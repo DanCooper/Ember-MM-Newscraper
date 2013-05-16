@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Label2.Text" xml:space="preserve">
+    <value>This is either your first time running Ember Media Manager or you have upgraded to a newer version.  There are a few things Ember Media Manager needs to know to work properly.  This wizard will walk you through configuring Ember Media Manager to work for your set up.
+
+Only a handful of settings will be covered in this wizard. You can change these or any other setting at any time by selecting "Settings..." from the "Edit" menu.</value>
+  </data>
+  <data name="Label4.Text" xml:space="preserve">
+    <value>Now that Ember Media Manager knows WHERE to look for the files, we need to tell it WHAT files to look for.  Simply select any combination of files type you wish Ember Media Manager to load from and save to.  You can select more than one from each section if you wish.</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="btnMovieRem.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAAK6QAA
+        CukB/XXO0wAAAe1JREFUOE+lkEFIG0EUhtfGFo21eFDbnYnJzMYomoSuFQMGmhRKoVAKHnsqCF7Ek3dF
+        ox5s2oB6UQ9ShR5yq9FADViTFoqgRWljqRTUg3j1qJfC883orLt71MO3897/v/fP7moAcCsczdGzztcH
+        CXPcrtk5TJj9h8kng3bNKv69iL3ZM0Pwu53B33g0bx8S7CfMVDkahHLEgP1kRwa+zVcIXZp/Xsa925Eg
+        bHIq2Wr1w6/u65DyUzO1HTbQI5KtNg67sXCXFVCo9laUOP1QCvpAgkPfW/zwszua3Ul2DP0IcyiiZvkG
+        LZaaHtVYAYpC0JdZMygUkDVGYB3fZKOdwxemX2qXXvFTG69UO44AQQ5DlnFQgrd+xiDV5wz69WO4+a59
+        3rGsyBp0M4v/wsXpSpdp3axwNIJFTkeXGPmPgJtFTnLueUczx2lqHgcVc1c4NZqHk3NnwFQooE0zMjod
+        IKCYEiejqzOMpmVth5H8TLO/ygrItDDvu4AOLorDj0N3hJ9mJDPp8tOcxqwAwaTR1DuG6WN+HfDcOOt5
+        JZcV4wHyXnrIBPfNHj+PS1/zaJI6PGrf6g0jA7QxX1PpMbGPoN4pwFr0rE9vWOinD5ewrkceyADxwCEP
+        Ir9JippWjX2tHdTu2/x7qHlkrcSbAdoFvKofAHGjlVEAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="btnMovieAddFolder.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAAK6QAA
+        CukB/XXO0wAAAq1JREFUOE+lzl1IU2Ecx/GBlAQVCkV3TZMIzC6SijCkiy666AWrSWIWFZqplTkVJUtb
+        5utWKsV6MyMzk6AMp6ldLC/MtcL3ueZ0Tuc2N7cz5zTbOWfj17PBDsquogPf8zwPPP8PDw/Af8Vt3NM1
+        0bTxcSJjkgpo8zPScwE9Vy+gLQ2+Et3ml0dXDwby/1zDheGsWcp6rC/gma+Hx/YKHvtreKkmeB3N8Dpb
+        /P02f6yYdWB9ELA4kBvJGB6CnX0A1lgD1lQH1vwInjkpPJan8MHe+SdYmuuBnVo22mzzIoeDCuUAhzKL
+        T+vLwejvk0rBTJeRKsDMVIE1iP2wx1gJl6kbTpcbFGUHQfZygK03lU9PloCZLAIzcYusd8DoisFM3SWJ
+        /Cg7dRuLBhkWFv/AbrfNEGQdB1h7Uvju8QLQGiHoXzlkzQU9ng9oi4AJAhGU1d6AU98KyrniAwp9cxxg
+        +nKWvzImhHs0k5QBWpUJduw6hkcS8HPkOEGz4FKXg7JZQDkW3OT5W9YA+nYBf2kwG0v9V7DcnwZ24CqY
+        oUxIlRGoVmzF8nAKVrQtcLi8sFotzYFhDhj/cIq/8OManIpUUH0XoVUkQaNMRt23aFT1RkGlTIBmtBRz
+        5AWmwbdlQYDq3Um+rTcDzp7LUH09jWx5BPLkUSiW70IJKU++E1ndm6DQvYdb3VYdBHxvOBZpkKfD1HUB
+        6s5ESDoO+BO2xyBbthvijlhIuuPRNSSDuq+hNggYepMQpvmcxox9OgdNazIMbecxLUtBelMskhpjoOs4
+        A12XCBpZXqOl88SONUAIz/9tLLi0L6E2P75EnHNIJLkZVyoRxt07Ur7HeLgyxiXKPSguSNldQO5FkSLI
+        TCQpjHsBOYSsVgPxtoVvDtu/PZw783gbyF1foYGZoKF/C7y/i3XTbS25p8IAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="Label8.Text" xml:space="preserve">
+    <value>Some options you may be interested in:
+
+Custom Filters - If your movie files have things like "DVDRip", "BluRay", "x264", etc in their folder or file name and you wish to filter the names when loading into the media list, you can utilize the Custom Filter option.  The custom filter is RegEx compatible for maximum usability.
+
+Images - This section allows you to select which websites to "scrape" images from as well as select a preferred size for the images Ember Media Manager selects.
+
+Locks - This section allows you to "lock" certain information so it does not get updated even if you re-scrape the movie. This is useful if you manually edit the title, outline, or plot of a movie and wish to keep your changes.</value>
+  </data>
+  <data name="btnTVRemoveSource.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAAK6QAA
+        CukB/XXO0wAAAe1JREFUOE+lkEFIG0EUhtfGFo21eFDbnYnJzMYomoSuFQMGmhRKoVAKHnsqCF7Ek3dF
+        ox5s2oB6UQ9ShR5yq9FADViTFoqgRWljqRTUg3j1qJfC883orLt71MO3897/v/fP7moAcCsczdGzztcH
+        CXPcrtk5TJj9h8kng3bNKv69iL3ZM0Pwu53B33g0bx8S7CfMVDkahHLEgP1kRwa+zVcIXZp/Xsa925Eg
+        bHIq2Wr1w6/u65DyUzO1HTbQI5KtNg67sXCXFVCo9laUOP1QCvpAgkPfW/zwszua3Ul2DP0IcyiiZvkG
+        LZaaHtVYAYpC0JdZMygUkDVGYB3fZKOdwxemX2qXXvFTG69UO44AQQ5DlnFQgrd+xiDV5wz69WO4+a59
+        3rGsyBp0M4v/wsXpSpdp3axwNIJFTkeXGPmPgJtFTnLueUczx2lqHgcVc1c4NZqHk3NnwFQooE0zMjod
+        IKCYEiejqzOMpmVth5H8TLO/ygrItDDvu4AOLorDj0N3hJ9mJDPp8tOcxqwAwaTR1DuG6WN+HfDcOOt5
+        JZcV4wHyXnrIBPfNHj+PS1/zaJI6PGrf6g0jA7QxX1PpMbGPoN4pwFr0rE9vWOinD5ewrkceyADxwCEP
+        Ir9JippWjX2tHdTu2/x7qHlkrcSbAdoFvKofAHGjlVEAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="btnTVAddSource.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAAK6QAA
+        CukB/XXO0wAAAq1JREFUOE+lzl1IU2Ecx/GBlAQVCkV3TZMIzC6SijCkiy666AWrSWIWFZqplTkVJUtb
+        5utWKsV6MyMzk6AMp6ldLC/MtcL3ueZ0Tuc2N7cz5zTbOWfj17PBDsquogPf8zwPPP8PDw/Af8Vt3NM1
+        0bTxcSJjkgpo8zPScwE9Vy+gLQ2+Et3ml0dXDwby/1zDheGsWcp6rC/gma+Hx/YKHvtreKkmeB3N8Dpb
+        /P02f6yYdWB9ELA4kBvJGB6CnX0A1lgD1lQH1vwInjkpPJan8MHe+SdYmuuBnVo22mzzIoeDCuUAhzKL
+        T+vLwejvk0rBTJeRKsDMVIE1iP2wx1gJl6kbTpcbFGUHQfZygK03lU9PloCZLAIzcYusd8DoisFM3SWJ
+        /Cg7dRuLBhkWFv/AbrfNEGQdB1h7Uvju8QLQGiHoXzlkzQU9ng9oi4AJAhGU1d6AU98KyrniAwp9cxxg
+        +nKWvzImhHs0k5QBWpUJduw6hkcS8HPkOEGz4FKXg7JZQDkW3OT5W9YA+nYBf2kwG0v9V7DcnwZ24CqY
+        oUxIlRGoVmzF8nAKVrQtcLi8sFotzYFhDhj/cIq/8OManIpUUH0XoVUkQaNMRt23aFT1RkGlTIBmtBRz
+        5AWmwbdlQYDq3Um+rTcDzp7LUH09jWx5BPLkUSiW70IJKU++E1ndm6DQvYdb3VYdBHxvOBZpkKfD1HUB
+        6s5ESDoO+BO2xyBbthvijlhIuuPRNSSDuq+hNggYepMQpvmcxox9OgdNazIMbecxLUtBelMskhpjoOs4
+        A12XCBpZXqOl88SONUAIz/9tLLi0L6E2P75EnHNIJLkZVyoRxt07Ur7HeLgyxiXKPSguSNldQO5FkSLI
+        TCQpjHsBOYSsVgPxtoVvDtu/PZw783gbyF1foYGZoKF/C7y/i3XTbS25p8IAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="Label11.Text" xml:space="preserve">
+    <value>And finally, let's tell Ember Media Manager what TV Show files to look for.  Simply select any combination of files type you wish Ember Media Manager to load from and save to.  You can select more than one from each section if you wish.</value>
+  </data>
+  <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        AAABAAEAEBAAAAEAIABoBAAAFgAAACgAAAAQAAAAIAAAAAEAIAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAA
+        AAD///8A////AP///wD///8A////AOLi4muBgYHTZmdp3n1+f7bExMRa////AP///wD///8A////AP//
+        /wD///8A////AP///wD///8A////ANra2ns4OTv/MjQ3/zs+Q/8zNjv/S1FZ/5yfo7b8/f0D////AP//
+        /wD///8A////AP///wD///8A////AP///wBiY2PzNDY5/5mir//P3vb/qrvU/zg+Rv9JT1j/xNDZo///
+        /wD///8A////AP///wD///8A////AP///wD8/PwaPD5B/zg7QP+Omqv/iJar/4CPpv9seIn/XGRv/2mC
+        k+rY5/BP////AP///wD///8A////AP///wD///8A+/z9E0RGSvMvMjb/XWd3/2Nuf/9VXmr/NTk//zY5
+        Pv9ZgJnngrbax////wD///8A////AP///wD///8A////AOfz/FdmbnTqR01W/11nd/+Sorn/f4qb/zQ4
+        Pf8zNTj6Tqbh80mk4fr///8A////AP///wD///8A////AP///wDl8/xeqs7m+kZLUPpMU13/QkdN/zo+
+        Q/8wMjX/XISg1xah/v9jvPm7////AP///wD///8A////AP///wD///8A8vn9MrDd/P+x1vDueYqW415n
+        bdN3eHmj0tLSOkap9uNqvvq28Pj9F////wD///8A////AP///wD///8A////AP///wDB5f7CldP9/4XL
+        +v92wfX/y+f5Y////wBVpvDP/P39A////wD///8A////AP///wD///8A////AP///wD///8A+fv9CqHX
+        /a5Suf7/Q7L9/1K0+ON4xPiusNH0cv///wD///8A////AP///wD///8A////AP///wD///8A////AP//
+        /wD8/f0DRLP+3i6p/e4HmPv/AY70/87l+Uf///8A////AP///wD///8A////AP///wD///8A////AP//
+        /wD///8A/Pz9B8Lk/Ff///8AbrXymwB04/+qzfNe////AP///wD///8A////AP///wD///8A////AP//
+        /wD///8A////AP///wD///8A////AI+364MSZ9T3vNPyT////wD///8A////AP///wD///8A////AP//
+        /wD///8A////AP///wD///8A////AP///wBwoOOuirHol/b4/Ar///8A////AP///wD///8A////AP//
+        /wD///8A////AP///wD///8A////AP///wDV4/Y6ytz0R+jv+iP///8A////AP///wD///8A////AP//
+        /wD///8A////AP///wD///8A////AP///wD///8A3ej3R////wD///8A////AP///wD///8A////AP//
+        /wD///8A/H8AAPgfAADwDwAA8A8AAPAHAADwBwAA8AcAAPBPAADw3wAA+D8AAPw/AAD/PwAA/z8AAP8/
+        AAD//wAA//8AAA==
+</value>
+  </data>
+</root>

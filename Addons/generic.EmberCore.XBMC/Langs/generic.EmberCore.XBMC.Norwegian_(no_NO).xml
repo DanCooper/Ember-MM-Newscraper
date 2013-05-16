@@ -1,0 +1,34 @@
+<strings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <string id="0">XBMC-kontroller</string>
+  <string id="1">Navnet du innførte er allerede i bruk. Vennligst velg et annet.</string>
+  <string id="2">Hvert navn må være unikt.</string>
+  <string id="3">Du må føre inn et port-nummer for denne XBMC-installasjonen.</string>
+  <string id="4">Vennligst før inn et port-nummer.</string>
+  <string id="5">Du må føre inn en IP-adresse til denne XBMC-installasjonen.</string>
+  <string id="6">Før inn en IP-adresse.</string>
+  <string id="7">Du må føre inn et navn for denne XBMC-installasjonen.</string>
+  <string id="8">Vennligst før inn et unikt navn.</string>
+  <string id="9">XBMC-kommunikasjon</string>
+  <string id="10">Endre</string>
+  <string id="11">Navn:</string>
+  <string id="12">Legg til</string>
+  <string id="13">XBMC IP:</string>
+  <string id="14">XBMC Port:</string>
+  <string id="15">Fjerne valgte</string>
+  <string id="16">Kan ikke starte XBMC-oppdatering</string>
+  <string id="17">En feil oppstod under kommunikasjon med {0}{1}.</string>
+  <string id="18">XBMC</string>
+  <string id="19">XBMC-kontroller</string>
+  <string id="20">Slå på Reell tidssynkronisering</string>
+  <string id="21">Reell tidssynkronisering</string>
+  <string id="22">Søker...</string>
+  <string id="23">Hent kilder</string>
+  <string id="24">EMM Kilde</string>
+  <string id="25">XBMC kilde</string>
+  <string id="26">XBMC kildetype</string>
+  <string id="27">Windows Partisjonsbokstav (x:\)</string>
+  <string id="28">Windows UNC/Linux/OSX</string>
+  <string id="29">XBMC-host</string>
+  <string id="30">Send varslinger</string>
+  <string id="31">Hent spilleantall fra:</string>
+</strings>

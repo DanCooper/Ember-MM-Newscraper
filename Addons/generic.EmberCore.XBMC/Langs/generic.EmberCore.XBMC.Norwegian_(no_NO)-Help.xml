@@ -1,0 +1,12 @@
+<strings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <string control="XBMCCom_cbEnabled">Slå på eller slå av denne modulen.</string>
+  <string control="XBMCCom_lbXBMCCom">Liste over alle XBMC-installasjoner som EMM vil kommunisere med.</string>
+  <string control="XBMCCom_btnRemoveCom">Fjerne valgte XBMC-installasjon fra listen.</string>
+  <string control="XBMCCom_txtName">Før inn et unikt navn for å identifisere denne XBMC-installasjonen.</string>
+  <string control="XBMCCom_txtIP">Før inn IP-adressen til PCen som kjører XBMC.</string>
+  <string control="XBMCCom_txtPort">Før inn port-nummeret til PCen som kjører XBMC.</string>
+  <string control="XBMCCom_txtUsername">Før inn brukernavnet som vil bli brukt til å logge inn i XBMC-installasjonen.</string>
+  <string control="XBMCCom_txtPassword">Før inn passordet til XBMC-installasjonen.</string>
+  <string control="XBMCCom_btnEditCom">Forandre den valgte XBMC-installasjonen til å bruke den nylig innførte informasjonen.</string>
+  <string control="XBMCCom_btnAddCom">Legg til den innførte informasjonen som en ny XBMC-installasjon.</string>
+</strings>

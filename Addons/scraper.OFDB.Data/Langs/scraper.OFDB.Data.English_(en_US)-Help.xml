@@ -1,0 +1,33 @@
+<strings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <string control="OFDBMovieInfo_cbEnabled">Enable or disable this module.</string>
+  <string control="OFDBMovieInfo_btnUp">Move this scraper module up in order. (Scraper modules will be processed in order from top to bottom)</string>
+  <string control="OFDBMovieInfo_btnDown">Move this scraper module down in order. (Scraper modules will be processed in order from top to bottom)</string>
+  <string control="OFDBMovieInfo_txtIMDBURL">Enter the mirror to use when retrieving information from IMDB.</string>
+  <string control="OFDBMovieInfo_chkOFDBTitle">If enabled, Ember will attempt to retreive the movie title from OFDB (a German language site) when scraping.</string>
+  <string control="OFDBMovieInfo_chkOFDBOutline">If enabled, Ember will attempt to retreive the movie outline from OFDB (a German language site) when scraping.</string>
+  <string control="OFDBMovieInfo_chkOFDBPlot">If enabled, Ember will attempt to retreive the movie plot from OFDB (a German language site) when scraping.</string>
+  <string control="OFDBMovieInfo_chkOFDBGenre">If enabled, Ember will attempt to retreive the movie genre from OFDB (a German language site) when scraping.</string>
+  <string control="OFDBMovieInfo_chkCertification">Enable scraping movie certification.</string>
+  <string control="OFDBMovieInfo_chkTop250">Enable scraping movie Top 250 ranking.</string>
+  <string control="OFDBMovieInfo_txtGenreLimit">Limit the number of scraped genres to the entered value.</string>
+  <string control="OFDBMovieInfo_txtActorLimit">Limit the number of scraped actors to the entered value.</string>
+  <string control="OFDBMovieInfo_chkCrew">Enable scraping movie other crew. (Scrape Full Crew must be enabled)</string>
+  <string control="OFDBMovieInfo_chkMusicBy">Enable scraping movie musicians. (Scrape Full Crew must be enabled)</string>
+  <string control="OFDBMovieInfo_chkProducers">Enable scraping movie producers. (Scrape Full Crew must be enabled)</string>
+  <string control="OFDBMovieInfo_chkWriters">Enable scraping movie writers.</string>
+  <string control="OFDBMovieInfo_chkStudio">Enable scraping movie studio.</string>
+  <string control="OFDBMovieInfo_chkRuntime">Enable scraping movie runtime.</string>
+  <string control="OFDBMovieInfo_chkPlot">Enable scraping movie plot.</string>
+  <string control="OFDBMovieInfo_chkOutline">Enable scraping movie outline.</string>
+  <string control="OFDBMovieInfo_chkGenre">Enable scraping movie genre.</string>
+  <string control="OFDBMovieInfo_chkDirector">Enable scraping movie director.</string>
+  <string control="OFDBMovieInfo_chkTagline">Enable scraping movie tagline.</string>
+  <string control="OFDBMovieInfo_chkCast">Enable scraping movie cast.</string>
+  <string control="OFDBMovieInfo_chkVotes">Enable scraping movie votes.</string>
+  <string control="OFDBMovieInfo_chkTrailer">Enable scraping movie trailer url.</string>
+  <string control="OFDBMovieInfo_chkRating">Enable scraping movie rating.</string>
+  <string control="OFDBMovieInfo_chkRelease">Enable scraping movie release date.</string>
+  <string control="OFDBMovieInfo_chkMPAA">Enable scraping movie MPAA.</string>
+  <string control="OFDBMovieInfo_chkYear">Enable scraping movie year.</string>
+  <string control="OFDBMovieInfo_chkTitle">Enable scraping movie title.</string>
+</strings>

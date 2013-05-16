@@ -1,0 +1,23 @@
+<strings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <string control="IMPAMovieMedia_cbEnabled">Enable or disable this module.</string>
+  <string control="IMPAMovieMedia_btnUp">Move this scraper module up in order. (Scraper modules will be processed in order from top to bottom)</string>
+  <string control="IMPAMovieMedia_btnDown">Move this scraper module down in order. (Scraper modules will be processed in order from top to bottom)</string>
+  <string control="IMPAMovieMedia_txtTMDBApiKey">API Key from the TMDB site. Sharing the API key is forbidden.</string>
+  <string control="IMPAMovieMedia_chkCertification">Enable scraping movie certification.</string>
+  <string control="IMPAMovieMedia_cbTMDBPrefLanguage">Selected language for TMDB searches</string>
+  <string control="IMPAMovieMedia_chkFallBackEng">If no record is available for selected language try English</string>
+  <string control="IMPAMovieMedia_chkCrew">Enable scraping movie other crew. (Scrape Full Crew must be enabled)</string>
+  <string control="IMPAMovieMedia_chkStudio">Enable scraping movie studio.</string>
+  <string control="IMPAMovieMedia_chkRuntime">Enable scraping movie runtime.</string>
+  <string control="IMPAMovieMedia_chkPlot">Enable scraping movie plot.</string>
+  <string control="IMPAMovieMedia_chkOutline">Enable scraping movie outline.</string>
+  <string control="IMPAMovieMedia_chkGenre">Enable scraping movie genre.</string>
+  <string control="IMPAMovieMedia_chkTagline">Enable scraping movie tagline.</string>
+  <string control="IMPAMovieMedia_chkCast">Enable scraping movie cast.</string>
+  <string control="IMPAMovieMedia_chkVotes">Enable scraping movie votes.</string>
+  <string control="IMPAMovieMedia_chkRating">Enable scraping movie rating.</string>
+  <string control="IMPAMovieMedia_chkRelease">Enable scraping movie release date.</string>
+  <string control="IMPAMovieMedia_chkMPAA">Enable scraping movie MPAA.</string>
+  <string control="IMPAMovieMedia_chkYear">Enable scraping movie year.</string>
+  <string control="IMPAMovieMedia_chkTitle">Enable scraping movie title.</string>
+</strings>

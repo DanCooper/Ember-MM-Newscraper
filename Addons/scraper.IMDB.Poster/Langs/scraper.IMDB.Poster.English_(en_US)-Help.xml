@@ -1,0 +1,33 @@
+<strings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <string control="IMDBMovieMedia_cbEnabled">Enable or disable this module.</string>
+  <string control="IMDBMovieMedia_btnUp">Move this scraper module up in order. (Scraper modules will be processed in order from top to bottom)</string>
+  <string control="IMDBMovieMedia_btnDown">Move this scraper module down in order. (Scraper modules will be processed in order from top to bottom)</string>
+  <string control="IMDBMovieMedia_txtIMDBURL">Enter the mirror to use when retrieving information from IMDB.</string>
+  <string control="IMDBMovieMedia_chkOFDBTitle">If enabled, Ember will attempt to retreive the movie title from OFDB (a German language site) when scraping.</string>
+  <string control="IMDBMovieMedia_chkOFDBOutline">If enabled, Ember will attempt to retreive the movie outline from OFDB (a German language site) when scraping.</string>
+  <string control="IMDBMovieMedia_chkOFDBPlot">If enabled, Ember will attempt to retreive the movie plot from OFDB (a German language site) when scraping.</string>
+  <string control="IMDBMovieMedia_chkOFDBGenre">If enabled, Ember will attempt to retreive the movie genre from OFDB (a German language site) when scraping.</string>
+  <string control="IMDBMovieMedia_chkCertification">Enable scraping movie certification.</string>
+  <string control="IMDBMovieMedia_chkTop250">Enable scraping movie Top 250 ranking.</string>
+  <string control="IMDBMovieMedia_txtGenreLimit">Limit the number of scraped genres to the entered value.</string>
+  <string control="IMDBMovieMedia_txtActorLimit">Limit the number of scraped actors to the entered value.</string>
+  <string control="IMDBMovieMedia_chkCrew">Enable scraping movie other crew. (Scrape Full Crew must be enabled)</string>
+  <string control="IMDBMovieMedia_chkMusicBy">Enable scraping movie musicians. (Scrape Full Crew must be enabled)</string>
+  <string control="IMDBMovieMedia_chkProducers">Enable scraping movie producers. (Scrape Full Crew must be enabled)</string>
+  <string control="IMDBMovieMedia_chkWriters">Enable scraping movie writers.</string>
+  <string control="IMDBMovieMedia_chkStudio">Enable scraping movie studio.</string>
+  <string control="IMDBMovieMedia_chkRuntime">Enable scraping movie runtime.</string>
+  <string control="IMDBMovieMedia_chkPlot">Enable scraping movie plot.</string>
+  <string control="IMDBMovieMedia_chkOutline">Enable scraping movie outline.</string>
+  <string control="IMDBMovieMedia_chkGenre">Enable scraping movie genre.</string>
+  <string control="IMDBMovieMedia_chkDirector">Enable scraping movie director.</string>
+  <string control="IMDBMovieMedia_chkTagline">Enable scraping movie tagline.</string>
+  <string control="IMDBMovieMedia_chkCast">Enable scraping movie cast.</string>
+  <string control="IMDBMovieMedia_chkVotes">Enable scraping movie votes.</string>
+  <string control="IMDBMovieMedia_chkTrailer">Enable scraping movie trailer url.</string>
+  <string control="IMDBMovieMedia_chkRating">Enable scraping movie rating.</string>
+  <string control="IMDBMovieMedia_chkRelease">Enable scraping movie release date.</string>
+  <string control="IMDBMovieMedia_chkMPAA">Enable scraping movie MPAA.</string>
+  <string control="IMDBMovieMedia_chkYear">Enable scraping movie year.</string>
+  <string control="IMDBMovieMedia_chkTitle">Enable scraping movie title.</string>
+  </strings>

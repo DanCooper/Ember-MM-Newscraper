@@ -1,0 +1,31 @@
+<strings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <string control="TMDBMovieInfo_cbEnabled">Slå denne modulen på eller av.</string>
+  <string control="TMDBMovieInfo_btnUp">Flytt denne detaljhentermodulen opp i rekkefølgen. (Detaljhentermoduler vil bli bruk fra toppen ned.)</string>
+  <string control="TMDBMovieInfo_btnDown">Flytt denne detaljhentermodulen ned i rekkefølgen. (Detaljhentermoduler vil bli bruk fra toppen ned.)</string>
+  <string control="TMDBMovieInfo_txtTMDBApiKey">API-nøkkel fra TMDB-siden. Deling av denne nøkkelen er forbudt.</string>
+  <string control="TMDBMovieInfo_chkCertification">Slå på detaljhenting av filmsertifisering.</string>
+  <string control="TMDBMovieInfo_cbTMDBPrefLanguage">Valgt språk for TMDB-søk.</string>
+  <string control="TMDBMovieInfo_chkFallBackEng">Hvis valgt språk ikke blir funnet, prøv engelsk.</string>
+  <string control="TMDBMovieInfo_chkCrew">Slå på detaljhenting av andre crew. (Detaljhenting av fullt crew må være påslått)</string>
+  <string control="TMDBMovieInfo_chkStudio">Slå på detaljhenting av filmstudio.</string>
+  <string control="TMDBMovieInfo_chkRuntime">Slå på detaljhenting av filmlengde.</string>
+  <string control="TMDBMovieInfo_chkPlot">Slå på detaljhenting av filmens historie.</string>
+  <string control="TMDBMovieInfo_chkOutline">Slå på detaljhenting av filmens beskrivelse.</string>
+  <string control="TMDBMovieInfo_chkGenre">Slå på detaljhenting av filmens sjanger.</string>
+  <string control="TMDBMovieInfo_chkTagline">Slå på detaljhetning av filmens undertittel.</string>
+  <string control="TMDBMovieInfo_chkCast">Slå på detaljhetning av filmens skuespillerbeholdning.</string>
+  <string control="TMDBMovieInfo_chkVotes">Slå på detaljhetning av filmens poeng.</string>
+  <string control="TMDBMovieInfo_chkRating">Slå på detaljhetning av filmens aldersgrense.</string>
+  <string control="TMDBMovieInfo_chkRelease">Slå på detaljhetning av filmens premieredato.</string>
+  <string control="TMDBMovieInfo_chkMPAA">Slå på detaljhetning av filmens MPAA-markering.</string>
+  <string control="TMDBMovieInfo_chkYear">Slå på detaljhetning av filmens år.</string>
+  <string control="TMDBMovieInfo_chkTitle">Slå på detaljhetning av filmens tittel.</string>
+  <string control="TMDBMovieMedia_btnUp">Flytt denne detaljhentermodulen opp i rekkefølgen. (Detaljhentermoduler vil bli bruk fra toppen ned.)</string>
+  <string control="TMDBMovieMedia_cbEnabled">Slå denne modulen på eller av.</string>
+  <string control="TMDBMovieMedia_btnDown">Flytt denne detaljhentermodulen ned i rekkefølgen. (Detaljhentermoduler vil bli bruk fra toppen ned.)</string>
+  <string control="TMDBMovieMedia_chkScrapePoster">Slå på detaljhetning av plakater i denne modulen. (Se globale plakatinnstillinger for flere valg)</string>
+  <string control="TMDBMovieMedia_chkScrapeFanart">Slå på detaljhetning av fankunst i denne modulen. (Se globale fankunstinnstillinger for flere valg)</string>
+  <string control="TMDBMovieMedia_chkDownloadTrailer">Slå på automatisk henting av trailer fra denne modulen. (Se globale trailerinnstillinger for flere valg)</string>
+  <string control="TMDBMovieMedia_txtTimeout">Før inn tiden (i sekunder) du vil bruke for timeout for trailersider. (Hvis siden ikke svarer innen timeoutfristen, så vil den bli hoppet over)</string>
+  <string control="TMDBMovieMedia_lbTrailerSites">Velg sidene du vil bruke til trailer URL og/eller filer.</string>
+</strings>

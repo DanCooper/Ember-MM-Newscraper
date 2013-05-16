@@ -1,0 +1,9 @@
+<strings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <string control="Renamer_chkEnabled">Slå på eller slå av denne modulen.</string>
+  <string control="Renamer_chkGenericModule">Slå generiske navnebytte-funksjoner av eller på.</string>
+  <string control="Renamer_txtFolderPattern">Før inn en navneendring-stil som skal brukes for automatisk navneendring av mapper.</string>
+  <string control="Renamer_txtFilePattern">Før inn en navneendring-stil som skal brukes for automatisk navneendring av filer.</string>
+  <string control="Renamer_chkRenameMulti">Hvis påslått, så vil EMM automatisk endre navn på filer og mapper under detaljhenting av flere filmer.</string>
+  <string control="Renamer_chkRenameSingle">Hvis påslått, så vil EMM automatisk endre navn på filer og mapper under detaljhenting av én film.</string>
+  <string control="Renamer_chkBulkRenamer">Slå på massenavnebytteverktøyet.</string>
+</strings>

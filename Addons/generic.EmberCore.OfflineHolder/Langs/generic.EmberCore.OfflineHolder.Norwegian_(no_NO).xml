@@ -1,0 +1,33 @@
+<strings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <string id="0">Offline mediamanager</string>
+  <string id="1">Sett inn DVD</string>
+  <string id="2">Forberedrer data</string>
+  <string id="3">Lager film</string>
+  <string id="4">Bygger film</string>
+  <string id="5">Flytter filer</string>
+  <string id="6">Endrer filnavn</string>
+  <string id="7">Offline film-holder lagd!</string>
+  <string id="8">Kildemappen eksisterer ikke, eller kunne ikke bli funnet</string>
+  <string id="9">Kildemappe</string>
+  <string id="10">Film (mappenavn)</string>
+  <string id="11">Midlertidig bilde</string>
+  <string id="12">Offline mediamanager</string>
+  <string id="13">Legg til offline film</string>
+  <string id="14">Legg til kilde:</string>
+  <string id="15">Midlertidig mappe/filmnavn:</string>
+  <string id="16">Søk IMDB</string>
+  <string id="17">Masse-skaper</string>
+  <string id="18">Kritérie</string>
+  <string id="19">Lag</string>
+  <string id="20">Bruk fankunst som Midlertidig video</string>
+  <string id="21">Midlertidig undertittel</string>
+  <string id="22">Tekstfarge:</string>
+  <string id="23">Undertittel over:</string>
+  <string id="24">Midlertidig videoformat</string>
+  <string id="25">Bruk undertittel som bakgrunn</string>
+  <string id="26">Bakgrunnsundertittel-farge:</string>
+  <string id="27">Bruk EMM-overlay</string>
+  <string id="28">Velg font...</string>
+  <string id="29">Informasjon</string>
+  <string id="30">Offline mediamanager</string>
+</strings>

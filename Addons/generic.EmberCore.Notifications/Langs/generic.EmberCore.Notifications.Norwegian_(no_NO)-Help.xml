@@ -1,0 +1,7 @@
+<strings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <string control="Notify_chkEnabled">Slå på eller slå av denne modulen.</string>
+  <string control="Notify_chkOnError">Hvis påslått, en varselboks vil vises når en feil oppstår.</string>
+  <string control="Notify_chkOnNewMovie">Hvis påslått, en varselboks vil vises når en ny film blir lagt til i biblioteket.</string>
+  <string control="Notify_chkOnMovieScraped">Hvis påslått, en varselboks vil vises når en film blir detaljhentet.</string>
+  <string control="Notify_chkOnNewEp">Hvis påslått, en varselboks vil vises når en episode blir lagt til i biblioteket.</string>
+</strings>

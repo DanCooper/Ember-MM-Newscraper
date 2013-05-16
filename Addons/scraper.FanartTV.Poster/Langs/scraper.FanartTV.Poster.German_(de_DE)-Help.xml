@@ -1,0 +1,31 @@
+<strings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <string control="TMDBMovieInfo_cbEnabled">Aktiviert oder deaktiviert dieses Modul.</string>
+  <string control="TMDBMovieInfo_btnUp">Verschiebt diesen Scraper in der Reihenfolge einen nach oben. (Scraper Module werden von oben nach unten abgearbeitet)</string>
+  <string control="TMDBMovieInfo_btnDown">Verschiebt diesen Scraper in der Reihenfolge einen nach unten. (Scraper Module werden von oben nach unten abgearbeitet)</string>
+  <string control="TMDBMovieInfo_txtTMDBApiKey">API-Key von der TMDB-Website. Gemeinsame Nutzung des API-Schlüssels ist verboten.</string>
+  <string control="TMDBMovieInfo_chkCertification">Das Scrapen von Altersbeschränkungen einschalten.</string>
+  <string control="TMDBMovieInfo_cbTMDBPrefLanguage">Wähle die Sprache in der auf TMDB gesucht werden soll</string>
+  <string control="TMDBMovieInfo_chkFallBackEng">Wenn kein Datensatz für die gewählte Sprache verfügbar ist versuche englischen zu nehmen.</string>
+  <string control="TMDBMovieInfo_chkCrew">Das Scrapen von der restlichen Crew einschalten. ("Gesamte Crew Scrapen" muss eingeschaltet sein)</string>
+  <string control="TMDBMovieInfo_chkStudio">Das Scrapen von Studios einschalten.</string>
+  <string control="TMDBMovieInfo_chkRuntime">Das Scrapen von Spielzeiten einschalten.</string>
+  <string control="TMDBMovieInfo_chkPlot">Das Scrapen von Inhaltsangaben einschalten.</string>
+  <string control="TMDBMovieInfo_chkOutline">Das Scrapen von Kurzbeschreibungen einschalten.</string>
+  <string control="TMDBMovieInfo_chkGenre">Das Scrapen von Genres einschalten.</string>
+  <string control="TMDBMovieInfo_chkTagline">Das Scrapen von Taglines einschalten.</string>
+  <string control="TMDBMovieInfo_chkCast">Das Scrapen von Schauspielern einschalten.</string>
+  <string control="TMDBMovieInfo_chkVotes">Das Scrapen von Anzahl Bewertungen einschalten.</string>
+  <string control="TMDBMovieInfo_chkRating">Das Scrapen von Bewertungen einschalten.</string>
+  <string control="TMDBMovieInfo_chkRelease">Das Scrapen von Premiere-Daten einschalten.</string>
+  <string control="TMDBMovieInfo_chkMPAA">Das Scrapen von MPAA-Informationen einschalten.</string>
+  <string control="TMDBMovieInfo_chkYear">Das Scrapen von Filmjahren einschalten.</string>
+  <string control="TMDBMovieInfo_chkTitle">Das Scrapen von Filmtiteln einschalten.</string>
+  <string control="TMDBMovieMedia_btnUp">Verschiebt diesen Scraper in der Reihenfolge einen nach oben. (Scraper Module werden von oben nach unten abgearbeitet)</string>
+  <string control="TMDBMovieMedia_cbEnabled">Aktiviert oder deaktiviert dieses Modul.</string>
+  <string control="TMDBMovieMedia_btnDown">Verschiebt diesen Scraper in der Reihenfolge einen nach unten. (Scraper Module werden von oben nach unten abgearbeitet)</string>
+  <string control="TMDBMovieMedia_chkScrapePoster">Aktiviert das Laden von Postern mit diesem Modul. (Schau auch in die Globale Konfiguration)</string>
+  <string control="TMDBMovieMedia_chkScrapeFanart">Aktiviert das Laden von Fanarts mit diesem Modul. (Schau auch in die Globale Konfiguration)</string>
+  <string control="TMDBMovieMedia_chkDownloadTrailer">Aktiviert das Laden von Trailern mit diesem Modul. (Schau auch in die Globale Konfiguration)</string>
+  <string control="TMDBMovieMedia_txtTimeout">Wähle die Zeit (in Sekunden) die auf Trailerseiten gewartet werden soll. (Wenn die Seite in dieser Zeit nicht geantwortet hat wird sie übersprungen)</string>
+  <string control="TMDBMovieMedia_lbTrailerSites">Wähle die Seite von der Trailer URLs/Dateien geladen werden sollen.</string>
+</strings>
