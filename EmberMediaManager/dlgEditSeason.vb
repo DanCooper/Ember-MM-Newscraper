@@ -165,7 +165,7 @@ Public Class dlgEditSeason
     End Sub
 
     Private Sub dlgEditSeason_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        If Not Master.eSettings.SeasonFanartEnabled AndAlso Not String.IsNullOrEmpty(Functions.GetSeasonDirectoryFromShowPath(Master.currShow.ShowPath, Master.currShow.TVEp.Season)) Then TabControl1.TabPages.Remove(TabPage3)
+        If Not Master.eSettings.SeasonFanartEnabled OrElse (String.IsNullOrEmpty(Functions.GetSeasonDirectoryFromShowPath(Master.currShow.ShowPath, Master.currShow.TVEp.Season)) AndAlso (Not Master.eSettings.SeasonXXDashFanartJPG AndAlso Not AdvancedSettings.GetBooleanSetting("YAMJSeasonFanart", False, "multi.Compatibility"))) Then TabControl1.TabPages.Remove(TabPage3)
 
         Me.SetUp()
 
@@ -181,7 +181,7 @@ Public Class dlgEditSeason
     Private Sub FillInfo()
         With Me
 
-            If Master.eSettings.SeasonFanartEnabled AndAlso Not String.IsNullOrEmpty(Functions.GetSeasonDirectoryFromShowPath(Master.currShow.ShowPath, Master.currShow.TVEp.Season)) Then
+            If Master.eSettings.SeasonXXDashFanartJPG OrElse AdvancedSettings.GetBooleanSetting("YAMJSeasonFanart", False, "multi.Compatibility") OrElse (Master.eSettings.SeasonFanartEnabled AndAlso Not String.IsNullOrEmpty(Functions.GetSeasonDirectoryFromShowPath(Master.currShow.ShowPath, Master.currShow.TVEp.Season))) Then
                 Fanart.FromFile(Master.currShow.SeasonFanartPath)
                 If Not IsNothing(Fanart.Image) Then
                     .pbFanart.Image = Fanart.Image
@@ -221,7 +221,7 @@ Public Class dlgEditSeason
         Try
             With Me
 
-                If Master.eSettings.SeasonFanartEnabled AndAlso Not String.IsNullOrEmpty(Functions.GetSeasonDirectoryFromShowPath(Master.currShow.ShowPath, Master.currShow.TVEp.Season)) Then
+                If Master.eSettings.SeasonXXDashFanartJPG OrElse AdvancedSettings.GetBooleanSetting("YAMJSeasonFanart", False, "multi.Compatibility") OrElse (Master.eSettings.SeasonFanartEnabled AndAlso Not String.IsNullOrEmpty(Functions.GetSeasonDirectoryFromShowPath(Master.currShow.ShowPath, Master.currShow.TVEp.Season))) Then
                     If Not IsNothing(.Fanart.Image) Then
                         Dim fPath As String = .Fanart.SaveAsSeasonFanart(Master.currShow)
                         Master.currShow.SeasonFanartPath = fPath
