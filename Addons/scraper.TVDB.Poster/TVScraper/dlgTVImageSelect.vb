@@ -867,33 +867,30 @@ Public Class dlgTVImageSelect
         Return Me.SetDefaults()
     End Function
 
-    Private Function DownloadFanart(ByVal iTag As ImageTag) As Image
+    Private Sub DownloadFanart(ByVal iTag As ImageTag, ByRef tImage As Images)
         Dim sHTTP As New HTTP
 
-        Using tImage As New Images
-            If Not String.IsNullOrEmpty(iTag.Path) AndAlso File.Exists(iTag.Path) Then
-                tImage.FromFile(iTag.Path)
-            ElseIf Not String.IsNullOrEmpty(iTag.Path) AndAlso Not String.IsNullOrEmpty(iTag.URL) Then
-                Me.lblStatus.Text = Master.eLang.GetString(87, "Downloading Fullsize Fanart Image...")
-                Me.pbStatus.Style = ProgressBarStyle.Marquee
-                Me.pnlStatus.Visible = True
+        If Not String.IsNullOrEmpty(iTag.Path) AndAlso File.Exists(iTag.Path) Then
+            tImage.FromFile(iTag.Path)
+        ElseIf Not String.IsNullOrEmpty(iTag.Path) AndAlso Not String.IsNullOrEmpty(iTag.URL) Then
+            Me.lblStatus.Text = Master.eLang.GetString(87, "Downloading Fullsize Fanart Image...")
+            Me.pbStatus.Style = ProgressBarStyle.Marquee
+            Me.pnlStatus.Visible = True
 
-                Application.DoEvents()
+            Application.DoEvents()
 
-                tImage.FromWeb(iTag.URL)
-                If Not IsNothing(tImage.Image) Then
-                    Directory.CreateDirectory(Directory.GetParent(iTag.Path).FullName)
-					tImage.Save(iTag.Path, , , False)
-                End If
-
-                sHTTP = Nothing
-
-                Me.pnlStatus.Visible = False
+            tImage.FromWeb(iTag.URL)
+            If Not IsNothing(tImage.Image) Then
+                Directory.CreateDirectory(Directory.GetParent(iTag.Path).FullName)
+                tImage.Save(iTag.Path, , , False)
             End If
 
-            Return tImage.Image
-        End Using
-    End Function
+            sHTTP = Nothing
+
+            Me.pnlStatus.Visible = False
+        End If
+        
+    End Sub
 
     Private Sub GenerateList()
         Try
@@ -991,10 +988,12 @@ Public Class dlgTVImageSelect
     End Sub
 
     Private Sub pbImage_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs)
+        Dim tImages As New Images
         Dim tImage As Image = Nothing
         Dim iTag As ImageTag = DirectCast(DirectCast(sender, PictureBox).Tag, ImageTag)
         If Not IsNothing(iTag) OrElse Not iTag.isFanart Then
-            tImage = DownloadFanart(iTag)
+            DownloadFanart(iTag, tImages)
+            tImage = tImages.Image
         Else
             tImage = DirectCast(sender, PictureBox).Image
         End If
