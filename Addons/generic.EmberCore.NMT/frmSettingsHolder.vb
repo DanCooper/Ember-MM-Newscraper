@@ -65,12 +65,12 @@ Public Class frmSettingsHolder
                     Dim status As String
                     Try
                         If Convert.ToSingle(conf.DesignVersion.Replace(".", System.Globalization.NumberFormatInfo.CurrentInfo.NumberDecimalSeparator)) < NMTExporterModule.MinDesignVersion Then
-                            status = Master.eLang.GetString(22, "Outdated")
+                            status = Master.eLang.GetString(447, "Outdated")
                         Else
-                            status = Master.eLang.GetString(18, "Installed")
+                            status = Master.eLang.GetString(446, "Installed")
                         End If
                     Catch ex As Exception
-                        status = Master.eLang.GetString(22, "Outdated")
+                        status = Master.eLang.GetString(447, "Outdated")
                     End Try
 
                     li.SubItems.AddRange(New String() {conf.Version.ToString, conf.Author.ToString, status})
@@ -89,7 +89,7 @@ Public Class frmSettingsHolder
                         conf.TemplatePath = fxml
                         confs.Add(conf)
                         Dim li As New ListViewItem(conf.Name)
-                        li.SubItems.AddRange(New String() {conf.Version.ToString, conf.Author.ToString, Master.eLang.GetString(19, "New")})
+                        li.SubItems.AddRange(New String() {conf.Version.ToString, conf.Author.ToString, Master.eLang.GetString(47, "New")})
                         li.ToolTipText = conf.Description
                         li.Tag = conf
                         lstTemplates.Items.Add(li)
@@ -161,13 +161,13 @@ Public Class frmSettingsHolder
     Private Function UnZip(ByVal fname As String) As Boolean
         Dim baseFolder As String = Path.Combine(sBasePath, String.Concat("Templates", Path.DirectorySeparatorChar, Path.GetFileNameWithoutExtension(fname)))
         If Directory.Exists(baseFolder) Then
-            If MsgBox(Master.eLang.GetString(37, "Folder already exist. Overwrite?"), MsgBoxStyle.YesNo, Master.eLang.GetString(36, "Install Template")) = MsgBoxResult.No Then
+            If MsgBox(Master.eLang.GetString(448, "Folder already exist. Overwrite?"), MsgBoxStyle.YesNo, Master.eLang.GetString(449, "Install Template")) = MsgBoxResult.No Then
                 Return False
             Else
                 Try
                     Directory.Delete(baseFolder, True)
                 Catch ex As Exception
-                    MsgBox(Master.eLang.GetString(38, "File/Folder in use! Can Not overwrite"), MsgBoxStyle.OkOnly, Master.eLang.GetString(36, "Install Template"))
+                    MsgBox(Master.eLang.GetString(450, "File/Folder in use! Can Not overwrite"), MsgBoxStyle.OkOnly, Master.eLang.GetString(449, "Install Template"))
                 End Try
             End If
         End If
@@ -196,24 +196,24 @@ Public Class frmSettingsHolder
     End Function
 
     Private Sub SetUp()
-		Me.cbEnabled.Text = Master.eLang.GetString(774, "Enabled", True)
-		Me.lstTemplates.Columns(0).Text = Master.eLang.GetString(4, "Template")
-		Me.lstTemplates.Columns(1).Text = Master.eLang.GetString(43, "Version")
-		Me.lstTemplates.Columns(2).Text = Master.eLang.GetString(44, "Author")
-		Me.lstTemplates.Columns(3).Text = Master.eLang.GetString(45, "Status")
-		Me.btnInstall.Text = Master.eLang.GetString(46, "Install")
-		Me.btnRemove.Text = Master.eLang.GetString(47, "Remove")
-		Me.GroupBox1.Text = Master.eLang.GetString(48, "Details")
+        Me.cbEnabled.Text = Master.eLang.GetString(774, "Enabled")
+        Me.lstTemplates.Columns(0).Text = Master.eLang.GetString(334, "Template")
+        Me.lstTemplates.Columns(1).Text = Master.eLang.GetString(422, "Version")
+        Me.lstTemplates.Columns(2).Text = Master.eLang.GetString(423, "Author")
+        Me.lstTemplates.Columns(3).Text = Master.eLang.GetString(425, "Status")
+        Me.btnInstall.Text = Master.eLang.GetString(427, "Install")
+        Me.btnRemove.Text = Master.eLang.GetString(428, "Remove")
+        Me.GroupBox1.Text = Master.eLang.GetString(443, "Details")
 	End Sub
 
     Sub RemoveTemplate()
         If lstTemplates.SelectedItems.Count > 0 Then
             Dim conf As NMTExporterModule.Config = DirectCast(lstTemplates.SelectedItems(0).Tag, NMTExporterModule.Config)
-            If MsgBox(Master.eLang.GetString(27, "Removing Template can not be undone. Are you sure?"), MsgBoxStyle.YesNo, Master.eLang.GetString(28, "Remove Template")) = MsgBoxResult.Yes Then
+            If MsgBox(Master.eLang.GetString(444, "Removing Template can not be undone. Are you sure?"), MsgBoxStyle.YesNo, Master.eLang.GetString(445, "Remove Template")) = MsgBoxResult.Yes Then
                 Select Case lstTemplates.SelectedItems(0).SubItems(3).Text
-                    Case Master.eLang.GetString(18, "Installed")
+                    Case Master.eLang.GetString(446, "Installed")
                         Directory.Delete(conf.TemplatePath, True)
-                    Case Master.eLang.GetString(19, "New")
+                    Case Master.eLang.GetString(47, "New")
                         File.Delete(conf.TemplatePath)
                 End Select
             End If
@@ -224,7 +224,7 @@ Public Class frmSettingsHolder
         If lstTemplates.SelectedItems.Count > 0 Then
             Dim conf As NMTExporterModule.Config = DirectCast(lstTemplates.SelectedItems(0).Tag, NMTExporterModule.Config)
             Select Case lstTemplates.SelectedItems(0).SubItems(3).Text
-                Case Master.eLang.GetString(19, "New")
+                Case Master.eLang.GetString(47, "New")
                     If UnZip(conf.TemplatePath) Then
                         File.Delete(conf.TemplatePath)
                         Dim wn As String = Path.Combine(Path.Combine(Path.GetDirectoryName(conf.TemplatePath), Path.GetFileNameWithoutExtension(conf.TemplatePath)), "WhatsNew.txt")
@@ -245,13 +245,13 @@ Public Class frmSettingsHolder
             Dim conf As NMTExporterModule.Config = DirectCast(lstTemplates.SelectedItems(0).Tag, NMTExporterModule.Config)
 
             Select Case lstTemplates.SelectedItems(0).SubItems(3).Text
-                Case Master.eLang.GetString(18, "Installed")
+                Case Master.eLang.GetString(446, "Installed")
                     btnRemove.Enabled = True
                     btnInstall.Enabled = False
                     If conf.ReadMe AndAlso File.Exists(Path.Combine(conf.TemplatePath, "readme.txt")) Then
                         readme = File.ReadAllText(Path.Combine(conf.TemplatePath, "readme.txt"))
                     End If
-                Case Master.eLang.GetString(19, "New")
+                Case Master.eLang.GetString(47, "New")
                     btnRemove.Enabled = True
                     btnInstall.Enabled = True
                     If conf.ReadMe Then readme = GetReadmeZip(conf.TemplatePath)

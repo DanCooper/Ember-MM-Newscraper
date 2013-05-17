@@ -151,7 +151,7 @@ Public Class dlgNMTMovies
     Public Sub SaveConfig()
         Try
             If IsNothing(conf) Then
-                MsgBox(Master.eLang.GetString(42, "Please Choose/Install a Template First"), MsgBoxStyle.OkCancel, "Error")
+                MsgBox(Master.eLang.GetString(337, "Please Choose/Install a Template First"), MsgBoxStyle.OkCancel, "Error")
                 Return
             End If
             AdvancedSettings.SetSetting("Template", cbTemplate.Text)
@@ -291,7 +291,7 @@ Public Class dlgNMTMovies
 
     Private Sub BuildMovieHTML(ByVal template As String, ByVal outputbase As String)
         Try
-            bwBuildHTML.ReportProgress(0, Master.eLang.GetString(2, "Compiling Movie List..."))
+            bwBuildHTML.ReportProgress(0, Master.eLang.GetString(332, "Compiling Movie List..."))
             Dim destPathShort As String = Path.Combine(outputbase, GetUserParam("MoviesDetailsPath", "html/").Replace("/", Path.DirectorySeparatorChar))
             HTMLMovieBody.Length = 0
             Dim sBasePath As String = Path.Combine(Path.Combine(Functions.AppPath, "Modules"), Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetExecutingAssembly.Location))
@@ -373,7 +373,7 @@ Public Class dlgNMTMovies
 
     Private Sub BuildTVHTML(ByVal template As String, ByVal outputbase As String)
         Try
-            bwBuildHTML.ReportProgress(0, Master.eLang.GetString(42, "Compiling TV Shows List..."))
+            bwBuildHTML.ReportProgress(0, Master.eLang.GetString(338, "Compiling TV Shows List..."))
             Dim destPathShort As String = Path.Combine(outputbase, GetUserParam("TVDetailsPath", "html/").Replace("/", Path.DirectorySeparatorChar))
             HTMLTVBody.Length = 0
             Dim sBasePath As String = Path.Combine(Path.Combine(Functions.AppPath, "Modules"), Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetExecutingAssembly.Location))
@@ -609,7 +609,7 @@ Public Class dlgNMTMovies
                             tVid = NFO.GetBestVideo(fiAV)
                             tRes = NFO.GetResFromDimensions(tVid)
                             _vidDimensions = NFO.GetDimensionsFromVideo(tVid)
-                            _vidDetails = String.Format("{0} / {1}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(283, "Unknown", True), tRes), If(String.IsNullOrEmpty(tVid.Codec), Master.eLang.GetString(283, "Unknown", True), tVid.Codec)).ToUpper
+                            _vidDetails = String.Format("{0} / {1}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(283, "Unknown"), tRes), If(String.IsNullOrEmpty(tVid.Codec), Master.eLang.GetString(283, "Unknown"), tVid.Codec)).ToUpper
                         End If
                     End If
                     row = row.Replace("<$VIDEO>", _vidDetails)
@@ -619,7 +619,7 @@ Public Class dlgNMTMovies
                     Dim _audDetails As String = String.Empty
                     If fiAV.StreamDetails.Audio.Count > 0 Then
                         tAud = NFO.GetBestAudio(fiAV, False)
-                        _audDetails = String.Format("{0} / {1}ch", If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(283, "Unknown", True), tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(283, "Unknown", True), tAud.Channels)).ToUpper
+                        _audDetails = String.Format("{0} / {1}ch", If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(283, "Unknown"), tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(283, "Unknown"), tAud.Channels)).ToUpper
                     End If
                     row = row.Replace("<$AUDIO>", _audDetails)
                 End If
@@ -864,7 +864,7 @@ Public Class dlgNMTMovies
 
 
     Private Sub cbTemplate_MouseHover(ByVal sender As Object, ByVal e As System.EventArgs) Handles cbTemplate.MouseHover
-        lblHelpa.Text = Master.eLang.GetString(5, "Choose a template")
+        lblHelpa.Text = Master.eLang.GetString(339, "Choose a template")
     End Sub
 
     Private Sub cbTemplate_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles cbTemplate.MouseLeave
@@ -1315,26 +1315,25 @@ Public Class dlgNMTMovies
     End Function
 
     Private Sub SetUp()
-        Me.Text = Master.eLang.GetString(1, "Jukebox Builder")
-        Me.Close_Button.Text = Master.eLang.GetString(19, "Close", True)
-        Me.lblCompiling.Text = Master.eLang.GetString(2, "Compiling Movie List...")
-        Me.lblCanceling.Text = Master.eLang.GetString(3, "Canceling Compilation...")
-        Me.btnCancel.Text = Master.eLang.GetString(167, "Cancel", True)
-        Me.Label2.Text = Master.eLang.GetString(4, "Template")
-        Me.Label1.Text = Master.eLang.GetString(14, "Output Folder")
-        Me.btnSave.Text = Master.eLang.GetString(15, "Save Settings")
-        Me.btnBuild.Text = Master.eLang.GetString(16, "Build")
-        Me.gbHelp.Text = String.Concat("     ", Master.eLang.GetString(17, "Help"))
-        Me.dgvProperties.Columns(0).HeaderText = Master.eLang.GetString(29, "Property")
-        Me.dgvProperties.Columns(1).HeaderText = Master.eLang.GetString(30, "Value")
-        Me.dgvSources.Columns(1).HeaderText = Master.eLang.GetString(31, "Ember Source")
-        Me.dgvSources.Columns(3).HeaderText = Master.eLang.GetString(32, "NMT Path")
-        Me.dgvSettings.Columns(0).HeaderText = Master.eLang.GetString(33, "Setting")
-        Me.dgvSettings.Columns(1).HeaderText = Master.eLang.GetString(30, "Value")
-        Me.TabPage1.Text = Master.eLang.GetString(34, "Template Settings")
-        Me.TabPage2.Text = Master.eLang.GetString(35, "Skin Properties")
-        Me.chHighPriority.Text = Master.eLang.GetString(39, "High Priority")
-
+        Me.Text = Master.eLang.GetString(340, "Jukebox Builder")
+        Me.Close_Button.Text = Master.eLang.GetString(19, "Close")
+        Me.lblCompiling.Text = Master.eLang.GetString(332, "Compiling Movie List...")
+        Me.lblCanceling.Text = Master.eLang.GetString(333, "Canceling Compilation...")
+        Me.btnCancel.Text = Master.eLang.GetString(167, "Cancel")
+        Me.Label2.Text = Master.eLang.GetString(334, "Template")
+        Me.Label1.Text = Master.eLang.GetString(341, "Output Folder")
+        Me.btnSave.Text = Master.eLang.GetString(342, "Save Settings")
+        Me.btnBuild.Text = Master.eLang.GetString(343, "Build")
+        Me.gbHelp.Text = String.Concat("     ", Master.eLang.GetString(458, "Help"))
+        Me.dgvProperties.Columns(0).HeaderText = Master.eLang.GetString(344, "Property")
+        Me.dgvProperties.Columns(1).HeaderText = Master.eLang.GetString(345, "Value")
+        Me.dgvSources.Columns(1).HeaderText = Master.eLang.GetString(346, "Ember Source")
+        Me.dgvSources.Columns(3).HeaderText = Master.eLang.GetString(347, "NMT Path")
+        Me.dgvSettings.Columns(0).HeaderText = Master.eLang.GetString(420, "Setting")
+        Me.dgvSettings.Columns(1).HeaderText = Master.eLang.GetString(345, "Value")
+        Me.TabPage1.Text = Master.eLang.GetString(348, "Template Settings")
+        Me.TabPage2.Text = Master.eLang.GetString(349, "Skin Properties")
+        Me.chHighPriority.Text = Master.eLang.GetString(350, "High Priority")
     End Sub
 
     Private Structure Arguments
@@ -1368,7 +1367,7 @@ Public Class dlgNMTMovies
         btnCancel.Enabled = True
         lblCompiling.Visible = True
         pbCompile.Visible = True
-        lblCompiling.Text = Master.eLang.GetString(20, "Starting...")
+        lblCompiling.Text = Master.eLang.GetString(352, "Starting...")
         pbCompile.Style = ProgressBarStyle.Continuous
         pnlCancel.Visible = True
         pnlCancel.BringToFront()
@@ -1378,11 +1377,11 @@ Public Class dlgNMTMovies
         Try
             While True
                 If GetUserParam("CleanBasePath", "true").ToLower = "true" Then
-                    lblCompiling.Text = Master.eLang.GetString(21, "Cleaning output folder...")
+                    lblCompiling.Text = Master.eLang.GetString(353, "Cleaning output folder...")
                     Dim mythread As New Thread(AddressOf DoDelete)
                     Dim bpath As String = Path.Combine(outputFolder, GetUserParam("BasePath", ".Ember/").Replace("/", Path.DirectorySeparatorChar))
                     If bpath = outputFolder Then
-                        MessageBox.Show(Master.eLang.GetString(6, "BasePath can not be the same as Output Folder"), Master.eLang.GetString(7, "Warning"), MessageBoxButtons.OK)
+                        MessageBox.Show(Master.eLang.GetString(354, "BasePath can not be the same as Output Folder"), Master.eLang.GetString(356, "Warning"), MessageBoxButtons.OK)
                         Return
                     End If
                     mythread.Start(bpath)
@@ -1391,7 +1390,7 @@ Public Class dlgNMTMovies
                         Threading.Thread.Sleep(50)
                     End While
                 End If
-                lblCompiling.Text = Master.eLang.GetString(23, "Preparing folders")
+                lblCompiling.Text = Master.eLang.GetString(357, "Preparing folders")
                 For Each s As NMTExporterModule.Config._Param In conf.Params.Where(Function(y) y.type = "path")
                     If Not Directory.Exists(Path.Combine(outputFolder, s.value.Replace("/", Path.DirectorySeparatorChar))) Then
                         Try
@@ -1455,7 +1454,7 @@ Public Class dlgNMTMovies
     End Function
     Private Sub SaveMovieFiles(ByVal srcPath As String, ByVal destPath As String)
         Try
-            bwBuildHTML.ReportProgress(0, Master.eLang.GetString(8, "Movies - Exporting Data..."))
+            bwBuildHTML.ReportProgress(0, Master.eLang.GetString(358, "Movies - Exporting Data..."))
             If Not DontSaveExtra Then
                 For Each f As NMTExporterModule.Config._File In conf.Files.Where(Function(y) y.Type = "other")
                     Dim dstPath As String = Path.Combine(Path.Combine(outputFolder, f.DestPath.Replace("/", Path.DirectorySeparatorChar)), f.Name)
@@ -1477,19 +1476,19 @@ Public Class dlgNMTMovies
                     If bwBuildHTML.CancellationPending Then Return
                 Next
                 If Me.bexportFlags Then
-                    bwBuildHTML.ReportProgress(0, Master.eLang.GetString(9, "Movies - Exporting Flags..."))
+                    bwBuildHTML.ReportProgress(0, Master.eLang.GetString(359, "Movies - Exporting Flags..."))
                     srcPath = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Flags", Path.DirectorySeparatorChar)
                     Dim flagspath As String = Path.Combine(destPath, GetUserParam("FlagsPath", "Flags/").Replace("/", Path.DirectorySeparatorChar))
                     CopyDirectory(srcPath, flagspath, True)
                 End If
                 If bwBuildHTML.CancellationPending Then Return
                 If Me.bexportPosters Then
-                    bwBuildHTML.ReportProgress(0, Master.eLang.GetString(10, "Movies - Exporting Posters..."))
+                    bwBuildHTML.ReportProgress(0, Master.eLang.GetString(360, "Movies - Exporting Posters..."))
                     Me.ExportMoviePosterThumb(destPath, Convert.ToInt32(GetUserParam("PostersThumbWidth", "160")))
                 End If
                 If bwBuildHTML.CancellationPending Then Return
                 If Me.bexportBackDrops Then
-                    bwBuildHTML.ReportProgress(0, Master.eLang.GetString(11, "Movies - Exporting Backdrops..."))
+                    bwBuildHTML.ReportProgress(0, Master.eLang.GetString(363, "Movies - Exporting Backdrops..."))
                     Me.ExportMovieBackDrops(destPath, Convert.ToInt32(GetUserParam("BackdropWidth", "1280")))
                 End If
                 If bwBuildHTML.CancellationPending Then Return
@@ -1515,7 +1514,7 @@ Public Class dlgNMTMovies
 
     Private Sub SaveTVFiles(ByVal srcPath As String, ByVal destPath As String)
         Try
-            bwBuildHTML.ReportProgress(0, Master.eLang.GetString(48, "TV - Exporting Data..."))
+            bwBuildHTML.ReportProgress(0, Master.eLang.GetString(372, "TV - Exporting Data..."))
             If Not DontSaveExtra Then
                 If Not HaveMovies Then ' If have Movies already done!
                     For Each f As NMTExporterModule.Config._File In conf.Files.Where(Function(y) y.Type = "other")
@@ -1538,7 +1537,7 @@ Public Class dlgNMTMovies
                         If bwBuildHTML.CancellationPending Then Return
                     Next
                     If Me.bexportFlags Then
-                        bwBuildHTML.ReportProgress(0, Master.eLang.GetString(49, "TV - Exporting Flags..."))
+                        bwBuildHTML.ReportProgress(0, Master.eLang.GetString(374, "TV - Exporting Flags..."))
                         srcPath = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Flags", Path.DirectorySeparatorChar)
                         Dim flagspath As String = Path.Combine(destPath, GetUserParam("FlagsPath", "Flags/").Replace("/", Path.DirectorySeparatorChar))
                         CopyDirectory(srcPath, flagspath, True)
@@ -1547,12 +1546,12 @@ Public Class dlgNMTMovies
 
                 If bwBuildHTML.CancellationPending Then Return
                 If Me.bexportPosters Then
-                    bwBuildHTML.ReportProgress(0, Master.eLang.GetString(50, "TV - Exporting Posters..."))
+                    bwBuildHTML.ReportProgress(0, Master.eLang.GetString(375, "TV - Exporting Posters..."))
                     Me.ExportTVShowPosterThumb(destPath, Convert.ToInt32(GetUserParam("TVPostersThumbWidth", "160")))
                 End If
                 If bwBuildHTML.CancellationPending Then Return
                 If Me.bexportBackDrops Then
-                    bwBuildHTML.ReportProgress(0, Master.eLang.GetString(51, "TV - Exporting Backdrops..."))
+                    bwBuildHTML.ReportProgress(0, Master.eLang.GetString(376, "TV - Exporting Backdrops..."))
                     'Me.ExportBackDrops(destPath, Convert.ToInt32(GetUserParam("BackdropWidth", "1280")))
                 End If
                 If bwBuildHTML.CancellationPending Then Return
@@ -1591,7 +1590,7 @@ Public Class dlgNMTMovies
 
 
     Private Sub dgvSources_MouseHover(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvSources.MouseHover
-        lblHelpa.Text = String.Format(Master.eLang.GetString(12, "Use the NMT Path when the source is not on the same Drive/Share as the Output folder.{0}Some common paths are:{0}file:///opt/sybhttpd/localhost.drives/NETWORK_SHARE/[remote_filesystem_name]/[Path_to_Source]{0}file:///opt/sybhttpd/localhost.drives/HARD_DISK/USB_DRIVE_A-1/[Path_to_Source]"), vbCrLf)
+        lblHelpa.Text = String.Format(Master.eLang.GetString(377, "Use the NMT Path when the source is not on the same Drive/Share as the Output folder.{0}Some common paths are:{0}file:///opt/sybhttpd/localhost.drives/NETWORK_SHARE/[remote_filesystem_name]/[Path_to_Source]{0}file:///opt/sybhttpd/localhost.drives/HARD_DISK/USB_DRIVE_A-1/[Path_to_Source]"), vbCrLf)
     End Sub
 
     Private Sub dgvSources_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvSources.MouseLeave
@@ -1606,7 +1605,7 @@ Public Class dlgNMTMovies
         HaveTV = False
         Cursor = Cursors.WaitCursor
         pbWarning.Image = ilNMT.Images("red")
-        lblWarning.Text = Master.eLang.GetString(24, "Validating Info...")
+        lblWarning.Text = Master.eLang.GetString(378, "Validating Info...")
         Application.DoEvents()
         Dim warn As String = String.Empty
         If outputChanged Then
@@ -1614,7 +1613,7 @@ Public Class dlgNMTMovies
             OutputExist = Directory.Exists(txtOutputFolder.Text)
         End If
         If Not OutputExist Then
-            warn = Master.eLang.GetString(25, "Invalid Output Folder")
+            warn = Master.eLang.GetString(379, "Invalid Output Folder")
         End If
         If String.IsNullOrEmpty(warn) Then
             For Each row As DataGridViewRow In dgvSources.Rows
@@ -1623,7 +1622,7 @@ Public Class dlgNMTMovies
                     Try
                         row.Cells(3).Value = If(IsNothing(row.Cells(3).Value), String.Empty, row.Cells(3).Value)
                         If String.IsNullOrEmpty(row.Cells(3).Value.ToString) AndAlso Not Path.GetPathRoot(row.Cells(1).ToolTipText).ToLower = Path.GetPathRoot(txtOutputFolder.Text).ToLower Then
-                            warn = Master.eLang.GetString(26, "Output Folder don't match Selected Sources and no NMT Path defined")
+                            warn = Master.eLang.GetString(380, "Output Folder don't match Selected Sources and no NMT Path defined")
                             Exit For
                         Else
                             selectedSources.Add(row.Cells(1).Value.ToString, row.Cells(3).Value.ToString)
@@ -1632,7 +1631,7 @@ Public Class dlgNMTMovies
                         End If
                     Catch ex As Exception
                         ' TODO Strings
-                        warn = Master.eLang.GetString(25, "Invalid Output Folder")
+                        warn = Master.eLang.GetString(379, "Invalid Output Folder")
                         Exit For
                     End Try
                 End If
@@ -1660,7 +1659,7 @@ Public Class dlgNMTMovies
     End Sub
 
     Private Sub txtOutputFolder_MouseHover(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtOutputFolder.MouseHover
-        lblHelpa.Text = Master.eLang.GetString(13, "Select Root Folder where Jukebox files will be exported")
+        lblHelpa.Text = Master.eLang.GetString(381, "Select Root Folder where Jukebox files will be exported")
     End Sub
 
     Private Sub txtOutputFolder_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtOutputFolder.MouseLeave
@@ -1758,14 +1757,14 @@ Public Class dlgNMTMovies
     End Sub
 
     Private Sub chHighPriority_MouseHover(ByVal sender As Object, ByVal e As System.EventArgs) Handles chHighPriority.MouseHover
-        lblHelpa.Text = Master.eLang.GetString(40, "When using external tools, run several instances for a faster build")
+        lblHelpa.Text = Master.eLang.GetString(382, "When using external tools, run several instances for a faster build")
     End Sub
 
     Private Sub chHighPriority_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles chHighPriority.MouseLeave
         lblHelpa.Text = ""
     End Sub
     Private Sub pbHelp_MouseHover(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbHelp.MouseHover
-        lblHelpa.Text = Master.eLang.GetString(41, "Click for more details")
+        lblHelpa.Text = Master.eLang.GetString(383, "Click for more details")
         Cursor = Cursors.Help
     End Sub
 
