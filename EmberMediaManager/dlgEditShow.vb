@@ -78,7 +78,7 @@ Public Class dlgEditShow
     Private Sub btnASChangePosterScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnASChangePosterScrape.Click
         Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.AllSeasonPoster, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(ASPoster, Images))
 
-        If Not IsNothing(tImage.Image) Then
+        If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
             ASPoster = tImage
             Me.pbASPoster.Image = tImage.Image
             Me.pbASPoster.Tag = tImage
@@ -184,7 +184,7 @@ Public Class dlgEditShow
     Private Sub btnSetFanartScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetFanartScrape.Click
         Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.ShowFanart, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(Fanart, Images))
 
-        If Not IsNothing(tImage.Image) Then
+        If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
             Fanart = tImage
             Me.pbFanart.Image = tImage.Image
             Me.pbFanart.Tag = tImage
@@ -238,7 +238,7 @@ Public Class dlgEditShow
     Private Sub btnSetPosterScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetPosterScrape.Click
         Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.ShowPoster, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(Poster, Images))
 
-        If Not IsNothing(tImage.Image) Then
+        If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
             Poster = tImage
             Me.pbPoster.Image = tImage.Image
             Me.pbPoster.Tag = tImage
