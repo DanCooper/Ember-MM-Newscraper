@@ -7290,17 +7290,16 @@ doCancel:
             If Not IsNothing(dRow(0)) Then
                 If Me.InvokeRequired Then
                     Me.Invoke(myDelegate, New Object() {dRow(0), 3, If(String.IsNullOrEmpty(tmpSeasonDb.SeasonPosterPath), False, True)})
-                    If Master.eSettings.SeasonFanartEnabled Then
-                        Me.Invoke(myDelegate, New Object() {dRow(0), 4, If(String.IsNullOrEmpty(tmpSeasonDb.SeasonFanartPath), False, True)})
-                    End If
+                    Me.Invoke(myDelegate, New Object() {dRow(0), 4, If(String.IsNullOrEmpty(tmpSeasonDb.SeasonFanartPath), False, True)})
                     Me.Invoke(myDelegate, New Object() {dRow(0), 9, False})
                 Else
                     DirectCast(dRow(0), DataRow).Item(3) = If(String.IsNullOrEmpty(tmpSeasonDb.SeasonPosterPath), False, True)
-                    If Master.eSettings.SeasonFanartEnabled Then
-                        DirectCast(dRow(0), DataRow).Item(4) = If(String.IsNullOrEmpty(tmpSeasonDb.SeasonFanartPath), False, True)
-                    End If
+                    DirectCast(dRow(0), DataRow).Item(4) = If(String.IsNullOrEmpty(tmpSeasonDb.SeasonFanartPath), False, True)
                     DirectCast(dRow(0), DataRow).Item(9) = False
                 End If
+
+                Master.DB.SaveTVSeasonToDB(tmpSeasonDb, False, False)
+
             End If
 
             If Not BatchMode Then
