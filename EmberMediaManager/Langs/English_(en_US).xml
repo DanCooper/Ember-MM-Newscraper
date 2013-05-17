@@ -611,7 +611,7 @@
   <string id="609">Duration</string>
   <string id="610">Language</string>
   <string id="611">Channels</string>
-  <string id="612">Preferred</string>
+  <string id="612">YAMJ Compatibility</string>
   <string id="613">Stream Editor</string>
   <string id="614">Aspect Ratio</string>
   <string id="615">Interlaced</string>
@@ -629,10 +629,10 @@
   <string id="627">Selected Items: {0}</string>
   <string id="628">Enable IFO Parsing</string>
   <string id="629">Themes</string>
-  <string id="630"/>
-  <string id="631"/>
-  <string id="632"/>
-  <string id="633"/>
+  <string id="630">Compatible VIDEO_TS File Placement/Naming
+  <string id="631">Fanart as backdrop.jpg
+  <string id="632">Media Browser mymovies.xml
+  <string id="633">Experimental module
   <string id="634"/>
   <string id="635">You have selected {0} folders to open. Are you sure you want to do this?</string>
   <string id="636"/>
