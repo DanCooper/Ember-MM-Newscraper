@@ -340,10 +340,12 @@ Public Class Database
         Using SQLpathcommand As SQLite.SQLiteCommand = _mediaDBConn.CreateCommand()
             Dim doAddColumns As Boolean = False
             Dim doAddColumnWatched As Boolean = False
+            Dim doAddColumnDisplaySE As Boolean = False
             SQLpathcommand.CommandText = "pragma table_info(TVEps);"
             Try
                 doAddColumns = True
                 doAddColumnWatched = True
+                doAddColumnDisplaySE = True
                 Using SQLreader As SQLite.SQLiteDataReader = SQLpathcommand.ExecuteReader
                     While SQLreader.Read
                         'Debug.Print(SQLreader("name").ToString.ToLower())
@@ -354,6 +356,10 @@ Public Class Database
                         If SQLreader("name").ToString.ToLower = "haswatched" Then
                             'Column does exist in current database of Ember --> asume: if one columns missing, all new mediainfo columns must be added
                             doAddColumnWatched = False
+                        End If
+                        If SQLreader("name").ToString.ToLower = "displayseason" Then
+                            'Column does exist in current database of Ember --> asume: if one columns missing, all new mediainfo columns must be added
+                            doAddColumnDisplaySE = False
                         End If
                     End While
                 End Using
@@ -389,6 +395,23 @@ Public Class Database
                 Using transaction As SQLite.SQLiteTransaction = _mediaDBConn.BeginTransaction()
                     Dim strlistSQLCommands As New List(Of String)
                     strlistSQLCommands.Add("alter table TVEps add HasWatched BOOL NOT NULL DEFAULT 0;")
+                    For Each sqlstatement In strlistSQLCommands
+                        Try
+                            SQLpathcommand.CommandText = sqlstatement
+                            SQLpathcommand.ExecuteNonQuery()
+                        Catch ex As Exception
+                            'TODO ugly to rely on exception but will do the job
+                            'Happens when column does exist (duplicate columns)
+                        End Try
+                    Next
+                    transaction.Commit()
+                End Using
+            End If
+            If doAddColumnDisplaySE = True Then
+                Using transaction As SQLite.SQLiteTransaction = _mediaDBConn.BeginTransaction()
+                    Dim strlistSQLCommands As New List(Of String)
+                    strlistSQLCommands.Add("alter table TVEps add DisplaySeason integer;")
+                    strlistSQLCommands.Add("alter table TVEps add DisplayEpisode integer;")
                     For Each sqlstatement In strlistSQLCommands
                         Try
                             SQLpathcommand.CommandText = sqlstatement
@@ -974,6 +997,15 @@ Public Class Database
                         _TVDB.EpNeedsSave = Convert.ToBoolean(SQLreader("NeedsSave"))
                         _TVDB.TVEp = New MediaContainers.EpisodeDetails
                         With _TVDB.TVEp
+                            ' add display season and episode - mh
+                            If Not DBNull.Value.Equals(SQLreader("DisplaySeason")) Then
+                                .DisplaySeason = Convert.ToInt32(SQLreader("Season"))
+                                .displaySEset = True
+                            End If
+                            If Not DBNull.Value.Equals(SQLreader("DisplayEpisode")) Then
+                                .DisplayEpisode = Convert.ToInt32(SQLreader("Episode"))
+                                .displaySEset = True
+                            End If
                             If Not DBNull.Value.Equals(SQLreader("Title")) Then .Title = SQLreader("Title").ToString
                             If Not DBNull.Value.Equals(SQLreader("Season")) Then .Season = Convert.ToInt32(SQLreader("Season"))
                             If Not DBNull.Value.Equals(SQLreader("Episode")) Then .Episode = Convert.ToInt32(SQLreader("Episode"))
@@ -1696,13 +1728,15 @@ Public Class Database
                 If IsNew Then
                     SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO TVEps (", _
                      "TVShowID, HasPoster, HasFanart, HasNfo, New, Mark, TVEpPathID, Source, Lock, Title, Season, Episode,", _
-                     "Rating, Plot, Aired, Director, Credits, PosterPath, FanartPath, NfoPath, NeedsSave, Missing, Playcount, HasWatched", _
-                     ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM TVEps;")
+                     "Rating, Plot, Aired, Director, Credits, PosterPath, FanartPath, NfoPath, NeedsSave, Missing, Playcount, HasWatched, DisplaySeason, DisplayEpisode", _
+                     ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM TVEps;")
+
                 Else
                     SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO TVEps (", _
                      "ID, TVShowID, HasPoster, HasFanart, HasNfo, New, Mark, TVEpPathID, Source, Lock, Title, Season, Episode,", _
-                     "Rating, Plot, Aired, Director, Credits, PosterPath, FanartPath, NfoPath, NeedsSave, Missing, Playcount, HasWatched", _
-                     ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM TVEps;")
+                     "Rating, Plot, Aired, Director, Credits, PosterPath, FanartPath, NfoPath, NeedsSave, Missing, Playcount, HasWatched, DisplaySeason, DisplayEpisode", _
+                     ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM TVEps;")
+
                     Dim parTVEpID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTVEpID", DbType.UInt64, 0, "ID")
                     parTVEpID.Value = _TVEpDB.EpID
                 End If
@@ -1733,6 +1767,8 @@ Public Class Database
 
                 Dim parPlaycount As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPlaycount", DbType.String, 0, "Playcount")
                 Dim parHasWatched As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasWatched", DbType.Boolean, 0, "HasWatched")
+                Dim parDisplaySeason As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parDisplaySeason", DbType.String, 0, "DisplaySeason")
+                Dim parDisplayEpisode As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parDisplayEpisode", DbType.String, 0, "DisplayEpisode")
 
                 ' First let's save it to NFO, even because we will need the NFO path
                 If ToNfo Then NFO.SaveTVEpToNFO(_TVEpDB)
@@ -1763,6 +1799,10 @@ Public Class Database
                     parDirector.Value = .Director
                     parCredits.Value = .Credits
                     parPlaycount.Value = .Playcount
+                    If .displaySEset Then
+                        parDisplaySeason.Value = .DisplaySeason
+                        parDisplayEpisode.Value = .DisplayEpisode
+                    End If
                 End With
 
                 If IsNew Then

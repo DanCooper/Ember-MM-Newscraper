@@ -373,6 +373,21 @@ Public Class Scraper
                                             .Season = If(IsNothing(Episode.Element("SeasonNumber")) OrElse String.IsNullOrEmpty(Episode.Element("SeasonNumber").Value), 0, Convert.ToInt32(Episode.Element("SeasonNumber").Value))
                                             .Episode = If(IsNothing(Episode.Element("EpisodeNumber")) OrElse String.IsNullOrEmpty(Episode.Element("EpisodeNumber").Value), 0, Convert.ToInt32(Episode.Element("EpisodeNumber").Value))
                                         End If
+                                        If Not IsNothing(Episode.Element("airsafter_season")) AndAlso Not String.IsNullOrEmpty(Episode.Element("airsafter_season").Value) Then
+                                            .DisplaySeason = Convert.ToInt32(Episode.Element("airsafter_season").Value) + 1
+                                            .DisplayEpisode = 0
+                                            .displaySEset = True
+                                        End If
+                                        If Not IsNothing(Episode.Element("airsbefore_season")) AndAlso Not String.IsNullOrEmpty(Episode.Element("airsbefore_season").Value) Then
+                                            .DisplaySeason = Convert.ToInt32(Episode.Element("airsbefore_season").Value)
+                                            .displaySEset = True
+                                        End If
+                                        If Not IsNothing(Episode.Element("airsbefore_episode")) AndAlso Not String.IsNullOrEmpty(Episode.Element("airsbefore_episode").Value) Then
+                                            .DisplayEpisode = Convert.ToInt32(CLng(Episode.Element("airsbefore_episode").Value)) - 1
+                                            .displaySEset = True
+                                        End If
+
+
                                         .Aired = If(IsNothing(Episode.Element("FirstAired")), String.Empty, Episode.Element("FirstAired").Value)
                                         .Rating = If(IsNothing(Episode.Element("Rating")), String.Empty, Episode.Element("Rating").Value)
                                         .Plot = If(IsNothing(Episode.Element("Overview")), String.Empty, Episode.Element("Overview").Value.ToString.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf))
@@ -1153,6 +1168,19 @@ Public Class Scraper
                                                 If sInfo.Options.bEpSeason Then .Season = If(IsNothing(xE.Element("SeasonNumber")) OrElse String.IsNullOrEmpty(xE.Element("SeasonNumber").Value), 0, Convert.ToInt32(xE.Element("SeasonNumber").Value))
                                                 If sInfo.Options.bEpEpisode Then .Episode = If(IsNothing(xE.Element("EpisodeNumber")) OrElse String.IsNullOrEmpty(xE.Element("EpisodeNumber").Value), 0, Convert.ToInt32(xE.Element("EpisodeNumber").Value))
                                             End If
+                                        End If
+                                        If Not IsNothing(xE.Element("airsafter_season")) AndAlso Not String.IsNullOrEmpty(xE.Element("airsafter_season").Value) Then
+                                            .DisplaySeason = Convert.ToInt32(xE.Element("airsafter_season").Value) + 1
+                                            .DisplayEpisode = 0
+                                            .displaySEset = True
+                                        End If
+                                        If Not IsNothing(xE.Element("airsbefore_season")) AndAlso Not String.IsNullOrEmpty(xE.Element("airsbefore_season").Value) Then
+                                            .DisplaySeason = Convert.ToInt32(xE.Element("airsbefore_season").Value)
+                                            .displaySEset = True
+                                        End If
+                                        If Not IsNothing(xE.Element("airsbefore_episode")) AndAlso Not String.IsNullOrEmpty(xE.Element("airsbefore_episode").Value) Then
+                                            .DisplayEpisode = Convert.ToInt32(CLng(xE.Element("airsbefore_episode").Value)) - 1
+                                            .displaySEset = True
                                         End If
                                         If sInfo.Options.bEpAired Then .Aired = If(IsNothing(xE.Element("FirstAired")), .Aired, xE.Element("FirstAired").Value)
                                         If sInfo.Options.bEpRating AndAlso (String.IsNullOrEmpty(.Rating) OrElse Not Master.eSettings.EpLockRating) Then .Rating = If(IsNothing(xE.Element("Rating")), .Rating, xE.Element("Rating").Value)

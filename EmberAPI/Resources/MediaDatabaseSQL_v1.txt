@@ -190,6 +190,8 @@ CREATE TABLE TVEps(
 	Missing BOOL NOT NULL DEFAULT False,
 	Playcount TEXT,
 	HasWatched BOOL NOT NULL DEFAULT False
+	DisplaySeason integer,
+	DisplayEpisode integer
 	);
 
 CREATE TABLE TVShowActors(
