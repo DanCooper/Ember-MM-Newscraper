@@ -48,18 +48,34 @@ Public Class dlgRenameManual
 
     Private Sub dlgRenameManual_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Me.SetUp()
-        Dim FileName = Path.GetFileNameWithoutExtension(StringUtils.CleanStackingMarkers(Master.currMovie.Filename))
-        Dim stackMark As String = Path.GetFileNameWithoutExtension(Master.currMovie.Filename).Replace(FileName, String.Empty).ToLower
-        If Not stackMark = String.Empty AndAlso Master.currMovie.Movie.Title.ToLower.EndsWith(stackMark) Then
-            FileName = Path.GetFileNameWithoutExtension(Master.currMovie.Filename)
-        End If
-        If Master.currMovie.isSingle Then
-            txtFolder.Text = Directory.GetParent(Master.currMovie.Filename).Name
+        If FileUtils.Common.isVideoTS(Master.currMovie.Filename) Then
+            txtFile.Text = "$F"
+            txtFile.Visible = False
+            txtFolder.Text = Directory.GetParent(Directory.GetParent(Master.currMovie.Filename).FullName).Name
+        ElseIf FileUtils.Common.isBDRip(Master.currMovie.Filename) Then
+            txtFile.Text = "$F"
+            txtFile.Visible = False
+            txtFolder.Text = Directory.GetParent(Directory.GetParent(Directory.GetParent(Master.currMovie.Filename).FullName).FullName).Name
         Else
-            txtFolder.Text = "$D"
-            txtFolder.Visible = False
+            Dim FileName = Path.GetFileNameWithoutExtension(StringUtils.CleanStackingMarkers(Master.currMovie.Filename))
+            Dim stackMark As String = Path.GetFileNameWithoutExtension(Master.currMovie.Filename).Replace(FileName, String.Empty).ToLower
+            If Not FileName.ToLower = "video_ts" Then
+                If Not stackMark = String.Empty AndAlso Master.currMovie.Movie.Title.ToLower.EndsWith(stackMark) Then
+                    FileName = Path.GetFileNameWithoutExtension(Master.currMovie.Filename)
+                End If
+                If Master.currMovie.isSingle Then
+                    txtFolder.Text = Directory.GetParent(Master.currMovie.Filename).Name
+                Else
+                    txtFolder.Text = "$D"
+                    txtFolder.Visible = False
+                End If
+                txtFile.Text = FileName
+            Else
+                txtFile.Text = "$F"
+                txtFile.Visible = False
+                txtFolder.Text = Directory.GetParent(Master.currMovie.Filename).Name
+            End If
         End If
-        txtFile.Text = FileName
     End Sub
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
