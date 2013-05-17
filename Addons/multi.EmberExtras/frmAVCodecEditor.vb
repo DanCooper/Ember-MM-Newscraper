@@ -96,16 +96,16 @@ Public Class frmAVCodecEditor
     End Sub
 
     Sub SetUp()
-        btnAddAudio.Text = Master.eLang.GetString(28, "Add", True)
-        btnAddVideo.Text = Master.eLang.GetString(28, "Add", True)
-        btnRemoveAudio.Text = Master.eLang.GetString(30, "Remove", True)
-        btnRemoveVideo.Text = Master.eLang.GetString(30, "Remove", True)
-        Label1.Text = Master.eLang.GetString(30, "Audio")
-        Label2.Text = Master.eLang.GetString(31, "Video")
-        Me.dgvAudio.Columns(0).HeaderText = Master.eLang.GetString(32, "Mediainfo Codec")
-        Me.dgvAudio.Columns(1).HeaderText = Master.eLang.GetString(33, "Mapped Codec")
-        Me.dgvVideo.Columns(0).HeaderText = Master.eLang.GetString(32, "Mediainfo Codec")
-        Me.dgvVideo.Columns(1).HeaderText = Master.eLang.GetString(33, "Mapped Codec")
+        btnAddAudio.Text = Master.eLang.GetString(28, "Add")
+        btnAddVideo.Text = Master.eLang.GetString(28, "Add")
+        btnRemoveAudio.Text = Master.eLang.GetString(30, "Remove")
+        btnRemoveVideo.Text = Master.eLang.GetString(30, "Remove")
+        Label1.Text = Master.eLang.GetString(634, "Audio")
+        Label2.Text = Master.eLang.GetString(636, "Video")
+        Me.dgvAudio.Columns(0).HeaderText = Master.eLang.GetString(637, "Mediainfo Codec")
+        Me.dgvAudio.Columns(1).HeaderText = Master.eLang.GetString(638, "Mapped Codec")
+        Me.dgvVideo.Columns(0).HeaderText = Master.eLang.GetString(637, "Mediainfo Codec")
+        Me.dgvVideo.Columns(1).HeaderText = Master.eLang.GetString(638, "Mapped Codec")
     End Sub
 
     Public Sub SaveChanges()

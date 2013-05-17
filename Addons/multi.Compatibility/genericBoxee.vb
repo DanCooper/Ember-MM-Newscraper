@@ -67,9 +67,9 @@ Public Class genericBoxee
 		Me.fBoxee.chkBoxeeId.Checked = AdvancedSettings.GetBooleanSetting("BoxeeTVShowId", False)
 		'chkYAMJnfoFields
 		SPanel.Name = _name
-        SPanel.Text = Master.eLang.GetString(18, "Boxee Compatibility")
+        SPanel.Text = Master.eLang.GetString(593, "Boxee Compatibility")
 		SPanel.Prefix = "Boxee_"
-		SPanel.Type = Master.eLang.GetString(802, "Modules", True)
+        SPanel.Type = Master.eLang.GetString(802, "Modules")
 		SPanel.ImageIndex = If(Me._enabled, 9, 10)
 		SPanel.Order = 100
 		SPanel.Panel = Me.fBoxee.pnlSettings

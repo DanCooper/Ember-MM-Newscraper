@@ -27,7 +27,7 @@ Public Class frmGenresEditor
         Try
             cbLangs.Items.Clear()
             dgvLang.Rows.Clear()
-            cbLangs.Items.Add(Master.eLang.GetString(2, "< All >"))
+            cbLangs.Items.Add(Master.eLang.GetString(639, "< All >"))
             cbLangs.Items.AddRange(xmlGenres.listOfLanguages.ToArray)
             cbLangs.SelectedIndex = 0
             For Each s As String In xmlGenres.listOfLanguages
@@ -43,7 +43,7 @@ Public Class frmGenresEditor
         Try
             dgvGenres.Rows.Clear()
             ClearLangSelection()
-            If cbLangs.SelectedItem.ToString = Master.eLang.GetString(2, "< All >") Then
+            If cbLangs.SelectedItem.ToString = Master.eLang.GetString(639, "< All >") Then
                 For Each sett As xGenre In xmlGenres.listOfGenres
                     Dim i As Integer = dgvGenres.Rows.Add(New Object() {sett.searchstring})
                     dgvGenres.Rows(i).Tag = sett
@@ -169,7 +169,7 @@ Public Class frmGenresEditor
     End Sub
 
     Private Sub btnAddLang_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddLang.Click
-        Dim s As String = InputBox(Master.eLang.GetString(3, "Enter the new Language"), Master.eLang.GetString(4, "New Language"))
+        Dim s As String = InputBox(Master.eLang.GetString(640, "Enter the new Language"), Master.eLang.GetString(641, "New Language"))
         Dim i As Integer = dgvLang.Rows.Add(New Object() {False, s})
         dgvLang.CurrentCell = dgvLang.Rows(i).Cells(1)
         dgvLang.BeginEdit(True)
@@ -183,7 +183,7 @@ Public Class frmGenresEditor
     End Sub
 
     Private Sub btnRemoveLang_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveLang.Click
-        If MsgBox(Master.eLang.GetString(5, "This will remove the Language from all Genres. Are you sure?"), MsgBoxStyle.YesNo, Master.eLang.GetString(6, "Remove Language")) = MsgBoxResult.Yes Then
+        If MsgBox(Master.eLang.GetString(661, "This will remove the Language from all Genres. Are you sure?"), MsgBoxStyle.YesNo, Master.eLang.GetString(662, "Remove Language")) = MsgBoxResult.Yes Then
             If dgvLang.SelectedRows.Count > 0 AndAlso Not dgvLang.CurrentRow.Cells(1).Value Is Nothing Then
                 Dim lang As String = dgvLang.SelectedRows(0).Cells(1).Value.ToString
                 dgvLang.Rows.Remove(dgvLang.SelectedRows(0))
@@ -223,15 +223,15 @@ Public Class frmGenresEditor
     End Sub
 
     Private Sub SetUp()
-        btnAddGenre.Text = Master.eLang.GetString(28, "Add", True)
-        btnAddLang.Text = Master.eLang.GetString(28, "Add", True)
-        btnRemoveGenre.Text = Master.eLang.GetString(30, "Remove", True)
-        btnRemoveLang.Text = Master.eLang.GetString(30, "Remove", True)
-        btnChangeImg.Text = Master.eLang.GetString(8, "Change")
-        GroupBox1.Text = Master.eLang.GetString(9, "Images")
-        Label1.Text = Master.eLang.GetString(10, "Genres Filter")
-        Me.dgvGenres.Columns(0).HeaderText = Master.eLang.GetString(20, "Genres", True)
-        Me.dgvLang.Columns(1).HeaderText = Master.eLang.GetString(7, "Languages")
+        btnAddGenre.Text = Master.eLang.GetString(28, "Add")
+        btnAddLang.Text = Master.eLang.GetString(28, "Add")
+        btnRemoveGenre.Text = Master.eLang.GetString(30, "Remove")
+        btnRemoveLang.Text = Master.eLang.GetString(30, "Remove")
+        btnChangeImg.Text = Master.eLang.GetString(702, "Change")
+        GroupBox1.Text = Master.eLang.GetString(703, "Images")
+        Label1.Text = Master.eLang.GetString(704, "Genres Filter")
+        Me.dgvGenres.Columns(0).HeaderText = Master.eLang.GetString(20, "Genres")
+        Me.dgvLang.Columns(1).HeaderText = Master.eLang.GetString(707, "Languages")
 
     End Sub
 

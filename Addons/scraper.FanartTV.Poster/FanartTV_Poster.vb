@@ -127,17 +127,17 @@ Public Class FanartTV_Poster
         LoadSettings()
         _setup.cbEnabled.Checked = _ScraperEnabled
         If String.IsNullOrEmpty(_MySettings.FANARTTVApiKey) Then
-            _MySettings.FANARTTVApiKey = Master.eLang.GetString(123, "Get your API Key from fanart.tv")
+            _MySettings.FANARTTVApiKey = Master.eLang.GetString(787, "Get your API Key from fanart.tv")
         End If
         _setup.txtFANARTTVApiKey.Text = _MySettings.FANARTTVApiKey
 
         _setup.orderChanged()
         Spanel.Name = String.Concat(Me._Name, "Scraper")
-        Spanel.Text = Master.eLang.GetString(104, "FanartTV")
+        Spanel.Text = Master.eLang.GetString(788, "FanartTV")
         Spanel.Prefix = "FanartTVMovieMedia_"
         Spanel.Order = 110
         Spanel.Parent = "pnlMovieMedia"
-        Spanel.Type = Master.eLang.GetString(36, "Movies", True)
+        Spanel.Type = Master.eLang.GetString(36, "Movies")
         Spanel.ImageIndex = If(Me._ScraperEnabled, 9, 10)
         Spanel.Panel = Me._setup.pnlSettings
 
@@ -169,7 +169,7 @@ Public Class FanartTV_Poster
         If Not String.IsNullOrEmpty(_setup.txtFANARTTVApiKey.Text) Then
             _MySettings.FANARTTVApiKey = _setup.txtFANARTTVApiKey.Text
         Else
-            _MySettings.FANARTTVApiKey = Master.eLang.GetString(123, "Get your API Key from fanart.tv")
+            _MySettings.FANARTTVApiKey = Master.eLang.GetString(787, "Get your API Key from fanart.tv")
         End If
         SaveSettings()
         'ModulesManager.Instance.SaveSettings()
