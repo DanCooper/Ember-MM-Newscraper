@@ -169,8 +169,10 @@ Public Class Images
 
     Public Sub DeleteEpFanart(ByVal mShow As Structures.DBTV)
         Try
-            Delete(String.Concat(FileUtils.Common.RemoveExtFromPath(mShow.ShowPath), "-fanart.jpg"))
-            Delete(String.Concat(FileUtils.Common.RemoveExtFromPath(mShow.ShowPath), ".fanart.jpg"))
+            Dim tPath As String = FileUtils.Common.RemoveExtFromPath(mShow.Filename)
+
+            Delete(String.Concat(tPath, "-fanart.jpg"))
+            Delete(String.Concat(tPath, ".fanart.jpg"))
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -182,6 +184,7 @@ Public Class Images
 
             Delete(String.Concat(tPath, ".tbn"))
             Delete(String.Concat(tPath, ".jpg"))
+            Delete(String.Concat(tPath, "-thumb.jpg"))
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -297,6 +300,8 @@ Public Class Images
                 Delete(Path.Combine(tPath, String.Concat(FileUtils.Common.GetDirectory(tPath), "-fanart.jpg")))
                 Delete(Path.Combine(tPath, "Fanart.jpg"))
             End If
+
+            Delete(Path.Combine(mShow.ShowPath, String.Format("season{0}-fanart.jpg", mShow.TVEp.Season.ToString.PadLeft(2, Convert.ToChar("0")))))
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
