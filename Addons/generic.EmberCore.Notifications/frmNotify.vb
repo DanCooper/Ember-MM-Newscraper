@@ -153,7 +153,9 @@ Public Class frmNotify
         End If
 
         For Each DisplayedForm As frmNotify In frmNotify.DisplayedForms
-            DisplayedForm.Top -= 5
+            If Not DisplayedForm.InvokeRequired Then
+                DisplayedForm.Top -= 5
+            End If
         Next
 
         frmNotify.MasterIndex += 1
