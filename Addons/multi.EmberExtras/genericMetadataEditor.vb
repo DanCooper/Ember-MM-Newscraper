@@ -61,10 +61,10 @@ Public Class genericMetadataEditor
     Public Function InjectSetup() As EmberAPI.Containers.SettingsPanel Implements EmberAPI.Interfaces.EmberExternalModule.InjectSetup
         Dim SPanel As New Containers.SettingsPanel
         Me.fMetadata = New frmAVCodecEditor
-        SPanel.Name = Master.eLang.GetString(0, "Audio & Video Codec Mapping", False)
-        SPanel.Text = Master.eLang.GetString(0, "Audio & Video Codec Mapping", False)
+        SPanel.Name = Master.eLang.GetString(785, "Audio & Video Codec Mapping")
+        SPanel.Text = Master.eLang.GetString(785, "Audio & Video Codec Mapping")
         SPanel.Prefix = "AVCodecEditor_"
-        SPanel.Type = Master.eLang.GetString(822, "Miscellaneous", True)
+        SPanel.Type = Master.eLang.GetString(822, "Miscellaneous")
         SPanel.ImageIndex = -1
         SPanel.Image = My.Resources.MetadataEditor
         SPanel.Order = 100

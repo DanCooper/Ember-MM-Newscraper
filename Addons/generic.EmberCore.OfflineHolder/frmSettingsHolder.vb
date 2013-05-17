@@ -42,7 +42,7 @@ Public Class frmSettingsHolder
     End Sub
 
     Private Sub SetUp()
-        Me.cbEnabled.Text = Master.eLang.GetString(774, "Enabled", True)
+        Me.cbEnabled.Text = Master.eLang.GetString(774, "Enabled")
     End Sub
 
 #End Region 'Methods

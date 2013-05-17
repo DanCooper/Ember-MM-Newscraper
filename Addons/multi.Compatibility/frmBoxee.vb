@@ -19,9 +19,9 @@ Public Class frmBoxee
     End Sub
 
     Private Sub SetUp()
-		Me.chkEnabled.Text = Master.eLang.GetString(774, "Enabled", True)
-		Me.chkBoxeeId.Text = Master.eLang.GetString(15, "Replace ID field with Boxee Id Field")
-		Me.GroupBox1.Text = Master.eLang.GetString(16, "TV Show Options")
+        Me.chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
+        Me.chkBoxeeId.Text = Master.eLang.GetString(554, "Replace ID field with Boxee Id Field")
+        Me.GroupBox1.Text = Master.eLang.GetString(560, "TV Show Options")
     End Sub
 
 

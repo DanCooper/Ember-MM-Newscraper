@@ -68,17 +68,17 @@ Public Class frmMediaSources
     End Sub
 
     Sub SetUp()
-        btnAddSource.Text = Master.eLang.GetString(28, "Add", True)
-        btnRemoveSource.Text = Master.eLang.GetString(30, "Remove", True)
-        btnAddByFile.Text = Master.eLang.GetString(28, "Add", True)
-        btnRemoveByFile.Text = Master.eLang.GetString(30, "Remove", True)
-        btnSetDefaults.Text = Master.eLang.GetString(67, "Set Defaults")
-        Label1.Text = Master.eLang.GetString(62, "Sources")
-        Me.dgvSources.Columns(0).HeaderText = Master.eLang.GetString(63, "Search String")
-        Me.dgvSources.Columns(1).HeaderText = Master.eLang.GetString(64, "Source Name")
-        Me.chkMapByFile.Text = Master.eLang.GetString(65, "Map Media Source by File Extension")
-        Me.dgvByFile.Columns(0).HeaderText = Master.eLang.GetString(66, "File Extension")
-        Me.dgvByFile.Columns(1).HeaderText = Master.eLang.GetString(64, "Source Name")
+        btnAddSource.Text = Master.eLang.GetString(28, "Add")
+        btnRemoveSource.Text = Master.eLang.GetString(30, "Remove")
+        btnAddByFile.Text = Master.eLang.GetString(28, "Add")
+        btnRemoveByFile.Text = Master.eLang.GetString(30, "Remove")
+        btnSetDefaults.Text = Master.eLang.GetString(713, "Set Defaults")
+        Label1.Text = Master.eLang.GetString(602, "Sources")
+        Me.dgvSources.Columns(0).HeaderText = Master.eLang.GetString(763, "Search String")
+        Me.dgvSources.Columns(1).HeaderText = Master.eLang.GetString(764, "Source Name")
+        Me.chkMapByFile.Text = Master.eLang.GetString(765, "Map Media Source by File Extension")
+        Me.dgvByFile.Columns(0).HeaderText = Master.eLang.GetString(775, "File Extension")
+        Me.dgvByFile.Columns(1).HeaderText = Master.eLang.GetString(776, "Source Name")
 
     End Sub
 

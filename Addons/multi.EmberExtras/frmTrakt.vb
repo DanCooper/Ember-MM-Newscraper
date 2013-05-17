@@ -21,15 +21,15 @@ Public Class frmTrakt
         prgtrakt.Maximum = myWatchedMovies.Count
         prgtrakt.Minimum = 0
         prgtrakt.Step = 1
-        chkUseTrakt.Text = Master.eLang.GetString(68, "Use trakt.tv as source for ""Playcount""")
-        btGetMoviesTrakt.Text = Master.eLang.GetString(70, "Get watched movies")
-        btSaveMoviesTrakt.Text = Master.eLang.GetString(71, "Save playcount to database/Nfo")
+        chkUseTrakt.Text = Master.eLang.GetString(778, "Use trakt.tv as source for ""Playcount""")
+        btGetMoviesTrakt.Text = Master.eLang.GetString(779, "Get watched movies")
+        btSaveMoviesTrakt.Text = Master.eLang.GetString(780, "Save playcount to database/Nfo")
         txtTraktUser.Text = Master.eSettings.TraktUser
-        lblTraktUser.Text = Master.eLang.GetString(73, "Username")
+        lblTraktUser.Text = Master.eLang.GetString(425, "Username")
         txtTraktPassword.Text = Master.eSettings.TraktPassword
-        lblTraktPassword.Text = Master.eLang.GetString(74, "Password")
-        btGetSeriesTrakt.Text = Master.eLang.GetString(75, "Get watched episodes")
-        btnSavetraktsettings.Text = Master.eLang.GetString(76, "Save")
+        lblTraktPassword.Text = Master.eLang.GetString(426, "Password")
+        btGetSeriesTrakt.Text = Master.eLang.GetString(781, "Get watched episodes")
+        btnSavetraktsettings.Text = Master.eLang.GetString(273, "Save")
         txtTraktPassword.PasswordChar = "*"c
 
         If Not String.IsNullOrEmpty(Master.eSettings.UseTrakt.ToString) Then

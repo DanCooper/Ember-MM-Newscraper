@@ -38,18 +38,18 @@ Public Class frmYAMJ
     End Sub
 
     Private Sub SetUp()
-		Me.chkEnabled.Text = Master.eLang.GetString(774, "Enabled", True)
-        Me.chkYAMJCompatibleSets.Text = Master.eLang.GetString(2, "YAMJ Compatible Sets")
-        Me.chkVideoTSParent.Text = Master.eLang.GetString(3, "Compatible VIDEO_TS File Placement/Naming")
-        Me.chkYAMJCompatibleTVImages.Text = Master.eLang.GetString(4, "YAMJ Compatible TV Images Naming")
-        Me.chkYAMJnfoFields.Text = Master.eLang.GetString(5, "YAMJ Specific NFO fields")
-        Me.chkShowPoster.Text = Master.eLang.GetString(6, "Show Poster as Set_<Show>_1.jpg")
-        Me.chkShowFanart.Text = Master.eLang.GetString(7, "Show Poster as Set_<Show>_1.fanart.jpg")
-        Me.chkSeasonPoster.Text = Master.eLang.GetString(8, "Season Poster as <Episode>SxxE01.jpg")
-        Me.chkSeasonFanart.Text = Master.eLang.GetString(9, "Season Fanart as <Episode>SxxE01.fanart.jpg")
-        Me.chkEpisodePoster.Text = Master.eLang.GetString(10, "Episode Poster as <Show>.videoimage.jpg")
-		Me.chkAllSeasonPoster.Text = Master.eLang.GetString(14, "Show All Season as Set_<Show>_1.banner.jpg")
-		Me.btnCheckAll.Text = Master.eLang.GetString(17, "Check all")
+        Me.chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
+        Me.chkYAMJCompatibleSets.Text = Master.eLang.GetString(561, "YAMJ Compatible Sets")
+        Me.chkVideoTSParent.Text = Master.eLang.GetString(562, "Compatible VIDEO_TS File Placement/Naming")
+        Me.chkYAMJCompatibleTVImages.Text = Master.eLang.GetString(563, "YAMJ Compatible TV Images Naming")
+        Me.chkYAMJnfoFields.Text = Master.eLang.GetString(564, "YAMJ Specific NFO fields")
+        Me.chkShowPoster.Text = Master.eLang.GetString(565, "Show Poster as Set_<Show>_1.jpg")
+        Me.chkShowFanart.Text = Master.eLang.GetString(566, "Show Poster as Set_<Show>_1.fanart.jpg")
+        Me.chkSeasonPoster.Text = Master.eLang.GetString(567, "Season Poster as <Episode>SxxE01.jpg")
+        Me.chkSeasonFanart.Text = Master.eLang.GetString(588, "Season Fanart as <Episode>SxxE01.fanart.jpg")
+        Me.chkEpisodePoster.Text = Master.eLang.GetString(589, "Episode Poster as <Show>.videoimage.jpg")
+        Me.chkAllSeasonPoster.Text = Master.eLang.GetString(590, "Show All Season as Set_<Show>_1.banner.jpg")
+        Me.btnCheckAll.Text = Master.eLang.GetString(592, "Check all")
     End Sub
 
     Private Sub chkYAMJCompatibleSets_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkYAMJCompatibleSets.CheckedChanged

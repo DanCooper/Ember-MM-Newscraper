@@ -98,12 +98,12 @@ Public Class OfflineHolderModule
     Sub Enable()
         Dim tsi As New ToolStripMenuItem
         MyMenu.Image = New Bitmap(My.Resources.icon)
-        MyMenu.Text = Master.eLang.GetString(30, "Offline Media Manager")
+        MyMenu.Text = Master.eLang.GetString(524, "Offline Media Manager")
         MyMenu.Tag = New Structures.ModulesMenus With {.IfNoMovies = True, .IfNoTVShow = True}
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("ToolsToolStripMenuItem"), ToolStripMenuItem)
         tsi.DropDownItems.Add(MyMenu)
         MyTrayMenu.Image = New Bitmap(My.Resources.icon)
-        MyTrayMenu.Text = Master.eLang.GetString(30, "Offline Media Manager")
+        MyTrayMenu.Text = Master.eLang.GetString(524, "Offline Media Manager")
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayIconTools"), ToolStripMenuItem)
         tsi.DropDownItems.Add(MyTrayMenu)
     End Sub
@@ -126,9 +126,9 @@ Public Class OfflineHolderModule
         Me._setup.cbEnabled.Checked = Me._enabled
         Dim SPanel As New Containers.SettingsPanel
         SPanel.Name = Me._Name
-        SPanel.Text = Master.eLang.GetString(0, "Offline Media Manager")
+        SPanel.Text = Master.eLang.GetString(524, "Offline Media Manager")
         SPanel.Prefix = "Offline_"
-        SPanel.Type = Master.eLang.GetString(802, "Modules", True)
+        SPanel.Type = Master.eLang.GetString(802, "Modules")
         SPanel.ImageIndex = If(Me._enabled, 9, 10)
         SPanel.Order = 100
         SPanel.Panel = Me._setup.pnlSettings
