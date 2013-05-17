@@ -112,7 +112,7 @@ Public Class dlgEditEpisode
         Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.EpisodeFanart, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(Fanart, Images))
 
         If Not IsNothing(tImage) Then
-			Me.Fanart = tImage
+            Me.Fanart = tImage
 			Me.pbFanart.Image = tImage.Image
 			Me.pbFanart.Tag = tImage
 
@@ -125,9 +125,9 @@ Public Class dlgEditEpisode
         Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.EpisodePoster, Master.currShow.TVEp.Season, Master.currShow.TVEp.Episode, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(Poster, Images))
 
         If Not IsNothing(tImage) Then
-			Me.Poster = tImage
+            Poster = tImage
 			Me.pbPoster.Image = tImage.Image
-			Me.pbFanart.Tag = tImage
+            Me.pbPoster.Tag = tImage
 
             Me.lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
             Me.lblPosterSize.Visible = True
@@ -316,6 +316,7 @@ Public Class dlgEditEpisode
                 Fanart.FromFile(Master.currShow.EpFanartPath)
                 If Not IsNothing(Fanart.Image) Then
                     .pbFanart.Image = Fanart.Image
+                    .pbFanart.Tag = Fanart
 
                     .lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbFanart.Image.Width, .pbFanart.Image.Height)
                     .lblFanartSize.Visible = True
@@ -325,6 +326,7 @@ Public Class dlgEditEpisode
             Poster.FromFile(Master.currShow.EpPosterPath)
             If Not IsNothing(Poster.Image) Then
                 .pbPoster.Image = Poster.Image
+                .pbPoster.Tag = Poster
 
                 .lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbPoster.Image.Width, .pbPoster.Image.Height)
                 .lblPosterSize.Visible = True
@@ -609,8 +611,16 @@ Public Class dlgEditEpisode
 
     Sub GenericRunCallBack(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
         If mType = Enums.ModuleEventType.TVFrameExtrator Then
-			'Me.Poster.Image = DirectCast(_params(0), Bitmap)   'New Bitmap(pbFrame.Image)
-			' Me.pbPoster.Image = DirectCast(_params(1), Image)   'pbFrame.Image
+            Poster.FromFile(Path.Combine(Master.TempPath, "frame.jpg"))
+            If Not IsNothing(Poster.Image) Then
+                Me.pbPoster.Image = Poster.Image
+                Me.pbPoster.Tag = Poster
+
+                Me.lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
+                Me.lblPosterSize.Visible = True
+            End If
+            'Me.Poster.Image = DirectCast(_params(0), Bitmap)   'New Bitmap(pbFrame.Image)
+            ' Me.pbPoster.Image = DirectCast(_params(1), Image)   'pbFrame.Image
         End If
     End Sub
 
@@ -625,10 +635,13 @@ Public Class dlgEditEpisode
 
             If ofdImage.ShowDialog() = DialogResult.OK Then
                 Poster.FromFile(ofdImage.FileName)
-                pbPoster.Image = Poster.Image
+                If Not IsNothing(Poster.Image) Then
+                    Me.pbPoster.Image = Poster.Image
+                    Me.pbPoster.Tag = Poster
 
-                Me.lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
-                Me.lblPosterSize.Visible = True
+                    Me.lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
+                    Me.lblPosterSize.Visible = True
+                End If
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -641,7 +654,8 @@ Public Class dlgEditEpisode
 				Dim tImage As Images = dImgManual.ShowDialog(Enums.ImageType.Posters)
 				If Not IsNothing(tImage) Then
 					Poster = tImage
-					pbPoster.Image = Poster.Image
+                    Me.pbPoster.Image = Poster.Image
+                    Me.pbPoster.Tag = Poster
 
 					Me.lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
 					Me.lblPosterSize.Visible = True
@@ -662,10 +676,13 @@ Public Class dlgEditEpisode
 
             If ofdImage.ShowDialog() = DialogResult.OK Then
                 Fanart.FromFile(ofdImage.FileName)
-                pbFanart.Image = Fanart.Image
+                If Not IsNothing(Fanart.Image) Then
+                    Me.pbFanart.Image = Fanart.Image
+                    Me.pbFanart.Tag = Fanart
 
-                Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
-                Me.lblFanartSize.Visible = True
+                    Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
+                    Me.lblFanartSize.Visible = True
+                End If
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -678,7 +695,8 @@ Public Class dlgEditEpisode
 				Dim tImage As Images = dImgManual.ShowDialog(Enums.ImageType.Fanart)
 				If Not IsNothing(tImage) Then
 					Fanart = tImage
-					pbFanart.Image = Fanart.Image
+                    Me.pbFanart.Image = Fanart.Image
+                    Me.pbFanart.Tag = Fanart
 
 					Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
 					Me.lblFanartSize.Visible = True

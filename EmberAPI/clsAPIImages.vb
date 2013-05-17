@@ -379,11 +379,14 @@ Public Class Images
 
 	Public Sub FromFile(ByVal sPath As String)
         'Debug.Print("FromFile/t{0}", sPath)
+        If Not IsNothing(Me._ms) Then
+            Me._ms.Dispose()
+        End If
+        If Not IsNothing(Me._image) Then
+            Me._image.Dispose()
+        End If
 		If Not String.IsNullOrEmpty(sPath) AndAlso File.Exists(sPath) Then
 			Try
-				If Not IsNothing(Me._ms) Then
-					Me._ms.Dispose()
-				End If
 				Me._ms = New MemoryStream()
 				Using fsImage As New FileStream(sPath, FileMode.Open, FileAccess.Read)
 					Dim StreamBuffer(Convert.ToInt32(fsImage.Length - 1)) As Byte
