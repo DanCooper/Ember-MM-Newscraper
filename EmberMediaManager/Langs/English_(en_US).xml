@@ -786,10 +786,10 @@
   <string id="784">Media Sources Editor</string>
   <string id="785">Audio & Video Codec Mapping</string>
   <string id="786">All Seasons Poster</string>
-  <string id="787"/>
-  <string id="788"/>
-  <string id="789"/>
-  <string id="790"/>
+  <string id="787">Get your API Key from fanart.tv</string>
+  <string id="788">Fanart.tv</string>
+  <string id="789">Fanart.tv API Key:</string>
+  <string id="790">These settings are specific to this module.{0}Please refer to the global settings for more options</string>
   <string id="791"/>
   <string id="792">Donate</string>
   <string id="793">&amp;Versions...</string>
