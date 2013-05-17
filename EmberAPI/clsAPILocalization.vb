@@ -139,6 +139,13 @@ Public Class Localization
     End Sub
 
     Public Function GetHelpString(ByVal ctrlName As String) As String
+        Dim aStr As String
+
+        If htHelpStrings.ContainsKey(ctrlName) Then
+            aStr = htHelpStrings.Item(ctrlName).ToString
+        Else
+            aStr = String.Empty
+        End If
 #If DEBUG Then
         Dim _sPath = Path.Combine(Functions.AppPath, "Log")
         If Not System.IO.Directory.Exists(_sPath) Then
@@ -146,45 +153,18 @@ Public Class Localization
         End If
 
         Dim _LogFile = Path.Combine(_sPath, "language_help.log")
-#End If
-
-        If htHelpStrings.ContainsKey(ctrlName) Then
-#If DEBUG Then
-            Using fs1 As FileStream = New FileStream(_LogFile, FileMode.Append, FileAccess.Write)
-                Using s1 As StreamWriter = New StreamWriter(fs1)
-                    s1.Write(String.Concat(ctrlName, vbTab, htHelpStrings.Item(ctrlName).ToString, vbNewLine))
-                    s1.Flush()
-                End Using
+        Using fs1 As FileStream = New FileStream(_LogFile, FileMode.Append, FileAccess.Write)
+            Using s1 As StreamWriter = New StreamWriter(fs1)
+                s1.Write(String.Concat(ctrlName, vbTab, aStr, vbNewLine))
+                s1.Flush()
             End Using
+        End Using
 #End If
-            Return htHelpStrings.Item(ctrlName).ToString
-        Else
-#If DEBUG Then
-            Using fs1 As FileStream = New FileStream(_LogFile, FileMode.Append, FileAccess.Write)
-                Using s1 As StreamWriter = New StreamWriter(fs1)
-                    s1.Write(String.Concat(ctrlName, vbTab, String.Empty, vbNewLine))
-                    s1.Flush()
-                End Using
-            End Using
-#End If
-            Return String.Empty
-        End If
+        Return aStr
     End Function
 
     Public Function GetString(ByVal ID As Integer, ByVal strDefault As String, Optional ByVal forceFromMain As Boolean = False) As String
         Dim tStr As String
-#If DEBUG Then
-        Try
-            Dim _sPath = Path.Combine(Functions.AppPath, "Log")
-            If Not System.IO.Directory.Exists(_sPath) Then
-                System.IO.Directory.CreateDirectory(_sPath)
-            End If
-
-            Dim _LogFile = Path.Combine(_sPath, "language_strings.log")
-        Catch ex As Exception
-
-        End Try
-#End If
 
         Dim Assembly As String = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
         If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" OrElse forceFromMain Then
@@ -202,6 +182,12 @@ Public Class Localization
         End If
 #If DEBUG Then
         Try
+            Dim _sPath = Path.Combine(Functions.AppPath, "Log")
+            If Not System.IO.Directory.Exists(_sPath) Then
+                System.IO.Directory.CreateDirectory(_sPath)
+            End If
+
+            Dim _LogFile = Path.Combine(_sPath, "language_strings.log")
             Using fs1 As FileStream = New FileStream(_LogFile, FileMode.Append, FileAccess.Write)
                 Using s1 As StreamWriter = New StreamWriter(fs1)
                     s1.Write(String.Concat(Assembly, vbTab, ID, vbTab, tStr, vbNewLine))
