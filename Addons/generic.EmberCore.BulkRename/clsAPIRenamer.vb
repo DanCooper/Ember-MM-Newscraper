@@ -246,14 +246,14 @@ Public Class FileFolderRenamer
                 If _tmpMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
                     Dim tVid As MediaInfo.Video = NFO.GetBestVideo(_tmpMovie.Movie.FileInfo)
                     Dim tRes As String = NFO.GetResFromDimensions(tVid)
-                    MovieFile.Resolution = String.Format("{0}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(283, "Unknown", True), tRes))
+                    MovieFile.Resolution = String.Format("{0}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(138, "Unknown", True), tRes))
                 Else
                     MovieFile.Resolution = String.Empty
                 End If
 
                 If _tmpMovie.Movie.FileInfo.StreamDetails.Audio.Count > 0 Then
                     Dim tAud As MediaInfo.Audio = NFO.GetBestAudio(_tmpMovie.Movie.FileInfo, False)
-                    MovieFile.Audio = String.Format("{0}-{1}ch", If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(283, "Unknown", True), tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(283, "Unknown", True), tAud.Channels))
+                    MovieFile.Audio = String.Format("{0}-{1}ch", If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(138, "Unknown", True), tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(138, "Unknown", True), tAud.Channels))
                 Else
                     MovieFile.Audio = String.Empty
                 End If
@@ -557,11 +557,11 @@ Public Class FileFolderRenamer
     Public Function GetMovies() As DataTable
         Dim dtMovies As New DataTable
 
-        dtMovies.Columns.Add(Master.eLang.GetString(21, "Title", True), GetType(String))
-        dtMovies.Columns.Add(Master.eLang.GetString(410, "Path", True), GetType(String))
-        dtMovies.Columns.Add(Master.eLang.GetString(15, "File Name", True), GetType(String))
-        dtMovies.Columns.Add(Master.eLang.GetString(30, "New Path"), GetType(String))
-        dtMovies.Columns.Add(Master.eLang.GetString(31, "New File Name"), GetType(String))
+        dtMovies.Columns.Add(Master.eLang.GetString(21, "Title"), GetType(String))
+        dtMovies.Columns.Add(Master.eLang.GetString(410, "Path"), GetType(String))
+        dtMovies.Columns.Add(Master.eLang.GetString(15, "File Name"), GetType(String))
+        dtMovies.Columns.Add(Master.eLang.GetString(141, "New Path"), GetType(String))
+        dtMovies.Columns.Add(Master.eLang.GetString(142, "New File Name"), GetType(String))
         dtMovies.Columns.Add("IsLocked", GetType(Boolean))
         dtMovies.Columns.Add("DirExist", GetType(Boolean))
         dtMovies.Columns.Add("FileExist", GetType(Boolean))
@@ -697,7 +697,7 @@ Public Class FileFolderRenamer
                         End If
                     Catch ex As Exception
                         If ShowError Then
-                            MsgBox(String.Format(Master.eLang.GetString(12, "An error occured while attempting to rename the directory:{0}{0}{1}{0}{0}Please ensure that you are not accessing this directory or any of its files from another program (including browsing via Windows Explorer)."), vbNewLine, ex.Message), MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, Master.eLang.GetString(13, "Unable to Rename Directory"))
+                            MsgBox(String.Format(Master.eLang.GetString(144, "An error occured while attempting to rename the directory:{0}{0}{1}{0}{0}Please ensure that you are not accessing this directory or any of its files from another program (including browsing via Windows Explorer)."), vbNewLine, ex.Message), MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, Master.eLang.GetString(165, "Unable to Rename Directory"))
                         Else
                             Master.eLog.WriteToErrorLog(ex.Message, "Dir: " & srcDir & " " & destDir, "Error")
                         End If
@@ -739,7 +739,7 @@ Public Class FileFolderRenamer
 
                                     Catch ex As Exception
                                         If ShowError Then
-                                            MsgBox(String.Format(Master.eLang.GetString(14, "An error occured while attempting to rename a file:{0}{0}{1}{0}{0}Please ensure that you are not accessing this file from another program."), vbNewLine, ex.Message), MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, Master.eLang.GetString(15, "Unable to Rename File"))
+                                            MsgBox(String.Format(Master.eLang.GetString(166, "An error occured while attempting to rename a file:{0}{0}{1}{0}{0}Please ensure that you are not accessing this file from another program."), vbNewLine, ex.Message), MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, Master.eLang.GetString(171, "Unable to Rename File"))
                                         Else
                                             Master.eLog.WriteToErrorLog(ex.Message, "File " & srcFile & " " & dstFile, "Error")
                                         End If
