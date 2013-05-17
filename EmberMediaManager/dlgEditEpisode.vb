@@ -707,6 +707,12 @@ Public Class dlgEditEpisode
         End Try
     End Sub
 
+    Private Sub txtPlot_KeyDown(ByVal sender As Object, e As KeyEventArgs) Handles txtPlot.KeyDown
+        If e.KeyData = (Keys.Control Or Keys.A) Then
+            Me.txtPlot.SelectAll()
+        End If
+    End Sub
+
 #End Region 'Methods
 
 End Class

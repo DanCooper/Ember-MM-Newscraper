@@ -1487,6 +1487,18 @@ Public Class dlgEditMovie
 
     End Sub
 
+    Private Sub txtOutline_KeyDown(ByVal sender As Object, e As KeyEventArgs) Handles txtOutline.KeyDown
+        If e.KeyData = (Keys.Control Or Keys.A) Then
+            Me.txtOutline.SelectAll()
+        End If
+    End Sub
+
+    Private Sub txtPlot_KeyDown(ByVal sender As Object, e As KeyEventArgs) Handles txtPlot.KeyDown
+        If e.KeyData = (Keys.Control Or Keys.A) Then
+            Me.txtPlot.SelectAll()
+        End If
+    End Sub
+
 #End Region 'Methods
 
 #Region "Nested Types"

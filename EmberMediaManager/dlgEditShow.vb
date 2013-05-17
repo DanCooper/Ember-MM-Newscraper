@@ -712,6 +712,12 @@ Public Class dlgEditShow
         End If
     End Sub
 
+    Private Sub txtPlot_KeyDown(ByVal sender As Object, e As KeyEventArgs) Handles txtPlot.KeyDown
+        If e.KeyData = (Keys.Control Or Keys.A) Then
+            Me.txtPlot.SelectAll()
+        End If
+    End Sub
+
     Private Sub SetInfo()
         Try
             With Me
@@ -755,14 +761,14 @@ Public Class dlgEditShow
                 End If
 
                 If Not IsNothing(.Fanart.Image) Then
-					Master.currShow.ShowFanartPath = .Fanart.SaveAsShowFanart(Master.currShow, "")
+                    Master.currShow.ShowFanartPath = .Fanart.SaveAsShowFanart(Master.currShow, "")
                 Else
                     .Fanart.DeleteShowFanart(Master.currShow)
                     Master.currShow.ShowFanartPath = String.Empty
                 End If
 
                 If Not IsNothing(.Poster.Image) Then
-					Master.currShow.ShowPosterPath = .Poster.SaveAsShowPoster(Master.currShow, "")
+                    Master.currShow.ShowPosterPath = .Poster.SaveAsShowPoster(Master.currShow, "")
                 Else
                     .Poster.DeleteShowPosters(Master.currShow)
                     Master.currShow.ShowPosterPath = String.Empty
@@ -770,7 +776,7 @@ Public Class dlgEditShow
 
                 If Master.eSettings.AllSeasonPosterEnabled Then
                     If Not IsNothing(.ASPoster.Image) Then
-						Master.currShow.SeasonPosterPath = .ASPoster.SaveAsAllSeasonPoster(Master.currShow, "")
+                        Master.currShow.SeasonPosterPath = .ASPoster.SaveAsAllSeasonPoster(Master.currShow, "")
                     Else
                         .ASPoster.DeleteAllSeasonPosters(Master.currShow)
                         Master.currShow.SeasonPosterPath = String.Empty
