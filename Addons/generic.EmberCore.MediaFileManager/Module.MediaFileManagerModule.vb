@@ -42,7 +42,7 @@ Public Class FileManagerExternalModule
     Private WithEvents MySubMenu1 As New System.Windows.Forms.ToolStripMenuItem
     Private WithEvents MySubMenu2 As New System.Windows.Forms.ToolStripMenuItem
     Private _enabled As Boolean = False
-    Private _Name As String = Master.eLang.GetString(1, "Media File Manager")
+    Private _Name As String = Master.eLang.GetString(311, "Media File Manager")
     Private _setup As frmSettingsHolder
     Private withErrors As Boolean
 #End Region 'Fields
@@ -186,11 +186,11 @@ Public Class FileManagerExternalModule
     End Sub
 
     Sub Enable()
-        MyMenu.Text = Master.eLang.GetString(1, "Media File Manager")
+        MyMenu.Text = Master.eLang.GetString(311, "Media File Manager")
 
-        MySubMenu1.Text = Master.eLang.GetString(2, "Move To")
+        MySubMenu1.Text = Master.eLang.GetString(312, "Move To")
         MySubMenu1.Tag = "MOVE"
-        MySubMenu2.Text = Master.eLang.GetString(3, "Copy To")
+        MySubMenu2.Text = Master.eLang.GetString(313, "Copy To")
         MySubMenu2.Tag = "COPY"
         MyMenu.DropDownItems.Add(MySubMenu1)
         MyMenu.DropDownItems.Add(MySubMenu2)
@@ -227,17 +227,17 @@ Public Class FileManagerExternalModule
                     If ItemsToWork.Count = 1 AndAlso Directory.Exists(ItemsToWork(0).ToString) Then
                         Select Case tMItem.OwnerItem.Tag.ToString
                             Case "MOVE"
-                                If MsgBox(String.Format(Master.eLang.GetString(4, "Move from {0} To {1}"), ItemsToWork(0).ToString, Path.Combine(tMItem.Tag.ToString, Path.GetFileName(ItemsToWork(0).ToString))), MsgBoxStyle.YesNo, "Move") = MsgBoxResult.Yes Then
+                                If MsgBox(String.Format(Master.eLang.GetString(314, "Move from {0} To {1}"), ItemsToWork(0).ToString, Path.Combine(tMItem.Tag.ToString, Path.GetFileName(ItemsToWork(0).ToString))), MsgBoxStyle.YesNo, "Move") = MsgBoxResult.Yes Then
                                     'TODO:  need to test it better
-                                    DirectoryMove(ItemsToWork(0).ToString, Path.Combine(tMItem.Tag.ToString, Path.GetFileName(ItemsToWork(0).ToString)), Master.eLang.GetString(6, "Moving Movie"))
+                                    DirectoryMove(ItemsToWork(0).ToString, Path.Combine(tMItem.Tag.ToString, Path.GetFileName(ItemsToWork(0).ToString)), Master.eLang.GetString(316, "Moving Movie"))
                                     Master.DB.DeleteFromDB(MovieId)
                                     ModulesManager.Instance.RuntimeObjects.InvokeLoadMedia(New Structures.Scans With {.Movies = True}, String.Empty)
                                 End If
 
                             Case "COPY"
-                                If MsgBox(String.Format(Master.eLang.GetString(5, "Copy from {0} To {1}"), ItemsToWork(0).ToString, Path.Combine(tMItem.Tag.ToString, Path.GetFileName(ItemsToWork(0).ToString))), MsgBoxStyle.YesNo, "Copy") = MsgBoxResult.Yes Then
+                                If MsgBox(String.Format(Master.eLang.GetString(315, "Copy from {0} To {1}"), ItemsToWork(0).ToString, Path.Combine(tMItem.Tag.ToString, Path.GetFileName(ItemsToWork(0).ToString))), MsgBoxStyle.YesNo, "Copy") = MsgBoxResult.Yes Then
                                     'TODO:   need to test it better
-                                    DirectoryCopy(ItemsToWork(0).ToString, Path.Combine(tMItem.Tag.ToString, Path.GetFileName(ItemsToWork(0).ToString)), Master.eLang.GetString(7, "Copying Movie"))
+                                    DirectoryCopy(ItemsToWork(0).ToString, Path.Combine(tMItem.Tag.ToString, Path.GetFileName(ItemsToWork(0).ToString)), Master.eLang.GetString(317, "Copying Movie"))
                                     ModulesManager.Instance.RuntimeObjects.InvokeLoadMedia(New Structures.Scans With {.Movies = True}, String.Empty)
                                 End If
                         End Select
@@ -279,9 +279,9 @@ Public Class FileManagerExternalModule
             _setup.ListView1.Items.Add(li)
         Next
         SPanel.Name = Me._Name
-        SPanel.Text = Master.eLang.GetString(0, "Media File Manager")
+        SPanel.Text = Master.eLang.GetString(311, "Media File Manager")
         SPanel.Prefix = "FileManager_"
-        SPanel.Type = Master.eLang.GetString(802, "Modules", True)
+        SPanel.Type = Master.eLang.GetString(802, "Modules")
         SPanel.ImageIndex = If(Me._enabled, 9, 10)
         SPanel.Order = 100
         SPanel.Panel = _setup.pnlSettings
