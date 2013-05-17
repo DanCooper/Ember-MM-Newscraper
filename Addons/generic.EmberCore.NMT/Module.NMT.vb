@@ -114,12 +114,12 @@ Public Class NMTExporterModule
     Sub Enable()
         Dim tsi As New ToolStripMenuItem
         MyMenu.Image = New Bitmap(My.Resources.icon)
-		MyMenu.Text = Master.eLang.GetString(0, "NMT Jukebox Builder")
+        MyMenu.Text = Master.eLang.GetString(475, "NMT Jukebox Builder")
         MyMenu.Tag = New Structures.ModulesMenus With {.IfNoMovies = True, .IfNoTVShow = True}
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("ToolsToolStripMenuItem"), ToolStripMenuItem)
         tsi.DropDownItems.Add(MyMenu)
         MyTrayMenu.Image = New Bitmap(My.Resources.icon)
-		MyTrayMenu.Text = Master.eLang.GetString(0, "NMT Jukebox Builder")
+        MyTrayMenu.Text = Master.eLang.GetString(475, "NMT Jukebox Builder")
         MyTrayMenu.Tag = New Structures.ModulesMenus With {.IfNoMovies = True, .IfNoTVShow = True}
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayIconTools"), ToolStripMenuItem)
         If Not tsi Is Nothing Then tsi.DropDownItems.Add(MyTrayMenu)
@@ -154,9 +154,9 @@ Public Class NMTExporterModule
         Me._setup.cbEnabled.Checked = Me._enabled
         Dim SPanel As New Containers.SettingsPanel
         SPanel.Name = Me._Name
-        SPanel.Text = Master.eLang.GetString(0, "NMT Jukebox Builder")
+        SPanel.Text = Master.eLang.GetString(475, "NMT Jukebox Builder")
         SPanel.Prefix = "NMT_"
-        SPanel.Type = Master.eLang.GetString(802, "Modules", True)
+        SPanel.Type = Master.eLang.GetString(802, "Modules")
         SPanel.ImageIndex = If(Me._enabled, 9, 10)
         SPanel.Order = 100
         SPanel.Panel = Me._setup.pnlSettings

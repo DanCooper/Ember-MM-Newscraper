@@ -149,19 +149,19 @@ Public Class BulkRenamerModule
     Sub Enable()
         Dim tsi As New ToolStripMenuItem
         MyMenu.Image = New Bitmap(My.Resources.icon)
-        MyMenu.Text = Master.eLang.GetString(26, "Bulk &Renamer")
+        MyMenu.Text = Master.eLang.GetString(291, "Bulk &Renamer")
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("ToolsToolStripMenuItem"), ToolStripMenuItem)
         MyMenu.Tag = New Structures.ModulesMenus With {.IfNoMovies = True, .IfNoTVShow = True}
         tsi.DropDownItems.Add(MyMenu)
         MyTrayMenu.Image = New Bitmap(My.Resources.icon)
-        MyTrayMenu.Text = Master.eLang.GetString(26, "Bulk &Renamer")
+        MyTrayMenu.Text = Master.eLang.GetString(291, "Bulk &Renamer")
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayIconTools"), ToolStripMenuItem)
         tsi.DropDownItems.Add(MyTrayMenu)
 
-        ctxMyMenu.Text = Master.eLang.GetString(6, "Rename")
+        ctxMyMenu.Text = Master.eLang.GetString(257, "Rename")
         ctxMyMenu.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.R), System.Windows.Forms.Keys)
-        ctxMySubMenu1.Text = Master.eLang.GetString(28, "Auto")
-        ctxMySubMenu2.Text = Master.eLang.GetString(29, "Manual")
+        ctxMySubMenu1.Text = Master.eLang.GetString(293, "Auto")
+        ctxMySubMenu2.Text = Master.eLang.GetString(294, "Manual")
         ctxMyMenu.DropDownItems.Add(ctxMySubMenu1)
         ctxMyMenu.DropDownItems.Add(ctxMySubMenu2)
 
@@ -196,9 +196,9 @@ Public Class BulkRenamerModule
         _setup.chkGenericModule.Checked = MySettings.GenericModule
         _setup.chkBulkRenamer.Checked = MySettings.BulkRenamer
         SPanel.Name = Me._Name
-        SPanel.Text = Master.eLang.GetString(0, "Renamer")
+        SPanel.Text = Master.eLang.GetString(295, "Renamer")
         SPanel.Prefix = "Renamer_"
-        SPanel.Type = Master.eLang.GetString(802, "Modules", True)
+        SPanel.Type = Master.eLang.GetString(802, "Modules")
         SPanel.ImageIndex = If(Me._enabled, 9, 10)
         SPanel.Order = 100
         SPanel.Panel = Me._setup.pnlSettings()

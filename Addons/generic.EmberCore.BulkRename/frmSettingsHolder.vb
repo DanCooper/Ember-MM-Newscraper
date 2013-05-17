@@ -57,15 +57,15 @@ Public Class frmSettingsHolder
     End Sub
 
     Sub SetUp()
-        Me.chkRenameMulti.Text = Master.eLang.GetString(21, "Automatically Rename Files During Multi-Scraper")
-        Me.chkRenameSingle.Text = Master.eLang.GetString(22, "Automatically Rename Files During Single-Scraper")
-        Me.gbRenamerPatterns.Text = Master.eLang.GetString(23, "Default Renaming Patterns")
-        Me.lblFilePattern.Text = Master.eLang.GetString(24, "Files Pattern")
-        Me.lblFolderPattern.Text = Master.eLang.GetString(25, "Folders Pattern")
-        Me.chkEnabled.Text = Master.eLang.GetString(774, "Enabled", True)
-        Me.chkGenericModule.Text = Master.eLang.GetString(32, "Enable Generic Rename Module")
-        Me.chkBulkRenamer.Text = Master.eLang.GetString(33, "Enable Bulk Renamer Tool")
-        Me.Label1.Text = String.Format(Master.eLang.GetString(11, "$1 = First Letter of the Title{0}$A = Audio{0}$B = Base Path{0}$C = Director{0}$D = Directory{0}$E = Sort Title{0}$F = File Name{0}$G = Genre (Follow with a space, dot or hyphen to change separator){0}$I = IMDB ID{0}$L = List Title{0}$M = MPAA{0}$O = OriginalTitle{0}$R = Resolution{0}$S = Source{0}$T = Title{0}$U = Country{0}$Y = Year{0}$X. (Replace Space with .){0}{{}} = Optional{0}$?aaa?bbb? = Replace aaa with bbb{0}$- = Remove previous char if next pattern does not have a value{0}$+ = Remove next char if previous pattern does not have a value{0}$^ = Remove previous and next char if next pattern does not have a value"), vbNewLine)
+        Me.chkRenameMulti.Text = Master.eLang.GetString(281, "Automatically Rename Files During Multi-Scraper")
+        Me.chkRenameSingle.Text = Master.eLang.GetString(282, "Automatically Rename Files During Single-Scraper")
+        Me.gbRenamerPatterns.Text = Master.eLang.GetString(285, "Default Renaming Patterns")
+        Me.lblFilePattern.Text = Master.eLang.GetString(286, "Files Pattern")
+        Me.lblFolderPattern.Text = Master.eLang.GetString(287, "Folders Pattern")
+        Me.chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
+        Me.chkGenericModule.Text = Master.eLang.GetString(288, "Enable Generic Rename Module")
+        Me.chkBulkRenamer.Text = Master.eLang.GetString(290, "Enable Bulk Renamer Tool")
+        Me.Label1.Text = String.Format(Master.eLang.GetString(262, "$1 = First Letter of the Title{0}$A = Audio{0}$B = Base Path{0}$C = Director{0}$D = Directory{0}$E = Sort Title{0}$F = File Name{0}$G = Genre (Follow with a space, dot or hyphen to change separator){0}$I = IMDB ID{0}$L = List Title{0}$M = MPAA{0}$O = OriginalTitle{0}$R = Resolution{0}$S = Source{0}$T = Title{0}$U = Country{0}$Y = Year{0}$X. (Replace Space with .){0}{{}} = Optional{0}$?aaa?bbb? = Replace aaa with bbb{0}$- = Remove previous char if next pattern does not have a value{0}$+ = Remove next char if previous pattern does not have a value{0}$^ = Remove previous and next char if next pattern does not have a value"), vbNewLine)
     End Sub
 
     Private Sub txtFilePattern_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFilePattern.TextChanged
