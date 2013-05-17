@@ -80,9 +80,9 @@ Public Class genericYAMJ
 		Me.fYAMJ.chkAllSeasonPoster.Checked = AdvancedSettings.GetBooleanSetting("YAMJAllSeasonPoster", False)
 		'chkYAMJnfoFields
 		SPanel.Name = _name
-		SPanel.Text = Master.eLang.GetString(1, "YAMJ Compatibility")
+        SPanel.Text = Master.eLang.GetString(612, "YAMJ Compatibility")
 		SPanel.Prefix = "YAMJ_"
-		SPanel.Type = Master.eLang.GetString(802, "Modules", True)
+        SPanel.Type = Master.eLang.GetString(802, "Modules")
 		SPanel.ImageIndex = If(Me._enabled, 9, 10)
 		SPanel.Order = 100
 		SPanel.Panel = Me.fYAMJ.pnlSettings
