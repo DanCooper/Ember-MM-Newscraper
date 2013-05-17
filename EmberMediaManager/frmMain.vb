@@ -3236,7 +3236,7 @@ doCancel:
                 If Convert.ToBoolean(Me.dgvMediaList.Item(14, e.RowIndex).Value) Then
                     e.CellStyle.BackColor = Color.LightSteelBlue
                     e.CellStyle.SelectionBackColor = Color.DarkTurquoise
-                ElseIf Convert.ToBoolean(Me.dgvMediaList.Item(43, e.RowIndex).Value) Then
+                ElseIf Convert.ToBoolean(Me.dgvMediaList.Item(44, e.RowIndex).Value) Then
                     e.CellStyle.BackColor = Color.MistyRose
                     e.CellStyle.SelectionBackColor = Color.DarkMagenta
                 Else
@@ -4320,7 +4320,7 @@ doCancel:
                             ElseIf FileUtils.Common.isBDRip(drvRow.Cells(1).Value.ToString) Then
                                 pTitle = Directory.GetParent(Directory.GetParent(Directory.GetParent(drvRow.Cells(1).Value.ToString).FullName).FullName).Name
                             Else
-                                If Convert.ToBoolean(drvRow.Cells(42).Value) AndAlso Convert.ToBoolean(drvRow.Cells(2).Value) Then
+                                If Convert.ToBoolean(drvRow.Cells(43).FormattedValue) AndAlso Convert.ToBoolean(drvRow.Cells(2).FormattedValue) Then
                                     pTitle = Directory.GetParent(drvRow.Cells(1).Value.ToString).Name
                                 Else
                                     pTitle = Path.GetFileNameWithoutExtension(drvRow.Cells(1).Value.ToString)
@@ -4330,11 +4330,11 @@ doCancel:
                             LevFail = StringUtils.ComputeLevenshtein(StringUtils.FilterName(drvRow.Cells(15).Value.ToString, False, True).ToLower, StringUtils.FilterName(pTitle, False, True).ToLower) > Master.eSettings.LevTolerance
 
                             parOutOfTolerance.Value = LevFail
-                            drvRow.Cells(43).Value = LevFail
+                            drvRow.Cells(44).Value = LevFail
                             parID.Value = drvRow.Cells(0).Value
                         Else
                             parOutOfTolerance.Value = False
-                            drvRow.Cells(43).Value = False
+                            drvRow.Cells(44).Value = False
                             parID.Value = drvRow.Cells(0).Value
                         End If
                         SQLcommand.ExecuteNonQuery()
