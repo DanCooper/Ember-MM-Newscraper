@@ -155,7 +155,8 @@ Public Class APIXML
                 Dim acodecFlag As Flag = lFlags.FirstOrDefault(Function(f) f.Name = tAudio.Codec.ToLower AndAlso f.Type = FlagType.AudioCodec)
                 If Not IsNothing(acodecFlag) Then
                     If tAudio.HasPreferred Then
-                        iReturn(3) = ImageUtils.SetOverlay(acodecFlag.Image, 64, 44, My.Resources.haslanguage, 4)
+                        Dim acodecFlagTemp As Image = acodecFlag.Image
+                        iReturn(3) = ImageUtils.SetOverlay(acodecFlagTemp, 64, 44, My.Resources.haslanguage, 4)
                     Else
                         iReturn(3) = acodecFlag.Image
                     End If
@@ -163,7 +164,8 @@ Public Class APIXML
                     acodecFlag = lFlags.FirstOrDefault(Function(f) f.Name = "defaultaudio" AndAlso f.Type = FlagType.AudioCodec)
                     If Not IsNothing(acodecFlag) Then
                         If tAudio.HasPreferred Then
-                            iReturn(3) = ImageUtils.SetOverlay(acodecFlag.Image, 64, 44, My.Resources.haslanguage, 4)
+                            Dim acodecFlagTemp As Image = acodecFlag.Image
+                            iReturn(3) = ImageUtils.SetOverlay(acodecFlagTemp, 64, 44, My.Resources.haslanguage, 4)
                         Else
                             iReturn(3) = acodecFlag.Image
                         End If
