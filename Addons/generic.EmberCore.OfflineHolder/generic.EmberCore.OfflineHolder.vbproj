@@ -197,27 +197,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Langs\generic.EmberCore.OfflineHolder.Debug_%28db_DB%29.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Langs\generic.EmberCore.OfflineHolder.English_%28en_US%29-Help.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Langs\generic.EmberCore.OfflineHolder.English_%28en_US%29.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Langs\generic.EmberCore.OfflineHolder.German_%28de_DE%29-Help.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Langs\generic.EmberCore.OfflineHolder.German_%28de_DE%29.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Langs\generic.EmberCore.OfflineHolder.Norwegian_%28no_NO%29-Help.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Langs\generic.EmberCore.OfflineHolder.Norwegian_%28no_NO%29.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="x64\SQLite.Interop.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
