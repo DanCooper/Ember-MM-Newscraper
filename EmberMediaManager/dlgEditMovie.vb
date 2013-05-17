@@ -206,14 +206,14 @@ Public Class dlgEditMovie
         Try
             Using dImgManual As New dlgImgManual
 				Dim tImage As Images = dImgManual.ShowDialog(Enums.ImageType.Fanart)
-				If Not IsNothing(tImage) Then
-					Fanart = tImage
+                If Not IsNothing(tImage.Image) Then
+                    Fanart = tImage
                     Me.pbFanart.Image = Fanart.Image
                     Me.pbFanart.Tag = Fanart
 
-					Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
-					Me.lblFanartSize.Visible = True
-				End If
+                    Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
+                    Me.lblFanartSize.Visible = True
+                End If
             End Using
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -271,14 +271,14 @@ Public Class dlgEditMovie
         Try
             Using dImgManual As New dlgImgManual
 				Dim tImage As Images = dImgManual.ShowDialog(Enums.ImageType.Posters)
-				If Not IsNothing(tImage) Then
-					Poster = tImage
+                If Not IsNothing(tImage.Image) Then
+                    Poster = tImage
                     Me.pbPoster.Image = Poster.Image
                     Me.pbPoster.Tag = Poster
 
-					Me.lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
-					Me.lblPosterSize.Visible = True
-				End If
+                    Me.lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
+                    Me.lblPosterSize.Visible = True
+                End If
             End Using
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
