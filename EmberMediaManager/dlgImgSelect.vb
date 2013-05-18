@@ -894,8 +894,8 @@ Public Class dlgImgSelect
             'Else
             rbXLarge.Text = Master.eLang.GetString(897, "Original")
             rbLarge.Text = Master.eLang.GetString(898, "Cover")
-            rbMedium.Text = Master.eLang.GetString(899, "Medium")
-            rbSmall.Text = Master.eLang.GetString(900, "Small")
+            rbMedium.Text = Master.eLang.GetString(324, "Medium")
+            rbSmall.Text = Master.eLang.GetString(325, "Small")
             'End If
 
             For Each TMDBPoster As MediaContainers.Image In _ImageList.Where(Function(f) f.ParentID = ParentID)

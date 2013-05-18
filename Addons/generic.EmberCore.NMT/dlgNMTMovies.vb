@@ -291,7 +291,7 @@ Public Class dlgNMTMovies
 
     Private Sub BuildMovieHTML(ByVal template As String, ByVal outputbase As String)
         Try
-            bwBuildHTML.ReportProgress(0, Master.eLang.GetString(332, "Compiling Movie List..."))
+            bwBuildHTML.ReportProgress(0, Master.eLang.GetString(177, "Compiling Movie List..."))
             Dim destPathShort As String = Path.Combine(outputbase, GetUserParam("MoviesDetailsPath", "html/").Replace("/", Path.DirectorySeparatorChar))
             HTMLMovieBody.Length = 0
             Dim sBasePath As String = Path.Combine(Path.Combine(Functions.AppPath, "Modules"), Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetExecutingAssembly.Location))
@@ -373,7 +373,7 @@ Public Class dlgNMTMovies
 
     Private Sub BuildTVHTML(ByVal template As String, ByVal outputbase As String)
         Try
-            bwBuildHTML.ReportProgress(0, Master.eLang.GetString(338, "Compiling TV Shows List..."))
+            bwBuildHTML.ReportProgress(0, Master.eLang.GetString(277, "Compiling TV Shows List..."))
             Dim destPathShort As String = Path.Combine(outputbase, GetUserParam("TVDetailsPath", "html/").Replace("/", Path.DirectorySeparatorChar))
             HTMLTVBody.Length = 0
             Dim sBasePath As String = Path.Combine(Path.Combine(Functions.AppPath, "Modules"), Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetExecutingAssembly.Location))
@@ -609,7 +609,7 @@ Public Class dlgNMTMovies
                             tVid = NFO.GetBestVideo(fiAV)
                             tRes = NFO.GetResFromDimensions(tVid)
                             _vidDimensions = NFO.GetDimensionsFromVideo(tVid)
-                            _vidDetails = String.Format("{0} / {1}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(283, "Unknown"), tRes), If(String.IsNullOrEmpty(tVid.Codec), Master.eLang.GetString(283, "Unknown"), tVid.Codec)).ToUpper
+                            _vidDetails = String.Format("{0} / {1}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(138, "Unknown"), tRes), If(String.IsNullOrEmpty(tVid.Codec), Master.eLang.GetString(138, "Unknown"), tVid.Codec)).ToUpper
                         End If
                     End If
                     row = row.Replace("<$VIDEO>", _vidDetails)
@@ -619,7 +619,7 @@ Public Class dlgNMTMovies
                     Dim _audDetails As String = String.Empty
                     If fiAV.StreamDetails.Audio.Count > 0 Then
                         tAud = NFO.GetBestAudio(fiAV, False)
-                        _audDetails = String.Format("{0} / {1}ch", If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(283, "Unknown"), tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(283, "Unknown"), tAud.Channels)).ToUpper
+                        _audDetails = String.Format("{0} / {1}ch", If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(138, "Unknown"), tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(138, "Unknown"), tAud.Channels)).ToUpper
                     End If
                     row = row.Replace("<$AUDIO>", _audDetails)
                 End If
@@ -770,7 +770,7 @@ Public Class dlgNMTMovies
             'tVid = NFO.GetBestVideo(fiAV)
             'tRes = NFO.GetResFromDimensions(tVid)
             '_vidDimensions = NFO.GetDimensionsFromVideo(tVid)
-            '_vidDetails = String.Format("{0} / {1}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(283, "Unknown", True), tRes), If(String.IsNullOrEmpty(tVid.Codec), Master.eLang.GetString(283, "Unknown", True), tVid.Codec)).ToUpper
+            '_vidDetails = String.Format("{0} / {1}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(138, "Unknown", True), tRes), If(String.IsNullOrEmpty(tVid.Codec), Master.eLang.GetString(138, "Unknown", True), tVid.Codec)).ToUpper
             'End If
             'End If
             'row = row.Replace("<$VIDEO>", _vidDetails)
@@ -780,7 +780,7 @@ Public Class dlgNMTMovies
             ' Dim _audDetails As String = String.Empty
             ' If fiAV.StreamDetails.Audio.Count > 0 Then
             ' tAud = NFO.GetBestAudio(fiAV, False)
-            ' _audDetails = String.Format("{0} / {1}ch", If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(283, "Unknown", True), tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(283, "Unknown", True), tAud.Channels)).ToUpper
+            ' _audDetails = String.Format("{0} / {1}ch", If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(138, "Unknown", True), tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(138, "Unknown", True), tAud.Channels)).ToUpper
             ' End If
             ' row = row.Replace("<$AUDIO>", _audDetails)
             ' End If
@@ -1317,8 +1317,8 @@ Public Class dlgNMTMovies
     Private Sub SetUp()
         Me.Text = Master.eLang.GetString(340, "Jukebox Builder")
         Me.Close_Button.Text = Master.eLang.GetString(19, "Close")
-        Me.lblCompiling.Text = Master.eLang.GetString(332, "Compiling Movie List...")
-        Me.lblCanceling.Text = Master.eLang.GetString(333, "Canceling Compilation...")
+        Me.lblCompiling.Text = Master.eLang.GetString(177, "Compiling Movie List...")
+        Me.lblCanceling.Text = Master.eLang.GetString(178, "Canceling Compilation...")
         Me.btnCancel.Text = Master.eLang.GetString(167, "Cancel")
         Me.Label2.Text = Master.eLang.GetString(334, "Template")
         Me.Label1.Text = Master.eLang.GetString(341, "Output Folder")

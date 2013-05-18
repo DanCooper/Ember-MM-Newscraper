@@ -124,7 +124,7 @@ Public Class dlgTrailerSelect
                     didCancel = True
                 End If
             Else
-                MsgBox(Master.eLang.GetString(192, "File is not valid.", True), MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly, Master.eLang.GetString(194, "Not Valid", True))
+                MsgBox(Master.eLang.GetString(192, "File is not valid."), MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly, Master.eLang.GetString(194, "Not Valid"))
                 didCancel = True
             End If
         ElseIf Regex.IsMatch(Me.txtYouTube.Text, "http:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") Then
@@ -274,7 +274,7 @@ Public Class dlgTrailerSelect
                 Me.DialogResult = System.Windows.Forms.DialogResult.OK
                 Me.Close()
             Else
-                MsgBox(Master.eLang.GetString(192, "File is not valid.", True), MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly, Master.eLang.GetString(194, "Not Valid", True))
+                MsgBox(Master.eLang.GetString(192, "File is not valid."), MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly, Master.eLang.GetString(194, "Not Valid"))
                 Me.pnlStatus.Visible = False
                 Me.lbTrailers.Enabled = True
                 Me.txtYouTube.Enabled = True
@@ -378,12 +378,12 @@ Public Class dlgTrailerSelect
                 Me.OK_Button.Text = Master.eLang.GetString(911, "Copy")
                 Me.btnSetNfo.Text = Master.eLang.GetString(910, "Move")
             Else
-                Me.OK_Button.Text = Master.eLang.GetString(373, "Download", True)
+                Me.OK_Button.Text = Master.eLang.GetString(373, "Download")
                 Me.btnSetNfo.Text = Master.eLang.GetString(913, "Set To Nfo")
             End If
         Else
             Me.OK_Button.Enabled = False
-            Me.OK_Button.Text = Master.eLang.GetString(373, "Download", True)
+            Me.OK_Button.Text = Master.eLang.GetString(373, "Download")
             Me.btnPlayTrailer.Enabled = False
             Me.btnPlayBrowser.Enabled = False
             Me.btnSetNfo.Enabled = False
@@ -393,8 +393,8 @@ Public Class dlgTrailerSelect
 
     Private Sub SetUp()
         Me.Text = Master.eLang.GetString(914, "Select Trailer")
-        Me.OK_Button.Text = Master.eLang.GetString(373, "Download", True)
-        Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel", True)
+        Me.OK_Button.Text = Master.eLang.GetString(373, "Download")
+        Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
         Me.GroupBox1.Text = Master.eLang.GetString(915, "Select Trailer to Download")
         Me.GroupBox2.Text = Master.eLang.GetString(916, "Manual Trailer Entry")
         Me.Label1.Text = Master.eLang.GetString(917, "Direct Link or YouTube URL:")

@@ -77,7 +77,7 @@ Public Class dlgSettings
         AddHandler TSB.Click, AddressOf ToolStripButton_Click
         TSBs.Add(TSB)
         TSB = New ToolStripButton With { _
-              .Text = Master.eLang.GetString(698, "TV Shows"), _
+              .Text = Master.eLang.GetString(653, "TV Shows"), _
               .Image = My.Resources.TVShows, _
               .TextImageRelation = TextImageRelation.ImageAboveText, _
               .DisplayStyle = ToolStripItemDisplayStyle.ImageAndText, _
@@ -94,7 +94,7 @@ Public Class dlgSettings
         TSBs.Add(TSB)
 
         TSB = New ToolStripButton With { _
-            .Text = Master.eLang.GetString(822, "Miscellaneous"), _
+            .Text = Master.eLang.GetString(429, "Miscellaneous"), _
             .Image = My.Resources.Miscellaneous, _
             .TextImageRelation = TextImageRelation.ImageAboveText, _
             .DisplayStyle = ToolStripItemDisplayStyle.ImageAndText, _
@@ -193,28 +193,28 @@ Public Class dlgSettings
              .Name = "pnlShows", _
              .Text = Master.eLang.GetString(38, "General"), _
              .ImageIndex = 7, _
-             .Type = Master.eLang.GetString(698, "TV Shows"), _
+             .Type = Master.eLang.GetString(653, "TV Shows"), _
              .Panel = Me.pnlShows, _
              .Order = 100})
         Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
              .Name = "pnlTVSources", _
              .Text = Master.eLang.GetString(555, "Files and Sources"), _
              .ImageIndex = 5, _
-             .Type = Master.eLang.GetString(698, "TV Shows"), _
+             .Type = Master.eLang.GetString(653, "TV Shows"), _
              .Panel = Me.pnlTVSources, _
              .Order = 200})
         Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
              .Name = "pnlTVData", _
              .Text = Master.eLang.GetString(556, "Scrapers - Data"), _
              .ImageIndex = 3, _
-             .Type = Master.eLang.GetString(698, "TV Shows"), _
+             .Type = Master.eLang.GetString(653, "TV Shows"), _
              .Panel = Me.pnlTVScraper, _
              .Order = 300})
         Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
              .Name = "pnlTVMedia", _
-             .Text = Master.eLang.GetString(837, "Scrapers - Images"), _
+             .Text = Master.eLang.GetString(557, "Scrapers - Images"), _
              .ImageIndex = 6, _
-             .Type = Master.eLang.GetString(698, "TV Shows"), _
+             .Type = Master.eLang.GetString(653, "TV Shows"), _
              .Panel = Me.pnlTVImages, _
              .Order = 400})
         Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
@@ -3852,7 +3852,7 @@ Public Class dlgSettings
         Me.chkGenre.Text = Master.eLang.GetString(20, "Genres")
         Me.chkDirector.Text = Master.eLang.GetString(62, "Director")
         Me.chkTagline.Text = Master.eLang.GetString(397, "Tagline")
-        Me.chkCast.Text = Master.eLang.GetString(398, "Cast")
+        Me.chkCast.Text = Master.eLang.GetString(63, "Cast")
         Me.chkVotes.Text = Master.eLang.GetString(399, "Votes")
         Me.chkTrailer.Text = Master.eLang.GetString(151, "Trailer")
         Me.chkRating.Text = Master.eLang.GetString(400, "Rating")
@@ -3945,7 +3945,7 @@ Public Class dlgSettings
         Me.lblEpisodeMatch.Text = Master.eLang.GetString(693, "Episode Match Regex:")
         Me.lblSeasonRetrieve.Text = String.Concat(Master.eLang.GetString(694, "Apply To"), ":")
         Me.lblEpisodeRetrieve.Text = Me.lblSeasonRetrieve.Text
-        Me.btnAddShowRegex.Text = Master.eLang.GetString(695, "Edit Regex")
+        Me.btnAddShowRegex.Text = Master.eLang.GetString(690, "Edit Regex")
         Me.gbShowPosterOpts.Text = Me.GroupBox5.Text
         Me.lblShowPosterSize.Text = Master.eLang.GetString(730, "Preferred Type:")
         Me.chkOverwriteShowPoster.Text = Me.chkOverwritePoster.Text

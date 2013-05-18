@@ -38,7 +38,7 @@ Public Class dlgTVDBSearchResults
 
     Public Overloads Function ShowDialog(ByVal _sInfo As Structures.ScrapeInfo) As Windows.Forms.DialogResult
         Me.sInfo = _sInfo
-        Me.Text = String.Concat(Master.eLang.GetString(85, "TV Search Results"), " - ", sInfo.ShowTitle)
+        Me.Text = String.Concat(Master.eLang.GetString(948, "TV Search Results"), " - ", sInfo.ShowTitle)
         Scraper.sObject.GetSearchResultsAsync(Me.sInfo)
 
         Return MyBase.ShowDialog()
@@ -48,7 +48,7 @@ Public Class dlgTVDBSearchResults
         Me.sInfo = _sinfo
         Me._skipdownload = SkipDownload
 
-        Me.Text = String.Concat(Master.eLang.GetString(85, "TV Search Results"), " - ", sInfo.ShowTitle)
+        Me.Text = String.Concat(Master.eLang.GetString(948, "TV Search Results"), " - ", sInfo.ShowTitle)
         Scraper.sObject.GetSearchResultsAsync(Me.sInfo)
 
         If MyBase.ShowDialog() = Windows.Forms.DialogResult.OK Then
@@ -138,7 +138,7 @@ Public Class dlgTVDBSearchResults
             End If
 
         Else
-            MsgBox(Master.eLang.GetString(83, "The ID you entered is not a valid TVDB ID."), MsgBoxStyle.Exclamation, Master.eLang.GetString(292, "Invalid Entry", True))
+            MsgBox(Master.eLang.GetString(949, "The ID you entered is not a valid TVDB ID."), MsgBoxStyle.Exclamation, Master.eLang.GetString(292, "Invalid Entry"))
         End If
     End Sub
 
@@ -275,7 +275,7 @@ Public Class dlgTVDBSearchResults
             Me.sInfo.SelectedLang = sResults.Language.ShortLang
 
             If Not _skipdownload Then
-                Me.Label3.Text = Master.eLang.GetString(84, "Downloading show info...")
+                Me.Label3.Text = Master.eLang.GetString(950, "Downloading show info...")
                 Me.pnlLoading.Visible = True
                 Scraper.sObject.DownloadSeriesAsync(sInfo)
             Else
@@ -287,7 +287,7 @@ Public Class dlgTVDBSearchResults
             Me.sInfo.SelectedLang = Me._manualresult.Language.ShortLang
 
             If Not _skipdownload Then
-                Me.Label3.Text = Master.eLang.GetString(84, "Downloading show info...")
+                Me.Label3.Text = Master.eLang.GetString(950, "Downloading show info...")
                 Me.pnlLoading.Visible = True
                 Scraper.sObject.DownloadSeriesAsync(sInfo)
             Else
@@ -298,16 +298,16 @@ Public Class dlgTVDBSearchResults
     End Sub
 
     Private Sub SetUp()
-        Me.Label1.Text = Master.eLang.GetString(85, "TV Search Results")
-        Me.Label2.Text = Master.eLang.GetString(86, "View details of each result to find the proper TV show.")
-        Me.lblAiredHeader.Text = Master.eLang.GetString(658, "Aired:", True)
-        Me.lblPlotHeader.Text = Master.eLang.GetString(783, "Plot Summary:", True)
+        Me.Label1.Text = Master.eLang.GetString(948, "TV Search Results")
+        Me.Label2.Text = Master.eLang.GetString(951, "View details of each result to find the proper TV show.")
+        Me.lblAiredHeader.Text = Master.eLang.GetString(658, "Aired:")
+        Me.lblPlotHeader.Text = Master.eLang.GetString(783, "Plot Summary:")
 
-        Me.lvSearchResults.Columns(0).Text = Master.eLang.GetString(21, "Title", True)
-        Me.lvSearchResults.Columns(1).Text = Master.eLang.GetString(610, "Language", True)
+        Me.lvSearchResults.Columns(0).Text = Master.eLang.GetString(21, "Title")
+        Me.lvSearchResults.Columns(1).Text = Master.eLang.GetString(610, "Language")
 
-        Me.OK_Button.Text = Master.eLang.GetString(179, "OK", True)
-        Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel", True)
+        Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
+        Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
     End Sub
 
     Private Sub TVScraperEvent(ByVal eType As Enums.TVScraperEventType, ByVal iProgress As Integer, ByVal Parameter As Object)

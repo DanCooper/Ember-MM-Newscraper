@@ -163,13 +163,10 @@ Public Class Localization
         Return aStr
     End Function
 
-    Public Function GetString(ByVal ID As Integer, ByVal strDefault As String, Optional ByVal forceFromMain As Boolean = False) As String
+    Public Function GetString(ByVal ID As Integer, ByVal strDefault As String) As String
         Dim tStr As String
 
-        Dim Assembly As String = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
-        If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" OrElse forceFromMain Then
-            Assembly = "*EmberAPP"
-        End If
+        Dim Assembly = "*EmberAPP"
         htStrings = htArrayStrings.FirstOrDefault(Function(x) x.AssenblyName = Assembly).htStrings
         If IsNothing(htStrings) Then
             tStr = strDefault

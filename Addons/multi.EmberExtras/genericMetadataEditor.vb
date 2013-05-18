@@ -64,7 +64,7 @@ Public Class genericMetadataEditor
         SPanel.Name = Master.eLang.GetString(785, "Audio & Video Codec Mapping")
         SPanel.Text = Master.eLang.GetString(785, "Audio & Video Codec Mapping")
         SPanel.Prefix = "AVCodecEditor_"
-        SPanel.Type = Master.eLang.GetString(822, "Miscellaneous")
+        SPanel.Type = Master.eLang.GetString(429, "Miscellaneous")
         SPanel.ImageIndex = -1
         SPanel.Image = My.Resources.MetadataEditor
         SPanel.Order = 100

@@ -230,7 +230,7 @@ Public Class dlgExportMovies
                         'cocotus end
 
                         _vidDimensions = NFO.GetDimensionsFromVideo(tVid)
-                        _vidDetails = String.Format("{0} / {1}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(283, "Unknown"), tRes), If(String.IsNullOrEmpty(tVid.Codec), Master.eLang.GetString(283, "Unknown"), tVid.Codec)).ToUpper
+                        _vidDetails = String.Format("{0} / {1}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(138, "Unknown"), tRes), If(String.IsNullOrEmpty(tVid.Codec), Master.eLang.GetString(138, "Unknown"), tVid.Codec)).ToUpper
                     End If
 
                     If _curMovie.Movie.FileInfo.StreamDetails.Audio.Count > 0 Then
@@ -242,7 +242,7 @@ Public Class dlgExportMovies
                         End If
                         'cocotus end
 
-                        _audDetails = String.Format("{0} / {1}ch", If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(283, "Unknown"), tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(283, "Unknown"), tAud.Channels)).ToUpper
+                        _audDetails = String.Format("{0} / {1}ch", If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(138, "Unknown"), tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(138, "Unknown"), tAud.Channels)).ToUpper
                     End If
                 End If
 
@@ -964,8 +964,8 @@ Public Class dlgExportMovies
         Me.Label1.Text = Master.eLang.GetString(330, "Filter")
         Me.Search_Button.Text = Master.eLang.GetString(176, "Apply")
         Me.lblIn.Text = Master.eLang.GetString(331, "in")
-        Me.lblCompiling.Text = Master.eLang.GetString(332, "Compiling Movie List...")
-        Me.lblCanceling.Text = Master.eLang.GetString(333, "Canceling Compilation...")
+        Me.lblCompiling.Text = Master.eLang.GetString(177, "Compiling Movie List...")
+        Me.lblCanceling.Text = Master.eLang.GetString(178, "Canceling Compilation...")
         Me.btnCancel.Text = Master.eLang.GetString(167, "Cancel")
         Me.Label2.Text = Master.eLang.GetString(334, "Template")
 

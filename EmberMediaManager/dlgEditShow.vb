@@ -819,7 +819,7 @@ Public Class dlgEditShow
         Me.btnSetFanart.Text = Master.eLang.GetString(252, "Change Fanart (Local)")
         Me.btnSetPosterDL.Text = Master.eLang.GetString(265, "Change Poster (Download)")
         Me.btnSetFanartDL.Text = Master.eLang.GetString(266, "Change Fanart (Download)")
-        Me.TabPage4.Text = Master.eLang.GetString(786, "All Seasons Poster")
+        Me.TabPage4.Text = Master.eLang.GetString(735, "All Season Poster")
         Me.btnASPosterRemove.Text = Master.eLang.GetString(247, "Remove Poster")
         Me.btnASChangePosterScrape.Text = Master.eLang.GetString(248, "Change Poster (Scrape)")
         Me.btnASChangePoster.Text = Master.eLang.GetString(249, "Change Poster (Local)")

@@ -110,16 +110,16 @@ Public Class frmTMDBMediaSettingsHolder
     End Sub
 
     Sub SetUp()
-        Me.Label3.Text = Master.eLang.GetString(168, "Scrape Order", True)
-        Me.cbEnabled.Text = Master.eLang.GetString(774, "Enabled", True)
-        Me.chkScrapePoster.Text = Master.eLang.GetString(101, "Get Posters")
-        Me.chkScrapeFanart.Text = Master.eLang.GetString(102, "Get Fanart")
-        Me.Label1.Text = String.Format(Master.eLang.GetString(103, "These settings are specific to this module.{0}Please refer to the global settings for more options."), vbCrLf)
-        Me.Label18.Text = Master.eLang.GetString(870, "TMDB API Key", True)
-        Me.GroupBox30.Text = Master.eLang.GetString(124, "TMDB")
-        Me.GroupBox3.Text = Master.eLang.GetString(125, "Images")
-        Me.chkFallBackEng.Text = Master.eLang.GetString(114, "Fall back on english")
-        Me.Label2.Text = Master.eLang.GetString(115, "Preferred Language:")
+        Me.Label3.Text = Master.eLang.GetString(168, "Scrape Order")
+        Me.cbEnabled.Text = Master.eLang.GetString(774, "Enabled")
+        Me.chkScrapePoster.Text = Master.eLang.GetString(939, "Get Posters")
+        Me.chkScrapeFanart.Text = Master.eLang.GetString(940, "Get Fanart")
+        Me.Label1.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), vbCrLf)
+        Me.Label18.Text = Master.eLang.GetString(870, "TMDB API Key")
+        Me.GroupBox30.Text = Master.eLang.GetString(937, "TMDB")
+        Me.GroupBox3.Text = Master.eLang.GetString(497, "Images")
+        Me.chkFallBackEng.Text = Master.eLang.GetString(922, "Fall back on english")
+        Me.Label2.Text = Master.eLang.GetString(741, "Preferred Language:")
     End Sub
 
     Private Sub txtTMDBApiKey_TextEnter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTMDBApiKey.Enter

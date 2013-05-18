@@ -123,7 +123,7 @@ Public Class TMDB_Poster
         'Must be after Load settings to retrieve the correct API key
         _TMDBApi = New WatTmdb.V3.Tmdb(_MySettings.TMDBAPIKey, _MySettings.TMDBLanguage)
         If IsNothing(_TMDBApi) Then
-            Master.eLog.WriteToErrorLog(Master.eLang.GetString(119, "TheMovieDB API is missing or not valid"), _TMDBApi.Error.status_message, "Info")
+            Master.eLog.WriteToErrorLog(Master.eLang.GetString(938, "TheMovieDB API is missing or not valid"), _TMDBApi.Error.status_message, "Info")
         Else
             If Not IsNothing(_TMDBApi.Error) AndAlso _TMDBApi.Error.status_message.Length > 0 Then
                 Master.eLog.WriteToErrorLog(_TMDBApi.Error.status_message, _TMDBApi.Error.status_code.ToString(), "Error")
@@ -145,7 +145,7 @@ Public Class TMDB_Poster
         _setup.chkScrapeFanart.Checked = ConfigScrapeModifier.Fanart
 
         If String.IsNullOrEmpty(_MySettings.TMDBAPIKey) Then
-            _MySettings.TMDBAPIKey = Master.eLang.GetString(122, "Get your API Key from www.themoviedb.org")
+            _MySettings.TMDBAPIKey = Master.eLang.GetString(936, "Get your API Key from www.themoviedb.org")
         End If
         _setup.txtTMDBApiKey.Text = _MySettings.TMDBAPIKey
         _setup.cbTMDBPrefLanguage.Text = _MySettings.TMDBLanguage
@@ -156,11 +156,11 @@ Public Class TMDB_Poster
         _setup.orderChanged()
 
         Spanel.Name = String.Concat(Me._Name, "Scraper")
-        Spanel.Text = Master.eLang.GetString(104, "TMDB")
+        Spanel.Text = Master.eLang.GetString(937, "TMDB")
         Spanel.Prefix = "TMDBMovieMedia_"
         Spanel.Order = 110
         Spanel.Parent = "pnlMovieMedia"
-        Spanel.Type = Master.eLang.GetString(36, "Movies", True)
+        Spanel.Type = Master.eLang.GetString(36, "Movies")
         Spanel.ImageIndex = If(Me._ScraperEnabled, 9, 10)
         Spanel.Panel = Me._setup.pnlSettings
 
@@ -214,7 +214,7 @@ Public Class TMDB_Poster
         If Not String.IsNullOrEmpty(_setup.txtTMDBApiKey.Text) Then
             _MySettings.TMDBAPIKey = _setup.txtTMDBApiKey.Text
         Else
-            _MySettings.TMDBAPIKey = Master.eLang.GetString(122, "Get your API Key from www.themoviedb.org")
+            _MySettings.TMDBAPIKey = Master.eLang.GetString(936, "Get your API Key from www.themoviedb.org")
         End If
         _MySettings.TMDBLanguage = _setup.cbTMDBPrefLanguage.Text
         _MySettings.FallBackEng = _setup.chkFallBackEng.Checked

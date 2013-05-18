@@ -103,8 +103,8 @@ Public Class dlgTrailerFormat
         Me.Text = Master.eLang.GetString(923, "Select Format")
         Me.lblStatus.Text = Master.eLang.GetString(924, "Getting available formats...")
         Me.GroupBox1.Text = Master.eLang.GetString(925, "Available Formats")
-        Me.OK_Button.Text = Master.eLang.GetString(179, "OK", True)
-        Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel", True)
+        Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
+        Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
     End Sub
 
 

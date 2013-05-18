@@ -6751,8 +6751,8 @@ doCancel:
         End Select
 
         If Not sType = Enums.ScrapeType.SingleScrape Then
-            Me.btnCancel.Text = Master.eLang.GetString(126, "Cancel Scraper")
-            Me.lblCanceling.Text = Master.eLang.GetString(125, "Canceling Scraper...")
+            Me.btnCancel.Text = Master.eLang.GetString(54, "Cancel Scraper")
+            Me.lblCanceling.Text = Master.eLang.GetString(53, "Canceling Scraper...")
             Me.btnCancel.Visible = True
             Me.lblCanceling.Visible = False
             Me.pbCanceling.Visible = False
@@ -8504,7 +8504,7 @@ doCancel:
                 .mnuTrayFilterAskTrailer.Text = .mnuAllAutoTrailer.Text
                 .mnuTrayFilterAskMI.Text = .mnuAllAutoMI.Text
                 .mnuMoviesUpdate.Text = Master.eLang.GetString(36, "Movies")
-                .mnuTVShowUpdate.Text = Master.eLang.GetString(698, "TV Shows")
+                .mnuTVShowUpdate.Text = Master.eLang.GetString(653, "TV Shows")
                 .cmnuEditEpisode.Text = Master.eLang.GetString(656, "Edit Episode")
                 .cmnuEditShow.Text = Master.eLang.GetString(663, "Edit Show")
                 .CustomUpdaterToolStripMenuItem.Text = Master.eLang.GetString(81, "Custom Scraper...")
@@ -8547,12 +8547,12 @@ doCancel:
                 .RemoveEpToolStripMenuItem.Text = Master.eLang.GetString(30, "Remove")
                 .cmnuRemoveTVEp.Text = Master.eLang.GetString(646, "Remove from Database")
                 .cmnuDeleteTVEp.Text = Master.eLang.GetString(773, "Delete Episode")
-                .DonateToolStripMenuItem.Text = Master.eLang.GetString(792, "Donate")
+                .DonateToolStripMenuItem.Text = Master.eLang.GetString(708, "Donate")
                 .VersionsToolStripMenuItem.Text = Master.eLang.GetString(793, "&Versions...")
                 .CheckUpdatesToolStripMenuItem.Text = Master.eLang.GetString(850, "&Check For Updates...")
                 .Label7.Text = Master.eLang.GetString(484, "Loading Settings...")
                 .cmnuRescrape.Text = Master.eLang.GetString(163, "(Re)Scrape Movie")
-                .ScrapingToolStripMenuItem.Text = Master.eLang.GetString(164, "(Re)Scrape Selected Movies")
+                .ScrapingToolStripMenuItem.Text = Master.eLang.GetString(31, "(Re)Scrape Selected Movies")
                 .WikiStripMenuItem.Text = Master.eLang.GetString(869, "EmberMM.com &Wiki...")
 
                 Dim TT As ToolTip = New System.Windows.Forms.ToolTip(.components)

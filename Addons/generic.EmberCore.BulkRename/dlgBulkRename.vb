@@ -128,14 +128,14 @@ Public Class dlgBulkRenamer
                                                     If _curMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
                                                         Dim tVid As MediaInfo.Video = NFO.GetBestVideo(_curMovie.Movie.FileInfo)
                                                         Dim tRes As String = NFO.GetResFromDimensions(tVid)
-                                                        MovieFile.Resolution = String.Format("{0}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(138, "Unknown", True), tRes))
+                                                        MovieFile.Resolution = String.Format("{0}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(138, "Unknown"), tRes))
                                                     Else
                                                         MovieFile.Resolution = String.Empty
                                                     End If
 
                                                     If _curMovie.Movie.FileInfo.StreamDetails.Audio.Count > 0 Then
                                                         Dim tAud As MediaInfo.Audio = NFO.GetBestAudio(_curMovie.Movie.FileInfo, False)
-                                                        MovieFile.Audio = String.Format("{0}-{1}ch", If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(138, "Unknown", True), tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(138, "Unknown", True), tAud.Channels))
+                                                        MovieFile.Audio = String.Format("{0}-{1}ch", If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(138, "Unknown"), tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(138, "Unknown"), tAud.Channels))
                                                     Else
                                                         MovieFile.Audio = String.Empty
                                                     End If

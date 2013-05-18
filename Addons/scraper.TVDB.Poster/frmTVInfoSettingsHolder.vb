@@ -75,10 +75,10 @@ Public Class frmTVInfoSettingsHolder
     End Sub
 
     Private Sub SetUp()
-        Me.Label2.Text = Master.eLang.GetString(168, "Scrape Order", True)
-        Me.cbEnabled.Text = Master.eLang.GetString(774, "Enabled", True)
-        Me.Label18.Text = Master.eLang.GetString(932, "TVDB API Key", True)
-        Me.Label1.Text = String.Format(Master.eLang.GetString(103, "These settings are specific to this module.{0}Please refer to the global settings for more options."), vbCrLf)
+        Me.Label2.Text = Master.eLang.GetString(168, "Scrape Order")
+        Me.cbEnabled.Text = Master.eLang.GetString(774, "Enabled")
+        Me.Label18.Text = Master.eLang.GetString(932, "TVDB API Key")
+        Me.Label1.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), vbCrLf)
     End Sub
 
     Private Sub txtTVDBApiKey_TextChanged(sender As System.Object, e As System.EventArgs) Handles txtTVDBApiKey.TextChanged

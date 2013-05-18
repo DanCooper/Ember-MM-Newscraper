@@ -116,7 +116,7 @@ Public Class TMDB_Data
         'Must be after Load settings to retrieve the correct API key
         _TMDBApi = New WatTmdb.V3.Tmdb(_MySettings.TMDBAPIKey, _MySettings.TMDBLanguage)
         If IsNothing(_TMDBApi) Then
-            Master.eLog.WriteToErrorLog(Master.eLang.GetString(119, "TheMovieDB API is missing or not valid"), _TMDBApi.Error.status_message, "Info")
+            Master.eLog.WriteToErrorLog(Master.eLang.GetString(938, "TheMovieDB API is missing or not valid"), _TMDBApi.Error.status_message, "Info")
         Else
             If Not IsNothing(_TMDBApi.Error) AndAlso _TMDBApi.Error.status_message.Length > 0 Then
                 Master.eLog.WriteToErrorLog(_TMDBApi.Error.status_message, _TMDBApi.Error.status_code.ToString(), "Error")
@@ -150,7 +150,7 @@ Public Class TMDB_Data
         _setup.chkCrew.Checked = ConfigOptions.bFullCrew
         
         If String.IsNullOrEmpty(_MySettings.TMDBAPIKey) Then
-            _MySettings.TMDBAPIKey = Master.eLang.GetString(122, "Get your API Key from www.themoviedb.org")
+            _MySettings.TMDBAPIKey = Master.eLang.GetString(936, "Get your API Key from www.themoviedb.org")
         End If
         _setup.txtTMDBApiKey.Text = _MySettings.TMDBAPIKey
         _setup.cbTMDBPrefLanguage.Text = _MySettings.TMDBLanguage
@@ -161,11 +161,11 @@ Public Class TMDB_Data
         _setup.orderChanged()
 
         SPanel.Name = String.Concat(Me._Name, "Scraper")
-        SPanel.Text = Master.eLang.GetString(104, "TMDB")
+        SPanel.Text = Master.eLang.GetString(937, "TMDB")
         SPanel.Prefix = "TMDBMovieInfo_"
         SPanel.Order = 110
         SPanel.Parent = "pnlMovieData"
-        SPanel.Type = Master.eLang.GetString(36, "Movies", True)
+        SPanel.Type = Master.eLang.GetString(36, "Movies")
         SPanel.ImageIndex = If(_ScraperEnabled, 9, 10)
         SPanel.Panel = _setup.pnlSettings
         AddHandler _setup.SetupScraperChanged, AddressOf Handle_SetupScraperChanged
@@ -258,7 +258,7 @@ Public Class TMDB_Data
         If Not String.IsNullOrEmpty(_setup.txtTMDBApiKey.Text) Then
             _MySettings.TMDBAPIKey = _setup.txtTMDBApiKey.Text
         Else
-            _MySettings.TMDBAPIKey = Master.eLang.GetString(122, "Get your API Key from www.themoviedb.org")
+            _MySettings.TMDBAPIKey = Master.eLang.GetString(936, "Get your API Key from www.themoviedb.org")
         End If
         _MySettings.TMDBLanguage = _setup.cbTMDBPrefLanguage.Text
         _MySettings.FallBackEng = _setup.chkFallBackEng.Checked
@@ -310,7 +310,7 @@ Public Class TMDB_Data
         Dim OldTitle As String = DBMovie.Movie.Title
 
         If IsNothing(_TMDBApi) Then
-            Master.eLog.WriteToErrorLog(Master.eLang.GetString(119, "TheMovieDB API is missing or not valid"), _TMDBApi.Error.status_message, "Error")
+            Master.eLog.WriteToErrorLog(Master.eLang.GetString(938, "TheMovieDB API is missing or not valid"), _TMDBApi.Error.status_message, "Error")
             Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
         Else
             If Not IsNothing(_TMDBApi.Error) AndAlso _TMDBApi.Error.status_message.Length > 0 Then

@@ -38,7 +38,6 @@ Public Class IMDB_trailer
     Public Shared ConfigScrapeModifier As New Structures.ScrapeModifier
     Public Shared _AssemblyName As String
 
-    Private MySettings As New _MySettings
     Private _Name As String = "IMDB_Trailer"
     Private _ScraperEnabled As Boolean = False
     Private _setup As frmIMDBTrailerSettingsHolder
@@ -113,14 +112,13 @@ Public Class IMDB_trailer
         _setup = New frmIMDBTrailerSettingsHolder
         LoadSettings()
         _setup.cbEnabled.Checked = _ScraperEnabled
-        _setup.txtTimeout.Text = MySettings.TrailerTimeout.ToString
 
         SPanel.Name = String.Concat(Me._Name, "Scraper")
-        SPanel.Text = Master.eLang.GetString(104, "IMDB")
+        SPanel.Text = Master.eLang.GetString(885, "IMDB")
         SPanel.Prefix = "IMDBTrailer_"
         SPanel.Order = 110
         SPanel.Parent = "pnlMovieTrailer"
-        SPanel.Type = Master.eLang.GetString(36, "Movies", True)
+        SPanel.Type = Master.eLang.GetString(36, "Movies")
         SPanel.ImageIndex = If(_ScraperEnabled, 9, 10)
         SPanel.Panel = _setup.pnlSettings
         AddHandler _setup.SetupScraperChanged, AddressOf Handle_SetupScraperChanged
@@ -130,8 +128,6 @@ Public Class IMDB_trailer
     End Function
 
     Sub LoadSettings()
-        MySettings.TrailerTimeout = Convert.ToInt32(AdvancedSettings.GetSetting("TrailerTimeout", "10"))
-
         ConfigScrapeModifier.DoSearch = True
         ConfigScrapeModifier.Meta = True
         ConfigScrapeModifier.NFO = True
@@ -144,7 +140,6 @@ Public Class IMDB_trailer
     End Sub
 
     Sub SaveSettings()
-        AdvancedSettings.SetSetting("TrailerTimeout", MySettings.TrailerTimeout.ToString)
         AdvancedSettings.SetBooleanSetting("DoTrailer", ConfigScrapeModifier.Trailer)
     End Sub
 
@@ -283,17 +278,5 @@ Public Class IMDB_trailer
     End Sub
 
 #End Region 'Methods
-
-#Region "Nested Types"
-
-    Structure _MySettings
-
-#Region "Fields"
-        Dim TrailerTimeout As Integer
-#End Region 'Fields
-
-    End Structure
-
-#End Region 'Nested Types
 
 End Class

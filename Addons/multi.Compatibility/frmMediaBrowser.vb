@@ -40,10 +40,11 @@ Public Class frmMediaBrowser
     End Sub
 
     Private Sub SetUp()
-        Me.chkEnabled.Text = Master.eLang.GetString(774, "Enabled", True)
-        Me.chkVideoTSParent.Text = Master.eLang.GetString(11, "Compatible VIDEO_TS File Placement/Naming")
-        Me.chkBackdrop.Text = Master.eLang.GetString(12, "Fanart as backdrop.jpg")
-		Me.chkMyMovies.Text = Master.eLang.GetString(13, "Media Browser mymovies.xml")
+        Me.chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
+        Me.chkVideoTSParent.Text = Master.eLang.GetString(562, "Compatible VIDEO_TS File Placement/Naming")
+        Me.chkBackdrop.Text = Master.eLang.GetString(631, "Fanart as backdrop.jpg")
+        Me.chkMyMovies.Text = Master.eLang.GetString(632, "Media Browser mymovies.xml")
+        Me.Label1.Text = Master.eLang.GetString(633, "Experimental module")
     End Sub
 
     Private Sub chkVideoTSParent_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkVideoTSParent.CheckedChanged
