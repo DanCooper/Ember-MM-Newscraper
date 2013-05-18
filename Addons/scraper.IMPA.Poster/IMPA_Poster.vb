@@ -120,11 +120,11 @@ Public Class IMPA_Poster
         _setup.cbEnabled.Checked = _ScraperEnabled
 
         SPanel.Name = String.Concat(Me._Name, "Scraper")
-        SPanel.Text = Master.eLang.GetString(104, "IMPA")
+        SPanel.Text = Master.eLang.GetString(876, "IMPA")
         SPanel.Prefix = "IMPAMovieMedia_"
         SPanel.Order = 110
         SPanel.Parent = "pnlMovieMedia"
-        SPanel.Type = Master.eLang.GetString(36, "Movies", True)
+        SPanel.Type = Master.eLang.GetString(36, "Movies")
         SPanel.ImageIndex = If(_ScraperEnabled, 9, 10)
         SPanel.Panel = _setup.pnlSettings
         AddHandler _setup.SetupScraperChanged, AddressOf Handle_SetupScraperChanged

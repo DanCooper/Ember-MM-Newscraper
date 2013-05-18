@@ -228,7 +228,7 @@ Public Class frmGenresEditor
         btnRemoveGenre.Text = Master.eLang.GetString(30, "Remove")
         btnRemoveLang.Text = Master.eLang.GetString(30, "Remove")
         btnChangeImg.Text = Master.eLang.GetString(702, "Change")
-        GroupBox1.Text = Master.eLang.GetString(703, "Images")
+        GroupBox1.Text = Master.eLang.GetString(497, "Images")
         Label1.Text = Master.eLang.GetString(704, "Genres Filter")
         Me.dgvGenres.Columns(0).HeaderText = Master.eLang.GetString(20, "Genres")
         Me.dgvLang.Columns(1).HeaderText = Master.eLang.GetString(707, "Languages")

@@ -106,7 +106,7 @@ Public Class dlgNewVersion
         Me.Label2.Text = Master.eLang.GetString(212, "to visit embermm.com.")
         Me.lblStart.Text = Master.eLang.GetString(717, "Preparing for upgrade ...")
         Me.lblUpgrade.Text = Master.eLang.GetString(718, "We are now ready to upgrade. Ember will now close so the Upgrade can start.\n\nDo you want to continue?").Replace("\n", vbCrLf)
-        Me.btnYes.Text = Master.eLang.GetString(719, "YES")
+        Me.btnYes.Text = Master.eLang.GetString(300, "YES")
         Me.btnNo.Text = Master.eLang.GetString(720, "NO")
         Me.btnUpgrade.Text = Master.eLang.GetString(721, "Upgrade")
     End Sub

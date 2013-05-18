@@ -397,7 +397,7 @@ Public Class dlgUpdateMedia
         Me.chkGenre.Text = Master.eLang.GetString(20, "Genres")
         Me.chkDirector.Text = Master.eLang.GetString(62, "Director")
         Me.chkTagline.Text = Master.eLang.GetString(397, "Tagline")
-        Me.chkCast.Text = Master.eLang.GetString(398, "Cast")
+        Me.chkCast.Text = Master.eLang.GetString(63, "Cast")
         Me.chkVotes.Text = Master.eLang.GetString(399, "Votes")
         Me.chkTrailer.Text = Master.eLang.GetString(151, "Trailer")
         Me.chkRating.Text = Master.eLang.GetString(400, "Rating")

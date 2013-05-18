@@ -78,7 +78,7 @@ Public Class frmMediaSources
         Me.dgvSources.Columns(1).HeaderText = Master.eLang.GetString(764, "Source Name")
         Me.chkMapByFile.Text = Master.eLang.GetString(765, "Map Media Source by File Extension")
         Me.dgvByFile.Columns(0).HeaderText = Master.eLang.GetString(775, "File Extension")
-        Me.dgvByFile.Columns(1).HeaderText = Master.eLang.GetString(776, "Source Name")
+        Me.dgvByFile.Columns(1).HeaderText = Master.eLang.GetString(764, "Source Name")
 
     End Sub
 

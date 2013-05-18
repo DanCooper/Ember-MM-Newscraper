@@ -121,11 +121,11 @@ Public Class OFDB_Data
 
         _setup.orderChanged()
         SPanel.Name = String.Concat(Me._Name, "Scraper")
-        SPanel.Text = Master.eLang.GetString(104, "OFDB")
+        SPanel.Text = Master.eLang.GetString(895, "OFDB")
         SPanel.Prefix = "OFDBMovieInfo_"
         SPanel.Order = 110
         SPanel.Parent = "pnlMovieData"
-        SPanel.Type = Master.eLang.GetString(36, "Movies", True)
+        SPanel.Type = Master.eLang.GetString(36, "Movies")
         SPanel.ImageIndex = If(_ScraperEnabled, 9, 10)
         SPanel.Panel = _setup.pnlSettings
         AddHandler _setup.SetupScraperChanged, AddressOf Handle_SetupScraperChanged

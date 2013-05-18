@@ -63,7 +63,7 @@ Public Class genericGenresEditor
         SPanel.Name = Master.eLang.GetString(782, "Genres Editor")
         SPanel.Text = Master.eLang.GetString(782, "Genres Editor")
 		SPanel.Prefix = "GenresEditor_"
-        SPanel.Type = Master.eLang.GetString(822, "Miscellaneous")
+        SPanel.Type = Master.eLang.GetString(429, "Miscellaneous")
 		SPanel.ImageIndex = -1
 		SPanel.Image = My.Resources.GenresEditor
 		SPanel.Order = 100

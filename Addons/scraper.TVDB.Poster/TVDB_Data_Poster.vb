@@ -147,9 +147,9 @@ Public Class TVDB_Data_Poster
         _setupPost.txtTVDBApiKey.Text = _APIKey
         _setupPost.cbEnabled.Checked = _PostScraperEnabled
         SPanel.Name = String.Concat(Me._Name, "PostScraper")
-        SPanel.Text = Master.eLang.GetString(0, "TVDB")
+        SPanel.Text = Master.eLang.GetString(941, "TVDB")
         SPanel.Prefix = "TVDBData_"
-        SPanel.Type = Master.eLang.GetString(698, "TV Shows", True)
+        SPanel.Type = Master.eLang.GetString(653, "TV Shows")
         SPanel.ImageIndex = If(Me._ScraperEnabled, 9, 10)
         SPanel.Order = 100
         SPanel.Panel = Me._setupPost.pnlSettings
@@ -166,9 +166,9 @@ Public Class TVDB_Data_Poster
         _setup.txtTVDBApiKey.Text = _APIKey
         _setup.cbEnabled.Checked = _ScraperEnabled
         SPanel.Name = String.Concat(Me._Name, "Scraper")
-        SPanel.Text = Master.eLang.GetString(0, "TVDB")
+        SPanel.Text = Master.eLang.GetString(941, "TVDB")
         SPanel.Prefix = "TVDBMedia_"
-        SPanel.Type = Master.eLang.GetString(698, "TV Shows", True)
+        SPanel.Type = Master.eLang.GetString(653, "TV Shows")
         SPanel.ImageIndex = If(Me._ScraperEnabled, 9, 10)
         SPanel.Order = 100
         SPanel.Panel = Me._setup.pnlSettings
@@ -211,7 +211,7 @@ Public Class TVDB_Data_Poster
         If Not String.IsNullOrEmpty(_APIKey) Then
             AdvancedSettings.SetSetting("TVDBAPIKey", _APIKey)
         Else
-            AdvancedSettings.SetSetting("TVDBAPIKey", Master.eLang.GetString(115, "Get your API Key from thetvdb.com"))
+            AdvancedSettings.SetSetting("TVDBAPIKey", Master.eLang.GetString(942, "Get your API Key from thetvdb.com"))
         End If
         If DoDispose Then
             RemoveHandler _setup.SetupScraperChanged, AddressOf Handle_SetupScraperChanged
@@ -224,7 +224,7 @@ Public Class TVDB_Data_Poster
         If Not String.IsNullOrEmpty(_APIKey) Then
             AdvancedSettings.SetSetting("TVDBAPIKey", _APIKey)
         Else
-            AdvancedSettings.SetSetting("TVDBAPIKey", Master.eLang.GetString(115, "Get your API Key from thetvdb.com"))
+            AdvancedSettings.SetSetting("TVDBAPIKey", Master.eLang.GetString(942, "Get your API Key from thetvdb.com"))
         End If
         If DoDispose Then
             RemoveHandler _setup.SetupScraperChanged, AddressOf Handle_SetupScraperChanged

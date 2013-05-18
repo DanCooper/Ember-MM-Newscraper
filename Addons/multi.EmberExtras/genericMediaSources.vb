@@ -64,7 +64,7 @@ Public Class genericMediaSources
         SPanel.Name = Master.eLang.GetString(784, "Media Sources Editor")
         SPanel.Text = Master.eLang.GetString(784, "Media Sources Editor")
         SPanel.Prefix = "MediaSourcesEditor_"
-        SPanel.Type = Master.eLang.GetString(822, "Miscellaneous")
+        SPanel.Type = Master.eLang.GetString(429, "Miscellaneous")
         SPanel.ImageIndex = -1
         SPanel.Image = My.Resources.MediaSourcesEditor
         SPanel.Order = 100

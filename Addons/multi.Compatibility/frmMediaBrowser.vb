@@ -41,7 +41,7 @@ Public Class frmMediaBrowser
 
     Private Sub SetUp()
         Me.chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
-        Me.chkVideoTSParent.Text = Master.eLang.GetString(630, "Compatible VIDEO_TS File Placement/Naming")
+        Me.chkVideoTSParent.Text = Master.eLang.GetString(562, "Compatible VIDEO_TS File Placement/Naming")
         Me.chkBackdrop.Text = Master.eLang.GetString(631, "Fanart as backdrop.jpg")
         Me.chkMyMovies.Text = Master.eLang.GetString(632, "Media Browser mymovies.xml")
         Me.Label1.Text = Master.eLang.GetString(633, "Experimental module")

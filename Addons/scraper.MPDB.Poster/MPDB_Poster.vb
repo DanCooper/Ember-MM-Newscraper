@@ -126,11 +126,11 @@ Public Class MPDB_Poster
         _setup.cbEnabled.Checked = _ScraperEnabled
 
         SPanel.Name = String.Concat(Me._Name, "Scraper")
-        SPanel.Text = Master.eLang.GetString(104, "MPDB")
+        SPanel.Text = Master.eLang.GetString(883, "MPDB")
         SPanel.Prefix = "MPDBMovieMedia_"
         SPanel.Order = 110
         SPanel.Parent = "pnlMovieMedia"
-        SPanel.Type = Master.eLang.GetString(36, "Movies", True)
+        SPanel.Type = Master.eLang.GetString(36, "Movies")
         SPanel.ImageIndex = If(_ScraperEnabled, 9, 10)
         SPanel.Panel = _setup.pnlSettings
         AddHandler _setup.SetupScraperChanged, AddressOf Handle_SetupScraperChanged

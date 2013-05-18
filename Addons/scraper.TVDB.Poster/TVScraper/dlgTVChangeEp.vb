@@ -63,7 +63,7 @@ Public Class dlgTVChangeEp
         For Each Season As Integer In _tepisodes.GroupBy(Function(s) s.Season).Select(Function(group) group.Key)
             tSeason = Season
             lGroup = New ListViewGroup
-            lGroup.Header = String.Format(Master.eLang.GetString(726, "Season {0}", True), tSeason)
+            lGroup.Header = String.Format(Master.eLang.GetString(726, "Season {0}"), tSeason)
             lvEpisodes.Groups.Add(lGroup)
             For Each Episode As MediaContainers.EpisodeDetails In _tepisodes.Where(Function(s) s.Season = tSeason).OrderBy(Function(s) s.Episode)
                 lItem = lvEpisodes.Items.Add(Episode.Episode.ToString)
@@ -106,13 +106,13 @@ Public Class dlgTVChangeEp
     End Sub
 
     Private Sub SetUp()
-        Me.Text = Master.eLang.GetString(772, "Change Episode", True)
+        Me.Text = Master.eLang.GetString(772, "Change Episode")
 
-        Me.lvEpisodes.Columns(0).Text = Master.eLang.GetString(727, "Episode", True)
-        Me.lvEpisodes.Columns(1).Text = Master.eLang.GetString(21, "Title", True)
+        Me.lvEpisodes.Columns(0).Text = Master.eLang.GetString(727, "Episode")
+        Me.lvEpisodes.Columns(1).Text = Master.eLang.GetString(21, "Title")
 
-        Me.OK_Button.Text = Master.eLang.GetString(179, "OK", True)
-        Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel", True)
+        Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
+        Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
     End Sub
 
 #End Region 'Methods

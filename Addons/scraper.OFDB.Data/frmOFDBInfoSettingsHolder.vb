@@ -85,15 +85,15 @@ Public Class frmOFDBInfoSettingsHolder
     End Sub
 
     Private Sub SetUp()
-        Me.chkOFDBGenre.Text = Master.eLang.GetString(1, "Genre")
-        Me.chkOFDBPlot.Text = Master.eLang.GetString(2, "Plot")
-        Me.chkOFDBOutline.Text = Master.eLang.GetString(3, "Outline")
-        Me.chkOFDBTitle.Text = Master.eLang.GetString(4, "Title")
+        Me.chkOFDBGenre.Text = Master.eLang.GetString(51, "Genre")
+        Me.chkOFDBPlot.Text = Master.eLang.GetString(241, "Plot")
+        Me.chkOFDBOutline.Text = Master.eLang.GetString(242, "Outline")
+        Me.chkOFDBTitle.Text = Master.eLang.GetString(246, "Title")
 
-        Me.gbOptions.Text = Master.eLang.GetString(6, "Scraper Fields - Scraper specific")
-        Me.Label2.Text = Master.eLang.GetString(168, "Scrape Order", True)
-        Me.cbEnabled.Text = Master.eLang.GetString(774, "Enabled", True)
-        Me.Label1.Text = String.Format(Master.eLang.GetString(103, "These settings are specific to this module.{0}Please refer to the global settings for more options."), vbCrLf)
+        Me.gbOptions.Text = Master.eLang.GetString(791, "Scraper Fields - Scraper specific")
+        Me.Label2.Text = Master.eLang.GetString(168, "Scrape Order")
+        Me.cbEnabled.Text = Master.eLang.GetString(774, "Enabled")
+        Me.Label1.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), vbCrLf)
     End Sub
 
 #End Region 'Methods

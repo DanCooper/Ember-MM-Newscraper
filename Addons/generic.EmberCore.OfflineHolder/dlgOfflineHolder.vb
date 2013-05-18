@@ -655,7 +655,7 @@ Public Class dlgOfflineHolder
         Me.GetIMDB_Button.Text = Master.eLang.GetString(528, "Search IMDB")
         Me.Bulk_Button.Text = Master.eLang.GetString(531, "Bulk Creator")
         Me.colCondition.Text = Master.eLang.GetString(532, "Condition")
-        Me.colStatus.Text = Master.eLang.GetString(215, "Status", True)
+        Me.colStatus.Text = Master.eLang.GetString(215, "Status")
         Me.Create_Button.Text = Master.eLang.GetString(533, "Create")
         Me.chkUseFanart.Text = Master.eLang.GetString(541, "Use Fanart for Place Holder Video")
         Me.lblTagline.Text = Master.eLang.GetString(542, "Place Holder Video Tagline:")

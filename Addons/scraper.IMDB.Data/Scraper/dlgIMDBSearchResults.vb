@@ -388,7 +388,7 @@ Public Class dlgIMDBSearchResults
         Me.lblGenreHeader.Text = Master.eLang.GetString(51, "Genre(s):")
         Me.lblIMDBHeader.Text = Master.eLang.GetString(873, "IMDB ID:")
         Me.lblPlotHeader.Text = Master.eLang.GetString(242, "Plot Outline:")
-        Me.Label3.Text = Master.eLang.GetString(872, "Searching IMDB...")
+        Me.Label3.Text = Master.eLang.GetString(798, "Searching IMDB...")
         Me.txtFileName.Text = Master.currMovie.Filename
     End Sub
 

@@ -203,7 +203,7 @@ Public Class frmSettingsHolder
         Me.lstTemplates.Columns(3).Text = Master.eLang.GetString(425, "Status")
         Me.btnInstall.Text = Master.eLang.GetString(427, "Install")
         Me.btnRemove.Text = Master.eLang.GetString(428, "Remove")
-        Me.GroupBox1.Text = Master.eLang.GetString(443, "Details")
+        Me.GroupBox1.Text = Master.eLang.GetString(26, "Details")
 	End Sub
 
     Sub RemoveTemplate()
