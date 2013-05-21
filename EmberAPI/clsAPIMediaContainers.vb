@@ -33,6 +33,8 @@ Namespace MediaContainers
         Private _rating As String
         Private _season As Integer
         Private _episode As Integer
+        Private _displayseason As Integer
+        Private _displayepisode As Integer
         Private _plot As String
         Private _credits As String
         Private _director As String
@@ -43,6 +45,9 @@ Namespace MediaContainers
         Private _localfile As String
         Private _playcount As String
         Private _fanart As Images
+        <XmlIgnore()> _
+        Public displaySEset As Boolean = False
+
 
 #End Region 'Fields
 
@@ -155,6 +160,40 @@ Namespace MediaContainers
         Public ReadOnly Property EpisodeSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._episode.ToString)
+            End Get
+        End Property
+
+        <XmlElement("displayseason")> _
+        Public Property DisplaySeason() As Integer
+            Get
+                Return Me._displayseason
+            End Get
+            Set(ByVal value As Integer)
+                Me._displayseason = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property DisplaySeasonSpecified() As Boolean
+            Get
+                Return displaySEset
+            End Get
+        End Property
+
+        <XmlElement("displayepisode")> _
+        Public Property DisplayEpisode() As Integer
+            Get
+                Return Me._displayepisode
+            End Get
+            Set(ByVal value As Integer)
+                Me._displayepisode = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property DisplayEpisodeSpecified() As Boolean
+            Get
+                Return displaySEset
             End Get
         End Property
 

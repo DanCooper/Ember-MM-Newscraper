@@ -3236,7 +3236,7 @@ doCancel:
                 If Convert.ToBoolean(Me.dgvMediaList.Item(14, e.RowIndex).Value) Then
                     e.CellStyle.BackColor = Color.LightSteelBlue
                     e.CellStyle.SelectionBackColor = Color.DarkTurquoise
-                ElseIf Convert.ToBoolean(Me.dgvMediaList.Item(43, e.RowIndex).Value) Then
+                ElseIf Convert.ToBoolean(Me.dgvMediaList.Item(44, e.RowIndex).Value) Then
                     e.CellStyle.BackColor = Color.MistyRose
                     e.CellStyle.SelectionBackColor = Color.DarkMagenta
                 Else
@@ -4320,7 +4320,7 @@ doCancel:
                             ElseIf FileUtils.Common.isBDRip(drvRow.Cells(1).Value.ToString) Then
                                 pTitle = Directory.GetParent(Directory.GetParent(Directory.GetParent(drvRow.Cells(1).Value.ToString).FullName).FullName).Name
                             Else
-                                If Convert.ToBoolean(drvRow.Cells(42).Value) AndAlso Convert.ToBoolean(drvRow.Cells(2).Value) Then
+                                If Convert.ToBoolean(drvRow.Cells(43).FormattedValue) AndAlso Convert.ToBoolean(drvRow.Cells(2).FormattedValue) Then
                                     pTitle = Directory.GetParent(drvRow.Cells(1).Value.ToString).Name
                                 Else
                                     pTitle = Path.GetFileNameWithoutExtension(drvRow.Cells(1).Value.ToString)
@@ -4330,11 +4330,11 @@ doCancel:
                             LevFail = StringUtils.ComputeLevenshtein(StringUtils.FilterName(drvRow.Cells(15).Value.ToString, False, True).ToLower, StringUtils.FilterName(pTitle, False, True).ToLower) > Master.eSettings.LevTolerance
 
                             parOutOfTolerance.Value = LevFail
-                            drvRow.Cells(43).Value = LevFail
+                            drvRow.Cells(44).Value = LevFail
                             parID.Value = drvRow.Cells(0).Value
                         Else
                             parOutOfTolerance.Value = False
-                            drvRow.Cells(43).Value = False
+                            drvRow.Cells(44).Value = False
                             parID.Value = drvRow.Cells(0).Value
                         End If
                         SQLcommand.ExecuteNonQuery()
@@ -4703,7 +4703,7 @@ doCancel:
             End If
 
             If Not String.IsNullOrEmpty(Master.currShow.TVShow.Studio) Then
-                Me.pbStudio.Image = APIXML.GetStudioImage(Master.currShow.TVShow.Studio)
+                Me.pbStudio.Image = APIXML.GetStudioImage(Master.currShow.TVShow.Studio.ToLower) 'ByDef all images file a lower case
                 Me.pbStudio.Tag = Master.currShow.TVShow.Studio
             Else
                 Me.pbStudio.Image = APIXML.GetStudioImage("####")
@@ -5052,9 +5052,11 @@ doCancel:
             End If
 
             If Not String.IsNullOrEmpty(Master.currShow.TVShow.Studio) Then
-                Me.pbStudio.Image = APIXML.GetStudioImage(Master.currShow.TVShow.Studio)
+                Me.pbStudio.Image = APIXML.GetStudioImage(Master.currShow.TVShow.Studio.ToLower) 'ByDef all images file a lower case
+                Me.pbStudio.Tag = Master.currShow.TVShow.Studio
             Else
                 Me.pbStudio.Image = APIXML.GetStudioImage("####")
+                Me.pbStudio.Tag = String.Empty
             End If
 
             Me.pnlInfoIcons.Width = pbStudio.Width + 1
@@ -5196,9 +5198,11 @@ doCancel:
             End If
 
             If Not String.IsNullOrEmpty(Master.currShow.TVShow.Studio) Then
-                Me.pbStudio.Image = APIXML.GetStudioImage(Master.currShow.TVShow.Studio)
+                Me.pbStudio.Image = APIXML.GetStudioImage(Master.currShow.TVShow.Studio.ToLower) 'ByDef all images file a lower case
+                Me.pbStudio.Tag = Master.currShow.TVShow.Studio
             Else
                 Me.pbStudio.Image = APIXML.GetStudioImage("####")
+                Me.pbStudio.Tag = String.Empty
             End If
 
             Me.pnlInfoIcons.Width = pbStudio.Width + 1
@@ -7290,17 +7294,16 @@ doCancel:
             If Not IsNothing(dRow(0)) Then
                 If Me.InvokeRequired Then
                     Me.Invoke(myDelegate, New Object() {dRow(0), 3, If(String.IsNullOrEmpty(tmpSeasonDb.SeasonPosterPath), False, True)})
-                    If Master.eSettings.SeasonFanartEnabled Then
-                        Me.Invoke(myDelegate, New Object() {dRow(0), 4, If(String.IsNullOrEmpty(tmpSeasonDb.SeasonFanartPath), False, True)})
-                    End If
+                    Me.Invoke(myDelegate, New Object() {dRow(0), 4, If(String.IsNullOrEmpty(tmpSeasonDb.SeasonFanartPath), False, True)})
                     Me.Invoke(myDelegate, New Object() {dRow(0), 9, False})
                 Else
                     DirectCast(dRow(0), DataRow).Item(3) = If(String.IsNullOrEmpty(tmpSeasonDb.SeasonPosterPath), False, True)
-                    If Master.eSettings.SeasonFanartEnabled Then
-                        DirectCast(dRow(0), DataRow).Item(4) = If(String.IsNullOrEmpty(tmpSeasonDb.SeasonFanartPath), False, True)
-                    End If
+                    DirectCast(dRow(0), DataRow).Item(4) = If(String.IsNullOrEmpty(tmpSeasonDb.SeasonFanartPath), False, True)
                     DirectCast(dRow(0), DataRow).Item(9) = False
                 End If
+
+                Master.DB.SaveTVSeasonToDB(tmpSeasonDb, False, False)
+
             End If
 
             If Not BatchMode Then

@@ -167,13 +167,13 @@ Public Class dlgEditMovie
     Private Sub btnRemoveFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveFanart.Click
 		Me.pbFanart.Image = Nothing
 		Me.pbFanart.Tag = Nothing
-		Me.Fanart = Nothing
+        Me.Fanart.Dispose()
     End Sub
 
     Private Sub btnRemovePoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemovePoster.Click
 		Me.pbPoster.Image = Nothing
 		Me.pbPoster.Tag = Nothing
-		Me.Poster = Nothing
+        Me.Poster.Dispose()
     End Sub
 
     Private Sub btnRemoveThumb_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveThumb.Click
@@ -192,23 +192,28 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub btnSetAsFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetAsFanart.Click
-        Me.Fanart.FromFile(Me.Thumbs.Item(Me.ExtraIndex).Path)
-        Me.pbFanart.Image = pbExtraThumbs.Image
-        Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
-        Me.btnSetAsFanart.Enabled = False
+        Fanart.FromFile(Me.Thumbs.Item(Me.ExtraIndex).Path)
+        If Not IsNothing(Fanart.Image) Then
+            Me.pbFanart.Image = Fanart.Image
+            Me.pbFanart.Tag = Fanart
+
+            Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
+            Me.lblFanartSize.Visible = True
+        End If
     End Sub
 
     Private Sub btnSetFanartDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetFanartDL.Click
         Try
             Using dImgManual As New dlgImgManual
 				Dim tImage As Images = dImgManual.ShowDialog(Enums.ImageType.Fanart)
-				If Not IsNothing(tImage) Then
-					Fanart = tImage
-					pbFanart.Image = Fanart.Image
+                If Not IsNothing(tImage.Image) Then
+                    Fanart = tImage
+                    Me.pbFanart.Image = Fanart.Image
+                    Me.pbFanart.Tag = Fanart
 
-					Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
-					Me.lblFanartSize.Visible = True
-				End If
+                    Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
+                    Me.lblFanartSize.Visible = True
+                End If
             End Using
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -251,7 +256,8 @@ Public Class dlgEditMovie
 
             If ofdImage.ShowDialog() = DialogResult.OK Then
                 Fanart.FromFile(ofdImage.FileName)
-                pbFanart.Image = Fanart.Image
+                Me.pbFanart.Image = Fanart.Image
+                Me.pbFanart.Tag = Fanart
 
                 Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
                 Me.lblFanartSize.Visible = True
@@ -265,14 +271,14 @@ Public Class dlgEditMovie
         Try
             Using dImgManual As New dlgImgManual
 				Dim tImage As Images = dImgManual.ShowDialog(Enums.ImageType.Posters)
-				If Not IsNothing(tImage) Then
-					Poster = tImage
-					'Poster.FromFile(Path.Combine(Master.TempPath, "poster.jpg"))
-					pbPoster.Image = Poster.Image
+                If Not IsNothing(tImage.Image) Then
+                    Poster = tImage
+                    Me.pbPoster.Image = Poster.Image
+                    Me.pbPoster.Tag = Poster
 
-					Me.lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
-					Me.lblPosterSize.Visible = True
-				End If
+                    Me.lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
+                    Me.lblPosterSize.Visible = True
+                End If
             End Using
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -314,7 +320,8 @@ Public Class dlgEditMovie
 
             If ofdImage.ShowDialog() = DialogResult.OK Then
                 Poster.FromFile(ofdImage.FileName)
-                pbPoster.Image = Poster.Image
+                Me.pbPoster.Image = Poster.Image
+                Me.pbPoster.Tag = Poster
 
                 Me.lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
                 Me.lblPosterSize.Visible = True
@@ -750,6 +757,7 @@ Public Class dlgEditMovie
                     Fanart.FromFile(Master.currMovie.FanartPath)
                     If Not IsNothing(Fanart.Image) Then
                         .pbFanart.Image = Fanart.Image
+                        .pbFanart.Tag = Fanart
 
                         .lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbFanart.Image.Width, .pbFanart.Image.Height)
                         .lblFanartSize.Visible = True
@@ -758,6 +766,7 @@ Public Class dlgEditMovie
                     Poster.FromFile(Master.currMovie.PosterPath)
                     If Not IsNothing(Poster.Image) Then
                         .pbPoster.Image = Poster.Image
+                        .pbPoster.Tag = Poster
 
                         .lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbPoster.Image.Width, .pbPoster.Image.Height)
                         .lblPosterSize.Visible = True
@@ -1476,6 +1485,18 @@ Public Class dlgEditMovie
             Me.RefreshExtraThumbs()
         End If
 
+    End Sub
+
+    Private Sub txtOutline_KeyDown(ByVal sender As Object, e As KeyEventArgs) Handles txtOutline.KeyDown
+        If e.KeyData = (Keys.Control Or Keys.A) Then
+            Me.txtOutline.SelectAll()
+        End If
+    End Sub
+
+    Private Sub txtPlot_KeyDown(ByVal sender As Object, e As KeyEventArgs) Handles txtPlot.KeyDown
+        If e.KeyData = (Keys.Control Or Keys.A) Then
+            Me.txtPlot.SelectAll()
+        End If
     End Sub
 
 #End Region 'Methods
