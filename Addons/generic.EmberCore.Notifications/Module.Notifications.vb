@@ -79,7 +79,7 @@ Public Class NotificationsModule
 
 	Public Sub Init(ByVal sAssemblyName As String, ByVal sExecutable As String) Implements Interfaces.EmberExternalModule.Init
 		_AssemblyName = sAssemblyName
-		Master.eLang.LoadLanguage(Master.eSettings.Language, sExecutable)
+        'Master.eLang.LoadLanguage(Master.eSettings.Language, sExecutable)
 		LoadSettings()
 	End Sub
 

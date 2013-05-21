@@ -122,7 +122,7 @@ Public Class ModulesManager
         loadScrapersModules()
         loadTVScrapersModules()
         BuildVersionList()
-        Master.eLang.LoadAllLanguage(Master.eSettings.Language)
+        'Master.eLang.LoadAllLanguage(Master.eSettings.Language)
     End Sub
 
     ''' <summary>

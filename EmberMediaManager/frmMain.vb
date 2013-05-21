@@ -5470,7 +5470,7 @@ doCancel:
 
             ' Force initialization of languages for main
             Master.eLang.LoadAllLanguage(Master.eSettings.Language)
-            Master.eLang.LoadLanguage(Master.eSettings.Language, "")
+            ''Master.eLang.LoadLanguage(Master.eSettings.Language, "")
             fLoading.SetVersionMesg(Master.eLang.GetString(865, "Version {0}.{1}.{2}.{3}"))
 
             'fLoading.SetLoadingMesg("Basic setup...")

@@ -54,9 +54,8 @@ Public Class genericMetadataEditor
 
 	Public Sub Init(ByVal sAssemblyName As String, ByVal sExecutable As String) Implements EmberAPI.Interfaces.EmberExternalModule.Init
 		_AssemblyName = sAssemblyName
-		Master.eLang.LoadLanguage(Master.eSettings.Language, sExecutable)
-
-	End Sub
+        'Master.eLang.LoadLanguage(Master.eSettings.Language, sExecutable)
+    End Sub
 
     Public Function InjectSetup() As EmberAPI.Containers.SettingsPanel Implements EmberAPI.Interfaces.EmberExternalModule.InjectSetup
         Dim SPanel As New Containers.SettingsPanel

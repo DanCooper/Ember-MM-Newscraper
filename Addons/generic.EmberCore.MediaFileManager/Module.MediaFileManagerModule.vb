@@ -261,7 +261,7 @@ Public Class FileManagerExternalModule
 	Sub Init(ByVal sAssemblyName As String, ByVal sExecutable As String) Implements Interfaces.EmberExternalModule.Init
 		MyPath = Path.Combine(Functions.AppPath, "Modules")
 		_AssemblyName = sAssemblyName
-		Master.eLang.LoadLanguage(Master.eSettings.Language, sExecutable)
+        'Master.eLang.LoadLanguage(Master.eSettings.Language, sExecutable)
 		Load()
 	End Sub
 

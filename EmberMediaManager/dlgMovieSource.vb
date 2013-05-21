@@ -33,6 +33,7 @@ Public Class dlgMovieSource
     Private prevPathText As String = String.Empty
     Private _id As Integer = -1
     Private autoName As Boolean = True
+    Private tmppath As String
 
 #End Region 'Fields
 
@@ -48,9 +49,20 @@ Public Class dlgMovieSource
         Return MyBase.ShowDialog()
     End Function
 
+    Public Overloads Function ShowDialog(ByVal path As String) As Windows.Forms.DialogResult
+        Me.tmppath = path
+
+        Return MyBase.ShowDialog()
+    End Function
+
     Private Sub btnBrowse_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBrowse.Click
         Try
             With Me.fbdBrowse
+                If Not String.IsNullOrEmpty(Me.txtSourcePath.Text) Then
+                    .SelectedPath = Me.txtSourcePath.Text
+                Else
+                    .SelectedPath = Me.tmppath
+                End If
                 If .ShowDialog = Windows.Forms.DialogResult.OK Then
                     If Not String.IsNullOrEmpty(.SelectedPath) Then
                         Me.txtSourcePath.Text = .SelectedPath
