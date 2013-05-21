@@ -157,6 +157,7 @@ Public Class Localization
             Using s1 As StreamWriter = New StreamWriter(fs1)
                 s1.Write(String.Concat(ctrlName, vbTab, aStr, vbNewLine))
                 s1.Flush()
+                s1.Close()
             End Using
         End Using
 #End If
@@ -189,6 +190,7 @@ Public Class Localization
                 Using s1 As StreamWriter = New StreamWriter(fs1)
                     s1.Write(String.Concat(Assembly, vbTab, ID, vbTab, tStr, vbNewLine))
                     s1.Flush()
+                    s1.Close()
                 End Using
             End Using
         Catch
