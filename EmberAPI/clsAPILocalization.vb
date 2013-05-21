@@ -157,6 +157,7 @@ Public Class Localization
             Using s1 As StreamWriter = New StreamWriter(fs1)
                 s1.Write(String.Concat(ctrlName, vbTab, aStr, vbNewLine))
                 s1.Flush()
+                s1.Close()
             End Using
         End Using
 #End If
@@ -189,6 +190,7 @@ Public Class Localization
                 Using s1 As StreamWriter = New StreamWriter(fs1)
                     s1.Write(String.Concat(Assembly, vbTab, ID, vbTab, tStr, vbNewLine))
                     s1.Flush()
+                    s1.Close()
                 End Using
             End Using
         Catch
@@ -203,10 +205,12 @@ Public Class Localization
 			htHelpStrings = New Hashtable
 			htHelpStrings.Clear()
 			htArrayStrings.Clear()
-		End If
-		For Each s As String In ModulesManager.VersionList.Select(Function(m) m.AssemblyFileName).Distinct
-			LoadLanguage(language, s.Replace(".dll", String.Empty))
-		Next
+        End If
+        LoadLanguage(language)
+        ' no more module specific language files
+        'For Each s As String In ModulesManager.VersionList.Select(Function(m) m.AssemblyFileName).Distinct
+        '	LoadLanguage(language, s.Replace(".dll", String.Empty))
+        'Next
 	End Sub
 
     Public Sub LoadHelpStrings(ByVal hPath As String)
@@ -241,7 +245,7 @@ Public Class Localization
                 End If
 
 
-                If Assembly = "Ember Media Manager" OrElse Assembly = "*EmberAPI" OrElse Assembly = "*EmberAPP" Then
+                If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" OrElse Assembly = "*EmberAPI" OrElse Assembly = "*EmberAPP" Then
                     Assembly = "*EmberAPP"
                     lPath = String.Concat(Functions.AppPath, "Langs", Path.DirectorySeparatorChar, Language, ".xml")
                     lhPath = String.Concat(Functions.AppPath, "Langs", Path.DirectorySeparatorChar, Language, "-Help.xml")
