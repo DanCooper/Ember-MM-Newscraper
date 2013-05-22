@@ -4762,7 +4762,7 @@ doCancel:
             If Not IsNothing(Me.MainPoster.Image) Then
                 Me.pbPosterCache.Image = Me.MainPoster.Image
                 ImageUtils.ResizePB(Me.pbPoster, Me.pbPosterCache, Me.PosterMaxHeight, Me.PosterMaxWidth)
-                If AdvancedSettings.GetBooleanSetting("PosterGlassOverlay", True) Then ImageUtils.SetGlassOverlay(Me.pbPoster)
+                If Master.eSettings.ImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbPoster)
                 Me.pnlPoster.Size = New Size(Me.pbPoster.Width + 10, Me.pbPoster.Height + 10)
 
                 If Master.eSettings.ShowDims Then
@@ -4786,7 +4786,7 @@ doCancel:
             If Not IsNothing(Me.MainFanartSmall.Image) Then
                 Me.pbFanartSmallCache.Image = Me.MainFanartSmall.Image
                 ImageUtils.ResizePB(Me.pbFanartSmall, Me.pbFanartSmallCache, Me.FanartSmallMaxHeight, Me.FanartSmallMaxWidth)
-                If AdvancedSettings.GetBooleanSetting("PosterGlassOverlay", True) Then ImageUtils.SetGlassOverlay(Me.pbFanartSmall)
+                If Master.eSettings.ImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbFanartSmall)
                 Me.pnlFanartSmall.Size = New Size(Me.pbFanartSmall.Width + 10, Me.pbFanartSmall.Height + 10)
                 Me.pnlFanartSmall.Location = New Point(Me.pnlPoster.Location.X + Me.pnlPoster.Width + 10, Me.pnlPoster.Location.Y)
 
@@ -4979,7 +4979,7 @@ doCancel:
             If Not IsNothing(Me.MainPoster.Image) Then
                 Me.pbPosterCache.Image = Me.MainPoster.Image
                 ImageUtils.ResizePB(Me.pbPoster, Me.pbPosterCache, Me.PosterMaxHeight, Me.PosterMaxWidth)
-                If AdvancedSettings.GetBooleanSetting("PosterGlassOverlay", True) Then ImageUtils.SetGlassOverlay(Me.pbPoster)
+                If Master.eSettings.ImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbPoster)
                 Me.pnlPoster.Size = New Size(Me.pbPoster.Width + 10, Me.pbPoster.Height + 10)
 
                 If Master.eSettings.ShowDims Then
@@ -5003,7 +5003,7 @@ doCancel:
             If Not IsNothing(Me.MainFanartSmall.Image) Then
                 Me.pbFanartSmallCache.Image = Me.MainFanartSmall.Image
                 ImageUtils.ResizePB(Me.pbFanartSmall, Me.pbFanartSmallCache, Me.FanartSmallMaxHeight, Me.FanartSmallMaxWidth)
-                If AdvancedSettings.GetBooleanSetting("PosterGlassOverlay", True) Then ImageUtils.SetGlassOverlay(Me.pbFanartSmall)
+                If Master.eSettings.ImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbFanartSmall)
                 Me.pnlFanartSmall.Size = New Size(Me.pbFanartSmall.Width + 10, Me.pbFanartSmall.Height + 10)
                 Me.pnlFanartSmall.Location = New Point(Me.pnlPoster.Location.X + Me.pnlPoster.Width + 10, Me.pnlPoster.Location.Y)
 
@@ -5153,7 +5153,7 @@ doCancel:
             If Not IsNothing(Me.MainPoster.Image) Then
                 Me.pbPosterCache.Image = Me.MainPoster.Image
                 ImageUtils.ResizePB(Me.pbPoster, Me.pbPosterCache, Me.PosterMaxHeight, Me.PosterMaxWidth)
-                If AdvancedSettings.GetBooleanSetting("PosterGlassOverlay", True) Then ImageUtils.SetGlassOverlay(Me.pbPoster)
+                If Master.eSettings.ImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbPoster)
                 Me.pnlPoster.Size = New Size(Me.pbPoster.Width + 10, Me.pbPoster.Height + 10)
 
                 If Master.eSettings.ShowDims Then
@@ -5177,7 +5177,7 @@ doCancel:
             If Not IsNothing(Me.MainFanartSmall.Image) Then
                 Me.pbFanartSmallCache.Image = Me.MainFanartSmall.Image
                 ImageUtils.ResizePB(Me.pbFanartSmall, Me.pbFanartSmallCache, Me.FanartSmallMaxHeight, Me.FanartSmallMaxWidth)
-                If AdvancedSettings.GetBooleanSetting("PosterGlassOverlay", True) Then ImageUtils.SetGlassOverlay(Me.pbFanartSmall)
+                If Master.eSettings.ImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbFanartSmall)
                 Me.pnlFanartSmall.Size = New Size(Me.pbFanartSmall.Width + 10, Me.pbFanartSmall.Height + 10)
                 Me.pnlFanartSmall.Location = New Point(Me.pnlPoster.Location.X + Me.pnlPoster.Width + 10, Me.pnlPoster.Location.Y)
 
@@ -5325,7 +5325,7 @@ doCancel:
             If Not IsNothing(Me.MainPoster.Image) Then
                 Me.pbPosterCache.Image = Me.MainPoster.Image
                 ImageUtils.ResizePB(Me.pbPoster, Me.pbPosterCache, Me.PosterMaxHeight, Me.PosterMaxWidth)
-                If AdvancedSettings.GetBooleanSetting("PosterGlassOverlay", True) Then ImageUtils.SetGlassOverlay(Me.pbPoster)
+                If Master.eSettings.ImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbPoster)
                 Me.pnlPoster.Size = New Size(Me.pbPoster.Width + 10, Me.pbPoster.Height + 10)
 
                 If Master.eSettings.ShowDims Then
@@ -5349,7 +5349,7 @@ doCancel:
             If Not IsNothing(Me.MainFanartSmall.Image) Then
                 Me.pbFanartSmallCache.Image = Me.MainFanartSmall.Image
                 ImageUtils.ResizePB(Me.pbFanartSmall, Me.pbFanartSmallCache, Me.FanartSmallMaxHeight, Me.FanartSmallMaxWidth)
-                If AdvancedSettings.GetBooleanSetting("PosterGlassOverlay", True) Then ImageUtils.SetGlassOverlay(Me.pbFanartSmall)
+                If Master.eSettings.ImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbFanartSmall)
                 Me.pnlFanartSmall.Size = New Size(Me.pbFanartSmall.Width + 10, Me.pbFanartSmall.Height + 10)
                 Me.pnlFanartSmall.Location = New Point(Me.pnlPoster.Location.X + Me.pnlPoster.Width + 10, Me.pnlPoster.Location.Y)
                 
@@ -5400,7 +5400,7 @@ doCancel:
             If Not IsNothing(Me.MainAllSeason.Image) Then
                 Me.pbAllSeasonCache.Image = Me.MainAllSeason.Image
                 ImageUtils.ResizePB(Me.pbAllSeason, Me.pbAllSeasonCache, Me.PosterMaxHeight, Me.PosterMaxWidth)
-                If AdvancedSettings.GetBooleanSetting("PosterGlassOverlay", True) Then ImageUtils.SetGlassOverlay(Me.pbAllSeason)
+                If Master.eSettings.ImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbAllSeason)
                 Me.pnlAllSeason.Size = New Size(Me.pbAllSeason.Width + 10, Me.pbAllSeason.Height + 10)
 
                 If Master.eSettings.ShowDims Then

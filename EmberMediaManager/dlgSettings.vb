@@ -1557,6 +1557,10 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
+    Private Sub chkImagesGlassOverlay_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkImagesGlassOverlay.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
     Private Sub chkUseMPAAFSK_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUseMPAAFSK.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
@@ -2452,6 +2456,7 @@ Public Class dlgSettings
             Me.chkTagline.Checked = Master.eSettings.FieldTagline
             Me.chkOutline.Checked = Master.eSettings.FieldOutline
             Me.chkPlot.Checked = Master.eSettings.FieldPlot
+            Me.chkImagesGlassOverlay.Checked = Master.eSettings.ImagesGlassOverlay
             Me.chkCast.Checked = Master.eSettings.FieldCast
             Me.chkDirector.Checked = Master.eSettings.FieldDirector
             Me.chkWriters.Checked = Master.eSettings.FieldWriters
@@ -3489,6 +3494,7 @@ Public Class dlgSettings
             Master.eSettings.NoDisplayFanart = Me.chkNoDisplayFanart.Checked
             Master.eSettings.NoDisplayPoster = Me.chkNoDisplayPoster.Checked
             Master.eSettings.NoDisplayFanartSmall = Me.chkNoDisplayFanartSmall.Checked
+            Master.eSettings.ImagesGlassOverlay = Me.chkImagesGlassOverlay.Checked
             Master.eSettings.OutlineForPlot = Me.chkOutlineForPlot.Checked
 
             Master.eSettings.AllwaysDisplayGenresText = Me.chkShowGenresText.Checked
@@ -3774,6 +3780,7 @@ Public Class dlgSettings
         Me.chkNoDisplayFanart.Text = Master.eLang.GetString(455, "Do Not Display Fanart")
         Me.chkNoDisplayPoster.Text = Master.eLang.GetString(456, "Do Not Display Poster")
         Me.chkNoDisplayFanartSmall.Text = Master.eLang.GetString(967, "Do Not Display Small Fanart")
+        Me.chkImagesGlassOverlay.Text = Master.eLang.GetString(966, "Enable Images Glass Overlay")
         Me.chkShowDims.Text = Master.eLang.GetString(457, "Display Image Dimensions")
         Me.chkMarkNew.Text = Master.eLang.GetString(459, "Mark New Movies")
         Me.GroupBox2.Text = Master.eLang.GetString(460, "Media List Options")

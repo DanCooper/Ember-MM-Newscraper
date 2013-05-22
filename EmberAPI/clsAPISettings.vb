@@ -203,6 +203,7 @@ Public Class Settings
     Private _overwritetrailer As Boolean
     Private _plotforoutline As Boolean
     Private _outlinelimit As Integer
+    Private _imagesglassoverlay As Boolean
     Private _posterheight As Integer
     Private _posterjpg As Boolean
     Private _PosterPrefSizeOnly As Boolean
@@ -1916,6 +1917,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property ImagesGlassOverlay() As Boolean
+        Get
+            Return Me._imagesglassoverlay
+        End Get
+        Set(ByVal value As Boolean)
+            Me._imagesglassoverlay = value
+        End Set
+    End Property
+
     Public Property PosterHeight() As Integer
         Get
             Return Me._posterheight
@@ -3427,6 +3437,7 @@ Public Class Settings
         Me._nodisplayfanart = False
         Me._nodisplayfanartsmall = False
         Me._outlineforplot = False
+        Me._imagesglassoverlay = False
         Me._plotforoutline = False
         Me._outlinelimit = 350
         Me._sortpath = String.Empty

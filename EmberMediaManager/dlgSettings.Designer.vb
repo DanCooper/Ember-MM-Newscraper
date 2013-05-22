@@ -31,6 +31,8 @@ Partial Class dlgSettings
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgSettings))
         Me.GroupBox4 = New System.Windows.Forms.GroupBox()
+        Me.chkImagesGlassOverlay = New System.Windows.Forms.CheckBox()
+        Me.chkNoDisplayFanartSmall = New System.Windows.Forms.CheckBox()
         Me.chkSpecialDateAdd = New System.Windows.Forms.CheckBox()
         Me.chkShowGenresText = New System.Windows.Forms.CheckBox()
         Me.chkSourceFromFolder = New System.Windows.Forms.CheckBox()
@@ -595,7 +597,6 @@ Partial Class dlgSettings
         Me.chkDeleteAllTrailers = New System.Windows.Forms.CheckBox()
         Me.chkOverwriteTrailer = New System.Windows.Forms.CheckBox()
         Me.chkDownloadTrailer = New System.Windows.Forms.CheckBox()
-        Me.chkNoDisplayFanartSmall = New System.Windows.Forms.CheckBox()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox29.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -706,6 +707,7 @@ Partial Class dlgSettings
         '
         'GroupBox4
         '
+        Me.GroupBox4.Controls.Add(Me.chkImagesGlassOverlay)
         Me.GroupBox4.Controls.Add(Me.chkNoDisplayFanartSmall)
         Me.GroupBox4.Controls.Add(Me.chkSpecialDateAdd)
         Me.GroupBox4.Controls.Add(Me.chkShowGenresText)
@@ -725,6 +727,28 @@ Partial Class dlgSettings
         Me.GroupBox4.TabIndex = 1
         Me.GroupBox4.TabStop = False
         Me.GroupBox4.Text = "Miscellaneous"
+        '
+        'chkImagesGlassOverlay
+        '
+        Me.chkImagesGlassOverlay.AutoSize = True
+        Me.chkImagesGlassOverlay.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkImagesGlassOverlay.Location = New System.Drawing.Point(10, 233)
+        Me.chkImagesGlassOverlay.Name = "chkImagesGlassOverlay"
+        Me.chkImagesGlassOverlay.Size = New System.Drawing.Size(171, 17)
+        Me.chkImagesGlassOverlay.TabIndex = 12
+        Me.chkImagesGlassOverlay.Text = "Enable Images Glass Overlay"
+        Me.chkImagesGlassOverlay.UseVisualStyleBackColor = True
+        '
+        'chkNoDisplayFanartSmall
+        '
+        Me.chkNoDisplayFanartSmall.AutoSize = True
+        Me.chkNoDisplayFanartSmall.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkNoDisplayFanartSmall.Location = New System.Drawing.Point(10, 210)
+        Me.chkNoDisplayFanartSmall.Name = "chkNoDisplayFanartSmall"
+        Me.chkNoDisplayFanartSmall.Size = New System.Drawing.Size(169, 17)
+        Me.chkNoDisplayFanartSmall.TabIndex = 11
+        Me.chkNoDisplayFanartSmall.Text = "Do Not Display Small Fanart"
+        Me.chkNoDisplayFanartSmall.UseVisualStyleBackColor = True
         '
         'chkSpecialDateAdd
         '
@@ -7027,17 +7051,6 @@ Partial Class dlgSettings
         Me.chkDownloadTrailer.Text = "Enable Trailer Support"
         Me.chkDownloadTrailer.UseVisualStyleBackColor = True
         '
-        'chkNoDisplayFanartSmall
-        '
-        Me.chkNoDisplayFanartSmall.AutoSize = True
-        Me.chkNoDisplayFanartSmall.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkNoDisplayFanartSmall.Location = New System.Drawing.Point(10, 210)
-        Me.chkNoDisplayFanartSmall.Name = "chkNoDisplayFanartSmall"
-        Me.chkNoDisplayFanartSmall.Size = New System.Drawing.Size(169, 17)
-        Me.chkNoDisplayFanartSmall.TabIndex = 11
-        Me.chkNoDisplayFanartSmall.Text = "Do Not Display Small Fanart"
-        Me.chkNoDisplayFanartSmall.UseVisualStyleBackColor = True
-        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -7811,4 +7824,5 @@ Partial Class dlgSettings
     Friend WithEvents chkPlotForOutline As System.Windows.Forms.CheckBox
     Friend WithEvents lblLimit3 As System.Windows.Forms.Label
     Friend WithEvents chkNoDisplayFanartSmall As System.Windows.Forms.CheckBox
+    Friend WithEvents chkImagesGlassOverlay As System.Windows.Forms.CheckBox
 End Class

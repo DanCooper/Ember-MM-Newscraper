@@ -378,7 +378,6 @@ Public Class AdvancedSettings
             SetSetting("ForceTitle", "Argentina|Australia|Belgium|Brazil|Canada: English title|Canada: French title|Denmark|Finland|France|Germany|Hong Kong|Iceland|Ireland|Italy|Netherlands|New Zealand|Peru|Portugal|Singapore|South Korea|Spain|Sweden|Switzerland|UK|USA", "*EmberAPP", True)
 
             SetBooleanSetting("StudioTagAlwaysOn", False, "*EmberAPP", True)
-            SetBooleanSetting("PosterGlassOverlay", True, "*EmberAPP", True)
         End If
 
  
