@@ -312,9 +312,9 @@ Partial Class frmTMDBInfoSettingsHolder
         Me.chkPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkPlot.Location = New System.Drawing.Point(173, 53)
         Me.chkPlot.Name = "chkPlot"
-        Me.chkPlot.Size = New System.Drawing.Size(65, 17)
+        Me.chkPlot.Size = New System.Drawing.Size(46, 17)
         Me.chkPlot.TabIndex = 10
-        Me.chkPlot.Text = "Outline"
+        Me.chkPlot.Text = "Plot"
         Me.chkPlot.UseVisualStyleBackColor = True
         '
         'chkGenre
