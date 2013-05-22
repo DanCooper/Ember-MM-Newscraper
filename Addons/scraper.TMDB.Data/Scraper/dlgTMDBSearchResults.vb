@@ -170,7 +170,7 @@ Public Class dlgTMDBSearchResults
         Me.lblYear.Text = String.Empty
         Me.lblDirector.Text = String.Empty
         Me.lblGenre.Text = String.Empty
-        Me.txtOutline.Text = String.Empty
+        Me.txtPlot.Text = String.Empty
         Me.lblIMDB.Text = String.Empty
         Me.pbPoster.Image = Nothing
 
@@ -185,7 +185,7 @@ Public Class dlgTMDBSearchResults
         Me.lblGenreHeader.Visible = areVisible
         Me.lblPlotHeader.Visible = areVisible
         Me.lblIMDBHeader.Visible = areVisible
-        Me.txtOutline.Visible = areVisible
+        Me.txtPlot.Visible = areVisible
         Me.lblYear.Visible = areVisible
         Me.lblTagline.Visible = areVisible
         Me.lblTitle.Visible = areVisible
@@ -252,7 +252,7 @@ Public Class dlgTMDBSearchResults
                 Me.lblYear.Text = Master.tmpMovie.Year
                 Me.lblDirector.Text = Master.tmpMovie.Director
                 Me.lblGenre.Text = Master.tmpMovie.Genre
-                Me.txtOutline.Text = Master.tmpMovie.Outline
+                Me.txtPlot.Text = Master.tmpMovie.Plot
                 Me.lblIMDB.Text = Master.tmpMovie.IMDBID
 
                 If _PosterCache.ContainsKey(Master.tmpMovie.TMDBID) Then
@@ -422,7 +422,7 @@ Public Class dlgTMDBSearchResults
             .Year = original.Year
             .Director = original.Director
             .Genre = original.Genre
-            .Outline = original.Outline
+            .Plot = original.Plot
         End With
         Return result
         'Using mem As New IO.MemoryStream()

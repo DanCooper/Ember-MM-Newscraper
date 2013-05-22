@@ -313,6 +313,7 @@ Namespace TMDBg
 					IMDBMovie.Actors = Cast
 				End If
 
+                'Get tagline of the movie
 				If Options.bTagline AndAlso (String.IsNullOrEmpty(IMDBMovie.Tagline) OrElse Not Master.eSettings.LockTagline) Then
 					IMDBMovie.Tagline = CStr(IIf(String.IsNullOrEmpty(IMDBMovie.Tagline) AndAlso _MySettings.FallBackEng, MovieE.tagline, Movie.tagline))
 				End If
@@ -361,93 +362,97 @@ Namespace TMDBg
 					End If
 				End If
 
-				If bwTMDBg.CancellationPending Then Return Nothing
+                If bwTMDBg.CancellationPending Then Return Nothing
 
-				If Options.bOutline AndAlso (String.IsNullOrEmpty(IMDBMovie.Outline) OrElse Not Master.eSettings.LockOutline) Then
-					IMDBMovie.Outline = CStr(IIf(String.IsNullOrEmpty(Movie.overview) AndAlso _MySettings.FallBackEng, MovieE.overview, Movie.overview))
-				End If
+                'Get plot of the movie
+                If Options.bPlot AndAlso (String.IsNullOrEmpty(IMDBMovie.Plot) OrElse Not Master.eSettings.LockPlot) Then
+                    IMDBMovie.Plot = CStr(IIf(String.IsNullOrEmpty(Movie.overview) AndAlso _MySettings.FallBackEng, MovieE.overview, Movie.overview))
+                End If
 
-				If bwTMDBg.CancellationPending Then Return Nothing
+                If bwTMDBg.CancellationPending Then Return Nothing
 
-				If Options.bPlot AndAlso (String.IsNullOrEmpty(IMDBMovie.Plot) OrElse Not Master.eSettings.LockPlot) Then
-					If Master.eSettings.OutlineForPlot AndAlso String.IsNullOrEmpty(IMDBMovie.Plot) AndAlso Not String.IsNullOrEmpty(IMDBMovie.Outline) Then
-						IMDBMovie.Plot = IMDBMovie.Outline
-					Else
-						IMDBMovie.Plot = ""
-					End If
-				End If
+                'Get outline of the movie
+                If Master.eSettings.FieldOutline AndAlso Master.eSettings.PlotForOutline AndAlso (String.IsNullOrEmpty(IMDBMovie.Outline) OrElse Not Master.eSettings.LockOutline) Then
+                    If Master.eSettings.OutlineLimit > 0 Then
+                        IMDBMovie.Outline = StringUtils.ShortenOutline(IMDBMovie.Plot, Master.eSettings.OutlineLimit)
+                    Else
+                        IMDBMovie.Outline = IMDBMovie.Plot
+                    End If
+                Else
+                    IMDBMovie.Outline = ""
+                End If
 
-				If bwTMDBg.CancellationPending Then Return Nothing
+                If bwTMDBg.CancellationPending Then Return Nothing
 
-				'Get the movie duration
-				If Options.bRuntime Then
-					IMDBMovie.Runtime = CStr(IIf(IsNothing(Movie.runtime) AndAlso Movie.runtime = 0 AndAlso _MySettings.FallBackEng, MovieE.runtime.ToString(), Movie.runtime.ToString()))
-				End If
+                'Get the movie duration
+                If Options.bRuntime Then
+                    IMDBMovie.Runtime = CStr(IIf(IsNothing(Movie.runtime) AndAlso Movie.runtime = 0 AndAlso _MySettings.FallBackEng, MovieE.runtime.ToString(), Movie.runtime.ToString()))
+                End If
 
-				'Get Production Studio
-				If Options.bStudio AndAlso (String.IsNullOrEmpty(IMDBMovie.Studio) OrElse Not Master.eSettings.LockStudio) Then
-					tStr = ""
-					Dim tPC As System.Collections.Generic.List(Of WatTmdb.V3.ProductionCompany)
-					If Not IsNothing(Movie) AndAlso Not IsNothing(Movie.genres) Then
-						tPC = CType(IIf(Movie.production_companies.Count = 0 AndAlso _MySettings.FallBackEng, MovieE.production_companies, Movie.production_companies), Global.System.Collections.Generic.List(Of WatTmdb.V3.ProductionCompany))
-					Else
-						tPC = CType(IIf(_MySettings.FallBackEng, MovieE.production_companies, Nothing), Global.System.Collections.Generic.List(Of WatTmdb.V3.ProductionCompany))
-					End If
+                'Get Production Studio
+                If Options.bStudio AndAlso (String.IsNullOrEmpty(IMDBMovie.Studio) OrElse Not Master.eSettings.LockStudio) Then
+                    tStr = ""
+                    Dim tPC As System.Collections.Generic.List(Of WatTmdb.V3.ProductionCompany)
+                    If Not IsNothing(Movie) AndAlso Not IsNothing(Movie.genres) Then
+                        tPC = CType(IIf(Movie.production_companies.Count = 0 AndAlso _MySettings.FallBackEng, MovieE.production_companies, Movie.production_companies), Global.System.Collections.Generic.List(Of WatTmdb.V3.ProductionCompany))
+                    Else
+                        tPC = CType(IIf(_MySettings.FallBackEng, MovieE.production_companies, Nothing), Global.System.Collections.Generic.List(Of WatTmdb.V3.ProductionCompany))
+                    End If
 
-					If Not IsNothing(tPC) Then
-						For Each aPro As WatTmdb.V3.ProductionCompany In tPC
-							tStr = tStr & " / " & aPro.name
-						Next
-					End If
-					If Len(tStr) > 3 Then
-						tStr = Trim(Right(tStr, Len(tStr) - 3))
-					End If
-					IMDBMovie.Studio = tStr
-				End If
+                    If Not IsNothing(tPC) Then
+                        For Each aPro As WatTmdb.V3.ProductionCompany In tPC
+                            tStr = tStr & " / " & aPro.name
+                        Next
+                    End If
+                    If Len(tStr) > 3 Then
+                        tStr = Trim(Right(tStr, Len(tStr) - 3))
+                    End If
+                    IMDBMovie.Studio = tStr
+                End If
 
-				If bwTMDBg.CancellationPending Then Return Nothing
+                If bwTMDBg.CancellationPending Then Return Nothing
 
-				'Get All Other Info
-				If FullCrew Or Options.bWriters Or Options.bDirector Then
-					If IsNothing(aCast) Then
-						aCast = _TMDBApi.GetMovieCast(Movie.id)
-						If Not IsNothing(aCast) AndAlso Not IsNothing(aCast.cast) Then
-							If (aCast.crew.Count = 0) AndAlso _MySettings.FallBackEng Then
-								aCast = _TMDBApiE.GetMovieCast(Movie.id)
-							End If
-						Else
-							If _MySettings.FallBackEng Then
-								aCast = _TMDBApiE.GetMovieCast(Movie.id)
-							End If
-						End If
-					End If
-					IMDBMovie.Credits.Clear()
-					IMDBMovie.Directors.Clear()
-					If Not IsNothing(aCast.crew) Then
-						For Each aAc As WatTmdb.V3.Crew In aCast.crew
-							If FullCrew Then
-								IMDBMovie.Credits.Add(aAc.name)
-							ElseIf Options.bWriters Then
-								If aAc.department = "Writing" AndAlso aAc.job = "Writer" Then
-									IMDBMovie.Credits.Add(aAc.name)
-								End If
-							End If
-							If Options.bDirector Then
-								If aAc.job = "Director" Then
-									IMDBMovie.Directors.Add(aAc.name)
-								End If
-							End If
-						Next
-					End If
-				End If
+                'Get All Other Info
+                If FullCrew Or Options.bWriters Or Options.bDirector Then
+                    If IsNothing(aCast) Then
+                        aCast = _TMDBApi.GetMovieCast(Movie.id)
+                        If Not IsNothing(aCast) AndAlso Not IsNothing(aCast.cast) Then
+                            If (aCast.crew.Count = 0) AndAlso _MySettings.FallBackEng Then
+                                aCast = _TMDBApiE.GetMovieCast(Movie.id)
+                            End If
+                        Else
+                            If _MySettings.FallBackEng Then
+                                aCast = _TMDBApiE.GetMovieCast(Movie.id)
+                            End If
+                        End If
+                    End If
+                    IMDBMovie.Credits.Clear()
+                    IMDBMovie.Directors.Clear()
+                    If Not IsNothing(aCast.crew) Then
+                        For Each aAc As WatTmdb.V3.Crew In aCast.crew
+                            If FullCrew Then
+                                IMDBMovie.Credits.Add(aAc.name)
+                            ElseIf Options.bWriters Then
+                                If aAc.department = "Writing" AndAlso aAc.job = "Writer" Then
+                                    IMDBMovie.Credits.Add(aAc.name)
+                                End If
+                            End If
+                            If Options.bDirector Then
+                                If aAc.job = "Director" Then
+                                    IMDBMovie.Directors.Add(aAc.name)
+                                End If
+                            End If
+                        Next
+                    End If
+                End If
 
-				If bwTMDBg.CancellationPending Then Return Nothing
+                If bwTMDBg.CancellationPending Then Return Nothing
 
-				Return True
-			Catch ex As Exception
-				Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-				Return False
-			End Try
+                Return True
+            Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Return False
+            End Try
 		End Function
 
 		Public Function GetMovieStudios(ByVal strID As String) As List(Of String)

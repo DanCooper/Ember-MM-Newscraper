@@ -44,7 +44,7 @@ Partial Class frmTMDBInfoSettingsHolder
         Me.chkCountry = New System.Windows.Forms.CheckBox()
         Me.chkStudio = New System.Windows.Forms.CheckBox()
         Me.chkRuntime = New System.Windows.Forms.CheckBox()
-        Me.chkOutline = New System.Windows.Forms.CheckBox()
+        Me.chkPlot = New System.Windows.Forms.CheckBox()
         Me.chkGenre = New System.Windows.Forms.CheckBox()
         Me.chkTagline = New System.Windows.Forms.CheckBox()
         Me.chkCast = New System.Windows.Forms.CheckBox()
@@ -243,7 +243,7 @@ Partial Class frmTMDBInfoSettingsHolder
         Me.gbOptions.Controls.Add(Me.chkCountry)
         Me.gbOptions.Controls.Add(Me.chkStudio)
         Me.gbOptions.Controls.Add(Me.chkRuntime)
-        Me.gbOptions.Controls.Add(Me.chkOutline)
+        Me.gbOptions.Controls.Add(Me.chkPlot)
         Me.gbOptions.Controls.Add(Me.chkGenre)
         Me.gbOptions.Controls.Add(Me.chkTagline)
         Me.gbOptions.Controls.Add(Me.chkCast)
@@ -306,16 +306,16 @@ Partial Class frmTMDBInfoSettingsHolder
         Me.chkRuntime.Text = "Runtime"
         Me.chkRuntime.UseVisualStyleBackColor = True
         '
-        'chkOutline
+        'chkPlot
         '
-        Me.chkOutline.AutoSize = True
-        Me.chkOutline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkOutline.Location = New System.Drawing.Point(173, 53)
-        Me.chkOutline.Name = "chkOutline"
-        Me.chkOutline.Size = New System.Drawing.Size(65, 17)
-        Me.chkOutline.TabIndex = 10
-        Me.chkOutline.Text = "Outline"
-        Me.chkOutline.UseVisualStyleBackColor = True
+        Me.chkPlot.AutoSize = True
+        Me.chkPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkPlot.Location = New System.Drawing.Point(173, 53)
+        Me.chkPlot.Name = "chkPlot"
+        Me.chkPlot.Size = New System.Drawing.Size(65, 17)
+        Me.chkPlot.TabIndex = 10
+        Me.chkPlot.Text = "Outline"
+        Me.chkPlot.UseVisualStyleBackColor = True
         '
         'chkGenre
         '
@@ -455,23 +455,23 @@ Partial Class frmTMDBInfoSettingsHolder
         Me.ResumeLayout(False)
 
     End Sub
-	Friend WithEvents lblVersion As System.Windows.Forms.Label
-	Friend WithEvents GroupBox30 As System.Windows.Forms.GroupBox
-	Friend WithEvents Label18 As System.Windows.Forms.Label
-	Friend WithEvents txtTMDBApiKey As System.Windows.Forms.TextBox
-	Friend WithEvents cbEnabled As System.Windows.Forms.CheckBox
-	Friend WithEvents Panel1 As System.Windows.Forms.Panel
-	Friend WithEvents pnlSettings As System.Windows.Forms.Panel
-	Friend WithEvents btnDown As System.Windows.Forms.Button
-	Friend WithEvents btnUp As System.Windows.Forms.Button
-	Friend WithEvents Label2 As System.Windows.Forms.Label
-	Friend WithEvents Label1 As System.Windows.Forms.Label
-	Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
-	Friend WithEvents gbOptions As System.Windows.Forms.GroupBox
-	Friend WithEvents chkCountry As System.Windows.Forms.CheckBox
-	Friend WithEvents chkStudio As System.Windows.Forms.CheckBox
-	Friend WithEvents chkRuntime As System.Windows.Forms.CheckBox
-	Friend WithEvents chkOutline As System.Windows.Forms.CheckBox
+    Friend WithEvents lblVersion As System.Windows.Forms.Label
+    Friend WithEvents GroupBox30 As System.Windows.Forms.GroupBox
+    Friend WithEvents Label18 As System.Windows.Forms.Label
+    Friend WithEvents txtTMDBApiKey As System.Windows.Forms.TextBox
+    Friend WithEvents cbEnabled As System.Windows.Forms.CheckBox
+    Friend WithEvents Panel1 As System.Windows.Forms.Panel
+    Friend WithEvents pnlSettings As System.Windows.Forms.Panel
+    Friend WithEvents btnDown As System.Windows.Forms.Button
+    Friend WithEvents btnUp As System.Windows.Forms.Button
+    Friend WithEvents Label2 As System.Windows.Forms.Label
+    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
+    Friend WithEvents gbOptions As System.Windows.Forms.GroupBox
+    Friend WithEvents chkCountry As System.Windows.Forms.CheckBox
+    Friend WithEvents chkStudio As System.Windows.Forms.CheckBox
+    Friend WithEvents chkRuntime As System.Windows.Forms.CheckBox
+    Friend WithEvents chkPlot As System.Windows.Forms.CheckBox
 	Friend WithEvents chkGenre As System.Windows.Forms.CheckBox
 	Friend WithEvents chkTagline As System.Windows.Forms.CheckBox
 	Friend WithEvents chkCast As System.Windows.Forms.CheckBox
