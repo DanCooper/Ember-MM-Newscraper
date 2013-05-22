@@ -142,13 +142,13 @@ Public Class TMDB_Data
         _setup.chkVotes.Checked = ConfigOptions.bVotes
         _setup.chkStudio.Checked = ConfigOptions.bStudio
         _setup.chkTagline.Checked = ConfigOptions.bTagline
-        _setup.chkOutline.Checked = ConfigOptions.bOutline
+        _setup.chkPlot.Checked = ConfigOptions.bPlot
         _setup.chkCast.Checked = ConfigOptions.bFullCast
         _setup.chkGenre.Checked = ConfigOptions.bGenre
         _setup.chkTrailer.Checked = ConfigOptions.bTrailer
         _setup.chkCountry.Checked = ConfigOptions.bCountry
         _setup.chkCrew.Checked = ConfigOptions.bFullCrew
-        
+
         If String.IsNullOrEmpty(_MySettings.TMDBAPIKey) Then
             _MySettings.TMDBAPIKey = Master.eLang.GetString(936, "Get your API Key from www.themoviedb.org")
         End If
@@ -271,8 +271,8 @@ Public Class TMDB_Data
         ConfigOptions.bVotes = _setup.chkVotes.Checked
         ConfigOptions.bStudio = _setup.chkStudio.Checked
         ConfigOptions.bTagline = _setup.chkTagline.Checked
-        ConfigOptions.bOutline = _setup.chkOutline.Checked
-        ConfigOptions.bPlot = False
+        ConfigOptions.bOutline = _setup.chkPlot.Checked
+        ConfigOptions.bPlot = _setup.chkPlot.Checked
         ConfigOptions.bCast = _setup.chkCast.Checked
         ConfigOptions.bDirector = _setup.chkCrew.Checked
         ConfigOptions.bWriters = _setup.chkCrew.Checked

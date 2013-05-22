@@ -119,7 +119,7 @@ Public Class frmTMDBInfoSettingsHolder
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkOutline_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOutline.CheckedChanged
+    Private Sub chkPlot_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkPlot.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
@@ -211,7 +211,7 @@ Public Class frmTMDBInfoSettingsHolder
         Me.gbOptions.Text = Master.eLang.GetString(577, "Scraper Fields - Scraper specific")
         Me.chkStudio.Text = Master.eLang.GetString(395, "Studio")
         Me.chkRuntime.Text = Master.eLang.GetString(396, "Runtime")
-        Me.chkOutline.Text = Master.eLang.GetString(64, "Plot Outline")
+        Me.chkPlot.Text = Master.eLang.GetString(64, "Plot Outline")
         Me.chkGenre.Text = Master.eLang.GetString(20, "Genres")
         Me.chkTagline.Text = Master.eLang.GetString(397, "Tagline")
         Me.chkCast.Text = Master.eLang.GetString(63, "Cast")
