@@ -211,7 +211,7 @@ Public Class frmTMDBInfoSettingsHolder
         Me.gbOptions.Text = Master.eLang.GetString(577, "Scraper Fields - Scraper specific")
         Me.chkStudio.Text = Master.eLang.GetString(395, "Studio")
         Me.chkRuntime.Text = Master.eLang.GetString(396, "Runtime")
-        Me.chkPlot.Text = Master.eLang.GetString(64, "Plot Outline")
+        Me.chkPlot.Text = Master.eLang.GetString(65, "Plot")
         Me.chkGenre.Text = Master.eLang.GetString(20, "Genres")
         Me.chkTagline.Text = Master.eLang.GetString(397, "Tagline")
         Me.chkCast.Text = Master.eLang.GetString(63, "Cast")
