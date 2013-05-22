@@ -104,6 +104,8 @@ Public Class Theming
         frmMain.GenrePanelColor = xTheme.GenreBackColor
         frmMain.PosterMaxWidth = xTheme.PosterMaxWidth
         frmMain.PosterMaxHeight = xTheme.PosterMaxHeight
+        frmMain.FanartSmallMaxWidth = xTheme.FanartSmallMaxWidth
+        frmMain.FanartSmallMaxHeight = xTheme.FanartSmallMaxHeight
         frmMain.IPUp = xTheme.IPUp
         frmMain.IPMid = xTheme.IPMid
 
@@ -243,6 +245,8 @@ Public Class Theming
                 If Not String.IsNullOrEmpty(xImages.<posterbackcolor>.Value) Then tTheme.PosterBackColor = Color.FromArgb(Convert.ToInt32(xImages.<posterbackcolor>.Value))
                 If Not String.IsNullOrEmpty(xImages.<postermaxheight>.Value) Then tTheme.PosterMaxHeight = Convert.ToInt32(xImages.<postermaxheight>.Value)
                 If Not String.IsNullOrEmpty(xImages.<postermaxwidth>.Value) Then tTheme.PosterMaxWidth = Convert.ToInt32(xImages.<postermaxwidth>.Value)
+                If Not String.IsNullOrEmpty(xImages.<fanartsmallmaxheight>.Value) Then tTheme.FanartSmallMaxHeight = Convert.ToInt32(xImages.<fanartsmallmaxheight>.Value)
+                If Not String.IsNullOrEmpty(xImages.<fanartsmallmaxwidth>.Value) Then tTheme.FanartSmallMaxWidth = Convert.ToInt32(xImages.<fanartsmallmaxwidth>.Value)
                 If Not String.IsNullOrEmpty(xImages.<mpaabackcolor>.Value) Then tTheme.MPAABackColor = Color.FromArgb(Convert.ToInt32(xImages.<mpaabackcolor>.Value))
                 If Not String.IsNullOrEmpty(xImages.<genrebackcolor>.Value) Then tTheme.GenreBackColor = Color.FromArgb(Convert.ToInt32(xImages.<genrebackcolor>.Value))
             End If
@@ -490,6 +494,8 @@ Public Class Theming
         Dim _posterbackcolor As Color
         Dim _postermaxheight As Integer
         Dim _postermaxwidth As Integer
+        Dim _fanartsmallmaxheight As Integer
+        Dim _fanartsmallmaxwidth As Integer
         Dim _toppanelbackcolor As Color
         Dim _toppanelforecolor As Color
 
@@ -595,6 +601,24 @@ Public Class Theming
             End Set
         End Property
 
+        Public Property FanartSmallMaxHeight() As Integer
+            Get
+                Return _fanartsmallmaxheight
+            End Get
+            Set(ByVal value As Integer)
+                _fanartsmallmaxheight = value
+            End Set
+        End Property
+
+        Public Property FanartSmallMaxWidth() As Integer
+            Get
+                Return _fanartsmallmaxwidth
+            End Get
+            Set(ByVal value As Integer)
+                _fanartsmallmaxwidth = value
+            End Set
+        End Property
+
         Public Property TopPanelBackColor() As Color
             Get
                 Return _toppanelbackcolor
@@ -624,6 +648,8 @@ Public Class Theming
             _posterbackcolor = Color.Gainsboro
             _postermaxwidth = 160
             _postermaxheight = 160
+            _fanartsmallmaxwidth = 285
+            _fanartsmallmaxheight = 160
             _mpaabackcolor = Color.Gainsboro
             _genrebackcolor = Color.Gainsboro
             _infopanelbackcolor = Color.Gainsboro

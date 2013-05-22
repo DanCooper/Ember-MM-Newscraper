@@ -208,6 +208,9 @@ Partial Class frmMain
         Me.btnFilterDown = New System.Windows.Forms.Button()
         Me.btnFilterUp = New System.Windows.Forms.Button()
         Me.lblFilter = New System.Windows.Forms.Label()
+        Me.pbFanartSmallCache = New System.Windows.Forms.PictureBox()
+        Me.pnlFanartSmall = New System.Windows.Forms.Panel()
+        Me.pbFanartSmall = New System.Windows.Forms.PictureBox()
         Me.pnlTop = New System.Windows.Forms.Panel()
         Me.lblTitle = New System.Windows.Forms.Label()
         Me.pnlInfoIcons = New System.Windows.Forms.Panel()
@@ -498,77 +501,80 @@ Partial Class frmMain
         Me.pnlLoadingSettings = New System.Windows.Forms.Panel()
         Me.tmrAppExit = New System.Windows.Forms.Timer(Me.components)
         Me.tmrKeyBuffer = New System.Windows.Forms.Timer(Me.components)
-        Me.StatusStrip.SuspendLayout
-        Me.MenuStrip.SuspendLayout
-        Me.scMain.Panel1.SuspendLayout
-        Me.scMain.Panel2.SuspendLayout
-        Me.scMain.SuspendLayout
-        Me.pnlFilterGenre.SuspendLayout
-        Me.pnlFilterSource.SuspendLayout
-        CType(Me.dgvMediaList,System.ComponentModel.ISupportInitialize).BeginInit
-        Me.mnuMediaList.SuspendLayout
-        Me.scTV.Panel1.SuspendLayout
-        Me.scTV.Panel2.SuspendLayout
-        Me.scTV.SuspendLayout
-        CType(Me.dgvTVShows,System.ComponentModel.ISupportInitialize).BeginInit
-        Me.mnuShows.SuspendLayout
-        Me.SplitContainer2.Panel1.SuspendLayout
-        Me.SplitContainer2.Panel2.SuspendLayout
-        Me.SplitContainer2.SuspendLayout
-        CType(Me.dgvTVSeasons,System.ComponentModel.ISupportInitialize).BeginInit
-        Me.mnuSeasons.SuspendLayout
-        CType(Me.dgvTVEpisodes,System.ComponentModel.ISupportInitialize).BeginInit
-        Me.mnuEpisodes.SuspendLayout
-        Me.pnlListTop.SuspendLayout
-        Me.pnlSearch.SuspendLayout
-        CType(Me.picSearch,System.ComponentModel.ISupportInitialize).BeginInit
-        Me.tabsMain.SuspendLayout
-        Me.pnlFilter.SuspendLayout
-        Me.GroupBox1.SuspendLayout
-        Me.GroupBox3.SuspendLayout
-        Me.gbSpecific.SuspendLayout
-        Me.GroupBox2.SuspendLayout
-        Me.pnlTop.SuspendLayout
-        Me.pnlInfoIcons.SuspendLayout
-        CType(Me.pbVType,System.ComponentModel.ISupportInitialize).BeginInit
-        CType(Me.pbStudio,System.ComponentModel.ISupportInitialize).BeginInit
-        CType(Me.pbVideo,System.ComponentModel.ISupportInitialize).BeginInit
-        CType(Me.pbAudio,System.ComponentModel.ISupportInitialize).BeginInit
-        CType(Me.pbResolution,System.ComponentModel.ISupportInitialize).BeginInit
-        CType(Me.pbChannels,System.ComponentModel.ISupportInitialize).BeginInit
-        Me.pnlRating.SuspendLayout
-        CType(Me.pbStar5,System.ComponentModel.ISupportInitialize).BeginInit
-        CType(Me.pbStar4,System.ComponentModel.ISupportInitialize).BeginInit
-        CType(Me.pbStar3,System.ComponentModel.ISupportInitialize).BeginInit
-        CType(Me.pbStar2,System.ComponentModel.ISupportInitialize).BeginInit
-        CType(Me.pbStar1,System.ComponentModel.ISupportInitialize).BeginInit
-        Me.pnlCancel.SuspendLayout
-        Me.pnlAllSeason.SuspendLayout
-        CType(Me.pbAllSeason,System.ComponentModel.ISupportInitialize).BeginInit
-        CType(Me.pbAllSeasonCache,System.ComponentModel.ISupportInitialize).BeginInit
-        Me.pnlNoInfo.SuspendLayout
-        Me.Panel2.SuspendLayout
-        CType(Me.PictureBox1,System.ComponentModel.ISupportInitialize).BeginInit
-        Me.pnlInfoPanel.SuspendLayout
-        CType(Me.pbMILoading,System.ComponentModel.ISupportInitialize).BeginInit
-        Me.pnlActors.SuspendLayout
-        CType(Me.pbActLoad,System.ComponentModel.ISupportInitialize).BeginInit
-        CType(Me.pbActors,System.ComponentModel.ISupportInitialize).BeginInit
-        Me.pnlTop250.SuspendLayout
-        CType(Me.pbTop250,System.ComponentModel.ISupportInitialize).BeginInit
-        Me.pnlPoster.SuspendLayout
-        CType(Me.pbPoster,System.ComponentModel.ISupportInitialize).BeginInit
-        CType(Me.pbPosterCache,System.ComponentModel.ISupportInitialize).BeginInit
-        Me.pnlMPAA.SuspendLayout
-        CType(Me.pbMPAA,System.ComponentModel.ISupportInitialize).BeginInit
-        CType(Me.pbFanartCache,System.ComponentModel.ISupportInitialize).BeginInit
-        CType(Me.pbFanart,System.ComponentModel.ISupportInitialize).BeginInit
-        Me.tsMain.SuspendLayout
-        Me.cmnuTrayIcon.SuspendLayout
-        Me.Panel3.SuspendLayout
-        CType(Me.PictureBox2,System.ComponentModel.ISupportInitialize).BeginInit
-        Me.pnlLoadingSettings.SuspendLayout
-        Me.SuspendLayout
+        Me.StatusStrip.SuspendLayout()
+        Me.MenuStrip.SuspendLayout()
+        Me.scMain.Panel1.SuspendLayout()
+        Me.scMain.Panel2.SuspendLayout()
+        Me.scMain.SuspendLayout()
+        Me.pnlFilterGenre.SuspendLayout()
+        Me.pnlFilterSource.SuspendLayout()
+        CType(Me.dgvMediaList, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.mnuMediaList.SuspendLayout()
+        Me.scTV.Panel1.SuspendLayout()
+        Me.scTV.Panel2.SuspendLayout()
+        Me.scTV.SuspendLayout()
+        CType(Me.dgvTVShows, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.mnuShows.SuspendLayout()
+        Me.SplitContainer2.Panel1.SuspendLayout()
+        Me.SplitContainer2.Panel2.SuspendLayout()
+        Me.SplitContainer2.SuspendLayout()
+        CType(Me.dgvTVSeasons, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.mnuSeasons.SuspendLayout()
+        CType(Me.dgvTVEpisodes, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.mnuEpisodes.SuspendLayout()
+        Me.pnlListTop.SuspendLayout()
+        Me.pnlSearch.SuspendLayout()
+        CType(Me.picSearch, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.tabsMain.SuspendLayout()
+        Me.pnlFilter.SuspendLayout()
+        Me.GroupBox1.SuspendLayout()
+        Me.GroupBox3.SuspendLayout()
+        Me.gbSpecific.SuspendLayout()
+        Me.GroupBox2.SuspendLayout()
+        CType(Me.pbFanartSmallCache, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.pnlFanartSmall.SuspendLayout()
+        CType(Me.pbFanartSmall, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.pnlTop.SuspendLayout()
+        Me.pnlInfoIcons.SuspendLayout()
+        CType(Me.pbVType, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbStudio, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbVideo, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbAudio, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbResolution, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbChannels, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.pnlRating.SuspendLayout()
+        CType(Me.pbStar5, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbStar4, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbStar3, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbStar2, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbStar1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.pnlCancel.SuspendLayout()
+        Me.pnlAllSeason.SuspendLayout()
+        CType(Me.pbAllSeason, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbAllSeasonCache, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.pnlNoInfo.SuspendLayout()
+        Me.Panel2.SuspendLayout()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.pnlInfoPanel.SuspendLayout()
+        CType(Me.pbMILoading, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.pnlActors.SuspendLayout()
+        CType(Me.pbActLoad, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbActors, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.pnlTop250.SuspendLayout()
+        CType(Me.pbTop250, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.pnlPoster.SuspendLayout()
+        CType(Me.pbPoster, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbPosterCache, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.pnlMPAA.SuspendLayout()
+        CType(Me.pbMPAA, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbFanartCache, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbFanart, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.tsMain.SuspendLayout()
+        Me.cmnuTrayIcon.SuspendLayout()
+        Me.Panel3.SuspendLayout()
+        CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.pnlLoadingSettings.SuspendLayout()
+        Me.SuspendLayout()
         '
         'BottomToolStripPanel
         '
@@ -609,14 +615,14 @@ Partial Class frmMain
         'FileToolStripMenuItem
         '
         Me.FileToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ExitToolStripMenuItem})
-        Me.FileToolStripMenuItem.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.FileToolStripMenuItem.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.FileToolStripMenuItem.Name = "FileToolStripMenuItem"
         Me.FileToolStripMenuItem.Size = New System.Drawing.Size(37, 20)
         Me.FileToolStripMenuItem.Text = "&File"
         '
         'ExitToolStripMenuItem
         '
-        Me.ExitToolStripMenuItem.Image = CType(resources.GetObject("ExitToolStripMenuItem.Image"),System.Drawing.Image)
+        Me.ExitToolStripMenuItem.Image = CType(resources.GetObject("ExitToolStripMenuItem.Image"), System.Drawing.Image)
         Me.ExitToolStripMenuItem.Name = "ExitToolStripMenuItem"
         Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(92, 22)
         Me.ExitToolStripMenuItem.Text = "E&xit"
@@ -624,14 +630,14 @@ Partial Class frmMain
         'EditToolStripMenuItem
         '
         Me.EditToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.SettingsToolStripMenuItem})
-        Me.EditToolStripMenuItem.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.EditToolStripMenuItem.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.EditToolStripMenuItem.Name = "EditToolStripMenuItem"
         Me.EditToolStripMenuItem.Size = New System.Drawing.Size(39, 20)
         Me.EditToolStripMenuItem.Text = "&Edit"
         '
         'SettingsToolStripMenuItem
         '
-        Me.SettingsToolStripMenuItem.Image = CType(resources.GetObject("SettingsToolStripMenuItem.Image"),System.Drawing.Image)
+        Me.SettingsToolStripMenuItem.Image = CType(resources.GetObject("SettingsToolStripMenuItem.Image"), System.Drawing.Image)
         Me.SettingsToolStripMenuItem.Name = "SettingsToolStripMenuItem"
         Me.SettingsToolStripMenuItem.Size = New System.Drawing.Size(125, 22)
         Me.SettingsToolStripMenuItem.Text = "&Settings..."
@@ -639,14 +645,14 @@ Partial Class frmMain
         'HelpToolStripMenuItem
         '
         Me.HelpToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.WikiStripMenuItem, Me.ToolStripSeparator18, Me.VersionsToolStripMenuItem, Me.CheckUpdatesToolStripMenuItem, Me.ToolStripSeparator19, Me.AboutToolStripMenuItem})
-        Me.HelpToolStripMenuItem.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.HelpToolStripMenuItem.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.HelpToolStripMenuItem.Name = "HelpToolStripMenuItem"
         Me.HelpToolStripMenuItem.Size = New System.Drawing.Size(43, 20)
         Me.HelpToolStripMenuItem.Text = "&Help"
         '
         'WikiStripMenuItem
         '
-        Me.WikiStripMenuItem.Image = CType(resources.GetObject("WikiStripMenuItem.Image"),System.Drawing.Image)
+        Me.WikiStripMenuItem.Image = CType(resources.GetObject("WikiStripMenuItem.Image"), System.Drawing.Image)
         Me.WikiStripMenuItem.Name = "WikiStripMenuItem"
         Me.WikiStripMenuItem.Size = New System.Drawing.Size(185, 22)
         Me.WikiStripMenuItem.Text = "EmberMM.com &Wiki..."
@@ -658,19 +664,19 @@ Partial Class frmMain
         '
         'VersionsToolStripMenuItem
         '
-        Me.VersionsToolStripMenuItem.Image = CType(resources.GetObject("VersionsToolStripMenuItem.Image"),System.Drawing.Image)
+        Me.VersionsToolStripMenuItem.Image = CType(resources.GetObject("VersionsToolStripMenuItem.Image"), System.Drawing.Image)
         Me.VersionsToolStripMenuItem.Name = "VersionsToolStripMenuItem"
         Me.VersionsToolStripMenuItem.Size = New System.Drawing.Size(185, 22)
         Me.VersionsToolStripMenuItem.Text = "&Versions..."
         '
         'CheckUpdatesToolStripMenuItem
         '
-        Me.CheckUpdatesToolStripMenuItem.Enabled = false
-        Me.CheckUpdatesToolStripMenuItem.Image = CType(resources.GetObject("CheckUpdatesToolStripMenuItem.Image"),System.Drawing.Image)
+        Me.CheckUpdatesToolStripMenuItem.Enabled = False
+        Me.CheckUpdatesToolStripMenuItem.Image = CType(resources.GetObject("CheckUpdatesToolStripMenuItem.Image"), System.Drawing.Image)
         Me.CheckUpdatesToolStripMenuItem.Name = "CheckUpdatesToolStripMenuItem"
         Me.CheckUpdatesToolStripMenuItem.Size = New System.Drawing.Size(185, 22)
         Me.CheckUpdatesToolStripMenuItem.Text = "Check For Updates"
-        Me.CheckUpdatesToolStripMenuItem.Visible = false
+        Me.CheckUpdatesToolStripMenuItem.Visible = False
         '
         'ToolStripSeparator19
         '
@@ -679,7 +685,7 @@ Partial Class frmMain
         '
         'AboutToolStripMenuItem
         '
-        Me.AboutToolStripMenuItem.Image = CType(resources.GetObject("AboutToolStripMenuItem.Image"),System.Drawing.Image)
+        Me.AboutToolStripMenuItem.Image = CType(resources.GetObject("AboutToolStripMenuItem.Image"), System.Drawing.Image)
         Me.AboutToolStripMenuItem.Name = "AboutToolStripMenuItem"
         Me.AboutToolStripMenuItem.Size = New System.Drawing.Size(185, 22)
         Me.AboutToolStripMenuItem.Text = "&About..."
@@ -754,7 +760,7 @@ Partial Class frmMain
         Me.CleanFoldersToolStripMenuItem.Name = "CleanFoldersToolStripMenuItem"
         Me.CleanFoldersToolStripMenuItem.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt) _
             Or System.Windows.Forms.Keys.C), System.Windows.Forms.Keys)
-        Me.CleanFoldersToolStripMenuItem.Size = New System.Drawing.Size(349, 22)
+        Me.CleanFoldersToolStripMenuItem.Size = New System.Drawing.Size(352, 22)
         Me.CleanFoldersToolStripMenuItem.Text = "&Clean Files"
         '
         'ConvertFileSourceToFolderSourceToolStripMenuItem
@@ -763,7 +769,7 @@ Partial Class frmMain
         Me.ConvertFileSourceToFolderSourceToolStripMenuItem.Name = "ConvertFileSourceToFolderSourceToolStripMenuItem"
         Me.ConvertFileSourceToFolderSourceToolStripMenuItem.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt) _
             Or System.Windows.Forms.Keys.S), System.Windows.Forms.Keys)
-        Me.ConvertFileSourceToFolderSourceToolStripMenuItem.Size = New System.Drawing.Size(349, 22)
+        Me.ConvertFileSourceToFolderSourceToolStripMenuItem.Size = New System.Drawing.Size(352, 22)
         Me.ConvertFileSourceToFolderSourceToolStripMenuItem.Text = "&Sort Files Into Folders"
         '
         'CopyExistingFanartToBackdropsFolderToolStripMenuItem
@@ -772,13 +778,13 @@ Partial Class frmMain
         Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem.Name = "CopyExistingFanartToBackdropsFolderToolStripMenuItem"
         Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt) _
             Or System.Windows.Forms.Keys.B), System.Windows.Forms.Keys)
-        Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem.Size = New System.Drawing.Size(349, 22)
+        Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem.Size = New System.Drawing.Size(352, 22)
         Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem.Text = "Copy Existing Fanart To &Backdrops Folder"
         '
         'ToolStripSeparator4
         '
         Me.ToolStripSeparator4.Name = "ToolStripSeparator4"
-        Me.ToolStripSeparator4.Size = New System.Drawing.Size(346, 6)
+        Me.ToolStripSeparator4.Size = New System.Drawing.Size(349, 6)
         '
         'SetsManagerToolStripMenuItem
         '
@@ -786,13 +792,13 @@ Partial Class frmMain
         Me.SetsManagerToolStripMenuItem.Name = "SetsManagerToolStripMenuItem"
         Me.SetsManagerToolStripMenuItem.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt) _
             Or System.Windows.Forms.Keys.M), System.Windows.Forms.Keys)
-        Me.SetsManagerToolStripMenuItem.Size = New System.Drawing.Size(349, 22)
+        Me.SetsManagerToolStripMenuItem.Size = New System.Drawing.Size(352, 22)
         Me.SetsManagerToolStripMenuItem.Text = "Sets &Manager"
         '
         'ToolStripMenuItem3
         '
         Me.ToolStripMenuItem3.Name = "ToolStripMenuItem3"
-        Me.ToolStripMenuItem3.Size = New System.Drawing.Size(346, 6)
+        Me.ToolStripMenuItem3.Size = New System.Drawing.Size(349, 6)
         '
         'ClearAllCachesToolStripMenuItem
         '
@@ -800,7 +806,7 @@ Partial Class frmMain
         Me.ClearAllCachesToolStripMenuItem.Name = "ClearAllCachesToolStripMenuItem"
         Me.ClearAllCachesToolStripMenuItem.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt) _
             Or System.Windows.Forms.Keys.A), System.Windows.Forms.Keys)
-        Me.ClearAllCachesToolStripMenuItem.Size = New System.Drawing.Size(349, 22)
+        Me.ClearAllCachesToolStripMenuItem.Size = New System.Drawing.Size(352, 22)
         Me.ClearAllCachesToolStripMenuItem.Text = "Clear &All Caches"
         '
         'RefreshAllMoviesToolStripMenuItem
@@ -809,7 +815,7 @@ Partial Class frmMain
         Me.RefreshAllMoviesToolStripMenuItem.Name = "RefreshAllMoviesToolStripMenuItem"
         Me.RefreshAllMoviesToolStripMenuItem.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt) _
             Or System.Windows.Forms.Keys.L), System.Windows.Forms.Keys)
-        Me.RefreshAllMoviesToolStripMenuItem.Size = New System.Drawing.Size(349, 22)
+        Me.RefreshAllMoviesToolStripMenuItem.Size = New System.Drawing.Size(352, 22)
         Me.RefreshAllMoviesToolStripMenuItem.Text = "Re&load All Movies"
         '
         'CleanDatabaseToolStripMenuItem
@@ -818,13 +824,13 @@ Partial Class frmMain
         Me.CleanDatabaseToolStripMenuItem.Name = "CleanDatabaseToolStripMenuItem"
         Me.CleanDatabaseToolStripMenuItem.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt) _
             Or System.Windows.Forms.Keys.D), System.Windows.Forms.Keys)
-        Me.CleanDatabaseToolStripMenuItem.Size = New System.Drawing.Size(349, 22)
+        Me.CleanDatabaseToolStripMenuItem.Size = New System.Drawing.Size(352, 22)
         Me.CleanDatabaseToolStripMenuItem.Text = "Clean Database"
         '
         'ToolStripSeparator5
         '
         Me.ToolStripSeparator5.Name = "ToolStripSeparator5"
-        Me.ToolStripSeparator5.Size = New System.Drawing.Size(346, 6)
+        Me.ToolStripSeparator5.Size = New System.Drawing.Size(349, 6)
         '
         'DonateToolStripMenuItem
         '
@@ -866,6 +872,8 @@ Partial Class frmMain
         'scMain.Panel2
         '
         Me.scMain.Panel2.BackColor = System.Drawing.Color.DimGray
+        Me.scMain.Panel2.Controls.Add(Me.pbFanartSmallCache)
+        Me.scMain.Panel2.Controls.Add(Me.pnlFanartSmall)
         Me.scMain.Panel2.Controls.Add(Me.pnlTop)
         Me.scMain.Panel2.Controls.Add(Me.pnlCancel)
         Me.scMain.Panel2.Controls.Add(Me.pnlAllSeason)
@@ -1016,27 +1024,27 @@ Partial Class frmMain
         '
         Me.mnuMediaList.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTitle, Me.ToolStripSeparator3, Me.cmnuRefresh, Me.cmnuMark, Me.cmnuLock, Me.ToolStripMenuItem1, Me.cmnuEditMovie, Me.cmnuMetaData, Me.GenresToolStripMenuItem, Me.cmnuSep, Me.ScrapingToolStripMenuItem, Me.cmnuRescrape, Me.cmnuSearchNew, Me.cmnuSep2, Me.OpenContainingFolderToolStripMenuItem, Me.ToolStripSeparator1, Me.RemoveToolStripMenuItem})
         Me.mnuMediaList.Name = "mnuMediaList"
-        Me.mnuMediaList.Size = New System.Drawing.Size(245, 298)
+        Me.mnuMediaList.Size = New System.Drawing.Size(247, 298)
         '
         'cmnuTitle
         '
         Me.cmnuTitle.Enabled = False
         Me.cmnuTitle.Image = CType(resources.GetObject("cmnuTitle.Image"), System.Drawing.Image)
         Me.cmnuTitle.Name = "cmnuTitle"
-        Me.cmnuTitle.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuTitle.Size = New System.Drawing.Size(246, 22)
         Me.cmnuTitle.Text = "Title"
         '
         'ToolStripSeparator3
         '
         Me.ToolStripSeparator3.Name = "ToolStripSeparator3"
-        Me.ToolStripSeparator3.Size = New System.Drawing.Size(241, 6)
+        Me.ToolStripSeparator3.Size = New System.Drawing.Size(243, 6)
         '
         'cmnuRefresh
         '
         Me.cmnuRefresh.Image = CType(resources.GetObject("cmnuRefresh.Image"), System.Drawing.Image)
         Me.cmnuRefresh.Name = "cmnuRefresh"
         Me.cmnuRefresh.ShortcutKeys = System.Windows.Forms.Keys.F5
-        Me.cmnuRefresh.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuRefresh.Size = New System.Drawing.Size(246, 22)
         Me.cmnuRefresh.Text = "Reload"
         '
         'cmnuMark
@@ -1044,7 +1052,7 @@ Partial Class frmMain
         Me.cmnuMark.Image = CType(resources.GetObject("cmnuMark.Image"), System.Drawing.Image)
         Me.cmnuMark.Name = "cmnuMark"
         Me.cmnuMark.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.M), System.Windows.Forms.Keys)
-        Me.cmnuMark.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuMark.Size = New System.Drawing.Size(246, 22)
         Me.cmnuMark.Text = "Mark"
         '
         'cmnuLock
@@ -1052,20 +1060,20 @@ Partial Class frmMain
         Me.cmnuLock.Image = CType(resources.GetObject("cmnuLock.Image"), System.Drawing.Image)
         Me.cmnuLock.Name = "cmnuLock"
         Me.cmnuLock.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.L), System.Windows.Forms.Keys)
-        Me.cmnuLock.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuLock.Size = New System.Drawing.Size(246, 22)
         Me.cmnuLock.Text = "Lock"
         '
         'ToolStripMenuItem1
         '
         Me.ToolStripMenuItem1.Name = "ToolStripMenuItem1"
-        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(241, 6)
+        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(243, 6)
         '
         'cmnuEditMovie
         '
         Me.cmnuEditMovie.Image = CType(resources.GetObject("cmnuEditMovie.Image"), System.Drawing.Image)
         Me.cmnuEditMovie.Name = "cmnuEditMovie"
         Me.cmnuEditMovie.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.E), System.Windows.Forms.Keys)
-        Me.cmnuEditMovie.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuEditMovie.Size = New System.Drawing.Size(246, 22)
         Me.cmnuEditMovie.Text = "Edit Movie"
         '
         'cmnuMetaData
@@ -1073,7 +1081,7 @@ Partial Class frmMain
         Me.cmnuMetaData.Image = CType(resources.GetObject("cmnuMetaData.Image"), System.Drawing.Image)
         Me.cmnuMetaData.Name = "cmnuMetaData"
         Me.cmnuMetaData.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.D), System.Windows.Forms.Keys)
-        Me.cmnuMetaData.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuMetaData.Size = New System.Drawing.Size(246, 22)
         Me.cmnuMetaData.Text = "Edit Meta Data"
         '
         'GenresToolStripMenuItem
@@ -1081,7 +1089,7 @@ Partial Class frmMain
         Me.GenresToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.LblGenreStripMenuItem2, Me.GenreListToolStripComboBox, Me.AddGenreToolStripMenuItem, Me.SetGenreToolStripMenuItem, Me.RemoveGenreToolStripMenuItem})
         Me.GenresToolStripMenuItem.Image = CType(resources.GetObject("GenresToolStripMenuItem.Image"), System.Drawing.Image)
         Me.GenresToolStripMenuItem.Name = "GenresToolStripMenuItem"
-        Me.GenresToolStripMenuItem.Size = New System.Drawing.Size(244, 22)
+        Me.GenresToolStripMenuItem.Size = New System.Drawing.Size(246, 22)
         Me.GenresToolStripMenuItem.Text = "Genres"
         '
         'LblGenreStripMenuItem2
@@ -1120,14 +1128,14 @@ Partial Class frmMain
         'cmnuSep
         '
         Me.cmnuSep.Name = "cmnuSep"
-        Me.cmnuSep.Size = New System.Drawing.Size(241, 6)
+        Me.cmnuSep.Size = New System.Drawing.Size(243, 6)
         '
         'ScrapingToolStripMenuItem
         '
         Me.ScrapingToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripMenuItem5, Me.ToolStripMenuItem13})
         Me.ScrapingToolStripMenuItem.Image = CType(resources.GetObject("ScrapingToolStripMenuItem.Image"), System.Drawing.Image)
         Me.ScrapingToolStripMenuItem.Name = "ScrapingToolStripMenuItem"
-        Me.ScrapingToolStripMenuItem.Size = New System.Drawing.Size(244, 22)
+        Me.ScrapingToolStripMenuItem.Size = New System.Drawing.Size(246, 22)
         Me.ScrapingToolStripMenuItem.Text = "(Re)Scrape Selected Movies"
         '
         'ToolStripMenuItem5
@@ -1233,7 +1241,7 @@ Partial Class frmMain
         Me.cmnuRescrape.Image = CType(resources.GetObject("cmnuRescrape.Image"), System.Drawing.Image)
         Me.cmnuRescrape.Name = "cmnuRescrape"
         Me.cmnuRescrape.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.I), System.Windows.Forms.Keys)
-        Me.cmnuRescrape.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuRescrape.Size = New System.Drawing.Size(246, 22)
         Me.cmnuRescrape.Text = "(Re)Scrape Movie"
         '
         'cmnuSearchNew
@@ -1241,33 +1249,33 @@ Partial Class frmMain
         Me.cmnuSearchNew.Image = CType(resources.GetObject("cmnuSearchNew.Image"), System.Drawing.Image)
         Me.cmnuSearchNew.Name = "cmnuSearchNew"
         Me.cmnuSearchNew.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.C), System.Windows.Forms.Keys)
-        Me.cmnuSearchNew.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuSearchNew.Size = New System.Drawing.Size(246, 22)
         Me.cmnuSearchNew.Text = "Change Movie"
         '
         'cmnuSep2
         '
         Me.cmnuSep2.Name = "cmnuSep2"
-        Me.cmnuSep2.Size = New System.Drawing.Size(241, 6)
+        Me.cmnuSep2.Size = New System.Drawing.Size(243, 6)
         '
         'OpenContainingFolderToolStripMenuItem
         '
         Me.OpenContainingFolderToolStripMenuItem.Image = CType(resources.GetObject("OpenContainingFolderToolStripMenuItem.Image"), System.Drawing.Image)
         Me.OpenContainingFolderToolStripMenuItem.Name = "OpenContainingFolderToolStripMenuItem"
         Me.OpenContainingFolderToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.O), System.Windows.Forms.Keys)
-        Me.OpenContainingFolderToolStripMenuItem.Size = New System.Drawing.Size(244, 22)
+        Me.OpenContainingFolderToolStripMenuItem.Size = New System.Drawing.Size(246, 22)
         Me.OpenContainingFolderToolStripMenuItem.Text = "Open Containing Folder"
         '
         'ToolStripSeparator1
         '
         Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-        Me.ToolStripSeparator1.Size = New System.Drawing.Size(241, 6)
+        Me.ToolStripSeparator1.Size = New System.Drawing.Size(243, 6)
         '
         'RemoveToolStripMenuItem
         '
         Me.RemoveToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.RemoveFromDatabaseToolStripMenuItem, Me.DeleteMovieToolStripMenuItem})
         Me.RemoveToolStripMenuItem.Image = CType(resources.GetObject("RemoveToolStripMenuItem.Image"), System.Drawing.Image)
         Me.RemoveToolStripMenuItem.Name = "RemoveToolStripMenuItem"
-        Me.RemoveToolStripMenuItem.Size = New System.Drawing.Size(244, 22)
+        Me.RemoveToolStripMenuItem.Size = New System.Drawing.Size(246, 22)
         Me.RemoveToolStripMenuItem.Text = "Remove"
         '
         'RemoveFromDatabaseToolStripMenuItem
@@ -1275,7 +1283,7 @@ Partial Class frmMain
         Me.RemoveFromDatabaseToolStripMenuItem.Image = CType(resources.GetObject("RemoveFromDatabaseToolStripMenuItem.Image"), System.Drawing.Image)
         Me.RemoveFromDatabaseToolStripMenuItem.Name = "RemoveFromDatabaseToolStripMenuItem"
         Me.RemoveFromDatabaseToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Delete
-        Me.RemoveFromDatabaseToolStripMenuItem.Size = New System.Drawing.Size(221, 22)
+        Me.RemoveFromDatabaseToolStripMenuItem.Size = New System.Drawing.Size(225, 22)
         Me.RemoveFromDatabaseToolStripMenuItem.Text = "Remove from Database"
         '
         'DeleteMovieToolStripMenuItem
@@ -1283,7 +1291,7 @@ Partial Class frmMain
         Me.DeleteMovieToolStripMenuItem.Image = CType(resources.GetObject("DeleteMovieToolStripMenuItem.Image"), System.Drawing.Image)
         Me.DeleteMovieToolStripMenuItem.Name = "DeleteMovieToolStripMenuItem"
         Me.DeleteMovieToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Delete), System.Windows.Forms.Keys)
-        Me.DeleteMovieToolStripMenuItem.Size = New System.Drawing.Size(221, 22)
+        Me.DeleteMovieToolStripMenuItem.Size = New System.Drawing.Size(225, 22)
         Me.DeleteMovieToolStripMenuItem.Text = "Delete Movie"
         '
         'scTV
@@ -1337,27 +1345,27 @@ Partial Class frmMain
         '
         Me.mnuShows.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuShowTitle, Me.ToolStripMenuItem2, Me.cmnuReloadShow, Me.cmnuMarkShow, Me.cmnuLockShow, Me.ToolStripSeparator8, Me.cmnuEditShow, Me.ToolStripSeparator7, Me.cmnuRescrapeShow, Me.cmnuChangeShow, Me.ToolStripSeparator11, Me.cmnuShowOpenFolder, Me.ToolStripSeparator20, Me.RemoveShowToolStripMenuItem})
         Me.mnuShows.Name = "mnuShows"
-        Me.mnuShows.Size = New System.Drawing.Size(245, 232)
+        Me.mnuShows.Size = New System.Drawing.Size(247, 232)
         '
         'cmnuShowTitle
         '
         Me.cmnuShowTitle.Enabled = False
         Me.cmnuShowTitle.Image = CType(resources.GetObject("cmnuShowTitle.Image"), System.Drawing.Image)
         Me.cmnuShowTitle.Name = "cmnuShowTitle"
-        Me.cmnuShowTitle.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuShowTitle.Size = New System.Drawing.Size(246, 22)
         Me.cmnuShowTitle.Text = "Title"
         '
         'ToolStripMenuItem2
         '
         Me.ToolStripMenuItem2.Name = "ToolStripMenuItem2"
-        Me.ToolStripMenuItem2.Size = New System.Drawing.Size(241, 6)
+        Me.ToolStripMenuItem2.Size = New System.Drawing.Size(243, 6)
         '
         'cmnuReloadShow
         '
         Me.cmnuReloadShow.Image = CType(resources.GetObject("cmnuReloadShow.Image"), System.Drawing.Image)
         Me.cmnuReloadShow.Name = "cmnuReloadShow"
         Me.cmnuReloadShow.ShortcutKeys = System.Windows.Forms.Keys.F5
-        Me.cmnuReloadShow.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuReloadShow.Size = New System.Drawing.Size(246, 22)
         Me.cmnuReloadShow.Text = "Reload"
         '
         'cmnuMarkShow
@@ -1365,7 +1373,7 @@ Partial Class frmMain
         Me.cmnuMarkShow.Image = CType(resources.GetObject("cmnuMarkShow.Image"), System.Drawing.Image)
         Me.cmnuMarkShow.Name = "cmnuMarkShow"
         Me.cmnuMarkShow.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.M), System.Windows.Forms.Keys)
-        Me.cmnuMarkShow.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuMarkShow.Size = New System.Drawing.Size(246, 22)
         Me.cmnuMarkShow.Text = "Mark"
         '
         'cmnuLockShow
@@ -1373,33 +1381,33 @@ Partial Class frmMain
         Me.cmnuLockShow.Image = CType(resources.GetObject("cmnuLockShow.Image"), System.Drawing.Image)
         Me.cmnuLockShow.Name = "cmnuLockShow"
         Me.cmnuLockShow.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.L), System.Windows.Forms.Keys)
-        Me.cmnuLockShow.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuLockShow.Size = New System.Drawing.Size(246, 22)
         Me.cmnuLockShow.Text = "Lock"
         '
         'ToolStripSeparator8
         '
         Me.ToolStripSeparator8.Name = "ToolStripSeparator8"
-        Me.ToolStripSeparator8.Size = New System.Drawing.Size(241, 6)
+        Me.ToolStripSeparator8.Size = New System.Drawing.Size(243, 6)
         '
         'cmnuEditShow
         '
         Me.cmnuEditShow.Image = CType(resources.GetObject("cmnuEditShow.Image"), System.Drawing.Image)
         Me.cmnuEditShow.Name = "cmnuEditShow"
         Me.cmnuEditShow.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.E), System.Windows.Forms.Keys)
-        Me.cmnuEditShow.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuEditShow.Size = New System.Drawing.Size(246, 22)
         Me.cmnuEditShow.Text = "Edit Show"
         '
         'ToolStripSeparator7
         '
         Me.ToolStripSeparator7.Name = "ToolStripSeparator7"
-        Me.ToolStripSeparator7.Size = New System.Drawing.Size(241, 6)
+        Me.ToolStripSeparator7.Size = New System.Drawing.Size(243, 6)
         '
         'cmnuRescrapeShow
         '
         Me.cmnuRescrapeShow.Image = CType(resources.GetObject("cmnuRescrapeShow.Image"), System.Drawing.Image)
         Me.cmnuRescrapeShow.Name = "cmnuRescrapeShow"
         Me.cmnuRescrapeShow.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.I), System.Windows.Forms.Keys)
-        Me.cmnuRescrapeShow.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuRescrapeShow.Size = New System.Drawing.Size(246, 22)
         Me.cmnuRescrapeShow.Text = "Re-scrape theTVDB"
         '
         'cmnuChangeShow
@@ -1407,33 +1415,33 @@ Partial Class frmMain
         Me.cmnuChangeShow.Image = CType(resources.GetObject("cmnuChangeShow.Image"), System.Drawing.Image)
         Me.cmnuChangeShow.Name = "cmnuChangeShow"
         Me.cmnuChangeShow.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.C), System.Windows.Forms.Keys)
-        Me.cmnuChangeShow.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuChangeShow.Size = New System.Drawing.Size(246, 22)
         Me.cmnuChangeShow.Text = "Change Show"
         '
         'ToolStripSeparator11
         '
         Me.ToolStripSeparator11.Name = "ToolStripSeparator11"
-        Me.ToolStripSeparator11.Size = New System.Drawing.Size(241, 6)
+        Me.ToolStripSeparator11.Size = New System.Drawing.Size(243, 6)
         '
         'cmnuShowOpenFolder
         '
         Me.cmnuShowOpenFolder.Image = CType(resources.GetObject("cmnuShowOpenFolder.Image"), System.Drawing.Image)
         Me.cmnuShowOpenFolder.Name = "cmnuShowOpenFolder"
         Me.cmnuShowOpenFolder.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.O), System.Windows.Forms.Keys)
-        Me.cmnuShowOpenFolder.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuShowOpenFolder.Size = New System.Drawing.Size(246, 22)
         Me.cmnuShowOpenFolder.Text = "Open Containing Folder"
         '
         'ToolStripSeparator20
         '
         Me.ToolStripSeparator20.Name = "ToolStripSeparator20"
-        Me.ToolStripSeparator20.Size = New System.Drawing.Size(241, 6)
+        Me.ToolStripSeparator20.Size = New System.Drawing.Size(243, 6)
         '
         'RemoveShowToolStripMenuItem
         '
         Me.RemoveShowToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuRemoveTVShow, Me.cmnuDeleteTVShow})
         Me.RemoveShowToolStripMenuItem.Image = CType(resources.GetObject("RemoveShowToolStripMenuItem.Image"), System.Drawing.Image)
         Me.RemoveShowToolStripMenuItem.Name = "RemoveShowToolStripMenuItem"
-        Me.RemoveShowToolStripMenuItem.Size = New System.Drawing.Size(244, 22)
+        Me.RemoveShowToolStripMenuItem.Size = New System.Drawing.Size(246, 22)
         Me.RemoveShowToolStripMenuItem.Text = "Remove"
         '
         'cmnuRemoveTVShow
@@ -1441,7 +1449,7 @@ Partial Class frmMain
         Me.cmnuRemoveTVShow.Image = CType(resources.GetObject("cmnuRemoveTVShow.Image"), System.Drawing.Image)
         Me.cmnuRemoveTVShow.Name = "cmnuRemoveTVShow"
         Me.cmnuRemoveTVShow.ShortcutKeys = System.Windows.Forms.Keys.Delete
-        Me.cmnuRemoveTVShow.Size = New System.Drawing.Size(221, 22)
+        Me.cmnuRemoveTVShow.Size = New System.Drawing.Size(225, 22)
         Me.cmnuRemoveTVShow.Text = "Remove from Database"
         '
         'cmnuDeleteTVShow
@@ -1449,7 +1457,7 @@ Partial Class frmMain
         Me.cmnuDeleteTVShow.Image = CType(resources.GetObject("cmnuDeleteTVShow.Image"), System.Drawing.Image)
         Me.cmnuDeleteTVShow.Name = "cmnuDeleteTVShow"
         Me.cmnuDeleteTVShow.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Delete), System.Windows.Forms.Keys)
-        Me.cmnuDeleteTVShow.Size = New System.Drawing.Size(221, 22)
+        Me.cmnuDeleteTVShow.Size = New System.Drawing.Size(225, 22)
         Me.cmnuDeleteTVShow.Text = "Delete TV Show"
         '
         'SplitContainer2
@@ -1502,27 +1510,27 @@ Partial Class frmMain
         '
         Me.mnuSeasons.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuSeasonTitle, Me.ToolStripSeparator17, Me.cmnuReloadSeason, Me.cmnuMarkSeason, Me.cmnuLockSeason, Me.ToolStripSeparator16, Me.cmnuSeasonChangeImages, Me.ToolStripSeparator14, Me.cmnuSeasonRescrape, Me.ToolStripSeparator15, Me.cmnuSeasonOpenFolder, Me.ToolStripSeparator27, Me.cmnuSeasonRemove})
         Me.mnuSeasons.Name = "mnuSeasons"
-        Me.mnuSeasons.Size = New System.Drawing.Size(245, 210)
+        Me.mnuSeasons.Size = New System.Drawing.Size(247, 210)
         '
         'cmnuSeasonTitle
         '
         Me.cmnuSeasonTitle.Enabled = False
         Me.cmnuSeasonTitle.Image = CType(resources.GetObject("cmnuSeasonTitle.Image"), System.Drawing.Image)
         Me.cmnuSeasonTitle.Name = "cmnuSeasonTitle"
-        Me.cmnuSeasonTitle.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuSeasonTitle.Size = New System.Drawing.Size(246, 22)
         Me.cmnuSeasonTitle.Text = "Title"
         '
         'ToolStripSeparator17
         '
         Me.ToolStripSeparator17.Name = "ToolStripSeparator17"
-        Me.ToolStripSeparator17.Size = New System.Drawing.Size(241, 6)
+        Me.ToolStripSeparator17.Size = New System.Drawing.Size(243, 6)
         '
         'cmnuReloadSeason
         '
         Me.cmnuReloadSeason.Image = CType(resources.GetObject("cmnuReloadSeason.Image"), System.Drawing.Image)
         Me.cmnuReloadSeason.Name = "cmnuReloadSeason"
         Me.cmnuReloadSeason.ShortcutKeys = System.Windows.Forms.Keys.F5
-        Me.cmnuReloadSeason.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuReloadSeason.Size = New System.Drawing.Size(246, 22)
         Me.cmnuReloadSeason.Text = "Reload"
         '
         'cmnuMarkSeason
@@ -1530,7 +1538,7 @@ Partial Class frmMain
         Me.cmnuMarkSeason.Image = CType(resources.GetObject("cmnuMarkSeason.Image"), System.Drawing.Image)
         Me.cmnuMarkSeason.Name = "cmnuMarkSeason"
         Me.cmnuMarkSeason.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.M), System.Windows.Forms.Keys)
-        Me.cmnuMarkSeason.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuMarkSeason.Size = New System.Drawing.Size(246, 22)
         Me.cmnuMarkSeason.Text = "Mark"
         '
         'cmnuLockSeason
@@ -1538,59 +1546,59 @@ Partial Class frmMain
         Me.cmnuLockSeason.Image = CType(resources.GetObject("cmnuLockSeason.Image"), System.Drawing.Image)
         Me.cmnuLockSeason.Name = "cmnuLockSeason"
         Me.cmnuLockSeason.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.L), System.Windows.Forms.Keys)
-        Me.cmnuLockSeason.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuLockSeason.Size = New System.Drawing.Size(246, 22)
         Me.cmnuLockSeason.Text = "Lock"
         '
         'ToolStripSeparator16
         '
         Me.ToolStripSeparator16.Name = "ToolStripSeparator16"
-        Me.ToolStripSeparator16.Size = New System.Drawing.Size(241, 6)
+        Me.ToolStripSeparator16.Size = New System.Drawing.Size(243, 6)
         '
         'cmnuSeasonChangeImages
         '
         Me.cmnuSeasonChangeImages.Image = CType(resources.GetObject("cmnuSeasonChangeImages.Image"), System.Drawing.Image)
         Me.cmnuSeasonChangeImages.Name = "cmnuSeasonChangeImages"
         Me.cmnuSeasonChangeImages.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.E), System.Windows.Forms.Keys)
-        Me.cmnuSeasonChangeImages.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuSeasonChangeImages.Size = New System.Drawing.Size(246, 22)
         Me.cmnuSeasonChangeImages.Text = "Change Images"
         '
         'ToolStripSeparator14
         '
         Me.ToolStripSeparator14.Name = "ToolStripSeparator14"
-        Me.ToolStripSeparator14.Size = New System.Drawing.Size(241, 6)
+        Me.ToolStripSeparator14.Size = New System.Drawing.Size(243, 6)
         '
         'cmnuSeasonRescrape
         '
         Me.cmnuSeasonRescrape.Image = CType(resources.GetObject("cmnuSeasonRescrape.Image"), System.Drawing.Image)
         Me.cmnuSeasonRescrape.Name = "cmnuSeasonRescrape"
         Me.cmnuSeasonRescrape.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.I), System.Windows.Forms.Keys)
-        Me.cmnuSeasonRescrape.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuSeasonRescrape.Size = New System.Drawing.Size(246, 22)
         Me.cmnuSeasonRescrape.Text = "Re-scrape theTVDB"
         '
         'ToolStripSeparator15
         '
         Me.ToolStripSeparator15.Name = "ToolStripSeparator15"
-        Me.ToolStripSeparator15.Size = New System.Drawing.Size(241, 6)
+        Me.ToolStripSeparator15.Size = New System.Drawing.Size(243, 6)
         '
         'cmnuSeasonOpenFolder
         '
         Me.cmnuSeasonOpenFolder.Image = CType(resources.GetObject("cmnuSeasonOpenFolder.Image"), System.Drawing.Image)
         Me.cmnuSeasonOpenFolder.Name = "cmnuSeasonOpenFolder"
         Me.cmnuSeasonOpenFolder.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.O), System.Windows.Forms.Keys)
-        Me.cmnuSeasonOpenFolder.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuSeasonOpenFolder.Size = New System.Drawing.Size(246, 22)
         Me.cmnuSeasonOpenFolder.Text = "Open Contianing Folder"
         '
         'ToolStripSeparator27
         '
         Me.ToolStripSeparator27.Name = "ToolStripSeparator27"
-        Me.ToolStripSeparator27.Size = New System.Drawing.Size(241, 6)
+        Me.ToolStripSeparator27.Size = New System.Drawing.Size(243, 6)
         '
         'cmnuSeasonRemove
         '
         Me.cmnuSeasonRemove.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuRemoveSeasonFromDB, Me.cmnuDeleteSeason})
         Me.cmnuSeasonRemove.Image = CType(resources.GetObject("cmnuSeasonRemove.Image"), System.Drawing.Image)
         Me.cmnuSeasonRemove.Name = "cmnuSeasonRemove"
-        Me.cmnuSeasonRemove.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuSeasonRemove.Size = New System.Drawing.Size(246, 22)
         Me.cmnuSeasonRemove.Text = "Remove"
         '
         'cmnuRemoveSeasonFromDB
@@ -1598,7 +1606,7 @@ Partial Class frmMain
         Me.cmnuRemoveSeasonFromDB.Image = CType(resources.GetObject("cmnuRemoveSeasonFromDB.Image"), System.Drawing.Image)
         Me.cmnuRemoveSeasonFromDB.Name = "cmnuRemoveSeasonFromDB"
         Me.cmnuRemoveSeasonFromDB.ShortcutKeys = System.Windows.Forms.Keys.Delete
-        Me.cmnuRemoveSeasonFromDB.Size = New System.Drawing.Size(221, 22)
+        Me.cmnuRemoveSeasonFromDB.Size = New System.Drawing.Size(225, 22)
         Me.cmnuRemoveSeasonFromDB.Text = "Remove from Database"
         '
         'cmnuDeleteSeason
@@ -1606,7 +1614,7 @@ Partial Class frmMain
         Me.cmnuDeleteSeason.Image = CType(resources.GetObject("cmnuDeleteSeason.Image"), System.Drawing.Image)
         Me.cmnuDeleteSeason.Name = "cmnuDeleteSeason"
         Me.cmnuDeleteSeason.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Delete), System.Windows.Forms.Keys)
-        Me.cmnuDeleteSeason.Size = New System.Drawing.Size(221, 22)
+        Me.cmnuDeleteSeason.Size = New System.Drawing.Size(225, 22)
         Me.cmnuDeleteSeason.Text = "Delete Season"
         '
         'dgvTVEpisodes
@@ -1639,27 +1647,27 @@ Partial Class frmMain
         '
         Me.mnuEpisodes.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuEpTitle, Me.ToolStripSeparator6, Me.cmnuReloadEp, Me.cmnuMarkEp, Me.cmnuLockEp, Me.ToolStripSeparator9, Me.cmnuEditEpisode, Me.ToolStripSeparator10, Me.cmnuRescrapeEp, Me.cmnuChangeEp, Me.ToolStripSeparator12, Me.cmnuEpOpenFolder, Me.ToolStripSeparator28, Me.RemoveEpToolStripMenuItem})
         Me.mnuEpisodes.Name = "mnuEpisodes"
-        Me.mnuEpisodes.Size = New System.Drawing.Size(245, 232)
+        Me.mnuEpisodes.Size = New System.Drawing.Size(247, 232)
         '
         'cmnuEpTitle
         '
         Me.cmnuEpTitle.Enabled = False
         Me.cmnuEpTitle.Image = CType(resources.GetObject("cmnuEpTitle.Image"), System.Drawing.Image)
         Me.cmnuEpTitle.Name = "cmnuEpTitle"
-        Me.cmnuEpTitle.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuEpTitle.Size = New System.Drawing.Size(246, 22)
         Me.cmnuEpTitle.Text = "Title"
         '
         'ToolStripSeparator6
         '
         Me.ToolStripSeparator6.Name = "ToolStripSeparator6"
-        Me.ToolStripSeparator6.Size = New System.Drawing.Size(241, 6)
+        Me.ToolStripSeparator6.Size = New System.Drawing.Size(243, 6)
         '
         'cmnuReloadEp
         '
         Me.cmnuReloadEp.Image = CType(resources.GetObject("cmnuReloadEp.Image"), System.Drawing.Image)
         Me.cmnuReloadEp.Name = "cmnuReloadEp"
         Me.cmnuReloadEp.ShortcutKeys = System.Windows.Forms.Keys.F5
-        Me.cmnuReloadEp.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuReloadEp.Size = New System.Drawing.Size(246, 22)
         Me.cmnuReloadEp.Text = "Reload"
         '
         'cmnuMarkEp
@@ -1667,7 +1675,7 @@ Partial Class frmMain
         Me.cmnuMarkEp.Image = CType(resources.GetObject("cmnuMarkEp.Image"), System.Drawing.Image)
         Me.cmnuMarkEp.Name = "cmnuMarkEp"
         Me.cmnuMarkEp.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.M), System.Windows.Forms.Keys)
-        Me.cmnuMarkEp.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuMarkEp.Size = New System.Drawing.Size(246, 22)
         Me.cmnuMarkEp.Text = "Mark"
         '
         'cmnuLockEp
@@ -1675,33 +1683,33 @@ Partial Class frmMain
         Me.cmnuLockEp.Image = CType(resources.GetObject("cmnuLockEp.Image"), System.Drawing.Image)
         Me.cmnuLockEp.Name = "cmnuLockEp"
         Me.cmnuLockEp.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.L), System.Windows.Forms.Keys)
-        Me.cmnuLockEp.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuLockEp.Size = New System.Drawing.Size(246, 22)
         Me.cmnuLockEp.Text = "Lock"
         '
         'ToolStripSeparator9
         '
         Me.ToolStripSeparator9.Name = "ToolStripSeparator9"
-        Me.ToolStripSeparator9.Size = New System.Drawing.Size(241, 6)
+        Me.ToolStripSeparator9.Size = New System.Drawing.Size(243, 6)
         '
         'cmnuEditEpisode
         '
         Me.cmnuEditEpisode.Image = CType(resources.GetObject("cmnuEditEpisode.Image"), System.Drawing.Image)
         Me.cmnuEditEpisode.Name = "cmnuEditEpisode"
         Me.cmnuEditEpisode.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.E), System.Windows.Forms.Keys)
-        Me.cmnuEditEpisode.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuEditEpisode.Size = New System.Drawing.Size(246, 22)
         Me.cmnuEditEpisode.Text = "Edit Episode"
         '
         'ToolStripSeparator10
         '
         Me.ToolStripSeparator10.Name = "ToolStripSeparator10"
-        Me.ToolStripSeparator10.Size = New System.Drawing.Size(241, 6)
+        Me.ToolStripSeparator10.Size = New System.Drawing.Size(243, 6)
         '
         'cmnuRescrapeEp
         '
         Me.cmnuRescrapeEp.Image = CType(resources.GetObject("cmnuRescrapeEp.Image"), System.Drawing.Image)
         Me.cmnuRescrapeEp.Name = "cmnuRescrapeEp"
         Me.cmnuRescrapeEp.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.I), System.Windows.Forms.Keys)
-        Me.cmnuRescrapeEp.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuRescrapeEp.Size = New System.Drawing.Size(246, 22)
         Me.cmnuRescrapeEp.Text = "Re-scrape theTVDB"
         '
         'cmnuChangeEp
@@ -1709,33 +1717,33 @@ Partial Class frmMain
         Me.cmnuChangeEp.Image = CType(resources.GetObject("cmnuChangeEp.Image"), System.Drawing.Image)
         Me.cmnuChangeEp.Name = "cmnuChangeEp"
         Me.cmnuChangeEp.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.C), System.Windows.Forms.Keys)
-        Me.cmnuChangeEp.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuChangeEp.Size = New System.Drawing.Size(246, 22)
         Me.cmnuChangeEp.Text = "Change Episode"
         '
         'ToolStripSeparator12
         '
         Me.ToolStripSeparator12.Name = "ToolStripSeparator12"
-        Me.ToolStripSeparator12.Size = New System.Drawing.Size(241, 6)
+        Me.ToolStripSeparator12.Size = New System.Drawing.Size(243, 6)
         '
         'cmnuEpOpenFolder
         '
         Me.cmnuEpOpenFolder.Image = CType(resources.GetObject("cmnuEpOpenFolder.Image"), System.Drawing.Image)
         Me.cmnuEpOpenFolder.Name = "cmnuEpOpenFolder"
         Me.cmnuEpOpenFolder.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.O), System.Windows.Forms.Keys)
-        Me.cmnuEpOpenFolder.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuEpOpenFolder.Size = New System.Drawing.Size(246, 22)
         Me.cmnuEpOpenFolder.Text = "Open Contianing Folder"
         '
         'ToolStripSeparator28
         '
         Me.ToolStripSeparator28.Name = "ToolStripSeparator28"
-        Me.ToolStripSeparator28.Size = New System.Drawing.Size(241, 6)
+        Me.ToolStripSeparator28.Size = New System.Drawing.Size(243, 6)
         '
         'RemoveEpToolStripMenuItem
         '
         Me.RemoveEpToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuRemoveTVEp, Me.cmnuDeleteTVEp})
         Me.RemoveEpToolStripMenuItem.Image = CType(resources.GetObject("RemoveEpToolStripMenuItem.Image"), System.Drawing.Image)
         Me.RemoveEpToolStripMenuItem.Name = "RemoveEpToolStripMenuItem"
-        Me.RemoveEpToolStripMenuItem.Size = New System.Drawing.Size(244, 22)
+        Me.RemoveEpToolStripMenuItem.Size = New System.Drawing.Size(246, 22)
         Me.RemoveEpToolStripMenuItem.Text = "Remove"
         '
         'cmnuRemoveTVEp
@@ -1743,7 +1751,7 @@ Partial Class frmMain
         Me.cmnuRemoveTVEp.Image = CType(resources.GetObject("cmnuRemoveTVEp.Image"), System.Drawing.Image)
         Me.cmnuRemoveTVEp.Name = "cmnuRemoveTVEp"
         Me.cmnuRemoveTVEp.ShortcutKeys = System.Windows.Forms.Keys.Delete
-        Me.cmnuRemoveTVEp.Size = New System.Drawing.Size(221, 22)
+        Me.cmnuRemoveTVEp.Size = New System.Drawing.Size(225, 22)
         Me.cmnuRemoveTVEp.Text = "Remove from Database"
         '
         'cmnuDeleteTVEp
@@ -1751,7 +1759,7 @@ Partial Class frmMain
         Me.cmnuDeleteTVEp.Image = CType(resources.GetObject("cmnuDeleteTVEp.Image"), System.Drawing.Image)
         Me.cmnuDeleteTVEp.Name = "cmnuDeleteTVEp"
         Me.cmnuDeleteTVEp.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Delete), System.Windows.Forms.Keys)
-        Me.cmnuDeleteTVEp.Size = New System.Drawing.Size(221, 22)
+        Me.cmnuDeleteTVEp.Size = New System.Drawing.Size(225, 22)
         Me.cmnuDeleteTVEp.Text = "Delete Episode"
         '
         'pnlListTop
@@ -2212,6 +2220,35 @@ Partial Class frmMain
         Me.lblFilter.TabIndex = 0
         Me.lblFilter.Text = "Filters"
         Me.lblFilter.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'pbFanartSmallCache
+        '
+        Me.pbFanartSmallCache.Location = New System.Drawing.Point(697, 107)
+        Me.pbFanartSmallCache.Name = "pbFanartSmallCache"
+        Me.pbFanartSmallCache.Size = New System.Drawing.Size(115, 111)
+        Me.pbFanartSmallCache.TabIndex = 15
+        Me.pbFanartSmallCache.TabStop = False
+        Me.pbFanartSmallCache.Visible = False
+        '
+        'pnlFanartSmall
+        '
+        Me.pnlFanartSmall.BackColor = System.Drawing.Color.Gainsboro
+        Me.pnlFanartSmall.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlFanartSmall.Controls.Add(Me.pbFanartSmall)
+        Me.pnlFanartSmall.Location = New System.Drawing.Point(146, 112)
+        Me.pnlFanartSmall.Name = "pnlFanartSmall"
+        Me.pnlFanartSmall.Size = New System.Drawing.Size(293, 169)
+        Me.pnlFanartSmall.TabIndex = 14
+        Me.pnlFanartSmall.Visible = False
+        '
+        'pbFanartSmall
+        '
+        Me.pbFanartSmall.BackColor = System.Drawing.SystemColors.Control
+        Me.pbFanartSmall.Location = New System.Drawing.Point(4, 4)
+        Me.pbFanartSmall.Name = "pbFanartSmall"
+        Me.pbFanartSmall.Size = New System.Drawing.Size(283, 159)
+        Me.pbFanartSmall.TabIndex = 0
+        Me.pbFanartSmall.TabStop = False
         '
         'pnlTop
         '
@@ -4451,100 +4488,103 @@ Partial Class frmMain
         Me.Controls.Add(Me.scMain)
         Me.Controls.Add(Me.StatusStrip)
         Me.Controls.Add(Me.MenuStrip)
-        Me.DoubleBuffered = true
-        Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.Icon = CType(resources.GetObject("$this.Icon"),System.Drawing.Icon)
+        Me.DoubleBuffered = True
+        Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MainMenuStrip = Me.MenuStrip
         Me.MinimumSize = New System.Drawing.Size(800, 600)
         Me.Name = "frmMain"
         Me.Text = "Ember Media Manager"
-        Me.StatusStrip.ResumeLayout(false)
-        Me.StatusStrip.PerformLayout
-        Me.MenuStrip.ResumeLayout(false)
-        Me.MenuStrip.PerformLayout
-        Me.scMain.Panel1.ResumeLayout(false)
-        Me.scMain.Panel2.ResumeLayout(false)
-        Me.scMain.Panel2.PerformLayout
-        Me.scMain.ResumeLayout(false)
-        Me.pnlFilterGenre.ResumeLayout(false)
-        Me.pnlFilterGenre.PerformLayout
-        Me.pnlFilterSource.ResumeLayout(false)
-        Me.pnlFilterSource.PerformLayout
-        CType(Me.dgvMediaList,System.ComponentModel.ISupportInitialize).EndInit
-        Me.mnuMediaList.ResumeLayout(false)
-        Me.scTV.Panel1.ResumeLayout(false)
-        Me.scTV.Panel2.ResumeLayout(false)
-        Me.scTV.ResumeLayout(false)
-        CType(Me.dgvTVShows,System.ComponentModel.ISupportInitialize).EndInit
-        Me.mnuShows.ResumeLayout(false)
-        Me.SplitContainer2.Panel1.ResumeLayout(false)
-        Me.SplitContainer2.Panel2.ResumeLayout(false)
-        Me.SplitContainer2.ResumeLayout(false)
-        CType(Me.dgvTVSeasons,System.ComponentModel.ISupportInitialize).EndInit
-        Me.mnuSeasons.ResumeLayout(false)
-        CType(Me.dgvTVEpisodes,System.ComponentModel.ISupportInitialize).EndInit
-        Me.mnuEpisodes.ResumeLayout(false)
-        Me.pnlListTop.ResumeLayout(false)
-        Me.pnlSearch.ResumeLayout(false)
-        Me.pnlSearch.PerformLayout
-        CType(Me.picSearch,System.ComponentModel.ISupportInitialize).EndInit
-        Me.tabsMain.ResumeLayout(false)
-        Me.pnlFilter.ResumeLayout(false)
-        Me.GroupBox1.ResumeLayout(false)
-        Me.GroupBox3.ResumeLayout(false)
-        Me.GroupBox3.PerformLayout
-        Me.gbSpecific.ResumeLayout(false)
-        Me.gbSpecific.PerformLayout
-        Me.GroupBox2.ResumeLayout(false)
-        Me.GroupBox2.PerformLayout
-        Me.pnlTop.ResumeLayout(false)
-        Me.pnlTop.PerformLayout
-        Me.pnlInfoIcons.ResumeLayout(false)
-        Me.pnlInfoIcons.PerformLayout
-        CType(Me.pbVType,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.pbStudio,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.pbVideo,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.pbAudio,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.pbResolution,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.pbChannels,System.ComponentModel.ISupportInitialize).EndInit
-        Me.pnlRating.ResumeLayout(false)
-        Me.pnlRating.PerformLayout
-        CType(Me.pbStar5,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.pbStar4,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.pbStar3,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.pbStar2,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.pbStar1,System.ComponentModel.ISupportInitialize).EndInit
-        Me.pnlCancel.ResumeLayout(false)
-        Me.pnlCancel.PerformLayout
-        Me.pnlAllSeason.ResumeLayout(false)
-        CType(Me.pbAllSeason,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.pbAllSeasonCache,System.ComponentModel.ISupportInitialize).EndInit
-        Me.pnlNoInfo.ResumeLayout(false)
-        Me.Panel2.ResumeLayout(false)
-        CType(Me.PictureBox1,System.ComponentModel.ISupportInitialize).EndInit
-        Me.pnlInfoPanel.ResumeLayout(false)
-        Me.pnlInfoPanel.PerformLayout
-        CType(Me.pbMILoading,System.ComponentModel.ISupportInitialize).EndInit
-        Me.pnlActors.ResumeLayout(false)
-        CType(Me.pbActLoad,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.pbActors,System.ComponentModel.ISupportInitialize).EndInit
-        Me.pnlTop250.ResumeLayout(false)
-        CType(Me.pbTop250,System.ComponentModel.ISupportInitialize).EndInit
-        Me.pnlPoster.ResumeLayout(false)
-        CType(Me.pbPoster,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.pbPosterCache,System.ComponentModel.ISupportInitialize).EndInit
-        Me.pnlMPAA.ResumeLayout(false)
-        Me.pnlMPAA.PerformLayout
-        CType(Me.pbMPAA,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.pbFanartCache,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.pbFanart,System.ComponentModel.ISupportInitialize).EndInit
-        Me.tsMain.ResumeLayout(false)
-        Me.tsMain.PerformLayout
-        Me.cmnuTrayIcon.ResumeLayout(false)
-        Me.Panel3.ResumeLayout(false)
-        CType(Me.PictureBox2,System.ComponentModel.ISupportInitialize).EndInit
-        Me.pnlLoadingSettings.ResumeLayout(false)
-        Me.ResumeLayout(false)
+        Me.StatusStrip.ResumeLayout(False)
+        Me.StatusStrip.PerformLayout()
+        Me.MenuStrip.ResumeLayout(False)
+        Me.MenuStrip.PerformLayout()
+        Me.scMain.Panel1.ResumeLayout(False)
+        Me.scMain.Panel2.ResumeLayout(False)
+        Me.scMain.Panel2.PerformLayout()
+        Me.scMain.ResumeLayout(False)
+        Me.pnlFilterGenre.ResumeLayout(False)
+        Me.pnlFilterGenre.PerformLayout()
+        Me.pnlFilterSource.ResumeLayout(False)
+        Me.pnlFilterSource.PerformLayout()
+        CType(Me.dgvMediaList, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.mnuMediaList.ResumeLayout(False)
+        Me.scTV.Panel1.ResumeLayout(False)
+        Me.scTV.Panel2.ResumeLayout(False)
+        Me.scTV.ResumeLayout(False)
+        CType(Me.dgvTVShows, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.mnuShows.ResumeLayout(False)
+        Me.SplitContainer2.Panel1.ResumeLayout(False)
+        Me.SplitContainer2.Panel2.ResumeLayout(False)
+        Me.SplitContainer2.ResumeLayout(False)
+        CType(Me.dgvTVSeasons, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.mnuSeasons.ResumeLayout(False)
+        CType(Me.dgvTVEpisodes, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.mnuEpisodes.ResumeLayout(False)
+        Me.pnlListTop.ResumeLayout(False)
+        Me.pnlSearch.ResumeLayout(False)
+        Me.pnlSearch.PerformLayout()
+        CType(Me.picSearch, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.tabsMain.ResumeLayout(False)
+        Me.pnlFilter.ResumeLayout(False)
+        Me.GroupBox1.ResumeLayout(False)
+        Me.GroupBox3.ResumeLayout(False)
+        Me.GroupBox3.PerformLayout()
+        Me.gbSpecific.ResumeLayout(False)
+        Me.gbSpecific.PerformLayout()
+        Me.GroupBox2.ResumeLayout(False)
+        Me.GroupBox2.PerformLayout()
+        CType(Me.pbFanartSmallCache, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlFanartSmall.ResumeLayout(False)
+        CType(Me.pbFanartSmall, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlTop.ResumeLayout(False)
+        Me.pnlTop.PerformLayout()
+        Me.pnlInfoIcons.ResumeLayout(False)
+        Me.pnlInfoIcons.PerformLayout()
+        CType(Me.pbVType, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbStudio, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbVideo, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbAudio, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbResolution, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbChannels, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlRating.ResumeLayout(False)
+        Me.pnlRating.PerformLayout()
+        CType(Me.pbStar5, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbStar4, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbStar3, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbStar2, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbStar1, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlCancel.ResumeLayout(False)
+        Me.pnlCancel.PerformLayout()
+        Me.pnlAllSeason.ResumeLayout(False)
+        CType(Me.pbAllSeason, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbAllSeasonCache, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlNoInfo.ResumeLayout(False)
+        Me.Panel2.ResumeLayout(False)
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlInfoPanel.ResumeLayout(False)
+        Me.pnlInfoPanel.PerformLayout()
+        CType(Me.pbMILoading, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlActors.ResumeLayout(False)
+        CType(Me.pbActLoad, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbActors, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlTop250.ResumeLayout(False)
+        CType(Me.pbTop250, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlPoster.ResumeLayout(False)
+        CType(Me.pbPoster, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbPosterCache, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlMPAA.ResumeLayout(False)
+        Me.pnlMPAA.PerformLayout()
+        CType(Me.pbMPAA, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbFanartCache, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbFanart, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.tsMain.ResumeLayout(False)
+        Me.tsMain.PerformLayout()
+        Me.cmnuTrayIcon.ResumeLayout(False)
+        Me.Panel3.ResumeLayout(False)
+        CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlLoadingSettings.ResumeLayout(False)
+        Me.ResumeLayout(False)
         Me.PerformLayout
 
 End Sub
@@ -5019,4 +5059,7 @@ End Sub
     Friend WithEvents pbStar1 As System.Windows.Forms.PictureBox
     Friend WithEvents lblVotes As System.Windows.Forms.Label
     Friend WithEvents lblOriginalTitle As System.Windows.Forms.Label
+    Friend WithEvents pnlFanartSmall As System.Windows.Forms.Panel
+    Friend WithEvents pbFanartSmall As System.Windows.Forms.PictureBox
+    Friend WithEvents pbFanartSmallCache As System.Windows.Forms.PictureBox
 End Class

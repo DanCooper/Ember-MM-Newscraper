@@ -1493,7 +1493,7 @@ Public Class dlgSettings
 
     Private Sub chkNoDisplayFanart_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkNoDisplayFanart.CheckedChanged
         Me.SetApplyButton(True)
-        If Me.chkNoDisplayFanart.Checked AndAlso Me.chkNoDisplayPoster.Checked Then
+        If Me.chkNoDisplayFanart.Checked AndAlso Me.chkNoDisplayPoster.Checked AndAlso Me.chkNoDisplayFanartSmall.Checked Then
             Me.chkShowDims.Enabled = False
             Me.chkShowDims.Checked = False
         Else
@@ -1503,7 +1503,17 @@ Public Class dlgSettings
 
     Private Sub chkNoDisplayPoster_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkNoDisplayPoster.CheckedChanged
         Me.SetApplyButton(True)
-        If Me.chkNoDisplayFanart.Checked AndAlso Me.chkNoDisplayPoster.Checked Then
+        If Me.chkNoDisplayFanart.Checked AndAlso Me.chkNoDisplayPoster.Checked AndAlso Me.chkNoDisplayFanartSmall.Checked Then
+            Me.chkShowDims.Enabled = False
+            Me.chkShowDims.Checked = False
+        Else
+            Me.chkShowDims.Enabled = True
+        End If
+    End Sub
+
+    Private Sub chkNoDisplayFanartSmall_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkNoDisplayFanartSmall.CheckedChanged
+        Me.SetApplyButton(True)
+        If Me.chkNoDisplayFanart.Checked AndAlso Me.chkNoDisplayPoster.Checked AndAlso Me.chkNoDisplayFanartSmall.Checked Then
             Me.chkShowDims.Enabled = False
             Me.chkShowDims.Checked = False
         Else
@@ -2409,6 +2419,7 @@ Public Class dlgSettings
             Me.chkShowDims.Checked = Master.eSettings.ShowDims
             Me.chkNoDisplayFanart.Checked = Master.eSettings.NoDisplayFanart
             Me.chkNoDisplayPoster.Checked = Master.eSettings.NoDisplayPoster
+            Me.chkNoDisplayFanartSmall.Checked = Master.eSettings.NoDisplayFanartSmall
             Me.chkOutlineForPlot.Checked = Master.eSettings.OutlineForPlot
             Me.chkPlotForOutline.Checked = Master.eSettings.PlotForOutline
             Me.chkShowGenresText.Checked = Master.eSettings.AllwaysDisplayGenresText
@@ -3477,6 +3488,7 @@ Public Class dlgSettings
             Master.eSettings.ShowDims = Me.chkShowDims.Checked
             Master.eSettings.NoDisplayFanart = Me.chkNoDisplayFanart.Checked
             Master.eSettings.NoDisplayPoster = Me.chkNoDisplayPoster.Checked
+            Master.eSettings.NoDisplayFanartSmall = Me.chkNoDisplayFanartSmall.Checked
             Master.eSettings.OutlineForPlot = Me.chkOutlineForPlot.Checked
 
             Master.eSettings.AllwaysDisplayGenresText = Me.chkShowGenresText.Checked
@@ -3761,6 +3773,7 @@ Public Class dlgSettings
         Me.gbGenreFilter.Text = Master.eLang.GetString(454, "Genre Language Filter")
         Me.chkNoDisplayFanart.Text = Master.eLang.GetString(455, "Do Not Display Fanart")
         Me.chkNoDisplayPoster.Text = Master.eLang.GetString(456, "Do Not Display Poster")
+        Me.chkNoDisplayFanartSmall.Text = Master.eLang.GetString(967, "Do Not Display Small Fanart")
         Me.chkShowDims.Text = Master.eLang.GetString(457, "Display Image Dimensions")
         Me.chkMarkNew.Text = Master.eLang.GetString(459, "Mark New Movies")
         Me.GroupBox2.Text = Master.eLang.GetString(460, "Media List Options")

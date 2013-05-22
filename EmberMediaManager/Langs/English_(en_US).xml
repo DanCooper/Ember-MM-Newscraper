@@ -964,4 +964,6 @@
 	<string id="963">TV Image Selection</string>
 	<string id="964">Current Image:</string>
 	<string id="965">Use Plot for Outline if Outline is Empty</string>
+	<string id="966">Enable Images Glass Overlay</string>
+	<string id="967">Do Not Display Small Fanart</string>
 </strings>
