@@ -567,6 +567,7 @@ Partial Class dlgSettings
         Me.chkLockTagline = New System.Windows.Forms.CheckBox()
         Me.chkLockTitle = New System.Windows.Forms.CheckBox()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.lblLimit3 = New System.Windows.Forms.Label()
         Me.txtOutlineLimit = New System.Windows.Forms.TextBox()
         Me.chkPlotForOutline = New System.Windows.Forms.CheckBox()
         Me.chkUseMPAAFSK = New System.Windows.Forms.CheckBox()
@@ -594,7 +595,7 @@ Partial Class dlgSettings
         Me.chkDeleteAllTrailers = New System.Windows.Forms.CheckBox()
         Me.chkOverwriteTrailer = New System.Windows.Forms.CheckBox()
         Me.chkDownloadTrailer = New System.Windows.Forms.CheckBox()
-        Me.lblLimit3 = New System.Windows.Forms.Label()
+        Me.chkNoDisplayFanartSmall = New System.Windows.Forms.CheckBox()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox29.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -705,6 +706,7 @@ Partial Class dlgSettings
         '
         'GroupBox4
         '
+        Me.GroupBox4.Controls.Add(Me.chkNoDisplayFanartSmall)
         Me.GroupBox4.Controls.Add(Me.chkSpecialDateAdd)
         Me.GroupBox4.Controls.Add(Me.chkShowGenresText)
         Me.GroupBox4.Controls.Add(Me.chkSourceFromFolder)
@@ -2258,7 +2260,7 @@ Partial Class dlgSettings
         Me.pnlGeneral.BackColor = System.Drawing.Color.White
         Me.pnlGeneral.Controls.Add(Me.gbInterface)
         Me.pnlGeneral.Controls.Add(Me.GroupBox4)
-        Me.pnlGeneral.Location = New System.Drawing.Point(1175, 492)
+        Me.pnlGeneral.Location = New System.Drawing.Point(251, 147)
         Me.pnlGeneral.Name = "pnlGeneral"
         Me.pnlGeneral.Size = New System.Drawing.Size(617, 400)
         Me.pnlGeneral.TabIndex = 10
@@ -6708,6 +6710,17 @@ Partial Class dlgSettings
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Miscellaneous"
         '
+        'lblLimit3
+        '
+        Me.lblLimit3.AutoSize = True
+        Me.lblLimit3.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblLimit3.Location = New System.Drawing.Point(202, 57)
+        Me.lblLimit3.Name = "lblLimit3"
+        Me.lblLimit3.Size = New System.Drawing.Size(34, 13)
+        Me.lblLimit3.TabIndex = 70
+        Me.lblLimit3.Text = "Limit:"
+        Me.lblLimit3.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
         'txtOutlineLimit
         '
         Me.txtOutlineLimit.Enabled = False
@@ -7014,16 +7027,16 @@ Partial Class dlgSettings
         Me.chkDownloadTrailer.Text = "Enable Trailer Support"
         Me.chkDownloadTrailer.UseVisualStyleBackColor = True
         '
-        'lblLimit3
+        'chkNoDisplayFanartSmall
         '
-        Me.lblLimit3.AutoSize = True
-        Me.lblLimit3.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblLimit3.Location = New System.Drawing.Point(202, 57)
-        Me.lblLimit3.Name = "lblLimit3"
-        Me.lblLimit3.Size = New System.Drawing.Size(34, 13)
-        Me.lblLimit3.TabIndex = 70
-        Me.lblLimit3.Text = "Limit:"
-        Me.lblLimit3.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.chkNoDisplayFanartSmall.AutoSize = True
+        Me.chkNoDisplayFanartSmall.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkNoDisplayFanartSmall.Location = New System.Drawing.Point(10, 210)
+        Me.chkNoDisplayFanartSmall.Name = "chkNoDisplayFanartSmall"
+        Me.chkNoDisplayFanartSmall.Size = New System.Drawing.Size(169, 17)
+        Me.chkNoDisplayFanartSmall.TabIndex = 11
+        Me.chkNoDisplayFanartSmall.Text = "Do Not Display Small Fanart"
+        Me.chkNoDisplayFanartSmall.UseVisualStyleBackColor = True
         '
         'dlgSettings
         '
@@ -7797,4 +7810,5 @@ Partial Class dlgSettings
     Friend WithEvents txtOutlineLimit As System.Windows.Forms.TextBox
     Friend WithEvents chkPlotForOutline As System.Windows.Forms.CheckBox
     Friend WithEvents lblLimit3 As System.Windows.Forms.Label
+    Friend WithEvents chkNoDisplayFanartSmall As System.Windows.Forms.CheckBox
 End Class

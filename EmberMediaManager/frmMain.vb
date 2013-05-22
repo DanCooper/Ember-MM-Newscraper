@@ -70,6 +70,7 @@ Public Class frmMain
     Private MainAllSeason As New Images
     Private MainFanart As New Images
     Private MainPoster As New Images
+    Private MainFanartSmall As New Images
     Private pbGenre() As PictureBox = Nothing
     Private pnlGenre() As Panel = Nothing
     Private prevText As String = String.Empty
@@ -107,6 +108,8 @@ Public Class frmMain
     'Theme Information
     Private _postermaxheight As Integer = 160
     Private _postermaxwidth As Integer = 160
+    Private _fanartsmallmaxheight As Integer = 160
+    Private _fanartsmallmaxwidth As Integer = 285
     Private tTheme As New Theming
     Private _genrepanelcolor As Color = Color.Gainsboro
     Private _ipmid As Integer = 280
@@ -176,6 +179,24 @@ Public Class frmMain
         End Set
     End Property
 
+    Public Property FanartSmallMaxHeight() As Integer
+        Get
+            Return _fanartsmallmaxheight
+        End Get
+        Set(ByVal value As Integer)
+            _fanartsmallmaxheight = value
+        End Set
+    End Property
+
+    Public Property FanartSmallMaxWidth() As Integer
+        Get
+            Return _fanartsmallmaxwidth
+        End Get
+        Set(ByVal value As Integer)
+            _fanartsmallmaxwidth = value
+        End Set
+    End Property
+
 #End Region 'Properties
 
 #Region "Methods"
@@ -236,6 +257,13 @@ Public Class frmMain
                 End If
                 .pnlPoster.Visible = False
                 .MainPoster.Clear()
+
+                If Not IsNothing(.pbFanartSmall.Image) Then
+                    .pbFanartSmall.Image.Dispose()
+                    .pbFanartSmall.Image = Nothing
+                End If
+                .pnlFanartSmall.Visible = False
+                .MainFanartSmall.Clear()
 
                 If WithAllSeasons Then
                     If Not IsNothing(.pbAllSeason.Image) Then
@@ -843,6 +871,7 @@ Public Class frmMain
             Dim Args As Arguments = DirectCast(e.Argument, Arguments)
             Me.MainPoster.Clear()
             Me.MainFanart.Clear()
+            Me.MainFanartSmall.Clear()
 
             If bwLoadEpInfo.CancellationPending Then
                 e.Cancel = True
@@ -857,6 +886,7 @@ Public Class frmMain
             End If
 
             If Not Master.eSettings.NoDisplayPoster Then Me.MainPoster.FromFile(Master.currShow.EpPosterPath)
+            If Not Master.eSettings.NoDisplayFanartSmall Then Me.MainFanartSmall.FromFile(Master.currShow.EpFanartPath)
 
             If bwLoadEpInfo.CancellationPending Then
                 e.Cancel = True
@@ -918,6 +948,7 @@ Public Class frmMain
             Dim Args As Arguments = DirectCast(e.Argument, Arguments)
             Me.MainFanart.Clear()
             Me.MainPoster.Clear()
+            Me.MainFanartSmall.Clear()
 
             If bwLoadInfo.CancellationPending Then
                 e.Cancel = True
@@ -939,6 +970,7 @@ Public Class frmMain
             End If
 
             If Not Master.eSettings.NoDisplayPoster Then Me.MainPoster.FromFile(Master.currMovie.PosterPath)
+            If Not Master.eSettings.NoDisplayFanartSmall Then Me.MainFanartSmall.FromFile(Master.currMovie.FanartPath)
             'read nfo if it's there
 
             'wait for mediainfo to update the nfo
@@ -982,6 +1014,7 @@ Public Class frmMain
             Dim Args As Arguments = DirectCast(e.Argument, Arguments)
             Me.MainPoster.Clear()
             Me.MainFanart.Clear()
+            Me.MainFanartSmall.Clear()
 
             Master.currShow = Master.DB.LoadTVSeasonFromDB(Args.ID, Args.Season, True)
 
@@ -991,6 +1024,7 @@ Public Class frmMain
             End If
 
             If Not Master.eSettings.NoDisplayPoster Then Me.MainPoster.FromFile(Master.currShow.SeasonPosterPath)
+            If Not Master.eSettings.NoDisplayFanartSmall Then Me.MainFanartSmall.FromFile(Master.currShow.SeasonFanartPath)
 
             If bwLoadSeasonInfo.CancellationPending Then
                 e.Cancel = True
@@ -1036,6 +1070,7 @@ Public Class frmMain
             Dim Args As Arguments = DirectCast(e.Argument, Arguments)
             Me.MainFanart.Clear()
             Me.MainPoster.Clear()
+            Me.MainFanartSmall.Clear()
 
             If bwLoadShowInfo.CancellationPending Then
                 e.Cancel = True
@@ -1057,6 +1092,7 @@ Public Class frmMain
             End If
 
             If Not Master.eSettings.NoDisplayPoster Then Me.MainPoster.FromFile(Master.currShow.ShowPosterPath)
+            If Not Master.eSettings.NoDisplayFanartSmall Then Me.MainFanartSmall.FromFile(Master.currShow.ShowFanartPath)
 
             If Master.eSettings.DisplayAllSeason AndAlso Master.eSettings.AllSeasonPosterEnabled Then
                 Me.MainAllSeason.FromFile(Master.currShow.SeasonPosterPath)
@@ -4747,6 +4783,31 @@ doCancel:
                 End If
             End If
 
+            If Not IsNothing(Me.MainFanartSmall.Image) Then
+                Me.pbFanartSmallCache.Image = Me.MainFanartSmall.Image
+                ImageUtils.ResizePB(Me.pbFanartSmall, Me.pbFanartSmallCache, Me.FanartSmallMaxHeight, Me.FanartSmallMaxWidth)
+                If AdvancedSettings.GetBooleanSetting("PosterGlassOverlay", True) Then ImageUtils.SetGlassOverlay(Me.pbFanartSmall)
+                Me.pnlFanartSmall.Size = New Size(Me.pbFanartSmall.Width + 10, Me.pbFanartSmall.Height + 10)
+                Me.pnlFanartSmall.Location = New Point(Me.pnlPoster.Location.X + Me.pnlPoster.Width + 10, Me.pnlPoster.Location.Y)
+
+                If Master.eSettings.ShowDims Then
+                    g = Graphics.FromImage(pbFanartSmall.Image)
+                    g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+                    strSize = String.Format("{0} x {1}", Me.MainFanartSmall.Image.Width, Me.MainFanartSmall.Image.Height)
+                    lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
+                    rect = New Rectangle(Convert.ToInt32((pbFanartSmall.Image.Width - lenSize) / 2 - 15), Me.pbFanartSmall.Height - 25, lenSize + 30, 25)
+                    ImageUtils.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
+                    g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((pbFanartSmall.Image.Width - lenSize) / 2), Me.pbFanartSmall.Height - 20)
+                End If
+
+                Me.pbFanartSmall.Location = New Point(4, 4)
+            Else
+                If Not IsNothing(Me.pbFanartSmall.Image) Then
+                    Me.pbFanartSmall.Image.Dispose()
+                    Me.pbFanartSmall.Image = Nothing
+                End If
+            End If
+
             If Not IsNothing(Me.MainFanart.Image) Then
                 Me.pbFanartCache.Image = Me.MainFanart.Image
 
@@ -4790,6 +4851,7 @@ doCancel:
             Me.pnlTop.Visible = True
             If Not IsNothing(Me.pbAllSeason.Image) Then Me.pnlAllSeason.Visible = True
             If Not IsNothing(Me.pbPoster.Image) Then Me.pnlPoster.Visible = True
+            If Not IsNothing(Me.pbFanartSmall.Image) Then Me.pnlFanartSmall.Visible = True
             If Not IsNothing(Me.pbMPAA.Image) Then Me.pnlMPAA.Visible = True
             For i As Integer = 0 To UBound(Me.pnlGenre)
                 Me.pnlGenre(i).Visible = True
@@ -4938,6 +5000,31 @@ doCancel:
                 End If
             End If
 
+            If Not IsNothing(Me.MainFanartSmall.Image) Then
+                Me.pbFanartSmallCache.Image = Me.MainFanartSmall.Image
+                ImageUtils.ResizePB(Me.pbFanartSmall, Me.pbFanartSmallCache, Me.FanartSmallMaxHeight, Me.FanartSmallMaxWidth)
+                If AdvancedSettings.GetBooleanSetting("PosterGlassOverlay", True) Then ImageUtils.SetGlassOverlay(Me.pbFanartSmall)
+                Me.pnlFanartSmall.Size = New Size(Me.pbFanartSmall.Width + 10, Me.pbFanartSmall.Height + 10)
+                Me.pnlFanartSmall.Location = New Point(Me.pnlPoster.Location.X + Me.pnlPoster.Width + 10, Me.pnlPoster.Location.Y)
+
+                If Master.eSettings.ShowDims Then
+                    g = Graphics.FromImage(pbFanartSmall.Image)
+                    g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+                    strSize = String.Format("{0} x {1}", Me.MainFanartSmall.Image.Width, Me.MainFanartSmall.Image.Height)
+                    lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
+                    rect = New Rectangle(Convert.ToInt32((pbFanartSmall.Image.Width - lenSize) / 2 - 15), Me.pbFanartSmall.Height - 25, lenSize + 30, 25)
+                    ImageUtils.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
+                    g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((pbFanartSmall.Image.Width - lenSize) / 2), Me.pbFanartSmall.Height - 20)
+                End If
+
+                Me.pbFanartSmall.Location = New Point(4, 4)
+            Else
+                If Not IsNothing(Me.pbFanartSmall.Image) Then
+                    Me.pbFanartSmall.Image.Dispose()
+                    Me.pbFanartSmall.Image = Nothing
+                End If
+            End If
+
             If Not IsNothing(Me.MainFanart.Image) Then
                 Me.pbFanartCache.Image = Me.MainFanart.Image
 
@@ -4984,6 +5071,7 @@ doCancel:
 
             Me.pnlTop.Visible = True
             If Not IsNothing(Me.pbPoster.Image) Then Me.pnlPoster.Visible = True
+            If Not IsNothing(Me.pbFanartSmall.Image) Then Me.pnlFanartSmall.Visible = True
             If Not IsNothing(Me.pbMPAA.Image) Then Me.pnlMPAA.Visible = True
             For i As Integer = 0 To UBound(Me.pnlGenre)
                 Me.pnlGenre(i).Visible = True
@@ -5086,6 +5174,31 @@ doCancel:
                 End If
             End If
 
+            If Not IsNothing(Me.MainFanartSmall.Image) Then
+                Me.pbFanartSmallCache.Image = Me.MainFanartSmall.Image
+                ImageUtils.ResizePB(Me.pbFanartSmall, Me.pbFanartSmallCache, Me.FanartSmallMaxHeight, Me.FanartSmallMaxWidth)
+                If AdvancedSettings.GetBooleanSetting("PosterGlassOverlay", True) Then ImageUtils.SetGlassOverlay(Me.pbFanartSmall)
+                Me.pnlFanartSmall.Size = New Size(Me.pbFanartSmall.Width + 10, Me.pbFanartSmall.Height + 10)
+                Me.pnlFanartSmall.Location = New Point(Me.pnlPoster.Location.X + Me.pnlPoster.Width + 10, Me.pnlPoster.Location.Y)
+
+                If Master.eSettings.ShowDims Then
+                    g = Graphics.FromImage(pbFanartSmall.Image)
+                    g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+                    strSize = String.Format("{0} x {1}", Me.MainFanartSmall.Image.Width, Me.MainFanartSmall.Image.Height)
+                    lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
+                    rect = New Rectangle(Convert.ToInt32((pbFanartSmall.Image.Width - lenSize) / 2 - 15), Me.pbFanartSmall.Height - 25, lenSize + 30, 25)
+                    ImageUtils.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
+                    g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((pbFanartSmall.Image.Width - lenSize) / 2), Me.pbFanartSmall.Height - 20)
+                End If
+
+                Me.pbFanartSmall.Location = New Point(4, 4)
+            Else
+                If Not IsNothing(Me.pbFanartSmall.Image) Then
+                    Me.pbFanartSmall.Image.Dispose()
+                    Me.pbFanartSmall.Image = Nothing
+                End If
+            End If
+
             If Not IsNothing(Me.MainFanart.Image) Then
                 Me.pbFanartCache.Image = Me.MainFanart.Image
 
@@ -5129,6 +5242,7 @@ doCancel:
             Me.pnlTop.Visible = True
             If Not IsNothing(Me.pbPoster.Image) Then Me.pnlPoster.Visible = True
             If Not IsNothing(Me.pbAllSeason.Image) Then Me.pnlAllSeason.Visible = True
+            If Not IsNothing(Me.pbFanartSmall.Image) Then Me.pnlFanartSmall.Visible = True
             If Not IsNothing(Me.pbMPAA.Image) Then Me.pnlMPAA.Visible = True
             For i As Integer = 0 To UBound(Me.pnlGenre)
                 Me.pnlGenre(i).Visible = True
@@ -5232,6 +5346,31 @@ doCancel:
                 End If
             End If
 
+            If Not IsNothing(Me.MainFanartSmall.Image) Then
+                Me.pbFanartSmallCache.Image = Me.MainFanartSmall.Image
+                ImageUtils.ResizePB(Me.pbFanartSmall, Me.pbFanartSmallCache, Me.FanartSmallMaxHeight, Me.FanartSmallMaxWidth)
+                If AdvancedSettings.GetBooleanSetting("PosterGlassOverlay", True) Then ImageUtils.SetGlassOverlay(Me.pbFanartSmall)
+                Me.pnlFanartSmall.Size = New Size(Me.pbFanartSmall.Width + 10, Me.pbFanartSmall.Height + 10)
+                Me.pnlFanartSmall.Location = New Point(Me.pnlPoster.Location.X + Me.pnlPoster.Width + 10, Me.pnlPoster.Location.Y)
+                
+                If Master.eSettings.ShowDims Then
+                    g = Graphics.FromImage(pbFanartSmall.Image)
+                    g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+                    strSize = String.Format("{0} x {1}", Me.MainFanartSmall.Image.Width, Me.MainFanartSmall.Image.Height)
+                    lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
+                    rect = New Rectangle(Convert.ToInt32((pbFanartSmall.Image.Width - lenSize) / 2 - 15), Me.pbFanartSmall.Height - 25, lenSize + 30, 25)
+                    ImageUtils.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
+                    g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((pbFanartSmall.Image.Width - lenSize) / 2), Me.pbFanartSmall.Height - 20)
+                End If
+
+                Me.pbFanartSmall.Location = New Point(4, 4)
+            Else
+                If Not IsNothing(Me.pbFanartSmall.Image) Then
+                    Me.pbFanartSmall.Image.Dispose()
+                    Me.pbFanartSmall.Image = Nothing
+                End If
+            End If
+
             If Not IsNothing(Me.MainFanart.Image) Then
                 Me.pbFanartCache.Image = Me.MainFanart.Image
 
@@ -5300,6 +5439,7 @@ doCancel:
             Me.pnlTop.Visible = True
             If Not IsNothing(Me.pbAllSeason.Image) Then Me.pnlAllSeason.Visible = True
             If Not IsNothing(Me.pbPoster.Image) Then Me.pnlPoster.Visible = True
+            If Not IsNothing(Me.pbFanartSmall.Image) Then Me.pnlFanartSmall.Visible = True
             If Not IsNothing(Me.pbMPAA.Image) Then Me.pnlMPAA.Visible = True
             For i As Integer = 0 To UBound(Me.pnlGenre)
                 Me.pnlGenre(i).Visible = True
@@ -6922,6 +7062,18 @@ doCancel:
             If Not IsNothing(Me.pbPoster.Image) Then
                 Using dImgView As New dlgImgView
                     dImgView.ShowDialog(Me.pbPosterCache.Image)
+                End Using
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub pbFanartSmall_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbFanartSmall.DoubleClick
+        Try
+            If Not IsNothing(Me.pbFanartSmall.Image) Then
+                Using dImgView As New dlgImgView
+                    dImgView.ShowDialog(Me.pbFanartSmallCache.Image)
                 End Using
             End If
         Catch ex As Exception

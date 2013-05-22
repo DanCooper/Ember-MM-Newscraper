@@ -32,6 +32,8 @@ fontstyle code 5.
     <posterbackcolor>-2302756</posterbackcolor>
     <postermaxwidth>160</postermaxwidth>
     <postermaxheight>160</postermaxheight>
+    <fanartsmallmaxwidth>285</fanartsmallmaxwidth>
+    <fanartsmallmaxheight>160</fanartsmallmaxheight>
     <mpaabackcolor>-2302756</mpaabackcolor>
     <genrebackcolor>-2302756</genrebackcolor>
   </images>
