@@ -189,7 +189,7 @@ CREATE TABLE TVEps(
 	NeedsSave BOOL NOT NULL DEFAULT False,
 	Missing BOOL NOT NULL DEFAULT False,
 	Playcount TEXT,
-	HasWatched BOOL NOT NULL DEFAULT False
+	HasWatched BOOL NOT NULL DEFAULT False,
 	DisplaySeason integer,
 	DisplayEpisode integer
 	);

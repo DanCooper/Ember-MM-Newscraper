@@ -26,7 +26,9 @@ Imports EmberAPI
 
 Public Class dlgWizard
 
-	Private tLangList As New List(Of Containers.TVLanguage)
+    Private tLangList As New List(Of Containers.TVLanguage)
+    Private tLang As String
+    Private tmppath As String = String.Empty
 
 #Region "Methods"
 
@@ -54,9 +56,11 @@ Public Class dlgWizard
 	End Sub
 
 	Private Sub btnMovieAddFolders_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieAddFolder.Click
-		Using dSource As New dlgMovieSource
-			If dSource.ShowDialog = Windows.Forms.DialogResult.OK Then RefreshSources()
-		End Using
+        Using dSource As New dlgMovieSource()
+            If dSource.ShowDialog(tmppath) = Windows.Forms.DialogResult.OK Then
+                RefreshSources()
+            End If
+        End Using
 	End Sub
 
 	Private Sub btnMovieRem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieRem.Click
@@ -88,9 +92,9 @@ Public Class dlgWizard
 
 	Private Sub btnTVAddSource_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVAddSource.Click
 		Using dSource As New dlgTVSource
-			If dSource.ShowDialog = Windows.Forms.DialogResult.OK Then
-				RefreshTVSources()
-			End If
+            If dSource.ShowDialog(tmppath) = Windows.Forms.DialogResult.OK Then
+                RefreshTVSources()
+            End If
 		End Using
 	End Sub
 
@@ -104,10 +108,11 @@ Public Class dlgWizard
 	End Sub
 
 	Private Sub cbIntLang_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbIntLang.SelectedIndexChanged
-		If Not String.IsNullOrEmpty(Me.cbIntLang.SelectedItem.ToString) Then
-			Master.eLang.LoadAllLanguage(Me.cbIntLang.SelectedItem.ToString, True)
-			Me.SetUp()
-		End If
+        If Not String.IsNullOrEmpty(Me.cbIntLang.SelectedItem.ToString) AndAlso Not (Me.cbIntLang.SelectedItem.ToString = tLang) Then
+            Master.eLang.LoadAllLanguage(Me.cbIntLang.SelectedItem.ToString, True)
+            tLang = Me.cbIntLang.SelectedItem.ToString
+            Me.SetUp()
+        End If
 	End Sub
 
 	Private Sub dlgWizard_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
@@ -144,8 +149,9 @@ Public Class dlgWizard
 		Me.chkMovieNameNFO.Checked = Master.eSettings.MovieNameNFO
 		Me.chkMovieNameNFOStack.Checked = Master.eSettings.MovieNameNFOStack
 		Me.chkMovieNameMultiOnly.Checked = Master.eSettings.MovieNameMultiOnly
-		Me.chkVideoTSParentXBMC.Checked = Master.eSettings.VideoTSParentXBMC
-		Me.cbIntLang.SelectedItem = Master.eSettings.Language
+        Me.chkVideoTSParentXBMC.Checked = Master.eSettings.VideoTSParentXBMC
+        tLang = Master.eSettings.Language
+        Me.cbIntLang.SelectedItem = Master.eSettings.Language
 		Me.chkSeasonAllTBN.Checked = Master.eSettings.SeasonAllTBN
 		Me.chkSeasonAllJPG.Checked = Master.eSettings.SeasonAllJPG
 		Me.chkShowTBN.Checked = Master.eSettings.ShowTBN
@@ -234,7 +240,8 @@ Public Class dlgWizard
 		For Each s As Structures.MovieSource In Master.MovieSources
 			lvItem = New ListViewItem(s.id)
 			lvItem.SubItems.Add(s.Name)
-			lvItem.SubItems.Add(s.Path)
+            lvItem.SubItems.Add(s.Path)
+            tmppath = s.Path
 			lvItem.SubItems.Add(If(s.Recursive, "Yes", "No"))
 			lvItem.SubItems.Add(If(s.UseFolderName, "Yes", "No"))
 			lvItem.SubItems.Add(If(s.IsSingle, "Yes", "No"))
@@ -252,8 +259,9 @@ Public Class dlgWizard
 				While SQLreader.Read
 					lvItem = New ListViewItem(SQLreader("ID").ToString)
 					lvItem.SubItems.Add(SQLreader("Name").ToString)
-					lvItem.SubItems.Add(SQLreader("Path").ToString)
-					lvTVSources.Items.Add(lvItem)
+                    lvItem.SubItems.Add(SQLreader("Path").ToString)
+                    tmppath = SQLreader("Path").ToString
+                    lvTVSources.Items.Add(lvItem)
 				End While
 			End Using
 		End Using
