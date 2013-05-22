@@ -424,6 +424,30 @@ Public Class StringUtils
         Return String.Empty
     End Function
 
+    Public Shared Function ShortenOutline(ByVal fOutline As String, ByVal fLimit As Integer) As String
+        Dim MaxLength As Integer = fLimit - 2
+        Dim FullLenght As Integer = fOutline.Length
+        Dim sOutline As String = fOutline
+
+        If Not String.IsNullOrEmpty(sOutline) AndAlso MaxLength > 0 AndAlso FullLenght > MaxLength Then
+            sOutline = Strings.Left(sOutline, MaxLength)
+            sOutline = Strings.Left(sOutline, (sOutline.LastIndexOf(".") + 1))
+            If sOutline.Length > 0 Then
+                sOutline = String.Concat(sOutline, "..")
+            Else
+                sOutline = Strings.Left(fOutline, (fOutline.IndexOf(".") + 1))
+                sOutline = String.Concat(sOutline, "..")
+            End If
+            Return sOutline
+        Else
+            sOutline = Strings.Left(fOutline, (fOutline.IndexOf(".") + 1))
+            sOutline = String.Concat(sOutline, "..")
+            Return sOutline
+        End If
+
+        Return fOutline
+    End Function
+
 #End Region 'Methods
 
 #Region "Nested Types"

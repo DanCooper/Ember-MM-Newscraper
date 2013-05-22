@@ -567,6 +567,8 @@ Partial Class dlgSettings
         Me.chkLockTagline = New System.Windows.Forms.CheckBox()
         Me.chkLockTitle = New System.Windows.Forms.CheckBox()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.txtOutlineLimit = New System.Windows.Forms.TextBox()
+        Me.chkPlotForOutline = New System.Windows.Forms.CheckBox()
         Me.chkUseMPAAFSK = New System.Windows.Forms.CheckBox()
         Me.chkOnlyValueForCert = New System.Windows.Forms.CheckBox()
         Me.cbForce = New System.Windows.Forms.ComboBox()
@@ -592,6 +594,7 @@ Partial Class dlgSettings
         Me.chkDeleteAllTrailers = New System.Windows.Forms.CheckBox()
         Me.chkOverwriteTrailer = New System.Windows.Forms.CheckBox()
         Me.chkDownloadTrailer = New System.Windows.Forms.CheckBox()
+        Me.lblLimit3 = New System.Windows.Forms.Label()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox29.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -6683,6 +6686,9 @@ Partial Class dlgSettings
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.lblLimit3)
+        Me.GroupBox1.Controls.Add(Me.txtOutlineLimit)
+        Me.GroupBox1.Controls.Add(Me.chkPlotForOutline)
         Me.GroupBox1.Controls.Add(Me.chkUseMPAAFSK)
         Me.GroupBox1.Controls.Add(Me.chkOnlyValueForCert)
         Me.GroupBox1.Controls.Add(Me.cbForce)
@@ -6701,6 +6707,26 @@ Partial Class dlgSettings
         Me.GroupBox1.TabIndex = 0
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Miscellaneous"
+        '
+        'txtOutlineLimit
+        '
+        Me.txtOutlineLimit.Enabled = False
+        Me.txtOutlineLimit.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtOutlineLimit.Location = New System.Drawing.Point(240, 54)
+        Me.txtOutlineLimit.Name = "txtOutlineLimit"
+        Me.txtOutlineLimit.Size = New System.Drawing.Size(39, 22)
+        Me.txtOutlineLimit.TabIndex = 69
+        '
+        'chkPlotForOutline
+        '
+        Me.chkPlotForOutline.AutoSize = True
+        Me.chkPlotForOutline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkPlotForOutline.Location = New System.Drawing.Point(78, 31)
+        Me.chkPlotForOutline.Name = "chkPlotForOutline"
+        Me.chkPlotForOutline.Size = New System.Drawing.Size(228, 17)
+        Me.chkPlotForOutline.TabIndex = 68
+        Me.chkPlotForOutline.Text = "Use Plot  for Outline if Outline is Empty"
+        Me.chkPlotForOutline.UseVisualStyleBackColor = True
         '
         'chkUseMPAAFSK
         '
@@ -6836,7 +6862,7 @@ Partial Class dlgSettings
         Me.pnlScraper.Controls.Add(Me.gbOptions)
         Me.pnlScraper.Controls.Add(Me.GroupBox1)
         Me.pnlScraper.Controls.Add(Me.GroupBox26)
-        Me.pnlScraper.Location = New System.Drawing.Point(1003, 606)
+        Me.pnlScraper.Location = New System.Drawing.Point(900, 900)
         Me.pnlScraper.Name = "pnlScraper"
         Me.pnlScraper.Size = New System.Drawing.Size(617, 400)
         Me.pnlScraper.TabIndex = 14
@@ -6987,6 +7013,17 @@ Partial Class dlgSettings
         Me.chkDownloadTrailer.TabIndex = 0
         Me.chkDownloadTrailer.Text = "Enable Trailer Support"
         Me.chkDownloadTrailer.UseVisualStyleBackColor = True
+        '
+        'lblLimit3
+        '
+        Me.lblLimit3.AutoSize = True
+        Me.lblLimit3.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblLimit3.Location = New System.Drawing.Point(202, 57)
+        Me.lblLimit3.Name = "lblLimit3"
+        Me.lblLimit3.Size = New System.Drawing.Size(34, 13)
+        Me.lblLimit3.TabIndex = 70
+        Me.lblLimit3.Text = "Limit:"
+        Me.lblLimit3.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'dlgSettings
         '
@@ -7757,4 +7794,7 @@ Partial Class dlgSettings
     Friend WithEvents chkDeleteAllTrailers As System.Windows.Forms.CheckBox
     Friend WithEvents chkOverwriteTrailer As System.Windows.Forms.CheckBox
     Friend WithEvents chkDownloadTrailer As System.Windows.Forms.CheckBox
+    Friend WithEvents txtOutlineLimit As System.Windows.Forms.TextBox
+    Friend WithEvents chkPlotForOutline As System.Windows.Forms.CheckBox
+    Friend WithEvents lblLimit3 As System.Windows.Forms.Label
 End Class

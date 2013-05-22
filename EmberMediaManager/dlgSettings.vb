@@ -1602,8 +1602,24 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
+    Private Sub chkPlotForOutline_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkPlotForOutline.CheckedChanged
+        Me.SetApplyButton(True)
+
+        Me.txtOutlineLimit.Enabled = Me.chkPlotForOutline.Checked
+        If Not Me.chkPlotForOutline.Checked Then
+            Me.txtOutlineLimit.Enabled = False
+            Me.txtOutlineLimit.Text = "0"
+        End If
+    End Sub
+
     Private Sub chkPlot_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkPlot.CheckedChanged
         Me.SetApplyButton(True)
+
+        Me.chkPlotForOutline.Enabled = Me.chkPlot.Checked
+        If Not Me.chkPlot.Checked Then
+            Me.chkPlotForOutline.Checked = False
+            Me.txtOutlineLimit.Enabled = False
+        End If
     End Sub
 
     Private Sub chkPosterJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkPosterJPG.CheckedChanged
@@ -2394,7 +2410,7 @@ Public Class dlgSettings
             Me.chkNoDisplayFanart.Checked = Master.eSettings.NoDisplayFanart
             Me.chkNoDisplayPoster.Checked = Master.eSettings.NoDisplayPoster
             Me.chkOutlineForPlot.Checked = Master.eSettings.OutlineForPlot
-
+            Me.chkPlotForOutline.Checked = Master.eSettings.PlotForOutline
             Me.chkShowGenresText.Checked = Master.eSettings.AllwaysDisplayGenresText
             Me.chkDisplayYear.Checked = Master.eSettings.DisplayYear
 
@@ -2437,6 +2453,7 @@ Public Class dlgSettings
             Me.chkCountry.Checked = Master.eSettings.FieldCountry
             Me.txtActorLimit.Text = Master.eSettings.ActorLimit.ToString
             Me.txtGenreLimit.Text = Master.eSettings.GenreLimit.ToString
+            Me.txtOutlineLimit.Text = Master.eSettings.OutlineLimit.ToString
 
             Me.chkMissingPoster.Checked = Master.eSettings.MissingFilterPoster
             Me.chkMissingFanart.Checked = Master.eSettings.MissingFilterFanart
@@ -3491,6 +3508,7 @@ Public Class dlgSettings
             Master.eSettings.FieldTrailer = Me.chkTrailer.Checked
             Master.eSettings.FieldTagline = Me.chkTagline.Checked
             Master.eSettings.FieldOutline = Me.chkOutline.Checked
+            Master.eSettings.PlotForOutline = Me.chkPlotForOutline.Checked
             Master.eSettings.FieldPlot = Me.chkPlot.Checked
             Master.eSettings.FieldCast = Me.chkCast.Checked
             Master.eSettings.FieldDirector = Me.chkDirector.Checked
@@ -3510,6 +3528,11 @@ Public Class dlgSettings
                 Master.eSettings.GenreLimit = Convert.ToInt32(Me.txtGenreLimit.Text)
             Else
                 Master.eSettings.GenreLimit = 0
+            End If
+            If Not String.IsNullOrEmpty(Me.txtOutlineLimit.Text) Then
+                Master.eSettings.OutlineLimit = Convert.ToInt32(Me.txtOutlineLimit.Text)
+            Else
+                Master.eSettings.OutlineLimit = 0
             End If
 
             Master.eSettings.MissingFilterPoster = Me.chkMissingPoster.Checked
@@ -3800,6 +3823,7 @@ Public Class dlgSettings
         Me.chkLockMPAA.Text = Master.eLang.GetString(881, "Lock MPAA/Certification")
         Me.chkUseMPAAFSK.Text = Master.eLang.GetString(882, "Use MPAA as Fallback for FSK Rating")
         Me.chkOutlineForPlot.Text = Master.eLang.GetString(508, "Use Outline for Plot if Plot is Empty")
+        Me.chkPlotForOutline.Text = Master.eLang.GetString(965, "Use Plot for Outline if Outline is Empty")
 
         Me.chkCastWithImg.Text = Master.eLang.GetString(510, "Scrape Only Actors With Images")
         Me.chkUseCertForMPAA.Text = Master.eLang.GetString(511, "Use Certification for MPAA")
@@ -3882,6 +3906,7 @@ Public Class dlgSettings
         Me.GroupBox1.Text = Me.GroupBox4.Text
         Me.lblLimit.Text = Master.eLang.GetString(578, "Limit:")
         Me.lblLimit2.Text = Me.lblLimit.Text
+        Me.lblLimit3.Text = Me.lblLimit.Text
         Me.GroupBox27.Text = Master.eLang.GetString(581, "Missing Items Filter")
         Me.chkMissingPoster.Text = Master.eLang.GetString(582, "Check for Poster")
         Me.chkMissingFanart.Text = Master.eLang.GetString(583, "Check for Fanart")
@@ -4442,6 +4467,14 @@ Public Class dlgSettings
     End Sub
 
     Private Sub txtGenreLimit_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtGenreLimit.TextChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub txtOutlineLimit_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtOutlineLimit.KeyPress
+        e.Handled = StringUtils.NumericOnly(e.KeyChar)
+    End Sub
+
+    Private Sub txtOutlineLimit_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtOutlineLimit.TextChanged
         Me.SetApplyButton(True)
     End Sub
 

@@ -200,6 +200,8 @@ Public Class Settings
     Private _overwriteShowFanart As Boolean
     Private _overwriteShowPoster As Boolean
     Private _overwritetrailer As Boolean
+    Private _plotforoutline As Boolean
+    Private _outlinelimit As Integer
     Private _posterheight As Integer
     Private _posterjpg As Boolean
     Private _PosterPrefSizeOnly As Boolean
@@ -1886,6 +1888,23 @@ Public Class Settings
             Me._overwritetrailer = value
         End Set
     End Property
+    Public Property PlotForOutline() As Boolean
+        Get
+            Return Me._plotforoutline
+        End Get
+        Set(ByVal value As Boolean)
+            Me._plotforoutline = value
+        End Set
+    End Property
+
+    Public Property OutlineLimit() As Integer
+        Get
+            Return Me._outlinelimit
+        End Get
+        Set(ByVal value As Integer)
+            Me._outlinelimit = value
+        End Set
+    End Property
 
     Public Property PosterHeight() As Integer
         Get
@@ -3397,6 +3416,8 @@ Public Class Settings
         Me._nodisplayposter = False
         Me._nodisplayfanart = False
         Me._outlineforplot = False
+        Me._plotforoutline = False
+        Me._outlinelimit = 350
         Me._sortpath = String.Empty
         Me._allwaysdisplaygenrestext = False
         Me._displayyear = False
