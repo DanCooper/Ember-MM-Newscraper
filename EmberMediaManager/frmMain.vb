@@ -1352,7 +1352,6 @@ Public Class frmMain
                                         'End If
                                     End If
                                 End If
-
                             ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
                                 If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
                                     MsgBox(Master.eLang.GetString(927, "Fanart of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(929, "No Preferred Size:"))
@@ -3195,6 +3194,98 @@ doCancel:
         End Try
     End Sub
 
+    Private Sub dgvMediaList_CellMouseDown(sender As Object, e As System.Windows.Forms.DataGridViewCellMouseEventArgs) Handles dgvMediaList.CellMouseDown
+        Try
+            If e.Button = Windows.Forms.MouseButtons.Right And Me.dgvMediaList.RowCount > 0 Then
+                If bwCleanDB.IsBusy OrElse bwMovieScraper.IsBusy OrElse bwNonScrape.IsBusy Then
+                    Me.cmnuTitle.Text = Master.eLang.GetString(845, ">> No Item Selected <<")
+                    Return
+                End If
+
+                Me.mnuMediaList.Enabled = False
+
+
+                If e.RowIndex >= 0 AndAlso dgvMediaList.SelectedRows.Count > 0 Then
+
+                    Me.mnuMediaList.Enabled = True
+                    Me.cmnuEditMovie.Visible = False
+                    Me.ScrapingToolStripMenuItem.Visible = True
+                    Me.cmnuRescrape.Visible = False
+                    Me.cmnuSearchNew.Visible = False
+                    'Me.cmuRenamer.Visible = False
+                    Me.cmnuMetaData.Visible = False
+                    Me.cmnuSep2.Visible = False
+
+                    If Me.dgvMediaList.SelectedRows.Count > 1 AndAlso Me.dgvMediaList.Rows(e.RowIndex).Selected Then
+                        Dim setMark As Boolean = False
+                        Dim setLock As Boolean = False
+
+                        Me.cmnuTitle.Text = Master.eLang.GetString(106, ">> Multiple <<")
+
+                        For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
+                            'if any one item is set as unmarked, set menu to mark
+                            'else they are all marked, so set menu to unmark
+                            If Not Convert.ToBoolean(sRow.Cells(11).Value) Then
+                                setMark = True
+                                If setLock Then Exit For
+                            End If
+                            'if any one item is set as unlocked, set menu to lock
+                            'else they are all locked so set menu to unlock
+                            If Not Convert.ToBoolean(sRow.Cells(14).Value) Then
+                                setLock = True
+                                If setMark Then Exit For
+                            End If
+                        Next
+
+                        Me.cmnuMark.Text = If(setMark, Master.eLang.GetString(23, "Mark"), Master.eLang.GetString(107, "Unmark"))
+                        Me.cmnuLock.Text = If(setLock, Master.eLang.GetString(24, "Lock"), Master.eLang.GetString(108, "Unlock"))
+
+                        Me.GenreListToolStripComboBox.Items.Insert(0, Master.eLang.GetString(98, "Select Genre..."))
+                        Me.GenreListToolStripComboBox.SelectedItem = Master.eLang.GetString(98, "Select Genre...")
+                        Me.AddGenreToolStripMenuItem.Enabled = False
+                        Me.SetGenreToolStripMenuItem.Enabled = False
+                        Me.RemoveGenreToolStripMenuItem.Enabled = False
+                    Else
+                        Me.cmnuEditMovie.Visible = True
+                        Me.ScrapingToolStripMenuItem.Visible = True
+                        Me.cmnuRescrape.Visible = True
+                        Me.cmnuSearchNew.Visible = True
+                        Me.cmnuMetaData.Visible = True
+                        Me.cmnuSep.Visible = True
+                        Me.cmnuSep2.Visible = True
+
+                        cmnuTitle.Text = String.Concat(">> ", Me.dgvMediaList.Item(3, e.RowIndex).Value, " <<")
+
+                        If Not Me.dgvMediaList.Rows(e.RowIndex).Selected Then
+                            Me.prevRow = -1
+                            Me.dgvMediaList.CurrentCell = Nothing
+                            Me.dgvMediaList.ClearSelection()
+                            Me.dgvMediaList.Rows(e.RowIndex).Selected = True
+                            Me.dgvMediaList.CurrentCell = Me.dgvMediaList.Item(3, e.RowIndex)
+                        Else
+                            Me.mnuMediaList.Enabled = True
+                        End If
+
+                        Me.cmnuMark.Text = If(Convert.ToBoolean(Me.dgvMediaList.Item(11, e.RowIndex).Value), Master.eLang.GetString(107, "Unmark"), Master.eLang.GetString(23, "Mark"))
+                        Me.cmnuLock.Text = If(Convert.ToBoolean(Me.dgvMediaList.Item(14, e.RowIndex).Value), Master.eLang.GetString(108, "Unlock"), Master.eLang.GetString(24, "Lock"))
+
+                        Me.GenreListToolStripComboBox.Tag = Me.dgvMediaList.Item(27, e.RowIndex).Value
+                        Me.GenreListToolStripComboBox.Items.Insert(0, Master.eLang.GetString(98, "Select Genre..."))
+                        Me.GenreListToolStripComboBox.SelectedItem = Master.eLang.GetString(98, "Select Genre...")
+                        Me.AddGenreToolStripMenuItem.Enabled = False
+                        Me.SetGenreToolStripMenuItem.Enabled = False
+                        Me.RemoveGenreToolStripMenuItem.Enabled = False
+                    End If
+                Else
+                    Me.mnuMediaList.Enabled = False
+                    Me.cmnuTitle.Text = Master.eLang.GetString(845, ">> No Item Selected <<")
+                End If
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
 
     Private Sub dgvMediaList_CellMouseEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMediaList.CellMouseEnter
         'EMM not able to scrape subtitles yet.
@@ -3358,97 +3449,6 @@ doCancel:
                     RemoveHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
                 End Using
 
-            End If
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
-
-    Private Sub dgvMediaList_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles dgvMediaList.MouseDown
-        Try
-            If e.Button = Windows.Forms.MouseButtons.Right And Me.dgvMediaList.RowCount > 0 Then
-                If bwCleanDB.IsBusy OrElse bwMovieScraper.IsBusy OrElse bwNonScrape.IsBusy Then
-                    Me.cmnuTitle.Text = Master.eLang.GetString(845, ">> No Item Selected <<")
-                    Return
-                End If
-
-                Me.mnuMediaList.Enabled = False
-
-                Dim dgvHTI As DataGridView.HitTestInfo = dgvMediaList.HitTest(e.X, e.Y)
-                If dgvHTI.Type = DataGridViewHitTestType.Cell Then
-
-                    If Me.dgvMediaList.SelectedRows.Count > 1 AndAlso Me.dgvMediaList.Rows(dgvHTI.RowIndex).Selected Then
-                        Dim setMark As Boolean = False
-                        Dim setLock As Boolean = False
-
-                        Me.mnuMediaList.Enabled = True
-                        Me.cmnuTitle.Text = Master.eLang.GetString(106, ">> Multiple <<")
-                        Me.cmnuEditMovie.Visible = False
-                        Me.ScrapingToolStripMenuItem.Visible = True
-                        Me.cmnuRescrape.Visible = False
-                        Me.cmnuSearchNew.Visible = False
-                        'Me.cmuRenamer.Visible = False
-                        Me.cmnuMetaData.Visible = False
-                        Me.cmnuSep2.Visible = False
-
-                        For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
-                            'if any one item is set as unmarked, set menu to mark
-                            'else they are all marked, so set menu to unmark
-                            If Not Convert.ToBoolean(sRow.Cells(11).Value) Then
-                                setMark = True
-                                If setLock Then Exit For
-                            End If
-                            'if any one item is set as unlocked, set menu to lock
-                            'else they are all locked so set menu to unlock
-                            If Not Convert.ToBoolean(sRow.Cells(14).Value) Then
-                                setLock = True
-                                If setMark Then Exit For
-                            End If
-                        Next
-
-                        Me.cmnuMark.Text = If(setMark, Master.eLang.GetString(23, "Mark"), Master.eLang.GetString(107, "Unmark"))
-                        Me.cmnuLock.Text = If(setLock, Master.eLang.GetString(24, "Lock"), Master.eLang.GetString(108, "Unlock"))
-
-                        Me.GenreListToolStripComboBox.Items.Insert(0, Master.eLang.GetString(98, "Select Genre..."))
-                        Me.GenreListToolStripComboBox.SelectedItem = Master.eLang.GetString(98, "Select Genre...")
-                        Me.AddGenreToolStripMenuItem.Enabled = False
-                        Me.SetGenreToolStripMenuItem.Enabled = False
-                        Me.RemoveGenreToolStripMenuItem.Enabled = False
-                    Else
-                        Me.cmnuEditMovie.Visible = True
-                        Me.ScrapingToolStripMenuItem.Visible = False
-                        Me.cmnuRescrape.Visible = True
-                        Me.cmnuSearchNew.Visible = True
-                        Me.cmnuMetaData.Visible = True
-                        Me.cmnuSep.Visible = True
-                        Me.cmnuSep2.Visible = True
-
-                        cmnuTitle.Text = String.Concat(">> ", Me.dgvMediaList.Item(3, dgvHTI.RowIndex).Value, " <<")
-
-                        If Not Me.dgvMediaList.Rows(dgvHTI.RowIndex).Selected Then
-                            Me.prevRow = -1
-                            Me.dgvMediaList.CurrentCell = Nothing
-                            Me.dgvMediaList.ClearSelection()
-                            Me.dgvMediaList.Rows(dgvHTI.RowIndex).Selected = True
-                            Me.dgvMediaList.CurrentCell = Me.dgvMediaList.Item(3, dgvHTI.RowIndex)
-                        Else
-                            Me.mnuMediaList.Enabled = True
-                        End If
-
-                        Me.cmnuMark.Text = If(Convert.ToBoolean(Me.dgvMediaList.Item(11, dgvHTI.RowIndex).Value), Master.eLang.GetString(107, "Unmark"), Master.eLang.GetString(23, "Mark"))
-                        Me.cmnuLock.Text = If(Convert.ToBoolean(Me.dgvMediaList.Item(14, dgvHTI.RowIndex).Value), Master.eLang.GetString(108, "Unlock"), Master.eLang.GetString(24, "Lock"))
-
-                        Me.GenreListToolStripComboBox.Tag = Me.dgvMediaList.Item(27, dgvHTI.RowIndex).Value
-                        Me.GenreListToolStripComboBox.Items.Insert(0, Master.eLang.GetString(98, "Select Genre..."))
-                        Me.GenreListToolStripComboBox.SelectedItem = Master.eLang.GetString(98, "Select Genre...")
-                        Me.AddGenreToolStripMenuItem.Enabled = False
-                        Me.SetGenreToolStripMenuItem.Enabled = False
-                        Me.RemoveGenreToolStripMenuItem.Enabled = False
-                    End If
-                Else
-                    Me.mnuMediaList.Enabled = False
-                    Me.cmnuTitle.Text = Master.eLang.GetString(845, ">> No Item Selected <<")
-                End If
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -9341,6 +9341,12 @@ doCancel:
     Private Sub pbStudio_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStudio.MouseLeave
         If Not AdvancedSettings.GetBooleanSetting("StudioTagAlwaysOn", False) Then lblStudio.Text = String.Empty
     End Sub
+
+    Private Sub tmrKeyBuffer_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrKeyBuffer.Tick
+        tmrKeyBuffer.Enabled = False
+        KeyBuffer = String.Empty
+    End Sub
+
 #End Region 'Methods
 
 #Region "Nested Types"
@@ -9383,10 +9389,4 @@ doCancel:
     End Structure
 
 #End Region 'Nested Types
-
-
-    Private Sub tmrKeyBuffer_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrKeyBuffer.Tick
-        tmrKeyBuffer.Enabled = False
-        KeyBuffer = String.Empty
-    End Sub
 End Class
