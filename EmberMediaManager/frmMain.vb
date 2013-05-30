@@ -1351,28 +1351,29 @@ Public Class frmMain
                                         '    DBScrapeMovie.Movie.Fanart = fResults.Fanart
                                         'End If
                                     End If
-                                ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
-                                    If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
-                                        MsgBox(Master.eLang.GetString(927, "Fanart of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(929, "No Preferred Size:"))
-                                    End If
-                                    Using dImgSelect As New dlgImgSelect()
-                                        Fanart = dImgSelect.ShowDialog(DBScrapeMovie, Enums.ImageType.Posters, aList)
-                                        If IsNothing(Fanart.WebImage.Image) Then
-                                            Fanart.WebImage.FromWeb(Fanart.URL)
-                                        End If
-                                        If Not IsNothing(Fanart.WebImage.Image) Then
-                                            tURL = Fanart.WebImage.SaveAsFanart(DBScrapeMovie)
-                                            If Not String.IsNullOrEmpty(tURL) Then
-                                                DBScrapeMovie.FanartPath = tURL
-                                                MovieScraperEvent(Enums.MovieScraperEventType.FanartItem, True) '
-                                                'If Master.GlobalScrapeMod.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
-                                                '    DBScrapeMovie.Movie.Fanart = fResults.Fanart
-                                                'End If
-                                            End If
-                                        End If
-
-                                    End Using
                                 End If
+
+                            ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
+                                If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
+                                    MsgBox(Master.eLang.GetString(927, "Fanart of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(929, "No Preferred Size:"))
+                                End If
+                                Using dImgSelect As New dlgImgSelect()
+                                    Fanart = dImgSelect.ShowDialog(DBScrapeMovie, Enums.ImageType.Posters, aList)
+                                    If IsNothing(Fanart.WebImage.Image) Then
+                                        Fanart.WebImage.FromWeb(Fanart.URL)
+                                    End If
+                                    If Not IsNothing(Fanart.WebImage.Image) Then
+                                        tURL = Fanart.WebImage.SaveAsFanart(DBScrapeMovie)
+                                        If Not String.IsNullOrEmpty(tURL) Then
+                                            DBScrapeMovie.FanartPath = tURL
+                                            MovieScraperEvent(Enums.MovieScraperEventType.FanartItem, True) '
+                                            'If Master.GlobalScrapeMod.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
+                                            '    DBScrapeMovie.Movie.Fanart = fResults.Fanart
+                                            'End If
+                                        End If
+                                    End If
+
+                                End Using
                             End If
                         End If
                     End If
