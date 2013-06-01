@@ -1357,7 +1357,7 @@ Public Class frmMain
                                     MsgBox(Master.eLang.GetString(927, "Fanart of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(929, "No Preferred Size:"))
                                 End If
                                 Using dImgSelect As New dlgImgSelect()
-                                    Fanart = dImgSelect.ShowDialog(DBScrapeMovie, Enums.ImageType.Posters, aList)
+                                    Fanart = dImgSelect.ShowDialog(DBScrapeMovie, Enums.ImageType.Fanart, aList)
                                     If IsNothing(Fanart.WebImage.Image) Then
                                         Fanart.WebImage.FromWeb(Fanart.URL)
                                     End If
