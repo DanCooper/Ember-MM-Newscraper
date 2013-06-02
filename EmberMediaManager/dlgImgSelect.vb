@@ -30,7 +30,7 @@ Public Class dlgImgSelect
 
     Friend WithEvents bwImgDownload As New System.ComponentModel.BackgroundWorker
 
-    Private CachePath As String = String.Empty
+    'Private CachePath As String = String.Empty
     'Private chkImage() As CheckBox
     Private DLType As Enums.ImageType
     Private isWorkerDone As Boolean = False
@@ -85,14 +85,10 @@ Public Class dlgImgSelect
         Select Case DLType
             Case Enums.ImageType.Posters
                 aDes = Master.eSize.poster_names(0).description
-                Me.cbFilterSize.Items.Clear()
-                Me.cbFilterSize.Items.AddRange(New String() {Master.eLang.GetString(569, "All"), Master.eLang.GetString(322, "X-Large"), Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small"), Master.eLang.GetString(558, "Wide")})
             Case Enums.ImageType.Fanart
                 aDes = Master.eSize.backdrop_names(0).description
-                Me.cbFilterSize.Items.Clear()
-                Me.cbFilterSize.Items.AddRange(New String() {Master.eLang.GetString(569, "All"), Master.eLang.GetString(322, "X-Large"), Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small")})
         End Select
-        Me.cbFilterSize.SelectedIndex = 0
+
         Me.SetUp()
         MyBase.ShowDialog()
         Return Results
@@ -408,16 +404,19 @@ Public Class dlgImgSelect
             If Me.DLType = Enums.ImageType.Posters Then
                 Me.Text = String.Concat(Master.eLang.GetString(877, "Select Poster"), " - ", If(Not String.IsNullOrEmpty(Me.tMovie.Movie.Title), Me.tMovie.Movie.Title, Me.tMovie.ListTitle))
                 Me.pnlDwld.Visible = True
-                'Me.pnlDLStatus.Height = 328
-                'Me.pnlDLStatus.Top = 82
+                Me.cbFilterSize.Items.Clear()
+                Me.cbFilterSize.Items.AddRange(New String() {Master.eLang.GetString(569, "All"), Master.eLang.GetString(322, "X-Large"), Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small"), Master.eLang.GetString(558, "Wide")})
             Else
                 Me.Text = String.Concat(Master.eLang.GetString(878, "Select Fanart"), " - ", If(Not String.IsNullOrEmpty(Me.tMovie.Movie.Title), Me.tMovie.Movie.Title, Me.tMovie.ListTitle))
                 Me.pnlDwld.Visible = True
-                'Me.pnlDLStatus.Height = 165
-                'Me.pnlDLStatus.Top = 129
+                Me.cbFilterSize.Items.Clear()
+                Me.cbFilterSize.Items.AddRange(New String() {Master.eLang.GetString(569, "All"), Master.eLang.GetString(322, "X-Large"), Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small")})
             End If
 
-            CachePath = String.Concat(Master.TempPath, Path.DirectorySeparatorChar, tMovie.Movie.IMDBID, Path.DirectorySeparatorChar, If(Me.DLType = Enums.ImageType.Posters, "posters", "fanart"))
+            Me.cbFilterSize.SelectedIndex = 0
+            lblSize.Text = Master.eLang.GetString(957, "Show the ones with size:")
+
+            'CachePath = String.Concat(Master.TempPath, Path.DirectorySeparatorChar, tMovie.Movie.IMDBID, Path.DirectorySeparatorChar, If(Me.DLType = Enums.ImageType.Posters, "posters", "fanart"))
 
             Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
             Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")

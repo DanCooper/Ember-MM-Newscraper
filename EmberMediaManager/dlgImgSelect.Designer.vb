@@ -28,8 +28,8 @@ Partial Class dlgImgSelect
         Me.OK_Button = New System.Windows.Forms.Button()
         Me.Cancel_Button = New System.Windows.Forms.Button()
         Me.pnlBottomMain = New System.Windows.Forms.Panel()
-        Me.lblPosterSize = New System.Windows.Forms.Label()
         Me.cbFilterSize = New System.Windows.Forms.ComboBox()
+        Me.lblSize = New System.Windows.Forms.Label()
         Me.pnlSize = New System.Windows.Forms.Panel()
         Me.btnPreview = New System.Windows.Forms.Button()
         Me.rbSmall = New System.Windows.Forms.RadioButton()
@@ -93,7 +93,7 @@ Partial Class dlgImgSelect
         'pnlBottomMain
         '
         Me.pnlBottomMain.Controls.Add(Me.cbFilterSize)
-        Me.pnlBottomMain.Controls.Add(Me.lblPosterSize)
+        Me.pnlBottomMain.Controls.Add(Me.lblSize)
         Me.pnlBottomMain.Controls.Add(Me.pnlSize)
         Me.pnlBottomMain.Controls.Add(Me.TableLayoutPanel1)
         Me.pnlBottomMain.Dock = System.Windows.Forms.DockStyle.Bottom
@@ -102,25 +102,25 @@ Partial Class dlgImgSelect
         Me.pnlBottomMain.Size = New System.Drawing.Size(836, 64)
         Me.pnlBottomMain.TabIndex = 0
         '
-        'lblPosterSize
-        '
-        Me.lblPosterSize.AutoSize = True
-        Me.lblPosterSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblPosterSize.Location = New System.Drawing.Point(6, 9)
-        Me.lblPosterSize.Name = "lblPosterSize"
-        Me.lblPosterSize.Size = New System.Drawing.Size(80, 13)
-        Me.lblPosterSize.TabIndex = 6
-        Me.lblPosterSize.Text = "Preferred Size:"
-        '
         'cbFilterSize
         '
         Me.cbFilterSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbFilterSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.cbFilterSize.FormattingEnabled = True
-        Me.cbFilterSize.Location = New System.Drawing.Point(108, 6)
+        Me.cbFilterSize.Location = New System.Drawing.Point(147, 6)
         Me.cbFilterSize.Name = "cbFilterSize"
         Me.cbFilterSize.Size = New System.Drawing.Size(148, 21)
         Me.cbFilterSize.TabIndex = 5
+        '
+        'lblSize
+        '
+        Me.lblSize.AutoSize = True
+        Me.lblSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblSize.Location = New System.Drawing.Point(6, 9)
+        Me.lblSize.Name = "lblSize"
+        Me.lblSize.Size = New System.Drawing.Size(135, 13)
+        Me.lblSize.TabIndex = 6
+        Me.lblSize.Text = "Show the ones with size:"
         '
         'pnlSize
         '
@@ -339,6 +339,6 @@ Partial Class dlgImgSelect
     Friend WithEvents lvImages As System.Windows.Forms.ListView
     Friend WithEvents pnlBG As System.Windows.Forms.Panel
     Friend WithEvents cbFilterSize As System.Windows.Forms.ComboBox
-    Friend WithEvents lblPosterSize As System.Windows.Forms.Label
+    Friend WithEvents lblSize As System.Windows.Forms.Label
 
 End Class
