@@ -296,6 +296,11 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="XMLViewer\CharacterEncoder.vb" />
+    <Compile Include="XMLViewer\XMLViewer.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="XMLViewer\XMLViewerSettings.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="dlgAbout.resx">
