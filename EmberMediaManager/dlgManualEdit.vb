@@ -58,7 +58,7 @@ Public Class dlgManualEdit
             Dim currRows() As DataRow = DtdDt.Select(Nothing, Nothing, DataViewRowState.CurrentRows)
 
             If (currRows.Length < 1) Then
-                RichTextBox1.Text += "No Current Rows Found"
+                XmlViewer.Text += "No Current Rows Found"
             Else
 
                 For Each myRow In currRows
@@ -82,7 +82,7 @@ Public Class dlgManualEdit
     End Function
 
     Private Sub Editor_Activated(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Activated
-        RichTextBox1.Focus()
+        XmlViewer.Focus()
     End Sub
 
     Private Sub Editor_Closing(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles MyBase.Closing
@@ -90,7 +90,7 @@ Public Class dlgManualEdit
             Dim DResult As MsgBoxResult
             DResult = MsgBox(Master.eLang.GetString(196, "Do you want to save changes?"), MsgBoxStyle.YesNoCancel, Master.eLang.GetString(197, "Save?"))
             If DResult = MsgBoxResult.Yes Then
-                File.WriteAllText(currFile, RichTextBox1.Text, Encoding.UTF8)
+                File.WriteAllText(currFile, XmlViewer.Text, Encoding.UTF8)
                 'RichTextBox1.SaveFile(currFile, RichTextBoxStreamType.PlainText)
                 Me.DialogResult = Windows.Forms.DialogResult.OK
 
@@ -111,8 +111,18 @@ Public Class dlgManualEdit
         Me.SetUp()
 
         If File.Exists(currFile) Then
-            RichTextBox1.Text = File.ReadAllText(currFile, Encoding.UTF8)
+            Me.Cursor = System.Windows.Forms.Cursors.WaitCursor
+            XmlViewer.Text = File.ReadAllText(currFile, Encoding.UTF8)
             'RichTextBox1.LoadFile(currFile, RichTextBoxStreamType.PlainText)
+            Try
+                XmlViewer.Process(True)
+            Catch appException As ApplicationException
+                Master.eLog.WriteToErrorLog(appException.Message, appException.StackTrace, "ApplicationException")
+            Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            End Try
+            ParseFile()
+            Me.Cursor = System.Windows.Forms.Cursors.Default
         End If
         Me.Text = String.Concat(Master.eLang.GetString(190, "Manual NFO Editor | "), currFile.Substring(currFile.LastIndexOf(Path.DirectorySeparatorChar) + 1))
 
@@ -121,151 +131,151 @@ Public Class dlgManualEdit
         Me.Activate()
     End Sub
 
-    Private Sub IndentFormat()
-        Try
-            Me.Cursor = System.Windows.Forms.Cursors.WaitCursor
+    'Private Sub IndentFormat()
+    '    Try
+    '        Me.Cursor = System.Windows.Forms.Cursors.WaitCursor
 
-            Dim tempfile As String = Path.GetTempPath + "nfo-uf.tmp"
-            File.WriteAllText(tempfile, RichTextBox1.Text, Encoding.UTF8)
-            'RichTextBox1.SaveFile(tempfile, RichTextBoxStreamType.PlainText)
+    '        Dim tempfile As String = Path.GetTempPath + "nfo-uf.tmp"
+    '        File.WriteAllText(tempfile, XmlViewer.Text, Encoding.UTF8)
+    '        'RichTextBox1.SaveFile(tempfile, RichTextBoxStreamType.PlainText)
 
-            Dim IfErr As Boolean = False
-            Dim StrR As New StreamReader(tempfile)
-            Dim StrW As New StreamWriter(Path.GetTempPath + "nfo.tmp", False)
-            Dim AllData As String = StrR.ReadToEnd
-            Dim m As Match
+    '        Dim IfErr As Boolean = False
+    '        Dim StrR As New StreamReader(tempfile)
+    '        Dim StrW As New StreamWriter(Path.GetTempPath + "nfo.tmp", False)
+    '        Dim AllData As String = StrR.ReadToEnd
+    '        Dim m As Match
 
-            Dim TagS As String, i As Integer
+    '        Dim TagS As String, i As Integer
 
-            'Converting entire file to a single line
+    '        'Converting entire file to a single line
 
-            AllData = AllData.Replace(vbNewLine, String.Empty)
-            AllData = AllData.Replace(vbCrLf, String.Empty)
-            AllData = AllData.Replace(vbLf, String.Empty)
-            AllData = AllData.Replace(vbCr, String.Empty)
-            AllData = AllData.Replace(vbTab, String.Empty).Trim
+    '        AllData = AllData.Replace(vbNewLine, String.Empty)
+    '        AllData = AllData.Replace(vbCrLf, String.Empty)
+    '        AllData = AllData.Replace(vbLf, String.Empty)
+    '        AllData = AllData.Replace(vbCr, String.Empty)
+    '        AllData = AllData.Replace(vbTab, String.Empty).Trim
 
-            'Looking for Processing Instruction and DTD declaration
+    '        'Looking for Processing Instruction and DTD declaration
 
-            For i = 0 To 3 'We assume only first 4 lines have Processing Instruction and DTD declaration
-                m = Regex.Match(AllData, "^\<\?([^>]+)\>", RegexOptions.IgnoreCase) 'go to MSDN for RegularExpression Help
-                TagS = String.Empty
-                If m.Success Then
-                    TagS = Regex.Replace(AllData, "^\<\?([^>]+)\>(.*)", "<?$1>", RegexOptions.IgnoreCase)
-                    AllData = Regex.Replace(AllData, "^\<\?([^>]+)\>(.*)", "$2", RegexOptions.IgnoreCase)
-                    StrW.WriteLine(TagS)
-                Else
-                    m = Regex.Match(AllData, "^\<\!DOCTYPE([^>]+)\>", RegexOptions.IgnoreCase)
-                    If m.Success Then
-                        TagS = Regex.Replace(AllData, "^\<\!DOCTYPE([^>]+)\>(.*)", "<!DOCTYPE$1>", RegexOptions.IgnoreCase)
-                        AllData = Regex.Replace(AllData, "^\<\!DOCTYPE([^>]+)\>(.*)", "$2", RegexOptions.IgnoreCase)
-                        StrW.WriteLine(TagS)
-                    End If
+    '        For i = 0 To 3 'We assume only first 4 lines have Processing Instruction and DTD declaration
+    '            m = Regex.Match(AllData, "^\<\?([^>]+)\>", RegexOptions.IgnoreCase) 'go to MSDN for RegularExpression Help
+    '            TagS = String.Empty
+    '            If m.Success Then
+    '                TagS = Regex.Replace(AllData, "^\<\?([^>]+)\>(.*)", "<?$1>", RegexOptions.IgnoreCase)
+    '                AllData = Regex.Replace(AllData, "^\<\?([^>]+)\>(.*)", "$2", RegexOptions.IgnoreCase)
+    '                StrW.WriteLine(TagS)
+    '            Else
+    '                m = Regex.Match(AllData, "^\<\!DOCTYPE([^>]+)\>", RegexOptions.IgnoreCase)
+    '                If m.Success Then
+    '                    TagS = Regex.Replace(AllData, "^\<\!DOCTYPE([^>]+)\>(.*)", "<!DOCTYPE$1>", RegexOptions.IgnoreCase)
+    '                    AllData = Regex.Replace(AllData, "^\<\!DOCTYPE([^>]+)\>(.*)", "$2", RegexOptions.IgnoreCase)
+    '                    StrW.WriteLine(TagS)
+    '                End If
 
-                End If
+    '            End If
 
-            Next
+    '        Next
 
-            Dim LevelX, j As Integer, TabC As String
+    '        Dim LevelX, j As Integer, TabC As String
 
-            Do
-                TagS = String.Empty
-                TabC = String.Empty
+    '        Do
+    '            TagS = String.Empty
+    '            TabC = String.Empty
 
-                m = Regex.Match(AllData, "^\<([^>]+) \/\>") 'Single Tag
-                If m.Success Then
+    '            m = Regex.Match(AllData, "^\<([^>]+) \/\>") 'Single Tag
+    '            If m.Success Then
 
-                    TagS = Regex.Replace(AllData, "^\<([^>]+) \/\>(.*)", "<$1 />").Trim
-                    AllData = Regex.Replace(AllData, "^\<([^>]+) \/\>(.*)", "$2").Trim
+    '                TagS = Regex.Replace(AllData, "^\<([^>]+) \/\>(.*)", "<$1 />").Trim
+    '                AllData = Regex.Replace(AllData, "^\<([^>]+) \/\>(.*)", "$2").Trim
 
-                    For j = 1 To LevelX
-                        TabC += vbTab
-                    Next
-                    StrW.WriteLine(String.Concat(TabC, TagS))
-                Else
-                    m = Regex.Match(AllData, "^\<([^>/]+)\>([^<]+)\<\/([^>/]+)\>") 'Opening Tag
-                    If m.Success Then
-                        TagS = Regex.Replace(AllData, "^\<([^>/]+)\>([^<]+)\<\/([^>/]+)\>(.*)", "<$1>$2</$3>").Trim
+    '                For j = 1 To LevelX
+    '                    TabC += vbTab
+    '                Next
+    '                StrW.WriteLine(String.Concat(TabC, TagS))
+    '            Else
+    '                m = Regex.Match(AllData, "^\<([^>/]+)\>([^<]+)\<\/([^>/]+)\>") 'Opening Tag
+    '                If m.Success Then
+    '                    TagS = Regex.Replace(AllData, "^\<([^>/]+)\>([^<]+)\<\/([^>/]+)\>(.*)", "<$1>$2</$3>").Trim
 
-                        AllData = Regex.Replace(AllData, "^\<([^>/]+)\>([^<]+)\<\/([^>/]+)\>(.*)", "$4").Trim
+    '                    AllData = Regex.Replace(AllData, "^\<([^>/]+)\>([^<]+)\<\/([^>/]+)\>(.*)", "$4").Trim
 
-                        For j = 1 To LevelX 'Calculating depth of tag
-                            TabC += vbTab
-                        Next
-                        StrW.WriteLine(String.Concat(TabC, TagS))
-                    Else
-                        m = Regex.Match(AllData, "^\<\/([^>]+)\>(.*)") 'Closing Tag
-                        If m.Success Then
+    '                    For j = 1 To LevelX 'Calculating depth of tag
+    '                        TabC += vbTab
+    '                    Next
+    '                    StrW.WriteLine(String.Concat(TabC, TagS))
+    '                Else
+    '                    m = Regex.Match(AllData, "^\<\/([^>]+)\>(.*)") 'Closing Tag
+    '                    If m.Success Then
 
-                            TagS = Regex.Replace(AllData, "^\<\/([^>]+)\>(.*)", "</$1>").Trim
-                            AllData = Regex.Replace(AllData, "^\<\/([^>]+)\>(.*)", "$2").Trim
-                            LevelX -= 1
+    '                        TagS = Regex.Replace(AllData, "^\<\/([^>]+)\>(.*)", "</$1>").Trim
+    '                        AllData = Regex.Replace(AllData, "^\<\/([^>]+)\>(.*)", "$2").Trim
+    '                        LevelX -= 1
 
-                            For j = 1 To LevelX
-                                TabC += vbTab
-                            Next
+    '                        For j = 1 To LevelX
+    '                            TabC += vbTab
+    '                        Next
 
-                            StrW.WriteLine(String.Concat(TabC, TagS))
+    '                        StrW.WriteLine(String.Concat(TabC, TagS))
 
-                        Else
-                            m = Regex.Match(AllData, "^\<([^>]+)\>(.*)")
-                            If m.Success Then
-                                TagS = Regex.Replace(AllData, "^\<([^>]+)\>(.*)", "<$1>").Trim
-                                AllData = Regex.Replace(AllData, "^\<([^>]+)\>(.*)", "$2").Trim
-                                LevelX += 1
-                                For j = 1 To LevelX - 1
-                                    TabC += vbTab
-                                Next
+    '                    Else
+    '                        m = Regex.Match(AllData, "^\<([^>]+)\>(.*)")
+    '                        If m.Success Then
+    '                            TagS = Regex.Replace(AllData, "^\<([^>]+)\>(.*)", "<$1>").Trim
+    '                            AllData = Regex.Replace(AllData, "^\<([^>]+)\>(.*)", "$2").Trim
+    '                            LevelX += 1
+    '                            For j = 1 To LevelX - 1
+    '                                TabC += vbTab
+    '                            Next
 
-                                StrW.WriteLine(String.Concat(TabC, TagS))
+    '                            StrW.WriteLine(String.Concat(TabC, TagS))
 
-                            Else
-                                m = Regex.Match(AllData, "^([^<]+)\<")
-                                If m.Success Then
-                                    TagS = Regex.Replace(AllData, "^([^<]+)\<(.*)", "$1").Trim
+    '                        Else
+    '                            m = Regex.Match(AllData, "^([^<]+)\<")
+    '                            If m.Success Then
+    '                                TagS = Regex.Replace(AllData, "^([^<]+)\<(.*)", "$1").Trim
 
-                                    AllData = Regex.Replace(AllData, "^([^<]+)\<(.*)", "<$2").Trim
+    '                                AllData = Regex.Replace(AllData, "^([^<]+)\<(.*)", "<$2").Trim
 
-                                    For j = 0 To LevelX - 1
-                                        TabC += vbTab
-                                    Next
+    '                                For j = 0 To LevelX - 1
+    '                                    TabC += vbTab
+    '                                Next
 
-                                    StrW.WriteLine(String.Concat(TabC, TagS))
+    '                                StrW.WriteLine(String.Concat(TabC, TagS))
 
-                                Else
-                                    MsgBox(Master.eLang.GetString(191, "This is not a proper XML document"), MsgBoxStyle.Information)
-                                    IfErr = True
-                                    Exit Do
+    '                            Else
+    '                                MsgBox(Master.eLang.GetString(191, "This is not a proper XML document"), MsgBoxStyle.Information)
+    '                                IfErr = True
+    '                                Exit Do
 
-                                End If
+    '                            End If
 
-                            End If
+    '                        End If
 
-                        End If
+    '                    End If
 
-                    End If
+    '                End If
 
-                End If
+    '            End If
 
-                If AllData.Length < 2 Then
-                    Exit Do
-                End If
+    '            If AllData.Length < 2 Then
+    '                Exit Do
+    '            End If
 
-            Loop While True
+    '        Loop While True
 
-            StrR.Close()
-            StrW.Close()
+    '        StrR.Close()
+    '        StrW.Close()
 
-            If IfErr = False Then
-                RichTextBox1.LoadFile(Path.GetTempPath + "nfo.tmp", RichTextBoxStreamType.PlainText)
-            End If
+    '        If IfErr = False Then
+    '            XmlViewer.LoadFile(Path.GetTempPath + "nfo.tmp", RichTextBoxStreamType.PlainText)
+    '        End If
 
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
+    '    Catch ex As Exception
+    '        Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+    '    End Try
 
-        Me.Cursor = System.Windows.Forms.Cursors.Default
-    End Sub
+    '    Me.Cursor = System.Windows.Forms.Cursors.Default
+    'End Sub
 
     Private Sub ListBox1_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ListBox1.SelectedIndexChanged
         Dim SelItem As String
@@ -281,15 +291,15 @@ Public Class dlgManualEdit
             Dim mc As MatchCollection
             Dim i As Integer = 0
 
-            mc = Regex.Matches(RichTextBox1.Text, "\n", RegexOptions.Singleline)
+            mc = Regex.Matches(XmlViewer.Text, "\n", RegexOptions.Singleline)
 
             Try
-                RichTextBox1.Select(mc(linN - 2).Index + colN, 2)
-                RichTextBox1.SelectionColor = Color.Blue
-                RichTextBox1.Focus()
+                XmlViewer.Select(mc(linN - 2).Index + colN, 2)
+                XmlViewer.SelectionColor = Color.Blue
+                XmlViewer.Focus()
 
             Catch ex As Exception
-                RichTextBox1.Focus()
+                XmlViewer.Focus()
             End Try
         End If
     End Sub
@@ -299,7 +309,15 @@ Public Class dlgManualEdit
     End Sub
 
     Private Sub mnuFormat_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFormat.Click
-        IndentFormat()
+        Try
+            Me.Cursor = System.Windows.Forms.Cursors.WaitCursor
+            XmlViewer.Process(True)
+            Me.Cursor = System.Windows.Forms.Cursors.Default
+        Catch appException As ApplicationException
+            Master.eLog.WriteToErrorLog(appException.Message, appException.StackTrace, "ApplicationException")
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
 
     Private Sub mnuParse_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuParse.Click
@@ -307,7 +325,7 @@ Public Class dlgManualEdit
     End Sub
 
     Private Sub mnuSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuSave.Click
-        File.WriteAllText(currFile, RichTextBox1.Text, Encoding.UTF8)
+        File.WriteAllText(currFile, XmlViewer.Text, Encoding.UTF8)
         'RichTextBox1.SaveFile(currFile, RichTextBoxStreamType.PlainText)
         ReturnOK = True
         Changed = False
@@ -321,7 +339,7 @@ Public Class dlgManualEdit
         Me.Cursor = System.Windows.Forms.Cursors.WaitCursor
 
         Dim tempFile As String = Path.GetTempPath + "nfo.tmp"
-        File.WriteAllText(tempFile, RichTextBox1.Text, Encoding.UTF8)
+        File.WriteAllText(tempFile, XmlViewer.Text, Encoding.UTF8)
         'RichTextBox1.SaveFile(tempFile, RichTextBoxStreamType.PlainText)
 
         Dim xmlP As New XmlTextReader(tempFile)
@@ -380,7 +398,7 @@ Public Class dlgManualEdit
         End If
     End Sub
 
-    Private Sub RichTextBox1_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RichTextBox1.TextChanged
+    Private Sub RichTextBox1_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Changed = True
     End Sub
 
