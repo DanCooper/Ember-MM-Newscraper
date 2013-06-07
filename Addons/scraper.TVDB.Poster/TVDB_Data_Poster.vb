@@ -136,7 +136,7 @@ Public Class TVDB_Data_Poster
 
     Public Sub Init(ByVal sAssemblyName As String) Implements Interfaces.EmberTVScraperModule.Init
         _AssemblyName = sAssemblyName
-        _APIKey = AdvancedSettings.GetSetting("TVDBPIKey", "Get your API Key from http://thetvdb.com/?tab=apiregister")
+        _APIKey = AdvancedSettings.GetSetting("TVDBAPIKey", "Get your API Key from http://thetvdb.com/?tab=apiregister")
         TVScraper = New Scraper(_APIKey)
         AddHandler TVScraper.ScraperEvent, AddressOf Handler_ScraperEvent
     End Sub
