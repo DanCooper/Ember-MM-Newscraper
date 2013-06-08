@@ -196,20 +196,24 @@ Public Class Scraper
                         SQLCount.CommandText = String.Concat("SELECT COUNT(ID) AS eCount FROM TVEps WHERE TVShowID = ", _ID, " AND Season = ", OnlySeason, " AND Missing = 0;")
                     End If
                     Using SQLRCount As SQLite.SQLiteDataReader = SQLCount.ExecuteReader
-                        If Convert.ToInt32(SQLRCount("eCount")) > 0 Then
-                            Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
-                                If OnlySeason = 999 Then
-                                    SQLCommand.CommandText = String.Concat("SELECT ID, Lock FROM TVEps WHERE TVShowID = ", _ID, " AND Missing = 0;")
-                                Else
-                                    SQLCommand.CommandText = String.Concat("SELECT ID, Lock FROM TVEps WHERE TVShowID = ", _ID, " AND Season = ", OnlySeason, " AND Missing = 0;")
-                                End If
-                                Using SQLReader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
-                                    While SQLReader.Read
-                                        tmpTVDBShow.Episodes.Add(Master.DB.LoadTVEpFromDB(Convert.ToInt64(SQLReader("ID")), True))
-                                    End While
+                        If SQLRCount.HasRows Then
+                            SQLRCount.Read()
+                            If Convert.ToInt32(SQLRCount("eCount")) > 0 Then
+                                Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
+                                    If OnlySeason = 999 Then
+                                        SQLCommand.CommandText = String.Concat("SELECT ID, Lock FROM TVEps WHERE TVShowID = ", _ID, " AND Missing = 0;")
+                                    Else
+                                        SQLCommand.CommandText = String.Concat("SELECT ID, Lock FROM TVEps WHERE TVShowID = ", _ID, " AND Season = ", OnlySeason, " AND Missing = 0;")
+                                    End If
+                                    Using SQLReader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
+                                        While SQLReader.Read
+                                            tmpTVDBShow.Episodes.Add(Master.DB.LoadTVEpFromDB(Convert.ToInt64(SQLReader("ID")), True))
+                                        End While
+                                    End Using
                                 End Using
-                            End Using
+                            End If
                         End If
+
                     End Using
                 End Using
             Catch ex As Exception
