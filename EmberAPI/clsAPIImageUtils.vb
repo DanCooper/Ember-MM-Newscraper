@@ -184,7 +184,9 @@ Public Class ImageUtils
                 pbResize.Size = New Size(maxWidth, maxHeight)
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            pbResize.Left = 0
+            pbResize.Size = New Size(maxWidth, maxHeight)
+            'Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
