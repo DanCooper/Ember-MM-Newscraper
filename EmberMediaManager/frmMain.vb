@@ -1358,10 +1358,10 @@ Public Class frmMain
                                 End If
                                 Using dImgSelect As New dlgImgSelect()
                                     Fanart = dImgSelect.ShowDialog(DBScrapeMovie, Enums.ImageType.Fanart, aList)
-                                    If IsNothing(Fanart.WebImage.Image) Then
+                                    If Not IsNothing(Fanart) AndAlso IsNothing(Fanart.WebImage.Image) Then
                                         Fanart.WebImage.FromWeb(Fanart.URL)
                                     End If
-                                    If Not IsNothing(Fanart.WebImage.Image) Then
+                                    If Not IsNothing(Fanart) AndAlso Not IsNothing(Fanart.WebImage.Image) Then
                                         tURL = Fanart.WebImage.SaveAsFanart(DBScrapeMovie)
                                         If Not String.IsNullOrEmpty(tURL) Then
                                             DBScrapeMovie.FanartPath = tURL
