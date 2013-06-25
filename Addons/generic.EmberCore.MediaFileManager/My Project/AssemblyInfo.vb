@@ -8,11 +8,11 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("generic.EmberCore")> 
-<Assembly: AssemblyDescription("http://forum.xbmc.org/showthread.php?tid=116941")> 
-<Assembly: AssemblyCompany("")> 
-<Assembly: AssemblyProduct("generic.EmberCore")> 
-<Assembly: AssemblyCopyright("Copyright © 2011")> 
+<Assembly: AssemblyTitle("generic.EmberCore.MediaFileManager")> 
+<Assembly: AssemblyDescription("http://forum.xbmc.org/forumdisplay.php?fid=195")> 
+<Assembly: AssemblyCompany("Ember Media Manager")> 
+<Assembly: AssemblyProduct("generic.EmberCore.MediaFileManager")> 
+<Assembly: AssemblyCopyright("Copyright © 2013")> 
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>

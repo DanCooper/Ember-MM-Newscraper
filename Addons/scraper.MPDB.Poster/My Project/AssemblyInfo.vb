@@ -9,7 +9,7 @@ Imports System.Runtime.InteropServices
 ' Review the values of the assembly attributes
 
 <Assembly: AssemblyTitle("scraper.MPDB.Poster")> 
-<Assembly: AssemblyDescription("http://forum.xbmc.org/showthread.php?tid=116941")> 
+<Assembly: AssemblyDescription("http://forum.xbmc.org/forumdisplay.php?fid=195")> 
 <Assembly: AssemblyCompany("Ember Media Manager")>
 <Assembly: AssemblyProduct("scraper.MPDB.Poster")> 
 <Assembly: AssemblyCopyright("Copyright © 2013")> 

@@ -9,10 +9,10 @@ Imports System.Runtime.InteropServices
 ' Review the values of the assembly attributes
 
 <Assembly: AssemblyTitle("generic.EmberCore.Notifications")> 
-<Assembly: AssemblyDescription("http://forum.xbmc.org/showthread.php?tid=116941")> 
-<Assembly: AssemblyCompany("")> 
+<Assembly: AssemblyDescription("http://forum.xbmc.org/forumdisplay.php?fid=195")> 
+<Assembly: AssemblyCompany("Ember Media Manager")> 
 <Assembly: AssemblyProduct("generic.EmberCore.Notifications")> 
-<Assembly: AssemblyCopyright("Copyright © 2011")> 
+<Assembly: AssemblyCopyright("Copyright © 2013")> 
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>

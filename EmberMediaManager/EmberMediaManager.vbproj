@@ -35,7 +35,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
     <DefineDebug>true</DefineDebug>
-    <DefineTrace>true</DefineTrace>
+    <DefineTrace>false</DefineTrace>
     <OutputPath>..\EmberMM-Dev\</OutputPath>
     <NoWarn>42353,42354,42355</NoWarn>
     <DebugType>full</DebugType>
@@ -46,6 +46,7 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRuleSetDirectories>;D:\Applications\Development\Microsoft Visual Studio 2010\Team Tools\Static Analysis Tools\\Rule Sets;D:\Applications\Development\Microsoft Visual Studio 2010\Team Tools\Static Analysis Tools\\Rule Sets;D:\Applications\Development\Microsoft Visual Studio 2010\Team Tools\Static Analysis Tools\\Rule Sets;D:\Applications\Development\Microsoft Visual Studio 2010\Team Tools\Static Analysis Tools\\Rule Sets;D:\Applications\Development\Microsoft Visual Studio 2010\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
     <CodeAnalysisRuleDirectories>;D:\Applications\Development\Microsoft Visual Studio 2010\Team Tools\Static Analysis Tools\FxCop\\Rules;D:\Applications\Development\Microsoft Visual Studio 2010\Team Tools\Static Analysis Tools\FxCop\\Rules;D:\Applications\Development\Microsoft Visual Studio 2010\Team Tools\Static Analysis Tools\FxCop\\Rules;D:\Applications\Development\Microsoft Visual Studio 2010\Team Tools\Static Analysis Tools\FxCop\\Rules;D:\Applications\Development\Microsoft Visual Studio 2010\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <Optimize>true</Optimize>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <DefineTrace>true</DefineTrace>
