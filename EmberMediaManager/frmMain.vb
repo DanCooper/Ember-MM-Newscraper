@@ -5615,15 +5615,13 @@ doCancel:
                 InstallNewFiles("InstallTasks.xml")
             End If
 
-            'fLoading.SetLoadingMesg("Loading settings...")
+            ' Force initialization of languages for main
+            Master.eLang.LoadAllLanguage(Master.eSettings.Language)
+            fLoading.SetVersionMesg(Master.eLang.GetString(865, "Version {0}.{1}.{2}.{3}"))
+
             fLoading.SetLoadingMesg(Master.eLang.GetString(484, "Loading settings..."))
 
             Master.eSettings.Load()
-
-            ' Force initialization of languages for main
-            Master.eLang.LoadAllLanguage(Master.eSettings.Language)
-            ''Master.eLang.LoadLanguage(Master.eSettings.Language, "")
-            fLoading.SetVersionMesg(Master.eLang.GetString(865, "Version {0}.{1}.{2}.{3}"))
 
             'fLoading.SetLoadingMesg("Basic setup...")
             fLoading.SetLoadingMesg(Master.eLang.GetString(854, "Basic setup"))
@@ -5640,23 +5638,18 @@ doCancel:
                 File.Delete(sPath)
             End If
             AdvancedSettings.Start()
+
             'Create Modules Folders
             sPath = String.Concat(Functions.AppPath, "Modules")
             If Not Directory.Exists(sPath) Then
                 Directory.CreateDirectory(sPath)
             End If
-            sPath = String.Concat(Functions.AppPath, "Modules", Path.DirectorySeparatorChar, "Langs")
-            If Not Directory.Exists(sPath) Then
-                Directory.CreateDirectory(sPath)
-            End If
 
-            'fLoading.SetLoadingMesg("Creating default options...")
             fLoading.SetLoadingMesg(Master.eLang.GetString(855, "Creating default options..."))
             Functions.CreateDefaultOptions()
             '//
             ' Add our handlers, load settings, set form colors, and try to load movies at startup
             '\\
-            'fLoading.SetLoadingMesg("Loading modules...")
             fLoading.SetLoadingMesg(Master.eLang.GetString(856, "Loading modules..."))
             'Setup/Load Modules Manager and set runtime objects (ember application) so they can be exposed to modules
             'ExternalModulesManager = New ModulesManager
@@ -5671,7 +5664,6 @@ doCancel:
             ModulesManager.Instance.LoadAllModules()
 
             If Not isCL Then
-                'fLoading.SetLoadingMesg("Creating GUI...")
                 fLoading.SetLoadingMesg(Master.eLang.GetString(857, "Creating GUI..."))
             End If
             'setup some dummies so we don't get exceptions when resizing form/info panel
@@ -5815,7 +5807,6 @@ doCancel:
                     Next
                     If nowindow Then fLoading.Hide()
                     APIXML.CacheXMLs()
-                    'fLoading.SetLoadingMesg("Loading database...")
                     fLoading.SetLoadingMesg(Master.eLang.GetString(858, "Loading database..."))
                     If Master.DB.ConnectMediaDB() Then
                         Me.LoadMedia(New Structures.Scans With {.Movies = True, .TV = True})
@@ -5824,7 +5815,6 @@ doCancel:
                     Master.DB.LoadTVSourcesFromDB()
                     If RunModule Then
                         fLoading.SetProgressBarStyle(ProgressBarStyle.Marquee)
-                        'fLoading.SetLoadingMesg("Running Module...")
                         fLoading.SetLoadingMesg(Master.eLang.GetString(859, "Running Module..."))
                         Dim gModule As ModulesManager._externalGenericModuleClass = ModulesManager.Instance.externalProcessorModules.FirstOrDefault(Function(y) y.ProcessorModule.ModuleName = ModuleName)
                         If Not IsNothing(gModule) Then
@@ -5842,7 +5832,6 @@ doCancel:
                         If Functions.HasModifier AndAlso Not clScrapeType = Enums.ScrapeType.SingleScrape Then
                             Try
                                 fLoading.SetProgressBarStyle(ProgressBarStyle.Marquee)
-                                'fLoading.SetLoadingMesg("Loading Media...")
                                 fLoading.SetLoadingMesg(Master.eLang.GetString(860, "Loading Media..."))
                                 LoadMedia(New Structures.Scans With {.Movies = True})
                                 While Not Me.LoadingDone
@@ -5850,7 +5839,6 @@ doCancel:
                                     Threading.Thread.Sleep(50)
                                 End While
                                 fLoading.SetProgressBarStyle(ProgressBarStyle.Marquee)
-                                'fLoading.SetLoadingMesg("Command Line Scraping...")
                                 fLoading.SetLoadingMesg(Master.eLang.GetString(861, "Command Line Scraping..."))
                                 MovieScrapeData(False, clScrapeType, Master.DefaultOptions)
                             Catch ex As Exception
@@ -5921,7 +5909,6 @@ doCancel:
                                         Master.tmpMovie = Master.currMovie.Movie
                                     End If
                                     fLoading.SetProgressBarStyle(ProgressBarStyle.Marquee)
-                                    'fLoading.SetLoadingMesg("Command Line Scraping...")
                                     fLoading.SetLoadingMesg(Master.eLang.GetString(861, "Command Line Scraping..."))
                                     MovieScrapeData(False, Enums.ScrapeType.SingleScrape, Master.DefaultOptions)
                                 Else
@@ -5959,14 +5946,12 @@ doCancel:
 
                     'End If
                     If Not CloseApp Then
-                        'fLoading.SetLoadingMesg("Loading translations...")
                         fLoading.SetLoadingMesg(Master.eLang.GetString(862, "Loading translations..."))
                         APIXML.CacheXMLs()
 
                         Me.SetUp(True)
                         Me.cbSearch.SelectedIndex = 0
 
-                        'fLoading.SetLoadingMesg("Positioning controls...")
                         fLoading.SetLoadingMesg(Master.eLang.GetString(863, "Positioning controls..."))
                         Me.Location = Master.eSettings.WindowLoc
                         Me.Size = Master.eSettings.WindowSize
@@ -6014,7 +5999,6 @@ doCancel:
                         Me.ClearInfo()
 
                         Application.DoEvents()
-                        'fLoading.SetLoadingMesg("Loading database...")
                         fLoading.SetLoadingMesg(Master.eLang.GetString(858, "Loading database..."))
                         If Master.eSettings.Version = String.Format("r{0}", My.Application.Info.Version.Revision) Then
                             If Master.DB.ConnectMediaDB() Then
@@ -6039,7 +6023,6 @@ doCancel:
 
                         Master.DB.LoadMovieSourcesFromDB()
                         Master.DB.LoadTVSourcesFromDB()
-                        'fLoading.SetLoadingMesg("Setting menus...")
                         fLoading.SetLoadingMesg(Master.eLang.GetString(864, "Setting menus..."))
 
                         Me.SetMenus(True)
