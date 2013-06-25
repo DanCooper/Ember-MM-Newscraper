@@ -9274,11 +9274,13 @@ doCancel:
 
     Private Sub WikiStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles WikiStripMenuItem.Click
         If Master.isWindows Then
-            Process.Start("https://sourceforge.net/apps/trac/emm-r/wiki")
+            ' replace with new Wiki Page
+            Process.Start("http://forum.xbmc.org/forumdisplay.php?fid=195")
         Else
             Using Explorer As New Process
                 Explorer.StartInfo.FileName = "xdg-open"
-                Explorer.StartInfo.Arguments = "https://sourceforge.net/apps/trac/emm-r/wiki"
+                ' replace with new Wiki Page
+                Explorer.StartInfo.Arguments = "http://forum.xbmc.org/forumdisplay.php?fid=195"
                 Explorer.Start()
             End Using
         End If

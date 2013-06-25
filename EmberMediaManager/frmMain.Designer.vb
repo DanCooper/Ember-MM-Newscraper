@@ -652,15 +652,18 @@ Partial Class frmMain
         '
         'WikiStripMenuItem
         '
+        Me.WikiStripMenuItem.Enabled = False
         Me.WikiStripMenuItem.Image = CType(resources.GetObject("WikiStripMenuItem.Image"), System.Drawing.Image)
         Me.WikiStripMenuItem.Name = "WikiStripMenuItem"
         Me.WikiStripMenuItem.Size = New System.Drawing.Size(185, 22)
         Me.WikiStripMenuItem.Text = "EmberMM.com &Wiki..."
+        Me.WikiStripMenuItem.Visible = False
         '
         'ToolStripSeparator18
         '
         Me.ToolStripSeparator18.Name = "ToolStripSeparator18"
         Me.ToolStripSeparator18.Size = New System.Drawing.Size(182, 6)
+        Me.ToolStripSeparator18.Visible = False
         '
         'VersionsToolStripMenuItem
         '

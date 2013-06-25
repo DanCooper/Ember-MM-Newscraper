@@ -42,6 +42,6 @@ Public Class dlgCompatibility
     End Sub
 
     Private Sub lblTutorial_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles lblTutorial.LinkClicked
-        Process.Start("http://forum.xbmc.org/showthread.php?tid=116941&pid=1410086#pid1410086")
+        Process.Start("http://forum.xbmc.org/forumdisplay.php?fid=195&pid=1410086#pid1410086")
     End Sub
 End Class
