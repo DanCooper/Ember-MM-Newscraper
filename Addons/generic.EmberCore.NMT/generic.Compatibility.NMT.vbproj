@@ -7,8 +7,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{84B2143A-D04F-4262-923D-21AEDF86E2B7}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>generic.EmberCore.NMT</RootNamespace>
-    <AssemblyName>generic.EmberCore.NMT</AssemblyName>
+    <RootNamespace>generic.Compatibility.NMT</RootNamespace>
+    <AssemblyName>generic.Compatibility.NMT</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
