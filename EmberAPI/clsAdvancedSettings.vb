@@ -282,6 +282,10 @@ Public Class AdvancedSettings
                 End If
             Next
             xdoc.DocumentElement.AppendChild(elemp)
+            'Dim filePaths As New List(Of String)
+            'filePaths.Add(Path.Combine(Functions.AppPath, "AdvancedSettings.xml"))
+            'Dim Processes As IList(Of Process)
+            'Processes = clsFileLock.GetProcessesUsingFiles(filePaths)
             If count > 0 Then xdoc.Save(Path.Combine(Functions.AppPath, "AdvancedSettings.xml"))
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
