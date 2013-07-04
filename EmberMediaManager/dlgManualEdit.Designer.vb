@@ -27,6 +27,7 @@ Partial Class dlgManualEdit
         Me.mnuFormat = New System.Windows.Forms.MenuItem()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.Panel3 = New System.Windows.Forms.Panel()
+        Me.XmlViewer = New Ember_Media_Manager.XMLViewer()
         Me.Splitter1 = New System.Windows.Forms.Splitter()
         Me.Panel2 = New System.Windows.Forms.Panel()
         Me.ListBox1 = New System.Windows.Forms.ListBox()
@@ -37,7 +38,6 @@ Partial Class dlgManualEdit
         Me.mnuSave = New System.Windows.Forms.MenuItem()
         Me.MenuItem9 = New System.Windows.Forms.MenuItem()
         Me.mnuExit = New System.Windows.Forms.MenuItem()
-        Me.XmlViewer = New Ember_Media_Manager.XMLViewer()
         Me.Panel1.SuspendLayout()
         Me.Panel3.SuspendLayout()
         Me.Panel2.SuspendLayout()
@@ -68,6 +68,21 @@ Partial Class dlgManualEdit
         Me.Panel3.Name = "Panel3"
         Me.Panel3.Size = New System.Drawing.Size(853, 322)
         Me.Panel3.TabIndex = 2
+        '
+        'XmlViewer
+        '
+        Me.XmlViewer.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.XmlViewer.Location = New System.Drawing.Point(0, 0)
+        Me.XmlViewer.Name = "XmlViewer"
+        XmlViewerSettings1.AttributeKey = System.Drawing.Color.Red
+        XmlViewerSettings1.AttributeValue = System.Drawing.Color.Blue
+        XmlViewerSettings1.Element = System.Drawing.Color.DarkRed
+        XmlViewerSettings1.Tag = System.Drawing.Color.Blue
+        XmlViewerSettings1.Value = System.Drawing.Color.Black
+        Me.XmlViewer.Settings = XmlViewerSettings1
+        Me.XmlViewer.Size = New System.Drawing.Size(853, 322)
+        Me.XmlViewer.TabIndex = 0
+        Me.XmlViewer.Text = ""
         '
         'Splitter1
         '
@@ -137,21 +152,6 @@ Partial Class dlgManualEdit
         Me.mnuExit.Index = 2
         Me.mnuExit.Shortcut = System.Windows.Forms.Shortcut.AltF4
         Me.mnuExit.Text = "E&xit"
-        '
-        'XmlViewer
-        '
-        Me.XmlViewer.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.XmlViewer.Location = New System.Drawing.Point(0, 0)
-        Me.XmlViewer.Name = "XmlViewer"
-        XmlViewerSettings1.AttributeKey = System.Drawing.Color.Red
-        XmlViewerSettings1.AttributeValue = System.Drawing.Color.Blue
-        XmlViewerSettings1.Element = System.Drawing.Color.DarkRed
-        XmlViewerSettings1.Tag = System.Drawing.Color.Blue
-        XmlViewerSettings1.Value = System.Drawing.Color.Black
-        Me.XmlViewer.Settings = XmlViewerSettings1
-        Me.XmlViewer.Size = New System.Drawing.Size(853, 322)
-        Me.XmlViewer.TabIndex = 0
-        Me.XmlViewer.Text = ""
         '
         'dlgManualEdit
         '

@@ -38,6 +38,11 @@ Public Class Localization
     Private _disabled As String
     Private _none As String
 
+#If DEBUG Then
+    Private Shared _loggingString As New Object
+    Private Shared _loggingHelp As New Object
+#End If
+
 #End Region 'Fields
 
 #Region "Constructors"
@@ -147,19 +152,21 @@ Public Class Localization
             aStr = String.Empty
         End If
 #If DEBUG Then
-        Dim _sPath = Path.Combine(Functions.AppPath, "Log")
-        If Not System.IO.Directory.Exists(_sPath) Then
-            System.IO.Directory.CreateDirectory(_sPath)
-        End If
+        SyncLock _loggingHelp
+            Dim _sPath = Path.Combine(Functions.AppPath, "Log")
+            If Not System.IO.Directory.Exists(_sPath) Then
+                System.IO.Directory.CreateDirectory(_sPath)
+            End If
 
-        Dim _LogFile = Path.Combine(_sPath, "language_help.log")
-        Using fs1 As FileStream = New FileStream(_LogFile, FileMode.Append, FileAccess.Write)
-            Using s1 As StreamWriter = New StreamWriter(fs1)
-                s1.Write(String.Concat(ctrlName, vbTab, aStr, vbNewLine))
-                s1.Flush()
-                s1.Close()
+            Dim _LogFile = Path.Combine(_sPath, "language_help.log")
+            Using fs1 As FileStream = New FileStream(_LogFile, FileMode.Append, FileAccess.Write)
+                Using s1 As StreamWriter = New StreamWriter(fs1)
+                    s1.Write(String.Concat(ctrlName, vbTab, aStr, vbNewLine))
+                    s1.Flush()
+                    s1.Close()
+                End Using
             End Using
-        End Using
+        End SyncLock
 #End If
         Return aStr
     End Function
@@ -179,23 +186,30 @@ Public Class Localization
             End If
         End If
 #If DEBUG Then
-        Try
-            Dim _sPath = Path.Combine(Functions.AppPath, "Log")
-            If Not System.IO.Directory.Exists(_sPath) Then
-                System.IO.Directory.CreateDirectory(_sPath)
-            End If
+        SyncLock _loggingString
+            Try
+                Dim _sPath = Path.Combine(Functions.AppPath, "Log")
+                If Not System.IO.Directory.Exists(_sPath) Then
+                    System.IO.Directory.CreateDirectory(_sPath)
+                End If
 
-            Dim _LogFile = Path.Combine(_sPath, "language_strings.log")
-            Using fs1 As FileStream = New FileStream(_LogFile, FileMode.Append, FileAccess.Write)
-                Using s1 As StreamWriter = New StreamWriter(fs1)
-                    s1.Write(String.Concat(Assembly, vbTab, ID, vbTab, tStr, vbNewLine))
-                    s1.Flush()
-                    s1.Close()
+                Dim _LogFile = Path.Combine(_sPath, "language_strings.log")
+                'Dim filePaths As New List(Of String)
+                'filePaths.Add(_LogFile)
+                'Dim Processes As IList(Of Process)
+                'Processes = clsFileLock.GetProcessesUsingFiles(filePaths)
+
+                Using fs1 As FileStream = New FileStream(_LogFile, FileMode.Append, FileAccess.Write)
+                    Using s1 As StreamWriter = New StreamWriter(fs1)
+                        s1.Write(String.Concat(Assembly, vbTab, ID, vbTab, tStr, vbNewLine))
+                        s1.Flush()
+                        s1.Close()
+                    End Using
                 End Using
-            End Using
-        Catch
+            Catch
 
-        End Try
+            End Try
+        End SyncLock
 #End If
         Return tStr
     End Function
