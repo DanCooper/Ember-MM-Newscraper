@@ -231,16 +231,17 @@ Public Class dlgEditMovie
             'Public Function MovieScrapeImages(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.PostScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Boolean
             If Not ModulesManager.Instance.MovieScrapeImages(Master.currMovie, Enums.PostScraperCapabilities.Fanart, aList) Then
                 dlgImgS = New dlgImgSelect()
-                pResults = dlgImgS.ShowDialog(Master.currMovie, Enums.ImageType.Fanart, aList, True)
-            End If
-            If Not IsNothing(pResults) Then
-                pResults.WebImage.FromWeb(pResults.URL)
-                pbFanart.Image = CType(pResults.WebImage.Image.Clone(), Image)
+                If dlgImgS.ShowDialog(Master.currMovie, Enums.ImageType.Fanart, aList, True) = DialogResult.OK Then
+                    pResults = dlgImgS.Results
+                    If Not String.IsNullOrEmpty(pResults.URL) Then
+                        pResults.WebImage.FromWeb(pResults.URL)
+                        pbFanart.Image = CType(pResults.WebImage.Image.Clone(), Image)
 
-                Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
-                Me.lblFanartSize.Visible = True
+                        Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
+                        Me.lblFanartSize.Visible = True
+                    End If
+                End If
             End If
-
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -296,14 +297,16 @@ Public Class dlgEditMovie
             'Public Function MovieScrapeImages(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.PostScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Boolean
             If Not ModulesManager.Instance.MovieScrapeImages(Master.currMovie, Enums.PostScraperCapabilities.Poster, aList) Then
                 dlgImgS = New dlgImgSelect()
-                pResults = dlgImgS.ShowDialog(Master.currMovie, Enums.ImageType.Posters, aList, True)
-            End If
-            If Not IsNothing(pResults) Then
-                pResults.WebImage.FromWeb(pResults.URL)
-                pbPoster.Image = CType(pResults.WebImage.Image.Clone(), Image)
+                If dlgImgS.ShowDialog(Master.currMovie, Enums.ImageType.Posters, aList, True) = Windows.Forms.DialogResult.OK Then
+                    pResults = dlgImgS.Results
+                    If Not String.IsNullOrEmpty(pResults.URL) Then
+                        pResults.WebImage.FromWeb(pResults.URL)
+                        pbPoster.Image = CType(pResults.WebImage.Image.Clone(), Image)
 
-                Me.lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
-                Me.lblPosterSize.Visible = True
+                        Me.lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
+                        Me.lblPosterSize.Visible = True
+                    End If
+                End If
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
