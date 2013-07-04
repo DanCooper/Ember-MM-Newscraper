@@ -22,7 +22,7 @@ Imports System.IO
 
 Public Class Master
 
-    #Region "Fields"
+#Region "Fields"
 
     Public Shared CanScanDiscImage As Boolean
     Public Shared DB As New Database
@@ -35,7 +35,7 @@ Public Class Master
     Public Shared eLog As New ErrorLogger
     Public Shared eSettings As New Settings
     Public Shared eSize As New Globals
-    Public Shared GlobalScrapeMod As New Structures.ScrapeModifier    
+    Public Shared GlobalScrapeMod As New Structures.ScrapeModifier
     Public Shared isWindows As Boolean = Functions.CheckIfWindows
     'Public Shared MediaJobLog As New MediaLog
     Public Shared SourcesList As New List(Of String)
@@ -43,7 +43,7 @@ Public Class Master
     Public Shared tmpMovie As New MediaContainers.Movie
     Public Shared MovieSources As New List(Of Structures.MovieSource)
     Public Shared TVSources As New List(Of Structures.TVSource)
-    Public Shared MajorVersion As Single = 1.3
-    #End Region 'Fields
+
+#End Region 'Fields
 
 End Class
