@@ -110,21 +110,33 @@ Public Class dlgManualEdit
     Private Sub Editor_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Me.SetUp()
 
-        If File.Exists(currFile) Then
-            Me.Cursor = System.Windows.Forms.Cursors.WaitCursor
-            XmlViewer.Text = File.ReadAllText(currFile, Encoding.UTF8)
-            'RichTextBox1.LoadFile(currFile, RichTextBoxStreamType.PlainText)
-            Try
-                XmlViewer.Process(True)
-            Catch appException As ApplicationException
-                Master.eLog.WriteToErrorLog(appException.Message, appException.StackTrace, "ApplicationException")
-            Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-            End Try
-            ParseFile()
-            Me.Cursor = System.Windows.Forms.Cursors.Default
+        If Not String.IsNullOrEmpty(currFile) Then
+            If File.Exists(currFile) Then
+                Me.Cursor = System.Windows.Forms.Cursors.WaitCursor
+                XmlViewer.Text = File.ReadAllText(currFile, Encoding.UTF8)
+                'RichTextBox1.LoadFile(currFile, RichTextBoxStreamType.PlainText)
+                Try
+                    'Let's remove the xmlns
+                    Dim aI As Integer = XmlViewer.Find("xmlns")
+                    If aI > 0 Then
+                        Dim aJ As Integer = XmlViewer.Find(">", aI + 1, RichTextBoxFinds.None)
+                        Dim aS1 As String = XmlViewer.Text.Substring(0, aI)
+                        Dim aS2 As String = XmlViewer.Text.Substring(aI, aJ - aI)
+                        Dim aS3 As String = XmlViewer.Text.Substring(aJ, XmlViewer.Text.Length - aJ)
+                        XmlViewer.Text = aS1 & aS3
+                    End If
+                    XmlViewer.Process(True)
+                Catch appException As ApplicationException
+                    Master.eLog.WriteToErrorLog(appException.Message, appException.StackTrace, "ApplicationException")
+                Catch ex As Exception
+                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                End Try
+                ParseFile(True)
+                Me.Cursor = System.Windows.Forms.Cursors.Default
+            End If
+
+            Me.Text = String.Concat(Master.eLang.GetString(190, "Manual NFO Editor | "), currFile.Substring(currFile.LastIndexOf(Path.DirectorySeparatorChar) + 1))
         End If
-        Me.Text = String.Concat(Master.eLang.GetString(190, "Manual NFO Editor | "), currFile.Substring(currFile.LastIndexOf(Path.DirectorySeparatorChar) + 1))
 
         Changed = False
 
@@ -331,7 +343,7 @@ Public Class dlgManualEdit
         Changed = False
     End Sub
 
-    Private Sub ParseFile()
+    Private Sub ParseFile(Optional OnLoad As Boolean = False)
         If currFile Is Nothing Then
             Exit Sub
         End If
@@ -390,11 +402,12 @@ Public Class dlgManualEdit
         xmlP.Close()
 
         Me.Cursor = System.Windows.Forms.Cursors.Default
-
-        If IsValid = False Then
-            MsgBox(Master.eLang.GetString(192, "File is not valid."), MsgBoxStyle.Exclamation, Master.eLang.GetString(194, "Not Valid"))
-        Else
-            MsgBox(Master.eLang.GetString(193, "File is valid."), MsgBoxStyle.Information, Master.eLang.GetString(195, "Valid"))
+        If OnLoad Then
+            If IsValid = False Then
+                MsgBox(Master.eLang.GetString(192, "File is not valid."), MsgBoxStyle.Exclamation, Master.eLang.GetString(194, "Not Valid"))
+            Else
+                MsgBox(Master.eLang.GetString(193, "File is valid."), MsgBoxStyle.Information, Master.eLang.GetString(195, "Valid"))
+            End If
         End If
     End Sub
 
