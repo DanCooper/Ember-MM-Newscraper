@@ -31,21 +31,29 @@ Public Class dlgImgManual
 
 #End Region 'Fields
 
+#Region "Properties"
+
+    Public Property Results As Images
+        Get
+            Return tImage
+        End Get
+        Set(value As Images)
+            tImage = value
+        End Set
+    End Property
+
+#End Region
+
 #Region "Methods"
 
-	Public Overloads Function ShowDialog(ByVal _DLType As Enums.ImageType) As Images
-		'//
-		' Overload to pass data and return image
-		'\\
+    Public Overloads Function ShowDialog(ByVal _DLType As Enums.ImageType) As DialogResult
+        '//
+        ' Overload to pass data
+        '\\
 
-		Me.DLType = _DLType
-
-		If MyBase.ShowDialog() = Windows.Forms.DialogResult.OK Then
-			Return tImage
-		Else
-			Return Nothing
-		End If
-	End Function
+        Me.DLType = _DLType
+        Return MyBase.ShowDialog()
+    End Function
 
 	Private Sub btnPreview_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPreview.Click
 		Try
