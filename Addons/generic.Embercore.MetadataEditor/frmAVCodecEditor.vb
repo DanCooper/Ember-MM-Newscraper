@@ -116,14 +116,17 @@ Public Class frmAVCodecEditor
         For Each sett As AdvancedSettings.SettingItem In AdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("VideoFormatConvert:"))
             deleteitem.Add(sett.Name)
         Next
-        For Each s As String In deleteitem
-            AdvancedSettings.CleanSetting(s, "*EmberAPP")
-        Next
-        For Each r As DataGridViewRow In dgvAudio.Rows
-            AdvancedSettings.SetSetting(String.Concat("AudioFormatConvert:", r.Cells(0).Value.ToString), r.Cells(1).Value.ToString, "*EmberAPP")
-        Next
-        For Each r As DataGridViewRow In dgvVideo.Rows
-            AdvancedSettings.SetSetting(String.Concat("VideoFormatConvert:", r.Cells(0).Value.ToString), r.Cells(1).Value.ToString, "*EmberAPP")
-        Next
+
+        Using settings = New AdvancedSettings()
+            For Each s As String In deleteitem
+                settings.CleanSetting(s, "*EmberAPP")
+            Next
+            For Each r As DataGridViewRow In dgvAudio.Rows
+                settings.SetSetting(String.Concat("AudioFormatConvert:", r.Cells(0).Value.ToString), r.Cells(1).Value.ToString, "*EmberAPP")
+            Next
+            For Each r As DataGridViewRow In dgvVideo.Rows
+                settings.SetSetting(String.Concat("VideoFormatConvert:", r.Cells(0).Value.ToString), r.Cells(1).Value.ToString, "*EmberAPP")
+            Next
+        End Using
     End Sub
 End Class

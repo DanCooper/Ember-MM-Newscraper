@@ -253,12 +253,14 @@ Public Class BulkRenamerModule
     End Sub
 
     Sub SaveSettings()
-        AdvancedSettings.SetSetting("FoldersPattern", MySettings.FoldersPattern)
-        AdvancedSettings.SetSetting("FilesPattern", MySettings.FilesPattern)
-        AdvancedSettings.SetBooleanSetting("AutoRenameMulti", MySettings.AutoRenameMulti)
-        AdvancedSettings.SetBooleanSetting("AutoRenameSingle", MySettings.AutoRenameSingle)
-        AdvancedSettings.SetBooleanSetting("BulkRenamer", MySettings.BulkRenamer)
-        AdvancedSettings.SetBooleanSetting("GenericModule", MySettings.GenericModule)
+        Using settings = New AdvancedSettings()
+            settings.SetSetting("FoldersPattern", MySettings.FoldersPattern)
+            settings.SetSetting("FilesPattern", MySettings.FilesPattern)
+            settings.SetBooleanSetting("AutoRenameMulti", MySettings.AutoRenameMulti)
+            settings.SetBooleanSetting("AutoRenameSingle", MySettings.AutoRenameSingle)
+            settings.SetBooleanSetting("BulkRenamer", MySettings.BulkRenamer)
+            settings.SetBooleanSetting("GenericModule", MySettings.GenericModule)
+        End Using
     End Sub
 
 #End Region	'Methods
