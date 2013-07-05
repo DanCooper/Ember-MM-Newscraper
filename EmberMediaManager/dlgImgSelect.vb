@@ -47,7 +47,7 @@ Public Class dlgImgSelect
     'Private pbImage() As PictureBox
     'Private pnlImage() As Panel
     'Private PreDL As Boolean = False
-    Private Results As New MediaContainers.Image
+    Private _results As New MediaContainers.Image
     Private selIndex As Integer = -1
 
     Private tMovie As New Structures.DBMovie
@@ -58,6 +58,17 @@ Public Class dlgImgSelect
     Private aDes As String = String.Empty
 
 #End Region 'Fields
+
+#Region "Properties"
+    Public Property Results As MediaContainers.Image
+        Get
+            Return _results
+        End Get
+        Set(value As MediaContainers.Image)
+            _results = value
+        End Set
+    End Property
+#End Region
 
     '#Region "Events"
 
@@ -72,7 +83,7 @@ Public Class dlgImgSelect
         InitializeComponent()
     End Sub
 
-    Public Overloads Function ShowDialog(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ImageType, ByRef ImageList As List(Of MediaContainers.Image), Optional ByVal _isEdit As Boolean = False) As MediaContainers.Image
+    Public Overloads Function ShowDialog(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ImageType, ByRef ImageList As List(Of MediaContainers.Image), Optional ByVal _isEdit As Boolean = False) As DialogResult
         '//
         ' Overload to pass data
         '\\
@@ -90,8 +101,7 @@ Public Class dlgImgSelect
         End Select
 
         Me.SetUp()
-        MyBase.ShowDialog()
-        Return Results
+        Return MyBase.ShowDialog()
     End Function
 
     Private Sub dlgImgSelect_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
@@ -114,11 +124,9 @@ Public Class dlgImgSelect
         End Try
     End Sub
 
-    Public Overloads Function ShowDialog() As MediaContainers.Image
+    Public Overloads Function ShowDialog() As DialogResult
         'Me.isShown = True
-        MyBase.ShowDialog()
-
-        Return Results
+        Return MyBase.ShowDialog()
     End Function
 
     Private Sub AddImage(ByVal sDescription As String, ByVal iIndex As Integer, ByVal isChecked As Boolean, poster As MediaContainers.Image, ByVal text As String)
