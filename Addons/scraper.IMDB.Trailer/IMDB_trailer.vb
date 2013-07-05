@@ -140,7 +140,9 @@ Public Class IMDB_trailer
     End Sub
 
     Sub SaveSettings()
-        AdvancedSettings.SetBooleanSetting("DoTrailer", ConfigScrapeModifier.Trailer)
+        Using settings = New AdvancedSettings()
+            settings.SetBooleanSetting("DoTrailer", ConfigScrapeModifier.Trailer)
+        End Using
     End Sub
 
     Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.EmberMovieScraperModule_Trailer.SaveSetupScraper

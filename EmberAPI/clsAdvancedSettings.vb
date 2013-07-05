@@ -26,8 +26,9 @@ Imports System.Xml.Linq
 
 <Serializable> _
 Public Class AdvancedSettings
+    Implements IDisposable
 
-    #Region "Fields"
+#Region "Fields"
 
     Private Class SettingGroupItem
         Public Section As String
@@ -38,15 +39,19 @@ Public Class AdvancedSettings
     Private Shared _ComplexAdvancedSettings As New List(Of ComplexSettingItem)
     Private Shared _DoNotSave As Boolean = False
 
-    #End Region 'Fields
+    Private _disposed As Boolean = False
 
-    #Region "Constructors"
+#End Region 'Fields
+
+#Region "Constructors"
 
     Public Shared Sub Start()
-        Dim lhttp As New HTTP
+        'Dim lhttp As New HTTP
 
         Try
-            AdvancedSettings.SetDefaults()
+            Using settings = New AdvancedSettings()
+                settings.SetDefaults()
+            End Using
             AdvancedSettings.LoadBase()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "*Error")
@@ -85,17 +90,32 @@ Public Class AdvancedSettings
         Return _AdvancedSettings
     End Function
 
-    Public Shared Sub LoadBase()
+    Private Shared Sub LoadBase()
         Load(Path.Combine(Functions.AppPath, "AdvancedSettings.xml"))
     End Sub
 
 #End Region 'Constructors
 
 #Region "Methods"
+    Private Overloads Sub Dispose() Implements IDisposable.Dispose
+        Disposing(True)
+    End Sub
+
+    Private Sub Disposing(disposing As Boolean)
+        If disposing Then
+            If Not _DoNotSave Then
+                Save()
+            End If
+            _disposed = True
+        End If
+    End Sub
+
+    Public Sub Close()
+        Disposing(True)
+    End Sub
 
     Public Shared Function GetBooleanSetting(ByVal key As String, ByVal defvalue As Boolean, Optional ByVal cAssembly As String = "") As Boolean
         Try
-
             Dim Assembly As String = cAssembly
             If Assembly = "" Then
                 Assembly = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
@@ -122,45 +142,49 @@ Public Class AdvancedSettings
             End If
             Dim v = From e In _AdvancedSettings.Where(Function(f) f.Name = key AndAlso f.Section = Assembly)
             Return If(v(0) Is Nothing, defvalue, v(0).Value.ToString)
-
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             Return defvalue
         End Try
     End Function
 
-	Public Shared Sub CleanSetting(ByVal key As String, Optional ByVal cAssembly As String = "")
-		Dim Assembly As String = cAssembly
-		If Assembly = "" Then
-			Assembly = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
-			If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
-				Assembly = "*EmberAPP"
-			End If
-		End If
-		Dim v = From e In _AdvancedSettings.Where(Function(f) f.Name = key AndAlso f.Section = Assembly)
-		If Not v(0) Is Nothing Then
-			_AdvancedSettings.Remove(v(0))
-			If Not _DoNotSave Then Save()
-		End If
-	End Sub
+    Public Sub CleanSetting(ByVal key As String, Optional ByVal cAssembly As String = "")
+        If _disposed Then
+            Throw New ObjectDisposedException("AdvancedSettings.CleanSetting on disposed object")
+        End If
+        Dim Assembly As String = cAssembly
+        If Assembly = "" Then
+            Assembly = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
+            If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
+                Assembly = "*EmberAPP"
+            End If
+        End If
+        Dim v = From e In _AdvancedSettings.Where(Function(f) f.Name = key AndAlso f.Section = Assembly)
+        If Not v(0) Is Nothing Then
+            _AdvancedSettings.Remove(v(0))
+            'If Not _DoNotSave Then Save()
+        End If
+    End Sub
 
-	Public Shared Sub ClearComplexSetting(ByVal key As String, Optional ByVal cAssembly As String = "")
-		Try
-			Dim Assembly As String = cAssembly
-			If Assembly = "" Then
-				Assembly = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
-				If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
-					Assembly = "*EmberAPP"
-				End If
-			End If
-			Dim v = _ComplexAdvancedSettings.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly)
-			If Not v Is Nothing Then v.TableItem.Clear()
-		Catch ex As Exception
-		End Try
-	End Sub
+    Public Sub ClearComplexSetting(ByVal key As String, Optional ByVal cAssembly As String = "")
+        If _disposed Then
+            Throw New ObjectDisposedException("AdvancedSettings.CleanComplexSetting on disposed object")
+        End If
+        Try
+            Dim Assembly As String = cAssembly
+            If Assembly = "" Then
+                Assembly = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
+                If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
+                    Assembly = "*EmberAPP"
+                End If
+            End If
+            Dim v = _ComplexAdvancedSettings.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly)
+            If Not v Is Nothing Then v.TableItem.Clear()
+        Catch ex As Exception
+        End Try
+    End Sub
     Public Shared Function GetComplexSetting(ByVal key As String, Optional ByVal cAssembly As String = "") As Hashtable
         Try
-
             Dim Assembly As String = cAssembly
             If Assembly = "" Then
                 Assembly = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
@@ -176,7 +200,10 @@ Public Class AdvancedSettings
         End Try
     End Function
 
-    Public Shared Function SetComplexSetting(ByVal key As String, ByVal value As Hashtable, Optional ByVal cAssembly As String = "") As Boolean
+    Public Function SetComplexSetting(ByVal key As String, ByVal value As Hashtable, Optional ByVal cAssembly As String = "") As Boolean
+        If _disposed Then
+            Throw New ObjectDisposedException("AdvancedSettings.SetComplexSetting on disposed object")
+        End If
         Try
             Dim Assembly As String = cAssembly
             If Assembly = "" Then
@@ -192,15 +219,14 @@ Public Class AdvancedSettings
                 _ComplexAdvancedSettings.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly).TableItem = value
             End If
 
-            If Not _DoNotSave Then Save()
-
+            'If Not _DoNotSave Then Save()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
         Return True
     End Function
 
-    Public Shared Sub Load(ByVal fname As String)
+    Private Shared Sub Load(ByVal fname As String)
         _DoNotSave = True
         Try
             If File.Exists(fname) Then
@@ -237,8 +263,15 @@ Public Class AdvancedSettings
         _DoNotSave = False
     End Sub
 
-    Public Shared Sub Save()
+    Private Sub Save()
+        If _disposed Then
+            Throw New ObjectDisposedException("AdvancedSettings.Save on disposed object")
+        End If
         Try
+            If _DoNotSave Then
+                _DoNotSave = False
+                Return
+            End If
             If File.Exists(Path.Combine(Functions.AppPath, "AdvancedSettings.xml")) Then
                 File.Delete(Path.Combine(Functions.AppPath, "AdvancedSettings.xml"))
             End If
@@ -292,7 +325,10 @@ Public Class AdvancedSettings
         End Try
     End Sub
 
-    Public Shared Function SetBooleanSetting(ByVal key As String, ByVal value As Boolean, Optional ByVal cAssembly As String = "", Optional ByVal isDefault As Boolean = False) As Boolean
+    Public Function SetBooleanSetting(ByVal key As String, ByVal value As Boolean, Optional ByVal cAssembly As String = "", Optional ByVal isDefault As Boolean = False) As Boolean
+        If _disposed Then
+            Throw New ObjectDisposedException("AdvancedSettings.SetBooleanSetting on disposed object")
+        End If
         Try
             Dim Assembly As String = cAssembly
             If Assembly = "" Then
@@ -308,14 +344,17 @@ Public Class AdvancedSettings
                 _AdvancedSettings.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly).Value = Convert.ToString(value)
             End If
 
-            If Not _DoNotSave Then Save()
+            'If Not _DoNotSave Then Save()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
         Return True
     End Function
 
-    Public Shared Function SetSetting(ByVal key As String, ByVal value As String, Optional ByVal cAssembly As String = "", Optional ByVal isDefault As Boolean = False) As Boolean
+    Public Function SetSetting(ByVal key As String, ByVal value As String, Optional ByVal cAssembly As String = "", Optional ByVal isDefault As Boolean = False) As Boolean
+        If _disposed Then
+            Throw New ObjectDisposedException("AdvancedSettings.SetSetting on disposed object")
+        End If
         Try
             Dim Assembly As String = cAssembly
             If Assembly = "" Then
@@ -331,14 +370,17 @@ Public Class AdvancedSettings
                 _AdvancedSettings.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly).Value = value
             End If
 
-            If Not _DoNotSave Then Save()
+            'If Not _DoNotSave Then Save()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
         Return True
     End Function
 
-    Public Shared Sub SetDefaults(Optional ByVal loadSingle As Boolean = False, Optional ByVal section As String = "")
+    Public Sub SetDefaults(Optional ByVal loadSingle As Boolean = False, Optional ByVal section As String = "")
+        If _disposed Then
+            Throw New ObjectDisposedException("AdvancedSettings.SetDefaults on disposed object")
+        End If
         _DoNotSave = True
         If Not loadSingle OrElse section = "AudioFormatConvert" Then
             SetSetting("AudioFormatConvert:ac-3", "ac3", "*EmberAPP", True)
@@ -348,7 +390,6 @@ Public Class AdvancedSettings
             SetSetting("AudioFormatConvert:a_dts", "dca", "*EmberAPP", True)
             SetSetting("AudioFormatConvert:dts", "dca", "*EmberAPP", True)
             SetSetting("AudioFormatConvert:a_truehd", "truehd", "*EmberAPP", True)
-
         End If
 
         If Not loadSingle OrElse section = "VideoFormatConvert" Then
@@ -365,7 +406,6 @@ Public Class AdvancedSettings
             SetSetting("VideoFormatConvert:3iv1", "3ivx", "*EmberAPP", True)
             SetSetting("VideoFormatConvert:3iv2", "3ivx", "*EmberAPP", True)
             SetSetting("VideoFormatConvert:3ivd", "3ivx", "*EmberAPP", True)
-
         End If
 
         If Not loadSingle Then
@@ -384,8 +424,6 @@ Public Class AdvancedSettings
             SetBooleanSetting("StudioTagAlwaysOn", False, "*EmberAPP", True)
         End If
 
- 
-
         If Not loadSingle OrElse section = "MovieSources" Then
             Dim keypair As New Hashtable
             keypair.Add("(b[dr][-\s]?rip|blu[-\s]?ray)", "bluray")
@@ -395,8 +433,6 @@ Public Class AdvancedSettings
             keypair.Add("sd[-\s]?tv", "sdtv")
             SetComplexSetting("MovieSources", keypair)
         End If
-
-        _DoNotSave = False
     End Sub
 
 #End Region 'Methods
@@ -412,7 +448,7 @@ Public Class AdvancedSettings
         Public Value As String
 #End Region 'Fields
     End Class
-    Public Class ComplexSettingItem
+    Private Class ComplexSettingItem
         Public Name As String
         Public Section As String
         Public TableItem As New Hashtable

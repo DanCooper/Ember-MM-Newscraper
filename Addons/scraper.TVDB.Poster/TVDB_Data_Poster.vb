@@ -208,11 +208,14 @@ Public Class TVDB_Data_Poster
     End Function
 
     Public Sub SaveSetupPostScraper(ByVal DoDispose As Boolean) Implements Interfaces.EmberTVScraperModule.SaveSetupPostScraper
-        If Not String.IsNullOrEmpty(_APIKey) Then
-            AdvancedSettings.SetSetting("TVDBAPIKey", _APIKey)
-        Else
-            AdvancedSettings.SetSetting("TVDBAPIKey", Master.eLang.GetString(942, "Get your API Key from thetvdb.com"))
-        End If
+        Using settings = New AdvancedSettings()
+            If Not String.IsNullOrEmpty(_APIKey) Then
+                settings.SetSetting("TVDBAPIKey", _APIKey)
+            Else
+                settings.SetSetting("TVDBAPIKey", Master.eLang.GetString(942, "Get your API Key from thetvdb.com"))
+            End If
+        End Using
+
         If DoDispose Then
             RemoveHandler _setup.SetupScraperChanged, AddressOf Handle_SetupScraperChanged
             RemoveHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
@@ -221,11 +224,13 @@ Public Class TVDB_Data_Poster
     End Sub
 
     Public Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.EmberTVScraperModule.SaveSetupScraper
-        If Not String.IsNullOrEmpty(_APIKey) Then
-            AdvancedSettings.SetSetting("TVDBAPIKey", _APIKey)
-        Else
-            AdvancedSettings.SetSetting("TVDBAPIKey", Master.eLang.GetString(942, "Get your API Key from thetvdb.com"))
-        End If
+        Using settings = New AdvancedSettings()
+            If Not String.IsNullOrEmpty(_APIKey) Then
+                settings.SetSetting("TVDBAPIKey", _APIKey)
+            Else
+                settings.SetSetting("TVDBAPIKey", Master.eLang.GetString(942, "Get your API Key from thetvdb.com"))
+            End If
+        End Using
         If DoDispose Then
             RemoveHandler _setup.SetupScraperChanged, AddressOf Handle_SetupScraperChanged
             RemoveHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged

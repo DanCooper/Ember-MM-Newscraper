@@ -161,8 +161,10 @@ Public Class FanartTV_Poster
     End Sub
 
     Sub SaveSettings()
-        AdvancedSettings.SetBooleanSetting("DoFanart", ConfigScrapeModifier.Fanart)
-        AdvancedSettings.SetSetting("FANARTTVApiKey", _MySettings.FANARTTVApiKey)
+        Using settings = New AdvancedSettings()
+            settings.SetBooleanSetting("DoFanart", ConfigScrapeModifier.Fanart)
+            settings.SetSetting("FANARTTVApiKey", _MySettings.FANARTTVApiKey)
+        End Using
     End Sub
 
     Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.EmberMovieScraperModule_Poster.SaveSetupScraper

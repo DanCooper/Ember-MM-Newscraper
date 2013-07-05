@@ -158,10 +158,12 @@ Public Class NotificationsModule
     End Sub
 
     Private Sub SaveSettings()
-        AdvancedSettings.SetBooleanSetting("NotifyOnError", eSettings.OnError)
-        AdvancedSettings.SetBooleanSetting("NotifyOnNewMovie", eSettings.OnNewMovie)
-        AdvancedSettings.SetBooleanSetting("NotifyOnMovieScraped", eSettings.OnMovieScraped)
-        AdvancedSettings.SetBooleanSetting("NotifyOnNewEp", eSettings.OnNewEp)
+        Using settings = New AdvancedSettings()
+            settings.SetBooleanSetting("NotifyOnError", eSettings.OnError)
+            settings.SetBooleanSetting("NotifyOnNewMovie", eSettings.OnNewMovie)
+            settings.SetBooleanSetting("NotifyOnMovieScraped", eSettings.OnMovieScraped)
+            settings.SetBooleanSetting("NotifyOnNewEp", eSettings.OnNewEp)
+        End Using
     End Sub
 
     Sub SaveSetup(ByVal DoDispose As Boolean) Implements Interfaces.EmberExternalModule.SaveSetup

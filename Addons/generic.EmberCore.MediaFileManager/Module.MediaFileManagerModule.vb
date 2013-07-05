@@ -136,8 +136,10 @@ Public Class FileManagerExternalModule
             Names += String.Concat(If(String.IsNullOrEmpty(Names), String.Empty, "|"), i.Name)
             Paths += String.Concat(If(String.IsNullOrEmpty(Paths), String.Empty, "|"), i.FolderPath)
         Next
-        AdvancedSettings.SetSetting("Names", Names)
-        AdvancedSettings.SetSetting("Paths", Paths)
+        Using settings = New AdvancedSettings()
+            settings.SetSetting("Names", Names)
+            settings.SetSetting("Paths", Paths)
+        End Using
     End Sub
 
     Private Sub bwCopyDirectory_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwCopyDirectory.DoWork

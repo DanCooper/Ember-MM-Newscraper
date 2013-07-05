@@ -202,12 +202,14 @@ Public Class TMDB_Poster
     End Function
 
     Sub SaveSettings()
-        AdvancedSettings.SetBooleanSetting("DoPoster", ConfigScrapeModifier.Poster)
-        AdvancedSettings.SetBooleanSetting("DoFanart", ConfigScrapeModifier.Fanart)
+        Using settings = New AdvancedSettings()
+            settings.SetBooleanSetting("DoPoster", ConfigScrapeModifier.Poster)
+            settings.SetBooleanSetting("DoFanart", ConfigScrapeModifier.Fanart)
 
-        AdvancedSettings.SetSetting("TMDBAPIKey", _MySettings.TMDBAPIKey)
-        AdvancedSettings.SetBooleanSetting("FallBackEn", _MySettings.FallBackEng)
-        AdvancedSettings.SetSetting("TMDBLanguage", _MySettings.TMDBLanguage)
+            settings.SetSetting("TMDBAPIKey", _MySettings.TMDBAPIKey)
+            settings.SetBooleanSetting("FallBackEn", _MySettings.FallBackEng)
+            settings.SetSetting("TMDBLanguage", _MySettings.TMDBLanguage)
+        End Using
     End Sub
 
     Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.EmberMovieScraperModule_Poster.SaveSetupScraper

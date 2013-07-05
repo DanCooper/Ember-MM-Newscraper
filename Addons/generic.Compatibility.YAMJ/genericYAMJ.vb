@@ -104,16 +104,18 @@ Public Class genericYAMJ
 	Public Sub SaveSetup(ByVal DoDispose As Boolean) Implements EmberAPI.Interfaces.EmberExternalModule.SaveSetup
 		Me.Enabled = Me.fYAMJ.chkEnabled.Checked
 		'Master.eSettings.VideoTSParent = Me.fYAMJ.chkVideoTSParent.Checked
-		Master.eSettings.YAMJSetsCompatible = Me.fYAMJ.chkYAMJCompatibleSets.Checked
-		AdvancedSettings.SetBooleanSetting("YAMJTVImageNaming", Me.fYAMJ.chkYAMJCompatibleTVImages.Checked)
-		AdvancedSettings.SetBooleanSetting("YAMJnfoFields", Me.fYAMJ.chkYAMJnfoFields.Checked)
-		AdvancedSettings.SetBooleanSetting("YAMJShowPoster", Me.fYAMJ.chkShowPoster.Checked)
-		AdvancedSettings.SetBooleanSetting("YAMJShowFanart", Me.fYAMJ.chkShowFanart.Checked)
-		AdvancedSettings.SetBooleanSetting("YAMJSeasonPoster", Me.fYAMJ.chkSeasonPoster.Checked)
-		AdvancedSettings.SetBooleanSetting("YAMJSeasonFanart", Me.fYAMJ.chkSeasonFanart.Checked)
-		AdvancedSettings.SetBooleanSetting("YAMJEpisodePoster", Me.fYAMJ.chkEpisodePoster.Checked)
-		AdvancedSettings.SetBooleanSetting("YAMJAllSeasonPoster", Me.fYAMJ.chkAllSeasonPoster.Checked)
-	End Sub
+        Master.eSettings.YAMJSetsCompatible = Me.fYAMJ.chkYAMJCompatibleSets.Checked
+        Using settings = New AdvancedSettings()
+            settings.SetBooleanSetting("YAMJTVImageNaming", Me.fYAMJ.chkYAMJCompatibleTVImages.Checked)
+            settings.SetBooleanSetting("YAMJnfoFields", Me.fYAMJ.chkYAMJnfoFields.Checked)
+            settings.SetBooleanSetting("YAMJShowPoster", Me.fYAMJ.chkShowPoster.Checked)
+            settings.SetBooleanSetting("YAMJShowFanart", Me.fYAMJ.chkShowFanart.Checked)
+            settings.SetBooleanSetting("YAMJSeasonPoster", Me.fYAMJ.chkSeasonPoster.Checked)
+            settings.SetBooleanSetting("YAMJSeasonFanart", Me.fYAMJ.chkSeasonFanart.Checked)
+            settings.SetBooleanSetting("YAMJEpisodePoster", Me.fYAMJ.chkEpisodePoster.Checked)
+            settings.SetBooleanSetting("YAMJAllSeasonPoster", Me.fYAMJ.chkAllSeasonPoster.Checked)
+        End Using
+    End Sub
 
 	Public Function RunGeneric(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object), ByRef _refparam As Object) As EmberAPI.Interfaces.ModuleResult Implements EmberAPI.Interfaces.EmberExternalModule.RunGeneric
 		Dim iType As Enums.TVImageType

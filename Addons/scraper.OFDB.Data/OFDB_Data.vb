@@ -174,14 +174,16 @@ Public Class OFDB_Data
     End Sub
 
     Sub SaveSettings()
-        AdvancedSettings.SetBooleanSetting("DoTitle", ConfigOptions.bTitle)
-        AdvancedSettings.SetBooleanSetting("DoOutline", ConfigOptions.bOutline)
-        AdvancedSettings.SetBooleanSetting("DoPlot", ConfigOptions.bPlot)
-        AdvancedSettings.SetBooleanSetting("DoGenres", ConfigOptions.bGenre)
+        Using settings = New AdvancedSettings()
+            settings.SetBooleanSetting("DoTitle", ConfigOptions.bTitle)
+            settings.SetBooleanSetting("DoOutline", ConfigOptions.bOutline)
+            settings.SetBooleanSetting("DoPlot", ConfigOptions.bPlot)
+            settings.SetBooleanSetting("DoGenres", ConfigOptions.bGenre)
 
-        AdvancedSettings.SetBooleanSetting("DoPoster", ConfigScrapeModifier.Poster)
-        AdvancedSettings.SetBooleanSetting("DoFanart", ConfigScrapeModifier.Fanart)
-        'AdvancedSettings.SetBooleanSetting("DoTrailer", ConfigScrapeModifier.Trailer)
+            settings.SetBooleanSetting("DoPoster", ConfigScrapeModifier.Poster)
+            settings.SetBooleanSetting("DoFanart", ConfigScrapeModifier.Fanart)
+            'settings.SetBooleanSetting("DoTrailer", ConfigScrapeModifier.Trailer)
+        End Using
     End Sub
 
     Private Sub Handle_PostModuleSettingsChanged()

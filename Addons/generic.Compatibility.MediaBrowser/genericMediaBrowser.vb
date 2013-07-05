@@ -100,9 +100,11 @@ Public Class genericMediaBrowser
 	Public Sub SaveSetup(ByVal DoDispose As Boolean) Implements EmberAPI.Interfaces.EmberExternalModule.SaveSetup
 		Me.Enabled = Me.fMediaBrowser.chkEnabled.Checked
 		'Master.eSettings.VideoTSParent = Me.fMediaBrowser.chkVideoTSParent.Checked
-		AdvancedSettings.SetBooleanSetting("MediaBrowserMyMovie", Me.fMediaBrowser.chkMyMovies.Checked)
-		AdvancedSettings.SetBooleanSetting("MediaBrowserBackdrop", Me.fMediaBrowser.chkBackdrop.Checked)
-	End Sub
+        Using settings = New AdvancedSettings()
+            settings.SetBooleanSetting("MediaBrowserMyMovie", Me.fMediaBrowser.chkMyMovies.Checked)
+            settings.SetBooleanSetting("MediaBrowserBackdrop", Me.fMediaBrowser.chkBackdrop.Checked)
+        End Using
+    End Sub
 
 	Public Function RunGeneric(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object), ByRef _refparam As Object) As EmberAPI.Interfaces.ModuleResult Implements EmberAPI.Interfaces.EmberExternalModule.RunGeneric
 		Dim doContinue As Boolean
