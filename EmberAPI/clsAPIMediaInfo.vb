@@ -709,7 +709,7 @@ Public Class MediaInfo
         <XmlElement("channels")> _
         Public Property Channels() As String
             Get
-                Return Me._channels
+                Return Me._channels.Trim()
             End Get
             Set(ByVal Value As String)
                 Me._channels = Value
@@ -719,14 +719,14 @@ Public Class MediaInfo
         <XmlIgnore> _
         Public ReadOnly Property ChannelsSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._channels)
+                Return Not String.IsNullOrEmpty(Channels)
             End Get
         End Property
 
         <XmlElement("codec")> _
         Public Property Codec() As String
             Get
-                Return Me._codec
+                Return Me._codec.Trim()
             End Get
             Set(ByVal Value As String)
                 Me._codec = Value
@@ -736,7 +736,7 @@ Public Class MediaInfo
         <XmlIgnore> _
         Public ReadOnly Property CodecSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._codec)
+                Return Not String.IsNullOrEmpty(Codec)
             End Get
         End Property
 
@@ -753,7 +753,7 @@ Public Class MediaInfo
         <XmlElement("language")> _
         Public Property Language() As String
             Get
-                Return Me._language
+                Return Me._language.Trim()
             End Get
             Set(ByVal Value As String)
                 Me._language = Value
@@ -763,14 +763,14 @@ Public Class MediaInfo
         <XmlIgnore> _
         Public ReadOnly Property LanguageSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._language)
+                Return Not String.IsNullOrEmpty(Language)
             End Get
         End Property
 
         <XmlElement("longlanguage")> _
         Public Property LongLanguage() As String
             Get
-                Return Me._longlanguage
+                Return Me._longlanguage.Trim()
             End Get
             Set(ByVal value As String)
                 Me._longlanguage = value
@@ -780,7 +780,7 @@ Public Class MediaInfo
         <XmlIgnore> _
         Public ReadOnly Property LongLanguageSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._longlanguage)
+                Return Not String.IsNullOrEmpty(LongLanguage)
             End Get
         End Property
 
@@ -789,7 +789,7 @@ Public Class MediaInfo
         <XmlElement("bitrate")> _
         Public Property Bitrate() As String
             Get
-                Return Me._bitrate
+                Return Me._bitrate.Trim()
             End Get
             Set(ByVal Value As String)
                 Me._bitrate = Value
@@ -1001,7 +1001,7 @@ Public Class MediaInfo
         <XmlElement("aspect")> _
         Public Property Aspect() As String
             Get
-                Return Me._aspect
+                Return Me._aspect.Trim()
             End Get
             Set(ByVal Value As String)
                 Me._aspect = Value
@@ -1011,14 +1011,14 @@ Public Class MediaInfo
         <XmlIgnore> _
         Public ReadOnly Property AspectSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._aspect)
+                Return Not String.IsNullOrEmpty(Aspect)
             End Get
         End Property
 
         <XmlElement("codec")> _
         Public Property Codec() As String
             Get
-                Return Me._codec
+                Return Me._codec.Trim()
             End Get
             Set(ByVal Value As String)
                 Me._codec = Value
@@ -1028,14 +1028,14 @@ Public Class MediaInfo
         <XmlIgnore> _
         Public ReadOnly Property CodecSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._codec)
+                Return Not String.IsNullOrEmpty(Codec)
             End Get
         End Property
 
         <XmlElement("durationinseconds")> _
         Public Property Duration() As String
             Get
-                Return Me._duration
+                Return Me._duration.Trim()
             End Get
             Set(ByVal Value As String)
                 Me._duration = Value
@@ -1045,14 +1045,14 @@ Public Class MediaInfo
         <XmlIgnore()> _
         Public ReadOnly Property DurationSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._duration)
+                Return Not String.IsNullOrEmpty(Duration)
             End Get
         End Property
 
         <XmlElement("height")> _
         Public Property Height() As String
             Get
-                Return Me._height
+                Return Me._height.Trim()
             End Get
             Set(ByVal Value As String)
                 Me._height = Value
@@ -1062,14 +1062,14 @@ Public Class MediaInfo
         <XmlIgnore> _
         Public ReadOnly Property HeightSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._height)
+                Return Not String.IsNullOrEmpty(Height)
             End Get
         End Property
 
         <XmlElement("language")> _
         Public Property Language() As String
             Get
-                Return Me._language
+                Return Me._language.Trim()
             End Get
             Set(ByVal Value As String)
                 Me._language = Value
@@ -1079,14 +1079,14 @@ Public Class MediaInfo
         <XmlIgnore> _
         Public ReadOnly Property LanguageSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._language)
+                Return Not String.IsNullOrEmpty(Language)
             End Get
         End Property
 
         <XmlElement("longlanguage")> _
         Public Property LongLanguage() As String
             Get
-                Return Me._longlanguage
+                Return Me._longlanguage.Trim()
             End Get
             Set(ByVal value As String)
                 Me._longlanguage = value
@@ -1096,14 +1096,14 @@ Public Class MediaInfo
         <XmlIgnore> _
         Public ReadOnly Property LongLanguageSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._longlanguage)
+                Return Not String.IsNullOrEmpty(LongLanguage)
             End Get
         End Property
 
         <XmlElement("scantype")> _
         Public Property Scantype() As String
             Get
-                Return Me._scantype
+                Return Me._scantype.Trim()
             End Get
             Set(ByVal Value As String)
                 Me._scantype = Value
@@ -1113,14 +1113,14 @@ Public Class MediaInfo
         <XmlIgnore> _
         Public ReadOnly Property ScantypeSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._scantype)
+                Return Not String.IsNullOrEmpty(Scantype)
             End Get
         End Property
 
         <XmlElement("width")> _
         Public Property Width() As String
             Get
-                Return Me._width
+                Return Me._width.Trim()
             End Get
             Set(ByVal Value As String)
                 Me._width = Value
@@ -1130,7 +1130,7 @@ Public Class MediaInfo
         <XmlIgnore> _
         Public ReadOnly Property WidthSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._width)
+                Return Not String.IsNullOrEmpty(Width)
             End Get
         End Property
 
@@ -1140,7 +1140,7 @@ Public Class MediaInfo
         <XmlElement("bitrate")> _
         Public Property Bitrate() As String
             Get
-                Return Me._bitrate
+                Return Me._bitrate.Trim()
             End Get
             Set(ByVal Value As String)
                 Me._bitrate = Value
@@ -1150,7 +1150,7 @@ Public Class MediaInfo
         <XmlElement("multiView_Count")> _
         Public Property MultiView() As String
             Get
-                Return Me._multiview
+                Return Me._multiview.Trim()
             End Get
             Set(ByVal Value As String)
                 Me._multiview = Value
@@ -1159,7 +1159,7 @@ Public Class MediaInfo
         <XmlElement("encodedSettings")> _
         Public Property EncodedSettings() As String
             Get
-                Return Me._encoded_Settings
+                Return Me._encoded_Settings.Trim()
             End Get
             Set(ByVal Value As String)
                 Me._encoded_Settings = Value
