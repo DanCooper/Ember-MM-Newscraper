@@ -66,17 +66,36 @@ Namespace IMDBg
                         'Debug.Print("GetIMDBPoster 2 - {0}", mcIMDB(0).Value)
                         aStr = mcIMDB(0).Value.Substring(mcIMDB(0).Value.LastIndexOf("/") + 1, mcIMDB(0).Value.Length - (mcIMDB(0).Value.LastIndexOf("/") + 1))
                         aPar = Split(aStr, ",")
-                        aPar2 = Split(aPar(0), ".")
-                        aParentID = aPar2(0)
-                        aPar(3) = aPar(3).Substring(0, aPar(3).LastIndexOf("_"))
-                        alPoster.Add(New MediaContainers.Image With {.Description = Master.eSize.poster_names(0).description, .URL = mcIMDB(0).Value, .Width = aPar(2), .Height = aPar(3), .ParentID = aParentID})
+                        'URLs can now look like this as well:
+                        'http://ia.media-imdb.com/images/M/MV5BMTI5MTgxMzIzMl5BMl5BanBnXkFtZTcwNDA5MTYyMQ@@._V1_SY295_SX197_.jpg
+                        If aPar.Length = 1 Then
+                            aPar2 = Split(aPar(0), ".")
+                            aParentID = aPar2(0)
+                            Dim mSYSX As Match = Regex.Match(aPar(0), "\._V\d+?_SY(\d+?)_SX(\d+?)_")
+                            If mSYSX.Success Then
+                                alPoster.Add(New MediaContainers.Image With {.Description = Master.eSize.poster_names(5).description, .URL = mcIMDB(0).Value, .Width = mSYSX.Groups(2).Value, .Height = mSYSX.Groups(1).Value, .ParentID = aParentID})
+                            Else
+                                Master.eLog.WriteToErrorLog("Unknown IMDB Poster URL", "", "Scraping Error")
+                                Debug.Assert(False)
+                            End If
+                        Else
+                            aPar2 = Split(aPar(0), ".")
+                            aParentID = aPar2(0)
+                            aPar(3) = aPar(3).Substring(0, aPar(3).LastIndexOf("_"))
+                            alPoster.Add(New MediaContainers.Image With {.Description = Master.eSize.poster_names(0).description, .URL = mcIMDB(0).Value, .Width = aPar(2), .Height = aPar(3), .ParentID = aParentID})
+                        End If
                     End If
-                    Dim aSP As String() = Regex.Split(mcIMDB(0).Value, "._V\d+?_SY\d+?_CR\d+?,\d+?,\d+?,\d+?_")
-                    Dim sUrl1 = aSP(0) + aSP(1)
-                    'Debug.Print("GetIMDBPoster 3 - {0}", sUrl1)
-                    alPoster.Add(New MediaContainers.Image With {.Description = Master.eSize.poster_names(5).description, .URL = sUrl1, .Width = "n/a", .Height = "n/a", .ParentID = aParentID})
+                    'The URLs can contain SY or SX in them like this:
+                    'http://ia.media-imdb.com/images/M/MV5BMTk4OTQ1OTMwN15BMl5BanBnXkFtZTcwOTIwMzM3MQ@@._V1_SX214_CR0,0,214,317_.jpg
+                    'or 
+                    'http://ia.media-imdb.com/images/M/MV5BMjE3NDY0OTIwNl5BMl5BanBnXkFtZTcwMTY4MTU1MQ@@._V1_SY317_CR4,0,214,317_.jpg
+                    Dim aSP As String() = Regex.Split(mcIMDB(0).Value, "._V\d+?_S(?:X|Y)\d+?_CR\d+?,\d+?,\d+?,\d+?_")
+                    If aSP.Length > 1 Then
+                        Dim sUrl1 = aSP(0) + aSP(1)
+                        'Debug.Print("GetIMDBPoster 3 - {0}", sUrl1)
+                        alPoster.Add(New MediaContainers.Image With {.Description = Master.eSize.poster_names(5).description, .URL = sUrl1, .Width = "n/a", .Height = "n/a", .ParentID = aParentID})
+                    End If
                 End If
-
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
