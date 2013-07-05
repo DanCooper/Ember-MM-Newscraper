@@ -87,27 +87,31 @@ Public Class frmMediaSources
         For Each sett As AdvancedSettings.SettingItem In AdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("MediaSourcesByExtension:"))
             deleteitem.Add(sett.Name)
         Next
-        For Each s As String In deleteitem
-            AdvancedSettings.CleanSetting(s, "*EmberAPP")
-        Next
+        Using settings = New AdvancedSettings()
+            For Each s As String In deleteitem
+                settings.CleanSetting(s, "*EmberAPP")
+            Next
 
-        Dim sources As New Hashtable
-        For Each r As DataGridViewRow In dgvSources.Rows
-            If Not String.IsNullOrEmpty(r.Cells(0).Value.ToString) AndAlso Not sources.ContainsKey(r.Cells(0).Value.ToString) Then
-                sources.Add(r.Cells(0).Value.ToString, r.Cells(1).Value.ToString)
-            End If
-        Next
-        AdvancedSettings.SetComplexSetting("MovieSources", sources, "*EmberAPP")
-        AdvancedSettings.SetBooleanSetting("MediaSourcesByExtension", chkMapByFile.Checked, "*EmberAPP")
-        For Each r As DataGridViewRow In dgvByFile.Rows
-            If Not String.IsNullOrEmpty(r.Cells(0).Value.ToString) AndAlso Not sources.ContainsKey(r.Cells(0).Value.ToString) Then
-                AdvancedSettings.SetSetting(String.Concat("MediaSourcesByExtension:", r.Cells(0).Value.ToString), r.Cells(1).Value.ToString, "*EmberAPP")
-            End If
-        Next
+            Dim sources As New Hashtable
+            For Each r As DataGridViewRow In dgvSources.Rows
+                If Not String.IsNullOrEmpty(r.Cells(0).Value.ToString) AndAlso Not sources.ContainsKey(r.Cells(0).Value.ToString) Then
+                    sources.Add(r.Cells(0).Value.ToString, r.Cells(1).Value.ToString)
+                End If
+            Next
+            settings.SetComplexSetting("MovieSources", sources, "*EmberAPP")
+            settings.SetBooleanSetting("MediaSourcesByExtension", chkMapByFile.Checked, "*EmberAPP")
+            For Each r As DataGridViewRow In dgvByFile.Rows
+                If Not String.IsNullOrEmpty(r.Cells(0).Value.ToString) AndAlso Not sources.ContainsKey(r.Cells(0).Value.ToString) Then
+                    settings.SetSetting(String.Concat("MediaSourcesByExtension:", r.Cells(0).Value.ToString), r.Cells(1).Value.ToString, "*EmberAPP")
+                End If
+            Next
+        End Using
     End Sub
 
     Private Sub btnSetDefaults_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetDefaults.Click
-        AdvancedSettings.SetDefaults(True, "MovieSources")
+        Using settings = New AdvancedSettings()
+            settings.SetDefaults(True, "MovieSources")
+        End Using
         LoadSources()
     End Sub
 

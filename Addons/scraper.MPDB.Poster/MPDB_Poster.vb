@@ -160,7 +160,9 @@ Public Class MPDB_Poster
 
 
     Sub SaveSettings()
-        AdvancedSettings.SetBooleanSetting("DoPoster", ConfigScrapeModifier.Poster)
+        Using settings = New AdvancedSettings()
+            settings.SetBooleanSetting("DoPoster", ConfigScrapeModifier.Poster)
+        End Using
     End Sub
 
     Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.EmberMovieScraperModule_Poster.SaveSetupScraper

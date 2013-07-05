@@ -186,9 +186,11 @@ Public Class TMDB_Trailer
     End Function
 
     Sub SaveSettings()
-        AdvancedSettings.SetSetting("TMDBAPIKey", _MySettings.TMDBAPIKey)
-        AdvancedSettings.SetBooleanSetting("FallBackEn", _MySettings.FallBackEng)
-        AdvancedSettings.SetSetting("TMDBLanguage", _MySettings.TMDBLanguage)
+        Using settings = New AdvancedSettings()
+            settings.SetSetting("TMDBAPIKey", _MySettings.TMDBAPIKey)
+            settings.SetBooleanSetting("FallBackEn", _MySettings.FallBackEng)
+            settings.SetSetting("TMDBLanguage", _MySettings.TMDBLanguage)
+        End Using
     End Sub
 
     Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.EmberMovieScraperModule_Trailer.SaveSetupScraper

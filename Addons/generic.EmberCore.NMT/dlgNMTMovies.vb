@@ -154,31 +154,33 @@ Public Class dlgNMTMovies
                 MsgBox(Master.eLang.GetString(337, "Please Choose/Install a Template First"), MsgBoxStyle.OkCancel, "Error")
                 Return
             End If
-            AdvancedSettings.SetSetting("Template", cbTemplate.Text)
-            AdvancedSettings.SetSetting("BasePath", txtOutputFolder.Text.ToString)
-            AdvancedSettings.SetBooleanSetting(String.Concat("HighPriority.", conf.Name), chHighPriority.Checked)
+            Using settings = New AdvancedSettings()
+                settings.SetSetting("Template", cbTemplate.Text)
+                settings.SetSetting("BasePath", txtOutputFolder.Text.ToString)
+                settings.SetBooleanSetting(String.Concat("HighPriority.", conf.Name), chHighPriority.Checked)
 
-            For Each r As NMTExporterModule.Config._Param In conf.Params.Where(Function(y) Not y.access = "internal")
-                AdvancedSettings.SetSetting(String.Concat("Param.", conf.Name, ".", r.name), r.value)
-            Next
-            For Each r As NMTExporterModule.Config._Property In conf.Properties.Where(Function(y) y.type = "list")
-                Dim v As String = r.value
-                AdvancedSettings.SetSetting(String.Concat("Property.", conf.Name, ".", r.name), r.values.FirstOrDefault(Function(y) y.value = v).label)
-            Next
-            For Each s As DataGridViewRow In dgvSources.Rows
-                If IsNothing(s.Cells(3).Value) Then s.Cells(3).Value = String.Empty
-                If IsNothing(s.Cells(1).Value) Then Continue For
-                If IsNothing(s.Cells(0).Value) Then s.Cells(0).Value = False
+                For Each r As NMTExporterModule.Config._Param In conf.Params.Where(Function(y) Not y.access = "internal")
+                    settings.SetSetting(String.Concat("Param.", conf.Name, ".", r.name), r.value)
+                Next
+                For Each r As NMTExporterModule.Config._Property In conf.Properties.Where(Function(y) y.type = "list")
+                    Dim v As String = r.value
+                    settings.SetSetting(String.Concat("Property.", conf.Name, ".", r.name), r.values.FirstOrDefault(Function(y) y.value = v).label)
+                Next
+                For Each s As DataGridViewRow In dgvSources.Rows
+                    If IsNothing(s.Cells(3).Value) Then s.Cells(3).Value = String.Empty
+                    If IsNothing(s.Cells(1).Value) Then Continue For
+                    If IsNothing(s.Cells(0).Value) Then s.Cells(0).Value = False
 
-                If s.Cells(4).Value.ToString = "movie" Then
-                    AdvancedSettings.SetSetting(String.Concat("Path.Movie.", conf.Name, ".", s.Cells(1).Value.ToString), s.Cells(3).Value.ToString)
-                    AdvancedSettings.SetBooleanSetting(String.Concat("Path.Movie.Status.", conf.Name, ".", s.Cells(1).Value.ToString), Convert.ToBoolean(s.Cells(0).Value))
-                Else
-                    AdvancedSettings.SetSetting(String.Concat("Path.TV.", conf.Name, ".", s.Cells(1).Value.ToString), s.Cells(3).Value.ToString)
-                    AdvancedSettings.SetBooleanSetting(String.Concat("Path.TV.Status.", conf.Name, ".", s.Cells(1).Value.ToString), Convert.ToBoolean(s.Cells(0).Value))
-                End If
-            Next
-            'If Not conf Is Nothing Then conf.Save(Path.Combine(conf.TemplatePath, "config.xml"))
+                    If s.Cells(4).Value.ToString = "movie" Then
+                        settings.SetSetting(String.Concat("Path.Movie.", conf.Name, ".", s.Cells(1).Value.ToString), s.Cells(3).Value.ToString)
+                        settings.SetBooleanSetting(String.Concat("Path.Movie.Status.", conf.Name, ".", s.Cells(1).Value.ToString), Convert.ToBoolean(s.Cells(0).Value))
+                    Else
+                        settings.SetSetting(String.Concat("Path.TV.", conf.Name, ".", s.Cells(1).Value.ToString), s.Cells(3).Value.ToString)
+                        settings.SetBooleanSetting(String.Concat("Path.TV.Status.", conf.Name, ".", s.Cells(1).Value.ToString), Convert.ToBoolean(s.Cells(0).Value))
+                    End If
+                Next
+                'If Not conf Is Nothing Then conf.Save(Path.Combine(conf.TemplatePath, "config.xml"))
+            End Using
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try

@@ -89,9 +89,11 @@ Public Class genericBoxee
 	End Sub
 
 	Public Sub SaveSetup(ByVal DoDispose As Boolean) Implements EmberAPI.Interfaces.EmberExternalModule.SaveSetup
-		Me.Enabled = Me.fBoxee.chkEnabled.Checked()
-		AdvancedSettings.SetBooleanSetting("BoxeeTVShowId", Me.fBoxee.chkBoxeeId.Checked)
-	End Sub
+        Me.Enabled = Me.fBoxee.chkEnabled.Checked()
+        Using settings = New AdvancedSettings()
+            settings.SetBooleanSetting("BoxeeTVShowId", Me.fBoxee.chkBoxeeId.Checked)
+        End Using
+    End Sub
 
 	Public Function RunGeneric(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object), ByRef _refparam As Object) As EmberAPI.Interfaces.ModuleResult Implements EmberAPI.Interfaces.EmberExternalModule.RunGeneric
 		Dim doContinue As Boolean
@@ -149,11 +151,12 @@ Public Class genericBoxee
 		End If
 	End Sub
 	Sub DeploySyncSettings(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
-		If Not IsNothing(Me.fBoxee) Then
-			AdvancedSettings.SetBooleanSetting("BoxeeTVShowId", Me.fBoxee.chkBoxeeId.Checked)
-			RaiseEvent GenericEvent(mType, _params)
-		End If
-
-	End Sub
+        If Not IsNothing(Me.fBoxee) Then
+            Using settings = New AdvancedSettings()
+                settings.SetBooleanSetting("BoxeeTVShowId", Me.fBoxee.chkBoxeeId.Checked)
+            End Using
+            RaiseEvent GenericEvent(mType, _params)
+        End If
+    End Sub
 #End Region	'Methods
 End Class
