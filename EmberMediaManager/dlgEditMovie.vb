@@ -230,16 +230,20 @@ Public Class dlgEditMovie
 
             'Public Function MovieScrapeImages(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.PostScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Boolean
             If Not ModulesManager.Instance.MovieScrapeImages(Master.currMovie, Enums.PostScraperCapabilities.Fanart, aList) Then
-                dlgImgS = New dlgImgSelect()
-                If dlgImgS.ShowDialog(Master.currMovie, Enums.ImageType.Fanart, aList, True) = DialogResult.OK Then
-                    pResults = dlgImgS.Results
-                    If Not String.IsNullOrEmpty(pResults.URL) Then
-                        pResults.WebImage.FromWeb(pResults.URL)
-                        pbFanart.Image = CType(pResults.WebImage.Image.Clone(), Image)
+                If aList.Count > 0 Then
+                    dlgImgS = New dlgImgSelect()
+                    If dlgImgS.ShowDialog(Master.currMovie, Enums.ImageType.Fanart, aList, True) = DialogResult.OK Then
+                        pResults = dlgImgS.Results
+                        If Not String.IsNullOrEmpty(pResults.URL) Then
+                            pResults.WebImage.FromWeb(pResults.URL)
+                            pbFanart.Image = CType(pResults.WebImage.Image.Clone(), Image)
 
-                        Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
-                        Me.lblFanartSize.Visible = True
+                            Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
+                            Me.lblFanartSize.Visible = True
+                        End If
                     End If
+                Else
+                    MsgBox(Master.eLang.GetString(969, "No fanart could be found. Please check to see if any fanart scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(970, "No Fanart Found"))
                 End If
             End If
         Catch ex As Exception
@@ -296,16 +300,20 @@ Public Class dlgEditMovie
 
             'Public Function MovieScrapeImages(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.PostScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Boolean
             If Not ModulesManager.Instance.MovieScrapeImages(Master.currMovie, Enums.PostScraperCapabilities.Poster, aList) Then
-                dlgImgS = New dlgImgSelect()
-                If dlgImgS.ShowDialog(Master.currMovie, Enums.ImageType.Posters, aList, True) = Windows.Forms.DialogResult.OK Then
-                    pResults = dlgImgS.Results
-                    If Not String.IsNullOrEmpty(pResults.URL) Then
-                        pResults.WebImage.FromWeb(pResults.URL)
-                        pbPoster.Image = CType(pResults.WebImage.Image.Clone(), Image)
+                If aList.Count > 0 Then
+                    dlgImgS = New dlgImgSelect()
+                    If dlgImgS.ShowDialog(Master.currMovie, Enums.ImageType.Posters, aList, True) = Windows.Forms.DialogResult.OK Then
+                        pResults = dlgImgS.Results
+                        If Not String.IsNullOrEmpty(pResults.URL) Then
+                            pResults.WebImage.FromWeb(pResults.URL)
+                            pbPoster.Image = CType(pResults.WebImage.Image.Clone(), Image)
 
-                        Me.lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
-                        Me.lblPosterSize.Visible = True
+                            Me.lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
+                            Me.lblPosterSize.Visible = True
+                        End If
                     End If
+                Else
+                    MsgBox(Master.eLang.GetString(971, "No poster images could be found. Please check to see if any poster scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(972, "No Posters Found"))
                 End If
             End If
         Catch ex As Exception
