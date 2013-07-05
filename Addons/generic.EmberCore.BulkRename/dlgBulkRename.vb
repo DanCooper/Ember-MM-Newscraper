@@ -87,7 +87,9 @@ Public Class dlgBulkRenamer
                 Dim iProg As Integer = 0
                 SQLNewcommand.CommandText = String.Concat("SELECT COUNT(id) AS mcount FROM movies;")
                 Using SQLcount As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
-                    Me.bwLoadInfo.ReportProgress(-1, SQLcount("mcount")) ' set maximum
+                    If SQLcount.HasRows AndAlso SQLcount.Read() Then
+                        Me.bwLoadInfo.ReportProgress(-1, SQLcount("mcount")) ' set maximum
+                    End If
                 End Using
                 SQLNewcommand.CommandText = String.Concat("SELECT NfoPath ,id FROM movies ORDER BY ListTitle ASC;")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
