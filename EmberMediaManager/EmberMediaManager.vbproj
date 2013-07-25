@@ -1641,15 +1641,8 @@
     <Content Include="Images\Studios\Canal+ Distribution.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Studios\Canal+ Espa¦a.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Images\Studios\Canal+ Espaªa.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Images\Studios\Canal+ Espa▒a.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Images\Studios\Canal+ Espana.png" />
+    <Content Include="Images\Studios\Canal+ España.png" />
     <Content Include="Images\Studios\Canal+ Productions.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -1785,15 +1778,10 @@
     <Content Include="Images\Studios\Central_Film.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Studios\Centre National de la Cin+matographie %28CNC%29.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Images\Studios\Centre National de la Cinematographie.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Studios\Centre National de la Cin┌matographie %28CNC%29.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Images\Studios\Centre National de la Cinématographie %28CNC%29.png" />
     <Content Include="Images\Studios\Centropolis Entertainment.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -1935,12 +1923,8 @@
     <Content Include="Images\Studios\Condemned Productions.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Studios\ConspiraþÒo Filmes.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Images\Studios\Conspiraτπo Filmes.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Images\Studios\Conspiracao Filmes.png" />
+    <Content Include="Images\Studios\Conspiração Filmes.png" />
     <Content Include="Images\Studios\Constantin Entertainment.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -2097,12 +2081,8 @@
     <Content Include="Images\Studios\Eleven A Music Company.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Studios\Elz+vir Films.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Images\Studios\Elz┌vir Films.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Images\Studios\Elzevir Films.png" />
+    <Content Include="Images\Studios\Elzévir Films.png" />
     <Content Include="Images\Studios\EM Media.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -2169,15 +2149,8 @@
     <Content Include="Images\Studios\Film Department.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Studios\Film i V%29st.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Images\Studios\Film i V§st.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Images\Studios\Film i V⌡st.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Images\Studios\Film i Vast.png" />
+    <Content Include="Images\Studios\Film i Väst.png" />
     <Content Include="Images\Studios\Film Media.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -2694,6 +2667,7 @@
     <Content Include="Images\Studios\Lizard.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\Studios\Lleju Productions.png" />
     <Content Include="Images\Studios\Lucasfilm.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -3114,6 +3088,8 @@
     <Content Include="Images\Studios\Pandora.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\Studios\Pao com Ovo Filmes.png" />
+    <Content Include="Images\Studios\PaoCom Ovo Filmes.png" />
     <Content Include="Images\Studios\Paramount British Pictures.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -3270,12 +3246,8 @@
     <Content Include="Images\Studios\Priority Records.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Studios\PÒo Com Ovo Filmes.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Images\Studios\Pπo Com Ovo Filmes.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Images\Studios\Pão com Ovo Filmes.png" />
+    <Content Include="Images\Studios\PãoCom Ovo Filmes.png" />
     <Content Include="Images\Studios\Rai Cinema.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -4602,12 +4574,8 @@
     <Content Include="Images\Studios\Yash-Raj-Films.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Studios\Zazen Produþ§es.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Images\Studios\Zazen Produτ⌡es.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Images\Studios\Zazen Producoes.png" />
+    <Content Include="Images\Studios\Zazen Produções.png" />
     <Content Include="Images\Studios\ZDF Enterprises.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
