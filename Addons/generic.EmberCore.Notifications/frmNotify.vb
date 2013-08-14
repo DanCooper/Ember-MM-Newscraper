@@ -149,6 +149,7 @@ Public Class frmNotify
 
         'only allow 6 notifications on screen at a time
         If frmNotify.DisplayedForms.Count = 6 Then
+            frmNotify.DisplayedForms(0).AnimationTimer.Stop()
             frmNotify.DisplayedForms(0).Close()
         End If
 
@@ -158,10 +159,12 @@ Public Class frmNotify
             End If
         Next
 
-        frmNotify.MasterIndex += 1
+        Threading.Interlocked.Increment(frmNotify.MasterIndex)
+
         Me.Index = frmNotify.MasterIndex
 
         frmNotify.DisplayedForms.Add(Me)
+
     End Sub
 
     Private Sub frmNotify_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
@@ -183,6 +186,6 @@ Public Class frmNotify
         RaiseEvent NotifierClicked(Me._type)
     End Sub
 
-    #End Region 'Methods
+#End Region 'Methods
 
 End Class

@@ -72,13 +72,13 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Data.SQLite, Version=1.0.85.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+    <Reference Include="System.Data.SQLite, Version=1.0.88.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\System.Data.SQLite.1.0.85.0\lib\net20\System.Data.SQLite.dll</HintPath>
+      <HintPath>..\packages\System.Data.SQLite.1.0.88.0\lib\net20\System.Data.SQLite.dll</HintPath>
     </Reference>
-    <Reference Include="System.Data.SQLite.Linq, Version=1.0.85.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+    <Reference Include="System.Data.SQLite.Linq, Version=1.0.88.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\System.Data.SQLite.1.0.85.0\lib\net20\System.Data.SQLite.Linq.dll</HintPath>
+      <HintPath>..\packages\System.Data.SQLite.1.0.88.0\lib\net20\System.Data.SQLite.Linq.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
@@ -1598,6 +1598,7 @@
     <Content Include="Images\Studios\Blue Star Productions.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\Studios\BlumHouse Productions.png" />
     <Content Include="Images\Studios\Bob Yari Productions.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -1614,6 +1615,7 @@
     <Content Include="Images\Studios\BR Films.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\Studios\Brad Grey Pictures.png" />
     <Content Include="Images\Studios\Brave New Work Filmproduktions.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -1854,6 +1856,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\Studios\Channel Productions.png" />
+    <Content Include="Images\Studios\Chernin Entertainment.png" />
     <Content Include="Images\Studios\Cheyenne Enterprises.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -1980,6 +1983,8 @@
     <Content Include="Images\Studios\Constantin Entertainment.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\Studios\Constantin Film International.png" />
+    <Content Include="Images\Studios\Constantin Film Ltd..png" />
     <Content Include="Images\Studios\Constantin Film Produktion GmbH.png" />
     <Content Include="Images\Studios\Constantin Film Produktion.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -2204,6 +2209,7 @@
     <Content Include="Images\Studios\EvaApollo Media.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\Studios\Everest Entertainment.png" />
     <Content Include="Images\Studios\Excel Entertainment Group.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -2214,6 +2220,7 @@
     <Content Include="Images\Studios\Fact.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\Studios\Fade to Black Productions.png" />
     <Content Include="Images\Studios\Family.png" />
     <Content Include="Images\Studios\Fanes Film.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -2264,12 +2271,14 @@
     <Content Include="Images\Studios\FilmColony.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\Studios\FilmDistrict.png" />
     <Content Include="Images\Studios\FilmFour.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\Studios\Filmirage S.r.l..png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\Studios\FilmNation Entertainment.png" />
     <Content Include="Images\Studios\Filmoteka Narodowa Polski.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -2339,6 +2348,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\Studios\Fox Telecolumbia.png" />
+    <Content Include="Images\Studios\Fox Television Studios.png" />
     <Content Include="Images\Studios\FOX.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -2527,6 +2537,8 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\Studios\Hemus Film Group.png" />
+    <Content Include="Images\Studios\Henson Associates %28HA%29.png" />
+    <Content Include="Images\Studios\Henson Associates.png" />
     <Content Include="Images\Studios\Heyday Films.png" />
     <Content Include="Images\Studios\History Channel_hd.png" />
     <Content Include="Images\Studios\History.png">
@@ -2578,6 +2590,7 @@
     <Content Include="Images\Studios\IKM Productions.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\Studios\IM Global.png" />
     <Content Include="Images\Studios\Image Entertainment.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -2603,6 +2616,8 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\Studios\Imperial Entertainment.png" />
+    <Content Include="Images\Studios\Incorporated Television Company %28ITC%29 - Copy.png" />
+    <Content Include="Images\Studios\Incorporated Television Company.png" />
     <Content Include="Images\Studios\Indian Paintbrush.png" />
     <Content Include="Images\Studios\Industrial Light and Magic.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -2627,6 +2642,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\Studios\International West Pictures.png" />
+    <Content Include="Images\Studios\ITC Films.png" />
     <Content Include="Images\Studios\ITI Film Studio.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -2649,6 +2665,8 @@
     <Content Include="Images\Studios\Jim Henson Company, The.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\Studios\Jim Henson Pictures.png" />
+    <Content Include="Images\Studios\Jim Henson Productions.png" />
     <Content Include="Images\Studios\Kadokawa.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -3059,6 +3077,9 @@
     <Content Include="Images\Studios\MTV_hd.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\Studios\Muppet movie Productions Ltd..png" />
+    <Content Include="Images\Studios\Muppet Studios.png" />
+    <Content Include="Images\Studios\Muppets Holding Company, The.png" />
     <Content Include="Images\Studios\Musashi Films.png" />
     <Content Include="Images\Studios\Muse Productions.png" />
     <Content Include="Images\Studios\Music Masala Films.png" />
@@ -3105,6 +3126,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\Studios\NEOS Film.png" />
+    <Content Include="Images\Studios\netflix.png" />
     <Content Include="Images\Studios\Network Ten.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -3370,6 +3392,7 @@
     <Content Include="Images\Studios\Platige.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\Studios\Platinum Dunes.png" />
     <Content Include="Images\Studios\Playarte Pictures.png" />
     <Content Include="Images\Studios\Playgirl.png" />
     <Content Include="Images\Studios\Playtone Productions.png">
@@ -3431,6 +3454,8 @@
     <Content Include="Images\Studios\PãoCom Ovo Filmes.png" />
     <Content Include="Images\Studios\QED International.png" />
     <Content Include="Images\Studios\Quad Productions.png" />
+    <Content Include="Images\Studios\Radical Pictures.png" />
+    <Content Include="Images\Studios\Radical Studios.png" />
     <Content Include="Images\Studios\Rai Cinema.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -3611,6 +3636,7 @@
     <Content Include="Images\Studios\Saga Films.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\Studios\Saints LA.png" />
     <Content Include="Images\Studios\Sandrew Metronome Distribution.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -3833,6 +3859,7 @@
     <Content Include="Images\Studios\sky1.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\Studios\Skydance Productions.png" />
     <Content Include="Images\Studios\Slice.png" />
     <Content Include="Images\Studios\SMC.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -4271,6 +4298,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\Studios\Troublemaker Studios.png" />
+    <Content Include="Images\Studios\Truenorth Productions.png" />
     <Content Include="Images\Studios\Turner Classic Movies %28TCM%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -4723,6 +4751,7 @@
     <Content Include="Images\Studios\Weinstein Company, The.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\Studios\West Coast Film Partners.png" />
     <Content Include="Images\Studios\WFDIF Film Archive.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -4732,6 +4761,7 @@
     <Content Include="Images\Studios\wgn.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\Studios\Why Not Productions.png" />
     <Content Include="Images\Studios\Wicked Pictures.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

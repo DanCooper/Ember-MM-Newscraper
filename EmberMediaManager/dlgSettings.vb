@@ -1365,7 +1365,7 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkLogErrors_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkLogErrors.CheckedChanged
+    Private Sub chkLogErrors_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
     End Sub
 
@@ -2244,7 +2244,6 @@ Public Class dlgSettings
             Me.chkSpecialDateAdd.Checked = Master.eSettings.UseSpecialDateAddvalue
             'cocotus end
             'Me.chkYAMJCompatibleSets.Checked = Master.eSettings.YAMJSetsCompatible
-            Me.chkLogErrors.Checked = Master.eSettings.LogErrors
             Me.lstNoStack.Items.AddRange(Master.eSettings.NoStackExts.ToArray)
             Me.chkUpdates.Checked = Master.eSettings.CheckUpdates
             Me.chkInfoPanelAnim.Checked = Master.eSettings.InfoPanelAnim
@@ -3320,7 +3319,7 @@ Public Class dlgSettings
                 Master.eSettings.CleanWhitelistVideo = False
                 Master.eSettings.CleanWhitelistExts.Clear()
             End If
-            Master.eSettings.LogErrors = Me.chkLogErrors.Checked
+
             Master.eSettings.OverwriteNfo = Me.chkOverwriteNfo.Checked
             'cocotus 20130303 Special DateAddvalue
             Master.eSettings.UseSpecialDateAddvalue = Me.chkSpecialDateAdd.Checked
@@ -3761,7 +3760,7 @@ Public Class dlgSettings
         Me.chkSpecialDateAdd.Text = Master.eLang.GetString(874, "Use FileCreated information of videofile")
         'cocotus end
         Me.Label5.Text = Master.eLang.GetString(434, "(If unchecked, non-conforming nfos will be renamed to <filename>.info)")
-        Me.chkLogErrors.Text = Master.eLang.GetString(435, "Log Errors to File")
+
         Me.Label31.Text = Master.eLang.GetString(436, "Display Overlay if Video Contains an Audio Stream With the Following Language:")
         Me.Label50.Text = Me.Label31.Text
         Me.GroupBox3.Text = Master.eLang.GetString(437, "Clean Files")

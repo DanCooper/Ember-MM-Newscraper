@@ -43,7 +43,6 @@ Partial Class dlgSettings
         Me.chkUpdates = New System.Windows.Forms.CheckBox()
         Me.chkOverwriteNfo = New System.Windows.Forms.CheckBox()
         Me.Label5 = New System.Windows.Forms.Label()
-        Me.chkLogErrors = New System.Windows.Forms.CheckBox()
         Me.GroupBox29 = New System.Windows.Forms.GroupBox()
         Me.cbEpTheme = New System.Windows.Forms.ComboBox()
         Me.Label3 = New System.Windows.Forms.Label()
@@ -719,7 +718,6 @@ Partial Class dlgSettings
         Me.GroupBox4.Controls.Add(Me.chkUpdates)
         Me.GroupBox4.Controls.Add(Me.chkOverwriteNfo)
         Me.GroupBox4.Controls.Add(Me.Label5)
-        Me.GroupBox4.Controls.Add(Me.chkLogErrors)
         Me.GroupBox4.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox4.Location = New System.Drawing.Point(210, 3)
         Me.GroupBox4.Name = "GroupBox4"
@@ -859,17 +857,6 @@ Partial Class dlgSettings
         Me.Label5.TabIndex = 3
         Me.Label5.Text = "(If unchecked, non-conforming nfos will be renamed to <filename>.info)"
         Me.Label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'chkLogErrors
-        '
-        Me.chkLogErrors.AutoSize = True
-        Me.chkLogErrors.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkLogErrors.Location = New System.Drawing.Point(10, 37)
-        Me.chkLogErrors.Name = "chkLogErrors"
-        Me.chkLogErrors.Size = New System.Drawing.Size(113, 17)
-        Me.chkLogErrors.TabIndex = 1
-        Me.chkLogErrors.Text = "Log Errors to File"
-        Me.chkLogErrors.UseVisualStyleBackColor = True
         '
         'GroupBox29
         '
@@ -2284,7 +2271,7 @@ Partial Class dlgSettings
         Me.pnlGeneral.BackColor = System.Drawing.Color.White
         Me.pnlGeneral.Controls.Add(Me.gbInterface)
         Me.pnlGeneral.Controls.Add(Me.GroupBox4)
-        Me.pnlGeneral.Location = New System.Drawing.Point(900, 900)
+        Me.pnlGeneral.Location = New System.Drawing.Point(1151, 493)
         Me.pnlGeneral.Name = "pnlGeneral"
         Me.pnlGeneral.Size = New System.Drawing.Size(617, 400)
         Me.pnlGeneral.TabIndex = 10
@@ -2474,7 +2461,7 @@ Partial Class dlgSettings
         Me.pnlMovies.Controls.Add(Me.GroupBox27)
         Me.pnlMovies.Controls.Add(Me.GroupBox12)
         Me.pnlMovies.Controls.Add(Me.GroupBox2)
-        Me.pnlMovies.Location = New System.Drawing.Point(934, 639)
+        Me.pnlMovies.Location = New System.Drawing.Point(965, 619)
         Me.pnlMovies.Name = "pnlMovies"
         Me.pnlMovies.Size = New System.Drawing.Size(617, 400)
         Me.pnlMovies.TabIndex = 15
@@ -7274,7 +7261,6 @@ Partial Class dlgSettings
     Friend WithEvents chkCleanMovieNFO As System.Windows.Forms.CheckBox
     Friend WithEvents chkCleanMovieFanartJPG As System.Windows.Forms.CheckBox
     Friend WithEvents GroupBox4 As System.Windows.Forms.GroupBox
-    Friend WithEvents chkLogErrors As System.Windows.Forms.CheckBox
     Friend WithEvents Label5 As System.Windows.Forms.Label
     Friend WithEvents chkOverwriteNfo As System.Windows.Forms.CheckBox
     Friend WithEvents lvMovies As System.Windows.Forms.ListView
