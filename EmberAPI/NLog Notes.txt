@@ -1,2 +1,4 @@
 ﻿To enable Immediate Window debug messages it is needed to open the project and under Debug CHECK the
 Enable Unmanaged Debugging option.
+
+This is needed in ALL projects of the solution.
