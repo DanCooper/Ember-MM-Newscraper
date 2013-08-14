@@ -22,26 +22,6 @@ Imports System.IO
 
 Public Class ErrorLogger
 
-#Region "Fields"
-	Private Shared _LogFile As String
-#End Region	'Fields
-
-#Region "Constructors"
-
-	Public Sub New()
-		Dim _sPath As String
-		_sPath = Path.Combine(Functions.AppPath, "Log")
-		If Not System.IO.Directory.Exists(_sPath) Then
-			System.IO.Directory.CreateDirectory(_sPath)
-		End If
-
-		_LogFile = Path.Combine(_sPath, Format(Now, "yyyyMMdd-HHmmss") & ".log")
-	End Sub
-
-#End Region	'Constructors
-
-#Region "Properties"
-#End Region	'Properties
 
 #Region "Events"
 
@@ -58,26 +38,10 @@ Public Class ErrorLogger
 	''' <param name="stkTrace">Full stack trace</param>
 	''' <param name="title">Error title</param>
 	Public Sub WriteToErrorLog(ByVal msg As String, ByVal stkTrace As String, ByVal title As String, Optional ByVal Notify As Boolean = True)
-		Try
-			If Master.eSettings.LogErrors Then
-				Using fs1 As FileStream = New FileStream(_LogFile, FileMode.Append, FileAccess.Write)
-					Using s1 As StreamWriter = New StreamWriter(fs1)
-						s1.Write(String.Concat("Title: ", title, vbNewLine))
-						s1.Write(String.Concat("Message: ", msg, vbNewLine))
-						s1.Write(String.Concat("StackTrace: ", stkTrace, vbNewLine))
-						s1.Write(String.Concat("Date/Time: ", DateTime.Now.ToString(), vbNewLine))
-						s1.Write(String.Concat("===========================================================================================", vbNewLine, vbNewLine))
-						s1.Flush()
-					End Using
-				End Using
-
-				If Notify Then ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(816, "An Error Has Occurred"), msg, Nothing}))
-
-				RaiseEvent ErrorOccurred()
-			End If
-		Catch
-		End Try
-	End Sub
+        Master.logger.Debug("{0} {1}", msg, stkTrace)
+        If Notify Then ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(816, "An Error Has Occurred"), msg, Nothing}))
+        RaiseEvent ErrorOccurred()
+    End Sub
 
 #End Region	'Methods
 

@@ -433,7 +433,7 @@
 	<string id="432">Check for Updates</string>
 	<string id="433">Overwrite Non-conforming nfos</string>
 	<string id="434">(If unchecked, non-conforming nfos will be renamed to &lt;filename&gt;.info)</string>
-	<string id="435">Log Errors to File</string>
+	<string id="435"></string>
 	<string id="436">Display Overlay if Video Contains an Audio Stream With the Following Language:</string>
 	<string id="437">Clean Files</string>
 	<string id="438">Standard</string>

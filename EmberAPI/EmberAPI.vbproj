@@ -202,6 +202,7 @@
     <EmbeddedResource Include="Resources\puzzle.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="NLog Notes.txt" />
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -148,7 +148,6 @@ Public Class Settings
     Private _locktagline As Boolean
     Private _locktitle As Boolean
     Private _locktrailer As Boolean
-    Private _logerrors As Boolean
     Private _marknew As Boolean
     Private _marknewepisodes As Boolean
     Private _marknewshows As Boolean
@@ -1420,15 +1419,6 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Me._locktrailer = value
-        End Set
-    End Property
-
-    Public Property LogErrors() As Boolean
-        Get
-            Return Me._logerrors
-        End Get
-        Set(ByVal value As Boolean)
-            Me._logerrors = value
         End Set
     End Property
 
@@ -3339,7 +3329,6 @@ Public Class Settings
         Me._seasonfanartQuality = 0
         Me._overwriteSeasonPoster = True
         Me._overwriteSeasonFanart = True
-        Me._logerrors = True
         Me._properCase = True
         Me._showproperCase = True
         Me._epproperCase = True
