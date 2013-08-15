@@ -109,7 +109,6 @@
     <Compile Include="clsAPIImageUtils.vb" />
     <Compile Include="clsAPIInterfaces.vb" />
     <Compile Include="clsAPILocalization.vb" />
-    <Compile Include="clsAPILog.vb" />
     <Compile Include="clsAPIMaster.vb" />
     <Compile Include="clsAPIMediaContainers.vb" />
     <Compile Include="clsAPIMediaInfo.vb" />
