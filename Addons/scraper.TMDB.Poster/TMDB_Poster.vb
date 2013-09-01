@@ -94,11 +94,11 @@ Public Class TMDB_Poster
 #End Region 'Properties
 
 #Region "Methods"
-    Function QueryScraperCapabilities(ByVal cap As Enums.PostScraperCapabilities) As Boolean Implements Interfaces.EmberMovieScraperModule_Poster.QueryScraperCapabilities
+    Function QueryScraperCapabilities(ByVal cap As Enums.ScraperCapabilities) As Boolean Implements Interfaces.EmberMovieScraperModule_Poster.QueryScraperCapabilities
         Select Case cap
-            Case Enums.PostScraperCapabilities.Fanart
+            Case Enums.ScraperCapabilities.Fanart
                 Return ConfigScrapeModifier.Fanart 'True ' ConfigScrapeModifier.Fanart
-            Case Enums.PostScraperCapabilities.Poster
+            Case Enums.ScraperCapabilities.Poster
                 Return ConfigScrapeModifier.Poster 'True 'ConfigScrapeModifier.Poster
         End Select
         Return False
@@ -188,7 +188,7 @@ Public Class TMDB_Poster
 
     End Sub
 
-    Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.PostScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule_Poster.Scraper
+    Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule_Poster.Scraper
         'LoadSettings()
 
         LoadSettings()

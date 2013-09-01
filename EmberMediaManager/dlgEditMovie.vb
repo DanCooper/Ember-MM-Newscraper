@@ -229,21 +229,22 @@ Public Class dlgEditMovie
         Dim pResults As New MediaContainers.Image
 
         Try
-            Dim sPath As String = Path.Combine(Master.TempPath, "fanart.jpg")
-
-            'Public Function MovieScrapeImages(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.PostScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Boolean
-            If Not ModulesManager.Instance.MovieScrapeImages(Master.currMovie, Enums.PostScraperCapabilities.Fanart, aList) Then
+            'Public Function MovieScrapeImages(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Boolean
+            If Not ModulesManager.Instance.MovieScrapeImages(Master.currMovie, Enums.ScraperCapabilities.Fanart, aList) Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
                     If dlgImgS.ShowDialog(Master.currMovie, Enums.ImageType.Fanart, aList, True) = DialogResult.OK Then
                         pResults = dlgImgS.Results
                         If Not String.IsNullOrEmpty(pResults.URL) Then
+                            Cursor = Cursors.WaitCursor
                             pResults.WebImage.FromWeb(pResults.URL)
                             pbFanart.Image = CType(pResults.WebImage.Image.Clone(), Image)
+                            Cursor = Cursors.Default
 
                             Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
                             Me.lblFanartSize.Visible = True
                         End If
+                        Fanart = pResults.WebImage
                     End If
                 Else
                     MsgBox(Master.eLang.GetString(969, "No fanart could be found. Please check to see if any fanart scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(970, "No Fanart Found"))
@@ -304,19 +305,21 @@ Public Class dlgEditMovie
         Try
             Dim sPath As String = Path.Combine(Master.TempPath, "poster.jpg")
 
-            'Public Function MovieScrapeImages(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.PostScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Boolean
-            If Not ModulesManager.Instance.MovieScrapeImages(Master.currMovie, Enums.PostScraperCapabilities.Poster, aList) Then
+            'Public Function MovieScrapeImages(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Boolean
+            If Not ModulesManager.Instance.MovieScrapeImages(Master.currMovie, Enums.ScraperCapabilities.Poster, aList) Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
                     If dlgImgS.ShowDialog(Master.currMovie, Enums.ImageType.Posters, aList, True) = Windows.Forms.DialogResult.OK Then
                         pResults = dlgImgS.Results
                         If Not String.IsNullOrEmpty(pResults.URL) Then
+                            Cursor = Cursors.WaitCursor
                             pResults.WebImage.FromWeb(pResults.URL)
                             pbPoster.Image = CType(pResults.WebImage.Image.Clone(), Image)
-
+                            Cursor = Cursors.Default
                             Me.lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
                             Me.lblPosterSize.Visible = True
                         End If
+                        Poster = pResults.WebImage
                     End If
                 Else
                     MsgBox(Master.eLang.GetString(971, "No poster images could be found. Please check to see if any poster scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(972, "No Posters Found"))
@@ -522,7 +525,7 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub dlgEditMovie_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
-		Me.Poster.Dispose()
+        Me.Poster.Dispose()
         Me.Poster = Nothing
 
         Me.Fanart.Dispose()
@@ -571,7 +574,7 @@ Public Class dlgEditMovie
             Me.LoadRatings()
             Dim params As New List(Of Object)(New Object() {New Panel})
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieFrameExtrator, params, Nothing, True)
-			pnlFrameExtrator.Controls.Add(DirectCast(params(0), Panel))
+            pnlFrameExtrator.Controls.Add(DirectCast(params(0), Panel))
 
             Me.FillInfo()
 
@@ -711,7 +714,7 @@ Public Class dlgEditMovie
                     End If
                 End If
 
-                .btnDLTrailer.Enabled = Master.eSettings.DownloadTrailers AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.PostScraperCapabilities.Trailer)
+                .btnDLTrailer.Enabled = Master.eSettings.UpdaterTrailers AndAlso ModulesManager.Instance.QueryTrailerScraperCapabilities(Enums.ScraperCapabilities.Trailer)
 
                 If Not String.IsNullOrEmpty(Master.currMovie.Movie.Studio) Then
                     .txtStudio.Text = Master.currMovie.Movie.Studio
@@ -789,11 +792,11 @@ Public Class dlgEditMovie
                         .lblPosterSize.Visible = True
                     End If
 
-                    If Not ModulesManager.Instance.QueryPostScraperCapabilities(Enums.PostScraperCapabilities.Poster) Then
+                    If Not ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Poster) Then
                         .btnSetPosterScrape.Enabled = False
                     End If
 
-                    If Not ModulesManager.Instance.QueryPostScraperCapabilities(Enums.PostScraperCapabilities.Fanart) Then
+                    If Not ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart) Then
                         .btnSetFanartScrape.Enabled = False
                     End If
 

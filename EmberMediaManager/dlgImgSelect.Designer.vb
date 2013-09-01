@@ -111,6 +111,7 @@ Partial Class dlgImgSelect
         Me.cbFilterSize.Name = "cbFilterSize"
         Me.cbFilterSize.Size = New System.Drawing.Size(148, 21)
         Me.cbFilterSize.TabIndex = 5
+        Me.cbFilterSize.Visible = False
         '
         'lblSize
         '
@@ -121,6 +122,7 @@ Partial Class dlgImgSelect
         Me.lblSize.Size = New System.Drawing.Size(135, 13)
         Me.lblSize.TabIndex = 6
         Me.lblSize.Text = "Show the ones with size:"
+        Me.lblSize.Visible = False
         '
         'pnlSize
         '

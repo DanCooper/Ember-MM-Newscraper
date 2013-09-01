@@ -2271,7 +2271,6 @@ Public Class dlgSettings
             Me.chkMovieTrailerCol.Checked = Master.eSettings.MovieTrailerCol
             Me.chkMovieSubCol.Checked = Master.eSettings.MovieSubCol
             Me.chkMovieExtraCol.Checked = Master.eSettings.MovieExtraCol
-            Me.chkDownloadTrailer.Checked = Master.eSettings.DownloadTrailers
 
             Me.chkOverwriteTrailer.Checked = Master.eSettings.OverwriteTrailer
             Me.chkDeleteAllTrailers.Checked = Master.eSettings.DeleteAllTrailers
