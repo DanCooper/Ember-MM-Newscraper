@@ -392,7 +392,7 @@ Public Class ModulesManager
         End If
     End Sub
 
-    'Public Function MoviePostScrapeOnly(ByRef DBMovie As Structures.DBMovie, ByVal ScrapeType As Enums.PostScraperCapabilities) As Interfaces.ModuleResult
+    'Public Function MoviePostScrapeOnly(ByRef DBMovie As Structures.DBMovie, ByVal ScrapeType As Enums.ScraperCapabilities) As Interfaces.ModuleResult
     '    Dim ret As Interfaces.ModuleResult
     '    For Each _externalScraperModule As _externalScraperModuleClass_Poster In externalPosterScrapersModules.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ScraperOrder)
     '        AddHandler _externalScraperModule.ProcessorModule.MovieScraperEvent, AddressOf Handler_MovieScraperEvent
@@ -433,7 +433,7 @@ Public Class ModulesManager
         Return ret.Cancelled
     End Function
 
-    Public Function MovieScrapeImages(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.PostScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Boolean
+    Public Function MovieScrapeImages(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Boolean
         Dim ret As Interfaces.ModuleResult
         Dim aList As List(Of MediaContainers.Image)
         For Each _externalScraperModule As _externalScraperModuleClass_Poster In externalPosterScrapersModules.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ScraperOrder)
@@ -457,7 +457,7 @@ Public Class ModulesManager
         Return ret.Cancelled
     End Function
 
-    Public Function MovieScrapeTrailer(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.PostScraperCapabilities, ByRef URLList As List(Of String)) As Boolean
+    Public Function MovieScrapeTrailer(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef URLList As List(Of String)) As Boolean
         Dim ret As Interfaces.ModuleResult
         Dim aList As List(Of String)
         For Each _externalScraperModule As _externalScraperModuleClass_Trailer In externalTrailerScrapersModules.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ScraperOrder)
@@ -717,7 +717,7 @@ Public Class ModulesManager
         RaiseEvent GenericEvent(mType, _params)
     End Sub
 
-    Function QueryPostScraperCapabilities(ByVal cap As Enums.PostScraperCapabilities) As Boolean
+    Function QueryPostScraperCapabilities(ByVal cap As Enums.ScraperCapabilities) As Boolean
         Dim ret As Boolean = False
         Dim sStudio As New List(Of String)
         For Each _externalScraperModule As _externalScraperModuleClass_Poster In externalPosterScrapersModules.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ScraperOrder)
@@ -730,7 +730,7 @@ Public Class ModulesManager
         Return ret
     End Function
 
-    Function QueryTrailerScraperCapabilities(ByVal cap As Enums.PostScraperCapabilities) As Boolean
+    Function QueryTrailerScraperCapabilities(ByVal cap As Enums.ScraperCapabilities) As Boolean
         Dim ret As Boolean = False
         Dim sStudio As New List(Of String)
         For Each _externalScraperModule As _externalScraperModuleClass_Trailer In externalTrailerScrapersModules.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ScraperOrder)

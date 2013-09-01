@@ -58,7 +58,7 @@ Namespace TMDBtrailer
         '	End While
         'End Sub
 
-        'Public Sub GetImagesAsync(ByVal imdbID As String, ByVal Type As Enums.PostScraperCapabilities)
+        'Public Sub GetImagesAsync(ByVal imdbID As String, ByVal Type As Enums.ScraperCapabilities)
         '    Try
         '        If Not bwTMDB.IsBusy Then
         '            bwTMDB.WorkerSupportsCancellation = True
@@ -126,7 +126,7 @@ Namespace TMDBtrailer
 #Region "Fields"
 
             Dim Parameter As String
-            Dim Type As Enums.PostScraperCapabilities
+            Dim Type As Enums.ScraperCapabilities
 
 #End Region 'Fields
 

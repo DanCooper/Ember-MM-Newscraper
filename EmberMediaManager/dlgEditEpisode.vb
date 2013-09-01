@@ -112,7 +112,7 @@ Public Class dlgEditEpisode
         Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.EpisodeFanart, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(Fanart, Images))
 
         If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
-            Me.Fanart = tImage
+            Fanart = tImage
             Me.pbFanart.Image = tImage.Image
             Me.pbFanart.Tag = tImage
 

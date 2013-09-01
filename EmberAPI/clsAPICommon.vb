@@ -562,7 +562,7 @@ Public Class Enums
         Actor = 8
     End Enum
 
-    Public Enum PostScraperCapabilities
+    Public Enum ScraperCapabilities
         Poster = 1
         Fanart = 2
         Trailer = 3

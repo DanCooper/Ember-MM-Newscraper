@@ -68,7 +68,6 @@ Public Class Settings
     Private _displayallseason As Boolean
     Private _displaymissingepisodes As Boolean
     Private _displayyear As Boolean
-    Private _downloadtrailers As Boolean
     Private _orderdefault As Enums.Ordering
     Private _emberModules As List(Of ModulesManager._XMLEmberModuleClass)
     Private _enableifoscan As Boolean
@@ -701,15 +700,6 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Me._displayyear = value
-        End Set
-    End Property
-
-    Public Property DownloadTrailers() As Boolean
-        Get
-            Return Me._downloadtrailers
-        End Get
-        Set(ByVal value As Boolean)
-            Me._downloadtrailers = value
         End Set
     End Property
 
@@ -3411,7 +3401,6 @@ Public Class Settings
         Me._skiplessthan = 0
         Me._skipstacksizecheck = False
         Me._skiplessthanep = 0
-        Me._downloadtrailers = False
         Me._trailerquality = Enums.TrailerQuality.HD1080p
         Me._updatertrailers = False
         Me._updatertrailersnodownload = False

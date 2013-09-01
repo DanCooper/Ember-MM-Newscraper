@@ -567,7 +567,7 @@ Public Class dlgOfflineHolder
                 'Dim sPath As String = Path.Combine(Master.TempPath, "fanart.jpg")
                 Dim fResults As New Containers.ImgResult
                 Dim tList As New List(Of MediaContainers.Image)
-                If ModulesManager.Instance.MovieScrapeImages(tMovie, Enums.PostScraperCapabilities.Fanart, tList) Then
+                If ModulesManager.Instance.MovieScrapeImages(tMovie, Enums.ScraperCapabilities.Fanart, tList) Then
                     Poster.Clear()
                     If Images.GetPreferredFanart(tList, Poster) Then
                         If IsNothing(Poster.WebImage.Image) Then
@@ -585,7 +585,7 @@ Public Class dlgOfflineHolder
                     End If
                 End If
 
-                If ModulesManager.Instance.MovieScrapeImages(tMovie, Enums.PostScraperCapabilities.Poster, tList) Then
+                If ModulesManager.Instance.MovieScrapeImages(tMovie, Enums.ScraperCapabilities.Poster, tList) Then
                     Poster.Clear()
                     If Images.GetPreferredPoster(tList, Poster) Then
                         If IsNothing(Poster.WebImage.Image) Then

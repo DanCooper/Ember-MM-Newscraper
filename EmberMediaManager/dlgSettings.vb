@@ -1622,7 +1622,7 @@ Public Class dlgSettings
         Me.txtOutlineLimit.Enabled = Me.chkPlotForOutline.Checked
         If Not Me.chkPlotForOutline.Checked Then
             Me.txtOutlineLimit.Enabled = False
-            Me.txtOutlineLimit.Text = "0"
+            'Me.txtOutlineLimit.Text = "0"
         End If
     End Sub
 
@@ -2271,7 +2271,6 @@ Public Class dlgSettings
             Me.chkMovieTrailerCol.Checked = Master.eSettings.MovieTrailerCol
             Me.chkMovieSubCol.Checked = Master.eSettings.MovieSubCol
             Me.chkMovieExtraCol.Checked = Master.eSettings.MovieExtraCol
-            Me.chkDownloadTrailer.Checked = Master.eSettings.DownloadTrailers
 
             Me.chkOverwriteTrailer.Checked = Master.eSettings.OverwriteTrailer
             Me.chkDeleteAllTrailers.Checked = Master.eSettings.DeleteAllTrailers

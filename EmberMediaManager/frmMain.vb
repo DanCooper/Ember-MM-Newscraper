@@ -1294,7 +1294,7 @@ Public Class frmMain
                     Poster.Clear()
                     aList.Clear()
                     If Poster.WebImage.IsAllowedToDownload(DBScrapeMovie, Enums.ImageType.Posters) Then
-                        If Not ModulesManager.Instance.MovieScrapeImages(DBScrapeMovie, Enums.PostScraperCapabilities.Poster, aList) Then
+                        If Not ModulesManager.Instance.MovieScrapeImages(DBScrapeMovie, Enums.ScraperCapabilities.Poster, aList) Then
                             If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) AndAlso Images.GetPreferredPoster(aList, Poster) Then
                                 If Not String.IsNullOrEmpty(Poster.URL) AndAlso IsNothing(Poster.WebImage.Image) Then
                                     Poster.WebImage.FromWeb(Poster.URL)
@@ -1341,7 +1341,7 @@ Public Class frmMain
                     Fanart.Clear()
                     aList.Clear()
                     If Fanart.WebImage.IsAllowedToDownload(DBScrapeMovie, Enums.ImageType.Fanart) Then
-                        If Not ModulesManager.Instance.MovieScrapeImages(DBScrapeMovie, Enums.PostScraperCapabilities.Fanart, aList) Then
+                        If Not ModulesManager.Instance.MovieScrapeImages(DBScrapeMovie, Enums.ScraperCapabilities.Fanart, aList) Then
                             If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) AndAlso Images.GetPreferredFanart(aList, Fanart) Then
                                 If String.IsNullOrEmpty(Fanart.URL) AndAlso IsNothing(Fanart.WebImage.Image) Then
                                     Fanart.WebImage.FromWeb(Fanart.URL)
@@ -1386,7 +1386,7 @@ Public Class frmMain
                 End If
                 If Master.GlobalScrapeMod.Trailer Then
                     aUrlList.Clear()
-                    If Not ModulesManager.Instance.MovieScrapeTrailer(DBScrapeMovie, Enums.PostScraperCapabilities.Trailer, aUrlList) Then
+                    If Not ModulesManager.Instance.MovieScrapeTrailer(DBScrapeMovie, Enums.ScraperCapabilities.Trailer, aUrlList) Then
                         If aUrlList.Count > 0 Then
                             If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) AndAlso Trailers.PreferredTrailer(tURL, aUrlList, DBScrapeMovie.Filename, (Args.scrapeType = Enums.ScrapeType.SingleScrape)) Then
                                 If Not String.IsNullOrEmpty(tURL) Then
@@ -5367,7 +5367,7 @@ doCancel:
                 If Master.eSettings.ImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbFanartSmall)
                 Me.pnlFanartSmall.Size = New Size(Me.pbFanartSmall.Width + 10, Me.pbFanartSmall.Height + 10)
                 Me.pnlFanartSmall.Location = New Point(Me.pnlPoster.Location.X + Me.pnlPoster.Width + 10, Me.pnlPoster.Location.Y)
-                
+
                 If Master.eSettings.ShowDims Then
                     g = Graphics.FromImage(pbFanartSmall.Image)
                     g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
@@ -6665,14 +6665,14 @@ doCancel:
 
                 'If Master.eSettings.SingleScrapeImages Then
                 '    Dim tmpImages As New Images
-                '    Dim AllowFA As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.PostScraperCapabilities.Fanart) AndAlso tmpImages.IsAllowedToDownload(Master.currMovie, Enums.ImageType.Fanart, True)
+                '    Dim AllowFA As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart) AndAlso tmpImages.IsAllowedToDownload(Master.currMovie, Enums.ImageType.Fanart, True)
 
-                '    If ModulesManager.Instance.QueryPostScraperCapabilities(Enums.PostScraperCapabilities.Poster) AndAlso tmpImages.IsAllowedToDownload(Master.currMovie, Enums.ImageType.Posters, True) Then
+                '    If ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Poster) AndAlso tmpImages.IsAllowedToDownload(Master.currMovie, Enums.ImageType.Posters, True) Then
                 '        Me.tslLoading.Text = Master.eLang.GetString(572, "Scraping Posters:")
                 '        Application.DoEvents()
                 '        Dim pResults As New MediaContainers.Image
-                '        'Public Function MovieScrapeImages(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.PostScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Boolean
-                '        If Not ModulesManager.Instance.MovieScrapeImages(Master.currMovie, Enums.PostScraperCapabilities.Poster, aList) Then
+                '        'Public Function MovieScrapeImages(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Boolean
+                '        If Not ModulesManager.Instance.MovieScrapeImages(Master.currMovie, Enums.ScraperCapabilities.Poster, aList) Then
                 '            dlgImgS = New dlgImgSelect()
                 '            pResults = dlgImgS.ShowDialog(Master.currMovie, Enums.ImageType.Posters, aList, True)
                 '        End If
@@ -6696,8 +6696,8 @@ doCancel:
                 '        Me.tslLoading.Text = Master.eLang.GetString(573, "Scraping Fanart:")
                 '        Application.DoEvents()
                 '        Dim pResults As New MediaContainers.Image
-                '        'Public Function MovieScrapeImages(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.PostScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Boolean
-                '        If Not ModulesManager.Instance.MovieScrapeImages(Master.currMovie, Enums.PostScraperCapabilities.Fanart, aList) Then
+                '        'Public Function MovieScrapeImages(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Boolean
+                '        If Not ModulesManager.Instance.MovieScrapeImages(Master.currMovie, Enums.ScraperCapabilities.Fanart, aList) Then
                 '            dlgImgS = New dlgImgSelect()
                 '            pResults = dlgImgS.ShowDialog(Master.currMovie, Enums.ImageType.Fanart, aList, True)
                 '        End If
@@ -6720,7 +6720,7 @@ doCancel:
                 '    tmpImages = Nothing
                 'End If
 
-                ''If Master.eSettings.SingleScrapeTrailer AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.PostScraperCapabilities.Trailer) Then
+                ''If Master.eSettings.SingleScrapeTrailer AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Trailer) Then
                 ''    Me.tslLoading.Text = Master.eLang.GetString(574, "Scraping Trailers:")
                 ''    Application.DoEvents()
                 ''    Dim tURL As String = ModulesManager.Instance.ScraperDownloadTrailer(Master.currMovie)
@@ -6819,9 +6819,9 @@ doCancel:
                 ScrapeList.Add(DirectCast(sRow.DataBoundItem, DataRowView).Row)
             Next
         Else
-            Dim PosterAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.PostScraperCapabilities.Poster)
-            Dim FanartAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.PostScraperCapabilities.Fanart)
-            Dim TrailerAllowed As Boolean = ModulesManager.Instance.QueryTrailerScraperCapabilities(Enums.PostScraperCapabilities.Trailer)
+            Dim PosterAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Poster)
+            Dim FanartAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart)
+            Dim TrailerAllowed As Boolean = ModulesManager.Instance.QueryTrailerScraperCapabilities(Enums.ScraperCapabilities.Trailer)
 
             'create list of movies acording to scrapetype
             For Each drvRow As DataRow In Me.dtMedia.Rows
@@ -8099,7 +8099,7 @@ doCancel:
                 Me.mnuFilterAutoExtra.Enabled = False
                 Me.mnuFilterAskExtra.Enabled = False
 
-                Dim PosterAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.PostScraperCapabilities.Poster)
+                Dim PosterAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Poster)
                 Me.mnuAllAutoPoster.Enabled = PosterAllowed
                 Me.mnuAllAskPoster.Enabled = PosterAllowed
                 Me.mnuMissAutoPoster.Enabled = PosterAllowed
@@ -8111,7 +8111,7 @@ doCancel:
                 Me.mnuFilterAutoPoster.Enabled = PosterAllowed
                 Me.mnuFilterAskPoster.Enabled = PosterAllowed
 
-                Dim FanartAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.PostScraperCapabilities.Fanart)
+                Dim FanartAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart)
                 Me.mnuAllAutoFanart.Enabled = FanartAllowed
                 Me.mnuAllAskFanart.Enabled = FanartAllowed
                 Me.mnuMissAutoFanart.Enabled = FanartAllowed
@@ -8132,7 +8132,7 @@ doCancel:
                 Me.mnuFilterAskMI.Enabled = .ScanMediaInfo
                 Me.mnuFilterAutoMI.Enabled = .ScanMediaInfo
 
-                Dim TrailerAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.PostScraperCapabilities.Trailer)
+                Dim TrailerAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Trailer)
                 Me.mnuAllAutoTrailer.Enabled = TrailerAllowed
                 Me.mnuAllAskTrailer.Enabled = TrailerAllowed
                 Me.mnuMissAutoTrailer.Enabled = TrailerAllowed
