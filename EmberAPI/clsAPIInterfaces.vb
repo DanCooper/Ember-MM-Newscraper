@@ -109,99 +109,99 @@ Public Class Interfaces
 
 	'        Function InjectSetupPostScraper() As Containers.SettingsPanel
 
-	'        Function QueryPostScraperCapabilities(ByVal cap As Enums.PostScraperCapabilities) As Boolean
+    '        Function QueryPostScraperCapabilities(ByVal cap As Enums.ScraperCapabilities) As Boolean
 
-	'        Function InjectSetupScraper() As Containers.SettingsPanel
+    '        Function InjectSetupScraper() As Containers.SettingsPanel
 
-	'        Function PostScraper(ByRef DBMovie As Structures.DBMovie, ByVal ScrapeType As Enums.ScrapeType) As ModuleResult
+    '        Function PostScraper(ByRef DBMovie As Structures.DBMovie, ByVal ScrapeType As Enums.ScrapeType) As ModuleResult
 
-	'        Sub SaveSetupPostScraper(ByVal DoDispose As Boolean)
+    '        Sub SaveSetupPostScraper(ByVal DoDispose As Boolean)
 
-	'        Sub SaveSetupScraper(ByVal DoDispose As Boolean)
+    '        Sub SaveSetupScraper(ByVal DoDispose As Boolean)
 
-	'        'Movie is byref because some scrapper may run to update only some fields (defined in Scraper Setup)
-	'        'Options is byref to allow field blocking in scraper chain
-	'        Function Scraper(ByRef DBMovie As Structures.DBMovie, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions) As ModuleResult
+    '        'Movie is byref because some scrapper may run to update only some fields (defined in Scraper Setup)
+    '        'Options is byref to allow field blocking in scraper chain
+    '        Function Scraper(ByRef DBMovie As Structures.DBMovie, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions) As ModuleResult
 
-	'        Function SelectImageOfType(ByRef DBMovie As Structures.DBMovie, ByVal _DLType As Enums.ImageType, ByRef pResults As Containers.ImgResult, Optional ByVal _isEdit As Boolean = False, Optional ByVal preload As Boolean = False) As ModuleResult
+    '        Function SelectImageOfType(ByRef DBMovie As Structures.DBMovie, ByVal _DLType As Enums.ImageType, ByRef pResults As Containers.ImgResult, Optional ByVal _isEdit As Boolean = False, Optional ByVal preload As Boolean = False) As ModuleResult
 
-	'#End Region 'Methods
+    '#End Region 'Methods
 
-	'    End Interface
+    '    End Interface
 
 
 
-	' ################################################################################
-	' #                             EMBER MEDIA MANAGER                              #
-	' ################################################################################
-	' ################################################################################
-	' # NOTE: the following interfaces could be avoided with a single type			 #
-	' #  and some generic functions with generic Object return and type casting		 #
-	' #																				 #
-	' # IT HAS BEEN DONE ON PURPOSE as we have seen the mess it has been created in  #
-	' # multi purpose Scrapers (data + image + trailers).							 #
-	' # In this way evey scraper will have one precise object and development, debug #
-	' #  and maintenance will be far easier											 #
-	' #																				 #
-	' # In the libraries there will be replicated code to manage the five lists		 #
-	' #	3 for movies and 2 for TV episodes. Even if not optimal this is easier to	 #
-	' #	manage and debug															 #
-	' #																				 #
-	' ################################################################################
+    ' ################################################################################
+    ' #                             EMBER MEDIA MANAGER                              #
+    ' ################################################################################
+    ' ################################################################################
+    ' # NOTE: the following interfaces could be avoided with a single type			 #
+    ' #  and some generic functions with generic Object return and type casting		 #
+    ' #																				 #
+    ' # IT HAS BEEN DONE ON PURPOSE as we have seen the mess it has been created in  #
+    ' # multi purpose Scrapers (data + image + trailers).							 #
+    ' # In this way evey scraper will have one precise object and development, debug #
+    ' #  and maintenance will be far easier											 #
+    ' #																				 #
+    ' # In the libraries there will be replicated code to manage the five lists		 #
+    ' #	3 for movies and 2 for TV episodes. Even if not optimal this is easier to	 #
+    ' #	manage and debug															 #
+    ' #																				 #
+    ' ################################################################################
 
-	Public Interface EmberMovieScraperModule_Data
+    Public Interface EmberMovieScraperModule_Data
 
 #Region "Events"
 
-		Event ModuleSettingsChanged()
+        Event ModuleSettingsChanged()
 
-		Event MovieScraperEvent(ByVal eType As Enums.MovieScraperEventType, ByVal Parameter As Object)
+        Event MovieScraperEvent(ByVal eType As Enums.MovieScraperEventType, ByVal Parameter As Object)
 
-		Event ScraperSetupChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer)
+        Event ScraperSetupChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer)
 
-		Event SetupNeedsRestart()
+        Event SetupNeedsRestart()
 
-#End Region	'Events
+#End Region 'Events
 
 #Region "Properties"
 
-		ReadOnly Property ModuleName() As String
+        ReadOnly Property ModuleName() As String
 
-		ReadOnly Property ModuleVersion() As String
+        ReadOnly Property ModuleVersion() As String
 
-		Property ScraperEnabled() As Boolean
+        Property ScraperEnabled() As Boolean
 
-#End Region	'Properties
+#End Region 'Properties
 
 #Region "Methods"
 
-		Sub ScraperOrderChanged()
+        Sub ScraperOrderChanged()
 
-		Function GetMovieStudio(ByRef DBMovie As Structures.DBMovie, ByRef sStudio As List(Of String)) As ModuleResult
+        Function GetMovieStudio(ByRef DBMovie As Structures.DBMovie, ByRef sStudio As List(Of String)) As ModuleResult
 
-		Sub Init(ByVal sAssemblyName As String)
+        Sub Init(ByVal sAssemblyName As String)
 
-		Function InjectSetupScraper() As Containers.SettingsPanel
+        Function InjectSetupScraper() As Containers.SettingsPanel
 
-		Sub SaveSetupScraper(ByVal DoDispose As Boolean)
+        Sub SaveSetupScraper(ByVal DoDispose As Boolean)
 
-		'Movie is byref because some scrapper may run to update only some fields (defined in Scraper Setup)
-		'Options is byref to allow field blocking in scraper chain
-		Function Scraper(ByRef DBMovie As Structures.DBMovie, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions) As ModuleResult
+        'Movie is byref because some scrapper may run to update only some fields (defined in Scraper Setup)
+        'Options is byref to allow field blocking in scraper chain
+        Function Scraper(ByRef DBMovie As Structures.DBMovie, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions) As ModuleResult
 
-#End Region	'Methods
+#End Region 'Methods
 
-	End Interface
+    End Interface
 
-	Public Interface EmberMovieScraperModule_Poster
+    Public Interface EmberMovieScraperModule_Poster
 
 #Region "Events"
 
-		Event ModuleSettingsChanged()
+        Event ModuleSettingsChanged()
 
-		Event MovieScraperEvent(ByVal eType As Enums.MovieScraperEventType, ByVal Parameter As Object)
+        Event MovieScraperEvent(ByVal eType As Enums.MovieScraperEventType, ByVal Parameter As Object)
 
-		Event ScraperSetupChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer)
+        Event ScraperSetupChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer)
 
         Event SetupNeedsRestart()
 
@@ -213,71 +213,71 @@ Public Class Interfaces
 
 #Region "Properties"
 
-		ReadOnly Property ModuleName() As String
+        ReadOnly Property ModuleName() As String
 
-		ReadOnly Property ModuleVersion() As String
+        ReadOnly Property ModuleVersion() As String
 
-		Property ScraperEnabled() As Boolean
+        Property ScraperEnabled() As Boolean
 
-#End Region	'Properties
-
-#Region "Methods"
-
-		Sub ScraperOrderChanged()
-
-		Sub Init(ByVal sAssemblyName As String)
-
-		Function InjectSetupScraper() As Containers.SettingsPanel
-
-		Function QueryScraperCapabilities(ByVal cap As Enums.PostScraperCapabilities) As Boolean
-
-        Sub SaveSetupScraper(ByVal DoDispose As Boolean)
-
-        Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.PostScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult
-
-#End Region	'Methods
-
-	End Interface
-
-	Public Interface EmberMovieScraperModule_Trailer
-
-#Region "Events"
-
-		Event ModuleSettingsChanged()
-
-		Event MovieScraperEvent(ByVal eType As Enums.MovieScraperEventType, ByVal Parameter As Object)
-
-		Event ScraperSetupChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer)
-
-		Event SetupNeedsRestart()
-
-#End Region	'Events
-
-#Region "Properties"
-
-		ReadOnly Property ModuleName() As String
-
-		ReadOnly Property ModuleVersion() As String
-
-		Property ScraperEnabled() As Boolean
-
-#End Region	'Properties
+#End Region 'Properties
 
 #Region "Methods"
 
-		Sub ScraperOrderChanged()
+        Sub ScraperOrderChanged()
 
         Sub Init(ByVal sAssemblyName As String)
 
-		Function InjectSetupScraper() As Containers.SettingsPanel
+        Function InjectSetupScraper() As Containers.SettingsPanel
 
-        Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.PostScraperCapabilities, ByRef URLList As List(Of String)) As Interfaces.ModuleResult
+        Function QueryScraperCapabilities(ByVal cap As Enums.ScraperCapabilities) As Boolean
 
-		Sub SaveSetupScraper(ByVal DoDispose As Boolean)
+        Sub SaveSetupScraper(ByVal DoDispose As Boolean)
 
-#End Region	'Methods
+        Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult
 
-	End Interface
+#End Region 'Methods
+
+    End Interface
+
+    Public Interface EmberMovieScraperModule_Trailer
+
+#Region "Events"
+
+        Event ModuleSettingsChanged()
+
+        Event MovieScraperEvent(ByVal eType As Enums.MovieScraperEventType, ByVal Parameter As Object)
+
+        Event ScraperSetupChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer)
+
+        Event SetupNeedsRestart()
+
+#End Region 'Events
+
+#Region "Properties"
+
+        ReadOnly Property ModuleName() As String
+
+        ReadOnly Property ModuleVersion() As String
+
+        Property ScraperEnabled() As Boolean
+
+#End Region 'Properties
+
+#Region "Methods"
+
+        Sub ScraperOrderChanged()
+
+        Sub Init(ByVal sAssemblyName As String)
+
+        Function InjectSetupScraper() As Containers.SettingsPanel
+
+        Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef URLList As List(Of String)) As Interfaces.ModuleResult
+
+        Sub SaveSetupScraper(ByVal DoDispose As Boolean)
+
+#End Region 'Methods
+
+    End Interface
 
     Public Interface EmberTVScraperModule
 

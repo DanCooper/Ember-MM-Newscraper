@@ -49,21 +49,21 @@ Public Class dlgUpdateMedia
 
         If chkAllMod.Checked Then
             chkNFOMod.Checked = chkAllMod.Checked
-            chkPosterMod.Checked = chkAllMod.Checked AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.PostScraperCapabilities.Poster)
-            chkFanartMod.Checked = chkAllMod.Checked AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.PostScraperCapabilities.Fanart)
+            chkPosterMod.Checked = chkAllMod.Checked AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Poster)
+            chkFanartMod.Checked = chkAllMod.Checked AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart)
             chkMetaMod.Checked = chkAllMod.Checked AndAlso Not Me.rbUpdateModifier_Missing.Checked AndAlso Master.eSettings.ScanMediaInfo
             'chkExtraMod.Checked = chkAllMod.Checked AndAlso (Master.eSettings.AutoThumbs > 0)
-            chkTrailerMod.Checked = chkAllMod.Checked AndAlso Master.eSettings.DownloadTrailers
+            chkTrailerMod.Checked = chkAllMod.Checked AndAlso Master.eSettings.UpdaterTrailers
         Else
             If chkMetaMod.Checked Then chkMetaMod.Checked = Not Me.rbUpdateModifier_Missing.Checked AndAlso Master.eSettings.ScanMediaInfo AndAlso (Not rbUpdate_Ask.Checked OrElse chkNFOMod.Checked)
         End If
 
         chkNFOMod.Enabled = Not chkAllMod.Checked
-        chkPosterMod.Enabled = Not chkAllMod.Checked AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.PostScraperCapabilities.Poster)
-        chkFanartMod.Enabled = Not chkAllMod.Checked AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.PostScraperCapabilities.Fanart)
+        chkPosterMod.Enabled = Not chkAllMod.Checked AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Poster)
+        chkFanartMod.Enabled = Not chkAllMod.Checked AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart)
         chkMetaMod.Enabled = Not chkAllMod.Checked AndAlso Not Me.rbUpdateModifier_Missing.Checked AndAlso Master.eSettings.ScanMediaInfo AndAlso (Not rbUpdate_Ask.Checked OrElse chkNFOMod.Checked)
         'chkExtraMod.Enabled = Not chkAllMod.Checked AndAlso (Master.eSettings.AutoThumbs > 0)
-        chkTrailerMod.Enabled = Not chkAllMod.Checked AndAlso Master.eSettings.DownloadTrailers
+        chkTrailerMod.Enabled = Not chkAllMod.Checked AndAlso Master.eSettings.UpdaterTrailers
 
         If chkAllMod.Checked OrElse chkNFOMod.Checked Then
             If chkCast.Checked OrElse chkCrew.Checked OrElse chkDirector.Checked OrElse chkGenre.Checked OrElse _

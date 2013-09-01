@@ -109,6 +109,9 @@ Public Class dlgImgSelect
             Application.DoEvents()
             Me.pnlDLStatus.Visible = True
             Me.pnlBG.Visible = True
+            Me.lblSize.Visible = False
+            Me.cbFilterSize.Visible = False
+
             Application.DoEvents()
 
             Dim x = From MI As MediaContainers.Image In _ImageList Where (MI.Description = aDes)
@@ -151,7 +154,9 @@ Public Class dlgImgSelect
         Try
             Dim tImage As New Images
             Dim tImg As MediaContainers.Image = Nothing
-            pnlDLStatus.Visible = False
+            Me.pnlDLStatus.Visible = False
+            Me.lblSize.Visible = True
+            Me.cbFilterSize.Visible = True
 
             Application.DoEvents()
 
@@ -267,6 +272,8 @@ Public Class dlgImgSelect
         Next
         Me.pnlDLStatus.Visible = False
         Me.pnlBG.Visible = True
+        Me.lblSize.Visible = True
+        Me.cbFilterSize.Visible = True
         Me.ResumeLayout(True)
         Me.Activate()
 
@@ -453,23 +460,23 @@ Public Class dlgImgSelect
 
     Private Sub SetupSizes(ByVal ParentID As String)
         Try
-            rbXLarge.Checked = False
-            rbXLarge.Enabled = False
-            rbLarge.Checked = False
-            rbLarge.Enabled = False
-            rbMedium.Checked = False
-            rbMedium.Enabled = False
-            rbSmall.Checked = False
-            rbSmall.Enabled = False
+            Me.rbXLarge.Checked = False
+            Me.rbXLarge.Enabled = False
+            Me.rbLarge.Checked = False
+            Me.rbLarge.Enabled = False
+            Me.rbMedium.Checked = False
+            Me.rbMedium.Enabled = False
+            Me.rbSmall.Checked = False
+            Me.rbSmall.Enabled = False
             'If Me.DLType = Enums.ImageType.Fanart Then
             '    rbLarge.Text = Master.eSize.backdrop_names(2).description
             '    rbMedium.Text = Master.eSize.backdrop_names(1).description
             '    rbSmall.Text = Master.eSize.backdrop_names(0).description
             'Else
-            rbXLarge.Text = Master.eLang.GetString(897, "Original")
-            rbLarge.Text = Master.eLang.GetString(898, "Cover")
-            rbMedium.Text = Master.eLang.GetString(324, "Medium")
-            rbSmall.Text = Master.eLang.GetString(325, "Small")
+            Me.rbXLarge.Text = Master.eLang.GetString(897, "Original")
+            Me.rbLarge.Text = Master.eLang.GetString(898, "Cover")
+            Me.rbMedium.Text = Master.eLang.GetString(324, "Medium")
+            Me.rbSmall.Text = Master.eLang.GetString(325, "Small")
             'End If
 
             For Each TMDBPoster As MediaContainers.Image In _ImageList.Where(Function(f) f.ParentID = ParentID)
@@ -479,46 +486,46 @@ Public Class dlgImgSelect
                         Select Case TMDBPoster.Description
                             Case Master.eSize.poster_names(5).description
                                 ' xlarge
-                                rbXLarge.Enabled = True
-                                rbXLarge.Tag = TMDBPoster
-                                rbXLarge.Text = String.Format(Master.eLang.GetString(901, "Original ({0}x{1})"), TMDBPoster.Width, TMDBPoster.Height)
+                                Me.rbXLarge.Enabled = True
+                                Me.rbXLarge.Tag = TMDBPoster
+                                Me.rbXLarge.Text = String.Format(Master.eLang.GetString(901, "Original ({0}x{1})"), TMDBPoster.Width, TMDBPoster.Height)
                             Case Master.eSize.poster_names(4).description
                                 ' large
-                                rbLarge.Enabled = True
-                                rbLarge.Tag = TMDBPoster
-                                rbLarge.Text = String.Format(Master.eLang.GetString(902, "Cover ({0}x{1})"), TMDBPoster.Width, TMDBPoster.Height)
+                                Me.rbLarge.Enabled = True
+                                Me.rbLarge.Tag = TMDBPoster
+                                Me.rbLarge.Text = String.Format(Master.eLang.GetString(902, "Cover ({0}x{1})"), TMDBPoster.Width, TMDBPoster.Height)
                             Case Master.eSize.poster_names(2).description
-                                rbMedium.Enabled = True
-                                rbMedium.Tag = TMDBPoster
-                                rbMedium.Text = String.Format(Master.eLang.GetString(903, "Medium ({0}x{1})"), TMDBPoster.Width, TMDBPoster.Height)
+                                Me.rbMedium.Enabled = True
+                                Me.rbMedium.Tag = TMDBPoster
+                                Me.rbMedium.Text = String.Format(Master.eLang.GetString(903, "Medium ({0}x{1})"), TMDBPoster.Width, TMDBPoster.Height)
                             Case Master.eSize.poster_names(0).description
                                 ' small                        
-                                rbSmall.Enabled = True
-                                rbSmall.Tag = TMDBPoster
-                                rbSmall.Text = String.Format(Master.eLang.GetString(904, "Small ({0}x{1})"), TMDBPoster.Width, TMDBPoster.Height)
+                                Me.rbSmall.Enabled = True
+                                Me.rbSmall.Tag = TMDBPoster
+                                Me.rbSmall.Text = String.Format(Master.eLang.GetString(904, "Small ({0}x{1})"), TMDBPoster.Width, TMDBPoster.Height)
                         End Select
                     Else
                         Select Case TMDBPoster.Description
                             Case Master.eSize.backdrop_names(3).description
                                 ' xlarge
-                                rbXLarge.Enabled = True
-                                rbXLarge.Tag = TMDBPoster
-                                rbXLarge.Text = String.Format(Master.eLang.GetString(901, "Original ({0}x{1})"), TMDBPoster.Width, TMDBPoster.Height)
+                                Me.rbXLarge.Enabled = True
+                                Me.rbXLarge.Tag = TMDBPoster
+                                Me.rbXLarge.Text = String.Format(Master.eLang.GetString(901, "Original ({0}x{1})"), TMDBPoster.Width, TMDBPoster.Height)
                             Case Master.eSize.backdrop_names(2).description
                                 ' large
-                                rbLarge.Enabled = True
-                                rbLarge.Tag = TMDBPoster
-                                rbLarge.Text = String.Format(Master.eLang.GetString(905, "Large ({0}x{1})"), TMDBPoster.Width, TMDBPoster.Height)
+                                Me.rbLarge.Enabled = True
+                                Me.rbLarge.Tag = TMDBPoster
+                                Me.rbLarge.Text = String.Format(Master.eLang.GetString(905, "Large ({0}x{1})"), TMDBPoster.Width, TMDBPoster.Height)
                             Case Master.eSize.backdrop_names(1).description
                                 ' small                        
-                                rbMedium.Enabled = True
-                                rbMedium.Tag = TMDBPoster
-                                rbMedium.Text = String.Format(Master.eLang.GetString(903, "Small ({0}x{1})"), TMDBPoster.Width, TMDBPoster.Height)
+                                Me.rbMedium.Enabled = True
+                                Me.rbMedium.Tag = TMDBPoster
+                                Me.rbMedium.Text = String.Format(Master.eLang.GetString(903, "Small ({0}x{1})"), TMDBPoster.Width, TMDBPoster.Height)
                             Case Master.eSize.backdrop_names(0).description
                                 ' thumb
-                                rbSmall.Enabled = True
-                                rbSmall.Tag = TMDBPoster
-                                rbSmall.Text = String.Format(Master.eLang.GetString(904, "Small ({0}x{1})"), TMDBPoster.Width, TMDBPoster.Height)
+                                Me.rbSmall.Enabled = True
+                                Me.rbSmall.Tag = TMDBPoster
+                                Me.rbSmall.Text = String.Format(Master.eLang.GetString(904, "Small ({0}x{1})"), TMDBPoster.Width, TMDBPoster.Height)
                         End Select
                     End If
                 Else
@@ -526,38 +533,38 @@ Public Class dlgImgSelect
                         Select Case TMDBPoster.Description
                             Case Master.eSize.poster_names(5).description
                                 ' xlarge
-                                rbXLarge.Enabled = True
-                                rbXLarge.Tag = TMDBPoster
+                                Me.rbXLarge.Enabled = True
+                                Me.rbXLarge.Tag = TMDBPoster
                             Case Master.eSize.poster_names(4).description
                                 ' large
-                                rbLarge.Enabled = True
-                                rbLarge.Tag = TMDBPoster
+                                Me.rbLarge.Enabled = True
+                                Me.rbLarge.Tag = TMDBPoster
                             Case Master.eSize.poster_names(2).description
-                                rbMedium.Enabled = True
-                                rbMedium.Tag = TMDBPoster
+                                Me.rbMedium.Enabled = True
+                                Me.rbMedium.Tag = TMDBPoster
                             Case Master.eSize.poster_names(0).description
                                 ' small                        
-                                rbSmall.Enabled = True
-                                rbSmall.Tag = TMDBPoster
+                                Me.rbSmall.Enabled = True
+                                Me.rbSmall.Tag = TMDBPoster
                         End Select
                     Else
                         Select Case TMDBPoster.Description
                             Case Master.eSize.backdrop_names(3).description
                                 ' xlarge
-                                rbXLarge.Enabled = True
-                                rbXLarge.Tag = TMDBPoster
+                                Me.rbXLarge.Enabled = True
+                                Me.rbXLarge.Tag = TMDBPoster
                             Case Master.eSize.backdrop_names(2).description
                                 ' large
-                                rbLarge.Enabled = True
-                                rbLarge.Tag = TMDBPoster
+                                Me.rbLarge.Enabled = True
+                                Me.rbLarge.Tag = TMDBPoster
                             Case Master.eSize.backdrop_names(1).description
                                 ' small                        
-                                rbMedium.Enabled = True
-                                rbMedium.Tag = TMDBPoster
+                                Me.rbMedium.Enabled = True
+                                Me.rbMedium.Tag = TMDBPoster
                             Case Master.eSize.backdrop_names(0).description
                                 ' thumb
-                                rbSmall.Enabled = True
-                                rbSmall.Tag = TMDBPoster
+                                Me.rbSmall.Enabled = True
+                                Me.rbSmall.Tag = TMDBPoster
                         End Select
                     End If
                 End If
@@ -566,28 +573,28 @@ Public Class dlgImgSelect
             If Me.DLType = Enums.ImageType.Fanart Then
                 Select Case Master.eSettings.PreferredFanartSize
                     Case Enums.FanartSize.Small
-                        rbSmall.Checked = rbSmall.Enabled
+                        Me.rbSmall.Checked = rbSmall.Enabled
                     Case Enums.FanartSize.Mid
-                        rbMedium.Checked = rbMedium.Enabled
+                        Me.rbMedium.Checked = rbMedium.Enabled
                     Case Enums.FanartSize.Lrg
-                        rbLarge.Checked = rbLarge.Enabled
+                        Me.rbLarge.Checked = rbLarge.Enabled
                     Case Enums.FanartSize.Xlrg
-                        rbXLarge.Checked = rbXLarge.Enabled
+                        Me.rbXLarge.Checked = rbXLarge.Enabled
                 End Select
             Else
                 Select Case Master.eSettings.PreferredPosterSize
                     Case Enums.PosterSize.Small
-                        rbSmall.Checked = rbSmall.Enabled
+                        Me.rbSmall.Checked = rbSmall.Enabled
                     Case Enums.PosterSize.Mid
-                        rbMedium.Checked = rbMedium.Enabled
+                        Me.rbMedium.Checked = rbMedium.Enabled
                     Case Enums.PosterSize.Lrg
-                        rbLarge.Checked = rbLarge.Enabled
+                        Me.rbLarge.Checked = rbLarge.Enabled
                     Case Enums.PosterSize.Xlrg
-                        rbXLarge.Checked = rbXLarge.Enabled
+                        Me.rbXLarge.Checked = rbXLarge.Enabled
                 End Select
             End If
 
-            pnlSize.Visible = True
+            Me.pnlSize.Visible = True
 
             Invalidate()
         Catch ex As Exception

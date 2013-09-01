@@ -89,9 +89,9 @@ Public Class FanartTV_Poster
 #End Region 'Properties
 
 #Region "Methods"
-    Function QueryPostScraperCapabilities(ByVal cap As Enums.PostScraperCapabilities) As Boolean Implements Interfaces.EmberMovieScraperModule_Poster.QueryScraperCapabilities
+    Function QueryPostScraperCapabilities(ByVal cap As Enums.ScraperCapabilities) As Boolean Implements Interfaces.EmberMovieScraperModule_Poster.QueryScraperCapabilities
         Select Case cap
-            Case Enums.PostScraperCapabilities.Fanart
+            Case Enums.ScraperCapabilities.Fanart
                 Return True
         End Select
         Return False
@@ -183,7 +183,7 @@ Public Class FanartTV_Poster
         End If
     End Sub
 
-    Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.PostScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule_Poster.Scraper
+    Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule_Poster.Scraper
         'LoadSettings()
         Dim Poster As New Images
 

@@ -58,7 +58,7 @@ Namespace TMDB
         '	End While
         'End Sub
 
-        'Public Sub GetImagesAsync(ByVal imdbID As String, ByVal Type As Enums.PostScraperCapabilities)
+        'Public Sub GetImagesAsync(ByVal imdbID As String, ByVal Type As Enums.ScraperCapabilities)
         '    Try
         '        If Not bwTMDB.IsBusy Then
         '            bwTMDB.WorkerSupportsCancellation = True
@@ -70,7 +70,7 @@ Namespace TMDB
         '    End Try
         'End Sub
 
-        Public Function GetTMDBImages(ByVal TMDBID As String, ByVal Type As Enums.PostScraperCapabilities) As List(Of MediaContainers.Image)
+        Public Function GetTMDBImages(ByVal TMDBID As String, ByVal Type As Enums.ScraperCapabilities) As List(Of MediaContainers.Image)
             Dim alPosters As New List(Of MediaContainers.Image)
             Dim images As V3.TmdbMovieImages
             Dim aW, aH As Integer
@@ -78,7 +78,7 @@ Namespace TMDB
             ';If bwTMDB.CancellationPending Then Return Nothing
             Try
                 images = _TMDBApi.GetMovieImages(CInt(TMDBID), _MySettings.TMDBLanguage)
-                If Type = Enums.PostScraperCapabilities.Poster Then
+                If Type = Enums.ScraperCapabilities.Poster Then
                     If IsNothing(images.posters) OrElse images.posters.Count = 0 Then
                         images = _TMDBApiE.GetMovieImages(CInt(TMDBID))
                         If IsNothing(images.posters) OrElse images.posters.Count = 0 Then
@@ -100,7 +100,7 @@ Namespace TMDB
 
                 'If bwTMDB.CancellationPending Then Return Nothing
 
-                If Type = Enums.PostScraperCapabilities.Poster Then
+                If Type = Enums.ScraperCapabilities.Poster Then
                     For Each tmdbI As V3.Poster In images.posters
                         'If bwTMDB.CancellationPending Then Return Nothing
                         For Each aSize In Master.eSize.poster_names
@@ -116,7 +116,7 @@ Namespace TMDB
                             alPosters.Add(tmpPoster)
                         Next
                     Next
-                ElseIf Type = Enums.PostScraperCapabilities.Fanart Then
+                ElseIf Type = Enums.ScraperCapabilities.Fanart Then
                     For Each tmdbI As V3.Backdrop In images.backdrops
                         'If bwTMDB.CancellationPending Then Return Nothing
                         For Each aSize In Master.eSize.backdrop_names
@@ -171,18 +171,18 @@ Namespace TMDB
 
 #Region "Nested Types"
 
-		Private Structure Arguments
+        Private Structure Arguments
 
 #Region "Fields"
 
-			Dim Parameter As String
-            Dim Type As Enums.PostScraperCapabilities
+            Dim Parameter As String
+            Dim Type As Enums.ScraperCapabilities
 
-#End Region	'Fields
+#End Region 'Fields
 
-		End Structure
+        End Structure
 
-#End Region	'Nested Types
+#End Region 'Nested Types
 
 	End Class
 
