@@ -174,7 +174,7 @@ Public Class Trailers
         '    tURL = Path.Combine(Directory.GetParent(sPath).FullName, String.Concat(Path.GetFileNameWithoutExtension(sPath), If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(sURL)))
         'End If
         'If Not String.IsNullOrEmpty(sURL) Then
-        tURL = WebPage.DownloadFile(sURL, Path.GetFileNameWithoutExtension(sPath), True, "trailer")
+        tURL = WebPage.DownloadFile(sURL, Path.Combine(Path.GetDirectoryName(sPath), Path.GetFileNameWithoutExtension(sPath)), True, "trailer")
 
         If Not String.IsNullOrEmpty(tURL) Then
             'delete any other trailer if enabled in settings and download successful
