@@ -8400,7 +8400,7 @@ doCancel:
     End Sub
 
     Private Sub SetUp(ByVal doTheme As Boolean)
-        Master.eLog.WriteToErrorLog("test", "test2", "test3", False)
+
         Try
             With Me
                 .MinimumSize = New Size(800, 600)
