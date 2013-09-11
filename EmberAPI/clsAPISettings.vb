@@ -38,7 +38,7 @@ Public Class Settings
     Private _allspostersize As Enums.PosterSize
     Private _allsposterwidth As Integer
     Private _allwaysdisplaygenrestext As Boolean
-    Private _alwaysgetenglishtvimages As Boolean
+    'Private _alwaysgetenglishtvimages As Boolean
     Private _clickscrape As Boolean
     Private _askcheckboxscrape As Boolean
     Private _autobd As Boolean
@@ -92,7 +92,7 @@ Public Class Settings
     Private _epposterwidth As Integer
     Private _epproperCase As Boolean
     Private _expertcleaner As Boolean
-    Private _externaltvdbapikey As String
+    'Private _externaltvdbapikey As String
     Private _fanartheight As Integer
     Private _fanartjpg As Boolean
     Private _fanartprefsizeonly As Boolean
@@ -185,7 +185,7 @@ Public Class Settings
     Private _noshowfilters As Boolean
     Private _nostackexts As List(Of String)
     Private _notokens As Boolean
-    Private _onlytvimagesforselectedlangauge As Boolean
+    'Private _onlytvimagesforselectedlangauge As Boolean
     Private _onlyvalueforcert As Boolean
     Private _outlineforplot As Boolean
     Private _overwriteallsPoster As Boolean
@@ -318,9 +318,9 @@ Public Class Settings
     Private _trailerquality As Enums.TrailerQuality
     Private _trailertimeout As Integer
     Private _tvcleandb As Boolean
-    Private _tvdblanguage As String
-    Private _tvdblanguages As List(Of Containers.TVLanguage)
-    Private _tvdbmirror As String
+    'Private _tvdblanguage As String
+    'Private _tvdblanguages As List(Of Containers.TVLanguage)
+    'Private _tvdbmirror As String
     Private _tveptheme As String
     Private _tvflaglang As String
     Private _tvignorelastscan As Boolean
@@ -424,14 +424,14 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property AlwaysGetEnglishTVImages() As Boolean
-        Get
-            Return Me._alwaysgetenglishtvimages
-        End Get
-        Set(ByVal value As Boolean)
-            Me._alwaysgetenglishtvimages = value
-        End Set
-    End Property
+    'Public Property AlwaysGetEnglishTVImages() As Boolean
+    '    Get
+    '        Return Me._alwaysgetenglishtvimages
+    '    End Get
+    '    Set(ByVal value As Boolean)
+    '        Me._alwaysgetenglishtvimages = value
+    '    End Set
+    'End Property
 
     Public Property ClickScrape() As Boolean
         Get
@@ -912,14 +912,14 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property ExternalTVDBAPIKey() As String
-        Get
-            Return Me._externaltvdbapikey
-        End Get
-        Set(ByVal value As String)
-            Me._externaltvdbapikey = value
-        End Set
-    End Property
+    'Public Property ExternalTVDBAPIKey() As String
+    '    Get
+    '        Return Me._externaltvdbapikey
+    '    End Get
+    '    Set(ByVal value As String)
+    '        Me._externaltvdbapikey = value
+    '    End Set
+    'End Property
 
     Public Property FanartHeight() As Integer
         Get
@@ -1754,14 +1754,14 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property OnlyGetTVImagesForSelectedLanguage() As Boolean
-        Get
-            Return Me._onlytvimagesforselectedlangauge
-        End Get
-        Set(ByVal value As Boolean)
-            Me._onlytvimagesforselectedlangauge = value
-        End Set
-    End Property
+    'Public Property OnlyGetTVImagesForSelectedLanguage() As Boolean
+    '    Get
+    '        Return Me._onlytvimagesforselectedlangauge
+    '    End Get
+    '    Set(ByVal value As Boolean)
+    '        Me._onlytvimagesforselectedlangauge = value
+    '    End Set
+    'End Property
 
     Public Property OnlyValueForCert() As Boolean
         Get
@@ -2977,32 +2977,32 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property TVDBLanguage() As String
-        Get
-            Return Me._tvdblanguage
-        End Get
-        Set(ByVal value As String)
-            Me._tvdblanguage = If(String.IsNullOrEmpty(value), "en", value)
-        End Set
-    End Property
+    'Public Property TVDBLanguage() As String
+    '    Get
+    '        Return Me._tvdblanguage
+    '    End Get
+    '    Set(ByVal value As String)
+    '        Me._tvdblanguage = If(String.IsNullOrEmpty(value), "en", value)
+    '    End Set
+    'End Property
 
-    Public Property TVDBLanguages() As List(Of Containers.TVLanguage)
-        Get
-            Return Me._tvdblanguages
-        End Get
-        Set(ByVal value As List(Of Containers.TVLanguage))
-            Me._tvdblanguages = value
-        End Set
-    End Property
+    'Public Property TVDBLanguages() As List(Of Containers.TVLanguage)
+    '    Get
+    '        Return Me._tvdblanguages
+    '    End Get
+    '    Set(ByVal value As List(Of Containers.TVLanguage))
+    '        Me._tvdblanguages = value
+    '    End Set
+    'End Property
 
-    Public Property TVDBMirror() As String
-        Get
-            Return Me._tvdbmirror
-        End Get
-        Set(ByVal value As String)
-            Me._tvdbmirror = value
-        End Set
-    End Property
+    'Public Property TVDBMirror() As String
+    '    Get
+    '        Return Me._tvdbmirror
+    '    End Get
+    '    Set(ByVal value As String)
+    '        Me._tvdbmirror = value
+    '    End Set
+    'End Property
 
     Public Property TVEpTheme() As String
         Get
@@ -3515,33 +3515,33 @@ Public Class Settings
         Me._proxycredentials = New NetworkCredential
         Me._sourcefromfolder = False
         Me._sortbeforescan = False
-        Me._tvdbmirror = "thetvdb.com"
-        Me._tvdblanguage = "en"
-        Me._tvdblanguages = New List(Of Containers.TVLanguage)
-        Dim xmlTVDB As XDocument
-        Dim cLang As Containers.TVLanguage
-        Try
-            xmlTVDB = XDocument.Parse(My.Resources.languages)
-            Dim xLangs = From xLanguages In xmlTVDB.Descendants("Language")
+        'Me._tvdbmirror = "thetvdb.com"
+        'Me._tvdblanguage = "en"
+        'Me._tvdblanguages = New List(Of Containers.TVLanguage)
+        'Dim xmlTVDB As XDocument
+        'Dim cLang As Containers.TVLanguage
+        'Try
+        '    xmlTVDB = XDocument.Parse(My.Resources.languages)
+        '    Dim xLangs = From xLanguages In xmlTVDB.Descendants("Language")
 
-            For Each xL As XElement In xLangs
-                cLang = New Containers.TVLanguage
-                cLang.LongLang = xL.Element("name").Value
-                cLang.ShortLang = xL.Element("abbreviation").Value
-                _tvdblanguages.Add(cLang)
-            Next
-        Catch
+        '    For Each xL As XElement In xLangs
+        '        cLang = New Containers.TVLanguage
+        '        cLang.LongLang = xL.Element("name").Value
+        '        cLang.ShortLang = xL.Element("abbreviation").Value
+        '        _tvdblanguages.Add(cLang)
+        '    Next
+        'Catch
 
-        End Try
+        'End Try
 
         Me._emberModules = New List(Of ModulesManager._XMLEmberModuleClass)
-        Me._externaltvdbapikey = String.Empty
+        'Me._externaltvdbapikey = String.Empty
         Me._scanordermodify = False
         Me._tvscanordermodify = False
         Me._tvupdatetime = Enums.TVUpdateTime.Week
         Me._nofilterepisode = True
-        Me._onlytvimagesforselectedlangauge = True
-        Me._alwaysgetenglishtvimages = True
+        'Me._onlytvimagesforselectedlangauge = True
+        'Me._alwaysgetenglishtvimages = True
         Me._displaymissingepisodes = False
         Me._showlocktitle = False
         Me._showlockplot = False
@@ -3865,5 +3865,9 @@ Public Class Settings
     End Class
 
 #End Region 'Nested Types
+
+    Function TVDBLanguage() As Object
+        Throw New NotImplementedException
+    End Function
 
 End Class

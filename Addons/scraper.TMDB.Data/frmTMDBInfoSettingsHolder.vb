@@ -65,7 +65,6 @@ Public Class frmTMDBInfoSettingsHolder
 #End Region 'Properties
 
 
-
 #Region "Methods"
     Private Sub PictureBox2_Click(sender As System.Object, e As System.EventArgs) Handles pbTMDB.Click
         If Master.isWindows Then
