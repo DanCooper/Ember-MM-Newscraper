@@ -39,7 +39,7 @@ Public Class dlgSettings
     Private SettingsPanels As New List(Of Containers.SettingsPanel)
     Private ShowRegex As New List(Of Settings.TVShowRegEx)
     Private sResult As New Structures.SettingsResult
-    Private tLangList As New List(Of Containers.TVLanguage)
+    'Private tLangList As New List(Of Containers.TVLanguage)
     Private TVMeta As New List(Of Settings.MetadataPerType)
     Public Event LoadEnd()
 
@@ -2509,8 +2509,8 @@ Public Class dlgSettings
             Me.chkEpisodeNfoCol.Checked = Master.eSettings.EpisodeNfoCol
             Me.chkSourceFromFolder.Checked = Master.eSettings.SourceFromFolder
             Me.chkSortBeforeScan.Checked = Master.eSettings.SortBeforeScan
-            Me.tLangList.Clear()
-            Me.tLangList.AddRange(Master.eSettings.TVDBLanguages)
+            'Me.tLangList.Clear()
+            'Me.tLangList.AddRange(Master.eSettings.TVDBLanguages)
 
             If Not String.IsNullOrEmpty(Master.eSettings.ProxyURI) AndAlso Master.eSettings.ProxyPort >= 0 Then
                 Me.chkEnableProxy.Checked = True

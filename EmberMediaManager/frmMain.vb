@@ -2911,7 +2911,7 @@ doCancel:
             'End If
             ScrapeType = Enums.ScrapeType.FullAsk
             Dim Lang As String = Me.dgvTVShows.Item(22, s.Index).Value.ToString
-            ModulesManager.Instance.TVScrapeOnly(Convert.ToInt32(Me.dgvTVShows.Item(0, s.Index).Value), Me.dgvTVShows.Item(1, s.Index).Value.ToString, Me.dgvTVShows.Item(9, s.Index).Value.ToString, If(String.IsNullOrEmpty(Lang), Master.eSettings.TVDBLanguage, Lang), DirectCast(Convert.ToInt32(Me.dgvTVShows.Item(23, s.Index).Value), Enums.Ordering), Master.DefaultTVOptions, ScrapeType, True)
+            ModulesManager.Instance.TVScrapeOnly(Convert.ToInt32(Me.dgvTVShows.Item(0, s.Index).Value), Me.dgvTVShows.Item(1, s.Index).Value.ToString, Me.dgvTVShows.Item(9, s.Index).Value.ToString, If(String.IsNullOrEmpty(Lang), AdvancedSettings.GetSetting("TVDBLanguage", "en"), Lang), DirectCast(Convert.ToInt32(Me.dgvTVShows.Item(23, s.Index).Value), Enums.Ordering), Master.DefaultTVOptions, ScrapeType, True)
         Next
         Me.SetControlsEnabled(True)
     End Sub

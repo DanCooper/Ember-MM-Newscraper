@@ -981,7 +981,7 @@ Public Class Scraper
                         tmpID = tID
                         If xSer.Where(Function(s) s.Element("seriesid").Value.ToString = tmpID AndAlso s.Element("language").Value.ToString = Master.eSettings.TVDBLanguage).Count = 0 Then
                             'no preferred language in this series, force it
-                            Dim forceXML As String = sHTTP.DownloadData(String.Format("http://{0}/api/{1}/series/{2}/{3}.xml", Master.eSettings.TVDBMirror, APIKey, tmpID, Master.eSettings.TVDBLanguage))
+                            Dim forceXML As String = sHTTP.DownloadData(String.Format("http://{0}/api/{1}/series/{2}/{3}.xml", Master.eSettings.TVDBMirror, APIKey, tmpID, AdvancedSettings.GetSetting("TVDBLanguage", "en")))
                             If Not String.IsNullOrEmpty(forceXML) Then
                                 Try
                                     tmpXML = XDocument.Parse(forceXML)
@@ -1091,7 +1091,7 @@ Public Class Scraper
                                     sID = xS(0).Element("id").Value
                                     .ID = sID
                                     If sInfo.Options.bShowTitle AndAlso (String.IsNullOrEmpty(.Title) OrElse Not Master.eSettings.ShowLockTitle) Then .Title = If(IsNothing(xS(0).Element("SeriesName")), .Title, xS(0).Element("SeriesName").Value)
-                                    If sInfo.Options.bShowEpisodeGuide Then .EpisodeGuideURL = If(Not String.IsNullOrEmpty(AdvancedSettings.GetSetting("TVDBAPIKey", "")), String.Format("http://{0}/api/{1}/series/{2}/all/{3}.zip", Master.eSettings.TVDBMirror, AdvancedSettings.GetSetting("TVDBAPIKey", ""), sID, Master.eSettings.TVDBLanguage), String.Empty)
+                                    If sInfo.Options.bShowEpisodeGuide Then .EpisodeGuideURL = If(Not String.IsNullOrEmpty(AdvancedSettings.GetSetting("TVDBAPIKey", "")), String.Format("http://{0}/api/{1}/series/{2}/all/{3}.zip", AdvancedSettings.GetSetting("TVDBMirror", "thetvdb.com"), AdvancedSettings.GetSetting("TVDBAPIKey", ""), sID, AdvancedSettings.GetSetting("TVDBLanguage", "en")), String.Empty)
                                     If sInfo.Options.bShowGenre AndAlso (String.IsNullOrEmpty(.Genre) OrElse Not Master.eSettings.ShowLockGenre) Then .Genre = If(IsNothing(xS(0).Element("Genre")), .Genre, Strings.Join(xS(0).Element("Genre").Value.Trim(Convert.ToChar("|")).Split(Convert.ToChar("|")), " / "))
                                     If sInfo.Options.bShowMPAA Then .MPAA = If(IsNothing(xS(0).Element("ContentRating")), .MPAA, xS(0).Element("ContentRating").Value)
                                     If sInfo.Options.bShowPlot AndAlso (String.IsNullOrEmpty(.Plot) OrElse Not Master.eSettings.ShowLockPlot) Then .Plot = If(IsNothing(xS(0).Element("Overview")), .Plot, xS(0).Element("Overview").Value.ToString.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf))
