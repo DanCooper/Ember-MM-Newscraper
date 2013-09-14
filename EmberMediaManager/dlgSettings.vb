@@ -39,7 +39,7 @@ Public Class dlgSettings
     Private SettingsPanels As New List(Of Containers.SettingsPanel)
     Private ShowRegex As New List(Of Settings.TVShowRegEx)
     Private sResult As New Structures.SettingsResult
-    Private tLangList As New List(Of Containers.TVLanguage)
+    'Private tLangList As New List(Of Containers.TVLanguage)
     Private TVMeta As New List(Of Settings.MetadataPerType)
     Public Event LoadEnd()
 
@@ -857,15 +857,6 @@ Public Class dlgSettings
         End Try
     End Sub
 
-    Private Sub btnTVLanguageFetch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVLanguageFetch.Click
-        Me.tLangList.Clear()
-        Me.tLangList.AddRange(ModulesManager.Instance.TVGetLangs(Master.eSettings.TVDBMirror))
-        Me.cbTVLanguage.Items.AddRange((From lLang In tLangList Select lLang.LongLang).ToArray)
-
-        If Me.cbTVLanguage.Items.Count > 0 Then
-            Me.cbTVLanguage.Text = Me.tLangList.FirstOrDefault(Function(l) l.ShortLang = Master.eSettings.TVDBLanguage).LongLang
-        End If
-    End Sub
 
     Private Sub btnUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUp.Click
         Try
@@ -1010,10 +1001,6 @@ Public Class dlgSettings
     End Sub
 
     Private Sub cbTVEpTheme_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbEpTheme.SelectedIndexChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub cbTVLanguage_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbTVLanguage.SelectedIndexChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -1317,7 +1304,7 @@ Public Class dlgSettings
         If Not Me.chkGenre.Checked Then Me.txtGenreLimit.Text = "0"
     End Sub
 
-    Private Sub chkGetEnglishImages_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGetEnglishImages.CheckedChanged
+    Private Sub chkGetEnglishImages_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
     End Sub
 
@@ -1545,13 +1532,6 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkOnlyTVImagesLanguage_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOnlyTVImagesLanguage.CheckedChanged
-        Me.SetApplyButton(True)
-
-        Me.chkGetEnglishImages.Enabled = Me.chkOnlyTVImagesLanguage.Checked
-
-        If Not Me.chkOnlyTVImagesLanguage.Checked Then Me.chkGetEnglishImages.Checked = False
-    End Sub
 
     Private Sub chkOnlyValueForCert_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOnlyValueForCert.CheckedChanged
         Me.SetApplyButton(True)
@@ -2529,13 +2509,8 @@ Public Class dlgSettings
             Me.chkEpisodeNfoCol.Checked = Master.eSettings.EpisodeNfoCol
             Me.chkSourceFromFolder.Checked = Master.eSettings.SourceFromFolder
             Me.chkSortBeforeScan.Checked = Master.eSettings.SortBeforeScan
-            Me.tLangList.Clear()
-            Me.tLangList.AddRange(Master.eSettings.TVDBLanguages)
-            Me.cbTVLanguage.Items.AddRange((From lLang In Master.eSettings.TVDBLanguages Select lLang.LongLang).ToArray)
-            If Me.cbTVLanguage.Items.Count > 0 Then
-                Me.cbTVLanguage.Text = Me.tLangList.FirstOrDefault(Function(l) l.ShortLang = Master.eSettings.TVDBLanguage).LongLang
-            End If
-            Me.txtTVDBMirror.Text = Master.eSettings.TVDBMirror
+            'Me.tLangList.Clear()
+            'Me.tLangList.AddRange(Master.eSettings.TVDBLanguages)
 
             If Not String.IsNullOrEmpty(Master.eSettings.ProxyURI) AndAlso Master.eSettings.ProxyPort >= 0 Then
                 Me.chkEnableProxy.Checked = True
@@ -2549,13 +2524,11 @@ Public Class dlgSettings
                     Me.txtProxyDomain.Text = Master.eSettings.ProxyCreds.Domain
                 End If
             End If
-            Me.txtAPIKey.Text = Master.eSettings.ExternalTVDBAPIKey
+            'Me.txtAPIKey.Text = Master.eSettings.ExternalTVDBAPIKey
             Me.chkScanOrderModify.Checked = Master.eSettings.ScanOrderModify
             Me.chkTVScanOrderModify.Checked = Master.eSettings.TVScanOrderModify
             Me.cboTVUpdate.SelectedIndex = Master.eSettings.TVUpdateTime
             Me.chkNoFilterEpisode.Checked = Master.eSettings.NoFilterEpisode
-            Me.chkOnlyTVImagesLanguage.Checked = Master.eSettings.OnlyGetTVImagesForSelectedLanguage
-            Me.chkGetEnglishImages.Checked = Master.eSettings.AlwaysGetEnglishTVImages
             Me.chkDisplayMissingEpisodes.Checked = Master.eSettings.DisplayMissingEpisodes
             Me.chkShowLockTitle.Checked = Master.eSettings.ShowLockTitle
             Me.chkShowLockPlot.Checked = Master.eSettings.ShowLockPlot
@@ -3616,22 +3589,6 @@ Public Class dlgSettings
             Master.eSettings.EpisodeNfoCol = Me.chkEpisodeNfoCol.Checked
             Master.eSettings.SourceFromFolder = Me.chkSourceFromFolder.Checked
             Master.eSettings.SortBeforeScan = Me.chkSortBeforeScan.Checked
-            If tLangList.Count > 0 Then
-                Dim tLang As String = tLangList.FirstOrDefault(Function(l) l.LongLang = Me.cbTVLanguage.Text).ShortLang
-                If Not String.IsNullOrEmpty(tLang) Then
-                    Master.eSettings.TVDBLanguage = tLang
-                Else
-                    Master.eSettings.TVDBLanguage = "en"
-                End If
-            Else
-                Master.eSettings.TVDBLanguage = "en"
-            End If
-            Master.eSettings.TVDBLanguages = Me.tLangList
-            If Not String.IsNullOrEmpty(Me.txtTVDBMirror.Text) Then
-                Master.eSettings.TVDBMirror = Strings.Replace(Me.txtTVDBMirror.Text, "http://", String.Empty)
-            Else
-                Master.eSettings.TVDBMirror = "thetvdb.com"
-            End If
 
             If Not String.IsNullOrEmpty(Me.txtProxyURI.Text) AndAlso Not String.IsNullOrEmpty(Me.txtProxyPort.Text) Then
                 Master.eSettings.ProxyURI = Me.txtProxyURI.Text
@@ -3649,13 +3606,10 @@ Public Class dlgSettings
                 Master.eSettings.ProxyPort = -1
             End If
 
-            Master.eSettings.ExternalTVDBAPIKey = Me.txtAPIKey.Text
             Master.eSettings.ScanOrderModify = Me.chkScanOrderModify.Checked
             Master.eSettings.TVScanOrderModify = Me.chkTVScanOrderModify.Checked
             Master.eSettings.TVUpdateTime = DirectCast(Me.cboTVUpdate.SelectedIndex, Enums.TVUpdateTime)
             Master.eSettings.NoFilterEpisode = Me.chkNoFilterEpisode.Checked
-            Master.eSettings.OnlyGetTVImagesForSelectedLanguage = Me.chkOnlyTVImagesLanguage.Checked
-            Master.eSettings.AlwaysGetEnglishTVImages = Me.chkGetEnglishImages.Checked
             Master.eSettings.DisplayMissingEpisodes = Me.chkDisplayMissingEpisodes.Checked
             Master.eSettings.ShowLockTitle = Me.chkShowLockTitle.Checked
             Master.eSettings.ShowLockPlot = Me.chkShowLockPlot.Checked
@@ -4037,13 +3991,7 @@ Public Class dlgSettings
         Me.chkSortBeforeScan.Text = Master.eLang.GetString(712, "Sort files into folder before each library update")
         Me.chkNoFilterEpisode.Text = Master.eLang.GetString(734, "Build Episode Title Instead of Filtering")
         Me.gbAllSeasonPoster.Text = Master.eLang.GetString(735, "All Season Posters")
-        Me.chkOnlyTVImagesLanguage.Text = Master.eLang.GetString(736, "Only Get Images for the Selected Language")
-        Me.chkGetEnglishImages.Text = Master.eLang.GetString(737, "Also Get English Images")
-        Me.lblAPIKey.Text = Master.eLang.GetString(738, "API Key:")
         Me.lblTVUpdate.Text = Master.eLang.GetString(740, "Re-download Show Information Every:")
-        Me.gbLanguage.Text = Master.eLang.GetString(610, "Language")
-        Me.lblTVLanguagePreferred.Text = Master.eLang.GetString(741, "Preferred Language:")
-        Me.btnTVLanguageFetch.Text = Master.eLang.GetString(742, "Fetch Available Languages")
         Me.GroupBox33.Text = Master.eLang.GetString(488, "Global Locks")
         Me.gbShowLocks.Text = Master.eLang.GetString(743, "Show")
         Me.chkShowLockTitle.Text = Master.eLang.GetString(494, "Lock Title")
@@ -4062,8 +4010,7 @@ Public Class dlgSettings
         Me.chkTVScanOrderModify.Text = Me.chkScanOrderModify.Text
         Me.lblPreferredQuality.Text = Master.eLang.GetString(800, "Preferred Quality:")
         Me.gbTVScraperOptions.Text = Master.eLang.GetString(390, "Options")
-        Me.lblTVDBMirror.Text = Master.eLang.GetString(801, "TVDB Mirror")
-        Me.chkDisplayAllSeason.Text = Master.eLang.GetString(832, "Display All Season Poster")
+       Me.chkDisplayAllSeason.Text = Master.eLang.GetString(832, "Display All Season Poster")
         Me.gbHelp.Text = String.Concat("     ", Master.eLang.GetString(458, "Help"))
         Me.chkMarkNewShows.Text = Master.eLang.GetString(549, "Mark New Shows")
         Me.chkMarkNewEpisodes.Text = Master.eLang.GetString(621, "Mark New Episodes")
@@ -4105,7 +4052,6 @@ Public Class dlgSettings
         Me.TabPage5.Text = Master.eLang.GetString(700, "TV Show")
         Me.TabPage6.Text = Master.eLang.GetString(744, "TV Season")
         Me.TabPage7.Text = Master.eLang.GetString(701, "TV Episode")
-        Me.TabPage8.Text = Master.eLang.GetString(38, "General")
 
         Me.cbPosterSize.Items.Clear()
         Me.cbPosterSize.Items.AddRange(New String() {Master.eLang.GetString(322, "X-Large"), Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small"), Master.eLang.GetString(558, "Wide")})
@@ -4380,7 +4326,7 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub txtAPIKey_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtAPIKey.TextChanged
+    Private Sub txtAPIKey_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
     End Sub
 
@@ -4606,7 +4552,7 @@ Public Class dlgSettings
         Me.sResult.NeedsUpdate = True
     End Sub
 
-    Private Sub txtTVDBMirror_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVDBMirror.TextChanged
+    Private Sub txtTVDBMirror_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
     End Sub
 

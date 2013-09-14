@@ -155,6 +155,7 @@ Public Class IMDB_Data
         AddHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
         Return SPanel
     End Function
+
     Sub LoadSettings()
         ConfigOptions.bTitle = AdvancedSettings.GetBooleanSetting("DoTitle", True)
         ConfigOptions.bYear = AdvancedSettings.GetBooleanSetting("DoYear", True)

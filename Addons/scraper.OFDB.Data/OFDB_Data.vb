@@ -218,23 +218,25 @@ Public Class OFDB_Data
         ' we have the ID
         Dim tOFDB As New OFDB(DBMovie.Movie.ID, DBMovie.Movie)
 
-        If Options.bTitle AndAlso (String.IsNullOrEmpty(DBMovie.Movie.Title) OrElse Not Master.eSettings.LockTitle) Then
+        Dim filterOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(Options, ConfigOptions)
+
+        If filterOptions.bTitle AndAlso (String.IsNullOrEmpty(DBMovie.Movie.Title) OrElse Not Master.eSettings.LockTitle) Then
             DBMovie.Movie.Title = tOFDB.Title
         End If
-        If Options.bOutline AndAlso (String.IsNullOrEmpty(DBMovie.Movie.Outline) OrElse Not Master.eSettings.LockOutline) Then
+        If filterOptions.bOutline AndAlso (String.IsNullOrEmpty(DBMovie.Movie.Outline) OrElse Not Master.eSettings.LockOutline) Then
 
             If Not String.IsNullOrEmpty(tOFDB.Outline) Then
                 DBMovie.Movie.Outline = tOFDB.Outline
             End If
         End If
 
-        If Options.bPlot AndAlso (String.IsNullOrEmpty(DBMovie.Movie.Plot) OrElse Not Master.eSettings.LockPlot) Then
+        If filterOptions.bPlot AndAlso (String.IsNullOrEmpty(DBMovie.Movie.Plot) OrElse Not Master.eSettings.LockPlot) Then
             If Not String.IsNullOrEmpty(tOFDB.Plot) Then
                 DBMovie.Movie.Plot = tOFDB.Plot
             End If
         End If
 
-        If Options.bGenre AndAlso (String.IsNullOrEmpty(DBMovie.Movie.Genre) OrElse Not Master.eSettings.LockGenre) Then
+        If filterOptions.bGenre AndAlso (String.IsNullOrEmpty(DBMovie.Movie.Genre) OrElse Not Master.eSettings.LockGenre) Then
             If Not String.IsNullOrEmpty(tOFDB.Genre) Then
                 DBMovie.Movie.Genre = tOFDB.Genre
             End If

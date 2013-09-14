@@ -1381,7 +1381,7 @@ Public Class Scanner
                     tmpTVDB.IsMarkShow = False
                     tmpTVDB.Source = TVContainer.Source
                     tmpTVDB.Ordering = Master.eSettings.OrderDefault
-                    tmpTVDB.ShowLanguage = Master.eSettings.TVDBLanguage
+                    tmpTVDB.ShowLanguage = AdvancedSettings.GetSetting("TVDBLanguage", "en")
 
                     Master.DB.SaveTVShowToDB(tmpTVDB, True, True)
 

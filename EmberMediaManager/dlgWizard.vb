@@ -177,11 +177,26 @@ Public Class dlgWizard
         Me.chkEpisodeDashThumbJPG.Checked = Master.eSettings.EpisodeDashThumbJPG
 		Me.chkEpisodeDashFanart.Checked = Master.eSettings.EpisodeDashFanart
 		Me.chkEpisodeDotFanart.Checked = Master.eSettings.EpisodeDotFanart
-		Me.tLangList.Clear()
+        Me.tLangList.Clear()
+        Dim cLang As Containers.TVLanguage
+        Dim xmlTVDB As XDocument
+        Try
+            xmlTVDB = XDocument.Parse(My.Resources.languages)
+            Dim xLangs = From xLanguages In xmlTVDB.Descendants("Language")
+
+            For Each xL As XElement In xLangs
+                cLang = New Containers.TVLanguage
+                cLang.LongLang = xL.Element("name").Value
+                cLang.ShortLang = xL.Element("abbreviation").Value
+                tLangList.Add(cLang)
+            Next
+        Catch
+
+        End Try
 		Me.tLangList.AddRange(Master.eSettings.TVDBLanguages)
 		Me.cbTVLanguage.Items.AddRange((From lLang In Master.eSettings.TVDBLanguages Select lLang.LongLang).ToArray)
 		If Me.cbTVLanguage.Items.Count > 0 Then
-			Me.cbTVLanguage.Text = Me.tLangList.FirstOrDefault(Function(l) l.ShortLang = Master.eSettings.TVDBLanguage).LongLang
+            Me.cbTVLanguage.Text = Me.tLangList.FirstOrDefault(Function(l) l.ShortLang = AdvancedSettings.GetSetting("TVDBLanguage", "en")).LongLang
 		End If
 	End Sub
 
@@ -380,18 +395,20 @@ Public Class dlgWizard
         Master.eSettings.EpisodeDashThumbJPG = Me.chkEpisodeDashThumbJPG.Checked
 		Master.eSettings.EpisodeDashFanart = Me.chkEpisodeDashFanart.Checked
 		Master.eSettings.EpisodeDotFanart = Me.chkEpisodeDotFanart.Checked
-		If tLangList.Count > 0 Then
-			Dim tLang As String = tLangList.FirstOrDefault(Function(l) l.LongLang = Me.cbTVLanguage.Text).ShortLang
-			If Not String.IsNullOrEmpty(tLang) Then
-				Master.eSettings.TVDBLanguage = tLang
-			Else
-				Master.eSettings.TVDBLanguage = "en"
-			End If
-		Else
-			Master.eSettings.TVDBLanguage = "en"
-		End If
-		Master.eSettings.TVDBLanguages = Me.tLangList
-	End Sub
+        Using settings = New AdvancedSettings()
+            If tLangList.Count > 0 Then
+                Dim tLang As String = tLangList.FirstOrDefault(Function(l) l.LongLang = Me.cbTVLanguage.Text).ShortLang
+                If Not String.IsNullOrEmpty(tLang) Then
+                    settings.SetSetting("TVDBLanguage", tLang)
+                Else
+                    settings.SetSetting("TVDBLanguage", "en")
+                End If
+            Else
+                settings.SetSetting("TVDBLanguage", "en")
+            End If
+            'Master.eSettings.TVDBLanguages = Me.tLangList
+        End Using
+    End Sub
 
 	Private Sub SetUp()
 		Me.btnMovieFrodo.Text = Master.eLang.GetString(867, "XBMC Frodo")
@@ -455,7 +472,7 @@ Public Class dlgWizard
         Me.cbTVLanguage.Items.AddRange((From lLang In tLangList Select lLang.LongLang).ToArray)
 
 		If Me.cbTVLanguage.Items.Count > 0 Then
-			Me.cbTVLanguage.Text = Me.tLangList.FirstOrDefault(Function(l) l.ShortLang = Master.eSettings.TVDBLanguage).LongLang
+            Me.cbTVLanguage.Text = Me.tLangList.FirstOrDefault(Function(l) l.ShortLang = AdvancedSettings.GetSetting("TVDBLanguage", "en")).LongLang
 		End If
 	End Sub
 

@@ -36,11 +36,22 @@ Partial Class frmTVMediaSettingsHolder
         Me.txtTVDBApiKey = New System.Windows.Forms.TextBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.lblTVDBMirror = New System.Windows.Forms.Label()
+        Me.txtTVDBMirror = New System.Windows.Forms.TextBox()
+        Me.gbLanguage = New System.Windows.Forms.GroupBox()
+        Me.lblTVLanguagePreferred = New System.Windows.Forms.Label()
+        Me.btnTVLanguageFetch = New System.Windows.Forms.Button()
+        Me.cbTVLanguage = New System.Windows.Forms.ComboBox()
+        Me.chkGetEnglishImages = New System.Windows.Forms.CheckBox()
+        Me.chkOnlyTVImagesLanguage = New System.Windows.Forms.CheckBox()
+        Me.GroupBox32 = New System.Windows.Forms.GroupBox()
         Me.Panel1.SuspendLayout()
         Me.pnlSettings.SuspendLayout()
         Me.GroupBox30.SuspendLayout()
         CType(Me.pbTVDB, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.gbLanguage.SuspendLayout()
+        Me.GroupBox32.SuspendLayout()
         Me.SuspendLayout()
         '
         'lblVersion
@@ -107,6 +118,7 @@ Partial Class frmTVMediaSettingsHolder
         '
         'pnlSettings
         '
+        Me.pnlSettings.Controls.Add(Me.GroupBox32)
         Me.pnlSettings.Controls.Add(Me.GroupBox30)
         Me.pnlSettings.Controls.Add(Me.Label1)
         Me.pnlSettings.Controls.Add(Me.PictureBox1)
@@ -118,13 +130,16 @@ Partial Class frmTVMediaSettingsHolder
         '
         'GroupBox30
         '
+        Me.GroupBox30.Controls.Add(Me.gbLanguage)
+        Me.GroupBox30.Controls.Add(Me.lblTVDBMirror)
+        Me.GroupBox30.Controls.Add(Me.txtTVDBMirror)
         Me.GroupBox30.Controls.Add(Me.pbTVDB)
         Me.GroupBox30.Controls.Add(Me.Label18)
         Me.GroupBox30.Controls.Add(Me.txtTVDBApiKey)
         Me.GroupBox30.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox30.Location = New System.Drawing.Point(11, 31)
         Me.GroupBox30.Name = "GroupBox30"
-        Me.GroupBox30.Size = New System.Drawing.Size(513, 64)
+        Me.GroupBox30.Size = New System.Drawing.Size(603, 119)
         Me.GroupBox30.TabIndex = 96
         Me.GroupBox30.TabStop = False
         Me.GroupBox30.Text = "TMDB"
@@ -132,7 +147,7 @@ Partial Class frmTVMediaSettingsHolder
         'pbTVDB
         '
         Me.pbTVDB.Image = CType(resources.GetObject("pbTVDB.Image"), System.Drawing.Image)
-        Me.pbTVDB.Location = New System.Drawing.Point(491, 32)
+        Me.pbTVDB.Location = New System.Drawing.Point(385, 34)
         Me.pbTVDB.Name = "pbTVDB"
         Me.pbTVDB.Size = New System.Drawing.Size(16, 16)
         Me.pbTVDB.TabIndex = 5
@@ -153,7 +168,7 @@ Partial Class frmTVMediaSettingsHolder
         Me.txtTVDBApiKey.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtTVDBApiKey.Location = New System.Drawing.Point(8, 32)
         Me.txtTVDBApiKey.Name = "txtTVDBApiKey"
-        Me.txtTVDBApiKey.Size = New System.Drawing.Size(477, 22)
+        Me.txtTVDBApiKey.Size = New System.Drawing.Size(371, 22)
         Me.txtTVDBApiKey.TabIndex = 1
         '
         'Label1
@@ -181,6 +196,101 @@ Partial Class frmTVMediaSettingsHolder
         Me.PictureBox1.TabIndex = 96
         Me.PictureBox1.TabStop = False
         '
+        'lblTVDBMirror
+        '
+        Me.lblTVDBMirror.AutoSize = True
+        Me.lblTVDBMirror.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblTVDBMirror.Location = New System.Drawing.Point(6, 57)
+        Me.lblTVDBMirror.Name = "lblTVDBMirror"
+        Me.lblTVDBMirror.Size = New System.Drawing.Size(72, 13)
+        Me.lblTVDBMirror.TabIndex = 6
+        Me.lblTVDBMirror.Text = "TVDB Mirror:"
+        '
+        'txtTVDBMirror
+        '
+        Me.txtTVDBMirror.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtTVDBMirror.Location = New System.Drawing.Point(8, 72)
+        Me.txtTVDBMirror.Name = "txtTVDBMirror"
+        Me.txtTVDBMirror.Size = New System.Drawing.Size(189, 22)
+        Me.txtTVDBMirror.TabIndex = 7
+        '
+        'gbLanguage
+        '
+        Me.gbLanguage.Controls.Add(Me.lblTVLanguagePreferred)
+        Me.gbLanguage.Controls.Add(Me.btnTVLanguageFetch)
+        Me.gbLanguage.Controls.Add(Me.cbTVLanguage)
+        Me.gbLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbLanguage.Location = New System.Drawing.Point(407, 13)
+        Me.gbLanguage.Name = "gbLanguage"
+        Me.gbLanguage.Size = New System.Drawing.Size(190, 100)
+        Me.gbLanguage.TabIndex = 8
+        Me.gbLanguage.TabStop = False
+        Me.gbLanguage.Text = "Language"
+        '
+        'lblTVLanguagePreferred
+        '
+        Me.lblTVLanguagePreferred.AutoSize = True
+        Me.lblTVLanguagePreferred.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblTVLanguagePreferred.Location = New System.Drawing.Point(10, 24)
+        Me.lblTVLanguagePreferred.Name = "lblTVLanguagePreferred"
+        Me.lblTVLanguagePreferred.Size = New System.Drawing.Size(111, 13)
+        Me.lblTVLanguagePreferred.TabIndex = 0
+        Me.lblTVLanguagePreferred.Text = "Preferred Language:"
+        '
+        'btnTVLanguageFetch
+        '
+        Me.btnTVLanguageFetch.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnTVLanguageFetch.Location = New System.Drawing.Point(12, 68)
+        Me.btnTVLanguageFetch.Name = "btnTVLanguageFetch"
+        Me.btnTVLanguageFetch.Size = New System.Drawing.Size(166, 23)
+        Me.btnTVLanguageFetch.TabIndex = 2
+        Me.btnTVLanguageFetch.Text = "Fetch Available Languages"
+        Me.btnTVLanguageFetch.UseVisualStyleBackColor = True
+        '
+        'cbTVLanguage
+        '
+        Me.cbTVLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbTVLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbTVLanguage.Location = New System.Drawing.Point(12, 39)
+        Me.cbTVLanguage.Name = "cbTVLanguage"
+        Me.cbTVLanguage.Size = New System.Drawing.Size(166, 21)
+        Me.cbTVLanguage.TabIndex = 1
+        '
+        'chkGetEnglishImages
+        '
+        Me.chkGetEnglishImages.AutoSize = True
+        Me.chkGetEnglishImages.Enabled = False
+        Me.chkGetEnglishImages.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkGetEnglishImages.Location = New System.Drawing.Point(19, 39)
+        Me.chkGetEnglishImages.Name = "chkGetEnglishImages"
+        Me.chkGetEnglishImages.Size = New System.Drawing.Size(149, 17)
+        Me.chkGetEnglishImages.TabIndex = 76
+        Me.chkGetEnglishImages.Text = "Also Get English Images"
+        Me.chkGetEnglishImages.UseVisualStyleBackColor = True
+        '
+        'chkOnlyTVImagesLanguage
+        '
+        Me.chkOnlyTVImagesLanguage.AutoSize = True
+        Me.chkOnlyTVImagesLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkOnlyTVImagesLanguage.Location = New System.Drawing.Point(6, 21)
+        Me.chkOnlyTVImagesLanguage.Name = "chkOnlyTVImagesLanguage"
+        Me.chkOnlyTVImagesLanguage.Size = New System.Drawing.Size(248, 17)
+        Me.chkOnlyTVImagesLanguage.TabIndex = 75
+        Me.chkOnlyTVImagesLanguage.Text = "Only Get Images for the Selected Language"
+        Me.chkOnlyTVImagesLanguage.UseVisualStyleBackColor = True
+        '
+        'GroupBox32
+        '
+        Me.GroupBox32.Controls.Add(Me.chkGetEnglishImages)
+        Me.GroupBox32.Controls.Add(Me.chkOnlyTVImagesLanguage)
+        Me.GroupBox32.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.GroupBox32.Location = New System.Drawing.Point(10, 156)
+        Me.GroupBox32.Name = "GroupBox32"
+        Me.GroupBox32.Size = New System.Drawing.Size(403, 114)
+        Me.GroupBox32.TabIndex = 77
+        Me.GroupBox32.TabStop = False
+        Me.GroupBox32.Text = "Scraper Fields"
+        '
         'frmTVMediaSettingsHolder
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -204,6 +314,10 @@ Partial Class frmTVMediaSettingsHolder
         Me.GroupBox30.PerformLayout()
         CType(Me.pbTVDB, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.gbLanguage.ResumeLayout(False)
+        Me.gbLanguage.PerformLayout()
+        Me.GroupBox32.ResumeLayout(False)
+        Me.GroupBox32.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -220,5 +334,14 @@ Partial Class frmTVMediaSettingsHolder
     Friend WithEvents pbTVDB As System.Windows.Forms.PictureBox
     Friend WithEvents Label18 As System.Windows.Forms.Label
     Friend WithEvents txtTVDBApiKey As System.Windows.Forms.TextBox
+    Friend WithEvents lblTVDBMirror As System.Windows.Forms.Label
+    Friend WithEvents txtTVDBMirror As System.Windows.Forms.TextBox
+    Friend WithEvents gbLanguage As System.Windows.Forms.GroupBox
+    Friend WithEvents lblTVLanguagePreferred As System.Windows.Forms.Label
+    Friend WithEvents btnTVLanguageFetch As System.Windows.Forms.Button
+    Friend WithEvents cbTVLanguage As System.Windows.Forms.ComboBox
+    Friend WithEvents chkGetEnglishImages As System.Windows.Forms.CheckBox
+    Friend WithEvents chkOnlyTVImagesLanguage As System.Windows.Forms.CheckBox
+    Friend WithEvents GroupBox32 As System.Windows.Forms.GroupBox
 
 End Class

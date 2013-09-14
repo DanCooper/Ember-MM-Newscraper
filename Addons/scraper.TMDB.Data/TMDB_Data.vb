@@ -104,7 +104,6 @@ Public Class TMDB_Data
         RaiseEvent SetupNeedsRestart()
     End Sub
 
-
     Private Sub Handle_SetupScraperChanged(ByVal state As Boolean, ByVal difforder As Integer)
         ScraperEnabled = state
         RaiseEvent SetupScraperChanged(String.Concat(Me._Name, "Scraper"), state, difforder)

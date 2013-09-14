@@ -452,9 +452,6 @@ Partial Class dlgSettings
         Me.cbEpFanartSize = New System.Windows.Forms.ComboBox()
         Me.lblEpFanartSize = New System.Windows.Forms.Label()
         Me.chkOverwriteEpFanart = New System.Windows.Forms.CheckBox()
-        Me.TabPage8 = New System.Windows.Forms.TabPage()
-        Me.chkGetEnglishImages = New System.Windows.Forms.CheckBox()
-        Me.chkOnlyTVImagesLanguage = New System.Windows.Forms.CheckBox()
         Me.pnlTVScraper = New System.Windows.Forms.Panel()
         Me.GroupBox32 = New System.Windows.Forms.GroupBox()
         Me.GroupBox35 = New System.Windows.Forms.GroupBox()
@@ -504,17 +501,7 @@ Partial Class dlgSettings
         Me.cbOrdering = New System.Windows.Forms.ComboBox()
         Me.lblTVUpdate = New System.Windows.Forms.Label()
         Me.cboTVUpdate = New System.Windows.Forms.ComboBox()
-        Me.lblAPIKey = New System.Windows.Forms.Label()
-        Me.lblTVDBMirror = New System.Windows.Forms.Label()
-        Me.txtAPIKey = New System.Windows.Forms.TextBox()
-        Me.txtTVDBMirror = New System.Windows.Forms.TextBox()
-        Me.gbLanguage = New System.Windows.Forms.GroupBox()
-        Me.lblTVLanguagePreferred = New System.Windows.Forms.Label()
-        Me.btnTVLanguageFetch = New System.Windows.Forms.Button()
-        Me.cbTVLanguage = New System.Windows.Forms.ComboBox()
         Me.gbOptions = New System.Windows.Forms.GroupBox()
-        Me.lblLimit3 = New System.Windows.Forms.Label()
-        Me.txtOutlineLimit = New System.Windows.Forms.TextBox()
         Me.chkCertification = New System.Windows.Forms.CheckBox()
         Me.chkTop250 = New System.Windows.Forms.CheckBox()
         Me.chkCountry = New System.Windows.Forms.CheckBox()
@@ -541,6 +528,8 @@ Partial Class dlgSettings
         Me.chkMPAA = New System.Windows.Forms.CheckBox()
         Me.chkYear = New System.Windows.Forms.CheckBox()
         Me.chkTitle = New System.Windows.Forms.CheckBox()
+        Me.lblLimit3 = New System.Windows.Forms.Label()
+        Me.txtOutlineLimit = New System.Windows.Forms.TextBox()
         Me.GroupBox26 = New System.Windows.Forms.GroupBox()
         Me.GroupBox28 = New System.Windows.Forms.GroupBox()
         Me.lstMetaData = New System.Windows.Forms.ListBox()
@@ -678,7 +667,6 @@ Partial Class dlgSettings
         CType(Me.tbEpPosterQual, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.gbEpFanartOpts.SuspendLayout()
         CType(Me.tbEpFanartQual, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.TabPage8.SuspendLayout()
         Me.pnlTVScraper.SuspendLayout()
         Me.GroupBox32.SuspendLayout()
         Me.GroupBox35.SuspendLayout()
@@ -689,7 +677,6 @@ Partial Class dlgSettings
         Me.GroupBox31.SuspendLayout()
         Me.gbTVMIDefaults.SuspendLayout()
         Me.gbTVScraperOptions.SuspendLayout()
-        Me.gbLanguage.SuspendLayout()
         Me.gbOptions.SuspendLayout()
         Me.GroupBox26.SuspendLayout()
         Me.GroupBox28.SuspendLayout()
@@ -2196,7 +2183,7 @@ Partial Class dlgSettings
         Me.pnlTop.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlTop.Location = New System.Drawing.Point(0, 0)
         Me.pnlTop.Name = "pnlTop"
-        Me.pnlTop.Size = New System.Drawing.Size(892, 64)
+        Me.pnlTop.Size = New System.Drawing.Size(1438, 64)
         Me.pnlTop.TabIndex = 3
         '
         'Label2
@@ -2294,7 +2281,7 @@ Partial Class dlgSettings
         '
         Me.pnlXBMCCom.BackColor = System.Drawing.Color.White
         Me.pnlXBMCCom.Controls.Add(Me.gbProxy)
-        Me.pnlXBMCCom.Location = New System.Drawing.Point(723, 720)
+        Me.pnlXBMCCom.Location = New System.Drawing.Point(669, 731)
         Me.pnlXBMCCom.Name = "pnlXBMCCom"
         Me.pnlXBMCCom.Size = New System.Drawing.Size(617, 400)
         Me.pnlXBMCCom.TabIndex = 18
@@ -2762,7 +2749,7 @@ Partial Class dlgSettings
         Me.pnlExtensions.Controls.Add(Me.GroupBox22)
         Me.pnlExtensions.Controls.Add(Me.GroupBox3)
         Me.pnlExtensions.Controls.Add(Me.GroupBox18)
-        Me.pnlExtensions.Location = New System.Drawing.Point(772, 701)
+        Me.pnlExtensions.Location = New System.Drawing.Point(723, 696)
         Me.pnlExtensions.Name = "pnlExtensions"
         Me.pnlExtensions.Size = New System.Drawing.Size(617, 400)
         Me.pnlExtensions.TabIndex = 17
@@ -4384,7 +4371,7 @@ Partial Class dlgSettings
         '
         Me.pnlTVImages.BackColor = System.Drawing.Color.White
         Me.pnlTVImages.Controls.Add(Me.TabControl3)
-        Me.pnlTVImages.Location = New System.Drawing.Point(806, 675)
+        Me.pnlTVImages.Location = New System.Drawing.Point(767, 665)
         Me.pnlTVImages.Name = "pnlTVImages"
         Me.pnlTVImages.Size = New System.Drawing.Size(617, 402)
         Me.pnlTVImages.TabIndex = 16
@@ -4395,7 +4382,6 @@ Partial Class dlgSettings
         Me.TabControl3.Controls.Add(Me.TabPage5)
         Me.TabControl3.Controls.Add(Me.TabPage6)
         Me.TabControl3.Controls.Add(Me.TabPage7)
-        Me.TabControl3.Controls.Add(Me.TabPage8)
         Me.TabControl3.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.TabControl3.Location = New System.Drawing.Point(5, 6)
         Me.TabControl3.Name = "TabControl3"
@@ -5407,40 +5393,6 @@ Partial Class dlgSettings
         Me.chkOverwriteEpFanart.Text = "Overwrite Existing"
         Me.chkOverwriteEpFanart.UseVisualStyleBackColor = True
         '
-        'TabPage8
-        '
-        Me.TabPage8.Controls.Add(Me.chkGetEnglishImages)
-        Me.TabPage8.Controls.Add(Me.chkOnlyTVImagesLanguage)
-        Me.TabPage8.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage8.Name = "TabPage8"
-        Me.TabPage8.Size = New System.Drawing.Size(601, 371)
-        Me.TabPage8.TabIndex = 3
-        Me.TabPage8.Text = "General"
-        Me.TabPage8.UseVisualStyleBackColor = True
-        '
-        'chkGetEnglishImages
-        '
-        Me.chkGetEnglishImages.AutoSize = True
-        Me.chkGetEnglishImages.Enabled = False
-        Me.chkGetEnglishImages.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkGetEnglishImages.Location = New System.Drawing.Point(21, 32)
-        Me.chkGetEnglishImages.Name = "chkGetEnglishImages"
-        Me.chkGetEnglishImages.Size = New System.Drawing.Size(149, 17)
-        Me.chkGetEnglishImages.TabIndex = 1
-        Me.chkGetEnglishImages.Text = "Also Get English Images"
-        Me.chkGetEnglishImages.UseVisualStyleBackColor = True
-        '
-        'chkOnlyTVImagesLanguage
-        '
-        Me.chkOnlyTVImagesLanguage.AutoSize = True
-        Me.chkOnlyTVImagesLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkOnlyTVImagesLanguage.Location = New System.Drawing.Point(8, 14)
-        Me.chkOnlyTVImagesLanguage.Name = "chkOnlyTVImagesLanguage"
-        Me.chkOnlyTVImagesLanguage.Size = New System.Drawing.Size(248, 17)
-        Me.chkOnlyTVImagesLanguage.TabIndex = 0
-        Me.chkOnlyTVImagesLanguage.Text = "Only Get Images for the Selected Language"
-        Me.chkOnlyTVImagesLanguage.UseVisualStyleBackColor = True
-        '
         'pnlTVScraper
         '
         Me.pnlTVScraper.BackColor = System.Drawing.Color.White
@@ -5448,7 +5400,7 @@ Partial Class dlgSettings
         Me.pnlTVScraper.Controls.Add(Me.GroupBox33)
         Me.pnlTVScraper.Controls.Add(Me.GroupBox31)
         Me.pnlTVScraper.Controls.Add(Me.gbTVScraperOptions)
-        Me.pnlTVScraper.Location = New System.Drawing.Point(671, 744)
+        Me.pnlTVScraper.Location = New System.Drawing.Point(1221, 389)
         Me.pnlTVScraper.Name = "pnlTVScraper"
         Me.pnlTVScraper.Size = New System.Drawing.Size(617, 400)
         Me.pnlTVScraper.TabIndex = 19
@@ -5459,7 +5411,7 @@ Partial Class dlgSettings
         Me.GroupBox32.Controls.Add(Me.GroupBox35)
         Me.GroupBox32.Controls.Add(Me.GroupBox34)
         Me.GroupBox32.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GroupBox32.Location = New System.Drawing.Point(208, 252)
+        Me.GroupBox32.Location = New System.Drawing.Point(3, 255)
         Me.GroupBox32.Name = "GroupBox32"
         Me.GroupBox32.Size = New System.Drawing.Size(403, 114)
         Me.GroupBox32.TabIndex = 3
@@ -5933,15 +5885,10 @@ Partial Class dlgSettings
         Me.gbTVScraperOptions.Controls.Add(Me.cbOrdering)
         Me.gbTVScraperOptions.Controls.Add(Me.lblTVUpdate)
         Me.gbTVScraperOptions.Controls.Add(Me.cboTVUpdate)
-        Me.gbTVScraperOptions.Controls.Add(Me.lblAPIKey)
-        Me.gbTVScraperOptions.Controls.Add(Me.lblTVDBMirror)
-        Me.gbTVScraperOptions.Controls.Add(Me.txtAPIKey)
-        Me.gbTVScraperOptions.Controls.Add(Me.txtTVDBMirror)
-        Me.gbTVScraperOptions.Controls.Add(Me.gbLanguage)
         Me.gbTVScraperOptions.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbTVScraperOptions.Location = New System.Drawing.Point(5, 6)
         Me.gbTVScraperOptions.Name = "gbTVScraperOptions"
-        Me.gbTVScraperOptions.Size = New System.Drawing.Size(200, 359)
+        Me.gbTVScraperOptions.Size = New System.Drawing.Size(200, 243)
         Me.gbTVScraperOptions.TabIndex = 0
         Me.gbTVScraperOptions.TabStop = False
         Me.gbTVScraperOptions.Text = "Options"
@@ -5949,7 +5896,7 @@ Partial Class dlgSettings
         'lblOrdering
         '
         Me.lblOrdering.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblOrdering.Location = New System.Drawing.Point(12, 284)
+        Me.lblOrdering.Location = New System.Drawing.Point(10, 73)
         Me.lblOrdering.Name = "lblOrdering"
         Me.lblOrdering.Size = New System.Drawing.Size(177, 13)
         Me.lblOrdering.TabIndex = 7
@@ -5961,7 +5908,7 @@ Partial Class dlgSettings
         Me.cbOrdering.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbOrdering.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.cbOrdering.FormattingEnabled = True
-        Me.cbOrdering.Location = New System.Drawing.Point(17, 304)
+        Me.cbOrdering.Location = New System.Drawing.Point(15, 89)
         Me.cbOrdering.Name = "cbOrdering"
         Me.cbOrdering.Size = New System.Drawing.Size(166, 21)
         Me.cbOrdering.TabIndex = 8
@@ -5969,7 +5916,7 @@ Partial Class dlgSettings
         'lblTVUpdate
         '
         Me.lblTVUpdate.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblTVUpdate.Location = New System.Drawing.Point(5, 217)
+        Me.lblTVUpdate.Location = New System.Drawing.Point(3, 18)
         Me.lblTVUpdate.Name = "lblTVUpdate"
         Me.lblTVUpdate.Size = New System.Drawing.Size(190, 31)
         Me.lblTVUpdate.TabIndex = 5
@@ -5981,88 +5928,10 @@ Partial Class dlgSettings
         Me.cboTVUpdate.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboTVUpdate.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.cboTVUpdate.FormattingEnabled = True
-        Me.cboTVUpdate.Location = New System.Drawing.Point(17, 248)
+        Me.cboTVUpdate.Location = New System.Drawing.Point(15, 49)
         Me.cboTVUpdate.Name = "cboTVUpdate"
         Me.cboTVUpdate.Size = New System.Drawing.Size(166, 21)
         Me.cboTVUpdate.TabIndex = 6
-        '
-        'lblAPIKey
-        '
-        Me.lblAPIKey.AutoSize = True
-        Me.lblAPIKey.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblAPIKey.Location = New System.Drawing.Point(4, 60)
-        Me.lblAPIKey.Name = "lblAPIKey"
-        Me.lblAPIKey.Size = New System.Drawing.Size(73, 13)
-        Me.lblAPIKey.TabIndex = 2
-        Me.lblAPIKey.Text = "TVDB APIKey:"
-        '
-        'lblTVDBMirror
-        '
-        Me.lblTVDBMirror.AutoSize = True
-        Me.lblTVDBMirror.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblTVDBMirror.Location = New System.Drawing.Point(4, 17)
-        Me.lblTVDBMirror.Name = "lblTVDBMirror"
-        Me.lblTVDBMirror.Size = New System.Drawing.Size(72, 13)
-        Me.lblTVDBMirror.TabIndex = 0
-        Me.lblTVDBMirror.Text = "TVDB Mirror:"
-        '
-        'txtAPIKey
-        '
-        Me.txtAPIKey.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtAPIKey.Location = New System.Drawing.Point(6, 75)
-        Me.txtAPIKey.Name = "txtAPIKey"
-        Me.txtAPIKey.Size = New System.Drawing.Size(189, 22)
-        Me.txtAPIKey.TabIndex = 3
-        '
-        'txtTVDBMirror
-        '
-        Me.txtTVDBMirror.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTVDBMirror.Location = New System.Drawing.Point(6, 32)
-        Me.txtTVDBMirror.Name = "txtTVDBMirror"
-        Me.txtTVDBMirror.Size = New System.Drawing.Size(189, 22)
-        Me.txtTVDBMirror.TabIndex = 1
-        '
-        'gbLanguage
-        '
-        Me.gbLanguage.Controls.Add(Me.lblTVLanguagePreferred)
-        Me.gbLanguage.Controls.Add(Me.btnTVLanguageFetch)
-        Me.gbLanguage.Controls.Add(Me.cbTVLanguage)
-        Me.gbLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbLanguage.Location = New System.Drawing.Point(5, 104)
-        Me.gbLanguage.Name = "gbLanguage"
-        Me.gbLanguage.Size = New System.Drawing.Size(190, 100)
-        Me.gbLanguage.TabIndex = 4
-        Me.gbLanguage.TabStop = False
-        Me.gbLanguage.Text = "Language"
-        '
-        'lblTVLanguagePreferred
-        '
-        Me.lblTVLanguagePreferred.AutoSize = True
-        Me.lblTVLanguagePreferred.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblTVLanguagePreferred.Location = New System.Drawing.Point(10, 24)
-        Me.lblTVLanguagePreferred.Name = "lblTVLanguagePreferred"
-        Me.lblTVLanguagePreferred.Size = New System.Drawing.Size(111, 13)
-        Me.lblTVLanguagePreferred.TabIndex = 0
-        Me.lblTVLanguagePreferred.Text = "Preferred Language:"
-        '
-        'btnTVLanguageFetch
-        '
-        Me.btnTVLanguageFetch.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnTVLanguageFetch.Location = New System.Drawing.Point(12, 68)
-        Me.btnTVLanguageFetch.Name = "btnTVLanguageFetch"
-        Me.btnTVLanguageFetch.Size = New System.Drawing.Size(166, 23)
-        Me.btnTVLanguageFetch.TabIndex = 2
-        Me.btnTVLanguageFetch.Text = "Fetch Available Languages"
-        Me.btnTVLanguageFetch.UseVisualStyleBackColor = True
-        '
-        'cbTVLanguage
-        '
-        Me.cbTVLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbTVLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.cbTVLanguage.Location = New System.Drawing.Point(12, 39)
-        Me.cbTVLanguage.Name = "cbTVLanguage"
-        Me.cbTVLanguage.Size = New System.Drawing.Size(166, 21)
-        Me.cbTVLanguage.TabIndex = 1
         '
         'gbOptions
         '
@@ -6099,26 +5968,6 @@ Partial Class dlgSettings
         Me.gbOptions.TabIndex = 67
         Me.gbOptions.TabStop = False
         Me.gbOptions.Text = "Scraper Fields - Global"
-        '
-        'lblLimit3
-        '
-        Me.lblLimit3.AutoSize = True
-        Me.lblLimit3.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblLimit3.Location = New System.Drawing.Point(203, 68)
-        Me.lblLimit3.Name = "lblLimit3"
-        Me.lblLimit3.Size = New System.Drawing.Size(34, 13)
-        Me.lblLimit3.TabIndex = 70
-        Me.lblLimit3.Text = "Limit:"
-        Me.lblLimit3.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        '
-        'txtOutlineLimit
-        '
-        Me.txtOutlineLimit.Enabled = False
-        Me.txtOutlineLimit.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtOutlineLimit.Location = New System.Drawing.Point(240, 66)
-        Me.txtOutlineLimit.Name = "txtOutlineLimit"
-        Me.txtOutlineLimit.Size = New System.Drawing.Size(39, 22)
-        Me.txtOutlineLimit.TabIndex = 69
         '
         'chkCertification
         '
@@ -6404,6 +6253,26 @@ Partial Class dlgSettings
         Me.chkTitle.TabIndex = 0
         Me.chkTitle.Text = "Title"
         Me.chkTitle.UseVisualStyleBackColor = True
+        '
+        'lblLimit3
+        '
+        Me.lblLimit3.AutoSize = True
+        Me.lblLimit3.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblLimit3.Location = New System.Drawing.Point(203, 68)
+        Me.lblLimit3.Name = "lblLimit3"
+        Me.lblLimit3.Size = New System.Drawing.Size(34, 13)
+        Me.lblLimit3.TabIndex = 70
+        Me.lblLimit3.Text = "Limit:"
+        Me.lblLimit3.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'txtOutlineLimit
+        '
+        Me.txtOutlineLimit.Enabled = False
+        Me.txtOutlineLimit.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtOutlineLimit.Location = New System.Drawing.Point(240, 66)
+        Me.txtOutlineLimit.Name = "txtOutlineLimit"
+        Me.txtOutlineLimit.Size = New System.Drawing.Size(39, 22)
+        Me.txtOutlineLimit.TabIndex = 69
         '
         'GroupBox26
         '
@@ -6886,7 +6755,7 @@ Partial Class dlgSettings
         Me.pnlScraper.Controls.Add(Me.gbOptions)
         Me.pnlScraper.Controls.Add(Me.GroupBox1)
         Me.pnlScraper.Controls.Add(Me.GroupBox26)
-        Me.pnlScraper.Location = New System.Drawing.Point(905, 633)
+        Me.pnlScraper.Location = New System.Drawing.Point(908, 625)
         Me.pnlScraper.Name = "pnlScraper"
         Me.pnlScraper.Size = New System.Drawing.Size(617, 400)
         Me.pnlScraper.TabIndex = 14
@@ -6900,7 +6769,7 @@ Partial Class dlgSettings
         Me.ToolStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow
         Me.ToolStrip1.Location = New System.Drawing.Point(0, 64)
         Me.ToolStrip1.Name = "ToolStrip1"
-        Me.ToolStrip1.Size = New System.Drawing.Size(892, 25)
+        Me.ToolStrip1.Size = New System.Drawing.Size(1438, 25)
         Me.ToolStrip1.Stretch = True
         Me.ToolStrip1.TabIndex = 4
         Me.ToolStrip1.Text = "ToolStrip1"
@@ -7044,7 +6913,8 @@ Partial Class dlgSettings
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.btnCancel
-        Me.ClientSize = New System.Drawing.Size(892, 627)
+        Me.ClientSize = New System.Drawing.Size(1438, 875)
+        Me.Controls.Add(Me.pnlTVScraper)
         Me.Controls.Add(Me.pnlTrailer)
         Me.Controls.Add(Me.pnlSources)
         Me.Controls.Add(Me.pnlGeneral)
@@ -7065,7 +6935,6 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.pnlExtensions)
         Me.Controls.Add(Me.pnlXBMCCom)
         Me.Controls.Add(Me.pnlMain)
-        Me.Controls.Add(Me.pnlTVScraper)
         Me.Controls.Add(Me.pnlShows)
         Me.DoubleBuffered = True
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -7205,8 +7074,6 @@ Partial Class dlgSettings
         Me.gbEpFanartOpts.ResumeLayout(False)
         Me.gbEpFanartOpts.PerformLayout()
         CType(Me.tbEpFanartQual, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.TabPage8.ResumeLayout(False)
-        Me.TabPage8.PerformLayout()
         Me.pnlTVScraper.ResumeLayout(False)
         Me.GroupBox32.ResumeLayout(False)
         Me.GroupBox35.ResumeLayout(False)
@@ -7219,9 +7086,6 @@ Partial Class dlgSettings
         Me.gbTVMIDefaults.ResumeLayout(False)
         Me.gbTVMIDefaults.PerformLayout()
         Me.gbTVScraperOptions.ResumeLayout(False)
-        Me.gbTVScraperOptions.PerformLayout()
-        Me.gbLanguage.ResumeLayout(False)
-        Me.gbLanguage.PerformLayout()
         Me.gbOptions.ResumeLayout(False)
         Me.gbOptions.PerformLayout()
         Me.GroupBox26.ResumeLayout(False)
@@ -7583,12 +7447,6 @@ Partial Class dlgSettings
     Friend WithEvents chkSourceFromFolder As System.Windows.Forms.CheckBox
     Friend WithEvents chkSortBeforeScan As System.Windows.Forms.CheckBox
     Friend WithEvents gbTVScraperOptions As System.Windows.Forms.GroupBox
-    Friend WithEvents gbLanguage As System.Windows.Forms.GroupBox
-    Friend WithEvents lblTVLanguagePreferred As System.Windows.Forms.Label
-    Friend WithEvents btnTVLanguageFetch As System.Windows.Forms.Button
-    Friend WithEvents cbTVLanguage As System.Windows.Forms.ComboBox
-    Friend WithEvents txtTVDBMirror As System.Windows.Forms.TextBox
-    Friend WithEvents lblTVDBMirror As System.Windows.Forms.Label
     Friend WithEvents GroupBox26 As System.Windows.Forms.GroupBox
     Friend WithEvents GroupBox28 As System.Windows.Forms.GroupBox
     Friend WithEvents lstMetaData As System.Windows.Forms.ListBox
@@ -7674,16 +7532,11 @@ Partial Class dlgSettings
     Friend WithEvents cbSeaFanartSize As System.Windows.Forms.ComboBox
     Friend WithEvents lblSeaFanartSize As System.Windows.Forms.Label
     Friend WithEvents chkSeaOverwriteFanart As System.Windows.Forms.CheckBox
-    Friend WithEvents lblAPIKey As System.Windows.Forms.Label
-    Friend WithEvents txtAPIKey As System.Windows.Forms.TextBox
     Friend WithEvents chkTVScanOrderModify As System.Windows.Forms.CheckBox
     Friend WithEvents chkScanOrderModify As System.Windows.Forms.CheckBox
     Friend WithEvents lblTVUpdate As System.Windows.Forms.Label
     Friend WithEvents cboTVUpdate As System.Windows.Forms.ComboBox
     Friend WithEvents chkNoFilterEpisode As System.Windows.Forms.CheckBox
-    Friend WithEvents TabPage8 As System.Windows.Forms.TabPage
-    Friend WithEvents chkGetEnglishImages As System.Windows.Forms.CheckBox
-    Friend WithEvents chkOnlyTVImagesLanguage As System.Windows.Forms.CheckBox
     Friend WithEvents gbAllSeasonPoster As System.Windows.Forms.GroupBox
     Friend WithEvents chkSeasonAllJPG As System.Windows.Forms.CheckBox
     Friend WithEvents chkDisplayMissingEpisodes As System.Windows.Forms.CheckBox

@@ -23,6 +23,12 @@ Imports EmberAPI
 
 Public Class frmTVInfoSettingsHolder
 
+#Region "Fields"
+
+    Private tLangList As New List(Of Containers.TVLanguage)
+
+#End Region 'Fields
+
 #Region "Events"
 
     Public Event ModuleSettingsChanged()
@@ -75,17 +81,37 @@ Public Class frmTVInfoSettingsHolder
     End Sub
 
     Private Sub SetUp()
+        Dim cLang As Containers.TVLanguage
+        Dim xmlTVDB As XDocument
+        Try
+            xmlTVDB = XDocument.Parse(My.Resources.languages)
+            Dim xLangs = From xLanguages In xmlTVDB.Descendants("Language")
+
+            For Each xL As XElement In xLangs
+                cLang = New Containers.TVLanguage
+                cLang.LongLang = xL.Element("name").Value
+                cLang.ShortLang = xL.Element("abbreviation").Value
+                tLangList.Add(cLang)
+            Next
+        Catch
+
+        End Try
         Me.Label2.Text = Master.eLang.GetString(168, "Scrape Order")
         Me.cbEnabled.Text = Master.eLang.GetString(774, "Enabled")
         Me.Label18.Text = Master.eLang.GetString(932, "TVDB API Key")
         Me.Label1.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), vbCrLf)
+        Me.gbLanguage.Text = Master.eLang.GetString(610, "Language")
+        Me.lblTVLanguagePreferred.Text = Master.eLang.GetString(741, "Preferred Language:")
+        Me.btnTVLanguageFetch.Text = Master.eLang.GetString(742, "Fetch Available Languages")
+        Me.lblTVDBMirror.Text = Master.eLang.GetString(801, "TVDB Mirror")
+        Me.cbTVLanguage.Items.AddRange((From lLang In tLangList Select lLang.LongLang).ToArray)
     End Sub
 
     Private Sub txtTVDBApiKey_TextChanged(sender As System.Object, e As System.EventArgs) Handles txtTVDBApiKey.TextChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub pbTVDB_Click(sender As System.Object, e As System.EventArgs)
+    Private Sub pbTVDB_Click(sender As System.Object, e As System.EventArgs) Handles pbTVDB.Click
         If Master.isWindows Then
             Process.Start("http://thetvdb.com/?tab=apiregister")
         Else
@@ -96,6 +122,11 @@ Public Class frmTVInfoSettingsHolder
             End Using
         End If
     End Sub
+
+    Private Sub cbTVLanguage_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbTVLanguage.SelectedIndexChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
 #End Region 'Methods
 
 End Class
