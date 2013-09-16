@@ -343,13 +343,41 @@ Public Class dlgTMDBSearchResults
     End Sub
 
     Private Sub tmrLoad_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrLoad.Tick
+        Dim aOpt As New Structures.ScrapeOptions
+        aOpt.bCast = False
+        aOpt.bCert = False
+        aOpt.bCountry = False
+        aOpt.bDirector = True
+        aOpt.bFullCast = False
+        aOpt.bFullCrew = False
+        aOpt.bGenre = True
+        aOpt.bLanguageA = False
+        aOpt.bLanguageV = False
+        aOpt.bMPAA = False
+        aOpt.bMusicBy = False
+        aOpt.bOtherCrew = False
+        aOpt.bOutline = True
+        aOpt.bPlot = True
+        aOpt.bProducers = False
+        aOpt.bRating = False
+        aOpt.bRuntime = False
+        aOpt.bStudio = False
+        aOpt.bTagline = True
+        aOpt.bTitle = True
+        aOpt.bTop250 = True
+        aOpt.bTrailer = True
+        aOpt.buseMPAAForFSK = True
+        aOpt.bVotes = False
+        aOpt.bWriters = False
+        aOpt.bYear = True
+
         Me.tmrWait.Stop()
         Me.tmrLoad.Stop()
         Me.pnlLoading.Visible = True
         Me.Label3.Text = Master.eLang.GetString(875, "Downloading details...")
 
         'IMDB.IMDBURL = IMDBURL
-        TMDBg.GetSearchMovieInfoAsync(Me.tvResults.SelectedNode.Tag.ToString, Master.tmpMovie, Master.DefaultOptions)
+        TMDBg.GetSearchMovieInfoAsync(Me.tvResults.SelectedNode.Tag.ToString, Master.tmpMovie, aOpt)
     End Sub
 
     Private Sub tmrWait_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrWait.Tick

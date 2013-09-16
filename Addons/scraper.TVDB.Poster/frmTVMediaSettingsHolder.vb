@@ -23,6 +23,12 @@ Imports EmberAPI
 
 Public Class frmTVMediaSettingsHolder
 
+#Region "Fields"
+
+    Private tLangList As New List(Of Containers.TVLanguage)
+
+#End Region 'Fields
+
 #Region "Events"
 
     Public Event ModuleSettingsChanged()
@@ -75,10 +81,31 @@ Public Class frmTVMediaSettingsHolder
     End Sub
 
     Private Sub SetUp()
+        Dim cLang As Containers.TVLanguage
+        Dim xmlTVDB As XDocument
+        Try
+            xmlTVDB = XDocument.Parse(My.Resources.languages)
+            Dim xLangs = From xLanguages In xmlTVDB.Descendants("Language")
+
+            For Each xL As XElement In xLangs
+                cLang = New Containers.TVLanguage
+                cLang.LongLang = xL.Element("name").Value
+                cLang.ShortLang = xL.Element("abbreviation").Value
+                tLangList.Add(cLang)
+            Next
+        Catch
+        End Try
+
         Me.Label2.Text = Master.eLang.GetString(168, "Scrape Order")
         Me.cbEnabled.Text = Master.eLang.GetString(774, "Enabled")
         Me.Label18.Text = Master.eLang.GetString(932, "TVDB API Key")
         Me.Label1.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), vbCrLf)
+        Me.chkOnlyTVImagesLanguage.Text = Master.eLang.GetString(736, "Only Get Images for the Selected Language")
+        Me.chkGetEnglishImages.Text = Master.eLang.GetString(737, "Also Get English Images")
+        Me.gbLanguage.Text = Master.eLang.GetString(610, "Language")
+        Me.lblTVDBMirror.Text = Master.eLang.GetString(801, "TVDB Mirror")
+        Me.tLangList.Clear()
+        Me.cbTVLanguage.Items.AddRange((From lLang In tLangList Select lLang.LongLang).ToArray)
     End Sub
 
     Private Sub txtTMDBApiKey_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVDBApiKey.TextChanged
@@ -95,6 +122,23 @@ Public Class frmTVMediaSettingsHolder
                 Explorer.Start()
             End Using
         End If
+    End Sub
+
+    Private Sub btnTVLanguageFetch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        Me.tLangList.Clear()
+        Me.tLangList.AddRange(ModulesManager.Instance.TVGetLangs(Master.eSettings.TVDBMirror))
+        Me.cbTVLanguage.Items.AddRange((From lLang In tLangList Select lLang.LongLang).ToArray)
+
+        If Me.cbTVLanguage.Items.Count > 0 Then
+            Me.cbTVLanguage.Text = Me.tLangList.FirstOrDefault(Function(l) l.ShortLang = Master.eSettings.TVDBLanguage).LongLang
+        End If
+    End Sub
+
+    Private Sub chkOnlyTVImagesLanguage_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOnlyTVImagesLanguage.CheckedChanged
+
+        Me.chkGetEnglishImages.Enabled = Me.chkOnlyTVImagesLanguage.Checked
+
+        If Not Me.chkOnlyTVImagesLanguage.Checked Then Me.chkGetEnglishImages.Checked = False
     End Sub
 
 #End Region 'Methods
