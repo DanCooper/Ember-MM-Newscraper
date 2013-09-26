@@ -545,7 +545,18 @@ Public Class MediaInfo
                         End If
                     End If
 
-                    miVideo.Duration = Me.Get_(StreamKind.Visual, v, "Duration/String1")
+                    'It's possible that duration returns empty when retrieved from videostream data - so instead use "General" section of MediaInfo.dll to read duration (is always filled!)
+                    'More here: http://forum.xbmc.org/showthread.php?tid=169900 
+                    Try
+                        miVideo.Duration = Me.Get_(StreamKind.Visual, v, "Duration/String1")
+                        If miVideo.Duration = String.Empty Then
+                            miVideo.Duration = Me.Get_(StreamKind.General, 0, "Duration/String1")
+                        End If
+                    Catch ex As Exception
+                        'nothing to do here
+                    End Try
+                    ' miVideo.Duration = Me.Get_(StreamKind.Visual, v, "Duration/String1")
+
                     miVideo.Aspect = Me.Get_(StreamKind.Visual, v, "DisplayAspectRatio")
                     miVideo.Scantype = Me.Get_(StreamKind.Visual, v, "ScanType")
                     With miVideo
