@@ -886,7 +886,18 @@ Public Class NFO
                     End If
 
                     If movieToSave.isSingle AndAlso Master.eSettings.MovieNFO Then
-                        tPath = Path.Combine(Directory.GetParent(nPath).FullName, "movie.nfo")
+
+                        'Cocotus - If FRODO VIDEO_TS Handling is enabled and naming of nfo is "movie.nfo", movie.nfo should not be saved in VIDEO_TS folder but in parent folder like fanart and poster !
+                        'more here http://forum.xbmc.org/showthread.php?tid=166013 (XBMC Developer statement)
+                        ''Statement: Use movie.nfo OUTSIDE the VIDEO_TS directory. Anything else is futzing with the layout of the dvd which can potentially cause issues with certain players. ''
+                        If Master.eSettings.VideoTSParentXBMC AndAlso FileUtils.Common.isVideoTS(nPath) Then
+                            tPath = String.Concat(Directory.GetParent(Directory.GetParent(nPath).FullName).FullName, "\", "movie.nfo")
+                            'old way, saves NFO into VIDEO_TS folder!
+                        Else
+                            tPath = Path.Combine(Directory.GetParent(nPath).FullName, "movie.nfo")
+                        End If
+                        'old way, saves NFO into VIDEO_TS folder!
+                        'tPath = Path.Combine(Directory.GetParent(nPath).FullName, "movie.nfo")
 
                         If Not Master.eSettings.OverwriteNfo Then
                             RenameNonConfNfo(tPath, False)
