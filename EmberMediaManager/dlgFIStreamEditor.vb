@@ -50,7 +50,11 @@ Public Class dlgFIStreamEditor
                     txtARatio.Text = movie.StreamDetails.Video(idx).Aspect
                     txtWidth.Text = movie.StreamDetails.Video(idx).Width
                     txtHeight.Text = movie.StreamDetails.Video(idx).Height
-                    If movie.StreamDetails.Video(idx).Scantype = Master.eLang.GetString(616, "Progressive") Then
+                    'cocotus, 2013/09 Fix for Progressive setting in metadata - don't use language specific name!!
+                    'see thread: http://forum.xbmc.org/showthread.php?tid=172326
+                    If movie.StreamDetails.Video(idx).Scantype = "Progressive" OrElse movie.StreamDetails.Video(idx).Scantype = Master.eLang.GetString(616, "Progressive") Then
+                        'old
+                        'If movie.StreamDetails.Video(idx).Scantype = Master.eLang.GetString(616, "Progressive") Then
                         rbProgressive.Checked = True
                     Else
                         rbInterlaced.Checked = True
@@ -107,7 +111,11 @@ Public Class dlgFIStreamEditor
                     stream_v.Aspect = txtARatio.Text
                     stream_v.Width = txtWidth.Text
                     stream_v.Height = txtHeight.Text
-                    stream_v.Scantype = If(rbProgressive.Checked, Master.eLang.GetString(616, "Progressive"), Master.eLang.GetString(615, "Interlaced"))
+                    'cocotus, 2013/09 Fix for Progressive setting in metadata - don't use language specific name!!
+                    'see thread: http://forum.xbmc.org/showthread.php?tid=172326
+                    stream_v.Scantype = If(rbProgressive.Checked, "Progressive", "Interlaced")
+                    'old
+                    'stream_v.Scantype = If(rbProgressive.Checked, Master.eLang.GetString(616, "Progressive"), Master.eLang.GetString(615, "Interlaced"))
                     stream_v.Duration = txtDuration.Text
 
                     'cocotus, 2013/02 Added support for new MediaInfo-fields
