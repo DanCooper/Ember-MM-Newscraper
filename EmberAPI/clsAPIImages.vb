@@ -1039,20 +1039,39 @@ Public Class Images
 	Public Function SaveAsActorThumb(ByVal actor As MediaContainers.Person, ByVal fpath As String, ByVal aMovie As Structures.DBMovie) As String
 		Dim tPath As String = String.Empty
 
-		If Master.eSettings.VideoTSParentXBMC AndAlso FileUtils.Common.isBDRip(aMovie.Filename) Then
-			tPath = Path.Combine(Path.Combine(Directory.GetParent(fpath).FullName, ".actors"), String.Concat(actor.Name.Replace(" ", "_"), ".jpg"))
-			If Not Directory.Exists(Path.Combine(Directory.GetParent(fpath).FullName, ".actors")) Then Directory.CreateDirectory(Path.Combine(Directory.GetParent(fpath).FullName, ".actors"))
-			If Not File.Exists(tPath) Then ' OrElse (IsEdit OrElse Master.eSettings.OverwritePoster) Then
-				Save(tPath, Master.eSettings.PosterQuality)
-			End If
-		Else
-			tPath = Path.Combine(Path.Combine(fpath, ".actors"), String.Concat(actor.Name.Replace(" ", "_"), ".jpg"))
-			If Not Directory.Exists(Path.Combine(fpath, ".actors")) Then Directory.CreateDirectory(Path.Combine(fpath, ".actors"))
-			If Not File.Exists(tPath) Then ' OrElse (IsEdit OrElse Master.eSettings.OverwritePoster) Then
-				Save(tPath, Master.eSettings.PosterQuality)
-			End If
-		End If
-		'End If
+        'Cocotus 20130905 If FRODO VIDEO_TS Handling is enabled, .actors-folder is now saved in parent directory for DVD folders too (like poster/fanart!) we shouldn't mess with DVD structure!
+        'recommended for Frodo by XBMC developer: 'more here http://forum.xbmc.org/showthread.php?tid=166013 (XBMC Developer statement)
+        If Master.eSettings.VideoTSParentXBMC AndAlso (FileUtils.Common.isBDRip(aMovie.Filename) OrElse FileUtils.Common.isVideoTS(aMovie.Filename)) Then
+            '	If Master.eSettings.VideoTSParentXBMC AndAlso FileUtils.Common.isBDRip(aMovie.Filename) Then
+            tPath = Path.Combine(Path.Combine(Directory.GetParent(fpath).FullName, ".actors"), String.Concat(actor.Name.Replace(" ", "_"), ".jpg"))
+            If Not Directory.Exists(Path.Combine(Directory.GetParent(fpath).FullName, ".actors")) Then Directory.CreateDirectory(Path.Combine(Directory.GetParent(fpath).FullName, ".actors"))
+            If Not File.Exists(tPath) Then ' OrElse (IsEdit OrElse Master.eSettings.OverwritePoster) Then
+                Save(tPath, Master.eSettings.PosterQuality)
+            End If
+        Else
+            tPath = Path.Combine(Path.Combine(fpath, ".actors"), String.Concat(actor.Name.Replace(" ", "_"), ".jpg"))
+            If Not Directory.Exists(Path.Combine(fpath, ".actors")) Then Directory.CreateDirectory(Path.Combine(fpath, ".actors"))
+            If Not File.Exists(tPath) Then ' OrElse (IsEdit OrElse Master.eSettings.OverwritePoster) Then
+                Save(tPath, Master.eSettings.PosterQuality)
+            End If
+        End If
+        'End If
+
+        'old
+        'If Master.eSettings.VideoTSParentXBMC AndAlso FileUtils.Common.isBDRip(aMovie.Filename) Then
+        '	tPath = Path.Combine(Path.Combine(Directory.GetParent(fpath).FullName, ".actors"), String.Concat(actor.Name.Replace(" ", "_"), ".jpg"))
+        '	If Not Directory.Exists(Path.Combine(Directory.GetParent(fpath).FullName, ".actors")) Then Directory.CreateDirectory(Path.Combine(Directory.GetParent(fpath).FullName, ".actors"))
+        '	If Not File.Exists(tPath) Then ' OrElse (IsEdit OrElse Master.eSettings.OverwritePoster) Then
+        '		Save(tPath, Master.eSettings.PosterQuality)
+        '	End If
+        'Else
+        '	tPath = Path.Combine(Path.Combine(fpath, ".actors"), String.Concat(actor.Name.Replace(" ", "_"), ".jpg"))
+        '	If Not Directory.Exists(Path.Combine(fpath, ".actors")) Then Directory.CreateDirectory(Path.Combine(fpath, ".actors"))
+        '	If Not File.Exists(tPath) Then ' OrElse (IsEdit OrElse Master.eSettings.OverwritePoster) Then
+        '		Save(tPath, Master.eSettings.PosterQuality)
+        '	End If
+        'End If
+        ''End If
 		Return tPath
 	End Function
 

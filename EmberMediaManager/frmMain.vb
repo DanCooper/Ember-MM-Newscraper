@@ -119,6 +119,8 @@ Public Class frmMain
     Private oldStatus As String = String.Empty
 
     Private KeyBuffer As String = String.Empty
+    ' Environment variables
+    Private isUserInteractive As Boolean = True
 
 #End Region 'Fields
 
@@ -5614,7 +5616,21 @@ doCancel:
                 isCL = True
                 fLoading.SetProgressBarSize(10)
             End If
-            fLoading.Show(Me)
+
+            ' #############################################
+            ' ###  Inserted by: redglory on 14.07.2013  ###
+            ' #############################################
+            ' #  Check If Ember Media Manager is called   #
+            ' #  from a service process or from a Web     # 
+            ' #  application                              #
+            ' #                                           #
+            ' #  UserInteractive property (True/False)    #             #
+            ' #############################################
+            Me.isUserInteractive = Environment.UserInteractive
+            If Me.isUserInteractive Then
+                '# Show UI
+                fLoading.Show(Me)
+            End If
             Application.DoEvents()
             ' Run InstallTask to see if any pending file needs to install
             ' Do this before loading modules/themes/etc
