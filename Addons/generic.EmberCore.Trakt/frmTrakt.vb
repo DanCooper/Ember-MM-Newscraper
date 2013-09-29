@@ -2,11 +2,13 @@
 Imports System.Xml.Serialization
 Imports System.IO
 Imports EmberAPI
+Imports Trakttv
+
 
 Public Class frmTrakt
     Public Event ModuleSettingsChanged()
     Dim myWatchedMovies As New Dictionary(Of String, KeyValuePair(Of String, Integer))
-    Dim myWatchedEpisodes As New Dictionary(Of String, KeyValuePair(Of String, List(Of SeasonClass)))
+    Dim myWatchedEpisodes As New Dictionary(Of String, KeyValuePair(Of String, List(Of TraktAPI.Model.TraktWatchedEpisode.SeasonsWatched)))
     Dim bkWrk As New System.ComponentModel.BackgroundWorker()
 
     Sub New()
@@ -95,13 +97,47 @@ Public Class frmTrakt
     End Sub
 
     Private Sub btGetMoviesTrakt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btGetMoviesTrakt.Click
+
+
+
         myWatchedEpisodes = Nothing
         dgvTraktWatched.DataSource = Nothing
         dgvTraktWatched.Rows.Clear()
         ' myWatchedMovies.Clear()
 
         If Not String.IsNullOrEmpty(txtTraktUser.Text) AndAlso chkUseTrakt.Checked = True AndAlso Not String.IsNullOrEmpty(txtTraktPassword.Text) Then
-            myWatchedMovies = GetWatchedMoviesFromTrakt(txtTraktUser.Text, txtTraktPassword.Text)
+            'Old method - not using Trakt.tv API wrapper
+            ' myWatchedMovies = GetWatchedMoviesFromTrakt(txtTraktUser.Text, txtTraktPassword.Text)
+
+            '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+            'Some Sample VB CODE for getting watched movies from Trakt - calling from Ember Module!
+            'Get watched movies of user
+            '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+            'Helper: Saving 3 values in Dictionary style
+            Dim dictMovieWatched As New Dictionary(Of String, KeyValuePair(Of String, Integer))
+
+            ' Use new Trakttv wrapper class to get watched data!
+            Trakttv.TraktSettings.Username = txtTraktUser.Text
+            Trakttv.TraktSettings.Password = txtTraktPassword.Text
+            Dim traktWatchedMovies As IEnumerable(Of TraktAPI.Model.TraktWatchedMovie) = TraktAPI.TrakttvAPI.GetUserWatchedMovies(txtTraktUser.Text)
+
+            ' Go through each item in collection	 
+            For Each Item In traktWatchedMovies
+                'Check if information is stored...
+                If Not Item.Title Is Nothing AndAlso Item.Title <> "" AndAlso Not Item.IMDBID Is Nothing AndAlso Item.IMDBID <> "" Then
+                    If Not dictMovieWatched.ContainsKey(Item.Title) Then
+                        'Now store imdbid, title and playcount information into dictionary (for now no other info needed...)
+                        If Item.IMDBID.Length > 2 AndAlso Item.IMDBID.Substring(0, 2) = "tt" Then
+                            'IMDBID beginning with tt -> strip tt first and save only number!
+                            dictMovieWatched.Add(Item.Title, New KeyValuePair(Of String, Integer)(Item.IMDBID.Substring(2), CInt(Item.Plays)))
+                        Else
+                            'IMDBID is alright
+                            dictMovieWatched.Add(Item.Title, New KeyValuePair(Of String, Integer)(Item.IMDBID, CInt(Item.Plays)))
+                        End If
+                    End If
+                End If
+            Next
+            myWatchedMovies = dictMovieWatched
         End If
         dgvTraktWatched.AutoGenerateColumns = True
         If Not myWatchedMovies Is Nothing Then
@@ -124,7 +160,32 @@ Public Class frmTrakt
         '  myWatchedMovies.Clear()
 
         If Not String.IsNullOrEmpty(txtTraktUser.Text) AndAlso chkUseTrakt.Checked = True AndAlso Not String.IsNullOrEmpty(txtTraktPassword.Text) Then
-            myWatchedEpisodes = GetWatchedEpisodesFromTrakt(txtTraktUser.Text, txtTraktPassword.Text)
+            'Old method - not using Trakt.tv API wrapper
+            '  myWatchedEpisodes = GetWatchedEpisodesFromTrakt(txtTraktUser.Text, txtTraktPassword.Text)
+
+            '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+            'Some Sample VB CODE for getting watched episode from Trakt - calling from Ember Module!
+            ' Get all episodes on Trakt.tv that are marked as 'seen' or 'watched'
+            '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+            'Helper: Saving 3 values in Dictionary style
+            Dim dictEpisodesWatched As New Dictionary(Of String, KeyValuePair(Of String, List(Of TraktAPI.Model.TraktWatchedEpisode.SeasonsWatched)))
+
+            ' Use new Trakttv wrapper class to get watched data!
+            Trakttv.TraktSettings.Username = txtTraktUser.Text
+            Trakttv.TraktSettings.Password = txtTraktPassword.Text
+            Dim traktWatchedEpisodes As IEnumerable(Of TraktAPI.Model.TraktWatchedEpisode) = TraktAPI.TrakttvAPI.GetUserWatchedEpisodes(txtTraktUser.Text)
+            ' Go through each item in collection	
+            If traktWatchedEpisodes Is Nothing = False Then
+                For Each episode In traktWatchedEpisodes
+                    If Not episode.Title Is Nothing AndAlso episode.Title <> "" AndAlso Not episode.SeriesId Is Nothing AndAlso episode.SeriesId <> "" Then
+                        If Not dictEpisodesWatched.ContainsKey(episode.Title) Then
+                            'Now store tvdbID, title and the season-episode-list in dictionary...
+                            dictEpisodesWatched.Add(episode.Title, New KeyValuePair(Of String, List(Of TraktAPI.Model.TraktWatchedEpisode.SeasonsWatched))(episode.SeriesId, episode.Seasons))
+                        End If
+                    End If
+                Next
+            End If
+            myWatchedEpisodes = dictEpisodesWatched
         End If
         dgvTraktWatched.AutoGenerateColumns = True
         If Not myWatchedEpisodes Is Nothing Then
@@ -268,6 +329,7 @@ Public Class frmTrakt
 
     End Sub
 
+#Region "Obsolete Methods - replaced by TVTrakt-Wrapper Calls!"
     ''' <summary>
     ''' cocotus 2013/02 Trakt.tv syncing: Movies
     ''' Connects with trakt.tv Website and gets Watched Movies from specific User and returns them in special Dictionary
@@ -374,7 +436,7 @@ Public Class frmTrakt
         End Try
     End Function
 
-
+#End Region
 End Class
 
 'New Class which holds/described an item of WatcheMovie on trakt.tv
@@ -479,3 +541,5 @@ Public Class SeasonClass
     End Property
 
 End Class
+
+
