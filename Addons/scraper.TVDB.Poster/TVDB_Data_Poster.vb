@@ -201,17 +201,21 @@ Public Class TVDB_Data_Poster
 
     Private Sub Handle_ModuleSettingsChanged()
         _APIKey = _setup.txtTVDBApiKey.Text
-        _setupPost.txtTVDBApiKey.Text = _setup.txtTVDBApiKey.Text
         _TVDBMirror = _setup.txtTVDBMirror.Text
         _Lang = Master.eSettings.TVDBLanguages.FirstOrDefault(Function(l) l.LongLang = _setup.cbTVLanguage.Text).ShortLang
+        _setupPost.txtTVDBApiKey.Text = _setup.txtTVDBApiKey.Text
+        _setupPost.txtTVDBMirror = _setup.txtTVDBMirror
+        _setupPost.cbTVLanguage.Text = _setup.cbTVLanguage.Text
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
     Private Sub Handle_PostModuleSettingsChanged()
         _APIKey = _setupPost.txtTVDBApiKey.Text
-        _setup.txtTVDBApiKey.Text = _setupPost.txtTVDBApiKey.Text
         _Lang = Master.eSettings.TVDBLanguages.FirstOrDefault(Function(l) l.LongLang = _setupPost.cbTVLanguage.Text).ShortLang
         _TVDBMirror = _setupPost.txtTVDBMirror.Text
+        _setup.txtTVDBApiKey.Text = _setupPost.txtTVDBApiKey.Text
+        _setup.txtTVDBMirror = _setupPost.txtTVDBMirror
+        _setup.cbTVLanguage.Text = _setupPost.cbTVLanguage.Text
         RaiseEvent ModuleSettingsChanged()
     End Sub
 

@@ -1256,7 +1256,7 @@ Partial Class dlgWizard
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(1428, 865)
+        Me.ClientSize = New System.Drawing.Size(546, 363)
         Me.Controls.Add(Me.Panel3)
         Me.Controls.Add(Me.PictureBox1)
         Me.Controls.Add(Me.btnBack)
