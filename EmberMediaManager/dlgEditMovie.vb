@@ -774,7 +774,11 @@ Public Class dlgEditMovie
                         End If
                     End If
 
-                    Fanart.FromFile(Master.currMovie.FanartPath)
+                    If Master.currMovie.FanartPath.Substring(0, 1) = ":" Then
+                        Fanart.FromWeb(Master.currMovie.FanartPath.Substring(1, Master.currMovie.FanartPath.Length - 1))
+                    Else
+                        Fanart.FromFile(Master.currMovie.FanartPath)
+                    End If
                     If Not IsNothing(Fanart.Image) Then
                         .pbFanart.Image = Fanart.Image
                         .pbFanart.Tag = Fanart
@@ -783,7 +787,11 @@ Public Class dlgEditMovie
                         .lblFanartSize.Visible = True
                     End If
 
-                    Poster.FromFile(Master.currMovie.PosterPath)
+                    If Master.currMovie.PosterPath.Substring(0, 1) = ":" Then
+                        Poster.FromWeb(Master.currMovie.PosterPath.Substring(1, Master.currMovie.PosterPath.Length - 1))
+                    Else
+                        Poster.FromFile(Master.currMovie.PosterPath)
+                    End If
                     If Not IsNothing(Poster.Image) Then
                         .pbPoster.Image = Poster.Image
                         .pbPoster.Tag = Poster
