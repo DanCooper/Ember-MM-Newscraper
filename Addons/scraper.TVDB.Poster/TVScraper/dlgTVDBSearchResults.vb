@@ -96,9 +96,9 @@ Public Class dlgTVDBSearchResults
                         Me._manualresult = New Scraper.TVSearchResults
                         Me._manualresult.ID = Convert.ToInt32(tSer.Element("id").Value)
                         Me._manualresult.Name = If(Not IsNothing(tSer.Element("SeriesName")), tSer.Element("SeriesName").Value, String.Empty)
-                        If Not IsNothing(tSer.Element("Language")) AndAlso Master.eSettings.TVDBLanguages.Count > 0 Then
+                        If Not IsNothing(tSer.Element("Language")) AndAlso Master.eSettings.Languages.Count > 0 Then
                             sLang = tSer.Element("Language").Value
-                            Me._manualresult.Language = Master.eSettings.TVDBLanguages.FirstOrDefault(Function(s) s.ShortLang = sLang)
+                            Me._manualresult.Language = Master.eSettings.Languages.FirstOrDefault(Function(s) s.ShortLang = sLang)
                         ElseIf Not IsNothing(tSer.Element("Language")) Then
                             sLang = tSer.Element("Language").Value
                             Me._manualresult.Language = New Containers.TVLanguage With {.LongLang = String.Format("Unknown ({0})", sLang), .ShortLang = sLang}

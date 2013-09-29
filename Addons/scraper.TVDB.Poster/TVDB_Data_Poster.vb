@@ -157,7 +157,7 @@ Public Class TVDB_Data_Poster
         _setupPost.chkOnlyTVImagesLanguage.Checked = CBool(AdvancedSettings.GetSetting("OnlyGetTVImagesForSelectedLanguage", "True"))
         _setupPost.chkGetEnglishImages.Checked = CBool(AdvancedSettings.GetSetting("AlwaysGetEnglishTVImages", "True"))
         If _setupPost.cbTVLanguage.Items.Count > 0 Then
-            _setupPost.cbTVLanguage.Text = Master.eSettings.TVDBLanguages.FirstOrDefault(Function(l) l.ShortLang = _Lang).LongLang
+            _setupPost.cbTVLanguage.Text = Master.eSettings.Languages.FirstOrDefault(Function(l) l.ShortLang = _Lang).LongLang
         End If
         _setupPost.txtTVDBMirror.Text = _TVDBMirror
 
@@ -182,7 +182,7 @@ Public Class TVDB_Data_Poster
         _setup.txtTVDBApiKey.Text = _APIKey
         _setup.cbEnabled.Checked = _ScraperEnabled
         If _setup.cbTVLanguage.Items.Count > 0 Then
-            _setup.cbTVLanguage.Text = Master.eSettings.TVDBLanguages.FirstOrDefault(Function(l) l.ShortLang = _Lang).LongLang
+            _setup.cbTVLanguage.Text = Master.eSettings.Languages.FirstOrDefault(Function(l) l.ShortLang = _Lang).LongLang
         End If
         _setup.txtTVDBMirror.Text = _TVDBMirror
 
@@ -202,7 +202,7 @@ Public Class TVDB_Data_Poster
     Private Sub Handle_ModuleSettingsChanged()
         _APIKey = _setup.txtTVDBApiKey.Text
         _TVDBMirror = _setup.txtTVDBMirror.Text
-        _Lang = Master.eSettings.TVDBLanguages.FirstOrDefault(Function(l) l.LongLang = _setup.cbTVLanguage.Text).ShortLang
+        _Lang = Master.eSettings.Languages.FirstOrDefault(Function(l) l.LongLang = _setup.cbTVLanguage.Text).ShortLang
         _setupPost.txtTVDBApiKey.Text = _setup.txtTVDBApiKey.Text
         _setupPost.txtTVDBMirror = _setup.txtTVDBMirror
         _setupPost.cbTVLanguage.Text = _setup.cbTVLanguage.Text
@@ -211,7 +211,7 @@ Public Class TVDB_Data_Poster
 
     Private Sub Handle_PostModuleSettingsChanged()
         _APIKey = _setupPost.txtTVDBApiKey.Text
-        _Lang = Master.eSettings.TVDBLanguages.FirstOrDefault(Function(l) l.LongLang = _setupPost.cbTVLanguage.Text).ShortLang
+        _Lang = Master.eSettings.Languages.FirstOrDefault(Function(l) l.LongLang = _setupPost.cbTVLanguage.Text).ShortLang
         _TVDBMirror = _setupPost.txtTVDBMirror.Text
         _setup.txtTVDBApiKey.Text = _setupPost.txtTVDBApiKey.Text
         _setup.txtTVDBMirror = _setupPost.txtTVDBMirror

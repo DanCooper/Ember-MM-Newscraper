@@ -87,7 +87,7 @@ Public Class frmTVInfoSettingsHolder
         Me.lblTVLanguagePreferred.Text = Master.eLang.GetString(741, "Preferred Language:")
 
         Me.lblTVDBMirror.Text = Master.eLang.GetString(801, "TVDB Mirror")
-        Me.cbTVLanguage.Items.AddRange((From lLang In Master.eSettings.TVDBLanguages Select lLang.LongLang).ToArray)
+        Me.cbTVLanguage.Items.AddRange((From lLang In Master.eSettings.Languages Select lLang.LongLang).ToArray)
     End Sub
 
     Private Sub txtTVDBApiKey_TextChanged(sender As System.Object, e As System.EventArgs) Handles txtTVDBApiKey.TextChanged

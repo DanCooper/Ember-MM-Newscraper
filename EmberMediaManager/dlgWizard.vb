@@ -177,211 +177,211 @@ Public Class dlgWizard
 		Me.chkEpisodeDashFanart.Checked = Master.eSettings.EpisodeDashFanart
 		Me.chkEpisodeDotFanart.Checked = Master.eSettings.EpisodeDotFanart
         'Me.tLangList.AddRange(Master.eSettings.TVDBLanguages)
-        Me.cbTVLanguage.Items.AddRange((From lLang In Master.eSettings.TVDBLanguages Select lLang.LongLang).ToArray)
-		If Me.cbTVLanguage.Items.Count > 0 Then
-            Me.cbTVLanguage.Text = Master.eSettings.TVDBLanguages.FirstOrDefault(Function(l) l.ShortLang = AdvancedSettings.GetSetting("TVDBLanguage", "en")).LongLang
-		End If
-	End Sub
+        Me.cbTVLanguage.Items.AddRange((From lLang In Master.eSettings.Languages Select lLang.LongLang).ToArray)
+        If Me.cbTVLanguage.Items.Count > 0 Then
+            Me.cbTVLanguage.Text = Master.eSettings.Languages.FirstOrDefault(Function(l) l.ShortLang = AdvancedSettings.GetSetting("TVDBLanguage", "en")).LongLang
+        End If
+    End Sub
 
-	Private Sub LoadIntLangs()
-		If Directory.Exists(Path.Combine(Functions.AppPath, "Langs")) Then
-			Dim alL As New List(Of String)
-			Dim alLangs As New List(Of String)
-			Try
-				alL.AddRange(Directory.GetFiles(Path.Combine(Functions.AppPath, "Langs"), "*).xml"))
-			Catch
-			End Try
-			alLangs.AddRange(alL.Cast(Of String)().Select(Function(AL) Path.GetFileNameWithoutExtension(AL)).ToArray)
-			Me.cbIntLang.Items.AddRange(alLangs.ToArray)
-		End If
-	End Sub
+    Private Sub LoadIntLangs()
+        If Directory.Exists(Path.Combine(Functions.AppPath, "Langs")) Then
+            Dim alL As New List(Of String)
+            Dim alLangs As New List(Of String)
+            Try
+                alL.AddRange(Directory.GetFiles(Path.Combine(Functions.AppPath, "Langs"), "*).xml"))
+            Catch
+            End Try
+            alLangs.AddRange(alL.Cast(Of String)().Select(Function(AL) Path.GetFileNameWithoutExtension(AL)).ToArray)
+            Me.cbIntLang.Items.AddRange(alLangs.ToArray)
+        End If
+    End Sub
 
-	Private Sub lvMovies_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles lvMovies.DoubleClick
-		If lvMovies.SelectedItems.Count > 0 Then
-			Using dMovieSource As New dlgMovieSource
-				If dMovieSource.ShowDialog(Convert.ToInt32(lvMovies.SelectedItems(0).Text)) = Windows.Forms.DialogResult.OK Then
-					Me.RefreshSources()
-				End If
-			End Using
-		End If
-	End Sub
+    Private Sub lvMovies_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles lvMovies.DoubleClick
+        If lvMovies.SelectedItems.Count > 0 Then
+            Using dMovieSource As New dlgMovieSource
+                If dMovieSource.ShowDialog(Convert.ToInt32(lvMovies.SelectedItems(0).Text)) = Windows.Forms.DialogResult.OK Then
+                    Me.RefreshSources()
+                End If
+            End Using
+        End If
+    End Sub
 
-	Private Sub lvMovies_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lvMovies.KeyDown
-		If e.KeyCode = Keys.Delete Then Me.RemoveSource()
-	End Sub
+    Private Sub lvMovies_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lvMovies.KeyDown
+        If e.KeyCode = Keys.Delete Then Me.RemoveSource()
+    End Sub
 
-	Private Sub lvTVSources_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles lvTVSources.DoubleClick
-		If lvTVSources.SelectedItems.Count > 0 Then
-			Using dTVSource As New dlgTVSource
-				If dTVSource.ShowDialog(Convert.ToInt32(lvTVSources.SelectedItems(0).Text)) = Windows.Forms.DialogResult.OK Then
-					Me.RefreshTVSources()
-				End If
-			End Using
-		End If
-	End Sub
+    Private Sub lvTVSources_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles lvTVSources.DoubleClick
+        If lvTVSources.SelectedItems.Count > 0 Then
+            Using dTVSource As New dlgTVSource
+                If dTVSource.ShowDialog(Convert.ToInt32(lvTVSources.SelectedItems(0).Text)) = Windows.Forms.DialogResult.OK Then
+                    Me.RefreshTVSources()
+                End If
+            End Using
+        End If
+    End Sub
 
-	Private Sub lvTVSources_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lvTVSources.KeyDown
-		If e.KeyCode = Keys.Delete Then Me.RemoveTVSource()
-	End Sub
+    Private Sub lvTVSources_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lvTVSources.KeyDown
+        If e.KeyCode = Keys.Delete Then Me.RemoveTVSource()
+    End Sub
 
-	Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
-		Me.SaveSettings()
-		Me.DialogResult = System.Windows.Forms.DialogResult.OK
-		Me.Close()
-	End Sub
+    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
+        Me.SaveSettings()
+        Me.DialogResult = System.Windows.Forms.DialogResult.OK
+        Me.Close()
+    End Sub
 
-	Private Sub RefreshSources()
-		Dim lvItem As ListViewItem
+    Private Sub RefreshSources()
+        Dim lvItem As ListViewItem
 
-		lvMovies.Items.Clear()
-		Master.DB.LoadMovieSourcesFromDB()
-		For Each s As Structures.MovieSource In Master.MovieSources
-			lvItem = New ListViewItem(s.id)
-			lvItem.SubItems.Add(s.Name)
+        lvMovies.Items.Clear()
+        Master.DB.LoadMovieSourcesFromDB()
+        For Each s As Structures.MovieSource In Master.MovieSources
+            lvItem = New ListViewItem(s.id)
+            lvItem.SubItems.Add(s.Name)
             lvItem.SubItems.Add(s.Path)
             tmppath = s.Path
-			lvItem.SubItems.Add(If(s.Recursive, "Yes", "No"))
-			lvItem.SubItems.Add(If(s.UseFolderName, "Yes", "No"))
-			lvItem.SubItems.Add(If(s.IsSingle, "Yes", "No"))
-			lvMovies.Items.Add(lvItem)
-		Next
-	End Sub
+            lvItem.SubItems.Add(If(s.Recursive, "Yes", "No"))
+            lvItem.SubItems.Add(If(s.UseFolderName, "Yes", "No"))
+            lvItem.SubItems.Add(If(s.IsSingle, "Yes", "No"))
+            lvMovies.Items.Add(lvItem)
+        Next
+    End Sub
 
-	Private Sub RefreshTVSources()
-		Dim lvItem As ListViewItem
-		Master.DB.LoadTVSourcesFromDB()
-		lvTVSources.Items.Clear()
-		Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
-			SQLcommand.CommandText = "SELECT * FROM TVSources;"
-			Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-				While SQLreader.Read
-					lvItem = New ListViewItem(SQLreader("ID").ToString)
-					lvItem.SubItems.Add(SQLreader("Name").ToString)
+    Private Sub RefreshTVSources()
+        Dim lvItem As ListViewItem
+        Master.DB.LoadTVSourcesFromDB()
+        lvTVSources.Items.Clear()
+        Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
+            SQLcommand.CommandText = "SELECT * FROM TVSources;"
+            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    lvItem = New ListViewItem(SQLreader("ID").ToString)
+                    lvItem.SubItems.Add(SQLreader("Name").ToString)
                     lvItem.SubItems.Add(SQLreader("Path").ToString)
                     tmppath = SQLreader("Path").ToString
                     lvTVSources.Items.Add(lvItem)
-				End While
-			End Using
-		End Using
-	End Sub
+                End While
+            End Using
+        End Using
+    End Sub
 
-	Private Sub RemoveSource()
-		Try
-			If Me.lvMovies.SelectedItems.Count > 0 Then
-				If MsgBox(Master.eLang.GetString(418, "Are you sure you want to remove the selected sources? This will remove the movies from these sources from the Ember database."), MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are You Sure?")) = MsgBoxResult.Yes Then
-					Me.lvMovies.BeginUpdate()
+    Private Sub RemoveSource()
+        Try
+            If Me.lvMovies.SelectedItems.Count > 0 Then
+                If MsgBox(Master.eLang.GetString(418, "Are you sure you want to remove the selected sources? This will remove the movies from these sources from the Ember database."), MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are You Sure?")) = MsgBoxResult.Yes Then
+                    Me.lvMovies.BeginUpdate()
 
-					Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MediaDBConn.BeginTransaction()
-						Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
-							Dim parSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSource", DbType.String, 0, "source")
-							While Me.lvMovies.SelectedItems.Count > 0
-								parSource.Value = lvMovies.SelectedItems(0).SubItems(1).Text
-								SQLcommand.CommandText = String.Concat("DELETE FROM movies WHERE source = (?);")
-								SQLcommand.ExecuteNonQuery()
-								SQLcommand.CommandText = String.Concat("DELETE FROM sources WHERE name = (?);")
-								SQLcommand.ExecuteNonQuery()
-								lvMovies.Items.Remove(Me.lvMovies.SelectedItems(0))
-							End While
-						End Using
-						SQLtransaction.Commit()
-					End Using
+                    Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MediaDBConn.BeginTransaction()
+                        Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
+                            Dim parSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSource", DbType.String, 0, "source")
+                            While Me.lvMovies.SelectedItems.Count > 0
+                                parSource.Value = lvMovies.SelectedItems(0).SubItems(1).Text
+                                SQLcommand.CommandText = String.Concat("DELETE FROM movies WHERE source = (?);")
+                                SQLcommand.ExecuteNonQuery()
+                                SQLcommand.CommandText = String.Concat("DELETE FROM sources WHERE name = (?);")
+                                SQLcommand.ExecuteNonQuery()
+                                lvMovies.Items.Remove(Me.lvMovies.SelectedItems(0))
+                            End While
+                        End Using
+                        SQLtransaction.Commit()
+                    End Using
 
-					Me.lvMovies.Sort()
-					Me.lvMovies.EndUpdate()
-					Me.lvMovies.Refresh()
-				End If
-			End If
-		Catch ex As Exception
-			Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-		End Try
-	End Sub
+                    Me.lvMovies.Sort()
+                    Me.lvMovies.EndUpdate()
+                    Me.lvMovies.Refresh()
+                End If
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
 
-	Private Sub RemoveTVSource()
-		Try
-			If Me.lvTVSources.SelectedItems.Count > 0 Then
-				If MsgBox(Master.eLang.GetString(418, "Are you sure you want to remove the selected sources? This will remove the TV Shows from these sources from the Ember database."), MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are You Sure?")) = MsgBoxResult.Yes Then
-					Me.lvTVSources.BeginUpdate()
+    Private Sub RemoveTVSource()
+        Try
+            If Me.lvTVSources.SelectedItems.Count > 0 Then
+                If MsgBox(Master.eLang.GetString(418, "Are you sure you want to remove the selected sources? This will remove the TV Shows from these sources from the Ember database."), MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are You Sure?")) = MsgBoxResult.Yes Then
+                    Me.lvTVSources.BeginUpdate()
 
-					Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MediaDBConn.BeginTransaction()
-						Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
-							Dim parSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSource", DbType.String, 0, "source")
-							While Me.lvTVSources.SelectedItems.Count > 0
-								parSource.Value = lvTVSources.SelectedItems(0).SubItems(1).Text
-								SQLcommand.CommandText = "SELECT Id FROM TVShows WHERE Source = (?);"
-								Using SQLReader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-									While SQLReader.Read
-										Master.DB.DeleteTVShowFromDB(Convert.ToInt64(SQLReader("ID")), True)
-									End While
-								End Using
-								SQLcommand.CommandText = String.Concat("DELETE FROM TVSources WHERE name = (?);")
-								SQLcommand.ExecuteNonQuery()
-								lvTVSources.Items.Remove(lvTVSources.SelectedItems(0))
-							End While
-						End Using
-						SQLtransaction.Commit()
-					End Using
+                    Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MediaDBConn.BeginTransaction()
+                        Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
+                            Dim parSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSource", DbType.String, 0, "source")
+                            While Me.lvTVSources.SelectedItems.Count > 0
+                                parSource.Value = lvTVSources.SelectedItems(0).SubItems(1).Text
+                                SQLcommand.CommandText = "SELECT Id FROM TVShows WHERE Source = (?);"
+                                Using SQLReader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                                    While SQLReader.Read
+                                        Master.DB.DeleteTVShowFromDB(Convert.ToInt64(SQLReader("ID")), True)
+                                    End While
+                                End Using
+                                SQLcommand.CommandText = String.Concat("DELETE FROM TVSources WHERE name = (?);")
+                                SQLcommand.ExecuteNonQuery()
+                                lvTVSources.Items.Remove(lvTVSources.SelectedItems(0))
+                            End While
+                        End Using
+                        SQLtransaction.Commit()
+                    End Using
 
-					Me.lvTVSources.Sort()
-					Me.lvTVSources.EndUpdate()
-					Me.lvTVSources.Refresh()
-				End If
-			End If
-		Catch ex As Exception
-			Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-		End Try
-	End Sub
+                    Me.lvTVSources.Sort()
+                    Me.lvTVSources.EndUpdate()
+                    Me.lvTVSources.Refresh()
+                End If
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
 
-	Private Sub SaveSettings()
-		Master.eSettings.SeasonAllPosterJPG = Me.chkSeasonAllPosterJPG.Checked
-		Master.eSettings.SeasonXXDashPosterJPG = Me.chkSeasonXXDashPosterJPG.Checked
-		Master.eSettings.MovieNameDashPosterJPG = Me.chkMovieNameDashPosterJPG.Checked
-		Master.eSettings.DashTrailer = Me.rbDashTrailer.Checked
-		Master.eSettings.SeasonXXDashFanartJPG = Me.chkSeasonXXDashFanartJPG.Checked
-		Master.eSettings.MovieTBN = Me.chkMovieTBN.Checked
-		Master.eSettings.MovieNameTBN = Me.chkMovieNameTBN.Checked
-		Master.eSettings.MovieJPG = Me.chkMovieJPG.Checked
-		Master.eSettings.MovieNameJPG = Me.chkMovieNameJPG.Checked
-		Master.eSettings.PosterTBN = Me.chkPosterTBN.Checked
-		Master.eSettings.PosterJPG = Me.chkPosterJPG.Checked
-		Master.eSettings.FolderJPG = Me.chkFolderJPG.Checked
-		Master.eSettings.FanartJPG = Me.chkFanartJPG.Checked
-		Master.eSettings.MovieNameFanartJPG = Me.chkMovieNameFanartJPG.Checked
-		Master.eSettings.MovieNameDotFanartJPG = Me.chkMovieNameDotFanartJPG.Checked
-		Master.eSettings.MovieNFO = Me.chkMovieNFO.Checked
-		Master.eSettings.MovieNameNFO = Me.chkMovieNameNFO.Checked
-		Master.eSettings.MovieNameNFOStack = Me.chkMovieNameNFOStack.Checked
-		Master.eSettings.MovieNameMultiOnly = Me.chkMovieNameMultiOnly.Checked
-		Master.eSettings.VideoTSParentXBMC = Me.chkVideoTSParentXBMC.Checked
-		Master.eSettings.Language = Me.cbIntLang.Text
-		Master.eSettings.SeasonAllTBN = Me.chkSeasonAllTBN.Checked
-		Master.eSettings.SeasonAllJPG = Me.chkSeasonAllJPG.Checked
-		Master.eSettings.ShowTBN = Me.chkShowTBN.Checked
-		Master.eSettings.ShowJPG = Me.chkShowJPG.Checked
-		Master.eSettings.ShowFolderJPG = Me.chkShowFolderJPG.Checked
-		Master.eSettings.ShowPosterTBN = Me.chkShowPosterTBN.Checked
-		Master.eSettings.ShowPosterJPG = Me.chkShowPosterJPG.Checked
-		Master.eSettings.ShowFanartJPG = Me.chkShowFanartJPG.Checked
-		Master.eSettings.ShowDashFanart = Me.chkShowDashFanart.Checked
-		Master.eSettings.ShowDotFanart = Me.chkShowDotFanart.Checked
-		Master.eSettings.SeasonXX = Me.chkSeasonXXTBN.Checked
-		Master.eSettings.SeasonX = Me.chkSeasonXTBN.Checked
-		Master.eSettings.SeasonPosterTBN = Me.chkSeasonPosterTBN.Checked
-		Master.eSettings.SeasonPosterJPG = Me.chkSeasonPosterJPG.Checked
-		Master.eSettings.SeasonNameTBN = Me.chkSeasonNameTBN.Checked
-		Master.eSettings.SeasonNameJPG = Me.chkSeasonNameJPG.Checked
-		Master.eSettings.SeasonFolderJPG = Me.chkSeasonFolderJPG.Checked
-		Master.eSettings.SeasonFanartJPG = Me.chkSeasonFanartJPG.Checked
-		Master.eSettings.SeasonDashFanart = Me.chkSeasonDashFanart.Checked
-		Master.eSettings.SeasonDotFanart = Me.chkSeasonDotFanart.Checked
-		Master.eSettings.EpisodeTBN = Me.chkEpisodeTBN.Checked
+    Private Sub SaveSettings()
+        Master.eSettings.SeasonAllPosterJPG = Me.chkSeasonAllPosterJPG.Checked
+        Master.eSettings.SeasonXXDashPosterJPG = Me.chkSeasonXXDashPosterJPG.Checked
+        Master.eSettings.MovieNameDashPosterJPG = Me.chkMovieNameDashPosterJPG.Checked
+        Master.eSettings.DashTrailer = Me.rbDashTrailer.Checked
+        Master.eSettings.SeasonXXDashFanartJPG = Me.chkSeasonXXDashFanartJPG.Checked
+        Master.eSettings.MovieTBN = Me.chkMovieTBN.Checked
+        Master.eSettings.MovieNameTBN = Me.chkMovieNameTBN.Checked
+        Master.eSettings.MovieJPG = Me.chkMovieJPG.Checked
+        Master.eSettings.MovieNameJPG = Me.chkMovieNameJPG.Checked
+        Master.eSettings.PosterTBN = Me.chkPosterTBN.Checked
+        Master.eSettings.PosterJPG = Me.chkPosterJPG.Checked
+        Master.eSettings.FolderJPG = Me.chkFolderJPG.Checked
+        Master.eSettings.FanartJPG = Me.chkFanartJPG.Checked
+        Master.eSettings.MovieNameFanartJPG = Me.chkMovieNameFanartJPG.Checked
+        Master.eSettings.MovieNameDotFanartJPG = Me.chkMovieNameDotFanartJPG.Checked
+        Master.eSettings.MovieNFO = Me.chkMovieNFO.Checked
+        Master.eSettings.MovieNameNFO = Me.chkMovieNameNFO.Checked
+        Master.eSettings.MovieNameNFOStack = Me.chkMovieNameNFOStack.Checked
+        Master.eSettings.MovieNameMultiOnly = Me.chkMovieNameMultiOnly.Checked
+        Master.eSettings.VideoTSParentXBMC = Me.chkVideoTSParentXBMC.Checked
+        Master.eSettings.Language = Me.cbIntLang.Text
+        Master.eSettings.SeasonAllTBN = Me.chkSeasonAllTBN.Checked
+        Master.eSettings.SeasonAllJPG = Me.chkSeasonAllJPG.Checked
+        Master.eSettings.ShowTBN = Me.chkShowTBN.Checked
+        Master.eSettings.ShowJPG = Me.chkShowJPG.Checked
+        Master.eSettings.ShowFolderJPG = Me.chkShowFolderJPG.Checked
+        Master.eSettings.ShowPosterTBN = Me.chkShowPosterTBN.Checked
+        Master.eSettings.ShowPosterJPG = Me.chkShowPosterJPG.Checked
+        Master.eSettings.ShowFanartJPG = Me.chkShowFanartJPG.Checked
+        Master.eSettings.ShowDashFanart = Me.chkShowDashFanart.Checked
+        Master.eSettings.ShowDotFanart = Me.chkShowDotFanart.Checked
+        Master.eSettings.SeasonXX = Me.chkSeasonXXTBN.Checked
+        Master.eSettings.SeasonX = Me.chkSeasonXTBN.Checked
+        Master.eSettings.SeasonPosterTBN = Me.chkSeasonPosterTBN.Checked
+        Master.eSettings.SeasonPosterJPG = Me.chkSeasonPosterJPG.Checked
+        Master.eSettings.SeasonNameTBN = Me.chkSeasonNameTBN.Checked
+        Master.eSettings.SeasonNameJPG = Me.chkSeasonNameJPG.Checked
+        Master.eSettings.SeasonFolderJPG = Me.chkSeasonFolderJPG.Checked
+        Master.eSettings.SeasonFanartJPG = Me.chkSeasonFanartJPG.Checked
+        Master.eSettings.SeasonDashFanart = Me.chkSeasonDashFanart.Checked
+        Master.eSettings.SeasonDotFanart = Me.chkSeasonDotFanart.Checked
+        Master.eSettings.EpisodeTBN = Me.chkEpisodeTBN.Checked
         Master.eSettings.EpisodeJPG = Me.chkEpisodeJPG.Checked
         Master.eSettings.EpisodeDashThumbJPG = Me.chkEpisodeDashThumbJPG.Checked
-		Master.eSettings.EpisodeDashFanart = Me.chkEpisodeDashFanart.Checked
-		Master.eSettings.EpisodeDotFanart = Me.chkEpisodeDotFanart.Checked
+        Master.eSettings.EpisodeDashFanart = Me.chkEpisodeDashFanart.Checked
+        Master.eSettings.EpisodeDotFanart = Me.chkEpisodeDotFanart.Checked
 
         Using settings = New AdvancedSettings()
-            If Master.eSettings.TVDBLanguages.Count > 0 Then
-                Dim tLang As String = Master.eSettings.TVDBLanguages.FirstOrDefault(Function(l) l.LongLang = Me.cbTVLanguage.Text).ShortLang
+            If Master.eSettings.Languages.Count > 0 Then
+                Dim tLang As String = Master.eSettings.Languages.FirstOrDefault(Function(l) l.LongLang = Me.cbTVLanguage.Text).ShortLang
                 If Not String.IsNullOrEmpty(tLang) Then
                     settings.SetSetting("TVDBLanguage", tLang)
                 Else
