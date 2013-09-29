@@ -25,8 +25,6 @@ Public Class frmTVMediaSettingsHolder
 
 #Region "Fields"
 
-    Private tLangList As New List(Of Containers.TVLanguage)
-
 #End Region 'Fields
 
 #Region "Events"
@@ -81,21 +79,6 @@ Public Class frmTVMediaSettingsHolder
     End Sub
 
     Private Sub SetUp()
-        Dim cLang As Containers.TVLanguage
-        Dim xmlTVDB As XDocument
-        Try
-            xmlTVDB = XDocument.Parse(My.Resources.languages)
-            Dim xLangs = From xLanguages In xmlTVDB.Descendants("Language")
-
-            For Each xL As XElement In xLangs
-                cLang = New Containers.TVLanguage
-                cLang.LongLang = xL.Element("name").Value
-                cLang.ShortLang = xL.Element("abbreviation").Value
-                tLangList.Add(cLang)
-            Next
-        Catch
-        End Try
-
         Me.Label2.Text = Master.eLang.GetString(168, "Scrape Order")
         Me.cbEnabled.Text = Master.eLang.GetString(774, "Enabled")
         Me.Label18.Text = Master.eLang.GetString(932, "TVDB API Key")
@@ -104,8 +87,8 @@ Public Class frmTVMediaSettingsHolder
         Me.chkGetEnglishImages.Text = Master.eLang.GetString(737, "Also Get English Images")
         Me.gbLanguage.Text = Master.eLang.GetString(610, "Language")
         Me.lblTVDBMirror.Text = Master.eLang.GetString(801, "TVDB Mirror")
-        Me.tLangList.Clear()
-        Me.cbTVLanguage.Items.AddRange((From lLang In tLangList Select lLang.LongLang).ToArray)
+
+        Me.cbTVLanguage.Items.AddRange((From lLang In Master.eSettings.Languages Select lLang.LongLang).ToArray)
     End Sub
 
     Private Sub txtTMDBApiKey_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVDBApiKey.TextChanged
@@ -124,16 +107,6 @@ Public Class frmTVMediaSettingsHolder
         End If
     End Sub
 
-    Private Sub btnTVLanguageFetch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.tLangList.Clear()
-        Me.tLangList.AddRange(ModulesManager.Instance.TVGetLangs(Master.eSettings.TVDBMirror))
-        Me.cbTVLanguage.Items.AddRange((From lLang In tLangList Select lLang.LongLang).ToArray)
-
-        If Me.cbTVLanguage.Items.Count > 0 Then
-            Me.cbTVLanguage.Text = Me.tLangList.FirstOrDefault(Function(l) l.ShortLang = Master.eSettings.TVDBLanguage).LongLang
-        End If
-    End Sub
-
     Private Sub chkOnlyTVImagesLanguage_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOnlyTVImagesLanguage.CheckedChanged
 
         Me.chkGetEnglishImages.Enabled = Me.chkOnlyTVImagesLanguage.Checked
@@ -141,6 +114,9 @@ Public Class frmTVMediaSettingsHolder
         If Not Me.chkOnlyTVImagesLanguage.Checked Then Me.chkGetEnglishImages.Checked = False
     End Sub
 
+    Private Sub cbTVLanguage_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbTVLanguage.SelectedIndexChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
 #End Region 'Methods
 
 End Class

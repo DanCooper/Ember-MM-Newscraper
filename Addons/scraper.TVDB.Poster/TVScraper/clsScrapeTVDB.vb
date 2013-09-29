@@ -30,6 +30,7 @@ Public Class Scraper
 #Region "Fields"
 
     Public Shared APIKey As String = String.Empty
+    Public Shared _TVDBMirror As String = String.Empty
 
     Public Shared WithEvents sObject As New ScraperObject
     Public Shared tEpisodes As New List(Of MediaContainers.EpisodeDetails)
@@ -43,6 +44,7 @@ Public Class Scraper
     Public Sub New(ByVal _Api As String)
         AddHandler sObject.ScraperEvent, AddressOf InnerEvent
         APIKey = _Api
+        _TVDBMirror = AdvancedSettings.GetSetting("TVDBMirror", "thetvdb.com")
     End Sub
 
 #End Region 'Constructors
@@ -263,7 +265,7 @@ Public Class Scraper
 
                 If doDownload OrElse Not fExists Then
                     Dim sHTTP As New HTTP
-                    Dim xZip As Byte() = sHTTP.DownloadZip(String.Format("http://{0}/api/{1}/series/{2}/all/{3}.zip", Master.eSettings.TVDBMirror, APIKey, sInfo.TVDBID, sInfo.SelectedLang))
+                    Dim xZip As Byte() = sHTTP.DownloadZip(String.Format("http://{0}/api/{1}/series/{2}/all/{3}.zip", _TVDBMirror, APIKey, sInfo.TVDBID, sInfo.SelectedLang))
                     sHTTP = Nothing
 
                     If Not IsNothing(xZip) AndAlso xZip.Length > 0 Then
@@ -322,7 +324,7 @@ Public Class Scraper
                                 Dim xdActors As XDocument = XDocument.Parse(aXML)
                                 For Each Actor As XElement In xdActors.Descendants("Actor")
                                     If Not IsNothing(Actor.Element("Name")) AndAlso Not String.IsNullOrEmpty(Actor.Element("Name").Value) Then
-                                        Actors.Add(New MediaContainers.Person With {.Name = Actor.Element("Name").Value, .Role = If(IsNothing(Actor.Element("Role")), String.Empty, Actor.Element("Role").Value), .Thumb = If(IsNothing(Actor.Element("Image")) OrElse String.IsNullOrEmpty(Actor.Element("Image").Value), String.Empty, String.Format("http://{0}/banners/{1}", Master.eSettings.TVDBMirror, Actor.Element("Image").Value))})
+                                        Actors.Add(New MediaContainers.Person With {.Name = Actor.Element("Name").Value, .Role = If(IsNothing(Actor.Element("Role")), String.Empty, Actor.Element("Role").Value), .Thumb = If(IsNothing(Actor.Element("Image")) OrElse String.IsNullOrEmpty(Actor.Element("Image").Value), String.Empty, String.Format("http://{0}/banners/{1}", _TVDBMirror, Actor.Element("Image").Value))})
                                     End If
                                 Next
                             End If
@@ -398,7 +400,7 @@ Public Class Scraper
                                         .Director = If(IsNothing(Episode.Element("Director")), String.Empty, Strings.Join(Episode.Element("Director").Value.Trim(Convert.ToChar("|")).Split(Convert.ToChar("|")), " / "))
                                         .Credits = CreditsString(If(IsNothing(Episode.Element("GuestStars")), String.Empty, Episode.Element("GuestStars").Value), If(IsNothing(Episode.Element("Writer")), String.Empty, Episode.Element("Writer").Value))
                                         .Actors = Actors
-                                        .PosterURL = If(IsNothing(Episode.Element("filename")), String.Empty, String.Format("http://{0}/banners/{1}", Master.eSettings.TVDBMirror, Episode.Element("filename").Value))
+                                        .PosterURL = If(IsNothing(Episode.Element("filename")), String.Empty, String.Format("http://{0}/banners/{1}", _TVDBMirror, Episode.Element("filename").Value))
                                         .LocalFile = If(IsNothing(Episode.Element("filename")), String.Empty, Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sInfo.TVDBID, Path.DirectorySeparatorChar, "episodeposters", Path.DirectorySeparatorChar, Episode.Element("filename").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar))))
                                     End With
 
@@ -965,7 +967,7 @@ Public Class Scraper
             Dim tmpID As String = String.Empty
 
             Try
-                Dim apiXML As String = sHTTP.DownloadData(String.Format("http://{0}/api/GetSeries.php?seriesname={1}&language={2}", AdvancedSettings.GetSetting("TVDBMirror", "thetvdb.com"), sInfo.ShowTitle, AdvancedSettings.GetSetting("TVDBLanguage", "en")))
+                Dim apiXML As String = sHTTP.DownloadData(String.Format("http://{0}/api/GetSeries.php?seriesname={1}&language={2}", _TVDBMirror, sInfo.ShowTitle, AdvancedSettings.GetSetting("TVDBLanguage", "en")))
 
                 If Not String.IsNullOrEmpty(apiXML) Then
                     Try
@@ -979,9 +981,9 @@ Public Class Scraper
                     'check each unique showid to see if we have an entry for the preferred languages. If not, try to force download it
                     For Each tID As String In xSer.GroupBy(Function(s) s.Element("seriesid").Value.ToString).Select(Function(group) group.Key)
                         tmpID = tID
-                        If xSer.Where(Function(s) s.Element("seriesid").Value.ToString = tmpID AndAlso s.Element("language").Value.ToString = Master.eSettings.TVDBLanguage).Count = 0 Then
+                        If xSer.Where(Function(s) s.Element("seriesid").Value.ToString = tmpID AndAlso s.Element("language").Value.ToString = AdvancedSettings.GetSetting("TVDBLanguage", "en")).Count = 0 Then
                             'no preferred language in this series, force it
-                            Dim forceXML As String = sHTTP.DownloadData(String.Format("http://{0}/api/{1}/series/{2}/{3}.xml", Master.eSettings.TVDBMirror, APIKey, tmpID, AdvancedSettings.GetSetting("TVDBLanguage", "en")))
+                            Dim forceXML As String = sHTTP.DownloadData(String.Format("http://{0}/api/{1}/series/{2}/{3}.xml", _TVDBMirror, APIKey, tmpID, AdvancedSettings.GetSetting("TVDBLanguage", "en")))
                             If Not String.IsNullOrEmpty(forceXML) Then
                                 Try
                                     tmpXML = XDocument.Parse(forceXML)
@@ -994,9 +996,9 @@ Public Class Scraper
                                     cResult = New TVSearchResults
                                     cResult.ID = Convert.ToInt32(tSer.Element("id").Value)
                                     cResult.Name = If(Not IsNothing(tSer.Element("SeriesName")), tSer.Element("SeriesName").Value, String.Empty)
-                                    If Not IsNothing(tSer.Element("Language")) AndAlso Master.eSettings.TVDBLanguages.Count > 0 Then
+                                    If Not IsNothing(tSer.Element("Language")) AndAlso Master.eSettings.Languages.Count > 0 Then
                                         sLang = tSer.Element("Language").Value
-                                        cResult.Language = Master.eSettings.TVDBLanguages.FirstOrDefault(Function(s) s.ShortLang = sLang)
+                                        cResult.Language = Master.eSettings.Languages.FirstOrDefault(Function(s) s.ShortLang = sLang)
                                     ElseIf Not IsNothing(tSer.Element("Language")) Then
                                         sLang = tSer.Element("Language").Value
                                         cResult.Language = New Containers.TVLanguage With {.LongLang = String.Format("Unknown ({0})", sLang), .ShortLang = sLang}
@@ -1022,9 +1024,9 @@ Public Class Scraper
                         cResult = New TVSearchResults
                         cResult.ID = Convert.ToInt32(xS.Element("seriesid").Value)
                         cResult.Name = If(Not IsNothing(xS.Element("SeriesName")), xS.Element("SeriesName").Value, String.Empty)
-                        If Not IsNothing(xS.Element("language")) AndAlso Master.eSettings.TVDBLanguages.Count > 0 Then
+                        If Not IsNothing(xS.Element("language")) AndAlso Master.eSettings.Languages.Count > 0 Then
                             sLang = xS.Element("language").Value
-                            cResult.Language = Master.eSettings.TVDBLanguages.FirstOrDefault(Function(s) s.ShortLang = sLang)
+                            cResult.Language = Master.eSettings.Languages.FirstOrDefault(Function(s) s.ShortLang = sLang)
                         ElseIf Not IsNothing(xS.Element("language")) Then
                             sLang = xS.Element("language").Value
                             cResult.Language = New Containers.TVLanguage With {.LongLang = String.Format("Unknown ({0})", sLang), .ShortLang = sLang}
@@ -1070,7 +1072,7 @@ Public Class Scraper
                             Dim xdActors As XDocument = XDocument.Parse(aXML)
                             For Each Actor As XElement In xdActors.Descendants("Actor")
                                 If Not IsNothing(Actor.Element("Name")) AndAlso Not String.IsNullOrEmpty(Actor.Element("Name").Value) Then
-                                    Actors.Add(New MediaContainers.Person With {.Name = Actor.Element("Name").Value, .Role = Actor.Element("Role").Value, .Thumb = If(IsNothing(Actor.Element("Image")) OrElse String.IsNullOrEmpty(Actor.Element("Image").Value), String.Empty, String.Format("http://{0}/banners/{1}", Master.eSettings.TVDBMirror, Actor.Element("Image").Value))})
+                                    Actors.Add(New MediaContainers.Person With {.Name = Actor.Element("Name").Value, .Role = Actor.Element("Role").Value, .Thumb = If(IsNothing(Actor.Element("Image")) OrElse String.IsNullOrEmpty(Actor.Element("Image").Value), String.Empty, String.Format("http://{0}/banners/{1}", _TVDBMirror, Actor.Element("Image").Value))})
                                 End If
                             Next
                         End If
@@ -1091,7 +1093,7 @@ Public Class Scraper
                                     sID = xS(0).Element("id").Value
                                     .ID = sID
                                     If sInfo.Options.bShowTitle AndAlso (String.IsNullOrEmpty(.Title) OrElse Not Master.eSettings.ShowLockTitle) Then .Title = If(IsNothing(xS(0).Element("SeriesName")), .Title, xS(0).Element("SeriesName").Value)
-                                    If sInfo.Options.bShowEpisodeGuide Then .EpisodeGuideURL = If(Not String.IsNullOrEmpty(AdvancedSettings.GetSetting("TVDBAPIKey", "")), String.Format("http://{0}/api/{1}/series/{2}/all/{3}.zip", AdvancedSettings.GetSetting("TVDBMirror", "thetvdb.com"), AdvancedSettings.GetSetting("TVDBAPIKey", ""), sID, AdvancedSettings.GetSetting("TVDBLanguage", "en")), String.Empty)
+                                    If sInfo.Options.bShowEpisodeGuide Then .EpisodeGuideURL = If(Not String.IsNullOrEmpty(AdvancedSettings.GetSetting("TVDBAPIKey", "")), String.Format("http://{0}/api/{1}/series/{2}/all/{3}.zip", _TVDBMirror, AdvancedSettings.GetSetting("TVDBAPIKey", ""), sID, AdvancedSettings.GetSetting("TVDBLanguage", "en")), String.Empty)
                                     If sInfo.Options.bShowGenre AndAlso (String.IsNullOrEmpty(.Genre) OrElse Not Master.eSettings.ShowLockGenre) Then .Genre = If(IsNothing(xS(0).Element("Genre")), .Genre, Strings.Join(xS(0).Element("Genre").Value.Trim(Convert.ToChar("|")).Split(Convert.ToChar("|")), " / "))
                                     If sInfo.Options.bShowMPAA Then .MPAA = If(IsNothing(xS(0).Element("ContentRating")), .MPAA, xS(0).Element("ContentRating").Value)
                                     If sInfo.Options.bShowPlot AndAlso (String.IsNullOrEmpty(.Plot) OrElse Not Master.eSettings.ShowLockPlot) Then .Plot = If(IsNothing(xS(0).Element("Overview")), .Plot, xS(0).Element("Overview").Value.ToString.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf))
@@ -1184,7 +1186,7 @@ Public Class Scraper
                                         If sInfo.Options.bEpDirector Then .Director = If(IsNothing(xE.Element("Director")), .Director, Strings.Join(xE.Element("Director").Value.Trim(Convert.ToChar("|")).Split(Convert.ToChar("|")), " / "))
                                         If sInfo.Options.bEpCredits Then .Credits = CreditsString(If(IsNothing(xE.Element("GuestStars")), String.Empty, xE.Element("GuestStars").Value), If(IsNothing(xE.Element("Writer")), String.Empty, xE.Element("Writer").Value))
                                         If sInfo.Options.bEpActors Then .Actors = Actors
-                                        .PosterURL = If(IsNothing(xE.Element("filename")) OrElse String.IsNullOrEmpty(xE.Element("filename").Value), String.Empty, String.Format("http://{0}/banners/{1}", Master.eSettings.TVDBMirror, xE.Element("filename").Value))
+                                        .PosterURL = If(IsNothing(xE.Element("filename")) OrElse String.IsNullOrEmpty(xE.Element("filename").Value), String.Empty, String.Format("http://{0}/banners/{1}", _TVDBMirror, xE.Element("filename").Value))
                                         .LocalFile = If(IsNothing(xE.Element("filename")) OrElse String.IsNullOrEmpty(xE.Element("filename").Value), String.Empty, Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "episodeposters", Path.DirectorySeparatorChar, xE.Element("filename").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar))))
                                     End With
                                 End If
@@ -1210,28 +1212,28 @@ Public Class Scraper
                                 Select Case tImage.Element("BannerType").Value
                                     Case "fanart"
                                         tmpTVDBShow.Fanart.Add(New TVDBFanart With { _
-                                                             .URL = String.Format("http://{0}/banners/{1}", AdvancedSettings.GetSetting("TVDBMirror", "thetvdb.com"), tImage.Element("BannerPath").Value), _
-                                                             .ThumbnailURL = If(IsNothing(tImage.Element("ThumbnailPath")) OrElse String.IsNullOrEmpty(tImage.Element("ThumbnailPath").Value), String.Empty, String.Format("http://{0}/banners/{1}", Master.eSettings.TVDBMirror, tImage.Element("ThumbnailPath").Value)), _
+                                                             .URL = String.Format("http://{0}/banners/{1}", _TVDBMirror, tImage.Element("BannerPath").Value), _
+                                                             .ThumbnailURL = If(IsNothing(tImage.Element("ThumbnailPath")) OrElse String.IsNullOrEmpty(tImage.Element("ThumbnailPath").Value), String.Empty, String.Format("http://{0}/banners/{1}", _TVDBMirror, tImage.Element("ThumbnailPath").Value)), _
                                                              .Size = If(IsNothing(tImage.Element("BannerType2")) OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), New Size With {.Width = 0, .Height = 0}, StringUtils.StringToSize(tImage.Element("BannerType2").Value)), _
                                                              .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "fanart", Path.DirectorySeparatorChar, tImage.Element("BannerPath").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar))), _
                                                              .LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "fanart", Path.DirectorySeparatorChar, tImage.Element("ThumbnailPath").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar))), _
                                                              .Language = If(IsNothing(tImage.Element("Language")) OrElse String.IsNullOrEmpty(tImage.Element("Language").Value), String.Empty, tImage.Element("Language").Value)})
                                     Case "poster"
                                         tmpTVDBShow.Posters.Add(New TVDBPoster With { _
-                                                              .URL = String.Format("http://{0}/banners/{1}", AdvancedSettings.GetSetting("TVDBMirror", "thetvdb.com"), tImage.Element("BannerPath").Value), _
+                                                              .URL = String.Format("http://{0}/banners/{1}", _TVDBMirror, tImage.Element("BannerPath").Value), _
                                                               .Size = If(IsNothing(tImage.Element("BannerType2")) OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), New Size With {.Width = 0, .Height = 0}, StringUtils.StringToSize(tImage.Element("BannerType2").Value)), _
                                                               .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "posters", Path.DirectorySeparatorChar, tImage.Element("BannerPath").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar))), _
                                                               .Language = If(IsNothing(tImage.Element("Language")) OrElse String.IsNullOrEmpty(tImage.Element("Language").Value), String.Empty, tImage.Element("Language").Value)})
                                     Case "season"
                                         tmpTVDBShow.SeasonPosters.Add(New TVDBSeasonPoster With { _
-                                                                .URL = String.Format("http://{0}/banners/{1}", Master.eSettings.TVDBMirror, tImage.Element("BannerPath").Value), _
+                                                                .URL = String.Format("http://{0}/banners/{1}", _TVDBMirror, tImage.Element("BannerPath").Value), _
                                                                 .Season = If(IsNothing(tImage.Element("Season")) OrElse String.IsNullOrEmpty(tImage.Element("Season").Value), 0, Convert.ToInt32(tImage.Element("Season").Value)), _
                                                                 .Type = If(IsNothing(tImage.Element("BannerType2")) OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), Enums.SeasonPosterType.None, StringToSeasonPosterType(tImage.Element("BannerType2").Value)), _
                                                                 .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seasonposters", Path.DirectorySeparatorChar, tImage.Element("BannerPath").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar))), _
                                                                 .Language = If(IsNothing(tImage.Element("Language")) OrElse String.IsNullOrEmpty(tImage.Element("Language").Value), String.Empty, tImage.Element("Language").Value)})
                                     Case "series"
                                         tmpTVDBShow.ShowPosters.Add(New TVDBShowPoster With { _
-                                                              .URL = String.Format("http://{0}/banners/{1}", Master.eSettings.TVDBMirror, tImage.Element("BannerPath").Value), _
+                                                              .URL = String.Format("http://{0}/banners/{1}", _TVDBMirror, tImage.Element("BannerPath").Value), _
                                                               .Type = If(IsNothing(tImage.Element("BannerType2")) OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), Enums.ShowBannerType.None, StringToShowPosterType(tImage.Element("BannerType2").Value)), _
                                                               .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriesposters", Path.DirectorySeparatorChar, tImage.Element("BannerPath").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar))), _
                                                               .Language = If(IsNothing(tImage.Element("Language")) OrElse String.IsNullOrEmpty(tImage.Element("Language").Value), String.Empty, tImage.Element("Language").Value)})

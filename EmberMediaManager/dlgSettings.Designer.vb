@@ -2183,7 +2183,7 @@ Partial Class dlgSettings
         Me.pnlTop.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlTop.Location = New System.Drawing.Point(0, 0)
         Me.pnlTop.Name = "pnlTop"
-        Me.pnlTop.Size = New System.Drawing.Size(1438, 64)
+        Me.pnlTop.Size = New System.Drawing.Size(892, 64)
         Me.pnlTop.TabIndex = 3
         '
         'Label2
@@ -6769,7 +6769,7 @@ Partial Class dlgSettings
         Me.ToolStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow
         Me.ToolStrip1.Location = New System.Drawing.Point(0, 64)
         Me.ToolStrip1.Name = "ToolStrip1"
-        Me.ToolStrip1.Size = New System.Drawing.Size(1438, 25)
+        Me.ToolStrip1.Size = New System.Drawing.Size(892, 25)
         Me.ToolStrip1.Stretch = True
         Me.ToolStrip1.TabIndex = 4
         Me.ToolStrip1.Text = "ToolStrip1"
@@ -6913,7 +6913,7 @@ Partial Class dlgSettings
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.btnCancel
-        Me.ClientSize = New System.Drawing.Size(1438, 875)
+        Me.ClientSize = New System.Drawing.Size(892, 627)
         Me.Controls.Add(Me.pnlTVScraper)
         Me.Controls.Add(Me.pnlTrailer)
         Me.Controls.Add(Me.pnlSources)
