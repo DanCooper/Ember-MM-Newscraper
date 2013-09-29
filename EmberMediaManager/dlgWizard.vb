@@ -26,7 +26,6 @@ Imports EmberAPI
 
 Public Class dlgWizard
 
-    Private tLangList As New List(Of Containers.TVLanguage)
     Private tLang As String
     Private tmppath As String = String.Empty
 
@@ -177,26 +176,10 @@ Public Class dlgWizard
         Me.chkEpisodeDashThumbJPG.Checked = Master.eSettings.EpisodeDashThumbJPG
 		Me.chkEpisodeDashFanart.Checked = Master.eSettings.EpisodeDashFanart
 		Me.chkEpisodeDotFanart.Checked = Master.eSettings.EpisodeDotFanart
-        Me.tLangList.Clear()
-        Dim cLang As Containers.TVLanguage
-        Dim xmlTVDB As XDocument
-        Try
-            xmlTVDB = XDocument.Parse(My.Resources.languages)
-            Dim xLangs = From xLanguages In xmlTVDB.Descendants("Language")
-
-            For Each xL As XElement In xLangs
-                cLang = New Containers.TVLanguage
-                cLang.LongLang = xL.Element("name").Value
-                cLang.ShortLang = xL.Element("abbreviation").Value
-                tLangList.Add(cLang)
-            Next
-        Catch
-
-        End Try
-		Me.tLangList.AddRange(Master.eSettings.TVDBLanguages)
-		Me.cbTVLanguage.Items.AddRange((From lLang In Master.eSettings.TVDBLanguages Select lLang.LongLang).ToArray)
+        'Me.tLangList.AddRange(Master.eSettings.TVDBLanguages)
+        Me.cbTVLanguage.Items.AddRange((From lLang In Master.eSettings.TVDBLanguages Select lLang.LongLang).ToArray)
 		If Me.cbTVLanguage.Items.Count > 0 Then
-            Me.cbTVLanguage.Text = Me.tLangList.FirstOrDefault(Function(l) l.ShortLang = AdvancedSettings.GetSetting("TVDBLanguage", "en")).LongLang
+            Me.cbTVLanguage.Text = Master.eSettings.TVDBLanguages.FirstOrDefault(Function(l) l.ShortLang = AdvancedSettings.GetSetting("TVDBLanguage", "en")).LongLang
 		End If
 	End Sub
 
@@ -395,9 +378,10 @@ Public Class dlgWizard
         Master.eSettings.EpisodeDashThumbJPG = Me.chkEpisodeDashThumbJPG.Checked
 		Master.eSettings.EpisodeDashFanart = Me.chkEpisodeDashFanart.Checked
 		Master.eSettings.EpisodeDotFanart = Me.chkEpisodeDotFanart.Checked
+
         Using settings = New AdvancedSettings()
-            If tLangList.Count > 0 Then
-                Dim tLang As String = tLangList.FirstOrDefault(Function(l) l.LongLang = Me.cbTVLanguage.Text).ShortLang
+            If Master.eSettings.TVDBLanguages.Count > 0 Then
+                Dim tLang As String = Master.eSettings.TVDBLanguages.FirstOrDefault(Function(l) l.LongLang = Me.cbTVLanguage.Text).ShortLang
                 If Not String.IsNullOrEmpty(tLang) Then
                     settings.SetSetting("TVDBLanguage", tLang)
                 Else
@@ -451,8 +435,7 @@ Public Class dlgWizard
 		Me.lblInsideSeason.Text = Master.eLang.GetString(834, "* Inside Season directory")
 		Me.gbAllSeasonPoster.Text = Master.eLang.GetString(735, "All Season Posters")
 		Me.Label10.Text = Master.eLang.GetString(113, "Now select the default language you would like Ember to look for when scraping TV Show items.")
-		Me.btnTVLanguageFetch.Text = Master.eLang.GetString(742, "Fetch Available Languages")
-		Me.Panel1.Location = New Point(166, 7)
+        Me.Panel1.Location = New Point(166, 7)
 		Me.Panel1.Visible = True
 		Me.Panel2.Visible = False
         Me.Panel3.Visible = False
@@ -466,34 +449,24 @@ Public Class dlgWizard
 		Me.Panel6.Location = New Point(166, 7)
 	End Sub
 
-	Private Sub btnTVLanguageFetch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVLanguageFetch.Click
-		Me.tLangList.Clear()
-        Me.tLangList.AddRange(ModulesManager.Instance.TVGetLangs(Master.eSettings.TVDBMirror))
-        Me.cbTVLanguage.Items.AddRange((From lLang In tLangList Select lLang.LongLang).ToArray)
-
-		If Me.cbTVLanguage.Items.Count > 0 Then
-            Me.cbTVLanguage.Text = Me.tLangList.FirstOrDefault(Function(l) l.ShortLang = AdvancedSettings.GetSetting("TVDBLanguage", "en")).LongLang
-		End If
-	End Sub
-
-	Private Sub btnMovieFrodo_Click(sender As Object, e As EventArgs) Handles btnMovieFrodo.Click
-		Me.chkFanartJPG.Checked = False
-		Me.chkFolderJPG.Checked = False
-		Me.chkMovieJPG.Checked = False
-		Me.chkMovieNameDashPosterJPG.Checked = True
-		Me.chkMovieNameDotFanartJPG.Checked = False
-		Me.chkMovieNameFanartJPG.Checked = True
-		Me.chkMovieNameJPG.Checked = False
-		Me.chkMovieNameNFO.Checked = False
-		Me.chkMovieNameNFOStack.Checked = True
-		Me.chkMovieNameTBN.Checked = False
-		Me.chkMovieNFO.Checked = False
-		Me.chkMovieTBN.Checked = False
-		Me.chkPosterJPG.Checked = False
-		Me.chkPosterTBN.Checked = False
-		Me.rbDashTrailer.Checked = True
-		Me.chkVideoTSParentXBMC.Checked = True
-	End Sub
+    Private Sub btnMovieFrodo_Click(sender As Object, e As EventArgs) Handles btnMovieFrodo.Click
+        Me.chkFanartJPG.Checked = False
+        Me.chkFolderJPG.Checked = False
+        Me.chkMovieJPG.Checked = False
+        Me.chkMovieNameDashPosterJPG.Checked = True
+        Me.chkMovieNameDotFanartJPG.Checked = False
+        Me.chkMovieNameFanartJPG.Checked = True
+        Me.chkMovieNameJPG.Checked = False
+        Me.chkMovieNameNFO.Checked = False
+        Me.chkMovieNameNFOStack.Checked = True
+        Me.chkMovieNameTBN.Checked = False
+        Me.chkMovieNFO.Checked = False
+        Me.chkMovieTBN.Checked = False
+        Me.chkPosterJPG.Checked = False
+        Me.chkPosterTBN.Checked = False
+        Me.rbDashTrailer.Checked = True
+        Me.chkVideoTSParentXBMC.Checked = True
+    End Sub
 
 	Private Sub btnTVShowFrodo_Click(sender As Object, e As EventArgs) Handles btnTVShowFrodo.Click
 		Me.chkEpisodeDashFanart.Checked = False

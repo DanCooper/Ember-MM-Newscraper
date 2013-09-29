@@ -36,8 +36,10 @@ Public Class TVDB_Data_Poster
     Private _ScraperEnabled As Boolean = False
     Private _setup As frmTVInfoSettingsHolder
     Private _setupPost As frmTVMediaSettingsHolder
+    Private _TVDBMirror As String
     Private _APIKey As String
-    Private tLangList As New List(Of Containers.TVLanguage)
+    Private _Lang As String
+
 
 #End Region 'Fields
 
@@ -138,9 +140,10 @@ Public Class TVDB_Data_Poster
     Public Sub Init(ByVal sAssemblyName As String) Implements Interfaces.EmberTVScraperModule.Init
         _AssemblyName = sAssemblyName
         _APIKey = AdvancedSettings.GetSetting("TVDBAPIKey", "Get your API Key from http://thetvdb.com/?tab=apiregister")
+        _Lang = AdvancedSettings.GetSetting("TVDBLang", "en")
+        _TVDBMirror = AdvancedSettings.GetSetting("TVDBMirror", "thetvdb.com")
         TVScraper = New Scraper(_APIKey)
-        Me.tLangList.Clear()
-        Me.tLangList.AddRange(Master.eSettings.TVDBLanguages)
+
         AddHandler TVScraper.ScraperEvent, AddressOf Handler_ScraperEvent
     End Sub
 
@@ -150,13 +153,13 @@ Public Class TVDB_Data_Poster
         _setupPost.txtTVDBApiKey.Text = _APIKey
         _setupPost.cbEnabled.Checked = _PostScraperEnabled
         _setupPost.lblTVLanguagePreferred.Text = Master.eLang.GetString(741, "Preferred Language:")
-        _setupPost.btnTVLanguageFetch.Text = Master.eLang.GetString(742, "Fetch Available Languages")
+
         _setupPost.chkOnlyTVImagesLanguage.Checked = CBool(AdvancedSettings.GetSetting("OnlyGetTVImagesForSelectedLanguage", "True"))
         _setupPost.chkGetEnglishImages.Checked = CBool(AdvancedSettings.GetSetting("AlwaysGetEnglishTVImages", "True"))
         If _setupPost.cbTVLanguage.Items.Count > 0 Then
-            _setupPost.cbTVLanguage.Text = Me.tLangList.FirstOrDefault(Function(l) l.ShortLang = AdvancedSettings.GetSetting("TVDBLanguage", "en")).LongLang
+            _setupPost.cbTVLanguage.Text = Master.eSettings.TVDBLanguages.FirstOrDefault(Function(l) l.ShortLang = _Lang).LongLang
         End If
-        _setupPost.txtTVDBMirror.Text = AdvancedSettings.GetSetting("TVDBMirror", "thetvdb.com")
+        _setupPost.txtTVDBMirror.Text = _TVDBMirror
 
 
         SPanel.Name = String.Concat(Me._Name, "PostScraper")
@@ -179,9 +182,9 @@ Public Class TVDB_Data_Poster
         _setup.txtTVDBApiKey.Text = _APIKey
         _setup.cbEnabled.Checked = _ScraperEnabled
         If _setup.cbTVLanguage.Items.Count > 0 Then
-            _setup.cbTVLanguage.Text = Me.tLangList.FirstOrDefault(Function(l) l.ShortLang = AdvancedSettings.GetSetting("TVDBLanguage", "True")).LongLang
+            _setup.cbTVLanguage.Text = Master.eSettings.TVDBLanguages.FirstOrDefault(Function(l) l.ShortLang = _Lang).LongLang
         End If
-        _setup.txtTVDBMirror.Text = AdvancedSettings.GetSetting("TVDBMirror", "thetvdb.com")
+        _setup.txtTVDBMirror.Text = _TVDBMirror
 
         SPanel.Name = String.Concat(Me._Name, "Scraper")
         SPanel.Text = Master.eLang.GetString(941, "TVDB")
@@ -199,12 +202,16 @@ Public Class TVDB_Data_Poster
     Private Sub Handle_ModuleSettingsChanged()
         _APIKey = _setup.txtTVDBApiKey.Text
         _setupPost.txtTVDBApiKey.Text = _setup.txtTVDBApiKey.Text
+        _TVDBMirror = _setup.txtTVDBMirror.Text
+        _Lang = Master.eSettings.TVDBLanguages.FirstOrDefault(Function(l) l.LongLang = _setup.cbTVLanguage.Text).ShortLang
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
     Private Sub Handle_PostModuleSettingsChanged()
         _APIKey = _setupPost.txtTVDBApiKey.Text
         _setup.txtTVDBApiKey.Text = _setupPost.txtTVDBApiKey.Text
+        _Lang = Master.eSettings.TVDBLanguages.FirstOrDefault(Function(l) l.LongLang = _setupPost.cbTVLanguage.Text).ShortLang
+        _TVDBMirror = _setupPost.txtTVDBMirror.Text
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
@@ -235,19 +242,15 @@ Public Class TVDB_Data_Poster
             settings.SetSetting("OnlyGetTVImagesForSelectedLanguage", CStr(_setupPost.chkOnlyTVImagesLanguage.Checked))
             settings.SetSetting("AlwaysGetEnglishTVImages", CStr(_setupPost.chkGetEnglishImages.Checked))
 
-            If tLangList.Count > 0 Then
-                Dim tLang As String = tLangList.FirstOrDefault(Function(l) l.LongLang = _setupPost.cbTVLanguage.Text).ShortLang
-                If Not String.IsNullOrEmpty(tLang) Then
-                    settings.SetSetting("TVDBLanguage", tLang)
-                Else
-                    settings.SetSetting("TVDBLanguage", "en")
-                End If
+            
+            If Not String.IsNullOrEmpty(_Lang) Then
+                settings.SetSetting("TVDBLanguage", _Lang)
             Else
                 settings.SetSetting("TVDBLanguage", "en")
             End If
 
-            If Not String.IsNullOrEmpty(_setupPost.txtTVDBMirror.Text) Then
-                settings.SetSetting("TVDBMirror", Strings.Replace(_setupPost.txtTVDBMirror.Text, "http://", String.Empty))
+            If Not String.IsNullOrEmpty(_TVDBMirror) Then
+                settings.SetSetting("TVDBMirror", Strings.Replace(_TVDBMirror, "http://", String.Empty))
             Else
                 settings.SetSetting("TVDBMirror", "thetvdb.com")
             End If
@@ -267,19 +270,14 @@ Public Class TVDB_Data_Poster
             Else
                 settings.SetSetting("TVDBAPIKey", Master.eLang.GetString(942, "Get your API Key from thetvdb.com"))
             End If
-            If tLangList.Count > 0 Then
-                Dim tLang As String = tLangList.FirstOrDefault(Function(l) l.LongLang = _setupPost.cbTVLanguage.Text).ShortLang
-                If Not String.IsNullOrEmpty(tLang) Then
-                    settings.SetSetting("TVDBLanguage", tLang)
-                Else
-                    settings.SetSetting("TVDBLanguage", "en")
-                End If
+            If Not String.IsNullOrEmpty(_Lang) Then
+                settings.SetSetting("TVDBLanguage", _Lang)
             Else
                 settings.SetSetting("TVDBLanguage", "en")
             End If
 
-            If Not String.IsNullOrEmpty(_setupPost.txtTVDBMirror.Text) Then
-                settings.SetSetting("TVDBMirror", Strings.Replace(_setupPost.txtTVDBMirror.Text, "http://", String.Empty))
+            If Not String.IsNullOrEmpty(_TVDBMirror) Then
+                settings.SetSetting("TVDBMirror", Strings.Replace(_TVDBMirror, "http://", String.Empty))
             Else
                 settings.SetSetting("TVDBMirror", "thetvdb.com")
             End If

@@ -81,7 +81,7 @@ Public Class dlgTVDBSearchResults
             Me.pnlLoading.Visible = True
             Application.DoEvents()
 
-            Dim forceXML As String = sHTTP.DownloadData(String.Format("http://{0}/api/{1}/series/{2}/{3}.xml", Master.eSettings.TVDBMirror, Scraper.APIKey, Me.txtTVDBID.Text, AdvancedSettings.GetSetting("TVDBLanguage", "en")))
+            Dim forceXML As String = sHTTP.DownloadData(String.Format("http://{0}/api/{1}/series/{2}/{3}.xml", AdvancedSettings.GetSetting("TVDBMirror", "thetvdb.com"), Scraper.APIKey, Me.txtTVDBID.Text, AdvancedSettings.GetSetting("TVDBLanguage", "en")))
 
             If Not String.IsNullOrEmpty(forceXML) Then
                 Try
@@ -144,7 +144,7 @@ Public Class dlgTVDBSearchResults
 
     Private Sub bwDownloadPic_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDownloadPic.DoWork
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
-        sHTTP.StartDownloadImage(String.Format("http://{0}/banners/_cache/{1}", Master.eSettings.TVDBMirror, Args.pURL))
+        sHTTP.StartDownloadImage(String.Format("http://{0}/banners/_cache/{1}", AdvancedSettings.GetSetting("TVDBMirror", "thetvdb.com"), Args.pURL))
 
         While sHTTP.IsDownloading
             Application.DoEvents()
@@ -358,7 +358,7 @@ Public Class dlgTVDBSearchResults
                                 Dim tID As Integer = sResults.OrderBy(Function(s) s.Lev).FirstOrDefault(Function(s) s.Language.ShortLang = "en").ID
                                 If tID > 0 Then
                                     For Each fItem As ListViewItem In Me.lvSearchResults.Items
-                                        If Convert.ToInt32(fItem.SubItems(3).Text) = tID AndAlso fItem.SubItems(4).Text = Master.eSettings.TVDBLanguage Then
+                                        If Convert.ToInt32(fItem.SubItems(3).Text) = tID AndAlso fItem.SubItems(4).Text = AdvancedSettings.GetSetting("TVDBLang", "en") Then
                                             fItem.Selected = True
                                             fItem.EnsureVisible()
                                             Exit For

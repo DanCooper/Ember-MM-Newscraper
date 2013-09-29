@@ -319,7 +319,7 @@ Public Class Settings
     Private _trailertimeout As Integer
     Private _tvcleandb As Boolean
     'Private _tvdblanguage As String
-    'Private _tvdblanguages As List(Of Containers.TVLanguage)
+    Private _tvdblanguages As List(Of Containers.TVLanguage)
     'Private _tvdbmirror As String
     Private _tveptheme As String
     Private _tvflaglang As String
@@ -2986,14 +2986,14 @@ Public Class Settings
     '    End Set
     'End Property
 
-    'Public Property TVDBLanguages() As List(Of Containers.TVLanguage)
-    '    Get
-    '        Return Me._tvdblanguages
-    '    End Get
-    '    Set(ByVal value As List(Of Containers.TVLanguage))
-    '        Me._tvdblanguages = value
-    '    End Set
-    'End Property
+    Public ReadOnly Property TVDBLanguages() As List(Of Containers.TVLanguage)
+        Get
+            Return Me._tvdblanguages
+        End Get
+        'Set(ByVal value As List(Of Containers.TVLanguage))
+        '    Me._tvdblanguages = value
+        'End Set
+    End Property
 
     'Public Property TVDBMirror() As String
     '    Get
@@ -3517,22 +3517,21 @@ Public Class Settings
         Me._sortbeforescan = False
         'Me._tvdbmirror = "thetvdb.com"
         'Me._tvdblanguage = "en"
-        'Me._tvdblanguages = New List(Of Containers.TVLanguage)
-        'Dim xmlTVDB As XDocument
-        'Dim cLang As Containers.TVLanguage
-        'Try
-        '    xmlTVDB = XDocument.Parse(My.Resources.languages)
-        '    Dim xLangs = From xLanguages In xmlTVDB.Descendants("Language")
+        Me._tvdblanguages = New List(Of Containers.TVLanguage)
+        Dim xmlTVDB As XDocument
+        Dim cLang As Containers.TVLanguage
+        Try
+            xmlTVDB = XDocument.Parse(My.Resources.Languages_2)
+            Dim xLangs = From xLanguages In xmlTVDB.Descendants("Language")
+            For Each xL As XElement In xLangs
+                cLang = New Containers.TVLanguage
+                cLang.LongLang = xL.Element("name").Value
+                cLang.ShortLang = xL.Element("abbreviation").Value
+                _tvdblanguages.Add(cLang)
+            Next
+        Catch
 
-        '    For Each xL As XElement In xLangs
-        '        cLang = New Containers.TVLanguage
-        '        cLang.LongLang = xL.Element("name").Value
-        '        cLang.ShortLang = xL.Element("abbreviation").Value
-        '        _tvdblanguages.Add(cLang)
-        '    Next
-        'Catch
-
-        'End Try
+        End Try
 
         Me._emberModules = New List(Of ModulesManager._XMLEmberModuleClass)
         'Me._externaltvdbapikey = String.Empty
