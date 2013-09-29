@@ -319,7 +319,7 @@ Public Class Settings
     Private _trailertimeout As Integer
     Private _tvcleandb As Boolean
     'Private _tvdblanguage As String
-    'Private _tvdblanguages As List(Of Containers.TVLanguage)
+    Private _languages As List(Of Containers.TVLanguage)
     'Private _tvdbmirror As String
     Private _tveptheme As String
     Private _tvflaglang As String
@@ -2986,14 +2986,14 @@ Public Class Settings
     '    End Set
     'End Property
 
-    'Public Property TVDBLanguages() As List(Of Containers.TVLanguage)
-    '    Get
-    '        Return Me._tvdblanguages
-    '    End Get
-    '    Set(ByVal value As List(Of Containers.TVLanguage))
-    '        Me._tvdblanguages = value
-    '    End Set
-    'End Property
+    Public ReadOnly Property Languages() As List(Of Containers.TVLanguage)
+        Get
+            Return Me._languages
+        End Get
+        'Set(ByVal value As List(Of Containers.TVLanguage))
+        '    Me._tvdblanguages = value
+        'End Set
+    End Property
 
     'Public Property TVDBMirror() As String
     '    Get
@@ -3517,22 +3517,22 @@ Public Class Settings
         Me._sortbeforescan = False
         'Me._tvdbmirror = "thetvdb.com"
         'Me._tvdblanguage = "en"
-        'Me._tvdblanguages = New List(Of Containers.TVLanguage)
-        'Dim xmlTVDB As XDocument
-        'Dim cLang As Containers.TVLanguage
-        'Try
-        '    xmlTVDB = XDocument.Parse(My.Resources.languages)
-        '    Dim xLangs = From xLanguages In xmlTVDB.Descendants("Language")
+        Me._languages = New List(Of Containers.TVLanguage)
+        Dim xmlTVDB As XDocument
+        Dim cLang As Containers.TVLanguage
+        Try
+            xmlTVDB = XDocument.Parse(My.Resources.Languages_2)
+            Dim xLangs = From xLanguages In xmlTVDB.Descendants("Language")
+            For Each xL As XElement In xLangs
+                cLang = New Containers.TVLanguage
+                cLang.LongLang = xL.Element("name").Value
+                cLang.ShortLang = xL.Element("abbreviation").Value
+                _languages.Add(cLang)
+            Next
+            _languages.Sort(AddressOf CompareLanguagesLong)
+        Catch
 
-        '    For Each xL As XElement In xLangs
-        '        cLang = New Containers.TVLanguage
-        '        cLang.LongLang = xL.Element("name").Value
-        '        cLang.ShortLang = xL.Element("abbreviation").Value
-        '        _tvdblanguages.Add(cLang)
-        '    Next
-        'Catch
-
-        'End Try
+        End Try
 
         Me._emberModules = New List(Of ModulesManager._XMLEmberModuleClass)
         'Me._externaltvdbapikey = String.Empty
@@ -3727,6 +3727,92 @@ Public Class Settings
         End If
     End Sub
 
+    Private Shared Function CompareLanguagesLong( _
+        ByVal x As Containers.TVLanguage, ByVal y As Containers.TVLanguage) As Integer
+
+        If x Is Nothing Then
+            If y Is Nothing Then
+                ' If x is Nothing and y is Nothing, they're 
+                ' equal.  
+                Return 0
+            Else
+                ' If x is Nothing and y is not Nothing, y 
+                ' is greater.  
+                Return -1
+            End If
+        Else
+            ' If x is not Nothing... 
+            ' 
+            If y Is Nothing Then
+                ' ...and y is Nothing, x is greater. 
+                Return 1
+            Else
+                ' ...and y is not Nothing, compare the  
+                ' lengths of the two strings. 
+                ' 
+
+                'Dim retval As Integer = _
+                '    x.LongLang.Length.CompareTo(y.LongLang.Length)
+
+                'If retval <> 0 Then
+                '    ' If the strings are not of equal length, 
+                '    ' the longer string is greater. 
+                '    ' 
+                '    Return retval
+                'Else
+                '    ' If the strings are of equal length, 
+                '    ' sort them with ordinary string comparison. 
+                '    ' 
+                Return x.LongLang.CompareTo(y.LongLang)
+                'End If
+            End If
+        End If
+
+    End Function
+
+    Private Shared Function CompareLanguagesShort( _
+        ByVal x As Containers.TVLanguage, ByVal y As Containers.TVLanguage) As Integer
+
+        If x Is Nothing Then
+            If y Is Nothing Then
+                ' If x is Nothing and y is Nothing, they're 
+                ' equal.  
+                Return 0
+            Else
+                ' If x is Nothing and y is not Nothing, y 
+                ' is greater.  
+                Return -1
+            End If
+        Else
+            ' If x is not Nothing... 
+            ' 
+            If y Is Nothing Then
+                ' ...and y is Nothing, x is greater. 
+                Return 1
+            Else
+                ' ...and y is not Nothing, compare the  
+                ' lengths of the two strings. 
+                ' 
+
+                'Dim retval As Integer = _
+                '    x.ShortLang.Length.CompareTo(y.ShortLang.Length)
+
+                'If retval <> 0 Then
+                '    ' If the strings are not of equal length, 
+                '    ' the longer string is greater. 
+                '    ' 
+                '    Return retval
+                'Else
+                '    ' If the strings are of equal length, 
+                '    ' sort them with ordinary string comparison. 
+                '    ' 
+                Return x.ShortLang.CompareTo(y.ShortLang)
+                'End If
+            End If
+        End If
+
+    End Function
+
 #End Region 'Methods
 
 #Region "Nested Types"
@@ -3865,9 +3951,5 @@ Public Class Settings
     End Class
 
 #End Region 'Nested Types
-
-    Function TVDBLanguage() As Object
-        Throw New NotImplementedException
-    End Function
 
 End Class

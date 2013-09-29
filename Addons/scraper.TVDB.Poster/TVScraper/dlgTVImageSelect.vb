@@ -69,10 +69,10 @@ Public Class dlgTVImageSelect
 
             If (Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.ShowPoster) AndAlso IsNothing(Scraper.TVDBImages.ShowPoster.Image.Image) Then
                 If Master.eSettings.IsShowBanner Then
-                    Dim tSP As Scraper.TVDBShowPoster = ShowPosterList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image) AndAlso p.Type = Master.eSettings.PreferredShowBannerType AndAlso p.Language = Master.eSettings.TVDBLanguage)
+                    Dim tSP As Scraper.TVDBShowPoster = ShowPosterList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image) AndAlso p.Type = Master.eSettings.PreferredShowBannerType AndAlso p.Language = AdvancedSettings.GetSetting("TVDBLang", "en"))
 
                     If CBool(AdvancedSettings.GetSetting("OnlyGetTVImagesForSelectedLanguage", "True")) Then
-                        If IsNothing(tSP) Then tSP = ShowPosterList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image) AndAlso p.Language = Master.eSettings.TVDBLanguage)
+                        If IsNothing(tSP) Then tSP = ShowPosterList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image) AndAlso p.Language = AdvancedSettings.GetSetting("TVDBLang", "en"))
                     End If
 
                     If IsNothing(tSP) Then tSP = ShowPosterList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image) AndAlso p.Type = Master.eSettings.PreferredShowBannerType)
@@ -86,7 +86,7 @@ Public Class dlgTVImageSelect
 						Scraper.TVDBImages.ShowPoster.URL = tSP.URL
 					Else
 						'still nothing? try to get from generic posters
-						Dim tSPg As Scraper.TVDBPoster = GenericPosterList.FirstOrDefault(Function(p) p.Language = Master.eSettings.TVDBLanguage AndAlso Not IsNothing(p.Image.Image))
+                        Dim tSPg As Scraper.TVDBPoster = GenericPosterList.FirstOrDefault(Function(p) p.Language = AdvancedSettings.GetSetting("TVDBLang", "en") AndAlso Not IsNothing(p.Image.Image))
 
 						If IsNothing(tSPg) Then tSPg = GenericPosterList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image))
 
@@ -97,10 +97,10 @@ Public Class dlgTVImageSelect
 						End If
 					End If
                 Else
-                    Dim tSPg As Scraper.TVDBPoster = GenericPosterList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image) AndAlso Me.GetPosterDims(p.Size) = Master.eSettings.PreferredShowPosterSize AndAlso p.Language = Master.eSettings.TVDBLanguage)
+                    Dim tSPg As Scraper.TVDBPoster = GenericPosterList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image) AndAlso Me.GetPosterDims(p.Size) = Master.eSettings.PreferredShowPosterSize AndAlso p.Language = AdvancedSettings.GetSetting("TVDBLang", "en"))
 
                     If CBool(AdvancedSettings.GetSetting("OnlyGetTVImagesForSelectedLanguage", "True")) Then
-                        If IsNothing(tSPg) Then tSPg = GenericPosterList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image) AndAlso p.Language = Master.eSettings.TVDBLanguage)
+                        If IsNothing(tSPg) Then tSPg = GenericPosterList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image) AndAlso p.Language = AdvancedSettings.GetSetting("TVDBLang", "en"))
                     End If
 
                     If IsNothing(tSPg) Then tSPg = GenericPosterList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image) AndAlso Me.GetPosterDims(p.Size) = Master.eSettings.PreferredShowPosterSize)
@@ -113,7 +113,7 @@ Public Class dlgTVImageSelect
                         Scraper.TVDBImages.ShowPoster.LocalFile = tSPg.LocalFile
                         Scraper.TVDBImages.ShowPoster.URL = tSPg.URL
                     Else
-                        Dim tSP As Scraper.TVDBShowPoster = ShowPosterList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image) AndAlso p.Language = Master.eSettings.TVDBLanguage)
+                        Dim tSP As Scraper.TVDBShowPoster = ShowPosterList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image) AndAlso p.Language = AdvancedSettings.GetSetting("TVDBLang", "en"))
 
                         If IsNothing(tSP) Then tSP = ShowPosterList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image))
 
@@ -132,7 +132,7 @@ Public Class dlgTVImageSelect
             Me.bwLoadImages.ReportProgress(1, "progress")
 
             If (Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.ShowFanart OrElse Me._type = Enums.TVImageType.EpisodeFanart) AndAlso IsNothing(Scraper.TVDBImages.ShowFanart.Image.Image) Then
-                Dim tSF As Scraper.TVDBFanart = FanartList.FirstOrDefault(Function(f) Not IsNothing(f.Image.Image) AndAlso Me.GetFanartDims(f.Size) = Master.eSettings.PreferredShowFanartSize AndAlso f.Language = Master.eSettings.TVDBLanguage)
+                Dim tSF As Scraper.TVDBFanart = FanartList.FirstOrDefault(Function(f) Not IsNothing(f.Image.Image) AndAlso Me.GetFanartDims(f.Size) = Master.eSettings.PreferredShowFanartSize AndAlso f.Language = AdvancedSettings.GetSetting("TVDBLang", "en"))
 
                 If IsNothing(tSF) Then tSF = FanartList.FirstOrDefault(Function(f) Not IsNothing(f.Image.Image) AndAlso Me.GetFanartDims(f.Size) = Master.eSettings.PreferredShowFanartSize)
 
@@ -163,7 +163,7 @@ Public Class dlgTVImageSelect
 
             If (Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.AllSeasonPoster) AndAlso Master.eSettings.AllSeasonPosterEnabled AndAlso IsNothing(Scraper.TVDBImages.AllSeasonPoster.Image.Image) Then
                 If Master.eSettings.IsAllSBanner Then
-                    Dim tSP As Scraper.TVDBShowPoster = ShowPosterList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image) AndAlso p.Type = Master.eSettings.PreferredAllSBannerType AndAlso p.Language = Master.eSettings.TVDBLanguage)
+                    Dim tSP As Scraper.TVDBShowPoster = ShowPosterList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image) AndAlso p.Type = Master.eSettings.PreferredAllSBannerType AndAlso p.Language = AdvancedSettings.GetSetting("TVDBLang", "en"))
 
                     If IsNothing(tSP) Then tSP = ShowPosterList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image) AndAlso p.Type = Master.eSettings.PreferredAllSBannerType)
 
@@ -176,7 +176,7 @@ Public Class dlgTVImageSelect
                         Scraper.TVDBImages.AllSeasonPoster.URL = tSP.URL
                     Else
                         'still nothing? try to get from generic posters
-                        Dim tSPg As Scraper.TVDBPoster = GenericPosterList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image) AndAlso p.Language = Master.eSettings.TVDBLanguage)
+                        Dim tSPg As Scraper.TVDBPoster = GenericPosterList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image) AndAlso p.Language = AdvancedSettings.GetSetting("TVDBLang", "en"))
 
                         If IsNothing(tSPg) Then tSPg = GenericPosterList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image))
 
@@ -187,7 +187,7 @@ Public Class dlgTVImageSelect
                         End If
                     End If
                 Else
-                    Dim tSPg As Scraper.TVDBPoster = GenericPosterList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image) AndAlso Me.GetPosterDims(p.Size) = Master.eSettings.PreferredAllSPosterSize AndAlso p.Language = Master.eSettings.TVDBLanguage)
+                    Dim tSPg As Scraper.TVDBPoster = GenericPosterList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image) AndAlso Me.GetPosterDims(p.Size) = Master.eSettings.PreferredAllSPosterSize AndAlso p.Language = AdvancedSettings.GetSetting("TVDBLang", "en"))
 
                     If IsNothing(tSPg) Then tSPg = GenericPosterList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image) AndAlso Me.GetPosterDims(p.Size) = Master.eSettings.PreferredAllSPosterSize)
 
@@ -199,7 +199,7 @@ Public Class dlgTVImageSelect
                         Scraper.TVDBImages.AllSeasonPoster.LocalFile = tSPg.LocalFile
                         Scraper.TVDBImages.AllSeasonPoster.URL = tSPg.URL
                     Else
-                        Dim tSP As Scraper.TVDBShowPoster = ShowPosterList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image) AndAlso p.Language = Master.eSettings.TVDBLanguage)
+                        Dim tSP As Scraper.TVDBShowPoster = ShowPosterList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image) AndAlso p.Language = AdvancedSettings.GetSetting("TVDBLang", "en"))
 
                         If IsNothing(tSP) Then tSP = ShowPosterList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image))
 
@@ -222,7 +222,7 @@ Public Class dlgTVImageSelect
                     Try
                         iSeason = cSeason.Season
                         If (Me._type = Enums.TVImageType.All OrElse Me._type = Enums.TVImageType.SeasonPoster) AndAlso IsNothing(cSeason.Poster.Image) Then
-                            tSea = SeasonList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image) AndAlso p.Season = iSeason AndAlso p.Type = Master.eSettings.PreferredSeasonPosterSize AndAlso p.Language = Master.eSettings.TVDBLanguage)
+                            tSea = SeasonList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image) AndAlso p.Season = iSeason AndAlso p.Type = Master.eSettings.PreferredSeasonPosterSize AndAlso p.Language = AdvancedSettings.GetSetting("TVDBLang", "en"))
                             If IsNothing(tSea) Then tSea = SeasonList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image) AndAlso p.Season = iSeason AndAlso p.Type = Master.eSettings.PreferredSeasonPosterSize)
                             If IsNothing(tSea) Then tSea = SeasonList.FirstOrDefault(Function(p) Not IsNothing(p.Image.Image) AndAlso p.Season = iSeason)
 							If Not IsNothing(tSea) Then cSeason.Poster = tSea.Image

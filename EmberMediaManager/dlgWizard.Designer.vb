@@ -28,6 +28,10 @@ Partial Class dlgWizard
         Me.btnBack = New System.Windows.Forms.Button()
         Me.btnNext = New System.Windows.Forms.Button()
         Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.Label32 = New System.Windows.Forms.Label()
+        Me.cbIntLang = New System.Windows.Forms.ComboBox()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.Label1 = New System.Windows.Forms.Label()
         Me.Panel3 = New System.Windows.Forms.Panel()
         Me.GroupBox7 = New System.Windows.Forms.GroupBox()
         Me.chkMovieNameNFOStack = New System.Windows.Forms.CheckBox()
@@ -54,10 +58,6 @@ Partial Class dlgWizard
         Me.chkMovieTBN = New System.Windows.Forms.CheckBox()
         Me.Label5 = New System.Windows.Forms.Label()
         Me.Label4 = New System.Windows.Forms.Label()
-        Me.Label32 = New System.Windows.Forms.Label()
-        Me.cbIntLang = New System.Windows.Forms.ComboBox()
-        Me.Label2 = New System.Windows.Forms.Label()
-        Me.Label1 = New System.Windows.Forms.Label()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.Panel2 = New System.Windows.Forms.Panel()
         Me.lvMovies = New System.Windows.Forms.ListView()
@@ -76,7 +76,6 @@ Partial Class dlgWizard
         Me.Label7 = New System.Windows.Forms.Label()
         Me.Panel4 = New System.Windows.Forms.Panel()
         Me.Label10 = New System.Windows.Forms.Label()
-        Me.btnTVLanguageFetch = New System.Windows.Forms.Button()
         Me.lvTVSources = New System.Windows.Forms.ListView()
         Me.ColumnHeader1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader2 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
@@ -197,6 +196,46 @@ Partial Class dlgWizard
         Me.Panel1.Size = New System.Drawing.Size(376, 323)
         Me.Panel1.TabIndex = 4
         '
+        'Label32
+        '
+        Me.Label32.AutoSize = True
+        Me.Label32.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.Label32.Location = New System.Drawing.Point(108, 260)
+        Me.Label32.Name = "Label32"
+        Me.Label32.Size = New System.Drawing.Size(110, 13)
+        Me.Label32.TabIndex = 2
+        Me.Label32.Text = "Interface Language:"
+        '
+        'cbIntLang
+        '
+        Me.cbIntLang.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbIntLang.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbIntLang.FormattingEnabled = True
+        Me.cbIntLang.Location = New System.Drawing.Point(110, 275)
+        Me.cbIntLang.Name = "cbIntLang"
+        Me.cbIntLang.Size = New System.Drawing.Size(148, 21)
+        Me.cbIntLang.TabIndex = 3
+        '
+        'Label2
+        '
+        Me.Label2.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.Label2.Location = New System.Drawing.Point(17, 46)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(337, 201)
+        Me.Label2.TabIndex = 1
+        Me.Label2.Text = resources.GetString("Label2.Text")
+        Me.Label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Font = New System.Drawing.Font("Segoe UI", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.Label1.Location = New System.Drawing.Point(15, 15)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(324, 25)
+        Me.Label1.TabIndex = 0
+        Me.Label1.Text = "Welcome to Ember Media Manager"
+        '
         'Panel3
         '
         Me.Panel3.BackColor = System.Drawing.Color.White
@@ -210,7 +249,7 @@ Partial Class dlgWizard
         Me.Panel3.Controls.Add(Me.GroupBox5)
         Me.Panel3.Controls.Add(Me.Label5)
         Me.Panel3.Controls.Add(Me.Label4)
-        Me.Panel3.Location = New System.Drawing.Point(666, 7)
+        Me.Panel3.Location = New System.Drawing.Point(956, 7)
         Me.Panel3.Name = "Panel3"
         Me.Panel3.Size = New System.Drawing.Size(376, 323)
         Me.Panel3.TabIndex = 6
@@ -503,46 +542,6 @@ Partial Class dlgWizard
         Me.Label4.Text = resources.GetString("Label4.Text")
         Me.Label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
-        'Label32
-        '
-        Me.Label32.AutoSize = True
-        Me.Label32.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label32.Location = New System.Drawing.Point(108, 260)
-        Me.Label32.Name = "Label32"
-        Me.Label32.Size = New System.Drawing.Size(110, 13)
-        Me.Label32.TabIndex = 2
-        Me.Label32.Text = "Interface Language:"
-        '
-        'cbIntLang
-        '
-        Me.cbIntLang.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbIntLang.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.cbIntLang.FormattingEnabled = True
-        Me.cbIntLang.Location = New System.Drawing.Point(110, 275)
-        Me.cbIntLang.Name = "cbIntLang"
-        Me.cbIntLang.Size = New System.Drawing.Size(148, 21)
-        Me.cbIntLang.TabIndex = 3
-        '
-        'Label2
-        '
-        Me.Label2.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label2.Location = New System.Drawing.Point(17, 46)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(337, 201)
-        Me.Label2.TabIndex = 1
-        Me.Label2.Text = resources.GetString("Label2.Text")
-        Me.Label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'Label1
-        '
-        Me.Label1.AutoSize = True
-        Me.Label1.Font = New System.Drawing.Font("Segoe UI", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label1.Location = New System.Drawing.Point(15, 15)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(325, 25)
-        Me.Label1.TabIndex = 0
-        Me.Label1.Text = "Welcome to Ember Media Manager"
-        '
         'PictureBox1
         '
         Me.PictureBox1.BackColor = System.Drawing.Color.White
@@ -695,7 +694,6 @@ Partial Class dlgWizard
         Me.Panel4.BackColor = System.Drawing.Color.White
         Me.Panel4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.Panel4.Controls.Add(Me.Label10)
-        Me.Panel4.Controls.Add(Me.btnTVLanguageFetch)
         Me.Panel4.Controls.Add(Me.lvTVSources)
         Me.Panel4.Controls.Add(Me.cbTVLanguage)
         Me.Panel4.Controls.Add(Me.btnTVRemoveSource)
@@ -717,16 +715,6 @@ Partial Class dlgWizard
         Me.Label10.Text = "Now select the default language you would like Ember to look for when scraping TV" & _
     " Show items."
         Me.Label10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'btnTVLanguageFetch
-        '
-        Me.btnTVLanguageFetch.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnTVLanguageFetch.Location = New System.Drawing.Point(101, 293)
-        Me.btnTVLanguageFetch.Name = "btnTVLanguageFetch"
-        Me.btnTVLanguageFetch.Size = New System.Drawing.Size(166, 23)
-        Me.btnTVLanguageFetch.TabIndex = 5
-        Me.btnTVLanguageFetch.Text = "Fetch Available Languages"
-        Me.btnTVLanguageFetch.UseVisualStyleBackColor = True
         '
         'lvTVSources
         '
@@ -1268,7 +1256,7 @@ Partial Class dlgWizard
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(546, 364)
+        Me.ClientSize = New System.Drawing.Size(546, 363)
         Me.Controls.Add(Me.Panel3)
         Me.Controls.Add(Me.PictureBox1)
         Me.Controls.Add(Me.btnBack)
@@ -1410,8 +1398,7 @@ Partial Class dlgWizard
 	Friend WithEvents chkShowPosterTBN As System.Windows.Forms.CheckBox
 	Friend WithEvents chkShowFolderJPG As System.Windows.Forms.CheckBox
 	Friend WithEvents Label10 As System.Windows.Forms.Label
-	Friend WithEvents btnTVLanguageFetch As System.Windows.Forms.Button
-	Friend WithEvents cbTVLanguage As System.Windows.Forms.ComboBox
+    Friend WithEvents cbTVLanguage As System.Windows.Forms.ComboBox
 	Friend WithEvents btnTVShowFrodo As System.Windows.Forms.Button
 	Friend WithEvents chkEpisodeDashThumbJPG As System.Windows.Forms.CheckBox
 	Friend WithEvents chkSeasonAllPosterJPG As System.Windows.Forms.CheckBox

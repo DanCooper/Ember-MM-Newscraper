@@ -2035,7 +2035,7 @@ doCancel:
     Private Sub cmnuChangeShow_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuChangeShow.Click
         Me.SetControlsEnabled(False, True)
         Dim Lang As String = Me.dgvTVShows.Item(22, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString
-        ModulesManager.Instance.TVScrapeOnly(Convert.ToInt32(Me.dgvTVShows.Item(0, Me.dgvTVShows.SelectedRows(0).Index).Value), Me.dgvTVShows.Item(1, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString, String.Empty, If(String.IsNullOrEmpty(Lang), Master.eSettings.TVDBLanguage, Lang), DirectCast(Convert.ToInt32(Me.dgvTVShows.Item(23, Me.dgvTVShows.SelectedRows(0).Index).Value), Enums.Ordering), Master.DefaultTVOptions, Enums.ScrapeType.FullAsk, False)
+        ModulesManager.Instance.TVScrapeOnly(Convert.ToInt32(Me.dgvTVShows.Item(0, Me.dgvTVShows.SelectedRows(0).Index).Value), Me.dgvTVShows.Item(1, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString, String.Empty, If(String.IsNullOrEmpty(Lang), AdvancedSettings.GetSetting("TVDBLang", "en"), Lang), DirectCast(Convert.ToInt32(Me.dgvTVShows.Item(23, Me.dgvTVShows.SelectedRows(0).Index).Value), Enums.Ordering), Master.DefaultTVOptions, Enums.ScrapeType.FullAsk, False)
     End Sub
 
     Private Sub cmnuDeleteSeason_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuDeleteSeason.Click
