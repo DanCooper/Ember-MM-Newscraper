@@ -30,6 +30,7 @@ Public Class TVDB_Data_Poster
     Public Shared _AssemblyName As String
 
     Public Shared TVScraper As Scraper
+    Public Shared ConfigOptions As New Structures.TVScrapeOptions
 
     Private _Name As String = "TVDB Data Poster"
     Private _PostScraperEnabled As Boolean = False
@@ -144,6 +145,25 @@ Public Class TVDB_Data_Poster
         _TVDBMirror = AdvancedSettings.GetSetting("TVDBMirror", "thetvdb.com")
         TVScraper = New Scraper(_APIKey)
 
+        ConfigOptions.bEpActors = CBool(AdvancedSettings.GetSetting("ScraperEpActors", "false"))
+        ConfigOptions.bEpAired = CBool(AdvancedSettings.GetSetting("ScraperEpAired", "true"))
+        ConfigOptions.bEpCredits = CBool(AdvancedSettings.GetSetting("ScraperEpCredits", "false"))
+        ConfigOptions.bEpDirector = CBool(AdvancedSettings.GetSetting("ScraperEpDirector", "false"))
+        ConfigOptions.bEpEpisode = CBool(AdvancedSettings.GetSetting("ScraperEpEpisode", "true"))
+        ConfigOptions.bEpPlot = CBool(AdvancedSettings.GetSetting("ScraperEpPlot", "true"))
+        ConfigOptions.bEpRating = CBool(AdvancedSettings.GetSetting("ScraperEpRating", "true"))
+        ConfigOptions.bEpSeason = CBool(AdvancedSettings.GetSetting("ScraperEpSeason", "true"))
+        ConfigOptions.bEpTitle = CBool(AdvancedSettings.GetSetting("ScraperEpTitle", "true"))
+        ConfigOptions.bShowActors = CBool(AdvancedSettings.GetSetting("ScraperShowActors", "false"))
+        ConfigOptions.bShowEpisodeGuide = CBool(AdvancedSettings.GetSetting("ScraperShowEGU", "false"))
+        ConfigOptions.bShowGenre = CBool(AdvancedSettings.GetSetting("ScraperShowGenre", "true"))
+        ConfigOptions.bShowMPAA = CBool(AdvancedSettings.GetSetting("ScraperShowMPAA", "true"))
+        ConfigOptions.bShowPlot = CBool(AdvancedSettings.GetSetting("ScraperShowPlot", "true"))
+        ConfigOptions.bShowPremiered = CBool(AdvancedSettings.GetSetting("ScraperShowPremiered", "true"))
+        ConfigOptions.bShowRating = CBool(AdvancedSettings.GetSetting("ScraperShowRating", "true"))
+        ConfigOptions.bShowStudio = CBool(AdvancedSettings.GetSetting("ScraperShowStudio", "true"))
+        ConfigOptions.bShowTitle = CBool(AdvancedSettings.GetSetting("ScraperShowTitle", "true"))
+
         AddHandler TVScraper.ScraperEvent, AddressOf Handler_ScraperEvent
     End Sub
 
@@ -185,6 +205,24 @@ Public Class TVDB_Data_Poster
             _setup.cbTVLanguage.Text = Master.eSettings.Languages.FirstOrDefault(Function(l) l.ShortLang = _Lang).LongLang
         End If
         _setup.txtTVDBMirror.Text = _TVDBMirror
+        _setup.chkScraperShowTitle.Checked = ConfigOptions.bShowTitle
+        _setup.chkScraperShowEGU.Checked = ConfigOptions.bShowEpisodeGuide
+        _setup.chkScraperShowGenre.Checked = ConfigOptions.bShowGenre
+        _setup.chkScraperShowMPAA.Checked = ConfigOptions.bShowMPAA
+        _setup.chkScraperShowPlot.Checked = ConfigOptions.bShowPlot
+        _setup.chkScraperShowPremiered.Checked = ConfigOptions.bShowPremiered
+        _setup.chkScraperShowRating.Checked = ConfigOptions.bShowRating
+        _setup.chkScraperShowStudio.Checked = ConfigOptions.bShowStudio
+        _setup.chkScraperShowActors.Checked = ConfigOptions.bShowActors
+        _setup.chkScraperEpTitle.Checked = ConfigOptions.bEpTitle
+        _setup.chkScraperEpSeason.Checked = ConfigOptions.bEpSeason
+        _setup.chkScraperEpEpisode.Checked = ConfigOptions.bEpEpisode
+        _setup.chkScraperEpAired.Checked = ConfigOptions.bEpAired
+        _setup.chkScraperEpRating.Checked = ConfigOptions.bEpRating
+        _setup.chkScraperEpPlot.Checked = ConfigOptions.bEpPlot
+        _setup.chkScraperEpDirector.Checked = ConfigOptions.bEpDirector
+        _setup.chkScraperEpCredits.Checked = ConfigOptions.bEpCredits
+        _setup.chkScraperEpActors.Checked = ConfigOptions.bEpActors
 
         SPanel.Name = String.Concat(Me._Name, "Scraper")
         SPanel.Text = Master.eLang.GetString(941, "TVDB")
@@ -285,6 +323,25 @@ Public Class TVDB_Data_Poster
             Else
                 settings.SetSetting("TVDBMirror", "thetvdb.com")
             End If
+            settings.SetSetting("ScraperShowTitle", _setup.chkScraperShowTitle.Checked.ToString)
+            settings.SetSetting("ScraperShowEGU", _setup.chkScraperShowEGU.Checked.ToString)
+            settings.SetSetting("ScraperShowGenre", _setup.chkScraperShowGenre.Checked.ToString)
+            settings.SetSetting("ScraperShowMPAA", _setup.chkScraperShowMPAA.Checked.ToString)
+            settings.SetSetting("ScraperShowPlot", _setup.chkScraperShowPlot.Checked.ToString)
+            settings.SetSetting("ScraperShowPremiered", _setup.chkScraperShowPremiered.Checked.ToString)
+            settings.SetSetting("ScraperShowRating", _setup.chkScraperShowRating.Checked.ToString)
+            settings.SetSetting("ScraperShowStudio", _setup.chkScraperShowStudio.Checked.ToString)
+            settings.SetSetting("ScraperShowActors", _setup.chkScraperShowActors.Checked.ToString)
+            settings.SetSetting("ScraperEpTitle", _setup.chkScraperEpTitle.Checked.ToString)
+            settings.SetSetting("ScraperEpSeason", _setup.chkScraperEpSeason.Checked.ToString)
+            settings.SetSetting("ScraperEpEpisode", _setup.chkScraperEpEpisode.Checked.ToString)
+            settings.SetSetting("ScraperEpAired", _setup.chkScraperEpAired.Checked.ToString)
+            settings.SetSetting("ScraperEpRating", _setup.chkScraperEpRating.Checked.ToString)
+            settings.SetSetting("ScraperEpPlot", _setup.chkScraperEpPlot.Checked.ToString)
+            settings.SetSetting("ScraperEpDirector", _setup.chkScraperEpDirector.Checked.ToString)
+            settings.SetSetting("ScraperEpCredits", _setup.chkScraperEpCredits.Checked.ToString)
+            settings.SetSetting("ScraperEpActors", _setup.chkScraperEpActors.Checked.ToString)
+
         End Using
 
         If DoDispose Then
@@ -296,17 +353,20 @@ Public Class TVDB_Data_Poster
     End Sub
 
     Public Function ScrapeEpisode(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal iEpisode As Integer, ByVal iSeason As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions) As Interfaces.ModuleResult Implements Interfaces.EmberTVScraperModule.ScrapeEpisode
-        TVScraper.ScrapeEpisode(ShowID, ShowTitle, TVDBID, iEpisode, iSeason, Lang, Ordering, Options)
+        Dim filterOptions As Structures.TVScrapeOptions = Functions.TVScrapeOptionsAndAlso(Options, ConfigOptions)
+        TVScraper.ScrapeEpisode(ShowID, ShowTitle, TVDBID, iEpisode, iSeason, Lang, Ordering, filterOptions)
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
     Public Function Scraper(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions, ByVal ScrapeType As Enums.ScrapeType, ByVal WithCurrent As Boolean) As Interfaces.ModuleResult Implements Interfaces.EmberTVScraperModule.Scraper
-        TVScraper.SingleScrape(ShowID, ShowTitle, TVDBID, Lang, Ordering, Options, ScrapeType, WithCurrent)
+        Dim filterOptions As Structures.TVScrapeOptions = Functions.TVScrapeOptionsAndAlso(Options, ConfigOptions)
+        TVScraper.SingleScrape(ShowID, ShowTitle, TVDBID, Lang, Ordering, filterOptions, ScrapeType, WithCurrent)
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
     Public Function ScrapeSeason(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal iSeason As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions) As Interfaces.ModuleResult Implements Interfaces.EmberTVScraperModule.ScrapeSeason
-        TVScraper.ScrapeSeason(ShowID, ShowTitle, TVDBID, iSeason, Lang, Ordering, Options)
+        Dim filterOptions As Structures.TVScrapeOptions = Functions.TVScrapeOptionsAndAlso(Options, ConfigOptions)
+        TVScraper.ScrapeSeason(ShowID, ShowTitle, TVDBID, iSeason, Lang, Ordering, filterOptions)
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 

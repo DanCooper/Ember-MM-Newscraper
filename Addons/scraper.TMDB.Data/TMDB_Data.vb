@@ -309,6 +309,7 @@ Public Class TMDB_Data
         ''TMDBg.UseOFDBGenre = MySettings.UseOFDBGenre
         Dim tTitle As String = String.Empty
         Dim OldTitle As String = DBMovie.Movie.Title
+        Dim filterOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(Options, ConfigOptions)
 
         If IsNothing(_TMDBApi) Then
             Master.eLog.WriteToErrorLog(Master.eLang.GetString(938, "TheMovieDB API is missing or not valid"), _TMDBApi.Error.status_message, "Error")
@@ -322,9 +323,9 @@ Public Class TMDB_Data
 
         If Master.GlobalScrapeMod.NFO AndAlso Not Master.GlobalScrapeMod.DoSearch Then
             If Not String.IsNullOrEmpty(DBMovie.Movie.IMDBID) Then
-                _TMDBg.GetMovieInfo(DBMovie.Movie.ID, DBMovie.Movie, Options.bFullCrew, Options.bFullCast, False, Options, False)
+                _TMDBg.GetMovieInfo(DBMovie.Movie.ID, DBMovie.Movie, filterOptions.bFullCrew, filterOptions.bFullCast, False, filterOptions, False)
             ElseIf Not ScrapeType = Enums.ScrapeType.SingleScrape Then
-                DBMovie.Movie = _TMDBg.GetSearchMovieInfo(DBMovie.Movie.Title, DBMovie, ScrapeType, Options)
+                DBMovie.Movie = _TMDBg.GetSearchMovieInfo(DBMovie.Movie.Title, DBMovie, ScrapeType, filterOptions)
                 If String.IsNullOrEmpty(DBMovie.Movie.IMDBID) Then Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
             End If
         End If
@@ -359,7 +360,6 @@ Public Class TMDB_Data
                         tmpTitle = StringUtils.FilterName(If(DBMovie.isSingle, Directory.GetParent(DBMovie.Filename).Name, Path.GetFileNameWithoutExtension(DBMovie.Filename)))
                     End If
                 End If
-                Dim filterOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(Options, ConfigOptions)
                 If dSearch.ShowDialog(tmpTitle, filterOptions) = Windows.Forms.DialogResult.OK Then
                     If Not String.IsNullOrEmpty(Master.tmpMovie.IMDBID) Then
                         ' if we changed the ID tipe we need to clear everything and rescrape
