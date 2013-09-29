@@ -1070,6 +1070,31 @@ Public Class Functions
         Return filterOptions
     End Function
 
+    Public Shared Function TVScrapeOptionsAndAlso(ByVal Options As Structures.TVScrapeOptions, ByVal Options2 As Structures.TVScrapeOptions) As Structures.TVScrapeOptions
+
+        Dim filterOptions As New Structures.TVScrapeOptions
+        filterOptions.bEpActors = Options.bEpActors AndAlso Options2.bEpActors
+        filterOptions.bEpAired = Options.bEpAired AndAlso Options2.bEpAired
+        filterOptions.bEpCredits = Options.bEpCredits AndAlso Options2.bEpCredits
+        filterOptions.bEpDirector = Options.bEpDirector AndAlso Options2.bEpDirector
+        filterOptions.bEpEpisode = Options.bEpEpisode AndAlso Options2.bEpEpisode
+        filterOptions.bEpPlot = Options.bEpPlot AndAlso Options2.bEpPlot
+        filterOptions.bEpRating = Options.bEpRating AndAlso Options2.bEpRating
+        filterOptions.bEpSeason = Options.bEpSeason AndAlso Options2.bEpSeason
+        filterOptions.bEpTitle = Options.bEpTitle AndAlso Options2.bEpTitle
+        filterOptions.bShowActors = Options.bShowActors AndAlso Options2.bShowActors
+        filterOptions.bShowEpisodeGuide = Options.bShowEpisodeGuide AndAlso Options2.bShowEpisodeGuide
+        filterOptions.bShowGenre = Options.bShowGenre AndAlso Options2.bShowGenre
+        filterOptions.bShowMPAA = Options.bShowMPAA AndAlso Options2.bShowMPAA
+        filterOptions.bShowPlot = Options.bShowPlot AndAlso Options2.bShowPlot
+        filterOptions.bShowPremiered = Options.bShowPremiered AndAlso Options2.bShowPremiered
+        filterOptions.bShowRating = Options.bShowRating AndAlso Options2.bShowRating
+        filterOptions.bShowStudio = Options.bShowStudio AndAlso Options2.bShowStudio
+        filterOptions.bShowTitle = Options.bShowTitle AndAlso Options2.bShowTitle
+        Return filterOptions
+    End Function
+
+
     Public Shared Sub SetScraperMod(ByVal MType As Enums.ModType, ByVal MValue As Boolean, Optional ByVal DoClear As Boolean = True)
         With Master.GlobalScrapeMod
             If DoClear Then
