@@ -64,14 +64,30 @@ Public Class APIXML
                 End Try
             End If
 
-            Dim gPath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Genres", Path.DirectorySeparatorChar, "Genres.xml")
+
+            'Cocotus, Load from central "Settings" folder if it exists!
+            Dim gPath As String = String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar, "Genres.xml")
+
+            'Genres.xml is still at old place (root) -> move to new place if no Genres.xml exists there !
+            If File.Exists(String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar, "Genres.xml")) = False AndAlso File.Exists(String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Genres", Path.DirectorySeparatorChar, "Genres.xml")) AndAlso Directory.Exists(String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar)) Then
+                File.Move(String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Genres", Path.DirectorySeparatorChar, "Genres.xml"), String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar, "Genres.xml"))
+                'New Settings folder doesn't exist -> do it the old way...
+            ElseIf Directory.Exists(String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar)) = False Then
+                gPath = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Genres", Path.DirectorySeparatorChar, "Genres.xml")
+            End If
+            'Dim gPath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Genres", Path.DirectorySeparatorChar, "Genres.xml")
+
             If File.Exists(gPath) Then
                 GenreXML = XDocument.Load(gPath)
+                'cocotus if file does not exists - create new one!
+            Else
+                GenreXML = XDocument.Parse(My.Resources.Genres)
+                GenreXML.Save(gPath)
             End If
 
-            If Directory.Exists(Directory.GetParent(gPath).FullName) Then
+            If Directory.Exists(Directory.GetParent(String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Genres", Path.DirectorySeparatorChar)).FullName) Then
                 Try
-                    alGenres.AddRange(Directory.GetFiles(Directory.GetParent(gPath).FullName, "*.jpg"))
+                    alGenres.AddRange(Directory.GetFiles(Directory.GetParent(String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Genres", Path.DirectorySeparatorChar)).FullName, "*.jpg"))
                 Catch
                 End Try
                 alGenres = alGenres.ConvertAll(Function(s) s.ToLower)
@@ -97,9 +113,26 @@ Public Class APIXML
                 End Try
             End If
 
-            Dim rPath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Ratings", Path.DirectorySeparatorChar, "Ratings.xml")
+
+            'Cocotus, Load from central "Settings" folder if it exists!
+            Dim rPath As String = String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar, "Ratings.xml")
+
+            'Ratings.xml is still at old place (root) -> move to new place if no Ratings.xml exists there !
+            If File.Exists(String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar, "Ratings.xml")) = False AndAlso File.Exists(String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Ratings", Path.DirectorySeparatorChar, "Ratings.xml")) AndAlso Directory.Exists(String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar)) Then
+                File.Move(String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Ratings", Path.DirectorySeparatorChar, "Ratings.xml"), String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar, "Ratings.xml"))
+                'New Settings folder doesn't exist -> do it the old way...
+            ElseIf Directory.Exists(String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar)) = False Then
+                rPath = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Ratings", Path.DirectorySeparatorChar, "Ratings.xml")
+            End If
+
+            '  Dim rPath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Ratings", Path.DirectorySeparatorChar, "Ratings.xml")
+
             If File.Exists(rPath) Then
                 RatingXML = XDocument.Load(rPath)
+                'cocotus if file does not exists - create new one!
+            Else
+                RatingXML = XDocument.Parse(My.Resources.Ratings)
+                RatingXML.Save(rPath)
             End If
 
         Catch ex As Exception

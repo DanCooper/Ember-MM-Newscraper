@@ -5655,6 +5655,12 @@ doCancel:
 
             fLoading.SetLoadingMesg(Master.eLang.GetString(484, "Loading settings..."))
 
+            'cocotus Check if new "Settings" folder exists - if not then create it!
+            If Not Directory.Exists(String.Concat(Functions.AppPath, "Settings")) Then
+                Directory.CreateDirectory(String.Concat(Functions.AppPath, "Settings"))
+            End If
+            'cocotus end
+
             Master.eSettings.Load()
 
             'fLoading.SetLoadingMesg("Basic setup...")
