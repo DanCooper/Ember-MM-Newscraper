@@ -12,14 +12,31 @@ Public Class frmGenresEditor
         InitializeComponent()
         ' Add any initialization after the InitializeComponent() call.
         SetUp()
-        xmlGenres = xGenres.Load(Path.Combine(Functions.AppPath, String.Format("Images{0}Genres{0}Genres.xml", Path.DirectorySeparatorChar)))
+        'Cocotus All XML Config files in new Setting-folder!
+        If File.Exists(String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar, "Genres.xml")) Then
+            xmlGenres = xGenres.Load(String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar, "Genres.xml"))
+        Else
+            xmlGenres = xGenres.Load(Path.Combine(Functions.AppPath, String.Format("Images{0}Genres{0}Genres.xml", Path.DirectorySeparatorChar)))
+        End If
+        'old
+        '  xmlGenres = xGenres.Load(Path.Combine(Functions.AppPath, String.Format("Images{0}Genres{0}Genres.xml", Path.DirectorySeparatorChar)))
         GetLanguages()
         'xmlGenres.Save(Path.Combine(Functions.AppPath, "Images\Genres\Genres2.xml"))
     End Sub
 
     Public Sub SaveChanges()
-        xmlGenres.Save(Path.Combine(Functions.AppPath, String.Format("Images{0}Genres{0}Genres.xml", Path.DirectorySeparatorChar)))
-        APIXML.GenreXML = XDocument.Load(Path.Combine(Functions.AppPath, String.Format("Images{0}Genres{0}Genres.xml", Path.DirectorySeparatorChar)))
+
+        'Cocotus All XML Config files in new Setting-folder!
+        If Directory.Exists(String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar)) Then
+            xmlGenres.Save(String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar, "Genres.xml"))
+            APIXML.GenreXML = XDocument.Load(String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar, "Genres.xml"))
+        Else
+            xmlGenres.Save(Path.Combine(Functions.AppPath, String.Format("Images{0}Genres{0}Genres.xml", Path.DirectorySeparatorChar)))
+            APIXML.GenreXML = XDocument.Load(Path.Combine(Functions.AppPath, String.Format("Images{0}Genres{0}Genres.xml", Path.DirectorySeparatorChar)))
+        End If
+        'old
+        '  xmlGenres.Save(Path.Combine(Functions.AppPath, String.Format("Images{0}Genres{0}Genres.xml", Path.DirectorySeparatorChar)))
+        ' APIXML.GenreXML = XDocument.Load(Path.Combine(Functions.AppPath, String.Format("Images{0}Genres{0}Genres.xml", Path.DirectorySeparatorChar)))
     End Sub
 
 

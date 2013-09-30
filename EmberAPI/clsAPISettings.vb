@@ -3588,8 +3588,25 @@ Public Class Settings
         Try
             Dim xmlSerial As New XmlSerializer(GetType(Settings))
 
-            If File.Exists(Path.Combine(Functions.AppPath, "Settings.xml")) Then
-                Dim strmReader As New StreamReader(Path.Combine(Functions.AppPath, "Settings.xml"))
+
+            'Cocotus, Load from central "Settings" folder if it exists!
+            Dim configpath As String = String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar, "Settings.xml")
+
+            'Settings.xml is still at old place (root) -> move to new place if there's no Settings.xml !
+            If File.Exists(String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar, "Settings.xml")) = False AndAlso File.Exists(Path.Combine(Functions.AppPath, "Settings.xml")) AndAlso Directory.Exists(String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar)) Then
+                File.Move(Path.Combine(Functions.AppPath, "Settings.xml"), String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar, "Settings.xml"))
+                'New Settings folder doesn't exist -> do it the old way...
+            ElseIf Directory.Exists(String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar)) = False Then
+                configpath = Path.Combine(Functions.AppPath, "Settings.xml")
+            End If
+
+            'old
+            '  If File.Exists(Path.Combine(Functions.AppPath, "Settings.xml")) Then
+
+            If File.Exists(configpath) Then
+                'old
+                '  Dim strmReader As New StreamReader(Path.Combine(Functions.AppPath, "Settings.xml"))
+                Dim strmReader As New StreamReader(configpath)
                 Master.eSettings = DirectCast(xmlSerial.Deserialize(strmReader), Settings)
                 strmReader.Close()
             Else
@@ -3608,7 +3625,20 @@ Public Class Settings
     Public Sub Save()
         Try
             Dim xmlSerial As New XmlSerializer(GetType(Settings))
-            Dim xmlWriter As New StreamWriter(Path.Combine(Functions.AppPath, "Settings.xml"))
+
+            'Cocotus All XML Config files in new Setting-folder!
+            Dim configpath As String = ""
+            If Directory.Exists(String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar)) Then
+                configpath = String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar, "Settings.xml")
+                'still Settings.xml is on old place (root)
+            Else
+                configpath = Path.Combine(Functions.AppPath, "Settings.xml")
+            End If
+
+            'old
+            '  Dim xmlWriter As New StreamWriter(Path.Combine(Functions.AppPath, "Settings.xml"))
+
+            Dim xmlWriter As New StreamWriter(configpath)
             xmlSerial.Serialize(xmlWriter, Master.eSettings)
             xmlWriter.Close()
         Catch ex As Exception
