@@ -45,11 +45,31 @@ Public Class StringUtils
             Dim tGenres As String
             Dim rGenres As New List(Of String)
 
-            For Each Genre As String In fGenres
-                If sGenres.Contains(Genre) Then
-                    rGenres.Add(Genre)
+            'Cocotus, 20130930,http://bugs.embermediamanager.org/thebuggenie/embermediamanager/issues/24 More robust Genre matching, should be working for IMDB genres like Game-Show, Talk-Show, Film-Noir 
+            'convert IMDB Scraping Genre result 
+            Dim comparelistsGenres As New List(Of String)
+            For Each blub In sGenres
+                comparelistsGenres.Add(blub.Replace("_", "").Replace("-", "").Replace(" ", "").ToLower)
+            Next
+            'convert EMBER Genres
+            Dim comparelistfGenres As New List(Of String)
+            For Each blub In fGenres
+                comparelistfGenres.Add(blub.Replace("_", "").Replace("-", "").Replace(" ", "").ToLower)
+            Next
+            'now look for matches...
+            For i = 0 To comparelistfGenres.Count - 1
+                If comparelistsGenres.Contains(comparelistfGenres(i)) Then
+                    'found! Now add the correct Ember string
+                    rGenres.Add(fGenres(i))
                 End If
             Next
+            'old: Looking for exact string  - not working if IMDB scrapes "Film-Noir" and Ember list "Film Noir"
+            'For Each Genre As String In fGenres
+            '    If sGenres.Contains(Genre) Then
+            '        rGenres.Add(Genre)
+            '    End If
+            'Next
+
 
             If rGenres.Count > 0 Then
                 tGenres = Strings.Join(rGenres.ToArray, "/").Trim

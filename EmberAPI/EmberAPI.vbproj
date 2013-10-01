@@ -153,6 +153,7 @@
   <ItemGroup>
     <EmbeddedResource Include="dlgCompatibility.resx">
       <DependentUpon>dlgCompatibility.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="dlgVersions.resx">
       <DependentUpon>dlgVersions.vb</DependentUpon>
@@ -218,6 +219,8 @@
     <None Include="Resources\languages.xml" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\Genres.xml" />
+    <None Include="Resources\Ratings.xml" />
     <Content Include="x64\SQLite.Interop.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

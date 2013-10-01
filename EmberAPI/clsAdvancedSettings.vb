@@ -91,7 +91,23 @@ Public Class AdvancedSettings
     End Function
 
     Private Shared Sub LoadBase()
-        Load(Path.Combine(Functions.AppPath, "AdvancedSettings.xml"))
+
+
+        'Cocotus, Load from central "Settings" folder if it exists!
+        Dim configpath As String = String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar, "AdvancedSettings.xml")
+
+        'AdvancedSettings.xml is still at old place (root) -> move to new place if there's no AdvancedSettings.xml !
+        If File.Exists(String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar, "AdvancedSettings.xml")) = False AndAlso File.Exists(Path.Combine(Functions.AppPath, "AdvancedSettings.xml")) AndAlso Directory.Exists(String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar)) Then
+            File.Move(Path.Combine(Functions.AppPath, "AdvancedSettings.xml"), String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar, "AdvancedSettings.xml"))
+            'New Settings folder doesn't exist -> do it the old way...
+        ElseIf Directory.Exists(String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar)) = False Then
+            configpath = Path.Combine(Functions.AppPath, "AdvancedSettings.xml")
+        End If
+
+        'old
+        ' Load(Path.Combine(Functions.AppPath, "AdvancedSettings.xml"))
+
+        Load(configpath)
     End Sub
 
 #End Region 'Constructors
@@ -272,9 +288,15 @@ Public Class AdvancedSettings
                 _DoNotSave = False
                 Return
             End If
+            'Cocotus All XML-config files in new Setting-folder!
+            Dim configpath As String = String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar, "AdvancedSettings.xml")
+            If File.Exists(configpath) Then
+                File.Delete(configpath)
+            End If
             If File.Exists(Path.Combine(Functions.AppPath, "AdvancedSettings.xml")) Then
                 File.Delete(Path.Combine(Functions.AppPath, "AdvancedSettings.xml"))
             End If
+
             Dim xdoc As New XmlDocument()
             xdoc.LoadXml("<?xml version=""1.0"" encoding=""utf-8""?><AdvancedSettings xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema""></AdvancedSettings>")
 
@@ -319,7 +341,11 @@ Public Class AdvancedSettings
             'filePaths.Add(Path.Combine(Functions.AppPath, "AdvancedSettings.xml"))
             'Dim Processes As IList(Of Process)
             'Processes = clsFileLock.GetProcessesUsingFiles(filePaths)
-            If count > 0 Then xdoc.Save(Path.Combine(Functions.AppPath, "AdvancedSettings.xml"))
+
+            'Cocotus All XML-config files in new Setting-folder!
+            'old
+            ' If count > 0 Then xdoc.Save(Path.Combine(Functions.AppPath, "AdvancedSettings.xml"))
+            If count > 0 Then xdoc.Save(configpath)
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
