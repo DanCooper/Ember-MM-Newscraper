@@ -8,7 +8,7 @@
     <ProjectGuid>{6F30E40B-6D85-4EE7-9474-5F82E96E1817}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>generic.EmberCore.Trakt</RootNamespace>
-    <AssemblyName>multi.EmberExtras</AssemblyName>
+    <AssemblyName>generic.EmberCore.Trakt</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
