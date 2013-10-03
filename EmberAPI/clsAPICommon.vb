@@ -666,6 +666,11 @@ Public Class Enums
         Posters = 0
         Fanart = 1
         ASPoster = 2
+        Banner = 3
+        ClearArt = 4
+        ClearLogo = 5
+        DiscArt = 6
+        Landscape = 7
     End Enum
 
     Public Enum TVImageType As Integer
