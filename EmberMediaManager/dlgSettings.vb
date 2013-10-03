@@ -874,7 +874,7 @@ Public Class dlgSettings
         End Try
     End Sub
 
-    Private Sub btnMovieFrodo_Click(sender As Object, e As EventArgs) Handles btnMovieFrodo.Click
+    Private Sub btnMovieFrodo_Click(sender As Object, e As EventArgs)
         Me.chkFanartJPG.Checked = False
         Me.chkFolderJPG.Checked = False
         Me.chkMovieJPG.Checked = False
@@ -2078,6 +2078,96 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
+    Private Sub chkUseFrodo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUseFrodo.CheckedChanged
+        Me.SetApplyButton(True)
+
+        Me.chkActorThumbsFrodo.Enabled = Me.chkUseFrodo.Checked
+        Me.chkBannerFrodo.Enabled = Me.chkUseFrodo.Checked
+        Me.chkClearArtFrodo.Enabled = Me.chkUseFrodo.Checked
+        Me.chkClearLogoFrodo.Enabled = Me.chkUseFrodo.Checked
+        Me.chkExtrafanartFrodo.Enabled = Me.chkUseFrodo.Checked
+        Me.chkExtrathumbsFrodo.Enabled = Me.chkUseFrodo.Checked
+        Me.chkDiscArtFrodo.Enabled = Me.chkUseFrodo.Checked
+        Me.chkFanartFrodo.Enabled = Me.chkUseFrodo.Checked
+        Me.chkLandscapeFrodo.Enabled = Me.chkUseFrodo.Checked
+        Me.chkNFOFrodo.Enabled = Me.chkUseFrodo.Checked
+        Me.chkPosterFrodo.Enabled = Me.chkUseFrodo.Checked
+        Me.chkTrailerFrodo.Enabled = Me.chkUseFrodo.Checked
+
+        If Not Me.chkUseFrodo.Checked Then
+            Me.chkActorThumbsFrodo.Checked = False
+            Me.chkBannerFrodo.Checked = False
+            Me.chkClearArtFrodo.Checked = False
+            Me.chkClearLogoFrodo.Checked = False
+            Me.chkDiscArtFrodo.Checked = False
+            Me.chkExtrafanartFrodo.Checked = False
+            Me.chkExtrathumbsFrodo.Checked = False
+            Me.chkFanartFrodo.Checked = False
+            Me.chkLandscapeFrodo.Checked = False
+            Me.chkNFOFrodo.Checked = False
+            Me.chkPosterFrodo.Checked = False
+            Me.chkTrailerFrodo.Checked = False
+        Else
+            Me.chkActorThumbsFrodo.Checked = True
+            Me.chkBannerFrodo.Checked = True
+            Me.chkClearArtFrodo.Checked = True
+            Me.chkClearLogoFrodo.Checked = True
+            Me.chkDiscArtFrodo.Checked = True
+            Me.chkExtrafanartFrodo.Checked = True
+            Me.chkExtrathumbsFrodo.Checked = True
+            Me.chkFanartFrodo.Checked = True
+            Me.chkLandscapeFrodo.Checked = True
+            Me.chkNFOFrodo.Checked = True
+            Me.chkPosterFrodo.Checked = True
+            Me.chkTrailerFrodo.Checked = True
+        End If
+    End Sub
+
+    Private Sub chkUseYAMJCheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUseYAMJ.CheckedChanged
+        Me.SetApplyButton(True)
+
+        'Me.chkActorThumbsYAMJ.Enabled = Me.chkUseYAMJ.Checked
+        Me.chkBannerYAMJ.Enabled = Me.chkUseYAMJ.Checked
+        'Me.chkClearArtYAMJ.Enabled = Me.chkUseYAMJ.Checked
+        'Me.chkClearLogoYAMJ.Enabled = Me.chkUseYAMJ.Checked
+        'Me.chkExtrafanartYAMJ.Enabled = Me.chkUseYAMJ.Checked
+        'Me.chkExtrathumbsYAMJ.Enabled = Me.chkUseYAMJ.Checked
+        'Me.chkDiscArtYAMJ.Enabled = Me.chkUseYAMJ.Checked
+        Me.chkFanartYAMJ.Enabled = Me.chkUseYAMJ.Checked
+        'Me.chkLandscapeYAMJ.Enabled = Me.chkUseYAMJ.Checked
+        Me.chkNFOYAMJ.Enabled = Me.chkUseYAMJ.Checked
+        Me.chkPosterYAMJ.Enabled = Me.chkUseYAMJ.Checked
+        Me.chkTrailerYAMJ.Enabled = Me.chkUseYAMJ.Checked
+
+        If Not Me.chkUseYAMJ.Checked Then
+            ' Me.chkActorThumbsYAMJ.Checked = False
+            Me.chkBannerYAMJ.Checked = False
+            'Me.chkClearArtYAMJ.Checked = False
+            'Me.chkClearLogoYAMJ.Checked = False
+            'Me.chkDiscArtYAMJ.Checked = False
+            'Me.chkExtrafanartYAMJ.Checked = False
+            'Me.chkExtrathumbsYAMJ.Checked = False
+            Me.chkFanartYAMJ.Checked = False
+            'Me.chkLandscapeYAMJ.Checked = False
+            Me.chkNFOYAMJ.Checked = False
+            Me.chkPosterYAMJ.Checked = False
+            Me.chkTrailerYAMJ.Checked = False
+        Else
+            'Me.chkActorThumbsYAMJ.Checked = True
+            Me.chkBannerYAMJ.Checked = True
+            'Me.chkClearArtYAMJ.Checked = True
+            'Me.chkClearLogoYAMJ.Checked = True
+            'Me.chkDiscArtYAMJ.Checked = True
+            'Me.chkExtrafanartYAMJ.Checked = True
+            'Me.chkExtrathumbsYAMJ.Checked = True
+            Me.chkFanartYAMJ.Checked = True
+            'Me.chkLandscapeYAMJ.Checked = True
+            Me.chkNFOYAMJ.Checked = True
+            Me.chkPosterYAMJ.Checked = True
+            Me.chkTrailerYAMJ.Checked = True
+        End If
+    End Sub
+
     Private Sub chkUseImgCacheUpdaters_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
     End Sub
@@ -2569,6 +2659,36 @@ Public Class dlgSettings
             Me.RefreshEpFilters()
             Me.RefreshMovieFilters()
             Me.RefreshValidExts()
+
+            '*************** XBMC Eden settings ***************
+            Me.chkUseFrodo.Checked = Master.eSettings.UseFrodo
+            Me.chkActorThumbsFrodo.Checked = Master.eSettings.ActorThumbsFrodo
+            Me.chkBannerFrodo.Checked = Master.eSettings.BannerFrodo
+            Me.chkClearArtFrodo.Checked = Master.eSettings.ClearArtFrodo
+            Me.chkClearLogoFrodo.Checked = Master.eSettings.ClearLogoFrodo
+            Me.chkDiscArtFrodo.Checked = Master.eSettings.DiscArtFrodo
+            Me.chkExtrafanartFrodo.Checked = Master.eSettings.ExtrafanartFrodo
+            Me.chkExtrathumbsFrodo.Checked = Master.eSettings.ExtrathumbsFrodo
+            Me.chkFanartFrodo.Checked = Master.eSettings.FanartFrodo
+            Me.chkLandscapeFrodo.Checked = Master.eSettings.LandscapeFrodo
+            Me.chkNFOFrodo.Checked = Master.eSettings.NFOFrodo
+            Me.chkPosterFrodo.Checked = Master.eSettings.PosterFrodo
+            Me.chkTrailerFrodo.Checked = Master.eSettings.TrailerFrodo
+
+            '****************** YAMJ settings *****************
+            Me.chkUseYAMJ.Checked = Master.eSettings.UseYAMJ
+            'Me.chkActorThumbsYAMJ.Checked = Master.eSettings.ActorThumbsYAMJ
+            Me.chkBannerYAMJ.Checked = Master.eSettings.BannerYAMJ
+            'Me.chkClearArtYAMJ.Checked = Master.eSettings.ClearArtYAMJ
+            'Me.chkClearLogoYAMJ.Checked = Master.eSettings.ClearLogoYAMJ
+            'Me.chkDiscArtYAMJ.Checked = Master.eSettings.DiscArtYAMJ
+            'Me.chkExtrafanartYAMJ.Checked = Master.eSettings.ExtrafanartYAMJ
+            'Me.chkExtrathumbsYAMJ.Checked = Master.eSettings.ExtrathumbsYAMJ
+            Me.chkFanartYAMJ.Checked = Master.eSettings.FanartYAMJ
+            'Me.chkLandscapeYAMJ.Checked = Master.eSettings.LandscapeYAMJ
+            Me.chkNFOYAMJ.Checked = Master.eSettings.NFOYAMJ
+            Me.chkPosterYAMJ.Checked = Master.eSettings.PosterYAMJ
+            Me.chkTrailerYAMJ.Checked = Master.eSettings.TrailerYAMJ
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -3643,6 +3763,40 @@ Public Class dlgSettings
             Master.eSettings.OrderDefault = DirectCast(Me.cbOrdering.SelectedIndex, Enums.Ordering)
             Master.eSettings.OnlyValueForCert = Me.chkOnlyValueForCert.Checked
             Master.eSettings.ScraperActorThumbs = Me.chkScraperActorThumbs.Checked
+            '*************** XBMC Frodo settings ***************
+            Master.eSettings.UseFrodo = Me.chkUseFrodo.Checked
+            Master.eSettings.ActorThumbsFrodo = Me.chkActorThumbsFrodo.Checked
+            Master.eSettings.BannerFrodo = Me.chkBannerFrodo.Checked
+            Master.eSettings.ClearArtFrodo = Me.chkClearArtFrodo.Checked
+            Master.eSettings.ClearLogoFrodo = Me.chkClearLogoFrodo.Checked
+            Master.eSettings.DiscArtFrodo = Me.chkDiscArtFrodo.Checked
+            Master.eSettings.ExtrafanartFrodo = Me.chkExtrafanartFrodo.Checked
+            Master.eSettings.ExtrathumbsFrodo = Me.chkExtrathumbsFrodo.Checked
+            Master.eSettings.FanartFrodo = Me.chkFanartFrodo.Checked
+            Master.eSettings.LandscapeFrodo = Me.chkLandscapeFrodo.Checked
+            Master.eSettings.NFOFrodo = Me.chkNFOFrodo.Checked
+            Master.eSettings.PosterFrodo = Me.chkPosterFrodo.Checked
+            Master.eSettings.TrailerFrodo = Me.chkTrailerFrodo.Checked
+
+            '*************** XBMC Eden settings ***************
+
+            '****************** YAMJ settings *****************
+            Master.eSettings.UseYAMJ = Me.chkUseYAMJ.Checked
+            'Master.eSettings.ActorThumbsYAMJ = Me.chkActorThumbsYAMJ.Checked
+            Master.eSettings.BannerYAMJ = Me.chkBannerYAMJ.Checked
+            'Master.eSettings.ClearArtYAMJ = Me.chkClearArtYAMJ.Checked
+            'Master.eSettings.ClearLogoYAMJ = Me.chkClearLogoYAMJ.Checked
+            'Master.eSettings.DiscArtYAMJ = Me.chkDiscArtYAMJ.Checked
+            'Master.eSettings.ExtrafanartYAMJ = Me.chkExtrafanartYAMJ.Checked
+            'Master.eSettings.ExtrathumbsYAMJ = Me.chkExtrathumbsYAMJ.Checked
+            Master.eSettings.FanartYAMJ = Me.chkFanartYAMJ.Checked
+            'Master.eSettings.LandscapeYAMJ = Me.chkLandscapeYAMJ.Checked
+            Master.eSettings.NFOYAMJ = Me.chkNFOYAMJ.Checked
+            Master.eSettings.PosterYAMJ = Me.chkPosterYAMJ.Checked
+            Master.eSettings.TrailerYAMJ = Me.chkTrailerYAMJ.Checked
+
+            '***************** Expert settings ****************
+
             For Each s As ModulesManager._externalScraperModuleClass_Data In ModulesManager.Instance.externalDataScrapersModules
                 Try
                     s.ProcessorModule.SaveSetupScraper(Not isApply)
@@ -3746,11 +3900,10 @@ Public Class dlgSettings
         Me.chkMovieInfoCol.Text = Master.eLang.GetString(468, "Hide Info Column")
         Me.chkMovieFanartCol.Text = Master.eLang.GetString(469, "Hide Fanart Column")
         Me.chkMoviePosterCol.Text = Master.eLang.GetString(470, "Hide Poster Column")
-        Me.GroupBox8.Text = Master.eLang.GetString(471, "File Naming")
-        Me.gbTVNaming.Text = Me.GroupBox8.Text
+        Me.gbFileNaming.Text = Master.eLang.GetString(471, "File Naming")
+        Me.gbTVNaming.Text = Me.gbFileNaming.Text
         Me.chkMovieNameMultiOnly.Text = Master.eLang.GetString(472, "Use <movie> Only for Folders with Multiple Movies")
         Me.GroupBox21.Text = Master.eLang.GetString(151, "Trailer")
-        'Me.chkVideoTSParent.Text = Master.eLang.GetString(473, "YAMJ Compatible VIDEO_TS File Placement/Naming")
         Me.GroupBox6.Text = Master.eLang.GetString(149, "Fanart")
         Me.GroupBox5.Text = Master.eLang.GetString(148, "Poster")
         Me.colName.Text = Master.eLang.GetString(232, "Name")
@@ -4010,7 +4163,7 @@ Public Class dlgSettings
         Me.chkTVScanOrderModify.Text = Me.chkScanOrderModify.Text
         Me.lblPreferredQuality.Text = Master.eLang.GetString(800, "Preferred Quality:")
         Me.gbTVScraperOptions.Text = Master.eLang.GetString(390, "Options")
-       Me.chkDisplayAllSeason.Text = Master.eLang.GetString(832, "Display All Season Poster")
+        Me.chkDisplayAllSeason.Text = Master.eLang.GetString(832, "Display All Season Poster")
         Me.gbHelp.Text = String.Concat("     ", Master.eLang.GetString(458, "Help"))
         Me.chkMarkNewShows.Text = Master.eLang.GetString(549, "Mark New Shows")
         Me.chkMarkNewEpisodes.Text = Master.eLang.GetString(621, "Mark New Episodes")
@@ -4030,7 +4183,6 @@ Public Class dlgSettings
         Me.lblAllSPosterQ.Text = Me.Label24.Text
         Me.btnClearRegex.Text = Master.eLang.GetString(123, "Clear")
         Me.chkAskCheckboxScrape.Text = Master.eLang.GetString(852, "Ask On Click Scrape")
-        Me.btnMovieFrodo.Text = Master.eLang.GetString(867, "XBMC Frodo")
         Me.btnTVShowFrodo.Text = Master.eLang.GetString(867, "XBMC Frodo")
 
         Me.lvTVSources.Columns(1).Text = Master.eLang.GetString(232, "Name")

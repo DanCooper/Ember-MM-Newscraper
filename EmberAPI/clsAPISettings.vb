@@ -356,6 +356,44 @@ Public Class Settings
     Private _usespecialdateadd As Boolean
     'cocotus end
 
+    '*************** XBMC Frodo settings ***************
+    Private _usefrodo As Boolean
+    Private _actorthumbsfrodo As Boolean
+    Private _bannerfrodo As Boolean
+    Private _clearartfrodo As Boolean
+    Private _clearlogofrodo As Boolean
+    Private _discartfrodo As Boolean
+    Private _extrafanartfrodo As Boolean
+    Private _extrathumbsfrodo As Boolean
+    Private _fanartfrodo As Boolean
+    Private _landscapefrodo As Boolean
+    Private _nfofrodo As Boolean
+    Private _posterfrodo As Boolean
+    Private _trailerfrodo As Boolean
+
+    '*************** XBMC Eden settings ***************
+    Private _useeden As Boolean
+    Private _postereden As Boolean
+    Private _fanarteden As Boolean
+
+    '****************** YAMJ settings *****************
+    Private _useyamj As Boolean
+    'Private _actorthumbsyamj As Boolean
+    Private _banneryamj As Boolean
+    'Private _clearartyamj As Boolean
+    'Private _clearlogoyamj As Boolean
+    'Private _discartyamj As Boolean
+    'Private _extrafanartyamj As Boolean
+    'Private _extrathumbsyamj As Boolean
+    Private _fanartyamj As Boolean
+    'Private _landscapeyamj As Boolean
+    Private _nfoyamj As Boolean
+    Private _posteryamj As Boolean
+    Private _traileryamj As Boolean
+
+    '***************** Expert settings ****************
+    Private _useexpert As Boolean
+
 
 #End Region 'Fields
 
@@ -3241,6 +3279,213 @@ Public Class Settings
         End Set
     End Property
     'cocotus end
+
+    Public Property UseFrodo() As Boolean
+        Get
+            Return Me._usefrodo
+        End Get
+        Set(ByVal value As Boolean)
+            Me._usefrodo = value
+        End Set
+    End Property
+
+    Public Property ActorThumbsFrodo() As Boolean
+        Get
+            Return Me._actorthumbsfrodo
+        End Get
+        Set(ByVal value As Boolean)
+            Me._actorthumbsfrodo = value
+        End Set
+    End Property
+
+    Public Property BannerFrodo() As Boolean
+        Get
+            Return Me._bannerfrodo
+        End Get
+        Set(ByVal value As Boolean)
+            Me._bannerfrodo = value
+        End Set
+    End Property
+
+    Public Property ClearArtFrodo() As Boolean
+        Get
+            Return Me._clearartfrodo
+        End Get
+        Set(ByVal value As Boolean)
+            Me._clearartfrodo = value
+        End Set
+    End Property
+
+    Public Property ClearLogoFrodo() As Boolean
+        Get
+            Return Me._clearlogofrodo
+        End Get
+        Set(ByVal value As Boolean)
+            Me._clearlogofrodo = value
+        End Set
+    End Property
+
+    Public Property DiscArtFrodo() As Boolean
+        Get
+            Return Me._discartfrodo
+        End Get
+        Set(ByVal value As Boolean)
+            Me._discartfrodo = value
+        End Set
+    End Property
+
+    Public Property ExtrafanartFrodo() As Boolean
+        Get
+            Return Me._extrafanartfrodo
+        End Get
+        Set(ByVal value As Boolean)
+            Me._extrafanartfrodo = value
+        End Set
+    End Property
+
+    Public Property ExtrathumbsFrodo() As Boolean
+        Get
+            Return Me._extrathumbsfrodo
+        End Get
+        Set(ByVal value As Boolean)
+            Me._extrathumbsfrodo = value
+        End Set
+    End Property
+
+    Public Property FanartFrodo() As Boolean
+        Get
+            Return Me._fanartfrodo
+        End Get
+        Set(ByVal value As Boolean)
+            Me._fanartfrodo = value
+        End Set
+    End Property
+
+    Public Property LandscapeFrodo() As Boolean
+        Get
+            Return Me._landscapefrodo
+        End Get
+        Set(ByVal value As Boolean)
+            Me._landscapefrodo = value
+        End Set
+    End Property
+
+    Public Property NFOFrodo() As Boolean
+        Get
+            Return Me._NFOfrodo
+        End Get
+        Set(ByVal value As Boolean)
+            Me._NFOfrodo = value
+        End Set
+    End Property
+
+    Public Property PosterFrodo() As Boolean
+        Get
+            Return Me._posterfrodo
+        End Get
+        Set(ByVal value As Boolean)
+            Me._posterfrodo = value
+        End Set
+    End Property
+
+    Public Property TrailerFrodo() As Boolean
+        Get
+            Return Me._trailerfrodo
+        End Get
+        Set(ByVal value As Boolean)
+            Me._trailerfrodo = value
+        End Set
+    End Property
+
+    Public Property UseEden() As Boolean
+        Get
+            Return Me._useeden
+        End Get
+        Set(ByVal value As Boolean)
+            Me._useeden = value
+        End Set
+    End Property
+
+    Public Property PosterEden() As Boolean
+        Get
+            Return Me._postereden
+        End Get
+        Set(ByVal value As Boolean)
+            Me._postereden = value
+        End Set
+    End Property
+
+    Public Property FanartEden() As Boolean
+        Get
+            Return Me._fanarteden
+        End Get
+        Set(ByVal value As Boolean)
+            Me._fanarteden = value
+        End Set
+    End Property
+
+    Public Property UseYAMJ() As Boolean
+        Get
+            Return Me._useyamj
+        End Get
+        Set(ByVal value As Boolean)
+            Me._useyamj = value
+        End Set
+    End Property
+
+    Public Property BannerYAMJ() As Boolean
+        Get
+            Return Me._banneryamj
+        End Get
+        Set(ByVal value As Boolean)
+            Me._banneryamj = value
+        End Set
+    End Property
+
+    Public Property FanartYAMJ() As Boolean
+        Get
+            Return Me._fanartyamj
+        End Get
+        Set(ByVal value As Boolean)
+            Me._fanartyamj = value
+        End Set
+    End Property
+
+    Public Property NFOYAMJ() As Boolean
+        Get
+            Return Me._nfoyamj
+        End Get
+        Set(ByVal value As Boolean)
+            Me._nfoyamj = value
+        End Set
+    End Property
+
+    Public Property PosterYAMJ() As Boolean
+        Get
+            Return Me._posteryamj
+        End Get
+        Set(ByVal value As Boolean)
+            Me._posteryamj = value
+        End Set
+    End Property
+
+    Public Property TrailerYAMJ() As Boolean
+        Get
+            Return Me._traileryamj
+        End Get
+        Set(ByVal value As Boolean)
+            Me._traileryamj = value
+        End Set
+    End Property
+
+    Public Property UseExpert() As Boolean
+        Get
+            Return Me._useexpert
+        End Get
+        Set(ByVal value As Boolean)
+            Me._useexpert = value
+        End Set
+    End Property
 
 #End Region 'Properties
 
