@@ -444,6 +444,24 @@ Public Class StringUtils
         Return String.Empty
     End Function
 
+    Public Shared Function CleanFileName(ByVal fName As String) As String
+
+        If Not String.IsNullOrEmpty(fName) Then
+            fName = fName.Replace(":", " -")
+            fName = fName.Replace("/", String.Empty)
+            'pattern = pattern.Replace("\", String.Empty)
+            fName = fName.Replace("|", String.Empty)
+            fName = fName.Replace("<", String.Empty)
+            fName = fName.Replace(">", String.Empty)
+            fName = fName.Replace("?", String.Empty)
+            fName = fName.Replace("*", String.Empty)
+            fName = fName.Replace(" ", " ")
+            Return fName
+        End If
+
+        Return fName
+    End Function
+
     Public Shared Function ShortenOutline(ByVal fOutline As String, ByVal fLimit As Integer) As String
         Dim MaxLength As Integer = fLimit - 2
         Dim FullLenght As Integer = fOutline.Length
@@ -460,9 +478,10 @@ Public Class StringUtils
             End If
             Return sOutline
         Else
-            sOutline = Strings.Left(fOutline, (fOutline.IndexOf(".") + 1))
-            sOutline = String.Concat(sOutline, "..")
-            Return sOutline
+            Return fOutline
+            'sOutline = Strings.Left(fOutline, (fOutline.IndexOf(".") + 1))
+            'sOutline = String.Concat(sOutline, "..")
+            'Return sOutline
         End If
 
         Return fOutline
