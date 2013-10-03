@@ -252,7 +252,7 @@ Public Class dlgTMDBSearchResults
                 Me.lblYear.Text = Master.tmpMovie.Year
                 Me.lblDirector.Text = Master.tmpMovie.Director
                 Me.lblGenre.Text = Master.tmpMovie.Genre
-                Me.txtPlot.Text = Master.tmpMovie.Plot
+                Me.txtPlot.Text = StringUtils.ShortenOutline(Master.tmpMovie.Plot, 410)
                 Me.lblIMDB.Text = Master.tmpMovie.IMDBID
 
                 If _PosterCache.ContainsKey(Master.tmpMovie.TMDBID) Then
