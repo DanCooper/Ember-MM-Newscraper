@@ -314,53 +314,53 @@ Namespace TMDBg
 				End If
 
                 'Get tagline of the movie
-				If Options.bTagline AndAlso (String.IsNullOrEmpty(IMDBMovie.Tagline) OrElse Not Master.eSettings.LockTagline) Then
-					IMDBMovie.Tagline = CStr(IIf(String.IsNullOrEmpty(IMDBMovie.Tagline) AndAlso _MySettings.FallBackEng, MovieE.tagline, Movie.tagline))
-				End If
+                If Options.bTagline AndAlso (String.IsNullOrEmpty(IMDBMovie.Tagline) OrElse Not Master.eSettings.LockTagline) Then
+                    IMDBMovie.Tagline = CStr(IIf(String.IsNullOrEmpty(Movie.tagline) AndAlso _MySettings.FallBackEng, MovieE.tagline, Movie.tagline))
+                End If
 
-				If bwTMDBg.CancellationPending Then Return Nothing
+                If bwTMDBg.CancellationPending Then Return Nothing
 
-				'Get countries of the movie
-				If Options.bCountry Then
-					If IsNothing(Releases) Then
-						Releases = _TMDBApi.GetMovieReleases(Movie.id)
-						If Not IsNothing(Releases) AndAlso Not IsNothing(Releases.countries) Then
-							If (Releases.countries.Count = 0) AndAlso _MySettings.FallBackEng Then
-								Releases = _TMDBApiE.GetMovieReleases(Movie.id)
-							End If
-						Else
-							If _MySettings.FallBackEng Then
-								Releases = _TMDBApiE.GetMovieReleases(Movie.id)
-							End If
-						End If
-					End If
-					IMDBMovie.Countries.Clear()
-					If Not IsNothing(Releases) AndAlso Not IsNothing(Releases.countries) Then
-						For Each aCo As WatTmdb.V3.ReleaseCountry In Releases.countries
-							IMDBMovie.Countries.Add(aCo.iso_3166_1)
-						Next
-					End If
-				End If
+                'Get countries of the movie
+                If Options.bCountry Then
+                    If IsNothing(Releases) Then
+                        Releases = _TMDBApi.GetMovieReleases(Movie.id)
+                        If Not IsNothing(Releases) AndAlso Not IsNothing(Releases.countries) Then
+                            If (Releases.countries.Count = 0) AndAlso _MySettings.FallBackEng Then
+                                Releases = _TMDBApiE.GetMovieReleases(Movie.id)
+                            End If
+                        Else
+                            If _MySettings.FallBackEng Then
+                                Releases = _TMDBApiE.GetMovieReleases(Movie.id)
+                            End If
+                        End If
+                    End If
+                    IMDBMovie.Countries.Clear()
+                    If Not IsNothing(Releases) AndAlso Not IsNothing(Releases.countries) Then
+                        For Each aCo As WatTmdb.V3.ReleaseCountry In Releases.countries
+                            IMDBMovie.Countries.Add(aCo.iso_3166_1)
+                        Next
+                    End If
+                End If
 
-				If bwTMDBg.CancellationPending Then Return Nothing
+                If bwTMDBg.CancellationPending Then Return Nothing
 
-				'Get genres of the movie
-				If Options.bGenre AndAlso (String.IsNullOrEmpty(IMDBMovie.Genre) OrElse Not Master.eSettings.LockGenre) Then
-					IMDBMovie.Genres.Clear()
-					Dim tGen As System.Collections.Generic.List(Of WatTmdb.V3.MovieGenre)
-					If Not IsNothing(Movie) AndAlso Not IsNothing(Movie.genres) Then
-						tGen = CType(IIf(Movie.genres.Count = 0 AndAlso _MySettings.FallBackEng, MovieE.genres, Movie.genres), Global.System.Collections.Generic.List(Of Global.WatTmdb.V3.MovieGenre))
-					Else
-						tGen = CType(IIf(_MySettings.FallBackEng, MovieE.genres, Nothing), Global.System.Collections.Generic.List(Of Global.WatTmdb.V3.MovieGenre))
-					End If
+                'Get genres of the movie
+                If Options.bGenre AndAlso (String.IsNullOrEmpty(IMDBMovie.Genre) OrElse Not Master.eSettings.LockGenre) Then
+                    IMDBMovie.Genres.Clear()
+                    Dim tGen As System.Collections.Generic.List(Of WatTmdb.V3.MovieGenre)
+                    If Not IsNothing(Movie) AndAlso Not IsNothing(Movie.genres) Then
+                        tGen = CType(IIf(Movie.genres.Count = 0 AndAlso _MySettings.FallBackEng, MovieE.genres, Movie.genres), Global.System.Collections.Generic.List(Of Global.WatTmdb.V3.MovieGenre))
+                    Else
+                        tGen = CType(IIf(_MySettings.FallBackEng, MovieE.genres, Nothing), Global.System.Collections.Generic.List(Of Global.WatTmdb.V3.MovieGenre))
+                    End If
 
 
-					If Not IsNothing(tGen) Then
-						For Each aGen As WatTmdb.V3.MovieGenre In tGen
-							IMDBMovie.Genres.Add(aGen.name)
-						Next
-					End If
-				End If
+                    If Not IsNothing(tGen) Then
+                        For Each aGen As WatTmdb.V3.MovieGenre In tGen
+                            IMDBMovie.Genres.Add(aGen.name)
+                        Next
+                    End If
+                End If
 
                 If bwTMDBg.CancellationPending Then Return Nothing
 
