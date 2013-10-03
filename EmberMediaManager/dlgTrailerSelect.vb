@@ -107,7 +107,7 @@ Public Class dlgTrailerSelect
             If Master.eSettings.ValidExts.Contains(Path.GetExtension(Me.txtManual.Text)) AndAlso File.Exists(Me.txtManual.Text) Then
                 If CloseDialog Then
                     If Master.eSettings.VideoTSParentXBMC AndAlso FileUtils.Common.isBDRip(Me.sPath) Then
-                        Me.tURL = String.Concat(Directory.GetParent(Directory.GetParent(Me.sPath).FullName).FullName, "\", "index", If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(Me.txtManual.Text))
+                        Me.tURL = String.Concat(Directory.GetParent(Directory.GetParent(Me.sPath).FullName).FullName, Path.DirectorySeparatorChar, "index", If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(Me.txtManual.Text))
                     ElseIf Master.eSettings.MovieNameNFOStack Then
                         Dim sPathStack As String = StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(Me.sPath))
                         Me.tURL = Path.Combine(Directory.GetParent(Me.sPath).FullName, String.Concat(Path.GetFileNameWithoutExtension(sPathStack), If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(Me.txtManual.Text)))
@@ -262,7 +262,7 @@ Public Class dlgTrailerSelect
                 Application.DoEvents()
 
                 If Master.eSettings.VideoTSParentXBMC AndAlso FileUtils.Common.isBDRip(Me.sPath) Then
-                    Me.tURL = String.Concat(Directory.GetParent(Directory.GetParent(Me.sPath).FullName).FullName, "\", "index", If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(Me.txtManual.Text))
+                    Me.tURL = String.Concat(Directory.GetParent(Directory.GetParent(Me.sPath).FullName).FullName, Path.DirectorySeparatorChar, "index", If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(Me.txtManual.Text))
                 ElseIf Master.eSettings.MovieNameNFOStack Then
                     Dim sPathStack As String = StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(Me.sPath))
                     Me.tURL = Path.Combine(Directory.GetParent(Me.sPath).FullName, String.Concat(Path.GetFileNameWithoutExtension(sPathStack), If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(Me.txtManual.Text)))

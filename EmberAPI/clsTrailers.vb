@@ -71,8 +71,8 @@ Public Class Trailers
                 File.Delete(String.Concat(tmpNameNoStack, "-trailer", t))
             ElseIf File.Exists(String.Concat(tmpNameNoStack, "[trailer]", t)) AndAlso Not String.Concat(tmpNameNoStack, "[trailer]", t).ToLower = NewTrailer.ToLower Then
                 File.Delete(String.Concat(tmpNameNoStack, "[trailer]", t))
-            ElseIf Master.eSettings.VideoTSParentXBMC AndAlso FileUtils.Common.isBDRip(sPath) AndAlso File.Exists(String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, "\", "index-trailer", t)) AndAlso Not String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, "\", "index-trailer", t).ToLower = NewTrailer.ToLower Then
-                File.Delete(String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, "\", "index-trailer", t))
+            ElseIf Master.eSettings.VideoTSParentXBMC AndAlso FileUtils.Common.isBDRip(sPath) AndAlso File.Exists(String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Path.DirectorySeparatorChar, "index-trailer", t)) AndAlso Not String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Path.DirectorySeparatorChar, "index-trailer", t).ToLower = NewTrailer.ToLower Then
+                File.Delete(String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Path.DirectorySeparatorChar, "index-trailer", t))
             End If
         Next
     End Sub
@@ -166,7 +166,7 @@ Public Class Trailers
         AddHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
         ' filename is managed in the DownloadFile
         'If Master.eSettings.VideoTSParentXBMC AndAlso FileUtils.Common.isBDRip(sPath) Then
-        '    tURL = String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, "\", "index", If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(sURL))
+        '    tURL = String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Path.DirectorySeparatorChar, "index", If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(sURL))
         'ElseIf Master.eSettings.MovieNameNFOStack Then
         '    Dim sPathStack As String = StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath))
         '    tURL = Path.Combine(Directory.GetParent(sPath).FullName, String.Concat(Path.GetFileNameWithoutExtension(sPathStack), If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(sURL)))
