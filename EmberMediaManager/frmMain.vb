@@ -1349,7 +1349,7 @@ Public Class frmMain
                     If Fanart.WebImage.IsAllowedToDownload(DBScrapeMovie, Enums.ImageType.Fanart) Then
                         If Not ModulesManager.Instance.MovieScrapeImages(DBScrapeMovie, Enums.ScraperCapabilities.Fanart, aList) Then
                             If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) AndAlso Images.GetPreferredFanart(aList, Fanart) Then
-                                If String.IsNullOrEmpty(Fanart.URL) AndAlso IsNothing(Fanart.WebImage.Image) Then
+                                If Not String.IsNullOrEmpty(Fanart.URL) AndAlso IsNothing(Fanart.WebImage.Image) Then
                                     Fanart.WebImage.FromWeb(Fanart.URL)
                                 End If
                                 If Not IsNothing(Fanart.WebImage.Image) Then
@@ -1431,6 +1431,7 @@ Public Class frmMain
                     End If
                 End If
                 If Master.GlobalScrapeMod.Actors AndAlso Master.eSettings.ScraperActorThumbs Then
+                    'If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
                     For Each act As MediaContainers.Person In DBScrapeMovie.Movie.Actors
                         Dim img As New Images
                         img.FromWeb(act.Thumb)
@@ -1438,6 +1439,7 @@ Public Class frmMain
                             img.SaveAsActorThumb(act, Directory.GetParent(DBScrapeMovie.Filename).FullName, DBScrapeMovie)
                         End If
                     Next
+                    'End If
                 End If
 
                 '-----
