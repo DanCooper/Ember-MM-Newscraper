@@ -60,7 +60,8 @@ Namespace TMDBg
 		Private _TMDBConf As V3.TmdbConfiguration
 		Private _TMDBConfE As V3.TmdbConfiguration
 		Private _TMDBApi As V3.Tmdb
-		Private _TMDBApiE As V3.Tmdb
+        Private _TMDBApiE As V3.Tmdb
+        Private _TMDBApiA As V3.Tmdb
         Private _MySettings As TMDB_Data.sMySettings
 
         Friend WithEvents bwTMDBg As New System.ComponentModel.BackgroundWorker
@@ -99,7 +100,7 @@ Namespace TMDBg
 
 #Region "Methods"
 
-        Public Sub New(ByRef tTMDBConf As V3.TmdbConfiguration, ByRef tTMDBConfE As V3.TmdbConfiguration, ByRef tTMDBApi As V3.Tmdb, ByRef tTMDBApiE As V3.Tmdb)
+        Public Sub New(ByRef tTMDBConf As V3.TmdbConfiguration, ByRef tTMDBConfE As V3.TmdbConfiguration, ByRef tTMDBApi As V3.Tmdb, ByRef tTMDBApiE As V3.Tmdb, ByRef tTMDBApiA As V3.Tmdb)
             _MySettings.TMDBAPIKey = AdvancedSettings.GetSetting("TMDBAPIKey", "Get your API Key from http://www.themoviedb.org")
             _MySettings.FallBackEng = AdvancedSettings.GetBooleanSetting("FallBackEn", False)
             _MySettings.TMDBLanguage = AdvancedSettings.GetSetting("TMDBLanguage", "en")
@@ -107,6 +108,7 @@ Namespace TMDBg
             _TMDBApi = tTMDBApi
             _TMDBConf = tTMDBConf
             _TMDBApiE = tTMDBApiE
+            _TMDBApiA = tTMDBApiA
             _TMDBConfE = tTMDBConfE
         End Sub
 

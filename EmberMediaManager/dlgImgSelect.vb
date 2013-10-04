@@ -258,7 +258,7 @@ Public Class dlgImgSelect
                 Dim x = From MI As MediaContainers.Image In _ImageList Where (MI.ParentID = aParentID)
                 If x.Count > 1 Then
 
-                    text = Master.eLang.GetString(896, "Multiple")
+                    text = If(String.IsNullOrEmpty(aImg.LongLang), Master.eLang.GetString(896, "Multiple"), Master.eLang.GetString(896, "Multiple") & Environment.NewLine & aImg.LongLang) 'Master.eLang.GetString(896, "Multiple")
                     Dim y = From MI As MediaContainers.Image In _ImageList Where ((MI.ParentID = aParentID) And (MI.Description = aDes))
                     tImg = y(0)
                 Else

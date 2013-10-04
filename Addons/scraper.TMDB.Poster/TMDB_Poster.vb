@@ -47,8 +47,9 @@ Public Class TMDB_Poster
     Private _setup As frmTMDBMediaSettingsHolder
     Private _TMDBConf As V3.TmdbConfiguration
     Private _TMDBConfE As V3.TmdbConfiguration
-    Private _TMDBApi As V3.Tmdb
-    Private _TMDBApiE As V3.Tmdb
+    Private _TMDBApi As V3.Tmdb 'preferred language
+    Private _TMDBApiE As V3.Tmdb 'english language
+    Private _TMDBApiA As V3.Tmdb 'all languages
 
 #End Region 'Fields
 
@@ -132,8 +133,9 @@ Public Class TMDB_Poster
         _TMDBConf = _TMDBApi.GetConfiguration()
         _TMDBApiE = New WatTmdb.V3.Tmdb(_MySettings.TMDBAPIKey)
         _TMDBConfE = _TMDBApiE.GetConfiguration()
-        _TMDBg = New TMDBg.Scraper(_TMDBConf, _TMDBConfE, _TMDBApi, _TMDBApiE)
-        TMDB = New TMDB.Scraper(_TMDBConf, _TMDBConfE, _TMDBApi, _TMDBApiE, _MySettings)
+        _TMDBApiA = New WatTmdb.V3.Tmdb(_MySettings.TMDBAPIKey, "")
+        _TMDBg = New TMDBg.Scraper(_TMDBConf, _TMDBConfE, _TMDBApi, _TMDBApiE, _TMDBApiA)
+        TMDB = New TMDB.Scraper(_TMDBConf, _TMDBConfE, _TMDBApi, _TMDBApiE, _TMDBApiA, _MySettings)
     End Sub
 
     Function InjectSetupScraper() As Containers.SettingsPanel Implements Interfaces.EmberMovieScraperModule_Poster.InjectSetupScraper

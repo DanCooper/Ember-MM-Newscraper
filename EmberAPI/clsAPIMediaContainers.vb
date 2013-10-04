@@ -1826,6 +1826,9 @@ Namespace MediaContainers
         Public Property URL As String ' path to image (local or url)
         Public Property WebImage As Images
         Public Property ParentID As String 'All images of the same size must have this identical, is used to group the images.
+        Public Property ShortLang As String
+        Public Property LongLang As String
+
 #End Region 'Properties
 
 #Region "Methods"
