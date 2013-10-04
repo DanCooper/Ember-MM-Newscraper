@@ -35,10 +35,6 @@ Public Class dlgOfflineHolder
     Private def_pbPreview_h As Integer
     Private def_pbPreview_w As Integer
     Private destPath As String
-    Private _IMDBg As IMDBg.Scraper
-
-    '    Private currTopText As String
-    '    Private prevTopText As String = String.Empty
     Private drawFont As New Font("Arial", 22, FontStyle.Bold)
     Private WorkingPath As String = Path.Combine(Master.TempPath, "OfflineHolder")
     Private FileName As String = Path.Combine(WorkingPath, "PlaceHolder.avi")
@@ -50,6 +46,7 @@ Public Class dlgOfflineHolder
     Private OverlayPath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Offlineoverlay.png")
     Private Preview As Bitmap
     Private PreviewPath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "OfflineDefault.jpg")
+    Private PreviewPathW As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "OfflineDefaultWide.jpg")
     Private prevNameText As String = String.Empty
     Private prevText As String = String.Empty
     Private RealImage_H As Integer
@@ -60,6 +57,7 @@ Public Class dlgOfflineHolder
     Private txtTopPos As Integer
     Private Video_Height As Integer
     Private Video_Width As Integer
+    Private Video_Aspect As String
 
 
 #End Region 'Fields
@@ -146,7 +144,7 @@ Public Class dlgOfflineHolder
             End If
             newGraphics.DrawString(drawString, drawFont, drawBrush, drawPoint)
             If chkOverlay.Checked AndAlso chkUseFanart.Checked Then
-                newGraphics.DrawImage(Overlay.Image, 0, Convert.ToUInt16(txtTopPos - 65 / (1280 / Video_Width)), Convert.ToUInt16(Overlay.Image.Width / (1280 / Video_Width)), Convert.ToUInt16(Overlay.Image.Height / (1280 / Video_Width)))
+                newGraphics.DrawImage(Overlay.Image, 0, Convert.ToUInt16(txtTopPos - 65 / (1920 / Video_Width)), Convert.ToUInt16(Overlay.Image.Width / (1920 / Video_Width)), Convert.ToUInt16(Overlay.Image.Height / (1920 / Video_Width)))
             End If
 
             imgTemp.Save(Path.Combine(buildPath, String.Format("image{0}.jpg", f)), System.Drawing.Imaging.ImageFormat.Jpeg)
@@ -161,13 +159,24 @@ Public Class dlgOfflineHolder
         End If
         Me.bwCreateHolder.ReportProgress(2, Master.eLang.GetString(503, "Building Movie"))
         Using ffmpeg As New Process()
+
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            '                                                ffmpeg info                                                     '
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            ' -r      = fps                                                                                                  '
+            ' -an     = disable audio recording                                                                              '
+            ' -i      = creating a video from many images                                                                    '
+            ' -q:v n  = constant qualitiy(:video) (but a variable bitrate), "n" 1 (excellent quality) and 31 (worst quality) '
+            ' -b:v n  = bitrate(:video)                                                                                      '
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
             ffmpeg.StartInfo.FileName = Functions.GetFFMpeg
             ffmpeg.EnableRaisingEvents = False
             ffmpeg.StartInfo.UseShellExecute = False
             ffmpeg.StartInfo.CreateNoWindow = True
             ffmpeg.StartInfo.RedirectStandardOutput = True
-            ffmpeg.StartInfo.RedirectStandardError = True
-            ffmpeg.StartInfo.Arguments = String.Format(" -qscale 5 -r 25 -b 1200 -an -i ""{0}\image%d.jpg"" ""{1}""", buildPath, tMovie.Filename)
+            'ffmpeg.StartInfo.RedirectStandardError = True     <----- if activated, ffmpeg can not finish the building process 
+            ffmpeg.StartInfo.Arguments = String.Format(" -r 25 -an -i ""{0}\image%d.jpg"" -q:v 1 -b:v 40000k ""{1}""", buildPath, tMovie.Filename)
             ffmpeg.Start()
             ffmpeg.WaitForExit()
             ffmpeg.Close()
@@ -214,6 +223,42 @@ Public Class dlgOfflineHolder
             tMovie.FanartPath = fanart.SaveAsFanart(tMovie)
             'tMovie.FanartPath = Path.Combine(destPath, Path.GetFileName(tMovie.FanartPath).ToString)
         End If
+
+        If Not String.IsNullOrEmpty(tMovie.ExtraPath) Then
+            DirectoryCopy(Directory.GetParent(tMovie.ExtraPath).FullName, Path.Combine(destPath, "extrathumbs"))
+        End If
+
+        If Master.eSettings.ScraperActorThumbs Then
+            Me.bwCreateHolder.ReportProgress(5, Master.eLang.GetString(31, "Generating Actor Thumbs"))
+            For Each act As MediaContainers.Person In tMovie.Movie.Actors
+                Dim img As New Images
+                img.FromWeb(act.Thumb)
+                If Not IsNothing(img.Image) Then
+                    img.SaveAsActorThumb(act, Directory.GetParent(tMovie.Filename).FullName, tMovie)
+                End If
+            Next
+        End If
+        Dim tPath As String = Directory.GetParent(tMovie.Filename).FullName
+        Dim tmpName As String = Path.Combine(tPath, StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(tMovie.Filename))).ToLower
+        Dim fList As New List(Of String)
+
+        Try
+            fList.AddRange(Directory.GetFiles(Directory.GetParent(tMovie.Filename).FullName))
+        Catch
+        End Try
+        For Each fFile As String In fList
+            For Each t As String In Master.eSettings.ValidExts
+                Select Case True
+                    Case fFile.ToLower = String.Concat(tmpName, "-trailer", t.ToLower)
+                        tMovie.TrailerPath = fFile
+                        Exit For
+                    Case fFile.ToLower = String.Concat(tmpName, "[trailer]", t.ToLower)
+                        tMovie.TrailerPath = fFile
+                        Exit For
+                End Select
+            Next
+        Next
+
         tMovie = Master.DB.SaveMovieToDB(tMovie, True, False, True)
 
         Me.bwCreateHolder.ReportProgress(4, Master.eLang.GetString(506, "Renaming Files"))
@@ -231,6 +276,32 @@ Public Class dlgOfflineHolder
             Return
         End If
         Me.bwCreateHolder.ReportProgress(5, Master.eLang.GetString(361, "Finished"))
+    End Sub
+
+    Private Sub CleanUp()
+        Try
+            If File.Exists(Path.Combine(Master.TempPath, "poster.jpg")) Then
+                File.Delete(Path.Combine(Master.TempPath, "poster.jpg"))
+            End If
+
+            If File.Exists(Path.Combine(Master.TempPath, "fanart.jpg")) Then
+                File.Delete(Path.Combine(Master.TempPath, "fanart.jpg"))
+            End If
+
+            If File.Exists(Path.Combine(Master.TempPath, "frame.jpg")) Then
+                File.Delete(Path.Combine(Master.TempPath, "frame.jpg"))
+            End If
+
+            If Directory.Exists(Path.Combine(Master.TempPath, "extrathumbs")) Then
+                FileUtils.Delete.DeleteDirectory(Path.Combine(Master.TempPath, "extrathumbs"))
+            End If
+
+            If Directory.Exists(Path.Combine(Master.TempPath, "OfflineHolder")) Then
+                FileUtils.Delete.DeleteDirectory(Path.Combine(Master.TempPath, "OfflineHolder"))
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
 
     Private Sub bwCreateHolder_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwCreateHolder.ProgressChanged
@@ -252,18 +323,30 @@ Public Class dlgOfflineHolder
     Private Sub cbFormat_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbFormat.SelectedIndexChanged
         Select Case cbFormat.SelectedIndex
             Case 0
-                Video_Width = 640
-                Video_Height = 480
+                Video_Width = 1920
+                Video_Height = 1080
+                Video_Aspect = "Wide"
             Case 1
                 Video_Width = 1280
                 Video_Height = 720
+                Video_Aspect = "Wide"
             Case 2
+                Video_Width = 1024
+                Video_Height = 576
+                Video_Aspect = "Wide"
+            Case 3
                 Video_Width = 720
                 Video_Height = 576
+                Video_Aspect = "NotWide"
         End Select
-        SetPreview(Not chkUseFanart.Checked, String.Empty)
+        Dim fPath = tMovie.FanartPath
+        SetPreview(Not chkUseFanart.Checked, fPath)
         If Not chkUseFanart.Checked AndAlso Not IsNothing(Preview) Then
-            txtTop.Text = Convert.ToUInt16((Preview.Height - 150 / (1280 / Video_Width))).ToString
+            If Video_Aspect = "Wide" Then
+                txtTop.Text = Convert.ToUInt16(Preview.Height - (167 / (1920 / Video_Width)) - (textHeight.Height / 2)).ToString
+            Else
+                txtTop.Text = Convert.ToUInt16(Preview.Height - 90 - (textHeight.Height / 2)).ToString
+            End If
         End If
         CreatePreview()
     End Sub
@@ -376,7 +459,7 @@ Public Class dlgOfflineHolder
         If Not chkUseFanart.Checked Then
             If File.Exists(PreviewPath) Then
                 SetPreview(True, PreviewPath)
-                txtTop.Text = (Preview.Height - 150 / (1280 / Video_Width)).ToString
+                txtTop.Text = (Preview.Height - 150 / (1920 / Video_Width)).ToString
             End If
         Else
             Dim fPath As String = tMovie.FanartPath
@@ -398,6 +481,7 @@ Public Class dlgOfflineHolder
             bwCreateHolder.CancelAsync()
         Else
             Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
+            Me.CleanUp()
             Me.Close()
         End If
     End Sub
@@ -405,12 +489,29 @@ Public Class dlgOfflineHolder
     Private Sub CreatePreview()
         If Preview Is Nothing Then Return
         Dim bmCloneOriginal As Bitmap = New Bitmap(Preview)
-        tbTagLine.Maximum = Convert.ToInt32(Preview.Height - textHeight.Height)
-        If txtTopPos > tbTagLine.Maximum Then
-            txtTopPos = tbTagLine.Maximum - 30
+
+        If chkUseFanart.Checked AndAlso chkOverlay.Checked Then
+            tbTagLine.Minimum = Convert.ToInt32(textHeight.Height) ' - 3
+            tbTagLine.Maximum = Convert.ToInt32(bmCloneOriginal.Height - (65 / (1920 / Video_Width)))
+        Else
+            tbTagLine.Minimum = Convert.ToInt32(textHeight.Height) ' - 3
+            tbTagLine.Maximum = Convert.ToInt32(bmCloneOriginal.Height)
+        End If
+
+        If txtTopPos < bmCloneOriginal.Height - tbTagLine.Maximum Then
+            txtTopPos = bmCloneOriginal.Height - tbTagLine.Maximum
             txtTop.Text = txtTopPos.ToString
         End If
-        tbTagLine.Value = tbTagLine.Maximum - txtTopPos
+
+        If txtTopPos > bmCloneOriginal.Height - tbTagLine.Minimum Then
+            txtTopPos = bmCloneOriginal.Height - tbTagLine.Minimum
+            txtTop.Text = txtTopPos.ToString
+        End If
+
+        tbTagLine.Value = bmCloneOriginal.Height - txtTopPos
+
+        pbPreview.Width = def_pbPreview_w
+        pbPreview.Height = def_pbPreview_h
         Dim w, h As Integer
         w = pbPreview.Width
         h = Convert.ToInt16(pbPreview.Width / RealImage_ratio)
@@ -428,15 +529,22 @@ Public Class dlgOfflineHolder
 
         Dim iLeft As Integer = Convert.ToInt32((bmCloneOriginal.Width - textHeight.Width) / 2)
         If chkBackground.Checked AndAlso chkUseFanart.Checked Then
-            grOriginal.FillRectangle(backgroundBrush, 0, txtTopPos - 5, bmCloneOriginal.Width, textHeight.Height + 10)
+            grOriginal.FillRectangle(backgroundBrush, 0, txtTopPos - 5, bmCloneOriginal.Width, drawFont.Height + 10)
         End If
         grOriginal.DrawString(txtTagline.Text, drawFont, drawBrush, iLeft, txtTopPos)
         If chkOverlay.Checked AndAlso chkUseFanart.Checked Then
-            grOriginal.DrawImage(Overlay.Image, 0, Convert.ToUInt16(txtTopPos - 65 / (1280 / Video_Width)), Convert.ToUInt16(Overlay.Image.Width / (1280 / Video_Width)), Convert.ToUInt16(Overlay.Image.Height / (1280 / Video_Width)))
+            grOriginal.DrawImage(Overlay.Image, 0, Convert.ToUInt16(txtTopPos - 65 / (1920 / Video_Width)), Convert.ToUInt16(Overlay.Image.Width / (1920 / Video_Width)), Convert.ToUInt16(Overlay.Image.Height / (1920 / Video_Width)))
         End If
         grPreview.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
         grPreview.DrawImage(bmCloneOriginal, New Rectangle(0, 0, pbPreview.Width, pbPreview.Height), New Rectangle(0, 0, bmCloneOriginal.Width, bmCloneOriginal.Height), GraphicsUnit.Pixel)
-        tbTagLine.Height = pbPreview.Image.Height + 7
+
+        If chkUseFanart.Checked AndAlso chkOverlay.Checked Then
+            tbTagLine.Location = New Point(tbTagLine.Location.X, Convert.ToInt32((gbPreview.Location.Y + pbPreview.Location.Y) - 13 + ((textHeight.Height / (RealImage_H / pbPreview.Height)) / 2) + (65 / (1920 / Video_Width) / (RealImage_H / pbPreview.Height))))
+            tbTagLine.Height = Convert.ToInt32(pbPreview.Height + 26 - (textHeight.Height / (RealImage_H / pbPreview.Height)) - (65 / (1920 / Video_Width) / (RealImage_H / pbPreview.Height)))
+        Else
+            tbTagLine.Location = New Point(tbTagLine.Location.X, Convert.ToInt32((gbPreview.Location.Y + pbPreview.Location.Y) - 13 + ((textHeight.Height / (RealImage_H / pbPreview.Height)) / 2)))
+            tbTagLine.Height = Convert.ToInt32(pbPreview.Height + 26 - (textHeight.Height / (RealImage_H / pbPreview.Height)))
+        End If
     End Sub
 
     Private Sub Create_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Create_Button.Click
@@ -445,6 +553,7 @@ Public Class dlgOfflineHolder
         txtMovieName.Enabled = False
         txtTagline.Enabled = False
         chkUseFanart.Enabled = False
+        CLOSE_Button.Enabled = False
         'Need to avoid cross thread in BackgroundWorker
         'txtTopPos = Video_Width / (pbPreview.Image.Width / Convert.ToSingle(currTopText)) ' ... and Scale it
         Me.pbProgress.Value = 100
@@ -503,8 +612,9 @@ Public Class dlgOfflineHolder
             Me.SetUp()
             def_pbPreview_w = pbPreview.Width
             def_pbPreview_h = pbPreview.Height
-            Video_Width = 1280
-            Video_Height = 720
+            Video_Width = 1920
+            Video_Height = 1080
+            Video_Aspect = "Wide"
             cbFormat.SelectedIndex = 0
             Dim iBackground As New Bitmap(Me.pnlTop.Width, Me.pnlTop.Height)
             Using g As Graphics = Graphics.FromImage(iBackground)
@@ -542,7 +652,6 @@ Public Class dlgOfflineHolder
             lvStatus.Items(idxStsImage).SubItems.Add(Master.eLang.GetString(195, "Valid"))
             lvStatus.Items(idxStsImage).UseItemStyleForSubItems = False
             lvStatus.Items(idxStsImage).SubItems(1).ForeColor = Color.Green
-            'tbTagLine.Value = tbTagLine.Maximum - 470 'Video_Height - 100
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -556,12 +665,41 @@ Public Class dlgOfflineHolder
         Dim Poster As New MediaContainers.Image
         Dim tUrl As String = String.Empty
         Try
+            Me.CleanUp()
             tMovie.Movie.Clear()
             tMovie.Movie.Title = txtMovieName.Text
+            Dim tempExtraPath As String = Path.Combine(Directory.GetParent(Directory.GetParent(tMovie.Filename).FullName).FullName, "extrathumbs")
             'Functions.SetScraperMod(Enums.ModType.DoSearch, True)
             Functions.SetScraperMod(Enums.ModType.NFO, True, True)
             Functions.SetScraperMod(Enums.ModType.Poster, True, False)
             Functions.SetScraperMod(Enums.ModType.Fanart, True, False)
+            Functions.SetScraperMod(Enums.ModType.Extra, True, False)
+            Functions.SetScraperMod(Enums.ModType.Trailer, True, False)
+
+            '****** original part of 1.3.x ********
+            'If Not ModulesManager.Instance.MovieScrapeOnly(tMovie, Enums.ScrapeType.SingleScrape, Master.DefaultOptions) Then
+            '    Me.txtMovieName.Text = String.Format("{0} [OffLine]", tMovie.Movie.Title)
+            '    Dim fResults = New Containers.ImgResult
+            '    ModulesManager.Instance.ScraperSelectImageOfType(tMovie, Enums.ImageType.Posters, fResults, True)
+            '    If Not String.IsNullOrEmpty(fResults.ImagePath) Then
+            '        tMovie.PosterPath = fResults.ImagePath
+            '    End If
+            '    fResults = New Containers.ImgResult
+            '    ModulesManager.Instance.ScraperSelectImageOfType(tMovie, Enums.ImageType.Fanart, fResults, True)
+            '    If Not String.IsNullOrEmpty(fResults.ImagePath) Then
+            '        tMovie.FanartPath = fResults.ImagePath
+            '        If Directory.Exists(tempExtraPath) Then
+            '            tMovie.ExtraPath = Path.Combine(tempExtraPath, "thumb1.jpg")
+            '        End If
+            '        If Not Master.eSettings.NoSaveImagesToNfo Then tMovie.Movie.Fanart = fResults.Fanart
+            '    End If
+            '    If Master.eSettings.DownloadTrailers Then
+            '        If Not Directory.Exists(Directory.GetParent(tMovie.Filename).FullName) Then
+            '            Directory.CreateDirectory(Directory.GetParent(tMovie.Filename).FullName)
+            '        End If
+            '        ModulesManager.Instance.ScraperDownloadTrailer(tMovie)
+            '    End If
+            'End If
             If Not ModulesManager.Instance.MovieScrapeOnly(tMovie, Enums.ScrapeType.SingleScrape, Master.DefaultOptions) Then
                 Me.txtMovieName.Text = String.Format("{0} [OffLine]", tMovie.Movie.Title)
                 'Dim sPath As String = Path.Combine(Master.TempPath, "fanart.jpg")
@@ -615,8 +753,11 @@ Public Class dlgOfflineHolder
         Try
 
             If bDefault Then
-                path = PreviewPath
-                'txtTopPos = RealImage_H - 100
+                If Video_Aspect = "Wide" Then
+                    path = PreviewPathW
+                Else
+                    path = PreviewPath
+                End If
             End If
             If path <> "" Then
                 'First let's resize it (Mantain aspect ratio)
@@ -630,8 +771,12 @@ Public Class dlgOfflineHolder
                 newGraphics.DrawImage(tmpImg, New Rectangle(0, 0, RealImage_W, RealImage_H), New Rectangle(0, 0, tmpImg.Width, tmpImg.Height), GraphicsUnit.Pixel)
                 'Dont need this one anymore
                 tmpImg.Dispose()
-                drawFont = New Font("Arial", Convert.ToUInt16(22 / (1280 / Video_Width)), FontStyle.Bold)
-                textHeight = newGraphics.MeasureString(txtTagline.Text, drawFont)
+                If Not IsNothing(drawFont) Then
+                    textHeight = newGraphics.MeasureString(txtTagline.Text, drawFont)
+                Else
+                    drawFont = New Font("Arial", Convert.ToUInt16(22 / (1920 / Video_Width)), FontStyle.Bold)
+                    textHeight = newGraphics.MeasureString(txtTagline.Text, drawFont)
+                End If
             Else
                 RealImage_W = Video_Width
                 RealImage_ratio = Preview.Width / Preview.Height
@@ -661,7 +806,7 @@ Public Class dlgOfflineHolder
         Me.lblTagline.Text = Master.eLang.GetString(542, "Place Holder Video Tagline:")
         Me.txtTagline.Text = Master.eLang.GetString(500, "Insert DVD")
         Me.Label1.Text = Master.eLang.GetString(543, "Text Color:")
-        Me.GroupBox1.Text = Master.eLang.GetString(180, "Preview")
+        Me.gbPreview.Text = Master.eLang.GetString(180, "Preview")
         Me.Label6.Text = Master.eLang.GetString(544, "Place Holder Video Format:")
         Me.chkBackground.Text = Master.eLang.GetString(545, "Use Tagline Background")
         Me.Label5.Text = Master.eLang.GetString(546, "Tagline background Color:")
@@ -669,10 +814,11 @@ Public Class dlgOfflineHolder
         Me.btnFont.Text = Master.eLang.GetString(548, "Select Font...")
         Me.Label3.Text = Master.eLang.GetString(550, "Tagline Top:")
         Me.GroupBox2.Text = Master.eLang.GetString(551, "Information")
+        Me.cbFormat.Items.AddRange(New Object() {"1080", "720", "DV PAL Wide", "DV PAL 4:3"})
     End Sub
 
     Private Sub tbTagLine_Scroll(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tbTagLine.Scroll
-        txtTop.Text = (tbTagLine.Maximum - tbTagLine.Value).ToString
+        txtTop.Text = (RealImage_H - tbTagLine.Value).ToString
     End Sub
 
     Private Sub tmrNameWait_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrNameWait.Tick
@@ -697,6 +843,12 @@ Public Class dlgOfflineHolder
 
     Private Sub txtTagline_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTagline.TextChanged
         Me.currText = Me.txtTagline.Text
+        'Dim fPath As String = tMovie.FanartPath
+        'If Not fPath = String.Empty AndAlso chkUseFanart.Checked Then
+        '    SetPreview(False, fPath)
+        'Else
+        '    SetPreview(True, PreviewPath)
+        'End If
     End Sub
 
     Private Sub txtTop_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtTop.KeyPress
