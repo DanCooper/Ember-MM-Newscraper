@@ -141,7 +141,7 @@ Public Class TVDB_Data_Poster
     Public Sub Init(ByVal sAssemblyName As String) Implements Interfaces.EmberTVScraperModule.Init
         _AssemblyName = sAssemblyName
         _APIKey = AdvancedSettings.GetSetting("TVDBAPIKey", "Get your API Key from http://thetvdb.com/?tab=apiregister")
-        _Lang = AdvancedSettings.GetSetting("TVDBLang", "en")
+        _Lang = AdvancedSettings.GetSetting("TVDBLanguage", "en")
         _TVDBMirror = AdvancedSettings.GetSetting("TVDBMirror", "thetvdb.com")
         TVScraper = New Scraper(_APIKey)
 
@@ -172,7 +172,6 @@ Public Class TVDB_Data_Poster
         _setupPost = New frmTVMediaSettingsHolder
         _setupPost.txtTVDBApiKey.Text = _APIKey
         _setupPost.cbEnabled.Checked = _PostScraperEnabled
-        _setupPost.lblTVLanguagePreferred.Text = Master.eLang.GetString(741, "Preferred Language:")
 
         _setupPost.chkOnlyTVImagesLanguage.Checked = CBool(AdvancedSettings.GetSetting("OnlyGetTVImagesForSelectedLanguage", "True"))
         _setupPost.chkGetEnglishImages.Checked = CBool(AdvancedSettings.GetSetting("AlwaysGetEnglishTVImages", "True"))
@@ -201,9 +200,11 @@ Public Class TVDB_Data_Poster
         _setup = New frmTVInfoSettingsHolder
         _setup.txtTVDBApiKey.Text = _APIKey
         _setup.cbEnabled.Checked = _ScraperEnabled
+
         If _setup.cbTVLanguage.Items.Count > 0 Then
             _setup.cbTVLanguage.Text = Master.eSettings.Languages.FirstOrDefault(Function(l) l.ShortLang = _Lang).LongLang
         End If
+
         _setup.txtTVDBMirror.Text = _TVDBMirror
         _setup.chkScraperShowTitle.Checked = ConfigOptions.bShowTitle
         _setup.chkScraperShowEGU.Checked = ConfigOptions.bShowEpisodeGuide
@@ -296,6 +297,7 @@ Public Class TVDB_Data_Poster
             Else
                 settings.SetSetting("TVDBMirror", "thetvdb.com")
             End If
+
         End Using
 
         If DoDispose Then
