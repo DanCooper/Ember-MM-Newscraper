@@ -229,8 +229,25 @@ Partial Class dlgSettings
         Me.tbcFileNaming = New System.Windows.Forms.TabControl()
         Me.tpFileNamingDefaults = New System.Windows.Forms.TabPage()
         Me.gbYAMJ = New System.Windows.Forms.GroupBox()
+        Me.Label8 = New System.Windows.Forms.Label()
+        Me.chkUseYAMJ = New System.Windows.Forms.CheckBox()
+        Me.chkBannerYAMJ = New System.Windows.Forms.CheckBox()
+        Me.chkTrailerYAMJ = New System.Windows.Forms.CheckBox()
+        Me.chkFanartYAMJ = New System.Windows.Forms.CheckBox()
+        Me.chkPosterYAMJ = New System.Windows.Forms.CheckBox()
+        Me.chkNFOYAMJ = New System.Windows.Forms.CheckBox()
         Me.gbEden = New System.Windows.Forms.GroupBox()
+        Me.chkExtrafanartEden = New System.Windows.Forms.CheckBox()
+        Me.chkExtrathumbsEden = New System.Windows.Forms.CheckBox()
+        Me.chkUseEden = New System.Windows.Forms.CheckBox()
+        Me.chkActorThumbsEden = New System.Windows.Forms.CheckBox()
+        Me.chkTrailerEden = New System.Windows.Forms.CheckBox()
+        Me.chkFanartEden = New System.Windows.Forms.CheckBox()
+        Me.chkPosterEden = New System.Windows.Forms.CheckBox()
+        Me.chkNFOEden = New System.Windows.Forms.CheckBox()
         Me.gbFrodo = New System.Windows.Forms.GroupBox()
+        Me.chkExtrafanartFrodo = New System.Windows.Forms.CheckBox()
+        Me.chkExtrathumbsFrodo = New System.Windows.Forms.CheckBox()
         Me.chkUseFrodo = New System.Windows.Forms.CheckBox()
         Me.chkLandscapeFrodo = New System.Windows.Forms.CheckBox()
         Me.chkBannerFrodo = New System.Windows.Forms.CheckBox()
@@ -601,14 +618,7 @@ Partial Class dlgSettings
         Me.chkDeleteAllTrailers = New System.Windows.Forms.CheckBox()
         Me.chkOverwriteTrailer = New System.Windows.Forms.CheckBox()
         Me.chkDownloadTrailer = New System.Windows.Forms.CheckBox()
-        Me.chkUseYAMJ = New System.Windows.Forms.CheckBox()
-        Me.chkBannerYAMJ = New System.Windows.Forms.CheckBox()
-        Me.chkTrailerYAMJ = New System.Windows.Forms.CheckBox()
-        Me.chkFanartYAMJ = New System.Windows.Forms.CheckBox()
-        Me.chkPosterYAMJ = New System.Windows.Forms.CheckBox()
-        Me.chkNFOYAMJ = New System.Windows.Forms.CheckBox()
-        Me.chkExtrathumbsFrodo = New System.Windows.Forms.CheckBox()
-        Me.chkExtrafanartFrodo = New System.Windows.Forms.CheckBox()
+        Me.Label13 = New System.Windows.Forms.Label()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox29.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -650,6 +660,7 @@ Partial Class dlgSettings
         Me.tbcFileNaming.SuspendLayout()
         Me.tpFileNamingDefaults.SuspendLayout()
         Me.gbYAMJ.SuspendLayout()
+        Me.gbEden.SuspendLayout()
         Me.gbFrodo.SuspendLayout()
         Me.tpFileNamingExpert.SuspendLayout()
         Me.GroupBox19.SuspendLayout()
@@ -2880,7 +2891,7 @@ Partial Class dlgSettings
         Me.pnlSources.Controls.Add(Me.btnMovieRem)
         Me.pnlSources.Controls.Add(Me.btnMovieAddFolder)
         Me.pnlSources.Controls.Add(Me.GroupBox16)
-        Me.pnlSources.Location = New System.Drawing.Point(260, 147)
+        Me.pnlSources.Location = New System.Drawing.Point(1176, 424)
         Me.pnlSources.Name = "pnlSources"
         Me.pnlSources.Size = New System.Drawing.Size(617, 402)
         Me.pnlSources.TabIndex = 13
@@ -2922,6 +2933,7 @@ Partial Class dlgSettings
         '
         'gbYAMJ
         '
+        Me.gbYAMJ.Controls.Add(Me.Label8)
         Me.gbYAMJ.Controls.Add(Me.chkUseYAMJ)
         Me.gbYAMJ.Controls.Add(Me.chkBannerYAMJ)
         Me.gbYAMJ.Controls.Add(Me.chkTrailerYAMJ)
@@ -2936,8 +2948,93 @@ Partial Class dlgSettings
         Me.gbYAMJ.TabStop = False
         Me.gbYAMJ.Text = "YAMJ"
         '
+        'Label8
+        '
+        Me.Label8.AutoSize = True
+        Me.Label8.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label8.ForeColor = System.Drawing.Color.Red
+        Me.Label8.Location = New System.Drawing.Point(4, 132)
+        Me.Label8.Name = "Label8"
+        Me.Label8.Size = New System.Drawing.Size(106, 78)
+        Me.Label8.TabIndex = 17
+        Me.Label8.Text = "Only NFO, Poster" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "and Fanart works!" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "More infos nedded" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "for VIDEO_TS" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "without VID" & _
+    "EO_TS" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "folder and Trailers."
+        '
+        'chkUseYAMJ
+        '
+        Me.chkUseYAMJ.AutoSize = True
+        Me.chkUseYAMJ.Location = New System.Drawing.Point(7, 17)
+        Me.chkUseYAMJ.Name = "chkUseYAMJ"
+        Me.chkUseYAMJ.Size = New System.Drawing.Size(45, 17)
+        Me.chkUseYAMJ.TabIndex = 16
+        Me.chkUseYAMJ.Text = "Use"
+        Me.chkUseYAMJ.UseVisualStyleBackColor = True
+        '
+        'chkBannerYAMJ
+        '
+        Me.chkBannerYAMJ.AutoSize = True
+        Me.chkBannerYAMJ.Enabled = False
+        Me.chkBannerYAMJ.Location = New System.Drawing.Point(7, 78)
+        Me.chkBannerYAMJ.Name = "chkBannerYAMJ"
+        Me.chkBannerYAMJ.Size = New System.Drawing.Size(63, 17)
+        Me.chkBannerYAMJ.TabIndex = 15
+        Me.chkBannerYAMJ.Text = "Banner"
+        Me.chkBannerYAMJ.UseVisualStyleBackColor = True
+        '
+        'chkTrailerYAMJ
+        '
+        Me.chkTrailerYAMJ.AutoSize = True
+        Me.chkTrailerYAMJ.Enabled = False
+        Me.chkTrailerYAMJ.Location = New System.Drawing.Point(7, 94)
+        Me.chkTrailerYAMJ.Name = "chkTrailerYAMJ"
+        Me.chkTrailerYAMJ.Size = New System.Drawing.Size(57, 17)
+        Me.chkTrailerYAMJ.TabIndex = 14
+        Me.chkTrailerYAMJ.Text = "Trailer"
+        Me.chkTrailerYAMJ.UseVisualStyleBackColor = True
+        '
+        'chkFanartYAMJ
+        '
+        Me.chkFanartYAMJ.AutoSize = True
+        Me.chkFanartYAMJ.Enabled = False
+        Me.chkFanartYAMJ.Location = New System.Drawing.Point(7, 63)
+        Me.chkFanartYAMJ.Name = "chkFanartYAMJ"
+        Me.chkFanartYAMJ.Size = New System.Drawing.Size(59, 17)
+        Me.chkFanartYAMJ.TabIndex = 13
+        Me.chkFanartYAMJ.Text = "Fanart"
+        Me.chkFanartYAMJ.UseVisualStyleBackColor = True
+        '
+        'chkPosterYAMJ
+        '
+        Me.chkPosterYAMJ.AutoSize = True
+        Me.chkPosterYAMJ.Enabled = False
+        Me.chkPosterYAMJ.Location = New System.Drawing.Point(7, 48)
+        Me.chkPosterYAMJ.Name = "chkPosterYAMJ"
+        Me.chkPosterYAMJ.Size = New System.Drawing.Size(58, 17)
+        Me.chkPosterYAMJ.TabIndex = 12
+        Me.chkPosterYAMJ.Text = "Poster"
+        Me.chkPosterYAMJ.UseVisualStyleBackColor = True
+        '
+        'chkNFOYAMJ
+        '
+        Me.chkNFOYAMJ.AutoSize = True
+        Me.chkNFOYAMJ.Enabled = False
+        Me.chkNFOYAMJ.Location = New System.Drawing.Point(7, 33)
+        Me.chkNFOYAMJ.Name = "chkNFOYAMJ"
+        Me.chkNFOYAMJ.Size = New System.Drawing.Size(49, 17)
+        Me.chkNFOYAMJ.TabIndex = 11
+        Me.chkNFOYAMJ.Text = "NFO"
+        Me.chkNFOYAMJ.UseVisualStyleBackColor = True
+        '
         'gbEden
         '
+        Me.gbEden.Controls.Add(Me.chkExtrafanartEden)
+        Me.gbEden.Controls.Add(Me.chkExtrathumbsEden)
+        Me.gbEden.Controls.Add(Me.chkUseEden)
+        Me.gbEden.Controls.Add(Me.chkActorThumbsEden)
+        Me.gbEden.Controls.Add(Me.chkTrailerEden)
+        Me.gbEden.Controls.Add(Me.chkFanartEden)
+        Me.gbEden.Controls.Add(Me.chkPosterEden)
+        Me.gbEden.Controls.Add(Me.chkNFOEden)
         Me.gbEden.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbEden.Location = New System.Drawing.Point(122, 6)
         Me.gbEden.Name = "gbEden"
@@ -2945,6 +3042,93 @@ Partial Class dlgSettings
         Me.gbEden.TabIndex = 1
         Me.gbEden.TabStop = False
         Me.gbEden.Text = "XBMC Eden"
+        '
+        'chkExtrafanartEden
+        '
+        Me.chkExtrafanartEden.AutoSize = True
+        Me.chkExtrafanartEden.Enabled = False
+        Me.chkExtrafanartEden.Location = New System.Drawing.Point(7, 199)
+        Me.chkExtrafanartEden.Name = "chkExtrafanartEden"
+        Me.chkExtrafanartEden.Size = New System.Drawing.Size(82, 17)
+        Me.chkExtrafanartEden.TabIndex = 20
+        Me.chkExtrafanartEden.Text = "Extrafanart"
+        Me.chkExtrafanartEden.UseVisualStyleBackColor = True
+        '
+        'chkExtrathumbsEden
+        '
+        Me.chkExtrathumbsEden.AutoSize = True
+        Me.chkExtrathumbsEden.Enabled = False
+        Me.chkExtrathumbsEden.Location = New System.Drawing.Point(7, 184)
+        Me.chkExtrathumbsEden.Name = "chkExtrathumbsEden"
+        Me.chkExtrathumbsEden.Size = New System.Drawing.Size(90, 17)
+        Me.chkExtrathumbsEden.TabIndex = 19
+        Me.chkExtrathumbsEden.Text = "Extrathumbs"
+        Me.chkExtrathumbsEden.UseVisualStyleBackColor = True
+        '
+        'chkUseEden
+        '
+        Me.chkUseEden.AutoSize = True
+        Me.chkUseEden.Location = New System.Drawing.Point(7, 17)
+        Me.chkUseEden.Name = "chkUseEden"
+        Me.chkUseEden.Size = New System.Drawing.Size(45, 17)
+        Me.chkUseEden.TabIndex = 18
+        Me.chkUseEden.Text = "Use"
+        Me.chkUseEden.UseVisualStyleBackColor = True
+        '
+        'chkActorThumbsEden
+        '
+        Me.chkActorThumbsEden.AutoSize = True
+        Me.chkActorThumbsEden.Enabled = False
+        Me.chkActorThumbsEden.Location = New System.Drawing.Point(7, 109)
+        Me.chkActorThumbsEden.Name = "chkActorThumbsEden"
+        Me.chkActorThumbsEden.Size = New System.Drawing.Size(96, 17)
+        Me.chkActorThumbsEden.TabIndex = 17
+        Me.chkActorThumbsEden.Text = "Actor Thumbs"
+        Me.chkActorThumbsEden.UseVisualStyleBackColor = True
+        '
+        'chkTrailerEden
+        '
+        Me.chkTrailerEden.AutoSize = True
+        Me.chkTrailerEden.Enabled = False
+        Me.chkTrailerEden.Location = New System.Drawing.Point(7, 94)
+        Me.chkTrailerEden.Name = "chkTrailerEden"
+        Me.chkTrailerEden.Size = New System.Drawing.Size(57, 17)
+        Me.chkTrailerEden.TabIndex = 16
+        Me.chkTrailerEden.Text = "Trailer"
+        Me.chkTrailerEden.UseVisualStyleBackColor = True
+        '
+        'chkFanartEden
+        '
+        Me.chkFanartEden.AutoSize = True
+        Me.chkFanartEden.Enabled = False
+        Me.chkFanartEden.Location = New System.Drawing.Point(7, 63)
+        Me.chkFanartEden.Name = "chkFanartEden"
+        Me.chkFanartEden.Size = New System.Drawing.Size(59, 17)
+        Me.chkFanartEden.TabIndex = 15
+        Me.chkFanartEden.Text = "Fanart"
+        Me.chkFanartEden.UseVisualStyleBackColor = True
+        '
+        'chkPosterEden
+        '
+        Me.chkPosterEden.AutoSize = True
+        Me.chkPosterEden.Enabled = False
+        Me.chkPosterEden.Location = New System.Drawing.Point(7, 48)
+        Me.chkPosterEden.Name = "chkPosterEden"
+        Me.chkPosterEden.Size = New System.Drawing.Size(58, 17)
+        Me.chkPosterEden.TabIndex = 14
+        Me.chkPosterEden.Text = "Poster"
+        Me.chkPosterEden.UseVisualStyleBackColor = True
+        '
+        'chkNFOEden
+        '
+        Me.chkNFOEden.AutoSize = True
+        Me.chkNFOEden.Enabled = False
+        Me.chkNFOEden.Location = New System.Drawing.Point(7, 33)
+        Me.chkNFOEden.Name = "chkNFOEden"
+        Me.chkNFOEden.Size = New System.Drawing.Size(49, 17)
+        Me.chkNFOEden.TabIndex = 13
+        Me.chkNFOEden.Text = "NFO"
+        Me.chkNFOEden.UseVisualStyleBackColor = True
         '
         'gbFrodo
         '
@@ -2968,6 +3152,28 @@ Partial Class dlgSettings
         Me.gbFrodo.TabIndex = 0
         Me.gbFrodo.TabStop = False
         Me.gbFrodo.Text = "XBMC Frodo"
+        '
+        'chkExtrafanartFrodo
+        '
+        Me.chkExtrafanartFrodo.AutoSize = True
+        Me.chkExtrafanartFrodo.Enabled = False
+        Me.chkExtrafanartFrodo.Location = New System.Drawing.Point(7, 199)
+        Me.chkExtrafanartFrodo.Name = "chkExtrafanartFrodo"
+        Me.chkExtrafanartFrodo.Size = New System.Drawing.Size(82, 17)
+        Me.chkExtrafanartFrodo.TabIndex = 12
+        Me.chkExtrafanartFrodo.Text = "Extrafanart"
+        Me.chkExtrafanartFrodo.UseVisualStyleBackColor = True
+        '
+        'chkExtrathumbsFrodo
+        '
+        Me.chkExtrathumbsFrodo.AutoSize = True
+        Me.chkExtrathumbsFrodo.Enabled = False
+        Me.chkExtrathumbsFrodo.Location = New System.Drawing.Point(7, 184)
+        Me.chkExtrathumbsFrodo.Name = "chkExtrathumbsFrodo"
+        Me.chkExtrathumbsFrodo.Size = New System.Drawing.Size(90, 17)
+        Me.chkExtrathumbsFrodo.TabIndex = 11
+        Me.chkExtrathumbsFrodo.Text = "Extrathumbs"
+        Me.chkExtrathumbsFrodo.UseVisualStyleBackColor = True
         '
         'chkUseFrodo
         '
@@ -3091,6 +3297,7 @@ Partial Class dlgSettings
         '
         'tpFileNamingExpert
         '
+        Me.tpFileNamingExpert.Controls.Add(Me.Label13)
         Me.tpFileNamingExpert.Controls.Add(Me.chkVideoTSParentXBMC)
         Me.tpFileNamingExpert.Controls.Add(Me.GroupBox21)
         Me.tpFileNamingExpert.Controls.Add(Me.GroupBox6)
@@ -7128,92 +7335,16 @@ Partial Class dlgSettings
         Me.chkDownloadTrailer.Text = "Enable Trailer Support"
         Me.chkDownloadTrailer.UseVisualStyleBackColor = True
         '
-        'chkUseYAMJ
+        'Label13
         '
-        Me.chkUseYAMJ.AutoSize = True
-        Me.chkUseYAMJ.Location = New System.Drawing.Point(6, 22)
-        Me.chkUseYAMJ.Name = "chkUseYAMJ"
-        Me.chkUseYAMJ.Size = New System.Drawing.Size(45, 17)
-        Me.chkUseYAMJ.TabIndex = 16
-        Me.chkUseYAMJ.Text = "Use"
-        Me.chkUseYAMJ.UseVisualStyleBackColor = True
-        '
-        'chkBannerYAMJ
-        '
-        Me.chkBannerYAMJ.AutoSize = True
-        Me.chkBannerYAMJ.Enabled = False
-        Me.chkBannerYAMJ.Location = New System.Drawing.Point(6, 83)
-        Me.chkBannerYAMJ.Name = "chkBannerYAMJ"
-        Me.chkBannerYAMJ.Size = New System.Drawing.Size(63, 17)
-        Me.chkBannerYAMJ.TabIndex = 15
-        Me.chkBannerYAMJ.Text = "Banner"
-        Me.chkBannerYAMJ.UseVisualStyleBackColor = True
-        '
-        'chkTrailerYAMJ
-        '
-        Me.chkTrailerYAMJ.AutoSize = True
-        Me.chkTrailerYAMJ.Enabled = False
-        Me.chkTrailerYAMJ.Location = New System.Drawing.Point(6, 99)
-        Me.chkTrailerYAMJ.Name = "chkTrailerYAMJ"
-        Me.chkTrailerYAMJ.Size = New System.Drawing.Size(57, 17)
-        Me.chkTrailerYAMJ.TabIndex = 14
-        Me.chkTrailerYAMJ.Text = "Trailer"
-        Me.chkTrailerYAMJ.UseVisualStyleBackColor = True
-        '
-        'chkFanartYAMJ
-        '
-        Me.chkFanartYAMJ.AutoSize = True
-        Me.chkFanartYAMJ.Enabled = False
-        Me.chkFanartYAMJ.Location = New System.Drawing.Point(6, 68)
-        Me.chkFanartYAMJ.Name = "chkFanartYAMJ"
-        Me.chkFanartYAMJ.Size = New System.Drawing.Size(59, 17)
-        Me.chkFanartYAMJ.TabIndex = 13
-        Me.chkFanartYAMJ.Text = "Fanart"
-        Me.chkFanartYAMJ.UseVisualStyleBackColor = True
-        '
-        'chkPosterYAMJ
-        '
-        Me.chkPosterYAMJ.AutoSize = True
-        Me.chkPosterYAMJ.Enabled = False
-        Me.chkPosterYAMJ.Location = New System.Drawing.Point(6, 53)
-        Me.chkPosterYAMJ.Name = "chkPosterYAMJ"
-        Me.chkPosterYAMJ.Size = New System.Drawing.Size(58, 17)
-        Me.chkPosterYAMJ.TabIndex = 12
-        Me.chkPosterYAMJ.Text = "Poster"
-        Me.chkPosterYAMJ.UseVisualStyleBackColor = True
-        '
-        'chkNFOYAMJ
-        '
-        Me.chkNFOYAMJ.AutoSize = True
-        Me.chkNFOYAMJ.Enabled = False
-        Me.chkNFOYAMJ.Location = New System.Drawing.Point(6, 38)
-        Me.chkNFOYAMJ.Name = "chkNFOYAMJ"
-        Me.chkNFOYAMJ.Size = New System.Drawing.Size(49, 17)
-        Me.chkNFOYAMJ.TabIndex = 11
-        Me.chkNFOYAMJ.Text = "NFO"
-        Me.chkNFOYAMJ.UseVisualStyleBackColor = True
-        '
-        'chkExtrathumbsFrodo
-        '
-        Me.chkExtrathumbsFrodo.AutoSize = True
-        Me.chkExtrathumbsFrodo.Enabled = False
-        Me.chkExtrathumbsFrodo.Location = New System.Drawing.Point(7, 184)
-        Me.chkExtrathumbsFrodo.Name = "chkExtrathumbsFrodo"
-        Me.chkExtrathumbsFrodo.Size = New System.Drawing.Size(90, 17)
-        Me.chkExtrathumbsFrodo.TabIndex = 11
-        Me.chkExtrathumbsFrodo.Text = "Extrathumbs"
-        Me.chkExtrathumbsFrodo.UseVisualStyleBackColor = True
-        '
-        'chkExtrafanartFrodo
-        '
-        Me.chkExtrafanartFrodo.AutoSize = True
-        Me.chkExtrafanartFrodo.Enabled = False
-        Me.chkExtrafanartFrodo.Location = New System.Drawing.Point(7, 199)
-        Me.chkExtrafanartFrodo.Name = "chkExtrafanartFrodo"
-        Me.chkExtrafanartFrodo.Size = New System.Drawing.Size(82, 17)
-        Me.chkExtrafanartFrodo.TabIndex = 12
-        Me.chkExtrafanartFrodo.Text = "Extrafanart"
-        Me.chkExtrafanartFrodo.UseVisualStyleBackColor = True
+        Me.Label13.AutoSize = True
+        Me.Label13.Font = New System.Drawing.Font("Segoe UI", 15.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label13.ForeColor = System.Drawing.Color.Red
+        Me.Label13.Location = New System.Drawing.Point(95, 67)
+        Me.Label13.Name = "Label13"
+        Me.Label13.Size = New System.Drawing.Size(158, 30)
+        Me.Label13.TabIndex = 6
+        Me.Label13.Text = "temp. disabled"
         '
         'dlgSettings
         '
@@ -7317,9 +7448,12 @@ Partial Class dlgSettings
         Me.tpFileNamingDefaults.ResumeLayout(False)
         Me.gbYAMJ.ResumeLayout(False)
         Me.gbYAMJ.PerformLayout()
+        Me.gbEden.ResumeLayout(False)
+        Me.gbEden.PerformLayout()
         Me.gbFrodo.ResumeLayout(False)
         Me.gbFrodo.PerformLayout()
         Me.tpFileNamingExpert.ResumeLayout(False)
+        Me.tpFileNamingExpert.PerformLayout()
         Me.GroupBox19.ResumeLayout(False)
         Me.GroupBox19.PerformLayout()
         Me.pnlImages.ResumeLayout(False)
@@ -8003,4 +8137,14 @@ Partial Class dlgSettings
     Friend WithEvents chkNFOYAMJ As System.Windows.Forms.CheckBox
     Friend WithEvents chkExtrafanartFrodo As System.Windows.Forms.CheckBox
     Friend WithEvents chkExtrathumbsFrodo As System.Windows.Forms.CheckBox
+    Friend WithEvents chkExtrafanartEden As System.Windows.Forms.CheckBox
+    Friend WithEvents chkExtrathumbsEden As System.Windows.Forms.CheckBox
+    Friend WithEvents chkUseEden As System.Windows.Forms.CheckBox
+    Friend WithEvents chkActorThumbsEden As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTrailerEden As System.Windows.Forms.CheckBox
+    Friend WithEvents chkFanartEden As System.Windows.Forms.CheckBox
+    Friend WithEvents chkPosterEden As System.Windows.Forms.CheckBox
+    Friend WithEvents chkNFOEden As System.Windows.Forms.CheckBox
+    Friend WithEvents Label8 As System.Windows.Forms.Label
+    Friend WithEvents Label13 As System.Windows.Forms.Label
 End Class

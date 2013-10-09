@@ -1346,6 +1346,16 @@ Public Class dlgEditMovie
                     Master.currMovie.PosterPath = String.Empty
                 End If
 
+                If Master.GlobalScrapeMod.Actors AndAlso Master.eSettings.ScraperActorThumbs AndAlso (Master.eSettings.ActorThumbsFrodo OrElse Master.eSettings.ActorThumbsEden) Then
+                    For Each act As MediaContainers.Person In Master.currMovie.Movie.Actors
+                        Dim img As New Images
+                        img.FromWeb(act.Thumb)
+                        If Not IsNothing(img.Image) Then
+                            img.SaveAsActorThumb(act, Directory.GetParent(Master.currMovie.Filename).FullName, Master.currMovie)
+                        End If
+                    Next
+                End If
+
                 If Not Master.eSettings.NoSaveImagesToNfo AndAlso pResults.Posters.Count > 0 Then Master.currMovie.Movie.Thumb = pResults.Posters
                 If Not Master.eSettings.NoSaveImagesToNfo AndAlso fResults.Fanart.Thumb.Count > 0 Then Master.currMovie.Movie.Fanart = pResults.Fanart
 

@@ -2123,6 +2123,51 @@ Public Class dlgSettings
         End If
     End Sub
 
+    Private Sub chkUseEden_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUseEden.CheckedChanged
+        Me.SetApplyButton(True)
+
+        Me.chkActorThumbsEden.Enabled = Me.chkUseEden.Checked
+        'Me.chkBannerEden.Enabled = Me.chkUseEden.Checked
+        'Me.chkClearArtEden.Enabled = Me.chkUseEden.Checked
+        'Me.chkClearLogoEden.Enabled = Me.chkUseEden.Checked
+        Me.chkExtrafanartEden.Enabled = Me.chkUseEden.Checked
+        Me.chkExtrathumbsEden.Enabled = Me.chkUseEden.Checked
+        'Me.chkDiscArtEden.Enabled = Me.chkUseEden.Checked
+        Me.chkFanartEden.Enabled = Me.chkUseEden.Checked
+        'Me.chkLandscapeEden.Enabled = Me.chkUseEden.Checked
+        Me.chkNFOEden.Enabled = Me.chkUseEden.Checked
+        Me.chkPosterEden.Enabled = Me.chkUseEden.Checked
+        Me.chkTrailerEden.Enabled = Me.chkUseEden.Checked
+
+        If Not Me.chkUseEden.Checked Then
+            Me.chkActorThumbsEden.Checked = False
+            'Me.chkBannerEden.Checked = False
+            'Me.chkClearArtEden.Checked = False
+            'Me.chkClearLogoEden.Checked = False
+            'Me.chkDiscArtEden.Checked = False
+            Me.chkExtrafanartEden.Checked = False
+            Me.chkExtrathumbsEden.Checked = False
+            Me.chkFanartEden.Checked = False
+            'Me.chkLandscapeEden.Checked = False
+            Me.chkNFOEden.Checked = False
+            Me.chkPosterEden.Checked = False
+            Me.chkTrailerEden.Checked = False
+        Else
+            Me.chkActorThumbsEden.Checked = True
+            'Me.chkBannerEden.Checked = True
+            'Me.chkClearArtEden.Checked = True
+            'Me.chkClearLogoEden.Checked = True
+            'Me.chkDiscArtEden.Checked = True
+            Me.chkExtrafanartEden.Checked = True
+            Me.chkExtrathumbsEden.Checked = True
+            Me.chkFanartEden.Checked = True
+            'Me.chkLandscapeEden.Checked = True
+            Me.chkNFOEden.Checked = True
+            Me.chkPosterEden.Checked = True
+            Me.chkTrailerEden.Checked = True
+        End If
+    End Sub
+
     Private Sub chkUseYAMJCheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUseYAMJ.CheckedChanged
         Me.SetApplyButton(True)
 
@@ -2660,7 +2705,7 @@ Public Class dlgSettings
             Me.RefreshMovieFilters()
             Me.RefreshValidExts()
 
-            '*************** XBMC Eden settings ***************
+            '*************** XBMC Frodo settings ***************
             Me.chkUseFrodo.Checked = Master.eSettings.UseFrodo
             Me.chkActorThumbsFrodo.Checked = Master.eSettings.ActorThumbsFrodo
             Me.chkBannerFrodo.Checked = Master.eSettings.BannerFrodo
@@ -2674,6 +2719,21 @@ Public Class dlgSettings
             Me.chkNFOFrodo.Checked = Master.eSettings.NFOFrodo
             Me.chkPosterFrodo.Checked = Master.eSettings.PosterFrodo
             Me.chkTrailerFrodo.Checked = Master.eSettings.TrailerFrodo
+
+            '*************** XBMC Eden settings ***************
+            Me.chkUseEden.Checked = Master.eSettings.UseEden
+            Me.chkActorThumbsEden.Checked = Master.eSettings.ActorThumbsEden
+            'Me.chkBannerEden.Checked = Master.eSettings.BannerEden
+            'Me.chkClearArtEden.Checked = Master.eSettings.ClearArtEden
+            'Me.chkClearLogoEden.Checked = Master.eSettings.ClearLogoEden
+            'Me.chkDiscArtEden.Checked = Master.eSettings.DiscArtEden
+            Me.chkExtrafanartEden.Checked = Master.eSettings.ExtrafanartEden
+            Me.chkExtrathumbsEden.Checked = Master.eSettings.ExtrathumbsEden
+            Me.chkFanartEden.Checked = Master.eSettings.FanartEden
+            'Me.chkLandscapeEden.Checked = Master.eSettings.LandscapeEden
+            Me.chkNFOEden.Checked = Master.eSettings.NFOEden
+            Me.chkPosterEden.Checked = Master.eSettings.PosterEden
+            Me.chkTrailerEden.Checked = Master.eSettings.TrailerEden
 
             '****************** YAMJ settings *****************
             Me.chkUseYAMJ.Checked = Master.eSettings.UseYAMJ
@@ -3763,6 +3823,7 @@ Public Class dlgSettings
             Master.eSettings.OrderDefault = DirectCast(Me.cbOrdering.SelectedIndex, Enums.Ordering)
             Master.eSettings.OnlyValueForCert = Me.chkOnlyValueForCert.Checked
             Master.eSettings.ScraperActorThumbs = Me.chkScraperActorThumbs.Checked
+
             '*************** XBMC Frodo settings ***************
             Master.eSettings.UseFrodo = Me.chkUseFrodo.Checked
             Master.eSettings.ActorThumbsFrodo = Me.chkActorThumbsFrodo.Checked
@@ -3779,6 +3840,19 @@ Public Class dlgSettings
             Master.eSettings.TrailerFrodo = Me.chkTrailerFrodo.Checked
 
             '*************** XBMC Eden settings ***************
+            Master.eSettings.UseEden = Me.chkUseEden.Checked
+            Master.eSettings.ActorThumbsEden = Me.chkActorThumbsEden.Checked
+            'Master.eSettings.BannerEden = Me.chkBannerEden.Checked
+            'Master.eSettings.ClearArtEden = Me.chkClearArtEden.Checked
+            'Master.eSettings.ClearLogoEden = Me.chkClearLogoEden.Checked
+            'Master.eSettings.DiscArtEden = Me.chkDiscArtEden.Checked
+            Master.eSettings.ExtrafanartEden = Me.chkExtrafanartEden.Checked
+            Master.eSettings.ExtrathumbsEden = Me.chkExtrathumbsEden.Checked
+            Master.eSettings.FanartEden = Me.chkFanartEden.Checked
+            'Master.eSettings.LandscapeEden = Me.chkLandscapeEden.Checked
+            Master.eSettings.NFOEden = Me.chkNFOEden.Checked
+            Master.eSettings.PosterEden = Me.chkPosterEden.Checked
+            Master.eSettings.TrailerEden = Me.chkTrailerEden.Checked
 
             '****************** YAMJ settings *****************
             Master.eSettings.UseYAMJ = Me.chkUseYAMJ.Checked

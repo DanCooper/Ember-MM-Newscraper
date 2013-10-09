@@ -373,20 +373,30 @@ Public Class Settings
 
     '*************** XBMC Eden settings ***************
     Private _useeden As Boolean
-    Private _postereden As Boolean
+    Private _actorthumbseden As Boolean
+    Private _bannereden As Boolean
+    Private _cleararteden As Boolean
+    Private _clearlogoeden As Boolean
+    Private _discarteden As Boolean
+    Private _extrafanarteden As Boolean
+    Private _extrathumbseden As Boolean
     Private _fanarteden As Boolean
+    Private _landscapeeden As Boolean
+    Private _nfoeden As Boolean
+    Private _postereden As Boolean
+    Private _trailereden As Boolean
 
     '****************** YAMJ settings *****************
     Private _useyamj As Boolean
-    'Private _actorthumbsyamj As Boolean
+    Private _actorthumbsyamj As Boolean
     Private _banneryamj As Boolean
-    'Private _clearartyamj As Boolean
-    'Private _clearlogoyamj As Boolean
-    'Private _discartyamj As Boolean
-    'Private _extrafanartyamj As Boolean
-    'Private _extrathumbsyamj As Boolean
+    Private _clearartyamj As Boolean
+    Private _clearlogoyamj As Boolean
+    Private _discartyamj As Boolean
+    Private _extrafanartyamj As Boolean
+    Private _extrathumbsyamj As Boolean
     Private _fanartyamj As Boolean
-    'Private _landscapeyamj As Boolean
+    Private _landscapeyamj As Boolean
     Private _nfoyamj As Boolean
     Private _posteryamj As Boolean
     Private _traileryamj As Boolean
@@ -3406,12 +3416,66 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property PosterEden() As Boolean
+    Public Property ActorThumbsEden() As Boolean
         Get
-            Return Me._postereden
+            Return Me._actorthumbseden
         End Get
         Set(ByVal value As Boolean)
-            Me._postereden = value
+            Me._actorthumbseden = value
+        End Set
+    End Property
+
+    Public Property BannerEden() As Boolean
+        Get
+            Return Me._bannereden
+        End Get
+        Set(ByVal value As Boolean)
+            Me._bannereden = value
+        End Set
+    End Property
+
+    Public Property ClearArtEden() As Boolean
+        Get
+            Return Me._cleararteden
+        End Get
+        Set(ByVal value As Boolean)
+            Me._cleararteden = value
+        End Set
+    End Property
+
+    Public Property ClearLogoEden() As Boolean
+        Get
+            Return Me._clearlogoeden
+        End Get
+        Set(ByVal value As Boolean)
+            Me._clearlogoeden = value
+        End Set
+    End Property
+
+    Public Property DiscArtEden() As Boolean
+        Get
+            Return Me._discarteden
+        End Get
+        Set(ByVal value As Boolean)
+            Me._discarteden = value
+        End Set
+    End Property
+
+    Public Property ExtrafanartEden() As Boolean
+        Get
+            Return Me._extrafanarteden
+        End Get
+        Set(ByVal value As Boolean)
+            Me._extrafanarteden = value
+        End Set
+    End Property
+
+    Public Property ExtrathumbsEden() As Boolean
+        Get
+            Return Me._extrathumbseden
+        End Get
+        Set(ByVal value As Boolean)
+            Me._extrathumbseden = value
         End Set
     End Property
 
@@ -3421,6 +3485,42 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Me._fanarteden = value
+        End Set
+    End Property
+
+    Public Property LandscapeEden() As Boolean
+        Get
+            Return Me._landscapeeden
+        End Get
+        Set(ByVal value As Boolean)
+            Me._landscapeeden = value
+        End Set
+    End Property
+
+    Public Property NFOEden() As Boolean
+        Get
+            Return Me._nfoeden
+        End Get
+        Set(ByVal value As Boolean)
+            Me._nfoeden = value
+        End Set
+    End Property
+
+    Public Property PosterEden() As Boolean
+        Get
+            Return Me._postereden
+        End Get
+        Set(ByVal value As Boolean)
+            Me._postereden = value
+        End Set
+    End Property
+
+    Public Property TrailerEden() As Boolean
+        Get
+            Return Me._trailereden
+        End Get
+        Set(ByVal value As Boolean)
+            Me._trailereden = value
         End Set
     End Property
 

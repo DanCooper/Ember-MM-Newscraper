@@ -1431,27 +1431,28 @@ Public Class frmMain
                     End If
                 End If
                 If Master.GlobalScrapeMod.Actors AndAlso Master.eSettings.ScraperActorThumbs Then
-                    'If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
-                    For Each act As MediaContainers.Person In DBScrapeMovie.Movie.Actors
-                        Dim img As New Images
-                        img.FromWeb(act.Thumb)
-                        If Not IsNothing(img.Image) Then
-                            img.SaveAsActorThumb(act, Directory.GetParent(DBScrapeMovie.Filename).FullName, DBScrapeMovie)
-                        End If
-                    Next
-                    'End If
+                    If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
+                        For Each act As MediaContainers.Person In DBScrapeMovie.Movie.Actors
+                            Dim img As New Images
+                            img.FromWeb(act.Thumb)
+                            If Not IsNothing(img.Image) Then
+                                img.SaveAsActorThumb(act, Directory.GetParent(DBScrapeMovie.Filename).FullName, DBScrapeMovie)
+                            End If
+                        Next
+                    End If
                 End If
 
                 '-----
 
                 If bwMovieScraper.CancellationPending Then Exit For
 
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieScraperRDYtoSave, Nothing, DBScrapeMovie)
+                'temp disabled
+                'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieScraperRDYtoSave, Nothing, DBScrapeMovie)
 
-                Dim currentDB As Structures.DBMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(dRow.Item(0)))
-                If Not DBScrapeMovie.Filename = currentDB.Filename Then
-                    DBScrapeMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(dRow.Item(0))) ' reload the DB if a module has changed the entries (renamer e.g.)
-                End If
+                'Dim currentDB As Structures.DBMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(dRow.Item(0)))
+                'If Not DBScrapeMovie.Filename = currentDB.Filename Then
+                '    DBScrapeMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(dRow.Item(0))) ' reload the DB if a module has changed the entries (renamer e.g.)
+                'End If
 
                 If Master.GlobalScrapeMod.Extra Then
                     If DBScrapeMovie.isSingle Then

@@ -309,74 +309,141 @@ Public Class NFO
         ' Get the proper path to NFO
         '\\
 
-        Dim nPath As String = String.Empty
+        Dim nPath As String = String.Empty 'NFO path
+        Dim fileName As String = Path.GetFileNameWithoutExtension(sPath)
+        Dim fileNameStack As String = StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath))
+        Dim filePath As String = Path.Combine(Directory.GetParent(sPath).FullName, fileName)
+        Dim filePathStack As String = Path.Combine(Directory.GetParent(sPath).FullName, fileNameStack)
+        Dim fileParPath As String = Directory.GetParent(filePath).FullName
 
-        If Master.eSettings.VideoTSParent AndAlso FileUtils.Common.isVideoTS(sPath) Then
-            If Master.eSettings.MovieNameNFO Then
-                nPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Directory.GetParent(Directory.GetParent(sPath).FullName).Name), ".nfo")
-            ElseIf Master.eSettings.MovieNFO Then
-                nPath = String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Path.DirectorySeparatorChar, "movie.nfo")
-            Else
-                nPath = String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Path.DirectorySeparatorChar, "movie.nfo")
+        '*************** XBMC Frodo settings ***************
+        If Master.eSettings.UseFrodo AndAlso Master.eSettings.NFOFrodo Then
+            'Frodo VIDEO_TS folder
+            If FileUtils.Common.isVideoTS(sPath) Then
+                nPath = String.Concat(filePath, ".nfo")
+                'Frodo BDMV folder
+            ElseIf FileUtils.Common.isBDRip(sPath) Then
+                nPath = Path.Combine(Directory.GetParent(fileParPath).FullName, "index.nfo")
+                'Frodo single/multi folder
+            ElseIf Not fileName.ToLower = "video_ts" Then
+                nPath = String.Concat(filePathStack, ".nfo")
+                'Frodo VIDEO_TS without VIDEO_TS folder
+            ElseIf fileName.ToLower = "video_ts" Then
+                nPath = String.Concat(filePath, ".nfo")
             End If
 
             If File.Exists(nPath) Then
                 Return nPath
-            Else
-                If Not isSingle Then
-                    Return String.Empty
-                Else
-                    'return movie path so we can use it for looking for non-conforming nfos
-                    Return sPath
-                End If
             End If
-        ElseIf Master.eSettings.VideoTSParent AndAlso FileUtils.Common.isBDRip(sPath) Then
-            If Master.eSettings.MovieNameNFO Then
-                nPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName).FullName, Directory.GetParent(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName).Name), ".nfo")
-            ElseIf Master.eSettings.MovieNFO Then
-                nPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName).FullName, "movie.nfo"))
-            Else
-                nPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName).FullName, "movie.nfo"))
+            End If
+
+        '*************** XBMC Eden settings ***************
+        If Master.eSettings.UseEden AndAlso Master.eSettings.NFOEden Then
+            'Eden VIDEO_TS folder
+            If FileUtils.Common.isVideoTS(sPath) Then
+                nPath = String.Concat(filePath, ".nfo")
+                'Eden BDMV folder
+            ElseIf FileUtils.Common.isBDRip(sPath) Then
+                nPath = Path.Combine(Directory.GetParent(fileParPath).FullName, "index.nfo")
+                'Eden single/multi folder
+            ElseIf Not fileName.ToLower = "video_ts" Then
+                nPath = String.Concat(filePathStack, ".nfo")
+                'Eden VIDEO_TS without VIDEO_TS folder
+            ElseIf fileName.ToLower = "video_ts" Then
+                nPath = String.Concat(filePath, ".nfo")
             End If
 
             If File.Exists(nPath) Then
                 Return nPath
-            Else
-                If Not isSingle Then
-                    Return String.Empty
-                Else
-                    'return movie path so we can use it for looking for non-conforming nfos
-                    Return sPath
-                End If
-            End If
-        Else
-            Dim tmpName As String = StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath))
-            Dim tmpNameNoStack As String = Path.GetFileNameWithoutExtension(sPath)
-            nPath = Path.Combine(Directory.GetParent(sPath).FullName, tmpName).ToLower
-            Dim nPathWithStack As String = Path.Combine(Directory.GetParent(sPath).FullName, tmpNameNoStack).ToLower
-
-            Dim fList As New List(Of String)
-            Try
-                fList.AddRange(Directory.GetFiles(Directory.GetParent(sPath).FullName, "*.nfo"))
-            Catch
-            End Try
-            fList = fList.ConvertAll(Function(s) s.ToLower)
-
-            If isSingle AndAlso Master.eSettings.MovieNFO AndAlso fList.Contains(Path.Combine(Directory.GetParent(sPath).FullName.ToLower, "movie.nfo")) Then
-                Return Path.Combine(Directory.GetParent(nPath).FullName.ToLower, "movie.nfo")
-            ElseIf Master.eSettings.MovieNameNFO AndAlso fList.Contains(String.Concat(nPathWithStack, ".nfo")) Then
-                Return String.Concat(nPathWithStack, ".nfo")
-            ElseIf Master.eSettings.MovieNameNFO AndAlso fList.Contains(String.Concat(nPath, ".nfo")) Then
-                Return String.Concat(nPath, ".nfo")
-            Else
-                If Not isSingle Then
-                    Return String.Empty
-                Else
-                    'return movie path so we can use it for looking for non-conforming nfos
-                    Return sPath
-                End If
             End If
         End If
+
+        '****************** YAMJ settings *****************
+        If Master.eSettings.UseYAMJ AndAlso Master.eSettings.NFOYAMJ Then
+            'YAMJ VIDEO_TS
+            If FileUtils.Common.isVideoTS(sPath) Then
+                nPath = String.Concat(Directory.GetParent(fileParPath).FullName, Path.DirectorySeparatorChar, Directory.GetParent(fileParPath).Name, ".nfo")
+                'YAMJ BDMV folder
+            ElseIf FileUtils.Common.isBDRip(sPath) Then
+                nPath = String.Concat(Directory.GetParent(Directory.GetParent(fileParPath).FullName).FullName, Path.DirectorySeparatorChar, Directory.GetParent(Directory.GetParent(fileParPath).FullName).Name, ".nfo")
+                'YAMJ single/multi folder
+            ElseIf Not fileName.ToLower = "video_ts" Then
+                nPath = String.Concat(filePath, ".nfo")
+            End If
+
+            If File.Exists(nPath) Then
+                Return nPath
+            End If
+        End If
+
+            'If Master.eSettings.VideoTSParent AndAlso FileUtils.Common.isVideoTS(sPath) Then
+            '    If Master.eSettings.MovieNameNFO Then
+            '        nPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Directory.GetParent(Directory.GetParent(sPath).FullName).Name), ".nfo")
+            '    ElseIf Master.eSettings.MovieNFO Then
+            '        nPath = String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Path.DirectorySeparatorChar, "movie.nfo")
+            '    Else
+            '        nPath = String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Path.DirectorySeparatorChar, "movie.nfo")
+            '    End If
+
+            '    If File.Exists(nPath) Then
+            '        Return nPath
+            '    Else
+            '        If Not isSingle Then
+            '            Return String.Empty
+            '        Else
+            '            'return movie path so we can use it for looking for non-conforming nfos
+            '            Return sPath
+            '        End If
+            '    End If
+            'ElseIf Master.eSettings.VideoTSParent AndAlso FileUtils.Common.isBDRip(sPath) Then
+            '    If Master.eSettings.MovieNameNFO Then
+            '        nPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName).FullName, Directory.GetParent(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName).Name), ".nfo")
+            '    ElseIf Master.eSettings.MovieNFO Then
+            '        nPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName).FullName, "movie.nfo"))
+            '    Else
+            '        nPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName).FullName, "movie.nfo"))
+            '    End If
+
+            '    If File.Exists(nPath) Then
+            '        Return nPath
+            '    Else
+            '        If Not isSingle Then
+            '            Return String.Empty
+            '        Else
+            '            'return movie path so we can use it for looking for non-conforming nfos
+            '            Return sPath
+            '        End If
+            '    End If
+            'Else
+            '    Dim fList As New List(Of String)
+            '    Try
+            '        fList.AddRange(Directory.GetFiles(Directory.GetParent(fileParPath).FullName, "*.nfo"))
+            '    Catch
+            '    End Try
+            '    fList = fList.ConvertAll(Function(s) s.ToLower)
+
+            '    If isSingle AndAlso Master.eSettings.MovieNFO AndAlso fList.Contains(Path.Combine(Directory.GetParent(sPath).FullName.ToLower, "movie.nfo")) Then
+            '        Return Path.Combine(Directory.GetParent(nPath).FullName.ToLower, "movie.nfo")
+            '    ElseIf Master.eSettings.MovieNameNFO AndAlso fList.Contains(String.Concat(filePathStack, ".nfo")) Then
+            '        Return String.Concat(filePathStack, ".nfo")
+            '    ElseIf Master.eSettings.MovieNameNFO AndAlso fList.Contains(String.Concat(nPath, ".nfo")) Then
+            '        Return String.Concat(nPath, ".nfo")
+            '    Else
+            '        If Not isSingle Then
+            '            Return String.Empty
+            '        Else
+            '            'return movie path so we can use it for looking for non-conforming nfos
+            '            Return sPath
+            '        End If
+            '    End If
+            'End If
+
+            If Not isSingle Then
+                Return String.Empty
+            Else
+                'return movie path so we can use it for looking for non-conforming nfos
+                Return sPath
+            End If
     End Function
 
     Public Shared Function GetResFromDimensions(ByVal fiRes As MediaInfo.Video) As String
@@ -748,14 +815,15 @@ Public Class NFO
                 Dim fileNameStack As String = StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(movieToSave.Filename))
                 Dim filePath As String = Path.Combine(Directory.GetParent(movieToSave.Filename).FullName, fileName)
                 Dim filePathStack As String = Path.Combine(Directory.GetParent(movieToSave.Filename).FullName, fileNameStack)
+                Dim fileParPath As String = Directory.GetParent(filePath).FullName
 
                 '*************** XBMC Frodo settings ***************
                 If Master.eSettings.UseFrodo Then
                     If Master.eSettings.NFOFrodo Then
                         If FileUtils.Common.isVideoTS(movieToSave.Filename) Then
-                            nPath = Path.Combine(Directory.GetParent(movieToSave.Filename).FullName, "video_ts.nfo")
+                            nPath = String.Concat(filePath, ".nfo")
                         ElseIf FileUtils.Common.isBDRip(movieToSave.Filename) Then
-                            nPath = Path.Combine(Directory.GetParent(Directory.GetParent(movieToSave.Filename).FullName).FullName, "index.nfo")
+                            nPath = Path.Combine(Directory.GetParent(fileParPath).FullName, "index.nfo")
                         Else
                             nPath = String.Concat(filePathStack, ".nfo")
                         End If
@@ -787,15 +855,49 @@ Public Class NFO
                 End If
 
                 '*************** XBMC Eden settings ***************
+                If Master.eSettings.UseEden Then
+                    If Master.eSettings.NFOEden Then
+                        If FileUtils.Common.isVideoTS(movieToSave.Filename) Then
+                            nPath = String.Concat(filePath, ".nfo")
+                        ElseIf FileUtils.Common.isBDRip(movieToSave.Filename) Then
+                            nPath = Path.Combine(Directory.GetParent(fileParPath).FullName, "index.nfo")
+                        Else
+                            nPath = String.Concat(filePathStack, ".nfo")
+                        End If
 
+                        If Not Master.eSettings.OverwriteNfo Then
+                            RenameNonConfNfo(nPath, False)
+                        End If
+
+                        doesExist = File.Exists(nPath)
+                        If Not doesExist OrElse (Not CBool(File.GetAttributes(nPath) And FileAttributes.ReadOnly)) Then
+
+                            If doesExist Then
+                                fAtt = File.GetAttributes(nPath)
+                                Try
+                                    File.SetAttributes(nPath, FileAttributes.Normal)
+                                Catch ex As Exception
+                                    fAttWritable = False
+                                End Try
+                            End If
+
+                            Using xmlSW As New StreamWriter(nPath)
+                                movieToSave.NfoPath = nPath
+                                xmlSer.Serialize(xmlSW, movieToSave.Movie)
+                            End Using
+
+                            If doesExist And fAttWritable Then File.SetAttributes(nPath, fAtt)
+                        End If
+                    End If
+                End If
 
                 '****************** YAMJ settings *****************
                 If Master.eSettings.UseYAMJ Then
                     If Master.eSettings.NFOYAMJ Then
                         If FileUtils.Common.isVideoTS(movieToSave.Filename) Then
-                            nPath = Path.Combine(Directory.GetParent(movieToSave.Filename).FullName, "video_ts.nfo")
+                            nPath = String.Concat(Path.Combine(Directory.GetParent(fileParPath).FullName, Directory.GetParent(fileParPath).Name), ".nfo")
                         ElseIf FileUtils.Common.isBDRip(movieToSave.Filename) Then
-                            nPath = Path.Combine(Directory.GetParent(Directory.GetParent(movieToSave.Filename).FullName).FullName, "index.nfo")
+                            nPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(fileParPath).FullName).FullName, Directory.GetParent(Directory.GetParent(fileParPath).FullName).Name), ".nfo")
                         Else
                             nPath = String.Concat(filePath, ".nfo")
                         End If
