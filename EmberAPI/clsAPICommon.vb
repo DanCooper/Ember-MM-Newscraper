@@ -716,21 +716,34 @@ Public Class Functions
 #Region "Methods"
 
     ''' <summary>
-    ''' Force of habit
+    ''' Gets the base directory that the assembly resolver uses to probe for assemblies (like the current application executable)
     ''' </summary>
     ''' <returns>Path of the directory containing the Ember executable</returns>
     Public Shared Function AppPath() As String
         Return System.AppDomain.CurrentDomain.BaseDirectory
     End Function
-
+    ''' <summary>
+    ''' Determine whether we are running a 64-bit instance
+    ''' </summary>
+    ''' <returns><c>True</c> if we are running a 64-bit instance</returns>
+    ''' <remarks>Note that the value of IntPtr.Size is 4 in a 32-bit process, and 8 in a 64-bit process</remarks>
     Public Shared Function Check64Bit() As Boolean
         Return (IntPtr.Size = 8)
     End Function
-
+    ''' <summary>
+    ''' Are we running on a Windows operating system?
+    ''' </summary>
+    ''' <returns><c>True</c>if we are running on Windows, <c>False</c> otherwise</returns>
     Public Shared Function CheckIfWindows() As Boolean
+        'TODO Shouldn't this be recoded to resemble http://msdn.microsoft.com/en-us/library/vstudio/3a8hyw88(v=vs.90).aspx ?
         Return Environment.OSVersion.ToString.ToLower.IndexOf("windows") > 0
     End Function
-
+    ''' <summary>
+    ''' Determine whether this instance is intended as a beta test version
+    ''' </summary>
+    ''' <returns><c>True</c> if this instance is a beta version, <c>False</c> otherwise</returns>
+    ''' <remarks>The defining test for being a beta version is the existance of the file "Beta.Tester" in the same directory as
+    ''' the Ember executable.</remarks>
     Public Shared Function IsBetaEnabled() As Boolean
         If File.Exists(Path.Combine(AppPath, "Beta.Tester")) Then
             Return True
@@ -742,6 +755,7 @@ Public Class Functions
     ''' Check for the lastest version of Ember
     ''' </summary>
     ''' <returns>Latest version as integer</returns>
+    ''' <remarks>Not implemented yet. This method is currently a stub, and always returns False</remarks>
     Public Shared Function CheckNeedUpdate() As Boolean
         Dim sHTTP As New HTTP
         Dim needUpdate As Boolean = False
@@ -770,18 +784,27 @@ Public Class Functions
 		'End If
         Return needUpdate
     End Function
-
-	Public Shared Function ConvertFromUnixTimestamp(ByVal timestamp As Double) As DateTime
-		Dim origin As DateTime = New DateTime(1970, 1, 1, 0, 0, 0, 0)
-		Return origin.AddSeconds(timestamp)
-	End Function
-
+    ''' <summary>
+    ''' Convert a Unix Timestamp to a VB DateTime
+    ''' </summary>
+    ''' <param name="timestamp">A valid unix-style timestamp</param>
+    ''' <returns>An appropriately formatted DateTime representing the supplied timestamp</returns>
+    Public Shared Function ConvertFromUnixTimestamp(ByVal timestamp As Double) As DateTime
+        Dim origin As DateTime = New DateTime(1970, 1, 1, 0, 0, 0, 0)
+        Return origin.AddSeconds(timestamp)
+    End Function
+    ''' <summary>
+    ''' Convert a VB-styled DateTime to a valid Unix-style timestamp
+    ''' </summary>
+    ''' <param name="data">A valid VB-style DateTime</param>
+    ''' <returns>A value representing the DateTime as a unix-style timestamp <c>Double</c></returns>
+    ''' <remarks></remarks>
 	Public Shared Function ConvertToUnixTimestamp(ByVal data As DateTime) As Double
 		Dim origin As DateTime = New DateTime(1970, 1, 1, 0, 0, 0, 0)
 		Dim diff As System.TimeSpan = data - origin
 		Return Math.Floor(diff.TotalSeconds)
 	End Function
-
+    ' TODO DOC Need appropriate header
     Public Shared Function LocksToOptions() As Structures.ScrapeOptions
         Dim options As New Structures.ScrapeOptions
         With options
@@ -816,7 +839,11 @@ Public Class Functions
         End With
         Return options
     End Function
-
+    ''' <summary>
+    ''' Create a collection of default options based off the currently selected options. 
+    ''' These default options are Master.DefaultOptions and Master.DefaultTVOptions
+    ''' </summary>
+    ''' <remarks></remarks>
     Public Shared Sub CreateDefaultOptions()
         With Master.DefaultOptions
             .bCast = Master.eSettings.FieldCast
@@ -867,13 +894,17 @@ Public Class Functions
             .bEpActors = Master.eSettings.ScraperEpActors
         End With
     End Sub
-
+    ' TODO DOC Need appropriate header
     Public Shared Sub DGVDoubleBuffer(ByRef cDGV As DataGridView)
         Dim conType As Type = cDGV.GetType
         Dim pi As System.Reflection.PropertyInfo = conType.GetProperty("DoubleBuffered", System.Reflection.BindingFlags.Instance Or System.Reflection.BindingFlags.NonPublic)
         pi.SetValue(cDGV, True, Nothing)
     End Sub
-
+    ''' <summary>
+    ''' Retrieves the Ember version
+    ''' </summary>
+    ''' <returns>A string representing the four-part period-separated version number</returns>
+    ''' <remarks>An example of the string returned would be "1.4.0.0", without the quotes, of course</remarks>
     Public Shared Function EmberAPIVersion() As String
         Return FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly.Location).FileVersion
     End Function
@@ -882,6 +913,7 @@ Public Class Functions
     ''' Get the changelog for the latest version
     ''' </summary>
     ''' <returns>Changelog as string</returns>
+    ''' <remarks>Not implemented yet. Always returns "Unavailable"</remarks>
     Public Shared Function GetChangelog() As String
         'Try
         '    Dim sHTTP As New HTTP
@@ -929,7 +961,11 @@ Public Class Functions
 
 		Return iMod
 	End Function
-
+    ''' <summary>
+    ''' Get a path to the ffmpeg included with the Ember distribution
+    ''' </summary>
+    ''' <returns>A path to an instance of ffmpeg</returns>
+    ''' <remarks>Windows distributions have ffmpeg in the Bin subdirectory</remarks>
 	Public Shared Function GetFFMpeg() As String
 		If Master.isWindows Then
 			Return String.Concat(Functions.AppPath, "Bin", Path.DirectorySeparatorChar, "ffmpeg.exe")
@@ -939,7 +975,7 @@ Public Class Functions
 	End Function
 
     ''' <summary>
-    ''' Get a list of paths to all sources stored in the database
+    ''' Populate Master.SourcesList with a list of paths to all (media?) sources stored in the database
     ''' </summary>
 	Public Shared Sub GetListOfSources()
 		Master.SourcesList.Clear()
@@ -952,7 +988,13 @@ Public Class Functions
 			End Using
 		End Using
 	End Sub
-
+    ''' <summary>
+    ''' Determines the path to the desired season of a given show
+    ''' </summary>
+    ''' <param name="ShowPath">The root path for a TV show</param>
+    ''' <param name="iSeason">The desired season number for which a path is desired</param>
+    ''' <returns>A path to the TV show's desired season number, or <c>String.Empty</c> if none is found</returns>
+    ''' <remarks></remarks>
     Public Shared Function GetSeasonDirectoryFromShowPath(ByVal ShowPath As String, ByVal iSeason As Integer) As String
         If Directory.Exists(ShowPath) Then
             Dim dInfo As New DirectoryInfo(ShowPath)
