@@ -877,8 +877,6 @@ Partial Class frmMain
         'scMain.Panel2
         '
         Me.scMain.Panel2.BackColor = System.Drawing.Color.DimGray
-        Me.scMain.Panel2.Controls.Add(Me.pbFanartSmallCache)
-        Me.scMain.Panel2.Controls.Add(Me.pnlFanartSmall)
         Me.scMain.Panel2.Controls.Add(Me.pnlTop)
         Me.scMain.Panel2.Controls.Add(Me.pnlCancel)
         Me.scMain.Panel2.Controls.Add(Me.pnlAllSeason)
@@ -887,6 +885,8 @@ Partial Class frmMain
         Me.scMain.Panel2.Controls.Add(Me.pnlInfoPanel)
         Me.scMain.Panel2.Controls.Add(Me.pnlPoster)
         Me.scMain.Panel2.Controls.Add(Me.pbPosterCache)
+        Me.scMain.Panel2.Controls.Add(Me.pbFanartSmallCache)
+        Me.scMain.Panel2.Controls.Add(Me.pnlFanartSmall)
         Me.scMain.Panel2.Controls.Add(Me.pnlMPAA)
         Me.scMain.Panel2.Controls.Add(Me.pbFanartCache)
         Me.scMain.Panel2.Controls.Add(Me.pbFanart)
