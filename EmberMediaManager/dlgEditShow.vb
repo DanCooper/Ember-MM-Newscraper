@@ -498,6 +498,16 @@ Public Class dlgEditShow
         End With
     End Sub
 
+    Private Sub lbGenre_ItemCheck(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckEventArgs) Handles lbGenre.ItemCheck
+        If e.Index = 0 Then
+            For i As Integer = 1 To lbGenre.Items.Count - 1
+                Me.lbGenre.SetItemChecked(i, False)
+            Next
+        Else
+            Me.lbGenre.SetItemChecked(0, False)
+        End If
+    End Sub
+
     Private Sub LoadGenres()
         Me.lbGenre.Items.Add(Master.eLang.None)
 
