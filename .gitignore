@@ -27,5 +27,5 @@ _ReSharper*/
 [Tt]est[Rr]esult*
 EmberMM*/
 +#ignore files downloaded by Transifex Downloader
-+Transifex/.tx/*
-+Transifex/translations/*
+Transifex/.tx/*
+Transifex/translations/*
