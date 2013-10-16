@@ -860,16 +860,16 @@ mPlot:
 
                 Dim D, W As Integer
 
-                D = HTML.IndexOf("<h5><a name=""akas"">Also Known As (AKA)</a></h5>")
+                D = HTML.IndexOf("<h4 class=""li_group"">Also Known As (AKA)&nbsp;</h4>")
 
                 If D > 0 Then
                     W = HTML.IndexOf("</table>", D)
                     Dim rTitles As MatchCollection = Regex.Matches(HTML.Substring(D, W - D), TD_PATTERN_4, RegexOptions.Multiline Or RegexOptions.IgnorePatternWhitespace)
 
                     If rTitles.Count > 0 Then
-                        For i As Integer = 1 To rTitles.Count - 1 Step 2
+                        For i As Integer = 0 To rTitles.Count - 1 Step 2
                             If rTitles(i).Value.ToString.Contains(Master.eSettings.ForceTitle) AndAlso Not rTitles(i).Value.ToString.Contains(String.Concat(Master.eSettings.ForceTitle, " (working title)")) AndAlso Not rTitles(i).Value.ToString.Contains(String.Concat(Master.eSettings.ForceTitle, " (fake working title)")) Then
-                                fTitle = CleanTitle(Web.HttpUtility.HtmlDecode(rTitles(i - 1).Groups("title").Value.ToString.Trim))
+                                fTitle = CleanTitle(Web.HttpUtility.HtmlDecode(rTitles(i + 1).Groups("title").Value.ToString.Trim))
                                 Exit For
                             End If
                         Next

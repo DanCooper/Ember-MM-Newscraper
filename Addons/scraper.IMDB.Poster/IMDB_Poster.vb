@@ -89,6 +89,8 @@ Public Class IMDB_Poster
         Select Case cap
             Case Enums.ScraperCapabilities.Poster
                 Return True
+            Case Enums.ScraperCapabilities.Actor
+                If Master.eSettings.ScraperActorThumbs Then Return True
         End Select
         Return False
     End Function

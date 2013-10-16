@@ -101,6 +101,8 @@ Public Class TMDB_Poster
                 Return ConfigScrapeModifier.Fanart 'True ' ConfigScrapeModifier.Fanart
             Case Enums.ScraperCapabilities.Poster
                 Return ConfigScrapeModifier.Poster 'True 'ConfigScrapeModifier.Poster
+            Case Enums.ScraperCapabilities.Actor
+                If Master.eSettings.ScraperActorThumbs Then Return True
         End Select
         Return False
     End Function

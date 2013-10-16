@@ -566,6 +566,7 @@ Public Class Enums
         Poster = 1
         Fanart = 2
         Trailer = 3
+        Actor = 4
     End Enum
 
     Public Enum ModuleEventType As Integer

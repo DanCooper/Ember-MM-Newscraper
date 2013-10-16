@@ -100,7 +100,9 @@ Public Class frmNotify
                     Me.SetBounds(Me.Left, Me.Top - 2, Me.Width, Me.Height + 2)
 
                     For Each DisplayedForm As frmNotify In frmNotify.DisplayedForms.Where(Function(s) s.Index < Me.Index)
-                        DisplayedForm.Top -= 2
+                        If Not DisplayedForm.InvokeRequired Then
+                            DisplayedForm.Top -= 2
+                        End If
                     Next
                 Else
                     Me.AnimationTimer.Stop()

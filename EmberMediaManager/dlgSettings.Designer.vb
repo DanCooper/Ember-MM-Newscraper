@@ -260,6 +260,7 @@ Partial Class dlgSettings
         Me.chkPosterFrodo = New System.Windows.Forms.CheckBox()
         Me.chkNFOFrodo = New System.Windows.Forms.CheckBox()
         Me.tpFileNamingExpert = New System.Windows.Forms.TabPage()
+        Me.Label13 = New System.Windows.Forms.Label()
         Me.chkVideoTSParentXBMC = New System.Windows.Forms.CheckBox()
         Me.chkAutoDetectVTS = New System.Windows.Forms.CheckBox()
         Me.btnEditSource = New System.Windows.Forms.Button()
@@ -618,7 +619,9 @@ Partial Class dlgSettings
         Me.chkDeleteAllTrailers = New System.Windows.Forms.CheckBox()
         Me.chkOverwriteTrailer = New System.Windows.Forms.CheckBox()
         Me.chkDownloadTrailer = New System.Windows.Forms.CheckBox()
-        Me.Label13 = New System.Windows.Forms.Label()
+        Me.gbTVScraperDuration = New System.Windows.Forms.GroupBox()
+        Me.txtEPRuntimeFormat = New System.Windows.Forms.TextBox()
+        Me.chkUseEPDuration = New System.Windows.Forms.CheckBox()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox29.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -729,6 +732,7 @@ Partial Class dlgSettings
         Me.Panel2.SuspendLayout()
         Me.pnlTrailer.SuspendLayout()
         Me.GroupBox15.SuspendLayout()
+        Me.gbTVScraperDuration.SuspendLayout()
         Me.SuspendLayout()
         '
         'GroupBox4
@@ -3313,6 +3317,17 @@ Partial Class dlgSettings
         Me.tpFileNamingExpert.Text = "Expert"
         Me.tpFileNamingExpert.UseVisualStyleBackColor = True
         '
+        'Label13
+        '
+        Me.Label13.AutoSize = True
+        Me.Label13.Font = New System.Drawing.Font("Segoe UI", 15.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label13.ForeColor = System.Drawing.Color.Red
+        Me.Label13.Location = New System.Drawing.Point(95, 67)
+        Me.Label13.Name = "Label13"
+        Me.Label13.Size = New System.Drawing.Size(158, 30)
+        Me.Label13.TabIndex = 6
+        Me.Label13.Text = "temp. disabled"
+        '
         'chkVideoTSParentXBMC
         '
         Me.chkVideoTSParentXBMC.CheckAlign = System.Drawing.ContentAlignment.TopLeft
@@ -5824,11 +5839,12 @@ Partial Class dlgSettings
         'pnlTVScraper
         '
         Me.pnlTVScraper.BackColor = System.Drawing.Color.White
+        Me.pnlTVScraper.Controls.Add(Me.gbTVScraperDuration)
         Me.pnlTVScraper.Controls.Add(Me.GroupBox32)
         Me.pnlTVScraper.Controls.Add(Me.GroupBox33)
         Me.pnlTVScraper.Controls.Add(Me.GroupBox31)
         Me.pnlTVScraper.Controls.Add(Me.gbTVScraperOptions)
-        Me.pnlTVScraper.Location = New System.Drawing.Point(1221, 389)
+        Me.pnlTVScraper.Location = New System.Drawing.Point(1000, 800)
         Me.pnlTVScraper.Name = "pnlTVScraper"
         Me.pnlTVScraper.Size = New System.Drawing.Size(617, 400)
         Me.pnlTVScraper.TabIndex = 19
@@ -6316,7 +6332,7 @@ Partial Class dlgSettings
         Me.gbTVScraperOptions.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbTVScraperOptions.Location = New System.Drawing.Point(5, 6)
         Me.gbTVScraperOptions.Name = "gbTVScraperOptions"
-        Me.gbTVScraperOptions.Size = New System.Drawing.Size(200, 243)
+        Me.gbTVScraperOptions.Size = New System.Drawing.Size(200, 128)
         Me.gbTVScraperOptions.TabIndex = 0
         Me.gbTVScraperOptions.TabStop = False
         Me.gbTVScraperOptions.Text = "Options"
@@ -7158,7 +7174,7 @@ Partial Class dlgSettings
         Me.cbCert.Enabled = False
         Me.cbCert.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.cbCert.FormattingEnabled = True
-        Me.cbCert.Items.AddRange(New Object() {"Argentina", "Australia", "Belgium", "Brazil", "Canada", "Finland", "France", "Germany", "Hong Kong", "Iceland", "Ireland", "Netherlands", "New Zealand", "Peru", "Portugal", "Singapore", "South Korea", "Spain", "Sweden", "Switzerland", "UK", "USA"})
+        Me.cbCert.Items.AddRange(New Object() {"Argentina", "Australia", "Belgium", "Brazil", "Canada", "Finland", "France", "Germany", "Hong Kong", "Hungary", "Iceland", "Ireland", "Netherlands", "New Zealand", "Peru", "Poland", "Portugal", "Serbia", "Singapore", "South Korea", "Spain", "Sweden", "Switzerland", "Turkey", "UK", "USA"})
         Me.cbCert.Location = New System.Drawing.Point(175, 102)
         Me.cbCert.Name = "cbCert"
         Me.cbCert.Size = New System.Drawing.Size(108, 21)
@@ -7335,16 +7351,35 @@ Partial Class dlgSettings
         Me.chkDownloadTrailer.Text = "Enable Trailer Support"
         Me.chkDownloadTrailer.UseVisualStyleBackColor = True
         '
-        'Label13
+        'gbTVScraperDuration
         '
-        Me.Label13.AutoSize = True
-        Me.Label13.Font = New System.Drawing.Font("Segoe UI", 15.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label13.ForeColor = System.Drawing.Color.Red
-        Me.Label13.Location = New System.Drawing.Point(95, 67)
-        Me.Label13.Name = "Label13"
-        Me.Label13.Size = New System.Drawing.Size(158, 30)
-        Me.Label13.TabIndex = 6
-        Me.Label13.Text = "temp. disabled"
+        Me.gbTVScraperDuration.Controls.Add(Me.chkUseEPDuration)
+        Me.gbTVScraperDuration.Controls.Add(Me.txtEPRuntimeFormat)
+        Me.gbTVScraperDuration.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.gbTVScraperDuration.Location = New System.Drawing.Point(6, 177)
+        Me.gbTVScraperDuration.Name = "gbTVScraperDuration"
+        Me.gbTVScraperDuration.Size = New System.Drawing.Size(200, 72)
+        Me.gbTVScraperDuration.TabIndex = 4
+        Me.gbTVScraperDuration.TabStop = False
+        Me.gbTVScraperDuration.Text = "Duration Format"
+        '
+        'txtEPRuntimeFormat
+        '
+        Me.txtEPRuntimeFormat.Location = New System.Drawing.Point(9, 44)
+        Me.txtEPRuntimeFormat.Name = "txtEPRuntimeFormat"
+        Me.txtEPRuntimeFormat.Size = New System.Drawing.Size(100, 22)
+        Me.txtEPRuntimeFormat.TabIndex = 0
+        '
+        'chkUseEPDuration
+        '
+        Me.chkUseEPDuration.AutoSize = True
+        Me.chkUseEPDuration.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkUseEPDuration.Location = New System.Drawing.Point(9, 21)
+        Me.chkUseEPDuration.Name = "chkUseEPDuration"
+        Me.chkUseEPDuration.Size = New System.Drawing.Size(158, 17)
+        Me.chkUseEPDuration.TabIndex = 1
+        Me.chkUseEPDuration.Text = "Use Duration for Runtime"
+        Me.chkUseEPDuration.UseVisualStyleBackColor = True
         '
         'dlgSettings
         '
@@ -7554,6 +7589,8 @@ Partial Class dlgSettings
         Me.pnlTrailer.ResumeLayout(False)
         Me.GroupBox15.ResumeLayout(False)
         Me.GroupBox15.PerformLayout()
+        Me.gbTVScraperDuration.ResumeLayout(False)
+        Me.gbTVScraperDuration.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -8147,4 +8184,7 @@ Partial Class dlgSettings
     Friend WithEvents chkNFOEden As System.Windows.Forms.CheckBox
     Friend WithEvents Label8 As System.Windows.Forms.Label
     Friend WithEvents Label13 As System.Windows.Forms.Label
+    Friend WithEvents gbTVScraperDuration As System.Windows.Forms.GroupBox
+    Friend WithEvents chkUseEPDuration As System.Windows.Forms.CheckBox
+    Friend WithEvents txtEPRuntimeFormat As System.Windows.Forms.TextBox
 End Class

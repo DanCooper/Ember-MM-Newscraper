@@ -43,6 +43,7 @@ BRC32 /NOFOLDERS /RECURSIVE /PATTERN:"*.xml" /REPLACECS:(pt_PT):Portuguese_(pt_P
 BRC32 /NOFOLDERS /RECURSIVE /PATTERN:"*.xml" /REPLACECS:(sv_SE):Swedish_(sv_SE) /EXECUTE /QUIET
 BRC32 /NOFOLDERS /RECURSIVE /PATTERN:"*.xml" /REPLACECS:(vi_VN):Vietnamese_(vi_VN) /EXECUTE /QUIET
 BRC32 /NOFOLDERS /RECURSIVE /PATTERN:"*.xml" /REPLACECS:(zh_CN.GB2312):Chinese_(zh_CN.GB2312) /EXECUTE /QUIET
+BRC32 /NOFOLDERS /RECURSIVE /PATTERN:"*.xml" /REPLACECS:(zh_CN):Chinese_(zh_CN) /EXECUTE /QUIET
 CLS
 ECHO *******************************************
 ECHO *          Copy files for Release         *
