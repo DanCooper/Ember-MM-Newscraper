@@ -549,7 +549,10 @@ Public Class Enums
         Mid = 2
         Small = 3
     End Enum
-
+    ''' <summary>
+    ''' Enum representing possible scrape data types
+    ''' </summary>
+    ''' <remarks></remarks>
     Public Enum ModType As Integer
         NFO = 0
         Poster = 1
@@ -561,7 +564,10 @@ Public Class Enums
         DoSearch = 7
         Actor = 8
     End Enum
-
+    ''' <summary>
+    ''' Enum representing possible scraper capabilities
+    ''' </summary>
+    ''' <remarks></remarks>
     Public Enum ScraperCapabilities
         Poster = 1
         Fanart = 2
@@ -604,13 +610,19 @@ Public Class Enums
         SortTitle = 6
         ListTitle = 7
     End Enum
-
+    ''' <summary>
+    ''' Enum representing valid TV series ordering.
+    ''' </summary>
+    ''' <remarks></remarks>
     Public Enum Ordering As Integer
         Standard = 0
         DVD = 1
         Absolute = 2
     End Enum
-
+    ''' <summary>
+    ''' Enum represeting valid poster sizes
+    ''' </summary>
+    ''' <remarks></remarks>
     Public Enum PosterSize As Integer
         Xlrg = 0
         Lrg = 1
@@ -618,7 +630,11 @@ Public Class Enums
         Small = 3
         Wide = 4
     End Enum
-
+    ''' <summary>
+    ''' Enum representing which Movies/TVShows should be scraped,
+    ''' and whether results should be automatically chosen or asked of the user.
+    ''' </summary>
+    ''' <remarks></remarks>
     Public Enum ScrapeType As Integer
         SingleScrape = 0
         FullAuto = 1
@@ -649,7 +665,10 @@ Public Class Enums
         Graphical = 2
         Text = 3
     End Enum
-
+    ''' <summary>
+    ''' Enum representing the trailer quality options
+    ''' </summary>
+    ''' <remarks></remarks>
     Public Enum TrailerQuality As Integer
         HD1080p = 0
         HD1080pVP8 = 1
@@ -662,7 +681,10 @@ Public Class Enums
         SQVP8 = 8
         OTHERS = 9
     End Enum
-
+    ''' <summary>
+    ''' Enum represeting valid movie image types
+    ''' </summary>
+    ''' <remarks></remarks>
     Public Enum ImageType As Integer
         Posters = 0
         Fanart = 1
@@ -673,7 +695,10 @@ Public Class Enums
         DiscArt = 6
         Landscape = 7
     End Enum
-
+    ''' <summary>
+    ''' Enum representing valid TV image types
+    ''' </summary>
+    ''' <remarks></remarks>
     Public Enum TVImageType As Integer
         All = 0
         ShowPoster = 1
@@ -758,31 +783,32 @@ Public Class Functions
     ''' <returns>Latest version as integer</returns>
     ''' <remarks>Not implemented yet. This method is currently a stub, and always returns False</remarks>
     Public Shared Function CheckNeedUpdate() As Boolean
+        'TODO STUB - Not implemented yet
         Dim sHTTP As New HTTP
         Dim needUpdate As Boolean = False
-		'Dim platform As String = "x86"
-		'Dim updateXML As String = sHTTP.DownloadData(String.Format("http://pcjco.dommel.be/emm-r/{0}/versions.xml", If(IsBetaEnabled(), "updatesbeta", "updates")))
-		'sHTTP = Nothing
-		'If updateXML.Length > 0 Then
-		'    For Each v As ModulesManager.VersionItem In ModulesManager.VersionList
-		'        Dim vl As ModulesManager.VersionItem = v
-		'        Dim n As String = String.Empty
-		'        Dim xmlUpdate As XDocument
-		'        Try
-		'            xmlUpdate = XDocument.Parse(updateXML)
-		'        Catch
-		'            Return False
-		'        End Try
-		'        Dim xUdpate = From xUp In xmlUpdate...<Config>...<Modules>...<File> Where (xUp.<Version>.Value <> "" AndAlso xUp.<Name>.Value = vl.AssemblyFileName AndAlso xUp.<Platform>.Value = platform) Select xUp.<Version>.Value
-		'        Try
-		'            If Convert.ToInt16(xUdpate(0)) > Convert.ToInt16(v.Version) Then
-		'                v.NeedUpdate = True
-		'                needUpdate = True
-		'            End If
-		'        Catch ex As Exception
-		'        End Try
-		'    Next
-		'End If
+        'Dim platform As String = "x86"
+        'Dim updateXML As String = sHTTP.DownloadData(String.Format("http://pcjco.dommel.be/emm-r/{0}/versions.xml", If(IsBetaEnabled(), "updatesbeta", "updates")))
+        'sHTTP = Nothing
+        'If updateXML.Length > 0 Then
+        '    For Each v As ModulesManager.VersionItem In ModulesManager.VersionList
+        '        Dim vl As ModulesManager.VersionItem = v
+        '        Dim n As String = String.Empty
+        '        Dim xmlUpdate As XDocument
+        '        Try
+        '            xmlUpdate = XDocument.Parse(updateXML)
+        '        Catch
+        '            Return False
+        '        End Try
+        '        Dim xUdpate = From xUp In xmlUpdate...<Config>...<Modules>...<File> Where (xUp.<Version>.Value <> "" AndAlso xUp.<Name>.Value = vl.AssemblyFileName AndAlso xUp.<Platform>.Value = platform) Select xUp.<Version>.Value
+        '        Try
+        '            If Convert.ToInt16(xUdpate(0)) > Convert.ToInt16(v.Version) Then
+        '                v.NeedUpdate = True
+        '                needUpdate = True
+        '            End If
+        '        Catch ex As Exception
+        '        End Try
+        '    Next
+        'End If
         Return needUpdate
     End Function
     ''' <summary>
@@ -916,6 +942,8 @@ Public Class Functions
     ''' <returns>Changelog as string</returns>
     ''' <remarks>Not implemented yet. Always returns "Unavailable"</remarks>
     Public Shared Function GetChangelog() As String
+        'TODO STUB - Not implemented yet
+
         'Try
         '    Dim sHTTP As New HTTP
         '    Dim strChangelog As String = sHTTP.DownloadData(String.Format("http://pcjco.dommel.be/emm-r/{0}/WhatsNew.txt", If(IsBetaEnabled(), "updatesbeta", "updates")))
@@ -957,7 +985,7 @@ Public Class Functions
 			End If
 
 		Catch ex As Exception
-			Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message & " - Failed trying to identify last thumb from path: " & sPath, ex.StackTrace, "Error")
 		End Try
 
 		Return iMod
@@ -1008,7 +1036,7 @@ Public Class Functions
                                 Return sDir.FullName
                             End If
                         Catch ex As Exception
-                            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                            Master.eLog.WriteToErrorLog(ex.Message & " - Failed to determine path for season " & iSeason & " in path: " & ShowPath, ex.StackTrace, "Error")
                         End Try
                     Next
                 Next
@@ -1017,29 +1045,37 @@ Public Class Functions
         'no matches
         Return String.Empty
     End Function
+    ''' <summary>
+    ''' Determine whether user has specified a subset of the scrapable items (Master.GlobalScrapeMod).
+    ''' </summary>
+    ''' <returns><c>True</c> if at least one modifier has been selected, <c>False</c>if no item has been selected.</returns>
+    Public Shared Function HasModifier() As Boolean
+        With Master.GlobalScrapeMod
+            If .Extra OrElse .Fanart OrElse .Meta OrElse .NFO OrElse .Poster OrElse .Trailer Then Return True
+        End With
 
-	Public Shared Function HasModifier() As Boolean
-		With Master.GlobalScrapeMod
-			If .Extra OrElse .Fanart OrElse .Meta OrElse .NFO OrElse .Poster OrElse .Trailer Then Return True
-		End With
-
-		Return False
-	End Function
-
+        Return False
+    End Function
+    ''' <summary>
+    ''' Determine whether the supplied path is already defined as a TV Show season subdirectory
+    ''' </summary>
+    ''' <param name="sPath">The path to look for</param>
+    ''' <returns><c>True</c> if the supplied path is found in the list of configured TV Show season directories, <c>False</c> otherwise</returns>
+    ''' <remarks></remarks>
     Public Shared Function IsSeasonDirectory(ByVal sPath As String) As Boolean
+        'TODO Warning - Potential for false positives and false negatives as paths can be defined in different ways to arrive at the same destination
         For Each rShow As Settings.TVShowRegEx In Master.eSettings.TVShowRegexes.Where(Function(s) s.SeasonFromDirectory = True)
             If Regex.IsMatch(FileUtils.Common.GetDirectory(sPath), rShow.SeasonRegex, RegexOptions.IgnoreCase) Then Return True
         Next
         'no matches
         Return False
     End Function
-
     ''' <summary>
-    ''' Convert a list(of T) to a string of separated values
+    ''' Convert a List(of T) to a string of separated values
     ''' </summary>
     ''' <param name="source">List(of T)</param>
     ''' <param name="separator">Character or string to use as a value separator</param>
-    ''' <returns>String of separated values</returns>
+    ''' <returns>String of separated List values</returns>
 	Public Shared Function ListToStringWithSeparator(Of T)(ByVal source As IList(Of T), ByVal separator As String) As String
 		If source Is Nothing Then Throw New ArgumentNullException("Source parameter cannot be nothing")
 		If String.IsNullOrEmpty(separator) Then Throw New ArgumentException("Separator parameter cannot be nothing or empty")
@@ -1048,23 +1084,36 @@ Public Class Functions
 
 		Return String.Join(separator, values)
 	End Function
-
+    ''' <summary>
+    ''' Set the DoubleBuffered property of the supplied Panel. This will tell the control to redraw its surface using a 
+    ''' secondary buffer to reduce/prevent flicker.
+    ''' </summary>
+    ''' <param name="cPNL">Panel control to DoubleBuffer</param>
+    ''' <remarks></remarks>
     Public Shared Sub PNLDoubleBuffer(ByRef cPNL As Panel)
+        If cPNL Is Nothing Then Throw New ArgumentNullException("Source parameter cannot be nothing")
         Dim conType As Type = cPNL.GetType
         Dim pi As System.Reflection.PropertyInfo = conType.GetProperty("DoubleBuffered", System.Reflection.BindingFlags.Instance Or System.Reflection.BindingFlags.NonPublic)
         pi.SetValue(cPNL, True, Nothing)
     End Sub
 
     ''' <summary>
-    ''' Constrain a number to the nearest multiple
+    ''' Constrain a number to the nearest multiple. 
     ''' </summary>
     ''' <param name="iNumber">Number to quantize</param>
     ''' <param name="iMultiple">Multiple of constraint.</param>
-	Public Shared Function Quantize(ByVal iNumber As Integer, ByVal iMultiple As Integer) As Integer
-		Return Convert.ToInt32(System.Math.Round(iNumber / iMultiple, 0) * iMultiple)
-	End Function
-
+    Public Shared Function Quantize(ByVal iNumber As Integer, ByVal iMultiple As Integer) As Integer
+        If iMultiple <= 0 Then Throw New ArgumentOutOfRangeException("Multiple must be greater than zero (0)")
+        Return Convert.ToInt32(System.Math.Round(iNumber / iMultiple, 0) * iMultiple)
+    End Function
+    ''' <summary>
+    ''' Reads bytes from a given stream and returns them as a Byte array
+    ''' </summary>
+    ''' <param name="rStream">Stream to be read from</param>
+    ''' <returns>Byte array representing the contents of the supplied Stream</returns>
+    ''' <remarks>Stream is read using a 4k buffer</remarks>
     Public Shared Function ReadStreamToEnd(ByVal rStream As Stream) As Byte()
+        If rStream Is Nothing Then Throw New ArgumentNullException("Source parameter cannot be Nothing")
         Dim StreamBuffer(4096) As Byte
         Dim BlockSize As Integer = 0
         Using mStream As MemoryStream = New MemoryStream()
@@ -1075,7 +1124,13 @@ Public Class Functions
             Return mStream.ToArray
         End Using
     End Function
-
+    ''' <summary>
+    ''' Determine the Structures.ScrapeModifier options that are in common between the two parameters
+    ''' </summary>
+    ''' <param name="Options">Base Structures.ScrapeModifier</param>
+    ''' <param name="Options2">Secondary Structures.ScrapeModifier</param>
+    ''' <returns>Structures.ScrapeModifier representing the AndAlso union of the two parameters</returns>
+    ''' <remarks></remarks>
     Public Shared Function ScrapeModifierAndAlso(ByVal Options As Structures.ScrapeModifier, ByVal Options2 As Structures.ScrapeModifier) As Structures.ScrapeModifier
         Dim filterModifier As New Structures.ScrapeModifier
         filterModifier.DoSearch = Options.DoSearch AndAlso Options2.DoSearch
@@ -1088,7 +1143,13 @@ Public Class Functions
         filterModifier.Actors = Options.Actors AndAlso Options2.Actors
         Return filterModifier
     End Function
-
+    ''' <summary>
+    ''' Determine the Structures.ScrapeOptions options that are in common between the two parameters
+    ''' </summary>
+    ''' <param name="Options">Base Structures.ScrapeOptions</param>
+    ''' <param name="Options2">Secondary Structures.ScrapeOptions</param>
+    ''' <returns>Structures.ScrapeOptions representing the AndAlso union of the two parameters</returns>
+    ''' <remarks></remarks>
     Public Shared Function ScrapeOptionsAndAlso(ByVal Options As Structures.ScrapeOptions, ByVal Options2 As Structures.ScrapeOptions) As Structures.ScrapeOptions
         Dim filterOptions As New Structures.ScrapeOptions
         filterOptions.bTitle = Options.bTitle AndAlso Options2.bTitle
@@ -1117,7 +1178,13 @@ Public Class Functions
         filterOptions.bFullCast = Options.bFullCast AndAlso Options2.bFullCast
         Return filterOptions
     End Function
-
+    ''' <summary>
+    ''' Determine the Structures.TVScrapeOptions options that are in common between the two parameters
+    ''' </summary>
+    ''' <param name="Options">Base Structures.TVScrapeOptions</param>
+    ''' <param name="Options2">Secondary Structures.TVScrapeOptions</param>
+    ''' <returns>Structures.TVScrapeOptions representing the AndAlso union of the two parameters</returns>
+    ''' <remarks></remarks>
     Public Shared Function TVScrapeOptionsAndAlso(ByVal Options As Structures.TVScrapeOptions, ByVal Options2 As Structures.TVScrapeOptions) As Structures.TVScrapeOptions
 
         Dim filterOptions As New Structures.TVScrapeOptions
@@ -1141,8 +1208,14 @@ Public Class Functions
         filterOptions.bShowTitle = Options.bShowTitle AndAlso Options2.bShowTitle
         Return filterOptions
     End Function
-
-
+    ''' <summary>
+    ''' Sets the Master.GlobalScrapeMod to the given MValue
+    ''' </summary>
+    ''' <param name="MType">The Enums.ModType that should be changed. Note that this could be All.</param>
+    ''' <param name="MValue">The <c>Boolean</c> value that you wish to change the ModType to.</param>
+    ''' <param name="DoClear">If <c>True</c>, pre-initialize all Mod values to False before setting the options. 
+    ''' If <c>False</c>, leave the existing options untouched wile setting the options</param>
+    ''' <remarks></remarks>
     Public Shared Sub SetScraperMod(ByVal MType As Enums.ModType, ByVal MValue As Boolean, Optional ByVal DoClear As Boolean = True)
         With Master.GlobalScrapeMod
             If DoClear Then
@@ -1190,9 +1263,11 @@ Public Class Functions
     ''' Check version of the MediaInfo dll. If newer than 0.7.11 then don't try to scan disc images with it.
     ''' </summary>
     Public Shared Sub TestMediaInfoDLL()
+        'TODO Warning - MediaInfo is newer than this method tests for - is this method required? Looks like it will ALWAYS return False
+        Dim dllPath As String = "Invalid path"
         Try
             'just assume dll is there since we're distributing full package... if it's not, user has bigger problems
-            Dim dllPath As String = String.Concat(AppPath, "Bin", Path.DirectorySeparatorChar, "MediaInfo.DLL")
+            dllPath = String.Concat(AppPath, "Bin", Path.DirectorySeparatorChar, "MediaInfo.DLL")
             Dim fVersion As FileVersionInfo = System.Diagnostics.FileVersionInfo.GetVersionInfo(dllPath)
             If fVersion.FileMinorPart <= 7 AndAlso fVersion.FileBuildPart <= 11 Then
                 Master.CanScanDiscImage = True
@@ -1200,7 +1275,7 @@ Public Class Functions
                 Master.CanScanDiscImage = False
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message & " - Failed to access MediaInfo.DLL from path:" & dllPath, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1211,7 +1286,10 @@ End Class
 Public Class Structures
 
 #Region "Nested Types"
-
+    ''' <summary>
+    ''' Structure representing poster/image metadata
+    ''' </summary>
+    ''' <remarks></remarks>
     Public Structure v3Size
         Dim size As String
         Dim description As String
@@ -1224,7 +1302,10 @@ Public Class Structures
         Dim Options As ScrapeOptions
         Dim ScrapeType As Enums.ScrapeType
     End Structure
-
+    ''' <summary>
+    ''' Structure representing a movie source path and its metadata
+    ''' </summary>
+    ''' <remarks></remarks>
     Public Structure MovieSource
         Dim id As String
         Dim Name As String
@@ -1233,13 +1314,19 @@ Public Class Structures
         Dim UseFolderName As Boolean
         Dim IsSingle As Boolean
     End Structure
-
+    ''' <summary>
+    ''' Structure representing a TV source path and its metadata
+    ''' </summary>
+    ''' <remarks></remarks>
     Public Structure TVSource
         Dim id As String
         Dim Name As String
         Dim Path As String
     End Structure
-
+    ''' <summary>
+    ''' Structure representing a movie in the database
+    ''' </summary>
+    ''' <remarks></remarks>
     Public Structure DBMovie
         Dim ClearExtras As Boolean
         Dim DateAdd As Long
@@ -1263,7 +1350,10 @@ Public Class Structures
         Dim TrailerPath As String
         Dim UseFolder As Boolean
     End Structure
-
+    ''' <summary>
+    ''' Structure representing a TV show in the database
+    ''' </summary>
+    ''' <remarks></remarks>
     Public Structure DBTV
         Dim EpFanartPath As String
         Dim EpID As Long
@@ -1322,7 +1412,10 @@ Public Class Structures
         Dim Trailer As Boolean
         Dim Actors As Boolean
     End Structure
-
+    ''' <summary>
+    ''' Structure representing posible scrape options for movies
+    ''' </summary>
+    ''' <remarks></remarks>
     Public Structure ScrapeOptions
         Dim bCast As Boolean
         Dim bCert As Boolean
@@ -1361,7 +1454,10 @@ Public Class Structures
         Dim NeedsUpdate As Boolean
         Dim NeedsRestart As Boolean
     End Structure
-
+    ''' <summary>
+    ''' Structure representing possible scrape options for TV shows
+    ''' </summary>
+    ''' <remarks></remarks>
     Public Structure TVScrapeOptions
         Dim bEpActors As Boolean
         Dim bEpAired As Boolean
