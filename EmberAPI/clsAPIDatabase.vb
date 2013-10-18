@@ -24,6 +24,10 @@ Imports System.IO
 Imports System.Xml.Serialization
 Imports System.Data.SQLite
 
+''' <summary>
+''' Class defining and implementing the interface to the database
+''' </summary>
+''' <remarks></remarks>
 Public Class Database
 
 #Region "Fields"
@@ -54,8 +58,13 @@ Public Class Database
 #Region "Methods"
 
     ''' <summary>
-    ''' Iterates db entries to check if the paths to the movie files are valid. If not, remove all entries pertaining to the movie.
+    ''' Iterates db entries to check if the paths to the movie or TV files are valid. 
+    ''' If not, remove all entries pertaining to the movie.
     ''' </summary>
+    ''' <param name="CleanMovies">If <c>True</c>, process the movie files</param>
+    ''' <param name="CleanTV">If <c>True</c>, process the TV files</param>
+    ''' <param name="source">Optional. If provided, only process entries from that named video source.</param>
+    ''' <remarks></remarks>
     Public Sub Clean(ByVal CleanMovies As Boolean, ByVal CleanTV As Boolean, Optional ByVal source As String = "")
         Dim fInfo As FileInfo
         Dim tPath As String = String.Empty
@@ -163,6 +172,7 @@ Public Class Database
                 SQLtransaction.Commit()
             End Using
 
+            ' Housekeeping - consolidate and pack database using vacuum command http://www.sqlite.org/lang_vacuum.html
             Using SQLcommand As SQLite.SQLiteCommand = _mediaDBConn.CreateCommand()
                 SQLcommand.CommandText = "VACUUM;"
                 SQLcommand.ExecuteNonQuery()
@@ -172,18 +182,30 @@ Public Class Database
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error", False)
         End Try
     End Sub
-
+    ''' <summary>
+    ''' Remove from the database the TV seasons for which there are no episodes defined
+    ''' </summary>
+    ''' <param name="BatchMode">If <c>False</c>, the action is wrapped in a transaction</param>
+    ''' <remarks></remarks>
     Public Sub CleanSeasons(Optional ByVal BatchMode As Boolean = False)
         Dim SQLTrans As SQLite.SQLiteTransaction = Nothing
-        If Not BatchMode Then SQLTrans = Master.DB.MediaDBConn.BeginTransaction()
-        Using SQLCommand As SQLite.SQLiteCommand = _mediaDBConn.CreateCommand()
-            SQLCommand.CommandText = "DELETE FROM TVSeason WHERE NOT EXISTS (SELECT TVEps.Season FROM TVEps WHERE TVEps.Season = TVSeason.Season AND TVEps.TVShowID = TVSeason.TVShowID) AND TVSeason.Season <> 999"
-            SQLCommand.ExecuteNonQuery()
-        End Using
-        If Not BatchMode Then SQLTrans.Commit()
-        SQLTrans = Nothing
+        Try
+            If Not BatchMode Then SQLTrans = Master.DB.MediaDBConn.BeginTransaction()
+            Using SQLCommand As SQLite.SQLiteCommand = _mediaDBConn.CreateCommand()
+                SQLCommand.CommandText = "DELETE FROM TVSeason WHERE NOT EXISTS (SELECT TVEps.Season FROM TVEps WHERE TVEps.Season = TVSeason.Season AND TVEps.TVShowID = TVSeason.TVShowID) AND TVSeason.Season <> 999"
+                SQLCommand.ExecuteNonQuery()
+            End Using
+            If Not BatchMode Then SQLTrans.Commit()
+            SQLTrans = Nothing
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error", False)
+        End Try
+        If SQLTrans IsNot Nothing Then SQLTrans.Dispose()
     End Sub
-
+    ''' <summary>
+    ''' Remove the New flag from database entries (movies, TVShows, TVSeason, TVEps)
+    ''' </summary>
+    ''' <remarks></remarks>
     Public Sub ClearNew()
         Try
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MediaDBConn.BeginTransaction()
@@ -218,7 +240,10 @@ Public Class Database
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
-
+    ''' <summary>
+    ''' Close the databases
+    ''' </summary>
+    ''' <remarks></remarks>
     Public Sub Close()
         CloseDatabase(_mediaDBConn)
         'CloseDatabase(_jobsDBConn)
@@ -230,18 +255,23 @@ Public Class Database
         '    _jobsDBConn = Nothing
         'End If
     End Sub
-
+    ''' <summary>
+    ''' Perform the actual closing of the given database connection
+    ''' </summary>
+    ''' <param name="connection">Database connection on which to perform closing activities</param>
+    ''' <remarks></remarks>
     Protected Sub CloseDatabase(ByRef connection As SQLiteConnection)
         If IsNothing(connection) Then
             Return
         End If
 
-        Using command As SQLiteCommand = connection.CreateCommand()
-            command.CommandText = "VACUUM;"
-            command.ExecuteNonQuery()
-        End Using
-
         Try
+            ' Housekeeping - consolidate and pack database using vacuum command http://www.sqlite.org/lang_vacuum.html
+            Using command As SQLiteCommand = connection.CreateCommand()
+                command.CommandText = "VACUUM;"
+                command.ExecuteNonQuery()
+            End Using
+
             connection.Close()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.ToString, _
@@ -251,14 +281,23 @@ Public Class Database
             connection.Dispose()
         End Try
     End Sub
-
+    ''' <summary>
+    ''' Creates the connections to the required databases
+    ''' </summary>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public Function Connect() As Boolean
         Dim newDatabase = ConnectMediaDB()
         'ConnectJobsDB()
         Return newDatabase
     End Function
-
+    ''' <summary>
+    ''' Creates the connection to the MediaDB database
+    ''' </summary>
+    ''' <returns><c>True</c> if the database needed to be created (is new), <c>False</c> otherwise</returns>
+    ''' <remarks></remarks>
     Public Function ConnectMediaDB() As Boolean
+        'TODO Warning - This method should be marked as Protected and references re-directed to Connect() above
         If Not IsNothing(_mediaDBConn) Then
             Return False
             'Throw New InvalidOperationException("A database connection is already open, can't open another.")
@@ -338,13 +377,15 @@ Public Class Database
         End Try
         Return isNew
     End Function
-
-
     ''' <summary>
+    ''' Parse the columns defined in the database to determine if any are missing.
+    ''' If a column is detected as missing, add the relevant related columns
+    ''' </summary>
+    ''' <remarks>
     ''' cocotus, 2013/02 Added support for new MediaInfo-fields
     ''' Checks if Ember database contains new mediainfo columns and create them if necessary
     ''' m.savazzi, code optimized, removed select * as is too time consuming and not correct, added the pragma to return table structure / added try catch
-    ''' </summary>
+    ''' </remarks>
     Private Sub AddMissingColumnsToDatabase()
         'TODO Check to see if column exists and then create if not
         Using SQLpathcommand As SQLite.SQLiteCommand = _mediaDBConn.CreateCommand()
@@ -439,10 +480,16 @@ Public Class Database
 
 
     ''' <summary>
+    ''' Determines whether database structure is "current" by testing for a particular column. 
+    ''' The actual test will change with each database upgrade.
+    ''' </summary>
+    ''' <returns></returns>
+    ''' <remarks>
     ''' DanCooper, 2013/04 Changed field "Watched TEXT" to "HasWatched BOOL"
     ''' Checks if Ember database contains new "HasWatched BOOL" column
-    ''' </summary>
+    ''' </remarks>
     Private Function CheckDatabaseCompatibility() As Boolean
+        'TODO This method should be replaced with a proper check for an embedded major/minor version number
         Dim isCompatible As Boolean = False
         Using SQLpathcommand As SQLite.SQLiteCommand = _mediaDBConn.CreateCommand()
             SQLpathcommand.CommandText = "pragma table_info(Movies);"
@@ -624,6 +671,9 @@ Public Class Database
     ''' <param name="BatchMode">Is this function already part of a transaction?</param>
     ''' <returns>True if successful, false if deletion failed.</returns>
     Public Function DeleteTVSeasonFromDB(ByVal ShowID As Long, ByVal iSeason As Integer, Optional ByVal BatchMode As Boolean = False) As Boolean
+        If ShowID < 0 Then Throw New ArgumentOutOfRangeException("ShowID", "Value must be >= 0, was given: " & ShowID)
+        If iSeason < 0 Then Throw New ArgumentOutOfRangeException("iSeason", "Value must be >= 0, was given: " & iSeason)
+
         Try
             Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
             If Not BatchMode Then SQLtransaction = _mediaDBConn.BeginTransaction()
@@ -698,7 +748,12 @@ Public Class Database
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
-
+    ''' <summary>
+    ''' Retrieve a TV Show's information for a particular season.
+    ''' </summary>
+    ''' <param name="_TVDB">Structure in which to return the information. NOTE: _TVDB.ShowID must be valid.</param>
+    ''' <param name="iSeason"></param>
+    ''' <remarks></remarks>
     Public Sub FillTVSeasonFromDB(ByRef _TVDB As Structures.DBTV, ByVal iSeason As Integer)
         Dim _tmpTVDB As New Structures.DBTV
         _tmpTVDB = LoadTVSeasonFromDB(_TVDB.ShowID, iSeason, False)
@@ -956,8 +1011,12 @@ Public Class Database
     ''' Get the posterpath for the all seasons entry.
     ''' </summary>
     ''' <param name="ShowID">ID of the show to load, as stored in the database</param>
+    ''' <param name="WithShow">If <c>True</c>, also retrieve base show information</param>
     ''' <returns>Structures.DBTV object</returns>
     Public Function LoadTVAllSeasonFromDB(ByVal ShowID As Long, Optional ByVal WithShow As Boolean = False) As Structures.DBTV
+        'TODO This method seems mis-named, and may not be performing its intended role
+        If ShowID < 0 Then Throw New ArgumentOutOfRangeException("ShowID", "Value must be >= 0, was given: " & ShowID)
+
         Dim _TVDB As New Structures.DBTV
         Try
             _TVDB.ShowID = ShowID
@@ -1124,7 +1183,6 @@ Public Class Database
         End Try
         Return _TVDB
     End Function
-
     ''' <summary>
     ''' Load all the information for a TV Episode (by episode path)
     ''' </summary>
@@ -1148,23 +1206,34 @@ Public Class Database
         End Try
         Return New Structures.DBTV With {.EpID = -1}
     End Function
-
+    ''' <summary>
+    ''' Retrieve details for the given ShowID. If AllSeasonPosterEnabled is <c>True</c>, also retrieve the AllSeasonPoster
+    ''' </summary>
+    ''' <param name="ShowID">Show ID to retrieve</param>
+    ''' <returns>Structures.DBDV filled with show information.</returns>
+    ''' <remarks></remarks>
     Public Function LoadTVFullShowFromDB(ByVal ShowID As Long) As Structures.DBTV
+        If ShowID < 0 Then Throw New ArgumentOutOfRangeException("ShowID", "Value must be >= 0, was given: " & ShowID)
+
         If Master.eSettings.AllSeasonPosterEnabled Then
             Return Master.DB.LoadTVAllSeasonFromDB(ShowID, True)
         Else
             Return Master.DB.LoadTVShowFromDB(ShowID)
         End If
     End Function
-
     ''' <summary>
     ''' Load all the information for a TV Season.
     ''' </summary>
     ''' <param name="ShowID">ID of the show to load, as stored in the database</param>
     ''' <param name="iSeason">Number of the season to load, as stored in the database</param>
+    ''' <param name="WithShow">If <c>True</c>, also retrieve the TV Show information</param>
     ''' <returns>Structures.DBTV object</returns>
+    ''' <remarks></remarks>
     Public Function LoadTVSeasonFromDB(ByVal ShowID As Long, ByVal iSeason As Integer, ByVal WithShow As Boolean) As Structures.DBTV
         Dim _TVDB As New Structures.DBTV
+
+        If ShowID < 0 Then Throw New ArgumentOutOfRangeException("ShowID", "Value must be >= 0, was given: " & ShowID)
+
         Try
             _TVDB.ShowID = ShowID
             If WithShow Then FillTVShowFromDB(_TVDB)
@@ -1189,7 +1258,6 @@ Public Class Database
         End Try
         Return _TVDB
     End Function
-
     ''' <summary>
     ''' Load all the information for a TV Show.
     ''' </summary>
@@ -1197,6 +1265,9 @@ Public Class Database
     ''' <returns>Structures.DBTV object</returns>
     Public Function LoadTVShowFromDB(ByVal ShowID As Long) As Structures.DBTV
         Dim _TVDB As New Structures.DBTV
+
+        If ShowID < 0 Then Throw New ArgumentOutOfRangeException("ShowID", "Value must be >= 0, was given: " & ShowID)
+
         Try
             _TVDB.ShowID = ShowID
             Using SQLcommand As SQLite.SQLiteCommand = _mediaDBConn.CreateCommand()
@@ -1251,7 +1322,12 @@ Public Class Database
         End Try
         Return _TVDB
     End Function
-
+    ''' <summary>
+    ''' Execute arbitrary SQL commands against the database. Commands are retrieved from fname. 
+    ''' Commands are serialized Containers.InstallCommands. Only commands marked as CommandType DB are executed.
+    ''' </summary>
+    ''' <param name="fname">Filename, based off current assembly path. File contains serialized Containers.InstallCommand</param>
+    ''' <remarks></remarks>
     Public Sub PatchDatabase(ByVal fname As String)
         Dim xmlSer As XmlSerializer
         Dim _cmds As New Containers.InstallCommands
@@ -1308,6 +1384,8 @@ Public Class Database
     ''' <param name="ToNfo">Save the information to an nfo file?</param>
     ''' <returns>Structures.DBMovie object</returns>
     Public Function SaveMovieToDB(ByVal _movieDB As Structures.DBMovie, ByVal IsNew As Boolean, Optional ByVal BatchMode As Boolean = False, Optional ByVal ToNfo As Boolean = False) As Structures.DBMovie
+        'TODO Must add parameter checking. Needs thought to ensure calling routines are not broken if exception thrown. 
+        'TODO Break this method into smaller chunks. Too important to be this complex
         Try
             Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
             If Not BatchMode Then SQLtransaction = _mediaDBConn.BeginTransaction()
@@ -1690,9 +1768,12 @@ Public Class Database
     ''' </summary>
     ''' <param name="_TVEpDB">Structures.DBTV object to save to the database</param>
     ''' <param name="IsNew">Is this a new episode (not already present in database)?</param>
+    ''' <param name="WithSeason">If <c>True</c>, also save season information</param>
     ''' <param name="BatchMode">Is the function already part of a transaction?</param>
     ''' <param name="ToNfo">Save the information to an nfo file?</param>
     Public Sub SaveTVEpToDB(ByVal _TVEpDB As Structures.DBTV, ByVal IsNew As Boolean, ByVal WithSeason As Boolean, Optional ByVal BatchMode As Boolean = False, Optional ByVal ToNfo As Boolean = False)
+        'TODO Must add parameter checking. Needs thought to ensure calling routines are not broken if exception thrown. 
+        'TODO Break this method into smaller chunks. Too important to be this complex
         Try
             Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
             Dim PathID As Long = -1
@@ -1974,8 +2055,16 @@ Public Class Database
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
-
+    ''' <summary>
+    ''' Stores information for a single season to the database
+    ''' </summary>
+    ''' <param name="_TVSeasonDB">Structures.DBTV representing the season to be stored.</param>
+    ''' <param name="IsNew"></param>
+    ''' <param name="BatchMode"></param>
+    ''' <remarks>Note that this stores the season information, not the individual episodes within that season</remarks>
     Public Sub SaveTVSeasonToDB(ByRef _TVSeasonDB As Structures.DBTV, ByVal IsNew As Boolean, Optional ByVal BatchMode As Boolean = False)
+        'TODO Must add parameter checking. Needs thought to ensure calling routines are not broken if exception thrown. 
+        'TODO Break this method into smaller chunks. Too important to be this complex
         Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
         If Not BatchMode Then SQLtransaction = _mediaDBConn.BeginTransaction()
 
@@ -2008,7 +2097,6 @@ Public Class Database
 
         If Not BatchMode Then SQLtransaction.Commit()
     End Sub
-
     ''' <summary>
     ''' Saves all show information from a Structures.DBTV object to the database
     ''' </summary>
@@ -2144,53 +2232,89 @@ Public Class Database
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
+    ''' <summary>
+    ''' Load TV Sources from the DB. This populates the Master.TVSources list of TV Sources
+    ''' </summary>
+    ''' <remarks></remarks>
     Public Sub LoadTVSourcesFromDB()
         Master.TVSources.Clear()
-
-        Using SQLcommand As SQLite.SQLiteCommand = _mediaDBConn.CreateCommand()
-            SQLcommand.CommandText = "SELECT * FROM TVSources;"
-            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                While SQLreader.Read
-                    Dim tvsource As New Structures.TVSource
-                    tvsource.id = SQLreader("ID").ToString
-                    tvsource.Name = SQLreader("Name").ToString
-                    tvsource.Path = SQLreader("Path").ToString
-                    Master.TVSources.Add(tvsource)
-                End While
+        Try
+            Using SQLcommand As SQLite.SQLiteCommand = _mediaDBConn.CreateCommand()
+                SQLcommand.CommandText = "SELECT * FROM TVSources;"
+                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                    While SQLreader.Read
+                        Try ' Parsing database entry may fail. If it does, log the error and ignore the entry but continue processing
+                            Dim tvsource As New Structures.TVSource
+                            tvsource.id = SQLreader("ID").ToString
+                            tvsource.Name = SQLreader("Name").ToString
+                            tvsource.Path = SQLreader("Path").ToString
+                            Master.TVSources.Add(tvsource)
+                        Catch ex As Exception
+                            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                        End Try
+                    End While
+                End Using
             End Using
-        End Using
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
-
+    ''' <summary>
+    ''' Load Movie Sources from the DB. This populates the Master.MovieSources list of TV Sources
+    ''' </summary>
+    ''' <remarks></remarks>
     Public Sub LoadMovieSourcesFromDB()
         Master.MovieSources.Clear()
-
-        Using SQLcommand As SQLite.SQLiteCommand = _mediaDBConn.CreateCommand()
-            SQLcommand.CommandText = "SELECT * FROM sources;"
-            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                While SQLreader.Read
-                    Dim msource As New Structures.MovieSource
-                    msource.id = SQLreader("ID").ToString
-                    msource.Name = SQLreader("Name").ToString
-                    msource.Path = SQLreader("Path").ToString
-                    msource.Recursive = Convert.ToBoolean(SQLreader("Recursive"))
-                    msource.UseFolderName = Convert.ToBoolean(SQLreader("Foldername"))
-                    msource.IsSingle = Convert.ToBoolean(SQLreader("Single"))
-                    Master.MovieSources.Add(msource)
-                End While
+        Try
+            Using SQLcommand As SQLite.SQLiteCommand = _mediaDBConn.CreateCommand()
+                SQLcommand.CommandText = "SELECT * FROM sources;"
+                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                    While SQLreader.Read
+                        Try ' Parsing database entry may fail. If it does, log the error and ignore the entry but continue processing
+                            Dim msource As New Structures.MovieSource
+                            msource.id = SQLreader("ID").ToString
+                            msource.Name = SQLreader("Name").ToString
+                            msource.Path = SQLreader("Path").ToString
+                            msource.Recursive = Convert.ToBoolean(SQLreader("Recursive"))
+                            msource.UseFolderName = Convert.ToBoolean(SQLreader("Foldername"))
+                            msource.IsSingle = Convert.ToBoolean(SQLreader("Single"))
+                            Master.MovieSources.Add(msource)
+                        Catch ex As Exception
+                            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                        End Try
+                    End While
+                End Using
             End Using
-        End Using
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
-
+    ''' <summary>
+    ''' Retrieve movie paths.
+    ''' </summary>
+    ''' <param name="source">If supplied, paths returned will be restricted to the given source. No validation is done
+    ''' on this source to ensure it is valid. If it is not valid, expect the returned paths to be empty.</param>
+    ''' <returns>List of String movie paths</returns>
+    ''' <remarks></remarks>
     Public Function GetMoviePathsBySource(Optional ByVal source As String = "") As List(Of String)
         Dim Paths As New List(Of String)
-        Using SQLcommand As SQLite.SQLiteCommand = _mediaDBConn.CreateCommand()
-            SQLcommand.CommandText = String.Format("SELECT MoviePath, Source FROM Movies {0};", If(source = String.Empty, String.Empty, String.Format("INNER JOIN Sources ON Movies.Source=Sources.Name Where Sources.Path=""{0}""", source)))
-            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                While SQLreader.Read
-                    Paths.Add(SQLreader("MoviePath").ToString)
-                End While
+        Try
+            Using SQLcommand As SQLite.SQLiteCommand = _mediaDBConn.CreateCommand()
+                SQLcommand.CommandText = String.Format("SELECT MoviePath, Source FROM Movies {0};", If(source = String.Empty, String.Empty, String.Format("INNER JOIN Sources ON Movies.Source=Sources.Name Where Sources.Path=""{0}""", source)))
+                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                    While SQLreader.Read
+                        Try ' Parsing database entry may fail. If it does, log the error and ignore the entry but continue processing
+                            Paths.Add(SQLreader("MoviePath").ToString)
+                        Catch ex As Exception
+                            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                        End Try
+                    End While
+                End Using
             End Using
-        End Using
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+        
         Return Paths
     End Function
 
@@ -2226,7 +2350,18 @@ Public Class Database
     '    End If
     'End Sub
 
+    ''' <summary>
+    ''' Verify whether the given Addon is installed
+    ''' </summary>
+    ''' <param name="AddonID">The AddonID to be verified.</param>
+    ''' <returns>Version of the addon, if it is installed, or zero (0) otherwise</returns>
+    ''' <remarks></remarks>
     Public Function IsAddonInstalled(ByVal AddonID As Integer) As Single
+        If AddonID < 0 Then
+            Master.eLog.WriteToErrorLog("Invalid AddonID: " & AddonID, Environment.StackTrace, "Error")
+            Throw New ArgumentOutOfRangeException("AddonID", "Must be a positive integer")
+        End If
+
         Try
             Using SQLCommand As SQLite.SQLiteCommand = _mediaDBConn.CreateCommand()
                 SQLCommand.CommandText = String.Concat("SELECT Version FROM Addons WHERE AddonID = ", AddonID, ";")
@@ -2243,75 +2378,100 @@ Public Class Database
         End Try
         Return 0
     End Function
-
+    ''' <summary>
+    ''' Removes the referenced Addon from the list of installed Addons
+    ''' </summary>
+    ''' <param name="AddonID"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public Function UninstallAddon(ByVal AddonID As Integer) As Boolean
+        If AddonID < 0 Then
+            Master.eLog.WriteToErrorLog("Invalid AddonID: " & AddonID, Environment.StackTrace, "Error")
+            Throw New ArgumentOutOfRangeException("AddonID", "Must be a positive integer")
+        End If
+
         Dim needRestart As Boolean = False
         Try
             Dim _cmds As Containers.InstallCommands = Containers.InstallCommands.Load(Path.Combine(Functions.AppPath, "InstallTasks.xml"))
-            Using SQLCommand As SQLite.SQLiteCommand = _mediaDBConn.CreateCommand()
-                SQLCommand.CommandText = String.Concat("SELECT FilePath FROM AddonFiles WHERE AddonID = ", AddonID, ";")
-                Using SQLReader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
-                    While SQLReader.Read
-                        Try
-                            File.Delete(SQLReader("FilePath").ToString)
-                        Catch
-                            _cmds.Command.Add(New Containers.InstallCommand With {.CommandType = "FILE.Delete", .CommandExecute = SQLReader("FilePath").ToString})
-                            needRestart = True
-                        End Try
-                    End While
-                    If needRestart Then _cmds.Save(Path.Combine(Functions.AppPath, "InstallTasks.xml"))
+            Using SQLtransaction As SQLite.SQLiteTransaction = _mediaDBConn.BeginTransaction()
+                Using SQLCommand As SQLite.SQLiteCommand = _mediaDBConn.CreateCommand()
+                    SQLCommand.CommandText = String.Concat("SELECT FilePath FROM AddonFiles WHERE AddonID = ", AddonID, ";")
+                    Using SQLReader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
+                        While SQLReader.Read
+                            Try
+                                File.Delete(SQLReader("FilePath").ToString)
+                            Catch
+                                _cmds.Command.Add(New Containers.InstallCommand With {.CommandType = "FILE.Delete", .CommandExecute = SQLReader("FilePath").ToString})
+                                needRestart = True
+                            End Try
+                        End While
+                        If needRestart Then _cmds.Save(Path.Combine(Functions.AppPath, "InstallTasks.xml"))
+                    End Using
+                    SQLCommand.CommandText = String.Concat("DELETE FROM Addons WHERE AddonID = ", AddonID, ";")
+                    SQLCommand.ExecuteNonQuery()
+                    SQLCommand.CommandText = String.Concat("DELETE FROM AddonFiles WHERE AddonID = ", AddonID, ";")
+                    SQLCommand.ExecuteNonQuery()
                 End Using
-                SQLCommand.CommandText = String.Concat("DELETE FROM Addons WHERE AddonID = ", AddonID, ";")
-                SQLCommand.ExecuteNonQuery()
-                SQLCommand.CommandText = String.Concat("DELETE FROM AddonFiles WHERE AddonID = ", AddonID, ";")
-                SQLCommand.ExecuteNonQuery()
+                SQLtransaction.Commit()
             End Using
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
         Return Not needRestart
     End Function
-
+    ''' <summary>
+    ''' Saves/installs the supplied Addon to the database
+    ''' </summary>
+    ''' <param name="Addon">Addon to be saved</param>
+    ''' <remarks></remarks>
     Public Sub SaveAddonToDB(ByVal Addon As Containers.Addon)
+        'TODO Need to add validation on Addon.ID, especially if it is passed in the parameter
+        If Addon Is Nothing Then
+            Master.eLog.WriteToErrorLog("Attempted to save an empty Addon", Environment.StackTrace, "Error")
+            Throw New ArgumentNullException("AddonID", "Must be a positive integer")
+        End If
         Try
-            Using SQLCommand As SQLite.SQLiteCommand = _mediaDBConn.CreateCommand()
-                SQLCommand.CommandText = String.Concat("INSERT OR REPLACE INTO Addons (", _
-                  "AddonID, Version) VALUES (?,?);")
-                Dim parAddonID As SQLite.SQLiteParameter = SQLCommand.Parameters.Add("parAddonID", DbType.Int32, 0, "AddonID")
-                Dim parVersion As SQLite.SQLiteParameter = SQLCommand.Parameters.Add("parVersion", DbType.String, 0, "Version")
+            Using SQLtransaction As SQLite.SQLiteTransaction = _mediaDBConn.BeginTransaction()
+                Using SQLCommand As SQLite.SQLiteCommand = _mediaDBConn.CreateCommand()
+                    SQLCommand.CommandText = String.Concat("INSERT OR REPLACE INTO Addons (", _
+                      "AddonID, Version) VALUES (?,?);")
+                    Dim parAddonID As SQLite.SQLiteParameter = SQLCommand.Parameters.Add("parAddonID", DbType.Int32, 0, "AddonID")
+                    Dim parVersion As SQLite.SQLiteParameter = SQLCommand.Parameters.Add("parVersion", DbType.String, 0, "Version")
 
-                parAddonID.Value = Addon.ID
-                parVersion.Value = Addon.Version.ToString
+                    parAddonID.Value = Addon.ID
+                    parVersion.Value = Addon.Version.ToString
 
-                SQLCommand.ExecuteNonQuery()
+                    SQLCommand.ExecuteNonQuery()
 
-                SQLCommand.CommandText = String.Concat("DELETE FROM AddonFiles WHERE AddonID = ", Addon.ID, ";")
-                SQLCommand.ExecuteNonQuery()
+                    SQLCommand.CommandText = String.Concat("DELETE FROM AddonFiles WHERE AddonID = ", Addon.ID, ";")
+                    SQLCommand.ExecuteNonQuery()
 
-                Using SQLFileCommand As SQLite.SQLiteCommand = _mediaDBConn.CreateCommand()
-                    SQLFileCommand.CommandText = String.Concat("INSERT INTO AddonFiles (AddonID, FilePath) VALUES (?,?);")
-                    Dim parFileAddonID As SQLite.SQLiteParameter = SQLFileCommand.Parameters.Add("parFileAddonID", DbType.Int32, 0, "AddonID")
-                    Dim parFilePath As SQLite.SQLiteParameter = SQLFileCommand.Parameters.Add("parFilePath", DbType.String, 0, "FilePath")
-                    parFileAddonID.Value = Addon.ID
-                    For Each fFile As KeyValuePair(Of String, String) In Addon.Files
-                        parFilePath.Value = Path.Combine(Functions.AppPath, fFile.Key.Replace("/", Path.DirectorySeparatorChar))
-                        SQLFileCommand.ExecuteNonQuery()
-                    Next
+                    Using SQLFileCommand As SQLite.SQLiteCommand = _mediaDBConn.CreateCommand()
+                        SQLFileCommand.CommandText = String.Concat("INSERT INTO AddonFiles (AddonID, FilePath) VALUES (?,?);")
+                        Dim parFileAddonID As SQLite.SQLiteParameter = SQLFileCommand.Parameters.Add("parFileAddonID", DbType.Int32, 0, "AddonID")
+                        Dim parFilePath As SQLite.SQLiteParameter = SQLFileCommand.Parameters.Add("parFilePath", DbType.String, 0, "FilePath")
+                        parFileAddonID.Value = Addon.ID
+                        For Each fFile As KeyValuePair(Of String, String) In Addon.Files
+                            parFilePath.Value = Path.Combine(Functions.AppPath, fFile.Key.Replace("/", Path.DirectorySeparatorChar))
+                            SQLFileCommand.ExecuteNonQuery()
+                        Next
+                    End Using
                 End Using
+                SQLtransaction.Commit()
             End Using
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
-
     ''' <summary>
-    ''''cocotus 2013/02 Trakt.tv syncing - Movies
-    ''' Savethe PlayCount Tag for watched movie  into Ember database /NFO if not already set
+    ''' Save the PlayCount Tag for watched movie  into Ember database /NFO if not already set
     ''' </summary>
-    ''' <param name="myWatchedMovies">The watched movie as Keypair</param>
-    ''' <returns></returns>
-    ''not using loop here, only do one movie a time (call function repeatedly!)! -> only deliver keypair instead of whole dictionary
-    '   Public Sub SaveMoviePlayCountInDatabase(ByVal myWatchedMovies As Dictionary(Of String, KeyValuePair(Of String, String)))
+    ''' <param name="WatchedMovieData">The watched movie as Keypair</param>
+    ''' <remarks>    
+    ''' cocotus 2013/02 Trakt.tv syncing - Movies
+    ''' not using loop here, only do one movie a time (call function repeatedly!)! -> only deliver keypair instead of whole dictionary
+    ''' Old-> Public Sub SaveMoviePlayCountInDatabase(ByVal myWatchedMovies As Dictionary(Of String, KeyValuePair(Of String, String)))
+    ''' </remarks>
     Public Sub SaveMoviePlayCountInDatabase(ByVal WatchedMovieData As KeyValuePair(Of String, KeyValuePair(Of String, Integer)))
         Try
             Dim PlaycountStored As Boolean = True
@@ -2364,17 +2524,18 @@ Public Class Database
 
         End Try
     End Sub
-
     ''' <summary>
-    ''''cocotus 2013/03 Trakt.tv syncing - Episodes
     ''' Savethe PlayCount Tag for watched episode into Ember database /NFO if not already set
     ''' </summary>
     ''' <param name="TVDBID">TVDBID for TV Show identification</param>
     ''' <param name="Season">Season Number</param>
     ''' <param name="episode">Episode Number</param>
-    ''' <returns></returns>
-    ''not using loop here, only do one episode a time (call function repeatedly!)!
+    ''' <remarks>
+    ''' cocotus 2013/03 Trakt.tv syncing - Episodes
+    ''' not using loop here, only do one episode a time (call function repeatedly!)!
+    '''</remarks>
     Public Sub SaveEpisodePlayCountInDatabase(ByVal TVDBID As String, ByVal Season As String, ByVal episode As String)
+        'TODO PlaycountStored is set to False if db value is 0 or not set. What conditions might cause that to happen? If DB Version issues, should be resolved elsewhere first!
         Try
             Dim PlaycountStored As Boolean = True
             Dim _TVEpDB As New Structures.DBTV
@@ -2395,7 +2556,7 @@ Public Class Database
             End Using
 
             'No ID --> TV Show doesn't Exist in Ember --> Exit no updates!
-            If tempTVDBID = "" Then Exit Sub
+            If String.IsNullOrEmpty(tempTVDBID) Then Exit Sub
             'Now we search episodes of the found TV Show
             Using SQLcommand As SQLite.SQLiteCommand = _mediaDBConn.CreateCommand()
                 SQLcommand.CommandText = String.Concat("SELECT * FROM TVEps WHERE TVShowID = ", tempTVDBID, ";")
@@ -2448,15 +2609,18 @@ Public Class Database
 #End Region 'Methods
 
 #Region "Nested Types"
-
+    ''' <summary>
+    ''' Class representing a media Source
+    ''' </summary>
+    ''' <remarks></remarks>
     Private Class SourceHolder
 
 #Region "Fields"
 
         Private _name As String
         Private _path As String
-        Private _recursive As Boolean
-        Private _single As Boolean
+        Private _recursive As Boolean   ' Scanned recursively? I.e. should sub-directories be scanned as well?
+        Private _single As Boolean      ' Does this path contains a single video/media?
 
 #End Region 'Fields
 
@@ -2469,7 +2633,10 @@ Public Class Database
 #End Region 'Constructors
 
 #Region "Properties"
-
+        ''' <summary>
+        ''' Does this path contains a single video/media?
+        ''' </summary>
+        ''' <value>Whether this folder contains a single video</value>
         Public Property isSingle() As Boolean
             Get
                 Return Me._single
@@ -2478,7 +2645,10 @@ Public Class Database
                 Me._single = value
             End Set
         End Property
-
+        ''' <summary>
+        ''' Name given to this source by the user
+        ''' </summary>
+        ''' <value>Name given to this source by the user</value>
         Public Property Name() As String
             Get
                 Return Me._name
@@ -2487,7 +2657,6 @@ Public Class Database
                 Me._name = value
             End Set
         End Property
-
         Public Property Path() As String
             Get
                 Return Me._path
@@ -2496,7 +2665,10 @@ Public Class Database
                 Me._path = value
             End Set
         End Property
-
+        ''' <summary>
+        ''' Scanned recursively? I.e. should sub-directories be scanned as well?
+        ''' </summary>
+        ''' <value>Whether sub-directories should be scanned</value>
         Public Property Recursive() As Boolean
             Get
                 Return Me._recursive
