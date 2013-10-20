@@ -526,20 +526,16 @@ Namespace IMDB
 mPlot:
                 'Get the full Plot
                 If Options.bPlot AndAlso (String.IsNullOrEmpty(IMDBMovie.Plot) OrElse Not Master.eSettings.LockPlot) Then
-                    Dim FullPlotP As String = Regex.Match(PlotHtml, "<p class=.plotpar.>(.*?)</p>", RegexOptions.Singleline Or RegexOptions.IgnoreCase Or RegexOptions.Multiline).Groups(1).Value.ToString.Trim
-                    Dim FullPlotI As String = Regex.Match(PlotHtml, "<p class=.plotpar.>(.*?)<i>", RegexOptions.Singleline Or RegexOptions.IgnoreCase Or RegexOptions.Multiline).Groups(1).Value.ToString.Trim
-                    Dim FullPlot As String = If(FullPlotI.Length < FullPlotP.Length, FullPlotI, FullPlotP)
-                    If Not String.IsNullOrEmpty(FullPlot) Then
-                        For Each rMatch As Match In Regex.Matches(FullPlot, HREF_PATTERN_4)
-                            FullPlot = FullPlot.Replace(rMatch.Value, rMatch.Groups("text").Value.Trim)
-                        Next
-                        IMDBMovie.Plot = Web.HttpUtility.HtmlDecode(FullPlot.Replace("|", String.Empty)).Trim
-                    End If
+                    Dim FullPlotO As String = Regex.Match(PlotHtml, "<li class=""odd"">\s*<p>(.*?)<br/>", RegexOptions.Singleline Or RegexOptions.IgnoreCase Or RegexOptions.Multiline).Groups(1).Value.ToString.Trim
+                    Dim FullPlotE As String = Regex.Match(PlotHtml, "<li class=""even"">\s*<p>(.*?)<br/>", RegexOptions.Singleline Or RegexOptions.IgnoreCase Or RegexOptions.Multiline).Groups(1).Value.ToString.Trim
+                    Dim FullPlot As String = If(Not String.IsNullOrEmpty(FullPlotO), FullPlotO, FullPlotE)
+                    FullPlot = Regex.Replace(FullPlot, "<a(.*?)>", "")
+                    FullPlot = Regex.Replace(FullPlot, "</a>", "")
+                    IMDBMovie.Plot = FullPlot
+                End If
 
-
-                    If Master.eSettings.OutlineForPlot AndAlso String.IsNullOrEmpty(IMDBMovie.Plot) AndAlso Not String.IsNullOrEmpty(IMDBMovie.Outline) Then
-                        IMDBMovie.Plot = IMDBMovie.Outline
-                    End If
+                If Master.eSettings.OutlineForPlot AndAlso String.IsNullOrEmpty(IMDBMovie.Plot) AndAlso Not String.IsNullOrEmpty(IMDBMovie.Outline) Then
+                    IMDBMovie.Plot = IMDBMovie.Outline
                 End If
 
                 If bwIMDB.CancellationPending Then Return Nothing
