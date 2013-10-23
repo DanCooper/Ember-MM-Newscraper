@@ -26,7 +26,6 @@ Public Class dlgSortFiles
 
 #Region "Fields"
 
-    Private fSorter As New FileUtils.FileSorter
     Private _hitgo As Boolean = False
 
 #End Region 'Fields
@@ -51,7 +50,7 @@ Public Class dlgSortFiles
         If Not String.IsNullOrEmpty(Me.txtPath.Text) AndAlso Directory.Exists(Me.txtPath.Text) Then
             If MsgBox(String.Concat(Master.eLang.GetString(220, "WARNING: If you continue, all files will be sorted into separate folders."), vbNewLine, vbNewLine, Master.eLang.GetString(101, "Are you sure you want to continue?")), MsgBoxStyle.Critical Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are you sure?")) = MsgBoxResult.Yes Then
                 Me._hitgo = True
-                fSorter.SortFiles(Me.txtPath.Text)
+                FileUtils.FileSorter.SortFiles(Me.txtPath.Text)
                 lblStatus.Text = "Done!"
                 pbStatus.Value = 0
 
@@ -69,7 +68,8 @@ Public Class dlgSortFiles
     End Sub
 
     Private Sub dlgSortFiles_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        AddHandler fSorter.ProgressUpdated, AddressOf UpdateProgress
+        AddHandler FileUtils.FileSorter.ProgressUpdated, AddressOf UpdateProgress
+        pbStatus.Maximum = 100
         Me.SetUp()
         Me.txtPath.Text = Master.eSettings.SortPath
     End Sub
@@ -87,14 +87,15 @@ Public Class dlgSortFiles
         Me.Label1.Text = Master.eLang.GetString(217, "Path to Sort:")
         Me.fbdBrowse.Description = Master.eLang.GetString(218, "Select the folder which contains the files you wish to sort.")
     End Sub
-
+    ''' <summary>
+    ''' Event handler to display status text and progress bar updates during file moving operations
+    ''' </summary>
+    ''' <param name="iPercent">Percentage completed</param>
+    ''' <param name="sStatus"></param>
+    ''' <remarks></remarks>
     Private Sub UpdateProgress(ByVal iPercent As Integer, ByVal sStatus As String)
-        If String.IsNullOrEmpty(sStatus) Then
-            pbStatus.Maximum = iPercent
-        Else
-            lblStatus.Text = sStatus
-            pbStatus.Value = iPercent
-        End If
+        lblStatus.Text = sStatus
+        pbStatus.Value = iPercent
     End Sub
 
 #End Region 'Methods
