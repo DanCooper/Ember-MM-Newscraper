@@ -31,12 +31,14 @@ Public Class ErrorLogger
 
 #Region "Methods"
 
-	''' <summary>
-	''' Write the error to our log file, if enabled in settings.
-	''' </summary>
-	''' <param name="msg">Error summary</param>
-	''' <param name="stkTrace">Full stack trace</param>
-	''' <param name="title">Error title</param>
+    ''' <summary>
+    ''' Write the error to our log file, if enabled in settings.
+    ''' </summary>
+    ''' <param name="msg">Error summary</param>
+    ''' <param name="stkTrace">Full stack trace</param>
+    ''' <param name="title">Error title</param>
+    ''' <param name="Notify"></param>
+    ''' <remarks></remarks>
 	Public Sub WriteToErrorLog(ByVal msg As String, ByVal stkTrace As String, ByVal title As String, Optional ByVal Notify As Boolean = True)
         Master.logger.Debug("{0} {1}", msg, stkTrace)
         If Notify Then ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(816, "An Error Has Occurred"), msg, Nothing}))

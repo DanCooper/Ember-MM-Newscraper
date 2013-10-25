@@ -27,7 +27,15 @@ Namespace FileUtils
 
         #Region "Methods"
 
+        ''' <summary>
+        ''' Determine the lowest-level directory from the supplied path string. 
+        ''' </summary>
+        ''' <param name="sPath">The path string to parse</param>
+        ''' <returns>String containing a directory name, or String.Empty if no valid directory name was found</returns>
+        ''' <remarks>Passing a path to a filename will treat that filename as a path. </remarks>
         Public Shared Function GetDirectory(ByVal sPath As String) As String
+            'TODO Need to evaluate more actual EMM uses of this method. I'm not confident in my understanding of what it is actually trying to accomplish. It seems overly complex for such a simple role
+            'Why not .split on DirectorySeparatorChar and use the last non-Empty string?
             Try
                 If String.IsNullOrEmpty(sPath) Then Return String.Empty
                 If sPath.EndsWith(Path.DirectorySeparatorChar) Then sPath = sPath.Substring(0, sPath.Length - 1)
@@ -41,8 +49,16 @@ Namespace FileUtils
                 Return String.Empty
             End Try
         End Function
-
+        ''' <summary>
+        ''' Given a path, determine whether it is a Blu-Ray or DVD folder. Find the respective media files within, and return the
+        ''' largest one that is over 1 GB, or String.Empty otherwise.
+        ''' </summary>
+        ''' <param name="sPath">Path to Blu-Ray or DVD files.</param>
+        ''' <param name="ForceBDMV">Assume path holds Blu-Ray files if <c>True</c></param>
+        ''' <returns>Path/filename to the largest media file for the detected video type</returns>
+        ''' <remarks></remarks>
         Public Shared Function GetLongestFromRip(ByVal sPath As String, Optional ByVal ForceBDMV As Boolean = False) As String
+            'TODO Needs error handling for when largest file is under 1GB. No default is set. Also, should error if path is not DVD or BR. Also, if ForceBDMV, complain if no files found
             Dim lFileList As New List(Of FileInfo)
             Select Case True
                 Case isBDRip(sPath) OrElse ForceBDMV
@@ -50,11 +66,18 @@ Namespace FileUtils
                 Case isVideoTS(sPath)
                     lFileList.AddRange(New DirectoryInfo(Directory.GetParent(sPath).FullName).GetFiles("*.vob"))
             End Select
-
+            'Return filename/path of the largest file that is over 1 GB in size.
             Return lFileList.Where(Function(s) s.Length > 1073741824).OrderByDescending(Function(s) s.Length).Select(Function(s) s.FullName).FirstOrDefault
         End Function
-
+        ''' <summary>
+        ''' Determine whether the path provided contains a Blu-Ray image
+        ''' </summary>
+        ''' <param name="sPath">Path to be evaluated</param>
+        ''' <returns><c>True</c> if the supplied path is determined to be a Blu-Ray path. <c>False</c> otherwise</returns>
+        ''' <remarks>Two tests are performed. If the supplied path has an extension (such as if a .m2ts file was provided), check 
+        ''' that the parent directory is "stream" and its parent is "bdmv"</remarks>
         Public Shared Function isBDRip(ByVal sPath As String) As Boolean
+            'TODO Kludge. Consider FileSystemInfo.Attributes to detect if path is a file or directory, and proceed from there
             If String.IsNullOrEmpty(sPath) Then Return False
             If Path.HasExtension(sPath) Then
                 Return Directory.GetParent(sPath).Name.ToLower = "stream" AndAlso Directory.GetParent(Directory.GetParent(sPath).FullName).Name.ToLower = "bdmv"
@@ -62,8 +85,14 @@ Namespace FileUtils
                 Return GetDirectory(sPath).ToLower = "stream" AndAlso Directory.GetParent(sPath).Name.ToLower = "bdmv"
             End If
         End Function
-
+        ''' <summary>
+        ''' Deermine whether the path provided contains a DVD image
+        ''' </summary>
+        ''' <param name="sPath">Path to be evaluated</param>
+        ''' <returns><c>True</c> if the supplied path is determined to be a Blu-Ray path. <c>False</c> otherwise</returns>
+        ''' <remarks>If the path is a file, check if parent is video_ts. Otherwise, it should be a directory, so see if it is video_ts</remarks>
         Public Shared Function isVideoTS(ByVal sPath As String) As Boolean
+            'TODO Kludge. Consider FileSystemInfo.Attributes to detect if path is a file or directory, and proceed from there
             If String.IsNullOrEmpty(sPath) Then Return False
             If Path.HasExtension(sPath) Then
                 Return Directory.GetParent(sPath).Name.ToLower = "video_ts"
@@ -71,13 +100,15 @@ Namespace FileUtils
                 Return GetDirectory(sPath).ToLower = "video_ts"
             End If
         End Function
-
         ''' <summary>
         ''' Copy a file from one location to another using a stream/buffer
         ''' </summary>
         ''' <param name="sPathFrom">Old path of file to move.</param>
         ''' <param name="sPathTo">New path of file to move.</param>
         Public Shared Sub MoveFileWithStream(ByVal sPathFrom As String, ByVal sPathTo As String)
+            'TODO Inefficient. Why not use system-provided FileInfo.MoveTo method. Instantaneous if on same system volume as a bonus.
+            'TODO Should do validation checking on input parameters. Should handle Empty or invalid files. Should perhaps handle directory (and content) moves intelligently
+            'TODO Badly named. Should instead be CopyFileWithStream, and use FileInfo.CopyTo method. 
             Try
                 Using SourceStream As FileStream = New FileStream(String.Concat("", sPathFrom, ""), FileMode.Open, FileAccess.Read)
                     Using DestinationStream As FileStream = New FileStream(String.Concat("", sPathTo, ""), FileMode.Create, FileAccess.Write)
@@ -93,12 +124,12 @@ Namespace FileUtils
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
         End Sub
-
         ''' <summary>
         ''' Get the entire path and filename of a file, but without the extension
         ''' </summary>
         ''' <param name="sPath">Full path to file.</param>
         ''' <returns>Path and filename of a file, without the extension</returns>
+        ''' <remarks>No validation is made on whether the path/file actually exists.</remarks>
         Public Shared Function RemoveExtFromPath(ByVal sPath As String) As String
             Try
                 Return Path.Combine(Directory.GetParent(sPath).FullName, Path.GetFileNameWithoutExtension(sPath))
@@ -106,19 +137,25 @@ Namespace FileUtils
                 Return String.Empty
             End Try
         End Function
-
-		Public Shared Function MakeValidFilename(ByVal filename As String) As String
-			filename = filename.Replace(":", " -")
-			filename = filename.Replace("/", String.Empty)
-			'pattern = pattern.Replace("\", String.Empty)
-			filename = filename.Replace("|", String.Empty)
-			filename = filename.Replace("<", String.Empty)
-			filename = filename.Replace(">", String.Empty)
-			filename = filename.Replace("?", String.Empty)
-			filename = filename.Replace("*", String.Empty)
-			filename = filename.Replace("  ", " ")
-			Return filename
-		End Function
+        ''' <summary>
+        ''' Takes the supplied filename and replaces any invalid characters with suitable substitutions.
+        ''' </summary>
+        ''' <param name="filename">String intended to represent a filename, without any path.</param>
+        ''' <returns>A String that has had any invalid characters substituted with acceptable alternatives.</returns>
+        ''' <remarks>No validation is done as to whether the filename actually exists</remarks>
+        Public Shared Function MakeValidFilename(ByVal filename As String) As String
+            'TODO Should look into Path.GetInvalidFileNameChars and Path.GetInvalidPathChars
+            filename = filename.Replace(":", " -")
+            filename = filename.Replace("/", String.Empty)
+            'pattern = pattern.Replace("\", String.Empty)
+            filename = filename.Replace("|", String.Empty)
+            filename = filename.Replace("<", String.Empty)
+            filename = filename.Replace(">", String.Empty)
+            filename = filename.Replace("?", String.Empty)
+            filename = filename.Replace("*", String.Empty)
+            filename = filename.Replace("  ", " ")
+            Return filename
+        End Function
 #End Region	'Methods
 
     End Class
@@ -131,7 +168,12 @@ Namespace FileUtils
         ''' Safer method of deleting a diretory and all it's contents
         ''' </summary>
         ''' <param name="sPath">Full path of directory to delete</param>
+        ''' <remarks>This method deletes the supplied path by recursively deleting its child directories, 
+        ''' then deleting its file contents before deleting itself.</remarks>
         Public Shared Sub DeleteDirectory(ByVal sPath As String)
+            'TODO The calls to Directory.Exists may return a false negative if the user does not have read access. If this happens
+            'TODO during a recursive call, orphan folders may be left behind, causing the final Delete to fail. Should give better
+            'TODO error messages so the log can be easier to interpret.
             Try
                 If String.IsNullOrEmpty(sPath) Then Return
 
@@ -174,7 +216,7 @@ Namespace FileUtils
         ''' </summary>
         ''' <param name="isCleaner">Is the function being called from the cleaner?</param>
         ''' <param name="mMovie">DBMovie object to get paths from</param>        
-        ''' <returns>True if files were found that are to be deleted, false if not.</returns>
+        ''' <returns><c>True</c> if files were found that are to be deleted, <c>False</c> if not.</returns>
         ''' <remarks>Not used for cleaner, needs to be modified to reflect.</remarks>
 		Public Function GetItemsToDelete(ByVal isCleaner As Boolean, ByVal mMovie As Structures.DBMovie) As List(Of IO.FileSystemInfo)
 			Dim dPath As String = String.Empty
@@ -392,61 +434,85 @@ Namespace FileUtils
 
 	End Class
 
-    Public Class FileSorter
+    ''' <summary>
+    ''' This module is a convenience library for sorting files into respective subdirectories.
+    ''' This module does NOT need to be instantiated!
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Module FileSorter
 
 #Region "Events"
 
+        ''' <summary>
+        ''' Event that is raised when SortFiles desires the progress indicator to be updated
+        ''' </summary>
+        ''' <param name="iPercent">Percentage complete</param>
+        ''' <param name="sStatus">Message to be displayed alongside the progress indicator</param>
+        ''' <remarks></remarks>
         Public Event ProgressUpdated(ByVal iPercent As Integer, ByVal sStatus As String)
 
 #End Region 'Events
 
 #Region "Methods"
 
-		Public Sub SortFiles(ByVal sPath As String)
-			Dim tmpAL As New List(Of String)
-			Dim tmpPath As String = String.Empty
-			Dim tmpName As String = String.Empty
-			Dim iCount As Integer = 0
-			Try
-				If Directory.Exists(sPath) Then
-					Dim di As New DirectoryInfo(sPath)
-					Dim lFi As New List(Of FileInfo)
+        ''' <summary>
+        ''' Reorganize the media files in the given folder into subfolders.
+        ''' </summary>
+        ''' <param name="sPath">Path to be sorted</param>
+        ''' <remarks>Occasionally a directory will contain multiple media files (and meta-files) and 
+        ''' this method will walk through the files in that directory and move each to its own unique subdirectory.
+        ''' This will move all files with the same core name, without extension or fanart/trailer endings.</remarks>
+        Public Sub SortFiles(ByVal sPath As String)
+            'TODO Need to test what happens if sPath points to an existing FILE (and not just a directory)
+            Dim tmpAL As New List(Of String)
+            Dim tmpPath As String = String.Empty
+            Dim tmpName As String = String.Empty
+            Dim iCount As Integer = 0
+            Try
+                If Directory.Exists(sPath) Then
+                    'Get information about files in the directory
+                    Dim di As New DirectoryInfo(sPath)
+                    Dim lFi As New List(Of FileInfo)
 
-					Try
-						lFi.AddRange(di.GetFiles())
-					Catch
-					End Try
+                    'Create a List of files in the directory
+                    Try
+                        lFi.AddRange(di.GetFiles())
+                    Catch
+                    End Try
 
-					RaiseEvent ProgressUpdated(lFi.Count, String.Empty)
+                    'For each file in the directory...
+                    For Each sFile As FileInfo In lFi
+                        RaiseEvent ProgressUpdated((iCount \ lFi.Count), String.Concat(Master.eLang.GetString(219, "Moving "), sFile.Name))
+                        tmpName = Path.GetFileNameWithoutExtension(sFile.Name)
+                        '...clean fanart and trailer decorations...
+                        tmpName = tmpName.Replace(".fanart", String.Empty)
+                        tmpName = tmpName.Replace("-fanart", String.Empty)
+                        tmpName = tmpName.Replace("-trailer", String.Empty)
+                        tmpName = Regex.Replace(tmpName, "\[trailer(\d+)\]", String.Empty)
+                        tmpName = StringUtils.CleanStackingMarkers(tmpName)
+                        '...determine the best destination path name...
+                        tmpPath = Path.Combine(sPath, tmpName)
+                        '...create the destination directory if it doesn't already exist
+                        If Not Directory.Exists(tmpPath) Then
+                            Directory.CreateDirectory(tmpPath)
+                        End If
+                        '...and move the file into that path
+                        File.Move(sFile.FullName, Path.Combine(tmpPath, sFile.Name))
+                        iCount += 1
+                    Next
 
-					For Each sFile As FileInfo In lFi
-						RaiseEvent ProgressUpdated(iCount, String.Concat(Master.eLang.GetString(219, "Moving "), sFile.Name))
-						tmpName = Path.GetFileNameWithoutExtension(sFile.Name)
-						tmpName = tmpName.Replace(".fanart", String.Empty)
-						tmpName = tmpName.Replace("-fanart", String.Empty)
-						tmpName = tmpName.Replace("-trailer", String.Empty)
-						tmpName = Regex.Replace(tmpName, "\[trailer(\d+)\]", String.Empty)
-						tmpName = StringUtils.CleanStackingMarkers(tmpName)
-						tmpPath = Path.Combine(sPath, tmpName)
-						If Not Directory.Exists(tmpPath) Then
-							Directory.CreateDirectory(tmpPath)
-						End If
+                    RaiseEvent ProgressUpdated((iCount \ lFi.Count), Master.eLang.GetString(362, "Done "))
+                    lFi = Nothing
+                    di = Nothing
+                End If
+            Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            End Try
+        End Sub
 
-						File.Move(sFile.FullName, Path.Combine(tmpPath, sFile.Name))
-						iCount += 1
-					Next
+#End Region 'Methods
 
-					lFi = Nothing
-					di = Nothing
-				End If
-			Catch ex As Exception
-				Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-			End Try
-		End Sub
-
-#End Region	'Methods
-
-	End Class
+    End Module
 
 End Namespace
 

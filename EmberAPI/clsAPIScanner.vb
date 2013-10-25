@@ -1415,9 +1415,7 @@ Public Class Scanner
                                         SQLUpdatecommand.ExecuteNonQuery()
                                         Try
                                             If Master.eSettings.SortBeforeScan Then
-                                                Dim fSorter As New FileUtils.FileSorter
-                                                fSorter.SortFiles(SQLreader("Path").ToString)
-                                                fSorter = Nothing
+                                                FileUtils.FileSorter.SortFiles(SQLreader("Path").ToString)
                                             End If
                                         Catch ex As Exception
                                             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")

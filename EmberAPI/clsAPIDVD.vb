@@ -58,8 +58,13 @@ Public Class DVD
     #End Region 'Constructors
 
     #Region "Properties"
-
+    ''' <summary>
+    ''' Returns an array of three strings, representing the audio encoding, language, and number of channels, for the given audio index
+    ''' </summary>
+    ''' <param name="bytAudioIndex">Index for which the audio information is desired</param>
+    ''' <value>Array of three strings, representing the audio encoding, language, and number of channels, for the given audio index</value>
     Public ReadOnly Property GetIFOAudio(ByVal bytAudioIndex As Integer) As String()
+        'TODO This method makes assumptions that ParsedIFO is populated. Also, with "AndAlso bytAudioIndex > 0", shouldn't that be >= 0??
         Get
             Dim ReturnArray(2) As String
             Try
@@ -80,14 +85,22 @@ Public Class DVD
             Return ReturnArray
         End Get
     End Property
-
+    ''' <summary>
+    ''' Returns the number of audio tracks
+    ''' </summary>
+    ''' <value>Number of audio tracks</value>
     Public ReadOnly Property GetIFOAudioNumberOfTracks() As Integer
         Get
             Return ParsedIFOFile.NumAudioStreams_VTS_VOBS
         End Get
     End Property
-
+    ''' <summary>
+    ''' Returns the language for the indicated SubPic (subtitle) index
+    ''' </summary>
+    ''' <param name="bytSubPicIndex">Index of the subtitle for which the language is desired</param>
+    ''' <value>Language of the indicated subtitle, in English</value>
     Public ReadOnly Property GetIFOSubPic(ByVal bytSubPicIndex As Integer) As String
+        'TODO Shouldn't the language returned be in the user's language, and not just English? i.e. "fr" should be français not French?
         Get
             Try
                 If bytSubPicIndex <= ParsedIFOFile.NumSubPictureStreams_VTS_VOBS AndAlso bytSubPicIndex > 0 Then
@@ -100,14 +113,21 @@ Public Class DVD
             Return String.Empty
         End Get
     End Property
-
+    ''' <summary>
+    ''' Returns the number of video streams
+    ''' </summary>
+    ''' <value>Number of video streams</value>
     Public ReadOnly Property GetIFOSubPicNumberOf() As Integer
         Get
             Return ParsedIFOFile.NumSubPictureStreams_VTS_VOBS
         End Get
     End Property
-
+    ''' <summary>
+    ''' Returns a two-dimensional String array representing the video coding mode and the aspect ratio
+    ''' </summary>
+    ''' <value>Two-dimensional String array representing the video coding mode and the aspect ratio</value>
     Public ReadOnly Property GetIFOVideo() As String()
+        'TODO This property makes assumption that ParsedIFOFile exists. Must do error-checking first. Also many string assumptions.
         Get
             Dim ReturnArray(2) As String
             Try
@@ -139,17 +159,27 @@ Public Class DVD
             Return ReturnArray
         End Get
     End Property
-
+    ''' <summary>
+    ''' Returns the number of program chains
+    ''' </summary>
+    ''' <value>Number of program chains</value>
     Public ReadOnly Property GetNumberProgramChains() As Integer
+        'TODO This property makes assumption that ParsedIFOFile exists. Must do error-checking first.
         Get
             Return Convert.ToInt32(ParsedIFOFile.NumberOfProgramChains)
         End Get
     End Property
-
+    ''' <summary>
+    ''' Returns the playback time for the indicated program chain
+    ''' </summary>
+    ''' <param name="bytProChainIndex">Index of the program chain</param>
+    ''' <param name="MinsOnly">If <c>True</c> the time is indicated in minutes only. If <c>False</c>, a fully qualified hour min sec format is used.</param>
+    ''' <value>Playback time for the indeicated program chain</value>
     Public ReadOnly Property GetProgramChainPlayBackTime(ByVal bytProChainIndex As Byte, Optional ByVal MinsOnly As Boolean = False) As String
+        'TODO This property makes assumption that ParsedIFOFile exists. Must do error-checking first.
         Get
             Try
-                If bytProChainIndex <= ParsedIFOFile.NumberOfProgramChains Then
+                If bytProChainIndex >= 0 AndAlso bytProChainIndex <= ParsedIFOFile.NumberOfProgramChains Then
                     bytProChainIndex = Convert.ToByte(bytProChainIndex - 1)
 
                     Return fctPlayBackTimeToString(ParsedIFOFile.ProgramChainInformation(bytProChainIndex).PlayBackTime, MinsOnly)
@@ -168,8 +198,14 @@ Public Class DVD
     Public Sub Close()
         Me.Finalize()
     End Sub
-
+    ''' <summary>
+    ''' Convenience function that accepts a Byte array and returns its Hexadecimal String representation.
+    ''' </summary>
+    ''' <param name="BytConvert">Array of bytes to be converted to Hex</param>
+    ''' <returns>String of Hexadecimal characters representing the input parameter</returns>
+    ''' <remarks></remarks>
     Public Function CovertByteToHex(ByVal BytConvert() As Byte) As String
+        'TODO Evaluate alternative implementation: http://stackoverflow.com/questions/311165/how-do-you-convert-byte-array-to-hexadecimal-string-and-vice-versa
         Dim hexStr As String = String.Empty
         Try
 
@@ -185,21 +221,31 @@ Public Class DVD
         End Try
         Return hexStr
     End Function
-
+    ''' <summary>
+    ''' Scan through the given directory for the largest DVD video file and poplulate ParsedIFOFile (a struct_IFO_VST_Parse class variable)
+    ''' </summary>
+    ''' <param name="strPath">The path to scan</param>
+    ''' <returns><c>True</c> if the scan successfully found a DVD video file, <c>False</c> otherwise</returns>
+    ''' <remarks>This function makes some assumptions about the structure of the files within the specified path.
+    ''' First, it only scans for files matching "VTS*.IFO". If more than one is found, find the largest and populate ParsedIFOFile. 
+    ''' If exactly one found, use it. If none was found, check if the path was an IFO itself.</remarks>
     Public Function fctOpenIFOFile(ByVal strPath As String) As Boolean
+        'TODO Need to test for exception/error. Shouldn't just return TRUE based off filename! Check for success of fctParseIFO_VSTFile before returning TRUE!!!
         Dim IFOFiles As New List(Of String)
         Dim tIFOFile As New struct_IFO_VST_Parse
         Dim currLongest As Integer = 0
         Dim currDuration As Integer = 0
 
         Try
+            'Fill IFOFiles List with all files that match the search criteria
             Try
                 IFOFiles.AddRange(Directory.GetFiles(Directory.GetParent(strPath).FullName, "VTS*.IFO"))
             Catch
             End Try
 
-            If IFOFiles.Count > 1 Then
-                'find the one with the longest duration
+
+            If IFOFiles.Count > 1 Then  'If more than one file was found to match the criteria...
+                '...find the one with the longest duration
                 For Each fFile As String In IFOFiles
                     Try
                         ParsedIFOFile = fctParseIFO_VSTFile(fFile)
@@ -215,10 +261,11 @@ Public Class DVD
 
                 ParsedIFOFile = tIFOFile
                 Return True
-            ElseIf IFOFiles.Count = 1 Then
+            ElseIf IFOFiles.Count = 1 Then  ' If only one file was found to match the criteria
                 ParsedIFOFile = fctParseIFO_VSTFile(IFOFiles(0).ToString)
                 Return True
             ElseIf Path.GetExtension(strPath).ToLower = ".ifo" AndAlso Not Path.GetFileName(strPath).ToLower = "video_ts.ifo" Then
+                ' If the path supplied was actually an .IFO file, try to parse it
                 ParsedIFOFile = fctParseIFO_VSTFile(strPath)
                 Return True
             End If
@@ -227,8 +274,13 @@ Public Class DVD
         End Try
         Return False
     End Function
-
+    ''' <summary>
+    ''' Cleanup unmanaged resources
+    ''' </summary>
+    ''' <remarks></remarks>
     Protected Overrides Sub Finalize()
+        'TODO Though harmless, these appear to all be managed resources, and don't need to be cleaned up on Finalize
+        'unless there is a problem, should avoid manually invoking GC. If there is an issue, should document it.
         mAudioModes = Nothing
         mVideoCodingMode = Nothing
         mVideoResolution = Nothing
@@ -237,8 +289,12 @@ Public Class DVD
         MyBase.Finalize()
         GC.Collect()
     End Sub
-
-    'Fill in the Audio Header Information
+    ''' <summary>
+    ''' Fill in the Audio Header Information
+    ''' </summary>
+    ''' <param name="strAudioInfo"></param>
+    ''' <returns>struct_AudioAttributes_VTSM_VTS structure</returns>
+    ''' <remarks></remarks>
     Private Function fctAudioAttVTSM_VTS(ByVal strAudioInfo As String) As struct_AudioAttributes_VTSM_VTS
         Dim byteInfo(8) As Byte
         Dim i As Integer
@@ -272,33 +328,48 @@ Public Class DVD
         End Try
         Return tVTSM
     End Function
-
+    ''' <summary>
+    ''' Converts the given Hexadecimal string to an integer.
+    ''' </summary>
+    ''' <param name="strHexString">String of characters representing a hexadecimal number.</param>
+    ''' <returns>Integer value of the input hexadecimal string</returns>
+    ''' <remarks></remarks>
     Private Function fctHexOffset(ByVal strHexString As String) As Integer
         Return Convert.ToInt32(Val(String.Concat("&H", (strHexString).ToUpper)))
     End Function
-
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="bytAmountHex"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Private Function fctHexTimeToDecTime(ByVal bytAmountHex As Byte) As Byte
         Return Convert.ToByte(bytAmountHex.ToString("X2"))
     End Function
-
-    'Open an IFO file and return the Parsed Variable
+    ''' <summary>
+    ''' Open an IFO file and return the Parsed Variable
+    ''' </summary>
+    ''' <param name="strFileName">IFO file/path to parse</param>
+    ''' <returns>A populated struct_IFO_VST_Parse structure</returns>
+    ''' <remarks></remarks>
     Private Function fctParseIFO_VSTFile(ByVal strFileName As String) As struct_IFO_VST_Parse
+        'TODO If file could not be read, or is not really an IFO file, the error is never communicated, and an empty structure is returned. Need to throw exception or handle-and-log the error somehow.
         Dim strTmpIFOFileIn As String
         Dim tmpIFO As New struct_IFO_VST_Parse
 
         Dim intFileLength As Integer
 
         Try
-            'Read in the Info file name
-            Dim objFS As FileStream
-            objFS = File.Open(strFileName, FileMode.Open, FileAccess.Read)
-            Dim objBR As New BinaryReader(objFS)
-            strTmpIFOFileIn = System.Text.Encoding.Default.GetString(objBR.ReadBytes(Convert.ToInt32(objFS.Length)))
-            intFileLength = strTmpIFOFileIn.Length
-            objBR.Close()
-            objBR = Nothing
-            objFS.Close()
-            objFS = Nothing
+            'Read the IFO file into a temporary String
+            Using _
+                objFS As FileStream = File.Open(strFileName, FileMode.Open, FileAccess.Read), _
+                objBR As New BinaryReader(objFS)
+
+                strTmpIFOFileIn = System.Text.Encoding.Default.GetString(objBR.ReadBytes(Convert.ToInt32(objFS.Length)))
+                intFileLength = strTmpIFOFileIn.Length
+                objBR.Close()
+                objFS.Close()
+            End Using
 
             If intFileLength > 0 Then
                 'Save the Ifo File name
@@ -371,8 +442,15 @@ Public Class DVD
         End Try
         Return tmpIFO
     End Function
-
+    ''' <summary>
+    ''' Converts a DVD_Time_Type to a String
+    ''' </summary>
+    ''' <param name="PlayBack">Time structure to be converted</param>
+    ''' <param name="MinsOnly">If <c>True</c> only convert and return the minutes portion of the DVD time. So 1h33m would return 93. If <c>False</c> it would convert all elements, and return 01h33mn00s</param>
+    ''' <returns>DVD Time converted to String.</returns>
+    ''' <remarks></remarks>
     Private Function fctPlayBackTimeToString(ByRef PlayBack As DVD_Time_Type, Optional ByVal MinsOnly As Boolean = False) As String
+        'TODO Implement some form of value checking. Structure deals with Bytes, and we assume they are numbers.
         Try
             If MinsOnly Then
                 Return ((PlayBack.hours * 60) + PlayBack.minutes).ToString
@@ -384,8 +462,16 @@ Public Class DVD
         End Try
         Return String.Empty
     End Function
-
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="shoProgramChainNumber"></param>
+    ''' <param name="strIFOFileBuffer"></param>
+    ''' <param name="tmpIFO"></param>
+    ''' <returns>Populated PCT (struct_Program_Chain_Type)</returns>
+    ''' <remarks></remarks>
     Private Function fctProgramChainInformation(ByVal shoProgramChainNumber As Short, ByRef strIFOFileBuffer As String, ByRef tmpIFO As struct_IFO_VST_Parse) As struct_Program_Chain_Type
+        'TODO Need better error checking. If an error is encountered, a partially-filled PCT will be returned.
         Dim ChainLoc As Integer
         Dim PCT As New struct_Program_Chain_Type
         Try
@@ -407,9 +493,14 @@ Public Class DVD
         End Try
         Return PCT
     End Function
-
-    'Creates the Video info from a string of 2 bytes
+    ''' <summary>
+    ''' Creates and returns the Video info from the supplied string of 2 bytes
+    ''' </summary>
+    ''' <param name="VideoInfo"></param>
+    ''' <returns>struct_SRPT structure</returns>
+    ''' <remarks></remarks>
     Private Function fctSRPT(ByVal VideoInfo As String) As struct_SRPT
+        'TODO Need better error checking. If an error is encountered, a partially-filled structure will be returned.
         Dim byte1 As Byte
         Dim byte2 As Byte
         Dim bytTmpValue As Byte
@@ -441,9 +532,14 @@ Public Class DVD
         End Try
         Return tSRPT
     End Function
-
-    'Convert a string of Bytes (0x00-0xFF) into a complete number
+    ''' <summary>
+    ''' Convert a string of Bytes (0x00-0xFF) into a complete number
+    ''' </summary>
+    ''' <param name="strHexString">Hexadecimal string to be converted</param>
+    ''' <returns>Integer value of the input parameter</returns>
+    ''' <remarks></remarks>
     Private Function fctStrByteToHex(ByVal strHexString As String) As Integer
+        'TODO Rename this method - it is not doing what it claims it should! Consider fctConvertStrHexToInteger?
         Dim i As Long
         Dim HexTotal As Double = 0
         Dim HexMod As Double
@@ -464,7 +560,12 @@ Public Class DVD
         End Try
         Return Convert.ToInt32(HexTotal)
     End Function
-
+    ''' <summary>
+    ''' Extract the SubPictureAtt_VTSM_VTS_Type structure from the given String
+    ''' </summary>
+    ''' <param name="strSubPictureInfo">String containing the SubPicture (subtitle) info</param>
+    ''' <returns>SubPictureAtt_VTSM_VTS_Type structure</returns>
+    ''' <remarks>Note that a failure to parse the input parameter will result in an empty structure being returned.</remarks>
     Private Function fctSubPictureAttVTSM_VTS(ByVal strSubPictureInfo As String) As SubPictureAtt_VTSM_VTS_Type
         Dim SubPicATT As New SubPictureAtt_VTSM_VTS_Type
         Try
@@ -475,8 +576,12 @@ Public Class DVD
         End Try
         Return SubPicATT
     End Function
-
-    'Creates the Video info from a string of 2 bytes
+    ''' <summary>
+    ''' Creates the Video info from a string of 2 bytes
+    ''' </summary>
+    ''' <param name="VideoInfo">Two-byte String representing the encoded Video Info</param>
+    ''' <returns>struct_VideoAttributes_VTS_VOBS structure</returns>
+    ''' <remarks>Regardless of the length of the VideoInfo, only the first two bytes are evaluated.</remarks>
     Private Function fctVideoAtt_VTS_VOBS(ByVal VideoInfo As String) As struct_VideoAttributes_VTS_VOBS
         Dim byte1 As Byte
         Dim byte2 As Byte
@@ -518,7 +623,10 @@ Public Class DVD
 
     #Region "Nested Types"
 
-    'Program time information
+    ''' <summary>
+    ''' Program time information
+    ''' </summary>
+    ''' <remarks></remarks>
     Private Structure DVD_Time_Type
 
         #Region "Fields"
@@ -532,7 +640,10 @@ Public Class DVD
 
     End Structure
 
-    'Individual Cell information
+    ''' <summary>
+    ''' Individual Cell information
+    ''' </summary>
+    ''' <remarks></remarks>
     Private Structure PGC_Cell_Info_Type
 
         #Region "Fields"
@@ -543,7 +654,10 @@ Public Class DVD
 
     End Structure
 
-    'Audio Type
+    ''' <summary>
+    ''' Audio Type
+    ''' </summary>
+    ''' <remarks></remarks>
     Private Structure struct_AudioAttributes_VTSM_VTS
 
         #Region "Fields"
@@ -556,7 +670,10 @@ Public Class DVD
 
     End Structure
 
-    'IFO VST information
+    ''' <summary>
+    ''' IFO VST information
+    ''' </summary>
+    ''' <remarks></remarks>
     Private Structure struct_IFO_VST_Parse
 
         #Region "Fields"
@@ -595,7 +712,10 @@ Public Class DVD
 
     End Structure
 
-    'IFO VST Program Chain Information
+    ''' <summary>
+    ''' IFO VST Program Chain Information
+    ''' </summary>
+    ''' <remarks></remarks>
     Private Structure struct_Program_Chain_Type
 
         #Region "Fields"
@@ -613,7 +733,10 @@ Public Class DVD
         #End Region 'Other
 
     End Structure
-
+    ''' <summary>
+    ''' Structure representing the Aspect Ratio, Coding Mode, Letterboxed, and Resolution information
+    ''' </summary>
+    ''' <remarks></remarks>
     Private Structure struct_SRPT
 
         #Region "Fields"
@@ -626,7 +749,10 @@ Public Class DVD
         #End Region 'Fields
 
     End Structure
-
+    ''' <summary>
+    ''' Video Attributes structure. Contains information on Aspect Ratio, Coding Mode, Letterboxed flag, Resolution, and Video Standard.
+    ''' </summary>
+    ''' <remarks></remarks>
     Private Structure struct_VideoAttributes_VTS_VOBS
 
         #Region "Fields"
@@ -641,7 +767,10 @@ Public Class DVD
 
     End Structure
 
-    'SubPicture Type
+    ''' <summary>
+    ''' SubPicture Type
+    ''' </summary>
+    ''' <remarks></remarks>
     Private Structure SubPictureAtt_VTSM_VTS_Type
 
         #Region "Fields"
@@ -654,7 +783,10 @@ Public Class DVD
 
     End Structure
 
-    'All these types are used for the IFO Parsing
+    ''' <summary>
+    ''' All these types are used for the IFO Parsing
+    ''' </summary>
+    ''' <remarks></remarks>
     Private Structure VTS_PTT_SRPT
 
         #Region "Fields"
