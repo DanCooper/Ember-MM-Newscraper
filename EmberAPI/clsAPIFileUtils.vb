@@ -32,9 +32,10 @@ Namespace FileUtils
         ''' </summary>
         ''' <param name="sPath">The path string to parse</param>
         ''' <returns>String containing a directory name, or String.Empty if no valid directory name was found</returns>
-        ''' <remarks></remarks>
+        ''' <remarks>Passing a path to a filename will treat that filename as a path. </remarks>
         Public Shared Function GetDirectory(ByVal sPath As String) As String
-            'TODO Kludge. Consider FileSystemInfo.Attributes to detect if path is a file or directory, and proceed from there
+            'TODO Need to evaluate more actual EMM uses of this method. I'm not confident in my understanding of what it is actually trying to accomplish. It seems overly complex for such a simple role
+            'Why not .split on DirectorySeparatorChar and use the last non-Empty string?
             Try
                 If String.IsNullOrEmpty(sPath) Then Return String.Empty
                 If sPath.EndsWith(Path.DirectorySeparatorChar) Then sPath = sPath.Substring(0, sPath.Length - 1)
@@ -76,7 +77,6 @@ Namespace FileUtils
         ''' <remarks>Two tests are performed. If the supplied path has an extension (such as if a .m2ts file was provided), check 
         ''' that the parent directory is "stream" and its parent is "bdmv"</remarks>
         Public Shared Function isBDRip(ByVal sPath As String) As Boolean
-            'TODO Needs investigation. Looks like "c:\movies\moviename.1080p" would fail since it might trigger the first test.
             'TODO Kludge. Consider FileSystemInfo.Attributes to detect if path is a file or directory, and proceed from there
             If String.IsNullOrEmpty(sPath) Then Return False
             If Path.HasExtension(sPath) Then
@@ -92,7 +92,6 @@ Namespace FileUtils
         ''' <returns><c>True</c> if the supplied path is determined to be a Blu-Ray path. <c>False</c> otherwise</returns>
         ''' <remarks>If the path is a file, check if parent is video_ts. Otherwise, it should be a directory, so see if it is video_ts</remarks>
         Public Shared Function isVideoTS(ByVal sPath As String) As Boolean
-            'TODO Needs investigation. Looks like "c:\movies\moviename.480p" would fail since it might trigger the first test. 
             'TODO Kludge. Consider FileSystemInfo.Attributes to detect if path is a file or directory, and proceed from there
             If String.IsNullOrEmpty(sPath) Then Return False
             If Path.HasExtension(sPath) Then
