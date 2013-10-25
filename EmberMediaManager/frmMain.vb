@@ -6700,7 +6700,7 @@ doCancel:
         'Dim aList As New List(Of MediaContainers.Image)
 
         Try
-            If Not String.IsNullOrEmpty(Master.tmpMovie.Title) Then
+            If Not String.IsNullOrEmpty(Master.currMovie.Movie.Title) Then 'changed from Master.tmpMovie.Title to Master.currMovie.Movie.Title)
 
                 Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
                 Dim ID As Integer = Convert.ToInt32(Me.dgvMediaList.Item(0, indX).Value)

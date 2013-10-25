@@ -22,6 +22,7 @@ Imports System
 Imports System.IO
 Imports System.Text.RegularExpressions
 Imports EmberAPI
+Imports Ember_Media_Manager.frmMain
 
 Public Class dlgEditMovie
 
@@ -774,7 +775,7 @@ Public Class dlgEditMovie
                         End If
                     End If
 
-                    If Master.currMovie.FanartPath.Substring(0, 1) = ":" Then
+                    If Not String.IsNullOrEmpty(Master.currMovie.FanartPath) AndAlso Master.currMovie.FanartPath.Substring(0, 1) = ":" Then
                         Fanart.FromWeb(Master.currMovie.FanartPath.Substring(1, Master.currMovie.FanartPath.Length - 1))
                     Else
                         Fanart.FromFile(Master.currMovie.FanartPath)
@@ -787,7 +788,7 @@ Public Class dlgEditMovie
                         .lblFanartSize.Visible = True
                     End If
 
-                    If Master.currMovie.PosterPath.Substring(0, 1) = ":" Then
+                    If Not String.IsNullOrEmpty(Master.currMovie.PosterPath) AndAlso Master.currMovie.PosterPath.Substring(0, 1) = ":" Then
                         Poster.FromWeb(Master.currMovie.PosterPath.Substring(1, Master.currMovie.PosterPath.Length - 1))
                     Else
                         Poster.FromFile(Master.currMovie.PosterPath)
@@ -1220,6 +1221,11 @@ Public Class dlgEditMovie
         Try
             With Me
 
+                Me.OK_Button.Enabled = False
+                Me.Cancel_Button.Enabled = False
+                Me.btnRescrape.Enabled = False
+                Me.btnChangeMovie.Enabled = False
+
                 Master.currMovie.IsMark = Me.chkMark.Checked
 
                 If Not String.IsNullOrEmpty(.txtTitle.Text) Then
@@ -1347,6 +1353,7 @@ Public Class dlgEditMovie
                 End If
 
                 If Master.GlobalScrapeMod.Actors AndAlso Master.eSettings.ScraperActorThumbs AndAlso (Master.eSettings.ActorThumbsFrodo OrElse Master.eSettings.ActorThumbsEden) Then
+                    frmMain.tslLoading.Text = Master.eLang.GetString(568, "Generating Actor Thumbs:")
                     For Each act As MediaContainers.Person In Master.currMovie.Movie.Actors
                         Dim img As New Images
                         img.FromWeb(act.Thumb)
