@@ -35,6 +35,7 @@ Public Class Template
         'Act
 
         'Assert
+        Assert.Inconclusive("Test not implemented")
     End Sub
 
 

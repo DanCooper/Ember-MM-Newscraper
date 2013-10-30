@@ -211,41 +211,41 @@ Namespace EmberTests
         ''' <remarks></remarks>
         <TestInitialize>
         Public Sub TestSetup()
-            ' NOTE: I am not catching exceptions here. If something fails, the developer should resolve the file-level problem
+            '' NOTE: I am not catching exceptions here. If something fails, the developer should resolve the file-level problem
 
-            Dim mediaNames = New List(Of String) From {{"Video alpha.avi"}, {"Movie beta.mkv"}, {"Gamma quadrant.flv"}, {"Roger roger.qt"}}
-            Dim mediaVariations = New List(Of String) From {{"-trailer.avi"}, {"-fanart.png"}, {".fanart.png"}, {"trailer5.avi"}}
+            'Dim mediaNames = New List(Of String) From {{"Video alpha.avi"}, {"Movie beta.mkv"}, {"Gamma quadrant.flv"}, {"Roger roger.qt"}}
+            'Dim mediaVariations = New List(Of String) From {{"-trailer.avi"}, {"-fanart.png"}, {".fanart.png"}, {"trailer5.avi"}}
 
-            Dim systemTempDirectory = New DirectoryInfo(Path.GetTempPath())
-            If systemTempDirectory.Exists() Then
-                testMediaDirectory = systemTempDirectory.CreateSubdirectory(Path.GetRandomFileName())
-                Debug.WriteLine("Temp directory is: " & testMediaDirectory.FullName)
+            'Dim systemTempDirectory = New DirectoryInfo(Path.GetTempPath())
+            'If systemTempDirectory.Exists() Then
+            '    testMediaDirectory = systemTempDirectory.CreateSubdirectory(Path.GetRandomFileName())
+            '    Debug.WriteLine("Temp directory is: " & testMediaDirectory.FullName)
 
-                Dim rootPath = testMediaDirectory.FullName()
-                'Dim tempFile As FileInfo
-                'Dim tempFile As FileStream
+            '    Dim rootPath = testMediaDirectory.FullName()
+            '    'Dim tempFile As FileInfo
+            '    'Dim tempFile As FileStream
 
-                For Each name In mediaNames
-                    Using tempFile = File.Create(Path.Combine(rootPath, name))
-                        Debug.WriteLine("  Creating: " & tempFile.Name)
-                    End Using
-                    'tempFile = New FileInfo(Path.Combine(rootPath, name))
-                    'tempFile.Create()
-                    'tempFile.
-                    For Each variation In mediaVariations
-                        Dim filePath = Path.Combine(rootPath, String.Concat(Path.GetFileNameWithoutExtension(name), variation))
-                        Using tempFile = File.Create(filePath)
-                            'tempFile = New FileInfo(Path.Combine(rootPath, String.Concat(Path.GetFileNameWithoutExtension(name), variation)))
-                            'tempFile.Create()
-                            Debug.WriteLine("  Creating: " & tempFile.Name)
-                        End Using
+            '    For Each name In mediaNames
+            '        Using tempFile = File.Create(Path.Combine(rootPath, name))
+            '            Debug.WriteLine("  Creating: " & tempFile.Name)
+            '        End Using
+            '        'tempFile = New FileInfo(Path.Combine(rootPath, name))
+            '        'tempFile.Create()
+            '        'tempFile.
+            '        For Each variation In mediaVariations
+            '            Dim filePath = Path.Combine(rootPath, String.Concat(Path.GetFileNameWithoutExtension(name), variation))
+            '            Using tempFile = File.Create(filePath)
+            '                'tempFile = New FileInfo(Path.Combine(rootPath, String.Concat(Path.GetFileNameWithoutExtension(name), variation)))
+            '                'tempFile.Create()
+            '                Debug.WriteLine("  Creating: " & tempFile.Name)
+            '            End Using
 
-                    Next
-                    Debug.WriteLine(String.Empty)
-                Next
-            Else
-                Throw New DirectoryNotFoundException("System temp directory not found!")
-            End If
+            '        Next
+            '        Debug.WriteLine(String.Empty)
+            '    Next
+            'Else
+            '    Throw New DirectoryNotFoundException("System temp directory not found!")
+            'End If
         End Sub
 
         ''' <summary>
@@ -254,13 +254,13 @@ Namespace EmberTests
         ''' <remarks></remarks>
         <TestCleanup>
         Public Sub TestCleanup()
-            'NOTE that there is no exception checking - Tester should resolve permission issues if any arise
+            ''NOTE that there is no exception checking - Tester should resolve permission issues if any arise
 
-            If testMediaDirectory IsNot Nothing Then
-                'Delete the directory and its sub-folders
-                testMediaDirectory.Delete(True)
-                Debug.WriteLine("  DELETING: " & testMediaDirectory.FullName)
-            End If
+            'If testMediaDirectory IsNot Nothing Then
+            '    'Delete the directory and its sub-folders
+            '    testMediaDirectory.Delete(True)
+            '    Debug.WriteLine("  DELETING: " & testMediaDirectory.FullName)
+            'End If
 
 
         End Sub
