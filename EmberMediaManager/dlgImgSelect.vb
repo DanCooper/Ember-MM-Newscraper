@@ -95,7 +95,7 @@ Public Class dlgImgSelect
         'Me.isShown = True
         Select Case DLType
             Case Enums.ImageType.Posters
-                aDes = Master.eSize.poster_names(0).description
+                aDes = Master.eSize.poster_names(2).description
             Case Enums.ImageType.Fanart
                 aDes = Master.eSize.backdrop_names(0).description
         End Select
