@@ -457,14 +457,14 @@ Public Class ModulesManager
         Return ret.Cancelled
     End Function
 
-    Public Function MovieScrapeTrailer(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef URLList As List(Of String)) As Boolean
+    Public Function MovieScrapeTrailer(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef URLList As List(Of Trailers)) As Boolean
         Dim ret As Interfaces.ModuleResult
-        Dim aList As List(Of String)
+        Dim aList As List(Of Trailers)
         For Each _externalScraperModule As _externalScraperModuleClass_Trailer In externalTrailerScrapersModules.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ScraperOrder)
             AddHandler _externalScraperModule.ProcessorModule.MovieScraperEvent, AddressOf Handler_MovieScraperEvent
             Try
                 'Debug.Print("MovieScrapeTrailer" & vbTab & _externalScraperModule.ProcessorModule.ModuleName)
-                aList = New List(Of String)
+                aList = New List(Of Trailers)
                 ret = _externalScraperModule.ProcessorModule.Scraper(DBMovie, Type, aList)
                 If Not IsNothing(aList) AndAlso aList.Count > 0 Then
                     For Each aIm In aList

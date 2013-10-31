@@ -97,16 +97,23 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub btnDLTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDLTrailer.Click
-        'Dim tURL As String = ModulesManager.Instance.ScraperDownloadTrailer(Master.currMovie)
-        'If Not String.IsNullOrEmpty(tURL) Then
-        '    Me.btnPlayTrailer.Enabled = True
-        '    If StringUtils.isValidURL(tURL) Then
-        '        Me.txtTrailer.Text = tURL
-        '    Else
-        '        Master.currMovie.TrailerPath = tURL
-        '        Me.lblLocalTrailer.Visible = True
-        '    End If
-        'End If
+        Dim aUrlList As New List(Of Trailers)
+        Dim tURL As String = String.Empty
+        If Not ModulesManager.Instance.MovieScrapeTrailer(Master.currMovie, Enums.ScraperCapabilities.Trailer, aUrlList) Then
+            Using dTrailerSelect As New dlgTrailerSelect()
+                tURL = dTrailerSelect.ShowDialog(Master.currMovie, aUrlList)
+            End Using
+        End If
+
+        If Not String.IsNullOrEmpty(tURL) Then
+            Me.btnPlayTrailer.Enabled = True
+            If StringUtils.isValidURL(tURL) Then
+                Me.txtTrailer.Text = tURL
+            Else
+                Master.currMovie.TrailerPath = tURL
+                Me.lblLocalTrailer.Visible = True
+            End If
+        End If
     End Sub
 
     Private Sub btnDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDown.Click
@@ -150,6 +157,9 @@ Public Class dlgEditMovie
 
             If Not String.IsNullOrEmpty(tPath) Then
                 If Master.isWindows Then
+                    If Regex.IsMatch(tPath, "plugin:\/\/plugin\.video\.youtube\/\?action=play_video&videoid=") Then
+                        tPath = Replace(tPath, "plugin://plugin.video.youtube/?action=play_video&videoid=", "http://www.youtube.com/watch?v=")
+                    End If
                     Process.Start(tPath)
                 Else
                     Using Explorer As New Process
@@ -1287,8 +1297,13 @@ Public Class dlgEditMovie
                 Master.currMovie.Movie.Runtime = .txtRuntime.Text.Trim
                 Master.currMovie.Movie.ReleaseDate = .txtReleaseDate.Text.Trim
                 Master.currMovie.Movie.OldCredits = .txtCredits.Text.Trim
-                Master.currMovie.Movie.Trailer = .txtTrailer.Text.Trim
                 Master.currMovie.Movie.Studio = .txtStudio.Text.Trim
+
+                If AdvancedSettings.GetBooleanSetting("UseTMDBTrailerXBMC", True) Then
+                    Master.currMovie.Movie.Trailer = Replace(.txtTrailer.Text.Trim, "http://www.youtube.com/watch?v=", "plugin://plugin.video.youtube/?action=play_video&videoid=")
+                Else
+                    Master.currMovie.Movie.Trailer = .txtTrailer.Text.Trim
+                End If
 
                 'cocotus, 2013/02 Playcount/Watched state support added
                 'if watched-checkbox is checked -> save Playcount=1 in nfo

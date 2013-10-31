@@ -30,7 +30,8 @@ Public Class Trailers
 
 #Region "Fields"
 
-    Private _TrailerList As New List(Of String)
+    Private _url As String
+    Private _description As String
 
 #End Region 'Fields
 
@@ -42,6 +43,28 @@ Public Class Trailers
 
 #End Region 'Constructors
 
+#Region "Properties"
+
+    Public Property URL() As String
+        Get
+            Return _url
+        End Get
+        Set(ByVal value As String)
+            _url = value
+        End Set
+    End Property
+
+    Public Property Description() As String
+        Get
+            Return _description
+        End Get
+        Set(ByVal value As String)
+            _description = value
+        End Set
+    End Property
+
+#End Region 'Properties
+
 #Region "Events"
 
     Public Shared Event ProgressUpdated(ByVal iPercent As Integer)
@@ -50,12 +73,13 @@ Public Class Trailers
 
 #Region "Methods"
 
-    Public Sub Cancel()
-        'Me.WebPage.Cancel()
+    Private Sub Clear()
+        _url = String.Empty
+        _description = String.Empty
     End Sub
 
-    Public Sub Clear()
-        Me._TrailerList.Clear()
+    Public Sub Cancel()
+        'Me.WebPage.Cancel()
     End Sub
 
     Public Shared Sub DeleteTrailers(ByVal sPath As String, ByVal NewTrailer As String)
@@ -81,15 +105,15 @@ Public Class Trailers
         RaiseEvent ProgressUpdated(iPercent)
     End Sub
 
-    Public Shared Function PreferredTrailer(ByRef tUrl As String, ByRef UrlList As List(Of String), ByVal sPath As String, ByVal isSingle As Boolean) As Boolean
+    Public Shared Function PreferredTrailer(ByRef tUrl As String, ByRef UrlList As List(Of Trailers), ByVal sPath As String, ByVal isSingle As Boolean) As Boolean
         PreferredTrailer = False
         Try
             If Not Master.eSettings.UpdaterTrailersNoDownload AndAlso IsAllowedToDownload(sPath, isSingle, True) Then
-                For Each aUrl As String In UrlList
+                For Each aUrl As Trailers In UrlList
                     Dim tLink As String = String.Empty
-                    If Regex.IsMatch(aUrl, "http:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") Then
+                    If Regex.IsMatch(aUrl.URL, "http:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") Then
                         Dim YT As New YouTube.Scraper
-                        YT.GetVideoLinks(aUrl)
+                        YT.GetVideoLinks(aUrl.URL)
                         If YT.VideoLinks.ContainsKey(Master.eSettings.PreferredTrailerQuality) Then
                             tLink = YT.VideoLinks(Master.eSettings.PreferredTrailerQuality).URL
                         Else
@@ -147,10 +171,11 @@ Public Class Trailers
                             End Select
                         End If
                     Else
-                        tLink = String.Empty 'Me._TrailerList.Item(0).ToString
+                        tLink = String.Empty 'UrlList(0).URL.ToString
                     End If
 
                     If Not String.IsNullOrEmpty(tLink) Then
+                        tUrl = tLink
                         Return True
                     End If
                 Next
@@ -174,7 +199,7 @@ Public Class Trailers
         '    tURL = Path.Combine(Directory.GetParent(sPath).FullName, String.Concat(Path.GetFileNameWithoutExtension(sPath), If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(sURL)))
         'End If
         'If Not String.IsNullOrEmpty(sURL) Then
-        tURL = WebPage.DownloadFile(sURL, Path.Combine(Path.GetDirectoryName(sPath), Path.GetFileNameWithoutExtension(sPath)), True, "trailer")
+        tURL = WebPage.DownloadFile(sURL, sPath, False, "trailer") 'ReportUpdate needs to be fixed
 
         If Not String.IsNullOrEmpty(tURL) Then
             'delete any other trailer if enabled in settings and download successful
