@@ -1241,7 +1241,7 @@ Public Class frmMain
         Dim Fanart As New MediaContainers.Image
         Dim tURL As String = String.Empty
         Dim aList As New List(Of MediaContainers.Image)
-        Dim aUrlList As New List(Of String)
+        Dim aUrlList As New List(Of Trailers)
         Dim DBScrapeMovie As New Structures.DBMovie
 
         AddHandler ModulesManager.Instance.MovieScraperEvent, AddressOf MovieScraperEvent
@@ -1259,7 +1259,7 @@ Public Class frmMain
 
                 If Master.GlobalScrapeMod.NFO Then
                     If ModulesManager.Instance.MovieScrapeOnly(DBScrapeMovie, Args.scrapeType, Args.Options) Then
-                        Exit For
+                        Exit Try
                     End If
                 Else
                     ' if we do not have the movie ID we need to retrive it even if is just a Poster/Fanart/Trailer/Actors update
@@ -1295,6 +1295,7 @@ Public Class frmMain
                 If Master.GlobalScrapeMod.Poster Then
                     Poster.Clear()
                     aList.Clear()
+                    tURL = String.Empty
                     If Poster.WebImage.IsAllowedToDownload(DBScrapeMovie, Enums.ImageType.Posters) Then
                         If Not ModulesManager.Instance.MovieScrapeImages(DBScrapeMovie, Enums.ScraperCapabilities.Poster, aList) Then
                             If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) AndAlso Images.GetPreferredPoster(aList, Poster) Then
@@ -1346,6 +1347,7 @@ Public Class frmMain
                 If Master.GlobalScrapeMod.Fanart Then
                     Fanart.Clear()
                     aList.Clear()
+                    tURL = String.Empty
                     If Fanart.WebImage.IsAllowedToDownload(DBScrapeMovie, Enums.ImageType.Fanart) Then
                         If Not ModulesManager.Instance.MovieScrapeImages(DBScrapeMovie, Enums.ScraperCapabilities.Fanart, aList) Then
                             If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) AndAlso Images.GetPreferredFanart(aList, Fanart) Then
@@ -1396,14 +1398,23 @@ Public Class frmMain
                 End If
                 If Master.GlobalScrapeMod.Trailer Then
                     aUrlList.Clear()
+                    tURL = String.Empty
                     If Not ModulesManager.Instance.MovieScrapeTrailer(DBScrapeMovie, Enums.ScraperCapabilities.Trailer, aUrlList) Then
                         If aUrlList.Count > 0 Then
                             If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) AndAlso Trailers.PreferredTrailer(tURL, aUrlList, DBScrapeMovie.Filename, (Args.scrapeType = Enums.ScrapeType.SingleScrape)) Then
                                 If Not String.IsNullOrEmpty(tURL) Then
-                                    tURL = Trailers.DownloadTrailer(tURL, DBScrapeMovie.Filename) ', DBScrapeMovie.Filename)
+                                    tURL = Trailers.DownloadTrailer(DBScrapeMovie.Filename, tURL) ', DBScrapeMovie.Filename)
                                     If Not String.IsNullOrEmpty(tURL) Then
-                                        DBScrapeMovie.TrailerPath = tURL
-                                        MovieScraperEvent(Enums.MovieScraperEventType.TrailerItem, True)
+                                        If StringUtils.isValidURL(tURL) Then
+                                            If AdvancedSettings.GetBooleanSetting("UseTMDBTrailerXBMC", True) Then
+                                                DBScrapeMovie.Movie.Trailer = Replace(tURL, "http://www.youtube.com/watch?v=", "plugin://plugin.video.youtube/?action=play_video&videoid=")
+                                            Else
+                                                DBScrapeMovie.Movie.Trailer = tURL
+                                            End If
+                                        Else
+                                            DBScrapeMovie.TrailerPath = tURL
+                                            MovieScraperEvent(Enums.MovieScraperEventType.TrailerItem, True)
+                                        End If
                                     End If
                                 End If
                             ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
@@ -1413,8 +1424,16 @@ Public Class frmMain
                                 Using dTrailerSelect As New dlgTrailerSelect()
                                     tURL = dTrailerSelect.ShowDialog(DBScrapeMovie, aUrlList)
                                     If Not String.IsNullOrEmpty(tURL) Then
-                                        DBScrapeMovie.TrailerPath = tURL
-                                        MovieScraperEvent(Enums.MovieScraperEventType.TrailerItem, True)
+                                        If StringUtils.isValidURL(tURL) Then
+                                            If AdvancedSettings.GetBooleanSetting("UseTMDBTrailerXBMC", True) Then
+                                                DBScrapeMovie.Movie.Trailer = Replace(tURL, "http://www.youtube.com/watch?v=", "plugin://plugin.video.youtube/?action=play_video&videoid=")
+                                            Else
+                                                DBScrapeMovie.Movie.Trailer = tURL
+                                            End If
+                                        Else
+                                            DBScrapeMovie.TrailerPath = tURL
+                                            MovieScraperEvent(Enums.MovieScraperEventType.TrailerItem, True)
+                                        End If
                                     End If
                                 End Using
                             End If

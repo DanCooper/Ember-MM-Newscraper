@@ -18,6 +18,7 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
+Imports System.Text.RegularExpressions
 Imports EmberAPI
 Imports WatTmdb
 
@@ -72,10 +73,11 @@ Namespace TMDBtrailer
         '    End Try
         'End Sub
 
-        Public Function GetTMDBTrailers(ByVal TMDBID As String) As List(Of String)
-            Dim alTrailers As New List(Of String)
+        Public Function GetTMDBTrailers(ByVal TMDBID As String) As List(Of Trailers)
+            Dim alTrailers As New List(Of Trailers)
             Dim trailers As V3.TmdbMovieTrailers
             Dim tLink As String
+            Dim tName As String
 
             Try
                 trailers = _TMDBApi.GetMovieTrailers(CInt(TMDBID), _MySettings.TMDBLanguage)
@@ -87,7 +89,8 @@ Namespace TMDBtrailer
                 End If
                 For Each YTb As V3.Youtube In trailers.youtube
                     tLink = String.Format("http://www.youtube.com/watch?v={0}", YTb.source)
-                    alTrailers.Add(tLink)
+                    tName = GetYouTubeTitle(tLink)
+                    alTrailers.Add(New Trailers With {.URL = tLink, .Description = tName})
                 Next
 
             Catch ex As Exception
@@ -95,6 +98,18 @@ Namespace TMDBtrailer
             End Try
 
             Return alTrailers
+        End Function
+
+        Public Shared Function GetYouTubeTitle(ByVal sURL As String) As String
+            Dim oTitle As String
+            Dim sHTTP As New HTTP
+
+            Dim HTML As String = sHTTP.DownloadData(String.Concat(sURL))
+            sHTTP = Nothing
+
+            oTitle = Regex.Match(HTML, "<meta property=""og:title"" content=""(.*?)"">", RegexOptions.Singleline Or RegexOptions.IgnoreCase Or RegexOptions.Multiline).Groups(1).Value.ToString.Trim
+
+            Return oTitle
         End Function
 
         '      Private Sub bwTMDB_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwTMDB.DoWork

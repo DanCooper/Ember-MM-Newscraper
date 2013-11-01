@@ -25,7 +25,6 @@ Partial Class dlgTrailerSelect
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgTrailerSelect))
         Me.OK_Button = New System.Windows.Forms.Button()
         Me.Cancel_Button = New System.Windows.Forms.Button()
-        Me.lbTrailers = New System.Windows.Forms.ListBox()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.pnlStatus = New System.Windows.Forms.Panel()
         Me.lblStatus = New System.Windows.Forms.Label()
@@ -36,6 +35,7 @@ Partial Class dlgTrailerSelect
         Me.Label2 = New System.Windows.Forms.Label()
         Me.txtYouTube = New System.Windows.Forms.TextBox()
         Me.Label1 = New System.Windows.Forms.Label()
+        Me.lvTrailers = New System.Windows.Forms.ListView()
         Me.btnPlayTrailer = New System.Windows.Forms.Button()
         Me.btnSetNfo = New System.Windows.Forms.Button()
         Me.ofdTrailer = New System.Windows.Forms.OpenFileDialog()
@@ -65,22 +65,11 @@ Partial Class dlgTrailerSelect
         Me.Cancel_Button.TabIndex = 7
         Me.Cancel_Button.Text = "Cancel"
         '
-        'lbTrailers
-        '
-        Me.lbTrailers.Enabled = False
-        Me.lbTrailers.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lbTrailers.FormattingEnabled = True
-        Me.lbTrailers.HorizontalScrollbar = True
-        Me.lbTrailers.Location = New System.Drawing.Point(6, 19)
-        Me.lbTrailers.Name = "lbTrailers"
-        Me.lbTrailers.Size = New System.Drawing.Size(445, 173)
-        Me.lbTrailers.TabIndex = 0
-        '
         'GroupBox1
         '
         Me.GroupBox1.Controls.Add(Me.pnlStatus)
         Me.GroupBox1.Controls.Add(Me.GroupBox2)
-        Me.GroupBox1.Controls.Add(Me.lbTrailers)
+        Me.GroupBox1.Controls.Add(Me.lvTrailers)
         Me.GroupBox1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.GroupBox1.Location = New System.Drawing.Point(9, 9)
         Me.GroupBox1.Name = "GroupBox1"
@@ -182,6 +171,16 @@ Partial Class dlgTrailerSelect
         Me.Label1.TabIndex = 0
         Me.Label1.Text = "Direct Link or YouTube URL:"
         '
+        'lvTrailers
+        '
+        Me.lvTrailers.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lvTrailers.Location = New System.Drawing.Point(6, 19)
+        Me.lvTrailers.Name = "lvTrailers"
+        Me.lvTrailers.Size = New System.Drawing.Size(445, 173)
+        Me.lvTrailers.TabIndex = 4
+        Me.lvTrailers.UseCompatibleStateImageBehavior = False
+        Me.lvTrailers.View = System.Windows.Forms.View.Details
+        '
         'btnPlayTrailer
         '
         Me.btnPlayTrailer.Enabled = False
@@ -256,7 +255,6 @@ Partial Class dlgTrailerSelect
     End Sub
     Friend WithEvents OK_Button As System.Windows.Forms.Button
     Friend WithEvents Cancel_Button As System.Windows.Forms.Button
-    Friend WithEvents lbTrailers As System.Windows.Forms.ListBox
     Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
     Friend WithEvents pnlStatus As System.Windows.Forms.Panel
     Friend WithEvents lblStatus As System.Windows.Forms.Label
@@ -272,5 +270,6 @@ Partial Class dlgTrailerSelect
     Friend WithEvents ofdTrailer As System.Windows.Forms.OpenFileDialog
     Friend WithEvents Panel1 As System.Windows.Forms.Panel
     Friend WithEvents btnPlayBrowser As System.Windows.Forms.Button
+    Friend WithEvents lvTrailers As System.Windows.Forms.ListView
 
 End Class

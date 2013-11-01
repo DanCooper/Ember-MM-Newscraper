@@ -490,15 +490,15 @@ Namespace TMDBg
 						Dim exactHaveYear As Integer = FindYear(dbMovie.Filename, r.Matches)
 						If r.Matches.Count = 1 Then	'redirected to imdb info page
 							b = GetMovieInfo(r.Matches.Item(0).ID, imdbMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False, Options, True)
-						Else
-							b = GetMovieInfo(r.Matches.Item(If(exactHaveYear >= 0, exactHaveYear, 0)).ID, imdbMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False, Options, True)
-						End If
+                        ElseIf r.Matches.Count > 1 Then
+                            b = GetMovieInfo(r.Matches.Item(If(exactHaveYear >= 0, exactHaveYear, 0)).ID, imdbMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False, Options, True)
+                        End If
 				End Select
 
 				If b Then
 					Return imdbMovie
 				Else
-					Return New MediaContainers.Movie
+                    Return imdbMovie ' New MediaContainers.Movie
 				End If
 			Catch ex As Exception
 				Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
