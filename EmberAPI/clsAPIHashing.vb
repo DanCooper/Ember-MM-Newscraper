@@ -26,6 +26,7 @@ Imports System.Text
 Imports System.Text.Encoding
 
 Public Class HashFile
+    'TODO Dekker500: This class does not appear to be in use. Consider deprecating then removing
 
     #Region "Methods"
 

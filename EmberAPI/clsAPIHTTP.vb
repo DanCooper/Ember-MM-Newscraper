@@ -24,442 +24,473 @@ Imports System.Text
 Imports System.Net
 Imports System.Drawing
 
+''' <summary>
+''' 
+''' </summary>
+''' <remarks>
+''' 2013/10/31 Dekker500 - Formally implemented iDisposable
+''' </remarks>
 Public Class HTTP
+    Implements IDisposable
+
 
 #Region "Fields"
 
-	Private dThread As New Threading.Thread(AddressOf DownloadImage)
-	Private wrRequest As HttpWebRequest
-	Private _cancel As Boolean
-	Private _image As Image
-	Private _ms As MemoryStream = New MemoryStream()
-	Private _responseuri As String
-	Private _URL As String = String.Empty
-	Private _isJPG As Boolean = False
-#End Region	'Fields
+    Private dThread As New Threading.Thread(AddressOf DownloadImage)
+    Private wrRequest As HttpWebRequest
+    Private _cancelRequested As Boolean
+    Private _image As Image
+    Private _ms As MemoryStream = New MemoryStream()
+    Private _responseuri As String
+    Private _URL As String = String.Empty
+    Private _isJPG As Boolean = False
+    Private _defaultRequestTimeout As Integer = 20000  'request timeout in milliseconds
+#End Region 'Fields
 
 #Region "Constructors"
 
-	Public Sub New()
-		Me.Clear()
-	End Sub
+    ''' <summary>
+    ''' Base constructor
+    ''' </summary>
+    Public Sub New()
+        Me.Clear()
+    End Sub
 
-	Protected Overrides Sub Finalize()
-		Me.wrRequest = Nothing
-		MyBase.Finalize()
-	End Sub
 
-#End Region	'Constructors
+#End Region 'Constructors
 
 #Region "Events"
 
-	Public Event ProgressUpdated(ByVal iPercent As Integer)
+    Public Event ProgressUpdated(ByVal iPercent As Integer)
 
-#End Region	'Events
+#End Region 'Events
 
 #Region "Properties"
-	Public ReadOnly Property Image() As Image
-		Get
-			Return Me._image
-		End Get
-	End Property
+    Public ReadOnly Property Image() As Image
+        Get
+            Return Me._image
+        End Get
+    End Property
 
-	Public ReadOnly Property isJPG() As Boolean
-		Get
-			Return Me._isJPG
-		End Get
-	End Property
+    Public ReadOnly Property isJPG() As Boolean
+        Get
+            Return Me._isJPG
+        End Get
+    End Property
 
-	Public ReadOnly Property ms() As MemoryStream
-		Get
-			Return Me._ms
-		End Get
-	End Property
+    Public ReadOnly Property ms() As MemoryStream
+        Get
+            Return Me._ms
+        End Get
+    End Property
 
-	Public Property ResponseUri() As String
-		Get
-			Return Me._responseuri
-		End Get
-		Set(ByVal value As String)
-			Me._responseuri = value
-		End Set
-	End Property
+    Public Property ResponseUri() As String
+        Get
+            Return Me._responseuri
+        End Get
+        Set(ByVal value As String)
+            Me._responseuri = value
+        End Set
+    End Property
 
-#End Region	'Properties
+#End Region 'Properties
 
 #Region "Methods"
 
-	Public Sub Cancel()
-		Me._cancel = True
-		If Not IsNothing(Me.wrRequest) Then Me.wrRequest.Abort()
-	End Sub
+    ''' <summary>
+    ''' Cancel any pending request
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Sub Cancel()
+        Me._cancelRequested = True
+        If Me.wrRequest IsNot Nothing Then Me.wrRequest.Abort()
+    End Sub
 
-	Public Sub Clear()
-		Me._responseuri = String.Empty
-		Me._image = Nothing
-		Me._cancel = False
-	End Sub
+    Public Sub Clear()
+        Me._responseuri = String.Empty
+        If Me._image IsNot Nothing Then Me._image.Dispose()
+        Me._image = Nothing
+        Cancel()    'Explicitely stop any in-progress requests
+        Me._cancelRequested = False
+    End Sub
 
-	Public Function DownloadData(ByVal URL As String) As String
-		Dim sResponse As String = String.Empty
-		Dim cEncoding As System.Text.Encoding
+    Public Function DownloadData(ByVal URL As String) As String
+        Dim sResponse As String = String.Empty
+        Dim cEncoding As System.Text.Encoding
 
-		Me.Clear()
+        Me.Clear()
 
-		Try
-			Me.wrRequest = DirectCast(WebRequest.Create(URL), HttpWebRequest)
-			Me.wrRequest.Timeout = 20000
-			Me.wrRequest.Headers.Add("Accept-Encoding", "gzip,deflate")
-			Me.wrRequest.KeepAlive = False
+        Try
+            Me.wrRequest = DirectCast(WebRequest.Create(URL), HttpWebRequest)
+            Me.wrRequest.Timeout = _defaultRequestTimeout
+            Me.wrRequest.Headers.Add("Accept-Encoding", "gzip,deflate")
+            Me.wrRequest.KeepAlive = False
 
-			If Not String.IsNullOrEmpty(Master.eSettings.ProxyURI) AndAlso Master.eSettings.ProxyPort >= 0 Then
-				Dim wProxy As New WebProxy(Master.eSettings.ProxyURI, Master.eSettings.ProxyPort)
-				wProxy.BypassProxyOnLocal = True
-				If Not String.IsNullOrEmpty(Master.eSettings.ProxyCreds.UserName) Then
-					wProxy.Credentials = Master.eSettings.ProxyCreds
-				Else
-					wProxy.Credentials = CredentialCache.DefaultCredentials
-				End If
-				Me.wrRequest.Proxy = wProxy
-			End If
-			Using wrResponse As HttpWebResponse = DirectCast(Me.wrRequest.GetResponse(), HttpWebResponse)
-				Select Case True
-					'for our purposes I think it's safe to assume that all xmls we will be dealing with will be UTF-8 encoded
-					Case wrResponse.ContentType.ToLower.Contains("/xml") OrElse wrResponse.ContentType.ToLower.Contains("charset=utf-8")
-						cEncoding = System.Text.Encoding.UTF8
-					Case Else
-						cEncoding = System.Text.Encoding.GetEncoding(28591)
-				End Select
-				Using Ms As Stream = wrResponse.GetResponseStream
-					If wrResponse.ContentEncoding.ToLower = "gzip" Then
-						sResponse = New StreamReader(New GZipStream(Ms, CompressionMode.Decompress), cEncoding, True).ReadToEnd
-					ElseIf wrResponse.ContentEncoding.ToLower = "deflate" Then
-						sResponse = New StreamReader(New DeflateStream(Ms, CompressionMode.Decompress), cEncoding, True).ReadToEnd
-					Else
-						sResponse = New StreamReader(Ms, cEncoding, True).ReadToEnd
-					End If
-				End Using
-				Me._responseuri = wrResponse.ResponseUri.ToString
-			End Using
-		Catch ex As Exception
-			Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error", False)
-		End Try
+            PrepareProxy()
 
-		Return sResponse
-	End Function
+            Using wrResponse As HttpWebResponse = DirectCast(Me.wrRequest.GetResponse(), HttpWebResponse)
+                Select Case True
+                    'for our purposes I think it's safe to assume that all xmls we will be dealing with will be UTF-8 encoded
+                    Case wrResponse.ContentType.ToLower.Contains("/xml") OrElse wrResponse.ContentType.ToLower.Contains("charset=utf-8")
+                        cEncoding = System.Text.Encoding.UTF8
+                    Case Else
+                        cEncoding = System.Text.Encoding.GetEncoding(28591)
+                End Select
+                Using Ms As Stream = wrResponse.GetResponseStream
+                    If wrResponse.ContentEncoding.ToLower = "gzip" Then
+                        sResponse = New StreamReader(New GZipStream(Ms, CompressionMode.Decompress), cEncoding, True).ReadToEnd
+                    ElseIf wrResponse.ContentEncoding.ToLower = "deflate" Then
+                        sResponse = New StreamReader(New DeflateStream(Ms, CompressionMode.Decompress), cEncoding, True).ReadToEnd
+                    Else
+                        sResponse = New StreamReader(Ms, cEncoding, True).ReadToEnd
+                    End If
+                End Using
+                Me._responseuri = wrResponse.ResponseUri.ToString
+            End Using
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error", False)
+        End Try
 
-	Private Function MakePostFieldText(ByVal Boundary As String, ByVal name As String, ByVal value As String) As String
-		Return String.Concat(Boundary, vbCrLf, String.Format("Content-Disposition:form-data;name=""{0}""", name), vbCrLf, vbCrLf, value, vbCrLf)
-	End Function
+        Return sResponse
+    End Function
 
-	Private Function MakePostFieldFile(ByVal Boundary As String, ByVal name As String) As String
-		Return String.Concat(Boundary, vbCrLf, String.Format("Content-Disposition:form-data;name=""file"";filename=""{0}""", name), vbCrLf, "Content-Type: application/octet-stream", vbCrLf, vbCrLf)
-	End Function
+    Private Function MakePostFieldText(ByVal Boundary As String, ByVal name As String, ByVal value As String) As String
+        Return String.Concat(Boundary, vbCrLf, String.Format("Content-Disposition:form-data;name=""{0}""", name), vbCrLf, vbCrLf, value, vbCrLf)
+    End Function
 
-	Public Function PostDownloadData(ByVal URL As String, ByVal postDataList As List(Of String())) As String
-		Dim sResponse As String = String.Empty
-		Dim cEncoding As System.Text.Encoding
-		Dim Idboundary As String = Convert.ToInt64(Functions.ConvertToUnixTimestamp(Now)).ToString
-		Dim Boundary As String = String.Format("--{0}", Idboundary)
-		Dim postDataBytes As New List(Of Byte())
-		Me.Clear()
-		System.Net.ServicePointManager.Expect100Continue = False
-		Try
-			For Each s() As String In postDataList
-				If s.Count = 2 Then postDataBytes.Add(System.Text.Encoding.UTF8.GetBytes(String.Concat(MakePostFieldText(Boundary, s(0), s(1)))))
-				If s.Count = 3 Then
-					Select Case s(2)
-						Case "file"	 'array in list is {filename,filepath,"file"}
-							postDataBytes.Add(System.Text.Encoding.UTF8.GetBytes(String.Concat(MakePostFieldFile(Boundary, s(0)))))
-							postDataBytes.Add(File.ReadAllBytes(s(1)))
-							postDataBytes.Add(System.Text.Encoding.UTF8.GetBytes(String.Concat(vbCrLf, Boundary, vbCrLf)))
-					End Select
-				End If
-			Next
-			postDataBytes.Add(System.Text.Encoding.UTF8.GetBytes(String.Concat(Boundary, vbCrLf)))
+    Private Function MakePostFieldFile(ByVal Boundary As String, ByVal name As String) As String
+        Return String.Concat(Boundary, vbCrLf, String.Format("Content-Disposition:form-data;name=""file"";filename=""{0}""", name), vbCrLf, "Content-Type: application/octet-stream", vbCrLf, vbCrLf)
+    End Function
 
-			Me.wrRequest = DirectCast(WebRequest.Create(URL), HttpWebRequest)
-			Me.wrRequest.Timeout = 20000
-			Me.wrRequest.Headers.Add("Accept-Encoding", "gzip,deflate")
-			If Not String.IsNullOrEmpty(Master.eSettings.ProxyURI) AndAlso Master.eSettings.ProxyPort >= 0 Then
-				Dim wProxy As New WebProxy(Master.eSettings.ProxyURI, Master.eSettings.ProxyPort)
-				wProxy.BypassProxyOnLocal = True
-				If Not String.IsNullOrEmpty(Master.eSettings.ProxyCreds.UserName) Then
-					wProxy.Credentials = Master.eSettings.ProxyCreds
-				Else
-					wProxy.Credentials = CredentialCache.DefaultCredentials
-				End If
-				Me.wrRequest.Proxy = wProxy
-			End If
-			Me.wrRequest.Method = "POST"
-			Me.wrRequest.ContentType = String.Concat("multipart/form-data;boundary=", Idboundary)
-			Dim size As Integer = 0
-			For i As Integer = 0 To postDataBytes.Count - 1
-				size += postDataBytes(i).Length
-			Next
-			Me.wrRequest.ContentLength = size
-			Dim newStream As Stream = Me.wrRequest.GetRequestStream()
-			For i As Integer = 0 To postDataBytes.Count - 1
-				newStream.Write(postDataBytes(i), 0, postDataBytes(i).Length)
-			Next
-			newStream.Close()
+    Public Function PostDownloadData(ByVal URL As String, ByVal postDataList As List(Of String())) As String
+        Dim sResponse As String = String.Empty
+        Dim cEncoding As System.Text.Encoding
+        Dim Idboundary As String = Convert.ToInt64(Functions.ConvertToUnixTimestamp(Now)).ToString
+        Dim Boundary As String = String.Format("--{0}", Idboundary)
+        Dim postDataBytes As New List(Of Byte())
+        Me.Clear()
+        System.Net.ServicePointManager.Expect100Continue = False
+        Try
+            For Each s() As String In postDataList
+                If s.Count = 2 Then postDataBytes.Add(System.Text.Encoding.UTF8.GetBytes(String.Concat(MakePostFieldText(Boundary, s(0), s(1)))))
+                If s.Count = 3 Then
+                    Select Case s(2)
+                        Case "file"  'array in list is {filename,filepath,"file"}
+                            postDataBytes.Add(System.Text.Encoding.UTF8.GetBytes(String.Concat(MakePostFieldFile(Boundary, s(0)))))
+                            postDataBytes.Add(File.ReadAllBytes(s(1)))
+                            postDataBytes.Add(System.Text.Encoding.UTF8.GetBytes(String.Concat(vbCrLf, Boundary, vbCrLf)))
+                    End Select
+                End If
+            Next
+            postDataBytes.Add(System.Text.Encoding.UTF8.GetBytes(String.Concat(Boundary, vbCrLf)))
 
-			Using wrResponse As HttpWebResponse = DirectCast(Me.wrRequest.GetResponse(), HttpWebResponse)
-				Select Case True
-					Case wrResponse.ContentType.ToLower.Contains("/xml") OrElse wrResponse.ContentType.ToLower.Contains("charset=utf-8")
-						cEncoding = System.Text.Encoding.UTF8
-					Case Else
-						cEncoding = System.Text.Encoding.GetEncoding(28591)
-				End Select
-				Using Ms As Stream = wrResponse.GetResponseStream
-					If wrResponse.ContentEncoding.ToLower = "gzip" Then
-						sResponse = New StreamReader(New GZipStream(Ms, CompressionMode.Decompress), cEncoding, True).ReadToEnd
-					ElseIf wrResponse.ContentEncoding.ToLower = "deflate" Then
-						sResponse = New StreamReader(New DeflateStream(Ms, CompressionMode.Decompress), cEncoding, True).ReadToEnd
-					Else
-						sResponse = New StreamReader(Ms, cEncoding, True).ReadToEnd
-					End If
-				End Using
-				Me._responseuri = wrResponse.ResponseUri.ToString
-			End Using
-		Catch ex As Exception
-			Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error", False)
-		End Try
+            Me.wrRequest = DirectCast(WebRequest.Create(URL), HttpWebRequest)
+            Me.wrRequest.Timeout = _defaultRequestTimeout
+            Me.wrRequest.Headers.Add("Accept-Encoding", "gzip,deflate")
+            PrepareProxy()
 
-		Return sResponse
-	End Function
+            Me.wrRequest.Method = "POST"
+            Me.wrRequest.ContentType = String.Concat("multipart/form-data;boundary=", Idboundary)
+            Dim size As Integer = 0
+            For i As Integer = 0 To postDataBytes.Count - 1
+                size += postDataBytes(i).Length
+            Next
+            Me.wrRequest.ContentLength = size
+            Using newStream As Stream = Me.wrRequest.GetRequestStream()
+                For i As Integer = 0 To postDataBytes.Count - 1
+                    newStream.Write(postDataBytes(i), 0, postDataBytes(i).Length)
+                Next
+                newStream.Close()
+            End Using
 
-	Public Function DownloadFile(ByVal URL As String, ByVal LocalFile As String, ByVal ReportUpdate As Boolean, ByVal Type As String) As String
-		Dim outFile As String = String.Empty
-		Dim urlExt As String = String.Empty
+            Using wrResponse As HttpWebResponse = DirectCast(Me.wrRequest.GetResponse(), HttpWebResponse)
+                Select Case True
+                    Case wrResponse.ContentType.ToLower.Contains("/xml") OrElse wrResponse.ContentType.ToLower.Contains("charset=utf-8")
+                        cEncoding = System.Text.Encoding.UTF8
+                    Case Else
+                        cEncoding = System.Text.Encoding.GetEncoding(28591)
+                End Select
+                Using Ms As Stream = wrResponse.GetResponseStream
+                    If wrResponse.ContentEncoding.ToLower = "gzip" Then
+                        sResponse = New StreamReader(New GZipStream(Ms, CompressionMode.Decompress), cEncoding, True).ReadToEnd
+                    ElseIf wrResponse.ContentEncoding.ToLower = "deflate" Then
+                        sResponse = New StreamReader(New DeflateStream(Ms, CompressionMode.Decompress), cEncoding, True).ReadToEnd
+                    Else
+                        sResponse = New StreamReader(Ms, cEncoding, True).ReadToEnd
+                    End If
+                    Ms.Close()
+                End Using
+                Me._responseuri = wrResponse.ResponseUri.ToString
+            End Using
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error", False)
+        End Try
 
-		Me._cancel = False
-		Try
-			Me.wrRequest = DirectCast(WebRequest.Create(URL), HttpWebRequest)
-			Me.wrRequest.Timeout = 20000
+        Return sResponse
+    End Function
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="URL"></param>
+    ''' <param name="LocalFile"></param>
+    ''' <param name="ReportUpdate"></param>
+    ''' <param name="Type"></param>
+    ''' <returns></returns>
+    ''' <remarks>
+    ''' 2013/10/31 Dekker500 - Refactored the main Case statement to simplify the conditions and improve performance</remarks>
+    Public Function DownloadFile(ByVal URL As String, ByVal LocalFile As String, ByVal ReportUpdate As Boolean, ByVal Type As String) As String
+        Dim outFile As String = String.Empty
+        Dim urlExt As String = String.Empty
 
-			If Not String.IsNullOrEmpty(Master.eSettings.ProxyURI) AndAlso Master.eSettings.ProxyPort >= 0 Then
-				Dim wProxy As New WebProxy(Master.eSettings.ProxyURI, Master.eSettings.ProxyPort)
-				wProxy.BypassProxyOnLocal = True
-				If Not String.IsNullOrEmpty(Master.eSettings.ProxyCreds.UserName) Then
-					wProxy.Credentials = Master.eSettings.ProxyCreds
-				Else
-					wProxy.Credentials = CredentialCache.DefaultCredentials
-				End If
-				Me.wrRequest.Proxy = wProxy
-			End If
+        Me._cancelRequested = False
+        Try
+            Me.wrRequest = DirectCast(WebRequest.Create(URL), HttpWebRequest)
+            Me.wrRequest.Timeout = _defaultRequestTimeout
 
-			Try
-				urlExt = Path.GetExtension(URL)
-			Catch
-			End Try
+            PrepareProxy()
 
-			Using wrResponse As HttpWebResponse = DirectCast(Me.wrRequest.GetResponse(), HttpWebResponse)
-				Select Case True
-					Case Type = "trailer" AndAlso Master.eSettings.ValidExts.Contains(urlExt)
-						If Master.eSettings.VideoTSParentXBMC AndAlso FileUtils.Common.isBDRip(LocalFile) Then
-							outFile = Path.Combine(Directory.GetParent(LocalFile).FullName, String.Concat(Path.GetFileNameWithoutExtension(LocalFile), If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(URL)))
-						ElseIf Master.eSettings.MovieNameNFOStack Then
-							Dim LocalFileStack As String = StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(LocalFile))
-                            outFile = String.Concat(Directory.GetParent(LocalFile).FullName, Path.DirectorySeparatorChar, LocalFileStack, If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(URL))
-						Else
-							outFile = Path.Combine(Directory.GetParent(LocalFile).FullName, String.Concat(Path.GetFileNameWithoutExtension(LocalFile), If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(URL)))
-						End If
-					Case Type = "trailer" AndAlso Master.eSettings.ValidExts.Contains(Path.GetExtension(wrResponse.ResponseUri.AbsolutePath))
-						If Master.eSettings.VideoTSParentXBMC AndAlso FileUtils.Common.isBDRip(LocalFile) Then
-							outFile = Path.Combine(Directory.GetParent(LocalFile).FullName, String.Concat(Path.GetFileNameWithoutExtension(LocalFile), If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(wrResponse.ResponseUri.AbsolutePath)))
-						ElseIf Master.eSettings.MovieNameNFOStack Then
-							Dim LocalFileStack As String = StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(LocalFile))
-                            outFile = String.Concat(Directory.GetParent(LocalFile).FullName, Path.DirectorySeparatorChar, LocalFileStack, If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(wrResponse.ResponseUri.AbsolutePath))
-						Else
-							outFile = Path.Combine(Directory.GetParent(LocalFile).FullName, String.Concat(Path.GetFileNameWithoutExtension(LocalFile), If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(wrResponse.ResponseUri.AbsolutePath)))
-						End If
-					Case Type = "trailer" AndAlso wrResponse.ContentType.Contains("mp4")
-						If Master.eSettings.VideoTSParentXBMC AndAlso FileUtils.Common.isBDRip(LocalFile) Then
-                            outFile = String.Concat(Directory.GetParent(Directory.GetParent(LocalFile).FullName).FullName, Path.DirectorySeparatorChar, "index", If(Master.eSettings.DashTrailer, "-trailer.mp4", "[trailer].mp4"))
-						ElseIf Master.eSettings.MovieNameNFOStack Then
-							Dim LocalFileStack As String = StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(LocalFile))
-                            outFile = String.Concat(Directory.GetParent(LocalFile).FullName, Path.DirectorySeparatorChar, LocalFileStack, If(Master.eSettings.DashTrailer, "-trailer.mp4", "[trailer].mp4"))
-						Else
-							outFile = Path.Combine(Directory.GetParent(LocalFile).FullName, String.Concat(Path.GetFileNameWithoutExtension(LocalFile), If(Master.eSettings.DashTrailer, "-trailer.mp4", "[trailer].mp4")))
-						End If
-					Case Type = "trailer" AndAlso wrResponse.ContentType.Contains("flv")
-						If Master.eSettings.VideoTSParentXBMC AndAlso FileUtils.Common.isBDRip(LocalFile) Then
-                            outFile = String.Concat(Directory.GetParent(Directory.GetParent(LocalFile).FullName).FullName, Path.DirectorySeparatorChar, "index", If(Master.eSettings.DashTrailer, "-trailer.flv", "[trailer].flv"))
-						ElseIf Master.eSettings.MovieNameNFOStack Then
-							Dim LocalFileStack As String = StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(LocalFile))
-                            outFile = String.Concat(Directory.GetParent(LocalFile).FullName, Path.DirectorySeparatorChar, LocalFileStack, If(Master.eSettings.DashTrailer, "-trailer.flv", "[trailer].flv"))
-						Else
-							outFile = Path.Combine(Directory.GetParent(LocalFile).FullName, String.Concat(Path.GetFileNameWithoutExtension(LocalFile), If(Master.eSettings.DashTrailer, "-trailer.flv", "[trailer].flv")))
-						End If
-					Case Type = "trailer" AndAlso wrResponse.ContentType.Contains("webm")
-						If Master.eSettings.VideoTSParentXBMC AndAlso FileUtils.Common.isBDRip(LocalFile) Then
-                            outFile = String.Concat(Directory.GetParent(Directory.GetParent(LocalFile).FullName).FullName, Path.DirectorySeparatorChar, "index", If(Master.eSettings.DashTrailer, "-trailer.webm", "[trailer].webm"))
-						ElseIf Master.eSettings.MovieNameNFOStack Then
-							Dim LocalFileStack As String = StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(LocalFile))
-                            outFile = String.Concat(Directory.GetParent(LocalFile).FullName, Path.DirectorySeparatorChar, LocalFileStack, If(Master.eSettings.DashTrailer, "-trailer.webm", "[trailer].webm"))
-						Else
-							outFile = Path.Combine(Directory.GetParent(LocalFile).FullName, String.Concat(Path.GetFileNameWithoutExtension(LocalFile), If(Master.eSettings.DashTrailer, "-trailer.webm", "[trailer].webm")))
-						End If
-					Case Type = "other"
-						outFile = LocalFile
-				End Select
+            Try
+                urlExt = Path.GetExtension(URL)
+            Catch
+            End Try
 
-				If Not String.IsNullOrEmpty(outFile) AndAlso Not wrResponse.ContentLength = 0 Then
+            Using wrResponse As HttpWebResponse = DirectCast(Me.wrRequest.GetResponse(), HttpWebResponse)
+                If Type.Equals("trailer") Then
+                    Select Case True
+                        Case Master.eSettings.ValidExts.Contains(urlExt)
+                            If Master.eSettings.VideoTSParentXBMC AndAlso FileUtils.Common.isBDRip(LocalFile) Then
+                                outFile = Path.Combine(Directory.GetParent(LocalFile).FullName, String.Concat(Path.GetFileNameWithoutExtension(LocalFile), If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(URL)))
+                            ElseIf Master.eSettings.MovieNameNFOStack Then
+                                Dim LocalFileStack As String = StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(LocalFile))
+                                outFile = String.Concat(Directory.GetParent(LocalFile).FullName, Path.DirectorySeparatorChar, LocalFileStack, If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(URL))
+                            Else
+                                outFile = Path.Combine(Directory.GetParent(LocalFile).FullName, String.Concat(Path.GetFileNameWithoutExtension(LocalFile), If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(URL)))
+                            End If
+                        Case Master.eSettings.ValidExts.Contains(Path.GetExtension(wrResponse.ResponseUri.AbsolutePath))
+                            If Master.eSettings.VideoTSParentXBMC AndAlso FileUtils.Common.isBDRip(LocalFile) Then
+                                outFile = Path.Combine(Directory.GetParent(LocalFile).FullName, String.Concat(Path.GetFileNameWithoutExtension(LocalFile), If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(wrResponse.ResponseUri.AbsolutePath)))
+                            ElseIf Master.eSettings.MovieNameNFOStack Then
+                                Dim LocalFileStack As String = StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(LocalFile))
+                                outFile = String.Concat(Directory.GetParent(LocalFile).FullName, Path.DirectorySeparatorChar, LocalFileStack, If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(wrResponse.ResponseUri.AbsolutePath))
+                            Else
+                                outFile = Path.Combine(Directory.GetParent(LocalFile).FullName, String.Concat(Path.GetFileNameWithoutExtension(LocalFile), If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(wrResponse.ResponseUri.AbsolutePath)))
+                            End If
+                        Case wrResponse.ContentType.Contains("mp4")
+                            If Master.eSettings.VideoTSParentXBMC AndAlso FileUtils.Common.isBDRip(LocalFile) Then
+                                outFile = String.Concat(Directory.GetParent(Directory.GetParent(LocalFile).FullName).FullName, Path.DirectorySeparatorChar, "index", If(Master.eSettings.DashTrailer, "-trailer.mp4", "[trailer].mp4"))
+                            ElseIf Master.eSettings.MovieNameNFOStack Then
+                                Dim LocalFileStack As String = StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(LocalFile))
+                                outFile = String.Concat(Directory.GetParent(LocalFile).FullName, Path.DirectorySeparatorChar, LocalFileStack, If(Master.eSettings.DashTrailer, "-trailer.mp4", "[trailer].mp4"))
+                            Else
+                                outFile = Path.Combine(Directory.GetParent(LocalFile).FullName, String.Concat(Path.GetFileNameWithoutExtension(LocalFile), If(Master.eSettings.DashTrailer, "-trailer.mp4", "[trailer].mp4")))
+                            End If
+                        Case wrResponse.ContentType.Contains("flv")
+                            If Master.eSettings.VideoTSParentXBMC AndAlso FileUtils.Common.isBDRip(LocalFile) Then
+                                outFile = String.Concat(Directory.GetParent(Directory.GetParent(LocalFile).FullName).FullName, Path.DirectorySeparatorChar, "index", If(Master.eSettings.DashTrailer, "-trailer.flv", "[trailer].flv"))
+                            ElseIf Master.eSettings.MovieNameNFOStack Then
+                                Dim LocalFileStack As String = StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(LocalFile))
+                                outFile = String.Concat(Directory.GetParent(LocalFile).FullName, Path.DirectorySeparatorChar, LocalFileStack, If(Master.eSettings.DashTrailer, "-trailer.flv", "[trailer].flv"))
+                            Else
+                                outFile = Path.Combine(Directory.GetParent(LocalFile).FullName, String.Concat(Path.GetFileNameWithoutExtension(LocalFile), If(Master.eSettings.DashTrailer, "-trailer.flv", "[trailer].flv")))
+                            End If
+                        Case wrResponse.ContentType.Contains("webm")
+                            If Master.eSettings.VideoTSParentXBMC AndAlso FileUtils.Common.isBDRip(LocalFile) Then
+                                outFile = String.Concat(Directory.GetParent(Directory.GetParent(LocalFile).FullName).FullName, Path.DirectorySeparatorChar, "index", If(Master.eSettings.DashTrailer, "-trailer.webm", "[trailer].webm"))
+                            ElseIf Master.eSettings.MovieNameNFOStack Then
+                                Dim LocalFileStack As String = StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(LocalFile))
+                                outFile = String.Concat(Directory.GetParent(LocalFile).FullName, Path.DirectorySeparatorChar, LocalFileStack, If(Master.eSettings.DashTrailer, "-trailer.webm", "[trailer].webm"))
+                            Else
+                                outFile = Path.Combine(Directory.GetParent(LocalFile).FullName, String.Concat(Path.GetFileNameWithoutExtension(LocalFile), If(Master.eSettings.DashTrailer, "-trailer.webm", "[trailer].webm")))
+                            End If
+                        Case Type = "other"
+                            outFile = LocalFile
+                    End Select
+                Else
+                    outFile = LocalFile
+                End If
 
-					If File.Exists(outFile) Then File.Delete(outFile)
+                If Not String.IsNullOrEmpty(outFile) AndAlso Not wrResponse.ContentLength = 0 Then
 
-					Using Ms As Stream = wrResponse.GetResponseStream
-						Using mStream As New FileStream(outFile, FileMode.Create, FileAccess.Write)
-							Dim StreamBuffer(4096) As Byte
-							Dim BlockSize As Integer
-							Dim iProgress As Integer
-							Dim iCurrent As Integer
-							Do
-								BlockSize = Ms.Read(StreamBuffer, 0, 4096)
-								iCurrent += BlockSize
-								If BlockSize > 0 Then
-									mStream.Write(StreamBuffer, 0, BlockSize)
-									If ReportUpdate Then
-										iProgress = Convert.ToInt32((iCurrent / wrResponse.ContentLength) * 100)
-										RaiseEvent ProgressUpdated(iProgress)
-									End If
-								End If
-							Loop While BlockSize > 0 AndAlso Not Me._cancel
-							StreamBuffer = Nothing
-						End Using
-					End Using
-				End If
+                    If File.Exists(outFile) Then File.Delete(outFile)
 
-			End Using
-		Catch ex As Exception
-			Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error", False)
-		End Try
+                    Using Ms As Stream = wrResponse.GetResponseStream
+                        Using mStream As New FileStream(outFile, FileMode.Create, FileAccess.Write)
+                            Dim StreamBuffer(4096) As Byte
+                            Dim BlockSize As Integer
+                            Dim iProgress As Integer
+                            Dim iCurrent As Integer
+                            Do
+                                BlockSize = Ms.Read(StreamBuffer, 0, 4096)
+                                iCurrent += BlockSize
+                                If BlockSize > 0 Then
+                                    mStream.Write(StreamBuffer, 0, BlockSize)
+                                    If ReportUpdate Then
+                                        iProgress = Convert.ToInt32((iCurrent / wrResponse.ContentLength) * 100)
+                                        RaiseEvent ProgressUpdated(iProgress)
+                                    End If
+                                End If
+                            Loop While BlockSize > 0 AndAlso Not Me._cancelRequested
+                            StreamBuffer = Nothing
+                            mStream.Close()
+                        End Using
+                        Ms.Close()
+                    End Using
+                End If
 
-		Return outFile
-	End Function
+            End Using
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error", False)
+        End Try
 
-	Public Sub DownloadImage()
-		Try
-			Me._isJPG = False
-			If StringUtils.isValidURL(Me._URL) Then
-				Me.wrRequest = DirectCast(HttpWebRequest.Create(Me._URL), HttpWebRequest)
-				Me.wrRequest.Timeout = 20000
+        Return outFile
+    End Function
 
-				If Me._cancel Then Return
+    Public Sub DownloadImage()
+        Try
+            Me._isJPG = False
+            If StringUtils.isValidURL(Me._URL) Then
+                Me.wrRequest = DirectCast(HttpWebRequest.Create(Me._URL), HttpWebRequest)
+                Me.wrRequest.Timeout = _defaultRequestTimeout
 
-				If Not String.IsNullOrEmpty(Master.eSettings.ProxyURI) AndAlso Master.eSettings.ProxyPort >= 0 Then
-					Dim wProxy As New WebProxy(Master.eSettings.ProxyURI, Master.eSettings.ProxyPort)
-					wProxy.BypassProxyOnLocal = True
-					If Not String.IsNullOrEmpty(Master.eSettings.ProxyCreds.UserName) AndAlso _
-					Not String.IsNullOrEmpty(Master.eSettings.ProxyCreds.Password) Then
-						wProxy.Credentials = Master.eSettings.ProxyCreds
-					Else
-						wProxy.Credentials = CredentialCache.DefaultCredentials
-					End If
-					Me.wrRequest.Proxy = wProxy
-				End If
+                If Me._cancelRequested Then Return
 
-				If Me._cancel Then Return
+                PrepareProxy()
 
-				Using wrResponse As WebResponse = Me.wrRequest.GetResponse()
-					If Me._cancel Then Return
-					Dim temp As String = wrResponse.ContentType.ToString
-					If wrResponse.ContentType.ToLower.Contains("image") Then
-						If Me._cancel Then Return
-						If wrResponse.ContentType.ToLower.Contains("jpeg") Then
-							_isJPG = True
-						End If
-						Using SourceStream As System.IO.Stream = wrResponse.GetResponseStream()
-							Dim count = Convert.ToInt32(wrResponse.ContentLength)
-							Dim buffer = New Byte(count) {}
-							Dim bytesRead As Integer
-							Do
-								bytesRead += SourceStream.Read(buffer, bytesRead, count - bytesRead)
-							Loop Until bytesRead = count
-							SourceStream.Close()
-							Me._ms.Dispose()
-							Me._ms = New MemoryStream()
+                If Me._cancelRequested Then Return
 
-							Me._ms.Write(buffer, 0, bytesRead)
-							Me._ms.Flush()
-							Me._image = New Bitmap(Me._ms)
-						End Using
-						'Me._image = Image.FromStream(wrResponse.GetResponseStream)
-					End If
-				End Using
-			End If
-		Catch ex As Exception
-			Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error", False)
-		End Try
-	End Sub
+                Using wrResponse As WebResponse = Me.wrRequest.GetResponse()
+                    If Me._cancelRequested Then Return
+                    Dim temp As String = wrResponse.ContentType.ToString
+                    If wrResponse.ContentType.ToLower.Contains("image") Then
+                        If Me._cancelRequested Then Return
+                        If wrResponse.ContentType.ToLower.Contains("jpeg") Then
+                            _isJPG = True
+                        End If
+                        Using SourceStream As System.IO.Stream = wrResponse.GetResponseStream()
+                            Dim count = Convert.ToInt32(wrResponse.ContentLength)
+                            Dim buffer = New Byte(count) {}
+                            Dim bytesRead As Integer
+                            Do
+                                bytesRead += SourceStream.Read(buffer, bytesRead, count - bytesRead)
+                            Loop Until bytesRead = count
+                            SourceStream.Close()
+                            Me._ms.Close()
+                            Me._ms = New MemoryStream()
 
-	Public Function DownloadZip(ByVal URL As String) As Byte()
-		Me.wrRequest = DirectCast(WebRequest.Create(URL), HttpWebRequest)
+                            Me._ms.Write(buffer, 0, bytesRead)
+                            Me._ms.Flush()
+                            Me._image = New Bitmap(Me._ms)
+                        End Using
+                        'Me._image = Image.FromStream(wrResponse.GetResponseStream)
+                    End If
+                End Using
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error", False)
+        End Try
+    End Sub
 
-		Try
-			Me.wrRequest.Timeout = 20000
+    Public Function DownloadZip(ByVal URL As String) As Byte()
+        Me.wrRequest = DirectCast(WebRequest.Create(URL), HttpWebRequest)
 
-			If Not String.IsNullOrEmpty(Master.eSettings.ProxyURI) AndAlso Master.eSettings.ProxyPort >= 0 Then
-				Dim wProxy As New WebProxy(Master.eSettings.ProxyURI, Master.eSettings.ProxyPort)
-				wProxy.BypassProxyOnLocal = True
-				If Not String.IsNullOrEmpty(Master.eSettings.ProxyCreds.UserName) Then
-					wProxy.Credentials = Master.eSettings.ProxyCreds
-				Else
-					wProxy.Credentials = CredentialCache.DefaultCredentials
-				End If
-				Me.wrRequest.Proxy = wProxy
-			End If
+        Try
+            Me.wrRequest.Timeout = _defaultRequestTimeout
 
-			Using wrResponse As HttpWebResponse = DirectCast(Me.wrRequest.GetResponse(), HttpWebResponse)
-				Return Functions.ReadStreamToEnd(wrResponse.GetResponseStream)
-			End Using
-		Catch ex As Exception
-			Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error", False)
-		End Try
+            PrepareProxy()
 
-		Return Nothing
-	End Function
+            Using wrResponse As HttpWebResponse = DirectCast(Me.wrRequest.GetResponse(), HttpWebResponse)
+                Return Functions.ReadStreamToEnd(wrResponse.GetResponseStream)
+            End Using
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error", False)
+        End Try
 
-	Public Function IsDownloading() As Boolean
-		Return Me.dThread.IsAlive
-	End Function
+        Return Nothing
+    End Function
 
-	Public Function IsValidURL(ByVal URL As String) As Boolean
-		Dim wrResponse As WebResponse
-		Try
-			Me.wrRequest = DirectCast(WebRequest.Create(URL), HttpWebRequest)
+    Public Function IsDownloading() As Boolean
+        Return Me.dThread.IsAlive
+    End Function
 
-			If Not String.IsNullOrEmpty(Master.eSettings.ProxyURI) AndAlso Master.eSettings.ProxyPort >= 0 Then
-				Dim wProxy As New WebProxy(Master.eSettings.ProxyURI, Master.eSettings.ProxyPort)
-				wProxy.BypassProxyOnLocal = True
-				If Not String.IsNullOrEmpty(Master.eSettings.ProxyCreds.UserName) Then
-					wProxy.Credentials = Master.eSettings.ProxyCreds
-				Else
-					wProxy.Credentials = CredentialCache.DefaultCredentials
-				End If
-				Me.wrRequest.Proxy = wProxy
-			End If
+    Public Sub PrepareProxy()
+        If Not String.IsNullOrEmpty(Master.eSettings.ProxyURI) AndAlso Master.eSettings.ProxyPort >= 0 Then
+            Dim wProxy As New WebProxy(Master.eSettings.ProxyURI, Master.eSettings.ProxyPort)
+            wProxy.BypassProxyOnLocal = True
+            'TODO Dekker500 - Verify if this Password/empty clause is required. Proxies can have usernames but blank passwords, no?
+            If Not String.IsNullOrEmpty(Master.eSettings.ProxyCreds.UserName) AndAlso _
+            Not String.IsNullOrEmpty(Master.eSettings.ProxyCreds.Password) Then
+                wProxy.Credentials = Master.eSettings.ProxyCreds
+            Else
+                wProxy.Credentials = CredentialCache.DefaultCredentials
+            End If
+            Me.wrRequest.Proxy = wProxy
+        End If
+    End Sub
 
-			Dim noCachePolicy As System.Net.Cache.HttpRequestCachePolicy = New System.Net.Cache.HttpRequestCachePolicy(System.Net.Cache.HttpRequestCacheLevel.NoCacheNoStore)
-			Me.wrRequest.CachePolicy = noCachePolicy
-			Me.wrRequest.Timeout = Master.eSettings.TrailerTimeout * 1000
-			wrResponse = Me.wrRequest.GetResponse()
-		Catch ex As Exception
-			Return False
-		End Try
-		wrResponse.Close()
-		wrResponse = Nothing
-		Return True
-	End Function
+    Public Function IsValidURL(ByVal URL As String) As Boolean
+        Dim wrResponse As WebResponse
+        Try
+            Me.wrRequest = DirectCast(WebRequest.Create(URL), HttpWebRequest)
 
-	Public Sub StartDownloadImage(ByVal sURL As String)
-		Me.Clear()
-		Me._URL = sURL
-		Me.dThread = New Threading.Thread(AddressOf DownloadImage)
-		Me.dThread.IsBackground = True
-		Me.dThread.Start()
-	End Sub
+            PrepareProxy()
 
-#End Region	'Methods
+            Dim noCachePolicy As System.Net.Cache.HttpRequestCachePolicy = New System.Net.Cache.HttpRequestCachePolicy(System.Net.Cache.HttpRequestCacheLevel.NoCacheNoStore)
+            Me.wrRequest.CachePolicy = noCachePolicy
+            Me.wrRequest.Timeout = _defaultRequestTimeout   'Master.eSettings.TrailerTimeout * 1000 * 2
+            wrResponse = Me.wrRequest.GetResponse()
+        Catch ex As Exception
+            Return False
+        End Try
+        wrResponse.Close()
+        wrResponse = Nothing
+        Return True
+    End Function
+
+    Public Sub StartDownloadImage(ByVal sURL As String)
+        Me.Clear()
+        Me._URL = sURL
+        Me.dThread = New Threading.Thread(AddressOf DownloadImage)
+        Me.dThread.IsBackground = True
+        Me.dThread.Start()
+    End Sub
+
+#End Region 'Methods
+
+#Region "IDisposable Support"
+    Private disposedValue As Boolean ' To detect redundant calls
+
+    ' IDisposable
+    Protected Overridable Sub Dispose(disposing As Boolean)
+        If Not Me.disposedValue Then
+            If disposing Then
+                If Me._image IsNot Nothing Then Me._image.Dispose()
+                If Me.wrRequest IsNot Nothing Then Me.wrRequest.Abort() 'Explicitely cancel any pending requests
+            End If
+
+            If Me._ms IsNot Nothing Then
+                'Make sure the stream is indeed closed so it can be disposed of properly
+                Me._ms.Close()
+            End If
+            Me._image = Nothing
+            Me.wrRequest = Nothing
+
+            Me.disposedValue = True
+        End If
+    End Sub
+
+    ' TODO: override Finalize() only if Dispose(ByVal disposing As Boolean) above has code to free unmanaged resources.
+    Protected Overrides Sub Finalize()
+        ' Do not change this code.  Put cleanup code in Dispose(ByVal disposing As Boolean) above.
+        Dispose(False)
+        MyBase.Finalize()
+    End Sub
+
+    ' This code added by Visual Basic to correctly implement the disposable pattern.
+    Public Sub Dispose() Implements IDisposable.Dispose
+        ' Do not change this code.  Put cleanup code in Dispose(disposing As Boolean) above.
+        Dispose(True)
+        GC.SuppressFinalize(Me)
+    End Sub
+#End Region
+
 End Class

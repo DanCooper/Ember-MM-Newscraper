@@ -17,6 +17,7 @@ Namespace EmberTests
                 {
                     {String.Empty, String.Empty},
                     {"c:\dir1\dir 2", "dir 2"},
+                    {"c:\dir1\dir2\", "dir2"},
                     {"c:\dir1\dir 2\filename.ext", "filename.ext"},
                     {"c:\", "c"},
                     {"c:", "c"},
@@ -59,7 +60,8 @@ Namespace EmberTests
                     {"c:\stream\BDmv\0020.ext", False},
                     {"x:\movie.name\bdmv\stream", True},
                     {"x:\BDMV\stream", True},
-                    {"x:\bdmv\stREAM\", True}
+                    {"x:\bdmv\stREAM\", True},
+                    {"x:\bdmv\stREAM\//\/", True}
                 }
 
             For Each pair As KeyValuePair(Of String, Boolean) In sourceDirectories
@@ -117,6 +119,8 @@ Namespace EmberTests
         Public Sub RemoveExtFromPath()
             'Arrange
             'The sourceDirectories should contain pairs of Strings - source strings to pass to the method, and expected return values.
+            'NOTE: the test that starts with a relative path "\dir1\dir4" resolves to the current working directory's drive (c:\ in my case).
+            'If your test system is different, expect a different result!
             Dim sourcePaths As New Dictionary(Of String, String) From
                 {
                     {String.Empty, String.Empty},
@@ -125,8 +129,9 @@ Namespace EmberTests
                     {"c:\dir1\dir 3\filename.ext.another", "c:\dir1\dir 3\filename.ext"},
                     {"\dir1\dir4\", "\dir1\dir4"},
                     {"fjkienmz.de.e", "fjkienmz.de"},
-                    {"c:", "c:"},
-                    {"c:\", "c:\"}
+                    {"c:\", "c:\"},
+                    {"c:", String.Empty},
+                    {"!)(&^%$#", "!)(&^%$#"}
                 }
 
             For Each pair As KeyValuePair(Of String, String) In sourcePaths
@@ -134,7 +139,8 @@ Namespace EmberTests
                 Dim result As String = FileUtils.Common.RemoveExtFromPath(pair.Key)
 
                 'Assert
-                Assert.AreEqual(pair.Value, result, "Data tested was: '" & pair.Key & "' : '" & pair.Value & "'")
+                'Ignore case during compare
+                Assert.AreEqual(pair.Value, result, True, "Data tested was: '" & pair.Key & "' : '" & pair.Value & "'")
             Next
         End Sub
         <TestMethod()>

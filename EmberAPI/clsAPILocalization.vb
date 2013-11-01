@@ -47,9 +47,15 @@ Public Class Localization
 
 #Region "Constructors"
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <remarks>
+    ''' 2013/10/31 Dekker500 - Fixed bug with missing directory separator between AppPath and Langs
+    ''' </remarks>
     Public Sub New()
         Me.Clear()
-        Dim lPath As String = String.Concat(Functions.AppPath, "Langs", Path.DirectorySeparatorChar, "Languages.xml")
+        Dim lPath As String = Path.Combine(Functions.AppPath, "Langs" & Path.DirectorySeparatorChar & "Languages.xml")
         If File.Exists(lPath) Then
             Dim LanguageXML As XDocument = XDocument.Load(lPath)
             For Each e In From xGen In LanguageXML...<Language> Select xGen
