@@ -151,8 +151,10 @@ Public Class frmNotify
 
         'only allow 6 notifications on screen at a time
         If frmNotify.DisplayedForms.Count = 6 Then
-            frmNotify.DisplayedForms(0).AnimationTimer.Stop()
-            frmNotify.DisplayedForms(0).Close()
+            If Not DisplayedForms(0).InvokeRequired Then
+                frmNotify.DisplayedForms(0).AnimationTimer.Stop()
+                frmNotify.DisplayedForms(0).Close()
+            End If
         End If
 
         For Each DisplayedForm As frmNotify In frmNotify.DisplayedForms
