@@ -347,7 +347,7 @@ Public Class NFO
                 nPath = Path.Combine(Directory.GetParent(fileParPath).FullName, "index.nfo")
                 'Eden single/multi folder
             ElseIf Not fileName.ToLower = "video_ts" Then
-                nPath = String.Concat(filePathStack, ".nfo")
+                nPath = String.Concat(filePath, ".nfo")
                 'Eden VIDEO_TS without VIDEO_TS folder
             ElseIf fileName.ToLower = "video_ts" Then
                 nPath = String.Concat(filePath, ".nfo")
@@ -862,7 +862,7 @@ Public Class NFO
                         ElseIf FileUtils.Common.isBDRip(movieToSave.Filename) Then
                             nPath = Path.Combine(Directory.GetParent(fileParPath).FullName, "index.nfo")
                         Else
-                            nPath = String.Concat(filePathStack, ".nfo")
+                            nPath = String.Concat(filePath, ".nfo")
                         End If
 
                         If Not Master.eSettings.OverwriteNfo Then

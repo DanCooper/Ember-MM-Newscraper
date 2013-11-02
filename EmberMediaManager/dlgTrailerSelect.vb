@@ -59,9 +59,9 @@ Public Class dlgTrailerSelect
         Me.lvTrailers.MultiSelect = False
         Me.lvTrailers.FullRowSelect = True
         Me.lvTrailers.HideSelection = False
-        Me.lvTrailers.Columns.Add("", -1, HorizontalAlignment.Right)
+        Me.lvTrailers.Columns.Add("#", -2, HorizontalAlignment.Right)
         Me.lvTrailers.Columns.Add("URL", 0, HorizontalAlignment.Left)
-        Me.lvTrailers.Columns.Add("Description", -1, HorizontalAlignment.Left)
+        Me.lvTrailers.Columns.Add("Description", -2, HorizontalAlignment.Left)
         'Me.lvTrailers.Columns.Add("HD", 20, HorizontalAlignment.Left)
 
         Me.tMovie = DBMovie
