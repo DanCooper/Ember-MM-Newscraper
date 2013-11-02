@@ -332,18 +332,21 @@ Public Class TMDB_Data
             End If
         End If
 
-        'If ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.GlobalScrapeMod.DoSearch _
-        ' AndAlso ModulesManager.Instance.externalDataScrapersModules.OrderBy(Function(y) y.ScraperOrder).FirstOrDefault(Function(e) e.ProcessorModule.ScraperEnabled).AssemblyName = _AssemblyName Then
-        '	DBMovie.Movie.IMDBID = String.Empty
-        '	DBMovie.ClearExtras = True
-        '	DBMovie.PosterPath = String.Empty
-        '	DBMovie.FanartPath = String.Empty
-        '	DBMovie.TrailerPath = String.Empty
-        '	DBMovie.ExtraPath = String.Empty
-        '	DBMovie.SubPath = String.Empty
-        '	DBMovie.NfoPath = String.Empty
-        '	DBMovie.Movie.Clear()
-        'End If
+        ' why a scraper should initialize the DBMovie structure?
+        ' Answer (DanCooper): If you want to CHANGE the movie. For this, all existing (incorrect) information must be deleted.
+        If ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.GlobalScrapeMod.DoSearch _
+         AndAlso ModulesManager.Instance.externalDataScrapersModules.OrderBy(Function(y) y.ScraperOrder).FirstOrDefault(Function(e) e.ProcessorModule.ScraperEnabled).AssemblyName = _AssemblyName Then
+            DBMovie.Movie.IMDBID = String.Empty
+            DBMovie.ClearExtras = True
+            DBMovie.PosterPath = String.Empty
+            DBMovie.FanartPath = String.Empty
+            DBMovie.TrailerPath = String.Empty
+            DBMovie.ExtraPath = String.Empty
+            DBMovie.SubPath = String.Empty
+            DBMovie.NfoPath = String.Empty
+            DBMovie.Movie.Clear()
+        End If
+
         If String.IsNullOrEmpty(DBMovie.Movie.IMDBID) Then
             Select Case ScrapeType
                 Case Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FullAuto, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.UpdateAuto
