@@ -894,6 +894,12 @@ Public Class NFO
                 '****************** YAMJ settings *****************
                 If Master.eSettings.UseYAMJ Then
                     If Master.eSettings.NFOYAMJ Then
+
+                        If Not String.IsNullOrEmpty(movieToSave.FileSource) Then
+                            movieToSave.Movie.VideoSource = movieToSave.FileSource
+                        End If
+                        movieToSave.Movie.IDMovieDB = "imdb"
+
                         If FileUtils.Common.isVideoTS(movieToSave.Filename) Then
                             nPath = String.Concat(Path.Combine(Directory.GetParent(fileParPath).FullName, Directory.GetParent(fileParPath).Name), ".nfo")
                         ElseIf FileUtils.Common.isBDRip(movieToSave.Filename) Then
@@ -901,11 +907,6 @@ Public Class NFO
                         Else
                             nPath = String.Concat(filePath, ".nfo")
                         End If
-
-                        If Not String.IsNullOrEmpty(movieToSave.FileSource) Then
-                            movieToSave.Movie.VideoSource = movieToSave.FileSource
-                        End If
-                        movieToSave.Movie.IDMovieDB = "imdb"
 
                         If Not Master.eSettings.OverwriteNfo Then
                             RenameNonConfNfo(nPath, False)
