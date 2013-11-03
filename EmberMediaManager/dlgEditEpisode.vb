@@ -629,7 +629,7 @@ Public Class dlgEditEpisode
         Try
             With ofdImage
                 .InitialDirectory = Directory.GetParent(Master.currShow.Filename).FullName
-                .Filter = "Supported Images(*.jpg, *.jpeg, *.tbn)|*.jpg;*.jpeg;*.tbn|jpeg (*.jpg, *.jpeg)|*.jpg;*.jpeg|tbn (*.tbn)|*.tbn"
+                .Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
                 .FilterIndex = 0
             End With
 
@@ -673,7 +673,7 @@ Public Class dlgEditEpisode
         Try
             With ofdImage
                 .InitialDirectory = Directory.GetParent(Master.currShow.Filename).FullName
-                .Filter = "JPEGs|*.jpg"
+                .Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
                 .FilterIndex = 4
             End With
 

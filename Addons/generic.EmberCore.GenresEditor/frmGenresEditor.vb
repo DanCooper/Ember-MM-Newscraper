@@ -227,7 +227,7 @@ Public Class frmGenresEditor
         Try
             Using fbImages As New OpenFileDialog
                 fbImages.InitialDirectory = Path.Combine(Functions.AppPath, String.Format("Images{0}Genres{0}", Path.DirectorySeparatorChar))
-                fbImages.Filter = "Jpeg|*.jpg|PNG|*.png|GIF|*.gif"
+                fbImages.Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
                 fbImages.ShowDialog()
                 Dim g As xGenre = DirectCast(dgvGenres.CurrentRow.Tag, xGenre)
                 g.icon = Path.GetFileName(fbImages.FileName)
