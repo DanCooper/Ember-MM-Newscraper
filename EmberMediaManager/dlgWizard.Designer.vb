@@ -123,6 +123,7 @@ Partial Class dlgWizard
         Me.chkShowPosterTBN = New System.Windows.Forms.CheckBox()
         Me.chkShowFolderJPG = New System.Windows.Forms.CheckBox()
         Me.Label11 = New System.Windows.Forms.Label()
+        Me.Label12 = New System.Windows.Forms.Label()
         Me.Panel1.SuspendLayout()
         Me.Panel3.SuspendLayout()
         Me.GroupBox7.SuspendLayout()
@@ -240,6 +241,7 @@ Partial Class dlgWizard
         '
         Me.Panel3.BackColor = System.Drawing.Color.White
         Me.Panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.Panel3.Controls.Add(Me.Label12)
         Me.Panel3.Controls.Add(Me.GroupBox7)
         Me.Panel3.Controls.Add(Me.chkVideoTSParentXBMC)
         Me.Panel3.Controls.Add(Me.GroupBox21)
@@ -1250,13 +1252,24 @@ Partial Class dlgWizard
         Me.Label11.Text = resources.GetString("Label11.Text")
         Me.Label11.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
+        'Label12
+        '
+        Me.Label12.AutoSize = True
+        Me.Label12.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.Label12.ForeColor = System.Drawing.Color.Red
+        Me.Label12.Location = New System.Drawing.Point(26, 167)
+        Me.Label12.Name = "Label12"
+        Me.Label12.Size = New System.Drawing.Size(319, 20)
+        Me.Label12.TabIndex = 8
+        Me.Label12.Text = "Please use the settings menu to set this part"
+        '
         'dlgWizard
         '
         Me.AcceptButton = Me.OK_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(546, 363)
+        Me.ClientSize = New System.Drawing.Size(1916, 1053)
         Me.Controls.Add(Me.Panel3)
         Me.Controls.Add(Me.PictureBox1)
         Me.Controls.Add(Me.btnBack)
@@ -1280,6 +1293,7 @@ Partial Class dlgWizard
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
         Me.Panel3.ResumeLayout(False)
+        Me.Panel3.PerformLayout()
         Me.GroupBox7.ResumeLayout(False)
         Me.GroupBox7.PerformLayout()
         Me.GroupBox21.ResumeLayout(False)
@@ -1410,5 +1424,6 @@ Partial Class dlgWizard
 	Friend WithEvents rbBracketTrailer As System.Windows.Forms.RadioButton
 	Friend WithEvents rbDashTrailer As System.Windows.Forms.RadioButton
 	Friend WithEvents chkVideoTSParentXBMC As System.Windows.Forms.CheckBox
-	Friend WithEvents chkMovieNameNFOStack As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMovieNameNFOStack As System.Windows.Forms.CheckBox
+    Friend WithEvents Label12 As System.Windows.Forms.Label
 End Class
