@@ -1278,8 +1278,9 @@ Public Class frmMain
                 End If
                 If bwMovieScraper.CancellationPending Then Exit For
 
-                'If Not Args.scrapeType = Enums.ScrapeType.SingleScrape Then
-                MovieScraperEvent(Enums.MovieScraperEventType.NFOItem, True)
+                If Not Args.scrapeType = Enums.ScrapeType.SingleScrape Then
+                    MovieScraperEvent(Enums.MovieScraperEventType.NFOItem, True)
+                End If
 
                 NewTitle = DBScrapeMovie.ListTitle
 
@@ -1444,7 +1445,7 @@ Public Class frmMain
                     If DBScrapeMovie.isSingle Then
                         Try
                             'aScrapeImages.GetPreferredFAasET(DBScrapeMovie.Movie.TMDBID, DBScrapeMovie.Filename)
-                            MovieScraperEvent(Enums.MovieScraperEventType.ThumbsItem, True)
+                            'MovieScraperEvent(Enums.MovieScraperEventType.ThumbsItem, True)
                         Catch ex As Exception
                         End Try
                     End If
@@ -1477,7 +1478,7 @@ Public Class frmMain
                     If DBScrapeMovie.isSingle Then
                         Dim params As New List(Of Object)(New Object() {DBScrapeMovie, 0, False, ""})
                         ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.RandomFrameExtrator, params, Nothing, True)
-                        MovieScraperEvent(Enums.MovieScraperEventType.ThumbsItem, True)
+                        'MovieScraperEvent(Enums.MovieScraperEventType.ThumbsItem, True)
                         Dim ETasFA As String = DirectCast(params(3), String)
                         If Not String.IsNullOrEmpty(ETasFA) Then
                             DBScrapeMovie.ExtraPath = "TRUE"
