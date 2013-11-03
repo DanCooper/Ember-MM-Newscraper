@@ -211,6 +211,30 @@ Namespace YouTube
             End Try
         End Function
 
+        Public Shared Function SearchOnYouTube(ByVal mName As String) As List(Of Trailers)
+            Dim tHTTP As New HTTP
+            Dim tList As New List(Of Trailers)
+            Dim tLink As String = String.Empty
+            Dim tName As String = String.Empty
+
+            Dim Html As String = tHTTP.DownloadData("http://www.youtube.com/results?search_query=" & Web.HttpUtility.UrlEncode(mName))
+            If Html.ToLower.Contains("page not found") Then
+                Html = String.Empty
+            End If
+
+            Dim Pattern As String = "<div class=""yt-lockup-content"">.*?title=""(?<NAME>.*?)"".*?href=""(?<LINK>.*?)"""
+
+            Dim Result As MatchCollection = Regex.Matches(Html, Pattern, RegexOptions.Singleline)
+
+            For ctr As Integer = 0 To Result.Count - 1
+                tName = Web.HttpUtility.HtmlDecode(Result.Item(ctr).Groups(1).Value)
+                tLink = String.Concat("http://www.youtube.com/", Result.Item(ctr).Groups(2).Value)
+                tList.Add(New Trailers With {.URL = tLink, .Description = tName})
+            Next
+
+            Return tList
+        End Function
+
 #End Region 'Methods
 
     End Class
