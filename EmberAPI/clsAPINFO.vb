@@ -347,7 +347,7 @@ Public Class NFO
                 nPath = Path.Combine(Directory.GetParent(fileParPath).FullName, "index.nfo")
                 'Eden single/multi folder
             ElseIf Not fileName.ToLower = "video_ts" Then
-                nPath = String.Concat(filePathStack, ".nfo")
+                nPath = String.Concat(filePath, ".nfo")
                 'Eden VIDEO_TS without VIDEO_TS folder
             ElseIf fileName.ToLower = "video_ts" Then
                 nPath = String.Concat(filePath, ".nfo")
@@ -862,7 +862,7 @@ Public Class NFO
                         ElseIf FileUtils.Common.isBDRip(movieToSave.Filename) Then
                             nPath = Path.Combine(Directory.GetParent(fileParPath).FullName, "index.nfo")
                         Else
-                            nPath = String.Concat(filePathStack, ".nfo")
+                            nPath = String.Concat(filePath, ".nfo")
                         End If
 
                         If Not Master.eSettings.OverwriteNfo Then
@@ -894,6 +894,12 @@ Public Class NFO
                 '****************** YAMJ settings *****************
                 If Master.eSettings.UseYAMJ Then
                     If Master.eSettings.NFOYAMJ Then
+
+                        If Not String.IsNullOrEmpty(movieToSave.FileSource) Then
+                            movieToSave.Movie.VideoSource = movieToSave.FileSource
+                        End If
+                        movieToSave.Movie.IDMovieDB = "imdb"
+
                         If FileUtils.Common.isVideoTS(movieToSave.Filename) Then
                             nPath = String.Concat(Path.Combine(Directory.GetParent(fileParPath).FullName, Directory.GetParent(fileParPath).Name), ".nfo")
                         ElseIf FileUtils.Common.isBDRip(movieToSave.Filename) Then
@@ -901,11 +907,6 @@ Public Class NFO
                         Else
                             nPath = String.Concat(filePath, ".nfo")
                         End If
-
-                        If Not String.IsNullOrEmpty(movieToSave.FileSource) Then
-                            movieToSave.Movie.VideoSource = movieToSave.FileSource
-                        End If
-                        movieToSave.Movie.IDMovieDB = "imdb"
 
                         If Not Master.eSettings.OverwriteNfo Then
                             RenameNonConfNfo(nPath, False)

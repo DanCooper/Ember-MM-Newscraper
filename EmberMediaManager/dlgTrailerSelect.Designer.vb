@@ -30,6 +30,7 @@ Partial Class dlgTrailerSelect
         Me.lblStatus = New System.Windows.Forms.Label()
         Me.pbStatus = New System.Windows.Forms.ProgressBar()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.btnClearLink = New System.Windows.Forms.Button()
         Me.btnBrowse = New System.Windows.Forms.Button()
         Me.txtManual = New System.Windows.Forms.TextBox()
         Me.Label2 = New System.Windows.Forms.Label()
@@ -40,17 +41,25 @@ Partial Class dlgTrailerSelect
         Me.btnSetNfo = New System.Windows.Forms.Button()
         Me.ofdTrailer = New System.Windows.Forms.OpenFileDialog()
         Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.gbYouTube = New System.Windows.Forms.GroupBox()
+        Me.asfTrailer = New AxShockwaveFlashObjects.AxShockwaveFlash()
         Me.btnPlayBrowser = New System.Windows.Forms.Button()
+        Me.gbYouTubeSearch = New System.Windows.Forms.GroupBox()
+        Me.txtYouTubeSearch = New System.Windows.Forms.TextBox()
+        Me.btnYouTubeSearch = New System.Windows.Forms.Button()
         Me.GroupBox1.SuspendLayout()
         Me.pnlStatus.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.Panel1.SuspendLayout()
+        Me.gbYouTube.SuspendLayout()
+        CType(Me.asfTrailer, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.gbYouTubeSearch.SuspendLayout()
         Me.SuspendLayout()
         '
         'OK_Button
         '
         Me.OK_Button.Enabled = False
-        Me.OK_Button.Location = New System.Drawing.Point(350, 340)
+        Me.OK_Button.Location = New System.Drawing.Point(752, 340)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(120, 23)
         Me.OK_Button.TabIndex = 6
@@ -59,7 +68,7 @@ Partial Class dlgTrailerSelect
         'Cancel_Button
         '
         Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Cancel_Button.Location = New System.Drawing.Point(350, 369)
+        Me.Cancel_Button.Location = New System.Drawing.Point(752, 369)
         Me.Cancel_Button.Name = "Cancel_Button"
         Me.Cancel_Button.Size = New System.Drawing.Size(120, 23)
         Me.Cancel_Button.TabIndex = 7
@@ -112,6 +121,7 @@ Partial Class dlgTrailerSelect
         '
         'GroupBox2
         '
+        Me.GroupBox2.Controls.Add(Me.btnClearLink)
         Me.GroupBox2.Controls.Add(Me.btnBrowse)
         Me.GroupBox2.Controls.Add(Me.txtManual)
         Me.GroupBox2.Controls.Add(Me.Label2)
@@ -123,6 +133,15 @@ Partial Class dlgTrailerSelect
         Me.GroupBox2.TabIndex = 3
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Manual Trailer Entry"
+        '
+        'btnClearLink
+        '
+        Me.btnClearLink.Location = New System.Drawing.Point(410, 28)
+        Me.btnClearLink.Name = "btnClearLink"
+        Me.btnClearLink.Size = New System.Drawing.Size(25, 23)
+        Me.btnClearLink.TabIndex = 5
+        Me.btnClearLink.Text = "X"
+        Me.btnClearLink.UseVisualStyleBackColor = True
         '
         'btnBrowse
         '
@@ -158,7 +177,7 @@ Partial Class dlgTrailerSelect
         Me.txtYouTube.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtYouTube.Location = New System.Drawing.Point(9, 28)
         Me.txtYouTube.Name = "txtYouTube"
-        Me.txtYouTube.Size = New System.Drawing.Size(426, 22)
+        Me.txtYouTube.Size = New System.Drawing.Size(395, 22)
         Me.txtYouTube.TabIndex = 1
         '
         'Label1
@@ -186,7 +205,7 @@ Partial Class dlgTrailerSelect
         Me.btnPlayTrailer.Enabled = False
         Me.btnPlayTrailer.Image = CType(resources.GetObject("btnPlayTrailer.Image"), System.Drawing.Image)
         Me.btnPlayTrailer.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnPlayTrailer.Location = New System.Drawing.Point(12, 369)
+        Me.btnPlayTrailer.Location = New System.Drawing.Point(12, 340)
         Me.btnPlayTrailer.Name = "btnPlayTrailer"
         Me.btnPlayTrailer.Size = New System.Drawing.Size(120, 23)
         Me.btnPlayTrailer.TabIndex = 3
@@ -197,7 +216,7 @@ Partial Class dlgTrailerSelect
         'btnSetNfo
         '
         Me.btnSetNfo.Enabled = False
-        Me.btnSetNfo.Location = New System.Drawing.Point(224, 340)
+        Me.btnSetNfo.Location = New System.Drawing.Point(626, 340)
         Me.btnSetNfo.Name = "btnSetNfo"
         Me.btnSetNfo.Size = New System.Drawing.Size(120, 23)
         Me.btnSetNfo.TabIndex = 5
@@ -206,21 +225,72 @@ Partial Class dlgTrailerSelect
         'Panel1
         '
         Me.Panel1.BackColor = System.Drawing.Color.White
+        Me.Panel1.Controls.Add(Me.gbYouTube)
         Me.Panel1.Controls.Add(Me.GroupBox1)
         Me.Panel1.Location = New System.Drawing.Point(3, 3)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(478, 331)
+        Me.Panel1.Size = New System.Drawing.Size(879, 331)
         Me.Panel1.TabIndex = 2
+        '
+        'gbYouTube
+        '
+        Me.gbYouTube.Controls.Add(Me.gbYouTubeSearch)
+        Me.gbYouTube.Controls.Add(Me.asfTrailer)
+        Me.gbYouTube.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.gbYouTube.Location = New System.Drawing.Point(473, 9)
+        Me.gbYouTube.Name = "gbYouTube"
+        Me.gbYouTube.Size = New System.Drawing.Size(396, 319)
+        Me.gbYouTube.TabIndex = 9
+        Me.gbYouTube.TabStop = False
+        Me.gbYouTube.Text = "YouTube Player"
+        '
+        'asfTrailer
+        '
+        Me.asfTrailer.Enabled = True
+        Me.asfTrailer.Location = New System.Drawing.Point(6, 19)
+        Me.asfTrailer.Name = "asfTrailer"
+        Me.asfTrailer.OcxState = CType(resources.GetObject("asfTrailer.OcxState"), System.Windows.Forms.AxHost.State)
+        Me.asfTrailer.Size = New System.Drawing.Size(384, 216)
+        Me.asfTrailer.TabIndex = 8
         '
         'btnPlayBrowser
         '
         Me.btnPlayBrowser.Enabled = False
-        Me.btnPlayBrowser.Location = New System.Drawing.Point(12, 340)
+        Me.btnPlayBrowser.Location = New System.Drawing.Point(12, 369)
         Me.btnPlayBrowser.Name = "btnPlayBrowser"
         Me.btnPlayBrowser.Size = New System.Drawing.Size(120, 23)
         Me.btnPlayBrowser.TabIndex = 4
         Me.btnPlayBrowser.Text = "Open In Browser"
         Me.btnPlayBrowser.UseVisualStyleBackColor = True
+        '
+        'gbYouTubeSearch
+        '
+        Me.gbYouTubeSearch.Controls.Add(Me.btnYouTubeSearch)
+        Me.gbYouTubeSearch.Controls.Add(Me.txtYouTubeSearch)
+        Me.gbYouTubeSearch.Location = New System.Drawing.Point(7, 242)
+        Me.gbYouTubeSearch.Name = "gbYouTubeSearch"
+        Me.gbYouTubeSearch.Size = New System.Drawing.Size(383, 70)
+        Me.gbYouTubeSearch.TabIndex = 9
+        Me.gbYouTubeSearch.TabStop = False
+        Me.gbYouTubeSearch.Text = "Search On YouTube"
+        '
+        'txtYouTubeSearch
+        '
+        Me.txtYouTubeSearch.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtYouTubeSearch.Location = New System.Drawing.Point(6, 27)
+        Me.txtYouTubeSearch.Name = "txtYouTubeSearch"
+        Me.txtYouTubeSearch.Size = New System.Drawing.Size(290, 22)
+        Me.txtYouTubeSearch.TabIndex = 0
+        '
+        'btnYouTubeSearch
+        '
+        Me.btnYouTubeSearch.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnYouTubeSearch.Location = New System.Drawing.Point(302, 27)
+        Me.btnYouTubeSearch.Name = "btnYouTubeSearch"
+        Me.btnYouTubeSearch.Size = New System.Drawing.Size(75, 23)
+        Me.btnYouTubeSearch.TabIndex = 1
+        Me.btnYouTubeSearch.Text = "Search"
+        Me.btnYouTubeSearch.UseVisualStyleBackColor = True
         '
         'dlgTrailerSelect
         '
@@ -228,7 +298,7 @@ Partial Class dlgTrailerSelect
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(484, 398)
+        Me.ClientSize = New System.Drawing.Size(884, 398)
         Me.ControlBox = False
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.btnSetNfo)
@@ -250,6 +320,10 @@ Partial Class dlgTrailerSelect
         Me.GroupBox2.ResumeLayout(False)
         Me.GroupBox2.PerformLayout()
         Me.Panel1.ResumeLayout(False)
+        Me.gbYouTube.ResumeLayout(False)
+        CType(Me.asfTrailer, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.gbYouTubeSearch.ResumeLayout(False)
+        Me.gbYouTubeSearch.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -271,5 +345,11 @@ Partial Class dlgTrailerSelect
     Friend WithEvents Panel1 As System.Windows.Forms.Panel
     Friend WithEvents btnPlayBrowser As System.Windows.Forms.Button
     Friend WithEvents lvTrailers As System.Windows.Forms.ListView
+    Friend WithEvents asfTrailer As AxShockwaveFlashObjects.AxShockwaveFlash
+    Friend WithEvents gbYouTube As System.Windows.Forms.GroupBox
+    Friend WithEvents btnClearLink As System.Windows.Forms.Button
+    Friend WithEvents gbYouTubeSearch As System.Windows.Forms.GroupBox
+    Friend WithEvents btnYouTubeSearch As System.Windows.Forms.Button
+    Friend WithEvents txtYouTubeSearch As System.Windows.Forms.TextBox
 
 End Class

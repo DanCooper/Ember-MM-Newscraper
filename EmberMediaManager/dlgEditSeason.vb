@@ -82,7 +82,7 @@ Public Class dlgEditSeason
         Try
             With ofdImage
                 .InitialDirectory = Master.currShow.ShowPath
-                .Filter = "JPEGs|*.jpg"
+                .Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
                 .FilterIndex = 4
             End With
 
@@ -137,7 +137,7 @@ Public Class dlgEditSeason
         Try
             With ofdImage
                 .InitialDirectory = Master.currShow.ShowPath
-                .Filter = "Supported Images(*.jpg, *.jpeg, *.tbn)|*.jpg;*.jpeg;*.tbn|jpeg (*.jpg, *.jpeg)|*.jpg;*.jpeg|tbn (*.tbn)|*.tbn"
+                .Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
                 .FilterIndex = 0
             End With
 

@@ -59,10 +59,11 @@ Public Class dlgTrailerSelect
         Me.lvTrailers.MultiSelect = False
         Me.lvTrailers.FullRowSelect = True
         Me.lvTrailers.HideSelection = False
-        Me.lvTrailers.Columns.Add("", -1, HorizontalAlignment.Right)
+        Me.lvTrailers.Columns.Add("#", -1, HorizontalAlignment.Right)
         Me.lvTrailers.Columns.Add("URL", 0, HorizontalAlignment.Left)
-        Me.lvTrailers.Columns.Add("Description", -1, HorizontalAlignment.Left)
-        'Me.lvTrailers.Columns.Add("HD", 20, HorizontalAlignment.Left)
+        Me.lvTrailers.Columns.Add("Description", -2, HorizontalAlignment.Left)
+
+        Me.txtYouTubeSearch.Text = DBMovie.Movie.Title & " Trailer"
 
         Me.tMovie = DBMovie
         Me.sPath = DBMovie.Filename
@@ -207,6 +208,10 @@ Public Class dlgTrailerSelect
         End Try
     End Sub
 
+    Private Sub btnClearLink_Click(sender As Object, e As EventArgs) Handles btnClearLink.Click
+        Me.txtYouTube.Text = String.Empty
+    End Sub
+
     Private Sub btnGetTrailers_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.OK_Button.Enabled = False
         Me.btnSetNfo.Enabled = False
@@ -221,7 +226,17 @@ Public Class dlgTrailerSelect
 
     Private Sub btnPlayTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPlayTrailer.Click
         Try
-            Me.BeginDownload(False)
+            If Not String.IsNullOrEmpty(Me.txtYouTube.Text) Then
+                If Regex.IsMatch(Me.txtYouTube.Text, "http:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") Then
+                    Me.asfTrailer.Movie = String.Concat(Replace(Me.txtYouTube.Text, "/watch?v=", "/v/"), "?rel=0&autoplay=1&iv_load_policy=3")
+                Else
+                    Me.BeginDownload(False)
+                End If
+            ElseIf Regex.IsMatch(Me.lvTrailers.SelectedItems(0).SubItems(1).Text.ToString, "http:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") Then
+                Me.asfTrailer.Movie = String.Concat(Replace(Me.lvTrailers.SelectedItems(0).SubItems(1).Text.ToString, "/watch?v=", "/v/"), "?rel=0&autoplay=1&iv_load_policy=3")
+            Else
+                Me.BeginDownload(False)
+            End If
         Catch
             MsgBox(Master.eLang.GetString(908, "The trailer could not be played. This could be due to an invalid URI or you do not have the proper player to play the trailer type."), MsgBoxStyle.Critical, Master.eLang.GetString(59, "Error Playing Trailer"))
             Me.pnlStatus.Visible = False
@@ -255,6 +270,24 @@ Public Class dlgTrailerSelect
                 End Using
             End If
         End If
+    End Sub
+
+    Private Sub btnYouTubeSearch_Click(sender As Object, e As EventArgs) Handles btnYouTubeSearch.Click
+        Dim ID As Integer = Me.lvTrailers.Items.Count + 1
+        Dim nList As New List(Of Trailers)
+
+        nList = YouTube.Scraper.SearchOnYouTube(txtYouTubeSearch.Text)
+
+        Dim str(3) As String
+        For Each aUrl In nList
+            Dim itm As ListViewItem
+            str(0) = ID.ToString
+            str(1) = aUrl.URL.ToString
+            str(2) = aUrl.Description.ToString
+            itm = New ListViewItem(str)
+            lvTrailers.Items.Add(itm)
+            ID = ID + 1
+        Next
     End Sub
 
     Private Sub btnSetNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetNfo.Click
@@ -405,6 +438,14 @@ Public Class dlgTrailerSelect
         End If
     End Sub
 
+    Private Sub SetEnabledSearch()
+        If Not String.IsNullOrEmpty(txtYouTubeSearch.Text) Then
+            Me.btnYouTubeSearch.Enabled = True
+        Else
+            Me.btnYouTubeSearch.Enabled = False
+        End If
+    End Sub
+
     Private Sub SetUp()
         Me.Text = Master.eLang.GetString(914, "Select Trailer")
         Me.OK_Button.Text = Master.eLang.GetString(373, "Download")
@@ -417,6 +458,8 @@ Public Class dlgTrailerSelect
         Me.btnPlayBrowser.Text = Master.eLang.GetString(931, "Open In Browser")
         Me.btnSetNfo.Text = Master.eLang.GetString(913, "Set To Nfo")
         Me.Label2.Text = Master.eLang.GetString(920, "Local Trailer:")
+        Me.gbYouTubeSearch.Text = Master.eLang.GetString(974, "Search On YouTube")
+        Me.btnYouTubeSearch.Text = Master.eLang.GetString(975, "Search")
     End Sub
 
     Private Sub txtManual_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtManual.TextChanged
@@ -425,6 +468,10 @@ Public Class dlgTrailerSelect
 
     Private Sub txtYouTube_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtYouTube.TextChanged
         Me.SetEnabled(True)
+    End Sub
+
+    Private Sub txtYouTubeSearch_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtYouTubeSearch.TextChanged
+        Me.SetEnabledSearch()
     End Sub
 
 #End Region 'Methods
@@ -443,5 +490,4 @@ Public Class dlgTrailerSelect
     End Structure
 
 #End Region 'Nested Types
-
 End Class

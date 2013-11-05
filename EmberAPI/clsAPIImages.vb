@@ -777,7 +777,7 @@ Public Class Images
                     ElseIf FileUtils.Common.isBDRip(mMovie.Filename) Then
                         fPath = Path.Combine(Directory.GetParent(fileParPath).FullName, "index-fanart.jpg")
                     Else
-                        fPath = String.Concat(filePathStack, "-fanart.jpg")
+                        fPath = String.Concat(filePath, "-fanart.jpg")
                     End If
 
                     If Not File.Exists(fPath) OrElse (IsEdit OrElse Master.eSettings.OverwritePoster) Then
@@ -789,7 +789,7 @@ Public Class Images
                         Save(String.Concat(Master.eSettings.BDPath, Path.DirectorySeparatorChar, StringUtils.CleanFileName(mMovie.Movie.OriginalTitle), "_tt", mMovie.Movie.IMDBID, ".jpg"), Master.eSettings.AllSPosterQuality, sURL, doResize)
                     End If
                 End If
-                End If
+            End If
 
             '****************** YAMJ settings *****************
             If Master.eSettings.UseYAMJ Then
@@ -957,7 +957,7 @@ Public Class Images
                     ElseIf FileUtils.Common.isBDRip(mMovie.Filename) Then
                         pPath = Path.Combine(Directory.GetParent(fileParPath).FullName, "index.tbn")
                     Else
-                        pPath = String.Concat(filePathStack, ".tbn")
+                        pPath = String.Concat(filePath, ".tbn")
                     End If
 
                     If Not pPath = String.Empty And (Not File.Exists(pPath) OrElse (IsEdit OrElse Master.eSettings.OverwritePoster)) Then

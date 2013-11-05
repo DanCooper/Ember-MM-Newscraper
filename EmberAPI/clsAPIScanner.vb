@@ -311,7 +311,7 @@ Public Class Scanner
                     End If
                     'Eden single/multi folder
                     If String.IsNullOrEmpty(Movie.Fanart) AndAlso Master.eSettings.FanartEden AndAlso Not fileName.ToLower = "video_ts" Then
-                        fName = String.Concat(filePathStack.ToLower, "-fanart.jpg")
+                        fName = String.Concat(filePath.ToLower, "-fanart.jpg")
                         Movie.Fanart = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
                     End If
                     'Eden VIDEO_TS without VIDEO_TS folder
@@ -397,7 +397,7 @@ Public Class Scanner
                     End If
                     'Eden single/multi folder
                     If String.IsNullOrEmpty(Movie.Poster) AndAlso Master.eSettings.PosterEden AndAlso Not fileName.ToLower = "video_ts" Then
-                        fName = String.Concat(filePathStack.ToLower, ".tbn")
+                        fName = String.Concat(filePath.ToLower, ".tbn")
                         Movie.Poster = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
                     End If
                     'Eden VIDEO_TS without VIDEO_TS folder
@@ -499,11 +499,11 @@ Public Class Scanner
                     End If
                     'Eden single/multi folder
                     If String.IsNullOrEmpty(Movie.Nfo) AndAlso Master.eSettings.NFOEden AndAlso Not fileName.ToLower = "video_ts" Then
-                        fName = String.Concat(filePathStack.ToLower, ".nfo")
+                        fName = String.Concat(filePath.ToLower, ".nfo")
                         Movie.Nfo = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
                     End If
                     'Eden VIDEO_TS without VIDEO_TS folder
-                    If String.IsNullOrEmpty(Movie.Nfo) AndAlso Master.eSettings.NFOEden AndAlso Not fileName.ToLower = "video_ts" Then
+                    If String.IsNullOrEmpty(Movie.Nfo) AndAlso Master.eSettings.NFOEden AndAlso fileName.ToLower = "video_ts" Then
                         fName = String.Concat(filePath.ToLower, ".nfo")
                         Movie.Nfo = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
                     End If
@@ -562,28 +562,25 @@ Public Class Scanner
                 If String.IsNullOrEmpty(Movie.Trailer) Then
                     For Each t As String In Master.eSettings.ValidExts
                         Select Case True
-                            Case fFile.ToLower = String.Concat(Directory.GetParent(Movie.Filename).FullName.ToLower, Path.DirectorySeparatorChar, "video_ts-trailer", t.ToLower)
+                            Case fFile.ToLower = String.Concat(filePathStack, "-trailer", t).ToLower AndAlso Master.eSettings.TrailerFrodo
                                 Movie.Trailer = fFile
                                 Exit For
-                            Case fFile.ToLower = String.Concat(Directory.GetParent(Directory.GetParent(Movie.Filename).FullName.ToLower).FullName.ToLower, Path.DirectorySeparatorChar, "index-trailer", t.ToLower)
+                            Case fFile.ToLower = String.Concat(filePath, "-trailer", t).ToLower AndAlso Master.eSettings.TrailerEden
                                 Movie.Trailer = fFile
                                 Exit For
-                            Case Not Master.eSettings.MovieNameNFOStack AndAlso fFile.ToLower = String.Concat(fileName, "-trailer", t.ToLower)
+                            Case fFile.ToLower = String.Concat(filePath, ".[trailer]", t).ToLower AndAlso Master.eSettings.TrailerYAMJ AndAlso Not (FileUtils.Common.isBDRip(Movie.Filename) Or FileUtils.Common.isVideoTS(Movie.Filename))
                                 Movie.Trailer = fFile
                                 Exit For
-                            Case fFile.ToLower = String.Concat(fileNameStack, "-trailer", t.ToLower)
+                            Case fFile.ToLower = String.Concat(Directory.GetParent(fileParPath).FullName, Path.DirectorySeparatorChar, "index-trailer", t).ToLower AndAlso Master.eSettings.TrailerFrodo AndAlso FileUtils.Common.isBDRip(Movie.Filename)
                                 Movie.Trailer = fFile
                                 Exit For
-                            Case fFile.ToLower = String.Concat(fileName, "[trailer]", t.ToLower)
+                            Case fFile.ToLower = String.Concat(Directory.GetParent(fileParPath).FullName, Path.DirectorySeparatorChar, "index-trailer", t).ToLower AndAlso Master.eSettings.TrailerEden AndAlso FileUtils.Common.isBDRip(Movie.Filename)
                                 Movie.Trailer = fFile
                                 Exit For
-                            Case fFile.ToLower = String.Concat(fileNameStack, "[trailer]", t.ToLower)
+                            Case fFile.ToLower = String.Concat(parPath, Path.DirectorySeparatorChar, Directory.GetParent(Directory.GetParent(fileParPath).FullName).Name, ".[trailer]", t).ToLower AndAlso Master.eSettings.TrailerYAMJ AndAlso FileUtils.Common.isBDRip(Movie.Filename)
                                 Movie.Trailer = fFile
                                 Exit For
-                            Case Movie.isSingle AndAlso fFile.ToLower = Path.Combine(parPath, String.Concat("movie-trailer", t.ToLower))
-                                Movie.Trailer = fFile
-                                Exit For
-                            Case Movie.isSingle AndAlso fFile.ToLower = Path.Combine(parPath, String.Concat("movie[trailer]", t.ToLower))
+                            Case fFile.ToLower = String.Concat(parPath, Path.DirectorySeparatorChar, Directory.GetParent(fileParPath).Name, ".[trailer]", t).ToLower AndAlso Master.eSettings.TrailerYAMJ AndAlso FileUtils.Common.isVideoTS(Movie.Filename)
                                 Movie.Trailer = fFile
                                 Exit For
                         End Select
