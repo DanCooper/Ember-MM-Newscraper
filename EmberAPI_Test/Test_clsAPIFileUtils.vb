@@ -1,4 +1,24 @@
-﻿Imports System.Text
+﻿' ################################################################################
+' #                             EMBER MEDIA MANAGER                              #
+' ################################################################################
+' ################################################################################
+' # This file is part of Ember Media Manager.                                    #
+' #                                                                              #
+' # Ember Media Manager is free software: you can redistribute it and/or modify  #
+' # it under the terms of the GNU General Public License as published by         #
+' # the Free Software Foundation, either version 3 of the License, or            #
+' # (at your option) any later version.                                          #
+' #                                                                              #
+' # Ember Media Manager is distributed in the hope that it will be useful,       #
+' # but WITHOUT ANY WARRANTY; without even the implied warranty of               #
+' # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                #
+' # GNU General Public License for more details.                                 #
+' #                                                                              #
+' # You should have received a copy of the GNU General Public License            #
+' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
+' ################################################################################
+
+Imports System.Text
 Imports Microsoft.VisualStudio.TestTools.UnitTesting
 Imports System.IO
 
@@ -9,8 +29,9 @@ Namespace EmberTests
     <TestClass()>
     Public Class Test_clsAPIFileUtils_Common
 
+        <UnitTest>
         <TestMethod()>
-        Public Sub GetDirectory()
+        Public Sub FileUtils_Common_GetDirectory()
             'Arrange
             'The sourceDirectories should contain pairs of Strings - source strings to pass to the method, and expected return values.
             Dim sourceDirectories As New Dictionary(Of String, String) From
@@ -34,14 +55,15 @@ Namespace EmberTests
             Next
 
         End Sub
-
+        <IntegrationTest>
         <TestMethod()>
-        Public Sub GetLongestFromRip()
+        Public Sub FileUtils_Common_GetLongestFromRip()
             'This method is impractical to test properly as it requires multiple files over 1GB. Perhaps in the future.
             Assert.Inconclusive("Test not implemented")
         End Sub
+        <UnitTest>
         <TestMethod()>
-        Public Sub isBDRip()
+        Public Sub FileUtils_Common_isBDRip()
             'Arrange
             'The sourceDirectories should contain a String and Boolean - String is a path, and bool should be True if path should be interpreted as a blu-ray
             Dim sourceDirectories As New Dictionary(Of String, Boolean) From
@@ -72,8 +94,9 @@ Namespace EmberTests
                 Assert.AreEqual(pair.Value, result, "Data tested was: '" & pair.Key & "' : '" & pair.Value & "'")
             Next
         End Sub
+        <UnitTest>
         <TestMethod()>
-        Public Sub isVideoTS()
+        Public Sub FileUtils_Common_isVideoTS()
             'Arrange
             'The sourceDirectories should contain a String and Boolean - String is a path, and bool should be True if path should be interpreted as a blu-ray
             Dim sourceDirectories As New Dictionary(Of String, Boolean) From
@@ -106,8 +129,9 @@ Namespace EmberTests
                 Assert.AreEqual(pair.Value, result, "Data tested was: '" & pair.Key & "' : '" & pair.Value & "'")
             Next
         End Sub
+        <IntegrationTest>
         <TestMethod()>
-        Public Sub MoveFileWithStream()
+        Public Sub FileUtils_Common_MoveFileWithStream()
             'Arrange
 
             'Act
@@ -115,8 +139,9 @@ Namespace EmberTests
             'Assert
             Assert.Inconclusive("Test not implemented")
         End Sub
+        <UnitTest>
         <TestMethod()>
-        Public Sub RemoveExtFromPath()
+        Public Sub FileUtils_Common_RemoveExtFromPath()
             'Arrange
             'The sourceDirectories should contain pairs of Strings - source strings to pass to the method, and expected return values.
             'NOTE: the test that starts with a relative path "\dir1\dir4" resolves to the current working directory's drive (c:\ in my case).
@@ -143,8 +168,10 @@ Namespace EmberTests
                 Assert.AreEqual(pair.Value, result, True, "Data tested was: '" & pair.Key & "' : '" & pair.Value & "'")
             Next
         End Sub
+
+        <UnitTest>
         <TestMethod()>
-        Public Sub MakeValidFilename()
+        Public Sub FileUtils_Common_MakeValidFilename()
             'Arrange
             'The fileNames should contain pairs of Strings - source strings to pass to the method, and expected return values.
             Dim fileNames As New Dictionary(Of String, String) From
@@ -195,14 +222,14 @@ Namespace EmberTests
         Public Sub TestCleanup()
 
         End Sub
-
+        <IntegrationTest>
         <TestMethod()>
-        Public Sub DeleteDirectory()
+        Public Sub FileUtils_Delete_DeleteDirectory()
             Assert.Inconclusive("Test not implemented")
         End Sub
-
+        <IntegrationTest>
         <TestMethod()>
-        Public Sub GetItemsToDelete()
+        Public Sub FileUtils_Delete_GetItemsToDelete()
             Assert.Inconclusive("Test not implemented")
         End Sub
     End Class
@@ -270,8 +297,9 @@ Namespace EmberTests
 
 
         End Sub
+        <IntegrationTest>
         <TestMethod()>
-        Public Sub SortFiles()
+        Public Sub FileUtils_FileSorter_SortFiles()
             'Arrange
 
             'Act

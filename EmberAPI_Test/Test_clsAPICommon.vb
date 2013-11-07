@@ -1,24 +1,47 @@
-﻿Imports System.Text
+﻿' ################################################################################
+' #                             EMBER MEDIA MANAGER                              #
+' ################################################################################
+' ################################################################################
+' # This file is part of Ember Media Manager.                                    #
+' #                                                                              #
+' # Ember Media Manager is free software: you can redistribute it and/or modify  #
+' # it under the terms of the GNU General Public License as published by         #
+' # the Free Software Foundation, either version 3 of the License, or            #
+' # (at your option) any later version.                                          #
+' #                                                                              #
+' # Ember Media Manager is distributed in the hope that it will be useful,       #
+' # but WITHOUT ANY WARRANTY; without even the implied warranty of               #
+' # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                #
+' # GNU General Public License for more details.                                 #
+' #                                                                              #
+' # You should have received a copy of the GNU General Public License            #
+' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
+' ################################################################################
+
+Imports System.Text
 Imports Microsoft.VisualStudio.TestTools.UnitTesting
+
+Imports EmberAPI
 
 Namespace EmberTests
 
     <TestClass()> Public Class Test_clsAPICommon_Functions
-
-        <TestMethod()> Public Sub CheckIfWindows()
+        <UnitTest>
+        <TestMethod()> Public Sub Functions_CheckIfWindows()
             'Arrange
             Dim expectedResult As Boolean
             expectedResult = Environment.OSVersion.ToString.ToLower.IndexOf("windows") > 0
 
             'Act
-            Dim actualResult = EmberAPI.Functions.CheckIfWindows()
+            Dim actualResult = Functions.CheckIfWindows()
 
             'Assert
             Assert.AreEqual(expectedResult, actualResult)
 
         End Sub 'CheckIfWindows
 
-        <TestMethod()> Public Sub ConvertFromUnixTimestamp_Valid()
+        <UnitTest>
+        <TestMethod()> Public Sub Functions_ConvertFromUnixTimestamp_Valid()
             'Arrange
             Dim sourceTimestamps As New Dictionary(Of Double, DateTime) From
                 {
@@ -39,14 +62,15 @@ Namespace EmberTests
 
             For Each pair As KeyValuePair(Of Double, DateTime) In sourceTimestamps
                 'Act
-                Dim actualResults As DateTime = EmberAPI.Functions.ConvertFromUnixTimestamp(pair.Key)
+                Dim actualResults As DateTime = Functions.ConvertFromUnixTimestamp(pair.Key)
                 Dim expectedResults As DateTime = pair.Value
                 'Assert
                 Assert.AreEqual(expectedResults, actualResults, "Data tested was: '" & pair.Key & "' : '" & pair.Value & "'")
             Next
         End Sub
 
-        <TestMethod()> Public Sub ConvertFromUnixTimestamp_NotValid()
+        <UnitTest>
+        <TestMethod()> Public Sub Functions_ConvertFromUnixTimestamp_NotValid()
             'Arrange
             Dim sourceTimestamps As New Dictionary(Of Double, Type) From
                 {
@@ -63,7 +87,7 @@ Namespace EmberTests
                 Dim exception As Exception = Nothing
                 'Act
                 Try
-                    Dim returnValue As DateTime = EmberAPI.Functions.ConvertFromUnixTimestamp(pair.Key)
+                    Dim returnValue As DateTime = Functions.ConvertFromUnixTimestamp(pair.Key)
 
                 Catch ex As Exception
                     exception = ex
@@ -75,37 +99,40 @@ Namespace EmberTests
             Next
         End Sub
 
-        <TestMethod()> Public Sub ConvertToUnixTimestamp()
+        <UnitTest>
+        <TestMethod()> Public Sub Functions_ConvertToUnixTimestamp()
             'Arrange
             'Oct 31, 2013, 10:31:20.0
             Dim valueToConvert As DateTime = New DateTime(2013, 10, 31, 15, 31, 20)
             Dim expectedResult As Double = 1383233480.0
             'Act
-            Dim actualResults As Double = EmberAPI.Functions.ConvertToUnixTimestamp(valueToConvert)
+            Dim actualResults As Double = Functions.ConvertToUnixTimestamp(valueToConvert)
 
             'Assert
             Assert.AreEqual(expectedResult, actualResults)
         End Sub
 
-        <TestMethod()> Public Sub DGVDoubleBuffer()
+        <UnitTest>
+        <TestMethod()> Public Sub Functions_DGVDoubleBuffer()
             'Arrange
             Dim sourceDGV As System.Windows.Forms.DataGridView = New System.Windows.Forms.DataGridView()
             Dim conType As Type = sourceDGV.GetType
             Dim pi As System.Reflection.PropertyInfo = conType.GetProperty("DoubleBuffered", System.Reflection.BindingFlags.Instance Or System.Reflection.BindingFlags.NonPublic)
             Dim currentValue As Boolean = pi.GetValue(sourceDGV, Nothing)
             'Act
-            EmberAPI.Functions.DGVDoubleBuffer(sourceDGV)
+            Functions.DGVDoubleBuffer(sourceDGV)
             Dim resultValue As Boolean = pi.GetValue(sourceDGV, Nothing)
 
             'Assert
             Assert.IsTrue(resultValue, "Value before method call was " & currentValue & ", and after the call it was " & resultValue)
         End Sub
 
-        <TestMethod()> Public Sub EmberAPIVersion()
+        <UnitTest>
+        <TestMethod()> Public Sub Functions_EmberAPIVersion()
             'Arrange
 
             'Act
-            Dim version As String = EmberAPI.Functions.EmberAPIVersion()
+            Dim version As String = Functions.EmberAPIVersion()
             Dim subVersions As String() = version.Split(".")
 
             Dim numParts As Integer = subVersions.Length()
@@ -113,8 +140,8 @@ Namespace EmberTests
             'Assert
             Assert.IsTrue(numParts = 4, "Version that was returned had {0} sections, and was expecting 4 sections", numParts)
         End Sub
-
-        <TestMethod()> Public Sub GetExtraModifier()
+        <IntegrationTest>
+        <TestMethod()> Public Sub Functions_GetExtraModifier()
             'Arrange
 
             'Act
@@ -124,7 +151,8 @@ Namespace EmberTests
             'This test would involve system integration with the OS
         End Sub
 
-        <TestMethod()> Public Sub GetSeasonDirectoryFromShowPath()
+        <IntegrationTest>
+        <TestMethod()> Public Sub Functions_GetSeasonDirectoryFromShowPath()
             'Arrange
 
             'Act
@@ -133,8 +161,8 @@ Namespace EmberTests
             Assert.Inconclusive("Test not implemented")
             'This test would involve some setup...
         End Sub
-
-        <TestMethod()> Public Sub HasModifier()
+        <UnitTest>
+        <TestMethod()> Public Sub Functions_HasModifier()
             'Arrange
 
             'Act
@@ -143,8 +171,8 @@ Namespace EmberTests
             Assert.Inconclusive("Test not implemented")
             'This test would involve some setup...
         End Sub
-
-        <TestMethod()> Public Sub IsSeasonDirectory()
+        <UnitTest>
+        <TestMethod()> Public Sub Functions_IsSeasonDirectory()
             'Arrange
 
             'Act
@@ -153,76 +181,84 @@ Namespace EmberTests
             Assert.Inconclusive("Test not implemented")
             'This test would involve some setup...
         End Sub
-
+        <UnitTest>
         <TestMethod()>
-        Public Sub ListToStringWithSeparator_Happy_Day()
+        Public Sub Functions_ListToStringWithSeparator_Happy_Day()
             'Arrange
             Dim sourceList = New List(Of String) From {{"First"}, {"Second"}, {"Third"}, {"Fourth"}, {"Last"}}
             Dim separator = ";"
             'Act
-            Dim result As String = EmberAPI.Functions.ListToStringWithSeparator(sourceList, separator)
+            Dim result As String = Functions.ListToStringWithSeparator(sourceList, separator)
             Dim expected = "First;Second;Third;Fourth;Last"
             'Assert
             Assert.AreEqual(expected, result, False, "Supplied List: <{0}> Separator: <{1}> and received <{2}>", sourceList, separator, result)
         End Sub
+        <UnitTest>
         <TestMethod()>
-        Public Sub ListToStringWithSeparator_Nothing_List()
+        Public Sub Functions_ListToStringWithSeparator_Nothing_List()
             'Arrange
             Dim sourceList As List(Of String) = Nothing
             Dim separator = ","
             'Act
-            Dim result As String = EmberAPI.Functions.ListToStringWithSeparator(sourceList, separator)
+            Dim result As String = Functions.ListToStringWithSeparator(sourceList, separator)
             Dim expected = String.Empty
             'Assert
             Assert.AreEqual(expected, result, False, "Supplied List: <{0}> Separator: <{1}> and received <{2}>", sourceList, separator, result)
         End Sub
+        <UnitTest>
         <TestMethod()>
-        Public Sub ListToStringWithSeparator_Nothing_value_in_list()
+        Public Sub Functions_ListToStringWithSeparator_Nothing_value_in_list()
             'Arrange
             Dim sourceList = New List(Of String) From {{"First"}, {Nothing}, {"Third"}, {"Fourth"}, {"Last"}}
             Dim separator = ","
             'Act
-            Dim result As String = EmberAPI.Functions.ListToStringWithSeparator(sourceList, separator)
+            Dim result As String = Functions.ListToStringWithSeparator(sourceList, separator)
             Dim expected = "First,Third,Fourth,Last"
             'Assert
             Assert.AreEqual(expected, result, False, "Supplied List: <{0}> Separator: <{1}> and received <{2}>", sourceList, separator, result)
         End Sub
+        <UnitTest>
         <TestMethod()>
-        Public Sub ListToStringWithSeparator_Nothing_Separator()
+        Public Sub Functions_ListToStringWithSeparator_Nothing_Separator()
             'Arrange
             Dim sourceList = New List(Of String) From {{"First"}, {"Second"}, {"Third"}, {"Fourth"}, {"Last"}}
             Dim separator As String = Nothing
             'Act
-            Dim result As String = EmberAPI.Functions.ListToStringWithSeparator(sourceList, separator)
+            Dim result As String = Functions.ListToStringWithSeparator(sourceList, separator)
             Dim expected = "First,Second,Third,Fourth,Last"
             'Assert
             Assert.AreEqual(expected, result, False, "Supplied List: <{0}> Separator: <{1}> and received <{2}>", sourceList, separator, result)
         End Sub
+        <UnitTest>
         <TestMethod()>
-        Public Sub ListToStringWithSeparator_Extra_Blanks_In_List()
+        Public Sub Functions_ListToStringWithSeparator_Extra_Blanks_In_List()
             'Arrange
             Dim sourceList = New List(Of String) From {{"First"}, {"Second "}, {"Third"}, {" Fourth"}, {"Last"}}
             Dim separator = ","
             'Act
-            Dim result As String = EmberAPI.Functions.ListToStringWithSeparator(sourceList, separator)
+            Dim result As String = Functions.ListToStringWithSeparator(sourceList, separator)
             Dim expected = "First,Second ,Third, Fourth,Last"
             'Assert
             Assert.AreEqual(expected, result, False, "Supplied List: <{0}> Separator: <{1}> and received <{2}>", sourceList, separator, result)
         End Sub
-
-        <TestMethod()> Public Sub PNLDoubleBuffer()
+        <UnitTest>
+        <TestMethod()> Public Sub Functions_PNLDoubleBuffer()
             'Arrange
             Dim sourcePnl As System.Windows.Forms.Panel = New System.Windows.Forms.Panel()
             Dim conType As Type = sourcePnl.GetType
             Dim pi As System.Reflection.PropertyInfo = conType.GetProperty("DoubleBuffered", System.Reflection.BindingFlags.Instance Or System.Reflection.BindingFlags.NonPublic)
             Dim currentValue As Boolean = pi.GetValue(sourcePnl, Nothing)
             'Act
-            EmberAPI.Functions.PNLDoubleBuffer(sourcePnl)
+            Functions.PNLDoubleBuffer(sourcePnl)
             Dim resultValue As Boolean = pi.GetValue(sourcePnl, Nothing)
 
             'Assert
             Assert.IsTrue(resultValue, "Value before method call was " & currentValue & ", and after the call it was " & resultValue)
         End Sub
+        ''' <summary>
+        ''' Internal structure for Quantize test
+        ''' </summary>
+        ''' <remarks></remarks>
         Private Structure IntegerTriplet
             Dim first As Integer
             Dim second As Integer
@@ -235,8 +271,9 @@ Namespace EmberTests
             End Sub
 
         End Structure
+        <UnitTest>
         <TestMethod()>
-        Public Sub Quantize_HappyDay()
+        Public Sub Functions_Quantize_HappyDay()
             'Arrange
             'Triplets are to be interpreted as Number, Multiple, ExpectedResult
             Dim sourceValues As New List(Of IntegerTriplet) From
@@ -252,30 +289,42 @@ Namespace EmberTests
             For Each triplet As IntegerTriplet In sourceValues
                 Dim exception As Exception = Nothing
                 'Act
-                Dim result As Integer = EmberAPI.Functions.Quantize(triplet.first, triplet.second)
+                Dim result As Integer = Functions.Quantize(triplet.first, triplet.second)
                 Assert.AreEqual(result, triplet.third, "Attempted to Quantize({0},{1}) and received {2}", triplet.first, triplet.second, result)
                 'Assert
                 Dim expectedResults As Integer = triplet.third
             Next
         End Sub
+        <UnitTest>
         <TestMethod()>
         <ExpectedException(GetType(ArgumentOutOfRangeException))>
-        Public Sub Quantize_NullMultiple()
+        Public Sub Functions_Quantize_NullMultiple()
             'Arrange
             'Act
-            Dim result As Integer = EmberAPI.Functions.Quantize(30, Nothing)
+            Dim result As Integer = Functions.Quantize(30, Nothing)
             'Assert
         End Sub
+        <UnitTest>
         <TestMethod()>
         <ExpectedException(GetType(ArgumentOutOfRangeException))>
-        Public Sub Quantize_NegativeMultiple()
+        Public Sub Functions_Quantize_NegativeMultiple()
             'Arrange
             'Act
-            Dim result As Integer = EmberAPI.Functions.Quantize(-30, Nothing)
+            Dim result As Integer = Functions.Quantize(-30, Nothing)
             'Assert
         End Sub
+        <UnitTest>
+        <TestMethod()> Public Sub Functions_ReadStreamToEnd()
+            'Arrange
 
-        <TestMethod()> Public Sub ReadStreamToEnd()
+            'Act
+
+            'Assert
+            Assert.Inconclusive("Test not implemented")
+            'This test would involve some setup...
+        End Sub
+        <UnitTest>
+        <TestMethod()> Public Sub Functions_ScrapeModifierAndAlso()
             'Arrange
 
             'Act
@@ -285,7 +334,8 @@ Namespace EmberTests
             'This test would involve some setup...
         End Sub
 
-        <TestMethod()> Public Sub ScrapeModifierAndAlso()
+        <UnitTest>
+        <TestMethod()> Public Sub Functions_ScrapeOptionsAndAlso()
             'Arrange
 
             'Act
@@ -295,7 +345,8 @@ Namespace EmberTests
             'This test would involve some setup...
         End Sub
 
-        <TestMethod()> Public Sub ScrapeOptionsAndAlso()
+        <UnitTest>
+        <TestMethod()> Public Sub Functions_TVScrapeOptionsAndAlso()
             'Arrange
 
             'Act
@@ -305,17 +356,8 @@ Namespace EmberTests
             'This test would involve some setup...
         End Sub
 
-        <TestMethod()> Public Sub TVScrapeOptionsAndAlso()
-            'Arrange
-
-            'Act
-
-            'Assert
-            Assert.Inconclusive("Test not implemented")
-            'This test would involve some setup...
-        End Sub
-
-        <TestMethod()> Public Sub SetScraperMod()
+        <UnitTest>
+        <TestMethod()> Public Sub Functions_SetScraperMod()
             'The difficulty with this method is that the real test would
             'be to check if all the fields have been cleared/set. Problem is,
             'if a new field is added, existing tests would not detect it!
@@ -328,7 +370,8 @@ Namespace EmberTests
             'This test would involve some setup...
         End Sub
 
-        <TestMethod()> Public Sub TestMediaInfoDLL()
+        <IntegrationTest>
+        <TestMethod()> Public Sub Functions_TestMediaInfoDLL()
             'Arrange
 
             'Act
