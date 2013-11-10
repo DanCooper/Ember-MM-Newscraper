@@ -56,14 +56,8 @@ Public Class dlgTVSource
                 If Not String.IsNullOrEmpty(Me.txtSourcePath.Text) Then
                     .SelectedPath = Me.txtSourcePath.Text
                 Else
-                    If String.IsNullOrEmpty(tmppath) Then
-                        .RootFolder = Environment.SpecialFolder.Personal
-                    Else
-                        .SelectedPath = Me.tmppath
-                    End If
-
+                    .SelectedPath = Me.tmppath
                 End If
-
                 If .ShowDialog = Windows.Forms.DialogResult.OK Then
                     If Not String.IsNullOrEmpty(.SelectedPath) Then
                         Me.txtSourcePath.Text = .SelectedPath
