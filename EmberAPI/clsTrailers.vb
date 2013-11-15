@@ -82,29 +82,56 @@ Public Class Trailers
         'Me.WebPage.Cancel()
     End Sub
 
+    ''' <summary>
+    ''' Remove existing trailers from the given path.
+    ''' </summary>
+    ''' <param name="sPath">Path to look for trailers</param>
+    ''' <param name="NewTrailer"></param>
+    ''' <remarks>
+    ''' 2013/11/08 Dekker500 - Enclosed file accessors in Try block
+    ''' </remarks>
     Public Shared Sub DeleteTrailers(ByVal sPath As String, ByVal NewTrailer As String)
         Dim parPath As String = Directory.GetParent(sPath).FullName
         Dim tmpName As String = Path.Combine(parPath, StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath)))
         Dim tmpNameNoStack As String = Path.Combine(parPath, Path.GetFileNameWithoutExtension(sPath))
-        For Each t As String In Master.eSettings.ValidExts
-            If File.Exists(String.Concat(tmpName, "-trailer", t)) AndAlso Not String.Concat(tmpName, "-trailer", t).ToLower = NewTrailer.ToLower Then
-                File.Delete(String.Concat(tmpName, "-trailer", t))
-            ElseIf File.Exists(String.Concat(tmpName, "[trailer]", t)) AndAlso Not String.Concat(tmpName, "[trailer]", t).ToLower = NewTrailer.ToLower Then
-                File.Delete(String.Concat(tmpName, "[trailer]", t))
-            ElseIf File.Exists(String.Concat(tmpNameNoStack, "-trailer", t)) AndAlso Not String.Concat(tmpNameNoStack, "-trailer", t).ToLower = NewTrailer.ToLower Then
-                File.Delete(String.Concat(tmpNameNoStack, "-trailer", t))
-            ElseIf File.Exists(String.Concat(tmpNameNoStack, "[trailer]", t)) AndAlso Not String.Concat(tmpNameNoStack, "[trailer]", t).ToLower = NewTrailer.ToLower Then
-                File.Delete(String.Concat(tmpNameNoStack, "[trailer]", t))
-            ElseIf Master.eSettings.VideoTSParentXBMC AndAlso FileUtils.Common.isBDRip(sPath) AndAlso File.Exists(String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Path.DirectorySeparatorChar, "index-trailer", t)) AndAlso Not String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Path.DirectorySeparatorChar, "index-trailer", t).ToLower = NewTrailer.ToLower Then
-                File.Delete(String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Path.DirectorySeparatorChar, "index-trailer", t))
-            End If
-        Next
+        Try
+            For Each t As String In Master.eSettings.ValidExts
+                If File.Exists(String.Concat(tmpName, "-trailer", t)) AndAlso Not String.Concat(tmpName, "-trailer", t).ToLower = NewTrailer.ToLower Then
+                    File.Delete(String.Concat(tmpName, "-trailer", t))
+                ElseIf File.Exists(String.Concat(tmpName, "[trailer]", t)) AndAlso Not String.Concat(tmpName, "[trailer]", t).ToLower = NewTrailer.ToLower Then
+                    File.Delete(String.Concat(tmpName, "[trailer]", t))
+                ElseIf File.Exists(String.Concat(tmpNameNoStack, "-trailer", t)) AndAlso Not String.Concat(tmpNameNoStack, "-trailer", t).ToLower = NewTrailer.ToLower Then
+                    File.Delete(String.Concat(tmpNameNoStack, "-trailer", t))
+                ElseIf File.Exists(String.Concat(tmpNameNoStack, "[trailer]", t)) AndAlso Not String.Concat(tmpNameNoStack, "[trailer]", t).ToLower = NewTrailer.ToLower Then
+                    File.Delete(String.Concat(tmpNameNoStack, "[trailer]", t))
+                ElseIf Master.eSettings.VideoTSParentXBMC AndAlso FileUtils.Common.isBDRip(sPath) AndAlso File.Exists(String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Path.DirectorySeparatorChar, "index-trailer", t)) AndAlso Not String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Path.DirectorySeparatorChar, "index-trailer", t).ToLower = NewTrailer.ToLower Then
+                    File.Delete(String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Path.DirectorySeparatorChar, "index-trailer", t))
+                End If
+            Next
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
-
+    ''' <summary>
+    ''' Raises the ProgressUpdated event, passing the iPercent value to indicate percent completed.
+    ''' </summary>
+    ''' <param name="iPercent">Integer representing percentage completed</param>
+    ''' <remarks></remarks>
     Public Shared Sub DownloadProgressUpdated(ByVal iPercent As Integer)
         RaiseEvent ProgressUpdated(iPercent)
     End Sub
-
+    ''' <summary>
+    ''' Given a list of Trailers, determine which one best matches the user's
+    ''' configured preferred trailer format. Return that URL in the <paramref name="tUrl"/>
+    ''' parameter, and returns <c>True</c>.
+    ''' </summary>
+    ''' <param name="tUrl"></param>
+    ''' <param name="UrlList"><c>List</c> of <c>Trailer</c>s</param>
+    ''' <param name="sPath"></param>
+    ''' <param name="isSingle">Flag to indicate whether a scrape of a single item was requested (Enums.ScrapeType.SingleScrape), or whether this is part of a multi-item scrape</param>
+    ''' <returns><c>True</c> if an appropriate trailer was found. The URL for the trailer is returned in
+    ''' <paramref name="tUrl"/>. <c>False</c> otherwise</returns>
+    ''' <remarks></remarks>
     Public Shared Function PreferredTrailer(ByRef tUrl As String, ByRef UrlList As List(Of Trailers), ByVal sPath As String, ByVal isSingle As Boolean) As Boolean
         PreferredTrailer = False
         Try
@@ -184,21 +211,19 @@ Public Class Trailers
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Function
-
+    ''' <summary>
+    ''' Downloads the trailer found at the supplied <paramref name="sURL"/> and places
+    ''' it in the supplied <paramref name="sPath"/>. 
+    ''' </summary>
+    ''' <param name="sPath">Path into which the trailer should be saved</param>
+    ''' <param name="sURL">URL from which to get the trailer</param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public Shared Function DownloadTrailer(ByVal sPath As String, ByVal sURL As String) As String
         Dim WebPage As New HTTP
         Dim tURL As String = String.Empty
         AddHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
-        ' filename is managed in the DownloadFile
-        'If Master.eSettings.VideoTSParentXBMC AndAlso FileUtils.Common.isBDRip(sPath) Then
-        '    tURL = String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Path.DirectorySeparatorChar, "index", If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(sURL))
-        'ElseIf Master.eSettings.MovieNameNFOStack Then
-        '    Dim sPathStack As String = StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath))
-        '    tURL = Path.Combine(Directory.GetParent(sPath).FullName, String.Concat(Path.GetFileNameWithoutExtension(sPathStack), If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(sURL)))
-        'Else
-        '    tURL = Path.Combine(Directory.GetParent(sPath).FullName, String.Concat(Path.GetFileNameWithoutExtension(sPath), If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(sURL)))
-        'End If
-        'If Not String.IsNullOrEmpty(sURL) Then
+        ' filename is managed in DownloadFile()
         tURL = WebPage.DownloadFile(sURL, sPath, False, "trailer") 'ReportUpdate needs to be fixed
 
         If Not String.IsNullOrEmpty(tURL) Then
@@ -207,12 +232,24 @@ Public Class Trailers
                 DeleteTrailers(sPath, tURL)
             End If
         End If
-        'End If
+
         RemoveHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
         Return tURL
     End Function
-
+    ''' <summary>
+    ''' Determines whether a trailer is allowed to be downloaded. This is determined
+    ''' by a combination of the Master.eSettings.LockTrailer settings,
+    ''' whether the path is valid, and whether the Master.eSettings.OverwriteTrailer
+    ''' flag is set. 
+    ''' </summary>
+    ''' <param name="sPath">The intended path to save the trailer</param>
+    ''' <param name="isDL">Flag to indicate whether the file is intended to be saved to the file system or not</param>
+    ''' <param name="isSS">Flag to indicate whether a scrape of a single item was requested (Enums.ScrapeType.SingleScrape), or whether this is part of a multi-item scrape</param>
+    ''' <returns><c>True</c> if a download is allowed, <c>False</c> otherwise</returns>
+    ''' <remarks></remarks>
     Public Shared Function IsAllowedToDownload(ByVal sPath As String, ByVal isDL As Boolean, Optional ByVal isSS As Boolean = False) As Boolean
+        'TODO Dekker500 - MUST VALIDATE whether these parameters are correct! I believe isDL and isSS are reversed in meanings (at least from the calling method's perspective)!!!!
+
         Dim fScanner As New Scanner
 
         If isDL Then
