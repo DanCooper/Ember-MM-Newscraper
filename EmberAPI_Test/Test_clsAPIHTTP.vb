@@ -118,6 +118,7 @@ Namespace EmberTests
                     {"google.ca", False},
                     {"http://google", False},
                     {"http://google.ca/", True},
+                    {"http://www.google.ca/garbage", False},
                     {"http://i54.tinypic.com/27ybwqt.png", True},
                     {"http://i54.tinypic.com/27ybwqt.png/fdsa", True},
                     {"http://www.youtube.com/watch?v=SDnYMbYB-nU", True}

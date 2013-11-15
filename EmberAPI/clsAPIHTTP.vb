@@ -105,7 +105,10 @@ Public Class HTTP
         Me._cancelRequested = True
         If Me.wrRequest IsNot Nothing Then Me.wrRequest.Abort()
     End Sub
-
+    ''' <summary>
+    ''' Clears this instance and makes it ready for re-use
+    ''' </summary>
+    ''' <remarks></remarks>
     Public Sub Clear()
         Me._responseuri = String.Empty
         If Me._image IsNot Nothing Then Me._image.Dispose()
@@ -113,7 +116,13 @@ Public Class HTTP
         Cancel()    'Explicitely stop any in-progress requests
         Me._cancelRequested = False
     End Sub
-
+    ''' <summary>
+    ''' Download the data from the given <paramref name="URL"/>
+    ''' and return it as a <c>String</c>
+    ''' </summary>
+    ''' <param name="URL"><c>URL</c> from which to download the data</param>
+    ''' <returns><c>String</c> representing the data retrieved from the <paramref name="URL"/>, or <c>String.Empty</c> on error.</returns>
+    ''' <remarks></remarks>
     Public Function DownloadData(ByVal URL As String) As String
         Dim sResponse As String = String.Empty
         Dim cEncoding As System.Text.Encoding
@@ -153,11 +162,24 @@ Public Class HTTP
 
         Return sResponse
     End Function
-
+    ''' <summary>
+    ''' Assembles Post field Text from parameters
+    ''' </summary>
+    ''' <param name="Boundary"></param>
+    ''' <param name="name"></param>
+    ''' <param name="value"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Private Function MakePostFieldText(ByVal Boundary As String, ByVal name As String, ByVal value As String) As String
         Return String.Concat(Boundary, vbCrLf, String.Format("Content-Disposition:form-data;name=""{0}""", name), vbCrLf, vbCrLf, value, vbCrLf)
     End Function
-
+    ''' <summary>
+    ''' Assembles Post field File from parameters
+    ''' </summary>
+    ''' <param name="Boundary"></param>
+    ''' <param name="name"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Private Function MakePostFieldFile(ByVal Boundary As String, ByVal name As String) As String
         Return String.Concat(Boundary, vbCrLf, String.Format("Content-Disposition:form-data;name=""file"";filename=""{0}""", name), vbCrLf, "Content-Type: application/octet-stream", vbCrLf, vbCrLf)
     End Function
@@ -229,15 +251,17 @@ Public Class HTTP
         Return sResponse
     End Function
     ''' <summary>
-    ''' 
+    ''' Download file from the supplied <paramref name="URL"/> and store it in the appropriate location relative to <paramref name="LocalFile"/>
     ''' </summary>
-    ''' <param name="URL"></param>
-    ''' <param name="LocalFile"></param>
-    ''' <param name="ReportUpdate"></param>
-    ''' <param name="Type"></param>
-    ''' <returns></returns>
+    ''' <param name="URL"><c>String</c> URL to retrieve data from. If the file retrieved has an extension, this will be preserved even if the file name is modified.</param>
+    ''' <param name="LocalFile">The local file to which the downloaded file is related. This could be the main video file, whereas the URL is the trailer.</param>
+    ''' <param name="ReportUpdate">If <c>True</c>, the <c>ProgressUpdated</c> event is raised</param>
+    ''' <param name="Type">This can be "<c>Trailer</c>", "<c>Other</c>", or left blank. This helps determine how the file name will be combined with 
+    ''' the <paramref name="LocalFile"/>'s filename to generate the save file's name</param>
+    ''' <returns><c>String</c> representing the path to the saved file</returns>
     ''' <remarks>
-    ''' 2013/10/31 Dekker500 - Refactored the main Case statement to simplify the conditions and improve performance</remarks>
+    ''' 2013/11/08 Dekker500 - Refactored the main Case statement to simplify the conditions and improve performance
+    ''' </remarks>
     Public Function DownloadFile(ByVal URL As String, ByVal LocalFile As String, ByVal ReportUpdate As Boolean, ByVal Type As String) As String
         Dim outFile As String = String.Empty
         Dim urlExt As String = String.Empty
@@ -262,8 +286,8 @@ Public Class HTTP
             End Try
 
             Using wrResponse As HttpWebResponse = DirectCast(Me.wrRequest.GetResponse(), HttpWebResponse)
-                Select Case True
-                    Case Type = "trailer" AndAlso Master.eSettings.ValidExts.Contains(urlExt)
+                If Type = "trailer" Then
+                    If Master.eSettings.ValidExts.Contains(urlExt) Then
                         If Master.eSettings.TrailerFrodo AndAlso FileUtils.Common.isBDRip(LocalFile) Then
                             outFile = Path.Combine(Directory.GetParent(LocalFile).FullName, String.Concat(Path.GetFileNameWithoutExtension(LocalFile), If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(URL)))
                         ElseIf Master.eSettings.TrailerFrodo Then
@@ -272,7 +296,7 @@ Public Class HTTP
                         Else
                             outFile = Path.Combine(Directory.GetParent(LocalFile).FullName, String.Concat(Path.GetFileNameWithoutExtension(LocalFile), If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(URL)))
                         End If
-                    Case Type = "trailer" AndAlso Master.eSettings.ValidExts.Contains(Path.GetExtension(wrResponse.ResponseUri.AbsolutePath))
+                    ElseIf Master.eSettings.ValidExts.Contains(Path.GetExtension(wrResponse.ResponseUri.AbsolutePath)) Then
                         If Master.eSettings.TrailerFrodo AndAlso FileUtils.Common.isBDRip(LocalFile) Then
                             outFile = Path.Combine(Directory.GetParent(LocalFile).FullName, String.Concat(Path.GetFileNameWithoutExtension(LocalFile), If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(wrResponse.ResponseUri.AbsolutePath)))
                         ElseIf Master.eSettings.TrailerFrodo Then
@@ -281,7 +305,7 @@ Public Class HTTP
                         Else
                             outFile = Path.Combine(Directory.GetParent(LocalFile).FullName, String.Concat(Path.GetFileNameWithoutExtension(LocalFile), If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(wrResponse.ResponseUri.AbsolutePath)))
                         End If
-                    Case Type = "trailer" AndAlso wrResponse.ContentType.Contains("mp4")
+                    ElseIf wrResponse.ContentType.Contains("mp4") Then
                         If FileUtils.Common.isBDRip(LocalFile) Then
                             parPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(LocalFile).FullName).FullName).FullName
                             If Master.eSettings.UseFrodo AndAlso Master.eSettings.TrailerFrodo Then
@@ -314,9 +338,8 @@ Public Class HTTP
                             If Master.eSettings.UseYAMJ AndAlso Master.eSettings.TrailerYAMJ Then
                                 outFile = String.Concat(filePath, ".[trailer].mp4")
                             End If
-
                         End If
-                    Case Type = "trailer" AndAlso wrResponse.ContentType.Contains("flv")
+                    ElseIf wrResponse.ContentType.Contains("flv") Then
                         If Master.eSettings.TrailerFrodo AndAlso FileUtils.Common.isBDRip(LocalFile) Then
                             outFile = String.Concat(Directory.GetParent(Directory.GetParent(LocalFile).FullName).FullName, Path.DirectorySeparatorChar, "index", If(Master.eSettings.DashTrailer, "-trailer.flv", "[trailer].flv"))
                         ElseIf Master.eSettings.TrailerFrodo Then
@@ -325,7 +348,7 @@ Public Class HTTP
                         Else
                             outFile = Path.Combine(Directory.GetParent(LocalFile).FullName, String.Concat(Path.GetFileNameWithoutExtension(LocalFile), If(Master.eSettings.DashTrailer, "-trailer.flv", "[trailer].flv")))
                         End If
-                    Case Type = "trailer" AndAlso wrResponse.ContentType.Contains("webm")
+                    ElseIf wrResponse.ContentType.Contains("webm") Then
                         If Master.eSettings.TrailerFrodo AndAlso FileUtils.Common.isBDRip(LocalFile) Then
                             outFile = String.Concat(Directory.GetParent(Directory.GetParent(LocalFile).FullName).FullName, Path.DirectorySeparatorChar, "index", If(Master.eSettings.DashTrailer, "-trailer.webm", "[trailer].webm"))
                         ElseIf Master.eSettings.TrailerFrodo Then
@@ -334,9 +357,12 @@ Public Class HTTP
                         Else
                             outFile = Path.Combine(Directory.GetParent(LocalFile).FullName, String.Concat(Path.GetFileNameWithoutExtension(LocalFile), If(Master.eSettings.DashTrailer, "-trailer.webm", "[trailer].webm")))
                         End If
-                    Case Type = "other"
-                        outFile = LocalFile
-                End Select
+                    End If
+
+                ElseIf Type = "other" Then
+                    outFile = LocalFile
+                End If
+
 
                 If Not String.IsNullOrEmpty(outFile) AndAlso Not wrResponse.ContentLength = 0 Then
 
@@ -373,7 +399,11 @@ Public Class HTTP
 
         Return outFile
     End Function
-
+    ''' <summary>
+    ''' Download the image pointed to by the <see cref="_URL"/> and
+    ''' store it in <see cref="_image"/>
+    ''' </summary>
+    ''' <remarks>This method is intended to be called in its own thread</remarks>
     Public Sub DownloadImage()
         Try
             Me._isJPG = False
@@ -418,7 +448,14 @@ Public Class HTTP
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error", False)
         End Try
     End Sub
-
+    ''' <summary>
+    ''' Download the file from the given <paramref name="URL"/> and 
+    ''' return it as an array of <c>Byte</c>s
+    ''' </summary>
+    ''' <param name="URL"><c>String</c> URL from which to get file</param>
+    ''' <returns>Array of <c>Byte</c>s representing the response from the <paramref name="URL"/></returns>
+    ''' <remarks>Note that there is no processing done on the returned file to ensure
+    ''' that it is indeed a ZIP file.</remarks>
     Public Function DownloadZip(ByVal URL As String) As Byte()
         Me.wrRequest = DirectCast(WebRequest.Create(URL), HttpWebRequest)
 
@@ -436,11 +473,18 @@ Public Class HTTP
 
         Return Nothing
     End Function
-
+    ''' <summary>
+    ''' Convenience flag to indicate whether the thread is in fact still doing something
+    ''' </summary>
+    ''' <returns><c>True</c> if the thread is still working</returns>
+    ''' <remarks></remarks>
     Public Function IsDownloading() As Boolean
         Return Me.dThread.IsAlive
     End Function
-
+    ''' <summary>
+    ''' Convenience function to prepare the <see cref="wrRequest"/>.Proxy if so defined.
+    ''' </summary>
+    ''' <remarks></remarks>
     Public Sub PrepareProxy()
         If Not String.IsNullOrEmpty(Master.eSettings.ProxyURI) AndAlso Master.eSettings.ProxyPort >= 0 Then
             Dim wProxy As New WebProxy(Master.eSettings.ProxyURI, Master.eSettings.ProxyPort)
@@ -455,7 +499,14 @@ Public Class HTTP
             Me.wrRequest.Proxy = wProxy
         End If
     End Sub
-
+    ''' <summary>
+    ''' Tests the given <paramref name="URL"/> to see if it is valid
+    ''' </summary>
+    ''' <param name="URL">The URL to test</param>
+    ''' <returns></returns>
+    ''' <remarks>The URL is tested by querying the URL, and if any response is returned, it is flagged as valid.
+    ''' Note URLs that return a response code of 2XX (see http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html) are
+    ''' considered valid. Anything else (such as 404) are flagged as not valid. </remarks>
     Public Function IsValidURL(ByVal URL As String) As Boolean
         Dim wrResponse As WebResponse
         Try
@@ -474,7 +525,11 @@ Public Class HTTP
         wrResponse = Nothing
         Return True
     End Function
-
+    ''' <summary>
+    ''' Commands a thread to be spawned to download the image contained at the given URL
+    ''' </summary>
+    ''' <param name="sURL">URL containing the desired image</param>
+    ''' <remarks>Once the download is complete, the url will be stored in <see cref="_image"/></remarks>
     Public Sub StartDownloadImage(ByVal sURL As String)
         Me.Clear()
         Me._URL = sURL
