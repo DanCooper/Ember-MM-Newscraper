@@ -43,6 +43,7 @@ Public Class APIXML
 #Region "Methods"
 
     Public Shared Sub CacheXMLs()
+        'TODO Dekker500 - This method is required before any of the other shared methods will work. Therefore, need to re-factor to have this method auto-run (unity?) and not depend on runtime ordering for shared methods to work.
         Try
             Dim fPath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Flags")
             If Directory.Exists(fPath) Then
