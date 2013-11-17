@@ -378,9 +378,14 @@ Public Class TMDB_Data
                             Master.currMovie.NfoPath = String.Empty
                         End If
                         DBMovie.Movie.IMDBID = Master.tmpMovie.IMDBID
+                        DBMovie.Movie.TMDBID = Master.tmpMovie.TMDBID
                     End If
                     If Not String.IsNullOrEmpty(DBMovie.Movie.IMDBID) AndAlso Master.GlobalScrapeMod.NFO Then
                         _TMDBg.GetMovieInfo(DBMovie.Movie.ID, DBMovie.Movie, filterOptions.bFullCrew, filterOptions.bFullCast, False, filterOptions, False)
+                    Else
+                        If Not String.IsNullOrEmpty(DBMovie.Movie.TMDBID) AndAlso Master.GlobalScrapeMod.NFO Then
+                            _TMDBg.GetMovieInfo(DBMovie.Movie.TMDBID, DBMovie.Movie, filterOptions.bFullCrew, filterOptions.bFullCast, False, filterOptions, False)
+                        End If
                     End If
                 Else
                     Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
