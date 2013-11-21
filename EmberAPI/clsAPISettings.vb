@@ -29,6 +29,7 @@ Imports System.Xml.Linq
 Public Class Settings
 
 #Region "Fields"
+    'TODO Dekker500 This class is a MONSTER. It needs to be broken down to a more manageable granularity
 
     Private _actorlimit As Integer
     Private _allsbanner As Boolean

@@ -17,16 +17,16 @@
 ' # You should have received a copy of the GNU General Public License            #
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
-
 Imports System.Text
 Imports Microsoft.VisualStudio.TestTools.UnitTesting
 
-'See http://msdn.microsoft.com/en-us/library/dd264975.aspx for ideas
+Imports EmberAPI
 
 Namespace EmberTests
 
-    <TestClass()>
-    Public Class Template
+
+    <TestClass()> Public Class Test_clsTrailers
+        Private trailers As Trailers
 
         ''' <summary>
         ''' Common setup for all tests in this class. This will run before EVERY test case in this class
@@ -34,7 +34,7 @@ Namespace EmberTests
         ''' <remarks></remarks>
         <TestInitialize>
         Public Sub TestSetup()
-
+            trailers = New Trailers()
         End Sub
 
         ''' <summary>
@@ -43,22 +43,70 @@ Namespace EmberTests
         ''' <remarks></remarks>
         <TestCleanup>
         Public Sub TestCleanup()
-
+            If trailers IsNot Nothing Then
+                trailers.Cancel()
+                trailers = Nothing
+            End If
         End Sub
-        ''' <summary>
-        ''' Unit test for single method. Multiple unit tests are expected for each method. 
-        ''' Only test one thing at one time, and make sure a failure lets you see what actually failed!
-        ''' There is no such thing as too many unit tests!!! 
-        ''' Test with Nothing, test 0, test Integer.MinValue, Integer.MaxValue, the maximum acceptable value, and one too many, etc.
-        ''' Use your imagination, but be thorough. Name your tests using the following template {method name}_{condition under test}
-        ''' Don't worry about long names. They are infinitely better than cryptic or short names.
-        ''' 
-        ''' Document with &lt;UnitTest&gt; or &lt;IntegrationTest&gt; before the &lt;TestMethod&gt;
-        ''' Unit tests run quickly in isolation. Integration tests rely on the file system, database, or other external system.
-        ''' </summary>
-        ''' <remarks></remarks>
+
+        <UnitTest>
         <TestMethod()>
-        Public Sub Template()
+        Public Sub Trailers_Cancel()
+            'Arrange
+
+            'Act
+
+            'Assert
+            Assert.Inconclusive("Test not implemented")
+        End Sub
+
+        <IntegrationTest>
+        <TestMethod()>
+        Public Sub Trailers_DeleteTrailers()
+            'Arrange
+
+            'Act
+
+            'Assert
+            Assert.Inconclusive("Test not implemented")
+        End Sub
+
+        <IntegrationTest>
+        <TestMethod()>
+        Public Sub Trailers_DownloadProgressUpdated()
+            'Arrange
+
+            'Act
+
+            'Assert
+            Assert.Inconclusive("Test not implemented")
+        End Sub
+
+        <IntegrationTest>
+        <TestMethod()>
+        Public Sub Trailers_PreferredTrailer()
+            'Arrange
+
+            'Act
+
+            'Assert
+            Assert.Inconclusive("Test not implemented")
+        End Sub
+
+        <IntegrationTest>
+        <TestMethod()>
+        Public Sub Trailers_DownloadTrailer()
+            'Arrange
+
+            'Act
+
+            'Assert
+            Assert.Inconclusive("Test not implemented")
+        End Sub
+
+        <IntegrationTest>
+        <TestMethod()>
+        Public Sub Trailers_IsAllowedToDownload()
             'Arrange
 
             'Act
@@ -68,5 +116,4 @@ Namespace EmberTests
         End Sub
 
     End Class
-
 End Namespace

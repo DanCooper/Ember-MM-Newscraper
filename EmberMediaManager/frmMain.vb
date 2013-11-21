@@ -3717,7 +3717,7 @@ doCancel:
 
     Private Sub dgvMediaList_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles dgvMediaList.KeyPress
         Try
-            If Not StringUtils.AlphaNumericOnly(e.KeyChar) Then
+            If StringUtils.AlphaNumericOnly(e.KeyChar) Then
                 KeyBuffer = String.Concat(KeyBuffer, e.KeyChar.ToString.ToLower)
                 tmrKeyBuffer.Start()
                 For Each drvRow As DataGridViewRow In Me.dgvMediaList.Rows
@@ -3927,7 +3927,7 @@ doCancel:
 
     Private Sub dgvTVEpisodes_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles dgvTVEpisodes.KeyPress
         Try
-            If Not StringUtils.AlphaNumericOnly(e.KeyChar) Then
+            If StringUtils.AlphaNumericOnly(e.KeyChar) Then
                 KeyBuffer = String.Concat(KeyBuffer, e.KeyChar.ToString.ToLower)
                 tmrKeyBuffer.Start()
                 For Each drvRow As DataGridViewRow In Me.dgvTVEpisodes.Rows
@@ -4251,7 +4251,7 @@ doCancel:
 
     Private Sub dgvTVSeasons_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles dgvTVSeasons.KeyPress
         Try
-            If Not StringUtils.AlphaNumericOnly(e.KeyChar) Then
+            If StringUtils.AlphaNumericOnly(e.KeyChar) Then
                 KeyBuffer = String.Concat(KeyBuffer, e.KeyChar.ToString.ToLower)
                 tmrKeyBuffer.Start()
                 For Each drvRow As DataGridViewRow In Me.dgvTVSeasons.Rows
@@ -4515,7 +4515,7 @@ doCancel:
 
     Private Sub dgvTVShows_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles dgvTVShows.KeyPress
         Try
-            If Not StringUtils.AlphaNumericOnly(e.KeyChar) Then
+            If StringUtils.AlphaNumericOnly(e.KeyChar) Then
                 KeyBuffer = String.Concat(KeyBuffer, e.KeyChar.ToString.ToLower)
                 tmrKeyBuffer.Start()
                 For Each drvRow As DataGridViewRow In Me.dgvTVShows.Rows
@@ -9730,7 +9730,7 @@ doCancel:
     End Sub
 
     Private Sub txtSearch_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtSearch.KeyPress
-        e.Handled = StringUtils.AlphaNumericOnly(e.KeyChar, True)
+        e.Handled = Not StringUtils.AlphaNumericOnly(e.KeyChar, True)
         If e.KeyChar = Microsoft.VisualBasic.ChrW(Keys.Return) Then
             Me.dgvMediaList.Focus()
         End If

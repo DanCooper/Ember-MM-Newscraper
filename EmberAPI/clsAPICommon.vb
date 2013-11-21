@@ -60,7 +60,7 @@ Public Class Containers
         End Function
 #End Region 'Methods
 
-    End Class
+    End Class 'InstallCommands
 
     Public Class InstallCommand
 
@@ -75,9 +75,7 @@ Public Class Containers
 
 #End Region 'Fields
 
-    End Class
-
-
+    End Class 'InstallCommand
 
     Public Class ImgResult
 
@@ -138,7 +136,7 @@ Public Class Containers
 
 #End Region 'Methods
 
-    End Class
+    End Class 'ImgResult
 
     Public Class SettingsPanel
 
@@ -157,7 +155,10 @@ Public Class Containers
 #End Region 'Fields
 
 #Region "Constructors"
-
+        ''' <summary>
+        ''' Overload the default New() method to provide proper initialization of fields
+        ''' </summary>
+        ''' <remarks></remarks>
         Public Sub New()
             Me.Clear()
         End Sub
@@ -254,20 +255,20 @@ Public Class Containers
 #Region "Methods"
 
         Public Sub Clear()
-            Me._name = String.Empty
-            Me._text = String.Empty
-            Me._prefix = String.Empty
             Me._imageindex = 0
             Me._image = Nothing
-            Me._type = String.Empty
-            Me._panel = New Panel
+            Me._name = String.Empty
             Me._order = 0
+            Me._panel = New Panel
             Me._parent = String.Empty
+            Me._prefix = String.Empty
+            Me._text = String.Empty
+            Me._type = String.Empty
         End Sub
 
 #End Region 'Methods
 
-    End Class
+    End Class 'SettingsPanel
 
     Public Class TVLanguage
 
@@ -317,9 +318,10 @@ Public Class Containers
 
 #End Region 'Methods
 
-    End Class
+    End Class 'TVLanguage
 
     Public Class Addon
+#Region "Fields"
         Private _id As Integer
         Private _name As String
         Private _author As String
@@ -332,7 +334,9 @@ Public Class Containers
         Private _screenshotimage As Image
         Private _files As Generic.SortedList(Of String, String)
         Private _deletefiles As List(Of String)
+#End Region 'Fields
 
+#Region "Properties"
         Public Property ID() As Integer
             Get
                 Return Me._id
@@ -440,11 +444,15 @@ Public Class Containers
                 Me._deletefiles = value
             End Set
         End Property
+#End Region 'Properties
 
+#Region "Constructors"
         Public Sub New()
             Me.Clear()
         End Sub
+#End Region 'Constructors
 
+#Region "Methods"
         Public Sub Clear()
             Me._id = -1
             Me._name = String.Empty
@@ -459,11 +467,13 @@ Public Class Containers
             Me._files = New Generic.SortedList(Of String, String)
             Me._deletefiles = New List(Of String)
         End Sub
-    End Class
+#End Region 'Methods
+
+    End Class 'Addon
 
 #End Region 'Nested Types
 
-End Class
+End Class 'Containers
 
 Public Class Globals
 
@@ -519,9 +529,9 @@ Public Class Globals
         backdrop_names(3).size = "original"
         backdrop_names(3).width = 0
     End Sub
-#End Region
+#End Region 'Methods
 
-End Class
+End Class 'Globals
 
 Public Class Enums
 
@@ -737,7 +747,7 @@ Public Class Enums
 
 #End Region 'Enumerations
 
-End Class
+End Class 'Enums
 
 Public Class Functions
 
@@ -763,8 +773,12 @@ Public Class Functions
     ''' </summary>
     ''' <returns><c>True</c>if we are running on Windows, <c>False</c> otherwise</returns>
     Public Shared Function CheckIfWindows() As Boolean
-        'TODO Shouldn't this be recoded to resemble http://msdn.microsoft.com/en-us/library/vstudio/3a8hyw88(v=vs.90).aspx ?
-        Return Environment.OSVersion.ToString.ToLower.IndexOf("windows") > 0
+        Dim os As OperatingSystem = Environment.OSVersion
+        Dim pid As PlatformID = os.Platform
+        If pid = PlatformID.Win32NT OrElse pid = PlatformID.Win32Windows OrElse pid = PlatformID.Win32S OrElse pid = PlatformID.WinCE Then
+            Return True
+        End If
+        Return False
     End Function
     ''' <summary>
     ''' Determine whether this instance is intended as a beta test version
@@ -786,8 +800,8 @@ Public Class Functions
     ''' <remarks>Not implemented yet. This method is currently a stub, and always returns False</remarks>
     Public Shared Function CheckNeedUpdate() As Boolean
         'TODO STUB - Not implemented yet
-        Dim sHTTP As New HTTP
         Dim needUpdate As Boolean = False
+        'Dim sHTTP As New HTTP
         'Dim platform As String = "x86"
         'Dim updateXML As String = sHTTP.DownloadData(String.Format("http://pcjco.dommel.be/emm-r/{0}/versions.xml", If(IsBetaEnabled(), "updatesbeta", "updates")))
         'sHTTP = Nothing
@@ -818,7 +832,22 @@ Public Class Functions
     ''' </summary>
     ''' <param name="timestamp">A valid unix-style timestamp</param>
     ''' <returns>An appropriately formatted DateTime representing the supplied timestamp</returns>
+    ''' <remarks></remarks>
+    ''' <exception cref="ArgumentException"> thrown when <paramref name="timestamp"/> is <c>Double.NAN</c>.</exception>
+    ''' <exception cref="ArgumentOutOfRangeException"> thrown when <paramref name="timestamp"/> is <c>Double.NegativeInfinity</c> or <c>Double.PositiveInfinity</c>,
+    ''' or if resulting <c>DateTime</c> would be outside the bounds of Jan 1, 0001 and Dec 31, 9999</exception>
     Public Shared Function ConvertFromUnixTimestamp(ByVal timestamp As Double) As DateTime
+        If timestamp.CompareTo(Double.NaN) = 0 Then
+            Throw New ArgumentException("Parameter was not a number (Double.NAN)", "timestamp")
+        End If
+        'Input can not be: NaN (not a number), Positive Infinity, Negative Infinity
+        If timestamp.CompareTo(Double.NegativeInfinity) = 0 OrElse timestamp.CompareTo(Double.PositiveInfinity) = 0 Then
+            Throw New ArgumentOutOfRangeException("timestamp", timestamp, "timestamp must be a valid discreet value.")
+        End If
+        'Values outside these ranges exceed the DateTime capacity of Jan 1, 0001 and Dec 31, 9999
+        If timestamp > 253402300799.0R OrElse timestamp < -62135596800.0R Then
+            Throw New ArgumentOutOfRangeException("timestamp", timestamp, "timestamp must resolve between Jan 1, 0001 and Dec 31, 9999")
+        End If
         Dim origin As DateTime = New DateTime(1970, 1, 1, 0, 0, 0, 0)
         Return origin.AddSeconds(timestamp)
     End Function
@@ -833,15 +862,17 @@ Public Class Functions
 		Dim diff As System.TimeSpan = data - origin
 		Return Math.Floor(diff.TotalSeconds)
 	End Function
-    ' TODO DOC Need appropriate header
+    ' TODO DOC Need appropriate header and tests
     Public Shared Function LocksToOptions() As Structures.ScrapeOptions
         Dim options As New Structures.ScrapeOptions
         With options
             .bCast = True
-            .bDirector = True
-            .bGenre = True
-            .bMPAA = True
             .bCert = True
+            .bDirector = True
+            .bFullCast = True
+            .bFullCrew = True
+            .bGenre = Not Master.eSettings.LockGenre    'Dekker500 This used to just be =True
+            .bMPAA = True
             .bMusicBy = True
             .bOtherCrew = True
             .bOutline = Not Master.eSettings.LockOutline
@@ -851,59 +882,70 @@ Public Class Functions
             .bLanguageV = Not Master.eSettings.LockLanguageV
             .bLanguageA = Not Master.eSettings.LockLanguageA
             .buseMPAAForFSK = Not Master.eSettings.UseMPAAForFSK
-
             .bRelease = True
             .bRuntime = True
             .bStudio = Not Master.eSettings.LockStudio
             .bTagline = Not Master.eSettings.LockTagline
             .bTitle = Not Master.eSettings.LockTitle
+            .bTop250 = True
+            .bCountry = True
             .bTrailer = Not Master.eSettings.LockTrailer
             .bVotes = True
             .bWriters = True
             .bYear = True
-            .bTop250 = True
-            .bCountry = True
-            .bFullCrew = True
-            .bFullCast = True
         End With
         Return options
     End Function
     ''' <summary>
-    ''' Create a collection of default options based off the currently selected options. 
+    ''' Create a collection of default Movie and TV scrape options
+    ''' based off the currently selected options. 
     ''' These default options are Master.DefaultOptions and Master.DefaultTVOptions
     ''' </summary>
     ''' <remarks></remarks>
     Public Shared Sub CreateDefaultOptions()
+        'TODO need proper unit test
         With Master.DefaultOptions
             .bCast = Master.eSettings.FieldCast
+            .bCert = Master.eSettings.FieldCert
             .bDirector = Master.eSettings.FieldDirector
+            .bFullCast = Master.eSettings.FullCast
+            .bFullCrew = Master.eSettings.FullCrew
             .bGenre = Master.eSettings.FieldGenre
             .bMPAA = Master.eSettings.FieldMPAA
-            .bCert = Master.eSettings.FieldCert
             .bMusicBy = Master.eSettings.FieldMusic
             .bOtherCrew = Master.eSettings.FieldCrew
             .bOutline = Master.eSettings.FieldOutline
             .bPlot = Master.eSettings.FieldPlot
             .bProducers = Master.eSettings.FieldProducers
             .bRating = Master.eSettings.FieldRating
+            'TODO Dekker500 - These seem to be missing Add fields to Master!!!???
+            '.bLanguageV = Master.eSettings.FieldLanguageV
+            '.bLanguageA = Master.eSettings.FieldLanguageA
+            '.buseMPAAForFSK = Master.eSettings.UseMPAAForFSK
             .bRelease = Master.eSettings.FieldRelease
             .bRuntime = Master.eSettings.FieldRuntime
             .bStudio = Master.eSettings.FieldStudio
             .bTagline = Master.eSettings.FieldTagline
             .bTitle = Master.eSettings.FieldTitle
+            .bTop250 = Master.eSettings.Field250
+            .bCountry = Master.eSettings.FieldCountry
             .bTrailer = Master.eSettings.FieldTrailer
             .bVotes = Master.eSettings.FieldVotes
             .bWriters = Master.eSettings.FieldWriters
             .bYear = Master.eSettings.FieldYear
-            .bTop250 = Master.eSettings.Field250
-            .bCountry = Master.eSettings.FieldCountry
-            ' Why this 2 arent here?
-            .bFullCrew = Master.eSettings.FullCrew
-            .bFullCast = Master.eSettings.FullCast
         End With
 
         With Master.DefaultTVOptions
-            .bShowTitle = Master.eSettings.ScraperShowTitle
+            .bEpActors = Master.eSettings.ScraperEpActors
+            .bEpAired = Master.eSettings.ScraperEpAired
+            .bEpCredits = Master.eSettings.ScraperEpCredits
+            .bEpDirector = Master.eSettings.ScraperEpDirector
+            .bEpEpisode = Master.eSettings.ScraperEpEpisode
+            .bEpPlot = Master.eSettings.ScraperEpPlot
+            .bEpRating = Master.eSettings.ScraperEpRating
+            .bEpSeason = Master.eSettings.ScraperEpSeason
+            .bEpTitle = Master.eSettings.ScraperEpTitle
+            .bShowActors = Master.eSettings.ScraperShowActors
             .bShowEpisodeGuide = Master.eSettings.ScraperShowEGU
             .bShowGenre = Master.eSettings.ScraperShowGenre
             .bShowMPAA = Master.eSettings.ScraperShowMPAA
@@ -911,19 +953,15 @@ Public Class Functions
             .bShowPremiered = Master.eSettings.ScraperShowPremiered
             .bShowRating = Master.eSettings.ScraperShowRating
             .bShowStudio = Master.eSettings.ScraperShowStudio
-            .bShowActors = Master.eSettings.ScraperShowActors
-            .bEpTitle = Master.eSettings.ScraperEpTitle
-            .bEpSeason = Master.eSettings.ScraperEpSeason
-            .bEpEpisode = Master.eSettings.ScraperEpEpisode
-            .bEpAired = Master.eSettings.ScraperEpAired
-            .bEpRating = Master.eSettings.ScraperEpRating
-            .bEpPlot = Master.eSettings.ScraperEpPlot
-            .bEpDirector = Master.eSettings.ScraperEpDirector
-            .bEpCredits = Master.eSettings.ScraperEpCredits
-            .bEpActors = Master.eSettings.ScraperEpActors
+            .bShowTitle = Master.eSettings.ScraperShowTitle
         End With
     End Sub
-    ' TODO DOC Need appropriate header
+    ''' <summary>
+    ''' Sets the DoubleBuffered property for the supplied DataGridView.
+    ''' This should have the effect of reducing any flicker during re-draw operations
+    ''' </summary>
+    ''' <param name="cDGV">DataGridView for which the <c>DoubleBuffered</c> property is to be set.</param>
+    ''' <remarks></remarks>
     Public Shared Sub DGVDoubleBuffer(ByRef cDGV As DataGridView)
         Dim conType As Type = cDGV.GetType
         Dim pi As System.Reflection.PropertyInfo = conType.GetProperty("DoubleBuffered", System.Reflection.BindingFlags.Instance Or System.Reflection.BindingFlags.NonPublic)
@@ -996,7 +1034,8 @@ Public Class Functions
     ''' Get a path to the ffmpeg included with the Ember distribution
     ''' </summary>
     ''' <returns>A path to an instance of ffmpeg</returns>
-    ''' <remarks>Windows distributions have ffmpeg in the Bin subdirectory</remarks>
+    ''' <remarks>Windows distributions have ffmpeg in the Bin subdirectory.
+    ''' Note that no validation is done to ensure that ffmpeg actually exists.</remarks>
 	Public Shared Function GetFFMpeg() As String
 		If Master.isWindows Then
 			Return String.Concat(Functions.AppPath, "Bin", Path.DirectorySeparatorChar, "ffmpeg.exe")
@@ -1077,10 +1116,12 @@ Public Class Functions
     ''' </summary>
     ''' <param name="source">List(of T)</param>
     ''' <param name="separator">Character or string to use as a value separator</param>
-    ''' <returns>String of separated List values</returns>
+    ''' <returns>String of separated List values.
+    ''' If the list is empty, an empty string will be returned.
+    ''' If the separator is empty or missing, assume "," is the separator</returns>
 	Public Shared Function ListToStringWithSeparator(Of T)(ByVal source As IList(Of T), ByVal separator As String) As String
-		If source Is Nothing Then Throw New ArgumentNullException("Source parameter cannot be nothing")
-		If String.IsNullOrEmpty(separator) Then Throw New ArgumentException("Separator parameter cannot be nothing or empty")
+        If source Is Nothing Then Return String.Empty
+        If String.IsNullOrEmpty(separator) Then separator = ","
 
 		Dim values As String() = source.Cast(Of Object)().Where(Function(n) n IsNot Nothing).Select(Function(s) s.ToString).ToArray
 
@@ -1103,9 +1144,9 @@ Public Class Functions
     ''' Constrain a number to the nearest multiple. 
     ''' </summary>
     ''' <param name="iNumber">Number to quantize</param>
-    ''' <param name="iMultiple">Multiple of constraint.</param>
+    ''' <param name="iMultiple">Multiple of constraint. This value can not be zero.</param>
     Public Shared Function Quantize(ByVal iNumber As Integer, ByVal iMultiple As Integer) As Integer
-        If iMultiple <= 0 Then Throw New ArgumentOutOfRangeException("Multiple must be greater than zero (0)")
+        If iMultiple = 0 Then Throw New ArgumentOutOfRangeException("Multiple must be greater than zero (0)")
         Return Convert.ToInt32(System.Math.Round(iNumber / iMultiple, 0) * iMultiple)
     End Function
     ''' <summary>
@@ -1155,30 +1196,33 @@ Public Class Functions
     ''' <remarks></remarks>
     Public Shared Function ScrapeOptionsAndAlso(ByVal Options As Structures.ScrapeOptions, ByVal Options2 As Structures.ScrapeOptions) As Structures.ScrapeOptions
         Dim filterOptions As New Structures.ScrapeOptions
-        filterOptions.bTitle = Options.bTitle AndAlso Options2.bTitle
-        filterOptions.bYear = Options.bYear AndAlso Options2.bYear
-        filterOptions.bMPAA = Options.bMPAA AndAlso Options2.bMPAA
-        filterOptions.bCert = Options.bCert AndAlso Options2.bCert
-        filterOptions.bRelease = Options.bRelease AndAlso Options2.bRelease
-        filterOptions.bRating = Options.bRating AndAlso Options2.bRating
-        filterOptions.bTrailer = Options.bTrailer AndAlso Options2.bTrailer
-        filterOptions.bVotes = Options.bVotes AndAlso Options2.bVotes
         filterOptions.bCast = Options.bCast AndAlso Options2.bCast
-        filterOptions.bTagline = Options.bTagline AndAlso Options2.bTagline
+        filterOptions.bCert = Options.bCert AndAlso Options2.bCert
         filterOptions.bDirector = Options.bDirector AndAlso Options2.bDirector
-        filterOptions.bGenre = Options.bGenre AndAlso Options2.bGenre
-        filterOptions.bOutline = Options.bOutline AndAlso Options2.bOutline
-        filterOptions.bPlot = Options.bPlot AndAlso Options2.bPlot
-        filterOptions.bRuntime = Options.bRuntime AndAlso Options2.bRuntime
-        filterOptions.bStudio = Options.bStudio AndAlso Options2.bStudio
-        filterOptions.bWriters = Options.bWriters AndAlso Options2.bWriters
-        filterOptions.bProducers = Options.bProducers AndAlso Options2.bProducers
-        filterOptions.bMusicBy = Options.bMusicBy AndAlso Options2.bMusicBy
-        filterOptions.bOtherCrew = Options.bOtherCrew AndAlso Options2.bOtherCrew
-        filterOptions.bTop250 = Options.bTop250 AndAlso Options2.bTop250
-        filterOptions.bCountry = Options.bCountry AndAlso Options2.bCountry
         filterOptions.bFullCrew = Options.bFullCrew AndAlso Options2.bFullCrew
         filterOptions.bFullCast = Options.bFullCast AndAlso Options2.bFullCast
+        filterOptions.bGenre = Options.bGenre AndAlso Options2.bGenre
+        filterOptions.bMPAA = Options.bMPAA AndAlso Options2.bMPAA
+        filterOptions.bMusicBy = Options.bMusicBy AndAlso Options2.bMusicBy
+        filterOptions.bOtherCrew = Options.bOtherCrew AndAlso Options2.bOtherCrew
+        filterOptions.bOutline = Options.bOutline AndAlso Options2.bOutline
+        filterOptions.bPlot = Options.bPlot AndAlso Options2.bPlot
+        filterOptions.bProducers = Options.bProducers AndAlso Options2.bProducers
+        filterOptions.bRating = Options.bRating AndAlso Options2.bRating
+        filterOptions.bLanguageV = Options.bLanguageV AndAlso Options2.bLanguageV
+        filterOptions.bLanguageA = Options.bLanguageA AndAlso Options2.bLanguageA
+        filterOptions.buseMPAAForFSK = Options.buseMPAAForFSK AndAlso Options2.buseMPAAForFSK
+        filterOptions.bRelease = Options.bRelease AndAlso Options2.bRelease
+        filterOptions.bRuntime = Options.bRuntime AndAlso Options2.bRuntime
+        filterOptions.bStudio = Options.bStudio AndAlso Options2.bStudio
+        filterOptions.bTagline = Options.bTagline AndAlso Options2.bTagline
+        filterOptions.bTitle = Options.bTitle AndAlso Options2.bTitle
+        filterOptions.bTop250 = Options.bTop250 AndAlso Options2.bTop250
+        filterOptions.bCountry = Options.bCountry AndAlso Options2.bCountry
+        filterOptions.bTrailer = Options.bTrailer AndAlso Options2.bTrailer
+        filterOptions.bVotes = Options.bVotes AndAlso Options2.bVotes
+        filterOptions.bWriters = Options.bWriters AndAlso Options2.bWriters
+        filterOptions.bYear = Options.bYear AndAlso Options2.bYear
         Return filterOptions
     End Function
     ''' <summary>
@@ -1224,12 +1268,12 @@ Public Class Functions
             If DoClear Then
                 .EThumbs = False
                 .EFanarts = False
+                .DoSearch = False
                 .Fanart = False
                 .Meta = False
                 .NFO = False
                 .Poster = False
                 .Trailer = False
-                .DoSearch = False
                 .Actors = False
             End If
 
@@ -1237,6 +1281,7 @@ Public Class Functions
                 Case Enums.ModType.All
                     .EThumbs = MValue
                     .EFanarts = MValue
+                    .DoSearch = MValue
                     .Fanart = MValue
                     .Meta = MValue
                     .NFO = MValue
@@ -1247,6 +1292,8 @@ Public Class Functions
                     .EThumbs = MValue
                 Case Enums.ModType.EFanarts
                     .EFanarts = MValue
+                Case Enums.ModType.DoSearch
+                    .DoSearch = MValue
                 Case Enums.ModType.Fanart
                     .Fanart = MValue
                 Case Enums.ModType.Meta
@@ -1257,8 +1304,6 @@ Public Class Functions
                     .Poster = MValue
                 Case Enums.ModType.Trailer
                     .Trailer = MValue
-                Case Enums.ModType.DoSearch
-                    .DoSearch = MValue
                 Case Enums.ModType.Actor
                     .Actors = MValue
             End Select
@@ -1288,7 +1333,7 @@ Public Class Functions
 
 #End Region 'Methods
 
-End Class
+End Class 'Functions
 
 Public Class Structures
 
@@ -1436,8 +1481,6 @@ Public Class Structures
         Dim bCert As Boolean
         Dim bDirector As Boolean
         Dim bFullCast As Boolean
-
-        ' Why this 2 arent here?
         Dim bFullCrew As Boolean
         Dim bGenre As Boolean
         Dim bMPAA As Boolean
