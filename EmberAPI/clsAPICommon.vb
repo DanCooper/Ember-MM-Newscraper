@@ -1321,11 +1321,15 @@ Public Class Functions
             'just assume dll is there since we're distributing full package... if it's not, user has bigger problems
             dllPath = String.Concat(AppPath, "Bin", Path.DirectorySeparatorChar, "MediaInfo.DLL")
             Dim fVersion As FileVersionInfo = System.Diagnostics.FileVersionInfo.GetVersionInfo(dllPath)
-            If fVersion.FileMinorPart <= 7 AndAlso fVersion.FileBuildPart <= 11 Then
+
+            'ISO Handling -> Use MediaInfo-Rar(if exists) to scan RAR and ISO files!
+            Dim mediainfoRaRPath As String = String.Concat(Functions.AppPath, "Bin", Path.DirectorySeparatorChar, "mediainfo-rar\mediainfo-rar.exe")
+            If File.Exists(mediainfoRaRPath) OrElse (fVersion.FileMinorPart <= 7 AndAlso fVersion.FileBuildPart <= 11) Then
                 Master.CanScanDiscImage = True
             Else
                 Master.CanScanDiscImage = False
             End If
+
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message & " - Failed to access MediaInfo.DLL from path:" & dllPath, ex.StackTrace, "Error")
         End Try
