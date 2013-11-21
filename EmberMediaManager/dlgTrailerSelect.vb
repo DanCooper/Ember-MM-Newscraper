@@ -121,7 +121,7 @@ Public Class dlgTrailerSelect
             Me.lblStatus.Text = Master.eLang.GetString(907, "Copying specified file to trailer...")
             If Master.eSettings.ValidExts.Contains(Path.GetExtension(Me.txtManual.Text)) AndAlso File.Exists(Me.txtManual.Text) Then
                 If CloseDialog Then
-                    If Master.eSettings.VideoTSParentXBMC AndAlso FileUtils.Common.isBDRip(Me.sPath) Then
+                    If FileUtils.Common.isBDRip(Me.sPath) Then
                         Me.tURL = String.Concat(Directory.GetParent(Directory.GetParent(Me.sPath).FullName).FullName, Path.DirectorySeparatorChar, "index", If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(Me.txtManual.Text))
                     ElseIf Master.eSettings.MovieNameNFOStack Then
                         Dim sPathStack As String = StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(Me.sPath))
@@ -308,7 +308,7 @@ Public Class dlgTrailerSelect
                 Me.pnlStatus.Visible = True
                 Application.DoEvents()
 
-                If Master.eSettings.VideoTSParentXBMC AndAlso FileUtils.Common.isBDRip(Me.sPath) Then
+                If FileUtils.Common.isBDRip(Me.sPath) Then
                     Me.tURL = String.Concat(Directory.GetParent(Directory.GetParent(Me.sPath).FullName).FullName, Path.DirectorySeparatorChar, "index", If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(Me.txtManual.Text))
                 ElseIf Master.eSettings.MovieNameNFOStack Then
                     Dim sPathStack As String = StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(Me.sPath))

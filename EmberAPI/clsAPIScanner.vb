@@ -238,11 +238,18 @@ Public Class Scanner
                 Try
                     fList.AddRange(Directory.GetFiles(Directory.GetParent(Movie.Filename).FullName))
                     fList.AddRange(Directory.GetFiles(parPath))
+                    If Master.eSettings.UseNMJ Then
+                        fList.AddRange(Directory.GetFiles(Directory.GetParent(parPath).FullName))
+                    End If
                 Catch
                 End Try
 
                 If Movie.isSingle AndAlso File.Exists(String.Concat(Directory.GetParent(Movie.Filename).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")) Then
-                    Movie.Extra = String.Concat(Directory.GetParent(Movie.Filename).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")
+                    Movie.EThumbs = String.Concat(Directory.GetParent(Movie.Filename).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")
+                End If
+
+                If Movie.isSingle AndAlso File.Exists(String.Concat(Directory.GetParent(Movie.Filename).FullName, Path.DirectorySeparatorChar, "extrafanart", Path.DirectorySeparatorChar, "fanart1.jpg")) Then
+                    Movie.EFanarts = String.Concat(Directory.GetParent(Movie.Filename).FullName, Path.DirectorySeparatorChar, "extrafanart", Path.DirectorySeparatorChar, "fanart1.jpg")
                 End If
             ElseIf FileUtils.Common.isBDRip(Movie.Filename) Then
                 parPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(Movie.Filename).FullName).FullName).FullName
@@ -250,11 +257,18 @@ Public Class Scanner
                 Try
                     fList.AddRange(Directory.GetFiles(Directory.GetParent(Directory.GetParent(Movie.Filename).FullName).FullName))
                     fList.AddRange(Directory.GetFiles(parPath))
+                    If Master.eSettings.UseNMJ Then
+                        fList.AddRange(Directory.GetFiles(Directory.GetParent(parPath).FullName))
+                    End If
                 Catch
                 End Try
 
                 If Movie.isSingle AndAlso File.Exists(String.Concat(Directory.GetParent(Directory.GetParent(Movie.Filename).FullName).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")) Then
-                    Movie.Extra = String.Concat(Directory.GetParent(Directory.GetParent(Movie.Filename).FullName).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")
+                    Movie.EThumbs = String.Concat(Directory.GetParent(Directory.GetParent(Movie.Filename).FullName).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")
+                End If
+
+                If Movie.isSingle AndAlso File.Exists(String.Concat(Directory.GetParent(Directory.GetParent(Movie.Filename).FullName).FullName, Path.DirectorySeparatorChar, "extrafanart", Path.DirectorySeparatorChar, "fanart1.jpg")) Then
+                    Movie.EFanarts = String.Concat(Directory.GetParent(Directory.GetParent(Movie.Filename).FullName).FullName, Path.DirectorySeparatorChar, "extrafanart", Path.DirectorySeparatorChar, "fanart1.jpg")
                 End If
             Else
                 parPath = Directory.GetParent(Movie.Filename).FullName
@@ -269,9 +283,12 @@ Public Class Scanner
                     End Try
                 End If
 
-
                 If Movie.isSingle AndAlso File.Exists(String.Concat(Directory.GetParent(Movie.Filename).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")) Then
-                    Movie.Extra = String.Concat(Directory.GetParent(Movie.Filename).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")
+                    Movie.EThumbs = String.Concat(Directory.GetParent(Movie.Filename).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")
+                End If
+
+                If Movie.isSingle AndAlso File.Exists(String.Concat(Directory.GetParent(Movie.Filename).FullName, Path.DirectorySeparatorChar, "extrafanart", Path.DirectorySeparatorChar, "fanart1.jpg")) Then
+                    Movie.EFanarts = String.Concat(Directory.GetParent(Movie.Filename).FullName, Path.DirectorySeparatorChar, "extrafanart", Path.DirectorySeparatorChar, "fanart1.jpg")
                 End If
             End If
 
@@ -336,6 +353,25 @@ Public Class Scanner
                     'YAMJ single/multi folder
                     If String.IsNullOrEmpty(Movie.Fanart) AndAlso Master.eSettings.FanartYAMJ AndAlso Not fileName.ToLower = "video_ts" Then
                         fName = String.Concat(filePath.ToLower, ".fanart.jpg")
+                        Movie.Fanart = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
+                    End If
+                End If
+
+                '****************** NMJ settings *****************
+                If Master.eSettings.UseNMJ Then
+                    'NMJ VIDEO_TS
+                    If String.IsNullOrEmpty(Movie.Fanart) AndAlso Master.eSettings.FanartNMJ AndAlso FileUtils.Common.isVideoTS(Movie.Filename) Then
+                        fName = String.Concat(Directory.GetParent(parPath.ToLower).FullName, Path.DirectorySeparatorChar, Directory.GetParent(fileParPath).Name.ToLower, ".fanart.jpg")
+                        Movie.Fanart = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
+                    End If
+                    'NMJ BDMV folder
+                    If String.IsNullOrEmpty(Movie.Fanart) AndAlso Master.eSettings.FanartNMJ AndAlso FileUtils.Common.isBDRip(Movie.Filename) Then
+                        fName = String.Concat(Directory.GetParent(parPath.ToLower).FullName, Path.DirectorySeparatorChar, Directory.GetParent(Directory.GetParent(fileParPath).FullName).Name.ToLower, ".fanart.jpg")
+                        Movie.Fanart = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
+                    End If
+                    'NMJ single/multi folder
+                    If String.IsNullOrEmpty(Movie.Fanart) AndAlso Master.eSettings.FanartNMJ AndAlso Not fileName.ToLower = "video_ts" Then
+                        fName = String.Concat(filePathStack.ToLower, ".fanart.jpg")
                         Movie.Fanart = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
                     End If
                 End If
@@ -422,6 +458,25 @@ Public Class Scanner
                     'YAMJ single/multi folder
                     If String.IsNullOrEmpty(Movie.Poster) AndAlso Master.eSettings.PosterYAMJ AndAlso Not fileName.ToLower = "video_ts" Then
                         fName = String.Concat(filePath.ToLower, ".jpg")
+                        Movie.Poster = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
+                    End If
+                End If
+
+                '****************** NMJ settings *****************
+                If Master.eSettings.UseNMJ Then
+                    'NMJ VIDEO_TS
+                    If String.IsNullOrEmpty(Movie.Poster) AndAlso Master.eSettings.PosterNMJ AndAlso FileUtils.Common.isVideoTS(Movie.Filename) Then
+                        fName = String.Concat(Directory.GetParent(parPath.ToLower).FullName, Path.DirectorySeparatorChar, Directory.GetParent(fileParPath).Name.ToLower, ".jpg")
+                        Movie.Poster = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
+                    End If
+                    'NMJ BDMV folder
+                    If String.IsNullOrEmpty(Movie.Poster) AndAlso Master.eSettings.PosterNMJ AndAlso FileUtils.Common.isBDRip(Movie.Filename) Then
+                        fName = String.Concat(Directory.GetParent(parPath.ToLower).FullName, Path.DirectorySeparatorChar, Directory.GetParent(Directory.GetParent(fileParPath).FullName).Name.ToLower, ".jpg")
+                        Movie.Poster = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
+                    End If
+                    'NMJ single/multi folder
+                    If String.IsNullOrEmpty(Movie.Poster) AndAlso Master.eSettings.PosterNMJ AndAlso Not fileName.ToLower = "video_ts" Then
+                        fName = String.Concat(filePathStack.ToLower, ".jpg")
                         Movie.Poster = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
                     End If
                 End If
@@ -528,6 +583,25 @@ Public Class Scanner
                     End If
                 End If
 
+                '****************** NMJ settings *****************
+                If Master.eSettings.UseNMJ Then
+                    'NMJ VIDEO_TS
+                    If String.IsNullOrEmpty(Movie.Nfo) AndAlso Master.eSettings.NFONMJ AndAlso FileUtils.Common.isVideoTS(Movie.Filename) Then
+                        fName = String.Concat(Directory.GetParent(parPath.ToLower).FullName, Path.DirectorySeparatorChar, Directory.GetParent(fileParPath).Name.ToLower, ".nfo")
+                        Movie.Nfo = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
+                    End If
+                    'NMJ BDMV folder
+                    If String.IsNullOrEmpty(Movie.Nfo) AndAlso Master.eSettings.NFONMJ AndAlso FileUtils.Common.isBDRip(Movie.Filename) Then
+                        fName = String.Concat(Directory.GetParent(parPath.ToLower).FullName, Path.DirectorySeparatorChar, Directory.GetParent(Directory.GetParent(fileParPath).FullName).Name.ToLower, ".nfo")
+                        Movie.Nfo = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
+                    End If
+                    'NMJ single/multi folder
+                    If String.IsNullOrEmpty(Movie.Nfo) AndAlso Master.eSettings.NFONMJ AndAlso Not fileName.ToLower = "video_ts" Then
+                        fName = String.Concat(filePathStack.ToLower, ".nfo")
+                        Movie.Nfo = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
+                    End If
+                End If
+
                 '***************** Expert settings ****************
                 'If ((Master.eSettings.NFOFrodo OrElse Master.eSettings.NFOEden) AndAlso FileUtils.Common.isVideoTS(Movie.Filename) AndAlso fFile.ToLower = Path.Combine(fileParPath, "video_ts.nfo")) _
                 '            OrElse (Master.eSettings.NFOFrodo AndAlso FileUtils.Common.isBDRip(Movie.Filename) AndAlso fFile.ToLower = Path.Combine(Directory.GetParent(fileParPath).FullName.ToLower, "index.nfo")) _
@@ -571,6 +645,9 @@ Public Class Scanner
                             Case fFile.ToLower = String.Concat(filePath, ".[trailer]", t).ToLower AndAlso Master.eSettings.TrailerYAMJ AndAlso Not (FileUtils.Common.isBDRip(Movie.Filename) Or FileUtils.Common.isVideoTS(Movie.Filename))
                                 Movie.Trailer = fFile
                                 Exit For
+                            Case fFile.ToLower = String.Concat(filePath, ".[trailer]", t).ToLower AndAlso Master.eSettings.TrailerNMJ AndAlso Not (FileUtils.Common.isBDRip(Movie.Filename) Or FileUtils.Common.isVideoTS(Movie.Filename))
+                                Movie.Trailer = fFile
+                                Exit For
                             Case fFile.ToLower = String.Concat(Directory.GetParent(fileParPath).FullName, Path.DirectorySeparatorChar, "index-trailer", t).ToLower AndAlso Master.eSettings.TrailerFrodo AndAlso FileUtils.Common.isBDRip(Movie.Filename)
                                 Movie.Trailer = fFile
                                 Exit For
@@ -580,7 +657,13 @@ Public Class Scanner
                             Case fFile.ToLower = String.Concat(parPath, Path.DirectorySeparatorChar, Directory.GetParent(Directory.GetParent(fileParPath).FullName).Name, ".[trailer]", t).ToLower AndAlso Master.eSettings.TrailerYAMJ AndAlso FileUtils.Common.isBDRip(Movie.Filename)
                                 Movie.Trailer = fFile
                                 Exit For
+                            Case fFile.ToLower = String.Concat(parPath, Path.DirectorySeparatorChar, Directory.GetParent(Directory.GetParent(fileParPath).FullName).Name, ".[trailer]", t).ToLower AndAlso Master.eSettings.TrailerNMJ AndAlso FileUtils.Common.isBDRip(Movie.Filename)
+                                Movie.Trailer = fFile
+                                Exit For
                             Case fFile.ToLower = String.Concat(parPath, Path.DirectorySeparatorChar, Directory.GetParent(fileParPath).Name, ".[trailer]", t).ToLower AndAlso Master.eSettings.TrailerYAMJ AndAlso FileUtils.Common.isVideoTS(Movie.Filename)
+                                Movie.Trailer = fFile
+                                Exit For
+                            Case fFile.ToLower = String.Concat(parPath, Path.DirectorySeparatorChar, Directory.GetParent(fileParPath).Name, ".[trailer]", t).ToLower AndAlso Master.eSettings.TrailerNMJ AndAlso FileUtils.Common.isVideoTS(Movie.Filename)
                                 Movie.Trailer = fFile
                                 Exit For
                         End Select
@@ -589,7 +672,8 @@ Public Class Scanner
 
                 If Not String.IsNullOrEmpty(Movie.Poster) AndAlso Not String.IsNullOrEmpty(Movie.Fanart) _
                 AndAlso Not String.IsNullOrEmpty(Movie.Nfo) AndAlso Not String.IsNullOrEmpty(Movie.Trailer) _
-                AndAlso Not String.IsNullOrEmpty(Movie.Subs) AndAlso Not String.IsNullOrEmpty(Movie.Extra) Then
+                AndAlso Not String.IsNullOrEmpty(Movie.Subs) AndAlso Not String.IsNullOrEmpty(Movie.EThumbs) _
+                AndAlso Not String.IsNullOrEmpty(Movie.EFanarts) Then
                     Exit For
                 End If
             Next
@@ -1039,7 +1123,8 @@ Public Class Scanner
                 tmpMovieDB.FanartPath = mContainer.Fanart
                 tmpMovieDB.TrailerPath = mContainer.Trailer
                 tmpMovieDB.SubPath = mContainer.Subs
-                tmpMovieDB.ExtraPath = mContainer.Extra
+                tmpMovieDB.EThumbsPath = mContainer.EThumbs
+                tmpMovieDB.EFanartsPath = mContainer.EFanarts
                 tmpMovieDB.Filename = mContainer.Filename
                 tmpMovieDB.isSingle = mContainer.isSingle
                 tmpMovieDB.UseFolder = mContainer.UseFolder
@@ -1787,7 +1872,8 @@ Public Class Scanner
 
 #Region "Fields"
 
-        Private _extra As String
+        Private _ethumbs As String
+        Private _efanarts As String
         Private _fanart As String
         Private _filename As String
         Private _nfo As String
@@ -1810,12 +1896,21 @@ Public Class Scanner
 
 #Region "Properties"
 
-        Public Property Extra() As String
+        Public Property EThumbs() As String
             Get
-                Return _extra
+                Return _ethumbs
             End Get
             Set(ByVal value As String)
-                _extra = value
+                _ethumbs = value
+            End Set
+        End Property
+
+        Public Property EFanarts() As String
+            Get
+                Return _efanarts
+            End Get
+            Set(ByVal value As String)
+                _efanarts = value
             End Set
         End Property
 
@@ -1912,7 +2007,8 @@ Public Class Scanner
             _poster = String.Empty
             _fanart = String.Empty
             _nfo = String.Empty
-            _extra = String.Empty
+            _ethumbs = String.Empty
+            _efanarts = String.Empty
             _trailer = String.Empty
             _subs = String.Empty
         End Sub

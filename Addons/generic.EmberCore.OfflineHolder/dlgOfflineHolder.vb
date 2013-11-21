@@ -224,8 +224,12 @@ Public Class dlgOfflineHolder
             'tMovie.FanartPath = Path.Combine(destPath, Path.GetFileName(tMovie.FanartPath).ToString)
         End If
 
-        If Not String.IsNullOrEmpty(tMovie.ExtraPath) Then
-            DirectoryCopy(Directory.GetParent(tMovie.ExtraPath).FullName, Path.Combine(destPath, "extrathumbs"))
+        If Not String.IsNullOrEmpty(tMovie.EThumbsPath) Then
+            DirectoryCopy(Directory.GetParent(tMovie.EThumbsPath).FullName, Path.Combine(destPath, "extrathumbs"))
+        End If
+
+        If Not String.IsNullOrEmpty(tMovie.EFanartsPath) Then
+            DirectoryCopy(Directory.GetParent(tMovie.EFanartsPath).FullName, Path.Combine(destPath, "extrafanart"))
         End If
 
         If Master.eSettings.ScraperActorThumbs Then
@@ -673,7 +677,8 @@ Public Class dlgOfflineHolder
             Functions.SetScraperMod(Enums.ModType.NFO, True, True)
             Functions.SetScraperMod(Enums.ModType.Poster, True, False)
             Functions.SetScraperMod(Enums.ModType.Fanart, True, False)
-            Functions.SetScraperMod(Enums.ModType.Extra, True, False)
+            Functions.SetScraperMod(Enums.ModType.EThumbs, True, False)
+            Functions.SetScraperMod(Enums.ModType.EFanarts, True, False)
             Functions.SetScraperMod(Enums.ModType.Trailer, True, False)
 
             '****** original part of 1.3.x ********
@@ -688,8 +693,8 @@ Public Class dlgOfflineHolder
             '    ModulesManager.Instance.ScraperSelectImageOfType(tMovie, Enums.ImageType.Fanart, fResults, True)
             '    If Not String.IsNullOrEmpty(fResults.ImagePath) Then
             '        tMovie.FanartPath = fResults.ImagePath
-            '        If Directory.Exists(tempExtraPath) Then
-            '            tMovie.ExtraPath = Path.Combine(tempExtraPath, "thumb1.jpg")
+            '        If Directory.Exists(tempEThumbsPath) Then
+            '            tMovie.ExtraPath = Path.Combine(tempEThumbsPath, "thumb1.jpg")
             '        End If
             '        If Not Master.eSettings.NoSaveImagesToNfo Then tMovie.Movie.Fanart = fResults.Fanart
             '    End If

@@ -75,7 +75,7 @@ Public Class dlgUpdateMedia
             Else
                 Update_Button.Enabled = False
             End If
-        ElseIf chkPosterMod.Checked OrElse chkFanartMod.Checked OrElse chkMetaMod.Checked OrElse chkExtraMod.Checked OrElse chkTrailerMod.Checked Then
+        ElseIf chkPosterMod.Checked OrElse chkFanartMod.Checked OrElse chkMetaMod.Checked OrElse chkEThumbsMod.Checked OrElse chkTrailerMod.Checked Then
             Update_Button.Enabled = True
         Else
             Update_Button.Enabled = False
@@ -84,7 +84,8 @@ Public Class dlgUpdateMedia
         If Me.chkAllMod.Checked Then
             Functions.SetScraperMod(Enums.ModType.All, True)
         Else
-            Functions.SetScraperMod(Enums.ModType.Extra, chkExtraMod.Checked, False)
+            Functions.SetScraperMod(Enums.ModType.EThumbs, chkEThumbsMod.Checked, False)
+            Functions.SetScraperMod(Enums.ModType.EFanarts, chkEFanartsMod.Checked, False)
             Functions.SetScraperMod(Enums.ModType.Fanart, chkFanartMod.Checked, False)
             Functions.SetScraperMod(Enums.ModType.Meta, chkMetaMod.Checked, False)
             Functions.SetScraperMod(Enums.ModType.NFO, chkNFOMod.Checked, False)
@@ -133,7 +134,7 @@ Public Class dlgUpdateMedia
         CheckEnable()
     End Sub
 
-    Private Sub chkExtraMod_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkExtraMod.Click
+    Private Sub chkExtraMod_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkEThumbsMod.Click
         CheckEnable()
     End Sub
 
@@ -379,7 +380,7 @@ Public Class dlgUpdateMedia
         Me.gbUpdateItems.Text = Master.eLang.GetString(388, "Modifiers")
         Me.chkMetaMod.Text = Master.eLang.GetString(59, "Meta Data")
         Me.chkTrailerMod.Text = Master.eLang.GetString(151, "Trailer")
-        Me.chkExtraMod.Text = Master.eLang.GetString(153, "Extrathumbs")
+        Me.chkEThumbsMod.Text = Master.eLang.GetString(153, "Extrathumbs")
         Me.chkFanartMod.Text = Master.eLang.GetString(149, "Fanart")
         Me.chkPosterMod.Text = Master.eLang.GetString(148, "Poster")
         Me.chkNFOMod.Text = Master.eLang.GetString(150, "NFO")

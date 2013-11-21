@@ -28,26 +28,153 @@ Public Class dlgEditMovie
 
 #Region "Fields"
 
-    Friend WithEvents bwThumbs As New System.ComponentModel.BackgroundWorker
+    Friend WithEvents bwEThumbs As New System.ComponentModel.BackgroundWorker
+    Friend WithEvents bwEFanarts As New System.ComponentModel.BackgroundWorker
 
     Private CachePath As String = String.Empty
-    Private DeleteList As New List(Of String)
-    Private ExtraIndex As Integer = 0
     Private Fanart As New Images With {.IsEdit = True}
     Private fResults As New Containers.ImgResult
-    Private hasCleared As Boolean = False
     Private isAborting As Boolean = False
     Private lvwActorSorter As ListViewColumnSorter
-    Private lvwThumbSorter As ListViewColumnSorter
+    'Private lvwEThumbsSorter As ListViewColumnSorter
+    'Private lvwEFanartsSorter As ListViewColumnSorter
     Private Poster As New Images With {.IsEdit = True}
     Private pResults As New Containers.ImgResult
     Private PreviousFrameValue As Integer
-    Private Thumbs As New List(Of ExtraThumbs)
     Private tmpRating As String = String.Empty
+
+    'Extrathumbs
+    Private etDeleteList As New List(Of String)
+    Private EThumbsIndex As Integer = -1
+    Private EThumbsList As New List(Of ExtraImages)
+    Private hasClearedET As Boolean = False
+    Private iETCounter As Integer = 0
+    Private iETLeft As Integer = 1
+    Private iETTop As Integer = 1
+    Private pbETImage() As PictureBox
+    Private pnlETImage() As Panel
+
+    'Extrafanarts
+    Private efDeleteList As New List(Of String)
+    Private EFanartsIndex As Integer = -1
+    Private EFanartsList As New List(Of ExtraImages)
+    Private hasClearedEF As Boolean = False
+    Private iEFCounter As Integer = 0
+    Private iEFLeft As Integer = 1
+    Private iEFTop As Integer = 1
+    Private pbEFImage() As PictureBox
+    Private pnlEFImage() As Panel
 
 #End Region 'Fields
 
 #Region "Methods"
+    Private Sub AddETImage(ByVal sDescription As String, ByVal iIndex As Integer, Extrathumb As ExtraImages)
+        Try
+            ReDim Preserve Me.pnlETImage(iIndex)
+            ReDim Preserve Me.pbETImage(iIndex)
+            Me.pnlETImage(iIndex) = New Panel()
+            Me.pbETImage(iIndex) = New PictureBox()
+            Me.pbETImage(iIndex).Name = iIndex.ToString
+            Me.pnlETImage(iIndex).Name = iIndex.ToString
+            Me.pnlETImage(iIndex).Size = New Size(128, 72)
+            Me.pbETImage(iIndex).Size = New Size(128, 72)
+            Me.pnlETImage(iIndex).BackColor = Color.White
+            Me.pnlETImage(iIndex).BorderStyle = BorderStyle.FixedSingle
+            Me.pbETImage(iIndex).SizeMode = PictureBoxSizeMode.Zoom
+            Me.pnlETImage(iIndex).Tag = Extrathumb.Image
+            Me.pbETImage(iIndex).Tag = Extrathumb.Image
+            Me.pbETImage(iIndex).Image = CType(Extrathumb.Image.Image.Clone(), Image)
+            Me.pnlETImage(iIndex).Left = iETLeft
+            Me.pbETImage(iIndex).Left = 0
+            Me.pnlETImage(iIndex).Top = iETTop
+            Me.pbETImage(iIndex).Top = 0
+            Me.pnlEThumbsBG.Controls.Add(Me.pnlETImage(iIndex))
+            Me.pnlETImage(iIndex).Controls.Add(Me.pbETImage(iIndex))
+            Me.pnlETImage(iIndex).BringToFront()
+            AddHandler pbETImage(iIndex).Click, AddressOf pbETImage_Click
+            AddHandler pnlETImage(iIndex).Click, AddressOf pnlETImage_Click
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+
+        Me.iETTop += 74
+
+    End Sub
+
+    Private Sub AddEFImage(ByVal sDescription As String, ByVal iIndex As Integer, Extrafanart As ExtraImages)
+        Try
+            ReDim Preserve Me.pnlEFImage(iIndex)
+            ReDim Preserve Me.pbEFImage(iIndex)
+            Me.pnlEFImage(iIndex) = New Panel()
+            Me.pbEFImage(iIndex) = New PictureBox()
+            Me.pbEFImage(iIndex).Name = iIndex.ToString
+            Me.pnlEFImage(iIndex).Name = iIndex.ToString
+            Me.pnlEFImage(iIndex).Size = New Size(128, 72)
+            Me.pbEFImage(iIndex).Size = New Size(128, 72)
+            Me.pnlEFImage(iIndex).BackColor = Color.White
+            Me.pnlEFImage(iIndex).BorderStyle = BorderStyle.FixedSingle
+            Me.pbEFImage(iIndex).SizeMode = PictureBoxSizeMode.Zoom
+            Me.pnlEFImage(iIndex).Tag = Extrafanart.Image
+            Me.pbEFImage(iIndex).Tag = Extrafanart.Image
+            Me.pbEFImage(iIndex).Image = CType(Extrafanart.Image.Image.Clone(), Image)
+            Me.pnlEFImage(iIndex).Left = iEFLeft
+            Me.pbEFImage(iIndex).Left = 0
+            Me.pnlEFImage(iIndex).Top = iEFTop
+            Me.pbEFImage(iIndex).Top = 0
+            Me.pnlEFanartsBG.Controls.Add(Me.pnlEFImage(iIndex))
+            Me.pnlEFImage(iIndex).Controls.Add(Me.pbEFImage(iIndex))
+            Me.pnlEFImage(iIndex).BringToFront()
+            AddHandler pbEFImage(iIndex).Click, AddressOf pbEFImage_Click
+            AddHandler pnlEFImage(iIndex).Click, AddressOf pnlEFImage_Click
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+
+        Me.iEFTop += 74
+
+    End Sub
+
+    Private Sub pbETImage_Click(ByVal sender As Object, ByVal e As System.EventArgs)
+        Me.DoSelectET(Convert.ToInt32(DirectCast(sender, PictureBox).Name), DirectCast(DirectCast(sender, PictureBox).Tag, Images))
+    End Sub
+
+    Private Sub pnlETImage_Click(ByVal sender As Object, ByVal e As System.EventArgs)
+        Me.DoSelectET(Convert.ToInt32(DirectCast(sender, Panel).Name), DirectCast(DirectCast(sender, Panel).Tag, Images))
+    End Sub
+
+    Private Sub pbEFImage_Click(ByVal sender As Object, ByVal e As System.EventArgs)
+        Me.DoSelectEF(Convert.ToInt32(DirectCast(sender, PictureBox).Name), DirectCast(DirectCast(sender, PictureBox).Tag, Images))
+    End Sub
+
+    Private Sub pnlEFImage_Click(ByVal sender As Object, ByVal e As System.EventArgs)
+        Me.DoSelectEF(Convert.ToInt32(DirectCast(sender, Panel).Name), DirectCast(DirectCast(sender, Panel).Tag, Images))
+    End Sub
+
+    Private Sub DoSelectET(ByVal iIndex As Integer, poster As Images)
+        Try
+            Me.pbEThumbs.Image = poster.Image
+            Me.pbEThumbs.Tag = poster
+            Me.btnEThumbsSetAsFanart.Enabled = True
+            Me.EThumbsIndex = iIndex
+            Me.lblEThumbsSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbEThumbs.Image.Width, Me.pbEThumbs.Image.Height)
+            Me.lblEThumbsSize.Visible = True
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub DoSelectEF(ByVal iIndex As Integer, poster As Images)
+        Try
+            Me.pbEFanarts.Image = poster.Image
+            Me.pbEFanarts.Tag = poster
+            Me.btnEFanartsSetAsFanart.Enabled = True
+            Me.EFanartsIndex = iIndex
+            Me.lblEFanartsSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbEFanarts.Image.Width, Me.pbEFanarts.Image.Height)
+            Me.lblEFanartsSize.Visible = True
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
 
     Private Sub btnActorDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnActorDown.Click
         If Me.lvActors.SelectedItems.Count > 0 AndAlso Not IsNothing(Me.lvActors.SelectedItems(0)) AndAlso Me.lvActors.SelectedIndices(0) < (Me.lvActors.Items.Count - 1) Then
@@ -116,18 +243,18 @@ Public Class dlgEditMovie
         End If
     End Sub
 
-    Private Sub btnDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDown.Click
-        Try
-            If lvThumbs.Items.Count > 0 AndAlso lvThumbs.SelectedIndices(0) < (lvThumbs.Items.Count - 1) Then
-                Dim iIndex As Integer = lvThumbs.SelectedIndices(0)
-                lvThumbs.Items(iIndex).Text = String.Concat("  ", CStr(Convert.ToInt32(lvThumbs.Items(iIndex).Text.Trim) + 1))
-                lvThumbs.Items(iIndex + 1).Text = String.Concat("  ", CStr(Convert.ToInt32(lvThumbs.Items(iIndex + 1).Text.Trim) - 1))
-                lvThumbs.Sort()
-            End If
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
+    ' temporarily disabled
+    'Private Sub btnEThumbsDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEThumbsDown.Click
+    '    Try
+    '        If EThumbsList.Count > 0 AndAlso EThumbsIndex < (EThumbsList.Count - 1) Then
+    '            Dim iIndex As Integer = EThumbsIndex
+    '            EThumbsList.Item(iIndex).Index = EThumbsList.Item(iIndex).Index + 1
+    '            EThumbsList.Item(iIndex + 1).Index = EThumbsList.Item(iIndex + 1).Index - 1
+    '        End If
+    '    Catch ex As Exception
+    '        Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+    '    End Try
+    'End Sub
 
     Private Sub btnEditActor_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEditActor.Click
         EditActor()
@@ -176,19 +303,29 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub btnRemoveFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveFanart.Click
-		Me.pbFanart.Image = Nothing
-		Me.pbFanart.Tag = Nothing
+        Me.pbFanart.Image = Nothing
+        Me.pbFanart.Tag = Nothing
         Me.Fanart.Dispose()
     End Sub
 
     Private Sub btnRemovePoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemovePoster.Click
-		Me.pbPoster.Image = Nothing
-		Me.pbPoster.Tag = Nothing
+        Me.pbPoster.Image = Nothing
+        Me.pbPoster.Tag = Nothing
         Me.Poster.Dispose()
     End Sub
 
-    Private Sub btnRemoveThumb_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveThumb.Click
-        Me.DeleteExtraThumbs()
+    Private Sub btnEThumbsRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEThumbsRemove.Click
+        Me.DeleteEThumbs()
+        Me.RefreshEThumbs()
+        Me.lblEThumbsSize.Text = ""
+        Me.lblEThumbsSize.Visible = False
+    End Sub
+
+    Private Sub btnEFanartsRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEFanartsRemove.Click
+        Me.DeleteEFanarts()
+        Me.RefreshEFanarts()
+        Me.lblEFanartsSize.Text = ""
+        Me.lblEFanartsSize.Visible = False
     End Sub
 
     Private Sub btnRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemove.Click
@@ -202,8 +339,27 @@ Public Class dlgEditMovie
         Me.Close()
     End Sub
 
-    Private Sub btnSetAsFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetAsFanart.Click
-        Fanart.FromFile(Me.Thumbs.Item(Me.ExtraIndex).Path)
+    Private Sub btnEThumbsSetAsFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEThumbsSetAsFanart.Click
+        If Not String.IsNullOrEmpty(Me.EThumbsList.Item(Me.EThumbsIndex).Path) AndAlso Me.EThumbsList.Item(Me.EThumbsIndex).Path.Substring(0, 1) = ":" Then
+            Fanart.FromWeb(Me.EThumbsList.Item(Me.EThumbsIndex).Path.Substring(1, Me.EThumbsList.Item(Me.EThumbsIndex).Path.Length - 1))
+        Else
+            Fanart.FromFile(Me.EThumbsList.Item(Me.EThumbsIndex).Path)
+        End If
+        If Not IsNothing(Fanart.Image) Then
+            Me.pbFanart.Image = Fanart.Image
+            Me.pbFanart.Tag = Fanart
+
+            Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
+            Me.lblFanartSize.Visible = True
+        End If
+    End Sub
+
+    Private Sub btnEFanartsSetAsFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEFanartsSetAsFanart.Click
+        If Not String.IsNullOrEmpty(Me.EFanartsList.Item(Me.EFanartsIndex).Path) AndAlso Me.EFanartsList.Item(Me.EFanartsIndex).Path.Substring(0, 1) = ":" Then
+            Fanart.FromWeb(Me.EFanartsList.Item(Me.EFanartsIndex).Path.Substring(1, Me.EFanartsList.Item(Me.EFanartsIndex).Path.Length - 1))
+        Else
+            Fanart.FromFile(Me.EFanartsList.Item(Me.EFanartsIndex).Path)
+        End If
         If Not IsNothing(Fanart.Image) Then
             Me.pbFanart.Image = Fanart.Image
             Me.pbFanart.Tag = Fanart
@@ -238,14 +394,18 @@ Public Class dlgEditMovie
         Dim dlgImgS As dlgImgSelect
         Dim aList As New List(Of MediaContainers.Image)
         Dim pResults As New MediaContainers.Image
+        Dim efList As New List(Of String)
+        Dim etList As New List(Of String)
 
         Try
             'Public Function MovieScrapeImages(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Boolean
             If Not ModulesManager.Instance.MovieScrapeImages(Master.currMovie, Enums.ScraperCapabilities.Fanart, aList) Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
-                    If dlgImgS.ShowDialog(Master.currMovie, Enums.ImageType.Fanart, aList, True) = DialogResult.OK Then
+                    If dlgImgS.ShowDialog(Master.currMovie, Enums.ImageType.Fanart, aList, efList, etList, True) = DialogResult.OK Then
                         pResults = dlgImgS.Results
+                        Master.currMovie.etList = dlgImgS.etList
+                        Master.currMovie.efList = dlgImgS.efList
                         If Not String.IsNullOrEmpty(pResults.URL) Then
                             Cursor = Cursors.WaitCursor
                             pResults.WebImage.FromWeb(pResults.URL)
@@ -261,6 +421,9 @@ Public Class dlgEditMovie
                     MsgBox(Master.eLang.GetString(969, "No fanart could be found. Please check to see if any fanart scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(970, "No Fanart Found"))
                 End If
             End If
+
+            RefreshEFanarts()
+            RefreshEThumbs()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -312,6 +475,8 @@ Public Class dlgEditMovie
         Dim pResults As New MediaContainers.Image
         Dim dlgImgS As dlgImgSelect
         Dim aList As New List(Of MediaContainers.Image)
+        Dim efList As New List(Of String)
+        Dim etList As New List(Of String)
 
         Try
             Dim sPath As String = Path.Combine(Master.TempPath, "poster.jpg")
@@ -320,7 +485,7 @@ Public Class dlgEditMovie
             If Not ModulesManager.Instance.MovieScrapeImages(Master.currMovie, Enums.ScraperCapabilities.Poster, aList) Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
-                    If dlgImgS.ShowDialog(Master.currMovie, Enums.ImageType.Posters, aList, True) = Windows.Forms.DialogResult.OK Then
+                    If dlgImgS.ShowDialog(Master.currMovie, Enums.ImageType.Posters, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
                         pResults = dlgImgS.Results
                         If Not String.IsNullOrEmpty(pResults.URL) Then
                             Cursor = Cursors.WaitCursor
@@ -371,28 +536,55 @@ Public Class dlgEditMovie
         End Using
     End Sub
 
-    Private Sub btnThumbsRefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnThumbsRefresh.Click
-        Me.RefreshExtraThumbs()
+    Private Sub btnEThumbsRefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEThumbsRefresh.Click
+        Me.RefreshEThumbs()
     End Sub
 
-    Private Sub btnTransferNow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTransferNow.Click
-        Me.TransferETs()
-        Me.RefreshExtraThumbs()
-        Me.pnlETQueue.Visible = False
+    Private Sub btnEFanartsRefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEFanartsRefresh.Click
+        Me.RefreshEFanarts()
     End Sub
 
-    Private Sub btnUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUp.Click
-        Try
-            If lvThumbs.Items.Count > 0 AndAlso lvThumbs.SelectedIndices(0) > 0 Then
-                Dim iIndex As Integer = lvThumbs.SelectedIndices(0)
-                lvThumbs.Items(iIndex).Text = String.Concat("  ", CStr(Convert.ToInt32(lvThumbs.Items(iIndex).Text.Trim) - 1))
-                lvThumbs.Items(iIndex - 1).Text = String.Concat("  ", CStr(Convert.ToInt32(lvThumbs.Items(iIndex - 1).Text.Trim) + 1))
-                lvThumbs.Sort()
-            End If
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
+    ' temporarily disabled
+    'Private Sub btnEThumbsTransfer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEThumbsTransfer.Click
+    '    Me.TransferEThumbs()
+    '    Me.RefreshEThumbs()
+    '    Me.pnlETQueue.Visible = False
+    'End Sub
+
+    ' temporarily disabled
+    'Private Sub btnEFanartsTransfer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEFanartsTransfer.Click
+    '    Me.TransferEFanarts()
+    '    Me.RefreshEFanarts()
+    '    Me.pnlETQueue.Visible = False
+    'End Sub
+
+    ' temporarily disabled
+    'Private Sub btnEThumbsUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEThumbsUp.Click
+    '    Try
+    '        If lvEThumbs.Items.Count > 0 AndAlso lvEThumbs.SelectedIndices(0) > 0 Then
+    '            Dim iIndex As Integer = lvEThumbs.SelectedIndices(0)
+    '            lvEThumbs.Items(iIndex).Text = String.Concat("  ", CStr(Convert.ToInt32(lvEThumbs.Items(iIndex).Text.Trim) - 1))
+    '            lvEThumbs.Items(iIndex - 1).Text = String.Concat("  ", CStr(Convert.ToInt32(lvEThumbs.Items(iIndex - 1).Text.Trim) + 1))
+    '            lvEThumbs.Sort()
+    '        End If
+    '    Catch ex As Exception
+    '        Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+    '    End Try
+    'End Sub
+
+    ' temporarily disabled
+    'Private Sub btnEFanartsUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    '    Try
+    '        If lvEFanarts.Items.Count > 0 AndAlso lvEFanarts.SelectedIndices(0) > 0 Then
+    '            Dim iIndex As Integer = lvEFanarts.SelectedIndices(0)
+    '            lvEFanarts.Items(iIndex).Text = String.Concat("  ", CStr(Convert.ToInt32(lvEFanarts.Items(iIndex).Text.Trim) - 1))
+    '            lvEFanarts.Items(iIndex - 1).Text = String.Concat("  ", CStr(Convert.ToInt32(lvEFanarts.Items(iIndex - 1).Text.Trim) + 1))
+    '            lvEFanarts.Sort()
+    '        End If
+    '    Catch ex As Exception
+    '        Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+    '    End Try
+    'End Sub
 
     Private Sub BuildStars(ByVal sinRating As Single)
 
@@ -455,17 +647,31 @@ Public Class dlgEditMovie
         End Try
     End Sub
 
-    Private Sub bwThumbs_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwThumbs.DoWork
-        If Not Master.currMovie.ClearExtras OrElse hasCleared Then LoadThumbs()
+    Private Sub bwEThumbs_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwEThumbs.DoWork
+        If Not Master.currMovie.ClearEThumbs OrElse hasClearedET Then LoadEThumbs()
     End Sub
 
-    Private Sub bwThumbs_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwThumbs.RunWorkerCompleted
+    Private Sub bwEFanarts_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwEFanarts.DoWork
+        If Not Master.currMovie.ClearEFanarts OrElse hasClearedEF Then LoadEFanarts()
+    End Sub
+
+    Private Sub bwEThumbs_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwEThumbs.RunWorkerCompleted
         Try
-            Dim lItem As ListViewItem
-            If Thumbs.Count > 0 Then
-                For Each thumb As ExtraThumbs In Thumbs
-                    lItem = lvThumbs.Items.Add(thumb.Name, String.Concat("  ", CStr(thumb.Index + 1)), thumb.Name)
-                    lItem.Tag = thumb.Index
+            If EThumbsList.Count > 0 Then
+                For Each tEThumb As ExtraImages In EThumbsList
+                    AddETImage(tEThumb.Name, tEThumb.Index, tEThumb)
+                Next
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub bwEFanarts_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwEFanarts.RunWorkerCompleted
+        Try
+            If EFanartsList.Count > 0 Then
+                For Each tEFanart As ExtraImages In EFanartsList
+                    AddEFImage(tEFanart.Name, tEFanart.Index, tEFanart)
                 Next
             End If
         Catch ex As Exception
@@ -497,6 +703,10 @@ Public Class dlgEditMovie
             If Directory.Exists(Path.Combine(Master.TempPath, "extrathumbs")) Then
                 FileUtils.Delete.DeleteDirectory(Path.Combine(Master.TempPath, "extrathumbs"))
             End If
+
+            If Directory.Exists(Path.Combine(Master.TempPath, "extrafanarts")) Then
+                FileUtils.Delete.DeleteDirectory(Path.Combine(Master.TempPath, "extrafanarts"))
+            End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -519,17 +729,44 @@ Public Class dlgEditMovie
         End Try
     End Sub
 
-    Private Sub DeleteExtraThumbs()
+    Private Sub DeleteEThumbs()
         Try
-            Dim iIndex As Integer = 0
-            While Me.lvThumbs.SelectedItems.Count > 0
-                iIndex = lvThumbs.SelectedItems(0).Index
-                DeleteList.Add(lvThumbs.Items(iIndex).Name)
-                lvThumbs.Items.Remove(lvThumbs.SelectedItems(0))
-                pbExtraThumbs.Image = Nothing
-                btnSetAsFanart.Enabled = False
-            End While
-            RenumberThumbs()
+            Dim iIndex As Integer = EThumbsIndex
+
+            If iIndex >= 0 Then
+                Dim tPath As String = Me.EThumbsList.Item(iIndex).Path
+                If Me.EThumbsList.Item(iIndex).Path.Substring(0, 1) = ":" Then
+                    Master.currMovie.etList.RemoveAll(Function(Str) Str = tPath)
+                    EThumbsList.Remove(EThumbsList.Item(iIndex))
+                Else
+                    etDeleteList.Add(Me.EThumbsList.Item(iIndex).Path)
+                    EThumbsList.Remove(EThumbsList.Item(iIndex))
+                End If
+                pbEThumbs.Image = Nothing
+                btnEThumbsSetAsFanart.Enabled = False
+            End If
+            RenumberEThumbs()
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub DeleteEFanarts()
+        Try
+            Dim iIndex As Integer = EFanartsIndex
+
+            If iIndex >= 0 Then
+                Dim tPath As String = Me.EFanartsList.Item(iIndex).Path
+                If Me.EFanartsList.Item(iIndex).Path.Substring(0, 1) = ":" Then
+                    Master.currMovie.efList.RemoveAll(Function(Str) Str = tPath)
+                    EFanartsList.Remove(EFanartsList.Item(iIndex))
+                Else
+                    efDeleteList.Add(Me.EFanartsList.Item(iIndex).Path)
+                    EFanartsList.Remove(EFanartsList.Item(iIndex))
+                End If
+                pbEFanarts.Image = Nothing
+                btnEFanartsSetAsFanart.Enabled = False
+            End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -542,13 +779,22 @@ Public Class dlgEditMovie
         Me.Fanart.Dispose()
         Me.Fanart = Nothing
 
-        Me.Thumbs.Clear()
-        Me.Thumbs = Nothing
+        Me.EThumbsList.Clear()
+        Me.EThumbsList = Nothing
+
+        Me.EFanartsList.Clear()
+        Me.EFanartsList = Nothing
     End Sub
 
     Private Sub dlgEditMovie_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
-        If Me.bwThumbs.IsBusy Then Me.bwThumbs.CancelAsync()
-        While Me.bwThumbs.IsBusy
+        If Me.bwEThumbs.IsBusy Then Me.bwEThumbs.CancelAsync()
+        While Me.bwEThumbs.IsBusy
+            Application.DoEvents()
+            Threading.Thread.Sleep(50)
+        End While
+
+        If Me.bwEFanarts.IsBusy Then Me.bwEFanarts.CancelAsync()
+        While Me.bwEFanarts.IsBusy
             Application.DoEvents()
             Threading.Thread.Sleep(50)
         End While
@@ -561,8 +807,10 @@ Public Class dlgEditMovie
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEditMovie, Nothing, Master.currMovie)
             Me.lvwActorSorter = New ListViewColumnSorter()
             Me.lvActors.ListViewItemSorter = Me.lvwActorSorter
-            Me.lvwThumbSorter = New ListViewColumnSorter() With {.SortByText = True, .Order = SortOrder.Ascending, .NumericSort = True}
-            Me.lvThumbs.ListViewItemSorter = Me.lvwThumbSorter
+            'Me.lvwEThumbsSorter = New ListViewColumnSorter() With {.SortByText = True, .Order = SortOrder.Ascending, .NumericSort = True}
+            'Me.lvEThumbs.ListViewItemSorter = Me.lvwEThumbsSorter
+            'Me.lvwEFanartsSorter = New ListViewColumnSorter() With {.SortByText = True, .Order = SortOrder.Ascending, .NumericSort = True}
+            'Me.lvEFanarts.ListViewItemSorter = Me.lvwEFanartsSorter
 
             Dim iBackground As New Bitmap(Me.pnlTop.Width, Me.pnlTop.Height)
             Using g As Graphics = Graphics.FromImage(iBackground)
@@ -772,16 +1020,19 @@ Public Class dlgEditMovie
                 If DoAll Then
 
                     If Not Master.currMovie.isSingle Then
-                        TabControl1.TabPages.Remove(TabPage4)
-                        TabControl1.TabPages.Remove(TabPage5)
+                        tcEditMovie.TabPages.Remove(tpFrameExtraction)
+                        tcEditMovie.TabPages.Remove(tpEThumbs)
+                        tcEditMovie.TabPages.Remove(tpEFanarts)
                     Else
                         Dim pExt As String = Path.GetExtension(Master.currMovie.Filename).ToLower
                         If pExt = ".rar" OrElse pExt = ".iso" OrElse pExt = ".img" OrElse _
                         pExt = ".bin" OrElse pExt = ".cue" OrElse pExt = ".dat" Then
-                            TabControl1.TabPages.Remove(TabPage4)
+                            tcEditMovie.TabPages.Remove(tpFrameExtraction)
                         Else
-                            .bwThumbs.WorkerSupportsCancellation = True
-                            .bwThumbs.RunWorkerAsync()
+                            .bwEThumbs.WorkerSupportsCancellation = True
+                            .bwEThumbs.RunWorkerAsync()
+                            .bwEFanarts.WorkerSupportsCancellation = True
+                            .bwEFanarts.RunWorkerAsync()
                         End If
                     End If
 
@@ -826,8 +1077,6 @@ Public Class dlgEditMovie
         End Try
     End Sub
 
-
-
     Private Sub lbGenre_ItemCheck(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckEventArgs) Handles lbGenre.ItemCheck
         If e.Index = 0 Then
             For i As Integer = 1 To lbGenre.Items.Count - 1
@@ -858,45 +1107,126 @@ Public Class dlgEditMovie
         Me.lbMPAA.Items.AddRange(APIXML.GetRatingList)
     End Sub
 
-    Private Sub LoadThumbs()
-        Dim tPath As String = String.Empty
+    Private Sub LoadEThumbs()
+        Dim ET_tPath As String = String.Empty
+        Dim ET_lFI As New List(Of String)
+        Dim ET_i As Integer = 0
 
-        If Master.eSettings.VideoTSParentXBMC AndAlso FileUtils.Common.isBDRip(Master.currMovie.Filename) Then
-            tPath = Path.Combine(Directory.GetParent(Directory.GetParent(Master.currMovie.Filename).FullName).FullName, "extrathumbs")
-        Else
-            tPath = Path.Combine(Directory.GetParent(Master.currMovie.Filename).FullName, "extrathumbs")
+        '*************** XBMC Frodo & Eden settings ***************
+        If Master.eSettings.UseFrodo OrElse Master.eSettings.UseEden Then
+            If Master.eSettings.ExtrathumbsFrodo OrElse Master.eSettings.ExtrathumbsEden Then
+                If FileUtils.Common.isVideoTS(Master.currMovie.Filename) Then
+                    ET_tPath = Path.Combine(Directory.GetParent(Master.currMovie.Filename).FullName, "extrathumbs")
+                ElseIf FileUtils.Common.isBDRip(Master.currMovie.Filename) Then
+                    ET_tPath = Path.Combine(Directory.GetParent(Directory.GetParent(Master.currMovie.Filename).FullName).FullName, "extrathumbs")
+                Else
+                    ET_tPath = Path.Combine(Directory.GetParent(Master.currMovie.Filename).FullName, "extrathumbs")
+                End If
+            End If
         End If
 
-        If Directory.Exists(tPath) Then
-            Dim di As New DirectoryInfo(tPath)
-            Dim lFI As New List(Of FileInfo)
-            Dim i As Integer = 0
-            Try
+        Try
+            If Directory.Exists(ET_tPath) Then
                 Try
-                    lFI.AddRange(di.GetFiles("thumb*.jpg"))
-                Catch
+                    ET_lFI.AddRange(Directory.GetFiles(ET_tPath, "thumb*.jpg"))
+                Catch ex As Exception
+                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 End Try
 
-                If lFI.Count > 0 Then
-                    For Each thumb As FileInfo In lFI.OrderBy(Function(t) Convert.ToInt32(Regex.Match(t.Name, "(\d+)").Groups(0).ToString))
-                        If Me.bwThumbs.CancellationPending Then Return
-                        If Not Me.DeleteList.Contains(thumb.Name) Then
-                            Using fsImage As New FileStream(thumb.FullName, FileMode.Open, FileAccess.Read)
-                                If fsImage.Length = 0 Then Continue For
-                                If Me.bwThumbs.CancellationPending Then Return
-                                Thumbs.Add(New ExtraThumbs With {.Image = Image.FromStream(fsImage), .Name = thumb.Name, .Index = i, .Path = thumb.FullName})
-                                ilThumbs.Images.Add(thumb.Name, Thumbs.Item(i).Image)
-                            End Using
-                            i += 1
+                ' load local Extrathumbs
+                If ET_lFI.Count > 0 Then
+                    For Each thumb As String In ET_lFI
+                        Dim ETImage As New Images
+                        If Me.bwEThumbs.CancellationPending Then Return
+                        If Not Me.etDeleteList.Contains(thumb) Then
+                            ETImage.FromFile(thumb)
+                            EThumbsList.Add(New ExtraImages With {.Image = ETImage, .Name = Path.GetFileName(thumb), .Index = ET_i, .Path = thumb})
+                            ET_i += 1
                         End If
                     Next
                 End If
-            Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-            End Try
-            lFI = Nothing
-            di = Nothing
+            End If
+
+            ' load scraped Extrathumbs
+            If Not Master.currMovie.etList Is Nothing Then
+                For Each thumb As String In Master.currMovie.etList
+                    Dim ETImage As New Images
+                    If Not String.IsNullOrEmpty(thumb) Then
+                        ETImage.FromWeb(thumb.Substring(1, thumb.Length - 1))
+                    End If
+                    If Not IsNothing(ETImage.Image) Then
+                        EThumbsList.Add(New ExtraImages With {.Image = ETImage, .Name = Path.GetFileName(thumb), .Index = ET_i, .Path = thumb})
+                        ET_i += 1
+                    End If
+                Next
+            End If
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+
+        ET_lFI = Nothing
+    End Sub
+
+    Private Sub LoadEFanarts()
+        Dim EF_tPath As String = String.Empty
+        Dim EF_lFI As New List(Of String)
+        Dim EF_i As Integer = 0
+
+        '*************** XBMC Frodo & Eden settings ***************
+        If Master.eSettings.UseFrodo OrElse Master.eSettings.UseEden Then
+            If Master.eSettings.ExtrafanartsFrodo OrElse Master.eSettings.ExtrafanartsEden Then
+                If FileUtils.Common.isVideoTS(Master.currMovie.Filename) Then
+                    EF_tPath = Path.Combine(Directory.GetParent(Master.currMovie.Filename).FullName, "extrafanart")
+                ElseIf FileUtils.Common.isBDRip(Master.currMovie.Filename) Then
+                    EF_tPath = Path.Combine(Directory.GetParent(Directory.GetParent(Master.currMovie.Filename).FullName).FullName, "extrafanart")
+                Else
+                    EF_tPath = Path.Combine(Directory.GetParent(Master.currMovie.Filename).FullName, "extrafanart")
+                End If
+            End If
         End If
+
+        Try
+            If Directory.Exists(EF_tPath) Then
+                Try
+                    EF_lFI.AddRange(Directory.GetFiles(EF_tPath, "*.jpg"))
+                Catch ex As Exception
+                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                End Try
+
+                ' load local Extrafanarts
+                If EF_lFI.Count > 0 Then
+                    For Each fanart As String In EF_lFI
+                        Dim EFImage As New Images
+                        If Me.bwEFanarts.CancellationPending Then Return
+                        If Not Me.efDeleteList.Contains(fanart) Then
+                            EFImage.FromFile(fanart)
+                            EFanartsList.Add(New ExtraImages With {.Image = EFImage, .Name = Path.GetFileName(fanart), .Index = EF_i, .Path = fanart})
+                            EF_i += 1
+                        End If
+                    Next
+                End If
+            End If
+
+            ' load scraped Extrafanarts
+            If Not Master.currMovie.efList Is Nothing Then
+                For Each fanart As String In Master.currMovie.efList
+                    Dim EFImage As New Images
+                    If Not String.IsNullOrEmpty(fanart) Then
+                        EFImage.FromWeb(fanart.Substring(1, fanart.Length - 1))
+                    End If
+                    If Not IsNothing(EFImage.Image) Then
+                        EFanartsList.Add(New ExtraImages With {.Image = EFImage, .Name = Path.GetFileName(fanart), .Index = EF_i, .Path = fanart})
+                        EF_i += 1
+                    End If
+                Next
+            End If
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+
+        EF_lFI = Nothing
     End Sub
 
     Private Sub lvActors_ColumnClick(ByVal sender As Object, ByVal e As System.Windows.Forms.ColumnClickEventArgs) Handles lvActors.ColumnClick
@@ -931,20 +1261,12 @@ Public Class dlgEditMovie
         If e.KeyCode = Keys.Delete Then Me.DeleteActors()
     End Sub
 
-    Private Sub lvThumbs_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lvThumbs.KeyDown
-        If e.KeyCode = Keys.Delete Then Me.DeleteExtraThumbs()
+    Private Sub lvEThumbs_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs)
+        If e.KeyCode = Keys.Delete Then Me.DeleteEThumbs()
     End Sub
 
-    Private Sub lvThumbs_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lvThumbs.SelectedIndexChanged
-        If Me.lvThumbs.SelectedIndices.Count > 0 Then
-            Try
-                Me.pbExtraThumbs.Image = Me.Thumbs.Item(Convert.ToInt32(Me.lvThumbs.SelectedItems(0).Tag)).Image
-                Me.ExtraIndex = Convert.ToInt32(Me.lvThumbs.SelectedItems(0).Tag)
-                Me.btnSetAsFanart.Enabled = True
-            Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-            End Try
-        End If
+    Private Sub lvEFanart_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs)
+        If e.KeyCode = Keys.Delete Then Me.DeleteEFanarts()
     End Sub
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
@@ -1103,63 +1425,162 @@ Public Class dlgEditMovie
         End Try
     End Sub
 
-    Private Sub RefreshExtraThumbs()
+    Private Sub RefreshEThumbs()
         Try
-            If Me.bwThumbs.IsBusy Then Me.bwThumbs.CancelAsync()
-            While Me.bwThumbs.IsBusy
+            If Me.bwEThumbs.IsBusy Then Me.bwEThumbs.CancelAsync()
+            While Me.bwEThumbs.IsBusy
                 Application.DoEvents()
                 Threading.Thread.Sleep(50)
             End While
 
-            Thumbs.Clear()
-            lvThumbs.Clear()
-            ilThumbs.Images.Clear()
+            Me.iETTop = 1 ' set first image top position back to 1
+            Me.EThumbsList.Clear()
+            While Me.pnlEThumbsBG.Controls.Count > 0
+                Me.pnlEThumbsBG.Controls(0).Dispose()
+            End While
 
-            Me.bwThumbs.WorkerSupportsCancellation = True
-            Me.bwThumbs.RunWorkerAsync()
+            Me.bwEThumbs.WorkerSupportsCancellation = True
+            Me.bwEThumbs.RunWorkerAsync()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
-    Private Sub RenumberThumbs()
-        For i As Integer = 0 To lvThumbs.Items.Count - 1
-            lvThumbs.Items(i).Text = String.Concat("  ", CStr(i + 1))
-            lvThumbs.Sort()
+    Private Sub RefreshEFanarts()
+        Try
+            If Me.bwEFanarts.IsBusy Then Me.bwEFanarts.CancelAsync()
+            While Me.bwEFanarts.IsBusy
+                Application.DoEvents()
+                Threading.Thread.Sleep(50)
+            End While
+
+            Me.iEFTop = 1 ' set first image top position back to 1
+            Me.EFanartsList.Clear()
+            While Me.pnlEFanartsBG.Controls.Count > 0
+                Me.pnlEFanartsBG.Controls(0).Dispose()
+            End While
+
+            Me.bwEFanarts.WorkerSupportsCancellation = True
+            Me.bwEFanarts.RunWorkerAsync()
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub RenumberEThumbs()
+        For i As Integer = 0 To EThumbsList.Count - 1
+            EThumbsList.Item(i).Index = i + 1
         Next
     End Sub
 
-    Private Sub SaveExtraThumbsList()
+    Private Sub SaveEThumbsList()
         Dim tPath As String = String.Empty
         Try
-            If Master.eSettings.VideoTSParent AndAlso FileUtils.Common.isVideoTS(Master.currMovie.Filename) Then
-                tPath = Path.Combine(Directory.GetParent(Directory.GetParent(Master.currMovie.Filename).FullName).FullName, "extrathumbs")
-            ElseIf Master.eSettings.VideoTSParent AndAlso FileUtils.Common.isBDRip(Master.currMovie.Filename) Then
-                tPath = Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(Master.currMovie.Filename).FullName).FullName).FullName, "extrathumbs")
-            ElseIf Master.eSettings.VideoTSParentXBMC AndAlso FileUtils.Common.isBDRip(Master.currMovie.Filename) Then
-                tPath = Path.Combine(Directory.GetParent(Directory.GetParent(Master.currMovie.Filename).FullName).FullName, "extrathumbs")
-            Else
-                tPath = Path.Combine(Directory.GetParent(Master.currMovie.Filename).FullName, "extrathumbs")
+            '*************** XBMC Frodo & Eden settings ***************
+            If Master.eSettings.UseFrodo OrElse Master.eSettings.UseEden Then
+                If Master.eSettings.ExtrathumbsFrodo OrElse Master.eSettings.ExtrathumbsEden Then
+                    If FileUtils.Common.isVideoTS(Master.currMovie.Filename) Then
+                        tPath = Path.Combine(Directory.GetParent(Master.currMovie.Filename).FullName, "extrathumbs")
+                    ElseIf FileUtils.Common.isBDRip(Master.currMovie.Filename) Then
+                        tPath = Path.Combine(Directory.GetParent(Directory.GetParent(Master.currMovie.Filename).FullName).FullName, "extrathumbs")
+                    Else
+                        tPath = Path.Combine(Directory.GetParent(Master.currMovie.Filename).FullName, "extrathumbs")
+                    End If
+                End If
             End If
 
-            If Master.currMovie.ClearExtras AndAlso Not hasCleared Then
-                FileUtils.Delete.DeleteDirectory(tPath)
-                hasCleared = True
-            Else
-                'first delete the ones from the delete list
-                For Each del As String In DeleteList
-                    File.Delete(Path.Combine(tPath, del))
-                Next
+            If Not String.IsNullOrEmpty(tPath) Then
+                If Master.currMovie.ClearEThumbs AndAlso Not hasClearedET Then
+                    FileUtils.Delete.DeleteDirectory(tPath)
+                    hasClearedET = True
+                Else
+                    'first delete the ones from the delete list
+                    For Each del As String In etDeleteList
+                        File.Delete(Path.Combine(tPath, del))
+                    Next
 
-                'now name the rest something arbitrary so we don't get any conflicts
-                For Each lItem As ListViewItem In lvThumbs.Items
-                    FileSystem.Rename(Path.Combine(tPath, lItem.Name), Path.Combine(tPath, String.Concat("temp", lItem.Name)))
-                Next
+                    'now name the rest something arbitrary so we don't get any conflicts
+                    For Each lItem As ExtraImages In EThumbsList
+                        If Not lItem.Path.Substring(0, 1) = ":" Then
+                            FileSystem.Rename(lItem.Path, Path.Combine(Directory.GetParent(lItem.Path).FullName, String.Concat("temp", lItem.Name)))
+                        End If
+                    Next
 
-                'now rename them properly
-                For Each lItem As ListViewItem In lvThumbs.Items
-                    FileSystem.Rename(Path.Combine(tPath, String.Concat("temp", lItem.Name)), Path.Combine(tPath, String.Concat("thumb", lItem.Text.Trim, ".jpg")))
-                Next
+                    'now rename them properly
+                    For Each lItem As ExtraImages In EThumbsList
+                        Dim etPath As String = lItem.Image.SaveAsExtraThumb(Master.currMovie)
+                        If lItem.Index = 0 Then
+                            Master.currMovie.EThumbsPath = etPath
+                        End If
+                    Next
+
+                    'now remove the temp images
+                    Dim tList As New List(Of String)
+
+                    If Directory.Exists(tPath) Then
+                        tList.AddRange(Directory.GetFiles(tPath, "tempthumb*.jpg"))
+                        For Each tFile As String In tList
+                            File.Delete(Path.Combine(tPath, tFile))
+                        Next
+                    End If
+                End If
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub SaveEFanartsList()
+        Dim tPath As String = String.Empty
+        Try
+            '*************** XBMC Frodo & Eden settings ***************
+            If Master.eSettings.UseFrodo OrElse Master.eSettings.UseEden Then
+                If Master.eSettings.ExtrafanartsFrodo OrElse Master.eSettings.ExtrafanartsEden Then
+                    If FileUtils.Common.isVideoTS(Master.currMovie.Filename) Then
+                        tPath = Path.Combine(Directory.GetParent(Master.currMovie.Filename).FullName, "extrafanart")
+                    ElseIf FileUtils.Common.isBDRip(Master.currMovie.Filename) Then
+                        tPath = Path.Combine(Directory.GetParent(Directory.GetParent(Master.currMovie.Filename).FullName).FullName, "extrafanart")
+                    Else
+                        tPath = Path.Combine(Directory.GetParent(Master.currMovie.Filename).FullName, "extrafanart")
+                    End If
+                End If
+            End If
+
+            If Not String.IsNullOrEmpty(tPath) Then
+                If Master.currMovie.ClearEFanarts AndAlso Not hasClearedEF Then
+                    FileUtils.Delete.DeleteDirectory(tPath)
+                    hasClearedEF = True
+                Else
+                    'first delete the ones from the delete list
+                    For Each del As String In efDeleteList
+                        File.Delete(Path.Combine(tPath, del))
+                    Next
+
+                    'now name the rest something arbitrary so we don't get any conflicts
+                    For Each lItem As ExtraImages In EFanartsList
+                        If Not lItem.Path.Substring(0, 1) = ":" Then
+                            FileSystem.Rename(lItem.Path, Path.Combine(Directory.GetParent(lItem.Path).FullName, String.Concat("temp", lItem.Name)))
+                        End If
+                    Next
+
+                    'now rename them properly
+                    For Each lItem As ExtraImages In EFanartsList
+                        Dim efPath As String = lItem.Image.SaveAsExtraFanart(Master.currMovie, lItem.Name)
+                        If lItem.Index = 0 Then
+                            Master.currMovie.EFanartsPath = efPath
+                        End If
+                    Next
+
+                    'now remove the temp images
+                    Dim tList As New List(Of String)
+
+                    If Directory.Exists(tPath) Then
+                        tList.AddRange(Directory.GetFiles(tPath, "temp*.jpg"))
+                        For Each tFile As String In tList
+                            File.Delete(Path.Combine(tPath, tFile))
+                        Next
+                    End If
+                End If
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -1299,7 +1720,7 @@ Public Class dlgEditMovie
                 Master.currMovie.Movie.OldCredits = .txtCredits.Text.Trim
                 Master.currMovie.Movie.Studio = .txtStudio.Text.Trim
 
-                If AdvancedSettings.GetBooleanSetting("UseTMDBTrailerXBMC", True) Then
+                If Master.eSettings.XBMCTrailerFormat Then
                     Master.currMovie.Movie.Trailer = Replace(.txtTrailer.Text.Trim, "http://www.youtube.com/watch?v=", "plugin://plugin.video.youtube/?action=play_video&videoid=")
                 Else
                     Master.currMovie.Movie.Trailer = .txtTrailer.Text.Trim
@@ -1346,8 +1767,11 @@ Public Class dlgEditMovie
                     Next
                 End If
 
-                If Master.currMovie.ClearExtras Then
+                If Master.currMovie.ClearFanart Then
                     .Fanart.DeleteFanart(Master.currMovie)
+                End If
+
+                If Master.currMovie.ClearPoster Then
                     .Poster.DeletePosters(Master.currMovie)
                 End If
 
@@ -1381,9 +1805,11 @@ Public Class dlgEditMovie
                 If Not Master.eSettings.NoSaveImagesToNfo AndAlso pResults.Posters.Count > 0 Then Master.currMovie.Movie.Thumb = pResults.Posters
                 If Not Master.eSettings.NoSaveImagesToNfo AndAlso fResults.Fanart.Thumb.Count > 0 Then Master.currMovie.Movie.Fanart = pResults.Fanart
 
-                .SaveExtraThumbsList()
+                .SaveEThumbsList()
+                '.TransferEThumbs()
 
-                .TransferETs()
+                .SaveEFanartsList()
+                '.TransferEFanarts()
 
             End With
         Catch ex As Exception
@@ -1408,7 +1834,7 @@ Public Class dlgEditMovie
         Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
         Me.Label2.Text = Master.eLang.GetString(224, "Edit the details for the selected movie.")
         Me.Label1.Text = Master.eLang.GetString(25, "Edit Movie")
-        Me.TabPage1.Text = Master.eLang.GetString(26, "Details")
+        Me.tpDetails.Text = Master.eLang.GetString(26, "Details")
         Me.lblLocalTrailer.Text = Master.eLang.GetString(225, "Local Trailer Found")
         Me.lblStudio.Text = Master.eLang.GetString(226, "Studio:")
         Me.lblTrailer.Text = Master.eLang.GetString(227, "Trailer URL:")
@@ -1434,19 +1860,22 @@ Public Class dlgEditMovie
         Me.lblRating.Text = Master.eLang.GetString(245, "Rating:")
         Me.lblYear.Text = Master.eLang.GetString(49, "Year:")
         Me.lblTitle.Text = Master.eLang.GetString(246, "Title:")
-        Me.TabPage2.Text = Master.eLang.GetString(148, "Poster")
+        Me.tpPoster.Text = Master.eLang.GetString(148, "Poster")
         Me.btnRemovePoster.Text = Master.eLang.GetString(247, "Remove Poster")
         Me.btnSetPosterScrape.Text = Master.eLang.GetString(248, "Change Poster (Scrape)")
         Me.btnSetPoster.Text = Master.eLang.GetString(249, "Change Poster (Local)")
-        Me.TabPage3.Text = Master.eLang.GetString(149, "Fanart")
+        Me.tpFanart.Text = Master.eLang.GetString(149, "Fanart")
         Me.btnRemoveFanart.Text = Master.eLang.GetString(250, "Remove Fanart")
         Me.btnSetFanartScrape.Text = Master.eLang.GetString(251, "Change Fanart (Scrape)")
         Me.btnSetFanart.Text = Master.eLang.GetString(252, "Change Fanart (Local)")
-        Me.TabPage5.Text = Master.eLang.GetString(153, "Extrathumbs")
-        Me.Label4.Text = Master.eLang.GetString(253, "You have extrathumbs queued to be transferred to the movie directory.")
-        Me.btnTransferNow.Text = Master.eLang.GetString(254, "Transfer Now")
-        Me.btnSetAsFanart.Text = Master.eLang.GetString(255, "Set As Fanart")
-        Me.TabPage4.Text = Master.eLang.GetString(256, "Frame Extraction")
+        Me.tpEThumbs.Text = Master.eLang.GetString(153, "Extrathumbs")
+        Me.lbEThumbsQueue.Text = Master.eLang.GetString(253, "You have extrathumbs queued to be transferred to the movie directory.")
+        Me.btnEThumbsTransfer.Text = Master.eLang.GetString(254, "Transfer Now")
+        Me.btnEThumbsSetAsFanart.Text = Master.eLang.GetString(255, "Set As Fanart")
+        Me.lbEFanartsQueue.Text = Master.eLang.GetString(974, "You have extratfanarts queued to be transferred to the movie directory.")
+        Me.btnEFanartsTransfer.Text = Me.btnEThumbsTransfer.Text
+        Me.btnEFanartsSetAsFanart.Text = Me.btnEThumbsSetAsFanart.Text
+        Me.tpFrameExtraction.Text = Master.eLang.GetString(256, "Frame Extraction")
         Me.chkMark.Text = Master.eLang.GetString(23, "Mark")
         Me.btnRescrape.Text = Master.eLang.GetString(716, "Re-scrape")
         Me.btnChangeMovie.Text = Master.eLang.GetString(32, "Change Movie")
@@ -1454,75 +1883,130 @@ Public Class dlgEditMovie
         Me.btnSetFanartDL.Text = Master.eLang.GetString(266, "Change Fanart (Download)")
         Me.Label6.Text = String.Concat(Master.eLang.GetString(642, "Sort Title"), ":")
         Me.lblOriginalTitle.Text = String.Concat(Master.eLang.GetString(302, "Original Title"), ":")
-		Me.lblFileSource.Text = Master.eLang.GetString(824, "Video Source:")
-		Me.TabPage6.Text = Master.eLang.GetString(866, "Metadata")
+        Me.lblFileSource.Text = Master.eLang.GetString(824, "Video Source:")
+        Me.tpMetaData.Text = Master.eLang.GetString(866, "Metadata")
     End Sub
 
-    Private Sub TabControl1_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles TabControl1.SelectedIndexChanged
-        Try
-            If TabControl1.SelectedIndex = 3 Then
-                If File.Exists(String.Concat(Master.TempPath, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")) Then
-                    Me.pnlETQueue.Visible = True
-                Else
-                    Me.pnlETQueue.Visible = False
-                End If
-            End If
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
+    ' temporarily disabled
+    'Private Sub tcEditMovie_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tcEditMovie.SelectedIndexChanged
+    '    Try
+    '        If tcEditMovie.SelectedIndex = 3 Then
+    '            If File.Exists(String.Concat(Master.TempPath, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")) Then
+    '                Me.pnlETQueue.Visible = True
+    '            Else
+    '                Me.pnlETQueue.Visible = False
+    '            End If
+    '        End If
+    '    Catch ex As Exception
+    '        Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+    '    End Try
+    'End Sub
 
-    Private Sub TransferETs()
-        Try
-            If Directory.Exists(Path.Combine(Master.TempPath, "extrathumbs")) Then
-                Dim ePath As String = String.Empty
-                If Master.eSettings.VideoTSParent AndAlso FileUtils.Common.isVideoTS(Master.currMovie.Filename) Then
-                    ePath = Path.Combine(Directory.GetParent(Directory.GetParent(Master.currMovie.Filename).FullName).FullName, "extrathumbs")
-                    'ElseIf Master.eSettings.VideoTSParentXBMC AndAlso FileUtils.Common.isVideoTS(Master.currMovie.Filename) Then
-                    '    ePath = Path.Combine(Directory.GetParent(Master.currMovie.Filename).FullName, "extrathumbs")
-                ElseIf Master.eSettings.VideoTSParent AndAlso FileUtils.Common.isBDRip(Master.currMovie.Filename) Then
-                    ePath = Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(Master.currMovie.Filename).FullName).FullName).FullName, "extrathumbs")
-				ElseIf Master.eSettings.VideoTSParentXBMC AndAlso FileUtils.Common.isBDRip(Master.currMovie.Filename) Then
-					ePath = Path.Combine(Directory.GetParent(Directory.GetParent(Master.currMovie.Filename).FullName).FullName, "extrathumbs")
-				Else
-					ePath = Path.Combine(Directory.GetParent(Master.currMovie.Filename).FullName, "extrathumbs")
-                End If
+    ' temporarily disabled
+    'Private Sub TransferEThumbs()
+    '    Try
+    '        If Directory.Exists(Path.Combine(Master.TempPath, "extrathumbs")) Then
+    '            Dim ePath As String = String.Empty
+    '            If Master.eSettings.VideoTSParent AndAlso FileUtils.Common.isVideoTS(Master.currMovie.Filename) Then
+    '                ePath = Path.Combine(Directory.GetParent(Directory.GetParent(Master.currMovie.Filename).FullName).FullName, "extrathumbs")
+    '                'ElseIf Master.eSettings.VideoTSParentXBMC AndAlso FileUtils.Common.isVideoTS(Master.currMovie.Filename) Then
+    '                '    ePath = Path.Combine(Directory.GetParent(Master.currMovie.Filename).FullName, "extrathumbs")
+    '            ElseIf Master.eSettings.VideoTSParent AndAlso FileUtils.Common.isBDRip(Master.currMovie.Filename) Then
+    '                ePath = Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(Master.currMovie.Filename).FullName).FullName).FullName, "extrathumbs")
+    '            ElseIf Master.eSettings.VideoTSParentXBMC AndAlso FileUtils.Common.isBDRip(Master.currMovie.Filename) Then
+    '                ePath = Path.Combine(Directory.GetParent(Directory.GetParent(Master.currMovie.Filename).FullName).FullName, "extrathumbs")
+    '            Else
+    '                ePath = Path.Combine(Directory.GetParent(Master.currMovie.Filename).FullName, "extrathumbs")
+    '            End If
 
-                If Master.currMovie.ClearExtras AndAlso Not hasCleared Then
-                    FileUtils.Delete.DeleteDirectory(ePath)
-                    hasCleared = True
-                End If
+    '            If Master.currMovie.ClearEThumbs AndAlso Not hasCleared Then
+    '                FileUtils.Delete.DeleteDirectory(ePath)
+    '                hasCleared = True
+    '            End If
 
-                Dim iMod As Integer = Functions.GetExtraModifier(ePath)
-                Dim iVal As Integer = iMod + 1
-                Dim hasET As Boolean = Not iMod = 0
-                Dim fList As New List(Of String)
+    '            Dim iMod As Integer = Functions.GetExtraModifier(ePath)
+    '            Dim iVal As Integer = iMod + 1
+    '            Dim hasET As Boolean = Not iMod = 0
+    '            Dim fList As New List(Of String)
 
-                Try
-                    fList.AddRange(Directory.GetFiles(Path.Combine(Master.TempPath, "extrathumbs"), "thumb*.jpg"))
-                Catch
-                End Try
+    '            Try
+    '                fList.AddRange(Directory.GetFiles(Path.Combine(Master.TempPath, "extrathumbs"), "thumb*.jpg"))
+    '            Catch
+    '            End Try
 
-                If fList.Count > 0 Then
+    '            If fList.Count > 0 Then
 
-                    If Not hasET Then
-                        Directory.CreateDirectory(ePath)
-                    End If
+    '                If Not hasET Then
+    '                    Directory.CreateDirectory(ePath)
+    '                End If
 
-                    For Each sFile As String In fList
-                        FileUtils.Common.MoveFileWithStream(sFile, Path.Combine(ePath, String.Concat("thumb", iVal, ".jpg")))
-                        iVal += 1
-                    Next
-                End If
+    '                For Each sFile As String In fList
+    '                    FileUtils.Common.MoveFileWithStream(sFile, Path.Combine(ePath, String.Concat("thumb", iVal, ".jpg")))
+    '                    iVal += 1
+    '                Next
+    '            End If
 
-                Master.currMovie.ExtraPath = ePath
+    '            Master.currMovie.EThumbsPath = ePath
 
-                FileUtils.Delete.DeleteDirectory(Path.Combine(Master.TempPath, "extrathumbs"))
-            End If
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
+    '            FileUtils.Delete.DeleteDirectory(Path.Combine(Master.TempPath, "extrathumbs"))
+    '        End If
+    '    Catch ex As Exception
+    '        Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+    '    End Try
+    'End Sub
+
+    ' temporarily disabled
+    'Private Sub TransferEFanarts()
+    '    Try
+    '        If Directory.Exists(Path.Combine(Master.TempPath, "extrafanart")) Then
+    '            Dim ePath As String = String.Empty
+    '            If Master.eSettings.VideoTSParent AndAlso FileUtils.Common.isVideoTS(Master.currMovie.Filename) Then
+    '                ePath = Path.Combine(Directory.GetParent(Directory.GetParent(Master.currMovie.Filename).FullName).FullName, "extrafanart")
+    '                'ElseIf Master.eSettings.VideoTSParentXBMC AndAlso FileUtils.Common.isVideoTS(Master.currMovie.Filename) Then
+    '                '    ePath = Path.Combine(Directory.GetParent(Master.currMovie.Filename).FullName, "extrathumbs")
+    '            ElseIf Master.eSettings.VideoTSParent AndAlso FileUtils.Common.isBDRip(Master.currMovie.Filename) Then
+    '                ePath = Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(Master.currMovie.Filename).FullName).FullName).FullName, "extrafanart")
+    '            ElseIf Master.eSettings.VideoTSParentXBMC AndAlso FileUtils.Common.isBDRip(Master.currMovie.Filename) Then
+    '                ePath = Path.Combine(Directory.GetParent(Directory.GetParent(Master.currMovie.Filename).FullName).FullName, "extrafanart")
+    '            Else
+    '                ePath = Path.Combine(Directory.GetParent(Master.currMovie.Filename).FullName, "extrafanart")
+    '            End If
+
+    '            If Master.currMovie.ClearEFanarts AndAlso Not hasCleared Then
+    '                FileUtils.Delete.DeleteDirectory(ePath)
+    '                hasCleared = True
+    '            End If
+
+    '            Dim iMod As Integer = Functions.GetExtraModifier(ePath)
+    '            Dim iVal As Integer = iMod + 1
+    '            Dim hasET As Boolean = Not iMod = 0
+    '            Dim fList As New List(Of String)
+
+    '            Try
+    '                fList.AddRange(Directory.GetFiles(Path.Combine(Master.TempPath, "extrafanart"), "fanart*.jpg"))
+    '            Catch
+    '            End Try
+
+    '            If fList.Count > 0 Then
+
+    '                If Not hasET Then
+    '                    Directory.CreateDirectory(ePath)
+    '                End If
+
+    '                For Each sFile As String In fList
+    '                    FileUtils.Common.MoveFileWithStream(sFile, Path.Combine(ePath, String.Concat("fanart", iVal, ".jpg")))
+    '                    iVal += 1
+    '                Next
+    '            End If
+
+    '            Master.currMovie.EFanartsPath = ePath
+
+    '            FileUtils.Delete.DeleteDirectory(Path.Combine(Master.TempPath, "extrafanart"))
+    '        End If
+    '    Catch ex As Exception
+    '        Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+    '    End Try
+    'End Sub
 
     Private Sub txtThumbCount_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs)
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
@@ -1542,7 +2026,7 @@ Public Class dlgEditMovie
 
     Sub GenericRunCallBack(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
         If mType = Enums.ModuleEventType.MovieFrameExtrator Then
-            Me.RefreshExtraThumbs()
+            Me.RefreshEThumbs()
         End If
 
     End Sub
@@ -1563,11 +2047,11 @@ Public Class dlgEditMovie
 
 #Region "Nested Types"
 
-    Friend Class ExtraThumbs
+    Friend Class ExtraImages
 
 #Region "Fields"
 
-        Private _image As Image
+        Private _image As New Images
         Private _index As Integer
         Private _name As String
         Private _path As String
@@ -1584,11 +2068,11 @@ Public Class dlgEditMovie
 
 #Region "Properties"
 
-        Friend Property Image() As Image
+        Friend Property Image() As Images
             Get
                 Return _image
             End Get
-            Set(ByVal value As Image)
+            Set(ByVal value As Images)
                 _image = value
             End Set
         End Property

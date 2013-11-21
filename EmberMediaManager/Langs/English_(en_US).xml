@@ -1061,5 +1061,8 @@
 <string id="970">No Fanart Found</string>
 <string id="971">No poster images could be found. Please check to see if any poster scrapers are enabled.</string>
 <string id="972">No Posters Found</string>
-<string id="973">Actor Thumbs Only</string>  
+<string id="973">Actor Thumbs Only</string> 
+<string id="974">You have extratfanarts queued to be transferred to the movie directory.</string>
+<string id="975">Extrafanarts Only</string>
+<string id="976">Check for Extrafanarts</string>
 </strings>
