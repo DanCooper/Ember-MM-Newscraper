@@ -71,8 +71,8 @@ Public Class HashFile
 			tPath = Path.Combine(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, "extrathumbs")
 		ElseIf Master.eSettings.VideoTSParent AndAlso FileUtils.Common.isBDRip(sPath) Then
 			tPath = Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName).FullName, "extrathumbs")
-		ElseIf Master.eSettings.VideoTSParentXBMC AndAlso FileUtils.Common.isBDRip(sPath) Then
-			tPath = Path.Combine(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, "extrathumbs")
+        ElseIf FileUtils.Common.isBDRip(sPath) Then
+            tPath = Path.Combine(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, "extrathumbs")
 		Else
 			tPath = Path.Combine(Directory.GetParent(sPath).FullName, "extrathumbs")
 		End If

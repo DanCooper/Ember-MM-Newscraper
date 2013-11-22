@@ -22,7 +22,6 @@ Partial Class dlgImgSelect
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgImgSelect))
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.OK_Button = New System.Windows.Forms.Button()
@@ -37,13 +36,11 @@ Partial Class dlgImgSelect
         Me.rbLarge = New System.Windows.Forms.RadioButton()
         Me.rbXLarge = New System.Windows.Forms.RadioButton()
         Me.lblDL2 = New System.Windows.Forms.Label()
-        Me.LargeImageList = New System.Windows.Forms.ImageList(Me.components)
         Me.pnlDLStatus = New System.Windows.Forms.Panel()
         Me.pnlDwld = New System.Windows.Forms.Panel()
         Me.lblDL1Status = New System.Windows.Forms.Label()
         Me.lblDL1 = New System.Windows.Forms.Label()
         Me.pbDL1 = New System.Windows.Forms.ProgressBar()
-        Me.lvImages = New System.Windows.Forms.ListView()
         Me.pnlBG = New System.Windows.Forms.Panel()
         Me.TableLayoutPanel1.SuspendLayout()
         Me.pnlBottomMain.SuspendLayout()
@@ -97,7 +94,7 @@ Partial Class dlgImgSelect
         Me.pnlBottomMain.Controls.Add(Me.pnlSize)
         Me.pnlBottomMain.Controls.Add(Me.TableLayoutPanel1)
         Me.pnlBottomMain.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.pnlBottomMain.Location = New System.Drawing.Point(0, 481)
+        Me.pnlBottomMain.Location = New System.Drawing.Point(0, 606)
         Me.pnlBottomMain.Name = "pnlBottomMain"
         Me.pnlBottomMain.Size = New System.Drawing.Size(836, 64)
         Me.pnlBottomMain.TabIndex = 0
@@ -105,6 +102,7 @@ Partial Class dlgImgSelect
         'cbFilterSize
         '
         Me.cbFilterSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbFilterSize.Enabled = False
         Me.cbFilterSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.cbFilterSize.FormattingEnabled = True
         Me.cbFilterSize.Location = New System.Drawing.Point(147, 6)
@@ -214,12 +212,6 @@ Partial Class dlgImgSelect
         Me.lblDL2.TabIndex = 7
         Me.lblDL2.Text = "Performing Preliminary Tasks..."
         '
-        'LargeImageList
-        '
-        Me.LargeImageList.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit
-        Me.LargeImageList.ImageSize = New System.Drawing.Size(16, 16)
-        Me.LargeImageList.TransparentColor = System.Drawing.Color.Transparent
-        '
         'pnlDLStatus
         '
         Me.pnlDLStatus.BackColor = System.Drawing.Color.White
@@ -266,28 +258,14 @@ Partial Class dlgImgSelect
         Me.pbDL1.Style = System.Windows.Forms.ProgressBarStyle.Continuous
         Me.pbDL1.TabIndex = 6
         '
-        'lvImages
-        '
-        Me.lvImages.BackColor = System.Drawing.SystemColors.Control
-        Me.lvImages.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.lvImages.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.lvImages.LargeImageList = Me.LargeImageList
-        Me.lvImages.Location = New System.Drawing.Point(0, 0)
-        Me.lvImages.MultiSelect = False
-        Me.lvImages.Name = "lvImages"
-        Me.lvImages.Size = New System.Drawing.Size(836, 481)
-        Me.lvImages.TabIndex = 2
-        Me.lvImages.UseCompatibleStateImageBehavior = False
-        '
         'pnlBG
         '
         Me.pnlBG.AutoScroll = True
         Me.pnlBG.Controls.Add(Me.pnlDLStatus)
-        Me.pnlBG.Controls.Add(Me.lvImages)
         Me.pnlBG.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlBG.Location = New System.Drawing.Point(0, 0)
         Me.pnlBG.Name = "pnlBG"
-        Me.pnlBG.Size = New System.Drawing.Size(836, 481)
+        Me.pnlBG.Size = New System.Drawing.Size(836, 606)
         Me.pnlBG.TabIndex = 2
         Me.pnlBG.Visible = False
         '
@@ -298,7 +276,7 @@ Partial Class dlgImgSelect
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.AutoScroll = True
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(836, 545)
+        Me.ClientSize = New System.Drawing.Size(836, 670)
         Me.ControlBox = False
         Me.Controls.Add(Me.pnlBG)
         Me.Controls.Add(Me.pnlBottomMain)
@@ -332,13 +310,11 @@ Partial Class dlgImgSelect
     Friend WithEvents rbXLarge As System.Windows.Forms.RadioButton
     Friend WithEvents btnPreview As System.Windows.Forms.Button
     Friend WithEvents lblDL2 As System.Windows.Forms.Label
-    Friend WithEvents LargeImageList As System.Windows.Forms.ImageList
     Friend WithEvents pnlDLStatus As System.Windows.Forms.Panel
     Friend WithEvents pnlDwld As System.Windows.Forms.Panel
     Friend WithEvents lblDL1Status As System.Windows.Forms.Label
     Friend WithEvents lblDL1 As System.Windows.Forms.Label
     Friend WithEvents pbDL1 As System.Windows.Forms.ProgressBar
-    Friend WithEvents lvImages As System.Windows.Forms.ListView
     Friend WithEvents pnlBG As System.Windows.Forms.Panel
     Friend WithEvents cbFilterSize As System.Windows.Forms.ComboBox
     Friend WithEvents lblSize As System.Windows.Forms.Label

@@ -12,7 +12,7 @@ CREATE TABLE Movies (
 	HasNfo BOOL,
 	HasTrailer BOOL,
 	HasSub BOOL,
-	HasExtra BOOL,
+	HasEThumbs BOOL,
 	New BOOL,
 	Mark BOOL,
 	Source TEXT,
@@ -41,7 +41,7 @@ CREATE TABLE Movies (
 	Trailer TEXT,
 	PosterPath TEXT,
 	FanartPath TEXT,
-	ExtraPath TEXT,
+	EThumbsPath TEXT,
 	NfoPath TEXT,
 	TrailerPath TEXT,
 	SubPath TEXT,
@@ -51,7 +51,9 @@ CREATE TABLE Movies (
 	FileSource TEXT,
 	NeedsSave BOOL,
 	SortTitle TEXT,
-	DateAdd INTEGER
+	DateAdd INTEGER,
+	HasEFanarts BOOL,
+	EFanartsPath TEXT
 	);
 
 CREATE TABLE MoviesSets(

@@ -567,12 +567,13 @@ Public Class Enums
         NFO = 0
         Poster = 1
         Fanart = 2
-        Extra = 3
+        EThumbs = 3
         Trailer = 4
         Meta = 5
         All = 6
         DoSearch = 7
         Actor = 8
+        EFanarts = 9
     End Enum
     ''' <summary>
     ''' Enum representing possible scraper capabilities
@@ -659,7 +660,6 @@ Public Class Enums
         FilterAuto = 11
         FilterAsk = 12
         CopyBD = 13
-        FullSkip = 14
         None = 99 ' 
     End Enum
 
@@ -704,6 +704,8 @@ Public Class Enums
         ClearLogo = 5
         DiscArt = 6
         Landscape = 7
+        EFanarts = 8
+        EThumbs = 9
     End Enum
     ''' <summary>
     ''' Enum representing valid TV image types
@@ -1090,7 +1092,7 @@ Public Class Functions
     ''' <returns><c>True</c> if at least one modifier has been selected, <c>False</c>if no item has been selected.</returns>
     Public Shared Function HasModifier() As Boolean
         With Master.GlobalScrapeMod
-            If .Extra OrElse .Fanart OrElse .Meta OrElse .NFO OrElse .Poster OrElse .Trailer Then Return True
+            If .EThumbs OrElse .EFanarts OrElse .Fanart OrElse .Meta OrElse .NFO OrElse .Poster OrElse .Trailer Then Return True
         End With
 
         Return False
@@ -1175,7 +1177,8 @@ Public Class Functions
     Public Shared Function ScrapeModifierAndAlso(ByVal Options As Structures.ScrapeModifier, ByVal Options2 As Structures.ScrapeModifier) As Structures.ScrapeModifier
         Dim filterModifier As New Structures.ScrapeModifier
         filterModifier.DoSearch = Options.DoSearch AndAlso Options2.DoSearch
-        filterModifier.Extra = Options.Extra AndAlso Options2.Extra
+        filterModifier.EThumbs = Options.EThumbs AndAlso Options2.EThumbs
+        filterModifier.EFanarts = Options.EFanarts AndAlso Options2.EFanarts
         filterModifier.Fanart = Options.Fanart AndAlso Options2.Fanart
         filterModifier.Meta = Options.Meta AndAlso Options2.Meta
         filterModifier.NFO = Options.NFO AndAlso Options2.NFO
@@ -1263,8 +1266,9 @@ Public Class Functions
     Public Shared Sub SetScraperMod(ByVal MType As Enums.ModType, ByVal MValue As Boolean, Optional ByVal DoClear As Boolean = True)
         With Master.GlobalScrapeMod
             If DoClear Then
+                .EThumbs = False
+                .EFanarts = False
                 .DoSearch = False
-                .Extra = False
                 .Fanart = False
                 .Meta = False
                 .NFO = False
@@ -1275,18 +1279,20 @@ Public Class Functions
 
             Select Case MType
                 Case Enums.ModType.All
-                    .DoSearch = MValue
-                    .Extra = MValue
+                    .EThumbs = MValue
+                    .EFanarts = MValue
                     .Fanart = MValue
                     .Meta = MValue
                     .NFO = MValue
                     .Poster = MValue
                     .Trailer = If(Master.eSettings.UpdaterTrailers, MValue, False)
                     .Actors = MValue
+                Case Enums.ModType.EThumbs
+                    .EThumbs = MValue
+                Case Enums.ModType.EFanarts
+                    .EFanarts = MValue
                 Case Enums.ModType.DoSearch
                     .DoSearch = MValue
-                Case Enums.ModType.Extra
-                    .Extra = MValue
                 Case Enums.ModType.Fanart
                     .Fanart = MValue
                 Case Enums.ModType.Meta
@@ -1314,11 +1320,15 @@ Public Class Functions
             'just assume dll is there since we're distributing full package... if it's not, user has bigger problems
             dllPath = String.Concat(AppPath, "Bin", Path.DirectorySeparatorChar, "MediaInfo.DLL")
             Dim fVersion As FileVersionInfo = System.Diagnostics.FileVersionInfo.GetVersionInfo(dllPath)
-            If fVersion.FileMinorPart <= 7 AndAlso fVersion.FileBuildPart <= 11 Then
+
+            'ISO Handling -> Use MediaInfo-Rar(if exists) to scan RAR and ISO files!
+            Dim mediainfoRaRPath As String = String.Concat(Functions.AppPath, "Bin", Path.DirectorySeparatorChar, "mediainfo-rar\mediainfo-rar.exe")
+            If File.Exists(mediainfoRaRPath) OrElse (fVersion.FileMinorPart <= 7 AndAlso fVersion.FileBuildPart <= 11) Then
                 Master.CanScanDiscImage = True
             Else
                 Master.CanScanDiscImage = False
             End If
+
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message & " - Failed to access MediaInfo.DLL from path:" & dllPath, ex.StackTrace, "Error")
         End Try
@@ -1373,9 +1383,14 @@ Public Class Structures
     ''' </summary>
     ''' <remarks></remarks>
     Public Structure DBMovie
-        Dim ClearExtras As Boolean
+        Dim ClearEThumbs As Boolean
+        Dim ClearEFanarts As Boolean
+        Dim ClearFanart As Boolean
+        Dim ClearPoster As Boolean
+        Dim ClearTrailer As Boolean
         Dim DateAdd As Long
-        Dim ExtraPath As String
+        Dim EThumbsPath As String
+        Dim EFanartsPath As String
         Dim FanartPath As String
         Dim Filename As String
         Dim FileSource As String
@@ -1394,6 +1409,8 @@ Public Class Structures
         Dim SubPath As String
         Dim TrailerPath As String
         Dim UseFolder As Boolean
+        Dim efList As List(Of String)
+        Dim etList As List(Of String)
     End Structure
     ''' <summary>
     ''' Structure representing a TV show in the database
@@ -1449,7 +1466,8 @@ Public Class Structures
 
     Public Structure ScrapeModifier
         Dim DoSearch As Boolean
-        Dim Extra As Boolean
+        Dim EThumbs As Boolean
+        Dim EFanarts As Boolean
         Dim Fanart As Boolean
         Dim Meta As Boolean
         Dim NFO As Boolean

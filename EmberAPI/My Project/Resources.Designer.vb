@@ -193,7 +193,7 @@ Namespace My.Resources
         '''	HasNfo BOOL,
         '''	HasTrailer BOOL,
         '''	HasSub BOOL,
-        '''	HasExtra BOOL,
+        '''	HasEThumbs BOOL,
         '''	New BOOL,
         '''	Mark BOOL,
         '''	Source TEXT,

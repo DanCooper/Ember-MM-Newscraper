@@ -143,7 +143,8 @@ Public Class MPDB_Poster
         ConfigScrapeModifier.DoSearch = True
         ConfigScrapeModifier.Meta = True
         ConfigScrapeModifier.NFO = True
-        ConfigScrapeModifier.Extra = True
+        ConfigScrapeModifier.EThumbs = True
+        ConfigScrapeModifier.EFanarts = True
         ConfigScrapeModifier.Actors = True
 
         ConfigScrapeModifier.Poster = AdvancedSettings.GetBooleanSetting("DoPoster", True)

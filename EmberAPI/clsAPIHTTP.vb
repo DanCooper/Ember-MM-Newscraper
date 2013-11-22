@@ -317,6 +317,9 @@ Public Class HTTP
                             If Master.eSettings.UseYAMJ AndAlso Master.eSettings.TrailerYAMJ Then
                                 outFile = String.Concat(parPath, Path.DirectorySeparatorChar, Directory.GetParent(Directory.GetParent(fileParPath).FullName).Name, ".[trailer].mp4")
                             End If
+                            If Master.eSettings.UseNMJ AndAlso Master.eSettings.TrailerYAMJ Then
+                                outFile = String.Concat(parPath, Path.DirectorySeparatorChar, Directory.GetParent(Directory.GetParent(fileParPath).FullName).Name, ".[trailer].mp4")
+                            End If
                         ElseIf FileUtils.Common.isVideoTS(LocalFile) Then
                             parPath = Directory.GetParent(Directory.GetParent(LocalFile).FullName).FullName
                             If Master.eSettings.UseFrodo AndAlso Master.eSettings.TrailerFrodo Then
@@ -328,6 +331,9 @@ Public Class HTTP
                             If Master.eSettings.UseYAMJ AndAlso Master.eSettings.TrailerYAMJ Then
                                 outFile = String.Concat(parPath, Path.DirectorySeparatorChar, Directory.GetParent(fileParPath).Name, ".[trailer].mp4")
                             End If
+                            If Master.eSettings.UseNMJ AndAlso Master.eSettings.TrailerYAMJ Then
+                                outFile = String.Concat(parPath, Path.DirectorySeparatorChar, Directory.GetParent(fileParPath).Name, ".[trailer].mp4")
+                            End If
                         Else
                             If Master.eSettings.UseFrodo AndAlso Master.eSettings.TrailerFrodo Then
                                 outFile = String.Concat(filePathStack, "-trailer.mp4")
@@ -336,6 +342,10 @@ Public Class HTTP
                                 outFile = String.Concat(filePath, "-trailer.mp4")
                             End If
                             If Master.eSettings.UseYAMJ AndAlso Master.eSettings.TrailerYAMJ Then
+                                outFile = String.Concat(filePath, ".[trailer].mp4")
+                            End If
+
+                            If Master.eSettings.UseNMJ AndAlso Master.eSettings.TrailerNMJ Then
                                 outFile = String.Concat(filePath, ".[trailer].mp4")
                             End If
                         End If

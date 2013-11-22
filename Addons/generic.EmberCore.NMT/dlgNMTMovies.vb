@@ -591,8 +591,8 @@ Public Class dlgNMTMovies
             Next
             row = row.Replace("<$SIZE>", (MovieSize(_curMovie.Item("MoviePath").ToString).ToString))
             If row.Contains("<$EXTRATHUMB>") Then
-                If DirectCast(_curMovie.Item("HasExtra"), Boolean) Then
-                    Dim di As DirectoryInfo = New DirectoryInfo(Path.GetDirectoryName(_curMovie.Item("ExtraPath").ToString))
+                If DirectCast(_curMovie.Item("HasEThumbs"), Boolean) Then
+                    Dim di As DirectoryInfo = New DirectoryInfo(Path.GetDirectoryName(_curMovie.Item("EThumbsPath").ToString))
                     Dim c As Integer = di.GetFiles("thumb*.jpg").Count
                     row = row.Replace("<$EXTRATHUMB>", c.ToString)
                 Else

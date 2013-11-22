@@ -27,27 +27,66 @@ Partial Class dlgWizard
         Me.Cancel_Button = New System.Windows.Forms.Button()
         Me.btnBack = New System.Windows.Forms.Button()
         Me.btnNext = New System.Windows.Forms.Button()
-        Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.pnlWelcome = New System.Windows.Forms.Panel()
         Me.Label32 = New System.Windows.Forms.Label()
         Me.cbIntLang = New System.Windows.Forms.ComboBox()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
-        Me.Panel3 = New System.Windows.Forms.Panel()
-        Me.Label12 = New System.Windows.Forms.Label()
-        Me.GroupBox7 = New System.Windows.Forms.GroupBox()
-        Me.chkMovieNameNFOStack = New System.Windows.Forms.CheckBox()
-        Me.chkMovieNameNFO = New System.Windows.Forms.CheckBox()
-        Me.chkMovieNFO = New System.Windows.Forms.CheckBox()
+        Me.pnlMovieSettings = New System.Windows.Forms.Panel()
+        Me.tbcFileNaming = New System.Windows.Forms.TabControl()
+        Me.tpFileNamingXBMC = New System.Windows.Forms.TabPage()
+        Me.gbXBMCOptional = New System.Windows.Forms.GroupBox()
+        Me.chkXBMCTrailerFormat = New System.Windows.Forms.CheckBox()
+        Me.gbEden = New System.Windows.Forms.GroupBox()
+        Me.chkExtrafanartsEden = New System.Windows.Forms.CheckBox()
+        Me.chkExtrathumbsEden = New System.Windows.Forms.CheckBox()
+        Me.chkUseEden = New System.Windows.Forms.CheckBox()
+        Me.chkActorThumbsEden = New System.Windows.Forms.CheckBox()
+        Me.chkTrailerEden = New System.Windows.Forms.CheckBox()
+        Me.chkFanartEden = New System.Windows.Forms.CheckBox()
+        Me.chkPosterEden = New System.Windows.Forms.CheckBox()
+        Me.chkNFOEden = New System.Windows.Forms.CheckBox()
+        Me.gbFrodo = New System.Windows.Forms.GroupBox()
+        Me.chkExtrafanartsFrodo = New System.Windows.Forms.CheckBox()
+        Me.chkExtrathumbsFrodo = New System.Windows.Forms.CheckBox()
+        Me.chkUseFrodo = New System.Windows.Forms.CheckBox()
+        Me.chkLandscapeFrodo = New System.Windows.Forms.CheckBox()
+        Me.chkBannerFrodo = New System.Windows.Forms.CheckBox()
+        Me.chkDiscArtFrodo = New System.Windows.Forms.CheckBox()
+        Me.chkClearArtFrodo = New System.Windows.Forms.CheckBox()
+        Me.chkClearLogoFrodo = New System.Windows.Forms.CheckBox()
+        Me.chkActorThumbsFrodo = New System.Windows.Forms.CheckBox()
+        Me.chkTrailerFrodo = New System.Windows.Forms.CheckBox()
+        Me.chkFanartFrodo = New System.Windows.Forms.CheckBox()
+        Me.chkPosterFrodo = New System.Windows.Forms.CheckBox()
+        Me.chkNFOFrodo = New System.Windows.Forms.CheckBox()
+        Me.tpFileNamingNMT = New System.Windows.Forms.TabPage()
+        Me.gbNMJ = New System.Windows.Forms.GroupBox()
+        Me.chkUseNMJ = New System.Windows.Forms.CheckBox()
+        Me.chkBannerNMJ = New System.Windows.Forms.CheckBox()
+        Me.chkTrailerNMJ = New System.Windows.Forms.CheckBox()
+        Me.chkFanartNMJ = New System.Windows.Forms.CheckBox()
+        Me.chkPosterNMJ = New System.Windows.Forms.CheckBox()
+        Me.chkNFONMJ = New System.Windows.Forms.CheckBox()
+        Me.gbYAMJ = New System.Windows.Forms.GroupBox()
+        Me.chkUseYAMJ = New System.Windows.Forms.CheckBox()
+        Me.chkBannerYAMJ = New System.Windows.Forms.CheckBox()
+        Me.chkTrailerYAMJ = New System.Windows.Forms.CheckBox()
+        Me.chkFanartYAMJ = New System.Windows.Forms.CheckBox()
+        Me.chkPosterYAMJ = New System.Windows.Forms.CheckBox()
+        Me.chkNFOYAMJ = New System.Windows.Forms.CheckBox()
+        Me.tpFileNamingExpert = New System.Windows.Forms.TabPage()
+        Me.Label13 = New System.Windows.Forms.Label()
         Me.chkVideoTSParentXBMC = New System.Windows.Forms.CheckBox()
         Me.GroupBox21 = New System.Windows.Forms.GroupBox()
         Me.rbBracketTrailer = New System.Windows.Forms.RadioButton()
         Me.rbDashTrailer = New System.Windows.Forms.RadioButton()
-        Me.chkMovieNameMultiOnly = New System.Windows.Forms.CheckBox()
-        Me.btnMovieFrodo = New System.Windows.Forms.Button()
         Me.GroupBox6 = New System.Windows.Forms.GroupBox()
         Me.chkMovieNameDotFanartJPG = New System.Windows.Forms.CheckBox()
         Me.chkMovieNameFanartJPG = New System.Windows.Forms.CheckBox()
         Me.chkFanartJPG = New System.Windows.Forms.CheckBox()
+        Me.chkMovieNameMultiOnly = New System.Windows.Forms.CheckBox()
+        Me.chkAutoDetectVTS = New System.Windows.Forms.CheckBox()
         Me.GroupBox5 = New System.Windows.Forms.GroupBox()
         Me.chkMovieNameDashPosterJPG = New System.Windows.Forms.CheckBox()
         Me.chkFolderJPG = New System.Windows.Forms.CheckBox()
@@ -57,10 +96,14 @@ Partial Class dlgWizard
         Me.chkMovieJPG = New System.Windows.Forms.CheckBox()
         Me.chkMovieNameTBN = New System.Windows.Forms.CheckBox()
         Me.chkMovieTBN = New System.Windows.Forms.CheckBox()
+        Me.GroupBox7 = New System.Windows.Forms.GroupBox()
+        Me.chkMovieNameNFOStack = New System.Windows.Forms.CheckBox()
+        Me.chkMovieNameNFO = New System.Windows.Forms.CheckBox()
+        Me.chkMovieNFO = New System.Windows.Forms.CheckBox()
         Me.Label5 = New System.Windows.Forms.Label()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
-        Me.Panel2 = New System.Windows.Forms.Panel()
+        Me.pnlMovieSource = New System.Windows.Forms.Panel()
         Me.lvMovies = New System.Windows.Forms.ListView()
         Me.colID = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.colName = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
@@ -71,11 +114,11 @@ Partial Class dlgWizard
         Me.btnMovieRem = New System.Windows.Forms.Button()
         Me.btnMovieAddFolder = New System.Windows.Forms.Button()
         Me.Label3 = New System.Windows.Forms.Label()
-        Me.Panel6 = New System.Windows.Forms.Panel()
+        Me.pnlDone = New System.Windows.Forms.Panel()
         Me.Label8 = New System.Windows.Forms.Label()
         Me.Label6 = New System.Windows.Forms.Label()
         Me.Label7 = New System.Windows.Forms.Label()
-        Me.Panel4 = New System.Windows.Forms.Panel()
+        Me.pnlTVShowSource = New System.Windows.Forms.Panel()
         Me.Label10 = New System.Windows.Forms.Label()
         Me.lvTVSources = New System.Windows.Forms.ListView()
         Me.ColumnHeader1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
@@ -85,7 +128,7 @@ Partial Class dlgWizard
         Me.btnTVRemoveSource = New System.Windows.Forms.Button()
         Me.btnTVAddSource = New System.Windows.Forms.Button()
         Me.Label9 = New System.Windows.Forms.Label()
-        Me.Panel5 = New System.Windows.Forms.Panel()
+        Me.pnlTVShowSettings = New System.Windows.Forms.Panel()
         Me.btnTVShowFrodo = New System.Windows.Forms.Button()
         Me.gbAllSeasonPoster = New System.Windows.Forms.GroupBox()
         Me.chkSeasonAllPosterJPG = New System.Windows.Forms.CheckBox()
@@ -124,17 +167,26 @@ Partial Class dlgWizard
         Me.chkShowPosterTBN = New System.Windows.Forms.CheckBox()
         Me.chkShowFolderJPG = New System.Windows.Forms.CheckBox()
         Me.Label11 = New System.Windows.Forms.Label()
-        Me.Panel1.SuspendLayout()
-        Me.Panel3.SuspendLayout()
-        Me.GroupBox7.SuspendLayout()
+        Me.pnlWelcome.SuspendLayout()
+        Me.pnlMovieSettings.SuspendLayout()
+        Me.tbcFileNaming.SuspendLayout()
+        Me.tpFileNamingXBMC.SuspendLayout()
+        Me.gbXBMCOptional.SuspendLayout()
+        Me.gbEden.SuspendLayout()
+        Me.gbFrodo.SuspendLayout()
+        Me.tpFileNamingNMT.SuspendLayout()
+        Me.gbNMJ.SuspendLayout()
+        Me.gbYAMJ.SuspendLayout()
+        Me.tpFileNamingExpert.SuspendLayout()
         Me.GroupBox21.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
+        Me.GroupBox7.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.Panel2.SuspendLayout()
-        Me.Panel6.SuspendLayout()
-        Me.Panel4.SuspendLayout()
-        Me.Panel5.SuspendLayout()
+        Me.pnlMovieSource.SuspendLayout()
+        Me.pnlDone.SuspendLayout()
+        Me.pnlTVShowSource.SuspendLayout()
+        Me.pnlTVShowSettings.SuspendLayout()
         Me.gbAllSeasonPoster.SuspendLayout()
         Me.gbSeasonFanart.SuspendLayout()
         Me.gbSeasonPosters.SuspendLayout()
@@ -149,7 +201,7 @@ Partial Class dlgWizard
         Me.OK_Button.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.OK_Button.Enabled = False
         Me.OK_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.OK_Button.Location = New System.Drawing.Point(402, 337)
+        Me.OK_Button.Location = New System.Drawing.Point(402, 394)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(67, 23)
         Me.OK_Button.TabIndex = 0
@@ -159,7 +211,7 @@ Partial Class dlgWizard
         '
         Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Cancel_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Cancel_Button.Location = New System.Drawing.Point(475, 337)
+        Me.Cancel_Button.Location = New System.Drawing.Point(475, 394)
         Me.Cancel_Button.Name = "Cancel_Button"
         Me.Cancel_Button.Size = New System.Drawing.Size(67, 23)
         Me.Cancel_Button.TabIndex = 1
@@ -169,7 +221,7 @@ Partial Class dlgWizard
         '
         Me.btnBack.Enabled = False
         Me.btnBack.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnBack.Location = New System.Drawing.Point(219, 337)
+        Me.btnBack.Location = New System.Drawing.Point(219, 394)
         Me.btnBack.Name = "btnBack"
         Me.btnBack.Size = New System.Drawing.Size(67, 23)
         Me.btnBack.TabIndex = 3
@@ -178,24 +230,24 @@ Partial Class dlgWizard
         'btnNext
         '
         Me.btnNext.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnNext.Location = New System.Drawing.Point(292, 337)
+        Me.btnNext.Location = New System.Drawing.Point(292, 394)
         Me.btnNext.Name = "btnNext"
         Me.btnNext.Size = New System.Drawing.Size(67, 23)
         Me.btnNext.TabIndex = 2
         Me.btnNext.Text = "Next >"
         '
-        'Panel1
+        'pnlWelcome
         '
-        Me.Panel1.BackColor = System.Drawing.Color.White
-        Me.Panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.Panel1.Controls.Add(Me.Label32)
-        Me.Panel1.Controls.Add(Me.cbIntLang)
-        Me.Panel1.Controls.Add(Me.Label2)
-        Me.Panel1.Controls.Add(Me.Label1)
-        Me.Panel1.Location = New System.Drawing.Point(166, 7)
-        Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(376, 323)
-        Me.Panel1.TabIndex = 4
+        Me.pnlWelcome.BackColor = System.Drawing.Color.White
+        Me.pnlWelcome.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlWelcome.Controls.Add(Me.Label32)
+        Me.pnlWelcome.Controls.Add(Me.cbIntLang)
+        Me.pnlWelcome.Controls.Add(Me.Label2)
+        Me.pnlWelcome.Controls.Add(Me.Label1)
+        Me.pnlWelcome.Location = New System.Drawing.Point(166, 7)
+        Me.pnlWelcome.Name = "pnlWelcome"
+        Me.pnlWelcome.Size = New System.Drawing.Size(376, 380)
+        Me.pnlWelcome.TabIndex = 4
         '
         'Label32
         '
@@ -237,91 +289,545 @@ Partial Class dlgWizard
         Me.Label1.TabIndex = 0
         Me.Label1.Text = "Welcome to Ember Media Manager"
         '
-        'Panel3
+        'pnlMovieSettings
         '
-        Me.Panel3.BackColor = System.Drawing.Color.White
-        Me.Panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.Panel3.Controls.Add(Me.Label12)
-        Me.Panel3.Controls.Add(Me.GroupBox7)
-        Me.Panel3.Controls.Add(Me.chkVideoTSParentXBMC)
-        Me.Panel3.Controls.Add(Me.GroupBox21)
-        Me.Panel3.Controls.Add(Me.chkMovieNameMultiOnly)
-        Me.Panel3.Controls.Add(Me.btnMovieFrodo)
-        Me.Panel3.Controls.Add(Me.GroupBox6)
-        Me.Panel3.Controls.Add(Me.GroupBox5)
-        Me.Panel3.Controls.Add(Me.Label5)
-        Me.Panel3.Controls.Add(Me.Label4)
-        Me.Panel3.Location = New System.Drawing.Point(956, 7)
-        Me.Panel3.Name = "Panel3"
-        Me.Panel3.Size = New System.Drawing.Size(376, 323)
-        Me.Panel3.TabIndex = 6
-        Me.Panel3.Visible = False
+        Me.pnlMovieSettings.BackColor = System.Drawing.Color.White
+        Me.pnlMovieSettings.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlMovieSettings.Controls.Add(Me.tbcFileNaming)
+        Me.pnlMovieSettings.Controls.Add(Me.Label5)
+        Me.pnlMovieSettings.Controls.Add(Me.Label4)
+        Me.pnlMovieSettings.Location = New System.Drawing.Point(956, 7)
+        Me.pnlMovieSettings.Name = "pnlMovieSettings"
+        Me.pnlMovieSettings.Size = New System.Drawing.Size(376, 380)
+        Me.pnlMovieSettings.TabIndex = 6
+        Me.pnlMovieSettings.Visible = False
         '
-        'Label12
+        'tbcFileNaming
         '
-        Me.Label12.AutoSize = True
-        Me.Label12.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label12.ForeColor = System.Drawing.Color.Red
-        Me.Label12.Location = New System.Drawing.Point(26, 167)
-        Me.Label12.Name = "Label12"
-        Me.Label12.Size = New System.Drawing.Size(319, 20)
-        Me.Label12.TabIndex = 8
-        Me.Label12.Text = "Please use the settings menu to set this part"
+        Me.tbcFileNaming.Controls.Add(Me.tpFileNamingXBMC)
+        Me.tbcFileNaming.Controls.Add(Me.tpFileNamingNMT)
+        Me.tbcFileNaming.Controls.Add(Me.tpFileNamingExpert)
+        Me.tbcFileNaming.Location = New System.Drawing.Point(7, 91)
+        Me.tbcFileNaming.Name = "tbcFileNaming"
+        Me.tbcFileNaming.SelectedIndex = 0
+        Me.tbcFileNaming.Size = New System.Drawing.Size(360, 254)
+        Me.tbcFileNaming.TabIndex = 8
         '
-        'GroupBox7
+        'tpFileNamingXBMC
         '
-        Me.GroupBox7.Controls.Add(Me.chkMovieNameNFOStack)
-        Me.GroupBox7.Controls.Add(Me.chkMovieNameNFO)
-        Me.GroupBox7.Controls.Add(Me.chkMovieNFO)
-        Me.GroupBox7.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GroupBox7.Location = New System.Drawing.Point(218, 181)
-        Me.GroupBox7.Name = "GroupBox7"
-        Me.GroupBox7.Size = New System.Drawing.Size(139, 74)
-        Me.GroupBox7.TabIndex = 3
-        Me.GroupBox7.TabStop = False
-        Me.GroupBox7.Text = "NFO"
+        Me.tpFileNamingXBMC.Controls.Add(Me.gbXBMCOptional)
+        Me.tpFileNamingXBMC.Controls.Add(Me.gbEden)
+        Me.tpFileNamingXBMC.Controls.Add(Me.gbFrodo)
+        Me.tpFileNamingXBMC.Location = New System.Drawing.Point(4, 22)
+        Me.tpFileNamingXBMC.Name = "tpFileNamingXBMC"
+        Me.tpFileNamingXBMC.Padding = New System.Windows.Forms.Padding(3)
+        Me.tpFileNamingXBMC.Size = New System.Drawing.Size(352, 228)
+        Me.tpFileNamingXBMC.TabIndex = 1
+        Me.tpFileNamingXBMC.Text = "XBMC"
+        Me.tpFileNamingXBMC.UseVisualStyleBackColor = True
         '
-        'chkMovieNameNFOStack
+        'gbXBMCOptional
         '
-        Me.chkMovieNameNFOStack.AutoSize = True
-        Me.chkMovieNameNFOStack.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkMovieNameNFOStack.Location = New System.Drawing.Point(6, 53)
-        Me.chkMovieNameNFOStack.Name = "chkMovieNameNFOStack"
-        Me.chkMovieNameNFOStack.Size = New System.Drawing.Size(129, 17)
-        Me.chkMovieNameNFOStack.TabIndex = 2
-        Me.chkMovieNameNFOStack.Text = "<movie>.nfo (Stack)"
-        Me.chkMovieNameNFOStack.UseVisualStyleBackColor = True
+        Me.gbXBMCOptional.Controls.Add(Me.chkXBMCTrailerFormat)
+        Me.gbXBMCOptional.Location = New System.Drawing.Point(238, 6)
+        Me.gbXBMCOptional.Name = "gbXBMCOptional"
+        Me.gbXBMCOptional.Size = New System.Drawing.Size(110, 56)
+        Me.gbXBMCOptional.TabIndex = 2
+        Me.gbXBMCOptional.TabStop = False
+        Me.gbXBMCOptional.Text = "Optional"
         '
-        'chkMovieNameNFO
+        'chkXBMCTrailerFormat
         '
-        Me.chkMovieNameNFO.AutoSize = True
-        Me.chkMovieNameNFO.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkMovieNameNFO.Location = New System.Drawing.Point(6, 34)
-        Me.chkMovieNameNFO.Name = "chkMovieNameNFO"
-        Me.chkMovieNameNFO.Size = New System.Drawing.Size(93, 17)
-        Me.chkMovieNameNFO.TabIndex = 1
-        Me.chkMovieNameNFO.Text = "<movie>.nfo"
-        Me.chkMovieNameNFO.UseVisualStyleBackColor = True
+        Me.chkXBMCTrailerFormat.Location = New System.Drawing.Point(7, 17)
+        Me.chkXBMCTrailerFormat.Name = "chkXBMCTrailerFormat"
+        Me.chkXBMCTrailerFormat.Size = New System.Drawing.Size(81, 33)
+        Me.chkXBMCTrailerFormat.TabIndex = 0
+        Me.chkXBMCTrailerFormat.Text = "Trailer Format"
+        Me.chkXBMCTrailerFormat.UseVisualStyleBackColor = True
         '
-        'chkMovieNFO
+        'gbEden
         '
-        Me.chkMovieNFO.AutoSize = True
-        Me.chkMovieNFO.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkMovieNFO.Location = New System.Drawing.Point(6, 18)
-        Me.chkMovieNFO.Name = "chkMovieNFO"
-        Me.chkMovieNFO.Size = New System.Drawing.Size(77, 17)
-        Me.chkMovieNFO.TabIndex = 0
-        Me.chkMovieNFO.Text = "movie.nfo"
-        Me.chkMovieNFO.UseVisualStyleBackColor = True
+        Me.gbEden.Controls.Add(Me.chkExtrafanartsEden)
+        Me.gbEden.Controls.Add(Me.chkExtrathumbsEden)
+        Me.gbEden.Controls.Add(Me.chkUseEden)
+        Me.gbEden.Controls.Add(Me.chkActorThumbsEden)
+        Me.gbEden.Controls.Add(Me.chkTrailerEden)
+        Me.gbEden.Controls.Add(Me.chkFanartEden)
+        Me.gbEden.Controls.Add(Me.chkPosterEden)
+        Me.gbEden.Controls.Add(Me.chkNFOEden)
+        Me.gbEden.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.gbEden.Location = New System.Drawing.Point(122, 6)
+        Me.gbEden.Name = "gbEden"
+        Me.gbEden.Size = New System.Drawing.Size(110, 219)
+        Me.gbEden.TabIndex = 1
+        Me.gbEden.TabStop = False
+        Me.gbEden.Text = "Eden"
+        '
+        'chkExtrafanartsEden
+        '
+        Me.chkExtrafanartsEden.AutoSize = True
+        Me.chkExtrafanartsEden.Enabled = False
+        Me.chkExtrafanartsEden.Location = New System.Drawing.Point(7, 199)
+        Me.chkExtrafanartsEden.Name = "chkExtrafanartsEden"
+        Me.chkExtrafanartsEden.Size = New System.Drawing.Size(87, 17)
+        Me.chkExtrafanartsEden.TabIndex = 20
+        Me.chkExtrafanartsEden.Text = "Extrafanarts"
+        Me.chkExtrafanartsEden.UseVisualStyleBackColor = True
+        '
+        'chkExtrathumbsEden
+        '
+        Me.chkExtrathumbsEden.AutoSize = True
+        Me.chkExtrathumbsEden.Enabled = False
+        Me.chkExtrathumbsEden.Location = New System.Drawing.Point(7, 184)
+        Me.chkExtrathumbsEden.Name = "chkExtrathumbsEden"
+        Me.chkExtrathumbsEden.Size = New System.Drawing.Size(90, 17)
+        Me.chkExtrathumbsEden.TabIndex = 19
+        Me.chkExtrathumbsEden.Text = "Extrathumbs"
+        Me.chkExtrathumbsEden.UseVisualStyleBackColor = True
+        '
+        'chkUseEden
+        '
+        Me.chkUseEden.AutoSize = True
+        Me.chkUseEden.Location = New System.Drawing.Point(7, 17)
+        Me.chkUseEden.Name = "chkUseEden"
+        Me.chkUseEden.Size = New System.Drawing.Size(45, 17)
+        Me.chkUseEden.TabIndex = 18
+        Me.chkUseEden.Text = "Use"
+        Me.chkUseEden.UseVisualStyleBackColor = True
+        '
+        'chkActorThumbsEden
+        '
+        Me.chkActorThumbsEden.AutoSize = True
+        Me.chkActorThumbsEden.Enabled = False
+        Me.chkActorThumbsEden.Location = New System.Drawing.Point(7, 109)
+        Me.chkActorThumbsEden.Name = "chkActorThumbsEden"
+        Me.chkActorThumbsEden.Size = New System.Drawing.Size(96, 17)
+        Me.chkActorThumbsEden.TabIndex = 17
+        Me.chkActorThumbsEden.Text = "Actor Thumbs"
+        Me.chkActorThumbsEden.UseVisualStyleBackColor = True
+        '
+        'chkTrailerEden
+        '
+        Me.chkTrailerEden.AutoSize = True
+        Me.chkTrailerEden.Enabled = False
+        Me.chkTrailerEden.Location = New System.Drawing.Point(7, 94)
+        Me.chkTrailerEden.Name = "chkTrailerEden"
+        Me.chkTrailerEden.Size = New System.Drawing.Size(57, 17)
+        Me.chkTrailerEden.TabIndex = 16
+        Me.chkTrailerEden.Text = "Trailer"
+        Me.chkTrailerEden.UseVisualStyleBackColor = True
+        '
+        'chkFanartEden
+        '
+        Me.chkFanartEden.AutoSize = True
+        Me.chkFanartEden.Enabled = False
+        Me.chkFanartEden.Location = New System.Drawing.Point(7, 63)
+        Me.chkFanartEden.Name = "chkFanartEden"
+        Me.chkFanartEden.Size = New System.Drawing.Size(59, 17)
+        Me.chkFanartEden.TabIndex = 15
+        Me.chkFanartEden.Text = "Fanart"
+        Me.chkFanartEden.UseVisualStyleBackColor = True
+        '
+        'chkPosterEden
+        '
+        Me.chkPosterEden.AutoSize = True
+        Me.chkPosterEden.Enabled = False
+        Me.chkPosterEden.Location = New System.Drawing.Point(7, 48)
+        Me.chkPosterEden.Name = "chkPosterEden"
+        Me.chkPosterEden.Size = New System.Drawing.Size(58, 17)
+        Me.chkPosterEden.TabIndex = 14
+        Me.chkPosterEden.Text = "Poster"
+        Me.chkPosterEden.UseVisualStyleBackColor = True
+        '
+        'chkNFOEden
+        '
+        Me.chkNFOEden.AutoSize = True
+        Me.chkNFOEden.Enabled = False
+        Me.chkNFOEden.Location = New System.Drawing.Point(7, 33)
+        Me.chkNFOEden.Name = "chkNFOEden"
+        Me.chkNFOEden.Size = New System.Drawing.Size(49, 17)
+        Me.chkNFOEden.TabIndex = 13
+        Me.chkNFOEden.Text = "NFO"
+        Me.chkNFOEden.UseVisualStyleBackColor = True
+        '
+        'gbFrodo
+        '
+        Me.gbFrodo.Controls.Add(Me.chkExtrafanartsFrodo)
+        Me.gbFrodo.Controls.Add(Me.chkExtrathumbsFrodo)
+        Me.gbFrodo.Controls.Add(Me.chkUseFrodo)
+        Me.gbFrodo.Controls.Add(Me.chkLandscapeFrodo)
+        Me.gbFrodo.Controls.Add(Me.chkBannerFrodo)
+        Me.gbFrodo.Controls.Add(Me.chkDiscArtFrodo)
+        Me.gbFrodo.Controls.Add(Me.chkClearArtFrodo)
+        Me.gbFrodo.Controls.Add(Me.chkClearLogoFrodo)
+        Me.gbFrodo.Controls.Add(Me.chkActorThumbsFrodo)
+        Me.gbFrodo.Controls.Add(Me.chkTrailerFrodo)
+        Me.gbFrodo.Controls.Add(Me.chkFanartFrodo)
+        Me.gbFrodo.Controls.Add(Me.chkPosterFrodo)
+        Me.gbFrodo.Controls.Add(Me.chkNFOFrodo)
+        Me.gbFrodo.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.gbFrodo.Location = New System.Drawing.Point(6, 6)
+        Me.gbFrodo.Name = "gbFrodo"
+        Me.gbFrodo.Size = New System.Drawing.Size(110, 219)
+        Me.gbFrodo.TabIndex = 0
+        Me.gbFrodo.TabStop = False
+        Me.gbFrodo.Text = "Frodo"
+        '
+        'chkExtrafanartsFrodo
+        '
+        Me.chkExtrafanartsFrodo.AutoSize = True
+        Me.chkExtrafanartsFrodo.Enabled = False
+        Me.chkExtrafanartsFrodo.Location = New System.Drawing.Point(7, 199)
+        Me.chkExtrafanartsFrodo.Name = "chkExtrafanartsFrodo"
+        Me.chkExtrafanartsFrodo.Size = New System.Drawing.Size(87, 17)
+        Me.chkExtrafanartsFrodo.TabIndex = 12
+        Me.chkExtrafanartsFrodo.Text = "Extrafanarts"
+        Me.chkExtrafanartsFrodo.UseVisualStyleBackColor = True
+        '
+        'chkExtrathumbsFrodo
+        '
+        Me.chkExtrathumbsFrodo.AutoSize = True
+        Me.chkExtrathumbsFrodo.Enabled = False
+        Me.chkExtrathumbsFrodo.Location = New System.Drawing.Point(7, 184)
+        Me.chkExtrathumbsFrodo.Name = "chkExtrathumbsFrodo"
+        Me.chkExtrathumbsFrodo.Size = New System.Drawing.Size(90, 17)
+        Me.chkExtrathumbsFrodo.TabIndex = 11
+        Me.chkExtrathumbsFrodo.Text = "Extrathumbs"
+        Me.chkExtrathumbsFrodo.UseVisualStyleBackColor = True
+        '
+        'chkUseFrodo
+        '
+        Me.chkUseFrodo.AutoSize = True
+        Me.chkUseFrodo.Location = New System.Drawing.Point(7, 17)
+        Me.chkUseFrodo.Name = "chkUseFrodo"
+        Me.chkUseFrodo.Size = New System.Drawing.Size(45, 17)
+        Me.chkUseFrodo.TabIndex = 10
+        Me.chkUseFrodo.Text = "Use"
+        Me.chkUseFrodo.UseVisualStyleBackColor = True
+        '
+        'chkLandscapeFrodo
+        '
+        Me.chkLandscapeFrodo.AutoSize = True
+        Me.chkLandscapeFrodo.Enabled = False
+        Me.chkLandscapeFrodo.Location = New System.Drawing.Point(7, 169)
+        Me.chkLandscapeFrodo.Name = "chkLandscapeFrodo"
+        Me.chkLandscapeFrodo.Size = New System.Drawing.Size(80, 17)
+        Me.chkLandscapeFrodo.TabIndex = 9
+        Me.chkLandscapeFrodo.Text = "Landscape"
+        Me.chkLandscapeFrodo.UseVisualStyleBackColor = True
+        '
+        'chkBannerFrodo
+        '
+        Me.chkBannerFrodo.AutoSize = True
+        Me.chkBannerFrodo.Enabled = False
+        Me.chkBannerFrodo.Location = New System.Drawing.Point(7, 78)
+        Me.chkBannerFrodo.Name = "chkBannerFrodo"
+        Me.chkBannerFrodo.Size = New System.Drawing.Size(63, 17)
+        Me.chkBannerFrodo.TabIndex = 8
+        Me.chkBannerFrodo.Text = "Banner"
+        Me.chkBannerFrodo.UseVisualStyleBackColor = True
+        '
+        'chkDiscArtFrodo
+        '
+        Me.chkDiscArtFrodo.AutoSize = True
+        Me.chkDiscArtFrodo.Enabled = False
+        Me.chkDiscArtFrodo.Location = New System.Drawing.Point(7, 154)
+        Me.chkDiscArtFrodo.Name = "chkDiscArtFrodo"
+        Me.chkDiscArtFrodo.Size = New System.Drawing.Size(62, 17)
+        Me.chkDiscArtFrodo.TabIndex = 7
+        Me.chkDiscArtFrodo.Text = "DiscArt"
+        Me.chkDiscArtFrodo.UseVisualStyleBackColor = True
+        '
+        'chkClearArtFrodo
+        '
+        Me.chkClearArtFrodo.AutoSize = True
+        Me.chkClearArtFrodo.Enabled = False
+        Me.chkClearArtFrodo.Location = New System.Drawing.Point(7, 139)
+        Me.chkClearArtFrodo.Name = "chkClearArtFrodo"
+        Me.chkClearArtFrodo.Size = New System.Drawing.Size(67, 17)
+        Me.chkClearArtFrodo.TabIndex = 6
+        Me.chkClearArtFrodo.Text = "ClearArt"
+        Me.chkClearArtFrodo.UseVisualStyleBackColor = True
+        '
+        'chkClearLogoFrodo
+        '
+        Me.chkClearLogoFrodo.AutoSize = True
+        Me.chkClearLogoFrodo.Enabled = False
+        Me.chkClearLogoFrodo.Location = New System.Drawing.Point(7, 124)
+        Me.chkClearLogoFrodo.Name = "chkClearLogoFrodo"
+        Me.chkClearLogoFrodo.Size = New System.Drawing.Size(78, 17)
+        Me.chkClearLogoFrodo.TabIndex = 5
+        Me.chkClearLogoFrodo.Text = "ClearLogo"
+        Me.chkClearLogoFrodo.UseVisualStyleBackColor = True
+        '
+        'chkActorThumbsFrodo
+        '
+        Me.chkActorThumbsFrodo.AutoSize = True
+        Me.chkActorThumbsFrodo.Enabled = False
+        Me.chkActorThumbsFrodo.Location = New System.Drawing.Point(7, 109)
+        Me.chkActorThumbsFrodo.Name = "chkActorThumbsFrodo"
+        Me.chkActorThumbsFrodo.Size = New System.Drawing.Size(96, 17)
+        Me.chkActorThumbsFrodo.TabIndex = 4
+        Me.chkActorThumbsFrodo.Text = "Actor Thumbs"
+        Me.chkActorThumbsFrodo.UseVisualStyleBackColor = True
+        '
+        'chkTrailerFrodo
+        '
+        Me.chkTrailerFrodo.AutoSize = True
+        Me.chkTrailerFrodo.Enabled = False
+        Me.chkTrailerFrodo.Location = New System.Drawing.Point(7, 94)
+        Me.chkTrailerFrodo.Name = "chkTrailerFrodo"
+        Me.chkTrailerFrodo.Size = New System.Drawing.Size(57, 17)
+        Me.chkTrailerFrodo.TabIndex = 3
+        Me.chkTrailerFrodo.Text = "Trailer"
+        Me.chkTrailerFrodo.UseVisualStyleBackColor = True
+        '
+        'chkFanartFrodo
+        '
+        Me.chkFanartFrodo.AutoSize = True
+        Me.chkFanartFrodo.Enabled = False
+        Me.chkFanartFrodo.Location = New System.Drawing.Point(7, 63)
+        Me.chkFanartFrodo.Name = "chkFanartFrodo"
+        Me.chkFanartFrodo.Size = New System.Drawing.Size(59, 17)
+        Me.chkFanartFrodo.TabIndex = 2
+        Me.chkFanartFrodo.Text = "Fanart"
+        Me.chkFanartFrodo.UseVisualStyleBackColor = True
+        '
+        'chkPosterFrodo
+        '
+        Me.chkPosterFrodo.AutoSize = True
+        Me.chkPosterFrodo.Enabled = False
+        Me.chkPosterFrodo.Location = New System.Drawing.Point(7, 48)
+        Me.chkPosterFrodo.Name = "chkPosterFrodo"
+        Me.chkPosterFrodo.Size = New System.Drawing.Size(58, 17)
+        Me.chkPosterFrodo.TabIndex = 1
+        Me.chkPosterFrodo.Text = "Poster"
+        Me.chkPosterFrodo.UseVisualStyleBackColor = True
+        '
+        'chkNFOFrodo
+        '
+        Me.chkNFOFrodo.AutoSize = True
+        Me.chkNFOFrodo.Enabled = False
+        Me.chkNFOFrodo.Location = New System.Drawing.Point(7, 33)
+        Me.chkNFOFrodo.Name = "chkNFOFrodo"
+        Me.chkNFOFrodo.Size = New System.Drawing.Size(49, 17)
+        Me.chkNFOFrodo.TabIndex = 0
+        Me.chkNFOFrodo.Text = "NFO"
+        Me.chkNFOFrodo.UseVisualStyleBackColor = True
+        '
+        'tpFileNamingNMT
+        '
+        Me.tpFileNamingNMT.Controls.Add(Me.gbNMJ)
+        Me.tpFileNamingNMT.Controls.Add(Me.gbYAMJ)
+        Me.tpFileNamingNMT.Location = New System.Drawing.Point(4, 22)
+        Me.tpFileNamingNMT.Name = "tpFileNamingNMT"
+        Me.tpFileNamingNMT.Padding = New System.Windows.Forms.Padding(3)
+        Me.tpFileNamingNMT.Size = New System.Drawing.Size(352, 228)
+        Me.tpFileNamingNMT.TabIndex = 3
+        Me.tpFileNamingNMT.Text = "NMT"
+        Me.tpFileNamingNMT.UseVisualStyleBackColor = True
+        '
+        'gbNMJ
+        '
+        Me.gbNMJ.Controls.Add(Me.chkUseNMJ)
+        Me.gbNMJ.Controls.Add(Me.chkBannerNMJ)
+        Me.gbNMJ.Controls.Add(Me.chkTrailerNMJ)
+        Me.gbNMJ.Controls.Add(Me.chkFanartNMJ)
+        Me.gbNMJ.Controls.Add(Me.chkPosterNMJ)
+        Me.gbNMJ.Controls.Add(Me.chkNFONMJ)
+        Me.gbNMJ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.gbNMJ.Location = New System.Drawing.Point(122, 6)
+        Me.gbNMJ.Name = "gbNMJ"
+        Me.gbNMJ.Size = New System.Drawing.Size(110, 219)
+        Me.gbNMJ.TabIndex = 17
+        Me.gbNMJ.TabStop = False
+        Me.gbNMJ.Text = "NMJ"
+        '
+        'chkUseNMJ
+        '
+        Me.chkUseNMJ.AutoSize = True
+        Me.chkUseNMJ.Location = New System.Drawing.Point(7, 17)
+        Me.chkUseNMJ.Name = "chkUseNMJ"
+        Me.chkUseNMJ.Size = New System.Drawing.Size(45, 17)
+        Me.chkUseNMJ.TabIndex = 16
+        Me.chkUseNMJ.Text = "Use"
+        Me.chkUseNMJ.UseVisualStyleBackColor = True
+        '
+        'chkBannerNMJ
+        '
+        Me.chkBannerNMJ.AutoSize = True
+        Me.chkBannerNMJ.Enabled = False
+        Me.chkBannerNMJ.Location = New System.Drawing.Point(7, 78)
+        Me.chkBannerNMJ.Name = "chkBannerNMJ"
+        Me.chkBannerNMJ.Size = New System.Drawing.Size(63, 17)
+        Me.chkBannerNMJ.TabIndex = 15
+        Me.chkBannerNMJ.Text = "Banner"
+        Me.chkBannerNMJ.UseVisualStyleBackColor = True
+        '
+        'chkTrailerNMJ
+        '
+        Me.chkTrailerNMJ.AutoSize = True
+        Me.chkTrailerNMJ.Enabled = False
+        Me.chkTrailerNMJ.Location = New System.Drawing.Point(7, 94)
+        Me.chkTrailerNMJ.Name = "chkTrailerNMJ"
+        Me.chkTrailerNMJ.Size = New System.Drawing.Size(57, 17)
+        Me.chkTrailerNMJ.TabIndex = 14
+        Me.chkTrailerNMJ.Text = "Trailer"
+        Me.chkTrailerNMJ.UseVisualStyleBackColor = True
+        '
+        'chkFanartNMJ
+        '
+        Me.chkFanartNMJ.AutoSize = True
+        Me.chkFanartNMJ.Enabled = False
+        Me.chkFanartNMJ.Location = New System.Drawing.Point(7, 63)
+        Me.chkFanartNMJ.Name = "chkFanartNMJ"
+        Me.chkFanartNMJ.Size = New System.Drawing.Size(59, 17)
+        Me.chkFanartNMJ.TabIndex = 13
+        Me.chkFanartNMJ.Text = "Fanart"
+        Me.chkFanartNMJ.UseVisualStyleBackColor = True
+        '
+        'chkPosterNMJ
+        '
+        Me.chkPosterNMJ.AutoSize = True
+        Me.chkPosterNMJ.Enabled = False
+        Me.chkPosterNMJ.Location = New System.Drawing.Point(7, 48)
+        Me.chkPosterNMJ.Name = "chkPosterNMJ"
+        Me.chkPosterNMJ.Size = New System.Drawing.Size(58, 17)
+        Me.chkPosterNMJ.TabIndex = 12
+        Me.chkPosterNMJ.Text = "Poster"
+        Me.chkPosterNMJ.UseVisualStyleBackColor = True
+        '
+        'chkNFONMJ
+        '
+        Me.chkNFONMJ.AutoSize = True
+        Me.chkNFONMJ.Enabled = False
+        Me.chkNFONMJ.Location = New System.Drawing.Point(7, 33)
+        Me.chkNFONMJ.Name = "chkNFONMJ"
+        Me.chkNFONMJ.Size = New System.Drawing.Size(49, 17)
+        Me.chkNFONMJ.TabIndex = 11
+        Me.chkNFONMJ.Text = "NFO"
+        Me.chkNFONMJ.UseVisualStyleBackColor = True
+        '
+        'gbYAMJ
+        '
+        Me.gbYAMJ.Controls.Add(Me.chkUseYAMJ)
+        Me.gbYAMJ.Controls.Add(Me.chkBannerYAMJ)
+        Me.gbYAMJ.Controls.Add(Me.chkTrailerYAMJ)
+        Me.gbYAMJ.Controls.Add(Me.chkFanartYAMJ)
+        Me.gbYAMJ.Controls.Add(Me.chkPosterYAMJ)
+        Me.gbYAMJ.Controls.Add(Me.chkNFOYAMJ)
+        Me.gbYAMJ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.gbYAMJ.Location = New System.Drawing.Point(6, 6)
+        Me.gbYAMJ.Name = "gbYAMJ"
+        Me.gbYAMJ.Size = New System.Drawing.Size(110, 219)
+        Me.gbYAMJ.TabIndex = 3
+        Me.gbYAMJ.TabStop = False
+        Me.gbYAMJ.Text = "YAMJ"
+        '
+        'chkUseYAMJ
+        '
+        Me.chkUseYAMJ.AutoSize = True
+        Me.chkUseYAMJ.Location = New System.Drawing.Point(7, 17)
+        Me.chkUseYAMJ.Name = "chkUseYAMJ"
+        Me.chkUseYAMJ.Size = New System.Drawing.Size(45, 17)
+        Me.chkUseYAMJ.TabIndex = 16
+        Me.chkUseYAMJ.Text = "Use"
+        Me.chkUseYAMJ.UseVisualStyleBackColor = True
+        '
+        'chkBannerYAMJ
+        '
+        Me.chkBannerYAMJ.AutoSize = True
+        Me.chkBannerYAMJ.Enabled = False
+        Me.chkBannerYAMJ.Location = New System.Drawing.Point(7, 78)
+        Me.chkBannerYAMJ.Name = "chkBannerYAMJ"
+        Me.chkBannerYAMJ.Size = New System.Drawing.Size(63, 17)
+        Me.chkBannerYAMJ.TabIndex = 15
+        Me.chkBannerYAMJ.Text = "Banner"
+        Me.chkBannerYAMJ.UseVisualStyleBackColor = True
+        '
+        'chkTrailerYAMJ
+        '
+        Me.chkTrailerYAMJ.AutoSize = True
+        Me.chkTrailerYAMJ.Enabled = False
+        Me.chkTrailerYAMJ.Location = New System.Drawing.Point(7, 94)
+        Me.chkTrailerYAMJ.Name = "chkTrailerYAMJ"
+        Me.chkTrailerYAMJ.Size = New System.Drawing.Size(57, 17)
+        Me.chkTrailerYAMJ.TabIndex = 14
+        Me.chkTrailerYAMJ.Text = "Trailer"
+        Me.chkTrailerYAMJ.UseVisualStyleBackColor = True
+        '
+        'chkFanartYAMJ
+        '
+        Me.chkFanartYAMJ.AutoSize = True
+        Me.chkFanartYAMJ.Enabled = False
+        Me.chkFanartYAMJ.Location = New System.Drawing.Point(7, 63)
+        Me.chkFanartYAMJ.Name = "chkFanartYAMJ"
+        Me.chkFanartYAMJ.Size = New System.Drawing.Size(59, 17)
+        Me.chkFanartYAMJ.TabIndex = 13
+        Me.chkFanartYAMJ.Text = "Fanart"
+        Me.chkFanartYAMJ.UseVisualStyleBackColor = True
+        '
+        'chkPosterYAMJ
+        '
+        Me.chkPosterYAMJ.AutoSize = True
+        Me.chkPosterYAMJ.Enabled = False
+        Me.chkPosterYAMJ.Location = New System.Drawing.Point(7, 48)
+        Me.chkPosterYAMJ.Name = "chkPosterYAMJ"
+        Me.chkPosterYAMJ.Size = New System.Drawing.Size(58, 17)
+        Me.chkPosterYAMJ.TabIndex = 12
+        Me.chkPosterYAMJ.Text = "Poster"
+        Me.chkPosterYAMJ.UseVisualStyleBackColor = True
+        '
+        'chkNFOYAMJ
+        '
+        Me.chkNFOYAMJ.AutoSize = True
+        Me.chkNFOYAMJ.Enabled = False
+        Me.chkNFOYAMJ.Location = New System.Drawing.Point(7, 33)
+        Me.chkNFOYAMJ.Name = "chkNFOYAMJ"
+        Me.chkNFOYAMJ.Size = New System.Drawing.Size(49, 17)
+        Me.chkNFOYAMJ.TabIndex = 11
+        Me.chkNFOYAMJ.Text = "NFO"
+        Me.chkNFOYAMJ.UseVisualStyleBackColor = True
+        '
+        'tpFileNamingExpert
+        '
+        Me.tpFileNamingExpert.Controls.Add(Me.Label13)
+        Me.tpFileNamingExpert.Controls.Add(Me.chkVideoTSParentXBMC)
+        Me.tpFileNamingExpert.Controls.Add(Me.GroupBox21)
+        Me.tpFileNamingExpert.Controls.Add(Me.GroupBox6)
+        Me.tpFileNamingExpert.Controls.Add(Me.chkMovieNameMultiOnly)
+        Me.tpFileNamingExpert.Controls.Add(Me.chkAutoDetectVTS)
+        Me.tpFileNamingExpert.Controls.Add(Me.GroupBox5)
+        Me.tpFileNamingExpert.Controls.Add(Me.GroupBox7)
+        Me.tpFileNamingExpert.Location = New System.Drawing.Point(4, 22)
+        Me.tpFileNamingExpert.Name = "tpFileNamingExpert"
+        Me.tpFileNamingExpert.Padding = New System.Windows.Forms.Padding(3)
+        Me.tpFileNamingExpert.Size = New System.Drawing.Size(352, 228)
+        Me.tpFileNamingExpert.TabIndex = 2
+        Me.tpFileNamingExpert.Text = "Expert"
+        Me.tpFileNamingExpert.UseVisualStyleBackColor = True
+        '
+        'Label13
+        '
+        Me.Label13.AutoSize = True
+        Me.Label13.Font = New System.Drawing.Font("Segoe UI", 15.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label13.ForeColor = System.Drawing.Color.Red
+        Me.Label13.Location = New System.Drawing.Point(95, 67)
+        Me.Label13.Name = "Label13"
+        Me.Label13.Size = New System.Drawing.Size(158, 30)
+        Me.Label13.TabIndex = 6
+        Me.Label13.Text = "temp. disabled"
         '
         'chkVideoTSParentXBMC
         '
+        Me.chkVideoTSParentXBMC.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkVideoTSParentXBMC.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkVideoTSParentXBMC.Location = New System.Drawing.Point(20, 269)
+        Me.chkVideoTSParentXBMC.Location = New System.Drawing.Point(6, 38)
         Me.chkVideoTSParentXBMC.Name = "chkVideoTSParentXBMC"
-        Me.chkVideoTSParentXBMC.Size = New System.Drawing.Size(337, 26)
-        Me.chkVideoTSParentXBMC.TabIndex = 7
-        Me.chkVideoTSParentXBMC.Text = "Frodo Compatible VIDEO_TS File Placement/Naming"
+        Me.chkVideoTSParentXBMC.Size = New System.Drawing.Size(222, 33)
+        Me.chkVideoTSParentXBMC.TabIndex = 5
+        Me.chkVideoTSParentXBMC.Text = "Frodo Compatible VIDEO_TS File Replacement/Naming"
+        Me.chkVideoTSParentXBMC.TextAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkVideoTSParentXBMC.UseVisualStyleBackColor = True
         '
         'GroupBox21
@@ -329,7 +835,7 @@ Partial Class dlgWizard
         Me.GroupBox21.Controls.Add(Me.rbBracketTrailer)
         Me.GroupBox21.Controls.Add(Me.rbDashTrailer)
         Me.GroupBox21.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GroupBox21.Location = New System.Drawing.Point(13, 205)
+        Me.GroupBox21.Location = New System.Drawing.Point(237, 77)
         Me.GroupBox21.Name = "GroupBox21"
         Me.GroupBox21.Size = New System.Drawing.Size(102, 59)
         Me.GroupBox21.TabIndex = 4
@@ -340,7 +846,7 @@ Partial Class dlgWizard
         '
         Me.rbBracketTrailer.AutoSize = True
         Me.rbBracketTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.rbBracketTrailer.Location = New System.Drawing.Point(10, 33)
+        Me.rbBracketTrailer.Location = New System.Drawing.Point(5, 33)
         Me.rbBracketTrailer.Name = "rbBracketTrailer"
         Me.rbBracketTrailer.Size = New System.Drawing.Size(61, 17)
         Me.rbBracketTrailer.TabIndex = 1
@@ -353,7 +859,7 @@ Partial Class dlgWizard
         Me.rbDashTrailer.AutoSize = True
         Me.rbDashTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.rbDashTrailer.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.rbDashTrailer.Location = New System.Drawing.Point(10, 17)
+        Me.rbDashTrailer.Location = New System.Drawing.Point(5, 17)
         Me.rbDashTrailer.Name = "rbDashTrailer"
         Me.rbDashTrailer.Size = New System.Drawing.Size(59, 17)
         Me.rbDashTrailer.TabIndex = 0
@@ -361,43 +867,23 @@ Partial Class dlgWizard
         Me.rbDashTrailer.Text = "-trailer"
         Me.rbDashTrailer.UseVisualStyleBackColor = True
         '
-        'chkMovieNameMultiOnly
-        '
-        Me.chkMovieNameMultiOnly.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMovieNameMultiOnly.Location = New System.Drawing.Point(121, 236)
-        Me.chkMovieNameMultiOnly.Name = "chkMovieNameMultiOnly"
-        Me.chkMovieNameMultiOnly.Size = New System.Drawing.Size(236, 34)
-        Me.chkMovieNameMultiOnly.TabIndex = 6
-        Me.chkMovieNameMultiOnly.Text = "Use <movie> Only for Folders with Multiple Movies"
-        Me.chkMovieNameMultiOnly.UseVisualStyleBackColor = True
-        '
-        'btnMovieFrodo
-        '
-        Me.btnMovieFrodo.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnMovieFrodo.Location = New System.Drawing.Point(121, 213)
-        Me.btnMovieFrodo.Name = "btnMovieFrodo"
-        Me.btnMovieFrodo.Size = New System.Drawing.Size(91, 23)
-        Me.btnMovieFrodo.TabIndex = 5
-        Me.btnMovieFrodo.Text = "XBMC Frodo"
-        Me.btnMovieFrodo.UseVisualStyleBackColor = True
-        '
         'GroupBox6
         '
         Me.GroupBox6.Controls.Add(Me.chkMovieNameDotFanartJPG)
         Me.GroupBox6.Controls.Add(Me.chkMovieNameFanartJPG)
         Me.GroupBox6.Controls.Add(Me.chkFanartJPG)
         Me.GroupBox6.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GroupBox6.Location = New System.Drawing.Point(218, 107)
+        Me.GroupBox6.Location = New System.Drawing.Point(6, 67)
         Me.GroupBox6.Name = "GroupBox6"
-        Me.GroupBox6.Size = New System.Drawing.Size(139, 70)
-        Me.GroupBox6.TabIndex = 2
+        Me.GroupBox6.Size = New System.Drawing.Size(136, 72)
+        Me.GroupBox6.TabIndex = 3
         Me.GroupBox6.TabStop = False
         Me.GroupBox6.Text = "Fanart"
         '
         'chkMovieNameDotFanartJPG
         '
         Me.chkMovieNameDotFanartJPG.AutoSize = True
-        Me.chkMovieNameDotFanartJPG.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkMovieNameDotFanartJPG.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieNameDotFanartJPG.Location = New System.Drawing.Point(6, 51)
         Me.chkMovieNameDotFanartJPG.Name = "chkMovieNameDotFanartJPG"
         Me.chkMovieNameDotFanartJPG.Size = New System.Drawing.Size(126, 17)
@@ -408,7 +894,8 @@ Partial Class dlgWizard
         'chkMovieNameFanartJPG
         '
         Me.chkMovieNameFanartJPG.AutoSize = True
-        Me.chkMovieNameFanartJPG.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkMovieNameFanartJPG.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkMovieNameFanartJPG.ForeColor = System.Drawing.SystemColors.ControlText
         Me.chkMovieNameFanartJPG.Location = New System.Drawing.Point(6, 35)
         Me.chkMovieNameFanartJPG.Name = "chkMovieNameFanartJPG"
         Me.chkMovieNameFanartJPG.Size = New System.Drawing.Size(127, 17)
@@ -419,13 +906,37 @@ Partial Class dlgWizard
         'chkFanartJPG
         '
         Me.chkFanartJPG.AutoSize = True
-        Me.chkFanartJPG.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkFanartJPG.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkFanartJPG.Location = New System.Drawing.Point(6, 19)
         Me.chkFanartJPG.Name = "chkFanartJPG"
         Me.chkFanartJPG.Size = New System.Drawing.Size(77, 17)
         Me.chkFanartJPG.TabIndex = 0
         Me.chkFanartJPG.Text = "fanart.jpg"
         Me.chkFanartJPG.UseVisualStyleBackColor = True
+        '
+        'chkMovieNameMultiOnly
+        '
+        Me.chkMovieNameMultiOnly.CheckAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkMovieNameMultiOnly.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkMovieNameMultiOnly.Location = New System.Drawing.Point(218, 14)
+        Me.chkMovieNameMultiOnly.Name = "chkMovieNameMultiOnly"
+        Me.chkMovieNameMultiOnly.Size = New System.Drawing.Size(125, 43)
+        Me.chkMovieNameMultiOnly.TabIndex = 2
+        Me.chkMovieNameMultiOnly.Text = "Use <movie> Only for Folders with Multiple Movies"
+        Me.chkMovieNameMultiOnly.TextAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkMovieNameMultiOnly.UseVisualStyleBackColor = True
+        '
+        'chkAutoDetectVTS
+        '
+        Me.chkAutoDetectVTS.CheckAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkAutoDetectVTS.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkAutoDetectVTS.Location = New System.Drawing.Point(6, 6)
+        Me.chkAutoDetectVTS.Name = "chkAutoDetectVTS"
+        Me.chkAutoDetectVTS.Size = New System.Drawing.Size(222, 33)
+        Me.chkAutoDetectVTS.TabIndex = 4
+        Me.chkAutoDetectVTS.Text = "Recognize VIDEO_TS Folders"
+        Me.chkAutoDetectVTS.TextAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkAutoDetectVTS.UseVisualStyleBackColor = True
         '
         'GroupBox5
         '
@@ -438,10 +949,10 @@ Partial Class dlgWizard
         Me.GroupBox5.Controls.Add(Me.chkMovieNameTBN)
         Me.GroupBox5.Controls.Add(Me.chkMovieTBN)
         Me.GroupBox5.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GroupBox5.Location = New System.Drawing.Point(13, 107)
+        Me.GroupBox5.Location = New System.Drawing.Point(6, 140)
         Me.GroupBox5.Name = "GroupBox5"
-        Me.GroupBox5.Size = New System.Drawing.Size(199, 104)
-        Me.GroupBox5.TabIndex = 1
+        Me.GroupBox5.Size = New System.Drawing.Size(221, 83)
+        Me.GroupBox5.TabIndex = 0
         Me.GroupBox5.TabStop = False
         Me.GroupBox5.Text = "Posters"
         '
@@ -450,18 +961,18 @@ Partial Class dlgWizard
         Me.chkMovieNameDashPosterJPG.AutoSize = True
         Me.chkMovieNameDashPosterJPG.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieNameDashPosterJPG.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.chkMovieNameDashPosterJPG.Location = New System.Drawing.Point(10, 81)
+        Me.chkMovieNameDashPosterJPG.Location = New System.Drawing.Point(85, 63)
         Me.chkMovieNameDashPosterJPG.Name = "chkMovieNameDashPosterJPG"
         Me.chkMovieNameDashPosterJPG.Size = New System.Drawing.Size(129, 17)
-        Me.chkMovieNameDashPosterJPG.TabIndex = 8
+        Me.chkMovieNameDashPosterJPG.TabIndex = 7
         Me.chkMovieNameDashPosterJPG.Text = "<movie>-poster.jpg"
         Me.chkMovieNameDashPosterJPG.UseVisualStyleBackColor = True
         '
         'chkFolderJPG
         '
         Me.chkFolderJPG.AutoSize = True
-        Me.chkFolderJPG.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkFolderJPG.Location = New System.Drawing.Point(10, 65)
+        Me.chkFolderJPG.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkFolderJPG.Location = New System.Drawing.Point(6, 63)
         Me.chkFolderJPG.Name = "chkFolderJPG"
         Me.chkFolderJPG.Size = New System.Drawing.Size(77, 17)
         Me.chkFolderJPG.TabIndex = 3
@@ -471,8 +982,8 @@ Partial Class dlgWizard
         'chkPosterJPG
         '
         Me.chkPosterJPG.AutoSize = True
-        Me.chkPosterJPG.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkPosterJPG.Location = New System.Drawing.Point(100, 49)
+        Me.chkPosterJPG.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkPosterJPG.Location = New System.Drawing.Point(85, 47)
         Me.chkPosterJPG.Name = "chkPosterJPG"
         Me.chkPosterJPG.Size = New System.Drawing.Size(79, 17)
         Me.chkPosterJPG.TabIndex = 6
@@ -482,8 +993,8 @@ Partial Class dlgWizard
         'chkPosterTBN
         '
         Me.chkPosterTBN.AutoSize = True
-        Me.chkPosterTBN.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkPosterTBN.Location = New System.Drawing.Point(10, 49)
+        Me.chkPosterTBN.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkPosterTBN.Location = New System.Drawing.Point(6, 47)
         Me.chkPosterTBN.Name = "chkPosterTBN"
         Me.chkPosterTBN.Size = New System.Drawing.Size(80, 17)
         Me.chkPosterTBN.TabIndex = 2
@@ -493,8 +1004,8 @@ Partial Class dlgWizard
         'chkMovieNameJPG
         '
         Me.chkMovieNameJPG.AutoSize = True
-        Me.chkMovieNameJPG.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkMovieNameJPG.Location = New System.Drawing.Point(100, 33)
+        Me.chkMovieNameJPG.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkMovieNameJPG.Location = New System.Drawing.Point(85, 31)
         Me.chkMovieNameJPG.Name = "chkMovieNameJPG"
         Me.chkMovieNameJPG.Size = New System.Drawing.Size(92, 17)
         Me.chkMovieNameJPG.TabIndex = 5
@@ -504,8 +1015,8 @@ Partial Class dlgWizard
         'chkMovieJPG
         '
         Me.chkMovieJPG.AutoSize = True
-        Me.chkMovieJPG.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkMovieJPG.Location = New System.Drawing.Point(10, 33)
+        Me.chkMovieJPG.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkMovieJPG.Location = New System.Drawing.Point(6, 31)
         Me.chkMovieJPG.Name = "chkMovieJPG"
         Me.chkMovieJPG.Size = New System.Drawing.Size(76, 17)
         Me.chkMovieJPG.TabIndex = 1
@@ -515,8 +1026,8 @@ Partial Class dlgWizard
         'chkMovieNameTBN
         '
         Me.chkMovieNameTBN.AutoSize = True
-        Me.chkMovieNameTBN.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkMovieNameTBN.Location = New System.Drawing.Point(100, 17)
+        Me.chkMovieNameTBN.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkMovieNameTBN.Location = New System.Drawing.Point(85, 15)
         Me.chkMovieNameTBN.Name = "chkMovieNameTBN"
         Me.chkMovieNameTBN.Size = New System.Drawing.Size(93, 17)
         Me.chkMovieNameTBN.TabIndex = 4
@@ -526,18 +1037,66 @@ Partial Class dlgWizard
         'chkMovieTBN
         '
         Me.chkMovieTBN.AutoSize = True
-        Me.chkMovieTBN.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkMovieTBN.Location = New System.Drawing.Point(10, 17)
+        Me.chkMovieTBN.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkMovieTBN.Location = New System.Drawing.Point(6, 15)
         Me.chkMovieTBN.Name = "chkMovieTBN"
         Me.chkMovieTBN.Size = New System.Drawing.Size(77, 17)
         Me.chkMovieTBN.TabIndex = 0
         Me.chkMovieTBN.Text = "movie.tbn"
         Me.chkMovieTBN.UseVisualStyleBackColor = True
         '
+        'GroupBox7
+        '
+        Me.GroupBox7.Controls.Add(Me.chkMovieNameNFOStack)
+        Me.GroupBox7.Controls.Add(Me.chkMovieNameNFO)
+        Me.GroupBox7.Controls.Add(Me.chkMovieNFO)
+        Me.GroupBox7.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.GroupBox7.Location = New System.Drawing.Point(237, 142)
+        Me.GroupBox7.Name = "GroupBox7"
+        Me.GroupBox7.Size = New System.Drawing.Size(102, 81)
+        Me.GroupBox7.TabIndex = 5
+        Me.GroupBox7.TabStop = False
+        Me.GroupBox7.Text = "NFO"
+        '
+        'chkMovieNameNFOStack
+        '
+        Me.chkMovieNameNFOStack.AutoSize = True
+        Me.chkMovieNameNFOStack.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkMovieNameNFOStack.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.chkMovieNameNFOStack.Location = New System.Drawing.Point(6, 51)
+        Me.chkMovieNameNFOStack.Name = "chkMovieNameNFOStack"
+        Me.chkMovieNameNFOStack.Size = New System.Drawing.Size(93, 30)
+        Me.chkMovieNameNFOStack.TabIndex = 2
+        Me.chkMovieNameNFOStack.Text = "<movie>.nfo" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "(Stack)"
+        Me.chkMovieNameNFOStack.UseVisualStyleBackColor = True
+        '
+        'chkMovieNameNFO
+        '
+        Me.chkMovieNameNFO.AutoSize = True
+        Me.chkMovieNameNFO.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkMovieNameNFO.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.chkMovieNameNFO.Location = New System.Drawing.Point(6, 34)
+        Me.chkMovieNameNFO.Name = "chkMovieNameNFO"
+        Me.chkMovieNameNFO.Size = New System.Drawing.Size(93, 17)
+        Me.chkMovieNameNFO.TabIndex = 1
+        Me.chkMovieNameNFO.Text = "<movie>.nfo"
+        Me.chkMovieNameNFO.UseVisualStyleBackColor = True
+        '
+        'chkMovieNFO
+        '
+        Me.chkMovieNFO.AutoSize = True
+        Me.chkMovieNFO.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkMovieNFO.Location = New System.Drawing.Point(6, 18)
+        Me.chkMovieNFO.Name = "chkMovieNFO"
+        Me.chkMovieNFO.Size = New System.Drawing.Size(77, 17)
+        Me.chkMovieNFO.TabIndex = 0
+        Me.chkMovieNFO.Text = "movie.nfo"
+        Me.chkMovieNFO.UseVisualStyleBackColor = True
+        '
         'Label5
         '
         Me.Label5.Font = New System.Drawing.Font("Segoe UI", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label5.Location = New System.Drawing.Point(45, 292)
+        Me.Label5.Location = New System.Drawing.Point(45, 346)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(286, 30)
         Me.Label5.TabIndex = 5
@@ -548,7 +1107,7 @@ Partial Class dlgWizard
         'Label4
         '
         Me.Label4.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label4.Location = New System.Drawing.Point(13, 15)
+        Me.Label4.Location = New System.Drawing.Point(13, 1)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(341, 93)
         Me.Label4.TabIndex = 0
@@ -562,24 +1121,24 @@ Partial Class dlgWizard
         Me.PictureBox1.Image = Global.Ember_Media_Manager.My.Resources.Resources.Wizard
         Me.PictureBox1.Location = New System.Drawing.Point(3, 7)
         Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(157, 353)
+        Me.PictureBox1.Size = New System.Drawing.Size(157, 410)
         Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.PictureBox1.TabIndex = 0
         Me.PictureBox1.TabStop = False
         '
-        'Panel2
+        'pnlMovieSource
         '
-        Me.Panel2.BackColor = System.Drawing.Color.White
-        Me.Panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.Panel2.Controls.Add(Me.lvMovies)
-        Me.Panel2.Controls.Add(Me.btnMovieRem)
-        Me.Panel2.Controls.Add(Me.btnMovieAddFolder)
-        Me.Panel2.Controls.Add(Me.Label3)
-        Me.Panel2.Location = New System.Drawing.Point(566, 7)
-        Me.Panel2.Name = "Panel2"
-        Me.Panel2.Size = New System.Drawing.Size(376, 323)
-        Me.Panel2.TabIndex = 5
-        Me.Panel2.Visible = False
+        Me.pnlMovieSource.BackColor = System.Drawing.Color.White
+        Me.pnlMovieSource.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlMovieSource.Controls.Add(Me.lvMovies)
+        Me.pnlMovieSource.Controls.Add(Me.btnMovieRem)
+        Me.pnlMovieSource.Controls.Add(Me.btnMovieAddFolder)
+        Me.pnlMovieSource.Controls.Add(Me.Label3)
+        Me.pnlMovieSource.Location = New System.Drawing.Point(566, 7)
+        Me.pnlMovieSource.Name = "pnlMovieSource"
+        Me.pnlMovieSource.Size = New System.Drawing.Size(376, 380)
+        Me.pnlMovieSource.TabIndex = 5
+        Me.pnlMovieSource.Visible = False
         '
         'lvMovies
         '
@@ -658,18 +1217,18 @@ Partial Class dlgWizard
     "d as many sources as you wish."
         Me.Label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
-        'Panel6
+        'pnlDone
         '
-        Me.Panel6.BackColor = System.Drawing.Color.White
-        Me.Panel6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.Panel6.Controls.Add(Me.Label8)
-        Me.Panel6.Controls.Add(Me.Label6)
-        Me.Panel6.Controls.Add(Me.Label7)
-        Me.Panel6.Location = New System.Drawing.Point(959, 406)
-        Me.Panel6.Name = "Panel6"
-        Me.Panel6.Size = New System.Drawing.Size(376, 323)
-        Me.Panel6.TabIndex = 9
-        Me.Panel6.Visible = False
+        Me.pnlDone.BackColor = System.Drawing.Color.White
+        Me.pnlDone.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlDone.Controls.Add(Me.Label8)
+        Me.pnlDone.Controls.Add(Me.Label6)
+        Me.pnlDone.Controls.Add(Me.Label7)
+        Me.pnlDone.Location = New System.Drawing.Point(959, 463)
+        Me.pnlDone.Name = "pnlDone"
+        Me.pnlDone.Size = New System.Drawing.Size(376, 380)
+        Me.pnlDone.TabIndex = 9
+        Me.pnlDone.Visible = False
         '
         'Label8
         '
@@ -702,21 +1261,21 @@ Partial Class dlgWizard
         Me.Label7.Text = "That's it!" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Ember Media Manager is Ready!"
         Me.Label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
-        'Panel4
+        'pnlTVShowSource
         '
-        Me.Panel4.BackColor = System.Drawing.Color.White
-        Me.Panel4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.Panel4.Controls.Add(Me.Label10)
-        Me.Panel4.Controls.Add(Me.lvTVSources)
-        Me.Panel4.Controls.Add(Me.cbTVLanguage)
-        Me.Panel4.Controls.Add(Me.btnTVRemoveSource)
-        Me.Panel4.Controls.Add(Me.btnTVAddSource)
-        Me.Panel4.Controls.Add(Me.Label9)
-        Me.Panel4.Location = New System.Drawing.Point(166, 406)
-        Me.Panel4.Name = "Panel4"
-        Me.Panel4.Size = New System.Drawing.Size(376, 323)
-        Me.Panel4.TabIndex = 7
-        Me.Panel4.Visible = False
+        Me.pnlTVShowSource.BackColor = System.Drawing.Color.White
+        Me.pnlTVShowSource.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlTVShowSource.Controls.Add(Me.Label10)
+        Me.pnlTVShowSource.Controls.Add(Me.lvTVSources)
+        Me.pnlTVShowSource.Controls.Add(Me.cbTVLanguage)
+        Me.pnlTVShowSource.Controls.Add(Me.btnTVRemoveSource)
+        Me.pnlTVShowSource.Controls.Add(Me.btnTVAddSource)
+        Me.pnlTVShowSource.Controls.Add(Me.Label9)
+        Me.pnlTVShowSource.Location = New System.Drawing.Point(166, 463)
+        Me.pnlTVShowSource.Name = "pnlTVShowSource"
+        Me.pnlTVShowSource.Size = New System.Drawing.Size(376, 380)
+        Me.pnlTVShowSource.TabIndex = 7
+        Me.pnlTVShowSource.Visible = False
         '
         'Label10
         '
@@ -803,25 +1362,25 @@ Partial Class dlgWizard
     "dd as many sources as you wish."
         Me.Label9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
-        'Panel5
+        'pnlTVShowSettings
         '
-        Me.Panel5.BackColor = System.Drawing.Color.White
-        Me.Panel5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.Panel5.Controls.Add(Me.btnTVShowFrodo)
-        Me.Panel5.Controls.Add(Me.gbAllSeasonPoster)
-        Me.Panel5.Controls.Add(Me.lblInsideSeason)
-        Me.Panel5.Controls.Add(Me.gbSeasonFanart)
-        Me.Panel5.Controls.Add(Me.gbSeasonPosters)
-        Me.Panel5.Controls.Add(Me.gbEpisodePosters)
-        Me.Panel5.Controls.Add(Me.gbShowFanart)
-        Me.Panel5.Controls.Add(Me.gbEpisodeFanart)
-        Me.Panel5.Controls.Add(Me.gbShowPosters)
-        Me.Panel5.Controls.Add(Me.Label11)
-        Me.Panel5.Location = New System.Drawing.Point(566, 406)
-        Me.Panel5.Name = "Panel5"
-        Me.Panel5.Size = New System.Drawing.Size(376, 323)
-        Me.Panel5.TabIndex = 8
-        Me.Panel5.Visible = False
+        Me.pnlTVShowSettings.BackColor = System.Drawing.Color.White
+        Me.pnlTVShowSettings.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlTVShowSettings.Controls.Add(Me.btnTVShowFrodo)
+        Me.pnlTVShowSettings.Controls.Add(Me.gbAllSeasonPoster)
+        Me.pnlTVShowSettings.Controls.Add(Me.lblInsideSeason)
+        Me.pnlTVShowSettings.Controls.Add(Me.gbSeasonFanart)
+        Me.pnlTVShowSettings.Controls.Add(Me.gbSeasonPosters)
+        Me.pnlTVShowSettings.Controls.Add(Me.gbEpisodePosters)
+        Me.pnlTVShowSettings.Controls.Add(Me.gbShowFanart)
+        Me.pnlTVShowSettings.Controls.Add(Me.gbEpisodeFanart)
+        Me.pnlTVShowSettings.Controls.Add(Me.gbShowPosters)
+        Me.pnlTVShowSettings.Controls.Add(Me.Label11)
+        Me.pnlTVShowSettings.Location = New System.Drawing.Point(566, 463)
+        Me.pnlTVShowSettings.Name = "pnlTVShowSettings"
+        Me.pnlTVShowSettings.Size = New System.Drawing.Size(376, 380)
+        Me.pnlTVShowSettings.TabIndex = 8
+        Me.pnlTVShowSettings.Visible = False
         '
         'btnTVShowFrodo
         '
@@ -1269,18 +1828,18 @@ Partial Class dlgWizard
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(548, 366)
-        Me.Controls.Add(Me.Panel3)
+        Me.ClientSize = New System.Drawing.Size(548, 423)
+        Me.Controls.Add(Me.pnlMovieSettings)
         Me.Controls.Add(Me.PictureBox1)
         Me.Controls.Add(Me.btnBack)
         Me.Controls.Add(Me.btnNext)
         Me.Controls.Add(Me.OK_Button)
         Me.Controls.Add(Me.Cancel_Button)
-        Me.Controls.Add(Me.Panel4)
-        Me.Controls.Add(Me.Panel2)
-        Me.Controls.Add(Me.Panel6)
-        Me.Controls.Add(Me.Panel5)
-        Me.Controls.Add(Me.Panel1)
+        Me.Controls.Add(Me.pnlTVShowSource)
+        Me.Controls.Add(Me.pnlMovieSource)
+        Me.Controls.Add(Me.pnlDone)
+        Me.Controls.Add(Me.pnlTVShowSettings)
+        Me.Controls.Add(Me.pnlWelcome)
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
@@ -1290,24 +1849,37 @@ Partial Class dlgWizard
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Ember Startup Wizard"
         Me.TopMost = True
-        Me.Panel1.ResumeLayout(False)
-        Me.Panel1.PerformLayout()
-        Me.Panel3.ResumeLayout(False)
-        Me.Panel3.PerformLayout()
-        Me.GroupBox7.ResumeLayout(False)
-        Me.GroupBox7.PerformLayout()
+        Me.pnlWelcome.ResumeLayout(False)
+        Me.pnlWelcome.PerformLayout()
+        Me.pnlMovieSettings.ResumeLayout(False)
+        Me.tbcFileNaming.ResumeLayout(False)
+        Me.tpFileNamingXBMC.ResumeLayout(False)
+        Me.gbXBMCOptional.ResumeLayout(False)
+        Me.gbEden.ResumeLayout(False)
+        Me.gbEden.PerformLayout()
+        Me.gbFrodo.ResumeLayout(False)
+        Me.gbFrodo.PerformLayout()
+        Me.tpFileNamingNMT.ResumeLayout(False)
+        Me.gbNMJ.ResumeLayout(False)
+        Me.gbNMJ.PerformLayout()
+        Me.gbYAMJ.ResumeLayout(False)
+        Me.gbYAMJ.PerformLayout()
+        Me.tpFileNamingExpert.ResumeLayout(False)
+        Me.tpFileNamingExpert.PerformLayout()
         Me.GroupBox21.ResumeLayout(False)
         Me.GroupBox21.PerformLayout()
         Me.GroupBox6.ResumeLayout(False)
         Me.GroupBox6.PerformLayout()
         Me.GroupBox5.ResumeLayout(False)
         Me.GroupBox5.PerformLayout()
+        Me.GroupBox7.ResumeLayout(False)
+        Me.GroupBox7.PerformLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.Panel2.ResumeLayout(False)
-        Me.Panel6.ResumeLayout(False)
-        Me.Panel6.PerformLayout()
-        Me.Panel4.ResumeLayout(False)
-        Me.Panel5.ResumeLayout(False)
+        Me.pnlMovieSource.ResumeLayout(False)
+        Me.pnlDone.ResumeLayout(False)
+        Me.pnlDone.PerformLayout()
+        Me.pnlTVShowSource.ResumeLayout(False)
+        Me.pnlTVShowSettings.ResumeLayout(False)
         Me.gbAllSeasonPoster.ResumeLayout(False)
         Me.gbAllSeasonPoster.PerformLayout()
         Me.gbSeasonFanart.ResumeLayout(False)
@@ -1325,105 +1897,148 @@ Partial Class dlgWizard
         Me.ResumeLayout(False)
 
     End Sub
-	Friend WithEvents OK_Button As System.Windows.Forms.Button
-	Friend WithEvents Cancel_Button As System.Windows.Forms.Button
-	Friend WithEvents btnBack As System.Windows.Forms.Button
-	Friend WithEvents btnNext As System.Windows.Forms.Button
-	Friend WithEvents Panel1 As System.Windows.Forms.Panel
-	Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
-	Friend WithEvents Label2 As System.Windows.Forms.Label
-	Friend WithEvents Label1 As System.Windows.Forms.Label
-	Friend WithEvents Panel2 As System.Windows.Forms.Panel
-	Friend WithEvents Panel3 As System.Windows.Forms.Panel
-	Friend WithEvents Label3 As System.Windows.Forms.Label
-	Friend WithEvents btnMovieRem As System.Windows.Forms.Button
-	Friend WithEvents btnMovieAddFolder As System.Windows.Forms.Button
-	Friend WithEvents Label5 As System.Windows.Forms.Label
-	Friend WithEvents Label4 As System.Windows.Forms.Label
-	Friend WithEvents GroupBox7 As System.Windows.Forms.GroupBox
-	Friend WithEvents chkMovieNameNFO As System.Windows.Forms.CheckBox
-	Friend WithEvents chkMovieNFO As System.Windows.Forms.CheckBox
-	Friend WithEvents GroupBox6 As System.Windows.Forms.GroupBox
-	Friend WithEvents chkMovieNameDotFanartJPG As System.Windows.Forms.CheckBox
-	Friend WithEvents chkMovieNameFanartJPG As System.Windows.Forms.CheckBox
-	Friend WithEvents chkFanartJPG As System.Windows.Forms.CheckBox
-	Friend WithEvents GroupBox5 As System.Windows.Forms.GroupBox
-	Friend WithEvents chkFolderJPG As System.Windows.Forms.CheckBox
-	Friend WithEvents chkPosterJPG As System.Windows.Forms.CheckBox
-	Friend WithEvents chkPosterTBN As System.Windows.Forms.CheckBox
-	Friend WithEvents chkMovieNameJPG As System.Windows.Forms.CheckBox
-	Friend WithEvents chkMovieJPG As System.Windows.Forms.CheckBox
-	Friend WithEvents chkMovieNameTBN As System.Windows.Forms.CheckBox
-	Friend WithEvents chkMovieTBN As System.Windows.Forms.CheckBox
-	Friend WithEvents Panel6 As System.Windows.Forms.Panel
-	Friend WithEvents Label6 As System.Windows.Forms.Label
-	Friend WithEvents Label7 As System.Windows.Forms.Label
-	Friend WithEvents Label8 As System.Windows.Forms.Label
-	Friend WithEvents lvMovies As System.Windows.Forms.ListView
-	Friend WithEvents colID As System.Windows.Forms.ColumnHeader
-	Friend WithEvents colName As System.Windows.Forms.ColumnHeader
-	Friend WithEvents colPath As System.Windows.Forms.ColumnHeader
-	Friend WithEvents colRecur As System.Windows.Forms.ColumnHeader
-	Friend WithEvents colFolder As System.Windows.Forms.ColumnHeader
-	Friend WithEvents colSingle As System.Windows.Forms.ColumnHeader
-	Friend WithEvents chkMovieNameMultiOnly As System.Windows.Forms.CheckBox
-	Friend WithEvents Label32 As System.Windows.Forms.Label
-	Friend WithEvents cbIntLang As System.Windows.Forms.ComboBox
-	Friend WithEvents Panel4 As System.Windows.Forms.Panel
-	Friend WithEvents btnTVRemoveSource As System.Windows.Forms.Button
-	Friend WithEvents btnTVAddSource As System.Windows.Forms.Button
-	Friend WithEvents Label9 As System.Windows.Forms.Label
-	Friend WithEvents lvTVSources As System.Windows.Forms.ListView
-	Friend WithEvents ColumnHeader1 As System.Windows.Forms.ColumnHeader
-	Friend WithEvents ColumnHeader2 As System.Windows.Forms.ColumnHeader
-	Friend WithEvents ColumnHeader3 As System.Windows.Forms.ColumnHeader
-	Friend WithEvents Panel5 As System.Windows.Forms.Panel
-	Friend WithEvents Label11 As System.Windows.Forms.Label
-	Friend WithEvents gbAllSeasonPoster As System.Windows.Forms.GroupBox
-	Friend WithEvents chkSeasonAllJPG As System.Windows.Forms.CheckBox
-	Friend WithEvents chkSeasonAllTBN As System.Windows.Forms.CheckBox
-	Friend WithEvents lblInsideSeason As System.Windows.Forms.Label
-	Friend WithEvents gbEpisodeFanart As System.Windows.Forms.GroupBox
-	Friend WithEvents chkEpisodeDotFanart As System.Windows.Forms.CheckBox
-	Friend WithEvents chkEpisodeDashFanart As System.Windows.Forms.CheckBox
-	Friend WithEvents gbEpisodePosters As System.Windows.Forms.GroupBox
-	Friend WithEvents chkEpisodeJPG As System.Windows.Forms.CheckBox
-	Friend WithEvents chkEpisodeTBN As System.Windows.Forms.CheckBox
-	Friend WithEvents gbSeasonFanart As System.Windows.Forms.GroupBox
-	Friend WithEvents chkSeasonDotFanart As System.Windows.Forms.CheckBox
-	Friend WithEvents chkSeasonDashFanart As System.Windows.Forms.CheckBox
-	Friend WithEvents chkSeasonFanartJPG As System.Windows.Forms.CheckBox
-	Friend WithEvents gbSeasonPosters As System.Windows.Forms.GroupBox
-	Friend WithEvents chkSeasonFolderJPG As System.Windows.Forms.CheckBox
-	Friend WithEvents chkSeasonNameJPG As System.Windows.Forms.CheckBox
-	Friend WithEvents chkSeasonNameTBN As System.Windows.Forms.CheckBox
-	Friend WithEvents chkSeasonPosterJPG As System.Windows.Forms.CheckBox
-	Friend WithEvents chkSeasonPosterTBN As System.Windows.Forms.CheckBox
-	Friend WithEvents chkSeasonXTBN As System.Windows.Forms.CheckBox
-	Friend WithEvents chkSeasonXXTBN As System.Windows.Forms.CheckBox
-	Friend WithEvents gbShowFanart As System.Windows.Forms.GroupBox
-	Friend WithEvents chkShowDotFanart As System.Windows.Forms.CheckBox
-	Friend WithEvents chkShowDashFanart As System.Windows.Forms.CheckBox
-	Friend WithEvents chkShowFanartJPG As System.Windows.Forms.CheckBox
-	Friend WithEvents gbShowPosters As System.Windows.Forms.GroupBox
-	Friend WithEvents chkShowJPG As System.Windows.Forms.CheckBox
-	Friend WithEvents chkShowTBN As System.Windows.Forms.CheckBox
-	Friend WithEvents chkShowPosterJPG As System.Windows.Forms.CheckBox
-	Friend WithEvents chkShowPosterTBN As System.Windows.Forms.CheckBox
-	Friend WithEvents chkShowFolderJPG As System.Windows.Forms.CheckBox
-	Friend WithEvents Label10 As System.Windows.Forms.Label
+    Friend WithEvents OK_Button As System.Windows.Forms.Button
+    Friend WithEvents Cancel_Button As System.Windows.Forms.Button
+    Friend WithEvents btnBack As System.Windows.Forms.Button
+    Friend WithEvents btnNext As System.Windows.Forms.Button
+    Friend WithEvents pnlWelcome As System.Windows.Forms.Panel
+    Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
+    Friend WithEvents Label2 As System.Windows.Forms.Label
+    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents pnlMovieSource As System.Windows.Forms.Panel
+    Friend WithEvents pnlMovieSettings As System.Windows.Forms.Panel
+    Friend WithEvents Label3 As System.Windows.Forms.Label
+    Friend WithEvents btnMovieRem As System.Windows.Forms.Button
+    Friend WithEvents btnMovieAddFolder As System.Windows.Forms.Button
+    Friend WithEvents Label5 As System.Windows.Forms.Label
+    Friend WithEvents Label4 As System.Windows.Forms.Label
+    Friend WithEvents pnlDone As System.Windows.Forms.Panel
+    Friend WithEvents Label6 As System.Windows.Forms.Label
+    Friend WithEvents Label7 As System.Windows.Forms.Label
+    Friend WithEvents Label8 As System.Windows.Forms.Label
+    Friend WithEvents lvMovies As System.Windows.Forms.ListView
+    Friend WithEvents colID As System.Windows.Forms.ColumnHeader
+    Friend WithEvents colName As System.Windows.Forms.ColumnHeader
+    Friend WithEvents colPath As System.Windows.Forms.ColumnHeader
+    Friend WithEvents colRecur As System.Windows.Forms.ColumnHeader
+    Friend WithEvents colFolder As System.Windows.Forms.ColumnHeader
+    Friend WithEvents colSingle As System.Windows.Forms.ColumnHeader
+    Friend WithEvents Label32 As System.Windows.Forms.Label
+    Friend WithEvents cbIntLang As System.Windows.Forms.ComboBox
+    Friend WithEvents pnlTVShowSource As System.Windows.Forms.Panel
+    Friend WithEvents btnTVRemoveSource As System.Windows.Forms.Button
+    Friend WithEvents btnTVAddSource As System.Windows.Forms.Button
+    Friend WithEvents Label9 As System.Windows.Forms.Label
+    Friend WithEvents lvTVSources As System.Windows.Forms.ListView
+    Friend WithEvents ColumnHeader1 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents ColumnHeader2 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents ColumnHeader3 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents pnlTVShowSettings As System.Windows.Forms.Panel
+    Friend WithEvents Label11 As System.Windows.Forms.Label
+    Friend WithEvents gbAllSeasonPoster As System.Windows.Forms.GroupBox
+    Friend WithEvents chkSeasonAllJPG As System.Windows.Forms.CheckBox
+    Friend WithEvents chkSeasonAllTBN As System.Windows.Forms.CheckBox
+    Friend WithEvents lblInsideSeason As System.Windows.Forms.Label
+    Friend WithEvents gbEpisodeFanart As System.Windows.Forms.GroupBox
+    Friend WithEvents chkEpisodeDotFanart As System.Windows.Forms.CheckBox
+    Friend WithEvents chkEpisodeDashFanart As System.Windows.Forms.CheckBox
+    Friend WithEvents gbEpisodePosters As System.Windows.Forms.GroupBox
+    Friend WithEvents chkEpisodeJPG As System.Windows.Forms.CheckBox
+    Friend WithEvents chkEpisodeTBN As System.Windows.Forms.CheckBox
+    Friend WithEvents gbSeasonFanart As System.Windows.Forms.GroupBox
+    Friend WithEvents chkSeasonDotFanart As System.Windows.Forms.CheckBox
+    Friend WithEvents chkSeasonDashFanart As System.Windows.Forms.CheckBox
+    Friend WithEvents chkSeasonFanartJPG As System.Windows.Forms.CheckBox
+    Friend WithEvents gbSeasonPosters As System.Windows.Forms.GroupBox
+    Friend WithEvents chkSeasonFolderJPG As System.Windows.Forms.CheckBox
+    Friend WithEvents chkSeasonNameJPG As System.Windows.Forms.CheckBox
+    Friend WithEvents chkSeasonNameTBN As System.Windows.Forms.CheckBox
+    Friend WithEvents chkSeasonPosterJPG As System.Windows.Forms.CheckBox
+    Friend WithEvents chkSeasonPosterTBN As System.Windows.Forms.CheckBox
+    Friend WithEvents chkSeasonXTBN As System.Windows.Forms.CheckBox
+    Friend WithEvents chkSeasonXXTBN As System.Windows.Forms.CheckBox
+    Friend WithEvents gbShowFanart As System.Windows.Forms.GroupBox
+    Friend WithEvents chkShowDotFanart As System.Windows.Forms.CheckBox
+    Friend WithEvents chkShowDashFanart As System.Windows.Forms.CheckBox
+    Friend WithEvents chkShowFanartJPG As System.Windows.Forms.CheckBox
+    Friend WithEvents gbShowPosters As System.Windows.Forms.GroupBox
+    Friend WithEvents chkShowJPG As System.Windows.Forms.CheckBox
+    Friend WithEvents chkShowTBN As System.Windows.Forms.CheckBox
+    Friend WithEvents chkShowPosterJPG As System.Windows.Forms.CheckBox
+    Friend WithEvents chkShowPosterTBN As System.Windows.Forms.CheckBox
+    Friend WithEvents chkShowFolderJPG As System.Windows.Forms.CheckBox
+    Friend WithEvents Label10 As System.Windows.Forms.Label
     Friend WithEvents cbTVLanguage As System.Windows.Forms.ComboBox
-	Friend WithEvents btnTVShowFrodo As System.Windows.Forms.Button
-	Friend WithEvents chkEpisodeDashThumbJPG As System.Windows.Forms.CheckBox
-	Friend WithEvents chkSeasonAllPosterJPG As System.Windows.Forms.CheckBox
-	Friend WithEvents chkSeasonXXDashFanartJPG As System.Windows.Forms.CheckBox
-	Friend WithEvents chkSeasonXXDashPosterJPG As System.Windows.Forms.CheckBox
-	Friend WithEvents btnMovieFrodo As System.Windows.Forms.Button
-	Friend WithEvents chkMovieNameDashPosterJPG As System.Windows.Forms.CheckBox
-	Friend WithEvents GroupBox21 As System.Windows.Forms.GroupBox
-	Friend WithEvents rbBracketTrailer As System.Windows.Forms.RadioButton
-	Friend WithEvents rbDashTrailer As System.Windows.Forms.RadioButton
-	Friend WithEvents chkVideoTSParentXBMC As System.Windows.Forms.CheckBox
+    Friend WithEvents btnTVShowFrodo As System.Windows.Forms.Button
+    Friend WithEvents chkEpisodeDashThumbJPG As System.Windows.Forms.CheckBox
+    Friend WithEvents chkSeasonAllPosterJPG As System.Windows.Forms.CheckBox
+    Friend WithEvents chkSeasonXXDashFanartJPG As System.Windows.Forms.CheckBox
+    Friend WithEvents chkSeasonXXDashPosterJPG As System.Windows.Forms.CheckBox
+    Friend WithEvents tbcFileNaming As System.Windows.Forms.TabControl
+    Friend WithEvents tpFileNamingXBMC As System.Windows.Forms.TabPage
+    Friend WithEvents gbEden As System.Windows.Forms.GroupBox
+    Friend WithEvents chkExtrafanartsEden As System.Windows.Forms.CheckBox
+    Friend WithEvents chkExtrathumbsEden As System.Windows.Forms.CheckBox
+    Friend WithEvents chkUseEden As System.Windows.Forms.CheckBox
+    Friend WithEvents chkActorThumbsEden As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTrailerEden As System.Windows.Forms.CheckBox
+    Friend WithEvents chkFanartEden As System.Windows.Forms.CheckBox
+    Friend WithEvents chkPosterEden As System.Windows.Forms.CheckBox
+    Friend WithEvents chkNFOEden As System.Windows.Forms.CheckBox
+    Friend WithEvents gbFrodo As System.Windows.Forms.GroupBox
+    Friend WithEvents chkExtrafanartsFrodo As System.Windows.Forms.CheckBox
+    Friend WithEvents chkExtrathumbsFrodo As System.Windows.Forms.CheckBox
+    Friend WithEvents chkUseFrodo As System.Windows.Forms.CheckBox
+    Friend WithEvents chkLandscapeFrodo As System.Windows.Forms.CheckBox
+    Friend WithEvents chkBannerFrodo As System.Windows.Forms.CheckBox
+    Friend WithEvents chkDiscArtFrodo As System.Windows.Forms.CheckBox
+    Friend WithEvents chkClearArtFrodo As System.Windows.Forms.CheckBox
+    Friend WithEvents chkClearLogoFrodo As System.Windows.Forms.CheckBox
+    Friend WithEvents chkActorThumbsFrodo As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTrailerFrodo As System.Windows.Forms.CheckBox
+    Friend WithEvents chkFanartFrodo As System.Windows.Forms.CheckBox
+    Friend WithEvents chkPosterFrodo As System.Windows.Forms.CheckBox
+    Friend WithEvents chkNFOFrodo As System.Windows.Forms.CheckBox
+    Friend WithEvents tpFileNamingNMT As System.Windows.Forms.TabPage
+    Friend WithEvents gbNMJ As System.Windows.Forms.GroupBox
+    Friend WithEvents chkUseNMJ As System.Windows.Forms.CheckBox
+    Friend WithEvents chkBannerNMJ As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTrailerNMJ As System.Windows.Forms.CheckBox
+    Friend WithEvents chkFanartNMJ As System.Windows.Forms.CheckBox
+    Friend WithEvents chkPosterNMJ As System.Windows.Forms.CheckBox
+    Friend WithEvents chkNFONMJ As System.Windows.Forms.CheckBox
+    Friend WithEvents gbYAMJ As System.Windows.Forms.GroupBox
+    Friend WithEvents chkUseYAMJ As System.Windows.Forms.CheckBox
+    Friend WithEvents chkBannerYAMJ As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTrailerYAMJ As System.Windows.Forms.CheckBox
+    Friend WithEvents chkFanartYAMJ As System.Windows.Forms.CheckBox
+    Friend WithEvents chkPosterYAMJ As System.Windows.Forms.CheckBox
+    Friend WithEvents chkNFOYAMJ As System.Windows.Forms.CheckBox
+    Friend WithEvents tpFileNamingExpert As System.Windows.Forms.TabPage
+    Friend WithEvents Label13 As System.Windows.Forms.Label
+    Friend WithEvents chkVideoTSParentXBMC As System.Windows.Forms.CheckBox
+    Friend WithEvents GroupBox21 As System.Windows.Forms.GroupBox
+    Friend WithEvents rbBracketTrailer As System.Windows.Forms.RadioButton
+    Friend WithEvents rbDashTrailer As System.Windows.Forms.RadioButton
+    Friend WithEvents GroupBox6 As System.Windows.Forms.GroupBox
+    Friend WithEvents chkMovieNameDotFanartJPG As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMovieNameFanartJPG As System.Windows.Forms.CheckBox
+    Friend WithEvents chkFanartJPG As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMovieNameMultiOnly As System.Windows.Forms.CheckBox
+    Friend WithEvents chkAutoDetectVTS As System.Windows.Forms.CheckBox
+    Friend WithEvents GroupBox5 As System.Windows.Forms.GroupBox
+    Friend WithEvents chkMovieNameDashPosterJPG As System.Windows.Forms.CheckBox
+    Friend WithEvents chkFolderJPG As System.Windows.Forms.CheckBox
+    Friend WithEvents chkPosterJPG As System.Windows.Forms.CheckBox
+    Friend WithEvents chkPosterTBN As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMovieNameJPG As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMovieJPG As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMovieNameTBN As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMovieTBN As System.Windows.Forms.CheckBox
+    Friend WithEvents GroupBox7 As System.Windows.Forms.GroupBox
     Friend WithEvents chkMovieNameNFOStack As System.Windows.Forms.CheckBox
-    Friend WithEvents Label12 As System.Windows.Forms.Label
+    Friend WithEvents chkMovieNameNFO As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMovieNFO As System.Windows.Forms.CheckBox
+    Friend WithEvents gbXBMCOptional As System.Windows.Forms.GroupBox
+    Friend WithEvents chkXBMCTrailerFormat As System.Windows.Forms.CheckBox
 End Class
