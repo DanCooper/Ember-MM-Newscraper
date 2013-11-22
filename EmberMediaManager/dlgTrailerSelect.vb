@@ -407,6 +407,12 @@ Public Class dlgTrailerSelect
         Me.SetEnabled(True)
     End Sub
 
+    Private Sub lvTrailers_DoubleClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lvTrailers.DoubleClick
+        If Regex.IsMatch(Me.lvTrailers.SelectedItems(0).SubItems(1).Text.ToString, "http:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") Then
+            Me.asfTrailer.Movie = String.Concat(Replace(Me.lvTrailers.SelectedItems(0).SubItems(1).Text.ToString, "/watch?v=", "/v/"), "?rel=0&autoplay=1&iv_load_policy=3")
+        End If
+    End Sub
+
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
         Me.BeginDownload(True)
     End Sub
