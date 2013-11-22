@@ -24,7 +24,6 @@ Imports System.Text
 Imports System.Text.RegularExpressions
 Imports System.Drawing
 Imports System.Runtime.CompilerServices
-Imports System.Net
 
 'The InternalsVisibleTo is required for unit testing the friend methods
 <Assembly: InternalsVisibleTo("EmberAPI_Test")> 
@@ -438,56 +437,53 @@ Public Class StringUtils
         End Try
         Return TVEpName.Trim
     End Function
-    ''' <summary>
-    ''' Cleans up a name by stripping it down to the basic title with no additional decorations.
-    ''' </summary>
-    ''' <param name="TVShowName">The <c>String</c> TV Show name to clean</param>
-    ''' <param name="doExtras">If <c>True</c>, consider optional cleanups such as changing to Title Case</param>
-    ''' <param name="remPunct">If <c>True</c> remove any non-word character [^a-zA-Z0-9_]
-    ''' and duplicate whitespaces, replacing them all with a simple space </param>
-    ''' <returns>The filtered name as a <c>String</c></returns>
-    ''' <remarks></remarks>
+
     Public Shared Function FilterTVShowName(ByVal TVShowName As String, Optional ByVal doExtras As Boolean = True, Optional ByVal remPunct As Boolean = False) As String
         '//
         ' Clean all the crap out of the name
         '\\
-        If String.IsNullOrEmpty(TVShowName) Then Return String.Empty
-        TVShowName = TVShowName.Trim
-        TVShowName = ApplyFilters(TVShowName, Master.eSettings.ShowFilterCustom)
-        'TVShowName = CleanStackingMarkers(TVShowName)
+        Try
 
-        'Convert String To Proper Case
-        If Master.eSettings.ShowProperCase AndAlso doExtras Then
-            TVShowName = ProperCase(TVShowName)
-        End If
+            If String.IsNullOrEmpty(TVShowName) Then Return String.Empty
 
-        'TODO Dekker500 Why are we not using this next line (FilterTokens)?
-        'If doExtras Then TVEpName = FilterTokens(TVEpName.Trim)
-        If remPunct Then TVShowName = RemovePunctuation(CleanStackingMarkers(TVShowName.Trim))
+            Dim strSplit() As String
 
-        Return TVShowName.Trim
+            'run through each of the custom filters
+            If Master.eSettings.ShowFilterCustom.Count > 0 Then
+                For Each Str As String In Master.eSettings.ShowFilterCustom
+
+                    'everything was already filtered out, return an empty string
+                    If String.IsNullOrEmpty(TVShowName) Then Return String.Empty
+
+                    If Str.IndexOf("[->]") > 0 Then
+                        strSplit = Strings.Split(Str, "[->]")
+                        TVShowName = Strings.Replace(TVShowName, Regex.Match(TVShowName, strSplit.First).ToString, strSplit.Last)
+                    Else
+                        TVShowName = Strings.Replace(TVShowName, Regex.Match(TVShowName, Str).ToString, String.Empty)
+                    End If
+                Next
+            End If
+
+            'Convert String To Proper Case
+            If Master.eSettings.ShowProperCase AndAlso doExtras Then
+                TVShowName = ProperCase(TVShowName)
+            End If
+
+            If remPunct Then TVShowName = RemovePunctuation(CleanStackingMarkers(TVShowName.Trim))
+
+            Return TVShowName.Trim
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ' Some error handling so EMM dont break on populate folderdata
+            Return TVShowName.Trim
+        End Try
     End Function
-    ''' <summary>
-    ''' Removes the four-digit year from the given <c>String</c>
-    ''' </summary>
-    ''' <param name="sString"><c>String</c> from which to strip the year</param>
-    ''' <returns>Source <c>String</c> but without the year</returns>
-    ''' <remarks>The year can only be 4 digits. More or less digits and the string won't be modified.
-    ''' Opening or closing bracket is optional.
-    ''' Date must be preceeded by space, underscore, period, or dash
-    ''' NOTE: Closing bracket is required, otherwise 5-digit (or longer) numbers would get truncated</remarks>
+
     Public Shared Function FilterYear(ByVal sString As String) As String
-        If String.IsNullOrEmpty(sString) Then Return String.Empty
         Return Regex.Replace(sString, "([ _.-]\(?\d{4}\))?", String.Empty).Trim
     End Function
-    ''' <summary>
-    ''' For a given <c>Integer</c> season number, determine the appropriate season text
-    ''' </summary>
-    ''' <param name="sSeason"><c>Integer</c> season value. Valid values are 0 or higher. Negatives evaluate to Unknonw</param>
-    ''' <returns><c>String</c> title appropriate for the season</returns>
-    ''' <remarks>For <paramref name="sSeason"/> greater than 0, evaluates to (regional equivalent of) "Season XX" where XX is a 0-padded number.
-    ''' For 0, returns equivalent of "Season Specials".
-    ''' For less than 0, returns equivalent of "Unknown"</remarks>
+
     Public Shared Function FormatSeasonText(ByVal sSeason As Integer) As String
         If sSeason > 0 Then
             Return String.Concat(Master.eLang.GetString(650, "Season"), " ", sSeason.ToString.PadLeft(2, Convert.ToChar("0")))
@@ -497,148 +493,58 @@ Public Class StringUtils
             Return Master.eLang.GetString(138, "Unknown")
         End If
     End Function
-    ''' <summary>
-    ''' Converts a string to an HTML-encoded string.
-    ''' </summary>
-    ''' <param name="stext"></param>
-    ''' <returns>An encoded <c>String</c></returns>
-    ''' <remarks>If characters such as blanks and punctuation are passed in an HTTP stream, 
-    ''' they might be misinterpreted at the receiving end. HTML encoding converts characters 
-    ''' that are not allowed in HTML into character-entity equivalents; 
-    ''' HTML decoding reverses the encoding. For example, when embedded in a block of text, 
-    ''' the characters for "less-than" and "greater-than" are encoded as &lt; and &gt; for HTTP transmission.
-    ''' NOTE that this implementation is non-standard in that it can handle entries with characters above 0xFF</remarks>
+
     Public Shared Function HtmlEncode(ByVal stext As String) As String
-        If String.IsNullOrEmpty(stext) Then Return String.Empty
-        Try
-            Dim chars = Web.HttpUtility.HtmlEncode(stext).ToCharArray()
+        Dim chars = Web.HttpUtility.HtmlEncode(stext).ToCharArray()
+        Dim result As StringBuilder = New StringBuilder(stext.Length + Convert.ToInt16(stext.Length * 0.1))
 
-            'Now do some extra magic to handle characters above 0xFF
-            Dim result = New StringBuilder(stext.Length + Convert.ToInt16(stext.Length * 0.1))
+        For Each c As Char In chars
+            Dim value As Integer = Convert.ToInt32(c)
+            If (value > 127) Then
+                result.AppendFormat("&#{0};", value)
+            Else
+                result.Append(c)
+            End If
 
-            For Each c As Char In chars
-                Dim value As Integer = Convert.ToInt32(c)
-                If (value > 127) Then
-                    result.AppendFormat("&#{0};", value)
-                Else
-                    result.Append(c)
-                End If
-            Next
-            Return result.ToString()
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog("Input <" & stext & "> generated the following message: " & vbCrLf & ex.Message, ex.StackTrace, "Error")
-        End Try
-
-        'If we get here, something went wrong.
-        Return String.Empty
+        Next
+        Return result.ToString()
     End Function
-    ''' <summary>
-    ''' Determine whether the given string represents a file that needs to be treated as if it is stacked (single media in multiple files)
-    ''' If the system setting "DisableMultiPartMedia" is False, then always return False
-    ''' </summary>
-    ''' <param name="sName"><c>String</c> to evaluate</param>
-    ''' <param name="VTS">If <c>True</c> then DVD file structure stacking is also considered. Default is <c>False</c></param>
-    ''' <returns><c>True</c> if the string represents a stacked file, or <c>False</c> otherwise</returns>
-    ''' <remarks>A stacked file is one that appears to be a part of a series of files that belong together.
-    ''' Examples would be "filename.cd1.1080p.avi", "movie.part1.mkv" or "film.disc.1.iso".
-    ''' A special case of stacking is the DVD file structure, which has segments in a format such as:
-    ''' "VTS_01_0.VOB", "VTS_03_2.VOB", etc.
-    ''' </remarks>
+
     Public Shared Function IsStacked(ByVal sName As String, Optional ByVal VTS As Boolean = False) As Boolean
         If String.IsNullOrEmpty(sName) Then Return False
         If AdvancedSettings.GetBooleanSetting("DisableMultiPartMedia", False) Then Return False
-        Dim sCheckStackMarkers As String = AdvancedSettings.GetSetting("CheckStackMarkers", "[\s_\-\.]+\(?(cd|dvd|p(?:ar)?t|dis[ck])+[_\-\.]?[0-9]+\)?")
-        Try
-            Dim bReturn As Boolean = Regex.IsMatch(sName, sCheckStackMarkers, RegexOptions.IgnoreCase)
-            If VTS And Not bReturn Then
-                bReturn = Regex.IsMatch(sName, "^vts_[0-9]+_[0-9]+", RegexOptions.IgnoreCase)
-            End If
-            Return bReturn
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog("Input <" & sName & "><" & VTS & "> generated the following message: " & vbCrLf & ex.Message, ex.StackTrace, "Error")
-        End Try
-
-        'If we get here, something went wrong.
-        Return False
-    End Function
-    ''' <summary>
-    ''' Determine whether the format of the supplied URL is valid. No actual Internet query is made to see if
-    ''' the URL is actually responsive.
-    ''' </summary>
-    ''' <param name="sToCheck"><c>String</c> URL to check</param>
-    ''' <returns><c>True</c> if the URL is properly formatted, <c>False</c> otherwise</returns>
-    ''' <remarks>This is not a thoroughly exhaustive check, but is instead a suitably-acceptable sanity check
-    ''' for user-supplied URLs.
-    ''' </remarks>
-    Public Shared Function isValidURL(ByVal sToCheck As String) As Boolean
-        If String.IsNullOrEmpty(sToCheck) Then Return False
-
-        Dim validatedUri As Uri = Nothing
-        Dim parsedOK = Uri.TryCreate(sToCheck, UriKind.Absolute, validatedUri)
-        If parsedOK Then
-            If validatedUri.Scheme = Uri.UriSchemeHttp OrElse validatedUri.Scheme = Uri.UriSchemeHttps Then
-                Return True
-            End If
+        Dim bReturn As Boolean = False
+        If VTS Then
+            bReturn = Regex.IsMatch(sName, AdvancedSettings.GetSetting("CheckStackMarkers", "[\s_\-\.]+\(?(cd|dvd|p(?:ar)?t|dis[ck])+[_\-\.]?[0-9]+\)?"), RegexOptions.IgnoreCase) OrElse Regex.IsMatch(sName, "^vts_[0-9]+_[0-9]+", RegexOptions.IgnoreCase)
+        Else
+            bReturn = Regex.IsMatch(sName, AdvancedSettings.GetSetting("CheckStackMarkers", "[\s_\-\.]+\(?(cd|dvd|p(?:ar)?t|dis[ck])+[_\-\.]?[0-9]+\)?"), RegexOptions.IgnoreCase)
         End If
-        Return False
-
-        'Oldest Return Regex.IsMatch(sToCheck, "^((ht|f)tps?\:\/\/|~\/|\/)?(\w+:\w+@)?(([-\w]+\.)+(com|org|net|gov|mil|biz|info|mobi|name|aero|jobs|museum|travel|[a-z]{2}))\/", RegexOptions.IgnoreCase)
-        'Old Return Regex.IsMatch(sToCheck, "[a-zA-Z]{3,}://[a-zA-Z0-9\.]+/*[a-zA-Z0-9/\\%_.]*\?*[a-zA-Z0-9/\\%_.=&amp;]*")
-        'Alternate method using regex.
-        'Static expression As String = "^(http(?:s)?\:\/\/[a-zA-Z0-9\-]+(?:\.[a-zA-Z0-9\-]+)*\.[a-zA-Z]{2,6}(?:\/?|(?:\/[\w\-]+)*)(?:\/?|\/\w+\.[a-zA-Z]{2,4}(?:\?[\w]+\=[\w\-]+)?)?(?:\&[\w]+\=[\w\-]+)*)$"
-        'Try
-        '    Return Regex.IsMatch(sToCheck, expression, RegexOptions.IgnoreCase)
-        'Catch ex As Exception
-        '    Master.eLog.WriteToErrorLog("Input <" & sToCheck & "> generated the following message: " & vbCrLf & ex.Message, ex.StackTrace, "Error")
-        'End Try
-
-        ''If we get here, something went wrong.
-        'Return False
+        Return bReturn
     End Function
-    ''' <summary>
-    ''' Determines whether the supplied character is valid for a numeric-only field such as a text-box.
-    ''' </summary>
-    ''' <param name="KeyChar"><c>Char</c> to evaluate</param>
-    ''' <param name="isIP"></param>
-    ''' <returns><c>False</c> if <paramref name="KeyChar"/> is something that should be kept (and processed by the
-    ''' underlying control) or <c>True</c> if it should be ignored.</returns>
-    ''' <remarks>Intended to be used when determining whether a textbox or equivalent numeric-only field should
-    ''' handle a keypress or not, this method returns <c>True</c> when the key should be ignored and not processed,
-    ''' and <c>False</c> when it should be allowed to pass and be processed.
-    ''' </remarks>
+
+    Public Shared Function isValidURL(ByVal sToCheck As String) As Boolean
+        '        Return Regex.IsMatch(sToCheck, "^((ht|f)tps?\:\/\/|~\/|\/)?(\w+:\w+@)?(([-\w]+\.)+(com|org|net|gov|mil|biz|info|mobi|name|aero|jobs|museum|travel|[a-z]{2}))\/", RegexOptions.IgnoreCase)
+        Return Regex.IsMatch(sToCheck, "[a-zA-Z]{3,}://[a-zA-Z0-9\.]+/*[a-zA-Z0-9/\\%_.]*\?*[a-zA-Z0-9/\\%_.=&amp;]*")
+
+    End Function
+
     Public Shared Function NumericOnly(ByVal KeyChar As Char, Optional ByVal isIP As Boolean = False) As Boolean
-        'TODO Dekker500 - This method is horribly named. It should be something like "IsInvalidNumericChar". Also, why are we allowing control chars, whitespace, or period?
         If Char.IsNumber(KeyChar) OrElse Char.IsControl(KeyChar) OrElse Char.IsWhiteSpace(KeyChar) OrElse (isIP AndAlso Asc(KeyChar) = 46) Then
             Return False
         Else
             Return True
         End If
     End Function
-    ''' <summary>
-    ''' Converts the supplied <c>String</c> to title-case, and converts certain keywords to uppercase
-    ''' </summary>
-    ''' <param name="sString"><c>String</c> to modify</param>
-    ''' <returns>Converted <c>String</c>. It is always Trimmed</returns>
-    ''' <remarks>Converts <paramref name="sString"/> to title-case (first char of each word is upper-case) and certain keywords are uppercase.
-    ''' Note that if a problem is encountered processing the string, the source string is returned.</remarks>
+
     Public Shared Function ProperCase(ByVal sString As String) As String
         If String.IsNullOrEmpty(sString) Then Return String.Empty
-        Dim sReturn As String = String.Empty
+        Dim sReturn As String = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(sString)
+        Dim toUpper As String = AdvancedSettings.GetSetting("ToProperCase", "\b(hd|cd|dvd|bc|b\.c\.|ad|a\.d\.|sw|nw|se|sw|ii|iii|iv|vi|vii|viii|ix|x)\b")
 
-        Try
-            sReturn = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(sString)
-            Dim toUpper As String = AdvancedSettings.GetSetting("ToProperCase", "\b(hd|cd|dvd|bc|b\.c\.|ad|a\.d\.|sw|nw|se|sw|ii|iii|iv|vi|vii|viii|ix|x)\b")
-
-            Dim mcUp As MatchCollection = Regex.Matches(sReturn, toUpper, RegexOptions.IgnoreCase)
-            For Each M As Match In mcUp
-                sReturn = sReturn.Replace(M.Value, Strings.StrConv(M.Value, VbStrConv.Uppercase))
-            Next
-
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog("Source of <" & sString & "> generated the following message: " & vbCrLf & ex.Message, ex.StackTrace, "Error")
-            'Return the source string and move along
-            sReturn = sString.Trim
-        End Try
+        Dim mcUp As MatchCollection = Regex.Matches(sReturn, toUpper, RegexOptions.IgnoreCase)
+        For Each M As Match In mcUp
+            sReturn = sReturn.Replace(M.Value, Strings.StrConv(M.Value, VbStrConv.Uppercase))
+        Next
 
         Return sReturn.Trim
     End Function
@@ -657,70 +563,24 @@ Public Class StringUtils
     ''' </remarks>
     Public Shared Function RemovePunctuation(ByVal sString As String) As String
         If String.IsNullOrEmpty(sString) Then Return String.Empty
-        Dim sReturn As String = String.Empty
-
-        Try
-            sReturn = Regex.Replace(sString, "\W", " ")
-            'TODO Dekker500 - This used to be "sReturn.ToLower", but didn't make sense why it did... Investigate up the chain! (What does the case have to do with punctuation anyway???)
-            sReturn = Regex.Replace(sReturn, "\s\s(\s+)?", " ")
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog("Source of <" & sString & "> generated the following message: " & vbCrLf & ex.Message, ex.StackTrace, "Error")
-            'Return the source string and move along
-            sReturn = sString
-        End Try
-        Return sReturn.Trim
+        Dim sReturn As String = Regex.Replace(sString, "\W", " ")
+        'TODO Dekker500 - This used to be "sReturn.ToLower", but didn't make sense why it did... Investigate up the chain! (What does the case have to do with punctuation anyway???)
+        Return Regex.Replace(sReturn, "\s\s(\s+)?", " ").Trim
     End Function
-    ''' <summary>
-    ''' Converts a string indicating a size into an actual <c>Size</c> object
-    ''' </summary>
-    ''' <param name="sString"><c>String</c> to parse for the size (WIDTHxHeight format)</param>
-    ''' <returns>A valid <c>Size</c> object. Will have 0 width and 0 height if an error was encountered,
-    ''' otherwise will have width and height as indicated by the supplied string</returns>
-    ''' <remarks>A sample source string is "4x3" which is converted to Width of 4, Height of 3,
-    ''' or "16x9" which is converted to 16 width and 9 height.
-    '''  
-    ''' 2013/11/21 Dekker500 - Modified so it changes input strin ToLowerInvariant before parsing and splitting to overcome inconsistant behaviour with upper-case "x" in source string
-    ''' </remarks>
+
     Public Shared Function StringToSize(ByVal sString As String) As Size
-        'TODO Dekker500 - This can be made more robust by trimming whitespace within the string, so we could accept "16 x 9" 
-        If String.IsNullOrEmpty(sString) Then Return New Size(0, 0)
-
-        Try
-            Dim source As String = sString.ToLowerInvariant
-            If Regex.IsMatch(source, "^[0-9]+x[0-9]+$", RegexOptions.IgnoreCase) Then
-                Dim SplitSize() As String = Strings.Split(source, "x")
-                Return New Size(Convert.ToInt32(SplitSize(0)), Convert.ToInt32(SplitSize(1)))
-            End If
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog("Source of <" & sString & "> generated the following message: " & vbCrLf & ex.Message, ex.StackTrace, "Error")
-        End Try
-        'If you get here, something went wrong
-        Return New Size(0, 0)
-
+        If Regex.IsMatch(sString, "^[0-9]+x[0-9]+$", RegexOptions.IgnoreCase) Then
+            Dim SplitSize() As String = Strings.Split(sString, "x")
+            Return New Size With {.Width = Convert.ToInt32(SplitSize(0)), .Height = Convert.ToInt32(SplitSize(1))}
+        Else
+            Return New Size With {.Width = 0, .Height = 0}
+        End If
     End Function
-    ''' <summary>
-    ''' Shorten a URL String to the given maximum length
-    ''' </summary>
-    ''' <param name="sString">URL <c>String</c> to be shortened</param>
-    ''' <param name="MaxLength">Maximum Integer length of the <c>String</c></param>
-    ''' <param name="EndOnly">If <c>True</c>, only return the right-hand portion of the source string, up to <paramref name="MaxLength"/> in length</param>
-    ''' <returns><c>String</c> url containing no more than <paramref name="MaxLength"/> characters</returns>
-    ''' <remarks>If <paramref name="EndOnly"/>, then the end of the string is returned (up to <paramref name="MaxLength"/> in length.
-    ''' Otherwise, extract the last significant portion of the URL (the portion after the last "/"). Return that portion,
-    ''' along with as much of the start of the string as possible, joined by three periods.
-    ''' Therefore, if EndOnly was TRUE, and MaxLength was 10:
-    '''   TruncateURL("http://a.b.com/page1/page2", 15, True) would give ".../page1/page2"
-    '''   TruncateURL("http://a.b.com/page1/page2", 15, False) would give "http:/.../page2"
-    '''   TruncateURL("http://a.b.com/page1/this_long_title_page2", 15, True) would give "..._title_page2"
-    ''' 
-    ''' Note that if the source string is null or empty, String.Empty is returned.
-    ''' Note that if MaxLength is less than or equal to 0, String.Empty is returned.
-    ''' 
-    ''' 2013/11/21 Dekker500 - Correct issue where if string did not actually need to be shortened (when maxLen > sString.Length), it was still shortened inappropriately
-    ''' </remarks>
+
     Public Shared Function TruncateURL(ByVal sString As String, ByVal MaxLength As Integer, Optional ByVal EndOnly As Boolean = False) As String
-        If String.IsNullOrEmpty(sString) OrElse (MaxLength <= 0) Then Return String.Empty
-        If MaxLength >= sString.Length Then Return sString 'Nothing to do, since it is short enough
+        '//
+        ' Shorten a URL to fit on the GUI
+        '\\
 
         Try
             Dim sEnd As String = String.Empty
@@ -739,21 +599,13 @@ Public Class StringUtils
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog("Source of <" & sString & "> generated the following message: " & vbCrLf & ex.Message, ex.StackTrace, "Error")
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
-        'If you get here, something went wrong
         Return String.Empty
     End Function
-    ''' <summary>
-    ''' Transform the codified US movie certification value to MPAA certification
-    ''' </summary>
-    ''' <param name="sCert"><c>String</c> USA certification</param>
-    ''' <returns><c>String</c>MPAA certification, or String.Empty if <paramref name="sCert"/> was not recognized</returns>
-    ''' <remarks>Converts entries such as "usa:g" into "Rated G"</remarks>
-    Public Shared Function USACertToMPAA(ByVal sCert As String) As String
-        If String.IsNullOrEmpty(sCert) Then Return String.Empty
 
+    Public Shared Function USACertToMPAA(ByVal sCert As String) As String
         Select Case sCert.ToLower
             Case "usa:g"
                 Return "Rated G"
@@ -768,67 +620,48 @@ Public Class StringUtils
         End Select
         Return String.Empty
     End Function
-    ''' <summary>
-    ''' Removes invalid token from the given filename string
-    ''' </summary>
-    ''' <param name="fName"><c>String</c> filename to clean</param>
-    ''' <returns>Cleaned <c>String</c></returns>
-    ''' <remarks>Removes all invalid filename characters such as (:/|<>?*)
-    ''' 
-    ''' 2013/11/21 Dekker500 - Re-factored to remove the full set of invalid characters. Why was "\" considered acceptable before?
-    ''' </remarks>
+
     Public Shared Function CleanFileName(ByVal fName As String) As String
-        If String.IsNullOrEmpty(fName) Then Return String.Empty
 
-        'Do specific replaces first
-        fName = fName.Replace(":", " -")
+        If Not String.IsNullOrEmpty(fName) Then
+            fName = fName.Replace(":", " -")
+            fName = fName.Replace("/", String.Empty)
+            'pattern = pattern.Replace("\", String.Empty)
+            fName = fName.Replace("|", String.Empty)
+            fName = fName.Replace("<", String.Empty)
+            fName = fName.Replace(">", String.Empty)
+            fName = fName.Replace("?", String.Empty)
+            fName = fName.Replace("*", String.Empty)
+            fName = fName.Replace(" ", " ")
+            Return fName
+        End If
 
-        'Everthing else gets removed
-        Dim invalidFileChars() As Char = Path.GetInvalidFileNameChars()
-        For Each someChar In invalidFileChars
-            fName = fName.Replace(someChar, " "c)
-        Next
-
-        'fName = fName.Replace("/", String.Empty)
-        ''pattern = pattern.Replace("\", String.Empty)
-        'fName = fName.Replace("|", String.Empty)
-        'fName = fName.Replace("<", String.Empty)
-        'fName = fName.Replace(">", String.Empty)
-        'fName = fName.Replace("?", String.Empty)
-        'fName = fName.Replace("*", String.Empty)
-        'fName = fName.Replace(" ", " ")
         Return fName
     End Function
-    ''' <summary>
-    ''' Shortens the given <paramref name="fOutline"/> such that it is not longer than <paramref name="fLimit"/>.
-    ''' </summary>
-    ''' <param name="fOutline"><c>String</c> to shorten</param>
-    ''' <param name="fLimit"><c>Integer</c> length that must not be exceeded</param>
-    ''' <returns><c>Sting</c> that contains as much of the source <paramref name="fOutline"/> as possible</returns>
-    ''' <remarks>The shortening is done by finding the last period "." and trimming from there.
-    ''' 
-    ''' 2013/11/22 Dekker500 - Major rewrite, since original did not pass many Unit Tests
-    ''' </remarks>
+
     Public Shared Function ShortenOutline(ByVal fOutline As String, ByVal fLimit As Integer) As String
-        If String.IsNullOrEmpty(fOutline) OrElse fLimit < 0 Then Return String.Empty
+        Dim MaxLength As Integer = fLimit - 2
+        Dim FullLenght As Integer = fOutline.Length
+        Dim sOutline As String = fOutline
 
-        If fLimit >= fOutline.Length Then Return fOutline 'Supplied string is within limits, so just return it
-        If fLimit <= 3 Then
-            'fLimit is ridiculously small. Fudge it and just return the appropriate number of dots
-            Return "...".Substring(0, fLimit)
+        If Not String.IsNullOrEmpty(sOutline) AndAlso MaxLength > 0 AndAlso FullLenght > MaxLength Then
+            sOutline = Strings.Left(sOutline, MaxLength)
+            sOutline = Strings.Left(sOutline, (sOutline.LastIndexOf(".") + 1))
+            If sOutline.Length > 0 Then
+                sOutline = String.Concat(sOutline, "..")
+            Else
+                sOutline = Strings.Left(fOutline, (fOutline.IndexOf(".") + 1))
+                sOutline = String.Concat(sOutline, "..")
+            End If
+            Return sOutline
+        Else
+            Return fOutline
+            'sOutline = Strings.Left(fOutline, (fOutline.IndexOf(".") + 1))
+            'sOutline = String.Concat(sOutline, "..")
+            'Return sOutline
         End If
 
-        'If we get this far, fOutline is longer than we want it, so it needs to be shortened.
-        Dim lastPeriod As Integer = fOutline.LastIndexOf("."c)
-
-        If lastPeriod < 0 OrElse lastPeriod > fLimit - 3 Then
-            'No period was found, or was too close to the max length
-            'Cheat and trim the last 3 chars, replacing with "..."
-            Return String.Concat(fOutline.Substring(0, fLimit - 3), "...")
-        End If
-
-        'If we get this far, we found a period that was not at the extreme end of the string
-        Return String.Concat(fOutline.Substring(0, lastPeriod + 1), "..") 'Note only 2 periods required, since one is already there
+        Return fOutline
     End Function
 
 #End Region 'Methods
