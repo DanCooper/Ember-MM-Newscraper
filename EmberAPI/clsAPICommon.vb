@@ -1281,7 +1281,6 @@ Public Class Functions
                 Case Enums.ModType.All
                     .EThumbs = MValue
                     .EFanarts = MValue
-                    .DoSearch = MValue
                     .Fanart = MValue
                     .Meta = MValue
                     .NFO = MValue
