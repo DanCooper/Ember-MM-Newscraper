@@ -1279,6 +1279,7 @@ Public Class Functions
 
             Select Case MType
                 Case Enums.ModType.All
+                    '.DoSearch should not be set here as it is only needed for a re-search of a movie (first scraping or movie change).
                     .EThumbs = MValue
                     .EFanarts = MValue
                     .Fanart = MValue
