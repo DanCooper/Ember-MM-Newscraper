@@ -25,35 +25,35 @@ Partial Class dlgTrailerSelect
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgTrailerSelect))
         Me.OK_Button = New System.Windows.Forms.Button()
         Me.Cancel_Button = New System.Windows.Forms.Button()
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.gbSelectTrailer = New System.Windows.Forms.GroupBox()
         Me.pnlStatus = New System.Windows.Forms.Panel()
         Me.lblStatus = New System.Windows.Forms.Label()
         Me.pbStatus = New System.Windows.Forms.ProgressBar()
-        Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.gbManualTrailer = New System.Windows.Forms.GroupBox()
         Me.btnClearLink = New System.Windows.Forms.Button()
         Me.btnBrowse = New System.Windows.Forms.Button()
         Me.txtManual = New System.Windows.Forms.TextBox()
-        Me.Label2 = New System.Windows.Forms.Label()
+        Me.lblManual = New System.Windows.Forms.Label()
         Me.txtYouTube = New System.Windows.Forms.TextBox()
-        Me.Label1 = New System.Windows.Forms.Label()
+        Me.lblYouTube = New System.Windows.Forms.Label()
         Me.lvTrailers = New System.Windows.Forms.ListView()
         Me.btnPlayTrailer = New System.Windows.Forms.Button()
         Me.btnSetNfo = New System.Windows.Forms.Button()
         Me.ofdTrailer = New System.Windows.Forms.OpenFileDialog()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.gbYouTube = New System.Windows.Forms.GroupBox()
+        Me.gbYouTubeSearch = New System.Windows.Forms.GroupBox()
+        Me.btnYouTubeSearch = New System.Windows.Forms.Button()
+        Me.txtYouTubeSearch = New System.Windows.Forms.TextBox()
         Me.asfTrailer = New AxShockwaveFlashObjects.AxShockwaveFlash()
         Me.btnPlayBrowser = New System.Windows.Forms.Button()
-        Me.gbYouTubeSearch = New System.Windows.Forms.GroupBox()
-        Me.txtYouTubeSearch = New System.Windows.Forms.TextBox()
-        Me.btnYouTubeSearch = New System.Windows.Forms.Button()
-        Me.GroupBox1.SuspendLayout()
+        Me.gbSelectTrailer.SuspendLayout()
         Me.pnlStatus.SuspendLayout()
-        Me.GroupBox2.SuspendLayout()
+        Me.gbManualTrailer.SuspendLayout()
         Me.Panel1.SuspendLayout()
         Me.gbYouTube.SuspendLayout()
-        CType(Me.asfTrailer, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.gbYouTubeSearch.SuspendLayout()
+        CType(Me.asfTrailer, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'OK_Button
@@ -74,18 +74,18 @@ Partial Class dlgTrailerSelect
         Me.Cancel_Button.TabIndex = 7
         Me.Cancel_Button.Text = "Cancel"
         '
-        'GroupBox1
+        'gbSelectTrailer
         '
-        Me.GroupBox1.Controls.Add(Me.pnlStatus)
-        Me.GroupBox1.Controls.Add(Me.GroupBox2)
-        Me.GroupBox1.Controls.Add(Me.lvTrailers)
-        Me.GroupBox1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.GroupBox1.Location = New System.Drawing.Point(9, 9)
-        Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(458, 319)
-        Me.GroupBox1.TabIndex = 0
-        Me.GroupBox1.TabStop = False
-        Me.GroupBox1.Text = "Select Trailer to Scrape"
+        Me.gbSelectTrailer.Controls.Add(Me.pnlStatus)
+        Me.gbSelectTrailer.Controls.Add(Me.gbManualTrailer)
+        Me.gbSelectTrailer.Controls.Add(Me.lvTrailers)
+        Me.gbSelectTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.gbSelectTrailer.Location = New System.Drawing.Point(9, 9)
+        Me.gbSelectTrailer.Name = "gbSelectTrailer"
+        Me.gbSelectTrailer.Size = New System.Drawing.Size(458, 319)
+        Me.gbSelectTrailer.TabIndex = 0
+        Me.gbSelectTrailer.TabStop = False
+        Me.gbSelectTrailer.Text = "Select Trailer to Scrape"
         '
         'pnlStatus
         '
@@ -119,20 +119,20 @@ Partial Class dlgTrailerSelect
         Me.pbStatus.Style = System.Windows.Forms.ProgressBarStyle.Marquee
         Me.pbStatus.TabIndex = 1
         '
-        'GroupBox2
+        'gbManualTrailer
         '
-        Me.GroupBox2.Controls.Add(Me.btnClearLink)
-        Me.GroupBox2.Controls.Add(Me.btnBrowse)
-        Me.GroupBox2.Controls.Add(Me.txtManual)
-        Me.GroupBox2.Controls.Add(Me.Label2)
-        Me.GroupBox2.Controls.Add(Me.txtYouTube)
-        Me.GroupBox2.Controls.Add(Me.Label1)
-        Me.GroupBox2.Location = New System.Drawing.Point(6, 201)
-        Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(445, 111)
-        Me.GroupBox2.TabIndex = 3
-        Me.GroupBox2.TabStop = False
-        Me.GroupBox2.Text = "Manual Trailer Entry"
+        Me.gbManualTrailer.Controls.Add(Me.btnClearLink)
+        Me.gbManualTrailer.Controls.Add(Me.btnBrowse)
+        Me.gbManualTrailer.Controls.Add(Me.txtManual)
+        Me.gbManualTrailer.Controls.Add(Me.lblManual)
+        Me.gbManualTrailer.Controls.Add(Me.txtYouTube)
+        Me.gbManualTrailer.Controls.Add(Me.lblYouTube)
+        Me.gbManualTrailer.Location = New System.Drawing.Point(6, 201)
+        Me.gbManualTrailer.Name = "gbManualTrailer"
+        Me.gbManualTrailer.Size = New System.Drawing.Size(445, 111)
+        Me.gbManualTrailer.TabIndex = 3
+        Me.gbManualTrailer.TabStop = False
+        Me.gbManualTrailer.Text = "Manual Trailer Entry"
         '
         'btnClearLink
         '
@@ -161,15 +161,15 @@ Partial Class dlgTrailerSelect
         Me.txtManual.Size = New System.Drawing.Size(395, 22)
         Me.txtManual.TabIndex = 3
         '
-        'Label2
+        'lblManual
         '
-        Me.Label2.AutoSize = True
-        Me.Label2.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label2.Location = New System.Drawing.Point(6, 68)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(71, 13)
-        Me.Label2.TabIndex = 2
-        Me.Label2.Text = "Local Trailer:"
+        Me.lblManual.AutoSize = True
+        Me.lblManual.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblManual.Location = New System.Drawing.Point(6, 68)
+        Me.lblManual.Name = "lblManual"
+        Me.lblManual.Size = New System.Drawing.Size(71, 13)
+        Me.lblManual.TabIndex = 2
+        Me.lblManual.Text = "Local Trailer:"
         '
         'txtYouTube
         '
@@ -180,15 +180,15 @@ Partial Class dlgTrailerSelect
         Me.txtYouTube.Size = New System.Drawing.Size(395, 22)
         Me.txtYouTube.TabIndex = 1
         '
-        'Label1
+        'lblYouTube
         '
-        Me.Label1.AutoSize = True
-        Me.Label1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label1.Location = New System.Drawing.Point(6, 14)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(151, 13)
-        Me.Label1.TabIndex = 0
-        Me.Label1.Text = "Direct Link or YouTube URL:"
+        Me.lblYouTube.AutoSize = True
+        Me.lblYouTube.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblYouTube.Location = New System.Drawing.Point(6, 14)
+        Me.lblYouTube.Name = "lblYouTube"
+        Me.lblYouTube.Size = New System.Drawing.Size(151, 13)
+        Me.lblYouTube.TabIndex = 0
+        Me.lblYouTube.Text = "Direct Link or YouTube URL:"
         '
         'lvTrailers
         '
@@ -226,7 +226,7 @@ Partial Class dlgTrailerSelect
         '
         Me.Panel1.BackColor = System.Drawing.Color.White
         Me.Panel1.Controls.Add(Me.gbYouTube)
-        Me.Panel1.Controls.Add(Me.GroupBox1)
+        Me.Panel1.Controls.Add(Me.gbSelectTrailer)
         Me.Panel1.Location = New System.Drawing.Point(3, 3)
         Me.Panel1.Name = "Panel1"
         Me.Panel1.Size = New System.Drawing.Size(879, 331)
@@ -243,6 +243,35 @@ Partial Class dlgTrailerSelect
         Me.gbYouTube.TabIndex = 9
         Me.gbYouTube.TabStop = False
         Me.gbYouTube.Text = "YouTube Player"
+        '
+        'gbYouTubeSearch
+        '
+        Me.gbYouTubeSearch.Controls.Add(Me.btnYouTubeSearch)
+        Me.gbYouTubeSearch.Controls.Add(Me.txtYouTubeSearch)
+        Me.gbYouTubeSearch.Location = New System.Drawing.Point(7, 242)
+        Me.gbYouTubeSearch.Name = "gbYouTubeSearch"
+        Me.gbYouTubeSearch.Size = New System.Drawing.Size(383, 70)
+        Me.gbYouTubeSearch.TabIndex = 9
+        Me.gbYouTubeSearch.TabStop = False
+        Me.gbYouTubeSearch.Text = "Search On YouTube"
+        '
+        'btnYouTubeSearch
+        '
+        Me.btnYouTubeSearch.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnYouTubeSearch.Location = New System.Drawing.Point(302, 27)
+        Me.btnYouTubeSearch.Name = "btnYouTubeSearch"
+        Me.btnYouTubeSearch.Size = New System.Drawing.Size(75, 23)
+        Me.btnYouTubeSearch.TabIndex = 1
+        Me.btnYouTubeSearch.Text = "Search"
+        Me.btnYouTubeSearch.UseVisualStyleBackColor = True
+        '
+        'txtYouTubeSearch
+        '
+        Me.txtYouTubeSearch.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtYouTubeSearch.Location = New System.Drawing.Point(6, 27)
+        Me.txtYouTubeSearch.Name = "txtYouTubeSearch"
+        Me.txtYouTubeSearch.Size = New System.Drawing.Size(290, 22)
+        Me.txtYouTubeSearch.TabIndex = 0
         '
         'asfTrailer
         '
@@ -262,35 +291,6 @@ Partial Class dlgTrailerSelect
         Me.btnPlayBrowser.TabIndex = 4
         Me.btnPlayBrowser.Text = "Open In Browser"
         Me.btnPlayBrowser.UseVisualStyleBackColor = True
-        '
-        'gbYouTubeSearch
-        '
-        Me.gbYouTubeSearch.Controls.Add(Me.btnYouTubeSearch)
-        Me.gbYouTubeSearch.Controls.Add(Me.txtYouTubeSearch)
-        Me.gbYouTubeSearch.Location = New System.Drawing.Point(7, 242)
-        Me.gbYouTubeSearch.Name = "gbYouTubeSearch"
-        Me.gbYouTubeSearch.Size = New System.Drawing.Size(383, 70)
-        Me.gbYouTubeSearch.TabIndex = 9
-        Me.gbYouTubeSearch.TabStop = False
-        Me.gbYouTubeSearch.Text = "Search On YouTube"
-        '
-        'txtYouTubeSearch
-        '
-        Me.txtYouTubeSearch.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtYouTubeSearch.Location = New System.Drawing.Point(6, 27)
-        Me.txtYouTubeSearch.Name = "txtYouTubeSearch"
-        Me.txtYouTubeSearch.Size = New System.Drawing.Size(290, 22)
-        Me.txtYouTubeSearch.TabIndex = 0
-        '
-        'btnYouTubeSearch
-        '
-        Me.btnYouTubeSearch.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnYouTubeSearch.Location = New System.Drawing.Point(302, 27)
-        Me.btnYouTubeSearch.Name = "btnYouTubeSearch"
-        Me.btnYouTubeSearch.Size = New System.Drawing.Size(75, 23)
-        Me.btnYouTubeSearch.TabIndex = 1
-        Me.btnYouTubeSearch.Text = "Search"
-        Me.btnYouTubeSearch.UseVisualStyleBackColor = True
         '
         'dlgTrailerSelect
         '
@@ -314,33 +314,33 @@ Partial Class dlgTrailerSelect
         Me.ShowIcon = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Select Trailer"
-        Me.GroupBox1.ResumeLayout(False)
+        Me.gbSelectTrailer.ResumeLayout(False)
         Me.pnlStatus.ResumeLayout(False)
         Me.pnlStatus.PerformLayout()
-        Me.GroupBox2.ResumeLayout(False)
-        Me.GroupBox2.PerformLayout()
+        Me.gbManualTrailer.ResumeLayout(False)
+        Me.gbManualTrailer.PerformLayout()
         Me.Panel1.ResumeLayout(False)
         Me.gbYouTube.ResumeLayout(False)
-        CType(Me.asfTrailer, System.ComponentModel.ISupportInitialize).EndInit()
         Me.gbYouTubeSearch.ResumeLayout(False)
         Me.gbYouTubeSearch.PerformLayout()
+        CType(Me.asfTrailer, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
     Friend WithEvents OK_Button As System.Windows.Forms.Button
     Friend WithEvents Cancel_Button As System.Windows.Forms.Button
-    Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
+    Friend WithEvents gbSelectTrailer As System.Windows.Forms.GroupBox
     Friend WithEvents pnlStatus As System.Windows.Forms.Panel
     Friend WithEvents lblStatus As System.Windows.Forms.Label
     Friend WithEvents pbStatus As System.Windows.Forms.ProgressBar
     Friend WithEvents btnPlayTrailer As System.Windows.Forms.Button
     Friend WithEvents btnSetNfo As System.Windows.Forms.Button
-    Friend WithEvents GroupBox2 As System.Windows.Forms.GroupBox
-    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents gbManualTrailer As System.Windows.Forms.GroupBox
+    Friend WithEvents lblYouTube As System.Windows.Forms.Label
     Friend WithEvents txtYouTube As System.Windows.Forms.TextBox
     Friend WithEvents btnBrowse As System.Windows.Forms.Button
     Friend WithEvents txtManual As System.Windows.Forms.TextBox
-    Friend WithEvents Label2 As System.Windows.Forms.Label
+    Friend WithEvents lblManual As System.Windows.Forms.Label
     Friend WithEvents ofdTrailer As System.Windows.Forms.OpenFileDialog
     Friend WithEvents Panel1 As System.Windows.Forms.Panel
     Friend WithEvents btnPlayBrowser As System.Windows.Forms.Button

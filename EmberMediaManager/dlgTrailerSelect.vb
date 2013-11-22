@@ -61,7 +61,7 @@ Public Class dlgTrailerSelect
         Me.lvTrailers.HideSelection = False
         Me.lvTrailers.Columns.Add("#", -1, HorizontalAlignment.Right)
         Me.lvTrailers.Columns.Add("URL", 0, HorizontalAlignment.Left)
-        Me.lvTrailers.Columns.Add("Description", -2, HorizontalAlignment.Left)
+        Me.lvTrailers.Columns.Add(Master.eLang.GetString(979, "Description"), -2, HorizontalAlignment.Left)
 
         Me.txtYouTubeSearch.Text = DBMovie.Movie.Title & " Trailer"
 
@@ -456,16 +456,16 @@ Public Class dlgTrailerSelect
         Me.Text = Master.eLang.GetString(914, "Select Trailer")
         Me.OK_Button.Text = Master.eLang.GetString(373, "Download")
         Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
-        Me.GroupBox1.Text = Master.eLang.GetString(915, "Select Trailer to Download")
-        Me.GroupBox2.Text = Master.eLang.GetString(916, "Manual Trailer Entry")
-        Me.Label1.Text = Master.eLang.GetString(917, "Direct Link or YouTube URL:")
+        Me.gbSelectTrailer.Text = Master.eLang.GetString(915, "Select Trailer to Download")
+        Me.gbManualTrailer.Text = Master.eLang.GetString(916, "Manual Trailer Entry")
+        Me.lblYouTube.Text = Master.eLang.GetString(917, "Direct Link or YouTube URL:")
         Me.lblStatus.Text = Master.eLang.GetString(918, "Compiling trailer list...")
         Me.btnPlayTrailer.Text = Master.eLang.GetString(919, "Preview Trailer")
         Me.btnPlayBrowser.Text = Master.eLang.GetString(931, "Open In Browser")
         Me.btnSetNfo.Text = Master.eLang.GetString(913, "Set To Nfo")
-        Me.Label2.Text = Master.eLang.GetString(920, "Local Trailer:")
-        Me.gbYouTubeSearch.Text = Master.eLang.GetString(974, "Search On YouTube")
-        Me.btnYouTubeSearch.Text = Master.eLang.GetString(975, "Search")
+        Me.lblManual.Text = Master.eLang.GetString(920, "Local Trailer:")
+        Me.gbYouTubeSearch.Text = Master.eLang.GetString(978, "Search On YouTube")
+        Me.btnYouTubeSearch.Text = Master.eLang.GetString(977, "Search")
     End Sub
 
     Private Sub txtManual_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtManual.TextChanged
