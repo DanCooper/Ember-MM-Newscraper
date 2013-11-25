@@ -28,16 +28,23 @@ Public Class NumUtils
     ''' Convert a numerical string to single (internationally friendly method)
     ''' </summary>
     ''' <param name="sNumber">Number (as string) to convert</param>
-    ''' <returns>Number as single</returns>
+    ''' <returns>Number as single, or 0 if any error is encountered parsing <paramref name="sNumber"/>.</returns>
+    ''' <remarks>Many countries use the "," symbol to indicate a decimal (5,32 meaning 5.32).
+    ''' This method first converts any existing commas into decimals before attempting to parse 
+    ''' the source string. Note that this may cause an otherwise acceptable number (1,000.00) to fail
+    ''' to parse.
+    ''' 
+    ''' 2013/11/25 Dekker500 - Refactored because original could not pass unit tests. Also converted to
+    '''                        TryParse instead of just Parse because of efficiencies in avoiding Try/Catch block
+    '''</remarks>
     Public Shared Function ConvertToSingle(ByVal sNumber As String) As Single
-        Try
-            If String.IsNullOrEmpty(sNumber) OrElse sNumber = "0" Then Return 0
-            Dim numFormat As NumberFormatInfo = New NumberFormatInfo()
-            numFormat.NumberDecimalSeparator = "."
-            Return Single.Parse(sNumber.Replace(",", "."), NumberStyles.AllowDecimalPoint, numFormat)
-        Catch
-        End Try
-        Return 0
+        If String.IsNullOrEmpty(sNumber) Then Return 0.0F
+        sNumber = sNumber.Replace(",", ".")    ' This is to deal with those regions that use commas in place of a dot for the decimal indicator
+        Dim result As Single = 0.0F
+        Dim success As Boolean = Single.TryParse(sNumber, result)
+        If success Then Return result
+        Return 0.0F
+
     End Function
 
     #End Region 'Methods
