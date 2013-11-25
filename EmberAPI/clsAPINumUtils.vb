@@ -43,6 +43,10 @@ Public Class NumUtils
         Dim result As Single = 0.0F
         Dim success As Boolean = Single.TryParse(sNumber, result)
         If success Then Return result
+
+        'If we got here, something went wrong
+        Dim trace = New StackTrace()
+        Master.eLog.WriteToErrorLog("Failed to convert <" & sNumber & ">", trace.ToString(), "Error")
         Return 0.0F
 
     End Function
