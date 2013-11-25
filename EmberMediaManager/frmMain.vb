@@ -8261,7 +8261,7 @@ doCancel:
     End Sub
 
     Private Sub SetControlsEnabled(ByVal isEnabled As Boolean, Optional ByVal withLists As Boolean = False, Optional ByVal withTools As Boolean = True)
-        'Me.ToolsToolStripMenuItem.Enabled = isEnabled AndAlso (Me.dgvMediaList.RowCount > 0 OrElse Me.dgvTVShows.RowCount > 0)
+        'Me.mnuMainTools.Enabled = isEnabled AndAlso (Me.dgvMediaList.RowCount > 0 OrElse Me.dgvTVShows.RowCount > 0)
         For Each i As Object In Me.mnuMainTools.DropDownItems
             If TypeOf i Is ToolStripMenuItem Then
                 Dim o As ToolStripMenuItem = DirectCast(i, ToolStripMenuItem)

@@ -105,7 +105,7 @@ Public Class NMTExporterModule
 
     Sub Disable()
         Dim tsi As New ToolStripMenuItem
-        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("ToolsToolStripMenuItem"), ToolStripMenuItem)
+        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("mnuMainTools"), ToolStripMenuItem)
         tsi.DropDownItems.Remove(MyMenu)
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("cmnuTrayIconTools"), ToolStripMenuItem)
         If Not tsi Is Nothing Then tsi.DropDownItems.Remove(MyTrayMenu)
@@ -116,7 +116,7 @@ Public Class NMTExporterModule
         MyMenu.Image = New Bitmap(My.Resources.icon)
         MyMenu.Text = Master.eLang.GetString(475, "NMT Jukebox Builder")
         MyMenu.Tag = New Structures.ModulesMenus With {.IfNoMovies = True, .IfNoTVShow = True}
-        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("ToolsToolStripMenuItem"), ToolStripMenuItem)
+        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("mnuMainTools"), ToolStripMenuItem)
         tsi.DropDownItems.Add(MyMenu)
         MyTrayMenu.Image = New Bitmap(My.Resources.icon)
         MyTrayMenu.Text = Master.eLang.GetString(475, "NMT Jukebox Builder")
