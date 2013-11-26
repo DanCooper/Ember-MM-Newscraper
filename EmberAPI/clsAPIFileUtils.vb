@@ -136,13 +136,14 @@ Namespace FileUtils
         ''' <remarks>No validation is made on whether the path/file actually exists.</remarks>
         Public Shared Function RemoveExtFromPath(ByVal sPath As String) As String
             'TODO Dekker500 This method needs serious work. Invalid paths are not consistently handled. Need analysis on how to handle these properly
+            If String.IsNullOrEmpty(sPath) Then Return String.Empty
             Try
-                If String.IsNullOrEmpty(sPath) Then Return String.Empty
                 'If the path has no directories (only the root), short-circuit the routine and just return
                 If sPath.Equals(Directory.GetDirectoryRoot(sPath)) Then Return sPath
                 Return Path.Combine(Path.GetDirectoryName(sPath), Path.GetFileNameWithoutExtension(sPath))
                 'Return Path.Combine(Directory.GetParent(sPath).FullName, Path.GetFileNameWithoutExtension(sPath))
-            Catch
+            Catch ex As Exception
+                Master.eLog.WriteToErrorLog("Source: <" & sPath & ">" & ex.Message, ex.StackTrace, "Error")
                 Return String.Empty
             End Try
         End Function
