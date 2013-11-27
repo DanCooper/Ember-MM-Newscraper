@@ -358,8 +358,8 @@ Public Class frmMain
             Me.EnableFilters(False)
 
             Me.SetControlsEnabled(False)
-            Me.tabMovies.Text = Master.eLang.GetString(36, "Movies")
-            Me.tabTV.Text = Master.eLang.GetString(653, "TV")
+            Me.tpMovies.Text = Master.eLang.GetString(36, "Movies")
+            Me.tpShows.Text = Master.eLang.GetString(653, "TV")
             Me.txtSearch.Text = String.Empty
 
             Me.fScanner.CancelAndWait()
@@ -467,7 +467,7 @@ Public Class frmMain
 
         Me.tmrAni.Stop()
 
-        Select Case If(Me.tabsMain.SelectedIndex = 0, aniType, aniShowType)
+        Select Case If(Me.tcMain.SelectedIndex = 0, aniType, aniShowType)
             Case 1
                 If Me.btnMid.Visible Then
                     Me.pnlInfoPanel.Height = Me._ipmid
@@ -476,7 +476,7 @@ Public Class frmMain
                     Me.btnDown.Enabled = True
                 ElseIf Me.btnUp.Visible Then
                     Me.pnlInfoPanel.Height = Me._ipup
-                    If Me.tabsMain.SelectedIndex = 0 Then
+                    If Me.tcMain.SelectedIndex = 0 Then
                         aniType = 2
                     Else
                         aniShowType = 2
@@ -486,7 +486,7 @@ Public Class frmMain
                     Me.btnDown.Enabled = True
                 Else
                     Me.pnlInfoPanel.Height = 25
-                    If Me.tabsMain.SelectedIndex = 0 Then
+                    If Me.tcMain.SelectedIndex = 0 Then
                         aniType = 0
                     Else
                         aniShowType = 0
@@ -504,7 +504,7 @@ Public Class frmMain
                 ElseIf Me.btnMid.Visible Then
                     Me.pnlInfoPanel.Height = Me._ipmid
 
-                    If Me.tabsMain.SelectedIndex = 0 Then
+                    If Me.tcMain.SelectedIndex = 0 Then
                         aniType = 1
                     Else
                         aniShowType = 1
@@ -515,7 +515,7 @@ Public Class frmMain
                     Me.btnDown.Enabled = True
                 Else
                     Me.pnlInfoPanel.Height = 25
-                    If Me.tabsMain.SelectedIndex = 0 Then
+                    If Me.tcMain.SelectedIndex = 0 Then
                         aniType = 0
                     Else
                         aniShowType = 0
@@ -526,7 +526,7 @@ Public Class frmMain
                 End If
             Case Else
                 Me.pnlInfoPanel.Height = 25
-                If Me.tabsMain.SelectedIndex = 0 Then
+                If Me.tcMain.SelectedIndex = 0 Then
                     aniType = 0
                 Else
                     aniShowType = 0
@@ -547,7 +547,7 @@ Public Class frmMain
     Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
         btnCancel.Visible = False
         lblCanceling.Visible = True
-        pbCanceling.Visible = True
+        prbCanceling.Visible = True
 
         If Me.bwMovieScraper.IsBusy Then Me.bwMovieScraper.CancelAsync()
         If Me.bwRefreshMovies.IsBusy Then Me.bwRefreshMovies.CancelAsync()
@@ -567,8 +567,8 @@ Public Class frmMain
         ' Begin animation to lower panel all the way down
         '\\
 
-        Me.tabsMain.Focus()
-        If Me.tabsMain.SelectedIndex = 0 Then
+        Me.tcMain.Focus()
+        If Me.tcMain.SelectedIndex = 0 Then
             Me.aniType = 0
         Else
             Me.aniShowType = 0
@@ -634,14 +634,14 @@ Public Class frmMain
         ' Begin animation to raise/lower panel to mid point
         '\\
 
-        Me.tabsMain.Focus()
+        Me.tcMain.Focus()
         If Me.pnlInfoPanel.Height = Me.IPUp Then
             Me.aniRaise = False
         Else
             Me.aniRaise = True
         End If
 
-        If Me.tabsMain.SelectedIndex = 0 Then
+        If Me.tcMain.SelectedIndex = 0 Then
             Me.aniType = 1
         Else
             Me.aniShowType = 1
@@ -655,7 +655,7 @@ Public Class frmMain
         ' Refresh Media Info
         '\\
 
-        If Me.tabsMain.SelectedIndex = 0 Then
+        If Me.tcMain.SelectedIndex = 0 Then
             If Not String.IsNullOrEmpty(Master.currMovie.Filename) AndAlso Me.dgvMovies.SelectedRows.Count > 0 Then
                 Me.LoadInfo(Convert.ToInt32(Master.currMovie.ID), Master.currMovie.Filename, False, True, True)
             End If
@@ -733,8 +733,8 @@ Public Class frmMain
         ' Begin animation to raise panel all the way up
         '\\
 
-        Me.tabsMain.Focus()
-        If Me.tabsMain.SelectedIndex = 0 Then
+        Me.tcMain.Focus()
+        If Me.tcMain.SelectedIndex = 0 Then
             Me.aniType = 2
         Else
             Me.aniShowType = 2
@@ -1198,11 +1198,11 @@ Public Class frmMain
             End Try
 
             If Res.setEnabled Then
-                Me.tabsMain.Enabled = True
+                Me.tcMain.Enabled = True
                 Me.mnuUpdate.Enabled = True
                 Me.cmnuTrayUpdate.Enabled = True
-                If (Me.tabsMain.SelectedIndex = 0 AndAlso Me.dgvMovies.RowCount > 0) OrElse _
-                   (Me.tabsMain.SelectedIndex = 1 AndAlso Me.dgvTVShows.RowCount > 0) Then
+                If (Me.tcMain.SelectedIndex = 0 AndAlso Me.dgvMovies.RowCount > 0) OrElse _
+                   (Me.tcMain.SelectedIndex = 1 AndAlso Me.dgvTVShows.RowCount > 0) Then
                     Me.SetControlsEnabled(True)
                 End If
             End If
@@ -1227,7 +1227,7 @@ Public Class frmMain
             Me.tspbLoading.Visible = False
             Me.btnCancel.Visible = False
             Me.lblCanceling.Visible = False
-            Me.pbCanceling.Visible = False
+            Me.prbCanceling.Visible = False
             Me.pnlCancel.Visible = False
             Me.SetControlsEnabled(True)
         End If
@@ -1564,7 +1564,7 @@ Public Class frmMain
         Me.tspbLoading.Visible = False
         Me.btnCancel.Visible = False
         Me.lblCanceling.Visible = False
-        Me.pbCanceling.Visible = False
+        Me.prbCanceling.Visible = False
         Me.pnlCancel.Visible = False
         Me.SetControlsEnabled(True)
         Me.EnableFilters(True)
@@ -3488,7 +3488,7 @@ doCancel:
 
     Private Sub dgvMediaList_CellEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMovies.CellEnter
         Try
-            If Not Me.tabsMain.SelectedIndex = 0 Then Return
+            If Not Me.tcMain.SelectedIndex = 0 Then Return
 
             Me.tmrWaitShow.Stop()
             Me.tmrWaitSeason.Stop()
@@ -3703,7 +3703,7 @@ doCancel:
                 End If
             End If
 
-            Me.tabMovies.Text = String.Format("{0} ({1})", Master.eLang.GetString(36, "Movies"), Me.dgvMovies.RowCount)
+            Me.tpMovies.Text = String.Format("{0} ({1})", Master.eLang.GetString(36, "Movies"), Me.dgvMovies.RowCount)
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -3829,7 +3829,7 @@ doCancel:
 
     Private Sub dgvTVEpisodes_CellEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVEpisodes.CellEnter
         Try
-            If Not Me.tabsMain.SelectedIndex = 1 OrElse Not Me.currList = 2 Then Return
+            If Not Me.tcMain.SelectedIndex = 1 OrElse Not Me.currList = 2 Then Return
 
             Me.tmrWaitShow.Stop()
             Me.tmrWaitSeason.Stop()
@@ -3864,7 +3864,7 @@ doCancel:
                 Dim offset As Integer = Convert.ToInt32((e.CellBounds.Width - Me.ilColumnIcons.ImageSize.Width) / 2)
 
                 pt.X += offset
-                pt.Y = 1
+                pt.Y = 3
 
                 Me.ilColumnIcons.Draw(e.Graphics, pt, e.ColumnIndex - 4)
 
@@ -4161,7 +4161,7 @@ doCancel:
     Private Sub dgvTVSeasons_CellEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVSeasons.CellEnter
         Try
 
-            If Not Me.tabsMain.SelectedIndex = 1 OrElse Not Me.currList = 1 Then Return
+            If Not Me.tcMain.SelectedIndex = 1 OrElse Not Me.currList = 1 Then Return
 
             Me.tmrWaitShow.Stop()
             Me.tmrWait.Stop()
@@ -4196,7 +4196,7 @@ doCancel:
                 Dim offset As Integer = Convert.ToInt32((e.CellBounds.Width - Me.ilColumnIcons.ImageSize.Width) / 2)
 
                 pt.X += offset
-                pt.Y = 1
+                pt.Y = 3
                 Me.ilColumnIcons.Draw(e.Graphics, pt, e.ColumnIndex - 3)
 
                 e.Handled = True
@@ -4425,7 +4425,7 @@ doCancel:
 
     Private Sub dgvTVShows_CellEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVShows.CellEnter
         Try
-            If Not Me.tabsMain.SelectedIndex = 1 OrElse Not Me.currList = 0 Then Return
+            If Not Me.tcMain.SelectedIndex = 1 OrElse Not Me.currList = 0 Then Return
 
             Me.tmrWait.Stop()
             Me.tmrWaitSeason.Stop()
@@ -4459,7 +4459,7 @@ doCancel:
                 Dim offset As Integer = Convert.ToInt32((e.CellBounds.Width - Me.ilColumnIcons.ImageSize.Width) / 2)
 
                 pt.X += offset
-                pt.Y = 1
+                pt.Y = 3
                 Me.ilColumnIcons.Draw(e.Graphics, pt, e.ColumnIndex - 2)
 
                 e.Handled = True
@@ -4729,11 +4729,11 @@ doCancel:
     End Sub
 
     Private Sub ErrorOccurred()
-        Me.ErrorToolStripMenuItem.Visible = True
+        Me.mnuMainError.Visible = True
         If dlgErrorViewer.Visible Then dlgErrorViewer.UpdateLog()
     End Sub
 
-    Private Sub ErrorToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ErrorToolStripMenuItem.Click
+    Private Sub ErrorToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainError.Click
         dlgErrorViewer.Show(Me)
     End Sub
 
@@ -4912,7 +4912,7 @@ doCancel:
                         If Master.isWindows Then .dgvMovies.Columns(3).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
                         ResizeMediaList()
 
-                        If .dgvMovies.RowCount > 0 AndAlso Me.tabsMain.SelectedIndex = 0 Then
+                        If .dgvMovies.RowCount > 0 AndAlso Me.tcMain.SelectedIndex = 0 Then
                             .dgvMovies.Sort(.dgvMovies.Columns(3), ComponentModel.ListSortDirection.Ascending)
 
                             .SetControlsEnabled(True)
@@ -4993,7 +4993,7 @@ doCancel:
             Me.tslLoading.Visible = False
             Me.tspbLoading.Visible = False
             Me.tspbLoading.Value = 0
-            Me.tabsMain.Enabled = True
+            Me.tcMain.Enabled = True
             Me.DoTitleCheck()
             Me.EnableFilters(True)
             Me.SetTVCount()
@@ -5859,7 +5859,7 @@ doCancel:
             lblCanceling.Text = Master.eLang.GetString(99, "Canceling All Processes...")
             btnCancel.Visible = False
             lblCanceling.Visible = True
-            pbCanceling.Visible = True
+            prbCanceling.Visible = True
             pnlCancel.Visible = True
             Me.Refresh()
 
@@ -5886,7 +5886,7 @@ doCancel:
                 Master.eSettings.FilterPanelState = Me.aniFilterRaise
                 Master.eSettings.SplitterPanelState = Me.scMain.SplitterDistance
                 Me.pnlFilter.Visible = False
-                Master.eSettings.SeasonSplitterPanelState = Me.SplitContainer2.SplitterDistance
+                Master.eSettings.SeasonSplitterPanelState = Me.scTVSeasonsEpisodes.SplitterDistance
                 Master.eSettings.ShowSplitterPanelState = Me.scTV.SplitterDistance
             End If
             If Not Me.WindowState = FormWindowState.Minimized Then Master.eSettings.Save()
@@ -5987,7 +5987,7 @@ doCancel:
             ModulesManager.Instance.RuntimeObjects.MenuMediaList = Me.cmnuMovie
             ModulesManager.Instance.RuntimeObjects.MenuTVShowList = Me.cmnuShow
             ModulesManager.Instance.RuntimeObjects.MediaList = Me.dgvMovies
-            ModulesManager.Instance.RuntimeObjects.TopMenu = Me.MenuStrip
+            ModulesManager.Instance.RuntimeObjects.TopMenu = Me.mnuMain
             ModulesManager.Instance.RuntimeObjects.MainTool = Me.tsMain
             ModulesManager.Instance.RuntimeObjects.TrayMenu = Me.cmnuTray
             ModulesManager.Instance.RuntimeObjects.DelegateLoadMedia(AddressOf LoadMedia)
@@ -6311,7 +6311,7 @@ doCancel:
 
                         Me.aniFilterRaise = Master.eSettings.FilterPanelState
                         If Me.aniFilterRaise Then
-                            Me.pnlFilter.Height = Functions.Quantize(Me.gbSpecific.Height + Me.lblFilter.Height + 15, 5)
+                            Me.pnlFilter.Height = Functions.Quantize(Me.gbFilterSpecific.Height + Me.lblFilter.Height + 15, 5)
                             Me.btnFilterDown.Enabled = True
                             Me.btnFilterUp.Enabled = False
                         Else
@@ -6322,7 +6322,7 @@ doCancel:
                         Try ' On error just ignore this a let it use default
                             Me.scMain.SplitterDistance = Master.eSettings.SplitterPanelState
                             Me.scTV.SplitterDistance = Master.eSettings.ShowSplitterPanelState
-                            Me.SplitContainer2.SplitterDistance = Master.eSettings.SeasonSplitterPanelState
+                            Me.scTVSeasonsEpisodes.SplitterDistance = Master.eSettings.SeasonSplitterPanelState
                         Catch ex As Exception
                         End Try
                         Me.pnlFilter.Visible = True
@@ -6384,9 +6384,9 @@ doCancel:
                 Me.pbFanart.Left = Convert.ToInt32((Me.scMain.Panel2.Width - Me.pbFanart.Width) / 2)
                 Me.pnlNoInfo.Location = New Point(Convert.ToInt32((Me.scMain.Panel2.Width - Me.pnlNoInfo.Width) / 2), Convert.ToInt32((Me.scMain.Panel2.Height - Me.pnlNoInfo.Height) / 2))
                 Me.pnlCancel.Location = New Point(Convert.ToInt32((Me.scMain.Panel2.Width - Me.pnlNoInfo.Width) / 2), 100)
-                Me.pnlFilterGenre.Location = New Point(Me.gbSpecific.Left + Me.txtFilterGenre.Left, (Me.pnlFilter.Top + Me.txtFilterGenre.Top + Me.gbSpecific.Top) - Me.pnlFilterGenre.Height)
-                Me.pnlFilterSource.Location = New Point(Me.gbSpecific.Left + Me.txtFilterSource.Left, (Me.pnlFilter.Top + Me.txtFilterSource.Top + Me.gbSpecific.Top) - Me.pnlFilterSource.Height)
-                Me.pnlLoadingSettings.Location = New Point(Convert.ToInt32((Me.Width - Me.pnlLoadingSettings.Width) / 2), Convert.ToInt32((Me.Height - Me.pnlLoadingSettings.Height) / 2))
+                Me.pnlFilterGenre.Location = New Point(Me.gbFilterSpecific.Left + Me.txtFilterGenre.Left, (Me.pnlFilter.Top + Me.txtFilterGenre.Top + Me.gbFilterSpecific.Top) - Me.pnlFilterGenre.Height)
+                Me.pnlFilterSource.Location = New Point(Me.gbFilterSpecific.Left + Me.txtFilterSource.Left, (Me.pnlFilter.Top + Me.txtFilterSource.Top + Me.gbFilterSpecific.Top) - Me.pnlFilterSource.Height)
+                Me.pnlLoadSettings.Location = New Point(Convert.ToInt32((Me.Width - Me.pnlLoadSettings.Width) / 2), Convert.ToInt32((Me.Height - Me.pnlLoadSettings.Height) / 2))
                 Me.pnlAllSeason.Location = New Point(Me.pbFanart.Width - Me.pnlAllSeason.Width - 9, 112)
             End If
         Catch ex As Exception
@@ -7175,7 +7175,7 @@ doCancel:
             Me.lblCanceling.Text = Master.eLang.GetString(53, "Canceling Scraper...")
             Me.btnCancel.Visible = True
             Me.lblCanceling.Visible = False
-            Me.pbCanceling.Visible = False
+            Me.prbCanceling.Visible = False
             Me.pnlCancel.Visible = True
         End If
 
@@ -7237,7 +7237,7 @@ doCancel:
 
         btnCancel.Visible = True
         lblCanceling.Visible = False
-        pbCanceling.Visible = False
+        prbCanceling.Visible = False
         Me.pnlCancel.Visible = True
         Me.tslLoading.Visible = True
         Me.tspbLoading.Value = 0
@@ -8065,10 +8065,10 @@ doCancel:
                 Me.pbFanart.Left = Convert.ToInt32((Me.scMain.Panel2.Width - Me.pbFanart.Width) / 2)
                 Me.pnlNoInfo.Location = New Point(Convert.ToInt32((Me.scMain.Panel2.Width - Me.pnlNoInfo.Width) / 2), Convert.ToInt32((Me.scMain.Panel2.Height - Me.pnlNoInfo.Height) / 2))
                 Me.pnlCancel.Location = New Point(Convert.ToInt32((Me.scMain.Panel2.Width - Me.pnlNoInfo.Width) / 2), 100)
-                Me.pnlFilterGenre.Location = New Point(Me.gbSpecific.Left + Me.txtFilterGenre.Left, (Me.pnlFilter.Top + Me.txtFilterGenre.Top + Me.gbSpecific.Top) - Me.pnlFilterGenre.Height)
-                Me.pnlFilterSource.Location = New Point(Me.gbSpecific.Left + Me.txtFilterSource.Left, (Me.pnlFilter.Top + Me.txtFilterSource.Top + Me.gbSpecific.Top) - Me.pnlFilterSource.Height)
+                Me.pnlFilterGenre.Location = New Point(Me.gbFilterSpecific.Left + Me.txtFilterGenre.Left, (Me.pnlFilter.Top + Me.txtFilterGenre.Top + Me.gbFilterSpecific.Top) - Me.pnlFilterGenre.Height)
+                Me.pnlFilterSource.Location = New Point(Me.gbFilterSpecific.Left + Me.txtFilterSource.Left, (Me.pnlFilter.Top + Me.txtFilterSource.Top + Me.gbFilterSpecific.Top) - Me.pnlFilterSource.Height)
 
-                Select Case Me.tabsMain.SelectedIndex
+                Select Case Me.tcMain.SelectedIndex
                     Case 0
                         Me.dgvMovies.Focus()
                     Case 1
@@ -8267,10 +8267,10 @@ doCancel:
             If TypeOf i Is ToolStripMenuItem Then
                 Dim o As ToolStripMenuItem = DirectCast(i, ToolStripMenuItem)
                 If o.Tag Is Nothing Then
-                    o.Enabled = isEnabled AndAlso (Me.dgvMovies.RowCount > 0 OrElse Me.dgvTVShows.RowCount > 0) AndAlso tabsMain.SelectedIndex = 0
+                    o.Enabled = isEnabled AndAlso (Me.dgvMovies.RowCount > 0 OrElse Me.dgvTVShows.RowCount > 0) AndAlso tcMain.SelectedIndex = 0
                 ElseIf TypeOf o.Tag Is Structures.ModulesMenus Then
                     Dim tagmenu As Structures.ModulesMenus = DirectCast(o.Tag, Structures.ModulesMenus)
-                    o.Enabled = (isEnabled OrElse Not withTools) AndAlso (((Me.dgvMovies.RowCount > 0 OrElse tagmenu.IfNoMovies) AndAlso tabsMain.SelectedIndex = 0) OrElse ((Me.dgvTVShows.RowCount > 0 OrElse tagmenu.IfNoTVShow) AndAlso tabsMain.SelectedIndex = 1))
+                    o.Enabled = (isEnabled OrElse Not withTools) AndAlso (((Me.dgvMovies.RowCount > 0 OrElse tagmenu.IfNoMovies) AndAlso tcMain.SelectedIndex = 0) OrElse ((Me.dgvTVShows.RowCount > 0 OrElse tagmenu.IfNoTVShow) AndAlso tcMain.SelectedIndex = 1))
                 End If
             ElseIf TypeOf i Is ToolStripSeparator Then
                 Dim o As ToolStripSeparator = DirectCast(i, ToolStripSeparator)
@@ -8282,13 +8282,13 @@ doCancel:
             .CleanMovieJPG OrElse .CleanMovieNameJPG OrElse .CleanMovieNFO OrElse .CleanMovieNFOB OrElse _
             .CleanMovieTBN OrElse .CleanMovieTBNB OrElse .CleanPosterJPG OrElse .CleanPosterTBN OrElse .CleanExtraThumbs)) OrElse _
             (.ExpertCleaner AndAlso (.CleanWhitelistVideo OrElse .CleanWhitelistExts.Count > 0)) Then
-                Me.mnuMainToolsCleanFiles.Enabled = isEnabled AndAlso Me.dgvMovies.RowCount > 0 AndAlso Me.tabsMain.SelectedIndex = 0
+                Me.mnuMainToolsCleanFiles.Enabled = isEnabled AndAlso Me.dgvMovies.RowCount > 0 AndAlso Me.tcMain.SelectedIndex = 0
             Else
                 Me.mnuMainToolsCleanFiles.Enabled = False
             End If
         End With
         Me.mnuMainEdit.Enabled = isEnabled
-        Me.tsbAutoPilot.Enabled = isEnabled AndAlso Me.dgvMovies.RowCount > 0 AndAlso Me.tabsMain.SelectedIndex = 0
+        Me.tsbAutoPilot.Enabled = isEnabled AndAlso Me.dgvMovies.RowCount > 0 AndAlso Me.tcMain.SelectedIndex = 0
         Me.mnuUpdate.Enabled = isEnabled
         Me.tsbMediaCenters.Enabled = isEnabled
         Me.cmnuMovie.Enabled = isEnabled
@@ -8296,12 +8296,12 @@ doCancel:
         Me.cmnuSeason.Enabled = isEnabled
         Me.cmnuEpisode.Enabled = isEnabled
         Me.txtSearch.Enabled = isEnabled
-        Me.tabsMain.Enabled = isEnabled
+        Me.tcMain.Enabled = isEnabled
         Me.btnMarkAll.Enabled = isEnabled
         Me.btnMetaDataRefresh.Enabled = isEnabled
         Me.scMain.IsSplitterFixed = Not isEnabled
         Me.scTV.IsSplitterFixed = Not isEnabled
-        Me.SplitContainer2.IsSplitterFixed = Not isEnabled
+        Me.scTVSeasonsEpisodes.IsSplitterFixed = Not isEnabled
         Me.mnuMainHelp.Enabled = isEnabled
         Me.cmnuTrayTools.Enabled = Me.mnuMainTools.Enabled
         Me.cmnuTrayScrape.Enabled = Me.tsbAutoPilot.Enabled
@@ -8360,7 +8360,7 @@ doCancel:
                 .CleanMovieJPG OrElse .CleanMovieNameJPG OrElse .CleanMovieNFO OrElse .CleanMovieNFOB OrElse _
                 .CleanMovieTBN OrElse .CleanMovieTBNB OrElse .CleanPosterJPG OrElse .CleanPosterTBN OrElse .CleanExtraThumbs)) OrElse _
                 (.ExpertCleaner AndAlso (.CleanWhitelistVideo OrElse .CleanWhitelistExts.Count > 0)) Then
-                    Me.mnuMainToolsCleanFiles.Enabled = True AndAlso Me.dgvMovies.RowCount > 0 AndAlso Me.tabsMain.SelectedIndex = 0
+                    Me.mnuMainToolsCleanFiles.Enabled = True AndAlso Me.dgvMovies.RowCount > 0 AndAlso Me.tcMain.SelectedIndex = 0
                 Else
                     Me.mnuMainToolsCleanFiles.Enabled = False
                 End If
@@ -8630,7 +8630,7 @@ doCancel:
                 End If
 
             End With
-            Me.tsbAutoPilot.Enabled = (Me.dgvMovies.RowCount > 0 AndAlso Me.tabsMain.SelectedIndex = 0)
+            Me.tsbAutoPilot.Enabled = (Me.dgvMovies.RowCount > 0 AndAlso Me.tcMain.SelectedIndex = 0)
             Me.cmnuTrayScrape.Enabled = Me.tsbAutoPilot.Enabled
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -8654,8 +8654,8 @@ doCancel:
     End Function
 
     Sub HideLoadingSettings()
-        If Not Me.pnlLoadingSettings.InvokeRequired Then
-            Me.pnlLoadingSettings.Visible = False
+        If Not Me.pnlLoadSettings.InvokeRequired Then
+            Me.pnlLoadSettings.Visible = False
         End If
     End Sub
     Sub SettingsShow(ByVal dlg As dlgSettings)
@@ -8663,7 +8663,7 @@ doCancel:
         Dim dresult As Structures.SettingsResult = dlg.ShowDialog()
         RemoveHandler dlg.LoadEnd, AddressOf HideLoadingSettings
         Me.mnuMainEditSettings.Enabled = True
-        Me.pnlLoadingSettings.Visible = False
+        Me.pnlLoadSettings.Visible = False
         Me.cmnuTraySettings.Enabled = True
         Me.cmnuTrayExit.Enabled = True
         If Not dresult.DidCancel Then
@@ -8757,7 +8757,7 @@ doCancel:
     Private Sub SettingsToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainEditSettings.Click, cmnuTraySettings.Click
         Try
             Me.SetControlsEnabled(False)
-            Me.pnlLoadingSettings.Visible = True
+            Me.pnlLoadSettings.Visible = True
 
             Dim dThread As Threading.Thread = New Threading.Thread(AddressOf ShowSettings)
             dThread.SetApartmentState(Threading.ApartmentState.STA)
@@ -8781,9 +8781,9 @@ doCancel:
         End Using
 
         If ShowCount > 0 Then
-            Me.tabTV.Text = String.Format("{0} ({1}/{2})", Master.eLang.GetString(653, "TV"), ShowCount, EpCount)
+            Me.tpShows.Text = String.Format("{0} ({1}/{2})", Master.eLang.GetString(653, "TV"), ShowCount, EpCount)
         Else
-            Me.tabTV.Text = Master.eLang.GetString(653, "TV")
+            Me.tpShows.Text = Master.eLang.GetString(653, "TV")
         End If
     End Sub
 
@@ -8823,8 +8823,8 @@ doCancel:
                 .cmnuTrayToolsReloadMovies.Text = .mnuMainToolsReloadMovies.Text
                 .lblGFilClose.Text = Master.eLang.GetString(19, "Close")
                 .lblSFilClose.Text = Master.eLang.GetString(19, "Close")
-                .Label4.Text = Master.eLang.GetString(20, "Genres")
-                .Label8.Text = Master.eLang.GetString(602, "Sources")
+                .lblFilterGenres.Text = Master.eLang.GetString(20, "Genres")
+                .lblFilterSources.Text = Master.eLang.GetString(602, "Sources")
                 .cmnuMovieTitle.Text = Master.eLang.GetString(21, "Title")
                 .cmnuMovieReload.Text = Master.eLang.GetString(22, "Reload")
                 .cmnuMovieMark.Text = Master.eLang.GetString(23, "Mark")
@@ -8845,23 +8845,23 @@ doCancel:
                 .cmnuMovieRemoveFromDisk.Text = Master.eLang.GetString(34, "Delete Movie")
                 .cmnuMovieRemoveFromDB.Text = Master.eLang.GetString(646, "Remove From Database")
                 .btnMarkAll.Text = Master.eLang.GetString(35, "Mark All")
-                .tabMovies.Text = Master.eLang.GetString(36, "Movies")
-                .tabTV.Text = Master.eLang.GetString(653, "TV")
+                .tpMovies.Text = Master.eLang.GetString(36, "Movies")
+                .tpShows.Text = Master.eLang.GetString(653, "TV")
                 .btnClearFilters.Text = Master.eLang.GetString(37, "Clear Filters")
-                .GroupBox3.Text = Master.eLang.GetString(38, "General")
+                .gbFilterGeneral.Text = Master.eLang.GetString(38, "General")
                 .chkFilterTolerance.Text = Master.eLang.GetString(39, "Out of Tolerance")
                 .chkFilterMissing.Text = Master.eLang.GetString(40, "Missing Items")
                 .chkFilterDupe.Text = Master.eLang.GetString(41, "Duplicates")
-                .gbSpecific.Text = Master.eLang.GetString(42, "Specific")
+                .gbFilterSpecific.Text = Master.eLang.GetString(42, "Specific")
                 .chkFilterLock.Text = Master.eLang.GetString(43, "Locked")
-                .GroupBox2.Text = Master.eLang.GetString(44, "Modifier")
+                .gbFilterModifier.Text = Master.eLang.GetString(44, "Modifier")
                 .rbFilterAnd.Text = Master.eLang.GetString(45, "And")
                 .rbFilterOr.Text = Master.eLang.GetString(46, "Or")
                 .chkFilterNew.Text = Master.eLang.GetString(47, "New")
                 .chkFilterMark.Text = Master.eLang.GetString(48, "Marked")
-                .Label5.Text = Master.eLang.GetString(49, "Year:")
-                .Label2.Text = Master.eLang.GetString(50, "Source:")
-                .Label3.Text = Master.eLang.GetString(51, "Genre:")
+                .lblFilterYear.Text = Master.eLang.GetString(49, "Year:")
+                .lblFilterSource.Text = Master.eLang.GetString(50, "Source:")
+                .lblFilterGenre.Text = Master.eLang.GetString(51, "Genre:")
                 .lblFilter.Text = Master.eLang.GetString(52, "Filters")
                 .lblCanceling.Text = Master.eLang.GetString(53, "Canceling Scraper...")
                 .btnCancel.Text = Master.eLang.GetString(54, "Cancel Scraper")
@@ -9149,8 +9149,8 @@ doCancel:
                 .cmnuTrayUpdate.Text = Master.eLang.GetString(82, "Update Library")
                 .tsbMediaCenters.Text = Master.eLang.GetString(83, "Media Centers")
                 .cmnuTrayMediaCenters.Text = .tsbMediaCenters.Text
-                .Label6.Text = Master.eLang.GetString(579, "File Source:")
-                .GroupBox1.Text = Master.eLang.GetString(600, "Extra Sorting")
+                .lblFilterFileSource.Text = Master.eLang.GetString(579, "File Source:")
+                .gbSort.Text = Master.eLang.GetString(600, "Extra Sorting")
                 .btnSortDate.Text = Master.eLang.GetString(601, "Date Added")
                 .cmnuMovieEditMetaData.Text = Master.eLang.GetString(603, "Edit Meta Data")
                 .btnSortTitle.Text = Master.eLang.GetString(642, "Sort Title")
@@ -9186,7 +9186,7 @@ doCancel:
                 .mnuMainDonate.Text = Master.eLang.GetString(708, "Donate")
                 .mnuMainHelpVersions.Text = Master.eLang.GetString(793, "&Versions...")
                 .mnuMainHelpUpdate.Text = Master.eLang.GetString(850, "&Check For Updates...")
-                .Label7.Text = Master.eLang.GetString(484, "Loading Settings...")
+                .lblLoadSettings.Text = Master.eLang.GetString(484, "Loading Settings...")
                 .cmnuMovieRescrape.Text = Master.eLang.GetString(163, "(Re)Scrape Movie")
                 .cmnuMovieReSel.Text = Master.eLang.GetString(31, "(Re)Scrape Selected Movies")
                 .mnuMainHelpWiki.Text = Master.eLang.GetString(869, "EmberMM.com &Wiki...")
@@ -9213,7 +9213,7 @@ doCancel:
 
                 If doTheme Then
                     Me.tTheme = New Theming
-                    .ApplyTheme(If(Me.tabsMain.SelectedIndex = 0, Theming.ThemeType.Movies, Theming.ThemeType.Show))
+                    .ApplyTheme(If(Me.tcMain.SelectedIndex = 0, Theming.ThemeType.Movies, Theming.ThemeType.Show))
                 End If
 
             End With
@@ -9226,13 +9226,13 @@ doCancel:
         If ShowIt Then
             Select Case tType
                 Case 0
-                    Me.Label1.Text = Master.eLang.GetString(55, "No Information is Available for This Movie")
+                    Me.lblNoInfo.Text = Master.eLang.GetString(55, "No Information is Available for This Movie")
                     If Not Me.currThemeType = Theming.ThemeType.Movies Then Me.ApplyTheme(Theming.ThemeType.Movies)
                 Case 1
-                    Me.Label1.Text = Master.eLang.GetString(651, "No Information is Available for This Show")
+                    Me.lblNoInfo.Text = Master.eLang.GetString(651, "No Information is Available for This Show")
                     If Not Me.currThemeType = Theming.ThemeType.Show Then Me.ApplyTheme(Theming.ThemeType.Show)
                 Case 2
-                    Me.Label1.Text = Master.eLang.GetString(652, "No Information is Available for This Episode")
+                    Me.lblNoInfo.Text = Master.eLang.GetString(652, "No Information is Available for This Episode")
                     If Not Me.currThemeType = Theming.ThemeType.Episode Then Me.ApplyTheme(Theming.ThemeType.Episode)
             End Select
         End If
@@ -9251,11 +9251,11 @@ doCancel:
         Me.LoadMedia(New Structures.Scans With {.Movies = True}, SourceName)
     End Sub
 
-    Private Sub tabsMain_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tabsMain.SelectedIndexChanged
+    Private Sub tabsMain_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tcMain.SelectedIndexChanged
         Me.ClearInfo()
         Me.ShowNoInfo(False)
-        ModulesManager.Instance.RuntimeObjects.MediaTabSelected = tabsMain.SelectedIndex
-        Select Case tabsMain.SelectedIndex
+        ModulesManager.Instance.RuntimeObjects.MediaTabSelected = tcMain.SelectedIndex
+        Select Case tcMain.SelectedIndex
             Case 0
                 Me.mnuMainTools.Enabled = True
                 Me.cmnuTrayTools.Enabled = True
@@ -9320,7 +9320,7 @@ doCancel:
                     Me.pnlInfoPanel.Height -= 5
                 End If
             Else
-                Select Case If(Me.tabsMain.SelectedIndex = 0, Me.aniType, Me.aniShowType)
+                Select Case If(Me.tcMain.SelectedIndex = 0, Me.aniType, Me.aniShowType)
                     Case 0
                         Me.pnlInfoPanel.Height = 25
 
@@ -9336,7 +9336,7 @@ doCancel:
             Me.MoveGenres()
             Me.MoveMPAA()
 
-            Dim aType As Integer = If(Me.tabsMain.SelectedIndex = 0, Me.aniType, Me.aniShowType)
+            Dim aType As Integer = If(Me.tcMain.SelectedIndex = 0, Me.aniType, Me.aniShowType)
             Select Case aType
                 Case 0
                     If Me.pnlInfoPanel.Height = 25 Then
@@ -9373,7 +9373,7 @@ doCancel:
 
         Try
 
-            Dim pHeight As Integer = Functions.Quantize(Me.gbSpecific.Height + Me.lblFilter.Height + 15, 5)
+            Dim pHeight As Integer = Functions.Quantize(Me.gbFilterSpecific.Height + Me.lblFilter.Height + 15, 5)
 
             If Master.eSettings.InfoPanelAnim Then
                 If Me.aniFilterRaise Then
@@ -9704,7 +9704,7 @@ doCancel:
     End Sub
 
     Private Sub txtFilterGenre_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtFilterGenre.Click
-        Me.pnlFilterGenre.Location = New Point(Me.gbSpecific.Left + Me.txtFilterGenre.Left, (Me.pnlFilter.Top + Me.txtFilterGenre.Top + Me.gbSpecific.Top) - Me.pnlFilterGenre.Height)
+        Me.pnlFilterGenre.Location = New Point(Me.gbFilterSpecific.Left + Me.txtFilterGenre.Left, (Me.pnlFilter.Top + Me.txtFilterGenre.Top + Me.gbFilterSpecific.Top) - Me.pnlFilterGenre.Height)
         If Me.pnlFilterGenre.Visible Then
             Me.pnlFilterGenre.Visible = False
         ElseIf Not Me.pnlFilterGenre.Tag.ToString = "NO" Then
@@ -9717,7 +9717,7 @@ doCancel:
     End Sub
 
     Private Sub txtFilterSource_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtFilterSource.Click
-        Me.pnlFilterSource.Location = New Point(Me.gbSpecific.Left + Me.txtFilterSource.Left, (Me.pnlFilter.Top + Me.txtFilterSource.Top + Me.gbSpecific.Top) - Me.pnlFilterSource.Height)
+        Me.pnlFilterSource.Location = New Point(Me.gbFilterSpecific.Left + Me.txtFilterSource.Left, (Me.pnlFilter.Top + Me.txtFilterSource.Top + Me.gbFilterSpecific.Top) - Me.pnlFilterSource.Height)
         If Me.pnlFilterSource.Visible Then
             Me.pnlFilterSource.Visible = False
         ElseIf Not Me.pnlFilterSource.Tag.ToString = "NO" Then
