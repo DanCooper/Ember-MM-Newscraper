@@ -307,8 +307,10 @@ Namespace TMDBg
 							Dim aPer As New MediaContainers.Person
 							aPer.Name = aAc.name
 							aPer.Role = aAc.character
-							' to be added / dialog to choose the size of the images
-							aPer.Thumb = _TMDBConf.images.base_url & "original" & aAc.profile_path
+                            ' to be added / dialog to choose the size of the images
+                            If Not String.IsNullOrEmpty(aAc.profile_path) Then
+                                aPer.Thumb = _TMDBConf.images.base_url & "original" & aAc.profile_path
+                            End If
 							Cast.Add(aPer)
 						Next
 					End If
