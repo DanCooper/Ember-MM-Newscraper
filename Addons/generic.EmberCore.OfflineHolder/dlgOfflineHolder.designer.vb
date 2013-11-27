@@ -11,7 +11,7 @@ Partial Class dlgOfflineHolder
     Friend WithEvents cbFormat As System.Windows.Forms.ComboBox
     Friend WithEvents cbSources As System.Windows.Forms.ComboBox
     Friend WithEvents cdColor As System.Windows.Forms.ColorDialog
-    Friend WithEvents cdFont As System.Windows.Forms.FontDialog
+    Friend WithEvents fdFont As System.Windows.Forms.FontDialog
     Friend WithEvents chkBackground As System.Windows.Forms.CheckBox
     Friend WithEvents chkOverlay As System.Windows.Forms.CheckBox
     Friend WithEvents chkUseFanart As System.Windows.Forms.CheckBox
@@ -103,7 +103,7 @@ Partial Class dlgOfflineHolder
         Me.txtTop = New System.Windows.Forms.TextBox()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.tmrName = New System.Windows.Forms.Timer(Me.components)
-        Me.cdFont = New System.Windows.Forms.FontDialog()
+        Me.fdFont = New System.Windows.Forms.FontDialog()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
         Me.tbTagLine = New System.Windows.Forms.TrackBar()
         Me.tmrNameWait = New System.Windows.Forms.Timer(Me.components)
@@ -472,9 +472,9 @@ Partial Class dlgOfflineHolder
         '
         Me.tmrName.Interval = 250
         '
-        'cdFont
+        'fdFont
         '
-        Me.cdFont.Font = New System.Drawing.Font("Arial", 21.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.fdFont.Font = New System.Drawing.Font("Arial", 21.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         '
         'GroupBox2
         '

@@ -24,15 +24,15 @@ Partial Class dlgTrailerFormat
     Private Sub InitializeComponent()
         Me.OK_Button = New System.Windows.Forms.Button()
         Me.Cancel_Button = New System.Windows.Forms.Button()
-        Me.lstFormats = New System.Windows.Forms.ListBox()
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.lbFormats = New System.Windows.Forms.ListBox()
+        Me.gbFormats = New System.Windows.Forms.GroupBox()
         Me.pnlStatus = New System.Windows.Forms.Panel()
         Me.lblStatus = New System.Windows.Forms.Label()
-        Me.pbStatus = New System.Windows.Forms.ProgressBar()
-        Me.Panel1 = New System.Windows.Forms.Panel()
-        Me.GroupBox1.SuspendLayout()
+        Me.prbStatus = New System.Windows.Forms.ProgressBar()
+        Me.pnlTrailerFormat = New System.Windows.Forms.Panel()
+        Me.gbFormats.SuspendLayout()
         Me.pnlStatus.SuspendLayout()
-        Me.Panel1.SuspendLayout()
+        Me.pnlTrailerFormat.SuspendLayout()
         Me.SuspendLayout()
         '
         'OK_Button
@@ -55,33 +55,33 @@ Partial Class dlgTrailerFormat
         Me.Cancel_Button.TabIndex = 1
         Me.Cancel_Button.Text = "Cancel"
         '
-        'lstFormats
+        'lbFormats
         '
-        Me.lstFormats.Enabled = False
-        Me.lstFormats.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lstFormats.FormattingEnabled = True
-        Me.lstFormats.Location = New System.Drawing.Point(4, 19)
-        Me.lstFormats.Name = "lstFormats"
-        Me.lstFormats.Size = New System.Drawing.Size(170, 121)
-        Me.lstFormats.TabIndex = 0
+        Me.lbFormats.Enabled = False
+        Me.lbFormats.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lbFormats.FormattingEnabled = True
+        Me.lbFormats.Location = New System.Drawing.Point(4, 19)
+        Me.lbFormats.Name = "lbFormats"
+        Me.lbFormats.Size = New System.Drawing.Size(170, 121)
+        Me.lbFormats.TabIndex = 0
         '
-        'GroupBox1
+        'gbFormats
         '
-        Me.GroupBox1.Controls.Add(Me.lstFormats)
-        Me.GroupBox1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GroupBox1.Location = New System.Drawing.Point(10, 8)
-        Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(180, 151)
-        Me.GroupBox1.TabIndex = 0
-        Me.GroupBox1.TabStop = False
-        Me.GroupBox1.Text = "Available Formats"
+        Me.gbFormats.Controls.Add(Me.lbFormats)
+        Me.gbFormats.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbFormats.Location = New System.Drawing.Point(10, 8)
+        Me.gbFormats.Name = "gbFormats"
+        Me.gbFormats.Size = New System.Drawing.Size(180, 151)
+        Me.gbFormats.TabIndex = 0
+        Me.gbFormats.TabStop = False
+        Me.gbFormats.Text = "Available Formats"
         '
         'pnlStatus
         '
         Me.pnlStatus.BackColor = System.Drawing.Color.White
         Me.pnlStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pnlStatus.Controls.Add(Me.lblStatus)
-        Me.pnlStatus.Controls.Add(Me.pbStatus)
+        Me.pnlStatus.Controls.Add(Me.prbStatus)
         Me.pnlStatus.Location = New System.Drawing.Point(12, 75)
         Me.pnlStatus.Name = "pnlStatus"
         Me.pnlStatus.Size = New System.Drawing.Size(200, 54)
@@ -98,23 +98,23 @@ Partial Class dlgTrailerFormat
         Me.lblStatus.Text = "Getting available formats..."
         Me.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
-        'pbStatus
+        'prbStatus
         '
-        Me.pbStatus.Location = New System.Drawing.Point(3, 29)
-        Me.pbStatus.MarqueeAnimationSpeed = 25
-        Me.pbStatus.Name = "pbStatus"
-        Me.pbStatus.Size = New System.Drawing.Size(192, 17)
-        Me.pbStatus.Style = System.Windows.Forms.ProgressBarStyle.Marquee
-        Me.pbStatus.TabIndex = 1
+        Me.prbStatus.Location = New System.Drawing.Point(3, 29)
+        Me.prbStatus.MarqueeAnimationSpeed = 25
+        Me.prbStatus.Name = "prbStatus"
+        Me.prbStatus.Size = New System.Drawing.Size(192, 17)
+        Me.prbStatus.Style = System.Windows.Forms.ProgressBarStyle.Marquee
+        Me.prbStatus.TabIndex = 1
         '
-        'Panel1
+        'pnlTrailerFormat
         '
-        Me.Panel1.BackColor = System.Drawing.Color.White
-        Me.Panel1.Controls.Add(Me.GroupBox1)
-        Me.Panel1.Location = New System.Drawing.Point(12, 12)
-        Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(200, 169)
-        Me.Panel1.TabIndex = 2
+        Me.pnlTrailerFormat.BackColor = System.Drawing.Color.White
+        Me.pnlTrailerFormat.Controls.Add(Me.gbFormats)
+        Me.pnlTrailerFormat.Location = New System.Drawing.Point(12, 12)
+        Me.pnlTrailerFormat.Name = "pnlTrailerFormat"
+        Me.pnlTrailerFormat.Size = New System.Drawing.Size(200, 169)
+        Me.pnlTrailerFormat.TabIndex = 2
         '
         'dlgTrailerFormat
         '
@@ -124,7 +124,7 @@ Partial Class dlgTrailerFormat
         Me.CancelButton = Me.Cancel_Button
         Me.ClientSize = New System.Drawing.Size(224, 217)
         Me.Controls.Add(Me.pnlStatus)
-        Me.Controls.Add(Me.Panel1)
+        Me.Controls.Add(Me.pnlTrailerFormat)
         Me.Controls.Add(Me.Cancel_Button)
         Me.Controls.Add(Me.OK_Button)
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -136,20 +136,20 @@ Partial Class dlgTrailerFormat
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Select Format"
-        Me.GroupBox1.ResumeLayout(False)
+        Me.gbFormats.ResumeLayout(False)
         Me.pnlStatus.ResumeLayout(False)
         Me.pnlStatus.PerformLayout()
-        Me.Panel1.ResumeLayout(False)
+        Me.pnlTrailerFormat.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
     Friend WithEvents OK_Button As System.Windows.Forms.Button
     Friend WithEvents Cancel_Button As System.Windows.Forms.Button
-    Friend WithEvents lstFormats As System.Windows.Forms.ListBox
-    Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
+    Friend WithEvents lbFormats As System.Windows.Forms.ListBox
+    Friend WithEvents gbFormats As System.Windows.Forms.GroupBox
     Friend WithEvents pnlStatus As System.Windows.Forms.Panel
     Friend WithEvents lblStatus As System.Windows.Forms.Label
-    Friend WithEvents pbStatus As System.Windows.Forms.ProgressBar
-    Friend WithEvents Panel1 As System.Windows.Forms.Panel
+    Friend WithEvents prbStatus As System.Windows.Forms.ProgressBar
+    Friend WithEvents pnlTrailerFormat As System.Windows.Forms.Panel
 
 End Class

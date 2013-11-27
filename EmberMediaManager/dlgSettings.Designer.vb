@@ -161,9 +161,9 @@ Partial Class dlgSettings
         Me.btnApply = New System.Windows.Forms.Button()
         Me.btnCancel = New System.Windows.Forms.Button()
         Me.pnlTop = New System.Windows.Forms.Panel()
-        Me.Label2 = New System.Windows.Forms.Label()
-        Me.Label4 = New System.Windows.Forms.Label()
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.lblTopDetails = New System.Windows.Forms.Label()
+        Me.lblTopTitle = New System.Windows.Forms.Label()
+        Me.pbTopLogo = New System.Windows.Forms.PictureBox()
         Me.ilSettings = New System.Windows.Forms.ImageList(Me.components)
         Me.tvSettings = New System.Windows.Forms.TreeView()
         Me.pnlGeneral = New System.Windows.Forms.Panel()
@@ -677,7 +677,7 @@ Partial Class dlgSettings
         CType(Me.tbMovieFanartQual, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox9.SuspendLayout()
         Me.pnlTop.SuspendLayout()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlGeneral.SuspendLayout()
         Me.gbInterface.SuspendLayout()
         Me.pnlXBMCCom.SuspendLayout()
@@ -2238,49 +2238,49 @@ Partial Class dlgSettings
         '
         Me.pnlTop.BackColor = System.Drawing.Color.SteelBlue
         Me.pnlTop.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlTop.Controls.Add(Me.Label2)
-        Me.pnlTop.Controls.Add(Me.Label4)
-        Me.pnlTop.Controls.Add(Me.PictureBox1)
+        Me.pnlTop.Controls.Add(Me.lblTopDetails)
+        Me.pnlTop.Controls.Add(Me.lblTopTitle)
+        Me.pnlTop.Controls.Add(Me.pbTopLogo)
         Me.pnlTop.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlTop.Location = New System.Drawing.Point(0, 0)
         Me.pnlTop.Name = "pnlTop"
         Me.pnlTop.Size = New System.Drawing.Size(892, 64)
         Me.pnlTop.TabIndex = 3
         '
-        'Label2
+        'lblTopDetails
         '
-        Me.Label2.AutoSize = True
-        Me.Label2.BackColor = System.Drawing.Color.Transparent
-        Me.Label2.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label2.ForeColor = System.Drawing.Color.White
-        Me.Label2.Location = New System.Drawing.Point(61, 38)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(245, 13)
-        Me.Label2.TabIndex = 1
-        Me.Label2.Text = "Configure Ember's appearance and operation."
+        Me.lblTopDetails.AutoSize = True
+        Me.lblTopDetails.BackColor = System.Drawing.Color.Transparent
+        Me.lblTopDetails.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblTopDetails.ForeColor = System.Drawing.Color.White
+        Me.lblTopDetails.Location = New System.Drawing.Point(61, 38)
+        Me.lblTopDetails.Name = "lblTopDetails"
+        Me.lblTopDetails.Size = New System.Drawing.Size(245, 13)
+        Me.lblTopDetails.TabIndex = 1
+        Me.lblTopDetails.Text = "Configure Ember's appearance and operation."
         '
-        'Label4
+        'lblTopTitle
         '
-        Me.Label4.AutoSize = True
-        Me.Label4.BackColor = System.Drawing.Color.Transparent
-        Me.Label4.Font = New System.Drawing.Font("Segoe UI", 18.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label4.ForeColor = System.Drawing.Color.White
-        Me.Label4.Location = New System.Drawing.Point(58, 3)
-        Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(107, 32)
-        Me.Label4.TabIndex = 0
-        Me.Label4.Text = "Settings"
+        Me.lblTopTitle.AutoSize = True
+        Me.lblTopTitle.BackColor = System.Drawing.Color.Transparent
+        Me.lblTopTitle.Font = New System.Drawing.Font("Segoe UI", 18.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblTopTitle.ForeColor = System.Drawing.Color.White
+        Me.lblTopTitle.Location = New System.Drawing.Point(58, 3)
+        Me.lblTopTitle.Name = "lblTopTitle"
+        Me.lblTopTitle.Size = New System.Drawing.Size(107, 32)
+        Me.lblTopTitle.TabIndex = 0
+        Me.lblTopTitle.Text = "Settings"
         '
-        'PictureBox1
+        'pbTopLogo
         '
-        Me.PictureBox1.BackColor = System.Drawing.Color.Transparent
-        Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
-        Me.PictureBox1.Location = New System.Drawing.Point(7, 8)
-        Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(48, 48)
-        Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
-        Me.PictureBox1.TabIndex = 0
-        Me.PictureBox1.TabStop = False
+        Me.pbTopLogo.BackColor = System.Drawing.Color.Transparent
+        Me.pbTopLogo.Image = CType(resources.GetObject("pbTopLogo.Image"), System.Drawing.Image)
+        Me.pbTopLogo.Location = New System.Drawing.Point(7, 8)
+        Me.pbTopLogo.Name = "pbTopLogo"
+        Me.pbTopLogo.Size = New System.Drawing.Size(48, 48)
+        Me.pbTopLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
+        Me.pbTopLogo.TabIndex = 0
+        Me.pbTopLogo.TabStop = False
         '
         'ilSettings
         '
@@ -7899,7 +7899,7 @@ Partial Class dlgSettings
         Me.GroupBox9.ResumeLayout(False)
         Me.pnlTop.ResumeLayout(False)
         Me.pnlTop.PerformLayout()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlGeneral.ResumeLayout(False)
         Me.gbInterface.ResumeLayout(False)
         Me.gbInterface.PerformLayout()
@@ -8056,9 +8056,9 @@ Partial Class dlgSettings
     Friend WithEvents btnApply As System.Windows.Forms.Button
     Friend WithEvents btnCancel As System.Windows.Forms.Button
     Friend WithEvents pnlTop As System.Windows.Forms.Panel
-    Friend WithEvents Label2 As System.Windows.Forms.Label
-    Friend WithEvents Label4 As System.Windows.Forms.Label
-    Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
+    Friend WithEvents lblTopDetails As System.Windows.Forms.Label
+    Friend WithEvents lblTopTitle As System.Windows.Forms.Label
+    Friend WithEvents pbTopLogo As System.Windows.Forms.PictureBox
     Friend WithEvents GroupBox3 As System.Windows.Forms.GroupBox
     Friend WithEvents chkCleanFolderJPG As System.Windows.Forms.CheckBox
     Friend WithEvents chkCleanFanartJPG As System.Windows.Forms.CheckBox

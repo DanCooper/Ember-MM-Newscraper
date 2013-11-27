@@ -165,8 +165,8 @@ Public Class dlgTVSource
         Me.Text = Master.eLang.GetString(705, "TV Source")
         Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
         Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
-        Me.Label1.Text = Master.eLang.GetString(199, "Source Name:")
-        Me.Label2.Text = Master.eLang.GetString(200, "Source Path:")
+        Me.lblSourceName.Text = Master.eLang.GetString(199, "Source Name:")
+        Me.lblSourcePath.Text = Master.eLang.GetString(200, "Source Path:")
         Me.fbdBrowse.Description = Master.eLang.GetString(706, "Select the parent folder for your TV Series folders/files.")
     End Sub
 

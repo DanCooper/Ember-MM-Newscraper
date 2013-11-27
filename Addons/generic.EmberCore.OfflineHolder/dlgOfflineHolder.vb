@@ -76,7 +76,7 @@ Public Class dlgOfflineHolder
     End Sub
 
     Private Sub btnFont_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFont.Click
-        With Me.cdFont
+        With Me.fdFont
             If .ShowDialog = Windows.Forms.DialogResult.OK Then
                 If Not IsNothing(.Font) Then
                     Me.drawFont = .Font

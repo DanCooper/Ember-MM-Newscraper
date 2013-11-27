@@ -23,7 +23,7 @@ Partial Class dlgImgSelect
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgImgSelect))
-        Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
+        Me.tlpButtons = New System.Windows.Forms.TableLayoutPanel()
         Me.OK_Button = New System.Windows.Forms.Button()
         Me.Cancel_Button = New System.Windows.Forms.Button()
         Me.pnlBottomMain = New System.Windows.Forms.Panel()
@@ -42,7 +42,7 @@ Partial Class dlgImgSelect
         Me.lblDL1 = New System.Windows.Forms.Label()
         Me.pbDL1 = New System.Windows.Forms.ProgressBar()
         Me.pnlBG = New System.Windows.Forms.Panel()
-        Me.TableLayoutPanel1.SuspendLayout()
+        Me.tlpButtons.SuspendLayout()
         Me.pnlBottomMain.SuspendLayout()
         Me.pnlSize.SuspendLayout()
         Me.pnlDLStatus.SuspendLayout()
@@ -50,20 +50,20 @@ Partial Class dlgImgSelect
         Me.pnlBG.SuspendLayout()
         Me.SuspendLayout()
         '
-        'TableLayoutPanel1
+        'tlpButtons
         '
-        Me.TableLayoutPanel1.ColumnCount = 2
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel1.Controls.Add(Me.OK_Button, 0, 0)
-        Me.TableLayoutPanel1.Controls.Add(Me.Cancel_Button, 1, 0)
-        Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Right
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(690, 0)
-        Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
-        Me.TableLayoutPanel1.RowCount = 1
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel1.Size = New System.Drawing.Size(146, 64)
-        Me.TableLayoutPanel1.TabIndex = 0
+        Me.tlpButtons.ColumnCount = 2
+        Me.tlpButtons.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.tlpButtons.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.tlpButtons.Controls.Add(Me.OK_Button, 0, 0)
+        Me.tlpButtons.Controls.Add(Me.Cancel_Button, 1, 0)
+        Me.tlpButtons.Dock = System.Windows.Forms.DockStyle.Right
+        Me.tlpButtons.Location = New System.Drawing.Point(690, 0)
+        Me.tlpButtons.Name = "tlpButtons"
+        Me.tlpButtons.RowCount = 1
+        Me.tlpButtons.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.tlpButtons.Size = New System.Drawing.Size(146, 64)
+        Me.tlpButtons.TabIndex = 0
         '
         'OK_Button
         '
@@ -92,7 +92,7 @@ Partial Class dlgImgSelect
         Me.pnlBottomMain.Controls.Add(Me.cbFilterSize)
         Me.pnlBottomMain.Controls.Add(Me.lblSize)
         Me.pnlBottomMain.Controls.Add(Me.pnlSize)
-        Me.pnlBottomMain.Controls.Add(Me.TableLayoutPanel1)
+        Me.pnlBottomMain.Controls.Add(Me.tlpButtons)
         Me.pnlBottomMain.Dock = System.Windows.Forms.DockStyle.Bottom
         Me.pnlBottomMain.Location = New System.Drawing.Point(0, 606)
         Me.pnlBottomMain.Name = "pnlBottomMain"
@@ -288,7 +288,7 @@ Partial Class dlgImgSelect
         Me.ShowIcon = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Select Poster"
-        Me.TableLayoutPanel1.ResumeLayout(False)
+        Me.tlpButtons.ResumeLayout(False)
         Me.pnlBottomMain.ResumeLayout(False)
         Me.pnlBottomMain.PerformLayout()
         Me.pnlSize.ResumeLayout(False)
@@ -299,7 +299,7 @@ Partial Class dlgImgSelect
         Me.ResumeLayout(False)
 
     End Sub
-    Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents tlpButtons As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents OK_Button As System.Windows.Forms.Button
     Friend WithEvents Cancel_Button As System.Windows.Forms.Button
     Friend WithEvents pnlBottomMain As System.Windows.Forms.Panel

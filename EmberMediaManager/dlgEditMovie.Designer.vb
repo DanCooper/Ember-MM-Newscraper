@@ -27,9 +27,9 @@ Partial Class dlgEditMovie
         Me.OK_Button = New System.Windows.Forms.Button()
         Me.Cancel_Button = New System.Windows.Forms.Button()
         Me.pnlTop = New System.Windows.Forms.Panel()
-        Me.Label2 = New System.Windows.Forms.Label()
-        Me.Label1 = New System.Windows.Forms.Label()
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.lblTopDetails = New System.Windows.Forms.Label()
+        Me.lblTopTitle = New System.Windows.Forms.Label()
+        Me.pbTopLogo = New System.Windows.Forms.PictureBox()
         Me.tcEditMovie = New System.Windows.Forms.TabControl()
         Me.tpDetails = New System.Windows.Forms.TabPage()
         Me.txtOriginalTitle = New System.Windows.Forms.TextBox()
@@ -40,12 +40,12 @@ Partial Class dlgEditMovie
         Me.lblFileSource = New System.Windows.Forms.Label()
         Me.btnActorDown = New System.Windows.Forms.Button()
         Me.btnActorUp = New System.Windows.Forms.Button()
-        Me.Label6 = New System.Windows.Forms.Label()
+        Me.lblSortTilte = New System.Windows.Forms.Label()
         Me.txtSortTitle = New System.Windows.Forms.TextBox()
         Me.lblLocalTrailer = New System.Windows.Forms.Label()
         Me.btnPlayTrailer = New System.Windows.Forms.Button()
         Me.btnDLTrailer = New System.Windows.Forms.Button()
-        Me.lbGenre = New System.Windows.Forms.CheckedListBox()
+        Me.clbGenre = New System.Windows.Forms.CheckedListBox()
         Me.btnStudio = New System.Windows.Forms.Button()
         Me.lblStudio = New System.Windows.Forms.Label()
         Me.txtStudio = New System.Windows.Forms.TextBox()
@@ -110,6 +110,7 @@ Partial Class dlgEditMovie
         Me.btnSetFanart = New System.Windows.Forms.Button()
         Me.pbFanart = New System.Windows.Forms.PictureBox()
         Me.tpEFanarts = New System.Windows.Forms.TabPage()
+        Me.lblEFanartsSize = New System.Windows.Forms.Label()
         Me.pnlEFanartsBG = New System.Windows.Forms.Panel()
         Me.pnlEFanartsSetAsFanart = New System.Windows.Forms.Panel()
         Me.btnEFanartsSetAsFanart = New System.Windows.Forms.Button()
@@ -120,6 +121,7 @@ Partial Class dlgEditMovie
         Me.btnEFanartsTransfer = New System.Windows.Forms.Button()
         Me.pbEFanarts = New System.Windows.Forms.PictureBox()
         Me.tpEThumbs = New System.Windows.Forms.TabPage()
+        Me.lblEThumbsSize = New System.Windows.Forms.Label()
         Me.pnlEThumbsBG = New System.Windows.Forms.Panel()
         Me.pnlETQueue = New System.Windows.Forms.Panel()
         Me.lbEThumbsQueue = New System.Windows.Forms.Label()
@@ -139,12 +141,10 @@ Partial Class dlgEditMovie
         Me.chkMark = New System.Windows.Forms.CheckBox()
         Me.btnRescrape = New System.Windows.Forms.Button()
         Me.btnChangeMovie = New System.Windows.Forms.Button()
-        Me.DelayTimer = New System.Windows.Forms.Timer(Me.components)
+        Me.tmrDelay = New System.Windows.Forms.Timer(Me.components)
         Me.chkWatched = New System.Windows.Forms.CheckBox()
-        Me.lblEFanartsSize = New System.Windows.Forms.Label()
-        Me.lblEThumbsSize = New System.Windows.Forms.Label()
         Me.pnlTop.SuspendLayout()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tcEditMovie.SuspendLayout()
         Me.tpDetails.SuspendLayout()
         CType(Me.pbStar5, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -191,49 +191,49 @@ Partial Class dlgEditMovie
         '
         Me.pnlTop.BackColor = System.Drawing.Color.LightSteelBlue
         Me.pnlTop.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlTop.Controls.Add(Me.Label2)
-        Me.pnlTop.Controls.Add(Me.Label1)
-        Me.pnlTop.Controls.Add(Me.PictureBox1)
+        Me.pnlTop.Controls.Add(Me.lblTopDetails)
+        Me.pnlTop.Controls.Add(Me.lblTopTitle)
+        Me.pnlTop.Controls.Add(Me.pbTopLogo)
         Me.pnlTop.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlTop.Location = New System.Drawing.Point(0, 0)
         Me.pnlTop.Name = "pnlTop"
         Me.pnlTop.Size = New System.Drawing.Size(854, 64)
         Me.pnlTop.TabIndex = 2
         '
-        'Label2
+        'lblTopDetails
         '
-        Me.Label2.AutoSize = True
-        Me.Label2.BackColor = System.Drawing.Color.Transparent
-        Me.Label2.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label2.ForeColor = System.Drawing.Color.White
-        Me.Label2.Location = New System.Drawing.Point(61, 38)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(205, 13)
-        Me.Label2.TabIndex = 1
-        Me.Label2.Text = "Edit the details for the selected movie."
+        Me.lblTopDetails.AutoSize = True
+        Me.lblTopDetails.BackColor = System.Drawing.Color.Transparent
+        Me.lblTopDetails.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblTopDetails.ForeColor = System.Drawing.Color.White
+        Me.lblTopDetails.Location = New System.Drawing.Point(61, 38)
+        Me.lblTopDetails.Name = "lblTopDetails"
+        Me.lblTopDetails.Size = New System.Drawing.Size(205, 13)
+        Me.lblTopDetails.TabIndex = 1
+        Me.lblTopDetails.Text = "Edit the details for the selected movie."
         '
-        'Label1
+        'lblTopTitle
         '
-        Me.Label1.AutoSize = True
-        Me.Label1.BackColor = System.Drawing.Color.Transparent
-        Me.Label1.Font = New System.Drawing.Font("Segoe UI", 18.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label1.ForeColor = System.Drawing.Color.White
-        Me.Label1.Location = New System.Drawing.Point(58, 3)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(137, 32)
-        Me.Label1.TabIndex = 0
-        Me.Label1.Text = "Edit Movie"
+        Me.lblTopTitle.AutoSize = True
+        Me.lblTopTitle.BackColor = System.Drawing.Color.Transparent
+        Me.lblTopTitle.Font = New System.Drawing.Font("Segoe UI", 18.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblTopTitle.ForeColor = System.Drawing.Color.White
+        Me.lblTopTitle.Location = New System.Drawing.Point(58, 3)
+        Me.lblTopTitle.Name = "lblTopTitle"
+        Me.lblTopTitle.Size = New System.Drawing.Size(137, 32)
+        Me.lblTopTitle.TabIndex = 0
+        Me.lblTopTitle.Text = "Edit Movie"
         '
-        'PictureBox1
+        'pbTopLogo
         '
-        Me.PictureBox1.BackColor = System.Drawing.Color.Transparent
-        Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
-        Me.PictureBox1.Location = New System.Drawing.Point(7, 8)
-        Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(48, 48)
-        Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
-        Me.PictureBox1.TabIndex = 0
-        Me.PictureBox1.TabStop = False
+        Me.pbTopLogo.BackColor = System.Drawing.Color.Transparent
+        Me.pbTopLogo.Image = CType(resources.GetObject("pbTopLogo.Image"), System.Drawing.Image)
+        Me.pbTopLogo.Location = New System.Drawing.Point(7, 8)
+        Me.pbTopLogo.Name = "pbTopLogo"
+        Me.pbTopLogo.Size = New System.Drawing.Size(48, 48)
+        Me.pbTopLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
+        Me.pbTopLogo.TabIndex = 0
+        Me.pbTopLogo.TabStop = False
         '
         'tcEditMovie
         '
@@ -261,12 +261,12 @@ Partial Class dlgEditMovie
         Me.tpDetails.Controls.Add(Me.lblFileSource)
         Me.tpDetails.Controls.Add(Me.btnActorDown)
         Me.tpDetails.Controls.Add(Me.btnActorUp)
-        Me.tpDetails.Controls.Add(Me.Label6)
+        Me.tpDetails.Controls.Add(Me.lblSortTilte)
         Me.tpDetails.Controls.Add(Me.txtSortTitle)
         Me.tpDetails.Controls.Add(Me.lblLocalTrailer)
         Me.tpDetails.Controls.Add(Me.btnPlayTrailer)
         Me.tpDetails.Controls.Add(Me.btnDLTrailer)
-        Me.tpDetails.Controls.Add(Me.lbGenre)
+        Me.tpDetails.Controls.Add(Me.clbGenre)
         Me.tpDetails.Controls.Add(Me.btnStudio)
         Me.tpDetails.Controls.Add(Me.lblStudio)
         Me.tpDetails.Controls.Add(Me.txtStudio)
@@ -396,15 +396,15 @@ Partial Class dlgEditMovie
         Me.btnActorUp.TabIndex = 33
         Me.btnActorUp.UseVisualStyleBackColor = True
         '
-        'Label6
+        'lblSortTilte
         '
-        Me.Label6.AutoSize = True
-        Me.Label6.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label6.Location = New System.Drawing.Point(5, 87)
-        Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(56, 13)
-        Me.Label6.TabIndex = 4
-        Me.Label6.Text = "Sort Title:"
+        Me.lblSortTilte.AutoSize = True
+        Me.lblSortTilte.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblSortTilte.Location = New System.Drawing.Point(5, 87)
+        Me.lblSortTilte.Name = "lblSortTilte"
+        Me.lblSortTilte.Size = New System.Drawing.Size(56, 13)
+        Me.lblSortTilte.TabIndex = 4
+        Me.lblSortTilte.Text = "Sort Title:"
         '
         'txtSortTitle
         '
@@ -446,19 +446,19 @@ Partial Class dlgEditMovie
         Me.btnDLTrailer.TabIndex = 53
         Me.btnDLTrailer.UseVisualStyleBackColor = True
         '
-        'lbGenre
+        'clbGenre
         '
-        Me.lbGenre.BackColor = System.Drawing.SystemColors.Window
-        Me.lbGenre.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lbGenre.CheckOnClick = True
-        Me.lbGenre.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lbGenre.FormattingEnabled = True
-        Me.lbGenre.IntegralHeight = False
-        Me.lbGenre.Location = New System.Drawing.Point(8, 345)
-        Me.lbGenre.Name = "lbGenre"
-        Me.lbGenre.Size = New System.Drawing.Size(192, 100)
-        Me.lbGenre.Sorted = True
-        Me.lbGenre.TabIndex = 24
+        Me.clbGenre.BackColor = System.Drawing.SystemColors.Window
+        Me.clbGenre.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.clbGenre.CheckOnClick = True
+        Me.clbGenre.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.clbGenre.FormattingEnabled = True
+        Me.clbGenre.IntegralHeight = False
+        Me.clbGenre.Location = New System.Drawing.Point(8, 345)
+        Me.clbGenre.Name = "clbGenre"
+        Me.clbGenre.Size = New System.Drawing.Size(192, 100)
+        Me.clbGenre.Sorted = True
+        Me.clbGenre.TabIndex = 24
         '
         'btnStudio
         '
@@ -1116,6 +1116,17 @@ Partial Class dlgEditMovie
         Me.tpEFanarts.Text = "Extrafanarts"
         Me.tpEFanarts.UseVisualStyleBackColor = True
         '
+        'lblEFanartsSize
+        '
+        Me.lblEFanartsSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblEFanartsSize.Location = New System.Drawing.Point(178, 10)
+        Me.lblEFanartsSize.Name = "lblEFanartsSize"
+        Me.lblEFanartsSize.Size = New System.Drawing.Size(105, 23)
+        Me.lblEFanartsSize.TabIndex = 16
+        Me.lblEFanartsSize.Text = "Size: (XXXXxXXXX)"
+        Me.lblEFanartsSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.lblEFanartsSize.Visible = False
+        '
         'pnlEFanartsBG
         '
         Me.pnlEFanartsBG.AutoScroll = True
@@ -1229,6 +1240,17 @@ Partial Class dlgEditMovie
         Me.tpEThumbs.TabIndex = 4
         Me.tpEThumbs.Text = "Extrathumbs"
         Me.tpEThumbs.UseVisualStyleBackColor = True
+        '
+        'lblEThumbsSize
+        '
+        Me.lblEThumbsSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblEThumbsSize.Location = New System.Drawing.Point(178, 10)
+        Me.lblEThumbsSize.Name = "lblEThumbsSize"
+        Me.lblEThumbsSize.Size = New System.Drawing.Size(105, 23)
+        Me.lblEThumbsSize.TabIndex = 17
+        Me.lblEThumbsSize.Text = "Size: (XXXXxXXXX)"
+        Me.lblEThumbsSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.lblEThumbsSize.Visible = False
         '
         'pnlEThumbsBG
         '
@@ -1421,9 +1443,9 @@ Partial Class dlgEditMovie
         Me.btnChangeMovie.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnChangeMovie.UseVisualStyleBackColor = True
         '
-        'DelayTimer
+        'tmrDelay
         '
-        Me.DelayTimer.Interval = 250
+        Me.tmrDelay.Interval = 250
         '
         'chkWatched
         '
@@ -1435,28 +1457,6 @@ Partial Class dlgEditMovie
         Me.chkWatched.TabIndex = 6
         Me.chkWatched.Text = "Watched!"
         Me.chkWatched.UseVisualStyleBackColor = True
-        '
-        'lblEFanartsSize
-        '
-        Me.lblEFanartsSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblEFanartsSize.Location = New System.Drawing.Point(178, 10)
-        Me.lblEFanartsSize.Name = "lblEFanartsSize"
-        Me.lblEFanartsSize.Size = New System.Drawing.Size(105, 23)
-        Me.lblEFanartsSize.TabIndex = 16
-        Me.lblEFanartsSize.Text = "Size: (XXXXxXXXX)"
-        Me.lblEFanartsSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        Me.lblEFanartsSize.Visible = False
-        '
-        'lblEThumbsSize
-        '
-        Me.lblEThumbsSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblEThumbsSize.Location = New System.Drawing.Point(178, 10)
-        Me.lblEThumbsSize.Name = "lblEThumbsSize"
-        Me.lblEThumbsSize.Size = New System.Drawing.Size(105, 23)
-        Me.lblEThumbsSize.TabIndex = 17
-        Me.lblEThumbsSize.Text = "Size: (XXXXxXXXX)"
-        Me.lblEThumbsSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        Me.lblEThumbsSize.Visible = False
         '
         'dlgEditMovie
         '
@@ -1483,7 +1483,7 @@ Partial Class dlgEditMovie
         Me.Text = "Edit Movie"
         Me.pnlTop.ResumeLayout(False)
         Me.pnlTop.PerformLayout()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tcEditMovie.ResumeLayout(False)
         Me.tpDetails.ResumeLayout(False)
         Me.tpDetails.PerformLayout()
@@ -1513,9 +1513,9 @@ Partial Class dlgEditMovie
     Friend WithEvents OK_Button As System.Windows.Forms.Button
     Friend WithEvents Cancel_Button As System.Windows.Forms.Button
     Friend WithEvents pnlTop As System.Windows.Forms.Panel
-    Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
-    Friend WithEvents Label2 As System.Windows.Forms.Label
-    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents pbTopLogo As System.Windows.Forms.PictureBox
+    Friend WithEvents lblTopDetails As System.Windows.Forms.Label
+    Friend WithEvents lblTopTitle As System.Windows.Forms.Label
     Friend WithEvents tcEditMovie As System.Windows.Forms.TabControl
     Friend WithEvents tpDetails As System.Windows.Forms.TabPage
     Friend WithEvents lblMPAADesc As System.Windows.Forms.Label
@@ -1590,7 +1590,7 @@ Partial Class dlgEditMovie
     Friend WithEvents btnRemoveFanart As System.Windows.Forms.Button
     Friend WithEvents btnEThumbsRefresh As System.Windows.Forms.Button
     Friend WithEvents btnStudio As System.Windows.Forms.Button
-    Friend WithEvents lbGenre As System.Windows.Forms.CheckedListBox
+    Friend WithEvents clbGenre As System.Windows.Forms.CheckedListBox
     Friend WithEvents pnlEThumbsSetAsFanart As System.Windows.Forms.Panel
     Friend WithEvents btnEThumbsSetAsFanart As System.Windows.Forms.Button
     Friend WithEvents btnDLTrailer As System.Windows.Forms.Button
@@ -1603,9 +1603,9 @@ Partial Class dlgEditMovie
     Friend WithEvents btnSetFanartDL As System.Windows.Forms.Button
     Friend WithEvents tpMetaData As System.Windows.Forms.TabPage
     Friend WithEvents pnlFileInfo As System.Windows.Forms.Panel
-    Friend WithEvents Label6 As System.Windows.Forms.Label
+    Friend WithEvents lblSortTilte As System.Windows.Forms.Label
     Friend WithEvents txtSortTitle As System.Windows.Forms.TextBox
-    Friend WithEvents DelayTimer As System.Windows.Forms.Timer
+    Friend WithEvents tmrDelay As System.Windows.Forms.Timer
     Friend WithEvents btnActorDown As System.Windows.Forms.Button
     Friend WithEvents btnActorUp As System.Windows.Forms.Button
     Friend WithEvents pnlFrameExtrator As System.Windows.Forms.Panel

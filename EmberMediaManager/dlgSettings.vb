@@ -4194,8 +4194,8 @@ Public Class dlgSettings
         Me.btnOK.Text = Master.eLang.GetString(179, "OK")
         Me.btnApply.Text = Master.eLang.GetString(276, "Apply")
         Me.btnCancel.Text = Master.eLang.GetString(167, "Cancel")
-        Me.Label2.Text = Master.eLang.GetString(518, "Configure Ember's appearance and operation.")
-        Me.Label4.Text = Me.Text
+        Me.lblTopDetails.Text = Master.eLang.GetString(518, "Configure Ember's appearance and operation.")
+        Me.lblTopTitle.Text = Me.Text
         Me.GroupBox16.Text = Master.eLang.GetString(520, "Backdrops Folder")
         Me.chkAutoBD.Text = Master.eLang.GetString(521, "Automatically Save Fanart To Backdrops Folder")
         Me.GroupBox26.Text = Master.eLang.GetString(59, "Meta Data")

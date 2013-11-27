@@ -367,8 +367,8 @@ Public Class dlgUpdateMedia
     Private Sub SetUp()
         Me.Text = Master.eLang.GetString(384, "Custom Scraper")
         Me.OK_Button.Text = Master.eLang.GetString(167, "Cancel")
-        Me.Label2.Text = Master.eLang.GetString(385, "Create a custom scraper")
-        Me.Label4.Text = Me.Text
+        Me.lblTopDescription.Text = Master.eLang.GetString(385, "Create a custom scraper")
+        Me.lblTopTitle.Text = Me.Text
         Me.rbUpdateModifier_All.Text = Master.eLang.GetString(68, "All Movies")
         Me.gbUpdateModifier.Text = Master.eLang.GetString(386, "Selection Filter")
         Me.rbUpdateModifier_Marked.Text = Master.eLang.GetString(80, "Marked Movies")

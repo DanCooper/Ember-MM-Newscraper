@@ -1579,7 +1579,7 @@ Public Class dlgNMTMovies
     End Sub
 
     Private Sub dgvSources_CellValueChanged(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvSources.CellValueChanged
-        ValidatedToBuild.Start()
+        tmrValidatedToBuild.Start()
         'btnSave.Enabled = False
     End Sub
 
@@ -1599,9 +1599,9 @@ Public Class dlgNMTMovies
         lblHelpa.Text = ""
     End Sub
 
-    Private Sub ValidatedToBuild_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ValidatedToBuild.Tick
-        ValidatedToBuild.Stop()
-        ValidatedToBuild.Interval = 300
+    Private Sub ValidatedToBuild_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrValidatedToBuild.Tick
+        tmrValidatedToBuild.Stop()
+        tmrValidatedToBuild.Interval = 300
         selectedSources.Clear()
         HaveMovies = False
         HaveTV = False
@@ -1656,7 +1656,7 @@ Public Class dlgNMTMovies
     End Sub
 
     Private Sub txtOutputFolder_LostFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtOutputFolder.LostFocus
-        ValidatedToBuild.Start()
+        tmrValidatedToBuild.Start()
         btnSave.Enabled = True
     End Sub
 
@@ -1671,8 +1671,8 @@ Public Class dlgNMTMovies
     Private Sub txtOutputFolder_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtOutputFolder.TextChanged
         btnBuild.Enabled = False
         outputChanged = True
-        ValidatedToBuild.Interval = 2000
-        ValidatedToBuild.Start()
+        tmrValidatedToBuild.Interval = 2000
+        tmrValidatedToBuild.Start()
         btnSave.Enabled = True
     End Sub
     Private Sub btnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave.Click
@@ -1742,7 +1742,7 @@ Public Class dlgNMTMovies
     Private oldWarning As String = String.Empty
     Private Sub pbWarning_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbWarning.Click
         If Not IsNothing(pbWarning.Image) Then
-            ValidatedToBuild.Start()
+            tmrValidatedToBuild.Start()
         End If
     End Sub
     Private Sub pbWarning_MouseHover(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbWarning.MouseHover

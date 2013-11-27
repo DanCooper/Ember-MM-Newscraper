@@ -92,7 +92,7 @@ Public Class genericBoxee
         SPanel.Type = Master.eLang.GetString(802, "Modules")
 		SPanel.ImageIndex = If(Me._enabled, 9, 10)
 		SPanel.Order = 100
-		SPanel.Panel = Me.fBoxee.pnlSettings
+        SPanel.Panel = Me.fBoxee.pnlBoxee
 		AddHandler Me.fBoxee.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
 		AddHandler fBoxee.ModuleEnabledChanged, AddressOf Handle_SetupChanged
 		AddHandler fBoxee.GenericEvent, AddressOf DeploySyncSettings

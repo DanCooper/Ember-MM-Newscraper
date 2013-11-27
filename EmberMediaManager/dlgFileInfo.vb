@@ -382,7 +382,7 @@ Public Class dlgFileInfo
         cbStreamType.Items.Add(Master.eLang.GetString(596, "Audio Stream"))
         cbStreamType.Items.Add(Master.eLang.GetString(597, "Subtitle Stream"))
         Me.Text = Master.eLang.GetString(594, "Meta Data Editor")
-        Me.Label4.Text = Master.eLang.GetString(598, "Stream Type")
+        Me.lblStreamType.Text = Master.eLang.GetString(598, "Stream Type")
         Me.Cancel_Button.Text = Master.eLang.GetString(19, "Close")
     End Sub
 

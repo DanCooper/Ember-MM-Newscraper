@@ -114,7 +114,7 @@ Public Class dlgImgManual
 		Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
 		Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
 		Me.btnPreview.Text = Master.eLang.GetString(180, "Preview")
-		Me.Label1.Text = Master.eLang.GetString(181, "Enter URL to Image:")
+        Me.lblURL.Text = Master.eLang.GetString(181, "Enter URL to Image:")
 	End Sub
 
 	Private Sub txtURL_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtURL.TextChanged

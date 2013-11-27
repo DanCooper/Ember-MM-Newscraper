@@ -37,10 +37,10 @@ Partial Class dlgUpdateMedia
     Friend WithEvents gbUpdateItems As System.Windows.Forms.GroupBox
     Friend WithEvents gbUpdateModifier As System.Windows.Forms.GroupBox
     Friend WithEvents gbUpdateType As System.Windows.Forms.GroupBox
-    Friend WithEvents Label2 As System.Windows.Forms.Label
-    Friend WithEvents Label4 As System.Windows.Forms.Label
+    Friend WithEvents lblTopDescription As System.Windows.Forms.Label
+    Friend WithEvents lblTopTitle As System.Windows.Forms.Label
     Friend WithEvents OK_Button As System.Windows.Forms.Button
-    Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
+    Friend WithEvents pbTopLogo As System.Windows.Forms.PictureBox
     Friend WithEvents pnlTop As System.Windows.Forms.Panel
     Friend WithEvents rbUpdateModifier_All As System.Windows.Forms.RadioButton
     Friend WithEvents rbUpdateModifier_Marked As System.Windows.Forms.RadioButton
@@ -77,9 +77,9 @@ Partial Class dlgUpdateMedia
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgUpdateMedia))
         Me.OK_Button = New System.Windows.Forms.Button()
         Me.pnlTop = New System.Windows.Forms.Panel()
-        Me.Label2 = New System.Windows.Forms.Label()
-        Me.Label4 = New System.Windows.Forms.Label()
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.lblTopDescription = New System.Windows.Forms.Label()
+        Me.lblTopTitle = New System.Windows.Forms.Label()
+        Me.pbTopLogo = New System.Windows.Forms.PictureBox()
         Me.rbUpdateModifier_All = New System.Windows.Forms.RadioButton()
         Me.gbUpdateModifier = New System.Windows.Forms.GroupBox()
         Me.rbUpdateModifier_Marked = New System.Windows.Forms.RadioButton()
@@ -89,6 +89,7 @@ Partial Class dlgUpdateMedia
         Me.rbUpdate_Ask = New System.Windows.Forms.RadioButton()
         Me.rbUpdate_Auto = New System.Windows.Forms.RadioButton()
         Me.gbUpdateItems = New System.Windows.Forms.GroupBox()
+        Me.chkEFanartsMod = New System.Windows.Forms.CheckBox()
         Me.chkTrailerMod = New System.Windows.Forms.CheckBox()
         Me.chkEThumbsMod = New System.Windows.Forms.CheckBox()
         Me.chkMetaMod = New System.Windows.Forms.CheckBox()
@@ -120,15 +121,14 @@ Partial Class dlgUpdateMedia
         Me.chkMPAA = New System.Windows.Forms.CheckBox()
         Me.chkYear = New System.Windows.Forms.CheckBox()
         Me.chkTitle = New System.Windows.Forms.CheckBox()
-        Me.Panel1 = New System.Windows.Forms.Panel()
-        Me.chkEFanartsMod = New System.Windows.Forms.CheckBox()
+        Me.pnlUpdateMedia = New System.Windows.Forms.Panel()
         Me.pnlTop.SuspendLayout()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.gbUpdateModifier.SuspendLayout()
         Me.gbUpdateType.SuspendLayout()
         Me.gbUpdateItems.SuspendLayout()
         Me.gbOptions.SuspendLayout()
-        Me.Panel1.SuspendLayout()
+        Me.pnlUpdateMedia.SuspendLayout()
         Me.SuspendLayout()
         '
         'OK_Button
@@ -145,49 +145,49 @@ Partial Class dlgUpdateMedia
         '
         Me.pnlTop.BackColor = System.Drawing.Color.SteelBlue
         Me.pnlTop.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlTop.Controls.Add(Me.Label2)
-        Me.pnlTop.Controls.Add(Me.Label4)
-        Me.pnlTop.Controls.Add(Me.PictureBox1)
+        Me.pnlTop.Controls.Add(Me.lblTopDescription)
+        Me.pnlTop.Controls.Add(Me.lblTopTitle)
+        Me.pnlTop.Controls.Add(Me.pbTopLogo)
         Me.pnlTop.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlTop.Location = New System.Drawing.Point(0, 0)
         Me.pnlTop.Name = "pnlTop"
         Me.pnlTop.Size = New System.Drawing.Size(576, 64)
         Me.pnlTop.TabIndex = 2
         '
-        'Label2
+        'lblTopDescription
         '
-        Me.Label2.AutoSize = True
-        Me.Label2.BackColor = System.Drawing.Color.Transparent
-        Me.Label2.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label2.ForeColor = System.Drawing.Color.White
-        Me.Label2.Location = New System.Drawing.Point(64, 38)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(130, 13)
-        Me.Label2.TabIndex = 1
-        Me.Label2.Text = "Create a custom scraper"
+        Me.lblTopDescription.AutoSize = True
+        Me.lblTopDescription.BackColor = System.Drawing.Color.Transparent
+        Me.lblTopDescription.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblTopDescription.ForeColor = System.Drawing.Color.White
+        Me.lblTopDescription.Location = New System.Drawing.Point(64, 38)
+        Me.lblTopDescription.Name = "lblTopDescription"
+        Me.lblTopDescription.Size = New System.Drawing.Size(130, 13)
+        Me.lblTopDescription.TabIndex = 1
+        Me.lblTopDescription.Text = "Create a custom scraper"
         '
-        'Label4
+        'lblTopTitle
         '
-        Me.Label4.AutoSize = True
-        Me.Label4.BackColor = System.Drawing.Color.Transparent
-        Me.Label4.Font = New System.Drawing.Font("Segoe UI", 18.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label4.ForeColor = System.Drawing.Color.White
-        Me.Label4.Location = New System.Drawing.Point(61, 3)
-        Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(195, 32)
-        Me.Label4.TabIndex = 0
-        Me.Label4.Text = "Custom Scraper"
+        Me.lblTopTitle.AutoSize = True
+        Me.lblTopTitle.BackColor = System.Drawing.Color.Transparent
+        Me.lblTopTitle.Font = New System.Drawing.Font("Segoe UI", 18.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblTopTitle.ForeColor = System.Drawing.Color.White
+        Me.lblTopTitle.Location = New System.Drawing.Point(61, 3)
+        Me.lblTopTitle.Name = "lblTopTitle"
+        Me.lblTopTitle.Size = New System.Drawing.Size(195, 32)
+        Me.lblTopTitle.TabIndex = 0
+        Me.lblTopTitle.Text = "Custom Scraper"
         '
-        'PictureBox1
+        'pbTopLogo
         '
-        Me.PictureBox1.BackColor = System.Drawing.Color.Transparent
-        Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
-        Me.PictureBox1.Location = New System.Drawing.Point(12, 7)
-        Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(48, 48)
-        Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
-        Me.PictureBox1.TabIndex = 0
-        Me.PictureBox1.TabStop = False
+        Me.pbTopLogo.BackColor = System.Drawing.Color.Transparent
+        Me.pbTopLogo.Image = CType(resources.GetObject("pbTopLogo.Image"), System.Drawing.Image)
+        Me.pbTopLogo.Location = New System.Drawing.Point(12, 7)
+        Me.pbTopLogo.Name = "pbTopLogo"
+        Me.pbTopLogo.Size = New System.Drawing.Size(48, 48)
+        Me.pbTopLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
+        Me.pbTopLogo.TabIndex = 0
+        Me.pbTopLogo.TabStop = False
         '
         'rbUpdateModifier_All
         '
@@ -304,6 +304,20 @@ Partial Class dlgUpdateMedia
         Me.gbUpdateItems.TabIndex = 2
         Me.gbUpdateItems.TabStop = False
         Me.gbUpdateItems.Text = "Modifiers"
+        '
+        'chkEFanartsMod
+        '
+        Me.chkEFanartsMod.AutoSize = True
+        Me.chkEFanartsMod.Checked = True
+        Me.chkEFanartsMod.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkEFanartsMod.Enabled = False
+        Me.chkEFanartsMod.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkEFanartsMod.Location = New System.Drawing.Point(135, 54)
+        Me.chkEFanartsMod.Name = "chkEFanartsMod"
+        Me.chkEFanartsMod.Size = New System.Drawing.Size(87, 17)
+        Me.chkEFanartsMod.TabIndex = 6
+        Me.chkEFanartsMod.Text = "Extrafanarts"
+        Me.chkEFanartsMod.UseVisualStyleBackColor = True
         '
         'chkTrailerMod
         '
@@ -730,31 +744,17 @@ Partial Class dlgUpdateMedia
         Me.chkTitle.Text = "Title"
         Me.chkTitle.UseVisualStyleBackColor = True
         '
-        'Panel1
+        'pnlUpdateMedia
         '
-        Me.Panel1.BackColor = System.Drawing.Color.White
-        Me.Panel1.Controls.Add(Me.gbOptions)
-        Me.Panel1.Controls.Add(Me.gbUpdateItems)
-        Me.Panel1.Controls.Add(Me.gbUpdateType)
-        Me.Panel1.Controls.Add(Me.gbUpdateModifier)
-        Me.Panel1.Location = New System.Drawing.Point(4, 68)
-        Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(568, 262)
-        Me.Panel1.TabIndex = 3
-        '
-        'chkEFanartsMod
-        '
-        Me.chkEFanartsMod.AutoSize = True
-        Me.chkEFanartsMod.Checked = True
-        Me.chkEFanartsMod.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkEFanartsMod.Enabled = False
-        Me.chkEFanartsMod.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkEFanartsMod.Location = New System.Drawing.Point(135, 54)
-        Me.chkEFanartsMod.Name = "chkEFanartsMod"
-        Me.chkEFanartsMod.Size = New System.Drawing.Size(87, 17)
-        Me.chkEFanartsMod.TabIndex = 6
-        Me.chkEFanartsMod.Text = "Extrafanarts"
-        Me.chkEFanartsMod.UseVisualStyleBackColor = True
+        Me.pnlUpdateMedia.BackColor = System.Drawing.Color.White
+        Me.pnlUpdateMedia.Controls.Add(Me.gbOptions)
+        Me.pnlUpdateMedia.Controls.Add(Me.gbUpdateItems)
+        Me.pnlUpdateMedia.Controls.Add(Me.gbUpdateType)
+        Me.pnlUpdateMedia.Controls.Add(Me.gbUpdateModifier)
+        Me.pnlUpdateMedia.Location = New System.Drawing.Point(4, 68)
+        Me.pnlUpdateMedia.Name = "pnlUpdateMedia"
+        Me.pnlUpdateMedia.Size = New System.Drawing.Size(568, 262)
+        Me.pnlUpdateMedia.TabIndex = 3
         '
         'dlgUpdateMedia
         '
@@ -763,7 +763,7 @@ Partial Class dlgUpdateMedia
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.OK_Button
         Me.ClientSize = New System.Drawing.Size(576, 358)
-        Me.Controls.Add(Me.Panel1)
+        Me.Controls.Add(Me.pnlUpdateMedia)
         Me.Controls.Add(Me.Update_Button)
         Me.Controls.Add(Me.pnlTop)
         Me.Controls.Add(Me.OK_Button)
@@ -776,7 +776,7 @@ Partial Class dlgUpdateMedia
         Me.Text = "Custom Scraper"
         Me.pnlTop.ResumeLayout(False)
         Me.pnlTop.PerformLayout()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).EndInit()
         Me.gbUpdateModifier.ResumeLayout(False)
         Me.gbUpdateModifier.PerformLayout()
         Me.gbUpdateType.ResumeLayout(False)
@@ -785,11 +785,11 @@ Partial Class dlgUpdateMedia
         Me.gbUpdateItems.PerformLayout()
         Me.gbOptions.ResumeLayout(False)
         Me.gbOptions.PerformLayout()
-        Me.Panel1.ResumeLayout(False)
+        Me.pnlUpdateMedia.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
-    Friend WithEvents Panel1 As System.Windows.Forms.Panel
+    Friend WithEvents pnlUpdateMedia As System.Windows.Forms.Panel
     Friend WithEvents chkEFanartsMod As System.Windows.Forms.CheckBox
 
 #End Region 'Methods

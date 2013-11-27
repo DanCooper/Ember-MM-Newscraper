@@ -8,9 +8,9 @@ Public Class dlgTVRegExProfiles
     Private MyTVShowRegExProfiles As New TVShowRegExProfiles
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
         Try
-            If lstProfiles.SelectedItems.Count > 0 Then
+            If lvProfiles.SelectedItems.Count > 0 Then
                 ShowRegex.Clear()
-                ShowRegex.AddRange(MyTVShowRegExProfiles.Profiles.FirstOrDefault(Function(y) y.Name = lstProfiles.SelectedItems(0).Text).ShowRegex)
+                ShowRegex.AddRange(MyTVShowRegExProfiles.Profiles.FirstOrDefault(Function(y) y.Name = lvProfiles.SelectedItems(0).Text).ShowRegex)
             End If
         Catch ex As Exception
         End Try
@@ -28,10 +28,10 @@ Public Class dlgTVRegExProfiles
         GetProfiles()
         PopulateList()
     End Sub
-    Private Sub lstProfiles_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lstProfiles.SelectedIndexChanged
-        If lstProfiles.SelectedItems.Count > 0 Then
+    Private Sub lstProfiles_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lvProfiles.SelectedIndexChanged
+        If lvProfiles.SelectedItems.Count > 0 Then
             Try
-                txtDescription.Text = lstProfiles.Items(lstProfiles.SelectedIndices(0)).Tag.ToString
+                txtDescription.Text = lvProfiles.Items(lvProfiles.SelectedIndices(0)).Tag.ToString
                 OK_Button.Enabled = True
             Catch ex As Exception
             End Try
@@ -42,9 +42,9 @@ Public Class dlgTVRegExProfiles
     End Sub
 
     Sub PopulateList()
-        lstProfiles.Items.Clear()
+        lvProfiles.Items.Clear()
         For Each s As TVShowRegExProfile In MyTVShowRegExProfiles.Profiles
-            lstProfiles.Items.Add(s.Name).Tag = s.Description.Replace("\n", vbCrLf)
+            lvProfiles.Items.Add(s.Name).Tag = s.Description.Replace("\n", vbCrLf)
         Next
     End Sub
 
@@ -64,8 +64,8 @@ Public Class dlgTVRegExProfiles
         Me.Text = Master.eLang.GetString(819, "TV RegEx Profiles")
         Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
         Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
-        lstProfiles.Columns(0).Text = Master.eLang.GetString(820, "RegEx Profile")
-        Me.Label1.Text = Master.eLang.GetString(172, "Description:")
+        lvProfiles.Columns(0).Text = Master.eLang.GetString(820, "RegEx Profile")
+        Me.lblDescription.Text = Master.eLang.GetString(172, "Description:")
     End Sub
     Class TVShowRegExProfiles
         Public Profiles As New List(Of TVShowRegExProfile)

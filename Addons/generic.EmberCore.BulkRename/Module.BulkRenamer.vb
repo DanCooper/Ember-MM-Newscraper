@@ -222,8 +222,8 @@ Public Class BulkRenamerModule
         Select Case ModulesManager.Instance.RuntimeObjects.MediaTabSelected
             Case 0
                 Using dBulkRename As New dlgBulkRenamer
-                    dBulkRename.txtFolder.Text = MySettings.FoldersPattern
-                    dBulkRename.txtFile.Text = MySettings.FilesPattern
+                    dBulkRename.txtFolderPattern.Text = MySettings.FoldersPattern
+                    dBulkRename.txtFilePattern.Text = MySettings.FilesPattern
                     Try
                         If dBulkRename.ShowDialog() = Windows.Forms.DialogResult.OK Then
                             ModulesManager.Instance.RuntimeObjects.InvokeLoadMedia(New Structures.Scans With {.Movies = True}, String.Empty)

@@ -40,7 +40,7 @@ Partial Class dlgTrailerSelect
         Me.btnPlayTrailer = New System.Windows.Forms.Button()
         Me.btnSetNfo = New System.Windows.Forms.Button()
         Me.ofdTrailer = New System.Windows.Forms.OpenFileDialog()
-        Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.pnlTrailerSelect = New System.Windows.Forms.Panel()
         Me.gbYouTube = New System.Windows.Forms.GroupBox()
         Me.gbYouTubeSearch = New System.Windows.Forms.GroupBox()
         Me.btnYouTubeSearch = New System.Windows.Forms.Button()
@@ -50,7 +50,7 @@ Partial Class dlgTrailerSelect
         Me.gbSelectTrailer.SuspendLayout()
         Me.pnlStatus.SuspendLayout()
         Me.gbManualTrailer.SuspendLayout()
-        Me.Panel1.SuspendLayout()
+        Me.pnlTrailerSelect.SuspendLayout()
         Me.gbYouTube.SuspendLayout()
         Me.gbYouTubeSearch.SuspendLayout()
         CType(Me.asfTrailer, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -222,15 +222,15 @@ Partial Class dlgTrailerSelect
         Me.btnSetNfo.TabIndex = 5
         Me.btnSetNfo.Text = "Set To Nfo"
         '
-        'Panel1
+        'pnlTrailerSelect
         '
-        Me.Panel1.BackColor = System.Drawing.Color.White
-        Me.Panel1.Controls.Add(Me.gbYouTube)
-        Me.Panel1.Controls.Add(Me.gbSelectTrailer)
-        Me.Panel1.Location = New System.Drawing.Point(3, 3)
-        Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(879, 331)
-        Me.Panel1.TabIndex = 2
+        Me.pnlTrailerSelect.BackColor = System.Drawing.Color.White
+        Me.pnlTrailerSelect.Controls.Add(Me.gbYouTube)
+        Me.pnlTrailerSelect.Controls.Add(Me.gbSelectTrailer)
+        Me.pnlTrailerSelect.Location = New System.Drawing.Point(3, 3)
+        Me.pnlTrailerSelect.Name = "pnlTrailerSelect"
+        Me.pnlTrailerSelect.Size = New System.Drawing.Size(879, 331)
+        Me.pnlTrailerSelect.TabIndex = 2
         '
         'gbYouTube
         '
@@ -300,7 +300,7 @@ Partial Class dlgTrailerSelect
         Me.CancelButton = Me.Cancel_Button
         Me.ClientSize = New System.Drawing.Size(884, 398)
         Me.ControlBox = False
-        Me.Controls.Add(Me.Panel1)
+        Me.Controls.Add(Me.pnlTrailerSelect)
         Me.Controls.Add(Me.btnSetNfo)
         Me.Controls.Add(Me.Cancel_Button)
         Me.Controls.Add(Me.OK_Button)
@@ -319,7 +319,7 @@ Partial Class dlgTrailerSelect
         Me.pnlStatus.PerformLayout()
         Me.gbManualTrailer.ResumeLayout(False)
         Me.gbManualTrailer.PerformLayout()
-        Me.Panel1.ResumeLayout(False)
+        Me.pnlTrailerSelect.ResumeLayout(False)
         Me.gbYouTube.ResumeLayout(False)
         Me.gbYouTubeSearch.ResumeLayout(False)
         Me.gbYouTubeSearch.PerformLayout()
@@ -342,7 +342,7 @@ Partial Class dlgTrailerSelect
     Friend WithEvents txtManual As System.Windows.Forms.TextBox
     Friend WithEvents lblManual As System.Windows.Forms.Label
     Friend WithEvents ofdTrailer As System.Windows.Forms.OpenFileDialog
-    Friend WithEvents Panel1 As System.Windows.Forms.Panel
+    Friend WithEvents pnlTrailerSelect As System.Windows.Forms.Panel
     Friend WithEvents btnPlayBrowser As System.Windows.Forms.Button
     Friend WithEvents lvTrailers As System.Windows.Forms.ListView
     Friend WithEvents asfTrailer As AxShockwaveFlashObjects.AxShockwaveFlash

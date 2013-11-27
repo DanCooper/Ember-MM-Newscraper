@@ -255,7 +255,7 @@ Public Class dlgEditEpisode
         dFileInfoEdit.Show(True)
 
         If Not (Master.eSettings.EpisodeDashFanart OrElse Master.eSettings.EpisodeDotFanart) Then
-            Me.TabControl1.TabPages.Remove(TabPage3)
+            Me.tcEditEpisode.TabPages.Remove(tpFanart)
         End If
         Dim params As New List(Of Object)(New Object() {New Panel})
         ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVFrameExtrator, params, Nothing, True)
@@ -312,7 +312,7 @@ Public Class dlgEditEpisode
             .pbStar5.Tag = tRating
             If tRating > 0 Then .BuildStars(tRating)
 
-            If TabControl1.TabPages.Contains(TabPage3) Then
+            If tcEditEpisode.TabPages.Contains(tpFanart) Then
                 Fanart.FromFile(Master.currShow.EpFanartPath)
                 If Not IsNothing(Fanart.Image) Then
                     .pbFanart.Image = Fanart.Image
@@ -570,9 +570,9 @@ Public Class dlgEditEpisode
         Me.Text = sTitle
         Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
         Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
-        Me.Label2.Text = Master.eLang.GetString(656, "Edit the details for the selected episode.")
-        Me.Label1.Text = Master.eLang.GetString(657, "Edit Episode")
-        Me.TabPage1.Text = Master.eLang.GetString(26, "Details")
+        Me.lblTopDetails.Text = Master.eLang.GetString(656, "Edit the details for the selected episode.")
+        Me.lblTopTitle.Text = Master.eLang.GetString(657, "Edit Episode")
+        Me.tpDetails.Text = Master.eLang.GetString(26, "Details")
         Me.btnManual.Text = Master.eLang.GetString(230, "Manual Edit")
         Me.lblActors.Text = Master.eLang.GetString(231, "Actors:")
         Me.colName.Text = Master.eLang.GetString(232, "Name")
@@ -584,11 +584,11 @@ Public Class dlgEditEpisode
         Me.lblSeason.Text = Master.eLang.GetString(659, "Season:")
         Me.lblEpisode.Text = Master.eLang.GetString(660, "Episode:")
         Me.lblTitle.Text = Master.eLang.GetString(246, "Title:")
-        Me.TabPage2.Text = Master.eLang.GetString(148, "Poster")
+        Me.tpPoster.Text = Master.eLang.GetString(148, "Poster")
         Me.btnRemovePoster.Text = Master.eLang.GetString(247, "Remove Poster")
         Me.btnSetPosterScrape.Text = Master.eLang.GetString(248, "Change Poster (Scrape)")
         Me.btnSetPoster.Text = Master.eLang.GetString(249, "Change Poster (Local)")
-        Me.TabPage3.Text = Master.eLang.GetString(149, "Fanart")
+        Me.tpFanart.Text = Master.eLang.GetString(149, "Fanart")
         Me.btnRemoveFanart.Text = Master.eLang.GetString(250, "Remove Fanart")
         Me.btnSetFanartScrape.Text = Master.eLang.GetString(251, "Change Fanart (Scrape)")
         Me.btnSetFanart.Text = Master.eLang.GetString(252, "Change Fanart (Local)")
@@ -596,9 +596,9 @@ Public Class dlgEditEpisode
         Me.btnSetFanartDL.Text = Master.eLang.GetString(266, "Change Fanart (Download)")
         Me.lblDirector.Text = Master.eLang.GetString(239, "Director:")
         Me.lblCredits.Text = Master.eLang.GetString(228, "Credits:")
-        Me.TabPage4.Text = Master.eLang.GetString(256, "Frame Extraction")
+        Me.tpFrameExtraction.Text = Master.eLang.GetString(256, "Frame Extraction")
 
-        Me.TabPage5.Text = Master.eLang.GetString(59, "Meta Data")
+        Me.tpMetaData.Text = Master.eLang.GetString(59, "Meta Data")
     End Sub
 
     Private Sub txtEpisode_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtEpisode.KeyPress

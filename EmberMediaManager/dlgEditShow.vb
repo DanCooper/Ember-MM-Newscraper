@@ -379,7 +379,7 @@ Public Class dlgEditShow
     End Sub
 
     Private Sub dlgEditShow_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        If Not Master.eSettings.AllSeasonPosterEnabled Then Me.TabControl1.TabPages.Remove(TabPage4)
+        If Not Master.eSettings.AllSeasonPosterEnabled Then Me.tcEditShow.TabPages.Remove(tpAllSeasonsPoster)
 
         Me.SetUp()
 
@@ -429,23 +429,23 @@ Public Class dlgEditShow
             If Not String.IsNullOrEmpty(Master.currShow.TVShow.Premiered) Then .txtPremiered.Text = Master.currShow.TVShow.Premiered
             If Not String.IsNullOrEmpty(Master.currShow.TVShow.Studio) Then .txtStudio.Text = Master.currShow.TVShow.Studio
 
-            For i As Integer = 0 To .lbGenre.Items.Count - 1
-                .lbGenre.SetItemChecked(i, False)
+            For i As Integer = 0 To .clbGenre.Items.Count - 1
+                .clbGenre.SetItemChecked(i, False)
             Next
             If Not String.IsNullOrEmpty(Master.currShow.TVShow.Genre) Then
                 Dim genreArray() As String
                 genreArray = Strings.Split(Master.currShow.TVShow.Genre, " / ")
                 For g As Integer = 0 To UBound(genreArray)
-                    If .lbGenre.FindString(genreArray(g).Trim) > 0 Then
-                        .lbGenre.SetItemChecked(.lbGenre.FindString(genreArray(g).Trim), True)
+                    If .clbGenre.FindString(genreArray(g).Trim) > 0 Then
+                        .clbGenre.SetItemChecked(.clbGenre.FindString(genreArray(g).Trim), True)
                     End If
                 Next
 
-                If .lbGenre.CheckedItems.Count = 0 Then
-                    .lbGenre.SetItemChecked(0, True)
+                If .clbGenre.CheckedItems.Count = 0 Then
+                    .clbGenre.SetItemChecked(0, True)
                 End If
             Else
-                .lbGenre.SetItemChecked(0, True)
+                .clbGenre.SetItemChecked(0, True)
             End If
 
             Dim lvItem As ListViewItem
@@ -498,20 +498,20 @@ Public Class dlgEditShow
         End With
     End Sub
 
-    Private Sub lbGenre_ItemCheck(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckEventArgs) Handles lbGenre.ItemCheck
+    Private Sub lbGenre_ItemCheck(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckEventArgs) Handles clbGenre.ItemCheck
         If e.Index = 0 Then
-            For i As Integer = 1 To lbGenre.Items.Count - 1
-                Me.lbGenre.SetItemChecked(i, False)
+            For i As Integer = 1 To clbGenre.Items.Count - 1
+                Me.clbGenre.SetItemChecked(i, False)
             Next
         Else
-            Me.lbGenre.SetItemChecked(0, False)
+            Me.clbGenre.SetItemChecked(0, False)
         End If
     End Sub
 
     Private Sub LoadGenres()
-        Me.lbGenre.Items.Add(Master.eLang.None)
+        Me.clbGenre.Items.Add(Master.eLang.None)
 
-        Me.lbGenre.Items.AddRange(APIXML.GetGenreList)
+        Me.clbGenre.Items.AddRange(APIXML.GetGenreList)
     End Sub
 
     Private Sub LoadRatings()
@@ -753,14 +753,14 @@ Public Class dlgEditShow
 
                 Master.currShow.TVShow.Rating = .tmpRating
 
-                If .lbGenre.CheckedItems.Count > 0 Then
+                If .clbGenre.CheckedItems.Count > 0 Then
 
-                    If .lbGenre.CheckedIndices.Contains(0) Then
+                    If .clbGenre.CheckedIndices.Contains(0) Then
                         Master.currShow.TVShow.Genre = String.Empty
                     Else
                         Dim strGenre As String = String.Empty
                         Dim isFirst As Boolean = True
-                        Dim iChecked = From iCheck In .lbGenre.CheckedItems
+                        Dim iChecked = From iCheck In .clbGenre.CheckedItems
                         strGenre = Strings.Join(iChecked.ToArray, " / ")
                         Master.currShow.TVShow.Genre = strGenre.Trim
                     End If
@@ -813,9 +813,9 @@ Public Class dlgEditShow
         Me.Text = sTitle
         Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
         Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
-        Me.Label2.Text = Master.eLang.GetString(664, "Edit the details for the selected show.")
-        Me.Label1.Text = Master.eLang.GetString(663, "Edit Show")
-        Me.TabPage1.Text = Master.eLang.GetString(26, "Details")
+        Me.lblTopDetails.Text = Master.eLang.GetString(664, "Edit the details for the selected show.")
+        Me.lblTopTitle.Text = Master.eLang.GetString(663, "Edit Show")
+        Me.tpDetails.Text = Master.eLang.GetString(26, "Details")
         Me.lblStudio.Text = Master.eLang.GetString(226, "Studio:")
         Me.btnManual.Text = Master.eLang.GetString(230, "Manual Edit")
         Me.lblActors.Text = Master.eLang.GetString(231, "Actors:")
@@ -828,17 +828,17 @@ Public Class dlgEditShow
         Me.lblRating.Text = Master.eLang.GetString(245, "Rating:")
         Me.lblPremiered.Text = Master.eLang.GetString(665, "Premiered:")
         Me.lblTitle.Text = Master.eLang.GetString(246, "Title:")
-        Me.TabPage2.Text = Master.eLang.GetString(148, "Poster")
+        Me.tpPoster.Text = Master.eLang.GetString(148, "Poster")
         Me.btnRemovePoster.Text = Master.eLang.GetString(247, "Remove Poster")
         Me.btnSetPosterScrape.Text = Master.eLang.GetString(248, "Change Poster (Scrape)")
         Me.btnSetPoster.Text = Master.eLang.GetString(249, "Change Poster (Local)")
-        Me.TabPage3.Text = Master.eLang.GetString(149, "Fanart")
+        Me.tpFanart.Text = Master.eLang.GetString(149, "Fanart")
         Me.btnRemoveFanart.Text = Master.eLang.GetString(250, "Remove Fanart")
         Me.btnSetFanartScrape.Text = Master.eLang.GetString(251, "Change Fanart (Scrape)")
         Me.btnSetFanart.Text = Master.eLang.GetString(252, "Change Fanart (Local)")
         Me.btnSetPosterDL.Text = Master.eLang.GetString(265, "Change Poster (Download)")
         Me.btnSetFanartDL.Text = Master.eLang.GetString(266, "Change Fanart (Download)")
-        Me.TabPage4.Text = Master.eLang.GetString(735, "All Season Poster")
+        Me.tpAllSeasonsPoster.Text = Master.eLang.GetString(735, "All Season Poster")
         Me.btnASPosterRemove.Text = Master.eLang.GetString(247, "Remove Poster")
         Me.btnASChangePosterScrape.Text = Master.eLang.GetString(248, "Change Poster (Scrape)")
         Me.btnASChangePoster.Text = Master.eLang.GetString(249, "Change Poster (Local)")
