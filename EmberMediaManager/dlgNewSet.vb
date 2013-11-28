@@ -70,7 +70,7 @@ Public Class dlgNewSet
     Private Sub SetUp()
         Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
         Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
-        Me.Label1.Text = Master.eLang.GetString(206, "Set Name:")
+        Me.lblSetName.Text = Master.eLang.GetString(206, "Set Name:")
     End Sub
 
 #End Region 'Methods

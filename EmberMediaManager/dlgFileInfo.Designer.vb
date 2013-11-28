@@ -22,11 +22,11 @@ Partial Class dlgFileInfo
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim ListViewGroup4 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("Video Streams", System.Windows.Forms.HorizontalAlignment.Left)
-        Dim ListViewGroup5 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("Audio Streams", System.Windows.Forms.HorizontalAlignment.Left)
-        Dim ListViewGroup6 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("Subtitles Stream", System.Windows.Forms.HorizontalAlignment.Left)
-        Dim ListViewItem3 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New String() {"1", "H264", "Progressive"}, -1)
-        Dim ListViewItem4 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New String() {"1", "AC3", "English"}, -1)
+        Dim ListViewGroup1 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("Video Streams", System.Windows.Forms.HorizontalAlignment.Left)
+        Dim ListViewGroup2 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("Audio Streams", System.Windows.Forms.HorizontalAlignment.Left)
+        Dim ListViewGroup3 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("Subtitles Stream", System.Windows.Forms.HorizontalAlignment.Left)
+        Dim ListViewItem1 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New String() {"1", "H264", "Progressive"}, -1)
+        Dim ListViewItem2 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New String() {"1", "AC3", "English"}, -1)
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgFileInfo))
         Me.Cancel_Button = New System.Windows.Forms.Button()
         Me.lvStreams = New System.Windows.Forms.ListView()
@@ -43,7 +43,7 @@ Partial Class dlgFileInfo
         Me.btnRemoveSet = New System.Windows.Forms.Button()
         Me.btnEditSet = New System.Windows.Forms.Button()
         Me.btnNewSet = New System.Windows.Forms.Button()
-        Me.Label4 = New System.Windows.Forms.Label()
+        Me.lblStreamType = New System.Windows.Forms.Label()
         Me.cbStreamType = New System.Windows.Forms.ComboBox()
         Me.SuspendLayout()
         '
@@ -65,17 +65,17 @@ Partial Class dlgFileInfo
         Me.lvStreams.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2, Me.ColumnHeader3, Me.ColumnHeader4, Me.ColumnHeader5, Me.ColumnHeader6, Me.ColumnHeader7, Me.ColumnHeader8, Me.ColumnHeader9, Me.ColumnHeader10})
         Me.lvStreams.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lvStreams.FullRowSelect = True
-        ListViewGroup4.Header = "Video Streams"
-        ListViewGroup4.Name = "VideoStreams"
-        ListViewGroup5.Header = "Audio Streams"
-        ListViewGroup5.Name = "AudioStreams"
-        ListViewGroup6.Header = "Subtitles Stream"
-        ListViewGroup6.Name = "SubtitlesStream"
-        Me.lvStreams.Groups.AddRange(New System.Windows.Forms.ListViewGroup() {ListViewGroup4, ListViewGroup5, ListViewGroup6})
+        ListViewGroup1.Header = "Video Streams"
+        ListViewGroup1.Name = "VideoStreams"
+        ListViewGroup2.Header = "Audio Streams"
+        ListViewGroup2.Name = "AudioStreams"
+        ListViewGroup3.Header = "Subtitles Stream"
+        ListViewGroup3.Name = "SubtitlesStream"
+        Me.lvStreams.Groups.AddRange(New System.Windows.Forms.ListViewGroup() {ListViewGroup1, ListViewGroup2, ListViewGroup3})
         Me.lvStreams.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None
-        ListViewItem3.Group = ListViewGroup4
-        ListViewItem4.Group = ListViewGroup5
-        Me.lvStreams.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem3, ListViewItem4})
+        ListViewItem1.Group = ListViewGroup1
+        ListViewItem2.Group = ListViewGroup2
+        Me.lvStreams.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem1, ListViewItem2})
         Me.lvStreams.Location = New System.Drawing.Point(4, 7)
         Me.lvStreams.MultiSelect = False
         Me.lvStreams.Name = "lvStreams"
@@ -167,16 +167,16 @@ Partial Class dlgFileInfo
         Me.btnNewSet.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnNewSet.UseVisualStyleBackColor = True
         '
-        'Label4
+        'lblStreamType
         '
-        Me.Label4.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.Label4.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label4.Location = New System.Drawing.Point(6, 330)
-        Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(78, 15)
-        Me.Label4.TabIndex = 2
-        Me.Label4.Text = "Stream Type"
-        Me.Label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.lblStreamType.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.lblStreamType.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblStreamType.Location = New System.Drawing.Point(6, 330)
+        Me.lblStreamType.Name = "lblStreamType"
+        Me.lblStreamType.Size = New System.Drawing.Size(78, 15)
+        Me.lblStreamType.TabIndex = 2
+        Me.lblStreamType.Text = "Stream Type"
+        Me.lblStreamType.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'cbStreamType
         '
@@ -198,7 +198,7 @@ Partial Class dlgFileInfo
         Me.CancelButton = Me.Cancel_Button
         Me.ClientSize = New System.Drawing.Size(735, 354)
         Me.Controls.Add(Me.Cancel_Button)
-        Me.Controls.Add(Me.Label4)
+        Me.Controls.Add(Me.lblStreamType)
         Me.Controls.Add(Me.cbStreamType)
         Me.Controls.Add(Me.btnRemoveSet)
         Me.Controls.Add(Me.btnEditSet)
@@ -226,7 +226,7 @@ Partial Class dlgFileInfo
     Friend WithEvents btnRemoveSet As System.Windows.Forms.Button
     Friend WithEvents btnEditSet As System.Windows.Forms.Button
     Friend WithEvents btnNewSet As System.Windows.Forms.Button
-    Friend WithEvents Label4 As System.Windows.Forms.Label
+    Friend WithEvents lblStreamType As System.Windows.Forms.Label
     Friend WithEvents cbStreamType As System.Windows.Forms.ComboBox
     Friend WithEvents ColumnHeader6 As System.Windows.Forms.ColumnHeader
     Friend WithEvents ColumnHeader7 As System.Windows.Forms.ColumnHeader

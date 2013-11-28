@@ -351,7 +351,7 @@ Public Class Scanner
                         Movie.Fanart = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
                     End If
                     'YAMJ single/multi folder
-                    If String.IsNullOrEmpty(Movie.Fanart) AndAlso Master.eSettings.FanartYAMJ AndAlso Not fileName.ToLower = "video_ts" Then
+                    If String.IsNullOrEmpty(Movie.Fanart) AndAlso Master.eSettings.FanartYAMJ Then
                         fName = String.Concat(filePath.ToLower, ".fanart.jpg")
                         Movie.Fanart = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
                     End If
@@ -369,7 +369,7 @@ Public Class Scanner
                         fName = String.Concat(Directory.GetParent(parPath.ToLower).FullName, Path.DirectorySeparatorChar, Directory.GetParent(Directory.GetParent(fileParPath).FullName).Name.ToLower, ".fanart.jpg")
                         Movie.Fanart = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
                     End If
-                    'NMJ single/multi folder
+                    'NMJ single/multi folder (NMJ does not support VIDEO_TS files without separate VIDEO_TS folder)
                     If String.IsNullOrEmpty(Movie.Fanart) AndAlso Master.eSettings.FanartNMJ AndAlso Not fileName.ToLower = "video_ts" Then
                         fName = String.Concat(filePathStack.ToLower, ".fanart.jpg")
                         Movie.Fanart = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
@@ -456,7 +456,7 @@ Public Class Scanner
                         Movie.Poster = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
                     End If
                     'YAMJ single/multi folder
-                    If String.IsNullOrEmpty(Movie.Poster) AndAlso Master.eSettings.PosterYAMJ AndAlso Not fileName.ToLower = "video_ts" Then
+                    If String.IsNullOrEmpty(Movie.Poster) AndAlso Master.eSettings.PosterYAMJ Then
                         fName = String.Concat(filePath.ToLower, ".jpg")
                         Movie.Poster = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
                     End If
@@ -474,7 +474,7 @@ Public Class Scanner
                         fName = String.Concat(Directory.GetParent(parPath.ToLower).FullName, Path.DirectorySeparatorChar, Directory.GetParent(Directory.GetParent(fileParPath).FullName).Name.ToLower, ".jpg")
                         Movie.Poster = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
                     End If
-                    'NMJ single/multi folder
+                    'NMJ single/multi folder (NMJ does not support VIDEO_TS files without separate VIDEO_TS folder)
                     If String.IsNullOrEmpty(Movie.Poster) AndAlso Master.eSettings.PosterNMJ AndAlso Not fileName.ToLower = "video_ts" Then
                         fName = String.Concat(filePathStack.ToLower, ".jpg")
                         Movie.Poster = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
@@ -577,7 +577,7 @@ Public Class Scanner
                         Movie.Nfo = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
                     End If
                     'YAMJ single/multi folder
-                    If String.IsNullOrEmpty(Movie.Nfo) AndAlso Master.eSettings.NFOYAMJ AndAlso Not fileName.ToLower = "video_ts" Then
+                    If String.IsNullOrEmpty(Movie.Nfo) AndAlso Master.eSettings.NFOYAMJ Then
                         fName = String.Concat(filePath.ToLower, ".nfo")
                         Movie.Nfo = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
                     End If
@@ -595,7 +595,7 @@ Public Class Scanner
                         fName = String.Concat(Directory.GetParent(parPath.ToLower).FullName, Path.DirectorySeparatorChar, Directory.GetParent(Directory.GetParent(fileParPath).FullName).Name.ToLower, ".nfo")
                         Movie.Nfo = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
                     End If
-                    'NMJ single/multi folder
+                    'NMJ single/multi folder (NMJ does not support VIDEO_TS files without separate VIDEO_TS folder)
                     If String.IsNullOrEmpty(Movie.Nfo) AndAlso Master.eSettings.NFONMJ AndAlso Not fileName.ToLower = "video_ts" Then
                         fName = String.Concat(filePathStack.ToLower, ".nfo")
                         Movie.Nfo = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)

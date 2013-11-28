@@ -9,32 +9,32 @@ Partial Class dlgExportMovies
     Friend  WithEvents cbSearch As System.Windows.Forms.ComboBox
     Friend  WithEvents cbTemplate As System.Windows.Forms.ComboBox
     Friend  WithEvents Close_Button As System.Windows.Forms.Button
-    Friend  WithEvents ImageList1 As System.Windows.Forms.ImageList
-    Friend  WithEvents Label1 As System.Windows.Forms.Label
-    Friend  WithEvents Label2 As System.Windows.Forms.Label
-    Friend  WithEvents lblCanceling As System.Windows.Forms.Label
-    Friend  WithEvents lblCompiling As System.Windows.Forms.Label
-    Friend  WithEvents lblFile As System.Windows.Forms.Label
-    Friend  WithEvents lblIn As System.Windows.Forms.Label
-    Friend  WithEvents lstSources As System.Windows.Forms.CheckedListBox
-    Friend  WithEvents pbCompile As System.Windows.Forms.ProgressBar
-    Friend  WithEvents pnlBG As System.Windows.Forms.Panel
-    Friend  WithEvents pnlBottomMain As System.Windows.Forms.Panel
-    Friend  WithEvents pnlCancel As System.Windows.Forms.Panel
-    Friend  WithEvents pnlSearch As System.Windows.Forms.Panel
-    Friend  WithEvents Reset_Button As System.Windows.Forms.Button
-    Friend  WithEvents Save_Button As System.Windows.Forms.Button
-    Friend  WithEvents Search_Button As System.Windows.Forms.Button
-    Friend  WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
-    Friend  WithEvents txtSearch As System.Windows.Forms.TextBox
-    Friend  WithEvents wbMovieList As System.Windows.Forms.WebBrowser
+    Friend WithEvents ilExport As System.Windows.Forms.ImageList
+    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents Label2 As System.Windows.Forms.Label
+    Friend WithEvents lblCanceling As System.Windows.Forms.Label
+    Friend WithEvents lblCompiling As System.Windows.Forms.Label
+    Friend WithEvents lblFile As System.Windows.Forms.Label
+    Friend WithEvents lblIn As System.Windows.Forms.Label
+    Friend WithEvents lstSources As System.Windows.Forms.CheckedListBox
+    Friend WithEvents pbCompile As System.Windows.Forms.ProgressBar
+    Friend WithEvents pnlBG As System.Windows.Forms.Panel
+    Friend WithEvents pnlBottomMain As System.Windows.Forms.Panel
+    Friend WithEvents pnlCancel As System.Windows.Forms.Panel
+    Friend WithEvents pnlSearch As System.Windows.Forms.Panel
+    Friend WithEvents Reset_Button As System.Windows.Forms.Button
+    Friend WithEvents Save_Button As System.Windows.Forms.Button
+    Friend WithEvents Search_Button As System.Windows.Forms.Button
+    Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents txtSearch As System.Windows.Forms.TextBox
+    Friend WithEvents wbMovieList As System.Windows.Forms.WebBrowser
 
     'Required by the Windows Form Designer
     Private components As System.ComponentModel.IContainer
 
-    #End Region 'Fields
+#End Region 'Fields
 
-    #Region "Methods"
+#Region "Methods"
 
     'Form overrides dispose to clean up the component list.
     <System.Diagnostics.DebuggerNonUserCode> _
@@ -59,14 +59,14 @@ Partial Class dlgExportMovies
         Me.Save_Button = New System.Windows.Forms.Button()
         Me.Close_Button = New System.Windows.Forms.Button()
         Me.pnlBottomMain = New System.Windows.Forms.Panel()
+        Me.lstSources = New System.Windows.Forms.CheckedListBox()
         Me.lblfanart = New System.Windows.Forms.Label()
         Me.cbofanart = New System.Windows.Forms.ComboBox()
         Me.lblposter = New System.Windows.Forms.Label()
         Me.cboposter = New System.Windows.Forms.ComboBox()
         Me.pnlSearch = New System.Windows.Forms.Panel()
-        Me.lstSources = New System.Windows.Forms.CheckedListBox()
         Me.btnSource = New System.Windows.Forms.Button()
-        Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
+        Me.ilExport = New System.Windows.Forms.ImageList(Me.components)
         Me.Reset_Button = New System.Windows.Forms.Button()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Search_Button = New System.Windows.Forms.Button()
@@ -144,6 +144,16 @@ Partial Class dlgExportMovies
         Me.pnlBottomMain.Size = New System.Drawing.Size(1035, 48)
         Me.pnlBottomMain.TabIndex = 0
         '
+        'lstSources
+        '
+        Me.lstSources.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lstSources.FormattingEnabled = True
+        Me.lstSources.Location = New System.Drawing.Point(236, 7)
+        Me.lstSources.Name = "lstSources"
+        Me.lstSources.Size = New System.Drawing.Size(84, 38)
+        Me.lstSources.TabIndex = 1
+        Me.lstSources.Visible = False
+        '
         'lblfanart
         '
         Me.lblfanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
@@ -199,20 +209,10 @@ Partial Class dlgExportMovies
         Me.pnlSearch.Size = New System.Drawing.Size(407, 27)
         Me.pnlSearch.TabIndex = 3
         '
-        'lstSources
-        '
-        Me.lstSources.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lstSources.FormattingEnabled = True
-        Me.lstSources.Location = New System.Drawing.Point(236, 7)
-        Me.lstSources.Name = "lstSources"
-        Me.lstSources.Size = New System.Drawing.Size(84, 38)
-        Me.lstSources.TabIndex = 1
-        Me.lstSources.Visible = False
-        '
         'btnSource
         '
         Me.btnSource.ImageIndex = 0
-        Me.btnSource.ImageList = Me.ImageList1
+        Me.btnSource.ImageList = Me.ilExport
         Me.btnSource.Location = New System.Drawing.Point(127, 2)
         Me.btnSource.Name = "btnSource"
         Me.btnSource.Size = New System.Drawing.Size(19, 20)
@@ -220,12 +220,12 @@ Partial Class dlgExportMovies
         Me.btnSource.UseVisualStyleBackColor = True
         Me.btnSource.Visible = False
         '
-        'ImageList1
+        'ilExport
         '
-        Me.ImageList1.ImageStream = CType(resources.GetObject("ImageList1.ImageStream"), System.Windows.Forms.ImageListStreamer)
-        Me.ImageList1.TransparentColor = System.Drawing.Color.Transparent
-        Me.ImageList1.Images.SetKeyName(0, "asc.png")
-        Me.ImageList1.Images.SetKeyName(1, "desc.png")
+        Me.ilExport.ImageStream = CType(resources.GetObject("ilExport.ImageStream"), System.Windows.Forms.ImageListStreamer)
+        Me.ilExport.TransparentColor = System.Drawing.Color.Transparent
+        Me.ilExport.Images.SetKeyName(0, "asc.png")
+        Me.ilExport.Images.SetKeyName(1, "desc.png")
         '
         'Reset_Button
         '
@@ -425,6 +425,6 @@ Partial Class dlgExportMovies
     Friend WithEvents lblposter As System.Windows.Forms.Label
     Friend WithEvents cboposter As System.Windows.Forms.ComboBox
 
-    #End Region 'Methods
+#End Region 'Methods
 
 End Class

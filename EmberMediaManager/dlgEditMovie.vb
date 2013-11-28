@@ -712,8 +712,8 @@ Public Class dlgEditMovie
         End Try
     End Sub
 
-    Private Sub DelayTimer_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DelayTimer.Tick
-        DelayTimer.Stop()
+    Private Sub DelayTimer_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrDelay.Tick
+        tmrDelay.Stop()
         'GrabTheFrame()
     End Sub
 
@@ -981,23 +981,23 @@ Public Class dlgEditMovie
 
                 Me.SelectMPAA()
 
-                For i As Integer = 0 To .lbGenre.Items.Count - 1
-                    .lbGenre.SetItemChecked(i, False)
+                For i As Integer = 0 To .clbGenre.Items.Count - 1
+                    .clbGenre.SetItemChecked(i, False)
                 Next
                 If Not String.IsNullOrEmpty(Master.currMovie.Movie.Genre) Then
                     Dim genreArray() As String
                     genreArray = Strings.Split(Master.currMovie.Movie.Genre, " / ")
                     For g As Integer = 0 To UBound(genreArray)
-                        If .lbGenre.FindString(genreArray(g).Trim) > 0 Then
-                            .lbGenre.SetItemChecked(.lbGenre.FindString(genreArray(g).Trim), True)
+                        If .clbGenre.FindString(genreArray(g).Trim) > 0 Then
+                            .clbGenre.SetItemChecked(.clbGenre.FindString(genreArray(g).Trim), True)
                         End If
                     Next
 
-                    If .lbGenre.CheckedItems.Count = 0 Then
-                        .lbGenre.SetItemChecked(0, True)
+                    If .clbGenre.CheckedItems.Count = 0 Then
+                        .clbGenre.SetItemChecked(0, True)
                     End If
                 Else
-                    .lbGenre.SetItemChecked(0, True)
+                    .clbGenre.SetItemChecked(0, True)
                 End If
 
                 Dim lvItem As ListViewItem
@@ -1077,13 +1077,13 @@ Public Class dlgEditMovie
         End Try
     End Sub
 
-    Private Sub lbGenre_ItemCheck(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckEventArgs) Handles lbGenre.ItemCheck
+    Private Sub lbGenre_ItemCheck(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckEventArgs) Handles clbGenre.ItemCheck
         If e.Index = 0 Then
-            For i As Integer = 1 To lbGenre.Items.Count - 1
-                Me.lbGenre.SetItemChecked(i, False)
+            For i As Integer = 1 To clbGenre.Items.Count - 1
+                Me.clbGenre.SetItemChecked(i, False)
             Next
         Else
-            Me.lbGenre.SetItemChecked(0, False)
+            Me.clbGenre.SetItemChecked(0, False)
         End If
     End Sub
 
@@ -1092,9 +1092,9 @@ Public Class dlgEditMovie
         ' Read all the genres from the xml and load into the list
         '\\
 
-        Me.lbGenre.Items.Add(Master.eLang.None)
+        Me.clbGenre.Items.Add(Master.eLang.None)
 
-        Me.lbGenre.Items.AddRange(APIXML.GetGenreList)
+        Me.clbGenre.Items.AddRange(APIXML.GetGenreList)
     End Sub
 
     Private Sub LoadRatings()
@@ -1741,14 +1741,14 @@ Public Class dlgEditMovie
                 End If
                 'cocotus End
 
-                If .lbGenre.CheckedItems.Count > 0 Then
+                If .clbGenre.CheckedItems.Count > 0 Then
 
-                    If .lbGenre.CheckedIndices.Contains(0) Then
+                    If .clbGenre.CheckedIndices.Contains(0) Then
                         Master.currMovie.Movie.Genre = String.Empty
                     Else
                         Dim strGenre As String = String.Empty
                         Dim isFirst As Boolean = True
-                        Dim iChecked = From iCheck In .lbGenre.CheckedItems
+                        Dim iChecked = From iCheck In .clbGenre.CheckedItems
                         strGenre = Strings.Join(iChecked.ToArray, " / ")
                         Master.currMovie.Movie.Genre = strGenre.Trim
                     End If
@@ -1832,8 +1832,8 @@ Public Class dlgEditMovie
         Me.Text = sTitle
         Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
         Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
-        Me.Label2.Text = Master.eLang.GetString(224, "Edit the details for the selected movie.")
-        Me.Label1.Text = Master.eLang.GetString(25, "Edit Movie")
+        Me.lblTopDetails.Text = Master.eLang.GetString(224, "Edit the details for the selected movie.")
+        Me.lblTopTitle.Text = Master.eLang.GetString(25, "Edit Movie")
         Me.tpDetails.Text = Master.eLang.GetString(26, "Details")
         Me.lblLocalTrailer.Text = Master.eLang.GetString(225, "Local Trailer Found")
         Me.lblStudio.Text = Master.eLang.GetString(226, "Studio:")
@@ -1881,7 +1881,7 @@ Public Class dlgEditMovie
         Me.btnChangeMovie.Text = Master.eLang.GetString(32, "Change Movie")
         Me.btnSetPosterDL.Text = Master.eLang.GetString(265, "Change Poster (Download)")
         Me.btnSetFanartDL.Text = Master.eLang.GetString(266, "Change Fanart (Download)")
-        Me.Label6.Text = String.Concat(Master.eLang.GetString(642, "Sort Title"), ":")
+        Me.lblSortTilte.Text = String.Concat(Master.eLang.GetString(642, "Sort Title"), ":")
         Me.lblOriginalTitle.Text = String.Concat(Master.eLang.GetString(302, "Original Title"), ":")
         Me.lblFileSource.Text = Master.eLang.GetString(824, "Video Source:")
         Me.tpMetaData.Text = Master.eLang.GetString(866, "Metadata")

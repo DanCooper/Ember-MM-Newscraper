@@ -82,9 +82,9 @@ Public Class dlgSortFiles
         Me.Text = Master.eLang.GetString(213, "Sort Files Into Folders")
         Me.Cancel_Button.Text = Master.eLang.GetString(19, "Close")
         Me.btnGo.Text = Master.eLang.GetString(214, "Go")
-        Me.GroupBox1.Text = Master.eLang.GetString(215, "Status")
+        Me.gbStatus.Text = Master.eLang.GetString(215, "Status")
         Me.lblStatus.Text = Master.eLang.GetString(216, "Enter Path and Press ""Go"" to Begin.")
-        Me.Label1.Text = Master.eLang.GetString(217, "Path to Sort:")
+        Me.lblPathToSort.Text = Master.eLang.GetString(217, "Path to Sort:")
         Me.fbdBrowse.Description = Master.eLang.GetString(218, "Select the folder which contains the files you wish to sort.")
     End Sub
     ''' <summary>

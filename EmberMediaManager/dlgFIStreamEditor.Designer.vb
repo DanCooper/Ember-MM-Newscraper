@@ -22,66 +22,66 @@ Partial Class dlgFIStreamEditor
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
+        Me.tlpButtons = New System.Windows.Forms.TableLayoutPanel()
         Me.OK_Button = New System.Windows.Forms.Button()
         Me.Cancel_Button = New System.Windows.Forms.Button()
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
-        Me.Label12 = New System.Windows.Forms.Label()
-        Me.txtMultiview = New System.Windows.Forms.TextBox()
-        Me.Label11 = New System.Windows.Forms.Label()
-        Me.txtBitrate = New System.Windows.Forms.TextBox()
-        Me.Label8 = New System.Windows.Forms.Label()
+        Me.gbVideoStreams = New System.Windows.Forms.GroupBox()
+        Me.lblVideoMultiView = New System.Windows.Forms.Label()
+        Me.txtVideoMultiview = New System.Windows.Forms.TextBox()
+        Me.lblVideoBitrate = New System.Windows.Forms.Label()
+        Me.txtVideoBitrate = New System.Windows.Forms.TextBox()
+        Me.lblVideoLanguage = New System.Windows.Forms.Label()
         Me.cbVideoLanguage = New System.Windows.Forms.ComboBox()
-        Me.Label5 = New System.Windows.Forms.Label()
-        Me.txtARatio = New System.Windows.Forms.TextBox()
-        Me.rbInterlaced = New System.Windows.Forms.RadioButton()
-        Me.rbProgressive = New System.Windows.Forms.RadioButton()
-        Me.Label4 = New System.Windows.Forms.Label()
+        Me.lblVideoAspect = New System.Windows.Forms.Label()
+        Me.txtVideoAspect = New System.Windows.Forms.TextBox()
+        Me.rbVideoInterlaced = New System.Windows.Forms.RadioButton()
+        Me.rbVideoProgressive = New System.Windows.Forms.RadioButton()
+        Me.lblVideoCodec = New System.Windows.Forms.Label()
         Me.cbVideoCodec = New System.Windows.Forms.ComboBox()
-        Me.Label3 = New System.Windows.Forms.Label()
-        Me.txtDuration = New System.Windows.Forms.TextBox()
-        Me.Label2 = New System.Windows.Forms.Label()
-        Me.Label1 = New System.Windows.Forms.Label()
-        Me.txtHeight = New System.Windows.Forms.TextBox()
-        Me.txtWidth = New System.Windows.Forms.TextBox()
-        Me.GroupBox2 = New System.Windows.Forms.GroupBox()
-        Me.txtABitrate = New System.Windows.Forms.TextBox()
-        Me.Label13 = New System.Windows.Forms.Label()
-        Me.Label9 = New System.Windows.Forms.Label()
+        Me.lblVideoDuration = New System.Windows.Forms.Label()
+        Me.txtVideoDuration = New System.Windows.Forms.TextBox()
+        Me.lblVideoHeight = New System.Windows.Forms.Label()
+        Me.lblVideoWidth = New System.Windows.Forms.Label()
+        Me.txtVideoHeight = New System.Windows.Forms.TextBox()
+        Me.txtVideoWidth = New System.Windows.Forms.TextBox()
+        Me.gbAudioStreams = New System.Windows.Forms.GroupBox()
+        Me.txtAudioBitrate = New System.Windows.Forms.TextBox()
+        Me.lblAudioBitrate = New System.Windows.Forms.Label()
+        Me.lblAudioChannels = New System.Windows.Forms.Label()
         Me.cbAudioChannels = New System.Windows.Forms.ComboBox()
-        Me.Label7 = New System.Windows.Forms.Label()
+        Me.lblAudioCodec = New System.Windows.Forms.Label()
         Me.cbAudioCodec = New System.Windows.Forms.ComboBox()
-        Me.Label6 = New System.Windows.Forms.Label()
+        Me.lblAudioLanguage = New System.Windows.Forms.Label()
         Me.cbAudioLanguage = New System.Windows.Forms.ComboBox()
-        Me.GroupBox3 = New System.Windows.Forms.GroupBox()
-        Me.rbExternal = New System.Windows.Forms.RadioButton()
-        Me.rbEmbedded = New System.Windows.Forms.RadioButton()
-        Me.Label10 = New System.Windows.Forms.Label()
-        Me.cbSubsLanguage = New System.Windows.Forms.ComboBox()
-        Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.gbSubtitleStreams = New System.Windows.Forms.GroupBox()
+        Me.rbSubtitleExternal = New System.Windows.Forms.RadioButton()
+        Me.rbSubtitleEmbedded = New System.Windows.Forms.RadioButton()
+        Me.lblSubtitleLanguage = New System.Windows.Forms.Label()
+        Me.cbSubtitleLanguage = New System.Windows.Forms.ComboBox()
+        Me.pnlStreamEditor = New System.Windows.Forms.Panel()
         Me.txtEncodingSettings = New System.Windows.Forms.TextBox()
         Me.lblEncoding = New System.Windows.Forms.Label()
-        Me.TableLayoutPanel1.SuspendLayout()
-        Me.GroupBox1.SuspendLayout()
-        Me.GroupBox2.SuspendLayout()
-        Me.GroupBox3.SuspendLayout()
-        Me.Panel1.SuspendLayout()
+        Me.tlpButtons.SuspendLayout()
+        Me.gbVideoStreams.SuspendLayout()
+        Me.gbAudioStreams.SuspendLayout()
+        Me.gbSubtitleStreams.SuspendLayout()
+        Me.pnlStreamEditor.SuspendLayout()
         Me.SuspendLayout()
         '
-        'TableLayoutPanel1
+        'tlpButtons
         '
-        Me.TableLayoutPanel1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.TableLayoutPanel1.ColumnCount = 2
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel1.Controls.Add(Me.OK_Button, 0, 0)
-        Me.TableLayoutPanel1.Controls.Add(Me.Cancel_Button, 1, 0)
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(88, 372)
-        Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
-        Me.TableLayoutPanel1.RowCount = 1
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel1.Size = New System.Drawing.Size(146, 29)
-        Me.TableLayoutPanel1.TabIndex = 0
+        Me.tlpButtons.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.tlpButtons.ColumnCount = 2
+        Me.tlpButtons.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.tlpButtons.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.tlpButtons.Controls.Add(Me.OK_Button, 0, 0)
+        Me.tlpButtons.Controls.Add(Me.Cancel_Button, 1, 0)
+        Me.tlpButtons.Location = New System.Drawing.Point(88, 372)
+        Me.tlpButtons.Name = "tlpButtons"
+        Me.tlpButtons.RowCount = 1
+        Me.tlpButtons.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.tlpButtons.Size = New System.Drawing.Size(146, 29)
+        Me.tlpButtons.TabIndex = 0
         '
         'OK_Button
         '
@@ -104,80 +104,80 @@ Partial Class dlgFIStreamEditor
         Me.Cancel_Button.TabIndex = 1
         Me.Cancel_Button.Text = "Cancel"
         '
-        'GroupBox1
+        'gbVideoStreams
         '
-        Me.GroupBox1.Controls.Add(Me.Label12)
-        Me.GroupBox1.Controls.Add(Me.txtMultiview)
-        Me.GroupBox1.Controls.Add(Me.Label11)
-        Me.GroupBox1.Controls.Add(Me.txtBitrate)
-        Me.GroupBox1.Controls.Add(Me.Label8)
-        Me.GroupBox1.Controls.Add(Me.cbVideoLanguage)
-        Me.GroupBox1.Controls.Add(Me.Label5)
-        Me.GroupBox1.Controls.Add(Me.txtARatio)
-        Me.GroupBox1.Controls.Add(Me.rbInterlaced)
-        Me.GroupBox1.Controls.Add(Me.rbProgressive)
-        Me.GroupBox1.Controls.Add(Me.Label4)
-        Me.GroupBox1.Controls.Add(Me.cbVideoCodec)
-        Me.GroupBox1.Controls.Add(Me.Label3)
-        Me.GroupBox1.Controls.Add(Me.txtDuration)
-        Me.GroupBox1.Controls.Add(Me.Label2)
-        Me.GroupBox1.Controls.Add(Me.Label1)
-        Me.GroupBox1.Controls.Add(Me.txtHeight)
-        Me.GroupBox1.Controls.Add(Me.txtWidth)
-        Me.GroupBox1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GroupBox1.Location = New System.Drawing.Point(21, 7)
-        Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(191, 248)
-        Me.GroupBox1.TabIndex = 0
-        Me.GroupBox1.TabStop = False
-        Me.GroupBox1.Text = "Video Streams"
-        Me.GroupBox1.Visible = False
+        Me.gbVideoStreams.Controls.Add(Me.lblVideoMultiView)
+        Me.gbVideoStreams.Controls.Add(Me.txtVideoMultiview)
+        Me.gbVideoStreams.Controls.Add(Me.lblVideoBitrate)
+        Me.gbVideoStreams.Controls.Add(Me.txtVideoBitrate)
+        Me.gbVideoStreams.Controls.Add(Me.lblVideoLanguage)
+        Me.gbVideoStreams.Controls.Add(Me.cbVideoLanguage)
+        Me.gbVideoStreams.Controls.Add(Me.lblVideoAspect)
+        Me.gbVideoStreams.Controls.Add(Me.txtVideoAspect)
+        Me.gbVideoStreams.Controls.Add(Me.rbVideoInterlaced)
+        Me.gbVideoStreams.Controls.Add(Me.rbVideoProgressive)
+        Me.gbVideoStreams.Controls.Add(Me.lblVideoCodec)
+        Me.gbVideoStreams.Controls.Add(Me.cbVideoCodec)
+        Me.gbVideoStreams.Controls.Add(Me.lblVideoDuration)
+        Me.gbVideoStreams.Controls.Add(Me.txtVideoDuration)
+        Me.gbVideoStreams.Controls.Add(Me.lblVideoHeight)
+        Me.gbVideoStreams.Controls.Add(Me.lblVideoWidth)
+        Me.gbVideoStreams.Controls.Add(Me.txtVideoHeight)
+        Me.gbVideoStreams.Controls.Add(Me.txtVideoWidth)
+        Me.gbVideoStreams.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbVideoStreams.Location = New System.Drawing.Point(21, 7)
+        Me.gbVideoStreams.Name = "gbVideoStreams"
+        Me.gbVideoStreams.Size = New System.Drawing.Size(191, 248)
+        Me.gbVideoStreams.TabIndex = 0
+        Me.gbVideoStreams.TabStop = False
+        Me.gbVideoStreams.Text = "Video Streams"
+        Me.gbVideoStreams.Visible = False
         '
-        'Label12
+        'lblVideoMultiView
         '
-        Me.Label12.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label12.Location = New System.Drawing.Point(8, 220)
-        Me.Label12.Name = "Label12"
-        Me.Label12.Size = New System.Drawing.Size(63, 22)
-        Me.Label12.TabIndex = 16
-        Me.Label12.Text = "MultiView"
-        Me.Label12.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.lblVideoMultiView.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblVideoMultiView.Location = New System.Drawing.Point(8, 220)
+        Me.lblVideoMultiView.Name = "lblVideoMultiView"
+        Me.lblVideoMultiView.Size = New System.Drawing.Size(63, 22)
+        Me.lblVideoMultiView.TabIndex = 16
+        Me.lblVideoMultiView.Text = "MultiView"
+        Me.lblVideoMultiView.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
-        'txtMultiview
+        'txtVideoMultiview
         '
-        Me.txtMultiview.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtMultiview.Location = New System.Drawing.Point(76, 220)
-        Me.txtMultiview.Name = "txtMultiview"
-        Me.txtMultiview.Size = New System.Drawing.Size(48, 22)
-        Me.txtMultiview.TabIndex = 17
+        Me.txtVideoMultiview.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.txtVideoMultiview.Location = New System.Drawing.Point(76, 220)
+        Me.txtVideoMultiview.Name = "txtVideoMultiview"
+        Me.txtVideoMultiview.Size = New System.Drawing.Size(48, 22)
+        Me.txtVideoMultiview.TabIndex = 17
         '
-        'Label11
+        'lblVideoBitrate
         '
-        Me.Label11.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label11.Location = New System.Drawing.Point(16, 196)
-        Me.Label11.Name = "Label11"
-        Me.Label11.Size = New System.Drawing.Size(56, 13)
-        Me.Label11.TabIndex = 14
-        Me.Label11.Text = "Bitrate"
-        Me.Label11.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.lblVideoBitrate.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblVideoBitrate.Location = New System.Drawing.Point(16, 196)
+        Me.lblVideoBitrate.Name = "lblVideoBitrate"
+        Me.lblVideoBitrate.Size = New System.Drawing.Size(56, 13)
+        Me.lblVideoBitrate.TabIndex = 14
+        Me.lblVideoBitrate.Text = "Bitrate"
+        Me.lblVideoBitrate.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
-        'txtBitrate
+        'txtVideoBitrate
         '
-        Me.txtBitrate.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtBitrate.Location = New System.Drawing.Point(76, 192)
-        Me.txtBitrate.Name = "txtBitrate"
-        Me.txtBitrate.Size = New System.Drawing.Size(68, 22)
-        Me.txtBitrate.TabIndex = 15
+        Me.txtVideoBitrate.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.txtVideoBitrate.Location = New System.Drawing.Point(76, 192)
+        Me.txtVideoBitrate.Name = "txtVideoBitrate"
+        Me.txtVideoBitrate.Size = New System.Drawing.Size(68, 22)
+        Me.txtVideoBitrate.TabIndex = 15
         '
-        'Label8
+        'lblVideoLanguage
         '
-        Me.Label8.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label8.Location = New System.Drawing.Point(4, 167)
-        Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(68, 19)
-        Me.Label8.TabIndex = 12
-        Me.Label8.Text = "Language"
-        Me.Label8.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.lblVideoLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblVideoLanguage.Location = New System.Drawing.Point(4, 167)
+        Me.lblVideoLanguage.Name = "lblVideoLanguage"
+        Me.lblVideoLanguage.Size = New System.Drawing.Size(68, 19)
+        Me.lblVideoLanguage.TabIndex = 12
+        Me.lblVideoLanguage.Text = "Language"
+        Me.lblVideoLanguage.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'cbVideoLanguage
         '
@@ -191,58 +191,58 @@ Partial Class dlgFIStreamEditor
         Me.cbVideoLanguage.Size = New System.Drawing.Size(93, 21)
         Me.cbVideoLanguage.TabIndex = 13
         '
-        'Label5
+        'lblVideoAspect
         '
-        Me.Label5.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label5.Location = New System.Drawing.Point(5, 116)
-        Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(68, 19)
-        Me.Label5.TabIndex = 8
-        Me.Label5.Text = "Aspect Ratio"
-        Me.Label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.lblVideoAspect.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblVideoAspect.Location = New System.Drawing.Point(5, 116)
+        Me.lblVideoAspect.Name = "lblVideoAspect"
+        Me.lblVideoAspect.Size = New System.Drawing.Size(68, 19)
+        Me.lblVideoAspect.TabIndex = 8
+        Me.lblVideoAspect.Text = "Aspect Ratio"
+        Me.lblVideoAspect.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
-        'txtARatio
+        'txtVideoAspect
         '
-        Me.txtARatio.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtARatio.Location = New System.Drawing.Point(76, 115)
-        Me.txtARatio.Name = "txtARatio"
-        Me.txtARatio.Size = New System.Drawing.Size(48, 22)
-        Me.txtARatio.TabIndex = 9
+        Me.txtVideoAspect.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.txtVideoAspect.Location = New System.Drawing.Point(76, 115)
+        Me.txtVideoAspect.Name = "txtVideoAspect"
+        Me.txtVideoAspect.Size = New System.Drawing.Size(48, 22)
+        Me.txtVideoAspect.TabIndex = 9
         '
-        'rbInterlaced
+        'rbVideoInterlaced
         '
-        Me.rbInterlaced.AutoSize = True
-        Me.rbInterlaced.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.rbInterlaced.Location = New System.Drawing.Point(111, 45)
-        Me.rbInterlaced.Name = "rbInterlaced"
-        Me.rbInterlaced.Size = New System.Drawing.Size(76, 17)
-        Me.rbInterlaced.TabIndex = 3
-        Me.rbInterlaced.TabStop = True
-        Me.rbInterlaced.Text = "Interlaced"
-        Me.rbInterlaced.UseVisualStyleBackColor = True
+        Me.rbVideoInterlaced.AutoSize = True
+        Me.rbVideoInterlaced.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.rbVideoInterlaced.Location = New System.Drawing.Point(111, 45)
+        Me.rbVideoInterlaced.Name = "rbVideoInterlaced"
+        Me.rbVideoInterlaced.Size = New System.Drawing.Size(76, 17)
+        Me.rbVideoInterlaced.TabIndex = 3
+        Me.rbVideoInterlaced.TabStop = True
+        Me.rbVideoInterlaced.Text = "Interlaced"
+        Me.rbVideoInterlaced.UseVisualStyleBackColor = True
         '
-        'rbProgressive
+        'rbVideoProgressive
         '
-        Me.rbProgressive.AutoSize = True
-        Me.rbProgressive.Checked = True
-        Me.rbProgressive.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.rbProgressive.Location = New System.Drawing.Point(25, 45)
-        Me.rbProgressive.Name = "rbProgressive"
-        Me.rbProgressive.Size = New System.Drawing.Size(85, 17)
-        Me.rbProgressive.TabIndex = 2
-        Me.rbProgressive.TabStop = True
-        Me.rbProgressive.Text = "Progressive"
-        Me.rbProgressive.UseVisualStyleBackColor = True
+        Me.rbVideoProgressive.AutoSize = True
+        Me.rbVideoProgressive.Checked = True
+        Me.rbVideoProgressive.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.rbVideoProgressive.Location = New System.Drawing.Point(25, 45)
+        Me.rbVideoProgressive.Name = "rbVideoProgressive"
+        Me.rbVideoProgressive.Size = New System.Drawing.Size(85, 17)
+        Me.rbVideoProgressive.TabIndex = 2
+        Me.rbVideoProgressive.TabStop = True
+        Me.rbVideoProgressive.Text = "Progressive"
+        Me.rbVideoProgressive.UseVisualStyleBackColor = True
         '
-        'Label4
+        'lblVideoCodec
         '
-        Me.Label4.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label4.Location = New System.Drawing.Point(22, 21)
-        Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(51, 15)
-        Me.Label4.TabIndex = 0
-        Me.Label4.Text = "Codec"
-        Me.Label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.lblVideoCodec.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblVideoCodec.Location = New System.Drawing.Point(22, 21)
+        Me.lblVideoCodec.Name = "lblVideoCodec"
+        Me.lblVideoCodec.Size = New System.Drawing.Size(51, 15)
+        Me.lblVideoCodec.TabIndex = 0
+        Me.lblVideoCodec.Text = "Codec"
+        Me.lblVideoCodec.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'cbVideoCodec
         '
@@ -254,106 +254,106 @@ Partial Class dlgFIStreamEditor
         Me.cbVideoCodec.Size = New System.Drawing.Size(93, 21)
         Me.cbVideoCodec.TabIndex = 1
         '
-        'Label3
+        'lblVideoDuration
         '
-        Me.Label3.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label3.Location = New System.Drawing.Point(17, 143)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(56, 13)
-        Me.Label3.TabIndex = 10
-        Me.Label3.Text = "Duration"
-        Me.Label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.lblVideoDuration.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblVideoDuration.Location = New System.Drawing.Point(17, 143)
+        Me.lblVideoDuration.Name = "lblVideoDuration"
+        Me.lblVideoDuration.Size = New System.Drawing.Size(56, 13)
+        Me.lblVideoDuration.TabIndex = 10
+        Me.lblVideoDuration.Text = "Duration"
+        Me.lblVideoDuration.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
-        'txtDuration
+        'txtVideoDuration
         '
-        Me.txtDuration.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtDuration.Location = New System.Drawing.Point(76, 139)
-        Me.txtDuration.Name = "txtDuration"
-        Me.txtDuration.Size = New System.Drawing.Size(68, 22)
-        Me.txtDuration.TabIndex = 11
+        Me.txtVideoDuration.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.txtVideoDuration.Location = New System.Drawing.Point(76, 139)
+        Me.txtVideoDuration.Name = "txtVideoDuration"
+        Me.txtVideoDuration.Size = New System.Drawing.Size(68, 22)
+        Me.txtVideoDuration.TabIndex = 11
         '
-        'Label2
+        'lblVideoHeight
         '
-        Me.Label2.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label2.Location = New System.Drawing.Point(17, 93)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(56, 16)
-        Me.Label2.TabIndex = 6
-        Me.Label2.Text = "Height"
-        Me.Label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.lblVideoHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblVideoHeight.Location = New System.Drawing.Point(17, 93)
+        Me.lblVideoHeight.Name = "lblVideoHeight"
+        Me.lblVideoHeight.Size = New System.Drawing.Size(56, 16)
+        Me.lblVideoHeight.TabIndex = 6
+        Me.lblVideoHeight.Text = "Height"
+        Me.lblVideoHeight.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
-        'Label1
+        'lblVideoWidth
         '
-        Me.Label1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label1.Location = New System.Drawing.Point(20, 69)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(53, 19)
-        Me.Label1.TabIndex = 4
-        Me.Label1.Text = "Width"
-        Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.lblVideoWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblVideoWidth.Location = New System.Drawing.Point(20, 69)
+        Me.lblVideoWidth.Name = "lblVideoWidth"
+        Me.lblVideoWidth.Size = New System.Drawing.Size(53, 19)
+        Me.lblVideoWidth.TabIndex = 4
+        Me.lblVideoWidth.Text = "Width"
+        Me.lblVideoWidth.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
-        'txtHeight
+        'txtVideoHeight
         '
-        Me.txtHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtHeight.Location = New System.Drawing.Point(76, 91)
-        Me.txtHeight.Name = "txtHeight"
-        Me.txtHeight.Size = New System.Drawing.Size(48, 22)
-        Me.txtHeight.TabIndex = 7
+        Me.txtVideoHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.txtVideoHeight.Location = New System.Drawing.Point(76, 91)
+        Me.txtVideoHeight.Name = "txtVideoHeight"
+        Me.txtVideoHeight.Size = New System.Drawing.Size(48, 22)
+        Me.txtVideoHeight.TabIndex = 7
         '
-        'txtWidth
+        'txtVideoWidth
         '
-        Me.txtWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtWidth.Location = New System.Drawing.Point(76, 68)
-        Me.txtWidth.Name = "txtWidth"
-        Me.txtWidth.Size = New System.Drawing.Size(48, 22)
-        Me.txtWidth.TabIndex = 5
+        Me.txtVideoWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.txtVideoWidth.Location = New System.Drawing.Point(76, 68)
+        Me.txtVideoWidth.Name = "txtVideoWidth"
+        Me.txtVideoWidth.Size = New System.Drawing.Size(48, 22)
+        Me.txtVideoWidth.TabIndex = 5
         '
-        'GroupBox2
+        'gbAudioStreams
         '
-        Me.GroupBox2.Controls.Add(Me.txtABitrate)
-        Me.GroupBox2.Controls.Add(Me.Label13)
-        Me.GroupBox2.Controls.Add(Me.Label9)
-        Me.GroupBox2.Controls.Add(Me.cbAudioChannels)
-        Me.GroupBox2.Controls.Add(Me.Label7)
-        Me.GroupBox2.Controls.Add(Me.cbAudioCodec)
-        Me.GroupBox2.Controls.Add(Me.Label6)
-        Me.GroupBox2.Controls.Add(Me.cbAudioLanguage)
-        Me.GroupBox2.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.GroupBox2.Location = New System.Drawing.Point(21, 7)
-        Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(191, 194)
-        Me.GroupBox2.TabIndex = 5
-        Me.GroupBox2.TabStop = False
-        Me.GroupBox2.Text = "Audio Streams"
-        Me.GroupBox2.Visible = False
+        Me.gbAudioStreams.Controls.Add(Me.txtAudioBitrate)
+        Me.gbAudioStreams.Controls.Add(Me.lblAudioBitrate)
+        Me.gbAudioStreams.Controls.Add(Me.lblAudioChannels)
+        Me.gbAudioStreams.Controls.Add(Me.cbAudioChannels)
+        Me.gbAudioStreams.Controls.Add(Me.lblAudioCodec)
+        Me.gbAudioStreams.Controls.Add(Me.cbAudioCodec)
+        Me.gbAudioStreams.Controls.Add(Me.lblAudioLanguage)
+        Me.gbAudioStreams.Controls.Add(Me.cbAudioLanguage)
+        Me.gbAudioStreams.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.gbAudioStreams.Location = New System.Drawing.Point(21, 7)
+        Me.gbAudioStreams.Name = "gbAudioStreams"
+        Me.gbAudioStreams.Size = New System.Drawing.Size(191, 194)
+        Me.gbAudioStreams.TabIndex = 5
+        Me.gbAudioStreams.TabStop = False
+        Me.gbAudioStreams.Text = "Audio Streams"
+        Me.gbAudioStreams.Visible = False
         '
-        'txtABitrate
+        'txtAudioBitrate
         '
-        Me.txtABitrate.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtABitrate.Location = New System.Drawing.Point(75, 100)
-        Me.txtABitrate.Name = "txtABitrate"
-        Me.txtABitrate.Size = New System.Drawing.Size(93, 22)
-        Me.txtABitrate.TabIndex = 19
+        Me.txtAudioBitrate.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.txtAudioBitrate.Location = New System.Drawing.Point(75, 100)
+        Me.txtAudioBitrate.Name = "txtAudioBitrate"
+        Me.txtAudioBitrate.Size = New System.Drawing.Size(93, 22)
+        Me.txtAudioBitrate.TabIndex = 19
         '
-        'Label13
+        'lblAudioBitrate
         '
-        Me.Label13.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label13.Location = New System.Drawing.Point(8, 98)
-        Me.Label13.Name = "Label13"
-        Me.Label13.Size = New System.Drawing.Size(63, 22)
-        Me.Label13.TabIndex = 18
-        Me.Label13.Text = "Bitrate"
-        Me.Label13.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.lblAudioBitrate.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblAudioBitrate.Location = New System.Drawing.Point(8, 98)
+        Me.lblAudioBitrate.Name = "lblAudioBitrate"
+        Me.lblAudioBitrate.Size = New System.Drawing.Size(63, 22)
+        Me.lblAudioBitrate.TabIndex = 18
+        Me.lblAudioBitrate.Text = "Bitrate"
+        Me.lblAudioBitrate.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
-        'Label9
+        'lblAudioChannels
         '
-        Me.Label9.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label9.Location = New System.Drawing.Point(3, 75)
-        Me.Label9.Name = "Label9"
-        Me.Label9.Size = New System.Drawing.Size(68, 19)
-        Me.Label9.TabIndex = 4
-        Me.Label9.Text = "Channels"
-        Me.Label9.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.lblAudioChannels.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblAudioChannels.Location = New System.Drawing.Point(3, 75)
+        Me.lblAudioChannels.Name = "lblAudioChannels"
+        Me.lblAudioChannels.Size = New System.Drawing.Size(68, 19)
+        Me.lblAudioChannels.TabIndex = 4
+        Me.lblAudioChannels.Text = "Channels"
+        Me.lblAudioChannels.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'cbAudioChannels
         '
@@ -364,15 +364,15 @@ Partial Class dlgFIStreamEditor
         Me.cbAudioChannels.Size = New System.Drawing.Size(93, 21)
         Me.cbAudioChannels.TabIndex = 5
         '
-        'Label7
+        'lblAudioCodec
         '
-        Me.Label7.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label7.Location = New System.Drawing.Point(3, 48)
-        Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(68, 19)
-        Me.Label7.TabIndex = 2
-        Me.Label7.Text = "Codec"
-        Me.Label7.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.lblAudioCodec.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblAudioCodec.Location = New System.Drawing.Point(3, 48)
+        Me.lblAudioCodec.Name = "lblAudioCodec"
+        Me.lblAudioCodec.Size = New System.Drawing.Size(68, 19)
+        Me.lblAudioCodec.TabIndex = 2
+        Me.lblAudioCodec.Text = "Codec"
+        Me.lblAudioCodec.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'cbAudioCodec
         '
@@ -383,15 +383,15 @@ Partial Class dlgFIStreamEditor
         Me.cbAudioCodec.Size = New System.Drawing.Size(93, 21)
         Me.cbAudioCodec.TabIndex = 3
         '
-        'Label6
+        'lblAudioLanguage
         '
-        Me.Label6.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label6.Location = New System.Drawing.Point(3, 21)
-        Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(68, 19)
-        Me.Label6.TabIndex = 0
-        Me.Label6.Text = "Language"
-        Me.Label6.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.lblAudioLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblAudioLanguage.Location = New System.Drawing.Point(3, 21)
+        Me.lblAudioLanguage.Name = "lblAudioLanguage"
+        Me.lblAudioLanguage.Size = New System.Drawing.Size(68, 19)
+        Me.lblAudioLanguage.TabIndex = 0
+        Me.lblAudioLanguage.Text = "Language"
+        Me.lblAudioLanguage.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'cbAudioLanguage
         '
@@ -405,78 +405,78 @@ Partial Class dlgFIStreamEditor
         Me.cbAudioLanguage.Sorted = True
         Me.cbAudioLanguage.TabIndex = 1
         '
-        'GroupBox3
+        'gbSubtitleStreams
         '
-        Me.GroupBox3.Controls.Add(Me.rbExternal)
-        Me.GroupBox3.Controls.Add(Me.rbEmbedded)
-        Me.GroupBox3.Controls.Add(Me.Label10)
-        Me.GroupBox3.Controls.Add(Me.cbSubsLanguage)
-        Me.GroupBox3.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.GroupBox3.Location = New System.Drawing.Point(21, 7)
-        Me.GroupBox3.Name = "GroupBox3"
-        Me.GroupBox3.Size = New System.Drawing.Size(191, 194)
-        Me.GroupBox3.TabIndex = 6
-        Me.GroupBox3.TabStop = False
-        Me.GroupBox3.Text = "Subtitle  Streams"
-        Me.GroupBox3.Visible = False
+        Me.gbSubtitleStreams.Controls.Add(Me.rbSubtitleExternal)
+        Me.gbSubtitleStreams.Controls.Add(Me.rbSubtitleEmbedded)
+        Me.gbSubtitleStreams.Controls.Add(Me.lblSubtitleLanguage)
+        Me.gbSubtitleStreams.Controls.Add(Me.cbSubtitleLanguage)
+        Me.gbSubtitleStreams.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.gbSubtitleStreams.Location = New System.Drawing.Point(21, 7)
+        Me.gbSubtitleStreams.Name = "gbSubtitleStreams"
+        Me.gbSubtitleStreams.Size = New System.Drawing.Size(191, 194)
+        Me.gbSubtitleStreams.TabIndex = 6
+        Me.gbSubtitleStreams.TabStop = False
+        Me.gbSubtitleStreams.Text = "Subtitle  Streams"
+        Me.gbSubtitleStreams.Visible = False
         '
-        'rbExternal
+        'rbSubtitleExternal
         '
-        Me.rbExternal.AutoSize = True
-        Me.rbExternal.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.rbExternal.Location = New System.Drawing.Point(94, 46)
-        Me.rbExternal.Name = "rbExternal"
-        Me.rbExternal.Size = New System.Drawing.Size(67, 17)
-        Me.rbExternal.TabIndex = 24
-        Me.rbExternal.TabStop = True
-        Me.rbExternal.Text = "External"
-        Me.rbExternal.UseVisualStyleBackColor = True
+        Me.rbSubtitleExternal.AutoSize = True
+        Me.rbSubtitleExternal.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.rbSubtitleExternal.Location = New System.Drawing.Point(94, 46)
+        Me.rbSubtitleExternal.Name = "rbSubtitleExternal"
+        Me.rbSubtitleExternal.Size = New System.Drawing.Size(67, 17)
+        Me.rbSubtitleExternal.TabIndex = 24
+        Me.rbSubtitleExternal.TabStop = True
+        Me.rbSubtitleExternal.Text = "External"
+        Me.rbSubtitleExternal.UseVisualStyleBackColor = True
         '
-        'rbEmbedded
+        'rbSubtitleEmbedded
         '
-        Me.rbEmbedded.AutoSize = True
-        Me.rbEmbedded.Checked = True
-        Me.rbEmbedded.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.rbEmbedded.Location = New System.Drawing.Point(8, 46)
-        Me.rbEmbedded.Name = "rbEmbedded"
-        Me.rbEmbedded.Size = New System.Drawing.Size(81, 17)
-        Me.rbEmbedded.TabIndex = 23
-        Me.rbEmbedded.TabStop = True
-        Me.rbEmbedded.Text = "Embedded"
-        Me.rbEmbedded.UseVisualStyleBackColor = True
+        Me.rbSubtitleEmbedded.AutoSize = True
+        Me.rbSubtitleEmbedded.Checked = True
+        Me.rbSubtitleEmbedded.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.rbSubtitleEmbedded.Location = New System.Drawing.Point(8, 46)
+        Me.rbSubtitleEmbedded.Name = "rbSubtitleEmbedded"
+        Me.rbSubtitleEmbedded.Size = New System.Drawing.Size(81, 17)
+        Me.rbSubtitleEmbedded.TabIndex = 23
+        Me.rbSubtitleEmbedded.TabStop = True
+        Me.rbSubtitleEmbedded.Text = "Embedded"
+        Me.rbSubtitleEmbedded.UseVisualStyleBackColor = True
         '
-        'Label10
+        'lblSubtitleLanguage
         '
-        Me.Label10.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label10.Location = New System.Drawing.Point(5, 21)
-        Me.Label10.Name = "Label10"
-        Me.Label10.Size = New System.Drawing.Size(71, 19)
-        Me.Label10.TabIndex = 22
-        Me.Label10.Text = "Language"
-        Me.Label10.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.lblSubtitleLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblSubtitleLanguage.Location = New System.Drawing.Point(5, 21)
+        Me.lblSubtitleLanguage.Name = "lblSubtitleLanguage"
+        Me.lblSubtitleLanguage.Size = New System.Drawing.Size(71, 19)
+        Me.lblSubtitleLanguage.TabIndex = 22
+        Me.lblSubtitleLanguage.Text = "Language"
+        Me.lblSubtitleLanguage.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
-        'cbSubsLanguage
+        'cbSubtitleLanguage
         '
-        Me.cbSubsLanguage.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend
-        Me.cbSubsLanguage.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems
-        Me.cbSubsLanguage.DropDownWidth = 120
-        Me.cbSubsLanguage.FormattingEnabled = True
-        Me.cbSubsLanguage.Location = New System.Drawing.Point(79, 21)
-        Me.cbSubsLanguage.Name = "cbSubsLanguage"
-        Me.cbSubsLanguage.Size = New System.Drawing.Size(93, 21)
-        Me.cbSubsLanguage.Sorted = True
-        Me.cbSubsLanguage.TabIndex = 0
+        Me.cbSubtitleLanguage.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend
+        Me.cbSubtitleLanguage.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems
+        Me.cbSubtitleLanguage.DropDownWidth = 120
+        Me.cbSubtitleLanguage.FormattingEnabled = True
+        Me.cbSubtitleLanguage.Location = New System.Drawing.Point(79, 21)
+        Me.cbSubtitleLanguage.Name = "cbSubtitleLanguage"
+        Me.cbSubtitleLanguage.Size = New System.Drawing.Size(93, 21)
+        Me.cbSubtitleLanguage.Sorted = True
+        Me.cbSubtitleLanguage.TabIndex = 0
         '
-        'Panel1
+        'pnlStreamEditor
         '
-        Me.Panel1.BackColor = System.Drawing.Color.White
-        Me.Panel1.Controls.Add(Me.GroupBox1)
-        Me.Panel1.Controls.Add(Me.GroupBox2)
-        Me.Panel1.Controls.Add(Me.GroupBox3)
-        Me.Panel1.Location = New System.Drawing.Point(3, 3)
-        Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(236, 264)
-        Me.Panel1.TabIndex = 1
+        Me.pnlStreamEditor.BackColor = System.Drawing.Color.White
+        Me.pnlStreamEditor.Controls.Add(Me.gbVideoStreams)
+        Me.pnlStreamEditor.Controls.Add(Me.gbSubtitleStreams)
+        Me.pnlStreamEditor.Controls.Add(Me.gbAudioStreams)
+        Me.pnlStreamEditor.Location = New System.Drawing.Point(3, 3)
+        Me.pnlStreamEditor.Name = "pnlStreamEditor"
+        Me.pnlStreamEditor.Size = New System.Drawing.Size(236, 264)
+        Me.pnlStreamEditor.TabIndex = 1
         '
         'txtEncodingSettings
         '
@@ -508,8 +508,8 @@ Partial Class dlgFIStreamEditor
         Me.ClientSize = New System.Drawing.Size(242, 404)
         Me.Controls.Add(Me.lblEncoding)
         Me.Controls.Add(Me.txtEncodingSettings)
-        Me.Controls.Add(Me.Panel1)
-        Me.Controls.Add(Me.TableLayoutPanel1)
+        Me.Controls.Add(Me.pnlStreamEditor)
+        Me.Controls.Add(Me.tlpButtons)
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
@@ -518,55 +518,55 @@ Partial Class dlgFIStreamEditor
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Stream Editor"
-        Me.TableLayoutPanel1.ResumeLayout(False)
-        Me.GroupBox1.ResumeLayout(False)
-        Me.GroupBox1.PerformLayout()
-        Me.GroupBox2.ResumeLayout(False)
-        Me.GroupBox2.PerformLayout()
-        Me.GroupBox3.ResumeLayout(False)
-        Me.GroupBox3.PerformLayout()
-        Me.Panel1.ResumeLayout(False)
+        Me.tlpButtons.ResumeLayout(False)
+        Me.gbVideoStreams.ResumeLayout(False)
+        Me.gbVideoStreams.PerformLayout()
+        Me.gbAudioStreams.ResumeLayout(False)
+        Me.gbAudioStreams.PerformLayout()
+        Me.gbSubtitleStreams.ResumeLayout(False)
+        Me.gbSubtitleStreams.PerformLayout()
+        Me.pnlStreamEditor.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
     End Sub
-    Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents tlpButtons As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents OK_Button As System.Windows.Forms.Button
     Friend WithEvents Cancel_Button As System.Windows.Forms.Button
-    Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
-    Friend WithEvents GroupBox2 As System.Windows.Forms.GroupBox
-    Friend WithEvents GroupBox3 As System.Windows.Forms.GroupBox
-    Friend WithEvents Label2 As System.Windows.Forms.Label
-    Friend WithEvents Label1 As System.Windows.Forms.Label
-    Friend WithEvents txtHeight As System.Windows.Forms.TextBox
-    Friend WithEvents txtWidth As System.Windows.Forms.TextBox
-    Friend WithEvents Label4 As System.Windows.Forms.Label
+    Friend WithEvents gbVideoStreams As System.Windows.Forms.GroupBox
+    Friend WithEvents gbAudioStreams As System.Windows.Forms.GroupBox
+    Friend WithEvents gbSubtitleStreams As System.Windows.Forms.GroupBox
+    Friend WithEvents lblVideoHeight As System.Windows.Forms.Label
+    Friend WithEvents lblVideoWidth As System.Windows.Forms.Label
+    Friend WithEvents txtVideoHeight As System.Windows.Forms.TextBox
+    Friend WithEvents txtVideoWidth As System.Windows.Forms.TextBox
+    Friend WithEvents lblVideoCodec As System.Windows.Forms.Label
     Friend WithEvents cbVideoCodec As System.Windows.Forms.ComboBox
-    Friend WithEvents Label3 As System.Windows.Forms.Label
-    Friend WithEvents txtDuration As System.Windows.Forms.TextBox
-    Friend WithEvents rbInterlaced As System.Windows.Forms.RadioButton
-    Friend WithEvents rbProgressive As System.Windows.Forms.RadioButton
-    Friend WithEvents Label5 As System.Windows.Forms.Label
-    Friend WithEvents txtARatio As System.Windows.Forms.TextBox
-    Friend WithEvents Label7 As System.Windows.Forms.Label
+    Friend WithEvents lblVideoDuration As System.Windows.Forms.Label
+    Friend WithEvents txtVideoDuration As System.Windows.Forms.TextBox
+    Friend WithEvents rbVideoInterlaced As System.Windows.Forms.RadioButton
+    Friend WithEvents rbVideoProgressive As System.Windows.Forms.RadioButton
+    Friend WithEvents lblVideoAspect As System.Windows.Forms.Label
+    Friend WithEvents txtVideoAspect As System.Windows.Forms.TextBox
+    Friend WithEvents lblAudioCodec As System.Windows.Forms.Label
     Friend WithEvents cbAudioCodec As System.Windows.Forms.ComboBox
-    Friend WithEvents Label6 As System.Windows.Forms.Label
+    Friend WithEvents lblAudioLanguage As System.Windows.Forms.Label
     Friend WithEvents cbAudioLanguage As System.Windows.Forms.ComboBox
-    Friend WithEvents Label9 As System.Windows.Forms.Label
+    Friend WithEvents lblAudioChannels As System.Windows.Forms.Label
     Friend WithEvents cbAudioChannels As System.Windows.Forms.ComboBox
-    Friend WithEvents Label10 As System.Windows.Forms.Label
-    Friend WithEvents cbSubsLanguage As System.Windows.Forms.ComboBox
-    Friend WithEvents Label8 As System.Windows.Forms.Label
+    Friend WithEvents lblSubtitleLanguage As System.Windows.Forms.Label
+    Friend WithEvents cbSubtitleLanguage As System.Windows.Forms.ComboBox
+    Friend WithEvents lblVideoLanguage As System.Windows.Forms.Label
     Friend WithEvents cbVideoLanguage As System.Windows.Forms.ComboBox
-    Friend WithEvents rbExternal As System.Windows.Forms.RadioButton
-    Friend WithEvents rbEmbedded As System.Windows.Forms.RadioButton
-    Friend WithEvents Panel1 As System.Windows.Forms.Panel
-    Friend WithEvents Label12 As System.Windows.Forms.Label
-    Friend WithEvents txtMultiview As System.Windows.Forms.TextBox
-    Friend WithEvents Label11 As System.Windows.Forms.Label
-    Friend WithEvents txtBitrate As System.Windows.Forms.TextBox
-    Friend WithEvents txtABitrate As System.Windows.Forms.TextBox
-    Friend WithEvents Label13 As System.Windows.Forms.Label
+    Friend WithEvents rbSubtitleExternal As System.Windows.Forms.RadioButton
+    Friend WithEvents rbSubtitleEmbedded As System.Windows.Forms.RadioButton
+    Friend WithEvents pnlStreamEditor As System.Windows.Forms.Panel
+    Friend WithEvents lblVideoMultiView As System.Windows.Forms.Label
+    Friend WithEvents txtVideoMultiview As System.Windows.Forms.TextBox
+    Friend WithEvents lblVideoBitrate As System.Windows.Forms.Label
+    Friend WithEvents txtVideoBitrate As System.Windows.Forms.TextBox
+    Friend WithEvents txtAudioBitrate As System.Windows.Forms.TextBox
+    Friend WithEvents lblAudioBitrate As System.Windows.Forms.Label
     Friend WithEvents txtEncodingSettings As System.Windows.Forms.TextBox
     Friend WithEvents lblEncoding As System.Windows.Forms.Label
 

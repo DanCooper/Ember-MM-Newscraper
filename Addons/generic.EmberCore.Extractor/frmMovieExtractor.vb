@@ -164,10 +164,10 @@ Public Class frmMovieExtractor
 		btnFrameSave.Enabled = False
 	End Sub
 
-	Private Sub DelayTimer_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DelayTimer.Tick
-		DelayTimer.Stop()
-		GrabTheFrame()
-	End Sub
+    Private Sub DelayTimer_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrDelay.Tick
+        tmrDelay.Stop()
+        GrabTheFrame()
+    End Sub
 
 	Private Sub btnAutoGen_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAutoGen.Click
 		Try
