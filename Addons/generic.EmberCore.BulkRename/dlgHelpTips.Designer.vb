@@ -23,7 +23,7 @@ Partial Class dlgHelpTips
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgHelpTips))
-        Me.lblTips = New System.Windows.Forms.Label
+        Me.lblTips = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'lblTips
@@ -39,6 +39,7 @@ Partial Class dlgHelpTips
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoSize = True
         Me.ClientSize = New System.Drawing.Size(271, 279)
         Me.Controls.Add(Me.lblTips)
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
