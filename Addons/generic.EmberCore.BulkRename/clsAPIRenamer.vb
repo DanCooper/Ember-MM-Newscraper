@@ -218,15 +218,7 @@ Public Class FileFolderRenamer
                 pattern = String.Concat(pattern, strmore)
                 nextC = pattern.IndexOf("$?")
             End While
-            pattern = pattern.Replace(":", " -")
-            pattern = pattern.Replace("/", String.Empty)
-            'pattern = pattern.Replace("\", String.Empty)
-            pattern = pattern.Replace("|", String.Empty)
-            pattern = pattern.Replace("<", String.Empty)
-            pattern = pattern.Replace(">", String.Empty)
-            pattern = pattern.Replace("?", String.Empty)
-            pattern = pattern.Replace("*", String.Empty)
-            pattern = pattern.Replace("  ", " ")
+            pattern = StringUtils.CleanFileName(pattern)
 
             For Each Invalid As Char In Path.GetInvalidPathChars
                 pattern = pattern.Replace(Invalid, String.Empty)
@@ -275,6 +267,7 @@ Public Class FileFolderRenamer
         MovieFile.Director = _tmpMovie.Movie.Director
         MovieFile.FileSource = _tmpMovie.FileSource
         MovieFile.Country = _tmpMovie.Movie.Country
+        MovieFile.IMDBID = _tmpMovie.Movie.IMDBID
         Dim mFolders As New List(Of String)
         Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
             SQLNewcommand.CommandText = String.Concat("SELECT Path FROM Sources;")
@@ -416,13 +409,13 @@ Public Class FileFolderRenamer
                         Dim srcDir As String = Path.Combine(f.BasePath, f.Path)
                         Dim destDir As String = Path.Combine(f.BasePath, f.NewPath)
 
-                        If f.IsVideo_TS Then
-                            srcDir = Path.Combine(srcDir, "VIDEO_TS")
-                            destDir = Path.Combine(destDir, "VIDEO_TS")
-                        ElseIf f.IsBDMV Then
-                            srcDir = Path.Combine(srcDir, String.Concat("BDMV", Path.DirectorySeparatorChar, "STREAM"))
-                            destDir = Path.Combine(destDir, String.Concat("BDMV", Path.DirectorySeparatorChar, "STREAM"))
-                        End If
+                        'If f.IsVideo_TS Then
+                        '    srcDir = Path.Combine(srcDir, "VIDEO_TS")
+                        '    destDir = Path.Combine(destDir, "VIDEO_TS")
+                        'ElseIf f.IsBDMV Then
+                        '    srcDir = Path.Combine(srcDir, String.Concat("BDMV", Path.DirectorySeparatorChar, "STREAM"))
+                        '    destDir = Path.Combine(destDir, String.Concat("BDMV", Path.DirectorySeparatorChar, "STREAM"))
+                        'End If
 
                         If Not f.ID = -1 Then
                             _movieDB = Master.DB.LoadMovieFromDB(f.ID)
@@ -601,7 +594,11 @@ Public Class FileFolderRenamer
                 ElseIf f.IsBDMV Then
                     f.NewFileName = String.Concat("BDMV", Path.DirectorySeparatorChar, "STREAM")
                 Else
-                    f.NewFileName = ProccessPattern(f, filePattern).Trim
+                    If Path.GetFileName(f.FileName.ToLower) = "video_ts" Then
+                        f.NewFileName = "VIDEO_TS"
+                    Else
+                        f.NewFileName = ProccessPattern(f, filePattern).Trim
+                    End If
                 End If
 
                 If HaveBase(localFolderPattern) Then
