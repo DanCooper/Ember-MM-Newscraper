@@ -88,11 +88,13 @@ Partial Class dlgBulkRenamer
         Me.btnFolderPatternHelp = New System.Windows.Forms.Button()
         Me.btnFilePatternHelp = New System.Windows.Forms.Button()
         Me.btnFolderPatternNotSingleHelp = New System.Windows.Forms.Button()
+        Me.tlpButtons = New System.Windows.Forms.TableLayoutPanel()
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlCancel.SuspendLayout()
         CType(Me.dgvMoviesList, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.cmsMovieList.SuspendLayout()
+        Me.tlpButtons.SuspendLayout()
         Me.SuspendLayout()
         '
         'Close_Button
@@ -100,9 +102,9 @@ Partial Class dlgBulkRenamer
         Me.Close_Button.Anchor = System.Windows.Forms.AnchorStyles.Bottom
         Me.Close_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Close_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Close_Button.Location = New System.Drawing.Point(898, 445)
+        Me.Close_Button.Location = New System.Drawing.Point(76, 3)
         Me.Close_Button.Name = "Close_Button"
-        Me.Close_Button.Size = New System.Drawing.Size(80, 23)
+        Me.Close_Button.Size = New System.Drawing.Size(67, 23)
         Me.Close_Button.TabIndex = 0
         Me.Close_Button.Text = "Close"
         '
@@ -227,9 +229,9 @@ Partial Class dlgBulkRenamer
         Me.Rename_Button.Anchor = System.Windows.Forms.AnchorStyles.Bottom
         Me.Rename_Button.Enabled = False
         Me.Rename_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Rename_Button.Location = New System.Drawing.Point(812, 445)
+        Me.Rename_Button.Location = New System.Drawing.Point(3, 3)
         Me.Rename_Button.Name = "Rename_Button"
-        Me.Rename_Button.Size = New System.Drawing.Size(80, 23)
+        Me.Rename_Button.Size = New System.Drawing.Size(67, 23)
         Me.Rename_Button.TabIndex = 1
         Me.Rename_Button.Text = "Rename"
         '
@@ -242,7 +244,8 @@ Partial Class dlgBulkRenamer
         Me.dgvMoviesList.AllowUserToAddRows = False
         Me.dgvMoviesList.AllowUserToDeleteRows = False
         Me.dgvMoviesList.AllowUserToResizeRows = False
-        Me.dgvMoviesList.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+        Me.dgvMoviesList.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.dgvMoviesList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvMoviesList.ContextMenuStrip = Me.cmsMovieList
@@ -259,7 +262,7 @@ Partial Class dlgBulkRenamer
         '
         Me.cmsMovieList.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsmLockMovie, Me.tsmUnlockMovie, Me.tsmSeparator, Me.tsmLockAll, Me.tsmUnlockAll})
         Me.cmsMovieList.Name = "cmsMovieList"
-        Me.cmsMovieList.Size = New System.Drawing.Size(161, 120)
+        Me.cmsMovieList.Size = New System.Drawing.Size(161, 98)
         '
         'tsmLockMovie
         '
@@ -292,6 +295,7 @@ Partial Class dlgBulkRenamer
         '
         'lblFolderPattern
         '
+        Me.lblFolderPattern.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.lblFolderPattern.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblFolderPattern.Location = New System.Drawing.Point(12, 401)
         Me.lblFolderPattern.Name = "lblFolderPattern"
@@ -302,6 +306,7 @@ Partial Class dlgBulkRenamer
         '
         'lblFilePattern
         '
+        Me.lblFilePattern.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.lblFilePattern.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblFilePattern.Location = New System.Drawing.Point(522, 401)
         Me.lblFilePattern.Name = "lblFilePattern"
@@ -312,6 +317,7 @@ Partial Class dlgBulkRenamer
         '
         'txtFilePattern
         '
+        Me.txtFilePattern.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.txtFilePattern.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.txtFilePattern.Location = New System.Drawing.Point(668, 398)
         Me.txtFilePattern.Name = "txtFilePattern"
@@ -321,6 +327,7 @@ Partial Class dlgBulkRenamer
         '
         'txtFolderPattern
         '
+        Me.txtFolderPattern.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.txtFolderPattern.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.txtFolderPattern.Location = New System.Drawing.Point(316, 398)
         Me.txtFolderPattern.Name = "txtFolderPattern"
@@ -330,6 +337,7 @@ Partial Class dlgBulkRenamer
         '
         'txtFolderPatternNotSingle
         '
+        Me.txtFolderPatternNotSingle.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.txtFolderPatternNotSingle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.txtFolderPatternNotSingle.Location = New System.Drawing.Point(316, 424)
         Me.txtFolderPatternNotSingle.Name = "txtFolderPatternNotSingle"
@@ -339,6 +347,7 @@ Partial Class dlgBulkRenamer
         '
         'lblFolderPatternNotSingle
         '
+        Me.lblFolderPatternNotSingle.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.lblFolderPatternNotSingle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblFolderPatternNotSingle.Location = New System.Drawing.Point(12, 427)
         Me.lblFolderPatternNotSingle.Name = "lblFolderPatternNotSingle"
@@ -349,6 +358,7 @@ Partial Class dlgBulkRenamer
         '
         'chkRenamedOnly
         '
+        Me.chkRenamedOnly.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.chkRenamedOnly.AutoSize = True
         Me.chkRenamedOnly.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.chkRenamedOnly.Location = New System.Drawing.Point(668, 424)
@@ -360,6 +370,7 @@ Partial Class dlgBulkRenamer
         '
         'btnFolderPatternHelp
         '
+        Me.btnFolderPatternHelp.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.btnFolderPatternHelp.Image = CType(resources.GetObject("btnFolderPatternHelp.Image"), System.Drawing.Image)
         Me.btnFolderPatternHelp.Location = New System.Drawing.Point(517, 400)
         Me.btnFolderPatternHelp.Name = "btnFolderPatternHelp"
@@ -369,6 +380,7 @@ Partial Class dlgBulkRenamer
         '
         'btnFilePatternHelp
         '
+        Me.btnFilePatternHelp.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.btnFilePatternHelp.Image = CType(resources.GetObject("btnFilePatternHelp.Image"), System.Drawing.Image)
         Me.btnFilePatternHelp.Location = New System.Drawing.Point(895, 398)
         Me.btnFilePatternHelp.Name = "btnFilePatternHelp"
@@ -378,12 +390,28 @@ Partial Class dlgBulkRenamer
         '
         'btnFolderPatternNotSingleHelp
         '
+        Me.btnFolderPatternNotSingleHelp.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.btnFolderPatternNotSingleHelp.Image = CType(resources.GetObject("btnFolderPatternNotSingleHelp.Image"), System.Drawing.Image)
         Me.btnFolderPatternNotSingleHelp.Location = New System.Drawing.Point(517, 427)
         Me.btnFolderPatternNotSingleHelp.Name = "btnFolderPatternNotSingleHelp"
         Me.btnFolderPatternNotSingleHelp.Size = New System.Drawing.Size(17, 19)
         Me.btnFolderPatternNotSingleHelp.TabIndex = 13
         Me.btnFolderPatternNotSingleHelp.UseVisualStyleBackColor = True
+        '
+        'tlpButtons
+        '
+        Me.tlpButtons.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.tlpButtons.ColumnCount = 2
+        Me.tlpButtons.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.tlpButtons.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.tlpButtons.Controls.Add(Me.Close_Button, 1, 0)
+        Me.tlpButtons.Controls.Add(Me.Rename_Button, 0, 0)
+        Me.tlpButtons.Location = New System.Drawing.Point(845, 442)
+        Me.tlpButtons.Name = "tlpButtons"
+        Me.tlpButtons.RowCount = 1
+        Me.tlpButtons.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.tlpButtons.Size = New System.Drawing.Size(146, 29)
+        Me.tlpButtons.TabIndex = 15
         '
         'dlgBulkRenamer
         '
@@ -392,6 +420,7 @@ Partial Class dlgBulkRenamer
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Close_Button
         Me.ClientSize = New System.Drawing.Size(992, 472)
+        Me.Controls.Add(Me.tlpButtons)
         Me.Controls.Add(Me.btnFolderPatternNotSingleHelp)
         Me.Controls.Add(Me.btnFilePatternHelp)
         Me.Controls.Add(Me.btnFolderPatternHelp)
@@ -404,14 +433,12 @@ Partial Class dlgBulkRenamer
         Me.Controls.Add(Me.lblFilePattern)
         Me.Controls.Add(Me.txtFilePattern)
         Me.Controls.Add(Me.dgvMoviesList)
-        Me.Controls.Add(Me.Rename_Button)
         Me.Controls.Add(Me.pnlTop)
-        Me.Controls.Add(Me.Close_Button)
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
+        Me.MinimumSize = New System.Drawing.Size(1008, 511)
         Me.Name = "dlgBulkRenamer"
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
@@ -422,6 +449,7 @@ Partial Class dlgBulkRenamer
         Me.pnlCancel.ResumeLayout(False)
         CType(Me.dgvMoviesList, System.ComponentModel.ISupportInitialize).EndInit()
         Me.cmsMovieList.ResumeLayout(False)
+        Me.tlpButtons.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -429,6 +457,7 @@ Partial Class dlgBulkRenamer
     Friend WithEvents btnFolderPatternHelp As System.Windows.Forms.Button
     Friend WithEvents btnFilePatternHelp As System.Windows.Forms.Button
     Friend WithEvents btnFolderPatternNotSingleHelp As System.Windows.Forms.Button
+    Friend WithEvents tlpButtons As System.Windows.Forms.TableLayoutPanel
 
 #End Region 'Methods
 

@@ -350,11 +350,12 @@ Public Class dlgBulkRenamer
         Me.SetUp()
 
         FFRenamer = New FileFolderRenamer
-        Dim iBackground As New Bitmap(Me.pnlTop.Width, Me.pnlTop.Height)
-        Using g As Graphics = Graphics.FromImage(iBackground)
-            g.FillRectangle(New Drawing2D.LinearGradientBrush(Me.pnlTop.ClientRectangle, Color.SteelBlue, Color.LightSteelBlue, Drawing2D.LinearGradientMode.Horizontal), pnlTop.ClientRectangle)
-            Me.pnlTop.BackgroundImage = iBackground
-        End Using
+        ' temporarily disabled - TODO: autoresizing
+        'Dim iBackground As New Bitmap(Me.pnlTop.Width, Me.pnlTop.Height)
+        'Using g As Graphics = Graphics.FromImage(iBackground)
+        '    g.FillRectangle(New Drawing2D.LinearGradientBrush(Me.pnlTop.ClientRectangle, Color.SteelBlue, Color.LightSteelBlue, Drawing2D.LinearGradientMode.Horizontal), pnlTop.ClientRectangle)
+        '    Me.pnlTop.BackgroundImage = iBackground
+        'End Using
 
     End Sub
 
