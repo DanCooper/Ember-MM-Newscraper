@@ -438,7 +438,7 @@ Public Class MediaInfo
         If Not String.IsNullOrEmpty(Duration) Then
             If Reverse Then
                 Dim ts As New TimeSpan(0, 0, Convert.ToInt32(Duration))
-                Return String.Format("{0}h {1}mn {2}s", ts.Hours, ts.Minutes, ts.Seconds)
+                Return String.Format("{0}h {1}min {2}s", ts.Hours, ts.Minutes, ts.Seconds)
             Else
                 Dim sDuration As Match = Regex.Match(Duration, "(([0-9]+)h)?\s?(([0-9]+)mn)?\s?(([0-9]+)s)?")
                 Dim sHour As Integer = If(Not String.IsNullOrEmpty(sDuration.Groups(2).Value), (Convert.ToInt32(sDuration.Groups(2).Value)), 0)
