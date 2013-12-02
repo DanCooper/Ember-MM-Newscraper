@@ -88,6 +88,8 @@
     <Import Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Test_clsAPIImages.vb" />
+    <Compile Include="Test_clsAPINumUtils.vb" />
     <Compile Include="TestTypeAttribute.vb" />
     <Compile Include="Test_clsAPIFileUtils.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
