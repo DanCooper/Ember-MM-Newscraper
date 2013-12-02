@@ -381,7 +381,7 @@
   <string control="Core_txtSortToken">Enter in a sort token to add to the list.</string>
   <string control="Core_lstSortTokens">A list of all current sort tokens. (If the movie title begins with a sort token, then the sort token will be moved to the end. For example: Sort Token = "The", Title = "The Dark Knight", Result = "Dark Knight, The")</string>
   <string control="Core_chkDisplayYear">If enabled, Ember will display the year of the movie in the main movie list.</string>
-  <string control="Core_chkMovieExtraCol">Hide the Extrathumbs column from the main movie list.</string>
+  <string control="Core_chkMovieEThumbsCol">Hide the Extrathumbs column from the main movie list.</string>
   <string control="Core_chkMovieSubCol">Hide the Subtitles column from the main movie list.</string>
   <string control="Core_chkMovieTrailerCol">Hide the Trailers column from the main movie list.</string>
   <string control="Core_chkMovieInfoCol">Hide the Info column from the main movie list.</string>
@@ -551,6 +551,8 @@
   <string control="Core_btnAddShowFilter">Add the entered filter to the filter list.</string>
   <string control="Core_txtShowFilter">Enter a filter to add to the filter list.</string>
   <string control="Core_lstShowFilters">The list of all current filters that will be used when generating titles for shows.</string>
+  <string control="Core_chkMovieWatchedCol">Hide the Watched column from the main movie list.</string>
+  <string control="Core_chkMovieEFanartsCol">Hide the Extrafanart column from the main movie list.</string>
 </strings>
 
 

@@ -1453,9 +1453,9 @@ Partial Class dlgEditMovie
         Me.chkWatched.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkWatched.Location = New System.Drawing.Point(96, 559)
         Me.chkWatched.Name = "chkWatched"
-        Me.chkWatched.Size = New System.Drawing.Size(75, 17)
+        Me.chkWatched.Size = New System.Drawing.Size(72, 17)
         Me.chkWatched.TabIndex = 6
-        Me.chkWatched.Text = "Watched!"
+        Me.chkWatched.Text = "Watched"
         Me.chkWatched.UseVisualStyleBackColor = True
         '
         'dlgEditMovie

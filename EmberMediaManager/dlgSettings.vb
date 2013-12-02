@@ -18,7 +18,7 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 ' #
-' # Dialog size: 908; 666
+' # Dialog size: 908; 686
 ' # Enlarge it to see all the panels.
 
 Imports System
@@ -1389,7 +1389,11 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkMovieExtraCol_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieExtraCol.CheckedChanged
+    Private Sub chkMovieEFanartsCol_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieEFanartsCol.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMovieEThumbsCol_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieEThumbsCol.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -1454,6 +1458,10 @@ Public Class dlgSettings
     End Sub
 
     Private Sub chkMovieTrailerCol_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieTrailerCol.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMovieWatchedCol_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieWatchedCol.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -2468,7 +2476,9 @@ Public Class dlgSettings
             Me.chkMovieInfoCol.Checked = Master.eSettings.MovieInfoCol
             Me.chkMovieTrailerCol.Checked = Master.eSettings.MovieTrailerCol
             Me.chkMovieSubCol.Checked = Master.eSettings.MovieSubCol
-            Me.chkMovieExtraCol.Checked = Master.eSettings.MovieExtraCol
+            Me.chkMovieEFanartsCol.Checked = Master.eSettings.MovieEFanartsCol
+            Me.chkMovieEThumbsCol.Checked = Master.eSettings.MovieEThumbsCol
+            Me.chkMovieWatchedCol.Checked = Master.eSettings.MovieWatchedCol
 
             Me.chkOverwriteTrailer.Checked = Master.eSettings.OverwriteTrailer
             Me.chkDeleteAllTrailers.Checked = Master.eSettings.DeleteAllTrailers
@@ -3623,7 +3633,9 @@ Public Class dlgSettings
             Master.eSettings.MovieInfoCol = Me.chkMovieInfoCol.Checked
             Master.eSettings.MovieTrailerCol = Me.chkMovieTrailerCol.Checked
             Master.eSettings.MovieSubCol = Me.chkMovieSubCol.Checked
-            Master.eSettings.MovieExtraCol = Me.chkMovieExtraCol.Checked
+            Master.eSettings.MovieEFanartsCol = Me.chkMovieEFanartsCol.Checked
+            Master.eSettings.MovieEThumbsCol = Me.chkMovieEThumbsCol.Checked
+            Master.eSettings.movieWatchedCol = Me.chkMovieWatchedCol.Checked
 
             Master.eSettings.PreferredEFanartsSize = DirectCast(Me.cbMovieEFanartsSize.SelectedIndex, Enums.FanartSize)
             Master.eSettings.PreferredEThumbsSize = DirectCast(Me.cbMovieEThumbsSize.SelectedIndex, Enums.FanartSize)
@@ -4124,12 +4136,14 @@ Public Class dlgSettings
         Me.chkCheckTitles.Text = Master.eLang.GetString(462, "Check Title Match Confidence")
         Me.GroupBox25.Text = Master.eLang.GetString(463, "Sort Tokens to Ignore")
         Me.chkDisplayYear.Text = Master.eLang.GetString(464, "Display Year in List Title")
-        Me.chkMovieExtraCol.Text = Master.eLang.GetString(465, "Hide Extrathumb Column")
+        Me.chkMovieEFanartsCol.Text = Master.eLang.GetString(983, "Hide Extrafanart Column")
+        Me.chkMovieEThumbsCol.Text = Master.eLang.GetString(465, "Hide Extrathumb Column")
         Me.chkMovieSubCol.Text = Master.eLang.GetString(466, "Hide Sub Column")
         Me.chkMovieTrailerCol.Text = Master.eLang.GetString(467, "Hide Trailer Column")
         Me.chkMovieInfoCol.Text = Master.eLang.GetString(468, "Hide Info Column")
         Me.chkMovieFanartCol.Text = Master.eLang.GetString(469, "Hide Fanart Column")
         Me.chkMoviePosterCol.Text = Master.eLang.GetString(470, "Hide Poster Column")
+        Me.chkMovieWatchedCol.Text = Master.eLang.GetString(982, "Hide Watched Column")
         Me.gbFileNaming.Text = Master.eLang.GetString(471, "File Naming")
         Me.gbTVNaming.Text = Me.gbFileNaming.Text
         Me.chkMovieNameMultiOnly.Text = Master.eLang.GetString(472, "Use <movie> Only for Folders with Multiple Movies")

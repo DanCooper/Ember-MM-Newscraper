@@ -167,7 +167,8 @@ Public Class Settings
     Private _missingfilterposter As Boolean
     Private _missingfiltersubs As Boolean
     Private _missingfiltertrailer As Boolean
-    Private _movieextraCol As Boolean
+    Private _movieefanartsCol As Boolean
+    Private _movieethumbsCol As Boolean
     Private _moviefanartCol As Boolean
     Private _movieinfoCol As Boolean
     Private _moviejpg As Boolean
@@ -185,6 +186,7 @@ Public Class Settings
     Private _movietbn As Boolean
     Private _movietheme As String
     Private _movietrailerCol As Boolean
+    Private _moviewatchedCol As Boolean
     Private _nodisplayfanart As Boolean
     Private _nodisplayposter As Boolean
     Private _nodisplayfanartsmall As Boolean
@@ -1648,12 +1650,21 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieExtraCol() As Boolean
+    Public Property MovieEFanartsCol() As Boolean
         Get
-            Return Me._movieextraCol
+            Return Me._movieefanartsCol
         End Get
         Set(ByVal value As Boolean)
-            Me._movieextraCol = value
+            Me._movieefanartsCol = value
+        End Set
+    End Property
+
+    Public Property MovieEThumbsCol() As Boolean
+        Get
+            Return Me._movieethumbsCol
+        End Get
+        Set(ByVal value As Boolean)
+            Me._movieethumbsCol = value
         End Set
     End Property
 
@@ -1807,6 +1818,15 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Me._movietrailerCol = value
+        End Set
+    End Property
+
+    Public Property MovieWatchedCol() As Boolean
+        Get
+            Return Me._moviewatchedCol
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviewatchedCol = value
         End Set
     End Property
 
@@ -3857,7 +3877,9 @@ Public Class Settings
         Me._movieinfoCol = False
         Me._movietrailerCol = False
         Me._moviesubCol = False
-        Me._movieextraCol = False
+        Me._movieefanartsCol = False
+        Me._movieethumbsCol = False
+        Me._moviewatchedCol = False
         Me._cleanfolderJpg = False
         Me._cleanmovieTbn = False
         Me._cleanmovieTbnB = False

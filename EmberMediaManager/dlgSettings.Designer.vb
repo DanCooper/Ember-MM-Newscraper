@@ -82,6 +82,8 @@ Partial Class dlgSettings
         Me.chkMarkNew = New System.Windows.Forms.CheckBox()
         Me.lbGenre = New System.Windows.Forms.CheckedListBox()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.chkMovieWatchedCol = New System.Windows.Forms.CheckBox()
+        Me.chkMovieEFanartsCol = New System.Windows.Forms.CheckBox()
         Me.txtCheckTitleTol = New System.Windows.Forms.TextBox()
         Me.Label30 = New System.Windows.Forms.Label()
         Me.chkCheckTitles = New System.Windows.Forms.CheckBox()
@@ -91,7 +93,7 @@ Partial Class dlgSettings
         Me.txtSortToken = New System.Windows.Forms.TextBox()
         Me.lstSortTokens = New System.Windows.Forms.ListBox()
         Me.chkDisplayYear = New System.Windows.Forms.CheckBox()
-        Me.chkMovieExtraCol = New System.Windows.Forms.CheckBox()
+        Me.chkMovieEThumbsCol = New System.Windows.Forms.CheckBox()
         Me.chkMovieSubCol = New System.Windows.Forms.CheckBox()
         Me.chkMovieTrailerCol = New System.Windows.Forms.CheckBox()
         Me.chkMovieInfoCol = New System.Windows.Forms.CheckBox()
@@ -1365,12 +1367,14 @@ Partial Class dlgSettings
         '
         'GroupBox2
         '
+        Me.GroupBox2.Controls.Add(Me.chkMovieWatchedCol)
+        Me.GroupBox2.Controls.Add(Me.chkMovieEFanartsCol)
         Me.GroupBox2.Controls.Add(Me.txtCheckTitleTol)
         Me.GroupBox2.Controls.Add(Me.Label30)
         Me.GroupBox2.Controls.Add(Me.chkCheckTitles)
         Me.GroupBox2.Controls.Add(Me.GroupBox25)
         Me.GroupBox2.Controls.Add(Me.chkDisplayYear)
-        Me.GroupBox2.Controls.Add(Me.chkMovieExtraCol)
+        Me.GroupBox2.Controls.Add(Me.chkMovieEThumbsCol)
         Me.GroupBox2.Controls.Add(Me.chkMovieSubCol)
         Me.GroupBox2.Controls.Add(Me.chkMovieTrailerCol)
         Me.GroupBox2.Controls.Add(Me.chkMovieInfoCol)
@@ -1379,10 +1383,33 @@ Partial Class dlgSettings
         Me.GroupBox2.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox2.Location = New System.Drawing.Point(7, 106)
         Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(218, 279)
+        Me.GroupBox2.Size = New System.Drawing.Size(218, 306)
         Me.GroupBox2.TabIndex = 4
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Media List Options"
+        '
+        'chkMovieWatchedCol
+        '
+        Me.chkMovieWatchedCol.AutoSize = True
+        Me.chkMovieWatchedCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkMovieWatchedCol.Location = New System.Drawing.Point(9, 290)
+        Me.chkMovieWatchedCol.Name = "chkMovieWatchedCol"
+        Me.chkMovieWatchedCol.Size = New System.Drawing.Size(142, 17)
+        Me.chkMovieWatchedCol.TabIndex = 76
+        Me.chkMovieWatchedCol.Text = "Hide Watched Column"
+        Me.chkMovieWatchedCol.UseVisualStyleBackColor = True
+        '
+        'chkMovieEFanartsCol
+        '
+        Me.chkMovieEFanartsCol.AutoSize = True
+        Me.chkMovieEFanartsCol.Enabled = False
+        Me.chkMovieEFanartsCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkMovieEFanartsCol.Location = New System.Drawing.Point(9, 274)
+        Me.chkMovieEFanartsCol.Name = "chkMovieEFanartsCol"
+        Me.chkMovieEFanartsCol.Size = New System.Drawing.Size(152, 17)
+        Me.chkMovieEFanartsCol.TabIndex = 75
+        Me.chkMovieEFanartsCol.Text = "Hide Extrafanart Column"
+        Me.chkMovieEFanartsCol.UseVisualStyleBackColor = True
         '
         'txtCheckTitleTol
         '
@@ -1477,16 +1504,16 @@ Partial Class dlgSettings
         Me.chkDisplayYear.Text = "Display Year in List Title"
         Me.chkDisplayYear.UseVisualStyleBackColor = True
         '
-        'chkMovieExtraCol
+        'chkMovieEThumbsCol
         '
-        Me.chkMovieExtraCol.AutoSize = True
-        Me.chkMovieExtraCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMovieExtraCol.Location = New System.Drawing.Point(9, 258)
-        Me.chkMovieExtraCol.Name = "chkMovieExtraCol"
-        Me.chkMovieExtraCol.Size = New System.Drawing.Size(155, 17)
-        Me.chkMovieExtraCol.TabIndex = 5
-        Me.chkMovieExtraCol.Text = "Hide Extrathumb Column"
-        Me.chkMovieExtraCol.UseVisualStyleBackColor = True
+        Me.chkMovieEThumbsCol.AutoSize = True
+        Me.chkMovieEThumbsCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkMovieEThumbsCol.Location = New System.Drawing.Point(9, 258)
+        Me.chkMovieEThumbsCol.Name = "chkMovieEThumbsCol"
+        Me.chkMovieEThumbsCol.Size = New System.Drawing.Size(155, 17)
+        Me.chkMovieEThumbsCol.TabIndex = 5
+        Me.chkMovieEThumbsCol.Text = "Hide Extrathumb Column"
+        Me.chkMovieEThumbsCol.UseVisualStyleBackColor = True
         '
         'chkMovieSubCol
         '
@@ -2205,7 +2232,7 @@ Partial Class dlgSettings
         'btnOK
         '
         Me.btnOK.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnOK.Location = New System.Drawing.Point(813, 601)
+        Me.btnOK.Location = New System.Drawing.Point(813, 621)
         Me.btnOK.Name = "btnOK"
         Me.btnOK.Size = New System.Drawing.Size(75, 23)
         Me.btnOK.TabIndex = 0
@@ -2216,7 +2243,7 @@ Partial Class dlgSettings
         '
         Me.btnApply.Enabled = False
         Me.btnApply.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnApply.Location = New System.Drawing.Point(650, 601)
+        Me.btnApply.Location = New System.Drawing.Point(650, 621)
         Me.btnApply.Name = "btnApply"
         Me.btnApply.Size = New System.Drawing.Size(75, 23)
         Me.btnApply.TabIndex = 2
@@ -2227,7 +2254,7 @@ Partial Class dlgSettings
         '
         Me.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.btnCancel.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnCancel.Location = New System.Drawing.Point(732, 601)
+        Me.btnCancel.Location = New System.Drawing.Point(732, 621)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(75, 23)
         Me.btnCancel.TabIndex = 1
@@ -2311,7 +2338,7 @@ Partial Class dlgSettings
         Me.tvSettings.SelectedImageIndex = 0
         Me.tvSettings.ShowLines = False
         Me.tvSettings.ShowPlusMinus = False
-        Me.tvSettings.Size = New System.Drawing.Size(242, 402)
+        Me.tvSettings.Size = New System.Drawing.Size(242, 422)
         Me.tvSettings.TabIndex = 7
         '
         'pnlGeneral
@@ -2509,9 +2536,9 @@ Partial Class dlgSettings
         Me.pnlMovieGeneral.Controls.Add(Me.GroupBox27)
         Me.pnlMovieGeneral.Controls.Add(Me.GroupBox12)
         Me.pnlMovieGeneral.Controls.Add(Me.GroupBox2)
-        Me.pnlMovieGeneral.Location = New System.Drawing.Point(774, 641)
+        Me.pnlMovieGeneral.Location = New System.Drawing.Point(922, 570)
         Me.pnlMovieGeneral.Name = "pnlMovieGeneral"
-        Me.pnlMovieGeneral.Size = New System.Drawing.Size(617, 400)
+        Me.pnlMovieGeneral.Size = New System.Drawing.Size(617, 420)
         Me.pnlMovieGeneral.TabIndex = 15
         Me.pnlMovieGeneral.Visible = False
         '
@@ -7702,7 +7729,7 @@ Partial Class dlgSettings
         Me.pnlMain.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pnlMain.Location = New System.Drawing.Point(251, 147)
         Me.pnlMain.Name = "pnlMain"
-        Me.pnlMain.Size = New System.Drawing.Size(636, 402)
+        Me.pnlMain.Size = New System.Drawing.Size(636, 422)
         Me.pnlMain.TabIndex = 9
         '
         'gbHelp
@@ -7741,7 +7768,7 @@ Partial Class dlgSettings
         Me.Panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.Panel2.Controls.Add(Me.gbHelp)
         Me.Panel2.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Panel2.Location = New System.Drawing.Point(5, 555)
+        Me.Panel2.Location = New System.Drawing.Point(5, 575)
         Me.Panel2.Name = "Panel2"
         Me.Panel2.Size = New System.Drawing.Size(636, 69)
         Me.Panel2.TabIndex = 8
@@ -7834,9 +7861,9 @@ Partial Class dlgSettings
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.btnCancel
-        Me.ClientSize = New System.Drawing.Size(892, 627)
-        Me.Controls.Add(Me.pnlMovieImages)
+        Me.ClientSize = New System.Drawing.Size(892, 647)
         Me.Controls.Add(Me.pnlMovieGeneral)
+        Me.Controls.Add(Me.pnlMovieImages)
         Me.Controls.Add(Me.pnlMovieSources)
         Me.Controls.Add(Me.pnlTVScraper)
         Me.Controls.Add(Me.pnlMovieTrailers)
@@ -8142,7 +8169,7 @@ Partial Class dlgSettings
     Friend WithEvents txtBDPath As System.Windows.Forms.TextBox
     Friend WithEvents btnBrowse As System.Windows.Forms.Button
     Friend WithEvents chkAutoBD As System.Windows.Forms.CheckBox
-    Friend WithEvents chkMovieExtraCol As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMovieEThumbsCol As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieSubCol As System.Windows.Forms.CheckBox
     Friend WithEvents pnlMovieSources As System.Windows.Forms.Panel
     Friend WithEvents lbGenre As System.Windows.Forms.CheckedListBox
@@ -8680,4 +8707,6 @@ Partial Class dlgSettings
     Friend WithEvents chkMovieOverwriteEThumbs As System.Windows.Forms.CheckBox
     Friend WithEvents gbXBMCOptional As System.Windows.Forms.GroupBox
     Friend WithEvents chkXBMCTrailerFormat As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMovieWatchedCol As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMovieEFanartsCol As System.Windows.Forms.CheckBox
 End Class

@@ -445,7 +445,7 @@ Namespace MediaContainers
         Private _runtime As String
         Private _trailer As String
         Private _playcount As String
-        Private _watched As String
+        'Private _watched As String
         Private _actors As New List(Of Person)
         Private _thumb As New List(Of String)
         Private _fanart As New Fanart
@@ -964,22 +964,22 @@ Namespace MediaContainers
             End Get
         End Property
 
-        <XmlElement("watched")> _
-        Public Property Watched() As String
-            Get
-                Return Me._watched
-            End Get
-            Set(ByVal value As String)
-                Me._watched = value
-            End Set
-        End Property
+        '<XmlElement("watched")> _
+        'Public Property Watched() As String
+        '    Get
+        '        Return Me._watched
+        '    End Get
+        '    Set(ByVal value As String)
+        '        Me._watched = value
+        '    End Set
+        'End Property
 
-        <XmlIgnore()> _
-        Public ReadOnly Property WatchedSpecified() As Boolean
-            Get
-                Return Not String.IsNullOrEmpty(Me._watched)
-            End Get
-        End Property
+        '<XmlIgnore()> _
+        'Public ReadOnly Property WatchedSpecified() As Boolean
+        '    Get
+        '        Return Not String.IsNullOrEmpty(Me._watched)
+        '    End Get
+        'End Property
 
         <XmlElement("actor")> _
         Public Property Actors() As List(Of Person)
@@ -1303,7 +1303,6 @@ Namespace MediaContainers
             Me._directors.Clear()
             Me._credits.Clear()
             Me._playcount = String.Empty
-            Me._watched = String.Empty
             Me._thumb.Clear()
             Me._fanart = New Fanart
             Me._actors.Clear()

@@ -2324,13 +2324,13 @@ doCancel:
 
     Private Sub cmnuMovieWatched_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieWatched.Click
         Try
-            Dim setHasWatched As Boolean = False
+            Dim setWatched As Boolean = False
             If Me.dgvMovies.SelectedRows.Count > 1 Then
                 For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
-                    'if any one item is set as watched, set menu to watched
-                    'else they are all watched, so set menu to unwatched
+                    'if any one item is set as not watched, set menu to watched
+                    'else they are all watched so set menu to not watched
                     If Not Convert.ToBoolean(sRow.Cells(34).Value) Then
-                        setHasWatched = True
+                        setWatched = True
                         Exit For
                     End If
                 Next
@@ -2338,32 +2338,49 @@ doCancel:
 
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MediaDBConn.BeginTransaction()
                 Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
-                    Dim parHasWatched As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasWatched", DbType.Boolean, 0, "HasWatched")
+                    Dim parPlaycount As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPlaycount", DbType.String, 0, "Playcount")
                     Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
-                    SQLcommand.CommandText = "UPDATE movies SET HasWatched = (?) WHERE id = (?);"
+                    SQLcommand.CommandText = "UPDATE movies SET Playcount = (?) WHERE id = (?);"
                     For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
-                        parHasWatched.Value = If(Me.dgvMovies.SelectedRows.Count > 1, setHasWatched, Not Convert.ToBoolean(sRow.Cells(34).Value))
+                        Dim currPlaycount As String = String.Empty
+                        Dim hasWatched As Boolean = False
+                        Dim newPlaycount As String = String.Empty
+
+                        currPlaycount = Convert.ToString(sRow.Cells(33).Value)
+                        hasWatched = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", True, False)
+
+                        If Me.dgvMovies.SelectedRows.Count > 1 AndAlso setWatched Then
+                            newPlaycount = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", currPlaycount, "1")
+                        ElseIf Not hasWatched Then
+                            newPlaycount = "1"
+                        Else
+                            newPlaycount = "0"
+                        End If
+
+                        parPlaycount.Value = newPlaycount
                         parID.Value = sRow.Cells(0).Value
                         SQLcommand.ExecuteNonQuery()
-                        sRow.Cells(34).Value = parHasWatched.Value
+                        sRow.Cells(33).Value = newPlaycount
+                        sRow.Cells(34).Value = If(Me.dgvMovies.SelectedRows.Count > 1, setWatched, Not hasWatched)
                     Next
                 End Using
                 SQLtransaction.Commit()
+
             End Using
 
-            setHasWatched = False
-            For Each sRow As DataGridViewRow In Me.dgvMovies.Rows
-                If Convert.ToBoolean(sRow.Cells(34).Value) Then
-                    setHasWatched = True
-                    Exit For
-                End If
-            Next
-            'Me.btnMarkAll.Text = If(setHasWatched, Master.eLang.GetString(105, "Unmark All"), Master.eLang.GetString(35, "Mark All"))
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MediaDBConn.BeginTransaction()
+                For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
+                    Me.RefreshMovie(Convert.ToInt64(sRow.Cells(0).Value), True, False, True)
+                Next
+                SQLtransaction.Commit()
+            End Using
 
-            'If Me.chkFilterMark.Checked Then
-            '    Me.dgvMediaList.ClearSelection()
-            '    Me.dgvMediaList.CurrentCell = Nothing
-            '    If Me.dgvMediaList.RowCount <= 0 Then Me.ClearInfo()
+            Me.LoadInfo(Convert.ToInt32(Me.dgvMovies.Item(0, Me.dgvMovies.CurrentCell.RowIndex).Value), Me.dgvMovies.Item(1, Me.dgvMovies.CurrentCell.RowIndex).Value.ToString, True, False)
+
+            'If Me.chkFilterLock.Checked Then
+            '    Me.dgvMovies.ClearSelection()
+            '    Me.dgvMovies.CurrentCell = Nothing
+            '    If Me.dgvMovies.RowCount <= 0 Then Me.ClearInfo()
             'End If
 
             Me.dgvMovies.Invalidate()
@@ -3532,6 +3549,7 @@ doCancel:
                     If Me.dgvMovies.SelectedRows.Count > 1 AndAlso Me.dgvMovies.Rows(e.RowIndex).Selected Then
                         Dim setMark As Boolean = False
                         Dim setLock As Boolean = False
+                        Dim setWatched As Boolean = False
 
                         Me.cmnuMovieTitle.Text = Master.eLang.GetString(106, ">> Multiple <<")
 
@@ -3540,18 +3558,25 @@ doCancel:
                             'else they are all marked, so set menu to unmark
                             If Not Convert.ToBoolean(sRow.Cells(11).Value) Then
                                 setMark = True
-                                If setLock Then Exit For
+                                If setLock AndAlso setWatched Then Exit For
                             End If
                             'if any one item is set as unlocked, set menu to lock
                             'else they are all locked so set menu to unlock
                             If Not Convert.ToBoolean(sRow.Cells(14).Value) Then
                                 setLock = True
-                                If setMark Then Exit For
+                                If setMark AndAlso setWatched Then Exit For
+                            End If
+                            'if any one item is set as unwatched, set menu to watched
+                            'else they are all watched so set menu to not watched
+                            If Not Convert.ToBoolean(sRow.Cells(34).Value) Then
+                                setWatched = True
+                                If setLock AndAlso setMark Then Exit For
                             End If
                         Next
 
                         Me.cmnuMovieMark.Text = If(setMark, Master.eLang.GetString(23, "Mark"), Master.eLang.GetString(107, "Unmark"))
                         Me.cmnuMovieLock.Text = If(setLock, Master.eLang.GetString(24, "Lock"), Master.eLang.GetString(108, "Unlock"))
+                        Me.cmnuMovieWatched.Text = If(setWatched, Master.eLang.GetString(981, "Watched"), Master.eLang.GetString(980, "Not Watched"))
 
                         Me.cmnuMovieGenresGenre.Items.Insert(0, Master.eLang.GetString(98, "Select Genre..."))
                         Me.cmnuMovieGenresGenre.SelectedItem = Master.eLang.GetString(98, "Select Genre...")
@@ -3581,6 +3606,7 @@ doCancel:
 
                         Me.cmnuMovieMark.Text = If(Convert.ToBoolean(Me.dgvMovies.Item(11, e.RowIndex).Value), Master.eLang.GetString(107, "Unmark"), Master.eLang.GetString(23, "Mark"))
                         Me.cmnuMovieLock.Text = If(Convert.ToBoolean(Me.dgvMovies.Item(14, e.RowIndex).Value), Master.eLang.GetString(108, "Unlock"), Master.eLang.GetString(24, "Lock"))
+                        Me.cmnuMovieWatched.Text = If(Convert.ToBoolean(Me.dgvMovies.Item(34, e.RowIndex).Value), Master.eLang.GetString(980, "Not Watched"), Master.eLang.GetString(981, "Watched"))
 
                         Me.cmnuMovieGenresGenre.Tag = Me.dgvMovies.Item(27, e.RowIndex).Value
                         Me.cmnuMovieGenresGenre.Items.Insert(0, Master.eLang.GetString(98, "Select Genre..."))
@@ -3639,7 +3665,7 @@ doCancel:
         If Not String.IsNullOrEmpty(oldStatus) Then Me.SetStatus(oldStatus)
     End Sub
 
-    Private Sub dgvMediaList_CellPainting(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellPaintingEventArgs) Handles dgvMovies.CellPainting
+    Private Sub dgvMovies_CellPainting(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellPaintingEventArgs) Handles dgvMovies.CellPainting
         Try
 
             If Master.isWindows AndAlso e.RowIndex >= 0 AndAlso Not Me.dgvMovies.Item(e.ColumnIndex, e.RowIndex).Displayed Then
@@ -3648,7 +3674,7 @@ doCancel:
             End If
 
             'icons
-            If e.ColumnIndex >= 4 AndAlso e.ColumnIndex <= 9 AndAlso e.RowIndex = -1 Then
+            If e.ColumnIndex >= 4 AndAlso e.ColumnIndex <= 34 AndAlso e.RowIndex = -1 Then
                 e.PaintBackground(e.ClipBounds, False)
 
                 Dim pt As Point = e.CellBounds.Location
@@ -3656,18 +3682,23 @@ doCancel:
 
                 pt.X += offset
                 pt.Y = 3
-                Me.ilColumnIcons.Draw(e.Graphics, pt, e.ColumnIndex - 4)
+                If e.ColumnIndex = 34 Then
+                    Me.ilColumnIcons.Draw(e.Graphics, pt, e.ColumnIndex - 26)
+                Else
+                    Me.ilColumnIcons.Draw(e.Graphics, pt, e.ColumnIndex - 4)
+                End If
 
                 e.Handled = True
 
             End If
 
+            'text
             If e.ColumnIndex = 3 AndAlso e.RowIndex >= 0 Then
-                If Convert.ToBoolean(Me.dgvMovies.Item(11, e.RowIndex).Value) Then
+                If Convert.ToBoolean(Me.dgvMovies.Item(11, e.RowIndex).Value) Then                  'is marked
                     e.CellStyle.ForeColor = Color.Crimson
                     e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
                     e.CellStyle.SelectionForeColor = Color.Crimson
-                ElseIf Convert.ToBoolean(Me.dgvMovies.Item(10, e.RowIndex).Value) Then
+                ElseIf Convert.ToBoolean(Me.dgvMovies.Item(10, e.RowIndex).Value) Then              'is new
                     e.CellStyle.ForeColor = Color.Green
                     e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
                     e.CellStyle.SelectionForeColor = Color.Green
@@ -3678,11 +3709,11 @@ doCancel:
                 End If
             End If
 
-            If e.ColumnIndex >= 3 AndAlso e.ColumnIndex <= 9 AndAlso e.RowIndex >= 0 Then
-                If Convert.ToBoolean(Me.dgvMovies.Item(14, e.RowIndex).Value) Then
+            If e.ColumnIndex >= 3 AndAlso e.ColumnIndex <= 34 AndAlso e.RowIndex >= 0 Then
+                If Convert.ToBoolean(Me.dgvMovies.Item(14, e.RowIndex).Value) Then                  'is locked
                     e.CellStyle.BackColor = Color.LightSteelBlue
                     e.CellStyle.SelectionBackColor = Color.DarkTurquoise
-                ElseIf Convert.ToBoolean(Me.dgvMovies.Item(44, e.RowIndex).Value) Then
+                ElseIf Convert.ToBoolean(Me.dgvMovies.Item(44, e.RowIndex).Value) Then              'use folder
                     e.CellStyle.BackColor = Color.MistyRose
                     e.CellStyle.SelectionBackColor = Color.DarkMagenta
                 Else
@@ -3690,7 +3721,7 @@ doCancel:
                     e.CellStyle.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
                 End If
 
-                If e.ColumnIndex >= 4 AndAlso e.ColumnIndex <= 9 Then
+                If e.ColumnIndex >= 4 AndAlso e.ColumnIndex <= 34 Then
                     e.PaintBackground(e.ClipBounds, True)
 
                     Dim pt As Point = e.CellBounds.Location
@@ -3703,7 +3734,7 @@ doCancel:
                 End If
             End If
 
-            Me.tpMovies.Text = String.Format("{0} ({1})", Master.eLang.GetString(36, "Movies"), Me.dgvMovies.RowCount)
+                Me.tpMovies.Text = String.Format("{0} ({1})", Master.eLang.GetString(36, "Movies"), Me.dgvMovies.RowCount)
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -4026,6 +4057,7 @@ doCancel:
                         Else
                             Dim setMark As Boolean = False
                             Dim setLock As Boolean = False
+                            Dim setWatched As Boolean = False
 
                             Me.ShowEpisodeMenuItems(True)
 
@@ -4050,10 +4082,17 @@ doCancel:
                                     setLock = True
                                     If setMark Then Exit For
                                 End If
+                                'if any one item is set as unwatched, set menu to watched
+                                'else they are all watched so set menu to not watched
+                                If Not Convert.ToBoolean(sRow.Cells(24).Value) Then
+                                    setWatched = True
+                                    If setWatched Then Exit For
+                                End If
                             Next
 
                             Me.cmnuEpisodeMark.Text = If(setMark, Master.eLang.GetString(23, "Mark"), Master.eLang.GetString(107, "Unmark"))
                             Me.cmnuEpisodeLock.Text = If(setLock, Master.eLang.GetString(24, "Lock"), Master.eLang.GetString(108, "Unlock"))
+                            Me.cmnuEpisodeWatched.Text = If(setWatched, Master.eLang.GetString(981, "Watched"), Master.eLang.GetString(980, "Not Watched"))
                         End If
                     Else
                         cmnuEpisodeTitle.Text = String.Concat(">> ", Me.dgvTVEpisodes.Item(3, dgvHTI.RowIndex).Value, " <<")
@@ -4901,22 +4940,53 @@ doCancel:
                         .dgvMovies.Columns(9).Resizable = DataGridViewTriState.False
                         .dgvMovies.Columns(9).ReadOnly = True
                         .dgvMovies.Columns(9).SortMode = DataGridViewColumnSortMode.Automatic
-                        .dgvMovies.Columns(9).Visible = Not Master.eSettings.MovieExtraCol
+                        .dgvMovies.Columns(9).Visible = Not Master.eSettings.MovieEThumbsCol
                         .dgvMovies.Columns(9).ToolTipText = Master.eLang.GetString(153, "Extrathumbs")
-                        For i As Integer = 10 To .dgvMovies.Columns.Count - 1
+                        .dgvMovies.Columns(10).Visible = False
+                        .dgvMovies.Columns(11).Visible = False
+                        .dgvMovies.Columns(12).Visible = False
+                        .dgvMovies.Columns(13).Visible = False
+                        .dgvMovies.Columns(14).Visible = False
+                        .dgvMovies.Columns(15).Visible = False
+                        .dgvMovies.Columns(16).Visible = False
+                        .dgvMovies.Columns(17).Visible = False
+                        .dgvMovies.Columns(18).Visible = False
+                        .dgvMovies.Columns(19).Visible = False
+                        .dgvMovies.Columns(20).Visible = False
+                        .dgvMovies.Columns(21).Visible = False
+                        .dgvMovies.Columns(22).Visible = False
+                        .dgvMovies.Columns(23).Visible = False
+                        .dgvMovies.Columns(24).Visible = False
+                        .dgvMovies.Columns(25).Visible = False
+                        .dgvMovies.Columns(26).Visible = False
+                        .dgvMovies.Columns(27).Visible = False
+                        .dgvMovies.Columns(28).Visible = False
+                        .dgvMovies.Columns(29).Visible = False
+                        .dgvMovies.Columns(30).Visible = False
+                        .dgvMovies.Columns(31).Visible = False
+                        .dgvMovies.Columns(32).Visible = False
+                        .dgvMovies.Columns(33).Visible = False
+                        .dgvMovies.Columns(34).Width = 20
+                        .dgvMovies.Columns(34).Resizable = DataGridViewTriState.False
+                        .dgvMovies.Columns(34).ReadOnly = True
+                        .dgvMovies.Columns(34).SortMode = DataGridViewColumnSortMode.Automatic
+                        .dgvMovies.Columns(34).Visible = Not Master.eSettings.MovieWatchedCol
+                        .dgvMovies.Columns(34).ToolTipText = Master.eLang.GetString(981, "Watched")
+
+                        For i As Integer = 35 To .dgvMovies.Columns.Count - 1
                             .dgvMovies.Columns(i).Visible = False
                         Next
 
-                        .dgvMovies.Columns(0).ValueType = GetType(Int32)
+                            .dgvMovies.Columns(0).ValueType = GetType(Int32)
 
-                        If Master.isWindows Then .dgvMovies.Columns(3).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
-                        ResizeMediaList()
+                            If Master.isWindows Then .dgvMovies.Columns(3).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+                            ResizeMediaList()
 
-                        If .dgvMovies.RowCount > 0 AndAlso Me.tcMain.SelectedIndex = 0 Then
-                            .dgvMovies.Sort(.dgvMovies.Columns(3), ComponentModel.ListSortDirection.Ascending)
+                            If .dgvMovies.RowCount > 0 AndAlso Me.tcMain.SelectedIndex = 0 Then
+                                .dgvMovies.Sort(.dgvMovies.Columns(3), ComponentModel.ListSortDirection.Ascending)
 
-                            .SetControlsEnabled(True)
-                        End If
+                                .SetControlsEnabled(True)
+                            End If
 
                     End With
                 End If
@@ -7549,6 +7619,7 @@ doCancel:
         Dim hasSub As Boolean = False
         Dim hasEThumbs As Boolean = False
         Dim hasEFanarts As Boolean = False
+        Dim hasWatched As Boolean = False
 
         Dim myDelegate As New MydtListUpdate(AddressOf dtListUpdate)
 
@@ -7629,6 +7700,7 @@ doCancel:
                 hasSub = Not String.IsNullOrEmpty(mContainer.Subs)
                 hasEThumbs = Not String.IsNullOrEmpty(mContainer.EThumbs)
                 hasEFanarts = Not String.IsNullOrEmpty(mContainer.EFanarts)
+                hasWatched = Not String.IsNullOrEmpty(tmpMovieDb.Movie.PlayCount) AndAlso Not tmpMovieDb.Movie.PlayCount = "0"
 
                 Dim dRow = From drvRow In dtMedia.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item(0)) = ID Select drvRow
 
@@ -7650,6 +7722,7 @@ doCancel:
                         Me.Invoke(myDelegate, New Object() {dRow(0), 15, tmpMovieDb.Movie.Title})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 47, tmpMovieDb.Movie.SortTitle})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 27, tmpMovieDb.Movie.Genre})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 34, hasWatched})
                     Else
                         selRow.Item(1) = tmpMovieDb.Filename
                         selRow.Item(3) = tmpMovieDb.ListTitle
@@ -7663,6 +7736,7 @@ doCancel:
                         selRow.Item(15) = tmpMovieDb.Movie.Title
                         selRow.Item(47) = tmpMovieDb.Movie.SortTitle
                         selRow.Item(27) = tmpMovieDb.Movie.Genre
+                        selRow.Item(34) = hasWatched
                     End If
                 End If
                 'Why on earth resave the movie if we just refreshed its data (causes issues with saving rescrapes_
@@ -7956,7 +8030,8 @@ doCancel:
                 If(Master.eSettings.MovieInfoCol, 0, 20) - _
                 If(Master.eSettings.MovieTrailerCol, 0, 20) - _
                 If(Master.eSettings.MovieSubCol, 0, 20) - _
-                If(Master.eSettings.MovieExtraCol, 0, 20) - _
+                If(Master.eSettings.MovieEThumbsCol, 0, 20) - _
+                If(Master.eSettings.MovieWatchedCol, 0, 20) - _
                 If(Me.dgvMovies.DisplayRectangle.Height > Me.dgvMovies.ClientRectangle.Height, 0, SystemInformation.VerticalScrollBarWidth)
             End If
         End If
@@ -8688,7 +8763,8 @@ doCancel:
                 Me.dgvMovies.Columns(6).Visible = Not Master.eSettings.MovieInfoCol
                 Me.dgvMovies.Columns(7).Visible = Not Master.eSettings.MovieTrailerCol
                 Me.dgvMovies.Columns(8).Visible = Not Master.eSettings.MovieSubCol
-                Me.dgvMovies.Columns(9).Visible = Not Master.eSettings.MovieExtraCol
+                Me.dgvMovies.Columns(9).Visible = Not Master.eSettings.MovieEThumbsCol
+                Me.dgvMovies.Columns(34).Visible = Not Master.eSettings.MovieWatchedCol
             End If
 
             If Me.dgvTVShows.RowCount > 0 Then

@@ -1877,7 +1877,8 @@ Public Class dlgEditMovie
         Me.btnEFanartsSetAsFanart.Text = Me.btnEThumbsSetAsFanart.Text
         Me.tpFrameExtraction.Text = Master.eLang.GetString(256, "Frame Extraction")
         Me.chkMark.Text = Master.eLang.GetString(23, "Mark")
-        Me.btnRescrape.Text = Master.eLang.GetString(716, "Re-scrape")
+        Me.chkWatched.Text = Master.eLang.GetString(981, "Watched")
+        Me.btnRescrape.Text = Master.eLang.GetString(716, "Re-Scrape")
         Me.btnChangeMovie.Text = Master.eLang.GetString(32, "Change Movie")
         Me.btnSetPosterDL.Text = Master.eLang.GetString(265, "Change Poster (Download)")
         Me.btnSetFanartDL.Text = Master.eLang.GetString(266, "Change Fanart (Download)")

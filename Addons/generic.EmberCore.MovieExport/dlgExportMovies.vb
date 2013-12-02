@@ -326,7 +326,7 @@ Public Class dlgExportMovies
                 row = row.Replace("<$TOP250>", StringUtils.HtmlEncode(_curMovie.Movie.Top250))
                 row = row.Replace("<$TRAILER>", StringUtils.HtmlEncode(_curMovie.Movie.Trailer))
                 row = row.Replace("<$VIDEOSOURCE>", StringUtils.HtmlEncode(_curMovie.Movie.VideoSource))
-                row = row.Replace("<$WATCHED>", StringUtils.HtmlEncode(_curMovie.Movie.Watched))
+                'row = row.Replace("<$WATCHED>", StringUtils.HtmlEncode(_curMovie.Movie.Watched))
                 'cocotus end
 
 

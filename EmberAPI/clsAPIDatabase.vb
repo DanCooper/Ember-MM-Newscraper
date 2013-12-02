@@ -1507,7 +1507,7 @@ Public Class Database
                 parHasSub.Value = Not String.IsNullOrEmpty(_movieDB.SubPath)
                 parHasEThumbs.Value = Not String.IsNullOrEmpty(_movieDB.EThumbsPath)
                 parHasEFanarts.Value = Not String.IsNullOrEmpty(_movieDB.EFanartsPath)
-                parHasWatched.Value = Not String.IsNullOrEmpty(_movieDB.Movie.PlayCount)
+                parHasWatched.Value = Not String.IsNullOrEmpty(_movieDB.Movie.PlayCount) AndAlso Not _movieDB.Movie.PlayCount = "0"
 
                 parNew.Value = IsNew
                 parMark.Value = _movieDB.IsMark
@@ -1534,7 +1534,6 @@ Public Class Database
                 parDirector.Value = _movieDB.Movie.Director
                 parCredits.Value = _movieDB.Movie.OldCredits
                 parPlaycount.Value = _movieDB.Movie.PlayCount
-                'parWatched.Value = _movieDB.Movie.Watched
                 parTrailer.Value = _movieDB.Movie.Trailer
 
                 parUseFolder.Value = _movieDB.UseFolder
@@ -1877,7 +1876,7 @@ Public Class Database
                 parHasPoster.Value = Not String.IsNullOrEmpty(_TVEpDB.EpPosterPath)
                 parHasFanart.Value = Not String.IsNullOrEmpty(_TVEpDB.EpFanartPath)
                 parHasNfo.Value = Not String.IsNullOrEmpty(_TVEpDB.EpNfoPath)
-                parHasWatched.Value = Not String.IsNullOrEmpty(_TVEpDB.TVEp.Playcount)
+                parHasWatched.Value = Not String.IsNullOrEmpty(_TVEpDB.TVEp.Playcount) AndAlso Not _TVEpDB.TVEp.Playcount = "0"
                 parNew.Value = IsNew
                 parMark.Value = _TVEpDB.IsMarkEp
                 parTVEpPathID.Value = PathID

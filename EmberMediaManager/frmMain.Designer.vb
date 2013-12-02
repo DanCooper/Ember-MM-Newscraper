@@ -1970,7 +1970,7 @@ Partial Class frmMain
         Me.tpShows.Location = New System.Drawing.Point(4, 23)
         Me.tpShows.Name = "tpShows"
         Me.tpShows.Padding = New System.Windows.Forms.Padding(3)
-        Me.tpShows.Size = New System.Drawing.Size(351, 0)
+        Me.tpShows.Size = New System.Drawing.Size(356, 0)
         Me.tpShows.TabIndex = 1
         Me.tpShows.Text = "TV Shows"
         Me.tpShows.UseVisualStyleBackColor = True
