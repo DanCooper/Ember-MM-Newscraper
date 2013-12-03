@@ -1947,7 +1947,7 @@ doCancel:
         End Try
     End Sub
 
-    Private Sub CleanDatabaseToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsCleanDB.Click, cmnuTrayToolsCleanDB.Click
+    Private Sub mnuMainToolsCleanDB_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsCleanDB.Click, cmnuTrayToolsCleanDB.Click
         Me.SetControlsEnabled(False, True)
         Me.tspbLoading.Style = ProgressBarStyle.Marquee
         Me.EnableFilters(False)
@@ -8157,12 +8157,12 @@ doCancel:
         End Try
     End Sub
 
-    Private Sub cmnuSelAskAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskAll.Click
+    Private Sub cmnuMovieReSelAskAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskAll.Click
         Functions.SetScraperMod(Enums.ModType.All, True)
         MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
     End Sub
 
-    Private Sub cmnuSelAutoAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAutoAll.Click
+    Private Sub cmnuMovieReSelAutoAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAutoAll.Click
         Functions.SetScraperMod(Enums.ModType.All, True)
         MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
     End Sub
@@ -8188,62 +8188,62 @@ doCancel:
         End Try
     End Sub
 
-    Private Sub cmnuSelAskEThumbs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskEThumbs.Click
+    Private Sub cmnuMovieReSelAskEThumbs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskEThumbs.Click
         Functions.SetScraperMod(Enums.ModType.EThumbs, True)
         MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
     End Sub
 
-    Private Sub cmnuSelAskEFanarts_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskEFanarts.Click
+    Private Sub cmnuMovieReSelAskEFanarts_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskEFanarts.Click
         Functions.SetScraperMod(Enums.ModType.EFanarts, True)
         MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
     End Sub
 
-    Private Sub cmnuSelAutoEThumbs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAutoEThumbs.Click
+    Private Sub cmnuMovieReSelAutoEThumbs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAutoEThumbs.Click
         Functions.SetScraperMod(Enums.ModType.EThumbs, True)
         MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
     End Sub
 
-    Private Sub cmnuSelAutoEFanarts_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAutoEFanarts.Click
+    Private Sub cmnuMovieReSelAutoEFanarts_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAutoEFanarts.Click
         Functions.SetScraperMod(Enums.ModType.EFanarts, True)
         MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
     End Sub
 
-    Private Sub cmnuSelAskFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskFanart.Click
+    Private Sub cmnuMovieReSelAskFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskFanart.Click
         Functions.SetScraperMod(Enums.ModType.Fanart, True)
         MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
     End Sub
 
-    Private Sub cmnuSelAutoFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAutoFanart.Click
+    Private Sub cmnuMovieReSelAutoFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAutoFanart.Click
         Functions.SetScraperMod(Enums.ModType.Fanart, True)
         MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
     End Sub
 
-    Private Sub cmnuSelAskMI_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskMetaData.Click
+    Private Sub cmnuMovieReSelAskMetaData_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskMetaData.Click
         Functions.SetScraperMod(Enums.ModType.Meta, True)
         MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
     End Sub
 
-    Private Sub cmnuSelAutoMI_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAutoMetaData.Click
+    Private Sub cmnuMovieReSelAutoMetaData_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAutoMetaData.Click
         Functions.SetScraperMod(Enums.ModType.Meta, True)
         MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
     End Sub
 
-    Private Sub cmnuSelAskNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskNfo.Click
+    Private Sub cmnuMovieReSelAskNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskNfo.Click
         Functions.SetScraperMod(Enums.ModType.NFO, True)
         MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
     End Sub
 
-    Private Sub cmnuSelAutoNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAutoNfo.Click
+    Private Sub cmnuMovieReSelAutoNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAutoNfo.Click
         Functions.SetScraperMod(Enums.ModType.NFO, True)
         MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
     End Sub
 
-    Private Sub cmnuSelAutoPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAutoPoster.Click
+    Private Sub cmnuMovieReSelAutoPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAutoPoster.Click
         Functions.SetScraperMod(Enums.ModType.Poster, True)
         MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultOptions)
     End Sub
 
-    Private Sub cmnuSelAskPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskPoster.Click
+    Private Sub cmnuMovieReSelAskPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskPoster.Click
         Functions.SetScraperMod(Enums.ModType.Poster, True)
         MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
     End Sub
@@ -8712,7 +8712,16 @@ doCancel:
         End Try
     End Sub
 
-    Private Sub SetsManagerToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsSetsManager.Click, cmnuTrayToolsSetsManager.Click
+    Private Sub mnuMainToolsOfflineMM_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsOfflineHolder.Click, cmnuTrayToolsOfflineHolder.Click
+        Me.SetControlsEnabled(False)
+        Using dOfflineHolder As New dlgOfflineHolder
+            dOfflineHolder.ShowDialog()
+        End Using
+        Me.LoadMedia(New Structures.Scans With {.Movies = True, .TV = False})
+        Me.SetControlsEnabled(True)
+    End Sub
+
+    Private Sub mnuMainToolsSetsManager_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsSetsManager.Click, cmnuTrayToolsSetsManager.Click
         Me.SetControlsEnabled(False)
         Using dSetsManager As New dlgSetsManager
             dSetsManager.ShowDialog()
@@ -8868,92 +8877,6 @@ doCancel:
         Try
             With Me
                 .MinimumSize = New Size(800, 600)
-
-                .btnSortDate.Tag = String.Empty
-                .pnlFilterGenre.Tag = String.Empty
-                .pnlFilterSource.Tag = String.Empty
-                .btnSortTitle.Tag = String.Empty
-                .btnIMDBRating.Tag = String.Empty
-                .mnuMainFile.Text = Master.eLang.GetString(1, "&File")
-                .mnuMainFileExit.Text = Master.eLang.GetString(2, "E&xit")
-                .cmnuTrayExit.Text = Master.eLang.GetString(2, "E&xit")
-                .mnuMainEdit.Text = Master.eLang.GetString(3, "&Edit")
-                .mnuMainEditSettings.Text = Master.eLang.GetString(4, "&Settings...")
-                .cmnuTraySettings.Text = Master.eLang.GetString(4, "&Settings...")
-                .mnuMainHelp.Text = Master.eLang.GetString(5, "&Help")
-                .mnuMainHelpAbout.Text = Master.eLang.GetString(6, "&About...")
-                .tslLoading.Text = Master.eLang.GetString(7, "Loading Media:")
-                .mnuMainTools.Text = Master.eLang.GetString(8, "&Tools")
-                .cmnuTrayTools.Text = Master.eLang.GetString(8, "&Tools")
-                .mnuMainToolsCleanFiles.Text = Master.eLang.GetString(9, "&Clean Files")
-                .cmnuTrayToolsCleanFiles.Text = .mnuMainToolsCleanFiles.Text
-                .mnuMainToolsSortFiles.Text = Master.eLang.GetString(10, "&Sort Files Into Folders")
-                .cmnuTrayToolsSortFiles.Text = .mnuMainToolsSortFiles.Text
-                .mnuMainToolsBackdrops.Text = Master.eLang.GetString(11, "Copy Existing Fanart To &Backdrops Folder")
-                .cmnuTrayToolsBackdrops.Text = .mnuMainToolsBackdrops.Text
-                .mnuMainToolsSetsManager.Text = Master.eLang.GetString(14, "Sets &Manager")
-                .cmnuTrayToolsSetsManager.Text = .mnuMainToolsSetsManager.Text
-                .mnuMainToolsClearCache.Text = Master.eLang.GetString(17, "Clear &All Caches")
-                .cmnuTrayToolsClearCache.Text = .mnuMainToolsClearCache.Text
-                .mnuMainToolsReloadMovies.Text = Master.eLang.GetString(18, "Re&load All Movies")
-                .cmnuTrayToolsReloadMovies.Text = .mnuMainToolsReloadMovies.Text
-                .lblGFilClose.Text = Master.eLang.GetString(19, "Close")
-                .lblSFilClose.Text = Master.eLang.GetString(19, "Close")
-                .lblFilterGenres.Text = Master.eLang.GetString(20, "Genres")
-                .lblFilterSources.Text = Master.eLang.GetString(602, "Sources")
-                .cmnuMovieTitle.Text = Master.eLang.GetString(21, "Title")
-                .cmnuMovieReload.Text = Master.eLang.GetString(22, "Reload")
-                .cmnuMovieMark.Text = Master.eLang.GetString(23, "Mark")
-                .cmnuMovieLock.Text = Master.eLang.GetString(24, "Lock")
-                .cmnuMovieEdit.Text = Master.eLang.GetString(25, "Edit Movie")
-                .cmnuMovieGenres.Text = Master.eLang.GetString(20, "Genres")
-                .cmnuMovieGenresTitle.Text = Master.eLang.GetString(27, ">> Select Genre <<")
-                .cmnuMovieGenresAdd.Text = Master.eLang.GetString(28, "Add")
-                .cmnuMovieGenresSet.Text = Master.eLang.GetString(29, "Set")
-                .cmnuMovieGenresRemove.Text = Master.eLang.GetString(30, "Remove")
-                .cmnuMovieReSel.Text = Master.eLang.GetString(31, "(Re)Scrape Selected Movies")
-                .cmnuMovieChange.Text = Master.eLang.GetString(32, "Change Movie")
-                .cmnuMovieOpenFolder.Text = Master.eLang.GetString(33, "Open Containing Folder")
-                .cmnuShowOpenFolder.Text = .cmnuMovieOpenFolder.Text
-                .cmnuSeasonOpenFolder.Text = .cmnuMovieOpenFolder.Text
-                .cmnuEpisodeOpenFolder.Text = .cmnuMovieOpenFolder.Text
-                .cmnuMovieRemove.Text = Master.eLang.GetString(30, "Remove")
-                .cmnuMovieRemoveFromDisk.Text = Master.eLang.GetString(34, "Delete Movie")
-                .cmnuMovieRemoveFromDB.Text = Master.eLang.GetString(646, "Remove From Database")
-                .btnMarkAll.Text = Master.eLang.GetString(35, "Mark All")
-                .tpMovies.Text = Master.eLang.GetString(36, "Movies")
-                .tpShows.Text = Master.eLang.GetString(653, "TV")
-                .btnClearFilters.Text = Master.eLang.GetString(37, "Clear Filters")
-                .gbFilterGeneral.Text = Master.eLang.GetString(38, "General")
-                .chkFilterTolerance.Text = Master.eLang.GetString(39, "Out of Tolerance")
-                .chkFilterMissing.Text = Master.eLang.GetString(40, "Missing Items")
-                .chkFilterDupe.Text = Master.eLang.GetString(41, "Duplicates")
-                .gbFilterSpecific.Text = Master.eLang.GetString(42, "Specific")
-                .chkFilterLock.Text = Master.eLang.GetString(43, "Locked")
-                .gbFilterModifier.Text = Master.eLang.GetString(44, "Modifier")
-                .rbFilterAnd.Text = Master.eLang.GetString(45, "And")
-                .rbFilterOr.Text = Master.eLang.GetString(46, "Or")
-                .chkFilterNew.Text = Master.eLang.GetString(47, "New")
-                .chkFilterMark.Text = Master.eLang.GetString(48, "Marked")
-                .lblFilterYear.Text = Master.eLang.GetString(49, "Year:")
-                .lblFilterSource.Text = Master.eLang.GetString(50, "Source:")
-                .lblFilterGenre.Text = Master.eLang.GetString(51, "Genre:")
-                .lblFilter.Text = Master.eLang.GetString(52, "Filters")
-                .lblCanceling.Text = Master.eLang.GetString(53, "Canceling Scraper...")
-                .btnCancel.Text = Master.eLang.GetString(54, "Cancel Scraper")
-                .lblCertsHeader.Text = Master.eLang.GetString(56, "Certification(s)")
-                .lblReleaseDateHeader.Text = Master.eLang.GetString(57, "Release Date")
-                .btnMetaDataRefresh.Text = Master.eLang.GetString(58, "Refresh")
-                .lblMetaDataHeader.Text = Master.eLang.GetString(59, "Meta Data")
-                .lblFilePathHeader.Text = Master.eLang.GetString(60, "File Path")
-                .lblIMDBHeader.Text = Master.eLang.GetString(61, "IMDB ID")
-                .lblDirectorHeader.Text = Master.eLang.GetString(62, "Director")
-                .lblActorsHeader.Text = Master.eLang.GetString(63, "Cast")
-                .lblOutlineHeader.Text = Master.eLang.GetString(64, "Plot Outline")
-                .lblPlotHeader.Text = Master.eLang.GetString(65, "Plot")
-                .lblInfoPanelHeader.Text = Master.eLang.GetString(66, "Info")
-                .tsbAutoPilot.Text = Master.eLang.GetString(67, "Scrape Media")
-                .cmnuTrayScrape.Text = Master.eLang.GetString(67, "Scrape Media")
 
                 ' Scrape Media Menu: All Movies
                 .mnuAll.Text = Master.eLang.GetString(68, "All Movies")
@@ -9217,55 +9140,144 @@ doCancel:
                 .cmnuMovieReSelAskActor.Text = .mnuAllAutoActor.Text
                 .cmnuMovieReSelAutoActor.Text = .mnuAllAutoActor.Text
 
-                .mnuUpdateMovies.Text = Master.eLang.GetString(36, "Movies")
-                .mnuUpdateShows.Text = Master.eLang.GetString(653, "TV Shows")
-                .cmnuEpisodeEdit.Text = Master.eLang.GetString(656, "Edit Episode")
-                .cmnuShowEdit.Text = Master.eLang.GetString(663, "Edit Show")
-                .mnuUpdate.Text = Master.eLang.GetString(82, "Update Library")
-                .cmnuTrayUpdate.Text = Master.eLang.GetString(82, "Update Library")
-                .tsbMediaCenters.Text = Master.eLang.GetString(83, "Media Centers")
-                .cmnuTrayMediaCenters.Text = .tsbMediaCenters.Text
-                .lblFilterFileSource.Text = Master.eLang.GetString(579, "File Source:")
-                .gbSort.Text = Master.eLang.GetString(600, "Extra Sorting")
-                .btnSortDate.Text = Master.eLang.GetString(601, "Date Added")
-                .cmnuMovieEditMetaData.Text = Master.eLang.GetString(603, "Edit Meta Data")
-                .btnSortTitle.Text = Master.eLang.GetString(642, "Sort Title")
+                ' others
+                .btnCancel.Text = Master.eLang.GetString(54, "Cancel Scraper")
+                .btnClearFilters.Text = Master.eLang.GetString(37, "Clear Filters")
+                .btnIMDBRating.Tag = String.Empty
                 .btnIMDBRating.Text = Master.eLang.GetString(400, "Rating")
-                .mnuMainDonate.Text = Master.eLang.GetString(708, "Donate")
-                .mnuMainToolsCleanDB.Text = Master.eLang.GetString(709, "Clean Database")
-                .cmnuShowReload.Text = Master.eLang.GetString(22, "Reload")
-                .cmnuShowMark.Text = Master.eLang.GetString(23, "Mark")
-                .cmnuShowLock.Text = Master.eLang.GetString(24, "Lock")
-                .cmnuShowEdit.Text = Master.eLang.GetString(663, "Edit Show")
-                .cmnuShowRescrape.Text = Master.eLang.GetString(766, "(Re)Scrape Show")
-                .cmnuShowChange.Text = Master.eLang.GetString(767, "Change Show")
-                .cmnuShowRemove.Text = Master.eLang.GetString(30, "Remove")
-                .cmnuShowRemoveFromDB.Text = Master.eLang.GetString(646, "Remove from Database")
-                .cmnuShowRemoveFromDisk.Text = Master.eLang.GetString(768, "Delete TV Show")
-                .cmnuSeasonReload.Text = Master.eLang.GetString(22, "Reload")
-                .cmnuSeasonMark.Text = Master.eLang.GetString(23, "Mark")
-                .cmnuSeasonLock.Text = Master.eLang.GetString(24, "Lock")
-                .cmnuSeasonChangeImages.Text = Master.eLang.GetString(770, "Change Images")
-                .cmnuSeasonRescrape.Text = Master.eLang.GetString(146, "(Re)Scrape Season")
-                .cmnuSeasonRemove.Text = Master.eLang.GetString(30, "Remove")
-                .cmnuRemoveSeasonFromDB.Text = Master.eLang.GetString(646, "Remove from Database")
-                .cmnuSeasonRemoveFromDisk.Text = Master.eLang.GetString(771, "Delete Season")
-                .cmnuEpisodeReload.Text = Master.eLang.GetString(22, "Reload")
-                .cmnuEpisodeMark.Text = Master.eLang.GetString(23, "Mark")
-                .cmnuEpisodeLock.Text = Master.eLang.GetString(24, "Lock")
-                .cmnuEpisodeEdit.Text = Master.eLang.GetString(656, "Edit Episode")
-                .cmnuEpisodeRescrape.Text = Master.eLang.GetString(147, "(Re)Scrape Episode")
+                .btnMarkAll.Text = Master.eLang.GetString(35, "Mark All")
+                .btnMetaDataRefresh.Text = Master.eLang.GetString(58, "Refresh")
+                .btnSortDate.Tag = String.Empty
+                .btnSortDate.Text = Master.eLang.GetString(601, "Date Added")
+                .btnSortTitle.Tag = String.Empty
+                .btnSortTitle.Text = Master.eLang.GetString(642, "Sort Title")
+                .chkFilterDupe.Text = Master.eLang.GetString(41, "Duplicates")
+                .chkFilterLock.Text = Master.eLang.GetString(43, "Locked")
+                .chkFilterMark.Text = Master.eLang.GetString(48, "Marked")
+                .chkFilterMissing.Text = Master.eLang.GetString(40, "Missing Items")
+                .chkFilterNew.Text = Master.eLang.GetString(47, "New")
+                .chkFilterTolerance.Text = Master.eLang.GetString(39, "Out of Tolerance")
                 .cmnuEpisodeChange.Text = Master.eLang.GetString(772, "Change Episode")
+                .cmnuEpisodeEdit.Text = Master.eLang.GetString(656, "Edit Episode")
+                .cmnuEpisodeEdit.Text = Master.eLang.GetString(656, "Edit Episode")
+                .cmnuEpisodeLock.Text = Master.eLang.GetString(24, "Lock")
+                .cmnuEpisodeMark.Text = Master.eLang.GetString(23, "Mark")
+                .cmnuEpisodeReload.Text = Master.eLang.GetString(22, "Reload")
                 .cmnuEpisodeRemove.Text = Master.eLang.GetString(30, "Remove")
                 .cmnuEpisodeRemoveFromDB.Text = Master.eLang.GetString(646, "Remove from Database")
                 .cmnuEpisodeRemoveFromDisk.Text = Master.eLang.GetString(773, "Delete Episode")
-                .mnuMainDonate.Text = Master.eLang.GetString(708, "Donate")
-                .mnuMainHelpVersions.Text = Master.eLang.GetString(793, "&Versions...")
-                .mnuMainHelpUpdate.Text = Master.eLang.GetString(850, "&Check For Updates...")
-                .lblLoadSettings.Text = Master.eLang.GetString(484, "Loading Settings...")
+                .cmnuEpisodeRescrape.Text = Master.eLang.GetString(147, "(Re)Scrape Episode")
+                .cmnuMovieChange.Text = Master.eLang.GetString(32, "Change Movie")
+                .cmnuMovieEdit.Text = Master.eLang.GetString(25, "Edit Movie")
+                .cmnuMovieEditMetaData.Text = Master.eLang.GetString(603, "Edit Meta Data")
+                .cmnuMovieGenres.Text = Master.eLang.GetString(20, "Genres")
+                .cmnuMovieGenresAdd.Text = Master.eLang.GetString(28, "Add")
+                .cmnuMovieGenresRemove.Text = Master.eLang.GetString(30, "Remove")
+                .cmnuMovieGenresSet.Text = Master.eLang.GetString(29, "Set")
+                .cmnuMovieGenresTitle.Text = Master.eLang.GetString(27, ">> Select Genre <<")
+                .cmnuMovieLock.Text = Master.eLang.GetString(24, "Lock")
+                .cmnuMovieMark.Text = Master.eLang.GetString(23, "Mark")
+                .cmnuMovieOpenFolder.Text = Master.eLang.GetString(33, "Open Containing Folder")
+                .cmnuMovieReload.Text = Master.eLang.GetString(22, "Reload")
+                .cmnuMovieRemove.Text = Master.eLang.GetString(30, "Remove")
+                .cmnuMovieRemoveFromDB.Text = Master.eLang.GetString(646, "Remove From Database")
+                .cmnuMovieRemoveFromDisk.Text = Master.eLang.GetString(34, "Delete Movie")
                 .cmnuMovieRescrape.Text = Master.eLang.GetString(163, "(Re)Scrape Movie")
                 .cmnuMovieReSel.Text = Master.eLang.GetString(31, "(Re)Scrape Selected Movies")
+                .cmnuMovieReSel.Text = Master.eLang.GetString(31, "(Re)Scrape Selected Movies")
+                .cmnuMovieTitle.Text = Master.eLang.GetString(21, "Title")
+                .cmnuRemoveSeasonFromDB.Text = Master.eLang.GetString(646, "Remove from Database")
+                .cmnuSeasonChangeImages.Text = Master.eLang.GetString(770, "Change Images")
+                .cmnuSeasonLock.Text = Master.eLang.GetString(24, "Lock")
+                .cmnuSeasonMark.Text = Master.eLang.GetString(23, "Mark")
+                .cmnuSeasonReload.Text = Master.eLang.GetString(22, "Reload")
+                .cmnuSeasonRemove.Text = Master.eLang.GetString(30, "Remove")
+                .cmnuSeasonRemoveFromDisk.Text = Master.eLang.GetString(771, "Delete Season")
+                .cmnuSeasonRescrape.Text = Master.eLang.GetString(146, "(Re)Scrape Season")
+                .cmnuShowChange.Text = Master.eLang.GetString(767, "Change Show")
+                .cmnuShowEdit.Text = Master.eLang.GetString(663, "Edit Show")
+                .cmnuShowEdit.Text = Master.eLang.GetString(663, "Edit Show")
+                .cmnuShowLock.Text = Master.eLang.GetString(24, "Lock")
+                .cmnuShowMark.Text = Master.eLang.GetString(23, "Mark")
+                .cmnuShowReload.Text = Master.eLang.GetString(22, "Reload")
+                .cmnuShowRemove.Text = Master.eLang.GetString(30, "Remove")
+                .cmnuShowRemoveFromDB.Text = Master.eLang.GetString(646, "Remove from Database")
+                .cmnuShowRemoveFromDisk.Text = Master.eLang.GetString(768, "Delete TV Show")
+                .cmnuShowRescrape.Text = Master.eLang.GetString(766, "(Re)Scrape Show")
+                .cmnuTrayExit.Text = Master.eLang.GetString(2, "E&xit")
+                .cmnuTrayScrape.Text = Master.eLang.GetString(67, "Scrape Media")
+                .cmnuTraySettings.Text = Master.eLang.GetString(4, "&Settings...")
+                .cmnuTrayTools.Text = Master.eLang.GetString(8, "&Tools")
+                .cmnuTrayUpdate.Text = Master.eLang.GetString(82, "Update Library")
+                .gbFilterGeneral.Text = Master.eLang.GetString(38, "General")
+                .gbFilterModifier.Text = Master.eLang.GetString(44, "Modifier")
+                .gbFilterSpecific.Text = Master.eLang.GetString(42, "Specific")
+                .gbSort.Text = Master.eLang.GetString(600, "Extra Sorting")
+                .lblActorsHeader.Text = Master.eLang.GetString(63, "Cast")
+                .lblCanceling.Text = Master.eLang.GetString(53, "Canceling Scraper...")
+                .lblCertsHeader.Text = Master.eLang.GetString(56, "Certification(s)")
+                .lblDirectorHeader.Text = Master.eLang.GetString(62, "Director")
+                .lblFilePathHeader.Text = Master.eLang.GetString(60, "File Path")
+                .lblFilter.Text = Master.eLang.GetString(52, "Filters")
+                .lblFilterFileSource.Text = Master.eLang.GetString(579, "File Source:")
+                .lblFilterGenre.Text = Master.eLang.GetString(51, "Genre:")
+                .lblFilterGenres.Text = Master.eLang.GetString(20, "Genres")
+                .lblFilterSource.Text = Master.eLang.GetString(50, "Source:")
+                .lblFilterSources.Text = Master.eLang.GetString(602, "Sources")
+                .lblFilterYear.Text = Master.eLang.GetString(49, "Year:")
+                .lblGFilClose.Text = Master.eLang.GetString(19, "Close")
+                .lblIMDBHeader.Text = Master.eLang.GetString(61, "IMDB ID")
+                .lblInfoPanelHeader.Text = Master.eLang.GetString(66, "Info")
+                .lblLoadSettings.Text = Master.eLang.GetString(484, "Loading Settings...")
+                .lblMetaDataHeader.Text = Master.eLang.GetString(59, "Meta Data")
+                .lblOutlineHeader.Text = Master.eLang.GetString(64, "Plot Outline")
+                .lblPlotHeader.Text = Master.eLang.GetString(65, "Plot")
+                .lblReleaseDateHeader.Text = Master.eLang.GetString(57, "Release Date")
+                .lblSFilClose.Text = Master.eLang.GetString(19, "Close")
+                .mnuMainDonate.Text = Master.eLang.GetString(708, "Donate")
+                .mnuMainDonate.Text = Master.eLang.GetString(708, "Donate")
+                .mnuMainEdit.Text = Master.eLang.GetString(3, "&Edit")
+                .mnuMainEditSettings.Text = Master.eLang.GetString(4, "&Settings...")
+                .mnuMainFile.Text = Master.eLang.GetString(1, "&File")
+                .mnuMainFileExit.Text = Master.eLang.GetString(2, "E&xit")
+                .mnuMainHelp.Text = Master.eLang.GetString(5, "&Help")
+                .mnuMainHelpAbout.Text = Master.eLang.GetString(6, "&About...")
+                .mnuMainHelpUpdate.Text = Master.eLang.GetString(850, "&Check For Updates...")
+                .mnuMainHelpVersions.Text = Master.eLang.GetString(793, "&Versions...")
                 .mnuMainHelpWiki.Text = Master.eLang.GetString(869, "EmberMM.com &Wiki...")
+                .mnuMainTools.Text = Master.eLang.GetString(8, "&Tools")
+                .mnuMainToolsBackdrops.Text = Master.eLang.GetString(11, "Copy Existing Fanart To &Backdrops Folder")
+                .mnuMainToolsCleanDB.Text = Master.eLang.GetString(709, "Clean &Database")
+                .mnuMainToolsCleanFiles.Text = Master.eLang.GetString(9, "&Clean Files")
+                .mnuMainToolsClearCache.Text = Master.eLang.GetString(17, "Clear &All Caches")
+                .mnuMainToolsOfflineHolder.Text = Master.eLang.GetString(524, "&Offline Media Manager")
+                .mnuMainToolsReloadMovies.Text = Master.eLang.GetString(18, "Re&load All Movies")
+                .mnuMainToolsSetsManager.Text = Master.eLang.GetString(14, "Sets &Manager")
+                .mnuMainToolsSortFiles.Text = Master.eLang.GetString(10, "&Sort Files Into Folders")
+                .mnuUpdate.Text = Master.eLang.GetString(82, "Update Library")
+                .mnuUpdateMovies.Text = Master.eLang.GetString(36, "Movies")
+                .mnuUpdateShows.Text = Master.eLang.GetString(653, "TV Shows")
+                .pnlFilterGenre.Tag = String.Empty
+                .pnlFilterSource.Tag = String.Empty
+                .rbFilterAnd.Text = Master.eLang.GetString(45, "And")
+                .rbFilterOr.Text = Master.eLang.GetString(46, "Or")
+                .tpMovies.Text = Master.eLang.GetString(36, "Movies")
+                .tpShows.Text = Master.eLang.GetString(653, "TV")
+                .tsbAutoPilot.Text = Master.eLang.GetString(67, "Scrape Media")
+                .tsbMediaCenters.Text = Master.eLang.GetString(83, "Media Centers")
+                .tslLoading.Text = Master.eLang.GetString(7, "Loading Media:")
+
+                .cmnuEpisodeOpenFolder.Text = .cmnuMovieOpenFolder.Text
+                .cmnuSeasonOpenFolder.Text = .cmnuMovieOpenFolder.Text
+                .cmnuTrayMediaCenters.Text = .tsbMediaCenters.Text
+                .cmnuShowOpenFolder.Text = .cmnuMovieOpenFolder.Text
+                .cmnuTrayToolsBackdrops.Text = .mnuMainToolsBackdrops.Text
+                .cmnuTrayToolsCleanFiles.Text = .mnuMainToolsCleanFiles.Text
+                .cmnuTrayToolsClearCache.Text = .mnuMainToolsClearCache.Text
+                .cmnuTrayToolsOfflineHolder.Text = .mnuMainToolsOfflineHolder.Text
+                .cmnuTrayToolsReloadMovies.Text = .mnuMainToolsReloadMovies.Text
+                .cmnuTrayToolsSetsManager.Text = .mnuMainToolsSetsManager.Text
+                .cmnuTrayToolsSortFiles.Text = .mnuMainToolsSortFiles.Text
 
                 Dim TT As ToolTip = New System.Windows.Forms.ToolTip(.components)
                 .tsbAutoPilot.ToolTipText = Master.eLang.GetString(84, "Scrape/download data from the internet for multiple movies.")
@@ -9662,12 +9674,12 @@ doCancel:
         End If
     End Sub
 
-    Private Sub cmnuSelAskTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskTrailer.Click
+    Private Sub cmnuMovieReSelAskTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskTrailer.Click
         Functions.SetScraperMod(Enums.ModType.Trailer, True)
         MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
     End Sub
 
-    Private Sub tsbRefreshMedia_ButtonClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuUpdate.ButtonClick
+    Private Sub mnuUpdate_ButtonClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuUpdate.ButtonClick
         Me.LoadMedia(New Structures.Scans With {.Movies = True, .TV = True})
     End Sub
 
