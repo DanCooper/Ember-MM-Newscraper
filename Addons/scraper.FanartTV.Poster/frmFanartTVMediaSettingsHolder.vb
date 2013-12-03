@@ -69,7 +69,7 @@ Public Class frmFanartTVMediaSettingsHolder
         Dim order As Integer = ModulesManager.Instance.externalPosterScrapersModules.FirstOrDefault(Function(p) p.AssemblyName = FanartTV_Poster._AssemblyName).ScraperOrder
         If ModulesManager.Instance.externalPosterScrapersModules.Count > 0 Then
             btnDown.Enabled = (order < ModulesManager.Instance.externalPosterScrapersModules.Count - 1)
-            btnUp.Enabled = (order > 1)
+            btnUp.Enabled = (order > 0)
         Else
             btnDown.Enabled = False
             btnUp.Enabled = False

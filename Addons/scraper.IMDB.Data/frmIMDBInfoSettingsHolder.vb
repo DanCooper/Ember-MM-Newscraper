@@ -172,7 +172,7 @@ Public Class frmIMDBInfoSettingsHolder
         Dim order As Integer = ModulesManager.Instance.externalDataScrapersModules.FirstOrDefault(Function(p) p.AssemblyName = IMDB_Data._AssemblyName).ScraperOrder
         If ModulesManager.Instance.externalDataScrapersModules.Count > 0 Then
             btnDown.Enabled = (order < ModulesManager.Instance.externalDataScrapersModules.Count - 1)
-            btnUp.Enabled = (order > 1)
+            btnUp.Enabled = (order > 0)
         Else
             btnDown.Enabled = False
             btnUp.Enabled = False

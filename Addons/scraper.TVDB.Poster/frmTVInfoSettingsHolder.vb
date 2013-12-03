@@ -71,7 +71,7 @@ Public Class frmTVInfoSettingsHolder
         Dim order As Integer = ModulesManager.Instance.externalTVScrapersModules.FirstOrDefault(Function(p) p.AssemblyName = TVDB_Data_Poster._AssemblyName).ScraperOrder
         If ModulesManager.Instance.externalTVScrapersModules.Count > 0 Then
             btnDown.Enabled = (order < ModulesManager.Instance.externalTVScrapersModules.Where(Function(y) y.ProcessorModule.IsScraper).Count - 1)
-            btnUp.Enabled = (order > 1)
+            btnUp.Enabled = (order > 0)
         Else
             btnDown.Enabled = False
             btnUp.Enabled = False
