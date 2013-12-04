@@ -139,7 +139,7 @@ Public Class BulkRenamerModule
         Dim tsi As New ToolStripMenuItem
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("mnuMainTools"), ToolStripMenuItem)
         tsi.DropDownItems.Remove(MyMenu)
-        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayIconTools"), ToolStripMenuItem)
+        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayTools"), ToolStripMenuItem)
         tsi.DropDownItems.Remove(MyTrayMenu)
         ModulesManager.Instance.RuntimeObjects.MenuMediaList.Items.Remove(MyMenuSep)
         ModulesManager.Instance.RuntimeObjects.MenuMediaList.Items.Remove(ctxMyMenu)
@@ -155,7 +155,7 @@ Public Class BulkRenamerModule
         tsi.DropDownItems.Add(MyMenu)
         MyTrayMenu.Image = New Bitmap(My.Resources.icon)
         MyTrayMenu.Text = Master.eLang.GetString(291, "Bulk &Renamer")
-        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayIconTools"), ToolStripMenuItem)
+        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayTools"), ToolStripMenuItem)
         tsi.DropDownItems.Add(MyTrayMenu)
 
         ctxMyMenu.Text = Master.eLang.GetString(257, "Rename")
