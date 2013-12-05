@@ -31,6 +31,7 @@ Public Class dlgOfflineHolder
 
     Private currNameText As String = String.Empty
     Private currText As String = Master.eLang.GetString(500, "Insert DVD")
+    Private cMovie As New DVDProfiler.cDVD
     Private def_pbPreview_h As Integer
     Private def_pbPreview_w As Integer
     Private destPath As String
@@ -73,6 +74,35 @@ Public Class dlgOfflineHolder
                 End If
             End If
         End With
+    End Sub
+
+    Private Sub AddVDProfilerMovie(ByRef cMovie As DVDProfiler.cDVD)
+        txtCaseType.Text = cMovie.CaseType
+        txtLocation.Text = cMovie.Discs.Disc(0).Location
+        txtSlot.Text = cMovie.Discs.Disc(0).Slot
+        Select Case True
+            Case cMovie.MediaTypes.BluRay = True
+                txtMediaType.Text = "BluRay"
+            Case cMovie.MediaTypes.DVD = True
+                txtMediaType.Text = "DVD"
+            Case cMovie.MediaTypes.HDDVD = True
+                txtMediaType.Text = "HDDVD"
+        End Select
+    End Sub
+
+    Private Sub btnDVDProfiler_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDVDProfiler.Click
+        Try
+            Using dDVDProfilerSelect As New dlgDVDProfilerSelect
+                Select Case dDVDProfilerSelect.ShowDialog()
+                    Case Windows.Forms.DialogResult.OK
+                        cMovie = dDVDProfilerSelect.Results
+                        AddVDProfilerMovie(cMovie)
+                    Case Windows.Forms.DialogResult.Abort
+                End Select
+            End Using
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
 
     Private Sub btnFont_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFont.Click
@@ -693,6 +723,22 @@ Public Class dlgOfflineHolder
     End Sub
 
     Private Sub btnSearchMovie_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearchMovie.Click
+        tMovie.Movie.Clear()
+        tMovie.Movie.Title = txtMovieName.Text
+        SearchMovie()
+    End Sub
+
+    Private Sub btnSearchPMovie_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearchPMovie.Click
+        tMovie.Movie.Clear()
+        tMovie.Movie.Title = String.Concat(cMovie.Title & " (" & cMovie.ProductionYear & ")")
+        tMovie.FileSource = txtMediaType.Text.ToLower
+        'tMovie.Movie.FileInfo.StreamDetails.Audio(0).Channels = cMovie.Audio.AudioTrack(0).AudioChannels
+        tMovie.Movie.FileInfo.StreamDetails.Audio(0).LongLanguage = cMovie.Audio.AudioTrack(0).AudioContent
+        tMovie.Movie.FileInfo.StreamDetails.Audio(0).Codec = cMovie.Audio.AudioTrack(0).AudioFormat
+        SearchMovie()
+    End Sub
+
+    Private Sub SearchMovie()
         Dim Poster As New MediaContainers.Image
         Dim Fanart As New MediaContainers.Image
         Dim aList As New List(Of MediaContainers.Image)
@@ -702,9 +748,7 @@ Public Class dlgOfflineHolder
         Try
             Me.CleanUp()
             fPath = String.Empty
-            tMovie.Movie.Clear()
-            tMovie.Movie.Title = txtMovieName.Text
-            Dim tempExtraPath As String = Path.Combine(Directory.GetParent(Directory.GetParent(tMovie.Filename).FullName).FullName, "extrathumbs")
+            'tMovie.Movie.Title = txtMovieName.Text
             'Functions.SetScraperMod(Enums.ModType.DoSearch, True)
             Functions.SetScraperMod(Enums.ModType.NFO, True, True)
             Functions.SetScraperMod(Enums.ModType.Poster, True, False)

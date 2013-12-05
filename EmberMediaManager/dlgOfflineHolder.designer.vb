@@ -108,6 +108,13 @@ Partial Class dlgOfflineHolder
         Me.tbTagLine = New System.Windows.Forms.TrackBar()
         Me.tmrNameWait = New System.Windows.Forms.Timer(Me.components)
         Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.gbDVDProfiler = New System.Windows.Forms.GroupBox()
+        Me.btnDVDProfiler = New System.Windows.Forms.Button()
+        Me.txtLocation = New System.Windows.Forms.TextBox()
+        Me.txtSlot = New System.Windows.Forms.TextBox()
+        Me.txtCaseType = New System.Windows.Forms.TextBox()
+        Me.txtMediaType = New System.Windows.Forms.TextBox()
+        Me.btnSearchPMovie = New System.Windows.Forms.Button()
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbPreview, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -115,6 +122,7 @@ Partial Class dlgOfflineHolder
         Me.gbInfo.SuspendLayout()
         CType(Me.tbTagLine, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel1.SuspendLayout()
+        Me.gbDVDProfiler.SuspendLayout()
         Me.SuspendLayout()
         '
         'CLOSE_Button
@@ -220,7 +228,7 @@ Partial Class dlgOfflineHolder
         Me.btnSearchMovie.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnSearchMovie.Location = New System.Drawing.Point(9, 90)
         Me.btnSearchMovie.Name = "btnSearchMovie"
-        Me.btnSearchMovie.Size = New System.Drawing.Size(102, 21)
+        Me.btnSearchMovie.Size = New System.Drawing.Size(102, 23)
         Me.btnSearchMovie.TabIndex = 4
         Me.btnSearchMovie.Text = "Search Movie"
         Me.btnSearchMovie.UseVisualStyleBackColor = True
@@ -232,7 +240,7 @@ Partial Class dlgOfflineHolder
         Me.Bulk_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Bulk_Button.Location = New System.Drawing.Point(117, 90)
         Me.Bulk_Button.Name = "Bulk_Button"
-        Me.Bulk_Button.Size = New System.Drawing.Size(80, 21)
+        Me.Bulk_Button.Size = New System.Drawing.Size(80, 23)
         Me.Bulk_Button.TabIndex = 5
         Me.Bulk_Button.Text = "Bulk Creator"
         Me.Bulk_Button.UseVisualStyleBackColor = True
@@ -507,6 +515,7 @@ Partial Class dlgOfflineHolder
         'Panel1
         '
         Me.Panel1.BackColor = System.Drawing.Color.White
+        Me.Panel1.Controls.Add(Me.gbDVDProfiler)
         Me.Panel1.Controls.Add(Me.gbInfo)
         Me.Panel1.Controls.Add(Me.gbPreview)
         Me.Panel1.Controls.Add(Me.Bulk_Button)
@@ -520,6 +529,70 @@ Partial Class dlgOfflineHolder
         Me.Panel1.Name = "Panel1"
         Me.Panel1.Size = New System.Drawing.Size(765, 494)
         Me.Panel1.TabIndex = 3
+        '
+        'gbDVDProfiler
+        '
+        Me.gbDVDProfiler.Controls.Add(Me.btnSearchPMovie)
+        Me.gbDVDProfiler.Controls.Add(Me.txtMediaType)
+        Me.gbDVDProfiler.Controls.Add(Me.txtCaseType)
+        Me.gbDVDProfiler.Controls.Add(Me.txtSlot)
+        Me.gbDVDProfiler.Controls.Add(Me.txtLocation)
+        Me.gbDVDProfiler.Controls.Add(Me.btnDVDProfiler)
+        Me.gbDVDProfiler.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.gbDVDProfiler.Location = New System.Drawing.Point(9, 120)
+        Me.gbDVDProfiler.Name = "gbDVDProfiler"
+        Me.gbDVDProfiler.Size = New System.Drawing.Size(313, 80)
+        Me.gbDVDProfiler.TabIndex = 10
+        Me.gbDVDProfiler.TabStop = False
+        Me.gbDVDProfiler.Text = "DVDProfiler"
+        '
+        'btnDVDProfiler
+        '
+        Me.btnDVDProfiler.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnDVDProfiler.Location = New System.Drawing.Point(1, 21)
+        Me.btnDVDProfiler.Name = "btnDVDProfiler"
+        Me.btnDVDProfiler.Size = New System.Drawing.Size(96, 23)
+        Me.btnDVDProfiler.TabIndex = 9
+        Me.btnDVDProfiler.Text = "Select Movie"
+        Me.btnDVDProfiler.UseVisualStyleBackColor = True
+        '
+        'txtLocation
+        '
+        Me.txtLocation.Location = New System.Drawing.Point(207, 21)
+        Me.txtLocation.Name = "txtLocation"
+        Me.txtLocation.Size = New System.Drawing.Size(100, 22)
+        Me.txtLocation.TabIndex = 10
+        '
+        'txtSlot
+        '
+        Me.txtSlot.Location = New System.Drawing.Point(207, 52)
+        Me.txtSlot.Name = "txtSlot"
+        Me.txtSlot.Size = New System.Drawing.Size(100, 22)
+        Me.txtSlot.TabIndex = 11
+        '
+        'txtCaseType
+        '
+        Me.txtCaseType.Location = New System.Drawing.Point(101, 21)
+        Me.txtCaseType.Name = "txtCaseType"
+        Me.txtCaseType.Size = New System.Drawing.Size(100, 22)
+        Me.txtCaseType.TabIndex = 12
+        '
+        'txtMediaType
+        '
+        Me.txtMediaType.Location = New System.Drawing.Point(101, 52)
+        Me.txtMediaType.Name = "txtMediaType"
+        Me.txtMediaType.Size = New System.Drawing.Size(100, 22)
+        Me.txtMediaType.TabIndex = 13
+        '
+        'btnSearchPMovie
+        '
+        Me.btnSearchPMovie.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnSearchPMovie.Location = New System.Drawing.Point(1, 50)
+        Me.btnSearchPMovie.Name = "btnSearchPMovie"
+        Me.btnSearchPMovie.Size = New System.Drawing.Size(96, 23)
+        Me.btnSearchPMovie.TabIndex = 14
+        Me.btnSearchPMovie.Text = "Search"
+        Me.btnSearchPMovie.UseVisualStyleBackColor = True
         '
         'dlgOfflineHolder
         '
@@ -550,10 +623,19 @@ Partial Class dlgOfflineHolder
         CType(Me.tbTagLine, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
+        Me.gbDVDProfiler.ResumeLayout(False)
+        Me.gbDVDProfiler.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
     Friend WithEvents Panel1 As System.Windows.Forms.Panel
+    Friend WithEvents btnDVDProfiler As System.Windows.Forms.Button
+    Friend WithEvents gbDVDProfiler As System.Windows.Forms.GroupBox
+    Friend WithEvents txtMediaType As System.Windows.Forms.TextBox
+    Friend WithEvents txtCaseType As System.Windows.Forms.TextBox
+    Friend WithEvents txtSlot As System.Windows.Forms.TextBox
+    Friend WithEvents txtLocation As System.Windows.Forms.TextBox
+    Friend WithEvents btnSearchPMovie As System.Windows.Forms.Button
 
 #End Region 'Methods
 

@@ -61,17 +61,18 @@ Namespace DVDProfiler
 #End Region 'Methods
     End Class
 
-    <XmlRoot("DVD")> _
+    '<XmlRoot("DVD")> _
     Public Class cDVD
 
 #Region "Fields"
 
-        Private _mediatypes As New dMediaTypes
         Private _title As String
         Private _productionyear As String
         Private _casetype As String
+        Private _mediatypes As New dMediaTypes
         Private _discs As New dDiscs
         Private _audio As New dAudio
+        Private _subtitles As New dSubtitles
 
 #End Region 'Fields
 
@@ -84,16 +85,6 @@ Namespace DVDProfiler
 #End Region 'Constructors
 
 #Region "Properties"
-
-        <XmlElement("MediaTypes")> _
-        Public Property MediaTypes() As dMediaTypes
-            Get
-                Return Me._mediatypes
-            End Get
-            Set(ByVal Value As dMediaTypes)
-                Me._mediatypes = Value
-            End Set
-        End Property
 
         <XmlElement("Title")> _
         Public Property Title() As String
@@ -125,6 +116,16 @@ Namespace DVDProfiler
             End Set
         End Property
 
+        <XmlElement("MediaTypes")> _
+        Public Property MediaTypes() As dMediaTypes
+            Get
+                Return Me._mediatypes
+            End Get
+            Set(ByVal Value As dMediaTypes)
+                Me._mediatypes = Value
+            End Set
+        End Property
+
         <XmlElement("Discs")> _
         Public Property Discs() As dDiscs
             Get
@@ -145,17 +146,28 @@ Namespace DVDProfiler
             End Set
         End Property
 
+        <XmlElement("Subtitles")> _
+        Public Property Subtitles() As dSubtitles
+            Get
+                Return Me._subtitles
+            End Get
+            Set(ByVal Value As dSubtitles)
+                Me._subtitles = Value
+            End Set
+        End Property
+
 #End Region 'Properties
 
 #Region "Methods"
 
         Public Sub Clear()
-            Me._mediatypes.Clear()
             Me._title = String.Empty
             Me._productionyear = String.Empty
             Me._casetype = String.Empty
+            Me._mediatypes.Clear()
             Me._discs.Clear()
-            Me._audio.clear()
+            Me._audio.Clear()
+            Me._subtitles.Clear()
         End Sub
 
 #End Region 'Methods
@@ -219,6 +231,45 @@ Namespace DVDProfiler
             Me._dvd = False
             Me._hddvd = False
             Me._bluray = False
+        End Sub
+
+#End Region 'Methods
+    End Class
+
+    Public Class dSubtitles
+
+#Region "Fields"
+
+        Private _subtitle As String
+
+#End Region 'Fields
+
+#Region "Constructors"
+
+        Public Sub New()
+            Me.Clear()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Properties"
+
+        <XmlElement("Subtitle")> _
+        Public Property Subtitle() As String
+            Get
+                Return Me._subtitle
+            End Get
+            Set(ByVal Value As String)
+                Me._subtitle = Value
+            End Set
+        End Property
+
+#End Region 'Properties
+
+#Region "Methods"
+
+        Public Sub Clear()
+            Me._subtitle = String.Empty
         End Sub
 
 #End Region 'Methods
