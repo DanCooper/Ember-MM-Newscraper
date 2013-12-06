@@ -88,6 +88,19 @@
     <Import Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ImageFeedback.Designer.vb">
+      <DependentUpon>ImageFeedback.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ImageFeedback.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PixelRuler.Designer.vb">
+      <DependentUpon>PixelRuler.vb</DependentUpon>
+    </Compile>
+    <Compile Include="PixelRuler.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Test_clsAPIImageUtils.vb" />
     <Compile Include="Test_clsAPIImages.vb" />
     <Compile Include="Test_clsAPINumUtils.vb" />
     <Compile Include="TestTypeAttribute.vb" />
@@ -116,11 +129,17 @@
     <Compile Include="Test_clsAPIStringUtils.vb" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="ImageFeedback.resx">
+      <DependentUpon>ImageFeedback.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PixelRuler.resx">
+      <DependentUpon>PixelRuler.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -139,6 +158,21 @@
       <Project>{208aa35e-c6ae-4d2d-a9dd-b6efd19a4279}</Project>
       <Name>EmberAPI</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TestPattern.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{94E38DFF-614B-4CBD-B67C-F211BB35CE8B}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TestPattern_Med.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TestPattern_Med_Vert.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TestPattern_Vert.png" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
