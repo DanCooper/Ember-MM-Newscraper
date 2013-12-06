@@ -48,23 +48,6 @@ Public Class dlgDVDProfilerSelect
 
 #Region "Methods"
 
-    Private Sub btnCollection_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnLoadCollection.Click
-        Try
-            With ofdCollectionXML
-                .Filter = "Collection.xml (*.xml)|*.xml"
-                .FilterIndex = 0
-            End With
-
-            If ofdCollectionXML.ShowDialog() = DialogResult.OK Then
-                lvCollection.Clear()
-                PrepareList()
-                AddCollection(ofdCollectionXML.FileName)
-            End If
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
-
     Private Sub AddCollection(ByVal fPath As String)
         Dim xmlSer As XmlSerializer = Nothing
 
@@ -95,10 +78,22 @@ Public Class dlgDVDProfilerSelect
         Me.lvCollection.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent)
     End Sub
 
-    Public Overloads Function ShowDialog() As DialogResult
-        Me.SetUp()
-        Return MyBase.ShowDialog()
-    End Function
+    Private Sub btnCollection_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnLoadCollection.Click
+        Try
+            With ofdCollectionXML
+                .Filter = "Collection.xml (*.xml)|*.xml"
+                .FilterIndex = 0
+            End With
+
+            If ofdCollectionXML.ShowDialog() = DialogResult.OK Then
+                lvCollection.Clear()
+                PrepareList()
+                AddCollection(ofdCollectionXML.FileName)
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
 
     Private Sub lvCollection_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lvCollection.SelectedIndexChanged
         If lvCollection.SelectedItems.Count > 0 Then
@@ -108,16 +103,16 @@ Public Class dlgDVDProfilerSelect
         End If
     End Sub
 
-    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
-        Me.MergeCollection(xmlMov.DVD(Me.lvCollection.SelectedItems(0).Index))
-        Me.DialogResult = System.Windows.Forms.DialogResult.OK
-        Me.Close()
-    End Sub
-
-    Private Function MergeCollection(ByVal cMovie As DVDProfiler.cDVD) As DVDProfiler.cDVD
+    Private Function MergeSelectedMovie(ByVal cMovie As DVDProfiler.cDVD) As DVDProfiler.cDVD
         _results = cMovie
         Return _results
     End Function
+
+    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
+        Me.MergeSelectedMovie(xmlMov.DVD(Me.lvCollection.SelectedItems(0).Index))
+        Me.DialogResult = System.Windows.Forms.DialogResult.OK
+        Me.Close()
+    End Sub
 
     Private Sub PrepareList()
         'set ListView
@@ -135,6 +130,11 @@ Public Class dlgDVDProfilerSelect
         Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
         Me.CANCEL_Button.Text = Master.eLang.GetString(167, "Cancel")
     End Sub
+
+    Public Overloads Function ShowDialog() As DialogResult
+        Me.SetUp()
+        Return MyBase.ShowDialog()
+    End Function
 
 #End Region 'Methods
 

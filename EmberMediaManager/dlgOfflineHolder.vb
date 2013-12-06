@@ -400,7 +400,7 @@ Public Class dlgOfflineHolder
         End If
     End Sub
 
-    Sub CheckConditions()
+    Private Sub CheckConditions()
         Dim Fanart As New Images
         Try
             If rbTypeTitle.Checked Then
@@ -500,11 +500,11 @@ Public Class dlgOfflineHolder
 
             Me.CreatePreview()
             If Not Me.pbProgress.Visible Then
-                Create_Button.Enabled = True
+                btnCreate.Enabled = True
                 gbSearch.Enabled = True
                 For Each i As ListViewItem In lvStatus.Items
                     If Not i.SubItems(1).ForeColor = Color.Green Then
-                        Create_Button.Enabled = False
+                        btnCreate.Enabled = False
                         gbSearch.Enabled = False
                         Exit For
                     End If
@@ -548,7 +548,7 @@ Public Class dlgOfflineHolder
         CreatePreview()
     End Sub
 
-    Private Sub Close_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CLOSE_Button.Click
+    Private Sub btnClose_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClose.Click
         If bwCreateHolder.IsBusy Then
             bwCreateHolder.CancelAsync()
         Else
@@ -619,13 +619,22 @@ Public Class dlgOfflineHolder
         End If
     End Sub
 
-    Private Sub Create_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Create_Button.Click
+    Private Sub SetControlsEnabled(ByVal isEnabled As Boolean)
+        gbHolderType.Enabled = isEnabled
+        gbMode.Enabled = isEnabled
+        gbSearch.Enabled = isEnabled
+        gbSettings.Enabled = isEnabled
+        gbSource.Enabled = isEnabled
+        gbType.Enabled = isEnabled
+    End Sub
+
+    Private Sub btnCreate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCreate.Click
         cbSources.Enabled = False
-        Create_Button.Enabled = False
+        btnCreate.Enabled = False
         txtMovieName.Enabled = False
         txtTagline.Enabled = False
         chkUseFanart.Enabled = False
-        CLOSE_Button.Enabled = False
+        btnClose.Enabled = False
         btnLoadSingle.Enabled = False
         btnLoadCollection.Enabled = False
         'Need to avoid cross thread in BackgroundWorker
@@ -909,14 +918,14 @@ Public Class dlgOfflineHolder
 
     Private Sub SetUp()
         Me.Text = Master.eLang.GetString(524, "Offline Media Manager")
-        Me.CLOSE_Button.Text = Master.eLang.GetString(19, "Close")
+        Me.btnClose.Text = Master.eLang.GetString(19, "Close")
         Me.lblTopDetails.Text = Master.eLang.GetString(525, "Add Offline movie")
         Me.lblTopTitle.Text = Me.Text
         Me.lblMovie.Text = Master.eLang.GetString(527, "Place Holder Folder/Movie Name:")
         Me.btnSearch.Text = Master.eLang.GetString(528, "Search Movie")
         Me.colCondition.Text = Master.eLang.GetString(532, "Condition")
         Me.colStatus.Text = Master.eLang.GetString(215, "Status")
-        Me.Create_Button.Text = Master.eLang.GetString(533, "Create")
+        Me.btnCreate.Text = Master.eLang.GetString(533, "Create")
         Me.chkUseFanart.Text = Master.eLang.GetString(541, "Use Fanart for Place Holder Video")
         Me.lblTagline.Text = Master.eLang.GetString(542, "Place Holder Video Tagline:")
         Me.txtTagline.Text = Master.eLang.GetString(500, "Insert DVD")

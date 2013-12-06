@@ -37,7 +37,7 @@ Partial Class dlgDVDProfilerSelect
         Me.btnLoadCollection.Name = "btnLoadCollection"
         Me.btnLoadCollection.Size = New System.Drawing.Size(116, 23)
         Me.btnLoadCollection.TabIndex = 0
-        Me.btnLoadCollection.Text = "Collection.xml"
+        Me.btnLoadCollection.Text = "Load Collection XML"
         Me.btnLoadCollection.UseVisualStyleBackColor = True
         '
         'lvCollection

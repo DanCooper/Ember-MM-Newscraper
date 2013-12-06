@@ -1928,5 +1928,58 @@ Namespace MediaContainers
 
     End Class
 
+    <XmlRoot("discstub>")> _
+    Public Class Discstub
+
+#Region "Fields"
+
+        Private _title As String
+        Private _message As String
+
+#End Region 'Fields
+
+#Region "Constructors"
+
+        Public Sub New()
+            Me.Clear()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Properties"
+
+        <XmlElement("title")> _
+        Public Property Title() As String
+            Get
+                Return Me._title
+            End Get
+            Set(ByVal Value As String)
+                Me._title = Value
+            End Set
+        End Property
+
+        <XmlElement("message")> _
+        Public Property Message() As String
+            Get
+                Return Me._message
+            End Get
+            Set(ByVal Value As String)
+                Me._message = Value
+            End Set
+        End Property
+
+#End Region 'Properties
+
+#Region "Methods"
+
+        Public Sub Clear()
+            Me._title = String.Empty
+            Me._message = String.Empty
+        End Sub
+
+#End Region 'Methods
+
+    End Class
+
 End Namespace
 
