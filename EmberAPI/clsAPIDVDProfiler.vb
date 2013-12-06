@@ -61,7 +61,7 @@ Namespace DVDProfiler
 #End Region 'Methods
     End Class
 
-    '<XmlRoot("DVD")> _
+    <XmlRoot("DVD")> _
     Public Class cDVD
 
 #Region "Fields"

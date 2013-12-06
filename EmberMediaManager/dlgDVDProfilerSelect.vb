@@ -48,29 +48,29 @@ Public Class dlgDVDProfilerSelect
 
 #Region "Methods"
 
-    Private Sub btnCollection_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCollection.Click
+    Private Sub btnCollection_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnLoadCollection.Click
         Try
-            With ofdCollection
+            With ofdCollectionXML
                 .Filter = "Collection.xml (*.xml)|*.xml"
                 .FilterIndex = 0
             End With
 
-            If ofdCollection.ShowDialog() = DialogResult.OK Then
+            If ofdCollectionXML.ShowDialog() = DialogResult.OK Then
                 lvCollection.Clear()
                 PrepareList()
-                AddCollection(ofdCollection.FileName)
+                AddCollection(ofdCollectionXML.FileName)
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
-    Private Sub AddCollection(ByVal fName As String)
+    Private Sub AddCollection(ByVal fPath As String)
         Dim xmlSer As XmlSerializer = Nothing
 
         Try
-            If File.Exists(fName) Then
-                Using xmlSR As StreamReader = New StreamReader(fName)
+            If File.Exists(fPath) Then
+                Using xmlSR As StreamReader = New StreamReader(fPath)
                     xmlSer = New XmlSerializer(GetType(DVDProfiler.Collection))
                     xmlMov = DirectCast(xmlSer.Deserialize(xmlSR), DVDProfiler.Collection)
                 End Using
@@ -100,9 +100,16 @@ Public Class dlgDVDProfilerSelect
         Return MyBase.ShowDialog()
     End Function
 
+    Private Sub lvCollection_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lvCollection.SelectedIndexChanged
+        If lvCollection.SelectedItems.Count > 0 Then
+            OK_Button.Enabled = True
+        Else
+            OK_Button.Enabled = False
+        End If
+    End Sub
+
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
         Me.MergeCollection(xmlMov.DVD(Me.lvCollection.SelectedItems(0).Index))
-
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()
     End Sub

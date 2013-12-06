@@ -22,8 +22,8 @@ Partial Class dlgDVDProfilerSelect
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.ofdCollection = New System.Windows.Forms.OpenFileDialog()
-        Me.btnCollection = New System.Windows.Forms.Button()
+        Me.ofdCollectionXML = New System.Windows.Forms.OpenFileDialog()
+        Me.btnLoadCollection = New System.Windows.Forms.Button()
         Me.lvCollection = New System.Windows.Forms.ListView()
         Me.tlpButtons = New System.Windows.Forms.TableLayoutPanel()
         Me.OK_Button = New System.Windows.Forms.Button()
@@ -31,14 +31,14 @@ Partial Class dlgDVDProfilerSelect
         Me.tlpButtons.SuspendLayout()
         Me.SuspendLayout()
         '
-        'btnCollection
+        'btnLoadCollection
         '
-        Me.btnCollection.Location = New System.Drawing.Point(195, 12)
-        Me.btnCollection.Name = "btnCollection"
-        Me.btnCollection.Size = New System.Drawing.Size(116, 23)
-        Me.btnCollection.TabIndex = 0
-        Me.btnCollection.Text = "Collection.xml"
-        Me.btnCollection.UseVisualStyleBackColor = True
+        Me.btnLoadCollection.Location = New System.Drawing.Point(195, 12)
+        Me.btnLoadCollection.Name = "btnLoadCollection"
+        Me.btnLoadCollection.Size = New System.Drawing.Size(116, 23)
+        Me.btnLoadCollection.TabIndex = 0
+        Me.btnLoadCollection.Text = "Collection.xml"
+        Me.btnLoadCollection.UseVisualStyleBackColor = True
         '
         'lvCollection
         '
@@ -66,6 +66,7 @@ Partial Class dlgDVDProfilerSelect
         '
         'OK_Button
         '
+        Me.OK_Button.Enabled = False
         Me.OK_Button.Location = New System.Drawing.Point(3, 3)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(67, 23)
@@ -92,16 +93,16 @@ Partial Class dlgDVDProfilerSelect
         Me.ClientSize = New System.Drawing.Size(518, 424)
         Me.Controls.Add(Me.tlpButtons)
         Me.Controls.Add(Me.lvCollection)
-        Me.Controls.Add(Me.btnCollection)
+        Me.Controls.Add(Me.btnLoadCollection)
         Me.Name = "dlgDVDProfilerSelect"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "Load DVDProfiler XML"
+        Me.Text = "Load DVD Profiler Collection"
         Me.tlpButtons.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
-    Friend WithEvents ofdCollection As System.Windows.Forms.OpenFileDialog
-    Friend WithEvents btnCollection As System.Windows.Forms.Button
+    Friend WithEvents ofdCollectionXML As System.Windows.Forms.OpenFileDialog
+    Friend WithEvents btnLoadCollection As System.Windows.Forms.Button
     Friend WithEvents lvCollection As System.Windows.Forms.ListView
     Friend WithEvents tlpButtons As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents OK_Button As System.Windows.Forms.Button
