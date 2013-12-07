@@ -334,7 +334,7 @@
   <string control="Core_chkUseMPAAFSK">If enabled, MPAA values will be converted to FSK if no FSK values are found. Priority: FSK -> MPAA</string>
   <string control="Core_chkOnlyValueForCert">If enabled, Ember will only save the value of the certification to the MPAA field. (Example: "Germany:18" will save as "18")</string>
   <string control="Core_cbForce">Select the region of the title you would like Ember to look for.</string>
-  <string control="Core_chkForceTitle">If enabled, Ember will check for alternative titles in the selected language. This is useful for fetching titles in your native language when scraping foreign films.</string>
+  <string control="Core_chkForceTitle">If enabled, Ember will check for alternative titles in the selected language. This is useful for fetching titles in your native language when scraping foreign films.</string> 
   <string control="Core_chkOutlineForPlot">If enabled, Ember will use the outline for the plot if the plot is empty.</string>
   <string control="Core_chkCastWithImg">If enabled, Ember will only scrape cast entries that have valid images.</string>
   <string control="Core_chkUseCertForMPAA">If enabled, Ember will use the certifcation of the selected region in place of the MPAA rating.</string>
@@ -553,6 +553,7 @@
   <string control="Core_lstShowFilters">The list of all current filters that will be used when generating titles for shows.</string>
   <string control="Core_chkMovieWatchedCol">Hide the Watched column from the main movie list.</string>
   <string control="Core_chkMovieEFanartsCol">Hide the Extrafanart column from the main movie list.</string>
+  <string control="Core_chkTitleFallback">If enabled, Ember will use world-wide/english title instead of originaltitle if preferred language isn't found. This is useful for fetching titles for asian movies to avoid original (i.e japanese) titles!</string>
 </strings>
 
 

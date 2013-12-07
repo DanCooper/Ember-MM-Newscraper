@@ -1268,6 +1268,17 @@ Public Class dlgSettings
     Private Sub chkForceTitle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkForceTitle.CheckedChanged
         Me.cbForce.SelectedIndex = -1
         Me.cbForce.Enabled = Me.chkForceTitle.Checked
+        Me.chkTitleFallback.Enabled = Me.chkForceTitle.Checked
+        If Me.chkForceTitle.Checked = False Then
+            Me.chkTitleFallback.Checked = False
+            Me.chkTitleFallback.Enabled = False
+        Else
+            Me.chkTitleFallback.Enabled = True
+        End If
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkTitleFallback_CheckedChanged(sender As Object, e As EventArgs) Handles chkTitleFallback.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -2464,8 +2475,10 @@ Public Class dlgSettings
             If Not String.IsNullOrEmpty(Master.eSettings.ForceTitle) Then
                 Me.chkForceTitle.Checked = True
                 Me.cbForce.Enabled = True
-                Me.cbForce.Text = Master.eSettings.ForceTitle
+                Me.chkTitleFallback.Enabled = True
+                Me.cbForce.Text = Master.eSettings.ForceTitle       
             End If
+            Me.chkTitleFallback.Checked = Master.eSettings.UseTitleFallback
             Me.chkScanMediaInfo.Checked = Master.eSettings.ScanMediaInfo
             Me.chkTVScanMetaData.Checked = Master.eSettings.ScanTVMediaInfo
             Me.chkFullCast.Checked = Master.eSettings.FullCast
@@ -3623,6 +3636,7 @@ Public Class dlgSettings
             End If
 
             Master.eSettings.ForceTitle = Me.cbForce.Text
+            Master.eSettings.UseTitleFallback = Me.chkTitleFallback.Checked
             Master.eSettings.ScanMediaInfo = Me.chkScanMediaInfo.Checked
             Master.eSettings.ScanTVMediaInfo = Me.chkTVScanMetaData.Checked
             Master.eSettings.FullCast = Me.chkFullCast.Checked
@@ -4386,6 +4400,7 @@ Public Class dlgSettings
         Me.Label51.Text = Master.eLang.GetString(732, "<h>=Hours <m>=Minutes <s>=Seconds")
         Me.chkDisplayMissingEpisodes.Text = Master.eLang.GetString(733, "Display Missing Episodes")
         Me.chkForceTitle.Text = Master.eLang.GetString(710, "Force Title Language:")
+        Me.chkTitleFallback.Text = Master.eLang.GetString(984, "Worldwide title as fallback")
         Me.chkSourceFromFolder.Text = Master.eLang.GetString(711, "Include Folder Name in Source Type Check")
         Me.chkSortBeforeScan.Text = Master.eLang.GetString(712, "Sort files into folder before each library update")
         Me.chkNoFilterEpisode.Text = Master.eLang.GetString(734, "Build Episode Title Instead of Filtering")
@@ -5041,5 +5056,6 @@ Public Class dlgSettings
     End Class
 
 #End Region 'Methods
+
 
 End Class

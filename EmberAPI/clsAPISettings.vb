@@ -134,7 +134,6 @@ Public Class Settings
     Private _filterPanelState As Boolean
     Private _flaglang As String
     Private _folderjpg As Boolean
-    Private _forcetitle As String
     Private _fullcast As Boolean
     Private _fullcrew As Boolean
     Private _genrefilter As String
@@ -374,6 +373,10 @@ Public Class Settings
     'Adding Settings
     Private _usespecialdateadd As Boolean
     'cocotus end
+
+    '*************** Scraper Data Misc. settings ***************
+    Private _scrapertitlefallback As Boolean
+    Private _forcetitle As String
 
     '*************** XBMC Frodo settings ***************
     Private _usefrodo As Boolean
@@ -3846,6 +3849,16 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Me._useexpert = value
+        End Set
+    End Property
+
+
+    Public Property UseTitleFallback() As Boolean
+        Get
+            Return Me._scrapertitlefallback
+        End Get
+        Set(ByVal value As Boolean)
+            Me._scrapertitlefallback = value
         End Set
     End Property
 
