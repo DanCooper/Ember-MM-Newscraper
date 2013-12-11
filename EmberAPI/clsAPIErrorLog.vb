@@ -41,6 +41,8 @@ Public Class ErrorLogger
     ''' <param name="Notify"></param>
     ''' <remarks></remarks>
     Public Sub WriteToErrorLog(ByVal msg As String, ByVal stkTrace As String, ByVal title As String, Optional ByVal Notify As Boolean = True)
+        '<Obsolete("WriteToErrorLog has been deprecated. Please use Trace/Debug/Info/Warn/Error/Fatal instead")>
+
         'Delegate to the new logging routines
         [Error](GetType(EmberAPI.Master), msg, stkTrace, title, Notify)
 
@@ -156,7 +158,7 @@ Public Class ErrorLogger
     ''' <summary>
     ''' Get the primary log filename with path
     ''' </summary>
-    ''' <returns>Primary log filename including path, or Nothing if none is currently defined</returns>
+    ''' <returns>Primary log filename including path, or <c>String.Empty</c> if none is currently defined</returns>
     ''' <remarks></remarks>
     Public Shared Function GetPrimaryLog() As String
         Try

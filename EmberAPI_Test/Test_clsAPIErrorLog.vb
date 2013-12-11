@@ -32,6 +32,7 @@ Namespace EmberTests
         Dim logger As ErrorLogger
         Dim exception As Exception
         Shared debugTarget As NLog.Targets.DebugTarget
+        Dim defaultExpectedCallsite As String = "EmberAPI.ErrorLogger.Error"
 
         <ClassInitialize>
         Public Shared Sub ClassInit(ByVal context As TestContext)
@@ -99,8 +100,8 @@ Namespace EmberTests
             Dim outputLevel = output(3)
             Dim outputMessage = output(4)
 
-            Dim expectedCallSite = "EmberAPI.ErrorLogger.WriteToErrorLog"
-            Dim expectedLevel = "DEBUG"
+            Dim expectedCallSite = defaultExpectedCallsite
+            Dim expectedLevel = "ERROR"
             Dim expectedMessage = String.Format("{0} {1}", myMessage, exception.StackTrace) 'This should match clsAPIErrorLog's WriteErrorLog routine
 
             Assert.AreEqual(outputCallSite, expectedCallSite, True, "CallSite - expecting: {0}, got: {1}", expectedCallSite, outputCallSite)
@@ -133,8 +134,8 @@ Namespace EmberTests
             Dim outputLevel = output(3)
             Dim outputMessage = output(4)
 
-            Dim expectedCallSite = "EmberAPI.ErrorLogger.WriteToErrorLog"
-            Dim expectedLevel = "DEBUG"
+            Dim expectedCallSite = defaultExpectedCallsite
+            Dim expectedLevel = "ERROR"
             Dim expectedMessage = String.Format("{0} {1}", Nothing, exception.StackTrace) 'This should match clsAPIErrorLog's WriteErrorLog routine
 
             Assert.AreEqual(outputCallSite, expectedCallSite, True, "CallSite - expecting: {0}, got: {1}", expectedCallSite, outputCallSite)
@@ -167,8 +168,8 @@ Namespace EmberTests
             Dim outputLevel = output(3)
             Dim outputMessage = output(4)
 
-            Dim expectedCallSite = "EmberAPI.ErrorLogger.WriteToErrorLog"
-            Dim expectedLevel = "DEBUG"
+            Dim expectedCallSite = defaultExpectedCallsite
+            Dim expectedLevel = "ERROR"
             Dim expectedMessage = String.Format("{0} {1}", myMessage, exception.StackTrace) 'This should match clsAPIErrorLog's WriteErrorLog routine
 
             Assert.AreEqual(outputCallSite, expectedCallSite, True, "CallSite - expecting: {0}, got: {1}", expectedCallSite, outputCallSite)
@@ -199,8 +200,8 @@ Namespace EmberTests
             Dim outputLevel = output(3)
             Dim outputMessage = output(4)
 
-            Dim expectedCallSite = "EmberAPI.ErrorLogger.WriteToErrorLog"
-            Dim expectedLevel = "DEBUG"
+            Dim expectedCallSite = defaultExpectedCallsite
+            Dim expectedLevel = "ERROR"
             Dim expectedMessage = String.Format("{0} {1}", myMessage, Nothing) 'This should match clsAPIErrorLog's WriteErrorLog routine
 
             Assert.AreEqual(outputCallSite, expectedCallSite, True, "CallSite - expecting: {0}, got: {1}", expectedCallSite, outputCallSite)
@@ -231,8 +232,8 @@ Namespace EmberTests
             Dim outputLevel = output(3)
             Dim outputMessage = output(4)
 
-            Dim expectedCallSite = "EmberAPI.ErrorLogger.WriteToErrorLog"
-            Dim expectedLevel = "DEBUG"
+            Dim expectedCallSite = defaultExpectedCallsite
+            Dim expectedLevel = "ERROR"
             Dim expectedMessage = String.Format("{0} {1}", Nothing, Nothing) 'This should match clsAPIErrorLog's WriteErrorLog routine
 
             Assert.AreEqual(outputCallSite, expectedCallSite, True, "CallSite - expecting: {0}, got: {1}", expectedCallSite, outputCallSite)
@@ -265,8 +266,8 @@ Namespace EmberTests
             Dim outputLevel = output(3)
             Dim outputMessage = output(4)
 
-            Dim expectedCallSite = "EmberAPI.ErrorLogger.WriteToErrorLog"
-            Dim expectedLevel = "DEBUG"
+            Dim expectedCallSite = defaultExpectedCallsite
+            Dim expectedLevel = "ERROR"
             Dim expectedMessage = String.Format("{0} {1}", Nothing, exception.StackTrace) 'This should match clsAPIErrorLog's WriteErrorLog routine
 
             Assert.AreEqual(outputCallSite, expectedCallSite, True, "CallSite - expecting: {0}, got: {1}", expectedCallSite, outputCallSite)
@@ -299,8 +300,8 @@ Namespace EmberTests
             Dim outputLevel = output(3)
             Dim outputMessage = output(4)
 
-            Dim expectedCallSite = "EmberAPI.ErrorLogger.WriteToErrorLog"
-            Dim expectedLevel = "DEBUG"
+            Dim expectedCallSite = defaultExpectedCallsite
+            Dim expectedLevel = "ERROR"
             Dim expectedMessage = String.Format("{0} {1}", myMessage, Nothing) 'This should match clsAPIErrorLog's WriteErrorLog routine
 
             Assert.AreEqual(outputCallSite, expectedCallSite, True, "CallSite - expecting: {0}, got: {1}", expectedCallSite, outputCallSite)
@@ -331,8 +332,8 @@ Namespace EmberTests
             Dim outputLevel = output(3)
             Dim outputMessage = output(4)
 
-            Dim expectedCallSite = "EmberAPI.ErrorLogger.WriteToErrorLog"
-            Dim expectedLevel = "DEBUG"
+            Dim expectedCallSite = defaultExpectedCallsite
+            Dim expectedLevel = "ERROR"
             Dim expectedMessage = String.Format("{0} {1}", myMessage, exception.StackTrace) 'This should match clsAPIErrorLog's WriteErrorLog routine
 
             Assert.AreEqual(outputCallSite, expectedCallSite, True, "CallSite - expecting: {0}, got: {1}", expectedCallSite, outputCallSite)
