@@ -17,48 +17,42 @@
 ' # You should have received a copy of the GNU General Public License            #
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
+Imports System.Drawing
 
-Namespace EmberTests
-
+Public Class ImageFeedback
     ''' <summary>
-    ''' Used to indicate that the test is a Unit Test
+    ''' Supplies an image and question. The image is displayed in the dialog, and the question
+    ''' asks the user whether the image portrays the correct aspect.
     ''' </summary>
+    ''' <param name="img">Image to display</param>
+    ''' <param name="instr">Text to place in the text box</param>
     ''' <remarks></remarks>
-    Public Class UnitTestAttribute
-        Inherits TestCategoryBaseAttribute
-        Public Overrides ReadOnly Property TestCategories() As IList(Of String)
-            Get
-                Return New List(Of String)() From {"UnitTest"}
-            End Get
-        End Property
-    End Class
+    Public Sub LoadInfo(img As Image, instr As String)
+        Instructions.Text = instr
 
-    ''' <summary>
-    ''' Used to indicate that the test is an integration test, and interacts
-    ''' with external systems such as the file system, or database, or web site.
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public Class IntegrationTestAttribute
-        Inherits TestCategoryBaseAttribute
-        Public Overrides ReadOnly Property TestCategories() As IList(Of String)
-            Get
-                Return New List(Of String)() From {"IntegrationTest"}
-            End Get
-        End Property
-    End Class
-    ''' <summary>
-    ''' Used to indicate that the test is an interactive test, and interacts
-    ''' with the user performing the testing. The user must make a visual/manual
-    ''' determination as to whether the test was successful ("is the displayed image grayscale?")
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public Class InteractiveTestAttribute
-        Inherits TestCategoryBaseAttribute
-        Public Overrides ReadOnly Property TestCategories() As IList(Of String)
-            Get
-                Return New List(Of String)() From {"InteractiveTest"}
-            End Get
-        End Property
-    End Class
+        ShownPicture.Image = img
+        'ShownPicture.Width = img.Width
+        'ShownPicture.Height = img.Height
 
-End Namespace
+        ShownPicture.Size = ShownPicture.Image.Size
+
+
+    End Sub
+    ''' <summary>
+    ''' Loads just the question. Assumes the caller has directly manipulated the dialog's PictureBox control
+    ''' </summary>
+    ''' <param name="instr">Text to place in the text box</param>
+    ''' <remarks></remarks>
+    Public Sub LoadInfo(instr As String)
+        Instructions.Text = instr
+        'ShownPicture.Size = ShownPicture.Image.Size
+
+    End Sub
+
+    Private Sub ImageFeedback_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        'Due to a bug in the MS VisualStudio debugger, you have to manually set visible!
+        Me.Visible = True
+        ' Instructions.Dock = Windows.Forms.DockStyle.Top
+
+    End Sub
+End Class

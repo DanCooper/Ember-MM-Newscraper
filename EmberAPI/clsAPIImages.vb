@@ -87,13 +87,13 @@ Public Class Images
             EncPars.Param(1) = New EncoderParameter(Encoder.Quality, 100)
 
             'Write the supplied image into the MemoryStream
-            _ms.Dispose()
+            If Not _ms Is Nothing Then _ms.Dispose()
             _ms = New MemoryStream()
             nImage.Save(_ms, ICI, EncPars)
             _ms.Flush()
 
             'Replace the existing image with the new image
-            _image.Dispose()
+            If Not _image Is Nothing Then _image.Dispose()
             _image = New Bitmap(_ms)
 
         Catch ex As Exception
