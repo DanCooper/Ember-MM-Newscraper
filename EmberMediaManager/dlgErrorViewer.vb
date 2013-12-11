@@ -70,13 +70,17 @@ Public Class dlgErrorViewer
                 Clipboard.SetText(Me.sBuilder.ToString)
         End Select
     End Sub
-
+    ''' <summary>
+    ''' Builds the text that will be displayed in the Error Viewer dialog, and places it in the textbox. 
+    ''' It also enables the action buttons (copy to clipboard/pastebin)
+    ''' </summary>
+    ''' <remarks></remarks>
     Private Sub BuildErrorLog()
         Me.btnCopy.Enabled = False
 
         Me.sBuilder = New StringBuilder
 
-        Dim sPath As String = String.Concat(Functions.AppPath, Path.DirectorySeparatorChar, "Log", Path.DirectorySeparatorChar, "errlog.txt")
+        'Dim sPath As String = String.Concat(Functions.AppPath, Path.DirectorySeparatorChar, "Log", Path.DirectorySeparatorChar, "errlog.txt")
 
         Me.sBuilder.AppendLine("================= <Assembly Versions> =================")
         Me.sBuilder.AppendLine(String.Empty)
@@ -90,15 +94,24 @@ Public Class dlgErrorViewer
         Me.sBuilder.AppendLine(String.Empty)
         Me.sBuilder.AppendLine(String.Empty)
 
-        If File.Exists(sPath) Then
-            Using fs As FileStream = New FileStream(sPath, FileMode.Open, FileAccess.Read)
-                Using sr As New StreamReader(fs)
-                    While Not sr.EndOfStream
-                        Me.sBuilder.AppendLine(sr.ReadLine)
-                    End While
+        Dim logFile As String = EmberAPI.ErrorLogger.GetPrimaryLog()
+        'Dim logFile = Master.logger.GetType()
+        If ((Not String.IsNullOrEmpty(logFile)) AndAlso (File.Exists(logFile))) Then
+            Try
+
+                Using fs As FileStream = New FileStream(logFile, FileMode.Open, FileAccess.Read)
+                    Using sr As New StreamReader(fs)
+                        While Not sr.EndOfStream
+                            Me.sBuilder.AppendLine(sr.ReadLine)
+                        End While
+                    End Using
                 End Using
-            End Using
+            Catch ex As Exception
+                Master.eLog.Error(Me.GetType(), "Failed to read logfile." & vbNewLine & ex.Message, ex.StackTrace, "Error")
+            End Try
+
         End If
+
 
         Me.txtError.Text = Me.sBuilder.ToString
 
