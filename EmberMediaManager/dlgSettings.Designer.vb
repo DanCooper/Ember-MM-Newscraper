@@ -170,21 +170,7 @@ Partial Class dlgSettings
         Me.tvSettings = New System.Windows.Forms.TreeView()
         Me.pnlGeneral = New System.Windows.Forms.Panel()
         Me.gbInterface = New System.Windows.Forms.GroupBox()
-        Me.pnlXBMCCom = New System.Windows.Forms.Panel()
-        Me.gbProxy = New System.Windows.Forms.GroupBox()
-        Me.gbCreds = New System.Windows.Forms.GroupBox()
-        Me.txtProxyDomain = New System.Windows.Forms.TextBox()
-        Me.lblProxyDomain = New System.Windows.Forms.Label()
-        Me.txtProxyPassword = New System.Windows.Forms.TextBox()
-        Me.txtProxyUsername = New System.Windows.Forms.TextBox()
-        Me.lblProxyUN = New System.Windows.Forms.Label()
-        Me.lblProxyPW = New System.Windows.Forms.Label()
-        Me.chkEnableCredentials = New System.Windows.Forms.CheckBox()
-        Me.lblProxyPort = New System.Windows.Forms.Label()
-        Me.lblProxyURI = New System.Windows.Forms.Label()
-        Me.txtProxyPort = New System.Windows.Forms.TextBox()
-        Me.txtProxyURI = New System.Windows.Forms.TextBox()
-        Me.chkEnableProxy = New System.Windows.Forms.CheckBox()
+        Me.pnlMovieImages = New System.Windows.Forms.Panel()
         Me.pnlMovieGeneral = New System.Windows.Forms.Panel()
         Me.GroupBox30 = New System.Windows.Forms.GroupBox()
         Me.Label18 = New System.Windows.Forms.Label()
@@ -207,6 +193,47 @@ Partial Class dlgSettings
         Me.chkMissingNFO = New System.Windows.Forms.CheckBox()
         Me.chkMissingFanart = New System.Windows.Forms.CheckBox()
         Me.chkMissingPoster = New System.Windows.Forms.CheckBox()
+        Me.gbMovieImagesEFanarts = New System.Windows.Forms.GroupBox()
+        Me.chkMovieEFanartsOnly = New System.Windows.Forms.CheckBox()
+        Me.txtMovieEFanartsWidth = New System.Windows.Forms.TextBox()
+        Me.txtMovieEFanartsHeight = New System.Windows.Forms.TextBox()
+        Me.lblMovieEFanartsQual = New System.Windows.Forms.Label()
+        Me.tbMovieEFanartsQual = New System.Windows.Forms.TrackBar()
+        Me.Label22 = New System.Windows.Forms.Label()
+        Me.Label23 = New System.Windows.Forms.Label()
+        Me.Label28 = New System.Windows.Forms.Label()
+        Me.chkMovieResizeEFanarts = New System.Windows.Forms.CheckBox()
+        Me.Label29 = New System.Windows.Forms.Label()
+        Me.cbMovieEFanartsSize = New System.Windows.Forms.ComboBox()
+        Me.chkMovieOverwriteEFanarts = New System.Windows.Forms.CheckBox()
+        Me.gbMovieImagesEThumbs = New System.Windows.Forms.GroupBox()
+        Me.chkMovieEThumbsOnly = New System.Windows.Forms.CheckBox()
+        Me.txtMovieEThumbsWidth = New System.Windows.Forms.TextBox()
+        Me.txtMovieEThumbsHeight = New System.Windows.Forms.TextBox()
+        Me.lblMovieEThumbsQual = New System.Windows.Forms.Label()
+        Me.tbMovieEThumbsQual = New System.Windows.Forms.TrackBar()
+        Me.Label14 = New System.Windows.Forms.Label()
+        Me.Label15 = New System.Windows.Forms.Label()
+        Me.Label16 = New System.Windows.Forms.Label()
+        Me.chkMovieResizeEThumbs = New System.Windows.Forms.CheckBox()
+        Me.Label17 = New System.Windows.Forms.Label()
+        Me.cbMovieEThumbsSize = New System.Windows.Forms.ComboBox()
+        Me.chkMovieOverwriteEThumbs = New System.Windows.Forms.CheckBox()
+        Me.pnlXBMCCom = New System.Windows.Forms.Panel()
+        Me.gbProxy = New System.Windows.Forms.GroupBox()
+        Me.gbCreds = New System.Windows.Forms.GroupBox()
+        Me.txtProxyDomain = New System.Windows.Forms.TextBox()
+        Me.lblProxyDomain = New System.Windows.Forms.Label()
+        Me.txtProxyPassword = New System.Windows.Forms.TextBox()
+        Me.txtProxyUsername = New System.Windows.Forms.TextBox()
+        Me.lblProxyUN = New System.Windows.Forms.Label()
+        Me.lblProxyPW = New System.Windows.Forms.Label()
+        Me.chkEnableCredentials = New System.Windows.Forms.CheckBox()
+        Me.lblProxyPort = New System.Windows.Forms.Label()
+        Me.lblProxyURI = New System.Windows.Forms.Label()
+        Me.txtProxyPort = New System.Windows.Forms.TextBox()
+        Me.txtProxyURI = New System.Windows.Forms.TextBox()
+        Me.chkEnableProxy = New System.Windows.Forms.CheckBox()
         Me.GroupBox16 = New System.Windows.Forms.GroupBox()
         Me.chkAutoBD = New System.Windows.Forms.CheckBox()
         Me.btnBrowse = New System.Windows.Forms.Button()
@@ -285,33 +312,6 @@ Partial Class dlgSettings
         Me.Label21 = New System.Windows.Forms.Label()
         Me.txtSkipLessThan = New System.Windows.Forms.TextBox()
         Me.Label20 = New System.Windows.Forms.Label()
-        Me.pnlMovieImages = New System.Windows.Forms.Panel()
-        Me.gbMovieImagesEFanarts = New System.Windows.Forms.GroupBox()
-        Me.chkMovieEFanartsOnly = New System.Windows.Forms.CheckBox()
-        Me.txtMovieEFanartsWidth = New System.Windows.Forms.TextBox()
-        Me.txtMovieEFanartsHeight = New System.Windows.Forms.TextBox()
-        Me.lblMovieEFanartsQual = New System.Windows.Forms.Label()
-        Me.tbMovieEFanartsQual = New System.Windows.Forms.TrackBar()
-        Me.Label22 = New System.Windows.Forms.Label()
-        Me.Label23 = New System.Windows.Forms.Label()
-        Me.Label28 = New System.Windows.Forms.Label()
-        Me.chkMovieResizeEFanarts = New System.Windows.Forms.CheckBox()
-        Me.Label29 = New System.Windows.Forms.Label()
-        Me.cbMovieEFanartsSize = New System.Windows.Forms.ComboBox()
-        Me.chkMovieOverwriteEFanarts = New System.Windows.Forms.CheckBox()
-        Me.gbMovieImagesEThumbs = New System.Windows.Forms.GroupBox()
-        Me.chkMovieEThumbsOnly = New System.Windows.Forms.CheckBox()
-        Me.txtMovieEThumbsWidth = New System.Windows.Forms.TextBox()
-        Me.txtMovieEThumbsHeight = New System.Windows.Forms.TextBox()
-        Me.lblMovieEThumbsQual = New System.Windows.Forms.Label()
-        Me.tbMovieEThumbsQual = New System.Windows.Forms.TrackBar()
-        Me.Label14 = New System.Windows.Forms.Label()
-        Me.Label15 = New System.Windows.Forms.Label()
-        Me.Label16 = New System.Windows.Forms.Label()
-        Me.chkMovieResizeEThumbs = New System.Windows.Forms.CheckBox()
-        Me.Label17 = New System.Windows.Forms.Label()
-        Me.cbMovieEThumbsSize = New System.Windows.Forms.ComboBox()
-        Me.chkMovieOverwriteEThumbs = New System.Windows.Forms.CheckBox()
         Me.fbdBrowse = New System.Windows.Forms.FolderBrowserDialog()
         Me.ToolTips = New System.Windows.Forms.ToolTip(Me.components)
         Me.pnlTVSources = New System.Windows.Forms.Panel()
@@ -634,15 +634,16 @@ Partial Class dlgSettings
         Me.chkLockTagline = New System.Windows.Forms.CheckBox()
         Me.chkLockTitle = New System.Windows.Forms.CheckBox()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.chkTitleFallback = New System.Windows.Forms.CheckBox()
         Me.chkPlotForOutline = New System.Windows.Forms.CheckBox()
         Me.chkUseMPAAFSK = New System.Windows.Forms.CheckBox()
-        Me.chkOnlyValueForCert = New System.Windows.Forms.CheckBox()
-        Me.cbForce = New System.Windows.Forms.ComboBox()
+        Me.chkFullCast = New System.Windows.Forms.CheckBox()
         Me.chkForceTitle = New System.Windows.Forms.CheckBox()
+        Me.cbForce = New System.Windows.Forms.ComboBox()
+        Me.chkOnlyValueForCert = New System.Windows.Forms.CheckBox()
         Me.chkOutlineForPlot = New System.Windows.Forms.CheckBox()
         Me.chkCastWithImg = New System.Windows.Forms.CheckBox()
         Me.chkUseCertForMPAA = New System.Windows.Forms.CheckBox()
-        Me.chkFullCast = New System.Windows.Forms.CheckBox()
         Me.chkFullCrew = New System.Windows.Forms.CheckBox()
         Me.cbCert = New System.Windows.Forms.ComboBox()
         Me.chkCert = New System.Windows.Forms.CheckBox()
@@ -682,14 +683,19 @@ Partial Class dlgSettings
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlGeneral.SuspendLayout()
         Me.gbInterface.SuspendLayout()
-        Me.pnlXBMCCom.SuspendLayout()
-        Me.gbProxy.SuspendLayout()
-        Me.gbCreds.SuspendLayout()
+        Me.pnlMovieImages.SuspendLayout()
         Me.pnlMovieGeneral.SuspendLayout()
         Me.GroupBox30.SuspendLayout()
         Me.gbGenreFilter.SuspendLayout()
         Me.gbFilters.SuspendLayout()
         Me.GroupBox27.SuspendLayout()
+        Me.gbMovieImagesEFanarts.SuspendLayout()
+        CType(Me.tbMovieEFanartsQual, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.gbMovieImagesEThumbs.SuspendLayout()
+        CType(Me.tbMovieEThumbsQual, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.pnlXBMCCom.SuspendLayout()
+        Me.gbProxy.SuspendLayout()
+        Me.gbCreds.SuspendLayout()
         Me.GroupBox16.SuspendLayout()
         Me.Panel1.SuspendLayout()
         CType(Me.pbCurrent, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -708,11 +714,6 @@ Partial Class dlgSettings
         Me.gbYAMJ.SuspendLayout()
         Me.tpFileNamingExpert.SuspendLayout()
         Me.GroupBox19.SuspendLayout()
-        Me.pnlMovieImages.SuspendLayout()
-        Me.gbMovieImagesEFanarts.SuspendLayout()
-        CType(Me.tbMovieEFanartsQual, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.gbMovieImagesEThumbs.SuspendLayout()
-        CType(Me.tbMovieEThumbsQual, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlTVSources.SuspendLayout()
         Me.TabControl2.SuspendLayout()
         Me.TabPage3.SuspendLayout()
@@ -2354,6 +2355,7 @@ Partial Class dlgSettings
         '
         'gbInterface
         '
+        Me.gbInterface.Controls.Add(Me.pnlMovieImages)
         Me.gbInterface.Controls.Add(Me.GroupBox29)
         Me.gbInterface.Controls.Add(Me.Label32)
         Me.gbInterface.Controls.Add(Me.cbIntLang)
@@ -2365,167 +2367,21 @@ Partial Class dlgSettings
         Me.gbInterface.TabStop = False
         Me.gbInterface.Text = "Interface"
         '
-        'pnlXBMCCom
+        'pnlMovieImages
         '
-        Me.pnlXBMCCom.BackColor = System.Drawing.Color.White
-        Me.pnlXBMCCom.Controls.Add(Me.gbProxy)
-        Me.pnlXBMCCom.Location = New System.Drawing.Point(631, 681)
-        Me.pnlXBMCCom.Name = "pnlXBMCCom"
-        Me.pnlXBMCCom.Size = New System.Drawing.Size(617, 400)
-        Me.pnlXBMCCom.TabIndex = 18
-        Me.pnlXBMCCom.Visible = False
-        '
-        'gbProxy
-        '
-        Me.gbProxy.Controls.Add(Me.gbCreds)
-        Me.gbProxy.Controls.Add(Me.lblProxyPort)
-        Me.gbProxy.Controls.Add(Me.lblProxyURI)
-        Me.gbProxy.Controls.Add(Me.txtProxyPort)
-        Me.gbProxy.Controls.Add(Me.txtProxyURI)
-        Me.gbProxy.Controls.Add(Me.chkEnableProxy)
-        Me.gbProxy.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbProxy.Location = New System.Drawing.Point(3, 6)
-        Me.gbProxy.Name = "gbProxy"
-        Me.gbProxy.Size = New System.Drawing.Size(290, 230)
-        Me.gbProxy.TabIndex = 0
-        Me.gbProxy.TabStop = False
-        Me.gbProxy.Text = "Proxy"
-        '
-        'gbCreds
-        '
-        Me.gbCreds.Controls.Add(Me.txtProxyDomain)
-        Me.gbCreds.Controls.Add(Me.lblProxyDomain)
-        Me.gbCreds.Controls.Add(Me.txtProxyPassword)
-        Me.gbCreds.Controls.Add(Me.txtProxyUsername)
-        Me.gbCreds.Controls.Add(Me.lblProxyUN)
-        Me.gbCreds.Controls.Add(Me.lblProxyPW)
-        Me.gbCreds.Controls.Add(Me.chkEnableCredentials)
-        Me.gbCreds.Enabled = False
-        Me.gbCreds.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbCreds.Location = New System.Drawing.Point(5, 115)
-        Me.gbCreds.Name = "gbCreds"
-        Me.gbCreds.Size = New System.Drawing.Size(279, 103)
-        Me.gbCreds.TabIndex = 5
-        Me.gbCreds.TabStop = False
-        Me.gbCreds.Text = "Credentials"
-        '
-        'txtProxyDomain
-        '
-        Me.txtProxyDomain.Enabled = False
-        Me.txtProxyDomain.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtProxyDomain.Location = New System.Drawing.Point(64, 69)
-        Me.txtProxyDomain.Name = "txtProxyDomain"
-        Me.txtProxyDomain.Size = New System.Drawing.Size(209, 22)
-        Me.txtProxyDomain.TabIndex = 6
-        '
-        'lblProxyDomain
-        '
-        Me.lblProxyDomain.AutoSize = True
-        Me.lblProxyDomain.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblProxyDomain.Location = New System.Drawing.Point(14, 72)
-        Me.lblProxyDomain.Name = "lblProxyDomain"
-        Me.lblProxyDomain.Size = New System.Drawing.Size(50, 13)
-        Me.lblProxyDomain.TabIndex = 5
-        Me.lblProxyDomain.Text = "Domain:"
-        '
-        'txtProxyPassword
-        '
-        Me.txtProxyPassword.Enabled = False
-        Me.txtProxyPassword.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtProxyPassword.Location = New System.Drawing.Point(201, 39)
-        Me.txtProxyPassword.Name = "txtProxyPassword"
-        Me.txtProxyPassword.Size = New System.Drawing.Size(72, 22)
-        Me.txtProxyPassword.TabIndex = 4
-        Me.txtProxyPassword.UseSystemPasswordChar = True
-        '
-        'txtProxyUsername
-        '
-        Me.txtProxyUsername.Enabled = False
-        Me.txtProxyUsername.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtProxyUsername.Location = New System.Drawing.Point(64, 39)
-        Me.txtProxyUsername.Name = "txtProxyUsername"
-        Me.txtProxyUsername.Size = New System.Drawing.Size(72, 22)
-        Me.txtProxyUsername.TabIndex = 2
-        '
-        'lblProxyUN
-        '
-        Me.lblProxyUN.AutoSize = True
-        Me.lblProxyUN.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblProxyUN.Location = New System.Drawing.Point(3, 42)
-        Me.lblProxyUN.Name = "lblProxyUN"
-        Me.lblProxyUN.Size = New System.Drawing.Size(61, 13)
-        Me.lblProxyUN.TabIndex = 1
-        Me.lblProxyUN.Text = "Username:"
-        '
-        'lblProxyPW
-        '
-        Me.lblProxyPW.AutoSize = True
-        Me.lblProxyPW.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblProxyPW.Location = New System.Drawing.Point(143, 42)
-        Me.lblProxyPW.Name = "lblProxyPW"
-        Me.lblProxyPW.Size = New System.Drawing.Size(59, 13)
-        Me.lblProxyPW.TabIndex = 3
-        Me.lblProxyPW.Text = "Password:"
-        '
-        'chkEnableCredentials
-        '
-        Me.chkEnableCredentials.AutoSize = True
-        Me.chkEnableCredentials.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkEnableCredentials.Location = New System.Drawing.Point(8, 17)
-        Me.chkEnableCredentials.Name = "chkEnableCredentials"
-        Me.chkEnableCredentials.Size = New System.Drawing.Size(122, 17)
-        Me.chkEnableCredentials.TabIndex = 0
-        Me.chkEnableCredentials.Text = "Enable Credentials"
-        Me.chkEnableCredentials.UseVisualStyleBackColor = True
-        '
-        'lblProxyPort
-        '
-        Me.lblProxyPort.AutoSize = True
-        Me.lblProxyPort.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblProxyPort.Location = New System.Drawing.Point(9, 88)
-        Me.lblProxyPort.Name = "lblProxyPort"
-        Me.lblProxyPort.Size = New System.Drawing.Size(61, 13)
-        Me.lblProxyPort.TabIndex = 3
-        Me.lblProxyPort.Text = "Proxy Port:"
-        '
-        'lblProxyURI
-        '
-        Me.lblProxyURI.AutoSize = True
-        Me.lblProxyURI.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblProxyURI.Location = New System.Drawing.Point(9, 39)
-        Me.lblProxyURI.Name = "lblProxyURI"
-        Me.lblProxyURI.Size = New System.Drawing.Size(58, 13)
-        Me.lblProxyURI.TabIndex = 1
-        Me.lblProxyURI.Text = "Proxy URI:"
-        '
-        'txtProxyPort
-        '
-        Me.txtProxyPort.Enabled = False
-        Me.txtProxyPort.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtProxyPort.Location = New System.Drawing.Point(72, 84)
-        Me.txtProxyPort.Name = "txtProxyPort"
-        Me.txtProxyPort.Size = New System.Drawing.Size(51, 22)
-        Me.txtProxyPort.TabIndex = 4
-        '
-        'txtProxyURI
-        '
-        Me.txtProxyURI.Enabled = False
-        Me.txtProxyURI.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtProxyURI.Location = New System.Drawing.Point(11, 54)
-        Me.txtProxyURI.Name = "txtProxyURI"
-        Me.txtProxyURI.Size = New System.Drawing.Size(267, 22)
-        Me.txtProxyURI.TabIndex = 2
-        '
-        'chkEnableProxy
-        '
-        Me.chkEnableProxy.AutoSize = True
-        Me.chkEnableProxy.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkEnableProxy.Location = New System.Drawing.Point(11, 17)
-        Me.chkEnableProxy.Name = "chkEnableProxy"
-        Me.chkEnableProxy.Size = New System.Drawing.Size(91, 17)
-        Me.chkEnableProxy.TabIndex = 0
-        Me.chkEnableProxy.Text = "Enable Proxy"
-        Me.chkEnableProxy.UseVisualStyleBackColor = True
+        Me.pnlMovieImages.BackColor = System.Drawing.Color.White
+        Me.pnlMovieImages.Controls.Add(Me.pnlMovieGeneral)
+        Me.pnlMovieImages.Controls.Add(Me.gbMovieImagesEFanarts)
+        Me.pnlMovieImages.Controls.Add(Me.gbMovieImagesEThumbs)
+        Me.pnlMovieImages.Controls.Add(Me.GroupBox9)
+        Me.pnlMovieImages.Controls.Add(Me.gbMovieImagesFanart)
+        Me.pnlMovieImages.Controls.Add(Me.gbMovieImagesPoster)
+        Me.pnlMovieImages.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.pnlMovieImages.Location = New System.Drawing.Point(50, 242)
+        Me.pnlMovieImages.Name = "pnlMovieImages"
+        Me.pnlMovieImages.Size = New System.Drawing.Size(617, 438)
+        Me.pnlMovieImages.TabIndex = 12
+        Me.pnlMovieImages.Visible = False
         '
         'pnlMovieGeneral
         '
@@ -2536,7 +2392,7 @@ Partial Class dlgSettings
         Me.pnlMovieGeneral.Controls.Add(Me.GroupBox27)
         Me.pnlMovieGeneral.Controls.Add(Me.GroupBox12)
         Me.pnlMovieGeneral.Controls.Add(Me.GroupBox2)
-        Me.pnlMovieGeneral.Location = New System.Drawing.Point(922, 570)
+        Me.pnlMovieGeneral.Location = New System.Drawing.Point(450, 114)
         Me.pnlMovieGeneral.Name = "pnlMovieGeneral"
         Me.pnlMovieGeneral.Size = New System.Drawing.Size(617, 420)
         Me.pnlMovieGeneral.TabIndex = 15
@@ -2761,6 +2617,458 @@ Partial Class dlgSettings
         Me.chkMissingPoster.TabIndex = 6
         Me.chkMissingPoster.Text = "Check for Poster"
         Me.chkMissingPoster.UseVisualStyleBackColor = True
+        '
+        'gbMovieImagesEFanarts
+        '
+        Me.gbMovieImagesEFanarts.Controls.Add(Me.chkMovieEFanartsOnly)
+        Me.gbMovieImagesEFanarts.Controls.Add(Me.txtMovieEFanartsWidth)
+        Me.gbMovieImagesEFanarts.Controls.Add(Me.txtMovieEFanartsHeight)
+        Me.gbMovieImagesEFanarts.Controls.Add(Me.lblMovieEFanartsQual)
+        Me.gbMovieImagesEFanarts.Controls.Add(Me.tbMovieEFanartsQual)
+        Me.gbMovieImagesEFanarts.Controls.Add(Me.Label22)
+        Me.gbMovieImagesEFanarts.Controls.Add(Me.Label23)
+        Me.gbMovieImagesEFanarts.Controls.Add(Me.Label28)
+        Me.gbMovieImagesEFanarts.Controls.Add(Me.chkMovieResizeEFanarts)
+        Me.gbMovieImagesEFanarts.Controls.Add(Me.Label29)
+        Me.gbMovieImagesEFanarts.Controls.Add(Me.cbMovieEFanartsSize)
+        Me.gbMovieImagesEFanarts.Controls.Add(Me.chkMovieOverwriteEFanarts)
+        Me.gbMovieImagesEFanarts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbMovieImagesEFanarts.Location = New System.Drawing.Point(229, 259)
+        Me.gbMovieImagesEFanarts.Name = "gbMovieImagesEFanarts"
+        Me.gbMovieImagesEFanarts.Size = New System.Drawing.Size(218, 170)
+        Me.gbMovieImagesEFanarts.TabIndex = 13
+        Me.gbMovieImagesEFanarts.TabStop = False
+        Me.gbMovieImagesEFanarts.Text = "Extrafanarts"
+        '
+        'chkMovieEFanartsOnly
+        '
+        Me.chkMovieEFanartsOnly.AutoSize = True
+        Me.chkMovieEFanartsOnly.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkMovieEFanartsOnly.Location = New System.Drawing.Point(163, 38)
+        Me.chkMovieEFanartsOnly.Name = "chkMovieEFanartsOnly"
+        Me.chkMovieEFanartsOnly.Size = New System.Drawing.Size(50, 17)
+        Me.chkMovieEFanartsOnly.TabIndex = 2
+        Me.chkMovieEFanartsOnly.Text = "Only"
+        Me.chkMovieEFanartsOnly.UseVisualStyleBackColor = True
+        '
+        'txtMovieEFanartsWidth
+        '
+        Me.txtMovieEFanartsWidth.Enabled = False
+        Me.txtMovieEFanartsWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtMovieEFanartsWidth.Location = New System.Drawing.Point(68, 100)
+        Me.txtMovieEFanartsWidth.Name = "txtMovieEFanartsWidth"
+        Me.txtMovieEFanartsWidth.Size = New System.Drawing.Size(40, 22)
+        Me.txtMovieEFanartsWidth.TabIndex = 6
+        '
+        'txtMovieEFanartsHeight
+        '
+        Me.txtMovieEFanartsHeight.Enabled = False
+        Me.txtMovieEFanartsHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtMovieEFanartsHeight.Location = New System.Drawing.Point(175, 100)
+        Me.txtMovieEFanartsHeight.Name = "txtMovieEFanartsHeight"
+        Me.txtMovieEFanartsHeight.Size = New System.Drawing.Size(40, 22)
+        Me.txtMovieEFanartsHeight.TabIndex = 8
+        '
+        'lblMovieEFanartsQual
+        '
+        Me.lblMovieEFanartsQual.AutoSize = True
+        Me.lblMovieEFanartsQual.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblMovieEFanartsQual.Location = New System.Drawing.Point(183, 147)
+        Me.lblMovieEFanartsQual.Name = "lblMovieEFanartsQual"
+        Me.lblMovieEFanartsQual.Size = New System.Drawing.Size(29, 17)
+        Me.lblMovieEFanartsQual.TabIndex = 11
+        Me.lblMovieEFanartsQual.Text = "100"
+        '
+        'tbMovieEFanartsQual
+        '
+        Me.tbMovieEFanartsQual.AutoSize = False
+        Me.tbMovieEFanartsQual.LargeChange = 10
+        Me.tbMovieEFanartsQual.Location = New System.Drawing.Point(7, 139)
+        Me.tbMovieEFanartsQual.Maximum = 100
+        Me.tbMovieEFanartsQual.Name = "tbMovieEFanartsQual"
+        Me.tbMovieEFanartsQual.Size = New System.Drawing.Size(179, 27)
+        Me.tbMovieEFanartsQual.TabIndex = 10
+        Me.tbMovieEFanartsQual.TickFrequency = 10
+        Me.tbMovieEFanartsQual.Value = 100
+        '
+        'Label22
+        '
+        Me.Label22.AutoSize = True
+        Me.Label22.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label22.Location = New System.Drawing.Point(3, 127)
+        Me.Label22.Name = "Label22"
+        Me.Label22.Size = New System.Drawing.Size(46, 13)
+        Me.Label22.TabIndex = 9
+        Me.Label22.Text = "Quality:"
+        '
+        'Label23
+        '
+        Me.Label23.AutoSize = True
+        Me.Label23.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label23.Location = New System.Drawing.Point(3, 104)
+        Me.Label23.Name = "Label23"
+        Me.Label23.Size = New System.Drawing.Size(66, 13)
+        Me.Label23.TabIndex = 5
+        Me.Label23.Text = "Max Width:"
+        '
+        'Label28
+        '
+        Me.Label28.AutoSize = True
+        Me.Label28.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label28.Location = New System.Drawing.Point(106, 104)
+        Me.Label28.Name = "Label28"
+        Me.Label28.Size = New System.Drawing.Size(69, 13)
+        Me.Label28.TabIndex = 7
+        Me.Label28.Text = "Max Height:"
+        '
+        'chkMovieResizeEFanarts
+        '
+        Me.chkMovieResizeEFanarts.AutoSize = True
+        Me.chkMovieResizeEFanarts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkMovieResizeEFanarts.Location = New System.Drawing.Point(6, 82)
+        Me.chkMovieResizeEFanarts.Name = "chkMovieResizeEFanarts"
+        Me.chkMovieResizeEFanarts.Size = New System.Drawing.Size(133, 17)
+        Me.chkMovieResizeEFanarts.TabIndex = 4
+        Me.chkMovieResizeEFanarts.Text = "Automatically Resize:"
+        Me.chkMovieResizeEFanarts.UseVisualStyleBackColor = True
+        '
+        'Label29
+        '
+        Me.Label29.AutoSize = True
+        Me.Label29.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label29.Location = New System.Drawing.Point(4, 18)
+        Me.Label29.Name = "Label29"
+        Me.Label29.Size = New System.Drawing.Size(80, 13)
+        Me.Label29.TabIndex = 0
+        Me.Label29.Text = "Preferred Size:"
+        '
+        'cbMovieEFanartsSize
+        '
+        Me.cbMovieEFanartsSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbMovieEFanartsSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbMovieEFanartsSize.FormattingEnabled = True
+        Me.cbMovieEFanartsSize.Location = New System.Drawing.Point(6, 34)
+        Me.cbMovieEFanartsSize.Name = "cbMovieEFanartsSize"
+        Me.cbMovieEFanartsSize.Size = New System.Drawing.Size(148, 21)
+        Me.cbMovieEFanartsSize.TabIndex = 1
+        '
+        'chkMovieOverwriteEFanarts
+        '
+        Me.chkMovieOverwriteEFanarts.AutoSize = True
+        Me.chkMovieOverwriteEFanarts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkMovieOverwriteEFanarts.Location = New System.Drawing.Point(6, 62)
+        Me.chkMovieOverwriteEFanarts.Name = "chkMovieOverwriteEFanarts"
+        Me.chkMovieOverwriteEFanarts.Size = New System.Drawing.Size(119, 17)
+        Me.chkMovieOverwriteEFanarts.TabIndex = 3
+        Me.chkMovieOverwriteEFanarts.Text = "Overwrite Existing"
+        Me.chkMovieOverwriteEFanarts.UseVisualStyleBackColor = True
+        '
+        'gbMovieImagesEThumbs
+        '
+        Me.gbMovieImagesEThumbs.Controls.Add(Me.chkMovieEThumbsOnly)
+        Me.gbMovieImagesEThumbs.Controls.Add(Me.txtMovieEThumbsWidth)
+        Me.gbMovieImagesEThumbs.Controls.Add(Me.txtMovieEThumbsHeight)
+        Me.gbMovieImagesEThumbs.Controls.Add(Me.lblMovieEThumbsQual)
+        Me.gbMovieImagesEThumbs.Controls.Add(Me.tbMovieEThumbsQual)
+        Me.gbMovieImagesEThumbs.Controls.Add(Me.Label14)
+        Me.gbMovieImagesEThumbs.Controls.Add(Me.Label15)
+        Me.gbMovieImagesEThumbs.Controls.Add(Me.Label16)
+        Me.gbMovieImagesEThumbs.Controls.Add(Me.chkMovieResizeEThumbs)
+        Me.gbMovieImagesEThumbs.Controls.Add(Me.Label17)
+        Me.gbMovieImagesEThumbs.Controls.Add(Me.cbMovieEThumbsSize)
+        Me.gbMovieImagesEThumbs.Controls.Add(Me.chkMovieOverwriteEThumbs)
+        Me.gbMovieImagesEThumbs.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbMovieImagesEThumbs.Location = New System.Drawing.Point(3, 259)
+        Me.gbMovieImagesEThumbs.Name = "gbMovieImagesEThumbs"
+        Me.gbMovieImagesEThumbs.Size = New System.Drawing.Size(218, 170)
+        Me.gbMovieImagesEThumbs.TabIndex = 12
+        Me.gbMovieImagesEThumbs.TabStop = False
+        Me.gbMovieImagesEThumbs.Text = "Extrathumbs"
+        '
+        'chkMovieEThumbsOnly
+        '
+        Me.chkMovieEThumbsOnly.AutoSize = True
+        Me.chkMovieEThumbsOnly.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkMovieEThumbsOnly.Location = New System.Drawing.Point(163, 38)
+        Me.chkMovieEThumbsOnly.Name = "chkMovieEThumbsOnly"
+        Me.chkMovieEThumbsOnly.Size = New System.Drawing.Size(50, 17)
+        Me.chkMovieEThumbsOnly.TabIndex = 2
+        Me.chkMovieEThumbsOnly.Text = "Only"
+        Me.chkMovieEThumbsOnly.UseVisualStyleBackColor = True
+        '
+        'txtMovieEThumbsWidth
+        '
+        Me.txtMovieEThumbsWidth.Enabled = False
+        Me.txtMovieEThumbsWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtMovieEThumbsWidth.Location = New System.Drawing.Point(68, 100)
+        Me.txtMovieEThumbsWidth.Name = "txtMovieEThumbsWidth"
+        Me.txtMovieEThumbsWidth.Size = New System.Drawing.Size(40, 22)
+        Me.txtMovieEThumbsWidth.TabIndex = 6
+        '
+        'txtMovieEThumbsHeight
+        '
+        Me.txtMovieEThumbsHeight.Enabled = False
+        Me.txtMovieEThumbsHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtMovieEThumbsHeight.Location = New System.Drawing.Point(175, 100)
+        Me.txtMovieEThumbsHeight.Name = "txtMovieEThumbsHeight"
+        Me.txtMovieEThumbsHeight.Size = New System.Drawing.Size(40, 22)
+        Me.txtMovieEThumbsHeight.TabIndex = 8
+        '
+        'lblMovieEThumbsQual
+        '
+        Me.lblMovieEThumbsQual.AutoSize = True
+        Me.lblMovieEThumbsQual.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblMovieEThumbsQual.Location = New System.Drawing.Point(183, 147)
+        Me.lblMovieEThumbsQual.Name = "lblMovieEThumbsQual"
+        Me.lblMovieEThumbsQual.Size = New System.Drawing.Size(29, 17)
+        Me.lblMovieEThumbsQual.TabIndex = 11
+        Me.lblMovieEThumbsQual.Text = "100"
+        '
+        'tbMovieEThumbsQual
+        '
+        Me.tbMovieEThumbsQual.AutoSize = False
+        Me.tbMovieEThumbsQual.LargeChange = 10
+        Me.tbMovieEThumbsQual.Location = New System.Drawing.Point(7, 139)
+        Me.tbMovieEThumbsQual.Maximum = 100
+        Me.tbMovieEThumbsQual.Name = "tbMovieEThumbsQual"
+        Me.tbMovieEThumbsQual.Size = New System.Drawing.Size(179, 27)
+        Me.tbMovieEThumbsQual.TabIndex = 10
+        Me.tbMovieEThumbsQual.TickFrequency = 10
+        Me.tbMovieEThumbsQual.Value = 100
+        '
+        'Label14
+        '
+        Me.Label14.AutoSize = True
+        Me.Label14.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label14.Location = New System.Drawing.Point(3, 127)
+        Me.Label14.Name = "Label14"
+        Me.Label14.Size = New System.Drawing.Size(46, 13)
+        Me.Label14.TabIndex = 9
+        Me.Label14.Text = "Quality:"
+        '
+        'Label15
+        '
+        Me.Label15.AutoSize = True
+        Me.Label15.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label15.Location = New System.Drawing.Point(3, 104)
+        Me.Label15.Name = "Label15"
+        Me.Label15.Size = New System.Drawing.Size(66, 13)
+        Me.Label15.TabIndex = 5
+        Me.Label15.Text = "Max Width:"
+        '
+        'Label16
+        '
+        Me.Label16.AutoSize = True
+        Me.Label16.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label16.Location = New System.Drawing.Point(106, 104)
+        Me.Label16.Name = "Label16"
+        Me.Label16.Size = New System.Drawing.Size(69, 13)
+        Me.Label16.TabIndex = 7
+        Me.Label16.Text = "Max Height:"
+        '
+        'chkMovieResizeEThumbs
+        '
+        Me.chkMovieResizeEThumbs.AutoSize = True
+        Me.chkMovieResizeEThumbs.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkMovieResizeEThumbs.Location = New System.Drawing.Point(6, 82)
+        Me.chkMovieResizeEThumbs.Name = "chkMovieResizeEThumbs"
+        Me.chkMovieResizeEThumbs.Size = New System.Drawing.Size(133, 17)
+        Me.chkMovieResizeEThumbs.TabIndex = 4
+        Me.chkMovieResizeEThumbs.Text = "Automatically Resize:"
+        Me.chkMovieResizeEThumbs.UseVisualStyleBackColor = True
+        '
+        'Label17
+        '
+        Me.Label17.AutoSize = True
+        Me.Label17.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label17.Location = New System.Drawing.Point(4, 18)
+        Me.Label17.Name = "Label17"
+        Me.Label17.Size = New System.Drawing.Size(80, 13)
+        Me.Label17.TabIndex = 0
+        Me.Label17.Text = "Preferred Size:"
+        '
+        'cbMovieEThumbsSize
+        '
+        Me.cbMovieEThumbsSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbMovieEThumbsSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbMovieEThumbsSize.FormattingEnabled = True
+        Me.cbMovieEThumbsSize.Location = New System.Drawing.Point(6, 34)
+        Me.cbMovieEThumbsSize.Name = "cbMovieEThumbsSize"
+        Me.cbMovieEThumbsSize.Size = New System.Drawing.Size(148, 21)
+        Me.cbMovieEThumbsSize.TabIndex = 1
+        '
+        'chkMovieOverwriteEThumbs
+        '
+        Me.chkMovieOverwriteEThumbs.AutoSize = True
+        Me.chkMovieOverwriteEThumbs.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkMovieOverwriteEThumbs.Location = New System.Drawing.Point(6, 62)
+        Me.chkMovieOverwriteEThumbs.Name = "chkMovieOverwriteEThumbs"
+        Me.chkMovieOverwriteEThumbs.Size = New System.Drawing.Size(119, 17)
+        Me.chkMovieOverwriteEThumbs.TabIndex = 3
+        Me.chkMovieOverwriteEThumbs.Text = "Overwrite Existing"
+        Me.chkMovieOverwriteEThumbs.UseVisualStyleBackColor = True
+        '
+        'pnlXBMCCom
+        '
+        Me.pnlXBMCCom.BackColor = System.Drawing.Color.White
+        Me.pnlXBMCCom.Controls.Add(Me.gbProxy)
+        Me.pnlXBMCCom.Location = New System.Drawing.Point(631, 681)
+        Me.pnlXBMCCom.Name = "pnlXBMCCom"
+        Me.pnlXBMCCom.Size = New System.Drawing.Size(617, 400)
+        Me.pnlXBMCCom.TabIndex = 18
+        Me.pnlXBMCCom.Visible = False
+        '
+        'gbProxy
+        '
+        Me.gbProxy.Controls.Add(Me.gbCreds)
+        Me.gbProxy.Controls.Add(Me.lblProxyPort)
+        Me.gbProxy.Controls.Add(Me.lblProxyURI)
+        Me.gbProxy.Controls.Add(Me.txtProxyPort)
+        Me.gbProxy.Controls.Add(Me.txtProxyURI)
+        Me.gbProxy.Controls.Add(Me.chkEnableProxy)
+        Me.gbProxy.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbProxy.Location = New System.Drawing.Point(3, 6)
+        Me.gbProxy.Name = "gbProxy"
+        Me.gbProxy.Size = New System.Drawing.Size(290, 230)
+        Me.gbProxy.TabIndex = 0
+        Me.gbProxy.TabStop = False
+        Me.gbProxy.Text = "Proxy"
+        '
+        'gbCreds
+        '
+        Me.gbCreds.Controls.Add(Me.txtProxyDomain)
+        Me.gbCreds.Controls.Add(Me.lblProxyDomain)
+        Me.gbCreds.Controls.Add(Me.txtProxyPassword)
+        Me.gbCreds.Controls.Add(Me.txtProxyUsername)
+        Me.gbCreds.Controls.Add(Me.lblProxyUN)
+        Me.gbCreds.Controls.Add(Me.lblProxyPW)
+        Me.gbCreds.Controls.Add(Me.chkEnableCredentials)
+        Me.gbCreds.Enabled = False
+        Me.gbCreds.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbCreds.Location = New System.Drawing.Point(5, 115)
+        Me.gbCreds.Name = "gbCreds"
+        Me.gbCreds.Size = New System.Drawing.Size(279, 103)
+        Me.gbCreds.TabIndex = 5
+        Me.gbCreds.TabStop = False
+        Me.gbCreds.Text = "Credentials"
+        '
+        'txtProxyDomain
+        '
+        Me.txtProxyDomain.Enabled = False
+        Me.txtProxyDomain.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtProxyDomain.Location = New System.Drawing.Point(64, 69)
+        Me.txtProxyDomain.Name = "txtProxyDomain"
+        Me.txtProxyDomain.Size = New System.Drawing.Size(209, 22)
+        Me.txtProxyDomain.TabIndex = 6
+        '
+        'lblProxyDomain
+        '
+        Me.lblProxyDomain.AutoSize = True
+        Me.lblProxyDomain.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblProxyDomain.Location = New System.Drawing.Point(14, 72)
+        Me.lblProxyDomain.Name = "lblProxyDomain"
+        Me.lblProxyDomain.Size = New System.Drawing.Size(50, 13)
+        Me.lblProxyDomain.TabIndex = 5
+        Me.lblProxyDomain.Text = "Domain:"
+        '
+        'txtProxyPassword
+        '
+        Me.txtProxyPassword.Enabled = False
+        Me.txtProxyPassword.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtProxyPassword.Location = New System.Drawing.Point(201, 39)
+        Me.txtProxyPassword.Name = "txtProxyPassword"
+        Me.txtProxyPassword.Size = New System.Drawing.Size(72, 22)
+        Me.txtProxyPassword.TabIndex = 4
+        Me.txtProxyPassword.UseSystemPasswordChar = True
+        '
+        'txtProxyUsername
+        '
+        Me.txtProxyUsername.Enabled = False
+        Me.txtProxyUsername.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtProxyUsername.Location = New System.Drawing.Point(64, 39)
+        Me.txtProxyUsername.Name = "txtProxyUsername"
+        Me.txtProxyUsername.Size = New System.Drawing.Size(72, 22)
+        Me.txtProxyUsername.TabIndex = 2
+        '
+        'lblProxyUN
+        '
+        Me.lblProxyUN.AutoSize = True
+        Me.lblProxyUN.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblProxyUN.Location = New System.Drawing.Point(3, 42)
+        Me.lblProxyUN.Name = "lblProxyUN"
+        Me.lblProxyUN.Size = New System.Drawing.Size(61, 13)
+        Me.lblProxyUN.TabIndex = 1
+        Me.lblProxyUN.Text = "Username:"
+        '
+        'lblProxyPW
+        '
+        Me.lblProxyPW.AutoSize = True
+        Me.lblProxyPW.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblProxyPW.Location = New System.Drawing.Point(143, 42)
+        Me.lblProxyPW.Name = "lblProxyPW"
+        Me.lblProxyPW.Size = New System.Drawing.Size(59, 13)
+        Me.lblProxyPW.TabIndex = 3
+        Me.lblProxyPW.Text = "Password:"
+        '
+        'chkEnableCredentials
+        '
+        Me.chkEnableCredentials.AutoSize = True
+        Me.chkEnableCredentials.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkEnableCredentials.Location = New System.Drawing.Point(8, 17)
+        Me.chkEnableCredentials.Name = "chkEnableCredentials"
+        Me.chkEnableCredentials.Size = New System.Drawing.Size(122, 17)
+        Me.chkEnableCredentials.TabIndex = 0
+        Me.chkEnableCredentials.Text = "Enable Credentials"
+        Me.chkEnableCredentials.UseVisualStyleBackColor = True
+        '
+        'lblProxyPort
+        '
+        Me.lblProxyPort.AutoSize = True
+        Me.lblProxyPort.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblProxyPort.Location = New System.Drawing.Point(9, 88)
+        Me.lblProxyPort.Name = "lblProxyPort"
+        Me.lblProxyPort.Size = New System.Drawing.Size(61, 13)
+        Me.lblProxyPort.TabIndex = 3
+        Me.lblProxyPort.Text = "Proxy Port:"
+        '
+        'lblProxyURI
+        '
+        Me.lblProxyURI.AutoSize = True
+        Me.lblProxyURI.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblProxyURI.Location = New System.Drawing.Point(9, 39)
+        Me.lblProxyURI.Name = "lblProxyURI"
+        Me.lblProxyURI.Size = New System.Drawing.Size(58, 13)
+        Me.lblProxyURI.TabIndex = 1
+        Me.lblProxyURI.Text = "Proxy URI:"
+        '
+        'txtProxyPort
+        '
+        Me.txtProxyPort.Enabled = False
+        Me.txtProxyPort.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtProxyPort.Location = New System.Drawing.Point(72, 84)
+        Me.txtProxyPort.Name = "txtProxyPort"
+        Me.txtProxyPort.Size = New System.Drawing.Size(51, 22)
+        Me.txtProxyPort.TabIndex = 4
+        '
+        'txtProxyURI
+        '
+        Me.txtProxyURI.Enabled = False
+        Me.txtProxyURI.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtProxyURI.Location = New System.Drawing.Point(11, 54)
+        Me.txtProxyURI.Name = "txtProxyURI"
+        Me.txtProxyURI.Size = New System.Drawing.Size(267, 22)
+        Me.txtProxyURI.TabIndex = 2
+        '
+        'chkEnableProxy
+        '
+        Me.chkEnableProxy.AutoSize = True
+        Me.chkEnableProxy.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkEnableProxy.Location = New System.Drawing.Point(11, 17)
+        Me.chkEnableProxy.Name = "chkEnableProxy"
+        Me.chkEnableProxy.Size = New System.Drawing.Size(91, 17)
+        Me.chkEnableProxy.TabIndex = 0
+        Me.chkEnableProxy.Text = "Enable Proxy"
+        Me.chkEnableProxy.UseVisualStyleBackColor = True
         '
         'GroupBox16
         '
@@ -3653,311 +3961,6 @@ Partial Class dlgSettings
         Me.Label20.Size = New System.Drawing.Size(122, 13)
         Me.Label20.TabIndex = 0
         Me.Label20.Text = "Skip files smaller than:"
-        '
-        'pnlMovieImages
-        '
-        Me.pnlMovieImages.BackColor = System.Drawing.Color.White
-        Me.pnlMovieImages.Controls.Add(Me.gbMovieImagesEFanarts)
-        Me.pnlMovieImages.Controls.Add(Me.gbMovieImagesEThumbs)
-        Me.pnlMovieImages.Controls.Add(Me.GroupBox9)
-        Me.pnlMovieImages.Controls.Add(Me.gbMovieImagesFanart)
-        Me.pnlMovieImages.Controls.Add(Me.gbMovieImagesPoster)
-        Me.pnlMovieImages.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.pnlMovieImages.Location = New System.Drawing.Point(950, 603)
-        Me.pnlMovieImages.Name = "pnlMovieImages"
-        Me.pnlMovieImages.Size = New System.Drawing.Size(617, 438)
-        Me.pnlMovieImages.TabIndex = 12
-        Me.pnlMovieImages.Visible = False
-        '
-        'gbMovieImagesEFanarts
-        '
-        Me.gbMovieImagesEFanarts.Controls.Add(Me.chkMovieEFanartsOnly)
-        Me.gbMovieImagesEFanarts.Controls.Add(Me.txtMovieEFanartsWidth)
-        Me.gbMovieImagesEFanarts.Controls.Add(Me.txtMovieEFanartsHeight)
-        Me.gbMovieImagesEFanarts.Controls.Add(Me.lblMovieEFanartsQual)
-        Me.gbMovieImagesEFanarts.Controls.Add(Me.tbMovieEFanartsQual)
-        Me.gbMovieImagesEFanarts.Controls.Add(Me.Label22)
-        Me.gbMovieImagesEFanarts.Controls.Add(Me.Label23)
-        Me.gbMovieImagesEFanarts.Controls.Add(Me.Label28)
-        Me.gbMovieImagesEFanarts.Controls.Add(Me.chkMovieResizeEFanarts)
-        Me.gbMovieImagesEFanarts.Controls.Add(Me.Label29)
-        Me.gbMovieImagesEFanarts.Controls.Add(Me.cbMovieEFanartsSize)
-        Me.gbMovieImagesEFanarts.Controls.Add(Me.chkMovieOverwriteEFanarts)
-        Me.gbMovieImagesEFanarts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbMovieImagesEFanarts.Location = New System.Drawing.Point(229, 259)
-        Me.gbMovieImagesEFanarts.Name = "gbMovieImagesEFanarts"
-        Me.gbMovieImagesEFanarts.Size = New System.Drawing.Size(218, 170)
-        Me.gbMovieImagesEFanarts.TabIndex = 13
-        Me.gbMovieImagesEFanarts.TabStop = False
-        Me.gbMovieImagesEFanarts.Text = "Extrafanarts"
-        '
-        'chkMovieEFanartsOnly
-        '
-        Me.chkMovieEFanartsOnly.AutoSize = True
-        Me.chkMovieEFanartsOnly.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMovieEFanartsOnly.Location = New System.Drawing.Point(163, 38)
-        Me.chkMovieEFanartsOnly.Name = "chkMovieEFanartsOnly"
-        Me.chkMovieEFanartsOnly.Size = New System.Drawing.Size(50, 17)
-        Me.chkMovieEFanartsOnly.TabIndex = 2
-        Me.chkMovieEFanartsOnly.Text = "Only"
-        Me.chkMovieEFanartsOnly.UseVisualStyleBackColor = True
-        '
-        'txtMovieEFanartsWidth
-        '
-        Me.txtMovieEFanartsWidth.Enabled = False
-        Me.txtMovieEFanartsWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtMovieEFanartsWidth.Location = New System.Drawing.Point(68, 100)
-        Me.txtMovieEFanartsWidth.Name = "txtMovieEFanartsWidth"
-        Me.txtMovieEFanartsWidth.Size = New System.Drawing.Size(40, 22)
-        Me.txtMovieEFanartsWidth.TabIndex = 6
-        '
-        'txtMovieEFanartsHeight
-        '
-        Me.txtMovieEFanartsHeight.Enabled = False
-        Me.txtMovieEFanartsHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtMovieEFanartsHeight.Location = New System.Drawing.Point(175, 100)
-        Me.txtMovieEFanartsHeight.Name = "txtMovieEFanartsHeight"
-        Me.txtMovieEFanartsHeight.Size = New System.Drawing.Size(40, 22)
-        Me.txtMovieEFanartsHeight.TabIndex = 8
-        '
-        'lblMovieEFanartsQual
-        '
-        Me.lblMovieEFanartsQual.AutoSize = True
-        Me.lblMovieEFanartsQual.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblMovieEFanartsQual.Location = New System.Drawing.Point(183, 147)
-        Me.lblMovieEFanartsQual.Name = "lblMovieEFanartsQual"
-        Me.lblMovieEFanartsQual.Size = New System.Drawing.Size(29, 17)
-        Me.lblMovieEFanartsQual.TabIndex = 11
-        Me.lblMovieEFanartsQual.Text = "100"
-        '
-        'tbMovieEFanartsQual
-        '
-        Me.tbMovieEFanartsQual.AutoSize = False
-        Me.tbMovieEFanartsQual.LargeChange = 10
-        Me.tbMovieEFanartsQual.Location = New System.Drawing.Point(7, 139)
-        Me.tbMovieEFanartsQual.Maximum = 100
-        Me.tbMovieEFanartsQual.Name = "tbMovieEFanartsQual"
-        Me.tbMovieEFanartsQual.Size = New System.Drawing.Size(179, 27)
-        Me.tbMovieEFanartsQual.TabIndex = 10
-        Me.tbMovieEFanartsQual.TickFrequency = 10
-        Me.tbMovieEFanartsQual.Value = 100
-        '
-        'Label22
-        '
-        Me.Label22.AutoSize = True
-        Me.Label22.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label22.Location = New System.Drawing.Point(3, 127)
-        Me.Label22.Name = "Label22"
-        Me.Label22.Size = New System.Drawing.Size(46, 13)
-        Me.Label22.TabIndex = 9
-        Me.Label22.Text = "Quality:"
-        '
-        'Label23
-        '
-        Me.Label23.AutoSize = True
-        Me.Label23.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label23.Location = New System.Drawing.Point(3, 104)
-        Me.Label23.Name = "Label23"
-        Me.Label23.Size = New System.Drawing.Size(66, 13)
-        Me.Label23.TabIndex = 5
-        Me.Label23.Text = "Max Width:"
-        '
-        'Label28
-        '
-        Me.Label28.AutoSize = True
-        Me.Label28.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label28.Location = New System.Drawing.Point(106, 104)
-        Me.Label28.Name = "Label28"
-        Me.Label28.Size = New System.Drawing.Size(69, 13)
-        Me.Label28.TabIndex = 7
-        Me.Label28.Text = "Max Height:"
-        '
-        'chkMovieResizeEFanarts
-        '
-        Me.chkMovieResizeEFanarts.AutoSize = True
-        Me.chkMovieResizeEFanarts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMovieResizeEFanarts.Location = New System.Drawing.Point(6, 82)
-        Me.chkMovieResizeEFanarts.Name = "chkMovieResizeEFanarts"
-        Me.chkMovieResizeEFanarts.Size = New System.Drawing.Size(133, 17)
-        Me.chkMovieResizeEFanarts.TabIndex = 4
-        Me.chkMovieResizeEFanarts.Text = "Automatically Resize:"
-        Me.chkMovieResizeEFanarts.UseVisualStyleBackColor = True
-        '
-        'Label29
-        '
-        Me.Label29.AutoSize = True
-        Me.Label29.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label29.Location = New System.Drawing.Point(4, 18)
-        Me.Label29.Name = "Label29"
-        Me.Label29.Size = New System.Drawing.Size(80, 13)
-        Me.Label29.TabIndex = 0
-        Me.Label29.Text = "Preferred Size:"
-        '
-        'cbMovieEFanartsSize
-        '
-        Me.cbMovieEFanartsSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbMovieEFanartsSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.cbMovieEFanartsSize.FormattingEnabled = True
-        Me.cbMovieEFanartsSize.Location = New System.Drawing.Point(6, 34)
-        Me.cbMovieEFanartsSize.Name = "cbMovieEFanartsSize"
-        Me.cbMovieEFanartsSize.Size = New System.Drawing.Size(148, 21)
-        Me.cbMovieEFanartsSize.TabIndex = 1
-        '
-        'chkMovieOverwriteEFanarts
-        '
-        Me.chkMovieOverwriteEFanarts.AutoSize = True
-        Me.chkMovieOverwriteEFanarts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMovieOverwriteEFanarts.Location = New System.Drawing.Point(6, 62)
-        Me.chkMovieOverwriteEFanarts.Name = "chkMovieOverwriteEFanarts"
-        Me.chkMovieOverwriteEFanarts.Size = New System.Drawing.Size(119, 17)
-        Me.chkMovieOverwriteEFanarts.TabIndex = 3
-        Me.chkMovieOverwriteEFanarts.Text = "Overwrite Existing"
-        Me.chkMovieOverwriteEFanarts.UseVisualStyleBackColor = True
-        '
-        'gbMovieImagesEThumbs
-        '
-        Me.gbMovieImagesEThumbs.Controls.Add(Me.chkMovieEThumbsOnly)
-        Me.gbMovieImagesEThumbs.Controls.Add(Me.txtMovieEThumbsWidth)
-        Me.gbMovieImagesEThumbs.Controls.Add(Me.txtMovieEThumbsHeight)
-        Me.gbMovieImagesEThumbs.Controls.Add(Me.lblMovieEThumbsQual)
-        Me.gbMovieImagesEThumbs.Controls.Add(Me.tbMovieEThumbsQual)
-        Me.gbMovieImagesEThumbs.Controls.Add(Me.Label14)
-        Me.gbMovieImagesEThumbs.Controls.Add(Me.Label15)
-        Me.gbMovieImagesEThumbs.Controls.Add(Me.Label16)
-        Me.gbMovieImagesEThumbs.Controls.Add(Me.chkMovieResizeEThumbs)
-        Me.gbMovieImagesEThumbs.Controls.Add(Me.Label17)
-        Me.gbMovieImagesEThumbs.Controls.Add(Me.cbMovieEThumbsSize)
-        Me.gbMovieImagesEThumbs.Controls.Add(Me.chkMovieOverwriteEThumbs)
-        Me.gbMovieImagesEThumbs.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbMovieImagesEThumbs.Location = New System.Drawing.Point(3, 259)
-        Me.gbMovieImagesEThumbs.Name = "gbMovieImagesEThumbs"
-        Me.gbMovieImagesEThumbs.Size = New System.Drawing.Size(218, 170)
-        Me.gbMovieImagesEThumbs.TabIndex = 12
-        Me.gbMovieImagesEThumbs.TabStop = False
-        Me.gbMovieImagesEThumbs.Text = "Extrathumbs"
-        '
-        'chkMovieEThumbsOnly
-        '
-        Me.chkMovieEThumbsOnly.AutoSize = True
-        Me.chkMovieEThumbsOnly.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMovieEThumbsOnly.Location = New System.Drawing.Point(163, 38)
-        Me.chkMovieEThumbsOnly.Name = "chkMovieEThumbsOnly"
-        Me.chkMovieEThumbsOnly.Size = New System.Drawing.Size(50, 17)
-        Me.chkMovieEThumbsOnly.TabIndex = 2
-        Me.chkMovieEThumbsOnly.Text = "Only"
-        Me.chkMovieEThumbsOnly.UseVisualStyleBackColor = True
-        '
-        'txtMovieEThumbsWidth
-        '
-        Me.txtMovieEThumbsWidth.Enabled = False
-        Me.txtMovieEThumbsWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtMovieEThumbsWidth.Location = New System.Drawing.Point(68, 100)
-        Me.txtMovieEThumbsWidth.Name = "txtMovieEThumbsWidth"
-        Me.txtMovieEThumbsWidth.Size = New System.Drawing.Size(40, 22)
-        Me.txtMovieEThumbsWidth.TabIndex = 6
-        '
-        'txtMovieEThumbsHeight
-        '
-        Me.txtMovieEThumbsHeight.Enabled = False
-        Me.txtMovieEThumbsHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtMovieEThumbsHeight.Location = New System.Drawing.Point(175, 100)
-        Me.txtMovieEThumbsHeight.Name = "txtMovieEThumbsHeight"
-        Me.txtMovieEThumbsHeight.Size = New System.Drawing.Size(40, 22)
-        Me.txtMovieEThumbsHeight.TabIndex = 8
-        '
-        'lblMovieEThumbsQual
-        '
-        Me.lblMovieEThumbsQual.AutoSize = True
-        Me.lblMovieEThumbsQual.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblMovieEThumbsQual.Location = New System.Drawing.Point(183, 147)
-        Me.lblMovieEThumbsQual.Name = "lblMovieEThumbsQual"
-        Me.lblMovieEThumbsQual.Size = New System.Drawing.Size(29, 17)
-        Me.lblMovieEThumbsQual.TabIndex = 11
-        Me.lblMovieEThumbsQual.Text = "100"
-        '
-        'tbMovieEThumbsQual
-        '
-        Me.tbMovieEThumbsQual.AutoSize = False
-        Me.tbMovieEThumbsQual.LargeChange = 10
-        Me.tbMovieEThumbsQual.Location = New System.Drawing.Point(7, 139)
-        Me.tbMovieEThumbsQual.Maximum = 100
-        Me.tbMovieEThumbsQual.Name = "tbMovieEThumbsQual"
-        Me.tbMovieEThumbsQual.Size = New System.Drawing.Size(179, 27)
-        Me.tbMovieEThumbsQual.TabIndex = 10
-        Me.tbMovieEThumbsQual.TickFrequency = 10
-        Me.tbMovieEThumbsQual.Value = 100
-        '
-        'Label14
-        '
-        Me.Label14.AutoSize = True
-        Me.Label14.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label14.Location = New System.Drawing.Point(3, 127)
-        Me.Label14.Name = "Label14"
-        Me.Label14.Size = New System.Drawing.Size(46, 13)
-        Me.Label14.TabIndex = 9
-        Me.Label14.Text = "Quality:"
-        '
-        'Label15
-        '
-        Me.Label15.AutoSize = True
-        Me.Label15.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label15.Location = New System.Drawing.Point(3, 104)
-        Me.Label15.Name = "Label15"
-        Me.Label15.Size = New System.Drawing.Size(66, 13)
-        Me.Label15.TabIndex = 5
-        Me.Label15.Text = "Max Width:"
-        '
-        'Label16
-        '
-        Me.Label16.AutoSize = True
-        Me.Label16.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label16.Location = New System.Drawing.Point(106, 104)
-        Me.Label16.Name = "Label16"
-        Me.Label16.Size = New System.Drawing.Size(69, 13)
-        Me.Label16.TabIndex = 7
-        Me.Label16.Text = "Max Height:"
-        '
-        'chkMovieResizeEThumbs
-        '
-        Me.chkMovieResizeEThumbs.AutoSize = True
-        Me.chkMovieResizeEThumbs.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMovieResizeEThumbs.Location = New System.Drawing.Point(6, 82)
-        Me.chkMovieResizeEThumbs.Name = "chkMovieResizeEThumbs"
-        Me.chkMovieResizeEThumbs.Size = New System.Drawing.Size(133, 17)
-        Me.chkMovieResizeEThumbs.TabIndex = 4
-        Me.chkMovieResizeEThumbs.Text = "Automatically Resize:"
-        Me.chkMovieResizeEThumbs.UseVisualStyleBackColor = True
-        '
-        'Label17
-        '
-        Me.Label17.AutoSize = True
-        Me.Label17.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label17.Location = New System.Drawing.Point(4, 18)
-        Me.Label17.Name = "Label17"
-        Me.Label17.Size = New System.Drawing.Size(80, 13)
-        Me.Label17.TabIndex = 0
-        Me.Label17.Text = "Preferred Size:"
-        '
-        'cbMovieEThumbsSize
-        '
-        Me.cbMovieEThumbsSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbMovieEThumbsSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.cbMovieEThumbsSize.FormattingEnabled = True
-        Me.cbMovieEThumbsSize.Location = New System.Drawing.Point(6, 34)
-        Me.cbMovieEThumbsSize.Name = "cbMovieEThumbsSize"
-        Me.cbMovieEThumbsSize.Size = New System.Drawing.Size(148, 21)
-        Me.cbMovieEThumbsSize.TabIndex = 1
-        '
-        'chkMovieOverwriteEThumbs
-        '
-        Me.chkMovieOverwriteEThumbs.AutoSize = True
-        Me.chkMovieOverwriteEThumbs.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMovieOverwriteEThumbs.Location = New System.Drawing.Point(6, 62)
-        Me.chkMovieOverwriteEThumbs.Name = "chkMovieOverwriteEThumbs"
-        Me.chkMovieOverwriteEThumbs.Size = New System.Drawing.Size(119, 17)
-        Me.chkMovieOverwriteEThumbs.TabIndex = 3
-        Me.chkMovieOverwriteEThumbs.Text = "Overwrite Existing"
-        Me.chkMovieOverwriteEThumbs.UseVisualStyleBackColor = True
         '
         'fbdBrowse
         '
@@ -7206,7 +7209,7 @@ Partial Class dlgSettings
         '
         Me.lblLimit3.AutoSize = True
         Me.lblLimit3.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblLimit3.Location = New System.Drawing.Point(203, 68)
+        Me.lblLimit3.Location = New System.Drawing.Point(203, 105)
         Me.lblLimit3.Name = "lblLimit3"
         Me.lblLimit3.Size = New System.Drawing.Size(34, 13)
         Me.lblLimit3.TabIndex = 70
@@ -7217,7 +7220,7 @@ Partial Class dlgSettings
         '
         Me.txtOutlineLimit.Enabled = False
         Me.txtOutlineLimit.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtOutlineLimit.Location = New System.Drawing.Point(240, 66)
+        Me.txtOutlineLimit.Location = New System.Drawing.Point(240, 103)
         Me.txtOutlineLimit.Name = "txtOutlineLimit"
         Me.txtOutlineLimit.Size = New System.Drawing.Size(39, 22)
         Me.txtOutlineLimit.TabIndex = 69
@@ -7536,17 +7539,18 @@ Partial Class dlgSettings
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.chkTitleFallback)
         Me.GroupBox1.Controls.Add(Me.lblLimit3)
         Me.GroupBox1.Controls.Add(Me.chkPlotForOutline)
         Me.GroupBox1.Controls.Add(Me.txtOutlineLimit)
         Me.GroupBox1.Controls.Add(Me.chkUseMPAAFSK)
-        Me.GroupBox1.Controls.Add(Me.chkOnlyValueForCert)
-        Me.GroupBox1.Controls.Add(Me.cbForce)
+        Me.GroupBox1.Controls.Add(Me.chkFullCast)
         Me.GroupBox1.Controls.Add(Me.chkForceTitle)
+        Me.GroupBox1.Controls.Add(Me.cbForce)
+        Me.GroupBox1.Controls.Add(Me.chkOnlyValueForCert)
         Me.GroupBox1.Controls.Add(Me.chkOutlineForPlot)
         Me.GroupBox1.Controls.Add(Me.chkCastWithImg)
         Me.GroupBox1.Controls.Add(Me.chkUseCertForMPAA)
-        Me.GroupBox1.Controls.Add(Me.chkFullCast)
         Me.GroupBox1.Controls.Add(Me.chkFullCrew)
         Me.GroupBox1.Controls.Add(Me.cbCert)
         Me.GroupBox1.Controls.Add(Me.chkCert)
@@ -7558,11 +7562,22 @@ Partial Class dlgSettings
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Miscellaneous"
         '
+        'chkTitleFallback
+        '
+        Me.chkTitleFallback.AutoSize = True
+        Me.chkTitleFallback.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkTitleFallback.Location = New System.Drawing.Point(6, 31)
+        Me.chkTitleFallback.Name = "chkTitleFallback"
+        Me.chkTitleFallback.Size = New System.Drawing.Size(153, 17)
+        Me.chkTitleFallback.TabIndex = 71
+        Me.chkTitleFallback.Text = "Worldwide-Title Fallback"
+        Me.chkTitleFallback.UseVisualStyleBackColor = True
+        '
         'chkPlotForOutline
         '
         Me.chkPlotForOutline.AutoSize = True
         Me.chkPlotForOutline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkPlotForOutline.Location = New System.Drawing.Point(6, 51)
+        Me.chkPlotForOutline.Location = New System.Drawing.Point(6, 88)
         Me.chkPlotForOutline.Name = "chkPlotForOutline"
         Me.chkPlotForOutline.Size = New System.Drawing.Size(228, 17)
         Me.chkPlotForOutline.TabIndex = 68
@@ -7574,24 +7589,34 @@ Partial Class dlgSettings
         Me.chkUseMPAAFSK.AutoSize = True
         Me.chkUseMPAAFSK.Enabled = False
         Me.chkUseMPAAFSK.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkUseMPAAFSK.Location = New System.Drawing.Point(25, 163)
+        Me.chkUseMPAAFSK.Location = New System.Drawing.Point(25, 190)
         Me.chkUseMPAAFSK.Name = "chkUseMPAAFSK"
         Me.chkUseMPAAFSK.Size = New System.Drawing.Size(213, 17)
         Me.chkUseMPAAFSK.TabIndex = 67
         Me.chkUseMPAAFSK.Text = "Use MPAA as Fallback for FSK Rating"
         Me.chkUseMPAAFSK.UseVisualStyleBackColor = True
         '
-        'chkOnlyValueForCert
+        'chkFullCast
         '
-        Me.chkOnlyValueForCert.AutoSize = True
-        Me.chkOnlyValueForCert.Enabled = False
-        Me.chkOnlyValueForCert.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkOnlyValueForCert.Location = New System.Drawing.Point(25, 142)
-        Me.chkOnlyValueForCert.Name = "chkOnlyValueForCert"
-        Me.chkOnlyValueForCert.Size = New System.Drawing.Size(168, 17)
-        Me.chkOnlyValueForCert.TabIndex = 66
-        Me.chkOnlyValueForCert.Text = "Only Save the Value to NFO"
-        Me.chkOnlyValueForCert.UseVisualStyleBackColor = True
+        Me.chkFullCast.AutoSize = True
+        Me.chkFullCast.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkFullCast.Location = New System.Drawing.Point(6, 50)
+        Me.chkFullCast.Name = "chkFullCast"
+        Me.chkFullCast.Size = New System.Drawing.Size(107, 17)
+        Me.chkFullCast.TabIndex = 0
+        Me.chkFullCast.Text = "Scrape Full Cast"
+        Me.chkFullCast.UseVisualStyleBackColor = True
+        '
+        'chkForceTitle
+        '
+        Me.chkForceTitle.AutoSize = True
+        Me.chkForceTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkForceTitle.Location = New System.Drawing.Point(6, 14)
+        Me.chkForceTitle.Name = "chkForceTitle"
+        Me.chkForceTitle.Size = New System.Drawing.Size(135, 17)
+        Me.chkForceTitle.TabIndex = 64
+        Me.chkForceTitle.Text = "Force Title Language:"
+        Me.chkForceTitle.UseVisualStyleBackColor = True
         '
         'cbForce
         '
@@ -7599,28 +7624,29 @@ Partial Class dlgSettings
         Me.cbForce.Enabled = False
         Me.cbForce.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.cbForce.FormattingEnabled = True
-        Me.cbForce.Location = New System.Drawing.Point(139, 183)
+        Me.cbForce.Location = New System.Drawing.Point(168, 12)
         Me.cbForce.Name = "cbForce"
-        Me.cbForce.Size = New System.Drawing.Size(144, 21)
+        Me.cbForce.Size = New System.Drawing.Size(115, 21)
         Me.cbForce.Sorted = True
         Me.cbForce.TabIndex = 65
         '
-        'chkForceTitle
+        'chkOnlyValueForCert
         '
-        Me.chkForceTitle.AutoSize = True
-        Me.chkForceTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkForceTitle.Location = New System.Drawing.Point(6, 184)
-        Me.chkForceTitle.Name = "chkForceTitle"
-        Me.chkForceTitle.Size = New System.Drawing.Size(135, 17)
-        Me.chkForceTitle.TabIndex = 64
-        Me.chkForceTitle.Text = "Force Title Language:"
-        Me.chkForceTitle.UseVisualStyleBackColor = True
+        Me.chkOnlyValueForCert.AutoSize = True
+        Me.chkOnlyValueForCert.Enabled = False
+        Me.chkOnlyValueForCert.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkOnlyValueForCert.Location = New System.Drawing.Point(25, 174)
+        Me.chkOnlyValueForCert.Name = "chkOnlyValueForCert"
+        Me.chkOnlyValueForCert.Size = New System.Drawing.Size(168, 17)
+        Me.chkOnlyValueForCert.TabIndex = 66
+        Me.chkOnlyValueForCert.Text = "Only Save the Value to NFO"
+        Me.chkOnlyValueForCert.UseVisualStyleBackColor = True
         '
         'chkOutlineForPlot
         '
         Me.chkOutlineForPlot.AutoSize = True
         Me.chkOutlineForPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkOutlineForPlot.Location = New System.Drawing.Point(6, 82)
+        Me.chkOutlineForPlot.Location = New System.Drawing.Point(6, 114)
         Me.chkOutlineForPlot.Name = "chkOutlineForPlot"
         Me.chkOutlineForPlot.Size = New System.Drawing.Size(206, 17)
         Me.chkOutlineForPlot.TabIndex = 3
@@ -7631,7 +7657,7 @@ Partial Class dlgSettings
         '
         Me.chkCastWithImg.AutoSize = True
         Me.chkCastWithImg.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkCastWithImg.Location = New System.Drawing.Point(6, 34)
+        Me.chkCastWithImg.Location = New System.Drawing.Point(6, 69)
         Me.chkCastWithImg.Name = "chkCastWithImg"
         Me.chkCastWithImg.Size = New System.Drawing.Size(189, 17)
         Me.chkCastWithImg.TabIndex = 1
@@ -7643,29 +7669,18 @@ Partial Class dlgSettings
         Me.chkUseCertForMPAA.AutoSize = True
         Me.chkUseCertForMPAA.Enabled = False
         Me.chkUseCertForMPAA.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkUseCertForMPAA.Location = New System.Drawing.Point(6, 124)
+        Me.chkUseCertForMPAA.Location = New System.Drawing.Point(6, 155)
         Me.chkUseCertForMPAA.Name = "chkUseCertForMPAA"
         Me.chkUseCertForMPAA.Size = New System.Drawing.Size(162, 17)
         Me.chkUseCertForMPAA.TabIndex = 6
         Me.chkUseCertForMPAA.Text = "Use Certification for MPAA"
         Me.chkUseCertForMPAA.UseVisualStyleBackColor = True
         '
-        'chkFullCast
-        '
-        Me.chkFullCast.AutoSize = True
-        Me.chkFullCast.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkFullCast.Location = New System.Drawing.Point(6, 17)
-        Me.chkFullCast.Name = "chkFullCast"
-        Me.chkFullCast.Size = New System.Drawing.Size(107, 17)
-        Me.chkFullCast.TabIndex = 0
-        Me.chkFullCast.Text = "Scrape Full Cast"
-        Me.chkFullCast.UseVisualStyleBackColor = True
-        '
         'chkFullCrew
         '
         Me.chkFullCrew.AutoSize = True
         Me.chkFullCrew.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkFullCrew.Location = New System.Drawing.Point(121, 17)
+        Me.chkFullCrew.Location = New System.Drawing.Point(148, 50)
         Me.chkFullCrew.Name = "chkFullCrew"
         Me.chkFullCrew.Size = New System.Drawing.Size(111, 17)
         Me.chkFullCrew.TabIndex = 2
@@ -7679,7 +7694,7 @@ Partial Class dlgSettings
         Me.cbCert.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.cbCert.FormattingEnabled = True
         Me.cbCert.Items.AddRange(New Object() {"Argentina", "Australia", "Belgium", "Brazil", "Canada", "Finland", "France", "Germany", "Hong Kong", "Hungary", "Iceland", "Ireland", "Netherlands", "New Zealand", "Peru", "Poland", "Portugal", "Serbia", "Singapore", "South Korea", "Spain", "Sweden", "Switzerland", "Turkey", "UK", "USA"})
-        Me.cbCert.Location = New System.Drawing.Point(175, 102)
+        Me.cbCert.Location = New System.Drawing.Point(174, 137)
         Me.cbCert.Name = "cbCert"
         Me.cbCert.Size = New System.Drawing.Size(108, 21)
         Me.cbCert.Sorted = True
@@ -7689,7 +7704,7 @@ Partial Class dlgSettings
         '
         Me.chkCert.AutoSize = True
         Me.chkCert.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkCert.Location = New System.Drawing.Point(6, 103)
+        Me.chkCert.Location = New System.Drawing.Point(6, 136)
         Me.chkCert.Name = "chkCert"
         Me.chkCert.Size = New System.Drawing.Size(168, 17)
         Me.chkCert.TabIndex = 4
@@ -7703,7 +7718,7 @@ Partial Class dlgSettings
         Me.pnlMovieScraper.Controls.Add(Me.gbOptions)
         Me.pnlMovieScraper.Controls.Add(Me.GroupBox1)
         Me.pnlMovieScraper.Controls.Add(Me.GroupBox26)
-        Me.pnlMovieScraper.Location = New System.Drawing.Point(908, 625)
+        Me.pnlMovieScraper.Location = New System.Drawing.Point(929, 487)
         Me.pnlMovieScraper.Name = "pnlMovieScraper"
         Me.pnlMovieScraper.Size = New System.Drawing.Size(617, 400)
         Me.pnlMovieScraper.TabIndex = 14
@@ -7862,14 +7877,12 @@ Partial Class dlgSettings
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.btnCancel
         Me.ClientSize = New System.Drawing.Size(892, 647)
-        Me.Controls.Add(Me.pnlMovieGeneral)
-        Me.Controls.Add(Me.pnlMovieImages)
+        Me.Controls.Add(Me.pnlMovieScraper)
         Me.Controls.Add(Me.pnlMovieSources)
         Me.Controls.Add(Me.pnlTVScraper)
         Me.Controls.Add(Me.pnlMovieTrailers)
         Me.Controls.Add(Me.pnlGeneral)
         Me.Controls.Add(Me.pnlTVSources)
-        Me.Controls.Add(Me.pnlMovieScraper)
         Me.Controls.Add(Me.Panel2)
         Me.Controls.Add(Me.ToolStrip1)
         Me.Controls.Add(Me.Panel1)
@@ -7930,11 +7943,7 @@ Partial Class dlgSettings
         Me.pnlGeneral.ResumeLayout(False)
         Me.gbInterface.ResumeLayout(False)
         Me.gbInterface.PerformLayout()
-        Me.pnlXBMCCom.ResumeLayout(False)
-        Me.gbProxy.ResumeLayout(False)
-        Me.gbProxy.PerformLayout()
-        Me.gbCreds.ResumeLayout(False)
-        Me.gbCreds.PerformLayout()
+        Me.pnlMovieImages.ResumeLayout(False)
         Me.pnlMovieGeneral.ResumeLayout(False)
         Me.GroupBox30.ResumeLayout(False)
         Me.GroupBox30.PerformLayout()
@@ -7942,6 +7951,17 @@ Partial Class dlgSettings
         Me.gbFilters.ResumeLayout(False)
         Me.gbFilters.PerformLayout()
         Me.GroupBox27.ResumeLayout(False)
+        Me.gbMovieImagesEFanarts.ResumeLayout(False)
+        Me.gbMovieImagesEFanarts.PerformLayout()
+        CType(Me.tbMovieEFanartsQual, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.gbMovieImagesEThumbs.ResumeLayout(False)
+        Me.gbMovieImagesEThumbs.PerformLayout()
+        CType(Me.tbMovieEThumbsQual, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlXBMCCom.ResumeLayout(False)
+        Me.gbProxy.ResumeLayout(False)
+        Me.gbProxy.PerformLayout()
+        Me.gbCreds.ResumeLayout(False)
+        Me.gbCreds.PerformLayout()
         Me.GroupBox16.ResumeLayout(False)
         Me.GroupBox16.PerformLayout()
         Me.Panel1.ResumeLayout(False)
@@ -7969,13 +7989,6 @@ Partial Class dlgSettings
         Me.tpFileNamingExpert.PerformLayout()
         Me.GroupBox19.ResumeLayout(False)
         Me.GroupBox19.PerformLayout()
-        Me.pnlMovieImages.ResumeLayout(False)
-        Me.gbMovieImagesEFanarts.ResumeLayout(False)
-        Me.gbMovieImagesEFanarts.PerformLayout()
-        CType(Me.tbMovieEFanartsQual, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.gbMovieImagesEThumbs.ResumeLayout(False)
-        Me.gbMovieImagesEThumbs.PerformLayout()
-        CType(Me.tbMovieEThumbsQual, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlTVSources.ResumeLayout(False)
         Me.TabControl2.ResumeLayout(False)
         Me.TabPage3.ResumeLayout(False)
@@ -8709,4 +8722,5 @@ Partial Class dlgSettings
     Friend WithEvents chkXBMCTrailerFormat As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieWatchedCol As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieEFanartsCol As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTitleFallback As System.Windows.Forms.CheckBox
 End Class
