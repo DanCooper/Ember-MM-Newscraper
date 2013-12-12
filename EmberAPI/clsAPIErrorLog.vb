@@ -40,9 +40,8 @@ Public Class ErrorLogger
     ''' <param name="title">Error title</param>
     ''' <param name="Notify"></param>
     ''' <remarks></remarks>
+    <Obsolete("WriteToErrorLog has been deprecated. Please use Trace/Debug/Info/Warn/Error/Fatal instead")>
     Public Sub WriteToErrorLog(ByVal msg As String, ByVal stkTrace As String, ByVal title As String, Optional ByVal Notify As Boolean = True)
-        '<Obsolete("WriteToErrorLog has been deprecated. Please use Trace/Debug/Info/Warn/Error/Fatal instead")>
-
         'Delegate to the new logging routines
         [Error](GetType(EmberAPI.Master), msg, stkTrace, title, Notify)
 
@@ -60,7 +59,7 @@ Public Class ErrorLogger
     ''' <summary>
     ''' Write a message at the TRACE level to our log file, if enabled in settings.
     ''' </summary>
-    ''' <param name="type"><c>Type</c> of the calling class</param>
+    ''' <param name="type"><c>Type</c> of the calling class. Recommend Me.GetType() or GetType(classname).</param>
     ''' <param name="msg">Error summary</param>
     ''' <param name="stkTrace">Full stack trace</param>
     ''' <param name="title">Error title</param>
@@ -76,7 +75,7 @@ Public Class ErrorLogger
     ''' <summary>
     ''' Write a message at the DEBUG level to our log file, if enabled in settings.
     ''' </summary>
-    ''' <param name="type"><c>Type</c> of the calling class</param>
+    ''' <param name="type"><c>Type</c> of the calling class. Recommend Me.GetType() or GetType(classname).</param>
     ''' <param name="msg">Error summary</param>
     ''' <param name="stkTrace">Full stack trace</param>
     ''' <param name="title">Error title</param>
@@ -93,7 +92,7 @@ Public Class ErrorLogger
     ''' <summary>
     ''' Write a message at the INFO level to our log file, if enabled in settings.
     ''' </summary>
-    ''' <param name="type"><c>Type</c> of the calling class</param>
+    ''' <param name="type"><c>Type</c> of the calling class. Recommend Me.GetType() or GetType(classname).</param>
     ''' <param name="msg">Error summary</param>
     ''' <param name="stkTrace">Full stack trace</param>
     ''' <param name="title">Error title</param>
@@ -110,7 +109,7 @@ Public Class ErrorLogger
     ''' <summary>
     ''' Write a message at the WARN level to our log file, if enabled in settings.
     ''' </summary>
-    ''' <param name="type"><c>Type</c> of the calling class</param>
+    ''' <param name="type"><c>Type</c> of the calling class. Recommend Me.GetType() or GetType(classname).</param>
     ''' <param name="msg">Error summary</param>
     ''' <param name="stkTrace">Full stack trace</param>
     ''' <param name="title">Error title</param>
@@ -126,7 +125,7 @@ Public Class ErrorLogger
     ''' <summary>
     ''' Write a message at the ERROR level to our log file, if enabled in settings.
     ''' </summary>
-    ''' <param name="type"><c>Type</c> of the calling class</param>
+    ''' <param name="type"><c>Type</c> of the calling class. Recommend Me.GetType() or GetType(classname).</param>
     ''' <param name="msg">Error summary</param>
     ''' <param name="stkTrace">Full stack trace</param>
     ''' <param name="title">Error title</param>
@@ -142,7 +141,7 @@ Public Class ErrorLogger
     ''' <summary>
     ''' Write a message at the FATAL level to our log file, if enabled in settings.
     ''' </summary>
-    ''' <param name="type"><c>Type</c> of the calling class</param>
+    ''' <param name="type"><c>Type</c> of the calling class. Recommend Me.GetType() or GetType(classname).</param>
     ''' <param name="msg">Error summary</param>
     ''' <param name="stkTrace">Full stack trace</param>
     ''' <param name="title">Error title</param>

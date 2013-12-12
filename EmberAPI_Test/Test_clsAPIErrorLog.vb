@@ -99,7 +99,7 @@ Namespace EmberTests
             Dim message As String = "My Message"
             Dim stackTrace As String = Me.exception.StackTrace
             'Act
-            logger.WriteToErrorLog(message, stackTrace, title)
+            logger.Error(Me.GetType(), message, stackTrace, title)
             'Assert
             CheckLastMessage(message, stackTrace, title, NLog.LogLevel.Error.ToString())
         End Sub
@@ -111,7 +111,7 @@ Namespace EmberTests
             Dim message As String = Nothing
             Dim stackTrace As String = Me.exception.StackTrace
             'Act
-            logger.WriteToErrorLog(message, stackTrace, title)
+            logger.Error(Me.GetType(), message, stackTrace, title)
             'Assert
             CheckLastMessage(message, stackTrace, title, NLog.LogLevel.Error.ToString())
 
@@ -126,7 +126,7 @@ Namespace EmberTests
             Dim message As String = "My Message"
             Dim stackTrace As String = Me.exception.StackTrace
             'Act
-            logger.WriteToErrorLog(message, stackTrace, title)
+            logger.Error(Me.GetType(), message, stackTrace, title)
             'Assert
             CheckLastMessage(message, stackTrace, title, NLog.LogLevel.Error.ToString())
         End Sub
@@ -138,7 +138,7 @@ Namespace EmberTests
             Dim message As String = "My Message"
             Dim stackTrace As String = Nothing
             'Act
-            logger.WriteToErrorLog(message, stackTrace, title)
+            logger.Error(Me.GetType(), message, stackTrace, title)
             'Assert
             CheckLastMessage(message, stackTrace, title, NLog.LogLevel.Error.ToString())
 
@@ -151,7 +151,7 @@ Namespace EmberTests
             Dim message As String = Nothing
             Dim stackTrace As String = Nothing
             'Act
-            logger.WriteToErrorLog(message, stackTrace, title)
+            logger.Error(Me.GetType(), message, stackTrace, title)
             'Assert
             CheckLastMessage(message, stackTrace, title, NLog.LogLevel.Error.ToString())
         End Sub
@@ -165,7 +165,7 @@ Namespace EmberTests
             Dim message As String = Nothing
             Dim stackTrace As String = Me.exception.StackTrace
             'Act
-            logger.WriteToErrorLog(message, stackTrace, title)
+            logger.Error(Me.GetType(), message, stackTrace, title)
 
             'Assert
             CheckLastMessage(message, stackTrace, title, NLog.LogLevel.Error.ToString())
@@ -179,7 +179,7 @@ Namespace EmberTests
             Dim message As String = "My Message"
             Dim stackTrace As String = Nothing
             'Act
-            logger.WriteToErrorLog(message, stackTrace, title)
+            logger.Error(Me.GetType(), message, stackTrace, title)
             'Assert
             CheckLastMessage(message, stackTrace, title, NLog.LogLevel.Error.ToString())
 
@@ -192,7 +192,7 @@ Namespace EmberTests
             Dim message As String = "My Message"
             Dim stackTrace As String = Me.exception.StackTrace
             'Act
-            logger.WriteToErrorLog(message, stackTrace, title, False)
+            logger.Error(Me.GetType(), message, stackTrace, title, False)
             'Assert
             CheckLastMessage(message, stackTrace, title, NLog.LogLevel.Error.ToString())
         End Sub

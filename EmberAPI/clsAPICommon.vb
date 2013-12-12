@@ -993,7 +993,7 @@ Public Class Functions
         '        Return strChangelog
         '    End If
         'Catch ex As Exception
-        '    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        '    Master.eLog.Error(GetType(Functions),ex.Message, ex.StackTrace, "Error")
         'End Try
         Return "Unavailable"
     End Function
@@ -1025,7 +1025,7 @@ Public Class Functions
 			End If
 
 		Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message & " - Failed trying to identify last thumb from path: " & sPath, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(Functions), ex.Message & " - Failed trying to identify last thumb from path: " & sPath, ex.StackTrace, "Error")
 		End Try
 
 		Return iMod
@@ -1077,7 +1077,7 @@ Public Class Functions
                                 Return sDir.FullName
                             End If
                         Catch ex As Exception
-                            Master.eLog.WriteToErrorLog(ex.Message & " - Failed to determine path for season " & iSeason & " in path: " & ShowPath, ex.StackTrace, "Error")
+                            Master.eLog.Error(GetType(Functions), ex.Message & " - Failed to determine path for season " & iSeason & " in path: " & ShowPath, ex.StackTrace, "Error")
                         End Try
                     Next
                 Next
@@ -1331,7 +1331,7 @@ Public Class Functions
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message & " - Failed to access MediaInfo.DLL from path:" & dllPath, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(Functions), ex.Message & " - Failed to access MediaInfo.DLL from path:" & dllPath, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1548,4 +1548,4 @@ Public Class Structures
 
 #End Region 'Nested Types
 
-End Class
+End Class 'Structures

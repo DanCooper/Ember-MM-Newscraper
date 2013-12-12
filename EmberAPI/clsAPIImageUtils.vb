@@ -103,7 +103,7 @@ Public Class ImageUtils
                 End Using
             End Using
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(ImageUtils), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
     ''' <summary>
@@ -166,7 +166,7 @@ Public Class ImageUtils
 
             End Using
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(ImageUtils), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
     ''' <summary>
@@ -230,7 +230,7 @@ Public Class ImageUtils
             Catch ex As Exception
                 pbDestination.Left = 0
                 pbDestination.Size = New Size(maxWidth, maxHeight)
-                'Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                'Master.eLog.Error(GetType(ImageUtils),ex.Message, ex.StackTrace, "Error")
             End Try
         Else
             pbDestination.Left = 0
@@ -267,7 +267,7 @@ Public Class ImageUtils
             End Using
             bmOverlay = Nothing
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(ImageUtils), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
     ''' <summary>
@@ -319,7 +319,7 @@ Public Class ImageUtils
             End Using
             bmOverlay = Nothing
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(ImageUtils), ex.Message, ex.StackTrace, "Error")
         End Try
 
         Return imgUnderlay

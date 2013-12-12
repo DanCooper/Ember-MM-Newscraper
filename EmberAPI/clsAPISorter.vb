@@ -127,7 +127,7 @@ Public Class ListViewColumnSorter
                 Return 0
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(ListViewColumnSorter), ex.Message, ex.StackTrace, "Error")
             Return 0
         End Try
     End Function

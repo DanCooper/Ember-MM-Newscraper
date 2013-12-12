@@ -110,7 +110,7 @@ Public Class Trailers
                 End If
             Next
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(Trailers), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
     ''' <summary>
@@ -209,7 +209,7 @@ Public Class Trailers
                 Next
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(Trailers), ex.Message, ex.StackTrace, "Error")
         End Try
     End Function
     ''' <summary>

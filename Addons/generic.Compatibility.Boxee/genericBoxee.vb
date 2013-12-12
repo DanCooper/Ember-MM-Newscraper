@@ -149,7 +149,7 @@ Public Class genericBoxee
 
 				_refparam = doContinue
 			Catch ex As Exception
-				Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
 			End Try
 		End If
 	End Function

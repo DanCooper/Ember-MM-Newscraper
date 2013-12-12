@@ -58,131 +58,131 @@ Public Class frmMovieExtractor
 			PreviousFrameValue = 0
 
 		Catch ex As Exception
-			Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error", False)
-			tbFrame.Maximum = 0
-			tbFrame.Value = 0
-			tbFrame.Enabled = False
-			pbFrame.Image = Nothing
-		End Try
-	End Sub
-	Private Sub tbFrame_KeyUp(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles tbFrame.KeyUp
-		If tbFrame.Value <> PreviousFrameValue Then
-			GrabTheFrame()
-		End If
-	End Sub
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error", False)
+            tbFrame.Maximum = 0
+            tbFrame.Value = 0
+            tbFrame.Enabled = False
+            pbFrame.Image = Nothing
+        End Try
+    End Sub
+    Private Sub tbFrame_KeyUp(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles tbFrame.KeyUp
+        If tbFrame.Value <> PreviousFrameValue Then
+            GrabTheFrame()
+        End If
+    End Sub
 
-	Private Sub tbFrame_MouseUp(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles tbFrame.MouseUp
-		If tbFrame.Value <> PreviousFrameValue Then
-			GrabTheFrame()
-		End If
-	End Sub
-	Private Sub tbFrame_Scroll(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tbFrame.Scroll
-		Try
-			Dim sec2Time As New TimeSpan(0, 0, tbFrame.Value)
-			lblTime.Text = String.Format("{0}:{1:00}:{2:00}", sec2Time.Hours, sec2Time.Minutes, sec2Time.Seconds)
+    Private Sub tbFrame_MouseUp(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles tbFrame.MouseUp
+        If tbFrame.Value <> PreviousFrameValue Then
+            GrabTheFrame()
+        End If
+    End Sub
+    Private Sub tbFrame_Scroll(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tbFrame.Scroll
+        Try
+            Dim sec2Time As New TimeSpan(0, 0, tbFrame.Value)
+            lblTime.Text = String.Format("{0}:{1:00}:{2:00}", sec2Time.Hours, sec2Time.Minutes, sec2Time.Seconds)
 
-		Catch ex As Exception
-			Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-		End Try
-	End Sub
+        Catch ex As Exception
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
 
-	Private Sub GrabTheFrame()
-		Try
+    Private Sub GrabTheFrame()
+        Try
 
-			tbFrame.Enabled = False
-			Dim ffmpeg As New Process()
+            tbFrame.Enabled = False
+            Dim ffmpeg As New Process()
 
-			ffmpeg.StartInfo.FileName = Functions.GetFFMpeg
-			'ffmpeg.StartInfo.Arguments = String.Format("-ss {0} -i ""{1}"" -an -f rawvideo -vframes 1 -vcodec mjpeg -y -pix_fmt ""yuvj420p"" ""{2}""", tbFrame.Value, Master.currMovie.Filename, Path.Combine(Master.TempPath, "frame.jpg"))
-			ffmpeg.StartInfo.Arguments = String.Format("-ss {0} -i ""{1}"" -vframes 1 -y ""{2}""", tbFrame.Value, Master.currMovie.Filename, Path.Combine(Master.TempPath, "frame.jpg"))
-			ffmpeg.EnableRaisingEvents = False
-			ffmpeg.StartInfo.UseShellExecute = False
-			ffmpeg.StartInfo.CreateNoWindow = True
-			ffmpeg.StartInfo.RedirectStandardOutput = False
-			ffmpeg.StartInfo.RedirectStandardError = False
+            ffmpeg.StartInfo.FileName = Functions.GetFFMpeg
+            'ffmpeg.StartInfo.Arguments = String.Format("-ss {0} -i ""{1}"" -an -f rawvideo -vframes 1 -vcodec mjpeg -y -pix_fmt ""yuvj420p"" ""{2}""", tbFrame.Value, Master.currMovie.Filename, Path.Combine(Master.TempPath, "frame.jpg"))
+            ffmpeg.StartInfo.Arguments = String.Format("-ss {0} -i ""{1}"" -vframes 1 -y ""{2}""", tbFrame.Value, Master.currMovie.Filename, Path.Combine(Master.TempPath, "frame.jpg"))
+            ffmpeg.EnableRaisingEvents = False
+            ffmpeg.StartInfo.UseShellExecute = False
+            ffmpeg.StartInfo.CreateNoWindow = True
+            ffmpeg.StartInfo.RedirectStandardOutput = False
+            ffmpeg.StartInfo.RedirectStandardError = False
 
-			pnlFrameProgress.Visible = True
-			btnFrameSave.Enabled = False
+            pnlFrameProgress.Visible = True
+            btnFrameSave.Enabled = False
 
-			ffmpeg.Start()
+            ffmpeg.Start()
 
-			ffmpeg.WaitForExit()
-			ffmpeg.Close()
+            ffmpeg.WaitForExit()
+            ffmpeg.Close()
 
-			If File.Exists(Path.Combine(Master.TempPath, "frame.jpg")) Then
-				Using fsFImage As FileStream = New FileStream(Path.Combine(Master.TempPath, "frame.jpg"), FileMode.Open, FileAccess.Read)
-					pbFrame.Image = Image.FromStream(fsFImage)
-				End Using
-				tbFrame.Enabled = True
-				btnFrameSave.Enabled = True
-				pnlFrameProgress.Visible = False
-				PreviousFrameValue = tbFrame.Value
-			Else
-				lblTime.Text = String.Empty
-				tbFrame.Maximum = 0
-				tbFrame.Value = 0
-				tbFrame.Enabled = False
-				btnFrameSave.Enabled = False
-				btnFrameLoad.Enabled = True
-				pbFrame.Image = Nothing
-				pnlFrameProgress.Visible = False
-				PreviousFrameValue = tbFrame.Value
-			End If
+            If File.Exists(Path.Combine(Master.TempPath, "frame.jpg")) Then
+                Using fsFImage As FileStream = New FileStream(Path.Combine(Master.TempPath, "frame.jpg"), FileMode.Open, FileAccess.Read)
+                    pbFrame.Image = Image.FromStream(fsFImage)
+                End Using
+                tbFrame.Enabled = True
+                btnFrameSave.Enabled = True
+                pnlFrameProgress.Visible = False
+                PreviousFrameValue = tbFrame.Value
+            Else
+                lblTime.Text = String.Empty
+                tbFrame.Maximum = 0
+                tbFrame.Value = 0
+                tbFrame.Enabled = False
+                btnFrameSave.Enabled = False
+                btnFrameLoad.Enabled = True
+                pbFrame.Image = Nothing
+                pnlFrameProgress.Visible = False
+                PreviousFrameValue = tbFrame.Value
+            End If
 
-		Catch ex As Exception
-			Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error", False)
-			PreviousFrameValue = 0
-			lblTime.Text = String.Empty
-			tbFrame.Maximum = 0
-			tbFrame.Value = 0
-			tbFrame.Enabled = False
-			btnFrameSave.Enabled = False
-			btnFrameLoad.Enabled = True
-			pbFrame.Image = Nothing
-		End Try
-	End Sub
+        Catch ex As Exception
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error", False)
+            PreviousFrameValue = 0
+            lblTime.Text = String.Empty
+            tbFrame.Maximum = 0
+            tbFrame.Value = 0
+            tbFrame.Enabled = False
+            btnFrameSave.Enabled = False
+            btnFrameLoad.Enabled = True
+            pbFrame.Image = Nothing
+        End Try
+    End Sub
 
-	Private Sub btnFrameSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFrameSave.Click
-		Try
-			Dim tPath As String = Path.Combine(Master.TempPath, "extrathumbs")
+    Private Sub btnFrameSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFrameSave.Click
+        Try
+            Dim tPath As String = Path.Combine(Master.TempPath, "extrathumbs")
 
-			If Not Directory.Exists(tPath) Then
-				Directory.CreateDirectory(tPath)
-			End If
+            If Not Directory.Exists(tPath) Then
+                Directory.CreateDirectory(tPath)
+            End If
 
-			Dim iMod As Integer = Functions.GetExtraModifier(tPath)
+            Dim iMod As Integer = Functions.GetExtraModifier(tPath)
 
-			Dim exImage As New Images
-			exImage.ResizeExtraThumb(Path.Combine(Master.TempPath, "frame.jpg"), Path.Combine(tPath, String.Concat("thumb", (iMod + 1), ".jpg")))
-			exImage.Dispose()
-			exImage = Nothing
+            Dim exImage As New Images
+            exImage.ResizeExtraThumb(Path.Combine(Master.TempPath, "frame.jpg"), Path.Combine(tPath, String.Concat("thumb", (iMod + 1), ".jpg")))
+            exImage.Dispose()
+            exImage = Nothing
 
-		Catch ex As Exception
-			Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-		End Try
+        Catch ex As Exception
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+        End Try
 
-		btnFrameSave.Enabled = False
-	End Sub
+        btnFrameSave.Enabled = False
+    End Sub
 
     Private Sub DelayTimer_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrDelay.Tick
         tmrDelay.Stop()
         GrabTheFrame()
     End Sub
 
-	Private Sub btnAutoGen_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAutoGen.Click
-		Try
-			If Convert.ToInt32(txtThumbCount.Text) > 0 Then
-				pnlFrameProgress.Visible = True
-				Me.Refresh()
-				ThumbGenerator.CreateRandomThumbs(Master.currMovie, Convert.ToInt32(txtThumbCount.Text), True)
-				pnlFrameProgress.Visible = False
-				'Me.RefreshExtraThumbs()
-				RaiseEvent GenericEvent(Enums.ModuleEventType.MovieFrameExtrator, Nothing)
-			End If
-		Catch ex As Exception
-			Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-		End Try
-	End Sub
+    Private Sub btnAutoGen_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAutoGen.Click
+        Try
+            If Convert.ToInt32(txtThumbCount.Text) > 0 Then
+                pnlFrameProgress.Visible = True
+                Me.Refresh()
+                ThumbGenerator.CreateRandomThumbs(Master.currMovie, Convert.ToInt32(txtThumbCount.Text), True)
+                pnlFrameProgress.Visible = False
+                'Me.RefreshExtraThumbs()
+                RaiseEvent GenericEvent(Enums.ModuleEventType.MovieFrameExtrator, Nothing)
+            End If
+        Catch ex As Exception
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
 
 	Private Sub txtThumbCount_GotFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtThumbCount.GotFocus
 		Me.AcceptButton = Me.btnAutoGen

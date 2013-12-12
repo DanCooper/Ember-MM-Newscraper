@@ -92,7 +92,7 @@ Public Class NFO
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(NFO), ex.Message, ex.StackTrace, "Error")
         End Try
 
         If strOutput.ToString.Trim.Length > 0 Then
@@ -148,7 +148,7 @@ Public Class NFO
             Next
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(NFO), ex.Message, ex.StackTrace, "Error")
         End Try
         Return fiaOut
     End Function
@@ -207,7 +207,7 @@ Public Class NFO
             Next
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(NFO), ex.Message, ex.StackTrace, "Error")
         End Try
         Return fivOut
     End Function
@@ -227,7 +227,7 @@ Public Class NFO
                 result = String.Format("{0}x{1} ({2})", iWidth, iHeight, sinADR.ToString("0.00"))
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(NFO), ex.Message, ex.StackTrace, "Error")
         End Try
 
         Return result
@@ -335,7 +335,7 @@ Public Class NFO
             If File.Exists(nPath) Then
                 Return nPath
             End If
-            End If
+        End If
 
         '*************** XBMC Eden settings ***************
         If Master.eSettings.UseEden AndAlso Master.eSettings.NFOEden Then
@@ -394,74 +394,74 @@ Public Class NFO
             End If
         End If
 
-            'If Master.eSettings.VideoTSParent AndAlso FileUtils.Common.isVideoTS(sPath) Then
-            '    If Master.eSettings.MovieNameNFO Then
-            '        nPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Directory.GetParent(Directory.GetParent(sPath).FullName).Name), ".nfo")
-            '    ElseIf Master.eSettings.MovieNFO Then
-            '        nPath = String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Path.DirectorySeparatorChar, "movie.nfo")
-            '    Else
-            '        nPath = String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Path.DirectorySeparatorChar, "movie.nfo")
-            '    End If
+        'If Master.eSettings.VideoTSParent AndAlso FileUtils.Common.isVideoTS(sPath) Then
+        '    If Master.eSettings.MovieNameNFO Then
+        '        nPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Directory.GetParent(Directory.GetParent(sPath).FullName).Name), ".nfo")
+        '    ElseIf Master.eSettings.MovieNFO Then
+        '        nPath = String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Path.DirectorySeparatorChar, "movie.nfo")
+        '    Else
+        '        nPath = String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Path.DirectorySeparatorChar, "movie.nfo")
+        '    End If
 
-            '    If File.Exists(nPath) Then
-            '        Return nPath
-            '    Else
-            '        If Not isSingle Then
-            '            Return String.Empty
-            '        Else
-            '            'return movie path so we can use it for looking for non-conforming nfos
-            '            Return sPath
-            '        End If
-            '    End If
-            'ElseIf Master.eSettings.VideoTSParent AndAlso FileUtils.Common.isBDRip(sPath) Then
-            '    If Master.eSettings.MovieNameNFO Then
-            '        nPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName).FullName, Directory.GetParent(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName).Name), ".nfo")
-            '    ElseIf Master.eSettings.MovieNFO Then
-            '        nPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName).FullName, "movie.nfo"))
-            '    Else
-            '        nPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName).FullName, "movie.nfo"))
-            '    End If
+        '    If File.Exists(nPath) Then
+        '        Return nPath
+        '    Else
+        '        If Not isSingle Then
+        '            Return String.Empty
+        '        Else
+        '            'return movie path so we can use it for looking for non-conforming nfos
+        '            Return sPath
+        '        End If
+        '    End If
+        'ElseIf Master.eSettings.VideoTSParent AndAlso FileUtils.Common.isBDRip(sPath) Then
+        '    If Master.eSettings.MovieNameNFO Then
+        '        nPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName).FullName, Directory.GetParent(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName).Name), ".nfo")
+        '    ElseIf Master.eSettings.MovieNFO Then
+        '        nPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName).FullName, "movie.nfo"))
+        '    Else
+        '        nPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName).FullName, "movie.nfo"))
+        '    End If
 
-            '    If File.Exists(nPath) Then
-            '        Return nPath
-            '    Else
-            '        If Not isSingle Then
-            '            Return String.Empty
-            '        Else
-            '            'return movie path so we can use it for looking for non-conforming nfos
-            '            Return sPath
-            '        End If
-            '    End If
-            'Else
-            '    Dim fList As New List(Of String)
-            '    Try
-            '        fList.AddRange(Directory.GetFiles(Directory.GetParent(fileParPath).FullName, "*.nfo"))
-            '    Catch
-            '    End Try
-            '    fList = fList.ConvertAll(Function(s) s.ToLower)
+        '    If File.Exists(nPath) Then
+        '        Return nPath
+        '    Else
+        '        If Not isSingle Then
+        '            Return String.Empty
+        '        Else
+        '            'return movie path so we can use it for looking for non-conforming nfos
+        '            Return sPath
+        '        End If
+        '    End If
+        'Else
+        '    Dim fList As New List(Of String)
+        '    Try
+        '        fList.AddRange(Directory.GetFiles(Directory.GetParent(fileParPath).FullName, "*.nfo"))
+        '    Catch
+        '    End Try
+        '    fList = fList.ConvertAll(Function(s) s.ToLower)
 
-            '    If isSingle AndAlso Master.eSettings.MovieNFO AndAlso fList.Contains(Path.Combine(Directory.GetParent(sPath).FullName.ToLower, "movie.nfo")) Then
-            '        Return Path.Combine(Directory.GetParent(nPath).FullName.ToLower, "movie.nfo")
-            '    ElseIf Master.eSettings.MovieNameNFO AndAlso fList.Contains(String.Concat(filePathStack, ".nfo")) Then
-            '        Return String.Concat(filePathStack, ".nfo")
-            '    ElseIf Master.eSettings.MovieNameNFO AndAlso fList.Contains(String.Concat(nPath, ".nfo")) Then
-            '        Return String.Concat(nPath, ".nfo")
-            '    Else
-            '        If Not isSingle Then
-            '            Return String.Empty
-            '        Else
-            '            'return movie path so we can use it for looking for non-conforming nfos
-            '            Return sPath
-            '        End If
-            '    End If
-            'End If
+        '    If isSingle AndAlso Master.eSettings.MovieNFO AndAlso fList.Contains(Path.Combine(Directory.GetParent(sPath).FullName.ToLower, "movie.nfo")) Then
+        '        Return Path.Combine(Directory.GetParent(nPath).FullName.ToLower, "movie.nfo")
+        '    ElseIf Master.eSettings.MovieNameNFO AndAlso fList.Contains(String.Concat(filePathStack, ".nfo")) Then
+        '        Return String.Concat(filePathStack, ".nfo")
+        '    ElseIf Master.eSettings.MovieNameNFO AndAlso fList.Contains(String.Concat(nPath, ".nfo")) Then
+        '        Return String.Concat(nPath, ".nfo")
+        '    Else
+        '        If Not isSingle Then
+        '            Return String.Empty
+        '        Else
+        '            'return movie path so we can use it for looking for non-conforming nfos
+        '            Return sPath
+        '        End If
+        '    End If
+        'End If
 
-            If Not isSingle Then
-                Return String.Empty
-            Else
-                'return movie path so we can use it for looking for non-conforming nfos
-                Return sPath
-            End If
+        If Not isSingle Then
+            Return String.Empty
+        Else
+            'return movie path so we can use it for looking for non-conforming nfos
+            Return sPath
+        End If
     End Function
 
     Public Shared Function GetResFromDimensions(ByVal fiRes As MediaInfo.Video) As String
@@ -521,7 +521,7 @@ Public Class NFO
                 End Select
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(NFO), ex.Message, ex.StackTrace, "Error")
         End Try
 
         If Not String.IsNullOrEmpty(resOut) Then
@@ -1172,7 +1172,7 @@ Public Class NFO
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(NFO), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1198,7 +1198,7 @@ Public Class NFO
 
             xmlDoc = Nothing
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(NFO), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1286,7 +1286,7 @@ Public Class NFO
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(NFO), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1339,7 +1339,7 @@ Public Class NFO
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(NFO), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1351,7 +1351,7 @@ Public Class NFO
                 RenameToInfo(sPath)
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(NFO), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1365,7 +1365,7 @@ Public Class NFO
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(NFO), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1377,7 +1377,7 @@ Public Class NFO
                 RenameToInfo(sPath)
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(NFO), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1395,7 +1395,7 @@ Public Class NFO
             End If
             My.Computer.FileSystem.RenameFile(sPath, Path.GetFileName(strNewName))
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(NFO), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1410,7 +1410,7 @@ Public Class NFO
                 _TVEpDB.TVEp.Runtime = MediaInfo.FormatDuration(MediaInfo.DurationToSeconds(cTotal, True), Master.eSettings.EPRuntimeMask)
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(NFO), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 

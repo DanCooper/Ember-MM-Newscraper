@@ -142,7 +142,7 @@ Public Class StringUtils
                 If InternalGenreList.TryGetValue(candidate.Key, toAdd) Then
                     rGenres.Add(toAdd)
                 Else
-                    Master.eLog.WriteToErrorLog(String.Format("Unhandled genre encountered: {0}", candidate.Value), New StackTrace(True).ToString(), "Error")
+                    Master.eLog.Error(GetType(StringUtils), String.Format("Unhandled genre encountered: {0}", candidate.Value), New StackTrace(True).ToString(), "Error")
                 End If
             Next
 
@@ -331,7 +331,7 @@ Public Class StringUtils
             Next
             Return name.Trim
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog("Name: " & name & " generated the following message: " & vbCrLf & ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(StringUtils), "Name: " & name & " generated the following message: " & vbCrLf & ex.Message, ex.StackTrace, "Error")
         End Try
         Return String.Empty
     End Function
@@ -396,7 +396,7 @@ Public Class StringUtils
                         Exit For
                     End If
                 Catch ex As Exception
-                    Master.eLog.WriteToErrorLog("Title: " & sTitle & " generated the following message: " & vbCrLf & ex.Message, ex.StackTrace, "Error")
+                    Master.eLog.Error(GetType(StringUtils), "Title: " & sTitle & " generated the following message: " & vbCrLf & ex.Message, ex.StackTrace, "Error")
                 End Try
             Next
         End If
@@ -434,7 +434,7 @@ Public Class StringUtils
 
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(StringUtils), ex.Message, ex.StackTrace, "Error")
         End Try
         Return TVEpName.Trim
     End Function
@@ -526,7 +526,7 @@ Public Class StringUtils
             Next
             Return result.ToString()
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog("Input <" & stext & "> generated the following message: " & vbCrLf & ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(StringUtils), "Input <" & stext & "> generated the following message: " & vbCrLf & ex.Message, ex.StackTrace, "Error")
         End Try
 
         'If we get here, something went wrong.
@@ -555,7 +555,7 @@ Public Class StringUtils
             End If
             Return bReturn
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog("Input <" & sName & "><" & VTS & "> generated the following message: " & vbCrLf & ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(StringUtils), "Input <" & sName & "><" & VTS & "> generated the following message: " & vbCrLf & ex.Message, ex.StackTrace, "Error")
         End Try
 
         'If we get here, something went wrong.
@@ -589,7 +589,7 @@ Public Class StringUtils
         'Try
         '    Return Regex.IsMatch(sToCheck, expression, RegexOptions.IgnoreCase)
         'Catch ex As Exception
-        '    Master.eLog.WriteToErrorLog("Input <" & sToCheck & "> generated the following message: " & vbCrLf & ex.Message, ex.StackTrace, "Error")
+        '    Master.eLog.Error(GetType(StringUtils),"Input <" & sToCheck & "> generated the following message: " & vbCrLf & ex.Message, ex.StackTrace, "Error")
         'End Try
 
         ''If we get here, something went wrong.
@@ -635,7 +635,7 @@ Public Class StringUtils
             Next
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog("Source of <" & sString & "> generated the following message: " & vbCrLf & ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(StringUtils), "Source of <" & sString & "> generated the following message: " & vbCrLf & ex.Message, ex.StackTrace, "Error")
             'Return the source string and move along
             sReturn = sString.Trim
         End Try
@@ -664,7 +664,7 @@ Public Class StringUtils
             'TODO Dekker500 - This used to be "sReturn.ToLower", but didn't make sense why it did... Investigate up the chain! (What does the case have to do with punctuation anyway???)
             sReturn = Regex.Replace(sReturn, "\s\s(\s+)?", " ")
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog("Source of <" & sString & "> generated the following message: " & vbCrLf & ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(StringUtils), "Source of <" & sString & "> generated the following message: " & vbCrLf & ex.Message, ex.StackTrace, "Error")
             'Return the source string and move along
             sReturn = sString
         End Try
@@ -692,7 +692,7 @@ Public Class StringUtils
                 Return New Size(Convert.ToInt32(SplitSize(0)), Convert.ToInt32(SplitSize(1)))
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog("Source of <" & sString & "> generated the following message: " & vbCrLf & ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(StringUtils), "Source of <" & sString & "> generated the following message: " & vbCrLf & ex.Message, ex.StackTrace, "Error")
         End Try
         'If you get here, something went wrong
         Return New Size(0, 0)
@@ -739,7 +739,7 @@ Public Class StringUtils
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog("Source of <" & sString & "> generated the following message: " & vbCrLf & ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(StringUtils), "Source of <" & sString & "> generated the following message: " & vbCrLf & ex.Message, ex.StackTrace, "Error")
         End Try
 
         'If you get here, something went wrong

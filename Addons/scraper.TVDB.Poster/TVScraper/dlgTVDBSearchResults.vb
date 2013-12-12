@@ -160,7 +160,7 @@ Public Class dlgTVDBSearchResults
         Try
             Me.pbBanner.Image = Res.Result
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -213,7 +213,7 @@ Public Class dlgTVDBSearchResults
 
             Me.SetUp()
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -237,7 +237,7 @@ Public Class dlgTVDBSearchResults
             ' Perform the sort with these new sort options.
             Me.lvSearchResults.Sort()
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 

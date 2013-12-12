@@ -463,7 +463,7 @@ Public Class dlgSettings
             Me.SetApplyButton(False)
             If Me.sResult.NeedsUpdate OrElse Me.sResult.NeedsRefresh Then Me.didApply = True
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -499,7 +499,7 @@ Public Class dlgSettings
                 Me.lstFilters.Focus()
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -587,7 +587,7 @@ Public Class dlgSettings
                 Me.lstEpFilters.Focus()
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -603,7 +603,7 @@ Public Class dlgSettings
                 Me.lstEpFilters.Focus()
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -690,7 +690,7 @@ Public Class dlgSettings
                 Me.lvShowRegex.Focus()
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -717,7 +717,7 @@ Public Class dlgSettings
                 Me.lvShowRegex.Focus()
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -837,7 +837,7 @@ Public Class dlgSettings
                 Me.lstShowFilters.Focus()
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -853,7 +853,7 @@ Public Class dlgSettings
                 Me.lstShowFilters.Focus()
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -870,7 +870,7 @@ Public Class dlgSettings
                 Me.lstFilters.Focus()
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -2476,7 +2476,7 @@ Public Class dlgSettings
                 Me.chkForceTitle.Checked = True
                 Me.cbForce.Enabled = True
                 Me.chkTitleFallback.Enabled = True
-                Me.cbForce.Text = Master.eSettings.ForceTitle       
+                Me.cbForce.Text = Master.eSettings.ForceTitle
             End If
             Me.chkTitleFallback.Checked = Master.eSettings.UseTitleFallback
             Me.chkScanMediaInfo.Checked = Master.eSettings.ScanMediaInfo
@@ -2895,7 +2895,7 @@ Public Class dlgSettings
             Me.chkPosterNMJ.Checked = Master.eSettings.PosterNMJ
             Me.chkTrailerNMJ.Checked = Master.eSettings.TrailerNMJ
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -2934,7 +2934,7 @@ Public Class dlgSettings
             Me.NoUpdate = False
             RaiseEvent LoadEnd()
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -2996,7 +2996,7 @@ Public Class dlgSettings
                     RemoveHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
                 Next
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
             End Try
         End If
         Me.ResumeLayout()
@@ -3460,7 +3460,7 @@ Public Class dlgSettings
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -3553,7 +3553,7 @@ Public Class dlgSettings
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -4057,21 +4057,21 @@ Public Class dlgSettings
                 Try
                     s.ProcessorModule.SaveSetupScraper(Not isApply)
                 Catch ex As Exception
-                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
                 End Try
             Next
             For Each s As ModulesManager._externalScraperModuleClass_Poster In ModulesManager.Instance.externalPosterScrapersModules
                 Try
                     s.ProcessorModule.SaveSetupScraper(Not isApply)
                 Catch ex As Exception
-                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
                 End Try
             Next
             For Each s As ModulesManager._externalScraperModuleClass_Trailer In ModulesManager.Instance.externalTrailerScrapersModules
                 Try
                     s.ProcessorModule.SaveSetupScraper(Not isApply)
                 Catch ex As Exception
-                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
                 End Try
             Next
             For Each s As ModulesManager._externalTVScraperModuleClass In ModulesManager.Instance.externalTVScrapersModules
@@ -4079,7 +4079,7 @@ Public Class dlgSettings
                     If s.ProcessorModule.IsScraper Then s.ProcessorModule.SaveSetupScraper(Not isApply)
                     If s.ProcessorModule.IsPostScraper Then s.ProcessorModule.SaveSetupPostScraper(Not isApply)
                 Catch ex As Exception
-                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
                 End Try
             Next
 
@@ -4087,13 +4087,13 @@ Public Class dlgSettings
                 Try
                     s.ProcessorModule.SaveSetup(Not isApply)
                 Catch ex As Exception
-                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
                 End Try
             Next
             ModulesManager.Instance.SaveSettings()
             Functions.CreateDefaultOptions()
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
