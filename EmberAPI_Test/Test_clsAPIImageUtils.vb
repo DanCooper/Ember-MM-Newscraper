@@ -1003,7 +1003,7 @@ Namespace EmberTests
 
                     Dim visualOK = False
                     Using dialog = New ImageFeedback()
-                        dialog.LoadInfo(result, "Is this image stretched?")
+                        dialog.LoadInfo(result, "Is this image squished or stretched?")
 
                         Dim userResponse = dialog.ShowDialog()
                         visualOK = userResponse = Windows.Forms.DialogResult.No    'No means it is not stretched
@@ -1032,7 +1032,7 @@ Namespace EmberTests
 
                     Dim visualOK = False
                     Using dialog = New ImageFeedback()
-                        dialog.LoadInfo(result, "Is this image stretched?")
+                        dialog.LoadInfo(result, "Is this image squished or stretched?")
 
                         Dim userResponse = dialog.ShowDialog()
                         visualOK = userResponse = Windows.Forms.DialogResult.No    'No means it is not stretched
