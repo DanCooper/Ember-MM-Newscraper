@@ -25,20 +25,34 @@ Imports NLog
 Imports EmberAPI
 
 Namespace EmberTests
-
+    ''' <summary>
+    ''' This test class is a bit of an oddity.
+    ''' It uses the EMM logging facility, but it creates its own custom target.
+    ''' No messages are written to the EMM configured targets, because that configuration
+    ''' file is not read. Instead, they are written to the "debugTarget" 
+    ''' defined in the class initializer below. 
+    ''' </summary>
+    ''' <remarks></remarks>
     <TestClass()>
     Public Class Test_clsAPIErrorLog
 
         Dim logger As ErrorLogger
         Dim exception As Exception
         Shared debugTarget As NLog.Targets.DebugTarget
-        Dim defaultExpectedCallsite As String = "EmberAPI.ErrorLogger.Error"
+        Dim defaultExpectedMessageParts As Integer = 5
+        Shared defaultMessageSeparator As Char = "|"c
 
         <ClassInitialize>
         Public Shared Sub ClassInit(ByVal context As TestContext)
             debugTarget = New NLog.Targets.DebugTarget()
             debugTarget.Name = "UnitTest"
-            debugTarget.Layout = "${longdate}|${callsite}|${threadid}|${uppercase:${level}}|${message}"
+            '            debugTarget.Layout = "${longdate}|${callsite}|${threadid}|${uppercase:${level}}|${message}"
+            debugTarget.Layout = String.Join(defaultMessageSeparator, _
+                                             {"${longdate}", _
+                                              "${callsite}", _
+                                              "${threadid}", _
+                                              "${uppercase:${level}}", _
+                                              "${message}"})
             NLog.LogManager.Configuration.AddTarget("UnitTest", debugTarget)
             NLog.Config.SimpleConfigurator.ConfigureForTargetLogging(debugTarget, LogLevel.Trace)
             NLog.LogManager.ReconfigExistingLoggers()
@@ -82,65 +96,24 @@ Namespace EmberTests
         Public Sub ErrorLogger_WriteToErrorLog_HappyDay()
             'Arrange
             Dim title As String = "My Title"
-            Dim myMessage As String = "My Message"
+            Dim message As String = "My Message"
+            Dim stackTrace As String = Me.exception.StackTrace
             'Act
-            logger.WriteToErrorLog(myMessage, Me.exception.StackTrace, title)
-
+            logger.WriteToErrorLog(message, stackTrace, title)
             'Assert
-            If String.IsNullOrEmpty(debugTarget.LastMessage) Then
-                Assert.Fail("Message did not get written to the log")
-            End If
-
-            Dim output As String() = debugTarget.LastMessage.Split("|")
-            If output.Length < 5 Then
-                Assert.Fail("Message had incorrect number of parts. Expected {0}, got {1}", 4, output.Length)
-            End If
-            Dim outputCallSite = output(1)
-            Dim outputThreadID = output(2)
-            Dim outputLevel = output(3)
-            Dim outputMessage = output(4)
-
-            Dim expectedCallSite = defaultExpectedCallsite
-            Dim expectedLevel = "ERROR"
-            Dim expectedMessage = String.Format("{0} {1}", myMessage, exception.StackTrace) 'This should match clsAPIErrorLog's WriteErrorLog routine
-
-            Assert.AreEqual(outputCallSite, expectedCallSite, True, "CallSite - expecting: {0}, got: {1}", expectedCallSite, outputCallSite)
-            Assert.AreEqual(outputLevel, expectedLevel, True, "OutputLevel - expecting: {0}, got: {1}", expectedLevel, outputLevel)
-            Assert.AreEqual(outputMessage, expectedMessage, True, "Message - expecting: {0}, got: {1}", expectedMessage, outputMessage)
-
+            CheckLastMessage(message, stackTrace, title, NLog.LogLevel.Error.ToString())
         End Sub
         <IntegrationTest>
         <TestMethod()>
         Public Sub ErrorLogger_WriteToErrorLog_NothingMessage()
             'Arrange
             Dim title As String = "My Title"
-            'Dim myMessage As String = "My Message"
+            Dim message As String = Nothing
+            Dim stackTrace As String = Me.exception.StackTrace
             'Act
-            logger.WriteToErrorLog(Nothing, Me.exception.StackTrace, title)
-            ' Sample result: "2013-11-08 14:13:54.5405|EmberAPI.ErrorLogger.WriteToErrorLog|7|DEBUG|Message    at EmberAPI_Test.EmberTests.Test_clsAPIErrorLog.TestSetup() in C:\Users\Michael\Documents\Visual Studio 2012\Projects\Ember-MM-Newscraper\EmberAPI_Test\Test_clsAPIErrorLog.vb:line 62"
-
+            logger.WriteToErrorLog(message, stackTrace, title)
             'Assert
-            If String.IsNullOrEmpty(debugTarget.LastMessage) Then
-                Assert.Fail("Message did not get written to the log")
-            End If
-
-            Dim output As String() = debugTarget.LastMessage.Split("|")
-            If output.Length < 5 Then
-                Assert.Fail("Message had incorrect number of parts. Expected {0}, got {1}", 4, output.Length)
-            End If
-            ' "${longdate}|${callsite}|${threadid}|${uppercase:${level}}|${message}"
-            Dim outputCallSite = output(1)
-            Dim outputThreadID = output(2)
-            Dim outputLevel = output(3)
-            Dim outputMessage = output(4)
-
-            Dim expectedCallSite = defaultExpectedCallsite
-            Dim expectedLevel = "ERROR"
-            Dim expectedMessage = String.Format("{0} {1}", Nothing, exception.StackTrace) 'This should match clsAPIErrorLog's WriteErrorLog routine
-
-            Assert.AreEqual(outputCallSite, expectedCallSite, True, "CallSite - expecting: {0}, got: {1}", expectedCallSite, outputCallSite)
-            Assert.AreEqual(outputLevel, expectedLevel, True, "OutputLevel - expecting: {0}, got: {1}", expectedLevel, outputLevel)
-            Assert.AreEqual(outputMessage, expectedMessage, True, "Message - expecting: {0}, got: {1}", expectedMessage, outputMessage)
+            CheckLastMessage(message, stackTrace, title, NLog.LogLevel.Error.ToString())
 
         End Sub
         <IntegrationTest>
@@ -149,64 +122,25 @@ Namespace EmberTests
             ' Note that it appears the Title does not impact the written log.
 
             'Arrange
-            'Dim title As String = "My Title"
-            Dim myMessage As String = "My Message"
+            Dim title As String = Nothing
+            Dim message As String = "My Message"
+            Dim stackTrace As String = Me.exception.StackTrace
             'Act
-            logger.WriteToErrorLog(myMessage, Me.exception.StackTrace, Nothing)
-
+            logger.WriteToErrorLog(message, stackTrace, title)
             'Assert
-            If String.IsNullOrEmpty(debugTarget.LastMessage) Then
-                Assert.Fail("Message did not get written to the log")
-            End If
-
-            Dim output As String() = debugTarget.LastMessage.Split("|")
-            If output.Length < 5 Then
-                Assert.Fail("Message had incorrect number of parts. Expected {0}, got {1}", 4, output.Length)
-            End If
-            Dim outputCallSite = output(1)
-            Dim outputThreadID = output(2)
-            Dim outputLevel = output(3)
-            Dim outputMessage = output(4)
-
-            Dim expectedCallSite = defaultExpectedCallsite
-            Dim expectedLevel = "ERROR"
-            Dim expectedMessage = String.Format("{0} {1}", myMessage, exception.StackTrace) 'This should match clsAPIErrorLog's WriteErrorLog routine
-
-            Assert.AreEqual(outputCallSite, expectedCallSite, True, "CallSite - expecting: {0}, got: {1}", expectedCallSite, outputCallSite)
-            Assert.AreEqual(outputLevel, expectedLevel, True, "OutputLevel - expecting: {0}, got: {1}", expectedLevel, outputLevel)
-            Assert.AreEqual(outputMessage, expectedMessage, True, "Message - expecting: {0}, got: {1}", expectedMessage, outputMessage)
-
+            CheckLastMessage(message, stackTrace, title, NLog.LogLevel.Error.ToString())
         End Sub
         <IntegrationTest>
         <TestMethod()>
         Public Sub ErrorLogger_WriteToErrorLog_NothingStackTrace()
             'Arrange
             Dim title As String = "My Title"
-            Dim myMessage As String = "My Message"
+            Dim message As String = "My Message"
+            Dim stackTrace As String = Nothing
             'Act
-            logger.WriteToErrorLog(myMessage, Nothing, title)
-
+            logger.WriteToErrorLog(message, stackTrace, title)
             'Assert
-            If String.IsNullOrEmpty(debugTarget.LastMessage) Then
-                Assert.Fail("Message did not get written to the log")
-            End If
-
-            Dim output As String() = debugTarget.LastMessage.Split("|")
-            If output.Length < 5 Then
-                Assert.Fail("Message had incorrect number of parts. Expected {0}, got {1}", 4, output.Length)
-            End If
-            Dim outputCallSite = output(1)
-            Dim outputThreadID = output(2)
-            Dim outputLevel = output(3)
-            Dim outputMessage = output(4)
-
-            Dim expectedCallSite = defaultExpectedCallsite
-            Dim expectedLevel = "ERROR"
-            Dim expectedMessage = String.Format("{0} {1}", myMessage, Nothing) 'This should match clsAPIErrorLog's WriteErrorLog routine
-
-            Assert.AreEqual(outputCallSite, expectedCallSite, True, "CallSite - expecting: {0}, got: {1}", expectedCallSite, outputCallSite)
-            Assert.AreEqual(outputLevel, expectedLevel, True, "OutputLevel - expecting: {0}, got: {1}", expectedLevel, outputLevel)
-            Assert.AreEqual(outputMessage, expectedMessage, True, "Message - expecting: {0}, got: {1}", expectedMessage, outputMessage)
+            CheckLastMessage(message, stackTrace, title, NLog.LogLevel.Error.ToString())
 
         End Sub
         <IntegrationTest>
@@ -214,32 +148,12 @@ Namespace EmberTests
         Public Sub ErrorLogger_WriteToErrorLog_NothingMessageAndStackTrace()
             'Arrange
             Dim title As String = "My Title"
-            'Dim myMessage As String = "My Message"
+            Dim message As String = Nothing
+            Dim stackTrace As String = Nothing
             'Act
-            logger.WriteToErrorLog(Nothing, Nothing, title)
-
+            logger.WriteToErrorLog(message, stackTrace, title)
             'Assert
-            If String.IsNullOrEmpty(debugTarget.LastMessage) Then
-                Assert.Fail("Message did not get written to the log")
-            End If
-
-            Dim output As String() = debugTarget.LastMessage.Split("|")
-            If output.Length < 5 Then
-                Assert.Fail("Message had incorrect number of parts. Expected {0}, got {1}", 4, output.Length)
-            End If
-            Dim outputCallSite = output(1)
-            Dim outputThreadID = output(2)
-            Dim outputLevel = output(3)
-            Dim outputMessage = output(4)
-
-            Dim expectedCallSite = defaultExpectedCallsite
-            Dim expectedLevel = "ERROR"
-            Dim expectedMessage = String.Format("{0} {1}", Nothing, Nothing) 'This should match clsAPIErrorLog's WriteErrorLog routine
-
-            Assert.AreEqual(outputCallSite, expectedCallSite, True, "CallSite - expecting: {0}, got: {1}", expectedCallSite, outputCallSite)
-            Assert.AreEqual(outputLevel, expectedLevel, True, "OutputLevel - expecting: {0}, got: {1}", expectedLevel, outputLevel)
-            Assert.AreEqual(outputMessage, expectedMessage, True, "Message - expecting: {0}, got: {1}", expectedMessage, outputMessage)
-
+            CheckLastMessage(message, stackTrace, title, NLog.LogLevel.Error.ToString())
         End Sub
         <IntegrationTest>
         <TestMethod()>
@@ -247,66 +161,27 @@ Namespace EmberTests
             'Note that it appears that Title does not affect file output
 
             'Arrange
-            'Dim title As String = "My Title"
-            'Dim myMessage As String = "My Message"
+            Dim title As String = Nothing
+            Dim message As String = Nothing
+            Dim stackTrace As String = Me.exception.StackTrace
             'Act
-            logger.WriteToErrorLog(Nothing, Me.exception.StackTrace, Nothing)
+            logger.WriteToErrorLog(message, stackTrace, title)
 
             'Assert
-            If String.IsNullOrEmpty(debugTarget.LastMessage) Then
-                Assert.Fail("Message did not get written to the log")
-            End If
-
-            Dim output As String() = debugTarget.LastMessage.Split("|")
-            If output.Length < 5 Then
-                Assert.Fail("Message had incorrect number of parts. Expected {0}, got {1}", 4, output.Length)
-            End If
-            Dim outputCallSite = output(1)
-            Dim outputThreadID = output(2)
-            Dim outputLevel = output(3)
-            Dim outputMessage = output(4)
-
-            Dim expectedCallSite = defaultExpectedCallsite
-            Dim expectedLevel = "ERROR"
-            Dim expectedMessage = String.Format("{0} {1}", Nothing, exception.StackTrace) 'This should match clsAPIErrorLog's WriteErrorLog routine
-
-            Assert.AreEqual(outputCallSite, expectedCallSite, True, "CallSite - expecting: {0}, got: {1}", expectedCallSite, outputCallSite)
-            Assert.AreEqual(outputLevel, expectedLevel, True, "OutputLevel - expecting: {0}, got: {1}", expectedLevel, outputLevel)
-            Assert.AreEqual(outputMessage, expectedMessage, True, "Message - expecting: {0}, got: {1}", expectedMessage, outputMessage)
-
+            CheckLastMessage(message, stackTrace, title, NLog.LogLevel.Error.ToString())
         End Sub
         <IntegrationTest>
         <TestMethod()>
         Public Sub ErrorLogger_WriteToErrorLog_NothingStackTraceAndTitle()
             'Note that it appears that title has no effect on the log file output
-
             'Arrange
-            'Dim title As String = "My Title"
-            Dim myMessage As String = "My Message"
+            Dim title As String = Nothing
+            Dim message As String = "My Message"
+            Dim stackTrace As String = Nothing
             'Act
-            logger.WriteToErrorLog(myMessage, Nothing, Nothing)
-
+            logger.WriteToErrorLog(message, stackTrace, title)
             'Assert
-            If String.IsNullOrEmpty(debugTarget.LastMessage) Then
-                Assert.Fail("Message did not get written to the log")
-            End If
-
-            Dim output As String() = debugTarget.LastMessage.Split("|")
-            If output.Length < 5 Then
-                Assert.Fail("Message had incorrect number of parts. Expected {0}, got {1}", 4, output.Length)
-            End If
-            Dim outputCallSite = output(1)
-            Dim outputThreadID = output(2)
-            Dim outputLevel = output(3)
-            Dim outputMessage = output(4)
-
-            Dim expectedCallSite = defaultExpectedCallsite
-            Dim expectedLevel = "ERROR"
-            Dim expectedMessage = String.Format("{0} {1}", myMessage, Nothing) 'This should match clsAPIErrorLog's WriteErrorLog routine
-
-            Assert.AreEqual(outputCallSite, expectedCallSite, True, "CallSite - expecting: {0}, got: {1}", expectedCallSite, outputCallSite)
-            Assert.AreEqual(outputLevel, expectedLevel, True, "OutputLevel - expecting: {0}, got: {1}", expectedLevel, outputLevel)
-            Assert.AreEqual(outputMessage, expectedMessage, True, "Message - expecting: {0}, got: {1}", expectedMessage, outputMessage)
+            CheckLastMessage(message, stackTrace, title, NLog.LogLevel.Error.ToString())
 
         End Sub
         <IntegrationTest>
@@ -314,33 +189,106 @@ Namespace EmberTests
         Public Sub ErrorLogger_WriteToErrorLog_HappyDayNoNotify()
             'Arrange
             Dim title As String = "My Title"
-            Dim myMessage As String = "My Message"
+            Dim message As String = "My Message"
+            Dim stackTrace As String = Me.exception.StackTrace
             'Act
-            logger.WriteToErrorLog(myMessage, Me.exception.StackTrace, title, False)
-
+            logger.WriteToErrorLog(message, stackTrace, title, False)
             'Assert
+            CheckLastMessage(message, stackTrace, title, NLog.LogLevel.Error.ToString())
+        End Sub
+        <IntegrationTest>
+        <TestMethod()>
+        Public Sub ErrorLogger_Trace_HappyDayNoNotify()
+            'Arrange
+            Dim title As String = "My Title"
+            Dim message As String = "My Message"
+            Dim stackTrace As String = Me.exception.StackTrace
+            'Act
+            logger.Trace(Me.GetType(), message, stackTrace, title, False)
+            'Assert
+            CheckLastMessage(message, stackTrace, title, NLog.LogLevel.Trace.ToString())
+        End Sub
+        <IntegrationTest>
+        <TestMethod()>
+        Public Sub ErrorLogger_Debug_HappyDayNoNotify()
+            'Arrange
+            Dim title As String = "My Title"
+            Dim message As String = "My Message"
+            Dim stackTrace As String = Me.exception.StackTrace
+            'Act
+            logger.Debug(Me.GetType(), message, stackTrace, title, False)
+            'Assert
+            CheckLastMessage(message, stackTrace, title, NLog.LogLevel.Debug.ToString())
+        End Sub
+        <IntegrationTest>
+        <TestMethod()>
+        Public Sub ErrorLogger_Info_HappyDayNoNotify()
+            'Arrange
+            Dim title As String = "My Title"
+            Dim message As String = "My Message"
+            Dim stackTrace As String = Me.exception.StackTrace
+            'Act
+            logger.Info(Me.GetType(), message, stackTrace, title, False)
+            'Assert
+            CheckLastMessage(message, stackTrace, title, NLog.LogLevel.Info.ToString())
+        End Sub
+        <IntegrationTest>
+        <TestMethod()>
+        Public Sub ErrorLogger_Warn_HappyDayNoNotify()
+            'Arrange
+            Dim title As String = "My Title"
+            Dim message As String = "My Message"
+            Dim stackTrace As String = Me.exception.StackTrace
+            'Act
+            logger.Warn(Me.GetType(), message, stackTrace, title, False)
+            'Assert
+            CheckLastMessage(message, stackTrace, title, NLog.LogLevel.Warn.ToString())
+        End Sub
+        <IntegrationTest>
+        <TestMethod()>
+        Public Sub ErrorLogger_Error_HappyDayNoNotify()
+            'Arrange
+            Dim title As String = "My Title"
+            Dim message As String = "My Message"
+            Dim stackTrace As String = Me.exception.StackTrace
+            'Act
+            logger.Error(Me.GetType(), message, stackTrace, title, False)
+            'Assert
+            CheckLastMessage(message, stackTrace, title, NLog.LogLevel.Error.ToString())
+        End Sub
+        <IntegrationTest>
+        <TestMethod()>
+        Public Sub ErrorLogger_Fatal_HappyDayNoNotify()
+            'Arrange
+            Dim title As String = "My Title"
+            Dim message As String = "My Message"
+            Dim stackTrace As String = Me.exception.StackTrace
+            'Act
+            logger.Fatal(Me.GetType(), message, stackTrace, title, False)
+            'Assert
+            CheckLastMessage(message, stackTrace, title, NLog.LogLevel.Fatal.ToString())
+        End Sub
+
+        Public Sub CheckLastMessage(ByVal message As String, ByVal stackTrace As String, ByVal title As String, ByVal expectedLevel As String)
             If String.IsNullOrEmpty(debugTarget.LastMessage) Then
                 Assert.Fail("Message did not get written to the log")
             End If
 
-            Dim output As String() = debugTarget.LastMessage.Split("|")
-            If output.Length < 5 Then
-                Assert.Fail("Message had incorrect number of parts. Expected {0}, got {1}", 4, output.Length)
+            Dim output As String() = debugTarget.LastMessage.Split(defaultMessageSeparator)
+            If output.Length < defaultExpectedMessageParts Then
+                Assert.Fail("Message had incorrect number of parts. Expected {0}, got {1}", defaultExpectedMessageParts, output.Length)
             End If
             Dim outputCallSite = output(1)
             Dim outputThreadID = output(2)
             Dim outputLevel = output(3)
             Dim outputMessage = output(4)
 
-            Dim expectedCallSite = defaultExpectedCallsite
-            Dim expectedLevel = "ERROR"
-            Dim expectedMessage = String.Format("{0} {1}", myMessage, exception.StackTrace) 'This should match clsAPIErrorLog's WriteErrorLog routine
+            Dim expectedCallSite = "EmberAPI.ErrorLogger." & expectedLevel
+            Dim expectedMessage = String.Format("{0} {1}", message, stackTrace) 'This should match clsAPIErrorLog's WriteErrorLog routine
 
             Assert.AreEqual(outputCallSite, expectedCallSite, True, "CallSite - expecting: {0}, got: {1}", expectedCallSite, outputCallSite)
-            Assert.AreEqual(outputLevel, expectedLevel, True, "OutputLevel - expecting: {0}, got: {1}", expectedLevel, outputLevel)
+            Assert.AreEqual(outputLevel.ToUpper(), expectedLevel.ToUpper(), True, "OutputLevel - expecting: {0}, got: {1}", expectedLevel, outputLevel)
             Assert.AreEqual(outputMessage, expectedMessage, True, "Message - expecting: {0}, got: {1}", expectedMessage, outputMessage)
-
         End Sub
-
     End Class
 End Namespace

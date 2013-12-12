@@ -90,9 +90,8 @@ Public Class ErrorLogger
         'RaiseEvent ErrorOccurred()
     End Sub
 
-
     ''' <summary>
-    ''' Write a message at the Info level to our log file, if enabled in settings.
+    ''' Write a message at the INFO level to our log file, if enabled in settings.
     ''' </summary>
     ''' <param name="type"><c>Type</c> of the calling class</param>
     ''' <param name="msg">Error summary</param>
