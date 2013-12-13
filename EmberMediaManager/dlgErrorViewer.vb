@@ -80,8 +80,6 @@ Public Class dlgErrorViewer
 
         Me.sBuilder = New StringBuilder
 
-        'Dim sPath As String = String.Concat(Functions.AppPath, Path.DirectorySeparatorChar, "Log", Path.DirectorySeparatorChar, "errlog.txt")
-
         Me.sBuilder.AppendLine("================= <Assembly Versions> =================")
         Me.sBuilder.AppendLine(String.Empty)
         Me.sBuilder.AppendLine("Platform: x86")
