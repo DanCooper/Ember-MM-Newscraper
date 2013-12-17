@@ -491,7 +491,7 @@ Public Class ModulesManager
                 If ret.breakChain OrElse RunOnlyOne Then Exit For
             Next
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(ModulesManager), ex.Message, ex.StackTrace, "Error")
         End Try
         Return ret.Cancelled
     End Function

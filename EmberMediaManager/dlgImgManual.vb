@@ -67,48 +67,48 @@ Public Class dlgImgManual
 
 			End If
 		Catch ex As Exception
-			Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-		End Try
-	End Sub
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
 
-	Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
-		Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
-		Me.Close()
-	End Sub
+    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
+        Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.Close()
+    End Sub
 
-	Private Sub dlgImgManual_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
-		'tImage.Dispose() cannot dispose as is used by calling entity
-		tImage = Nothing
-	End Sub
+    Private Sub dlgImgManual_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
+        'tImage.Dispose() cannot dispose as is used by calling entity
+        tImage = Nothing
+    End Sub
 
-	Private Sub dlgImgManual_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-		Me.SetUp()
+    Private Sub dlgImgManual_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Me.SetUp()
 
-		If Me.DLType = Enums.ImageType.Fanart Then
-			Me.Text = Master.eLang.GetString(182, "Manual Fanart Entry")
-		Else
-			Me.Text = Master.eLang.GetString(183, "Manual Poster Entry")
-		End If
-	End Sub
+        If Me.DLType = Enums.ImageType.Fanart Then
+            Me.Text = Master.eLang.GetString(182, "Manual Fanart Entry")
+        Else
+            Me.Text = Master.eLang.GetString(183, "Manual Poster Entry")
+        End If
+    End Sub
 
-	Private Sub dlgImgManual_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
-		Me.Activate()
-	End Sub
+    Private Sub dlgImgManual_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
+        Me.Activate()
+    End Sub
 
-	Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
+    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
 
-		Try
+        Try
 
-			If IsNothing(tImage.Image) Then
-				tImage.FromWeb(Me.txtURL.Text)
-			End If
-		Catch ex As Exception
-			Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-		End Try
+            If IsNothing(tImage.Image) Then
+                tImage.FromWeb(Me.txtURL.Text)
+            End If
+        Catch ex As Exception
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+        End Try
 
-		Me.DialogResult = System.Windows.Forms.DialogResult.OK
-		Me.Close()
-	End Sub
+        Me.DialogResult = System.Windows.Forms.DialogResult.OK
+        Me.Close()
+    End Sub
 
 	Private Sub SetUp()
 		Me.OK_Button.Text = Master.eLang.GetString(179, "OK")

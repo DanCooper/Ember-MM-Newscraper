@@ -126,10 +126,10 @@ Public Class TMDB_Poster
         'Must be after Load settings to retrieve the correct API key
         _TMDBApi = New WatTmdb.V3.Tmdb(_MySettings.TMDBAPIKey, _MySettings.TMDBLanguage)
         If IsNothing(_TMDBApi) Then
-            Master.eLog.WriteToErrorLog(Master.eLang.GetString(938, "TheMovieDB API is missing or not valid"), _TMDBApi.Error.status_message, "Info")
+            Master.eLog.Error(Me.GetType(), Master.eLang.GetString(938, "TheMovieDB API is missing or not valid"), _TMDBApi.Error.status_message, "Info")
         Else
             If Not IsNothing(_TMDBApi.Error) AndAlso _TMDBApi.Error.status_message.Length > 0 Then
-                Master.eLog.WriteToErrorLog(_TMDBApi.Error.status_message, _TMDBApi.Error.status_code.ToString(), "Error")
+                Master.eLog.Error(Me.GetType(), _TMDBApi.Error.status_message, _TMDBApi.Error.status_code.ToString(), "Error")
             End If
         End If
         _TMDBConf = _TMDBApi.GetConfiguration()

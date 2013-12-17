@@ -246,7 +246,7 @@ Public Class Localization
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(Localization), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -314,7 +314,7 @@ Public Class Localization
             Master.eSettings.GenreFilter = Master.eSettings.GenreFilter.Replace(_old_all, _all)
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(Localization), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 

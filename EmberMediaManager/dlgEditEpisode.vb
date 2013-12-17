@@ -56,7 +56,7 @@ Public Class dlgEditEpisode
                 Me.lvActors.Select()
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -72,7 +72,7 @@ Public Class dlgEditEpisode
                 lvItem.SubItems.Add(eActor.Thumb)
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -88,7 +88,7 @@ Public Class dlgEditEpisode
                 Me.FillInfo()
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -191,7 +191,7 @@ Public Class dlgEditEpisode
                 End If
             End With
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -215,7 +215,7 @@ Public Class dlgEditEpisode
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -227,7 +227,7 @@ Public Class dlgEditEpisode
                 End While
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -281,7 +281,7 @@ Public Class dlgEditEpisode
                 eActor = Nothing
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -354,7 +354,7 @@ Public Class dlgEditEpisode
             ' Perform the sort with these new sort options.
             Me.lvActors.Sort()
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -371,7 +371,7 @@ Public Class dlgEditEpisode
             Me.CleanUp()
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
 
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
@@ -388,7 +388,7 @@ Public Class dlgEditEpisode
             Single.TryParse(Me.tmpRating, tmpDBL)
             Me.BuildStars(tmpDBL)
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -402,7 +402,7 @@ Public Class dlgEditEpisode
                 Me.BuildStars(2)
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -416,7 +416,7 @@ Public Class dlgEditEpisode
             Single.TryParse(Me.tmpRating, tmpDBL)
             Me.BuildStars(tmpDBL)
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -430,7 +430,7 @@ Public Class dlgEditEpisode
                 Me.BuildStars(4)
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -444,7 +444,7 @@ Public Class dlgEditEpisode
             Single.TryParse(Me.tmpRating, tmpDBL)
             Me.BuildStars(tmpDBL)
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -458,7 +458,7 @@ Public Class dlgEditEpisode
                 Me.BuildStars(6)
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -472,7 +472,7 @@ Public Class dlgEditEpisode
             Single.TryParse(Me.tmpRating, tmpDBL)
             Me.BuildStars(tmpDBL)
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -486,7 +486,7 @@ Public Class dlgEditEpisode
                 Me.BuildStars(8)
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -500,7 +500,7 @@ Public Class dlgEditEpisode
             Single.TryParse(Me.tmpRating, tmpDBL)
             Me.BuildStars(tmpDBL)
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -514,7 +514,7 @@ Public Class dlgEditEpisode
                 Me.BuildStars(10)
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -559,7 +559,7 @@ Public Class dlgEditEpisode
                 End If
             End With
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -644,7 +644,7 @@ Public Class dlgEditEpisode
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -665,7 +665,7 @@ Public Class dlgEditEpisode
                 End If
             End Using
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -688,13 +688,13 @@ Public Class dlgEditEpisode
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
     Private Sub btnSetFanartDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetFanartDL.Click
         Try
-			Using dImgManual As New dlgImgManual
+            Using dImgManual As New dlgImgManual
                 Dim tImage As Images
                 If dImgManual.ShowDialog(Enums.ImageType.Fanart) = DialogResult.OK Then
                     tImage = dImgManual.Results
@@ -709,7 +709,7 @@ Public Class dlgEditEpisode
                 End If
             End Using
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 

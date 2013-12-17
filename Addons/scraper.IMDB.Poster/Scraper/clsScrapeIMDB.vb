@@ -75,7 +75,7 @@ Namespace IMDBg
                             If mSYSX.Success Then
                                 alPoster.Add(New MediaContainers.Image With {.Description = Master.eSize.poster_names(5).description, .URL = mcIMDB(0).Value, .Width = mSYSX.Groups(2).Value, .Height = mSYSX.Groups(1).Value, .ParentID = aParentID})
                             Else
-                                Master.eLog.WriteToErrorLog("Unknown IMDB Poster URL", "", "Scraping Error")
+                                Master.eLog.Error(Me.GetType(), "Unknown IMDB Poster URL", "", "Scraping Error")
                                 Debug.Assert(False)
                             End If
                         Else
@@ -97,7 +97,7 @@ Namespace IMDBg
                     End If
                 End If
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
             End Try
 
             Return alPoster

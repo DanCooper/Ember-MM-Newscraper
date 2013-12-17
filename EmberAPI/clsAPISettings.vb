@@ -4237,7 +4237,7 @@ Public Class Settings
                 Master.eSettings = New Settings
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(Settings), ex.Message, ex.StackTrace, "Error")
             Master.eSettings = New Settings
         End Try
 
@@ -4266,7 +4266,7 @@ Public Class Settings
             xmlSerial.Serialize(xmlWriter, Master.eSettings)
             xmlWriter.Close()
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(Settings), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 

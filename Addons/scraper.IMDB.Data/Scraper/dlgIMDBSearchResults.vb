@@ -125,7 +125,7 @@ Public Class dlgIMDBSearchResults
                 _PosterCache.Add(Res.IMDBId, Res.Result)
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         Finally
             pnlPicStatus.Visible = False
         End Try
@@ -211,7 +211,7 @@ Public Class dlgIMDBSearchResults
                 Me.pnlTop.BackgroundImage = iBackground
             End Using
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -236,7 +236,7 @@ Public Class dlgIMDBSearchResults
             End If
             Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
 
         Me.Close()
@@ -266,15 +266,15 @@ Public Class dlgIMDBSearchResults
                     Me.pbPoster.Image = _PosterCache(Master.tmpMovie.IMDBID)
                 Else
                     'go download it, if available
-                If Not String.IsNullOrEmpty(sPoster) Then
-                    If Me.bwDownloadPic.IsBusy Then
-                        Me.bwDownloadPic.CancelAsync()
-                    End If
+                    If Not String.IsNullOrEmpty(sPoster) Then
+                        If Me.bwDownloadPic.IsBusy Then
+                            Me.bwDownloadPic.CancelAsync()
+                        End If
                         pnlPicStatus.Visible = True
-                    Me.bwDownloadPic = New System.ComponentModel.BackgroundWorker
-                    Me.bwDownloadPic.WorkerSupportsCancellation = True
+                        Me.bwDownloadPic = New System.ComponentModel.BackgroundWorker
+                        Me.bwDownloadPic.WorkerSupportsCancellation = True
                         Me.bwDownloadPic.RunWorkerAsync(New Arguments With {.pURL = sPoster, .IMDBId = Master.tmpMovie.IMDBID})
-                End If
+                    End If
 
                 End If
 
@@ -292,7 +292,7 @@ Public Class dlgIMDBSearchResults
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -372,7 +372,7 @@ Public Class dlgIMDBSearchResults
             Me.pnlLoading.Visible = False
             chkManual.Enabled = True
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -464,7 +464,7 @@ Public Class dlgIMDBSearchResults
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 

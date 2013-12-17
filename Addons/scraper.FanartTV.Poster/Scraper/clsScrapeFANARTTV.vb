@@ -67,7 +67,7 @@ Namespace FANARTTVs
             Dim Result As FanartTV.V1.FanartTVMovie = _FanartTV.GetMovieInfo(New FanartTV.V1.FanartTVRequest("1", "JSON", "all", 1, 1))
             If IsNothing(Result) Then
                 If Not IsNothing(_FanartTV.Error) Then
-                    'Master.eLog.WriteToErrorLog(_FanartTV.Error, "", "Error")
+                    'Master.eLog.Error(Me.GetType(), _FanartTV.Error, "", "Error")
                     _APIInvalid = True
                 End If
             End If
@@ -90,7 +90,7 @@ Namespace FANARTTVs
         '			bwFANARTTV.RunWorkerAsync(New Arguments With {.Parameter = sURL})
         '		End If
         '	Catch ex As Exception
-        '		Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        '		Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         '	End Try
         'End Sub
 
@@ -112,7 +112,7 @@ Namespace FANARTTVs
                     alPoster.Add(New MediaContainers.Image With {.Description = Master.eSize.backdrop_names(0).description, .URL = image.url & "/preview", .Width = "200", .Height = "112", .ParentID = image.url})
                 Next
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
             End Try
 
             Return alPoster
@@ -123,7 +123,7 @@ Namespace FANARTTVs
         '	Try
         '		e.Result = GetFANARTTVImages(Args.Parameter)
         '	Catch ex As Exception
-        '		Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        '		Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         '		e.Result = Nothing
         '	End Try
         'End Sub

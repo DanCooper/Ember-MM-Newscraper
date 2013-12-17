@@ -225,7 +225,7 @@ Public Class FileFolderRenamer
             Next
             Return pattern.Trim
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(FileFolderRenamer), ex.Message, ex.StackTrace, "Error")
             Return String.Empty
         End Try
     End Function
@@ -250,7 +250,7 @@ Public Class FileFolderRenamer
                     MovieFile.Audio = String.Empty
                 End If
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error FileInfo")
+                Master.eLog.Error(GetType(FileFolderRenamer), ex.Message, ex.StackTrace, "Error FileInfo")
             End Try
         Else
             MovieFile.Resolution = String.Empty
@@ -382,7 +382,7 @@ Public Class FileFolderRenamer
                     Return String.Empty
                 End If
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.Error(GetType(FileFolderRenamer), ex.Message, ex.StackTrace, "Error")
             End Try
         Else
             Return String.Empty
@@ -445,7 +445,7 @@ Public Class FileFolderRenamer
                                 End If
                                 DoUpdate = True
                             Catch ex As Exception
-                                Master.eLog.WriteToErrorLog(ex.Message, "Dir: " & srcDir & " " & destDir, "Error")
+                                Master.eLog.Error(Me.GetType(), ex.Message, "Dir: " & srcDir & " " & destDir, "Error")
                                 'Need to make some type of failure log
                                 Continue For
                             End Try
@@ -492,7 +492,7 @@ Public Class FileFolderRenamer
 
                                                 DoUpdate = True
                                             Catch ex As Exception
-                                                Master.eLog.WriteToErrorLog(ex.Message, "File " & srcFile & " " & dstFile, "Error")
+                                                Master.eLog.Error(Me.GetType(), ex.Message, "File " & srcFile & " " & dstFile, "Error")
                                                 'Need to make some type of failure log
                                             End Try
                                         End If
@@ -531,7 +531,7 @@ Public Class FileFolderRenamer
                 End If
             Next
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -614,7 +614,7 @@ Public Class FileFolderRenamer
                 f.IsRenamed = Not f.NewPath = f.Path OrElse Not f.NewFileName = f.FileName
             Next
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -696,7 +696,7 @@ Public Class FileFolderRenamer
                         If ShowError Then
                             MsgBox(String.Format(Master.eLang.GetString(144, "An error occured while attempting to rename the directory:{0}{0}{1}{0}{0}Please ensure that you are not accessing this directory or any of its files from another program (including browsing via Windows Explorer)."), vbNewLine, ex.Message), MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, Master.eLang.GetString(165, "Unable to Rename Directory"))
                         Else
-                            Master.eLog.WriteToErrorLog(ex.Message, "Dir: " & srcDir & " " & destDir, "Error")
+                            Master.eLog.Error(GetType(FileFolderRenamer), ex.Message, "Dir: " & srcDir & " " & destDir, "Error")
                         End If
                     End Try
 
@@ -738,7 +738,7 @@ Public Class FileFolderRenamer
                                         If ShowError Then
                                             MsgBox(String.Format(Master.eLang.GetString(166, "An error occured while attempting to rename a file:{0}{0}{1}{0}{0}Please ensure that you are not accessing this file from another program."), vbNewLine, ex.Message), MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, Master.eLang.GetString(171, "Unable to Rename File"))
                                         Else
-                                            Master.eLog.WriteToErrorLog(ex.Message, "File " & srcFile & " " & dstFile, "Error")
+                                            Master.eLog.Error(GetType(FileFolderRenamer), ex.Message, "File " & srcFile & " " & dstFile, "Error")
                                         End If
                                     End Try
                                 End If
@@ -774,7 +774,7 @@ Public Class FileFolderRenamer
 
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(FileFolderRenamer), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 

@@ -157,7 +157,7 @@ Public Class HTTP
                 Me._responseuri = wrResponse.ResponseUri.ToString
             End Using
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error", False)
+            Master.eLog.Error(GetType(HTTP), "<" & URL & ">" & ex.Message, ex.StackTrace, "Error", False)
         End Try
 
         Return sResponse
@@ -245,7 +245,7 @@ Public Class HTTP
                 Me._responseuri = wrResponse.ResponseUri.ToString
             End Using
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error", False)
+            Master.eLog.Error(GetType(HTTP), "<" & URL & ">" & ex.Message, ex.StackTrace, "Error", False)
         End Try
 
         Return sResponse
@@ -404,7 +404,7 @@ Public Class HTTP
 
             End Using
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error", False)
+            Master.eLog.Error(GetType(HTTP), "<" & URL & ">" & ex.Message, ex.StackTrace, "Error", False)
         End Try
 
         Return outFile
@@ -455,7 +455,7 @@ Public Class HTTP
                 End Using
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error", False)
+            Master.eLog.Error(GetType(HTTP), "<" & Me._URL & ">" & ex.Message, ex.StackTrace, "Error", False)
         End Try
     End Sub
     ''' <summary>
@@ -478,7 +478,7 @@ Public Class HTTP
                 Return Functions.ReadStreamToEnd(wrResponse.GetResponseStream)
             End Using
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error", False)
+            Master.eLog.Error(GetType(HTTP), "<" & URL & ">" & ex.Message, ex.StackTrace, "Error", False)
         End Try
 
         Return Nothing

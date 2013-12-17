@@ -54,7 +54,7 @@ Public Class AdvancedSettings
             End Using
             AdvancedSettings.LoadBase()
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "*Error")
+            Master.eLog.Error(GetType(AdvancedSettings), ex.Message, ex.StackTrace, "Error")
         End Try
 
         'Not working currently
@@ -82,7 +82,7 @@ Public Class AdvancedSettings
         '        Next
         '    End If
         'Catch ex As Exception
-        '    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        '    Master.eLog.Error(GetType(AdvancedSettings),ex.Message, ex.StackTrace, "Error")
         'End Try
     End Sub
 
@@ -142,7 +142,7 @@ Public Class AdvancedSettings
             Dim v = From e In _AdvancedSettings.Where(Function(f) f.Name = key AndAlso f.Section = Assembly)
             Return If(v(0) Is Nothing, defvalue, Convert.ToBoolean(v(0).Value.ToString))
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(AdvancedSettings), ex.Message, ex.StackTrace, "Error")
             Return defvalue
         End Try
     End Function
@@ -159,7 +159,7 @@ Public Class AdvancedSettings
             Dim v = From e In _AdvancedSettings.Where(Function(f) f.Name = key AndAlso f.Section = Assembly)
             Return If(v(0) Is Nothing, defvalue, v(0).Value.ToString)
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(AdvancedSettings), ex.Message, ex.StackTrace, "Error")
             Return defvalue
         End Try
     End Function
@@ -211,7 +211,7 @@ Public Class AdvancedSettings
             Dim v = _ComplexAdvancedSettings.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly)
             Return If(v Is Nothing, Nothing, v.TableItem)
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(AdvancedSettings), ex.Message, ex.StackTrace, "Error")
             Return Nothing
         End Try
     End Function
@@ -237,7 +237,7 @@ Public Class AdvancedSettings
 
             'If Not _DoNotSave Then Save()
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(AdvancedSettings), ex.Message, ex.StackTrace, "Error")
         End Try
         Return True
     End Function
@@ -274,7 +274,7 @@ Public Class AdvancedSettings
                 Next
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(AdvancedSettings), ex.Message, ex.StackTrace, "Error")
         End Try
         _DoNotSave = False
     End Sub
@@ -347,7 +347,7 @@ Public Class AdvancedSettings
             ' If count > 0 Then xdoc.Save(Path.Combine(Functions.AppPath, "AdvancedSettings.xml"))
             If count > 0 Then xdoc.Save(configpath)
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(AdvancedSettings), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -372,7 +372,7 @@ Public Class AdvancedSettings
 
             'If Not _DoNotSave Then Save()
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(AdvancedSettings), ex.Message, ex.StackTrace, "Error")
         End Try
         Return True
     End Function
@@ -398,7 +398,7 @@ Public Class AdvancedSettings
 
             'If Not _DoNotSave Then Save()
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(AdvancedSettings), ex.Message, ex.StackTrace, "Error")
         End Try
         Return True
     End Function

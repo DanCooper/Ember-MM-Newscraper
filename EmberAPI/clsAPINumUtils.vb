@@ -46,7 +46,7 @@ Public Class NumUtils
 
         'If we got here, something went wrong
         Dim trace = New StackTrace()
-        Master.eLog.WriteToErrorLog("Failed to convert <" & sNumber & ">", trace.ToString(), "Error")
+        Master.eLog.Error(GetType(NumUtils), "Failed to convert <" & sNumber & ">", trace.ToString(), "Error")
         Return 0.0F
 
     End Function

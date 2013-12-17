@@ -59,7 +59,7 @@ Namespace DVDProfiler
             Me._dvd = New List(Of cDVD)
         End Sub
 #End Region 'Methods
-    End Class
+    End Class 'Collection
 
     <XmlRoot("DVD")> _
     Public Class cDVD
@@ -159,7 +159,7 @@ Namespace DVDProfiler
         End Sub
 
 #End Region 'Methods
-    End Class
+    End Class 'cDVD
 
     Public Class dMediaTypes
 
@@ -222,7 +222,7 @@ Namespace DVDProfiler
         End Sub
 
 #End Region 'Methods
-    End Class
+    End Class 'dMediaTypes
 
     Public Class dDiscs
 
@@ -261,7 +261,7 @@ Namespace DVDProfiler
         End Sub
 
 #End Region 'Methods
-    End Class
+    End Class 'dDiscs
 
     Public Class dDisc
 
@@ -312,7 +312,7 @@ Namespace DVDProfiler
         End Sub
 
 #End Region 'Methods
-    End Class
+    End Class 'dDisc
 
     Public Class dAudio
 
@@ -351,7 +351,7 @@ Namespace DVDProfiler
         End Sub
 
 #End Region 'Methods
-    End Class
+    End Class 'dAudio
 
     Public Class dAudioTrack
 
@@ -414,7 +414,7 @@ Namespace DVDProfiler
         End Sub
 
 #End Region 'Methods
-    End Class
+    End Class 'dAudioTrack
 
 End Namespace
 

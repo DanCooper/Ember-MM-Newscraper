@@ -304,7 +304,7 @@ Public Class dlgOfflineHolder
                 FileUtils.Delete.DeleteDirectory(Path.Combine(Master.TempPath, "OfflineHolder"))
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -628,7 +628,7 @@ Public Class dlgOfflineHolder
             Files = Nothing
             dir = Nothing
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -684,7 +684,7 @@ Public Class dlgOfflineHolder
             lvStatus.Items(idxStsImage).UseItemStyleForSubItems = False
             lvStatus.Items(idxStsImage).SubItems(1).ForeColor = Color.Green
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -765,7 +765,7 @@ Public Class dlgOfflineHolder
             End If
             CheckConditions()
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -811,7 +811,7 @@ Public Class dlgOfflineHolder
                 txtTop.Text = (RealImage_H - 30).ToString
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 

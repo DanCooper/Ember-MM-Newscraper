@@ -123,7 +123,7 @@ Public Class frmSettingsHolder
                     End While
                 End Using
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
             End Try
         End Using
         If Not conf Is Nothing Then
@@ -152,7 +152,7 @@ Public Class frmSettingsHolder
                     End While
                 End Using
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
             End Try
         End Using
         Return readme
@@ -188,7 +188,7 @@ Public Class frmSettingsHolder
                     End While
                 End Using
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
                 Return False
             End Try
         End Using

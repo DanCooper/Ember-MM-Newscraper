@@ -94,7 +94,7 @@ Public Class dlgEditMovie
             AddHandler pbETImage(iIndex).Click, AddressOf pbETImage_Click
             AddHandler pnlETImage(iIndex).Click, AddressOf pnlETImage_Click
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
 
         Me.iETTop += 74
@@ -127,7 +127,7 @@ Public Class dlgEditMovie
             AddHandler pbEFImage(iIndex).Click, AddressOf pbEFImage_Click
             AddHandler pnlEFImage(iIndex).Click, AddressOf pnlEFImage_Click
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
 
         Me.iEFTop += 74
@@ -159,7 +159,7 @@ Public Class dlgEditMovie
             Me.lblEThumbsSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbEThumbs.Image.Width, Me.pbEThumbs.Image.Height)
             Me.lblEThumbsSize.Visible = True
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -172,7 +172,7 @@ Public Class dlgEditMovie
             Me.lblEFanartsSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbEFanarts.Image.Width, Me.pbEFanarts.Image.Height)
             Me.lblEFanartsSize.Visible = True
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -196,7 +196,7 @@ Public Class dlgEditMovie
                 Me.lvActors.Select()
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -212,7 +212,7 @@ Public Class dlgEditMovie
                 lvItem.SubItems.Add(eActor.Thumb)
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -252,7 +252,7 @@ Public Class dlgEditMovie
     '            EThumbsList.Item(iIndex + 1).Index = EThumbsList.Item(iIndex + 1).Index - 1
     '        End If
     '    Catch ex As Exception
-    '        Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+    '        Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
     '    End Try
     'End Sub
 
@@ -267,7 +267,7 @@ Public Class dlgEditMovie
                 Me.FillInfo(False)
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -386,7 +386,7 @@ Public Class dlgEditMovie
                 End If
             End Using
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -425,7 +425,7 @@ Public Class dlgEditMovie
             RefreshEFanarts()
             RefreshEThumbs()
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -446,7 +446,7 @@ Public Class dlgEditMovie
                 Me.lblFanartSize.Visible = True
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -467,7 +467,7 @@ Public Class dlgEditMovie
                 End If
             End Using
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -502,7 +502,7 @@ Public Class dlgEditMovie
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -523,7 +523,7 @@ Public Class dlgEditMovie
                 Me.lblPosterSize.Visible = True
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -568,7 +568,7 @@ Public Class dlgEditMovie
     '            lvEThumbs.Sort()
     '        End If
     '    Catch ex As Exception
-    '        Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+    '        Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
     '    End Try
     'End Sub
 
@@ -582,7 +582,7 @@ Public Class dlgEditMovie
     '            lvEFanarts.Sort()
     '        End If
     '    Catch ex As Exception
-    '        Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+    '        Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
     '    End Try
     'End Sub
 
@@ -643,7 +643,7 @@ Public Class dlgEditMovie
                 End If
             End With
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -663,7 +663,7 @@ Public Class dlgEditMovie
                 Next
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -675,7 +675,7 @@ Public Class dlgEditMovie
                 Next
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -708,7 +708,7 @@ Public Class dlgEditMovie
                 FileUtils.Delete.DeleteDirectory(Path.Combine(Master.TempPath, "extrafanarts"))
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -725,7 +725,7 @@ Public Class dlgEditMovie
                 End While
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -747,7 +747,7 @@ Public Class dlgEditMovie
             End If
             RenumberEThumbs()
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -768,7 +768,7 @@ Public Class dlgEditMovie
                 btnEFanartsSetAsFanart.Enabled = False
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -838,7 +838,7 @@ Public Class dlgEditMovie
             Me.FillInfo()
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -864,7 +864,7 @@ Public Class dlgEditMovie
                 eActor = Nothing
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1073,7 +1073,7 @@ Public Class dlgEditMovie
                 End If
             End With
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1130,7 +1130,7 @@ Public Class dlgEditMovie
                 Try
                     ET_lFI.AddRange(Directory.GetFiles(ET_tPath, "thumb*.jpg"))
                 Catch ex As Exception
-                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
                 End Try
 
                 ' load local Extrathumbs
@@ -1162,7 +1162,7 @@ Public Class dlgEditMovie
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
 
         ET_lFI = Nothing
@@ -1191,7 +1191,7 @@ Public Class dlgEditMovie
                 Try
                     EF_lFI.AddRange(Directory.GetFiles(EF_tPath, "*.jpg"))
                 Catch ex As Exception
-                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
                 End Try
 
                 ' load local Extrafanarts
@@ -1223,7 +1223,7 @@ Public Class dlgEditMovie
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
 
         EF_lFI = Nothing
@@ -1249,7 +1249,7 @@ Public Class dlgEditMovie
             ' Perform the sort with these new sort options.
             Me.lvActors.Sort()
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1278,7 +1278,7 @@ Public Class dlgEditMovie
             Me.CleanUp()
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
 
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
@@ -1295,7 +1295,7 @@ Public Class dlgEditMovie
             Single.TryParse(Me.tmpRating, tmpDBL)
             Me.BuildStars(tmpDBL)
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1309,7 +1309,7 @@ Public Class dlgEditMovie
                 Me.BuildStars(2)
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1323,7 +1323,7 @@ Public Class dlgEditMovie
             Single.TryParse(Me.tmpRating, tmpDBL)
             Me.BuildStars(tmpDBL)
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1337,7 +1337,7 @@ Public Class dlgEditMovie
                 Me.BuildStars(4)
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1351,7 +1351,7 @@ Public Class dlgEditMovie
             Single.TryParse(Me.tmpRating, tmpDBL)
             Me.BuildStars(tmpDBL)
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1365,7 +1365,7 @@ Public Class dlgEditMovie
                 Me.BuildStars(6)
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1379,7 +1379,7 @@ Public Class dlgEditMovie
             Single.TryParse(Me.tmpRating, tmpDBL)
             Me.BuildStars(tmpDBL)
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1393,7 +1393,7 @@ Public Class dlgEditMovie
                 Me.BuildStars(8)
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1407,7 +1407,7 @@ Public Class dlgEditMovie
             Single.TryParse(Me.tmpRating, tmpDBL)
             Me.BuildStars(tmpDBL)
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1421,7 +1421,7 @@ Public Class dlgEditMovie
                 Me.BuildStars(10)
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1442,7 +1442,7 @@ Public Class dlgEditMovie
             Me.bwEThumbs.WorkerSupportsCancellation = True
             Me.bwEThumbs.RunWorkerAsync()
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1463,7 +1463,7 @@ Public Class dlgEditMovie
             Me.bwEFanarts.WorkerSupportsCancellation = True
             Me.bwEFanarts.RunWorkerAsync()
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1526,7 +1526,7 @@ Public Class dlgEditMovie
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1583,7 +1583,7 @@ Public Class dlgEditMovie
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1641,7 +1641,7 @@ Public Class dlgEditMovie
                 End If
 
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
             End Try
         Else
             Me.lbMPAA.SelectedIndex = 0
@@ -1813,7 +1813,7 @@ Public Class dlgEditMovie
 
             End With
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1899,7 +1899,7 @@ Public Class dlgEditMovie
     '            End If
     '        End If
     '    Catch ex As Exception
-    '        Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+    '        Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
     '    End Try
     'End Sub
 
@@ -1952,7 +1952,7 @@ Public Class dlgEditMovie
     '            FileUtils.Delete.DeleteDirectory(Path.Combine(Master.TempPath, "extrathumbs"))
     '        End If
     '    Catch ex As Exception
-    '        Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+    '        Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
     '    End Try
     'End Sub
 
@@ -2005,7 +2005,7 @@ Public Class dlgEditMovie
     '            FileUtils.Delete.DeleteDirectory(Path.Combine(Master.TempPath, "extrafanart"))
     '        End If
     '    Catch ex As Exception
-    '        Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+    '        Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
     '    End Try
     'End Sub
 

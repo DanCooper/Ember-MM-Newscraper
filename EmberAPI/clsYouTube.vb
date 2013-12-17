@@ -70,7 +70,7 @@ Namespace YouTube
                 _VideoLinks = ParseYTFormats(url, False)
 
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.Error(GetType(Scraper), ex.Message, ex.StackTrace, "Error")
             End Try
         End Sub
         ''' <summary>
@@ -231,7 +231,7 @@ Namespace YouTube
                 Return DownloadLinks
 
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.Error(GetType(Scraper), ex.Message, ex.StackTrace, "Error")
                 Return New VideoLinkItemCollection
             Finally
                 sHTTP = Nothing

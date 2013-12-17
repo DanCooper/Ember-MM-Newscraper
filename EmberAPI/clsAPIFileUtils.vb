@@ -125,7 +125,7 @@ Namespace FileUtils
                     End Using
                 End Using
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.Error(GetType(Common), ex.Message, ex.StackTrace, "Error")
             End Try
         End Sub
         ''' <summary>
@@ -143,7 +143,7 @@ Namespace FileUtils
                 Return Path.Combine(Path.GetDirectoryName(sPath), Path.GetFileNameWithoutExtension(sPath))
                 'Return Path.Combine(Directory.GetParent(sPath).FullName, Path.GetFileNameWithoutExtension(sPath))
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog("Source: <" & sPath & ">" & ex.Message, ex.StackTrace, "Error")
+                Master.eLog.Error(GetType(Common), "Source: <" & sPath & ">" & ex.Message, ex.StackTrace, "Error")
                 Return String.Empty
             End Try
         End Function
@@ -217,7 +217,7 @@ Namespace FileUtils
                     Directory.Delete(sPath, True)
                 End If
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.Error(GetType(Delete), ex.Message, ex.StackTrace, "Error")
             End Try
         End Sub
 
@@ -435,7 +435,7 @@ Namespace FileUtils
 				ioFi = Nothing
 				dirInfo = Nothing
 			Catch ex As Exception
-				Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.Error(GetType(Delete), ex.Message, ex.StackTrace, "Error")
 			End Try
 			Return ItemsToDelete
 		End Function
@@ -516,7 +516,7 @@ Namespace FileUtils
                     di = Nothing
                 End If
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.Error(GetType(FileSorter), ex.Message, ex.StackTrace, "Error")
             End Try
         End Sub
 

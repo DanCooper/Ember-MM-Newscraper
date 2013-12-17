@@ -341,7 +341,7 @@ Public Class frmMain
                 Application.DoEvents()
             End With
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -380,7 +380,7 @@ Public Class frmMain
             Me.LoadingDone = True
             Me.EnableFilters(True)
             Me.SetControlsEnabled(True)
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -397,7 +397,7 @@ Public Class frmMain
                 End Using
             End Using
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -413,7 +413,7 @@ Public Class frmMain
                 End Using
             End Using
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -454,7 +454,7 @@ Public Class frmMain
 
             Me.LoadInfo(Convert.ToInt32(Me.dgvMovies.Item(0, Me.dgvMovies.CurrentCell.RowIndex).Value), Me.dgvMovies.Item(1, Me.dgvMovies.CurrentCell.RowIndex).Value.ToString, True, False)
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -625,7 +625,7 @@ Public Class frmMain
             dgvMovies.Refresh()
             btnMarkAll.Text = If(Not MarkAll, Master.eLang.GetString(35, "Mark All"), Master.eLang.GetString(105, "Unmark All"))
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -694,7 +694,7 @@ Public Class frmMain
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -809,7 +809,7 @@ Public Class frmMain
                 End If
             End With
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -925,7 +925,7 @@ Public Class frmMain
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error", False)
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error", False)
             e.Cancel = True
         End Try
     End Sub
@@ -940,7 +940,7 @@ Public Class frmMain
 
             Me.dgvTVEpisodes.ResumeLayout()
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -987,7 +987,7 @@ Public Class frmMain
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error", False)
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error", False)
             e.Cancel = True
         End Try
     End Sub
@@ -1006,7 +1006,7 @@ Public Class frmMain
             End If
             Me.dgvMovies.ResumeLayout()
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1048,7 +1048,7 @@ Public Class frmMain
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error", False)
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error", False)
             e.Cancel = True
         End Try
     End Sub
@@ -1062,7 +1062,7 @@ Public Class frmMain
             End If
             Me.dgvTVSeasons.ResumeLayout()
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1106,7 +1106,7 @@ Public Class frmMain
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error", False)
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error", False)
             e.Cancel = True
         End Try
     End Sub
@@ -1120,7 +1120,7 @@ Public Class frmMain
             End If
             Me.dgvTVShows.ResumeLayout()
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1147,7 +1147,7 @@ Public Class frmMain
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error", False)
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error", False)
             e.Result = New Results With {.fileinfo = "error", .setEnabled = Args.setEnabled}
             e.Cancel = True
         End Try
@@ -1194,7 +1194,7 @@ Public Class frmMain
                     Me.btnMetaDataRefresh.Focus()
                 End If
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
             End Try
 
             If Res.setEnabled Then
@@ -1534,7 +1534,7 @@ Public Class frmMain
                 'Args.scrapeType = Enums.ScrapeType.None
                 'End If
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error", False)
+                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error", False)
             End Try
         Next
         If Args.scrapeType = Enums.ScrapeType.SingleScrape Then
@@ -1599,7 +1599,7 @@ Public Class frmMain
 
                                     Me.bwNonScrape.ReportProgress(iCount, String.Format("[[{0}]]", drvRow.Item(0).ToString))
                                 Catch ex As Exception
-                                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error", False)
+                                    Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error", False)
                                 End Try
                             Next
                         Case Enums.ScrapeType.CopyBD
@@ -1642,7 +1642,7 @@ Public Class frmMain
                                         End If
                                     End If
                                 Catch ex As Exception
-                                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error", False)
+                                    Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error", False)
                                 End Try
                             Next
                     End Select
@@ -1653,7 +1653,7 @@ doCancel:
                     End If
                 End If
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error", False)
+                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error", False)
             End Try
         End Using
     End Sub
@@ -1666,7 +1666,7 @@ doCancel:
                         Me.SelectRow(Me.dgvMovies.SelectedRows(0).Index)
                     End If
                 Catch ex As Exception
-                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error", False)
+                    Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error", False)
                 End Try
             Else
                 Me.SetStatus(e.UserState.ToString)
@@ -1692,7 +1692,7 @@ doCancel:
                     Me.bwRefreshMovies.ReportProgress(iCount, KVP.Value)
                     Me.RefreshMovie(KVP.Key, True)
                 Catch ex As Exception
-                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error", False)
+                    Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error", False)
                 End Try
                 iCount += 1
             Next
@@ -1733,7 +1733,7 @@ doCancel:
 
             Me.RunFilter()
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1796,7 +1796,7 @@ doCancel:
         Try
             Me.RunFilter(True)
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1987,7 +1987,7 @@ doCancel:
                 Me.NonScrape(Enums.ScrapeType.CleanFolders, Nothing)
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -2051,7 +2051,7 @@ doCancel:
 
             If Reload Then Me.FillList(0)
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -2129,7 +2129,7 @@ doCancel:
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -2156,7 +2156,7 @@ doCancel:
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub
@@ -2183,7 +2183,7 @@ doCancel:
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -2209,7 +2209,7 @@ doCancel:
             Me.SetControlsEnabled(True)
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -2254,7 +2254,7 @@ doCancel:
                 'RemoveHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
             End Using
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -2284,7 +2284,7 @@ doCancel:
             End Using
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -2386,7 +2386,7 @@ doCancel:
             Me.dgvMovies.Invalidate()
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -2453,7 +2453,7 @@ doCancel:
             Me.dgvTVEpisodes.Invalidate()
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -2505,7 +2505,7 @@ doCancel:
     '        Me.dgvTVEpisodes.Invalidate()
 
     '    Catch ex As Exception
-    '        Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+    '        Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
     '    End Try
     'End Sub
 
@@ -2569,7 +2569,7 @@ doCancel:
     '        Me.dgvTVEpisodes.Invalidate()
 
     '    Catch ex As Exception
-    '        Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+    '        Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
     '    End Try
     'End Sub
 
@@ -2636,7 +2636,7 @@ doCancel:
             Me.dgvTVSeasons.Invalidate()
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -2688,7 +2688,7 @@ doCancel:
             Me.dgvTVEpisodes.Invalidate()
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -2752,7 +2752,7 @@ doCancel:
             Me.dgvTVEpisodes.Invalidate()
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -2794,7 +2794,7 @@ doCancel:
             Me.dgvMovies.Invalidate()
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -2861,7 +2861,7 @@ doCancel:
             Me.dgvTVEpisodes.Invalidate()
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -2913,7 +2913,7 @@ doCancel:
             Me.dgvTVEpisodes.Invalidate()
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -2977,7 +2977,7 @@ doCancel:
             Me.dgvTVEpisodes.Invalidate()
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -3028,7 +3028,7 @@ doCancel:
             Me.dgvMovies.Invalidate()
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -3079,7 +3079,7 @@ doCancel:
 
             If doFill Then FillEpisodes(Convert.ToInt32(Me.dgvTVEpisodes.SelectedRows(0).Cells(0).Value), Convert.ToInt32(Me.dgvTVEpisodes.SelectedRows(0).Cells(12).Value))
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -3154,7 +3154,7 @@ doCancel:
 
             If doFill Then FillList(0)
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -3371,7 +3371,7 @@ doCancel:
                 End If
             Next
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -3409,7 +3409,7 @@ doCancel:
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -3461,7 +3461,7 @@ doCancel:
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -3499,7 +3499,7 @@ doCancel:
                 'RemoveHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
             End Using
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -3520,7 +3520,7 @@ doCancel:
             Me.tmrWait.Start()
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -3621,7 +3621,7 @@ doCancel:
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -3737,7 +3737,7 @@ doCancel:
                 Me.tpMovies.Text = String.Format("{0} ({1})", Master.eLang.GetString(36, "Movies"), Me.dgvMovies.RowCount)
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -3795,7 +3795,7 @@ doCancel:
 
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -3854,7 +3854,7 @@ doCancel:
                 RemoveHandler ModulesManager.Instance.GenericEvent, AddressOf dEditEpisode.GenericRunCallBack
             End Using
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -3875,7 +3875,7 @@ doCancel:
             Me.tmrWaitEp.Start()
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -3948,7 +3948,7 @@ doCancel:
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -3988,7 +3988,7 @@ doCancel:
                 End Using
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -4023,7 +4023,7 @@ doCancel:
                 Next
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
 
     End Sub
@@ -4134,7 +4134,7 @@ doCancel:
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -4193,7 +4193,7 @@ doCancel:
             End Using
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -4215,7 +4215,7 @@ doCancel:
             Me.tmrWaitSeason.Start()
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -4280,7 +4280,7 @@ doCancel:
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -4319,7 +4319,7 @@ doCancel:
                 End Using
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -4393,7 +4393,7 @@ doCancel:
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -4458,7 +4458,7 @@ doCancel:
 
             End Using
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -4478,7 +4478,7 @@ doCancel:
             Me.currShowRow = e.RowIndex
             Me.tmrWaitShow.Start()
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -4544,7 +4544,7 @@ doCancel:
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -4586,7 +4586,7 @@ doCancel:
                 End Using
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -4666,7 +4666,7 @@ doCancel:
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -4740,7 +4740,7 @@ doCancel:
 
             Me.dgvMovies.Invalidate()
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -5050,7 +5050,7 @@ doCancel:
             End If
         Catch ex As Exception
             Me.LoadingDone = True
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
 
         If Not isCL Then
@@ -5249,7 +5249,7 @@ doCancel:
             Next
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
         Me.ResumeLayout()
     End Sub
@@ -5469,7 +5469,7 @@ doCancel:
             Next
             'Me.SetStatus(Master.currMovie.Filename)
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
         Me.ResumeLayout()
     End Sub
@@ -5640,7 +5640,7 @@ doCancel:
             Next
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
         Me.ResumeLayout()
     End Sub
@@ -5837,7 +5837,7 @@ doCancel:
             Next
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
         Me.ResumeLayout()
     End Sub
@@ -6242,7 +6242,7 @@ doCancel:
                                 fLoading.SetLoadingMesg(Master.eLang.GetString(861, "Command Line Scraping..."))
                                 MovieScrapeData(False, clScrapeType, Master.DefaultOptions)
                             Catch ex As Exception
-                                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
                             End Try
                         Else
                             Try
@@ -6317,7 +6317,7 @@ doCancel:
                                 End If
                             Catch ex As Exception
                                 Me.ScraperDone = True
-                                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
                             End Try
                         End If
 
@@ -6434,14 +6434,14 @@ doCancel:
                         If tsbMediaCenters.DropDownItems.Count > 0 Then tsbMediaCenters.Enabled = True
                     End If
                 Catch ex As Exception
-                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
                 End Try
 
             End If
 
             fLoading.Close()
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -6460,7 +6460,7 @@ doCancel:
                 Me.pnlAllSeason.Location = New Point(Me.pbFanart.Width - Me.pnlAllSeason.Width - 9, 112)
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -6495,7 +6495,7 @@ doCancel:
                     End If
                     Me.SetStatus(Master.currMovie.Filename)
                 Catch ex As Exception
-                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
                 End Try
             Case Enums.ModuleEventType.RenameMovieManual
                 Try
@@ -6505,7 +6505,7 @@ doCancel:
                     End If
                     Me.SetStatus(Master.currMovie.Filename)
                 Catch ex As Exception
-                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
                 End Try
         End Select
     End Sub
@@ -6551,7 +6551,7 @@ doCancel:
 
         Catch ex As Exception
             Me.SetControlsEnabled(True)
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -6581,7 +6581,7 @@ doCancel:
             End If
         Catch ex As Exception
             Me.SetControlsEnabled(True)
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -6605,7 +6605,7 @@ doCancel:
 
         Catch ex As Exception
             Me.SetControlsEnabled(True)
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -6627,7 +6627,7 @@ doCancel:
 
         Catch ex As Exception
             Me.SetControlsEnabled(True)
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -6661,7 +6661,7 @@ doCancel:
                 Me.pbActors.Image = My.Resources.actor_silhouette
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -7080,7 +7080,7 @@ doCancel:
                 Me.pnlGenre(i).Top = Me.pnlInfoPanel.Top - 105
             Next
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -7141,7 +7141,7 @@ doCancel:
 
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
 
         Master.currMovie.ClearEThumbs = False
@@ -7364,7 +7364,7 @@ doCancel:
                 End Using
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -7390,7 +7390,7 @@ doCancel:
             grGenre.DrawString(drawString, drawFont, drawBrush, iLeft, (bmGenre.Height - drawHeight))
             DirectCast(sender, PictureBox).Image = bmGenre
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -7403,7 +7403,7 @@ doCancel:
             If Master.eSettings.AllwaysDisplayGenresText Then Return
             DirectCast(sender, PictureBox).Image = GenreImage
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -7415,7 +7415,7 @@ doCancel:
                 End Using
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -7427,7 +7427,7 @@ doCancel:
                 End Using
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -7439,7 +7439,7 @@ doCancel:
                 End Using
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -7600,7 +7600,7 @@ doCancel:
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
 
         Return False
@@ -7770,7 +7770,7 @@ doCancel:
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
 
         Return False
@@ -7823,7 +7823,7 @@ doCancel:
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
 
         Return False
@@ -7942,7 +7942,7 @@ doCancel:
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
 
         Return False
@@ -7971,7 +7971,7 @@ doCancel:
 
             If doFill Then FillList(0) Else DoTitleCheck()
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -7986,7 +7986,7 @@ doCancel:
             Me.FillList(0)
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -8017,7 +8017,7 @@ doCancel:
 
             Me.LoadInfo(Convert.ToInt32(Me.dgvMovies.Item(0, Me.dgvMovies.CurrentCell.RowIndex).Value), Me.dgvMovies.Item(1, Me.dgvMovies.CurrentCell.RowIndex).Value.ToString, True, False)
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -8100,7 +8100,7 @@ doCancel:
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -8153,7 +8153,7 @@ doCancel:
                 Me.ResumeLayout(True)
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -8184,7 +8184,7 @@ doCancel:
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -8264,7 +8264,7 @@ doCancel:
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -8288,7 +8288,7 @@ doCancel:
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -8315,7 +8315,7 @@ doCancel:
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -8332,7 +8332,7 @@ doCancel:
             Me.pbAudio.Image = aImage(3)
             Me.pbChannels.Image = aImage(4)
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -8422,7 +8422,7 @@ doCancel:
 
             Me.LoadInfo(Convert.ToInt32(Me.dgvMovies.Item(0, Me.dgvMovies.CurrentCell.RowIndex).Value), Me.dgvMovies.Item(1, Me.dgvMovies.CurrentCell.RowIndex).Value.ToString, True, False)
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -8708,7 +8708,7 @@ doCancel:
             Me.tsbAutoPilot.Enabled = (Me.dgvMovies.RowCount > 0 AndAlso Me.tcMain.SelectedIndex = 0)
             Me.cmnuTrayScrape.Enabled = Me.tsbAutoPilot.Enabled
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -8849,7 +8849,7 @@ doCancel:
             dThread.Start()
         Catch ex As Exception
             Me.mnuMainEditSettings.Enabled = True
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -9306,7 +9306,7 @@ doCancel:
 
             End With
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -9450,7 +9450,7 @@ doCancel:
             End Select
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -9490,7 +9490,7 @@ doCancel:
             Me.dgvMovies.Invalidate()
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 

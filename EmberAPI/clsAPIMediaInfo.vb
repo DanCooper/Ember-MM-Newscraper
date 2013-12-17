@@ -141,7 +141,7 @@ Public Class MediaInfo
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(MediaInfo), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -163,7 +163,7 @@ Public Class MediaInfo
                 If Not _mi Is Nothing Then miTV.TVEp.FileInfo = _mi
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(MediaInfo), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -237,7 +237,7 @@ Public Class MediaInfo
 
                     fiInfo = fiOut
                 Catch ex As Exception
-                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error", False)
+                    Master.eLog.Error(GetType(MediaInfo), ex.Message, ex.StackTrace, "Error", False)
                 End Try
             ElseIf StringUtils.IsStacked(Path.GetFileNameWithoutExtension(sPath), True) OrElse FileUtils.Common.isVideoTS(sPath) OrElse FileUtils.Common.isBDRip(sPath) Then
                 Try
@@ -312,7 +312,7 @@ Public Class MediaInfo
 
                     fiInfo = fiOut
                 Catch ex As Exception
-                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error", False)
+                    Master.eLog.Error(GetType(MediaInfo), ex.Message, ex.StackTrace, "Error", False)
                 End Try
             Else
                 fiInfo = ScanMI(sPath)
@@ -861,7 +861,7 @@ Public Class MediaInfo
                 Me.Close()
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error", False)
+            Master.eLog.Error(GetType(MediaInfo), ex.Message, ex.StackTrace, "Error", False)
         End Try
         Return fiOut
     End Function

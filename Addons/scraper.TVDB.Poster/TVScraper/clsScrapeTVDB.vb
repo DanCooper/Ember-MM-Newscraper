@@ -29,7 +29,27 @@ Public Class Scraper
 
 #Region "Fields"
 
-    Public Shared APIKey As String = String.Empty
+    ''' <summary>
+    ''' Please use the APIKey property, and NOT this variable.
+    ''' </summary>
+    Private Shared _APIKey As String = String.Empty
+    ''' <summary>
+    ''' APIKey has the potential to be undefined, or at least http://thetvdb.com/?tab=apiregister
+    ''' Strongly recommend using the Property, so a warning can be issued if the APIKey is used without being
+    ''' adequately initialized
+    ''' </summary>
+    Public Shared Property APIKey As String
+        Get
+            If (_APIKey.Contains("http://")) Then
+                Master.eLog.Warn(GetType(Scraper), "The API key for TheTVDB.com has not been set. Expect some errors.", New StackTrace().ToString(), "Warning")
+            End If
+
+            Return _APIKey
+        End Get
+        Set(value As String)
+            _APIKey = value
+        End Set
+    End Property
     Public Shared _TVDBMirror As String = String.Empty
 
     Public Shared WithEvents sObject As New ScraperObject
@@ -154,7 +174,7 @@ Public Class Scraper
                     ms.Close()
                 End Using
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
             End Try
             Return newTVI
         End Function
@@ -219,7 +239,7 @@ Public Class Scraper
                     End Using
                 End Using
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.Error(GetType(ScraperObject), ex.Message, ex.StackTrace, "Error")
             End Try
         End Sub
 
@@ -238,7 +258,7 @@ Public Class Scraper
                     MsgBox(Master.eLang.GetString(943, "There are no known episodes for this show. Scrape the show, season, or episode and try again."), MsgBoxStyle.OkOnly, Master.eLang.GetString(944, "No Known Episodes"))
                 End If
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
             End Try
 
             Return Nothing
@@ -264,20 +284,20 @@ Public Class Scraper
                 End Select
 
                 If doDownload OrElse Not fExists Then
-                    Dim sHTTP As New HTTP
-                    Dim xZip As Byte() = sHTTP.DownloadZip(String.Format("http://{0}/api/{1}/series/{2}/all/{3}.zip", _TVDBMirror, APIKey, sInfo.TVDBID, sInfo.SelectedLang))
-                    sHTTP = Nothing
+                    Using sHTTP As New HTTP
+                        Dim xZip As Byte() = sHTTP.DownloadZip(String.Format("http://{0}/api/{1}/series/{2}/all/{3}.zip", _TVDBMirror, APIKey, sInfo.TVDBID, sInfo.SelectedLang))
 
-                    If Not IsNothing(xZip) AndAlso xZip.Length > 0 Then
-                        'save it to the temp dir
-                        Directory.CreateDirectory(Directory.GetParent(fPath).FullName)
-                        Using fStream As FileStream = New FileStream(fPath, FileMode.Create, FileAccess.Write)
-                            fStream.Write(xZip, 0, xZip.Length)
-                        End Using
+                        If Not IsNothing(xZip) AndAlso xZip.Length > 0 Then
+                            'save it to the temp dir
+                            Directory.CreateDirectory(Directory.GetParent(fPath).FullName)
+                            Using fStream As FileStream = New FileStream(fPath, FileMode.Create, FileAccess.Write)
+                                fStream.Write(xZip, 0, xZip.Length)
+                            End Using
 
-                        Me.ProcessTVDBZip(xZip, sInfo)
-                        Me.ShowFromXML(sInfo, ImagesOnly)
-                    End If
+                            Me.ProcessTVDBZip(xZip, sInfo)
+                            Me.ShowFromXML(sInfo, ImagesOnly)
+                        End If
+                    End Using
                 Else
                     Using fStream As FileStream = New FileStream(fPath, FileMode.Open, FileAccess.Read)
                         Dim fZip As Byte() = Functions.ReadStreamToEnd(fStream)
@@ -287,10 +307,9 @@ Public Class Scraper
                     End Using
                 End If
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
             End Try
         End Sub
-
         Public Sub DownloadSeriesAsync(ByVal sInfo As Structures.ScrapeInfo)
             Try
                 If Not bwTVDB.IsBusy Then
@@ -300,7 +319,7 @@ Public Class Scraper
                     bwTVDB.RunWorkerAsync(New Arguments With {.Type = 1, .Parameter = sInfo})
                 End If
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
             End Try
         End Sub
 
@@ -329,7 +348,7 @@ Public Class Scraper
                                 Next
                             End If
                         Catch ex As Exception
-                            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
                         End Try
 
                         If Not String.IsNullOrEmpty(sXML) Then
@@ -412,7 +431,7 @@ Public Class Scraper
                     End Using
                 End If
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
             End Try
 
             Return tEpisodes
@@ -426,7 +445,7 @@ Public Class Scraper
                     bwTVDB.RunWorkerAsync(New Arguments With {.Type = 0, .Parameter = sInfo})
                 End If
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
             End Try
         End Sub
 
@@ -440,7 +459,7 @@ Public Class Scraper
                     Return tEp
                 End If
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
             End Try
 
             Return New MediaContainers.EpisodeDetails
@@ -570,7 +589,7 @@ Public Class Scraper
                     End While
                 End Using
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
             End Try
         End Sub
 
@@ -652,7 +671,7 @@ Public Class Scraper
                     End If
                 End If
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
             End Try
         End Sub
 
@@ -744,7 +763,7 @@ Public Class Scraper
                     End If
                 End If
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
             End Try
         End Sub
 
@@ -770,7 +789,7 @@ Public Class Scraper
                         e.Result = New Results With {.Type = 2, .Result = Args.Parameter}
                 End Select
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
             End Try
         End Sub
 
@@ -797,7 +816,7 @@ Public Class Scraper
                         RaiseEvent ScraperEvent(Enums.TVScraperEventType.ScraperDone, 0, Nothing)
                 End Select
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
             End Try
         End Sub
 
@@ -911,7 +930,7 @@ Public Class Scraper
 
                             iProgress += 1
                         Catch ex As Exception
-                            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
                         End Try
                     Next
 
@@ -940,7 +959,7 @@ Public Class Scraper
                     SQLTrans.Commit()
 
                 Catch ex As Exception
-                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
                 End Try
 
             End Using
@@ -1045,7 +1064,7 @@ Public Class Scraper
                 End If
 
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
             End Try
 
             Return tvdbResults
@@ -1078,7 +1097,7 @@ Public Class Scraper
                         End If
                     End If
                 Catch ex As Exception
-                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
                 End Try
 
                 'now let's get the show info and all the episodes
@@ -1195,7 +1214,7 @@ Public Class Scraper
                         End If
                     End If
                 Catch ex As Exception
-                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
                 End Try
             Else
                 sID = sInfo.TVDBID
@@ -1243,7 +1262,7 @@ Public Class Scraper
                     End If
                 End If
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
             End Try
         End Sub
 

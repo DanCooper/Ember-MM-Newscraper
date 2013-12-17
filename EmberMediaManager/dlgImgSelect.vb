@@ -150,7 +150,7 @@ Public Class dlgImgSelect
             Me.bwImgDownload.RunWorkerAsync() 'Me.TMDB.GetImagesAsync(tMovie.Movie.TMDBID, "backdrop")
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -170,7 +170,7 @@ Public Class dlgImgSelect
         '    Me.lvImages.Items.Add(text, Me.LargeImageList.Images.Count - 1)
         '    Me.lvImages.Items(Me.lvImages.Items.Count - 1).Tag = poster
         'Catch ex As Exception
-        '    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        '    Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         'End Try
         Try
             ReDim Preserve Me.pnlImage(iIndex)
@@ -280,7 +280,7 @@ Public Class dlgImgSelect
                 AddHandler lblImage(iIndex).MouseWheel, AddressOf MouseWheelEvent
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
 
         Me.iCounter += 1
@@ -331,7 +331,7 @@ Public Class dlgImgSelect
             tImage = Nothing
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -370,7 +370,7 @@ Public Class dlgImgSelect
             Me.Refresh()
             Application.DoEvents()
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -505,7 +505,7 @@ Public Class dlgImgSelect
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -640,7 +640,7 @@ Public Class dlgImgSelect
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
 
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
@@ -712,7 +712,7 @@ Public Class dlgImgSelect
             Me.btnPreview.Text = Master.eLang.GetString(180, "Preview")
             Me.lblDL1.Text = Master.eLang.GetString(894, "Performing Preliminary Tasks...")
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -872,7 +872,7 @@ Public Class dlgImgSelect
 
             Invalidate()
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
