@@ -23,6 +23,62 @@ Imports NLog
 
 Public Class ErrorLogger
 
+#Region "Properties"
+    ReadOnly Property IsTraceEnabled(ByVal type As Type) As Boolean
+        Get
+            Dim logger = LogManager.GetLogger(type.FullName)
+            If logger IsNot Nothing Then
+                Return logger.IsTraceEnabled
+            End If
+            Return False
+        End Get
+    End Property
+    ReadOnly Property IsDebugEnabled(ByVal type As Type) As Boolean
+        Get
+            Dim logger = LogManager.GetLogger(type.FullName)
+            If logger IsNot Nothing Then
+                Return logger.IsDebugEnabled
+            End If
+            Return False
+        End Get
+    End Property
+    ReadOnly Property IsInfoEnabled(ByVal type As Type) As Boolean
+        Get
+            Dim logger = LogManager.GetLogger(type.FullName)
+            If logger IsNot Nothing Then
+                Return logger.IsInfoEnabled
+            End If
+            Return False
+        End Get
+    End Property
+    ReadOnly Property IsWarnEnabled(ByVal type As Type) As Boolean
+        Get
+            Dim logger = LogManager.GetLogger(type.FullName)
+            If logger IsNot Nothing Then
+                Return logger.IsWarnEnabled
+            End If
+            Return False
+        End Get
+    End Property
+    ReadOnly Property IsErrorEnabled(ByVal type As Type) As Boolean
+        Get
+            Dim logger = LogManager.GetLogger(type.FullName)
+            If logger IsNot Nothing Then
+                Return logger.IsErrorEnabled
+            End If
+            Return False
+        End Get
+    End Property
+    ReadOnly Property IsFatalEnabled(ByVal type As Type) As Boolean
+        Get
+            Dim logger = LogManager.GetLogger(type.FullName)
+            If logger IsNot Nothing Then
+                Return logger.IsFatalEnabled
+            End If
+            Return False
+        End Get
+    End Property
+#End Region
 
 #Region "Events"
 
@@ -66,7 +122,13 @@ Public Class ErrorLogger
     ''' <param name="Notify"></param>
     ''' <remarks>Often used for fine-grained informational events, seldom of any use beyond the developer</remarks>
     Public Sub Trace(ByVal type As Type, ByVal msg As String, ByVal stkTrace As String, ByVal title As String, Optional ByVal Notify As Boolean = True)
-        LogManager.GetLogger(type.FullName).Trace("{0} {1}", msg, stkTrace)
+        Dim logger = LogManager.GetLogger(type.FullName)
+        If (String.IsNullOrEmpty(stkTrace)) Then
+            logger.Trace(msg)
+        Else
+            logger.Trace("{0}{1}{2}", msg, vbCrLf, stkTrace)
+        End If
+
         'Don't raise user-level notifications for trace-level messages
         'If Notify Then ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(816, "An Error Has Occurred"), msg, Nothing}))
         'RaiseEvent ErrorOccurred()
@@ -83,7 +145,12 @@ Public Class ErrorLogger
     ''' <remarks>Often used for fine-grained informational events, often of use to developers. 
     ''' Usually contains diagnostic related information</remarks>
     Public Sub Debug(ByVal type As Type, ByVal msg As String, ByVal stkTrace As String, ByVal title As String, Optional ByVal Notify As Boolean = True)
-        LogManager.GetLogger(type.FullName).Debug("{0} {1}", msg, stkTrace)
+        Dim logger = LogManager.GetLogger(type.FullName)
+        If (String.IsNullOrEmpty(stkTrace)) Then
+            logger.Debug(msg)
+        Else
+            logger.Debug("{0}{1}{2}", msg, vbCrLf, stkTrace)
+        End If
         'Don't raise user-level notifications for trace-level messages
         'If Notify Then ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(816, "An Error Has Occurred"), msg, Nothing}))
         'RaiseEvent ErrorOccurred()
@@ -100,7 +167,12 @@ Public Class ErrorLogger
     ''' <remarks>Often used to highlight the progress of the application at a coarse-grained level.
     ''' Things such as startup/shutdown may be logged at this level</remarks>
     Public Sub Info(ByVal type As Type, ByVal msg As String, ByVal stkTrace As String, ByVal title As String, Optional ByVal Notify As Boolean = True)
-        LogManager.GetLogger(type.FullName).Info("{0} {1}", msg, stkTrace)
+        Dim logger = LogManager.GetLogger(type.FullName)
+        If (String.IsNullOrEmpty(stkTrace)) Then
+            logger.Info(msg)
+        Else
+            logger.Info("{0}{1}{2}", msg, vbCrLf, stkTrace)
+        End If
         'Don't raise user-level notifications for trace-level messages
         'If Notify Then ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(816, "An Error Has Occurred"), msg, Nothing}))
         'RaiseEvent ErrorOccurred()
@@ -117,7 +189,12 @@ Public Class ErrorLogger
     ''' <remarks>Often used to record potentially harmful situations, but which can be recovered from.
     ''' Things such as switching to alternate methods, retrying an operation, missing secondary data, etc.</remarks>
     Public Sub Warn(ByVal type As Type, ByVal msg As String, ByVal stkTrace As String, ByVal title As String, Optional ByVal Notify As Boolean = True)
-        LogManager.GetLogger(type.FullName).Warn("{0} {1}", msg, stkTrace)
+        Dim logger = LogManager.GetLogger(type.FullName)
+        If (String.IsNullOrEmpty(stkTrace)) Then
+            logger.Warn(msg)
+        Else
+            logger.Warn("{0}{1}{2}", msg, vbCrLf, stkTrace)
+        End If
         If Notify Then ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(816, "An Error Has Occurred"), msg, Nothing}))
         RaiseEvent ErrorOccurred()
     End Sub
@@ -133,7 +210,12 @@ Public Class ErrorLogger
     ''' <remarks>Often used to record any error which is fatal to the *operation* but not the service or application.
     ''' These errors will usually force the user to intervene in some manner.</remarks>
     Public Sub [Error](ByVal type As Type, ByVal msg As String, ByVal stkTrace As String, ByVal title As String, Optional ByVal Notify As Boolean = True)
-        LogManager.GetLogger(type.FullName).Error("{0} {1}", msg, stkTrace)
+        Dim logger = LogManager.GetLogger(type.FullName)
+        If (String.IsNullOrEmpty(stkTrace)) Then
+            logger.Error(msg)
+        Else
+            logger.Error("{0}{1}{2}", msg, vbCrLf, stkTrace)
+        End If
         If Notify Then ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(816, "An Error Has Occurred"), msg, Nothing}))
         RaiseEvent ErrorOccurred()
     End Sub
@@ -148,7 +230,12 @@ Public Class ErrorLogger
     ''' <param name="Notify"></param>
     ''' <remarks>Often used to record any error that is forcing a shutdown of the application. </remarks>
     Public Sub Fatal(ByVal type As Type, ByVal msg As String, ByVal stkTrace As String, ByVal title As String, Optional ByVal Notify As Boolean = True)
-        LogManager.GetLogger(type.FullName).Fatal("{0} {1}", msg, stkTrace)
+        Dim logger = LogManager.GetLogger(type.FullName)
+        If (String.IsNullOrEmpty(stkTrace)) Then
+            logger.Fatal(msg)
+        Else
+            logger.Fatal("{0}{1}{2}", msg, vbCrLf, stkTrace)
+        End If
         If Notify Then ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(816, "An Error Has Occurred"), msg, Nothing}))
         RaiseEvent ErrorOccurred()
     End Sub
