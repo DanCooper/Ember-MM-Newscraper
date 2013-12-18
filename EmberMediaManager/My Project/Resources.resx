@@ -214,4 +214,42 @@
   <data name="haswatched" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\haswatched.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="urlEmberMediaManager" xml:space="preserve">
+    <value>http://www.EmberMediaManager.org/</value>
+    <comment>Ember Media Manager - Simply the best media manager :)</comment>
+  </data>
+  <data name="urlEmberWiki" xml:space="preserve">
+    <value>http://wiki.embermediamanager.org</value>
+    <comment>Ember Media Manager's wiki</comment>
+  </data>
+  <data name="urlFfmpeg" xml:space="preserve">
+    <value>http://www.ffmpeg.org/</value>
+    <comment>FFmpeg is a complete, cross-platform solution to record, convert and stream audio and video</comment>
+  </data>
+  <data name="urlIMDB" xml:space="preserve">
+    <value>http://www.imdb.com/</value>
+    <comment>Internet Movie Database</comment>
+  </data>
+  <data name="urlIMPAwards" xml:space="preserve">
+    <value>http://www.impawards.com/</value>
+    <comment>Internet Movie Poster Awards - Featuring one of the largest collections of movie poster images on the web.</comment>
+  </data>
+  <data name="urlMediaInfo" xml:space="preserve">
+    <value>http://mediainfo.sourceforge.net</value>
+    <comment>MediaInfo is a convenient unified display of the most relevant technical and tag data for video and audio files.</comment>
+  </data>
+  <data name="urlMoviePostersDb" xml:space="preserve">
+    <value>http://www.moviepostersdb.com/</value>
+  </data>
+  <data name="urlTheMovieDb" xml:space="preserve">
+    <value>http://www.themoviedb.org/</value>
+    <comment>themoviedb.org is a free and community maintained movie database</comment>
+  </data>
+  <data name="urlXBMC" xml:space="preserve">
+    <value>http://www.xbmc.org/</value>
+    <comment>XBMC is a free and open source media player application</comment>
+  </data>
+  <data name="urlYouTube" xml:space="preserve">
+    <value>http://www.youtube.com/</value>
+  </data>
 </root>

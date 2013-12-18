@@ -22,6 +22,7 @@ Imports System.Text
 Imports Microsoft.VisualStudio.TestTools.UnitTesting
 
 Imports EmberAPI
+Imports System.IO
 
 Namespace EmberTests
 
@@ -379,6 +380,209 @@ Namespace EmberTests
             'Assert
             Assert.Inconclusive("Test not implemented")
             'This test would involve some setup...
+        End Sub
+        <UnitTest>
+        <TestMethod()>
+        Public Sub Functions_Launch_NothingDestination_Disallow()
+            'Arrange
+            Dim destination As String = Nothing
+
+            'Act
+            Dim result As Boolean = Functions.Launch(destination)
+
+            'Assert
+            Assert.IsFalse(result)
+        End Sub
+        <UnitTest>
+        <TestMethod()>
+        Public Sub Functions_Launch_NothingDestination_DisallowExplicit()
+            'Arrange
+            Dim destination As String = Nothing
+
+            'Act
+            Dim result As Boolean = Functions.Launch(destination, False)
+
+            'Assert
+            Assert.IsFalse(result)
+        End Sub
+        <UnitTest>
+        <TestMethod()>
+        Public Sub Functions_Launch_NothingDestination_AllowExplicit()
+            'Arrange
+            Dim destination As String = Nothing
+
+            'Act
+            Dim result As Boolean = Functions.Launch(destination, True)
+
+            'Assert
+            Assert.IsFalse(result)
+        End Sub
+        <UnitTest>
+        <TestMethod()>
+        Public Sub Functions_Launch_EmptyDestination_Disallow()
+            'Arrange
+            Dim destination As String = String.Empty
+
+            'Act
+            Dim result As Boolean = Functions.Launch(destination)
+
+            'Assert
+            Assert.IsFalse(result)
+        End Sub
+        <UnitTest>
+        <TestMethod()>
+        Public Sub Functions_Launch_EmptyDestination_DisallowExplicit()
+            'Arrange
+            Dim destination As String = String.Empty
+
+            'Act
+            Dim result As Boolean = Functions.Launch(destination, False)
+
+            'Assert
+            Assert.IsFalse(result)
+        End Sub
+        <UnitTest>
+        <TestMethod()>
+        Public Sub Functions_Launch_EmptyDestination_AllowExplicit()
+            'Arrange
+            Dim destination As String = String.Empty
+
+            'Act
+            Dim result As Boolean = Functions.Launch(destination, True)
+
+            'Assert
+            Assert.IsFalse(result)
+        End Sub
+        <UnitTest>
+        <TestMethod()>
+        Public Sub Functions_Launch_LocalFile_Disallow()
+            'Arrange
+
+            Dim destination As String = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Images")
+            destination = Path.Combine(destination, "OfflineOverlay.png")
+
+            'Act
+            Dim result As Boolean = Functions.Launch(destination)
+
+            'Assert
+            Assert.IsFalse(result)
+        End Sub
+        <UnitTest>
+        <TestMethod()>
+        Public Sub Functions_Launch_LocalFile_DisallowExplicit()
+            'Arrange
+
+            Dim destination As String = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Images")
+            destination = Path.Combine(destination, "OfflineOverlay.png")
+
+            'Act
+            Dim result As Boolean = Functions.Launch(destination, False)
+
+            'Assert
+            Assert.IsFalse(result)
+        End Sub
+        <InteractiveTest>
+        <TestMethod()>
+        Public Sub Functions_Launch_LocalFile_AllowExplicit()
+            'Arrange
+
+            Dim destination As String = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Images")
+            destination = Path.Combine(destination, "OfflineOverlay.png")
+
+            'Act
+            Dim result As Boolean = Functions.Launch(destination, True)
+
+            'Assert
+            Assert.IsTrue(result)
+        End Sub
+        <UnitTest>
+        <TestMethod()>
+        Public Sub Functions_Launch_URL_Disallow()
+            'Arrange
+
+            Dim destination As String = "http://embermediamanager.org/"
+
+            'Act
+            Dim result As Boolean = Functions.Launch(destination)
+
+            'Assert
+            Assert.IsTrue(result)
+        End Sub
+        <UnitTest>
+        <TestMethod()>
+        Public Sub Functions_Launch_URL_DisallowExplicit()
+            'Arrange
+
+            Dim destination As String = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Images")
+            destination = Path.Combine(destination, "OfflineOverlay.png")
+
+            'Act
+            Dim result As Boolean = Functions.Launch(destination, False)
+
+            'Assert
+            Assert.IsFalse(result)
+        End Sub
+        <InteractiveTest>
+        <TestMethod()>
+        Public Sub Functions_Launch_URL_AllowExplicit()
+            'Arrange
+
+            Dim destination As String = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Images")
+            destination = Path.Combine(destination, "OfflineOverlay.png")
+
+            'Act
+            Dim result As Boolean = Functions.Launch(destination, True)
+
+            'Assert
+            Assert.IsTrue(result)
+        End Sub
+        <UnitTest>
+        <TestMethod()>
+        Public Sub Functions_Launch_URL_Malformed1()
+            'Arrange
+
+            Dim destination As String = "http://embermed iamanager.org/"
+
+            'Act
+            Dim result As Boolean = Functions.Launch(destination)
+
+            'Assert
+            Assert.IsFalse(result)
+        End Sub
+        <UnitTest>
+        <TestMethod()>
+        Public Sub Functions_Launch_URL_Malformed2()
+            'Arrange
+
+            Dim destination As String = "embermediamanager.org"
+
+            'Act
+            Dim result As Boolean = Functions.Launch(destination)
+
+            'Assert
+            Assert.IsFalse(result)
+        End Sub
+        ''' <summary>
+        ''' This method is to replicate an error in the original frmMain.btnPlay_Click, where it had a line as follows:
+        ''' Process.Start(String.Concat("""", Me.txtFilePath.Text, """"))
+        ''' But with the new Launch implementation, the extra quotes are not required any more
+        ''' </summary>
+        ''' <remarks></remarks>
+        <UnitTest>
+        <TestMethod()>
+        Public Sub Functions_Launch_ExtraQuotes_FileAllowed()
+            'Arrange
+            Dim tempDestination As String = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Images")
+            tempDestination = Path.Combine(tempDestination, "OfflineOverlay.png")
+
+            'This should produce an error because it will not like the explicit quotes around the string
+            Dim destination As String = String.Format("""{0}""", tempDestination)
+
+            'Act
+            Dim result As Boolean = Functions.Launch(destination, True)
+
+            'Assert
+            Assert.IsFalse(result)
         End Sub
 
     End Class

@@ -1334,6 +1334,56 @@ Public Class Functions
             Master.eLog.Error(GetType(Functions), ex.Message & " - Failed to access MediaInfo.DLL from path:" & dllPath, ex.StackTrace, "Error")
         End Try
     End Sub
+    ''' <summary>
+    ''' This method launches the user's default web browser to the supplied destination
+    ''' </summary>
+    ''' <param name="Destination">URL or file to be launched. Note that care should be taken when launching files, as it exposes
+    ''' the user to a high security risk.</param>
+    ''' <param name="AllowLocalFiles">If <c>False</c>, no action will be taken if the destination points to a local file.
+    ''' This protects the user's machine from malformed URLs</param>
+    ''' <returns><c>True</c> if process was launched, or <c>False</c> if an error prevented the launch from occurring.
+    ''' Note that a process may be launched but produce no visible results. This flag only indicates that the process was called.</returns>
+    ''' <remarks>Note that if the supplied string is not a valid URI, 
+    ''' or if it refers to a local file,
+    ''' a log message will be generated but no further action will be taken.
+    ''' This is to prevent malformed URIs from attacking the user's machine.</remarks>
+    Public Shared Function Launch(ByRef Destination As String, Optional ByRef AllowLocalFiles As Boolean = False) As Boolean
+        If String.IsNullOrEmpty(Destination) Then
+            Master.eLog.Error(GetType(Functions), "Blank destination", New StackTrace().ToString(), Nothing, False)
+            Return False
+        End If
+        Try
+            Dim uriDestination As New Uri(Destination)
+            If uriDestination.IsFile() Then
+                If (Not AllowLocalFiles) Then
+                    Master.eLog.Error(GetType(Functions), String.Format("Destination is a file, which is not permitted for security reasons <{0}>", Destination), New StackTrace().ToString(), Nothing, False)
+                    Return False
+                Else
+                    Dim localFileName = uriDestination.GetComponents(UriComponents.Path, UriFormat.SafeUnescaped)
+                    If (Not File.Exists(localFileName)) Then
+                        Master.eLog.Error(GetType(Functions), String.Format("Destination is a file, but it does not exist <{0}>", Destination), New StackTrace().ToString(), Nothing, False)
+                        Return False
+                    End If
+                End If
+            End If
+
+            'If we got this far, everything is OK, so we can go ahead and launch it!
+            If Master.isWindows Then
+                Process.Start(uriDestination.AbsoluteUri())
+            Else
+                Using Explorer As New Process
+                    Explorer.StartInfo.FileName = "xdg-open"
+                    Explorer.StartInfo.Arguments = uriDestination.AbsoluteUri()
+                    Explorer.Start()
+                End Using
+            End If
+        Catch ex As Exception
+            Master.eLog.Error(GetType(Functions), String.Format("Could not launch <{0}>.{1}{2}", Destination, vbCrLf, ex.Message), ex.StackTrace, Nothing, False)
+            Return False
+        End Try
+        'If you got here, everything went fine
+        Return True
+    End Function
 
 #End Region 'Methods
 

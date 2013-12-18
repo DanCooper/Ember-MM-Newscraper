@@ -272,6 +272,7 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub btnPlayTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPlayTrailer.Click
+        'TODO 2013/12/18 Dekker500 - This should be re-factored to use Functions.Launch. Why is the URL different for non-windows??? Need to test first before editing
         Try
 
             Dim tPath As String = String.Empty
