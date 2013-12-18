@@ -174,6 +174,9 @@
   <ItemGroup>
     <None Include="Resources\TestPattern_Vert.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Genre.jpg" />
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

@@ -1044,5 +1044,31 @@ Namespace EmberTests
             Assert.IsTrue(success)
         End Sub
 
+        <UnitTest>
+        <TestMethod()>
+        Public Sub ImageUtils_AddGenreString()
+            'Arrange
+            Dim success As Boolean = False
+            Using img As Image = My.Resources.Genre
+                Dim genreString As String = "Fantasy"
+                'Act
+                Using result As Image = ImageUtils.AddGenreString(img, genreString)
+
+                    'Assert
+                    If result Is Nothing Then Assert.Fail()
+                    Dim sizeOK = result.Size = img.Size
+
+                    Dim visualOK = False
+                    Using dialog = New ImageFeedback()
+                        dialog.LoadInfo(result, "Does this image have " & genreString & " written on it?")
+
+                        Dim userResponse = dialog.ShowDialog()
+                        visualOK = userResponse = Windows.Forms.DialogResult.No    'No means it is not stretched
+                    End Using
+                    success = sizeOK And visualOK
+                End Using
+            End Using
+        End Sub
+
     End Class
 End Namespace
