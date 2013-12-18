@@ -158,6 +158,7 @@ Public Class IMDB_trailer
     End Sub
 
     Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef URLList As List(Of Trailers)) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule_Trailer.Scraper
+        Master.eLog.Trace(Me.GetType(), "Started scrape", New StackTrace().ToString(), Nothing, False)
 
         Dim TrailerNumber As Integer = 0
         Dim Links As MatchCollection
@@ -273,6 +274,7 @@ Public Class IMDB_trailer
                 End If
             End If
         End If
+        Master.eLog.Trace(Me.GetType(), "Finished scrape", New StackTrace().ToString(), Nothing, False)
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 

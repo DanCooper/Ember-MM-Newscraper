@@ -263,6 +263,8 @@ Public Class IMDB_Data
     End Sub
 
     Function Scraper(ByRef DBMovie As Structures.DBMovie, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule_Data.Scraper
+        Master.eLog.Trace(Me.GetType(), "Started scrape", New StackTrace().ToString(), Nothing, False)
+
         'LoadSettings()
         Dim tTitle As String = String.Empty
         Dim OldTitle As String = DBMovie.Movie.Title
@@ -364,6 +366,7 @@ Public Class IMDB_Data
             If Not OldTitle = DBMovie.Movie.Title OrElse String.IsNullOrEmpty(DBMovie.Movie.SortTitle) Then DBMovie.Movie.SortTitle = DBMovie.ListTitle
         End If
 
+        Master.eLog.Trace(Me.GetType(), "Finished scrape", New StackTrace().ToString(), Nothing, False)
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
