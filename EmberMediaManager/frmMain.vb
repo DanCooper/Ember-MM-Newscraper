@@ -121,7 +121,6 @@ Public Class frmMain
     Private KeyBuffer As String = String.Empty
     ' Environment variables
     Private isUserInteractive As Boolean = True
-
 #End Region 'Fields
 
 #Region "Delegates"
@@ -672,30 +671,32 @@ Public Class frmMain
             Me.bwMediaInfo.RunWorkerAsync(New Arguments With {.TVShow = Master.currShow, .IsTV = True, .setEnabled = True})
         End If
     End Sub
-
+    ''' <summary>
+    ''' Launch video using system default player
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub btnPlay_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPlay.Click
-        '//
-        ' Launch video using system default player
-        '\\
+        Functions.Launch(Me.txtFilePath.Text, True)
+        'Try
+        '    If Not String.IsNullOrEmpty(Me.txtFilePath.Text) Then
+        '        If File.Exists(Me.txtFilePath.Text) Then
+        '            If Master.isWindows Then
+        '                Process.Start(String.Concat("""", Me.txtFilePath.Text, """"))
+        '            Else
+        '                Using Explorer As New Process
+        '                    Explorer.StartInfo.FileName = "xdg-open"
+        '                    Explorer.StartInfo.Arguments = String.Format("""{0}""", Me.txtFilePath.Text)
+        '                    Explorer.Start()
+        '                End Using
+        '            End If
 
-        Try
-            If Not String.IsNullOrEmpty(Me.txtFilePath.Text) Then
-                If File.Exists(Me.txtFilePath.Text) Then
-                    If Master.isWindows Then
-                        Process.Start(String.Concat("""", Me.txtFilePath.Text, """"))
-                    Else
-                        Using Explorer As New Process
-                            Explorer.StartInfo.FileName = "xdg-open"
-                            Explorer.StartInfo.Arguments = String.Format("""{0}""", Me.txtFilePath.Text)
-                            Explorer.Start()
-                        End Using
-                    End If
-
-                End If
-            End If
-        Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
-        End Try
+        '        End If
+        '    End If
+        'Catch ex As Exception
+        '    Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+        'End Try
     End Sub
 
     Private Sub btnSortDate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSortDate.Click
@@ -1245,6 +1246,8 @@ Public Class frmMain
         Dim efList As New List(Of String)
         Dim etList As New List(Of String)
         Dim DBScrapeMovie As New Structures.DBMovie
+
+        Master.eLog.Trace(Me.GetType, "Starting MOVIE scrape", New StackTrace().ToString, Nothing, False)
 
         AddHandler ModulesManager.Instance.MovieScraperEvent, AddressOf MovieScraperEvent
 
@@ -3244,9 +3247,15 @@ doCancel:
             Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions)
         End If
     End Sub
-
+    ''' <summary>
+    ''' User has selected "Change Movie" from the context menu. This will re-validate the movie title with the user,
+    ''' and initiate a new scrape of the movie.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub cmnuMovieChange_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieChange.Click
-        If Me.dgvMovies.SelectedRows.Count > 1 Then Return
+        If Me.dgvMovies.SelectedRows.Count <> 1 Then Return 'This method is only valid for when exactly one movie is selected
         Functions.SetScraperMod(Enums.ModType.DoSearch, True)
         Functions.SetScraperMod(Enums.ModType.All, True, False)
         Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions)
@@ -3320,30 +3329,32 @@ doCancel:
     Private Sub CopyExistingFanartToBackdropsFolderToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsBackdrops.Click, cmnuTrayToolsBackdrops.Click
         Me.NonScrape(Enums.ScrapeType.CopyBD, Nothing)
     End Sub
+    ''' <summary>
+    ''' Populate the form's Genre panel and picture box arrays with the 
+    ''' appropriate genre images and (conditionally) labels 
+    ''' </summary>
+    ''' <param name="genres"><c>List (Of String)</c> holding genre names</param>
+    ''' <remarks>If any individual genre is invalid or generates an error, 
+    ''' the remaining genres are still processed, however the placement/spacing
+    ''' of the remaining genres may show gaps where the erronious genres should have been</remarks>
+    Private Sub createGenreThumbs(ByVal genres As List(Of String))
+        If ((genres Is Nothing) OrElse (genres.Count = 0)) Then Return
 
-    Private Sub createGenreThumbs(ByVal strGenres As String)
-        '//
-        ' Parse the genre string and create panels/pictureboxes for each one
-        '\\
-
-        Dim genreArray() As String
-
-        Try
-            genreArray = Microsoft.VisualBasic.Strings.Split(strGenres, " / ")
-            For i As Integer = 0 To UBound(genreArray)
+        For i As Integer = 0 To genres.Count - 1
+            Try
                 ReDim Preserve Me.pnlGenre(i)
                 ReDim Preserve Me.pbGenre(i)
                 Me.pnlGenre(i) = New Panel()
                 Me.pnlGenre(i).Visible = False
                 Me.pbGenre(i) = New PictureBox()
-                Me.pbGenre(i).Name = genreArray(i).Trim.ToUpper
+                Me.pbGenre(i).Name = genres(i).Trim.ToUpper
                 Me.pnlGenre(i).Size = New Size(68, 100)
                 Me.pbGenre(i).Size = New Size(62, 94)
                 Me.pnlGenre(i).BackColor = Me.GenrePanelColor
                 Me.pbGenre(i).BackColor = Me.GenrePanelColor
                 Me.pnlGenre(i).BorderStyle = BorderStyle.FixedSingle
                 Me.pbGenre(i).SizeMode = PictureBoxSizeMode.StretchImage
-                Me.pbGenre(i).Image = APIXML.GetGenreImage(genreArray(i).Trim)
+                Me.pbGenre(i).Image = APIXML.GetGenreImage(genres(i).Trim)
                 Me.pnlGenre(i).Left = ((Me.pnlInfoPanel.Right) - (i * 73)) - 73
                 Me.pbGenre(i).Left = 2
                 Me.pnlGenre(i).Top = Me.pnlInfoPanel.Top - 105
@@ -3354,26 +3365,53 @@ doCancel:
                 AddHandler Me.pbGenre(i).MouseEnter, AddressOf pbGenre_MouseEnter
                 AddHandler Me.pbGenre(i).MouseLeave, AddressOf pbGenre_MouseLeave
                 If Master.eSettings.AllwaysDisplayGenresText Then
-                    Dim iLeft As Integer = 0
-                    Me.GenreImage = pbGenre(i).Image
-                    Dim bmGenre As New Bitmap(Me.GenreImage)
-                    Dim grGenre As Graphics = Graphics.FromImage(bmGenre)
-                    Dim drawString As String = pbGenre(i).Name
-                    Dim drawFont As New Font("Microsoft Sans Serif", 14, FontStyle.Bold, GraphicsUnit.Pixel)
-                    Dim drawBrush As New SolidBrush(Color.White)
-                    Dim drawWidth As Single = grGenre.MeasureString(drawString, drawFont).Width
-                    Dim drawSize As Integer = Convert.ToInt32((14 * (bmGenre.Width / drawWidth)) - 0.5)
-                    drawFont = New Font("Microsoft Sans Serif", If(drawSize > 14, 14, drawSize), FontStyle.Bold, GraphicsUnit.Pixel)
-                    Dim drawHeight As Single = grGenre.MeasureString(drawString, drawFont).Height
-                    iLeft = Convert.ToInt32((bmGenre.Width - grGenre.MeasureString(drawString, drawFont).Width) / 2)
-                    grGenre.DrawString(drawString, drawFont, drawBrush, iLeft, (bmGenre.Height - drawHeight))
-                    pbGenre(i).Image = bmGenre
+                    pbGenre(i).Image = ImageUtils.AddGenreString(pbGenre(i).Image, pbGenre(i).Name)
                 End If
-            Next
-        Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
-        End Try
+            Catch ex As Exception
+                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            End Try
+        Next
     End Sub
+    'Private Sub createGenreThumbs(ByVal strGenres As String)
+    '    '//
+    '    ' Parse the genre string and create panels/pictureboxes for each one
+    '    '\\
+
+    '    Dim genreArray() As String
+
+    '    Try
+    '        genreArray = Microsoft.VisualBasic.Strings.Split(strGenres, " / ")
+    '        For i As Integer = 0 To UBound(genreArray)
+    '            ReDim Preserve Me.pnlGenre(i)
+    '            ReDim Preserve Me.pbGenre(i)
+    '            Me.pnlGenre(i) = New Panel()
+    '            Me.pnlGenre(i).Visible = False
+    '            Me.pbGenre(i) = New PictureBox()
+    '            Me.pbGenre(i).Name = genreArray(i).Trim.ToUpper
+    '            Me.pnlGenre(i).Size = New Size(68, 100)
+    '            Me.pbGenre(i).Size = New Size(62, 94)
+    '            Me.pnlGenre(i).BackColor = Me.GenrePanelColor
+    '            Me.pbGenre(i).BackColor = Me.GenrePanelColor
+    '            Me.pnlGenre(i).BorderStyle = BorderStyle.FixedSingle
+    '            Me.pbGenre(i).SizeMode = PictureBoxSizeMode.StretchImage
+    '            Me.pbGenre(i).Image = APIXML.GetGenreImage(genreArray(i).Trim)
+    '            Me.pnlGenre(i).Left = ((Me.pnlInfoPanel.Right) - (i * 73)) - 73
+    '            Me.pbGenre(i).Left = 2
+    '            Me.pnlGenre(i).Top = Me.pnlInfoPanel.Top - 105
+    '            Me.pbGenre(i).Top = 2
+    '            Me.scMain.Panel2.Controls.Add(Me.pnlGenre(i))
+    '            Me.pnlGenre(i).Controls.Add(Me.pbGenre(i))
+    '            Me.pnlGenre(i).BringToFront()
+    '            AddHandler Me.pbGenre(i).MouseEnter, AddressOf pbGenre_MouseEnter
+    '            AddHandler Me.pbGenre(i).MouseLeave, AddressOf pbGenre_MouseLeave
+    '            If Master.eSettings.AllwaysDisplayGenresText Then
+    '                pbGenre(i).Image = ImageUtils.AddGenreString(pbGenre(i).Image, pbGenre(i).Name)
+    '            End If
+    '        Next
+    '    Catch ex As Exception
+    '        Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+    '    End Try
+    'End Sub
 
     Private Sub CustomUpdaterToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuCustom.Click, cmnuTrayCustom.Click
         Me.SetControlsEnabled(False)
@@ -5125,8 +5163,8 @@ doCancel:
                 Me.BuildStars(tmpRating)
             End If
 
-            If Not String.IsNullOrEmpty(Master.currShow.TVShow.Genre) Then
-                Me.createGenreThumbs(Master.currShow.TVShow.Genre)
+            If Master.currShow.TVShow.Genres.Count > 0 Then
+                Me.createGenreThumbs(Master.currShow.TVShow.Genres)
             End If
 
             If Not String.IsNullOrEmpty(Master.currShow.TVShow.Studio) Then
@@ -5332,8 +5370,8 @@ doCancel:
                 Me.BuildStars(tmpRating)
             End If
 
-            If Not String.IsNullOrEmpty(Master.currMovie.Movie.Genre) Then
-                Me.createGenreThumbs(Master.currMovie.Movie.Genre)
+            If Master.currMovie.Movie.Genres.Count > 0 Then
+                Me.createGenreThumbs(Master.currMovie.Movie.Genres)
             End If
 
             If Not String.IsNullOrEmpty(Master.currMovie.Movie.Studio) Then
@@ -5526,8 +5564,8 @@ doCancel:
                 Me.BuildStars(tmpRating)
             End If
 
-            If Not String.IsNullOrEmpty(Master.currShow.TVShow.Genre) Then
-                Me.createGenreThumbs(Master.currShow.TVShow.Genre)
+            If Master.currShow.TVShow.Genres.Count > 0 Then
+                Me.createGenreThumbs(Master.currShow.TVShow.Genres)
             End If
 
             If Not String.IsNullOrEmpty(Master.currShow.TVShow.Studio) Then
@@ -5698,8 +5736,8 @@ doCancel:
                 Me.BuildStars(tmpRating)
             End If
 
-            If Not String.IsNullOrEmpty(Master.currShow.TVShow.Genre) Then
-                Me.createGenreThumbs(Master.currShow.TVShow.Genre)
+            If Master.currShow.TVShow.Genres.Count > 0 Then
+                Me.createGenreThumbs(Master.currShow.TVShow.Genres)
             End If
 
             If Not String.IsNullOrEmpty(Master.currShow.TVShow.Studio) Then
@@ -5899,6 +5937,15 @@ doCancel:
         Me.dgvTVSeasons.Enabled = True
     End Sub
 
+    Private Sub frmMain_FormClosed(sender As Object, e As FormClosedEventArgs) Handles Me.FormClosed
+        Master.eLog.Info(Me.GetType(), "====Ember Media Manager exiting====", Nothing, "Exiting", False)
+    End Sub
+    ''' <summary>
+    ''' The FormClosing event has been called, so prepare the form to shut down
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub frmMain_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
 
         Try
@@ -5969,11 +6016,18 @@ doCancel:
             ' Application.Exit()
         End Try
     End Sub
-
+    ''' <summary>
+    ''' The form is loading. This method occurs before the form is actually visible.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub frmMain_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
-
             Me.Visible = False
+
+            Master.eLog.Info(Me.GetType(), "====Ember Media Manager starting up====", Nothing, "Startup", False)
+
             fLoading = New frmSplash
             If Master.isWindows Then 'Dam mono on MacOSX don't have trayicon implemented yet
                 Me.TrayIcon = New System.Windows.Forms.NotifyIcon(Me.components)
@@ -5997,7 +6051,7 @@ doCancel:
             ' #  from a service process or from a Web     # 
             ' #  application                              #
             ' #                                           #
-            ' #  UserInteractive property (True/False)    #             #
+            ' #  UserInteractive property (True/False)    #
             ' #############################################
             Me.isUserInteractive = Environment.UserInteractive
             If Me.isUserInteractive Then
@@ -6032,16 +6086,10 @@ doCancel:
                     .Assembly = Assembly.LoadFile(Path.Combine(Functions.AppPath, "EmberAPI.dll"), Assembly.GetExecutingAssembly().Evidence)})
             AddHandler currentDomain.AssemblyResolve, AddressOf MyResolveEventHandler
 
-            Dim sPath As String = String.Concat(Functions.AppPath, "Log", Path.DirectorySeparatorChar, "errlog.txt")
-            If File.Exists(sPath) Then
-                If File.Exists(sPath.Insert(sPath.LastIndexOf("."), "-old")) Then File.Delete(sPath.Insert(sPath.LastIndexOf("."), "-old"))
-                FileUtils.Common.MoveFileWithStream(sPath, sPath.Insert(sPath.LastIndexOf("."), "-old"))
-                File.Delete(sPath)
-            End If
             AdvancedSettings.Start()
 
             'Create Modules Folders
-            sPath = String.Concat(Functions.AppPath, "Modules")
+            Dim sPath = String.Concat(Functions.AppPath, "Modules")
             If Not Directory.Exists(sPath) Then
                 Directory.CreateDirectory(sPath)
             End If
@@ -6094,357 +6142,381 @@ doCancel:
             If Not Directory.Exists(Master.TempPath) Then Directory.CreateDirectory(Master.TempPath)
 
             If isCL Then ' Command Line
-                Try
-                    Dim MoviePath As String = String.Empty
-                    Dim isSingle As Boolean = False
-                    Dim hasSpec As Boolean = False
-                    Dim clScrapeType As Enums.ScrapeType = Nothing
-                    Dim clExport As Boolean = False
-                    Dim clExportResizePoster As Integer = 0
-                    Dim clExportTemplate As String = "template"
-                    Dim clAsk As Boolean = False
-                    Dim nowindow As Boolean = False
-                    Dim RunModule As Boolean = False
-                    Dim ModuleName As String = String.Empty
-                    For i As Integer = 1 To Args.Count - 1
-
-                        Select Case Args(i).ToLower
-                            Case "-fullask"
-                                clScrapeType = Enums.ScrapeType.FullAsk
-                                clAsk = True
-                            Case "-fullauto"
-                                clScrapeType = Enums.ScrapeType.FullAuto
-                                clAsk = False
-                            Case "-missask"
-                                clScrapeType = Enums.ScrapeType.UpdateAsk
-                                clAsk = True
-                            Case "-missauto"
-                                clScrapeType = Enums.ScrapeType.UpdateAuto
-                                clAsk = False
-                            Case "-newask"
-                                clScrapeType = Enums.ScrapeType.NewAsk
-                                clAsk = True
-                            Case "-newauto"
-                                clScrapeType = Enums.ScrapeType.NewAuto
-                                clAsk = False
-                            Case "-markask"
-                                clScrapeType = Enums.ScrapeType.MarkAsk
-                                clAsk = True
-                            Case "-markauto"
-                                clScrapeType = Enums.ScrapeType.MarkAuto
-                                clAsk = False
-                            Case "-file"
-                                If Args.Count - 1 > i Then
-                                    isSingle = False
-                                    hasSpec = True
-                                    clScrapeType = Enums.ScrapeType.SingleScrape
-                                    If File.Exists(Args(i + 1).Replace("""", String.Empty)) Then
-                                        MoviePath = Args(i + 1).Replace("""", String.Empty)
-                                        i += 1
-                                    End If
-                                Else
-                                    Exit For
-                                End If
-                            Case "-folder"
-                                If Args.Count - 1 > i Then
-                                    isSingle = True
-                                    hasSpec = True
-                                    clScrapeType = Enums.ScrapeType.SingleScrape
-                                    If File.Exists(Args(i + 1).Replace("""", String.Empty)) Then
-                                        MoviePath = Args(i + 1).Replace("""", String.Empty)
-                                        i += 1
-                                    End If
-                                Else
-                                    Exit For
-                                End If
-                            Case "-export"
-                                If Args.Count - 1 > i Then
-                                    MoviePath = Args(i + 1).Replace("""", String.Empty)
-                                    clExport = True
-                                Else
-                                    Exit For
-                                End If
-                            Case "-template"
-                                If Args.Count - 1 > i Then
-                                    clExportTemplate = Args(i + 1).Replace("""", String.Empty)
-                                Else
-                                    Exit For
-                                End If
-                            Case "-resize"
-                                If Args.Count - 1 > i Then
-                                    clExportResizePoster = Convert.ToUInt16(Args(i + 1).Replace("""", String.Empty))
-                                Else
-                                    Exit For
-                                End If
-                            Case "-all"
-                                Functions.SetScraperMod(Enums.ModType.All, True)
-                            Case "-nfo"
-                                Functions.SetScraperMod(Enums.ModType.NFO, True)
-                            Case "-posters"
-                                Functions.SetScraperMod(Enums.ModType.Poster, True)
-                            Case "-fanart"
-                                Functions.SetScraperMod(Enums.ModType.Fanart, True)
-                            Case "-ethumbs"
-                                Functions.SetScraperMod(Enums.ModType.EThumbs, True)
-                            Case "-efanarts"
-                                Functions.SetScraperMod(Enums.ModType.EFanarts, True)
-                            Case "--verbose"
-                                clAsk = True
-                            Case "-nowindow"
-                                nowindow = True
-                            Case "-run"
-                                If Args.Count - 1 > i Then
-                                    ModuleName = Args(i + 1).Replace("""", String.Empty)
-                                    RunModule = True
-                                Else
-                                    Exit For
-                                End If
-                            Case Else
-                                'If File.Exists(Args(2).Replace("""", String.Empty)) Then
-                                'MoviePath = Args(2).Replace("""", String.Empty)
-                                'End If
-                        End Select
-                    Next
-                    If nowindow Then fLoading.Hide()
-                    APIXML.CacheXMLs()
-                    fLoading.SetLoadingMesg(Master.eLang.GetString(858, "Loading database..."))
-                    If Master.DB.ConnectMediaDB() Then
-                        Me.LoadMedia(New Structures.Scans With {.Movies = True, .TV = True})
-                    End If
-                    Master.DB.LoadMovieSourcesFromDB()
-                    Master.DB.LoadTVSourcesFromDB()
-                    If RunModule Then
-                        fLoading.SetProgressBarStyle(ProgressBarStyle.Marquee)
-                        fLoading.SetLoadingMesg(Master.eLang.GetString(859, "Running Module..."))
-                        Dim gModule As ModulesManager._externalGenericModuleClass = ModulesManager.Instance.externalProcessorModules.FirstOrDefault(Function(y) y.ProcessorModule.ModuleName = ModuleName)
-                        If Not IsNothing(gModule) Then
-                            gModule.ProcessorModule.RunGeneric(Enums.ModuleEventType.CommandLine, Nothing, Nothing)
-                        End If
-                    End If
-                    If clExport = True Then
-                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {MoviePath, clExportTemplate, clExportResizePoster}))
-                        'dlgExportMovies.CLExport(MoviePath, clExportTemplate, clExportResizePoster)
-                    End If
-
-                    If Not IsNothing(clScrapeType) Then
-                        Me.cmnuTrayExit.Enabled = True
-                        Me.cmnuTray.Enabled = True
-                        If Functions.HasModifier AndAlso Not clScrapeType = Enums.ScrapeType.SingleScrape Then
-                            Try
-                                fLoading.SetProgressBarStyle(ProgressBarStyle.Marquee)
-                                fLoading.SetLoadingMesg(Master.eLang.GetString(860, "Loading Media..."))
-                                LoadMedia(New Structures.Scans With {.Movies = True})
-                                While Not Me.LoadingDone
-                                    Application.DoEvents()
-                                    Threading.Thread.Sleep(50)
-                                End While
-                                fLoading.SetProgressBarStyle(ProgressBarStyle.Marquee)
-                                fLoading.SetLoadingMesg(Master.eLang.GetString(861, "Command Line Scraping..."))
-                                MovieScrapeData(False, clScrapeType, Master.DefaultOptions)
-                            Catch ex As Exception
-                                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
-                            End Try
-                        Else
-                            Try
-                                If Not String.IsNullOrEmpty(MoviePath) AndAlso hasSpec Then
-                                    Master.currMovie = Master.DB.LoadMovieFromDB(MoviePath)
-                                    Dim tmpTitle As String = String.Empty
-                                    If FileUtils.Common.isVideoTS(MoviePath) Then
-                                        tmpTitle = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(MoviePath).FullName).Name, False)
-                                    ElseIf FileUtils.Common.isBDRip(MoviePath) Then
-                                        tmpTitle = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(Directory.GetParent(MoviePath).FullName).FullName).Name, False)
-                                    Else
-                                        tmpTitle = StringUtils.FilterName(If(isSingle, Directory.GetParent(MoviePath).Name, Path.GetFileNameWithoutExtension(MoviePath)))
-                                    End If
-                                    If IsNothing(Master.currMovie.Movie) Then
-                                        Master.currMovie.Movie = New MediaContainers.Movie
-                                        Master.currMovie.Movie.Title = tmpTitle
-                                        Dim sFile As New Scanner.MovieContainer
-                                        sFile.Filename = MoviePath
-                                        sFile.isSingle = isSingle
-                                        sFile.UseFolder = If(isSingle, True, False)
-                                        fScanner.GetMovieFolderContents(sFile)
-                                        If Not String.IsNullOrEmpty(sFile.Nfo) Then
-                                            Master.currMovie.Movie = NFO.LoadMovieFromNFO(sFile.Nfo, sFile.isSingle)
-                                        Else
-                                            Master.currMovie.Movie = NFO.LoadMovieFromNFO(sFile.Filename, sFile.isSingle)
-                                        End If
-                                        If String.IsNullOrEmpty(Master.currMovie.Movie.Title) Then
-                                            'no title so assume it's an invalid nfo, clear nfo path if exists
-                                            sFile.Nfo = String.Empty
-                                            If FileUtils.Common.isVideoTS(sFile.Filename) Then
-                                                Master.currMovie.ListTitle = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(sFile.Filename).FullName).Name)
-                                            ElseIf FileUtils.Common.isBDRip(sFile.Filename) Then
-                                                Master.currMovie.ListTitle = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(Directory.GetParent(sFile.Filename).FullName).FullName).Name)
-                                            Else
-                                                If sFile.UseFolder AndAlso sFile.isSingle Then
-                                                    Master.currMovie.ListTitle = StringUtils.FilterName(Directory.GetParent(sFile.Filename).Name)
-                                                Else
-                                                    Master.currMovie.ListTitle = StringUtils.FilterName(Path.GetFileNameWithoutExtension(sFile.Filename))
-                                                End If
-                                            End If
-                                            If String.IsNullOrEmpty(Master.currMovie.Movie.SortTitle) Then Master.currMovie.Movie.SortTitle = Master.currMovie.ListTitle
-                                        Else
-                                            Dim tTitle As String = StringUtils.FilterTokens(Master.currMovie.Movie.Title)
-                                            If String.IsNullOrEmpty(Master.currMovie.Movie.SortTitle) Then Master.currMovie.Movie.SortTitle = tTitle
-                                            If Master.eSettings.DisplayYear AndAlso Not String.IsNullOrEmpty(Master.currMovie.Movie.Year) Then
-                                                Master.currMovie.ListTitle = String.Format("{0} ({1})", tTitle, Master.currMovie.Movie.Year)
-                                            Else
-                                                Master.currMovie.ListTitle = tTitle
-                                            End If
-                                        End If
-
-                                        If Not String.IsNullOrEmpty(Master.currMovie.ListTitle) Then
-                                            Master.currMovie.NfoPath = sFile.Nfo
-                                            Master.currMovie.PosterPath = sFile.Poster
-                                            Master.currMovie.FanartPath = sFile.Fanart
-                                            Master.currMovie.TrailerPath = sFile.Trailer
-                                            Master.currMovie.SubPath = sFile.Subs
-                                            Master.currMovie.EThumbsPath = sFile.EThumbs
-                                            Master.currMovie.EFanartsPath = sFile.EFanarts
-                                            Master.currMovie.Filename = sFile.Filename
-                                            Master.currMovie.isSingle = sFile.isSingle
-                                            Master.currMovie.UseFolder = sFile.UseFolder
-                                            Master.currMovie.Source = sFile.Source
-                                        End If
-                                        Master.tmpMovie = Master.currMovie.Movie
-                                    End If
-                                    fLoading.SetProgressBarStyle(ProgressBarStyle.Marquee)
-                                    fLoading.SetLoadingMesg(Master.eLang.GetString(861, "Command Line Scraping..."))
-                                    MovieScrapeData(False, Enums.ScrapeType.SingleScrape, Master.DefaultOptions)
-                                Else
-                                    Me.ScraperDone = True
-                                End If
-                            Catch ex As Exception
-                                Me.ScraperDone = True
-                                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
-                            End Try
-                        End If
-
-                        While Not Me.ScraperDone
-                            Application.DoEvents()
-                            Threading.Thread.Sleep(50)
-                        End While
-                    End If
-
-                    frmSplash.Close()
-                    Me.Close()
-                Catch ex As Exception
-                End Try
-
+                LoadWithCommandLine(Args)
             Else 'Regular Run (GUI)
-                Try
-                    'If Master.eSettings.CheckUpdates Then
-                    '    If Functions.CheckNeedUpdate() Then
-                    '        Using dNewVer As New dlgNewVersion
-                    '            fLoading.Hide()
-                    '            If dNewVer.ShowDialog() = Windows.Forms.DialogResult.Abort Then
-                    '                tmrAppExit.Enabled = True
-                    '                CloseApp = True
-                    '            End If
-                    '        End Using
-                    '    End If
-
-                    'End If
-                    If Not CloseApp Then
-                        fLoading.SetLoadingMesg(Master.eLang.GetString(862, "Loading translations..."))
-                        APIXML.CacheXMLs()
-
-                        Me.SetUp(True)
-                        Me.cbSearch.SelectedIndex = 0
-
-                        fLoading.SetLoadingMesg(Master.eLang.GetString(863, "Positioning controls..."))
-                        Me.Location = Master.eSettings.WindowLoc
-                        Me.Size = Master.eSettings.WindowSize
-                        Me.WindowState = Master.eSettings.WindowState
-
-                        Me.aniType = Master.eSettings.InfoPanelState
-                        Select Case Me.aniType
-                            Case 0
-                                Me.pnlInfoPanel.Height = 25
-                                Me.btnDown.Enabled = False
-                                Me.btnMid.Enabled = True
-                                Me.btnUp.Enabled = True
-                            Case 1
-                                Me.pnlInfoPanel.Height = Me.IPMid
-                                Me.btnMid.Enabled = False
-                                Me.btnDown.Enabled = True
-                                Me.btnUp.Enabled = True
-                            Case 2
-                                Me.pnlInfoPanel.Height = Me.IPUp
-                                Me.btnUp.Enabled = False
-                                Me.btnDown.Enabled = True
-                                Me.btnMid.Enabled = True
-                        End Select
-
-                        Me.aniShowType = Master.eSettings.ShowInfoPanelState
-
-                        Me.aniFilterRaise = Master.eSettings.FilterPanelState
-                        If Me.aniFilterRaise Then
-                            Me.pnlFilter.Height = Functions.Quantize(Me.gbFilterSpecific.Height + Me.lblFilter.Height + 15, 5)
-                            Me.btnFilterDown.Enabled = True
-                            Me.btnFilterUp.Enabled = False
-                        Else
-                            Me.pnlFilter.Height = 25
-                            Me.btnFilterDown.Enabled = False
-                            Me.btnFilterUp.Enabled = True
-                        End If
-                        Try ' On error just ignore this a let it use default
-                            Me.scMain.SplitterDistance = Master.eSettings.SplitterPanelState
-                            Me.scTV.SplitterDistance = Master.eSettings.ShowSplitterPanelState
-                            Me.scTVSeasonsEpisodes.SplitterDistance = Master.eSettings.SeasonSplitterPanelState
-                        Catch ex As Exception
-                        End Try
-                        Me.pnlFilter.Visible = True
-
-                        Me.ClearInfo()
-
-                        Application.DoEvents()
-                        fLoading.SetLoadingMesg(Master.eLang.GetString(858, "Loading database..."))
-                        If Master.eSettings.Version = String.Format("r{0}", My.Application.Info.Version.Revision) Then
-                            If Master.DB.ConnectMediaDB() Then
-                                Me.LoadMedia(New Structures.Scans With {.Movies = True, .TV = True})
-                            End If
-                            Me.FillList(0)
-                            Me.Visible = True
-                        Else
-                            If Master.DB.ConnectMediaDB() Then
-                                Me.LoadMedia(New Structures.Scans With {.Movies = True, .TV = True})
-                            End If
-                            If dlgWizard.ShowDialog = Windows.Forms.DialogResult.OK Then
-                                Application.DoEvents()
-                                Me.SetUp(False) 'just in case user changed languages
-                                Me.Visible = True
-                                Me.LoadMedia(New Structures.Scans With {.Movies = True, .TV = True})
-                            Else
-                                Me.FillList(0)
-                                Me.Visible = True
-                            End If
-                        End If
-
-                        Master.DB.LoadMovieSourcesFromDB()
-                        Master.DB.LoadTVSourcesFromDB()
-                        fLoading.SetLoadingMesg(Master.eLang.GetString(864, "Setting menus..."))
-
-                        Me.SetMenus(True)
-                        Functions.GetListOfSources()
-                        Me.cmnuTrayExit.Enabled = True
-                        Me.cmnuTraySettings.Enabled = True
-                        Me.mnuMainEdit.Enabled = True
-                        If tsbMediaCenters.DropDownItems.Count > 0 Then tsbMediaCenters.Enabled = True
-                    End If
-                Catch ex As Exception
-                    Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
-                End Try
-
+                LoadWithGUI()
             End If
 
             fLoading.Close()
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Fatal(Me.GetType(), ex.Message, ex.StackTrace, "Fatal")
+            Me.Close()
         End Try
     End Sub
+    ''' <summary>
+    ''' Performs startup routines specific to being initiated by the command line
+    ''' </summary>
+    ''' <param name="Args">Command line arguments. Must NOT be empty!</param>
+    ''' <remarks></remarks>
+    Private Sub LoadWithCommandLine(ByVal Args() As String)
+        Try
+            Master.eLog.Trace(Me.GetType(), "LoadWithCommandLine()", Nothing, Nothing, False)
 
+            Dim MoviePath As String = String.Empty
+            Dim isSingle As Boolean = False
+            Dim hasSpec As Boolean = False
+            Dim clScrapeType As Enums.ScrapeType = Nothing
+            Dim clExport As Boolean = False
+            Dim clExportResizePoster As Integer = 0
+            Dim clExportTemplate As String = "template"
+            Dim clAsk As Boolean = False
+            Dim nowindow As Boolean = False
+            Dim RunModule As Boolean = False
+            Dim ModuleName As String = String.Empty
+            For i As Integer = 1 To Args.Count - 1
+
+                Select Case Args(i).ToLower
+                    Case "-fullask"
+                        clScrapeType = Enums.ScrapeType.FullAsk
+                        clAsk = True
+                    Case "-fullauto"
+                        clScrapeType = Enums.ScrapeType.FullAuto
+                        clAsk = False
+                    Case "-missask"
+                        clScrapeType = Enums.ScrapeType.UpdateAsk
+                        clAsk = True
+                    Case "-missauto"
+                        clScrapeType = Enums.ScrapeType.UpdateAuto
+                        clAsk = False
+                    Case "-newask"
+                        clScrapeType = Enums.ScrapeType.NewAsk
+                        clAsk = True
+                    Case "-newauto"
+                        clScrapeType = Enums.ScrapeType.NewAuto
+                        clAsk = False
+                    Case "-markask"
+                        clScrapeType = Enums.ScrapeType.MarkAsk
+                        clAsk = True
+                    Case "-markauto"
+                        clScrapeType = Enums.ScrapeType.MarkAuto
+                        clAsk = False
+                    Case "-file"
+                        If Args.Count - 1 > i Then
+                            isSingle = False
+                            hasSpec = True
+                            clScrapeType = Enums.ScrapeType.SingleScrape
+                            If File.Exists(Args(i + 1).Replace("""", String.Empty)) Then
+                                MoviePath = Args(i + 1).Replace("""", String.Empty)
+                                i += 1
+                            End If
+                        Else
+                            Exit For
+                        End If
+                    Case "-folder"
+                        If Args.Count - 1 > i Then
+                            isSingle = True
+                            hasSpec = True
+                            clScrapeType = Enums.ScrapeType.SingleScrape
+                            If File.Exists(Args(i + 1).Replace("""", String.Empty)) Then
+                                MoviePath = Args(i + 1).Replace("""", String.Empty)
+                                i += 1
+                            End If
+                        Else
+                            Exit For
+                        End If
+                    Case "-export"
+                        If Args.Count - 1 > i Then
+                            MoviePath = Args(i + 1).Replace("""", String.Empty)
+                            clExport = True
+                        Else
+                            Exit For
+                        End If
+                    Case "-template"
+                        If Args.Count - 1 > i Then
+                            clExportTemplate = Args(i + 1).Replace("""", String.Empty)
+                        Else
+                            Exit For
+                        End If
+                    Case "-resize"
+                        If Args.Count - 1 > i Then
+                            clExportResizePoster = Convert.ToUInt16(Args(i + 1).Replace("""", String.Empty))
+                        Else
+                            Exit For
+                        End If
+                    Case "-all"
+                        Functions.SetScraperMod(Enums.ModType.All, True)
+                    Case "-nfo"
+                        Functions.SetScraperMod(Enums.ModType.NFO, True)
+                    Case "-posters"
+                        Functions.SetScraperMod(Enums.ModType.Poster, True)
+                    Case "-fanart"
+                        Functions.SetScraperMod(Enums.ModType.Fanart, True)
+                    Case "-ethumbs"
+                        Functions.SetScraperMod(Enums.ModType.EThumbs, True)
+                    Case "-efanarts"
+                        Functions.SetScraperMod(Enums.ModType.EFanarts, True)
+                    Case "--verbose"
+                        clAsk = True
+                    Case "-nowindow"
+                        nowindow = True
+                    Case "-run"
+                        If Args.Count - 1 > i Then
+                            ModuleName = Args(i + 1).Replace("""", String.Empty)
+                            RunModule = True
+                        Else
+                            Exit For
+                        End If
+                    Case Else
+                        'If File.Exists(Args(2).Replace("""", String.Empty)) Then
+                        'MoviePath = Args(2).Replace("""", String.Empty)
+                        'End If
+                End Select
+            Next
+            If nowindow Then fLoading.Hide()
+            APIXML.CacheXMLs()
+            fLoading.SetLoadingMesg(Master.eLang.GetString(858, "Loading database..."))
+            If Master.DB.ConnectMediaDB() Then
+                Me.LoadMedia(New Structures.Scans With {.Movies = True, .TV = True})
+            End If
+            Master.DB.LoadMovieSourcesFromDB()
+            Master.DB.LoadTVSourcesFromDB()
+            If RunModule Then
+                fLoading.SetProgressBarStyle(ProgressBarStyle.Marquee)
+                fLoading.SetLoadingMesg(Master.eLang.GetString(859, "Running Module..."))
+                Dim gModule As ModulesManager._externalGenericModuleClass = ModulesManager.Instance.externalProcessorModules.FirstOrDefault(Function(y) y.ProcessorModule.ModuleName = ModuleName)
+                If Not IsNothing(gModule) Then
+                    gModule.ProcessorModule.RunGeneric(Enums.ModuleEventType.CommandLine, Nothing, Nothing)
+                End If
+            End If
+            If clExport = True Then
+                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {MoviePath, clExportTemplate, clExportResizePoster}))
+                'dlgExportMovies.CLExport(MoviePath, clExportTemplate, clExportResizePoster)
+            End If
+
+            If Not IsNothing(clScrapeType) Then
+                Me.cmnuTrayExit.Enabled = True
+                Me.cmnuTray.Enabled = True
+                If Functions.HasModifier AndAlso Not clScrapeType = Enums.ScrapeType.SingleScrape Then
+                    Try
+                        fLoading.SetProgressBarStyle(ProgressBarStyle.Marquee)
+                        fLoading.SetLoadingMesg(Master.eLang.GetString(860, "Loading Media..."))
+                        LoadMedia(New Structures.Scans With {.Movies = True})
+                        While Not Me.LoadingDone
+                            Application.DoEvents()
+                            Threading.Thread.Sleep(50)
+                        End While
+                        fLoading.SetProgressBarStyle(ProgressBarStyle.Marquee)
+                        fLoading.SetLoadingMesg(Master.eLang.GetString(861, "Command Line Scraping..."))
+                        MovieScrapeData(False, clScrapeType, Master.DefaultOptions)
+                    Catch ex As Exception
+                        Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                    End Try
+                Else
+                    Try
+                        If Not String.IsNullOrEmpty(MoviePath) AndAlso hasSpec Then
+                            Master.currMovie = Master.DB.LoadMovieFromDB(MoviePath)
+                            Dim tmpTitle As String = String.Empty
+                            If FileUtils.Common.isVideoTS(MoviePath) Then
+                                tmpTitle = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(MoviePath).FullName).Name, False)
+                            ElseIf FileUtils.Common.isBDRip(MoviePath) Then
+                                tmpTitle = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(Directory.GetParent(MoviePath).FullName).FullName).Name, False)
+                            Else
+                                tmpTitle = StringUtils.FilterName(If(isSingle, Directory.GetParent(MoviePath).Name, Path.GetFileNameWithoutExtension(MoviePath)))
+                            End If
+                            If IsNothing(Master.currMovie.Movie) Then
+                                Master.currMovie.Movie = New MediaContainers.Movie
+                                Master.currMovie.Movie.Title = tmpTitle
+                                Dim sFile As New Scanner.MovieContainer
+                                sFile.Filename = MoviePath
+                                sFile.isSingle = isSingle
+                                sFile.UseFolder = If(isSingle, True, False)
+                                fScanner.GetMovieFolderContents(sFile)
+                                If Not String.IsNullOrEmpty(sFile.Nfo) Then
+                                    Master.currMovie.Movie = NFO.LoadMovieFromNFO(sFile.Nfo, sFile.isSingle)
+                                Else
+                                    Master.currMovie.Movie = NFO.LoadMovieFromNFO(sFile.Filename, sFile.isSingle)
+                                End If
+                                If String.IsNullOrEmpty(Master.currMovie.Movie.Title) Then
+                                    'no title so assume it's an invalid nfo, clear nfo path if exists
+                                    sFile.Nfo = String.Empty
+                                    If FileUtils.Common.isVideoTS(sFile.Filename) Then
+                                        Master.currMovie.ListTitle = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(sFile.Filename).FullName).Name)
+                                    ElseIf FileUtils.Common.isBDRip(sFile.Filename) Then
+                                        Master.currMovie.ListTitle = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(Directory.GetParent(sFile.Filename).FullName).FullName).Name)
+                                    Else
+                                        If sFile.UseFolder AndAlso sFile.isSingle Then
+                                            Master.currMovie.ListTitle = StringUtils.FilterName(Directory.GetParent(sFile.Filename).Name)
+                                        Else
+                                            Master.currMovie.ListTitle = StringUtils.FilterName(Path.GetFileNameWithoutExtension(sFile.Filename))
+                                        End If
+                                    End If
+                                    If String.IsNullOrEmpty(Master.currMovie.Movie.SortTitle) Then Master.currMovie.Movie.SortTitle = Master.currMovie.ListTitle
+                                Else
+                                    Dim tTitle As String = StringUtils.FilterTokens(Master.currMovie.Movie.Title)
+                                    If String.IsNullOrEmpty(Master.currMovie.Movie.SortTitle) Then Master.currMovie.Movie.SortTitle = tTitle
+                                    If Master.eSettings.DisplayYear AndAlso Not String.IsNullOrEmpty(Master.currMovie.Movie.Year) Then
+                                        Master.currMovie.ListTitle = String.Format("{0} ({1})", tTitle, Master.currMovie.Movie.Year)
+                                    Else
+                                        Master.currMovie.ListTitle = tTitle
+                                    End If
+                                End If
+
+                                If Not String.IsNullOrEmpty(Master.currMovie.ListTitle) Then
+                                    Master.currMovie.NfoPath = sFile.Nfo
+                                    Master.currMovie.PosterPath = sFile.Poster
+                                    Master.currMovie.FanartPath = sFile.Fanart
+                                    Master.currMovie.TrailerPath = sFile.Trailer
+                                    Master.currMovie.SubPath = sFile.Subs
+                                    Master.currMovie.EThumbsPath = sFile.EThumbs
+                                    Master.currMovie.EFanartsPath = sFile.EFanarts
+                                    Master.currMovie.Filename = sFile.Filename
+                                    Master.currMovie.isSingle = sFile.isSingle
+                                    Master.currMovie.UseFolder = sFile.UseFolder
+                                    Master.currMovie.Source = sFile.Source
+                                End If
+                                Master.tmpMovie = Master.currMovie.Movie
+                            End If
+                            fLoading.SetProgressBarStyle(ProgressBarStyle.Marquee)
+                            fLoading.SetLoadingMesg(Master.eLang.GetString(861, "Command Line Scraping..."))
+                            MovieScrapeData(False, Enums.ScrapeType.SingleScrape, Master.DefaultOptions)
+                        Else
+                            Me.ScraperDone = True
+                        End If
+                    Catch ex As Exception
+                        Me.ScraperDone = True
+                        Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                    End Try
+                End If
+
+                While Not Me.ScraperDone
+                    Application.DoEvents()
+                    Threading.Thread.Sleep(50)
+                End While
+            End If
+
+            frmSplash.Close()
+            Me.Close()
+        Catch ex As Exception
+        End Try
+
+    End Sub
+    ''' <summary>
+    ''' Performs startup routines specific to being initiated as a GUI application (user interaction intended)
+    ''' </summary>
+    ''' <remarks></remarks>
+    Private Sub LoadWithGUI()
+        Try
+            Master.eLog.Trace(Me.GetType(), "LoadWithGUI()", Nothing, Nothing, False)
+            'If Master.eSettings.CheckUpdates Then
+            '    If Functions.CheckNeedUpdate() Then
+            '        Using dNewVer As New dlgNewVersion
+            '            fLoading.Hide()
+            '            If dNewVer.ShowDialog() = Windows.Forms.DialogResult.Abort Then
+            '                tmrAppExit.Enabled = True
+            '                CloseApp = True
+            '            End If
+            '        End Using
+            '    End If
+
+            'End If
+            If Not CloseApp Then
+                fLoading.SetLoadingMesg(Master.eLang.GetString(862, "Loading translations..."))
+                APIXML.CacheXMLs()
+
+                Me.SetUp(True)
+                Me.cbSearch.SelectedIndex = 0
+
+                fLoading.SetLoadingMesg(Master.eLang.GetString(863, "Positioning controls..."))
+                Me.Location = Master.eSettings.WindowLoc
+                Me.Size = Master.eSettings.WindowSize
+                Me.WindowState = Master.eSettings.WindowState
+
+                Me.aniType = Master.eSettings.InfoPanelState
+                Select Case Me.aniType
+                    Case 0
+                        Me.pnlInfoPanel.Height = 25
+                        Me.btnDown.Enabled = False
+                        Me.btnMid.Enabled = True
+                        Me.btnUp.Enabled = True
+                    Case 1
+                        Me.pnlInfoPanel.Height = Me.IPMid
+                        Me.btnMid.Enabled = False
+                        Me.btnDown.Enabled = True
+                        Me.btnUp.Enabled = True
+                    Case 2
+                        Me.pnlInfoPanel.Height = Me.IPUp
+                        Me.btnUp.Enabled = False
+                        Me.btnDown.Enabled = True
+                        Me.btnMid.Enabled = True
+                End Select
+
+                Me.aniShowType = Master.eSettings.ShowInfoPanelState
+
+                Me.aniFilterRaise = Master.eSettings.FilterPanelState
+                If Me.aniFilterRaise Then
+                    Me.pnlFilter.Height = Functions.Quantize(Me.gbFilterSpecific.Height + Me.lblFilter.Height + 15, 5)
+                    Me.btnFilterDown.Enabled = True
+                    Me.btnFilterUp.Enabled = False
+                Else
+                    Me.pnlFilter.Height = 25
+                    Me.btnFilterDown.Enabled = False
+                    Me.btnFilterUp.Enabled = True
+                End If
+                Try ' On error just ignore this a let it use default
+                    Me.scMain.SplitterDistance = Master.eSettings.SplitterPanelState
+                    Me.scTV.SplitterDistance = Master.eSettings.ShowSplitterPanelState
+                    Me.scTVSeasonsEpisodes.SplitterDistance = Master.eSettings.SeasonSplitterPanelState
+                Catch ex As Exception
+                End Try
+                Me.pnlFilter.Visible = True
+
+                Me.ClearInfo()
+
+                Application.DoEvents()
+                fLoading.SetLoadingMesg(Master.eLang.GetString(858, "Loading database..."))
+                If Master.eSettings.Version = String.Format("r{0}", My.Application.Info.Version.Revision) Then
+                    If Master.DB.ConnectMediaDB() Then
+                        Me.LoadMedia(New Structures.Scans With {.Movies = True, .TV = True})
+                    End If
+                    Me.FillList(0)
+                    Me.Visible = True
+                Else
+                    If Master.DB.ConnectMediaDB() Then
+                        Me.LoadMedia(New Structures.Scans With {.Movies = True, .TV = True})
+                    End If
+                    If dlgWizard.ShowDialog = Windows.Forms.DialogResult.OK Then
+                        Application.DoEvents()
+                        Me.SetUp(False) 'just in case user changed languages
+                        Me.Visible = True
+                        Me.LoadMedia(New Structures.Scans With {.Movies = True, .TV = True})
+                    Else
+                        Me.FillList(0)
+                        Me.Visible = True
+                    End If
+                End If
+
+                Master.DB.LoadMovieSourcesFromDB()
+                Master.DB.LoadTVSourcesFromDB()
+                fLoading.SetLoadingMesg(Master.eLang.GetString(864, "Setting menus..."))
+
+                Me.SetMenus(True)
+                Functions.GetListOfSources()
+                Me.cmnuTrayExit.Enabled = True
+                Me.cmnuTraySettings.Enabled = True
+                Me.mnuMainEdit.Enabled = True
+                If tsbMediaCenters.DropDownItems.Count > 0 Then tsbMediaCenters.Enabled = True
+            End If
+        Catch ex As Exception
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+        End Try
+
+    End Sub
+    ''' <summary>
+    ''' The form has been resized, so re-position those controls that need to be re-located
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub frmMain_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Resize
         Try
             If Me.Created Then
@@ -6472,7 +6544,12 @@ doCancel:
             If Not Functions.CheckIfWindows Then Mono_Shown()
         End If
     End Sub
-
+    ''' <summary>
+    ''' This is a generic callback function.
+    ''' </summary>
+    ''' <param name="mType"></param>
+    ''' <param name="_params"></param>
+    ''' <remarks></remarks>
     Private Sub GenericRunCallBack(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
         Select Case mType
             Case Enums.ModuleEventType.Generic
@@ -6507,6 +6584,8 @@ doCancel:
                 Catch ex As Exception
                     Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
                 End Try
+            Case Else
+                Master.eLog.Warn(Me.GetType(), String.Format("Callback for <{0}> with no handler.", mType), New StackFrame(True).ToString(), Nothing, False)
         End Select
     End Sub
 
@@ -7068,12 +7147,11 @@ doCancel:
     Private Sub Mono_Shown()
         Me.pnlNoInfo.Location = New Point(Convert.ToInt32((Me.scMain.Panel2.Width - Me.pnlNoInfo.Width) / 2), Convert.ToInt32((Me.scMain.Panel2.Height - Me.pnlNoInfo.Height) / 2))
     End Sub
-
+    ''' <summary>
+    ''' Slide the genre images along with the panel and move with form resizing
+    ''' </summary>
+    ''' <remarks></remarks>
     Private Sub MoveGenres()
-        '//
-        ' Slide the genre images along with the panel and move with form resizing
-        '\\
-
         Try
             For i As Integer = 0 To UBound(Me.pnlGenre)
                 Me.pnlGenre(i).Left = ((Me.pnlInfoPanel.Right) - (i * 73)) - 73
@@ -7083,12 +7161,11 @@ doCancel:
             Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
-
+    ''' <summary>
+    ''' Slide the MPAA image along with the panel
+    ''' </summary>
+    ''' <remarks></remarks>
     Private Sub MoveMPAA()
-        '//
-        ' Slide the MPAA image along with the panel
-        '\\
-
         Me.pnlMPAA.BringToFront()
         Me.pnlMPAA.Size = New Size(Me.pbMPAA.Width + 10, Me.pbMPAA.Height + 10)
         Me.pbMPAA.Location = New Point(4, 4)
@@ -7156,7 +7233,11 @@ doCancel:
         Me.SetControlsEnabled(True)
         Me.EnableFilters(True)
     End Sub
-
+    ''' <summary>
+    ''' Update the progressbar for the download progress
+    ''' </summary>
+    ''' <param name="iPercent">Percent of progress (expect 0 - 100)</param>
+    ''' <remarks></remarks>
     Private Sub MovieInfoDownloadedPercent(ByVal iPercent As Integer)
         If Me.ReportDownloadPercent = True Then
             Me.tspbLoading.Value = iPercent
@@ -7303,6 +7384,8 @@ doCancel:
                 Me.btnCancel.Text = Master.eLang.GetString(122, "Cancel Copy")
                 Me.lblCanceling.Text = Master.eLang.GetString(121, "Canceling Backdrop Copy...")
                 Me.tslLoading.Text = Master.eLang.GetString(130, "Copying Fanart to Backdrops Folder:")
+            Case Else
+                Master.eLog.Warn(Me.GetType(), "Invalid sType: <" & sType & ">", New StackTrace().ToString(), Nothing, False)
         End Select
 
         btnCancel.Visible = True
@@ -7351,12 +7434,13 @@ doCancel:
             dImgView.ShowDialog(_Image)
         End Using
     End Sub
-
+    ''' <summary>
+    ''' Show the Fanart in the Image Viewer
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub pbFanart_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbFanart.DoubleClick
-        '//
-        ' Show the Fanart in the Image Viewer
-        '\\
-
         Try
             If Not IsNothing(Me.pbFanartCache.Image) Then
                 Using dImgView As New dlgImgView
@@ -7367,44 +7451,26 @@ doCancel:
             Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
-
+    ''' <summary>
+    ''' Draw genre text over the image when mouse hovers
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub pbGenre_MouseEnter(ByVal sender As Object, ByVal e As System.EventArgs)
-        '//
-        ' Draw genre text over the image when mouse hovers
-        '\\
-
-        Try
-            If Master.eSettings.AllwaysDisplayGenresText Then Return
-            Dim iLeft As Integer = 0
-            Me.GenreImage = DirectCast(sender, PictureBox).Image
-            Dim bmGenre As New Bitmap(Me.GenreImage)
-            Dim grGenre As Graphics = Graphics.FromImage(bmGenre)
-            Dim drawString As String = DirectCast(sender, PictureBox).Name.ToString
-            Dim drawFont As New Font("Microsoft Sans Serif", 14, FontStyle.Bold, GraphicsUnit.Pixel)
-            Dim drawBrush As New SolidBrush(Color.White)
-            Dim drawWidth As Single = grGenre.MeasureString(drawString, drawFont).Width
-            Dim drawSize As Integer = Convert.ToInt32((14 * (bmGenre.Width / drawWidth)) - 0.5)
-            drawFont = New Font("Microsoft Sans Serif", If(drawSize > 14, 14, drawSize), FontStyle.Bold, GraphicsUnit.Pixel)
-            Dim drawHeight As Single = grGenre.MeasureString(drawString, drawFont).Height
-            iLeft = Convert.ToInt32((bmGenre.Width - grGenre.MeasureString(drawString, drawFont).Width) / 2)
-            grGenre.DrawString(drawString, drawFont, drawBrush, iLeft, (bmGenre.Height - drawHeight))
-            DirectCast(sender, PictureBox).Image = bmGenre
-        Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
-        End Try
+        If Master.eSettings.AllwaysDisplayGenresText Then Return 'Because Image already has genre text displayed
+        Me.GenreImage = DirectCast(sender, PictureBox).Image    'Store the image for later retrieval
+        DirectCast(sender, PictureBox).Image = ImageUtils.AddGenreString(DirectCast(sender, PictureBox).Image, DirectCast(sender, PictureBox).Name.ToString)
     End Sub
-
+    ''' <summary>
+    ''' Reset genre image when mouse leaves to "clear" the text
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub pbGenre_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs)
-        '//
-        ' Reset genre image when mouse leaves to "clear" the text
-        '\\
-
-        Try
-            If Master.eSettings.AllwaysDisplayGenresText Then Return
-            DirectCast(sender, PictureBox).Image = GenreImage
-        Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
-        End Try
+        If Master.eSettings.AllwaysDisplayGenresText Then Return
+        DirectCast(sender, PictureBox).Image = GenreImage
     End Sub
 
     Private Sub pbPoster_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbPoster.DoubleClick
@@ -8247,7 +8313,11 @@ doCancel:
         Functions.SetScraperMod(Enums.ModType.Poster, True)
         MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultOptions)
     End Sub
-
+    ''' <summary>
+    ''' Updates the media info panels (right side of disiplay) when the movie selector changes (left side of display)
+    ''' </summary>
+    ''' <param name="iRow"><c>Integer</c> row which is currently selected</param>
+    ''' <remarks></remarks>
     Private Sub SelectRow(ByVal iRow As Integer)
         Try
             If Not Convert.ToBoolean(Me.dgvMovies.Item(4, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvMovies.Item(5, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvMovies.Item(6, iRow).Value) Then
@@ -8267,7 +8337,11 @@ doCancel:
             Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
-
+    ''' <summary>
+    ''' Updates the media info panels (right side of disiplay) when the TV Season selector changes (left side of display)
+    ''' </summary>
+    ''' <param name="iRow"></param>
+    ''' <remarks></remarks>
     Private Sub SelectSeasonRow(ByVal iRow As Integer)
         Try
             Me.ClearInfo(False)
@@ -8291,7 +8365,11 @@ doCancel:
             Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
-
+    ''' <summary>
+    ''' Updates the media info panels (right side of disiplay) when the TV Show selector changes (left side of display)
+    ''' </summary>
+    ''' <param name="iRow"></param>
+    ''' <remarks></remarks>
     Private Sub SelectShowRow(ByVal iRow As Integer)
         Try
             Me.tmpTitle = Me.dgvTVShows.Item(1, iRow).Value.ToString
@@ -8425,7 +8503,11 @@ doCancel:
             Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
-
+    ''' <summary>
+    ''' Enable or disable the various menu and context-menu actions based on the currently-defined settings
+    ''' </summary>
+    ''' <param name="ReloadFilters"></param>
+    ''' <remarks></remarks>
     Private Sub SetMenus(ByVal ReloadFilters As Boolean)
         Dim mnuItem As ToolStripItem
 
@@ -8742,6 +8824,11 @@ doCancel:
             Me.pnlLoadSettings.Visible = False
         End If
     End Sub
+    ''' <summary>
+    ''' Display the settings dialog (passed as parameter) and process the results.
+    ''' </summary>
+    ''' <param name="dlg"></param>
+    ''' <remarks></remarks>
     Sub SettingsShow(ByVal dlg As dlgSettings)
         AddHandler dlg.LoadEnd, AddressOf HideLoadingSettings
         Dim dresult As Structures.SettingsResult = dlg.ShowDialog()
@@ -8852,7 +8939,10 @@ doCancel:
             Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
-
+    ''' <summary>
+    ''' Update the displayed show/episode counts
+    ''' </summary>
+    ''' <remarks></remarks>
     Private Sub SetTVCount()
         Dim ShowCount As Integer = 0
         Dim EpCount As Integer = 0
@@ -8871,7 +8961,12 @@ doCancel:
             Me.tpShows.Text = Master.eLang.GetString(653, "TV")
         End If
     End Sub
-
+    ''' <summary>
+    ''' Setup the default/initial text for the GUI's controls. 
+    ''' Language used is based on the app's current setting.
+    ''' </summary>
+    ''' <param name="doTheme"></param>
+    ''' <remarks></remarks>
     Private Sub SetUp(ByVal doTheme As Boolean)
 
         Try
@@ -9309,7 +9404,12 @@ doCancel:
             Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
-
+    ''' <summary>
+    ''' Updates the label indicating there is no information for the current item.
+    ''' </summary>
+    ''' <param name="ShowIt"><c>Boolean</c> indicating whether the panel should be shown or not</param>
+    ''' <param name="tType"></param>
+    ''' <remarks></remarks>
     Private Sub ShowNoInfo(ByVal ShowIt As Boolean, Optional ByVal tType As Integer = 0)
         If ShowIt Then
             Select Case tType
@@ -9322,12 +9422,17 @@ doCancel:
                 Case 2
                     Me.lblNoInfo.Text = Master.eLang.GetString(652, "No Information is Available for This Episode")
                     If Not Me.currThemeType = Theming.ThemeType.Episode Then Me.ApplyTheme(Theming.ThemeType.Episode)
+                Case Else
+                    Master.eLog.Warn(Me.GetType(), String.Format("Invalid media type <{0}>", tType), New StackTrace().ToString(), Nothing, False)
             End Select
         End If
 
         Me.pnlNoInfo.Visible = ShowIt
     End Sub
-
+    ''' <summary>
+    ''' Triggers the display of the Settings dialog
+    ''' </summary>
+    ''' <remarks></remarks>
     Private Sub ShowSettings()
         Using dSettings As New dlgSettings
             Me.Invoke(New MySettingsShow(AddressOf SettingsShow), dSettings)
@@ -9394,13 +9499,14 @@ doCancel:
                 End If
         End Select
     End Sub
-
+    ''' <summary>
+    ''' Just some crappy animation to make the GUI slightly more interesting
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub tmrAni_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles tmrAni.Tick
-        '//
-        ' Just some crappy animation to make the GUI slightly more interesting
-        '\\
-
-        Try
+         Try
             If Master.eSettings.InfoPanelAnim Then
                 If Me.aniRaise Then
                     Me.pnlInfoPanel.Height += 5
@@ -9453,12 +9559,13 @@ doCancel:
             Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
-
+    ''' <summary>
+    ''' Just some crappy animation to make the GUI slightly more interesting
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub tmrFilterAni_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrFilterAni.Tick
-        '//
-        ' Just some crappy animation to make the GUI slightly more interesting
-        '\\
-
         Try
 
             Dim pHeight As Integer = Functions.Quantize(Me.gbFilterSpecific.Height + Me.lblFilter.Height + 15, 5)
@@ -9725,6 +9832,8 @@ doCancel:
                     Case 0 ' show
                         Me.SetShowListItemAfterEdit(Convert.ToInt32(Master.currShow.ShowID), Me.dgvTVShows.SelectedRows(0).Index)
                         ModulesManager.Instance.TVSaveImages()
+                    Case Else
+                        Master.eLog.Warn(Me.GetType(), String.Format("Unhandled TVScraperEventType.SaveAuto <{0}>", iProgress), New StackTrace(True).ToString(), Nothing, False)
                 End Select
 
             Case Enums.TVScraperEventType.Verifying
@@ -9762,6 +9871,8 @@ doCancel:
                         Me.tspbLoading.Visible = False
                         Me.tslLoading.Visible = False
                         Me.SetControlsEnabled(True)
+                    Case Else
+                        Master.eLog.Warn(Me.GetType(), String.Format("Unhandled TVScraperEventType.Verifying <{0}>", iProgress), New StackTrace(True).ToString(), Nothing, False)
                 End Select
 
             Case Enums.TVScraperEventType.Progress
@@ -9772,6 +9883,8 @@ doCancel:
                         Me.tspbLoading.Maximum = iProgress
                     Case "progress"
                         Me.tspbLoading.Value = iProgress
+                    Case Else
+                        Master.eLog.Warn(Me.GetType(), String.Format("Unhandled TVScraperEventType.Progress <{0}>", iProgress), New StackTrace(True).ToString(), Nothing, False)
                 End Select
                 Me.tspbLoading.Visible = True
                 Me.tslLoading.Visible = True
@@ -9783,6 +9896,8 @@ doCancel:
                 Me.LoadShowInfo(Convert.ToInt32(Master.currShow.ShowID))
 
                 Me.SetControlsEnabled(True)
+            Case Else
+                Master.eLog.Warn(Me.GetType(), String.Format("Unhandled TVScraperEventType <{0}>", eType), New StackTrace(True).ToString(), Nothing, False)
         End Select
     End Sub
 
@@ -9837,17 +9952,7 @@ doCancel:
     End Sub
 
     Private Sub WikiStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainHelpWiki.Click
-        If Master.isWindows Then
-            ' replace with new Wiki Page
-            Process.Start("http://wiki.embermediamanager.org")
-        Else
-            Using Explorer As New Process
-                Explorer.StartInfo.FileName = "xdg-open"
-                ' replace with new Wiki Page
-                Explorer.StartInfo.Arguments = "http://wiki.embermediamanager.org"
-                Explorer.Start()
-            End Using
-        End If
+        Functions.Launch(My.Resources.urlEmberWiki)
     End Sub
 
     Private Sub tmrAppExit_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrAppExit.Tick
@@ -9870,15 +9975,7 @@ doCancel:
 
     Private Sub lblIMDBHeader_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles lblIMDBHeader.Click
         If Not String.IsNullOrEmpty(txtIMDBID.Text) Then
-            If Master.isWindows Then
-                Process.Start(String.Format("http://www.imdb.com/title/tt{0}/", txtIMDBID.Text))
-            Else
-                Using Explorer As New Process
-                    Explorer.StartInfo.FileName = "xdg-open"
-                    Explorer.StartInfo.Arguments = String.Format("http://www.imdb.com/title/tt{0}/", txtIMDBID.Text)
-                    Explorer.Start()
-                End Using
-            End If
+            Functions.Launch(String.Format("http://www.imdb.com/title/tt{0}/", txtIMDBID.Text))
         End If
     End Sub
 
