@@ -1527,7 +1527,7 @@ Public Class Structures
         Dim Actors As Boolean
     End Structure
     ''' <summary>
-    ''' Structure representing posible scrape options for movies
+    ''' Structure representing posible scrape fields for movies
     ''' </summary>
     ''' <remarks></remarks>
     Public Structure ScrapeOptions
