@@ -23,6 +23,7 @@ Imports Microsoft.VisualStudio.TestTools.UnitTesting
 
 Imports EmberAPI
 Imports System.IO
+Imports UnitTests
 
 Namespace EmberTests
 

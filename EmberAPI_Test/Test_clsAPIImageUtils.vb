@@ -23,6 +23,7 @@ Imports System.Windows.Forms
 
 Imports EmberAPI
 Imports System.Drawing
+Imports UnitTests
 
 Namespace EmberTests
 
