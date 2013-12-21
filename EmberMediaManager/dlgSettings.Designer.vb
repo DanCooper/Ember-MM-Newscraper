@@ -255,6 +255,9 @@ Partial Class dlgSettings
         Me.txtMovieExt = New System.Windows.Forms.TextBox()
         Me.lstMovieExts = New System.Windows.Forms.ListBox()
         Me.pnlMovieSources = New System.Windows.Forms.Panel()
+        Me.GroupBox8 = New System.Windows.Forms.GroupBox()
+        Me.btnBrowseMoviesets = New System.Windows.Forms.Button()
+        Me.txtMoviesetsPath = New System.Windows.Forms.TextBox()
         Me.gbFileNaming = New System.Windows.Forms.GroupBox()
         Me.tbcFileNaming = New System.Windows.Forms.TabControl()
         Me.tpFileNamingXBMC = New System.Windows.Forms.TabPage()
@@ -703,6 +706,7 @@ Partial Class dlgSettings
         Me.GroupBox22.SuspendLayout()
         Me.GroupBox18.SuspendLayout()
         Me.pnlMovieSources.SuspendLayout()
+        Me.GroupBox8.SuspendLayout()
         Me.gbFileNaming.SuspendLayout()
         Me.tbcFileNaming.SuspendLayout()
         Me.tpFileNamingXBMC.SuspendLayout()
@@ -3087,7 +3091,7 @@ Partial Class dlgSettings
         '
         Me.chkAutoBD.AutoSize = True
         Me.chkAutoBD.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkAutoBD.Location = New System.Drawing.Point(12, 46)
+        Me.chkAutoBD.Location = New System.Drawing.Point(3, 45)
         Me.chkAutoBD.Name = "chkAutoBD"
         Me.chkAutoBD.Size = New System.Drawing.Size(265, 17)
         Me.chkAutoBD.TabIndex = 2
@@ -3097,7 +3101,7 @@ Partial Class dlgSettings
         'btnBrowse
         '
         Me.btnBrowse.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnBrowse.Location = New System.Drawing.Point(188, 15)
+        Me.btnBrowse.Location = New System.Drawing.Point(200, 16)
         Me.btnBrowse.Name = "btnBrowse"
         Me.btnBrowse.Size = New System.Drawing.Size(25, 23)
         Me.btnBrowse.TabIndex = 1
@@ -3109,7 +3113,7 @@ Partial Class dlgSettings
         Me.txtBDPath.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtBDPath.Location = New System.Drawing.Point(7, 17)
         Me.txtBDPath.Name = "txtBDPath"
-        Me.txtBDPath.Size = New System.Drawing.Size(150, 22)
+        Me.txtBDPath.Size = New System.Drawing.Size(187, 22)
         Me.txtBDPath.TabIndex = 0
         '
         'lblCurrent
@@ -3277,6 +3281,7 @@ Partial Class dlgSettings
         'pnlMovieSources
         '
         Me.pnlMovieSources.BackColor = System.Drawing.Color.White
+        Me.pnlMovieSources.Controls.Add(Me.GroupBox8)
         Me.pnlMovieSources.Controls.Add(Me.gbFileNaming)
         Me.pnlMovieSources.Controls.Add(Me.btnEditSource)
         Me.pnlMovieSources.Controls.Add(Me.GroupBox19)
@@ -3289,6 +3294,36 @@ Partial Class dlgSettings
         Me.pnlMovieSources.Size = New System.Drawing.Size(617, 402)
         Me.pnlMovieSources.TabIndex = 13
         Me.pnlMovieSources.Visible = False
+        '
+        'GroupBox8
+        '
+        Me.GroupBox8.Controls.Add(Me.btnBrowseMoviesets)
+        Me.GroupBox8.Controls.Add(Me.txtMoviesetsPath)
+        Me.GroupBox8.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.GroupBox8.Location = New System.Drawing.Point(5, 277)
+        Me.GroupBox8.Name = "GroupBox8"
+        Me.GroupBox8.Size = New System.Drawing.Size(233, 45)
+        Me.GroupBox8.TabIndex = 7
+        Me.GroupBox8.TabStop = False
+        Me.GroupBox8.Text = "MovieSets Folder"
+        '
+        'btnBrowseMoviesets
+        '
+        Me.btnBrowseMoviesets.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnBrowseMoviesets.Location = New System.Drawing.Point(200, 16)
+        Me.btnBrowseMoviesets.Name = "btnBrowseMoviesets"
+        Me.btnBrowseMoviesets.Size = New System.Drawing.Size(25, 23)
+        Me.btnBrowseMoviesets.TabIndex = 1
+        Me.btnBrowseMoviesets.Text = "..."
+        Me.btnBrowseMoviesets.UseVisualStyleBackColor = True
+        '
+        'txtMoviesetsPath
+        '
+        Me.txtMoviesetsPath.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtMoviesetsPath.Location = New System.Drawing.Point(7, 17)
+        Me.txtMoviesetsPath.Name = "txtMoviesetsPath"
+        Me.txtMoviesetsPath.Size = New System.Drawing.Size(187, 22)
+        Me.txtMoviesetsPath.TabIndex = 0
         '
         'gbFileNaming
         '
@@ -3868,18 +3903,19 @@ Partial Class dlgSettings
         Me.GroupBox19.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox19.Location = New System.Drawing.Point(5, 113)
         Me.GroupBox19.Name = "GroupBox19"
-        Me.GroupBox19.Size = New System.Drawing.Size(233, 213)
+        Me.GroupBox19.Size = New System.Drawing.Size(233, 158)
         Me.GroupBox19.TabIndex = 4
         Me.GroupBox19.TabStop = False
         Me.GroupBox19.Text = "Miscellaneous Options"
         '
         'chkScanOrderModify
         '
+        Me.chkScanOrderModify.AutoSize = True
         Me.chkScanOrderModify.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkScanOrderModify.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScanOrderModify.Location = New System.Drawing.Point(5, 144)
+        Me.chkScanOrderModify.Location = New System.Drawing.Point(6, 111)
         Me.chkScanOrderModify.Name = "chkScanOrderModify"
-        Me.chkScanOrderModify.Size = New System.Drawing.Size(222, 33)
+        Me.chkScanOrderModify.Size = New System.Drawing.Size(186, 17)
         Me.chkScanOrderModify.TabIndex = 8
         Me.chkScanOrderModify.Text = "Scan in order of last write time."
         Me.chkScanOrderModify.TextAlign = System.Drawing.ContentAlignment.TopLeft
@@ -3887,11 +3923,12 @@ Partial Class dlgSettings
         '
         'chkSortBeforeScan
         '
+        Me.chkSortBeforeScan.AutoSize = True
         Me.chkSortBeforeScan.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkSortBeforeScan.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkSortBeforeScan.Location = New System.Drawing.Point(5, 78)
+        Me.chkSortBeforeScan.Location = New System.Drawing.Point(6, 57)
         Me.chkSortBeforeScan.Name = "chkSortBeforeScan"
-        Me.chkSortBeforeScan.Size = New System.Drawing.Size(222, 33)
+        Me.chkSortBeforeScan.Size = New System.Drawing.Size(273, 17)
         Me.chkSortBeforeScan.TabIndex = 6
         Me.chkSortBeforeScan.Text = "Sort files into folders before each library update"
         Me.chkSortBeforeScan.TextAlign = System.Drawing.ContentAlignment.TopLeft
@@ -3901,7 +3938,7 @@ Partial Class dlgSettings
         '
         Me.chkIgnoreLastScan.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkIgnoreLastScan.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkIgnoreLastScan.Location = New System.Drawing.Point(5, 111)
+        Me.chkIgnoreLastScan.Location = New System.Drawing.Point(6, 79)
         Me.chkIgnoreLastScan.Name = "chkIgnoreLastScan"
         Me.chkIgnoreLastScan.Size = New System.Drawing.Size(222, 33)
         Me.chkIgnoreLastScan.TabIndex = 7
@@ -3911,11 +3948,12 @@ Partial Class dlgSettings
         '
         'chkCleanDB
         '
+        Me.chkCleanDB.AutoSize = True
         Me.chkCleanDB.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkCleanDB.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkCleanDB.Location = New System.Drawing.Point(5, 177)
+        Me.chkCleanDB.Location = New System.Drawing.Point(6, 134)
         Me.chkCleanDB.Name = "chkCleanDB"
-        Me.chkCleanDB.Size = New System.Drawing.Size(222, 33)
+        Me.chkCleanDB.Size = New System.Drawing.Size(218, 17)
         Me.chkCleanDB.TabIndex = 9
         Me.chkCleanDB.Text = "Clean database after updating library"
         Me.chkCleanDB.TextAlign = System.Drawing.ContentAlignment.TopLeft
@@ -3926,7 +3964,7 @@ Partial Class dlgSettings
         Me.chkSkipStackedSizeCheck.AutoSize = True
         Me.chkSkipStackedSizeCheck.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkSkipStackedSizeCheck.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkSkipStackedSizeCheck.Location = New System.Drawing.Point(27, 58)
+        Me.chkSkipStackedSizeCheck.Location = New System.Drawing.Point(35, 35)
         Me.chkSkipStackedSizeCheck.Name = "chkSkipStackedSizeCheck"
         Me.chkSkipStackedSizeCheck.Size = New System.Drawing.Size(188, 17)
         Me.chkSkipStackedSizeCheck.TabIndex = 3
@@ -3938,7 +3976,7 @@ Partial Class dlgSettings
         '
         Me.Label21.AutoSize = True
         Me.Label21.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label21.Location = New System.Drawing.Point(133, 39)
+        Me.Label21.Location = New System.Drawing.Point(185, 19)
         Me.Label21.Name = "Label21"
         Me.Label21.Size = New System.Drawing.Size(24, 13)
         Me.Label21.TabIndex = 2
@@ -3947,9 +3985,9 @@ Partial Class dlgSettings
         'txtSkipLessThan
         '
         Me.txtSkipLessThan.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtSkipLessThan.Location = New System.Drawing.Point(27, 35)
+        Me.txtSkipLessThan.Location = New System.Drawing.Point(132, 10)
         Me.txtSkipLessThan.Name = "txtSkipLessThan"
-        Me.txtSkipLessThan.Size = New System.Drawing.Size(100, 22)
+        Me.txtSkipLessThan.Size = New System.Drawing.Size(51, 22)
         Me.txtSkipLessThan.TabIndex = 1
         '
         'Label20
@@ -7972,6 +8010,8 @@ Partial Class dlgSettings
         Me.GroupBox18.ResumeLayout(False)
         Me.GroupBox18.PerformLayout()
         Me.pnlMovieSources.ResumeLayout(False)
+        Me.GroupBox8.ResumeLayout(False)
+        Me.GroupBox8.PerformLayout()
         Me.gbFileNaming.ResumeLayout(False)
         Me.tbcFileNaming.ResumeLayout(False)
         Me.tpFileNamingXBMC.ResumeLayout(False)
@@ -8723,4 +8763,7 @@ Partial Class dlgSettings
     Friend WithEvents chkMovieWatchedCol As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieEFanartsCol As System.Windows.Forms.CheckBox
     Friend WithEvents chkTitleFallback As System.Windows.Forms.CheckBox
+    Friend WithEvents GroupBox8 As System.Windows.Forms.GroupBox
+    Friend WithEvents btnBrowseMoviesets As System.Windows.Forms.Button
+    Friend WithEvents txtMoviesetsPath As System.Windows.Forms.TextBox
 End Class

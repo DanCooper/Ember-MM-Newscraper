@@ -2638,6 +2638,7 @@ Public Class dlgSettings
             End If
 
             Me.txtBDPath.Text = Master.eSettings.BDPath
+            Me.txtMoviesetsPath.Text = Master.eSettings.MoviesetsPath
             Me.txtBDPath.Enabled = Master.eSettings.AutoBD
             Me.btnBrowse.Enabled = Master.eSettings.AutoBD
             Me.chkAutoBD.Checked = Master.eSettings.AutoBD
@@ -3777,6 +3778,7 @@ Public Class dlgSettings
             Else
                 Master.eSettings.AutoBD = False
             End If
+            Master.eSettings.MoviesetsPath = Me.txtMoviesetsPath.Text
             Master.eSettings.UseMIDuration = Me.chkUseMIDuration.Checked
             Master.eSettings.RuntimeMask = Me.txtRuntimeFormat.Text
             Master.eSettings.UseEPDuration = Me.chkUseEPDuration.Checked
@@ -4228,6 +4230,7 @@ Public Class dlgSettings
         Me.chkAutoBD.Text = Master.eLang.GetString(521, "Automatically Save Fanart To Backdrops Folder")
         Me.GroupBox26.Text = Master.eLang.GetString(59, "Meta Data")
         Me.GroupBox31.Text = Me.GroupBox26.Text
+        Me.GroupBox8.Text = Master.eLang.GetString(986, "Movieset Artwork Folder")
 
         Me.chkDeleteAllTrailers.Text = Master.eLang.GetString(522, "Delete All Existing")
         Me.chkOverwriteTrailer.Text = Master.eLang.GetString(483, "Overwrite Existing")
@@ -5057,5 +5060,16 @@ Public Class dlgSettings
 
 #End Region 'Methods
 
-
+    Private Sub txtMoviesetsPath_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMoviesetsPath.TextChanged
+        Me.SetApplyButton(True)
+    End Sub
+    Private Sub btnBrowseMoviesets_Click(sender As Object, e As EventArgs) Handles btnBrowseMoviesets.Click
+        With Me.fbdBrowse
+            If .ShowDialog = Windows.Forms.DialogResult.OK Then
+                If Not String.IsNullOrEmpty(.SelectedPath.ToString) AndAlso Directory.Exists(.SelectedPath) Then
+                    Me.txtMoviesetsPath.Text = .SelectedPath.ToString
+                End If
+            End If
+        End With
+    End Sub
 End Class

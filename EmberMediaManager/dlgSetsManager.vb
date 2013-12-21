@@ -31,6 +31,10 @@ Public Class dlgSetsManager
     Private lMovies As New List(Of Movies)
     Private needsSave As Boolean = False
     Private sListTitle As String = String.Empty
+    Private Poster As New Images With {.IsEdit = True}
+    Private Fanart As New Images With {.IsEdit = True}
+    Private tmppath As String
+    Private collectionartwork_path As String
 
 #End Region 'Fields
 
@@ -365,6 +369,59 @@ Public Class dlgSetsManager
                 End If
                 Me.btnEditSet.Enabled = True
                 Me.btnRemoveSet.Enabled = True
+
+                'added loading of images in setsmanager
+
+                If IO.File.Exists(collectionartwork_path & currSet.Set & "-fanart.jpg") Then
+                    Fanart.FromFile(collectionartwork_path & currSet.Set & "-fanart.jpg")
+                    If Not IsNothing(Fanart.Image) Then
+                        pbFanart.Image = Fanart.Image
+                        pbFanart.Tag = Fanart
+                        lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbFanart.Image.Width, pbFanart.Image.Height)
+                        lblFanartSize.Visible = True
+                    End If
+                    If Not ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart) Then
+                        btnSetFanartScrape.Enabled = False
+                    End If
+                Else
+                    Me.pbFanart.Image = Nothing
+                    Me.pbFanart.Tag = Nothing
+                    Me.lblFanartSize.Visible = False
+                    Me.Fanart.Dispose()
+                End If
+                If IO.File.Exists(collectionartwork_path & currSet.Set & "-folder.jpg") Then
+                    Poster.FromFile(collectionartwork_path & currSet.Set & "-folder.jpg")
+                    If Not IsNothing(Poster.Image) Then
+                        pbPoster.Image = Poster.Image
+                        pbPoster.Tag = Poster
+                        lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbPoster.Image.Width, pbPoster.Image.Height)
+                        lblPosterSize.Visible = True
+                    End If
+                    If Not ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Poster) Then
+                        btnSetPosterScrape.Enabled = False
+                    End If
+                ElseIf IO.File.Exists(collectionartwork_path & currSet.Set & "-folder.png") Then
+                    Poster.FromFile(collectionartwork_path & currSet.Set & "-folder.png")
+                    If Not IsNothing(Poster.Image) Then
+                        pbPoster.Image = Poster.Image
+                        pbPoster.Tag = Poster
+                        lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbPoster.Image.Width, pbPoster.Image.Height)
+                        lblPosterSize.Visible = True
+                    End If
+                    If Not ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Poster) Then
+                        btnSetPosterScrape.Enabled = False
+                    End If
+                Else
+                    Me.pbPoster.Image = Nothing
+                    Me.pbPoster.Tag = Nothing
+                    Me.lblPosterSize.Visible = False
+                    Me.Poster.Dispose()
+                End If
+              
+
+
+
+
             Else
                 Me.lblCurrentSet.Text = Master.eLang.GetString(368, "None Selected")
                 needsSave = False
@@ -509,6 +566,21 @@ Public Class dlgSetsManager
         Me.btnCancel.Text = Master.eLang.GetString(167, "Cancel")
         Me.lblTopDetails.Text = Master.eLang.GetString(371, "Add and configure movie boxed sets.")
         Me.lblTopTitle.Text = Me.Text
+
+        collectionartwork_path = Master.eSettings.MovieSetsPath & "\"
+        Me.txtSourcePath.Enabled = False
+        Me.txtSourcePath.Text = collectionartwork_path
+        Me.lblSourcePath.Text = Master.eLang.GetString(986, "Movieset Artwork Folder")
+        If txtSourcePath.Text.Length < 1 Then
+            txtSourcePath.Text = Master.eLang.GetString(987, "Please set artwork folder in Ember settings first!")
+        End If
+        Me.btnRemovePoster.Text = Master.eLang.GetString(247, "Remove Poster")
+        Me.btnSetPosterScrape.Text = Master.eLang.GetString(248, "Change Poster (Scrape)")
+        Me.btnSetPoster.Text = Master.eLang.GetString(249, "Change Poster (Local)")
+        Me.btnRemoveFanart.Text = Master.eLang.GetString(250, "Remove Fanart")
+        Me.btnSetFanartScrape.Text = Master.eLang.GetString(251, "Change Fanart (Scrape)")
+        Me.btnSetFanart.Text = Master.eLang.GetString(252, "Change Fanart (Local)")
+
     End Sub
 
     Private Sub lbMoviesInSet_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbMoviesInSet.SelectedIndexChanged
@@ -657,5 +729,188 @@ Public Class dlgSetsManager
 
 #End Region 'Nested Types
 
+#Region "Moviesetscraper"
+    Private Sub btnSetPosterScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetPosterScrape.Click
+        Dim pResults As New MediaContainers.Image
+        Dim dlgImgS As dlgImgSelect
+        Dim aList As New List(Of MediaContainers.Image)
+        Dim efList As New List(Of String)
+        Dim etList As New List(Of String)
+
+        Try
+            If currSet.Movies.Count > 0 Then
+                Dim collectionMovie As New Structures.DBMovie
+                collectionMovie = currSet.Movies.Item(0).DBMovie
+                collectionMovie.OriginalTitle = "GETSETIMAGES"
+                If Not ModulesManager.Instance.MovieScrapeImages(collectionMovie, Enums.ScraperCapabilities.Poster, aList) Then
+                    If aList.Count > 0 Then
+                        dlgImgS = New dlgImgSelect()
+                        If dlgImgS.ShowDialog(collectionMovie, Enums.ImageType.Posters, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
+                            pResults = dlgImgS.Results
+                            If Not String.IsNullOrEmpty(pResults.URL) Then
+                                Cursor = Cursors.WaitCursor
+                                pResults.WebImage.FromWeb(pResults.URL)
+                                pbPoster.Image = CType(pResults.WebImage.Image.Clone(), Image)
+                                Cursor = Cursors.Default
+                                Me.lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
+                                Me.lblPosterSize.Visible = True
+                            End If
+                            Poster = pResults.WebImage
+                        End If
+                    Else
+                        MsgBox(Master.eLang.GetString(971, "No poster images could be found. Please check to see if any poster scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(972, "No Posters Found"))
+                    End If
+                End If
+            End If
+
+        Catch ex As Exception
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+    Private Sub btnSetFanartScrape_Click(sender As Object, e As EventArgs) Handles btnSetFanartScrape.Click
+        Dim pResults As New MediaContainers.Image
+        Dim dlgImgS As dlgImgSelect
+        Dim aList As New List(Of MediaContainers.Image)
+        Dim efList As New List(Of String)
+        Dim etList As New List(Of String)
+
+        Try
+            If currSet.Movies.Count > 0 Then
+                Dim collectionMovie As New Structures.DBMovie
+                collectionMovie = currSet.Movies.Item(0).DBMovie
+                collectionMovie.OriginalTitle = "GETSETIMAGES"
+                If Not ModulesManager.Instance.MovieScrapeImages(collectionMovie, Enums.ScraperCapabilities.Fanart, aList) Then
+                    If aList.Count > 0 Then
+                        dlgImgS = New dlgImgSelect()
+                        If dlgImgS.ShowDialog(collectionMovie, Enums.ImageType.Fanart, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
+                            pResults = dlgImgS.Results
+                            If Not String.IsNullOrEmpty(pResults.URL) Then
+                                Cursor = Cursors.WaitCursor
+                                pResults.WebImage.FromWeb(pResults.URL)
+                                pbFanart.Image = CType(pResults.WebImage.Image.Clone(), Image)
+                                Cursor = Cursors.Default
+                                Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
+                                Me.lblFanartSize.Visible = True
+                            End If
+                            Fanart = pResults.WebImage
+                        End If
+                    Else
+                        MsgBox(Master.eLang.GetString(971, "No Fanart images could be found. Please check to see if any poster scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(972, "No Fanart Found"))
+                    End If
+                End If
+            End If
+
+        Catch ex As Exception
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub btSave_Click(sender As Object, e As EventArgs) Handles btSave.Click
+
+        If Not String.IsNullOrEmpty(collectionartwork_path) AndAlso IO.Directory.Exists(collectionartwork_path) Then
+            If Not IsNothing(Fanart.Image) Then
+                Dim fPath As String = Fanart.SaveCollectionFanart(collectionartwork_path, currSet.Set)
+                ' Master.currMovie.FanartPath = fPath
+            Else
+                ' Fanart.DeleteFanart(Master.currMovie)
+                Master.currMovie.FanartPath = String.Empty
+            End If
+
+            If Not IsNothing(Poster.Image) Then
+                Dim pPath As String = Poster.SaveCollectionPoster(collectionartwork_path, currSet.Set)
+                ' Master.currMovie.PosterPath = pPath
+            Else
+                '         Poster.DeletePosters(Master.currMovie)
+                Master.currMovie.PosterPath = String.Empty
+            End If
+        End If
+    End Sub
+
+    Private Sub pbPoster_BackgroundImageChanged(sender As Object, e As EventArgs) Handles pbPoster.BackgroundImageChanged
+        If IsNothing(Poster.Image) Then
+            btnRemovePoster.Enabled = False
+        Else
+            btnRemovePoster.Enabled = True
+        End If
+
+        If IsNothing(Fanart.Image) AndAlso IsNothing(Poster.Image) Then
+            btSave.Enabled = False
+        Else
+            btSave.Enabled = True
+        End If
+    End Sub
+    Private Sub pbFanart_BackgroundImageChanged(sender As Object, e As EventArgs) Handles pbFanart.BackgroundImageChanged
+
+        If IsNothing(Fanart.Image) Then
+            btnRemoveFanart.Enabled = False
+        Else
+            btnRemoveFanart.Enabled = True
+        End If
+
+        If IsNothing(Fanart.Image) AndAlso IsNothing(Poster.Image) Then
+            btSave.Enabled = False
+        Else
+            btSave.Enabled = True
+        End If
+    End Sub
+
+    Private Sub btnSetPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetPoster.Click
+        Try
+            With ofdImage
+                ' .InitialDirectory = IO.Directory.GetParent(currSet.Movies(0).DBMovie.Filename).FullName
+                .Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
+                .FilterIndex = 0
+            End With
+
+            If ofdImage.ShowDialog() = DialogResult.OK Then
+                Poster.FromFile(ofdImage.FileName)
+                Me.pbPoster.Image = Poster.Image
+                Me.pbPoster.Tag = Poster
+
+                Me.lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
+                Me.lblPosterSize.Visible = True
+            End If
+        Catch ex As Exception
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+    Private Sub btnSetFanart_Click(sender As Object, e As EventArgs) Handles btnSetFanart.Click
+        Try
+            With ofdImage
+                ' .InitialDirectory = IO.Directory.GetParent(currSet.Movies(0).DBMovie.Filename).FullName
+                .Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
+                .FilterIndex = 4
+            End With
+
+            If ofdImage.ShowDialog() = DialogResult.OK Then
+                Fanart.FromFile(ofdImage.FileName)
+                Me.pbFanart.Image = Fanart.Image
+                Me.pbFanart.Tag = Fanart
+
+                Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
+                Me.lblFanartSize.Visible = True
+            End If
+        Catch ex As Exception
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub btnRemovePoster_Click(sender As Object, e As EventArgs) Handles btnRemovePoster.Click
+        Me.pbPoster.Image = Nothing
+        Me.pbPoster.Tag = Nothing
+        Me.lblPosterSize.Visible = False
+        Me.Poster.Dispose()
+    End Sub
+
+    Private Sub btnRemoveFanart_Click(sender As Object, e As EventArgs) Handles btnRemoveFanart.Click
+        Me.pbFanart.Image = Nothing
+        Me.pbFanart.Tag = Nothing
+        Me.lblFanartSize.Visible = False
+        Me.Fanart.Dispose()
+    End Sub
+
+
+
+#End Region
 
 End Class

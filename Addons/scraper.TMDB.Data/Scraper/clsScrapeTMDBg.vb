@@ -142,6 +142,25 @@ Namespace TMDBg
 
         End Sub
 
+        Public Function GetMovieCollectionID(ByVal IMDBID As String) As String
+            Try
+                Dim Movie As WatTmdb.V3.TmdbMovie
+                If bwTMDBg.CancellationPending Then Return ""
+
+                Movie = _TMDBApiE.GetMovieByIMDB(IMDBID)
+                If IsNothing(Movie) Then
+                    Return ""
+                End If
+
+                Return CStr(Movie.belongs_to_collection.id)
+
+            Catch ex As Exception
+                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                Return ""
+            End Try
+
+        End Function
+
         Public Function GetMovieInfo(ByVal strID As String, ByRef IMDBMovie As MediaContainers.Movie, ByVal FullCrew As Boolean, ByVal FullCast As Boolean, ByVal GetPoster As Boolean, ByVal Options As Structures.ScrapeOptions, ByVal IsSearch As Boolean) As Boolean
             Try
                 Dim Movie As WatTmdb.V3.TmdbMovie

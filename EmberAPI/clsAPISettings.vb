@@ -45,6 +45,7 @@ Public Class Settings
     Private _autobd As Boolean
     Private _autodetectvts As Boolean
     Private _bdpath As String
+    Private _moviesetspath As String
     Private _castimagesonly As Boolean
     Private _certificationLang As String
     Private _checkupdates As Boolean
@@ -573,6 +574,15 @@ Public Class Settings
         End Get
         Set(ByVal value As String)
             Me._bdpath = value
+        End Set
+    End Property
+
+    Public Property MovieSetsPath() As String
+        Get
+            Return Me._moviesetspath
+        End Get
+        Set(ByVal value As String)
+            Me._moviesetspath = value
         End Set
     End Property
 
@@ -4017,6 +4027,7 @@ Public Class Settings
         Me._infopanelanim = False
         Me._checkupdates = True
         Me._bdpath = String.Empty
+        Me._moviesetspath = String.Empty
         Me._autobd = False
         Me._usemiduration = False
         Me._useepduration = False
