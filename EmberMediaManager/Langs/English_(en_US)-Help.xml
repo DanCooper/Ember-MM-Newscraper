@@ -33,6 +33,15 @@
   <string control="OFDBMovieInfo_chkOFDBPlot">If enabled, Ember will attempt to retreive the movie plot from OFDB (a German language site) when scraping.</string>
   <string control="OFDBMovieInfo_chkOFDBOutline">If enabled, Ember will attempt to retreive the movie outline from OFDB (a German language site) when scraping.</string>
   <string control="OFDBMovieInfo_chkOFDBTitle">If enabled, Ember will attempt to retreive the movie title from OFDB (a German language site) when scraping.</string>
+  <string control="OFDBMovieInfo_btnDown">Move this scraper module down in order. (Scraper modules will be processed in order from top to bottom)</string>
+ 
+  <string control="MoviepilotDEMovieInfo_cbEnabled">Enable or disable this module.</string>
+  <string control="MoviepilotDEMovieInfo_btnDown">Move this scraper module down in order. (Scraper modules will be processed in order from top to bottom)</string>
+  <string control="MoviepilotDEMovieInfo_btnUp">Move this scraper module up in order. (Scraper modules will be processed in order from top to bottom)</string>
+  <string control="MoviepilotDEMovieInfo_chkMoviepilotRating">Enable scraping movie MPAA and Certification from Moviepilot.de (German site)</string>
+  <string control="MoviepilotDEMovieInfo_chkMoviepilotPlot">Enable scraping movie plot from Moviepilot.de (German site)</string>
+  <string control="MoviepilotDEMovieInfo_chkMoviepilotOutline">Enable scraping movie outline from Moviepilot.de (German site)</string>
+
   <string control="TMDBMovieInfo_btnDown">Move this scraper module down in order. (Scraper modules will be processed in order from top to bottom)</string>
   <string control="TMDBMovieInfo_cbEnabled">Enable or disable this module.</string>
   <string control="TMDBMovieInfo_btnUp">Move this scraper module up in order. (Scraper modules will be processed in order from top to bottom)</string>

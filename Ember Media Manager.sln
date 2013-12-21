@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Express 2012 for Windows Desktop
+# Visual Studio 2012
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EmberMediaManager", "EmberMediaManager\EmberMediaManager.vbproj", "{9B57D3AB-AF12-4012-B945-284C2448DC81}"
 	ProjectSection(ProjectDependencies) = postProject
 		{EAAB0601-6478-44D2-A39C-89B0850D7833} = {EAAB0601-6478-44D2-A39C-89B0850D7833}
@@ -96,6 +96,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trakttv", "Trakttv\Trakttv.csproj", "{857E14F3-060A-467E-9195-6165996D7BA3}"
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EmberAPI_Test", "EmberAPI_Test\EmberAPI_Test.vbproj", "{BFDAF0E3-A7AC-40E8-9CC8-8975838B7098}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.MoviepilotDE.Data", "Addons\scraper.MoviepilotDE.Data\scraper.MoviepilotDE.Data.vbproj", "{5F7F16F4-1BE8-47FF-B48B-2527D4971645}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -433,6 +435,16 @@ Global
 		{BFDAF0E3-A7AC-40E8-9CC8-8975838B7098}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{BFDAF0E3-A7AC-40E8-9CC8-8975838B7098}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{BFDAF0E3-A7AC-40E8-9CC8-8975838B7098}.Release|x86.ActiveCfg = Release|Any CPU
+		{5F7F16F4-1BE8-47FF-B48B-2527D4971645}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{5F7F16F4-1BE8-47FF-B48B-2527D4971645}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{5F7F16F4-1BE8-47FF-B48B-2527D4971645}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{5F7F16F4-1BE8-47FF-B48B-2527D4971645}.Debug|x86.ActiveCfg = Debug|x86
+		{5F7F16F4-1BE8-47FF-B48B-2527D4971645}.Debug|x86.Build.0 = Debug|x86
+		{5F7F16F4-1BE8-47FF-B48B-2527D4971645}.Release|Any CPU.ActiveCfg = Release|x86
+		{5F7F16F4-1BE8-47FF-B48B-2527D4971645}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{5F7F16F4-1BE8-47FF-B48B-2527D4971645}.Release|Mixed Platforms.Build.0 = Release|x86
+		{5F7F16F4-1BE8-47FF-B48B-2527D4971645}.Release|x86.ActiveCfg = Release|x86
+		{5F7F16F4-1BE8-47FF-B48B-2527D4971645}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -463,5 +475,6 @@ Global
 		{859C1085-518B-49D2-9C84-D91C4094097F} = {4FD2B635-11BD-4532-96F6-97ECB41072A1}
 		{2918A276-E3E5-4625-A411-6863C6D29EE6} = {4FD2B635-11BD-4532-96F6-97ECB41072A1}
 		{32911C6E-DFB0-4A6B-8267-3489DAD544C1} = {4FD2B635-11BD-4532-96F6-97ECB41072A1}
+		{5F7F16F4-1BE8-47FF-B48B-2527D4971645} = {4FD2B635-11BD-4532-96F6-97ECB41072A1}
 	EndGlobalSection
 EndGlobal
