@@ -53,6 +53,10 @@ Public Class frmOFDBInfoSettingsHolder
         End If
     End Sub
 
+    Private Sub bEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbEnabled.CheckedChanged
+        RaiseEvent SetupScraperChanged(cbEnabled.Checked, 0)
+    End Sub
+
     Private Sub chkOFDBGenre_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOFDBGenre.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
