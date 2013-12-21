@@ -106,6 +106,7 @@ Public Class MoviepilotDE_Data
         _setup.chkMoviepilotRating.Checked = ConfigOptions.bCert
         _setup.chkMoviepilotOutline.Checked = ConfigOptions.bOutline
         _setup.chkMoviepilotPlot.Checked = ConfigOptions.bPlot
+        _setup.chkMoviepilotCleanPlotOutline.Checked = ConfigOptions.bCleanPlotOutline
 
         _setup.orderChanged()
         SPanel.Name = String.Concat(Me._Name, "Scraper")
@@ -132,8 +133,8 @@ Public Class MoviepilotDE_Data
         ConfigOptions.bVotes = False
         ConfigOptions.bStudio = False
         ConfigOptions.bTagline = False
-        ConfigOptions.bOutline = AdvancedSettings.GetBooleanSetting("DoOutline", True)
-        ConfigOptions.bPlot = AdvancedSettings.GetBooleanSetting("DoPlot", True)
+        ConfigOptions.bOutline = AdvancedSettings.GetBooleanSetting("DoOutline", False)
+        ConfigOptions.bPlot = AdvancedSettings.GetBooleanSetting("DoPlot", False)
         ConfigOptions.bCast = False
         ConfigOptions.bDirector = False
         ConfigOptions.bWriters = False
@@ -146,9 +147,10 @@ Public Class MoviepilotDE_Data
         ConfigOptions.bFullCrew = False
         ConfigOptions.bTop250 = False
         ConfigOptions.bCountry = False
-        ConfigOptions.bCert = AdvancedSettings.GetBooleanSetting("DoCert", True)
+        ConfigOptions.bCert = AdvancedSettings.GetBooleanSetting("DoCert", False)
         ConfigOptions.bFullCast = False
         ConfigOptions.bFullCrew = False
+        ConfigOptions.bCleanPlotOutline = AdvancedSettings.GetBooleanSetting("CleanPlotOutline", True)
 
         ConfigScrapeModifier.DoSearch = True
         ConfigScrapeModifier.Meta = True
@@ -167,6 +169,7 @@ Public Class MoviepilotDE_Data
             settings.SetBooleanSetting("DoOutline", ConfigOptions.bOutline)
             settings.SetBooleanSetting("DoPlot", ConfigOptions.bPlot)
             settings.SetBooleanSetting("DoCert", ConfigOptions.bCert)
+            settings.SetBooleanSetting("CleanPlotOutline", ConfigOptions.bCleanPlotOutline)
 
             'settings.SetBooleanSetting("DoPoster", ConfigScrapeModifier.Poster)
             'settings.SetBooleanSetting("DoFanart", ConfigScrapeModifier.Fanart)
@@ -181,6 +184,7 @@ Public Class MoviepilotDE_Data
         ConfigOptions.bCert = _setup.chkMoviepilotRating.Checked
         ConfigOptions.bOutline = _setup.chkMoviepilotOutline.Checked
         ConfigOptions.bPlot = _setup.chkMoviepilotPlot.Checked
+        ConfigOptions.bCleanPlotOutline = _setup.chkMoviepilotCleanPlotOutline.Checked
         SaveSettings()
         'ModulesManager.Instance.SaveSettings()
         If DoDispose Then
@@ -190,6 +194,12 @@ Public Class MoviepilotDE_Data
         End If
     End Sub
 
+    ''' <summary>
+    ''' Scrape MovieDetails from Moviepilot.de (German site)
+    ''' </summary> 
+    ''' <remarks>Main method to retrieve Moviepilot information - from here all other class methods gets called
+    ''' 
+    ''' 2013/12/21 Cocotus - First implementation
     Function Scraper(ByRef DBMovie As Structures.DBMovie, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule_Data.Scraper
         ' as we do not have a OFDB search / show dialog we use IMDB
         If String.IsNullOrEmpty(DBMovie.Movie.ID) Then
@@ -201,11 +211,13 @@ Public Class MoviepilotDE_Data
             End If
         End If
 
-        ' we have the originaltitle!
+        ' we have the originaltitle -> now we can use scraper methods!
         Dim tMoviepilotDE As New MoviepilotDE(DBMovie.Movie.OriginalTitle, DBMovie.Movie)
 
+        'Now check what information we want to take over...
         Dim filterOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(Options, ConfigOptions)
 
+        'Use Moviepilot FSK?
         If filterOptions.bCert AndAlso (String.IsNullOrEmpty(DBMovie.Movie.Certification) OrElse Not Master.eSettings.LockMPAA) Then
 
 
@@ -250,16 +262,29 @@ Public Class MoviepilotDE_Data
             End If
 
         End If
+
+        'Use Moviepilot Outline?
         If filterOptions.bOutline AndAlso (String.IsNullOrEmpty(DBMovie.Movie.Outline) OrElse Not Master.eSettings.LockOutline) Then
 
             If Not String.IsNullOrEmpty(tMoviepilotDE.Outline) Then
-                DBMovie.Movie.Outline = tMoviepilotDE.Outline
+                'check if brackets should be removed...
+                If ConfigOptions.bCleanPlotOutline Then
+                    DBMovie.Movie.Outline = StringUtils.RemoveBrackets(tMoviepilotDE.Outline)
+                Else
+                    DBMovie.Movie.Outline = tMoviepilotDE.Outline
+                End If
             End If
         End If
 
+        'Use Moviepilot Plot?
         If filterOptions.bPlot AndAlso (String.IsNullOrEmpty(DBMovie.Movie.Plot) OrElse Not Master.eSettings.LockPlot) Then
             If Not String.IsNullOrEmpty(tMoviepilotDE.Plot) Then
-                DBMovie.Movie.Plot = tMoviepilotDE.Plot
+                'check if brackets should be removed...
+                If ConfigOptions.bCleanPlotOutline Then
+                    DBMovie.Movie.Plot = StringUtils.RemoveBrackets(tMoviepilotDE.Plot)
+                Else
+                    DBMovie.Movie.Plot = tMoviepilotDE.Plot
+                End If
             End If
         End If
 

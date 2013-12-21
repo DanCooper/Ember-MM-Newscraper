@@ -118,6 +118,7 @@ Public Class OFDB_Data
         _setup.chkOFDBOutline.Checked = ConfigOptions.bOutline
         _setup.chkOFDBPlot.Checked = ConfigOptions.bPlot
         _setup.chkOFDBGenre.Checked = ConfigOptions.bGenre
+        _setup.chkOFDBCleanPlotOutline.Checked = ConfigOptions.bCleanPlotOutline
 
         _setup.orderChanged()
         SPanel.Name = String.Concat(Me._Name, "Scraper")
@@ -161,6 +162,7 @@ Public Class OFDB_Data
         ConfigOptions.bCert = False
         ConfigOptions.bFullCast = False
         ConfigOptions.bFullCrew = False
+        ConfigOptions.bCleanPlotOutline = AdvancedSettings.GetBooleanSetting("CleanPlotOutline", False)
 
         ConfigScrapeModifier.DoSearch = True
         ConfigScrapeModifier.Meta = True
@@ -180,6 +182,7 @@ Public Class OFDB_Data
             settings.SetBooleanSetting("DoOutline", ConfigOptions.bOutline)
             settings.SetBooleanSetting("DoPlot", ConfigOptions.bPlot)
             settings.SetBooleanSetting("DoGenres", ConfigOptions.bGenre)
+            settings.SetBooleanSetting("CleanPlotOutline", ConfigOptions.bCleanPlotOutline)
 
             settings.SetBooleanSetting("DoPoster", ConfigScrapeModifier.Poster)
             settings.SetBooleanSetting("DoFanart", ConfigScrapeModifier.Fanart)
@@ -196,6 +199,7 @@ Public Class OFDB_Data
         ConfigOptions.bOutline = _setup.chkOFDBOutline.Checked
         ConfigOptions.bPlot = _setup.chkOFDBPlot.Checked
         ConfigOptions.bGenre = _setup.chkOFDBGenre.Checked
+        ConfigOptions.bCleanPlotOutline = _setup.chkOFDBCleanPlotOutline.Checked
         SaveSettings()
         'ModulesManager.Instance.SaveSettings()
         If DoDispose Then
@@ -229,13 +233,24 @@ Public Class OFDB_Data
         If filterOptions.bOutline AndAlso (String.IsNullOrEmpty(DBMovie.Movie.Outline) OrElse Not Master.eSettings.LockOutline) Then
 
             If Not String.IsNullOrEmpty(tOFDB.Outline) Then
-                DBMovie.Movie.Outline = tOFDB.Outline
+                'check if brackets should be removed...
+                If ConfigOptions.bCleanPlotOutline Then
+                    DBMovie.Movie.Outline = StringUtils.RemoveBrackets(tOFDB.Outline)
+                Else
+                    DBMovie.Movie.Outline = tOFDB.Outline
+                End If
+
             End If
         End If
 
         If filterOptions.bPlot AndAlso (String.IsNullOrEmpty(DBMovie.Movie.Plot) OrElse Not Master.eSettings.LockPlot) Then
             If Not String.IsNullOrEmpty(tOFDB.Plot) Then
-                DBMovie.Movie.Plot = tOFDB.Plot
+                'check if brackets should be removed...
+                If ConfigOptions.bCleanPlotOutline Then
+                    DBMovie.Movie.Plot = StringUtils.RemoveBrackets(tOFDB.Plot)
+                Else
+                    DBMovie.Movie.Plot = tOFDB.Plot
+                End If
             End If
         End If
 

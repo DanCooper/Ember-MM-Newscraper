@@ -72,6 +72,11 @@ Public Class frmMoviepilotDEInfoSettingsHolder
     Private Sub chkkMoviepilotRating_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMoviepilotRating.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
+
+    Private Sub chkMoviepilotPlotCleanPlotOutline_CheckedChanged(sender As Object, e As EventArgs) Handles chkMoviepilotCleanPlotOutline.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
     Public Sub New()
         InitializeComponent()
         Me.SetUp()
@@ -92,6 +97,7 @@ Public Class frmMoviepilotDEInfoSettingsHolder
         Me.chkMoviepilotPlot.Text = Master.eLang.GetString(65, "Plot")
         Me.chkMoviepilotOutline.Text = Master.eLang.GetString(64, "Outline")
         Me.chkMoviepilotRating.Text = Master.eLang.GetString(722, "Rating")
+        Me.chkMoviepilotCleanPlotOutline.Text = Master.eLang.GetString(985, "Clean Plot/Outline")
 
         Me.gbOptions.Text = Master.eLang.GetString(791, "Scraper Fields - Scraper specific")
         Me.Label2.Text = Master.eLang.GetString(168, "Scrape Order")
@@ -100,5 +106,6 @@ Public Class frmMoviepilotDEInfoSettingsHolder
     End Sub
 
 #End Region 'Methods
+
 
 End Class

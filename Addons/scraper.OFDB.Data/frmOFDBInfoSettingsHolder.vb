@@ -72,6 +72,11 @@ Public Class frmOFDBInfoSettingsHolder
     Private Sub chkOFDBTitle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOFDBTitle.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
+
+    Private Sub chkOFDBCleanPlotOutline_CheckedChanged(sender As Object, e As EventArgs) Handles chkOFDBCleanPlotOutline.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
     Public Sub New()
         InitializeComponent()
         Me.SetUp()
@@ -93,6 +98,7 @@ Public Class frmOFDBInfoSettingsHolder
         Me.chkOFDBPlot.Text = Master.eLang.GetString(65, "Plot")
         Me.chkOFDBOutline.Text = Master.eLang.GetString(64, "Outline")
         Me.chkOFDBTitle.Text = Master.eLang.GetString(21, "Title")
+        Me.chkOFDBCleanPlotOutline.Text = Master.eLang.GetString(985, "Clean Plot/Outline")
 
         Me.gbOptions.Text = Master.eLang.GetString(791, "Scraper Fields - Scraper specific")
         Me.Label2.Text = Master.eLang.GetString(168, "Scrape Order")
@@ -101,5 +107,6 @@ Public Class frmOFDBInfoSettingsHolder
     End Sub
 
 #End Region 'Methods
+
 
 End Class

@@ -130,6 +130,7 @@ Public Class Settings
     Private _fieldvotes As Boolean
     Private _fieldwriters As Boolean
     Private _fieldyear As Boolean
+    Private _fieldcleanPlotOutline As Boolean
     Private _filterCustom As List(Of String)
     Private _filterPanelState As Boolean
     Private _flaglang As String
@@ -1305,6 +1306,7 @@ Public Class Settings
             Me._fieldyear = value
         End Set
     End Property
+
 
     Public Property FilterCustom() As List(Of String)
         Get

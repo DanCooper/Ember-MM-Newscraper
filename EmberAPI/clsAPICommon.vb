@@ -893,6 +893,7 @@ Public Class Functions
             .bVotes = True
             .bWriters = True
             .bYear = True
+            .bCleanPlotOutline = True
         End With
         Return options
     End Function
@@ -1223,6 +1224,7 @@ Public Class Functions
         filterOptions.bVotes = Options.bVotes AndAlso Options2.bVotes
         filterOptions.bWriters = Options.bWriters AndAlso Options2.bWriters
         filterOptions.bYear = Options.bYear AndAlso Options2.bYear
+        filterOptions.bCleanPlotOutline = Options.bCleanPlotOutline AndAlso Options2.bCleanPlotOutline
         Return filterOptions
     End Function
     ''' <summary>
@@ -1497,6 +1499,7 @@ Public Class Structures
         Dim bLanguageV As Boolean
         Dim bLanguageA As Boolean
         Dim buseMPAAForFSK As Boolean
+        Dim bCleanPlotOutline As Boolean
         Dim bRelease As Boolean
         Dim bRuntime As Boolean
         Dim bStudio As Boolean

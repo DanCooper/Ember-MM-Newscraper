@@ -25,6 +25,7 @@ Partial Class frmMoviepilotDEInfoSettingsHolder
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMoviepilotDEInfoSettingsHolder))
         Me.lblVersion = New System.Windows.Forms.Label()
         Me.gbOptions = New System.Windows.Forms.GroupBox()
+        Me.chkMoviepilotCleanPlotOutline = New System.Windows.Forms.CheckBox()
         Me.chkMoviepilotPlot = New System.Windows.Forms.CheckBox()
         Me.chkMoviepilotOutline = New System.Windows.Forms.CheckBox()
         Me.chkMoviepilotRating = New System.Windows.Forms.CheckBox()
@@ -52,16 +53,27 @@ Partial Class frmMoviepilotDEInfoSettingsHolder
         '
         'gbOptions
         '
+        Me.gbOptions.Controls.Add(Me.chkMoviepilotCleanPlotOutline)
         Me.gbOptions.Controls.Add(Me.chkMoviepilotPlot)
         Me.gbOptions.Controls.Add(Me.chkMoviepilotOutline)
         Me.gbOptions.Controls.Add(Me.chkMoviepilotRating)
         Me.gbOptions.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbOptions.Location = New System.Drawing.Point(11, 31)
         Me.gbOptions.Name = "gbOptions"
-        Me.gbOptions.Size = New System.Drawing.Size(213, 77)
+        Me.gbOptions.Size = New System.Drawing.Size(213, 94)
         Me.gbOptions.TabIndex = 2
         Me.gbOptions.TabStop = False
         Me.gbOptions.Text = "Moviepilot (German)"
+        '
+        'chkMoviepilotCleanPlotOutline
+        '
+        Me.chkMoviepilotCleanPlotOutline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkMoviepilotCleanPlotOutline.Location = New System.Drawing.Point(6, 71)
+        Me.chkMoviepilotCleanPlotOutline.Name = "chkMoviepilotCleanPlotOutline"
+        Me.chkMoviepilotCleanPlotOutline.Size = New System.Drawing.Size(194, 17)
+        Me.chkMoviepilotCleanPlotOutline.TabIndex = 5
+        Me.chkMoviepilotCleanPlotOutline.Text = "Clean Plot/Outline"
+        Me.chkMoviepilotCleanPlotOutline.UseVisualStyleBackColor = True
         '
         'chkMoviepilotPlot
         '
@@ -220,5 +232,6 @@ Partial Class frmMoviepilotDEInfoSettingsHolder
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
     Friend WithEvents chkMoviepilotRating As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMoviepilotCleanPlotOutline As System.Windows.Forms.CheckBox
 
 End Class
