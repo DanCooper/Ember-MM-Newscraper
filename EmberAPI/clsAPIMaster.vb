@@ -34,7 +34,7 @@ Public Class Master
     'Public Shared eAdvancedSettings As New AdvancedSettings
     Public Shared eLang As New Localization
     Public Shared eLog As New ErrorLogger
-    Public Shared logger As Logger = LogManager.GetCurrentClassLogger()
+    'Public Shared logger As Logger = LogManager.GetCurrentClassLogger()
     Public Shared eSettings As New Settings
     Public Shared eSize As New Globals
     Public Shared GlobalScrapeMod As New Structures.ScrapeModifier

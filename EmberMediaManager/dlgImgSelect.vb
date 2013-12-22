@@ -31,12 +31,15 @@ Public Class dlgImgSelect
     Friend WithEvents bwImgDownload As New System.ComponentModel.BackgroundWorker
 
     'Private CachePath As String = String.Empty
-    'Private chkImage() As CheckBox
+    Private chkImageET() As CheckBox
+    Private chkImageEF() As CheckBox
+    Private pnlImageET() As Panel
+    Private pnlImageEF() As Panel
     Private DLType As Enums.ImageType
     Private isWorkerDone As Boolean = False
     'Private ETHashes As New List(Of String)
-    'Private iCounter As Integer = 0
-    'Private iLeft As Integer = 5
+    Private iCounter As Integer = 0
+    Private iLeft As Integer = 5
 
     Private isEdit As Boolean = False
     'Private isShown As Boolean = False
@@ -44,16 +47,20 @@ Public Class dlgImgSelect
     Private lblImage() As Label
 
     'Private noImages As Boolean = False
-    'Private pbImage() As PictureBox
-    'Private pnlImage() As Panel
+    Private pbImage() As PictureBox
+    Private pnlImage() As Panel
     'Private PreDL As Boolean = False
     Private _results As New MediaContainers.Image
     Private selIndex As Integer = -1
 
     Private tMovie As New Structures.DBMovie
     Private tmpImage As New MediaContainers.Image
+    Private tmpImageEF As New MediaContainers.Image
+    Private tmpImageET As New MediaContainers.Image
 
     Private _ImageList As New List(Of MediaContainers.Image)
+    Private _efList As New List(Of String)
+    Private _etList As New List(Of String)
 
     Private aDes As String = String.Empty
 
@@ -66,6 +73,24 @@ Public Class dlgImgSelect
         End Get
         Set(value As MediaContainers.Image)
             _results = value
+        End Set
+    End Property
+
+    Public Property efList As List(Of String)
+        Get
+            Return _efList
+        End Get
+        Set(value As List(Of String))
+            _efList = value
+        End Set
+    End Property
+
+    Public Property etList As List(Of String)
+        Get
+            Return _etList
+        End Get
+        Set(value As List(Of String))
+            _etList = value
         End Set
     End Property
 #End Region
@@ -83,13 +108,15 @@ Public Class dlgImgSelect
         InitializeComponent()
     End Sub
 
-    Public Overloads Function ShowDialog(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ImageType, ByRef ImageList As List(Of MediaContainers.Image), Optional ByVal _isEdit As Boolean = False) As DialogResult
+    Public Overloads Function ShowDialog(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ImageType, ByRef ImageList As List(Of MediaContainers.Image), ByRef efList As List(Of String), ByRef etList As List(Of String), Optional ByVal _isEdit As Boolean = False) As DialogResult
         '//
         ' Overload to pass data
         '\\
 
         Me.tMovie = DBMovie
         Me._ImageList = ImageList
+        Me._efList = efList
+        Me._etList = etList
         Me.DLType = Type
         Me.isEdit = _isEdit
         'Me.isShown = True
@@ -123,7 +150,7 @@ Public Class dlgImgSelect
             Me.bwImgDownload.RunWorkerAsync() 'Me.TMDB.GetImagesAsync(tMovie.Movie.TMDBID, "backdrop")
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -133,17 +160,139 @@ Public Class dlgImgSelect
     End Function
 
     Private Sub AddImage(ByVal sDescription As String, ByVal iIndex As Integer, ByVal isChecked As Boolean, poster As MediaContainers.Image, ByVal text As String)
-        Try
-            Dim ResImg As Image
-            ResImg = CType(poster.WebImage.Image.Clone(), Image)
-            ImageUtils.ResizeImage(ResImg, 250, 250, True, Color.White.ToArgb())
-            Me.LargeImageList.Images.Add(ResImg)
+        'AddImage(ByVal sDescription As String, ByVal iIndex As Integer, ByVal isChecked As Boolean, poster As MediaContainers.Image, ByVal text As String)
+        'Try
+        '    Dim ResImg As Image
+        '    ResImg = CType(poster.WebImage.Image.Clone(), Image)
+        '    ImageUtils.ResizeImage(ResImg, 250, 250, True, Color.White.ToArgb())
+        '    Me.LargeImageList.Images.Add(ResImg)
 
-            Me.lvImages.Items.Add(text, Me.LargeImageList.Images.Count - 1)
-            Me.lvImages.Items(Me.lvImages.Items.Count - 1).Tag = poster
+        '    Me.lvImages.Items.Add(text, Me.LargeImageList.Images.Count - 1)
+        '    Me.lvImages.Items(Me.lvImages.Items.Count - 1).Tag = poster
+        'Catch ex As Exception
+        '    Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+        'End Try
+        Try
+            ReDim Preserve Me.pnlImage(iIndex)
+            ReDim Preserve Me.pbImage(iIndex)
+            Me.pnlImage(iIndex) = New Panel()
+            Me.pbImage(iIndex) = New PictureBox()
+            Me.pbImage(iIndex).Name = iIndex.ToString
+            Me.pnlImage(iIndex).Name = iIndex.ToString
+            Me.pnlImage(iIndex).Size = New Size(256, 296)
+            Me.pbImage(iIndex).Size = New Size(250, 250)
+            Me.pnlImage(iIndex).BackColor = Color.White
+            Me.pnlImage(iIndex).BorderStyle = BorderStyle.FixedSingle
+            Me.pbImage(iIndex).SizeMode = PictureBoxSizeMode.Zoom
+            Me.pnlImage(iIndex).Tag = poster
+            Me.pbImage(iIndex).Tag = poster
+            Me.pbImage(iIndex).Image = CType(poster.WebImage.Image.Clone(), Image) ' ResImg
+            Me.pnlImage(iIndex).Left = iLeft
+            Me.pbImage(iIndex).Left = 2
+            Me.pnlImage(iIndex).Top = iTop
+            Me.pbImage(iIndex).Top = 2
+            Me.pnlBG.Controls.Add(Me.pnlImage(iIndex))
+            Me.pnlImage(iIndex).Controls.Add(Me.pbImage(iIndex))
+            Me.pnlImage(iIndex).BringToFront()
+            AddHandler pbImage(iIndex).Click, AddressOf pbImage_Click
+            AddHandler pbImage(iIndex).DoubleClick, AddressOf pbImage_DoubleClick
+            AddHandler pnlImage(iIndex).Click, AddressOf pnlImage_Click
+
+            AddHandler pbImage(iIndex).MouseWheel, AddressOf MouseWheelEvent
+            AddHandler pnlImage(iIndex).MouseWheel, AddressOf MouseWheelEvent
+
+            If Me.DLType = Enums.ImageType.Fanart Then
+                ReDim Preserve Me.chkImageET(iIndex)
+                ReDim Preserve Me.chkImageEF(iIndex)
+                ReDim Preserve Me.pnlImageET(iIndex)
+                ReDim Preserve Me.pnlImageEF(iIndex)
+                ReDim Preserve Me.lblImage(iIndex)
+                ' Label
+                Me.lblImage(iIndex) = New Label()
+                Me.lblImage(iIndex).Name = iIndex.ToString
+                Me.lblImage(iIndex).Size = New Size(250, 15)
+                Me.lblImage(iIndex).AutoSize = False
+                Me.lblImage(iIndex).BackColor = Color.White
+                Me.lblImage(iIndex).TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+                Me.lblImage(iIndex).Text = text
+                Me.lblImage(iIndex).Tag = poster
+                Me.lblImage(iIndex).Left = 2
+                Me.lblImage(iIndex).Top = 250
+                ' Extrathumbs Panel (fake button)
+                Me.pnlImageET(iIndex) = New Panel()
+                Me.pnlImageET(iIndex).Name = iIndex.ToString
+                Me.pnlImageET(iIndex).Size = New System.Drawing.Size(124, 20)
+                Me.pnlImageET(iIndex).BorderStyle = BorderStyle.FixedSingle
+                Me.pnlImageET(iIndex).BackColor = Color.White
+                Me.pnlImageET(iIndex).Left = 2
+                Me.pnlImageET(iIndex).Top = 271
+                ' Extrathumbs Checkbox
+                Me.chkImageET(iIndex) = New CheckBox()
+                Me.chkImageET(iIndex).Name = iIndex.ToString
+                Me.chkImageET(iIndex).Size = New Size(122, 16)
+                Me.chkImageET(iIndex).AutoSize = False
+                Me.chkImageET(iIndex).BackColor = Color.White
+                Me.chkImageET(iIndex).TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+                Me.chkImageET(iIndex).Text = "Extrathumb"
+                Me.chkImageET(iIndex).Left = 2
+                Me.chkImageET(iIndex).Top = 2
+                Me.chkImageET(iIndex).Checked = isChecked
+                ' Extrafanarts Panel (fake button)
+                Me.pnlImageEF(iIndex) = New Panel()
+                Me.pnlImageEF(iIndex).Name = iIndex.ToString
+                Me.pnlImageEF(iIndex).Size = New System.Drawing.Size(124, 20)
+                Me.pnlImageEF(iIndex).BorderStyle = BorderStyle.FixedSingle
+                Me.pnlImageEF(iIndex).BackColor = Color.White
+                Me.pnlImageEF(iIndex).Left = 128
+                Me.pnlImageEF(iIndex).Top = 271
+                ' Extrafanarts Checkbox
+                Me.chkImageEF(iIndex) = New CheckBox()
+                Me.chkImageEF(iIndex).Name = iIndex.ToString
+                Me.chkImageEF(iIndex).Size = New Size(122, 16)
+                Me.chkImageEF(iIndex).AutoSize = False
+                Me.chkImageEF(iIndex).BackColor = Color.White
+                Me.chkImageEF(iIndex).TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+                Me.chkImageEF(iIndex).Text = "Extrafanart"
+                Me.chkImageEF(iIndex).Left = 2
+                Me.chkImageEF(iIndex).Top = 2
+                Me.chkImageEF(iIndex).Checked = isChecked
+                ' Controls
+                Me.pnlImage(iIndex).Controls.Add(Me.lblImage(iIndex))
+                Me.pnlImageET(iIndex).Controls.Add(Me.chkImageET(iIndex))
+                Me.pnlImageEF(iIndex).Controls.Add(Me.chkImageEF(iIndex))
+                Me.pnlImage(iIndex).Controls.Add(Me.pnlImageET(iIndex))
+                Me.pnlImage(iIndex).Controls.Add(Me.pnlImageEF(iIndex))
+                AddHandler pnlImage(iIndex).MouseWheel, AddressOf MouseWheelEvent
+            Else
+                ReDim Preserve Me.lblImage(iIndex)
+                Me.lblImage(iIndex) = New Label()
+                Me.lblImage(iIndex).Name = iIndex.ToString
+                Me.lblImage(iIndex).Size = New Size(250, 40)
+                Me.lblImage(iIndex).AutoSize = False
+                Me.lblImage(iIndex).BackColor = Color.White
+                Me.lblImage(iIndex).TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+                Me.lblImage(iIndex).Text = text
+                Me.lblImage(iIndex).Tag = poster
+                Me.lblImage(iIndex).Left = 2
+                Me.lblImage(iIndex).Top = 254
+                Me.pnlImage(iIndex).Controls.Add(Me.lblImage(iIndex))
+                AddHandler lblImage(iIndex).Click, AddressOf lblImage_Click
+                AddHandler lblImage(iIndex).MouseWheel, AddressOf MouseWheelEvent
+            End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
+
+        Me.iCounter += 1
+
+        If Me.iCounter = 3 Then
+            Me.iCounter = 0
+            Me.iLeft = 5
+            Me.iTop += 302
+        Else
+            Me.iLeft += 271
+        End If
+
     End Sub
 
     Private Sub btnPreview_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPreview.Click
@@ -182,7 +331,7 @@ Public Class dlgImgSelect
             tImage = Nothing
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -221,7 +370,7 @@ Public Class dlgImgSelect
             Me.Refresh()
             Application.DoEvents()
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -247,10 +396,9 @@ Public Class dlgImgSelect
             Exit Sub
         End If
 
-        Me.LargeImageList.Images.Clear()
-        Me.lvImages.Items.Clear()
-        Me.LargeImageList.ImageSize = New Size(250, 250) 'Size(CInt(poster.Width), CInt(poster.Height))
-        Me.LargeImageList.ColorDepth = ColorDepth.Depth32Bit
+        'Me.LargeImageList.Images.Clear()
+        'Me.LargeImageList.ImageSize = New Size(250, 250) 'Size(CInt(poster.Width), CInt(poster.Height))
+        'Me.LargeImageList.ColorDepth = ColorDepth.Depth32Bit
 
         For Each aImg In _ImageList.Where(Function(f) f.Description = aDesc)
             Try
@@ -258,7 +406,7 @@ Public Class dlgImgSelect
                 Dim x = From MI As MediaContainers.Image In _ImageList Where (MI.ParentID = aParentID)
                 If x.Count > 1 Then
 
-                    text = If(String.IsNullOrEmpty(aImg.LongLang), Master.eLang.GetString(896, "Multiple"), Master.eLang.GetString(896, "Multiple") & Environment.NewLine & aImg.LongLang) 'Master.eLang.GetString(896, "Multiple")
+                    text = If(String.IsNullOrEmpty(aImg.LongLang), Master.eLang.GetString(896, "Multiple"), Master.eLang.GetString(896, "Multiple") & Environment.NewLine & aImg.LongLang)
                     Dim y = From MI As MediaContainers.Image In _ImageList Where ((MI.ParentID = aParentID) And (MI.Description = aDes))
                     tImg = y(0)
                 Else
@@ -305,38 +453,127 @@ Public Class dlgImgSelect
         Me.Close()
     End Sub
 
-    Private Sub DoSelect(ByVal iIndex As Integer, poster As MediaContainers.Image, isSelected As Boolean)
+    Private Sub DoSelect(ByVal iIndex As Integer, poster As MediaContainers.Image)
         Try
+            'set all pnl colors to white first
+            'remove all the current genres
+            For i As Integer = 0 To UBound(Me.pnlImage)
+                Me.pnlImage(i).BackColor = Color.White
+
+                If DLType = Enums.ImageType.Fanart Then
+                    Me.lblImage(i).BackColor = Color.White
+                    Me.lblImage(i).ForeColor = Color.Black
+                Else
+                    Me.lblImage(i).BackColor = Color.White
+                    Me.lblImage(i).ForeColor = Color.Black
+                End If
+            Next
+
+            'set selected pnl color to blue
+            Me.pnlImage(iIndex).BackColor = Color.Blue
+
+            If DLType = Enums.ImageType.Fanart Then
+                Me.lblImage(iIndex).BackColor = Color.Blue
+                Me.lblImage(iIndex).ForeColor = Color.White
+            Else
+                Me.lblImage(iIndex).BackColor = Color.Blue
+                Me.lblImage(iIndex).ForeColor = Color.White
+            End If
+
+            Me.selIndex = iIndex
+            Me.tmpImage = poster
+
             Me.pnlSize.Visible = False
 
-            If isSelected Then
-                Me.selIndex = iIndex
-
-                Dim x = From MI As MediaContainers.Image In _ImageList Where (MI.ParentID = poster.ParentID)
-                If x.Count > 1 Then
-                    Me.SetupSizes(poster.ParentID)
-                    If Not rbLarge.Checked AndAlso Not rbMedium.Checked AndAlso Not rbSmall.Checked AndAlso Not rbXLarge.Checked Then
-                        Me.OK_Button.Enabled = False
-                    Else
-                        Me.OK_Button.Focus()
-                    End If
-                    Me.tmpImage.Clear()
+            Dim x = From MI As MediaContainers.Image In _ImageList Where (MI.ParentID = poster.ParentID)
+            If x.Count > 1 Then
+                Me.SetupSizes(poster.ParentID)
+                If Not rbLarge.Checked AndAlso Not rbMedium.Checked AndAlso Not rbSmall.Checked AndAlso Not rbXLarge.Checked Then
+                    Me.OK_Button.Enabled = False
                 Else
-                    Me.rbXLarge.Checked = False
-                    Me.rbLarge.Checked = False
-                    Me.rbMedium.Checked = False
-                    Me.rbSmall.Checked = False
-                    Me.OK_Button.Enabled = True
                     Me.OK_Button.Focus()
-                    Me.tmpImage = poster
                 End If
+                'Me.tmpImage.Clear()
             Else
-                Me.selIndex = -1
+                Me.rbXLarge.Checked = False
+                Me.rbLarge.Checked = False
+                Me.rbMedium.Checked = False
+                Me.rbSmall.Checked = False
+                Me.OK_Button.Enabled = True
+                Me.OK_Button.Focus()
+                Me.tmpImage = poster 'CType(Me.pbImage(iIndex).Tag, MediaContainers.Image)
             End If
+
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
+
+    Private Function GetEThumbsURL(ByVal iIndex As Integer, poster As MediaContainers.Image) As String
+        Dim eURL As String = String.Empty
+        Dim ParentID As String = poster.ParentID
+        Dim prefETSize As String = String.Empty
+
+        Select Case Master.eSettings.PreferredEThumbsSize
+            Case Enums.FanartSize.Xlrg
+                prefETSize = "original"
+            Case Enums.FanartSize.Lrg
+                prefETSize = "w1280"
+            Case Enums.FanartSize.Mid
+                prefETSize = "poster"
+            Case Enums.FanartSize.Small
+                prefETSize = "thumb"
+        End Select
+
+        For Each Fanart As MediaContainers.Image In _ImageList.Where(Function(f) f.ParentID = ParentID)
+            If Not (Fanart.Width = "n/a") AndAlso Not (Fanart.Height = "n/a") Then
+                Select Case prefETSize
+                    Case Fanart.Description
+                        eURL = ":" & Fanart.URL
+                End Select
+            Else
+                Select Case prefETSize
+                    Case Fanart.Description
+                        eURL = ":" & Fanart.URL
+                End Select
+            End If
+        Next
+
+        Return eURL
+    End Function
+
+    Private Function GetEFanartsURL(ByVal iIndex As Integer, poster As MediaContainers.Image) As String
+        Dim eURL As String = String.Empty
+        Dim ParentID As String = poster.ParentID
+        Dim prefEFSize As String = String.Empty
+
+        Select Case Master.eSettings.PreferredEFanartsSize
+            Case Enums.FanartSize.Xlrg
+                prefEFSize = "original"
+            Case Enums.FanartSize.Lrg
+                prefEFSize = "w1280"
+            Case Enums.FanartSize.Mid
+                prefEFSize = "poster"
+            Case Enums.FanartSize.Small
+                prefEFSize = "thumb"
+        End Select
+
+        For Each Fanart As MediaContainers.Image In _ImageList.Where(Function(f) f.ParentID = ParentID)
+            If Not (Fanart.Width = "n/a") AndAlso Not (Fanart.Height = "n/a") Then
+                Select Case prefEFSize
+                    Case Fanart.Description
+                        eURL = ":" & Fanart.URL
+                End Select
+            Else
+                Select Case prefEFSize
+                    Case Fanart.Description
+                        eURL = ":" & Fanart.URL
+                End Select
+            End If
+        Next
+
+        Return eURL
+    End Function
 
     Private Sub MouseWheelEvent(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs)
         If e.Delta < 0 Then
@@ -356,7 +593,8 @@ Public Class dlgImgSelect
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
         Try
-            If IsNothing(Me.tmpImage.WebImage.Image) Then
+            'If IsNothing(Me.tmpImage.WebImage.Image) Then
+            If Not IsNothing(Me.tmpImage.WebImage.Image) Then
                 Me.pnlBG.Visible = False
 
                 Me.Refresh()
@@ -373,20 +611,56 @@ Public Class dlgImgSelect
                 End Select
             End If
 
+            If Me.DLType = Enums.ImageType.Fanart Then
+                Dim iMod As Integer = 0
+                Dim iVal As Integer = 1
+                Dim etPath As String = String.Empty
+                Dim efPath As String = String.Empty
+                Dim isChecked As Boolean = False
+
+                For i As Integer = 0 To UBound(Me.chkImageET)
+                    If Me.chkImageET(i).Checked OrElse Me.chkImageEF(i).Checked Then
+                        isChecked = True
+                        Exit For
+                    End If
+                Next
+
+                If isChecked Then
+                    For i As Integer = 0 To UBound(Me.chkImageET)
+                        If Me.chkImageET(i).Checked Then
+                            etList.Add(GetEThumbsURL(i, CType(Me.pbImage(i).Tag, MediaContainers.Image)))
+                        End If
+                    Next
+                    For i As Integer = 0 To UBound(Me.chkImageEF)
+                        If Me.chkImageEF(i).Checked Then
+                            efList.Add(GetEFanartsURL(i, CType(Me.pbImage(i).Tag, MediaContainers.Image)))
+                        End If
+                    Next
+                End If
+            End If
+
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
 
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()
     End Sub
 
-    Private Sub lvImages_DoubleClick(sender As Object, e As System.EventArgs) Handles lvImages.DoubleClick
+    Private Sub pbImage_DoubleClick(ByVal sender As System.Object, ByVal e As System.EventArgs)
         PreviewImage()
-    End Sub 'Methods
+    End Sub
 
-    Private Sub lvImages_ItemSelectionChanged(sender As Object, e As System.Windows.Forms.ListViewItemSelectionChangedEventArgs) Handles lvImages.ItemSelectionChanged
-        Me.DoSelect(e.ItemIndex, DirectCast(DirectCast(e.Item, ListViewItem).Tag, MediaContainers.Image), e.IsSelected)
+    Private Sub pbImage_Click(ByVal sender As Object, ByVal e As System.EventArgs)
+        Me.DoSelect(Convert.ToInt32(DirectCast(sender, PictureBox).Name), DirectCast(DirectCast(sender, PictureBox).Tag, MediaContainers.Image))
+    End Sub
+
+    Private Sub pnlImage_Click(ByVal sender As Object, ByVal e As System.EventArgs)
+        Me.DoSelect(Convert.ToInt32(DirectCast(sender, Panel).Name), DirectCast(DirectCast(sender, Panel).Tag, MediaContainers.Image))
+    End Sub
+
+    Private Sub lblImage_Click(ByVal sender As Object, ByVal e As System.EventArgs)
+        Me.DoSelect(Convert.ToInt32(DirectCast(sender, Label).Name), DirectCast(DirectCast(sender, Label).Tag, MediaContainers.Image))
     End Sub
 
     Private Sub rbLarge_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbLarge.CheckedChanged
@@ -438,7 +712,7 @@ Public Class dlgImgSelect
             Me.btnPreview.Text = Master.eLang.GetString(180, "Preview")
             Me.lblDL1.Text = Master.eLang.GetString(894, "Performing Preliminary Tasks...")
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -598,7 +872,7 @@ Public Class dlgImgSelect
 
             Invalidate()
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 

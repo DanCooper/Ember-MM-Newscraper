@@ -43,6 +43,7 @@ Public Class APIXML
 #Region "Methods"
 
     Public Shared Sub CacheXMLs()
+        'TODO Dekker500 - This method is required before any of the other shared methods will work. Therefore, need to re-factor to have this method auto-run (unity?) and not depend on runtime ordering for shared methods to work.
         Try
             Dim fPath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Flags")
             If Directory.Exists(fPath) Then
@@ -136,7 +137,7 @@ Public Class APIXML
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(APIXML), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -224,7 +225,7 @@ Public Class APIXML
                 End If
 
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.Error(GetType(APIXML), ex.Message, ex.StackTrace, "Error")
             End Try
         Else
             iReturn(0) = My.Resources.defaultscreen
@@ -263,7 +264,7 @@ Public Class APIXML
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(APIXML), ex.Message, ex.StackTrace, "Error")
         End Try
 
         Return String.Empty
@@ -302,7 +303,7 @@ Public Class APIXML
                 End If
 
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.Error(GetType(APIXML), ex.Message, ex.StackTrace, "Error")
             End Try
         Else
             imgGenre = My.Resources.defaultgenre
@@ -336,7 +337,7 @@ Public Class APIXML
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(APIXML), ex.Message, ex.StackTrace, "Error")
         End Try
         Return retGenre.ToArray
     End Function
@@ -366,7 +367,7 @@ Public Class APIXML
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(APIXML), ex.Message, ex.StackTrace, "Error")
         End Try
         Return retGenre.ToArray
     End Function
@@ -403,7 +404,7 @@ Public Class APIXML
                 End If
 
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.Error(GetType(APIXML), ex.Message, ex.StackTrace, "Error")
             End Try
         End If
 
@@ -426,7 +427,7 @@ Public Class APIXML
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(APIXML), ex.Message, ex.StackTrace, "Error")
         End Try
         Return retRatings.ToArray
     End Function
@@ -439,7 +440,7 @@ Public Class APIXML
                 retRatings.AddRange(xRating.ToArray)
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(APIXML), ex.Message, ex.StackTrace, "Error")
         End Try
         Return retRatings.ToArray
     End Function
@@ -486,7 +487,7 @@ Public Class APIXML
                 End If
 
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.Error(GetType(APIXML), ex.Message, ex.StackTrace, "Error")
             End Try
         End If
 
@@ -509,7 +510,7 @@ Public Class APIXML
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(APIXML), ex.Message, ex.StackTrace, "Error")
         End Try
         Return retRatings.ToArray
     End Function

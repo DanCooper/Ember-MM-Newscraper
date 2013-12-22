@@ -144,7 +144,7 @@ Public Class dlgNMTMovies
             btnSave.Enabled = False
             pbWarning.Image = Nothing 'ilNMT.Images("green")
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -182,7 +182,7 @@ Public Class dlgNMTMovies
                 'If Not conf Is Nothing Then conf.Save(Path.Combine(conf.TemplatePath, "config.xml"))
             End Using
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -199,7 +199,7 @@ Public Class dlgNMTMovies
                 MySelf.DoBuild()
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(dlgNMTMovies), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -286,7 +286,7 @@ Public Class dlgNMTMovies
                 Next
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
         Return rets
     End Function
@@ -352,7 +352,7 @@ Public Class dlgNMTMovies
             Me.SaveMovieFiles(Path.GetDirectoryName(htmlPath), outputbase)
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -491,7 +491,7 @@ Public Class dlgNMTMovies
             Me.SaveTVFiles(Path.GetDirectoryName(htmlPath), outputbase)
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -591,8 +591,8 @@ Public Class dlgNMTMovies
             Next
             row = row.Replace("<$SIZE>", (MovieSize(_curMovie.Item("MoviePath").ToString).ToString))
             If row.Contains("<$EXTRATHUMB>") Then
-                If DirectCast(_curMovie.Item("HasExtra"), Boolean) Then
-                    Dim di As DirectoryInfo = New DirectoryInfo(Path.GetDirectoryName(_curMovie.Item("ExtraPath").ToString))
+                If DirectCast(_curMovie.Item("HasEThumbs"), Boolean) Then
+                    Dim di As DirectoryInfo = New DirectoryInfo(Path.GetDirectoryName(_curMovie.Item("EThumbsPath").ToString))
                     Dim c As Integer = di.GetFiles("thumb*.jpg").Count
                     row = row.Replace("<$EXTRATHUMB>", c.ToString)
                 Else
@@ -1096,7 +1096,7 @@ Public Class dlgNMTMovies
                 bwBuildHTML.ReportProgress(1)
             Next
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1175,7 +1175,7 @@ Public Class dlgNMTMovies
                 bwBuildHTML.ReportProgress(1)
             Next
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1208,7 +1208,7 @@ Public Class dlgNMTMovies
                 bwBuildHTML.ReportProgress(1)
             Next
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1271,7 +1271,7 @@ Public Class dlgNMTMovies
                 End If
 
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
             End Try
         End If
         Return line
@@ -1398,7 +1398,7 @@ Public Class dlgNMTMovies
                         Try
                             Directory.CreateDirectory(Path.Combine(outputFolder, s.value.Replace("/", Path.DirectorySeparatorChar)))
                         Catch ex As Exception
-                            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
                             Exit While
                         End Try
                     End If
@@ -1510,7 +1510,7 @@ Public Class dlgNMTMovies
             'myStream.Close()
             'End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1574,12 +1574,12 @@ Public Class dlgNMTMovies
             'myStream.Close()
             'End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
     Private Sub dgvSources_CellValueChanged(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvSources.CellValueChanged
-        ValidatedToBuild.Start()
+        tmrValidatedToBuild.Start()
         'btnSave.Enabled = False
     End Sub
 
@@ -1599,9 +1599,9 @@ Public Class dlgNMTMovies
         lblHelpa.Text = ""
     End Sub
 
-    Private Sub ValidatedToBuild_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ValidatedToBuild.Tick
-        ValidatedToBuild.Stop()
-        ValidatedToBuild.Interval = 300
+    Private Sub ValidatedToBuild_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrValidatedToBuild.Tick
+        tmrValidatedToBuild.Stop()
+        tmrValidatedToBuild.Interval = 300
         selectedSources.Clear()
         HaveMovies = False
         HaveTV = False
@@ -1656,7 +1656,7 @@ Public Class dlgNMTMovies
     End Sub
 
     Private Sub txtOutputFolder_LostFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtOutputFolder.LostFocus
-        ValidatedToBuild.Start()
+        tmrValidatedToBuild.Start()
         btnSave.Enabled = True
     End Sub
 
@@ -1671,8 +1671,8 @@ Public Class dlgNMTMovies
     Private Sub txtOutputFolder_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtOutputFolder.TextChanged
         btnBuild.Enabled = False
         outputChanged = True
-        ValidatedToBuild.Interval = 2000
-        ValidatedToBuild.Start()
+        tmrValidatedToBuild.Interval = 2000
+        tmrValidatedToBuild.Start()
         btnSave.Enabled = True
     End Sub
     Private Sub btnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave.Click
@@ -1736,13 +1736,13 @@ Public Class dlgNMTMovies
                 End If
             End Using
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
     Private oldWarning As String = String.Empty
     Private Sub pbWarning_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbWarning.Click
         If Not IsNothing(pbWarning.Image) Then
-            ValidatedToBuild.Start()
+            tmrValidatedToBuild.Start()
         End If
     End Sub
     Private Sub pbWarning_MouseHover(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbWarning.MouseHover

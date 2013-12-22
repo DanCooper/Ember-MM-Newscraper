@@ -18,7 +18,7 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 ' #
-' # Dialog size: 552, 392
+' # Dialog size: 564; 462
 ' # Enlarge it to see all the panels.
 
 Imports System.IO
@@ -33,149 +33,363 @@ Public Class dlgWizard
 
 	Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
 		Select Case True
-			Case Me.Panel2.Visible
-				Me.btnBack.Enabled = False
-				Me.Panel2.Visible = False
-				Me.Panel1.Visible = True
-			Case Me.Panel3.Visible
-				Me.Panel3.Visible = False
-				Me.Panel2.Visible = True
-			Case Me.Panel4.Visible
-				Me.Panel4.Visible = False
-				Me.Panel3.Visible = True
-			Case Me.Panel5.Visible
-				Me.Panel5.Visible = False
-				Me.Panel4.Visible = True
-			Case Me.Panel6.Visible
-				Me.Panel6.Visible = False
-				Me.Panel5.Visible = True
-				Me.btnNext.Enabled = True
-				Me.OK_Button.Enabled = False
-		End Select
-	End Sub
+            Case Me.pnlMovieSource.Visible
+                Me.btnBack.Enabled = False
+                Me.pnlMovieSource.Visible = False
+                Me.pnlWelcome.Visible = True
+            Case Me.pnlMovieSettings.Visible
+                Me.pnlMovieSettings.Visible = False
+                Me.pnlMovieSource.Visible = True
+            Case Me.pnlTVShowSource.Visible
+                Me.pnlTVShowSource.Visible = False
+                Me.pnlMovieSettings.Visible = True
+            Case Me.pnlTVShowSettings.Visible
+                Me.pnlTVShowSettings.Visible = False
+                Me.pnlTVShowSource.Visible = True
+            Case Me.pnlDone.Visible
+                Me.pnlDone.Visible = False
+                Me.pnlTVShowSettings.Visible = True
+                Me.btnNext.Enabled = True
+                Me.OK_Button.Enabled = False
+        End Select
+    End Sub
 
-	Private Sub btnMovieAddFolders_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieAddFolder.Click
+    Private Sub btnMovieAddFolders_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieAddFolder.Click
         Using dSource As New dlgMovieSource()
             If dSource.ShowDialog(tmppath) = Windows.Forms.DialogResult.OK Then
                 RefreshSources()
             End If
         End Using
-	End Sub
+    End Sub
 
-	Private Sub btnMovieRem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieRem.Click
-		Me.RemoveSource()
-	End Sub
+    Private Sub btnMovieRem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieRem.Click
+        Me.RemoveSource()
+    End Sub
 
-	Private Sub btnNext_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNext.Click
-		Select Case True
-			Case Me.Panel1.Visible
-				Me.btnBack.Enabled = True
-				Me.Panel1.Visible = False
-				Me.Panel2.Visible = True
-			Case Me.Panel2.Visible
-				Me.Panel2.Visible = False
-				Me.Panel3.Visible = True
-			Case Me.Panel3.Visible
-				Me.Panel3.Visible = False
-				Me.Panel4.Visible = True
-			Case Me.Panel4.Visible
-				Me.Panel4.Visible = False
-				Me.Panel5.Visible = True
-			Case Me.Panel5.Visible
-				Me.Panel5.Visible = False
-				Me.Panel6.Visible = True
-				Me.btnNext.Enabled = False
-				Me.OK_Button.Enabled = True
-		End Select
-	End Sub
+    Private Sub btnNext_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNext.Click
+        Select Case True
+            Case Me.pnlWelcome.Visible
+                Me.btnBack.Enabled = True
+                Me.pnlWelcome.Visible = False
+                Me.pnlMovieSource.Visible = True
+            Case Me.pnlMovieSource.Visible
+                Me.pnlMovieSource.Visible = False
+                Me.pnlMovieSettings.Visible = True
+            Case Me.pnlMovieSettings.Visible
+                Me.pnlMovieSettings.Visible = False
+                Me.pnlTVShowSource.Visible = True
+            Case Me.pnlTVShowSource.Visible
+                Me.pnlTVShowSource.Visible = False
+                Me.pnlTVShowSettings.Visible = True
+            Case Me.pnlTVShowSettings.Visible
+                Me.pnlTVShowSettings.Visible = False
+                Me.pnlDone.Visible = True
+                Me.btnNext.Enabled = False
+                Me.OK_Button.Enabled = True
+        End Select
+    End Sub
 
-	Private Sub btnTVAddSource_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVAddSource.Click
-		Using dSource As New dlgTVSource
+    Private Sub btnTVAddSource_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVAddSource.Click
+        Using dSource As New dlgTVSource
             If dSource.ShowDialog(tmppath) = Windows.Forms.DialogResult.OK Then
                 RefreshTVSources()
             End If
-		End Using
-	End Sub
+        End Using
+    End Sub
 
-	Private Sub btnTVRemoveSource_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVRemoveSource.Click
-		Me.RemoveTVSource()
-	End Sub
+    Private Sub btnTVRemoveSource_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVRemoveSource.Click
+        Me.RemoveTVSource()
+    End Sub
 
-	Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
-		Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
-		Me.Close()
-	End Sub
+    Private Sub chkUseFrodo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUseFrodo.CheckedChanged
 
-	Private Sub cbIntLang_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbIntLang.SelectedIndexChanged
+        Me.chkActorThumbsFrodo.Enabled = Me.chkUseFrodo.Checked
+        Me.chkBannerFrodo.Enabled = Me.chkUseFrodo.Checked
+        Me.chkClearArtFrodo.Enabled = Me.chkUseFrodo.Checked
+        Me.chkClearLogoFrodo.Enabled = Me.chkUseFrodo.Checked
+        Me.chkExtrafanartsFrodo.Enabled = Me.chkUseFrodo.Checked
+        Me.chkExtrathumbsFrodo.Enabled = Me.chkUseFrodo.Checked
+        Me.chkDiscArtFrodo.Enabled = Me.chkUseFrodo.Checked
+        Me.chkFanartFrodo.Enabled = Me.chkUseFrodo.Checked
+        Me.chkLandscapeFrodo.Enabled = Me.chkUseFrodo.Checked
+        Me.chkNFOFrodo.Enabled = Me.chkUseFrodo.Checked
+        Me.chkPosterFrodo.Enabled = Me.chkUseFrodo.Checked
+        Me.chkTrailerFrodo.Enabled = Me.chkUseFrodo.Checked
+
+        If Not Me.chkUseFrodo.Checked Then
+            Me.chkActorThumbsFrodo.Checked = False
+            Me.chkBannerFrodo.Checked = False
+            Me.chkClearArtFrodo.Checked = False
+            Me.chkClearLogoFrodo.Checked = False
+            Me.chkDiscArtFrodo.Checked = False
+            Me.chkExtrafanartsFrodo.Checked = False
+            Me.chkExtrathumbsFrodo.Checked = False
+            Me.chkFanartFrodo.Checked = False
+            Me.chkLandscapeFrodo.Checked = False
+            Me.chkNFOFrodo.Checked = False
+            Me.chkPosterFrodo.Checked = False
+            Me.chkTrailerFrodo.Checked = False
+        Else
+            Me.chkActorThumbsFrodo.Checked = True
+            Me.chkBannerFrodo.Checked = True
+            Me.chkClearArtFrodo.Checked = True
+            Me.chkClearLogoFrodo.Checked = True
+            Me.chkDiscArtFrodo.Checked = True
+            Me.chkExtrafanartsFrodo.Checked = True
+            Me.chkExtrathumbsFrodo.Checked = True
+            Me.chkFanartFrodo.Checked = True
+            Me.chkLandscapeFrodo.Checked = True
+            Me.chkNFOFrodo.Checked = True
+            Me.chkPosterFrodo.Checked = True
+            Me.chkTrailerFrodo.Checked = True
+        End If
+    End Sub
+
+    Private Sub chkUseEden_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUseEden.CheckedChanged
+
+        Me.chkActorThumbsEden.Enabled = Me.chkUseEden.Checked
+        'Me.chkBannerEden.Enabled = Me.chkUseEden.Checked
+        'Me.chkClearArtEden.Enabled = Me.chkUseEden.Checked
+        'Me.chkClearLogoEden.Enabled = Me.chkUseEden.Checked
+        Me.chkExtrafanartsEden.Enabled = Me.chkUseEden.Checked
+        Me.chkExtrathumbsEden.Enabled = Me.chkUseEden.Checked
+        'Me.chkDiscArtEden.Enabled = Me.chkUseEden.Checked
+        Me.chkFanartEden.Enabled = Me.chkUseEden.Checked
+        'Me.chkLandscapeEden.Enabled = Me.chkUseEden.Checked
+        Me.chkNFOEden.Enabled = Me.chkUseEden.Checked
+        Me.chkPosterEden.Enabled = Me.chkUseEden.Checked
+        Me.chkTrailerEden.Enabled = Me.chkUseEden.Checked
+
+        If Not Me.chkUseEden.Checked Then
+            Me.chkActorThumbsEden.Checked = False
+            'Me.chkBannerEden.Checked = False
+            'Me.chkClearArtEden.Checked = False
+            'Me.chkClearLogoEden.Checked = False
+            'Me.chkDiscArtEden.Checked = False
+            Me.chkExtrafanartsEden.Checked = False
+            Me.chkExtrathumbsEden.Checked = False
+            Me.chkFanartEden.Checked = False
+            'Me.chkLandscapeEden.Checked = False
+            Me.chkNFOEden.Checked = False
+            Me.chkPosterEden.Checked = False
+            Me.chkTrailerEden.Checked = False
+        Else
+            Me.chkActorThumbsEden.Checked = True
+            'Me.chkBannerEden.Checked = True
+            'Me.chkClearArtEden.Checked = True
+            'Me.chkClearLogoEden.Checked = True
+            'Me.chkDiscArtEden.Checked = True
+            Me.chkExtrafanartsEden.Checked = True
+            Me.chkExtrathumbsEden.Checked = True
+            Me.chkFanartEden.Checked = True
+            'Me.chkLandscapeEden.Checked = True
+            Me.chkNFOEden.Checked = True
+            Me.chkPosterEden.Checked = True
+            Me.chkTrailerEden.Checked = True
+        End If
+    End Sub
+
+    Private Sub chkUseYAMJCheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUseYAMJ.CheckedChanged
+
+        'Me.chkActorThumbsYAMJ.Enabled = Me.chkUseYAMJ.Checked
+        Me.chkBannerYAMJ.Enabled = Me.chkUseYAMJ.Checked
+        'Me.chkClearArtYAMJ.Enabled = Me.chkUseYAMJ.Checked
+        'Me.chkClearLogoYAMJ.Enabled = Me.chkUseYAMJ.Checked
+        'Me.chkExtrafanartYAMJ.Enabled = Me.chkUseYAMJ.Checked
+        'Me.chkExtrathumbsYAMJ.Enabled = Me.chkUseYAMJ.Checked
+        'Me.chkDiscArtYAMJ.Enabled = Me.chkUseYAMJ.Checked
+        Me.chkFanartYAMJ.Enabled = Me.chkUseYAMJ.Checked
+        'Me.chkLandscapeYAMJ.Enabled = Me.chkUseYAMJ.Checked
+        Me.chkNFOYAMJ.Enabled = Me.chkUseYAMJ.Checked
+        Me.chkPosterYAMJ.Enabled = Me.chkUseYAMJ.Checked
+        Me.chkTrailerYAMJ.Enabled = Me.chkUseYAMJ.Checked
+
+        If Not Me.chkUseYAMJ.Checked Then
+            ' Me.chkActorThumbsYAMJ.Checked = False
+            Me.chkBannerYAMJ.Checked = False
+            'Me.chkClearArtYAMJ.Checked = False
+            'Me.chkClearLogoYAMJ.Checked = False
+            'Me.chkDiscArtYAMJ.Checked = False
+            'Me.chkExtrafanartYAMJ.Checked = False
+            'Me.chkExtrathumbsYAMJ.Checked = False
+            Me.chkFanartYAMJ.Checked = False
+            'Me.chkLandscapeYAMJ.Checked = False
+            Me.chkNFOYAMJ.Checked = False
+            Me.chkPosterYAMJ.Checked = False
+            Me.chkTrailerYAMJ.Checked = False
+        Else
+            'Me.chkActorThumbsYAMJ.Checked = True
+            Me.chkBannerYAMJ.Checked = True
+            'Me.chkClearArtYAMJ.Checked = True
+            'Me.chkClearLogoYAMJ.Checked = True
+            'Me.chkDiscArtYAMJ.Checked = True
+            'Me.chkExtrafanartYAMJ.Checked = True
+            'Me.chkExtrathumbsYAMJ.Checked = True
+            Me.chkFanartYAMJ.Checked = True
+            'Me.chkLandscapeYAMJ.Checked = True
+            Me.chkNFOYAMJ.Checked = True
+            Me.chkPosterYAMJ.Checked = True
+            Me.chkTrailerYAMJ.Checked = True
+        End If
+    End Sub
+
+    Private Sub chkUseNMJCheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUseNMJ.CheckedChanged
+
+        'Me.chkActorThumbsNMJ.Enabled = Me.chkUseNMJ.Checked
+        Me.chkBannerNMJ.Enabled = Me.chkUseNMJ.Checked
+        'Me.chkClearArtNMJ.Enabled = Me.chkUseNMJ.Checked
+        'Me.chkClearLogoNMJ.Enabled = Me.chkUseNMJ.Checked
+        'Me.chkExtrafanartNMJ.Enabled = Me.chkUseNMJ.Checked
+        'Me.chkExtrathumbsNMJ.Enabled = Me.chkUseNMJ.Checked
+        'Me.chkDiscArtNMJ.Enabled = Me.chkUseNMJ.Checked
+        Me.chkFanartNMJ.Enabled = Me.chkUseNMJ.Checked
+        'Me.chkLandscapeNMJ.Enabled = Me.chkUseNMJ.Checked
+        Me.chkNFONMJ.Enabled = Me.chkUseNMJ.Checked
+        Me.chkPosterNMJ.Enabled = Me.chkUseNMJ.Checked
+        Me.chkTrailerNMJ.Enabled = Me.chkUseNMJ.Checked
+
+        If Not Me.chkUseNMJ.Checked Then
+            ' Me.chkActorThumbsNMJ.Checked = False
+            Me.chkBannerNMJ.Checked = False
+            'Me.chkClearArtNMJ.Checked = False
+            'Me.chkClearLogoNMJ.Checked = False
+            'Me.chkDiscArtNMJ.Checked = False
+            'Me.chkExtrafanartNMJ.Checked = False
+            'Me.chkExtrathumbsNMJ.Checked = False
+            Me.chkFanartNMJ.Checked = False
+            'Me.chkLandscapeNMJ.Checked = False
+            Me.chkNFONMJ.Checked = False
+            Me.chkPosterNMJ.Checked = False
+            Me.chkTrailerNMJ.Checked = False
+        Else
+            'Me.chkActorThumbsNMJ.Checked = True
+            Me.chkBannerNMJ.Checked = True
+            'Me.chkClearArtNMJ.Checked = True
+            'Me.chkClearLogoNMJ.Checked = True
+            'Me.chkDiscArtNMJ.Checked = True
+            'Me.chkExtrafanartNMJ.Checked = True
+            'Me.chkExtrathumbsNMJ.Checked = True
+            Me.chkFanartNMJ.Checked = True
+            'Me.chkLandscapeNMJ.Checked = True
+            Me.chkNFONMJ.Checked = True
+            Me.chkPosterNMJ.Checked = True
+            Me.chkTrailerNMJ.Checked = True
+        End If
+    End Sub
+
+    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
+        Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.Close()
+    End Sub
+
+    Private Sub cbIntLang_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbIntLang.SelectedIndexChanged
         If Not String.IsNullOrEmpty(Me.cbIntLang.SelectedItem.ToString) AndAlso Not (Me.cbIntLang.SelectedItem.ToString = tLang) Then
             Master.eLang.LoadAllLanguage(Me.cbIntLang.SelectedItem.ToString, True)
             tLang = Me.cbIntLang.SelectedItem.ToString
             Me.SetUp()
         End If
-	End Sub
+    End Sub
 
-	Private Sub dlgWizard_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-		Me.SetUp()
-		Me.LoadIntLangs()
-		Me.FillSettings()
-	End Sub
+    Private Sub dlgWizard_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Me.SetUp()
+        Me.LoadIntLangs()
+        Me.FillSettings()
+    End Sub
 
-	Private Sub dlgWizard_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Shown
-		Me.Activate()
-	End Sub
+    Private Sub dlgWizard_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Shown
+        Me.Activate()
+    End Sub
 
-	Private Sub FillSettings()
-		Me.RefreshSources()
-		Me.RefreshTVSources()
+    Private Sub FillSettings()
+        Me.RefreshSources()
+        Me.RefreshTVSources()
 
-		Me.chkSeasonAllPosterJPG.Checked = Master.eSettings.SeasonAllPosterJPG
-		Me.chkSeasonXXDashPosterJPG.Checked = Master.eSettings.SeasonXXDashPosterJPG
-		Me.chkMovieNameDashPosterJPG.Checked = Master.eSettings.MovieNameDashPosterJPG
-		Me.rbDashTrailer.Checked = Master.eSettings.DashTrailer
-		Me.chkSeasonXXDashFanartJPG.Checked = Master.eSettings.SeasonXXDashFanartJPG
+        Me.chkUseFrodo.Checked = Master.eSettings.UseFrodo
+        Me.chkActorThumbsFrodo.Checked = Master.eSettings.ActorThumbsFrodo
+        Me.chkBannerFrodo.Checked = Master.eSettings.BannerFrodo
+        Me.chkClearArtFrodo.Checked = Master.eSettings.ClearArtFrodo
+        Me.chkClearLogoFrodo.Checked = Master.eSettings.ClearLogoFrodo
+        Me.chkDiscArtFrodo.Checked = Master.eSettings.DiscArtFrodo
+        Me.chkExtrafanartsFrodo.Checked = Master.eSettings.ExtrafanartsFrodo
+        Me.chkExtrathumbsFrodo.Checked = Master.eSettings.ExtrathumbsFrodo
+        Me.chkFanartFrodo.Checked = Master.eSettings.FanartFrodo
+        Me.chkLandscapeFrodo.Checked = Master.eSettings.LandscapeFrodo
+        Me.chkNFOFrodo.Checked = Master.eSettings.NFOFrodo
+        Me.chkPosterFrodo.Checked = Master.eSettings.PosterFrodo
+        Me.chkTrailerFrodo.Checked = Master.eSettings.TrailerFrodo
 
-		Me.chkMovieTBN.Checked = Master.eSettings.MovieTBN
-		Me.chkMovieNameTBN.Checked = Master.eSettings.MovieNameTBN
-		Me.chkMovieJPG.Checked = Master.eSettings.MovieJPG
-		Me.chkMovieNameJPG.Checked = Master.eSettings.MovieNameJPG
-		Me.chkPosterTBN.Checked = Master.eSettings.PosterTBN
-		Me.chkPosterJPG.Checked = Master.eSettings.PosterJPG
-		Me.chkFolderJPG.Checked = Master.eSettings.FolderJPG
-		Me.chkFanartJPG.Checked = Master.eSettings.FanartJPG
-		Me.chkMovieNameFanartJPG.Checked = Master.eSettings.MovieNameFanartJPG
-		Me.chkMovieNameDotFanartJPG.Checked = Master.eSettings.MovieNameDotFanartJPG
-		Me.chkMovieNFO.Checked = Master.eSettings.MovieNFO
-		Me.chkMovieNameNFO.Checked = Master.eSettings.MovieNameNFO
-		Me.chkMovieNameNFOStack.Checked = Master.eSettings.MovieNameNFOStack
-		Me.chkMovieNameMultiOnly.Checked = Master.eSettings.MovieNameMultiOnly
-        Me.chkVideoTSParentXBMC.Checked = Master.eSettings.VideoTSParentXBMC
+        Me.chkUseEden.Checked = Master.eSettings.UseEden
+        Me.chkActorThumbsEden.Checked = Master.eSettings.ActorThumbsEden
+        Me.chkExtrafanartsEden.Checked = Master.eSettings.ExtrafanartsEden
+        Me.chkExtrathumbsEden.Checked = Master.eSettings.ExtrathumbsEden
+        Me.chkFanartEden.Checked = Master.eSettings.FanartEden
+        Me.chkNFOEden.Checked = Master.eSettings.NFOEden
+        Me.chkPosterEden.Checked = Master.eSettings.PosterEden
+        Me.chkTrailerEden.Checked = Master.eSettings.TrailerEden
+
+        Me.chkXBMCTrailerFormat.Checked = Master.eSettings.XBMCTrailerFormat
+
+        Me.chkUseYAMJ.Checked = Master.eSettings.UseYAMJ
+        Me.chkBannerYAMJ.Checked = Master.eSettings.BannerYAMJ
+        Me.chkFanartYAMJ.Checked = Master.eSettings.FanartYAMJ
+        Me.chkNFONMJ.Checked = Master.eSettings.NFOYAMJ
+        Me.chkPosterYAMJ.Checked = Master.eSettings.PosterYAMJ
+        Me.chkTrailerYAMJ.Checked = Master.eSettings.TrailerYAMJ
+
+        Me.chkUseNMJ.Checked = Master.eSettings.UseNMJ
+        Me.chkBannerNMJ.Checked = Master.eSettings.BannerNMJ
+        Me.chkFanartNMJ.Checked = Master.eSettings.FanartNMJ
+        Me.chkNFONMJ.Checked = Master.eSettings.NFONMJ
+        Me.chkPosterNMJ.Checked = Master.eSettings.PosterNMJ
+        Me.chkTrailerNMJ.Checked = Master.eSettings.TrailerNMJ
+
+        Me.chkSeasonAllPosterJPG.Checked = Master.eSettings.SeasonAllPosterJPG
+        Me.chkSeasonXXDashPosterJPG.Checked = Master.eSettings.SeasonXXDashPosterJPG
+        Me.chkMovieNameDashPosterJPG.Checked = Master.eSettings.MovieNameDashPosterJPG
+        Me.rbDashTrailer.Checked = Master.eSettings.DashTrailer
+        Me.chkSeasonXXDashFanartJPG.Checked = Master.eSettings.SeasonXXDashFanartJPG
+
+        Me.chkMovieTBN.Checked = Master.eSettings.MovieTBN
+        Me.chkMovieNameTBN.Checked = Master.eSettings.MovieNameTBN
+        Me.chkMovieJPG.Checked = Master.eSettings.MovieJPG
+        Me.chkMovieNameJPG.Checked = Master.eSettings.MovieNameJPG
+        Me.chkPosterTBN.Checked = Master.eSettings.PosterTBN
+        Me.chkPosterJPG.Checked = Master.eSettings.PosterJPG
+        Me.chkFolderJPG.Checked = Master.eSettings.FolderJPG
+        Me.chkFanartJPG.Checked = Master.eSettings.FanartJPG
+        Me.chkMovieNameFanartJPG.Checked = Master.eSettings.MovieNameFanartJPG
+        Me.chkMovieNameDotFanartJPG.Checked = Master.eSettings.MovieNameDotFanartJPG
+        Me.chkMovieNFO.Checked = Master.eSettings.MovieNFO
+        Me.chkMovieNameNFO.Checked = Master.eSettings.MovieNameNFO
+        Me.chkMovieNameNFOStack.Checked = Master.eSettings.MovieNameNFOStack
+        Me.chkMovieNameMultiOnly.Checked = Master.eSettings.MovieNameMultiOnly
         tLang = Master.eSettings.Language
         Me.cbIntLang.SelectedItem = Master.eSettings.Language
-		Me.chkSeasonAllTBN.Checked = Master.eSettings.SeasonAllTBN
-		Me.chkSeasonAllJPG.Checked = Master.eSettings.SeasonAllJPG
-		Me.chkShowTBN.Checked = Master.eSettings.ShowTBN
-		Me.chkShowJPG.Checked = Master.eSettings.ShowJPG
-		Me.chkShowFolderJPG.Checked = Master.eSettings.ShowFolderJPG
-		Me.chkShowPosterTBN.Checked = Master.eSettings.ShowPosterTBN
-		Me.chkShowPosterJPG.Checked = Master.eSettings.ShowPosterJPG
-		Me.chkShowFanartJPG.Checked = Master.eSettings.ShowFanartJPG
-		Me.chkShowDashFanart.Checked = Master.eSettings.ShowDashFanart
-		Me.chkShowDotFanart.Checked = Master.eSettings.ShowDotFanart
-		Me.chkSeasonXXTBN.Checked = Master.eSettings.SeasonXX
-		Me.chkSeasonXTBN.Checked = Master.eSettings.SeasonX
-		Me.chkSeasonPosterTBN.Checked = Master.eSettings.SeasonPosterTBN
-		Me.chkSeasonPosterJPG.Checked = Master.eSettings.SeasonPosterJPG
-		Me.chkSeasonNameTBN.Checked = Master.eSettings.SeasonNameTBN
-		Me.chkSeasonNameJPG.Checked = Master.eSettings.SeasonNameJPG
-		Me.chkSeasonFolderJPG.Checked = Master.eSettings.SeasonFolderJPG
-		Me.chkSeasonFanartJPG.Checked = Master.eSettings.SeasonFanartJPG
-		Me.chkSeasonDashFanart.Checked = Master.eSettings.SeasonDashFanart
-		Me.chkSeasonDotFanart.Checked = Master.eSettings.SeasonDotFanart
-		Me.chkEpisodeTBN.Checked = Master.eSettings.EpisodeTBN
+        Me.chkSeasonAllTBN.Checked = Master.eSettings.SeasonAllTBN
+        Me.chkSeasonAllJPG.Checked = Master.eSettings.SeasonAllJPG
+        Me.chkShowTBN.Checked = Master.eSettings.ShowTBN
+        Me.chkShowJPG.Checked = Master.eSettings.ShowJPG
+        Me.chkShowFolderJPG.Checked = Master.eSettings.ShowFolderJPG
+        Me.chkShowPosterTBN.Checked = Master.eSettings.ShowPosterTBN
+        Me.chkShowPosterJPG.Checked = Master.eSettings.ShowPosterJPG
+        Me.chkShowFanartJPG.Checked = Master.eSettings.ShowFanartJPG
+        Me.chkShowDashFanart.Checked = Master.eSettings.ShowDashFanart
+        Me.chkShowDotFanart.Checked = Master.eSettings.ShowDotFanart
+        Me.chkSeasonXXTBN.Checked = Master.eSettings.SeasonXX
+        Me.chkSeasonXTBN.Checked = Master.eSettings.SeasonX
+        Me.chkSeasonPosterTBN.Checked = Master.eSettings.SeasonPosterTBN
+        Me.chkSeasonPosterJPG.Checked = Master.eSettings.SeasonPosterJPG
+        Me.chkSeasonNameTBN.Checked = Master.eSettings.SeasonNameTBN
+        Me.chkSeasonNameJPG.Checked = Master.eSettings.SeasonNameJPG
+        Me.chkSeasonFolderJPG.Checked = Master.eSettings.SeasonFolderJPG
+        Me.chkSeasonFanartJPG.Checked = Master.eSettings.SeasonFanartJPG
+        Me.chkSeasonDashFanart.Checked = Master.eSettings.SeasonDashFanart
+        Me.chkSeasonDotFanart.Checked = Master.eSettings.SeasonDotFanart
+        Me.chkEpisodeTBN.Checked = Master.eSettings.EpisodeTBN
         Me.chkEpisodeJPG.Checked = Master.eSettings.EpisodeJPG
         Me.chkEpisodeDashThumbJPG.Checked = Master.eSettings.EpisodeDashThumbJPG
-		Me.chkEpisodeDashFanart.Checked = Master.eSettings.EpisodeDashFanart
-		Me.chkEpisodeDotFanart.Checked = Master.eSettings.EpisodeDotFanart
+        Me.chkEpisodeDashFanart.Checked = Master.eSettings.EpisodeDashFanart
+        Me.chkEpisodeDotFanart.Checked = Master.eSettings.EpisodeDotFanart
         'Me.tLangList.AddRange(Master.eSettings.TVDBLanguages)
         Me.cbTVLanguage.Items.AddRange((From lLang In Master.eSettings.Languages Select lLang.LongLang).ToArray)
         If Me.cbTVLanguage.Items.Count > 0 Then
@@ -292,7 +506,7 @@ Public Class dlgWizard
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -327,11 +541,51 @@ Public Class dlgWizard
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
     Private Sub SaveSettings()
+
+        Master.eSettings.UseFrodo = Me.chkUseFrodo.Checked
+        Master.eSettings.ActorThumbsFrodo = Me.chkActorThumbsFrodo.Checked
+        Master.eSettings.BannerFrodo = Me.chkBannerFrodo.Checked
+        Master.eSettings.ClearArtFrodo = Me.chkClearArtFrodo.Checked
+        Master.eSettings.ClearLogoFrodo = Me.chkClearLogoFrodo.Checked
+        Master.eSettings.DiscArtFrodo = Me.chkDiscArtFrodo.Checked
+        Master.eSettings.ExtrafanartsFrodo = Me.chkExtrafanartsFrodo.Checked
+        Master.eSettings.ExtrathumbsFrodo = Me.chkExtrathumbsFrodo.Checked
+        Master.eSettings.FanartFrodo = Me.chkFanartFrodo.Checked
+        Master.eSettings.LandscapeFrodo = Me.chkLandscapeFrodo.Checked
+        Master.eSettings.NFOFrodo = Me.chkNFOFrodo.Checked
+        Master.eSettings.PosterFrodo = Me.chkPosterFrodo.Checked
+        Master.eSettings.TrailerFrodo = Me.chkTrailerFrodo.Checked
+
+        Master.eSettings.UseEden = Me.chkUseEden.Checked
+        Master.eSettings.ActorThumbsEden = Me.chkActorThumbsEden.Checked
+        Master.eSettings.ExtrafanartsEden = Me.chkExtrafanartsEden.Checked
+        Master.eSettings.ExtrathumbsEden = Me.chkExtrathumbsEden.Checked
+        Master.eSettings.FanartEden = Me.chkFanartEden.Checked
+        Master.eSettings.NFOEden = Me.chkNFOEden.Checked
+        Master.eSettings.PosterEden = Me.chkPosterEden.Checked
+        Master.eSettings.TrailerEden = Me.chkTrailerEden.Checked
+
+        Master.eSettings.XBMCTrailerFormat = Me.chkXBMCTrailerFormat.Checked
+
+        Master.eSettings.UseYAMJ = Me.chkUseYAMJ.Checked
+        Master.eSettings.BannerYAMJ = Me.chkBannerYAMJ.Checked
+        Master.eSettings.FanartYAMJ = Me.chkFanartYAMJ.Checked
+        Master.eSettings.NFOYAMJ = Me.chkNFONMJ.Checked
+        Master.eSettings.PosterYAMJ = Me.chkPosterYAMJ.Checked
+        Master.eSettings.TrailerYAMJ = Me.chkTrailerYAMJ.Checked
+
+        Master.eSettings.UseNMJ = Me.chkUseNMJ.Checked
+        Master.eSettings.BannerNMJ = Me.chkBannerNMJ.Checked
+        Master.eSettings.FanartNMJ = Me.chkFanartNMJ.Checked
+        Master.eSettings.NFONMJ = Me.chkNFONMJ.Checked
+        Master.eSettings.PosterNMJ = Me.chkPosterNMJ.Checked
+        Master.eSettings.TrailerNMJ = Me.chkTrailerNMJ.Checked
+
         Master.eSettings.SeasonAllPosterJPG = Me.chkSeasonAllPosterJPG.Checked
         Master.eSettings.SeasonXXDashPosterJPG = Me.chkSeasonXXDashPosterJPG.Checked
         Master.eSettings.MovieNameDashPosterJPG = Me.chkMovieNameDashPosterJPG.Checked
@@ -351,7 +605,6 @@ Public Class dlgWizard
         Master.eSettings.MovieNameNFO = Me.chkMovieNameNFO.Checked
         Master.eSettings.MovieNameNFOStack = Me.chkMovieNameNFOStack.Checked
         Master.eSettings.MovieNameMultiOnly = Me.chkMovieNameMultiOnly.Checked
-        Master.eSettings.VideoTSParentXBMC = Me.chkVideoTSParentXBMC.Checked
         Master.eSettings.Language = Me.cbIntLang.Text
         Master.eSettings.SeasonAllTBN = Me.chkSeasonAllTBN.Checked
         Master.eSettings.SeasonAllJPG = Me.chkSeasonAllJPG.Checked
@@ -394,79 +647,58 @@ Public Class dlgWizard
         End Using
     End Sub
 
-	Private Sub SetUp()
-		Me.btnMovieFrodo.Text = Master.eLang.GetString(867, "XBMC Frodo")
-		Me.btnTVShowFrodo.Text = Master.eLang.GetString(867, "XBMC Frodo")
-		Me.chkVideoTSParentXBMC.Text = Master.eLang.GetString(474, "Frodo Compatible VIDEO_TS File Placement/Naming")
-		Me.Text = Master.eLang.GetString(402, "Ember Startup Wizard")
-		Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
-		Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
-		Me.btnBack.Text = Master.eLang.GetString(403, "< Back")
-		Me.btnNext.Text = Master.eLang.GetString(404, "Next >")
-		Me.Label1.Text = Master.eLang.GetString(405, "Welcome to Ember Media Manager")
-		Me.GroupBox6.Text = Master.eLang.GetString(149, "Fanart")
-		Me.GroupBox5.Text = Master.eLang.GetString(148, "Poster")
-		Me.Label5.Text = Master.eLang.GetString(406, "TIP: Selections containing the text <movie> means that Ember Media Manager will use the filename of the movie.")
-		Me.btnMovieRem.Text = Master.eLang.GetString(30, "Remove")
-		Me.btnTVRemoveSource.Text = Me.btnMovieRem.Text
-		Me.btnMovieAddFolder.Text = Master.eLang.GetString(407, "Add Source")
-		Me.btnTVAddSource.Text = Me.btnMovieAddFolder.Text
-		Me.Label6.Text = Master.eLang.GetString(408, "That wasn't so hard was it?  As mentioned earlier, you can change these or any other options in the Settings dialog.")
-		Me.Label7.Text = String.Format(Master.eLang.GetString(409, "That's it!{0}Ember Media Manager is Ready!"), vbNewLine)
-		Me.colName.Text = Master.eLang.GetString(232, "Name")
-		Me.colPath.Text = Master.eLang.GetString(410, "Path")
-		Me.colRecur.Text = Master.eLang.GetString(411, "Recursive")
-		Me.colFolder.Text = Master.eLang.GetString(412, "Use Folder Name")
-		Me.colSingle.Text = Master.eLang.GetString(413, "Single Video")
-		Me.Label2.Text = String.Format(Master.eLang.GetString(415, "This is either your first time running Ember Media Manager or you have upgraded to a newer version.  There are a few things Ember Media Manager needs to know to work properly.  This wizard will walk you through configuring Ember Media Manager to work for your set up.{0}{0}Only a handful of settings will be covered in this wizard. You can change these or any other setting at any time by selecting ""Settings..."" from the ""Edit"" menu."), vbNewLine)
-		Me.Label4.Text = Master.eLang.GetString(416, "Now that Ember Media Manager knows WHERE to look for the files, we need to tell it WHAT files to look for.  Simply select any combination of files type you wish Ember Media Manager to load from and save to.  You can select more than one from each section if you wish.")
-		Me.Label3.Text = Master.eLang.GetString(414, "First, let's tell Ember Media Manager where to locate all your movies. You can add as many sources as you wish.")
-		Me.Label8.Text = String.Format(Master.eLang.GetString(417, "Some options you may be interested in:{0}{0}Custom Filters - If your movie files have things like ""DVDRip"", ""BluRay"", ""x264"", etc in their folder or file name and you wish to filter the names when loading into the media list, you can utilize the Custom Filter option.  The custom filter is RegEx compatible for maximum usability.{0}{0}Images - This section allows you to select which websites to ""scrape"" images from as well as select a preferred size for the images Ember Media Manager selects.{0}{0}Locks - This section allows you to ""lock"" certain information so it does not get updated even if you re-scrape the movie. This is useful if you manually edit the title, outline, or plot of a movie and wish to keep your changes."), vbNewLine)
-		Me.chkMovieNameMultiOnly.Text = Master.eLang.GetString(472, "Use <movie> Only for Folders with Multiple Movies")
-		Me.Label32.Text = Master.eLang.GetString(430, "Interface Language")
-		Me.Label9.Text = Master.eLang.GetString(803, "Next, let's tell Ember Media Manager where to locate all your TV Shows. You can add as many sources as you wish.")
-		Me.Label11.Text = Master.eLang.GetString(804, "And finally, let's tell Ember Media Manager what TV Show files to look for.  Simply select any combination of files type you wish Ember Media Manager to load from and save to.  You can select more than one from each section if you wish.")
-		Me.gbShowPosters.Text = Master.eLang.GetString(683, "Show Posters")
-		Me.gbShowFanart.Text = Master.eLang.GetString(684, "Show Fanart")
-		Me.gbSeasonPosters.Text = Master.eLang.GetString(685, "Season Posters")
-		Me.gbSeasonFanart.Text = Master.eLang.GetString(686, "Season Fanart")
-		Me.gbEpisodePosters.Text = Master.eLang.GetString(687, "Episode Posters")
-		Me.gbEpisodeFanart.Text = Master.eLang.GetString(688, "Episode Fanart")
-		Me.lblInsideSeason.Text = Master.eLang.GetString(834, "* Inside Season directory")
-		Me.gbAllSeasonPoster.Text = Master.eLang.GetString(735, "All Season Posters")
-		Me.Label10.Text = Master.eLang.GetString(113, "Now select the default language you would like Ember to look for when scraping TV Show items.")
-        Me.Panel1.Location = New Point(166, 7)
-		Me.Panel1.Visible = True
-		Me.Panel2.Visible = False
-        Me.Panel3.Visible = False
-        Me.Panel4.Visible = False
-		Me.Panel5.Visible = False
-		Me.Panel6.Visible = False
-		Me.Panel2.Location = New Point(166, 7)
-		Me.Panel3.Location = New Point(166, 7)
-		Me.Panel4.Location = New Point(166, 7)
-		Me.Panel5.Location = New Point(166, 7)
-		Me.Panel6.Location = New Point(166, 7)
+    Private Sub SetUp()
+        Me.btnTVShowFrodo.Text = Master.eLang.GetString(867, "XBMC Frodo")
+        Me.Text = Master.eLang.GetString(402, "Ember Startup Wizard")
+        Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
+        Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
+        Me.btnBack.Text = Master.eLang.GetString(403, "< Back")
+        Me.btnNext.Text = Master.eLang.GetString(404, "Next >")
+        Me.Label1.Text = Master.eLang.GetString(405, "Welcome to Ember Media Manager")
+        Me.GroupBox6.Text = Master.eLang.GetString(149, "Fanart")
+        Me.GroupBox5.Text = Master.eLang.GetString(148, "Poster")
+        Me.Label5.Text = Master.eLang.GetString(406, "TIP: Selections containing the text <movie> means that Ember Media Manager will use the filename of the movie.")
+        Me.btnMovieRem.Text = Master.eLang.GetString(30, "Remove")
+        Me.btnTVRemoveSource.Text = Me.btnMovieRem.Text
+        Me.btnMovieAddFolder.Text = Master.eLang.GetString(407, "Add Source")
+        Me.btnTVAddSource.Text = Me.btnMovieAddFolder.Text
+        Me.Label6.Text = Master.eLang.GetString(408, "That wasn't so hard was it?  As mentioned earlier, you can change these or any other options in the Settings dialog.")
+        Me.Label7.Text = String.Format(Master.eLang.GetString(409, "That's it!{0}Ember Media Manager is Ready!"), vbNewLine)
+        Me.colName.Text = Master.eLang.GetString(232, "Name")
+        Me.colPath.Text = Master.eLang.GetString(410, "Path")
+        Me.colRecur.Text = Master.eLang.GetString(411, "Recursive")
+        Me.colFolder.Text = Master.eLang.GetString(412, "Use Folder Name")
+        Me.colSingle.Text = Master.eLang.GetString(413, "Single Video")
+        Me.Label2.Text = String.Format(Master.eLang.GetString(415, "This is either your first time running Ember Media Manager or you have upgraded to a newer version.  There are a few things Ember Media Manager needs to know to work properly.  This wizard will walk you through configuring Ember Media Manager to work for your set up.{0}{0}Only a handful of settings will be covered in this wizard. You can change these or any other setting at any time by selecting ""Settings..."" from the ""Edit"" menu."), vbNewLine)
+        Me.Label4.Text = Master.eLang.GetString(416, "Now that Ember Media Manager knows WHERE to look for the files, we need to tell it WHAT files to look for.  Simply select any combination of files type you wish Ember Media Manager to load from and save to.  You can select more than one from each section if you wish.")
+        Me.Label3.Text = Master.eLang.GetString(414, "First, let's tell Ember Media Manager where to locate all your movies. You can add as many sources as you wish.")
+        Me.Label8.Text = String.Format(Master.eLang.GetString(417, "Some options you may be interested in:{0}{0}Custom Filters - If your movie files have things like ""DVDRip"", ""BluRay"", ""x264"", etc in their folder or file name and you wish to filter the names when loading into the media list, you can utilize the Custom Filter option.  The custom filter is RegEx compatible for maximum usability.{0}{0}Images - This section allows you to select which websites to ""scrape"" images from as well as select a preferred size for the images Ember Media Manager selects.{0}{0}Locks - This section allows you to ""lock"" certain information so it does not get updated even if you re-scrape the movie. This is useful if you manually edit the title, outline, or plot of a movie and wish to keep your changes."), vbNewLine)
+        Me.chkMovieNameMultiOnly.Text = Master.eLang.GetString(472, "Use <movie> Only for Folders with Multiple Movies")
+        Me.Label32.Text = Master.eLang.GetString(430, "Interface Language")
+        Me.Label9.Text = Master.eLang.GetString(803, "Next, let's tell Ember Media Manager where to locate all your TV Shows. You can add as many sources as you wish.")
+        Me.Label11.Text = Master.eLang.GetString(804, "And finally, let's tell Ember Media Manager what TV Show files to look for.  Simply select any combination of files type you wish Ember Media Manager to load from and save to.  You can select more than one from each section if you wish.")
+        Me.gbShowPosters.Text = Master.eLang.GetString(683, "Show Posters")
+        Me.gbShowFanart.Text = Master.eLang.GetString(684, "Show Fanart")
+        Me.gbSeasonPosters.Text = Master.eLang.GetString(685, "Season Posters")
+        Me.gbSeasonFanart.Text = Master.eLang.GetString(686, "Season Fanart")
+        Me.gbEpisodePosters.Text = Master.eLang.GetString(687, "Episode Posters")
+        Me.gbEpisodeFanart.Text = Master.eLang.GetString(688, "Episode Fanart")
+        Me.lblInsideSeason.Text = Master.eLang.GetString(834, "* Inside Season directory")
+        Me.gbAllSeasonPoster.Text = Master.eLang.GetString(735, "All Season Posters")
+        Me.Label10.Text = Master.eLang.GetString(113, "Now select the default language you would like Ember to look for when scraping TV Show items.")
+        Me.pnlWelcome.Location = New Point(166, 7)
+        Me.pnlWelcome.Visible = True
+        Me.pnlMovieSource.Visible = False
+        Me.pnlMovieSettings.Visible = False
+        Me.pnlTVShowSource.Visible = False
+        Me.pnlTVShowSettings.Visible = False
+        Me.pnlDone.Visible = False
+        Me.pnlMovieSource.Location = New Point(166, 7)
+        Me.pnlMovieSettings.Location = New Point(166, 7)
+        Me.pnlTVShowSource.Location = New Point(166, 7)
+        Me.pnlTVShowSettings.Location = New Point(166, 7)
+        Me.pnlDone.Location = New Point(166, 7)
 	End Sub
-
-    Private Sub btnMovieFrodo_Click(sender As Object, e As EventArgs) Handles btnMovieFrodo.Click
-        Me.chkFanartJPG.Checked = False
-        Me.chkFolderJPG.Checked = False
-        Me.chkMovieJPG.Checked = False
-        Me.chkMovieNameDashPosterJPG.Checked = True
-        Me.chkMovieNameDotFanartJPG.Checked = False
-        Me.chkMovieNameFanartJPG.Checked = True
-        Me.chkMovieNameJPG.Checked = False
-        Me.chkMovieNameNFO.Checked = False
-        Me.chkMovieNameNFOStack.Checked = True
-        Me.chkMovieNameTBN.Checked = False
-        Me.chkMovieNFO.Checked = False
-        Me.chkMovieTBN.Checked = False
-        Me.chkPosterJPG.Checked = False
-        Me.chkPosterTBN.Checked = False
-        Me.rbDashTrailer.Checked = True
-        Me.chkVideoTSParentXBMC.Checked = True
-    End Sub
 
 	Private Sub btnTVShowFrodo_Click(sender As Object, e As EventArgs) Handles btnTVShowFrodo.Click
 		Me.chkEpisodeDashFanart.Checked = False

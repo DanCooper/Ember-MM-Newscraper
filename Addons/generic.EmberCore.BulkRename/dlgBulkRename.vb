@@ -142,7 +142,7 @@ Public Class dlgBulkRenamer
                                                         MovieFile.Audio = String.Empty
                                                     End If
                                                 Catch ex As Exception
-                                                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error FileInfo")
+                                                    Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error FileInfo")
                                                 End Try
                                             Else
                                                 MovieFile.Resolution = String.Empty
@@ -201,7 +201,7 @@ Public Class dlgBulkRenamer
                                     End If
                                 End If
                             Catch ex As Exception
-                                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
                             End Try
                             iProg += 1
 
@@ -217,7 +217,7 @@ Public Class dlgBulkRenamer
                 End Using
             End Using
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -243,7 +243,7 @@ Public Class dlgBulkRenamer
             End If
             Me.pnlCancel.Visible = False
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -317,7 +317,7 @@ Public Class dlgBulkRenamer
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -350,11 +350,12 @@ Public Class dlgBulkRenamer
         Me.SetUp()
 
         FFRenamer = New FileFolderRenamer
-        Dim iBackground As New Bitmap(Me.pnlTop.Width, Me.pnlTop.Height)
-        Using g As Graphics = Graphics.FromImage(iBackground)
-            g.FillRectangle(New Drawing2D.LinearGradientBrush(Me.pnlTop.ClientRectangle, Color.SteelBlue, Color.LightSteelBlue, Drawing2D.LinearGradientMode.Horizontal), pnlTop.ClientRectangle)
-            Me.pnlTop.BackgroundImage = iBackground
-        End Using
+        ' temporarily disabled - TODO: autoresizing
+        'Dim iBackground As New Bitmap(Me.pnlTop.Width, Me.pnlTop.Height)
+        'Using g As Graphics = Graphics.FromImage(iBackground)
+        '    g.FillRectangle(New Drawing2D.LinearGradientBrush(Me.pnlTop.ClientRectangle, Color.SteelBlue, Color.LightSteelBlue, Drawing2D.LinearGradientMode.Horizontal), pnlTop.ClientRectangle)
+        '    Me.pnlTop.BackgroundImage = iBackground
+        'End Using
 
     End Sub
 
@@ -378,7 +379,7 @@ Public Class dlgBulkRenamer
             Me.bwLoadInfo.RunWorkerAsync()
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -392,7 +393,7 @@ Public Class dlgBulkRenamer
             lblCanceling.Visible = True
             lblFile.Visible = False
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -400,7 +401,7 @@ Public Class dlgBulkRenamer
         Dim Sta As MyStart = New MyStart(AddressOf Start)
         Dim Fin As MyFinish = New MyFinish(AddressOf Finish)
         Me.Invoke(Sta)
-        FFRenamer.ProccessFiles(txtFolder.Text, txtFile.Text, txtFolderNotSingle.Text)
+        FFRenamer.ProccessFiles(txtFolderPattern.Text, txtFilePattern.Text, txtFolderPatternNotSingle.Text)
         Me.Invoke(Fin)
     End Sub
 
@@ -453,15 +454,15 @@ Public Class dlgBulkRenamer
 
             dgvMoviesList.Refresh()
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
     Private Sub SetUp()
         Me.Text = Master.eLang.GetString(174, "Bulk Renamer")
         Me.Close_Button.Text = Master.eLang.GetString(19, "Close")
-        Me.Label2.Text = Master.eLang.GetString(175, "Rename movies and files")
-        Me.Label4.Text = Me.Text
+        Me.lblTopDetails.Text = Master.eLang.GetString(175, "Rename movies and files")
+        Me.lblTopTitle.Text = Me.Text
         Me.lblCompiling.Text = Master.eLang.GetString(177, "Compiling Movie List...")
         Me.lblCanceling.Text = Master.eLang.GetString(178, "Canceling Compilation...")
         Me.btnCancel.Text = Master.eLang.GetString(167, "Cancel")
@@ -472,14 +473,14 @@ Public Class dlgBulkRenamer
         Me.tsmUnlockAll.Text = Master.eLang.GetString(170, "Unlock All")
         Me.lblFolderPattern.Text = Master.eLang.GetString(258, "Folder Pattern (for Single movie in Folder)")
         Me.lblFilePattern.Text = Master.eLang.GetString(259, "File Pattern")
-        Me.Label1.Text = Master.eLang.GetString(260, "Folder Pattern (for Multiple movies in Folder)")
+        Me.lblFolderPatternNotSingle.Text = Master.eLang.GetString(260, "Folder Pattern (for Multiple movies in Folder)")
         Me.chkRenamedOnly.Text = Master.eLang.GetString(261, "Display Only Movies That Will Be Renamed")
 
         Dim frmToolTip As New ToolTip()
         Dim s As String = String.Format(Master.eLang.GetString(262, "$1 = First Letter of the Title{0}$A = Audio{0}$B = Base Path{0}$C = Director{0}$D = Directory{0}$E = Sort Title{0}$F = File Name{0}$G = Genre (Follow with a space, dot or hyphen to change separator){0}$I = IMDB ID{0}$L = List Title{0}$M = MPAA{0}$O = OriginalTitle{0}$R = Resolution{0}$S = Source{0}$T = Title{0}$Y = Year{0}$X. (Replace Space with .){0}{{}} = Optional{0}$?aaa?bbb? = Replace aaa with bbb{0}$- = Remove previous char if next pattern does not have a value{0}$+ = Remove next char if previous pattern does not have a value{0}$^ = Remove previous and next char if next pattern does not have a value"), vbNewLine)
-        frmToolTip.SetToolTip(Me.txtFolder, s)
-        frmToolTip.SetToolTip(Me.txtFile, s)
-        frmToolTip.SetToolTip(Me.txtFolderNotSingle, s)
+        frmToolTip.SetToolTip(Me.txtFolderPattern, s)
+        frmToolTip.SetToolTip(Me.txtFilePattern, s)
+        frmToolTip.SetToolTip(Me.txtFolderPatternNotSingle, s)
     End Sub
 
     Private Function ShowProgressRename(ByVal mov As String, ByVal iProg As Integer) As Boolean
@@ -529,7 +530,7 @@ Public Class dlgBulkRenamer
                 End If
             End With
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -549,7 +550,7 @@ Public Class dlgBulkRenamer
                 tThread.Start()
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -569,30 +570,30 @@ Public Class dlgBulkRenamer
         setLock(False)
     End Sub
 
-    Private Sub txtFile_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFile.TextChanged
+    Private Sub txtFile_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFilePattern.TextChanged
         Try
-            If String.IsNullOrEmpty(txtFile.Text) Then txtFile.Text = "$F"
+            If String.IsNullOrEmpty(txtFilePattern.Text) Then txtFilePattern.Text = "$F"
             tmrSimul.Enabled = True
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
-    Private Sub txtFolderNotSingle_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFolderNotSingle.TextChanged
+    Private Sub txtFolderNotSingle_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFolderPatternNotSingle.TextChanged
         Try
-            If String.IsNullOrEmpty(txtFolderNotSingle.Text) Then txtFolderNotSingle.Text = "$D"
+            If String.IsNullOrEmpty(txtFolderPatternNotSingle.Text) Then txtFolderPatternNotSingle.Text = "$D"
             tmrSimul.Enabled = True
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
-    Private Sub txtFolder_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFolder.TextChanged
+    Private Sub txtFolder_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFolderPattern.TextChanged
         Try
-            If String.IsNullOrEmpty(txtFolder.Text) Then txtFolder.Text = "$D"
+            If String.IsNullOrEmpty(txtFolderPattern.Text) Then txtFolderPattern.Text = "$D"
             tmrSimul.Enabled = True
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
     Sub LoadHelpTips()
@@ -611,14 +612,14 @@ Public Class dlgBulkRenamer
             dHelpTips.Show(Me)
         End If
     End Sub
-    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
+    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFolderPatternHelp.Click
         LoadHelpTips()
     End Sub
-    Private Sub Button3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button3.Click
+    Private Sub Button3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFolderPatternNotSingleHelp.Click
         LoadHelpTips()
     End Sub
 
-    Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
+    Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFilePatternHelp.Click
         LoadHelpTips()
     End Sub
 #End Region 'Methods

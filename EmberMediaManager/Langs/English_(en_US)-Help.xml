@@ -334,7 +334,7 @@
   <string control="Core_chkUseMPAAFSK">If enabled, MPAA values will be converted to FSK if no FSK values are found. Priority: FSK -> MPAA</string>
   <string control="Core_chkOnlyValueForCert">If enabled, Ember will only save the value of the certification to the MPAA field. (Example: "Germany:18" will save as "18")</string>
   <string control="Core_cbForce">Select the region of the title you would like Ember to look for.</string>
-  <string control="Core_chkForceTitle">If enabled, Ember will check for alternative titles in the selected language. This is useful for fetching titles in your native language when scraping foreign films.</string>
+  <string control="Core_chkForceTitle">If enabled, Ember will check for alternative titles in the selected language. This is useful for fetching titles in your native language when scraping foreign films.</string> 
   <string control="Core_chkOutlineForPlot">If enabled, Ember will use the outline for the plot if the plot is empty.</string>
   <string control="Core_chkCastWithImg">If enabled, Ember will only scrape cast entries that have valid images.</string>
   <string control="Core_chkUseCertForMPAA">If enabled, Ember will use the certifcation of the selected region in place of the MPAA rating.</string>
@@ -381,7 +381,7 @@
   <string control="Core_txtSortToken">Enter in a sort token to add to the list.</string>
   <string control="Core_lstSortTokens">A list of all current sort tokens. (If the movie title begins with a sort token, then the sort token will be moved to the end. For example: Sort Token = "The", Title = "The Dark Knight", Result = "Dark Knight, The")</string>
   <string control="Core_chkDisplayYear">If enabled, Ember will display the year of the movie in the main movie list.</string>
-  <string control="Core_chkMovieExtraCol">Hide the Extrathumbs column from the main movie list.</string>
+  <string control="Core_chkMovieEThumbsCol">Hide the Extrathumbs column from the main movie list.</string>
   <string control="Core_chkMovieSubCol">Hide the Subtitles column from the main movie list.</string>
   <string control="Core_chkMovieTrailerCol">Hide the Trailers column from the main movie list.</string>
   <string control="Core_chkMovieInfoCol">Hide the Info column from the main movie list.</string>
@@ -551,6 +551,9 @@
   <string control="Core_btnAddShowFilter">Add the entered filter to the filter list.</string>
   <string control="Core_txtShowFilter">Enter a filter to add to the filter list.</string>
   <string control="Core_lstShowFilters">The list of all current filters that will be used when generating titles for shows.</string>
+  <string control="Core_chkMovieWatchedCol">Hide the Watched column from the main movie list.</string>
+  <string control="Core_chkMovieEFanartsCol">Hide the Extrafanart column from the main movie list.</string>
+  <string control="Core_chkTitleFallback">If enabled, Ember will use world-wide/english title instead of originaltitle if preferred language isn't found. This is useful for fetching titles for asian movies to avoid original (i.e japanese) titles!</string>
 </strings>
 
 

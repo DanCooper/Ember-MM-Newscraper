@@ -16,6 +16,21 @@
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <PublishUrl>veröffentlichen\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup>
     <OptionExplicit>On</OptionExplicit>
@@ -206,6 +221,12 @@
     <Compile Include="dlgNewVersion.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="dlgOfflineHolder.designer.vb">
+      <DependentUpon>dlgOfflineHolder.vb</DependentUpon>
+    </Compile>
+    <Compile Include="dlgOfflineHolder.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="dlgRestart.Designer.vb">
       <DependentUpon>dlgRestart.vb</DependentUpon>
     </Compile>
@@ -315,6 +336,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="dlgDeleteConfirm.resx">
       <DependentUpon>dlgDeleteConfirm.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="dlgEditEpisode.resx">
       <DependentUpon>dlgEditEpisode.vb</DependentUpon>
@@ -358,6 +380,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="dlgNewVersion.resx">
       <DependentUpon>dlgNewVersion.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="dlgOfflineHolder.resx">
+      <DependentUpon>dlgOfflineHolder.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="dlgRestart.resx">
       <DependentUpon>dlgRestart.vb</DependentUpon>
@@ -516,10 +542,19 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Bin\ffmpeg.exe">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Bin\mediainfo-rar\mediainfo-rar.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Bin\mediainfo-rar\MediaInfo.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Bin\mediainfo-rar\unrar.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Bin\MediaInfo.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\Flags\achan_1.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -5060,6 +5095,7 @@
     </Content>
     <Content Include="logo.ico" />
     <None Include="Resources\languages.xml" />
+    <None Include="Resources\haswatched.png" />
     <Content Include="Themes\movie-Default.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -5116,6 +5152,18 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

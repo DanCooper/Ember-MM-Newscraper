@@ -79,6 +79,10 @@ Namespace FileUtils
         Public Shared Function isBDRip(ByVal sPath As String) As Boolean
             'TODO Kludge. Consider FileSystemInfo.Attributes to detect if path is a file or directory, and proceed from there
             If String.IsNullOrEmpty(sPath) Then Return False
+            If sPath.EndsWith(Path.DirectorySeparatorChar) OrElse sPath.EndsWith(Path.AltDirectorySeparatorChar) Then
+                'The current/parent directory comparisons can't handle paths ending with a directory separator. Therefore, strip them out
+                Return isBDRip(sPath.Substring(0, sPath.Length - 1))
+            End If
             If Path.HasExtension(sPath) Then
                 Return Directory.GetParent(sPath).Name.ToLower = "stream" AndAlso Directory.GetParent(Directory.GetParent(sPath).FullName).Name.ToLower = "bdmv"
             Else
@@ -121,7 +125,7 @@ Namespace FileUtils
                     End Using
                 End Using
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.Error(GetType(Common), ex.Message, ex.StackTrace, "Error")
             End Try
         End Sub
         ''' <summary>
@@ -131,9 +135,15 @@ Namespace FileUtils
         ''' <returns>Path and filename of a file, without the extension</returns>
         ''' <remarks>No validation is made on whether the path/file actually exists.</remarks>
         Public Shared Function RemoveExtFromPath(ByVal sPath As String) As String
+            'TODO Dekker500 This method needs serious work. Invalid paths are not consistently handled. Need analysis on how to handle these properly
+            If String.IsNullOrEmpty(sPath) Then Return String.Empty
             Try
-                Return Path.Combine(Directory.GetParent(sPath).FullName, Path.GetFileNameWithoutExtension(sPath))
-            Catch
+                'If the path has no directories (only the root), short-circuit the routine and just return
+                If sPath.Equals(Directory.GetDirectoryRoot(sPath)) Then Return sPath
+                Return Path.Combine(Path.GetDirectoryName(sPath), Path.GetFileNameWithoutExtension(sPath))
+                'Return Path.Combine(Directory.GetParent(sPath).FullName, Path.GetFileNameWithoutExtension(sPath))
+            Catch ex As Exception
+                Master.eLog.Error(GetType(Common), "Source: <" & sPath & ">" & ex.Message, ex.StackTrace, "Error")
                 Return String.Empty
             End Try
         End Function
@@ -207,7 +217,7 @@ Namespace FileUtils
                     Directory.Delete(sPath, True)
                 End If
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.Error(GetType(Delete), ex.Message, ex.StackTrace, "Error")
             End Try
         End Sub
 
@@ -425,7 +435,7 @@ Namespace FileUtils
 				ioFi = Nothing
 				dirInfo = Nothing
 			Catch ex As Exception
-				Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.Error(GetType(Delete), ex.Message, ex.StackTrace, "Error")
 			End Try
 			Return ItemsToDelete
 		End Function
@@ -506,7 +516,7 @@ Namespace FileUtils
                     di = Nothing
                 End If
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.Error(GetType(FileSorter), ex.Message, ex.StackTrace, "Error")
             End Try
         End Sub
 

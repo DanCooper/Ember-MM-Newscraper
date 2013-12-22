@@ -137,9 +137,9 @@ Public Class BulkRenamerModule
 
     Sub Disable()
         Dim tsi As New ToolStripMenuItem
-        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("ToolsToolStripMenuItem"), ToolStripMenuItem)
+        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("mnuMainTools"), ToolStripMenuItem)
         tsi.DropDownItems.Remove(MyMenu)
-        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayIconTools"), ToolStripMenuItem)
+        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayTools"), ToolStripMenuItem)
         tsi.DropDownItems.Remove(MyTrayMenu)
         ModulesManager.Instance.RuntimeObjects.MenuMediaList.Items.Remove(MyMenuSep)
         ModulesManager.Instance.RuntimeObjects.MenuMediaList.Items.Remove(ctxMyMenu)
@@ -150,12 +150,12 @@ Public Class BulkRenamerModule
         Dim tsi As New ToolStripMenuItem
         MyMenu.Image = New Bitmap(My.Resources.icon)
         MyMenu.Text = Master.eLang.GetString(291, "Bulk &Renamer")
-        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("ToolsToolStripMenuItem"), ToolStripMenuItem)
+        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("mnuMainTools"), ToolStripMenuItem)
         MyMenu.Tag = New Structures.ModulesMenus With {.IfNoMovies = True, .IfNoTVShow = True}
         tsi.DropDownItems.Add(MyMenu)
         MyTrayMenu.Image = New Bitmap(My.Resources.icon)
         MyTrayMenu.Text = Master.eLang.GetString(291, "Bulk &Renamer")
-        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayIconTools"), ToolStripMenuItem)
+        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayTools"), ToolStripMenuItem)
         tsi.DropDownItems.Add(MyTrayMenu)
 
         ctxMyMenu.Text = Master.eLang.GetString(257, "Rename")
@@ -222,8 +222,8 @@ Public Class BulkRenamerModule
         Select Case ModulesManager.Instance.RuntimeObjects.MediaTabSelected
             Case 0
                 Using dBulkRename As New dlgBulkRenamer
-                    dBulkRename.txtFolder.Text = MySettings.FoldersPattern
-                    dBulkRename.txtFile.Text = MySettings.FilesPattern
+                    dBulkRename.txtFolderPattern.Text = MySettings.FoldersPattern
+                    dBulkRename.txtFilePattern.Text = MySettings.FilesPattern
                     Try
                         If dBulkRename.ShowDialog() = Windows.Forms.DialogResult.OK Then
                             ModulesManager.Instance.RuntimeObjects.InvokeLoadMedia(New Structures.Scans With {.Movies = True}, String.Empty)

@@ -75,7 +75,7 @@ Public Class dlgManualEdit
             ElementName += ">"
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
 
         Return ElementName
@@ -127,9 +127,9 @@ Public Class dlgManualEdit
                     End If
                     XmlViewer.Process(True)
                 Catch appException As ApplicationException
-                    Master.eLog.WriteToErrorLog(appException.Message, appException.StackTrace, "ApplicationException")
+                    Master.eLog.Error(Me.GetType(), appException.Message, appException.StackTrace, "ApplicationException")
                 Catch ex As Exception
-                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
                 End Try
                 ParseFile(True)
                 Me.Cursor = System.Windows.Forms.Cursors.Default
@@ -283,7 +283,7 @@ Public Class dlgManualEdit
     '        End If
 
     '    Catch ex As Exception
-    '        Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+    '        Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
     '    End Try
 
     '    Me.Cursor = System.Windows.Forms.Cursors.Default
@@ -326,9 +326,9 @@ Public Class dlgManualEdit
             XmlViewer.Process(True)
             Me.Cursor = System.Windows.Forms.Cursors.Default
         Catch appException As ApplicationException
-            Master.eLog.WriteToErrorLog(appException.Message, appException.StackTrace, "ApplicationException")
+            Master.eLog.Error(Me.GetType(), appException.Message, appException.StackTrace, "ApplicationException")
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -390,7 +390,7 @@ Public Class dlgManualEdit
                     ListBox1.Items.Add(ErrStr)
 
                 Catch ex As Exception
-                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
                     Exit Do
                 End Try
 

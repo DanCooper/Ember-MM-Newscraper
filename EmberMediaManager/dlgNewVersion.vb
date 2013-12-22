@@ -55,13 +55,13 @@ Public Class dlgNewVersion
         End While
         If File.Exists(Path.Combine(Functions.AppPath, "EmberSetup.exe")) Then
             lblStart.Visible = False
-            pbUpgrade.Visible = False
+            prbUpgrade.Visible = False
             lblUpgrade.Visible = True
             btnNo.Visible = True
             btnYes.Visible = True
         Else
             lblStart.Visible = False
-            pbUpgrade.Visible = False
+            prbUpgrade.Visible = False
             Me.lblUpgrade.Text = Master.eLang.GetString(210, "Failed to Load Upgrade Application")
             lblUpgrade.Visible = True
             'Error
@@ -86,7 +86,7 @@ Public Class dlgNewVersion
         Me.Activate()
     End Sub
 
-    Private Sub llClick_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles llClick.LinkClicked
+    Private Sub llClick_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles llblClick.LinkClicked
         'If Master.isWindows Then
         'Process.Start("http://www.embermm.com/tab/show/embermm")
         'Else
@@ -102,8 +102,8 @@ Public Class dlgNewVersion
         Me.Text = Master.eLang.GetString(209, "A New Version Is Available")
         Me.lblNew.Text = Me.Text
         Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
-        Me.llClick.Text = Master.eLang.GetString(211, "Click Here")
-        Me.Label2.Text = Master.eLang.GetString(212, "to visit embermm.com.")
+        Me.llblClick.Text = Master.eLang.GetString(211, "Click Here")
+        Me.lblVisit.Text = Master.eLang.GetString(212, "to visit embermm.com.")
         Me.lblStart.Text = Master.eLang.GetString(717, "Preparing for upgrade ...")
         Me.lblUpgrade.Text = Master.eLang.GetString(718, "We are now ready to upgrade. Ember will now close so the Upgrade can start.\n\nDo you want to continue?").Replace("\n", vbCrLf)
         Me.btnYes.Text = Master.eLang.GetString(300, "YES")

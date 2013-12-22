@@ -23,7 +23,7 @@
     <DebugType>full</DebugType>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\EmberMM-Dev\</OutputPath>
     <DocumentationFile>EmberAPI_Test.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
     <PlatformTarget>x86</PlatformTarget>
@@ -33,7 +33,7 @@
     <DefineDebug>false</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\EmberMM-Deploy\</OutputPath>
     <DocumentationFile>EmberAPI_Test.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
@@ -53,8 +53,14 @@
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>True</SpecificVersion>
     </Reference>
+    <Reference Include="NLog, Version=2.0.1.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\NLog.2.0.1.2\lib\net35\NLog.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -79,10 +85,25 @@
     <Import Include="System.Diagnostics" />
     <Import Include="System.Linq" />
     <Import Include="System.Xml.Linq" />
-    <Import Include="System.Threading.Tasks" />
     <Import Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ImageFeedback.Designer.vb">
+      <DependentUpon>ImageFeedback.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ImageFeedback.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PixelRuler.Designer.vb">
+      <DependentUpon>PixelRuler.vb</DependentUpon>
+    </Compile>
+    <Compile Include="PixelRuler.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Test_clsAPIImageUtils.vb" />
+    <Compile Include="Test_clsAPIImages.vb" />
+    <Compile Include="Test_clsAPINumUtils.vb" />
+    <Compile Include="TestTypeAttribute.vb" />
     <Compile Include="Test_clsAPIFileUtils.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
@@ -100,13 +121,25 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Template.vb" />
+    <Compile Include="Test_clsAPICommon.vb" />
+    <Compile Include="Test_clsAPIHTTP.vb" />
+    <Compile Include="Test_clsYouTube.vb" />
+    <Compile Include="Test_clsTrailers.vb" />
+    <Compile Include="Test_clsAPIErrorLog.vb" />
+    <Compile Include="Test_clsAPIStringUtils.vb" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="ImageFeedback.resx">
+      <DependentUpon>ImageFeedback.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PixelRuler.resx">
+      <DependentUpon>PixelRuler.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -125,6 +158,21 @@
       <Project>{208aa35e-c6ae-4d2d-a9dd-b6efd19a4279}</Project>
       <Name>EmberAPI</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TestPattern.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{94E38DFF-614B-4CBD-B67C-F211BB35CE8B}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TestPattern_Med.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TestPattern_Med_Vert.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TestPattern_Vert.png" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

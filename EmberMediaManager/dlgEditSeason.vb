@@ -61,7 +61,7 @@ Public Class dlgEditSeason
                 End If
             End Using
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -95,7 +95,7 @@ Public Class dlgEditSeason
                 Me.lblFanartSize.Visible = True
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -116,7 +116,7 @@ Public Class dlgEditSeason
                 End If
             End Using
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -150,7 +150,7 @@ Public Class dlgEditSeason
                 Me.lblPosterSize.Visible = True
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -170,12 +170,12 @@ Public Class dlgEditSeason
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
     Private Sub dlgEditSeason_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        If Not Master.eSettings.SeasonFanartEnabled OrElse (String.IsNullOrEmpty(Functions.GetSeasonDirectoryFromShowPath(Master.currShow.ShowPath, Master.currShow.TVEp.Season)) AndAlso (Not Master.eSettings.SeasonXXDashFanartJPG AndAlso Not AdvancedSettings.GetBooleanSetting("YAMJSeasonFanart", False, "multi.Compatibility"))) Then TabControl1.TabPages.Remove(TabPage3)
+        If Not Master.eSettings.SeasonFanartEnabled OrElse (String.IsNullOrEmpty(Functions.GetSeasonDirectoryFromShowPath(Master.currShow.ShowPath, Master.currShow.TVEp.Season)) AndAlso (Not Master.eSettings.SeasonXXDashFanartJPG AndAlso Not AdvancedSettings.GetBooleanSetting("YAMJSeasonFanart", False, "multi.Compatibility"))) Then tcEditSeason.TabPages.Remove(tpFanart)
 
         Me.SetUp()
 
@@ -222,7 +222,7 @@ Public Class dlgEditSeason
             Me.CleanUp()
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
 
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
@@ -252,7 +252,7 @@ Public Class dlgEditSeason
                 End If
             End With
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -260,13 +260,13 @@ Public Class dlgEditSeason
         Me.Text = Master.eLang.GetString(769, "Edit Season")
         Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
         Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
-        Me.Label2.Text = Master.eLang.GetString(830, "Edit the details for the selected season.")
-        Me.Label1.Text = Me.Text
-        Me.TabPage2.Text = Master.eLang.GetString(148, "Poster")
+        Me.tblTopDetails.Text = Master.eLang.GetString(830, "Edit the details for the selected season.")
+        Me.lblTopTitle.Text = Me.Text
+        Me.tpPoster.Text = Master.eLang.GetString(148, "Poster")
         Me.btnRemovePoster.Text = Master.eLang.GetString(247, "Remove Poster")
         Me.btnSetPosterScrape.Text = Master.eLang.GetString(248, "Change Poster (Scrape)")
         Me.btnSetPoster.Text = Master.eLang.GetString(249, "Change Poster (Local)")
-        Me.TabPage3.Text = Master.eLang.GetString(149, "Fanart")
+        Me.tpFanart.Text = Master.eLang.GetString(149, "Fanart")
         Me.btnRemoveFanart.Text = Master.eLang.GetString(250, "Remove Fanart")
         Me.btnSetFanartScrape.Text = Master.eLang.GetString(251, "Change Fanart (Scrape)")
         Me.btnSetFanart.Text = Master.eLang.GetString(252, "Change Fanart (Local)")

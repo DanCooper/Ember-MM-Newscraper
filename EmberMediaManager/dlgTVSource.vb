@@ -56,14 +56,8 @@ Public Class dlgTVSource
                 If Not String.IsNullOrEmpty(Me.txtSourcePath.Text) Then
                     .SelectedPath = Me.txtSourcePath.Text
                 Else
-                    If String.IsNullOrEmpty(tmppath) Then
-                        .RootFolder = Environment.SpecialFolder.Personal
-                    Else
-                        .SelectedPath = Me.tmppath
-                    End If
-
+                    .SelectedPath = Me.tmppath
                 End If
-
                 If .ShowDialog = Windows.Forms.DialogResult.OK Then
                     If Not String.IsNullOrEmpty(.SelectedPath) Then
                         Me.txtSourcePath.Text = .SelectedPath
@@ -71,7 +65,7 @@ Public Class dlgTVSource
                 End If
             End With
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -106,7 +100,7 @@ Public Class dlgTVSource
                 End Using
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
 
         If Not String.IsNullOrEmpty(Me.txtSourcePath.Text) AndAlso Directory.Exists(Me.txtSourcePath.Text.Trim) AndAlso isValid Then
@@ -131,7 +125,7 @@ Public Class dlgTVSource
                 End Using
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -159,7 +153,7 @@ Public Class dlgTVSource
                 SQLtransaction.Commit()
             End Using
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
             Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         End Try
 
@@ -171,8 +165,8 @@ Public Class dlgTVSource
         Me.Text = Master.eLang.GetString(705, "TV Source")
         Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
         Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
-        Me.Label1.Text = Master.eLang.GetString(199, "Source Name:")
-        Me.Label2.Text = Master.eLang.GetString(200, "Source Path:")
+        Me.lblSourceName.Text = Master.eLang.GetString(199, "Source Name:")
+        Me.lblSourcePath.Text = Master.eLang.GetString(200, "Source Path:")
         Me.fbdBrowse.Description = Master.eLang.GetString(706, "Select the parent folder for your TV Series folders/files.")
     End Sub
 

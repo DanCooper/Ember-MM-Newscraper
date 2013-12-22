@@ -76,7 +76,7 @@ Public Class dlgOfflineHolder
     End Sub
 
     Private Sub btnFont_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFont.Click
-        With Me.cdFont
+        With Me.fdFont
             If .ShowDialog = Windows.Forms.DialogResult.OK Then
                 If Not IsNothing(.Font) Then
                     Me.drawFont = .Font
@@ -224,8 +224,12 @@ Public Class dlgOfflineHolder
             'tMovie.FanartPath = Path.Combine(destPath, Path.GetFileName(tMovie.FanartPath).ToString)
         End If
 
-        If Not String.IsNullOrEmpty(tMovie.ExtraPath) Then
-            DirectoryCopy(Directory.GetParent(tMovie.ExtraPath).FullName, Path.Combine(destPath, "extrathumbs"))
+        If Not String.IsNullOrEmpty(tMovie.EThumbsPath) Then
+            DirectoryCopy(Directory.GetParent(tMovie.EThumbsPath).FullName, Path.Combine(destPath, "extrathumbs"))
+        End If
+
+        If Not String.IsNullOrEmpty(tMovie.EFanartsPath) Then
+            DirectoryCopy(Directory.GetParent(tMovie.EFanartsPath).FullName, Path.Combine(destPath, "extrafanart"))
         End If
 
         If Master.eSettings.ScraperActorThumbs Then
@@ -300,7 +304,7 @@ Public Class dlgOfflineHolder
                 FileUtils.Delete.DeleteDirectory(Path.Combine(Master.TempPath, "OfflineHolder"))
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -597,7 +601,7 @@ Public Class dlgOfflineHolder
             Files = Nothing
             dir = Nothing
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -653,7 +657,7 @@ Public Class dlgOfflineHolder
             lvStatus.Items(idxStsImage).UseItemStyleForSubItems = False
             lvStatus.Items(idxStsImage).SubItems(1).ForeColor = Color.Green
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -673,7 +677,8 @@ Public Class dlgOfflineHolder
             Functions.SetScraperMod(Enums.ModType.NFO, True, True)
             Functions.SetScraperMod(Enums.ModType.Poster, True, False)
             Functions.SetScraperMod(Enums.ModType.Fanart, True, False)
-            Functions.SetScraperMod(Enums.ModType.Extra, True, False)
+            Functions.SetScraperMod(Enums.ModType.EThumbs, True, False)
+            Functions.SetScraperMod(Enums.ModType.EFanarts, True, False)
             Functions.SetScraperMod(Enums.ModType.Trailer, True, False)
 
             '****** original part of 1.3.x ********
@@ -688,8 +693,8 @@ Public Class dlgOfflineHolder
             '    ModulesManager.Instance.ScraperSelectImageOfType(tMovie, Enums.ImageType.Fanart, fResults, True)
             '    If Not String.IsNullOrEmpty(fResults.ImagePath) Then
             '        tMovie.FanartPath = fResults.ImagePath
-            '        If Directory.Exists(tempExtraPath) Then
-            '            tMovie.ExtraPath = Path.Combine(tempExtraPath, "thumb1.jpg")
+            '        If Directory.Exists(tempEThumbsPath) Then
+            '            tMovie.ExtraPath = Path.Combine(tempEThumbsPath, "thumb1.jpg")
             '        End If
             '        If Not Master.eSettings.NoSaveImagesToNfo Then tMovie.Movie.Fanart = fResults.Fanart
             '    End If
@@ -740,7 +745,7 @@ Public Class dlgOfflineHolder
             End If
             CheckConditions()
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -786,7 +791,7 @@ Public Class dlgOfflineHolder
                 txtTop.Text = (RealImage_H - 30).ToString
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 

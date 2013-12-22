@@ -29,6 +29,7 @@ Imports System.Xml.Linq
 Public Class Settings
 
 #Region "Fields"
+    'TODO Dekker500 This class is a MONSTER. It needs to be broken down to a more manageable granularity
 
     Private _actorlimit As Integer
     Private _allsbanner As Boolean
@@ -93,11 +94,19 @@ Public Class Settings
     Private _epproperCase As Boolean
     Private _expertcleaner As Boolean
     'Private _externaltvdbapikey As String
+    Private _efanartsheight As Integer
+    Private _ethumbsheight As Integer
     Private _fanartheight As Integer
     Private _fanartjpg As Boolean
+    Private _efanartsprefsizeonly As Boolean
+    Private _ethumbsprefsizeonly As Boolean
+    Private _efanartswidth As Integer
+    Private _ethumbswidth As Integer
     Private _fanartprefsizeonly As Boolean
     Private _fanartQuality As Integer
     Private _fanartsize As Enums.FanartSize
+    Private _efanartssize As Enums.FanartSize
+    Private _ethumbssize As Enums.FanartSize
     Private _fanartwidth As Integer
     Private _field250 As Boolean
     Private _fieldcountry As Boolean
@@ -125,7 +134,6 @@ Public Class Settings
     Private _filterPanelState As Boolean
     Private _flaglang As String
     Private _folderjpg As Boolean
-    Private _forcetitle As String
     Private _fullcast As Boolean
     Private _fullcrew As Boolean
     Private _genrefilter As String
@@ -151,13 +159,15 @@ Public Class Settings
     Private _marknewepisodes As Boolean
     Private _marknewshows As Boolean
     Private _metadatapertype As List(Of MetadataPerType)
-    Private _missingfilterextras As Boolean
+    Private _missingfilterethumbs As Boolean
+    Private _missingfilterefanarts As Boolean
     Private _missingfilterfanart As Boolean
     Private _missingfilternfo As Boolean
     Private _missingfilterposter As Boolean
     Private _missingfiltersubs As Boolean
     Private _missingfiltertrailer As Boolean
-    Private _movieextraCol As Boolean
+    Private _movieefanartsCol As Boolean
+    Private _movieethumbsCol As Boolean
     Private _moviefanartCol As Boolean
     Private _movieinfoCol As Boolean
     Private _moviejpg As Boolean
@@ -175,6 +185,7 @@ Public Class Settings
     Private _movietbn As Boolean
     Private _movietheme As String
     Private _movietrailerCol As Boolean
+    Private _moviewatchedCol As Boolean
     Private _nodisplayfanart As Boolean
     Private _nodisplayposter As Boolean
     Private _nodisplayfanartsmall As Boolean
@@ -191,6 +202,8 @@ Public Class Settings
     Private _overwriteallsPoster As Boolean
     Private _overwriteEpFanart As Boolean
     Private _overwriteEpPoster As Boolean
+    Private _overwriteEFanarts As Boolean
+    Private _overwriteEThumbs As Boolean
     Private _overwriteFanart As Boolean
     Private _overwritenfo As Boolean
     Private _overwritePoster As Boolean
@@ -205,6 +218,8 @@ Public Class Settings
     Private _posterheight As Integer
     Private _posterjpg As Boolean
     Private _PosterPrefSizeOnly As Boolean
+    Private _efanartsQuality As Integer
+    Private _ethumbsQuality As Integer
     Private _posterQuality As Integer
     Private _postersize As Enums.PosterSize
     Private _postertbn As Boolean
@@ -216,6 +231,8 @@ Public Class Settings
     Private _resizeallsposter As Boolean
     Private _resizeepfanart As Boolean
     Private _resizeepposter As Boolean
+    Private _resizeefanarts As Boolean
+    Private _resizeethumbs As Boolean
     Private _resizefanart As Boolean
     Private _resizeposter As Boolean
     Private _resizeseasonfanart As Boolean
@@ -338,7 +355,6 @@ Public Class Settings
     Private _validexts As List(Of String)
     Private _version As String
     Private _videotsparent As Boolean
-    Private _videotsparentxbmc As Boolean
     Private _windowloc As New Point
     Private _windowsize As New Size
     Private _windowstate As FormWindowState
@@ -358,6 +374,10 @@ Public Class Settings
     Private _usespecialdateadd As Boolean
     'cocotus end
 
+    '*************** Scraper Data Misc. settings ***************
+    Private _scrapertitlefallback As Boolean
+    Private _forcetitle As String
+
     '*************** XBMC Frodo settings ***************
     Private _usefrodo As Boolean
     Private _actorthumbsfrodo As Boolean
@@ -365,7 +385,7 @@ Public Class Settings
     Private _clearartfrodo As Boolean
     Private _clearlogofrodo As Boolean
     Private _discartfrodo As Boolean
-    Private _extrafanartfrodo As Boolean
+    Private _extrafanartsfrodo As Boolean
     Private _extrathumbsfrodo As Boolean
     Private _fanartfrodo As Boolean
     Private _landscapefrodo As Boolean
@@ -380,13 +400,16 @@ Public Class Settings
     Private _cleararteden As Boolean
     Private _clearlogoeden As Boolean
     Private _discarteden As Boolean
-    Private _extrafanarteden As Boolean
+    Private _extrafanartseden As Boolean
     Private _extrathumbseden As Boolean
     Private _fanarteden As Boolean
     Private _landscapeeden As Boolean
     Private _nfoeden As Boolean
     Private _postereden As Boolean
     Private _trailereden As Boolean
+
+    '************* XBMC optional settings *************
+    Private _xbmctrailerformat As Boolean
 
     '****************** YAMJ settings *****************
     Private _useyamj As Boolean
@@ -402,6 +425,21 @@ Public Class Settings
     Private _nfoyamj As Boolean
     Private _posteryamj As Boolean
     Private _traileryamj As Boolean
+
+    '****************** NMJ settings ******************
+    Private _usenmj As Boolean
+    Private _actorthumbsnmj As Boolean
+    Private _bannernmj As Boolean
+    Private _clearartnmj As Boolean
+    Private _clearlogonmj As Boolean
+    Private _discartnmj As Boolean
+    Private _extrafanartnmj As Boolean
+    Private _extrathumbsnmj As Boolean
+    Private _fanartnmj As Boolean
+    Private _landscapenmj As Boolean
+    Private _nfonmj As Boolean
+    Private _posternmj As Boolean
+    Private _trailernmj As Boolean
 
     '***************** Expert settings ****************
     Private _useexpert As Boolean
@@ -971,6 +1009,24 @@ Public Class Settings
     '    End Set
     'End Property
 
+    Public Property EFanartsHeight() As Integer
+        Get
+            Return Me._efanartsheight
+        End Get
+        Set(ByVal value As Integer)
+            Me._efanartsheight = value
+        End Set
+    End Property
+
+    Public Property EThumbsHeight() As Integer
+        Get
+            Return Me._ethumbsheight
+        End Get
+        Set(ByVal value As Integer)
+            Me._ethumbsheight = value
+        End Set
+    End Property
+
     Public Property FanartHeight() As Integer
         Get
             Return Me._fanartheight
@@ -989,6 +1045,24 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property EFanartsPrefSizeOnly() As Boolean
+        Get
+            Return Me._efanartsprefsizeonly
+        End Get
+        Set(ByVal value As Boolean)
+            Me._efanartsprefsizeonly = value
+        End Set
+    End Property
+
+    Public Property EThumbsPrefSizeOnly() As Boolean
+        Get
+            Return Me._ethumbsprefsizeonly
+        End Get
+        Set(ByVal value As Boolean)
+            Me._ethumbsprefsizeonly = value
+        End Set
+    End Property
+
     Public Property FanartPrefSizeOnly() As Boolean
         Get
             Return Me._fanartprefsizeonly
@@ -1004,6 +1078,24 @@ Public Class Settings
         End Get
         Set(ByVal value As Integer)
             Me._fanartQuality = value
+        End Set
+    End Property
+
+    Public Property EFanartsWidth() As Integer
+        Get
+            Return Me._efanartswidth
+        End Get
+        Set(ByVal value As Integer)
+            Me._efanartswidth = value
+        End Set
+    End Property
+
+    Public Property EThumbsWidth() As Integer
+        Get
+            Return Me._ethumbswidth
+        End Get
+        Set(ByVal value As Integer)
+            Me._ethumbswidth = value
         End Set
     End Property
 
@@ -1498,12 +1590,21 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MissingFilterExtras() As Boolean
+    Public Property MissingFilterEThumbs() As Boolean
         Get
-            Return Me._missingfilterextras
+            Return Me._missingfilterethumbs
         End Get
         Set(ByVal value As Boolean)
-            Me._missingfilterextras = value
+            Me._missingfilterethumbs = value
+        End Set
+    End Property
+
+    Public Property MissingFilterEFanarts() As Boolean
+        Get
+            Return Me._missingfilterefanarts
+        End Get
+        Set(ByVal value As Boolean)
+            Me._missingfilterefanarts = value
         End Set
     End Property
 
@@ -1552,12 +1653,21 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieExtraCol() As Boolean
+    Public Property MovieEFanartsCol() As Boolean
         Get
-            Return Me._movieextraCol
+            Return Me._movieefanartsCol
         End Get
         Set(ByVal value As Boolean)
-            Me._movieextraCol = value
+            Me._movieefanartsCol = value
+        End Set
+    End Property
+
+    Public Property MovieEThumbsCol() As Boolean
+        Get
+            Return Me._movieethumbsCol
+        End Get
+        Set(ByVal value As Boolean)
+            Me._movieethumbsCol = value
         End Set
     End Property
 
@@ -1714,6 +1824,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property MovieWatchedCol() As Boolean
+        Get
+            Return Me._moviewatchedCol
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviewatchedCol = value
+        End Set
+    End Property
+
     Public Property NoDisplayFanart() As Boolean
         Get
             Return Me._nodisplayfanart
@@ -1858,6 +1977,24 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property OverwriteEFanarts() As Boolean
+        Get
+            Return Me._overwriteEFanarts
+        End Get
+        Set(ByVal value As Boolean)
+            Me._overwriteEFanarts = value
+        End Set
+    End Property
+
+    Public Property OverwriteEThumbs() As Boolean
+        Get
+            Return Me._overwriteEThumbs
+        End Get
+        Set(ByVal value As Boolean)
+            Me._overwriteEThumbs = value
+        End Set
+    End Property
+
     Public Property OverwriteFanart() As Boolean
         Get
             Return Me._overwriteFanart
@@ -1983,6 +2120,24 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property EThumbsQuality() As Integer
+        Get
+            Return Me._ethumbsQuality
+        End Get
+        Set(ByVal value As Integer)
+            Me._ethumbsQuality = value
+        End Set
+    End Property
+
+    Public Property EFanartsQuality() As Integer
+        Get
+            Return Me._efanartsQuality
+        End Get
+        Set(ByVal value As Integer)
+            Me._efanartsQuality = value
+        End Set
+    End Property
+
     Public Property PosterQuality() As Integer
         Get
             Return Me._posterQuality
@@ -2043,6 +2198,24 @@ Public Class Settings
         End Get
         Set(ByVal value As Enums.FanartSize)
             Me._fanartsize = value
+        End Set
+    End Property
+
+    Public Property PreferredEFanartsSize() As Enums.FanartSize
+        Get
+            Return Me._efanartssize
+        End Get
+        Set(ByVal value As Enums.FanartSize)
+            Me._efanartssize = value
+        End Set
+    End Property
+
+    Public Property PreferredEThumbsSize() As Enums.FanartSize
+        Get
+            Return Me._ethumbssize
+        End Get
+        Set(ByVal value As Enums.FanartSize)
+            Me._ethumbssize = value
         End Set
     End Property
 
@@ -2169,6 +2342,24 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Me._resizeepposter = value
+        End Set
+    End Property
+
+    Public Property ResizeEFanarts() As Boolean
+        Get
+            Return Me._resizeefanarts
+        End Get
+        Set(ByVal value As Boolean)
+            Me._resizeefanarts = value
+        End Set
+    End Property
+
+    Public Property ResizeEThumbs() As Boolean
+        Get
+            Return Me._resizeethumbs
+        End Get
+        Set(ByVal value As Boolean)
+            Me._resizeethumbs = value
         End Set
     End Property
 
@@ -3207,15 +3398,6 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property VideoTSParentXBMC() As Boolean
-        Get
-            Return Me._videotsparentxbmc
-        End Get
-        Set(ByVal value As Boolean)
-            Me._videotsparentxbmc = value
-        End Set
-    End Property
-
     Public Property WindowLoc() As Point
         Get
             Return Me._windowloc
@@ -3364,12 +3546,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property ExtrafanartFrodo() As Boolean
+    Public Property ExtrafanartsFrodo() As Boolean
         Get
-            Return Me._extrafanartfrodo
+            Return Me._extrafanartsfrodo
         End Get
         Set(ByVal value As Boolean)
-            Me._extrafanartfrodo = value
+            Me._extrafanartsfrodo = value
         End Set
     End Property
 
@@ -3481,12 +3663,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property ExtrafanartEden() As Boolean
+    Public Property ExtrafanartsEden() As Boolean
         Get
-            Return Me._extrafanarteden
+            Return Me._extrafanartseden
         End Get
         Set(ByVal value As Boolean)
-            Me._extrafanarteden = value
+            Me._extrafanartseden = value
         End Set
     End Property
 
@@ -3544,6 +3726,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property XBMCTrailerFormat() As Boolean
+        Get
+            Return Me._xbmctrailerformat
+        End Get
+        Set(ByVal value As Boolean)
+            Me._xbmctrailerformat = value
+        End Set
+    End Property
+
     Public Property UseYAMJ() As Boolean
         Get
             Return Me._useyamj
@@ -3598,12 +3789,76 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property UseNMJ() As Boolean
+        Get
+            Return Me._usenmj
+        End Get
+        Set(ByVal value As Boolean)
+            Me._usenmj = value
+        End Set
+    End Property
+
+    Public Property BannerNMJ() As Boolean
+        Get
+            Return Me._bannernmj
+        End Get
+        Set(ByVal value As Boolean)
+            Me._bannernmj = value
+        End Set
+    End Property
+
+    Public Property FanartNMJ() As Boolean
+        Get
+            Return Me._fanartnmj
+        End Get
+        Set(ByVal value As Boolean)
+            Me._fanartnmj = value
+        End Set
+    End Property
+
+    Public Property NFONMJ() As Boolean
+        Get
+            Return Me._nfonmj
+        End Get
+        Set(ByVal value As Boolean)
+            Me._nfonmj = value
+        End Set
+    End Property
+
+    Public Property PosterNMJ() As Boolean
+        Get
+            Return Me._posternmj
+        End Get
+        Set(ByVal value As Boolean)
+            Me._posternmj = value
+        End Set
+    End Property
+
+    Public Property TrailerNMJ() As Boolean
+        Get
+            Return Me._trailernmj
+        End Get
+        Set(ByVal value As Boolean)
+            Me._trailernmj = value
+        End Set
+    End Property
+
     Public Property UseExpert() As Boolean
         Get
             Return Me._useexpert
         End Get
         Set(ByVal value As Boolean)
             Me._useexpert = value
+        End Set
+    End Property
+
+
+    Public Property UseTitleFallback() As Boolean
+        Get
+            Return Me._scrapertitlefallback
+        End Get
+        Set(ByVal value As Boolean)
+            Me._scrapertitlefallback = value
         End Set
     End Property
 
@@ -3635,7 +3890,9 @@ Public Class Settings
         Me._movieinfoCol = False
         Me._movietrailerCol = False
         Me._moviesubCol = False
-        Me._movieextraCol = False
+        Me._movieefanartsCol = False
+        Me._movieethumbsCol = False
+        Me._moviewatchedCol = False
         Me._cleanfolderJpg = False
         Me._cleanmovieTbn = False
         Me._cleanmovieTbnB = False
@@ -3653,8 +3910,8 @@ Public Class Settings
         Me._cleanwhitelistvideo = False
         Me._cleanwhitelistexts = New List(Of String)
         Me._postersize = Enums.PosterSize.Xlrg
-        Me._fanartsize = Enums.FanartSize.Lrg
-        Me._showbanner = True
+        Me._fanartsize = Enums.FanartSize.Xlrg
+        Me._showbanner = False
         Me._showbannertype = Enums.ShowBannerType.Graphical
         Me._showpostersize = Enums.PosterSize.Xlrg
         Me._allsbanner = False
@@ -3692,24 +3949,23 @@ Public Class Settings
         Me._overwritenfo = False
         Me._validexts = New List(Of String)
         Me._nostackexts = New List(Of String)
-        Me._movietbn = True
-        Me._movienametbn = True
+        Me._movietbn = False
+        Me._movienametbn = False
         Me._moviejpg = False
         Me._movienamejpg = False
         Me._movienamedashposterjpg = False
         Me._postertbn = False
         Me._posterjpg = False
         Me._folderjpg = False
-        Me._fanartjpg = True
-        Me._movienamefanartjpg = True
+        Me._fanartjpg = False
+        Me._movienamefanartjpg = False
         Me._movienamedotfanartjpg = False
-        Me._movienfo = True
-        Me._movienamenfo = True
-        Me._movienamenfostack = True
+        Me._movienfo = False
+        Me._movienamenfo = False
+        Me._movienamenfostack = False
         Me._movienamemultionly = False
-        Me._dashtrailer = True
+        Me._dashtrailer = False
         Me._videotsparent = False
-        Me._videotsparentxbmc = False
         Me._lockplot = False
         Me._lockoutline = False
         Me._locktitle = False
@@ -3783,7 +4039,7 @@ Public Class Settings
         Me._nodisplayfanartsmall = False
         Me._outlineforplot = False
         Me._imagesglassoverlay = False
-        Me._plotforoutline = False
+        Me._plotforoutline = True
         Me._outlinelimit = 350
         Me._sortpath = String.Empty
         Me._allwaysdisplaygenrestext = False
@@ -3827,7 +4083,8 @@ Public Class Settings
         Me._missingfilternfo = True
         Me._missingfiltertrailer = True
         Me._missingfiltersubs = True
-        Me._missingfilterextras = True
+        Me._missingfilterethumbs = True
+        Me._missingfilterefanarts = True
         Me._movietheme = "Default"
         Me._tvshowtheme = "Default"
         Me._tveptheme = "Default"
@@ -3905,7 +4162,7 @@ Public Class Settings
         'Me._externaltvdbapikey = String.Empty
         Me._scanordermodify = False
         Me._tvscanordermodify = False
-        Me._tvupdatetime = Enums.TVUpdateTime.Week
+        Me._tvupdatetime = Enums.TVUpdateTime.Always
         Me._nofilterepisode = True
         'Me._onlytvimagesforselectedlangauge = True
         'Me._alwaysgetenglishtvimages = True
@@ -3918,7 +4175,7 @@ Public Class Settings
         Me._eplocktitle = False
         Me._eplockplot = False
         Me._eplockrating = False
-        Me._scraperactorthumbs = False
+        Me._scraperactorthumbs = True
         Me._scrapershowtitle = True
         Me._scrapershowegu = True
         Me._scrapershowgenre = True
@@ -3980,7 +4237,7 @@ Public Class Settings
                 Master.eSettings = New Settings
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(Settings), ex.Message, ex.StackTrace, "Error")
             Master.eSettings = New Settings
         End Try
 
@@ -4009,7 +4266,7 @@ Public Class Settings
             xmlSerial.Serialize(xmlWriter, Master.eSettings)
             xmlWriter.Close()
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(Settings), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 

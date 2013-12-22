@@ -43,22 +43,22 @@ Public Class dlgTrailerFormat
     End Function
 
     Private Sub dlgTrailerFormat_Shown(sender As Object, e As System.EventArgs) Handles Me.Shown
-        pbStatus.Style = ProgressBarStyle.Marquee
+        prbStatus.Style = ProgressBarStyle.Marquee
         Application.DoEvents()
         YouTube.GetVideoLinks(Me._yturl)
         If YouTube.VideoLinks.Count > 0 Then
             Me.pnlStatus.Visible = False
 
-            lstFormats.DataSource = YouTube.VideoLinks.Values.ToList
-            lstFormats.DisplayMember = "Description"
-            lstFormats.ValueMember = "URL"
+            lbFormats.DataSource = YouTube.VideoLinks.Values.ToList
+            lbFormats.DisplayMember = "Description"
+            lbFormats.ValueMember = "URL"
 
             If YouTube.VideoLinks.ContainsKey(Master.eSettings.PreferredTrailerQuality) Then
-                Me.lstFormats.SelectedIndex = YouTube.VideoLinks.IndexOfKey(Master.eSettings.PreferredTrailerQuality)
-            ElseIf Me.lstFormats.Items.Count = 1 Then
-                Me.lstFormats.SelectedIndex = 0
+                Me.lbFormats.SelectedIndex = YouTube.VideoLinks.IndexOfKey(Master.eSettings.PreferredTrailerQuality)
+            ElseIf Me.lbFormats.Items.Count = 1 Then
+                Me.lbFormats.SelectedIndex = 0
             End If
-            Me.lstFormats.Enabled = True
+            Me.lbFormats.Enabled = True
         End If
 
     End Sub
@@ -72,7 +72,7 @@ Public Class dlgTrailerFormat
         Try
             Me.SetUp()
 
-            lstFormats.DataSource = Nothing
+            lbFormats.DataSource = Nothing
 
             YouTube = New YouTube.Scraper
 
@@ -81,11 +81,11 @@ Public Class dlgTrailerFormat
         End Try
     End Sub
 
-    Private Sub lstFormats_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lstFormats.SelectedIndexChanged
+    Private Sub lstFormats_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbFormats.SelectedIndexChanged
         Try
-            Me._selectedformaturl = DirectCast(lstFormats.SelectedItem, YouTube.VideoLinkItem).URL
+            Me._selectedformaturl = DirectCast(lbFormats.SelectedItem, YouTube.VideoLinkItem).URL
 
-            If Me.lstFormats.SelectedItems.Count > 0 Then
+            If Me.lbFormats.SelectedItems.Count > 0 Then
                 Me.OK_Button.Enabled = True
             Else
                 Me.OK_Button.Enabled = False
@@ -102,7 +102,7 @@ Public Class dlgTrailerFormat
     Private Sub SetUp()
         Me.Text = Master.eLang.GetString(923, "Select Format")
         Me.lblStatus.Text = Master.eLang.GetString(924, "Getting available formats...")
-        Me.GroupBox1.Text = Master.eLang.GetString(925, "Available Formats")
+        Me.gbFormats.Text = Master.eLang.GetString(925, "Available Formats")
         Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
         Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
     End Sub

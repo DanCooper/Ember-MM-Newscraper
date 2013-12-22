@@ -69,7 +69,7 @@ Namespace TMDBtrailer
         '            bwTMDB.RunWorkerAsync(New Arguments With {.Parameter = imdbID, .Type = Type})
         '        End If
         '    Catch ex As Exception
-        '        Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        '        Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         '    End Try
         'End Sub
 
@@ -94,7 +94,7 @@ Namespace TMDBtrailer
                 Next
 
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
             End Try
 
             Return alTrailers
@@ -117,7 +117,7 @@ Namespace TMDBtrailer
         '          Try
         '              e.Result = GetTMDBImages(Args.Parameter, Args.Type)
         '          Catch ex As Exception
-        '              Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        '              Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         '              e.Result = Nothing
         '          End Try
         '      End Sub

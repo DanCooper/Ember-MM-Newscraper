@@ -45,7 +45,7 @@ Public Class dlgDeleteConfirm
             NewNode.ImageKey = "FILE"
             NewNode.SelectedImageKey = "FILE"
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
             Throw
         End Try
     End Sub
@@ -69,7 +69,7 @@ Public Class dlgDeleteConfirm
                 AddFileNode(NewNode, item)
             Next
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
             Throw
         End Try
     End Sub
@@ -87,7 +87,7 @@ Public Class dlgDeleteConfirm
         Dim result As Boolean = True
         Dim tPair As New KeyValuePair(Of Long, Long)
         Try
-            With tvwFiles
+            With tvFiles
                 If .Nodes.Count = 0 Then Return False
 
                 Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MediaDBConn.BeginTransaction() 'Only on Batch Mode
@@ -135,7 +135,7 @@ Public Class dlgDeleteConfirm
             End With
             Return result
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Function
 
@@ -160,7 +160,7 @@ Public Class dlgDeleteConfirm
         Dim ItemParentNode As New TreeNode
 
         Try
-            With tvwFiles
+            With tvFiles
 
                 Select Case Me._deltype
                     Case Enums.DelType.Movies
@@ -327,7 +327,7 @@ Public Class dlgDeleteConfirm
 
             End With
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -342,7 +342,7 @@ Public Class dlgDeleteConfirm
     Private Sub ToggleAllNodes()
         Try
             Dim Checked As Nullable(Of Boolean)
-            With tvwFiles
+            With tvFiles
                 If .Nodes.Count = 0 Then Return
                 For Each node As TreeNode In .Nodes
                     If Not Checked.HasValue Then
@@ -357,7 +357,7 @@ Public Class dlgDeleteConfirm
         End Try
     End Sub
 
-    Private Sub tvwFiles_AfterCheck(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles tvwFiles.AfterCheck
+    Private Sub tvwFiles_AfterCheck(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles tvFiles.AfterCheck
         Try
             If e.Node.Parent Is Nothing Then
                 'this is a movie node
@@ -408,7 +408,7 @@ Public Class dlgDeleteConfirm
         End Try
     End Sub
 
-    Private Sub tvwFiles_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles tvwFiles.AfterSelect
+    Private Sub tvwFiles_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles tvFiles.AfterSelect
         Try
             Select Case e.Node.ImageKey
                 Case "MOVIE"

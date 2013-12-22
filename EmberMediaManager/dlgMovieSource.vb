@@ -70,7 +70,7 @@ Public Class dlgMovieSource
                 End If
             End With
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -106,7 +106,7 @@ Public Class dlgMovieSource
                 End Using
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
 
         If Not String.IsNullOrEmpty(Me.txtSourcePath.Text) AndAlso Directory.Exists(Me.txtSourcePath.Text.Trim) AndAlso isValid Then
@@ -135,7 +135,7 @@ Public Class dlgMovieSource
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -171,7 +171,7 @@ Public Class dlgMovieSource
             End Using
             Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
             Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Finally
             Functions.GetListOfSources()
@@ -184,9 +184,9 @@ Public Class dlgMovieSource
         Me.Text = Master.eLang.GetString(198, "Movie Source")
         Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
         Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
-        Me.Label1.Text = Master.eLang.GetString(199, "Source Name:")
-        Me.Label2.Text = Master.eLang.GetString(200, "Source Path:")
-        Me.GroupBox1.Text = Master.eLang.GetString(201, "Source Options")
+        Me.lblSourceName.Text = Master.eLang.GetString(199, "Source Name:")
+        Me.lblSourcePath.Text = Master.eLang.GetString(200, "Source Path:")
+        Me.gbSourceOptions.Text = Master.eLang.GetString(201, "Source Options")
         Me.chkSingle.Text = Master.eLang.GetString(202, "Only Detect One Movie From Each Folder*")
         Me.chkUseFolderName.Text = Master.eLang.GetString(203, "Use Folder Name for Initial Listing")
         Me.chkScanRecursive.Text = Master.eLang.GetString(204, "Scan Recursively")

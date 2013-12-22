@@ -58,7 +58,7 @@ Public Class dlgSetsManager
 
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -78,7 +78,7 @@ Public Class dlgSetsManager
                 Me.lbMoviesInSet.Focus()
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -96,7 +96,7 @@ Public Class dlgSetsManager
                 End If
             End Using
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -120,7 +120,7 @@ Public Class dlgSetsManager
                 Me.lbMoviesInSet.Focus()
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -166,16 +166,16 @@ Public Class dlgSetsManager
                 End Using
             End Using
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
     Private Sub bwLoadMovies_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwLoadMovies.ProgressChanged
         If e.ProgressPercentage >= 0 Then
-            Me.pbCompile.Value = e.ProgressPercentage
+            Me.prbCompile.Value = e.ProgressPercentage
             Me.lblFile.Text = e.UserState.ToString
         Else
-            Me.pbCompile.Maximum = Convert.ToInt32(e.UserState)
+            Me.prbCompile.Maximum = Convert.ToInt32(e.UserState)
         End If
     End Sub
 
@@ -250,8 +250,8 @@ Public Class dlgSetsManager
         ' Show Cancel Panel
         btnCancel.Visible = True
         lblCompiling.Visible = True
-        pbCompile.Visible = True
-        pbCompile.Style = ProgressBarStyle.Continuous
+        prbCompile.Visible = True
+        prbCompile.Style = ProgressBarStyle.Continuous
         lblCanceling.Visible = False
         pnlCancel.Visible = True
         Application.DoEvents()
@@ -265,8 +265,8 @@ Public Class dlgSetsManager
         Me.bwLoadMovies.CancelAsync()
         btnCancel.Visible = False
         lblCompiling.Visible = False
-        pbCompile.Style = ProgressBarStyle.Marquee
-        pbCompile.MarqueeAnimationSpeed = 25
+        prbCompile.Style = ProgressBarStyle.Marquee
+        prbCompile.MarqueeAnimationSpeed = 25
         lblCanceling.Visible = True
         lblFile.Visible = False
     End Sub
@@ -300,7 +300,7 @@ Public Class dlgSetsManager
                 End Using
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -315,7 +315,7 @@ Public Class dlgSetsManager
 
             Me.lbMovies.ResumeLayout()
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -377,7 +377,7 @@ Public Class dlgSetsManager
             Me.FillMovies()
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -397,7 +397,7 @@ Public Class dlgSetsManager
             Me.btnDown.Enabled = False
             Me.btnRemove.Enabled = False
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -431,7 +431,7 @@ Public Class dlgSetsManager
             Master.DB.SaveMovieToDB(lMov.DBMovie, False, False, True)
             If Not isEdit Then Me.currSet.Movies.Remove(lMov)
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -450,7 +450,7 @@ Public Class dlgSetsManager
             Me.btnEditSet.Enabled = False
             Me.btnRemoveSet.Enabled = False
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -473,7 +473,7 @@ Public Class dlgSetsManager
 
             Me.SetControlsEnabled(True)
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -500,15 +500,15 @@ Public Class dlgSetsManager
         End If
         Me.Text = Master.eLang.GetString(365, "Sets Manager")
         Me.OK_Button.Text = Master.eLang.GetString(19, "Close")
-        Me.GroupBox1.Text = Master.eLang.GetString(36, "Movies")
-        Me.GroupBox2.Text = Master.eLang.GetString(366, "Sets")
-        Me.GroupBox3.Text = Master.eLang.GetString(367, "Movies In Set")
+        Me.gbMovies.Text = Master.eLang.GetString(36, "Movies")
+        Me.gbSets.Text = Master.eLang.GetString(366, "Sets")
+        Me.gbMoviesInSet.Text = Master.eLang.GetString(367, "Movies In Set")
         Me.lblCurrentSet.Text = Master.eLang.GetString(368, "None Selected")
         Me.lblCompiling.Text = Master.eLang.GetString(369, "Loading Movies and Sets...")
         Me.lblCanceling.Text = Master.eLang.GetString(370, "Canceling Load...")
         Me.btnCancel.Text = Master.eLang.GetString(167, "Cancel")
-        Me.Label2.Text = Master.eLang.GetString(371, "Add and configure movie boxed sets.")
-        Me.Label4.Text = Me.Text
+        Me.lblTopDetails.Text = Master.eLang.GetString(371, "Add and configure movie boxed sets.")
+        Me.lblTopTitle.Text = Me.Text
     End Sub
 
     Private Sub lbMoviesInSet_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbMoviesInSet.SelectedIndexChanged

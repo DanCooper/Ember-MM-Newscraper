@@ -187,7 +187,8 @@ Public Class IMDB_Data
         ConfigScrapeModifier.DoSearch = True
         ConfigScrapeModifier.Meta = True
         ConfigScrapeModifier.NFO = True
-        ConfigScrapeModifier.Extra = True
+        ConfigScrapeModifier.EThumbs = True
+        ConfigScrapeModifier.EFanarts = True
         ConfigScrapeModifier.Actors = True
 
         ConfigScrapeModifier.Poster = AdvancedSettings.GetBooleanSetting("DoPoster", True)
@@ -281,11 +282,15 @@ Public Class IMDB_Data
         If ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.GlobalScrapeMod.DoSearch _
             AndAlso ModulesManager.Instance.externalDataScrapersModules.OrderBy(Function(y) y.ScraperOrder).FirstOrDefault(Function(e) e.ProcessorModule.ScraperEnabled).AssemblyName = _AssemblyName Then
             DBMovie.Movie.IMDBID = String.Empty
-            DBMovie.ClearExtras = True
+            DBMovie.ClearEThumbs = True
+            DBMovie.ClearEFanarts = True
+            DBMovie.ClearFanart = True
+            DBMovie.ClearPoster = True
             DBMovie.PosterPath = String.Empty
             DBMovie.FanartPath = String.Empty
             DBMovie.TrailerPath = String.Empty
-            DBMovie.ExtraPath = String.Empty
+            DBMovie.EThumbsPath = String.Empty
+            DBMovie.EFanartsPath = String.Empty
             DBMovie.SubPath = String.Empty
             DBMovie.NfoPath = String.Empty
             DBMovie.Movie.Clear()
@@ -312,11 +317,15 @@ Public Class IMDB_Data
                         If Not String.IsNullOrEmpty(Master.tmpMovie.IMDBID) Then
                             ' if we changed the ID tipe we need to clear everything and rescrape
                             If Not String.IsNullOrEmpty(DBMovie.Movie.IMDBID) AndAlso Not (DBMovie.Movie.IMDBID = Master.tmpMovie.IMDBID) Then
-                                Master.currMovie.ClearExtras = True
+                                Master.currMovie.ClearEThumbs = True
+                                Master.currMovie.ClearEFanarts = True
+                                Master.currMovie.ClearFanart = True
+                                Master.currMovie.ClearPoster = True
                                 Master.currMovie.PosterPath = String.Empty
                                 Master.currMovie.FanartPath = String.Empty
                                 Master.currMovie.TrailerPath = String.Empty
-                                Master.currMovie.ExtraPath = String.Empty
+                                Master.currMovie.EThumbsPath = String.Empty
+                                Master.currMovie.EFanartsPath = String.Empty
                                 Master.currMovie.SubPath = String.Empty
                                 Master.currMovie.NfoPath = String.Empty
                             End If

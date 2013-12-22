@@ -61,7 +61,7 @@ Public Class dlgTrailerSelect
         Me.lvTrailers.HideSelection = False
         Me.lvTrailers.Columns.Add("#", -1, HorizontalAlignment.Right)
         Me.lvTrailers.Columns.Add("URL", 0, HorizontalAlignment.Left)
-        Me.lvTrailers.Columns.Add("Description", -2, HorizontalAlignment.Left)
+        Me.lvTrailers.Columns.Add(Master.eLang.GetString(979, "Description"), -2, HorizontalAlignment.Left)
 
         Me.txtYouTubeSearch.Text = DBMovie.Movie.Title & " Trailer"
 
@@ -121,7 +121,7 @@ Public Class dlgTrailerSelect
             Me.lblStatus.Text = Master.eLang.GetString(907, "Copying specified file to trailer...")
             If Master.eSettings.ValidExts.Contains(Path.GetExtension(Me.txtManual.Text)) AndAlso File.Exists(Me.txtManual.Text) Then
                 If CloseDialog Then
-                    If Master.eSettings.VideoTSParentXBMC AndAlso FileUtils.Common.isBDRip(Me.sPath) Then
+                    If FileUtils.Common.isBDRip(Me.sPath) Then
                         Me.tURL = String.Concat(Directory.GetParent(Directory.GetParent(Me.sPath).FullName).FullName, Path.DirectorySeparatorChar, "index", If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(Me.txtManual.Text))
                     ElseIf Master.eSettings.MovieNameNFOStack Then
                         Dim sPathStack As String = StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(Me.sPath))
@@ -204,7 +204,7 @@ Public Class dlgTrailerSelect
                 txtManual.Text = ofdTrailer.FileName
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -308,7 +308,7 @@ Public Class dlgTrailerSelect
                 Me.pnlStatus.Visible = True
                 Application.DoEvents()
 
-                If Master.eSettings.VideoTSParentXBMC AndAlso FileUtils.Common.isBDRip(Me.sPath) Then
+                If FileUtils.Common.isBDRip(Me.sPath) Then
                     Me.tURL = String.Concat(Directory.GetParent(Directory.GetParent(Me.sPath).FullName).FullName, Path.DirectorySeparatorChar, "index", If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(Me.txtManual.Text))
                 ElseIf Master.eSettings.MovieNameNFOStack Then
                     Dim sPathStack As String = StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(Me.sPath))
@@ -407,6 +407,12 @@ Public Class dlgTrailerSelect
         Me.SetEnabled(True)
     End Sub
 
+    Private Sub lvTrailers_DoubleClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lvTrailers.DoubleClick
+        If Regex.IsMatch(Me.lvTrailers.SelectedItems(0).SubItems(1).Text.ToString, "http:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") Then
+            Me.asfTrailer.Movie = String.Concat(Replace(Me.lvTrailers.SelectedItems(0).SubItems(1).Text.ToString, "/watch?v=", "/v/"), "?rel=0&autoplay=1&iv_load_policy=3")
+        End If
+    End Sub
+
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
         Me.BeginDownload(True)
     End Sub
@@ -450,16 +456,16 @@ Public Class dlgTrailerSelect
         Me.Text = Master.eLang.GetString(914, "Select Trailer")
         Me.OK_Button.Text = Master.eLang.GetString(373, "Download")
         Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
-        Me.GroupBox1.Text = Master.eLang.GetString(915, "Select Trailer to Download")
-        Me.GroupBox2.Text = Master.eLang.GetString(916, "Manual Trailer Entry")
-        Me.Label1.Text = Master.eLang.GetString(917, "Direct Link or YouTube URL:")
+        Me.gbSelectTrailer.Text = Master.eLang.GetString(915, "Select Trailer to Download")
+        Me.gbManualTrailer.Text = Master.eLang.GetString(916, "Manual Trailer Entry")
+        Me.lblYouTube.Text = Master.eLang.GetString(917, "Direct Link or YouTube URL:")
         Me.lblStatus.Text = Master.eLang.GetString(918, "Compiling trailer list...")
         Me.btnPlayTrailer.Text = Master.eLang.GetString(919, "Preview Trailer")
         Me.btnPlayBrowser.Text = Master.eLang.GetString(931, "Open In Browser")
         Me.btnSetNfo.Text = Master.eLang.GetString(913, "Set To Nfo")
-        Me.Label2.Text = Master.eLang.GetString(920, "Local Trailer:")
-        Me.gbYouTubeSearch.Text = Master.eLang.GetString(974, "Search On YouTube")
-        Me.btnYouTubeSearch.Text = Master.eLang.GetString(975, "Search")
+        Me.lblManual.Text = Master.eLang.GetString(920, "Local Trailer:")
+        Me.gbYouTubeSearch.Text = Master.eLang.GetString(978, "Search On YouTube")
+        Me.btnYouTubeSearch.Text = Master.eLang.GetString(977, "Search")
     End Sub
 
     Private Sub txtManual_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtManual.TextChanged

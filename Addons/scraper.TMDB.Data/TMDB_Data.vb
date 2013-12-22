@@ -116,10 +116,10 @@ Public Class TMDB_Data
         'Must be after Load settings to retrieve the correct API key
         _TMDBApi = New WatTmdb.V3.Tmdb(_MySettings.TMDBAPIKey, _MySettings.TMDBLanguage)
         If IsNothing(_TMDBApi) Then
-            Master.eLog.WriteToErrorLog(Master.eLang.GetString(938, "TheMovieDB API is missing or not valid"), _TMDBApi.Error.status_message, "Info")
+            Master.eLog.Error(Me.GetType(), Master.eLang.GetString(938, "TheMovieDB API is missing or not valid"), _TMDBApi.Error.status_message, "Info")
         Else
             If Not IsNothing(_TMDBApi.Error) AndAlso _TMDBApi.Error.status_message.Length > 0 Then
-                Master.eLog.WriteToErrorLog(_TMDBApi.Error.status_message, _TMDBApi.Error.status_code.ToString(), "Error")
+                Master.eLog.Error(Me.GetType(), _TMDBApi.Error.status_message, _TMDBApi.Error.status_code.ToString(), "Error")
             End If
         End If
         _TMDBConf = _TMDBApi.GetConfiguration()
@@ -210,7 +210,8 @@ Public Class TMDB_Data
         ConfigScrapeModifier.DoSearch = True
         ConfigScrapeModifier.Meta = True
         ConfigScrapeModifier.NFO = True
-        ConfigScrapeModifier.Extra = True
+        ConfigScrapeModifier.EThumbs = True
+        ConfigScrapeModifier.EFanarts = True
         ConfigScrapeModifier.Actors = True
 
         ConfigScrapeModifier.Poster = AdvancedSettings.GetBooleanSetting("DoPoster", True)
@@ -314,11 +315,11 @@ Public Class TMDB_Data
         Dim filterOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(Options, ConfigOptions)
 
         If IsNothing(_TMDBApi) Then
-            Master.eLog.WriteToErrorLog(Master.eLang.GetString(938, "TheMovieDB API is missing or not valid"), _TMDBApi.Error.status_message, "Error")
+            Master.eLog.Error(Me.GetType(), Master.eLang.GetString(938, "TheMovieDB API is missing or not valid"), _TMDBApi.Error.status_message, "Error")
             Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
         Else
             If Not IsNothing(_TMDBApi.Error) AndAlso _TMDBApi.Error.status_message.Length > 0 Then
-                Master.eLog.WriteToErrorLog(_TMDBApi.Error.status_message, _TMDBApi.Error.status_code.ToString(), "Error")
+                Master.eLog.Error(Me.GetType(), _TMDBApi.Error.status_message, _TMDBApi.Error.status_code.ToString(), "Error")
                 Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
             End If
         End If
@@ -337,11 +338,15 @@ Public Class TMDB_Data
         If ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.GlobalScrapeMod.DoSearch _
          AndAlso ModulesManager.Instance.externalDataScrapersModules.OrderBy(Function(y) y.ScraperOrder).FirstOrDefault(Function(e) e.ProcessorModule.ScraperEnabled).AssemblyName = _AssemblyName Then
             DBMovie.Movie.IMDBID = String.Empty
-            DBMovie.ClearExtras = True
+            DBMovie.ClearEThumbs = True
+            DBMovie.ClearEFanarts = True
+            DBMovie.ClearFanart = True
+            DBMovie.ClearPoster = True
             DBMovie.PosterPath = String.Empty
             DBMovie.FanartPath = String.Empty
             DBMovie.TrailerPath = String.Empty
-            DBMovie.ExtraPath = String.Empty
+            DBMovie.EThumbsPath = String.Empty
+            DBMovie.EFanartsPath = String.Empty
             DBMovie.SubPath = String.Empty
             DBMovie.NfoPath = String.Empty
             DBMovie.Movie.Clear()
@@ -369,11 +374,15 @@ Public Class TMDB_Data
                     If Not String.IsNullOrEmpty(Master.tmpMovie.IMDBID) Then
                         ' if we changed the ID tipe we need to clear everything and rescrape
                         If Not String.IsNullOrEmpty(DBMovie.Movie.IMDBID) AndAlso Not (DBMovie.Movie.IMDBID = Master.tmpMovie.IMDBID) Then
-                            Master.currMovie.ClearExtras = True
+                            Master.currMovie.ClearEThumbs = True
+                            Master.currMovie.ClearEFanarts = True
+                            Master.currMovie.ClearFanart = True
+                            Master.currMovie.ClearPoster = True
                             Master.currMovie.PosterPath = String.Empty
                             Master.currMovie.FanartPath = String.Empty
                             Master.currMovie.TrailerPath = String.Empty
-                            Master.currMovie.ExtraPath = String.Empty
+                            Master.currMovie.EThumbsPath = String.Empty
+                            Master.currMovie.EFanartsPath = String.Empty
                             Master.currMovie.SubPath = String.Empty
                             Master.currMovie.NfoPath = String.Empty
                         End If

@@ -526,7 +526,7 @@
 	<string id="525">Add Offline movie</string>
 	<string id="526">Add to Source:</string>
 	<string id="527">Place Holder Folder/Movie Name:</string>
-	<string id="528">Search IMDB</string>
+	<string id="528">Search Movie</string>
 	<string id="529">Enable Trailer Support</string>
 	<string id="530">No Stack Extensions</string>
 	<string id="531">Bulk Creator</string>
@@ -1057,9 +1057,20 @@
   "Jezz_X" and Wayne "nitr8" Humphrey
   Media Flags
 </string>
-<string id="969">No fanart could be found. Please check to see if any fanart scrapers are enabled.</string>
-<string id="970">No Fanart Found</string>
-<string id="971">No poster images could be found. Please check to see if any poster scrapers are enabled.</string>
-<string id="972">No Posters Found</string>
-<string id="973">Actor Thumbs Only</string>  
+	<string id="969">No fanart could be found. Please check to see if any fanart scrapers are enabled.</string>
+	<string id="970">No Fanart Found</string>
+	<string id="971">No poster images could be found. Please check to see if any poster scrapers are enabled.</string>
+	<string id="972">No Posters Found</string>
+	<string id="973">Actor Thumbs Only</string> 
+	<string id="974">You have extratfanarts queued to be transferred to the movie directory.</string>
+	<string id="975">Extrafanarts Only</string>
+	<string id="976">Check for Extrafanarts</string>
+	<string id="977">Search</string>
+	<string id="978">Search On Youtube</string>
+	<string id="979">Description</string>
+	<string id="980">Not Watched</string>
+	<string id="981">Watched</string>
+	<string id="982">Hide Watched Column</string>
+	<string id="983">Hide Extrafanart Column</string>
+  <string id="984">Worldwide title as fallback</string>
 </strings>

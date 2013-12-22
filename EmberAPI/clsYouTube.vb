@@ -20,6 +20,10 @@
 
 Imports System.Text.RegularExpressions
 Imports EmberAPI
+Imports System.Runtime.CompilerServices
+
+'The InternalsVisibleTo is required for unit testing the friend methods
+<Assembly: InternalsVisibleTo("EmberAPI_Test")> 
 
 Namespace YouTube
 
@@ -54,15 +58,28 @@ Namespace YouTube
 
 #Region "Methods"
 
+        ''' <summary>
+        ''' Fetches the list of valid video links for the given URL
+        ''' </summary>
+        ''' <param name="url"><c>String</c> representation of the URL to query</param>
+        ''' <remarks>If the <paramref name="url">URL</paramref> leads to a YouTube video page, this method will parse
+        ''' the page to extract the various video stream links, and store them in the internal <c>VideoLinks</c> collection.
+        ''' Note that only one link of each <c>Enums.TrailerQuality</c> will be kept.</remarks>
         Public Sub GetVideoLinks(ByVal url As String)
             Try
                 _VideoLinks = ParseYTFormats(url, False)
 
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.Error(GetType(Scraper), ex.Message, ex.StackTrace, "Error")
             End Try
         End Sub
-
+        ''' <summary>
+        ''' Extract and return the title of the video from the supplied HTML.
+        ''' </summary>
+        ''' <param name="HTML">The text to parse for the title</param>
+        ''' <returns><c>String</c> representing the title of the video, as extracted from the YouTube page.</returns>
+        ''' <remarks>This method looks in the page's metadata, looking for the meta name="title" tag, and 
+        ''' fetching the content attribute.</remarks>
         Private Function GetVideoTitle(ByVal HTML As String) As String
             Dim result As String = ""
             'Dim KeyPattern As String = "'VIDEO_TITLE':\s*'([^']*?)'"
@@ -74,7 +91,17 @@ Namespace YouTube
 
             Return result
         End Function
-
+        ''' <summary>
+        ''' Fetches the list of valid video links for the given URL
+        ''' </summary>
+        ''' <param name="url"><c>String</c> representation of the URL to query</param>
+        ''' <param name="doProgress"><c>Boolean</c> representing whether an event should be raised. Note that this functionality
+        ''' has not yet been implemented.</param>
+        ''' <remarks>Note that most callers should use <c>GetVideoLinks(ByVal url As String)</c> instead of this <c>Private</c> function.
+        ''' If the <paramref name="url">URL</paramref> leads to a YouTube video page, this method will parse
+        ''' the page to extract the various video stream links, and store them in the internal <c>VideoLinks</c> collection.
+        ''' Note that only one link of each <c>Enums.TrailerQuality</c> will be kept.
+        ''' </remarks>
         Private Function ParseYTFormats(ByVal url As String, ByVal doProgress As Boolean) As VideoLinkItemCollection
             Dim DownloadLinks As New VideoLinkItemCollection
             Dim sHTTP As New HTTP
@@ -204,13 +231,18 @@ Namespace YouTube
                 Return DownloadLinks
 
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.Error(GetType(Scraper), ex.Message, ex.StackTrace, "Error")
                 Return New VideoLinkItemCollection
             Finally
                 sHTTP = Nothing
             End Try
         End Function
-
+        ''' <summary>
+        ''' Search for the given string on YouTube
+        ''' </summary>
+        ''' <param name="mName"><c>String</c> to search for</param>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
         Public Shared Function SearchOnYouTube(ByVal mName As String) As List(Of Trailers)
             Dim tHTTP As New HTTP
             Dim tList As New List(Of Trailers)
@@ -286,9 +318,22 @@ Namespace YouTube
         Inherits Generic.SortedList(Of Enums.TrailerQuality, VideoLinkItem)
 
 #Region "Methods"
-
+        ''' <summary>
+        ''' Adds the provided <c>VideoLinkItem</c> to the collection. 
+        ''' </summary>
+        ''' <param name="Link">The <c>VideoLinkItem</c> to be added. Nothing values or existing values will be ignored</param>
+        ''' <remarks>NOTE that the collection is arranged to allow only one
+        ''' of VideoLink of each <c>Enums.TrailerQuality</c>. This means that attempting
+        ''' to add a second <c>VideoLinkItem</c> with with an identical <c>Enums.TrailerQuality</c>
+        ''' will silently fail, while leaving the original untouched.
+        ''' 
+        ''' 2013/11/07 Dekker500 - Added parameter validation
+        ''' </remarks>
         Public Shadows Sub Add(ByVal Link As VideoLinkItem)
-            If Not MyBase.ContainsKey(Link.FormatQuality) Then MyBase.Add(Link.FormatQuality, Link)
+            If Link IsNot Nothing AndAlso Not MyBase.ContainsKey(Link.FormatQuality) Then
+                MyBase.Add(Link.FormatQuality, Link)
+            End If
+
         End Sub
 
 #End Region 'Methods
