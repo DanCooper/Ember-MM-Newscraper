@@ -31,6 +31,12 @@ Partial Class dlgSettings
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgSettings))
         Me.GroupBox4 = New System.Windows.Forms.GroupBox()
+        Me.gb_DAEMON = New System.Windows.Forms.GroupBox()
+        Me.lbl_DAEMON_driveletter = New System.Windows.Forms.Label()
+        Me.cbo_DAEMON_driveletter = New System.Windows.Forms.ComboBox()
+        Me.bt_DAEMON_Programpath = New System.Windows.Forms.Button()
+        Me.txt_DAEMON_Programpath = New System.Windows.Forms.TextBox()
+        Me.lbl_DAEMON_Programpath = New System.Windows.Forms.Label()
         Me.chkImagesGlassOverlay = New System.Windows.Forms.CheckBox()
         Me.chkNoDisplayFanartSmall = New System.Windows.Forms.CheckBox()
         Me.chkSpecialDateAdd = New System.Windows.Forms.CheckBox()
@@ -315,6 +321,45 @@ Partial Class dlgSettings
         Me.Label21 = New System.Windows.Forms.Label()
         Me.txtSkipLessThan = New System.Windows.Forms.TextBox()
         Me.Label20 = New System.Windows.Forms.Label()
+        Me.pnlTVGeneral = New System.Windows.Forms.Panel()
+        Me.gbTVListOptions = New System.Windows.Forms.GroupBox()
+        Me.chkDisplayMissingEpisodes = New System.Windows.Forms.CheckBox()
+        Me.gbEpisodeListOptions = New System.Windows.Forms.GroupBox()
+        Me.chkEpisodeNfoCol = New System.Windows.Forms.CheckBox()
+        Me.chkEpisodeFanartCol = New System.Windows.Forms.CheckBox()
+        Me.chkEpisodePosterCol = New System.Windows.Forms.CheckBox()
+        Me.gbSeasonListOptions = New System.Windows.Forms.GroupBox()
+        Me.chkSeasonFanartCol = New System.Windows.Forms.CheckBox()
+        Me.chkSeasonPosterCol = New System.Windows.Forms.CheckBox()
+        Me.gbShowListOptions = New System.Windows.Forms.GroupBox()
+        Me.chkShowNfoCol = New System.Windows.Forms.CheckBox()
+        Me.chkShowFanartCol = New System.Windows.Forms.CheckBox()
+        Me.chkShowPosterCol = New System.Windows.Forms.CheckBox()
+        Me.gbTVMisc = New System.Windows.Forms.GroupBox()
+        Me.chkMarkNewShows = New System.Windows.Forms.CheckBox()
+        Me.chkMarkNewEpisodes = New System.Windows.Forms.CheckBox()
+        Me.chkDisplayAllSeason = New System.Windows.Forms.CheckBox()
+        Me.lblRatingRegion = New System.Windows.Forms.Label()
+        Me.cbRatingRegion = New System.Windows.Forms.ComboBox()
+        Me.gbEpFilter = New System.Windows.Forms.GroupBox()
+        Me.btnResetEpFilter = New System.Windows.Forms.Button()
+        Me.chkNoFilterEpisode = New System.Windows.Forms.CheckBox()
+        Me.btnEpFilterDown = New System.Windows.Forms.Button()
+        Me.btnEpFilterUp = New System.Windows.Forms.Button()
+        Me.chkEpProperCase = New System.Windows.Forms.CheckBox()
+        Me.btnRemoveEpFilter = New System.Windows.Forms.Button()
+        Me.btnAddEpFilter = New System.Windows.Forms.Button()
+        Me.txtEpFilter = New System.Windows.Forms.TextBox()
+        Me.lstEpFilters = New System.Windows.Forms.ListBox()
+        Me.gbShowFilter = New System.Windows.Forms.GroupBox()
+        Me.btnResetShowFilters = New System.Windows.Forms.Button()
+        Me.btnShowFilterDown = New System.Windows.Forms.Button()
+        Me.btnShowFilterUp = New System.Windows.Forms.Button()
+        Me.chkShowProperCase = New System.Windows.Forms.CheckBox()
+        Me.btnRemoveShowFilter = New System.Windows.Forms.Button()
+        Me.btnAddShowFilter = New System.Windows.Forms.Button()
+        Me.txtShowFilter = New System.Windows.Forms.TextBox()
+        Me.lstShowFilters = New System.Windows.Forms.ListBox()
         Me.fbdBrowse = New System.Windows.Forms.FolderBrowserDialog()
         Me.ToolTips = New System.Windows.Forms.ToolTip(Me.components)
         Me.pnlTVSources = New System.Windows.Forms.Panel()
@@ -397,45 +442,6 @@ Partial Class dlgSettings
         Me.colSeasonApply = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.colEpisode = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.colEpApply = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.pnlTVGeneral = New System.Windows.Forms.Panel()
-        Me.gbTVListOptions = New System.Windows.Forms.GroupBox()
-        Me.chkDisplayMissingEpisodes = New System.Windows.Forms.CheckBox()
-        Me.gbEpisodeListOptions = New System.Windows.Forms.GroupBox()
-        Me.chkEpisodeNfoCol = New System.Windows.Forms.CheckBox()
-        Me.chkEpisodeFanartCol = New System.Windows.Forms.CheckBox()
-        Me.chkEpisodePosterCol = New System.Windows.Forms.CheckBox()
-        Me.gbSeasonListOptions = New System.Windows.Forms.GroupBox()
-        Me.chkSeasonFanartCol = New System.Windows.Forms.CheckBox()
-        Me.chkSeasonPosterCol = New System.Windows.Forms.CheckBox()
-        Me.gbShowListOptions = New System.Windows.Forms.GroupBox()
-        Me.chkShowNfoCol = New System.Windows.Forms.CheckBox()
-        Me.chkShowFanartCol = New System.Windows.Forms.CheckBox()
-        Me.chkShowPosterCol = New System.Windows.Forms.CheckBox()
-        Me.gbTVMisc = New System.Windows.Forms.GroupBox()
-        Me.chkMarkNewShows = New System.Windows.Forms.CheckBox()
-        Me.chkMarkNewEpisodes = New System.Windows.Forms.CheckBox()
-        Me.chkDisplayAllSeason = New System.Windows.Forms.CheckBox()
-        Me.lblRatingRegion = New System.Windows.Forms.Label()
-        Me.cbRatingRegion = New System.Windows.Forms.ComboBox()
-        Me.gbEpFilter = New System.Windows.Forms.GroupBox()
-        Me.btnResetEpFilter = New System.Windows.Forms.Button()
-        Me.chkNoFilterEpisode = New System.Windows.Forms.CheckBox()
-        Me.btnEpFilterDown = New System.Windows.Forms.Button()
-        Me.btnEpFilterUp = New System.Windows.Forms.Button()
-        Me.chkEpProperCase = New System.Windows.Forms.CheckBox()
-        Me.btnRemoveEpFilter = New System.Windows.Forms.Button()
-        Me.btnAddEpFilter = New System.Windows.Forms.Button()
-        Me.txtEpFilter = New System.Windows.Forms.TextBox()
-        Me.lstEpFilters = New System.Windows.Forms.ListBox()
-        Me.gbShowFilter = New System.Windows.Forms.GroupBox()
-        Me.btnResetShowFilters = New System.Windows.Forms.Button()
-        Me.btnShowFilterDown = New System.Windows.Forms.Button()
-        Me.btnShowFilterUp = New System.Windows.Forms.Button()
-        Me.chkShowProperCase = New System.Windows.Forms.CheckBox()
-        Me.btnRemoveShowFilter = New System.Windows.Forms.Button()
-        Me.btnAddShowFilter = New System.Windows.Forms.Button()
-        Me.txtShowFilter = New System.Windows.Forms.TextBox()
-        Me.lstShowFilters = New System.Windows.Forms.ListBox()
         Me.pnlTVImages = New System.Windows.Forms.Panel()
         Me.TabControl3 = New System.Windows.Forms.TabControl()
         Me.TabPage5 = New System.Windows.Forms.TabPage()
@@ -664,7 +670,9 @@ Partial Class dlgSettings
         Me.chkDeleteAllTrailers = New System.Windows.Forms.CheckBox()
         Me.chkOverwriteTrailer = New System.Windows.Forms.CheckBox()
         Me.chkDownloadTrailer = New System.Windows.Forms.CheckBox()
+        Me.fileBrowse = New System.Windows.Forms.OpenFileDialog()
         Me.GroupBox4.SuspendLayout()
+        Me.gb_DAEMON.SuspendLayout()
         Me.GroupBox29.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
         Me.tcCleaner.SuspendLayout()
@@ -718,6 +726,14 @@ Partial Class dlgSettings
         Me.gbYAMJ.SuspendLayout()
         Me.tpFileNamingExpert.SuspendLayout()
         Me.GroupBox19.SuspendLayout()
+        Me.pnlTVGeneral.SuspendLayout()
+        Me.gbTVListOptions.SuspendLayout()
+        Me.gbEpisodeListOptions.SuspendLayout()
+        Me.gbSeasonListOptions.SuspendLayout()
+        Me.gbShowListOptions.SuspendLayout()
+        Me.gbTVMisc.SuspendLayout()
+        Me.gbEpFilter.SuspendLayout()
+        Me.gbShowFilter.SuspendLayout()
         Me.pnlTVSources.SuspendLayout()
         Me.TabControl2.SuspendLayout()
         Me.TabPage3.SuspendLayout()
@@ -733,14 +749,6 @@ Partial Class dlgSettings
         Me.gbShowPosters.SuspendLayout()
         Me.TabPage4.SuspendLayout()
         Me.gbShowRegex.SuspendLayout()
-        Me.pnlTVGeneral.SuspendLayout()
-        Me.gbTVListOptions.SuspendLayout()
-        Me.gbEpisodeListOptions.SuspendLayout()
-        Me.gbSeasonListOptions.SuspendLayout()
-        Me.gbShowListOptions.SuspendLayout()
-        Me.gbTVMisc.SuspendLayout()
-        Me.gbEpFilter.SuspendLayout()
-        Me.gbShowFilter.SuspendLayout()
         Me.pnlTVImages.SuspendLayout()
         Me.TabControl3.SuspendLayout()
         Me.TabPage5.SuspendLayout()
@@ -787,6 +795,7 @@ Partial Class dlgSettings
         '
         'GroupBox4
         '
+        Me.GroupBox4.Controls.Add(Me.gb_DAEMON)
         Me.GroupBox4.Controls.Add(Me.chkImagesGlassOverlay)
         Me.GroupBox4.Controls.Add(Me.chkNoDisplayFanartSmall)
         Me.GroupBox4.Controls.Add(Me.chkSpecialDateAdd)
@@ -806,6 +815,69 @@ Partial Class dlgSettings
         Me.GroupBox4.TabIndex = 1
         Me.GroupBox4.TabStop = False
         Me.GroupBox4.Text = "Miscellaneous"
+        '
+        'gb_DAEMON
+        '
+        Me.gb_DAEMON.Controls.Add(Me.lbl_DAEMON_driveletter)
+        Me.gb_DAEMON.Controls.Add(Me.cbo_DAEMON_driveletter)
+        Me.gb_DAEMON.Controls.Add(Me.bt_DAEMON_Programpath)
+        Me.gb_DAEMON.Controls.Add(Me.txt_DAEMON_Programpath)
+        Me.gb_DAEMON.Controls.Add(Me.lbl_DAEMON_Programpath)
+        Me.gb_DAEMON.Location = New System.Drawing.Point(6, 256)
+        Me.gb_DAEMON.Name = "gb_DAEMON"
+        Me.gb_DAEMON.Size = New System.Drawing.Size(396, 122)
+        Me.gb_DAEMON.TabIndex = 13
+        Me.gb_DAEMON.TabStop = False
+        Me.gb_DAEMON.Text = "DAEMON Tools"
+        '
+        'lbl_DAEMON_driveletter
+        '
+        Me.lbl_DAEMON_driveletter.AutoSize = True
+        Me.lbl_DAEMON_driveletter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lbl_DAEMON_driveletter.Location = New System.Drawing.Point(7, 29)
+        Me.lbl_DAEMON_driveletter.Name = "lbl_DAEMON_driveletter"
+        Me.lbl_DAEMON_driveletter.Size = New System.Drawing.Size(63, 13)
+        Me.lbl_DAEMON_driveletter.TabIndex = 6
+        Me.lbl_DAEMON_driveletter.Text = "Driveletter:"
+        '
+        'cbo_DAEMON_driveletter
+        '
+        Me.cbo_DAEMON_driveletter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbo_DAEMON_driveletter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbo_DAEMON_driveletter.FormattingEnabled = True
+        Me.cbo_DAEMON_driveletter.Items.AddRange(New Object() {"", "A:\", "B:\", "D:\", "E:\", "F:\", "G:\", "H:\", "I:\", "J:\", "K:\", "L:\", "M:\", "N:\", "O:\", "F:\", "F:\", "F:\"})
+        Me.cbo_DAEMON_driveletter.Location = New System.Drawing.Point(77, 30)
+        Me.cbo_DAEMON_driveletter.Name = "cbo_DAEMON_driveletter"
+        Me.cbo_DAEMON_driveletter.Size = New System.Drawing.Size(48, 21)
+        Me.cbo_DAEMON_driveletter.TabIndex = 7
+        '
+        'bt_DAEMON_Programpath
+        '
+        Me.bt_DAEMON_Programpath.Location = New System.Drawing.Point(259, 82)
+        Me.bt_DAEMON_Programpath.Name = "bt_DAEMON_Programpath"
+        Me.bt_DAEMON_Programpath.Size = New System.Drawing.Size(25, 23)
+        Me.bt_DAEMON_Programpath.TabIndex = 4
+        Me.bt_DAEMON_Programpath.Text = "..."
+        Me.bt_DAEMON_Programpath.UseVisualStyleBackColor = True
+        '
+        'txt_DAEMON_Programpath
+        '
+        Me.txt_DAEMON_Programpath.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txt_DAEMON_Programpath.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txt_DAEMON_Programpath.Location = New System.Drawing.Point(9, 82)
+        Me.txt_DAEMON_Programpath.Name = "txt_DAEMON_Programpath"
+        Me.txt_DAEMON_Programpath.Size = New System.Drawing.Size(241, 22)
+        Me.txt_DAEMON_Programpath.TabIndex = 3
+        '
+        'lbl_DAEMON_Programpath
+        '
+        Me.lbl_DAEMON_Programpath.AutoSize = True
+        Me.lbl_DAEMON_Programpath.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lbl_DAEMON_Programpath.Location = New System.Drawing.Point(6, 68)
+        Me.lbl_DAEMON_Programpath.Name = "lbl_DAEMON_Programpath"
+        Me.lbl_DAEMON_Programpath.Size = New System.Drawing.Size(136, 13)
+        Me.lbl_DAEMON_Programpath.TabIndex = 2
+        Me.lbl_DAEMON_Programpath.Text = ".EXE path (i.e. DTLite.exe):"
         '
         'chkImagesGlassOverlay
         '
@@ -2351,7 +2423,7 @@ Partial Class dlgSettings
         Me.pnlGeneral.BackColor = System.Drawing.Color.White
         Me.pnlGeneral.Controls.Add(Me.gbInterface)
         Me.pnlGeneral.Controls.Add(Me.GroupBox4)
-        Me.pnlGeneral.Location = New System.Drawing.Point(1074, 521)
+        Me.pnlGeneral.Location = New System.Drawing.Point(1015, 371)
         Me.pnlGeneral.Name = "pnlGeneral"
         Me.pnlGeneral.Size = New System.Drawing.Size(617, 400)
         Me.pnlGeneral.TabIndex = 10
@@ -2359,7 +2431,6 @@ Partial Class dlgSettings
         '
         'gbInterface
         '
-        Me.gbInterface.Controls.Add(Me.pnlMovieImages)
         Me.gbInterface.Controls.Add(Me.GroupBox29)
         Me.gbInterface.Controls.Add(Me.Label32)
         Me.gbInterface.Controls.Add(Me.cbIntLang)
@@ -2381,7 +2452,7 @@ Partial Class dlgSettings
         Me.pnlMovieImages.Controls.Add(Me.gbMovieImagesFanart)
         Me.pnlMovieImages.Controls.Add(Me.gbMovieImagesPoster)
         Me.pnlMovieImages.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.pnlMovieImages.Location = New System.Drawing.Point(50, 242)
+        Me.pnlMovieImages.Location = New System.Drawing.Point(2, 79)
         Me.pnlMovieImages.Name = "pnlMovieImages"
         Me.pnlMovieImages.Size = New System.Drawing.Size(617, 438)
         Me.pnlMovieImages.TabIndex = 12
@@ -3289,7 +3360,7 @@ Partial Class dlgSettings
         Me.pnlMovieSources.Controls.Add(Me.btnMovieRem)
         Me.pnlMovieSources.Controls.Add(Me.btnMovieAddFolder)
         Me.pnlMovieSources.Controls.Add(Me.GroupBox16)
-        Me.pnlMovieSources.Location = New System.Drawing.Point(925, 70)
+        Me.pnlMovieSources.Location = New System.Drawing.Point(352, 696)
         Me.pnlMovieSources.Name = "pnlMovieSources"
         Me.pnlMovieSources.Size = New System.Drawing.Size(617, 402)
         Me.pnlMovieSources.TabIndex = 13
@@ -3900,6 +3971,7 @@ Partial Class dlgSettings
         Me.GroupBox19.Controls.Add(Me.Label21)
         Me.GroupBox19.Controls.Add(Me.txtSkipLessThan)
         Me.GroupBox19.Controls.Add(Me.Label20)
+        Me.GroupBox19.Controls.Add(Me.pnlTVGeneral)
         Me.GroupBox19.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox19.Location = New System.Drawing.Point(5, 113)
         Me.GroupBox19.Name = "GroupBox19"
@@ -3999,6 +4071,432 @@ Partial Class dlgSettings
         Me.Label20.Size = New System.Drawing.Size(122, 13)
         Me.Label20.TabIndex = 0
         Me.Label20.Text = "Skip files smaller than:"
+        '
+        'pnlTVGeneral
+        '
+        Me.pnlTVGeneral.BackColor = System.Drawing.Color.White
+        Me.pnlTVGeneral.Controls.Add(Me.gbTVListOptions)
+        Me.pnlTVGeneral.Controls.Add(Me.gbTVMisc)
+        Me.pnlTVGeneral.Controls.Add(Me.gbEpFilter)
+        Me.pnlTVGeneral.Controls.Add(Me.gbShowFilter)
+        Me.pnlTVGeneral.Location = New System.Drawing.Point(44, 144)
+        Me.pnlTVGeneral.Name = "pnlTVGeneral"
+        Me.pnlTVGeneral.Size = New System.Drawing.Size(617, 400)
+        Me.pnlTVGeneral.TabIndex = 20
+        Me.pnlTVGeneral.Visible = False
+        '
+        'gbTVListOptions
+        '
+        Me.gbTVListOptions.Controls.Add(Me.chkDisplayMissingEpisodes)
+        Me.gbTVListOptions.Controls.Add(Me.gbEpisodeListOptions)
+        Me.gbTVListOptions.Controls.Add(Me.gbSeasonListOptions)
+        Me.gbTVListOptions.Controls.Add(Me.gbShowListOptions)
+        Me.gbTVListOptions.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbTVListOptions.Location = New System.Drawing.Point(6, 150)
+        Me.gbTVListOptions.Name = "gbTVListOptions"
+        Me.gbTVListOptions.Size = New System.Drawing.Size(219, 245)
+        Me.gbTVListOptions.TabIndex = 1
+        Me.gbTVListOptions.TabStop = False
+        Me.gbTVListOptions.Text = "Media List Options"
+        '
+        'chkDisplayMissingEpisodes
+        '
+        Me.chkDisplayMissingEpisodes.AutoSize = True
+        Me.chkDisplayMissingEpisodes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkDisplayMissingEpisodes.Location = New System.Drawing.Point(10, 224)
+        Me.chkDisplayMissingEpisodes.Name = "chkDisplayMissingEpisodes"
+        Me.chkDisplayMissingEpisodes.Size = New System.Drawing.Size(155, 17)
+        Me.chkDisplayMissingEpisodes.TabIndex = 3
+        Me.chkDisplayMissingEpisodes.Text = "Display Missing Episodes"
+        Me.chkDisplayMissingEpisodes.UseVisualStyleBackColor = True
+        '
+        'gbEpisodeListOptions
+        '
+        Me.gbEpisodeListOptions.Controls.Add(Me.chkEpisodeNfoCol)
+        Me.gbEpisodeListOptions.Controls.Add(Me.chkEpisodeFanartCol)
+        Me.gbEpisodeListOptions.Controls.Add(Me.chkEpisodePosterCol)
+        Me.gbEpisodeListOptions.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbEpisodeListOptions.Location = New System.Drawing.Point(10, 143)
+        Me.gbEpisodeListOptions.Name = "gbEpisodeListOptions"
+        Me.gbEpisodeListOptions.Size = New System.Drawing.Size(199, 68)
+        Me.gbEpisodeListOptions.TabIndex = 2
+        Me.gbEpisodeListOptions.TabStop = False
+        Me.gbEpisodeListOptions.Text = "Episodes"
+        '
+        'chkEpisodeNfoCol
+        '
+        Me.chkEpisodeNfoCol.AutoSize = True
+        Me.chkEpisodeNfoCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkEpisodeNfoCol.Location = New System.Drawing.Point(7, 48)
+        Me.chkEpisodeNfoCol.Name = "chkEpisodeNfoCol"
+        Me.chkEpisodeNfoCol.Size = New System.Drawing.Size(117, 17)
+        Me.chkEpisodeNfoCol.TabIndex = 2
+        Me.chkEpisodeNfoCol.Text = "Hide Info Column"
+        Me.chkEpisodeNfoCol.UseVisualStyleBackColor = True
+        '
+        'chkEpisodeFanartCol
+        '
+        Me.chkEpisodeFanartCol.AutoSize = True
+        Me.chkEpisodeFanartCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkEpisodeFanartCol.Location = New System.Drawing.Point(7, 32)
+        Me.chkEpisodeFanartCol.Name = "chkEpisodeFanartCol"
+        Me.chkEpisodeFanartCol.Size = New System.Drawing.Size(129, 17)
+        Me.chkEpisodeFanartCol.TabIndex = 1
+        Me.chkEpisodeFanartCol.Text = "Hide Fanart Column"
+        Me.chkEpisodeFanartCol.UseVisualStyleBackColor = True
+        '
+        'chkEpisodePosterCol
+        '
+        Me.chkEpisodePosterCol.AutoSize = True
+        Me.chkEpisodePosterCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkEpisodePosterCol.Location = New System.Drawing.Point(7, 16)
+        Me.chkEpisodePosterCol.Name = "chkEpisodePosterCol"
+        Me.chkEpisodePosterCol.Size = New System.Drawing.Size(128, 17)
+        Me.chkEpisodePosterCol.TabIndex = 0
+        Me.chkEpisodePosterCol.Text = "Hide Poster Column"
+        Me.chkEpisodePosterCol.UseVisualStyleBackColor = True
+        '
+        'gbSeasonListOptions
+        '
+        Me.gbSeasonListOptions.Controls.Add(Me.chkSeasonFanartCol)
+        Me.gbSeasonListOptions.Controls.Add(Me.chkSeasonPosterCol)
+        Me.gbSeasonListOptions.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbSeasonListOptions.Location = New System.Drawing.Point(10, 87)
+        Me.gbSeasonListOptions.Name = "gbSeasonListOptions"
+        Me.gbSeasonListOptions.Size = New System.Drawing.Size(199, 52)
+        Me.gbSeasonListOptions.TabIndex = 1
+        Me.gbSeasonListOptions.TabStop = False
+        Me.gbSeasonListOptions.Text = "Seasons"
+        '
+        'chkSeasonFanartCol
+        '
+        Me.chkSeasonFanartCol.AutoSize = True
+        Me.chkSeasonFanartCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkSeasonFanartCol.Location = New System.Drawing.Point(7, 32)
+        Me.chkSeasonFanartCol.Name = "chkSeasonFanartCol"
+        Me.chkSeasonFanartCol.Size = New System.Drawing.Size(129, 17)
+        Me.chkSeasonFanartCol.TabIndex = 1
+        Me.chkSeasonFanartCol.Text = "Hide Fanart Column"
+        Me.chkSeasonFanartCol.UseVisualStyleBackColor = True
+        '
+        'chkSeasonPosterCol
+        '
+        Me.chkSeasonPosterCol.AutoSize = True
+        Me.chkSeasonPosterCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkSeasonPosterCol.Location = New System.Drawing.Point(7, 16)
+        Me.chkSeasonPosterCol.Name = "chkSeasonPosterCol"
+        Me.chkSeasonPosterCol.Size = New System.Drawing.Size(128, 17)
+        Me.chkSeasonPosterCol.TabIndex = 0
+        Me.chkSeasonPosterCol.Text = "Hide Poster Column"
+        Me.chkSeasonPosterCol.UseVisualStyleBackColor = True
+        '
+        'gbShowListOptions
+        '
+        Me.gbShowListOptions.Controls.Add(Me.chkShowNfoCol)
+        Me.gbShowListOptions.Controls.Add(Me.chkShowFanartCol)
+        Me.gbShowListOptions.Controls.Add(Me.chkShowPosterCol)
+        Me.gbShowListOptions.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbShowListOptions.Location = New System.Drawing.Point(9, 16)
+        Me.gbShowListOptions.Name = "gbShowListOptions"
+        Me.gbShowListOptions.Size = New System.Drawing.Size(199, 68)
+        Me.gbShowListOptions.TabIndex = 0
+        Me.gbShowListOptions.TabStop = False
+        Me.gbShowListOptions.Text = "Shows"
+        '
+        'chkShowNfoCol
+        '
+        Me.chkShowNfoCol.AutoSize = True
+        Me.chkShowNfoCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkShowNfoCol.Location = New System.Drawing.Point(7, 48)
+        Me.chkShowNfoCol.Name = "chkShowNfoCol"
+        Me.chkShowNfoCol.Size = New System.Drawing.Size(117, 17)
+        Me.chkShowNfoCol.TabIndex = 2
+        Me.chkShowNfoCol.Text = "Hide Info Column"
+        Me.chkShowNfoCol.UseVisualStyleBackColor = True
+        '
+        'chkShowFanartCol
+        '
+        Me.chkShowFanartCol.AutoSize = True
+        Me.chkShowFanartCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkShowFanartCol.Location = New System.Drawing.Point(7, 32)
+        Me.chkShowFanartCol.Name = "chkShowFanartCol"
+        Me.chkShowFanartCol.Size = New System.Drawing.Size(129, 17)
+        Me.chkShowFanartCol.TabIndex = 1
+        Me.chkShowFanartCol.Text = "Hide Fanart Column"
+        Me.chkShowFanartCol.UseVisualStyleBackColor = True
+        '
+        'chkShowPosterCol
+        '
+        Me.chkShowPosterCol.AutoSize = True
+        Me.chkShowPosterCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkShowPosterCol.Location = New System.Drawing.Point(7, 16)
+        Me.chkShowPosterCol.Name = "chkShowPosterCol"
+        Me.chkShowPosterCol.Size = New System.Drawing.Size(128, 17)
+        Me.chkShowPosterCol.TabIndex = 0
+        Me.chkShowPosterCol.Text = "Hide Poster Column"
+        Me.chkShowPosterCol.UseVisualStyleBackColor = True
+        '
+        'gbTVMisc
+        '
+        Me.gbTVMisc.Controls.Add(Me.chkMarkNewShows)
+        Me.gbTVMisc.Controls.Add(Me.chkMarkNewEpisodes)
+        Me.gbTVMisc.Controls.Add(Me.chkDisplayAllSeason)
+        Me.gbTVMisc.Controls.Add(Me.lblRatingRegion)
+        Me.gbTVMisc.Controls.Add(Me.cbRatingRegion)
+        Me.gbTVMisc.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbTVMisc.Location = New System.Drawing.Point(6, 7)
+        Me.gbTVMisc.Name = "gbTVMisc"
+        Me.gbTVMisc.Size = New System.Drawing.Size(219, 142)
+        Me.gbTVMisc.TabIndex = 0
+        Me.gbTVMisc.TabStop = False
+        Me.gbTVMisc.Text = "Miscellaneous"
+        '
+        'chkMarkNewShows
+        '
+        Me.chkMarkNewShows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkMarkNewShows.Location = New System.Drawing.Point(8, 90)
+        Me.chkMarkNewShows.Name = "chkMarkNewShows"
+        Me.chkMarkNewShows.Size = New System.Drawing.Size(204, 17)
+        Me.chkMarkNewShows.TabIndex = 3
+        Me.chkMarkNewShows.Text = "Mark New Shows"
+        Me.chkMarkNewShows.UseVisualStyleBackColor = True
+        '
+        'chkMarkNewEpisodes
+        '
+        Me.chkMarkNewEpisodes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkMarkNewEpisodes.Location = New System.Drawing.Point(8, 113)
+        Me.chkMarkNewEpisodes.Name = "chkMarkNewEpisodes"
+        Me.chkMarkNewEpisodes.Size = New System.Drawing.Size(204, 17)
+        Me.chkMarkNewEpisodes.TabIndex = 4
+        Me.chkMarkNewEpisodes.Text = "Mark New Episodes"
+        Me.chkMarkNewEpisodes.UseVisualStyleBackColor = True
+        '
+        'chkDisplayAllSeason
+        '
+        Me.chkDisplayAllSeason.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkDisplayAllSeason.Location = New System.Drawing.Point(8, 67)
+        Me.chkDisplayAllSeason.Name = "chkDisplayAllSeason"
+        Me.chkDisplayAllSeason.Size = New System.Drawing.Size(204, 17)
+        Me.chkDisplayAllSeason.TabIndex = 2
+        Me.chkDisplayAllSeason.Text = "Display All Season Poster"
+        Me.chkDisplayAllSeason.UseVisualStyleBackColor = True
+        '
+        'lblRatingRegion
+        '
+        Me.lblRatingRegion.AutoSize = True
+        Me.lblRatingRegion.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblRatingRegion.Location = New System.Drawing.Point(8, 21)
+        Me.lblRatingRegion.Name = "lblRatingRegion"
+        Me.lblRatingRegion.Size = New System.Drawing.Size(99, 13)
+        Me.lblRatingRegion.TabIndex = 0
+        Me.lblRatingRegion.Text = "TV Rating Region:"
+        '
+        'cbRatingRegion
+        '
+        Me.cbRatingRegion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbRatingRegion.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbRatingRegion.FormattingEnabled = True
+        Me.cbRatingRegion.Location = New System.Drawing.Point(8, 36)
+        Me.cbRatingRegion.Name = "cbRatingRegion"
+        Me.cbRatingRegion.Size = New System.Drawing.Size(163, 21)
+        Me.cbRatingRegion.TabIndex = 1
+        '
+        'gbEpFilter
+        '
+        Me.gbEpFilter.Controls.Add(Me.btnResetEpFilter)
+        Me.gbEpFilter.Controls.Add(Me.chkNoFilterEpisode)
+        Me.gbEpFilter.Controls.Add(Me.btnEpFilterDown)
+        Me.gbEpFilter.Controls.Add(Me.btnEpFilterUp)
+        Me.gbEpFilter.Controls.Add(Me.chkEpProperCase)
+        Me.gbEpFilter.Controls.Add(Me.btnRemoveEpFilter)
+        Me.gbEpFilter.Controls.Add(Me.btnAddEpFilter)
+        Me.gbEpFilter.Controls.Add(Me.txtEpFilter)
+        Me.gbEpFilter.Controls.Add(Me.lstEpFilters)
+        Me.gbEpFilter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbEpFilter.Location = New System.Drawing.Point(229, 185)
+        Me.gbEpFilter.Name = "gbEpFilter"
+        Me.gbEpFilter.Size = New System.Drawing.Size(382, 205)
+        Me.gbEpFilter.TabIndex = 3
+        Me.gbEpFilter.TabStop = False
+        Me.gbEpFilter.Text = "Episode Folder/File Name Filters"
+        '
+        'btnResetEpFilter
+        '
+        Me.btnResetEpFilter.Image = CType(resources.GetObject("btnResetEpFilter.Image"), System.Drawing.Image)
+        Me.btnResetEpFilter.Location = New System.Drawing.Point(354, 38)
+        Me.btnResetEpFilter.Name = "btnResetEpFilter"
+        Me.btnResetEpFilter.Size = New System.Drawing.Size(23, 23)
+        Me.btnResetEpFilter.TabIndex = 3
+        Me.btnResetEpFilter.UseVisualStyleBackColor = True
+        '
+        'chkNoFilterEpisode
+        '
+        Me.chkNoFilterEpisode.CheckAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkNoFilterEpisode.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkNoFilterEpisode.Location = New System.Drawing.Point(6, 15)
+        Me.chkNoFilterEpisode.Name = "chkNoFilterEpisode"
+        Me.chkNoFilterEpisode.Size = New System.Drawing.Size(371, 21)
+        Me.chkNoFilterEpisode.TabIndex = 0
+        Me.chkNoFilterEpisode.Text = "Build Episode Title Instead of Filtering"
+        Me.chkNoFilterEpisode.TextAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkNoFilterEpisode.UseVisualStyleBackColor = True
+        '
+        'btnEpFilterDown
+        '
+        Me.btnEpFilterDown.Image = CType(resources.GetObject("btnEpFilterDown.Image"), System.Drawing.Image)
+        Me.btnEpFilterDown.Location = New System.Drawing.Point(320, 176)
+        Me.btnEpFilterDown.Name = "btnEpFilterDown"
+        Me.btnEpFilterDown.Size = New System.Drawing.Size(23, 23)
+        Me.btnEpFilterDown.TabIndex = 7
+        Me.btnEpFilterDown.UseVisualStyleBackColor = True
+        '
+        'btnEpFilterUp
+        '
+        Me.btnEpFilterUp.Image = CType(resources.GetObject("btnEpFilterUp.Image"), System.Drawing.Image)
+        Me.btnEpFilterUp.Location = New System.Drawing.Point(296, 176)
+        Me.btnEpFilterUp.Name = "btnEpFilterUp"
+        Me.btnEpFilterUp.Size = New System.Drawing.Size(23, 23)
+        Me.btnEpFilterUp.TabIndex = 6
+        Me.btnEpFilterUp.UseVisualStyleBackColor = True
+        '
+        'chkEpProperCase
+        '
+        Me.chkEpProperCase.AutoSize = True
+        Me.chkEpProperCase.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkEpProperCase.Location = New System.Drawing.Point(6, 47)
+        Me.chkEpProperCase.Name = "chkEpProperCase"
+        Me.chkEpProperCase.Size = New System.Drawing.Size(181, 17)
+        Me.chkEpProperCase.TabIndex = 1
+        Me.chkEpProperCase.Text = "Convert Names to Proper Case"
+        Me.chkEpProperCase.UseVisualStyleBackColor = True
+        '
+        'btnRemoveEpFilter
+        '
+        Me.btnRemoveEpFilter.Image = CType(resources.GetObject("btnRemoveEpFilter.Image"), System.Drawing.Image)
+        Me.btnRemoveEpFilter.Location = New System.Drawing.Point(354, 176)
+        Me.btnRemoveEpFilter.Name = "btnRemoveEpFilter"
+        Me.btnRemoveEpFilter.Size = New System.Drawing.Size(23, 23)
+        Me.btnRemoveEpFilter.TabIndex = 8
+        Me.btnRemoveEpFilter.UseVisualStyleBackColor = True
+        '
+        'btnAddEpFilter
+        '
+        Me.btnAddEpFilter.Image = CType(resources.GetObject("btnAddEpFilter.Image"), System.Drawing.Image)
+        Me.btnAddEpFilter.Location = New System.Drawing.Point(260, 176)
+        Me.btnAddEpFilter.Name = "btnAddEpFilter"
+        Me.btnAddEpFilter.Size = New System.Drawing.Size(23, 23)
+        Me.btnAddEpFilter.TabIndex = 5
+        Me.btnAddEpFilter.UseVisualStyleBackColor = True
+        '
+        'txtEpFilter
+        '
+        Me.txtEpFilter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtEpFilter.Location = New System.Drawing.Point(6, 177)
+        Me.txtEpFilter.Name = "txtEpFilter"
+        Me.txtEpFilter.Size = New System.Drawing.Size(252, 22)
+        Me.txtEpFilter.TabIndex = 4
+        '
+        'lstEpFilters
+        '
+        Me.lstEpFilters.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lstEpFilters.FormattingEnabled = True
+        Me.lstEpFilters.Location = New System.Drawing.Point(6, 64)
+        Me.lstEpFilters.Name = "lstEpFilters"
+        Me.lstEpFilters.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
+        Me.lstEpFilters.Size = New System.Drawing.Size(371, 95)
+        Me.lstEpFilters.TabIndex = 2
+        '
+        'gbShowFilter
+        '
+        Me.gbShowFilter.Controls.Add(Me.btnResetShowFilters)
+        Me.gbShowFilter.Controls.Add(Me.btnShowFilterDown)
+        Me.gbShowFilter.Controls.Add(Me.btnShowFilterUp)
+        Me.gbShowFilter.Controls.Add(Me.chkShowProperCase)
+        Me.gbShowFilter.Controls.Add(Me.btnRemoveShowFilter)
+        Me.gbShowFilter.Controls.Add(Me.btnAddShowFilter)
+        Me.gbShowFilter.Controls.Add(Me.txtShowFilter)
+        Me.gbShowFilter.Controls.Add(Me.lstShowFilters)
+        Me.gbShowFilter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbShowFilter.Location = New System.Drawing.Point(229, 7)
+        Me.gbShowFilter.Name = "gbShowFilter"
+        Me.gbShowFilter.Size = New System.Drawing.Size(382, 175)
+        Me.gbShowFilter.TabIndex = 2
+        Me.gbShowFilter.TabStop = False
+        Me.gbShowFilter.Text = "Show Folder/File Name Filters"
+        '
+        'btnResetShowFilters
+        '
+        Me.btnResetShowFilters.Image = CType(resources.GetObject("btnResetShowFilters.Image"), System.Drawing.Image)
+        Me.btnResetShowFilters.Location = New System.Drawing.Point(354, 9)
+        Me.btnResetShowFilters.Name = "btnResetShowFilters"
+        Me.btnResetShowFilters.Size = New System.Drawing.Size(23, 23)
+        Me.btnResetShowFilters.TabIndex = 2
+        Me.btnResetShowFilters.UseVisualStyleBackColor = True
+        '
+        'btnShowFilterDown
+        '
+        Me.btnShowFilterDown.Image = CType(resources.GetObject("btnShowFilterDown.Image"), System.Drawing.Image)
+        Me.btnShowFilterDown.Location = New System.Drawing.Point(320, 146)
+        Me.btnShowFilterDown.Name = "btnShowFilterDown"
+        Me.btnShowFilterDown.Size = New System.Drawing.Size(23, 23)
+        Me.btnShowFilterDown.TabIndex = 6
+        Me.btnShowFilterDown.UseVisualStyleBackColor = True
+        '
+        'btnShowFilterUp
+        '
+        Me.btnShowFilterUp.Image = CType(resources.GetObject("btnShowFilterUp.Image"), System.Drawing.Image)
+        Me.btnShowFilterUp.Location = New System.Drawing.Point(296, 146)
+        Me.btnShowFilterUp.Name = "btnShowFilterUp"
+        Me.btnShowFilterUp.Size = New System.Drawing.Size(23, 23)
+        Me.btnShowFilterUp.TabIndex = 5
+        Me.btnShowFilterUp.UseVisualStyleBackColor = True
+        '
+        'chkShowProperCase
+        '
+        Me.chkShowProperCase.AutoSize = True
+        Me.chkShowProperCase.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkShowProperCase.Location = New System.Drawing.Point(6, 17)
+        Me.chkShowProperCase.Name = "chkShowProperCase"
+        Me.chkShowProperCase.Size = New System.Drawing.Size(181, 17)
+        Me.chkShowProperCase.TabIndex = 0
+        Me.chkShowProperCase.Text = "Convert Names to Proper Case"
+        Me.chkShowProperCase.UseVisualStyleBackColor = True
+        '
+        'btnRemoveShowFilter
+        '
+        Me.btnRemoveShowFilter.Image = CType(resources.GetObject("btnRemoveShowFilter.Image"), System.Drawing.Image)
+        Me.btnRemoveShowFilter.Location = New System.Drawing.Point(354, 146)
+        Me.btnRemoveShowFilter.Name = "btnRemoveShowFilter"
+        Me.btnRemoveShowFilter.Size = New System.Drawing.Size(23, 23)
+        Me.btnRemoveShowFilter.TabIndex = 7
+        Me.btnRemoveShowFilter.UseVisualStyleBackColor = True
+        '
+        'btnAddShowFilter
+        '
+        Me.btnAddShowFilter.Image = CType(resources.GetObject("btnAddShowFilter.Image"), System.Drawing.Image)
+        Me.btnAddShowFilter.Location = New System.Drawing.Point(260, 146)
+        Me.btnAddShowFilter.Name = "btnAddShowFilter"
+        Me.btnAddShowFilter.Size = New System.Drawing.Size(23, 23)
+        Me.btnAddShowFilter.TabIndex = 4
+        Me.btnAddShowFilter.UseVisualStyleBackColor = True
+        '
+        'txtShowFilter
+        '
+        Me.txtShowFilter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtShowFilter.Location = New System.Drawing.Point(6, 147)
+        Me.txtShowFilter.Name = "txtShowFilter"
+        Me.txtShowFilter.Size = New System.Drawing.Size(252, 22)
+        Me.txtShowFilter.TabIndex = 3
+        '
+        'lstShowFilters
+        '
+        Me.lstShowFilters.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lstShowFilters.FormattingEnabled = True
+        Me.lstShowFilters.Location = New System.Drawing.Point(6, 35)
+        Me.lstShowFilters.Name = "lstShowFilters"
+        Me.lstShowFilters.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
+        Me.lstShowFilters.Size = New System.Drawing.Size(371, 95)
+        Me.lstShowFilters.TabIndex = 1
         '
         'fbdBrowse
         '
@@ -4898,432 +5396,6 @@ Partial Class dlgSettings
         Me.colEpApply.DisplayIndex = 3
         Me.colEpApply.Text = "Apply To"
         Me.colEpApply.Width = 70
-        '
-        'pnlTVGeneral
-        '
-        Me.pnlTVGeneral.BackColor = System.Drawing.Color.White
-        Me.pnlTVGeneral.Controls.Add(Me.gbTVListOptions)
-        Me.pnlTVGeneral.Controls.Add(Me.gbTVMisc)
-        Me.pnlTVGeneral.Controls.Add(Me.gbEpFilter)
-        Me.pnlTVGeneral.Controls.Add(Me.gbShowFilter)
-        Me.pnlTVGeneral.Location = New System.Drawing.Point(5, 681)
-        Me.pnlTVGeneral.Name = "pnlTVGeneral"
-        Me.pnlTVGeneral.Size = New System.Drawing.Size(617, 400)
-        Me.pnlTVGeneral.TabIndex = 20
-        Me.pnlTVGeneral.Visible = False
-        '
-        'gbTVListOptions
-        '
-        Me.gbTVListOptions.Controls.Add(Me.chkDisplayMissingEpisodes)
-        Me.gbTVListOptions.Controls.Add(Me.gbEpisodeListOptions)
-        Me.gbTVListOptions.Controls.Add(Me.gbSeasonListOptions)
-        Me.gbTVListOptions.Controls.Add(Me.gbShowListOptions)
-        Me.gbTVListOptions.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbTVListOptions.Location = New System.Drawing.Point(6, 150)
-        Me.gbTVListOptions.Name = "gbTVListOptions"
-        Me.gbTVListOptions.Size = New System.Drawing.Size(219, 245)
-        Me.gbTVListOptions.TabIndex = 1
-        Me.gbTVListOptions.TabStop = False
-        Me.gbTVListOptions.Text = "Media List Options"
-        '
-        'chkDisplayMissingEpisodes
-        '
-        Me.chkDisplayMissingEpisodes.AutoSize = True
-        Me.chkDisplayMissingEpisodes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkDisplayMissingEpisodes.Location = New System.Drawing.Point(10, 224)
-        Me.chkDisplayMissingEpisodes.Name = "chkDisplayMissingEpisodes"
-        Me.chkDisplayMissingEpisodes.Size = New System.Drawing.Size(155, 17)
-        Me.chkDisplayMissingEpisodes.TabIndex = 3
-        Me.chkDisplayMissingEpisodes.Text = "Display Missing Episodes"
-        Me.chkDisplayMissingEpisodes.UseVisualStyleBackColor = True
-        '
-        'gbEpisodeListOptions
-        '
-        Me.gbEpisodeListOptions.Controls.Add(Me.chkEpisodeNfoCol)
-        Me.gbEpisodeListOptions.Controls.Add(Me.chkEpisodeFanartCol)
-        Me.gbEpisodeListOptions.Controls.Add(Me.chkEpisodePosterCol)
-        Me.gbEpisodeListOptions.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbEpisodeListOptions.Location = New System.Drawing.Point(10, 143)
-        Me.gbEpisodeListOptions.Name = "gbEpisodeListOptions"
-        Me.gbEpisodeListOptions.Size = New System.Drawing.Size(199, 68)
-        Me.gbEpisodeListOptions.TabIndex = 2
-        Me.gbEpisodeListOptions.TabStop = False
-        Me.gbEpisodeListOptions.Text = "Episodes"
-        '
-        'chkEpisodeNfoCol
-        '
-        Me.chkEpisodeNfoCol.AutoSize = True
-        Me.chkEpisodeNfoCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkEpisodeNfoCol.Location = New System.Drawing.Point(7, 48)
-        Me.chkEpisodeNfoCol.Name = "chkEpisodeNfoCol"
-        Me.chkEpisodeNfoCol.Size = New System.Drawing.Size(117, 17)
-        Me.chkEpisodeNfoCol.TabIndex = 2
-        Me.chkEpisodeNfoCol.Text = "Hide Info Column"
-        Me.chkEpisodeNfoCol.UseVisualStyleBackColor = True
-        '
-        'chkEpisodeFanartCol
-        '
-        Me.chkEpisodeFanartCol.AutoSize = True
-        Me.chkEpisodeFanartCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkEpisodeFanartCol.Location = New System.Drawing.Point(7, 32)
-        Me.chkEpisodeFanartCol.Name = "chkEpisodeFanartCol"
-        Me.chkEpisodeFanartCol.Size = New System.Drawing.Size(129, 17)
-        Me.chkEpisodeFanartCol.TabIndex = 1
-        Me.chkEpisodeFanartCol.Text = "Hide Fanart Column"
-        Me.chkEpisodeFanartCol.UseVisualStyleBackColor = True
-        '
-        'chkEpisodePosterCol
-        '
-        Me.chkEpisodePosterCol.AutoSize = True
-        Me.chkEpisodePosterCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkEpisodePosterCol.Location = New System.Drawing.Point(7, 16)
-        Me.chkEpisodePosterCol.Name = "chkEpisodePosterCol"
-        Me.chkEpisodePosterCol.Size = New System.Drawing.Size(128, 17)
-        Me.chkEpisodePosterCol.TabIndex = 0
-        Me.chkEpisodePosterCol.Text = "Hide Poster Column"
-        Me.chkEpisodePosterCol.UseVisualStyleBackColor = True
-        '
-        'gbSeasonListOptions
-        '
-        Me.gbSeasonListOptions.Controls.Add(Me.chkSeasonFanartCol)
-        Me.gbSeasonListOptions.Controls.Add(Me.chkSeasonPosterCol)
-        Me.gbSeasonListOptions.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbSeasonListOptions.Location = New System.Drawing.Point(10, 87)
-        Me.gbSeasonListOptions.Name = "gbSeasonListOptions"
-        Me.gbSeasonListOptions.Size = New System.Drawing.Size(199, 52)
-        Me.gbSeasonListOptions.TabIndex = 1
-        Me.gbSeasonListOptions.TabStop = False
-        Me.gbSeasonListOptions.Text = "Seasons"
-        '
-        'chkSeasonFanartCol
-        '
-        Me.chkSeasonFanartCol.AutoSize = True
-        Me.chkSeasonFanartCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkSeasonFanartCol.Location = New System.Drawing.Point(7, 32)
-        Me.chkSeasonFanartCol.Name = "chkSeasonFanartCol"
-        Me.chkSeasonFanartCol.Size = New System.Drawing.Size(129, 17)
-        Me.chkSeasonFanartCol.TabIndex = 1
-        Me.chkSeasonFanartCol.Text = "Hide Fanart Column"
-        Me.chkSeasonFanartCol.UseVisualStyleBackColor = True
-        '
-        'chkSeasonPosterCol
-        '
-        Me.chkSeasonPosterCol.AutoSize = True
-        Me.chkSeasonPosterCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkSeasonPosterCol.Location = New System.Drawing.Point(7, 16)
-        Me.chkSeasonPosterCol.Name = "chkSeasonPosterCol"
-        Me.chkSeasonPosterCol.Size = New System.Drawing.Size(128, 17)
-        Me.chkSeasonPosterCol.TabIndex = 0
-        Me.chkSeasonPosterCol.Text = "Hide Poster Column"
-        Me.chkSeasonPosterCol.UseVisualStyleBackColor = True
-        '
-        'gbShowListOptions
-        '
-        Me.gbShowListOptions.Controls.Add(Me.chkShowNfoCol)
-        Me.gbShowListOptions.Controls.Add(Me.chkShowFanartCol)
-        Me.gbShowListOptions.Controls.Add(Me.chkShowPosterCol)
-        Me.gbShowListOptions.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbShowListOptions.Location = New System.Drawing.Point(9, 16)
-        Me.gbShowListOptions.Name = "gbShowListOptions"
-        Me.gbShowListOptions.Size = New System.Drawing.Size(199, 68)
-        Me.gbShowListOptions.TabIndex = 0
-        Me.gbShowListOptions.TabStop = False
-        Me.gbShowListOptions.Text = "Shows"
-        '
-        'chkShowNfoCol
-        '
-        Me.chkShowNfoCol.AutoSize = True
-        Me.chkShowNfoCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkShowNfoCol.Location = New System.Drawing.Point(7, 48)
-        Me.chkShowNfoCol.Name = "chkShowNfoCol"
-        Me.chkShowNfoCol.Size = New System.Drawing.Size(117, 17)
-        Me.chkShowNfoCol.TabIndex = 2
-        Me.chkShowNfoCol.Text = "Hide Info Column"
-        Me.chkShowNfoCol.UseVisualStyleBackColor = True
-        '
-        'chkShowFanartCol
-        '
-        Me.chkShowFanartCol.AutoSize = True
-        Me.chkShowFanartCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkShowFanartCol.Location = New System.Drawing.Point(7, 32)
-        Me.chkShowFanartCol.Name = "chkShowFanartCol"
-        Me.chkShowFanartCol.Size = New System.Drawing.Size(129, 17)
-        Me.chkShowFanartCol.TabIndex = 1
-        Me.chkShowFanartCol.Text = "Hide Fanart Column"
-        Me.chkShowFanartCol.UseVisualStyleBackColor = True
-        '
-        'chkShowPosterCol
-        '
-        Me.chkShowPosterCol.AutoSize = True
-        Me.chkShowPosterCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkShowPosterCol.Location = New System.Drawing.Point(7, 16)
-        Me.chkShowPosterCol.Name = "chkShowPosterCol"
-        Me.chkShowPosterCol.Size = New System.Drawing.Size(128, 17)
-        Me.chkShowPosterCol.TabIndex = 0
-        Me.chkShowPosterCol.Text = "Hide Poster Column"
-        Me.chkShowPosterCol.UseVisualStyleBackColor = True
-        '
-        'gbTVMisc
-        '
-        Me.gbTVMisc.Controls.Add(Me.chkMarkNewShows)
-        Me.gbTVMisc.Controls.Add(Me.chkMarkNewEpisodes)
-        Me.gbTVMisc.Controls.Add(Me.chkDisplayAllSeason)
-        Me.gbTVMisc.Controls.Add(Me.lblRatingRegion)
-        Me.gbTVMisc.Controls.Add(Me.cbRatingRegion)
-        Me.gbTVMisc.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbTVMisc.Location = New System.Drawing.Point(6, 7)
-        Me.gbTVMisc.Name = "gbTVMisc"
-        Me.gbTVMisc.Size = New System.Drawing.Size(219, 142)
-        Me.gbTVMisc.TabIndex = 0
-        Me.gbTVMisc.TabStop = False
-        Me.gbTVMisc.Text = "Miscellaneous"
-        '
-        'chkMarkNewShows
-        '
-        Me.chkMarkNewShows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMarkNewShows.Location = New System.Drawing.Point(8, 90)
-        Me.chkMarkNewShows.Name = "chkMarkNewShows"
-        Me.chkMarkNewShows.Size = New System.Drawing.Size(204, 17)
-        Me.chkMarkNewShows.TabIndex = 3
-        Me.chkMarkNewShows.Text = "Mark New Shows"
-        Me.chkMarkNewShows.UseVisualStyleBackColor = True
-        '
-        'chkMarkNewEpisodes
-        '
-        Me.chkMarkNewEpisodes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMarkNewEpisodes.Location = New System.Drawing.Point(8, 113)
-        Me.chkMarkNewEpisodes.Name = "chkMarkNewEpisodes"
-        Me.chkMarkNewEpisodes.Size = New System.Drawing.Size(204, 17)
-        Me.chkMarkNewEpisodes.TabIndex = 4
-        Me.chkMarkNewEpisodes.Text = "Mark New Episodes"
-        Me.chkMarkNewEpisodes.UseVisualStyleBackColor = True
-        '
-        'chkDisplayAllSeason
-        '
-        Me.chkDisplayAllSeason.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkDisplayAllSeason.Location = New System.Drawing.Point(8, 67)
-        Me.chkDisplayAllSeason.Name = "chkDisplayAllSeason"
-        Me.chkDisplayAllSeason.Size = New System.Drawing.Size(204, 17)
-        Me.chkDisplayAllSeason.TabIndex = 2
-        Me.chkDisplayAllSeason.Text = "Display All Season Poster"
-        Me.chkDisplayAllSeason.UseVisualStyleBackColor = True
-        '
-        'lblRatingRegion
-        '
-        Me.lblRatingRegion.AutoSize = True
-        Me.lblRatingRegion.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblRatingRegion.Location = New System.Drawing.Point(8, 21)
-        Me.lblRatingRegion.Name = "lblRatingRegion"
-        Me.lblRatingRegion.Size = New System.Drawing.Size(99, 13)
-        Me.lblRatingRegion.TabIndex = 0
-        Me.lblRatingRegion.Text = "TV Rating Region:"
-        '
-        'cbRatingRegion
-        '
-        Me.cbRatingRegion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbRatingRegion.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.cbRatingRegion.FormattingEnabled = True
-        Me.cbRatingRegion.Location = New System.Drawing.Point(8, 36)
-        Me.cbRatingRegion.Name = "cbRatingRegion"
-        Me.cbRatingRegion.Size = New System.Drawing.Size(163, 21)
-        Me.cbRatingRegion.TabIndex = 1
-        '
-        'gbEpFilter
-        '
-        Me.gbEpFilter.Controls.Add(Me.btnResetEpFilter)
-        Me.gbEpFilter.Controls.Add(Me.chkNoFilterEpisode)
-        Me.gbEpFilter.Controls.Add(Me.btnEpFilterDown)
-        Me.gbEpFilter.Controls.Add(Me.btnEpFilterUp)
-        Me.gbEpFilter.Controls.Add(Me.chkEpProperCase)
-        Me.gbEpFilter.Controls.Add(Me.btnRemoveEpFilter)
-        Me.gbEpFilter.Controls.Add(Me.btnAddEpFilter)
-        Me.gbEpFilter.Controls.Add(Me.txtEpFilter)
-        Me.gbEpFilter.Controls.Add(Me.lstEpFilters)
-        Me.gbEpFilter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbEpFilter.Location = New System.Drawing.Point(229, 185)
-        Me.gbEpFilter.Name = "gbEpFilter"
-        Me.gbEpFilter.Size = New System.Drawing.Size(382, 205)
-        Me.gbEpFilter.TabIndex = 3
-        Me.gbEpFilter.TabStop = False
-        Me.gbEpFilter.Text = "Episode Folder/File Name Filters"
-        '
-        'btnResetEpFilter
-        '
-        Me.btnResetEpFilter.Image = CType(resources.GetObject("btnResetEpFilter.Image"), System.Drawing.Image)
-        Me.btnResetEpFilter.Location = New System.Drawing.Point(354, 38)
-        Me.btnResetEpFilter.Name = "btnResetEpFilter"
-        Me.btnResetEpFilter.Size = New System.Drawing.Size(23, 23)
-        Me.btnResetEpFilter.TabIndex = 3
-        Me.btnResetEpFilter.UseVisualStyleBackColor = True
-        '
-        'chkNoFilterEpisode
-        '
-        Me.chkNoFilterEpisode.CheckAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkNoFilterEpisode.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkNoFilterEpisode.Location = New System.Drawing.Point(6, 15)
-        Me.chkNoFilterEpisode.Name = "chkNoFilterEpisode"
-        Me.chkNoFilterEpisode.Size = New System.Drawing.Size(371, 21)
-        Me.chkNoFilterEpisode.TabIndex = 0
-        Me.chkNoFilterEpisode.Text = "Build Episode Title Instead of Filtering"
-        Me.chkNoFilterEpisode.TextAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkNoFilterEpisode.UseVisualStyleBackColor = True
-        '
-        'btnEpFilterDown
-        '
-        Me.btnEpFilterDown.Image = CType(resources.GetObject("btnEpFilterDown.Image"), System.Drawing.Image)
-        Me.btnEpFilterDown.Location = New System.Drawing.Point(320, 176)
-        Me.btnEpFilterDown.Name = "btnEpFilterDown"
-        Me.btnEpFilterDown.Size = New System.Drawing.Size(23, 23)
-        Me.btnEpFilterDown.TabIndex = 7
-        Me.btnEpFilterDown.UseVisualStyleBackColor = True
-        '
-        'btnEpFilterUp
-        '
-        Me.btnEpFilterUp.Image = CType(resources.GetObject("btnEpFilterUp.Image"), System.Drawing.Image)
-        Me.btnEpFilterUp.Location = New System.Drawing.Point(296, 176)
-        Me.btnEpFilterUp.Name = "btnEpFilterUp"
-        Me.btnEpFilterUp.Size = New System.Drawing.Size(23, 23)
-        Me.btnEpFilterUp.TabIndex = 6
-        Me.btnEpFilterUp.UseVisualStyleBackColor = True
-        '
-        'chkEpProperCase
-        '
-        Me.chkEpProperCase.AutoSize = True
-        Me.chkEpProperCase.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkEpProperCase.Location = New System.Drawing.Point(6, 47)
-        Me.chkEpProperCase.Name = "chkEpProperCase"
-        Me.chkEpProperCase.Size = New System.Drawing.Size(181, 17)
-        Me.chkEpProperCase.TabIndex = 1
-        Me.chkEpProperCase.Text = "Convert Names to Proper Case"
-        Me.chkEpProperCase.UseVisualStyleBackColor = True
-        '
-        'btnRemoveEpFilter
-        '
-        Me.btnRemoveEpFilter.Image = CType(resources.GetObject("btnRemoveEpFilter.Image"), System.Drawing.Image)
-        Me.btnRemoveEpFilter.Location = New System.Drawing.Point(354, 176)
-        Me.btnRemoveEpFilter.Name = "btnRemoveEpFilter"
-        Me.btnRemoveEpFilter.Size = New System.Drawing.Size(23, 23)
-        Me.btnRemoveEpFilter.TabIndex = 8
-        Me.btnRemoveEpFilter.UseVisualStyleBackColor = True
-        '
-        'btnAddEpFilter
-        '
-        Me.btnAddEpFilter.Image = CType(resources.GetObject("btnAddEpFilter.Image"), System.Drawing.Image)
-        Me.btnAddEpFilter.Location = New System.Drawing.Point(260, 176)
-        Me.btnAddEpFilter.Name = "btnAddEpFilter"
-        Me.btnAddEpFilter.Size = New System.Drawing.Size(23, 23)
-        Me.btnAddEpFilter.TabIndex = 5
-        Me.btnAddEpFilter.UseVisualStyleBackColor = True
-        '
-        'txtEpFilter
-        '
-        Me.txtEpFilter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtEpFilter.Location = New System.Drawing.Point(6, 177)
-        Me.txtEpFilter.Name = "txtEpFilter"
-        Me.txtEpFilter.Size = New System.Drawing.Size(252, 22)
-        Me.txtEpFilter.TabIndex = 4
-        '
-        'lstEpFilters
-        '
-        Me.lstEpFilters.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lstEpFilters.FormattingEnabled = True
-        Me.lstEpFilters.Location = New System.Drawing.Point(6, 64)
-        Me.lstEpFilters.Name = "lstEpFilters"
-        Me.lstEpFilters.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
-        Me.lstEpFilters.Size = New System.Drawing.Size(371, 95)
-        Me.lstEpFilters.TabIndex = 2
-        '
-        'gbShowFilter
-        '
-        Me.gbShowFilter.Controls.Add(Me.btnResetShowFilters)
-        Me.gbShowFilter.Controls.Add(Me.btnShowFilterDown)
-        Me.gbShowFilter.Controls.Add(Me.btnShowFilterUp)
-        Me.gbShowFilter.Controls.Add(Me.chkShowProperCase)
-        Me.gbShowFilter.Controls.Add(Me.btnRemoveShowFilter)
-        Me.gbShowFilter.Controls.Add(Me.btnAddShowFilter)
-        Me.gbShowFilter.Controls.Add(Me.txtShowFilter)
-        Me.gbShowFilter.Controls.Add(Me.lstShowFilters)
-        Me.gbShowFilter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbShowFilter.Location = New System.Drawing.Point(229, 7)
-        Me.gbShowFilter.Name = "gbShowFilter"
-        Me.gbShowFilter.Size = New System.Drawing.Size(382, 175)
-        Me.gbShowFilter.TabIndex = 2
-        Me.gbShowFilter.TabStop = False
-        Me.gbShowFilter.Text = "Show Folder/File Name Filters"
-        '
-        'btnResetShowFilters
-        '
-        Me.btnResetShowFilters.Image = CType(resources.GetObject("btnResetShowFilters.Image"), System.Drawing.Image)
-        Me.btnResetShowFilters.Location = New System.Drawing.Point(354, 9)
-        Me.btnResetShowFilters.Name = "btnResetShowFilters"
-        Me.btnResetShowFilters.Size = New System.Drawing.Size(23, 23)
-        Me.btnResetShowFilters.TabIndex = 2
-        Me.btnResetShowFilters.UseVisualStyleBackColor = True
-        '
-        'btnShowFilterDown
-        '
-        Me.btnShowFilterDown.Image = CType(resources.GetObject("btnShowFilterDown.Image"), System.Drawing.Image)
-        Me.btnShowFilterDown.Location = New System.Drawing.Point(320, 146)
-        Me.btnShowFilterDown.Name = "btnShowFilterDown"
-        Me.btnShowFilterDown.Size = New System.Drawing.Size(23, 23)
-        Me.btnShowFilterDown.TabIndex = 6
-        Me.btnShowFilterDown.UseVisualStyleBackColor = True
-        '
-        'btnShowFilterUp
-        '
-        Me.btnShowFilterUp.Image = CType(resources.GetObject("btnShowFilterUp.Image"), System.Drawing.Image)
-        Me.btnShowFilterUp.Location = New System.Drawing.Point(296, 146)
-        Me.btnShowFilterUp.Name = "btnShowFilterUp"
-        Me.btnShowFilterUp.Size = New System.Drawing.Size(23, 23)
-        Me.btnShowFilterUp.TabIndex = 5
-        Me.btnShowFilterUp.UseVisualStyleBackColor = True
-        '
-        'chkShowProperCase
-        '
-        Me.chkShowProperCase.AutoSize = True
-        Me.chkShowProperCase.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkShowProperCase.Location = New System.Drawing.Point(6, 17)
-        Me.chkShowProperCase.Name = "chkShowProperCase"
-        Me.chkShowProperCase.Size = New System.Drawing.Size(181, 17)
-        Me.chkShowProperCase.TabIndex = 0
-        Me.chkShowProperCase.Text = "Convert Names to Proper Case"
-        Me.chkShowProperCase.UseVisualStyleBackColor = True
-        '
-        'btnRemoveShowFilter
-        '
-        Me.btnRemoveShowFilter.Image = CType(resources.GetObject("btnRemoveShowFilter.Image"), System.Drawing.Image)
-        Me.btnRemoveShowFilter.Location = New System.Drawing.Point(354, 146)
-        Me.btnRemoveShowFilter.Name = "btnRemoveShowFilter"
-        Me.btnRemoveShowFilter.Size = New System.Drawing.Size(23, 23)
-        Me.btnRemoveShowFilter.TabIndex = 7
-        Me.btnRemoveShowFilter.UseVisualStyleBackColor = True
-        '
-        'btnAddShowFilter
-        '
-        Me.btnAddShowFilter.Image = CType(resources.GetObject("btnAddShowFilter.Image"), System.Drawing.Image)
-        Me.btnAddShowFilter.Location = New System.Drawing.Point(260, 146)
-        Me.btnAddShowFilter.Name = "btnAddShowFilter"
-        Me.btnAddShowFilter.Size = New System.Drawing.Size(23, 23)
-        Me.btnAddShowFilter.TabIndex = 4
-        Me.btnAddShowFilter.UseVisualStyleBackColor = True
-        '
-        'txtShowFilter
-        '
-        Me.txtShowFilter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtShowFilter.Location = New System.Drawing.Point(6, 147)
-        Me.txtShowFilter.Name = "txtShowFilter"
-        Me.txtShowFilter.Size = New System.Drawing.Size(252, 22)
-        Me.txtShowFilter.TabIndex = 3
-        '
-        'lstShowFilters
-        '
-        Me.lstShowFilters.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lstShowFilters.FormattingEnabled = True
-        Me.lstShowFilters.Location = New System.Drawing.Point(6, 35)
-        Me.lstShowFilters.Name = "lstShowFilters"
-        Me.lstShowFilters.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
-        Me.lstShowFilters.Size = New System.Drawing.Size(371, 95)
-        Me.lstShowFilters.TabIndex = 1
         '
         'pnlTVImages
         '
@@ -7752,11 +7824,12 @@ Partial Class dlgSettings
         'pnlMovieScraper
         '
         Me.pnlMovieScraper.BackColor = System.Drawing.Color.White
+        Me.pnlMovieScraper.Controls.Add(Me.pnlMovieImages)
         Me.pnlMovieScraper.Controls.Add(Me.GroupBox10)
         Me.pnlMovieScraper.Controls.Add(Me.gbOptions)
         Me.pnlMovieScraper.Controls.Add(Me.GroupBox1)
         Me.pnlMovieScraper.Controls.Add(Me.GroupBox26)
-        Me.pnlMovieScraper.Location = New System.Drawing.Point(929, 487)
+        Me.pnlMovieScraper.Location = New System.Drawing.Point(946, 653)
         Me.pnlMovieScraper.Name = "pnlMovieScraper"
         Me.pnlMovieScraper.Size = New System.Drawing.Size(617, 400)
         Me.pnlMovieScraper.TabIndex = 14
@@ -7915,11 +7988,11 @@ Partial Class dlgSettings
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.btnCancel
         Me.ClientSize = New System.Drawing.Size(892, 647)
+        Me.Controls.Add(Me.pnlGeneral)
         Me.Controls.Add(Me.pnlMovieScraper)
         Me.Controls.Add(Me.pnlMovieSources)
         Me.Controls.Add(Me.pnlTVScraper)
         Me.Controls.Add(Me.pnlMovieTrailers)
-        Me.Controls.Add(Me.pnlGeneral)
         Me.Controls.Add(Me.pnlTVSources)
         Me.Controls.Add(Me.Panel2)
         Me.Controls.Add(Me.ToolStrip1)
@@ -7934,7 +8007,6 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.pnlExtensions)
         Me.Controls.Add(Me.pnlXBMCCom)
         Me.Controls.Add(Me.pnlMain)
-        Me.Controls.Add(Me.pnlTVGeneral)
         Me.DoubleBuffered = True
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
@@ -7946,6 +8018,8 @@ Partial Class dlgSettings
         Me.Text = "Settings"
         Me.GroupBox4.ResumeLayout(False)
         Me.GroupBox4.PerformLayout()
+        Me.gb_DAEMON.ResumeLayout(False)
+        Me.gb_DAEMON.PerformLayout()
         Me.GroupBox29.ResumeLayout(False)
         Me.GroupBox29.PerformLayout()
         Me.GroupBox3.ResumeLayout(False)
@@ -8029,6 +8103,21 @@ Partial Class dlgSettings
         Me.tpFileNamingExpert.PerformLayout()
         Me.GroupBox19.ResumeLayout(False)
         Me.GroupBox19.PerformLayout()
+        Me.pnlTVGeneral.ResumeLayout(False)
+        Me.gbTVListOptions.ResumeLayout(False)
+        Me.gbTVListOptions.PerformLayout()
+        Me.gbEpisodeListOptions.ResumeLayout(False)
+        Me.gbEpisodeListOptions.PerformLayout()
+        Me.gbSeasonListOptions.ResumeLayout(False)
+        Me.gbSeasonListOptions.PerformLayout()
+        Me.gbShowListOptions.ResumeLayout(False)
+        Me.gbShowListOptions.PerformLayout()
+        Me.gbTVMisc.ResumeLayout(False)
+        Me.gbTVMisc.PerformLayout()
+        Me.gbEpFilter.ResumeLayout(False)
+        Me.gbEpFilter.PerformLayout()
+        Me.gbShowFilter.ResumeLayout(False)
+        Me.gbShowFilter.PerformLayout()
         Me.pnlTVSources.ResumeLayout(False)
         Me.TabControl2.ResumeLayout(False)
         Me.TabPage3.ResumeLayout(False)
@@ -8054,21 +8143,6 @@ Partial Class dlgSettings
         Me.TabPage4.ResumeLayout(False)
         Me.gbShowRegex.ResumeLayout(False)
         Me.gbShowRegex.PerformLayout()
-        Me.pnlTVGeneral.ResumeLayout(False)
-        Me.gbTVListOptions.ResumeLayout(False)
-        Me.gbTVListOptions.PerformLayout()
-        Me.gbEpisodeListOptions.ResumeLayout(False)
-        Me.gbEpisodeListOptions.PerformLayout()
-        Me.gbSeasonListOptions.ResumeLayout(False)
-        Me.gbSeasonListOptions.PerformLayout()
-        Me.gbShowListOptions.ResumeLayout(False)
-        Me.gbShowListOptions.PerformLayout()
-        Me.gbTVMisc.ResumeLayout(False)
-        Me.gbTVMisc.PerformLayout()
-        Me.gbEpFilter.ResumeLayout(False)
-        Me.gbEpFilter.PerformLayout()
-        Me.gbShowFilter.ResumeLayout(False)
-        Me.gbShowFilter.PerformLayout()
         Me.pnlTVImages.ResumeLayout(False)
         Me.TabControl3.ResumeLayout(False)
         Me.TabPage5.ResumeLayout(False)
@@ -8766,4 +8840,11 @@ Partial Class dlgSettings
     Friend WithEvents GroupBox8 As System.Windows.Forms.GroupBox
     Friend WithEvents btnBrowseMoviesets As System.Windows.Forms.Button
     Friend WithEvents txtMoviesetsPath As System.Windows.Forms.TextBox
+    Friend WithEvents gb_DAEMON As System.Windows.Forms.GroupBox
+    Friend WithEvents bt_DAEMON_Programpath As System.Windows.Forms.Button
+    Friend WithEvents txt_DAEMON_Programpath As System.Windows.Forms.TextBox
+    Friend WithEvents lbl_DAEMON_Programpath As System.Windows.Forms.Label
+    Friend WithEvents lbl_DAEMON_driveletter As System.Windows.Forms.Label
+    Friend WithEvents cbo_DAEMON_driveletter As System.Windows.Forms.ComboBox
+    Friend WithEvents fileBrowse As System.Windows.Forms.OpenFileDialog
 End Class

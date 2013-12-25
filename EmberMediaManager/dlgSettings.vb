@@ -2720,6 +2720,8 @@ Public Class dlgSettings
             Me.chkMissingEFanarts.Checked = Master.eSettings.MissingFilterEFanarts
             Me.cbMovieTheme.SelectedItem = Master.eSettings.MovieTheme
             Me.cbTVShowTheme.SelectedItem = Master.eSettings.TVShowTheme
+            Me.cbo_DAEMON_driveletter.SelectedItem = Master.eSettings.DAEMON_driveletter
+            Me.txt_DAEMON_Programpath.Text = Master.eSettings.DAEMON_Programpath
             Me.cbEpTheme.SelectedItem = Master.eSettings.TVEpTheme
             Me.Meta.AddRange(Master.eSettings.MetadataPerFileType)
             Me.LoadMetadata()
@@ -3876,7 +3878,8 @@ Public Class dlgSettings
             Master.eSettings.MissingFilterSubs = Me.chkMissingSubs.Checked
             Master.eSettings.MissingFilterEThumbs = Me.chkMissingEThumbs.Checked
             Master.eSettings.MissingFilterEFanarts = Me.chkMissingEFanarts.Checked
-
+            Master.eSettings.DAEMON_driveletter = Me.cbo_DAEMON_driveletter.Text
+            Master.eSettings.DAEMON_Programpath = Me.txt_DAEMON_Programpath.Text
             Master.eSettings.MovieTheme = Me.cbMovieTheme.Text
             Master.eSettings.TVShowTheme = Me.cbTVShowTheme.Text
             Master.eSettings.TVEpTheme = Me.cbEpTheme.Text
@@ -5071,5 +5074,29 @@ Public Class dlgSettings
                 End If
             End If
         End With
+    End Sub
+
+    Private Sub cbo_DAEMON_driveletter_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbo_DAEMON_driveletter.SelectedIndexChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub txt_DAEMON_Programpath_TextChanged(sender As Object, e As EventArgs) Handles txt_DAEMON_Programpath.TextChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub bt_DAEMON_Programpath_Click(sender As Object, e As EventArgs) Handles bt_DAEMON_Programpath.Click
+        Try
+            With Me.fileBrowse
+                .Filter = "Exe (*.exe*)|*.exe*|Exe (*.exe*)|*.exe*"
+                If .ShowDialog = Windows.Forms.DialogResult.OK Then
+                    If Not String.IsNullOrEmpty(.FileName) Then
+                        Me.txt_DAEMON_Programpath.Text = .FileName
+
+                    End If
+                End If
+            End With
+        Catch ex As Exception
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
 End Class

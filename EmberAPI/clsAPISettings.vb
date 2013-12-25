@@ -186,6 +186,8 @@ Public Class Settings
     Private _moviesubCol As Boolean
     Private _movietbn As Boolean
     Private _movietheme As String
+    Private _daemon_programpath As String
+    Private _daemon_driveletter As String
     Private _movietrailerCol As Boolean
     Private _moviewatchedCol As Boolean
     Private _nodisplayfanart As Boolean
@@ -1824,6 +1826,24 @@ Public Class Settings
         End Get
         Set(ByVal value As String)
             Me._movietheme = value
+        End Set
+    End Property
+
+    Public Property DAEMON_Programpath() As String
+        Get
+            Return Me._daemon_programpath
+        End Get
+        Set(ByVal value As String)
+            Me._daemon_programpath = value
+        End Set
+    End Property
+
+    Public Property DAEMON_driveletter() As String
+        Get
+            Return Me._daemon_driveletter
+        End Get
+        Set(ByVal value As String)
+            Me._daemon_driveletter = value
         End Set
     End Property
 
