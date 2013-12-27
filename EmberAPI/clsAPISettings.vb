@@ -4244,6 +4244,24 @@ Public Class Settings
         If Not Master.eSettings.Version = String.Format("r{0}", My.Application.Info.Version.Revision) Then
             SetDefaultsForLists(Enums.DefaultType.All, False)
         End If
+
+        ' Fix added to avoid to have no NFO saved
+        If Not (Master.eSettings.UseEden Or Master.eSettings.UseExpert Or Master.eSettings.UseFrodo Or Master.eSettings.UseNMJ Or Master.eSettings.UseYAMJ) Then
+            Master.eSettings.UseFrodo = True
+            Master.eSettings.ActorThumbsFrodo = True
+            Master.eSettings.BannerFrodo = False
+            Master.eSettings.ClearArtFrodo = False
+            Master.eSettings.ClearLogoFrodo = False
+            Master.eSettings.DiscArtFrodo = False
+            Master.eSettings.ExtrafanartsFrodo = False
+            Master.eSettings.ExtrathumbsFrodo = False
+            Master.eSettings.FanartFrodo = True
+            Master.eSettings.LandscapeFrodo = True
+            Master.eSettings.NFOFrodo = True
+            Master.eSettings.PosterFrodo = True
+            Master.eSettings.TrailerFrodo = False
+        End If
+
     End Sub
 
     Public Sub Save()
