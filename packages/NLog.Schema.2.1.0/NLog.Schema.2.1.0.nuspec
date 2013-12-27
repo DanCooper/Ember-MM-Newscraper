@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>NLog.Schema</id>
+    <version>2.1.0</version>
+    <title>NLog Schema for Intellisense(TM)</title>
+    <authors>Kim Christensen</authors>
+    <owners>Kim Christensen</owners>
+    <licenseUrl>http://raw.github.com/NLog/NLog/master/LICENSE.txt</licenseUrl>
+    <projectUrl>http://github.com/NLog/NLog/</projectUrl>
+    <iconUrl>http://nlog-project.org/NConfig.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Enables Intellisense(TM) when editing NLog configuration file.</description>
+    <summary>Enables Intellisense(TM) when editing NLog.config.</summary>
+    <language>en-US</language>
+  </metadata>
+</package>
