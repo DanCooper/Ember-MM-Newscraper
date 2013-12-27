@@ -4052,6 +4052,24 @@ Public Class dlgSettings
             Master.eSettings.TrailerNMJ = Me.chkTrailerNMJ.Checked
 
             '***************** Expert settings ****************
+            'to be added
+
+            'Default to Frodo
+            If Not (Master.eSettings.UseEden Or Master.eSettings.UseExpert Or Master.eSettings.UseFrodo Or Master.eSettings.UseNMJ Or Master.eSettings.UseYAMJ) Then
+                Master.eSettings.UseFrodo = True
+                Master.eSettings.ActorThumbsFrodo = True
+                Master.eSettings.BannerFrodo = False
+                Master.eSettings.ClearArtFrodo = False
+                Master.eSettings.ClearLogoFrodo = False
+                Master.eSettings.DiscArtFrodo = False
+                Master.eSettings.ExtrafanartsFrodo = False
+                Master.eSettings.ExtrathumbsFrodo = False
+                Master.eSettings.FanartFrodo = True
+                Master.eSettings.LandscapeFrodo = True
+                Master.eSettings.NFOFrodo = True
+                Master.eSettings.PosterFrodo = True
+                Master.eSettings.TrailerFrodo = False
+            End If
 
             For Each s As ModulesManager._externalScraperModuleClass_Data In ModulesManager.Instance.externalDataScrapersModules
                 Try
