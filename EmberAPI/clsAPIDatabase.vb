@@ -23,6 +23,7 @@ Imports System.Windows.Forms
 Imports System.IO
 Imports System.Xml.Serialization
 Imports System.Data.SQLite
+Imports System.Xml.Linq
 
 ''' <summary>
 ''' Class defining and implementing the interface to the database
@@ -325,8 +326,6 @@ Public Class Database
              "Unable to open media database connection.")
         End Try
 
-
-
         Try
             If isNew Then
                 Dim sqlCommand As String = My.Resources.MediaDatabaseSQL_v1
@@ -377,6 +376,7 @@ Public Class Database
         End Try
         Return isNew
     End Function
+
     ''' <summary>
     ''' Parse the columns defined in the database to determine if any are missing.
     ''' If a column is detected as missing, add the relevant related columns
@@ -392,6 +392,9 @@ Public Class Database
             Dim doAddColumns As Boolean = False
             Dim doAddColumnWatched As Boolean = False
             Dim doAddColumnDisplaySE As Boolean = False
+            Dim doAddColumnMovies As Boolean = False
+            Dim strlistSQLCommands As New List(Of String)
+
             SQLpathcommand.CommandText = "pragma table_info(TVEps);"
             Try
                 doAddColumns = True
@@ -417,64 +420,57 @@ Public Class Database
             Catch ex As Exception
                 'TODO
             End Try
+            SQLpathcommand.CommandText = "pragma table_info(Movies);"
+            Try
+                doAddColumnMovies = True
+                Using SQLreader As SQLite.SQLiteDataReader = SQLpathcommand.ExecuteReader
+                    While SQLreader.Read
+                        'Debug.Print(SQLreader("name").ToString.ToLower())
+                        If SQLreader("name").ToString.ToLower = "efanartspath" Then
+                            'Column does exist in current database of Ember --> asume: if one columns missing, all new mediainfo columns must be added
+                            doAddColumnMovies = False
+                        End If
+                    End While
+                End Using
+            Catch ex As Exception
+                'TODO
+            End Try
             'Now add new columns to current database if needed
             If doAddColumns = True Then
-                Using transaction As SQLite.SQLiteTransaction = _mediaDBConn.BeginTransaction()
-                    Dim strlistSQLCommands As New List(Of String)
-                    strlistSQLCommands.Add("alter table MoviesAStreams add Audio_Bitrate text;")
-                    strlistSQLCommands.Add("alter table MoviesVStreams add Video_EncodedSettings text;")
-                    strlistSQLCommands.Add("alter table MoviesVStreams add Video_Bitrate text;")
-                    strlistSQLCommands.Add("alter table MoviesVStreams add Video_MultiView text;")
-                    strlistSQLCommands.Add("alter table TVAStreams add Audio_Bitrate text;")
-                    strlistSQLCommands.Add("alter table TVVStreams add Video_EncodedSettings text;")
-                    strlistSQLCommands.Add("alter table TVVStreams add Video_Bitrate text;")
-                    strlistSQLCommands.Add("alter table TVVStreams add Video_MultiView text;")
-                    strlistSQLCommands.Add("alter table TVEps add Playcount text;")
-                    For Each sqlstatement In strlistSQLCommands
-                        Try
-                            SQLpathcommand.CommandText = sqlstatement
-                            SQLpathcommand.ExecuteNonQuery()
-                        Catch ex As Exception
-                            'TODO ugly to rely on exception but will do the job
-                            'Happens when column does exist (duplicate columns)
-                        End Try
-                    Next
-                    transaction.Commit()
-                End Using
+                strlistSQLCommands.Add("alter table MoviesAStreams add Audio_Bitrate text;")
+                strlistSQLCommands.Add("alter table MoviesVStreams add Video_EncodedSettings text;")
+                strlistSQLCommands.Add("alter table MoviesVStreams add Video_Bitrate text;")
+                strlistSQLCommands.Add("alter table MoviesVStreams add Video_MultiView text;")
+                strlistSQLCommands.Add("alter table TVAStreams add Audio_Bitrate text;")
+                strlistSQLCommands.Add("alter table TVVStreams add Video_EncodedSettings text;")
+                strlistSQLCommands.Add("alter table TVVStreams add Video_Bitrate text;")
+                strlistSQLCommands.Add("alter table TVVStreams add Video_MultiView text;")
+                strlistSQLCommands.Add("alter table TVEps add Playcount text;")
             End If
             If doAddColumnWatched = True Then
-                Using transaction As SQLite.SQLiteTransaction = _mediaDBConn.BeginTransaction()
-                    Dim strlistSQLCommands As New List(Of String)
-                    strlistSQLCommands.Add("alter table TVEps add HasWatched BOOL NOT NULL DEFAULT 0;")
-                    For Each sqlstatement In strlistSQLCommands
-                        Try
-                            SQLpathcommand.CommandText = sqlstatement
-                            SQLpathcommand.ExecuteNonQuery()
-                        Catch ex As Exception
-                            'TODO ugly to rely on exception but will do the job
-                            'Happens when column does exist (duplicate columns)
-                        End Try
-                    Next
-                    transaction.Commit()
-                End Using
+                strlistSQLCommands.Add("alter table TVEps add HasWatched BOOL NOT NULL DEFAULT 0;")
             End If
             If doAddColumnDisplaySE = True Then
-                Using transaction As SQLite.SQLiteTransaction = _mediaDBConn.BeginTransaction()
-                    Dim strlistSQLCommands As New List(Of String)
-                    strlistSQLCommands.Add("alter table TVEps add DisplaySeason integer;")
-                    strlistSQLCommands.Add("alter table TVEps add DisplayEpisode integer;")
-                    For Each sqlstatement In strlistSQLCommands
-                        Try
-                            SQLpathcommand.CommandText = sqlstatement
-                            SQLpathcommand.ExecuteNonQuery()
-                        Catch ex As Exception
-                            'TODO ugly to rely on exception but will do the job
-                            'Happens when column does exist (duplicate columns)
-                        End Try
-                    Next
-                    transaction.Commit()
-                End Using
+                strlistSQLCommands.Add("alter table TVEps add DisplaySeason integer;")
+                strlistSQLCommands.Add("alter table TVEps add DisplayEpisode integer;")
             End If
+            If doAddColumnMovies = True Then
+                strlistSQLCommands.Add("alter table Movies add EFanartsPath text;")
+                strlistSQLCommands.Add("alter table Movies add EThumbsPath text;")
+            End If
+
+            Using transaction As SQLite.SQLiteTransaction = _mediaDBConn.BeginTransaction()
+                For Each sqlstatement In strlistSQLCommands
+                    Try
+                        SQLpathcommand.CommandText = sqlstatement
+                        SQLpathcommand.ExecuteNonQuery()
+                    Catch ex As Exception
+                        'TODO ugly to rely on exception but will do the job
+                        'Happens when column does exist (duplicate columns)
+                    End Try
+                Next
+                transaction.Commit()
+            End Using
         End Using
     End Sub
 
@@ -2319,7 +2315,7 @@ Public Class Database
         Catch ex As Exception
             Master.eLog.Error(GetType(Database), ex.Message, ex.StackTrace, "Error")
         End Try
-        
+
         Return Paths
     End Function
 
