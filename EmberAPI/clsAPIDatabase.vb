@@ -462,6 +462,8 @@ Public Class Database
             If doAddColumnMovies = True Then
                 strlistSQLCommands.Add("alter table Movies add EFanartsPath text;")
                 strlistSQLCommands.Add("alter table Movies add EThumbsPath text;")
+                strlistSQLCommands.Add("alter table Movies add HasEThumbs BOOL;")
+                strlistSQLCommands.Add("alter table Movies add HasEFanarts BOOL;")
             End If
 
             Using transaction As SQLite.SQLiteTransaction = _mediaDBConn.BeginTransaction()
