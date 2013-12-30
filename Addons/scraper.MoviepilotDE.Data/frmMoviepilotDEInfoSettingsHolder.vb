@@ -21,7 +21,7 @@
 Imports System.IO
 Imports EmberAPI
 
-Public Class frmOFDBInfoSettingsHolder
+Public Class frmMoviepilotDEInfoSettingsHolder
 
 #Region "Events"
 
@@ -34,20 +34,20 @@ Public Class frmOFDBInfoSettingsHolder
 #Region "Methods"
 
     Private Sub btnDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDown.Click
-        Dim order As Integer = ModulesManager.Instance.externalDataScrapersModules.FirstOrDefault(Function(p) p.AssemblyName = OFDB_Data._AssemblyName).ScraperOrder
+        Dim order As Integer = ModulesManager.Instance.externalDataScrapersModules.FirstOrDefault(Function(p) p.AssemblyName = MoviepilotDE_Data._AssemblyName).ScraperOrder
         If order < ModulesManager.Instance.externalDataScrapersModules.Count - 1 Then
             ModulesManager.Instance.externalDataScrapersModules.FirstOrDefault(Function(p) p.ScraperOrder = order + 1).ScraperOrder = order
-            ModulesManager.Instance.externalDataScrapersModules.FirstOrDefault(Function(p) p.AssemblyName = OFDB_Data._AssemblyName).ScraperOrder = order + 1
+            ModulesManager.Instance.externalDataScrapersModules.FirstOrDefault(Function(p) p.AssemblyName = MoviepilotDE_Data._AssemblyName).ScraperOrder = order + 1
             RaiseEvent SetupScraperChanged(cbEnabled.Checked, 1)
             orderChanged()
         End If
     End Sub
 
     Private Sub btnUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUp.Click
-        Dim order As Integer = ModulesManager.Instance.externalDataScrapersModules.FirstOrDefault(Function(p) p.AssemblyName = OFDB_Data._AssemblyName).ScraperOrder
+        Dim order As Integer = ModulesManager.Instance.externalDataScrapersModules.FirstOrDefault(Function(p) p.AssemblyName = MoviepilotDE_Data._AssemblyName).ScraperOrder
         If order > 0 Then
             ModulesManager.Instance.externalDataScrapersModules.FirstOrDefault(Function(p) p.ScraperOrder = order - 1).ScraperOrder = order
-            ModulesManager.Instance.externalDataScrapersModules.FirstOrDefault(Function(p) p.AssemblyName = OFDB_Data._AssemblyName).ScraperOrder = order - 1
+            ModulesManager.Instance.externalDataScrapersModules.FirstOrDefault(Function(p) p.AssemblyName = MoviepilotDE_Data._AssemblyName).ScraperOrder = order - 1
             RaiseEvent SetupScraperChanged(cbEnabled.Checked, -1)
             orderChanged()
         End If
@@ -57,23 +57,23 @@ Public Class frmOFDBInfoSettingsHolder
         RaiseEvent SetupScraperChanged(cbEnabled.Checked, 0)
     End Sub
 
-    Private Sub chkOFDBGenre_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOFDBGenre.CheckedChanged
+    Private Sub chkMoviepilotGenre_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkOFDBOutline_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOFDBOutline.CheckedChanged
+    Private Sub chkMoviepilotOutline_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMoviepilotOutline.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkOFDBPlot_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOFDBPlot.CheckedChanged
+    Private Sub chkMoviepilotPlot_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMoviepilotPlot.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkOFDBTitle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOFDBTitle.CheckedChanged
+    Private Sub chkkMoviepilotRating_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMoviepilotRating.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkOFDBCleanPlotOutline_CheckedChanged(sender As Object, e As EventArgs) Handles chkOFDBCleanPlotOutline.CheckedChanged
+    Private Sub chkMoviepilotPlotCleanPlotOutline_CheckedChanged(sender As Object, e As EventArgs) Handles chkMoviepilotCleanPlotOutline.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
@@ -83,7 +83,7 @@ Public Class frmOFDBInfoSettingsHolder
     End Sub
 
     Sub orderChanged()
-        Dim order As Integer = ModulesManager.Instance.externalDataScrapersModules.FirstOrDefault(Function(p) p.AssemblyName = OFDB_Data._AssemblyName).ScraperOrder
+        Dim order As Integer = ModulesManager.Instance.externalDataScrapersModules.FirstOrDefault(Function(p) p.AssemblyName = MoviepilotDE_Data._AssemblyName).ScraperOrder
         If ModulesManager.Instance.externalDataScrapersModules.Count > 0 Then
             btnDown.Enabled = (order < ModulesManager.Instance.externalDataScrapersModules.Count - 1)
             btnUp.Enabled = (order > 0)
@@ -94,11 +94,10 @@ Public Class frmOFDBInfoSettingsHolder
     End Sub
 
     Private Sub SetUp()
-        Me.chkOFDBGenre.Text = Master.eLang.GetString(20, "Genre")
-        Me.chkOFDBPlot.Text = Master.eLang.GetString(65, "Plot")
-        Me.chkOFDBOutline.Text = Master.eLang.GetString(64, "Outline")
-        Me.chkOFDBTitle.Text = Master.eLang.GetString(21, "Title")
-        Me.chkOFDBCleanPlotOutline.Text = Master.eLang.GetString(985, "Clean Plot/Outline")
+        Me.chkMoviepilotPlot.Text = Master.eLang.GetString(65, "Plot")
+        Me.chkMoviepilotOutline.Text = Master.eLang.GetString(64, "Outline")
+        Me.chkMoviepilotRating.Text = Master.eLang.GetString(722, "Rating")
+        Me.chkMoviepilotCleanPlotOutline.Text = Master.eLang.GetString(985, "Clean Plot/Outline")
 
         Me.gbOptions.Text = Master.eLang.GetString(791, "Scraper Fields - Scraper specific")
         Me.Label2.Text = Master.eLang.GetString(168, "Scrape Order")

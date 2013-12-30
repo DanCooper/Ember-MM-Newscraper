@@ -491,47 +491,94 @@ Public Class MediaInfo
                 Dim intPosAudiostream As New List(Of Integer)
                 Dim intPosSubtitlestream As New List(Of Integer)
 
-                'New ISO Handling -> Use MediaInfo-Rar instead of Mediainfo.dll!
-                If sExt = ".iso" OrElse sExt = ".rar" Then
-                    Dim returnstring As String = ""
-                    Dim mediainfoRaRPath As String = String.Concat(Functions.AppPath, "Bin", Path.DirectorySeparatorChar, "mediainfo-rar\mediainfo-rar.exe")
-                    Dim commandline As String = "--Output=XML -f " & """" & sPath & """"
-                    returnstring = Run_Process(mediainfoRaRPath, commandline, True, True)
-                    If Not returnstring = String.Empty Then
-                        Dim xmlReader As Xml.XmlReader = Xml.XmlReader.Create(New StringReader(returnstring))
-                        ds.ReadXml(xmlReader)
-                    End If
+                Dim mode As String = ""
+                'New ISO Handling -> Use either MediaInfo-Rar or DAEMON Tools to mount ISO!
+                If sExt = ".iso" Then
 
-                    'For testing purpose save and read scanned movies to log folder...
-                    '  ds.WriteXml(String.Concat(Functions.AppPath, "Log", Path.DirectorySeparatorChar, Path.GetFileNameWithoutExtension(sPath).ToLower & "_MediaInfoRarScan" & ".xml"), XmlWriteMode.IgnoreSchema)
-                    '  ds.ReadXml("D:\DOWNLOADS\Log_1\Log\fast_and_furious_06_[hddvd]_MediaInfoRarScan.xml")
+                    Dim driveletter As String = Master.eSettings.DAEMON_driveletter ' i.e. "F:\"
+                    Dim ToolPath As String = Master.eSettings.DAEMON_Programpath 'i.e. "C:\Program Files (x86)\DAEMON Tools Lite\DTLite.exe"
+                    'Now only use DAEMON Tools to mount ISO if installed on user system
+                    If Not String.IsNullOrEmpty(driveletter) AndAlso Not String.IsNullOrEmpty(driveletter) Then
+                        'First unmount
+                        Run_Process(ToolPath, " -unmount 0", False, True)
+                        'Mount ISO on virtual drive
+                        Run_Process(ToolPath, " -mount 0, " & """" & sPath & """", False, True)
 
-                    If Not ds Is Nothing Then
-                        'First look for streams in Dataset
-
-                        If ds.Tables.Contains("track") AndAlso ds.Tables("track").Rows.Count > 1 Then
-                            If ds.Tables("track").Columns.Contains("Count_of_video_streams") Then
-                                VideoStreams = CInt(ds.Tables("track").Rows(0).Item("Count_of_video_streams"))
-                                'Videostream always second table with "FILE" anf "GENERAL" table at Pos0 and Pos1
-                                intPosVideostream.Add(VideoStreams)
-                            End If
-                            If ds.Tables("track").Columns.Contains("Count_of_audio_streams") Then
-                                AudioStreams = CInt(ds.Tables("track").Rows(0).Item("Count_of_audio_streams"))
-                                'Save table position of audiostreams
-                                For i = 1 To AudioStreams
-                                    intPosAudiostream.Add(VideoStreams + i)
-                                Next
-                            End If
-                            If ds.Tables("track").Columns.Contains("Count_of_text_streams") Then
-                                SubtitleStreams = CInt(ds.Tables("track").Rows(0).Item("Count_of_text_streams"))
-                                'Save table position of subtitlestreams
-                                For i = 1 To SubtitleStreams
-                                    intPosSubtitlestream.Add(VideoStreams + AudioStreams + i)
-                                Next
-                            End If
+                        'now check if it's bluray or dvd image
+                        If Directory.Exists(driveletter & "\VIDEO_TS") Then
+                            Try
+                                ' looking at the largest vob file within the \VIDEO_TS folder
+                                Dim biggestfile As String = Directory.GetFiles(driveletter & "\VIDEO_TS", "VTS*.VOB").OrderByDescending(Function(fi) fi.Length).First()
+                                sPath = biggestfile
+                            Catch
+                            End Try
+                        ElseIf Directory.Exists(driveletter & "\BDMV\STREAM") Then
+                            Try
+                                ' looking at the largest m2ts file within the \BDMV\STREAM folder
+                                Dim biggestfile As String = Directory.GetFiles(driveletter & "\BDMV\STREAM", "*.m2ts").OrderByDescending(Function(fi) fi.Length).First()
+                                sPath = biggestfile
+                            Catch
+                            End Try
                         End If
 
+                        Me.Handle = MediaInfo_New()
+
+                        If Master.isWindows Then
+                            UseAnsi = False
+                        Else
+                            UseAnsi = True
+                        End If
+
+                        Me.Open(sPath)
+
+                        VideoStreams = Me.Count_Get(StreamKind.Visual)
+                        AudioStreams = Me.Count_Get(StreamKind.Audio)
+                        SubtitleStreams = Me.Count_Get(StreamKind.Text)
+
+                        'use mediainfo-rar
+                    Else
+                        mode = "MEDIAINFO-RAR"
+                        Dim returnstring As String = ""
+                        Dim mediainfoRaRPath As String = String.Concat(Functions.AppPath, "Bin", Path.DirectorySeparatorChar, "mediainfo-rar\mediainfo-rar.exe")
+                        Dim commandline As String = "--Output=XML -f " & """" & sPath & """"
+                        returnstring = Run_Process(mediainfoRaRPath, commandline, True, True)
+                        If Not returnstring = String.Empty Then
+                            Dim xmlReader As Xml.XmlReader = Xml.XmlReader.Create(New StringReader(returnstring))
+                            ds.ReadXml(xmlReader)
+                        End If
+
+                        'For testing purpose save and read scanned movies to log folder...
+                        '  ds.WriteXml(String.Concat(Functions.AppPath, "Log", Path.DirectorySeparatorChar, Path.GetFileNameWithoutExtension(sPath).ToLower & "_MediaInfoRarScan" & ".xml"), XmlWriteMode.IgnoreSchema)
+                        '  ds.ReadXml("D:\DOWNLOADS\Log_1\Log\fast_and_furious_06_[hddvd]_MediaInfoRarScan.xml")
+
+                        If Not ds Is Nothing Then
+                            'First look for streams in Dataset
+
+                            If ds.Tables.Contains("track") AndAlso ds.Tables("track").Rows.Count > 1 Then
+                                If ds.Tables("track").Columns.Contains("Count_of_video_streams") Then
+                                    VideoStreams = CInt(ds.Tables("track").Rows(0).Item("Count_of_video_streams"))
+                                    'Videostream always second table with "FILE" anf "GENERAL" table at Pos0 and Pos1
+                                    intPosVideostream.Add(VideoStreams)
+                                End If
+                                If ds.Tables("track").Columns.Contains("Count_of_audio_streams") Then
+                                    AudioStreams = CInt(ds.Tables("track").Rows(0).Item("Count_of_audio_streams"))
+                                    'Save table position of audiostreams
+                                    For i = 1 To AudioStreams
+                                        intPosAudiostream.Add(VideoStreams + i)
+                                    Next
+                                End If
+                                If ds.Tables("track").Columns.Contains("Count_of_text_streams") Then
+                                    SubtitleStreams = CInt(ds.Tables("track").Rows(0).Item("Count_of_text_streams"))
+                                    'Save table position of subtitlestreams
+                                    For i = 1 To SubtitleStreams
+                                        intPosSubtitlestream.Add(VideoStreams + AudioStreams + i)
+                                    Next
+                                End If
+                            End If
+
+                        End If
                     End If
+
 
                     'old/default way of scanning files: Using Mediainfo.dll
                 Else
@@ -552,11 +599,12 @@ Public Class MediaInfo
                 End If
 
 
+
                 For v As Integer = 0 To VideoStreams - 1
                     miVideo = New Video
 
                     'New ISO Handling -> Use MediaInfo-Rar instead of Mediainfo.dll!
-                    If sExt = ".iso" OrElse sExt = ".rar" Then
+                    If mode = "MEDIAINFO-RAR" Then
 
                         'Video-Bitrate
                         If ds.Tables.Contains("Maximum_bit_rate") AndAlso ds.Tables("Maximum_bit_rate").Rows.Count > 1 Then
@@ -704,7 +752,7 @@ Public Class MediaInfo
                     miAudio = New Audio
 
                     'New ISO Handling -> Use MediaInfo-Rar instead of Mediainfo.dll!
-                    If sExt = ".iso" OrElse sExt = ".rar" Then
+                    If mode = "MEDIAINFO-RAR" Then
 
                         'Codec
                         If ds.Tables("track").Columns.Contains("Format_profile") AndAlso ds.Tables("track").Rows.Count > intPosAudiostream.Item(a) - 1 Then
@@ -824,7 +872,7 @@ Public Class MediaInfo
                     miSubtitle = New MediaInfo.Subtitle
 
                     'New ISO Handling -> Use MediaInfo-Rar instead of Mediainfo.dll!
-                    If sExt = ".iso" OrElse sExt = ".rar" Then
+                    If mode = "MEDIAINFO-RAR" Then
 
                         'Subtitle Language
                         If ds.Tables.Contains("Language") AndAlso ds.Tables("Language").Rows.Count >= intPosSubtitlestream.Item(s) + 1 Then

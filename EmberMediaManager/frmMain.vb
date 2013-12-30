@@ -6346,6 +6346,40 @@ doCancel:
                     '    End If
 
                     'End If
+
+                    Try
+                        Dim sHTTP As New EmberAPI.HTTP
+                        'Pull Assembly version info from current Ember repo on github
+                        Dim HTML As String = sHTTP.DownloadData("https://raw.github.com/DanCooper/Ember-MM-Newscraper/master/EmberMediaManager/My%20Project/AssemblyInfo.vb")
+                        sHTTP = Nothing
+                        Dim VersionNumber As String = System.String.Format("{0}.{1}.{2}.{3}", My.Application.Info.Version.Major, My.Application.Info.Version.Minor, My.Application.Info.Version.Build, My.Application.Info.Version.Revision)
+
+                        If Not String.IsNullOrEmpty(HTML) Then
+                            'Example: AssemblyFileVersion("1.3.0.18")>
+                            Dim mc As MatchCollection = System.Text.RegularExpressions.Regex.Matches(HTML, "AssemblyFileVersion([^<]+)>")
+                            'check to see if at least one entry was found
+                            If mc.Count > 0 Then
+                                'just use the first match if more are found and compare with running Ember Version               
+                                If mc(0).Value.ToString <> "AssemblyFileVersion(""" & VersionNumber & """)>" Then
+                                    'means that running Ember version is outdated!
+                                    lblUpdate.ForeColor = Color.DarkRed
+                                    lblUpdate.Text = "Ember v." & VersionNumber & " (New version available!)"
+                                Else
+                                    'Ember already up to date!
+                                    lblUpdate.ForeColor = Color.DarkGreen
+                                    lblUpdate.Text = "Ember v." & VersionNumber
+                                End If
+                            End If
+                            'if no github query possible, than simply display Ember version on form
+                        Else
+                            lblUpdate.ForeColor = Color.DarkGreen
+                            lblUpdate.Text = "Ember v." & VersionNumber
+                        End If
+
+                    Catch ex As Exception
+                        Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                    End Try
+
                     If Not CloseApp Then
                         fLoading.SetLoadingMesg(Master.eLang.GetString(862, "Loading translations..."))
                         APIXML.CacheXMLs()

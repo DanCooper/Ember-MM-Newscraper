@@ -846,6 +846,68 @@ Public Class Images
         End Try
         Return strReturn
     End Function
+
+
+    ''' <summary>
+    ''' Save the image as collection poster
+    ''' </summary>
+    ''' <param name="fPath"><c></c> name of artwork folder</param>
+    ''' <param name="setname"><c></c> name of collection</param>
+    ''' <returns><c>String</c> path to the saved image</returns>
+    ''' <remarks></remarks>
+    Public Function SaveCollectionPoster(ByVal fPath As String, ByVal setname As String) As String
+        Dim strReturn As String = String.Empty
+        Try
+            Dim doResize As Boolean = Master.eSettings.ResizePoster AndAlso (_image.Width > Master.eSettings.PosterWidth OrElse _image.Height > Master.eSettings.PosterHeight)
+
+            If doResize Then
+                ImageUtils.ResizeImage(_image, Master.eSettings.PosterWidth, Master.eSettings.PosterHeight)
+            End If
+
+            'TODO At the moment only single artwork folder is supported
+            If Directory.Exists(fPath) AndAlso setname <> "" Then
+                fPath = Path.Combine(fPath, setname & "-folder.jpg")
+                Save(fPath, Master.eSettings.PosterQuality, "", doResize)
+                strReturn = fPath
+            End If
+        Catch ex As Exception
+            Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+            Return strReturn
+        End Try
+
+        Return strReturn
+    End Function
+
+    ''' <summary>
+    ''' Save the image as collection fanart
+    ''' </summary>
+    ''' <param name="fPath"><c></c> name of artwork folder</param>
+    ''' <param name="setname"><c></c> name of collection</param>
+    ''' <returns><c>String</c> path to the saved image</returns>
+    ''' <remarks></remarks>
+    Public Function SaveCollectionFanart(ByVal fPath As String, ByVal setname As String) As String
+        Dim strReturn As String = String.Empty
+        Try
+            Dim doResize As Boolean = Master.eSettings.ResizeFanart AndAlso (_image.Width > Master.eSettings.FanartWidth OrElse _image.Height > Master.eSettings.FanartHeight)
+
+            If doResize Then
+                ImageUtils.ResizeImage(_image, Master.eSettings.FanartWidth, Master.eSettings.FanartHeight)
+            End If
+
+            'TODO At the moment only single artwork folder is supported
+            If Directory.Exists(fPath) AndAlso setname <> "" Then
+                fPath = Path.Combine(fPath, setname & "-fanart.jpg")
+                Save(fPath, Master.eSettings.FanartQuality, "", doResize)
+                strReturn = fPath
+            End If
+        Catch ex As Exception
+            Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+            Return strReturn
+        End Try
+
+        Return strReturn
+    End Function
+
     ''' <summary>
     ''' Save the image as a movie fanart
     ''' </summary>

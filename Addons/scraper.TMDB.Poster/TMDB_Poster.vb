@@ -197,11 +197,25 @@ Public Class TMDB_Poster
         'LoadSettings()
 
         LoadSettings()
-        If String.IsNullOrEmpty(DBMovie.Movie.TMDBID) Then
-            _TMDBg.GetMovieID(DBMovie)
+
+        'Cocotus 12/21/2013, Support of MOviesetPoster - TODO better way to handle this?!
+        Dim collectionID As String = ""
+        If DBMovie.OriginalTitle = "GETSETIMAGES" Then
+            collectionID = _TMDBg.GetMovieCollectionID(DBMovie.Movie.ID)
+            ImageList = TMDB.GetTMDBCollectionImages(collectionID, Type)
+        Else
+            If String.IsNullOrEmpty(DBMovie.Movie.TMDBID) Then
+                _TMDBg.GetMovieID(DBMovie)
+            End If
+            ImageList = TMDB.GetTMDBImages(DBMovie.Movie.TMDBID, Type)
         End If
 
-        ImageList = TMDB.GetTMDBImages(DBMovie.Movie.TMDBID, Type)
+        'old way
+        'If String.IsNullOrEmpty(DBMovie.Movie.TMDBID) Then
+        '    _TMDBg.GetMovieID(DBMovie)
+        'End If
+
+        'ImageList = TMDB.GetTMDBImages(DBMovie.Movie.TMDBID, Type)
 
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function

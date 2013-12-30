@@ -33,6 +33,15 @@
   <string control="OFDBMovieInfo_chkOFDBPlot">If enabled, Ember will attempt to retreive the movie plot from OFDB (a German language site) when scraping.</string>
   <string control="OFDBMovieInfo_chkOFDBOutline">If enabled, Ember will attempt to retreive the movie outline from OFDB (a German language site) when scraping.</string>
   <string control="OFDBMovieInfo_chkOFDBTitle">If enabled, Ember will attempt to retreive the movie title from OFDB (a German language site) when scraping.</string>
+  <string control="OFDBMovieInfo_btnDown">Move this scraper module down in order. (Scraper modules will be processed in order from top to bottom)</string>
+  <string control="OFDBMovieInfo_chkOFDBCleanPlotOutline">Clean Plot/Outline by removing brackets and unwanted spaces</string>
+  <string control="MoviepilotDEMovieInfo_cbEnabled">Enable or disable this module.</string>
+  <string control="MoviepilotDEMovieInfo_btnDown">Move this scraper module down in order. (Scraper modules will be processed in order from top to bottom)</string>
+  <string control="MoviepilotDEMovieInfo_btnUp">Move this scraper module up in order. (Scraper modules will be processed in order from top to bottom)</string>
+  <string control="MoviepilotDEMovieInfo_chkMoviepilotRating">Enable scraping movie MPAA and Certification from Moviepilot.de (German site)</string>
+  <string control="MoviepilotDEMovieInfo_chkMoviepilotPlot">Enable scraping movie plot from Moviepilot.de (German site)</string>
+  <string control="MoviepilotDEMovieInfo_chkMoviepilotOutline">Enable scraping movie outline from Moviepilot.de (German site)</string>
+  <string control="MoviepilotDEMovieInfo_chkMoviepilotCleanPlotOutline">Clean Plot/Outline by removing brackets and unwanted spaces</string>
   <string control="TMDBMovieInfo_btnDown">Move this scraper module down in order. (Scraper modules will be processed in order from top to bottom)</string>
   <string control="TMDBMovieInfo_cbEnabled">Enable or disable this module.</string>
   <string control="TMDBMovieInfo_btnUp">Move this scraper module up in order. (Scraper modules will be processed in order from top to bottom)</string>
@@ -188,6 +197,9 @@
   <string control="Core_chkOverwriteTrailer">If enabled, existing trailer files will be overwritten when saving new ones. If disabled, new trailer files will only be saved if one does not already exist.</string>
   <string control="Core_chkDownloadTrailer">Enable Ember's trailer support.</string>
   <string control="Core_btnEditSource">Edit the selected source.</string>
+  <string control="Core_gb_DAEMON">DAEMON Tools settings. It's recommended to fill these settings if you scrape some ISO files! You need to install Daemon Tools Lite for free to use it. </string>
+  <string control="Core_cbo_DAEMON_driveletter">Check the drive letter of your mounted image using DAEMON Tools and set the drive letter here</string>
+  <string control="Core_txt_DAEMON_Programpath">Path to DTLite.exe, usually Program Files/DAEMON Tools Lite folder</string>
   <string control="Core_chkVideoTSParentXBMC"></string>
   <string control="Core_chkScanOrderModify">If enabled, Ember will add new files in order of there last modified time. If disabled, Ember will add new files to the library in alphabetical order.</string>
   <string control="Core_chkSortBeforeScan">If enabled, Ember will sort all single files in the top directory of the source into their own folders.</string>
@@ -220,6 +232,7 @@
   <string control="Core_chkAutoBD">If enabled, Ember will automatically save new fanart images to the entered backdrops folder.</string>
   <string control="Core_btnBrowse">Open a folder browser to select a backdrops folder.</string>
   <string control="Core_txtBDPath">The path to the backdrops folder.</string>
+  <string control="Core_txtMoviesetsPath">The artwork folder for Movieset images. Posters will be saved as setname-folder.jpg/png, fanart will be saved as setname-fanart.jpg</string>
   <string control="Core_btnTVShowFrodo"></string>
   <string control="Core_lvTVSources">The list of all current TV Show sources. (Paths that will be scanned for TV Show files)</string>
   <string control="Core_txtTVSkipLessThan">Ember will use the entered size as the minimum size for episode files. Any files smaller than this will be skipped when updating the library.</string>
