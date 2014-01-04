@@ -206,37 +206,42 @@ Public Class Database
     ''' <summary>
     ''' Remove the New flag from database entries (movies, TVShows, TVSeason, TVEps)
     ''' </summary>
-    ''' <remarks></remarks>
+    ''' <remarks>
+    ''' 2013/12/13 Dekker500 - Check that MediaDBConn IsNot Nothing before continuing, 
+    '''                        otherwise shutdown after a failed startup (before DB initialized) 
+    '''                        will trow exception
+    ''' </remarks>
     Public Sub ClearNew()
         Try
-            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MediaDBConn.BeginTransaction()
-                Using SQLcommand As SQLite.SQLiteCommand = _mediaDBConn.CreateCommand()
-                    SQLcommand.CommandText = "UPDATE movies SET new = (?);"
-                    Dim parNew As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parNew", DbType.Boolean, 0, "new")
-                    parNew.Value = False
-                    SQLcommand.ExecuteNonQuery()
+            If (Master.DB.MediaDBConn IsNot Nothing) Then
+                Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MediaDBConn.BeginTransaction()
+                    Using SQLcommand As SQLite.SQLiteCommand = _mediaDBConn.CreateCommand()
+                        SQLcommand.CommandText = "UPDATE movies SET new = (?);"
+                        Dim parNew As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parNew", DbType.Boolean, 0, "new")
+                        parNew.Value = False
+                        SQLcommand.ExecuteNonQuery()
+                    End Using
+                    Using SQLShowcommand As SQLite.SQLiteCommand = _mediaDBConn.CreateCommand()
+                        SQLShowcommand.CommandText = "UPDATE TVShows SET new = (?);"
+                        Dim parShowNew As SQLite.SQLiteParameter = SQLShowcommand.Parameters.Add("parShowNew", DbType.Boolean, 0, "new")
+                        parShowNew.Value = False
+                        SQLShowcommand.ExecuteNonQuery()
+                    End Using
+                    Using SQLSeasoncommand As SQLite.SQLiteCommand = _mediaDBConn.CreateCommand()
+                        SQLSeasoncommand.CommandText = "UPDATE TVSeason SET new = (?);"
+                        Dim parSeasonNew As SQLite.SQLiteParameter = SQLSeasoncommand.Parameters.Add("parSeasonNew", DbType.Boolean, 0, "new")
+                        parSeasonNew.Value = False
+                        SQLSeasoncommand.ExecuteNonQuery()
+                    End Using
+                    Using SQLEpcommand As SQLite.SQLiteCommand = _mediaDBConn.CreateCommand()
+                        SQLEpcommand.CommandText = "UPDATE TVEps SET new = (?);"
+                        Dim parEpNew As SQLite.SQLiteParameter = SQLEpcommand.Parameters.Add("parEpNew", DbType.Boolean, 0, "new")
+                        parEpNew.Value = False
+                        SQLEpcommand.ExecuteNonQuery()
+                    End Using
+                    SQLtransaction.Commit()
                 End Using
-                Using SQLShowcommand As SQLite.SQLiteCommand = _mediaDBConn.CreateCommand()
-                    SQLShowcommand.CommandText = "UPDATE TVShows SET new = (?);"
-                    Dim parShowNew As SQLite.SQLiteParameter = SQLShowcommand.Parameters.Add("parShowNew", DbType.Boolean, 0, "new")
-                    parShowNew.Value = False
-                    SQLShowcommand.ExecuteNonQuery()
-                End Using
-                Using SQLSeasoncommand As SQLite.SQLiteCommand = _mediaDBConn.CreateCommand()
-                    SQLSeasoncommand.CommandText = "UPDATE TVSeason SET new = (?);"
-                    Dim parSeasonNew As SQLite.SQLiteParameter = SQLSeasoncommand.Parameters.Add("parSeasonNew", DbType.Boolean, 0, "new")
-                    parSeasonNew.Value = False
-                    SQLSeasoncommand.ExecuteNonQuery()
-                End Using
-                Using SQLEpcommand As SQLite.SQLiteCommand = _mediaDBConn.CreateCommand()
-                    SQLEpcommand.CommandText = "UPDATE TVEps SET new = (?);"
-                    Dim parEpNew As SQLite.SQLiteParameter = SQLEpcommand.Parameters.Add("parEpNew", DbType.Boolean, 0, "new")
-                    parEpNew.Value = False
-                    SQLEpcommand.ExecuteNonQuery()
-                End Using
-                SQLtransaction.Commit()
-            End Using
-
+            End If
         Catch ex As Exception
             Master.eLog.Error(GetType(Database), ex.Message, ex.StackTrace, "Error")
         End Try

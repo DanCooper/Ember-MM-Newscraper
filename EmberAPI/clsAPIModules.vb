@@ -129,6 +129,7 @@ Public Class ModulesManager
     ''' Load all Generic Modules and field in externalProcessorModules List
     ''' </summary>
     Public Sub loadModules(Optional ByVal modulefile As String = "*.dll")
+        Master.eLog.Trace(Me.GetType(), "loadModules started", Nothing, Nothing, False)
         If Directory.Exists(moduleLocation) Then
             'Assembly to load the file
             Dim assembly As System.Reflection.Assembly
@@ -185,12 +186,15 @@ Public Class ModulesManager
             Next
 
         End If
+        Master.eLog.Trace(Me.GetType(), "loadModules finished", Nothing, Nothing, False)
+
     End Sub
 
     ''' <summary>
     ''' Load all Scraper Modules and field in externalScrapersModules List
     ''' </summary>
     Public Sub loadScrapersModules(Optional ByVal modulefile As String = "*.dll")
+        Master.eLog.Trace(Me.GetType(), "loadScrapersModules started", Nothing, Nothing, False)
         Dim ScraperAnyEnabled As Boolean = False
         Dim PostScraperAnyEnabled As Boolean = False
         Dim TrailerScraperAnyEnabled As Boolean = False
@@ -317,9 +321,11 @@ Public Class ModulesManager
             '             'SetPostScraperOrder("scraper.EmberCore.EmberScraperModule.EmberNativeScraperModule", 1)
             '         End If
         End If
+        Master.eLog.Trace(Me.GetType(), "loadScrapersModules finished", Nothing, Nothing, False)
     End Sub
 
-     Public Sub loadTVScrapersModules()
+    Public Sub loadTVScrapersModules()
+        Master.eLog.Trace(Me.GetType(), "loadTVScrapersModules started", Nothing, Nothing, False)
         Dim ScraperAnyEnabled As Boolean = False
         Dim PostScraperAnyEnabled As Boolean = False
         If Directory.Exists(moduleLocation) Then
@@ -390,6 +396,7 @@ Public Class ModulesManager
                 'SetTVPostScraperOrder("scraper.EmberCore.EmberScraperModule.EmberNativeTVScraperModule", 1)
             End If
         End If
+        Master.eLog.Trace(Me.GetType(), "loadTVScrapersModules finished", Nothing, Nothing, False)
     End Sub
 
     'Public Function MoviePostScrapeOnly(ByRef DBMovie As Structures.DBMovie, ByVal ScrapeType As Enums.ScraperCapabilities) As Interfaces.ModuleResult
@@ -418,81 +425,153 @@ Public Class ModulesManager
     '    Return ret.Cancelled
     'End Function
 
+    ''' <summary>
+    ''' Request that enabled movie scrapers perform their functions on the supplied movie
+    ''' </summary>
+    ''' <param name="DBMovie">Movie to be scraped. Scraper will directly manipulate this structure</param>
+    ''' <param name="ScrapeType">What kind of scrape is being requested, such as whether user-validation is desired</param>
+    ''' <param name="Options">What kind of data is being requested from the scrape</param>
+    ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
+    ''' <remarks>Note that if no movie scrapers are enabled, a silent warning is generated.</remarks>
     Public Function MovieScrapeOnly(ByRef DBMovie As Structures.DBMovie, ByVal ScrapeType As Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions) As Boolean
+        Dim modules As IEnumerable(Of _externalScraperModuleClass_Data) = externalDataScrapersModules.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ScraperOrder)
         Dim ret As Interfaces.ModuleResult
-        For Each _externalScraperModule As _externalScraperModuleClass_Data In externalDataScrapersModules.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ScraperOrder)
-            AddHandler _externalScraperModule.ProcessorModule.MovieScraperEvent, AddressOf Handler_MovieScraperEvent
-            Try
-                'Debug.Print("MovieScrapeOnly" & vbTab & DBMovie.ID & vbTab & ScrapeType)
-                ret = _externalScraperModule.ProcessorModule.Scraper(DBMovie, ScrapeType, Options)
-            Catch ex As Exception
-            End Try
-            RemoveHandler _externalScraperModule.ProcessorModule.MovieScraperEvent, AddressOf Handler_MovieScraperEvent
-            If ret.breakChain Then Exit For
-        Next
-        Return ret.Cancelled
-    End Function
 
-    Public Function MovieScrapeImages(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Boolean
-        Dim ret As Interfaces.ModuleResult
-        Dim aList As List(Of MediaContainers.Image)
-        For Each _externalScraperModule As _externalScraperModuleClass_Poster In externalPosterScrapersModules.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ScraperOrder)
-            If _externalScraperModule.ProcessorModule.QueryScraperCapabilities(Type) Then
+        If (modules.Count() <= 0) Then
+            Master.eLog.Warn(Me.GetType(), "No movie scrapers are defined", New StackTrace().ToString(), Nothing, False)
+        Else
+            For Each _externalScraperModule As _externalScraperModuleClass_Data In modules
+                If Master.eLog.IsTraceEnabled(Me.GetType) Then
+                    Master.eLog.Trace(Me.GetType(), String.Format("Scraping movies trailers using <{0}>", _externalScraperModule.ProcessorModule.ModuleName), New StackTrace().ToString(), Nothing, False)
+                End If
                 AddHandler _externalScraperModule.ProcessorModule.MovieScraperEvent, AddressOf Handler_MovieScraperEvent
                 Try
-                    'Debug.Print("MovieScrapeImages" & vbTab & _externalScraperModule.ProcessorModule.ModuleName)
-                    aList = New List(Of MediaContainers.Image)
-                    ret = _externalScraperModule.ProcessorModule.Scraper(DBMovie, Type, aList)
-                    If Not IsNothing(aList) AndAlso aList.Count > 0 Then
-                        For Each aIm In aList
-                            ImageList.Add(aIm)
-                        Next
-                    End If
+                    'Debug.Print("MovieScrapeOnly" & vbTab & DBMovie.ID & vbTab & ScrapeType)
+                    ret = _externalScraperModule.ProcessorModule.Scraper(DBMovie, ScrapeType, Options)
                 Catch ex As Exception
                 End Try
                 RemoveHandler _externalScraperModule.ProcessorModule.MovieScraperEvent, AddressOf Handler_MovieScraperEvent
                 If ret.breakChain Then Exit For
-            End If
-        Next
+            Next
+        End If
+
         Return ret.Cancelled
     End Function
+    ''' <summary>
+    ''' Request that enabled movie image scrapers perform their functions on the supplied movie
+    ''' </summary>
+    ''' <param name="DBMovie">Movie to be scraped. Scraper will directly manipulate this structure</param>
+    ''' <param name="Type">What kind of image is being scraped (poster, fanart, etc)</param>
+    ''' <param name="ImageList">List of images that the scraper should add to</param>
+    ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
+    ''' <remarks>Note that if no movie scrapers are enabled, a silent warning is generated.</remarks>
+    Public Function MovieScrapeImages(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Boolean
+        Dim modules As IEnumerable(Of _externalScraperModuleClass_Poster) = externalPosterScrapersModules.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ScraperOrder)
+        Dim ret As Interfaces.ModuleResult
+        Dim aList As List(Of MediaContainers.Image)
 
+        If (modules.Count() <= 0) Then
+            Master.eLog.Warn(Me.GetType(), "No movie image scrapers are defined", New StackTrace().ToString(), Nothing, False)
+        Else
+            For Each _externalScraperModule As _externalScraperModuleClass_Poster In modules
+                If Master.eLog.IsTraceEnabled(Me.GetType) Then
+                    Master.eLog.Trace(Me.GetType(), String.Format("Scraping movies images using <{0}>", _externalScraperModule.ProcessorModule.ModuleName), New StackTrace().ToString(), Nothing, False)
+                End If
+                If _externalScraperModule.ProcessorModule.QueryScraperCapabilities(Type) Then
+                    AddHandler _externalScraperModule.ProcessorModule.MovieScraperEvent, AddressOf Handler_MovieScraperEvent
+                    Try
+                        'Debug.Print("MovieScrapeImages" & vbTab & _externalScraperModule.ProcessorModule.ModuleName)
+                        aList = New List(Of MediaContainers.Image)
+                        ret = _externalScraperModule.ProcessorModule.Scraper(DBMovie, Type, aList)
+                        If Not IsNothing(aList) AndAlso aList.Count > 0 Then
+                            For Each aIm In aList
+                                ImageList.Add(aIm)
+                            Next
+                        End If
+                    Catch ex As Exception
+                        Master.eLog.Error(Me.GetType(), String.Format("Error scraping movies images using <{0}>", _externalScraperModule.ProcessorModule.ModuleName), ex.StackTrace().ToString(), "Error", True)
+                    End Try
+                    RemoveHandler _externalScraperModule.ProcessorModule.MovieScraperEvent, AddressOf Handler_MovieScraperEvent
+                    If ret.breakChain Then Exit For
+                End If
+            Next
+        End If
+        Return ret.Cancelled
+    End Function
+    ''' <summary>
+    ''' Request that enabled movie trailer scrapers perform their functions on the supplied movie
+    ''' </summary>
+    ''' <param name="DBMovie">Movie to be scraped. Scraper will directly manipulate this structure</param>
+    ''' <param name="Type">NOT ACTUALLY USED!</param>
+    ''' <param name="URLList">List of Trailer objects that the scraper will append to. Note that only the URL is returned, 
+    ''' not the full content of the trailer</param>
+    ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
+    ''' <remarks></remarks>
     Public Function MovieScrapeTrailer(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef URLList As List(Of Trailers)) As Boolean
+        Dim modules As IEnumerable(Of _externalScraperModuleClass_Trailer) = externalTrailerScrapersModules.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ScraperOrder)
         Dim ret As Interfaces.ModuleResult
         Dim aList As List(Of Trailers)
-        For Each _externalScraperModule As _externalScraperModuleClass_Trailer In externalTrailerScrapersModules.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ScraperOrder)
-            AddHandler _externalScraperModule.ProcessorModule.MovieScraperEvent, AddressOf Handler_MovieScraperEvent
-            Try
-                'Debug.Print("MovieScrapeTrailer" & vbTab & _externalScraperModule.ProcessorModule.ModuleName)
-                aList = New List(Of Trailers)
-                ret = _externalScraperModule.ProcessorModule.Scraper(DBMovie, Type, aList)
-                If Not IsNothing(aList) AndAlso aList.Count > 0 Then
-                    For Each aIm In aList
-                        URLList.Add(aIm)
-                    Next
+
+        If (modules.Count() <= 0) Then
+            Master.eLog.Warn(Me.GetType(), "No movie trailer scrapers are defined", New StackTrace().ToString(), Nothing, False)
+        Else
+            For Each _externalScraperModule As _externalScraperModuleClass_Trailer In modules
+                If Master.eLog.IsTraceEnabled(Me.GetType) Then
+                    Master.eLog.Trace(Me.GetType(), String.Format("Scraping movies trailers using <{0}>", _externalScraperModule.ProcessorModule.ModuleName), New StackTrace().ToString(), Nothing, False)
                 End If
-            Catch ex As Exception
-            End Try
-            RemoveHandler _externalScraperModule.ProcessorModule.MovieScraperEvent, AddressOf Handler_MovieScraperEvent
-            If ret.breakChain Then Exit For
-        Next
+                AddHandler _externalScraperModule.ProcessorModule.MovieScraperEvent, AddressOf Handler_MovieScraperEvent
+                Try
+                    'Debug.Print("MovieScrapeTrailer" & vbTab & _externalScraperModule.ProcessorModule.ModuleName)
+                    aList = New List(Of Trailers)
+                    ret = _externalScraperModule.ProcessorModule.Scraper(DBMovie, Type, aList)
+                    If Not IsNothing(aList) AndAlso aList.Count > 0 Then
+                        For Each aIm In aList
+                            URLList.Add(aIm)
+                        Next
+                    End If
+                Catch ex As Exception
+                    Master.eLog.Error(Me.GetType(), String.Format("Error scraping movies images using <{0}>", _externalScraperModule.ProcessorModule.ModuleName), ex.StackTrace().ToString(), "Error", True)
+                End Try
+                RemoveHandler _externalScraperModule.ProcessorModule.MovieScraperEvent, AddressOf Handler_MovieScraperEvent
+                If ret.breakChain Then Exit For
+            Next
+        End If
         Return ret.Cancelled
     End Function
-
+    ''' <summary>
+    ''' Calls all the generic modules of the supplied type (if one is defined), passing the supplied _params.
+    ''' The module will do its task and return any expected results in the _refparams.
+    ''' </summary>
+    ''' <param name="mType">The <c>Enums.ModuleEventType</c> of module to execute.</param>
+    ''' <param name="_params">Parameters to pass to the module</param>
+    ''' <param name="_refparam"><c>Object</c> representing the module's result (if relevant)</param>
+    ''' <param name="RunOnlyOne">If <c>True</c>, allow only one module to perform the required task.</param>
+    ''' <returns></returns>
+    ''' <remarks>Note that if any module returns a result of breakChain, no further modules are processed</remarks>
     Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), Optional ByVal _refparam As Object = Nothing, Optional ByVal RunOnlyOne As Boolean = False) As Boolean
         Dim ret As Interfaces.ModuleResult
         Try
-            For Each _externalGenericModule As _externalGenericModuleClass In externalProcessorModules.Where(Function(e) e.ProcessorModule.ModuleType.Contains(mType) AndAlso e.ProcessorModule.Enabled)
-                Try
-                    'Debug.Print("RunGeneric" & vbTab & mType & vbTab & _externalGenericModule.AssemblyName)
-                    ret = _externalGenericModule.ProcessorModule.RunGeneric(mType, _params, _refparam)
-                Catch ex As Exception
-                End Try
-                If ret.breakChain OrElse RunOnlyOne Then Exit For
-            Next
+            Dim modules As IEnumerable(Of _externalGenericModuleClass) = externalProcessorModules.Where(Function(e) e.ProcessorModule.ModuleType.Contains(mType) AndAlso e.ProcessorModule.Enabled)
+            If (modules.Count() <= 0) Then
+                Master.eLog.Warn(Me.GetType(), String.Format("No generic modules defined <{0}>", mType.ToString), New StackTrace().ToString(), Nothing, False)
+            Else
+                For Each _externalGenericModule As _externalGenericModuleClass In modules
+                    Try
+                        If Master.eLog.IsTraceEnabled(Me.GetType) Then
+                            Master.eLog.Trace(Me.GetType(), "Could not run generic module <" & _externalGenericModule.ProcessorModule.ModuleName & ">", New StackTrace().ToString(), Nothing, False)
+                        End If
+                        'Debug.Print("RunGeneric" & vbTab & mType & vbTab & _externalGenericModule.AssemblyName)
+                        ret = _externalGenericModule.ProcessorModule.RunGeneric(mType, _params, _refparam)
+                    Catch ex As Exception
+                        Master.eLog.Error(Me.GetType(), String.Format("Error scraping movies images using <{0}>", _externalGenericModule.ProcessorModule.ModuleName), ex.StackTrace().ToString(), "Error", True)
+                    End Try
+                    If ret.breakChain OrElse RunOnlyOne Then Exit For
+                Next
+            End If
         Catch ex As Exception
             Master.eLog.Error(GetType(ModulesManager), ex.Message, ex.StackTrace, "Error")
         End Try
+
         Return ret.Cancelled
     End Function
 
@@ -543,41 +622,96 @@ Public Class ModulesManager
         Master.eSettings.EmberModules = tmpForXML
         Master.eSettings.Save()
     End Sub
-
+    ''' <summary>
+    ''' Sets the enabled flag of the module identified by <paramref name="ModuleAssembly"/> to the value of <paramref name="value"/>
+    ''' </summary>
+    ''' <param name="ModuleAssembly"><c>String</c> representing the assembly name of the module</param>
+    ''' <param name="value"><c>Boolean</c> value to set the enabled flag to</param>
+    ''' <remarks></remarks>
     Public Sub SetModuleEnable(ByVal ModuleAssembly As String, ByVal value As Boolean)
-        For Each _externalProcessorModule As _externalGenericModuleClass In externalProcessorModules.Where(Function(p) p.AssemblyName = ModuleAssembly)
-            Try
-                _externalProcessorModule.ProcessorModule.Enabled = value
-            Catch ex As Exception
-            End Try
-        Next
+        If (String.IsNullOrEmpty(ModuleAssembly)) Then
+            Master.eLog.Error(Me.GetType(), "Invalid ModuleAssembly", New StackTrace().ToString(), Nothing, False)
+            Return
+        End If
+
+        Dim modules As IEnumerable(Of _externalGenericModuleClass) = externalProcessorModules.Where(Function(p) p.AssemblyName = ModuleAssembly)
+        If (modules.Count < 0) Then
+            Master.eLog.Warn(Me.GetType(), String.Format("No modules of type <{0}> were found", ModuleAssembly), New StackTrace().ToString(), Nothing, False)
+        Else
+            For Each _externalProcessorModule As _externalGenericModuleClass In modules
+                Try
+                    _externalProcessorModule.ProcessorModule.Enabled = value
+                Catch ex As Exception
+                    Master.eLog.Error(Me.GetType(), String.Format("Could not set module <{0}> to enabled status <{1}>", ModuleAssembly, value), New StackTrace().ToString(), Nothing, False)
+                End Try
+            Next
+        End If
     End Sub
+    ''' <summary>
+    ''' Sets the enabled flag of the module identified by <paramref name="ModuleAssembly"/> to the value of <paramref name="value"/>
+    ''' </summary>
+    ''' <param name="ModuleAssembly"><c>String</c> representing the assembly name of the module</param>
+    ''' <param name="value"><c>Boolean</c> value to set the enabled flag to</param>
+    ''' <remarks></remarks>
 
     Public Sub SetTrailerScraperEnable(ByVal ModuleAssembly As String, ByVal value As Boolean)
-        For Each _externalScraperModule As _externalScraperModuleClass_Trailer In externalTrailerScrapersModules.Where(Function(p) p.AssemblyName = ModuleAssembly)
-            Try
-                _externalScraperModule.ProcessorModule.ScraperEnabled = value
-            Catch ex As Exception
-            End Try
-        Next
+        If (String.IsNullOrEmpty(ModuleAssembly)) Then
+            Master.eLog.Error(Me.GetType(), "Invalid ModuleAssembly", New StackTrace().ToString(), Nothing, False)
+            Return
+        End If
+
+        Dim modules As IEnumerable(Of _externalScraperModuleClass_Trailer) = externalTrailerScrapersModules.Where(Function(p) p.AssemblyName = ModuleAssembly)
+        If (modules.Count < 0) Then
+            Master.eLog.Warn(Me.GetType(), String.Format("No modules of type <{0}> were found", ModuleAssembly), New StackTrace().ToString(), Nothing, False)
+        Else
+            For Each _externalScraperModule As _externalScraperModuleClass_Trailer In modules
+                Try
+                    _externalScraperModule.ProcessorModule.ScraperEnabled = value
+                Catch ex As Exception
+                    Master.eLog.Error(Me.GetType(), String.Format("Could not set module <{0}> to enabled status <{1}>", ModuleAssembly, value), New StackTrace().ToString(), Nothing, False)
+                End Try
+            Next
+        End If
     End Sub
 
     Public Sub SetPostScraperEnable(ByVal ModuleAssembly As String, ByVal value As Boolean)
-        For Each _externalScraperModule As _externalScraperModuleClass_Poster In externalPosterScrapersModules.Where(Function(p) p.AssemblyName = ModuleAssembly)
-            Try
-                _externalScraperModule.ProcessorModule.ScraperEnabled = value
-            Catch ex As Exception
-            End Try
-        Next
+        If (String.IsNullOrEmpty(ModuleAssembly)) Then
+            Master.eLog.Error(Me.GetType(), "Invalid ModuleAssembly", New StackTrace().ToString(), Nothing, False)
+            Return
+        End If
+
+        Dim modules As IEnumerable(Of _externalScraperModuleClass_Poster) = externalPosterScrapersModules.Where(Function(p) p.AssemblyName = ModuleAssembly)
+        If (modules.Count < 0) Then
+            Master.eLog.Warn(Me.GetType(), String.Format("No modules of type <{0}> were found", ModuleAssembly), New StackTrace().ToString(), Nothing, False)
+        Else
+            For Each _externalScraperModule As _externalScraperModuleClass_Poster In modules
+                Try
+                    _externalScraperModule.ProcessorModule.ScraperEnabled = value
+                Catch ex As Exception
+                    Master.eLog.Error(Me.GetType(), String.Format("Could not set module <{0}> to enabled status <{1}>", ModuleAssembly, value), New StackTrace().ToString(), Nothing, False)
+                End Try
+            Next
+        End If
     End Sub
 
     Public Sub SetScraperEnable(ByVal ModuleAssembly As String, ByVal value As Boolean)
-        For Each _externalScraperModule As _externalScraperModuleClass_Data In externalDataScrapersModules.Where(Function(p) p.AssemblyName = ModuleAssembly)
-            Try
-                _externalScraperModule.ProcessorModule.ScraperEnabled = value
-            Catch ex As Exception
-            End Try
-        Next
+        If (String.IsNullOrEmpty(ModuleAssembly)) Then
+            Master.eLog.Error(Me.GetType(), "Invalid ModuleAssembly", New StackTrace().ToString(), Nothing, False)
+            Return
+        End If
+
+        Dim modules As IEnumerable(Of _externalScraperModuleClass_Data) = externalDataScrapersModules.Where(Function(p) p.AssemblyName = ModuleAssembly)
+        If (modules.Count < 0) Then
+            Master.eLog.Warn(Me.GetType(), String.Format("No modules of type <{0}> were found", ModuleAssembly), New StackTrace().ToString(), Nothing, False)
+        Else
+            For Each _externalScraperModule As _externalScraperModuleClass_Data In modules
+                Try
+                    _externalScraperModule.ProcessorModule.ScraperEnabled = value
+                Catch ex As Exception
+                    Master.eLog.Error(Me.GetType(), String.Format("Could not set module <{0}> to enabled status <{1}>", ModuleAssembly, value), New StackTrace().ToString(), Nothing, False)
+                End Try
+            Next
+        End If
     End Sub
 
     Public Sub SetTVPostScraperEnable(ByVal ModuleAssembly As String, ByVal value As Boolean)
@@ -656,7 +790,7 @@ Public Class ModulesManager
         Return ret.Cancelled
     End Function
 
-	Public Function TVSingleImageOnly(ByVal Title As String, ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Type As Enums.TVImageType, ByVal Season As Integer, ByVal Episode As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal CurrentImage As Images) As Images
+    Public Function TVSingleImageOnly(ByVal Title As String, ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Type As Enums.TVImageType, ByVal Season As Integer, ByVal Episode As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal CurrentImage As Images) As Images
         Dim Image As New Images
         Dim ret As Interfaces.ModuleResult
         For Each _externaltvScraperModule As _externalTVScraperModuleClass In externalTVScrapersModules.Where(Function(e) e.ProcessorModule.IsScraper AndAlso e.ProcessorModule.ScraperEnabled)

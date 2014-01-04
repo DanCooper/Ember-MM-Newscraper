@@ -39,7 +39,7 @@ Namespace My.Resources
         Friend ReadOnly Property ResourceManager() As Global.System.Resources.ResourceManager
             Get
                 If Object.ReferenceEquals(resourceMan, Nothing) Then
-                    Dim temp As Global.System.Resources.ResourceManager = New Global.System.Resources.ResourceManager("EmberAPI_Test.Resources", GetType(Resources).Assembly)
+                    Dim temp As Global.System.Resources.ResourceManager = New Global.System.Resources.ResourceManager("Scraper_Test.Resources", GetType(Resources).Assembly)
                     resourceMan = temp
                 End If
                 Return resourceMan
@@ -61,52 +61,21 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''  Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+        '''&lt;movie xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot;&gt;
+        '''  &lt;id TMDB=&quot;&quot;&gt;tt91949&lt;/id&gt;
+        '''  &lt;title&gt;Short Circuit&lt;/title&gt;
+        '''  &lt;originaltitle&gt;Short Circuit&lt;/originaltitle&gt;
+        '''  &lt;year&gt;1986&lt;/year&gt;
+        '''  &lt;releasedate&gt;5/9/1986&lt;/releasedate&gt;
+        '''  &lt;country&gt;United States of America&lt;/country&gt;
+        '''  &lt;rating&gt;6.4&lt;/rating&gt;
+        '''  &lt;votes&gt;32,957&lt;/votes&gt;
+        '''  &lt;certification&gt;West Germany:6 / USA:PG / UK:PG / Sweden:7 / Spain:T / Portugal:M/6 / Iceland:L / F [rest of string was truncated]&quot;;.
         '''</summary>
-        Friend ReadOnly Property Genre() As System.Drawing.Bitmap
+        Friend ReadOnly Property txtShortCircuit_Full() As String
             Get
-                Dim obj As Object = ResourceManager.GetObject("Genre", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized resource of type System.Drawing.Bitmap.
-        '''</summary>
-        Friend ReadOnly Property TestPattern() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("TestPattern", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized resource of type System.Drawing.Bitmap.
-        '''</summary>
-        Friend ReadOnly Property TestPattern_Med() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("TestPattern_Med", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized resource of type System.Drawing.Bitmap.
-        '''</summary>
-        Friend ReadOnly Property TestPattern_Med_Vert() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("TestPattern_Med_Vert", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized resource of type System.Drawing.Bitmap.
-        '''</summary>
-        Friend ReadOnly Property TestPattern_Vert() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("TestPattern_Vert", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
+                Return ResourceManager.GetString("txtShortCircuit_Full", resourceCulture)
             End Get
         End Property
     End Module

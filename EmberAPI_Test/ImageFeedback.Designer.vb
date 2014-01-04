@@ -24,7 +24,6 @@ Partial Class ImageFeedback
     Private Sub InitializeComponent()
         Me.btnNo = New System.Windows.Forms.Button()
         Me.btnYes = New System.Windows.Forms.Button()
-        Me.Instructions = New System.Windows.Forms.TextBox()
         Me.BottomPanel = New System.Windows.Forms.Panel()
         Me.ButtonFlowLayoutPanel = New System.Windows.Forms.FlowLayoutPanel()
         Me.TopPanel = New System.Windows.Forms.Panel()
@@ -32,6 +31,7 @@ Partial Class ImageFeedback
         Me.PictureBackground = New System.Windows.Forms.Panel()
         Me.ShownPicture = New System.Windows.Forms.PictureBox()
         Me.SquareFiller = New System.Windows.Forms.Panel()
+        Me.Instructions = New System.Windows.Forms.TextBox()
         Me.VerticalRuler = New EmberAPI_Test.PixelRuler()
         Me.HorizontalRuler = New EmberAPI_Test.PixelRuler()
         Me.BottomPanel.SuspendLayout()
@@ -62,20 +62,6 @@ Partial Class ImageFeedback
         Me.btnYes.Text = "&Yes"
         Me.btnYes.UseVisualStyleBackColor = True
         '
-        'Instructions
-        '
-        Me.Instructions.Cursor = System.Windows.Forms.Cursors.IBeam
-        Me.Instructions.Dock = System.Windows.Forms.DockStyle.Top
-        Me.Instructions.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Instructions.ForeColor = System.Drawing.SystemColors.WindowText
-        Me.Instructions.Location = New System.Drawing.Point(0, 0)
-        Me.Instructions.Multiline = True
-        Me.Instructions.Name = "Instructions"
-        Me.Instructions.ReadOnly = True
-        Me.Instructions.Size = New System.Drawing.Size(344, 76)
-        Me.Instructions.TabIndex = 3
-        Me.Instructions.TabStop = False
-        '
         'BottomPanel
         '
         Me.BottomPanel.AutoSize = True
@@ -83,9 +69,9 @@ Partial Class ImageFeedback
         Me.BottomPanel.Controls.Add(Me.ButtonFlowLayoutPanel)
         Me.BottomPanel.Controls.Add(Me.Instructions)
         Me.BottomPanel.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.BottomPanel.Location = New System.Drawing.Point(0, 179)
+        Me.BottomPanel.Location = New System.Drawing.Point(0, 160)
         Me.BottomPanel.Name = "BottomPanel"
-        Me.BottomPanel.Size = New System.Drawing.Size(344, 105)
+        Me.BottomPanel.Size = New System.Drawing.Size(344, 169)
         Me.BottomPanel.TabIndex = 4
         '
         'ButtonFlowLayoutPanel
@@ -96,7 +82,7 @@ Partial Class ImageFeedback
         Me.ButtonFlowLayoutPanel.Controls.Add(Me.btnYes)
         Me.ButtonFlowLayoutPanel.Dock = System.Windows.Forms.DockStyle.Bottom
         Me.ButtonFlowLayoutPanel.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft
-        Me.ButtonFlowLayoutPanel.Location = New System.Drawing.Point(0, 76)
+        Me.ButtonFlowLayoutPanel.Location = New System.Drawing.Point(0, 140)
         Me.ButtonFlowLayoutPanel.Name = "ButtonFlowLayoutPanel"
         Me.ButtonFlowLayoutPanel.Size = New System.Drawing.Size(344, 29)
         Me.ButtonFlowLayoutPanel.TabIndex = 5
@@ -110,7 +96,7 @@ Partial Class ImageFeedback
         Me.TopPanel.Location = New System.Drawing.Point(0, 0)
         Me.TopPanel.Margin = New System.Windows.Forms.Padding(0)
         Me.TopPanel.Name = "TopPanel"
-        Me.TopPanel.Size = New System.Drawing.Size(344, 179)
+        Me.TopPanel.Size = New System.Drawing.Size(344, 160)
         Me.TopPanel.TabIndex = 5
         '
         'TableLayoutPanel1
@@ -133,7 +119,7 @@ Partial Class ImageFeedback
         Me.TableLayoutPanel1.RowCount = 2
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 15.0!))
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.TableLayoutPanel1.Size = New System.Drawing.Size(344, 179)
+        Me.TableLayoutPanel1.Size = New System.Drawing.Size(344, 160)
         Me.TableLayoutPanel1.TabIndex = 3
         '
         'PictureBackground
@@ -165,6 +151,20 @@ Partial Class ImageFeedback
         Me.SquareFiller.Size = New System.Drawing.Size(15, 15)
         Me.SquareFiller.TabIndex = 1
         '
+        'Instructions
+        '
+        Me.Instructions.Cursor = System.Windows.Forms.Cursors.IBeam
+        Me.Instructions.Dock = System.Windows.Forms.DockStyle.Top
+        Me.Instructions.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Instructions.ForeColor = System.Drawing.SystemColors.WindowText
+        Me.Instructions.Location = New System.Drawing.Point(0, 0)
+        Me.Instructions.Multiline = True
+        Me.Instructions.Name = "Instructions"
+        Me.Instructions.ReadOnly = True
+        Me.Instructions.Size = New System.Drawing.Size(344, 140)
+        Me.Instructions.TabIndex = 3
+        Me.Instructions.TabStop = False
+        '
         'VerticalRuler
         '
         Me.VerticalRuler.AutoSize = True
@@ -174,7 +174,7 @@ Partial Class ImageFeedback
         Me.VerticalRuler.Location = New System.Drawing.Point(1, 17)
         Me.VerticalRuler.Margin = New System.Windows.Forms.Padding(0)
         Me.VerticalRuler.Name = "VerticalRuler"
-        Me.VerticalRuler.Size = New System.Drawing.Size(15, 161)
+        Me.VerticalRuler.Size = New System.Drawing.Size(15, 142)
         Me.VerticalRuler.TabIndex = 2
         '
         'HorizontalRuler
@@ -196,7 +196,7 @@ Partial Class ImageFeedback
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoSize = True
         Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.ClientSize = New System.Drawing.Size(344, 284)
+        Me.ClientSize = New System.Drawing.Size(344, 329)
         Me.Controls.Add(Me.TopPanel)
         Me.Controls.Add(Me.BottomPanel)
         Me.DoubleBuffered = True
@@ -221,7 +221,6 @@ Partial Class ImageFeedback
     End Sub
     Friend WithEvents btnNo As System.Windows.Forms.Button
     Friend WithEvents btnYes As System.Windows.Forms.Button
-    Friend WithEvents Instructions As System.Windows.Forms.TextBox
     Friend WithEvents BottomPanel As System.Windows.Forms.Panel
     Friend WithEvents TopPanel As System.Windows.Forms.Panel
     Friend WithEvents HorizontalRuler As EmberAPI_Test.PixelRuler
@@ -231,4 +230,5 @@ Partial Class ImageFeedback
     Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents ShownPicture As System.Windows.Forms.PictureBox
     Friend WithEvents PictureBackground As System.Windows.Forms.Panel
+    Friend WithEvents Instructions As System.Windows.Forms.TextBox
 End Class

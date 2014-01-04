@@ -185,6 +185,7 @@ Public Class FanartTV_Poster
     End Sub
 
     Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule_Poster.Scraper
+        Master.eLog.Trace(Me.GetType(), "Started scrape", New Diagnostics.StackTrace().ToString(), Nothing, False)
         'LoadSettings()
         Dim Poster As New Images
 
@@ -192,6 +193,7 @@ Public Class FanartTV_Poster
 
         ImageList = _fanartTV.GetFANARTTVImages(DBMovie.Movie.ID)
 
+        Master.eLog.Trace(Me.GetType(), "Finished scrape", New Diagnostics.StackTrace().ToString(), Nothing, False)
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 

@@ -118,19 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="Genre" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Genre.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="TestPattern" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\TestPattern.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="TestPattern_Med" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\TestPattern_Med.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="TestPattern_Med_Vert" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\TestPattern_Med_Vert.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="TestPattern_Vert" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\TestPattern_Vert.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="txtShortCircuit_Full" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\txtShortCircuit_Full.xml;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
 </root>

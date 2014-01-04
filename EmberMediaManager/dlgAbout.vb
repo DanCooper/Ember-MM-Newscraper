@@ -1,5 +1,4 @@
-﻿Imports EmberAPI
-
+﻿
 ' ################################################################################
 ' #                             EMBER MEDIA MANAGER                              #
 ' ################################################################################
@@ -19,6 +18,8 @@
 ' # You should have received a copy of the GNU General Public License            #
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
+Imports EmberAPI
+Imports System.Resources
 
 Public NotInheritable Class dlgAbout
 
@@ -97,118 +98,110 @@ Public NotInheritable Class dlgAbout
     Private Sub OKButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OKButton.Click
         Me.Close()
     End Sub
-
+    ''' <summary>
+    ''' Launch the default browser to the appropriate URL.
+    ''' The URL is defined in the project's resources
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub pbFFMPEG_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbFFMPEG.Click
-        If Master.isWindows Then
-            Using nProc As New Process
-                nProc.StartInfo.Arguments = "http://www.ffmpeg.org/"
-                nProc.Start()
-            End Using
-        Else
-            Using Explorer As New Process
-                Explorer.StartInfo.FileName = "xdg-open"
-                Explorer.StartInfo.Arguments = "http://www.ffmpeg.org/"
-                Explorer.Start()
-            End Using
-        End If
+        Functions.Launch(My.Resources.urlFfmpeg)
     End Sub
 
+    ''' <summary>
+    ''' Launch the default browser to the appropriate URL.
+    ''' The URL is defined in the project's resources
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub pbIMDB_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbIMDB.Click
-        If Master.isWindows Then
-            Process.Start("http://www.imdb.com/")
-        Else
-            Using Explorer As New Process
-                Explorer.StartInfo.FileName = "xdg-open"
-                Explorer.StartInfo.Arguments = "http://www.imdb.com/"
-                Explorer.Start()
-            End Using
-        End If
+        Functions.Launch(My.Resources.urlIMDB)
     End Sub
 
+    ''' <summary>
+    ''' Launch the default browser to the appropriate URL.
+    ''' The URL is defined in the project's resources
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub pbIMPA_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbIMPA.Click
-        If Master.isWindows Then
-            Process.Start("http://www.impawards.com/")
-        Else
-            Using Explorer As New Process
-                Explorer.StartInfo.FileName = "xdg-open"
-                Explorer.StartInfo.Arguments = "http://www.impawards.com/"
-                Explorer.Start()
-            End Using
-        End If
+        Functions.Launch(My.Resources.urlIMPAwards)
     End Sub
 
+    ''' <summary>
+    ''' Launch the default browser to the appropriate URL.
+    ''' The URL is defined in the project's resources
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub pbMI_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbMI.Click
-        If Master.isWindows Then
-            Process.Start("http://mediainfo.sourceforge.net")
-        Else
-            Using Explorer As New Process
-                Explorer.StartInfo.FileName = "xdg-open"
-                Explorer.StartInfo.Arguments = "http://mediainfo.sourceforge.net"
-                Explorer.Start()
-            End Using
-        End If
+        Functions.Launch(My.Resources.urlMediaInfo)
     End Sub
 
+    ''' <summary>
+    ''' Launch the default browser to the appropriate URL.
+    ''' The URL is defined in the project's resources
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub pbMPDB_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbMPDB.Click
-        If Master.isWindows Then
-            Process.Start("http://www.moviepostersdb.com/")
-        Else
-            Using Explorer As New Process
-                Explorer.StartInfo.FileName = "xdg-open"
-                Explorer.StartInfo.Arguments = "http://www.moviepostersdb.com/"
-                Explorer.Start()
-            End Using
-        End If
+        Functions.Launch(My.Resources.urlMoviePostersDb)
     End Sub
 
+    ''' <summary>
+    ''' Launch the default browser to the appropriate URL.
+    ''' The URL is defined in the project's resources
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub pbTMDB_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbTMDB.Click
-        If Master.isWindows Then
-            Process.Start("http://www.themoviedb.org/")
-        Else
-            Using Explorer As New Process
-                Explorer.StartInfo.FileName = "xdg-open"
-                Explorer.StartInfo.Arguments = "http://www.themoviedb.org/"
-                Explorer.Start()
-            End Using
-        End If
+        Functions.Launch(My.Resources.urlTheMovieDb)
     End Sub
 
+    ''' <summary>
+    ''' Launch the default browser to the appropriate URL.
+    ''' The URL is defined in the project's resources
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub pbXBMC_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbXBMC.Click
-        If Master.isWindows Then
-            Process.Start("http://www.xbmc.org/")
-        Else
-            Using Explorer As New Process
-                Explorer.StartInfo.FileName = "xdg-open"
-                Explorer.StartInfo.Arguments = "http://www.xbmc.org/"
-                Explorer.Start()
-            End Using
-        End If
+        Functions.Launch(My.Resources.urlXBMC)
     End Sub
 
+    ''' <summary>
+    ''' Launch the default browser to the appropriate URL.
+    ''' The URL is defined in the project's resources
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub pbYouTube_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbYouTube.Click
-        If Master.isWindows Then
-            Process.Start("http://www.youtube.com/")
-        Else
-            Using Explorer As New Process
-                Explorer.StartInfo.FileName = "xdg-open"
-                Explorer.StartInfo.Arguments = "http://www.youtube.com/"
-                Explorer.Start()
-            End Using
-        End If
+        Functions.Launch(My.Resources.urlYouTube)
     End Sub
 
+    ''' <summary>
+    ''' Launch the default browser to the appropriate URL.
+    ''' The URL is defined in the project's resources
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub picDisplay_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles picDisplay.Click
-        If Master.isWindows Then
-            Process.Start("http://ember.purplepig.net")
-        Else
-            Using Explorer As New Process
-                Explorer.StartInfo.FileName = "xdg-open"
-                Explorer.StartInfo.Arguments = "http://ember.purplepig.net"
-                Explorer.Start()
-            End Using
-        End If
+        Functions.Launch(My.Resources.urlEmberMediaManager)
     End Sub
-
+    ''' <summary>
+    ''' Scroll the credit lines <c>CredList</c> in the dialog window.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub picDisplay_Paint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles picDisplay.Paint
         Dim CurrentX As Single, CurrentY As Single, FontMod As Single = 0
 
@@ -226,6 +219,9 @@ Public NotInheritable Class dlgAbout
         Next
 
         PicY -= 1
+
+        'Allow other things to redraw if required
+        Application.DoEvents()
 
         System.Threading.Thread.Sleep(30)
 

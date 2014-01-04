@@ -375,6 +375,39 @@ Public Class ImageUtils
 
     'cocotus end
 
+    ''' <summary>
+    ''' Adds the supplied <paramref name="genreString"/> to the given <paramref name="image"/>
+    ''' </summary>
+    ''' <param name="image">Source <c>Image</c> to manipulate</param>
+    ''' <param name="genreString"><c>String</c> to superimpose</param>
+    ''' <remarks>If an error is encountered, the source image is returned.</remarks>
+    Public Shared Function AddGenreString(ByRef image As System.Drawing.Image, genreString As String) As Bitmap
+        If (image Is Nothing) OrElse (image.Size.IsEmpty) Then
+            Master.eLog.Error(GetType(ImageUtils), "Invalid image parameter", New StackTrace().ToString(), "Error")
+            Return Nothing
+        End If
+
+        Dim bmGenre As New Bitmap(image)
+        Try
+            Using grGenre As Graphics = Graphics.FromImage(bmGenre),
+                drawFont1 As New Font("Microsoft Sans Serif", 14, FontStyle.Bold, GraphicsUnit.Pixel)
+
+                Dim drawBrush As New SolidBrush(Color.White)
+                Dim drawWidth As Single = grGenre.MeasureString(genreString, drawFont1).Width
+                Dim drawSize As Integer = Convert.ToInt32((14 * (bmGenre.Width / drawWidth)) - 0.5)
+                Using drawFont2 = New Font("Microsoft Sans Serif", If(drawSize > 14, 14, drawSize), FontStyle.Bold, GraphicsUnit.Pixel)
+                    Dim drawHeight As Single = grGenre.MeasureString(genreString, drawFont2).Height
+                    Dim iLeft As Integer = Convert.ToInt32((bmGenre.Width - grGenre.MeasureString(genreString, drawFont2).Width) / 2)
+                    grGenre.DrawString(genreString, drawFont2, drawBrush, iLeft, (bmGenre.Height - drawHeight))
+                End Using
+            End Using
+        Catch ex As Exception
+            Master.eLog.Error(GetType(ImageUtils), ex.Message, ex.StackTrace, "Error")
+        End Try
+        Return bmGenre
+
+    End Function
+
 #End Region 'Methods
 
 End Class

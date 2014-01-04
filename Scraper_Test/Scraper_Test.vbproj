@@ -3,10 +3,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{BFDAF0E3-A7AC-40E8-9CC8-8975838B7098}</ProjectGuid>
+    <ProjectGuid>{125DE2A3-081B-41B2-9528-8BF387EB39C7}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>EmberAPI_Test</RootNamespace>
-    <AssemblyName>EmberAPI_Test</AssemblyName>
+    <RootNamespace>Scraper_Test</RootNamespace>
+    <AssemblyName>Scraper_Test</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
@@ -24,9 +24,8 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>..\EmberMM-Dev\</OutputPath>
-    <DocumentationFile>EmberAPI_Test.xml</DocumentationFile>
+    <DocumentationFile>Scraper_Test.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
-    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -34,7 +33,7 @@
     <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
     <OutputPath>..\EmberMM-Deploy\</OutputPath>
-    <DocumentationFile>EmberAPI_Test.xml</DocumentationFile>
+    <DocumentationFile>Scraper_Test.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <PropertyGroup>
@@ -50,29 +49,22 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <SpecificVersion>True</SpecificVersion>
-    </Reference>
-    <Reference Include="NLog, Version=2.0.1.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\NLog.2.0.1.2\lib\net35\NLog.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
   </ItemGroup>
   <Choose>
-    <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'" />
+    <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+      </ItemGroup>
+    </When>
     <Otherwise>
       <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework">
-          <SpecificVersion>True</SpecificVersion>
-        </Reference>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
       </ItemGroup>
     </Otherwise>
   </Choose>
@@ -85,25 +77,11 @@
     <Import Include="System.Diagnostics" />
     <Import Include="System.Linq" />
     <Import Include="System.Xml.Linq" />
+    <Import Include="System.Threading.Tasks" />
     <Import Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ImageFeedback.Designer.vb">
-      <DependentUpon>ImageFeedback.vb</DependentUpon>
-    </Compile>
-    <Compile Include="ImageFeedback.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="PixelRuler.Designer.vb">
-      <DependentUpon>PixelRuler.vb</DependentUpon>
-    </Compile>
-    <Compile Include="PixelRuler.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Test_clsAPIImageUtils.vb" />
-    <Compile Include="Test_clsAPIImages.vb" />
-    <Compile Include="Test_clsAPINumUtils.vb" />
-    <Compile Include="Test_clsAPIFileUtils.vb" />
+    <Compile Include="Test_IMDB_Data.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -119,25 +97,13 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Test_clsAPICommon.vb" />
-    <Compile Include="Test_clsAPIHTTP.vb" />
-    <Compile Include="Test_clsYouTube.vb" />
-    <Compile Include="Test_clsTrailers.vb" />
-    <Compile Include="Test_clsAPIErrorLog.vb" />
-    <Compile Include="Test_clsAPIStringUtils.vb" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ImageFeedback.resx">
-      <DependentUpon>ImageFeedback.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PixelRuler.resx">
-      <DependentUpon>PixelRuler.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -152,6 +118,46 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Addons\scraper.IMDB.Data\scraper.IMDB.Data.vbproj">
+      <Project>{d3c1a3c4-a060-40df-ace4-143f7f102a24}</Project>
+      <Name>scraper.IMDB.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Addons\scraper.IMDB.Poster\scraper.IMDB.Poster.vbproj">
+      <Project>{33f99994-12ca-4fab-b62d-741f7ae35f4b}</Project>
+      <Name>scraper.IMDB.Poster</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Addons\scraper.IMDB.Trailer\scraper.IMDB.Trailer.vbproj">
+      <Project>{194445be-3721-4270-984d-fa978d5f34a0}</Project>
+      <Name>scraper.IMDB.Trailer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Addons\scraper.IMPA.Poster\scraper.IMPA.Poster.vbproj">
+      <Project>{d9878e03-87d7-429e-aa0c-a7116a31fa7f}</Project>
+      <Name>scraper.IMPA.Poster</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Addons\scraper.MPDB.Poster\scraper.MPDB.Poster.vbproj">
+      <Project>{72a8ef23-3379-4c72-b212-a14a3c286d9c}</Project>
+      <Name>scraper.MPDB.Poster</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Addons\scraper.OFDB.Data\scraper.OFDB.Data.vbproj">
+      <Project>{39c49e1a-75ba-4ad1-9286-58e83d22bc1e}</Project>
+      <Name>scraper.OFDB.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Addons\scraper.TMDB.Data\scraper.TMDB.Data.vbproj">
+      <Project>{a9188cf1-bd07-4d24-bc4a-906a43012f37}</Project>
+      <Name>scraper.TMDB.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Addons\scraper.TMDB.Poster\scraper.TMDB.Poster.vbproj">
+      <Project>{2b684c20-7e1a-4da0-8c26-96da1407b2c3}</Project>
+      <Name>scraper.TMDB.Poster</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Addons\scraper.TMDB.Trailer\scraper.TMDB.Trailer.vbproj">
+      <Project>{0beba16b-9a83-4bd5-a476-b366451f0907}</Project>
+      <Name>scraper.TMDB.Trailer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Addons\scraper.TVDB.Poster\scraper.TVDB.Data.Poster.vbproj">
+      <Project>{3faf50aa-ad5f-455a-8711-6d791c457f0f}</Project>
+      <Name>scraper.TVDB.Data.Poster</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EmberAPI\EmberAPI.vbproj">
       <Project>{208aa35e-c6ae-4d2d-a9dd-b6efd19a4279}</Project>
       <Name>EmberAPI</Name>
@@ -162,22 +168,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\TestPattern.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{94E38DFF-614B-4CBD-B67C-F211BB35CE8B}" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\TestPattern_Med.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\TestPattern_Med_Vert.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\TestPattern_Vert.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Genre.jpg" />
+    <None Include="Resources\txtShortCircuit_Full.xml" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

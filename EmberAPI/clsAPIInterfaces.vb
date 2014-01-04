@@ -454,14 +454,27 @@ Public Class Interfaces
 #End Region	'Nested Interfaces
 
 #Region "Nested Types"
-
+    ''' <summary>
+    ''' This structure is returned by most scraper interfaces to represent the
+    ''' status of the operation that was requested
+    ''' </summary>
+    ''' <remarks></remarks>
 	Public Structure ModuleResult
 
 #Region "Fields"
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <remarks></remarks>
+        Public breakChain As Boolean
+        ''' <summary>
+        ''' An error has occurred in the module, and its operation has been cancelled. 
+        ''' </summary>
+        ''' <remarks></remarks>
+        Public Cancelled As Boolean
 
-		Public breakChain As Boolean
-		Public Cancelled As Boolean
-		Public BoolProperty As Boolean
+        <Obsolete("BoolProperty has been marked Obsolete in v1.4, and will be removed shortly", True)> _
+        Public BoolProperty As Boolean
 
 #End Region	'Fields
 
