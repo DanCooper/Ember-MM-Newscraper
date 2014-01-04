@@ -466,7 +466,7 @@ Public Class dlgWizard
         Master.DB.LoadTVSourcesFromDB()
         lvTVSources.Items.Clear()
         Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
-            SQLcommand.CommandText = "SELECT * FROM TVSources;"
+            SQLcommand.CommandText = "SELECT ID, Name, path, LastScan FROM TVSources;"
             Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                 While SQLreader.Read
                     lvItem = New ListViewItem(SQLreader("ID").ToString)

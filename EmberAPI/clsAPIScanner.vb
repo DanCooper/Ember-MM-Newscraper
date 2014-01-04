@@ -790,7 +790,7 @@ Public Class Scanner
 
                         If String.IsNullOrEmpty(epPath) Then
                             Dim dtEpisodes As New DataTable
-                            Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM TVEps INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE TVShowID = ", TVDB.ShowID, " AND Season = ", TVDB.TVEp.Season, " ORDER BY Episode;"))
+                            Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT ID, TVShowID, Episode, Title, HasPoster, HasFanart, HasNfo, New, Mark, TVEpPathID, Source, Lock, Season, Rating, Plot, Aired, Director, Credits, PosterPath, FanartPath, NfoPath, NeedsSave, Missing, Playcount, HasWatched, DisplaySeason, DisplayEpisode FROM TVEps INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE TVShowID = ", TVDB.ShowID, " AND Season = ", TVDB.TVEp.Season, " ORDER BY Episode;"))
                             If dtEpisodes.Rows.Count > 0 Then
                                 epPath = dtEpisodes.Rows(0).Item("TVEpPath").ToString
                             End If
@@ -827,7 +827,7 @@ Public Class Scanner
 
                         If String.IsNullOrEmpty(epPath) Then
                             Dim dtEpisodes As New DataTable
-                            Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM TVEps INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE TVShowID = ", TVDB.ShowID, " AND Season = ", TVDB.TVEp.Season, " ORDER BY Episode;"))
+                            Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT ID, TVShowID, Episode, Title, HasPoster, HasFanart, HasNfo, New, Mark, TVEpPathID, Source, Lock, Season, Rating, Plot, Aired, Director, Credits, PosterPath, FanartPath, NfoPath, NeedsSave, Missing, Playcount, HasWatched, DisplaySeason, DisplayEpisode FROM TVEps INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE TVShowID = ", TVDB.ShowID, " AND Season = ", TVDB.TVEp.Season, " ORDER BY Episode;"))
                             If dtEpisodes.Rows.Count > 0 Then
                                 epPath = dtEpisodes.Rows(0).Item("TVEpPath").ToString
                             End If
@@ -945,7 +945,7 @@ Public Class Scanner
                 End If
                 If String.IsNullOrEmpty(seasonPath) Then
                     Dim dtSeasons As New DataTable
-                    Master.DB.FillDataTable(dtSeasons, String.Concat("SELECT * FROM TVEps INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE TVShowID = ", ID, " ORDER BY Season, Episode;"))
+                    Master.DB.FillDataTable(dtSeasons, String.Concat("SELECT ID, TVShowID, Episode, Title, HasPoster, HasFanart, HasNfo, New, Mark, TVEpPathID, Source, Lock, Season, Rating, Plot, Aired, Director, Credits, PosterPath, FanartPath, NfoPath, NeedsSave, Missing, Playcount, HasWatched, DisplaySeason, DisplayEpisode FROM TVEps INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE TVShowID = ", ID, " ORDER BY Season, Episode;"))
                     If dtSeasons.Rows.Count > 0 Then
                         seasonPath = Functions.GetSeasonDirectoryFromShowPath(parPath, Convert.ToInt32(dtSeasons.Rows(0).Item("Season").ToString))
                     End If
@@ -967,7 +967,7 @@ Public Class Scanner
                 End If
                 If String.IsNullOrEmpty(seasonPath) Then
                     Dim dtSeasons As New DataTable
-                    Master.DB.FillDataTable(dtSeasons, String.Concat("SELECT * FROM TVEps INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE TVShowID = ", ID, " ORDER BY Season, Episode;"))
+                    Master.DB.FillDataTable(dtSeasons, String.Concat("SELECT ID, TVShowID, Episode, Title, HasPoster, HasFanart, HasNfo, New, Mark, TVEpPathID, Source, Lock, Season, Rating, Plot, Aired, Director, Credits, PosterPath, FanartPath, NfoPath, NeedsSave, Missing, Playcount, HasWatched, DisplaySeason, DisplayEpisode FROM TVEps INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE TVShowID = ", ID, " ORDER BY Season, Episode;"))
                     If dtSeasons.Rows.Count > 0 Then
                         seasonPath = Functions.GetSeasonDirectoryFromShowPath(parPath, Convert.ToInt32(dtSeasons.Rows(0).Item("Season").ToString))
                     End If
@@ -1474,9 +1474,9 @@ Public Class Scanner
                 Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.MediaDBConn.BeginTransaction()
                     Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
                         If Not String.IsNullOrEmpty(Args.SourceName) Then
-                            SQLcommand.CommandText = String.Format("SELECT * FROM sources WHERE Name = ""{0}"";", Args.SourceName)
+                            SQLcommand.CommandText = String.Format("SELECT ID, Name, path, Recursive, Foldername, Single, LastScan FROM sources WHERE Name = ""{0}"";", Args.SourceName)
                         Else
-                            SQLcommand.CommandText = "SELECT * FROM sources;"
+                            SQLcommand.CommandText = "SELECT ID, Name, path, Recursive, Foldername, Single, LastScan FROM sources;"
                         End If
 
                         Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
@@ -1550,9 +1550,9 @@ Public Class Scanner
                 Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.MediaDBConn.BeginTransaction()
                     Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
                         If Not String.IsNullOrEmpty(Args.SourceName) Then
-                            SQLcommand.CommandText = String.Format("SELECT * FROM TVSources WHERE Name = ""{0}"";", Args.SourceName)
+                            SQLcommand.CommandText = String.Format("SELECT ID, Name, path, LastScan FROM TVSources WHERE Name = ""{0}"";", Args.SourceName)
                         Else
-                            SQLcommand.CommandText = "SELECT * FROM TVSources;"
+                            SQLcommand.CommandText = "SELECT ID, Name, path, LastScan FROM TVSources;"
                         End If
 
                         Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()

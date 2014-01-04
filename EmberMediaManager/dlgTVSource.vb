@@ -113,7 +113,7 @@ Public Class dlgTVSource
         Try
             If Me._id >= 0 Then
                 Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
-                    SQLcommand.CommandText = String.Concat("SELECT * FROM TVSources WHERE ID = ", Me._id, ";")
+                    SQLcommand.CommandText = String.Concat("SELECT ID, Name, path, LastScan FROM TVSources WHERE ID = ", Me._id, ";")
                     Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                         If SQLreader.HasRows() Then
                             SQLreader.Read()
