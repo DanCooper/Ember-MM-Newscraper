@@ -80,8 +80,8 @@ Public Class dlgOfflineHolder
     Private Sub AddDVDProfilerMovie(ByRef cMovie As DVDProfiler.cDVD)
         txtDVDTitle.Text = cMovie.Title
         txtCaseType.Text = cMovie.CaseType
-        txtLocation.Text = cMovie.Discs.Disc(0).Location
-        txtSlot.Text = cMovie.Discs.Disc(0).Slot
+        txtLocation.Text = If(cMovie.Discs.Disc.Count > 0, cMovie.Discs.Disc(0).dLocation, String.Empty)
+        txtSlot.Text = If(cMovie.Discs.Disc.Count > 0, cMovie.Discs.Disc(0).dSlot, String.Empty)
         Select Case True
             Case cMovie.MediaTypes.BluRay = True
                 txtMediaType.Text = "BluRay"
@@ -620,23 +620,34 @@ Public Class dlgOfflineHolder
     End Sub
 
     Private Sub SetControlsEnabled(ByVal isEnabled As Boolean)
+        btnClose.Enabled = isEnabled
+        btnCreate.Enabled = isEnabled
+        gbDVDProfiler.Enabled = isEnabled
         gbHolderType.Enabled = isEnabled
         gbMode.Enabled = isEnabled
+        gbMovieTitle.Enabled = isEnabled
         gbSearch.Enabled = isEnabled
         gbSettings.Enabled = isEnabled
         gbSource.Enabled = isEnabled
         gbType.Enabled = isEnabled
+        tbTagLine.Enabled = isEnabled
+    End Sub
+
+    Private Sub SetControlsDummyMovie(ByVal isDummy As Boolean)
+        gbSettings.Enabled = True
+        gbPreview.Visible = isDummy
+        tbTagLine.Visible = isDummy
+        tbTagLine.Enabled = isDummy
+        txtMovieTitle.Enabled = Not isDummy
+        If isDummy Then
+            lblTagline.Text = Master.eLang.GetString(542, "Place Holder Video Tagline:")
+        Else
+            lblTagline.Text = "Message"
+        End If
     End Sub
 
     Private Sub btnCreate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCreate.Click
-        cbSources.Enabled = False
-        btnCreate.Enabled = False
-        txtMovieName.Enabled = False
-        txtTagline.Enabled = False
-        chkUseFanart.Enabled = False
-        btnClose.Enabled = False
-        btnLoadSingle.Enabled = False
-        btnLoadCollection.Enabled = False
+        SetControlsEnabled(False)
         'Need to avoid cross thread in BackgroundWorker
         'txtTopPos = Video_Width / (pbPreview.Image.Width / Convert.ToSingle(currTopText)) ' ... and Scale it
         Me.pbProgress.Value = 100
@@ -645,10 +656,53 @@ Public Class dlgOfflineHolder
         Me.pbProgress.Visible = True
 
         lvStatus.Items.Clear()
-        Me.bwCreateHolder = New System.ComponentModel.BackgroundWorker
-        Me.bwCreateHolder.WorkerReportsProgress = True
-        Me.bwCreateHolder.WorkerSupportsCancellation = True
-        Me.bwCreateHolder.RunWorkerAsync()
+        If rbDummyMovie.Checked Then
+            Me.bwCreateHolder = New System.ComponentModel.BackgroundWorker
+            Me.bwCreateHolder.WorkerReportsProgress = True
+            Me.bwCreateHolder.WorkerSupportsCancellation = True
+            Me.bwCreateHolder.RunWorkerAsync()
+        Else
+            CreateMediaStub()
+        End If
+    End Sub
+
+    Private Sub CreateMediaStub()
+        Dim doesExist As Boolean = False
+        Dim xmlSer As New XmlSerializer(GetType(MediaContainers.Discstub))
+        Dim fAtt As New FileAttributes
+        Dim fAttWritable As Boolean = True
+        Dim StubFile As String = String.Empty
+        Dim StubPath As String = String.Empty
+        Dim DiscStub As New MediaContainers.Discstub
+
+        DiscStub.Title = txtMovieTitle.Text
+        DiscStub.Message = txtTagline.Text
+
+        StubFile = String.Concat(destPath, Path.DirectorySeparatorChar, txtDVDTitle.Text, If(Not String.IsNullOrEmpty(txtMediaType.Text), String.Concat(".", txtMediaType.Text.ToLower), String.Empty), ".disc")
+        StubPath = Directory.GetParent(StubFile).FullName
+
+        doesExist = File.Exists(StubFile)
+        If Not doesExist OrElse (Not CBool(File.GetAttributes(StubFile) And FileAttributes.ReadOnly)) Then
+
+            If Not Directory.Exists(StubPath) Then
+                Directory.CreateDirectory(StubPath)
+            End If
+
+            If doesExist Then
+                fAtt = File.GetAttributes(StubFile)
+                Try
+                    File.SetAttributes(StubFile, FileAttributes.Normal)
+                Catch ex As Exception
+                    fAttWritable = False
+                End Try
+            End If
+
+            Using xmlSW As New StreamWriter(StubFile)
+                xmlSer.Serialize(xmlSW, DiscStub)
+            End Using
+
+            If doesExist And fAttWritable Then File.SetAttributes(StubFile, fAtt)
+        End If
     End Sub
 
     Private Sub DirectoryCopy(ByVal sourceDirName As String, ByVal destDirName As String)
@@ -723,6 +777,7 @@ Public Class dlgOfflineHolder
             CreatePreview()
             tMovie.Movie = New MediaContainers.Movie
             tMovie.isSingle = True
+            cMovie = New DVDProfiler.cDVD
             idxStsSource = lvStatus.Items.Add(Master.eLang.GetString(318, "Source Folder")).Index
             lvStatus.Items(idxStsSource).SubItems.Add(Master.eLang.GetString(194, "Not Valid"))
             lvStatus.Items(idxStsSource).UseItemStyleForSubItems = False
@@ -749,19 +804,50 @@ Public Class dlgOfflineHolder
             tMovie.Movie.Clear()
             tMovie.Movie.Title = txtMovieName.Text
             SearchMovie()
+            gbHolderType.Enabled = True
         Else
             tMovie.Movie.Clear()
             MergeMovie()
             SearchMovie()
+            gbHolderType.Enabled = True
         End If
     End Sub
 
     Private Sub MergeMovie()
         tMovie.Movie.Title = cMovie.Title
         tMovie.Movie.Year = cMovie.ProductionYear
-        tMovie.FileSource = cMovie.CaseType
+        tMovie.FileSource = cMovie.MediaTypes.ToString
+        Select Case True
+            Case cMovie.MediaTypes.BluRay = True
+                tMovie.FileSource = "bluray"
+            Case cMovie.MediaTypes.DVD = True
+                tMovie.FileSource = "dvd"
+            Case cMovie.MediaTypes.HDDVD = True
+                tMovie.FileSource = "hddvd"
+        End Select
 
-        ' TODO: audio & subtitles
+        If cMovie.Subtitles.Subtitle.Count > 0 Then
+            For Each sStream In cMovie.Subtitles.Subtitle
+                Dim stream_s As New MediaInfo.Subtitle
+                stream_s.LongLanguage = sStream
+                stream_s.Language = Localization.ISOLangGetCode3ByLang(sStream)
+                stream_s.SubsType = "Embedded"
+                tMovie.Movie.FileInfo.StreamDetails.Subtitle.Add(DirectCast(stream_s, MediaInfo.Subtitle))
+            Next
+        End If
+
+        If cMovie.Audio.AudioTrack.Count > 0 Then
+            For Each aStream In cMovie.Audio.AudioTrack
+                Dim stream_a As New MediaInfo.Audio
+                stream_a.Channels = DVDProfiler.ConvertAChannels(aStream.AudioChannels)
+                stream_a.Codec = DVDProfiler.ConvertAFormat(aStream.AudioFormat).ToLower
+                stream_a.LongLanguage = aStream.AudioContent
+                stream_a.Language = Localization.ISOLangGetCode3ByLang(aStream.AudioContent)
+                tMovie.Movie.FileInfo.StreamDetails.Audio.Add(DirectCast(stream_a, MediaInfo.Audio))
+            Next
+        End If
+
+            ' TODO: audio & subtitles
     End Sub
 
     Private Sub SearchMovie()
@@ -871,6 +957,20 @@ Public Class dlgOfflineHolder
             gbMovieTitle.Enabled = False
             gbDVDProfiler.Enabled = True
             txtMovieName.Text = String.Empty
+        End If
+        CheckConditions()
+    End Sub
+
+    Private Sub rbDummyMovie_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbDummyMovie.CheckedChanged
+        If gbHolderType.Enabled Then
+            SetControlsDummyMovie(True)
+        End If
+        CheckConditions()
+    End Sub
+
+    Private Sub rbMediaStub_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbMediaStub.CheckedChanged
+        If gbHolderType.Enabled Then
+            SetControlsDummyMovie(False)
         End If
         CheckConditions()
     End Sub

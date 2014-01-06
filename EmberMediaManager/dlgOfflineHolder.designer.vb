@@ -108,6 +108,8 @@ Partial Class dlgOfflineHolder
         Me.rbMediaStub = New System.Windows.Forms.RadioButton()
         Me.rbDummyMovie = New System.Windows.Forms.RadioButton()
         Me.gbSettings = New System.Windows.Forms.GroupBox()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.txtMovieTitle = New System.Windows.Forms.TextBox()
         Me.gbDefaults = New System.Windows.Forms.GroupBox()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
         Me.btnDefaultLoad = New System.Windows.Forms.Button()
@@ -136,8 +138,6 @@ Partial Class dlgOfflineHolder
         Me.btnLoadCollection = New System.Windows.Forms.Button()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.ofdSingleXML = New System.Windows.Forms.OpenFileDialog()
-        Me.TextBox1 = New System.Windows.Forms.TextBox()
-        Me.Label1 = New System.Windows.Forms.Label()
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbPreview, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -275,7 +275,7 @@ Partial Class dlgOfflineHolder
         Me.lvStatus.Location = New System.Drawing.Point(6, 44)
         Me.lvStatus.MultiSelect = False
         Me.lvStatus.Name = "lvStatus"
-        Me.lvStatus.Size = New System.Drawing.Size(318, 171)
+        Me.lvStatus.Size = New System.Drawing.Size(318, 141)
         Me.lvStatus.TabIndex = 1
         Me.lvStatus.UseCompatibleStateImageBehavior = False
         Me.lvStatus.View = System.Windows.Forms.View.Details
@@ -367,6 +367,7 @@ Partial Class dlgOfflineHolder
         'gbPreview
         '
         Me.gbPreview.Controls.Add(Me.pbPreview)
+        Me.gbPreview.Enabled = False
         Me.gbPreview.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbPreview.Location = New System.Drawing.Point(366, 320)
         Me.gbPreview.Name = "gbPreview"
@@ -374,6 +375,7 @@ Partial Class dlgOfflineHolder
         Me.gbPreview.TabIndex = 7
         Me.gbPreview.TabStop = False
         Me.gbPreview.Text = "Preview"
+        Me.gbPreview.Visible = False
         '
         'lblVideoFormat
         '
@@ -486,9 +488,9 @@ Partial Class dlgOfflineHolder
         Me.gbInfo.Controls.Add(Me.pbProgress)
         Me.gbInfo.Controls.Add(Me.lvStatus)
         Me.gbInfo.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbInfo.Location = New System.Drawing.Point(10, 430)
+        Me.gbInfo.Location = New System.Drawing.Point(10, 460)
         Me.gbInfo.Name = "gbInfo"
-        Me.gbInfo.Size = New System.Drawing.Size(330, 223)
+        Me.gbInfo.Size = New System.Drawing.Size(330, 193)
         Me.gbInfo.TabIndex = 6
         Me.gbInfo.TabStop = False
         Me.gbInfo.Text = "Information"
@@ -504,6 +506,7 @@ Partial Class dlgOfflineHolder
         Me.tbTagLine.Size = New System.Drawing.Size(45, 338)
         Me.tbTagLine.TabIndex = 8
         Me.tbTagLine.TickStyle = System.Windows.Forms.TickStyle.None
+        Me.tbTagLine.Visible = False
         '
         'tmrNameWait
         '
@@ -568,7 +571,7 @@ Partial Class dlgOfflineHolder
         'gbSettings
         '
         Me.gbSettings.Controls.Add(Me.Label1)
-        Me.gbSettings.Controls.Add(Me.TextBox1)
+        Me.gbSettings.Controls.Add(Me.txtMovieTitle)
         Me.gbSettings.Controls.Add(Me.gbDefaults)
         Me.gbSettings.Controls.Add(Me.lblVideoFormat)
         Me.gbSettings.Controls.Add(Me.lblTagline)
@@ -584,6 +587,7 @@ Partial Class dlgOfflineHolder
         Me.gbSettings.Controls.Add(Me.btnTextColor)
         Me.gbSettings.Controls.Add(Me.btnFont)
         Me.gbSettings.Controls.Add(Me.chkUseFanart)
+        Me.gbSettings.Enabled = False
         Me.gbSettings.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbSettings.Location = New System.Drawing.Point(366, 84)
         Me.gbSettings.Name = "gbSettings"
@@ -591,6 +595,25 @@ Partial Class dlgOfflineHolder
         Me.gbSettings.TabIndex = 16
         Me.gbSettings.TabStop = False
         Me.gbSettings.Text = "7. Settings"
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        Me.Label1.Location = New System.Drawing.Point(7, 22)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(62, 13)
+        Me.Label1.TabIndex = 18
+        Me.Label1.Text = "Movie Title"
+        '
+        'txtMovieTitle
+        '
+        Me.txtMovieTitle.Enabled = False
+        Me.txtMovieTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        Me.txtMovieTitle.Location = New System.Drawing.Point(6, 38)
+        Me.txtMovieTitle.Name = "txtMovieTitle"
+        Me.txtMovieTitle.Size = New System.Drawing.Size(241, 22)
+        Me.txtMovieTitle.TabIndex = 17
         '
         'gbDefaults
         '
@@ -766,7 +789,7 @@ Partial Class dlgOfflineHolder
         Me.gbDVDProfiler.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbDVDProfiler.Location = New System.Drawing.Point(10, 234)
         Me.gbDVDProfiler.Name = "gbDVDProfiler"
-        Me.gbDVDProfiler.Size = New System.Drawing.Size(330, 190)
+        Me.gbDVDProfiler.Size = New System.Drawing.Size(330, 220)
         Me.gbDVDProfiler.TabIndex = 10
         Me.gbDVDProfiler.TabStop = False
         Me.gbDVDProfiler.Text = "4. DVD Profiler"
@@ -775,7 +798,7 @@ Partial Class dlgOfflineHolder
         '
         Me.lblTitle.AutoSize = True
         Me.lblTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.lblTitle.Location = New System.Drawing.Point(100, 53)
+        Me.lblTitle.Location = New System.Drawing.Point(6, 61)
         Me.lblTitle.Name = "lblTitle"
         Me.lblTitle.Size = New System.Drawing.Size(53, 13)
         Me.lblTitle.TabIndex = 20
@@ -785,17 +808,16 @@ Partial Class dlgOfflineHolder
         'txtDVDTitle
         '
         Me.txtDVDTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.txtDVDTitle.Location = New System.Drawing.Point(159, 50)
+        Me.txtDVDTitle.Location = New System.Drawing.Point(6, 78)
         Me.txtDVDTitle.Name = "txtDVDTitle"
-        Me.txtDVDTitle.ReadOnly = True
-        Me.txtDVDTitle.Size = New System.Drawing.Size(165, 22)
+        Me.txtDVDTitle.Size = New System.Drawing.Size(318, 22)
         Me.txtDVDTitle.TabIndex = 19
         '
         'lblSlot
         '
         Me.lblSlot.AutoSize = True
         Me.lblSlot.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.lblSlot.Location = New System.Drawing.Point(100, 165)
+        Me.lblSlot.Location = New System.Drawing.Point(100, 193)
         Me.lblSlot.Name = "lblSlot"
         Me.lblSlot.Size = New System.Drawing.Size(53, 13)
         Me.lblSlot.TabIndex = 18
@@ -806,7 +828,7 @@ Partial Class dlgOfflineHolder
         '
         Me.lblLocation.AutoSize = True
         Me.lblLocation.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.lblLocation.Location = New System.Drawing.Point(77, 137)
+        Me.lblLocation.Location = New System.Drawing.Point(77, 165)
         Me.lblLocation.Name = "lblLocation"
         Me.lblLocation.Size = New System.Drawing.Size(76, 13)
         Me.lblLocation.TabIndex = 17
@@ -817,7 +839,7 @@ Partial Class dlgOfflineHolder
         '
         Me.lblCaseType.AutoSize = True
         Me.lblCaseType.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.lblCaseType.Location = New System.Drawing.Point(72, 109)
+        Me.lblCaseType.Location = New System.Drawing.Point(72, 137)
         Me.lblCaseType.Name = "lblCaseType"
         Me.lblCaseType.Size = New System.Drawing.Size(81, 13)
         Me.lblCaseType.TabIndex = 16
@@ -828,7 +850,7 @@ Partial Class dlgOfflineHolder
         '
         Me.lblMediaType.AutoSize = True
         Me.lblMediaType.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.lblMediaType.Location = New System.Drawing.Point(66, 81)
+        Me.lblMediaType.Location = New System.Drawing.Point(66, 109)
         Me.lblMediaType.Name = "lblMediaType"
         Me.lblMediaType.Size = New System.Drawing.Size(87, 13)
         Me.lblMediaType.TabIndex = 15
@@ -848,7 +870,7 @@ Partial Class dlgOfflineHolder
         'txtMediaType
         '
         Me.txtMediaType.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.txtMediaType.Location = New System.Drawing.Point(159, 78)
+        Me.txtMediaType.Location = New System.Drawing.Point(159, 106)
         Me.txtMediaType.Name = "txtMediaType"
         Me.txtMediaType.ReadOnly = True
         Me.txtMediaType.Size = New System.Drawing.Size(165, 22)
@@ -857,7 +879,7 @@ Partial Class dlgOfflineHolder
         'txtCaseType
         '
         Me.txtCaseType.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.txtCaseType.Location = New System.Drawing.Point(159, 106)
+        Me.txtCaseType.Location = New System.Drawing.Point(159, 134)
         Me.txtCaseType.Name = "txtCaseType"
         Me.txtCaseType.ReadOnly = True
         Me.txtCaseType.Size = New System.Drawing.Size(165, 22)
@@ -866,7 +888,7 @@ Partial Class dlgOfflineHolder
         'txtSlot
         '
         Me.txtSlot.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.txtSlot.Location = New System.Drawing.Point(159, 162)
+        Me.txtSlot.Location = New System.Drawing.Point(159, 190)
         Me.txtSlot.Name = "txtSlot"
         Me.txtSlot.ReadOnly = True
         Me.txtSlot.Size = New System.Drawing.Size(165, 22)
@@ -875,7 +897,7 @@ Partial Class dlgOfflineHolder
         'txtLocation
         '
         Me.txtLocation.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.txtLocation.Location = New System.Drawing.Point(159, 134)
+        Me.txtLocation.Location = New System.Drawing.Point(159, 162)
         Me.txtLocation.Name = "txtLocation"
         Me.txtLocation.ReadOnly = True
         Me.txtLocation.Size = New System.Drawing.Size(165, 22)
@@ -905,24 +927,6 @@ Partial Class dlgOfflineHolder
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.TableLayoutPanel1.Size = New System.Drawing.Size(182, 28)
         Me.TableLayoutPanel1.TabIndex = 4
-        '
-        'TextBox1
-        '
-        Me.TextBox1.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.TextBox1.Location = New System.Drawing.Point(6, 38)
-        Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.Size = New System.Drawing.Size(241, 22)
-        Me.TextBox1.TabIndex = 17
-        '
-        'Label1
-        '
-        Me.Label1.AutoSize = True
-        Me.Label1.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.Label1.Location = New System.Drawing.Point(7, 22)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(62, 13)
-        Me.Label1.TabIndex = 18
-        Me.Label1.Text = "Movie Title"
         '
         'dlgOfflineHolder
         '
@@ -1004,7 +1008,7 @@ Partial Class dlgOfflineHolder
     Friend WithEvents gbHolderType As System.Windows.Forms.GroupBox
     Friend WithEvents rbMediaStub As System.Windows.Forms.RadioButton
     Friend WithEvents rbDummyMovie As System.Windows.Forms.RadioButton
-    Friend WithEvents TextBox1 As System.Windows.Forms.TextBox
+    Friend WithEvents txtMovieTitle As System.Windows.Forms.TextBox
     Friend WithEvents Label1 As System.Windows.Forms.Label
 
 #End Region 'Methods

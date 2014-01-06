@@ -1928,7 +1928,7 @@ Namespace MediaContainers
 
     End Class
 
-    <XmlRoot("discstub>")> _
+    <XmlRoot("discstub")> _
     Public Class Discstub
 
 #Region "Fields"
