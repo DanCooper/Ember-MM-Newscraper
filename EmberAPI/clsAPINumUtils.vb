@@ -24,24 +24,31 @@ Public Class NumUtils
 
     #Region "Methods"
 
+    Private Shared cultureUS As CultureInfo = New CultureInfo("en-US", False)
+    Private Shared cultureDE As CultureInfo = New CultureInfo("de-DE", False)
+
     ''' <summary>
     ''' Convert a numerical string to single (internationally friendly method)
     ''' </summary>
     ''' <param name="sNumber">Number (as string) to convert</param>
     ''' <returns>Number as single, or 0 if any error is encountered parsing <paramref name="sNumber"/>.</returns>
     ''' <remarks>Many countries use the "," symbol to indicate a decimal (5,32 meaning 5.32).
-    ''' This method first converts any existing commas into decimals before attempting to parse 
-    ''' the source string. Note that this may cause an otherwise acceptable number (1,000.00) to fail
-    ''' to parse.
+    ''' This method first attempts to parse numbers using the US culture norms (comma separator, dot decimal),
+    ''' then tries the GB culture norm (dot separator, comma decimal).
     ''' 
     ''' 2013/11/25 Dekker500 - Refactored because original could not pass unit tests. Also converted to
     '''                        TryParse instead of just Parse because of efficiencies in avoiding Try/Catch block
+    ''' 2014/01/06 Dekker500 - Bug discovered - User's culture affected TryParse's success. Now we compare with 
+    '''                        the two major formats - decimal = dot and decimal = comma.
     '''</remarks>
     Public Shared Function ConvertToSingle(ByVal sNumber As String) As Single
         If String.IsNullOrEmpty(sNumber) Then Return 0.0F
-        sNumber = sNumber.Replace(",", ".")    ' This is to deal with those regions that use commas in place of a dot for the decimal indicator
+
         Dim result As Single = 0.0F
-        Dim success As Boolean = Single.TryParse(sNumber, result)
+        Dim success As Boolean
+        success = Single.TryParse(sNumber, NumberStyles.Float, cultureUS, result)
+        If success Then Return result
+        success = Single.TryParse(sNumber, NumberStyles.Float, cultureDE, result)
         If success Then Return result
 
         'If we got here, something went wrong
