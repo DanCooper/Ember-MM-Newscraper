@@ -70,6 +70,10 @@ Namespace EmberTests
                 .Add(",5", 0.5)
                 .Add("Test", 0.0F) '
                 .Add("0-4", 0.0F)
+                .Add("1,000.241", 0.0F)
+                .Add("1.000,241", 0.0F)
+                .Add("1.000.00", 0.0F)
+                .Add(" 5.5 ", 5.5F) 'Trailing and leading spaces should be ignored
             End With
 
             For Each pair As KeyValuePair(Of String, Single) In source
