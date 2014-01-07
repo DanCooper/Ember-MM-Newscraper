@@ -55,7 +55,12 @@ Namespace EmberTests
                                               "${uppercase:${level}}", _
                                               "${message}"})
             NLog.LogManager.Configuration.AddTarget("UnitTest", debugTarget)
-            NLog.Config.SimpleConfigurator.ConfigureForTargetLogging(debugTarget, LogLevel.Trace)
+
+            'We only care about error messages from this class, so filter out non-matching messages
+            Dim rule1 As NLog.Config.LoggingRule = New NLog.Config.LoggingRule(GetType(Test_clsAPIErrorLog).ToString(), LogLevel.Trace, debugTarget)
+            NLog.LogManager.Configuration.LoggingRules.Add(rule1)
+
+            'NLog.Config.SimpleConfigurator.ConfigureForTargetLogging(debugTarget, LogLevel.Trace)
             NLog.LogManager.ReconfigExistingLoggers()
         End Sub
 
@@ -285,7 +290,19 @@ Namespace EmberTests
             Dim outputMessage = output(4)
 
             Dim expectedCallSite = "EmberAPI.ErrorLogger." & expectedLevel
-            Dim expectedMessage = String.Format("{0} {1}", message, stackTrace) 'This should match clsAPIErrorLog's WriteErrorLog routine
+            Dim expectedMessage = String.Empty 'String.Format("{0}{1}{2}", message, vbCrLf, stackTrace) 'This should match clsAPIErrorLog's WriteErrorLog routine
+
+            'Handle null strings
+            Dim tempMessage = message
+            If String.IsNullOrEmpty(message) Then
+                tempMessage = String.Empty
+            End If
+
+            If (String.IsNullOrEmpty(stackTrace)) Then
+                expectedMessage = tempMessage
+            Else
+                expectedMessage = String.Format("{0}{1}{2}", tempMessage, vbCrLf, stackTrace)
+            End If
 
             Assert.AreEqual(outputCallSite, expectedCallSite, True, "CallSite - expecting: {0}, got: {1}", expectedCallSite, outputCallSite)
             Assert.AreEqual(outputLevel.ToUpper(), expectedLevel.ToUpper(), True, "OutputLevel - expecting: {0}, got: {1}", expectedLevel, outputLevel)
