@@ -45,6 +45,7 @@ Public Class Settings
     Private _autobd As Boolean
     Private _autodetectvts As Boolean
     Private _bdpath As String
+    Private _moviesetspath As String
     Private _castimagesonly As Boolean
     Private _certificationLang As String
     Private _checkupdates As Boolean
@@ -130,6 +131,7 @@ Public Class Settings
     Private _fieldvotes As Boolean
     Private _fieldwriters As Boolean
     Private _fieldyear As Boolean
+    Private _fieldcleanPlotOutline As Boolean
     Private _filterCustom As List(Of String)
     Private _filterPanelState As Boolean
     Private _flaglang As String
@@ -184,6 +186,8 @@ Public Class Settings
     Private _moviesubCol As Boolean
     Private _movietbn As Boolean
     Private _movietheme As String
+    Private _daemon_programpath As String
+    Private _daemon_driveletter As String
     Private _movietrailerCol As Boolean
     Private _moviewatchedCol As Boolean
     Private _nodisplayfanart As Boolean
@@ -572,6 +576,15 @@ Public Class Settings
         End Get
         Set(ByVal value As String)
             Me._bdpath = value
+        End Set
+    End Property
+
+    Public Property MovieSetsPath() As String
+        Get
+            Return Me._moviesetspath
+        End Get
+        Set(ByVal value As String)
+            Me._moviesetspath = value
         End Set
     End Property
 
@@ -1306,6 +1319,7 @@ Public Class Settings
         End Set
     End Property
 
+
     Public Property FilterCustom() As List(Of String)
         Get
             Return Me._filterCustom
@@ -1812,6 +1826,24 @@ Public Class Settings
         End Get
         Set(ByVal value As String)
             Me._movietheme = value
+        End Set
+    End Property
+
+    Public Property DAEMON_Programpath() As String
+        Get
+            Return Me._daemon_programpath
+        End Get
+        Set(ByVal value As String)
+            Me._daemon_programpath = value
+        End Set
+    End Property
+
+    Public Property DAEMON_driveletter() As String
+        Get
+            Return Me._daemon_driveletter
+        End Get
+        Set(ByVal value As String)
+            Me._daemon_driveletter = value
         End Set
     End Property
 
@@ -4015,6 +4047,7 @@ Public Class Settings
         Me._infopanelanim = False
         Me._checkupdates = True
         Me._bdpath = String.Empty
+        Me._moviesetspath = String.Empty
         Me._autobd = False
         Me._usemiduration = False
         Me._useepduration = False

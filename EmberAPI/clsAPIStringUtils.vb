@@ -831,6 +831,26 @@ Public Class StringUtils
         Return String.Concat(fOutline.Substring(0, lastPeriod + 1), "..") 'Note only 2 periods required, since one is already there
     End Function
 
+    ''' <summary>
+    ''' Cleans the given <paramref name="strText"/> such that it does no longer contain any bracket-sections and unwanted spaces.
+    ''' </summary>
+    ''' <param name="strText"><c>String</c> to remove brackets from</param>
+    ''' <returns><c>Sting</c> that contains no brackets and unwanted whitespaces</returns>
+    ''' <remarks>This one is used for cleaning scraped plots/outline, often actor names are provided in brackets which some might not like
+    ''' 
+    ''' 2013/12/21 Cocotus - First implementation, it seem's there no method like this in Ember?
+    ''' </remarks>
+    Public Shared Function RemoveBrackets(ByVal strText As String) As String
+        'First 2 Regex to get rid of brackets, including string between brackets
+        strText = Regex.Replace(strText, "\[.+?\]", "")
+        strText = Regex.Replace(strText, "\(.+?\)", "")
+        'After removing brackets unwanted spaces may be left - get rid of them
+        strText = strText.Replace("  ", " ")
+        strText = strText.Replace(" , ", ", ")
+        strText = strText.Replace(" .", ".")
+        Return strText.Trim()
+    End Function
+
 #End Region 'Methods
 
 #Region "Nested Types"

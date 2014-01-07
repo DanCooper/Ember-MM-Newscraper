@@ -2638,6 +2638,7 @@ Public Class dlgSettings
             End If
 
             Me.txtBDPath.Text = Master.eSettings.BDPath
+            Me.txtMoviesetsPath.Text = Master.eSettings.MoviesetsPath
             Me.txtBDPath.Enabled = Master.eSettings.AutoBD
             Me.btnBrowse.Enabled = Master.eSettings.AutoBD
             Me.chkAutoBD.Checked = Master.eSettings.AutoBD
@@ -2719,6 +2720,8 @@ Public Class dlgSettings
             Me.chkMissingEFanarts.Checked = Master.eSettings.MissingFilterEFanarts
             Me.cbMovieTheme.SelectedItem = Master.eSettings.MovieTheme
             Me.cbTVShowTheme.SelectedItem = Master.eSettings.TVShowTheme
+            Me.cbo_DAEMON_driveletter.SelectedItem = Master.eSettings.DAEMON_driveletter
+            Me.txt_DAEMON_Programpath.Text = Master.eSettings.DAEMON_Programpath
             Me.cbEpTheme.SelectedItem = Master.eSettings.TVEpTheme
             Me.Meta.AddRange(Master.eSettings.MetadataPerFileType)
             Me.LoadMetadata()
@@ -3777,6 +3780,7 @@ Public Class dlgSettings
             Else
                 Master.eSettings.AutoBD = False
             End If
+            Master.eSettings.MoviesetsPath = Me.txtMoviesetsPath.Text
             Master.eSettings.UseMIDuration = Me.chkUseMIDuration.Checked
             Master.eSettings.RuntimeMask = Me.txtRuntimeFormat.Text
             Master.eSettings.UseEPDuration = Me.chkUseEPDuration.Checked
@@ -3874,7 +3878,8 @@ Public Class dlgSettings
             Master.eSettings.MissingFilterSubs = Me.chkMissingSubs.Checked
             Master.eSettings.MissingFilterEThumbs = Me.chkMissingEThumbs.Checked
             Master.eSettings.MissingFilterEFanarts = Me.chkMissingEFanarts.Checked
-
+            Master.eSettings.DAEMON_driveletter = Me.cbo_DAEMON_driveletter.Text
+            Master.eSettings.DAEMON_Programpath = Me.txt_DAEMON_Programpath.Text
             Master.eSettings.MovieTheme = Me.cbMovieTheme.Text
             Master.eSettings.TVShowTheme = Me.cbTVShowTheme.Text
             Master.eSettings.TVEpTheme = Me.cbEpTheme.Text
@@ -4246,6 +4251,7 @@ Public Class dlgSettings
         Me.chkAutoBD.Text = Master.eLang.GetString(521, "Automatically Save Fanart To Backdrops Folder")
         Me.GroupBox26.Text = Master.eLang.GetString(59, "Meta Data")
         Me.GroupBox31.Text = Me.GroupBox26.Text
+        Me.GroupBox8.Text = Master.eLang.GetString(986, "Movieset Artwork Folder")
 
         Me.chkDeleteAllTrailers.Text = Master.eLang.GetString(522, "Delete All Existing")
         Me.chkOverwriteTrailer.Text = Master.eLang.GetString(483, "Overwrite Existing")
@@ -5075,5 +5081,40 @@ Public Class dlgSettings
 
 #End Region 'Methods
 
+    Private Sub txtMoviesetsPath_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMoviesetsPath.TextChanged
+        Me.SetApplyButton(True)
+    End Sub
+    Private Sub btnBrowseMoviesets_Click(sender As Object, e As EventArgs) Handles btnBrowseMoviesets.Click
+        With Me.fbdBrowse
+            If .ShowDialog = Windows.Forms.DialogResult.OK Then
+                If Not String.IsNullOrEmpty(.SelectedPath.ToString) AndAlso Directory.Exists(.SelectedPath) Then
+                    Me.txtMoviesetsPath.Text = .SelectedPath.ToString
+                End If
+            End If
+        End With
+    End Sub
 
+    Private Sub cbo_DAEMON_driveletter_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbo_DAEMON_driveletter.SelectedIndexChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub txt_DAEMON_Programpath_TextChanged(sender As Object, e As EventArgs) Handles txt_DAEMON_Programpath.TextChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub bt_DAEMON_Programpath_Click(sender As Object, e As EventArgs) Handles bt_DAEMON_Programpath.Click
+        Try
+            With Me.fileBrowse
+                .Filter = "Exe (*.exe*)|*.exe*|Exe (*.exe*)|*.exe*"
+                If .ShowDialog = Windows.Forms.DialogResult.OK Then
+                    If Not String.IsNullOrEmpty(.FileName) Then
+                        Me.txt_DAEMON_Programpath.Text = .FileName
+
+                    End If
+                End If
+            End With
+        Catch ex As Exception
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
 End Class

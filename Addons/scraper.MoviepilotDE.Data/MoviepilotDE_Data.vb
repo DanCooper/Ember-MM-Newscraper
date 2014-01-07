@@ -22,7 +22,7 @@ Imports System.IO
 
 Imports EmberAPI
 
-Public Class OFDB_Data
+Public Class MoviepilotDE_Data
     Implements Interfaces.EmberMovieScraperModule_Data
 
 
@@ -37,9 +37,9 @@ Public Class OFDB_Data
     ''' </summary>
     ''' <remarks></remarks>
     'Private IMDB As New IMDB.Scraper
-    Private _Name As String = "OFDB_Data"
+    Private _Name As String = "MoviepilotDE_Data"
     Private _ScraperEnabled As Boolean = False
-    Private _setup As frmOFDBInfoSettingsHolder
+    Private _setup As frmMoviepilotDEInfoSettingsHolder
 
 
 #End Region 'Fields
@@ -48,7 +48,6 @@ Public Class OFDB_Data
 
     Public Event ModuleSettingsChanged() Implements Interfaces.EmberMovieScraperModule_Data.ModuleSettingsChanged
 
-    'Public Event ScraperUpdateMediaList(ByVal col As Integer, ByVal v As Boolean) Implements Interfaces.EmberMovieScraperModule.MovieScraperEvent
     Public Event MovieScraperEvent(ByVal eType As Enums.MovieScraperEventType, ByVal Parameter As Object) Implements Interfaces.EmberMovieScraperModule_Data.MovieScraperEvent
 
     Public Event SetupScraperChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements Interfaces.EmberMovieScraperModule_Data.ScraperSetupChanged
@@ -83,16 +82,6 @@ Public Class OFDB_Data
 #End Region 'Properties
 
 #Region "Methods"
-    Function GetMovieStudio(ByRef DBMovie As Structures.DBMovie, ByRef studio As List(Of String)) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule_Data.GetMovieStudio
-        'Dim IMDB As New IMDB.Scraper
-        'IMDB.UseOFDBTitle = MySettings.UseOFDBTitle
-        'IMDB.UseOFDBOutline = MySettings.UseOFDBOutline
-        'IMDB.UseOFDBPlot = MySettings.UseOFDBPlot
-        'IMDB.UseOFDBGenre = MySettings.UseOFDBGenre
-        'IMDB.IMDBURL = MySettings.IMDBURL
-        'studio = IMDB.GetMovieStudios(DBMovie.Movie.IMDBID)
-        'Return New Interfaces.ModuleResult With {.breakChain = False}
-    End Function
 
     Private Sub Handle_ModuleSettingsChanged()
         RaiseEvent ModuleSettingsChanged()
@@ -111,19 +100,18 @@ Public Class OFDB_Data
 
     Function InjectSetupScraper() As Containers.SettingsPanel Implements Interfaces.EmberMovieScraperModule_Data.InjectSetupScraper
         Dim SPanel As New Containers.SettingsPanel
-        _setup = New frmOFDBInfoSettingsHolder
+        _setup = New frmMoviepilotDEInfoSettingsHolder
         LoadSettings()
         _setup.cbEnabled.Checked = _ScraperEnabled
-        _setup.chkOFDBTitle.Checked = ConfigOptions.bTitle
-        _setup.chkOFDBOutline.Checked = ConfigOptions.bOutline
-        _setup.chkOFDBPlot.Checked = ConfigOptions.bPlot
-        _setup.chkOFDBGenre.Checked = ConfigOptions.bGenre
-        _setup.chkOFDBCleanPlotOutline.Checked = ConfigOptions.bCleanPlotOutline
+        _setup.chkMoviepilotRating.Checked = ConfigOptions.bCert
+        _setup.chkMoviepilotOutline.Checked = ConfigOptions.bOutline
+        _setup.chkMoviepilotPlot.Checked = ConfigOptions.bPlot
+        _setup.chkMoviepilotCleanPlotOutline.Checked = ConfigOptions.bCleanPlotOutline
 
         _setup.orderChanged()
         SPanel.Name = String.Concat(Me._Name, "Scraper")
-        SPanel.Text = Master.eLang.GetString(895, "OFDB")
-        SPanel.Prefix = "OFDBMovieInfo_"
+        SPanel.Text = "Moviepilot"
+        SPanel.Prefix = "MoviepilotDEMovieInfo_"
         SPanel.Order = 110
         SPanel.Parent = "pnlMovieData"
         SPanel.Type = Master.eLang.GetString(36, "Movies")
@@ -136,7 +124,7 @@ Public Class OFDB_Data
 
     Sub LoadSettings()
         ' Only the ones we can get
-        ConfigOptions.bTitle = AdvancedSettings.GetBooleanSetting("DoTitle", True)
+        ConfigOptions.bTitle = False
         ConfigOptions.bYear = False
         ConfigOptions.bMPAA = False
         ConfigOptions.bRelease = False
@@ -145,13 +133,13 @@ Public Class OFDB_Data
         ConfigOptions.bVotes = False
         ConfigOptions.bStudio = False
         ConfigOptions.bTagline = False
-        ConfigOptions.bOutline = AdvancedSettings.GetBooleanSetting("DoOutline", True)
-        ConfigOptions.bPlot = AdvancedSettings.GetBooleanSetting("DoPlot", True)
+        ConfigOptions.bOutline = AdvancedSettings.GetBooleanSetting("DoOutline", False)
+        ConfigOptions.bPlot = AdvancedSettings.GetBooleanSetting("DoPlot", False)
         ConfigOptions.bCast = False
         ConfigOptions.bDirector = False
         ConfigOptions.bWriters = False
         ConfigOptions.bProducers = False
-        ConfigOptions.bGenre = AdvancedSettings.GetBooleanSetting("DoGenres", True)
+        ConfigOptions.bGenre = False
         ConfigOptions.bTrailer = False
         ConfigOptions.bMusicBy = False
         ConfigOptions.bOtherCrew = False
@@ -159,10 +147,10 @@ Public Class OFDB_Data
         ConfigOptions.bFullCrew = False
         ConfigOptions.bTop250 = False
         ConfigOptions.bCountry = False
-        ConfigOptions.bCert = False
+        ConfigOptions.bCert = AdvancedSettings.GetBooleanSetting("DoCert", False)
         ConfigOptions.bFullCast = False
         ConfigOptions.bFullCrew = False
-        ConfigOptions.bCleanPlotOutline = AdvancedSettings.GetBooleanSetting("CleanPlotOutline", False)
+        ConfigOptions.bCleanPlotOutline = AdvancedSettings.GetBooleanSetting("CleanPlotOutline", True)
 
         ConfigScrapeModifier.DoSearch = True
         ConfigScrapeModifier.Meta = True
@@ -178,15 +166,13 @@ Public Class OFDB_Data
 
     Sub SaveSettings()
         Using settings = New AdvancedSettings()
-            settings.SetBooleanSetting("DoTitle", ConfigOptions.bTitle)
             settings.SetBooleanSetting("DoOutline", ConfigOptions.bOutline)
             settings.SetBooleanSetting("DoPlot", ConfigOptions.bPlot)
-            settings.SetBooleanSetting("DoGenres", ConfigOptions.bGenre)
+            settings.SetBooleanSetting("DoCert", ConfigOptions.bCert)
             settings.SetBooleanSetting("CleanPlotOutline", ConfigOptions.bCleanPlotOutline)
 
-            settings.SetBooleanSetting("DoPoster", ConfigScrapeModifier.Poster)
-            settings.SetBooleanSetting("DoFanart", ConfigScrapeModifier.Fanart)
-            'settings.SetBooleanSetting("DoTrailer", ConfigScrapeModifier.Trailer)
+            'settings.SetBooleanSetting("DoPoster", ConfigScrapeModifier.Poster)
+            'settings.SetBooleanSetting("DoFanart", ConfigScrapeModifier.Fanart)
         End Using
     End Sub
 
@@ -195,11 +181,10 @@ Public Class OFDB_Data
     End Sub
 
     Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.EmberMovieScraperModule_Data.SaveSetupScraper
-        ConfigOptions.bTitle = _setup.chkOFDBTitle.Checked
-        ConfigOptions.bOutline = _setup.chkOFDBOutline.Checked
-        ConfigOptions.bPlot = _setup.chkOFDBPlot.Checked
-        ConfigOptions.bGenre = _setup.chkOFDBGenre.Checked
-        ConfigOptions.bCleanPlotOutline = _setup.chkOFDBCleanPlotOutline.Checked
+        ConfigOptions.bCert = _setup.chkMoviepilotRating.Checked
+        ConfigOptions.bOutline = _setup.chkMoviepilotOutline.Checked
+        ConfigOptions.bPlot = _setup.chkMoviepilotPlot.Checked
+        ConfigOptions.bCleanPlotOutline = _setup.chkMoviepilotCleanPlotOutline.Checked
         SaveSettings()
         'ModulesManager.Instance.SaveSettings()
         If DoDispose Then
@@ -209,54 +194,97 @@ Public Class OFDB_Data
         End If
     End Sub
 
+    ''' <summary>
+    ''' Scrape MovieDetails from Moviepilot.de (German site)
+    ''' </summary> 
+    ''' <remarks>Main method to retrieve Moviepilot information - from here all other class methods gets called
+    ''' 
+    ''' 2013/12/21 Cocotus - First implementation
     Function Scraper(ByRef DBMovie As Structures.DBMovie, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule_Data.Scraper
         ' as we do not have a OFDB search / show dialog we use IMDB
         If String.IsNullOrEmpty(DBMovie.Movie.ID) Then
             Dim tOpt As New Structures.ScrapeOptions 'all false value not to override any field
             Dim IMDB As New IMDB_Data
             Dim aRet As Interfaces.ModuleResult = IMDB.Scraper(DBMovie, ScrapeType, tOpt)
-            If String.IsNullOrEmpty(DBMovie.Movie.ID) Then
+            If String.IsNullOrEmpty(DBMovie.Movie.OriginalTitle) Then
                 Return aRet
             End If
         End If
 
-        ' we have the ID
-        Dim tOFDB As New OFDB(DBMovie.Movie.ID, DBMovie.Movie)
+        ' we have the originaltitle -> now we can use scraper methods!
+        Dim tMoviepilotDE As New MoviepilotDE(DBMovie.Movie.OriginalTitle, DBMovie.Movie)
 
+        'Now check what information we want to take over...
         Dim filterOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(Options, ConfigOptions)
 
-        If filterOptions.bTitle AndAlso (String.IsNullOrEmpty(DBMovie.Movie.Title) OrElse Not Master.eSettings.LockTitle) Then
-            If Not String.IsNullOrEmpty(tOFDB.Title) Then
-                DBMovie.Movie.Title = tOFDB.Title
+        'Use Moviepilot FSK?
+        If filterOptions.bCert AndAlso (String.IsNullOrEmpty(DBMovie.Movie.Certification) OrElse Not Master.eSettings.LockMPAA) Then
+
+
+            If Not String.IsNullOrEmpty(tMoviepilotDE.FSK) Then
+                Select Case CInt(tMoviepilotDE.FSK)
+                    Case 0
+                        DBMovie.Movie.Certification = "Germany:0"
+                        If Master.eSettings.OnlyValueForCert = False Then
+                            DBMovie.Movie.MPAA = "Germany:0"
+                        Else
+                            DBMovie.Movie.MPAA = "0"
+                        End If
+                    Case 6
+                        DBMovie.Movie.Certification = "Germany:6"
+                        If Master.eSettings.OnlyValueForCert = False Then
+                            DBMovie.Movie.MPAA = "Germany:6"
+                        Else
+                            DBMovie.Movie.MPAA = "6"
+                        End If
+                    Case 16
+                        DBMovie.Movie.Certification = "Germany:16"
+                        If Master.eSettings.OnlyValueForCert = False Then
+                            DBMovie.Movie.MPAA = "Germany:16"
+                        Else
+                            DBMovie.Movie.MPAA = "16"
+                        End If
+                    Case 12
+                        DBMovie.Movie.Certification = "Germany:12"
+                        If Master.eSettings.OnlyValueForCert = False Then
+                            DBMovie.Movie.MPAA = "Germany:12"
+                        Else
+                            DBMovie.Movie.MPAA = "12"
+                        End If
+                    Case 18
+                        DBMovie.Movie.Certification = "Germany:18"
+                        If Master.eSettings.OnlyValueForCert = False Then
+                            DBMovie.Movie.MPAA = "Germany:18"
+                        Else
+                            DBMovie.Movie.MPAA = "18"
+                        End If
+                End Select
             End If
+
         End If
+
+        'Use Moviepilot Outline?
         If filterOptions.bOutline AndAlso (String.IsNullOrEmpty(DBMovie.Movie.Outline) OrElse Not Master.eSettings.LockOutline) Then
 
-            If Not String.IsNullOrEmpty(tOFDB.Outline) Then
+            If Not String.IsNullOrEmpty(tMoviepilotDE.Outline) Then
                 'check if brackets should be removed...
                 If ConfigOptions.bCleanPlotOutline Then
-                    DBMovie.Movie.Outline = StringUtils.RemoveBrackets(tOFDB.Outline)
+                    DBMovie.Movie.Outline = StringUtils.RemoveBrackets(tMoviepilotDE.Outline)
                 Else
-                    DBMovie.Movie.Outline = tOFDB.Outline
+                    DBMovie.Movie.Outline = tMoviepilotDE.Outline
                 End If
-
             End If
         End If
 
+        'Use Moviepilot Plot?
         If filterOptions.bPlot AndAlso (String.IsNullOrEmpty(DBMovie.Movie.Plot) OrElse Not Master.eSettings.LockPlot) Then
-            If Not String.IsNullOrEmpty(tOFDB.Plot) Then
+            If Not String.IsNullOrEmpty(tMoviepilotDE.Plot) Then
                 'check if brackets should be removed...
                 If ConfigOptions.bCleanPlotOutline Then
-                    DBMovie.Movie.Plot = StringUtils.RemoveBrackets(tOFDB.Plot)
+                    DBMovie.Movie.Plot = StringUtils.RemoveBrackets(tMoviepilotDE.Plot)
                 Else
-                    DBMovie.Movie.Plot = tOFDB.Plot
+                    DBMovie.Movie.Plot = tMoviepilotDE.Plot
                 End If
-            End If
-        End If
-
-        If filterOptions.bGenre AndAlso (String.IsNullOrEmpty(DBMovie.Movie.Genre) OrElse Not Master.eSettings.LockGenre) Then
-            If Not String.IsNullOrEmpty(tOFDB.Genre) Then
-                DBMovie.Movie.Genre = tOFDB.Genre
             End If
         End If
 
@@ -266,6 +294,17 @@ Public Class OFDB_Data
     Public Sub ScraperOrderChanged() Implements EmberAPI.Interfaces.EmberMovieScraperModule_Data.ScraperOrderChanged
         _setup.orderChanged()
     End Sub
+
+    Function GetMovieStudio(ByRef DBMovie As Structures.DBMovie, ByRef studio As List(Of String)) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule_Data.GetMovieStudio
+        'Dim IMDB As New IMDB.Scraper
+        'IMDB.UseOFDBTitle = MySettings.UseOFDBTitle
+        'IMDB.UseOFDBOutline = MySettings.UseOFDBOutline
+        'IMDB.UseOFDBPlot = MySettings.UseOFDBPlot
+        'IMDB.UseOFDBGenre = MySettings.UseOFDBGenre
+        'IMDB.IMDBURL = MySettings.IMDBURL
+        'studio = IMDB.GetMovieStudios(DBMovie.Movie.IMDBID)
+        'Return New Interfaces.ModuleResult With {.breakChain = False}
+    End Function
 
 #End Region 'Methods
 

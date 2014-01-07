@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class frmOFDBInfoSettingsHolder
+Partial Class frmMoviepilotDEInfoSettingsHolder
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
@@ -22,13 +22,13 @@ Partial Class frmOFDBInfoSettingsHolder
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmOFDBInfoSettingsHolder))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMoviepilotDEInfoSettingsHolder))
         Me.lblVersion = New System.Windows.Forms.Label()
         Me.gbOptions = New System.Windows.Forms.GroupBox()
-        Me.chkOFDBGenre = New System.Windows.Forms.CheckBox()
-        Me.chkOFDBPlot = New System.Windows.Forms.CheckBox()
-        Me.chkOFDBOutline = New System.Windows.Forms.CheckBox()
-        Me.chkOFDBTitle = New System.Windows.Forms.CheckBox()
+        Me.chkMoviepilotCleanPlotOutline = New System.Windows.Forms.CheckBox()
+        Me.chkMoviepilotPlot = New System.Windows.Forms.CheckBox()
+        Me.chkMoviepilotOutline = New System.Windows.Forms.CheckBox()
+        Me.chkMoviepilotRating = New System.Windows.Forms.CheckBox()
         Me.cbEnabled = New System.Windows.Forms.CheckBox()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.Label2 = New System.Windows.Forms.Label()
@@ -37,7 +37,6 @@ Partial Class frmOFDBInfoSettingsHolder
         Me.pnlSettings = New System.Windows.Forms.Panel()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
-        Me.chkOFDBCleanPlotOutline = New System.Windows.Forms.CheckBox()
         Me.gbOptions.SuspendLayout()
         Me.Panel1.SuspendLayout()
         Me.pnlSettings.SuspendLayout()
@@ -54,58 +53,57 @@ Partial Class frmOFDBInfoSettingsHolder
         '
         'gbOptions
         '
-        Me.gbOptions.Controls.Add(Me.chkOFDBCleanPlotOutline)
-        Me.gbOptions.Controls.Add(Me.chkOFDBGenre)
-        Me.gbOptions.Controls.Add(Me.chkOFDBPlot)
-        Me.gbOptions.Controls.Add(Me.chkOFDBOutline)
-        Me.gbOptions.Controls.Add(Me.chkOFDBTitle)
+        Me.gbOptions.Controls.Add(Me.chkMoviepilotCleanPlotOutline)
+        Me.gbOptions.Controls.Add(Me.chkMoviepilotPlot)
+        Me.gbOptions.Controls.Add(Me.chkMoviepilotOutline)
+        Me.gbOptions.Controls.Add(Me.chkMoviepilotRating)
         Me.gbOptions.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbOptions.Location = New System.Drawing.Point(11, 31)
         Me.gbOptions.Name = "gbOptions"
-        Me.gbOptions.Size = New System.Drawing.Size(213, 111)
+        Me.gbOptions.Size = New System.Drawing.Size(213, 94)
         Me.gbOptions.TabIndex = 2
         Me.gbOptions.TabStop = False
-        Me.gbOptions.Text = "OFDB (German)"
+        Me.gbOptions.Text = "Moviepilot (German)"
         '
-        'chkOFDBGenre
+        'chkMoviepilotCleanPlotOutline
         '
-        Me.chkOFDBGenre.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkOFDBGenre.Location = New System.Drawing.Point(6, 70)
-        Me.chkOFDBGenre.Name = "chkOFDBGenre"
-        Me.chkOFDBGenre.Size = New System.Drawing.Size(194, 17)
-        Me.chkOFDBGenre.TabIndex = 3
-        Me.chkOFDBGenre.Text = "Use OFDB Genre"
-        Me.chkOFDBGenre.UseVisualStyleBackColor = True
+        Me.chkMoviepilotCleanPlotOutline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkMoviepilotCleanPlotOutline.Location = New System.Drawing.Point(6, 71)
+        Me.chkMoviepilotCleanPlotOutline.Name = "chkMoviepilotCleanPlotOutline"
+        Me.chkMoviepilotCleanPlotOutline.Size = New System.Drawing.Size(194, 17)
+        Me.chkMoviepilotCleanPlotOutline.TabIndex = 5
+        Me.chkMoviepilotCleanPlotOutline.Text = "Clean Plot/Outline"
+        Me.chkMoviepilotCleanPlotOutline.UseVisualStyleBackColor = True
         '
-        'chkOFDBPlot
+        'chkMoviepilotPlot
         '
-        Me.chkOFDBPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkOFDBPlot.Location = New System.Drawing.Point(6, 53)
-        Me.chkOFDBPlot.Name = "chkOFDBPlot"
-        Me.chkOFDBPlot.Size = New System.Drawing.Size(194, 17)
-        Me.chkOFDBPlot.TabIndex = 2
-        Me.chkOFDBPlot.Text = "Use OFDB Plot"
-        Me.chkOFDBPlot.UseVisualStyleBackColor = True
+        Me.chkMoviepilotPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkMoviepilotPlot.Location = New System.Drawing.Point(6, 53)
+        Me.chkMoviepilotPlot.Name = "chkMoviepilotPlot"
+        Me.chkMoviepilotPlot.Size = New System.Drawing.Size(194, 17)
+        Me.chkMoviepilotPlot.TabIndex = 2
+        Me.chkMoviepilotPlot.Text = "Plot"
+        Me.chkMoviepilotPlot.UseVisualStyleBackColor = True
         '
-        'chkOFDBOutline
+        'chkMoviepilotOutline
         '
-        Me.chkOFDBOutline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkOFDBOutline.Location = New System.Drawing.Point(6, 36)
-        Me.chkOFDBOutline.Name = "chkOFDBOutline"
-        Me.chkOFDBOutline.Size = New System.Drawing.Size(194, 17)
-        Me.chkOFDBOutline.TabIndex = 1
-        Me.chkOFDBOutline.Text = "Use OFDB Outline"
-        Me.chkOFDBOutline.UseVisualStyleBackColor = True
+        Me.chkMoviepilotOutline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkMoviepilotOutline.Location = New System.Drawing.Point(6, 36)
+        Me.chkMoviepilotOutline.Name = "chkMoviepilotOutline"
+        Me.chkMoviepilotOutline.Size = New System.Drawing.Size(194, 17)
+        Me.chkMoviepilotOutline.TabIndex = 1
+        Me.chkMoviepilotOutline.Text = "Outline"
+        Me.chkMoviepilotOutline.UseVisualStyleBackColor = True
         '
-        'chkOFDBTitle
+        'chkMoviepilotRating
         '
-        Me.chkOFDBTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkOFDBTitle.Location = New System.Drawing.Point(6, 19)
-        Me.chkOFDBTitle.Name = "chkOFDBTitle"
-        Me.chkOFDBTitle.Size = New System.Drawing.Size(194, 17)
-        Me.chkOFDBTitle.TabIndex = 0
-        Me.chkOFDBTitle.Text = "Use OFDB Title"
-        Me.chkOFDBTitle.UseVisualStyleBackColor = True
+        Me.chkMoviepilotRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkMoviepilotRating.Location = New System.Drawing.Point(6, 19)
+        Me.chkMoviepilotRating.Name = "chkMoviepilotRating"
+        Me.chkMoviepilotRating.Size = New System.Drawing.Size(194, 17)
+        Me.chkMoviepilotRating.TabIndex = 0
+        Me.chkMoviepilotRating.Text = "Rating"
+        Me.chkMoviepilotRating.UseVisualStyleBackColor = True
         '
         'cbEnabled
         '
@@ -197,17 +195,7 @@ Partial Class frmOFDBInfoSettingsHolder
         Me.PictureBox1.TabIndex = 96
         Me.PictureBox1.TabStop = False
         '
-        'chkOFDBCleanPlotOutline
-        '
-        Me.chkOFDBCleanPlotOutline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkOFDBCleanPlotOutline.Location = New System.Drawing.Point(6, 88)
-        Me.chkOFDBCleanPlotOutline.Name = "chkOFDBCleanPlotOutline"
-        Me.chkOFDBCleanPlotOutline.Size = New System.Drawing.Size(194, 17)
-        Me.chkOFDBCleanPlotOutline.TabIndex = 4
-        Me.chkOFDBCleanPlotOutline.Text = "Clean Plot/Outline"
-        Me.chkOFDBCleanPlotOutline.UseVisualStyleBackColor = True
-        '
-        'frmOFDBInfoSettingsHolder
+        'frmMoviepilotDEInfoSettingsHolder
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
@@ -219,7 +207,7 @@ Partial Class frmOFDBInfoSettingsHolder
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "frmOFDBInfoSettingsHolder"
+        Me.Name = "frmMoviepilotDEInfoSettingsHolder"
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Scraper Setup"
@@ -233,10 +221,8 @@ Partial Class frmOFDBInfoSettingsHolder
     End Sub
     Friend WithEvents lblVersion As System.Windows.Forms.Label
     Friend WithEvents gbOptions As System.Windows.Forms.GroupBox
-    Friend WithEvents chkOFDBGenre As System.Windows.Forms.CheckBox
-    Friend WithEvents chkOFDBPlot As System.Windows.Forms.CheckBox
-    Friend WithEvents chkOFDBOutline As System.Windows.Forms.CheckBox
-    Friend WithEvents chkOFDBTitle As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMoviepilotPlot As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMoviepilotOutline As System.Windows.Forms.CheckBox
     Friend WithEvents cbEnabled As System.Windows.Forms.CheckBox
     Friend WithEvents Panel1 As System.Windows.Forms.Panel
     Friend WithEvents pnlSettings As System.Windows.Forms.Panel
@@ -245,6 +231,7 @@ Partial Class frmOFDBInfoSettingsHolder
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
-    Friend WithEvents chkOFDBCleanPlotOutline As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMoviepilotRating As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMoviepilotCleanPlotOutline As System.Windows.Forms.CheckBox
 
 End Class
