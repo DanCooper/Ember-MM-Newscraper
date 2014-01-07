@@ -137,7 +137,7 @@ Partial Class dlgOfflineHolder
         Me.txtLocation = New System.Windows.Forms.TextBox()
         Me.btnLoadCollection = New System.Windows.Forms.Button()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
-        Me.ofdSingleXML = New System.Windows.Forms.OpenFileDialog()
+        Me.ofdLoadXML = New System.Windows.Forms.OpenFileDialog()
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbPreview, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -997,7 +997,7 @@ Partial Class dlgOfflineHolder
     Friend WithEvents lblCaseType As System.Windows.Forms.Label
     Friend WithEvents lblMediaType As System.Windows.Forms.Label
     Friend WithEvents btnLoadSingle As System.Windows.Forms.Button
-    Friend WithEvents ofdSingleXML As System.Windows.Forms.OpenFileDialog
+    Friend WithEvents ofdLoadXML As System.Windows.Forms.OpenFileDialog
     Friend WithEvents lblTitle As System.Windows.Forms.Label
     Friend WithEvents txtDVDTitle As System.Windows.Forms.TextBox
     Friend WithEvents gbSettings As System.Windows.Forms.GroupBox

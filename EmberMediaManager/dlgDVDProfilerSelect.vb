@@ -131,8 +131,13 @@ Public Class dlgDVDProfilerSelect
         Me.CANCEL_Button.Text = Master.eLang.GetString(167, "Cancel")
     End Sub
 
-    Public Overloads Function ShowDialog() As DialogResult
+    Public Overloads Function ShowDialog(Optional ByVal DVDProfilerCollection As String = "") As DialogResult
         Me.SetUp()
+        If Not String.IsNullOrEmpty(DVDProfilerCollection) Then
+            lvCollection.Clear()
+            PrepareList()
+            AddCollection(DVDProfilerCollection)
+        End If
         Return MyBase.ShowDialog()
     End Function
 

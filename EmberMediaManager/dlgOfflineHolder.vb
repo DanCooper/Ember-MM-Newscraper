@@ -107,14 +107,14 @@ Public Class dlgOfflineHolder
 
     Private Sub btnLoadSingle_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnLoadSingle.Click
         Try
-            With ofdSingleXML
+            With ofdLoadXML
                 .Filter = "Single.xml (*.xml)|*.xml"
                 .FilterIndex = 0
             End With
 
-            If ofdSingleXML.ShowDialog() = DialogResult.OK Then
+            If ofdLoadXML.ShowDialog() = DialogResult.OK Then
                 ResetManager()
-                LoadSingleXML(ofdSingleXML.FileName)
+                LoadSingleXML(ofdLoadXML.FileName)
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -123,15 +123,22 @@ Public Class dlgOfflineHolder
 
     Private Sub btnLoadCollection_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnLoadCollection.Click
         Try
-            Using dDVDProfilerSelect As New dlgDVDProfilerSelect
-                Select Case dDVDProfilerSelect.ShowDialog()
-                    Case Windows.Forms.DialogResult.OK
-                        ResetManager()
-                        cMovie = dDVDProfilerSelect.Results
-                        AddDVDProfilerMovie(cMovie)
-                    Case Windows.Forms.DialogResult.Abort
-                End Select
-            End Using
+            With ofdLoadXML
+                .Filter = "Collection.xml (*.xml)|*.xml"
+                .FilterIndex = 0
+            End With
+
+            If ofdLoadXML.ShowDialog() = DialogResult.OK Then
+                Using dDVDProfilerSelect As New dlgDVDProfilerSelect
+                    Select Case dDVDProfilerSelect.ShowDialog(ofdLoadXML.FileName)
+                        Case Windows.Forms.DialogResult.OK
+                            ResetManager()
+                            cMovie = dDVDProfilerSelect.Results
+                            AddDVDProfilerMovie(cMovie)
+                        Case Windows.Forms.DialogResult.Abort
+                    End Select
+                End Using
+            End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
