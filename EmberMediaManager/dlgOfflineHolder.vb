@@ -336,37 +336,7 @@ Public Class dlgOfflineHolder
 
     Private Sub bwCreateHolder_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwCreateHolder.RunWorkerCompleted
         Me.pbProgress.Visible = False
-        Master.currMovie = tMovie
-
-        Using dEditMovie As New dlgEditMovie
-            Select Case dEditMovie.ShowDialog()
-                Case Windows.Forms.DialogResult.OK
-                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieScraperRDYtoSave, Nothing, Master.currMovie)
-                    'Me.SetListItemAfterEdit(ID, indX)
-                    'If Me.RefreshMovie(ID) Then
-                    '    Me.FillList(0)
-                    'End If
-                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieSync, Nothing, Master.currMovie)
-                Case Windows.Forms.DialogResult.Retry
-                    Master.currMovie.ClearEThumbs = False
-                    Master.currMovie.ClearEFanarts = False
-                    Master.currMovie.ClearFanart = False
-                    Master.currMovie.ClearPoster = False
-                    Functions.SetScraperMod(Enums.ModType.All, True, True)
-                    'Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions) ', ID)
-                Case Windows.Forms.DialogResult.Abort
-                    Master.currMovie.ClearEThumbs = False
-                    Master.currMovie.ClearEFanarts = False
-                    Master.currMovie.ClearFanart = False
-                    Master.currMovie.ClearPoster = False
-                    Functions.SetScraperMod(Enums.ModType.DoSearch, True)
-                    Functions.SetScraperMod(Enums.ModType.All, True, False)
-                    'Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions) ', ID, True)
-                Case Else
-                    'If Me.InfoCleared Then Me.LoadInfo(ID, Me.dgvMovies.Item(1, indX).Value.ToString, True, False)
-            End Select
-        End Using
-
+        Me.EditMovie()
         Me.Close()
     End Sub
 
@@ -647,23 +617,25 @@ Public Class dlgOfflineHolder
         tbTagLine.Enabled = isDummy
         txtMovieTitle.Enabled = Not isDummy
         If isDummy Then
+            txtMovieTitle.Text = String.Empty
             lblTagline.Text = Master.eLang.GetString(542, "Place Holder Video Tagline:")
         Else
+            txtMovieTitle.Text = tMovie.Movie.Title
             lblTagline.Text = "Message"
         End If
     End Sub
 
     Private Sub btnCreate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCreate.Click
         SetControlsEnabled(False)
-        'Need to avoid cross thread in BackgroundWorker
-        'txtTopPos = Video_Width / (pbPreview.Image.Width / Convert.ToSingle(currTopText)) ' ... and Scale it
-        Me.pbProgress.Value = 100
-        Me.pbProgress.Style = ProgressBarStyle.Marquee
-        Me.pbProgress.MarqueeAnimationSpeed = 25
-        Me.pbProgress.Visible = True
 
-        lvStatus.Items.Clear()
         If rbDummyMovie.Checked Then
+            'Need to avoid cross thread in BackgroundWorker
+            'txtTopPos = Video_Width / (pbPreview.Image.Width / Convert.ToSingle(currTopText)) ' ... and Scale it
+            Me.pbProgress.Value = 100
+            Me.pbProgress.Style = ProgressBarStyle.Marquee
+            Me.pbProgress.MarqueeAnimationSpeed = 25
+            Me.pbProgress.Visible = True
+            lvStatus.Items.Clear()
             Me.bwCreateHolder = New System.ComponentModel.BackgroundWorker
             Me.bwCreateHolder.WorkerReportsProgress = True
             Me.bwCreateHolder.WorkerSupportsCancellation = True
@@ -685,8 +657,9 @@ Public Class dlgOfflineHolder
         DiscStub.Title = txtMovieTitle.Text
         DiscStub.Message = txtTagline.Text
 
-        StubFile = String.Concat(destPath, Path.DirectorySeparatorChar, txtDVDTitle.Text, If(Not String.IsNullOrEmpty(txtMediaType.Text), String.Concat(".", txtMediaType.Text.ToLower), String.Empty), ".disc")
+        StubFile = String.Concat(destPath, Path.DirectorySeparatorChar, FileUtils.Common.MakeValidFilename(txtDVDTitle.Text), If(Not String.IsNullOrEmpty(txtMediaType.Text), String.Concat(".", txtMediaType.Text.ToLower), String.Empty), ".disc")
         StubPath = Directory.GetParent(StubFile).FullName
+        tMovie.Filename = StubFile
 
         doesExist = File.Exists(StubFile)
         If Not doesExist OrElse (Not CBool(File.GetAttributes(StubFile) And FileAttributes.ReadOnly)) Then
@@ -710,6 +683,43 @@ Public Class dlgOfflineHolder
 
             If doesExist And fAttWritable Then File.SetAttributes(StubFile, fAtt)
         End If
+
+        Me.EditMovie()
+        Me.Close()
+    End Sub
+
+    Private Sub EditMovie()
+
+        Master.currMovie = tMovie
+
+        Using dEditMovie As New dlgEditMovie
+            Select Case dEditMovie.ShowDialog()
+                Case Windows.Forms.DialogResult.OK
+                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieScraperRDYtoSave, Nothing, Master.currMovie)
+                    'Me.SetListItemAfterEdit(ID, indX)
+                    'If Me.RefreshMovie(ID) Then
+                    '    Me.FillList(0)
+                    'End If
+                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieSync, Nothing, Master.currMovie)
+                Case Windows.Forms.DialogResult.Retry
+                    Master.currMovie.ClearEThumbs = False
+                    Master.currMovie.ClearEFanarts = False
+                    Master.currMovie.ClearFanart = False
+                    Master.currMovie.ClearPoster = False
+                    Functions.SetScraperMod(Enums.ModType.All, True, True)
+                    'Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions) ', ID)
+                Case Windows.Forms.DialogResult.Abort
+                    Master.currMovie.ClearEThumbs = False
+                    Master.currMovie.ClearEFanarts = False
+                    Master.currMovie.ClearFanart = False
+                    Master.currMovie.ClearPoster = False
+                    Functions.SetScraperMod(Enums.ModType.DoSearch, True)
+                    Functions.SetScraperMod(Enums.ModType.All, True, False)
+                    'Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions) ', ID, True)
+                Case Else
+                    'If Me.InfoCleared Then Me.LoadInfo(ID, Me.dgvMovies.Item(1, indX).Value.ToString, True, False)
+            End Select
+        End Using
     End Sub
 
     Private Sub DirectoryCopy(ByVal sourceDirName As String, ByVal destDirName As String)

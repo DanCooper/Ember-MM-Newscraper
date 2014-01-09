@@ -53,6 +53,8 @@ Public Class DVDProfiler
                     sChannels = "6"
                 Case "7.1"
                     sChannels = "8"
+                Case "Dolby Surround"
+                    sChannels = "6"
             End Select
         End If
 
