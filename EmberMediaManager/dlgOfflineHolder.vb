@@ -21,6 +21,7 @@
 Imports System.Drawing
 Imports System.Drawing.Drawing2D
 Imports System.IO
+Imports System.Xml.Serialization
 Imports EmberAPI
 
 Public Class dlgOfflineHolder
@@ -31,6 +32,7 @@ Public Class dlgOfflineHolder
 
     Private currNameText As String = String.Empty
     Private currText As String = Master.eLang.GetString(500, "Insert DVD")
+    Private cMovie As New DVDProfiler.cDVD
     Private def_pbPreview_h As Integer
     Private def_pbPreview_w As Integer
     Private destPath As String
@@ -73,6 +75,89 @@ Public Class dlgOfflineHolder
                 End If
             End If
         End With
+    End Sub
+
+    Private Sub AddDVDProfilerMovie(ByRef cMovie As DVDProfiler.cDVD)
+        txtDVDTitle.Text = cMovie.Title
+        txtCaseType.Text = cMovie.CaseType
+        txtLocation.Text = If(cMovie.Discs.Disc.Count > 0, cMovie.Discs.Disc(0).dLocation, String.Empty)
+        txtSlot.Text = If(cMovie.Discs.Disc.Count > 0, cMovie.Discs.Disc(0).dSlot, String.Empty)
+        Select Case True
+            Case cMovie.MediaTypes.BluRay = True
+                txtMediaType.Text = "BluRay"
+            Case cMovie.MediaTypes.DVD = True
+                txtMediaType.Text = "DVD"
+            Case cMovie.MediaTypes.HDDVD = True
+                txtMediaType.Text = "HDDVD"
+        End Select
+    End Sub
+
+    Private Sub ResetManager()
+        chkUseFanart.Checked = False
+        chkUseFanart.Enabled = False
+        CleanUp()
+        tMovie.Movie.Clear()
+        txtCaseType.Text = String.Empty
+        txtDVDTitle.Text = String.Empty
+        txtLocation.Text = String.Empty
+        txtMediaType.Text = String.Empty
+        txtMovieName.Text = String.Empty
+        txtSlot.Text = String.Empty
+    End Sub
+
+    Private Sub btnLoadSingle_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnLoadSingle.Click
+        Try
+            With ofdLoadXML
+                .Filter = "Single.xml (*.xml)|*.xml"
+                .FilterIndex = 0
+            End With
+
+            If ofdLoadXML.ShowDialog() = DialogResult.OK Then
+                ResetManager()
+                LoadSingleXML(ofdLoadXML.FileName)
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub btnLoadCollection_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnLoadCollection.Click
+        Try
+            With ofdLoadXML
+                .Filter = "Collection.xml (*.xml)|*.xml"
+                .FilterIndex = 0
+            End With
+
+            If ofdLoadXML.ShowDialog() = DialogResult.OK Then
+                Using dDVDProfilerSelect As New dlgDVDProfilerSelect
+                    Select Case dDVDProfilerSelect.ShowDialog(ofdLoadXML.FileName)
+                        Case Windows.Forms.DialogResult.OK
+                            ResetManager()
+                            cMovie = dDVDProfilerSelect.Results
+                            AddDVDProfilerMovie(cMovie)
+                        Case Windows.Forms.DialogResult.Abort
+                    End Select
+                End Using
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub LoadSingleXML(ByVal fPath As String)
+        Dim xmlSer As XmlSerializer = Nothing
+
+        Try
+            If File.Exists(fPath) Then
+                Using xmlSR As StreamReader = New StreamReader(fPath)
+                    xmlSer = New XmlSerializer(GetType(DVDProfiler.cDVD))
+                    cMovie = DirectCast(xmlSer.Deserialize(xmlSR), DVDProfiler.cDVD)
+                    AddDVDProfilerMovie(cMovie)
+                End Using
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
 
     Private Sub btnFont_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFont.Click
@@ -208,72 +293,6 @@ Public Class dlgOfflineHolder
         End If
 
         tMovie.Movie.SortTitle = tMovie.ListTitle
-        'If Not String.IsNullOrEmpty(tMovie.PosterPath) Then
-        '    'File.Copy(tMovie.PosterPath, Path.Combine(destPath, Path.GetFileName(tMovie.PosterPath).ToString))
-        '    Dim poster As New EmberAPI.Images
-        '    poster.FromFile(tMovie.PosterPath)
-        '    tMovie.PosterPath = poster.SaveAsPoster(tMovie)
-        '    'tMovie.PosterPath = Path.Combine(destPath, Path.GetFileName(tMovie.PosterPath).ToString)
-        'End If
-
-        'If Not String.IsNullOrEmpty(tMovie.FanartPath) Then
-        '    'File.Copy(tMovie.PosterPath, Path.Combine(destPath, Path.GetFileName(tMovie.FanartPath).ToString))
-        '    Dim fanart As New EmberAPI.Images
-        '    fanart.FromFile(tMovie.FanartPath)
-        '    tMovie.FanartPath = fanart.SaveAsFanart(tMovie)
-        '    'tMovie.FanartPath = Path.Combine(destPath, Path.GetFileName(tMovie.FanartPath).ToString)
-        'End If
-
-        'If Not String.IsNullOrEmpty(tMovie.EThumbsPath) Then
-        '    DirectoryCopy(Directory.GetParent(tMovie.EThumbsPath).FullName, Path.Combine(destPath, "extrathumbs"))
-        'End If
-
-        'If Not String.IsNullOrEmpty(tMovie.EFanartsPath) Then
-        '    DirectoryCopy(Directory.GetParent(tMovie.EFanartsPath).FullName, Path.Combine(destPath, "extrafanart"))
-        'End If
-
-        'If Master.eSettings.ScraperActorThumbs Then
-        '    Me.bwCreateHolder.ReportProgress(5, Master.eLang.GetString(31, "Generating Actor Thumbs"))
-        '    For Each act As MediaContainers.Person In tMovie.Movie.Actors
-        '        Dim img As New Images
-        '        img.FromWeb(act.Thumb)
-        '        If Not IsNothing(img.Image) Then
-        '            img.SaveAsActorThumb(act, Directory.GetParent(tMovie.Filename).FullName, tMovie)
-        '        End If
-        '    Next
-        'End If
-        'Dim tPath As String = Directory.GetParent(tMovie.Filename).FullName
-        'Dim tmpName As String = Path.Combine(tPath, StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(tMovie.Filename))).ToLower
-        'Dim fList As New List(Of String)
-
-        'Try
-        '    fList.AddRange(Directory.GetFiles(Directory.GetParent(tMovie.Filename).FullName))
-        'Catch
-        'End Try
-        'For Each fFile As String In fList
-        '    For Each t As String In Master.eSettings.ValidExts
-        '        Select Case True
-        '            Case fFile.ToLower = String.Concat(tmpName, "-trailer", t.ToLower)
-        '                tMovie.TrailerPath = fFile
-        '                Exit For
-        '            Case fFile.ToLower = String.Concat(tmpName, "[trailer]", t.ToLower)
-        '                tMovie.TrailerPath = fFile
-        '                Exit For
-        '        End Select
-        '    Next
-        'Next
-
-        'tMovie = Master.DB.SaveMovieToDB(tMovie, True, False, True)
-
-        'Me.bwCreateHolder.ReportProgress(4, Master.eLang.GetString(506, "Renaming Files"))
-        'If Directory.Exists(buildPath) Then
-        '    FileUtils.Delete.DeleteDirectory(buildPath)
-        'End If
-        'Try
-        '    ' ##** FileFolderRenamer.RenameSingle(tMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, False, False, False)
-        '    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.RenameMovie, New List(Of Object)(New Object() {False}), tMovie)
-        'Catch ex As Exception
-        'End Try
 
         If Me.bwCreateHolder.CancellationPending Then
             e.Cancel = True
@@ -317,41 +336,7 @@ Public Class dlgOfflineHolder
 
     Private Sub bwCreateHolder_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwCreateHolder.RunWorkerCompleted
         Me.pbProgress.Visible = False
-        'If Not e.Cancelled Then
-        '    MsgBox(Master.eLang.GetString(507, "Offline movie place holder created!"), MsgBoxStyle.OkOnly, Me.Text)
-        '    Me.DialogResult = Windows.Forms.DialogResult.OK
-        'End If
-        Master.currMovie = tMovie
-
-        Using dEditMovie As New dlgEditMovie
-            Select Case dEditMovie.ShowDialog()
-                Case Windows.Forms.DialogResult.OK
-                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieScraperRDYtoSave, Nothing, Master.currMovie)
-                    'Me.SetListItemAfterEdit(ID, indX)
-                    'If Me.RefreshMovie(ID) Then
-                    '    Me.FillList(0)
-                    'End If
-                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieSync, Nothing, Master.currMovie)
-                Case Windows.Forms.DialogResult.Retry
-                    Master.currMovie.ClearEThumbs = False
-                    Master.currMovie.ClearEFanarts = False
-                    Master.currMovie.ClearFanart = False
-                    Master.currMovie.ClearPoster = False
-                    Functions.SetScraperMod(Enums.ModType.All, True, True)
-                    'Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions) ', ID)
-                Case Windows.Forms.DialogResult.Abort
-                    Master.currMovie.ClearEThumbs = False
-                    Master.currMovie.ClearEFanarts = False
-                    Master.currMovie.ClearFanart = False
-                    Master.currMovie.ClearPoster = False
-                    Functions.SetScraperMod(Enums.ModType.DoSearch, True)
-                    Functions.SetScraperMod(Enums.ModType.All, True, False)
-                    'Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions) ', ID, True)
-                Case Else
-                    'If Me.InfoCleared Then Me.LoadInfo(ID, Me.dgvMovies.Item(1, indX).Value.ToString, True, False)
-            End Select
-        End Using
-
+        Me.EditMovie()
         Me.Close()
     End Sub
 
@@ -392,18 +377,31 @@ Public Class dlgOfflineHolder
         End If
     End Sub
 
-    Sub CheckConditions()
+    Private Sub CheckConditions()
         Dim Fanart As New Images
         Try
-            If txtMovieName.Text.IndexOfAny(Path.GetInvalidPathChars) <= 0 Then
-                MovieName = FileUtils.Common.MakeValidFilename(txtMovieName.Text)
-                tMovie.Filename = Path.Combine(WorkingPath, String.Concat(MovieName, ".avi"))
+            If rbTypeTitle.Checked Then
+                If txtMovieName.Text.IndexOfAny(Path.GetInvalidPathChars) <= 0 Then
+                    MovieName = FileUtils.Common.MakeValidFilename(txtMovieName.Text)
+                    tMovie.Filename = Path.Combine(WorkingPath, String.Concat(MovieName, ".avi"))
+                Else
+                    MovieName = FileUtils.Common.MakeValidFilename(txtMovieName.Text)
+                    For Each Invalid As Char In Path.GetInvalidPathChars
+                        MovieName = MovieName.Replace(Invalid, String.Empty)
+                    Next
+                    tMovie.Filename = Path.Combine(WorkingPath, String.Concat(MovieName, ".avi"))
+                End If
             Else
-                MovieName = FileUtils.Common.MakeValidFilename(txtMovieName.Text)
-                For Each Invalid As Char In Path.GetInvalidPathChars
-                    MovieName = MovieName.Replace(Invalid, String.Empty)
-                Next
-                tMovie.Filename = Path.Combine(WorkingPath, String.Concat(MovieName, ".avi"))
+                If txtDVDTitle.Text.IndexOfAny(Path.GetInvalidPathChars) <= 0 Then
+                    MovieName = FileUtils.Common.MakeValidFilename(txtDVDTitle.Text)
+                    tMovie.Filename = Path.Combine(WorkingPath, String.Concat(MovieName, ".avi"))
+                Else
+                    MovieName = FileUtils.Common.MakeValidFilename(txtDVDTitle.Text)
+                    For Each Invalid As Char In Path.GetInvalidPathChars
+                        MovieName = MovieName.Replace(Invalid, String.Empty)
+                    Next
+                    tMovie.Filename = Path.Combine(WorkingPath, String.Concat(MovieName, ".avi"))
+                End If
             End If
 
             If cbSources.SelectedIndex >= 0 Then
@@ -418,6 +416,7 @@ Public Class dlgOfflineHolder
                             End If
                             lvStatus.Items(idxStsSource).SubItems(1).Text = Master.eLang.GetString(195, "Valid")
                             lvStatus.Items(idxStsSource).SubItems(1).ForeColor = Color.Green
+                            gbMode.Enabled = True
                         End If
                     End Using
                 End Using
@@ -425,17 +424,34 @@ Public Class dlgOfflineHolder
                 lvStatus.Items(idxStsSource).SubItems(1).Text = Master.eLang.GetString(194, "Not Valid")
                 lvStatus.Items(idxStsSource).SubItems(1).ForeColor = Color.Red
             End If
-            If Not txtMovieName.Text = String.Empty Then
-                If Directory.Exists(destPath) Then
-                    lvStatus.Items(idxStsMovie).SubItems(1).Text = Master.eLang.GetString(355, "Exists")
-                    lvStatus.Items(idxStsMovie).SubItems(1).ForeColor = Color.Red
+
+
+            If rbTypeTitle.Checked Then
+                If Not txtMovieName.Text = String.Empty Then
+                    If Directory.Exists(destPath) Then
+                        lvStatus.Items(idxStsMovie).SubItems(1).Text = Master.eLang.GetString(355, "Exists")
+                        lvStatus.Items(idxStsMovie).SubItems(1).ForeColor = Color.Red
+                    Else
+                        lvStatus.Items(idxStsMovie).SubItems(1).Text = Master.eLang.GetString(195, "Valid")
+                        lvStatus.Items(idxStsMovie).SubItems(1).ForeColor = Color.Green
+                    End If
                 Else
-                    lvStatus.Items(idxStsMovie).SubItems(1).Text = Master.eLang.GetString(195, "Valid")
-                    lvStatus.Items(idxStsMovie).SubItems(1).ForeColor = Color.Green
+                    lvStatus.Items(idxStsMovie).SubItems(1).Text = Master.eLang.GetString(194, "Not Valid")
+                    lvStatus.Items(idxStsMovie).SubItems(1).ForeColor = Color.Red
                 End If
             Else
-                lvStatus.Items(idxStsMovie).SubItems(1).Text = Master.eLang.GetString(194, "Not Valid")
-                lvStatus.Items(idxStsMovie).SubItems(1).ForeColor = Color.Red
+                If Not txtDVDTitle.Text = String.Empty Then
+                    If Directory.Exists(destPath) Then
+                        lvStatus.Items(idxStsMovie).SubItems(1).Text = Master.eLang.GetString(355, "Exists")
+                        lvStatus.Items(idxStsMovie).SubItems(1).ForeColor = Color.Red
+                    Else
+                        lvStatus.Items(idxStsMovie).SubItems(1).Text = Master.eLang.GetString(195, "Valid")
+                        lvStatus.Items(idxStsMovie).SubItems(1).ForeColor = Color.Green
+                    End If
+                Else
+                    lvStatus.Items(idxStsMovie).SubItems(1).Text = Master.eLang.GetString(194, "Not Valid")
+                    lvStatus.Items(idxStsMovie).SubItems(1).ForeColor = Color.Red
+                End If
             End If
 
             If Not String.IsNullOrEmpty(fPath) Then
@@ -461,10 +477,12 @@ Public Class dlgOfflineHolder
 
             Me.CreatePreview()
             If Not Me.pbProgress.Visible Then
-                Create_Button.Enabled = True
+                btnCreate.Enabled = True
+                gbSearch.Enabled = True
                 For Each i As ListViewItem In lvStatus.Items
                     If Not i.SubItems(1).ForeColor = Color.Green Then
-                        Create_Button.Enabled = False
+                        btnCreate.Enabled = False
+                        gbSearch.Enabled = False
                         Exit For
                     End If
                 Next
@@ -507,7 +525,7 @@ Public Class dlgOfflineHolder
         CreatePreview()
     End Sub
 
-    Private Sub Close_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CLOSE_Button.Click
+    Private Sub btnClose_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClose.Click
         If bwCreateHolder.IsBusy Then
             bwCreateHolder.CancelAsync()
         Else
@@ -578,25 +596,130 @@ Public Class dlgOfflineHolder
         End If
     End Sub
 
-    Private Sub Create_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Create_Button.Click
-        cbSources.Enabled = False
-        Create_Button.Enabled = False
-        txtMovieName.Enabled = False
-        txtTagline.Enabled = False
-        chkUseFanart.Enabled = False
-        CLOSE_Button.Enabled = False
-        'Need to avoid cross thread in BackgroundWorker
-        'txtTopPos = Video_Width / (pbPreview.Image.Width / Convert.ToSingle(currTopText)) ' ... and Scale it
-        Me.pbProgress.Value = 100
-        Me.pbProgress.Style = ProgressBarStyle.Marquee
-        Me.pbProgress.MarqueeAnimationSpeed = 25
-        Me.pbProgress.Visible = True
+    Private Sub SetControlsEnabled(ByVal isEnabled As Boolean)
+        btnClose.Enabled = isEnabled
+        btnCreate.Enabled = isEnabled
+        gbDVDProfiler.Enabled = isEnabled
+        gbHolderType.Enabled = isEnabled
+        gbMode.Enabled = isEnabled
+        gbMovieTitle.Enabled = isEnabled
+        gbSearch.Enabled = isEnabled
+        gbSettings.Enabled = isEnabled
+        gbSource.Enabled = isEnabled
+        gbType.Enabled = isEnabled
+        tbTagLine.Enabled = isEnabled
+    End Sub
 
-        lvStatus.Items.Clear()
-        Me.bwCreateHolder = New System.ComponentModel.BackgroundWorker
-        Me.bwCreateHolder.WorkerReportsProgress = True
-        Me.bwCreateHolder.WorkerSupportsCancellation = True
-        Me.bwCreateHolder.RunWorkerAsync()
+    Private Sub SetControlsDummyMovie(ByVal isDummy As Boolean)
+        gbSettings.Enabled = True
+        gbPreview.Visible = isDummy
+        tbTagLine.Visible = isDummy
+        tbTagLine.Enabled = isDummy
+        txtMovieTitle.Enabled = Not isDummy
+        If isDummy Then
+            txtMovieTitle.Text = String.Empty
+            lblTagline.Text = Master.eLang.GetString(542, "Place Holder Video Tagline:")
+        Else
+            txtMovieTitle.Text = tMovie.Movie.Title
+            lblTagline.Text = "Message"
+        End If
+    End Sub
+
+    Private Sub btnCreate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCreate.Click
+        SetControlsEnabled(False)
+
+        If rbDummyMovie.Checked Then
+            'Need to avoid cross thread in BackgroundWorker
+            'txtTopPos = Video_Width / (pbPreview.Image.Width / Convert.ToSingle(currTopText)) ' ... and Scale it
+            Me.pbProgress.Value = 100
+            Me.pbProgress.Style = ProgressBarStyle.Marquee
+            Me.pbProgress.MarqueeAnimationSpeed = 25
+            Me.pbProgress.Visible = True
+            lvStatus.Items.Clear()
+            Me.bwCreateHolder = New System.ComponentModel.BackgroundWorker
+            Me.bwCreateHolder.WorkerReportsProgress = True
+            Me.bwCreateHolder.WorkerSupportsCancellation = True
+            Me.bwCreateHolder.RunWorkerAsync()
+        Else
+            CreateMediaStub()
+        End If
+    End Sub
+
+    Private Sub CreateMediaStub()
+        Dim doesExist As Boolean = False
+        Dim xmlSer As New XmlSerializer(GetType(MediaContainers.Discstub))
+        Dim fAtt As New FileAttributes
+        Dim fAttWritable As Boolean = True
+        Dim StubFile As String = String.Empty
+        Dim StubPath As String = String.Empty
+        Dim DiscStub As New MediaContainers.Discstub
+
+        DiscStub.Title = txtMovieTitle.Text
+        DiscStub.Message = txtTagline.Text
+
+        StubFile = String.Concat(destPath, Path.DirectorySeparatorChar, FileUtils.Common.MakeValidFilename(txtDVDTitle.Text), If(Not String.IsNullOrEmpty(txtMediaType.Text), String.Concat(".", txtMediaType.Text.ToLower), String.Empty), ".disc")
+        StubPath = Directory.GetParent(StubFile).FullName
+        tMovie.Filename = StubFile
+
+        doesExist = File.Exists(StubFile)
+        If Not doesExist OrElse (Not CBool(File.GetAttributes(StubFile) And FileAttributes.ReadOnly)) Then
+
+            If Not Directory.Exists(StubPath) Then
+                Directory.CreateDirectory(StubPath)
+            End If
+
+            If doesExist Then
+                fAtt = File.GetAttributes(StubFile)
+                Try
+                    File.SetAttributes(StubFile, FileAttributes.Normal)
+                Catch ex As Exception
+                    fAttWritable = False
+                End Try
+            End If
+
+            Using xmlSW As New StreamWriter(StubFile)
+                xmlSer.Serialize(xmlSW, DiscStub)
+            End Using
+
+            If doesExist And fAttWritable Then File.SetAttributes(StubFile, fAtt)
+        End If
+
+        Me.EditMovie()
+        Me.Close()
+    End Sub
+
+    Private Sub EditMovie()
+
+        Master.currMovie = tMovie
+
+        Using dEditMovie As New dlgEditMovie
+            Select Case dEditMovie.ShowDialog()
+                Case Windows.Forms.DialogResult.OK
+                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieScraperRDYtoSave, Nothing, Master.currMovie)
+                    'Me.SetListItemAfterEdit(ID, indX)
+                    'If Me.RefreshMovie(ID) Then
+                    '    Me.FillList(0)
+                    'End If
+                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieSync, Nothing, Master.currMovie)
+                Case Windows.Forms.DialogResult.Retry
+                    Master.currMovie.ClearEThumbs = False
+                    Master.currMovie.ClearEFanarts = False
+                    Master.currMovie.ClearFanart = False
+                    Master.currMovie.ClearPoster = False
+                    Functions.SetScraperMod(Enums.ModType.All, True, True)
+                    'Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions) ', ID)
+                Case Windows.Forms.DialogResult.Abort
+                    Master.currMovie.ClearEThumbs = False
+                    Master.currMovie.ClearEFanarts = False
+                    Master.currMovie.ClearFanart = False
+                    Master.currMovie.ClearPoster = False
+                    Functions.SetScraperMod(Enums.ModType.DoSearch, True)
+                    Functions.SetScraperMod(Enums.ModType.All, True, False)
+                    'Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions) ', ID, True)
+                Case Else
+                    'If Me.InfoCleared Then Me.LoadInfo(ID, Me.dgvMovies.Item(1, indX).Value.ToString, True, False)
+            End Select
+        End Using
     End Sub
 
     Private Sub DirectoryCopy(ByVal sourceDirName As String, ByVal destDirName As String)
@@ -671,6 +794,7 @@ Public Class dlgOfflineHolder
             CreatePreview()
             tMovie.Movie = New MediaContainers.Movie
             tMovie.isSingle = True
+            cMovie = New DVDProfiler.cDVD
             idxStsSource = lvStatus.Items.Add(Master.eLang.GetString(318, "Source Folder")).Index
             lvStatus.Items(idxStsSource).SubItems.Add(Master.eLang.GetString(194, "Not Valid"))
             lvStatus.Items(idxStsSource).UseItemStyleForSubItems = False
@@ -692,7 +816,58 @@ Public Class dlgOfflineHolder
         Me.Activate()
     End Sub
 
-    Private Sub btnSearchMovie_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearchMovie.Click
+    Private Sub btnSearchMovie_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearch.Click
+        If rbTypeTitle.Checked Then
+            tMovie.Movie.Clear()
+            tMovie.Movie.Title = txtMovieName.Text
+            SearchMovie()
+            gbHolderType.Enabled = True
+        Else
+            tMovie.Movie.Clear()
+            MergeMovie()
+            SearchMovie()
+            gbHolderType.Enabled = True
+        End If
+    End Sub
+
+    Private Sub MergeMovie()
+        tMovie.Movie.Title = cMovie.Title
+        tMovie.Movie.Year = cMovie.ProductionYear
+        tMovie.FileSource = cMovie.MediaTypes.ToString
+        Select Case True
+            Case cMovie.MediaTypes.BluRay = True
+                tMovie.FileSource = "bluray"
+            Case cMovie.MediaTypes.DVD = True
+                tMovie.FileSource = "dvd"
+            Case cMovie.MediaTypes.HDDVD = True
+                tMovie.FileSource = "hddvd"
+        End Select
+
+        If cMovie.Subtitles.Subtitle.Count > 0 Then
+            For Each sStream In cMovie.Subtitles.Subtitle
+                Dim stream_s As New MediaInfo.Subtitle
+                stream_s.LongLanguage = sStream
+                stream_s.Language = Localization.ISOLangGetCode3ByLang(sStream)
+                stream_s.SubsType = "Embedded"
+                tMovie.Movie.FileInfo.StreamDetails.Subtitle.Add(DirectCast(stream_s, MediaInfo.Subtitle))
+            Next
+        End If
+
+        If cMovie.Audio.AudioTrack.Count > 0 Then
+            For Each aStream In cMovie.Audio.AudioTrack
+                Dim stream_a As New MediaInfo.Audio
+                stream_a.Channels = DVDProfiler.ConvertAChannels(aStream.AudioChannels)
+                stream_a.Codec = DVDProfiler.ConvertAFormat(aStream.AudioFormat).ToLower
+                stream_a.LongLanguage = aStream.AudioContent
+                stream_a.Language = Localization.ISOLangGetCode3ByLang(aStream.AudioContent)
+                tMovie.Movie.FileInfo.StreamDetails.Audio.Add(DirectCast(stream_a, MediaInfo.Audio))
+            Next
+        End If
+
+            ' TODO: audio & subtitles
+    End Sub
+
+    Private Sub SearchMovie()
         Dim Poster As New MediaContainers.Image
         Dim Fanart As New MediaContainers.Image
         Dim aList As New List(Of MediaContainers.Image)
@@ -700,11 +875,9 @@ Public Class dlgOfflineHolder
         Dim efList As New List(Of String)
         Dim etList As New List(Of String)
         Try
+            chkUseFanart.Checked = False
             Me.CleanUp()
             fPath = String.Empty
-            tMovie.Movie.Clear()
-            tMovie.Movie.Title = txtMovieName.Text
-            Dim tempExtraPath As String = Path.Combine(Directory.GetParent(Directory.GetParent(tMovie.Filename).FullName).FullName, "extrathumbs")
             'Functions.SetScraperMod(Enums.ModType.DoSearch, True)
             Functions.SetScraperMod(Enums.ModType.NFO, True, True)
             Functions.SetScraperMod(Enums.ModType.Poster, True, False)
@@ -714,7 +887,11 @@ Public Class dlgOfflineHolder
             Functions.SetScraperMod(Enums.ModType.Trailer, True, False)
 
             If Not ModulesManager.Instance.MovieScrapeOnly(tMovie, Enums.ScrapeType.SingleScrape, Master.DefaultOptions) Then
-                Me.txtMovieName.Text = String.Format("{0} [OffLine]", tMovie.Movie.Title)
+                If rbTypeTitle.Checked Then
+                    Me.txtMovieName.Text = String.Format("{0} [OffLine]", tMovie.Movie.Title)
+                Else
+                    Me.txtDVDTitle.Text = String.Format("{0} [OffLine]", tMovie.Movie.Title)
+                End If
             End If
 
             If Master.GlobalScrapeMod.Poster Then
@@ -774,6 +951,47 @@ Public Class dlgOfflineHolder
         lvStatus.SelectedItems.Clear()
     End Sub
 
+    Private Sub rbModeSingle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbModeSingle.CheckedChanged
+        If gbMode.Enabled Then
+            ResetManager()
+            gbType.Enabled = True
+        End If
+        CheckConditions()
+    End Sub
+
+    Private Sub rbTypeTitle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbTypeTitle.CheckedChanged
+        If gbType.Enabled Then
+            ResetManager()
+            gbMovieTitle.Enabled = True
+            gbDVDProfiler.Enabled = False
+        End If
+        CheckConditions()
+    End Sub
+
+    Private Sub rbTypeDVDProfiler_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbTypeDVDProfiler.CheckedChanged
+        If gbType.Enabled Then
+            ResetManager()
+            gbMovieTitle.Enabled = False
+            gbDVDProfiler.Enabled = True
+            txtMovieName.Text = String.Empty
+        End If
+        CheckConditions()
+    End Sub
+
+    Private Sub rbDummyMovie_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbDummyMovie.CheckedChanged
+        If gbHolderType.Enabled Then
+            SetControlsDummyMovie(True)
+        End If
+        CheckConditions()
+    End Sub
+
+    Private Sub rbMediaStub_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbMediaStub.CheckedChanged
+        If gbHolderType.Enabled Then
+            SetControlsDummyMovie(False)
+        End If
+        CheckConditions()
+    End Sub
+
     Sub SetPreview(ByVal bDefault As Boolean, Optional ByVal path As String = "")
         Try
 
@@ -817,16 +1035,14 @@ Public Class dlgOfflineHolder
 
     Private Sub SetUp()
         Me.Text = Master.eLang.GetString(524, "Offline Media Manager")
-        Me.CLOSE_Button.Text = Master.eLang.GetString(19, "Close")
+        Me.btnClose.Text = Master.eLang.GetString(19, "Close")
         Me.lblTopDetails.Text = Master.eLang.GetString(525, "Add Offline movie")
         Me.lblTopTitle.Text = Me.Text
-        Me.lblSources.Text = Master.eLang.GetString(526, "Add to Source:")
         Me.lblMovie.Text = Master.eLang.GetString(527, "Place Holder Folder/Movie Name:")
-        Me.btnSearchMovie.Text = Master.eLang.GetString(528, "Search Movie")
-        Me.Bulk_Button.Text = Master.eLang.GetString(531, "Bulk Creator")
+        Me.btnSearch.Text = Master.eLang.GetString(528, "Search Movie")
         Me.colCondition.Text = Master.eLang.GetString(532, "Condition")
         Me.colStatus.Text = Master.eLang.GetString(215, "Status")
-        Me.Create_Button.Text = Master.eLang.GetString(533, "Create")
+        Me.btnCreate.Text = Master.eLang.GetString(533, "Create")
         Me.chkUseFanart.Text = Master.eLang.GetString(541, "Use Fanart for Place Holder Video")
         Me.lblTagline.Text = Master.eLang.GetString(542, "Place Holder Video Tagline:")
         Me.txtTagline.Text = Master.eLang.GetString(500, "Insert DVD")
@@ -866,14 +1082,14 @@ Public Class dlgOfflineHolder
         Me.tmrNameWait.Enabled = True
     End Sub
 
+    Private Sub txtDVDTitle_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtDVDTitle.TextChanged
+        Me.currNameText = Me.txtDVDTitle.Text
+        Me.tmrNameWait.Enabled = False
+        Me.tmrNameWait.Enabled = True
+    End Sub
+
     Private Sub txtTagline_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTagline.TextChanged
         Me.currText = Me.txtTagline.Text
-        'Dim fPath As String = tMovie.FanartPath
-        'If Not fPath = String.Empty AndAlso chkUseFanart.Checked Then
-        '    SetPreview(False, fPath)
-        'Else
-        '    SetPreview(True, PreviewPath)
-        'End If
     End Sub
 
     Private Sub txtTop_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtTop.KeyPress

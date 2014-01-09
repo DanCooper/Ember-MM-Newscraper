@@ -20,7 +20,51 @@
 
 Imports System.Xml.Serialization
 
-Namespace DVDProfiler
+Public Class DVDProfiler
+
+#Region "Methods"
+
+    Public Shared Function ConvertAFormat(ByVal sFormat As String) As String
+        If Not String.IsNullOrEmpty(sFormat) Then
+            Select Case sFormat.ToLower
+                Case "dolby digital"
+                    sFormat = "dolbydigital"
+                Case "dolby digital plus"
+                    sFormat = "eac3"
+                Case "dolby truehd"
+                    sFormat = "truehd"
+                Case "dts-hd high resolution"
+                    sFormat = "dtshd_hra"
+                Case "dts-hd master audio"
+                    sFormat = "dtshd_ma"
+            End Select
+        End If
+
+        Return sFormat
+
+    End Function
+
+    Public Shared Function ConvertAChannels(ByVal sChannels As String) As String
+        If Not String.IsNullOrEmpty(sChannels) Then
+            Select Case sChannels
+                Case "2.1"
+                    sChannels = "2"
+                Case "5.1"
+                    sChannels = "6"
+                Case "7.1"
+                    sChannels = "8"
+                Case "Dolby Surround"
+                    sChannels = "6"
+            End Select
+        End If
+
+        Return sChannels
+
+    End Function
+
+#End Region 'Methods
+
+#Region "Nested Types"
 
     <XmlRoot("Collection")> _
     Public Class Collection
@@ -66,12 +110,14 @@ Namespace DVDProfiler
 
 #Region "Fields"
 
-        Private _mediatypes As New dMediaTypes
         Private _title As String
         Private _productionyear As String
         Private _casetype As String
+        Private _format As New dFormat
+        Private _mediatypes As New dMediaTypes
         Private _discs As New dDiscs
         Private _audio As New dAudio
+        Private _subtitles As New dSubtitle
 
 #End Region 'Fields
 
@@ -84,16 +130,6 @@ Namespace DVDProfiler
 #End Region 'Constructors
 
 #Region "Properties"
-
-        <XmlElement("MediaTypes")> _
-        Public Property MediaTypes() As dMediaTypes
-            Get
-                Return Me._mediatypes
-            End Get
-            Set(ByVal Value As dMediaTypes)
-                Me._mediatypes = Value
-            End Set
-        End Property
 
         <XmlElement("Title")> _
         Public Property Title() As String
@@ -125,6 +161,26 @@ Namespace DVDProfiler
             End Set
         End Property
 
+        <XmlElement("Format")> _
+        Public Property Format() As dFormat
+            Get
+                Return Me._format
+            End Get
+            Set(ByVal Value As dFormat)
+                Me._format = Value
+            End Set
+        End Property
+
+        <XmlElement("MediaTypes")> _
+        Public Property MediaTypes() As dMediaTypes
+            Get
+                Return Me._mediatypes
+            End Get
+            Set(ByVal Value As dMediaTypes)
+                Me._mediatypes = Value
+            End Set
+        End Property
+
         <XmlElement("Discs")> _
         Public Property Discs() As dDiscs
             Get
@@ -145,17 +201,68 @@ Namespace DVDProfiler
             End Set
         End Property
 
+        <XmlElement("Subtitles")> _
+        Public Property Subtitles() As dSubtitle
+            Get
+                Return Me._subtitles
+            End Get
+            Set(ByVal Value As dSubtitle)
+                Me._subtitles = Value
+            End Set
+        End Property
+
 #End Region 'Properties
 
 #Region "Methods"
 
         Public Sub Clear()
-            Me._mediatypes.Clear()
             Me._title = String.Empty
             Me._productionyear = String.Empty
             Me._casetype = String.Empty
+            Me._format.clear()
+            Me._mediatypes.Clear()
             Me._discs.Clear()
-            Me._audio.clear()
+            Me._audio.Clear()
+            Me._subtitles.Clear()
+        End Sub
+
+#End Region 'Methods
+    End Class
+
+    Public Class dFormat
+
+#Region "Fields"
+
+        Private _formataspectratio As String
+
+#End Region 'Fields
+
+#Region "Constructors"
+
+        Public Sub New()
+            Me.Clear()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Properties"
+
+        <XmlElement("FormatAspectRatio")> _
+        Public Property FormatAspectRatio() As String
+            Get
+                Return Me._formataspectratio
+            End Get
+            Set(ByVal Value As String)
+                Me._formataspectratio = Value
+            End Set
+        End Property
+
+#End Region 'Properties
+
+#Region "Methods"
+
+        Public Sub Clear()
+            Me._formataspectratio = String.Empty
         End Sub
 
 #End Region 'Methods
@@ -224,6 +331,46 @@ Namespace DVDProfiler
 #End Region 'Methods
     End Class 'dMediaTypes
 
+    <XmlRoot("Subtitles")> _
+    Public Class dSubtitle
+
+#Region "Fields"
+
+        Private _subtitle As New List(Of String)
+
+#End Region 'Fields
+
+#Region "Constructors"
+
+        Public Sub New()
+            Me.Clear()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Properties"
+
+        <XmlElement("Subtitle")> _
+        Public Property Subtitle() As List(Of String)
+            Get
+                Return Me._subtitle
+            End Get
+            Set(ByVal Value As List(Of String))
+                Me._subtitle = Value
+            End Set
+        End Property
+
+#End Region 'Properties
+
+#Region "Methods"
+
+        Public Sub Clear()
+            Me._subtitle.Clear()
+        End Sub
+
+#End Region 'Methods
+    End Class
+
     Public Class dDiscs
 
 #Region "Fields"
@@ -267,8 +414,8 @@ Namespace DVDProfiler
 
 #Region "Fields"
 
-        Private _location As String
-        Private _slot As String
+        Private _dlocation As String
+        Private _dslot As String
 
 #End Region 'Fields
 
@@ -283,22 +430,22 @@ Namespace DVDProfiler
 #Region "Properties"
 
         <XmlElement("Location")> _
-        Public Property Location() As String
+        Public Property dLocation() As String
             Get
-                Return Me._location
+                Return Me._dlocation
             End Get
             Set(ByVal Value As String)
-                Me._location = Value
+                Me._dlocation = Value
             End Set
         End Property
 
         <XmlElement("Slot")> _
-        Public Property Slot() As String
+        Public Property dSlot() As String
             Get
-                Return Me._slot
+                Return Me._dslot
             End Get
             Set(ByVal Value As String)
-                Me._slot = Value
+                Me._dslot = Value
             End Set
         End Property
 
@@ -307,8 +454,8 @@ Namespace DVDProfiler
 #Region "Methods"
 
         Public Sub Clear()
-            Me._location = String.Empty
-            Me._slot = String.Empty
+            Me._dlocation = String.Empty
+            Me._dslot = String.Empty
         End Sub
 
 #End Region 'Methods
@@ -416,5 +563,7 @@ Namespace DVDProfiler
 #End Region 'Methods
     End Class 'dAudioTrack
 
-End Namespace
+#End Region 'Nested Types
+
+End Class
 

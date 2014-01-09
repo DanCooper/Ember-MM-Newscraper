@@ -455,7 +455,7 @@ Public Class HTTP
                 End Using
             End If
         Catch ex As Exception
-            Master.eLog.Error(GetType(HTTP), "<" & Me._URL & ">" & ex.Message, ex.StackTrace, "Error", False)
+            'Master.eLog.Error(GetType(HTTP), "<" & Me._URL & ">" & ex.Message, ex.StackTrace, "Error", False) 'disabled, log only nonsens server errors
         End Try
     End Sub
     ''' <summary>
