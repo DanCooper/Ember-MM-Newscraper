@@ -92,6 +92,7 @@ Partial Class frmMain
         Me.cmnuMovieGenresSet = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieGenresRemove = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuSep = New System.Windows.Forms.ToolStripSeparator()
+        Me.cmnuMovieRescrape = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieReSel = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieReSelAuto = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieReSelAutoAll = New System.Windows.Forms.ToolStripMenuItem()
@@ -113,7 +114,6 @@ Partial Class frmMain
         Me.cmnuMovieReSelAskTrailer = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieReSelAskMetaData = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieReSelAskActor = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieRescrape = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieChange = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuSep2 = New System.Windows.Forms.ToolStripSeparator()
         Me.cmnuMovieOpenFolder = New System.Windows.Forms.ToolStripMenuItem()
@@ -672,7 +672,7 @@ Partial Class frmMain
         '
         Me.mnuMainFileExit.Image = CType(resources.GetObject("mnuMainFileExit.Image"), System.Drawing.Image)
         Me.mnuMainFileExit.Name = "mnuMainFileExit"
-        Me.mnuMainFileExit.Size = New System.Drawing.Size(152, 22)
+        Me.mnuMainFileExit.Size = New System.Drawing.Size(92, 22)
         Me.mnuMainFileExit.Text = "E&xit"
         '
         'mnuMainEdit
@@ -687,7 +687,7 @@ Partial Class frmMain
         '
         Me.mnuMainEditSettings.Image = CType(resources.GetObject("mnuMainEditSettings.Image"), System.Drawing.Image)
         Me.mnuMainEditSettings.Name = "mnuMainEditSettings"
-        Me.mnuMainEditSettings.Size = New System.Drawing.Size(152, 22)
+        Me.mnuMainEditSettings.Size = New System.Drawing.Size(125, 22)
         Me.mnuMainEditSettings.Text = "&Settings..."
         '
         'mnuMainHelp
@@ -1086,7 +1086,7 @@ Partial Class frmMain
         '
         Me.cmnuMovie.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuMovieTitle, Me.ToolStripSeparator3, Me.cmnuMovieReload, Me.cmnuMovieMark, Me.cmnuMovieLock, Me.cmnuMovieWatched, Me.ToolStripMenuItem1, Me.cmnuMovieEdit, Me.cmnuMovieEditMetaData, Me.cmnuMovieGenres, Me.cmnuSep, Me.cmnuMovieRescrape, Me.cmnuMovieReSel, Me.cmnuMovieChange, Me.cmnuSep2, Me.cmnuMovieOpenFolder, Me.ToolStripSeparator1, Me.cmnuMovieRemove})
         Me.cmnuMovie.Name = "mnuMediaList"
-        Me.cmnuMovie.Size = New System.Drawing.Size(247, 342)
+        Me.cmnuMovie.Size = New System.Drawing.Size(247, 320)
         '
         'cmnuMovieTitle
         '
@@ -1199,6 +1199,14 @@ Partial Class frmMain
         '
         Me.cmnuSep.Name = "cmnuSep"
         Me.cmnuSep.Size = New System.Drawing.Size(243, 6)
+        '
+        'cmnuMovieRescrape
+        '
+        Me.cmnuMovieRescrape.Image = CType(resources.GetObject("cmnuMovieRescrape.Image"), System.Drawing.Image)
+        Me.cmnuMovieRescrape.Name = "cmnuMovieRescrape"
+        Me.cmnuMovieRescrape.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.I), System.Windows.Forms.Keys)
+        Me.cmnuMovieRescrape.Size = New System.Drawing.Size(246, 22)
+        Me.cmnuMovieRescrape.Text = "(Re)Scrape Movie"
         '
         'cmnuMovieReSel
         '
@@ -1329,14 +1337,6 @@ Partial Class frmMain
         Me.cmnuMovieReSelAskActor.Name = "cmnuMovieReSelAskActor"
         Me.cmnuMovieReSelAskActor.Size = New System.Drawing.Size(178, 22)
         Me.cmnuMovieReSelAskActor.Text = "Actor Thumbs Only"
-        '
-        'cmnuMovieRescrape
-        '
-        Me.cmnuMovieRescrape.Image = CType(resources.GetObject("cmnuMovieRescrape.Image"), System.Drawing.Image)
-        Me.cmnuMovieRescrape.Name = "cmnuMovieRescrape"
-        Me.cmnuMovieRescrape.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.I), System.Windows.Forms.Keys)
-        Me.cmnuMovieRescrape.Size = New System.Drawing.Size(246, 22)
-        Me.cmnuMovieRescrape.Text = "(Re)Scrape Movie"
         '
         'cmnuMovieChange
         '
