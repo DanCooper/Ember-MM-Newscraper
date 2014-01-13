@@ -291,6 +291,8 @@ Public Class Interfaces
 
         Event TVScraperEvent(ByVal eType As Enums.TVScraperEventType, ByVal iProgress As Integer, ByVal Parameter As Object)
 
+        Event SetupNeedsRestart()
+
 #End Region 'Events
 
 #Region "Properties"

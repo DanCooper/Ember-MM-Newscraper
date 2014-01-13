@@ -25,6 +25,8 @@ Public Class frmTVInfoSettingsHolder
 
 #Region "Fields"
 
+    Private _api As String
+
 #End Region 'Fields
 
 #Region "Events"
@@ -33,7 +35,23 @@ Public Class frmTVInfoSettingsHolder
 
     Public Event SetupScraperChanged(ByVal state As Boolean, ByVal difforder As Integer)
 
+    Public Event SetupNeedsRestart()
+
 #End Region 'Events
+
+#Region "Properties"
+
+    Public Property API() As String
+        Get
+            Return Me._api
+        End Get
+        Set(ByVal value As String)
+            Me._api = value
+        End Set
+    End Property
+
+#End Region 'Properties
+
 
 #Region "Methods"
 
@@ -62,6 +80,7 @@ Public Class frmTVInfoSettingsHolder
     End Sub
 
     Public Sub New()
+        _api = String.Empty
         InitializeComponent()
         Me.SetUp()
         orderChanged()
@@ -90,8 +109,18 @@ Public Class frmTVInfoSettingsHolder
         Me.cbTVLanguage.Items.AddRange((From lLang In Master.eSettings.Languages Select lLang.LongLang).ToArray)
     End Sub
 
+    Private Sub txtTVDBApiKey_TextEnter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVDBApiKey.Enter
+        _api = txtTVDBApiKey.Text
+    End Sub
+
     Private Sub txtTVDBApiKey_TextChanged(sender As System.Object, e As System.EventArgs) Handles txtTVDBApiKey.TextChanged
         RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub txtTVDBApiKey_TestValidated(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVDBApiKey.Validated
+        If Not (_api = txtTVDBApiKey.Text) Then
+            RaiseEvent SetupNeedsRestart()
+        End If
     End Sub
 
     Private Sub pbTVDB_Click(sender As System.Object, e As System.EventArgs) Handles pbTVDB.Click

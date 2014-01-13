@@ -39,6 +39,7 @@ Public Class FanartTV_Poster
     ''' Scraping Here
     ''' </summary>
     ''' <remarks></remarks>
+    Private strPrivateAPIKey As String = String.Empty
     Private _MySettings As New sMySettings
     Private _Name As String = "FanartTV_Poster"
     Private _ScraperEnabled As Boolean = False
@@ -126,10 +127,7 @@ Public Class FanartTV_Poster
         _setup = New frmFanartTVMediaSettingsHolder
         LoadSettings()
         _setup.cbEnabled.Checked = _ScraperEnabled
-        If String.IsNullOrEmpty(_MySettings.FANARTTVApiKey) Then
-            _MySettings.FANARTTVApiKey = Master.eLang.GetString(787, "Get your API Key from fanart.tv")
-        End If
-        _setup.txtFANARTTVApiKey.Text = _MySettings.FANARTTVApiKey
+        _setup.txtFANARTTVApiKey.Text = strPrivateAPIKey
 
         _setup.orderChanged()
         Spanel.Name = String.Concat(Me._Name, "Scraper")
@@ -148,7 +146,8 @@ Public Class FanartTV_Poster
     End Function
 
     Sub LoadSettings()
-        _MySettings.FANARTTVApiKey = AdvancedSettings.GetSetting("FANARTTVApiKey", "Get your API Key from http://fanart.tv")
+        strPrivateAPIKey = AdvancedSettings.GetSetting("FANARTTVApiKey", "")
+        _MySettings.FANARTTVApiKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "ea68f9d0847c1b7643813c70cbfc0196", strPrivateAPIKey)
         ConfigScrapeModifier.DoSearch = True
         ConfigScrapeModifier.Meta = True
         ConfigScrapeModifier.NFO = True
@@ -164,16 +163,11 @@ Public Class FanartTV_Poster
     Sub SaveSettings()
         Using settings = New AdvancedSettings()
             settings.SetBooleanSetting("DoFanart", ConfigScrapeModifier.Fanart)
-            settings.SetSetting("FANARTTVApiKey", _MySettings.FANARTTVApiKey)
+            settings.SetSetting("FANARTTVApiKey", _setup.txtFANARTTVApiKey.Text)
         End Using
     End Sub
 
     Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.EmberMovieScraperModule_Poster.SaveSetupScraper
-        If Not String.IsNullOrEmpty(_setup.txtFANARTTVApiKey.Text) Then
-            _MySettings.FANARTTVApiKey = _setup.txtFANARTTVApiKey.Text
-        Else
-            _MySettings.FANARTTVApiKey = Master.eLang.GetString(787, "Get your API Key from fanart.tv")
-        End If
         SaveSettings()
         'ModulesManager.Instance.SaveSettings()
         If DoDispose Then

@@ -41,6 +41,7 @@ Public Class TMDB_Trailer
     ''' Scraping Here
     ''' </summary>
     ''' <remarks></remarks>
+    Private strPrivateAPIKey As String = String.Empty
     Private _MySettings As New sMySettings
     Private _Name As String = "TMDB_Trailer"
     Private _ScraperEnabled As Boolean = False
@@ -129,11 +130,7 @@ Public Class TMDB_Trailer
         _setup = New frmTMDBTrailerSettingsHolder
         LoadSettings()
         _setup.cbEnabled.Checked = _ScraperEnabled
-
-        If String.IsNullOrEmpty(_MySettings.TMDBAPIKey) Then
-            _MySettings.TMDBAPIKey = Master.eLang.GetString(936, "Get your API Key from www.themoviedb.org")
-        End If
-        _setup.txtTMDBApiKey.Text = _MySettings.TMDBAPIKey
+        _setup.txtTMDBApiKey.Text = strPrivateAPIKey
         _setup.cbTMDBPrefLanguage.Text = _MySettings.TMDBLanguage
         _setup.chkFallBackEng.Checked = _MySettings.FallBackEng
         _setup.Lang = _setup.cbTMDBPrefLanguage.Text
@@ -158,7 +155,8 @@ Public Class TMDB_Trailer
 
     Sub LoadSettings()
 
-        _MySettings.TMDBAPIKey = AdvancedSettings.GetSetting("TMDBAPIKey", "Get your API Key from http://www.themoviedb.org")
+        strPrivateAPIKey = AdvancedSettings.GetSetting("TMDBAPIKey", "")
+        _MySettings.TMDBAPIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "44810eefccd9cb1fa1d57e7b0d67b08d", strPrivateAPIKey)
         _MySettings.FallBackEng = AdvancedSettings.GetBooleanSetting("FallBackEn", False)
         _MySettings.TMDBLanguage = AdvancedSettings.GetSetting("TMDBLanguage", "en")
 
@@ -176,7 +174,6 @@ Public Class TMDB_Trailer
     End Sub
 
     Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef URLList As List(Of Trailers)) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule_Trailer.Scraper
-        'LoadSettings()
 
         LoadSettings()
         If String.IsNullOrEmpty(DBMovie.Movie.TMDBID) Then
@@ -190,18 +187,13 @@ Public Class TMDB_Trailer
 
     Sub SaveSettings()
         Using settings = New AdvancedSettings()
-            settings.SetSetting("TMDBAPIKey", _MySettings.TMDBAPIKey)
+            settings.SetSetting("TMDBAPIKey", _setup.txtTMDBApiKey.Text)
             settings.SetBooleanSetting("FallBackEn", _MySettings.FallBackEng)
             settings.SetSetting("TMDBLanguage", _MySettings.TMDBLanguage)
         End Using
     End Sub
 
     Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.EmberMovieScraperModule_Trailer.SaveSetupScraper
-        If Not String.IsNullOrEmpty(_setup.txtTMDBApiKey.Text) Then
-            _MySettings.TMDBAPIKey = _setup.txtTMDBApiKey.Text
-        Else
-            _MySettings.TMDBAPIKey = Master.eLang.GetString(936, "Get your API Key from www.themoviedb.org")
-        End If
         _MySettings.TMDBLanguage = _setup.cbTMDBPrefLanguage.Text
         _MySettings.FallBackEng = _setup.chkFallBackEng.Checked
         SaveSettings()
