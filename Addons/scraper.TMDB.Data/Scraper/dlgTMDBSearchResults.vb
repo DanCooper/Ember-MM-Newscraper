@@ -57,7 +57,7 @@ Public Class dlgTMDBSearchResults
     End Sub
 
 
-    Public Overloads Function ShowDialog(ByVal sMovieTitle As String, ByVal filterOptions As Structures.ScrapeOptions) As Windows.Forms.DialogResult
+    Public Overloads Function ShowDialog(ByVal sMovieTitle As String, ByVal filterOptions As Structures.ScrapeOptions, Optional ByVal sMovieYear As Integer = 0) As Windows.Forms.DialogResult
         Me.tmrWait.Enabled = False
         Me.tmrWait.Interval = 250
         Me.tmrLoad.Enabled = False
@@ -69,7 +69,7 @@ Public Class dlgTMDBSearchResults
         Me.txtSearch.Text = sMovieTitle
         chkManual.Enabled = False
         'TMDBg.IMDBURL = TMDBId
-        TMDBg.SearchMovieAsync(sMovieTitle, _filterOptions)
+        TMDBg.SearchMovieAsync(sMovieTitle, _filterOptions, sMovieYear)
 
         Return MyBase.ShowDialog()
     End Function

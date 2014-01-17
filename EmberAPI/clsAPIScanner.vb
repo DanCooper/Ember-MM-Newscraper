@@ -1117,6 +1117,20 @@ Public Class Scanner
                 End If
             End If
 
+            If String.IsNullOrEmpty(tmpMovieDB.Movie.Year) Then
+                If FileUtils.Common.isVideoTS(mContainer.Filename) Then
+                    tmpMovieDB.Movie.Year = StringUtils.GetYear(Directory.GetParent(Directory.GetParent(mContainer.Filename).FullName).Name)
+                ElseIf FileUtils.Common.isBDRip(mContainer.Filename) Then
+                    tmpMovieDB.Movie.Year = StringUtils.GetYear(Directory.GetParent(Directory.GetParent(Directory.GetParent(mContainer.Filename).FullName).FullName).Name)
+                Else
+                    If mContainer.UseFolder AndAlso mContainer.isSingle Then
+                        tmpMovieDB.Movie.Year = StringUtils.GetYear(Directory.GetParent(mContainer.Filename).Name)
+                    Else
+                        tmpMovieDB.Movie.Year = StringUtils.GetYear(Path.GetFileNameWithoutExtension(mContainer.Filename))
+                    End If
+                End If
+            End If
+
             If Not String.IsNullOrEmpty(tmpMovieDB.ListTitle) Then
                 tmpMovieDB.NfoPath = mContainer.Nfo
                 tmpMovieDB.PosterPath = mContainer.Poster

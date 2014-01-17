@@ -498,6 +498,23 @@ Public Class StringUtils
         End If
     End Function
     ''' <summary>
+    ''' Get the four-digit year from the given <c>String</c>
+    ''' </summary>
+    ''' <param name="sString"><c>String</c> from which to get the year</param>
+    ''' <returns>Only the year of source <c>String</c> without brackets</returns>
+    ''' <remarks>The year can only be 4 digits. More or less digits and the string won't be modified.
+    ''' Opening and closing brackets are required.</remarks>
+    Public Shared Function GetYear(ByVal sString As String) As String
+        If String.IsNullOrEmpty(sString) Then Return String.Empty
+        Dim strYear As String = Regex.Match(sString, "\(?\d{4}\)?.*").Value
+        If Not String.IsNullOrEmpty(strYear) Then
+            strYear = Replace(strYear, "(", String.Empty)
+            strYear = Replace(strYear, ")", String.Empty)
+            Return strYear.Trim
+        End If
+        Return String.Empty
+    End Function
+    ''' <summary>
     ''' Converts a string to an HTML-encoded string.
     ''' </summary>
     ''' <param name="stext"></param>

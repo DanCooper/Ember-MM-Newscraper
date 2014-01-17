@@ -482,7 +482,7 @@ Namespace TMDBg
         End Function
 
         Public Function GetSearchMovieInfo(ByVal sMovieName As String, ByRef dbMovie As Structures.DBMovie, ByVal iType As Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions) As MediaContainers.Movie
-            Dim r As MovieSearchResults = SearchMovie(sMovieName)
+            Dim r As MovieSearchResults = SearchMovie(sMovieName, CInt(IIf(Not String.IsNullOrEmpty(dbMovie.Movie.Year), dbMovie.Movie.Year, 0)))
             Dim b As Boolean = False
             Dim imdbMovie As MediaContainers.Movie = dbMovie.Movie
 
@@ -563,14 +563,14 @@ Namespace TMDBg
         End Sub
 
 
-        Public Sub SearchMovieAsync(ByVal sMovie As String, ByVal filterOptions As Structures.ScrapeOptions)
+        Public Sub SearchMovieAsync(ByVal sMovie As String, ByVal filterOptions As Structures.ScrapeOptions, Optional ByVal sYear As Integer = 0)
             '' The rule is that if there is a tt is an IMDB otherwise is a TMDB
             Try
                 If Not bwTMDBg.IsBusy Then
                     bwTMDBg.WorkerReportsProgress = False
                     bwTMDBg.WorkerSupportsCancellation = True
                     bwTMDBg.RunWorkerAsync(New Arguments With {.Search = SearchType.Movies, _
-                      .Parameter = sMovie, .Options = filterOptions})
+                      .Parameter = sMovie, .Options = filterOptions, .Year = sYear})
                 End If
             Catch ex As Exception
                 Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
@@ -583,7 +583,7 @@ Namespace TMDBg
             Try
                 Select Case Args.Search
                     Case SearchType.Movies
-                        Dim r As MovieSearchResults = SearchMovie(Args.Parameter)
+                        Dim r As MovieSearchResults = SearchMovie(Args.Parameter, Args.Year)
                         e.Result = New Results With {.ResultType = SearchType.Movies, .Result = r}
                     Case SearchType.SearchDetails
                         Dim s As Boolean = GetMovieInfo(Args.Parameter, Args.IMDBMovie, False, False, True, Args.Options, True)
@@ -647,16 +647,24 @@ Namespace TMDBg
         '	End Try
         'End Function
 
-        Private Function SearchMovie(ByVal sMovie As String) As MovieSearchResults
+        Private Function SearchMovie(ByVal sMovie As String, Optional ByVal sYear As Integer = 0) As MovieSearchResults
             Try
                 Dim R As New MovieSearchResults
                 Dim Page As Integer = 1
                 Dim Movies As WatTmdb.V3.TmdbMovieSearch
                 Dim TotP As Integer
                 Dim aE As Boolean
-                Movies = _TMDBApi.SearchMovie(sMovie, Page, _MySettings.TMDBLanguage)
+                If sYear > 0 Then
+                    Movies = _TMDBApi.SearchMovie(sMovie, Page, _MySettings.TMDBLanguage, , sYear)
+                Else
+                    Movies = _TMDBApi.SearchMovie(sMovie, Page, _MySettings.TMDBLanguage)
+                End If
                 If Movies.total_results = 0 And _MySettings.FallBackEng Then
-                    Movies = _TMDBApiE.SearchMovie(sMovie, Page)
+                    If sYear > 0 Then
+                        Movies = _TMDBApiE.SearchMovie(sMovie, Page, , , sYear)
+                    Else
+                        Movies = _TMDBApiE.SearchMovie(sMovie, Page)
+                    End If
                     aE = True
                 End If
                 If Movies.total_results > 0 Then
@@ -684,9 +692,17 @@ Namespace TMDBg
                         Next
                         Page = Page + 1
                         If aE Then
-                            Movies = _TMDBApiE.SearchMovie(sMovie, Page)
+                            If sYear > 0 Then
+                                Movies = _TMDBApiE.SearchMovie(sMovie, Page, , , sYear)
+                            Else
+                                Movies = _TMDBApiE.SearchMovie(sMovie, Page)
+                            End If
                         Else
-                            Movies = _TMDBApi.SearchMovie(sMovie, Page, _MySettings.TMDBLanguage)
+                            If sYear > 0 Then
+                                Movies = _TMDBApi.SearchMovie(sMovie, Page, _MySettings.TMDBLanguage, , sYear)
+                            Else
+                                Movies = _TMDBApi.SearchMovie(sMovie, Page, _MySettings.TMDBLanguage)
+                            End If
                         End If
 
                     End While
@@ -712,7 +728,8 @@ Namespace TMDBg
 			Dim IMDBMovie As MediaContainers.Movie
 			Dim Options As Structures.ScrapeOptions
 			Dim Parameter As String
-			Dim Search As SearchType
+            Dim Search As SearchType
+            Dim Year As Integer
 			'Dim TMDBConf As V3.TmdbConfiguration
 			'Dim TMDBApi As V3.Tmdb
 			'Dim FallBackEng As Boolean

@@ -354,6 +354,7 @@ Public Class TMDB_Data
                 Dim dSearch As New dlgTMDBSearchResults(_MySettings, Me._TMDBg)
                 ''			dSearch.IMDBURL = MySettings.IMDBURL
                 Dim tmpTitle As String = DBMovie.Movie.Title
+                Dim tmpYear As Integer = CInt(IIf(Not String.IsNullOrEmpty(DBMovie.Movie.Year), DBMovie.Movie.Year, 0))
                 If String.IsNullOrEmpty(tmpTitle) Then
                     If FileUtils.Common.isVideoTS(DBMovie.Filename) Then
                         tmpTitle = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).Name, False)
@@ -363,7 +364,7 @@ Public Class TMDB_Data
                         tmpTitle = StringUtils.FilterName(If(DBMovie.isSingle, Directory.GetParent(DBMovie.Filename).Name, Path.GetFileNameWithoutExtension(DBMovie.Filename)))
                     End If
                 End If
-                If dSearch.ShowDialog(tmpTitle, filterOptions) = Windows.Forms.DialogResult.OK Then
+                If dSearch.ShowDialog(tmpTitle, filterOptions, tmpYear) = Windows.Forms.DialogResult.OK Then
                     If Not String.IsNullOrEmpty(Master.tmpMovie.IMDBID) Then
                         ' if we changed the ID tipe we need to clear everything and rescrape
                         If Not String.IsNullOrEmpty(DBMovie.Movie.IMDBID) AndAlso Not (DBMovie.Movie.IMDBID = Master.tmpMovie.IMDBID) Then

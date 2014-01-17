@@ -3892,13 +3892,13 @@ Partial Class frmMain
         'mnuUpdateMovies
         '
         Me.mnuUpdateMovies.Name = "mnuUpdateMovies"
-        Me.mnuUpdateMovies.Size = New System.Drawing.Size(123, 22)
+        Me.mnuUpdateMovies.Size = New System.Drawing.Size(152, 22)
         Me.mnuUpdateMovies.Text = "Movies"
         '
         'mnuUpdateShows
         '
         Me.mnuUpdateShows.Name = "mnuUpdateShows"
-        Me.mnuUpdateShows.Size = New System.Drawing.Size(123, 22)
+        Me.mnuUpdateShows.Size = New System.Drawing.Size(152, 22)
         Me.mnuUpdateShows.Text = "TV Shows"
         '
         'tsbMediaCenters
