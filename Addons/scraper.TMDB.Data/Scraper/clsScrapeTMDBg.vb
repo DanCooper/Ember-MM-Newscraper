@@ -647,23 +647,23 @@ Namespace TMDBg
         '	End Try
         'End Function
 
-        Private Function SearchMovie(ByVal sMovie As String, Optional ByVal sYear As Integer = 0) As MovieSearchResults
+        Private Function SearchMovie(ByVal sMovie As String, Optional ByVal sYear As Integer? = Nothing) As MovieSearchResults
             Try
                 Dim R As New MovieSearchResults
                 Dim Page As Integer = 1
                 Dim Movies As WatTmdb.V3.TmdbMovieSearch
                 Dim TotP As Integer
                 Dim aE As Boolean
-                If sYear > 0 Then
-                    Movies = _TMDBApi.SearchMovie(sMovie, Page, _MySettings.TMDBLanguage, , sYear)
-                Else
+                If sYear Is Nothing Then
                     Movies = _TMDBApi.SearchMovie(sMovie, Page, _MySettings.TMDBLanguage)
+                Else
+                    Movies = _TMDBApi.SearchMovie(sMovie, Page, _MySettings.TMDBLanguage, , sYear)
                 End If
                 If Movies.total_results = 0 And _MySettings.FallBackEng Then
-                    If sYear > 0 Then
-                        Movies = _TMDBApiE.SearchMovie(sMovie, Page, , , sYear)
-                    Else
+                    If sYear Is Nothing Then
                         Movies = _TMDBApiE.SearchMovie(sMovie, Page)
+                    Else
+                        Movies = _TMDBApiE.SearchMovie(sMovie, Page, , , sYear)
                     End If
                     aE = True
                 End If
@@ -692,16 +692,16 @@ Namespace TMDBg
                         Next
                         Page = Page + 1
                         If aE Then
-                            If sYear > 0 Then
-                                Movies = _TMDBApiE.SearchMovie(sMovie, Page, , , sYear)
-                            Else
+                            If sYear Is Nothing Then
                                 Movies = _TMDBApiE.SearchMovie(sMovie, Page)
+                            Else
+                                Movies = _TMDBApiE.SearchMovie(sMovie, Page, , , sYear)
                             End If
                         Else
-                            If sYear > 0 Then
-                                Movies = _TMDBApi.SearchMovie(sMovie, Page, _MySettings.TMDBLanguage, , sYear)
-                            Else
+                            If sYear Is Nothing Then
                                 Movies = _TMDBApi.SearchMovie(sMovie, Page, _MySettings.TMDBLanguage)
+                            Else
+                                Movies = _TMDBApi.SearchMovie(sMovie, Page, _MySettings.TMDBLanguage, , sYear)
                             End If
                         End If
 
