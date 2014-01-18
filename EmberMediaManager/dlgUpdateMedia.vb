@@ -395,7 +395,7 @@ Public Class dlgUpdateMedia
         Me.chkRuntime.Text = Master.eLang.GetString(396, "Runtime")
         Me.chkPlot.Text = Master.eLang.GetString(65, "Plot")
         Me.chkOutline.Text = Master.eLang.GetString(64, "Plot Outline")
-        Me.chkGenre.Text = Master.eLang.GetString(20, "Genres")
+        Me.chkGenre.Text = Master.eLang.GetString(20, "Genre")
         Me.chkDirector.Text = Master.eLang.GetString(62, "Director")
         Me.chkTagline.Text = Master.eLang.GetString(397, "Tagline")
         Me.chkCast.Text = Master.eLang.GetString(63, "Cast")

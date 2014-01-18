@@ -127,7 +127,7 @@ namespace WatTmdb.Utilities
 
         #region Search Methods
 
-        internal RestRequest SearchMovie(string query, int page, string language, bool? includeAdult = null, int? year = null, object userState = null)
+        internal RestRequest SearchMovie(string query, int page, string language, object userState = null, bool? includeAdult = null, int? year = null)
         {
             return GetBuilder(REQUEST_SEARCH_MOVIE)
                 .SetUserState(userState)

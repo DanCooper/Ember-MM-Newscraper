@@ -211,7 +211,7 @@ Public Class frmTMDBInfoSettingsHolder
         Me.chkStudio.Text = Master.eLang.GetString(395, "Studio")
         Me.chkRuntime.Text = Master.eLang.GetString(396, "Runtime")
         Me.chkPlot.Text = Master.eLang.GetString(65, "Plot")
-        Me.chkGenre.Text = Master.eLang.GetString(20, "Genres")
+        Me.chkGenre.Text = Master.eLang.GetString(20, "Genre")
         Me.chkTagline.Text = Master.eLang.GetString(397, "Tagline")
         Me.chkCast.Text = Master.eLang.GetString(63, "Cast")
         Me.chkCrew.Text = Master.eLang.GetString(909, "Crew")
@@ -227,7 +227,7 @@ Public Class frmTMDBInfoSettingsHolder
         Me.cbEnabled.Text = Master.eLang.GetString(774, "Enabled")
         Me.chkFallBackEng.Text = Master.eLang.GetString(922, "Fall back on english")
         Me.Label3.Text = Master.eLang.GetString(741, "Preferred Language:")
-
+        Me.GroupBox30.Text = Master.eLang.GetString(937, "TMDB")
         Me.Label1.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), vbCrLf)
     End Sub
 

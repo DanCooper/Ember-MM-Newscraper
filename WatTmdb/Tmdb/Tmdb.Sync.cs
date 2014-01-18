@@ -228,9 +228,10 @@ namespace WatTmdb.V3
         {
             if (string.IsNullOrEmpty(query))
                 throw new ArgumentException("Search must be supplied");
-
+            if (year == 0)
+                year = null;
             //return ProcessRequest<TmdbMovieSearch>(BuildSearchMovieRequest(query, page, language, includeAdult, year));
-            return ProcessRequest<TmdbMovieSearch>(Generator.SearchMovie(query, page, language, includeAdult, year));
+            return ProcessRequest<TmdbMovieSearch>(Generator.SearchMovie(query, page, language, null, includeAdult, year));
         }
 
         /// <summary>
