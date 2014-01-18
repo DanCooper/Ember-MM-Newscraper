@@ -198,7 +198,7 @@
   <string control="Core_btnEditSource">Edit the selected source.</string>
   <string control="Core_gb_DAEMON">DAEMON Tools settings. It's recommended to fill these settings if you scrape some ISO files! You need to install Daemon Tools Lite for free to use it. </string>
   <string control="Core_cbo_DAEMON_driveletter">Check the drive letter of your mounted image using DAEMON Tools and set the drive letter here</string>
-  <string control="Core_txt_DAEMON_Programpath">Path to DTLite.exe, usually Program Files/DAEMON Tools Lite folder</string>
+  <string control="Core_txt_DAEMON_Programpath">Path to DTLite.exe or VCDMOUNT.exe(DAEMONToolsLite or VirtualCloneDrive)</string>
   <string control="Core_chkVideoTSParentXBMC"></string>
   <string control="Core_chkScanOrderModify">If enabled, Ember will add new files in order of there last modified time. If disabled, Ember will add new files to the library in alphabetical order.</string>
   <string control="Core_chkSortBeforeScan">If enabled, Ember will sort all single files in the top directory of the source into their own folders.</string>

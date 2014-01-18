@@ -35,6 +35,7 @@ Public Class dlgSetsManager
     Private Fanart As New Images With {.IsEdit = True}
     Private tmppath As String
     Private collectionartwork_path As String
+    Private lMoviesinSets As New List(Of String)
 
 #End Region 'Fields
 
@@ -53,6 +54,8 @@ Public Class dlgSetsManager
                             Me.currSet.AddMovie(lMov, Me.currSet.Movies.Count + 1)
                             needsSave = True
                             Me.lbMovies.Items.Remove(lbMovies.SelectedItems(0))
+                            'cocotus 2014018 Add also to tempMovielist
+                            lMoviesinSets.Add(sListTitle)
                         End If
                     End If
                 End While
@@ -155,17 +158,21 @@ Public Class dlgSetsManager
                             tmpMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(SQLreader("ID")))
                             If Not String.IsNullOrEmpty(tmpMovie.Movie.Title) Then
 
-                                '  lMovies.Add(New Movies With {.DBMovie = tmpMovie, .ListTitle = String.Concat(StringUtils.FilterTokens(tmpMovie.Movie.Title), If(Not String.IsNullOrEmpty(tmpMovie.Movie.Year), String.Format(" ({0})", tmpMovie.Movie.Year), String.Empty))})
+                                'cocotus build up tempmovie list which contains all movies belonging to one movieset! this is used to filter right side movies(used in FillList)!
+                                If tmpMovie.Movie.Sets.Count > 0 Then
+                                    lMoviesinSets.Add(String.Concat(StringUtils.FilterTokens(tmpMovie.Movie.Title), If(Not String.IsNullOrEmpty(tmpMovie.Movie.Year), String.Format(" ({0})", tmpMovie.Movie.Year), String.Empty)))
+                                End If
+
+                                lMovies.Add(New Movies With {.DBMovie = tmpMovie, .ListTitle = String.Concat(StringUtils.FilterTokens(tmpMovie.Movie.Title), If(Not String.IsNullOrEmpty(tmpMovie.Movie.Year), String.Format(" ({0})", tmpMovie.Movie.Year), String.Empty))})
+
                                 If tmpMovie.Movie.Sets.Count > 0 Then
                                     For Each mSet As MediaContainers.Set In tmpMovie.Movie.Sets
                                         If Not alSets.Contains(mSet.Set) AndAlso Not String.IsNullOrEmpty(mSet.Set) Then
                                             alSets.Add(mSet.Set)
                                         End If
                                     Next
-                                    'now only add movie to right list, if it's not part of a movieset (Frodo/XBMC doesn't support a single movie belonging to multiple sets)
-                                Else
-                                    lMovies.Add(New Movies With {.DBMovie = tmpMovie, .ListTitle = String.Concat(StringUtils.FilterTokens(tmpMovie.Movie.Title), If(Not String.IsNullOrEmpty(tmpMovie.Movie.Year), String.Format(" ({0})", tmpMovie.Movie.Year), String.Empty))})
                                 End If
+
                             End If
                             Me.bwLoadMovies.ReportProgress(iProg, tmpMovie.Movie.Title)
                             iProg += 1
@@ -219,10 +226,25 @@ Public Class dlgSetsManager
                 Me.sListTitle = Me.lbMoviesInSet.SelectedItems(0).ToString
                 lMov = Me.currSet.Movies.Find(AddressOf FindMovie)
                 If Not IsNothing(lMov) Then
+                    'cocotus 2014018 Remove also from tempMovielist
+                    For i = 0 To lMoviesinSets.Count - 1
+                        If lMoviesinSets(i) = lMov.ListTitle Then
+                            lMoviesinSets.RemoveAt(i)
+                            Exit For
+                        End If
+                    Next
                     Me.RemoveFromSet(lMov, False)
                 Else
+                    'cocotus 2014018 Remove also from tempMovielist
+                    For i = 0 To lMoviesinSets.Count - 1
+                        If lMoviesinSets(i) = Me.lbMoviesInSet.SelectedItems(0).ToString Then
+                            lMoviesinSets.RemoveAt(i)
+                            Exit For
+                        End If
+                    Next
                     Me.lbMoviesInSet.Items.Remove(Me.lbMoviesInSet.SelectedItems(0))
                 End If
+
             End While
             Me.LoadCurrSet()
             Me.FillMovies()
@@ -291,6 +313,13 @@ Public Class dlgSetsManager
                                 'remove the old set from each movie.
                                 If lbMoviesInSet.Items.Count > 0 Then
                                     For Each lMov As Movies In Me.currSet.Movies
+                                        'cocotus 2014018 Remove also from tempMovielist
+                                        For z = 0 To lMoviesinSets.Count - 1
+                                            If lMoviesinSets(z) = lMov.ListTitle Then
+                                                lMoviesinSets.RemoveAt(z)
+                                                Exit For
+                                            End If
+                                        Next
                                         Me.RemoveFromSet(lMov, True)
                                     Next
                                 End If
@@ -318,7 +347,11 @@ Public Class dlgSetsManager
 
             Me.lbMovies.Items.Clear()
             For Each lMov As Movies In lMovies
-                If Not Me.lbMoviesInSet.Items.Contains(lMov.ListTitle) Then Me.lbMovies.Items.Add(lMov.ListTitle)
+                'cocotus from now on only show movie on right side if not already part in movieset! (XMBC doesnT support movie belonging to multiple sets!)
+                '     If Not Me.lbMoviesInSet.Items.Contains(lMov.ListTitle) Then Me.lbMovies.Items.Add(lMov.ListTitle)
+                If lMoviesinSets.Contains(lMov.ListTitle) = False Then
+                    If Not Me.lbMoviesInSet.Items.Contains(lMov.ListTitle) Then Me.lbMovies.Items.Add(lMov.ListTitle)
+                End If
             Next
 
             Me.lbMovies.ResumeLayout()
@@ -421,7 +454,7 @@ Public Class dlgSetsManager
                     Me.lblPosterSize.Visible = False
                     Me.Poster.Dispose()
                 End If
-              
+
 
 
 
