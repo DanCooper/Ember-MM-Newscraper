@@ -258,13 +258,14 @@ namespace WatTmdb.V3
         /// <param name="year">optional - to get a closer result</param>
         /// <param name="UserState">User object to include in callback</param>
         /// <param name="callback"></param>
-        public void SearchMovie(string query, int page, string language, bool? includeAdult, int? year, object UserState, Action<TmdbAsyncResult<TmdbMovieSearch>> callback)
+        public void SearchMovie(string query, int page, string language, object UserState, Action<TmdbAsyncResult<TmdbMovieSearch>> callback, bool? includeAdult = null, int? year = null)
         {
             if (CheckQuery(query, UserState, callback) == false)
                 return;
-
+            if (year == 0)
+                year = null;
             //ProcessAsyncRequest<TmdbMovieSearch>(BuildSearchMovieRequest(query, page, language, includeAdult, year, UserState), callback);
-            ProcessAsyncRequest<TmdbMovieSearch>(Generator.SearchMovie(query, page, language, includeAdult, year, UserState), callback);
+            ProcessAsyncRequest<TmdbMovieSearch>(Generator.SearchMovie(query, page, language, UserState, includeAdult, year), callback);
         }
 
         /// <summary>
@@ -277,7 +278,7 @@ namespace WatTmdb.V3
         /// <param name="callback"></param>
         public void SearchMovie(string query, int page, object UserState, Action<TmdbAsyncResult<TmdbMovieSearch>> callback)
         {
-            SearchMovie(query, page, Language, null, null, UserState, callback);
+            SearchMovie(query, page, Language, UserState, callback);
         }
 
         /// <summary>

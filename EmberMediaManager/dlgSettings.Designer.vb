@@ -2423,7 +2423,7 @@ Partial Class dlgSettings
         Me.pnlGeneral.BackColor = System.Drawing.Color.White
         Me.pnlGeneral.Controls.Add(Me.gbInterface)
         Me.pnlGeneral.Controls.Add(Me.GroupBox4)
-        Me.pnlGeneral.Location = New System.Drawing.Point(1015, 371)
+        Me.pnlGeneral.Location = New System.Drawing.Point(1068, 514)
         Me.pnlGeneral.Name = "pnlGeneral"
         Me.pnlGeneral.Size = New System.Drawing.Size(617, 400)
         Me.pnlGeneral.TabIndex = 10
@@ -2452,7 +2452,7 @@ Partial Class dlgSettings
         Me.pnlMovieImages.Controls.Add(Me.gbMovieImagesFanart)
         Me.pnlMovieImages.Controls.Add(Me.gbMovieImagesPoster)
         Me.pnlMovieImages.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.pnlMovieImages.Location = New System.Drawing.Point(2, 79)
+        Me.pnlMovieImages.Location = New System.Drawing.Point(1099, 483)
         Me.pnlMovieImages.Name = "pnlMovieImages"
         Me.pnlMovieImages.Size = New System.Drawing.Size(617, 438)
         Me.pnlMovieImages.TabIndex = 12
@@ -2987,7 +2987,7 @@ Partial Class dlgSettings
         '
         Me.pnlXBMCCom.BackColor = System.Drawing.Color.White
         Me.pnlXBMCCom.Controls.Add(Me.gbProxy)
-        Me.pnlXBMCCom.Location = New System.Drawing.Point(631, 681)
+        Me.pnlXBMCCom.Location = New System.Drawing.Point(807, 725)
         Me.pnlXBMCCom.Name = "pnlXBMCCom"
         Me.pnlXBMCCom.Size = New System.Drawing.Size(617, 400)
         Me.pnlXBMCCom.TabIndex = 18
@@ -3231,7 +3231,7 @@ Partial Class dlgSettings
         Me.pnlExtensions.Controls.Add(Me.GroupBox22)
         Me.pnlExtensions.Controls.Add(Me.GroupBox3)
         Me.pnlExtensions.Controls.Add(Me.GroupBox18)
-        Me.pnlExtensions.Location = New System.Drawing.Point(723, 696)
+        Me.pnlExtensions.Location = New System.Drawing.Point(855, 682)
         Me.pnlExtensions.Name = "pnlExtensions"
         Me.pnlExtensions.Size = New System.Drawing.Size(617, 400)
         Me.pnlExtensions.TabIndex = 17
@@ -3360,7 +3360,7 @@ Partial Class dlgSettings
         Me.pnlMovieSources.Controls.Add(Me.btnMovieRem)
         Me.pnlMovieSources.Controls.Add(Me.btnMovieAddFolder)
         Me.pnlMovieSources.Controls.Add(Me.GroupBox16)
-        Me.pnlMovieSources.Location = New System.Drawing.Point(352, 696)
+        Me.pnlMovieSources.Location = New System.Drawing.Point(999, 562)
         Me.pnlMovieSources.Name = "pnlMovieSources"
         Me.pnlMovieSources.Size = New System.Drawing.Size(617, 402)
         Me.pnlMovieSources.TabIndex = 13
@@ -4506,7 +4506,7 @@ Partial Class dlgSettings
         '
         Me.pnlTVSources.BackColor = System.Drawing.Color.White
         Me.pnlTVSources.Controls.Add(Me.TabControl2)
-        Me.pnlTVSources.Location = New System.Drawing.Point(1008, 563)
+        Me.pnlTVSources.Location = New System.Drawing.Point(949, 592)
         Me.pnlTVSources.Name = "pnlTVSources"
         Me.pnlTVSources.Size = New System.Drawing.Size(617, 400)
         Me.pnlTVSources.TabIndex = 11
@@ -5401,7 +5401,7 @@ Partial Class dlgSettings
         '
         Me.pnlTVImages.BackColor = System.Drawing.Color.White
         Me.pnlTVImages.Controls.Add(Me.TabControl3)
-        Me.pnlTVImages.Location = New System.Drawing.Point(767, 665)
+        Me.pnlTVImages.Location = New System.Drawing.Point(902, 651)
         Me.pnlTVImages.Name = "pnlTVImages"
         Me.pnlTVImages.Size = New System.Drawing.Size(617, 402)
         Me.pnlTVImages.TabIndex = 16
@@ -7824,12 +7824,11 @@ Partial Class dlgSettings
         'pnlMovieScraper
         '
         Me.pnlMovieScraper.BackColor = System.Drawing.Color.White
-        Me.pnlMovieScraper.Controls.Add(Me.pnlMovieImages)
         Me.pnlMovieScraper.Controls.Add(Me.GroupBox10)
         Me.pnlMovieScraper.Controls.Add(Me.gbOptions)
         Me.pnlMovieScraper.Controls.Add(Me.GroupBox1)
         Me.pnlMovieScraper.Controls.Add(Me.GroupBox26)
-        Me.pnlMovieScraper.Location = New System.Drawing.Point(946, 653)
+        Me.pnlMovieScraper.Location = New System.Drawing.Point(1030, 537)
         Me.pnlMovieScraper.Name = "pnlMovieScraper"
         Me.pnlMovieScraper.Size = New System.Drawing.Size(617, 400)
         Me.pnlMovieScraper.TabIndex = 14
@@ -7988,6 +7987,7 @@ Partial Class dlgSettings
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.btnCancel
         Me.ClientSize = New System.Drawing.Size(892, 647)
+        Me.Controls.Add(Me.pnlMovieImages)
         Me.Controls.Add(Me.pnlGeneral)
         Me.Controls.Add(Me.pnlMovieScraper)
         Me.Controls.Add(Me.pnlMovieSources)

@@ -18,7 +18,7 @@
 	<string id="17">Clear &amp;All Caches</string>
 	<string id="18">Re&amp;load All Movies</string>
 	<string id="19">Close</string>
-	<string id="20">Genres</string>
+	<string id="20">Genre</string>
 	<string id="21">Title</string>
 	<string id="22">Reload</string>
 	<string id="23">Mark</string>
@@ -721,7 +721,7 @@
 	<string id="720">No</string>
 	<string id="721">Upgrade</string>
 	<string id="722">Certification</string>
-	<string id="723">EpisodeGuideURL</string>
+	<string id="723">Episode Guide URL</string>
 	<string id="724">Premiered</string>
 	<string id="725">Actors</string>
 	<string id="726">Season {0}</string>
@@ -1077,4 +1077,4 @@
   <string id="988">DAEMON Tools settings (only used for scanning image files (.iso))</string>
   <string id="989">Driveletter</string>
   <string id="990">Path to DTLite.exe</string>
-</strings>
+  </strings>
