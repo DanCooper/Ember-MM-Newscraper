@@ -647,7 +647,7 @@ Namespace TMDBg
         '	End Try
         'End Function
 
-        Private Function SearchMovie(ByVal sMovie As String, Optional ByVal sYear As Integer? = 0) As MovieSearchResults
+        Private Function SearchMovie(ByVal sMovie As String, Optional ByVal sYear As Integer = 0) As MovieSearchResults
             Try
                 Dim R As New MovieSearchResults
                 Dim Page As Integer = 1
