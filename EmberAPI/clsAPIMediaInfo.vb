@@ -129,7 +129,7 @@ Public Class MediaInfo
                 If miMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 AndAlso Master.eSettings.UseMIDuration Then
                     Dim tVid As MediaInfo.Video = NFO.GetBestVideo(miMovie.Movie.FileInfo)
                     If Not String.IsNullOrEmpty(tVid.Duration) Then
-                        miMovie.Movie.Runtime = MediaInfo.FormatDuration(MediaInfo.DurationToSeconds(tVid.Duration, True), Master.eSettings.RuntimeMask)
+                        miMovie.Movie.Runtime = MediaInfo.FormatDuration(tVid.Duration, Master.eSettings.RuntimeMask)
                     End If
                 End If
                 MI = Nothing
@@ -1216,6 +1216,14 @@ Public Class MediaInfo
         Dim sSec As Integer = If(Not String.IsNullOrEmpty(sDuration.Groups(6).Value), (Convert.ToInt32(sDuration.Groups(6).Value)), 0)
         'Dim sMask As String = Master.eSettings.RuntimeMask
         'Dim sRuntime As String = String.Empty
+
+        'new handling: only seconds as tdur
+        If IsNumeric(tDur) Then
+            Dim ts As New TimeSpan(0, 0, Convert.ToInt32(tDur))
+            sHour = ts.Hours
+            sMin = ts.Minutes
+            sSec = ts.Seconds
+        End If
 
         If sMask.Contains("<h>") Then
             If sMask.Contains("<m>") OrElse sMask.Contains("<0m>") Then
