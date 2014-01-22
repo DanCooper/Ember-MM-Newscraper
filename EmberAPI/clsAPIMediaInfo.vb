@@ -509,26 +509,7 @@ Public Class MediaInfo
                 miAudio.Codec = ConvertAFormat(Me.Get_(StreamKind.Audio, a, "CodecID"), a_Profile)
                 miAudio.Codec = If(IsNumeric(miAudio.Codec) OrElse String.IsNullOrEmpty(miAudio.Codec), ConvertAFormat(Me.Get_(StreamKind.Audio, a, "Format"), a_Profile), miAudio.Codec)
             End If
-            miAudio.Channels = Me.Get_(StreamKind.Audio, a, "Channel(s)")
-
-            'cocotus 20130303 ChannelInfo fix
-            'Channel(s)/sNumber might contain: "8 / 6" (7.1) so we must handle backslash and spaces --> XBMC/Ember only supports Number like 2,6,8...
-            If miAudio.Channels.Contains("/") Then
-                Dim mystring As String = ""
-                'use regex to get rid of all letters(if that ever happens just in case) and also remove spaces
-                mystring = Text.RegularExpressions.Regex.Replace(miAudio.Channels, "[^/.0-9]", "").Trim
-                'now get channel number
-                If mystring.Length > 0 Then
-                    If Char.IsDigit(mystring(0)) Then
-                        Try
-                            'In case of "x/y" this will return x which is highest number, i.e 8/6 -> 8 (highest number always first!)
-                            miAudio.Channels = CStr(mystring(0))
-                        Catch ex As Exception
-                        End Try
-                    End If
-                End If
-            End If
-            'cocotus end
+            miAudio.Channels = FormatAudioChannel(Me.Get_(StreamKind.Audio, a, "Channel(s)"))
 
             'cocotus, 2013/02 Added support for new MediaInfo-fields
             'Audio-Bitrate
@@ -1060,27 +1041,8 @@ Public Class MediaInfo
 
                         'Channel(s)
                         If ds.Tables.Contains("Channel_s_") AndAlso ds.Tables("Channel_s_").Rows.Count > a Then
-                            miAudio.Channels = ds.Tables("Channel_s_").Rows(2 * a).Item(0).ToString
+                            miAudio.Channels = FormatAudioChannel(ds.Tables("Channel_s_").Rows(2 * a).Item(0).ToString)
                         End If
-
-                        'cocotus 20130303 ChannelInfo fix
-                        'Channel(s)/sNumber might contain: "8 / 6" (7.1) so we must handle backslash and spaces --> XBMC/Ember only supports Number like 2,6,8...
-                        If miAudio.Channels.Contains("/") Then
-                            Dim mystring As String = ""
-                            'use regex to get rid of all letters(if that ever happens just in case) and also remove spaces
-                            mystring = Text.RegularExpressions.Regex.Replace(miAudio.Channels, "[^/.0-9]", "").Trim
-                            'now get channel number
-                            If mystring.Length > 0 Then
-                                If Char.IsDigit(mystring(0)) Then
-                                    Try
-                                        'In case of "x/y" this will return x which is highest number, i.e 8/6 -> 8 (highest number always first!)
-                                        miAudio.Channels = CStr(mystring(0))
-                                    Catch ex As Exception
-                                    End Try
-                                End If
-                            End If
-                        End If
-                        'cocotus end
 
                         'Audio-Bitrate
                         If ds.Tables.Contains("Bit_rate") AndAlso ds.Tables("Bit_rate").Rows.Count > 2 * a Then
@@ -1108,26 +1070,7 @@ Public Class MediaInfo
                             miAudio.Codec = ConvertAFormat(Me.Get_(StreamKind.Audio, a, "CodecID"), a_Profile)
                             miAudio.Codec = If(IsNumeric(miAudio.Codec) OrElse String.IsNullOrEmpty(miAudio.Codec), ConvertAFormat(Me.Get_(StreamKind.Audio, a, "Format"), a_Profile), miAudio.Codec)
                         End If
-                        miAudio.Channels = Me.Get_(StreamKind.Audio, a, "Channel(s)")
-
-                        'cocotus 20130303 ChannelInfo fix
-                        'Channel(s)/sNumber might contain: "8 / 6" (7.1) so we must handle backslash and spaces --> XBMC/Ember only supports Number like 2,6,8...
-                        If miAudio.Channels.Contains("/") Then
-                            Dim mystring As String = ""
-                            'use regex to get rid of all letters(if that ever happens just in case) and also remove spaces
-                            mystring = Text.RegularExpressions.Regex.Replace(miAudio.Channels, "[^/.0-9]", "").Trim
-                            'now get channel number
-                            If mystring.Length > 0 Then
-                                If Char.IsDigit(mystring(0)) Then
-                                    Try
-                                        'In case of "x/y" this will return x which is highest number, i.e 8/6 -> 8 (highest number always first!)
-                                        miAudio.Channels = CStr(mystring(0))
-                                    Catch ex As Exception
-                                    End Try
-                                End If
-                            End If
-                        End If
-                        'cocotus end
+                        miAudio.Channels = FormatAudioChannel(Me.Get_(StreamKind.Audio, a, "Channel(s)"))
 
                         'cocotus, 2013/02 Added support for new MediaInfo-fields
                         'Audio-Bitrate
@@ -1212,7 +1155,7 @@ Public Class MediaInfo
         Return fiOut
     End Function
 
-    Private Shared Function FormatBitrate(ByVal rawbitrate As String) As String
+    Public Shared Function FormatBitrate(ByVal rawbitrate As String) As String
         'now consider bitrate number and calculate all values in KB instead of MB/KB
         If rawbitrate.ToUpper.IndexOf(" K") > 0 Then
             rawbitrate = rawbitrate.Substring(0, rawbitrate.ToUpper.IndexOf(" K"))
@@ -1237,6 +1180,38 @@ Public Class MediaInfo
         End If
         Return rawbitrate
     End Function
+
+    ''' <summary>
+    ''' Convert string "x/y" to single digit number "x" (Audio Channel conversion)
+    ''' </summary>
+    ''' <param name="AudioChannelstring">The channelstring (as string) to clean</param>
+    ''' <returns>cleaned Channelnumber, i.e  "8/6" will return as 7 </returns>
+    ''' <remarks>Inputstring "x/y" will return as "x" which is highest number, i.e 8/6 -> 8 (assume: highest number always first!)
+    ''' 2014/01/22 Cocotus - Since this functionality is needed on several places in Ember, I builded new function to avoid duplicate code
+    '''</remarks>
+    Public Shared Function FormatAudioChannel(ByVal AudioChannelstring As String) As String
+        'cocotus 20130303 ChannelInfo fix
+        'Channel(s)/sNumber might contain: "8 / 6" (7.1) so we must handle backslash and spaces --> XBMC/Ember only supports Number like 2,6,8...
+        If AudioChannelstring.Contains("/") Then
+            Dim mystring As String = ""
+            'use regex to get rid of all letters(if that ever happens just in case) and also remove spaces
+            mystring = Text.RegularExpressions.Regex.Replace(AudioChannelstring, "[^/.0-9]", "").Trim
+            'now get channel number
+            If mystring.Length > 0 Then
+                If Char.IsDigit(mystring(0)) Then
+                    Try
+                        'In case of "x/y" this will return x which is highest number, i.e 8/6 -> 8 (highest number always first!)
+                        AudioChannelstring = CStr(mystring(0))
+                    Catch ex As Exception
+                    End Try
+                End If
+            End If
+        End If
+        Return AudioChannelstring
+        'cocotus end
+    End Function
+
+
 
     Public Shared Function FormatDuration(ByVal tDur As String, ByVal sMask As String) As String
         Dim sDuration As Match = Regex.Match(tDur, "(([0-9]+)h)?\s?(([0-9]+)mn)?\s?(([0-9]+)s)?")

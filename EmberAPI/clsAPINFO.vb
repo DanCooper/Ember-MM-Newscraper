@@ -126,7 +126,7 @@ Public Class NFO
 
             For Each miAudio As MediaInfo.Audio In miFIA.StreamDetails.Audio
                 If Not String.IsNullOrEmpty(miAudio.Channels) Then
-                    sinChans = NumUtils.ConvertToSingle(miAudio.Channels)
+                    sinChans = NumUtils.ConvertToSingle(EmberAPI.MediaInfo.FormatAudioChannel(miAudio.Channels))
                     If sinChans > sinMostChannels Then
                         sinMostChannels = sinChans
                         fiaOut.Codec = miAudio.Codec
