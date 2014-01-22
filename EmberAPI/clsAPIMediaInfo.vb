@@ -768,19 +768,34 @@ Public Class MediaInfo
                                 'DVD structure
                                 Try
                                     Dim di As New IO.DirectoryInfo(Directory.GetParent(sPath).FullName)
-                                    Dim myFiles = From file In di.GetFiles("VTS*.VOB") _
+
+                                    'Biggest IFO File! -> Get Languages out of IFO and Bitrate data out of biggest VOB file!
+                                    Dim myFilesIFO = From file In di.GetFiles("VTS*.IFO") _
                                                   Order By file.Length _
                                                   Select file.FullName
-
-                                    If Not myFiles Is Nothing AndAlso myFiles.Count > 0 Then
-                                        'Biggest VOB File! -> Get Languages out of IFO and Bitrate data out of biggest VOB file!
-                                        sPath = myFiles.Last
+                                    If Not myFilesIFO Is Nothing AndAlso myFilesIFO.Count > 0 Then
+                                        fiIFO = ScanLanguage(myFilesIFO.Last)
                                     End If
-                                    If myFiles.Last.Length > 6 Then
-                                        ISOSubtitleScanFile = myFiles.Last.Substring(0, myFiles.Last.Length - 6) & "_0.IFO"
-                                        If IO.File.Exists(ISOSubtitleScanFile) Then
-                                            fiIFO = ScanLanguage(ISOSubtitleScanFile)
+
+                                    'Biggest VOB File! -> Get Languages out of IFO and Bitrate data out of biggest VOB file!
+                                    If Not myFilesIFO Is Nothing AndAlso myFilesIFO.Count > 0 AndAlso myFilesIFO.Last.Length > 6 Then
+
+                                        Dim myFiles = From file In di.GetFiles(Path.GetFileName(myFilesIFO.Last).Substring(0, Path.GetFileName(myFilesIFO.Last).Length - 6) & "*.VOB") _
+                                            Order By file.Length _
+                                            Select file.FullName
+                                        If Not myFiles Is Nothing AndAlso myFiles.Count > 0 Then
+                                            sPath = myFiles.Last
+                                        Else
+                                            myFiles = From file In di.GetFiles("VTS*.VOB") _
+                                               Order By file.Length _
+                                               Select file.FullName
+                                            sPath = myFiles.Last
                                         End If
+                                    Else
+                                        Dim myFiles = From file In di.GetFiles("VTS*.VOB") _
+                                                 Order By file.Length _
+                                                 Select file.FullName
+                                        sPath = myFiles.Last
                                     End If
 
                                 Catch
