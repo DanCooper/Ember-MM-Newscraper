@@ -122,6 +122,7 @@ Partial Class dlgUpdateMedia
         Me.chkYear = New System.Windows.Forms.CheckBox()
         Me.chkTitle = New System.Windows.Forms.CheckBox()
         Me.pnlUpdateMedia = New System.Windows.Forms.Panel()
+        Me.chkActorMod = New System.Windows.Forms.CheckBox()
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.gbUpdateModifier.SuspendLayout()
@@ -135,7 +136,7 @@ Partial Class dlgUpdateMedia
         '
         Me.OK_Button.Anchor = System.Windows.Forms.AnchorStyles.Bottom
         Me.OK_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.OK_Button.Location = New System.Drawing.Point(489, 333)
+        Me.OK_Button.Location = New System.Drawing.Point(489, 359)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(80, 23)
         Me.OK_Button.TabIndex = 1
@@ -289,6 +290,7 @@ Partial Class dlgUpdateMedia
         '
         'gbUpdateItems
         '
+        Me.gbUpdateItems.Controls.Add(Me.chkActorMod)
         Me.gbUpdateItems.Controls.Add(Me.chkEFanartsMod)
         Me.gbUpdateItems.Controls.Add(Me.chkTrailerMod)
         Me.gbUpdateItems.Controls.Add(Me.chkEThumbsMod)
@@ -300,7 +302,7 @@ Partial Class dlgUpdateMedia
         Me.gbUpdateItems.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbUpdateItems.Location = New System.Drawing.Point(6, 160)
         Me.gbUpdateItems.Name = "gbUpdateItems"
-        Me.gbUpdateItems.Size = New System.Drawing.Size(275, 96)
+        Me.gbUpdateItems.Size = New System.Drawing.Size(275, 113)
         Me.gbUpdateItems.TabIndex = 2
         Me.gbUpdateItems.TabStop = False
         Me.gbUpdateItems.Text = "Modifiers"
@@ -420,7 +422,7 @@ Partial Class dlgUpdateMedia
         '
         Me.Update_Button.Anchor = System.Windows.Forms.AnchorStyles.Bottom
         Me.Update_Button.Enabled = False
-        Me.Update_Button.Location = New System.Drawing.Point(401, 333)
+        Me.Update_Button.Location = New System.Drawing.Point(401, 359)
         Me.Update_Button.Name = "Update_Button"
         Me.Update_Button.Size = New System.Drawing.Size(80, 23)
         Me.Update_Button.TabIndex = 0
@@ -453,7 +455,7 @@ Partial Class dlgUpdateMedia
         Me.gbOptions.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbOptions.Location = New System.Drawing.Point(287, 2)
         Me.gbOptions.Name = "gbOptions"
-        Me.gbOptions.Size = New System.Drawing.Size(274, 254)
+        Me.gbOptions.Size = New System.Drawing.Size(274, 271)
         Me.gbOptions.TabIndex = 3
         Me.gbOptions.TabStop = False
         Me.gbOptions.Text = "Options"
@@ -753,8 +755,22 @@ Partial Class dlgUpdateMedia
         Me.pnlUpdateMedia.Controls.Add(Me.gbUpdateModifier)
         Me.pnlUpdateMedia.Location = New System.Drawing.Point(4, 68)
         Me.pnlUpdateMedia.Name = "pnlUpdateMedia"
-        Me.pnlUpdateMedia.Size = New System.Drawing.Size(568, 262)
+        Me.pnlUpdateMedia.Size = New System.Drawing.Size(568, 282)
         Me.pnlUpdateMedia.TabIndex = 3
+        '
+        'chkActorMod
+        '
+        Me.chkActorMod.AutoSize = True
+        Me.chkActorMod.Checked = True
+        Me.chkActorMod.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkActorMod.Enabled = False
+        Me.chkActorMod.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkActorMod.Location = New System.Drawing.Point(14, 90)
+        Me.chkActorMod.Name = "chkActorMod"
+        Me.chkActorMod.Size = New System.Drawing.Size(96, 17)
+        Me.chkActorMod.TabIndex = 7
+        Me.chkActorMod.Text = "Actor Thumbs"
+        Me.chkActorMod.UseVisualStyleBackColor = True
         '
         'dlgUpdateMedia
         '
@@ -762,7 +778,7 @@ Partial Class dlgUpdateMedia
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.OK_Button
-        Me.ClientSize = New System.Drawing.Size(576, 358)
+        Me.ClientSize = New System.Drawing.Size(576, 384)
         Me.Controls.Add(Me.pnlUpdateMedia)
         Me.Controls.Add(Me.Update_Button)
         Me.Controls.Add(Me.pnlTop)
@@ -791,6 +807,7 @@ Partial Class dlgUpdateMedia
     End Sub
     Friend WithEvents pnlUpdateMedia As System.Windows.Forms.Panel
     Friend WithEvents chkEFanartsMod As System.Windows.Forms.CheckBox
+    Friend WithEvents chkActorMod As System.Windows.Forms.CheckBox
 
 #End Region 'Methods
 
