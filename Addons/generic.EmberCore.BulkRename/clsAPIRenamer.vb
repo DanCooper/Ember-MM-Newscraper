@@ -223,6 +223,12 @@ Public Class FileFolderRenamer
             For Each Invalid As Char In Path.GetInvalidPathChars
                 pattern = pattern.Replace(Invalid, String.Empty)
             Next
+
+            ' removes all dots at the end of the name (dots are not allowed)
+            While pattern.Last = "."
+                pattern = pattern.Remove(pattern.Length - 1)
+            End While
+
             Return pattern.Trim
         Catch ex As Exception
             Master.eLog.Error(GetType(FileFolderRenamer), ex.Message, ex.StackTrace, "Error")
@@ -343,6 +349,16 @@ Public Class FileFolderRenamer
             MovieFile.NewPath = Path.Combine(MovieFile.OldPath, ProccessPattern(MovieFile, If(_tmpMovie.isSingle, folderPattern, "$D")).Trim)
         End If
         MovieFile.NewPath = If(MovieFile.NewPath.StartsWith(Path.DirectorySeparatorChar), MovieFile.NewPath.Substring(1), MovieFile.NewPath)
+
+        ' removes all dots at the end of the foldername (dots are not allowed)
+        While MovieFile.NewPath.Last = "."
+            MovieFile.NewPath = MovieFile.NewPath.Remove(MovieFile.NewPath.Length - 1)
+        End While
+
+        ' removes all dots at the end of the filename (for accord with foldername)
+        While MovieFile.NewPath.Last = "."
+            MovieFile.NewPath = MovieFile.NewPath.Remove(MovieFile.NewPath.Length - 1)
+        End While
 
         MovieFile.FileExist = File.Exists(Path.Combine(MovieFile.BasePath, Path.Combine(MovieFile.NewPath, MovieFile.NewFileName))) AndAlso Not (MovieFile.FileName = MovieFile.NewFileName)
         MovieFile.DirExist = File.Exists(Path.Combine(MovieFile.BasePath, MovieFile.NewPath)) AndAlso Not (MovieFile.Path = MovieFile.NewPath)
@@ -679,7 +695,6 @@ Public Class FileFolderRenamer
 
                 'Rename Directory
                 If Not srcDir = destDir Then
-
                     Try
                         If Not _movie.isSingle Then
                             Directory.CreateDirectory(destDir)
