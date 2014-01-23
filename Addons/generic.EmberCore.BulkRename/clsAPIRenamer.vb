@@ -451,7 +451,8 @@ Public Class FileFolderRenamer
                                 If Not f.IsSingle Then
                                     Directory.CreateDirectory(destDir)
                                 Else
-                                    If srcDir.ToLower = destDir.ToLower Then
+                                    ' workaround for .NET 3.5 bug (can't move X:\Fuss to X:\Fuß)
+                                    If srcDir.ToLower = destDir.ToLower OrElse destDir.ToLower.Contains("ß") OrElse srcDir.ToLower.Contains("ß") Then
                                         Directory.Move(srcDir, String.Concat(destDir, ".$emm"))
                                         Directory.Move(String.Concat(destDir, ".$emm"), destDir)
                                     Else
@@ -699,7 +700,8 @@ Public Class FileFolderRenamer
                         If Not _movie.isSingle Then
                             Directory.CreateDirectory(destDir)
                         Else
-                            If srcDir.ToLower = destDir.ToLower Then
+                            ' workaround for .NET 3.5 bug (can't move X:\Fuss to X:\Fuß)
+                            If srcDir.ToLower = destDir.ToLower OrElse destDir.ToLower.Contains("ß") OrElse srcDir.ToLower.Contains("ß") Then
                                 Directory.Move(srcDir, String.Concat(destDir, ".$emm"))
                                 Directory.Move(String.Concat(destDir, ".$emm"), destDir)
                             Else
