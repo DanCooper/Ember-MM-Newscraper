@@ -1198,7 +1198,7 @@ Public Class Scanner
 
             If lFi.Count > 0 Then
 
-                If Master.eSettings.ExpertRecognizeVTS AndAlso autoCheck Then
+                If Master.eSettings.AutoDetectVTS AndAlso autoCheck Then
                     If lFi.Where(Function(s) s.Name.ToLower = "index.bdmv").Count > 0 Then
                         bdmvSingle = True
                         tFile = FileUtils.Common.GetLongestFromRip(sPath, True)
@@ -1206,7 +1206,7 @@ Public Class Scanner
                     End If
                 End If
 
-                If Not bdmvSingle AndAlso Master.eSettings.ExpertRecognizeVTS AndAlso autoCheck Then
+                If Not bdmvSingle AndAlso Master.eSettings.AutoDetectVTS AndAlso autoCheck Then
                     Dim hasIfo As Integer = 0
                     Dim hasVob As Integer = 0
                     Dim hasBup As Integer = 0
