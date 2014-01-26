@@ -153,9 +153,6 @@ Public Class dlgExportMovies
             Dim tRes As String = String.Empty
             Dim htmlPath As String = String.Concat(Functions.AppPath, "Langs", Path.DirectorySeparatorChar, "html", Path.DirectorySeparatorChar, template, Path.DirectorySeparatorChar, Master.eSettings.Language, ".html")
             Dim pattern As String
-            Dim movieheader As String = String.Empty
-            Dim moviefooter As String = String.Empty
-            Dim movierow As String = String.Empty
             If Not File.Exists(htmlPath) Then
                 htmlPath = String.Concat(Functions.AppPath, "Langs", Path.DirectorySeparatorChar, "html", Path.DirectorySeparatorChar, template, Path.DirectorySeparatorChar, "English_(en_US).html")
             End If
@@ -175,19 +172,6 @@ Public Class dlgExportMovies
                 Me.bexportFlags = True
                 pattern = pattern.Replace("<$NEED_FLAGS>", String.Empty)
             End If
-            Dim s = pattern.IndexOf("<$MOVIE>")
-            If s >= 0 Then
-                Dim e = pattern.IndexOf("<$/MOVIE>")
-                If e >= 0 Then
-                    movieheader = pattern.Substring(0, s)
-                    movierow = pattern.Substring(s + 8, e - s - 8)
-                    moviefooter = pattern.Substring(e + 9, pattern.Length - e - 9)
-                Else
-                    'error
-                End If
-            Else
-                'error
-            End If
 
             If bSearch Then
                 bFiltered = True
@@ -195,147 +179,176 @@ Public Class dlgExportMovies
                 bFiltered = False
             End If
 
-            HTMLBody.Append(movieheader)
-            Dim counter As Integer = 1
-            FilterMovies.Clear()
-            For Each _curMovie As Structures.DBMovie In _movies
-                Dim _vidDetails As String = String.Empty
-                Dim _vidDimensions As String = String.Empty
+            'here we transform the pattern string into a content map
+            Dim contentMap As New List(Of ContentMapPart)
+            Dim s As Integer
+            Dim e As Integer
+            Dim part As ContentMapPart
+            Do While pattern.IndexOf("<$MOVIE>") >= 0
+                'create the non-looped section
+                s = pattern.IndexOf("<$MOVIE>")
+                part = New ContentMapPart
+                part.isLooped = False
+                part.content = pattern.Substring(0, s)
+                contentMap.Add(part)
+                'create the looped section
+                e = pattern.IndexOf("<$/MOVIE>")
+                part = New ContentMapPart
+                part.isLooped = True
+                part.content = pattern.Substring(s + 8, e - s - 8)
+                contentMap.Add(part)
+                ''truncate it to after the looped section
+                pattern = pattern.Substring(e + 9)
+            Loop
+            part = New ContentMapPart
+            part.content = pattern
+            part.isLooped = False
+            contentMap.Add(part)
+            'the contentmap is now a list of parts indicating if they loop, and containing their content
 
+            For Each part In contentMap
+                If part.isLooped Then
+                    Dim counter As Integer = 1
+                    FilterMovies.Clear()
+                    For Each _curMovie As Structures.DBMovie In _movies
+                        Dim _vidDetails As String = String.Empty
+                        Dim _vidDimensions As String = String.Empty
 
-                'cocotus, 2013/02 Added support for new MediaInfo-fields
-                'We want to use new mediainfo fields in template to -> make them avalaible here!
-                Dim _vidBitrate As String = String.Empty
-                Dim _vidEncodedSettings As String = String.Empty
-                Dim _vidMultiView As String = String.Empty
-                Dim _audBitrate As String = String.Empty
-                'cocotus end
-
-                Dim _audDetails As String = String.Empty
-                If Not IsNothing(_curMovie.Movie.FileInfo) Then
-                    If _curMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
-                        tVid = NFO.GetBestVideo(_curMovie.Movie.FileInfo)
-                        tRes = NFO.GetResFromDimensions(tVid)
-
-                        'cocotus, 2013/02 Added support for new MediaInfo-fields
-                        If Not String.IsNullOrEmpty(tVid.Bitrate) Then
-                            _vidBitrate = tVid.Bitrate
-                        End If
-                        If Not String.IsNullOrEmpty(tVid.EncodedSettings) Then
-                            _vidEncodedSettings = tVid.EncodedSettings
-                        End If
-                        If Not String.IsNullOrEmpty(tVid.MultiView) Then
-                            _vidMultiView = tVid.MultiView
-                        End If
-                        'cocotus end
-
-                        _vidDimensions = NFO.GetDimensionsFromVideo(tVid)
-                        _vidDetails = String.Format("{0} / {1}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(138, "Unknown"), tRes), If(String.IsNullOrEmpty(tVid.Codec), Master.eLang.GetString(138, "Unknown"), tVid.Codec)).ToUpper
-                    End If
-
-                    If _curMovie.Movie.FileInfo.StreamDetails.Audio.Count > 0 Then
-                        tAud = NFO.GetBestAudio(_curMovie.Movie.FileInfo, False)
+                        Dim row As String = part.content
 
                         'cocotus, 2013/02 Added support for new MediaInfo-fields
-                        If Not String.IsNullOrEmpty(tAud.Bitrate) Then
-                            _audBitrate = tAud.Bitrate
-                        End If
+                        'We want to use new mediainfo fields in template to -> make them avalaible here!
+                        Dim _vidBitrate As String = String.Empty
+                        Dim _vidEncodedSettings As String = String.Empty
+                        Dim _vidMultiView As String = String.Empty
+                        Dim _audBitrate As String = String.Empty
                         'cocotus end
 
-                        _audDetails = String.Format("{0} / {1}ch", If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(138, "Unknown"), tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(138, "Unknown"), tAud.Channels)).ToUpper
-                    End If
-                End If
+                        Dim _audDetails As String = String.Empty
+                        If Not IsNothing(_curMovie.Movie.FileInfo) Then
+                            If _curMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
+                                tVid = NFO.GetBestVideo(_curMovie.Movie.FileInfo)
+                                tRes = NFO.GetResFromDimensions(tVid)
 
-                'now check if we need to include this movie
-                If bSearch Then
-                    If strIn = Master.eLang.GetString(318, "Source Folder") Then
-                        Dim found As Boolean = False
-                        For Each u As String In strFilter.Split(Convert.ToChar(";"))
-                            If _curMovie.Source = u Then
-                                found = True
-                                Exit For
+                                'cocotus, 2013/02 Added support for new MediaInfo-fields
+                                If Not String.IsNullOrEmpty(tVid.Bitrate) Then
+                                    _vidBitrate = tVid.Bitrate
+                                End If
+                                If Not String.IsNullOrEmpty(tVid.EncodedSettings) Then
+                                    _vidEncodedSettings = tVid.EncodedSettings
+                                End If
+                                If Not String.IsNullOrEmpty(tVid.MultiView) Then
+                                    _vidMultiView = tVid.MultiView
+                                End If
+                                'cocotus end
+
+                                _vidDimensions = NFO.GetDimensionsFromVideo(tVid)
+                                _vidDetails = String.Format("{0} / {1}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(138, "Unknown"), tRes), If(String.IsNullOrEmpty(tVid.Codec), Master.eLang.GetString(138, "Unknown"), tVid.Codec)).ToUpper
                             End If
-                        Next
-                        '_curMovie.IsMark = False
-                        If Not found Then Continue For
-                    Else
-                        If (strIn = Master.eLang.GetString(319, "Video Flag") AndAlso StringUtils.Wildcard.IsMatch(_vidDetails, strFilter)) OrElse _
-                           (strIn = Master.eLang.GetString(320, "Audio Flag") AndAlso StringUtils.Wildcard.IsMatch(_audDetails, strFilter)) OrElse _
-                           (strIn = Master.eLang.GetString(21, "Title") AndAlso StringUtils.Wildcard.IsMatch(_curMovie.Movie.Title, strFilter)) OrElse _
-                           (strIn = Master.eLang.GetString(278, "Year") AndAlso StringUtils.Wildcard.IsMatch(_curMovie.Movie.Year, strFilter)) Then
-                            'included - build the output
-                        Else
-                            'filtered out - exclude this one
-                            '_curMovie.IsMark = False
-                            Continue For
+
+                            If _curMovie.Movie.FileInfo.StreamDetails.Audio.Count > 0 Then
+                                tAud = NFO.GetBestAudio(_curMovie.Movie.FileInfo, False)
+
+                                'cocotus, 2013/02 Added support for new MediaInfo-fields
+                                If Not String.IsNullOrEmpty(tAud.Bitrate) Then
+                                    _audBitrate = tAud.Bitrate
+                                End If
+                                'cocotus end
+
+                                _audDetails = String.Format("{0} / {1}ch", If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(138, "Unknown"), tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(138, "Unknown"), tAud.Channels)).ToUpper
+                            End If
                         End If
-                    End If
-                End If
-                FilterMovies.Add(_curMovie.ID)
-                Dim uni As New UnicodeEncoding()
 
-                Dim row As String = movierow
-                row = row.Replace("<$MOVIE_PATH>", String.Empty)
-                row = row.Replace("<$POSTER_FILE>", String.Concat("export/", counter.ToString, ".jpg"))
-                row = row.Replace("<$FANART_FILE>", String.Concat("export/", counter.ToString, "-fanart.jpg"))
-                If Not String.IsNullOrEmpty(_curMovie.Movie.Title) Then
-                    row = row.Replace("<$MOVIENAME>", StringUtils.HtmlEncode(_curMovie.Movie.Title))
+                        'now check if we need to include this movie
+                        If bSearch Then
+                            If strIn = Master.eLang.GetString(318, "Source Folder") Then
+                                Dim found As Boolean = False
+                                For Each u As String In strFilter.Split(Convert.ToChar(";"))
+                                    If _curMovie.Source = u Then
+                                        found = True
+                                        Exit For
+                                    End If
+                                Next
+                                '_curMovie.IsMark = False
+                                If Not found Then Continue For
+                            Else
+                                If (strIn = Master.eLang.GetString(319, "Video Flag") AndAlso StringUtils.Wildcard.IsMatch(_vidDetails, strFilter)) OrElse _
+                                   (strIn = Master.eLang.GetString(320, "Audio Flag") AndAlso StringUtils.Wildcard.IsMatch(_audDetails, strFilter)) OrElse _
+                                   (strIn = Master.eLang.GetString(21, "Title") AndAlso StringUtils.Wildcard.IsMatch(_curMovie.Movie.Title, strFilter)) OrElse _
+                                   (strIn = Master.eLang.GetString(278, "Year") AndAlso StringUtils.Wildcard.IsMatch(_curMovie.Movie.Year, strFilter)) Then
+                                    'included - build the output
+                                Else
+                                    'filtered out - exclude this one
+                                    '_curMovie.IsMark = False
+                                    Continue For
+                                End If
+                            End If
+                        End If
+                        FilterMovies.Add(_curMovie.ID)
+                        Dim uni As New UnicodeEncoding()
+
+                        row = row.Replace("<$MOVIE_PATH>", String.Empty)
+                        row = row.Replace("<$POSTER_FILE>", String.Concat("export/", counter.ToString, ".jpg"))
+                        row = row.Replace("<$FANART_FILE>", String.Concat("export/", counter.ToString, "-fanart.jpg"))
+                        If Not String.IsNullOrEmpty(_curMovie.Movie.Title) Then
+                            row = row.Replace("<$MOVIENAME>", StringUtils.HtmlEncode(_curMovie.Movie.Title))
+                        Else
+                            row = row.Replace("<$MOVIENAME>", StringUtils.HtmlEncode(_curMovie.ListTitle))
+                        End If
+                        row = row.Replace("<$ORIGINALTITLE>", StringUtils.HtmlEncode(_curMovie.Movie.OriginalTitle))
+                        row = row.Replace("<$ACTORS>", StringUtils.HtmlEncode(Functions.ListToStringWithSeparator(_curMovie.Movie.Actors, ",")))
+                        row = row.Replace("<$DIRECTOR>", StringUtils.HtmlEncode(_curMovie.Movie.Director))
+                        row = row.Replace("<$CERTIFICATION>", StringUtils.HtmlEncode(_curMovie.Movie.Certification))
+                        row = row.Replace("<$IMDBID>", StringUtils.HtmlEncode(_curMovie.Movie.IMDBID))
+                        row = row.Replace("<$MPAA>", StringUtils.HtmlEncode(_curMovie.Movie.MPAA))
+                        row = row.Replace("<$RELEASEDATE>", StringUtils.HtmlEncode(_curMovie.Movie.ReleaseDate))
+                        row = row.Replace("<$RUNTIME>", StringUtils.HtmlEncode(_curMovie.Movie.Runtime))
+                        row = row.Replace("<$TAGLINE>", StringUtils.HtmlEncode(_curMovie.Movie.Tagline))
+                        row = row.Replace("<$RATING>", StringUtils.HtmlEncode(_curMovie.Movie.Rating))
+                        row = row.Replace("<$VOTES>", StringUtils.HtmlEncode(_curMovie.Movie.Votes))
+                        row = row.Replace("<$LISTTITLE>", StringUtils.HtmlEncode(_curMovie.ListTitle))
+                        row = row.Replace("<$YEAR>", _curMovie.Movie.Year)
+                        row = row.Replace("<$COUNTRY>", StringUtils.HtmlEncode(_curMovie.Movie.Country))
+                        row = row.Replace("<$COUNT>", counter.ToString)
+                        row = row.Replace("<$FILENAME>", StringUtils.HtmlEncode(Path.GetFileName(_curMovie.Filename)))
+                        row = row.Replace("<$DIRNAME>", StringUtils.HtmlEncode(Path.GetDirectoryName(_curMovie.Filename)))
+                        row = row.Replace("<$OUTLINE>", StringUtils.HtmlEncode(_curMovie.Movie.Outline))
+                        row = row.Replace("<$PLOT>", StringUtils.HtmlEncode(_curMovie.Movie.Plot))
+                        row = row.Replace("<$GENRES>", StringUtils.HtmlEncode(_curMovie.Movie.Genre))
+                        row = row.Replace("<$VIDEO>", _vidDetails)
+                        row = row.Replace("<$VIDEO_DIMENSIONS>", _vidDimensions)
+                        row = row.Replace("<$AUDIO>", _audDetails)
+                        row = row.Replace("<$SIZE>", StringUtils.HtmlEncode(MovieSize(_curMovie.Filename).ToString))
+                        row = row.Replace("<$DATEADD>", StringUtils.HtmlEncode(Functions.ConvertFromUnixTimestamp(_curMovie.DateAdd).ToString("dd.MM.yyyy")))
+
+                        'cocotus, 2013/02 Added support for new MediaInfo-fields
+                        row = row.Replace("<$MOVIESETS>", StringUtils.HtmlEncode(AllMovieSetList)) 'A long string of all moviesets, seperated with ;!
+                        row = row.Replace("<$SET>", StringUtils.HtmlEncode(GetMovieSets(_curMovie))) 'All sets which movie belongs to, seperated with ;!
+                        row = row.Replace("<$VIDEOBITRATE>", _vidBitrate)
+                        row = row.Replace("<$VIDEOMULTIVIEW>", _vidMultiView)
+                        row = row.Replace("<$VIDEOENCODINGSETTINGS>", _vidEncodedSettings)
+                        row = row.Replace("<$AUDIOBITRATE>", _audBitrate)
+                        'Unlocking more fields to use in templates!
+                        row = row.Replace("<$NOW>", System.DateTime.Now.ToLongDateString) 'Save Build Date. might be useful info!
+                        row = row.Replace("<$COUNTRY>", StringUtils.HtmlEncode(_curMovie.Movie.Country))
+                        row = row.Replace("<$IDMOVIEDB>", StringUtils.HtmlEncode(_curMovie.Movie.IDMovieDB))
+                        row = row.Replace("<$ORIGINALTITLE>", StringUtils.HtmlEncode(_curMovie.Movie.OriginalTitle))
+                        row = row.Replace("<$PLAYCOUNT>", StringUtils.HtmlEncode(_curMovie.Movie.PlayCount))
+                        row = row.Replace("<$STUDIO>", StringUtils.HtmlEncode(_curMovie.Movie.Studio))
+                        row = row.Replace("<$TOP250>", StringUtils.HtmlEncode(_curMovie.Movie.Top250))
+                        row = row.Replace("<$TRAILER>", StringUtils.HtmlEncode(_curMovie.Movie.Trailer))
+                        row = row.Replace("<$VIDEOSOURCE>", StringUtils.HtmlEncode(_curMovie.Movie.VideoSource))
+                        'row = row.Replace("<$WATCHED>", StringUtils.HtmlEncode(_curMovie.Movie.Watched))
+                        'cocotus end
+                        row = GetAVImages(_curMovie, row)
+                        HTMLBody.Append(row)
+                        counter += 1
+                    Next
                 Else
-                    row = row.Replace("<$MOVIENAME>", StringUtils.HtmlEncode(_curMovie.ListTitle))
+                    HTMLBody.Append(part.content)
                 End If
-                row = row.Replace("<$ORIGINALTITLE>", StringUtils.HtmlEncode(_curMovie.Movie.OriginalTitle))
-                row = row.Replace("<$ACTORS>", StringUtils.HtmlEncode(Functions.ListToStringWithSeparator(_curMovie.Movie.Actors, ",")))
-                row = row.Replace("<$DIRECTOR>", StringUtils.HtmlEncode(_curMovie.Movie.Director))
-                row = row.Replace("<$CERTIFICATION>", StringUtils.HtmlEncode(_curMovie.Movie.Certification))
-                row = row.Replace("<$IMDBID>", StringUtils.HtmlEncode(_curMovie.Movie.IMDBID))
-                row = row.Replace("<$MPAA>", StringUtils.HtmlEncode(_curMovie.Movie.MPAA))
-                row = row.Replace("<$RELEASEDATE>", StringUtils.HtmlEncode(_curMovie.Movie.ReleaseDate))
-                row = row.Replace("<$RUNTIME>", StringUtils.HtmlEncode(_curMovie.Movie.Runtime))
-                row = row.Replace("<$TAGLINE>", StringUtils.HtmlEncode(_curMovie.Movie.Tagline))
-                row = row.Replace("<$RATING>", StringUtils.HtmlEncode(_curMovie.Movie.Rating))
-                row = row.Replace("<$VOTES>", StringUtils.HtmlEncode(_curMovie.Movie.Votes))
-                row = row.Replace("<$LISTTITLE>", StringUtils.HtmlEncode(_curMovie.ListTitle))
-                row = row.Replace("<$YEAR>", _curMovie.Movie.Year)
-                row = row.Replace("<$COUNTRY>", StringUtils.HtmlEncode(_curMovie.Movie.Country))
-                row = row.Replace("<$COUNT>", counter.ToString)
-                row = row.Replace("<$FILENAME>", StringUtils.HtmlEncode(Path.GetFileName(_curMovie.Filename)))
-                row = row.Replace("<$DIRNAME>", StringUtils.HtmlEncode(Path.GetDirectoryName(_curMovie.Filename)))
-                row = row.Replace("<$OUTLINE>", StringUtils.HtmlEncode(_curMovie.Movie.Outline))
-                row = row.Replace("<$PLOT>", StringUtils.HtmlEncode(_curMovie.Movie.Plot))
-                row = row.Replace("<$GENRES>", StringUtils.HtmlEncode(_curMovie.Movie.Genre))
-                row = row.Replace("<$VIDEO>", _vidDetails)
-                row = row.Replace("<$VIDEO_DIMENSIONS>", _vidDimensions)
-                row = row.Replace("<$AUDIO>", _audDetails)
-                row = row.Replace("<$SIZE>", StringUtils.HtmlEncode(MovieSize(_curMovie.Filename).ToString))
-                row = row.Replace("<$DATEADD>", StringUtils.HtmlEncode(Functions.ConvertFromUnixTimestamp(_curMovie.DateAdd).ToString("dd.MM.yyyy")))
-
-                'cocotus, 2013/02 Added support for new MediaInfo-fields
-                row = row.Replace("<$MOVIESETS>", StringUtils.HtmlEncode(AllMovieSetList)) 'A long string of all moviesets, seperated with ;!
-                row = row.Replace("<$SET>", StringUtils.HtmlEncode(GetMovieSets(_curMovie))) 'All sets which movie belongs to, seperated with ;!
-                row = row.Replace("<$VIDEOBITRATE>", _vidBitrate)
-                row = row.Replace("<$VIDEOMULTIVIEW>", _vidMultiView)
-                row = row.Replace("<$VIDEOENCODINGSETTINGS>", _vidEncodedSettings)
-                row = row.Replace("<$AUDIOBITRATE>", _audBitrate)
-                'Unlocking more fields to use in templates!
-                row = row.Replace("<$NOW>", System.DateTime.Now.ToLongDateString) 'Save Build Date. might be useful info!
-                row = row.Replace("<$COUNTRY>", StringUtils.HtmlEncode(_curMovie.Movie.Country))
-                row = row.Replace("<$IDMOVIEDB>", StringUtils.HtmlEncode(_curMovie.Movie.IDMovieDB))
-                row = row.Replace("<$ORIGINALTITLE>", StringUtils.HtmlEncode(_curMovie.Movie.OriginalTitle))
-                row = row.Replace("<$PLAYCOUNT>", StringUtils.HtmlEncode(_curMovie.Movie.PlayCount))
-                row = row.Replace("<$STUDIO>", StringUtils.HtmlEncode(_curMovie.Movie.Studio))
-                row = row.Replace("<$TOP250>", StringUtils.HtmlEncode(_curMovie.Movie.Top250))
-                row = row.Replace("<$TRAILER>", StringUtils.HtmlEncode(_curMovie.Movie.Trailer))
-                row = row.Replace("<$VIDEOSOURCE>", StringUtils.HtmlEncode(_curMovie.Movie.VideoSource))
-                'row = row.Replace("<$WATCHED>", StringUtils.HtmlEncode(_curMovie.Movie.Watched))
-                'cocotus end
-
-
-                row = GetAVImages(_curMovie, row)
-                HTMLBody.Append(row)
-                counter += 1
             Next
-            HTMLBody.Append(moviefooter)
-
+            
             If Not Me.isCL Then
                 Dim outFile As String = Path.Combine(Me.TempPath, String.Concat(Master.eSettings.Language, ".html"))
                 DontSaveExtra = False
@@ -1050,6 +1063,11 @@ Public Class dlgExportMovies
 
 #End Region 'Fields
 
+    End Structure
+
+    Private Structure ContentMapPart
+        Dim isLooped As Boolean
+        Dim content As String
     End Structure
 
 #End Region 'Nested Types
