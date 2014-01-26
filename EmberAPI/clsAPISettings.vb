@@ -43,7 +43,7 @@ Public Class Settings
     Private _clickscrape As Boolean
     Private _askcheckboxscrape As Boolean
     Private _autobd As Boolean
-    Private _autodetectvts As Boolean
+    Private _expertrecognizevts As Boolean
     Private _bdpath As String
     Private _moviesetspath As String
     Private _castimagesonly As Boolean
@@ -552,12 +552,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property AutoDetectVTS() As Boolean
+    Public Property ExpertRecognizeVTS() As Boolean
         Get
-            Return Me._autodetectvts
+            Return Me._expertrecognizevts
         End Get
         Set(ByVal value As Boolean)
-            Me._autodetectvts = value
+            Me._expertrecognizevts = value
         End Set
     End Property
 
@@ -4083,7 +4083,7 @@ Public Class Settings
         Me._noepfilters = False
         Me._notokens = False
         Me._levtolerance = 0
-        Me._autodetectvts = True
+        Me._expertrecognizevts = True
         Me._flaglang = String.Empty
         Me._tvflaglang = String.Empty
         Me._language = "English_(en_US)"
@@ -4293,6 +4293,7 @@ Public Class Settings
             Master.eSettings.NFOFrodo = True
             Master.eSettings.PosterFrodo = True
             Master.eSettings.TrailerFrodo = False
+            Master.eSettings.XBMCTrailerFormat = False
         End If
 
     End Sub
