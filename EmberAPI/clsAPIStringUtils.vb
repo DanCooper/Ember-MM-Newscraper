@@ -506,7 +506,7 @@ Public Class StringUtils
     ''' Opening and closing brackets are required.</remarks>
     Public Shared Function GetYear(ByVal sString As String) As String
         If String.IsNullOrEmpty(sString) Then Return String.Empty
-        Dim strYear As String = Regex.Match(sString, "\(?\d{4}\)?.*").Value
+        Dim strYear As String = Regex.Match(sString, "\(+\d{4}\)+").Value
         If Not String.IsNullOrEmpty(strYear) Then
             strYear = Replace(strYear, "(", String.Empty)
             strYear = Replace(strYear, ")", String.Empty)

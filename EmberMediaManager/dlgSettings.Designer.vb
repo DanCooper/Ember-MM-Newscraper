@@ -845,7 +845,7 @@ Partial Class dlgSettings
         Me.cbo_DAEMON_driveletter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbo_DAEMON_driveletter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.cbo_DAEMON_driveletter.FormattingEnabled = True
-        Me.cbo_DAEMON_driveletter.Items.AddRange(New Object() {"", "A:\", "B:\", "D:\", "E:\", "F:\", "G:\", "H:\", "I:\", "J:\", "K:\", "L:\", "M:\", "N:\", "O:\", "F:\", "F:\", "F:\"})
+        Me.cbo_DAEMON_driveletter.Items.AddRange(New Object() {"", "A:\", "B:\", "D:\", "E:\", "F:\", "G:\", "H:\", "I:\", "J:\", "K:\", "L:\", "M:\", "N:\", "O:\", "P:\", "Q:\", "R:\", "S:\", "T:\", "U:\", "V:\", "W:\", "X:\", "Y:\", "Z:\"})
         Me.cbo_DAEMON_driveletter.Location = New System.Drawing.Point(77, 30)
         Me.cbo_DAEMON_driveletter.Name = "cbo_DAEMON_driveletter"
         Me.cbo_DAEMON_driveletter.Size = New System.Drawing.Size(48, 21)

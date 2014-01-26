@@ -1313,29 +1313,7 @@ Public Class Functions
         End With
     End Sub
 
-    ''' <summary>
-    ''' Check version of the MediaInfo dll. If newer than 0.7.11 then don't try to scan disc images with it.
-    ''' </summary>
-    Public Shared Sub TestMediaInfoDLL()
-        'TODO Warning - MediaInfo is newer than this method tests for - is this method required? Looks like it will ALWAYS return False
-        Dim dllPath As String = "Invalid path"
-        Try
-            'just assume dll is there since we're distributing full package... if it's not, user has bigger problems
-            dllPath = String.Concat(AppPath, "Bin", Path.DirectorySeparatorChar, "MediaInfo.DLL")
-            Dim fVersion As FileVersionInfo = System.Diagnostics.FileVersionInfo.GetVersionInfo(dllPath)
 
-            'ISO Handling -> Use MediaInfo-Rar(if exists) to scan RAR and ISO files!
-            Dim mediainfoRaRPath As String = String.Concat(Functions.AppPath, "Bin", Path.DirectorySeparatorChar, "mediainfo-rar\mediainfo-rar.exe")
-            If File.Exists(mediainfoRaRPath) OrElse (fVersion.FileMinorPart <= 7 AndAlso fVersion.FileBuildPart <= 11) Then
-                Master.CanScanDiscImage = True
-            Else
-                Master.CanScanDiscImage = False
-            End If
-
-        Catch ex As Exception
-            Master.eLog.Error(GetType(Functions), ex.Message & " - Failed to access MediaInfo.DLL from path:" & dllPath, ex.StackTrace, "Error")
-        End Try
-    End Sub
     ''' <summary>
     ''' This method launches the user's default web browser to the supplied destination
     ''' </summary>
@@ -1387,6 +1365,81 @@ Public Class Functions
         Return True
     End Function
 
+    ''' <summary>
+    ''' Check version of the MediaInfo dll. If newer than 0.7.11 then don't try to scan disc images with it.
+    ''' </summary>
+    Public Shared Sub TestMediaInfoDLL()
+        'TODO Warning - MediaInfo is newer than this method tests for - is this method required? Looks like it will ALWAYS return False
+        Dim dllPath As String = "Invalid path"
+        Try
+
+            ' Since MediaInfo support ISO now -> FileVersion Check no longer needed!
+            Master.CanScanDiscImage = True
+
+            ' 'just assume dll is there since we're distributing full package... if it's not, user has bigger problems
+            'dllPath = String.Concat(AppPath, "Bin", Path.DirectorySeparatorChar, "MediaInfo.DLL")
+            'Dim fVersion As FileVersionInfo = System.Diagnostics.FileVersionInfo.GetVersionInfo(dllPath)
+
+            ''ISO Handling -> Use MediaInfo-Rar(if exists) to scan RAR and ISO files!
+            'Dim mediainfoRaRPath As String = String.Concat(Functions.AppPath, "Bin", Path.DirectorySeparatorChar, "mediainfo-rar\mediainfo-rar.exe")
+            'If File.Exists(mediainfoRaRPath) OrElse (fVersion.FileMinorPart <= 7 AndAlso fVersion.FileBuildPart <= 11) Then
+            '    Master.CanScanDiscImage = True
+            'Else
+            '    Master.CanScanDiscImage = False
+            'End If
+
+        Catch ex As Exception
+            Master.eLog.Error(GetType(Functions), ex.Message & " - Failed to access MediaInfo.DLL from path:" & dllPath, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    ''' <summary>
+    ''' Run console commands from Ember (used for calling mediainfo-rar.exe for scanning ISO files)
+    ''' </summary>
+    ''' <param name="Process_Name">The name i.e "vcmount.exe" of the process</param>
+    ''' <param name="Process_Arguments">Optional arguments, i.e "/u"</param>
+    ''' <param name="Read_Output">If <c>True</c>, returns console outputs like mediainfo-rar.exe scanresults </param>
+    ''' <param name="Process_Hide">If <c>True</c>, hide console window </param>
+    ''' <param name="Process_TimeOut">Timeout value - closes after specific time frame</param>
+    Public Shared Function Run_Process(ByVal Process_Name As String, Optional Process_Arguments As String = Nothing, Optional Read_Output As Boolean = False, Optional Process_Hide As Boolean = False, Optional Process_TimeOut As Integer = 30000) As String
+
+        Dim OutputString As String = String.Empty
+
+        Try
+            Using My_Process As New Process()
+                AddHandler My_Process.OutputDataReceived, Sub(sender As Object, LineOut As DataReceivedEventArgs)
+                                                              OutputString = OutputString & LineOut.Data ' & vbCrLf
+                                                          End Sub
+
+                Dim My_Process_Info As New ProcessStartInfo()
+                My_Process_Info.FileName = Process_Name ' Process filename
+                My_Process_Info.Arguments = Process_Arguments ' Process arguments
+                My_Process_Info.CreateNoWindow = Process_Hide ' Show or hide the process Window
+                My_Process_Info.UseShellExecute = False ' Don't use system shell to execute the process
+                My_Process_Info.RedirectStandardOutput = Read_Output '  Redirect Output
+                My_Process_Info.RedirectStandardError = Read_Output ' Redirect non Output
+                My_Process.EnableRaisingEvents = True ' Raise events
+                My_Process.StartInfo = My_Process_Info
+
+                My_Process.Start() ' Run the process NOW
+
+                If Read_Output = True Then
+                    System.Threading.Thread.Sleep(500)
+                    My_Process.BeginOutputReadLine()
+                    System.Threading.Thread.Sleep(1000)
+                    Do
+                        'TODO?!
+                    Loop Until My_Process.HasExited
+                End If
+                '    RemoveHandler My_Process.OutputDataReceived, AddressOf proc_DataReceived
+                My_Process.WaitForExit(Process_TimeOut) ' Wait X ms to kill the process (Default value is 30000 ms)
+                My_Process.Close()
+            End Using
+        Catch ex As Exception
+        End Try
+
+        Return OutputString
+    End Function
 #End Region 'Methods
 
 End Class 'Functions

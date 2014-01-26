@@ -52,7 +52,7 @@ Public Class dlgUpdateMedia
             chkPosterMod.Checked = chkAllMod.Checked AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Poster)
             chkFanartMod.Checked = chkAllMod.Checked AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart)
             chkMetaMod.Checked = chkAllMod.Checked AndAlso Not Me.rbUpdateModifier_Missing.Checked AndAlso Master.eSettings.ScanMediaInfo
-            'chkExtraMod.Checked = chkAllMod.Checked AndAlso (Master.eSettings.AutoThumbs > 0)
+            chkActorMod.Checked = chkAllMod.Checked AndAlso Master.eSettings.ScraperActorThumbs
             chkTrailerMod.Checked = chkAllMod.Checked AndAlso Master.eSettings.UpdaterTrailers
         Else
             If chkMetaMod.Checked Then chkMetaMod.Checked = Not Me.rbUpdateModifier_Missing.Checked AndAlso Master.eSettings.ScanMediaInfo AndAlso (Not rbUpdate_Ask.Checked OrElse chkNFOMod.Checked)
@@ -61,8 +61,10 @@ Public Class dlgUpdateMedia
         chkNFOMod.Enabled = Not chkAllMod.Checked
         chkPosterMod.Enabled = Not chkAllMod.Checked AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Poster)
         chkFanartMod.Enabled = Not chkAllMod.Checked AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart)
+        chkEFanartsMod.Enabled = Not chkAllMod.Checked AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart)
+        chkEThumbsMod.Enabled = Not chkAllMod.Checked AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart)
         chkMetaMod.Enabled = Not chkAllMod.Checked AndAlso Not Me.rbUpdateModifier_Missing.Checked AndAlso Master.eSettings.ScanMediaInfo AndAlso (Not rbUpdate_Ask.Checked OrElse chkNFOMod.Checked)
-        'chkExtraMod.Enabled = Not chkAllMod.Checked AndAlso (Master.eSettings.AutoThumbs > 0)
+        chkActorMod.Enabled = Not chkAllMod.Checked AndAlso Master.eSettings.ScraperActorThumbs
         chkTrailerMod.Enabled = Not chkAllMod.Checked AndAlso Master.eSettings.UpdaterTrailers
 
         If chkAllMod.Checked OrElse chkNFOMod.Checked Then
@@ -75,7 +77,7 @@ Public Class dlgUpdateMedia
             Else
                 Update_Button.Enabled = False
             End If
-        ElseIf chkPosterMod.Checked OrElse chkFanartMod.Checked OrElse chkMetaMod.Checked OrElse chkEThumbsMod.Checked OrElse chkTrailerMod.Checked Then
+        ElseIf chkPosterMod.Checked OrElse chkFanartMod.Checked OrElse chkMetaMod.Checked OrElse chkEFanartsMod.Checked OrElse chkEThumbsMod.Checked OrElse chkTrailerMod.Checked Then
             Update_Button.Enabled = True
         Else
             Update_Button.Enabled = False
@@ -84,6 +86,7 @@ Public Class dlgUpdateMedia
         If Me.chkAllMod.Checked Then
             Functions.SetScraperMod(Enums.ModType.All, True)
         Else
+            Functions.SetScraperMod(Enums.ModType.Actor, chkActorMod.Checked, False)
             Functions.SetScraperMod(Enums.ModType.EThumbs, chkEThumbsMod.Checked, False)
             Functions.SetScraperMod(Enums.ModType.EFanarts, chkEFanartsMod.Checked, False)
             Functions.SetScraperMod(Enums.ModType.Fanart, chkFanartMod.Checked, False)
@@ -110,6 +113,10 @@ Public Class dlgUpdateMedia
         End Using
     End Sub
 
+    Private Sub chkActorMod_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkActorMod.Click
+        CheckEnable()
+    End Sub
+
     Private Sub chkAllMod_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkAllMod.Click
         CheckEnable()
     End Sub
@@ -134,7 +141,11 @@ Public Class dlgUpdateMedia
         CheckEnable()
     End Sub
 
-    Private Sub chkExtraMod_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkEThumbsMod.Click
+    Private Sub chkEFanartsMod_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkEFanartsMod.Click
+        CheckEnable()
+    End Sub
+
+    Private Sub chkEThumbsMod_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkEThumbsMod.Click
         CheckEnable()
     End Sub
 
@@ -379,7 +390,9 @@ Public Class dlgUpdateMedia
         Me.rbUpdate_Auto.Text = Master.eLang.GetString(69, "Automatic (Force Best Match)")
         Me.gbUpdateItems.Text = Master.eLang.GetString(388, "Modifiers")
         Me.chkMetaMod.Text = Master.eLang.GetString(59, "Meta Data")
+        Me.chkActorMod.Text = Master.eLang.GetString(991, "Actor Thumbs")
         Me.chkTrailerMod.Text = Master.eLang.GetString(151, "Trailer")
+        Me.chkEFanartsMod.Text = Master.eLang.GetString(992, "Extrafanarts")
         Me.chkEThumbsMod.Text = Master.eLang.GetString(153, "Extrathumbs")
         Me.chkFanartMod.Text = Master.eLang.GetString(149, "Fanart")
         Me.chkPosterMod.Text = Master.eLang.GetString(148, "Poster")

@@ -2224,6 +2224,8 @@ doCancel:
 
             Me.SetControlsEnabled(False)
 
+            Functions.SetScraperMod(Enums.ModType.All, False, True)
+
             Using dEditMovie As New dlgEditMovie
                 'AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
                 Select Case dEditMovie.ShowDialog()
@@ -3513,6 +3515,8 @@ doCancel:
             Dim indX As Integer = Me.dgvMovies.SelectedRows(0).Index
             Dim ID As Integer = Convert.ToInt32(Me.dgvMovies.Item(0, indX).Value)
             Master.currMovie = Master.DB.LoadMovieFromDB(ID)
+
+            Functions.SetScraperMod(Enums.ModType.All, False, True)
 
             Using dEditMovie As New dlgEditMovie
                 'AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack

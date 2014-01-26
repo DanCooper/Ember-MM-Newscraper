@@ -321,8 +321,10 @@ Public Class TMDB_Data
             If Not String.IsNullOrEmpty(DBMovie.Movie.IMDBID) Then
                 _TMDBg.GetMovieInfo(DBMovie.Movie.ID, DBMovie.Movie, filterOptions.bFullCrew, filterOptions.bFullCast, False, filterOptions, False)
             ElseIf Not ScrapeType = Enums.ScrapeType.SingleScrape Then
-                DBMovie.Movie = _TMDBg.GetSearchMovieInfo(DBMovie.Movie.Title, DBMovie, ScrapeType, filterOptions)
-                If String.IsNullOrEmpty(DBMovie.Movie.IMDBID) Then Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
+                If Not String.IsNullOrEmpty(DBMovie.Movie.Title) Then
+                    DBMovie.Movie = _TMDBg.GetSearchMovieInfo(DBMovie.Movie.Title, DBMovie, ScrapeType, filterOptions)
+                End If
+                If String.IsNullOrEmpty(DBMovie.Movie.TMDBID) Then Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
             End If
         End If
 
@@ -345,7 +347,7 @@ Public Class TMDB_Data
             DBMovie.Movie.Clear()
         End If
 
-        If String.IsNullOrEmpty(DBMovie.Movie.IMDBID) Then
+        If String.IsNullOrEmpty(DBMovie.Movie.TMDBID) Then
             Select Case ScrapeType
                 Case Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FullAuto, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.UpdateAuto
                     Return New Interfaces.ModuleResult With {.breakChain = False}
@@ -365,8 +367,9 @@ Public Class TMDB_Data
                     End If
                 End If
                 If dSearch.ShowDialog(tmpTitle, filterOptions, tmpYear) = Windows.Forms.DialogResult.OK Then
-                    If Not String.IsNullOrEmpty(Master.tmpMovie.IMDBID) Then
+                    If Not String.IsNullOrEmpty(Master.tmpMovie.TMDBID) Then
                         ' if we changed the ID tipe we need to clear everything and rescrape
+                        ' TODO: check TMDB if IMDB NullOrEmpty
                         If Not String.IsNullOrEmpty(DBMovie.Movie.IMDBID) AndAlso Not (DBMovie.Movie.IMDBID = Master.tmpMovie.IMDBID) Then
                             Master.currMovie.ClearEThumbs = True
                             Master.currMovie.ClearEFanarts = True
@@ -383,12 +386,8 @@ Public Class TMDB_Data
                         DBMovie.Movie.IMDBID = Master.tmpMovie.IMDBID
                         DBMovie.Movie.TMDBID = Master.tmpMovie.TMDBID
                     End If
-                    If Not String.IsNullOrEmpty(DBMovie.Movie.IMDBID) AndAlso Master.GlobalScrapeMod.NFO Then
-                        _TMDBg.GetMovieInfo(DBMovie.Movie.ID, DBMovie.Movie, filterOptions.bFullCrew, filterOptions.bFullCast, False, filterOptions, False)
-                    Else
-                        If Not String.IsNullOrEmpty(DBMovie.Movie.TMDBID) AndAlso Master.GlobalScrapeMod.NFO Then
-                            _TMDBg.GetMovieInfo(DBMovie.Movie.TMDBID, DBMovie.Movie, filterOptions.bFullCrew, filterOptions.bFullCast, False, filterOptions, False)
-                        End If
+                    If Not String.IsNullOrEmpty(DBMovie.Movie.TMDBID) AndAlso Master.GlobalScrapeMod.NFO Then
+                        _TMDBg.GetMovieInfo(DBMovie.Movie.TMDBID, DBMovie.Movie, filterOptions.bFullCrew, filterOptions.bFullCast, False, filterOptions, False)
                     End If
                 Else
                     Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
