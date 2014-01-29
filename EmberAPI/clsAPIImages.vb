@@ -528,10 +528,9 @@ Public Class Images
 
         Try
             Select Case fType
-                Case Enums.ImageType.Fanart
+                Case Enums.ImageType.Fanart ' TODO: add all new expert settings
                     If (isChange OrElse (String.IsNullOrEmpty(mMovie.FanartPath) OrElse Master.eSettings.OverwriteFanart)) AndAlso _
-                    (Master.eSettings.MovieNameDotFanartJPG OrElse Master.eSettings.MovieNameFanartJPG OrElse Master.eSettings.FanartJPG _
-                     OrElse Master.eSettings.FanartFrodo OrElse Master.eSettings.FanartEden OrElse Master.eSettings.FanartYAMJ OrElse _
+                    (Master.eSettings.FanartFrodo OrElse Master.eSettings.FanartEden OrElse Master.eSettings.FanartYAMJ OrElse _
                      Master.eSettings.FanartNMJ) Then
                         ' Removed as there is not ONLY the TMDB scraper. Also the GetSetting is bound the calling procedure, is always true 
                         ' AndAlso AdvancedSettings.GetBooleanSetting("UseTMDB", True) Then
@@ -551,12 +550,9 @@ Public Class Images
                     Else
                         Return False
                     End If
-                Case Else
+                Case Else ' TODO: add all new expert settings
                     If (isChange OrElse (String.IsNullOrEmpty(mMovie.PosterPath) OrElse Master.eSettings.OverwritePoster)) AndAlso _
-                    (Master.eSettings.MovieTBN OrElse Master.eSettings.MovieNameTBN OrElse Master.eSettings.MovieJPG OrElse _
-                     Master.eSettings.MovieNameJPG OrElse Master.eSettings.MovieNameDashPosterJPG OrElse Master.eSettings.PosterTBN OrElse _
-                     Master.eSettings.PosterJPG OrElse Master.eSettings.FolderJPG OrElse Master.eSettings.PosterFrodo OrElse Master.eSettings.PosterEden OrElse _
-                     Master.eSettings.PosterYAMJ OrElse Master.eSettings.PosterNMJ) Then
+                    (Master.eSettings.PosterFrodo OrElse Master.eSettings.PosterEden OrElse Master.eSettings.PosterYAMJ OrElse Master.eSettings.PosterNMJ) Then
                         ' Removed as there is not ONLY the Native scraper scraper. Also the GetSetting is bound the calling procedure, is always true 
                         ' AndAlso (AdvancedSettings.GetBooleanSetting("UseIMPA", False) OrElse AdvancedSettings.GetBooleanSetting("UseMPDB", False) OrElse AdvancedSettings.GetBooleanSetting("UseTMDB", True)) Then
                         Return True
@@ -1594,8 +1590,9 @@ Public Class Images
                 Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
             End Try
 
+            ' TODO: add all new expert settings
             If Master.eSettings.SeasonPosterTBN OrElse Master.eSettings.SeasonPosterJPG OrElse Master.eSettings.SeasonNameTBN OrElse _
-            Master.eSettings.SeasonNameJPG OrElse Master.eSettings.FolderJPG Then
+            Master.eSettings.SeasonNameJPG Then
                 Dim tPath As String = String.Empty
                 Try
                     tPath = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, mShow.TVEp.Season)

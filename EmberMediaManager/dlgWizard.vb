@@ -345,24 +345,8 @@ Public Class dlgWizard
 
         Me.chkSeasonAllPosterJPG.Checked = Master.eSettings.SeasonAllPosterJPG
         Me.chkSeasonXXDashPosterJPG.Checked = Master.eSettings.SeasonXXDashPosterJPG
-        Me.chkMovieNameDashPosterJPG.Checked = Master.eSettings.MovieNameDashPosterJPG
-        Me.rbDashTrailer.Checked = Master.eSettings.DashTrailer
         Me.chkSeasonXXDashFanartJPG.Checked = Master.eSettings.SeasonXXDashFanartJPG
 
-        Me.chkMovieTBN.Checked = Master.eSettings.MovieTBN
-        Me.chkMovieNameTBN.Checked = Master.eSettings.MovieNameTBN
-        Me.chkMovieJPG.Checked = Master.eSettings.MovieJPG
-        Me.chkMovieNameJPG.Checked = Master.eSettings.MovieNameJPG
-        Me.chkPosterTBN.Checked = Master.eSettings.PosterTBN
-        Me.chkPosterJPG.Checked = Master.eSettings.PosterJPG
-        Me.chkFolderJPG.Checked = Master.eSettings.FolderJPG
-        Me.chkFanartJPG.Checked = Master.eSettings.FanartJPG
-        Me.chkMovieNameFanartJPG.Checked = Master.eSettings.MovieNameFanartJPG
-        Me.chkMovieNameDotFanartJPG.Checked = Master.eSettings.MovieNameDotFanartJPG
-        Me.chkMovieNFO.Checked = Master.eSettings.MovieNFO
-        Me.chkMovieNameNFO.Checked = Master.eSettings.MovieNameNFO
-        Me.chkMovieNameNFOStack.Checked = Master.eSettings.MovieNameNFOStack
-        Me.chkMovieNameMultiOnly.Checked = Master.eSettings.MovieNameMultiOnly
         tLang = Master.eSettings.Language
         Me.cbIntLang.SelectedItem = Master.eSettings.Language
         Me.chkSeasonAllTBN.Checked = Master.eSettings.SeasonAllTBN
@@ -588,23 +572,7 @@ Public Class dlgWizard
 
         Master.eSettings.SeasonAllPosterJPG = Me.chkSeasonAllPosterJPG.Checked
         Master.eSettings.SeasonXXDashPosterJPG = Me.chkSeasonXXDashPosterJPG.Checked
-        Master.eSettings.MovieNameDashPosterJPG = Me.chkMovieNameDashPosterJPG.Checked
-        Master.eSettings.DashTrailer = Me.rbDashTrailer.Checked
         Master.eSettings.SeasonXXDashFanartJPG = Me.chkSeasonXXDashFanartJPG.Checked
-        Master.eSettings.MovieTBN = Me.chkMovieTBN.Checked
-        Master.eSettings.MovieNameTBN = Me.chkMovieNameTBN.Checked
-        Master.eSettings.MovieJPG = Me.chkMovieJPG.Checked
-        Master.eSettings.MovieNameJPG = Me.chkMovieNameJPG.Checked
-        Master.eSettings.PosterTBN = Me.chkPosterTBN.Checked
-        Master.eSettings.PosterJPG = Me.chkPosterJPG.Checked
-        Master.eSettings.FolderJPG = Me.chkFolderJPG.Checked
-        Master.eSettings.FanartJPG = Me.chkFanartJPG.Checked
-        Master.eSettings.MovieNameFanartJPG = Me.chkMovieNameFanartJPG.Checked
-        Master.eSettings.MovieNameDotFanartJPG = Me.chkMovieNameDotFanartJPG.Checked
-        Master.eSettings.MovieNFO = Me.chkMovieNFO.Checked
-        Master.eSettings.MovieNameNFO = Me.chkMovieNameNFO.Checked
-        Master.eSettings.MovieNameNFOStack = Me.chkMovieNameNFOStack.Checked
-        Master.eSettings.MovieNameMultiOnly = Me.chkMovieNameMultiOnly.Checked
         Master.eSettings.Language = Me.cbIntLang.Text
         Master.eSettings.SeasonAllTBN = Me.chkSeasonAllTBN.Checked
         Master.eSettings.SeasonAllJPG = Me.chkSeasonAllJPG.Checked
@@ -655,8 +623,6 @@ Public Class dlgWizard
         Me.btnBack.Text = Master.eLang.GetString(403, "< Back")
         Me.btnNext.Text = Master.eLang.GetString(404, "Next >")
         Me.Label1.Text = Master.eLang.GetString(405, "Welcome to Ember Media Manager")
-        Me.GroupBox6.Text = Master.eLang.GetString(149, "Fanart")
-        Me.GroupBox5.Text = Master.eLang.GetString(148, "Poster")
         Me.Label5.Text = Master.eLang.GetString(406, "TIP: Selections containing the text <movie> means that Ember Media Manager will use the filename of the movie.")
         Me.btnMovieRem.Text = Master.eLang.GetString(30, "Remove")
         Me.btnTVRemoveSource.Text = Me.btnMovieRem.Text
@@ -673,7 +639,6 @@ Public Class dlgWizard
         Me.Label4.Text = Master.eLang.GetString(416, "Now that Ember Media Manager knows WHERE to look for the files, we need to tell it WHAT files to look for.  Simply select any combination of files type you wish Ember Media Manager to load from and save to.  You can select more than one from each section if you wish.")
         Me.Label3.Text = Master.eLang.GetString(414, "First, let's tell Ember Media Manager where to locate all your movies. You can add as many sources as you wish.")
         Me.Label8.Text = String.Format(Master.eLang.GetString(417, "Some options you may be interested in:{0}{0}Custom Filters - If your movie files have things like ""DVDRip"", ""BluRay"", ""x264"", etc in their folder or file name and you wish to filter the names when loading into the media list, you can utilize the Custom Filter option.  The custom filter is RegEx compatible for maximum usability.{0}{0}Images - This section allows you to select which websites to ""scrape"" images from as well as select a preferred size for the images Ember Media Manager selects.{0}{0}Locks - This section allows you to ""lock"" certain information so it does not get updated even if you re-scrape the movie. This is useful if you manually edit the title, outline, or plot of a movie and wish to keep your changes."), vbNewLine)
-        Me.chkMovieNameMultiOnly.Text = Master.eLang.GetString(472, "Use <movie> Only for Folders with Multiple Movies")
         Me.Label32.Text = Master.eLang.GetString(430, "Interface Language")
         Me.Label9.Text = Master.eLang.GetString(803, "Next, let's tell Ember Media Manager where to locate all your TV Shows. You can add as many sources as you wish.")
         Me.Label11.Text = Master.eLang.GetString(804, "And finally, let's tell Ember Media Manager what TV Show files to look for.  Simply select any combination of files type you wish Ember Media Manager to load from and save to.  You can select more than one from each section if you wish.")

@@ -18,7 +18,8 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 ' #
-' # Dialog size: 908; 686
+' # Dialog size: 1024; 768
+' # Panel size: 750; 500
 ' # Enlarge it to see all the panels.
 
 Imports System
@@ -236,7 +237,7 @@ Public Class dlgSettings
              .Text = Master.eLang.GetString(421, "Connection"), _
              .ImageIndex = 1, _
              .Type = Master.eLang.GetString(390, "Options"), _
-             .Panel = Me.pnlXBMCCom, _
+             .Panel = Me.pnlProxy, _
              .Order = 300})
         AddScraperPanels()
     End Sub
@@ -1020,7 +1021,7 @@ Public Class dlgSettings
         Me.btnBrowse.Enabled = chkAutoBD.Checked
     End Sub
 
-    Private Sub chkAutoDetectVTS_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkExpertRecognizeVTS.CheckedChanged
+    Private Sub chkAutoDetectVTS_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
     End Sub
 
@@ -1243,7 +1244,7 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkFanartJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFanartExpertJPG.CheckedChanged
+    Private Sub chkFanartJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
     End Sub
 
@@ -1263,7 +1264,7 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkFolderJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkPosterExpertFolderJPG.CheckedChanged
+    Private Sub chkFolderJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
     End Sub
 
@@ -1418,43 +1419,43 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkMovieJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkPosterExpertMovieJPG.CheckedChanged
+    Private Sub chkMovieJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkMovieNameDotFanartJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFanartExpertMovieNameDotJPG.CheckedChanged
+    Private Sub chkMovieNameDotFanartJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         btnApply.Enabled = True
     End Sub
 
-    Private Sub chkMovieNameFanartJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFanartExpertMovieNameDashJPG.CheckedChanged
+    Private Sub chkMovieNameFanartJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkMovieNameJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkPosterExpertMovieNameJPG.CheckedChanged
+    Private Sub chkMovieNameJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkMovieNameDashPosterJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkPosterExpertMovieNameDashJPG.CheckedChanged
+    Private Sub chkMovieNameDashPosterJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkMovieNameMultiOnly_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkExpertMultiOnly.CheckedChanged
+    Private Sub chkMovieNameMultiOnly_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkMovieNameNFO_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkNFOExpertMovieName.CheckedChanged
+    Private Sub chkMovieNameNFO_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkMovieNameNFOStack_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkNFOExpertMovieNameStack.CheckedChanged
+    Private Sub chkMovieNameNFOStack_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkMovieNameTBN_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkPosterExpertMovieNameTBN.CheckedChanged
+    Private Sub chkMovieNameTBN_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkMovieNFO_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkNFOExpertMovie.CheckedChanged
+    Private Sub chkMovieNFO_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
     End Sub
 
@@ -1466,7 +1467,7 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkMovieTBN_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkPosterExpertMovieTBN.CheckedChanged
+    Private Sub chkMovieTBN_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
     End Sub
 
@@ -1642,11 +1643,11 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkPosterJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkPosterExpertPosterJPG.CheckedChanged
+    Private Sub chkPosterJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkPosterTBN_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkPosterExpertPosterTBN.CheckedChanged
+    Private Sub chkPosterTBN_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
     End Sub
 
@@ -2548,24 +2549,6 @@ Public Class dlgSettings
             Me.chkOverwriteEpFanart.Checked = Master.eSettings.OverwriteEpFanart
             Me.chkSeaOverwritePoster.Checked = Master.eSettings.OverwriteSeasonPoster
             Me.chkSeaOverwriteFanart.Checked = Master.eSettings.OverwriteSeasonFanart
-            Me.chkPosterExpertMovieTBN.Checked = Master.eSettings.MovieTBN
-            Me.chkPosterExpertMovieNameTBN.Checked = Master.eSettings.MovieNameTBN
-            Me.chkPosterExpertMovieJPG.Checked = Master.eSettings.MovieJPG
-            Me.chkPosterExpertMovieNameJPG.Checked = Master.eSettings.MovieNameJPG
-            Me.chkPosterExpertMovieNameDashJPG.Checked = Master.eSettings.MovieNameDashPosterJPG
-            Me.chkPosterExpertPosterTBN.Checked = Master.eSettings.PosterTBN
-            Me.chkPosterExpertPosterJPG.Checked = Master.eSettings.PosterJPG
-            Me.chkPosterExpertFolderJPG.Checked = Master.eSettings.FolderJPG
-            Me.chkFanartExpertJPG.Checked = Master.eSettings.FanartJPG
-            Me.chkFanartExpertMovieNameDashJPG.Checked = Master.eSettings.MovieNameFanartJPG
-            Me.chkFanartExpertMovieNameDotJPG.Checked = Master.eSettings.MovieNameDotFanartJPG
-            Me.chkNFOExpertMovie.Checked = Master.eSettings.MovieNFO
-            Me.chkNFOExpertMovieName.Checked = Master.eSettings.MovieNameNFO
-            Me.chkNFOExpertMovieNameStack.Checked = Master.eSettings.MovieNameNFOStack
-            Me.chkExpertMultiOnly.Checked = Master.eSettings.MovieNameMultiOnly
-            Me.chkTrailerExpertDash.Checked = Master.eSettings.DashTrailer
-            Me.chkTrailerExpertBracket.Checked = Not Master.eSettings.DashTrailer
-            'Me.chkVideoTSParent.Checked = Master.eSettings.VideoTSParent
             Me.chkLockPlot.Checked = Master.eSettings.LockPlot
             Me.chkLockOutline.Checked = Master.eSettings.LockOutline
             Me.chkLockTitle.Checked = Master.eSettings.LockTitle
@@ -3704,23 +3687,6 @@ Public Class dlgSettings
             Master.eSettings.SeasonFanartQuality = Me.tbSeaFanartQual.Value
             Master.eSettings.OverwriteSeasonPoster = Me.chkSeaOverwritePoster.Checked
             Master.eSettings.OverwriteSeasonFanart = Me.chkSeaOverwriteFanart.Checked
-            Master.eSettings.MovieTBN = Me.chkPosterExpertMovieTBN.Checked
-            Master.eSettings.MovieNameTBN = Me.chkPosterExpertMovieNameTBN.Checked
-            Master.eSettings.MovieJPG = Me.chkPosterExpertMovieJPG.Checked
-            Master.eSettings.MovieNameJPG = Me.chkPosterExpertMovieNameJPG.Checked
-            Master.eSettings.MovieNameDashPosterJPG = Me.chkPosterExpertMovieNameDashJPG.Checked
-            Master.eSettings.PosterTBN = Me.chkPosterExpertPosterTBN.Checked
-            Master.eSettings.PosterJPG = Me.chkPosterExpertPosterJPG.Checked
-            Master.eSettings.FolderJPG = Me.chkPosterExpertFolderJPG.Checked
-            Master.eSettings.FanartJPG = Me.chkFanartExpertJPG.Checked
-            Master.eSettings.MovieNameFanartJPG = Me.chkFanartExpertMovieNameDashJPG.Checked
-            Master.eSettings.MovieNameDotFanartJPG = Me.chkFanartExpertMovieNameDotJPG.Checked
-            Master.eSettings.MovieNFO = Me.chkNFOExpertMovie.Checked
-            Master.eSettings.MovieNameNFO = Me.chkNFOExpertMovieName.Checked
-            Master.eSettings.MovieNameNFOStack = Me.chkNFOExpertMovieNameStack.Checked
-            Master.eSettings.MovieNameMultiOnly = Me.chkExpertMultiOnly.Checked
-            Master.eSettings.DashTrailer = Me.chkTrailerExpertDash.Checked
-            'Master.eSettings.VideoTSParent = Me.chkVideoTSParent.Checked
             Master.eSettings.LockPlot = Me.chkLockPlot.Checked
             Master.eSettings.LockOutline = Me.chkLockOutline.Checked
             Master.eSettings.LockTitle = Me.chkLockTitle.Checked
@@ -4065,17 +4031,17 @@ Public Class dlgSettings
             If Not (Master.eSettings.UseEden Or Master.eSettings.UseExpert Or Master.eSettings.UseFrodo Or Master.eSettings.UseNMJ Or Master.eSettings.UseYAMJ) Then
                 Master.eSettings.UseFrodo = True
                 Master.eSettings.ActorThumbsFrodo = True
-                Master.eSettings.BannerFrodo = False
-                Master.eSettings.ClearArtFrodo = False
-                Master.eSettings.ClearLogoFrodo = False
-                Master.eSettings.DiscArtFrodo = False
-                Master.eSettings.ExtrafanartsFrodo = False
-                Master.eSettings.ExtrathumbsFrodo = False
+                Master.eSettings.BannerFrodo = True
+                Master.eSettings.ClearArtFrodo = True
+                Master.eSettings.ClearLogoFrodo = True
+                Master.eSettings.DiscArtFrodo = True
+                Master.eSettings.ExtrafanartsFrodo = True
+                Master.eSettings.ExtrathumbsFrodo = True
                 Master.eSettings.FanartFrodo = True
                 Master.eSettings.LandscapeFrodo = True
                 Master.eSettings.NFOFrodo = True
                 Master.eSettings.PosterFrodo = True
-                Master.eSettings.TrailerFrodo = False
+                Master.eSettings.TrailerFrodo = True
             End If
 
             For Each s As ModulesManager._externalScraperModuleClass_Data In ModulesManager.Instance.externalDataScrapersModules
@@ -4185,10 +4151,6 @@ Public Class dlgSettings
         Me.chkMovieWatchedCol.Text = Master.eLang.GetString(982, "Hide Watched Column")
         Me.gbFileNaming.Text = Master.eLang.GetString(471, "File Naming")
         Me.gbTVNaming.Text = Me.gbFileNaming.Text
-        Me.chkExpertMultiOnly.Text = Master.eLang.GetString(472, "Use <movie> Only for Folders with Multiple Movies")
-        Me.gbExpertTrailer.Text = Master.eLang.GetString(151, "Trailer")
-        Me.gbExpertFanart.Text = Master.eLang.GetString(149, "Fanart")
-        Me.gbExpertPoster.Text = Master.eLang.GetString(148, "Poster")
         Me.colName.Text = Master.eLang.GetString(232, "Name")
         Me.colPath.Text = Master.eLang.GetString(410, "Path")
         Me.colRecur.Text = Master.eLang.GetString(411, "Recursive")
@@ -4198,14 +4160,14 @@ Public Class dlgSettings
         Me.btnRemTVSource.Text = Master.eLang.GetString(30, "Remove")
         Me.btnMovieAddFolder.Text = Master.eLang.GetString(407, "Add Source")
         Me.btnAddTVSource.Text = Me.btnMovieAddFolder.Text
-        Me.gbMovieImagesPoster.Text = Me.gbExpertPoster.Text
+        Me.gbMovieImagesPoster.Text = Master.eLang.GetString(148, "Poster")
         Me.Label24.Text = Master.eLang.GetString(478, "Quality:")
         Me.Label11.Text = Master.eLang.GetString(479, "Max Width:")
         Me.Label12.Text = Master.eLang.GetString(480, "Max Height:")
         Me.chkMovieResizePoster.Text = Master.eLang.GetString(481, "Automatically Resize:")
         Me.lblPosterSize.Text = Master.eLang.GetString(482, "Preferred Size:")
         Me.chkMovieOverwritePoster.Text = Master.eLang.GetString(483, "Overwrite Existing")
-        Me.gbMovieImagesFanart.Text = Me.gbExpertFanart.Text
+        Me.gbMovieImagesFanart.Text = Master.eLang.GetString(149, "Fanart")
         Me.chkMovieFanartOnly.Text = Master.eLang.GetString(145, "Only")
         Me.chkMoviePosterOnly.Text = Master.eLang.GetString(145, "Only")
         Me.Label26.Text = Me.Label24.Text
@@ -4338,7 +4300,6 @@ Public Class dlgSettings
         Me.Label49.Text = Me.Label34.Text
         Me.chkIFOScan.Text = Master.eLang.GetString(628, "Enable IFO Parsing")
         Me.GroupBox29.Text = Master.eLang.GetString(629, "Themes")
-        'Me.chkYAMJCompatibleSets.Text = Master.eLang.GetString(643, "YAMJ Compatible Sets")
         Me.chkCleanDB.Text = Master.eLang.GetString(668, "Clean database after updating library")
         Me.chkTVCleanDB.Text = Me.chkCleanDB.Text
         Me.chkIgnoreLastScan.Text = Master.eLang.GetString(669, "Ignore last scan time when updating library")
@@ -4382,41 +4343,41 @@ Public Class dlgSettings
         Me.lblSeasonRetrieve.Text = String.Concat(Master.eLang.GetString(694, "Apply To"), ":")
         Me.lblEpisodeRetrieve.Text = Me.lblSeasonRetrieve.Text
         Me.btnAddShowRegex.Text = Master.eLang.GetString(690, "Edit Regex")
-        Me.gbShowPosterOpts.Text = Me.gbExpertPoster.Text
+        Me.gbShowPosterOpts.Text = Me.gbMovieImagesPoster.Text
         Me.lblShowPosterSize.Text = Master.eLang.GetString(730, "Preferred Type:")
         Me.chkOverwriteShowPoster.Text = Me.chkMovieOverwritePoster.Text
         Me.chkResizeShowPoster.Text = Me.chkMovieResizePoster.Text
         Me.lblShowPosterWidth.Text = Me.Label11.Text
         Me.lblShowPosterHeight.Text = Me.Label12.Text
         Me.lblShowPosterQ.Text = Me.Label24.Text
-        Me.gbShowFanartOpts.Text = Me.gbExpertFanart.Text
+        Me.gbShowFanartOpts.Text = Me.gbMovieImagesFanart.Text
         Me.lblShowFanartSize.Text = Me.lblFanartSize.Text
         Me.chkOverwriteShowFanart.Text = Me.chkMovieOverwriteFanart.Text
         Me.chkResizeShowFanart.Text = Me.chkMovieResizeFanart.Text
         Me.lblShowFanartWidth.Text = Me.Label11.Text
         Me.lblShowFanartHeight.Text = Me.Label12.Text
         Me.lblShowFanartQ.Text = Me.Label26.Text
-        Me.gbEpPosterOpts.Text = Me.gbExpertPoster.Text
+        Me.gbEpPosterOpts.Text = Me.gbMovieImagesPoster.Text
         Me.chkOverwriteEpPoster.Text = Me.chkMovieOverwritePoster.Text
         Me.chkResizeEpPoster.Text = Me.chkMovieResizePoster.Text
         Me.lblEpPosterWidth.Text = Me.Label11.Text
         Me.lblEpPosterHeight.Text = Me.Label12.Text
         Me.lblEpPosterQ.Text = Me.Label24.Text
-        Me.gbEpFanartOpts.Text = Me.gbExpertFanart.Text
+        Me.gbEpFanartOpts.Text = Me.gbMovieImagesFanart.Text
         Me.lblEpFanartSize.Text = Me.lblFanartSize.Text
         Me.chkOverwriteEpFanart.Text = Me.chkMovieOverwriteFanart.Text
         Me.chkResizeEpFanart.Text = Me.chkMovieResizeFanart.Text
         Me.lblEpFanartWidth.Text = Me.Label11.Text
         Me.lblEpFanartHeight.Text = Me.Label12.Text
         Me.lblEpFanartQ.Text = Me.Label26.Text
-        Me.gbSeaPosterOpts.Text = Me.gbExpertPoster.Text
+        Me.gbSeaPosterOpts.Text = Me.gbMovieImagesPoster.Text
         Me.lblSeaPosterSize.Text = Me.lblShowPosterSize.Text
         Me.chkSeaOverwritePoster.Text = Me.chkMovieOverwritePoster.Text
         Me.chkSeaResizePoster.Text = Me.chkMovieResizePoster.Text
         Me.lblSeaPosterWidth.Text = Me.Label11.Text
         Me.lblSeaPosterHeight.Text = Me.Label12.Text
         Me.lblSeaPosterQ.Text = Me.Label24.Text
-        Me.gbSeaFanartOpts.Text = Me.gbExpertFanart.Text
+        Me.gbSeaFanartOpts.Text = Me.gbMovieImagesFanart.Text
         Me.lblSeaFanartSize.Text = Me.lblFanartSize.Text
         Me.chkSeaOverwriteFanart.Text = Me.chkMovieOverwriteFanart.Text
         Me.chkSeaResizeFanart.Text = Me.chkMovieResizeFanart.Text
@@ -4458,9 +4419,9 @@ Public Class dlgSettings
         Me.chkOnlyValueForCert.Text = Master.eLang.GetString(835, "Only Save the Value to NFO")
         Me.chkMovieScraperActorThumbs.Text = Master.eLang.GetString(828, "Enable Actor Thumbs")
         Me.rbBanner.Text = Master.eLang.GetString(838, "Banner")
-        Me.rbPoster.Text = Me.gbExpertPoster.Text
+        Me.rbPoster.Text = Me.gbMovieImagesPoster.Text
         Me.rbAllSBanner.Text = Me.rbBanner.Text
-        Me.rbAllSPoster.Text = Me.gbExpertPoster.Text
+        Me.rbAllSPoster.Text = Me.gbMovieImagesPoster.Text
         Me.gbAllSPosterOpts.Text = Me.gbAllSeasonPoster.Text
         Me.lblAllSPosterSize.Text = Me.lblShowPosterSize.Text
         Me.chkOverwriteAllSPoster.Text = Me.chkMovieOverwritePoster.Text
@@ -4505,7 +4466,7 @@ Public Class dlgSettings
         Me.cbEpFanartSize.Items.Clear()
         Me.cbEpFanartSize.Items.AddRange(New String() {Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small")})
         Me.cbSeaPosterSize.Items.Clear()
-        Me.cbSeaPosterSize.Items.AddRange(New String() {Master.eLang.GetString(745, "None"), Me.gbExpertPoster.Text, Master.eLang.GetString(558, "Wide")})
+        Me.cbSeaPosterSize.Items.AddRange(New String() {Master.eLang.GetString(745, "None"), Me.gbMovieImagesPoster.Text, Master.eLang.GetString(558, "Wide")})
         Me.cbSeaFanartSize.Items.Clear()
         Me.cbSeaFanartSize.Items.AddRange(New String() {Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small")})
 

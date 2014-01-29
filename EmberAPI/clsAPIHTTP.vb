@@ -285,124 +285,125 @@ Public Class HTTP
             Catch
             End Try
 
-            Using wrResponse As HttpWebResponse = DirectCast(Me.wrRequest.GetResponse(), HttpWebResponse)
-                If Type = "trailer" Then
-                    If Master.eSettings.ValidExts.Contains(urlExt) Then
-                        If Master.eSettings.TrailerFrodo AndAlso FileUtils.Common.isBDRip(LocalFile) Then
-                            outFile = Path.Combine(Directory.GetParent(LocalFile).FullName, String.Concat(Path.GetFileNameWithoutExtension(LocalFile), If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(URL)))
-                        ElseIf Master.eSettings.TrailerFrodo Then
-                            Dim LocalFileStack As String = StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(LocalFile))
-                            outFile = String.Concat(Directory.GetParent(LocalFile).FullName, Path.DirectorySeparatorChar, LocalFileStack, If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(URL))
-                        Else
-                            outFile = Path.Combine(Directory.GetParent(LocalFile).FullName, String.Concat(Path.GetFileNameWithoutExtension(LocalFile), If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(URL)))
-                        End If
-                    ElseIf Master.eSettings.ValidExts.Contains(Path.GetExtension(wrResponse.ResponseUri.AbsolutePath)) Then
-                        If Master.eSettings.TrailerFrodo AndAlso FileUtils.Common.isBDRip(LocalFile) Then
-                            outFile = Path.Combine(Directory.GetParent(LocalFile).FullName, String.Concat(Path.GetFileNameWithoutExtension(LocalFile), If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(wrResponse.ResponseUri.AbsolutePath)))
-                        ElseIf Master.eSettings.TrailerFrodo Then
-                            Dim LocalFileStack As String = StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(LocalFile))
-                            outFile = String.Concat(Directory.GetParent(LocalFile).FullName, Path.DirectorySeparatorChar, LocalFileStack, If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(wrResponse.ResponseUri.AbsolutePath))
-                        Else
-                            outFile = Path.Combine(Directory.GetParent(LocalFile).FullName, String.Concat(Path.GetFileNameWithoutExtension(LocalFile), If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(wrResponse.ResponseUri.AbsolutePath)))
-                        End If
-                    ElseIf wrResponse.ContentType.Contains("mp4") Then
-                        If FileUtils.Common.isBDRip(LocalFile) Then
-                            parPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(LocalFile).FullName).FullName).FullName
-                            If Master.eSettings.UseFrodo AndAlso Master.eSettings.TrailerFrodo Then
-                                outFile = Path.Combine(Directory.GetParent(fileParPath).FullName, "index-trailer.mp4")
-                            End If
-                            If Master.eSettings.UseEden AndAlso Master.eSettings.TrailerEden Then
-                                outFile = Path.Combine(Directory.GetParent(fileParPath).FullName, "index-trailer.mp4")
-                            End If
-                            If Master.eSettings.UseYAMJ AndAlso Master.eSettings.TrailerYAMJ Then
-                                outFile = String.Concat(parPath, Path.DirectorySeparatorChar, Directory.GetParent(Directory.GetParent(fileParPath).FullName).Name, ".[trailer].mp4")
-                            End If
-                            If Master.eSettings.UseNMJ AndAlso Master.eSettings.TrailerYAMJ Then
-                                outFile = String.Concat(parPath, Path.DirectorySeparatorChar, Directory.GetParent(Directory.GetParent(fileParPath).FullName).Name, ".[trailer].mp4")
-                            End If
-                        ElseIf FileUtils.Common.isVideoTS(LocalFile) Then
-                            parPath = Directory.GetParent(Directory.GetParent(LocalFile).FullName).FullName
-                            If Master.eSettings.UseFrodo AndAlso Master.eSettings.TrailerFrodo Then
-                                outFile = String.Concat(filePath, "-trailer.mp4")
-                            End If
-                            If Master.eSettings.UseEden AndAlso Master.eSettings.TrailerEden Then
-                                outFile = String.Concat(filePath, "-trailer.mp4")
-                            End If
-                            If Master.eSettings.UseYAMJ AndAlso Master.eSettings.TrailerYAMJ Then
-                                outFile = String.Concat(parPath, Path.DirectorySeparatorChar, Directory.GetParent(fileParPath).Name, ".[trailer].mp4")
-                            End If
-                            If Master.eSettings.UseNMJ AndAlso Master.eSettings.TrailerYAMJ Then
-                                outFile = String.Concat(parPath, Path.DirectorySeparatorChar, Directory.GetParent(fileParPath).Name, ".[trailer].mp4")
-                            End If
-                        Else
-                            If Master.eSettings.UseFrodo AndAlso Master.eSettings.TrailerFrodo Then
-                                outFile = String.Concat(filePathStack, "-trailer.mp4")
-                            End If
-                            If Master.eSettings.UseEden AndAlso Master.eSettings.TrailerEden Then
-                                outFile = String.Concat(filePath, "-trailer.mp4")
-                            End If
-                            If Master.eSettings.UseYAMJ AndAlso Master.eSettings.TrailerYAMJ Then
-                                outFile = String.Concat(filePath, ".[trailer].mp4")
-                            End If
+            ' TODO: add new expert settings
+            'Using wrResponse As HttpWebResponse = DirectCast(Me.wrRequest.GetResponse(), HttpWebResponse)
+            '    If Type = "trailer" Then
+            '        If Master.eSettings.ValidExts.Contains(urlExt) Then
+            '            If Master.eSettings.TrailerFrodo AndAlso FileUtils.Common.isBDRip(LocalFile) Then
+            '                outFile = Path.Combine(Directory.GetParent(LocalFile).FullName, String.Concat(Path.GetFileNameWithoutExtension(LocalFile), If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(URL)))
+            '            ElseIf Master.eSettings.TrailerFrodo Then
+            '                Dim LocalFileStack As String = StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(LocalFile))
+            '                outFile = String.Concat(Directory.GetParent(LocalFile).FullName, Path.DirectorySeparatorChar, LocalFileStack, If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(URL))
+            '            Else
+            '                outFile = Path.Combine(Directory.GetParent(LocalFile).FullName, String.Concat(Path.GetFileNameWithoutExtension(LocalFile), If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(URL)))
+            '            End If
+            '        ElseIf Master.eSettings.ValidExts.Contains(Path.GetExtension(wrResponse.ResponseUri.AbsolutePath)) Then
+            '            If Master.eSettings.TrailerFrodo AndAlso FileUtils.Common.isBDRip(LocalFile) Then
+            '                outFile = Path.Combine(Directory.GetParent(LocalFile).FullName, String.Concat(Path.GetFileNameWithoutExtension(LocalFile), If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(wrResponse.ResponseUri.AbsolutePath)))
+            '            ElseIf Master.eSettings.TrailerFrodo Then
+            '                Dim LocalFileStack As String = StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(LocalFile))
+            '                outFile = String.Concat(Directory.GetParent(LocalFile).FullName, Path.DirectorySeparatorChar, LocalFileStack, If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(wrResponse.ResponseUri.AbsolutePath))
+            '            Else
+            '                outFile = Path.Combine(Directory.GetParent(LocalFile).FullName, String.Concat(Path.GetFileNameWithoutExtension(LocalFile), If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(wrResponse.ResponseUri.AbsolutePath)))
+            '            End If
+            '        ElseIf wrResponse.ContentType.Contains("mp4") Then
+            '            If FileUtils.Common.isBDRip(LocalFile) Then
+            '                parPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(LocalFile).FullName).FullName).FullName
+            '                If Master.eSettings.UseFrodo AndAlso Master.eSettings.TrailerFrodo Then
+            '                    outFile = Path.Combine(Directory.GetParent(fileParPath).FullName, "index-trailer.mp4")
+            '                End If
+            '                If Master.eSettings.UseEden AndAlso Master.eSettings.TrailerEden Then
+            '                    outFile = Path.Combine(Directory.GetParent(fileParPath).FullName, "index-trailer.mp4")
+            '                End If
+            '                If Master.eSettings.UseYAMJ AndAlso Master.eSettings.TrailerYAMJ Then
+            '                    outFile = String.Concat(parPath, Path.DirectorySeparatorChar, Directory.GetParent(Directory.GetParent(fileParPath).FullName).Name, ".[trailer].mp4")
+            '                End If
+            '                If Master.eSettings.UseNMJ AndAlso Master.eSettings.TrailerYAMJ Then
+            '                    outFile = String.Concat(parPath, Path.DirectorySeparatorChar, Directory.GetParent(Directory.GetParent(fileParPath).FullName).Name, ".[trailer].mp4")
+            '                End If
+            '            ElseIf FileUtils.Common.isVideoTS(LocalFile) Then
+            '                parPath = Directory.GetParent(Directory.GetParent(LocalFile).FullName).FullName
+            '                If Master.eSettings.UseFrodo AndAlso Master.eSettings.TrailerFrodo Then
+            '                    outFile = String.Concat(filePath, "-trailer.mp4")
+            '                End If
+            '                If Master.eSettings.UseEden AndAlso Master.eSettings.TrailerEden Then
+            '                    outFile = String.Concat(filePath, "-trailer.mp4")
+            '                End If
+            '                If Master.eSettings.UseYAMJ AndAlso Master.eSettings.TrailerYAMJ Then
+            '                    outFile = String.Concat(parPath, Path.DirectorySeparatorChar, Directory.GetParent(fileParPath).Name, ".[trailer].mp4")
+            '                End If
+            '                If Master.eSettings.UseNMJ AndAlso Master.eSettings.TrailerYAMJ Then
+            '                    outFile = String.Concat(parPath, Path.DirectorySeparatorChar, Directory.GetParent(fileParPath).Name, ".[trailer].mp4")
+            '                End If
+            '            Else
+            '                If Master.eSettings.UseFrodo AndAlso Master.eSettings.TrailerFrodo Then
+            '                    outFile = String.Concat(filePathStack, "-trailer.mp4")
+            '                End If
+            '                If Master.eSettings.UseEden AndAlso Master.eSettings.TrailerEden Then
+            '                    outFile = String.Concat(filePath, "-trailer.mp4")
+            '                End If
+            '                If Master.eSettings.UseYAMJ AndAlso Master.eSettings.TrailerYAMJ Then
+            '                    outFile = String.Concat(filePath, ".[trailer].mp4")
+            '                End If
 
-                            If Master.eSettings.UseNMJ AndAlso Master.eSettings.TrailerNMJ Then
-                                outFile = String.Concat(filePath, ".[trailer].mp4")
-                            End If
-                        End If
-                    ElseIf wrResponse.ContentType.Contains("flv") Then
-                        If Master.eSettings.TrailerFrodo AndAlso FileUtils.Common.isBDRip(LocalFile) Then
-                            outFile = String.Concat(Directory.GetParent(Directory.GetParent(LocalFile).FullName).FullName, Path.DirectorySeparatorChar, "index", If(Master.eSettings.DashTrailer, "-trailer.flv", "[trailer].flv"))
-                        ElseIf Master.eSettings.TrailerFrodo Then
-                            Dim LocalFileStack As String = StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(LocalFile))
-                            outFile = String.Concat(Directory.GetParent(LocalFile).FullName, Path.DirectorySeparatorChar, LocalFileStack, If(Master.eSettings.DashTrailer, "-trailer.flv", "[trailer].flv"))
-                        Else
-                            outFile = Path.Combine(Directory.GetParent(LocalFile).FullName, String.Concat(Path.GetFileNameWithoutExtension(LocalFile), If(Master.eSettings.DashTrailer, "-trailer.flv", "[trailer].flv")))
-                        End If
-                    ElseIf wrResponse.ContentType.Contains("webm") Then
-                        If Master.eSettings.TrailerFrodo AndAlso FileUtils.Common.isBDRip(LocalFile) Then
-                            outFile = String.Concat(Directory.GetParent(Directory.GetParent(LocalFile).FullName).FullName, Path.DirectorySeparatorChar, "index", If(Master.eSettings.DashTrailer, "-trailer.webm", "[trailer].webm"))
-                        ElseIf Master.eSettings.TrailerFrodo Then
-                            Dim LocalFileStack As String = StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(LocalFile))
-                            outFile = String.Concat(Directory.GetParent(LocalFile).FullName, Path.DirectorySeparatorChar, LocalFileStack, If(Master.eSettings.DashTrailer, "-trailer.webm", "[trailer].webm"))
-                        Else
-                            outFile = Path.Combine(Directory.GetParent(LocalFile).FullName, String.Concat(Path.GetFileNameWithoutExtension(LocalFile), If(Master.eSettings.DashTrailer, "-trailer.webm", "[trailer].webm")))
-                        End If
-                    End If
+            '                If Master.eSettings.UseNMJ AndAlso Master.eSettings.TrailerNMJ Then
+            '                    outFile = String.Concat(filePath, ".[trailer].mp4")
+            '                End If
+            '            End If
+            '        ElseIf wrResponse.ContentType.Contains("flv") Then
+            '            If Master.eSettings.TrailerFrodo AndAlso FileUtils.Common.isBDRip(LocalFile) Then
+            '                outFile = String.Concat(Directory.GetParent(Directory.GetParent(LocalFile).FullName).FullName, Path.DirectorySeparatorChar, "index", If(Master.eSettings.DashTrailer, "-trailer.flv", "[trailer].flv"))
+            '            ElseIf Master.eSettings.TrailerFrodo Then
+            '                Dim LocalFileStack As String = StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(LocalFile))
+            '                outFile = String.Concat(Directory.GetParent(LocalFile).FullName, Path.DirectorySeparatorChar, LocalFileStack, If(Master.eSettings.DashTrailer, "-trailer.flv", "[trailer].flv"))
+            '            Else
+            '                outFile = Path.Combine(Directory.GetParent(LocalFile).FullName, String.Concat(Path.GetFileNameWithoutExtension(LocalFile), If(Master.eSettings.DashTrailer, "-trailer.flv", "[trailer].flv")))
+            '            End If
+            '        ElseIf wrResponse.ContentType.Contains("webm") Then
+            '            If Master.eSettings.TrailerFrodo AndAlso FileUtils.Common.isBDRip(LocalFile) Then
+            '                outFile = String.Concat(Directory.GetParent(Directory.GetParent(LocalFile).FullName).FullName, Path.DirectorySeparatorChar, "index", If(Master.eSettings.DashTrailer, "-trailer.webm", "[trailer].webm"))
+            '            ElseIf Master.eSettings.TrailerFrodo Then
+            '                Dim LocalFileStack As String = StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(LocalFile))
+            '                outFile = String.Concat(Directory.GetParent(LocalFile).FullName, Path.DirectorySeparatorChar, LocalFileStack, If(Master.eSettings.DashTrailer, "-trailer.webm", "[trailer].webm"))
+            '            Else
+            '                outFile = Path.Combine(Directory.GetParent(LocalFile).FullName, String.Concat(Path.GetFileNameWithoutExtension(LocalFile), If(Master.eSettings.DashTrailer, "-trailer.webm", "[trailer].webm")))
+            '            End If
+            '        End If
 
-                ElseIf Type = "other" Then
-                    outFile = LocalFile
-                End If
+            '    ElseIf Type = "other" Then
+            '        outFile = LocalFile
+            '    End If
 
 
-                If Not String.IsNullOrEmpty(outFile) AndAlso Not wrResponse.ContentLength = 0 Then
+            '    If Not String.IsNullOrEmpty(outFile) AndAlso Not wrResponse.ContentLength = 0 Then
 
-                    If File.Exists(outFile) Then File.Delete(outFile)
+            '        If File.Exists(outFile) Then File.Delete(outFile)
 
-                    Using Ms As Stream = wrResponse.GetResponseStream
-                        Using mStream As New FileStream(outFile, FileMode.Create, FileAccess.Write)
-                            Dim StreamBuffer(4096) As Byte
-                            Dim BlockSize As Integer
-                            Dim iProgress As Integer
-                            Dim iCurrent As Integer
-                            Do
-                                BlockSize = Ms.Read(StreamBuffer, 0, 4096)
-                                iCurrent += BlockSize
-                                If BlockSize > 0 Then
-                                    mStream.Write(StreamBuffer, 0, BlockSize)
-                                    If ReportUpdate Then
-                                        iProgress = Convert.ToInt32((iCurrent / wrResponse.ContentLength) * 100)
-                                        RaiseEvent ProgressUpdated(iProgress)
-                                    End If
-                                End If
-                            Loop While BlockSize > 0 AndAlso Not Me._cancelRequested
-                            StreamBuffer = Nothing
-                            mStream.Close()
-                        End Using
-                        Ms.Close()
-                    End Using
-                End If
+            '        Using Ms As Stream = wrResponse.GetResponseStream
+            '            Using mStream As New FileStream(outFile, FileMode.Create, FileAccess.Write)
+            '                Dim StreamBuffer(4096) As Byte
+            '                Dim BlockSize As Integer
+            '                Dim iProgress As Integer
+            '                Dim iCurrent As Integer
+            '                Do
+            '                    BlockSize = Ms.Read(StreamBuffer, 0, 4096)
+            '                    iCurrent += BlockSize
+            '                    If BlockSize > 0 Then
+            '                        mStream.Write(StreamBuffer, 0, BlockSize)
+            '                        If ReportUpdate Then
+            '                            iProgress = Convert.ToInt32((iCurrent / wrResponse.ContentLength) * 100)
+            '                            RaiseEvent ProgressUpdated(iProgress)
+            '                        End If
+            '                    End If
+            '                Loop While BlockSize > 0 AndAlso Not Me._cancelRequested
+            '                StreamBuffer = Nothing
+            '                mStream.Close()
+            '            End Using
+            '            Ms.Close()
+            '        End Using
+            '    End If
 
-            End Using
+            'End Using
         Catch ex As Exception
             Master.eLog.Error(GetType(HTTP), "<" & URL & ">" & ex.Message, ex.StackTrace, "Error", False)
         End Try

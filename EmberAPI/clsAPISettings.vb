@@ -759,15 +759,6 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property DashTrailer() As Boolean
-        Get
-            Return Me._dashtrailer
-        End Get
-        Set(ByVal value As Boolean)
-            Me._dashtrailer = value
-        End Set
-    End Property
-
     Public Property DeleteAllTrailers() As Boolean
         Get
             Return Me._deletealltrailers
@@ -1046,15 +1037,6 @@ Public Class Settings
         End Get
         Set(ByVal value As Integer)
             Me._fanartheight = value
-        End Set
-    End Property
-
-    Public Property FanartJPG() As Boolean
-        Get
-            Return Me._fanartjpg
-        End Get
-        Set(ByVal value As Boolean)
-            Me._fanartjpg = value
         End Set
     End Property
 
@@ -1344,15 +1326,6 @@ Public Class Settings
         End Get
         Set(ByVal value As String)
             Me._flaglang = value
-        End Set
-    End Property
-
-    Public Property FolderJPG() As Boolean
-        Get
-            Return Me._folderjpg
-        End Get
-        Set(ByVal value As Boolean)
-            Me._folderjpg = value
         End Set
     End Property
 
@@ -1703,96 +1676,6 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieJPG() As Boolean
-        Get
-            Return Me._moviejpg
-        End Get
-        Set(ByVal value As Boolean)
-            Me._moviejpg = value
-        End Set
-    End Property
-
-    Public Property MovieNameDotFanartJPG() As Boolean
-        Get
-            Return Me._movienamedotfanartjpg
-        End Get
-        Set(ByVal value As Boolean)
-            Me._movienamedotfanartjpg = value
-        End Set
-    End Property
-
-    Public Property MovieNameFanartJPG() As Boolean
-        Get
-            Return Me._movienamefanartjpg
-        End Get
-        Set(ByVal value As Boolean)
-            Me._movienamefanartjpg = value
-        End Set
-    End Property
-
-    Public Property MovieNameJPG() As Boolean
-        Get
-            Return Me._movienamejpg
-        End Get
-        Set(ByVal value As Boolean)
-            Me._movienamejpg = value
-        End Set
-    End Property
-
-    Public Property MovieNameDashPosterJPG() As Boolean
-        Get
-            Return Me._movienamedashposterjpg
-        End Get
-        Set(ByVal value As Boolean)
-            Me._movienamedashposterjpg = value
-        End Set
-    End Property
-
-    Public Property MovieNameMultiOnly() As Boolean
-        Get
-            Return Me._movienamemultionly
-        End Get
-        Set(ByVal value As Boolean)
-            Me._movienamemultionly = value
-        End Set
-    End Property
-
-    Public Property MovieNameNFO() As Boolean
-        Get
-            Return Me._movienamenfo
-        End Get
-        Set(ByVal value As Boolean)
-            Me._movienamenfo = value
-        End Set
-    End Property
-
-    Public Property MovieNameNFOStack() As Boolean
-        Get
-            Return Me._movienamenfostack
-        End Get
-        Set(ByVal value As Boolean)
-            Me._movienamenfostack = value
-        End Set
-    End Property
-
-    Public Property MovieNameTBN() As Boolean
-        Get
-            Return Me._movienametbn
-        End Get
-        Set(ByVal value As Boolean)
-            Me._movienametbn = value
-        End Set
-    End Property
-
-    Public Property MovieNFO() As Boolean
-        Get
-            Return Me._movienfo
-        End Get
-        Set(ByVal value As Boolean)
-            Me._movienfo = value
-        End Set
-    End Property
-
     Public Property MoviePosterCol() As Boolean
         Get
             Return Me._movieposterCol
@@ -1808,15 +1691,6 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Me._moviesubCol = value
-        End Set
-    End Property
-
-    Public Property MovieTBN() As Boolean
-        Get
-            Return Me._movietbn
-        End Get
-        Set(ByVal value As Boolean)
-            Me._movietbn = value
         End Set
     End Property
 
@@ -2134,15 +2008,6 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property PosterJPG() As Boolean
-        Get
-            Return Me._posterjpg
-        End Get
-        Set(ByVal value As Boolean)
-            Me._posterjpg = value
-        End Set
-    End Property
-
     Public Property PosterPrefSizeOnly() As Boolean
         Get
             Return Me._PosterPrefSizeOnly
@@ -2176,15 +2041,6 @@ Public Class Settings
         End Get
         Set(ByVal value As Integer)
             Me._posterQuality = value
-        End Set
-    End Property
-
-    Public Property PosterTBN() As Boolean
-        Get
-            Return Me._postertbn
-        End Get
-        Set(ByVal value As Boolean)
-            Me._postertbn = value
         End Set
     End Property
 
@@ -4282,18 +4138,18 @@ Public Class Settings
         If Not (Master.eSettings.UseEden Or Master.eSettings.UseExpert Or Master.eSettings.UseFrodo Or Master.eSettings.UseNMJ Or Master.eSettings.UseYAMJ) Then
             Master.eSettings.UseFrodo = True
             Master.eSettings.ActorThumbsFrodo = True
-            Master.eSettings.BannerFrodo = False
-            Master.eSettings.ClearArtFrodo = False
-            Master.eSettings.ClearLogoFrodo = False
-            Master.eSettings.DiscArtFrodo = False
-            Master.eSettings.ExtrafanartsFrodo = False
-            Master.eSettings.ExtrathumbsFrodo = False
+            Master.eSettings.BannerFrodo = True
+            Master.eSettings.ClearArtFrodo = True
+            Master.eSettings.ClearLogoFrodo = True
+            Master.eSettings.DiscArtFrodo = True
+            Master.eSettings.ExtrafanartsFrodo = True
+            Master.eSettings.ExtrathumbsFrodo = True
             Master.eSettings.FanartFrodo = True
             Master.eSettings.LandscapeFrodo = True
             Master.eSettings.NFOFrodo = True
             Master.eSettings.PosterFrodo = True
-            Master.eSettings.TrailerFrodo = False
-            Master.eSettings.XBMCTrailerFormat = False
+            Master.eSettings.TrailerFrodo = True
+            Master.eSettings.XBMCTrailerFormat = True
         End If
 
     End Sub
