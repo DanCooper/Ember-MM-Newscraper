@@ -2544,7 +2544,7 @@ Public Class dlgSettings
                 Me.txtCheckTitleTol.Enabled = True
                 Me.txtCheckTitleTol.Text = Master.eSettings.LevTolerance.ToString
             End If
-            Me.chkExpertRecognizeVTS.Checked = Master.eSettings.ExpertRecognizeVTS
+            Me.chkRecognizeVTSExpertVTS.Checked = Master.eSettings.ExpertRecognizeVTS
             Me.cbLanguages.SelectedItem = If(String.IsNullOrEmpty(Master.eSettings.FlagLang), Master.eLang.Disabled, Master.eSettings.FlagLang)
             Me.cboTVMetaDataOverlay.SelectedItem = If(String.IsNullOrEmpty(Master.eSettings.TVFlagLang), Master.eLang.Disabled, Master.eSettings.TVFlagLang)
             Me.cbIntLang.SelectedItem = Master.eSettings.Language
@@ -2764,6 +2764,75 @@ Public Class dlgSettings
             Me.chkNFONMJ.Checked = Master.eSettings.NFONMJ
             Me.chkPosterNMJ.Checked = Master.eSettings.PosterNMJ
             Me.chkTrailerNMJ.Checked = Master.eSettings.TrailerNMJ
+
+            '***************** Expert settings ****************
+            Me.chkUseExpert.Checked = Master.eSettings.UseExpert
+
+            '***************** Expert Single ******************
+            Me.chkActorThumbsExpertSingle.Checked = Master.eSettings.ActorThumbsExpertSingle
+            Me.txtActorThumbsExtExpertSingle.Text = Master.eSettings.ActorThumbsExtExpertSingle
+            Me.txtBannerExpertSingle.Text = Master.eSettings.BannerExpertSingle
+            Me.txtClearArtExpertSingle.Text = Master.eSettings.ClearArtExpertSingle
+            Me.txtClearLogoExpertSingle.Text = Master.eSettings.ClearLogoExpertSingle
+            Me.txtDiscArtExpertSingle.Text = Master.eSettings.DiscArtExpertSingle
+            Me.chkExtrafanartsExpertSingle.Checked = Master.eSettings.ExtrafanartsExpertSingle
+            Me.chkExtrathumbsExpertSingle.Checked = Master.eSettings.ExtrathumbsExpertSingle
+            Me.txtFanartExpertSingle.Text = Master.eSettings.FanartExpertSingle
+            Me.txtLandscapeExpertSingle.Text = Master.eSettings.LandscapeExpertSingle
+            Me.txtNFOExpertSingle.Text = Master.eSettings.NFOExpertSingle
+            Me.txtPosterExpertSingle.Text = Master.eSettings.PosterExpertSingle
+            Me.chkStackExpertSingle.Checked = Master.eSettings.StackExpertSingle
+            Me.txtTrailerExpertSingle.Text = Master.eSettings.TrailerExpertSingle
+            Me.chkUnstackExpertSingle.Checked = Master.eSettings.UnstackExpertSingle
+
+            '***************** Expert Multi ******************
+            Me.chkActorThumbsExpertMulti.Checked = Master.eSettings.ActorThumbsExpertMulti
+            Me.txtActorThumbsExtExpertMulti.Text = Master.eSettings.ActorThumbsExtExpertMulti
+            Me.txtBannerExpertMulti.Text = Master.eSettings.BannerExpertMulti
+            Me.txtClearArtExpertMulti.Text = Master.eSettings.ClearArtExpertMulti
+            Me.txtClearLogoExpertMulti.Text = Master.eSettings.ClearLogoExpertMulti
+            Me.txtDiscArtExpertMulti.Text = Master.eSettings.DiscArtExpertMulti
+            Me.txtFanartExpertMulti.Text = Master.eSettings.FanartExpertMulti
+            Me.txtLandscapeExpertMulti.Text = Master.eSettings.LandscapeExpertMulti
+            Me.txtNFOExpertMulti.Text = Master.eSettings.NFOExpertMulti
+            Me.txtPosterExpertMulti.Text = Master.eSettings.PosterExpertMulti
+            Me.chkStackExpertMulti.Checked = Master.eSettings.StackExpertMulti
+            Me.txtTrailerExpertMulti.Text = Master.eSettings.TrailerExpertMulti
+            Me.chkUnstackExpertMulti.Checked = Master.eSettings.UnstackExpertMulti
+
+            '***************** Expert VTS ******************
+            Me.chkActorThumbsExpertVTS.Checked = Master.eSettings.ActorThumbsExpertVTS
+            Me.txtActorThumbsExtExpertVTS.Text = Master.eSettings.ActorThumbsExtExpertVTS
+            Me.txtBannerExpertVTS.Text = Master.eSettings.BannerExpertVTS
+            Me.txtClearArtExpertVTS.Text = Master.eSettings.ClearArtExpertVTS
+            Me.txtClearLogoExpertVTS.Text = Master.eSettings.ClearLogoExpertVTS
+            Me.txtDiscArtExpertVTS.Text = Master.eSettings.DiscArtExpertVTS
+            Me.chkExtrafanartsExpertVTS.Checked = Master.eSettings.ExtrafanartsExpertVTS
+            Me.chkExtrathumbsExpertVTS.Checked = Master.eSettings.ExtrathumbsExpertVTS
+            Me.txtFanartExpertVTS.Text = Master.eSettings.FanartExpertVTS
+            Me.txtLandscapeExpertVTS.Text = Master.eSettings.LandscapeExpertVTS
+            Me.txtNFOExpertVTS.Text = Master.eSettings.NFOExpertVTS
+            Me.txtPosterExpertVTS.Text = Master.eSettings.PosterExpertVTS
+            Me.chkRecognizeVTSExpertVTS.Checked = Master.eSettings.RecognizeVTSExpertVTS
+            Me.txtTrailerExpertVTS.Text = Master.eSettings.TrailerExpertVTS
+            Me.chkUseBaseDirectoryExpertVTS.Checked = Master.eSettings.UseBaseDirectoryVTS
+
+            '***************** Expert BDMV ******************
+            Me.chkActorThumbsExpertBDMV.Checked = Master.eSettings.ActorThumbsExpertBDMV
+            Me.txtActorThumbsExtExpertBDMV.Text = Master.eSettings.ActorThumbsExtExpertBDMV
+            Me.txtBannerExpertBDMV.Text = Master.eSettings.BannerExpertBDMV
+            Me.txtClearArtExpertBDMV.Text = Master.eSettings.ClearArtExpertBDMV
+            Me.txtClearLogoExpertBDMV.Text = Master.eSettings.ClearLogoExpertBDMV
+            Me.txtDiscArtExpertBDMV.Text = Master.eSettings.DiscArtExpertBDMV
+            Me.chkExtrafanartsExpertBDMV.Checked = Master.eSettings.ExtrafanartsExpertBDMV
+            Me.chkExtrathumbsExpertBDMV.Checked = Master.eSettings.ExtrathumbsExpertBDMV
+            Me.txtFanartExpertBDMV.Text = Master.eSettings.FanartExpertBDMV
+            Me.txtLandscapeExpertBDMV.Text = Master.eSettings.LandscapeExpertBDMV
+            Me.txtNFOExpertBDMV.Text = Master.eSettings.NFOExpertBDMV
+            Me.txtPosterExpertBDMV.Text = Master.eSettings.PosterExpertBDMV
+            Me.txtTrailerExpertBDMV.Text = Master.eSettings.TrailerExpertBDMV
+            Me.chkUseBaseDirectoryExpertBDMV.Checked = Master.eSettings.UseBaseDirectoryBDMV
+
         Catch ex As Exception
             Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
@@ -3665,7 +3734,7 @@ Public Class dlgSettings
             If Master.eSettings.SortTokens.Count <= 0 Then Master.eSettings.NoTokens = True
 
             Master.eSettings.LevTolerance = If(Not String.IsNullOrEmpty(Me.txtCheckTitleTol.Text), Convert.ToInt32(Me.txtCheckTitleTol.Text), 0)
-            Master.eSettings.ExpertRecognizeVTS = Me.chkExpertRecognizeVTS.Checked
+            Master.eSettings.ExpertRecognizeVTS = Me.chkRecognizeVTSExpertVTS.Checked
             Master.eSettings.FlagLang = If(Me.cbLanguages.Text = Master.eLang.Disabled, String.Empty, Me.cbLanguages.Text)
             Master.eSettings.TVFlagLang = If(Me.cboTVMetaDataOverlay.Text = Master.eLang.Disabled, String.Empty, Me.cboTVMetaDataOverlay.Text)
             Master.eSettings.Language = Me.cbIntLang.Text
@@ -3898,7 +3967,72 @@ Public Class dlgSettings
             Master.eSettings.TrailerNMJ = Me.chkTrailerNMJ.Checked
 
             '***************** Expert settings ****************
-            'to be added
+            Master.eSettings.UseExpert = Me.chkUseExpert.Checked
+
+            '***************** Expert Single ******************
+            Master.eSettings.ActorThumbsExpertSingle = Me.chkActorThumbsExpertSingle.Checked
+            Master.eSettings.ActorThumbsExtExpertSingle = Me.txtActorThumbsExtExpertSingle.Text
+            Master.eSettings.BannerExpertSingle = Me.txtBannerExpertSingle.Text
+            Master.eSettings.ClearArtExpertSingle = Me.txtClearArtExpertSingle.Text
+            Master.eSettings.ClearLogoExpertSingle = Me.txtClearLogoExpertSingle.Text
+            Master.eSettings.DiscArtExpertSingle = Me.txtDiscArtExpertSingle.Text
+            Master.eSettings.ExtrafanartsExpertSingle = Me.chkExtrafanartsExpertSingle.Checked
+            Master.eSettings.ExtrathumbsExpertSingle = Me.chkExtrathumbsExpertSingle.Checked
+            Master.eSettings.FanartExpertSingle = Me.txtFanartExpertSingle.Text
+            Master.eSettings.LandscapeExpertSingle = Me.txtLandscapeExpertSingle.Text
+            Master.eSettings.NFOExpertSingle = Me.txtNFOExpertSingle.Text
+            Master.eSettings.PosterExpertSingle = Me.txtPosterExpertSingle.Text
+            Master.eSettings.StackExpertSingle = Me.chkStackExpertSingle.Checked
+            Master.eSettings.TrailerExpertSingle = Me.txtTrailerExpertSingle.Text
+            Master.eSettings.UnstackExpertSingle = Me.chkUnstackExpertSingle.Checked
+
+            '***************** Expert Multi ******************
+            Master.eSettings.ActorThumbsExpertMulti = Me.chkActorThumbsExpertMulti.Checked
+            Master.eSettings.ActorThumbsExtExpertMulti = Me.txtActorThumbsExtExpertMulti.Text
+            Master.eSettings.BannerExpertMulti = Me.txtBannerExpertMulti.Text
+            Master.eSettings.ClearArtExpertMulti = Me.txtClearArtExpertMulti.Text
+            Master.eSettings.ClearLogoExpertMulti = Me.txtClearLogoExpertMulti.Text
+            Master.eSettings.DiscArtExpertMulti = Me.txtDiscArtExpertMulti.Text
+            Master.eSettings.FanartExpertMulti = Me.txtFanartExpertMulti.Text
+            Master.eSettings.LandscapeExpertMulti = Me.txtLandscapeExpertMulti.Text
+            Master.eSettings.NFOExpertMulti = Me.txtNFOExpertMulti.Text
+            Master.eSettings.PosterExpertMulti = Me.txtPosterExpertMulti.Text
+            Master.eSettings.StackExpertMulti = Me.chkStackExpertMulti.Checked
+            Master.eSettings.TrailerExpertMulti = Me.txtTrailerExpertMulti.Text
+            Master.eSettings.UnstackExpertMulti = Me.chkUnstackExpertMulti.Checked
+
+            '***************** Expert VTS ******************
+            Master.eSettings.ActorThumbsExpertVTS = Me.chkActorThumbsExpertVTS.Checked
+            Master.eSettings.ActorThumbsExtExpertVTS = Me.txtActorThumbsExtExpertVTS.Text
+            Master.eSettings.BannerExpertVTS = Me.txtBannerExpertVTS.Text
+            Master.eSettings.ClearArtExpertVTS = Me.txtClearArtExpertVTS.Text
+            Master.eSettings.ClearLogoExpertVTS = Me.txtClearLogoExpertVTS.Text
+            Master.eSettings.DiscArtExpertVTS = Me.txtDiscArtExpertVTS.Text
+            Master.eSettings.ExtrafanartsExpertVTS = Me.chkExtrafanartsExpertVTS.Checked
+            Master.eSettings.ExtrathumbsExpertVTS = Me.chkExtrathumbsExpertVTS.Checked
+            Master.eSettings.FanartExpertVTS = Me.txtFanartExpertVTS.Text
+            Master.eSettings.LandscapeExpertVTS = Me.txtLandscapeExpertVTS.Text
+            Master.eSettings.NFOExpertVTS = Me.txtNFOExpertVTS.Text
+            Master.eSettings.PosterExpertVTS = Me.txtPosterExpertVTS.Text
+            Master.eSettings.RecognizeVTSExpertVTS = Me.chkRecognizeVTSExpertVTS.Checked
+            Master.eSettings.TrailerExpertVTS = Me.txtTrailerExpertVTS.Text
+            Master.eSettings.UseBaseDirectoryVTS = Me.chkUseBaseDirectoryExpertVTS.Checked
+
+            '***************** Expert BDMV ******************
+            Master.eSettings.ActorThumbsExpertBDMV = Me.chkActorThumbsExpertBDMV.Checked
+            Master.eSettings.ActorThumbsExtExpertBDMV = Me.txtActorThumbsExtExpertBDMV.Text
+            Master.eSettings.BannerExpertBDMV = Me.txtBannerExpertBDMV.Text
+            Master.eSettings.ClearArtExpertBDMV = Me.txtClearArtExpertBDMV.Text
+            Master.eSettings.ClearLogoExpertBDMV = Me.txtClearLogoExpertBDMV.Text
+            Master.eSettings.DiscArtExpertBDMV = Me.txtDiscArtExpertBDMV.Text
+            Master.eSettings.ExtrafanartsExpertBDMV = Me.chkExtrafanartsExpertBDMV.Checked
+            Master.eSettings.ExtrathumbsExpertBDMV = Me.chkExtrathumbsExpertBDMV.Checked
+            Master.eSettings.FanartExpertBDMV = Me.txtFanartExpertBDMV.Text
+            Master.eSettings.LandscapeExpertBDMV = Me.txtLandscapeExpertBDMV.Text
+            Master.eSettings.NFOExpertBDMV = Me.txtNFOExpertBDMV.Text
+            Master.eSettings.PosterExpertBDMV = Me.txtPosterExpertBDMV.Text
+            Master.eSettings.TrailerExpertBDMV = Me.txtTrailerExpertBDMV.Text
+            Master.eSettings.UseBaseDirectoryBDMV = Me.chkUseBaseDirectoryExpertBDMV.Checked
 
             'Default to Frodo
             If Not (Master.eSettings.UseEden Or Master.eSettings.UseExpert Or Master.eSettings.UseFrodo Or Master.eSettings.UseNMJ Or Master.eSettings.UseYAMJ) Then
@@ -4101,7 +4235,7 @@ Public Class dlgSettings
         Me.btnEditTVSource.Text = Master.eLang.GetString(535, "Edit Source")
         Me.GroupBox19.Text = Master.eLang.GetString(536, "Miscellaneous Options")
         Me.gbMiscTVSourceOpts.Text = Master.eLang.GetString(536, "Miscellaneous Options")
-        Me.chkExpertRecognizeVTS.Text = Master.eLang.GetString(537, "Automatically Detect VIDEO_TS Folders Even if They Are Not Named ""VIDEO_TS""")
+        Me.chkRecognizeVTSExpertVTS.Text = Master.eLang.GetString(537, "Automatically Detect VIDEO_TS Folders Even if They Are Not Named ""VIDEO_TS""")
         Me.chkSkipStackedSizeCheck.Text = Master.eLang.GetString(538, "Skip Size Check of Stacked Files")
         Me.Label21.Text = Master.eLang.GetString(539, "MB")
         Me.Label20.Text = Master.eLang.GetString(540, "Skip files smaller than:")

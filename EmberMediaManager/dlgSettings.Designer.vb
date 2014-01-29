@@ -292,9 +292,9 @@ Partial Class dlgSettings
         Me.tbcFileNamingExpert = New System.Windows.Forms.TabControl()
         Me.tpFileNamingExpertSingle = New System.Windows.Forms.TabPage()
         Me.GroupBox6 = New System.Windows.Forms.GroupBox()
-        Me.chkExpertUnstackSingle = New System.Windows.Forms.CheckBox()
-        Me.chkExpertStackSingle = New System.Windows.Forms.CheckBox()
-        Me.chkExpertXBMCTrailerFormatSingle = New System.Windows.Forms.CheckBox()
+        Me.chkUnstackExpertSingle = New System.Windows.Forms.CheckBox()
+        Me.chkStackExpertSingle = New System.Windows.Forms.CheckBox()
+        Me.chkXBMCTrailerFormatExpertSingle = New System.Windows.Forms.CheckBox()
         Me.GroupBox5 = New System.Windows.Forms.GroupBox()
         Me.txtActorThumbsExtExpertSingle = New System.Windows.Forms.TextBox()
         Me.chkActorThumbsExpertSingle = New System.Windows.Forms.CheckBox()
@@ -308,9 +308,9 @@ Partial Class dlgSettings
         Me.txtClearLogoExpertSingle = New System.Windows.Forms.TextBox()
         Me.txtClearArtExpertSingle = New System.Windows.Forms.TextBox()
         Me.txtLandscapeExpertSingle = New System.Windows.Forms.TextBox()
-        Me.txtDiskArtExpertSingle = New System.Windows.Forms.TextBox()
+        Me.txtDiscArtExpertSingle = New System.Windows.Forms.TextBox()
         Me.lblLandscapeExpertSingle = New System.Windows.Forms.Label()
-        Me.lblDiskArtExpertSingle = New System.Windows.Forms.Label()
+        Me.lblDiscArtExpertSingle = New System.Windows.Forms.Label()
         Me.lblBannerExpertSingle = New System.Windows.Forms.Label()
         Me.lblTrailerExpertSingle = New System.Windows.Forms.Label()
         Me.lblClearLogoExpertSingle = New System.Windows.Forms.Label()
@@ -323,9 +323,9 @@ Partial Class dlgSettings
         Me.txtActorThumbsExtExpertMulti = New System.Windows.Forms.TextBox()
         Me.chkActorThumbsExpertMulti = New System.Windows.Forms.CheckBox()
         Me.GroupBox11 = New System.Windows.Forms.GroupBox()
-        Me.chkExpertUnstackMulti = New System.Windows.Forms.CheckBox()
-        Me.chkExpertStackMulti = New System.Windows.Forms.CheckBox()
-        Me.chkExpertXBMCTrailerFormatMulti = New System.Windows.Forms.CheckBox()
+        Me.chkUnstackExpertMulti = New System.Windows.Forms.CheckBox()
+        Me.chkStackExpertMulti = New System.Windows.Forms.CheckBox()
+        Me.chkXBMCTrailerFormatExpertMulti = New System.Windows.Forms.CheckBox()
         Me.txtPosterExpertMulti = New System.Windows.Forms.TextBox()
         Me.txtFanartExpertMulti = New System.Windows.Forms.TextBox()
         Me.lblClearArtExpertMulti = New System.Windows.Forms.Label()
@@ -346,9 +346,9 @@ Partial Class dlgSettings
         Me.lblNFOExpertMulti = New System.Windows.Forms.Label()
         Me.tbFileNamingExpertVTS = New System.Windows.Forms.TabPage()
         Me.GroupBox13 = New System.Windows.Forms.GroupBox()
-        Me.chkExpertRecognizeVTS = New System.Windows.Forms.CheckBox()
-        Me.chkExpertUseBaseDirectoryVTS = New System.Windows.Forms.CheckBox()
-        Me.chkExpertXBMCTrailerFormatVTS = New System.Windows.Forms.CheckBox()
+        Me.chkRecognizeVTSExpertVTS = New System.Windows.Forms.CheckBox()
+        Me.chkUseBaseDirectoryExpertVTS = New System.Windows.Forms.CheckBox()
+        Me.chkXBMCTrailerFormatExpertVTS = New System.Windows.Forms.CheckBox()
         Me.GroupBox14 = New System.Windows.Forms.GroupBox()
         Me.txtActorThumbsExtExpertVTS = New System.Windows.Forms.TextBox()
         Me.chkActorThumbsExpertVTS = New System.Windows.Forms.CheckBox()
@@ -374,8 +374,8 @@ Partial Class dlgSettings
         Me.lblNFOExpertVTS = New System.Windows.Forms.Label()
         Me.tbFileNamingExpertBDMV = New System.Windows.Forms.TabPage()
         Me.GroupBox17 = New System.Windows.Forms.GroupBox()
-        Me.chkExpertUseBaseDirectoryBDMV = New System.Windows.Forms.CheckBox()
-        Me.chkExpertXBMCTrailerFormatBDMV = New System.Windows.Forms.CheckBox()
+        Me.chkUseBaseDirectoryExpertBDMV = New System.Windows.Forms.CheckBox()
+        Me.chkXBMCTrailerFormatExpertBDMV = New System.Windows.Forms.CheckBox()
         Me.GroupBox20 = New System.Windows.Forms.GroupBox()
         Me.txtActorThumbsExtExpertBDMV = New System.Windows.Forms.TextBox()
         Me.chkActorThumbsExpertBDMV = New System.Windows.Forms.CheckBox()
@@ -3785,7 +3785,7 @@ Partial Class dlgSettings
         Me.tbcFileNamingExpert.Name = "tbcFileNamingExpert"
         Me.tbcFileNamingExpert.SelectedIndex = 0
         Me.tbcFileNamingExpert.Size = New System.Drawing.Size(481, 280)
-        Me.tbcFileNamingExpert.TabIndex = 8
+        Me.tbcFileNamingExpert.TabIndex = 2
         '
         'tpFileNamingExpertSingle
         '
@@ -3799,9 +3799,9 @@ Partial Class dlgSettings
         Me.tpFileNamingExpertSingle.Controls.Add(Me.txtClearLogoExpertSingle)
         Me.tpFileNamingExpertSingle.Controls.Add(Me.txtClearArtExpertSingle)
         Me.tpFileNamingExpertSingle.Controls.Add(Me.txtLandscapeExpertSingle)
-        Me.tpFileNamingExpertSingle.Controls.Add(Me.txtDiskArtExpertSingle)
+        Me.tpFileNamingExpertSingle.Controls.Add(Me.txtDiscArtExpertSingle)
         Me.tpFileNamingExpertSingle.Controls.Add(Me.lblLandscapeExpertSingle)
-        Me.tpFileNamingExpertSingle.Controls.Add(Me.lblDiskArtExpertSingle)
+        Me.tpFileNamingExpertSingle.Controls.Add(Me.lblDiscArtExpertSingle)
         Me.tpFileNamingExpertSingle.Controls.Add(Me.lblBannerExpertSingle)
         Me.tpFileNamingExpertSingle.Controls.Add(Me.lblTrailerExpertSingle)
         Me.tpFileNamingExpertSingle.Controls.Add(Me.lblClearLogoExpertSingle)
@@ -3819,45 +3819,45 @@ Partial Class dlgSettings
         '
         'GroupBox6
         '
-        Me.GroupBox6.Controls.Add(Me.chkExpertUnstackSingle)
-        Me.GroupBox6.Controls.Add(Me.chkExpertStackSingle)
-        Me.GroupBox6.Controls.Add(Me.chkExpertXBMCTrailerFormatSingle)
+        Me.GroupBox6.Controls.Add(Me.chkUnstackExpertSingle)
+        Me.GroupBox6.Controls.Add(Me.chkStackExpertSingle)
+        Me.GroupBox6.Controls.Add(Me.chkXBMCTrailerFormatExpertSingle)
         Me.GroupBox6.Location = New System.Drawing.Point(307, 6)
         Me.GroupBox6.Name = "GroupBox6"
         Me.GroupBox6.Size = New System.Drawing.Size(160, 93)
-        Me.GroupBox6.TabIndex = 33
+        Me.GroupBox6.TabIndex = 12
         Me.GroupBox6.TabStop = False
         Me.GroupBox6.Text = "Optional Settings"
         '
-        'chkExpertUnstackSingle
+        'chkUnstackExpertSingle
         '
-        Me.chkExpertUnstackSingle.AutoSize = True
-        Me.chkExpertUnstackSingle.Location = New System.Drawing.Point(6, 67)
-        Me.chkExpertUnstackSingle.Name = "chkExpertUnstackSingle"
-        Me.chkExpertUnstackSingle.Size = New System.Drawing.Size(128, 17)
-        Me.chkExpertUnstackSingle.TabIndex = 34
-        Me.chkExpertUnstackSingle.Text = "also save unstacked"
-        Me.chkExpertUnstackSingle.UseVisualStyleBackColor = True
+        Me.chkUnstackExpertSingle.AutoSize = True
+        Me.chkUnstackExpertSingle.Location = New System.Drawing.Point(6, 67)
+        Me.chkUnstackExpertSingle.Name = "chkUnstackExpertSingle"
+        Me.chkUnstackExpertSingle.Size = New System.Drawing.Size(128, 17)
+        Me.chkUnstackExpertSingle.TabIndex = 3
+        Me.chkUnstackExpertSingle.Text = "also save unstacked"
+        Me.chkUnstackExpertSingle.UseVisualStyleBackColor = True
         '
-        'chkExpertStackSingle
+        'chkStackExpertSingle
         '
-        Me.chkExpertStackSingle.AutoSize = True
-        Me.chkExpertStackSingle.Location = New System.Drawing.Point(6, 44)
-        Me.chkExpertStackSingle.Name = "chkExpertStackSingle"
-        Me.chkExpertStackSingle.Size = New System.Drawing.Size(116, 17)
-        Me.chkExpertStackSingle.TabIndex = 33
-        Me.chkExpertStackSingle.Text = "Stack <filename>"
-        Me.chkExpertStackSingle.UseVisualStyleBackColor = True
+        Me.chkStackExpertSingle.AutoSize = True
+        Me.chkStackExpertSingle.Location = New System.Drawing.Point(6, 44)
+        Me.chkStackExpertSingle.Name = "chkStackExpertSingle"
+        Me.chkStackExpertSingle.Size = New System.Drawing.Size(116, 17)
+        Me.chkStackExpertSingle.TabIndex = 2
+        Me.chkStackExpertSingle.Text = "Stack <filename>"
+        Me.chkStackExpertSingle.UseVisualStyleBackColor = True
         '
-        'chkExpertXBMCTrailerFormatSingle
+        'chkXBMCTrailerFormatExpertSingle
         '
-        Me.chkExpertXBMCTrailerFormatSingle.AutoSize = True
-        Me.chkExpertXBMCTrailerFormatSingle.Location = New System.Drawing.Point(6, 21)
-        Me.chkExpertXBMCTrailerFormatSingle.Name = "chkExpertXBMCTrailerFormatSingle"
-        Me.chkExpertXBMCTrailerFormatSingle.Size = New System.Drawing.Size(129, 17)
-        Me.chkExpertXBMCTrailerFormatSingle.TabIndex = 32
-        Me.chkExpertXBMCTrailerFormatSingle.Text = "XBMC Trailer Format"
-        Me.chkExpertXBMCTrailerFormatSingle.UseVisualStyleBackColor = True
+        Me.chkXBMCTrailerFormatExpertSingle.AutoSize = True
+        Me.chkXBMCTrailerFormatExpertSingle.Location = New System.Drawing.Point(6, 21)
+        Me.chkXBMCTrailerFormatExpertSingle.Name = "chkXBMCTrailerFormatExpertSingle"
+        Me.chkXBMCTrailerFormatExpertSingle.Size = New System.Drawing.Size(129, 17)
+        Me.chkXBMCTrailerFormatExpertSingle.TabIndex = 1
+        Me.chkXBMCTrailerFormatExpertSingle.Text = "XBMC Trailer Format"
+        Me.chkXBMCTrailerFormatExpertSingle.UseVisualStyleBackColor = True
         '
         'GroupBox5
         '
@@ -3868,7 +3868,7 @@ Partial Class dlgSettings
         Me.GroupBox5.Location = New System.Drawing.Point(307, 105)
         Me.GroupBox5.Name = "GroupBox5"
         Me.GroupBox5.Size = New System.Drawing.Size(160, 93)
-        Me.GroupBox5.TabIndex = 32
+        Me.GroupBox5.TabIndex = 13
         Me.GroupBox5.TabStop = False
         Me.GroupBox5.Text = "Optional Images"
         '
@@ -3877,8 +3877,7 @@ Partial Class dlgSettings
         Me.txtActorThumbsExtExpertSingle.Location = New System.Drawing.Point(108, 19)
         Me.txtActorThumbsExtExpertSingle.Name = "txtActorThumbsExtExpertSingle"
         Me.txtActorThumbsExtExpertSingle.Size = New System.Drawing.Size(46, 22)
-        Me.txtActorThumbsExtExpertSingle.TabIndex = 32
-        Me.txtActorThumbsExtExpertSingle.Text = "jpg"
+        Me.txtActorThumbsExtExpertSingle.TabIndex = 2
         '
         'chkActorThumbsExpertSingle
         '
@@ -3886,7 +3885,7 @@ Partial Class dlgSettings
         Me.chkActorThumbsExpertSingle.Location = New System.Drawing.Point(6, 21)
         Me.chkActorThumbsExpertSingle.Name = "chkActorThumbsExpertSingle"
         Me.chkActorThumbsExpertSingle.Size = New System.Drawing.Size(96, 17)
-        Me.chkActorThumbsExpertSingle.TabIndex = 29
+        Me.chkActorThumbsExpertSingle.TabIndex = 1
         Me.chkActorThumbsExpertSingle.Text = "Actor Thumbs"
         Me.chkActorThumbsExpertSingle.UseVisualStyleBackColor = True
         '
@@ -3896,7 +3895,7 @@ Partial Class dlgSettings
         Me.chkExtrafanartsExpertSingle.Location = New System.Drawing.Point(6, 67)
         Me.chkExtrafanartsExpertSingle.Name = "chkExtrafanartsExpertSingle"
         Me.chkExtrafanartsExpertSingle.Size = New System.Drawing.Size(87, 17)
-        Me.chkExtrafanartsExpertSingle.TabIndex = 31
+        Me.chkExtrafanartsExpertSingle.TabIndex = 4
         Me.chkExtrafanartsExpertSingle.Text = "Extrafanarts"
         Me.chkExtrafanartsExpertSingle.UseVisualStyleBackColor = True
         '
@@ -3906,7 +3905,7 @@ Partial Class dlgSettings
         Me.chkExtrathumbsExpertSingle.Location = New System.Drawing.Point(6, 44)
         Me.chkExtrathumbsExpertSingle.Name = "chkExtrathumbsExpertSingle"
         Me.chkExtrathumbsExpertSingle.Size = New System.Drawing.Size(90, 17)
-        Me.chkExtrathumbsExpertSingle.TabIndex = 30
+        Me.chkExtrathumbsExpertSingle.TabIndex = 3
         Me.chkExtrathumbsExpertSingle.Text = "Extrathumbs"
         Me.chkExtrathumbsExpertSingle.UseVisualStyleBackColor = True
         '
@@ -3924,56 +3923,56 @@ Partial Class dlgSettings
         Me.txtPosterExpertSingle.Location = New System.Drawing.Point(71, 33)
         Me.txtPosterExpertSingle.Name = "txtPosterExpertSingle"
         Me.txtPosterExpertSingle.Size = New System.Drawing.Size(220, 22)
-        Me.txtPosterExpertSingle.TabIndex = 27
+        Me.txtPosterExpertSingle.TabIndex = 4
         '
         'txtFanartExpertSingle
         '
         Me.txtFanartExpertSingle.Location = New System.Drawing.Point(71, 60)
         Me.txtFanartExpertSingle.Name = "txtFanartExpertSingle"
         Me.txtFanartExpertSingle.Size = New System.Drawing.Size(220, 22)
-        Me.txtFanartExpertSingle.TabIndex = 26
+        Me.txtFanartExpertSingle.TabIndex = 5
         '
         'txtTrailerExpertSingle
         '
         Me.txtTrailerExpertSingle.Location = New System.Drawing.Point(71, 87)
         Me.txtTrailerExpertSingle.Name = "txtTrailerExpertSingle"
         Me.txtTrailerExpertSingle.Size = New System.Drawing.Size(220, 22)
-        Me.txtTrailerExpertSingle.TabIndex = 25
+        Me.txtTrailerExpertSingle.TabIndex = 6
         '
         'txtBannerExpertSingle
         '
         Me.txtBannerExpertSingle.Location = New System.Drawing.Point(71, 114)
         Me.txtBannerExpertSingle.Name = "txtBannerExpertSingle"
         Me.txtBannerExpertSingle.Size = New System.Drawing.Size(220, 22)
-        Me.txtBannerExpertSingle.TabIndex = 24
+        Me.txtBannerExpertSingle.TabIndex = 7
         '
         'txtClearLogoExpertSingle
         '
         Me.txtClearLogoExpertSingle.Location = New System.Drawing.Point(71, 141)
         Me.txtClearLogoExpertSingle.Name = "txtClearLogoExpertSingle"
         Me.txtClearLogoExpertSingle.Size = New System.Drawing.Size(220, 22)
-        Me.txtClearLogoExpertSingle.TabIndex = 23
+        Me.txtClearLogoExpertSingle.TabIndex = 8
         '
         'txtClearArtExpertSingle
         '
         Me.txtClearArtExpertSingle.Location = New System.Drawing.Point(71, 168)
         Me.txtClearArtExpertSingle.Name = "txtClearArtExpertSingle"
         Me.txtClearArtExpertSingle.Size = New System.Drawing.Size(220, 22)
-        Me.txtClearArtExpertSingle.TabIndex = 22
+        Me.txtClearArtExpertSingle.TabIndex = 9
         '
         'txtLandscapeExpertSingle
         '
         Me.txtLandscapeExpertSingle.Location = New System.Drawing.Point(71, 222)
         Me.txtLandscapeExpertSingle.Name = "txtLandscapeExpertSingle"
         Me.txtLandscapeExpertSingle.Size = New System.Drawing.Size(220, 22)
-        Me.txtLandscapeExpertSingle.TabIndex = 21
+        Me.txtLandscapeExpertSingle.TabIndex = 11
         '
-        'txtDiskArtExpertSingle
+        'txtDiscArtExpertSingle
         '
-        Me.txtDiskArtExpertSingle.Location = New System.Drawing.Point(71, 195)
-        Me.txtDiskArtExpertSingle.Name = "txtDiskArtExpertSingle"
-        Me.txtDiskArtExpertSingle.Size = New System.Drawing.Size(220, 22)
-        Me.txtDiskArtExpertSingle.TabIndex = 20
+        Me.txtDiscArtExpertSingle.Location = New System.Drawing.Point(71, 195)
+        Me.txtDiscArtExpertSingle.Name = "txtDiscArtExpertSingle"
+        Me.txtDiscArtExpertSingle.Size = New System.Drawing.Size(220, 22)
+        Me.txtDiscArtExpertSingle.TabIndex = 10
         '
         'lblLandscapeExpertSingle
         '
@@ -3984,14 +3983,14 @@ Partial Class dlgSettings
         Me.lblLandscapeExpertSingle.TabIndex = 19
         Me.lblLandscapeExpertSingle.Text = "Landscape"
         '
-        'lblDiskArtExpertSingle
+        'lblDiscArtExpertSingle
         '
-        Me.lblDiskArtExpertSingle.AutoSize = True
-        Me.lblDiskArtExpertSingle.Location = New System.Drawing.Point(6, 198)
-        Me.lblDiskArtExpertSingle.Name = "lblDiskArtExpertSingle"
-        Me.lblDiskArtExpertSingle.Size = New System.Drawing.Size(43, 13)
-        Me.lblDiskArtExpertSingle.TabIndex = 18
-        Me.lblDiskArtExpertSingle.Text = "DiscArt"
+        Me.lblDiscArtExpertSingle.AutoSize = True
+        Me.lblDiscArtExpertSingle.Location = New System.Drawing.Point(6, 198)
+        Me.lblDiscArtExpertSingle.Name = "lblDiscArtExpertSingle"
+        Me.lblDiscArtExpertSingle.Size = New System.Drawing.Size(43, 13)
+        Me.lblDiscArtExpertSingle.TabIndex = 18
+        Me.lblDiscArtExpertSingle.Text = "DiscArt"
         '
         'lblBannerExpertSingle
         '
@@ -4043,7 +4042,7 @@ Partial Class dlgSettings
         Me.txtNFOExpertSingle.Location = New System.Drawing.Point(71, 6)
         Me.txtNFOExpertSingle.Name = "txtNFOExpertSingle"
         Me.txtNFOExpertSingle.Size = New System.Drawing.Size(220, 22)
-        Me.txtNFOExpertSingle.TabIndex = 8
+        Me.txtNFOExpertSingle.TabIndex = 3
         '
         'lblNFOExpertSingle
         '
@@ -4091,7 +4090,7 @@ Partial Class dlgSettings
         Me.GroupBox7.Location = New System.Drawing.Point(307, 105)
         Me.GroupBox7.Name = "GroupBox7"
         Me.GroupBox7.Size = New System.Drawing.Size(160, 52)
-        Me.GroupBox7.TabIndex = 54
+        Me.GroupBox7.TabIndex = 11
         Me.GroupBox7.TabStop = False
         Me.GroupBox7.Text = "Optional Images"
         '
@@ -4100,8 +4099,7 @@ Partial Class dlgSettings
         Me.txtActorThumbsExtExpertMulti.Location = New System.Drawing.Point(108, 19)
         Me.txtActorThumbsExtExpertMulti.Name = "txtActorThumbsExtExpertMulti"
         Me.txtActorThumbsExtExpertMulti.Size = New System.Drawing.Size(46, 22)
-        Me.txtActorThumbsExtExpertMulti.TabIndex = 32
-        Me.txtActorThumbsExtExpertMulti.Text = "jpg"
+        Me.txtActorThumbsExtExpertMulti.TabIndex = 2
         '
         'chkActorThumbsExpertMulti
         '
@@ -4109,65 +4107,65 @@ Partial Class dlgSettings
         Me.chkActorThumbsExpertMulti.Location = New System.Drawing.Point(6, 21)
         Me.chkActorThumbsExpertMulti.Name = "chkActorThumbsExpertMulti"
         Me.chkActorThumbsExpertMulti.Size = New System.Drawing.Size(96, 17)
-        Me.chkActorThumbsExpertMulti.TabIndex = 29
+        Me.chkActorThumbsExpertMulti.TabIndex = 1
         Me.chkActorThumbsExpertMulti.Text = "Actor Thumbs"
         Me.chkActorThumbsExpertMulti.UseVisualStyleBackColor = True
         '
         'GroupBox11
         '
-        Me.GroupBox11.Controls.Add(Me.chkExpertUnstackMulti)
-        Me.GroupBox11.Controls.Add(Me.chkExpertStackMulti)
-        Me.GroupBox11.Controls.Add(Me.chkExpertXBMCTrailerFormatMulti)
+        Me.GroupBox11.Controls.Add(Me.chkUnstackExpertMulti)
+        Me.GroupBox11.Controls.Add(Me.chkStackExpertMulti)
+        Me.GroupBox11.Controls.Add(Me.chkXBMCTrailerFormatExpertMulti)
         Me.GroupBox11.Location = New System.Drawing.Point(307, 6)
         Me.GroupBox11.Name = "GroupBox11"
         Me.GroupBox11.Size = New System.Drawing.Size(160, 93)
-        Me.GroupBox11.TabIndex = 53
+        Me.GroupBox11.TabIndex = 10
         Me.GroupBox11.TabStop = False
         Me.GroupBox11.Text = "Optional Settings"
         '
-        'chkExpertUnstackMulti
+        'chkUnstackExpertMulti
         '
-        Me.chkExpertUnstackMulti.AutoSize = True
-        Me.chkExpertUnstackMulti.Location = New System.Drawing.Point(6, 67)
-        Me.chkExpertUnstackMulti.Name = "chkExpertUnstackMulti"
-        Me.chkExpertUnstackMulti.Size = New System.Drawing.Size(128, 17)
-        Me.chkExpertUnstackMulti.TabIndex = 34
-        Me.chkExpertUnstackMulti.Text = "also save unstacked"
-        Me.chkExpertUnstackMulti.UseVisualStyleBackColor = True
+        Me.chkUnstackExpertMulti.AutoSize = True
+        Me.chkUnstackExpertMulti.Location = New System.Drawing.Point(6, 67)
+        Me.chkUnstackExpertMulti.Name = "chkUnstackExpertMulti"
+        Me.chkUnstackExpertMulti.Size = New System.Drawing.Size(128, 17)
+        Me.chkUnstackExpertMulti.TabIndex = 3
+        Me.chkUnstackExpertMulti.Text = "also save unstacked"
+        Me.chkUnstackExpertMulti.UseVisualStyleBackColor = True
         '
-        'chkExpertStackMulti
+        'chkStackExpertMulti
         '
-        Me.chkExpertStackMulti.AutoSize = True
-        Me.chkExpertStackMulti.Location = New System.Drawing.Point(6, 44)
-        Me.chkExpertStackMulti.Name = "chkExpertStackMulti"
-        Me.chkExpertStackMulti.Size = New System.Drawing.Size(116, 17)
-        Me.chkExpertStackMulti.TabIndex = 33
-        Me.chkExpertStackMulti.Text = "Stack <filename>"
-        Me.chkExpertStackMulti.UseVisualStyleBackColor = True
+        Me.chkStackExpertMulti.AutoSize = True
+        Me.chkStackExpertMulti.Location = New System.Drawing.Point(6, 44)
+        Me.chkStackExpertMulti.Name = "chkStackExpertMulti"
+        Me.chkStackExpertMulti.Size = New System.Drawing.Size(116, 17)
+        Me.chkStackExpertMulti.TabIndex = 2
+        Me.chkStackExpertMulti.Text = "Stack <filename>"
+        Me.chkStackExpertMulti.UseVisualStyleBackColor = True
         '
-        'chkExpertXBMCTrailerFormatMulti
+        'chkXBMCTrailerFormatExpertMulti
         '
-        Me.chkExpertXBMCTrailerFormatMulti.AutoSize = True
-        Me.chkExpertXBMCTrailerFormatMulti.Location = New System.Drawing.Point(6, 21)
-        Me.chkExpertXBMCTrailerFormatMulti.Name = "chkExpertXBMCTrailerFormatMulti"
-        Me.chkExpertXBMCTrailerFormatMulti.Size = New System.Drawing.Size(129, 17)
-        Me.chkExpertXBMCTrailerFormatMulti.TabIndex = 32
-        Me.chkExpertXBMCTrailerFormatMulti.Text = "XBMC Trailer Format"
-        Me.chkExpertXBMCTrailerFormatMulti.UseVisualStyleBackColor = True
+        Me.chkXBMCTrailerFormatExpertMulti.AutoSize = True
+        Me.chkXBMCTrailerFormatExpertMulti.Location = New System.Drawing.Point(6, 21)
+        Me.chkXBMCTrailerFormatExpertMulti.Name = "chkXBMCTrailerFormatExpertMulti"
+        Me.chkXBMCTrailerFormatExpertMulti.Size = New System.Drawing.Size(129, 17)
+        Me.chkXBMCTrailerFormatExpertMulti.TabIndex = 1
+        Me.chkXBMCTrailerFormatExpertMulti.Text = "XBMC Trailer Format"
+        Me.chkXBMCTrailerFormatExpertMulti.UseVisualStyleBackColor = True
         '
         'txtPosterExpertMulti
         '
         Me.txtPosterExpertMulti.Location = New System.Drawing.Point(71, 33)
         Me.txtPosterExpertMulti.Name = "txtPosterExpertMulti"
         Me.txtPosterExpertMulti.Size = New System.Drawing.Size(220, 22)
-        Me.txtPosterExpertMulti.TabIndex = 50
+        Me.txtPosterExpertMulti.TabIndex = 2
         '
         'txtFanartExpertMulti
         '
         Me.txtFanartExpertMulti.Location = New System.Drawing.Point(71, 60)
         Me.txtFanartExpertMulti.Name = "txtFanartExpertMulti"
         Me.txtFanartExpertMulti.Size = New System.Drawing.Size(220, 22)
-        Me.txtFanartExpertMulti.TabIndex = 49
+        Me.txtFanartExpertMulti.TabIndex = 3
         '
         'lblClearArtExpertMulti
         '
@@ -4183,42 +4181,42 @@ Partial Class dlgSettings
         Me.txtTrailerExpertMulti.Location = New System.Drawing.Point(71, 87)
         Me.txtTrailerExpertMulti.Name = "txtTrailerExpertMulti"
         Me.txtTrailerExpertMulti.Size = New System.Drawing.Size(220, 22)
-        Me.txtTrailerExpertMulti.TabIndex = 48
+        Me.txtTrailerExpertMulti.TabIndex = 4
         '
         'txtBannerExpertMulti
         '
         Me.txtBannerExpertMulti.Location = New System.Drawing.Point(71, 114)
         Me.txtBannerExpertMulti.Name = "txtBannerExpertMulti"
         Me.txtBannerExpertMulti.Size = New System.Drawing.Size(220, 22)
-        Me.txtBannerExpertMulti.TabIndex = 47
+        Me.txtBannerExpertMulti.TabIndex = 5
         '
         'txtClearLogoExpertMulti
         '
         Me.txtClearLogoExpertMulti.Location = New System.Drawing.Point(71, 141)
         Me.txtClearLogoExpertMulti.Name = "txtClearLogoExpertMulti"
         Me.txtClearLogoExpertMulti.Size = New System.Drawing.Size(220, 22)
-        Me.txtClearLogoExpertMulti.TabIndex = 46
+        Me.txtClearLogoExpertMulti.TabIndex = 6
         '
         'txtClearArtExpertMulti
         '
         Me.txtClearArtExpertMulti.Location = New System.Drawing.Point(71, 168)
         Me.txtClearArtExpertMulti.Name = "txtClearArtExpertMulti"
         Me.txtClearArtExpertMulti.Size = New System.Drawing.Size(220, 22)
-        Me.txtClearArtExpertMulti.TabIndex = 45
+        Me.txtClearArtExpertMulti.TabIndex = 7
         '
         'txtLandscapeExpertMulti
         '
         Me.txtLandscapeExpertMulti.Location = New System.Drawing.Point(71, 222)
         Me.txtLandscapeExpertMulti.Name = "txtLandscapeExpertMulti"
         Me.txtLandscapeExpertMulti.Size = New System.Drawing.Size(220, 22)
-        Me.txtLandscapeExpertMulti.TabIndex = 44
+        Me.txtLandscapeExpertMulti.TabIndex = 9
         '
         'txtDiscArtExpertMulti
         '
         Me.txtDiscArtExpertMulti.Location = New System.Drawing.Point(71, 195)
         Me.txtDiscArtExpertMulti.Name = "txtDiscArtExpertMulti"
         Me.txtDiscArtExpertMulti.Size = New System.Drawing.Size(220, 22)
-        Me.txtDiscArtExpertMulti.TabIndex = 43
+        Me.txtDiscArtExpertMulti.TabIndex = 8
         '
         'lblLandscapeExpertMulti
         '
@@ -4288,7 +4286,7 @@ Partial Class dlgSettings
         Me.txtNFOExpertMulti.Location = New System.Drawing.Point(71, 6)
         Me.txtNFOExpertMulti.Name = "txtNFOExpertMulti"
         Me.txtNFOExpertMulti.Size = New System.Drawing.Size(220, 22)
-        Me.txtNFOExpertMulti.TabIndex = 34
+        Me.txtNFOExpertMulti.TabIndex = 1
         '
         'lblNFOExpertMulti
         '
@@ -4330,45 +4328,45 @@ Partial Class dlgSettings
         '
         'GroupBox13
         '
-        Me.GroupBox13.Controls.Add(Me.chkExpertRecognizeVTS)
-        Me.GroupBox13.Controls.Add(Me.chkExpertUseBaseDirectoryVTS)
-        Me.GroupBox13.Controls.Add(Me.chkExpertXBMCTrailerFormatVTS)
+        Me.GroupBox13.Controls.Add(Me.chkRecognizeVTSExpertVTS)
+        Me.GroupBox13.Controls.Add(Me.chkUseBaseDirectoryExpertVTS)
+        Me.GroupBox13.Controls.Add(Me.chkXBMCTrailerFormatExpertVTS)
         Me.GroupBox13.Location = New System.Drawing.Point(307, 6)
         Me.GroupBox13.Name = "GroupBox13"
         Me.GroupBox13.Size = New System.Drawing.Size(160, 93)
-        Me.GroupBox13.TabIndex = 53
+        Me.GroupBox13.TabIndex = 10
         Me.GroupBox13.TabStop = False
         Me.GroupBox13.Text = "Optional Settings"
         '
-        'chkExpertRecognizeVTS
+        'chkRecognizeVTSExpertVTS
         '
-        Me.chkExpertRecognizeVTS.AutoSize = True
-        Me.chkExpertRecognizeVTS.Location = New System.Drawing.Point(6, 67)
-        Me.chkExpertRecognizeVTS.Name = "chkExpertRecognizeVTS"
-        Me.chkExpertRecognizeVTS.Size = New System.Drawing.Size(131, 17)
-        Me.chkExpertRecognizeVTS.TabIndex = 35
-        Me.chkExpertRecognizeVTS.Text = "Recognize VIDEO_TS"
-        Me.chkExpertRecognizeVTS.UseVisualStyleBackColor = True
+        Me.chkRecognizeVTSExpertVTS.AutoSize = True
+        Me.chkRecognizeVTSExpertVTS.Location = New System.Drawing.Point(6, 67)
+        Me.chkRecognizeVTSExpertVTS.Name = "chkRecognizeVTSExpertVTS"
+        Me.chkRecognizeVTSExpertVTS.Size = New System.Drawing.Size(131, 17)
+        Me.chkRecognizeVTSExpertVTS.TabIndex = 3
+        Me.chkRecognizeVTSExpertVTS.Text = "Recognize VIDEO_TS"
+        Me.chkRecognizeVTSExpertVTS.UseVisualStyleBackColor = True
         '
-        'chkExpertUseBaseDirectoryVTS
+        'chkUseBaseDirectoryExpertVTS
         '
-        Me.chkExpertUseBaseDirectoryVTS.AutoSize = True
-        Me.chkExpertUseBaseDirectoryVTS.Location = New System.Drawing.Point(6, 44)
-        Me.chkExpertUseBaseDirectoryVTS.Name = "chkExpertUseBaseDirectoryVTS"
-        Me.chkExpertUseBaseDirectoryVTS.Size = New System.Drawing.Size(121, 17)
-        Me.chkExpertUseBaseDirectoryVTS.TabIndex = 34
-        Me.chkExpertUseBaseDirectoryVTS.Text = "Use Base Directory"
-        Me.chkExpertUseBaseDirectoryVTS.UseVisualStyleBackColor = True
+        Me.chkUseBaseDirectoryExpertVTS.AutoSize = True
+        Me.chkUseBaseDirectoryExpertVTS.Location = New System.Drawing.Point(6, 44)
+        Me.chkUseBaseDirectoryExpertVTS.Name = "chkUseBaseDirectoryExpertVTS"
+        Me.chkUseBaseDirectoryExpertVTS.Size = New System.Drawing.Size(121, 17)
+        Me.chkUseBaseDirectoryExpertVTS.TabIndex = 2
+        Me.chkUseBaseDirectoryExpertVTS.Text = "Use Base Directory"
+        Me.chkUseBaseDirectoryExpertVTS.UseVisualStyleBackColor = True
         '
-        'chkExpertXBMCTrailerFormatVTS
+        'chkXBMCTrailerFormatExpertVTS
         '
-        Me.chkExpertXBMCTrailerFormatVTS.AutoSize = True
-        Me.chkExpertXBMCTrailerFormatVTS.Location = New System.Drawing.Point(6, 21)
-        Me.chkExpertXBMCTrailerFormatVTS.Name = "chkExpertXBMCTrailerFormatVTS"
-        Me.chkExpertXBMCTrailerFormatVTS.Size = New System.Drawing.Size(129, 17)
-        Me.chkExpertXBMCTrailerFormatVTS.TabIndex = 32
-        Me.chkExpertXBMCTrailerFormatVTS.Text = "XBMC Trailer Format"
-        Me.chkExpertXBMCTrailerFormatVTS.UseVisualStyleBackColor = True
+        Me.chkXBMCTrailerFormatExpertVTS.AutoSize = True
+        Me.chkXBMCTrailerFormatExpertVTS.Location = New System.Drawing.Point(6, 21)
+        Me.chkXBMCTrailerFormatExpertVTS.Name = "chkXBMCTrailerFormatExpertVTS"
+        Me.chkXBMCTrailerFormatExpertVTS.Size = New System.Drawing.Size(129, 17)
+        Me.chkXBMCTrailerFormatExpertVTS.TabIndex = 1
+        Me.chkXBMCTrailerFormatExpertVTS.Text = "XBMC Trailer Format"
+        Me.chkXBMCTrailerFormatExpertVTS.UseVisualStyleBackColor = True
         '
         'GroupBox14
         '
@@ -4379,7 +4377,7 @@ Partial Class dlgSettings
         Me.GroupBox14.Location = New System.Drawing.Point(307, 105)
         Me.GroupBox14.Name = "GroupBox14"
         Me.GroupBox14.Size = New System.Drawing.Size(160, 93)
-        Me.GroupBox14.TabIndex = 52
+        Me.GroupBox14.TabIndex = 11
         Me.GroupBox14.TabStop = False
         Me.GroupBox14.Text = "Optional Images"
         '
@@ -4388,8 +4386,7 @@ Partial Class dlgSettings
         Me.txtActorThumbsExtExpertVTS.Location = New System.Drawing.Point(108, 19)
         Me.txtActorThumbsExtExpertVTS.Name = "txtActorThumbsExtExpertVTS"
         Me.txtActorThumbsExtExpertVTS.Size = New System.Drawing.Size(46, 22)
-        Me.txtActorThumbsExtExpertVTS.TabIndex = 32
-        Me.txtActorThumbsExtExpertVTS.Text = "jpg"
+        Me.txtActorThumbsExtExpertVTS.TabIndex = 2
         '
         'chkActorThumbsExpertVTS
         '
@@ -4397,7 +4394,7 @@ Partial Class dlgSettings
         Me.chkActorThumbsExpertVTS.Location = New System.Drawing.Point(6, 21)
         Me.chkActorThumbsExpertVTS.Name = "chkActorThumbsExpertVTS"
         Me.chkActorThumbsExpertVTS.Size = New System.Drawing.Size(96, 17)
-        Me.chkActorThumbsExpertVTS.TabIndex = 29
+        Me.chkActorThumbsExpertVTS.TabIndex = 1
         Me.chkActorThumbsExpertVTS.Text = "Actor Thumbs"
         Me.chkActorThumbsExpertVTS.UseVisualStyleBackColor = True
         '
@@ -4407,7 +4404,7 @@ Partial Class dlgSettings
         Me.chkExtrafanartsExpertVTS.Location = New System.Drawing.Point(6, 67)
         Me.chkExtrafanartsExpertVTS.Name = "chkExtrafanartsExpertVTS"
         Me.chkExtrafanartsExpertVTS.Size = New System.Drawing.Size(87, 17)
-        Me.chkExtrafanartsExpertVTS.TabIndex = 31
+        Me.chkExtrafanartsExpertVTS.TabIndex = 4
         Me.chkExtrafanartsExpertVTS.Text = "Extrafanarts"
         Me.chkExtrafanartsExpertVTS.UseVisualStyleBackColor = True
         '
@@ -4417,7 +4414,7 @@ Partial Class dlgSettings
         Me.chkExtrathumbsExpertVTS.Location = New System.Drawing.Point(6, 44)
         Me.chkExtrathumbsExpertVTS.Name = "chkExtrathumbsExpertVTS"
         Me.chkExtrathumbsExpertVTS.Size = New System.Drawing.Size(90, 17)
-        Me.chkExtrathumbsExpertVTS.TabIndex = 30
+        Me.chkExtrathumbsExpertVTS.TabIndex = 3
         Me.chkExtrathumbsExpertVTS.Text = "Extrathumbs"
         Me.chkExtrathumbsExpertVTS.UseVisualStyleBackColor = True
         '
@@ -4435,56 +4432,56 @@ Partial Class dlgSettings
         Me.txtPosterExpertVTS.Location = New System.Drawing.Point(71, 33)
         Me.txtPosterExpertVTS.Name = "txtPosterExpertVTS"
         Me.txtPosterExpertVTS.Size = New System.Drawing.Size(220, 22)
-        Me.txtPosterExpertVTS.TabIndex = 50
+        Me.txtPosterExpertVTS.TabIndex = 2
         '
         'txtFanartExpertVTS
         '
         Me.txtFanartExpertVTS.Location = New System.Drawing.Point(71, 60)
         Me.txtFanartExpertVTS.Name = "txtFanartExpertVTS"
         Me.txtFanartExpertVTS.Size = New System.Drawing.Size(220, 22)
-        Me.txtFanartExpertVTS.TabIndex = 49
+        Me.txtFanartExpertVTS.TabIndex = 3
         '
         'txtTrailerExpertVTS
         '
         Me.txtTrailerExpertVTS.Location = New System.Drawing.Point(71, 87)
         Me.txtTrailerExpertVTS.Name = "txtTrailerExpertVTS"
         Me.txtTrailerExpertVTS.Size = New System.Drawing.Size(220, 22)
-        Me.txtTrailerExpertVTS.TabIndex = 48
+        Me.txtTrailerExpertVTS.TabIndex = 4
         '
         'txtBannerExpertVTS
         '
         Me.txtBannerExpertVTS.Location = New System.Drawing.Point(71, 114)
         Me.txtBannerExpertVTS.Name = "txtBannerExpertVTS"
         Me.txtBannerExpertVTS.Size = New System.Drawing.Size(220, 22)
-        Me.txtBannerExpertVTS.TabIndex = 47
+        Me.txtBannerExpertVTS.TabIndex = 5
         '
         'txtClearLogoExpertVTS
         '
         Me.txtClearLogoExpertVTS.Location = New System.Drawing.Point(71, 141)
         Me.txtClearLogoExpertVTS.Name = "txtClearLogoExpertVTS"
         Me.txtClearLogoExpertVTS.Size = New System.Drawing.Size(220, 22)
-        Me.txtClearLogoExpertVTS.TabIndex = 46
+        Me.txtClearLogoExpertVTS.TabIndex = 6
         '
         'txtClearArtExpertVTS
         '
         Me.txtClearArtExpertVTS.Location = New System.Drawing.Point(71, 168)
         Me.txtClearArtExpertVTS.Name = "txtClearArtExpertVTS"
         Me.txtClearArtExpertVTS.Size = New System.Drawing.Size(220, 22)
-        Me.txtClearArtExpertVTS.TabIndex = 45
+        Me.txtClearArtExpertVTS.TabIndex = 7
         '
         'txtLandscapeExpertVTS
         '
         Me.txtLandscapeExpertVTS.Location = New System.Drawing.Point(71, 222)
         Me.txtLandscapeExpertVTS.Name = "txtLandscapeExpertVTS"
         Me.txtLandscapeExpertVTS.Size = New System.Drawing.Size(220, 22)
-        Me.txtLandscapeExpertVTS.TabIndex = 44
+        Me.txtLandscapeExpertVTS.TabIndex = 9
         '
         'txtDiscArtExpertVTS
         '
         Me.txtDiscArtExpertVTS.Location = New System.Drawing.Point(71, 195)
         Me.txtDiscArtExpertVTS.Name = "txtDiscArtExpertVTS"
         Me.txtDiscArtExpertVTS.Size = New System.Drawing.Size(220, 22)
-        Me.txtDiscArtExpertVTS.TabIndex = 43
+        Me.txtDiscArtExpertVTS.TabIndex = 8
         '
         'lblLandscapeExpertVTS
         '
@@ -4554,7 +4551,7 @@ Partial Class dlgSettings
         Me.txtNFOExpertVTS.Location = New System.Drawing.Point(71, 6)
         Me.txtNFOExpertVTS.Name = "txtNFOExpertVTS"
         Me.txtNFOExpertVTS.Size = New System.Drawing.Size(220, 22)
-        Me.txtNFOExpertVTS.TabIndex = 34
+        Me.txtNFOExpertVTS.TabIndex = 1
         '
         'lblNFOExpertVTS
         '
@@ -4596,34 +4593,34 @@ Partial Class dlgSettings
         '
         'GroupBox17
         '
-        Me.GroupBox17.Controls.Add(Me.chkExpertUseBaseDirectoryBDMV)
-        Me.GroupBox17.Controls.Add(Me.chkExpertXBMCTrailerFormatBDMV)
+        Me.GroupBox17.Controls.Add(Me.chkUseBaseDirectoryExpertBDMV)
+        Me.GroupBox17.Controls.Add(Me.chkXBMCTrailerFormatExpertBDMV)
         Me.GroupBox17.Location = New System.Drawing.Point(307, 6)
         Me.GroupBox17.Name = "GroupBox17"
-        Me.GroupBox17.Size = New System.Drawing.Size(160, 93)
-        Me.GroupBox17.TabIndex = 53
+        Me.GroupBox17.Size = New System.Drawing.Size(160, 71)
+        Me.GroupBox17.TabIndex = 10
         Me.GroupBox17.TabStop = False
         Me.GroupBox17.Text = "Optional Settings"
         '
-        'chkExpertUseBaseDirectoryBDMV
+        'chkUseBaseDirectoryExpertBDMV
         '
-        Me.chkExpertUseBaseDirectoryBDMV.AutoSize = True
-        Me.chkExpertUseBaseDirectoryBDMV.Location = New System.Drawing.Point(6, 44)
-        Me.chkExpertUseBaseDirectoryBDMV.Name = "chkExpertUseBaseDirectoryBDMV"
-        Me.chkExpertUseBaseDirectoryBDMV.Size = New System.Drawing.Size(121, 17)
-        Me.chkExpertUseBaseDirectoryBDMV.TabIndex = 33
-        Me.chkExpertUseBaseDirectoryBDMV.Text = "Use Base Directory"
-        Me.chkExpertUseBaseDirectoryBDMV.UseVisualStyleBackColor = True
+        Me.chkUseBaseDirectoryExpertBDMV.AutoSize = True
+        Me.chkUseBaseDirectoryExpertBDMV.Location = New System.Drawing.Point(6, 44)
+        Me.chkUseBaseDirectoryExpertBDMV.Name = "chkUseBaseDirectoryExpertBDMV"
+        Me.chkUseBaseDirectoryExpertBDMV.Size = New System.Drawing.Size(121, 17)
+        Me.chkUseBaseDirectoryExpertBDMV.TabIndex = 2
+        Me.chkUseBaseDirectoryExpertBDMV.Text = "Use Base Directory"
+        Me.chkUseBaseDirectoryExpertBDMV.UseVisualStyleBackColor = True
         '
-        'chkExpertXBMCTrailerFormatBDMV
+        'chkXBMCTrailerFormatExpertBDMV
         '
-        Me.chkExpertXBMCTrailerFormatBDMV.AutoSize = True
-        Me.chkExpertXBMCTrailerFormatBDMV.Location = New System.Drawing.Point(6, 21)
-        Me.chkExpertXBMCTrailerFormatBDMV.Name = "chkExpertXBMCTrailerFormatBDMV"
-        Me.chkExpertXBMCTrailerFormatBDMV.Size = New System.Drawing.Size(129, 17)
-        Me.chkExpertXBMCTrailerFormatBDMV.TabIndex = 32
-        Me.chkExpertXBMCTrailerFormatBDMV.Text = "XBMC Trailer Format"
-        Me.chkExpertXBMCTrailerFormatBDMV.UseVisualStyleBackColor = True
+        Me.chkXBMCTrailerFormatExpertBDMV.AutoSize = True
+        Me.chkXBMCTrailerFormatExpertBDMV.Location = New System.Drawing.Point(6, 21)
+        Me.chkXBMCTrailerFormatExpertBDMV.Name = "chkXBMCTrailerFormatExpertBDMV"
+        Me.chkXBMCTrailerFormatExpertBDMV.Size = New System.Drawing.Size(129, 17)
+        Me.chkXBMCTrailerFormatExpertBDMV.TabIndex = 1
+        Me.chkXBMCTrailerFormatExpertBDMV.Text = "XBMC Trailer Format"
+        Me.chkXBMCTrailerFormatExpertBDMV.UseVisualStyleBackColor = True
         '
         'GroupBox20
         '
@@ -4634,7 +4631,7 @@ Partial Class dlgSettings
         Me.GroupBox20.Location = New System.Drawing.Point(307, 105)
         Me.GroupBox20.Name = "GroupBox20"
         Me.GroupBox20.Size = New System.Drawing.Size(160, 93)
-        Me.GroupBox20.TabIndex = 52
+        Me.GroupBox20.TabIndex = 1
         Me.GroupBox20.TabStop = False
         Me.GroupBox20.Text = "Optional Images"
         '
@@ -4643,8 +4640,7 @@ Partial Class dlgSettings
         Me.txtActorThumbsExtExpertBDMV.Location = New System.Drawing.Point(108, 19)
         Me.txtActorThumbsExtExpertBDMV.Name = "txtActorThumbsExtExpertBDMV"
         Me.txtActorThumbsExtExpertBDMV.Size = New System.Drawing.Size(46, 22)
-        Me.txtActorThumbsExtExpertBDMV.TabIndex = 32
-        Me.txtActorThumbsExtExpertBDMV.Text = "jpg"
+        Me.txtActorThumbsExtExpertBDMV.TabIndex = 2
         '
         'chkActorThumbsExpertBDMV
         '
@@ -4652,7 +4648,7 @@ Partial Class dlgSettings
         Me.chkActorThumbsExpertBDMV.Location = New System.Drawing.Point(6, 21)
         Me.chkActorThumbsExpertBDMV.Name = "chkActorThumbsExpertBDMV"
         Me.chkActorThumbsExpertBDMV.Size = New System.Drawing.Size(96, 17)
-        Me.chkActorThumbsExpertBDMV.TabIndex = 29
+        Me.chkActorThumbsExpertBDMV.TabIndex = 1
         Me.chkActorThumbsExpertBDMV.Text = "Actor Thumbs"
         Me.chkActorThumbsExpertBDMV.UseVisualStyleBackColor = True
         '
@@ -4662,7 +4658,7 @@ Partial Class dlgSettings
         Me.chkExtrafanartsExpertBDMV.Location = New System.Drawing.Point(6, 67)
         Me.chkExtrafanartsExpertBDMV.Name = "chkExtrafanartsExpertBDMV"
         Me.chkExtrafanartsExpertBDMV.Size = New System.Drawing.Size(87, 17)
-        Me.chkExtrafanartsExpertBDMV.TabIndex = 31
+        Me.chkExtrafanartsExpertBDMV.TabIndex = 4
         Me.chkExtrafanartsExpertBDMV.Text = "Extrafanarts"
         Me.chkExtrafanartsExpertBDMV.UseVisualStyleBackColor = True
         '
@@ -4672,7 +4668,7 @@ Partial Class dlgSettings
         Me.chkExtrathumbsExpertBDMV.Location = New System.Drawing.Point(6, 44)
         Me.chkExtrathumbsExpertBDMV.Name = "chkExtrathumbsExpertBDMV"
         Me.chkExtrathumbsExpertBDMV.Size = New System.Drawing.Size(90, 17)
-        Me.chkExtrathumbsExpertBDMV.TabIndex = 30
+        Me.chkExtrathumbsExpertBDMV.TabIndex = 3
         Me.chkExtrathumbsExpertBDMV.Text = "Extrathumbs"
         Me.chkExtrathumbsExpertBDMV.UseVisualStyleBackColor = True
         '
@@ -4690,56 +4686,56 @@ Partial Class dlgSettings
         Me.txtPosterExpertBDMV.Location = New System.Drawing.Point(71, 33)
         Me.txtPosterExpertBDMV.Name = "txtPosterExpertBDMV"
         Me.txtPosterExpertBDMV.Size = New System.Drawing.Size(220, 22)
-        Me.txtPosterExpertBDMV.TabIndex = 50
+        Me.txtPosterExpertBDMV.TabIndex = 2
         '
         'txtFanartExpertBDMV
         '
         Me.txtFanartExpertBDMV.Location = New System.Drawing.Point(71, 60)
         Me.txtFanartExpertBDMV.Name = "txtFanartExpertBDMV"
         Me.txtFanartExpertBDMV.Size = New System.Drawing.Size(220, 22)
-        Me.txtFanartExpertBDMV.TabIndex = 49
+        Me.txtFanartExpertBDMV.TabIndex = 3
         '
         'txtTrailerExpertBDMV
         '
         Me.txtTrailerExpertBDMV.Location = New System.Drawing.Point(71, 87)
         Me.txtTrailerExpertBDMV.Name = "txtTrailerExpertBDMV"
         Me.txtTrailerExpertBDMV.Size = New System.Drawing.Size(220, 22)
-        Me.txtTrailerExpertBDMV.TabIndex = 48
+        Me.txtTrailerExpertBDMV.TabIndex = 4
         '
         'txtBannerExpertBDMV
         '
         Me.txtBannerExpertBDMV.Location = New System.Drawing.Point(71, 114)
         Me.txtBannerExpertBDMV.Name = "txtBannerExpertBDMV"
         Me.txtBannerExpertBDMV.Size = New System.Drawing.Size(220, 22)
-        Me.txtBannerExpertBDMV.TabIndex = 47
+        Me.txtBannerExpertBDMV.TabIndex = 5
         '
         'txtClearLogoExpertBDMV
         '
         Me.txtClearLogoExpertBDMV.Location = New System.Drawing.Point(71, 141)
         Me.txtClearLogoExpertBDMV.Name = "txtClearLogoExpertBDMV"
         Me.txtClearLogoExpertBDMV.Size = New System.Drawing.Size(220, 22)
-        Me.txtClearLogoExpertBDMV.TabIndex = 46
+        Me.txtClearLogoExpertBDMV.TabIndex = 6
         '
         'txtClearArtExpertBDMV
         '
         Me.txtClearArtExpertBDMV.Location = New System.Drawing.Point(71, 168)
         Me.txtClearArtExpertBDMV.Name = "txtClearArtExpertBDMV"
         Me.txtClearArtExpertBDMV.Size = New System.Drawing.Size(220, 22)
-        Me.txtClearArtExpertBDMV.TabIndex = 45
+        Me.txtClearArtExpertBDMV.TabIndex = 7
         '
         'txtLandscapeExpertBDMV
         '
         Me.txtLandscapeExpertBDMV.Location = New System.Drawing.Point(71, 222)
         Me.txtLandscapeExpertBDMV.Name = "txtLandscapeExpertBDMV"
         Me.txtLandscapeExpertBDMV.Size = New System.Drawing.Size(220, 22)
-        Me.txtLandscapeExpertBDMV.TabIndex = 44
+        Me.txtLandscapeExpertBDMV.TabIndex = 9
         '
         'txtDiscArtExpertBDMV
         '
         Me.txtDiscArtExpertBDMV.Location = New System.Drawing.Point(71, 195)
         Me.txtDiscArtExpertBDMV.Name = "txtDiscArtExpertBDMV"
         Me.txtDiscArtExpertBDMV.Size = New System.Drawing.Size(220, 22)
-        Me.txtDiscArtExpertBDMV.TabIndex = 43
+        Me.txtDiscArtExpertBDMV.TabIndex = 8
         '
         'lblLandscapeExpertBDMV
         '
@@ -4809,7 +4805,7 @@ Partial Class dlgSettings
         Me.txtNFOExpertBDMV.Location = New System.Drawing.Point(71, 6)
         Me.txtNFOExpertBDMV.Name = "txtNFOExpertBDMV"
         Me.txtNFOExpertBDMV.Size = New System.Drawing.Size(220, 22)
-        Me.txtNFOExpertBDMV.TabIndex = 34
+        Me.txtNFOExpertBDMV.TabIndex = 1
         '
         'lblNFOExpertBDMV
         '
@@ -4827,7 +4823,7 @@ Partial Class dlgSettings
         Me.chkUseExpert.Location = New System.Drawing.Point(6, 21)
         Me.chkUseExpert.Name = "chkUseExpert"
         Me.chkUseExpert.Size = New System.Drawing.Size(45, 17)
-        Me.chkUseExpert.TabIndex = 6
+        Me.chkUseExpert.TabIndex = 1
         Me.chkUseExpert.Text = "Use"
         Me.chkUseExpert.UseVisualStyleBackColor = True
         '
@@ -9726,9 +9722,9 @@ End Sub
     Friend WithEvents txtClearLogoExpertSingle As System.Windows.Forms.TextBox
     Friend WithEvents txtClearArtExpertSingle As System.Windows.Forms.TextBox
     Friend WithEvents txtLandscapeExpertSingle As System.Windows.Forms.TextBox
-    Friend WithEvents txtDiskArtExpertSingle As System.Windows.Forms.TextBox
+    Friend WithEvents txtDiscArtExpertSingle As System.Windows.Forms.TextBox
     Friend WithEvents lblLandscapeExpertSingle As System.Windows.Forms.Label
-    Friend WithEvents lblDiskArtExpertSingle As System.Windows.Forms.Label
+    Friend WithEvents lblDiscArtExpertSingle As System.Windows.Forms.Label
     Friend WithEvents lblBannerExpertSingle As System.Windows.Forms.Label
     Friend WithEvents lblTrailerExpertSingle As System.Windows.Forms.Label
     Friend WithEvents lblClearLogoExpertSingle As System.Windows.Forms.Label
@@ -9745,7 +9741,7 @@ End Sub
     Friend WithEvents chkExtrafanartsExpertSingle As System.Windows.Forms.CheckBox
     Friend WithEvents chkExtrathumbsExpertSingle As System.Windows.Forms.CheckBox
     Friend WithEvents GroupBox6 As System.Windows.Forms.GroupBox
-    Friend WithEvents chkExpertXBMCTrailerFormatSingle As System.Windows.Forms.CheckBox
+    Friend WithEvents chkXBMCTrailerFormatExpertSingle As System.Windows.Forms.CheckBox
     Friend WithEvents txtPosterExpertMulti As System.Windows.Forms.TextBox
     Friend WithEvents txtFanartExpertMulti As System.Windows.Forms.TextBox
     Friend WithEvents lblClearArtExpertMulti As System.Windows.Forms.Label
@@ -9764,18 +9760,18 @@ End Sub
     Friend WithEvents lblPosterExpertMulti As System.Windows.Forms.Label
     Friend WithEvents txtNFOExpertMulti As System.Windows.Forms.TextBox
     Friend WithEvents lblNFOExpertMulti As System.Windows.Forms.Label
-    Friend WithEvents chkExpertStackSingle As System.Windows.Forms.CheckBox
-    Friend WithEvents chkExpertUnstackSingle As System.Windows.Forms.CheckBox
+    Friend WithEvents chkStackExpertSingle As System.Windows.Forms.CheckBox
+    Friend WithEvents chkUnstackExpertSingle As System.Windows.Forms.CheckBox
     Friend WithEvents txtActorThumbsExtExpertSingle As System.Windows.Forms.TextBox
     Friend WithEvents GroupBox7 As System.Windows.Forms.GroupBox
     Friend WithEvents txtActorThumbsExtExpertMulti As System.Windows.Forms.TextBox
     Friend WithEvents chkActorThumbsExpertMulti As System.Windows.Forms.CheckBox
     Friend WithEvents GroupBox11 As System.Windows.Forms.GroupBox
-    Friend WithEvents chkExpertUnstackMulti As System.Windows.Forms.CheckBox
-    Friend WithEvents chkExpertStackMulti As System.Windows.Forms.CheckBox
-    Friend WithEvents chkExpertXBMCTrailerFormatMulti As System.Windows.Forms.CheckBox
+    Friend WithEvents chkUnstackExpertMulti As System.Windows.Forms.CheckBox
+    Friend WithEvents chkStackExpertMulti As System.Windows.Forms.CheckBox
+    Friend WithEvents chkXBMCTrailerFormatExpertMulti As System.Windows.Forms.CheckBox
     Friend WithEvents GroupBox13 As System.Windows.Forms.GroupBox
-    Friend WithEvents chkExpertXBMCTrailerFormatVTS As System.Windows.Forms.CheckBox
+    Friend WithEvents chkXBMCTrailerFormatExpertVTS As System.Windows.Forms.CheckBox
     Friend WithEvents GroupBox14 As System.Windows.Forms.GroupBox
     Friend WithEvents txtActorThumbsExtExpertVTS As System.Windows.Forms.TextBox
     Friend WithEvents chkActorThumbsExpertVTS As System.Windows.Forms.CheckBox
@@ -9800,7 +9796,7 @@ End Sub
     Friend WithEvents txtNFOExpertVTS As System.Windows.Forms.TextBox
     Friend WithEvents lblNFOExpertVTS As System.Windows.Forms.Label
     Friend WithEvents GroupBox17 As System.Windows.Forms.GroupBox
-    Friend WithEvents chkExpertXBMCTrailerFormatBDMV As System.Windows.Forms.CheckBox
+    Friend WithEvents chkXBMCTrailerFormatExpertBDMV As System.Windows.Forms.CheckBox
     Friend WithEvents GroupBox20 As System.Windows.Forms.GroupBox
     Friend WithEvents txtActorThumbsExtExpertBDMV As System.Windows.Forms.TextBox
     Friend WithEvents chkActorThumbsExpertBDMV As System.Windows.Forms.CheckBox
@@ -9824,8 +9820,8 @@ End Sub
     Friend WithEvents lblPosterExpertBDMV As System.Windows.Forms.Label
     Friend WithEvents txtNFOExpertBDMV As System.Windows.Forms.TextBox
     Friend WithEvents lblNFOExpertBDMV As System.Windows.Forms.Label
-    Friend WithEvents chkExpertUseBaseDirectoryVTS As System.Windows.Forms.CheckBox
-    Friend WithEvents chkExpertUseBaseDirectoryBDMV As System.Windows.Forms.CheckBox
-    Friend WithEvents chkExpertRecognizeVTS As System.Windows.Forms.CheckBox
+    Friend WithEvents chkUseBaseDirectoryExpertVTS As System.Windows.Forms.CheckBox
+    Friend WithEvents chkUseBaseDirectoryExpertBDMV As System.Windows.Forms.CheckBox
+    Friend WithEvents chkRecognizeVTSExpertVTS As System.Windows.Forms.CheckBox
     Friend WithEvents chkXBMCProtectBDMV As System.Windows.Forms.CheckBox
 End Class
