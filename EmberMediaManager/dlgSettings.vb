@@ -233,7 +233,7 @@ Public Class dlgSettings
              .Panel = Me.pnlExtensions, _
              .Order = 200})
         Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
-             .Name = "pnlXBMCCom", _
+             .Name = "pnlProxy", _
              .Text = Master.eLang.GetString(421, "Connection"), _
              .ImageIndex = 1, _
              .Type = Master.eLang.GetString(390, "Options"), _
@@ -909,10 +909,6 @@ Public Class dlgSettings
         Me.chkShowTBN.Checked = False
     End Sub
 
-    Private Sub cbAutoETSize_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub cbCert_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbCert.SelectedIndexChanged
         Me.SetApplyButton(True)
     End Sub
@@ -988,7 +984,7 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub cbTrailerQuality_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub cbTrailerQuality_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbTrailerQuality.SelectedIndexChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -1019,10 +1015,6 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
         Me.txtBDPath.Enabled = chkAutoBD.Checked
         Me.btnBrowse.Enabled = chkAutoBD.Checked
-    End Sub
-
-    Private Sub chkAutoDetectVTS_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.SetApplyButton(True)
     End Sub
 
     Private Sub chkCastWithImg_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkCastWithImg.CheckedChanged
@@ -1240,14 +1232,6 @@ Public Class dlgSettings
         Me.sResult.NeedsRefresh = True
     End Sub
 
-    Private Sub chkETPadding_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkFanartJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub chkPosterOnly_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMoviePosterOnly.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
@@ -1261,10 +1245,6 @@ Public Class dlgSettings
     End Sub
 
     Private Sub chkFanartOnly_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieFanartOnly.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkFolderJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
     End Sub
 
@@ -1311,10 +1291,6 @@ Public Class dlgSettings
         If Not Me.chkGenre.Checked Then Me.txtGenreLimit.Text = "0"
     End Sub
 
-    Private Sub chkGetEnglishImages_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub chkIFOScan_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkIFOScan.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
@@ -1356,10 +1332,6 @@ Public Class dlgSettings
     End Sub
 
     Private Sub chkLockTrailer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkLockTrailer.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkLogErrors_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
     End Sub
 
@@ -1419,55 +1391,11 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkMovieJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieNameDotFanartJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        btnApply.Enabled = True
-    End Sub
-
-    Private Sub chkMovieNameFanartJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieNameJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieNameDashPosterJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieNameMultiOnly_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieNameNFO_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieNameNFOStack_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieNameTBN_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieNFO_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub chkMoviePosterCol_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMoviePosterCol.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
     Private Sub chkMovieSubCol_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSubCol.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkMovieTBN_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
     End Sub
 
@@ -1527,10 +1455,6 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkNoDLTrailer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub chkNoFilterEpisode_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkNoFilterEpisode.CheckedChanged
         Me.SetApplyButton(True)
 
@@ -1546,11 +1470,6 @@ Public Class dlgSettings
     Private Sub chkNoSaveImagesToNfo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieNoSaveImagesToNfo.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
-
-    Private Sub chkNoSpoilers_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.SetApplyButton(True)
-    End Sub
-
 
     Private Sub chkOnlyValueForCert_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOnlyValueForCert.CheckedChanged
         Me.SetApplyButton(True)
@@ -1619,10 +1538,6 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkPersistImgCache_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub chkPlotForOutline_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkPlotForOutline.CheckedChanged
         Me.SetApplyButton(True)
 
@@ -1641,14 +1556,6 @@ Public Class dlgSettings
             Me.chkPlotForOutline.Checked = False
             Me.txtOutlineLimit.Enabled = False
         End If
-    End Sub
-
-    Private Sub chkPosterJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkPosterTBN_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.SetApplyButton(True)
     End Sub
 
     Private Sub chkProducers_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkProducers.CheckedChanged
@@ -2049,10 +1956,6 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkSingleScrapeTrailer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub chkSortBeforeScan_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkSortBeforeScan.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
@@ -2107,10 +2010,6 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkUpdaterTrailer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub chkUpdates_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUpdates.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
@@ -2123,10 +2022,6 @@ Public Class dlgSettings
 
         If Not Me.chkUseCertForMPAA.Checked Then Me.chkOnlyValueForCert.Checked = False
         If Not Me.chkUseCertForMPAA.Checked Then Me.chkUseMPAAFSK.Checked = False
-    End Sub
-
-    Private Sub chkUseETasFA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.SetApplyButton(True)
     End Sub
 
     Private Sub chkUseFrodo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUseFrodo.CheckedChanged
@@ -2309,10 +2204,6 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkUseImgCacheUpdaters_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub chkUseMIDuration_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUseMIDuration.CheckedChanged
         Me.txtRuntimeFormat.Enabled = Me.chkUseMIDuration.Checked
         Me.SetApplyButton(True)
@@ -2321,11 +2212,6 @@ Public Class dlgSettings
     Private Sub chkUseEPDuration_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUseEPDuration.CheckedChanged
         Me.txtEPRuntimeFormat.Enabled = Me.chkUseEPDuration.Checked
         Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkVideoTSParent_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.SetApplyButton(True)
-        Me.sResult.NeedsUpdate = True
     End Sub
 
     Private Sub chkVotes_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkVotes.CheckedChanged
@@ -2341,10 +2227,6 @@ Public Class dlgSettings
     End Sub
 
     Private Sub chkXBMCTrailerFormat_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkXBMCTrailerFormat.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkYAMJCompatibleSets_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
     End Sub
 
@@ -2774,7 +2656,7 @@ Public Class dlgSettings
                     Me.txtProxyDomain.Text = Master.eSettings.ProxyCreds.Domain
                 End If
             End If
-            'Me.txtAPIKey.Text = Master.eSettings.ExternalTVDBAPIKey
+
             Me.chkScanOrderModify.Checked = Master.eSettings.ScanOrderModify
             Me.chkTVScanOrderModify.Checked = Master.eSettings.TVScanOrderModify
             Me.cboTVUpdate.SelectedIndex = Master.eSettings.TVUpdateTime
@@ -3296,14 +3178,6 @@ Public Class dlgSettings
         Me.cbShowPosterSize.SelectedIndex = 0
     End Sub
 
-    Private Sub rbBracketTrailer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub rbDashTrailer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub RefreshEpFilters()
         Me.lstEpFilters.Items.Clear()
         Me.lstEpFilters.Items.AddRange(Master.eSettings.EpFilterCustom.ToArray)
@@ -3615,7 +3489,6 @@ Public Class dlgSettings
             Master.eSettings.NoStackExts.AddRange(lstNoStack.Items.OfType(Of String).ToList)
             Master.eSettings.CheckUpdates = chkUpdates.Checked
             Master.eSettings.InfoPanelAnim = chkInfoPanelAnim.Checked
-            'Master.eSettings.YAMJSetsCompatible = chkYAMJCompatibleSets.Checked
             Master.eSettings.CertificationLang = Me.cbCert.Text
             If Not String.IsNullOrEmpty(Me.cbCert.Text) Then
                 Master.eSettings.UseCertForMPAA = Me.chkUseCertForMPAA.Checked
@@ -4774,18 +4647,6 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub txtAPIKey_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtAutoThumbs_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs)
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtAutoThumbs_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub txtBDPath_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtBDPath.TextChanged
         Me.SetApplyButton(True)
     End Sub
@@ -4840,22 +4701,6 @@ Public Class dlgSettings
 
     Private Sub txtEpRegex_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtEpRegex.TextChanged
         Me.ValidateRegex()
-    End Sub
-
-    Private Sub txtETHeight_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs)
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtETHeight_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtETWidth_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs)
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtETWidth_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.SetApplyButton(True)
     End Sub
 
     Private Sub txtFanartHeight_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtMovieFanartHeight.KeyPress
@@ -5002,10 +4847,6 @@ Public Class dlgSettings
     Private Sub txtTVSkipLessThan_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVSkipLessThan.TextChanged
         Me.SetApplyButton(True)
         Me.sResult.NeedsUpdate = True
-    End Sub
-
-    Private Sub txtTVDBMirror_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.SetApplyButton(True)
     End Sub
 
     Private Sub txtTVDefFIExt_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVDefFIExt.TextChanged
