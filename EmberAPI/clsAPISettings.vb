@@ -448,6 +448,71 @@ Public Class Settings
     '***************** Expert settings ****************
     Private _useexpert As Boolean
 
+    '***************** Expert Single ****************
+    Private _actorthumbsexpertsingle As Boolean
+    Private _actorthumbsextexpertsingle As String
+    Private _bannerexpertsingle As String
+    Private _clearartexpertsingle As String
+    Private _clearlogoexpertsingle As String
+    Private _discartexpertsingle As String
+    Private _extrafanartsexpertsingle As Boolean
+    Private _extrathumbsexpertsingle As Boolean
+    Private _fanartexpertsingle As String
+    Private _landscapeexpertsingle As String
+    Private _nfoexpertsingle As String
+    Private _posterexpertsingle As String
+    Private _stackexpertsingle As Boolean
+    Private _trailerexpertsingle As String
+    Private _unstackexpertsingle As Boolean
+
+    '***************** Expert Multi ****************
+    Private _actorthumbsexpertmulti As Boolean
+    Private _actorthumbsextexpertmulti As String
+    Private _bannerexpertmulti As String
+    Private _clearartexpertmulti As String
+    Private _clearlogoexpertmulti As String
+    Private _discartexpertmulti As String
+    Private _fanartexpertmulti As String
+    Private _landscapeexpertmulti As String
+    Private _nfoexpertmulti As String
+    Private _posterexpertmulti As String
+    Private _stackexpertmulti As Boolean
+    Private _trailerexpertmulti As String
+    Private _unstackexpertmulti As Boolean
+
+    '***************** Expert VTS ****************
+    Private _actorthumbsexpertvts As Boolean
+    Private _actorthumbsextexpertvts As String
+    Private _bannerexpertvts As String
+    Private _clearartexpertvts As String
+    Private _clearlogoexpertvts As String
+    Private _discartexpertvts As String
+    Private _extrafanartsexpertvts As Boolean
+    Private _extrathumbsexpertvts As Boolean
+    Private _fanartexpertvts As String
+    Private _landscapeexpertvts As String
+    Private _nfoexpertvts As String
+    Private _posterexpertvts As String
+    Private _recognizevtsexpertvts As Boolean
+    Private _trailerexpertvts As String
+    Private _usebasedirectoryvts As Boolean
+
+    '***************** Expert BDMV ****************
+    Private _actorthumbsexpertbdmv As Boolean
+    Private _actorthumbsextexpertbdmv As String
+    Private _bannerexpertbdmv As String
+    Private _clearartexpertbdmv As String
+    Private _clearlogoexpertbdmv As String
+    Private _discartexpertbdmv As String
+    Private _extrafanartsexpertbdmv As Boolean
+    Private _extrathumbsexpertbdmv As Boolean
+    Private _fanartexpertbdmv As String
+    Private _landscapeexpertbdmv As String
+    Private _nfoexpertbdmv As String
+    Private _posterexpertbdmv As String
+    Private _trailerexpertbdmv As String
+    Private _usebasedirectorybdmv As Boolean
+
 
 #End Region 'Fields
 
@@ -3740,6 +3805,518 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property ActorThumbsExpertSingle() As Boolean
+        Get
+            Return Me._actorthumbsexpertsingle
+        End Get
+        Set(ByVal value As Boolean)
+            Me._actorthumbsexpertsingle = value
+        End Set
+    End Property
+
+    Public Property ActorThumbsExtExpertSingle() As String
+        Get
+            Return Me._actorthumbsextexpertsingle
+        End Get
+        Set(ByVal value As String)
+            Me._actorthumbsextexpertsingle = value
+        End Set
+    End Property
+
+    Public Property BannerExpertSingle() As String
+        Get
+            Return Me._bannerexpertsingle
+        End Get
+        Set(ByVal value As String)
+            Me._bannerexpertsingle = value
+        End Set
+    End Property
+
+    Public Property ClearArtExpertSingle() As String
+        Get
+            Return Me._clearartexpertsingle
+        End Get
+        Set(ByVal value As String)
+            Me._clearartexpertsingle = value
+        End Set
+    End Property
+
+    Public Property ClearLogoExpertSingle() As String
+        Get
+            Return Me._clearlogoexpertsingle
+        End Get
+        Set(ByVal value As String)
+            Me._clearlogoexpertsingle = value
+        End Set
+    End Property
+
+    Public Property DiscArtExpertSingle() As String
+        Get
+            Return Me._discartexpertsingle
+        End Get
+        Set(ByVal value As String)
+            Me._discartexpertsingle = value
+        End Set
+    End Property
+
+    Public Property ExtrafanartsExpertSingle() As Boolean
+        Get
+            Return Me._extrafanartsexpertsingle
+        End Get
+        Set(ByVal value As Boolean)
+            Me._extrafanartsexpertsingle = value
+        End Set
+    End Property
+
+    Public Property ExtrathumbsExpertSingle() As Boolean
+        Get
+            Return Me._extrathumbsexpertsingle
+        End Get
+        Set(ByVal value As Boolean)
+            Me._extrathumbsexpertsingle = value
+        End Set
+    End Property
+
+    Public Property FanartExpertSingle() As String
+        Get
+            Return Me._fanartexpertsingle
+        End Get
+        Set(ByVal value As String)
+            Me._fanartexpertsingle = value
+        End Set
+    End Property
+
+    Public Property LandscapeExpertSingle() As String
+        Get
+            Return Me._landscapeexpertsingle
+        End Get
+        Set(ByVal value As String)
+            Me._landscapeexpertsingle = value
+        End Set
+    End Property
+
+    Public Property NFOExpertSingle() As String
+        Get
+            Return Me._nfoexpertsingle
+        End Get
+        Set(ByVal value As String)
+            Me._nfoexpertsingle = value
+        End Set
+    End Property
+
+    Public Property PosterExpertSingle() As String
+        Get
+            Return Me._posterexpertsingle
+        End Get
+        Set(ByVal value As String)
+            Me._posterexpertsingle = value
+        End Set
+    End Property
+
+    Public Property StackExpertSingle() As Boolean
+        Get
+            Return Me._stackexpertsingle
+        End Get
+        Set(ByVal value As Boolean)
+            Me._stackexpertsingle = value
+        End Set
+    End Property
+
+    Public Property TrailerExpertSingle() As String
+        Get
+            Return Me._trailerexpertsingle
+        End Get
+        Set(ByVal value As String)
+            Me._trailerexpertsingle = value
+        End Set
+    End Property
+
+    Public Property UnstackExpertSingle() As Boolean
+        Get
+            Return Me._unstackexpertsingle
+        End Get
+        Set(ByVal value As Boolean)
+            Me._unstackexpertsingle = value
+        End Set
+    End Property
+
+    Public Property ActorThumbsExpertMulti() As Boolean
+        Get
+            Return Me._actorthumbsexpertmulti
+        End Get
+        Set(ByVal value As Boolean)
+            Me._actorthumbsexpertmulti = value
+        End Set
+    End Property
+
+    Public Property ActorThumbsExtExpertMulti() As String
+        Get
+            Return Me._actorthumbsextexpertmulti
+        End Get
+        Set(ByVal value As String)
+            Me._actorthumbsextexpertmulti = value
+        End Set
+    End Property
+
+    Public Property BannerExpertMulti() As String
+        Get
+            Return Me._bannerexpertmulti
+        End Get
+        Set(ByVal value As String)
+            Me._bannerexpertmulti = value
+        End Set
+    End Property
+
+    Public Property ClearArtExpertMulti() As String
+        Get
+            Return Me._clearartexpertmulti
+        End Get
+        Set(ByVal value As String)
+            Me._clearartexpertmulti = value
+        End Set
+    End Property
+
+    Public Property ClearLogoExpertMulti() As String
+        Get
+            Return Me._clearlogoexpertmulti
+        End Get
+        Set(ByVal value As String)
+            Me._clearlogoexpertmulti = value
+        End Set
+    End Property
+
+    Public Property DiscArtExpertMulti() As String
+        Get
+            Return Me._discartexpertmulti
+        End Get
+        Set(ByVal value As String)
+            Me._discartexpertmulti = value
+        End Set
+    End Property
+
+    Public Property FanartExpertMulti() As String
+        Get
+            Return Me._fanartexpertmulti
+        End Get
+        Set(ByVal value As String)
+            Me._fanartexpertmulti = value
+        End Set
+    End Property
+
+    Public Property LandscapeExpertMulti() As String
+        Get
+            Return Me._landscapeexpertmulti
+        End Get
+        Set(ByVal value As String)
+            Me._landscapeexpertmulti = value
+        End Set
+    End Property
+
+    Public Property NFOExpertMulti() As String
+        Get
+            Return Me._nfoexpertmulti
+        End Get
+        Set(ByVal value As String)
+            Me._nfoexpertmulti = value
+        End Set
+    End Property
+
+    Public Property PosterExpertMulti() As String
+        Get
+            Return Me._posterexpertmulti
+        End Get
+        Set(ByVal value As String)
+            Me._posterexpertmulti = value
+        End Set
+    End Property
+
+    Public Property StackExpertMulti() As Boolean
+        Get
+            Return Me._stackexpertmulti
+        End Get
+        Set(ByVal value As Boolean)
+            Me._stackexpertmulti = value
+        End Set
+    End Property
+
+    Public Property TrailerExpertMulti() As String
+        Get
+            Return Me._trailerexpertmulti
+        End Get
+        Set(ByVal value As String)
+            Me._trailerexpertmulti = value
+        End Set
+    End Property
+
+    Public Property UnstackExpertMulti() As Boolean
+        Get
+            Return Me._unstackexpertmulti
+        End Get
+        Set(ByVal value As Boolean)
+            Me._unstackexpertmulti = value
+        End Set
+    End Property
+
+    Public Property ActorThumbsExpertVTS() As Boolean
+        Get
+            Return Me._actorthumbsexpertvts
+        End Get
+        Set(ByVal value As Boolean)
+            Me._actorthumbsexpertvts = value
+        End Set
+    End Property
+
+    Public Property ActorThumbsExtExpertVTS() As String
+        Get
+            Return Me._actorthumbsextexpertvts
+        End Get
+        Set(ByVal value As String)
+            Me._actorthumbsextexpertvts = value
+        End Set
+    End Property
+
+    Public Property BannerExpertVTS() As String
+        Get
+            Return Me._bannerexpertvts
+        End Get
+        Set(ByVal value As String)
+            Me._bannerexpertvts = value
+        End Set
+    End Property
+
+    Public Property ClearArtExpertVTS() As String
+        Get
+            Return Me._clearartexpertvts
+        End Get
+        Set(ByVal value As String)
+            Me._clearartexpertvts = value
+        End Set
+    End Property
+
+    Public Property ClearLogoExpertVTS() As String
+        Get
+            Return Me._clearlogoexpertvts
+        End Get
+        Set(ByVal value As String)
+            Me._clearlogoexpertvts = value
+        End Set
+    End Property
+
+    Public Property DiscArtExpertVTS() As String
+        Get
+            Return Me._discartexpertvts
+        End Get
+        Set(ByVal value As String)
+            Me._discartexpertvts = value
+        End Set
+    End Property
+
+    Public Property ExtrafanartsExpertVTS() As Boolean
+        Get
+            Return Me._extrafanartsexpertvts
+        End Get
+        Set(ByVal value As Boolean)
+            Me._extrafanartsexpertvts = value
+        End Set
+    End Property
+
+    Public Property ExtrathumbsExpertVTS() As Boolean
+        Get
+            Return Me._extrathumbsexpertvts
+        End Get
+        Set(ByVal value As Boolean)
+            Me._extrathumbsexpertvts = value
+        End Set
+    End Property
+
+    Public Property FanartExpertVTS() As String
+        Get
+            Return Me._fanartexpertvts
+        End Get
+        Set(ByVal value As String)
+            Me._fanartexpertvts = value
+        End Set
+    End Property
+
+    Public Property LandscapeExpertVTS() As String
+        Get
+            Return Me._landscapeexpertvts
+        End Get
+        Set(ByVal value As String)
+            Me._landscapeexpertvts = value
+        End Set
+    End Property
+
+    Public Property NFOExpertVTS() As String
+        Get
+            Return Me._nfoexpertvts
+        End Get
+        Set(ByVal value As String)
+            Me._nfoexpertvts = value
+        End Set
+    End Property
+
+    Public Property PosterExpertVTS() As String
+        Get
+            Return Me._posterexpertvts
+        End Get
+        Set(ByVal value As String)
+            Me._posterexpertvts = value
+        End Set
+    End Property
+
+    Public Property RecognizeVTSExpertVTS() As Boolean
+        Get
+            Return Me._recognizevtsexpertvts
+        End Get
+        Set(ByVal value As Boolean)
+            Me._recognizevtsexpertvts = value
+        End Set
+    End Property
+
+    Public Property TrailerExpertVTS() As String
+        Get
+            Return Me._trailerexpertvts
+        End Get
+        Set(ByVal value As String)
+            Me._trailerexpertvts = value
+        End Set
+    End Property
+
+    Public Property UseBaseDirectoryVTS() As Boolean
+        Get
+            Return Me._usebasedirectoryvts
+        End Get
+        Set(ByVal value As Boolean)
+            Me._usebasedirectoryvts = value
+        End Set
+    End Property
+
+    Public Property ActorThumbsExpertBDMV() As Boolean
+        Get
+            Return Me._actorthumbsexpertbdmv
+        End Get
+        Set(ByVal value As Boolean)
+            Me._actorthumbsexpertbdmv = value
+        End Set
+    End Property
+
+    Public Property ActorThumbsExtExpertBDMV() As String
+        Get
+            Return Me._actorthumbsextexpertbdmv
+        End Get
+        Set(ByVal value As String)
+            Me._actorthumbsextexpertbdmv = value
+        End Set
+    End Property
+
+    Public Property BannerExpertBDMV() As String
+        Get
+            Return Me._bannerexpertbdmv
+        End Get
+        Set(ByVal value As String)
+            Me._bannerexpertbdmv = value
+        End Set
+    End Property
+
+    Public Property ClearArtExpertBDMV() As String
+        Get
+            Return Me._clearartexpertbdmv
+        End Get
+        Set(ByVal value As String)
+            Me._clearartexpertbdmv = value
+        End Set
+    End Property
+
+    Public Property ClearLogoExpertBDMV() As String
+        Get
+            Return Me._clearlogoexpertbdmv
+        End Get
+        Set(ByVal value As String)
+            Me._clearlogoexpertbdmv = value
+        End Set
+    End Property
+
+    Public Property DiscArtExpertBDMV() As String
+        Get
+            Return Me._discartexpertbdmv
+        End Get
+        Set(ByVal value As String)
+            Me._discartexpertbdmv = value
+        End Set
+    End Property
+
+    Public Property ExtrafanartsExpertBDMV() As Boolean
+        Get
+            Return Me._extrafanartsexpertbdmv
+        End Get
+        Set(ByVal value As Boolean)
+            Me._extrafanartsexpertbdmv = value
+        End Set
+    End Property
+
+    Public Property ExtrathumbsExpertBDMV() As Boolean
+        Get
+            Return Me._extrathumbsexpertbdmv
+        End Get
+        Set(ByVal value As Boolean)
+            Me._extrathumbsexpertbdmv = value
+        End Set
+    End Property
+
+    Public Property FanartExpertBDMV() As String
+        Get
+            Return Me._fanartexpertbdmv
+        End Get
+        Set(ByVal value As String)
+            Me._fanartexpertbdmv = value
+        End Set
+    End Property
+
+    Public Property LandscapeExpertBDMV() As String
+        Get
+            Return Me._landscapeexpertbdmv
+        End Get
+        Set(ByVal value As String)
+            Me._landscapeexpertbdmv = value
+        End Set
+    End Property
+
+    Public Property NFOExpertBDMV() As String
+        Get
+            Return Me._nfoexpertbdmv
+        End Get
+        Set(ByVal value As String)
+            Me._nfoexpertbdmv = value
+        End Set
+    End Property
+
+    Public Property PosterExpertBDMV() As String
+        Get
+            Return Me._posterexpertbdmv
+        End Get
+        Set(ByVal value As String)
+            Me._posterexpertbdmv = value
+        End Set
+    End Property
+
+    Public Property TrailerExpertBDMV() As String
+        Get
+            Return Me._trailerexpertbdmv
+        End Get
+        Set(ByVal value As String)
+            Me._trailerexpertbdmv = value
+        End Set
+    End Property
+
+    Public Property UseBaseDirectoryBDMV() As Boolean
+        Get
+            Return Me._usebasedirectorybdmv
+        End Get
+        Set(ByVal value As Boolean)
+            Me._usebasedirectorybdmv = value
+        End Set
+    End Property
 
     Public Property UseTitleFallback() As Boolean
         Get

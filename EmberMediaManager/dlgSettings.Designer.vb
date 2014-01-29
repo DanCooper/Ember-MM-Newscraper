@@ -296,7 +296,7 @@ Partial Class dlgSettings
         Me.chkExpertStackSingle = New System.Windows.Forms.CheckBox()
         Me.chkExpertXBMCTrailerFormatSingle = New System.Windows.Forms.CheckBox()
         Me.GroupBox5 = New System.Windows.Forms.GroupBox()
-        Me.txtActorThumbsExpertSingle = New System.Windows.Forms.TextBox()
+        Me.txtActorThumbsExtExpertSingle = New System.Windows.Forms.TextBox()
         Me.chkActorThumbsExpertSingle = New System.Windows.Forms.CheckBox()
         Me.chkExtrafanartsExpertSingle = New System.Windows.Forms.CheckBox()
         Me.chkExtrathumbsExpertSingle = New System.Windows.Forms.CheckBox()
@@ -320,7 +320,7 @@ Partial Class dlgSettings
         Me.lblNFOExpertSingle = New System.Windows.Forms.Label()
         Me.tpFileNamingExpertMulti = New System.Windows.Forms.TabPage()
         Me.GroupBox7 = New System.Windows.Forms.GroupBox()
-        Me.txtActorThumbsExpertMulti = New System.Windows.Forms.TextBox()
+        Me.txtActorThumbsExtExpertMulti = New System.Windows.Forms.TextBox()
         Me.chkActorThumbsExpertMulti = New System.Windows.Forms.CheckBox()
         Me.GroupBox11 = New System.Windows.Forms.GroupBox()
         Me.chkExpertUnstackMulti = New System.Windows.Forms.CheckBox()
@@ -347,10 +347,10 @@ Partial Class dlgSettings
         Me.tbFileNamingExpertVTS = New System.Windows.Forms.TabPage()
         Me.GroupBox13 = New System.Windows.Forms.GroupBox()
         Me.chkExpertRecognizeVTS = New System.Windows.Forms.CheckBox()
-        Me.chkExpertBaseDirectoryVTS = New System.Windows.Forms.CheckBox()
+        Me.chkExpertUseBaseDirectoryVTS = New System.Windows.Forms.CheckBox()
         Me.chkExpertXBMCTrailerFormatVTS = New System.Windows.Forms.CheckBox()
         Me.GroupBox14 = New System.Windows.Forms.GroupBox()
-        Me.txtActorThumbsExpertVTS = New System.Windows.Forms.TextBox()
+        Me.txtActorThumbsExtExpertVTS = New System.Windows.Forms.TextBox()
         Me.chkActorThumbsExpertVTS = New System.Windows.Forms.CheckBox()
         Me.chkExtrafanartsExpertVTS = New System.Windows.Forms.CheckBox()
         Me.chkExtrathumbsExpertVTS = New System.Windows.Forms.CheckBox()
@@ -374,10 +374,10 @@ Partial Class dlgSettings
         Me.lblNFOExpertVTS = New System.Windows.Forms.Label()
         Me.tbFileNamingExpertBDMV = New System.Windows.Forms.TabPage()
         Me.GroupBox17 = New System.Windows.Forms.GroupBox()
-        Me.chkExpertBaseDirectoryBDMV = New System.Windows.Forms.CheckBox()
+        Me.chkExpertUseBaseDirectoryBDMV = New System.Windows.Forms.CheckBox()
         Me.chkExpertXBMCTrailerFormatBDMV = New System.Windows.Forms.CheckBox()
         Me.GroupBox20 = New System.Windows.Forms.GroupBox()
-        Me.txtActorThumbsExpertBDMV = New System.Windows.Forms.TextBox()
+        Me.txtActorThumbsExtExpertBDMV = New System.Windows.Forms.TextBox()
         Me.chkActorThumbsExpertBDMV = New System.Windows.Forms.CheckBox()
         Me.chkExtrafanartsExpertBDMV = New System.Windows.Forms.CheckBox()
         Me.chkExtrathumbsExpertBDMV = New System.Windows.Forms.CheckBox()
@@ -3861,7 +3861,7 @@ Partial Class dlgSettings
         '
         'GroupBox5
         '
-        Me.GroupBox5.Controls.Add(Me.txtActorThumbsExpertSingle)
+        Me.GroupBox5.Controls.Add(Me.txtActorThumbsExtExpertSingle)
         Me.GroupBox5.Controls.Add(Me.chkActorThumbsExpertSingle)
         Me.GroupBox5.Controls.Add(Me.chkExtrafanartsExpertSingle)
         Me.GroupBox5.Controls.Add(Me.chkExtrathumbsExpertSingle)
@@ -3872,13 +3872,13 @@ Partial Class dlgSettings
         Me.GroupBox5.TabStop = False
         Me.GroupBox5.Text = "Optional Images"
         '
-        'txtActorThumbsExpertSingle
+        'txtActorThumbsExtExpertSingle
         '
-        Me.txtActorThumbsExpertSingle.Location = New System.Drawing.Point(108, 19)
-        Me.txtActorThumbsExpertSingle.Name = "txtActorThumbsExpertSingle"
-        Me.txtActorThumbsExpertSingle.Size = New System.Drawing.Size(46, 22)
-        Me.txtActorThumbsExpertSingle.TabIndex = 32
-        Me.txtActorThumbsExpertSingle.Text = ".jpg"
+        Me.txtActorThumbsExtExpertSingle.Location = New System.Drawing.Point(108, 19)
+        Me.txtActorThumbsExtExpertSingle.Name = "txtActorThumbsExtExpertSingle"
+        Me.txtActorThumbsExtExpertSingle.Size = New System.Drawing.Size(46, 22)
+        Me.txtActorThumbsExtExpertSingle.TabIndex = 32
+        Me.txtActorThumbsExtExpertSingle.Text = "jpg"
         '
         'chkActorThumbsExpertSingle
         '
@@ -4086,7 +4086,7 @@ Partial Class dlgSettings
         '
         'GroupBox7
         '
-        Me.GroupBox7.Controls.Add(Me.txtActorThumbsExpertMulti)
+        Me.GroupBox7.Controls.Add(Me.txtActorThumbsExtExpertMulti)
         Me.GroupBox7.Controls.Add(Me.chkActorThumbsExpertMulti)
         Me.GroupBox7.Location = New System.Drawing.Point(307, 105)
         Me.GroupBox7.Name = "GroupBox7"
@@ -4095,13 +4095,13 @@ Partial Class dlgSettings
         Me.GroupBox7.TabStop = False
         Me.GroupBox7.Text = "Optional Images"
         '
-        'txtActorThumbsExpertMulti
+        'txtActorThumbsExtExpertMulti
         '
-        Me.txtActorThumbsExpertMulti.Location = New System.Drawing.Point(108, 19)
-        Me.txtActorThumbsExpertMulti.Name = "txtActorThumbsExpertMulti"
-        Me.txtActorThumbsExpertMulti.Size = New System.Drawing.Size(46, 22)
-        Me.txtActorThumbsExpertMulti.TabIndex = 32
-        Me.txtActorThumbsExpertMulti.Text = ".jpg"
+        Me.txtActorThumbsExtExpertMulti.Location = New System.Drawing.Point(108, 19)
+        Me.txtActorThumbsExtExpertMulti.Name = "txtActorThumbsExtExpertMulti"
+        Me.txtActorThumbsExtExpertMulti.Size = New System.Drawing.Size(46, 22)
+        Me.txtActorThumbsExtExpertMulti.TabIndex = 32
+        Me.txtActorThumbsExtExpertMulti.Text = "jpg"
         '
         'chkActorThumbsExpertMulti
         '
@@ -4331,7 +4331,7 @@ Partial Class dlgSettings
         'GroupBox13
         '
         Me.GroupBox13.Controls.Add(Me.chkExpertRecognizeVTS)
-        Me.GroupBox13.Controls.Add(Me.chkExpertBaseDirectoryVTS)
+        Me.GroupBox13.Controls.Add(Me.chkExpertUseBaseDirectoryVTS)
         Me.GroupBox13.Controls.Add(Me.chkExpertXBMCTrailerFormatVTS)
         Me.GroupBox13.Location = New System.Drawing.Point(307, 6)
         Me.GroupBox13.Name = "GroupBox13"
@@ -4350,15 +4350,15 @@ Partial Class dlgSettings
         Me.chkExpertRecognizeVTS.Text = "Recognize VIDEO_TS"
         Me.chkExpertRecognizeVTS.UseVisualStyleBackColor = True
         '
-        'chkExpertBaseDirectoryVTS
+        'chkExpertUseBaseDirectoryVTS
         '
-        Me.chkExpertBaseDirectoryVTS.AutoSize = True
-        Me.chkExpertBaseDirectoryVTS.Location = New System.Drawing.Point(6, 44)
-        Me.chkExpertBaseDirectoryVTS.Name = "chkExpertBaseDirectoryVTS"
-        Me.chkExpertBaseDirectoryVTS.Size = New System.Drawing.Size(121, 17)
-        Me.chkExpertBaseDirectoryVTS.TabIndex = 34
-        Me.chkExpertBaseDirectoryVTS.Text = "Use Base Directory"
-        Me.chkExpertBaseDirectoryVTS.UseVisualStyleBackColor = True
+        Me.chkExpertUseBaseDirectoryVTS.AutoSize = True
+        Me.chkExpertUseBaseDirectoryVTS.Location = New System.Drawing.Point(6, 44)
+        Me.chkExpertUseBaseDirectoryVTS.Name = "chkExpertUseBaseDirectoryVTS"
+        Me.chkExpertUseBaseDirectoryVTS.Size = New System.Drawing.Size(121, 17)
+        Me.chkExpertUseBaseDirectoryVTS.TabIndex = 34
+        Me.chkExpertUseBaseDirectoryVTS.Text = "Use Base Directory"
+        Me.chkExpertUseBaseDirectoryVTS.UseVisualStyleBackColor = True
         '
         'chkExpertXBMCTrailerFormatVTS
         '
@@ -4372,7 +4372,7 @@ Partial Class dlgSettings
         '
         'GroupBox14
         '
-        Me.GroupBox14.Controls.Add(Me.txtActorThumbsExpertVTS)
+        Me.GroupBox14.Controls.Add(Me.txtActorThumbsExtExpertVTS)
         Me.GroupBox14.Controls.Add(Me.chkActorThumbsExpertVTS)
         Me.GroupBox14.Controls.Add(Me.chkExtrafanartsExpertVTS)
         Me.GroupBox14.Controls.Add(Me.chkExtrathumbsExpertVTS)
@@ -4383,13 +4383,13 @@ Partial Class dlgSettings
         Me.GroupBox14.TabStop = False
         Me.GroupBox14.Text = "Optional Images"
         '
-        'txtActorThumbsExpertVTS
+        'txtActorThumbsExtExpertVTS
         '
-        Me.txtActorThumbsExpertVTS.Location = New System.Drawing.Point(108, 19)
-        Me.txtActorThumbsExpertVTS.Name = "txtActorThumbsExpertVTS"
-        Me.txtActorThumbsExpertVTS.Size = New System.Drawing.Size(46, 22)
-        Me.txtActorThumbsExpertVTS.TabIndex = 32
-        Me.txtActorThumbsExpertVTS.Text = ".jpg"
+        Me.txtActorThumbsExtExpertVTS.Location = New System.Drawing.Point(108, 19)
+        Me.txtActorThumbsExtExpertVTS.Name = "txtActorThumbsExtExpertVTS"
+        Me.txtActorThumbsExtExpertVTS.Size = New System.Drawing.Size(46, 22)
+        Me.txtActorThumbsExtExpertVTS.TabIndex = 32
+        Me.txtActorThumbsExtExpertVTS.Text = "jpg"
         '
         'chkActorThumbsExpertVTS
         '
@@ -4596,7 +4596,7 @@ Partial Class dlgSettings
         '
         'GroupBox17
         '
-        Me.GroupBox17.Controls.Add(Me.chkExpertBaseDirectoryBDMV)
+        Me.GroupBox17.Controls.Add(Me.chkExpertUseBaseDirectoryBDMV)
         Me.GroupBox17.Controls.Add(Me.chkExpertXBMCTrailerFormatBDMV)
         Me.GroupBox17.Location = New System.Drawing.Point(307, 6)
         Me.GroupBox17.Name = "GroupBox17"
@@ -4605,15 +4605,15 @@ Partial Class dlgSettings
         Me.GroupBox17.TabStop = False
         Me.GroupBox17.Text = "Optional Settings"
         '
-        'chkExpertBaseDirectoryBDMV
+        'chkExpertUseBaseDirectoryBDMV
         '
-        Me.chkExpertBaseDirectoryBDMV.AutoSize = True
-        Me.chkExpertBaseDirectoryBDMV.Location = New System.Drawing.Point(6, 44)
-        Me.chkExpertBaseDirectoryBDMV.Name = "chkExpertBaseDirectoryBDMV"
-        Me.chkExpertBaseDirectoryBDMV.Size = New System.Drawing.Size(121, 17)
-        Me.chkExpertBaseDirectoryBDMV.TabIndex = 33
-        Me.chkExpertBaseDirectoryBDMV.Text = "Use Base Directory"
-        Me.chkExpertBaseDirectoryBDMV.UseVisualStyleBackColor = True
+        Me.chkExpertUseBaseDirectoryBDMV.AutoSize = True
+        Me.chkExpertUseBaseDirectoryBDMV.Location = New System.Drawing.Point(6, 44)
+        Me.chkExpertUseBaseDirectoryBDMV.Name = "chkExpertUseBaseDirectoryBDMV"
+        Me.chkExpertUseBaseDirectoryBDMV.Size = New System.Drawing.Size(121, 17)
+        Me.chkExpertUseBaseDirectoryBDMV.TabIndex = 33
+        Me.chkExpertUseBaseDirectoryBDMV.Text = "Use Base Directory"
+        Me.chkExpertUseBaseDirectoryBDMV.UseVisualStyleBackColor = True
         '
         'chkExpertXBMCTrailerFormatBDMV
         '
@@ -4627,7 +4627,7 @@ Partial Class dlgSettings
         '
         'GroupBox20
         '
-        Me.GroupBox20.Controls.Add(Me.txtActorThumbsExpertBDMV)
+        Me.GroupBox20.Controls.Add(Me.txtActorThumbsExtExpertBDMV)
         Me.GroupBox20.Controls.Add(Me.chkActorThumbsExpertBDMV)
         Me.GroupBox20.Controls.Add(Me.chkExtrafanartsExpertBDMV)
         Me.GroupBox20.Controls.Add(Me.chkExtrathumbsExpertBDMV)
@@ -4638,13 +4638,13 @@ Partial Class dlgSettings
         Me.GroupBox20.TabStop = False
         Me.GroupBox20.Text = "Optional Images"
         '
-        'txtActorThumbsExpertBDMV
+        'txtActorThumbsExtExpertBDMV
         '
-        Me.txtActorThumbsExpertBDMV.Location = New System.Drawing.Point(108, 19)
-        Me.txtActorThumbsExpertBDMV.Name = "txtActorThumbsExpertBDMV"
-        Me.txtActorThumbsExpertBDMV.Size = New System.Drawing.Size(46, 22)
-        Me.txtActorThumbsExpertBDMV.TabIndex = 32
-        Me.txtActorThumbsExpertBDMV.Text = ".jpg"
+        Me.txtActorThumbsExtExpertBDMV.Location = New System.Drawing.Point(108, 19)
+        Me.txtActorThumbsExtExpertBDMV.Name = "txtActorThumbsExtExpertBDMV"
+        Me.txtActorThumbsExtExpertBDMV.Size = New System.Drawing.Size(46, 22)
+        Me.txtActorThumbsExtExpertBDMV.TabIndex = 32
+        Me.txtActorThumbsExtExpertBDMV.Text = "jpg"
         '
         'chkActorThumbsExpertBDMV
         '
@@ -9766,9 +9766,9 @@ End Sub
     Friend WithEvents lblNFOExpertMulti As System.Windows.Forms.Label
     Friend WithEvents chkExpertStackSingle As System.Windows.Forms.CheckBox
     Friend WithEvents chkExpertUnstackSingle As System.Windows.Forms.CheckBox
-    Friend WithEvents txtActorThumbsExpertSingle As System.Windows.Forms.TextBox
+    Friend WithEvents txtActorThumbsExtExpertSingle As System.Windows.Forms.TextBox
     Friend WithEvents GroupBox7 As System.Windows.Forms.GroupBox
-    Friend WithEvents txtActorThumbsExpertMulti As System.Windows.Forms.TextBox
+    Friend WithEvents txtActorThumbsExtExpertMulti As System.Windows.Forms.TextBox
     Friend WithEvents chkActorThumbsExpertMulti As System.Windows.Forms.CheckBox
     Friend WithEvents GroupBox11 As System.Windows.Forms.GroupBox
     Friend WithEvents chkExpertUnstackMulti As System.Windows.Forms.CheckBox
@@ -9777,7 +9777,7 @@ End Sub
     Friend WithEvents GroupBox13 As System.Windows.Forms.GroupBox
     Friend WithEvents chkExpertXBMCTrailerFormatVTS As System.Windows.Forms.CheckBox
     Friend WithEvents GroupBox14 As System.Windows.Forms.GroupBox
-    Friend WithEvents txtActorThumbsExpertVTS As System.Windows.Forms.TextBox
+    Friend WithEvents txtActorThumbsExtExpertVTS As System.Windows.Forms.TextBox
     Friend WithEvents chkActorThumbsExpertVTS As System.Windows.Forms.CheckBox
     Friend WithEvents chkExtrafanartsExpertVTS As System.Windows.Forms.CheckBox
     Friend WithEvents chkExtrathumbsExpertVTS As System.Windows.Forms.CheckBox
@@ -9802,7 +9802,7 @@ End Sub
     Friend WithEvents GroupBox17 As System.Windows.Forms.GroupBox
     Friend WithEvents chkExpertXBMCTrailerFormatBDMV As System.Windows.Forms.CheckBox
     Friend WithEvents GroupBox20 As System.Windows.Forms.GroupBox
-    Friend WithEvents txtActorThumbsExpertBDMV As System.Windows.Forms.TextBox
+    Friend WithEvents txtActorThumbsExtExpertBDMV As System.Windows.Forms.TextBox
     Friend WithEvents chkActorThumbsExpertBDMV As System.Windows.Forms.CheckBox
     Friend WithEvents chkExtrafanartsExpertBDMV As System.Windows.Forms.CheckBox
     Friend WithEvents chkExtrathumbsExpertBDMV As System.Windows.Forms.CheckBox
@@ -9824,8 +9824,8 @@ End Sub
     Friend WithEvents lblPosterExpertBDMV As System.Windows.Forms.Label
     Friend WithEvents txtNFOExpertBDMV As System.Windows.Forms.TextBox
     Friend WithEvents lblNFOExpertBDMV As System.Windows.Forms.Label
-    Friend WithEvents chkExpertBaseDirectoryVTS As System.Windows.Forms.CheckBox
-    Friend WithEvents chkExpertBaseDirectoryBDMV As System.Windows.Forms.CheckBox
+    Friend WithEvents chkExpertUseBaseDirectoryVTS As System.Windows.Forms.CheckBox
+    Friend WithEvents chkExpertUseBaseDirectoryBDMV As System.Windows.Forms.CheckBox
     Friend WithEvents chkExpertRecognizeVTS As System.Windows.Forms.CheckBox
     Friend WithEvents chkXBMCProtectBDMV As System.Windows.Forms.CheckBox
 End Class
