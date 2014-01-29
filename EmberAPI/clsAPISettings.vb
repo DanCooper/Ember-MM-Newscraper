@@ -479,7 +479,7 @@ Public Class Settings
     Private _posterexpertvts As String
     Private _recognizevtsexpertvts As Boolean
     Private _trailerexpertvts As String
-    Private _usebasedirectoryvts As Boolean
+    Private _usebasedirectoryexpertvts As Boolean
 
     '***************** Expert BDMV ****************
     Private _actorthumbsexpertbdmv As Boolean
@@ -495,7 +495,7 @@ Public Class Settings
     Private _nfoexpertbdmv As String
     Private _posterexpertbdmv As String
     Private _trailerexpertbdmv As String
-    Private _usebasedirectorybdmv As Boolean
+    Private _usebasedirectoryexpertbdmv As Boolean
 
 
 #End Region 'Fields
@@ -4167,12 +4167,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property UseBaseDirectoryVTS() As Boolean
+    Public Property UseBaseDirectoryExpertVTS() As Boolean
         Get
-            Return Me._usebasedirectoryvts
+            Return Me._usebasedirectoryexpertvts
         End Get
         Set(ByVal value As Boolean)
-            Me._usebasedirectoryvts = value
+            Me._usebasedirectoryexpertvts = value
         End Set
     End Property
 
@@ -4293,12 +4293,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property UseBaseDirectoryBDMV() As Boolean
+    Public Property UseBaseDirectoryExpertBDMV() As Boolean
         Get
-            Return Me._usebasedirectorybdmv
+            Return Me._usebasedirectoryexpertbdmv
         End Get
         Set(ByVal value As Boolean)
-            Me._usebasedirectorybdmv = value
+            Me._usebasedirectoryexpertbdmv = value
         End Set
     End Property
 
@@ -4666,8 +4666,8 @@ Public Class Settings
         Me._unstackexpertsingle = False
         Me._updatertrailers = False
         Me._updatertrailersnodownload = False
-        Me._usebasedirectorybdmv = False
-        Me._usebasedirectoryvts = False
+        Me._usebasedirectoryexpertbdmv = False
+        Me._usebasedirectoryexpertvts = False
         Me._usecertformpaa = False
         Me._useepduration = False
         Me._useexpert = False
