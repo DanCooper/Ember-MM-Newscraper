@@ -65,7 +65,6 @@ Public Class Settings
     Private _cleanposterTbn As Boolean
     Private _cleanwhitelistexts As List(Of String)
     Private _cleanwhitelistvideo As Boolean
-    Private _dashtrailer As Boolean
     Private _deletealltrailers As Boolean
     Private _displayallseason As Boolean
     Private _displaymissingepisodes As Boolean
@@ -98,7 +97,6 @@ Public Class Settings
     Private _efanartsheight As Integer
     Private _ethumbsheight As Integer
     Private _fanartheight As Integer
-    Private _fanartjpg As Boolean
     Private _efanartsprefsizeonly As Boolean
     Private _ethumbsprefsizeonly As Boolean
     Private _efanartswidth As Integer
@@ -135,7 +133,6 @@ Public Class Settings
     Private _filterCustom As List(Of String)
     Private _filterPanelState As Boolean
     Private _flaglang As String
-    Private _folderjpg As Boolean
     Private _fullcast As Boolean
     Private _fullcrew As Boolean
     Private _genrefilter As String
@@ -172,19 +169,8 @@ Public Class Settings
     Private _movieethumbsCol As Boolean
     Private _moviefanartCol As Boolean
     Private _movieinfoCol As Boolean
-    Private _moviejpg As Boolean
-    Private _movienamedotfanartjpg As Boolean
-    Private _movienamefanartjpg As Boolean
-    Private _movienamejpg As Boolean
-    Private _movienamedashposterjpg As Boolean
-    Private _movienamemultionly As Boolean
-    Private _movienamenfo As Boolean
-    Private _movienamenfostack As Boolean
-    Private _movienametbn As Boolean
-    Private _movienfo As Boolean
     Private _movieposterCol As Boolean
     Private _moviesubCol As Boolean
-    Private _movietbn As Boolean
     Private _movietheme As String
     Private _daemon_programpath As String
     Private _daemon_driveletter As String
@@ -220,13 +206,11 @@ Public Class Settings
     Private _outlinelimit As Integer
     Private _imagesglassoverlay As Boolean
     Private _posterheight As Integer
-    Private _posterjpg As Boolean
     Private _PosterPrefSizeOnly As Boolean
     Private _efanartsQuality As Integer
     Private _ethumbsQuality As Integer
     Private _posterQuality As Integer
     Private _postersize As Enums.PosterSize
-    Private _postertbn As Boolean
     Private _posterwidth As Integer
     Private _properCase As Boolean
     Private _proxycredentials As NetworkCredential
@@ -362,7 +346,6 @@ Public Class Settings
     Private _windowloc As New Point
     Private _windowsize As New Size
     Private _windowstate As FormWindowState
-    Private _yamjsetscompatible As Boolean
     Private _username As String
     Private _password As String
     Private _IMDBURL As String
@@ -429,6 +412,7 @@ Public Class Settings
     Private _nfoyamj As Boolean
     Private _posteryamj As Boolean
     Private _traileryamj As Boolean
+    Private _yamjsetscompatible As Boolean
 
     '****************** NMJ settings ******************
     Private _usenmj As Boolean
@@ -4414,22 +4398,6 @@ Public Class Settings
         Me._overwritenfo = False
         Me._validexts = New List(Of String)
         Me._nostackexts = New List(Of String)
-        Me._movietbn = False
-        Me._movienametbn = False
-        Me._moviejpg = False
-        Me._movienamejpg = False
-        Me._movienamedashposterjpg = False
-        Me._postertbn = False
-        Me._posterjpg = False
-        Me._folderjpg = False
-        Me._fanartjpg = False
-        Me._movienamefanartjpg = False
-        Me._movienamedotfanartjpg = False
-        Me._movienfo = False
-        Me._movienamenfo = False
-        Me._movienamenfostack = False
-        Me._movienamemultionly = False
-        Me._dashtrailer = False
         Me._videotsparent = False
         Me._lockplot = False
         Me._lockoutline = False
