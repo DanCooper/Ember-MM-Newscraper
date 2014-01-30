@@ -43,7 +43,7 @@ Public Class Settings
     Private _clickscrape As Boolean
     Private _askcheckboxscrape As Boolean
     Private _autobd As Boolean
-    Private _autodetectvts As Boolean
+    Private _expertrecognizevts As Boolean
     Private _bdpath As String
     Private _moviesetspath As String
     Private _castimagesonly As Boolean
@@ -65,7 +65,6 @@ Public Class Settings
     Private _cleanposterTbn As Boolean
     Private _cleanwhitelistexts As List(Of String)
     Private _cleanwhitelistvideo As Boolean
-    Private _dashtrailer As Boolean
     Private _deletealltrailers As Boolean
     Private _displayallseason As Boolean
     Private _displaymissingepisodes As Boolean
@@ -98,7 +97,6 @@ Public Class Settings
     Private _efanartsheight As Integer
     Private _ethumbsheight As Integer
     Private _fanartheight As Integer
-    Private _fanartjpg As Boolean
     Private _efanartsprefsizeonly As Boolean
     Private _ethumbsprefsizeonly As Boolean
     Private _efanartswidth As Integer
@@ -135,7 +133,6 @@ Public Class Settings
     Private _filterCustom As List(Of String)
     Private _filterPanelState As Boolean
     Private _flaglang As String
-    Private _folderjpg As Boolean
     Private _fullcast As Boolean
     Private _fullcrew As Boolean
     Private _genrefilter As String
@@ -172,19 +169,8 @@ Public Class Settings
     Private _movieethumbsCol As Boolean
     Private _moviefanartCol As Boolean
     Private _movieinfoCol As Boolean
-    Private _moviejpg As Boolean
-    Private _movienamedotfanartjpg As Boolean
-    Private _movienamefanartjpg As Boolean
-    Private _movienamejpg As Boolean
-    Private _movienamedashposterjpg As Boolean
-    Private _movienamemultionly As Boolean
-    Private _movienamenfo As Boolean
-    Private _movienamenfostack As Boolean
-    Private _movienametbn As Boolean
-    Private _movienfo As Boolean
     Private _movieposterCol As Boolean
     Private _moviesubCol As Boolean
-    Private _movietbn As Boolean
     Private _movietheme As String
     Private _daemon_programpath As String
     Private _daemon_driveletter As String
@@ -220,13 +206,11 @@ Public Class Settings
     Private _outlinelimit As Integer
     Private _imagesglassoverlay As Boolean
     Private _posterheight As Integer
-    Private _posterjpg As Boolean
     Private _PosterPrefSizeOnly As Boolean
     Private _efanartsQuality As Integer
     Private _ethumbsQuality As Integer
     Private _posterQuality As Integer
     Private _postersize As Enums.PosterSize
-    Private _postertbn As Boolean
     Private _posterwidth As Integer
     Private _properCase As Boolean
     Private _proxycredentials As NetworkCredential
@@ -362,7 +346,6 @@ Public Class Settings
     Private _windowloc As New Point
     Private _windowsize As New Size
     Private _windowstate As FormWindowState
-    Private _yamjsetscompatible As Boolean
     Private _username As String
     Private _password As String
     Private _IMDBURL As String
@@ -429,6 +412,7 @@ Public Class Settings
     Private _nfoyamj As Boolean
     Private _posteryamj As Boolean
     Private _traileryamj As Boolean
+    Private _yamjsetscompatible As Boolean
 
     '****************** NMJ settings ******************
     Private _usenmj As Boolean
@@ -447,6 +431,71 @@ Public Class Settings
 
     '***************** Expert settings ****************
     Private _useexpert As Boolean
+
+    '***************** Expert Single ****************
+    Private _actorthumbsexpertsingle As Boolean
+    Private _actorthumbsextexpertsingle As String
+    Private _bannerexpertsingle As String
+    Private _clearartexpertsingle As String
+    Private _clearlogoexpertsingle As String
+    Private _discartexpertsingle As String
+    Private _extrafanartsexpertsingle As Boolean
+    Private _extrathumbsexpertsingle As Boolean
+    Private _fanartexpertsingle As String
+    Private _landscapeexpertsingle As String
+    Private _nfoexpertsingle As String
+    Private _posterexpertsingle As String
+    Private _stackexpertsingle As Boolean
+    Private _trailerexpertsingle As String
+    Private _unstackexpertsingle As Boolean
+
+    '***************** Expert Multi ****************
+    Private _actorthumbsexpertmulti As Boolean
+    Private _actorthumbsextexpertmulti As String
+    Private _bannerexpertmulti As String
+    Private _clearartexpertmulti As String
+    Private _clearlogoexpertmulti As String
+    Private _discartexpertmulti As String
+    Private _fanartexpertmulti As String
+    Private _landscapeexpertmulti As String
+    Private _nfoexpertmulti As String
+    Private _posterexpertmulti As String
+    Private _stackexpertmulti As Boolean
+    Private _trailerexpertmulti As String
+    Private _unstackexpertmulti As Boolean
+
+    '***************** Expert VTS ****************
+    Private _actorthumbsexpertvts As Boolean
+    Private _actorthumbsextexpertvts As String
+    Private _bannerexpertvts As String
+    Private _clearartexpertvts As String
+    Private _clearlogoexpertvts As String
+    Private _discartexpertvts As String
+    Private _extrafanartsexpertvts As Boolean
+    Private _extrathumbsexpertvts As Boolean
+    Private _fanartexpertvts As String
+    Private _landscapeexpertvts As String
+    Private _nfoexpertvts As String
+    Private _posterexpertvts As String
+    Private _recognizevtsexpertvts As Boolean
+    Private _trailerexpertvts As String
+    Private _usebasedirectoryexpertvts As Boolean
+
+    '***************** Expert BDMV ****************
+    Private _actorthumbsexpertbdmv As Boolean
+    Private _actorthumbsextexpertbdmv As String
+    Private _bannerexpertbdmv As String
+    Private _clearartexpertbdmv As String
+    Private _clearlogoexpertbdmv As String
+    Private _discartexpertbdmv As String
+    Private _extrafanartsexpertbdmv As Boolean
+    Private _extrathumbsexpertbdmv As Boolean
+    Private _fanartexpertbdmv As String
+    Private _landscapeexpertbdmv As String
+    Private _nfoexpertbdmv As String
+    Private _posterexpertbdmv As String
+    Private _trailerexpertbdmv As String
+    Private _usebasedirectoryexpertbdmv As Boolean
 
 
 #End Region 'Fields
@@ -552,12 +601,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property AutoDetectVTS() As Boolean
+    Public Property ExpertRecognizeVTS() As Boolean
         Get
-            Return Me._autodetectvts
+            Return Me._expertrecognizevts
         End Get
         Set(ByVal value As Boolean)
-            Me._autodetectvts = value
+            Me._expertrecognizevts = value
         End Set
     End Property
 
@@ -756,15 +805,6 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Me._cleanwhitelistvideo = value
-        End Set
-    End Property
-
-    Public Property DashTrailer() As Boolean
-        Get
-            Return Me._dashtrailer
-        End Get
-        Set(ByVal value As Boolean)
-            Me._dashtrailer = value
         End Set
     End Property
 
@@ -1046,15 +1086,6 @@ Public Class Settings
         End Get
         Set(ByVal value As Integer)
             Me._fanartheight = value
-        End Set
-    End Property
-
-    Public Property FanartJPG() As Boolean
-        Get
-            Return Me._fanartjpg
-        End Get
-        Set(ByVal value As Boolean)
-            Me._fanartjpg = value
         End Set
     End Property
 
@@ -1344,15 +1375,6 @@ Public Class Settings
         End Get
         Set(ByVal value As String)
             Me._flaglang = value
-        End Set
-    End Property
-
-    Public Property FolderJPG() As Boolean
-        Get
-            Return Me._folderjpg
-        End Get
-        Set(ByVal value As Boolean)
-            Me._folderjpg = value
         End Set
     End Property
 
@@ -1703,96 +1725,6 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieJPG() As Boolean
-        Get
-            Return Me._moviejpg
-        End Get
-        Set(ByVal value As Boolean)
-            Me._moviejpg = value
-        End Set
-    End Property
-
-    Public Property MovieNameDotFanartJPG() As Boolean
-        Get
-            Return Me._movienamedotfanartjpg
-        End Get
-        Set(ByVal value As Boolean)
-            Me._movienamedotfanartjpg = value
-        End Set
-    End Property
-
-    Public Property MovieNameFanartJPG() As Boolean
-        Get
-            Return Me._movienamefanartjpg
-        End Get
-        Set(ByVal value As Boolean)
-            Me._movienamefanartjpg = value
-        End Set
-    End Property
-
-    Public Property MovieNameJPG() As Boolean
-        Get
-            Return Me._movienamejpg
-        End Get
-        Set(ByVal value As Boolean)
-            Me._movienamejpg = value
-        End Set
-    End Property
-
-    Public Property MovieNameDashPosterJPG() As Boolean
-        Get
-            Return Me._movienamedashposterjpg
-        End Get
-        Set(ByVal value As Boolean)
-            Me._movienamedashposterjpg = value
-        End Set
-    End Property
-
-    Public Property MovieNameMultiOnly() As Boolean
-        Get
-            Return Me._movienamemultionly
-        End Get
-        Set(ByVal value As Boolean)
-            Me._movienamemultionly = value
-        End Set
-    End Property
-
-    Public Property MovieNameNFO() As Boolean
-        Get
-            Return Me._movienamenfo
-        End Get
-        Set(ByVal value As Boolean)
-            Me._movienamenfo = value
-        End Set
-    End Property
-
-    Public Property MovieNameNFOStack() As Boolean
-        Get
-            Return Me._movienamenfostack
-        End Get
-        Set(ByVal value As Boolean)
-            Me._movienamenfostack = value
-        End Set
-    End Property
-
-    Public Property MovieNameTBN() As Boolean
-        Get
-            Return Me._movienametbn
-        End Get
-        Set(ByVal value As Boolean)
-            Me._movienametbn = value
-        End Set
-    End Property
-
-    Public Property MovieNFO() As Boolean
-        Get
-            Return Me._movienfo
-        End Get
-        Set(ByVal value As Boolean)
-            Me._movienfo = value
-        End Set
-    End Property
-
     Public Property MoviePosterCol() As Boolean
         Get
             Return Me._movieposterCol
@@ -1808,15 +1740,6 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Me._moviesubCol = value
-        End Set
-    End Property
-
-    Public Property MovieTBN() As Boolean
-        Get
-            Return Me._movietbn
-        End Get
-        Set(ByVal value As Boolean)
-            Me._movietbn = value
         End Set
     End Property
 
@@ -2134,15 +2057,6 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property PosterJPG() As Boolean
-        Get
-            Return Me._posterjpg
-        End Get
-        Set(ByVal value As Boolean)
-            Me._posterjpg = value
-        End Set
-    End Property
-
     Public Property PosterPrefSizeOnly() As Boolean
         Get
             Return Me._PosterPrefSizeOnly
@@ -2176,15 +2090,6 @@ Public Class Settings
         End Get
         Set(ByVal value As Integer)
             Me._posterQuality = value
-        End Set
-    End Property
-
-    Public Property PosterTBN() As Boolean
-        Get
-            Return Me._postertbn
-        End Get
-        Set(ByVal value As Boolean)
-            Me._postertbn = value
         End Set
     End Property
 
@@ -3884,6 +3789,518 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property ActorThumbsExpertSingle() As Boolean
+        Get
+            Return Me._actorthumbsexpertsingle
+        End Get
+        Set(ByVal value As Boolean)
+            Me._actorthumbsexpertsingle = value
+        End Set
+    End Property
+
+    Public Property ActorThumbsExtExpertSingle() As String
+        Get
+            Return Me._actorthumbsextexpertsingle
+        End Get
+        Set(ByVal value As String)
+            Me._actorthumbsextexpertsingle = value
+        End Set
+    End Property
+
+    Public Property BannerExpertSingle() As String
+        Get
+            Return Me._bannerexpertsingle
+        End Get
+        Set(ByVal value As String)
+            Me._bannerexpertsingle = value
+        End Set
+    End Property
+
+    Public Property ClearArtExpertSingle() As String
+        Get
+            Return Me._clearartexpertsingle
+        End Get
+        Set(ByVal value As String)
+            Me._clearartexpertsingle = value
+        End Set
+    End Property
+
+    Public Property ClearLogoExpertSingle() As String
+        Get
+            Return Me._clearlogoexpertsingle
+        End Get
+        Set(ByVal value As String)
+            Me._clearlogoexpertsingle = value
+        End Set
+    End Property
+
+    Public Property DiscArtExpertSingle() As String
+        Get
+            Return Me._discartexpertsingle
+        End Get
+        Set(ByVal value As String)
+            Me._discartexpertsingle = value
+        End Set
+    End Property
+
+    Public Property ExtrafanartsExpertSingle() As Boolean
+        Get
+            Return Me._extrafanartsexpertsingle
+        End Get
+        Set(ByVal value As Boolean)
+            Me._extrafanartsexpertsingle = value
+        End Set
+    End Property
+
+    Public Property ExtrathumbsExpertSingle() As Boolean
+        Get
+            Return Me._extrathumbsexpertsingle
+        End Get
+        Set(ByVal value As Boolean)
+            Me._extrathumbsexpertsingle = value
+        End Set
+    End Property
+
+    Public Property FanartExpertSingle() As String
+        Get
+            Return Me._fanartexpertsingle
+        End Get
+        Set(ByVal value As String)
+            Me._fanartexpertsingle = value
+        End Set
+    End Property
+
+    Public Property LandscapeExpertSingle() As String
+        Get
+            Return Me._landscapeexpertsingle
+        End Get
+        Set(ByVal value As String)
+            Me._landscapeexpertsingle = value
+        End Set
+    End Property
+
+    Public Property NFOExpertSingle() As String
+        Get
+            Return Me._nfoexpertsingle
+        End Get
+        Set(ByVal value As String)
+            Me._nfoexpertsingle = value
+        End Set
+    End Property
+
+    Public Property PosterExpertSingle() As String
+        Get
+            Return Me._posterexpertsingle
+        End Get
+        Set(ByVal value As String)
+            Me._posterexpertsingle = value
+        End Set
+    End Property
+
+    Public Property StackExpertSingle() As Boolean
+        Get
+            Return Me._stackexpertsingle
+        End Get
+        Set(ByVal value As Boolean)
+            Me._stackexpertsingle = value
+        End Set
+    End Property
+
+    Public Property TrailerExpertSingle() As String
+        Get
+            Return Me._trailerexpertsingle
+        End Get
+        Set(ByVal value As String)
+            Me._trailerexpertsingle = value
+        End Set
+    End Property
+
+    Public Property UnstackExpertSingle() As Boolean
+        Get
+            Return Me._unstackexpertsingle
+        End Get
+        Set(ByVal value As Boolean)
+            Me._unstackexpertsingle = value
+        End Set
+    End Property
+
+    Public Property ActorThumbsExpertMulti() As Boolean
+        Get
+            Return Me._actorthumbsexpertmulti
+        End Get
+        Set(ByVal value As Boolean)
+            Me._actorthumbsexpertmulti = value
+        End Set
+    End Property
+
+    Public Property ActorThumbsExtExpertMulti() As String
+        Get
+            Return Me._actorthumbsextexpertmulti
+        End Get
+        Set(ByVal value As String)
+            Me._actorthumbsextexpertmulti = value
+        End Set
+    End Property
+
+    Public Property BannerExpertMulti() As String
+        Get
+            Return Me._bannerexpertmulti
+        End Get
+        Set(ByVal value As String)
+            Me._bannerexpertmulti = value
+        End Set
+    End Property
+
+    Public Property ClearArtExpertMulti() As String
+        Get
+            Return Me._clearartexpertmulti
+        End Get
+        Set(ByVal value As String)
+            Me._clearartexpertmulti = value
+        End Set
+    End Property
+
+    Public Property ClearLogoExpertMulti() As String
+        Get
+            Return Me._clearlogoexpertmulti
+        End Get
+        Set(ByVal value As String)
+            Me._clearlogoexpertmulti = value
+        End Set
+    End Property
+
+    Public Property DiscArtExpertMulti() As String
+        Get
+            Return Me._discartexpertmulti
+        End Get
+        Set(ByVal value As String)
+            Me._discartexpertmulti = value
+        End Set
+    End Property
+
+    Public Property FanartExpertMulti() As String
+        Get
+            Return Me._fanartexpertmulti
+        End Get
+        Set(ByVal value As String)
+            Me._fanartexpertmulti = value
+        End Set
+    End Property
+
+    Public Property LandscapeExpertMulti() As String
+        Get
+            Return Me._landscapeexpertmulti
+        End Get
+        Set(ByVal value As String)
+            Me._landscapeexpertmulti = value
+        End Set
+    End Property
+
+    Public Property NFOExpertMulti() As String
+        Get
+            Return Me._nfoexpertmulti
+        End Get
+        Set(ByVal value As String)
+            Me._nfoexpertmulti = value
+        End Set
+    End Property
+
+    Public Property PosterExpertMulti() As String
+        Get
+            Return Me._posterexpertmulti
+        End Get
+        Set(ByVal value As String)
+            Me._posterexpertmulti = value
+        End Set
+    End Property
+
+    Public Property StackExpertMulti() As Boolean
+        Get
+            Return Me._stackexpertmulti
+        End Get
+        Set(ByVal value As Boolean)
+            Me._stackexpertmulti = value
+        End Set
+    End Property
+
+    Public Property TrailerExpertMulti() As String
+        Get
+            Return Me._trailerexpertmulti
+        End Get
+        Set(ByVal value As String)
+            Me._trailerexpertmulti = value
+        End Set
+    End Property
+
+    Public Property UnstackExpertMulti() As Boolean
+        Get
+            Return Me._unstackexpertmulti
+        End Get
+        Set(ByVal value As Boolean)
+            Me._unstackexpertmulti = value
+        End Set
+    End Property
+
+    Public Property ActorThumbsExpertVTS() As Boolean
+        Get
+            Return Me._actorthumbsexpertvts
+        End Get
+        Set(ByVal value As Boolean)
+            Me._actorthumbsexpertvts = value
+        End Set
+    End Property
+
+    Public Property ActorThumbsExtExpertVTS() As String
+        Get
+            Return Me._actorthumbsextexpertvts
+        End Get
+        Set(ByVal value As String)
+            Me._actorthumbsextexpertvts = value
+        End Set
+    End Property
+
+    Public Property BannerExpertVTS() As String
+        Get
+            Return Me._bannerexpertvts
+        End Get
+        Set(ByVal value As String)
+            Me._bannerexpertvts = value
+        End Set
+    End Property
+
+    Public Property ClearArtExpertVTS() As String
+        Get
+            Return Me._clearartexpertvts
+        End Get
+        Set(ByVal value As String)
+            Me._clearartexpertvts = value
+        End Set
+    End Property
+
+    Public Property ClearLogoExpertVTS() As String
+        Get
+            Return Me._clearlogoexpertvts
+        End Get
+        Set(ByVal value As String)
+            Me._clearlogoexpertvts = value
+        End Set
+    End Property
+
+    Public Property DiscArtExpertVTS() As String
+        Get
+            Return Me._discartexpertvts
+        End Get
+        Set(ByVal value As String)
+            Me._discartexpertvts = value
+        End Set
+    End Property
+
+    Public Property ExtrafanartsExpertVTS() As Boolean
+        Get
+            Return Me._extrafanartsexpertvts
+        End Get
+        Set(ByVal value As Boolean)
+            Me._extrafanartsexpertvts = value
+        End Set
+    End Property
+
+    Public Property ExtrathumbsExpertVTS() As Boolean
+        Get
+            Return Me._extrathumbsexpertvts
+        End Get
+        Set(ByVal value As Boolean)
+            Me._extrathumbsexpertvts = value
+        End Set
+    End Property
+
+    Public Property FanartExpertVTS() As String
+        Get
+            Return Me._fanartexpertvts
+        End Get
+        Set(ByVal value As String)
+            Me._fanartexpertvts = value
+        End Set
+    End Property
+
+    Public Property LandscapeExpertVTS() As String
+        Get
+            Return Me._landscapeexpertvts
+        End Get
+        Set(ByVal value As String)
+            Me._landscapeexpertvts = value
+        End Set
+    End Property
+
+    Public Property NFOExpertVTS() As String
+        Get
+            Return Me._nfoexpertvts
+        End Get
+        Set(ByVal value As String)
+            Me._nfoexpertvts = value
+        End Set
+    End Property
+
+    Public Property PosterExpertVTS() As String
+        Get
+            Return Me._posterexpertvts
+        End Get
+        Set(ByVal value As String)
+            Me._posterexpertvts = value
+        End Set
+    End Property
+
+    Public Property RecognizeVTSExpertVTS() As Boolean
+        Get
+            Return Me._recognizevtsexpertvts
+        End Get
+        Set(ByVal value As Boolean)
+            Me._recognizevtsexpertvts = value
+        End Set
+    End Property
+
+    Public Property TrailerExpertVTS() As String
+        Get
+            Return Me._trailerexpertvts
+        End Get
+        Set(ByVal value As String)
+            Me._trailerexpertvts = value
+        End Set
+    End Property
+
+    Public Property UseBaseDirectoryExpertVTS() As Boolean
+        Get
+            Return Me._usebasedirectoryexpertvts
+        End Get
+        Set(ByVal value As Boolean)
+            Me._usebasedirectoryexpertvts = value
+        End Set
+    End Property
+
+    Public Property ActorThumbsExpertBDMV() As Boolean
+        Get
+            Return Me._actorthumbsexpertbdmv
+        End Get
+        Set(ByVal value As Boolean)
+            Me._actorthumbsexpertbdmv = value
+        End Set
+    End Property
+
+    Public Property ActorThumbsExtExpertBDMV() As String
+        Get
+            Return Me._actorthumbsextexpertbdmv
+        End Get
+        Set(ByVal value As String)
+            Me._actorthumbsextexpertbdmv = value
+        End Set
+    End Property
+
+    Public Property BannerExpertBDMV() As String
+        Get
+            Return Me._bannerexpertbdmv
+        End Get
+        Set(ByVal value As String)
+            Me._bannerexpertbdmv = value
+        End Set
+    End Property
+
+    Public Property ClearArtExpertBDMV() As String
+        Get
+            Return Me._clearartexpertbdmv
+        End Get
+        Set(ByVal value As String)
+            Me._clearartexpertbdmv = value
+        End Set
+    End Property
+
+    Public Property ClearLogoExpertBDMV() As String
+        Get
+            Return Me._clearlogoexpertbdmv
+        End Get
+        Set(ByVal value As String)
+            Me._clearlogoexpertbdmv = value
+        End Set
+    End Property
+
+    Public Property DiscArtExpertBDMV() As String
+        Get
+            Return Me._discartexpertbdmv
+        End Get
+        Set(ByVal value As String)
+            Me._discartexpertbdmv = value
+        End Set
+    End Property
+
+    Public Property ExtrafanartsExpertBDMV() As Boolean
+        Get
+            Return Me._extrafanartsexpertbdmv
+        End Get
+        Set(ByVal value As Boolean)
+            Me._extrafanartsexpertbdmv = value
+        End Set
+    End Property
+
+    Public Property ExtrathumbsExpertBDMV() As Boolean
+        Get
+            Return Me._extrathumbsexpertbdmv
+        End Get
+        Set(ByVal value As Boolean)
+            Me._extrathumbsexpertbdmv = value
+        End Set
+    End Property
+
+    Public Property FanartExpertBDMV() As String
+        Get
+            Return Me._fanartexpertbdmv
+        End Get
+        Set(ByVal value As String)
+            Me._fanartexpertbdmv = value
+        End Set
+    End Property
+
+    Public Property LandscapeExpertBDMV() As String
+        Get
+            Return Me._landscapeexpertbdmv
+        End Get
+        Set(ByVal value As String)
+            Me._landscapeexpertbdmv = value
+        End Set
+    End Property
+
+    Public Property NFOExpertBDMV() As String
+        Get
+            Return Me._nfoexpertbdmv
+        End Get
+        Set(ByVal value As String)
+            Me._nfoexpertbdmv = value
+        End Set
+    End Property
+
+    Public Property PosterExpertBDMV() As String
+        Get
+            Return Me._posterexpertbdmv
+        End Get
+        Set(ByVal value As String)
+            Me._posterexpertbdmv = value
+        End Set
+    End Property
+
+    Public Property TrailerExpertBDMV() As String
+        Get
+            Return Me._trailerexpertbdmv
+        End Get
+        Set(ByVal value As String)
+            Me._trailerexpertbdmv = value
+        End Set
+    End Property
+
+    Public Property UseBaseDirectoryExpertBDMV() As Boolean
+        Get
+            Return Me._usebasedirectoryexpertbdmv
+        End Get
+        Set(ByVal value As Boolean)
+            Me._usebasedirectoryexpertbdmv = value
+        End Set
+    End Property
 
     Public Property UseTitleFallback() As Boolean
         Get
@@ -3903,280 +4320,366 @@ Public Class Settings
     End Function
 
     Public Sub Clear()
-        Me._version = String.Empty
-        Me._filterCustom = New List(Of String)
-        Me._showfiltercustom = New List(Of String)
-        Me._epfiltercustom = New List(Of String)
-        Me._forcetitle = String.Empty
-        Me._certificationLang = String.Empty
-        Me._usecertformpaa = False
-        Me._showratingregion = "usa"
-        Me._askcheckboxscrape = True
-        Me._scanmediainfo = True
-        Me._scantvmediainfo = True
-        Me._fullcast = True
-        Me._fullcrew = False
-        Me._castimagesonly = False
-        Me._movieposterCol = False
-        Me._moviefanartCol = False
-        Me._movieinfoCol = False
-        Me._movietrailerCol = False
-        Me._moviesubCol = False
-        Me._movieefanartsCol = False
-        Me._movieethumbsCol = False
-        Me._moviewatchedCol = False
-        Me._cleanfolderJpg = False
-        Me._cleanmovieTbn = False
-        Me._cleanmovieTbnB = False
-        Me._cleanfanartJpg = False
-        Me._cleanmoviefanartJpg = False
-        Me._cleanmovieNfo = False
-        Me._cleanmovieNfoB = False
-        Me._cleanposterTbn = False
-        Me._cleanposterJpg = False
-        Me._cleanmovieJpg = False
-        Me._cleandotfanartJpg = False
-        Me._cleanmovienameJpg = False
-        Me._cleanextrathumbs = False
-        Me._expertcleaner = False
-        Me._cleanwhitelistvideo = False
-        Me._cleanwhitelistexts = New List(Of String)
-        Me._postersize = Enums.PosterSize.Xlrg
-        Me._fanartsize = Enums.FanartSize.Xlrg
-        Me._showbanner = False
-        Me._showbannertype = Enums.ShowBannerType.Graphical
-        Me._showpostersize = Enums.PosterSize.Xlrg
+        'Me._alwaysgetenglishtvimages = True
+        'Me._externaltvdbapikey = String.Empty
+        'Me._onlytvimagesforselectedlangauge = True
+        'Me._tvdblanguage = "en"
+        'Me._tvdbmirror = "thetvdb.com"
+        Dim cLang As Containers.TVLanguage
+        Dim xmlTVDB As XDocument
+        Me._IMDBURL = "akas.imdb.com"
+        Me._PosterPrefSizeOnly = False
+        Me._actorlimit = 0
+        Me._actorthumbsexpertbdmv = False
+        Me._actorthumbsexpertmulti = False
+        Me._actorthumbsexpertsingle = False
+        Me._actorthumbsexpertvts = False
+        Me._actorthumbsextexpertbdmv = String.Empty
+        Me._actorthumbsextexpertmulti = String.Empty
+        Me._actorthumbsextexpertsingle = String.Empty
+        Me._actorthumbsextexpertvts = String.Empty
         Me._allsbanner = False
         Me._allsbannertype = Enums.ShowBannerType.Graphical
-        Me._allspostersize = Enums.PosterSize.Xlrg
-        Me._showfanartsize = Enums.FanartSize.Lrg
-        Me._epfanartsize = Enums.FanartSize.Lrg
-        Me._seasonpostersize = Enums.SeasonPosterType.Poster
-        Me._seasonfanartsize = Enums.FanartSize.Lrg
-        Me._fanartprefsizeonly = False
-        Me._PosterPrefSizeOnly = False
-        Me._posterQuality = 0
-        Me._fanartQuality = 0
-        Me._overwritePoster = True
-        Me._overwriteFanart = True
-        Me._showposterQuality = 0
-        Me._showfanartQuality = 0
-        Me._overwriteShowPoster = True
-        Me._overwriteShowFanart = True
         Me._allsposterQuality = 0
-        Me._overwriteallsPoster = True
-        Me._epposterQuality = 0
-        Me._epfanartQuality = 0
-        Me._overwriteEpPoster = True
-        Me._overwriteEpFanart = True
-        Me._seasonposterQuality = 0
-        Me._seasonfanartQuality = 0
-        Me._overwriteSeasonPoster = True
-        Me._overwriteSeasonFanart = True
-        Me._properCase = True
-        Me._showproperCase = True
-        Me._epproperCase = True
-        Me._overwritenfo = False
-        Me._overwritenfo = False
-        Me._overwritenfo = False
-        Me._validexts = New List(Of String)
-        Me._nostackexts = New List(Of String)
-        Me._movietbn = False
-        Me._movienametbn = False
-        Me._moviejpg = False
-        Me._movienamejpg = False
-        Me._movienamedashposterjpg = False
-        Me._postertbn = False
-        Me._posterjpg = False
-        Me._folderjpg = False
-        Me._fanartjpg = False
-        Me._movienamefanartjpg = False
-        Me._movienamedotfanartjpg = False
-        Me._movienfo = False
-        Me._movienamenfo = False
-        Me._movienamenfostack = False
-        Me._movienamemultionly = False
-        Me._dashtrailer = False
-        Me._videotsparent = False
-        Me._lockplot = False
-        Me._lockoutline = False
-        Me._locktitle = False
-        Me._locktagline = False
-        Me._lockrating = False
-        Me._lockstudio = False
-        Me._lockrating = False
-        Me._locktrailer = False
-        Me._singlescrapeimages = True
-        Me._marknew = False
-        Me._resizefanart = False
-        Me._fanartheight = 0
-        Me._fanartwidth = 0
-        Me._resizeposter = False
-        Me._posterheight = 0
-        Me._posterwidth = 0
-        Me._resizeshowfanart = False
-        Me._showfanartheight = 0
-        Me._showfanartwidth = 0
-        Me._resizeshowposter = False
-        Me._showposterheight = 0
-        Me._showposterwidth = 0
-        Me._resizeallsposter = False
         Me._allsposterheight = 0
+        Me._allspostersize = Enums.PosterSize.Xlrg
         Me._allsposterwidth = 0
-        Me._resizeepfanart = False
+        Me._allwaysdisplaygenrestext = False
+        Me._askcheckboxscrape = True
+        Me._autobd = False
+        Me._bannerexpertbdmv = String.Empty
+        Me._bannerexpertmulti = String.Empty
+        Me._bannerexpertsingle = String.Empty
+        Me._bannerexpertvts = String.Empty
+        Me._bdpath = String.Empty
+        Me._castimagesonly = False
+        Me._certificationLang = String.Empty
+        Me._checkupdates = True
+        Me._cleandb = True
+        Me._cleandotfanartJpg = False
+        Me._cleanextrathumbs = False
+        Me._cleanfanartJpg = False
+        Me._cleanfolderJpg = False
+        Me._cleanmovieJpg = False
+        Me._cleanmovieNfo = False
+        Me._cleanmovieNfoB = False
+        Me._cleanmovieTbn = False
+        Me._cleanmovieTbnB = False
+        Me._cleanmoviefanartJpg = False
+        Me._cleanmovienameJpg = False
+        Me._cleanposterJpg = False
+        Me._cleanposterTbn = False
+        Me._cleanwhitelistexts = New List(Of String)
+        Me._cleanwhitelistvideo = False
+        Me._clearartexpertbdmv = String.Empty
+        Me._clearartexpertmulti = String.Empty
+        Me._clearartexpertsingle = String.Empty
+        Me._clearartexpertvts = String.Empty
+        Me._clearlogoexpertbdmv = String.Empty
+        Me._clearlogoexpertmulti = String.Empty
+        Me._clearlogoexpertsingle = String.Empty
+        Me._clearlogoexpertvts = String.Empty
+        Me._deletealltrailers = False
+        Me._discartexpertbdmv = String.Empty
+        Me._discartexpertmulti = String.Empty
+        Me._discartexpertsingle = String.Empty
+        Me._discartexpertvts = String.Empty
+        Me._displayallseason = True
+        Me._displaymissingepisodes = False
+        Me._displayyear = False
+        Me._emberModules = New List(Of ModulesManager._XMLEmberModuleClass)
+        Me._enableifoscan = True
+        Me._epfanartQuality = 0
         Me._epfanartheight = 0
+        Me._epfanartsize = Enums.FanartSize.Lrg
         Me._epfanartwidth = 0
-        Me._resizeepposter = False
+        Me._epfiltercustom = New List(Of String)
+        Me._episodedashfanart = False
+        Me._episodedashthumbjpg = False
+        Me._episodedotfanart = False
+        Me._episodefanartcol = True
+        Me._episodejpg = False
+        Me._episodenfocol = False
+        Me._episodepostercol = False
+        Me._episodetbn = True
+        Me._eplockplot = False
+        Me._eplockrating = False
+        Me._eplocktitle = False
+        Me._epposterQuality = 0
         Me._epposterheight = 0
         Me._epposterwidth = 0
+        Me._epproperCase = True
+        Me._epruntimemask = "<m>"
+        Me._expertcleaner = False
+        Me._expertrecognizevts = True
+        Me._extrafanartsexpertbdmv = False
+        Me._extrafanartsexpertsingle = False
+        Me._extrafanartsexpertvts = False
+        Me._extrathumbsexpertbdmv = False
+        Me._extrathumbsexpertsingle = False
+        Me._extrathumbsexpertvts = False
+        Me._fanartQuality = 0
+        Me._fanartexpertbdmv = String.Empty
+        Me._fanartexpertmulti = String.Empty
+        Me._fanartexpertsingle = String.Empty
+        Me._fanartexpertvts = String.Empty
+        Me._fanartheight = 0
+        Me._fanartprefsizeonly = False
+        Me._fanartsize = Enums.FanartSize.Xlrg
+        Me._fanartwidth = 0
+        Me._field250 = True
+        Me._fieldcast = True
+        Me._fieldcert = True
+        Me._fieldcountry = True
+        Me._fieldcrew = True
+        Me._fielddirector = True
+        Me._fieldgenre = True
+        Me._fieldmpaa = True
+        Me._fieldmusic = True
+        Me._fieldoutline = True
+        Me._fieldplot = True
+        Me._fieldproducers = True
+        Me._fieldrating = True
+        Me._fieldrelease = True
+        Me._fieldruntime = True
+        Me._fieldstudio = True
+        Me._fieldtagline = True
+        Me._fieldtitle = True
+        Me._fieldtrailer = True
+        Me._fieldvotes = True
+        Me._fieldwriters = True
+        Me._fieldyear = True
+        Me._filterCustom = New List(Of String)
+        Me._filterPanelState = False
+        Me._flaglang = String.Empty
+        Me._forcetitle = String.Empty
+        Me._fullcast = True
+        Me._fullcrew = False
+        Me._genrefilter = "English"
+        Me._genrelimit = 0
+        Me._ignorelastscan = True
+        Me._imagesglassoverlay = False
+        Me._infopanelanim = False
+        Me._infopanelstate = 0
+        Me._landscapeexpertbdmv = String.Empty
+        Me._landscapeexpertmulti = String.Empty
+        Me._landscapeexpertsingle = String.Empty
+        Me._landscapeexpertvts = String.Empty
+        Me._language = "English_(en_US)"
+        Me._languages = New List(Of Containers.TVLanguage)
+        Me._levtolerance = 0
+        Me._lockoutline = False
+        Me._lockplot = False
+        Me._lockrating = False
+        Me._lockrating = False
+        Me._lockstudio = False
+        Me._locktagline = False
+        Me._locktitle = False
+        Me._locktrailer = False
+        Me._marknew = False
+        Me._marknewepisodes = False
+        Me._marknewshows = False
+        Me._metadatapertype = New List(Of MetadataPerType)
+        Me._missingfilterefanarts = True
+        Me._missingfilterethumbs = True
+        Me._missingfilterfanart = True
+        Me._missingfilternfo = True
+        Me._missingfilterposter = True
+        Me._missingfiltersubs = True
+        Me._missingfiltertrailer = True
+        Me._movieefanartsCol = False
+        Me._movieethumbsCol = False
+        Me._moviefanartCol = False
+        Me._movieinfoCol = False
+        Me._movieposterCol = False
+        Me._moviesetspath = String.Empty
+        Me._moviesubCol = False
+        Me._movietheme = "Default"
+        Me._movietrailerCol = False
+        Me._moviewatchedCol = False
+        Me._nfoexpertbdmv = String.Empty
+        Me._nfoexpertmulti = String.Empty
+        Me._nfoexpertsingle = String.Empty
+        Me._nfoexpertvts = String.Empty
+        Me._nodisplayfanart = False
+        Me._nodisplayfanartsmall = False
+        Me._nodisplayposter = False
+        Me._noepfilters = False
+        Me._nofilterepisode = True
+        Me._nofilters = False
+        Me._nosaveimagestonfo = False
+        Me._noshowfilters = False
+        Me._nostackexts = New List(Of String)
+        Me._notokens = False
+        Me._onlyvalueforcert = False
+        Me._orderdefault = Enums.Ordering.Standard
+        Me._outlineforplot = False
+        Me._outlinelimit = 350
+        Me._overwriteEpFanart = True
+        Me._overwriteEpPoster = True
+        Me._overwriteFanart = True
+        Me._overwritePoster = True
+        Me._overwriteSeasonFanart = True
+        Me._overwriteSeasonPoster = True
+        Me._overwriteShowFanart = True
+        Me._overwriteShowPoster = True
+        Me._overwriteallsPoster = True
+        Me._overwritenfo = False
+        Me._overwritenfo = False
+        Me._overwritenfo = False
+        Me._overwritetrailer = False
+        Me._password = String.Empty
+        Me._plotforoutline = True
+        Me._posterQuality = 0
+        Me._posterexpertbdmv = String.Empty
+        Me._posterexpertmulti = String.Empty
+        Me._posterexpertsingle = String.Empty
+        Me._posterexpertvts = String.Empty
+        Me._posterheight = 0
+        Me._postersize = Enums.PosterSize.Xlrg
+        Me._posterwidth = 0
+        Me._properCase = True
+        Me._proxycredentials = New NetworkCredential
+        Me._proxyport = -1
+        Me._proxyuri = String.Empty
+        Me._recognizevtsexpertvts = False
+        Me._resizeallsposter = False
+        Me._resizeepfanart = False
+        Me._resizeepposter = False
+        Me._resizefanart = False
+        Me._resizeposter = False
         Me._resizeseasonfanart = False
-        Me._seasonfanartheight = 0
-        Me._seasonfanartwidth = 0
         Me._resizeseasonposter = False
+        Me._resizeshowfanart = False
+        Me._resizeshowposter = False
+        Me._runtimemask = "<m>"
+        Me._scanmediainfo = True
+        Me._scanordermodify = False
+        Me._scantvmediainfo = True
+        Me._scmainstate = 364
+        Me._scraperactorthumbs = True
+        Me._scraperepactors = True
+        Me._scraperepaired = True
+        Me._scraperepcredits = True
+        Me._scraperepdirector = True
+        Me._scraperepepisode = True
+        Me._scraperepplot = True
+        Me._scrapereprating = True
+        Me._scraperepseason = True
+        Me._scrapereptitle = True
+        Me._scrapershowactors = True
+        Me._scrapershowegu = True
+        Me._scrapershowgenre = True
+        Me._scrapershowmpaa = True
+        Me._scrapershowplot = True
+        Me._scrapershowpremiered = True
+        Me._scrapershowrating = True
+        Me._scrapershowstudio = True
+        Me._scrapershowtitle = True
+        Me._scseasonstate = 200
+        Me._scshowstate = 200
+        Me._seasonalljpg = False
+        Me._seasonallposterjpg = False
+        Me._seasonalltbn = True
+        Me._seasondashfanart = False
+        Me._seasondotfanart = False
+        Me._seasonfanartQuality = 0
+        Me._seasonfanartcol = True
+        Me._seasonfanartheight = 0
+        Me._seasonfanartjpg = False
+        Me._seasonfanartsize = Enums.FanartSize.Lrg
+        Me._seasonfanartwidth = 0
+        Me._seasonfolderjpg = False
+        Me._seasonnamejpg = False
+        Me._seasonnametbn = False
+        Me._seasonposterQuality = 0
+        Me._seasonpostercol = False
         Me._seasonposterheight = 0
+        Me._seasonposterjpg = False
+        Me._seasonpostersize = Enums.SeasonPosterType.Poster
+        Me._seasonpostertbn = False
         Me._seasonposterwidth = 0
+        Me._seasonx = False
+        Me._seasonxx = True
+        Me._seasonxxdashfanartjpg = False
+        Me._seasonxxdashposterjpg = False
+        Me._sets = New List(Of String)
+        Me._showbanner = False
+        Me._showbannerjpg = False
+        Me._showbannertype = Enums.ShowBannerType.Graphical
+        Me._showdashfanart = False
+        Me._showdims = False
+        Me._showdotfanart = False
+        Me._showfanartQuality = 0
+        Me._showfanartcol = False
+        Me._showfanartheight = 0
+        Me._showfanartjpg = True
+        Me._showfanartsize = Enums.FanartSize.Lrg
+        Me._showfanartwidth = 0
+        Me._showfiltercustom = New List(Of String)
+        Me._showfolderjpg = True
+        Me._showinfopanelstate = 0
+        Me._showjpg = False
+        Me._showlockgenre = False
+        Me._showlockplot = False
+        Me._showlockrating = False
+        Me._showlockstudio = False
+        Me._showlocktitle = False
+        Me._shownfocol = False
+        Me._showposterQuality = 0
+        Me._showpostercol = False
+        Me._showposterheight = 0
+        Me._showposterjpg = False
+        Me._showpostersize = Enums.PosterSize.Xlrg
+        Me._showpostertbn = False
+        Me._showposterwidth = 0
+        Me._showproperCase = True
+        Me._showratingregion = "usa"
+        Me._showtbn = False
+        Me._singlescrapeimages = True
+        Me._singlescrapetrailer = False
+        Me._skiplessthan = 0
+        Me._skiplessthanep = 0
+        Me._skipstacksizecheck = False
+        Me._sortbeforescan = False
+        Me._sortpath = String.Empty
+        Me._sorttokens = New List(Of String)
+        Me._sourcefromfolder = False
+        Me._stackexpertmulti = False
+        Me._stackexpertsingle = False
+        Me._trailerexpertbdmv = String.Empty
+        Me._trailerexpertmulti = String.Empty
+        Me._trailerexpertsingle = String.Empty
+        Me._trailerexpertvts = String.Empty
+        Me._trailerquality = Enums.TrailerQuality.HD1080p
+        Me._trailertimeout = 2
+        Me._tvcleandb = True
+        Me._tveptheme = "Default"
+        Me._tvflaglang = String.Empty
+        Me._tvignorelastscan = True
+        Me._tvmetadatapertype = New List(Of MetadataPerType)
+        Me._tvscanordermodify = False
+        Me._tvshowregexes = New List(Of TVShowRegEx)
+        Me._tvshowtheme = "Default"
+        Me._tvupdatetime = Enums.TVUpdateTime.Always
+        Me._unstackexpertmulti = False
+        Me._unstackexpertsingle = False
+        Me._updatertrailers = False
+        Me._updatertrailersnodownload = False
+        Me._usebasedirectoryexpertbdmv = False
+        Me._usebasedirectoryexpertvts = False
+        Me._usecertformpaa = False
+        Me._useepduration = False
+        Me._useexpert = False
+        Me._usemiduration = False
+        Me._username = String.Empty
+        Me._validexts = New List(Of String)
+        Me._version = String.Empty
+        Me._videotsparent = False
         Me._windowloc = New Point(If(Screen.PrimaryScreen.WorkingArea.Width <= 1024, 0, Convert.ToInt32((Screen.PrimaryScreen.WorkingArea.Width - 1024) / 2)), If(Screen.PrimaryScreen.WorkingArea.Height <= 768, 0, Convert.ToInt32((Screen.PrimaryScreen.WorkingArea.Height - 768) / 2)))
         Me._windowsize = New Size(1024, 768)
         Me._windowstate = FormWindowState.Normal
-        Me._infopanelstate = 0
-        Me._showinfopanelstate = 0
-        Me._filterPanelState = False
-        Me._scmainstate = 364
-        Me._scshowstate = 200
-        Me._scseasonstate = 200
-        Me._infopanelanim = False
-        Me._checkupdates = True
-        Me._bdpath = String.Empty
-        Me._moviesetspath = String.Empty
-        Me._autobd = False
-        Me._usemiduration = False
-        Me._useepduration = False
-        Me._runtimemask = "<m>"
-        Me._epruntimemask = "<m>"
-        Me._genrefilter = "English"
-        Me._skiplessthan = 0
-        Me._skipstacksizecheck = False
-        Me._skiplessthanep = 0
-        Me._trailerquality = Enums.TrailerQuality.HD1080p
-        Me._updatertrailers = False
-        Me._updatertrailersnodownload = False
-        Me._singlescrapetrailer = False
-        Me._trailertimeout = 2
-        Me._overwritetrailer = False
-        Me._deletealltrailers = False
-        Me._sets = New List(Of String)
-        Me._nosaveimagestonfo = False
-        Me._showdims = False
-        Me._nodisplayposter = False
-        Me._nodisplayfanart = False
-        Me._nodisplayfanartsmall = False
-        Me._outlineforplot = False
-        Me._imagesglassoverlay = False
-        Me._plotforoutline = True
-        Me._outlinelimit = 350
-        Me._sortpath = String.Empty
-        Me._allwaysdisplaygenrestext = False
-        Me._displayyear = False
-        Me._sorttokens = New List(Of String)
-        Me._nofilters = False
-        Me._noshowfilters = False
-        Me._noepfilters = False
-        Me._notokens = False
-        Me._levtolerance = 0
-        Me._autodetectvts = True
-        Me._flaglang = String.Empty
-        Me._tvflaglang = String.Empty
-        Me._language = "English_(en_US)"
-        Me._fieldtitle = True
-        Me._fieldyear = True
-        Me._fieldmpaa = True
-        Me._fieldcert = True
-        Me._fieldrelease = True
-        Me._fieldruntime = True
-        Me._fieldrating = True
-        Me._fieldvotes = True
-        Me._fieldstudio = True
-        Me._fieldgenre = True
-        Me._fieldtrailer = True
-        Me._fieldtagline = True
-        Me._fieldoutline = True
-        Me._fieldplot = True
-        Me._fieldcast = True
-        Me._fielddirector = True
-        Me._fieldwriters = True
-        Me._fieldproducers = True
-        Me._fieldmusic = True
-        Me._fieldcrew = True
-        Me._field250 = True
-        Me._fieldcountry = True
-        Me._genrelimit = 0
-        Me._actorlimit = 0
-        Me._missingfilterposter = True
-        Me._missingfilterfanart = True
-        Me._missingfilternfo = True
-        Me._missingfiltertrailer = True
-        Me._missingfiltersubs = True
-        Me._missingfilterethumbs = True
-        Me._missingfilterefanarts = True
-        Me._movietheme = "Default"
-        Me._tvshowtheme = "Default"
-        Me._tveptheme = "Default"
-        Me._metadatapertype = New List(Of MetadataPerType)
-        Me._tvmetadatapertype = New List(Of MetadataPerType)
-        Me._enableifoscan = True
         Me._yamjsetscompatible = False
-        Me._cleandb = True
-        Me._ignorelastscan = True
-        Me._tvcleandb = True
-        Me._tvignorelastscan = True
-        Me._tvshowregexes = New List(Of TVShowRegEx)
-        Me._seasonalltbn = True
-        Me._seasonalljpg = False
-        Me._seasonallposterjpg = False
-        Me._showfolderjpg = True
-        Me._showtbn = False
-        Me._showjpg = False
-        Me._showpostertbn = False
-        Me._showposterjpg = False
-        Me._showbannerjpg = False
-        Me._showfanartjpg = True
-        Me._showdashfanart = False
-        Me._showdotfanart = False
-        Me._seasonxx = True
-        Me._seasonx = False
-        Me._seasonxxdashposterjpg = False
-        Me._seasonpostertbn = False
-        Me._seasonposterjpg = False
-        Me._seasonnametbn = False
-        Me._seasonnamejpg = False
-        Me._seasonfolderjpg = False
-        Me._seasonfanartjpg = False
-        Me._seasondashfanart = False
-        Me._seasonxxdashfanartjpg = False
-        Me._seasondotfanart = False
-        Me._episodetbn = True
-        Me._episodejpg = False
-        Me._episodedashthumbjpg = False
-        Me._episodedashfanart = False
-        Me._episodedotfanart = False
-        Me._showpostercol = False
-        Me._showfanartcol = False
-        Me._shownfocol = False
-        Me._seasonpostercol = False
-        Me._seasonfanartcol = True
-        Me._episodepostercol = False
-        Me._episodefanartcol = True
-        Me._episodenfocol = False
-        Me._proxyuri = String.Empty
-        Me._proxyport = -1
-        Me._proxycredentials = New NetworkCredential
-        Me._sourcefromfolder = False
-        Me._sortbeforescan = False
-        'Me._tvdbmirror = "thetvdb.com"
-        'Me._tvdblanguage = "en"
-        Me._languages = New List(Of Containers.TVLanguage)
-        Dim xmlTVDB As XDocument
-        Dim cLang As Containers.TVLanguage
         Try
             xmlTVDB = XDocument.Parse(My.Resources.Languages_2)
             Dim xLangs = From xLanguages In xmlTVDB.Descendants("Language")
@@ -4190,51 +4693,6 @@ Public Class Settings
         Catch
 
         End Try
-
-        Me._emberModules = New List(Of ModulesManager._XMLEmberModuleClass)
-        'Me._externaltvdbapikey = String.Empty
-        Me._scanordermodify = False
-        Me._tvscanordermodify = False
-        Me._tvupdatetime = Enums.TVUpdateTime.Always
-        Me._nofilterepisode = True
-        'Me._onlytvimagesforselectedlangauge = True
-        'Me._alwaysgetenglishtvimages = True
-        Me._displaymissingepisodes = False
-        Me._showlocktitle = False
-        Me._showlockplot = False
-        Me._showlockrating = False
-        Me._showlockgenre = False
-        Me._showlockstudio = False
-        Me._eplocktitle = False
-        Me._eplockplot = False
-        Me._eplockrating = False
-        Me._scraperactorthumbs = True
-        Me._scrapershowtitle = True
-        Me._scrapershowegu = True
-        Me._scrapershowgenre = True
-        Me._scrapershowmpaa = True
-        Me._scrapershowplot = True
-        Me._scrapershowpremiered = True
-        Me._scrapershowrating = True
-        Me._scrapershowstudio = True
-        Me._scrapershowactors = True
-        Me._scrapereptitle = True
-        Me._scraperepseason = True
-        Me._scraperepepisode = True
-        Me._scraperepaired = True
-        Me._scrapereprating = True
-        Me._scraperepplot = True
-        Me._scraperepdirector = True
-        Me._scraperepcredits = True
-        Me._scraperepactors = True
-        Me._displayallseason = True
-        Me._marknewshows = False
-        Me._marknewepisodes = False
-        Me._orderdefault = Enums.Ordering.Standard
-        Me._onlyvalueforcert = False
-        Me._username = String.Empty
-        Me._password = String.Empty
-        Me._IMDBURL = "akas.imdb.com"
     End Sub
 
     Public Function EpisodeFanartEnabled() As Boolean
@@ -4282,17 +4740,18 @@ Public Class Settings
         If Not (Master.eSettings.UseEden Or Master.eSettings.UseExpert Or Master.eSettings.UseFrodo Or Master.eSettings.UseNMJ Or Master.eSettings.UseYAMJ) Then
             Master.eSettings.UseFrodo = True
             Master.eSettings.ActorThumbsFrodo = True
-            Master.eSettings.BannerFrodo = False
-            Master.eSettings.ClearArtFrodo = False
-            Master.eSettings.ClearLogoFrodo = False
-            Master.eSettings.DiscArtFrodo = False
-            Master.eSettings.ExtrafanartsFrodo = False
-            Master.eSettings.ExtrathumbsFrodo = False
+            Master.eSettings.BannerFrodo = True
+            Master.eSettings.ClearArtFrodo = True
+            Master.eSettings.ClearLogoFrodo = True
+            Master.eSettings.DiscArtFrodo = True
+            Master.eSettings.ExtrafanartsFrodo = True
+            Master.eSettings.ExtrathumbsFrodo = True
             Master.eSettings.FanartFrodo = True
             Master.eSettings.LandscapeFrodo = True
             Master.eSettings.NFOFrodo = True
             Master.eSettings.PosterFrodo = True
-            Master.eSettings.TrailerFrodo = False
+            Master.eSettings.TrailerFrodo = True
+            Master.eSettings.XBMCTrailerFormat = True
         End If
 
     End Sub

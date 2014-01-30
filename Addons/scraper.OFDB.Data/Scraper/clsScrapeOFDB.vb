@@ -167,6 +167,10 @@ Public Class OFDB
                             _title = String.Concat("Das ", OFDBTitle.Replace(", Das", " ")).Trim
                         ElseIf OFDBTitle.EndsWith(", The") Then
                             _title = String.Concat("The ", OFDBTitle.Replace(", The", " ")).Trim
+                        ElseIf OFDBTitle.EndsWith(", Ein") Then
+                            _title = String.Concat("Ein ", OFDBTitle.Replace(", Ein", " ")).Trim
+                        ElseIf OFDBTitle.EndsWith(", Eine") Then
+                            _title = String.Concat("Eine ", OFDBTitle.Replace(", Eine", " ")).Trim
                         Else
                             _title = OFDBTitle
                         End If

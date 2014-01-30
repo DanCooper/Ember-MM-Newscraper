@@ -137,11 +137,11 @@ Public Class dlgErrorViewer
 
     Private Sub llblURL_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles llblURL.LinkClicked
         If Master.isWindows Then
-            Process.Start("https://sourceforge.net/apps/trac/emm-r/")
+            Process.Start("http://bugs.embermediamanager.org/thebuggenie/embermediamanager/issues/open")
         Else
             Using Explorer As New Process
                 Explorer.StartInfo.FileName = "xdg-open"
-                Explorer.StartInfo.Arguments = "https://sourceforge.net/apps/trac/emm-r/"
+                Explorer.StartInfo.Arguments = "http://bugs.embermediamanager.org/thebuggenie/embermediamanager/issues/open"
                 Explorer.Start()
             End Using
         End If
