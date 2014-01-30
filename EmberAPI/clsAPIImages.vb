@@ -862,7 +862,7 @@ Public Class Images
 
             'TODO At the moment only single artwork folder is supported
             If Directory.Exists(fPath) AndAlso setname <> "" Then
-                fPath = Path.Combine(fPath, setname & "-folder.jpg")
+                fPath = Path.Combine(fPath, setname & "-poster.jpg")
                 Save(fPath, Master.eSettings.PosterQuality, "", doResize)
                 strReturn = fPath
             End If

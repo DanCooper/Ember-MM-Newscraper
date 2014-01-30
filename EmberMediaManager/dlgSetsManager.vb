@@ -426,8 +426,8 @@ Public Class dlgSetsManager
                     Me.lblFanartSize.Visible = False
                     Me.Fanart.Dispose()
                 End If
-                If IO.File.Exists(collectionartwork_path & currSet.Set & "-folder.jpg") Then
-                    Poster.FromFile(collectionartwork_path & currSet.Set & "-folder.jpg")
+                If IO.File.Exists(collectionartwork_path & currSet.Set & "-poster.jpg") Then
+                    Poster.FromFile(collectionartwork_path & currSet.Set & "-poster.jpg")
                     If Not IsNothing(Poster.Image) Then
                         pbPoster.Image = Poster.Image
                         pbPoster.Tag = Poster
@@ -437,8 +437,8 @@ Public Class dlgSetsManager
                     If Not ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Poster) Then
                         btnSetPosterScrape.Enabled = False
                     End If
-                ElseIf IO.File.Exists(collectionartwork_path & currSet.Set & "-folder.png") Then
-                    Poster.FromFile(collectionartwork_path & currSet.Set & "-folder.png")
+                ElseIf IO.File.Exists(collectionartwork_path & currSet.Set & "-poster.png") Then
+                    Poster.FromFile(collectionartwork_path & currSet.Set & "-poster.png")
                     If Not IsNothing(Poster.Image) Then
                         pbPoster.Image = Poster.Image
                         pbPoster.Tag = Poster
