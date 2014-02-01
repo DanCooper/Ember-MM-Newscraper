@@ -31,6 +31,7 @@ Public Class MovieExporterModule
 	Private _enabled As Boolean = False
     Private _Name As String = "Movie List Exporter"
     Private _setup As frmSettingsHolder
+    Private MySettings As New _MySettings
 
 #End Region 'Fields
 
@@ -124,12 +125,25 @@ Public Class MovieExporterModule
 	Sub Init(ByVal sAssemblyName As String, ByVal sExecutable As String) Implements Interfaces.EmberExternalModule.Init
 		_AssemblyName = sAssemblyName
         'Master.eLang.LoadLanguage(Master.eSettings.Language, sExecutable)
+        LoadSettings()
 	End Sub
 
     Function InjectSetup() As Containers.SettingsPanel Implements Interfaces.EmberExternalModule.InjectSetup
         Me._setup = New frmSettingsHolder
         Me._setup.cbEnabled.Checked = Me._enabled
         Dim SPanel As New Containers.SettingsPanel
+
+
+        _setup.txt_exportmoviepath.Text = MySettings.ExportPath
+        _setup.chkExportTVShows.Checked = MySettings.ExportTVShows
+        _setup.cbo_exportmovieposter.Text = CStr(MySettings.ExportPosterHeight)
+        _setup.cbo_exportmoviefanart.Text = CStr(MySettings.ExportFanartWidth)
+        _setup.cbo_exportmoviequality.Text = CStr(MySettings.ExportImageQuality)
+        _setup.lbl_exportmoviefilter1saved.Text = MySettings.ExportFilter1
+        _setup.lbl_exportmoviefilter2saved.Text = MySettings.ExportFilter2
+        _setup.lbl_exportmoviefilter3saved.Text = MySettings.ExportFilter3
+
+
         SPanel.Name = Me._Name
         SPanel.Text = Master.eLang.GetString(335, "Movie List Exporter")
         SPanel.Prefix = "Exporter_"
@@ -152,10 +166,69 @@ Public Class MovieExporterModule
         RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", True}))
     End Sub
 
-    Sub SaveSetup(ByVal DoDispose As Boolean) Implements Interfaces.EmberExternalModule.SaveSetup
-        Me.Enabled = Me._setup.cbEnabled.Checked
+    'Sub SaveSetup(ByVal DoDispose As Boolean) Implements Interfaces.EmberExternalModule.SaveSetup
+    '    Me.Enabled = Me._setup.cbEnabled.Checked
+    'End Sub
+
+
+
+    Sub LoadSettings()
+        MySettings.ExportPath = AdvancedSettings.GetSetting("ExportPath", "")
+        MySettings.ExportTVShows = AdvancedSettings.GetBooleanSetting("ExportTVShows", False)
+        MySettings.ExportPosterHeight = CInt(AdvancedSettings.GetSetting("ExportPosterHeight", "300"))
+        MySettings.ExportFanartWidth = CInt(AdvancedSettings.GetSetting("ExportFanartWidth", "800"))
+        MySettings.ExportFilter1 = AdvancedSettings.GetSetting("ExportFilter1", "-")
+        MySettings.ExportFilter2 = AdvancedSettings.GetSetting("ExportFilter2", "-")
+        MySettings.ExportFilter3 = AdvancedSettings.GetSetting("ExportFilter3", "-")
+        MySettings.ExportImageQuality = CInt(AdvancedSettings.GetSetting("ExportImageQuality", "70"))
     End Sub
 
-#End Region 'Methods
+    Sub SaveSetup(ByVal DoDispose As Boolean) Implements Interfaces.EmberExternalModule.SaveSetup
+        Me.Enabled = Me._setup.cbEnabled.Checked
+        MySettings.ExportPath = _setup.txt_exportmoviepath.Text
+        MySettings.ExportTVShows = _setup.chkExportTVShows.Checked
+        MySettings.ExportPosterHeight = CInt(_setup.cbo_exportmovieposter.Text)
+        MySettings.ExportFanartWidth = CInt(_setup.cbo_exportmoviefanart.Text)
+        MySettings.ExportFilter1 = _setup.lbl_exportmoviefilter1saved.Text
+        MySettings.ExportFilter2 = _setup.lbl_exportmoviefilter2saved.Text
+        MySettings.ExportFilter3 = _setup.lbl_exportmoviefilter3saved.Text
+        MySettings.ExportImageQuality = CInt(_setup.cbo_exportmoviequality.Text)
+        SaveSettings()
+    End Sub
 
+    Sub SaveSettings()
+        Using settings = New AdvancedSettings()
+            settings.SetSetting("ExportPath", MySettings.ExportPath)
+            settings.SetBooleanSetting("ExportTVShows", MySettings.ExportTVShows)
+            settings.SetSetting("ExportPosterHeight", CStr(MySettings.ExportPosterHeight))
+            settings.SetSetting("ExportFanartWidth", CStr(MySettings.ExportFanartWidth))
+            settings.SetSetting("ExportFilter1", MySettings.ExportFilter1)
+            settings.SetSetting("ExportFilter2", MySettings.ExportFilter2)
+            settings.SetSetting("ExportFilter3", MySettings.ExportFilter3)
+            settings.SetSetting("ExportImageQuality", CStr(MySettings.ExportImageQuality))
+        End Using
+
+    End Sub
+
+
+#End Region 'Methods
+#Region "Nested Types"
+
+    Structure _MySettings
+
+#Region "Fields"
+
+        Dim ExportPath As String
+        Dim ExportFanartWidth As Integer
+        Dim ExportPosterHeight As Integer
+        Dim ExportFilter1 As String
+        Dim ExportFilter2 As String
+        Dim ExportFilter3 As String
+        Dim ExportTVShows As Boolean
+        Dim ExportImageQuality As Integer
+#End Region 'Fields
+
+    End Structure
+
+#End Region 'Nested Types
 End Class

@@ -156,6 +156,15 @@
   <string control="YAMJ_chkVideoTSParent"></string>
   <string control="YAMJ_chkYAMJCompatibleSets"></string>
   <string control="YAMJ_chkEnabled"></string>
+  <string control="Exporter_cbEnabled">Enable or disable this module.</string>
+  <string control="Exporter_txt_exportmoviepath">The folder where the created HTML Template is stored</string>
+  <string control="Exporter_cbo_exportmoviefanart">The desired width of exported fanart. A smaller value results in smaller files and faster loading times</string>
+  <string control="Exporter_cbo_exportmovieposter">The desired width of exported poster. A smaller value results in smaller files and faster loading times</string>
+  <string control="Exporter_cbo_exportmoviequality">100 means no quality loss, but also biggest filesize - set smaller value to enhance loading times!</string>
+  <string control="Exporter_cbo_exportmoviefiltergenerate">Three filters which an can be used to store different filters. Those can be selected in Movie Export Interface</string>
+  <string control="Exporter_cbSearch">Different filtertypes to choose from</string>
+  <string control="Exporter_btn_Apply">Save selected filter</string>
+  <string control="Exporter_btn_Reset">Reset selected filter</string>
   <string control="GenresEditor_btnRemoveGenre"></string>
   <string control="GenresEditor_btnAddGenre"></string>
   <string control="GenresEditor_btnRemoveLang"></string>

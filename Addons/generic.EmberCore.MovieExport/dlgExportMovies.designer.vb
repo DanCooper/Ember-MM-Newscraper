@@ -5,28 +5,19 @@ Partial Class dlgExportMovies
     #Region "Fields"
 
     Friend  WithEvents btnCancel As System.Windows.Forms.Button
-    Friend  WithEvents btnSource As System.Windows.Forms.Button
-    Friend  WithEvents cbSearch As System.Windows.Forms.ComboBox
-    Friend  WithEvents cbTemplate As System.Windows.Forms.ComboBox
+    Friend WithEvents cbTemplate As System.Windows.Forms.ComboBox
     Friend  WithEvents Close_Button As System.Windows.Forms.Button
-    Friend WithEvents ilExport As System.Windows.Forms.ImageList
-    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend  WithEvents ImageList1 As System.Windows.Forms.ImageList
+    Friend WithEvents lblFilterSelected As System.Windows.Forms.Label
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents lblCanceling As System.Windows.Forms.Label
     Friend WithEvents lblCompiling As System.Windows.Forms.Label
     Friend WithEvents lblFile As System.Windows.Forms.Label
-    Friend WithEvents lblIn As System.Windows.Forms.Label
-    Friend WithEvents lstSources As System.Windows.Forms.CheckedListBox
     Friend WithEvents pbCompile As System.Windows.Forms.ProgressBar
     Friend WithEvents pnlBG As System.Windows.Forms.Panel
     Friend WithEvents pnlBottomMain As System.Windows.Forms.Panel
     Friend WithEvents pnlCancel As System.Windows.Forms.Panel
-    Friend WithEvents pnlSearch As System.Windows.Forms.Panel
-    Friend WithEvents Reset_Button As System.Windows.Forms.Button
     Friend WithEvents Save_Button As System.Windows.Forms.Button
-    Friend WithEvents Search_Button As System.Windows.Forms.Button
-    Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents txtSearch As System.Windows.Forms.TextBox
     Friend WithEvents wbMovieList As System.Windows.Forms.WebBrowser
 
     'Required by the Windows Form Designer
@@ -55,26 +46,15 @@ Partial Class dlgExportMovies
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgExportMovies))
-        Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.Save_Button = New System.Windows.Forms.Button()
         Me.Close_Button = New System.Windows.Forms.Button()
         Me.pnlBottomMain = New System.Windows.Forms.Panel()
-        Me.lstSources = New System.Windows.Forms.CheckedListBox()
-        Me.lblfanart = New System.Windows.Forms.Label()
-        Me.cbofanart = New System.Windows.Forms.ComboBox()
-        Me.lblposter = New System.Windows.Forms.Label()
-        Me.cboposter = New System.Windows.Forms.ComboBox()
-        Me.pnlSearch = New System.Windows.Forms.Panel()
-        Me.btnSource = New System.Windows.Forms.Button()
-        Me.ilExport = New System.Windows.Forms.ImageList(Me.components)
-        Me.Reset_Button = New System.Windows.Forms.Button()
-        Me.Label1 = New System.Windows.Forms.Label()
-        Me.Search_Button = New System.Windows.Forms.Button()
-        Me.lblIn = New System.Windows.Forms.Label()
-        Me.cbSearch = New System.Windows.Forms.ComboBox()
-        Me.txtSearch = New System.Windows.Forms.TextBox()
+        Me.btn_BuildHTML = New System.Windows.Forms.Button()
+        Me.lblFilterSelected = New System.Windows.Forms.Label()
+        Me.cbo_SelectedFilter = New System.Windows.Forms.ComboBox()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.cbTemplate = New System.Windows.Forms.ComboBox()
+        Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
         Me.pnlCancel = New System.Windows.Forms.Panel()
         Me.btnCancel = New System.Windows.Forms.Button()
         Me.pbCompile = New System.Windows.Forms.ProgressBar()
@@ -83,38 +63,20 @@ Partial Class dlgExportMovies
         Me.lblCanceling = New System.Windows.Forms.Label()
         Me.pnlBG = New System.Windows.Forms.Panel()
         Me.wbMovieList = New System.Windows.Forms.WebBrowser()
-        Me.TableLayoutPanel1.SuspendLayout()
         Me.pnlBottomMain.SuspendLayout()
-        Me.pnlSearch.SuspendLayout()
         Me.pnlCancel.SuspendLayout()
         Me.pnlBG.SuspendLayout()
         Me.SuspendLayout()
-        '
-        'TableLayoutPanel1
-        '
-        Me.TableLayoutPanel1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.TableLayoutPanel1.ColumnCount = 2
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel1.Controls.Add(Me.Save_Button, 0, 0)
-        Me.TableLayoutPanel1.Controls.Add(Me.Close_Button, 1, 0)
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(886, 6)
-        Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
-        Me.TableLayoutPanel1.RowCount = 1
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29.0!))
-        Me.TableLayoutPanel1.Size = New System.Drawing.Size(146, 29)
-        Me.TableLayoutPanel1.TabIndex = 0
         '
         'Save_Button
         '
         Me.Save_Button.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.Save_Button.Enabled = False
         Me.Save_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Save_Button.Location = New System.Drawing.Point(3, 3)
+        Me.Save_Button.Location = New System.Drawing.Point(779, 9)
         Me.Save_Button.Name = "Save_Button"
-        Me.Save_Button.Size = New System.Drawing.Size(67, 23)
-        Me.Save_Button.TabIndex = 0
+        Me.Save_Button.Size = New System.Drawing.Size(119, 31)
+        Me.Save_Button.TabIndex = 6
         Me.Save_Button.Text = "Save"
         '
         'Close_Button
@@ -122,167 +84,57 @@ Partial Class dlgExportMovies
         Me.Close_Button.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.Close_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Close_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Close_Button.Location = New System.Drawing.Point(76, 3)
+        Me.Close_Button.Location = New System.Drawing.Point(904, 9)
         Me.Close_Button.Name = "Close_Button"
-        Me.Close_Button.Size = New System.Drawing.Size(67, 23)
+        Me.Close_Button.Size = New System.Drawing.Size(119, 31)
         Me.Close_Button.TabIndex = 1
         Me.Close_Button.Text = "Close"
         '
         'pnlBottomMain
         '
-        Me.pnlBottomMain.Controls.Add(Me.lstSources)
-        Me.pnlBottomMain.Controls.Add(Me.lblfanart)
-        Me.pnlBottomMain.Controls.Add(Me.cbofanart)
-        Me.pnlBottomMain.Controls.Add(Me.lblposter)
-        Me.pnlBottomMain.Controls.Add(Me.cboposter)
-        Me.pnlBottomMain.Controls.Add(Me.pnlSearch)
+        Me.pnlBottomMain.Controls.Add(Me.Close_Button)
+        Me.pnlBottomMain.Controls.Add(Me.btn_BuildHTML)
+        Me.pnlBottomMain.Controls.Add(Me.Save_Button)
+        Me.pnlBottomMain.Controls.Add(Me.lblFilterSelected)
+        Me.pnlBottomMain.Controls.Add(Me.cbo_SelectedFilter)
         Me.pnlBottomMain.Controls.Add(Me.Label2)
         Me.pnlBottomMain.Controls.Add(Me.cbTemplate)
-        Me.pnlBottomMain.Controls.Add(Me.TableLayoutPanel1)
         Me.pnlBottomMain.Location = New System.Drawing.Point(0, 502)
         Me.pnlBottomMain.Name = "pnlBottomMain"
         Me.pnlBottomMain.Size = New System.Drawing.Size(1035, 48)
         Me.pnlBottomMain.TabIndex = 0
         '
-        'lstSources
+        'btn_BuildHTML
         '
-        Me.lstSources.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lstSources.FormattingEnabled = True
-        Me.lstSources.Location = New System.Drawing.Point(236, 7)
-        Me.lstSources.Name = "lstSources"
-        Me.lstSources.Size = New System.Drawing.Size(84, 38)
-        Me.lstSources.TabIndex = 1
-        Me.lstSources.Visible = False
+        Me.btn_BuildHTML.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.btn_BuildHTML.Enabled = False
+        Me.btn_BuildHTML.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btn_BuildHTML.Location = New System.Drawing.Point(604, 9)
+        Me.btn_BuildHTML.Name = "btn_BuildHTML"
+        Me.btn_BuildHTML.Size = New System.Drawing.Size(169, 31)
+        Me.btn_BuildHTML.TabIndex = 5
+        Me.btn_BuildHTML.Text = "Generate Template"
         '
-        'lblfanart
+        'lblFilterSelected
         '
-        Me.lblfanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblfanart.Location = New System.Drawing.Point(749, 9)
-        Me.lblfanart.Name = "lblfanart"
-        Me.lblfanart.Size = New System.Drawing.Size(66, 21)
-        Me.lblfanart.TabIndex = 7
-        Me.lblfanart.Text = "Fanart [px]"
-        Me.lblfanart.TextAlign = System.Drawing.ContentAlignment.BottomLeft
+        Me.lblFilterSelected.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblFilterSelected.Location = New System.Drawing.Point(288, 6)
+        Me.lblFilterSelected.Name = "lblFilterSelected"
+        Me.lblFilterSelected.Size = New System.Drawing.Size(43, 16)
+        Me.lblFilterSelected.TabIndex = 0
+        Me.lblFilterSelected.Text = "Filter"
+        Me.lblFilterSelected.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
-        'cbofanart
+        'cbo_SelectedFilter
         '
-        Me.cbofanart.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbofanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.cbofanart.FormattingEnabled = True
-        Me.cbofanart.Location = New System.Drawing.Point(821, 9)
-        Me.cbofanart.Name = "cbofanart"
-        Me.cbofanart.Size = New System.Drawing.Size(59, 21)
-        Me.cbofanart.TabIndex = 8
-        '
-        'lblposter
-        '
-        Me.lblposter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblposter.Location = New System.Drawing.Point(614, 9)
-        Me.lblposter.Name = "lblposter"
-        Me.lblposter.Size = New System.Drawing.Size(64, 21)
-        Me.lblposter.TabIndex = 5
-        Me.lblposter.Text = "Poster [px]"
-        Me.lblposter.TextAlign = System.Drawing.ContentAlignment.BottomLeft
-        '
-        'cboposter
-        '
-        Me.cboposter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboposter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.cboposter.FormattingEnabled = True
-        Me.cboposter.Location = New System.Drawing.Point(684, 9)
-        Me.cboposter.Name = "cboposter"
-        Me.cboposter.Size = New System.Drawing.Size(59, 21)
-        Me.cboposter.TabIndex = 7
-        '
-        'pnlSearch
-        '
-        Me.pnlSearch.Controls.Add(Me.btnSource)
-        Me.pnlSearch.Controls.Add(Me.Reset_Button)
-        Me.pnlSearch.Controls.Add(Me.Label1)
-        Me.pnlSearch.Controls.Add(Me.Search_Button)
-        Me.pnlSearch.Controls.Add(Me.lblIn)
-        Me.pnlSearch.Controls.Add(Me.cbSearch)
-        Me.pnlSearch.Controls.Add(Me.txtSearch)
-        Me.pnlSearch.Enabled = False
-        Me.pnlSearch.Location = New System.Drawing.Point(199, 9)
-        Me.pnlSearch.Name = "pnlSearch"
-        Me.pnlSearch.Size = New System.Drawing.Size(407, 27)
-        Me.pnlSearch.TabIndex = 3
-        '
-        'btnSource
-        '
-        Me.btnSource.ImageIndex = 0
-        Me.btnSource.ImageList = Me.ilExport
-        Me.btnSource.Location = New System.Drawing.Point(127, 2)
-        Me.btnSource.Name = "btnSource"
-        Me.btnSource.Size = New System.Drawing.Size(19, 20)
-        Me.btnSource.TabIndex = 2
-        Me.btnSource.UseVisualStyleBackColor = True
-        Me.btnSource.Visible = False
-        '
-        'ilExport
-        '
-        Me.ilExport.ImageStream = CType(resources.GetObject("ilExport.ImageStream"), System.Windows.Forms.ImageListStreamer)
-        Me.ilExport.TransparentColor = System.Drawing.Color.Transparent
-        Me.ilExport.Images.SetKeyName(0, "asc.png")
-        Me.ilExport.Images.SetKeyName(1, "desc.png")
-        '
-        'Reset_Button
-        '
-        Me.Reset_Button.Enabled = False
-        Me.Reset_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Reset_Button.Location = New System.Drawing.Point(334, 0)
-        Me.Reset_Button.Name = "Reset_Button"
-        Me.Reset_Button.Size = New System.Drawing.Size(67, 23)
-        Me.Reset_Button.TabIndex = 6
-        Me.Reset_Button.Text = "Reset"
-        '
-        'Label1
-        '
-        Me.Label1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label1.Location = New System.Drawing.Point(3, 7)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(36, 13)
-        Me.Label1.TabIndex = 0
-        Me.Label1.Text = "Filter"
-        Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        '
-        'Search_Button
-        '
-        Me.Search_Button.Enabled = False
-        Me.Search_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Search_Button.Location = New System.Drawing.Point(261, 0)
-        Me.Search_Button.Name = "Search_Button"
-        Me.Search_Button.Size = New System.Drawing.Size(67, 23)
-        Me.Search_Button.TabIndex = 5
-        Me.Search_Button.Text = "Apply"
-        '
-        'lblIn
-        '
-        Me.lblIn.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblIn.Location = New System.Drawing.Point(152, 5)
-        Me.lblIn.Name = "lblIn"
-        Me.lblIn.Size = New System.Drawing.Size(20, 16)
-        Me.lblIn.TabIndex = 3
-        Me.lblIn.Text = "in"
-        Me.lblIn.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'cbSearch
-        '
-        Me.cbSearch.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbSearch.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.cbSearch.FormattingEnabled = True
-        Me.cbSearch.Location = New System.Drawing.Point(178, 0)
-        Me.cbSearch.Name = "cbSearch"
-        Me.cbSearch.Size = New System.Drawing.Size(77, 21)
-        Me.cbSearch.TabIndex = 4
-        '
-        'txtSearch
-        '
-        Me.txtSearch.Location = New System.Drawing.Point(37, 0)
-        Me.txtSearch.Name = "txtSearch"
-        Me.txtSearch.Size = New System.Drawing.Size(84, 22)
-        Me.txtSearch.TabIndex = 3
+        Me.cbo_SelectedFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbo_SelectedFilter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbo_SelectedFilter.FormattingEnabled = True
+        Me.cbo_SelectedFilter.Items.AddRange(New Object() {"-", "Filter 1", "Filter 2", "Filter 3"})
+        Me.cbo_SelectedFilter.Location = New System.Drawing.Point(337, 9)
+        Me.cbo_SelectedFilter.Name = "cbo_SelectedFilter"
+        Me.cbo_SelectedFilter.Size = New System.Drawing.Size(138, 21)
+        Me.cbo_SelectedFilter.TabIndex = 4
         '
         'Label2
         '
@@ -302,8 +154,15 @@ Partial Class dlgExportMovies
         Me.cbTemplate.FormattingEnabled = True
         Me.cbTemplate.Location = New System.Drawing.Point(71, 9)
         Me.cbTemplate.Name = "cbTemplate"
-        Me.cbTemplate.Size = New System.Drawing.Size(122, 21)
+        Me.cbTemplate.Size = New System.Drawing.Size(195, 21)
         Me.cbTemplate.TabIndex = 2
+        '
+        'ImageList1
+        '
+        Me.ImageList1.ImageStream = CType(resources.GetObject("ImageList1.ImageStream"), System.Windows.Forms.ImageListStreamer)
+        Me.ImageList1.TransparentColor = System.Drawing.Color.Transparent
+        Me.ImageList1.Images.SetKeyName(0, "asc.png")
+        Me.ImageList1.Images.SetKeyName(1, "desc.png")
         '
         'pnlCancel
         '
@@ -410,20 +269,15 @@ Partial Class dlgExportMovies
         Me.Name = "dlgExportMovies"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Export Movies"
-        Me.TableLayoutPanel1.ResumeLayout(False)
         Me.pnlBottomMain.ResumeLayout(False)
         Me.pnlBottomMain.PerformLayout()
-        Me.pnlSearch.ResumeLayout(False)
-        Me.pnlSearch.PerformLayout()
         Me.pnlCancel.ResumeLayout(False)
         Me.pnlBG.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
-    Friend WithEvents lblfanart As System.Windows.Forms.Label
-    Friend WithEvents cbofanart As System.Windows.Forms.ComboBox
-    Friend WithEvents lblposter As System.Windows.Forms.Label
-    Friend WithEvents cboposter As System.Windows.Forms.ComboBox
+    Friend WithEvents cbo_SelectedFilter As System.Windows.Forms.ComboBox
+    Friend WithEvents btn_BuildHTML As System.Windows.Forms.Button
 
 #End Region 'Methods
 

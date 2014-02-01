@@ -1079,4 +1079,16 @@
 	<string id="990">Path to DTLite.exe</string>
 	<string id="991">Actor Thumbs</string>
 	<string id="992">Extrafanarts</string>
+  <string id="993">Export TV Shows</string>
+  <string id="994">Generate Filter</string>
+  <string id="995">Export Path</string>
+  <string id="996">Fanart Width [px]</string>
+  <string id="997">Poster Height [px]</string>
+  <string id="998">Filter Settings</string>
+  <string id="999">Image Settings</string>
+  <string id="1001">Save Filter</string>
+  <string id="1002">Reset Filter</string>
+  <string id="1003">Template saved to:</string>
+  <string id="1004">Generate HTML...</string>
+  
   </strings>
