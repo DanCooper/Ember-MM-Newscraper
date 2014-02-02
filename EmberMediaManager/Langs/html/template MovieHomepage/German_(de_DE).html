@@ -57,12 +57,10 @@ func_SearchActor(document.getElementById('actorform').value);
     <td><p>L&#228;nge:</p></td>
     <td class="tab"><p><$RUNTIME></p></td>
   </tr>
-    </tr>
     <tr class="tabellenlinie">
     <td><p>VideoBitrate:</p></td>
     <td class="tab"><p><$VIDEOBITRATE></p></td>
   </tr>
-    </tr>
     <tr class="tabellenlinie">
     <td><p>AudioBitrate:</p></td>
     <td class="tab"><p><$AUDIOBITRATE></p></td>
@@ -80,9 +78,9 @@ func_SearchActor(document.getElementById('actorform').value);
 
 <div class="divmoviebottominfo"> 
 <p> Links:
-<a href="http://www.imdb.de/title/tt<$IMDBID>/"><img style="border-style:none" src="images/imdb.jpg" title="IMDB-Link" alt="IMDB-Eintrag anzeigen"/></a>
-<a href="http://www.imdb.com/title/tt<$IMDBID>/trailers"><img style="border-style:none" src="images/youtube.jpg" title="Trailer-Link" alt="Trailer anzeigen"/></a>
-<a href="javascript:{}" onclick="func_OpenFolder(<$COUNT>)"><img style="border-style:none" src="images/movie_folder.png" title="Film &#246;ffnen" alt="Film &#246;ffnen"/></a>  
+<a href="http://www.imdb.de/title/tt<$IMDBID>/" target="_blank"><img style="border-style:none" src="images/imdb.jpg" title="IMDB-Link" alt="IMDB-Eintrag anzeigen"/></a>
+<a href="http://www.imdb.com/title/tt<$IMDBID>/trailers" target="_blank"><img style="border-style:none" src="images/youtube.jpg" title="Trailer-Link" alt="Trailer anzeigen"/></a>
+<a href="javascript:{}" onclick="func_OpenFolder(<$COUNT>)"><img style="border-style:none" src="images/movie_folder.png" title="Film &#246;ffnen (nur InternetExplorer)" alt="Film &#246;ffnen (nur InternetExplorer)"/></a>  
 </p><br />  
 <p class="fontstil"><$PLOT></p>
 <br />
@@ -113,6 +111,7 @@ DataThreed[<$COUNT>] = "<$VIDEOMULTIVIEW>";
 DataSet[<$COUNT>] = "<$SET>";
 DataNow = "<$NOW>";
 DataMoviesets = "<$MOVIESETS>";
+DataTVShows = "<$TVSHOWS>";
 </script>
 					
 
@@ -193,6 +192,7 @@ DataMoviesets = "<$MOVIESETS>";
 <li><a class="menu" href="javascript:{}" title="Alle Sportfilme anzeigen" onclick="func_SearchGenre('Sport')">Sport</a></li>
 <li><a class="menu" href="javascript:{}" title="Alle Thriller anzeigen" onclick="func_SearchGenre('Thriller')">Thriller</a></li>
 <li><a class="menu" href="javascript:{}" title="Alle Moviesets anzeigen" style="color:#CCFFCC;" onclick="func_BuildMoviesets()">Moviesets</a></li>
+<li><a class="menu" href="javascript:{}" title="Alle Serien anzeigen" style="color:#CCFFCC;" onclick="func_BuildTvShows()">Serien</a></li>
 <li><a class="menu" href="javascript:{}" title="Filme nach Erscheinungsjahr sortieren" onclick="func_SearchYear()">Erscheinungsjahr</a></li>
 <li><a class="menu" href="javascript:{}" title="Zuletzt hinzugef&#252;gte Filme anzeigen" onclick="func_SearchDate()">Neueste Filme</a></li>
 <li><a class="menu" href="javascript:{}" title="Bestbewertete Filme (IMDB-Wertung) anzeigen" onclick="func_SearchWertung()">Wertung</a></li>

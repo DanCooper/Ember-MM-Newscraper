@@ -23,6 +23,7 @@ var DataPlot = [];
 var DataNow;
 var DataSet = [];
 var DataMoviesets;
+var DataTVShows;
 
 //Here are string fragments which will be fused together with function-variables to build the whole site navigation dynamically
 var navilinks_full, navilinks, moviewall, moviewall_full;
@@ -30,6 +31,7 @@ var string_navigation_1 = '<li><a href="javascript:{}" onclick="func_ShowDetails
 var string_navigation_1HD1 = '<li><a href="javascript:{}" style="color:#A6D3EA;" onclick="func_ShowDetails(';
 var string_navigation_1DVD1 = '<li><a href="javascript:{}" style="color:#b8860b;" onclick="func_ShowDetails(';
 var string_navigation_1Movieset = '<li><a href="javascript:{}" onclick="func_DisplayMovieset(';
+var string_navigation_1TvShow = '<li><a href="javascript:{}" onclick="func_DisplayTvSeason(';
 var string_navigation_2 = ')"';
 var string_tabindexstart = ' tabindex="';
 var string_tabindexend = '">';
@@ -45,6 +47,14 @@ var string_moviewallpic_1 = '<img class="img150" src="';
 var string_moviewallpic_2 = '" width="133" height="200" alt="';
 var string_moviewallpic_3 = '" title="';
 var string_moviewallpic_4 = '"</a>';
+
+var string_tvshowwalllink_1 = ' <a class="thumbs" href="javascript:func_ShowDetailsTvSeason(';
+var string_tvshowwalllink_2 = ')"  onerror="func_DefaultFanart(';
+var string_tvshowwalllink_3 = ')">';
+var string_tvshowwallpic_1 = '<img class="img150" src="';
+var string_tvshowwallpic_2 = '" width="133" height="200" alt="';
+var string_tvshowwallpic_3 = '" title="';
+var string_tvshowwallpic_4 = '"</a>';
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
 //---- Function for setting default wallpaper if movie has no fanart-----
@@ -676,7 +686,7 @@ Control2.innerHTML = moviewall_full;
 function func_BuildMoviesets() {
 var Control1 = document.getElementById("navigation");
 var i;
-var arrmoviesets=DataMoviesets.split("#"); 
+var arrmoviesets=DataMoviesets.split("|"); 
 navilinks_full = "";  // deletes all entries of left sidebar
 moviewall_full = ""; // deletes all entries of right sidebar
 
@@ -695,7 +705,7 @@ Control1.innerHTML = '<ol id="ol_navigation">' + navilinks_full + '</ol>';
 //---- Function: Show Moviesets-----
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
 function func_DisplayMovieset(moviesetindex) {
-var arrmoviesets=DataMoviesets.split("#"); 
+var arrmoviesets=DataMoviesets.split("|"); 
 var movieset=arrmoviesets[moviesetindex];
 var myregexp = new RegExp(movieset); //  NEW RegeExp Object
 var doOnce = 0;
@@ -780,6 +790,70 @@ Control3.innerHTML = '<p><span style="font-family:Verdana;">Total: </span> <span
 }
 }
 
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
+//---- Function: Build TVSHOWnavigation-----
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
+function func_BuildTvShows() {
+var Control1 = document.getElementById("navigation");
+var i;
+var arrtvshowpackage=DataTVShows.split("|"); 
+navilinks_full = "";  // deletes all entries of left sidebar
+moviewall_full = ""; // deletes all entries of right sidebar
+
+
+// Loop through all entries and check if movie contains "movieset"
+//Navigation builder to build whole page dynamically
+for (var i=0; i < arrtvshowpackage.length; i++)
+{
+	
+var arrtvshow=arrtvshowpackage[i].split("*"); 
+var seasonposters = "";
+	for (var z=2; z < arrtvshow.length; z++)
+	{
+		seasonposters = seasonposters + "|" + arrtvshow[z]
+	}
+seasonposters =	"'" + seasonposters  + "'"
+escape(seasonposters)
+navilinks = string_navigation_1TvShow +  seasonposters  + string_navigation_2 + string_tabindexstart + i + string_tabindexend  + arrtvshow[1] + string_navigation_3 + string_navigation_4;
+navilinks_full = navilinks_full + navilinks;
+}
+
+Control1.innerHTML = '<ol id="ol_navigation">' + navilinks_full + '</ol>';
+}
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
+//---- Function: Show TvSeasonPosters-----
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
+function func_DisplayTvSeason(seasonposters) {
+var Control2 = document.getElementById("div_moviewall");
+var i;
+
+var arrseasonposter=seasonposters.split("|"); 
+
+moviewall_full = ""; // deletes all entries of right sidebar
+	for (var i=1; i < arrseasonposter.length; i++)
+	{
+  func_BuildNavigationTVSeason(arrseasonposter[i]); // Calls LoadPage Function and add match to left and right navigation string variable!
+  }
+Control2.innerHTML = moviewall_full;
+}
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
+//---- Function: Show TVShowInfo-----
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
+function func_ShowDetailsTvSeason(tvshowID) {
+//---- TODO - NOT  USED at moment, maybe later show TV Season Details...-----
+}
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
+//---- Function for building left and right navigation of site-----
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
+function func_BuildNavigationTVSeason(seasonposter)
+{
+//Navigation builder to build whole page dynamically
+//navilinks_full = navilinks_full + navilinks;  
+moviewall = string_tvshowwalllink_1 + "0" + string_tvshowwalllink_2 + "0" + string_tvshowwalllink_3 + string_tvshowwallpic_1 + "export/" + seasonposter + ".jpg" + string_tvshowwallpic_2 + "-" + string_tvshowwallpic_3 + "-" + string_tvshowwallpic_4;
+moviewall_full = moviewall_full + moviewall;
+
+}
+
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
 //---- Function: Custom Search [3D MOVIE]-----
@@ -836,20 +910,10 @@ Control2.innerHTML = moviewall_full;
 //---- Function: Open Movie Folder -----
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
 function func_OpenFolder(Counter) {
-var Adresse = window.location.href;
-var searchURL = new RegExp('file:'); //  NEW RegeExp Object
-var result = Adresse.search(searchURL);
 
-if (result !== -1) // HTML Page is local!
-{
-window.open ('file:///' + DataURL[Counter] + '/' + DataFilename[Counter]);
-}
-else // HTML Page is placed in internet!
-{
-alert( 'Kein Zugriff auf Ordner möglich!' );
-}
-}
+window.open ('file:///' + DataURL[Counter] + '/' + DataFilename[Counter], '_blank');
 
+}
 
 
 /* ****************************************************************************** * // CREDIT: Quaese, Quelle: http://www.tutorials.de/javascript-ajax/283260-javascript-zweidimensionales-array-sortieren.html
