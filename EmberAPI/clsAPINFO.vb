@@ -394,67 +394,92 @@ Public Class NFO
             End If
         End If
 
-        'If Master.eSettings.VideoTSParent AndAlso FileUtils.Common.isVideoTS(sPath) Then
-        '    If Master.eSettings.MovieNameNFO Then
-        '        nPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Directory.GetParent(Directory.GetParent(sPath).FullName).Name), ".nfo")
-        '    ElseIf Master.eSettings.MovieNFO Then
-        '        nPath = String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Path.DirectorySeparatorChar, "movie.nfo")
-        '    Else
-        '        nPath = String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Path.DirectorySeparatorChar, "movie.nfo")
-        '    End If
+        '***************** Expert settings ****************
+        If Master.eSettings.UseExpert Then
+            'Expert VIDEO_TS folder
+            If Not String.IsNullOrEmpty(Master.eSettings.NFOExpertVTS) AndAlso FileUtils.Common.isVideoTS(sPath) Then
+                For Each a In Master.eSettings.NFOExpertVTS.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
+                    If Master.eSettings.UseBaseDirectoryExpertVTS Then
+                        nPath = Path.Combine(Directory.GetParent(fileParPath).FullName, a.Replace("<filename>", fileName))
+                    Else
+                        nPath = Path.Combine(fileParPath, a.Replace("<filename>", fileName))
+                    End If
+                    If File.Exists(nPath) Then
+                        Return nPath
+                    End If
+                Next
+            End If
+            'Expert BDMV folder
+            If Not String.IsNullOrEmpty(Master.eSettings.NFOExpertBDMV) AndAlso FileUtils.Common.isBDRip(sPath) Then
+                For Each a In Master.eSettings.NFOExpertBDMV.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
+                    If Master.eSettings.UseBaseDirectoryExpertBDMV Then
+                        nPath = Path.Combine(Directory.GetParent(Directory.GetParent(fileParPath).FullName).FullName, a.Replace("<filename>", fileName))
+                    Else
+                        nPath = Path.Combine(fileParPath, a.Replace("<filename>", fileName))
+                    End If
+                    If File.Exists(nPath) Then
+                        Return nPath
+                    End If
+                Next
+            End If
+            'Expert single/VIDEO_TS without VIDEO_TS folder
+            If Not String.IsNullOrEmpty(Master.eSettings.NFOExpertSingle) AndAlso isSingle Then
+                'Expert VIDEO_TS without VIDEO_TS folder
+                If fileName.ToLower = "video_ts" AndAlso Master.eSettings.RecognizeVTSExpertVTS Then
+                    For Each a In Master.eSettings.NFOExpertVTS.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
+                        nPath = Path.Combine(fileParPath, a.Replace("<filename>", fileName))
+                        If File.Exists(nPath) Then
+                            Return nPath
+                        End If
+                    Next
+                    'Expert Single folder
+                ElseIf Master.eSettings.StackExpertSingle Then
+                    For Each a In Master.eSettings.NFOExpertSingle.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
+                        nPath = Path.Combine(fileParPath, a.Replace("<filename>", fileNameStack))
+                        If File.Exists(nPath) Then
+                            Return nPath
+                        End If
 
-        '    If File.Exists(nPath) Then
-        '        Return nPath
-        '    Else
-        '        If Not isSingle Then
-        '            Return String.Empty
-        '        Else
-        '            'return movie path so we can use it for looking for non-conforming nfos
-        '            Return sPath
-        '        End If
-        '    End If
-        'ElseIf Master.eSettings.VideoTSParent AndAlso FileUtils.Common.isBDRip(sPath) Then
-        '    If Master.eSettings.MovieNameNFO Then
-        '        nPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName).FullName, Directory.GetParent(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName).Name), ".nfo")
-        '    ElseIf Master.eSettings.MovieNFO Then
-        '        nPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName).FullName, "movie.nfo"))
-        '    Else
-        '        nPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName).FullName, "movie.nfo"))
-        '    End If
+                        If Master.eSettings.UnstackExpertSingle Then
+                            nPath = Path.Combine(fileParPath, a.Replace("<filename>", fileName))
+                        End If
+                        If File.Exists(nPath) Then
+                            Return nPath
+                        End If
+                    Next
+                Else
+                    For Each a In Master.eSettings.NFOExpertSingle.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
+                        nPath = Path.Combine(fileParPath, a.Replace("<filename>", fileName))
+                        If File.Exists(nPath) Then
+                            Return nPath
+                        End If
+                    Next
+                End If
+            End If
+            'Expert multi folder
+            If Not String.IsNullOrEmpty(Master.eSettings.NFOExpertMulti) AndAlso Not isSingle Then
+                For Each a In Master.eSettings.NFOExpertMulti.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
+                    If Master.eSettings.StackExpertMulti Then
+                        nPath = Path.Combine(fileParPath, a.Replace("<filename>", fileNameStack))
+                        If File.Exists(nPath) Then
+                            Return nPath
+                        End If
 
-        '    If File.Exists(nPath) Then
-        '        Return nPath
-        '    Else
-        '        If Not isSingle Then
-        '            Return String.Empty
-        '        Else
-        '            'return movie path so we can use it for looking for non-conforming nfos
-        '            Return sPath
-        '        End If
-        '    End If
-        'Else
-        '    Dim fList As New List(Of String)
-        '    Try
-        '        fList.AddRange(Directory.GetFiles(Directory.GetParent(fileParPath).FullName, "*.nfo"))
-        '    Catch
-        '    End Try
-        '    fList = fList.ConvertAll(Function(s) s.ToLower)
-
-        '    If isSingle AndAlso Master.eSettings.MovieNFO AndAlso fList.Contains(Path.Combine(Directory.GetParent(sPath).FullName.ToLower, "movie.nfo")) Then
-        '        Return Path.Combine(Directory.GetParent(nPath).FullName.ToLower, "movie.nfo")
-        '    ElseIf Master.eSettings.MovieNameNFO AndAlso fList.Contains(String.Concat(filePathStack, ".nfo")) Then
-        '        Return String.Concat(filePathStack, ".nfo")
-        '    ElseIf Master.eSettings.MovieNameNFO AndAlso fList.Contains(String.Concat(nPath, ".nfo")) Then
-        '        Return String.Concat(nPath, ".nfo")
-        '    Else
-        '        If Not isSingle Then
-        '            Return String.Empty
-        '        Else
-        '            'return movie path so we can use it for looking for non-conforming nfos
-        '            Return sPath
-        '        End If
-        '    End If
-        'End If
+                        If Master.eSettings.UnstackExpertMulti Then
+                            nPath = Path.Combine(fileParPath, a.Replace("<filename>", fileName))
+                            If File.Exists(nPath) Then
+                                Return nPath
+                            End If
+                        End If
+                    Else
+                        nPath = Path.Combine(fileParPath, a.Replace("<filename>", fileName))
+                        If File.Exists(nPath) Then
+                            Return nPath
+                        End If
+                    End If
+                Next
+            End If
+        End If
 
         If Not isSingle Then
             Return String.Empty
@@ -852,7 +877,6 @@ Public Class NFO
 
                         doesExist = File.Exists(nPath)
                         If Not doesExist OrElse (Not CBool(File.GetAttributes(nPath) And FileAttributes.ReadOnly)) Then
-
                             If doesExist Then
                                 fAtt = File.GetAttributes(nPath)
                                 Try
@@ -861,12 +885,10 @@ Public Class NFO
                                     fAttWritable = False
                                 End Try
                             End If
-
                             Using xmlSW As New StreamWriter(nPath)
                                 movieToSave.NfoPath = nPath
                                 xmlSer.Serialize(xmlSW, movieToSave.Movie)
                             End Using
-
                             If doesExist And fAttWritable Then File.SetAttributes(nPath, fAtt)
                         End If
                     End If
@@ -889,7 +911,6 @@ Public Class NFO
 
                         doesExist = File.Exists(nPath)
                         If Not doesExist OrElse (Not CBool(File.GetAttributes(nPath) And FileAttributes.ReadOnly)) Then
-
                             If doesExist Then
                                 fAtt = File.GetAttributes(nPath)
                                 Try
@@ -898,12 +919,10 @@ Public Class NFO
                                     fAttWritable = False
                                 End Try
                             End If
-
                             Using xmlSW As New StreamWriter(nPath)
                                 movieToSave.NfoPath = nPath
                                 xmlSer.Serialize(xmlSW, movieToSave.Movie)
                             End Using
-
                             If doesExist And fAttWritable Then File.SetAttributes(nPath, fAtt)
                         End If
                     End If
@@ -932,7 +951,6 @@ Public Class NFO
 
                         doesExist = File.Exists(nPath)
                         If Not doesExist OrElse (Not CBool(File.GetAttributes(nPath) And FileAttributes.ReadOnly)) Then
-
                             If doesExist Then
                                 fAtt = File.GetAttributes(nPath)
                                 Try
@@ -941,12 +959,10 @@ Public Class NFO
                                     fAttWritable = False
                                 End Try
                             End If
-
                             Using xmlSW As New StreamWriter(nPath)
                                 movieToSave.NfoPath = nPath
                                 xmlSer.Serialize(xmlSW, movieToSave.Movie)
                             End Using
-
                             If doesExist And fAttWritable Then File.SetAttributes(nPath, fAtt)
                         End If
                     End If
@@ -975,7 +991,6 @@ Public Class NFO
 
                         doesExist = File.Exists(nPath)
                         If Not doesExist OrElse (Not CBool(File.GetAttributes(nPath) And FileAttributes.ReadOnly)) Then
-
                             If doesExist Then
                                 fAtt = File.GetAttributes(nPath)
                                 Try
@@ -984,191 +999,299 @@ Public Class NFO
                                     fAttWritable = False
                                 End Try
                             End If
-
                             Using xmlSW As New StreamWriter(nPath)
                                 movieToSave.NfoPath = nPath
                                 xmlSer.Serialize(xmlSW, movieToSave.Movie)
                             End Using
-
                             If doesExist And fAttWritable Then File.SetAttributes(nPath, fAtt)
                         End If
                     End If
                 End If
 
                 '***************** Expert settings ****************
-                '    If Master.eSettings.UseExpert Then
-                '        If Master.eSettings.VideoTSParent AndAlso FileUtils.Common.isVideoTS(movieToSave.Filename) Then
-                '            If Master.eSettings.MovieNameNFO Then
-                '                nPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(movieToSave.Filename).FullName).FullName, Directory.GetParent(Directory.GetParent(movieToSave.Filename).FullName).Name), ".nfo")
-                '            ElseIf Master.eSettings.MovieNFO Then
-                '                nPath = String.Concat(Directory.GetParent(Directory.GetParent(movieToSave.Filename).FullName).FullName, Path.DirectorySeparatorChar, "movie.nfo")
-                '            Else
-                '                nPath = String.Concat(Directory.GetParent(Directory.GetParent(movieToSave.Filename).FullName).FullName, Path.DirectorySeparatorChar, "movie.nfo")
-                '            End If
+                If Master.eSettings.UseExpert Then
+                    If Not String.IsNullOrEmpty(Master.eSettings.NFOExpertBDMV) OrElse Not String.IsNullOrEmpty(Master.eSettings.NFOExpertMulti) OrElse _
+                        Not String.IsNullOrEmpty(Master.eSettings.NFOExpertSingle) OrElse Not String.IsNullOrEmpty(Master.eSettings.NFOExpertVTS) Then
+                        If FileUtils.Common.isVideoTS(movieToSave.Filename) Then
+                            For Each a In Master.eSettings.NFOExpertVTS.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
+                                If Master.eSettings.UseBaseDirectoryExpertVTS Then
+                                    nPath = Path.Combine(Directory.GetParent(fileParPath).FullName, a.Replace("<filename>", fileName))
 
-                '            If Not Master.eSettings.OverwriteNfo Then
-                '                RenameNonConfNfo(nPath, False)
-                '            End If
+                                    If Not Master.eSettings.OverwriteNfo Then
+                                        RenameNonConfNfo(nPath, False)
+                                    End If
 
-                '            doesExist = File.Exists(nPath)
-                '            If Not doesExist OrElse (Not CBool(File.GetAttributes(nPath) And FileAttributes.ReadOnly)) Then
+                                    doesExist = File.Exists(nPath)
+                                    If Not doesExist OrElse (Not CBool(File.GetAttributes(nPath) And FileAttributes.ReadOnly)) Then
+                                        If doesExist Then
+                                            fAtt = File.GetAttributes(nPath)
+                                            Try
+                                                File.SetAttributes(nPath, FileAttributes.Normal)
+                                            Catch ex As Exception
+                                                fAttWritable = False
+                                            End Try
+                                        End If
+                                        Using xmlSW As New StreamWriter(nPath)
+                                            movieToSave.NfoPath = nPath
+                                            xmlSer.Serialize(xmlSW, movieToSave.Movie)
+                                        End Using
+                                        If doesExist And fAttWritable Then File.SetAttributes(nPath, fAtt)
+                                    End If
+                                Else
+                                    nPath = Path.Combine(fileParPath, a.Replace("<filename>", fileName))
 
-                '                If doesExist Then
-                '                    fAtt = File.GetAttributes(nPath)
-                '                    Try
-                '                        File.SetAttributes(nPath, FileAttributes.Normal)
-                '                    Catch ex As Exception
-                '                        fAttWritable = False
-                '                    End Try
-                '                End If
+                                    If Not Master.eSettings.OverwriteNfo Then
+                                        RenameNonConfNfo(nPath, False)
+                                    End If
 
-                '                Using xmlSW As New StreamWriter(nPath)
-                '                    movieToSave.NfoPath = nPath
-                '                    xmlSer.Serialize(xmlSW, movieToSave.Movie)
-                '                End Using
+                                    doesExist = File.Exists(nPath)
+                                    If Not doesExist OrElse (Not CBool(File.GetAttributes(nPath) And FileAttributes.ReadOnly)) Then
+                                        If doesExist Then
+                                            fAtt = File.GetAttributes(nPath)
+                                            Try
+                                                File.SetAttributes(nPath, FileAttributes.Normal)
+                                            Catch ex As Exception
+                                                fAttWritable = False
+                                            End Try
+                                        End If
+                                        Using xmlSW As New StreamWriter(nPath)
+                                            movieToSave.NfoPath = nPath
+                                            xmlSer.Serialize(xmlSW, movieToSave.Movie)
+                                        End Using
+                                        If doesExist And fAttWritable Then File.SetAttributes(nPath, fAtt)
+                                    End If
+                                End If
+                            Next
+                        ElseIf FileUtils.Common.isBDRip(movieToSave.Filename) Then
+                            For Each a In Master.eSettings.NFOExpertBDMV.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
+                                If Master.eSettings.UseBaseDirectoryExpertBDMV Then
+                                    nPath = Path.Combine(Directory.GetParent(Directory.GetParent(fileParPath).FullName).FullName, a.Replace("<filename>", fileName))
 
-                '                If doesExist And fAttWritable Then File.SetAttributes(nPath, fAtt)
-                '            End If
-                '        ElseIf Master.eSettings.VideoTSParent AndAlso FileUtils.Common.isBDRip(movieToSave.Filename) Then
-                '            If Master.eSettings.MovieNameNFO Then
-                '                nPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(movieToSave.Filename).FullName).FullName).FullName, Directory.GetParent(Directory.GetParent(Directory.GetParent(movieToSave.Filename).FullName).FullName).Name), ".nfo")
-                '            ElseIf Master.eSettings.MovieNFO Then
-                '                nPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(movieToSave.Filename).FullName).FullName).FullName, "movie.nfo"))
-                '            Else
-                '                nPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(movieToSave.Filename).FullName).FullName).FullName, "movie.nfo"))
-                '            End If
+                                    If Not Master.eSettings.OverwriteNfo Then
+                                        RenameNonConfNfo(nPath, False)
+                                    End If
 
-                '            If Not Master.eSettings.OverwriteNfo Then
-                '                RenameNonConfNfo(nPath, False)
-                '            End If
+                                    doesExist = File.Exists(nPath)
+                                    If Not doesExist OrElse (Not CBool(File.GetAttributes(nPath) And FileAttributes.ReadOnly)) Then
+                                        If doesExist Then
+                                            fAtt = File.GetAttributes(nPath)
+                                            Try
+                                                File.SetAttributes(nPath, FileAttributes.Normal)
+                                            Catch ex As Exception
+                                                fAttWritable = False
+                                            End Try
+                                        End If
+                                        Using xmlSW As New StreamWriter(nPath)
+                                            movieToSave.NfoPath = nPath
+                                            xmlSer.Serialize(xmlSW, movieToSave.Movie)
+                                        End Using
+                                        If doesExist And fAttWritable Then File.SetAttributes(nPath, fAtt)
+                                    End If
+                                Else
+                                    nPath = Path.Combine(fileParPath, a.Replace("<filename>", fileName))
 
-                '            doesExist = File.Exists(nPath)
-                '            If Not doesExist OrElse (Not CBool(File.GetAttributes(nPath) And FileAttributes.ReadOnly)) Then
+                                    If Not Master.eSettings.OverwriteNfo Then
+                                        RenameNonConfNfo(nPath, False)
+                                    End If
 
-                '                If doesExist Then
-                '                    fAtt = File.GetAttributes(nPath)
-                '                    Try
-                '                        File.SetAttributes(nPath, FileAttributes.Normal)
-                '                    Catch ex As Exception
-                '                        fAttWritable = False
-                '                    End Try
-                '                End If
+                                    doesExist = File.Exists(nPath)
+                                    If Not doesExist OrElse (Not CBool(File.GetAttributes(nPath) And FileAttributes.ReadOnly)) Then
+                                        If doesExist Then
+                                            fAtt = File.GetAttributes(nPath)
+                                            Try
+                                                File.SetAttributes(nPath, FileAttributes.Normal)
+                                            Catch ex As Exception
+                                                fAttWritable = False
+                                            End Try
+                                        End If
+                                        Using xmlSW As New StreamWriter(nPath)
+                                            movieToSave.NfoPath = nPath
+                                            xmlSer.Serialize(xmlSW, movieToSave.Movie)
+                                        End Using
+                                        If doesExist And fAttWritable Then File.SetAttributes(nPath, fAtt)
+                                    End If
+                                End If
+                            Next
+                        Else
+                            If movieToSave.isSingle Then
+                                If fileName.ToLower = "video_ts" AndAlso Master.eSettings.RecognizeVTSExpertVTS Then
+                                    For Each a In Master.eSettings.NFOExpertVTS.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
+                                        nPath = Path.Combine(fileParPath, a.Replace("<filename>", fileName))
 
-                '                Using xmlSW As New StreamWriter(nPath)
-                '                    movieToSave.NfoPath = nPath
-                '                    xmlSer.Serialize(xmlSW, movieToSave.Movie)
-                '                End Using
+                                        If Not Master.eSettings.OverwriteNfo Then
+                                            RenameNonConfNfo(nPath, False)
+                                        End If
 
-                '                If doesExist And fAttWritable Then File.SetAttributes(nPath, fAtt)
-                '            End If
-                '        Else
-                '            If Master.eSettings.MovieNameNFO AndAlso (Not movieToSave.isSingle OrElse Not Master.eSettings.MovieNameMultiOnly) Then
-                '                If FileUtils.Common.isVideoTS(movieToSave.Filename) Then
-                '                    nPath = Path.Combine(Directory.GetParent(movieToSave.Filename).FullName, "video_ts.nfo")
-                '                ElseIf FileUtils.Common.isBDRip(movieToSave.Filename) Then
-                '                    nPath = Path.Combine(Directory.GetParent(movieToSave.Filename).FullName, "index.nfo")
-                '                Else
-                '                    nPath = String.Concat(nPath, ".nfo")
-                '                End If
+                                        doesExist = File.Exists(nPath)
+                                        If Not doesExist OrElse (Not CBool(File.GetAttributes(nPath) And FileAttributes.ReadOnly)) Then
+                                            If doesExist Then
+                                                fAtt = File.GetAttributes(nPath)
+                                                Try
+                                                    File.SetAttributes(nPath, FileAttributes.Normal)
+                                                Catch ex As Exception
+                                                    fAttWritable = False
+                                                End Try
+                                            End If
+                                            Using xmlSW As New StreamWriter(nPath)
+                                                movieToSave.NfoPath = nPath
+                                                xmlSer.Serialize(xmlSW, movieToSave.Movie)
+                                            End Using
+                                            If doesExist And fAttWritable Then File.SetAttributes(nPath, fAtt)
+                                        End If
+                                    Next
+                                ElseIf Master.eSettings.StackExpertSingle Then
+                                    For Each a In Master.eSettings.NFOExpertSingle.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
+                                        nPath = Path.Combine(fileParPath, a.Replace("<filename>", fileNameStack))
 
-                '                If Not Master.eSettings.OverwriteNfo Then
-                '                    RenameNonConfNfo(nPath, False)
-                '                End If
+                                        If Not Master.eSettings.OverwriteNfo Then
+                                            RenameNonConfNfo(nPath, False)
+                                        End If
 
-                '                doesExist = File.Exists(nPath)
-                '                If Not doesExist OrElse (Not CBool(File.GetAttributes(nPath) And FileAttributes.ReadOnly)) Then
+                                        doesExist = File.Exists(nPath)
+                                        If Not doesExist OrElse (Not CBool(File.GetAttributes(nPath) And FileAttributes.ReadOnly)) Then
+                                            If doesExist Then
+                                                fAtt = File.GetAttributes(nPath)
+                                                Try
+                                                    File.SetAttributes(nPath, FileAttributes.Normal)
+                                                Catch ex As Exception
+                                                    fAttWritable = False
+                                                End Try
+                                            End If
+                                            Using xmlSW As New StreamWriter(nPath)
+                                                movieToSave.NfoPath = nPath
+                                                xmlSer.Serialize(xmlSW, movieToSave.Movie)
+                                            End Using
+                                            If doesExist And fAttWritable Then File.SetAttributes(nPath, fAtt)
+                                        End If
+                                        If Master.eSettings.UnstackExpertSingle Then
+                                            nPath = Path.Combine(fileParPath, a.Replace("<filename>", fileName))
 
-                '                    If doesExist Then
-                '                        fAtt = File.GetAttributes(nPath)
-                '                        Try
-                '                            File.SetAttributes(nPath, FileAttributes.Normal)
-                '                        Catch ex As Exception
-                '                            fAttWritable = False
-                '                        End Try
-                '                    End If
+                                            If Not Master.eSettings.OverwriteNfo Then
+                                                RenameNonConfNfo(nPath, False)
+                                            End If
 
-                '                    Using xmlSW As New StreamWriter(nPath)
-                '                        movieToSave.NfoPath = nPath
-                '                        xmlSer.Serialize(xmlSW, movieToSave.Movie)
-                '                    End Using
+                                            doesExist = File.Exists(nPath)
+                                            If Not doesExist OrElse (Not CBool(File.GetAttributes(nPath) And FileAttributes.ReadOnly)) Then
+                                                If doesExist Then
+                                                    fAtt = File.GetAttributes(nPath)
+                                                    Try
+                                                        File.SetAttributes(nPath, FileAttributes.Normal)
+                                                    Catch ex As Exception
+                                                        fAttWritable = False
+                                                    End Try
+                                                End If
+                                                Using xmlSW As New StreamWriter(nPath)
+                                                    movieToSave.NfoPath = nPath
+                                                    xmlSer.Serialize(xmlSW, movieToSave.Movie)
+                                                End Using
+                                                If doesExist And fAttWritable Then File.SetAttributes(nPath, fAtt)
+                                            End If
+                                        End If
+                                    Next
+                                Else
+                                    For Each a In Master.eSettings.NFOExpertSingle.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
+                                        nPath = Path.Combine(fileParPath, a.Replace("<filename>", fileName))
 
-                '                    If doesExist And fAttWritable Then File.SetAttributes(nPath, fAtt)
-                '                End If
-                '            End If
+                                        If Not Master.eSettings.OverwriteNfo Then
+                                            RenameNonConfNfo(nPath, False)
+                                        End If
 
-                '            If Master.eSettings.MovieNameNFOStack AndAlso (Not movieToSave.isSingle OrElse Not Master.eSettings.MovieNameMultiOnly) Then
-                '                If FileUtils.Common.isVideoTS(movieToSave.Filename) Then
-                '                    nPath = Path.Combine(Directory.GetParent(movieToSave.Filename).FullName, "video_ts.nfo")
-                '                ElseIf FileUtils.Common.isBDRip(movieToSave.Filename) Then
-                '                    nPath = Path.Combine(Directory.GetParent(Directory.GetParent(movieToSave.Filename).FullName).FullName, "index.nfo")
-                '                Else
-                '                    nPath = String.Concat(filePathStack, ".nfo")
-                '                End If
+                                        doesExist = File.Exists(nPath)
+                                        If Not doesExist OrElse (Not CBool(File.GetAttributes(nPath) And FileAttributes.ReadOnly)) Then
+                                            If doesExist Then
+                                                fAtt = File.GetAttributes(nPath)
+                                                Try
+                                                    File.SetAttributes(nPath, FileAttributes.Normal)
+                                                Catch ex As Exception
+                                                    fAttWritable = False
+                                                End Try
+                                            End If
+                                            Using xmlSW As New StreamWriter(nPath)
+                                                movieToSave.NfoPath = nPath
+                                                xmlSer.Serialize(xmlSW, movieToSave.Movie)
+                                            End Using
+                                            If doesExist And fAttWritable Then File.SetAttributes(nPath, fAtt)
+                                        End If
+                                    Next
+                                End If
+                            Else
+                                For Each a In Master.eSettings.NFOExpertMulti.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
+                                    If Master.eSettings.StackExpertMulti Then
+                                        nPath = Path.Combine(fileParPath, a.Replace("<filename>", fileNameStack))
 
-                '                If Not Master.eSettings.OverwriteNfo Then
-                '                    RenameNonConfNfo(nPath, False)
-                '                End If
+                                        If Not Master.eSettings.OverwriteNfo Then
+                                            RenameNonConfNfo(nPath, False)
+                                        End If
 
-                '                doesExist = File.Exists(nPath)
-                '                If Not doesExist OrElse (Not CBool(File.GetAttributes(nPath) And FileAttributes.ReadOnly)) Then
+                                        doesExist = File.Exists(nPath)
+                                        If Not doesExist OrElse (Not CBool(File.GetAttributes(nPath) And FileAttributes.ReadOnly)) Then
+                                            If doesExist Then
+                                                fAtt = File.GetAttributes(nPath)
+                                                Try
+                                                    File.SetAttributes(nPath, FileAttributes.Normal)
+                                                Catch ex As Exception
+                                                    fAttWritable = False
+                                                End Try
+                                            End If
+                                            Using xmlSW As New StreamWriter(nPath)
+                                                movieToSave.NfoPath = nPath
+                                                xmlSer.Serialize(xmlSW, movieToSave.Movie)
+                                            End Using
+                                            If doesExist And fAttWritable Then File.SetAttributes(nPath, fAtt)
+                                        End If
+                                        If Master.eSettings.UnstackExpertMulti Then
+                                            nPath = Path.Combine(fileParPath, a.Replace("<filename>", fileName))
 
-                '                    If doesExist Then
-                '                        fAtt = File.GetAttributes(nPath)
-                '                        Try
-                '                            File.SetAttributes(nPath, FileAttributes.Normal)
-                '                        Catch ex As Exception
-                '                            fAttWritable = False
-                '                        End Try
-                '                    End If
+                                            If Not Master.eSettings.OverwriteNfo Then
+                                                RenameNonConfNfo(nPath, False)
+                                            End If
 
-                '                    Using xmlSW As New StreamWriter(nPath)
-                '                        movieToSave.NfoPath = nPath
-                '                        xmlSer.Serialize(xmlSW, movieToSave.Movie)
-                '                    End Using
+                                            doesExist = File.Exists(nPath)
+                                            If Not doesExist OrElse (Not CBool(File.GetAttributes(nPath) And FileAttributes.ReadOnly)) Then
+                                                If doesExist Then
+                                                    fAtt = File.GetAttributes(nPath)
+                                                    Try
+                                                        File.SetAttributes(nPath, FileAttributes.Normal)
+                                                    Catch ex As Exception
+                                                        fAttWritable = False
+                                                    End Try
+                                                End If
+                                                Using xmlSW As New StreamWriter(nPath)
+                                                    movieToSave.NfoPath = nPath
+                                                    xmlSer.Serialize(xmlSW, movieToSave.Movie)
+                                                End Using
+                                                If doesExist And fAttWritable Then File.SetAttributes(nPath, fAtt)
+                                            End If
+                                        End If
+                                    Else
+                                        nPath = Path.Combine(fileParPath, a.Replace("<filename>", fileName))
 
-                '                    If doesExist And fAttWritable Then File.SetAttributes(nPath, fAtt)
-                '                End If
-                '            End If
+                                        If Not Master.eSettings.OverwriteNfo Then
+                                            RenameNonConfNfo(nPath, False)
+                                        End If
 
-                '            If movieToSave.isSingle AndAlso Master.eSettings.MovieNFO Then
-
-                '                'Cocotus - If FRODO VIDEO_TS Handling is enabled and naming of nfo is "movie.nfo", movie.nfo should not be saved in VIDEO_TS folder but in parent folder like fanart and poster !
-                '                'more here http://forum.xbmc.org/showthread.php?tid=166013 (XBMC Developer statement)
-                '                ''Statement: Use movie.nfo OUTSIDE the VIDEO_TS directory. Anything else is futzing with the layout of the dvd which can potentially cause issues with certain players. ''
-                '                If Master.eSettings.VideoTSParentXBMC AndAlso FileUtils.Common.isVideoTS(nPath) Then
-                '                    nPath = String.Concat(Directory.GetParent(Directory.GetParent(nPath).FullName).FullName, Path.DirectorySeparatorChar, "movie.nfo")
-                '                    'old way, saves NFO into VIDEO_TS folder!
-                '                Else
-                '                    nPath = Path.Combine(Directory.GetParent(nPath).FullName, "movie.nfo")
-                '                End If
-                '                'old way, saves NFO into VIDEO_TS folder!
-                '                'nPath = Path.Combine(Directory.GetParent(nPath).FullName, "movie.nfo")
-
-                '                If Not Master.eSettings.OverwriteNfo Then
-                '                    RenameNonConfNfo(nPath, False)
-                '                End If
-
-                '                doesExist = File.Exists(nPath)
-                '                If Not doesExist OrElse (Not CBool(File.GetAttributes(nPath) And FileAttributes.ReadOnly)) Then
-
-                '                    If doesExist Then
-                '                        fAtt = File.GetAttributes(nPath)
-                '                        Try
-                '                            File.SetAttributes(nPath, FileAttributes.Normal)
-                '                        Catch ex As Exception
-                '                            fAttWritable = False
-                '                        End Try
-                '                    End If
-
-                '                    Using xmlSW As New StreamWriter(nPath)
-                '                        movieToSave.NfoPath = nPath
-                '                        xmlSer.Serialize(xmlSW, movieToSave.Movie)
-                '                    End Using
-                '                    If doesExist And fAttWritable Then File.SetAttributes(nPath, fAtt)
-                '                End If
-                '            End If
-                '        End If
-                '    End If
+                                        doesExist = File.Exists(nPath)
+                                        If Not doesExist OrElse (Not CBool(File.GetAttributes(nPath) And FileAttributes.ReadOnly)) Then
+                                            If doesExist Then
+                                                fAtt = File.GetAttributes(nPath)
+                                                Try
+                                                    File.SetAttributes(nPath, FileAttributes.Normal)
+                                                Catch ex As Exception
+                                                    fAttWritable = False
+                                                End Try
+                                            End If
+                                            Using xmlSW As New StreamWriter(nPath)
+                                                movieToSave.NfoPath = nPath
+                                                xmlSer.Serialize(xmlSW, movieToSave.Movie)
+                                            End Using
+                                            If doesExist And fAttWritable Then File.SetAttributes(nPath, fAtt)
+                                        End If
+                                    End If
+                                Next
+                            End If
+                        End If
+                    End If
+                End If
             End If
 
         Catch ex As Exception

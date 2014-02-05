@@ -340,7 +340,7 @@ Public Class Scanner
 
                 '****************** YAMJ settings *****************
                 If Master.eSettings.UseYAMJ Then
-                    'YAMJ VIDEO_TS
+                    'YAMJ VIDEO_TS folder
                     If String.IsNullOrEmpty(Movie.Fanart) AndAlso Master.eSettings.FanartYAMJ AndAlso FileUtils.Common.isVideoTS(Movie.Filename) Then
                         fName = String.Concat(parPath.ToLower, Path.DirectorySeparatorChar, Directory.GetParent(fileParPath).Name.ToLower, ".fanart.jpg")
                         Movie.Fanart = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
@@ -359,7 +359,7 @@ Public Class Scanner
 
                 '****************** NMJ settings *****************
                 If Master.eSettings.UseNMJ Then
-                    'NMJ VIDEO_TS
+                    'NMJ VIDEO_TS folder
                     If String.IsNullOrEmpty(Movie.Fanart) AndAlso Master.eSettings.FanartNMJ AndAlso FileUtils.Common.isVideoTS(Movie.Filename) Then
                         fName = String.Concat(Directory.GetParent(parPath.ToLower).FullName, Path.DirectorySeparatorChar, Directory.GetParent(fileParPath).Name.ToLower, ".fanart.jpg")
                         Movie.Fanart = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
@@ -377,24 +377,83 @@ Public Class Scanner
                 End If
 
                 '***************** Expert settings ****************
-                'If (Master.eSettings.FanartFrodo AndAlso (FileUtils.Common.isVideoTS(Movie.Filename) OrElse FileUtils.Common.isBDRip(Movie.Filename)) AndAlso fFile.ToLower = Path.Combine(parPath.ToLower, "fanart.jpg") _
-                '            OrElse ((Master.eSettings.FanartFrodo OrElse Master.eSettings.FanartEden) AndAlso Not (fileName.ToLower = "video_ts") AndAlso fFile.ToLower = String.Concat(filePathStack.ToLower, "-fanart.jpg") _
-                '            OrElse (Master.eSettings.FanartFrodo AndAlso Movie.Filename.ToLower = Path.Combine(parPath, "video_ts.ifo") AndAlso fFile.ToLower = Path.Combine(parPath.ToLower, "fanart.jpg")) _
-                '            OrElse (Master.eSettings.FanartEden AndAlso FileUtils.Common.isVideoTS(Movie.Filename) AndAlso fFile.ToLower = String.Concat(filePath.ToLower, "-fanart.jpg")) _
-                '            OrElse (Master.eSettings.FanartEden AndAlso Movie.Filename.ToLower = Path.Combine(parPath.ToLower, "video_ts.ifo") AndAlso fFile.ToLower = Path.Combine(parPath.ToLower, "video_ts-fanart.jpg")) _
-                '            OrElse (Master.eSettings.FanartYAMJ AndAlso fFile.ToLower = String.Concat(fileName, ".fanart.jpg")))) Then
-                '    'If (Movie.isSingle AndAlso Master.eSettings.FanartJPG AndAlso fFile.ToLower = Path.Combine(parPath, "fanart.jpg")) _
-                '    '            OrElse (Movie.isSingle AndAlso Master.eSettings.FanartFrodo AndAlso fFile.ToLower = Path.Combine(parPath, "fanart.jpg")) _
-                '    '            OrElse (Movie.isSingle AndAlso Master.eSettings.FanartFrodo AndAlso fFile.ToLower = String.Concat(fileNameStack, "-fanart.jpg")) _
-                '    '            OrElse ((Not Movie.isSingle OrElse Not Master.eSettings.MovieNameMultiOnly) AndAlso ((Master.eSettings.MovieNameFanartJPG AndAlso fFile.ToLower = String.Concat(fileName, "-fanart.jpg")) _
-                '    '            OrElse (Master.eSettings.MovieNameFanartJPG AndAlso fFile.ToLower = String.Concat(fileNameStack, "-fanart.jpg")) _
-                '    '            OrElse (Master.eSettings.MovieNameFanartJPG AndAlso ((fFile.ToLower = Path.Combine(parPath, "fanart.jpg") AndAlso Movie.Filename.ToLower = String.Concat(parPath, Path.DirectorySeparatorChar, "video_ts.ifo") OrElse Movie.Filename.ToLower = String.Concat(parPath, Path.DirectorySeparatorChar, "00000.m2ts")) OrElse fFile.ToLower = Path.Combine(parPath, "video_ts-fanart.jpg") OrElse fFile.ToLower = Path.Combine(parPath, "index-fanart.jpg")))) _
-                '    '            OrElse (Master.eSettings.MovieNameDotFanartJPG AndAlso (fFile.ToLower = Path.Combine(parPath, "video_ts.fanart.jpg") OrElse fFile.ToLower = Path.Combine(parPath, "index.fanart.jpg")))) _
-                '    '            OrElse ((Not Movie.isSingle OrElse Master.eSettings.UseYAMJ OrElse Not Master.eSettings.MovieNameMultiOnly) AndAlso (((Master.eSettings.MovieNameDotFanartJPG OrElse isYAMJ) AndAlso fFile.ToLower = String.Concat(fileNameStack, ".fanart.jpg")) _
-                '    '            OrElse ((Master.eSettings.MovieNameDotFanartJPG OrElse Master.eSettings.UseYAMJ) AndAlso fFile.ToLower = String.Concat(fileName, ".fanart.jpg")))) Then
-                '    Movie.Fanart = fFile
-                '    Continue For
-                'End If
+                If Master.eSettings.UseExpert Then
+                    'Expert VIDEO_TS folder
+                    If String.IsNullOrEmpty(Movie.Fanart) AndAlso Not String.IsNullOrEmpty(Master.eSettings.FanartExpertVTS) AndAlso FileUtils.Common.isVideoTS(Movie.Filename) Then
+                        For Each a In Master.eSettings.FanartExpertVTS.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
+                            If Master.eSettings.UseBaseDirectoryExpertVTS Then
+                                fName = Path.Combine(Directory.GetParent(fileParPath).FullName, a.Replace("<filename>", fileName))
+                                Movie.Fanart = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
+                            Else
+                                fName = Path.Combine(fileParPath, a.Replace("<filename>", fileName))
+                                Movie.Fanart = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
+                            End If
+                            If Not String.IsNullOrEmpty(Movie.Fanart) Then Exit For
+                        Next
+                    End If
+                    'Expert BDMV folder
+                    If String.IsNullOrEmpty(Movie.Fanart) AndAlso Not String.IsNullOrEmpty(Master.eSettings.FanartExpertBDMV) AndAlso FileUtils.Common.isBDRip(Movie.Filename) Then
+                        For Each a In Master.eSettings.FanartExpertBDMV.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
+                            If Master.eSettings.UseBaseDirectoryExpertBDMV Then
+                                fName = Path.Combine(Directory.GetParent(Directory.GetParent(fileParPath).FullName).FullName, a.Replace("<filename>", fileName))
+                                Movie.Fanart = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
+                            Else
+                                fName = Path.Combine(fileParPath, a.Replace("<filename>", fileName))
+                                Movie.Fanart = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
+                            End If
+                        Next
+                    End If
+                    'Expert single/VIDEO_TS without VIDEO_TS folder
+                    If String.IsNullOrEmpty(Movie.Fanart) AndAlso Not String.IsNullOrEmpty(Master.eSettings.FanartExpertSingle) AndAlso Movie.isSingle Then
+                        'Expert VIDEO_TS without VIDEO_TS folder
+                        If fileName.ToLower = "video_ts" AndAlso Master.eSettings.RecognizeVTSExpertVTS Then
+                            For Each a In Master.eSettings.FanartExpertVTS.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
+                                fName = Path.Combine(fileParPath, a.Replace("<filename>", fileName))
+                                Movie.Fanart = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
+                                If Not String.IsNullOrEmpty(Movie.Fanart) Then Exit For
+                            Next
+                            'Expert Single folder
+                        ElseIf Master.eSettings.StackExpertSingle Then
+                            For Each a In Master.eSettings.FanartExpertSingle.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
+                                fName = Path.Combine(fileParPath, a.Replace("<filename>", fileNameStack))
+                                Movie.Fanart = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
+                                If Not String.IsNullOrEmpty(Movie.Fanart) Then Exit For
+
+                                If Master.eSettings.UnstackExpertSingle Then
+                                    fName = Path.Combine(fileParPath, a.Replace("<filename>", fileName))
+                                    Movie.Fanart = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
+                                End If
+                                If Not String.IsNullOrEmpty(Movie.Fanart) Then Exit For
+                            Next
+                        Else
+                            For Each a In Master.eSettings.FanartExpertSingle.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
+                                fName = Path.Combine(fileParPath, a.Replace("<filename>", fileName))
+                                Movie.Fanart = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
+                                If Not String.IsNullOrEmpty(Movie.Fanart) Then Exit For
+                            Next
+                        End If
+                    End If
+                    'Expert multi folder
+                    If String.IsNullOrEmpty(Movie.Fanart) AndAlso Not String.IsNullOrEmpty(Master.eSettings.FanartExpertMulti) AndAlso Not Movie.isSingle Then
+                        For Each a In Master.eSettings.FanartExpertMulti.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
+                            If Master.eSettings.StackExpertMulti Then
+                                fName = Path.Combine(fileParPath, a.Replace("<filename>", fileNameStack))
+                                Movie.Fanart = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
+                                If Not String.IsNullOrEmpty(Movie.Fanart) Then Exit For
+
+                                If Master.eSettings.UnstackExpertMulti Then
+                                    fName = Path.Combine(fileParPath, a.Replace("<filename>", fileName))
+                                    Movie.Fanart = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
+                                    If Not String.IsNullOrEmpty(Movie.Fanart) Then Exit For
+                                End If
+                            Else
+                                fName = Path.Combine(fileParPath, a.Replace("<filename>", fileName))
+                                Movie.Fanart = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
+                                If Not String.IsNullOrEmpty(Movie.Fanart) Then Exit For
+                            End If
+                        Next
+                    End If
+                End If
             End If
 
             'poster
@@ -482,35 +541,83 @@ Public Class Scanner
                 End If
 
                 '***************** Expert settings ****************
-                'If (Master.eSettings.PosterFrodo AndAlso (FileUtils.Common.isVideoTS(Movie.Filename) OrElse FileUtils.Common.isBDRip(Movie.Filename)) AndAlso fFile.ToLower = Path.Combine(parPath.ToLower, "poster.jpg") _
-                '            OrElse (Master.eSettings.PosterFrodo AndAlso Not (fileName.ToLower = "video_ts") AndAlso fFile.ToLower = String.Concat(filePathStack.ToLower, "-poster.jpg") _
-                '            OrElse (Master.eSettings.PosterFrodo AndAlso Movie.Filename.ToLower = Path.Combine(parPath, "video_ts.ifo") AndAlso fFile.ToLower = Path.Combine(parPath.ToLower, "poster.jpg")) _
-                '            OrElse (Master.eSettings.PosterEden AndAlso FileUtils.Common.isVideoTS(Movie.Filename) AndAlso fFile.ToLower = String.Concat(filePath.ToLower, ".tbn")) _
-                '            OrElse (Master.eSettings.PosterEden AndAlso Movie.Filename.ToLower = Path.Combine(parPath, "video_ts.ifo") AndAlso fFile.ToLower = String.Concat(filePath.ToLower, ".tbn")) _
-                '            OrElse (Master.eSettings.PosterEden AndAlso fFile.ToLower = String.Concat(filePathStack.ToLower, ".tbn")) _
-                '            OrElse (Master.eSettings.PosterYAMJ AndAlso Movie.Filename.ToLower = String.Concat(fileName.ToLower, ".jpg")))) Then
-                '    'If (Movie.isSingle AndAlso (Master.eSettings.MovieTBN AndAlso fFile.ToLower = Path.Combine(parPath, "movie.tbn")) _
-                '    '            OrElse (Master.eSettings.PosterTBN AndAlso fFile.ToLower = Path.Combine(parPath, "poster.tbn")) _
-                '    '            OrElse (Master.eSettings.MovieJPG AndAlso fFile.ToLower = Path.Combine(parPath, "movie.jpg")) _
-                '    '            OrElse (Master.eSettings.PosterJPG AndAlso fFile.ToLower = Path.Combine(parPath, "poster.jpg")) _
-                '    '            OrElse (Master.eSettings.FolderJPG AndAlso fFile.ToLower = Path.Combine(parPath, "folder.jpg"))) _
-                '    '            OrElse ((Not Movie.isSingle OrElse Not Master.eSettings.MovieNameMultiOnly) AndAlso ((Master.eSettings.MovieNameTBN AndAlso fFile.ToLower = Path.Combine(parPath, "video_ts.tbn")) _
-                '    '            OrElse (Master.eSettings.MovieNameJPG AndAlso fFile.ToLower = Path.Combine(parPath, "video_ts.jpg")) _
-                '    '            OrElse (Master.eSettings.MovieNameDashPosterJPG AndAlso Not isXBMC AndAlso (fFile.ToLower = Path.Combine(parPath, "video_ts-poster.jpg") OrElse (fFile.ToLower = Path.Combine(parPath, "poster.jpg") AndAlso Movie.Filename.ToLower = String.Concat(parPath, Path.DirectorySeparatorChar, "video_ts.ifo") OrElse Movie.Filename.ToLower = String.Concat(parPath, Path.DirectorySeparatorChar, "00000.m2ts"))))) _
-                '    '            OrElse ((Not Movie.isSingle OrElse Not Master.eSettings.MovieNameMultiOnly) AndAlso ((Master.eSettings.MovieNameTBN AndAlso fFile.ToLower = Path.Combine(parPath, "index.tbn")) _
-                '    '            OrElse (Master.eSettings.MovieNameJPG AndAlso fFile.ToLower = Path.Combine(parPath, "index.jpg")) _
-                '    '            OrElse (Master.eSettings.MovieNameDashPosterJPG AndAlso Not isXBMC AndAlso fFile.ToLower = Path.Combine(parPath, "index-poster.jpg"))))) _
-                '    '            OrElse ((Not Movie.isSingle OrElse isYAMJ OrElse Not Master.eSettings.MovieNameMultiOnly) AndAlso (((Master.eSettings.MovieNameTBN OrElse isYAMJ) AndAlso fFile.ToLower = String.Concat(fileName, ".tbn")) _
-                '    '            OrElse ((Master.eSettings.MovieNameTBN OrElse isYAMJ) AndAlso fFile.ToLower = String.Concat(fileNameStack, ".tbn")) _
-                '    '            OrElse ((Master.eSettings.MovieNameJPG OrElse isYAMJ) AndAlso fFile.ToLower = String.Concat(fileName, ".jpg")) _
-                '    '            OrElse ((Master.eSettings.MovieNameJPG OrElse isYAMJ) AndAlso fFile.ToLower = String.Concat(fileNameStack, ".jpg")) _
-                '    '            OrElse ((Master.eSettings.MovieNameDashPosterJPG AndAlso Not isXBMC) AndAlso fFile.ToLower = String.Concat(fileName, "-poster.jpg")) _
-                '    '            OrElse ((Master.eSettings.MovieNameDashPosterJPG AndAlso Not isXBMC) AndAlso fFile.ToLower = String.Concat(fileNameStack, "-poster.jpg")) _
-                '    '            OrElse ((Master.eSettings.PosterFrodo AndAlso fFile.ToLower = Path.Combine(parPath, "poster.jpg"))) _
-                '    '            OrElse ((Master.eSettings.PosterFrodo AndAlso fFile.ToLower = String.Concat(fileNameStack, "-poster.jpg"))))) Then
-                '    Movie.Poster = fFile
-                '    Continue For
-                'End If
+                If Master.eSettings.UseExpert Then
+                    'Expert VIDEO_TS folder
+                    If String.IsNullOrEmpty(Movie.Poster) AndAlso Not String.IsNullOrEmpty(Master.eSettings.PosterExpertVTS) AndAlso FileUtils.Common.isVideoTS(Movie.Filename) Then
+                        For Each a In Master.eSettings.PosterExpertVTS.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
+                            If Master.eSettings.UseBaseDirectoryExpertVTS Then
+                                fName = Path.Combine(Directory.GetParent(fileParPath).FullName, a.Replace("<filename>", fileName))
+                                Movie.Poster = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
+                            Else
+                                fName = Path.Combine(fileParPath, a.Replace("<filename>", fileName))
+                                Movie.Poster = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
+                            End If
+                            If Not String.IsNullOrEmpty(Movie.Poster) Then Exit For
+                        Next
+                    End If
+                    'Expert BDMV folder
+                    If String.IsNullOrEmpty(Movie.Poster) AndAlso Not String.IsNullOrEmpty(Master.eSettings.PosterExpertBDMV) AndAlso FileUtils.Common.isBDRip(Movie.Filename) Then
+                        For Each a In Master.eSettings.PosterExpertBDMV.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
+                            If Master.eSettings.UseBaseDirectoryExpertBDMV Then
+                                fName = Path.Combine(Directory.GetParent(Directory.GetParent(fileParPath).FullName).FullName, a.Replace("<filename>", fileName))
+                                Movie.Poster = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
+                            Else
+                                fName = Path.Combine(fileParPath, a.Replace("<filename>", fileName))
+                                Movie.Poster = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
+                            End If
+                        Next
+                    End If
+                    'Expert single/VIDEO_TS without VIDEO_TS folder
+                    If String.IsNullOrEmpty(Movie.Poster) AndAlso Not String.IsNullOrEmpty(Master.eSettings.PosterExpertSingle) AndAlso Movie.isSingle Then
+                        'Expert VIDEO_TS without VIDEO_TS folder
+                        If fileName.ToLower = "video_ts" AndAlso Master.eSettings.RecognizeVTSExpertVTS Then
+                            For Each a In Master.eSettings.PosterExpertVTS.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
+                                fName = Path.Combine(fileParPath, a.Replace("<filename>", fileName))
+                                Movie.Poster = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
+                                If Not String.IsNullOrEmpty(Movie.Poster) Then Exit For
+                            Next
+                            'Expert Single folder
+                        ElseIf Master.eSettings.StackExpertSingle Then
+                            For Each a In Master.eSettings.PosterExpertSingle.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
+                                fName = Path.Combine(fileParPath, a.Replace("<filename>", fileNameStack))
+                                Movie.Poster = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
+                                If Not String.IsNullOrEmpty(Movie.Poster) Then Exit For
+
+                                If Master.eSettings.UnstackExpertSingle Then
+                                    fName = Path.Combine(fileParPath, a.Replace("<filename>", fileName))
+                                    Movie.Poster = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
+                                End If
+                                If Not String.IsNullOrEmpty(Movie.Poster) Then Exit For
+                            Next
+                        Else
+                            For Each a In Master.eSettings.PosterExpertSingle.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
+                                fName = Path.Combine(fileParPath, a.Replace("<filename>", fileName))
+                                Movie.Poster = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
+                                If Not String.IsNullOrEmpty(Movie.Poster) Then Exit For
+                            Next
+                        End If
+                    End If
+                    'Expert multi folder
+                    If String.IsNullOrEmpty(Movie.Poster) AndAlso Not String.IsNullOrEmpty(Master.eSettings.PosterExpertMulti) AndAlso Not Movie.isSingle Then
+                        For Each a In Master.eSettings.PosterExpertMulti.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
+                            If Master.eSettings.StackExpertMulti Then
+                                fName = Path.Combine(fileParPath, a.Replace("<filename>", fileNameStack))
+                                Movie.Poster = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
+                                If Not String.IsNullOrEmpty(Movie.Poster) Then Exit For
+
+                                If Master.eSettings.UnstackExpertMulti Then
+                                    fName = Path.Combine(fileParPath, a.Replace("<filename>", fileName))
+                                    Movie.Poster = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
+                                    If Not String.IsNullOrEmpty(Movie.Poster) Then Exit For
+                                End If
+                            Else
+                                fName = Path.Combine(fileParPath, a.Replace("<filename>", fileName))
+                                Movie.Poster = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
+                                If Not String.IsNullOrEmpty(Movie.Poster) Then Exit For
+                            End If
+                        Next
+                    End If
+                End If
             End If
 
             'nfo
@@ -603,22 +710,83 @@ Public Class Scanner
                 End If
 
                 '***************** Expert settings ****************
-                'If ((Master.eSettings.NFOFrodo OrElse Master.eSettings.NFOEden) AndAlso FileUtils.Common.isVideoTS(Movie.Filename) AndAlso fFile.ToLower = Path.Combine(fileParPath, "video_ts.nfo")) _
-                '            OrElse (Master.eSettings.NFOFrodo AndAlso FileUtils.Common.isBDRip(Movie.Filename) AndAlso fFile.ToLower = Path.Combine(Directory.GetParent(fileParPath).FullName.ToLower, "index.nfo")) _
-                '            OrElse ((Master.eSettings.NFOFrodo OrElse Master.eSettings.NFOEden) AndAlso fFile.ToLower = String.Concat(filePathStack.ToLower, ".nfo") _
-                '            OrElse (Master.eSettings.NFOYAMJ AndAlso Movie.Filename.ToLower = String.Concat(fileName.ToLower, ".nfo"))) Then
-                '    'If (Movie.isSingle AndAlso Master.eSettings.MovieNFO AndAlso fFile.ToLower = Path.Combine(parPath, "movie.nfo")) _
-                '    '    OrElse (Master.eSettings.NFOFrodo AndAlso fFile.ToLower = String.Concat(fileNameStack, ".nfo")) _
-                '    '    OrElse (Movie.isSingle AndAlso Master.eSettings.NFOFrodo AndAlso fFile.ToLower = String.Concat(Directory.GetParent(Movie.Filename).FullName.ToLower, Path.DirectorySeparatorChar, "video_ts.nfo")) _
-                '    '    OrElse (Movie.isSingle AndAlso Master.eSettings.NFOFrodo AndAlso fFile.ToLower = String.Concat(Directory.GetParent(Directory.GetParent(Movie.Filename).FullName.ToLower).FullName.ToLower, Path.DirectorySeparatorChar, "index.nfo")) _
-                '    '    OrElse ((Not Movie.isSingle OrElse isYAMJ OrElse Not Master.eSettings.MovieNameMultiOnly) AndAlso _
-                '    '            (((Master.eSettings.MovieNameNFO OrElse Master.eSettings.MovieNameNFOStack OrElse isYAMJ) AndAlso Not isXBMC AndAlso (fFile.ToLower = String.Concat(fileName, ".nfo") OrElse _
-                '    '                                                                            fFile.ToLower = String.Concat(fileNameStack, ".nfo") OrElse _
-                '    '                                                                            fFile.ToLower = Path.Combine(parPath, "video_ts.nfo") OrElse _
-                '    '                                                                            fFile.ToLower = Path.Combine(parPath, "index.nfo"))))) Then
-                '    Movie.Nfo = fFile
-                '    Continue For
-                'End If
+                If Master.eSettings.UseExpert Then
+                    'Expert VIDEO_TS folder
+                    If String.IsNullOrEmpty(Movie.Nfo) AndAlso Not String.IsNullOrEmpty(Master.eSettings.NFOExpertVTS) AndAlso FileUtils.Common.isVideoTS(Movie.Filename) Then
+                        For Each a In Master.eSettings.NFOExpertVTS.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
+                            If Master.eSettings.UseBaseDirectoryExpertVTS Then
+                                fName = Path.Combine(Directory.GetParent(fileParPath).FullName, a.Replace("<filename>", fileName))
+                                Movie.Nfo = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
+                            Else
+                                fName = Path.Combine(fileParPath, a.Replace("<filename>", fileName))
+                                Movie.Nfo = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
+                            End If
+                            If Not String.IsNullOrEmpty(Movie.Nfo) Then Exit For
+                        Next
+                    End If
+                    'Expert BDMV folder
+                    If String.IsNullOrEmpty(Movie.Nfo) AndAlso Not String.IsNullOrEmpty(Master.eSettings.NFOExpertBDMV) AndAlso FileUtils.Common.isBDRip(Movie.Filename) Then
+                        For Each a In Master.eSettings.NFOExpertBDMV.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
+                            If Master.eSettings.UseBaseDirectoryExpertBDMV Then
+                                fName = Path.Combine(Directory.GetParent(Directory.GetParent(fileParPath).FullName).FullName, a.Replace("<filename>", fileName))
+                                Movie.Nfo = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
+                            Else
+                                fName = Path.Combine(fileParPath, a.Replace("<filename>", fileName))
+                                Movie.Nfo = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
+                            End If
+                        Next
+                    End If
+                    'Expert single/VIDEO_TS without VIDEO_TS folder
+                    If String.IsNullOrEmpty(Movie.Nfo) AndAlso Not String.IsNullOrEmpty(Master.eSettings.NFOExpertSingle) AndAlso Movie.isSingle Then
+                        'Expert VIDEO_TS without VIDEO_TS folder
+                        If fileName.ToLower = "video_ts" AndAlso Master.eSettings.RecognizeVTSExpertVTS Then
+                            For Each a In Master.eSettings.NFOExpertVTS.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
+                                fName = Path.Combine(fileParPath, a.Replace("<filename>", fileName))
+                                Movie.Nfo = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
+                                If Not String.IsNullOrEmpty(Movie.Nfo) Then Exit For
+                            Next
+                            'Expert Single folder
+                        ElseIf Master.eSettings.StackExpertSingle Then
+                            For Each a In Master.eSettings.NFOExpertSingle.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
+                                fName = Path.Combine(fileParPath, a.Replace("<filename>", fileNameStack))
+                                Movie.Nfo = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
+                                If Not String.IsNullOrEmpty(Movie.Nfo) Then Exit For
+
+                                If Master.eSettings.UnstackExpertSingle Then
+                                    fName = Path.Combine(fileParPath, a.Replace("<filename>", fileName))
+                                    Movie.Nfo = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
+                                End If
+                                If Not String.IsNullOrEmpty(Movie.Nfo) Then Exit For
+                            Next
+                        Else
+                            For Each a In Master.eSettings.NFOExpertSingle.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
+                                fName = Path.Combine(fileParPath, a.Replace("<filename>", fileName))
+                                Movie.Nfo = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
+                                If Not String.IsNullOrEmpty(Movie.Nfo) Then Exit For
+                            Next
+                        End If
+                    End If
+                    'Expert multi folder
+                    If String.IsNullOrEmpty(Movie.Nfo) AndAlso Not String.IsNullOrEmpty(Master.eSettings.NFOExpertMulti) AndAlso Not Movie.isSingle Then
+                        For Each a In Master.eSettings.NFOExpertMulti.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
+                            If Master.eSettings.StackExpertMulti Then
+                                fName = Path.Combine(fileParPath, a.Replace("<filename>", fileNameStack))
+                                Movie.Nfo = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
+                                If Not String.IsNullOrEmpty(Movie.Nfo) Then Exit For
+
+                                If Master.eSettings.UnstackExpertMulti Then
+                                    fName = Path.Combine(fileParPath, a.Replace("<filename>", fileName))
+                                    Movie.Nfo = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
+                                    If Not String.IsNullOrEmpty(Movie.Nfo) Then Exit For
+                                End If
+                            Else
+                                fName = Path.Combine(fileParPath, a.Replace("<filename>", fileName))
+                                Movie.Nfo = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
+                                If Not String.IsNullOrEmpty(Movie.Nfo) Then Exit For
+                            End If
+                        Next
+                    End If
+                End If
             End If
 
             For Each fFile As String In fList
