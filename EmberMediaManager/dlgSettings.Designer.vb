@@ -3292,6 +3292,7 @@ Partial Class dlgSettings
         'chkXBMCProtectBDMV
         '
         Me.chkXBMCProtectBDMV.AutoSize = True
+        Me.chkXBMCProtectBDMV.Enabled = False
         Me.chkXBMCProtectBDMV.Location = New System.Drawing.Point(6, 44)
         Me.chkXBMCProtectBDMV.Name = "chkXBMCProtectBDMV"
         Me.chkXBMCProtectBDMV.Size = New System.Drawing.Size(147, 17)

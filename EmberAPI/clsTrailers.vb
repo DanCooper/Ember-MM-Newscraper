@@ -220,19 +220,32 @@ Public Class Trailers
     ''' <param name="sURL">URL from which to get the trailer</param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Shared Function DownloadTrailer(ByVal sPath As String, ByVal sURL As String) As String
+    Public Shared Function DownloadTrailer(ByVal sPath As String, ByVal isSingle As Boolean, ByVal sURL As String) As String
         Dim WebPage As New HTTP
         Dim tURL As String = String.Empty
-        AddHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
-        ' filename is managed in DownloadFile()
-        tURL = WebPage.DownloadFile(sURL, sPath, False, "trailer") 'ReportUpdate needs to be fixed
+        Dim lhttp As New HTTP
+        Dim tTrailer As String = String.Empty
+        'AddHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
 
-        If Not String.IsNullOrEmpty(tURL) Then
-            'delete any other trailer if enabled in settings and download successful
-            If Master.eSettings.DeleteAllTrailers Then
-                DeleteTrailers(sPath, tURL)
+        tTrailer = lhttp.DownloadFile(sURL, Path.Combine(Master.TempPath, "trailer"), False, "trailer")
+        Dim fExt As String = Path.GetExtension(tTrailer)
+        For Each a In FileUtils.GetFilenameList.Movie(sPath, isSingle, Enums.ModType.Trailer)
+            If File.Exists(a & fExt) Then
+                File.Delete(a & fExt)
             End If
-        End If
+            File.Copy(tTrailer, a & fExt)
+            tURL = a & fExt
+        Next
+
+        '' filename is managed in DownloadFile()
+        'tURL = WebPage.DownloadFile(sURL, sPath, False, "trailer") 'ReportUpdate needs to be fixed
+
+        'If Not String.IsNullOrEmpty(tURL) Then
+        '    'delete any other trailer if enabled in settings and download successful
+        '    If Master.eSettings.DeleteAllTrailers Then
+        '        DeleteTrailers(sPath, tURL)
+        '    End If
+        'End If
 
         RemoveHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
         Return tURL

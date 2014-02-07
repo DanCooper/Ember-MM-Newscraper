@@ -1803,6 +1803,27 @@ Public Class dlgEditMovie
                     Next
                 End If
 
+                If Not String.IsNullOrEmpty(Master.currMovie.TrailerPath) AndAlso Master.currMovie.TrailerPath.Contains(Master.TempPath) Then
+                    Dim TargetTrailer As String = String.Empty
+                    Dim fExt As String = Path.GetExtension(Master.currMovie.TrailerPath)
+                    For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.isSingle, Enums.ModType.Trailer)
+                        File.Copy(Master.currMovie.TrailerPath, a & fExt)
+                        TargetTrailer = a & fExt
+                    Next
+                    Master.currMovie.TrailerPath = TargetTrailer
+                ElseIf Not String.IsNullOrEmpty(Master.currMovie.TrailerPath) AndAlso Master.currMovie.TrailerPath.StartsWith(":") Then
+                    frmMain.tslLoading.Text = Master.eLang.GetString(906, "Downloading selected trailer...")
+                    Dim lhttp As New HTTP
+                    Master.currMovie.TrailerPath = lhttp.DownloadFile(Master.currMovie.TrailerPath.Replace(":http", "http"), Path.Combine(Master.TempPath, "trailer"), False, "trailer")
+                    Dim TargetTrailer As String = String.Empty
+                    Dim fExt As String = Path.GetExtension(Master.currMovie.TrailerPath)
+                    For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.isSingle, Enums.ModType.Trailer)
+                        File.Copy(Master.currMovie.TrailerPath, a & fExt)
+                        TargetTrailer = a & fExt
+                    Next
+                    Master.currMovie.TrailerPath = TargetTrailer
+                End If
+
                 If Not Master.eSettings.NoSaveImagesToNfo AndAlso pResults.Posters.Count > 0 Then Master.currMovie.Movie.Thumb = pResults.Posters
                 If Not Master.eSettings.NoSaveImagesToNfo AndAlso fResults.Fanart.Thumb.Count > 0 Then Master.currMovie.Movie.Fanart = pResults.Fanart
 

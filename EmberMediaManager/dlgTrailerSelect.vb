@@ -117,21 +117,18 @@ Public Class dlgTrailerSelect
         Me.pnlStatus.Visible = True
         Application.DoEvents()
 
-        ' TODO: add new expert settings
         If Me.txtManual.Text.Length > 0 Then
             Me.lblStatus.Text = Master.eLang.GetString(907, "Copying specified file to trailer...")
             If Master.eSettings.ValidExts.Contains(Path.GetExtension(Me.txtManual.Text)) AndAlso File.Exists(Me.txtManual.Text) Then
                 If CloseDialog Then
-                    If FileUtils.Common.isBDRip(Me.sPath) Then
-                        '    Me.tURL = String.Concat(Directory.GetParent(Directory.GetParent(Me.sPath).FullName).FullName, Path.DirectorySeparatorChar, "index", If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(Me.txtManual.Text))
-                        'ElseIf Master.eSettings.MovieNameNFOStack Then
-                        '    Dim sPathStack As String = StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(Me.sPath))
-                        '    Me.tURL = Path.Combine(Directory.GetParent(Me.sPath).FullName, String.Concat(Path.GetFileNameWithoutExtension(sPathStack), If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(Me.txtManual.Text)))
-                        'Else
-                        '    Me.tURL = Path.Combine(Directory.GetParent(Me.sPath).FullName, String.Concat(Path.GetFileNameWithoutExtension(Me.sPath), If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(Me.txtManual.Text)))
+
+                    Dim tFile As String = Path.Combine(Master.TempPath, "trailer" & Path.GetExtension(Me.txtManual.Text))
+                    If File.Exists(tFile) Then
+                        File.Delete(tFile)
                     End If
 
-                    FileUtils.Common.MoveFileWithStream(Me.txtManual.Text, Me.tURL)
+                    File.Copy(Me.txtManual.Text, tFile)
+                    Me.tURL = tFile
 
                     Me.DialogResult = System.Windows.Forms.DialogResult.OK
                     Me.Close()
@@ -143,15 +140,19 @@ Public Class dlgTrailerSelect
                 MsgBox(Master.eLang.GetString(192, "File is not valid."), MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly, Master.eLang.GetString(194, "Not Valid"))
                 didCancel = True
             End If
-        ElseIf Regex.IsMatch(Me.txtYouTube.Text, "http:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") Then
+        ElseIf Regex.IsMatch(Me.txtYouTube.Text, "https?:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") Then
             Using dFormats As New dlgTrailerFormat
                 Dim sFormat As String = dFormats.ShowDialog(Me.txtYouTube.Text)
 
                 If Not String.IsNullOrEmpty(sFormat) Then
-                    Me.bwDownloadTrailer = New System.ComponentModel.BackgroundWorker
-                    Me.bwDownloadTrailer.WorkerReportsProgress = True
-                    Me.bwDownloadTrailer.WorkerSupportsCancellation = True
-                    Me.bwDownloadTrailer.RunWorkerAsync(New Arguments With {.Parameter = sFormat, .bType = CloseDialog})
+                    Me.tURL = ":" & sFormat
+
+                    Me.DialogResult = System.Windows.Forms.DialogResult.OK
+                    Me.Close()
+                    'Me.bwDownloadTrailer = New System.ComponentModel.BackgroundWorker
+                    'Me.bwDownloadTrailer.WorkerReportsProgress = True
+                    'Me.bwDownloadTrailer.WorkerSupportsCancellation = True
+                    'Me.bwDownloadTrailer.RunWorkerAsync(New Arguments With {.Parameter = sFormat, .bType = CloseDialog})
                 Else
                     didCancel = True
                 End If
@@ -162,15 +163,19 @@ Public Class dlgTrailerSelect
             Me.bwDownloadTrailer.WorkerSupportsCancellation = True
             Me.bwDownloadTrailer.RunWorkerAsync(New Arguments With {.parameter = Me.txtYouTube.Text, .bType = CloseDialog})
         Else
-            If Regex.IsMatch(Me.lvTrailers.SelectedItems(0).SubItems(1).Text.ToString, "http:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") Then
+            If Regex.IsMatch(Me.lvTrailers.SelectedItems(0).SubItems(1).Text.ToString, "https?:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") Then
                 Using dFormats As New dlgTrailerFormat
                     Dim sFormat As String = dFormats.ShowDialog(Me.lvTrailers.SelectedItems(0).SubItems(1).Text.ToString)
 
                     If Not String.IsNullOrEmpty(sFormat) Then
-                        Me.bwDownloadTrailer = New System.ComponentModel.BackgroundWorker
-                        Me.bwDownloadTrailer.WorkerReportsProgress = True
-                        Me.bwDownloadTrailer.WorkerSupportsCancellation = True
-                        Me.bwDownloadTrailer.RunWorkerAsync(New Arguments With {.Parameter = sFormat, .bType = CloseDialog})
+                        Me.tURL = ":" & sFormat
+
+                        Me.DialogResult = System.Windows.Forms.DialogResult.OK
+                        Me.Close()
+                        'Me.bwDownloadTrailer = New System.ComponentModel.BackgroundWorker
+                        'Me.bwDownloadTrailer.WorkerReportsProgress = True
+                        'Me.bwDownloadTrailer.WorkerSupportsCancellation = True
+                        'Me.bwDownloadTrailer.RunWorkerAsync(New Arguments With {.Parameter = sFormat, .bType = CloseDialog})
                     Else
                         didCancel = True
                     End If
@@ -309,16 +314,13 @@ Public Class dlgTrailerSelect
                 Me.pnlStatus.Visible = True
                 Application.DoEvents()
 
-                ' TODO: add new expert settings
-                If FileUtils.Common.isBDRip(Me.sPath) Then
-                    '    Me.tURL = String.Concat(Directory.GetParent(Directory.GetParent(Me.sPath).FullName).FullName, Path.DirectorySeparatorChar, "index", If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(Me.txtManual.Text))
-                    'ElseIf Master.eSettings.MovieNameNFOStack Then
-                    '    Dim sPathStack As String = StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(Me.sPath))
-                    '    Me.tURL = Path.Combine(Directory.GetParent(Me.sPath).FullName, String.Concat(Path.GetFileNameWithoutExtension(sPathStack), If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(Me.txtManual.Text)))
-                    'Else
-                    '    Me.tURL = Path.Combine(Directory.GetParent(Me.sPath).FullName, String.Concat(Path.GetFileNameWithoutExtension(Me.sPath), If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(Me.txtManual.Text)))
+                Dim tFile As String = Path.Combine(Master.TempPath, "trailer" & Path.GetExtension(Me.txtManual.Text))
+                If File.Exists(tFile) Then
+                    File.Delete(tFile)
                 End If
-                File.Move(Me.txtManual.Text, Me.tURL)
+
+                File.Move(Me.txtManual.Text, tFile)
+                Me.tURL = tFile
 
                 Me.DialogResult = System.Windows.Forms.DialogResult.OK
                 Me.Close()
@@ -354,7 +356,7 @@ Public Class dlgTrailerSelect
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         Try
 
-            Me.tURL = Trailers.DownloadTrailer(Me.sPath, Args.Parameter) ', Me.tMovie.Filename)
+            Me.tURL = Trailers.DownloadTrailer(Me.sPath, Me.tMovie.isSingle, Args.Parameter) ', Me.tMovie.Filename)
             
         Catch
         End Try

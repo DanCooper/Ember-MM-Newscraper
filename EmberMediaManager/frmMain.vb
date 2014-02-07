@@ -1366,7 +1366,7 @@ Public Class frmMain
                                     tURL = Fanart.WebImage.SaveAsFanart(DBScrapeMovie)
                                     If Not String.IsNullOrEmpty(tURL) Then
                                         DBScrapeMovie.FanartPath = tURL
-                                        MovieScraperEvent(Enums.MovieScraperEventType.FanartItem, True) '
+                                        MovieScraperEvent(Enums.MovieScraperEventType.FanartItem, True)
                                         'If Master.GlobalScrapeMod.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
                                         '    DBScrapeMovie.Movie.Fanart = fResults.Fanart
                                         'End If
@@ -1390,7 +1390,7 @@ Public Class frmMain
                                                     tURL = Fanart.WebImage.SaveAsFanart(DBScrapeMovie)
                                                     If Not String.IsNullOrEmpty(tURL) Then
                                                         DBScrapeMovie.FanartPath = tURL
-                                                        MovieScraperEvent(Enums.MovieScraperEventType.FanartItem, True) '
+                                                        MovieScraperEvent(Enums.MovieScraperEventType.FanartItem, True)
                                                         'If Master.GlobalScrapeMod.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
                                                         '    DBScrapeMovie.Movie.Fanart = fResults.Fanart
                                                         'End If
@@ -1415,7 +1415,7 @@ Public Class frmMain
                         If aUrlList.Count > 0 Then
                             If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) AndAlso Trailers.PreferredTrailer(tURL, aUrlList, DBScrapeMovie.Filename, (Args.scrapeType = Enums.ScrapeType.SingleScrape)) Then
                                 If Not String.IsNullOrEmpty(tURL) Then
-                                    tURL = Trailers.DownloadTrailer(DBScrapeMovie.Filename, tURL) ', DBScrapeMovie.Filename)
+                                    tURL = Trailers.DownloadTrailer(DBScrapeMovie.Filename, DBScrapeMovie.isSingle, tURL)
                                     If Not String.IsNullOrEmpty(tURL) Then
                                         If StringUtils.isValidURL(tURL) Then
                                             If Master.eSettings.XBMCTrailerFormat Then

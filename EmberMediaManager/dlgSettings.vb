@@ -5072,8 +5072,8 @@ Public Class dlgSettings
         Me.chkRecognizeVTSExpertVTS.Enabled = Me.chkUseExpert.Checked
         Me.chkStackExpertMulti.Enabled = Me.chkUseExpert.Checked
         Me.chkStackExpertSingle.Enabled = Me.chkUseExpert.Checked
-        Me.chkUnstackExpertMulti.Enabled = Me.chkUseExpert.Checked
-        Me.chkUnstackExpertSingle.Enabled = Me.chkUseExpert.Checked
+        Me.chkUnstackExpertMulti.Enabled = Me.chkStackExpertMulti.Enabled AndAlso Me.chkStackExpertMulti.Checked
+        Me.chkUnstackExpertSingle.Enabled = Me.chkStackExpertSingle.Enabled AndAlso Me.chkStackExpertSingle.Checked
         Me.chkUseBaseDirectoryExpertBDMV.Enabled = Me.chkUseExpert.Checked
         Me.chkUseBaseDirectoryExpertVTS.Enabled = Me.chkUseExpert.Checked
         Me.txtActorThumbsExtExpertBDMV.Enabled = Me.chkUseExpert.Checked
@@ -5167,6 +5167,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub chkStackExpertSingle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkStackExpertSingle.CheckedChanged
+        Me.chkUnstackExpertSingle.Enabled = Me.chkStackExpertSingle.Checked AndAlso Me.chkStackExpertSingle.Enabled
         Me.SetApplyButton(True)
     End Sub
 
@@ -5219,6 +5220,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub chkStackExpertMulti_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkStackExpertMulti.CheckedChanged
+        Me.chkUnstackExpertMulti.Enabled = Me.chkStackExpertMulti.Checked AndAlso Me.chkStackExpertMulti.Enabled
         Me.SetApplyButton(True)
     End Sub
 
