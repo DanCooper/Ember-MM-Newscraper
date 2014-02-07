@@ -574,6 +574,11 @@ Public Class Enums
         DoSearch = 7
         Actor = 8
         EFanarts = 9
+        Banner = 10
+        DiscArt = 11
+        ClearLogo = 12
+        ClearArt = 13
+        Landscape = 14
     End Enum
     ''' <summary>
     ''' Enum representing possible scraper capabilities
