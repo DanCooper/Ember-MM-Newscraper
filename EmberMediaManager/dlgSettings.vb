@@ -470,7 +470,7 @@ Public Class dlgSettings
         End Try
     End Sub
 
-    Private Sub btnBrowse_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBrowse.Click
+    Private Sub btnBrowse_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBrowseBackdrops.Click
         With Me.fbdBrowse
             If .ShowDialog = Windows.Forms.DialogResult.OK Then
                 If Not String.IsNullOrEmpty(.SelectedPath.ToString) AndAlso Directory.Exists(.SelectedPath) Then
@@ -1014,7 +1014,7 @@ Public Class dlgSettings
     Private Sub chkAutoBD_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkAutoBD.CheckedChanged
         Me.SetApplyButton(True)
         Me.txtBDPath.Enabled = chkAutoBD.Checked
-        Me.btnBrowse.Enabled = chkAutoBD.Checked
+        Me.btnBrowseBackdrops.Enabled = chkAutoBD.Checked
     End Sub
 
     Private Sub chkCastWithImg_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkCastWithImg.CheckedChanged
@@ -2133,6 +2133,7 @@ Public Class dlgSettings
         Me.chkNFOYAMJ.Enabled = Me.chkUseYAMJ.Checked
         Me.chkPosterYAMJ.Enabled = Me.chkUseYAMJ.Checked
         Me.chkTrailerYAMJ.Enabled = Me.chkUseYAMJ.Checked
+        Me.chkYAMJWatchedFile.Enabled = Me.chkUseYAMJ.Checked
 
         If Not Me.chkUseYAMJ.Checked Then
             ' Me.chkActorThumbsYAMJ.Checked = False
@@ -2147,6 +2148,7 @@ Public Class dlgSettings
             Me.chkNFOYAMJ.Checked = False
             Me.chkPosterYAMJ.Checked = False
             Me.chkTrailerYAMJ.Checked = False
+            Me.chkYAMJWatchedFile.Checked = False
         Else
             'Me.chkActorThumbsYAMJ.Checked = True
             Me.chkBannerYAMJ.Checked = True
@@ -2239,6 +2241,12 @@ Public Class dlgSettings
     End Sub
 
     Private Sub chkYear_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkYear.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkYAMJWatchedFile_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkYAMJWatchedFile.CheckedChanged
+        Me.txtYAMJWatchedFolder.Enabled = Me.chkYAMJWatchedFile.Checked
+        Me.btnBrowseWatchedFiles.Enabled = Me.chkYAMJWatchedFile.Checked
         Me.SetApplyButton(True)
     End Sub
 
@@ -2515,7 +2523,7 @@ Public Class dlgSettings
             Me.txtBDPath.Text = Master.eSettings.BDPath
             Me.txtMoviesetsPath.Text = Master.eSettings.MoviesetsPath
             Me.txtBDPath.Enabled = Master.eSettings.AutoBD
-            Me.btnBrowse.Enabled = Master.eSettings.AutoBD
+            Me.btnBrowseBackdrops.Enabled = Master.eSettings.AutoBD
             Me.chkAutoBD.Checked = Master.eSettings.AutoBD
             Me.chkUseMIDuration.Checked = Master.eSettings.UseMIDuration
             Me.txtRuntimeFormat.Enabled = Master.eSettings.UseMIDuration
@@ -2773,6 +2781,10 @@ Public Class dlgSettings
             Me.chkNFONMJ.Checked = Master.eSettings.NFONMJ
             Me.chkPosterNMJ.Checked = Master.eSettings.PosterNMJ
             Me.chkTrailerNMJ.Checked = Master.eSettings.TrailerNMJ
+
+            '************** NMJ optional settings *************
+            Me.chkYAMJWatchedFile.Checked = Master.eSettings.YAMJWatchedFile
+            Me.txtYAMJWatchedFolder.Text = Master.eSettings.YAMJWatchedFolder
 
             '***************** Expert settings ****************
             Me.chkUseExpert.Checked = Master.eSettings.UseExpert
@@ -3976,6 +3988,10 @@ Public Class dlgSettings
             Master.eSettings.PosterNMJ = Me.chkPosterNMJ.Checked
             Master.eSettings.TrailerNMJ = Me.chkTrailerNMJ.Checked
 
+            '************** NMJ optional settings *************
+            Master.eSettings.YAMJWatchedFile = Me.chkYAMJWatchedFile.Checked
+            Master.eSettings.YAMJWatchedFolder = Me.txtYAMJWatchedFolder.Text
+
             '***************** Expert settings ****************
             Master.eSettings.UseExpert = Me.chkUseExpert.Checked
 
@@ -5001,6 +5017,10 @@ Public Class dlgSettings
         End If
     End Sub
 
+    Private Sub txtYAMJWatchedFolder_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtYAMJWatchedFolder.TextChanged
+        Me.SetApplyButton(True)
+    End Sub
+
     Private Sub ValidateRegex()
         If Not String.IsNullOrEmpty(Me.txtSeasonRegex.Text) AndAlso Not String.IsNullOrEmpty(Me.txtEpRegex.Text) Then
             If Me.cboSeasonRetrieve.SelectedIndex > -1 AndAlso Me.cboEpRetrieve.SelectedIndex > -1 Then
@@ -5026,9 +5046,6 @@ Public Class dlgSettings
             Return [String].Compare(CType(x, ListViewItem).SubItems(col).Text, CType(y, ListViewItem).SubItems(col).Text)
         End Function
     End Class
-
-#End Region 'Methods
-
     Private Sub txtMoviesetsPath_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMoviesetsPath.TextChanged
         Me.SetApplyButton(True)
     End Sub
@@ -5037,6 +5054,15 @@ Public Class dlgSettings
             If .ShowDialog = Windows.Forms.DialogResult.OK Then
                 If Not String.IsNullOrEmpty(.SelectedPath.ToString) AndAlso Directory.Exists(.SelectedPath) Then
                     Me.txtMoviesetsPath.Text = .SelectedPath.ToString
+                End If
+            End If
+        End With
+    End Sub
+    Private Sub btnBrowseWatchedFiles_Click(sender As Object, e As EventArgs) Handles btnBrowseWatchedFiles.Click
+        With Me.fbdBrowse
+            If .ShowDialog = Windows.Forms.DialogResult.OK Then
+                If Not String.IsNullOrEmpty(.SelectedPath.ToString) AndAlso Directory.Exists(.SelectedPath) Then
+                    Me.txtYAMJWatchedFolder.Text = .SelectedPath.ToString
                 End If
             End If
         End With
@@ -5127,7 +5153,6 @@ Public Class dlgSettings
         Me.txtTrailerExpertSingle.Enabled = Me.chkUseExpert.Checked
         Me.txtTrailerExpertVTS.Enabled = Me.chkUseExpert.Checked
     End Sub
-
     Private Sub chkActorThumbsExpertSingle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkActorThumbsExpertSingle.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
@@ -5357,4 +5382,7 @@ Public Class dlgSettings
     Private Sub chkUseBaseDirectoryExpertBDMV_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUseBaseDirectoryExpertBDMV.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
+
+#End Region 'Methods
+
 End Class

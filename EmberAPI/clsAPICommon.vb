@@ -579,6 +579,7 @@ Public Class Enums
         ClearLogo = 12
         ClearArt = 13
         Landscape = 14
+        WatchedFile = 15
     End Enum
     ''' <summary>
     ''' Enum representing possible scraper capabilities

@@ -1734,10 +1734,27 @@ Public Class dlgEditMovie
                     If String.IsNullOrEmpty(Master.currMovie.Movie.PlayCount) Or Master.currMovie.Movie.PlayCount = "0" Then
                         Master.currMovie.Movie.PlayCount = "1"
                     End If
+
+                    If Master.eSettings.UseYAMJ AndAlso Master.eSettings.YAMJWatchedFile Then
+                        For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.isSingle, Enums.ModType.WatchedFile)
+                            If Not File.Exists(a) Then
+                                Dim fs As FileStream = File.Create(a)
+                                fs.Close()
+                            End If
+                        Next
+                    End If
                 Else
                     'Unchecked Watched State -> Set Playcount back to 0, but only if it was filled before (check could save time)
                     If IsNumeric(Master.currMovie.Movie.PlayCount) AndAlso CInt(Master.currMovie.Movie.PlayCount) > 0 Then
                         Master.currMovie.Movie.PlayCount = ""
+                    End If
+
+                    If Master.eSettings.UseYAMJ AndAlso Master.eSettings.YAMJWatchedFile Then
+                        For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.isSingle, Enums.ModType.WatchedFile)
+                            If File.Exists(a) Then
+                                File.Delete(a)
+                            End If
+                        Next
                     End If
                 End If
                 'cocotus End

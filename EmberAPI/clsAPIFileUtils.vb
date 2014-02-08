@@ -817,6 +817,20 @@ Namespace FileUtils
                         Else
                         End If
                     End With
+
+                Case Enums.ModType.WatchedFile
+                    With Master.eSettings
+                        If isVideoTS Then
+                            If .UseYAMJ AndAlso .YAMJWatchedFile AndAlso String.IsNullOrEmpty(.YAMJWatchedFolder) Then FilenameList.Add(String.Concat(Path.Combine(basePath, Directory.GetParent(fileParPath).Name), ".watched"))
+                            If .UseYAMJ AndAlso .YAMJWatchedFile AndAlso Not String.IsNullOrEmpty(.YAMJWatchedFolder) Then FilenameList.Add(String.Concat(Path.Combine(.YAMJWatchedFolder, Directory.GetParent(fileParPath).Name), ".watched"))
+                        ElseIf isBDRip Then
+                            If .UseYAMJ AndAlso .YAMJWatchedFile AndAlso String.IsNullOrEmpty(.YAMJWatchedFolder) Then FilenameList.Add(String.Concat(Path.Combine(basePath, Directory.GetParent(Directory.GetParent(fileParPath).FullName).Name), ".watched"))
+                            If .UseYAMJ AndAlso .YAMJWatchedFile AndAlso Not String.IsNullOrEmpty(.YAMJWatchedFolder) Then FilenameList.Add(String.Concat(Path.Combine(.YAMJWatchedFolder, Directory.GetParent(Directory.GetParent(fileParPath).FullName).Name), ".watched"))
+                        Else
+                            If .UseYAMJ AndAlso .YAMJWatchedFile AndAlso String.IsNullOrEmpty(.YAMJWatchedFolder) Then FilenameList.Add(String.Concat(fPath, ".watched"))
+                            If .UseYAMJ AndAlso .YAMJWatchedFile AndAlso Not String.IsNullOrEmpty(.YAMJWatchedFolder) Then FilenameList.Add(String.Concat(Path.Combine(.YAMJWatchedFolder, String.Concat(Path.GetFileName(fPath), ".watched"))))
+                        End If
+                    End With
             End Select
 
             FilenameList = FilenameList.Distinct().ToList() 'remove double entries

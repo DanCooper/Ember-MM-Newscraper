@@ -720,6 +720,7 @@ Public Class Scanner
 
     Public Sub LoadMovie(ByVal mContainer As MovieContainer)
         Dim tmpMovieDB As New Structures.DBMovie
+        Dim ToNfo As Boolean = False
         Try
             'first, lets get the contents
             GetMovieFolderContents(mContainer)
@@ -798,6 +799,22 @@ Public Class Scanner
                 End If
             End If
 
+            If Master.eSettings.UseYAMJ AndAlso Master.eSettings.YAMJWatchedFile Then
+                For Each a In FileUtils.GetFilenameList.Movie(mContainer.Filename, False, Enums.ModType.WatchedFile)
+                    If Not String.IsNullOrEmpty(tmpMovieDB.Movie.PlayCount) AndAlso Not tmpMovieDB.Movie.PlayCount = "0" Then
+                        If Not File.Exists(a) Then
+                            Dim fs As FileStream = File.Create(a)
+                            fs.Close()
+                        End If
+                    Else
+                        If File.Exists(a) Then
+                            tmpMovieDB.Movie.PlayCount = "1"
+                            ToNfo = True
+                        End If
+                    End If
+                Next
+            End If
+
             If Not String.IsNullOrEmpty(tmpMovieDB.ListTitle) Then
                 tmpMovieDB.NfoPath = mContainer.Nfo
                 tmpMovieDB.PosterPath = mContainer.Poster
@@ -819,7 +836,11 @@ Public Class Scanner
                 tmpMovieDB.IsLock = False
                 tmpMovieDB.IsMark = Master.eSettings.MarkNew
                 'Do the Save
-                tmpMovieDB = Master.DB.SaveMovieToDB(tmpMovieDB, True, True)
+                If ToNfo AndAlso Not String.IsNullOrEmpty(tmpMovieDB.NfoPath) Then
+                    tmpMovieDB = Master.DB.SaveMovieToDB(tmpMovieDB, True, True, True)
+                Else
+                    tmpMovieDB = Master.DB.SaveMovieToDB(tmpMovieDB, True, True)
+                End If
 
                 Me.bwPrelim.ReportProgress(0, New ProgressValue With {.Type = 0, .Message = tmpMovieDB.Movie.Title})
             End If
