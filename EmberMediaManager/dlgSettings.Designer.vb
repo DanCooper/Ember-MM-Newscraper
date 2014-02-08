@@ -247,7 +247,7 @@ Partial Class dlgSettings
         Me.tbcFileNaming = New System.Windows.Forms.TabControl()
         Me.tpFileNamingXBMC = New System.Windows.Forms.TabPage()
         Me.gbXBMCOptional = New System.Windows.Forms.GroupBox()
-        Me.chkXBMCProtectBDMV = New System.Windows.Forms.CheckBox()
+        Me.chkXBMCProtectVTSBDMV = New System.Windows.Forms.CheckBox()
         Me.chkXBMCTrailerFormat = New System.Windows.Forms.CheckBox()
         Me.gbEden = New System.Windows.Forms.GroupBox()
         Me.chkExtrafanartsEden = New System.Windows.Forms.CheckBox()
@@ -3279,34 +3279,35 @@ Partial Class dlgSettings
         '
         'gbXBMCOptional
         '
-        Me.gbXBMCOptional.Controls.Add(Me.chkXBMCProtectBDMV)
+        Me.gbXBMCOptional.Controls.Add(Me.chkXBMCProtectVTSBDMV)
         Me.gbXBMCOptional.Controls.Add(Me.chkXBMCTrailerFormat)
         Me.gbXBMCOptional.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbXBMCOptional.Location = New System.Drawing.Point(238, 6)
         Me.gbXBMCOptional.Name = "gbXBMCOptional"
-        Me.gbXBMCOptional.Size = New System.Drawing.Size(160, 66)
+        Me.gbXBMCOptional.Size = New System.Drawing.Size(261, 66)
         Me.gbXBMCOptional.TabIndex = 2
         Me.gbXBMCOptional.TabStop = False
         Me.gbXBMCOptional.Text = "Optional Settings"
         '
-        'chkXBMCProtectBDMV
+        'chkXBMCProtectVTSBDMV
         '
-        Me.chkXBMCProtectBDMV.AutoSize = True
-        Me.chkXBMCProtectBDMV.Enabled = False
-        Me.chkXBMCProtectBDMV.Location = New System.Drawing.Point(6, 44)
-        Me.chkXBMCProtectBDMV.Name = "chkXBMCProtectBDMV"
-        Me.chkXBMCProtectBDMV.Size = New System.Drawing.Size(147, 17)
-        Me.chkXBMCProtectBDMV.TabIndex = 1
-        Me.chkXBMCProtectBDMV.Text = "Protect BDMV Structure"
-        Me.chkXBMCProtectBDMV.UseVisualStyleBackColor = True
+        Me.chkXBMCProtectVTSBDMV.AutoSize = True
+        Me.chkXBMCProtectVTSBDMV.Enabled = False
+        Me.chkXBMCProtectVTSBDMV.Location = New System.Drawing.Point(6, 44)
+        Me.chkXBMCProtectVTSBDMV.Name = "chkXBMCProtectVTSBDMV"
+        Me.chkXBMCProtectVTSBDMV.Size = New System.Drawing.Size(202, 17)
+        Me.chkXBMCProtectVTSBDMV.TabIndex = 1
+        Me.chkXBMCProtectVTSBDMV.Text = "Protect VIDEO_TS and BDMV Structure"
+        Me.chkXBMCProtectVTSBDMV.UseVisualStyleBackColor = True
         '
         'chkXBMCTrailerFormat
         '
+        Me.chkXBMCTrailerFormat.AutoSize = True
         Me.chkXBMCTrailerFormat.Location = New System.Drawing.Point(6, 21)
         Me.chkXBMCTrailerFormat.Name = "chkXBMCTrailerFormat"
-        Me.chkXBMCTrailerFormat.Size = New System.Drawing.Size(97, 17)
+        Me.chkXBMCTrailerFormat.Size = New System.Drawing.Size(179, 17)
         Me.chkXBMCTrailerFormat.TabIndex = 0
-        Me.chkXBMCTrailerFormat.Text = "Trailer Format"
+        Me.chkXBMCTrailerFormat.Text = "YouTube Plugin Trailer Format"
         Me.chkXBMCTrailerFormat.UseVisualStyleBackColor = True
         '
         'gbEden
@@ -9885,5 +9886,5 @@ End Sub
     Friend WithEvents chkUseBaseDirectoryExpertVTS As System.Windows.Forms.CheckBox
     Friend WithEvents chkUseBaseDirectoryExpertBDMV As System.Windows.Forms.CheckBox
     Friend WithEvents chkRecognizeVTSExpertVTS As System.Windows.Forms.CheckBox
-    Friend WithEvents chkXBMCProtectBDMV As System.Windows.Forms.CheckBox
+    Friend WithEvents chkXBMCProtectVTSBDMV As System.Windows.Forms.CheckBox
 End Class

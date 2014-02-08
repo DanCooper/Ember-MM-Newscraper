@@ -397,6 +397,7 @@ Public Class Settings
 
     '************* XBMC optional settings *************
     Private _xbmctrailerformat As Boolean
+    Private _xbmcprotectvtsbdmv As Boolean
 
     '****************** YAMJ settings *****************
     Private _useyamj As Boolean
@@ -3669,6 +3670,15 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Me._xbmctrailerformat = value
+        End Set
+    End Property
+
+    Public Property XBMCProtectVTSBDMV() As Boolean
+        Get
+            Return Me._xbmcprotectvtsbdmv
+        End Get
+        Set(ByVal value As Boolean)
+            Me._xbmcprotectvtsbdmv = value
         End Set
     End Property
 

@@ -464,23 +464,24 @@ Namespace FileUtils
             Dim filePath As String = Path.Combine(Directory.GetParent(fPath).FullName, fileName)
             Dim filePathStack As String = Path.Combine(Directory.GetParent(fPath).FullName, fileNameStack)
             Dim fileParPath As String = Directory.GetParent(filePath).FullName
-            Dim parPath As String = String.Empty
+            Dim basePath As String = String.Empty
 
             Dim isVideoTS As Boolean = FileUtils.Common.isVideoTS(fPath)
             Dim isBDRip As Boolean = FileUtils.Common.isBDRip(fPath)
             Dim isVideoTSFile As Boolean = fileName.ToLower = "video_ts"
 
-            If isVideoTS Then parPath = Directory.GetParent(Directory.GetParent(fPath).FullName).FullName
-            If isBDRip Then parPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(fPath).FullName).FullName).FullName
+            If isVideoTS Then basePath = Directory.GetParent(Directory.GetParent(fPath).FullName).FullName
+            If isBDRip Then basePath = Directory.GetParent(Directory.GetParent(Directory.GetParent(fPath).FullName).FullName).FullName
 
             Select Case mType
                 Case Enums.ModType.NFO
                     With Master.eSettings
                         If isVideoTS Then
-                            If .UseFrodo Then FilenameList.Add(String.Concat(filePath, ".nfo"))
-                            If .UseEden Then FilenameList.Add(String.Concat(filePath, ".nfo"))
-                            If .UseYAMJ Then FilenameList.Add(String.Concat(Directory.GetParent(fileParPath).FullName, Path.DirectorySeparatorChar, Directory.GetParent(fileParPath).Name, ".nfo"))
-                            If .UseNMJ Then FilenameList.Add(String.Concat(Directory.GetParent(fileParPath).FullName, Path.DirectorySeparatorChar, Directory.GetParent(fileParPath).Name, ".nfo"))
+                            If .UseFrodo AndAlso .NFOFrodo AndAlso .XBMCProtectVTSBDMV Then FilenameList.Add(Path.Combine(basePath, "movie.nfo"))
+                            If .UseFrodo AndAlso .NFOFrodo AndAlso Not .XBMCProtectVTSBDMV Then FilenameList.Add(String.Concat(filePath, ".nfo"))
+                            If .UseEden AndAlso .NFOEden Then FilenameList.Add(String.Concat(filePath, ".nfo"))
+                            If .UseYAMJ AndAlso .NFOYAMJ Then FilenameList.Add(String.Concat(Directory.GetParent(fileParPath).FullName, Path.DirectorySeparatorChar, Directory.GetParent(fileParPath).Name, ".nfo"))
+                            If .UseNMJ AndAlso .NFONMJ Then FilenameList.Add(String.Concat(Directory.GetParent(fileParPath).FullName, Path.DirectorySeparatorChar, Directory.GetParent(fileParPath).Name, ".nfo"))
                             If .UseExpert AndAlso Not String.IsNullOrEmpty(.NFOExpertVTS) Then
                                 For Each a In .NFOExpertVTS.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
                                     If .UseBaseDirectoryExpertVTS Then
@@ -491,10 +492,11 @@ Namespace FileUtils
                                 Next
                             End If
                         ElseIf isBDRip Then
-                            If .UseFrodo Then FilenameList.Add(Path.Combine(Directory.GetParent(fileParPath).FullName, "index.nfo"))
-                            If .UseEden Then FilenameList.Add(Path.Combine(Directory.GetParent(fileParPath).FullName, "index.nfo"))
-                            If .UseYAMJ Then FilenameList.Add(String.Concat(Directory.GetParent(Directory.GetParent(fileParPath).FullName).FullName, Path.DirectorySeparatorChar, Directory.GetParent(Directory.GetParent(fileParPath).FullName).Name, ".nfo"))
-                            If .UseNMJ Then FilenameList.Add(String.Concat(Directory.GetParent(Directory.GetParent(Directory.GetParent(fileParPath).FullName).FullName).FullName, Path.DirectorySeparatorChar, Directory.GetParent(Directory.GetParent(fileParPath).FullName).Name, ".nfo"))
+                            If .UseFrodo AndAlso .NFOFrodo AndAlso .XBMCProtectVTSBDMV Then FilenameList.Add(Path.Combine(basePath, "movie.nfo"))
+                            If .UseFrodo AndAlso .NFOFrodo AndAlso Not .XBMCProtectVTSBDMV Then FilenameList.Add(Path.Combine(Directory.GetParent(fileParPath).FullName, "index.nfo"))
+                            If .UseEden AndAlso .NFOEden Then FilenameList.Add(Path.Combine(Directory.GetParent(fileParPath).FullName, "index.nfo"))
+                            If .UseYAMJ AndAlso .NFOYAMJ Then FilenameList.Add(String.Concat(Directory.GetParent(Directory.GetParent(fileParPath).FullName).FullName, Path.DirectorySeparatorChar, Directory.GetParent(Directory.GetParent(fileParPath).FullName).Name, ".nfo"))
+                            If .UseNMJ AndAlso .NFONMJ Then FilenameList.Add(String.Concat(Directory.GetParent(Directory.GetParent(Directory.GetParent(fileParPath).FullName).FullName).FullName, Path.DirectorySeparatorChar, Directory.GetParent(Directory.GetParent(fileParPath).FullName).Name, ".nfo"))
                             If .UseExpert AndAlso Not String.IsNullOrEmpty(.NFOExpertBDMV) Then
                                 For Each a In .NFOExpertBDMV.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
                                     If .UseBaseDirectoryExpertBDMV Then
@@ -505,15 +507,17 @@ Namespace FileUtils
                                 Next
                             End If
                         ElseIf isSingle Then
-                            If .UseFrodo AndAlso isVideoTSFile Then FilenameList.Add(String.Concat(filePath, ".nfo"))
-                            If .UseFrodo AndAlso Not isVideoTSFile Then FilenameList.Add(String.Concat(filePathStack, ".nfo"))
-                            If .UseEden Then FilenameList.Add(String.Concat(filePath, ".nfo"))
-                            If .UseYAMJ Then FilenameList.Add(String.Concat(filePath, ".nfo"))
-                            If .UseNMJ Then FilenameList.Add(String.Concat(filePath, ".nfo"))
+                            If .UseFrodo AndAlso .NFOFrodo AndAlso isVideoTSFile Then FilenameList.Add(String.Concat(filePath, ".nfo"))
+                            If .UseFrodo AndAlso .NFOFrodo AndAlso Not isVideoTSFile Then FilenameList.Add(String.Concat(filePathStack, ".nfo"))
+                            If .UseEden AndAlso .NFOEden Then FilenameList.Add(String.Concat(filePath, ".nfo"))
+                            If .UseYAMJ AndAlso .NFOYAMJ Then FilenameList.Add(String.Concat(filePath, ".nfo"))
+                            If .UseNMJ AndAlso .NFONMJ Then FilenameList.Add(String.Concat(filePath, ".nfo"))
                             If .UseExpert AndAlso isVideoTSFile AndAlso .RecognizeVTSExpertVTS Then
-                                For Each a In Master.eSettings.NFOExpertVTS.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
-                                    FilenameList.Add(Path.Combine(fileParPath, a.Replace("<filename>", fileName)))
-                                Next
+                                If Not String.IsNullOrEmpty(.NFOExpertVTS) Then
+                                    For Each a In Master.eSettings.NFOExpertVTS.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
+                                        FilenameList.Add(Path.Combine(fileParPath, a.Replace("<filename>", fileName)))
+                                    Next
+                                End If
                             ElseIf .UseExpert AndAlso Not String.IsNullOrEmpty(.NFOExpertSingle) Then
                                 If .StackExpertSingle Then
                                     For Each a In .NFOExpertSingle.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
@@ -530,10 +534,10 @@ Namespace FileUtils
                                 End If
                             End If
                         Else
-                            If .UseFrodo Then FilenameList.Add(String.Concat(filePathStack, ".nfo"))
-                            If .UseEden Then FilenameList.Add(String.Concat(filePath, ".nfo"))
-                            If .UseYAMJ Then FilenameList.Add(String.Concat(filePath, ".nfo"))
-                            If .UseNMJ Then FilenameList.Add(String.Concat(filePath, ".nfo"))
+                            If .UseFrodo AndAlso .NFOFrodo Then FilenameList.Add(String.Concat(filePathStack, ".nfo"))
+                            If .UseEden AndAlso .NFOEden Then FilenameList.Add(String.Concat(filePath, ".nfo"))
+                            If .UseYAMJ AndAlso .NFOYAMJ Then FilenameList.Add(String.Concat(filePath, ".nfo"))
+                            If .UseNMJ AndAlso .NFONMJ Then FilenameList.Add(String.Concat(filePath, ".nfo"))
                             If .UseExpert AndAlso Not String.IsNullOrEmpty(.NFOExpertMulti) Then
                                 For Each a In Master.eSettings.NFOExpertMulti.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
                                     If Master.eSettings.StackExpertMulti Then
@@ -553,7 +557,7 @@ Namespace FileUtils
                 Case Enums.ModType.Poster
                     With Master.eSettings
                         If isVideoTS Then
-                            If .UseFrodo AndAlso .PosterFrodo Then FilenameList.Add(Path.Combine(Directory.GetParent(fileParPath).FullName, "poster.jpg"))
+                            If .UseFrodo AndAlso .PosterFrodo Then FilenameList.Add(Path.Combine(basePath, "poster.jpg"))
                             If .UseEden AndAlso .PosterEden Then FilenameList.Add(String.Concat(filePath, ".tbn"))
                             If .UseYAMJ AndAlso .PosterYAMJ Then FilenameList.Add(String.Concat(Path.Combine(Directory.GetParent(fileParPath).FullName, Directory.GetParent(fileParPath).Name), ".jpg"))
                             If .UseNMJ AndAlso .PosterNMJ Then FilenameList.Add(String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(fileParPath).FullName).FullName, Directory.GetParent(fileParPath).Name), ".jpg"))
@@ -567,7 +571,7 @@ Namespace FileUtils
                                 Next
                             End If
                         ElseIf isBDRip Then
-                            If .UseFrodo AndAlso .PosterFrodo Then FilenameList.Add(Path.Combine(Directory.GetParent(Directory.GetParent(fileParPath).FullName).FullName, "poster.jpg"))
+                            If .UseFrodo AndAlso .PosterFrodo Then FilenameList.Add(Path.Combine(basePath, "poster.jpg"))
                             If .UseEden AndAlso .PosterEden Then FilenameList.Add(Path.Combine(Directory.GetParent(fileParPath).FullName, "index.tbn"))
                             If .UseYAMJ AndAlso .PosterYAMJ Then FilenameList.Add(String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(fileParPath).FullName).FullName, Directory.GetParent(Directory.GetParent(fileParPath).FullName).Name), ".jpg"))
                             If .UseNMJ AndAlso .PosterNMJ Then FilenameList.Add(String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(fileParPath).FullName).FullName).FullName, Directory.GetParent(Directory.GetParent(fileParPath).FullName).Name), ".jpg"))
@@ -629,7 +633,7 @@ Namespace FileUtils
                 Case Enums.ModType.Fanart
                     With Master.eSettings
                         If isVideoTS Then
-                            If .UseFrodo AndAlso .FanartFrodo Then FilenameList.Add(Path.Combine(Directory.GetParent(fileParPath).FullName, "fanart.jpg"))
+                            If .UseFrodo AndAlso .FanartFrodo Then FilenameList.Add(Path.Combine(basePath, "fanart.jpg"))
                             If .UseEden AndAlso .FanartEden Then FilenameList.Add(String.Concat(filePath, "-fanart.jpg"))
                             If .UseYAMJ AndAlso .FanartYAMJ Then FilenameList.Add(String.Concat(Path.Combine(Directory.GetParent(fileParPath).FullName, Directory.GetParent(fileParPath).Name), ".fanart.jpg"))
                             If .UseNMJ AndAlso .FanartNMJ Then FilenameList.Add(String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(fileParPath).FullName).FullName, Directory.GetParent(fileParPath).Name), ".fanart.jpg"))
@@ -643,7 +647,7 @@ Namespace FileUtils
                                 Next
                             End If
                         ElseIf isBDRip Then
-                            If .UseFrodo AndAlso .FanartFrodo Then FilenameList.Add(Path.Combine(Directory.GetParent(Directory.GetParent(fileParPath).FullName).FullName, "fanart.jpg"))
+                            If .UseFrodo AndAlso .FanartFrodo Then FilenameList.Add(Path.Combine(basePath, "fanart.jpg"))
                             If .UseEden AndAlso .FanartEden Then FilenameList.Add(Path.Combine(Directory.GetParent(fileParPath).FullName, "index-fanart.jpg"))
                             If .UseYAMJ AndAlso .FanartYAMJ Then FilenameList.Add(String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(fileParPath).FullName).FullName, Directory.GetParent(Directory.GetParent(fileParPath).FullName).Name), ".fanart.jpg"))
                             If .UseNMJ AndAlso .FanartNMJ Then FilenameList.Add(String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(fileParPath).FullName).FullName).FullName, Directory.GetParent(Directory.GetParent(fileParPath).FullName).Name), ".fanart.jpg"))
@@ -705,15 +709,15 @@ Namespace FileUtils
                 Case Enums.ModType.Trailer
                     With Master.eSettings
                         If isVideoTS Then
-                            If .UseFrodo AndAlso .TrailerFrodo Then FilenameList.Add(String.Concat(filePath, "-trailer"))
+                            If .UseFrodo AndAlso .TrailerFrodo AndAlso Not .XBMCProtectVTSBDMV Then FilenameList.Add(String.Concat(filePath, "-trailer"))
                             If .UseEden AndAlso .TrailerEden Then FilenameList.Add(String.Concat(filePath, "-trailer"))
-                            If .UseYAMJ AndAlso .TrailerYAMJ Then FilenameList.Add(String.Concat(parPath, Path.DirectorySeparatorChar, Directory.GetParent(fileParPath).Name, ".[trailer]"))
-                            If .UseNMJ AndAlso .TrailerNMJ Then FilenameList.Add(String.Concat(parPath, Path.DirectorySeparatorChar, Directory.GetParent(fileParPath).Name, ".[trailer]"))
+                            If .UseYAMJ AndAlso .TrailerYAMJ Then FilenameList.Add(String.Concat(basePath, Path.DirectorySeparatorChar, Directory.GetParent(fileParPath).Name, ".[trailer]"))
+                            If .UseNMJ AndAlso .TrailerNMJ Then FilenameList.Add(String.Concat(basePath, Path.DirectorySeparatorChar, Directory.GetParent(fileParPath).Name, ".[trailer]"))
                         ElseIf isBDRip Then
-                            If .UseFrodo AndAlso .TrailerFrodo Then FilenameList.Add(String.Concat(Directory.GetParent(fileParPath).FullName, Path.DirectorySeparatorChar, "index-trailer"))
+                            If .UseFrodo AndAlso .TrailerFrodo AndAlso Not .XBMCProtectVTSBDMV Then FilenameList.Add(String.Concat(Directory.GetParent(fileParPath).FullName, Path.DirectorySeparatorChar, "index-trailer"))
                             If .UseEden AndAlso .TrailerEden Then FilenameList.Add(String.Concat(Directory.GetParent(fileParPath).FullName, Path.DirectorySeparatorChar, "index-trailer"))
-                            If .UseYAMJ AndAlso .TrailerYAMJ Then FilenameList.Add(String.Concat(parPath, Path.DirectorySeparatorChar, Directory.GetParent(Directory.GetParent(fileParPath).FullName).Name, ".[trailer]"))
-                            If .UseNMJ AndAlso .TrailerNMJ Then FilenameList.Add(String.Concat(parPath, Path.DirectorySeparatorChar, Directory.GetParent(Directory.GetParent(fileParPath).FullName).Name, ".[trailer]"))
+                            If .UseYAMJ AndAlso .TrailerYAMJ Then FilenameList.Add(String.Concat(basePath, Path.DirectorySeparatorChar, Directory.GetParent(Directory.GetParent(fileParPath).FullName).Name, ".[trailer]"))
+                            If .UseNMJ AndAlso .TrailerNMJ Then FilenameList.Add(String.Concat(basePath, Path.DirectorySeparatorChar, Directory.GetParent(Directory.GetParent(fileParPath).FullName).Name, ".[trailer]"))
                         ElseIf isSingle Then
                             If .UseFrodo AndAlso .TrailerFrodo Then FilenameList.Add(String.Concat(filePathStack, "-trailer"))
                             If .UseEden AndAlso .TrailerEden Then FilenameList.Add(String.Concat(filePath, "-trailer"))
@@ -766,10 +770,10 @@ Namespace FileUtils
                 Case Enums.ModType.Actor
                     With Master.eSettings
                         If isVideoTS Then
-                            If .UseFrodo AndAlso .ActorThumbsFrodo Then FilenameList.Add(String.Concat(fileParPath, "/.actors", "/<placeholder>.jpg"))
+                            If .UseFrodo AndAlso .ActorThumbsFrodo AndAlso Not .XBMCProtectVTSBDMV Then FilenameList.Add(String.Concat(fileParPath, "/.actors", "/<placeholder>.jpg"))
                             If .UseEden AndAlso .ActorThumbsEden Then FilenameList.Add(String.Concat(fileParPath, "/.actors", "/<placeholder>.tbn"))
                         ElseIf isBDRip Then
-                            If .UseFrodo AndAlso .ActorThumbsFrodo Then FilenameList.Add(String.Concat(Directory.GetParent(Directory.GetParent(fPath).FullName).FullName, "/.actors", "/<placeholder>.jpg"))
+                            If .UseFrodo AndAlso .ActorThumbsFrodo AndAlso Not .XBMCProtectVTSBDMV Then FilenameList.Add(String.Concat(Directory.GetParent(Directory.GetParent(fPath).FullName).FullName, "/.actors", "/<placeholder>.jpg"))
                             If .UseEden AndAlso .ActorThumbsEden Then FilenameList.Add(String.Concat(Directory.GetParent(Directory.GetParent(fPath).FullName).FullName, "/.actors", "/<placeholder>.tbn"))
                         ElseIf isSingle Then
                             If .UseFrodo AndAlso .ActorThumbsFrodo Then FilenameList.Add(String.Concat(fileParPath, "/.actors", "/<placeholder>.jpg"))
@@ -780,10 +784,10 @@ Namespace FileUtils
                 Case Enums.ModType.EThumbs
                     With Master.eSettings
                         If isVideoTS Then
-                            If .UseFrodo AndAlso .ExtrathumbsFrodo Then FilenameList.Add(Path.Combine(Directory.GetParent(fPath).FullName, "extrathumbs"))
+                            If .UseFrodo AndAlso .ExtrathumbsFrodo AndAlso Not .XBMCProtectVTSBDMV Then FilenameList.Add(Path.Combine(Directory.GetParent(fPath).FullName, "extrathumbs"))
                             If .UseEden AndAlso .ExtrathumbsEden Then FilenameList.Add(Path.Combine(Directory.GetParent(fPath).FullName, "extrathumbs"))
                         ElseIf isBDRip Then
-                            If .UseFrodo AndAlso .ExtrathumbsFrodo Then FilenameList.Add(Path.Combine(Directory.GetParent(Directory.GetParent(fPath).FullName).FullName, "extrathumbs"))
+                            If .UseFrodo AndAlso .ExtrathumbsFrodo AndAlso Not .XBMCProtectVTSBDMV Then FilenameList.Add(Path.Combine(Directory.GetParent(Directory.GetParent(fPath).FullName).FullName, "extrathumbs"))
                             If .UseEden AndAlso .ExtrathumbsEden Then FilenameList.Add(Path.Combine(Directory.GetParent(Directory.GetParent(fPath).FullName).FullName, "extrathumbs"))
                         ElseIf isSingle Then
                             If .UseFrodo AndAlso .ExtrathumbsFrodo Then FilenameList.Add(Path.Combine(Directory.GetParent(fPath).FullName, "extrathumbs"))
@@ -794,10 +798,10 @@ Namespace FileUtils
                 Case Enums.ModType.EFanarts
                     With Master.eSettings
                         If isVideoTS Then
-                            If .UseFrodo AndAlso .ExtrafanartsFrodo Then FilenameList.Add(Path.Combine(Directory.GetParent(fPath).FullName, "extrafanart"))
+                            If .UseFrodo AndAlso .ExtrafanartsFrodo AndAlso Not .XBMCProtectVTSBDMV Then FilenameList.Add(Path.Combine(Directory.GetParent(fPath).FullName, "extrafanart"))
                             If .UseEden AndAlso .ExtrafanartsEden Then FilenameList.Add(Path.Combine(Directory.GetParent(fPath).FullName, "extrafanart"))
                         ElseIf isBDRip Then
-                            If .UseFrodo AndAlso .ExtrafanartsFrodo Then FilenameList.Add(Path.Combine(Directory.GetParent(Directory.GetParent(fPath).FullName).FullName, "extrafanart"))
+                            If .UseFrodo AndAlso .ExtrafanartsFrodo AndAlso Not .XBMCProtectVTSBDMV Then FilenameList.Add(Path.Combine(Directory.GetParent(Directory.GetParent(fPath).FullName).FullName, "extrafanart"))
                             If .UseEden AndAlso .ExtrafanartsEden Then FilenameList.Add(Path.Combine(Directory.GetParent(Directory.GetParent(fPath).FullName).FullName, "extrafanart"))
                         ElseIf isSingle Then
                             If .UseFrodo AndAlso .ExtrafanartsFrodo Then FilenameList.Add(Path.Combine(Directory.GetParent(fPath).FullName, "extrafanart"))

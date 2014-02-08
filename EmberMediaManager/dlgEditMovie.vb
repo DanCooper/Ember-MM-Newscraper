@@ -1804,6 +1804,7 @@ Public Class dlgEditMovie
                 End If
 
                 If Not String.IsNullOrEmpty(Master.currMovie.TrailerPath) AndAlso Master.currMovie.TrailerPath.Contains(Master.TempPath) Then
+                    frmMain.tslLoading.Text = Master.eLang.GetString(906, "Downloading selected trailer...")
                     Dim TargetTrailer As String = String.Empty
                     Dim fExt As String = Path.GetExtension(Master.currMovie.TrailerPath)
                     For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.isSingle, Enums.ModType.Trailer)

@@ -2039,6 +2039,7 @@ Public Class dlgSettings
         Me.chkNFOFrodo.Enabled = Me.chkUseFrodo.Checked
         Me.chkPosterFrodo.Enabled = Me.chkUseFrodo.Checked
         Me.chkTrailerFrodo.Enabled = Me.chkUseFrodo.Checked
+        Me.chkXBMCProtectVTSBDMV.Enabled = Me.chkUseFrodo.Checked AndAlso Not Me.chkUseEden.Checked
 
         If Not Me.chkUseFrodo.Checked Then
             Me.chkActorThumbsFrodo.Checked = False
@@ -2053,6 +2054,7 @@ Public Class dlgSettings
             Me.chkNFOFrodo.Checked = False
             Me.chkPosterFrodo.Checked = False
             Me.chkTrailerFrodo.Checked = False
+            Me.chkXBMCProtectVTSBDMV.Checked = False
         Else
             Me.chkActorThumbsFrodo.Checked = True
             Me.chkBannerFrodo.Checked = True
@@ -2084,6 +2086,7 @@ Public Class dlgSettings
         Me.chkNFOEden.Enabled = Me.chkUseEden.Checked
         Me.chkPosterEden.Enabled = Me.chkUseEden.Checked
         Me.chkTrailerEden.Enabled = Me.chkUseEden.Checked
+        Me.chkXBMCProtectVTSBDMV.Enabled = Not Me.chkUseEden.Checked AndAlso Me.chkUseFrodo.Checked
 
         If Not Me.chkUseEden.Checked Then
             Me.chkActorThumbsEden.Checked = False
@@ -2111,6 +2114,7 @@ Public Class dlgSettings
             Me.chkNFOEden.Checked = True
             Me.chkPosterEden.Checked = True
             Me.chkTrailerEden.Checked = True
+            Me.chkXBMCProtectVTSBDMV.Checked = False
         End If
     End Sub
 
@@ -2223,6 +2227,10 @@ Public Class dlgSettings
     End Sub
 
     Private Sub chkWriters_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkWriters.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkXBMCProtectVTSBDMV_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkXBMCProtectVTSBDMV.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -2734,6 +2742,7 @@ Public Class dlgSettings
 
             '************* XBMC optional settings *************
             Me.chkXBMCTrailerFormat.Checked = Master.eSettings.XBMCTrailerFormat
+            Me.chkXBMCProtectVTSBDMV.Checked = Master.eSettings.XBMCProtectVTSBDMV
 
             '****************** YAMJ settings *****************
             Me.chkUseYAMJ.Checked = Master.eSettings.UseYAMJ
@@ -3935,6 +3944,7 @@ Public Class dlgSettings
 
             '************* XBMC optional settings *************
             Master.eSettings.XBMCTrailerFormat = Me.chkXBMCTrailerFormat.Checked
+            Master.eSettings.XBMCProtectVTSBDMV = Me.chkXBMCProtectVTSBDMV.Checked
 
             '****************** YAMJ settings *****************
             Master.eSettings.UseYAMJ = Me.chkUseYAMJ.Checked
