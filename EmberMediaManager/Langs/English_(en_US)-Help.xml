@@ -117,7 +117,6 @@
   <string control="FileManager_TextBox1"></string>
   <string control="FileManager_Button4"></string>
   <string control="FileManager_TextBox2"></string>
-  <string control="Exporter_cbEnabled">Enable or disable this module.</string>
   <string control="NMT_txtDetails"></string>
   <string control="NMT_btnRemove"></string>
   <string control="NMT_btnInstall"></string>
