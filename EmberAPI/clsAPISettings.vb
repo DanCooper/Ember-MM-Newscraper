@@ -397,6 +397,7 @@ Public Class Settings
 
     '************* XBMC optional settings *************
     Private _xbmctrailerformat As Boolean
+    Private _xbmcprotectvtsbdmv As Boolean
 
     '****************** YAMJ settings *****************
     Private _useyamj As Boolean
@@ -413,6 +414,8 @@ Public Class Settings
     Private _posteryamj As Boolean
     Private _traileryamj As Boolean
     Private _yamjsetscompatible As Boolean
+    Private _yamjwatchedfile As Boolean
+    Private _yamjwatchedfolder As String
 
     '****************** NMJ settings ******************
     Private _usenmj As Boolean
@@ -3672,6 +3675,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property XBMCProtectVTSBDMV() As Boolean
+        Get
+            Return Me._xbmcprotectvtsbdmv
+        End Get
+        Set(ByVal value As Boolean)
+            Me._xbmcprotectvtsbdmv = value
+        End Set
+    End Property
+
     Public Property UseYAMJ() As Boolean
         Get
             Return Me._useyamj
@@ -3723,6 +3735,24 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Me._traileryamj = value
+        End Set
+    End Property
+
+    Public Property YAMJWatchedFile() As Boolean
+        Get
+            Return Me._yamjwatchedfile
+        End Get
+        Set(ByVal value As Boolean)
+            Me._yamjwatchedfile = value
+        End Set
+    End Property
+
+    Public Property YAMJWatchedFolder() As String
+        Get
+            Return Me._yamjwatchedfolder
+        End Get
+        Set(ByVal value As String)
+            Me._yamjwatchedfolder = value
         End Set
     End Property
 

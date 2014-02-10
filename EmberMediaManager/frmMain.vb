@@ -1366,7 +1366,7 @@ Public Class frmMain
                                     tURL = Fanart.WebImage.SaveAsFanart(DBScrapeMovie)
                                     If Not String.IsNullOrEmpty(tURL) Then
                                         DBScrapeMovie.FanartPath = tURL
-                                        MovieScraperEvent(Enums.MovieScraperEventType.FanartItem, True) '
+                                        MovieScraperEvent(Enums.MovieScraperEventType.FanartItem, True)
                                         'If Master.GlobalScrapeMod.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
                                         '    DBScrapeMovie.Movie.Fanart = fResults.Fanart
                                         'End If
@@ -1390,7 +1390,7 @@ Public Class frmMain
                                                     tURL = Fanart.WebImage.SaveAsFanart(DBScrapeMovie)
                                                     If Not String.IsNullOrEmpty(tURL) Then
                                                         DBScrapeMovie.FanartPath = tURL
-                                                        MovieScraperEvent(Enums.MovieScraperEventType.FanartItem, True) '
+                                                        MovieScraperEvent(Enums.MovieScraperEventType.FanartItem, True)
                                                         'If Master.GlobalScrapeMod.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
                                                         '    DBScrapeMovie.Movie.Fanart = fResults.Fanart
                                                         'End If
@@ -1415,7 +1415,7 @@ Public Class frmMain
                         If aUrlList.Count > 0 Then
                             If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) AndAlso Trailers.PreferredTrailer(tURL, aUrlList, DBScrapeMovie.Filename, (Args.scrapeType = Enums.ScrapeType.SingleScrape)) Then
                                 If Not String.IsNullOrEmpty(tURL) Then
-                                    tURL = Trailers.DownloadTrailer(DBScrapeMovie.Filename, tURL) ', DBScrapeMovie.Filename)
+                                    tURL = Trailers.DownloadTrailer(DBScrapeMovie.Filename, DBScrapeMovie.isSingle, tURL)
                                     If Not String.IsNullOrEmpty(tURL) Then
                                         If StringUtils.isValidURL(tURL) Then
                                             If Master.eSettings.XBMCTrailerFormat Then
@@ -2375,7 +2375,7 @@ doCancel:
 
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MediaDBConn.BeginTransaction()
                 For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
-                    Me.RefreshMovie(Convert.ToInt64(sRow.Cells(0).Value), True, False, True)
+                    Me.RefreshMovie(Convert.ToInt64(sRow.Cells(0).Value), True, False, True, True)
                 Next
                 SQLtransaction.Commit()
             End Using
@@ -7711,7 +7711,7 @@ doCancel:
         Return False
     End Function
 
-    Private Function RefreshMovie(ByVal ID As Long, Optional ByVal BatchMode As Boolean = False, Optional ByVal FromNfo As Boolean = True, Optional ByVal ToNfo As Boolean = False) As Boolean
+    Private Function RefreshMovie(ByVal ID As Long, Optional ByVal BatchMode As Boolean = False, Optional ByVal FromNfo As Boolean = True, Optional ByVal ToNfo As Boolean = False, Optional ByVal delWatched As Boolean = False) As Boolean
         Dim tmpMovie As New MediaContainers.Movie
         Dim tmpMovieDb As New Structures.DBMovie
         Dim OldTitle As String = String.Empty
@@ -7785,6 +7785,29 @@ doCancel:
                     tmpMovieDb.FileSource = fromFile
                 ElseIf String.IsNullOrEmpty(tmpMovieDb.FileSource) AndAlso AdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
                     tmpMovieDb.FileSource = AdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(tmpMovieDb.Filename)), String.Empty, "*EmberAPP")
+                End If
+
+                If Master.eSettings.UseYAMJ AndAlso Master.eSettings.YAMJWatchedFile Then
+                    For Each a In FileUtils.GetFilenameList.Movie(tmpMovieDb.Filename, tmpMovieDb.isSingle, Enums.ModType.WatchedFile)
+                        If delWatched Then
+                            If File.Exists(a) Then
+                                File.Delete(a)
+                            End If
+                        End If
+                        If Not String.IsNullOrEmpty(tmpMovieDb.Movie.PlayCount) AndAlso Not tmpMovieDb.Movie.PlayCount = "0" Then
+                            If Not File.Exists(a) Then
+                                Dim fs As FileStream = File.Create(a)
+                                fs.Close()
+                            End If
+                        Else
+                            If File.Exists(a) Then
+                                tmpMovieDb.Movie.PlayCount = "1"
+                                If Not tmpMovieDb.NfoPath = tmpMovieDb.Filename AndAlso Not String.IsNullOrEmpty(tmpMovieDb.NfoPath) Then
+                                    ToNfo = True
+                                End If
+                            End If
+                        End If
+                    Next
                 End If
 
                 Dim mContainer As New Scanner.MovieContainer With {.Filename = tmpMovieDb.Filename, .isSingle = tmpMovieDb.isSingle}

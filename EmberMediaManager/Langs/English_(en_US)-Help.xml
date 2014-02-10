@@ -117,7 +117,6 @@
   <string control="FileManager_TextBox1"></string>
   <string control="FileManager_Button4"></string>
   <string control="FileManager_TextBox2"></string>
-  <string control="Exporter_cbEnabled">Enable or disable this module.</string>
   <string control="NMT_txtDetails"></string>
   <string control="NMT_btnRemove"></string>
   <string control="NMT_btnInstall"></string>
@@ -239,7 +238,7 @@
   <string control="Core_chkAutoBD">If enabled, Ember will automatically save new fanart images to the entered backdrops folder.</string>
   <string control="Core_btnBrowse">Open a folder browser to select a backdrops folder.</string>
   <string control="Core_txtBDPath">The path to the backdrops folder.</string>
-  <string control="Core_txtMoviesetsPath">The artwork folder for Movieset images. Posters will be saved as setname-folder.jpg/png, fanart will be saved as setname-fanart.jpg</string>
+  <string control="Core_txtMoviesetsPath">The artwork folder for Movieset images. Posters will be saved as setname-poster.jpg/png, fanart will be saved as setname-fanart.jpg</string>
   <string control="Core_btnTVShowFrodo"></string>
   <string control="Core_lvTVSources">The list of all current TV Show sources. (Paths that will be scanned for TV Show files)</string>
   <string control="Core_txtTVSkipLessThan">Ember will use the entered size as the minimum size for episode files. Any files smaller than this will be skipped when updating the library.</string>

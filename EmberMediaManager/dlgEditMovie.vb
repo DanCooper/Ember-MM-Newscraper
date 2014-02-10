@@ -1734,10 +1734,27 @@ Public Class dlgEditMovie
                     If String.IsNullOrEmpty(Master.currMovie.Movie.PlayCount) Or Master.currMovie.Movie.PlayCount = "0" Then
                         Master.currMovie.Movie.PlayCount = "1"
                     End If
+
+                    If Master.eSettings.UseYAMJ AndAlso Master.eSettings.YAMJWatchedFile Then
+                        For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.isSingle, Enums.ModType.WatchedFile)
+                            If Not File.Exists(a) Then
+                                Dim fs As FileStream = File.Create(a)
+                                fs.Close()
+                            End If
+                        Next
+                    End If
                 Else
                     'Unchecked Watched State -> Set Playcount back to 0, but only if it was filled before (check could save time)
                     If IsNumeric(Master.currMovie.Movie.PlayCount) AndAlso CInt(Master.currMovie.Movie.PlayCount) > 0 Then
                         Master.currMovie.Movie.PlayCount = ""
+                    End If
+
+                    If Master.eSettings.UseYAMJ AndAlso Master.eSettings.YAMJWatchedFile Then
+                        For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.isSingle, Enums.ModType.WatchedFile)
+                            If File.Exists(a) Then
+                                File.Delete(a)
+                            End If
+                        Next
                     End If
                 End If
                 'cocotus End
@@ -1801,6 +1818,28 @@ Public Class dlgEditMovie
                             img.SaveAsActorThumb(act, Directory.GetParent(Master.currMovie.Filename).FullName, Master.currMovie)
                         End If
                     Next
+                End If
+
+                If Not String.IsNullOrEmpty(Master.currMovie.TrailerPath) AndAlso Master.currMovie.TrailerPath.Contains(Master.TempPath) Then
+                    frmMain.tslLoading.Text = Master.eLang.GetString(906, "Downloading selected trailer...")
+                    Dim TargetTrailer As String = String.Empty
+                    Dim fExt As String = Path.GetExtension(Master.currMovie.TrailerPath)
+                    For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.isSingle, Enums.ModType.Trailer)
+                        File.Copy(Master.currMovie.TrailerPath, a & fExt)
+                        TargetTrailer = a & fExt
+                    Next
+                    Master.currMovie.TrailerPath = TargetTrailer
+                ElseIf Not String.IsNullOrEmpty(Master.currMovie.TrailerPath) AndAlso Master.currMovie.TrailerPath.StartsWith(":") Then
+                    frmMain.tslLoading.Text = Master.eLang.GetString(906, "Downloading selected trailer...")
+                    Dim lhttp As New HTTP
+                    Master.currMovie.TrailerPath = lhttp.DownloadFile(Master.currMovie.TrailerPath.Replace(":http", "http"), Path.Combine(Master.TempPath, "trailer"), False, "trailer")
+                    Dim TargetTrailer As String = String.Empty
+                    Dim fExt As String = Path.GetExtension(Master.currMovie.TrailerPath)
+                    For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.isSingle, Enums.ModType.Trailer)
+                        File.Copy(Master.currMovie.TrailerPath, a & fExt)
+                        TargetTrailer = a & fExt
+                    Next
+                    Master.currMovie.TrailerPath = TargetTrailer
                 End If
 
                 If Not Master.eSettings.NoSaveImagesToNfo AndAlso pResults.Posters.Count > 0 Then Master.currMovie.Movie.Thumb = pResults.Posters

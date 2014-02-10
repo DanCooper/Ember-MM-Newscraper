@@ -380,6 +380,7 @@ Public Class StringUtils
     Public Shared Function FilterTokens(ByVal sTitle As String) As String
         If String.IsNullOrEmpty(sTitle) Then Return String.Empty
         Dim newTitle As String = sTitle
+
         If Master.eSettings.SortTokens.Count > 0 Then
             Dim tokenContents As String
             Dim onlyTokenFromTitle As RegularExpressions.Match
@@ -388,7 +389,14 @@ Public Class StringUtils
                 Try
                     If Regex.IsMatch(sTitle, String.Concat("^", sToken), RegexOptions.IgnoreCase) Then
                         tokenContents = Regex.Replace(sToken, "\[(.*?)\]", String.Empty)
+ 
                         onlyTokenFromTitle = Regex.Match(sTitle, String.Concat("^", tokenContents), RegexOptions.IgnoreCase)
+
+                        'cocotus 20140207, Fix for movies like "A.C.O.D." -> check for tokenContents(="A","An","the"..) followed by whitespace at the start of title -> If no space -> don't do anyn filtering!
+                        If sTitle.ToLower.StartsWith(tokenContents.ToLower & " ") = False Then
+                            Exit For
+                        End If
+
                         titleWithoutToken = Regex.Replace(sTitle, String.Concat("^", sToken), String.Empty, RegexOptions.IgnoreCase).Trim
                         newTitle = String.Format("{0}, {1}", titleWithoutToken, onlyTokenFromTitle.Value).Trim
 
