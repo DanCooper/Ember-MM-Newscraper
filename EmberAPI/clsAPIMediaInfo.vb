@@ -1092,7 +1092,7 @@ Public Class MediaInfo
                         miAudio.Bitrate = FormatBitrate(Me.Get_(StreamKind.Audio, a, "BitRate/String"))
                         'cocotus end
 
-                        aLang = "BLABL" 'Me.Get_(StreamKind.Audio, a, "Language/String")
+                        aLang = Me.Get_(StreamKind.Audio, a, "Language/String")
                         If Not String.IsNullOrEmpty(aLang) Then
                             miAudio.LongLanguage = aLang
                             If Localization.ISOLangGetCode3ByLang(miAudio.LongLanguage) <> "" Then
