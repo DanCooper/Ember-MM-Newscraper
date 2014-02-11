@@ -876,6 +876,20 @@ Public Class StringUtils
         Return strText.Trim()
     End Function
 
+    ''' <summary>
+    ''' Determine whether the language of the supplied string is english. 
+    ''' </summary>
+    ''' <param name="sToCheck"><c>String</c> to check</param>
+    ''' <returns><c>True</c> if the string is english, <c>False</c> otherwise (foreign language)</returns>
+    ''' <remarks>This is not a thoroughly exhaustive check, but it does the job for now and worked in my tests
+    ''' </remarks>
+    Public Shared Function isEnglishText(ByVal sToCheck As String) As Boolean
+        If sToCheck.ToLower.Contains("the ") OrElse sToCheck.ToLower.Contains("this ") OrElse sToCheck.ToLower.Contains("that ") OrElse sToCheck.ToLower.Contains(" by ") OrElse sToCheck.ToLower.Contains(" of ") OrElse sToCheck.ToLower.Contains(" and ") Then
+            Return True
+        End If
+        Return False
+    End Function
+
 #End Region 'Methods
 
 #Region "Nested Types"

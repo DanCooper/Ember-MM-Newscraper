@@ -57,6 +57,7 @@ Partial Class frmIMDBInfoSettingsHolder
         Me.chkMPAA = New System.Windows.Forms.CheckBox()
         Me.chkYear = New System.Windows.Forms.CheckBox()
         Me.chkTitle = New System.Windows.Forms.CheckBox()
+        Me.chkIMDBCleanPlotOutline = New System.Windows.Forms.CheckBox()
         Me.Panel1.SuspendLayout()
         Me.pnlSettings.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -163,6 +164,7 @@ Partial Class frmIMDBInfoSettingsHolder
         '
         'gbOptions
         '
+        Me.gbOptions.Controls.Add(Me.chkIMDBCleanPlotOutline)
         Me.gbOptions.Controls.Add(Me.chkCertification)
         Me.gbOptions.Controls.Add(Me.chkCountry)
         Me.gbOptions.Controls.Add(Me.chkTop250)
@@ -190,7 +192,7 @@ Partial Class frmIMDBInfoSettingsHolder
         Me.gbOptions.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbOptions.Location = New System.Drawing.Point(11, 31)
         Me.gbOptions.Name = "gbOptions"
-        Me.gbOptions.Size = New System.Drawing.Size(387, 161)
+        Me.gbOptions.Size = New System.Drawing.Size(588, 161)
         Me.gbOptions.TabIndex = 3
         Me.gbOptions.TabStop = False
         Me.gbOptions.Text = "Scraper Fields"
@@ -462,7 +464,17 @@ Partial Class frmIMDBInfoSettingsHolder
         Me.chkTitle.Text = "Title"
         Me.chkTitle.UseVisualStyleBackColor = True
         '
-        'frmInfoSettingsHolder
+        'chkIMDBCleanPlotOutline
+        '
+        Me.chkIMDBCleanPlotOutline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkIMDBCleanPlotOutline.Location = New System.Drawing.Point(363, 19)
+        Me.chkIMDBCleanPlotOutline.Name = "chkIMDBCleanPlotOutline"
+        Me.chkIMDBCleanPlotOutline.Size = New System.Drawing.Size(194, 17)
+        Me.chkIMDBCleanPlotOutline.TabIndex = 75
+        Me.chkIMDBCleanPlotOutline.Text = "Clean Plot/Outline"
+        Me.chkIMDBCleanPlotOutline.UseVisualStyleBackColor = True
+        '
+        'frmIMDBInfoSettingsHolder
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
@@ -474,7 +486,7 @@ Partial Class frmIMDBInfoSettingsHolder
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "frmInfoSettingsHolder"
+        Me.Name = "frmIMDBInfoSettingsHolder"
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Scraper Setup"
@@ -521,5 +533,6 @@ Partial Class frmIMDBInfoSettingsHolder
     Friend WithEvents chkMPAA As System.Windows.Forms.CheckBox
     Friend WithEvents chkYear As System.Windows.Forms.CheckBox
     Friend WithEvents chkTitle As System.Windows.Forms.CheckBox
+    Friend WithEvents chkIMDBCleanPlotOutline As System.Windows.Forms.CheckBox
 
 End Class

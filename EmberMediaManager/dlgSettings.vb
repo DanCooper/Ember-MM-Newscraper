@@ -1487,6 +1487,10 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
+    Private Sub chkOutlinePlotEnglishOverwrite_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOutlinePlotEnglishOverwrite.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
     Private Sub chkOutline_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOutline.CheckedChanged
         Me.SetApplyButton(True)
 
@@ -2549,6 +2553,7 @@ Public Class dlgSettings
             Me.chkNoDisplayPoster.Checked = Master.eSettings.NoDisplayPoster
             Me.chkNoDisplayFanartSmall.Checked = Master.eSettings.NoDisplayFanartSmall
             Me.chkOutlineForPlot.Checked = Master.eSettings.OutlineForPlot
+            Me.chkOutlinePlotEnglishOverwrite.Checked = Master.eSettings.OutlinePlotEnglishOverwrite
             Me.chkPlotForOutline.Checked = Master.eSettings.PlotForOutline
             Me.chkShowGenresText.Checked = Master.eSettings.AllwaysDisplayGenresText
             Me.chkDisplayYear.Checked = Master.eSettings.DisplayYear
@@ -3747,6 +3752,8 @@ Public Class dlgSettings
             Master.eSettings.ImagesGlassOverlay = Me.chkImagesGlassOverlay.Checked
             Master.eSettings.OutlineForPlot = Me.chkOutlineForPlot.Checked
 
+            Master.eSettings.OutlinePlotEnglishOverwrite = Me.chkOutlinePlotEnglishOverwrite.Checked
+
             Master.eSettings.AllwaysDisplayGenresText = Me.chkShowGenresText.Checked
             Master.eSettings.DisplayYear = Me.chkDisplayYear.Checked
 
@@ -4227,7 +4234,7 @@ Public Class dlgSettings
         Me.chkUseMPAAFSK.Text = Master.eLang.GetString(882, "Use MPAA as Fallback for FSK Rating")
         Me.chkOutlineForPlot.Text = Master.eLang.GetString(508, "Use Outline for Plot if Plot is Empty")
         Me.chkPlotForOutline.Text = Master.eLang.GetString(965, "Use Plot for Outline if Outline is Empty")
-
+        Me.chkOutlinePlotEnglishOverwrite.Text = Master.eLang.GetString(1005, "Only overwrite english Outline and Plot")
         Me.chkCastWithImg.Text = Master.eLang.GetString(510, "Scrape Only Actors With Images")
         Me.chkUseCertForMPAA.Text = Master.eLang.GetString(511, "Use Certification for MPAA")
         Me.chkFullCast.Text = Master.eLang.GetString(512, "Scrape Full Cast")

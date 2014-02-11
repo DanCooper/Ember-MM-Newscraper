@@ -155,6 +155,7 @@ Public Class TMDB_Data
         _setup.chkFallBackEng.Checked = _MySettings.FallBackEng
         _setup.Lang = _setup.cbTMDBPrefLanguage.Text
         _setup.API = _setup.txtTMDBApiKey.Text
+        _setup.chkTMDBCleanPlotOutline.Checked = ConfigOptions.bCleanPlotOutline
 
         _setup.orderChanged()
 
@@ -199,6 +200,7 @@ Public Class TMDB_Data
         ConfigOptions.bCert = AdvancedSettings.GetBooleanSetting("DoCert", True)
         ConfigOptions.bFullCast = AdvancedSettings.GetBooleanSetting("FullCast", True)
         ConfigOptions.bFullCrew = AdvancedSettings.GetBooleanSetting("FullCrew", True)
+        ConfigOptions.bCleanPlotOutline = AdvancedSettings.GetBooleanSetting("CleanPlotOutline", True)
 
         strPrivateAPIKey = AdvancedSettings.GetSetting("TMDBAPIKey", "")
         _MySettings.TMDBAPIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "44810eefccd9cb1fa1d57e7b0d67b08d", strPrivateAPIKey)
@@ -243,6 +245,7 @@ Public Class TMDB_Data
             settings.SetBooleanSetting("DoCountry", ConfigOptions.bCountry)
             settings.SetBooleanSetting("DoTop250", ConfigOptions.bTop250)
             settings.SetBooleanSetting("DoCert", ConfigOptions.bCert)
+            settings.SetBooleanSetting("CleanPlotOutline", ConfigOptions.bCleanPlotOutline)
 
             settings.SetBooleanSetting("FullCast", ConfigOptions.bFullCast)
             settings.SetBooleanSetting("FullCrew", ConfigOptions.bFullCrew)
@@ -283,6 +286,7 @@ Public Class TMDB_Data
         ConfigOptions.bFullCrew = _setup.chkCrew.Checked
         ConfigOptions.bFullCast = _setup.chkCast.Checked
         ConfigOptions.bCert = ConfigOptions.bMPAA
+        ConfigOptions.bCleanPlotOutline = _setup.chkTMDBCleanPlotOutline.Checked
         SaveSettings()
         'ModulesManager.Instance.SaveSettings()
         If DoDispose Then
