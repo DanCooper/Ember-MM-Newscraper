@@ -209,7 +209,9 @@ Public Class MediaInfo
                         aLang = ifoAudio(1)
                         If Not String.IsNullOrEmpty(aLang) Then
                             miAudio.LongLanguage = aLang
-                            miAudio.Language = Localization.ISOLangGetCode3ByLang(miAudio.LongLanguage)
+                            If Localization.ISOLangGetCode3ByLang(miAudio.LongLanguage) <> "" Then
+                                miAudio.Language = Localization.ISOLangGetCode3ByLang(miAudio.LongLanguage)
+                            End If
                         End If
                         With miAudio
                             If Not String.IsNullOrEmpty(.Codec) OrElse Not String.IsNullOrEmpty(.Channels) OrElse Not String.IsNullOrEmpty(.Language) Then
@@ -224,7 +226,9 @@ Public Class MediaInfo
                         sLang = cDVD.GetIFOSubPic(s)
                         If Not String.IsNullOrEmpty(sLang) Then
                             miSubtitle.LongLanguage = sLang
-                            miSubtitle.Language = Localization.ISOLangGetCode3ByLang(miSubtitle.LongLanguage)
+                            If Localization.ISOLangGetCode3ByLang(miSubtitle.LongLanguage) <> "" Then
+                                miSubtitle.Language = Localization.ISOLangGetCode3ByLang(miSubtitle.LongLanguage)
+                            End If
                             miSubtitle.SubsType = "Embedded"
                             If Not String.IsNullOrEmpty(miSubtitle.Language) Then
                                 fiOut.StreamDetails.Subtitle.Add(miSubtitle)
@@ -519,7 +523,9 @@ Public Class MediaInfo
             aLang = Me.Get_(StreamKind.Audio, a, "Language/String")
             If Not String.IsNullOrEmpty(aLang) Then
                 miAudio.LongLanguage = aLang
-                miAudio.Language = Localization.ISOLangGetCode3ByLang(miAudio.LongLanguage)
+                If Localization.ISOLangGetCode3ByLang(miAudio.LongLanguage) <> "" Then
+                    miAudio.Language = Localization.ISOLangGetCode3ByLang(miAudio.LongLanguage)
+                End If
             End If
             fiOut.StreamDetails.Audio.Add(miAudio)
         Next
@@ -535,7 +541,9 @@ Public Class MediaInfo
             sLang = Me.Get_(StreamKind.Text, s, "Language/String")
             If Not String.IsNullOrEmpty(sLang) Then
                 miSubtitle.LongLanguage = sLang
-                miSubtitle.Language = Localization.ISOLangGetCode3ByLang(miSubtitle.LongLanguage)
+                If Localization.ISOLangGetCode3ByLang(miSubtitle.LongLanguage) <> "" Then
+                    miSubtitle.Language = Localization.ISOLangGetCode3ByLang(miSubtitle.LongLanguage)
+                End If
                 miSubtitle.SubsType = "Embedded"
             End If
             If Not String.IsNullOrEmpty(miSubtitle.Language) Then
@@ -936,7 +944,9 @@ Public Class MediaInfo
                         'Language
                         If ds.Tables.Contains("Language") AndAlso ds.Tables("Language").Rows.Count > 1 Then
                             miVideo.LongLanguage = ds.Tables("Language").Rows(1).Item(0).ToString
-                            miVideo.Language = Localization.ISOLangGetCode3ByLang(miVideo.LongLanguage)
+                            If Localization.ISOLangGetCode3ByLang(miVideo.LongLanguage) <> "" Then
+                                miVideo.Language = Localization.ISOLangGetCode3ByLang(miVideo.LongLanguage)
+                            End If
                         End If
 
                         'Add streamdata without checking for complete videometadata
@@ -998,7 +1008,9 @@ Public Class MediaInfo
                         vLang = Me.Get_(StreamKind.Visual, v, "Language/String")
                         If Not String.IsNullOrEmpty(vLang) Then
                             miVideo.LongLanguage = vLang
-                            miVideo.Language = Localization.ISOLangGetCode3ByLang(miVideo.LongLanguage)
+                            If Localization.ISOLangGetCode3ByLang(miVideo.LongLanguage) <> "" Then
+                                miVideo.Language = Localization.ISOLangGetCode3ByLang(miVideo.LongLanguage)
+                            End If
                         End If
 
                         'With miVideo
@@ -1052,7 +1064,10 @@ Public Class MediaInfo
                         'Language
                         If ds.Tables.Contains("Language") AndAlso ds.Tables("Language").Rows.Count > 2 * a Then
                             miAudio.LongLanguage = ds.Tables("Language").Rows(2 * a + 1).Item(0).ToString
-                            miAudio.Language = Localization.ISOLangGetCode3ByLang(miAudio.LongLanguage)
+
+                            If Localization.ISOLangGetCode3ByLang(miAudio.LongLanguage) <> "" Then
+                                miAudio.Language = Localization.ISOLangGetCode3ByLang(miAudio.LongLanguage)
+                            End If
                         End If
 
                         'With miAudio
@@ -1080,7 +1095,9 @@ Public Class MediaInfo
                         aLang = Me.Get_(StreamKind.Audio, a, "Language/String")
                         If Not String.IsNullOrEmpty(aLang) Then
                             miAudio.LongLanguage = aLang
-                            miAudio.Language = Localization.ISOLangGetCode3ByLang(miAudio.LongLanguage)
+                            If Localization.ISOLangGetCode3ByLang(miAudio.LongLanguage) <> "" Then
+                                miAudio.Language = Localization.ISOLangGetCode3ByLang(miAudio.LongLanguage)
+                            End If
                             'IFO Scan results (used when scanning VIDEO_TS files)
                         ElseIf fiIFO.StreamDetails.Audio.Count > 0 Then
                             If Not String.IsNullOrEmpty(fiIFO.StreamDetails.Audio(a).LongLanguage) Then
@@ -1109,10 +1126,15 @@ Public Class MediaInfo
                         'Subtitle Language
                         If ds.Tables.Contains("Language") AndAlso ds.Tables("Language").Rows.Count >= intPosSubtitlestream.Item(s) + 1 Then
                             miSubtitle.LongLanguage = ds.Tables("Language").Rows(intPosSubtitlestream.Item(s)).Item(0).ToString
-                            miSubtitle.Language = Localization.ISOLangGetCode3ByLang(miSubtitle.LongLanguage)
+                            If Localization.ISOLangGetCode3ByLang(miSubtitle.LongLanguage) <> "" Then
+                                miSubtitle.Language = Localization.ISOLangGetCode3ByLang(miSubtitle.LongLanguage)
+                            End If
+
                         Else
                             miSubtitle.LongLanguage = "Unknown"
-                            miSubtitle.Language = Localization.ISOLangGetCode3ByLang(miSubtitle.LongLanguage)
+                            If Localization.ISOLangGetCode3ByLang(miSubtitle.LongLanguage) <> "" Then
+                                miSubtitle.Language = Localization.ISOLangGetCode3ByLang(miSubtitle.LongLanguage)
+                            End If
                         End If
 
                         If Not String.IsNullOrEmpty(miSubtitle.Language) Then
@@ -1127,7 +1149,9 @@ Public Class MediaInfo
                         sLang = Me.Get_(StreamKind.Text, s, "Language/String")
                         If Not String.IsNullOrEmpty(sLang) Then
                             miSubtitle.LongLanguage = sLang
-                            miSubtitle.Language = Localization.ISOLangGetCode3ByLang(miSubtitle.LongLanguage)
+                            If Localization.ISOLangGetCode3ByLang(miSubtitle.LongLanguage) <> "" Then
+                                miSubtitle.Language = Localization.ISOLangGetCode3ByLang(miSubtitle.LongLanguage)
+                            End If
                             miSubtitle.SubsType = "Embedded"
 
                             'IFO Scan results (used when scanning VIDEO_TS files)
