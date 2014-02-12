@@ -195,10 +195,13 @@ Public Class ModulesManager
     ''' </summary>
     Public Sub loadScrapersModules(Optional ByVal modulefile As String = "*.dll")
         Master.eLog.Trace(Me.GetType(), "loadScrapersModules started", Nothing, Nothing, False)
-        Dim ScraperAnyEnabled As Boolean = False
-        Dim PostScraperAnyEnabled As Boolean = False
+        Dim DataScraperAnyEnabled As Boolean = False
+        Dim DataScraperFound As Boolean = False
+        Dim PosterScraperAnyEnabled As Boolean = False
+        Dim PosterScraperFound As Boolean = False
         Dim TrailerScraperAnyEnabled As Boolean = False
-        Dim ScraperFound As Boolean = False
+        Dim TrailerScraperFound As Boolean = False
+
         If Directory.Exists(moduleLocation) Then
             'Assembly to load the file
             Dim assembly As System.Reflection.Assembly
@@ -230,11 +233,11 @@ Public Class ModulesManager
                             _externalScraperModule.ProcessorModule.Init(_externalScraperModule.AssemblyName)
                             For Each i As _XMLEmberModuleClass In Master.eSettings.EmberModules.Where(Function(x) x.AssemblyName = _externalScraperModule.AssemblyName)
                                 _externalScraperModule.ProcessorModule.ScraperEnabled = i.ScraperEnabled
-                                ScraperAnyEnabled = ScraperAnyEnabled OrElse i.ScraperEnabled
+                                DataScraperAnyEnabled = DataScraperAnyEnabled OrElse i.ScraperEnabled
                                 _externalScraperModule.ScraperOrder = i.ScraperOrder
-                                ScraperFound = True
+                                DataScraperFound = True
                             Next
-                            If Not ScraperFound Then
+                            If Not DataScraperFound Then
                                 _externalScraperModule.ScraperOrder = 999
                             End If
                         Else
@@ -257,11 +260,11 @@ Public Class ModulesManager
                                 _externalScraperModule.ProcessorModule.Init(_externalScraperModule.AssemblyName)
                                 For Each i As _XMLEmberModuleClass In Master.eSettings.EmberModules.Where(Function(x) x.AssemblyName = _externalScraperModule.AssemblyName)
                                     _externalScraperModule.ProcessorModule.ScraperEnabled = i.ScraperEnabled
-                                    PostScraperAnyEnabled = ScraperAnyEnabled OrElse i.ScraperEnabled
+                                    PosterScraperAnyEnabled = PosterScraperAnyEnabled OrElse i.ScraperEnabled
                                     _externalScraperModule.ScraperOrder = i.ScraperOrder
-                                    ScraperFound = True
+                                    PosterScraperFound = True
                                 Next
-                                If Not ScraperFound Then
+                                If Not PosterScraperFound Then
                                     _externalScraperModule.ScraperOrder = 999
                                 End If
                             Else
@@ -283,11 +286,11 @@ Public Class ModulesManager
                                     _externalScraperModule.ProcessorModule.Init(_externalScraperModule.AssemblyName)
                                     For Each i As _XMLEmberModuleClass In Master.eSettings.EmberModules.Where(Function(x) x.AssemblyName = _externalScraperModule.AssemblyName)
                                         _externalScraperModule.ProcessorModule.ScraperEnabled = i.ScraperEnabled
-                                        ScraperAnyEnabled = ScraperAnyEnabled OrElse i.ScraperEnabled
+                                        TrailerScraperAnyEnabled = TrailerScraperAnyEnabled OrElse i.ScraperEnabled
                                         _externalScraperModule.ScraperOrder = i.ScraperOrder
-                                        ScraperFound = True
+                                        TrailerScraperFound = True
                                     Next
-                                    If Not ScraperFound Then
+                                    If Not TrailerScraperFound Then
                                         _externalScraperModule.ScraperOrder = 999
                                     End If
                                 End If
@@ -312,14 +315,15 @@ Public Class ModulesManager
                 ext.ScraperOrder = c
                 c += 1
             Next
-            'If Not ScraperAnyEnabled AndAlso Not ScraperFound Then
-            '	SetScraperEnable("scraper.EmberCore.EmberScraperModule.EmberNativeScraperModule", True)
-            '	'SetScraperOrder("scraper.EmberCore.EmberScraperModule.EmberNativeScraperModule", 1)
-            'End If
-            '         If Not PostScraperAnyEnabled AndAlso Not ScraperFound Then
-            '             SetPostScraperEnable("scraper.EmberCore.EmberScraperModule.EmberNativeScraperModule", True)
-            '             'SetPostScraperOrder("scraper.EmberCore.EmberScraperModule.EmberNativeScraperModule", 1)
-            '         End If
+            If Not DataScraperAnyEnabled AndAlso DataScraperFound Then
+                SetDataScraperEnable("scraper.TMDB.Data.EmberScraperModule.TMDB_Data", True)
+            End If
+            If Not PosterScraperAnyEnabled AndAlso PosterScraperFound Then
+                SetPosterScraperEnable("scraper.TMDB.Poster.EmberScraperModule.TMDB_Poster", True)
+            End If
+            If Not TrailerScraperAnyEnabled AndAlso TrailerScraperFound Then
+                SetTrailerScraperEnable("scraper.TMDB.Trailer.EmberScraperModule.TMDB_Trailer", True)
+            End If
         End If
         Master.eLog.Trace(Me.GetType(), "loadScrapersModules finished", Nothing, Nothing, False)
     End Sub
@@ -328,6 +332,7 @@ Public Class ModulesManager
         Master.eLog.Trace(Me.GetType(), "loadTVScrapersModules started", Nothing, Nothing, False)
         Dim ScraperAnyEnabled As Boolean = False
         Dim PostScraperAnyEnabled As Boolean = False
+        Dim TVScraperFound As Boolean = False
         If Directory.Exists(moduleLocation) Then
             'Assembly to load the file
             Dim assembly As System.Reflection.Assembly
@@ -354,7 +359,6 @@ Public Class ModulesManager
                             _externaltvScraperModule.ProcessorModule = ProcessorModule
                             _externaltvScraperModule.AssemblyName = String.Concat(Path.GetFileNameWithoutExtension(file), ".", fileType.FullName)
                             _externaltvScraperModule.AssemblyFileName = Path.GetFileName(file)
-                            Dim found As Boolean = False
                             externalTVScrapersModules.Add(_externaltvScraperModule)
                             _externaltvScraperModule.ProcessorModule.Init(_externaltvScraperModule.AssemblyName)
                             For Each i As _XMLEmberModuleClass In Master.eSettings.EmberModules.Where(Function(x) x.AssemblyName = _externaltvScraperModule.AssemblyName)
@@ -364,9 +368,9 @@ Public Class ModulesManager
                                 PostScraperAnyEnabled = PostScraperAnyEnabled OrElse i.PostScraperEnabled
                                 _externaltvScraperModule.ScraperOrder = i.ScraperOrder
                                 _externaltvScraperModule.PostScraperOrder = i.PostScraperOrder
-                                found = True
+                                TVScraperFound = True
                             Next
-                            If Not found Then
+                            If Not TVScraperFound Then
                                 _externaltvScraperModule.ScraperOrder = 999
                                 _externaltvScraperModule.PostScraperOrder = 999
                             End If
@@ -386,14 +390,11 @@ Public Class ModulesManager
                 ext.PostScraperOrder = c
                 c += 1
             Next
-            If Not ScraperAnyEnabled Then
-                SetTVScraperEnable("scraper.EmberCore.EmberScraperModule.EmberNativeTVScraperModule", True)
-                'SetTVScraperOrder("scraper.EmberCore.EmberScraperModule.EmberNativeTVScraperModule", 1)
-
+            If Not ScraperAnyEnabled AndAlso TVScraperFound Then
+                SetTVScraperEnable("scraper.TVDB.EmberScraperModule.TVDB_Data_Poster", True)
             End If
-            If Not PostScraperAnyEnabled Then
-                SetTVPostScraperEnable("scraper.EmberCore.EmberScraperModule.EmberNativeTVScraperModule", True)
-                'SetTVPostScraperOrder("scraper.EmberCore.EmberScraperModule.EmberNativeTVScraperModule", 1)
+            If Not PostScraperAnyEnabled AndAlso TVScraperFound Then
+                SetTVPostScraperEnable("scraper.TVDB.EmberScraperModule.TVDB_Data_Poster", True)
             End If
         End If
         Master.eLog.Trace(Me.GetType(), "loadTVScrapersModules finished", Nothing, Nothing, False)
@@ -674,7 +675,7 @@ Public Class ModulesManager
         End If
     End Sub
 
-    Public Sub SetPostScraperEnable(ByVal ModuleAssembly As String, ByVal value As Boolean)
+    Public Sub SetPosterScraperEnable(ByVal ModuleAssembly As String, ByVal value As Boolean)
         If (String.IsNullOrEmpty(ModuleAssembly)) Then
             Master.eLog.Error(Me.GetType(), "Invalid ModuleAssembly", New StackTrace().ToString(), Nothing, False)
             Return
@@ -694,7 +695,7 @@ Public Class ModulesManager
         End If
     End Sub
 
-    Public Sub SetScraperEnable(ByVal ModuleAssembly As String, ByVal value As Boolean)
+    Public Sub SetDataScraperEnable(ByVal ModuleAssembly As String, ByVal value As Boolean)
         If (String.IsNullOrEmpty(ModuleAssembly)) Then
             Master.eLog.Error(Me.GetType(), "Invalid ModuleAssembly", New StackTrace().ToString(), Nothing, False)
             Return
