@@ -40,6 +40,7 @@ Partial Class frmTMDBInfoSettingsHolder
         Me.Label1 = New System.Windows.Forms.Label()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.gbOptions = New System.Windows.Forms.GroupBox()
+        Me.chkTMDBCleanPlotOutline = New System.Windows.Forms.CheckBox()
         Me.chkCrew = New System.Windows.Forms.CheckBox()
         Me.chkCountry = New System.Windows.Forms.CheckBox()
         Me.chkStudio = New System.Windows.Forms.CheckBox()
@@ -239,6 +240,7 @@ Partial Class frmTMDBInfoSettingsHolder
         '
         'gbOptions
         '
+        Me.gbOptions.Controls.Add(Me.chkTMDBCleanPlotOutline)
         Me.gbOptions.Controls.Add(Me.chkCrew)
         Me.gbOptions.Controls.Add(Me.chkCountry)
         Me.gbOptions.Controls.Add(Me.chkStudio)
@@ -257,10 +259,20 @@ Partial Class frmTMDBInfoSettingsHolder
         Me.gbOptions.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbOptions.Location = New System.Drawing.Point(11, 139)
         Me.gbOptions.Name = "gbOptions"
-        Me.gbOptions.Size = New System.Drawing.Size(400, 150)
+        Me.gbOptions.Size = New System.Drawing.Size(513, 150)
         Me.gbOptions.TabIndex = 3
         Me.gbOptions.TabStop = False
         Me.gbOptions.Text = "Scraper Fields"
+        '
+        'chkTMDBCleanPlotOutline
+        '
+        Me.chkTMDBCleanPlotOutline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkTMDBCleanPlotOutline.Location = New System.Drawing.Point(315, 36)
+        Me.chkTMDBCleanPlotOutline.Name = "chkTMDBCleanPlotOutline"
+        Me.chkTMDBCleanPlotOutline.Size = New System.Drawing.Size(194, 17)
+        Me.chkTMDBCleanPlotOutline.TabIndex = 75
+        Me.chkTMDBCleanPlotOutline.Text = "Clean Plot/Outline"
+        Me.chkTMDBCleanPlotOutline.UseVisualStyleBackColor = True
         '
         'chkCrew
         '
@@ -472,20 +484,21 @@ Partial Class frmTMDBInfoSettingsHolder
     Friend WithEvents chkStudio As System.Windows.Forms.CheckBox
     Friend WithEvents chkRuntime As System.Windows.Forms.CheckBox
     Friend WithEvents chkPlot As System.Windows.Forms.CheckBox
-	Friend WithEvents chkGenre As System.Windows.Forms.CheckBox
-	Friend WithEvents chkTagline As System.Windows.Forms.CheckBox
-	Friend WithEvents chkCast As System.Windows.Forms.CheckBox
-	Friend WithEvents chkVotes As System.Windows.Forms.CheckBox
-	Friend WithEvents chkTrailer As System.Windows.Forms.CheckBox
-	Friend WithEvents chkRating As System.Windows.Forms.CheckBox
-	Friend WithEvents chkRelease As System.Windows.Forms.CheckBox
-	Friend WithEvents chkMPAA As System.Windows.Forms.CheckBox
-	Friend WithEvents chkYear As System.Windows.Forms.CheckBox
-	Friend WithEvents chkTitle As System.Windows.Forms.CheckBox
-	Friend WithEvents chkFallBackEng As System.Windows.Forms.CheckBox
-	Friend WithEvents cbTMDBPrefLanguage As System.Windows.Forms.ComboBox
-	Friend WithEvents Label3 As System.Windows.Forms.Label
-	Friend WithEvents chkCrew As System.Windows.Forms.CheckBox
+    Friend WithEvents chkGenre As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTagline As System.Windows.Forms.CheckBox
+    Friend WithEvents chkCast As System.Windows.Forms.CheckBox
+    Friend WithEvents chkVotes As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTrailer As System.Windows.Forms.CheckBox
+    Friend WithEvents chkRating As System.Windows.Forms.CheckBox
+    Friend WithEvents chkRelease As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMPAA As System.Windows.Forms.CheckBox
+    Friend WithEvents chkYear As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTitle As System.Windows.Forms.CheckBox
+    Friend WithEvents chkFallBackEng As System.Windows.Forms.CheckBox
+    Friend WithEvents cbTMDBPrefLanguage As System.Windows.Forms.ComboBox
+    Friend WithEvents Label3 As System.Windows.Forms.Label
+    Friend WithEvents chkCrew As System.Windows.Forms.CheckBox
     Friend WithEvents pbTMDB As System.Windows.Forms.PictureBox
+    Friend WithEvents chkTMDBCleanPlotOutline As System.Windows.Forms.CheckBox
 
 End Class

@@ -145,6 +145,7 @@ Public Class IMDB_Data
         _setup.chkCertification.Checked = ConfigOptions.bCert
         _setup.chkFullCast.Checked = ConfigOptions.bFullCast
         _setup.chkFullCrew.Checked = ConfigOptions.bFullCrew
+        _setup.chkIMDBCleanPlotOutline.Checked = ConfigOptions.bCleanPlotOutline
 
         _setup.orderChanged()
         SPanel.Name = String.Concat(Me._Name, "Scraper")
@@ -187,6 +188,7 @@ Public Class IMDB_Data
         ConfigOptions.bCert = AdvancedSettings.GetBooleanSetting("DoCert", True)
         ConfigOptions.bFullCast = AdvancedSettings.GetBooleanSetting("FullCast", True)
         ConfigOptions.bFullCrew = AdvancedSettings.GetBooleanSetting("FullCrew", True)
+        ConfigOptions.bCleanPlotOutline = AdvancedSettings.GetBooleanSetting("CleanPlotOutline", True)
 
         ConfigScrapeModifier.DoSearch = True
         ConfigScrapeModifier.Meta = True
@@ -226,6 +228,7 @@ Public Class IMDB_Data
             settings.SetBooleanSetting("DoCountry", ConfigOptions.bCountry)
             settings.SetBooleanSetting("DoTop250", ConfigOptions.bTop250)
             settings.SetBooleanSetting("DoCert", ConfigOptions.bCert)
+            settings.SetBooleanSetting("CleanPlotOutline", ConfigOptions.bCleanPlotOutline)
 
             settings.SetBooleanSetting("FullCast", ConfigOptions.bFullCast)
             settings.SetBooleanSetting("FullCrew", ConfigOptions.bFullCrew)
@@ -257,6 +260,8 @@ Public Class IMDB_Data
         ConfigOptions.bCert = _setup.chkCertification.Checked
         ConfigOptions.bFullCrew = _setup.chkFullCrew.Checked
         ConfigOptions.bFullCast = _setup.chkFullCast.Checked
+        ConfigOptions.bCleanPlotOutline = _setup.chkIMDBCleanPlotOutline.Checked
+
         SaveSettings()
         'ModulesManager.Instance.SaveSettings()
         If DoDispose Then

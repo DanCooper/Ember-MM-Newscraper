@@ -265,15 +265,18 @@ Public Class OFDB
             Dim HTML As String = sHTTP.DownloadData(String.Concat("http://www.ofdb.de/view.php?SText=", imdbID, "&Kat=IMDb&page=suchergebnis&sourceid=mozilla-search"))
             sHTTP = Nothing
 
+
             If Not String.IsNullOrEmpty(HTML) Then
                 Dim mcOFDBURL As MatchCollection = Regex.Matches(HTML, "<a href=""film/([^<]+)"" onmouseover")
                 If mcOFDBURL.Count > 0 Then
                     'just use the first one if more are found
                     ofdbURL = String.Concat("http://www.ofdb.de/", Regex.Match(mcOFDBURL(0).Value.ToString, """(film/([^<]+))""").Groups(1).Value.ToString)
                 End If
+            Else
+                Master.eLog.Warn(Me.GetType(), String.Format("OFDB Query returned no results for ID of <{0}>", imdbID), New StackTrace().ToString(), Nothing, False)
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error scraping ODFB (too many connections?):" & imdbID)
         End Try
 
         Return ofdbURL

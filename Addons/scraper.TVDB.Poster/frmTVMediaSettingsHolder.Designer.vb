@@ -176,7 +176,7 @@ Partial Class frmTVMediaSettingsHolder
         Me.GroupBox30.Size = New System.Drawing.Size(603, 119)
         Me.GroupBox30.TabIndex = 96
         Me.GroupBox30.TabStop = False
-        Me.GroupBox30.Text = "TMDB"
+        Me.GroupBox30.Text = "TVDB"
         '
         'gbLanguage
         '
@@ -242,9 +242,9 @@ Partial Class frmTVMediaSettingsHolder
         Me.Label18.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label18.Location = New System.Drawing.Point(6, 18)
         Me.Label18.Name = "Label18"
-        Me.Label18.Size = New System.Drawing.Size(79, 13)
+        Me.Label18.Size = New System.Drawing.Size(76, 13)
         Me.Label18.TabIndex = 0
-        Me.Label18.Text = "TMDB API Key:"
+        Me.Label18.Text = "TVDB API Key:"
         '
         'txtTVDBApiKey
         '

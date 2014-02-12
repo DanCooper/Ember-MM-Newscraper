@@ -163,6 +163,10 @@ Public Class frmIMDBInfoSettingsHolder
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
+    Private Sub chkIMDBCleanPlotOutline_CheckedChanged(sender As Object, e As EventArgs) Handles chkIMDBCleanPlotOutline.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
     Public Sub New()
         InitializeComponent()
         Me.SetUp()
@@ -208,8 +212,10 @@ Public Class frmIMDBInfoSettingsHolder
         Me.chkFullCast.Text = Master.eLang.GetString(512, "Scrape Full Cast")
         Me.chkFullCrew.Text = Master.eLang.GetString(513, "Scrape Full Crew")
         Me.chkTop250.Text = Master.eLang.GetString(591, "Top250")
+        Me.chkIMDBCleanPlotOutline.Text = Master.eLang.GetString(985, "Clean Plot/Outline")
     End Sub
 
 #End Region 'Methods
+
 
 End Class

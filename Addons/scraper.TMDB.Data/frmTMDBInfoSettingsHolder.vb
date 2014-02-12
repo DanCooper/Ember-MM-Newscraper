@@ -166,6 +166,10 @@ Public Class frmTMDBInfoSettingsHolder
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
+    Private Sub chkTMDBCleanPlotOutline_CheckedChanged(sender As Object, e As EventArgs) Handles chkTMDBCleanPlotOutline.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
     Private Sub cbTMDBPrefLanguage_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cbTMDBPrefLanguage.SelectedIndexChanged
         If Not (_language = cbTMDBPrefLanguage.Text) Then
             RaiseEvent SetupNeedsRestart()
@@ -233,5 +237,6 @@ Public Class frmTMDBInfoSettingsHolder
 
 
 #End Region 'Methods
+
 
 End Class

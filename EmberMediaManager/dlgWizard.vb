@@ -18,7 +18,7 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 ' #
-' # Dialog size: 564; 462
+' # Dialog size: 720; 570
 ' # Enlarge it to see all the panels.
 
 Imports System.IO
@@ -115,6 +115,7 @@ Public Class dlgWizard
         Me.chkNFOFrodo.Enabled = Me.chkUseFrodo.Checked
         Me.chkPosterFrodo.Enabled = Me.chkUseFrodo.Checked
         Me.chkTrailerFrodo.Enabled = Me.chkUseFrodo.Checked
+        Me.chkXBMCProtectVTSBDMV.Enabled = Me.chkUseFrodo.Checked AndAlso Not Me.chkUseEden.Checked
 
         If Not Me.chkUseFrodo.Checked Then
             Me.chkActorThumbsFrodo.Checked = False
@@ -129,6 +130,7 @@ Public Class dlgWizard
             Me.chkNFOFrodo.Checked = False
             Me.chkPosterFrodo.Checked = False
             Me.chkTrailerFrodo.Checked = False
+            Me.chkXBMCProtectVTSBDMV.Checked = False
         Else
             Me.chkActorThumbsFrodo.Checked = True
             Me.chkBannerFrodo.Checked = True
@@ -159,6 +161,7 @@ Public Class dlgWizard
         Me.chkNFOEden.Enabled = Me.chkUseEden.Checked
         Me.chkPosterEden.Enabled = Me.chkUseEden.Checked
         Me.chkTrailerEden.Enabled = Me.chkUseEden.Checked
+        Me.chkXBMCProtectVTSBDMV.Enabled = Not Me.chkUseEden.Checked AndAlso Me.chkUseFrodo.Checked
 
         If Not Me.chkUseEden.Checked Then
             Me.chkActorThumbsEden.Checked = False
@@ -186,10 +189,11 @@ Public Class dlgWizard
             Me.chkNFOEden.Checked = True
             Me.chkPosterEden.Checked = True
             Me.chkTrailerEden.Checked = True
+            Me.chkXBMCProtectVTSBDMV.Checked = False
         End If
     End Sub
 
-    Private Sub chkUseYAMJCheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUseYAMJ.CheckedChanged
+    Private Sub chkUseYAMJ_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUseYAMJ.CheckedChanged
 
         'Me.chkActorThumbsYAMJ.Enabled = Me.chkUseYAMJ.Checked
         Me.chkBannerYAMJ.Enabled = Me.chkUseYAMJ.Checked
@@ -203,6 +207,7 @@ Public Class dlgWizard
         Me.chkNFOYAMJ.Enabled = Me.chkUseYAMJ.Checked
         Me.chkPosterYAMJ.Enabled = Me.chkUseYAMJ.Checked
         Me.chkTrailerYAMJ.Enabled = Me.chkUseYAMJ.Checked
+        Me.chkYAMJWatchedFile.Enabled = Me.chkUseYAMJ.Checked
 
         If Not Me.chkUseYAMJ.Checked Then
             ' Me.chkActorThumbsYAMJ.Checked = False
@@ -217,6 +222,7 @@ Public Class dlgWizard
             Me.chkNFOYAMJ.Checked = False
             Me.chkPosterYAMJ.Checked = False
             Me.chkTrailerYAMJ.Checked = False
+            Me.chkYAMJWatchedFile.Checked = False
         Else
             'Me.chkActorThumbsYAMJ.Checked = True
             Me.chkBannerYAMJ.Checked = True
@@ -277,6 +283,79 @@ Public Class dlgWizard
         End If
     End Sub
 
+    Private Sub chkYAMJWatchedFile_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkYAMJWatchedFile.CheckedChanged
+        Me.txtYAMJWatchedFolder.Enabled = Me.chkYAMJWatchedFile.Checked
+        Me.btnBrowseWatchedFiles.Enabled = Me.chkYAMJWatchedFile.Checked
+    End Sub
+
+    Private Sub chkStackExpertSingle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkStackExpertSingle.CheckedChanged
+        Me.chkUnstackExpertSingle.Enabled = Me.chkStackExpertSingle.Checked AndAlso Me.chkStackExpertSingle.Enabled
+    End Sub
+
+    Private Sub chkStackExpertMulti_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkStackExpertMulti.CheckedChanged
+        Me.chkUnstackExpertMulti.Enabled = Me.chkStackExpertMulti.Checked AndAlso Me.chkStackExpertMulti.Enabled
+    End Sub
+
+    Private Sub chkUseExpert_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUseExpert.CheckedChanged
+        Me.chkActorThumbsExpertBDMV.Enabled = Me.chkUseExpert.Checked
+        Me.chkActorThumbsExpertMulti.Enabled = Me.chkUseExpert.Checked
+        Me.chkActorThumbsExpertSingle.Enabled = Me.chkUseExpert.Checked
+        Me.chkActorThumbsExpertVTS.Enabled = Me.chkUseExpert.Checked
+        Me.chkExtrafanartsExpertBDMV.Enabled = Me.chkUseExpert.Checked
+        Me.chkExtrafanartsExpertSingle.Enabled = Me.chkUseExpert.Checked
+        Me.chkExtrafanartsExpertVTS.Enabled = Me.chkUseExpert.Checked
+        Me.chkExtrathumbsExpertBDMV.Enabled = Me.chkUseExpert.Checked
+        Me.chkExtrathumbsExpertSingle.Enabled = Me.chkUseExpert.Checked
+        Me.chkExtrathumbsExpertVTS.Enabled = Me.chkUseExpert.Checked
+        Me.chkRecognizeVTSExpertVTS.Enabled = Me.chkUseExpert.Checked
+        Me.chkStackExpertMulti.Enabled = Me.chkUseExpert.Checked
+        Me.chkStackExpertSingle.Enabled = Me.chkUseExpert.Checked
+        Me.chkUnstackExpertMulti.Enabled = Me.chkStackExpertMulti.Enabled AndAlso Me.chkStackExpertMulti.Checked
+        Me.chkUnstackExpertSingle.Enabled = Me.chkStackExpertSingle.Enabled AndAlso Me.chkStackExpertSingle.Checked
+        Me.chkUseBaseDirectoryExpertBDMV.Enabled = Me.chkUseExpert.Checked
+        Me.chkUseBaseDirectoryExpertVTS.Enabled = Me.chkUseExpert.Checked
+        Me.txtActorThumbsExtExpertBDMV.Enabled = Me.chkUseExpert.Checked
+        Me.txtActorThumbsExtExpertMulti.Enabled = Me.chkUseExpert.Checked
+        Me.txtActorThumbsExtExpertSingle.Enabled = Me.chkUseExpert.Checked
+        Me.txtActorThumbsExtExpertVTS.Enabled = Me.chkUseExpert.Checked
+        Me.txtBannerExpertBDMV.Enabled = Me.chkUseExpert.Checked
+        Me.txtBannerExpertMulti.Enabled = Me.chkUseExpert.Checked
+        Me.txtBannerExpertSingle.Enabled = Me.chkUseExpert.Checked
+        Me.txtBannerExpertVTS.Enabled = Me.chkUseExpert.Checked
+        Me.txtClearArtExpertBDMV.Enabled = Me.chkUseExpert.Checked
+        Me.txtClearArtExpertMulti.Enabled = Me.chkUseExpert.Checked
+        Me.txtClearArtExpertSingle.Enabled = Me.chkUseExpert.Checked
+        Me.txtClearArtExpertVTS.Enabled = Me.chkUseExpert.Checked
+        Me.txtClearLogoExpertBDMV.Enabled = Me.chkUseExpert.Checked
+        Me.txtClearLogoExpertMulti.Enabled = Me.chkUseExpert.Checked
+        Me.txtClearLogoExpertSingle.Enabled = Me.chkUseExpert.Checked
+        Me.txtClearLogoExpertVTS.Enabled = Me.chkUseExpert.Checked
+        Me.txtDiscArtExpertBDMV.Enabled = Me.chkUseExpert.Checked
+        Me.txtDiscArtExpertMulti.Enabled = Me.chkUseExpert.Checked
+        Me.txtDiscArtExpertSingle.Enabled = Me.chkUseExpert.Checked
+        Me.txtDiscArtExpertVTS.Enabled = Me.chkUseExpert.Checked
+        Me.txtFanartExpertBDMV.Enabled = Me.chkUseExpert.Checked
+        Me.txtFanartExpertMulti.Enabled = Me.chkUseExpert.Checked
+        Me.txtFanartExpertSingle.Enabled = Me.chkUseExpert.Checked
+        Me.txtFanartExpertVTS.Enabled = Me.chkUseExpert.Checked
+        Me.txtLandscapeExpertBDMV.Enabled = Me.chkUseExpert.Checked
+        Me.txtLandscapeExpertMulti.Enabled = Me.chkUseExpert.Checked
+        Me.txtLandscapeExpertSingle.Enabled = Me.chkUseExpert.Checked
+        Me.txtLandscapeExpertVTS.Enabled = Me.chkUseExpert.Checked
+        Me.txtNFOExpertBDMV.Enabled = Me.chkUseExpert.Checked
+        Me.txtNFOExpertMulti.Enabled = Me.chkUseExpert.Checked
+        Me.txtNFOExpertSingle.Enabled = Me.chkUseExpert.Checked
+        Me.txtNFOExpertVTS.Enabled = Me.chkUseExpert.Checked
+        Me.txtPosterExpertBDMV.Enabled = Me.chkUseExpert.Checked
+        Me.txtPosterExpertMulti.Enabled = Me.chkUseExpert.Checked
+        Me.txtPosterExpertSingle.Enabled = Me.chkUseExpert.Checked
+        Me.txtPosterExpertVTS.Enabled = Me.chkUseExpert.Checked
+        Me.txtTrailerExpertBDMV.Enabled = Me.chkUseExpert.Checked
+        Me.txtTrailerExpertMulti.Enabled = Me.chkUseExpert.Checked
+        Me.txtTrailerExpertSingle.Enabled = Me.chkUseExpert.Checked
+        Me.txtTrailerExpertVTS.Enabled = Me.chkUseExpert.Checked
+    End Sub
+
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Close()
@@ -304,6 +383,7 @@ Public Class dlgWizard
         Me.RefreshSources()
         Me.RefreshTVSources()
 
+        '*************** XBMC Frodo settings ***************
         Me.chkUseFrodo.Checked = Master.eSettings.UseFrodo
         Me.chkActorThumbsFrodo.Checked = Master.eSettings.ActorThumbsFrodo
         Me.chkBannerFrodo.Checked = Master.eSettings.BannerFrodo
@@ -318,30 +398,126 @@ Public Class dlgWizard
         Me.chkPosterFrodo.Checked = Master.eSettings.PosterFrodo
         Me.chkTrailerFrodo.Checked = Master.eSettings.TrailerFrodo
 
+        '*************** XBMC Eden settings ***************
         Me.chkUseEden.Checked = Master.eSettings.UseEden
         Me.chkActorThumbsEden.Checked = Master.eSettings.ActorThumbsEden
+        'Me.chkBannerEden.Checked = Master.eSettings.BannerEden
+        'Me.chkClearArtEden.Checked = Master.eSettings.ClearArtEden
+        'Me.chkClearLogoEden.Checked = Master.eSettings.ClearLogoEden
+        'Me.chkDiscArtEden.Checked = Master.eSettings.DiscArtEden
         Me.chkExtrafanartsEden.Checked = Master.eSettings.ExtrafanartsEden
         Me.chkExtrathumbsEden.Checked = Master.eSettings.ExtrathumbsEden
         Me.chkFanartEden.Checked = Master.eSettings.FanartEden
+        'Me.chkLandscapeEden.Checked = Master.eSettings.LandscapeEden
         Me.chkNFOEden.Checked = Master.eSettings.NFOEden
         Me.chkPosterEden.Checked = Master.eSettings.PosterEden
         Me.chkTrailerEden.Checked = Master.eSettings.TrailerEden
 
+        '************* XBMC optional settings *************
         Me.chkXBMCTrailerFormat.Checked = Master.eSettings.XBMCTrailerFormat
+        Me.chkXBMCProtectVTSBDMV.Checked = Master.eSettings.XBMCProtectVTSBDMV
 
+        '****************** YAMJ settings *****************
         Me.chkUseYAMJ.Checked = Master.eSettings.UseYAMJ
+        'Me.chkActorThumbsYAMJ.Checked = Master.eSettings.ActorThumbsYAMJ
         Me.chkBannerYAMJ.Checked = Master.eSettings.BannerYAMJ
+        'Me.chkClearArtYAMJ.Checked = Master.eSettings.ClearArtYAMJ
+        'Me.chkClearLogoYAMJ.Checked = Master.eSettings.ClearLogoYAMJ
+        'Me.chkDiscArtYAMJ.Checked = Master.eSettings.DiscArtYAMJ
+        'Me.chkExtrafanartYAMJ.Checked = Master.eSettings.ExtrafanartYAMJ
+        'Me.chkExtrathumbsYAMJ.Checked = Master.eSettings.ExtrathumbsYAMJ
         Me.chkFanartYAMJ.Checked = Master.eSettings.FanartYAMJ
-        Me.chkNFONMJ.Checked = Master.eSettings.NFOYAMJ
+        'Me.chkLandscapeYAMJ.Checked = Master.eSettings.LandscapeYAMJ
+        Me.chkNFOYAMJ.Checked = Master.eSettings.NFOYAMJ
         Me.chkPosterYAMJ.Checked = Master.eSettings.PosterYAMJ
         Me.chkTrailerYAMJ.Checked = Master.eSettings.TrailerYAMJ
 
+        '****************** NMJ settings ******************
         Me.chkUseNMJ.Checked = Master.eSettings.UseNMJ
+        'Me.chkActorThumbsNMJ.Checked = Master.eSettings.ActorThumbsNMJ
         Me.chkBannerNMJ.Checked = Master.eSettings.BannerNMJ
+        'Me.chkClearArtNMJ.Checked = Master.eSettings.ClearArtNMJ
+        'Me.chkClearLogoNMJ.Checked = Master.eSettings.ClearLogoNMJ
+        'Me.chkDiscArtNMJ.Checked = Master.eSettings.DiscArtNMJ
+        'Me.chkExtrafanartNMJ.Checked = Master.eSettings.ExtrafanartNMJ
+        'Me.chkExtrathumbsNMJ.Checked = Master.eSettings.ExtrathumbsNMJ
         Me.chkFanartNMJ.Checked = Master.eSettings.FanartNMJ
+        'Me.chkLandscapeNMJ.Checked = Master.eSettings.LandscapeNMJ
         Me.chkNFONMJ.Checked = Master.eSettings.NFONMJ
         Me.chkPosterNMJ.Checked = Master.eSettings.PosterNMJ
         Me.chkTrailerNMJ.Checked = Master.eSettings.TrailerNMJ
+
+        '************** NMJ optional settings *************
+        Me.chkYAMJWatchedFile.Checked = Master.eSettings.YAMJWatchedFile
+        Me.txtYAMJWatchedFolder.Text = Master.eSettings.YAMJWatchedFolder
+
+        '***************** Expert settings ****************
+        Me.chkUseExpert.Checked = Master.eSettings.UseExpert
+
+        '***************** Expert Single ******************
+        Me.chkActorThumbsExpertSingle.Checked = Master.eSettings.ActorThumbsExpertSingle
+        Me.txtActorThumbsExtExpertSingle.Text = Master.eSettings.ActorThumbsExtExpertSingle
+        Me.txtBannerExpertSingle.Text = Master.eSettings.BannerExpertSingle
+        Me.txtClearArtExpertSingle.Text = Master.eSettings.ClearArtExpertSingle
+        Me.txtClearLogoExpertSingle.Text = Master.eSettings.ClearLogoExpertSingle
+        Me.txtDiscArtExpertSingle.Text = Master.eSettings.DiscArtExpertSingle
+        Me.chkExtrafanartsExpertSingle.Checked = Master.eSettings.ExtrafanartsExpertSingle
+        Me.chkExtrathumbsExpertSingle.Checked = Master.eSettings.ExtrathumbsExpertSingle
+        Me.txtFanartExpertSingle.Text = Master.eSettings.FanartExpertSingle
+        Me.txtLandscapeExpertSingle.Text = Master.eSettings.LandscapeExpertSingle
+        Me.txtNFOExpertSingle.Text = Master.eSettings.NFOExpertSingle
+        Me.txtPosterExpertSingle.Text = Master.eSettings.PosterExpertSingle
+        Me.chkStackExpertSingle.Checked = Master.eSettings.StackExpertSingle
+        Me.txtTrailerExpertSingle.Text = Master.eSettings.TrailerExpertSingle
+        Me.chkUnstackExpertSingle.Checked = Master.eSettings.UnstackExpertSingle
+
+        '***************** Expert Multi ******************
+        Me.chkActorThumbsExpertMulti.Checked = Master.eSettings.ActorThumbsExpertMulti
+        Me.txtActorThumbsExtExpertMulti.Text = Master.eSettings.ActorThumbsExtExpertMulti
+        Me.txtBannerExpertMulti.Text = Master.eSettings.BannerExpertMulti
+        Me.txtClearArtExpertMulti.Text = Master.eSettings.ClearArtExpertMulti
+        Me.txtClearLogoExpertMulti.Text = Master.eSettings.ClearLogoExpertMulti
+        Me.txtDiscArtExpertMulti.Text = Master.eSettings.DiscArtExpertMulti
+        Me.txtFanartExpertMulti.Text = Master.eSettings.FanartExpertMulti
+        Me.txtLandscapeExpertMulti.Text = Master.eSettings.LandscapeExpertMulti
+        Me.txtNFOExpertMulti.Text = Master.eSettings.NFOExpertMulti
+        Me.txtPosterExpertMulti.Text = Master.eSettings.PosterExpertMulti
+        Me.chkStackExpertMulti.Checked = Master.eSettings.StackExpertMulti
+        Me.txtTrailerExpertMulti.Text = Master.eSettings.TrailerExpertMulti
+        Me.chkUnstackExpertMulti.Checked = Master.eSettings.UnstackExpertMulti
+
+        '***************** Expert VTS ******************
+        Me.chkActorThumbsExpertVTS.Checked = Master.eSettings.ActorThumbsExpertVTS
+        Me.txtActorThumbsExtExpertVTS.Text = Master.eSettings.ActorThumbsExtExpertVTS
+        Me.txtBannerExpertVTS.Text = Master.eSettings.BannerExpertVTS
+        Me.txtClearArtExpertVTS.Text = Master.eSettings.ClearArtExpertVTS
+        Me.txtClearLogoExpertVTS.Text = Master.eSettings.ClearLogoExpertVTS
+        Me.txtDiscArtExpertVTS.Text = Master.eSettings.DiscArtExpertVTS
+        Me.chkExtrafanartsExpertVTS.Checked = Master.eSettings.ExtrafanartsExpertVTS
+        Me.chkExtrathumbsExpertVTS.Checked = Master.eSettings.ExtrathumbsExpertVTS
+        Me.txtFanartExpertVTS.Text = Master.eSettings.FanartExpertVTS
+        Me.txtLandscapeExpertVTS.Text = Master.eSettings.LandscapeExpertVTS
+        Me.txtNFOExpertVTS.Text = Master.eSettings.NFOExpertVTS
+        Me.txtPosterExpertVTS.Text = Master.eSettings.PosterExpertVTS
+        Me.chkRecognizeVTSExpertVTS.Checked = Master.eSettings.RecognizeVTSExpertVTS
+        Me.txtTrailerExpertVTS.Text = Master.eSettings.TrailerExpertVTS
+        Me.chkUseBaseDirectoryExpertVTS.Checked = Master.eSettings.UseBaseDirectoryExpertVTS
+
+        '***************** Expert BDMV ******************
+        Me.chkActorThumbsExpertBDMV.Checked = Master.eSettings.ActorThumbsExpertBDMV
+        Me.txtActorThumbsExtExpertBDMV.Text = Master.eSettings.ActorThumbsExtExpertBDMV
+        Me.txtBannerExpertBDMV.Text = Master.eSettings.BannerExpertBDMV
+        Me.txtClearArtExpertBDMV.Text = Master.eSettings.ClearArtExpertBDMV
+        Me.txtClearLogoExpertBDMV.Text = Master.eSettings.ClearLogoExpertBDMV
+        Me.txtDiscArtExpertBDMV.Text = Master.eSettings.DiscArtExpertBDMV
+        Me.chkExtrafanartsExpertBDMV.Checked = Master.eSettings.ExtrafanartsExpertBDMV
+        Me.chkExtrathumbsExpertBDMV.Checked = Master.eSettings.ExtrathumbsExpertBDMV
+        Me.txtFanartExpertBDMV.Text = Master.eSettings.FanartExpertBDMV
+        Me.txtLandscapeExpertBDMV.Text = Master.eSettings.LandscapeExpertBDMV
+        Me.txtNFOExpertBDMV.Text = Master.eSettings.NFOExpertBDMV
+        Me.txtPosterExpertBDMV.Text = Master.eSettings.PosterExpertBDMV
+        Me.txtTrailerExpertBDMV.Text = Master.eSettings.TrailerExpertBDMV
+        Me.chkUseBaseDirectoryExpertBDMV.Checked = Master.eSettings.UseBaseDirectoryExpertBDMV
 
         Me.chkSeasonAllPosterJPG.Checked = Master.eSettings.SeasonAllPosterJPG
         Me.chkSeasonXXDashPosterJPG.Checked = Master.eSettings.SeasonXXDashPosterJPG
@@ -531,6 +707,7 @@ Public Class dlgWizard
 
     Private Sub SaveSettings()
 
+        '*************** XBMC Frodo settings ***************
         Master.eSettings.UseFrodo = Me.chkUseFrodo.Checked
         Master.eSettings.ActorThumbsFrodo = Me.chkActorThumbsFrodo.Checked
         Master.eSettings.BannerFrodo = Me.chkBannerFrodo.Checked
@@ -545,30 +722,126 @@ Public Class dlgWizard
         Master.eSettings.PosterFrodo = Me.chkPosterFrodo.Checked
         Master.eSettings.TrailerFrodo = Me.chkTrailerFrodo.Checked
 
+        '*************** XBMC Eden settings ***************
         Master.eSettings.UseEden = Me.chkUseEden.Checked
         Master.eSettings.ActorThumbsEden = Me.chkActorThumbsEden.Checked
+        'Master.eSettings.BannerEden = Me.chkBannerEden.Checked
+        'Master.eSettings.ClearArtEden = Me.chkClearArtEden.Checked
+        'Master.eSettings.ClearLogoEden = Me.chkClearLogoEden.Checked
+        'Master.eSettings.DiscArtEden = Me.chkDiscArtEden.Checked
         Master.eSettings.ExtrafanartsEden = Me.chkExtrafanartsEden.Checked
         Master.eSettings.ExtrathumbsEden = Me.chkExtrathumbsEden.Checked
         Master.eSettings.FanartEden = Me.chkFanartEden.Checked
+        'Master.eSettings.LandscapeEden = Me.chkLandscapeEden.Checked
         Master.eSettings.NFOEden = Me.chkNFOEden.Checked
         Master.eSettings.PosterEden = Me.chkPosterEden.Checked
         Master.eSettings.TrailerEden = Me.chkTrailerEden.Checked
 
+        '************* XBMC optional settings *************
         Master.eSettings.XBMCTrailerFormat = Me.chkXBMCTrailerFormat.Checked
+        Master.eSettings.XBMCProtectVTSBDMV = Me.chkXBMCProtectVTSBDMV.Checked
 
+        '****************** YAMJ settings *****************
         Master.eSettings.UseYAMJ = Me.chkUseYAMJ.Checked
+        'Master.eSettings.ActorThumbsYAMJ = Me.chkActorThumbsYAMJ.Checked
         Master.eSettings.BannerYAMJ = Me.chkBannerYAMJ.Checked
+        'Master.eSettings.ClearArtYAMJ = Me.chkClearArtYAMJ.Checked
+        'Master.eSettings.ClearLogoYAMJ = Me.chkClearLogoYAMJ.Checked
+        'Master.eSettings.DiscArtYAMJ = Me.chkDiscArtYAMJ.Checked
+        'Master.eSettings.ExtrafanartYAMJ = Me.chkExtrafanartYAMJ.Checked
+        'Master.eSettings.ExtrathumbsYAMJ = Me.chkExtrathumbsYAMJ.Checked
         Master.eSettings.FanartYAMJ = Me.chkFanartYAMJ.Checked
-        Master.eSettings.NFOYAMJ = Me.chkNFONMJ.Checked
+        'Master.eSettings.LandscapeYAMJ = Me.chkLandscapeYAMJ.Checked
+        Master.eSettings.NFOYAMJ = Me.chkNFOYAMJ.Checked
         Master.eSettings.PosterYAMJ = Me.chkPosterYAMJ.Checked
         Master.eSettings.TrailerYAMJ = Me.chkTrailerYAMJ.Checked
 
+        '****************** NMJ settings *****************
         Master.eSettings.UseNMJ = Me.chkUseNMJ.Checked
+        'Master.eSettings.ActorThumbsNMJ = Me.chkActorThumbsNMJ.Checked
         Master.eSettings.BannerNMJ = Me.chkBannerNMJ.Checked
+        'Master.eSettings.ClearArtNMJ = Me.chkClearArtNMJ.Checked
+        'Master.eSettings.ClearLogoNMJ = Me.chkClearLogoNMJ.Checked
+        'Master.eSettings.DiscArtNMJ = Me.chkDiscArtNMJ.Checked
+        'Master.eSettings.ExtrafanartNMJ = Me.chkExtrafanartNMJ.Checked
+        'Master.eSettings.ExtrathumbsNMJ = Me.chkExtrathumbsNMJ.Checked
         Master.eSettings.FanartNMJ = Me.chkFanartNMJ.Checked
+        'Master.eSettings.LandscapeNMJ = Me.chkLandscapeNMJ.Checked
         Master.eSettings.NFONMJ = Me.chkNFONMJ.Checked
         Master.eSettings.PosterNMJ = Me.chkPosterNMJ.Checked
         Master.eSettings.TrailerNMJ = Me.chkTrailerNMJ.Checked
+
+        '************** NMJ optional settings *************
+        Master.eSettings.YAMJWatchedFile = Me.chkYAMJWatchedFile.Checked
+        Master.eSettings.YAMJWatchedFolder = Me.txtYAMJWatchedFolder.Text
+
+        '***************** Expert settings ****************
+        Master.eSettings.UseExpert = Me.chkUseExpert.Checked
+
+        '***************** Expert Single ******************
+        Master.eSettings.ActorThumbsExpertSingle = Me.chkActorThumbsExpertSingle.Checked
+        Master.eSettings.ActorThumbsExtExpertSingle = Me.txtActorThumbsExtExpertSingle.Text
+        Master.eSettings.BannerExpertSingle = Me.txtBannerExpertSingle.Text
+        Master.eSettings.ClearArtExpertSingle = Me.txtClearArtExpertSingle.Text
+        Master.eSettings.ClearLogoExpertSingle = Me.txtClearLogoExpertSingle.Text
+        Master.eSettings.DiscArtExpertSingle = Me.txtDiscArtExpertSingle.Text
+        Master.eSettings.ExtrafanartsExpertSingle = Me.chkExtrafanartsExpertSingle.Checked
+        Master.eSettings.ExtrathumbsExpertSingle = Me.chkExtrathumbsExpertSingle.Checked
+        Master.eSettings.FanartExpertSingle = Me.txtFanartExpertSingle.Text
+        Master.eSettings.LandscapeExpertSingle = Me.txtLandscapeExpertSingle.Text
+        Master.eSettings.NFOExpertSingle = Me.txtNFOExpertSingle.Text
+        Master.eSettings.PosterExpertSingle = Me.txtPosterExpertSingle.Text
+        Master.eSettings.StackExpertSingle = Me.chkStackExpertSingle.Checked
+        Master.eSettings.TrailerExpertSingle = Me.txtTrailerExpertSingle.Text
+        Master.eSettings.UnstackExpertSingle = Me.chkUnstackExpertSingle.Checked
+
+        '***************** Expert Multi ******************
+        Master.eSettings.ActorThumbsExpertMulti = Me.chkActorThumbsExpertMulti.Checked
+        Master.eSettings.ActorThumbsExtExpertMulti = Me.txtActorThumbsExtExpertMulti.Text
+        Master.eSettings.BannerExpertMulti = Me.txtBannerExpertMulti.Text
+        Master.eSettings.ClearArtExpertMulti = Me.txtClearArtExpertMulti.Text
+        Master.eSettings.ClearLogoExpertMulti = Me.txtClearLogoExpertMulti.Text
+        Master.eSettings.DiscArtExpertMulti = Me.txtDiscArtExpertMulti.Text
+        Master.eSettings.FanartExpertMulti = Me.txtFanartExpertMulti.Text
+        Master.eSettings.LandscapeExpertMulti = Me.txtLandscapeExpertMulti.Text
+        Master.eSettings.NFOExpertMulti = Me.txtNFOExpertMulti.Text
+        Master.eSettings.PosterExpertMulti = Me.txtPosterExpertMulti.Text
+        Master.eSettings.StackExpertMulti = Me.chkStackExpertMulti.Checked
+        Master.eSettings.TrailerExpertMulti = Me.txtTrailerExpertMulti.Text
+        Master.eSettings.UnstackExpertMulti = Me.chkUnstackExpertMulti.Checked
+
+        '***************** Expert VTS ******************
+        Master.eSettings.ActorThumbsExpertVTS = Me.chkActorThumbsExpertVTS.Checked
+        Master.eSettings.ActorThumbsExtExpertVTS = Me.txtActorThumbsExtExpertVTS.Text
+        Master.eSettings.BannerExpertVTS = Me.txtBannerExpertVTS.Text
+        Master.eSettings.ClearArtExpertVTS = Me.txtClearArtExpertVTS.Text
+        Master.eSettings.ClearLogoExpertVTS = Me.txtClearLogoExpertVTS.Text
+        Master.eSettings.DiscArtExpertVTS = Me.txtDiscArtExpertVTS.Text
+        Master.eSettings.ExtrafanartsExpertVTS = Me.chkExtrafanartsExpertVTS.Checked
+        Master.eSettings.ExtrathumbsExpertVTS = Me.chkExtrathumbsExpertVTS.Checked
+        Master.eSettings.FanartExpertVTS = Me.txtFanartExpertVTS.Text
+        Master.eSettings.LandscapeExpertVTS = Me.txtLandscapeExpertVTS.Text
+        Master.eSettings.NFOExpertVTS = Me.txtNFOExpertVTS.Text
+        Master.eSettings.PosterExpertVTS = Me.txtPosterExpertVTS.Text
+        Master.eSettings.RecognizeVTSExpertVTS = Me.chkRecognizeVTSExpertVTS.Checked
+        Master.eSettings.TrailerExpertVTS = Me.txtTrailerExpertVTS.Text
+        Master.eSettings.UseBaseDirectoryExpertVTS = Me.chkUseBaseDirectoryExpertVTS.Checked
+
+        '***************** Expert BDMV ******************
+        Master.eSettings.ActorThumbsExpertBDMV = Me.chkActorThumbsExpertBDMV.Checked
+        Master.eSettings.ActorThumbsExtExpertBDMV = Me.txtActorThumbsExtExpertBDMV.Text
+        Master.eSettings.BannerExpertBDMV = Me.txtBannerExpertBDMV.Text
+        Master.eSettings.ClearArtExpertBDMV = Me.txtClearArtExpertBDMV.Text
+        Master.eSettings.ClearLogoExpertBDMV = Me.txtClearLogoExpertBDMV.Text
+        Master.eSettings.DiscArtExpertBDMV = Me.txtDiscArtExpertBDMV.Text
+        Master.eSettings.ExtrafanartsExpertBDMV = Me.chkExtrafanartsExpertBDMV.Checked
+        Master.eSettings.ExtrathumbsExpertBDMV = Me.chkExtrathumbsExpertBDMV.Checked
+        Master.eSettings.FanartExpertBDMV = Me.txtFanartExpertBDMV.Text
+        Master.eSettings.LandscapeExpertBDMV = Me.txtLandscapeExpertBDMV.Text
+        Master.eSettings.NFOExpertBDMV = Me.txtNFOExpertBDMV.Text
+        Master.eSettings.PosterExpertBDMV = Me.txtPosterExpertBDMV.Text
+        Master.eSettings.TrailerExpertBDMV = Me.txtTrailerExpertBDMV.Text
+        Master.eSettings.UseBaseDirectoryExpertBDMV = Me.chkUseBaseDirectoryExpertBDMV.Checked
 
         Master.eSettings.SeasonAllPosterJPG = Me.chkSeasonAllPosterJPG.Checked
         Master.eSettings.SeasonXXDashPosterJPG = Me.chkSeasonXXDashPosterJPG.Checked
@@ -623,7 +896,6 @@ Public Class dlgWizard
         Me.btnBack.Text = Master.eLang.GetString(403, "< Back")
         Me.btnNext.Text = Master.eLang.GetString(404, "Next >")
         Me.Label1.Text = Master.eLang.GetString(405, "Welcome to Ember Media Manager")
-        Me.Label5.Text = Master.eLang.GetString(406, "TIP: Selections containing the text <movie> means that Ember Media Manager will use the filename of the movie.")
         Me.btnMovieRem.Text = Master.eLang.GetString(30, "Remove")
         Me.btnTVRemoveSource.Text = Me.btnMovieRem.Text
         Me.btnMovieAddFolder.Text = Master.eLang.GetString(407, "Add Source")

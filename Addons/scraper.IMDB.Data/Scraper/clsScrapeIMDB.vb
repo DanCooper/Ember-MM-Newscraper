@@ -129,7 +129,8 @@ Namespace IMDB
             End While
         End Sub
 
-        Public Function GetMovieInfo(ByVal strID As String, ByRef IMDBMovie As MediaContainers.Movie, ByVal FullCrew As Boolean, ByVal FullCast As Boolean, ByVal GetPoster As Boolean, ByVal Options As Structures.ScrapeOptions, ByVal IsSearch As Boolean) As Boolean
+
+        Public Function GetMovieInfo(ByVal strID As String, ByRef DBMovie As MediaContainers.Movie, ByVal FullCrew As Boolean, ByVal FullCast As Boolean, ByVal GetPoster As Boolean, ByVal Options As Structures.ScrapeOptions, ByVal IsSearch As Boolean) As Boolean
             Try
                 If bwIMDB.CancellationPending Then Return Nothing
 
@@ -145,23 +146,42 @@ Namespace IMDB
                     PlotHtml = sPlot.DownloadData(String.Concat("http://", Master.eSettings.IMDBURL, "/title/tt", strID, "/plotsummary"))
                 End Using
 
-                IMDBMovie.IMDBID = strID
+
+
+                DBMovie.IMDBID = strID
 
                 If bwIMDB.CancellationPending Then Return Nothing
 
+                Dim scrapedresult As String = ""
+
                 Dim OriginalTitle As String = Regex.Match(HTML, MOVIE_TITLE_PATTERN).ToString
                 If Options.bTitle Then
-                    Dim oldOTitle As String = IMDBMovie.OriginalTitle
-                    IMDBMovie.OriginalTitle = CleanTitle(Web.HttpUtility.HtmlDecode(Regex.Match(OriginalTitle, ".*(?=\s\(\d+.*?\))").ToString)).Trim
-                    If String.IsNullOrEmpty(IMDBMovie.Title) OrElse Not Master.eSettings.LockTitle Then
+
+                    'MOVIE ORIGINALTITLE
+                    Dim oldOTitle As String = DBMovie.OriginalTitle
+                    scrapedresult = CleanTitle(Web.HttpUtility.HtmlDecode(Regex.Match(OriginalTitle, ".*(?=\s\(\d+.*?\))").ToString)).Trim
+                    'only update DBMovie if scraped result is not empty/nothing!
+                    If Not String.IsNullOrEmpty(scrapedresult) Then
+                        DBMovie.OriginalTitle = scrapedresult
+                    End If
+
+                    'MOVIE TITLE
+                    If String.IsNullOrEmpty(DBMovie.Title) OrElse Not Master.eSettings.LockTitle Then
                         If Not String.IsNullOrEmpty(Master.eSettings.ForceTitle) Then
-                            IMDBMovie.Title = GetForcedTitle(strID, IMDBMovie.OriginalTitle)
+                            'only update DBMovie if scraped result is not empty/nothing!
+                            scrapedresult = GetForcedTitle(strID, DBMovie.OriginalTitle)
+                            If Not String.IsNullOrEmpty(scrapedresult) Then
+                                DBMovie.Title = scrapedresult
+                            End If
                         Else
-                            IMDBMovie.Title = IMDBMovie.OriginalTitle.Trim
+                            'only update DBMovie if scraped result is not empty/nothing!
+                            If Not String.IsNullOrEmpty(DBMovie.OriginalTitle) Then
+                                DBMovie.Title = DBMovie.OriginalTitle.Trim
+                            End If
                         End If
                     End If
-                    If String.IsNullOrEmpty(oldOTitle) OrElse Not oldOTitle = IMDBMovie.OriginalTitle Then
-                        IMDBMovie.SortTitle = String.Empty
+                    If String.IsNullOrEmpty(oldOTitle) OrElse Not oldOTitle = DBMovie.OriginalTitle Then
+                        DBMovie.SortTitle = String.Empty
                     End If
                 End If
 
@@ -173,23 +193,36 @@ Namespace IMDB
 
                 If bwIMDB.CancellationPending Then Return Nothing
 
-                If String.IsNullOrEmpty(IMDBMovie.Year) OrElse Options.bYear Then IMDBMovie.Year = Regex.Match(OriginalTitle, "(?<=\()\d+(?=.*\))", RegexOptions.RightToLeft).ToString
+                'MOVIE YEAR
+                If Options.bYear Then
+                    scrapedresult = Regex.Match(OriginalTitle, "(?<=\()\d+(?=.*\))", RegexOptions.RightToLeft).ToString
+                    'only update DBMovie if scraped result is not empty/nothing!
+                    If Not String.IsNullOrEmpty(scrapedresult) Then
+                        DBMovie.Year = scrapedresult
+                    End If
+                End If
+
 
                 Dim D, W, tempD As Integer
 
-                If Options.bMPAA AndAlso (String.IsNullOrEmpty(IMDBMovie.MPAA) OrElse Not Master.eSettings.LockMPAA) Then
+                'MOVIE MPAA
+                If Options.bMPAA AndAlso (String.IsNullOrEmpty(DBMovie.MPAA) OrElse Not Master.eSettings.LockMPAA) Then
                     tempD = If(HTML.IndexOf("<h5><a href=""/mpaa"">MPAA</a>:</h5>") > 0, HTML.IndexOf("<h5><a href=""/mpaa"">MPAA</a>:</h5>"), 0)
 
                     D = If(tempD > 0, HTML.IndexOf("<div class=""info-content"">", tempD), 0)
 
                     W = If(D > 0, HTML.IndexOf("</div", D), 0)
-
-                    IMDBMovie.MPAA = If(D > 0 AndAlso W > 0, Web.HttpUtility.HtmlDecode(HTML.Substring(D, W - D).Remove(0, 26)).Trim(), String.Empty)
+                    scrapedresult = If(D > 0 AndAlso W > 0, Web.HttpUtility.HtmlDecode(HTML.Substring(D, W - D).Remove(0, 26)).Trim(), String.Empty)
+                    'only update DBMovie if scraped result is not empty/nothing!
+                    If Not String.IsNullOrEmpty(scrapedresult) Then
+                        DBMovie.MPAA = scrapedresult
+                    End If
                 End If
 
                 If bwIMDB.CancellationPending Then Return Nothing
 
-                If Options.bCert AndAlso (String.IsNullOrEmpty(IMDBMovie.Certification) OrElse Not Master.eSettings.LockMPAA) Then
+                ' MOVIE certifications
+                If Options.bCert AndAlso (String.IsNullOrEmpty(DBMovie.Certification) OrElse Not Master.eSettings.LockMPAA) Then
                     'get certifications
                     D = HTML.IndexOf("<h5>Certification:</h5>")
 
@@ -202,9 +235,18 @@ Namespace IMDB
 
                             If Not String.IsNullOrEmpty(Master.eSettings.CertificationLang) Then
                                 If Cert.Count > 0 Then
-                                    IMDBMovie.Certification = Cert(0).ToString.Replace("West", String.Empty).Trim
-                                    If Options.bMPAA AndAlso Master.eSettings.UseCertForMPAA AndAlso (Not Master.eSettings.CertificationLang = "USA" OrElse (Master.eSettings.CertificationLang = "USA" AndAlso String.IsNullOrEmpty(IMDBMovie.MPAA))) Then
-                                        IMDBMovie.MPAA = If(Master.eSettings.CertificationLang = "USA", StringUtils.USACertToMPAA(IMDBMovie.Certification), If(Master.eSettings.OnlyValueForCert, IMDBMovie.Certification.Split(Convert.ToChar(":"))(1), IMDBMovie.Certification))
+                                    scrapedresult = Cert(0).ToString.Replace("West", String.Empty).Trim
+                                    'only update DBMovie if scraped result is not empty/nothing!
+                                    If Not String.IsNullOrEmpty(scrapedresult) Then
+                                        DBMovie.Certification = scrapedresult
+                                    End If
+
+                                    If Options.bMPAA AndAlso Master.eSettings.UseCertForMPAA AndAlso (Not Master.eSettings.CertificationLang = "USA" OrElse (Master.eSettings.CertificationLang = "USA" AndAlso String.IsNullOrEmpty(DBMovie.MPAA))) Then
+                                        scrapedresult = If(Master.eSettings.CertificationLang = "USA", StringUtils.USACertToMPAA(DBMovie.Certification), If(Master.eSettings.OnlyValueForCert, DBMovie.Certification.Split(Convert.ToChar(":"))(1), DBMovie.Certification))
+                                        'only update DBMovie if scraped result is not empty/nothing!
+                                        If Not String.IsNullOrEmpty(scrapedresult) Then
+                                            DBMovie.MPAA = scrapedresult
+                                        End If
                                     End If
 
 
@@ -212,50 +254,50 @@ Namespace IMDB
                                     'No FSK Rating was found  -> Alternative: Set USA Rating instead as fallback, MPAA will be converted to FSK, Certification from USA will be used, so people can see that US info was used!
                                     If Master.eSettings.UseMPAAForFSK Then
                                         Try
-                                            If Master.eSettings.CertificationLang = "Germany" AndAlso (IMDBMovie.MPAA.ToLower.Contains("usa") Or IMDBMovie.MPAA.ToLower.Contains("rated")) Then
+                                            If Master.eSettings.CertificationLang = "Germany" AndAlso (DBMovie.MPAA.ToLower.Contains("usa") Or DBMovie.MPAA.ToLower.Contains("rated")) Then
                                                 Dim LANGRATING As String = "USA"
                                                 Dim Cert2 = From M In rCert Select N = String.Format("{0}:{1}", DirectCast(M, Match).Groups(1).ToString.Trim, DirectCast(M, Match).Groups(2).ToString.Trim) Order By N Descending Where N.Contains(LANGRATING)
                                                 If Cert2.Count > 0 Then
-                                                    IMDBMovie.Certification = Cert2(0).ToString.Replace("West", String.Empty).Trim
+                                                    DBMovie.Certification = Cert2(0).ToString.Replace("West", String.Empty).Trim
                                                     If Options.bMPAA AndAlso Master.eSettings.UseCertForMPAA Then
-                                                        If IMDBMovie.MPAA.ToLower.Contains("usa:g") Or IMDBMovie.MPAA.ToLower.Contains("rated g") Then
-                                                            IMDBMovie.Certification = IMDBMovie.MPAA
+                                                        If DBMovie.MPAA.ToLower.Contains("usa:g") Or DBMovie.MPAA.ToLower.Contains("rated g") Then
+                                                            DBMovie.Certification = DBMovie.MPAA
                                                             If Master.eSettings.OnlyValueForCert = False Then
-                                                                IMDBMovie.MPAA = "Germany:0"
+                                                                DBMovie.MPAA = "Germany:0"
                                                             Else
-                                                                IMDBMovie.MPAA = "0"
+                                                                DBMovie.MPAA = "0"
                                                             End If
 
-                                                        ElseIf IMDBMovie.MPAA.ToLower.Contains("usa:pg-13") Or IMDBMovie.MPAA.ToLower.Contains("rated pg-13") Then
-                                                            IMDBMovie.Certification = IMDBMovie.MPAA
+                                                        ElseIf DBMovie.MPAA.ToLower.Contains("usa:pg-13") Or DBMovie.MPAA.ToLower.Contains("rated pg-13") Then
+                                                            DBMovie.Certification = DBMovie.MPAA
                                                             If Master.eSettings.OnlyValueForCert = False Then
-                                                                IMDBMovie.MPAA = "Germany:16"
+                                                                DBMovie.MPAA = "Germany:16"
                                                             Else
-                                                                IMDBMovie.MPAA = "16"
+                                                                DBMovie.MPAA = "16"
                                                             End If
 
-                                                        ElseIf IMDBMovie.MPAA.ToLower.Contains("usa:pg") Or IMDBMovie.MPAA.ToLower.Contains("rated pg") Then
-                                                            IMDBMovie.Certification = IMDBMovie.MPAA
+                                                        ElseIf DBMovie.MPAA.ToLower.Contains("usa:pg") Or DBMovie.MPAA.ToLower.Contains("rated pg") Then
+                                                            DBMovie.Certification = DBMovie.MPAA
                                                             If Master.eSettings.OnlyValueForCert = False Then
-                                                                IMDBMovie.MPAA = "Germany:12"
+                                                                DBMovie.MPAA = "Germany:12"
                                                             Else
-                                                                IMDBMovie.MPAA = "12"
+                                                                DBMovie.MPAA = "12"
                                                             End If
 
-                                                        ElseIf IMDBMovie.Certification.ToLower.Contains("usa:r") Or IMDBMovie.Certification.ToLower.Contains("rated r") Then
-                                                            IMDBMovie.Certification = IMDBMovie.MPAA
+                                                        ElseIf DBMovie.Certification.ToLower.Contains("usa:r") Or DBMovie.Certification.ToLower.Contains("rated r") Then
+                                                            DBMovie.Certification = DBMovie.MPAA
                                                             If Master.eSettings.OnlyValueForCert = False Then
-                                                                IMDBMovie.MPAA = "Germany:18"
+                                                                DBMovie.MPAA = "Germany:18"
                                                             Else
-                                                                IMDBMovie.MPAA = "18"
+                                                                DBMovie.MPAA = "18"
                                                             End If
 
-                                                        ElseIf IMDBMovie.Certification.ToLower.Contains("usa:nc-17") Or IMDBMovie.Certification.ToLower.Contains("rated nc") Then
-                                                            IMDBMovie.Certification = IMDBMovie.MPAA
+                                                        ElseIf DBMovie.Certification.ToLower.Contains("usa:nc-17") Or DBMovie.Certification.ToLower.Contains("rated nc") Then
+                                                            DBMovie.Certification = DBMovie.MPAA
                                                             If Master.eSettings.OnlyValueForCert = False Then
-                                                                IMDBMovie.MPAA = "Germany:18"
+                                                                DBMovie.MPAA = "Germany:18"
                                                             Else
-                                                                IMDBMovie.MPAA = "18"
+                                                                DBMovie.MPAA = "18"
                                                             End If
 
                                                         End If
@@ -272,82 +314,68 @@ Namespace IMDB
 
                             Else
 
-                                IMDBMovie.Certification = Strings.Join(Cert.ToArray, " / ").Trim
+                                DBMovie.Certification = Strings.Join(Cert.ToArray, " / ").Trim
 
 
                             End If
                         End If
                     End If
 
-                    If String.IsNullOrEmpty(IMDBMovie.Certification) AndAlso Not String.IsNullOrEmpty(IMDBMovie.MPAA) Then
-                        IMDBMovie.Certification = IMDBMovie.MPAA
+                    If String.IsNullOrEmpty(DBMovie.Certification) AndAlso Not String.IsNullOrEmpty(DBMovie.MPAA) Then
+                        DBMovie.Certification = DBMovie.MPAA
                     End If
 
                 End If
 
                 If bwIMDB.CancellationPending Then Return Nothing
 
+                'MOVIE RELEASEDATE
                 If Options.bRelease Then
                     Dim RelDate As Date
                     Dim sRelDate As String = Regex.Match(HTML, "\d+\s\w+\s\d\d\d\d\s").ToString.Trim
                     If Not sRelDate = String.Empty Then
                         If Date.TryParse(sRelDate, RelDate) Then
-                            IMDBMovie.ReleaseDate = Strings.FormatDateTime(RelDate, DateFormat.ShortDate).ToString
+                            DBMovie.ReleaseDate = Strings.FormatDateTime(RelDate, DateFormat.ShortDate).ToString
                         End If
-                    Else
-                        IMDBMovie.ReleaseDate = Nothing
                     End If
                 End If
 
                 If bwIMDB.CancellationPending Then Return Nothing
 
-                If Options.bRating AndAlso (String.IsNullOrEmpty(IMDBMovie.Rating) OrElse Not Master.eSettings.LockRating) Then
+                'MOVIE RATING IMDB
+                If Options.bRating AndAlso (String.IsNullOrEmpty(DBMovie.Rating) OrElse Not Master.eSettings.LockRating) Then
                     Dim RegexRating As String = Regex.Match(HTML, "\b\d\W\d/\d\d").ToString
-                    If String.IsNullOrEmpty(RegexRating) Then
-                        IMDBMovie.Rating = String.Empty
-                    Else
-                        IMDBMovie.Rating = RegexRating.Split(Convert.ToChar("/")).First.Trim
+                    If String.IsNullOrEmpty(RegexRating) = False Then
+                        DBMovie.Rating = RegexRating.Split(Convert.ToChar("/")).First.Trim
                     End If
                 End If
 
                 If bwIMDB.CancellationPending Then Return Nothing
 
-                'trailer
-                If Options.bTrailer AndAlso (String.IsNullOrEmpty(IMDBMovie.Trailer) OrElse Not Master.eSettings.LockTrailer) Then
+                'IMDB trailer
+                If Options.bTrailer AndAlso (String.IsNullOrEmpty(DBMovie.Trailer) OrElse Not Master.eSettings.LockTrailer) Then
                     'Get first IMDB trailer if possible
-                    Dim trailers As List(Of String) = GetTrailers(IMDBMovie.IMDBID)
-                    'Dim TMDB As New TMDB.Scraper
-                    'Dim YT As String = TMDB.GetTrailers(IMDBMovie.IMDBID)
-
-                    'Dim sTrailerUrl As String = Regex.Match(HTML, "href=""(.*?/video/imdb/vi.*?)""").Groups(1).Value.Trim
-                    'If Not sTrailerUrl = String.Empty Then
-                    'Dim sTrailerURL2 As String = String.Empty
-                    'sTrailerUrl = String.Concat("http://", IMDBURL, sTrailerUrl, "player")
-                    'Dim HTTPTrailer As New HTTP
-                    'Dim HtmlTrailer As String = HTTPTrailer.DownloadData(sTrailerUrl)
-                    'HTTPTrailer = Nothing
-
-                    'sTrailerUrl = Regex.Match(HtmlTrailer, "so.addVariable\(""id"", ""(.*?)""\);").Groups(1).Value.Trim
-                    'If sTrailerUrl = String.Empty Then
-                    'sTrailerURL2 = Regex.Match(HtmlTrailer, "so.addVariable\(""file"", ""(.*?)""\);").Groups(1).Value.Trim
-                    'Else
-                    'sTrailerURL2 = String.Concat(Regex.Match(HtmlTrailer, "so.addVariable\(""file"", ""(.*?)""\);").Groups(1).Value.Trim, sTrailerUrl)
-                    'End If
-                    'IMDBMovie.Trailer = Web.HttpUtility.UrlDecode(sTrailerURL2)
-                    'End If                    
-                    IMDBMovie.Trailer = trailers.FirstOrDefault()
+                    Dim trailers As List(Of String) = GetTrailers(DBMovie.IMDBID)
+                    DBMovie.Trailer = trailers.FirstOrDefault()
                 End If
 
                 If bwIMDB.CancellationPending Then Return Nothing
 
-                If Options.bVotes Then IMDBMovie.Votes = Regex.Match(HTML, "class=""tn15more"">([0-9,]+) votes</a>").Groups(1).Value.Trim
+                If Options.bVotes Then DBMovie.Votes = Regex.Match(HTML, "class=""tn15more"">([0-9,]+) votes</a>").Groups(1).Value.Trim
 
-                'Top250
+                'IMDB Top250
                 'ie: <a href="/chart/top?tt0167260">Top 250: #13</a>
-                If Options.bTop250 Then IMDBMovie.Top250 = Regex.Match(HTML, String.Concat("/chart/top\?tt", IMDBMovie.IMDBID, """>Top 250: #([0-9]+)</a>")).Groups(1).Value.Trim
+                If Options.bTop250 Then
+                    scrapedresult = Regex.Match(HTML, String.Concat("/chart/top\?tt", DBMovie.IMDBID, """>Top 250: #([0-9]+)</a>")).Groups(1).Value.Trim
+                    'only update DBMovie if scraped result is not empty/nothing!
+                    If Not String.IsNullOrEmpty(scrapedresult) Then
+                        DBMovie.Top250 = scrapedresult
+                    End If
+                End If
 
                 If bwIMDB.CancellationPending Then Return Nothing
 
+                'IMDB Actors
                 If Options.bCast Then
                     'Find all cast of the movie
                     'Match the table only 1 time
@@ -380,14 +408,19 @@ Namespace IMDB
                         ' If a_patterRegex.Success Then Ps.Role = a_patterRegex.Groups("name").ToString.Trim
                     Next
 
-                    IMDBMovie.Actors = Cast
+                    'only update DBMovie if scraped result is not empty/nothing!
+                    If Cast.Count > 0 Then
+                        DBMovie.Actors = Cast
+                    End If
+
                 End If
 
                 If bwIMDB.CancellationPending Then Return Nothing
 
                 D = 0 : W = 0
 
-                If Options.bTagline AndAlso (String.IsNullOrEmpty(IMDBMovie.Tagline) OrElse Not Master.eSettings.LockTagline) Then
+                'MOVIE TAGLINE
+                If Options.bTagline AndAlso (String.IsNullOrEmpty(DBMovie.Tagline) OrElse Not Master.eSettings.LockTagline) Then
 
                     tempD = If(HTML.IndexOf("<h5>Tagline:</h5>") > 0, HTML.IndexOf("<h5>Tagline:</h5>"), 0)
 
@@ -396,12 +429,16 @@ Namespace IMDB
                     Dim lHtmlIndexOf As Integer = If(D > 0, HTML.IndexOf("<a class=""tn15more inline""", D), 0)
                     Dim TagLineEnd As Integer = If(lHtmlIndexOf > 0, lHtmlIndexOf, 0)
                     If D > 0 Then W = If(TagLineEnd > 0, TagLineEnd, HTML.IndexOf("</div>", D))
-
-                    IMDBMovie.Tagline = If(D > 0 AndAlso W > 0, Web.HttpUtility.HtmlDecode(HTML.Substring(D, W - D).Replace("<h5>Tagline:</h5>", String.Empty).Split(vbCrLf.ToCharArray)(1)).Trim, String.Empty)
+                    scrapedresult = If(D > 0 AndAlso W > 0, Web.HttpUtility.HtmlDecode(HTML.Substring(D, W - D).Replace("<h5>Tagline:</h5>", String.Empty).Split(vbCrLf.ToCharArray)(1)).Trim, String.Empty)
+                    'only update DBMovie if scraped result is not empty/nothing!
+                    If Not String.IsNullOrEmpty(scrapedresult) Then
+                        DBMovie.Tagline = scrapedresult
+                    End If
                 End If
 
                 If bwIMDB.CancellationPending Then Return Nothing
 
+                'MOVIE DIRECTOR
                 If Options.bDirector Then
                     'Get the directors
                     D = If(HTML.IndexOf("<h5>Director:</h5>") > 0, HTML.IndexOf("<h5>Director:</h5>"), HTML.IndexOf("<h5>Directors:</h5>"))
@@ -412,15 +449,16 @@ Namespace IMDB
                         Dim rDir As MatchCollection = Regex.Matches(HTML.Substring(D, W - D), HREF_PATTERN)
                         Dim Dir = From M In rDir Where Not DirectCast(M, Match).Groups("name").ToString.Contains("more") _
                                   Select Web.HttpUtility.HtmlDecode(DirectCast(M, Match).Groups("name").ToString)
-
+                        'only update DBMovie if scraped result is not empty/nothing!
                         If Dir.Count > 0 Then
-                            IMDBMovie.Director = Strings.Join(Dir.ToArray, " / ").Trim
+                            DBMovie.Director = Strings.Join(Dir.ToArray, " / ").Trim
                         End If
                     End If
                 End If
 
                 If bwIMDB.CancellationPending Then Return Nothing
 
+                'MOVIE COUNTRIES
                 'Get countries of the movie
                 If Options.bCountry Then
                     'Get the countries
@@ -433,15 +471,15 @@ Namespace IMDB
                         Dim Cou = From M In rCou Where Not DirectCast(M, Match).Groups("name").ToString.Contains("more") _
                                   Select Web.HttpUtility.HtmlDecode(DirectCast(M, Match).Groups("name").ToString)
 
+                        'only update DBMovie if scraped result is not empty/nothing!
                         If Cou.Count > 0 Then
-
                             'fix for display country flag in XBMC! 
                             If Strings.Join(Cou.ToArray, " / ").Trim.ToUpper.Contains("USA") Then
-                                IMDBMovie.Country = "United States of America"
+                                DBMovie.Country = "United States of America"
                             ElseIf Strings.Join(Cou.ToArray, " / ").Trim.ToUpper.Contains("UK") Then
-                                IMDBMovie.Country = "United Kingdom"
+                                DBMovie.Country = "United Kingdom"
                             Else
-                                IMDBMovie.Country = Strings.Join(Cou.ToArray, " / ").Trim()
+                                DBMovie.Country = Strings.Join(Cou.ToArray, " / ").Trim()
                             End If
 
                         End If
@@ -452,8 +490,9 @@ Namespace IMDB
 
                 If bwIMDB.CancellationPending Then Return Nothing
 
+                'MOVIE GENRES
                 'Get genres of the movie
-                If Options.bGenre AndAlso (String.IsNullOrEmpty(IMDBMovie.Genre) OrElse Not Master.eSettings.LockGenre) Then
+                If Options.bGenre AndAlso (String.IsNullOrEmpty(DBMovie.Genre) OrElse Not Master.eSettings.LockGenre) Then
                     D = 0 : W = 0
                     D = HTML.IndexOf("<h5>Genre:</h5>")
                     'Check if doesnt find genres
@@ -468,8 +507,9 @@ Namespace IMDB
                             If Gen.Count > 0 Then
                                 Dim tGenre As String = Strings.Join(Gen.ToArray, "/").Trim
                                 tGenre = StringUtils.GenreFilter(tGenre)
+                                'only update DBMovie if scraped result is not empty/nothing!
                                 If Not String.IsNullOrEmpty(tGenre) Then
-                                    IMDBMovie.Genre = Strings.Join(tGenre.Split(Convert.ToChar("/")), " / ").Trim
+                                    DBMovie.Genre = Strings.Join(tGenre.Split(Convert.ToChar("/")), " / ").Trim
                                 End If
                             End If
                         End If
@@ -478,13 +518,14 @@ Namespace IMDB
 
                 If bwIMDB.CancellationPending Then Return Nothing
 
-                If Options.bOutline AndAlso (String.IsNullOrEmpty(IMDBMovie.Outline) OrElse Not Master.eSettings.LockOutline) Then
+                'MOVIE OUTLINE
+                If Options.bOutline AndAlso (String.IsNullOrEmpty(DBMovie.Outline) OrElse Not Master.eSettings.LockOutline OrElse (Master.eSettings.OutlinePlotEnglishOverwrite AndAlso StringUtils.isEnglishText(DBMovie.Outline))) Then
 
                     'Get the Plot Outline
                     D = 0 : W = 0
 
                     Try
-                        If IMDBMovie.Title.Contains("(VG)") Then
+                        If DBMovie.Title.Contains("(VG)") Then
                             D = If(HTML.IndexOf("<h5>Plot Summary:</h5>") > 0, HTML.IndexOf("<h5>Plot Summary:</h5>"), HTML.IndexOf("<h5>Tagline:</h5>"))
                             If D > 0 Then W = HTML.IndexOf("</div>", D)
                         Else
@@ -496,58 +537,79 @@ Namespace IMDB
                                 If W > 0 Then
                                     W = HTML.IndexOf("</div>", D)
                                 Else
-                                    IMDBMovie.Outline = String.Empty
+                                    '   IMDBMovie.Outline = String.Empty
                                     GoTo mplot
                                 End If
                             Else
-                                IMDBMovie.Outline = String.Empty
+                                'IMDBMovie.Outline = String.Empty
                                 GoTo mPlot 'This plot synopsis is empty
                             End If
                         End If
+
                         Dim PlotOutline As String = HTML.Substring(D, W - D).Remove(0, 26)
 
                         PlotOutline = Web.HttpUtility.HtmlDecode(If(PlotOutline.Contains("is empty") OrElse PlotOutline.Contains("View full synopsis") _
                                            , String.Empty, PlotOutline.Replace("|", String.Empty).Replace("&raquo;", String.Empty)).Trim)
-                        'check if outline has links to other IMDB entry
+                        'only update DBMovie if scraped result is not empty/nothing!
                         If Not String.IsNullOrEmpty(PlotOutline) Then
+                            'check if outline has links to other IMDB entry
                             For Each rMatch As Match In Regex.Matches(PlotOutline, HREF_PATTERN_4)
                                 PlotOutline = PlotOutline.Replace(rMatch.Value, rMatch.Groups("text").Value.Trim)
-                            Next
-                            IMDBMovie.Outline = Regex.Replace(PlotOutline, HREF_PATTERN, String.Empty).Trim
-                        Else
-                            IMDBMovie.Outline = String.Empty
+                            Next                       
+                            'check if brackets should be removed...
+                            If Options.bCleanPlotOutline Then
+                                DBMovie.Outline = StringUtils.RemoveBrackets(Regex.Replace(PlotOutline, HREF_PATTERN, String.Empty).Trim)
+                            Else
+                                DBMovie.Outline = Regex.Replace(PlotOutline, HREF_PATTERN, String.Empty).Trim
+                            End If
                         End If
 
                     Catch ex As Exception
-                        IMDBMovie.Outline = String.Empty
                     End Try
                 End If
 
                 If bwIMDB.CancellationPending Then Return Nothing
 
-mPlot:
+mPlot:          'MOVIE PLOT
                 'Get the full Plot
-                If Options.bPlot AndAlso (String.IsNullOrEmpty(IMDBMovie.Plot) OrElse Not Master.eSettings.LockPlot) Then
+                If Options.bPlot AndAlso (String.IsNullOrEmpty(DBMovie.Plot) OrElse Not Master.eSettings.LockPlot OrElse (Master.eSettings.OutlinePlotEnglishOverwrite AndAlso StringUtils.isEnglishText(DBMovie.Plot))) Then
                     Dim FullPlotS As String = Regex.Match(PlotHtml, "<p class=""plotSummary"">(.*?)</p>", RegexOptions.Singleline Or RegexOptions.IgnoreCase Or RegexOptions.Multiline).Groups(1).Value.ToString.Trim
                     Dim FullPlotO As String = Regex.Match(PlotHtml, "<li class=""odd"">\s*<p>(.*?)<br/>", RegexOptions.Singleline Or RegexOptions.IgnoreCase Or RegexOptions.Multiline).Groups(1).Value.ToString.Trim
                     Dim FullPlotE As String = Regex.Match(PlotHtml, "<li class=""even"">\s*<p>(.*?)<br/>", RegexOptions.Singleline Or RegexOptions.IgnoreCase Or RegexOptions.Multiline).Groups(1).Value.ToString.Trim
                     Dim FullPlot As String = If(Not String.IsNullOrEmpty(FullPlotS), FullPlotS, If(Not String.IsNullOrEmpty(FullPlotO), FullPlotO, FullPlotE))
                     FullPlot = Regex.Replace(FullPlot, "<a(.*?)>", "")
                     FullPlot = Regex.Replace(FullPlot, "</a>", "")
-                    IMDBMovie.Plot = FullPlot
+                    'only update DBMovie if scraped result is not empty/nothing!
+                    If Not String.IsNullOrEmpty(FullPlot) Then
+                        'check if brackets should be removed...
+                        If Options.bCleanPlotOutline Then
+                            DBMovie.Plot = StringUtils.RemoveBrackets(FullPlot)
+                        Else
+                            DBMovie.Plot = FullPlot
+                        End If
+                    End If
+                End If
+                'special treating: outline will be copied into plot if plot is empty!
+                If Master.eSettings.OutlineForPlot AndAlso String.IsNullOrEmpty(DBMovie.Plot) AndAlso Not String.IsNullOrEmpty(DBMovie.Outline) Then
+                    DBMovie.Plot = DBMovie.Outline
                 End If
 
-                If Master.eSettings.OutlineForPlot AndAlso String.IsNullOrEmpty(IMDBMovie.Plot) AndAlso Not String.IsNullOrEmpty(IMDBMovie.Outline) Then
-                    IMDBMovie.Plot = IMDBMovie.Outline
-                End If
 
                 If bwIMDB.CancellationPending Then Return Nothing
 
+                'MOVIE DURATION
                 'Get the movie duration
-                If Options.bRuntime AndAlso (String.IsNullOrEmpty(IMDBMovie.Runtime)) Then IMDBMovie.Runtime = Web.HttpUtility.HtmlDecode(Regex.Match(HTML, "<h5>Runtime:</h5>[^0-9]*([^<]*)").Groups(1).Value.Trim)
+                If Options.bRuntime AndAlso (String.IsNullOrEmpty(DBMovie.Runtime)) Then
+                    scrapedresult = Web.HttpUtility.HtmlDecode(Regex.Match(HTML, "<h5>Runtime:</h5>[^0-9]*([^<]*)").Groups(1).Value.Trim)
+                    'only update DBMovie if scraped result is not empty/nothing!
+                    If Not String.IsNullOrEmpty(scrapedresult) Then
+                        DBMovie.Runtime = scrapedresult
+                    End If
+                End If
 
+                'MOVIE STUDIO
                 'Get Production Studio
-                If Options.bStudio AndAlso (String.IsNullOrEmpty(IMDBMovie.Studio) OrElse Not Master.eSettings.LockStudio) Then
+                If Options.bStudio AndAlso (String.IsNullOrEmpty(DBMovie.Studio) OrElse Not Master.eSettings.LockStudio) Then
                     D = 0 : W = 0
                     If FullCrew Then
                         D = HTML.IndexOf("<b class=""blackcatheader"">Production Companies</b>")
@@ -557,21 +619,23 @@ mPlot:
                             Dim Ps = From P1 In Regex.Matches(HTML.Substring(D, W - D), HREF_PATTERN) _
                                      Where Not DirectCast(P1, Match).Groups("name").ToString = String.Empty _
                                      Select Studio = Web.HttpUtility.HtmlDecode(DirectCast(P1, Match).Groups("name").ToString) Take 1
-                            IMDBMovie.Studio = Ps(0).ToString.Trim
+                            DBMovie.Studio = Ps(0).ToString.Trim
                         End If
                     Else
                         D = HTML.IndexOf("<h5>Company:</h5>")
                         If D > 0 Then W = HTML.IndexOf("</div>", D)
+                        'only update DBMovie if scraped result is not empty/nothing!
                         If D > 0 AndAlso W > 0 Then
-                            IMDBMovie.Studio = Web.HttpUtility.HtmlDecode(Regex.Match(HTML.Substring(D, W - D), HREF_PATTERN).Groups("name").ToString.Trim)
+                            DBMovie.Studio = Web.HttpUtility.HtmlDecode(Regex.Match(HTML.Substring(D, W - D), HREF_PATTERN).Groups("name").ToString.Trim)
                         End If
                     End If
                 End If
 
                 If bwIMDB.CancellationPending Then Return Nothing
 
+                'MOVIE WRITERS
                 'Get Writers
-                If Options.bWriters AndAlso (String.IsNullOrEmpty(IMDBMovie.OldCredits)) Then
+                If Options.bWriters AndAlso (String.IsNullOrEmpty(DBMovie.OldCredits)) Then
                     D = 0 : W = 0
                     D = HTML.IndexOf("<h5>Writer")
                     If D > 0 Then W = HTML.IndexOf("</div>", D)
@@ -583,14 +647,16 @@ mPlot:
                                 AndAlso Not DirectCast(M, Match).Groups("name").ToString.Trim.Contains("see more") _
                                 Select Writer = Web.HttpUtility.HtmlDecode(String.Concat(DirectCast(M, Match).Groups("name").ToString, If(FullCrew, " (writer)", String.Empty)))
 
+                        'only update DBMovie if scraped result is not empty/nothing!
                         If q.Count > 0 Then
-                            IMDBMovie.OldCredits = Strings.Join(q.ToArray, " / ").Trim
+                            DBMovie.OldCredits = Strings.Join(q.ToArray, " / ").Trim
                         End If
                     End If
                 End If
 
                 If bwIMDB.CancellationPending Then Return Nothing
 
+                'MOVIE OTHER
                 'Get All Other Info
                 If FullCrew Then
 
@@ -611,9 +677,9 @@ mPlot:
                                 Let P1 = Regex.Match(Po.ToString, HREF_PATTERN_2) _
                                 Where Not String.IsNullOrEmpty(P1.Groups("name").ToString) _
                                 Select Producer = Web.HttpUtility.HtmlDecode(String.Concat(P1.Groups("name").ToString, " (producer)"))
-
+                                'only update DBMovie if scraped result is not empty/nothing!
                                 If Pr.Count > 0 Then
-                                    IMDBMovie.OldCredits = String.Concat(IMDBMovie.OldCredits, " / ", Strings.Join(Pr.ToArray, " / ").Trim)
+                                    DBMovie.OldCredits = String.Concat(DBMovie.OldCredits, " / ", Strings.Join(Pr.ToArray, " / ").Trim)
                                 End If
                             End If
 
@@ -623,9 +689,9 @@ mPlot:
                                 Let M1 = Regex.Match(Mo.ToString, HREF_PATTERN) _
                                 Where Not String.IsNullOrEmpty(M1.Groups("name").ToString) _
                                 Select Musician = Web.HttpUtility.HtmlDecode(String.Concat(M1.Groups("name").ToString, " (music by)"))
-
+                                'only update DBMovie if scraped result is not empty/nothing!
                                 If Mu.Count > 0 Then
-                                    IMDBMovie.OldCredits = String.Concat(IMDBMovie.OldCredits, " / ", Strings.Join(Mu.ToArray, " / ").Trim)
+                                    DBMovie.OldCredits = String.Concat(DBMovie.OldCredits, " / ", Strings.Join(Mu.ToArray, " / ").Trim)
                                 End If
                             End If
 
@@ -642,8 +708,9 @@ mPlot:
                             Dim Ps = From P1 In Regex.Matches(HTML.Substring(D, W - D), HREF_PATTERN) _
                                      Where Not String.IsNullOrEmpty(DirectCast(P1, Match).Groups("name").ToString) _
                                      Select Studio = Web.HttpUtility.HtmlDecode(DirectCast(P1, Match).Groups("name").ToString)
+                            'only update DBMovie if scraped result is not empty/nothing!
                             If Ps.Count > 0 Then
-                                IMDBMovie.OldCredits = String.Concat(IMDBMovie.OldCredits, " / ", Strings.Join(Ps.ToArray, " / ").Trim)
+                                DBMovie.OldCredits = String.Concat(DBMovie.OldCredits, " / ", Strings.Join(Ps.ToArray, " / ").Trim)
                             End If
                         End If
                     End If
