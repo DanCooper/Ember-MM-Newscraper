@@ -112,31 +112,31 @@ Namespace TMDBg
             _TMDBConfE = tTMDBConfE
         End Sub
 
-		Public Sub CancelAsync()
-			If bwTMDBg.IsBusy Then bwTMDBg.CancelAsync()
+        Public Sub CancelAsync()
+            If bwTMDBg.IsBusy Then bwTMDBg.CancelAsync()
 
-			While bwTMDBg.IsBusy
-				Application.DoEvents()
-				Threading.Thread.Sleep(50)
-			End While
-		End Sub
+            While bwTMDBg.IsBusy
+                Application.DoEvents()
+                Threading.Thread.Sleep(50)
+            End While
+        End Sub
 
-		Public Sub GetMovieID(ByRef DBMovie As Structures.DBMovie)
-			Try
-				Dim Movie As WatTmdb.V3.TmdbMovie
-				Dim MovieE As WatTmdb.V3.TmdbMovie
+        Public Sub GetMovieID(ByRef DBMovie As Structures.DBMovie)
+            Try
+                Dim Movie As WatTmdb.V3.TmdbMovie
+                Dim MovieE As WatTmdb.V3.TmdbMovie
 
-				If bwTMDBg.CancellationPending Then Return
+                If bwTMDBg.CancellationPending Then Return
 
-				Movie = _TMDBApi.GetMovieByIMDB(DBMovie.Movie.ID, _MySettings.TMDBLanguage)
-				MovieE = _TMDBApiE.GetMovieByIMDB(DBMovie.Movie.ID)
-				If IsNothing(Movie) AndAlso Not _MySettings.FallBackEng Then
-					Return
-				End If
+                Movie = _TMDBApi.GetMovieByIMDB(DBMovie.Movie.ID, _MySettings.TMDBLanguage)
+                MovieE = _TMDBApiE.GetMovieByIMDB(DBMovie.Movie.ID)
+                If IsNothing(Movie) AndAlso Not _MySettings.FallBackEng Then
+                    Return
+                End If
 
-				DBMovie.Movie.TMDBID = CStr(IIf(String.IsNullOrEmpty(Movie.id.ToString) AndAlso _MySettings.FallBackEng, MovieE.id.ToString, Movie.id.ToString))
+                DBMovie.Movie.TMDBID = CStr(IIf(String.IsNullOrEmpty(Movie.id.ToString) AndAlso _MySettings.FallBackEng, MovieE.id.ToString, Movie.id.ToString))
 
-			Catch ex As Exception
+            Catch ex As Exception
                 Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
             End Try
 
@@ -715,7 +715,7 @@ Namespace TMDBg
             End Try
         End Function
 
-#End Region	'Methods
+#End Region 'Methods
 
 #Region "Nested Types"
 
