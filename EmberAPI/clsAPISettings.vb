@@ -154,6 +154,7 @@ Public Class Settings
     Private _locktagline As Boolean
     Private _locktitle As Boolean
     Private _locktrailer As Boolean
+    Private _lockSubtitle As Boolean
     Private _marknew As Boolean
     Private _marknewepisodes As Boolean
     Private _marknewshows As Boolean
@@ -2952,6 +2953,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property LockSubtitle() As Boolean
+        Get
+            Return Me._lockSubtitle
+        End Get
+        Set(ByVal value As Boolean)
+            Me._lockSubtitle = value
+        End Set
+    End Property
+
     Public Property ShowNfoCol() As Boolean
         Get
             Return Me._shownfocol
@@ -3534,10 +3544,10 @@ Public Class Settings
 
     Public Property NFOFrodo() As Boolean
         Get
-            Return Me._NFOfrodo
+            Return Me._nfofrodo
         End Get
         Set(ByVal value As Boolean)
-            Me._NFOfrodo = value
+            Me._nfofrodo = value
         End Set
     End Property
 

@@ -124,6 +124,25 @@ Public Class MediaInfo
 
                         End Try
                     End If
+
+                    If Master.eSettings.LockSubtitle Then
+                        Try
+                            'sets old subinfo setting if setting is enabled (lock subs)
+                            'First make sure that there is no completely new source scanned of the movie --> if so (i.e. more streams) then update!
+                            If tinfo.StreamDetails.Subtitle.Count = miMovie.Movie.FileInfo.StreamDetails.Subtitle.Count Then
+                                For i = 0 To tinfo.StreamDetails.Subtitle.Count - 1
+                                    'only preserve if tag is filled --> else update!
+                                    If Not String.IsNullOrEmpty(miMovie.Movie.FileInfo.StreamDetails.Subtitle.Item(i).LongLanguage) Then
+                                        tinfo.StreamDetails.Subtitle.Item(i) = miMovie.Movie.FileInfo.StreamDetails.Subtitle.Item(i)
+                                    End If
+                                Next
+                            End If
+
+                        Catch ex As Exception
+
+                        End Try
+                    End If
+
                     miMovie.Movie.FileInfo = tinfo
                 End If
                 If miMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 AndAlso Master.eSettings.UseMIDuration Then

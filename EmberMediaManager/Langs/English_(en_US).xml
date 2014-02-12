@@ -1091,5 +1091,5 @@
   <string id="1003">Template saved to:</string>
   <string id="1004">Generate HTML...</string>
   <string id="1005">Always overwrite english outline and plot regardless of Lock Title/Lock Outline setting</string>
-  
+  <string id="1006">Lock Subtitle</string>
   </strings>

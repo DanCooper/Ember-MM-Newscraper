@@ -57,6 +57,9 @@ Partial Class frmMain
         Me.mnuMainToolsBackdrops = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator()
         Me.mnuMainToolsSetsManager = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ExportToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.MoviesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.TVShowsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuMainToolsOfflineHolder = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripMenuItem3 = New System.Windows.Forms.ToolStripSeparator()
         Me.mnuMainToolsClearCache = New System.Windows.Forms.ToolStripMenuItem()
@@ -803,7 +806,7 @@ Partial Class frmMain
         '
         'mnuMainTools
         '
-        Me.mnuMainTools.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMainToolsCleanFiles, Me.mnuMainToolsSortFiles, Me.mnuMainToolsBackdrops, Me.ToolStripSeparator4, Me.mnuMainToolsSetsManager, Me.mnuMainToolsOfflineHolder, Me.ToolStripMenuItem3, Me.mnuMainToolsClearCache, Me.mnuMainToolsReloadMovies, Me.mnuMainToolsCleanDB, Me.ToolStripSeparator5})
+        Me.mnuMainTools.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMainToolsCleanFiles, Me.mnuMainToolsSortFiles, Me.mnuMainToolsBackdrops, Me.ToolStripSeparator4, Me.mnuMainToolsSetsManager, Me.ExportToolStripMenuItem, Me.mnuMainToolsOfflineHolder, Me.ToolStripMenuItem3, Me.mnuMainToolsClearCache, Me.mnuMainToolsReloadMovies, Me.mnuMainToolsCleanDB, Me.ToolStripSeparator5})
         Me.mnuMainTools.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.mnuMainTools.Name = "mnuMainTools"
         Me.mnuMainTools.Size = New System.Drawing.Size(46, 20)
@@ -815,7 +818,7 @@ Partial Class frmMain
         Me.mnuMainToolsCleanFiles.Name = "mnuMainToolsCleanFiles"
         Me.mnuMainToolsCleanFiles.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt) _
             Or System.Windows.Forms.Keys.C), System.Windows.Forms.Keys)
-        Me.mnuMainToolsCleanFiles.Size = New System.Drawing.Size(349, 22)
+        Me.mnuMainToolsCleanFiles.Size = New System.Drawing.Size(352, 22)
         Me.mnuMainToolsCleanFiles.Text = "&Clean Files"
         '
         'mnuMainToolsSortFiles
@@ -824,7 +827,7 @@ Partial Class frmMain
         Me.mnuMainToolsSortFiles.Name = "mnuMainToolsSortFiles"
         Me.mnuMainToolsSortFiles.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt) _
             Or System.Windows.Forms.Keys.S), System.Windows.Forms.Keys)
-        Me.mnuMainToolsSortFiles.Size = New System.Drawing.Size(349, 22)
+        Me.mnuMainToolsSortFiles.Size = New System.Drawing.Size(352, 22)
         Me.mnuMainToolsSortFiles.Text = "&Sort Files Into Folders"
         '
         'mnuMainToolsBackdrops
@@ -833,13 +836,13 @@ Partial Class frmMain
         Me.mnuMainToolsBackdrops.Name = "mnuMainToolsBackdrops"
         Me.mnuMainToolsBackdrops.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt) _
             Or System.Windows.Forms.Keys.B), System.Windows.Forms.Keys)
-        Me.mnuMainToolsBackdrops.Size = New System.Drawing.Size(349, 22)
+        Me.mnuMainToolsBackdrops.Size = New System.Drawing.Size(352, 22)
         Me.mnuMainToolsBackdrops.Text = "Copy Existing Fanart To &Backdrops Folder"
         '
         'ToolStripSeparator4
         '
         Me.ToolStripSeparator4.Name = "ToolStripSeparator4"
-        Me.ToolStripSeparator4.Size = New System.Drawing.Size(346, 6)
+        Me.ToolStripSeparator4.Size = New System.Drawing.Size(349, 6)
         '
         'mnuMainToolsSetsManager
         '
@@ -847,8 +850,28 @@ Partial Class frmMain
         Me.mnuMainToolsSetsManager.Name = "mnuMainToolsSetsManager"
         Me.mnuMainToolsSetsManager.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt) _
             Or System.Windows.Forms.Keys.M), System.Windows.Forms.Keys)
-        Me.mnuMainToolsSetsManager.Size = New System.Drawing.Size(349, 22)
+        Me.mnuMainToolsSetsManager.Size = New System.Drawing.Size(352, 22)
         Me.mnuMainToolsSetsManager.Text = "Sets &Manager"
+        '
+        'ExportToolStripMenuItem
+        '
+        Me.ExportToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MoviesToolStripMenuItem, Me.TVShowsToolStripMenuItem})
+        Me.ExportToolStripMenuItem.Image = Global.Ember_Media_Manager.My.Resources.Resources.modules
+        Me.ExportToolStripMenuItem.Name = "ExportToolStripMenuItem"
+        Me.ExportToolStripMenuItem.Size = New System.Drawing.Size(352, 22)
+        Me.ExportToolStripMenuItem.Text = "Export"
+        '
+        'MoviesToolStripMenuItem
+        '
+        Me.MoviesToolStripMenuItem.Name = "MoviesToolStripMenuItem"
+        Me.MoviesToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.MoviesToolStripMenuItem.Text = "Movies"
+        '
+        'TVShowsToolStripMenuItem
+        '
+        Me.TVShowsToolStripMenuItem.Name = "TVShowsToolStripMenuItem"
+        Me.TVShowsToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.TVShowsToolStripMenuItem.Text = "TV Shows"
         '
         'mnuMainToolsOfflineHolder
         '
@@ -857,13 +880,13 @@ Partial Class frmMain
         Me.mnuMainToolsOfflineHolder.ShortcutKeyDisplayString = ""
         Me.mnuMainToolsOfflineHolder.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt) _
             Or System.Windows.Forms.Keys.O), System.Windows.Forms.Keys)
-        Me.mnuMainToolsOfflineHolder.Size = New System.Drawing.Size(349, 22)
+        Me.mnuMainToolsOfflineHolder.Size = New System.Drawing.Size(352, 22)
         Me.mnuMainToolsOfflineHolder.Text = "&Offline Media Manager"
         '
         'ToolStripMenuItem3
         '
         Me.ToolStripMenuItem3.Name = "ToolStripMenuItem3"
-        Me.ToolStripMenuItem3.Size = New System.Drawing.Size(346, 6)
+        Me.ToolStripMenuItem3.Size = New System.Drawing.Size(349, 6)
         '
         'mnuMainToolsClearCache
         '
@@ -871,7 +894,7 @@ Partial Class frmMain
         Me.mnuMainToolsClearCache.Name = "mnuMainToolsClearCache"
         Me.mnuMainToolsClearCache.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt) _
             Or System.Windows.Forms.Keys.A), System.Windows.Forms.Keys)
-        Me.mnuMainToolsClearCache.Size = New System.Drawing.Size(349, 22)
+        Me.mnuMainToolsClearCache.Size = New System.Drawing.Size(352, 22)
         Me.mnuMainToolsClearCache.Text = "Clear &All Caches"
         '
         'mnuMainToolsReloadMovies
@@ -880,7 +903,7 @@ Partial Class frmMain
         Me.mnuMainToolsReloadMovies.Name = "mnuMainToolsReloadMovies"
         Me.mnuMainToolsReloadMovies.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt) _
             Or System.Windows.Forms.Keys.L), System.Windows.Forms.Keys)
-        Me.mnuMainToolsReloadMovies.Size = New System.Drawing.Size(349, 22)
+        Me.mnuMainToolsReloadMovies.Size = New System.Drawing.Size(352, 22)
         Me.mnuMainToolsReloadMovies.Text = "Re&load All Movies"
         '
         'mnuMainToolsCleanDB
@@ -889,13 +912,13 @@ Partial Class frmMain
         Me.mnuMainToolsCleanDB.Name = "mnuMainToolsCleanDB"
         Me.mnuMainToolsCleanDB.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt) _
             Or System.Windows.Forms.Keys.D), System.Windows.Forms.Keys)
-        Me.mnuMainToolsCleanDB.Size = New System.Drawing.Size(349, 22)
+        Me.mnuMainToolsCleanDB.Size = New System.Drawing.Size(352, 22)
         Me.mnuMainToolsCleanDB.Text = "Clean &Database"
         '
         'ToolStripSeparator5
         '
         Me.ToolStripSeparator5.Name = "ToolStripSeparator5"
-        Me.ToolStripSeparator5.Size = New System.Drawing.Size(346, 6)
+        Me.ToolStripSeparator5.Size = New System.Drawing.Size(349, 6)
         '
         'mnuMainDonate
         '
@@ -1091,27 +1114,27 @@ Partial Class frmMain
         '
         Me.cmnuMovie.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuMovieTitle, Me.ToolStripSeparator3, Me.cmnuMovieReload, Me.cmnuMovieMark, Me.cmnuMovieLock, Me.cmnuMovieWatched, Me.ToolStripMenuItem1, Me.cmnuMovieEdit, Me.cmnuMovieEditMetaData, Me.cmnuMovieGenres, Me.cmnuSep, Me.cmnuMovieRescrape, Me.cmnuMovieReSel, Me.cmnuMovieChange, Me.cmnuSep2, Me.cmnuMovieOpenFolder, Me.ToolStripSeparator1, Me.cmnuMovieRemove})
         Me.cmnuMovie.Name = "mnuMediaList"
-        Me.cmnuMovie.Size = New System.Drawing.Size(245, 320)
+        Me.cmnuMovie.Size = New System.Drawing.Size(247, 320)
         '
         'cmnuMovieTitle
         '
         Me.cmnuMovieTitle.Enabled = False
         Me.cmnuMovieTitle.Image = CType(resources.GetObject("cmnuMovieTitle.Image"), System.Drawing.Image)
         Me.cmnuMovieTitle.Name = "cmnuMovieTitle"
-        Me.cmnuMovieTitle.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuMovieTitle.Size = New System.Drawing.Size(246, 22)
         Me.cmnuMovieTitle.Text = "Title"
         '
         'ToolStripSeparator3
         '
         Me.ToolStripSeparator3.Name = "ToolStripSeparator3"
-        Me.ToolStripSeparator3.Size = New System.Drawing.Size(241, 6)
+        Me.ToolStripSeparator3.Size = New System.Drawing.Size(243, 6)
         '
         'cmnuMovieReload
         '
         Me.cmnuMovieReload.Image = CType(resources.GetObject("cmnuMovieReload.Image"), System.Drawing.Image)
         Me.cmnuMovieReload.Name = "cmnuMovieReload"
         Me.cmnuMovieReload.ShortcutKeys = System.Windows.Forms.Keys.F5
-        Me.cmnuMovieReload.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuMovieReload.Size = New System.Drawing.Size(246, 22)
         Me.cmnuMovieReload.Text = "Reload"
         '
         'cmnuMovieMark
@@ -1119,7 +1142,7 @@ Partial Class frmMain
         Me.cmnuMovieMark.Image = CType(resources.GetObject("cmnuMovieMark.Image"), System.Drawing.Image)
         Me.cmnuMovieMark.Name = "cmnuMovieMark"
         Me.cmnuMovieMark.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.M), System.Windows.Forms.Keys)
-        Me.cmnuMovieMark.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuMovieMark.Size = New System.Drawing.Size(246, 22)
         Me.cmnuMovieMark.Text = "Mark"
         '
         'cmnuMovieLock
@@ -1127,7 +1150,7 @@ Partial Class frmMain
         Me.cmnuMovieLock.Image = CType(resources.GetObject("cmnuMovieLock.Image"), System.Drawing.Image)
         Me.cmnuMovieLock.Name = "cmnuMovieLock"
         Me.cmnuMovieLock.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.L), System.Windows.Forms.Keys)
-        Me.cmnuMovieLock.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuMovieLock.Size = New System.Drawing.Size(246, 22)
         Me.cmnuMovieLock.Text = "Lock"
         '
         'cmnuMovieWatched
@@ -1135,20 +1158,20 @@ Partial Class frmMain
         Me.cmnuMovieWatched.Image = CType(resources.GetObject("cmnuMovieWatched.Image"), System.Drawing.Image)
         Me.cmnuMovieWatched.Name = "cmnuMovieWatched"
         Me.cmnuMovieWatched.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.W), System.Windows.Forms.Keys)
-        Me.cmnuMovieWatched.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuMovieWatched.Size = New System.Drawing.Size(246, 22)
         Me.cmnuMovieWatched.Text = "Watched"
         '
         'ToolStripMenuItem1
         '
         Me.ToolStripMenuItem1.Name = "ToolStripMenuItem1"
-        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(241, 6)
+        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(243, 6)
         '
         'cmnuMovieEdit
         '
         Me.cmnuMovieEdit.Image = CType(resources.GetObject("cmnuMovieEdit.Image"), System.Drawing.Image)
         Me.cmnuMovieEdit.Name = "cmnuMovieEdit"
         Me.cmnuMovieEdit.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.E), System.Windows.Forms.Keys)
-        Me.cmnuMovieEdit.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuMovieEdit.Size = New System.Drawing.Size(246, 22)
         Me.cmnuMovieEdit.Text = "Edit Movie"
         '
         'cmnuMovieEditMetaData
@@ -1156,7 +1179,7 @@ Partial Class frmMain
         Me.cmnuMovieEditMetaData.Image = CType(resources.GetObject("cmnuMovieEditMetaData.Image"), System.Drawing.Image)
         Me.cmnuMovieEditMetaData.Name = "cmnuMovieEditMetaData"
         Me.cmnuMovieEditMetaData.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.D), System.Windows.Forms.Keys)
-        Me.cmnuMovieEditMetaData.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuMovieEditMetaData.Size = New System.Drawing.Size(246, 22)
         Me.cmnuMovieEditMetaData.Text = "Edit Meta Data"
         '
         'cmnuMovieGenres
@@ -1164,7 +1187,7 @@ Partial Class frmMain
         Me.cmnuMovieGenres.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuMovieGenresTitle, Me.cmnuMovieGenresGenre, Me.cmnuMovieGenresAdd, Me.cmnuMovieGenresSet, Me.cmnuMovieGenresRemove})
         Me.cmnuMovieGenres.Image = CType(resources.GetObject("cmnuMovieGenres.Image"), System.Drawing.Image)
         Me.cmnuMovieGenres.Name = "cmnuMovieGenres"
-        Me.cmnuMovieGenres.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuMovieGenres.Size = New System.Drawing.Size(246, 22)
         Me.cmnuMovieGenres.Text = "Genres"
         '
         'cmnuMovieGenresTitle
@@ -1203,14 +1226,14 @@ Partial Class frmMain
         'cmnuSep
         '
         Me.cmnuSep.Name = "cmnuSep"
-        Me.cmnuSep.Size = New System.Drawing.Size(241, 6)
+        Me.cmnuSep.Size = New System.Drawing.Size(243, 6)
         '
         'cmnuMovieRescrape
         '
         Me.cmnuMovieRescrape.Image = CType(resources.GetObject("cmnuMovieRescrape.Image"), System.Drawing.Image)
         Me.cmnuMovieRescrape.Name = "cmnuMovieRescrape"
         Me.cmnuMovieRescrape.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.I), System.Windows.Forms.Keys)
-        Me.cmnuMovieRescrape.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuMovieRescrape.Size = New System.Drawing.Size(246, 22)
         Me.cmnuMovieRescrape.Text = "(Re)Scrape Movie"
         '
         'cmnuMovieReSel
@@ -1218,7 +1241,7 @@ Partial Class frmMain
         Me.cmnuMovieReSel.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuMovieReSelAuto, Me.cmnuMovieReSelAsk})
         Me.cmnuMovieReSel.Image = CType(resources.GetObject("cmnuMovieReSel.Image"), System.Drawing.Image)
         Me.cmnuMovieReSel.Name = "cmnuMovieReSel"
-        Me.cmnuMovieReSel.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuMovieReSel.Size = New System.Drawing.Size(246, 22)
         Me.cmnuMovieReSel.Text = "(Re)Scrape Selected Movies"
         '
         'cmnuMovieReSelAuto
@@ -1348,33 +1371,33 @@ Partial Class frmMain
         Me.cmnuMovieChange.Image = CType(resources.GetObject("cmnuMovieChange.Image"), System.Drawing.Image)
         Me.cmnuMovieChange.Name = "cmnuMovieChange"
         Me.cmnuMovieChange.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.C), System.Windows.Forms.Keys)
-        Me.cmnuMovieChange.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuMovieChange.Size = New System.Drawing.Size(246, 22)
         Me.cmnuMovieChange.Text = "Change Movie"
         '
         'cmnuSep2
         '
         Me.cmnuSep2.Name = "cmnuSep2"
-        Me.cmnuSep2.Size = New System.Drawing.Size(241, 6)
+        Me.cmnuSep2.Size = New System.Drawing.Size(243, 6)
         '
         'cmnuMovieOpenFolder
         '
         Me.cmnuMovieOpenFolder.Image = CType(resources.GetObject("cmnuMovieOpenFolder.Image"), System.Drawing.Image)
         Me.cmnuMovieOpenFolder.Name = "cmnuMovieOpenFolder"
         Me.cmnuMovieOpenFolder.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.O), System.Windows.Forms.Keys)
-        Me.cmnuMovieOpenFolder.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuMovieOpenFolder.Size = New System.Drawing.Size(246, 22)
         Me.cmnuMovieOpenFolder.Text = "Open Containing Folder"
         '
         'ToolStripSeparator1
         '
         Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-        Me.ToolStripSeparator1.Size = New System.Drawing.Size(241, 6)
+        Me.ToolStripSeparator1.Size = New System.Drawing.Size(243, 6)
         '
         'cmnuMovieRemove
         '
         Me.cmnuMovieRemove.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuMovieRemoveFromDB, Me.cmnuMovieRemoveFromDisk})
         Me.cmnuMovieRemove.Image = CType(resources.GetObject("cmnuMovieRemove.Image"), System.Drawing.Image)
         Me.cmnuMovieRemove.Name = "cmnuMovieRemove"
-        Me.cmnuMovieRemove.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuMovieRemove.Size = New System.Drawing.Size(246, 22)
         Me.cmnuMovieRemove.Text = "Remove"
         '
         'cmnuMovieRemoveFromDB
@@ -1382,7 +1405,7 @@ Partial Class frmMain
         Me.cmnuMovieRemoveFromDB.Image = CType(resources.GetObject("cmnuMovieRemoveFromDB.Image"), System.Drawing.Image)
         Me.cmnuMovieRemoveFromDB.Name = "cmnuMovieRemoveFromDB"
         Me.cmnuMovieRemoveFromDB.ShortcutKeys = System.Windows.Forms.Keys.Delete
-        Me.cmnuMovieRemoveFromDB.Size = New System.Drawing.Size(221, 22)
+        Me.cmnuMovieRemoveFromDB.Size = New System.Drawing.Size(225, 22)
         Me.cmnuMovieRemoveFromDB.Text = "Remove from Database"
         '
         'cmnuMovieRemoveFromDisk
@@ -1390,7 +1413,7 @@ Partial Class frmMain
         Me.cmnuMovieRemoveFromDisk.Image = CType(resources.GetObject("cmnuMovieRemoveFromDisk.Image"), System.Drawing.Image)
         Me.cmnuMovieRemoveFromDisk.Name = "cmnuMovieRemoveFromDisk"
         Me.cmnuMovieRemoveFromDisk.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Delete), System.Windows.Forms.Keys)
-        Me.cmnuMovieRemoveFromDisk.Size = New System.Drawing.Size(221, 22)
+        Me.cmnuMovieRemoveFromDisk.Size = New System.Drawing.Size(225, 22)
         Me.cmnuMovieRemoveFromDisk.Text = "Delete Movie"
         '
         'scTV
@@ -1446,27 +1469,27 @@ Partial Class frmMain
         '
         Me.cmnuShow.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuShowTitle, Me.ToolStripMenuItem2, Me.cmnuShowReload, Me.cmnuShowMark, Me.cmnuShowLock, Me.cmnuShowWatched, Me.ToolStripSeparator8, Me.cmnuShowEdit, Me.ToolStripSeparator7, Me.cmnuShowRescrape, Me.cmnuShowChange, Me.ToolStripSeparator11, Me.cmnuShowOpenFolder, Me.ToolStripSeparator20, Me.cmnuShowRemove})
         Me.cmnuShow.Name = "mnuShows"
-        Me.cmnuShow.Size = New System.Drawing.Size(245, 254)
+        Me.cmnuShow.Size = New System.Drawing.Size(247, 254)
         '
         'cmnuShowTitle
         '
         Me.cmnuShowTitle.Enabled = False
         Me.cmnuShowTitle.Image = CType(resources.GetObject("cmnuShowTitle.Image"), System.Drawing.Image)
         Me.cmnuShowTitle.Name = "cmnuShowTitle"
-        Me.cmnuShowTitle.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuShowTitle.Size = New System.Drawing.Size(246, 22)
         Me.cmnuShowTitle.Text = "Title"
         '
         'ToolStripMenuItem2
         '
         Me.ToolStripMenuItem2.Name = "ToolStripMenuItem2"
-        Me.ToolStripMenuItem2.Size = New System.Drawing.Size(241, 6)
+        Me.ToolStripMenuItem2.Size = New System.Drawing.Size(243, 6)
         '
         'cmnuShowReload
         '
         Me.cmnuShowReload.Image = CType(resources.GetObject("cmnuShowReload.Image"), System.Drawing.Image)
         Me.cmnuShowReload.Name = "cmnuShowReload"
         Me.cmnuShowReload.ShortcutKeys = System.Windows.Forms.Keys.F5
-        Me.cmnuShowReload.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuShowReload.Size = New System.Drawing.Size(246, 22)
         Me.cmnuShowReload.Text = "Reload"
         '
         'cmnuShowMark
@@ -1474,7 +1497,7 @@ Partial Class frmMain
         Me.cmnuShowMark.Image = CType(resources.GetObject("cmnuShowMark.Image"), System.Drawing.Image)
         Me.cmnuShowMark.Name = "cmnuShowMark"
         Me.cmnuShowMark.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.M), System.Windows.Forms.Keys)
-        Me.cmnuShowMark.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuShowMark.Size = New System.Drawing.Size(246, 22)
         Me.cmnuShowMark.Text = "Mark"
         '
         'cmnuShowLock
@@ -1482,7 +1505,7 @@ Partial Class frmMain
         Me.cmnuShowLock.Image = CType(resources.GetObject("cmnuShowLock.Image"), System.Drawing.Image)
         Me.cmnuShowLock.Name = "cmnuShowLock"
         Me.cmnuShowLock.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.L), System.Windows.Forms.Keys)
-        Me.cmnuShowLock.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuShowLock.Size = New System.Drawing.Size(246, 22)
         Me.cmnuShowLock.Text = "Lock"
         '
         'cmnuShowWatched
@@ -1490,33 +1513,33 @@ Partial Class frmMain
         Me.cmnuShowWatched.Image = CType(resources.GetObject("cmnuShowWatched.Image"), System.Drawing.Image)
         Me.cmnuShowWatched.Name = "cmnuShowWatched"
         Me.cmnuShowWatched.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.W), System.Windows.Forms.Keys)
-        Me.cmnuShowWatched.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuShowWatched.Size = New System.Drawing.Size(246, 22)
         Me.cmnuShowWatched.Text = "Watched"
         '
         'ToolStripSeparator8
         '
         Me.ToolStripSeparator8.Name = "ToolStripSeparator8"
-        Me.ToolStripSeparator8.Size = New System.Drawing.Size(241, 6)
+        Me.ToolStripSeparator8.Size = New System.Drawing.Size(243, 6)
         '
         'cmnuShowEdit
         '
         Me.cmnuShowEdit.Image = CType(resources.GetObject("cmnuShowEdit.Image"), System.Drawing.Image)
         Me.cmnuShowEdit.Name = "cmnuShowEdit"
         Me.cmnuShowEdit.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.E), System.Windows.Forms.Keys)
-        Me.cmnuShowEdit.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuShowEdit.Size = New System.Drawing.Size(246, 22)
         Me.cmnuShowEdit.Text = "Edit Show"
         '
         'ToolStripSeparator7
         '
         Me.ToolStripSeparator7.Name = "ToolStripSeparator7"
-        Me.ToolStripSeparator7.Size = New System.Drawing.Size(241, 6)
+        Me.ToolStripSeparator7.Size = New System.Drawing.Size(243, 6)
         '
         'cmnuShowRescrape
         '
         Me.cmnuShowRescrape.Image = CType(resources.GetObject("cmnuShowRescrape.Image"), System.Drawing.Image)
         Me.cmnuShowRescrape.Name = "cmnuShowRescrape"
         Me.cmnuShowRescrape.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.I), System.Windows.Forms.Keys)
-        Me.cmnuShowRescrape.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuShowRescrape.Size = New System.Drawing.Size(246, 22)
         Me.cmnuShowRescrape.Text = "(Re)Scrape Show"
         '
         'cmnuShowChange
@@ -1524,33 +1547,33 @@ Partial Class frmMain
         Me.cmnuShowChange.Image = CType(resources.GetObject("cmnuShowChange.Image"), System.Drawing.Image)
         Me.cmnuShowChange.Name = "cmnuShowChange"
         Me.cmnuShowChange.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.C), System.Windows.Forms.Keys)
-        Me.cmnuShowChange.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuShowChange.Size = New System.Drawing.Size(246, 22)
         Me.cmnuShowChange.Text = "Change Show"
         '
         'ToolStripSeparator11
         '
         Me.ToolStripSeparator11.Name = "ToolStripSeparator11"
-        Me.ToolStripSeparator11.Size = New System.Drawing.Size(241, 6)
+        Me.ToolStripSeparator11.Size = New System.Drawing.Size(243, 6)
         '
         'cmnuShowOpenFolder
         '
         Me.cmnuShowOpenFolder.Image = CType(resources.GetObject("cmnuShowOpenFolder.Image"), System.Drawing.Image)
         Me.cmnuShowOpenFolder.Name = "cmnuShowOpenFolder"
         Me.cmnuShowOpenFolder.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.O), System.Windows.Forms.Keys)
-        Me.cmnuShowOpenFolder.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuShowOpenFolder.Size = New System.Drawing.Size(246, 22)
         Me.cmnuShowOpenFolder.Text = "Open Containing Folder"
         '
         'ToolStripSeparator20
         '
         Me.ToolStripSeparator20.Name = "ToolStripSeparator20"
-        Me.ToolStripSeparator20.Size = New System.Drawing.Size(241, 6)
+        Me.ToolStripSeparator20.Size = New System.Drawing.Size(243, 6)
         '
         'cmnuShowRemove
         '
         Me.cmnuShowRemove.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuShowRemoveFromDB, Me.cmnuShowRemoveFromDisk})
         Me.cmnuShowRemove.Image = CType(resources.GetObject("cmnuShowRemove.Image"), System.Drawing.Image)
         Me.cmnuShowRemove.Name = "cmnuShowRemove"
-        Me.cmnuShowRemove.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuShowRemove.Size = New System.Drawing.Size(246, 22)
         Me.cmnuShowRemove.Text = "Remove"
         '
         'cmnuShowRemoveFromDB
@@ -1558,7 +1581,7 @@ Partial Class frmMain
         Me.cmnuShowRemoveFromDB.Image = CType(resources.GetObject("cmnuShowRemoveFromDB.Image"), System.Drawing.Image)
         Me.cmnuShowRemoveFromDB.Name = "cmnuShowRemoveFromDB"
         Me.cmnuShowRemoveFromDB.ShortcutKeys = System.Windows.Forms.Keys.Delete
-        Me.cmnuShowRemoveFromDB.Size = New System.Drawing.Size(221, 22)
+        Me.cmnuShowRemoveFromDB.Size = New System.Drawing.Size(225, 22)
         Me.cmnuShowRemoveFromDB.Text = "Remove from Database"
         '
         'cmnuShowRemoveFromDisk
@@ -1566,7 +1589,7 @@ Partial Class frmMain
         Me.cmnuShowRemoveFromDisk.Image = CType(resources.GetObject("cmnuShowRemoveFromDisk.Image"), System.Drawing.Image)
         Me.cmnuShowRemoveFromDisk.Name = "cmnuShowRemoveFromDisk"
         Me.cmnuShowRemoveFromDisk.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Delete), System.Windows.Forms.Keys)
-        Me.cmnuShowRemoveFromDisk.Size = New System.Drawing.Size(221, 22)
+        Me.cmnuShowRemoveFromDisk.Size = New System.Drawing.Size(225, 22)
         Me.cmnuShowRemoveFromDisk.Text = "Delete TV Show"
         '
         'scTVSeasonsEpisodes
@@ -1619,27 +1642,27 @@ Partial Class frmMain
         '
         Me.cmnuSeason.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuSeasonTitle, Me.ToolStripSeparator17, Me.cmnuSeasonReload, Me.cmnuSeasonMark, Me.cmnuSeasonLock, Me.cmnuSeasonWatched, Me.ToolStripSeparator16, Me.cmnuSeasonChangeImages, Me.ToolStripSeparator14, Me.cmnuSeasonRescrape, Me.ToolStripSeparator15, Me.cmnuSeasonOpenFolder, Me.ToolStripSeparator27, Me.cmnuSeasonRemove})
         Me.cmnuSeason.Name = "mnuSeasons"
-        Me.cmnuSeason.Size = New System.Drawing.Size(245, 232)
+        Me.cmnuSeason.Size = New System.Drawing.Size(247, 232)
         '
         'cmnuSeasonTitle
         '
         Me.cmnuSeasonTitle.Enabled = False
         Me.cmnuSeasonTitle.Image = CType(resources.GetObject("cmnuSeasonTitle.Image"), System.Drawing.Image)
         Me.cmnuSeasonTitle.Name = "cmnuSeasonTitle"
-        Me.cmnuSeasonTitle.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuSeasonTitle.Size = New System.Drawing.Size(246, 22)
         Me.cmnuSeasonTitle.Text = "Title"
         '
         'ToolStripSeparator17
         '
         Me.ToolStripSeparator17.Name = "ToolStripSeparator17"
-        Me.ToolStripSeparator17.Size = New System.Drawing.Size(241, 6)
+        Me.ToolStripSeparator17.Size = New System.Drawing.Size(243, 6)
         '
         'cmnuSeasonReload
         '
         Me.cmnuSeasonReload.Image = CType(resources.GetObject("cmnuSeasonReload.Image"), System.Drawing.Image)
         Me.cmnuSeasonReload.Name = "cmnuSeasonReload"
         Me.cmnuSeasonReload.ShortcutKeys = System.Windows.Forms.Keys.F5
-        Me.cmnuSeasonReload.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuSeasonReload.Size = New System.Drawing.Size(246, 22)
         Me.cmnuSeasonReload.Text = "Reload"
         '
         'cmnuSeasonMark
@@ -1647,7 +1670,7 @@ Partial Class frmMain
         Me.cmnuSeasonMark.Image = CType(resources.GetObject("cmnuSeasonMark.Image"), System.Drawing.Image)
         Me.cmnuSeasonMark.Name = "cmnuSeasonMark"
         Me.cmnuSeasonMark.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.M), System.Windows.Forms.Keys)
-        Me.cmnuSeasonMark.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuSeasonMark.Size = New System.Drawing.Size(246, 22)
         Me.cmnuSeasonMark.Text = "Mark"
         '
         'cmnuSeasonLock
@@ -1655,7 +1678,7 @@ Partial Class frmMain
         Me.cmnuSeasonLock.Image = CType(resources.GetObject("cmnuSeasonLock.Image"), System.Drawing.Image)
         Me.cmnuSeasonLock.Name = "cmnuSeasonLock"
         Me.cmnuSeasonLock.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.L), System.Windows.Forms.Keys)
-        Me.cmnuSeasonLock.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuSeasonLock.Size = New System.Drawing.Size(246, 22)
         Me.cmnuSeasonLock.Text = "Lock"
         '
         'cmnuSeasonWatched
@@ -1663,59 +1686,59 @@ Partial Class frmMain
         Me.cmnuSeasonWatched.Image = CType(resources.GetObject("cmnuSeasonWatched.Image"), System.Drawing.Image)
         Me.cmnuSeasonWatched.Name = "cmnuSeasonWatched"
         Me.cmnuSeasonWatched.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.W), System.Windows.Forms.Keys)
-        Me.cmnuSeasonWatched.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuSeasonWatched.Size = New System.Drawing.Size(246, 22)
         Me.cmnuSeasonWatched.Text = "Watched"
         '
         'ToolStripSeparator16
         '
         Me.ToolStripSeparator16.Name = "ToolStripSeparator16"
-        Me.ToolStripSeparator16.Size = New System.Drawing.Size(241, 6)
+        Me.ToolStripSeparator16.Size = New System.Drawing.Size(243, 6)
         '
         'cmnuSeasonChangeImages
         '
         Me.cmnuSeasonChangeImages.Image = CType(resources.GetObject("cmnuSeasonChangeImages.Image"), System.Drawing.Image)
         Me.cmnuSeasonChangeImages.Name = "cmnuSeasonChangeImages"
         Me.cmnuSeasonChangeImages.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.E), System.Windows.Forms.Keys)
-        Me.cmnuSeasonChangeImages.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuSeasonChangeImages.Size = New System.Drawing.Size(246, 22)
         Me.cmnuSeasonChangeImages.Text = "Change Images"
         '
         'ToolStripSeparator14
         '
         Me.ToolStripSeparator14.Name = "ToolStripSeparator14"
-        Me.ToolStripSeparator14.Size = New System.Drawing.Size(241, 6)
+        Me.ToolStripSeparator14.Size = New System.Drawing.Size(243, 6)
         '
         'cmnuSeasonRescrape
         '
         Me.cmnuSeasonRescrape.Image = CType(resources.GetObject("cmnuSeasonRescrape.Image"), System.Drawing.Image)
         Me.cmnuSeasonRescrape.Name = "cmnuSeasonRescrape"
         Me.cmnuSeasonRescrape.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.I), System.Windows.Forms.Keys)
-        Me.cmnuSeasonRescrape.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuSeasonRescrape.Size = New System.Drawing.Size(246, 22)
         Me.cmnuSeasonRescrape.Text = "(Re)Scrape Season"
         '
         'ToolStripSeparator15
         '
         Me.ToolStripSeparator15.Name = "ToolStripSeparator15"
-        Me.ToolStripSeparator15.Size = New System.Drawing.Size(241, 6)
+        Me.ToolStripSeparator15.Size = New System.Drawing.Size(243, 6)
         '
         'cmnuSeasonOpenFolder
         '
         Me.cmnuSeasonOpenFolder.Image = CType(resources.GetObject("cmnuSeasonOpenFolder.Image"), System.Drawing.Image)
         Me.cmnuSeasonOpenFolder.Name = "cmnuSeasonOpenFolder"
         Me.cmnuSeasonOpenFolder.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.O), System.Windows.Forms.Keys)
-        Me.cmnuSeasonOpenFolder.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuSeasonOpenFolder.Size = New System.Drawing.Size(246, 22)
         Me.cmnuSeasonOpenFolder.Text = "Open Contianing Folder"
         '
         'ToolStripSeparator27
         '
         Me.ToolStripSeparator27.Name = "ToolStripSeparator27"
-        Me.ToolStripSeparator27.Size = New System.Drawing.Size(241, 6)
+        Me.ToolStripSeparator27.Size = New System.Drawing.Size(243, 6)
         '
         'cmnuSeasonRemove
         '
         Me.cmnuSeasonRemove.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuRemoveSeasonFromDB, Me.cmnuSeasonRemoveFromDisk})
         Me.cmnuSeasonRemove.Image = CType(resources.GetObject("cmnuSeasonRemove.Image"), System.Drawing.Image)
         Me.cmnuSeasonRemove.Name = "cmnuSeasonRemove"
-        Me.cmnuSeasonRemove.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuSeasonRemove.Size = New System.Drawing.Size(246, 22)
         Me.cmnuSeasonRemove.Text = "Remove"
         '
         'cmnuRemoveSeasonFromDB
@@ -1723,7 +1746,7 @@ Partial Class frmMain
         Me.cmnuRemoveSeasonFromDB.Image = CType(resources.GetObject("cmnuRemoveSeasonFromDB.Image"), System.Drawing.Image)
         Me.cmnuRemoveSeasonFromDB.Name = "cmnuRemoveSeasonFromDB"
         Me.cmnuRemoveSeasonFromDB.ShortcutKeys = System.Windows.Forms.Keys.Delete
-        Me.cmnuRemoveSeasonFromDB.Size = New System.Drawing.Size(221, 22)
+        Me.cmnuRemoveSeasonFromDB.Size = New System.Drawing.Size(225, 22)
         Me.cmnuRemoveSeasonFromDB.Text = "Remove from Database"
         '
         'cmnuSeasonRemoveFromDisk
@@ -1731,7 +1754,7 @@ Partial Class frmMain
         Me.cmnuSeasonRemoveFromDisk.Image = CType(resources.GetObject("cmnuSeasonRemoveFromDisk.Image"), System.Drawing.Image)
         Me.cmnuSeasonRemoveFromDisk.Name = "cmnuSeasonRemoveFromDisk"
         Me.cmnuSeasonRemoveFromDisk.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Delete), System.Windows.Forms.Keys)
-        Me.cmnuSeasonRemoveFromDisk.Size = New System.Drawing.Size(221, 22)
+        Me.cmnuSeasonRemoveFromDisk.Size = New System.Drawing.Size(225, 22)
         Me.cmnuSeasonRemoveFromDisk.Text = "Delete Season"
         '
         'dgvTVEpisodes
@@ -1764,27 +1787,27 @@ Partial Class frmMain
         '
         Me.cmnuEpisode.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuEpisodeTitle, Me.ToolStripSeparator6, Me.cmnuEpisodeReload, Me.cmnuEpisodeMark, Me.cmnuEpisodeLock, Me.cmnuEpisodeWatched, Me.ToolStripSeparator9, Me.cmnuEpisodeEdit, Me.ToolStripSeparator10, Me.cmnuEpisodeRescrape, Me.cmnuEpisodeChange, Me.ToolStripSeparator12, Me.cmnuEpisodeOpenFolder, Me.ToolStripSeparator28, Me.cmnuEpisodeRemove})
         Me.cmnuEpisode.Name = "mnuEpisodes"
-        Me.cmnuEpisode.Size = New System.Drawing.Size(245, 254)
+        Me.cmnuEpisode.Size = New System.Drawing.Size(247, 254)
         '
         'cmnuEpisodeTitle
         '
         Me.cmnuEpisodeTitle.Enabled = False
         Me.cmnuEpisodeTitle.Image = CType(resources.GetObject("cmnuEpisodeTitle.Image"), System.Drawing.Image)
         Me.cmnuEpisodeTitle.Name = "cmnuEpisodeTitle"
-        Me.cmnuEpisodeTitle.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuEpisodeTitle.Size = New System.Drawing.Size(246, 22)
         Me.cmnuEpisodeTitle.Text = "Title"
         '
         'ToolStripSeparator6
         '
         Me.ToolStripSeparator6.Name = "ToolStripSeparator6"
-        Me.ToolStripSeparator6.Size = New System.Drawing.Size(241, 6)
+        Me.ToolStripSeparator6.Size = New System.Drawing.Size(243, 6)
         '
         'cmnuEpisodeReload
         '
         Me.cmnuEpisodeReload.Image = CType(resources.GetObject("cmnuEpisodeReload.Image"), System.Drawing.Image)
         Me.cmnuEpisodeReload.Name = "cmnuEpisodeReload"
         Me.cmnuEpisodeReload.ShortcutKeys = System.Windows.Forms.Keys.F5
-        Me.cmnuEpisodeReload.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuEpisodeReload.Size = New System.Drawing.Size(246, 22)
         Me.cmnuEpisodeReload.Text = "Reload"
         '
         'cmnuEpisodeMark
@@ -1792,7 +1815,7 @@ Partial Class frmMain
         Me.cmnuEpisodeMark.Image = CType(resources.GetObject("cmnuEpisodeMark.Image"), System.Drawing.Image)
         Me.cmnuEpisodeMark.Name = "cmnuEpisodeMark"
         Me.cmnuEpisodeMark.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.M), System.Windows.Forms.Keys)
-        Me.cmnuEpisodeMark.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuEpisodeMark.Size = New System.Drawing.Size(246, 22)
         Me.cmnuEpisodeMark.Text = "Mark"
         '
         'cmnuEpisodeLock
@@ -1800,7 +1823,7 @@ Partial Class frmMain
         Me.cmnuEpisodeLock.Image = CType(resources.GetObject("cmnuEpisodeLock.Image"), System.Drawing.Image)
         Me.cmnuEpisodeLock.Name = "cmnuEpisodeLock"
         Me.cmnuEpisodeLock.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.L), System.Windows.Forms.Keys)
-        Me.cmnuEpisodeLock.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuEpisodeLock.Size = New System.Drawing.Size(246, 22)
         Me.cmnuEpisodeLock.Text = "Lock"
         '
         'cmnuEpisodeWatched
@@ -1808,33 +1831,33 @@ Partial Class frmMain
         Me.cmnuEpisodeWatched.Image = CType(resources.GetObject("cmnuEpisodeWatched.Image"), System.Drawing.Image)
         Me.cmnuEpisodeWatched.Name = "cmnuEpisodeWatched"
         Me.cmnuEpisodeWatched.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.W), System.Windows.Forms.Keys)
-        Me.cmnuEpisodeWatched.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuEpisodeWatched.Size = New System.Drawing.Size(246, 22)
         Me.cmnuEpisodeWatched.Text = "Watched"
         '
         'ToolStripSeparator9
         '
         Me.ToolStripSeparator9.Name = "ToolStripSeparator9"
-        Me.ToolStripSeparator9.Size = New System.Drawing.Size(241, 6)
+        Me.ToolStripSeparator9.Size = New System.Drawing.Size(243, 6)
         '
         'cmnuEpisodeEdit
         '
         Me.cmnuEpisodeEdit.Image = CType(resources.GetObject("cmnuEpisodeEdit.Image"), System.Drawing.Image)
         Me.cmnuEpisodeEdit.Name = "cmnuEpisodeEdit"
         Me.cmnuEpisodeEdit.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.E), System.Windows.Forms.Keys)
-        Me.cmnuEpisodeEdit.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuEpisodeEdit.Size = New System.Drawing.Size(246, 22)
         Me.cmnuEpisodeEdit.Text = "Edit Episode"
         '
         'ToolStripSeparator10
         '
         Me.ToolStripSeparator10.Name = "ToolStripSeparator10"
-        Me.ToolStripSeparator10.Size = New System.Drawing.Size(241, 6)
+        Me.ToolStripSeparator10.Size = New System.Drawing.Size(243, 6)
         '
         'cmnuEpisodeRescrape
         '
         Me.cmnuEpisodeRescrape.Image = CType(resources.GetObject("cmnuEpisodeRescrape.Image"), System.Drawing.Image)
         Me.cmnuEpisodeRescrape.Name = "cmnuEpisodeRescrape"
         Me.cmnuEpisodeRescrape.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.I), System.Windows.Forms.Keys)
-        Me.cmnuEpisodeRescrape.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuEpisodeRescrape.Size = New System.Drawing.Size(246, 22)
         Me.cmnuEpisodeRescrape.Text = "(Re)Scrape Episode"
         '
         'cmnuEpisodeChange
@@ -1842,33 +1865,33 @@ Partial Class frmMain
         Me.cmnuEpisodeChange.Image = CType(resources.GetObject("cmnuEpisodeChange.Image"), System.Drawing.Image)
         Me.cmnuEpisodeChange.Name = "cmnuEpisodeChange"
         Me.cmnuEpisodeChange.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.C), System.Windows.Forms.Keys)
-        Me.cmnuEpisodeChange.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuEpisodeChange.Size = New System.Drawing.Size(246, 22)
         Me.cmnuEpisodeChange.Text = "Change Episode"
         '
         'ToolStripSeparator12
         '
         Me.ToolStripSeparator12.Name = "ToolStripSeparator12"
-        Me.ToolStripSeparator12.Size = New System.Drawing.Size(241, 6)
+        Me.ToolStripSeparator12.Size = New System.Drawing.Size(243, 6)
         '
         'cmnuEpisodeOpenFolder
         '
         Me.cmnuEpisodeOpenFolder.Image = CType(resources.GetObject("cmnuEpisodeOpenFolder.Image"), System.Drawing.Image)
         Me.cmnuEpisodeOpenFolder.Name = "cmnuEpisodeOpenFolder"
         Me.cmnuEpisodeOpenFolder.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.O), System.Windows.Forms.Keys)
-        Me.cmnuEpisodeOpenFolder.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuEpisodeOpenFolder.Size = New System.Drawing.Size(246, 22)
         Me.cmnuEpisodeOpenFolder.Text = "Open Contianing Folder"
         '
         'ToolStripSeparator28
         '
         Me.ToolStripSeparator28.Name = "ToolStripSeparator28"
-        Me.ToolStripSeparator28.Size = New System.Drawing.Size(241, 6)
+        Me.ToolStripSeparator28.Size = New System.Drawing.Size(243, 6)
         '
         'cmnuEpisodeRemove
         '
         Me.cmnuEpisodeRemove.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuEpisodeRemoveFromDB, Me.cmnuEpisodeRemoveFromDisk})
         Me.cmnuEpisodeRemove.Image = CType(resources.GetObject("cmnuEpisodeRemove.Image"), System.Drawing.Image)
         Me.cmnuEpisodeRemove.Name = "cmnuEpisodeRemove"
-        Me.cmnuEpisodeRemove.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuEpisodeRemove.Size = New System.Drawing.Size(246, 22)
         Me.cmnuEpisodeRemove.Text = "Remove"
         '
         'cmnuEpisodeRemoveFromDB
@@ -1876,7 +1899,7 @@ Partial Class frmMain
         Me.cmnuEpisodeRemoveFromDB.Image = CType(resources.GetObject("cmnuEpisodeRemoveFromDB.Image"), System.Drawing.Image)
         Me.cmnuEpisodeRemoveFromDB.Name = "cmnuEpisodeRemoveFromDB"
         Me.cmnuEpisodeRemoveFromDB.ShortcutKeys = System.Windows.Forms.Keys.Delete
-        Me.cmnuEpisodeRemoveFromDB.Size = New System.Drawing.Size(221, 22)
+        Me.cmnuEpisodeRemoveFromDB.Size = New System.Drawing.Size(225, 22)
         Me.cmnuEpisodeRemoveFromDB.Text = "Remove from Database"
         '
         'cmnuEpisodeRemoveFromDisk
@@ -1884,7 +1907,7 @@ Partial Class frmMain
         Me.cmnuEpisodeRemoveFromDisk.Image = CType(resources.GetObject("cmnuEpisodeRemoveFromDisk.Image"), System.Drawing.Image)
         Me.cmnuEpisodeRemoveFromDisk.Name = "cmnuEpisodeRemoveFromDisk"
         Me.cmnuEpisodeRemoveFromDisk.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Delete), System.Windows.Forms.Keys)
-        Me.cmnuEpisodeRemoveFromDisk.Size = New System.Drawing.Size(221, 22)
+        Me.cmnuEpisodeRemoveFromDisk.Size = New System.Drawing.Size(225, 22)
         Me.cmnuEpisodeRemoveFromDisk.Text = "Delete Episode"
         '
         'pnlListTop
@@ -5488,4 +5511,7 @@ Partial Class frmMain
     Friend WithEvents mnuMainToolsOfflineHolder As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuTrayToolsOfflineHolder As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents lblUpdate As System.Windows.Forms.Label
+    Friend WithEvents ExportToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents MoviesToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents TVShowsToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 End Class

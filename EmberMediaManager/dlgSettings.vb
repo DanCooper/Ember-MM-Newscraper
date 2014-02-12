@@ -2459,6 +2459,7 @@ Public Class dlgSettings
             Me.chkLockRealStudio.Checked = Master.eSettings.LockStudio
             Me.chkLockLanguageA.Checked = Master.eSettings.LockLanguageA
             Me.chkLockLanguageV.Checked = Master.eSettings.LockLanguageV
+            Me.chkLockSubtitle.Checked = Master.eSettings.LockSubtitle
             Me.chkLockMPAA.Checked = Master.eSettings.LockMPAA
             Me.chkUseMPAAFSK.Checked = Master.eSettings.UseMPAAForFSK
             Me.chkLockGenre.Checked = Master.eSettings.LockGenre
@@ -3662,6 +3663,7 @@ Public Class dlgSettings
             Master.eSettings.LockRating = Me.chkLockRating.Checked
             Master.eSettings.LockLanguageV = Me.chkLockLanguageV.Checked
             Master.eSettings.LockLanguageA = Me.chkLockLanguageA.Checked
+            Master.eSettings.LockSubtitle = Me.chkLockSubtitle.Checked
             Master.eSettings.LockMPAA = Me.chkLockMPAA.Checked
             Master.eSettings.UseMPAAForFSK = Me.chkUseMPAAFSK.Checked
             Master.eSettings.LockStudio = Me.chkLockRealStudio.Checked
@@ -4230,6 +4232,7 @@ Public Class dlgSettings
         Me.chkMovieSingleScrapeImages.Text = Master.eLang.GetString(499, "Get on Single Scrape")
         Me.chkLockLanguageV.Text = Master.eLang.GetString(879, "Lock Language (video)")
         Me.chkLockLanguageA.Text = Master.eLang.GetString(880, "Lock Language (audio)")
+        Me.chkLockSubtitle.Text = Master.eLang.GetString(1006, "Lock Subtitle")
         Me.chkLockMPAA.Text = Master.eLang.GetString(881, "Lock MPAA/Certification")
         Me.chkUseMPAAFSK.Text = Master.eLang.GetString(882, "Use MPAA as Fallback for FSK Rating")
         Me.chkOutlineForPlot.Text = Master.eLang.GetString(508, "Use Outline for Plot if Plot is Empty")

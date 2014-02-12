@@ -887,6 +887,7 @@ Public Class Functions
             .bRating = Not Master.eSettings.LockRating
             .bLanguageV = Not Master.eSettings.LockLanguageV
             .bLanguageA = Not Master.eSettings.LockLanguageA
+            .bSubtitle = Not Master.eSettings.LockSubtitle
             .buseMPAAForFSK = Not Master.eSettings.UseMPAAForFSK
             .bRelease = True
             .bRuntime = True
@@ -1607,6 +1608,7 @@ Public Class Structures
         Dim bRating As Boolean
         Dim bLanguageV As Boolean
         Dim bLanguageA As Boolean
+        Dim bSubtitle As Boolean
         Dim buseMPAAForFSK As Boolean
         Dim bCleanPlotOutline As Boolean
         Dim bRelease As Boolean
