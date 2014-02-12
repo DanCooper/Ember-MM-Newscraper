@@ -189,6 +189,7 @@ Public Class Settings
     'Private _onlytvimagesforselectedlangauge As Boolean
     Private _onlyvalueforcert As Boolean
     Private _outlineforplot As Boolean
+    Private _outlineplotenglishoverwrite As Boolean
     Private _overwriteallsPoster As Boolean
     Private _overwriteEpFanart As Boolean
     Private _overwriteEpPoster As Boolean
@@ -1905,6 +1906,15 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Me._outlineforplot = value
+        End Set
+    End Property
+
+    Public Property OutlinePlotEnglishOverwrite() As Boolean
+        Get
+            Return Me._outlineplotenglishoverwrite
+        End Get
+        Set(ByVal value As Boolean)
+            Me._outlineplotenglishoverwrite = value
         End Set
     End Property
 

@@ -230,7 +230,7 @@ Public Class OFDB_Data
                 DBMovie.Movie.Title = tOFDB.Title
             End If
         End If
-        If filterOptions.bOutline AndAlso (String.IsNullOrEmpty(DBMovie.Movie.Outline) OrElse Not Master.eSettings.LockOutline) Then
+        If filterOptions.bOutline AndAlso (String.IsNullOrEmpty(DBMovie.Movie.Outline) OrElse Not Master.eSettings.LockOutline OrElse (Master.eSettings.OutlinePlotEnglishOverwrite AndAlso StringUtils.isEnglishText(DBMovie.Movie.Plot))) Then
 
             If Not String.IsNullOrEmpty(tOFDB.Outline) Then
                 'check if brackets should be removed...
@@ -243,7 +243,7 @@ Public Class OFDB_Data
             End If
         End If
 
-        If filterOptions.bPlot AndAlso (String.IsNullOrEmpty(DBMovie.Movie.Plot) OrElse Not Master.eSettings.LockPlot) Then
+        If filterOptions.bPlot AndAlso (String.IsNullOrEmpty(DBMovie.Movie.Plot) OrElse Not Master.eSettings.LockPlot OrElse (Master.eSettings.OutlinePlotEnglishOverwrite AndAlso StringUtils.isEnglishText(DBMovie.Movie.Plot))) Then
             If Not String.IsNullOrEmpty(tOFDB.Plot) Then
                 'check if brackets should be removed...
                 If ConfigOptions.bCleanPlotOutline Then

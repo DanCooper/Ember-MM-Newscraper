@@ -1,4 +1,4 @@
-<strings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+﻿<strings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
 	<string id="1">&amp;File</string>
 	<string id="2">E&amp;xit</string>
 	<string id="3">&amp;Edit</string>
@@ -1090,5 +1090,6 @@
   <string id="1002">Reset Filter</string>
   <string id="1003">Template saved to:</string>
   <string id="1004">Generate HTML...</string>
+  <string id="1005">Always overwrite english outline and plot regardless of Lock Title/Lock Outline setting</string>
   
   </strings>

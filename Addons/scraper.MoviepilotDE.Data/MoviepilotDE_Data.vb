@@ -264,7 +264,7 @@ Public Class MoviepilotDE_Data
         End If
 
         'Use Moviepilot Outline?
-        If filterOptions.bOutline AndAlso (String.IsNullOrEmpty(DBMovie.Movie.Outline) OrElse Not Master.eSettings.LockOutline) Then
+        If filterOptions.bOutline AndAlso (String.IsNullOrEmpty(DBMovie.Movie.Outline) OrElse Not Master.eSettings.LockOutline OrElse (Master.eSettings.OutlinePlotEnglishOverwrite AndAlso StringUtils.isEnglishText(DBMovie.Movie.Outline))) Then
 
             If Not String.IsNullOrEmpty(tMoviepilotDE.Outline) Then
                 'check if brackets should be removed...
@@ -277,16 +277,19 @@ Public Class MoviepilotDE_Data
         End If
 
         'Use Moviepilot Plot?
-        If filterOptions.bPlot AndAlso (String.IsNullOrEmpty(DBMovie.Movie.Plot) OrElse Not Master.eSettings.LockPlot) Then
-            If Not String.IsNullOrEmpty(tMoviepilotDE.Plot) Then
-                'check if brackets should be removed...
-                If ConfigOptions.bCleanPlotOutline Then
-                    DBMovie.Movie.Plot = StringUtils.RemoveBrackets(tMoviepilotDE.Plot)
-                Else
-                    DBMovie.Movie.Plot = tMoviepilotDE.Plot
+        If filterOptions.bPlot AndAlso (String.IsNullOrEmpty(DBMovie.Movie.Plot) OrElse Not Master.eSettings.LockPlot OrElse (Master.eSettings.OutlinePlotEnglishOverwrite AndAlso StringUtils.isEnglishText(DBMovie.Movie.Plot))) Then
+
+                If Not String.IsNullOrEmpty(tMoviepilotDE.Plot) Then
+                    'check if brackets should be removed...
+                    If ConfigOptions.bCleanPlotOutline Then
+                        DBMovie.Movie.Plot = StringUtils.RemoveBrackets(tMoviepilotDE.Plot)
+                    Else
+                        DBMovie.Movie.Plot = tMoviepilotDE.Plot
+                    End If
                 End If
+
+
             End If
-        End If
 
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function

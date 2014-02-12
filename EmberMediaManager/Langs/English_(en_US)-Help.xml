@@ -355,6 +355,7 @@
   <string control="Core_cbForce">Select the region of the title you would like Ember to look for.</string>
   <string control="Core_chkForceTitle">If enabled, Ember will check for alternative titles in the selected language. This is useful for fetching titles in your native language when scraping foreign films.</string> 
   <string control="Core_chkOutlineForPlot">If enabled, Ember will use the outline for the plot if the plot is empty.</string>
+  <string control="Core_chkOutlinePlotEnglishOverwrite">If enabled, Ember will will always attempt to overwrite existing plot/outline if it's english (Always overwrite english outline and plot regardless of Lock Title/Lock Outline setting).</string>
   <string control="Core_chkCastWithImg">If enabled, Ember will only scrape cast entries that have valid images.</string>
   <string control="Core_chkUseCertForMPAA">If enabled, Ember will use the certifcation of the selected region in place of the MPAA rating.</string>
   <string control="Core_chkFullCast">If enabled, all cast members will be scraped instead of only top billed.</string>
