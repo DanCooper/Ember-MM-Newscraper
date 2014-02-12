@@ -315,13 +315,13 @@ Public Class ModulesManager
                 ext.ScraperOrder = c
                 c += 1
             Next
-            If Not DataScraperAnyEnabled AndAlso DataScraperFound Then
+            If Not DataScraperAnyEnabled AndAlso Not DataScraperFound Then
                 SetDataScraperEnable("scraper.TMDB.Data.EmberScraperModule.TMDB_Data", True)
             End If
-            If Not PosterScraperAnyEnabled AndAlso PosterScraperFound Then
+            If Not PosterScraperAnyEnabled AndAlso Not PosterScraperFound Then
                 SetPosterScraperEnable("scraper.TMDB.Poster.EmberScraperModule.TMDB_Poster", True)
             End If
-            If Not TrailerScraperAnyEnabled AndAlso TrailerScraperFound Then
+            If Not TrailerScraperAnyEnabled AndAlso Not TrailerScraperFound Then
                 SetTrailerScraperEnable("scraper.TMDB.Trailer.EmberScraperModule.TMDB_Trailer", True)
             End If
         End If
@@ -390,10 +390,10 @@ Public Class ModulesManager
                 ext.PostScraperOrder = c
                 c += 1
             Next
-            If Not ScraperAnyEnabled AndAlso TVScraperFound Then
+            If Not ScraperAnyEnabled AndAlso Not TVScraperFound Then
                 SetTVScraperEnable("scraper.TVDB.EmberScraperModule.TVDB_Data_Poster", True)
             End If
-            If Not PostScraperAnyEnabled AndAlso TVScraperFound Then
+            If Not PostScraperAnyEnabled AndAlso Not TVScraperFound Then
                 SetTVPostScraperEnable("scraper.TVDB.EmberScraperModule.TVDB_Data_Poster", True)
             End If
         End If
