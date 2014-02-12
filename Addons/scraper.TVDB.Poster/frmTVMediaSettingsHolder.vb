@@ -61,6 +61,16 @@ Public Class frmTVMediaSettingsHolder
         RaiseEvent SetupPostScraperChanged(cbEnabled.Checked, 0)
     End Sub
 
+    Private Sub chkOnlyTVImagesLanguage_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOnlyTVImagesLanguage.CheckedChanged
+        Me.chkGetEnglishImages.Enabled = Me.chkOnlyTVImagesLanguage.Checked
+        If Not Me.chkOnlyTVImagesLanguage.Checked Then Me.chkGetEnglishImages.Checked = False
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkGetEnglishImages_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGetEnglishImages.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
     Public Sub New()
         InitializeComponent()
         Me.SetUp()
@@ -91,7 +101,11 @@ Public Class frmTVMediaSettingsHolder
         Me.cbTVLanguage.Items.AddRange((From lLang In Master.eSettings.Languages Select lLang.LongLang).ToArray)
     End Sub
 
-    Private Sub txtTMDBApiKey_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVDBApiKey.TextChanged
+    Private Sub txtTVDBApiKey_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVDBApiKey.TextChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub txtTVDBMirror_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVDBMirror.TextChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
@@ -105,13 +119,6 @@ Public Class frmTVMediaSettingsHolder
                 Explorer.Start()
             End Using
         End If
-    End Sub
-
-    Private Sub chkOnlyTVImagesLanguage_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOnlyTVImagesLanguage.CheckedChanged
-
-        Me.chkGetEnglishImages.Enabled = Me.chkOnlyTVImagesLanguage.Checked
-
-        If Not Me.chkOnlyTVImagesLanguage.Checked Then Me.chkGetEnglishImages.Checked = False
     End Sub
 
     Private Sub cbTVLanguage_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbTVLanguage.SelectedIndexChanged

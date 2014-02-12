@@ -153,24 +153,7 @@ Public Class TVDB_Data_Poster
         _TVDBMirror = AdvancedSettings.GetSetting("TVDBMirror", "thetvdb.com")
         TVScraper = New Scraper(_APIKey)
 
-        ConfigOptions.bEpActors = CBool(AdvancedSettings.GetSetting("ScraperEpActors", "false"))
-        ConfigOptions.bEpAired = CBool(AdvancedSettings.GetSetting("ScraperEpAired", "true"))
-        ConfigOptions.bEpCredits = CBool(AdvancedSettings.GetSetting("ScraperEpCredits", "false"))
-        ConfigOptions.bEpDirector = CBool(AdvancedSettings.GetSetting("ScraperEpDirector", "false"))
-        ConfigOptions.bEpEpisode = CBool(AdvancedSettings.GetSetting("ScraperEpEpisode", "true"))
-        ConfigOptions.bEpPlot = CBool(AdvancedSettings.GetSetting("ScraperEpPlot", "true"))
-        ConfigOptions.bEpRating = CBool(AdvancedSettings.GetSetting("ScraperEpRating", "true"))
-        ConfigOptions.bEpSeason = CBool(AdvancedSettings.GetSetting("ScraperEpSeason", "true"))
-        ConfigOptions.bEpTitle = CBool(AdvancedSettings.GetSetting("ScraperEpTitle", "true"))
-        ConfigOptions.bShowActors = CBool(AdvancedSettings.GetSetting("ScraperShowActors", "false"))
-        ConfigOptions.bShowEpisodeGuide = CBool(AdvancedSettings.GetSetting("ScraperShowEGU", "false"))
-        ConfigOptions.bShowGenre = CBool(AdvancedSettings.GetSetting("ScraperShowGenre", "true"))
-        ConfigOptions.bShowMPAA = CBool(AdvancedSettings.GetSetting("ScraperShowMPAA", "true"))
-        ConfigOptions.bShowPlot = CBool(AdvancedSettings.GetSetting("ScraperShowPlot", "true"))
-        ConfigOptions.bShowPremiered = CBool(AdvancedSettings.GetSetting("ScraperShowPremiered", "true"))
-        ConfigOptions.bShowRating = CBool(AdvancedSettings.GetSetting("ScraperShowRating", "true"))
-        ConfigOptions.bShowStudio = CBool(AdvancedSettings.GetSetting("ScraperShowStudio", "true"))
-        ConfigOptions.bShowTitle = CBool(AdvancedSettings.GetSetting("ScraperShowTitle", "true"))
+        LoadSettings()
 
         AddHandler TVScraper.ScraperEvent, AddressOf Handler_ScraperEvent
     End Sub
@@ -206,6 +189,7 @@ Public Class TVDB_Data_Poster
     Public Function InjectSetupScraper() As Containers.SettingsPanel Implements Interfaces.EmberTVScraperModule.InjectSetupScraper
         Dim SPanel As New Containers.SettingsPanel
         _setup = New frmTVInfoSettingsHolder
+        LoadSettings()
         _setup.txtTVDBApiKey.Text = strPrivateAPIKey
         _setup.cbEnabled.Checked = _ScraperEnabled
 
@@ -276,6 +260,27 @@ Public Class TVDB_Data_Poster
         ScraperEnabled = state
         RaiseEvent SetupScraperChanged(String.Concat(Me._Name, "Scraper"), state, difforder)
     End Sub
+
+    Sub LoadSettings()
+        ConfigOptions.bEpActors = AdvancedSettings.GetBooleanSetting("ScraperEpActors", True)
+        ConfigOptions.bEpAired = AdvancedSettings.GetBooleanSetting("ScraperEpAired", True)
+        ConfigOptions.bEpCredits = AdvancedSettings.GetBooleanSetting("ScraperEpCredits", True)
+        ConfigOptions.bEpDirector = AdvancedSettings.GetBooleanSetting("ScraperEpDirector", True)
+        ConfigOptions.bEpEpisode = AdvancedSettings.GetBooleanSetting("ScraperEpEpisode", True)
+        ConfigOptions.bEpPlot = AdvancedSettings.GetBooleanSetting("ScraperEpPlot", True)
+        ConfigOptions.bEpRating = AdvancedSettings.GetBooleanSetting("ScraperEpRating", True)
+        ConfigOptions.bEpSeason = AdvancedSettings.GetBooleanSetting("ScraperEpSeason", True)
+        ConfigOptions.bEpTitle = AdvancedSettings.GetBooleanSetting("ScraperEpTitle", True)
+        ConfigOptions.bShowActors = AdvancedSettings.GetBooleanSetting("ScraperShowActors", True)
+        ConfigOptions.bShowEpisodeGuide = AdvancedSettings.GetBooleanSetting("ScraperShowEGU", False)
+        ConfigOptions.bShowGenre = AdvancedSettings.GetBooleanSetting("ScraperShowGenre", True)
+        ConfigOptions.bShowMPAA = AdvancedSettings.GetBooleanSetting("ScraperShowMPAA", True)
+        ConfigOptions.bShowPlot = AdvancedSettings.GetBooleanSetting("ScraperShowPlot", True)
+        ConfigOptions.bShowPremiered = AdvancedSettings.GetBooleanSetting("ScraperShowPremiered", True)
+        ConfigOptions.bShowRating = AdvancedSettings.GetBooleanSetting("ScraperShowRating", True)
+        ConfigOptions.bShowStudio = AdvancedSettings.GetBooleanSetting("ScraperShowStudio", True)
+        ConfigOptions.bShowTitle = AdvancedSettings.GetBooleanSetting("ScraperShowTitle", True)
+    End Sub
     Public Function PostScraper(ByRef DBTV As Structures.DBTV, ByVal ScrapeType As Enums.ScrapeType) As Interfaces.ModuleResult Implements Interfaces.EmberTVScraperModule.PostScraper
     End Function
 
@@ -344,7 +349,6 @@ Public Class TVDB_Data_Poster
             settings.SetBooleanSetting("ScraperEpDirector", _setup.chkScraperEpDirector.Checked)
             settings.SetBooleanSetting("ScraperEpCredits", _setup.chkScraperEpCredits.Checked)
             settings.SetBooleanSetting("ScraperEpActors", _setup.chkScraperEpActors.Checked)
-
         End Using
 
         If DoDispose Then
@@ -356,18 +360,21 @@ Public Class TVDB_Data_Poster
     End Sub
 
     Public Function ScrapeEpisode(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal iEpisode As Integer, ByVal iSeason As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions) As Interfaces.ModuleResult Implements Interfaces.EmberTVScraperModule.ScrapeEpisode
+        LoadSettings()
         Dim filterOptions As Structures.TVScrapeOptions = Functions.TVScrapeOptionsAndAlso(Options, ConfigOptions)
         TVScraper.ScrapeEpisode(ShowID, ShowTitle, TVDBID, iEpisode, iSeason, Lang, Ordering, filterOptions)
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
     Public Function Scraper(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions, ByVal ScrapeType As Enums.ScrapeType, ByVal WithCurrent As Boolean) As Interfaces.ModuleResult Implements Interfaces.EmberTVScraperModule.Scraper
+        LoadSettings()
         Dim filterOptions As Structures.TVScrapeOptions = Functions.TVScrapeOptionsAndAlso(Options, ConfigOptions)
         TVScraper.SingleScrape(ShowID, ShowTitle, TVDBID, Lang, Ordering, filterOptions, ScrapeType, WithCurrent)
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
     Public Function ScrapeSeason(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal iSeason As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions) As Interfaces.ModuleResult Implements Interfaces.EmberTVScraperModule.ScrapeSeason
+        LoadSettings()
         Dim filterOptions As Structures.TVScrapeOptions = Functions.TVScrapeOptionsAndAlso(Options, ConfigOptions)
         TVScraper.ScrapeSeason(ShowID, ShowTitle, TVDBID, iSeason, Lang, Ordering, filterOptions)
         Return New Interfaces.ModuleResult With {.breakChain = False}
