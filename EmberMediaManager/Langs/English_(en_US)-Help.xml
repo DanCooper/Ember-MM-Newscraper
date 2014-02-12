@@ -574,6 +574,46 @@
   <string control="Core_chkMovieWatchedCol">Hide the Watched column from the main movie list.</string>
   <string control="Core_chkMovieEFanartsCol">Hide the Extrafanart column from the main movie list.</string>
   <string control="Core_chkTitleFallback">If enabled, Ember will use world-wide/english title instead of originaltitle if preferred language isn't found. This is useful for fetching titles for asian movies to avoid original (i.e japanese) titles!</string>
+  <string control="Core_txtActorThumbsExtExpertSingle">Set filename extension, e.g. .jpg or .tbn.</string>
+  <string control="Core_txtBannerExpertSingle">You can use &lt;filename&gt;, e.g. &lt;filename&gt;-banner.jpg. You can also enter multiple file names separated by a comma.</string>
+  <string control="Core_txtClearArtExpertSingle">You can use &lt;filename&gt;, e.g. &lt;filename&gt;-clearart.png. You can also enter multiple file names separated by a comma.</string>
+  <string control="Core_txtClearLogoExpertSingle">You can use &lt;filename&gt;, e.g. &lt;filename&gt;-clearlogo.png. You can also enter multiple file names separated by a comma.</string>
+  <string control="Core_txtDiscArtExpertSingle">You can use &lt;filename&gt;, e.g. &lt;filename&gt;-discart.png. You can also enter multiple file names separated by a comma.</string>
+  <string control="Core_txtFanartExpertSingle">You can use &lt;filename&gt;, e.g. &lt;filename&gt;-fanart.jpg. You can also enter multiple file names separated by a comma.</string>
+  <string control="Core_txtLandscapeExpertSingle">You can use &lt;filename&gt;, e.g. &lt;filename&gt;-landscape.jpg. You can also enter multiple file names separated by a comma.</string>
+  <string control="Core_txtNFOExpertSingle">You can use &lt;filename&gt;, e.g. &lt;filename&gt;.nfo. You can also enter multiple file names separated by a comma.</string>
+  <string control="Core_txtPosterExpertSingle">You can use &lt;filename&gt;, e.g. &lt;filename&gt;-poster.jpg. You can also enter multiple file names separated by a comma.</string>
+  <string control="Core_txtTrailerExpertSingle">You can use &lt;filename&gt;, e.g. &lt;filename&gt;-trailer (without a file name extension). You can also enter multiple file names separated by a comma.</string>
+  <string control="Core_txtActorThumbsExtExpertMulti">Set filename extension, e.g. .jpg or .tbn.</string>
+  <string control="Core_txtBannerExpertMulti">You can use &lt;filename&gt;, e.g. &lt;filename&gt;-banner.jpg. You can also enter multiple file names separated by a comma.</string>
+  <string control="Core_txtClearArtExpertMulti">You can use &lt;filename&gt;, e.g. &lt;filename&gt;-clearart.png. You can also enter multiple file names separated by a comma.</string>
+  <string control="Core_txtClearLogoExpertMulti">You can use &lt;filename&gt;, e.g. &lt;filename&gt;-clearlogo.png. You can also enter multiple file names separated by a comma.</string>
+  <string control="Core_txtDiscArtExpertMulti">You can use &lt;filename&gt;, e.g. &lt;filename&gt;-discart.png. You can also enter multiple file names separated by a comma.</string>
+  <string control="Core_txtFanartExpertMulti">You can use &lt;filename&gt;, e.g. &lt;filename&gt;-fanart.jpg. You can also enter multiple file names separated by a comma.</string>
+  <string control="Core_txtLandscapeExpertMulti">You can use &lt;filename&gt;, e.g. &lt;filename&gt;-landscape.jpg. You can also enter multiple file names separated by a comma.</string>
+  <string control="Core_txtNFOExpertMulti">You can use &lt;filename&gt;, e.g. &lt;filename&gt;.nfo. You can also enter multiple file names separated by a comma.</string>
+  <string control="Core_txtPosterExpertMulti">You can use &lt;filename&gt;, e.g. &lt;filename&gt;-poster.jpg. You can also enter multiple file names separated by a comma.</string>
+  <string control="Core_txtTrailerExpertMulti">You can use &lt;filename&gt;, e.g. &lt;filename&gt;-trailer (without a file name extension). You can also enter multiple file names separated by a comma.</string>  
+  <string control="Core_txtActorThumbsExtExpertVTS">Set filename extension, e.g. .jpg or .tbn.</string>
+  <string control="Core_txtBannerExpertVTS">You can use &lt;filename&gt;, e.g. &lt;filename&gt;-banner.jpg. You can also enter multiple file names separated by a comma.</string>
+  <string control="Core_txtClearArtExpertVTS">You can use &lt;filename&gt;, e.g. &lt;filename&gt;-clearart.png. You can also enter multiple file names separated by a comma.</string>
+  <string control="Core_txtClearLogoExpertVTS">You can use &lt;filename&gt;, e.g. &lt;filename&gt;-clearlogo.png. You can also enter multiple file names separated by a comma.</string>
+  <string control="Core_txtDiscArtExpertVTS">You can use &lt;filename&gt;, e.g. &lt;filename&gt;-discart.png. You can also enter multiple file names separated by a comma.</string>
+  <string control="Core_txtFanartExpertVTS">You can use &lt;filename&gt;, e.g. &lt;filename&gt;-fanart.jpg. You can also enter multiple file names separated by a comma.</string>
+  <string control="Core_txtLandscapeExpertVTS">You can use &lt;filename&gt;, e.g. &lt;filename&gt;-landscape.jpg. You can also enter multiple file names separated by a comma.</string>
+  <string control="Core_txtNFOExpertVTS">You can use &lt;filename&gt;, e.g. &lt;filename&gt;.nfo. You can also enter multiple file names separated by a comma.</string>
+  <string control="Core_txtPosterExpertVTS">You can use &lt;filename&gt;, e.g. &lt;filename&gt;-poster.jpg. You can also enter multiple file names separated by a comma.</string>
+  <string control="Core_txtTrailerExpertVTS">You can use &lt;filename&gt;, e.g. &lt;filename&gt;-trailer (without a file name extension). You can also enter multiple file names separated by a comma.</string>
+  <string control="Core_txtActorThumbsExtExpertBDMV">Set filename extension, e.g. .jpg or .tbn.</string>
+  <string control="Core_txtBannerExpertBDMV">You can use &lt;filename&gt;, e.g. &lt;filename&gt;-banner.jpg. You can also enter multiple file names separated by a comma.</string>
+  <string control="Core_txtClearArtExpertBDMV">You can use &lt;filename&gt;, e.g. &lt;filename&gt;-clearart.png. You can also enter multiple file names separated by a comma.</string>
+  <string control="Core_txtClearLogoExpertBDMV">You can use &lt;filename&gt;, e.g. &lt;filename&gt;-clearlogo.png. You can also enter multiple file names separated by a comma.</string>
+  <string control="Core_txtDiscArtExpertBDMV">You can use &lt;filename&gt;, e.g. &lt;filename&gt;-discart.png. You can also enter multiple file names separated by a comma.</string>
+  <string control="Core_txtFanartExpertBDMV">You can use &lt;filename&gt;, e.g. &lt;filename&gt;-fanart.jpg. You can also enter multiple file names separated by a comma.</string>
+  <string control="Core_txtLandscapeExpertBDMV">You can use &lt;filename&gt;, e.g. &lt;filename&gt;-landscape.jpg. You can also enter multiple file names separated by a comma.</string>
+  <string control="Core_txtNFOExpertBDMV">You can use &lt;filename&gt;, e.g. &lt;filename&gt;.nfo. You can also enter multiple file names separated by a comma.</string>
+  <string control="Core_txtPosterExpertBDMV">You can use &lt;filename&gt;, e.g. &lt;filename&gt;-poster.jpg. You can also enter multiple file names separated by a comma.</string>
+  <string control="Core_txtTrailerExpertBDMV">You can use &lt;filename&gt;, e.g. &lt;filename&gt;-trailer (without a file name extension). You can also enter multiple file names separated by a comma.</string>
 </strings>
 
 
