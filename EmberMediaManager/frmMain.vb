@@ -8235,13 +8235,13 @@ doCancel:
     Private Sub ScannerUpdated(ByVal iType As Integer, ByVal sText As String)
         Select Case iType
             Case 1
-                Me.SetStatus(String.Concat(Master.eLang.GetString(814, "Added Episode: "), sText))
+                Me.SetStatus(String.Concat(Master.eLang.GetString(814, "Added Episode:"), " " & sText))
             Case 2
                 Me.SetStatus(Master.eLang.GetString(116, "Performing Preliminary Tasks (Gathering Data)..."))
             Case 3
                 Me.SetStatus(Master.eLang.GetString(644, "Cleaning Database..."))
             Case Else
-                Me.SetStatus(String.Concat(Master.eLang.GetString(815, "Added Movie: "), sText))
+                Me.SetStatus(String.Concat(Master.eLang.GetString(815, "Added Movie:"), " " & sText))
         End Select
     End Sub
 

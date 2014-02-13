@@ -55,6 +55,13 @@ Public Class frmTVInfoSettingsHolder
 
 #Region "Methods"
 
+    Public Sub New()
+        _api = String.Empty
+        InitializeComponent()
+        Me.SetUp()
+        orderChanged()
+    End Sub
+
     Private Sub btnDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDown.Click
         Dim order As Integer = ModulesManager.Instance.externalTVScrapersModules.FirstOrDefault(Function(p) p.AssemblyName = TVDB_Data_Poster._AssemblyName).ScraperOrder
         If order < ModulesManager.Instance.externalTVScrapersModules.Where(Function(y) y.ProcessorModule.IsScraper).Count - 1 Then
@@ -75,18 +82,87 @@ Public Class frmTVInfoSettingsHolder
         End If
     End Sub
 
+    Private Sub cbTVLanguage_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbTVLanguage.SelectedIndexChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
     Private Sub cbEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbEnabled.CheckedChanged
         RaiseEvent SetupScraperChanged(cbEnabled.Checked, 0)
     End Sub
 
-    Public Sub New()
-        _api = String.Empty
-        InitializeComponent()
-        Me.SetUp()
-        orderChanged()
+    Private Sub chkScraperEpActors_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperEpActors.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Sub orderChanged()
+    Private Sub chkScraperEpAired_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperEpAired.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkScraperEpCredits_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperEpCredits.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkScraperEpDirector_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperEpDirector.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkScraperEpEpisode_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperEpEpisode.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkScraperEpPlot_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperEpPlot.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkScraperEpRating_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperEpRating.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkScraperEpSeason_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperEpSeason.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkScraperEpTitle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperEpTitle.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkScraperShowActors_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperShowActors.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkScraperShowEGU_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperShowEGU.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkScraperShowGenre_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperShowGenre.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkScraperShowMPAA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperShowMPAA.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkScraperShowPlot_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperShowPlot.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkScraperShowPremiered_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperShowPremiered.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkScraperShowRating_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperShowRating.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkScraperShowStudio_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperShowStudio.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkScraperShowTitle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperShowTitle.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub orderChanged()
         Dim order As Integer = ModulesManager.Instance.externalTVScrapersModules.FirstOrDefault(Function(p) p.AssemblyName = TVDB_Data_Poster._AssemblyName).ScraperOrder
         If ModulesManager.Instance.externalTVScrapersModules.Count > 0 Then
             btnDown.Enabled = (order < ModulesManager.Instance.externalTVScrapersModules.Where(Function(y) y.ProcessorModule.IsScraper).Count - 1)
@@ -97,17 +173,29 @@ Public Class frmTVInfoSettingsHolder
         End If
     End Sub
 
+    Private Sub pbTVDB_Click(sender As System.Object, e As System.EventArgs) Handles pbTVDB.Click
+        If Master.isWindows Then
+            Process.Start("http://thetvdb.com/?tab=apiregister")
+        Else
+            Using Explorer As New Process
+                Explorer.StartInfo.FileName = "xdg-open"
+                Explorer.StartInfo.Arguments = "http://thetvdb.com/?tab=apiregister"
+                Explorer.Start()
+            End Using
+        End If
+    End Sub
+
     Private Sub SetUp()
-        Me.Label2.Text = Master.eLang.GetString(168, "Scrape Order")
+        Me.lblScrapeOrder.Text = Master.eLang.GetString(168, "Scrape Order")
         Me.cbEnabled.Text = Master.eLang.GetString(774, "Enabled")
-        Me.Label18.Text = Master.eLang.GetString(932, "TVDB API Key")
-        Me.Label1.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), vbCrLf)
+        Me.lblTVDBApiKey.Text = Master.eLang.GetString(932, "TVDB API Key")
+        Me.lblModuleInfo.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), vbCrLf)
         Me.gbLanguage.Text = Master.eLang.GetString(610, "Language")
         Me.lblTVLanguagePreferred.Text = Master.eLang.GetString(741, "Preferred Language:")
-        Me.GroupBox30.Text = Master.eLang.GetString(941, "TVDB")
-        Me.GroupBox32.Text = Master.eLang.GetString(577, "Scraper Fields - Scraper specific")
-        Me.GroupBox35.Text = Master.eLang.GetString(743, "Show")
-        Me.GroupBox34.Text = Master.eLang.GetString(727, "Episode")
+        Me.gbTMDB.Text = Master.eLang.GetString(941, "TVDB")
+        Me.gbScraperFields.Text = Master.eLang.GetString(577, "Scraper Fields - Scraper specific")
+        Me.gbScraperFieldsShow.Text = Master.eLang.GetString(743, "Show")
+        Me.gbScraperFieldsEpisode.Text = Master.eLang.GetString(727, "Episode")
         Me.lblTVDBMirror.Text = Master.eLang.GetString(801, "TVDB Mirror")
         Me.cbTVLanguage.Items.AddRange((From lLang In Master.eSettings.Languages Select lLang.LongLang).ToArray)
         Me.chkScraperEpActors.Text = Master.eLang.GetString(725, "Actors")
@@ -144,19 +232,7 @@ Public Class frmTVInfoSettingsHolder
         End If
     End Sub
 
-    Private Sub pbTVDB_Click(sender As System.Object, e As System.EventArgs) Handles pbTVDB.Click
-        If Master.isWindows Then
-            Process.Start("http://thetvdb.com/?tab=apiregister")
-        Else
-            Using Explorer As New Process
-                Explorer.StartInfo.FileName = "xdg-open"
-                Explorer.StartInfo.Arguments = "http://thetvdb.com/?tab=apiregister"
-                Explorer.Start()
-            End Using
-        End If
-    End Sub
-
-    Private Sub cbTVLanguage_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbTVLanguage.SelectedIndexChanged
+    Private Sub txtTVDBMirror_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVDBMirror.TextChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
