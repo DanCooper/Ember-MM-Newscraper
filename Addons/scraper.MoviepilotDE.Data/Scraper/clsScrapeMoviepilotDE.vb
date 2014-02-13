@@ -110,12 +110,12 @@ Public Class MoviepilotDE
                 If Not String.IsNullOrEmpty(HTML) Then
 
                     'outline
-                    If String.IsNullOrEmpty(MoviepilotDEMovie.Outline) OrElse Not Master.eSettings.LockOutline Then
+                    If String.IsNullOrEmpty(MoviepilotDEMovie.Outline) OrElse Not Master.eSettings.LockOutline OrElse (Master.eSettings.OutlinePlotEnglishOverwrite AndAlso StringUtils.isEnglishText(MoviepilotDEMovie.Outline)) Then
                         _outline = GetPlotAndOutline(HTML, 1)
                     End If
 
                     'full plot
-                    If String.IsNullOrEmpty(MoviepilotDEMovie.Plot) OrElse Not Master.eSettings.LockPlot Then
+                    If String.IsNullOrEmpty(MoviepilotDEMovie.Plot) OrElse Not Master.eSettings.LockPlot OrElse (Master.eSettings.OutlinePlotEnglishOverwrite AndAlso StringUtils.isEnglishText(MoviepilotDEMovie.Plot)) Then
                         _plot = GetPlotAndOutline(HTML, 0)
                     End If
 
