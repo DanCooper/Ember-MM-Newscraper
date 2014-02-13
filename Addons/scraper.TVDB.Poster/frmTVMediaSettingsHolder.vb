@@ -37,6 +37,12 @@ Public Class frmTVMediaSettingsHolder
 
 #Region "Methods"
 
+    Public Sub New()
+        InitializeComponent()
+        Me.SetUp()
+        orderChanged()
+    End Sub
+
     Private Sub btnDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDown.Click
         Dim order As Integer = ModulesManager.Instance.externalTVScrapersModules.FirstOrDefault(Function(p) p.AssemblyName = TVDB_Data_Poster._AssemblyName).ScraperOrder
         If order < ModulesManager.Instance.externalTVScrapersModules.Where(Function(y) y.ProcessorModule.IsScraper).Count - 1 Then
@@ -61,9 +67,7 @@ Public Class frmTVMediaSettingsHolder
         RaiseEvent SetupPostScraperChanged(cbEnabled.Checked, 0)
     End Sub
 
-    Private Sub chkOnlyTVImagesLanguage_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOnlyTVImagesLanguage.CheckedChanged
-        Me.chkGetEnglishImages.Enabled = Me.chkOnlyTVImagesLanguage.Checked
-        If Not Me.chkOnlyTVImagesLanguage.Checked Then Me.chkGetEnglishImages.Checked = False
+    Private Sub cbTVLanguage_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbTVLanguage.SelectedIndexChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
@@ -71,13 +75,13 @@ Public Class frmTVMediaSettingsHolder
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Public Sub New()
-        InitializeComponent()
-        Me.SetUp()
-        orderChanged()
+    Private Sub chkOnlyTVImagesLanguage_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOnlyTVImagesLanguage.CheckedChanged
+        Me.chkGetEnglishImages.Enabled = Me.chkOnlyTVImagesLanguage.Checked
+        If Not Me.chkOnlyTVImagesLanguage.Checked Then Me.chkGetEnglishImages.Checked = False
+        RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Sub orderChanged()
+    Private Sub orderChanged()
         Dim order As Integer = ModulesManager.Instance.externalTVScrapersModules.FirstOrDefault(Function(p) p.AssemblyName = TVDB_Data_Poster._AssemblyName).ScraperOrder
         If ModulesManager.Instance.externalTVScrapersModules.Count > 0 Then
             btnDown.Enabled = (order < ModulesManager.Instance.externalTVScrapersModules.Where(Function(y) y.ProcessorModule.IsPostScraper).Count - 1)
@@ -88,11 +92,23 @@ Public Class frmTVMediaSettingsHolder
         End If
     End Sub
 
+    Private Sub pbTVDB_Click(sender As System.Object, e As System.EventArgs) Handles pbTVDB.Click
+        If Master.isWindows Then
+            Process.Start("http://thetvdb.com/?tab=apiregister")
+        Else
+            Using Explorer As New Process
+                Explorer.StartInfo.FileName = "xdg-open"
+                Explorer.StartInfo.Arguments = "http://thetvdb.com/?tab=apiregister"
+                Explorer.Start()
+            End Using
+        End If
+    End Sub
+
     Private Sub SetUp()
-        Me.Label2.Text = Master.eLang.GetString(168, "Scrape Order")
+        Me.lblScraperOrder.Text = Master.eLang.GetString(168, "Scrape Order")
         Me.cbEnabled.Text = Master.eLang.GetString(774, "Enabled")
-        Me.Label18.Text = Master.eLang.GetString(932, "TVDB API Key")
-        Me.Label1.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), vbCrLf)
+        Me.lblTVDBApiKey.Text = Master.eLang.GetString(932, "TVDB API Key")
+        Me.lblModuleInfo.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), vbCrLf)
         Me.chkOnlyTVImagesLanguage.Text = Master.eLang.GetString(736, "Only Get Images for the Selected Language")
         Me.chkGetEnglishImages.Text = Master.eLang.GetString(737, "Also Get English Images")
         Me.gbLanguage.Text = Master.eLang.GetString(610, "Language")
@@ -109,21 +125,6 @@ Public Class frmTVMediaSettingsHolder
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub pbTVDB_Click(sender As System.Object, e As System.EventArgs) Handles pbTVDB.Click
-        If Master.isWindows Then
-            Process.Start("http://thetvdb.com/?tab=apiregister")
-        Else
-            Using Explorer As New Process
-                Explorer.StartInfo.FileName = "xdg-open"
-                Explorer.StartInfo.Arguments = "http://thetvdb.com/?tab=apiregister"
-                Explorer.Start()
-            End Using
-        End If
-    End Sub
-
-    Private Sub cbTVLanguage_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbTVLanguage.SelectedIndexChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
 #End Region 'Methods
 
 End Class

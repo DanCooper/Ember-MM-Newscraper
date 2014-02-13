@@ -26,31 +26,31 @@ Partial Class frmTVMediaSettingsHolder
         Me.lblVersion = New System.Windows.Forms.Label()
         Me.cbEnabled = New System.Windows.Forms.CheckBox()
         Me.Panel1 = New System.Windows.Forms.Panel()
-        Me.Label2 = New System.Windows.Forms.Label()
+        Me.lblScraperOrder = New System.Windows.Forms.Label()
         Me.btnDown = New System.Windows.Forms.Button()
         Me.btnUp = New System.Windows.Forms.Button()
         Me.pnlSettings = New System.Windows.Forms.Panel()
-        Me.GroupBox32 = New System.Windows.Forms.GroupBox()
+        Me.gbScraperFields = New System.Windows.Forms.GroupBox()
         Me.chkGetEnglishImages = New System.Windows.Forms.CheckBox()
         Me.chkOnlyTVImagesLanguage = New System.Windows.Forms.CheckBox()
-        Me.GroupBox30 = New System.Windows.Forms.GroupBox()
+        Me.gbTVDB = New System.Windows.Forms.GroupBox()
         Me.gbLanguage = New System.Windows.Forms.GroupBox()
         Me.lblTVLanguagePreferred = New System.Windows.Forms.Label()
         Me.cbTVLanguage = New System.Windows.Forms.ComboBox()
         Me.lblTVDBMirror = New System.Windows.Forms.Label()
         Me.txtTVDBMirror = New System.Windows.Forms.TextBox()
         Me.pbTVDB = New System.Windows.Forms.PictureBox()
-        Me.Label18 = New System.Windows.Forms.Label()
+        Me.lblTVDBApiKey = New System.Windows.Forms.Label()
         Me.txtTVDBApiKey = New System.Windows.Forms.TextBox()
-        Me.Label1 = New System.Windows.Forms.Label()
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.lblModuleInfo = New System.Windows.Forms.Label()
+        Me.pbModuleLogo = New System.Windows.Forms.PictureBox()
         Me.Panel1.SuspendLayout()
         Me.pnlSettings.SuspendLayout()
-        Me.GroupBox32.SuspendLayout()
-        Me.GroupBox30.SuspendLayout()
+        Me.gbScraperFields.SuspendLayout()
+        Me.gbTVDB.SuspendLayout()
         Me.gbLanguage.SuspendLayout()
         CType(Me.pbTVDB, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbModuleLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'lblVersion
@@ -76,7 +76,7 @@ Partial Class frmTVMediaSettingsHolder
         Me.Panel1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Panel1.BackColor = System.Drawing.Color.WhiteSmoke
-        Me.Panel1.Controls.Add(Me.Label2)
+        Me.Panel1.Controls.Add(Me.lblScraperOrder)
         Me.Panel1.Controls.Add(Me.btnDown)
         Me.Panel1.Controls.Add(Me.cbEnabled)
         Me.Panel1.Controls.Add(Me.btnUp)
@@ -85,15 +85,15 @@ Partial Class frmTVMediaSettingsHolder
         Me.Panel1.Size = New System.Drawing.Size(1125, 25)
         Me.Panel1.TabIndex = 0
         '
-        'Label2
+        'lblScraperOrder
         '
-        Me.Label2.AutoSize = True
-        Me.Label2.Font = New System.Drawing.Font("Segoe UI", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label2.Location = New System.Drawing.Point(500, 7)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(58, 12)
-        Me.Label2.TabIndex = 1
-        Me.Label2.Text = "Scraper order"
+        Me.lblScraperOrder.AutoSize = True
+        Me.lblScraperOrder.Font = New System.Drawing.Font("Segoe UI", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblScraperOrder.Location = New System.Drawing.Point(500, 7)
+        Me.lblScraperOrder.Name = "lblScraperOrder"
+        Me.lblScraperOrder.Size = New System.Drawing.Size(58, 12)
+        Me.lblScraperOrder.TabIndex = 1
+        Me.lblScraperOrder.Text = "Scraper order"
         '
         'btnDown
         '
@@ -117,27 +117,27 @@ Partial Class frmTVMediaSettingsHolder
         '
         'pnlSettings
         '
-        Me.pnlSettings.Controls.Add(Me.GroupBox32)
-        Me.pnlSettings.Controls.Add(Me.GroupBox30)
-        Me.pnlSettings.Controls.Add(Me.Label1)
-        Me.pnlSettings.Controls.Add(Me.PictureBox1)
+        Me.pnlSettings.Controls.Add(Me.gbScraperFields)
+        Me.pnlSettings.Controls.Add(Me.gbTVDB)
+        Me.pnlSettings.Controls.Add(Me.lblModuleInfo)
+        Me.pnlSettings.Controls.Add(Me.pbModuleLogo)
         Me.pnlSettings.Controls.Add(Me.Panel1)
         Me.pnlSettings.Location = New System.Drawing.Point(12, 1)
         Me.pnlSettings.Name = "pnlSettings"
         Me.pnlSettings.Size = New System.Drawing.Size(617, 369)
         Me.pnlSettings.TabIndex = 0
         '
-        'GroupBox32
+        'gbScraperFields
         '
-        Me.GroupBox32.Controls.Add(Me.chkGetEnglishImages)
-        Me.GroupBox32.Controls.Add(Me.chkOnlyTVImagesLanguage)
-        Me.GroupBox32.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GroupBox32.Location = New System.Drawing.Point(10, 156)
-        Me.GroupBox32.Name = "GroupBox32"
-        Me.GroupBox32.Size = New System.Drawing.Size(403, 114)
-        Me.GroupBox32.TabIndex = 77
-        Me.GroupBox32.TabStop = False
-        Me.GroupBox32.Text = "Scraper Fields"
+        Me.gbScraperFields.Controls.Add(Me.chkGetEnglishImages)
+        Me.gbScraperFields.Controls.Add(Me.chkOnlyTVImagesLanguage)
+        Me.gbScraperFields.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbScraperFields.Location = New System.Drawing.Point(10, 156)
+        Me.gbScraperFields.Name = "gbScraperFields"
+        Me.gbScraperFields.Size = New System.Drawing.Size(403, 114)
+        Me.gbScraperFields.TabIndex = 77
+        Me.gbScraperFields.TabStop = False
+        Me.gbScraperFields.Text = "Scraper Fields"
         '
         'chkGetEnglishImages
         '
@@ -162,21 +162,21 @@ Partial Class frmTVMediaSettingsHolder
         Me.chkOnlyTVImagesLanguage.Text = "Only Get Images for the Selected Language"
         Me.chkOnlyTVImagesLanguage.UseVisualStyleBackColor = True
         '
-        'GroupBox30
+        'gbTVDB
         '
-        Me.GroupBox30.Controls.Add(Me.gbLanguage)
-        Me.GroupBox30.Controls.Add(Me.lblTVDBMirror)
-        Me.GroupBox30.Controls.Add(Me.txtTVDBMirror)
-        Me.GroupBox30.Controls.Add(Me.pbTVDB)
-        Me.GroupBox30.Controls.Add(Me.Label18)
-        Me.GroupBox30.Controls.Add(Me.txtTVDBApiKey)
-        Me.GroupBox30.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GroupBox30.Location = New System.Drawing.Point(11, 31)
-        Me.GroupBox30.Name = "GroupBox30"
-        Me.GroupBox30.Size = New System.Drawing.Size(603, 119)
-        Me.GroupBox30.TabIndex = 96
-        Me.GroupBox30.TabStop = False
-        Me.GroupBox30.Text = "TVDB"
+        Me.gbTVDB.Controls.Add(Me.gbLanguage)
+        Me.gbTVDB.Controls.Add(Me.lblTVDBMirror)
+        Me.gbTVDB.Controls.Add(Me.txtTVDBMirror)
+        Me.gbTVDB.Controls.Add(Me.pbTVDB)
+        Me.gbTVDB.Controls.Add(Me.lblTVDBApiKey)
+        Me.gbTVDB.Controls.Add(Me.txtTVDBApiKey)
+        Me.gbTVDB.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbTVDB.Location = New System.Drawing.Point(11, 31)
+        Me.gbTVDB.Name = "gbTVDB"
+        Me.gbTVDB.Size = New System.Drawing.Size(603, 119)
+        Me.gbTVDB.TabIndex = 96
+        Me.gbTVDB.TabStop = False
+        Me.gbTVDB.Text = "TVDB"
         '
         'gbLanguage
         '
@@ -236,15 +236,15 @@ Partial Class frmTVMediaSettingsHolder
         Me.pbTVDB.TabIndex = 5
         Me.pbTVDB.TabStop = False
         '
-        'Label18
+        'lblTVDBApiKey
         '
-        Me.Label18.AutoSize = True
-        Me.Label18.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label18.Location = New System.Drawing.Point(6, 18)
-        Me.Label18.Name = "Label18"
-        Me.Label18.Size = New System.Drawing.Size(76, 13)
-        Me.Label18.TabIndex = 0
-        Me.Label18.Text = "TVDB API Key:"
+        Me.lblTVDBApiKey.AutoSize = True
+        Me.lblTVDBApiKey.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblTVDBApiKey.Location = New System.Drawing.Point(6, 18)
+        Me.lblTVDBApiKey.Name = "lblTVDBApiKey"
+        Me.lblTVDBApiKey.Size = New System.Drawing.Size(76, 13)
+        Me.lblTVDBApiKey.TabIndex = 0
+        Me.lblTVDBApiKey.Text = "TVDB API Key:"
         '
         'txtTVDBApiKey
         '
@@ -254,30 +254,30 @@ Partial Class frmTVMediaSettingsHolder
         Me.txtTVDBApiKey.Size = New System.Drawing.Size(371, 22)
         Me.txtTVDBApiKey.TabIndex = 1
         '
-        'Label1
+        'lblModuleInfo
         '
-        Me.Label1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.Label1.Font = New System.Drawing.Font("Segoe UI", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label1.ForeColor = System.Drawing.Color.Blue
-        Me.Label1.Location = New System.Drawing.Point(37, 337)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(225, 31)
-        Me.Label1.TabIndex = 1
-        Me.Label1.Text = "These settings are specific to this module." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Please refer to the global settings " & _
+        Me.lblModuleInfo.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.lblModuleInfo.Font = New System.Drawing.Font("Segoe UI", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblModuleInfo.ForeColor = System.Drawing.Color.Blue
+        Me.lblModuleInfo.Location = New System.Drawing.Point(37, 337)
+        Me.lblModuleInfo.Name = "lblModuleInfo"
+        Me.lblModuleInfo.Size = New System.Drawing.Size(225, 31)
+        Me.lblModuleInfo.TabIndex = 1
+        Me.lblModuleInfo.Text = "These settings are specific to this module." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Please refer to the global settings " & _
     "for more options."
-        Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.lblModuleInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
-        'PictureBox1
+        'pbModuleLogo
         '
-        Me.PictureBox1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
-        Me.PictureBox1.InitialImage = CType(resources.GetObject("PictureBox1.InitialImage"), System.Drawing.Image)
-        Me.PictureBox1.Location = New System.Drawing.Point(3, 335)
-        Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(30, 31)
-        Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-        Me.PictureBox1.TabIndex = 96
-        Me.PictureBox1.TabStop = False
+        Me.pbModuleLogo.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.pbModuleLogo.Image = CType(resources.GetObject("pbModuleLogo.Image"), System.Drawing.Image)
+        Me.pbModuleLogo.InitialImage = CType(resources.GetObject("pbModuleLogo.InitialImage"), System.Drawing.Image)
+        Me.pbModuleLogo.Location = New System.Drawing.Point(3, 335)
+        Me.pbModuleLogo.Name = "pbModuleLogo"
+        Me.pbModuleLogo.Size = New System.Drawing.Size(30, 31)
+        Me.pbModuleLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.pbModuleLogo.TabIndex = 96
+        Me.pbModuleLogo.TabStop = False
         '
         'frmTVMediaSettingsHolder
         '
@@ -298,14 +298,14 @@ Partial Class frmTVMediaSettingsHolder
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
         Me.pnlSettings.ResumeLayout(False)
-        Me.GroupBox32.ResumeLayout(False)
-        Me.GroupBox32.PerformLayout()
-        Me.GroupBox30.ResumeLayout(False)
-        Me.GroupBox30.PerformLayout()
+        Me.gbScraperFields.ResumeLayout(False)
+        Me.gbScraperFields.PerformLayout()
+        Me.gbTVDB.ResumeLayout(False)
+        Me.gbTVDB.PerformLayout()
         Me.gbLanguage.ResumeLayout(False)
         Me.gbLanguage.PerformLayout()
         CType(Me.pbTVDB, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbModuleLogo, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -315,12 +315,12 @@ Partial Class frmTVMediaSettingsHolder
     Friend WithEvents pnlSettings As System.Windows.Forms.Panel
     Friend WithEvents btnDown As System.Windows.Forms.Button
     Friend WithEvents btnUp As System.Windows.Forms.Button
-    Friend WithEvents Label2 As System.Windows.Forms.Label
-    Friend WithEvents Label1 As System.Windows.Forms.Label
-    Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
-    Friend WithEvents GroupBox30 As System.Windows.Forms.GroupBox
+    Friend WithEvents lblScraperOrder As System.Windows.Forms.Label
+    Friend WithEvents lblModuleInfo As System.Windows.Forms.Label
+    Friend WithEvents pbModuleLogo As System.Windows.Forms.PictureBox
+    Friend WithEvents gbTVDB As System.Windows.Forms.GroupBox
     Friend WithEvents pbTVDB As System.Windows.Forms.PictureBox
-    Friend WithEvents Label18 As System.Windows.Forms.Label
+    Friend WithEvents lblTVDBApiKey As System.Windows.Forms.Label
     Friend WithEvents txtTVDBApiKey As System.Windows.Forms.TextBox
     Friend WithEvents lblTVDBMirror As System.Windows.Forms.Label
     Friend WithEvents txtTVDBMirror As System.Windows.Forms.TextBox
@@ -329,6 +329,6 @@ Partial Class frmTVMediaSettingsHolder
     Friend WithEvents cbTVLanguage As System.Windows.Forms.ComboBox
     Friend WithEvents chkGetEnglishImages As System.Windows.Forms.CheckBox
     Friend WithEvents chkOnlyTVImagesLanguage As System.Windows.Forms.CheckBox
-    Friend WithEvents GroupBox32 As System.Windows.Forms.GroupBox
+    Friend WithEvents gbScraperFields As System.Windows.Forms.GroupBox
 
 End Class
