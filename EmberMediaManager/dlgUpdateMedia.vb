@@ -53,7 +53,7 @@ Public Class dlgUpdateMedia
             chkFanartMod.Checked = chkAllMod.Checked AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart)
             chkMetaMod.Checked = chkAllMod.Checked AndAlso Not Me.rbUpdateModifier_Missing.Checked AndAlso Master.eSettings.ScanMediaInfo
             chkActorMod.Checked = chkAllMod.Checked AndAlso Master.eSettings.ScraperActorThumbs
-            chkTrailerMod.Checked = chkAllMod.Checked AndAlso Master.eSettings.UpdaterTrailers
+            chkTrailerMod.Checked = chkAllMod.Checked AndAlso ModulesManager.Instance.QueryTrailerScraperCapabilities(Enums.ScraperCapabilities.Trailer)
         Else
             If chkMetaMod.Checked Then chkMetaMod.Checked = Not Me.rbUpdateModifier_Missing.Checked AndAlso Master.eSettings.ScanMediaInfo AndAlso (Not rbUpdate_Ask.Checked OrElse chkNFOMod.Checked)
         End If
@@ -65,7 +65,7 @@ Public Class dlgUpdateMedia
         chkEThumbsMod.Enabled = Not chkAllMod.Checked AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart)
         chkMetaMod.Enabled = Not chkAllMod.Checked AndAlso Not Me.rbUpdateModifier_Missing.Checked AndAlso Master.eSettings.ScanMediaInfo AndAlso (Not rbUpdate_Ask.Checked OrElse chkNFOMod.Checked)
         chkActorMod.Enabled = Not chkAllMod.Checked AndAlso Master.eSettings.ScraperActorThumbs
-        chkTrailerMod.Enabled = Not chkAllMod.Checked AndAlso Master.eSettings.UpdaterTrailers
+        chkTrailerMod.Enabled = Not chkAllMod.Checked AndAlso ModulesManager.Instance.QueryTrailerScraperCapabilities(Enums.ScraperCapabilities.Trailer)
 
         If chkAllMod.Checked OrElse chkNFOMod.Checked Then
             If chkCast.Checked OrElse chkCrew.Checked OrElse chkDirector.Checked OrElse chkGenre.Checked OrElse _

@@ -8707,7 +8707,7 @@ doCancel:
                 Me.cmnuTrayFilterAskMI.Enabled = .ScanMediaInfo
                 Me.cmnuTrayFilterAutoMI.Enabled = .ScanMediaInfo
 
-                Dim TrailerAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Trailer)
+                Dim TrailerAllowed As Boolean = ModulesManager.Instance.QueryTrailerScraperCapabilities(Enums.ScraperCapabilities.Trailer)
                 Me.mnuAllAutoTrailer.Enabled = TrailerAllowed
                 Me.mnuAllAskTrailer.Enabled = TrailerAllowed
                 Me.mnuMissAutoTrailer.Enabled = TrailerAllowed
