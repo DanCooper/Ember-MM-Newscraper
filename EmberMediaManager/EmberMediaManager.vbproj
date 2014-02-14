@@ -86,27 +86,50 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
     <DefineDebug>true</DefineDebug>
-    <OutputPath>..\EmberMM-Dev-AnyCPU\</OutputPath>
+    <OutputPath>..\EmberMM-Dev\</OutputPath>
     <DocumentationFile>Ember Media Manager.xml</DocumentationFile>
     <Optimize>true</Optimize>
     <NoWarn>42353,42354,42355</NoWarn>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <WarningsAsErrors>41998,41999,42004,42016,42017,42018,42019,42020,42021,42022,42024,42025,42026,42029,42030,42031,42032,42036,42099,42104,42105,42106,42107,42108,42109</WarningsAsErrors>
-    <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <DefineTrace>true</DefineTrace>
-    <OutputPath>..\EmberMM-Deploy-AnyCPU\</OutputPath>
+    <OutputPath>..\EmberMM-Deploy\</OutputPath>
     <DocumentationFile>Ember Media Manager.xml</DocumentationFile>
     <Optimize>true</Optimize>
     <NoWarn>42353,42354,42355</NoWarn>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <WarningsAsErrors>41998,41999,42004,42016,42017,42018,42019,42020,42021,42022,42024,42025,42026,42029,42030,42031,42032,42036,42099,42104,42105,42106,42107,42108,42109</WarningsAsErrors>
-    <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <OutputPath>..\EmberMM-Dev\</OutputPath>
+    <DocumentationFile>Ember Media Manager.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <NoWarn>42353,42354,42355</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <WarningsAsErrors>41998,41999,42004,42016,42017,42018,42019,42020,42021,42022,42024,42025,42026,42029,42030,42031,42032,42036,42099,42104,42105,42106,42107,42108,42109</WarningsAsErrors>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>..\EmberMM-Deploy\</OutputPath>
+    <DocumentationFile>Ember Media Manager.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <NoWarn>42353,42354,42355</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <WarningsAsErrors>41998,41999,42004,42016,42017,42018,42019,42020,42021,42022,42024,42025,42026,42029,42030,42031,42032,42036,42099,42104,42105,42106,42107,42108,42109</WarningsAsErrors>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ICSharpCode.SharpZipLib">
@@ -579,12 +602,16 @@
     <None Include="Resources\Wizard.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Bin\ffmpeg.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Bin\MediaInfo.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Content Include="x64\ffmpeg.exe" />
+    <Content Include="x64\mediainfo-rar\mediainfo-rar.exe" />
+    <Content Include="x64\mediainfo-rar\MediaInfo.dll" />
+    <Content Include="x64\mediainfo-rar\unrar.exe" />
+    <Content Include="x64\MediaInfo.dll" />
+    <Content Include="x86\ffmpeg.exe" />
+    <Content Include="x86\mediainfo-rar\mediainfo-rar.exe" />
+    <Content Include="x86\mediainfo-rar\MediaInfo.dll" />
+    <Content Include="x86\mediainfo-rar\unrar.exe" />
+    <Content Include="x86\MediaInfo.dll" />
     <Content Include="Images\Flags\achan_1.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -5161,6 +5188,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Bin\" />
     <Folder Include="Settings\" />
   </ItemGroup>
   <ItemGroup>
@@ -5196,6 +5224,15 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>copy $(ProjectDir)$(PlatformName)\MediaInfo.dll $(TargetDir)Bin\MediaInfo.dll /Y
+copy $(ProjectDir)$(PlatformName)\ffmpeg.exe $(TargetDir)Bin\ffmpeg.exe /Y
+xcopy $(ProjectDir)$(PlatformName)\mediainfo-rar $(TargetDir)Bin\mediainfo-rar /E /I /R /Y</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
