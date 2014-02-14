@@ -5229,9 +5229,9 @@
     </PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>copy $(ProjectDir)$(PlatformName)\MediaInfo.dll $(TargetDir)Bin\MediaInfo.dll /Y
-copy $(ProjectDir)$(PlatformName)\ffmpeg.exe $(TargetDir)Bin\ffmpeg.exe /Y
-xcopy $(ProjectDir)$(PlatformName)\mediainfo-rar $(TargetDir)Bin\mediainfo-rar /E /I /R /Y</PostBuildEvent>
+    <PostBuildEvent>copy "$(ProjectDir)$(PlatformName)\MediaInfo.dll" "$(TargetDir)Bin\MediaInfo.dll" /Y
+copy "$(ProjectDir)$(PlatformName)\ffmpeg.exe" "$(TargetDir)Bin\ffmpeg.exe" /Y
+xcopy "$(ProjectDir)$(PlatformName)\mediainfo-rar" "$(TargetDir)Bin\mediainfo-rar" /E /I /R /Y</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
