@@ -855,12 +855,14 @@ Public Class dlgOfflineHolder
 
         If cMovie.Audio.AudioTrack.Count > 0 Then
             For Each aStream In cMovie.Audio.AudioTrack
-                Dim stream_a As New MediaInfo.Audio
-                stream_a.Channels = DVDProfiler.ConvertAChannels(aStream.AudioChannels)
-                stream_a.Codec = DVDProfiler.ConvertAFormat(aStream.AudioFormat).ToLower
-                stream_a.LongLanguage = aStream.AudioContent
-                stream_a.Language = Localization.ISOLangGetCode3ByLang(aStream.AudioContent)
-                tMovie.Movie.FileInfo.StreamDetails.Audio.Add(DirectCast(stream_a, MediaInfo.Audio))
+                If Not aStream.AudioContent = "Commentary" Then
+                    Dim stream_a As New MediaInfo.Audio
+                    stream_a.Channels = DVDProfiler.ConvertAChannels(aStream.AudioChannels)
+                    stream_a.Codec = DVDProfiler.ConvertAFormat(aStream.AudioFormat).ToLower
+                    stream_a.LongLanguage = aStream.AudioContent
+                    stream_a.Language = Localization.ISOLangGetCode3ByLang(aStream.AudioContent)
+                    tMovie.Movie.FileInfo.StreamDetails.Audio.Add(DirectCast(stream_a, MediaInfo.Audio))
+                End If
             Next
         End If
 

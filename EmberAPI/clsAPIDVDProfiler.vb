@@ -46,15 +46,23 @@ Public Class DVDProfiler
 
     Public Shared Function ConvertAChannels(ByVal sChannels As String) As String
         If Not String.IsNullOrEmpty(sChannels) Then
-            Select Case sChannels
+            Select Case sChannels.ToLower
+                Case "2-channel stereo"
+                    sChannels = "2"
                 Case "2.1"
                     sChannels = "2"
+                Case "4.0"
+                    sChannels = "4"
                 Case "5.1"
+                    sChannels = "6"
+                Case "5.1 (matrixed 6.1)"
                     sChannels = "6"
                 Case "7.1"
                     sChannels = "8"
-                Case "Dolby Surround"
-                    sChannels = "6"
+                Case "dolby surround"
+                    sChannels = "4"
+                Case "mono"
+                    sChannels = "1"
             End Select
         End If
 
