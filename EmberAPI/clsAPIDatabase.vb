@@ -1019,6 +1019,7 @@ Public Class Database
     ''' <returns>Structures.DBTV object</returns>
     Public Function LoadTVAllSeasonFromDB(ByVal ShowID As Long, Optional ByVal WithShow As Boolean = False) As Structures.DBTV
         'TODO This method seems mis-named, and may not be performing its intended role
+        'DanCooper: Works correctly. AllSeasonPosters don't have existing episodes, so it needs to be fetched manually from DB.
         If ShowID < 0 Then Throw New ArgumentOutOfRangeException("ShowID", "Value must be >= 0, was given: " & ShowID)
 
         Dim _TVDB As New Structures.DBTV

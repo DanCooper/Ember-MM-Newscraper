@@ -7643,7 +7643,10 @@ doCancel:
                     Else
                         tmpEp = NFO.LoadTVEpFromNFO(tmpShowDb.EpNfoPath, tmpShowDb.TVEp.Season, tmpShowDb.TVEp.Episode)
                     End If
-                    tmpShowDb.TVEp = tmpEp
+
+                    If Not tmpEp.Episode = -999 Then
+                        tmpShowDb.TVEp = tmpEp
+                    End If
                 End If
 
                 If String.IsNullOrEmpty(tmpShowDb.TVEp.Title) Then
