@@ -75,7 +75,7 @@ Namespace IMPA
 
                             alPoster.Add(New MediaContainers.Image With {.Description = Master.eSize.poster_names(5).description, .URL = PosterURL, .Height = "n/a", .Width = "n/a", .ParentID = ParentID})
 
-                            'Most posters are available as extra large. Therefore, for now disabled.
+                            'Most posters are not available as extra large. Therefore, for now disabled.
                             'PosterURL = PosterURL.Insert(PosterURL.LastIndexOf("."), "_xlg")
                             'alPoster.Add(New MediaContainers.Image With {.Description = Master.eSize.poster_names(5).description, .URL = PosterURL, .Height = "n/a", .Width = "n/a", .ParentID = ParentID})
 
