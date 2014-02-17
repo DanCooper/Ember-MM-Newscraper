@@ -20,6 +20,7 @@
 
 Imports System.IO
 Imports System.IO.Compression
+Imports System.Net
 Imports System.Text
 Imports System.Text.RegularExpressions
 Imports EmberAPI
@@ -50,6 +51,13 @@ Namespace IMPA
 
                     Dim sHTTP As New HTTP
                     Dim HTML As String = sHTTP.DownloadData(sURL)
+
+                    If HTML.Contains("equiv=""REFRESH""") Then
+                        Dim newURL As String = Regex.Match(HTML, "URL=..*html").ToString
+                        sURL = String.Concat("http://www.impawards.com", newURL.Replace("URL=..", String.Empty))
+                        HTML = sHTTP.DownloadData(sURL)
+                    End If
+
                     sHTTP = Nothing
 
                     Dim mcPoster As MatchCollection = Regex.Matches(HTML, "(thumbs/imp_([^>]*ver[^>]*.jpg))|(thumbs/imp_([^>]*.jpg))")
@@ -65,10 +73,11 @@ Namespace IMPA
 
                             PosterURL = Strings.Replace(String.Format("{0}/{1}", sURL.Substring(0, sURL.LastIndexOf("/")), mPoster.Value.ToString()).Replace("thumbs", "posters"), "imp_", String.Empty)
 
-                            alPoster.Add(New MediaContainers.Image With {.Description = Master.eSize.poster_names(2).description, .URL = PosterURL, .Height = "755", .Width = "511", .ParentID = ParentID})
-
-                            PosterURL = PosterURL.Insert(PosterURL.LastIndexOf("."), "_xlg")
                             alPoster.Add(New MediaContainers.Image With {.Description = Master.eSize.poster_names(5).description, .URL = PosterURL, .Height = "n/a", .Width = "n/a", .ParentID = ParentID})
+
+                            'Most posters are available as extra large. Therefore, for now disabled.
+                            'PosterURL = PosterURL.Insert(PosterURL.LastIndexOf("."), "_xlg")
+                            'alPoster.Add(New MediaContainers.Image With {.Description = Master.eSize.poster_names(5).description, .URL = PosterURL, .Height = "n/a", .Width = "n/a", .ParentID = ParentID})
 
                             oV = ParentID
                         End If
@@ -85,14 +94,21 @@ Namespace IMPA
             Try
 
                 Dim sHTTP As New HTTP
+                Dim sPoster As String
+                Dim sURLRequest As HttpWebRequest
 
                 Dim HTML As String = sHTTP.DownloadData(String.Concat("http://", Master.eSettings.IMDBURL, "/title/tt", IMDBID, "/posters"))
                 sHTTP = Nothing
 
-                Dim mcIMPA As MatchCollection = Regex.Matches(HTML, "http://([^""]*)impawards.com/([^""]*)")
+                Dim mcIMPA As MatchCollection = Regex.Matches(HTML, "/offsite.*impawards.*""")
                 If mcIMPA.Count > 0 Then
-                    'just use the first one if more are found
-                    Return mcIMPA(0).Value.ToString
+                    sPoster = mcIMPA(0).Value.ToString
+                    sPoster = sPoster.Replace("""", String.Empty)
+                    sPoster = String.Concat("http://", Master.eSettings.IMDBURL, sPoster)
+                    sURLRequest = DirectCast(WebRequest.Create(sPoster), HttpWebRequest)
+                    Using sURLResponse As HttpWebResponse = DirectCast(sURLRequest.GetResponse(), HttpWebResponse)
+                        Return sURLResponse.ResponseUri.ToString
+                    End Using
                 Else
                     Return String.Empty
                 End If
