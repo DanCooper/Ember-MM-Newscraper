@@ -30,9 +30,14 @@ Partial Class frmIMDBInfoSettingsHolder
         Me.btnDown = New System.Windows.Forms.Button()
         Me.btnUp = New System.Windows.Forms.Button()
         Me.pnlSettings = New System.Windows.Forms.Panel()
+        Me.gbScraperOptions = New System.Windows.Forms.GroupBox()
+        Me.chkTvTitles = New System.Windows.Forms.CheckBox()
+        Me.chkPartialTitles = New System.Windows.Forms.CheckBox()
+        Me.chkPopularTitles = New System.Windows.Forms.CheckBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
-        Me.gbOptions = New System.Windows.Forms.GroupBox()
+        Me.gbScraperFields = New System.Windows.Forms.GroupBox()
+        Me.chkIMDBCleanPlotOutline = New System.Windows.Forms.CheckBox()
         Me.chkCertification = New System.Windows.Forms.CheckBox()
         Me.chkCountry = New System.Windows.Forms.CheckBox()
         Me.chkTop250 = New System.Windows.Forms.CheckBox()
@@ -57,11 +62,11 @@ Partial Class frmIMDBInfoSettingsHolder
         Me.chkMPAA = New System.Windows.Forms.CheckBox()
         Me.chkYear = New System.Windows.Forms.CheckBox()
         Me.chkTitle = New System.Windows.Forms.CheckBox()
-        Me.chkIMDBCleanPlotOutline = New System.Windows.Forms.CheckBox()
         Me.Panel1.SuspendLayout()
         Me.pnlSettings.SuspendLayout()
+        Me.gbScraperOptions.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.gbOptions.SuspendLayout()
+        Me.gbScraperFields.SuspendLayout()
         Me.SuspendLayout()
         '
         'lblVersion
@@ -129,14 +134,61 @@ Partial Class frmIMDBInfoSettingsHolder
         '
         'pnlSettings
         '
+        Me.pnlSettings.Controls.Add(Me.gbScraperOptions)
         Me.pnlSettings.Controls.Add(Me.Label1)
         Me.pnlSettings.Controls.Add(Me.PictureBox1)
         Me.pnlSettings.Controls.Add(Me.Panel1)
-        Me.pnlSettings.Controls.Add(Me.gbOptions)
+        Me.pnlSettings.Controls.Add(Me.gbScraperFields)
         Me.pnlSettings.Location = New System.Drawing.Point(12, 4)
         Me.pnlSettings.Name = "pnlSettings"
         Me.pnlSettings.Size = New System.Drawing.Size(617, 369)
         Me.pnlSettings.TabIndex = 0
+        '
+        'gbScraperOptions
+        '
+        Me.gbScraperOptions.Controls.Add(Me.chkTvTitles)
+        Me.gbScraperOptions.Controls.Add(Me.chkPartialTitles)
+        Me.gbScraperOptions.Controls.Add(Me.chkPopularTitles)
+        Me.gbScraperOptions.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.gbScraperOptions.Location = New System.Drawing.Point(10, 199)
+        Me.gbScraperOptions.Name = "gbScraperOptions"
+        Me.gbScraperOptions.Size = New System.Drawing.Size(589, 99)
+        Me.gbScraperOptions.TabIndex = 97
+        Me.gbScraperOptions.TabStop = False
+        Me.gbScraperOptions.Text = "Scraper Options"
+        '
+        'chkTvTitles
+        '
+        Me.chkTvTitles.AutoSize = True
+        Me.chkTvTitles.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkTvTitles.Location = New System.Drawing.Point(7, 69)
+        Me.chkTvTitles.Name = "chkTvTitles"
+        Me.chkTvTitles.Size = New System.Drawing.Size(67, 17)
+        Me.chkTvTitles.TabIndex = 2
+        Me.chkTvTitles.Text = "TV Titles"
+        Me.chkTvTitles.UseVisualStyleBackColor = True
+        '
+        'chkPartialTitles
+        '
+        Me.chkPartialTitles.AutoSize = True
+        Me.chkPartialTitles.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkPartialTitles.Location = New System.Drawing.Point(7, 45)
+        Me.chkPartialTitles.Name = "chkPartialTitles"
+        Me.chkPartialTitles.Size = New System.Drawing.Size(87, 17)
+        Me.chkPartialTitles.TabIndex = 1
+        Me.chkPartialTitles.Text = "Partial Titles"
+        Me.chkPartialTitles.UseVisualStyleBackColor = True
+        '
+        'chkPopularTitles
+        '
+        Me.chkPopularTitles.AutoSize = True
+        Me.chkPopularTitles.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkPopularTitles.Location = New System.Drawing.Point(7, 22)
+        Me.chkPopularTitles.Name = "chkPopularTitles"
+        Me.chkPopularTitles.Size = New System.Drawing.Size(95, 17)
+        Me.chkPopularTitles.TabIndex = 0
+        Me.chkPopularTitles.Text = "Popular Titles"
+        Me.chkPopularTitles.UseVisualStyleBackColor = True
         '
         'Label1
         '
@@ -162,40 +214,50 @@ Partial Class frmIMDBInfoSettingsHolder
         Me.PictureBox1.TabIndex = 96
         Me.PictureBox1.TabStop = False
         '
-        'gbOptions
+        'gbScraperFields
         '
-        Me.gbOptions.Controls.Add(Me.chkIMDBCleanPlotOutline)
-        Me.gbOptions.Controls.Add(Me.chkCertification)
-        Me.gbOptions.Controls.Add(Me.chkCountry)
-        Me.gbOptions.Controls.Add(Me.chkTop250)
-        Me.gbOptions.Controls.Add(Me.chkCrew)
-        Me.gbOptions.Controls.Add(Me.chkMusicBy)
-        Me.gbOptions.Controls.Add(Me.chkProducers)
-        Me.gbOptions.Controls.Add(Me.chkFullCast)
-        Me.gbOptions.Controls.Add(Me.chkWriters)
-        Me.gbOptions.Controls.Add(Me.chkStudio)
-        Me.gbOptions.Controls.Add(Me.chkRuntime)
-        Me.gbOptions.Controls.Add(Me.chkFullCrew)
-        Me.gbOptions.Controls.Add(Me.chkPlot)
-        Me.gbOptions.Controls.Add(Me.chkOutline)
-        Me.gbOptions.Controls.Add(Me.chkGenre)
-        Me.gbOptions.Controls.Add(Me.chkDirector)
-        Me.gbOptions.Controls.Add(Me.chkTagline)
-        Me.gbOptions.Controls.Add(Me.chkCast)
-        Me.gbOptions.Controls.Add(Me.chkVotes)
-        Me.gbOptions.Controls.Add(Me.chkTrailer)
-        Me.gbOptions.Controls.Add(Me.chkRating)
-        Me.gbOptions.Controls.Add(Me.chkRelease)
-        Me.gbOptions.Controls.Add(Me.chkMPAA)
-        Me.gbOptions.Controls.Add(Me.chkYear)
-        Me.gbOptions.Controls.Add(Me.chkTitle)
-        Me.gbOptions.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.gbOptions.Location = New System.Drawing.Point(11, 31)
-        Me.gbOptions.Name = "gbOptions"
-        Me.gbOptions.Size = New System.Drawing.Size(588, 161)
-        Me.gbOptions.TabIndex = 3
-        Me.gbOptions.TabStop = False
-        Me.gbOptions.Text = "Scraper Fields"
+        Me.gbScraperFields.Controls.Add(Me.chkIMDBCleanPlotOutline)
+        Me.gbScraperFields.Controls.Add(Me.chkCertification)
+        Me.gbScraperFields.Controls.Add(Me.chkCountry)
+        Me.gbScraperFields.Controls.Add(Me.chkTop250)
+        Me.gbScraperFields.Controls.Add(Me.chkCrew)
+        Me.gbScraperFields.Controls.Add(Me.chkMusicBy)
+        Me.gbScraperFields.Controls.Add(Me.chkProducers)
+        Me.gbScraperFields.Controls.Add(Me.chkFullCast)
+        Me.gbScraperFields.Controls.Add(Me.chkWriters)
+        Me.gbScraperFields.Controls.Add(Me.chkStudio)
+        Me.gbScraperFields.Controls.Add(Me.chkRuntime)
+        Me.gbScraperFields.Controls.Add(Me.chkFullCrew)
+        Me.gbScraperFields.Controls.Add(Me.chkPlot)
+        Me.gbScraperFields.Controls.Add(Me.chkOutline)
+        Me.gbScraperFields.Controls.Add(Me.chkGenre)
+        Me.gbScraperFields.Controls.Add(Me.chkDirector)
+        Me.gbScraperFields.Controls.Add(Me.chkTagline)
+        Me.gbScraperFields.Controls.Add(Me.chkCast)
+        Me.gbScraperFields.Controls.Add(Me.chkVotes)
+        Me.gbScraperFields.Controls.Add(Me.chkTrailer)
+        Me.gbScraperFields.Controls.Add(Me.chkRating)
+        Me.gbScraperFields.Controls.Add(Me.chkRelease)
+        Me.gbScraperFields.Controls.Add(Me.chkMPAA)
+        Me.gbScraperFields.Controls.Add(Me.chkYear)
+        Me.gbScraperFields.Controls.Add(Me.chkTitle)
+        Me.gbScraperFields.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.gbScraperFields.Location = New System.Drawing.Point(11, 31)
+        Me.gbScraperFields.Name = "gbScraperFields"
+        Me.gbScraperFields.Size = New System.Drawing.Size(588, 161)
+        Me.gbScraperFields.TabIndex = 3
+        Me.gbScraperFields.TabStop = False
+        Me.gbScraperFields.Text = "Scraper Fields"
+        '
+        'chkIMDBCleanPlotOutline
+        '
+        Me.chkIMDBCleanPlotOutline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkIMDBCleanPlotOutline.Location = New System.Drawing.Point(363, 19)
+        Me.chkIMDBCleanPlotOutline.Name = "chkIMDBCleanPlotOutline"
+        Me.chkIMDBCleanPlotOutline.Size = New System.Drawing.Size(194, 17)
+        Me.chkIMDBCleanPlotOutline.TabIndex = 75
+        Me.chkIMDBCleanPlotOutline.Text = "Clean Plot/Outline"
+        Me.chkIMDBCleanPlotOutline.UseVisualStyleBackColor = True
         '
         'chkCertification
         '
@@ -401,6 +463,7 @@ Partial Class frmIMDBInfoSettingsHolder
         'chkTrailer
         '
         Me.chkTrailer.AutoSize = True
+        Me.chkTrailer.Enabled = False
         Me.chkTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkTrailer.Location = New System.Drawing.Point(237, 36)
         Me.chkTrailer.Name = "chkTrailer"
@@ -464,16 +527,6 @@ Partial Class frmIMDBInfoSettingsHolder
         Me.chkTitle.Text = "Title"
         Me.chkTitle.UseVisualStyleBackColor = True
         '
-        'chkIMDBCleanPlotOutline
-        '
-        Me.chkIMDBCleanPlotOutline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkIMDBCleanPlotOutline.Location = New System.Drawing.Point(363, 19)
-        Me.chkIMDBCleanPlotOutline.Name = "chkIMDBCleanPlotOutline"
-        Me.chkIMDBCleanPlotOutline.Size = New System.Drawing.Size(194, 17)
-        Me.chkIMDBCleanPlotOutline.TabIndex = 75
-        Me.chkIMDBCleanPlotOutline.Text = "Clean Plot/Outline"
-        Me.chkIMDBCleanPlotOutline.UseVisualStyleBackColor = True
-        '
         'frmIMDBInfoSettingsHolder
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -493,9 +546,11 @@ Partial Class frmIMDBInfoSettingsHolder
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
         Me.pnlSettings.ResumeLayout(False)
+        Me.gbScraperOptions.ResumeLayout(False)
+        Me.gbScraperOptions.PerformLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.gbOptions.ResumeLayout(False)
-        Me.gbOptions.PerformLayout()
+        Me.gbScraperFields.ResumeLayout(False)
+        Me.gbScraperFields.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -508,7 +563,7 @@ Partial Class frmIMDBInfoSettingsHolder
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
-    Friend WithEvents gbOptions As System.Windows.Forms.GroupBox
+    Friend WithEvents gbScraperFields As System.Windows.Forms.GroupBox
     Friend WithEvents chkCertification As System.Windows.Forms.CheckBox
     Friend WithEvents chkCountry As System.Windows.Forms.CheckBox
     Friend WithEvents chkTop250 As System.Windows.Forms.CheckBox
@@ -534,5 +589,9 @@ Partial Class frmIMDBInfoSettingsHolder
     Friend WithEvents chkYear As System.Windows.Forms.CheckBox
     Friend WithEvents chkTitle As System.Windows.Forms.CheckBox
     Friend WithEvents chkIMDBCleanPlotOutline As System.Windows.Forms.CheckBox
+    Friend WithEvents gbScraperOptions As System.Windows.Forms.GroupBox
+    Friend WithEvents chkTvTitles As System.Windows.Forms.CheckBox
+    Friend WithEvents chkPartialTitles As System.Windows.Forms.CheckBox
+    Friend WithEvents chkPopularTitles As System.Windows.Forms.CheckBox
 
 End Class

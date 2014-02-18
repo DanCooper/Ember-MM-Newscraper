@@ -34,6 +34,7 @@ Namespace IMDB
         Private _ExactMatches As New List(Of MediaContainers.Movie)
         Private _PartialMatches As New List(Of MediaContainers.Movie)
         Private _PopularTitles As New List(Of MediaContainers.Movie)
+        Private _TvTitles As New List(Of MediaContainers.Movie)
 
 #End Region 'Fields
 
@@ -66,6 +67,15 @@ Namespace IMDB
             End Set
         End Property
 
+        Public Property TvTitles() As List(Of MediaContainers.Movie)
+            Get
+                Return _TvTitles
+            End Get
+            Set(ByVal value As List(Of MediaContainers.Movie))
+                _TvTitles = value
+            End Set
+        End Property
+
 #End Region 'Properties
 
     End Class
@@ -93,6 +103,7 @@ Namespace IMDB
         Private Const TD_PATTERN_4 As String = "<td>(?<title>.*?)</td>"
         Private Const TITLE_PATTERN As String = "<a\shref=[""""'](?<url>.*?)[""""'].*?>(?<name>.*?)</a>((\s)+?(\((?<year>\d{4})(\/.*?)?\)))?((\s)+?(\((?<type>.*?)\)))?"
         Private Const TR_PATTERN As String = "<tr\sclass="".*?"">(.*?)</tr>"
+        Private Const TvTITLE_PATTERN As String = "<a\shref=[""'](?<url>.*?)[""']\stitle=[""'](?<name>.*?)((\s)+?(\((?<year>\d{4})))"
 
         Private sPoster As String
 
@@ -555,7 +566,7 @@ Namespace IMDB
                             'check if outline has links to other IMDB entry
                             For Each rMatch As Match In Regex.Matches(PlotOutline, HREF_PATTERN_4)
                                 PlotOutline = PlotOutline.Replace(rMatch.Value, rMatch.Groups("text").Value.Trim)
-                            Next                       
+                            Next
                             'check if brackets should be removed...
                             If Options.bCleanPlotOutline Then
                                 DBMovie.Outline = StringUtils.RemoveBrackets(Regex.Replace(PlotOutline, HREF_PATTERN, String.Empty).Trim)
@@ -973,18 +984,27 @@ mPlot:          'MOVIE PLOT
                 Dim D, W As Integer
                 Dim R As New MovieSearchResults
 
-                Dim HTML As String
-                Dim HTMLp As String
-                Dim HTMLm As String
-                Dim HTMLe As String
-                Dim rUri As String
+                Dim HTML As String = String.Empty
+                Dim HTMLt As String = String.Empty
+                Dim HTMLp As String = String.Empty
+                Dim HTMLm As String = String.Empty
+                Dim HTMLe As String = String.Empty
+                Dim rUri As String = String.Empty
 
                 Using sHTTP As New HTTP
                     HTML = sHTTP.DownloadData(String.Concat("http://", Master.eSettings.IMDBURL, "/find?q=", Web.HttpUtility.UrlEncode(sMovie), "&s=tt&ttype=ft"))
-                    HTMLp = sHTTP.DownloadData(String.Concat("http://", Master.eSettings.IMDBURL, "/find?q=", Web.HttpUtility.UrlEncode(sMovie), "&s=tt&ttype=ft&ref_=fn_tt_pop"))
-                    HTMLm = sHTTP.DownloadData(String.Concat("http://", Master.eSettings.IMDBURL, "/find?q=", Web.HttpUtility.UrlEncode(sMovie), "&s=tt&ttype=ft&ref_=fn_ft"))
                     HTMLe = sHTTP.DownloadData(String.Concat("http://", Master.eSettings.IMDBURL, "/find?q=", Web.HttpUtility.UrlEncode(sMovie), "&s=tt&ttype=ft&exact=true&ref_=fn_tt_ex"))
                     rUri = sHTTP.ResponseUri
+
+                    If AdvancedSettings.GetBooleanSetting("SearchTvTitles", False) Then
+                        HTMLt = sHTTP.DownloadData(String.Concat("http://", Master.eSettings.IMDBURL, "/search/title?title=", Web.HttpUtility.UrlEncode(sMovie), "&title_type=tv_movie"))
+                    End If
+                    If AdvancedSettings.GetBooleanSetting("SearchPartialTitles", True) Then
+                        HTMLm = sHTTP.DownloadData(String.Concat("http://", Master.eSettings.IMDBURL, "/find?q=", Web.HttpUtility.UrlEncode(sMovie), "&s=tt&ttype=ft&ref_=fn_ft"))
+                    End If
+                    If AdvancedSettings.GetBooleanSetting("SearchPopularTitles", True) Then
+                        HTMLp = sHTTP.DownloadData(String.Concat("http://", Master.eSettings.IMDBURL, "/find?q=", Web.HttpUtility.UrlEncode(sMovie), "&s=tt&ttype=ft&ref_=fn_tt_pop"))
+                    End If
                 End Using
 
                 'Check if we've been redirected straight to the movie page
@@ -1008,10 +1028,10 @@ mPlot:          'MOVIE PLOT
                                                 Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString), Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("year").ToString), StringUtils.ComputeLevenshtein(StringUtils.FilterYear(sMovie).ToLower, StringUtils.FilterYear(Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString)).ToLower))
 
                 R.PopularTitles = qPopular.ToList
-mPartial:
 
+mPartial:
                 D = HTMLm.IndexOf("</a>Titles</h3>")
-                If D <= 0 Then GoTo mExact
+                If D <= 0 Then GoTo mTV
                 W = HTMLm.IndexOf("</table>", D) + 8
 
                 Table = Regex.Match(HTMLm.Substring(D, W - D), TABLE_PATTERN).ToString
@@ -1021,28 +1041,21 @@ mPartial:
                                      Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString), Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("year").ToString), StringUtils.ComputeLevenshtein(StringUtils.FilterYear(sMovie).ToLower, StringUtils.FilterYear(Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString)).ToLower))
 
                 R.PartialMatches = qpartial.ToList
-                'mApprox:
 
-                '                'Now process "Approx Matches" and merge both Partial and Approx matches
-                '                D = HTML.IndexOf("Titles (Approx Matches)")
-                '                If D <= 0 Then GoTo mExact
-                '                W = HTML.IndexOf("</table>", D) + 8
+mTv:
+                D = HTMLt.IndexOf("<table class=""results"">")
+                If D <= 0 Then GoTo mExact
+                W = HTMLt.IndexOf("</table>", D) + 8
 
-                '                Table = Regex.Match(HTML.Substring(D, W - D), TABLE_PATTERN).ToString
+                Table = HTMLt.Substring(D, W - D).ToString
+                Dim qtvmovie = From Mtr In Regex.Matches(Table, TvTITLE_PATTERN) _
+                    Where Not DirectCast(Mtr, Match).Groups("name").ToString.Contains("<img") AndAlso Not DirectCast(Mtr, Match).Groups("type").ToString.Contains("VG") _
+                    Select New MediaContainers.Movie(GetMovieID(DirectCast(Mtr, Match).Groups("url").ToString), _
+                                     Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString), Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("year").ToString), StringUtils.ComputeLevenshtein(StringUtils.FilterYear(sMovie).ToLower, StringUtils.FilterYear(Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString)).ToLower))
 
-                '                Dim qApprox = From Mtr In Regex.Matches(Table, TITLE_PATTERN) _
-                '                    Where Not DirectCast(Mtr, Match).Groups("name").ToString.Contains("<img") AndAlso Not DirectCast(Mtr, Match).Groups("type").ToString.Contains("VG") _
-                '                    Select New MediaContainers.Movie(GetMovieID(DirectCast(Mtr, Match).Groups("url").ToString), _
-                '                                     Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString), Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("year").ToString), StringUtils.ComputeLevenshtein(StringUtils.FilterYear(sMovie).ToLower, StringUtils.FilterYear(Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString)).ToLower))
-
-                '                If Not IsNothing(R.PartialMatches) Then
-                '                    R.PartialMatches = R.PartialMatches.Union(qApprox.ToList).ToList
-                '                Else
-                '                    R.PartialMatches = qApprox.ToList
-                '                End If
+                R.TvTitles = qtvmovie.ToList
 
 mExact:
-
                 D = HTMLe.IndexOf("</a>Titles</h3>")
                 If D <= 0 Then GoTo mResult
                 W = HTMLe.IndexOf("</table>", D) + 8

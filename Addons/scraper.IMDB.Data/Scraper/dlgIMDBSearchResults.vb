@@ -92,8 +92,10 @@ Public Class dlgIMDBSearchResults
     End Sub
 
     Private Sub btnVerify_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnVerify.Click
+        Dim pOpt As New Structures.ScrapeOptions
+        pOpt = SetPreviewOptions()
         If Regex.IsMatch(Me.txtIMDBID.Text.Replace("tt", String.Empty), "\d\d\d\d\d\d\d") Then
-            IMDB.GetSearchMovieInfoAsync(Me.txtIMDBID.Text.Replace("tt", String.Empty), Master.tmpMovie, Master.DefaultOptions)
+            IMDB.GetSearchMovieInfoAsync(Me.txtIMDBID.Text.Replace("tt", String.Empty), Master.tmpMovie, pOpt)
         Else
             MsgBox(Master.eLang.GetString(799, "The ID you entered is not a valid IMDB ID."), MsgBoxStyle.Exclamation, Master.eLang.GetString(292, "Invalid Entry"))
         End If
@@ -121,9 +123,10 @@ Public Class dlgIMDBSearchResults
 
         Try
             Me.pbPoster.Image = Res.Result
-            If Not _PosterCache.ContainsKey(Res.IMDBId) Then
-                _PosterCache.Add(Res.IMDBId, Res.Result)
-            End If
+            'TODO: fix this part. Ends in an app crash after second picture when reselecting an older entry... i don't know why...
+            'If Not _PosterCache.ContainsKey(Res.IMDBId) Then
+            '    _PosterCache.Add(Res.IMDBId, Res.Result)
+            'End If
         Catch ex As Exception
             Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         Finally
@@ -305,7 +308,7 @@ Public Class dlgIMDBSearchResults
             Me.tvResults.Nodes.Clear()
             Me.ClearInfo()
             If Not IsNothing(M) Then
-                If M.PartialMatches.Count > 0 OrElse M.PopularTitles.Count > 0 OrElse M.ExactMatches.Count > 0 Then
+                If M.PartialMatches.Count > 0 OrElse M.PopularTitles.Count > 0 OrElse M.TvTitles.Count > 0 OrElse M.ExactMatches.Count > 0 Then
                     Dim TnP As New TreeNode(String.Format(Master.eLang.GetString(827, "Partial Matches ({0})"), M.PartialMatches.Count))
                     Dim selNode As New TreeNode
 
@@ -319,27 +322,37 @@ Public Class dlgIMDBSearchResults
                         selNode = TnP.FirstNode
                     End If
 
-                    If M.PopularTitles.Count > 0 Then
-                        M.PopularTitles.Sort()
-                        If M.PartialMatches.Count > 0 OrElse M.ExactMatches.Count > 0 Then
+                    If M.TvTitles.Count > 0 Then
+                        M.TvTitles.Sort()
+                        If M.PartialMatches.Count > 0 Then
                             Me.tvResults.Nodes(TnP.Index).Collapse()
                         End If
-
-                        TnP = New TreeNode(String.Format(Master.eLang.GetString(829, "Popular Titles ({0})"), M.PopularTitles.Count))
-
-                        For Each Movie As MediaContainers.Movie In M.PopularTitles
+                        TnP = New TreeNode(String.Format(Master.eLang.GetString(1006, "TV Movie Titles ({0})"), M.TvTitles.Count))
+                        For Each Movie As MediaContainers.Movie In M.TvTitles
                             TnP.Nodes.Add(New TreeNode() With {.Text = String.Concat(Movie.Title, If(Not String.IsNullOrEmpty(Movie.Year), String.Format(" ({0})", Movie.Year), String.Empty)), .Tag = Movie.IMDBID})
-
                         Next
                         TnP.Expand()
                         Me.tvResults.Nodes.Add(TnP)
+                        selNode = TnP.FirstNode
+                    End If
 
+                    If M.PopularTitles.Count > 0 Then
+                        M.PopularTitles.Sort()
+                        If M.PartialMatches.Count > 0 OrElse M.TvTitles.Count > 0 Then
+                            Me.tvResults.Nodes(TnP.Index).Collapse()
+                        End If
+                        TnP = New TreeNode(String.Format(Master.eLang.GetString(829, "Popular Titles ({0})"), M.PopularTitles.Count))
+                        For Each Movie As MediaContainers.Movie In M.PopularTitles
+                            TnP.Nodes.Add(New TreeNode() With {.Text = String.Concat(Movie.Title, If(Not String.IsNullOrEmpty(Movie.Year), String.Format(" ({0})", Movie.Year), String.Empty)), .Tag = Movie.IMDBID})
+                        Next
+                        TnP.Expand()
+                        Me.tvResults.Nodes.Add(TnP)
                         selNode = TnP.FirstNode
                     End If
 
                     If M.ExactMatches.Count > 0 Then
                         M.ExactMatches.Sort()
-                        If M.PartialMatches.Count > 0 Then
+                        If M.PartialMatches.Count > 0 OrElse M.TvTitles.Count > 0 OrElse M.PopularTitles.Count > 0 Then
                             Me.tvResults.Nodes(TnP.Index).Collapse()
                         End If
                         TnP = New TreeNode(String.Format(Master.eLang.GetString(831, "Exact Matches ({0})"), M.ExactMatches.Count))
@@ -348,9 +361,7 @@ Public Class dlgIMDBSearchResults
                         Next
                         TnP.Expand()
                         Me.tvResults.Nodes.Add(TnP)
-
                         selNode = TnP.FirstNode
-
                     End If
                     Me._prevnode = -2
 
@@ -358,6 +369,8 @@ Public Class dlgIMDBSearchResults
                     If M.ExactMatches.Count > 0 Then
                         Me.tvResults.SelectedNode = selNode
                     ElseIf M.PopularTitles.Count > 0 Then
+                        Me.tvResults.SelectedNode = selNode
+                    ElseIf M.TvTitles.Count > 0 Then
                         Me.tvResults.SelectedNode = selNode
                     ElseIf M.PartialMatches.Count > 0 Then
                         Me.tvResults.SelectedNode = selNode
@@ -376,23 +389,7 @@ Public Class dlgIMDBSearchResults
         End Try
     End Sub
 
-    Private Sub SetUp()
-        Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
-        Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
-        Me.Label2.Text = Master.eLang.GetString(836, "View details of each result to find the proper movie.")
-        Me.Label1.Text = Master.eLang.GetString(846, "Movie Search Results")
-        Me.chkManual.Text = Master.eLang.GetString(847, "Manual IMDB Entry:")
-        Me.btnVerify.Text = Master.eLang.GetString(848, "Verify")
-        Me.lblYearHeader.Text = Master.eLang.GetString(848, "Year:")
-        Me.lblDirectorHeader.Text = Master.eLang.GetString(239, "Director:")
-        Me.lblGenreHeader.Text = Master.eLang.GetString(51, "Genre(s):")
-        Me.lblIMDBHeader.Text = Master.eLang.GetString(873, "IMDB ID:")
-        Me.lblPlotHeader.Text = Master.eLang.GetString(242, "Plot Outline:")
-        Me.Label3.Text = Master.eLang.GetString(798, "Searching IMDB...")
-        Me.txtFileName.Text = Master.currMovie.Filename
-    End Sub
-
-    Private Sub tmrLoad_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrLoad.Tick
+    Private Function SetPreviewOptions() As Structures.ScrapeOptions
         Dim aOpt As New Structures.ScrapeOptions
         aOpt.bCast = False
         aOpt.bCert = False
@@ -414,19 +411,42 @@ Public Class dlgIMDBSearchResults
         aOpt.bStudio = False
         aOpt.bTagline = True
         aOpt.bTitle = True
-        aOpt.bTop250 = True
-        aOpt.bTrailer = True
-        aOpt.buseMPAAForFSK = True
+        aOpt.bTop250 = False
+        aOpt.bTrailer = False
+        aOpt.buseMPAAForFSK = False
         aOpt.bVotes = False
         aOpt.bWriters = False
         aOpt.bYear = True
+
+        Return aOpt
+    End Function
+
+    Private Sub SetUp()
+        Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
+        Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
+        Me.Label2.Text = Master.eLang.GetString(836, "View details of each result to find the proper movie.")
+        Me.Label1.Text = Master.eLang.GetString(846, "Movie Search Results")
+        Me.chkManual.Text = Master.eLang.GetString(847, "Manual IMDB Entry:")
+        Me.btnVerify.Text = Master.eLang.GetString(848, "Verify")
+        Me.lblYearHeader.Text = Master.eLang.GetString(49, "Year:")
+        Me.lblDirectorHeader.Text = Master.eLang.GetString(239, "Director:")
+        Me.lblGenreHeader.Text = Master.eLang.GetString(51, "Genre(s):")
+        Me.lblIMDBHeader.Text = Master.eLang.GetString(873, "IMDB ID:")
+        Me.lblPlotHeader.Text = Master.eLang.GetString(242, "Plot Outline:")
+        Me.Label3.Text = Master.eLang.GetString(798, "Searching IMDB...")
+        Me.txtFileName.Text = Master.currMovie.Filename
+    End Sub
+
+    Private Sub tmrLoad_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrLoad.Tick
+        Dim pOpt As New Structures.ScrapeOptions
+        pOpt = SetPreviewOptions()
 
         Me.tmrWait.Stop()
         Me.tmrLoad.Stop()
         Me.pnlLoading.Visible = True
         Me.Label3.Text = Master.eLang.GetString(875, "Downloading details...")
 
-        IMDB.GetSearchMovieInfoAsync(Me.tvResults.SelectedNode.Tag.ToString, Master.tmpMovie, aOpt)
+        IMDB.GetSearchMovieInfoAsync(Me.tvResults.SelectedNode.Tag.ToString, Master.tmpMovie, pOpt)
     End Sub
 
     Private Sub tmrWait_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrWait.Tick

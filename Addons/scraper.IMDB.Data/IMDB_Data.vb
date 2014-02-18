@@ -40,6 +40,7 @@ Public Class IMDB_Data
     ''' Scraping Here
     ''' </summary>
     ''' <remarks></remarks>
+    Private _MySettings As New sMySettings
     Private IMDB As New IMDB.Scraper
     Private _Name As String = "IMDB_Data"
     Private _PostScraperEnabled As Boolean = False
@@ -147,6 +148,10 @@ Public Class IMDB_Data
         _setup.chkFullCrew.Checked = ConfigOptions.bFullCrew
         _setup.chkIMDBCleanPlotOutline.Checked = ConfigOptions.bCleanPlotOutline
 
+        _setup.chkPartialTitles.Checked = _MySettings.SearchPartialTitles
+        _setup.chkPopularTitles.Checked = _MySettings.SearchPopularTitles
+        _setup.chkTvTitles.Checked = _MySettings.SearchTvTitles
+
         _setup.orderChanged()
         SPanel.Name = String.Concat(Me._Name, "Scraper")
         SPanel.Text = Master.eLang.GetString(885, "IMDB")
@@ -200,6 +205,10 @@ Public Class IMDB_Data
         ConfigScrapeModifier.Poster = AdvancedSettings.GetBooleanSetting("DoPoster", True)
         ConfigScrapeModifier.Fanart = AdvancedSettings.GetBooleanSetting("DoFanart", True)
         ConfigScrapeModifier.Trailer = AdvancedSettings.GetBooleanSetting("DoTrailer", True)
+
+        _MySettings.SearchPartialTitles = AdvancedSettings.GetBooleanSetting("SearchPartialTitles", True)
+        _MySettings.SearchPopularTitles = AdvancedSettings.GetBooleanSetting("SearchPopularTitles", True)
+        _MySettings.SearchTvTitles = AdvancedSettings.GetBooleanSetting("SearchTvTitles", False)
     End Sub
 
     Sub SaveSettings()
@@ -229,9 +238,12 @@ Public Class IMDB_Data
             settings.SetBooleanSetting("DoTop250", ConfigOptions.bTop250)
             settings.SetBooleanSetting("DoCert", ConfigOptions.bCert)
             settings.SetBooleanSetting("CleanPlotOutline", ConfigOptions.bCleanPlotOutline)
-
             settings.SetBooleanSetting("FullCast", ConfigOptions.bFullCast)
             settings.SetBooleanSetting("FullCrew", ConfigOptions.bFullCrew)
+
+            settings.SetBooleanSetting("SearchPartialTitles", _MySettings.SearchPartialTitles)
+            settings.SetBooleanSetting("SearchPopularTitles", _MySettings.SearchPopularTitles)
+            settings.SetBooleanSetting("SearchTvTitles", _MySettings.SearchTvTitles)
         End Using
     End Sub
 
@@ -261,6 +273,10 @@ Public Class IMDB_Data
         ConfigOptions.bFullCrew = _setup.chkFullCrew.Checked
         ConfigOptions.bFullCast = _setup.chkFullCast.Checked
         ConfigOptions.bCleanPlotOutline = _setup.chkIMDBCleanPlotOutline.Checked
+
+        _MySettings.SearchPartialTitles = _setup.chkPartialTitles.Checked
+        _MySettings.SearchPopularTitles = _setup.chkPopularTitles.Checked
+        _MySettings.SearchTvTitles = _setup.chkTvTitles.Checked
 
         SaveSettings()
         'ModulesManager.Instance.SaveSettings()
@@ -384,6 +400,20 @@ Public Class IMDB_Data
     End Sub
 
 #End Region 'Methods
+
+#Region "Nested Types"
+
+    Structure sMySettings
+
+#Region "Fields"
+        Dim SearchPartialTitles As Boolean
+        Dim SearchPopularTitles As Boolean
+        Dim SearchTvTitles As Boolean
+#End Region 'Fields
+
+    End Structure
+
+#End Region 'Nested Types
 
 
 End Class

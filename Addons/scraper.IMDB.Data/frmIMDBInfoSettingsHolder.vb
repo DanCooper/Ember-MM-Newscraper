@@ -107,7 +107,15 @@ Public Class frmIMDBInfoSettingsHolder
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
+    Private Sub chkPartialTitles_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkPartialTitles.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
     Private Sub chkPlot_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkPlot.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkPopularTitles_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkPopularTitles.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
@@ -140,6 +148,10 @@ Public Class frmIMDBInfoSettingsHolder
     End Sub
 
     Private Sub chkTop250_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTop250.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkTvTiles_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTvTitles.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
@@ -184,7 +196,7 @@ Public Class frmIMDBInfoSettingsHolder
     End Sub
 
     Private Sub SetUp()
-        Me.gbOptions.Text = Master.eLang.GetString(791, "Scraper Fields - Scraper specific")
+        Me.gbScraperFields.Text = Master.eLang.GetString(791, "Scraper Fields - Scraper specific")
         Me.chkCrew.Text = Master.eLang.GetString(391, "Other Crew")
         Me.chkMusicBy.Text = Master.eLang.GetString(392, "Music By")
         Me.chkProducers.Text = Master.eLang.GetString(393, "Producers")
