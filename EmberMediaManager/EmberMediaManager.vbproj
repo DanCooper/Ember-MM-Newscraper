@@ -602,16 +602,16 @@
     <None Include="Resources\Wizard.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="x64\ffmpeg.exe" />
-    <Content Include="x64\mediainfo-rar\mediainfo-rar.exe" />
-    <Content Include="x64\mediainfo-rar\MediaInfo.dll" />
-    <Content Include="x64\mediainfo-rar\unrar.exe" />
-    <Content Include="x64\MediaInfo.dll" />
-    <Content Include="x86\ffmpeg.exe" />
-    <Content Include="x86\mediainfo-rar\mediainfo-rar.exe" />
-    <Content Include="x86\mediainfo-rar\MediaInfo.dll" />
-    <Content Include="x86\mediainfo-rar\unrar.exe" />
-    <Content Include="x86\MediaInfo.dll" />
+    <None Include="x64\ffmpeg.exe" />
+    <None Include="x64\mediainfo-rar\mediainfo-rar.exe" />
+    <None Include="x64\mediainfo-rar\MediaInfo.dll" />
+    <None Include="x64\mediainfo-rar\unrar.exe" />
+    <None Include="x64\MediaInfo.dll" />
+    <None Include="x86\ffmpeg.exe" />
+    <None Include="x86\mediainfo-rar\mediainfo-rar.exe" />
+    <None Include="x86\mediainfo-rar\MediaInfo.dll" />
+    <None Include="x86\mediainfo-rar\unrar.exe" />
+    <None Include="x86\MediaInfo.dll" />
     <Content Include="Images\Flags\achan_1.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -5229,7 +5229,8 @@
     </PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>xcopy "$(ProjectDir)$(PlatformName)" "$(TargetDir)Bin" /E /I /R /Y</PostBuildEvent>
+    <PostBuildEvent>xcopy "$(ProjectDir)$(PlatformName)" "$(TargetDir)Bin" /E /I /R /Y
+del "$(TargetDir)Bin\SQLite.Interop.dll" /F /Q</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
