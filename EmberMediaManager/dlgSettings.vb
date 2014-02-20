@@ -2922,26 +2922,27 @@ Public Class dlgSettings
 
             Try
                 'If tvSettings.Nodes.Count > 0 AndAlso tvSettings.Nodes(0).TreeView.IsDisposed Then Return 'Dont know yet why we need this. second call to settings will raise Exception with treview been disposed
-                Dim t As TreeNode = tvSettings.Nodes.Find(Name, True)(0)
-                If Not IsNothing(t) Then
+                Dim t() As TreeNode = tvSettings.Nodes.Find(Name, True)
+
+                If t.Count > 0 Then
                     If Not diffOrder = 0 Then
-                        Dim p As TreeNode = t.Parent
-                        Dim i As Integer = t.Index
-                        If diffOrder < 0 AndAlso Not t.PrevNode Is Nothing Then
-                            oSetPan = SettingsPanels.FirstOrDefault(Function(s) s.Name = t.PrevNode.Name)
+                        Dim p As TreeNode = t(0).Parent
+                        Dim i As Integer = t(0).Index
+                        If diffOrder < 0 AndAlso Not t(0).PrevNode Is Nothing Then
+                            oSetPan = SettingsPanels.FirstOrDefault(Function(s) s.Name = t(0).PrevNode.Name)
                             If Not IsNothing(oSetPan) Then oSetPan.Order = i + (diffOrder * -1)
                         End If
-                        If diffOrder > 0 AndAlso Not t.NextNode Is Nothing Then
-                            oSetPan = SettingsPanels.FirstOrDefault(Function(s) s.Name = t.NextNode.Name)
+                        If diffOrder > 0 AndAlso Not t(0).NextNode Is Nothing Then
+                            oSetPan = SettingsPanels.FirstOrDefault(Function(s) s.Name = t(0).NextNode.Name)
                             If Not IsNothing(oSetPan) Then oSetPan.Order = i + (diffOrder * -1)
                         End If
-                        p.Nodes.Remove(t)
-                        p.Nodes.Insert(i + diffOrder, t)
-                        t.TreeView.SelectedNode = t
+                        p.Nodes.Remove(t(0))
+                        p.Nodes.Insert(i + diffOrder, t(0))
+                        t(0).TreeView.SelectedNode = t(0)
                         tSetPan.Order = i + diffOrder
                     End If
-                    t.ImageIndex = If(State, 9, 10)
-                    t.SelectedImageIndex = If(State, 9, 10)
+                    t(0).ImageIndex = If(State, 9, 10)
+                    t(0).SelectedImageIndex = If(State, 9, 10)
                     Me.pbCurrent.Image = Me.ilSettings.Images(If(State, 9, 10))
                 End If
 
