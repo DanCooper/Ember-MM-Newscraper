@@ -549,7 +549,7 @@ Partial Class frmMain
         Me.pnlLoadSettings = New System.Windows.Forms.Panel()
         Me.tmrAppExit = New System.Windows.Forms.Timer(Me.components)
         Me.tmrKeyBuffer = New System.Windows.Forms.Timer(Me.components)
-        Me.lblUpdate = New System.Windows.Forms.Label()
+        Me.mnuVersion = New System.Windows.Forms.ToolStripMenuItem()
         Me.StatusStrip.SuspendLayout()
         Me.mnuMain.SuspendLayout()
         CType(Me.scMain, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -794,7 +794,7 @@ Partial Class frmMain
         'mnuMain
         '
         Me.mnuMain.BackColor = System.Drawing.SystemColors.Control
-        Me.mnuMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMainFile, Me.mnuMainEdit, Me.mnuMainTools, Me.mnuMainHelp, Me.mnuMainDonate, Me.mnuMainError})
+        Me.mnuMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMainFile, Me.mnuMainEdit, Me.mnuMainTools, Me.mnuMainHelp, Me.mnuMainDonate, Me.mnuMainError, Me.mnuVersion})
         Me.mnuMain.Location = New System.Drawing.Point(5, 0)
         Me.mnuMain.Name = "mnuMain"
         Me.mnuMain.Size = New System.Drawing.Size(1344, 24)
@@ -4840,23 +4840,18 @@ Partial Class frmMain
         '
         Me.tmrKeyBuffer.Interval = 1000
         '
-        'lblUpdate
+        'mnuVersion
         '
-        Me.lblUpdate.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.lblUpdate.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblUpdate.Location = New System.Drawing.Point(1125, 3)
-        Me.lblUpdate.Name = "lblUpdate"
-        Me.lblUpdate.Size = New System.Drawing.Size(224, 21)
-        Me.lblUpdate.TabIndex = 14
-        Me.lblUpdate.Text = "Ember is up to date!"
-        Me.lblUpdate.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.mnuVersion.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+        Me.mnuVersion.Name = "mnuVersion"
+        Me.mnuVersion.Size = New System.Drawing.Size(83, 20)
+        Me.mnuVersion.Text = "mnuVersion"
         '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.ClientSize = New System.Drawing.Size(1354, 733)
-        Me.Controls.Add(Me.lblUpdate)
         Me.Controls.Add(Me.pnlLoadSettings)
         Me.Controls.Add(Me.scMain)
         Me.Controls.Add(Me.StatusStrip)
@@ -5487,5 +5482,5 @@ Partial Class frmMain
     Friend WithEvents tpMovies As System.Windows.Forms.TabPage
     Friend WithEvents mnuMainToolsOfflineHolder As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuTrayToolsOfflineHolder As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents lblUpdate As System.Windows.Forms.Label
+    Friend WithEvents mnuVersion As System.Windows.Forms.ToolStripMenuItem
 End Class

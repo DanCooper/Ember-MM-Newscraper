@@ -863,7 +863,7 @@
 	<string id="862">Loading translations...</string>
 	<string id="863">Positioning controls...</string>
 	<string id="864">Setting menus...</string>
-	<string id="865">Version {0}.{1}.{2}.{3}</string>
+	<string id="865">Version {0}.{1}.{2}.{3} {4}</string>
 	<string id="866">Metadata</string>
 	<string id="867">XBMC Frodo</string>
 	<string id="868"></string>
@@ -1092,5 +1092,7 @@
   <string id="1004">Generate HTML...</string>
   <string id="1005">Always overwrite english outline and plot regardless of Lock Title/Lock Outline setting</string>
   <string id="1006">TV Movie Titles ({0})</string>
-  
-  </strings>
+  <string id="1007">x86</string>
+  <string id="1008">x64</string>
+  <string id="1009">Ember v.{0} - (New version available!)</string>
+</strings>
