@@ -6040,6 +6040,7 @@ doCancel:
                 Me.TrayIcon.Text = "Ember Media Manager"
                 Me.TrayIcon.Visible = True
             End If
+            Master.is32Bit = (IntPtr.Size = 4)
 
             Dim Args() As String = Environment.GetCommandLineArgs
 
@@ -6081,7 +6082,11 @@ doCancel:
 
             ' Force initialization of languages for main
             Master.eLang.LoadAllLanguage(Master.eSettings.Language)
-            fLoading.SetVersionMesg(Master.eLang.GetString(865, "Version {0}.{1}.{2}.{3}"))
+            Dim aBit As String = Master.eLang.GetString(1008, "x64")
+            If Master.is32Bit Then
+                Master.eLang.GetString(1007, "x86")
+            End If
+            fLoading.SetVersionMesg(Master.eLang.GetString(865, "Version {0}.{1}.{2}.{3} {4}"), aBit)
 
             fLoading.SetLoadingMesg(Master.eLang.GetString(854, "Basic setup"))
 
@@ -6431,28 +6436,33 @@ doCancel:
                 'Pull Assembly version info from current Ember repo on github
                 Dim HTML As String = sHTTP.DownloadData("https://raw.github.com/DanCooper/Ember-MM-Newscraper/master/EmberMediaManager/My%20Project/AssemblyInfo.vb")
                 sHTTP = Nothing
-                Dim VersionNumber As String = System.String.Format("{0}.{1}.{2}.{3}", My.Application.Info.Version.Major, My.Application.Info.Version.Minor, My.Application.Info.Version.Build, My.Application.Info.Version.Revision)
-
+                Dim aBit As String = Master.eLang.GetString(1008, "x64")
+                If Master.is32Bit Then
+                    Master.eLang.GetString(1007, "x86")
+                End If
+                Dim VersionNumber As String = System.String.Format(Master.eLang.GetString(865, "Version {0}.{1}.{2}.{3} {4}"), My.Application.Info.Version.Major, My.Application.Info.Version.Minor, My.Application.Info.Version.Build, My.Application.Info.Version.Revision, aBit)
+                ' Not localized as is the Assembly file version
+                Dim VersionNumberO As String = System.String.Format("{0}.{1}.{2}.{3}", My.Application.Info.Version.Major, My.Application.Info.Version.Minor, My.Application.Info.Version.Build, My.Application.Info.Version.Revision)
                 If Not String.IsNullOrEmpty(HTML) Then
                     'Example: AssemblyFileVersion("1.3.0.18")>
                     Dim mc As MatchCollection = System.Text.RegularExpressions.Regex.Matches(HTML, "AssemblyFileVersion([^<]+)>")
                     'check to see if at least one entry was found
                     If mc.Count > 0 Then
                         'just use the first match if more are found and compare with running Ember Version
-                        If mc(0).Value.ToString <> "AssemblyFileVersion(""" & VersionNumber & """)>" Then
+                        If mc(0).Value.ToString <> "AssemblyFileVersion(""" & VersionNumberO & """)>" Then
                             'means that running Ember version is outdated!
-                            lblUpdate.ForeColor = Color.DarkRed
-                            lblUpdate.Text = "Ember v." & VersionNumber & " (New version available!)"
+                            mnuVersion.Text = System.String.Format(Master.eLang.GetString(1009, "{0} - (New version available!)"), VersionNumber)
+                            mnuVersion.ForeColor = Color.DarkRed
                         Else
                             'Ember already up to date!
-                            lblUpdate.ForeColor = Color.DarkGreen
-                            lblUpdate.Text = "Ember v." & VersionNumber
+                            mnuVersion.Text = VersionNumber
+                            mnuVersion.ForeColor = Color.DarkGreen
                         End If
                     End If
                     'if no github query possible, than simply display Ember version on form
                 Else
-                    lblUpdate.ForeColor = Color.DarkGreen
-                    lblUpdate.Text = "Ember v." & VersionNumber
+                    mnuVersion.Text = VersionNumber
+                    mnuVersion.ForeColor = Color.DarkBlue
                 End If
 
             Catch ex As Exception
@@ -9571,7 +9581,7 @@ doCancel:
     ''' <param name="e"></param>
     ''' <remarks></remarks>
     Private Sub tmrAni_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles tmrAni.Tick
-         Try
+        Try
             If Master.eSettings.InfoPanelAnim Then
                 If Me.aniRaise Then
                     Me.pnlInfoPanel.Height += 5
