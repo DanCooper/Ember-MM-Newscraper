@@ -623,7 +623,7 @@ Public Class Enums
         PosterItem = 2
         FanartItem = 3
         TrailerItem = 4
-        ThumbsItem = 5
+        EThumbsItem = 5
         SortTitle = 6
         ListTitle = 7
     End Enum

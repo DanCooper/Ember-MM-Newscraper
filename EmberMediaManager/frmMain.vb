@@ -1467,6 +1467,7 @@ Public Class frmMain
                                             Dim etPath As String = EThumb.SaveAsExtraThumb(DBScrapeMovie)
                                             If Not String.IsNullOrEmpty(etPath) Then
                                                 DBScrapeMovie.EThumbsPath = etPath
+                                                MovieScraperEvent(Enums.MovieScraperEventType.EThumbsItem, True)
                                             End If
                                         End If
                                     Next
@@ -3456,18 +3457,80 @@ doCancel:
     Private Sub dgvMediaList_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMovies.CellClick
         Try
 
-            If e.ColumnIndex = 3 OrElse Not Master.eSettings.ClickScrape Then 'Title
-                If Me.dgvMovies.SelectedRows.Count > 0 Then
-                    If Me.dgvMovies.RowCount > 0 Then
-                        If Me.dgvMovies.SelectedRows.Count > 1 Then
-                            Me.SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvMovies.SelectedRows.Count))
-                        ElseIf Me.dgvMovies.SelectedRows.Count = 1 Then
-                            Me.SetStatus(Me.dgvMovies.SelectedRows(0).Cells(1).Value.ToString)
+            If e.ColumnIndex = 3 OrElse e.ColumnIndex = 34 OrElse Not Master.eSettings.ClickScrape Then 'Title
+                If Not e.ColumnIndex = 34 Then
+                    If Me.dgvMovies.SelectedRows.Count > 0 Then
+                        If Me.dgvMovies.RowCount > 0 Then
+                            If Me.dgvMovies.SelectedRows.Count > 1 Then
+                                Me.SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvMovies.SelectedRows.Count))
+                            ElseIf Me.dgvMovies.SelectedRows.Count = 1 Then
+                                Me.SetStatus(Me.dgvMovies.SelectedRows(0).Cells(1).Value.ToString)
+                            End If
                         End If
+                        Me.currRow = Me.dgvMovies.SelectedRows(0).Index
                     End If
-                    Me.currRow = Me.dgvMovies.SelectedRows(0).Index
+                Else
+                    'TODO: maybe we can merge this to one sub/function together with "Private Sub cmnuMovieWatched_Click"
+                    Try
+                        Dim setWatched As Boolean = False
+                        If Me.dgvMovies.SelectedRows.Count > 1 Then
+                            For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
+                                'if any one item is set as not watched, set menu to watched
+                                'else they are all watched so set menu to not watched
+                                If Not Convert.ToBoolean(sRow.Cells(34).Value) Then
+                                    setWatched = True
+                                    Exit For
+                                End If
+                            Next
+                        End If
+
+                        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MediaDBConn.BeginTransaction()
+                            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
+                                Dim parPlaycount As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPlaycount", DbType.String, 0, "Playcount")
+                                Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
+                                SQLcommand.CommandText = "UPDATE movies SET Playcount = (?) WHERE id = (?);"
+                                For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
+                                    Dim currPlaycount As String = String.Empty
+                                    Dim hasWatched As Boolean = False
+                                    Dim newPlaycount As String = String.Empty
+
+                                    currPlaycount = Convert.ToString(sRow.Cells(33).Value)
+                                    hasWatched = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", True, False)
+
+                                    If Me.dgvMovies.SelectedRows.Count > 1 AndAlso setWatched Then
+                                        newPlaycount = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", currPlaycount, "1")
+                                    ElseIf Not hasWatched Then
+                                        newPlaycount = "1"
+                                    Else
+                                        newPlaycount = "0"
+                                    End If
+
+                                    parPlaycount.Value = newPlaycount
+                                    parID.Value = sRow.Cells(0).Value
+                                    SQLcommand.ExecuteNonQuery()
+                                    sRow.Cells(33).Value = newPlaycount
+                                    sRow.Cells(34).Value = If(Me.dgvMovies.SelectedRows.Count > 1, setWatched, Not hasWatched)
+                                Next
+                            End Using
+                            SQLtransaction.Commit()
+
+                        End Using
+
+                        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MediaDBConn.BeginTransaction()
+                            For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
+                                Me.RefreshMovie(Convert.ToInt64(sRow.Cells(0).Value), True, False, True, True)
+                            Next
+                            SQLtransaction.Commit()
+                        End Using
+
+                        Me.LoadInfo(Convert.ToInt32(Me.dgvMovies.Item(0, Me.dgvMovies.CurrentCell.RowIndex).Value), Me.dgvMovies.Item(1, Me.dgvMovies.CurrentCell.RowIndex).Value.ToString, True, False)
+                        Me.dgvMovies.Invalidate()
+
+                    Catch ex As Exception
+                        Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                    End Try
                 End If
-            ElseIf Master.eSettings.ClickScrape AndAlso e.RowIndex >= 0 AndAlso e.ColumnIndex <> 8 AndAlso Not bwMovieScraper.IsBusy Then
+            ElseIf Master.eSettings.ClickScrape AndAlso e.RowIndex >= 0 AndAlso e.ColumnIndex <> 8 AndAlso e.ColumnIndex <> 34 AndAlso Not bwMovieScraper.IsBusy Then
                 Dim movie As Int32 = CType(Me.dgvMovies.Rows(e.RowIndex).Cells(0).Value, Int32)
                 Dim objCell As DataGridViewCell = CType(Me.dgvMovies.Rows(e.RowIndex).Cells(e.ColumnIndex), DataGridViewCell)
 
@@ -7400,7 +7463,7 @@ doCancel:
                     dScrapeRow.Item(6) = DirectCast(Parameter, Boolean)
                 Case Enums.MovieScraperEventType.TrailerItem
                     dScrapeRow.Item(7) = DirectCast(Parameter, Boolean)
-                Case Enums.MovieScraperEventType.ThumbsItem
+                Case Enums.MovieScraperEventType.EThumbsItem
                     dScrapeRow.Item(9) = DirectCast(Parameter, Boolean)
                 Case Enums.MovieScraperEventType.SortTitle
                     dScrapeRow.Item(47) = DirectCast(Parameter, String)
