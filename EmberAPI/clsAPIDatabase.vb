@@ -2527,7 +2527,7 @@ Public Class Database
                 _movieSavetoNFO = Master.DB.LoadMovieFromDB(_movieDB.ID)
                 Master.DB.SaveMovieToDB(_movieSavetoNFO, False, False, True)
                 'create .watched files
-                If Master.eSettings.UseYAMJ AndAlso Master.eSettings.YAMJWatchedFile Then
+                If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
                     For Each a In FileUtils.GetFilenameList.Movie(_movieSavetoNFO.Filename, False, Enums.ModType.WatchedFile)
                         If Not File.Exists(a) Then
                             Dim fs As FileStream = File.Create(a)

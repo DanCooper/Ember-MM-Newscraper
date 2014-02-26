@@ -1418,7 +1418,7 @@ Public Class frmMain
                                     tURL = Trailers.DownloadTrailer(DBScrapeMovie.Filename, DBScrapeMovie.isSingle, tURL)
                                     If Not String.IsNullOrEmpty(tURL) Then
                                         If StringUtils.isValidURL(tURL) Then
-                                            If Master.eSettings.XBMCTrailerFormat Then
+                                            If Master.eSettings.MovieXBMCTrailerFormat Then
                                                 DBScrapeMovie.Movie.Trailer = Replace(tURL, "http://www.youtube.com/watch?v=", "plugin://plugin.video.youtube/?action=play_video&videoid=")
                                             Else
                                                 DBScrapeMovie.Movie.Trailer = tURL
@@ -1437,7 +1437,7 @@ Public Class frmMain
                                     tURL = dTrailerSelect.ShowDialog(DBScrapeMovie, aUrlList)
                                     If Not String.IsNullOrEmpty(tURL) Then
                                         If StringUtils.isValidURL(tURL) Then
-                                            If Master.eSettings.XBMCTrailerFormat Then
+                                            If Master.eSettings.MovieXBMCTrailerFormat Then
                                                 DBScrapeMovie.Movie.Trailer = Replace(tURL, "http://www.youtube.com/watch?v=", "plugin://plugin.video.youtube/?action=play_video&videoid=")
                                             Else
                                                 DBScrapeMovie.Movie.Trailer = tURL
@@ -7863,7 +7863,7 @@ doCancel:
                     tmpMovieDb.FileSource = AdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(tmpMovieDb.Filename)), String.Empty, "*EmberAPP")
                 End If
 
-                If Master.eSettings.UseYAMJ AndAlso Master.eSettings.YAMJWatchedFile Then
+                If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
                     For Each a In FileUtils.GetFilenameList.Movie(tmpMovieDb.Filename, tmpMovieDb.isSingle, Enums.ModType.WatchedFile)
                         If delWatched Then
                             If File.Exists(a) Then
@@ -8678,7 +8678,7 @@ doCancel:
 
 
                 'here for future use
-                Dim EFanartsAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart) AndAlso Master.eSettings.ExtrafanartsFrodo OrElse Master.eSettings.ExtrafanartsEden
+                Dim EFanartsAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart) AndAlso Master.eSettings.MovieExtrafanartsFrodo OrElse Master.eSettings.MovieExtrafanartsEden
                 Me.mnuAllAutoEFanarts.Enabled = EFanartsAllowed
                 Me.mnuAllAskEFanarts.Enabled = EFanartsAllowed
                 Me.mnuMissAutoEFanarts.Enabled = EFanartsAllowed
@@ -8700,7 +8700,7 @@ doCancel:
                 Me.cmnuTrayFilterAutoEFanarts.Enabled = EFanartsAllowed
                 Me.cmnuTrayFilterAskEFanarts.Enabled = EFanartsAllowed
 
-                Dim EThumbsAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart) AndAlso Master.eSettings.ExtrathumbsFrodo OrElse Master.eSettings.ExtrathumbsEden
+                Dim EThumbsAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart) AndAlso Master.eSettings.MovieExtrathumbsFrodo OrElse Master.eSettings.MovieExtrathumbsEden
                 Me.mnuAllAutoEThumbs.Enabled = EThumbsAllowed
                 Me.mnuAllAskEThumbs.Enabled = EThumbsAllowed
                 Me.mnuMissAutoEThumbs.Enabled = EThumbsAllowed

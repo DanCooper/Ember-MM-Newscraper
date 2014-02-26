@@ -238,7 +238,7 @@ Public Class Scanner
                 Try
                     fList.AddRange(Directory.GetFiles(Directory.GetParent(Movie.Filename).FullName))
                     fList.AddRange(Directory.GetFiles(parPath))
-                    If Master.eSettings.UseNMJ Then
+                    If Master.eSettings.MovieUseNMJ Then
                         fList.AddRange(Directory.GetFiles(Directory.GetParent(parPath).FullName))
                     End If
                 Catch
@@ -257,7 +257,7 @@ Public Class Scanner
                 Try
                     fList.AddRange(Directory.GetFiles(Directory.GetParent(Directory.GetParent(Movie.Filename).FullName).FullName))
                     fList.AddRange(Directory.GetFiles(parPath))
-                    If Master.eSettings.UseNMJ Then
+                    If Master.eSettings.MovieUseNMJ Then
                         fList.AddRange(Directory.GetFiles(Directory.GetParent(parPath).FullName))
                     End If
                 Catch
@@ -799,7 +799,7 @@ Public Class Scanner
                 End If
             End If
 
-            If Master.eSettings.UseYAMJ AndAlso Master.eSettings.YAMJWatchedFile Then
+            If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
                 For Each a In FileUtils.GetFilenameList.Movie(mContainer.Filename, False, Enums.ModType.WatchedFile)
                     If Not String.IsNullOrEmpty(tmpMovieDB.Movie.PlayCount) AndAlso Not tmpMovieDB.Movie.PlayCount = "0" Then
                         If Not File.Exists(a) Then

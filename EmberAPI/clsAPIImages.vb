@@ -530,10 +530,10 @@ Public Class Images
             Select Case fType
                 Case Enums.ImageType.Fanart
                     If (isChange OrElse (String.IsNullOrEmpty(mMovie.FanartPath) OrElse Master.eSettings.OverwriteFanart)) AndAlso _
-                    (Master.eSettings.FanartFrodo OrElse Master.eSettings.FanartEden OrElse Master.eSettings.FanartYAMJ OrElse _
-                     Master.eSettings.FanartNMJ OrElse (Master.eSettings.UseExpert AndAlso (Not String.IsNullOrEmpty(Master.eSettings.FanartExpertBDMV) OrElse _
-                     Not String.IsNullOrEmpty(Master.eSettings.FanartExpertMulti) OrElse Not String.IsNullOrEmpty(Master.eSettings.FanartExpertSingle) OrElse _
-                     Not String.IsNullOrEmpty(Master.eSettings.FanartExpertVTS)))) Then
+                    (Master.eSettings.MovieFanartFrodo OrElse Master.eSettings.MovieFanartEden OrElse Master.eSettings.MovieFanartYAMJ OrElse _
+                     Master.eSettings.MovieFanartNMJ OrElse (Master.eSettings.MovieUseExpert AndAlso (Not String.IsNullOrEmpty(Master.eSettings.MovieFanartExpertBDMV) OrElse _
+                     Not String.IsNullOrEmpty(Master.eSettings.MovieFanartExpertMulti) OrElse Not String.IsNullOrEmpty(Master.eSettings.MovieFanartExpertSingle) OrElse _
+                     Not String.IsNullOrEmpty(Master.eSettings.MovieFanartExpertVTS)))) Then
                         ' Removed as there is not ONLY the TMDB scraper. Also the GetSetting is bound the calling procedure, is always true 
                         ' AndAlso AdvancedSettings.GetBooleanSetting("UseTMDB", True) Then
                         Return True
@@ -541,23 +541,23 @@ Public Class Images
                         Return False
                     End If
                 Case Enums.ImageType.EFanarts 'TODO: move Overwrite to SaveAsExtraFanart, add all new expert settings
-                    If (isChange OrElse (String.IsNullOrEmpty(mMovie.EFanartsPath) OrElse Master.eSettings.OverwriteEFanarts) AndAlso (Master.eSettings.ExtrafanartsEden OrElse Master.eSettings.ExtrafanartsFrodo)) Then
+                    If (isChange OrElse (String.IsNullOrEmpty(mMovie.EFanartsPath) OrElse Master.eSettings.OverwriteEFanarts) AndAlso (Master.eSettings.MovieExtrafanartsEden OrElse Master.eSettings.MovieExtrafanartsFrodo)) Then
                         Return True
                     Else
                         Return False
                     End If
                 Case Enums.ImageType.EThumbs 'TODO: move Overwrite to SaveAsExtraThumb, add all new expert settings
-                    If (isChange OrElse (String.IsNullOrEmpty(mMovie.EThumbsPath) OrElse Master.eSettings.OverwriteEThumbs) AndAlso (Master.eSettings.ExtrathumbsEden OrElse Master.eSettings.ExtrathumbsFrodo)) Then
+                    If (isChange OrElse (String.IsNullOrEmpty(mMovie.EThumbsPath) OrElse Master.eSettings.OverwriteEThumbs) AndAlso (Master.eSettings.MovieExtrathumbsEden OrElse Master.eSettings.MovieExtrathumbsFrodo)) Then
                         Return True
                     Else
                         Return False
                     End If
                 Case Else
                     If (isChange OrElse (String.IsNullOrEmpty(mMovie.PosterPath) OrElse Master.eSettings.OverwritePoster)) AndAlso _
-                    (Master.eSettings.PosterFrodo OrElse Master.eSettings.PosterEden OrElse Master.eSettings.PosterYAMJ OrElse _
-                     Master.eSettings.PosterNMJ OrElse (Master.eSettings.UseExpert AndAlso (Not String.IsNullOrEmpty(Master.eSettings.PosterExpertBDMV) OrElse _
-                     Not String.IsNullOrEmpty(Master.eSettings.PosterExpertMulti) OrElse Not String.IsNullOrEmpty(Master.eSettings.PosterExpertSingle) OrElse _
-                     Not String.IsNullOrEmpty(Master.eSettings.PosterExpertVTS)))) Then
+                    (Master.eSettings.MoviePosterFrodo OrElse Master.eSettings.MoviePosterEden OrElse Master.eSettings.MoviePosterYAMJ OrElse _
+                     Master.eSettings.MoviePosterNMJ OrElse (Master.eSettings.MovieUseExpert AndAlso (Not String.IsNullOrEmpty(Master.eSettings.MoviePosterExpertBDMV) OrElse _
+                     Not String.IsNullOrEmpty(Master.eSettings.MoviePosterExpertMulti) OrElse Not String.IsNullOrEmpty(Master.eSettings.MoviePosterExpertSingle) OrElse _
+                     Not String.IsNullOrEmpty(Master.eSettings.MoviePosterExpertVTS)))) Then
                         ' Removed as there is not ONLY the Native scraper scraper. Also the GetSetting is bound the calling procedure, is always true 
                         ' AndAlso (AdvancedSettings.GetBooleanSetting("UseIMPA", False) OrElse AdvancedSettings.GetBooleanSetting("UseMPDB", False) OrElse AdvancedSettings.GetBooleanSetting("UseTMDB", True)) Then
                         Return True
