@@ -128,7 +128,8 @@ Public Class MediaInfo
                 End If
                 If miMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 AndAlso Master.eSettings.UseMIDuration Then
                     Dim tVid As MediaInfo.Video = NFO.GetBestVideo(miMovie.Movie.FileInfo)
-                    If Not String.IsNullOrEmpty(tVid.Duration) Then
+                    'cocotus 29/02/2014, Added check to only save Runtime in nfo/moviedb if scraped Runtime <> 0! (=Error during Mediainfo Scan)
+                    If Not String.IsNullOrEmpty(tVid.Duration) AndAlso Not tVid.Duration.Trim = "0" Then
                         miMovie.Movie.Runtime = MediaInfo.FormatDuration(tVid.Duration, Master.eSettings.RuntimeMask)
                     End If
                 End If
