@@ -1523,6 +1523,11 @@ Public Class Structures
         Dim UseFolder As Boolean
         Dim efList As List(Of String)
         Dim etList As List(Of String)
+        Dim DVDProfilerCaseType As String
+        Dim DVDProfilerLocation As String
+        Dim DVDProfilerSlot As String
+        Dim DVDProfilerTitle As String
+        Dim DVDProfilerMediaType As String
     End Structure
     ''' <summary>
     ''' Structure representing a TV show in the database

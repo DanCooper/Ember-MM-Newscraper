@@ -137,6 +137,11 @@ Partial Class dlgEditMovie
         Me.pnlFrameExtrator = New System.Windows.Forms.Panel()
         Me.tpMetaData = New System.Windows.Forms.TabPage()
         Me.pnlFileInfo = New System.Windows.Forms.Panel()
+        Me.tpMediaStub = New System.Windows.Forms.TabPage()
+        Me.lblMediaStubMessage = New System.Windows.Forms.Label()
+        Me.lblMediaStubTitle = New System.Windows.Forms.Label()
+        Me.txtMediaStubMessage = New System.Windows.Forms.TextBox()
+        Me.txtMediaStubTitle = New System.Windows.Forms.TextBox()
         Me.ofdImage = New System.Windows.Forms.OpenFileDialog()
         Me.chkMark = New System.Windows.Forms.CheckBox()
         Me.btnRescrape = New System.Windows.Forms.Button()
@@ -166,6 +171,7 @@ Partial Class dlgEditMovie
         CType(Me.pbEThumbs, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tpFrameExtraction.SuspendLayout()
         Me.tpMetaData.SuspendLayout()
+        Me.tpMediaStub.SuspendLayout()
         Me.SuspendLayout()
         '
         'OK_Button
@@ -244,6 +250,7 @@ Partial Class dlgEditMovie
         Me.tcEditMovie.Controls.Add(Me.tpEThumbs)
         Me.tcEditMovie.Controls.Add(Me.tpFrameExtraction)
         Me.tcEditMovie.Controls.Add(Me.tpMetaData)
+        Me.tcEditMovie.Controls.Add(Me.tpMediaStub)
         Me.tcEditMovie.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.tcEditMovie.Location = New System.Drawing.Point(4, 70)
         Me.tcEditMovie.Name = "tcEditMovie"
@@ -1406,6 +1413,53 @@ Partial Class dlgEditMovie
         Me.pnlFileInfo.Size = New System.Drawing.Size(844, 452)
         Me.pnlFileInfo.TabIndex = 0
         '
+        'tpMediaStub
+        '
+        Me.tpMediaStub.Controls.Add(Me.lblMediaStubMessage)
+        Me.tpMediaStub.Controls.Add(Me.lblMediaStubTitle)
+        Me.tpMediaStub.Controls.Add(Me.txtMediaStubMessage)
+        Me.tpMediaStub.Controls.Add(Me.txtMediaStubTitle)
+        Me.tpMediaStub.Location = New System.Drawing.Point(4, 22)
+        Me.tpMediaStub.Name = "tpMediaStub"
+        Me.tpMediaStub.Size = New System.Drawing.Size(836, 452)
+        Me.tpMediaStub.TabIndex = 7
+        Me.tpMediaStub.Text = "Media Stub"
+        Me.tpMediaStub.UseVisualStyleBackColor = True
+        '
+        'lblMediaStubMessage
+        '
+        Me.lblMediaStubMessage.AutoSize = True
+        Me.lblMediaStubMessage.Location = New System.Drawing.Point(203, 231)
+        Me.lblMediaStubMessage.Name = "lblMediaStubMessage"
+        Me.lblMediaStubMessage.Size = New System.Drawing.Size(56, 13)
+        Me.lblMediaStubMessage.TabIndex = 3
+        Me.lblMediaStubMessage.Text = "Message:"
+        '
+        'lblMediaStubTitle
+        '
+        Me.lblMediaStubTitle.AutoSize = True
+        Me.lblMediaStubTitle.Location = New System.Drawing.Point(203, 170)
+        Me.lblMediaStubTitle.Name = "lblMediaStubTitle"
+        Me.lblMediaStubTitle.Size = New System.Drawing.Size(32, 13)
+        Me.lblMediaStubTitle.TabIndex = 2
+        Me.lblMediaStubTitle.Text = "Title:"
+        '
+        'txtMediaStubMessage
+        '
+        Me.txtMediaStubMessage.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        Me.txtMediaStubMessage.Location = New System.Drawing.Point(206, 247)
+        Me.txtMediaStubMessage.Name = "txtMediaStubMessage"
+        Me.txtMediaStubMessage.Size = New System.Drawing.Size(472, 22)
+        Me.txtMediaStubMessage.TabIndex = 1
+        '
+        'txtMediaStubTitle
+        '
+        Me.txtMediaStubTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        Me.txtMediaStubTitle.Location = New System.Drawing.Point(206, 186)
+        Me.txtMediaStubTitle.Name = "txtMediaStubTitle"
+        Me.txtMediaStubTitle.Size = New System.Drawing.Size(260, 22)
+        Me.txtMediaStubTitle.TabIndex = 0
+        '
         'chkMark
         '
         Me.chkMark.AutoSize = True
@@ -1506,6 +1560,8 @@ Partial Class dlgEditMovie
         CType(Me.pbEThumbs, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tpFrameExtraction.ResumeLayout(False)
         Me.tpMetaData.ResumeLayout(False)
+        Me.tpMediaStub.ResumeLayout(False)
+        Me.tpMediaStub.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1629,5 +1685,10 @@ Partial Class dlgEditMovie
     Friend WithEvents pnlEFanartsBG As System.Windows.Forms.Panel
     Friend WithEvents lblEFanartsSize As System.Windows.Forms.Label
     Friend WithEvents lblEThumbsSize As System.Windows.Forms.Label
+    Friend WithEvents tpMediaStub As System.Windows.Forms.TabPage
+    Friend WithEvents lblMediaStubMessage As System.Windows.Forms.Label
+    Friend WithEvents lblMediaStubTitle As System.Windows.Forms.Label
+    Friend WithEvents txtMediaStubMessage As System.Windows.Forms.TextBox
+    Friend WithEvents txtMediaStubTitle As System.Windows.Forms.TextBox
 
 End Class

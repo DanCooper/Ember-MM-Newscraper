@@ -187,6 +187,17 @@ Public Class Settings
     Private _nostackexts As List(Of String)
     Private _notokens As Boolean
     'Private _onlytvimagesforselectedlangauge As Boolean
+    'Private _ommdummybgcolor As Color
+    'Private _ommdummyfont As Font
+    'Private _ommdummyfontcolor As Color
+    Private _ommdummyformat As Integer
+    Private _ommdummytagline As String
+    Private _ommdummytop As String
+    'Private _ommdummytextcolor As Color
+    Private _ommdummyusebackground As Boolean
+    Private _ommdummyusefanart As Boolean
+    Private _ommdummyuseoverlay As Boolean
+    Private _ommmediastubtagline As String
     Private _onlyvalueforcert As Boolean
     Private _outlineforplot As Boolean
     Private _outlineplotenglishoverwrite As Boolean
@@ -1879,6 +1890,105 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Me._notokens = value
+        End Set
+    End Property
+
+    'Public Property OMMDummyBGColor() As Color
+    '    Get
+    '        Return Me._ommdummybgcolor
+    '    End Get
+    '    Set(ByVal value As Color)
+    '        Me._ommdummybgcolor = value
+    '    End Set
+    'End Property
+
+    'Public Property OMMDummyFont() As Font
+    '    Get
+    '        Return Me._ommdummyfont
+    '    End Get
+    '    Set(ByVal value As Font)
+    '        Me._ommdummyfont = value
+    '    End Set
+    'End Property
+
+    'Public Property OMMDummyFontColor() As Color
+    '    Get
+    '        Return Me._ommdummyfontcolor
+    '    End Get
+    '    Set(ByVal value As Color)
+    '        Me._ommdummyfontcolor = value
+    '    End Set
+    'End Property
+
+    Public Property OMMDummyFormat() As Integer
+        Get
+            Return Me._ommdummyformat
+        End Get
+        Set(ByVal value As Integer)
+            Me._ommdummyformat = value
+        End Set
+    End Property
+
+    Public Property OMMDummyTagline() As String
+        Get
+            Return Me._ommdummytagline
+        End Get
+        Set(ByVal value As String)
+            Me._ommdummytagline = value
+        End Set
+    End Property
+
+    Public Property OMMDummyTop() As String
+        Get
+            Return Me._ommdummytop
+        End Get
+        Set(ByVal value As String)
+            Me._ommdummytop = value
+        End Set
+    End Property
+
+    'Public Property OMMDummyTextColor() As Color
+    '    Get
+    '        Return Me._ommdummytextcolor
+    '    End Get
+    '    Set(ByVal value As Color)
+    '        Me._ommdummytextcolor = value
+    '    End Set
+    'End Property
+
+    Public Property OMMDummyUseBackground() As Boolean
+        Get
+            Return Me._ommdummyusebackground
+        End Get
+        Set(ByVal value As Boolean)
+            Me._ommdummyusebackground = value
+        End Set
+    End Property
+
+    Public Property OMMDummyUseFanart() As Boolean
+        Get
+            Return Me._ommdummyusefanart
+        End Get
+        Set(ByVal value As Boolean)
+            Me._ommdummyusefanart = value
+        End Set
+    End Property
+
+    Public Property OMMDummyUseOverlay() As Boolean
+        Get
+            Return Me._ommdummyuseoverlay
+        End Get
+        Set(ByVal value As Boolean)
+            Me._ommdummyuseoverlay = value
+        End Set
+    End Property
+
+    Public Property OMMMediaStubTagline() As String
+        Get
+            Return Me._ommmediastubtagline
+        End Get
+        Set(ByVal value As String)
+            Me._ommmediastubtagline = value
         End Set
     End Property
 

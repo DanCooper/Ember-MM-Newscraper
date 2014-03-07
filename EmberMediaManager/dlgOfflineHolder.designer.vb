@@ -11,16 +11,16 @@ Partial Class dlgOfflineHolder
     Friend WithEvents cbSources As System.Windows.Forms.ComboBox
     Friend WithEvents cdColor As System.Windows.Forms.ColorDialog
     Friend WithEvents fdFont As System.Windows.Forms.FontDialog
-    Friend WithEvents chkBackground As System.Windows.Forms.CheckBox
-    Friend WithEvents chkOverlay As System.Windows.Forms.CheckBox
+    Friend WithEvents chkUseBackground As System.Windows.Forms.CheckBox
+    Friend WithEvents chkUseOverlay As System.Windows.Forms.CheckBox
     Friend WithEvents chkUseFanart As System.Windows.Forms.CheckBox
     Friend WithEvents btnClose As System.Windows.Forms.Button
     Friend WithEvents colCondition As System.Windows.Forms.ColumnHeader
     Friend WithEvents colStatus As System.Windows.Forms.ColumnHeader
     Friend WithEvents btnCreate As System.Windows.Forms.Button
-    Friend WithEvents btnSearch As System.Windows.Forms.Button
+    Friend WithEvents btnSearchSingle As System.Windows.Forms.Button
     Friend WithEvents gbPreview As System.Windows.Forms.GroupBox
-    Friend WithEvents gbInfo As System.Windows.Forms.GroupBox
+    Friend WithEvents gbInfoSingle As System.Windows.Forms.GroupBox
     Friend WithEvents lblTextColor As System.Windows.Forms.Label
     Friend WithEvents lblTopDetails As System.Windows.Forms.Label
     Friend WithEvents lblTaglineTop As System.Windows.Forms.Label
@@ -29,15 +29,15 @@ Partial Class dlgOfflineHolder
     Friend WithEvents lblVideoFormat As System.Windows.Forms.Label
     Friend WithEvents lblMovie As System.Windows.Forms.Label
     Friend WithEvents lblTagline As System.Windows.Forms.Label
-    Friend WithEvents lvStatus As System.Windows.Forms.ListView
+    Friend WithEvents lvStatusSingle As System.Windows.Forms.ListView
     Friend WithEvents pbPreview As System.Windows.Forms.PictureBox
-    Friend WithEvents pbProgress As System.Windows.Forms.ProgressBar
+    Friend WithEvents pbProgressSingle As System.Windows.Forms.ProgressBar
     Friend WithEvents pbTopLogo As System.Windows.Forms.PictureBox
     Friend WithEvents pnlTop As System.Windows.Forms.Panel
     Friend WithEvents tbTagLine As System.Windows.Forms.TrackBar
-    Friend WithEvents tmrName As System.Windows.Forms.Timer
-    Friend WithEvents tmrNameWait As System.Windows.Forms.Timer
-    Friend WithEvents txtMovieName As System.Windows.Forms.TextBox
+    Friend WithEvents tmrSingle As System.Windows.Forms.Timer
+    Friend WithEvents tmrSingleWait As System.Windows.Forms.Timer
+    Friend WithEvents txtFolderNameMovieTitle As System.Windows.Forms.TextBox
     Friend WithEvents txtTagline As System.Windows.Forms.TextBox
     Friend WithEvents txtTop As System.Windows.Forms.TextBox
 
@@ -73,11 +73,11 @@ Partial Class dlgOfflineHolder
         Me.lblTopTitle = New System.Windows.Forms.Label()
         Me.pbTopLogo = New System.Windows.Forms.PictureBox()
         Me.cbSources = New System.Windows.Forms.ComboBox()
-        Me.txtMovieName = New System.Windows.Forms.TextBox()
+        Me.txtFolderNameMovieTitle = New System.Windows.Forms.TextBox()
         Me.lblMovie = New System.Windows.Forms.Label()
-        Me.btnSearch = New System.Windows.Forms.Button()
-        Me.pbProgress = New System.Windows.Forms.ProgressBar()
-        Me.lvStatus = New System.Windows.Forms.ListView()
+        Me.btnSearchSingle = New System.Windows.Forms.Button()
+        Me.pbProgressSingle = New System.Windows.Forms.ProgressBar()
+        Me.lvStatusSingle = New System.Windows.Forms.ListView()
         Me.colCondition = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.colStatus = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.btnCreate = New System.Windows.Forms.Button()
@@ -91,58 +91,68 @@ Partial Class dlgOfflineHolder
         Me.gbPreview = New System.Windows.Forms.GroupBox()
         Me.lblVideoFormat = New System.Windows.Forms.Label()
         Me.cbFormat = New System.Windows.Forms.ComboBox()
-        Me.chkBackground = New System.Windows.Forms.CheckBox()
+        Me.chkUseBackground = New System.Windows.Forms.CheckBox()
         Me.btnBackgroundColor = New System.Windows.Forms.Button()
         Me.lblTaglineBGColor = New System.Windows.Forms.Label()
-        Me.chkOverlay = New System.Windows.Forms.CheckBox()
+        Me.chkUseOverlay = New System.Windows.Forms.CheckBox()
         Me.btnFont = New System.Windows.Forms.Button()
         Me.txtTop = New System.Windows.Forms.TextBox()
         Me.lblTaglineTop = New System.Windows.Forms.Label()
-        Me.tmrName = New System.Windows.Forms.Timer(Me.components)
+        Me.tmrSingle = New System.Windows.Forms.Timer(Me.components)
         Me.fdFont = New System.Windows.Forms.FontDialog()
-        Me.gbInfo = New System.Windows.Forms.GroupBox()
+        Me.gbInfoSingle = New System.Windows.Forms.GroupBox()
         Me.tbTagLine = New System.Windows.Forms.TrackBar()
-        Me.tmrNameWait = New System.Windows.Forms.Timer(Me.components)
+        Me.tmrSingleWait = New System.Windows.Forms.Timer(Me.components)
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.gbHolderType = New System.Windows.Forms.GroupBox()
-        Me.rbMediaStub = New System.Windows.Forms.RadioButton()
-        Me.rbDummyMovie = New System.Windows.Forms.RadioButton()
+        Me.rbHolderTypeMediaStub = New System.Windows.Forms.RadioButton()
+        Me.rbHolderTypeDummyMovie = New System.Windows.Forms.RadioButton()
         Me.gbSettings = New System.Windows.Forms.GroupBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.txtMovieTitle = New System.Windows.Forms.TextBox()
         Me.gbDefaults = New System.Windows.Forms.GroupBox()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
-        Me.btnDefaultLoad = New System.Windows.Forms.Button()
-        Me.btnDefaultSave = New System.Windows.Forms.Button()
+        Me.btnDefaultsLoad = New System.Windows.Forms.Button()
+        Me.btnDefaultsSave = New System.Windows.Forms.Button()
         Me.gbSearch = New System.Windows.Forms.GroupBox()
         Me.gbMovieTitle = New System.Windows.Forms.GroupBox()
         Me.gbType = New System.Windows.Forms.GroupBox()
         Me.rbTypeDVDProfiler = New System.Windows.Forms.RadioButton()
-        Me.rbTypeTitle = New System.Windows.Forms.RadioButton()
+        Me.rbTypeMovieTitle = New System.Windows.Forms.RadioButton()
         Me.gbMode = New System.Windows.Forms.GroupBox()
         Me.rbModeBatch = New System.Windows.Forms.RadioButton()
         Me.rbModeSingle = New System.Windows.Forms.RadioButton()
         Me.gbSource = New System.Windows.Forms.GroupBox()
         Me.gbDVDProfiler = New System.Windows.Forms.GroupBox()
+        Me.txtFolderNameDVDProfiler = New System.Windows.Forms.TextBox()
         Me.lblTitle = New System.Windows.Forms.Label()
         Me.txtDVDTitle = New System.Windows.Forms.TextBox()
         Me.lblSlot = New System.Windows.Forms.Label()
         Me.lblLocation = New System.Windows.Forms.Label()
         Me.lblCaseType = New System.Windows.Forms.Label()
         Me.lblMediaType = New System.Windows.Forms.Label()
-        Me.btnLoadSingle = New System.Windows.Forms.Button()
+        Me.btnLoadSingleXML = New System.Windows.Forms.Button()
         Me.txtMediaType = New System.Windows.Forms.TextBox()
         Me.txtCaseType = New System.Windows.Forms.TextBox()
         Me.txtSlot = New System.Windows.Forms.TextBox()
         Me.txtLocation = New System.Windows.Forms.TextBox()
-        Me.btnLoadCollection = New System.Windows.Forms.Button()
+        Me.btnLoadCollectionXML = New System.Windows.Forms.Button()
+        Me.gbScraperType = New System.Windows.Forms.GroupBox()
+        Me.btnSearchBatch = New System.Windows.Forms.Button()
+        Me.rbScraperTypeAsk = New System.Windows.Forms.RadioButton()
+        Me.rbScraperTypeAuto = New System.Windows.Forms.RadioButton()
+        Me.gbInfoBatch = New System.Windows.Forms.GroupBox()
+        Me.pbProgressBatch = New System.Windows.Forms.ProgressBar()
+        Me.lvStatusBatch = New System.Windows.Forms.ListView()
+        Me.ColumnHeader1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader2 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.ofdLoadXML = New System.Windows.Forms.OpenFileDialog()
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbPreview, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.gbPreview.SuspendLayout()
-        Me.gbInfo.SuspendLayout()
+        Me.gbInfoSingle.SuspendLayout()
         CType(Me.tbTagLine, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel1.SuspendLayout()
         Me.gbHolderType.SuspendLayout()
@@ -155,6 +165,8 @@ Partial Class dlgOfflineHolder
         Me.gbMode.SuspendLayout()
         Me.gbSource.SuspendLayout()
         Me.gbDVDProfiler.SuspendLayout()
+        Me.gbScraperType.SuspendLayout()
+        Me.gbInfoBatch.SuspendLayout()
         Me.TableLayoutPanel1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -227,13 +239,13 @@ Partial Class dlgOfflineHolder
         Me.cbSources.Size = New System.Drawing.Size(318, 21)
         Me.cbSources.TabIndex = 1
         '
-        'txtMovieName
+        'txtFolderNameMovieTitle
         '
-        Me.txtMovieName.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtMovieName.Location = New System.Drawing.Point(6, 34)
-        Me.txtMovieName.Name = "txtMovieName"
-        Me.txtMovieName.Size = New System.Drawing.Size(318, 22)
-        Me.txtMovieName.TabIndex = 3
+        Me.txtFolderNameMovieTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.txtFolderNameMovieTitle.Location = New System.Drawing.Point(6, 34)
+        Me.txtFolderNameMovieTitle.Name = "txtFolderNameMovieTitle"
+        Me.txtFolderNameMovieTitle.Size = New System.Drawing.Size(318, 22)
+        Me.txtFolderNameMovieTitle.TabIndex = 3
         '
         'lblMovie
         '
@@ -245,40 +257,40 @@ Partial Class dlgOfflineHolder
         Me.lblMovie.TabIndex = 2
         Me.lblMovie.Text = "Place Holder Folder/Movie Name:"
         '
-        'btnSearch
+        'btnSearchSingle
         '
-        Me.btnSearch.BackColor = System.Drawing.SystemColors.Control
-        Me.btnSearch.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnSearch.Location = New System.Drawing.Point(47, 27)
-        Me.btnSearch.Name = "btnSearch"
-        Me.btnSearch.Size = New System.Drawing.Size(102, 23)
-        Me.btnSearch.TabIndex = 4
-        Me.btnSearch.Text = "Search Movie"
-        Me.btnSearch.UseVisualStyleBackColor = True
+        Me.btnSearchSingle.BackColor = System.Drawing.SystemColors.Control
+        Me.btnSearchSingle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnSearchSingle.Location = New System.Drawing.Point(47, 27)
+        Me.btnSearchSingle.Name = "btnSearchSingle"
+        Me.btnSearchSingle.Size = New System.Drawing.Size(102, 23)
+        Me.btnSearchSingle.TabIndex = 4
+        Me.btnSearchSingle.Text = "Search Movie"
+        Me.btnSearchSingle.UseVisualStyleBackColor = True
         '
-        'pbProgress
+        'pbProgressSingle
         '
-        Me.pbProgress.Location = New System.Drawing.Point(6, 19)
-        Me.pbProgress.MarqueeAnimationSpeed = 25
-        Me.pbProgress.Name = "pbProgress"
-        Me.pbProgress.Size = New System.Drawing.Size(318, 20)
-        Me.pbProgress.Style = System.Windows.Forms.ProgressBarStyle.Marquee
-        Me.pbProgress.TabIndex = 0
-        Me.pbProgress.Visible = False
+        Me.pbProgressSingle.Location = New System.Drawing.Point(6, 19)
+        Me.pbProgressSingle.MarqueeAnimationSpeed = 25
+        Me.pbProgressSingle.Name = "pbProgressSingle"
+        Me.pbProgressSingle.Size = New System.Drawing.Size(318, 20)
+        Me.pbProgressSingle.Style = System.Windows.Forms.ProgressBarStyle.Marquee
+        Me.pbProgressSingle.TabIndex = 0
+        Me.pbProgressSingle.Visible = False
         '
-        'lvStatus
+        'lvStatusSingle
         '
-        Me.lvStatus.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colCondition, Me.colStatus})
-        Me.lvStatus.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lvStatus.FullRowSelect = True
-        Me.lvStatus.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable
-        Me.lvStatus.Location = New System.Drawing.Point(6, 44)
-        Me.lvStatus.MultiSelect = False
-        Me.lvStatus.Name = "lvStatus"
-        Me.lvStatus.Size = New System.Drawing.Size(318, 141)
-        Me.lvStatus.TabIndex = 1
-        Me.lvStatus.UseCompatibleStateImageBehavior = False
-        Me.lvStatus.View = System.Windows.Forms.View.Details
+        Me.lvStatusSingle.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colCondition, Me.colStatus})
+        Me.lvStatusSingle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lvStatusSingle.FullRowSelect = True
+        Me.lvStatusSingle.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable
+        Me.lvStatusSingle.Location = New System.Drawing.Point(6, 44)
+        Me.lvStatusSingle.MultiSelect = False
+        Me.lvStatusSingle.Name = "lvStatusSingle"
+        Me.lvStatusSingle.Size = New System.Drawing.Size(318, 141)
+        Me.lvStatusSingle.TabIndex = 1
+        Me.lvStatusSingle.UseCompatibleStateImageBehavior = False
+        Me.lvStatusSingle.View = System.Windows.Forms.View.Details
         '
         'colCondition
         '
@@ -330,7 +342,7 @@ Partial Class dlgOfflineHolder
         Me.txtTagline.Name = "txtTagline"
         Me.txtTagline.Size = New System.Drawing.Size(242, 22)
         Me.txtTagline.TabIndex = 1
-        Me.txtTagline.Text = "Insert DVD"
+        Me.txtTagline.Text = "$M{ ($C)}{ aus $L}{, $S}"
         '
         'btnTextColor
         '
@@ -397,18 +409,18 @@ Partial Class dlgOfflineHolder
         Me.cbFormat.Size = New System.Drawing.Size(95, 21)
         Me.cbFormat.TabIndex = 8
         '
-        'chkBackground
+        'chkUseBackground
         '
-        Me.chkBackground.Checked = True
-        Me.chkBackground.CheckState = System.Windows.Forms.CheckState.Indeterminate
-        Me.chkBackground.Enabled = False
-        Me.chkBackground.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkBackground.Location = New System.Drawing.Point(6, 202)
-        Me.chkBackground.Name = "chkBackground"
-        Me.chkBackground.Size = New System.Drawing.Size(182, 22)
-        Me.chkBackground.TabIndex = 11
-        Me.chkBackground.Text = "Use Tagline background"
-        Me.chkBackground.UseVisualStyleBackColor = True
+        Me.chkUseBackground.Checked = True
+        Me.chkUseBackground.CheckState = System.Windows.Forms.CheckState.Indeterminate
+        Me.chkUseBackground.Enabled = False
+        Me.chkUseBackground.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkUseBackground.Location = New System.Drawing.Point(6, 202)
+        Me.chkUseBackground.Name = "chkUseBackground"
+        Me.chkUseBackground.Size = New System.Drawing.Size(182, 22)
+        Me.chkUseBackground.TabIndex = 11
+        Me.chkUseBackground.Text = "Use Tagline background"
+        Me.chkUseBackground.UseVisualStyleBackColor = True
         '
         'btnBackgroundColor
         '
@@ -432,18 +444,18 @@ Partial Class dlgOfflineHolder
         Me.lblTaglineBGColor.TabIndex = 12
         Me.lblTaglineBGColor.Text = "Tagline background Color:"
         '
-        'chkOverlay
+        'chkUseOverlay
         '
-        Me.chkOverlay.Checked = True
-        Me.chkOverlay.CheckState = System.Windows.Forms.CheckState.Indeterminate
-        Me.chkOverlay.Enabled = False
-        Me.chkOverlay.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkOverlay.Location = New System.Drawing.Point(6, 180)
-        Me.chkOverlay.Name = "chkOverlay"
-        Me.chkOverlay.Size = New System.Drawing.Size(182, 22)
-        Me.chkOverlay.TabIndex = 10
-        Me.chkOverlay.Text = "Use Ember Overlay"
-        Me.chkOverlay.UseVisualStyleBackColor = True
+        Me.chkUseOverlay.Checked = True
+        Me.chkUseOverlay.CheckState = System.Windows.Forms.CheckState.Indeterminate
+        Me.chkUseOverlay.Enabled = False
+        Me.chkUseOverlay.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkUseOverlay.Location = New System.Drawing.Point(6, 180)
+        Me.chkUseOverlay.Name = "chkUseOverlay"
+        Me.chkUseOverlay.Size = New System.Drawing.Size(182, 22)
+        Me.chkUseOverlay.TabIndex = 10
+        Me.chkUseOverlay.Text = "Use Ember Overlay"
+        Me.chkUseOverlay.UseVisualStyleBackColor = True
         '
         'btnFont
         '
@@ -475,25 +487,25 @@ Partial Class dlgOfflineHolder
         Me.lblTaglineTop.Text = "Tagline Top:"
         Me.lblTaglineTop.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
-        'tmrName
+        'tmrSingle
         '
-        Me.tmrName.Interval = 250
+        Me.tmrSingle.Interval = 250
         '
         'fdFont
         '
         Me.fdFont.Font = New System.Drawing.Font("Arial", 21.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         '
-        'gbInfo
+        'gbInfoSingle
         '
-        Me.gbInfo.Controls.Add(Me.pbProgress)
-        Me.gbInfo.Controls.Add(Me.lvStatus)
-        Me.gbInfo.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbInfo.Location = New System.Drawing.Point(10, 460)
-        Me.gbInfo.Name = "gbInfo"
-        Me.gbInfo.Size = New System.Drawing.Size(330, 193)
-        Me.gbInfo.TabIndex = 6
-        Me.gbInfo.TabStop = False
-        Me.gbInfo.Text = "Information"
+        Me.gbInfoSingle.Controls.Add(Me.pbProgressSingle)
+        Me.gbInfoSingle.Controls.Add(Me.lvStatusSingle)
+        Me.gbInfoSingle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbInfoSingle.Location = New System.Drawing.Point(10, 460)
+        Me.gbInfoSingle.Name = "gbInfoSingle"
+        Me.gbInfoSingle.Size = New System.Drawing.Size(330, 193)
+        Me.gbInfoSingle.TabIndex = 6
+        Me.gbInfoSingle.TabStop = False
+        Me.gbInfoSingle.Text = "Information"
         '
         'tbTagLine
         '
@@ -508,9 +520,9 @@ Partial Class dlgOfflineHolder
         Me.tbTagLine.TickStyle = System.Windows.Forms.TickStyle.None
         Me.tbTagLine.Visible = False
         '
-        'tmrNameWait
+        'tmrSingleWait
         '
-        Me.tmrNameWait.Interval = 250
+        Me.tmrSingleWait.Interval = 250
         '
         'Panel1
         '
@@ -523,9 +535,11 @@ Partial Class dlgOfflineHolder
         Me.Panel1.Controls.Add(Me.gbMode)
         Me.Panel1.Controls.Add(Me.gbSource)
         Me.Panel1.Controls.Add(Me.gbDVDProfiler)
-        Me.Panel1.Controls.Add(Me.gbInfo)
+        Me.Panel1.Controls.Add(Me.gbInfoSingle)
         Me.Panel1.Controls.Add(Me.gbPreview)
         Me.Panel1.Controls.Add(Me.tbTagLine)
+        Me.Panel1.Controls.Add(Me.gbScraperType)
+        Me.Panel1.Controls.Add(Me.gbInfoBatch)
         Me.Panel1.Location = New System.Drawing.Point(4, 68)
         Me.Panel1.Name = "Panel1"
         Me.Panel1.Size = New System.Drawing.Size(791, 657)
@@ -533,8 +547,8 @@ Partial Class dlgOfflineHolder
         '
         'gbHolderType
         '
-        Me.gbHolderType.Controls.Add(Me.rbMediaStub)
-        Me.gbHolderType.Controls.Add(Me.rbDummyMovie)
+        Me.gbHolderType.Controls.Add(Me.rbHolderTypeMediaStub)
+        Me.gbHolderType.Controls.Add(Me.rbHolderTypeDummyMovie)
         Me.gbHolderType.Enabled = False
         Me.gbHolderType.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbHolderType.Location = New System.Drawing.Point(567, 10)
@@ -544,29 +558,29 @@ Partial Class dlgOfflineHolder
         Me.gbHolderType.TabStop = False
         Me.gbHolderType.Text = "6. Holder Type"
         '
-        'rbMediaStub
+        'rbHolderTypeMediaStub
         '
-        Me.rbMediaStub.AutoSize = True
-        Me.rbMediaStub.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.rbMediaStub.Location = New System.Drawing.Point(6, 43)
-        Me.rbMediaStub.Name = "rbMediaStub"
-        Me.rbMediaStub.Size = New System.Drawing.Size(81, 17)
-        Me.rbMediaStub.TabIndex = 1
-        Me.rbMediaStub.TabStop = True
-        Me.rbMediaStub.Text = "MediaStub"
-        Me.rbMediaStub.UseVisualStyleBackColor = True
+        Me.rbHolderTypeMediaStub.AutoSize = True
+        Me.rbHolderTypeMediaStub.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        Me.rbHolderTypeMediaStub.Location = New System.Drawing.Point(6, 43)
+        Me.rbHolderTypeMediaStub.Name = "rbHolderTypeMediaStub"
+        Me.rbHolderTypeMediaStub.Size = New System.Drawing.Size(81, 17)
+        Me.rbHolderTypeMediaStub.TabIndex = 1
+        Me.rbHolderTypeMediaStub.TabStop = True
+        Me.rbHolderTypeMediaStub.Text = "MediaStub"
+        Me.rbHolderTypeMediaStub.UseVisualStyleBackColor = True
         '
-        'rbDummyMovie
+        'rbHolderTypeDummyMovie
         '
-        Me.rbDummyMovie.AutoSize = True
-        Me.rbDummyMovie.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.rbDummyMovie.Location = New System.Drawing.Point(6, 21)
-        Me.rbDummyMovie.Name = "rbDummyMovie"
-        Me.rbDummyMovie.Size = New System.Drawing.Size(97, 17)
-        Me.rbDummyMovie.TabIndex = 0
-        Me.rbDummyMovie.TabStop = True
-        Me.rbDummyMovie.Text = "Dummy Movie"
-        Me.rbDummyMovie.UseVisualStyleBackColor = True
+        Me.rbHolderTypeDummyMovie.AutoSize = True
+        Me.rbHolderTypeDummyMovie.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        Me.rbHolderTypeDummyMovie.Location = New System.Drawing.Point(6, 21)
+        Me.rbHolderTypeDummyMovie.Name = "rbHolderTypeDummyMovie"
+        Me.rbHolderTypeDummyMovie.Size = New System.Drawing.Size(97, 17)
+        Me.rbHolderTypeDummyMovie.TabIndex = 0
+        Me.rbHolderTypeDummyMovie.TabStop = True
+        Me.rbHolderTypeDummyMovie.Text = "Dummy Movie"
+        Me.rbHolderTypeDummyMovie.UseVisualStyleBackColor = True
         '
         'gbSettings
         '
@@ -577,13 +591,13 @@ Partial Class dlgOfflineHolder
         Me.gbSettings.Controls.Add(Me.lblTagline)
         Me.gbSettings.Controls.Add(Me.cbFormat)
         Me.gbSettings.Controls.Add(Me.lblTaglineTop)
-        Me.gbSettings.Controls.Add(Me.chkBackground)
+        Me.gbSettings.Controls.Add(Me.chkUseBackground)
         Me.gbSettings.Controls.Add(Me.txtTop)
         Me.gbSettings.Controls.Add(Me.btnBackgroundColor)
         Me.gbSettings.Controls.Add(Me.lblTextColor)
         Me.gbSettings.Controls.Add(Me.lblTaglineBGColor)
         Me.gbSettings.Controls.Add(Me.txtTagline)
-        Me.gbSettings.Controls.Add(Me.chkOverlay)
+        Me.gbSettings.Controls.Add(Me.chkUseOverlay)
         Me.gbSettings.Controls.Add(Me.btnTextColor)
         Me.gbSettings.Controls.Add(Me.btnFont)
         Me.gbSettings.Controls.Add(Me.chkUseFanart)
@@ -631,8 +645,8 @@ Partial Class dlgOfflineHolder
         Me.TableLayoutPanel2.ColumnCount = 2
         Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel2.Controls.Add(Me.btnDefaultLoad, 1, 0)
-        Me.TableLayoutPanel2.Controls.Add(Me.btnDefaultSave, 0, 0)
+        Me.TableLayoutPanel2.Controls.Add(Me.btnDefaultsLoad, 1, 0)
+        Me.TableLayoutPanel2.Controls.Add(Me.btnDefaultsSave, 0, 0)
         Me.TableLayoutPanel2.Location = New System.Drawing.Point(6, 17)
         Me.TableLayoutPanel2.Name = "TableLayoutPanel2"
         Me.TableLayoutPanel2.RowCount = 1
@@ -640,29 +654,29 @@ Partial Class dlgOfflineHolder
         Me.TableLayoutPanel2.Size = New System.Drawing.Size(182, 28)
         Me.TableLayoutPanel2.TabIndex = 15
         '
-        'btnDefaultLoad
+        'btnDefaultsLoad
         '
-        Me.btnDefaultLoad.Anchor = System.Windows.Forms.AnchorStyles.Bottom
-        Me.btnDefaultLoad.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnDefaultLoad.Location = New System.Drawing.Point(96, 3)
-        Me.btnDefaultLoad.Name = "btnDefaultLoad"
-        Me.btnDefaultLoad.Size = New System.Drawing.Size(80, 22)
-        Me.btnDefaultLoad.TabIndex = 1
-        Me.btnDefaultLoad.Text = "Load"
+        Me.btnDefaultsLoad.Anchor = System.Windows.Forms.AnchorStyles.Bottom
+        Me.btnDefaultsLoad.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnDefaultsLoad.Location = New System.Drawing.Point(96, 3)
+        Me.btnDefaultsLoad.Name = "btnDefaultsLoad"
+        Me.btnDefaultsLoad.Size = New System.Drawing.Size(80, 22)
+        Me.btnDefaultsLoad.TabIndex = 1
+        Me.btnDefaultsLoad.Text = "Load"
         '
-        'btnDefaultSave
+        'btnDefaultsSave
         '
-        Me.btnDefaultSave.Anchor = System.Windows.Forms.AnchorStyles.Bottom
-        Me.btnDefaultSave.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnDefaultSave.Location = New System.Drawing.Point(5, 3)
-        Me.btnDefaultSave.Name = "btnDefaultSave"
-        Me.btnDefaultSave.Size = New System.Drawing.Size(80, 22)
-        Me.btnDefaultSave.TabIndex = 0
-        Me.btnDefaultSave.Text = "Save"
+        Me.btnDefaultsSave.Anchor = System.Windows.Forms.AnchorStyles.Bottom
+        Me.btnDefaultsSave.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnDefaultsSave.Location = New System.Drawing.Point(5, 3)
+        Me.btnDefaultsSave.Name = "btnDefaultsSave"
+        Me.btnDefaultsSave.Size = New System.Drawing.Size(80, 22)
+        Me.btnDefaultsSave.TabIndex = 0
+        Me.btnDefaultsSave.Text = "Save"
         '
         'gbSearch
         '
-        Me.gbSearch.Controls.Add(Me.btnSearch)
+        Me.gbSearch.Controls.Add(Me.btnSearchSingle)
         Me.gbSearch.Enabled = False
         Me.gbSearch.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbSearch.Location = New System.Drawing.Point(366, 10)
@@ -675,7 +689,7 @@ Partial Class dlgOfflineHolder
         'gbMovieTitle
         '
         Me.gbMovieTitle.Controls.Add(Me.lblMovie)
-        Me.gbMovieTitle.Controls.Add(Me.txtMovieName)
+        Me.gbMovieTitle.Controls.Add(Me.txtFolderNameMovieTitle)
         Me.gbMovieTitle.Enabled = False
         Me.gbMovieTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbMovieTitle.Location = New System.Drawing.Point(10, 158)
@@ -688,7 +702,7 @@ Partial Class dlgOfflineHolder
         'gbType
         '
         Me.gbType.Controls.Add(Me.rbTypeDVDProfiler)
-        Me.gbType.Controls.Add(Me.rbTypeTitle)
+        Me.gbType.Controls.Add(Me.rbTypeMovieTitle)
         Me.gbType.Enabled = False
         Me.gbType.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbType.Location = New System.Drawing.Point(178, 84)
@@ -710,17 +724,17 @@ Partial Class dlgOfflineHolder
         Me.rbTypeDVDProfiler.Text = "DVD Profiler"
         Me.rbTypeDVDProfiler.UseVisualStyleBackColor = True
         '
-        'rbTypeTitle
+        'rbTypeMovieTitle
         '
-        Me.rbTypeTitle.AutoSize = True
-        Me.rbTypeTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.rbTypeTitle.Location = New System.Drawing.Point(7, 22)
-        Me.rbTypeTitle.Name = "rbTypeTitle"
-        Me.rbTypeTitle.Size = New System.Drawing.Size(80, 17)
-        Me.rbTypeTitle.TabIndex = 0
-        Me.rbTypeTitle.TabStop = True
-        Me.rbTypeTitle.Text = "Movie Title"
-        Me.rbTypeTitle.UseVisualStyleBackColor = True
+        Me.rbTypeMovieTitle.AutoSize = True
+        Me.rbTypeMovieTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        Me.rbTypeMovieTitle.Location = New System.Drawing.Point(7, 22)
+        Me.rbTypeMovieTitle.Name = "rbTypeMovieTitle"
+        Me.rbTypeMovieTitle.Size = New System.Drawing.Size(80, 17)
+        Me.rbTypeMovieTitle.TabIndex = 0
+        Me.rbTypeMovieTitle.TabStop = True
+        Me.rbTypeMovieTitle.Text = "Movie Title"
+        Me.rbTypeMovieTitle.UseVisualStyleBackColor = True
         '
         'gbMode
         '
@@ -733,12 +747,11 @@ Partial Class dlgOfflineHolder
         Me.gbMode.Size = New System.Drawing.Size(162, 68)
         Me.gbMode.TabIndex = 12
         Me.gbMode.TabStop = False
-        Me.gbMode.Text = "2. Single or Batch Mode"
+        Me.gbMode.Text = "Mode"
         '
         'rbModeBatch
         '
         Me.rbModeBatch.AutoSize = True
-        Me.rbModeBatch.Enabled = False
         Me.rbModeBatch.Font = New System.Drawing.Font("Segoe UI", 8.25!)
         Me.rbModeBatch.Location = New System.Drawing.Point(6, 45)
         Me.rbModeBatch.Name = "rbModeBatch"
@@ -773,18 +786,19 @@ Partial Class dlgOfflineHolder
         '
         'gbDVDProfiler
         '
+        Me.gbDVDProfiler.Controls.Add(Me.txtFolderNameDVDProfiler)
         Me.gbDVDProfiler.Controls.Add(Me.lblTitle)
         Me.gbDVDProfiler.Controls.Add(Me.txtDVDTitle)
         Me.gbDVDProfiler.Controls.Add(Me.lblSlot)
         Me.gbDVDProfiler.Controls.Add(Me.lblLocation)
         Me.gbDVDProfiler.Controls.Add(Me.lblCaseType)
         Me.gbDVDProfiler.Controls.Add(Me.lblMediaType)
-        Me.gbDVDProfiler.Controls.Add(Me.btnLoadSingle)
+        Me.gbDVDProfiler.Controls.Add(Me.btnLoadSingleXML)
         Me.gbDVDProfiler.Controls.Add(Me.txtMediaType)
         Me.gbDVDProfiler.Controls.Add(Me.txtCaseType)
         Me.gbDVDProfiler.Controls.Add(Me.txtSlot)
         Me.gbDVDProfiler.Controls.Add(Me.txtLocation)
-        Me.gbDVDProfiler.Controls.Add(Me.btnLoadCollection)
+        Me.gbDVDProfiler.Controls.Add(Me.btnLoadCollectionXML)
         Me.gbDVDProfiler.Enabled = False
         Me.gbDVDProfiler.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbDVDProfiler.Location = New System.Drawing.Point(10, 234)
@@ -794,23 +808,32 @@ Partial Class dlgOfflineHolder
         Me.gbDVDProfiler.TabStop = False
         Me.gbDVDProfiler.Text = "4. DVD Profiler"
         '
+        'txtFolderNameDVDProfiler
+        '
+        Me.txtFolderNameDVDProfiler.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.txtFolderNameDVDProfiler.Location = New System.Drawing.Point(6, 50)
+        Me.txtFolderNameDVDProfiler.Name = "txtFolderNameDVDProfiler"
+        Me.txtFolderNameDVDProfiler.Size = New System.Drawing.Size(318, 22)
+        Me.txtFolderNameDVDProfiler.TabIndex = 21
+        '
         'lblTitle
         '
         Me.lblTitle.AutoSize = True
         Me.lblTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.lblTitle.Location = New System.Drawing.Point(6, 61)
+        Me.lblTitle.Location = New System.Drawing.Point(66, 81)
         Me.lblTitle.Name = "lblTitle"
-        Me.lblTitle.Size = New System.Drawing.Size(53, 13)
+        Me.lblTitle.Size = New System.Drawing.Size(87, 13)
         Me.lblTitle.TabIndex = 20
-        Me.lblTitle.Text = "Title = $T"
+        Me.lblTitle.Text = "Movie Title = $T"
         Me.lblTitle.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
         'txtDVDTitle
         '
         Me.txtDVDTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.txtDVDTitle.Location = New System.Drawing.Point(6, 78)
+        Me.txtDVDTitle.Location = New System.Drawing.Point(159, 78)
         Me.txtDVDTitle.Name = "txtDVDTitle"
-        Me.txtDVDTitle.Size = New System.Drawing.Size(318, 22)
+        Me.txtDVDTitle.ReadOnly = True
+        Me.txtDVDTitle.Size = New System.Drawing.Size(165, 22)
         Me.txtDVDTitle.TabIndex = 19
         '
         'lblSlot
@@ -850,22 +873,22 @@ Partial Class dlgOfflineHolder
         '
         Me.lblMediaType.AutoSize = True
         Me.lblMediaType.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.lblMediaType.Location = New System.Drawing.Point(66, 109)
+        Me.lblMediaType.Location = New System.Drawing.Point(61, 109)
         Me.lblMediaType.Name = "lblMediaType"
-        Me.lblMediaType.Size = New System.Drawing.Size(87, 13)
+        Me.lblMediaType.Size = New System.Drawing.Size(92, 13)
         Me.lblMediaType.TabIndex = 15
-        Me.lblMediaType.Text = "MediaType = $T"
+        Me.lblMediaType.Text = "MediaType = $M"
         Me.lblMediaType.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
-        'btnLoadSingle
+        'btnLoadSingleXML
         '
-        Me.btnLoadSingle.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.btnLoadSingle.Location = New System.Drawing.Point(159, 21)
-        Me.btnLoadSingle.Name = "btnLoadSingle"
-        Me.btnLoadSingle.Size = New System.Drawing.Size(165, 23)
-        Me.btnLoadSingle.TabIndex = 14
-        Me.btnLoadSingle.Text = "Load Single .xml"
-        Me.btnLoadSingle.UseVisualStyleBackColor = True
+        Me.btnLoadSingleXML.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        Me.btnLoadSingleXML.Location = New System.Drawing.Point(159, 21)
+        Me.btnLoadSingleXML.Name = "btnLoadSingleXML"
+        Me.btnLoadSingleXML.Size = New System.Drawing.Size(165, 23)
+        Me.btnLoadSingleXML.TabIndex = 14
+        Me.btnLoadSingleXML.Text = "Load Single .xml"
+        Me.btnLoadSingleXML.UseVisualStyleBackColor = True
         '
         'txtMediaType
         '
@@ -903,15 +926,109 @@ Partial Class dlgOfflineHolder
         Me.txtLocation.Size = New System.Drawing.Size(165, 22)
         Me.txtLocation.TabIndex = 10
         '
-        'btnLoadCollection
+        'btnLoadCollectionXML
         '
-        Me.btnLoadCollection.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnLoadCollection.Location = New System.Drawing.Point(6, 21)
-        Me.btnLoadCollection.Name = "btnLoadCollection"
-        Me.btnLoadCollection.Size = New System.Drawing.Size(147, 23)
-        Me.btnLoadCollection.TabIndex = 9
-        Me.btnLoadCollection.Text = "Load Collection.xml"
-        Me.btnLoadCollection.UseVisualStyleBackColor = True
+        Me.btnLoadCollectionXML.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnLoadCollectionXML.Location = New System.Drawing.Point(6, 21)
+        Me.btnLoadCollectionXML.Name = "btnLoadCollectionXML"
+        Me.btnLoadCollectionXML.Size = New System.Drawing.Size(147, 23)
+        Me.btnLoadCollectionXML.TabIndex = 9
+        Me.btnLoadCollectionXML.Text = "Load Collection.xml"
+        Me.btnLoadCollectionXML.UseVisualStyleBackColor = True
+        '
+        'gbScraperType
+        '
+        Me.gbScraperType.Controls.Add(Me.btnSearchBatch)
+        Me.gbScraperType.Controls.Add(Me.rbScraperTypeAsk)
+        Me.gbScraperType.Controls.Add(Me.rbScraperTypeAuto)
+        Me.gbScraperType.Enabled = False
+        Me.gbScraperType.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold)
+        Me.gbScraperType.Location = New System.Drawing.Point(366, 10)
+        Me.gbScraperType.Name = "gbScraperType"
+        Me.gbScraperType.Size = New System.Drawing.Size(195, 68)
+        Me.gbScraperType.TabIndex = 18
+        Me.gbScraperType.TabStop = False
+        Me.gbScraperType.Text = "5. Scraper Type"
+        '
+        'btnSearchBatch
+        '
+        Me.btnSearchBatch.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnSearchBatch.Location = New System.Drawing.Point(47, 40)
+        Me.btnSearchBatch.Name = "btnSearchBatch"
+        Me.btnSearchBatch.Size = New System.Drawing.Size(102, 23)
+        Me.btnSearchBatch.TabIndex = 2
+        Me.btnSearchBatch.Text = "Search Movies"
+        Me.btnSearchBatch.UseVisualStyleBackColor = True
+        '
+        'rbScraperTypeAsk
+        '
+        Me.rbScraperTypeAsk.AutoSize = True
+        Me.rbScraperTypeAsk.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        Me.rbScraperTypeAsk.Location = New System.Drawing.Point(117, 21)
+        Me.rbScraperTypeAsk.Name = "rbScraperTypeAsk"
+        Me.rbScraperTypeAsk.Size = New System.Drawing.Size(72, 17)
+        Me.rbScraperTypeAsk.TabIndex = 1
+        Me.rbScraperTypeAsk.TabStop = True
+        Me.rbScraperTypeAsk.Text = "Manually"
+        Me.rbScraperTypeAsk.UseVisualStyleBackColor = True
+        '
+        'rbScraperTypeAuto
+        '
+        Me.rbScraperTypeAuto.AutoSize = True
+        Me.rbScraperTypeAuto.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        Me.rbScraperTypeAuto.Location = New System.Drawing.Point(6, 21)
+        Me.rbScraperTypeAuto.Name = "rbScraperTypeAuto"
+        Me.rbScraperTypeAuto.Size = New System.Drawing.Size(50, 17)
+        Me.rbScraperTypeAuto.TabIndex = 0
+        Me.rbScraperTypeAuto.TabStop = True
+        Me.rbScraperTypeAuto.Text = "Auto"
+        Me.rbScraperTypeAuto.UseVisualStyleBackColor = True
+        '
+        'gbInfoBatch
+        '
+        Me.gbInfoBatch.Controls.Add(Me.pbProgressBatch)
+        Me.gbInfoBatch.Controls.Add(Me.lvStatusBatch)
+        Me.gbInfoBatch.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbInfoBatch.Location = New System.Drawing.Point(10, 460)
+        Me.gbInfoBatch.Name = "gbInfoBatch"
+        Me.gbInfoBatch.Size = New System.Drawing.Size(330, 193)
+        Me.gbInfoBatch.TabIndex = 7
+        Me.gbInfoBatch.TabStop = False
+        Me.gbInfoBatch.Text = "Information"
+        '
+        'pbProgressBatch
+        '
+        Me.pbProgressBatch.Location = New System.Drawing.Point(6, 19)
+        Me.pbProgressBatch.MarqueeAnimationSpeed = 25
+        Me.pbProgressBatch.Name = "pbProgressBatch"
+        Me.pbProgressBatch.Size = New System.Drawing.Size(318, 20)
+        Me.pbProgressBatch.Style = System.Windows.Forms.ProgressBarStyle.Marquee
+        Me.pbProgressBatch.TabIndex = 0
+        Me.pbProgressBatch.Visible = False
+        '
+        'lvStatusBatch
+        '
+        Me.lvStatusBatch.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2})
+        Me.lvStatusBatch.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lvStatusBatch.FullRowSelect = True
+        Me.lvStatusBatch.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable
+        Me.lvStatusBatch.Location = New System.Drawing.Point(6, 44)
+        Me.lvStatusBatch.MultiSelect = False
+        Me.lvStatusBatch.Name = "lvStatusBatch"
+        Me.lvStatusBatch.Size = New System.Drawing.Size(318, 141)
+        Me.lvStatusBatch.TabIndex = 1
+        Me.lvStatusBatch.UseCompatibleStateImageBehavior = False
+        Me.lvStatusBatch.View = System.Windows.Forms.View.Details
+        '
+        'ColumnHeader1
+        '
+        Me.ColumnHeader1.Text = "Condition"
+        Me.ColumnHeader1.Width = 236
+        '
+        'ColumnHeader2
+        '
+        Me.ColumnHeader2.Text = "Status"
+        Me.ColumnHeader2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'TableLayoutPanel1
         '
@@ -951,7 +1068,7 @@ Partial Class dlgOfflineHolder
         CType(Me.pbPreview, System.ComponentModel.ISupportInitialize).EndInit()
         Me.gbPreview.ResumeLayout(False)
         Me.gbPreview.PerformLayout()
-        Me.gbInfo.ResumeLayout(False)
+        Me.gbInfoSingle.ResumeLayout(False)
         CType(Me.tbTagLine, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
@@ -971,12 +1088,15 @@ Partial Class dlgOfflineHolder
         Me.gbSource.ResumeLayout(False)
         Me.gbDVDProfiler.ResumeLayout(False)
         Me.gbDVDProfiler.PerformLayout()
+        Me.gbScraperType.ResumeLayout(False)
+        Me.gbScraperType.PerformLayout()
+        Me.gbInfoBatch.ResumeLayout(False)
         Me.TableLayoutPanel1.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
     Friend WithEvents Panel1 As System.Windows.Forms.Panel
-    Friend WithEvents btnLoadCollection As System.Windows.Forms.Button
+    Friend WithEvents btnLoadCollectionXML As System.Windows.Forms.Button
     Friend WithEvents gbDVDProfiler As System.Windows.Forms.GroupBox
     Friend WithEvents txtMediaType As System.Windows.Forms.TextBox
     Friend WithEvents txtCaseType As System.Windows.Forms.TextBox
@@ -988,7 +1108,7 @@ Partial Class dlgOfflineHolder
     Friend WithEvents gbMovieTitle As System.Windows.Forms.GroupBox
     Friend WithEvents gbType As System.Windows.Forms.GroupBox
     Friend WithEvents rbTypeDVDProfiler As System.Windows.Forms.RadioButton
-    Friend WithEvents rbTypeTitle As System.Windows.Forms.RadioButton
+    Friend WithEvents rbTypeMovieTitle As System.Windows.Forms.RadioButton
     Friend WithEvents gbMode As System.Windows.Forms.GroupBox
     Friend WithEvents rbModeBatch As System.Windows.Forms.RadioButton
     Friend WithEvents rbModeSingle As System.Windows.Forms.RadioButton
@@ -996,20 +1116,30 @@ Partial Class dlgOfflineHolder
     Friend WithEvents lblLocation As System.Windows.Forms.Label
     Friend WithEvents lblCaseType As System.Windows.Forms.Label
     Friend WithEvents lblMediaType As System.Windows.Forms.Label
-    Friend WithEvents btnLoadSingle As System.Windows.Forms.Button
+    Friend WithEvents btnLoadSingleXML As System.Windows.Forms.Button
     Friend WithEvents ofdLoadXML As System.Windows.Forms.OpenFileDialog
     Friend WithEvents lblTitle As System.Windows.Forms.Label
     Friend WithEvents txtDVDTitle As System.Windows.Forms.TextBox
     Friend WithEvents gbSettings As System.Windows.Forms.GroupBox
     Friend WithEvents gbDefaults As System.Windows.Forms.GroupBox
     Friend WithEvents TableLayoutPanel2 As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents btnDefaultLoad As System.Windows.Forms.Button
-    Friend WithEvents btnDefaultSave As System.Windows.Forms.Button
+    Friend WithEvents btnDefaultsLoad As System.Windows.Forms.Button
+    Friend WithEvents btnDefaultsSave As System.Windows.Forms.Button
     Friend WithEvents gbHolderType As System.Windows.Forms.GroupBox
-    Friend WithEvents rbMediaStub As System.Windows.Forms.RadioButton
-    Friend WithEvents rbDummyMovie As System.Windows.Forms.RadioButton
+    Friend WithEvents rbHolderTypeMediaStub As System.Windows.Forms.RadioButton
+    Friend WithEvents rbHolderTypeDummyMovie As System.Windows.Forms.RadioButton
     Friend WithEvents txtMovieTitle As System.Windows.Forms.TextBox
     Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents gbScraperType As System.Windows.Forms.GroupBox
+    Friend WithEvents rbScraperTypeAsk As System.Windows.Forms.RadioButton
+    Friend WithEvents rbScraperTypeAuto As System.Windows.Forms.RadioButton
+    Friend WithEvents gbInfoBatch As System.Windows.Forms.GroupBox
+    Friend WithEvents pbProgressBatch As System.Windows.Forms.ProgressBar
+    Friend WithEvents lvStatusBatch As System.Windows.Forms.ListView
+    Friend WithEvents ColumnHeader1 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents ColumnHeader2 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents btnSearchBatch As System.Windows.Forms.Button
+    Friend WithEvents txtFolderNameDVDProfiler As System.Windows.Forms.TextBox
 
 #End Region 'Methods
 

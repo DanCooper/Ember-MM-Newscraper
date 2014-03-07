@@ -165,6 +165,7 @@
     <Compile Include="clsAPIMaster.vb" />
     <Compile Include="clsAPIMediaContainers.vb" />
     <Compile Include="clsAPIMediaInfo.vb" />
+    <Compile Include="clsAPIMediaStub.vb" />
     <Compile Include="clsAPIModules.vb" />
     <Compile Include="clsAPINFO.vb" />
     <Compile Include="clsAPINumUtils.vb" />

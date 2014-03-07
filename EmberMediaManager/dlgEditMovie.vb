@@ -22,7 +22,6 @@ Imports System
 Imports System.IO
 Imports System.Text.RegularExpressions
 Imports EmberAPI
-Imports Ember_Media_Manager.frmMain
 
 Public Class dlgEditMovie
 
@@ -491,10 +490,12 @@ Public Class dlgEditMovie
                         If Not String.IsNullOrEmpty(pResults.URL) Then
                             Cursor = Cursors.WaitCursor
                             pResults.WebImage.FromWeb(pResults.URL)
-                            pbPoster.Image = CType(pResults.WebImage.Image.Clone(), Image)
+                            If Not IsNothing(pResults.WebImage.Image) Then
+                                pbPoster.Image = CType(pResults.WebImage.Image.Clone(), Image)
+                                Me.lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
+                                Me.lblPosterSize.Visible = True
+                            End If
                             Cursor = Cursors.Default
-                            Me.lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
-                            Me.lblPosterSize.Visible = True
                         End If
                         Poster = pResults.WebImage
                     End If
@@ -1027,9 +1028,13 @@ Public Class dlgEditMovie
                     Else
                         Dim pExt As String = Path.GetExtension(Master.currMovie.Filename).ToLower
                         If pExt = ".rar" OrElse pExt = ".iso" OrElse pExt = ".img" OrElse _
-                        pExt = ".bin" OrElse pExt = ".cue" OrElse pExt = ".dat" Then
+                        pExt = ".bin" OrElse pExt = ".cue" OrElse pExt = ".dat" OrElse _
+                        pExt = ".disc" Then
                             tcEditMovie.TabPages.Remove(tpFrameExtraction)
                         Else
+                            If Not pExt = ".disc" Then
+                                tcEditMovie.TabPages.Remove(tpMediaStub)
+                            End If
                             .bwEThumbs.WorkerSupportsCancellation = True
                             .bwEThumbs.RunWorkerAsync()
                             .bwEFanarts.WorkerSupportsCancellation = True
@@ -1071,6 +1076,12 @@ Public Class dlgEditMovie
                         .btnSetFanartScrape.Enabled = False
                     End If
 
+                    If Path.GetExtension(Master.currMovie.Filename).ToLower = ".disc" Then
+                        Dim DiscStub As New MediaStub.DiscStub
+                        DiscStub = MediaStub.LoadDiscStub(Master.currMovie.Filename)
+                        .txtMediaStubTitle.Text = DiscStub.Title
+                        .txtMediaStubMessage.Text = DiscStub.Message
+                    End If
                 End If
             End With
         Catch ex As Exception
@@ -1810,7 +1821,6 @@ Public Class dlgEditMovie
                 End If
 
                 If Master.GlobalScrapeMod.Actors AndAlso Master.eSettings.ScraperActorThumbs AndAlso (Master.eSettings.ActorThumbsFrodo OrElse Master.eSettings.ActorThumbsEden) Then
-                    frmMain.tslLoading.Text = Master.eLang.GetString(568, "Generating Actor Thumbs:")
                     For Each act As MediaContainers.Person In Master.currMovie.Movie.Actors
                         Dim img As New Images
                         img.FromWeb(act.Thumb)
@@ -1821,7 +1831,6 @@ Public Class dlgEditMovie
                 End If
 
                 If Not String.IsNullOrEmpty(Master.currMovie.TrailerPath) AndAlso Master.currMovie.TrailerPath.Contains(Master.TempPath) Then
-                    frmMain.tslLoading.Text = Master.eLang.GetString(906, "Downloading selected trailer...")
                     Dim TargetTrailer As String = String.Empty
                     Dim fExt As String = Path.GetExtension(Master.currMovie.TrailerPath)
                     For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.isSingle, Enums.ModType.Trailer)
@@ -1830,7 +1839,6 @@ Public Class dlgEditMovie
                     Next
                     Master.currMovie.TrailerPath = TargetTrailer
                 ElseIf Not String.IsNullOrEmpty(Master.currMovie.TrailerPath) AndAlso Master.currMovie.TrailerPath.StartsWith(":") Then
-                    frmMain.tslLoading.Text = Master.eLang.GetString(906, "Downloading selected trailer...")
                     Dim lhttp As New HTTP
                     Master.currMovie.TrailerPath = lhttp.DownloadFile(Master.currMovie.TrailerPath.Replace(":http", "http"), Path.Combine(Master.TempPath, "trailer"), False, "trailer")
                     Dim TargetTrailer As String = String.Empty
@@ -1840,6 +1848,13 @@ Public Class dlgEditMovie
                         TargetTrailer = a & fExt
                     Next
                     Master.currMovie.TrailerPath = TargetTrailer
+                End If
+
+                If Path.GetExtension(Master.currMovie.Filename) = ".disc" Then
+                    Dim StubFile As String = Master.currMovie.Filename
+                    Dim Title As String = Me.txtMediaStubTitle.Text
+                    Dim Message As String = Me.txtMediaStubMessage.Text
+                    MediaStub.SaveDiscStub(StubFile, Title, Message)
                 End If
 
                 If Not Master.eSettings.NoSaveImagesToNfo AndAlso pResults.Posters.Count > 0 Then Master.currMovie.Movie.Thumb = pResults.Posters

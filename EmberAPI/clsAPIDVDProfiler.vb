@@ -24,6 +24,12 @@ Public Class DVDProfiler
 
 #Region "Methods"
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sFormat"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public Shared Function ConvertAFormat(ByVal sFormat As String) As String
         If Not String.IsNullOrEmpty(sFormat) Then
             Select Case sFormat.ToLower
@@ -41,9 +47,14 @@ Public Class DVDProfiler
         End If
 
         Return sFormat
-
     End Function
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sChannels"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public Shared Function ConvertAChannels(ByVal sChannels As String) As String
         If Not String.IsNullOrEmpty(sChannels) Then
             Select Case sChannels.ToLower
@@ -67,7 +78,66 @@ Public Class DVDProfiler
         End If
 
         Return sChannels
+    End Function
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="cMovie"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public Shared Function MergeToDBMovie(ByVal cMovie As DVDProfiler.cDVD) As Structures.DBMovie
+        Dim tMovie As New Structures.DBMovie
+        tMovie.Movie = New MediaContainers.Movie
+
+        tMovie.isSingle = True
+
+        tMovie.DVDProfilerTitle = cMovie.Title
+        tMovie.Movie.Title = cMovie.Title
+        tMovie.Movie.Year = cMovie.ProductionYear
+        tMovie.DVDProfilerCaseType = cMovie.CaseType
+        If cMovie.Discs.Disc.Count > 0 Then
+            tMovie.DVDProfilerLocation = cMovie.Discs.Disc(0).dLocation
+            tMovie.DVDProfilerSlot = cMovie.Discs.Disc(0).dSlot
+        End If
+
+        Select Case True
+            Case cMovie.MediaTypes.BluRay = True
+                tMovie.DVDProfilerMediaType = "BluRay"
+                tMovie.FileSource = "bluray"
+            Case cMovie.MediaTypes.DVD = True
+                tMovie.DVDProfilerMediaType = "DVD"
+                tMovie.FileSource = "dvd"
+            Case cMovie.MediaTypes.HDDVD = True
+                tMovie.DVDProfilerMediaType = "HDDVD"
+                tMovie.FileSource = "hddvd"
+        End Select
+
+        If cMovie.Subtitles.Subtitle.Count > 0 Then
+            For Each sStream In cMovie.Subtitles.Subtitle
+                Dim stream_s As New MediaInfo.Subtitle
+                stream_s.LongLanguage = sStream
+                stream_s.Language = Localization.ISOLangGetCode3ByLang(sStream)
+                stream_s.SubsType = "Embedded"
+                tMovie.Movie.FileInfo.StreamDetails.Subtitle.Add(DirectCast(stream_s, MediaInfo.Subtitle))
+            Next
+        End If
+
+        If cMovie.Audio.AudioTrack.Count > 0 Then
+            For Each aStream In cMovie.Audio.AudioTrack
+                If Not aStream.AudioContent = "Commentary" Then
+                    Dim stream_a As New MediaInfo.Audio
+                    stream_a.Channels = DVDProfiler.ConvertAChannels(aStream.AudioChannels)
+                    stream_a.Codec = DVDProfiler.ConvertAFormat(aStream.AudioFormat).ToLower
+                    stream_a.LongLanguage = aStream.AudioContent
+                    stream_a.Language = Localization.ISOLangGetCode3ByLang(aStream.AudioContent)
+                    tMovie.Movie.FileInfo.StreamDetails.Audio.Add(DirectCast(stream_a, MediaInfo.Audio))
+                End If
+            Next
+        End If
+
+        'TODO: add video tracks
+        Return tMovie
     End Function
 
 #End Region 'Methods

@@ -28,18 +28,18 @@ Public Class dlgDVDProfilerSelect
 
 #Region "Fields"
 
-    Private _results As New DVDProfiler.cDVD
+    Private _results As New List(Of DVDProfiler.cDVD)
     Dim xmlMov As New DVDProfiler.Collection
 
 #End Region
 
 #Region "Properties"
 
-    Public Property Results As DVDProfiler.cDVD
+    Public Property Results As List(Of DVDProfiler.cDVD)
         Get
             Return _results
         End Get
-        Set(value As DVDProfiler.cDVD)
+        Set(value As List(Of DVDProfiler.cDVD))
             _results = value
         End Set
     End Property
@@ -103,20 +103,22 @@ Public Class dlgDVDProfilerSelect
         End If
     End Sub
 
-    Private Function MergeSelectedMovie(ByVal cMovie As DVDProfiler.cDVD) As DVDProfiler.cDVD
-        _results = cMovie
-        Return _results
+    Private Function AddMovieToList() As List(Of DVDProfiler.cDVD)
+        For Each Movie As ListViewItem In Me.lvCollection.SelectedItems
+            _results.Add(xmlMov.DVD(Movie.Index))
+        Next
+            Return _results
     End Function
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
-        Me.MergeSelectedMovie(xmlMov.DVD(Me.lvCollection.SelectedItems(0).Index))
+        'Me.MergeSelectedMovie(xmlMov.DVD(Me.lvCollection.SelectedItems(0).Index))
+        AddMovieToList()
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()
     End Sub
 
     Private Sub PrepareList()
         'set ListView
-        Me.lvCollection.MultiSelect = False
         Me.lvCollection.FullRowSelect = True
         Me.lvCollection.HideSelection = False
         Me.lvCollection.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent)
@@ -131,11 +133,12 @@ Public Class dlgDVDProfilerSelect
         Me.CANCEL_Button.Text = Master.eLang.GetString(167, "Cancel")
     End Sub
 
-    Public Overloads Function ShowDialog(Optional ByVal DVDProfilerCollection As String = "") As DialogResult
+    Public Overloads Function ShowDialog(ByVal DVDProfilerCollection As String, ByVal isMulti As Boolean) As DialogResult
         Me.SetUp()
+        Me.lvCollection.MultiSelect = isMulti
+        lvCollection.Clear()
+        PrepareList()
         If Not String.IsNullOrEmpty(DVDProfilerCollection) Then
-            lvCollection.Clear()
-            PrepareList()
             AddCollection(DVDProfilerCollection)
         End If
         Return MyBase.ShowDialog()
