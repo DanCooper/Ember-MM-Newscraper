@@ -3174,7 +3174,9 @@ doCancel:
             SQLTrans.Commit()
         End Using
 
-        Me.FillSeasons(Convert.ToInt32(Me.dgvTVSeasons.SelectedRows(0).Cells(0).Value))
+        If Me.dgvTVSeasons.RowCount > 0 Then
+            Me.FillSeasons(Convert.ToInt32(Me.dgvTVSeasons.SelectedRows(0).Cells(0).Value))
+        End If
 
         Me.SetTVCount()
     End Sub
@@ -3198,7 +3200,9 @@ doCancel:
             cSeas = Me.currSeasonRow
         End If
 
-        Me.FillEpisodes(Convert.ToInt32(Me.dgvTVSeasons.Item(0, cSeas).Value), Convert.ToInt32(Me.dgvTVSeasons.Item(2, cSeas).Value))
+        If Me.dgvTVEpisodes.RowCount > 0 Then
+            Me.FillEpisodes(Convert.ToInt32(Me.dgvTVSeasons.Item(0, cSeas).Value), Convert.ToInt32(Me.dgvTVSeasons.Item(2, cSeas).Value))
+        End If
 
         Me.SetTVCount()
     End Sub
@@ -8079,8 +8083,9 @@ doCancel:
 
                 Dim sContainer As New Scanner.TVShowContainer With {.ShowPath = tmpShowDb.ShowPath}
                 fScanner.GetShowFolderContents(sContainer, ID)
-                tmpShowDb.ShowPosterPath = sContainer.Poster
+                tmpShowDb.ShowBannerPath = sContainer.Banner
                 tmpShowDb.ShowFanartPath = sContainer.Fanart
+                tmpShowDb.ShowPosterPath = sContainer.Poster
                 'assume invalid nfo if no title
                 tmpShowDb.ShowNfoPath = If(String.IsNullOrEmpty(tmpShowDb.TVShow.Title), String.Empty, sContainer.Nfo)
 
@@ -8106,6 +8111,14 @@ doCancel:
                 End If
 
                 Master.DB.SaveTVShowToDB(tmpShowDb, False, WithEpisodes, ToNfo)
+
+                ' DanCooper: i'm not shure if this is a proper solution...
+                If Master.eSettings.AllSeasonPosterEnabled Then
+                    tmpShowDb.SeasonBannerPath = sContainer.AllSeasonBanner
+                    tmpShowDb.SeasonFanartPath = sContainer.AllSeasonFanart
+                    tmpShowDb.SeasonPosterPath = sContainer.AllSeasonPoster
+                    Master.DB.SaveTVSeasonToDB(tmpShowDb, False, False)
+                End If
 
                 If Not BatchMode Then
                     Me.tspbLoading.Value += 1

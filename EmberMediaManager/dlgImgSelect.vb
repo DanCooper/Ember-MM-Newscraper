@@ -515,7 +515,7 @@ Public Class dlgImgSelect
         Dim prefETSize As String = String.Empty
 
         Select Case Master.eSettings.PreferredEThumbsSize
-            Case Enums.FanartSize.Xlrg
+            Case Enums.FanartSize.Original
                 prefETSize = "original"
             Case Enums.FanartSize.Lrg
                 prefETSize = "w1280"
@@ -548,7 +548,7 @@ Public Class dlgImgSelect
         Dim prefEFSize As String = String.Empty
 
         Select Case Master.eSettings.PreferredEFanartsSize
-            Case Enums.FanartSize.Xlrg
+            Case Enums.FanartSize.Original
                 prefEFSize = "original"
             Case Enums.FanartSize.Lrg
                 prefEFSize = "w1280"
@@ -852,7 +852,7 @@ Public Class dlgImgSelect
                         Me.rbMedium.Checked = rbMedium.Enabled
                     Case Enums.FanartSize.Lrg
                         Me.rbLarge.Checked = rbLarge.Enabled
-                    Case Enums.FanartSize.Xlrg
+                    Case Enums.FanartSize.Original
                         Me.rbXLarge.Checked = rbXLarge.Enabled
                 End Select
             Else
@@ -863,7 +863,7 @@ Public Class dlgImgSelect
                         Me.rbMedium.Checked = rbMedium.Enabled
                     Case Enums.PosterSize.Lrg
                         Me.rbLarge.Checked = rbLarge.Enabled
-                    Case Enums.PosterSize.Xlrg
+                    Case Enums.PosterSize.Original
                         Me.rbXLarge.Checked = rbXLarge.Enabled
                 End Select
             End If

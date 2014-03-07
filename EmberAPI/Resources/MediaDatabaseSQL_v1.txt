@@ -156,7 +156,9 @@ CREATE TABLE TVShows(
 	NfoPath TEXT,
 	NeedsSave BOOL NOT NULL DEFAULT False,
 	Language TEXT,
-	Ordering INTEGER NOT NULL DEFAULT 0
+	Ordering INTEGER NOT NULL DEFAULT 0,
+	HasBanner BOOL NOT NULL DEFAULT False,
+	BannerPath TEXT
 	);
 CREATE UNIQUE INDEX UniqueTVShowPath ON TVShows (TVShowPath);
 
@@ -221,6 +223,8 @@ CREATE TABLE TVSeason(
 	Lock BOOL NOT NULL DEFAULT False,
 	Mark BOOL NOT NULL DEFAULT False,
 	New BOOL NOT NULL DEFAULT False,
+	HasBanner BOOL NOT NULL DEFAULT False,
+	BannerPath TEXT,
 	PRIMARY KEY (TVShowID,Season)
 	);
 

@@ -519,37 +519,6 @@ Public Class dlgWizard
         Me.txtMovieTrailerExpertBDMV.Text = Master.eSettings.MovieTrailerExpertBDMV
         Me.chkMovieUseBaseDirectoryExpertBDMV.Checked = Master.eSettings.MovieUseBaseDirectoryExpertBDMV
 
-        Me.chkSeasonAllPosterJPG.Checked = Master.eSettings.SeasonAllPosterJPG
-        Me.chkSeasonXXDashPosterJPG.Checked = Master.eSettings.SeasonXXDashPosterJPG
-        Me.chkSeasonXXDashFanartJPG.Checked = Master.eSettings.SeasonXXDashFanartJPG
-
-        tLang = Master.eSettings.Language
-        Me.cbIntLang.SelectedItem = Master.eSettings.Language
-        Me.chkSeasonAllTBN.Checked = Master.eSettings.SeasonAllTBN
-        Me.chkSeasonAllJPG.Checked = Master.eSettings.SeasonAllJPG
-        Me.chkShowTBN.Checked = Master.eSettings.ShowTBN
-        Me.chkShowJPG.Checked = Master.eSettings.ShowJPG
-        Me.chkShowFolderJPG.Checked = Master.eSettings.ShowFolderJPG
-        Me.chkShowPosterTBN.Checked = Master.eSettings.ShowPosterTBN
-        Me.chkShowPosterJPG.Checked = Master.eSettings.ShowPosterJPG
-        Me.chkShowFanartJPG.Checked = Master.eSettings.ShowFanartJPG
-        Me.chkShowDashFanart.Checked = Master.eSettings.ShowDashFanart
-        Me.chkShowDotFanart.Checked = Master.eSettings.ShowDotFanart
-        Me.chkSeasonXXTBN.Checked = Master.eSettings.SeasonXX
-        Me.chkSeasonXTBN.Checked = Master.eSettings.SeasonX
-        Me.chkSeasonPosterTBN.Checked = Master.eSettings.SeasonPosterTBN
-        Me.chkSeasonPosterJPG.Checked = Master.eSettings.SeasonPosterJPG
-        Me.chkSeasonNameTBN.Checked = Master.eSettings.SeasonNameTBN
-        Me.chkSeasonNameJPG.Checked = Master.eSettings.SeasonNameJPG
-        Me.chkSeasonFolderJPG.Checked = Master.eSettings.SeasonFolderJPG
-        Me.chkSeasonFanartJPG.Checked = Master.eSettings.SeasonFanartJPG
-        Me.chkSeasonDashFanart.Checked = Master.eSettings.SeasonDashFanart
-        Me.chkSeasonDotFanart.Checked = Master.eSettings.SeasonDotFanart
-        Me.chkEpisodeTBN.Checked = Master.eSettings.EpisodeTBN
-        Me.chkEpisodeJPG.Checked = Master.eSettings.EpisodeJPG
-        Me.chkEpisodeDashThumbJPG.Checked = Master.eSettings.EpisodeDashThumbJPG
-        Me.chkEpisodeDashFanart.Checked = Master.eSettings.EpisodeDashFanart
-        Me.chkEpisodeDotFanart.Checked = Master.eSettings.EpisodeDotFanart
         'Me.tLangList.AddRange(Master.eSettings.TVDBLanguages)
         Me.cbTVLanguage.Items.AddRange((From lLang In Master.eSettings.Languages Select lLang.LongLang).ToArray)
         If Me.cbTVLanguage.Items.Count > 0 Then
@@ -843,36 +812,6 @@ Public Class dlgWizard
         Master.eSettings.MovieTrailerExpertBDMV = Me.txtMovieTrailerExpertBDMV.Text
         Master.eSettings.MovieUseBaseDirectoryExpertBDMV = Me.chkMovieUseBaseDirectoryExpertBDMV.Checked
 
-        Master.eSettings.SeasonAllPosterJPG = Me.chkSeasonAllPosterJPG.Checked
-        Master.eSettings.SeasonXXDashPosterJPG = Me.chkSeasonXXDashPosterJPG.Checked
-        Master.eSettings.SeasonXXDashFanartJPG = Me.chkSeasonXXDashFanartJPG.Checked
-        Master.eSettings.Language = Me.cbIntLang.Text
-        Master.eSettings.SeasonAllTBN = Me.chkSeasonAllTBN.Checked
-        Master.eSettings.SeasonAllJPG = Me.chkSeasonAllJPG.Checked
-        Master.eSettings.ShowTBN = Me.chkShowTBN.Checked
-        Master.eSettings.ShowJPG = Me.chkShowJPG.Checked
-        Master.eSettings.ShowFolderJPG = Me.chkShowFolderJPG.Checked
-        Master.eSettings.ShowPosterTBN = Me.chkShowPosterTBN.Checked
-        Master.eSettings.ShowPosterJPG = Me.chkShowPosterJPG.Checked
-        Master.eSettings.ShowFanartJPG = Me.chkShowFanartJPG.Checked
-        Master.eSettings.ShowDashFanart = Me.chkShowDashFanart.Checked
-        Master.eSettings.ShowDotFanart = Me.chkShowDotFanart.Checked
-        Master.eSettings.SeasonXX = Me.chkSeasonXXTBN.Checked
-        Master.eSettings.SeasonX = Me.chkSeasonXTBN.Checked
-        Master.eSettings.SeasonPosterTBN = Me.chkSeasonPosterTBN.Checked
-        Master.eSettings.SeasonPosterJPG = Me.chkSeasonPosterJPG.Checked
-        Master.eSettings.SeasonNameTBN = Me.chkSeasonNameTBN.Checked
-        Master.eSettings.SeasonNameJPG = Me.chkSeasonNameJPG.Checked
-        Master.eSettings.SeasonFolderJPG = Me.chkSeasonFolderJPG.Checked
-        Master.eSettings.SeasonFanartJPG = Me.chkSeasonFanartJPG.Checked
-        Master.eSettings.SeasonDashFanart = Me.chkSeasonDashFanart.Checked
-        Master.eSettings.SeasonDotFanart = Me.chkSeasonDotFanart.Checked
-        Master.eSettings.EpisodeTBN = Me.chkEpisodeTBN.Checked
-        Master.eSettings.EpisodeJPG = Me.chkEpisodeJPG.Checked
-        Master.eSettings.EpisodeDashThumbJPG = Me.chkEpisodeDashThumbJPG.Checked
-        Master.eSettings.EpisodeDashFanart = Me.chkEpisodeDashFanart.Checked
-        Master.eSettings.EpisodeDotFanart = Me.chkEpisodeDotFanart.Checked
-
         Using settings = New AdvancedSettings()
             If Master.eSettings.Languages.Count > 0 Then
                 Dim tLang As String = Master.eSettings.Languages.FirstOrDefault(Function(l) l.LongLang = Me.cbTVLanguage.Text).ShortLang
@@ -889,7 +828,6 @@ Public Class dlgWizard
     End Sub
 
     Private Sub SetUp()
-        Me.btnTVShowFrodo.Text = Master.eLang.GetString(867, "XBMC Frodo")
         Me.Text = Master.eLang.GetString(402, "Ember Startup Wizard")
         Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
         Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
@@ -914,14 +852,6 @@ Public Class dlgWizard
         Me.Label32.Text = Master.eLang.GetString(430, "Interface Language")
         Me.Label9.Text = Master.eLang.GetString(803, "Next, let's tell Ember Media Manager where to locate all your TV Shows. You can add as many sources as you wish.")
         Me.Label11.Text = Master.eLang.GetString(804, "And finally, let's tell Ember Media Manager what TV Show files to look for.  Simply select any combination of files type you wish Ember Media Manager to load from and save to.  You can select more than one from each section if you wish.")
-        Me.gbShowPosters.Text = Master.eLang.GetString(683, "Show Posters")
-        Me.gbShowFanart.Text = Master.eLang.GetString(684, "Show Fanart")
-        Me.gbSeasonPosters.Text = Master.eLang.GetString(685, "Season Posters")
-        Me.gbSeasonFanart.Text = Master.eLang.GetString(686, "Season Fanart")
-        Me.gbEpisodePosters.Text = Master.eLang.GetString(687, "Episode Posters")
-        Me.gbEpisodeFanart.Text = Master.eLang.GetString(688, "Episode Fanart")
-        Me.lblInsideSeason.Text = Master.eLang.GetString(834, "* Inside Season directory")
-        Me.gbAllSeasonPoster.Text = Master.eLang.GetString(735, "All Season Posters")
         Me.Label10.Text = Master.eLang.GetString(113, "Now select the default language you would like Ember to look for when scraping TV Show items.")
         Me.pnlWelcome.Location = New Point(166, 7)
         Me.pnlWelcome.Visible = True
@@ -935,38 +865,6 @@ Public Class dlgWizard
         Me.pnlTVShowSource.Location = New Point(166, 7)
         Me.pnlTVShowSettings.Location = New Point(166, 7)
         Me.pnlDone.Location = New Point(166, 7)
-	End Sub
-
-	Private Sub btnTVShowFrodo_Click(sender As Object, e As EventArgs) Handles btnTVShowFrodo.Click
-		Me.chkEpisodeDashFanart.Checked = False
-		Me.chkEpisodeDashThumbJPG.Checked = True
-		Me.chkEpisodeDotFanart.Checked = False
-        Me.chkEpisodeJPG.Checked = False
-		Me.chkEpisodeTBN.Checked = False
-		Me.chkSeasonAllJPG.Checked = False
-		Me.chkSeasonAllPosterJPG.Checked = True
-		Me.chkSeasonAllTBN.Checked = False
-		Me.chkSeasonDashFanart.Checked = False
-		Me.chkSeasonDotFanart.Checked = False
-		Me.chkSeasonFanartJPG.Checked = False
-		Me.chkSeasonFolderJPG.Checked = False
-		Me.chkSeasonNameJPG.Checked = False
-		Me.chkSeasonNameTBN.Checked = False
-		Me.chkSeasonPosterJPG.Checked = False
-		Me.chkSeasonPosterTBN.Checked = False
-		Me.chkSeasonXTBN.Checked = False
-		Me.chkSeasonXXDashFanartJPG.Checked = True
-		Me.chkSeasonXXDashPosterJPG.Checked = True
-		Me.chkSeasonXXTBN.Checked = False
-		'Me.chkShowBannerJPG.Checked = True (banners not implemented at time)
-		Me.chkShowDashFanart.Checked = False
-		Me.chkShowDotFanart.Checked = False
-		Me.chkShowFanartJPG.Checked = True
-		Me.chkShowFolderJPG.Checked = False
-		Me.chkShowJPG.Checked = False
-		Me.chkShowPosterJPG.Checked = True
-		Me.chkShowPosterTBN.Checked = False
-		Me.chkShowTBN.Checked = False
 	End Sub
 
 #End Region	'Methods

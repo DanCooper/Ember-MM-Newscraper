@@ -28,30 +28,39 @@ Partial Class dlgEditSeason
         Me.lblTopTitle = New System.Windows.Forms.Label()
         Me.pbTopLogo = New System.Windows.Forms.PictureBox()
         Me.tcEditSeason = New System.Windows.Forms.TabControl()
-        Me.tpPoster = New System.Windows.Forms.TabPage()
-        Me.btnSetPosterDL = New System.Windows.Forms.Button()
-        Me.btnRemovePoster = New System.Windows.Forms.Button()
-        Me.lblPosterSize = New System.Windows.Forms.Label()
-        Me.btnSetPosterScrape = New System.Windows.Forms.Button()
-        Me.btnSetPoster = New System.Windows.Forms.Button()
-        Me.pbPoster = New System.Windows.Forms.PictureBox()
-        Me.tpFanart = New System.Windows.Forms.TabPage()
-        Me.btnSetFanartDL = New System.Windows.Forms.Button()
-        Me.btnRemoveFanart = New System.Windows.Forms.Button()
-        Me.lblFanartSize = New System.Windows.Forms.Label()
-        Me.btnSetFanartScrape = New System.Windows.Forms.Button()
-        Me.btnSetFanart = New System.Windows.Forms.Button()
-        Me.pbFanart = New System.Windows.Forms.PictureBox()
+        Me.tpSeasonPoster = New System.Windows.Forms.TabPage()
+        Me.btnSetSeasonPosterDL = New System.Windows.Forms.Button()
+        Me.btnRemoveSeasonPoster = New System.Windows.Forms.Button()
+        Me.lblSeasonPosterSize = New System.Windows.Forms.Label()
+        Me.btnSetSeasonPosterScrape = New System.Windows.Forms.Button()
+        Me.btnSetSeasonPosterLocal = New System.Windows.Forms.Button()
+        Me.pbSeasonPoster = New System.Windows.Forms.PictureBox()
+        Me.tpSeasonBanner = New System.Windows.Forms.TabPage()
+        Me.btnSetSeasonBannerDL = New System.Windows.Forms.Button()
+        Me.btnRemoveSeasonBanner = New System.Windows.Forms.Button()
+        Me.lblSeasonBannerSize = New System.Windows.Forms.Label()
+        Me.btnSetSeasonBannerScrape = New System.Windows.Forms.Button()
+        Me.btnSetSeasonBannerLocal = New System.Windows.Forms.Button()
+        Me.pbSeasonBanner = New System.Windows.Forms.PictureBox()
+        Me.tpSeasonFanart = New System.Windows.Forms.TabPage()
+        Me.btnSetSeasonFanartDL = New System.Windows.Forms.Button()
+        Me.btnRemoveSeasonFanart = New System.Windows.Forms.Button()
+        Me.lblSeasonFanartSize = New System.Windows.Forms.Label()
+        Me.btnSetSeasonFanartScrape = New System.Windows.Forms.Button()
+        Me.btnSetSeasonFanartLocal = New System.Windows.Forms.Button()
+        Me.pbSeasonFanart = New System.Windows.Forms.PictureBox()
         Me.Cancel_Button = New System.Windows.Forms.Button()
         Me.OK_Button = New System.Windows.Forms.Button()
         Me.ofdImage = New System.Windows.Forms.OpenFileDialog()
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tcEditSeason.SuspendLayout()
-        Me.tpPoster.SuspendLayout()
-        CType(Me.pbPoster, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.tpFanart.SuspendLayout()
-        CType(Me.pbFanart, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.tpSeasonPoster.SuspendLayout()
+        CType(Me.pbSeasonPoster, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.tpSeasonBanner.SuspendLayout()
+        CType(Me.pbSeasonBanner, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.tpSeasonFanart.SuspendLayout()
+        CType(Me.pbSeasonFanart, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'pnlTop
@@ -104,8 +113,9 @@ Partial Class dlgEditSeason
         '
         'tcEditSeason
         '
-        Me.tcEditSeason.Controls.Add(Me.tpPoster)
-        Me.tcEditSeason.Controls.Add(Me.tpFanart)
+        Me.tcEditSeason.Controls.Add(Me.tpSeasonPoster)
+        Me.tcEditSeason.Controls.Add(Me.tpSeasonBanner)
+        Me.tcEditSeason.Controls.Add(Me.tpSeasonFanart)
         Me.tcEditSeason.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.tcEditSeason.Location = New System.Drawing.Point(4, 70)
         Me.tcEditSeason.Name = "tcEditSeason"
@@ -113,184 +123,274 @@ Partial Class dlgEditSeason
         Me.tcEditSeason.Size = New System.Drawing.Size(844, 478)
         Me.tcEditSeason.TabIndex = 3
         '
-        'tpPoster
+        'tpSeasonPoster
         '
-        Me.tpPoster.Controls.Add(Me.btnSetPosterDL)
-        Me.tpPoster.Controls.Add(Me.btnRemovePoster)
-        Me.tpPoster.Controls.Add(Me.lblPosterSize)
-        Me.tpPoster.Controls.Add(Me.btnSetPosterScrape)
-        Me.tpPoster.Controls.Add(Me.btnSetPoster)
-        Me.tpPoster.Controls.Add(Me.pbPoster)
-        Me.tpPoster.Location = New System.Drawing.Point(4, 22)
-        Me.tpPoster.Name = "tpPoster"
-        Me.tpPoster.Padding = New System.Windows.Forms.Padding(3)
-        Me.tpPoster.Size = New System.Drawing.Size(836, 452)
-        Me.tpPoster.TabIndex = 1
-        Me.tpPoster.Text = "Poster"
-        Me.tpPoster.UseVisualStyleBackColor = True
+        Me.tpSeasonPoster.Controls.Add(Me.btnSetSeasonPosterDL)
+        Me.tpSeasonPoster.Controls.Add(Me.btnRemoveSeasonPoster)
+        Me.tpSeasonPoster.Controls.Add(Me.lblSeasonPosterSize)
+        Me.tpSeasonPoster.Controls.Add(Me.btnSetSeasonPosterScrape)
+        Me.tpSeasonPoster.Controls.Add(Me.btnSetSeasonPosterLocal)
+        Me.tpSeasonPoster.Controls.Add(Me.pbSeasonPoster)
+        Me.tpSeasonPoster.Location = New System.Drawing.Point(4, 22)
+        Me.tpSeasonPoster.Name = "tpSeasonPoster"
+        Me.tpSeasonPoster.Padding = New System.Windows.Forms.Padding(3)
+        Me.tpSeasonPoster.Size = New System.Drawing.Size(836, 452)
+        Me.tpSeasonPoster.TabIndex = 1
+        Me.tpSeasonPoster.Text = "Poster"
+        Me.tpSeasonPoster.UseVisualStyleBackColor = True
         '
-        'btnSetPosterDL
+        'btnSetSeasonPosterDL
         '
-        Me.btnSetPosterDL.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnSetPosterDL.Image = CType(resources.GetObject("btnSetPosterDL.Image"), System.Drawing.Image)
-        Me.btnSetPosterDL.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnSetPosterDL.Location = New System.Drawing.Point(735, 180)
-        Me.btnSetPosterDL.Name = "btnSetPosterDL"
-        Me.btnSetPosterDL.Size = New System.Drawing.Size(96, 83)
-        Me.btnSetPosterDL.TabIndex = 3
-        Me.btnSetPosterDL.Text = "Change Poster (Download)"
-        Me.btnSetPosterDL.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.btnSetPosterDL.UseVisualStyleBackColor = True
+        Me.btnSetSeasonPosterDL.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnSetSeasonPosterDL.Image = CType(resources.GetObject("btnSetSeasonPosterDL.Image"), System.Drawing.Image)
+        Me.btnSetSeasonPosterDL.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetSeasonPosterDL.Location = New System.Drawing.Point(735, 180)
+        Me.btnSetSeasonPosterDL.Name = "btnSetSeasonPosterDL"
+        Me.btnSetSeasonPosterDL.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetSeasonPosterDL.TabIndex = 3
+        Me.btnSetSeasonPosterDL.Text = "Change Poster (Download)"
+        Me.btnSetSeasonPosterDL.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetSeasonPosterDL.UseVisualStyleBackColor = True
         '
-        'btnRemovePoster
+        'btnRemoveSeasonPoster
         '
-        Me.btnRemovePoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnRemovePoster.Image = CType(resources.GetObject("btnRemovePoster.Image"), System.Drawing.Image)
-        Me.btnRemovePoster.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnRemovePoster.Location = New System.Drawing.Point(735, 363)
-        Me.btnRemovePoster.Name = "btnRemovePoster"
-        Me.btnRemovePoster.Size = New System.Drawing.Size(96, 83)
-        Me.btnRemovePoster.TabIndex = 4
-        Me.btnRemovePoster.Text = "Remove Poster"
-        Me.btnRemovePoster.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.btnRemovePoster.UseVisualStyleBackColor = True
+        Me.btnRemoveSeasonPoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnRemoveSeasonPoster.Image = CType(resources.GetObject("btnRemoveSeasonPoster.Image"), System.Drawing.Image)
+        Me.btnRemoveSeasonPoster.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnRemoveSeasonPoster.Location = New System.Drawing.Point(735, 363)
+        Me.btnRemoveSeasonPoster.Name = "btnRemoveSeasonPoster"
+        Me.btnRemoveSeasonPoster.Size = New System.Drawing.Size(96, 83)
+        Me.btnRemoveSeasonPoster.TabIndex = 4
+        Me.btnRemoveSeasonPoster.Text = "Remove Poster"
+        Me.btnRemoveSeasonPoster.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnRemoveSeasonPoster.UseVisualStyleBackColor = True
         '
-        'lblPosterSize
+        'lblSeasonPosterSize
         '
-        Me.lblPosterSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblPosterSize.Location = New System.Drawing.Point(8, 8)
-        Me.lblPosterSize.Name = "lblPosterSize"
-        Me.lblPosterSize.Size = New System.Drawing.Size(105, 23)
-        Me.lblPosterSize.TabIndex = 0
-        Me.lblPosterSize.Text = "Size: (XXXXxXXXX)"
-        Me.lblPosterSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        Me.lblPosterSize.Visible = False
+        Me.lblSeasonPosterSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblSeasonPosterSize.Location = New System.Drawing.Point(8, 8)
+        Me.lblSeasonPosterSize.Name = "lblSeasonPosterSize"
+        Me.lblSeasonPosterSize.Size = New System.Drawing.Size(105, 23)
+        Me.lblSeasonPosterSize.TabIndex = 0
+        Me.lblSeasonPosterSize.Text = "Size: (XXXXxXXXX)"
+        Me.lblSeasonPosterSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.lblSeasonPosterSize.Visible = False
         '
-        'btnSetPosterScrape
+        'btnSetSeasonPosterScrape
         '
-        Me.btnSetPosterScrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnSetPosterScrape.Image = CType(resources.GetObject("btnSetPosterScrape.Image"), System.Drawing.Image)
-        Me.btnSetPosterScrape.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnSetPosterScrape.Location = New System.Drawing.Point(735, 93)
-        Me.btnSetPosterScrape.Name = "btnSetPosterScrape"
-        Me.btnSetPosterScrape.Size = New System.Drawing.Size(96, 83)
-        Me.btnSetPosterScrape.TabIndex = 2
-        Me.btnSetPosterScrape.Text = "Change Poster (Scrape)"
-        Me.btnSetPosterScrape.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.btnSetPosterScrape.UseVisualStyleBackColor = True
+        Me.btnSetSeasonPosterScrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnSetSeasonPosterScrape.Image = CType(resources.GetObject("btnSetSeasonPosterScrape.Image"), System.Drawing.Image)
+        Me.btnSetSeasonPosterScrape.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetSeasonPosterScrape.Location = New System.Drawing.Point(735, 93)
+        Me.btnSetSeasonPosterScrape.Name = "btnSetSeasonPosterScrape"
+        Me.btnSetSeasonPosterScrape.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetSeasonPosterScrape.TabIndex = 2
+        Me.btnSetSeasonPosterScrape.Text = "Change Poster (Scrape)"
+        Me.btnSetSeasonPosterScrape.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetSeasonPosterScrape.UseVisualStyleBackColor = True
         '
-        'btnSetPoster
+        'btnSetSeasonPosterLocal
         '
-        Me.btnSetPoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnSetPoster.Image = CType(resources.GetObject("btnSetPoster.Image"), System.Drawing.Image)
-        Me.btnSetPoster.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnSetPoster.Location = New System.Drawing.Point(735, 6)
-        Me.btnSetPoster.Name = "btnSetPoster"
-        Me.btnSetPoster.Size = New System.Drawing.Size(96, 83)
-        Me.btnSetPoster.TabIndex = 1
-        Me.btnSetPoster.Text = "Change Poster (Local)"
-        Me.btnSetPoster.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.btnSetPoster.UseVisualStyleBackColor = True
+        Me.btnSetSeasonPosterLocal.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnSetSeasonPosterLocal.Image = CType(resources.GetObject("btnSetSeasonPosterLocal.Image"), System.Drawing.Image)
+        Me.btnSetSeasonPosterLocal.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetSeasonPosterLocal.Location = New System.Drawing.Point(735, 6)
+        Me.btnSetSeasonPosterLocal.Name = "btnSetSeasonPosterLocal"
+        Me.btnSetSeasonPosterLocal.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetSeasonPosterLocal.TabIndex = 1
+        Me.btnSetSeasonPosterLocal.Text = "Change Poster (Local)"
+        Me.btnSetSeasonPosterLocal.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetSeasonPosterLocal.UseVisualStyleBackColor = True
         '
-        'pbPoster
+        'pbSeasonPoster
         '
-        Me.pbPoster.BackColor = System.Drawing.Color.DimGray
-        Me.pbPoster.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pbPoster.Location = New System.Drawing.Point(6, 6)
-        Me.pbPoster.Name = "pbPoster"
-        Me.pbPoster.Size = New System.Drawing.Size(724, 440)
-        Me.pbPoster.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.pbPoster.TabIndex = 0
-        Me.pbPoster.TabStop = False
+        Me.pbSeasonPoster.BackColor = System.Drawing.Color.DimGray
+        Me.pbSeasonPoster.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pbSeasonPoster.Location = New System.Drawing.Point(6, 6)
+        Me.pbSeasonPoster.Name = "pbSeasonPoster"
+        Me.pbSeasonPoster.Size = New System.Drawing.Size(724, 440)
+        Me.pbSeasonPoster.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.pbSeasonPoster.TabIndex = 0
+        Me.pbSeasonPoster.TabStop = False
         '
-        'tpFanart
+        'tpSeasonBanner
         '
-        Me.tpFanart.Controls.Add(Me.btnSetFanartDL)
-        Me.tpFanart.Controls.Add(Me.btnRemoveFanart)
-        Me.tpFanart.Controls.Add(Me.lblFanartSize)
-        Me.tpFanart.Controls.Add(Me.btnSetFanartScrape)
-        Me.tpFanart.Controls.Add(Me.btnSetFanart)
-        Me.tpFanart.Controls.Add(Me.pbFanart)
-        Me.tpFanart.Location = New System.Drawing.Point(4, 22)
-        Me.tpFanart.Name = "tpFanart"
-        Me.tpFanart.Size = New System.Drawing.Size(836, 452)
-        Me.tpFanart.TabIndex = 2
-        Me.tpFanart.Text = "Fanart"
-        Me.tpFanart.UseVisualStyleBackColor = True
+        Me.tpSeasonBanner.Controls.Add(Me.btnSetSeasonBannerDL)
+        Me.tpSeasonBanner.Controls.Add(Me.btnRemoveSeasonBanner)
+        Me.tpSeasonBanner.Controls.Add(Me.lblSeasonBannerSize)
+        Me.tpSeasonBanner.Controls.Add(Me.btnSetSeasonBannerScrape)
+        Me.tpSeasonBanner.Controls.Add(Me.btnSetSeasonBannerLocal)
+        Me.tpSeasonBanner.Controls.Add(Me.pbSeasonBanner)
+        Me.tpSeasonBanner.Location = New System.Drawing.Point(4, 22)
+        Me.tpSeasonBanner.Name = "tpSeasonBanner"
+        Me.tpSeasonBanner.Padding = New System.Windows.Forms.Padding(3)
+        Me.tpSeasonBanner.Size = New System.Drawing.Size(836, 452)
+        Me.tpSeasonBanner.TabIndex = 3
+        Me.tpSeasonBanner.Text = "Banner"
+        Me.tpSeasonBanner.UseVisualStyleBackColor = True
         '
-        'btnSetFanartDL
+        'btnSetSeasonBannerDL
         '
-        Me.btnSetFanartDL.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnSetFanartDL.Image = CType(resources.GetObject("btnSetFanartDL.Image"), System.Drawing.Image)
-        Me.btnSetFanartDL.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnSetFanartDL.Location = New System.Drawing.Point(735, 180)
-        Me.btnSetFanartDL.Name = "btnSetFanartDL"
-        Me.btnSetFanartDL.Size = New System.Drawing.Size(96, 83)
-        Me.btnSetFanartDL.TabIndex = 3
-        Me.btnSetFanartDL.Text = "Change Fanart (Download)"
-        Me.btnSetFanartDL.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.btnSetFanartDL.UseVisualStyleBackColor = True
+        Me.btnSetSeasonBannerDL.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnSetSeasonBannerDL.Image = CType(resources.GetObject("btnSetSeasonBannerDL.Image"), System.Drawing.Image)
+        Me.btnSetSeasonBannerDL.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetSeasonBannerDL.Location = New System.Drawing.Point(735, 180)
+        Me.btnSetSeasonBannerDL.Name = "btnSetSeasonBannerDL"
+        Me.btnSetSeasonBannerDL.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetSeasonBannerDL.TabIndex = 9
+        Me.btnSetSeasonBannerDL.Text = "Change Banner (Download)"
+        Me.btnSetSeasonBannerDL.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetSeasonBannerDL.UseVisualStyleBackColor = True
         '
-        'btnRemoveFanart
+        'btnRemoveSeasonBanner
         '
-        Me.btnRemoveFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnRemoveFanart.Image = CType(resources.GetObject("btnRemoveFanart.Image"), System.Drawing.Image)
-        Me.btnRemoveFanart.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnRemoveFanart.Location = New System.Drawing.Point(735, 363)
-        Me.btnRemoveFanart.Name = "btnRemoveFanart"
-        Me.btnRemoveFanart.Size = New System.Drawing.Size(96, 83)
-        Me.btnRemoveFanart.TabIndex = 4
-        Me.btnRemoveFanart.Text = "Remove Fanart"
-        Me.btnRemoveFanart.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.btnRemoveFanart.UseVisualStyleBackColor = True
+        Me.btnRemoveSeasonBanner.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnRemoveSeasonBanner.Image = CType(resources.GetObject("btnRemoveSeasonBanner.Image"), System.Drawing.Image)
+        Me.btnRemoveSeasonBanner.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnRemoveSeasonBanner.Location = New System.Drawing.Point(735, 363)
+        Me.btnRemoveSeasonBanner.Name = "btnRemoveSeasonBanner"
+        Me.btnRemoveSeasonBanner.Size = New System.Drawing.Size(96, 83)
+        Me.btnRemoveSeasonBanner.TabIndex = 10
+        Me.btnRemoveSeasonBanner.Text = "Remove Banner"
+        Me.btnRemoveSeasonBanner.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnRemoveSeasonBanner.UseVisualStyleBackColor = True
         '
-        'lblFanartSize
+        'lblSeasonBannerSize
         '
-        Me.lblFanartSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblFanartSize.Location = New System.Drawing.Point(8, 8)
-        Me.lblFanartSize.Name = "lblFanartSize"
-        Me.lblFanartSize.Size = New System.Drawing.Size(105, 23)
-        Me.lblFanartSize.TabIndex = 0
-        Me.lblFanartSize.Text = "Size: (XXXXxXXXX)"
-        Me.lblFanartSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        Me.lblFanartSize.Visible = False
+        Me.lblSeasonBannerSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblSeasonBannerSize.Location = New System.Drawing.Point(8, 8)
+        Me.lblSeasonBannerSize.Name = "lblSeasonBannerSize"
+        Me.lblSeasonBannerSize.Size = New System.Drawing.Size(105, 23)
+        Me.lblSeasonBannerSize.TabIndex = 5
+        Me.lblSeasonBannerSize.Text = "Size: (XXXXxXXXX)"
+        Me.lblSeasonBannerSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.lblSeasonBannerSize.Visible = False
         '
-        'btnSetFanartScrape
+        'btnSetSeasonBannerScrape
         '
-        Me.btnSetFanartScrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnSetFanartScrape.Image = CType(resources.GetObject("btnSetFanartScrape.Image"), System.Drawing.Image)
-        Me.btnSetFanartScrape.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnSetFanartScrape.Location = New System.Drawing.Point(735, 93)
-        Me.btnSetFanartScrape.Name = "btnSetFanartScrape"
-        Me.btnSetFanartScrape.Size = New System.Drawing.Size(96, 83)
-        Me.btnSetFanartScrape.TabIndex = 2
-        Me.btnSetFanartScrape.Text = "Change Fanart (Scrape)"
-        Me.btnSetFanartScrape.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.btnSetFanartScrape.UseVisualStyleBackColor = True
+        Me.btnSetSeasonBannerScrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnSetSeasonBannerScrape.Image = CType(resources.GetObject("btnSetSeasonBannerScrape.Image"), System.Drawing.Image)
+        Me.btnSetSeasonBannerScrape.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetSeasonBannerScrape.Location = New System.Drawing.Point(735, 93)
+        Me.btnSetSeasonBannerScrape.Name = "btnSetSeasonBannerScrape"
+        Me.btnSetSeasonBannerScrape.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetSeasonBannerScrape.TabIndex = 8
+        Me.btnSetSeasonBannerScrape.Text = "Change Banner (Scrape)"
+        Me.btnSetSeasonBannerScrape.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetSeasonBannerScrape.UseVisualStyleBackColor = True
         '
-        'btnSetFanart
+        'btnSetSeasonBannerLocal
         '
-        Me.btnSetFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnSetFanart.Image = CType(resources.GetObject("btnSetFanart.Image"), System.Drawing.Image)
-        Me.btnSetFanart.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnSetFanart.Location = New System.Drawing.Point(735, 6)
-        Me.btnSetFanart.Name = "btnSetFanart"
-        Me.btnSetFanart.Size = New System.Drawing.Size(96, 83)
-        Me.btnSetFanart.TabIndex = 1
-        Me.btnSetFanart.Text = "Change Fanart (Local)"
-        Me.btnSetFanart.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.btnSetFanart.UseVisualStyleBackColor = True
+        Me.btnSetSeasonBannerLocal.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnSetSeasonBannerLocal.Image = CType(resources.GetObject("btnSetSeasonBannerLocal.Image"), System.Drawing.Image)
+        Me.btnSetSeasonBannerLocal.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetSeasonBannerLocal.Location = New System.Drawing.Point(735, 6)
+        Me.btnSetSeasonBannerLocal.Name = "btnSetSeasonBannerLocal"
+        Me.btnSetSeasonBannerLocal.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetSeasonBannerLocal.TabIndex = 7
+        Me.btnSetSeasonBannerLocal.Text = "Change Banner (Local)"
+        Me.btnSetSeasonBannerLocal.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetSeasonBannerLocal.UseVisualStyleBackColor = True
         '
-        'pbFanart
+        'pbSeasonBanner
         '
-        Me.pbFanart.BackColor = System.Drawing.Color.DimGray
-        Me.pbFanart.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pbFanart.Location = New System.Drawing.Point(6, 6)
-        Me.pbFanart.Name = "pbFanart"
-        Me.pbFanart.Size = New System.Drawing.Size(724, 440)
-        Me.pbFanart.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.pbFanart.TabIndex = 1
-        Me.pbFanart.TabStop = False
+        Me.pbSeasonBanner.BackColor = System.Drawing.Color.DimGray
+        Me.pbSeasonBanner.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pbSeasonBanner.Location = New System.Drawing.Point(6, 6)
+        Me.pbSeasonBanner.Name = "pbSeasonBanner"
+        Me.pbSeasonBanner.Size = New System.Drawing.Size(724, 440)
+        Me.pbSeasonBanner.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.pbSeasonBanner.TabIndex = 6
+        Me.pbSeasonBanner.TabStop = False
+        '
+        'tpSeasonFanart
+        '
+        Me.tpSeasonFanart.Controls.Add(Me.btnSetSeasonFanartDL)
+        Me.tpSeasonFanart.Controls.Add(Me.btnRemoveSeasonFanart)
+        Me.tpSeasonFanart.Controls.Add(Me.lblSeasonFanartSize)
+        Me.tpSeasonFanart.Controls.Add(Me.btnSetSeasonFanartScrape)
+        Me.tpSeasonFanart.Controls.Add(Me.btnSetSeasonFanartLocal)
+        Me.tpSeasonFanart.Controls.Add(Me.pbSeasonFanart)
+        Me.tpSeasonFanart.Location = New System.Drawing.Point(4, 22)
+        Me.tpSeasonFanart.Name = "tpSeasonFanart"
+        Me.tpSeasonFanart.Size = New System.Drawing.Size(836, 452)
+        Me.tpSeasonFanart.TabIndex = 2
+        Me.tpSeasonFanart.Text = "Fanart"
+        Me.tpSeasonFanart.UseVisualStyleBackColor = True
+        '
+        'btnSetSeasonFanartDL
+        '
+        Me.btnSetSeasonFanartDL.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnSetSeasonFanartDL.Image = CType(resources.GetObject("btnSetSeasonFanartDL.Image"), System.Drawing.Image)
+        Me.btnSetSeasonFanartDL.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetSeasonFanartDL.Location = New System.Drawing.Point(735, 180)
+        Me.btnSetSeasonFanartDL.Name = "btnSetSeasonFanartDL"
+        Me.btnSetSeasonFanartDL.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetSeasonFanartDL.TabIndex = 3
+        Me.btnSetSeasonFanartDL.Text = "Change Fanart (Download)"
+        Me.btnSetSeasonFanartDL.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetSeasonFanartDL.UseVisualStyleBackColor = True
+        '
+        'btnRemoveSeasonFanart
+        '
+        Me.btnRemoveSeasonFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnRemoveSeasonFanart.Image = CType(resources.GetObject("btnRemoveSeasonFanart.Image"), System.Drawing.Image)
+        Me.btnRemoveSeasonFanart.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnRemoveSeasonFanart.Location = New System.Drawing.Point(735, 363)
+        Me.btnRemoveSeasonFanart.Name = "btnRemoveSeasonFanart"
+        Me.btnRemoveSeasonFanart.Size = New System.Drawing.Size(96, 83)
+        Me.btnRemoveSeasonFanart.TabIndex = 4
+        Me.btnRemoveSeasonFanart.Text = "Remove Fanart"
+        Me.btnRemoveSeasonFanart.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnRemoveSeasonFanart.UseVisualStyleBackColor = True
+        '
+        'lblSeasonFanartSize
+        '
+        Me.lblSeasonFanartSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblSeasonFanartSize.Location = New System.Drawing.Point(8, 8)
+        Me.lblSeasonFanartSize.Name = "lblSeasonFanartSize"
+        Me.lblSeasonFanartSize.Size = New System.Drawing.Size(105, 23)
+        Me.lblSeasonFanartSize.TabIndex = 0
+        Me.lblSeasonFanartSize.Text = "Size: (XXXXxXXXX)"
+        Me.lblSeasonFanartSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.lblSeasonFanartSize.Visible = False
+        '
+        'btnSetSeasonFanartScrape
+        '
+        Me.btnSetSeasonFanartScrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnSetSeasonFanartScrape.Image = CType(resources.GetObject("btnSetSeasonFanartScrape.Image"), System.Drawing.Image)
+        Me.btnSetSeasonFanartScrape.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetSeasonFanartScrape.Location = New System.Drawing.Point(735, 93)
+        Me.btnSetSeasonFanartScrape.Name = "btnSetSeasonFanartScrape"
+        Me.btnSetSeasonFanartScrape.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetSeasonFanartScrape.TabIndex = 2
+        Me.btnSetSeasonFanartScrape.Text = "Change Fanart (Scrape)"
+        Me.btnSetSeasonFanartScrape.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetSeasonFanartScrape.UseVisualStyleBackColor = True
+        '
+        'btnSetSeasonFanartLocal
+        '
+        Me.btnSetSeasonFanartLocal.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnSetSeasonFanartLocal.Image = CType(resources.GetObject("btnSetSeasonFanartLocal.Image"), System.Drawing.Image)
+        Me.btnSetSeasonFanartLocal.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetSeasonFanartLocal.Location = New System.Drawing.Point(735, 6)
+        Me.btnSetSeasonFanartLocal.Name = "btnSetSeasonFanartLocal"
+        Me.btnSetSeasonFanartLocal.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetSeasonFanartLocal.TabIndex = 1
+        Me.btnSetSeasonFanartLocal.Text = "Change Fanart (Local)"
+        Me.btnSetSeasonFanartLocal.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetSeasonFanartLocal.UseVisualStyleBackColor = True
+        '
+        'pbSeasonFanart
+        '
+        Me.pbSeasonFanart.BackColor = System.Drawing.Color.DimGray
+        Me.pbSeasonFanart.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pbSeasonFanart.Location = New System.Drawing.Point(6, 6)
+        Me.pbSeasonFanart.Name = "pbSeasonFanart"
+        Me.pbSeasonFanart.Size = New System.Drawing.Size(724, 440)
+        Me.pbSeasonFanart.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.pbSeasonFanart.TabIndex = 1
+        Me.pbSeasonFanart.TabStop = False
         '
         'Cancel_Button
         '
@@ -333,10 +433,12 @@ Partial Class dlgEditSeason
         Me.pnlTop.PerformLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tcEditSeason.ResumeLayout(False)
-        Me.tpPoster.ResumeLayout(False)
-        CType(Me.pbPoster, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.tpFanart.ResumeLayout(False)
-        CType(Me.pbFanart, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.tpSeasonPoster.ResumeLayout(False)
+        CType(Me.pbSeasonPoster, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.tpSeasonBanner.ResumeLayout(False)
+        CType(Me.pbSeasonBanner, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.tpSeasonFanart.ResumeLayout(False)
+        CType(Me.pbSeasonFanart, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -345,22 +447,29 @@ Partial Class dlgEditSeason
     Friend WithEvents lblTopTitle As System.Windows.Forms.Label
     Friend WithEvents pbTopLogo As System.Windows.Forms.PictureBox
     Friend WithEvents tcEditSeason As System.Windows.Forms.TabControl
-    Friend WithEvents tpPoster As System.Windows.Forms.TabPage
-    Friend WithEvents btnSetPosterDL As System.Windows.Forms.Button
-    Friend WithEvents btnRemovePoster As System.Windows.Forms.Button
-    Friend WithEvents lblPosterSize As System.Windows.Forms.Label
-    Friend WithEvents btnSetPosterScrape As System.Windows.Forms.Button
-    Friend WithEvents btnSetPoster As System.Windows.Forms.Button
-    Friend WithEvents pbPoster As System.Windows.Forms.PictureBox
-    Friend WithEvents tpFanart As System.Windows.Forms.TabPage
-    Friend WithEvents btnSetFanartDL As System.Windows.Forms.Button
-    Friend WithEvents btnRemoveFanart As System.Windows.Forms.Button
-    Friend WithEvents lblFanartSize As System.Windows.Forms.Label
-    Friend WithEvents btnSetFanartScrape As System.Windows.Forms.Button
-    Friend WithEvents btnSetFanart As System.Windows.Forms.Button
-    Friend WithEvents pbFanart As System.Windows.Forms.PictureBox
+    Friend WithEvents tpSeasonPoster As System.Windows.Forms.TabPage
+    Friend WithEvents btnSetSeasonPosterDL As System.Windows.Forms.Button
+    Friend WithEvents btnRemoveSeasonPoster As System.Windows.Forms.Button
+    Friend WithEvents lblSeasonPosterSize As System.Windows.Forms.Label
+    Friend WithEvents btnSetSeasonPosterScrape As System.Windows.Forms.Button
+    Friend WithEvents btnSetSeasonPosterLocal As System.Windows.Forms.Button
+    Friend WithEvents pbSeasonPoster As System.Windows.Forms.PictureBox
+    Friend WithEvents tpSeasonFanart As System.Windows.Forms.TabPage
+    Friend WithEvents btnSetSeasonFanartDL As System.Windows.Forms.Button
+    Friend WithEvents btnRemoveSeasonFanart As System.Windows.Forms.Button
+    Friend WithEvents lblSeasonFanartSize As System.Windows.Forms.Label
+    Friend WithEvents btnSetSeasonFanartScrape As System.Windows.Forms.Button
+    Friend WithEvents btnSetSeasonFanartLocal As System.Windows.Forms.Button
+    Friend WithEvents pbSeasonFanart As System.Windows.Forms.PictureBox
     Friend WithEvents Cancel_Button As System.Windows.Forms.Button
     Friend WithEvents OK_Button As System.Windows.Forms.Button
     Friend WithEvents ofdImage As System.Windows.Forms.OpenFileDialog
+    Friend WithEvents tpSeasonBanner As System.Windows.Forms.TabPage
+    Friend WithEvents btnSetSeasonBannerDL As System.Windows.Forms.Button
+    Friend WithEvents btnRemoveSeasonBanner As System.Windows.Forms.Button
+    Friend WithEvents lblSeasonBannerSize As System.Windows.Forms.Label
+    Friend WithEvents btnSetSeasonBannerScrape As System.Windows.Forms.Button
+    Friend WithEvents btnSetSeasonBannerLocal As System.Windows.Forms.Button
+    Friend WithEvents pbSeasonBanner As System.Windows.Forms.PictureBox
 
 End Class

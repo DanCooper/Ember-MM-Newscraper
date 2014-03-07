@@ -877,38 +877,6 @@ Public Class dlgSettings
         End Try
     End Sub
 
-    Private Sub btnTVShowFrodo_Click(sender As Object, e As EventArgs) Handles btnTVShowFrodo.Click
-        Me.chkEpisodeDashFanart.Checked = False
-        Me.chkEpisodeDashThumbJPG.Checked = True
-        Me.chkEpisodeDotFanart.Checked = False
-        Me.chkEpisodeJPG.Checked = False
-        Me.chkEpisodeTBN.Checked = False
-        Me.chkSeasonAllJPG.Checked = False
-        Me.chkSeasonAllPosterJPG.Checked = True
-        Me.chkSeasonAllTBN.Checked = False
-        Me.chkSeasonDashFanart.Checked = False
-        Me.chkSeasonDotFanart.Checked = False
-        Me.chkSeasonFanartJPG.Checked = False
-        Me.chkSeasonFolderJPG.Checked = False
-        Me.chkSeasonNameJPG.Checked = False
-        Me.chkSeasonNameTBN.Checked = False
-        Me.chkSeasonPosterJPG.Checked = False
-        Me.chkSeasonPosterTBN.Checked = False
-        Me.chkSeasonXTBN.Checked = False
-        Me.chkSeasonXXDashFanartJPG.Checked = True
-        Me.chkSeasonXXDashPosterJPG.Checked = True
-        Me.chkSeasonXXTBN.Checked = False
-        'Me.chkShowBannerJPG.Checked = True (banners not implemented atm)
-        Me.chkShowDashFanart.Checked = False
-        Me.chkShowDotFanart.Checked = False
-        Me.chkShowFanartJPG.Checked = True
-        Me.chkShowFolderJPG.Checked = False
-        Me.chkShowJPG.Checked = False
-        Me.chkShowPosterJPG.Checked = True
-        Me.chkShowPosterTBN.Checked = False
-        Me.chkShowTBN.Checked = False
-    End Sub
-
     Private Sub cbCert_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbCert.SelectedIndexChanged
         Me.SetApplyButton(True)
     End Sub
@@ -1183,23 +1151,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkEpisodeDashFanart_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEpisodeDashFanart.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkEpisodeDotFanart_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEpisodeDotFanart.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub chkEpisodeFanartCol_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEpisodeFanartCol.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkEpisodeJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEpisodeJPG.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkEpisodeDashThumbJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEpisodeDashThumbJPG.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -1208,10 +1160,6 @@ Public Class dlgSettings
     End Sub
 
     Private Sub chkEpisodePosterCol_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEpisodePosterCol.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkEpisodeTBN_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEpisodeTBN.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -1807,47 +1755,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkSeasonAllJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkSeasonAllJPG.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkSeasonAllTBN_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkSeasonAllTBN.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkSeasonAllPosterJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkSeasonAllPosterJPG.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkSeasonDashFanart_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkSeasonDashFanart.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkSeasonXXDashFanartJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkSeasonXXDashFanartJPG.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkSeasonDotFanart_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkSeasonDotFanart.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub chkSeasonFanartCol_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkSeasonFanartCol.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkSeasonFanartJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkSeasonFanartJPG.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkSeasonFolderJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkSeasonFolderJPG.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkSeasonNameJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkSeasonNameJPG.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkSeasonNameTBN_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkSeasonNameTBN.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -1855,35 +1763,7 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkSeasonPosterJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkSeasonPosterJPG.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkSeasonPosterTBN_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkSeasonPosterTBN.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkSeasonXTBN_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkSeasonXTBN.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkSeasonXXTBN_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkSeasonXXTBN.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkSeasonXXDashPosterJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkSeasonXXDashPosterJPG.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkShowDashFanart_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkShowDashFanart.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub chkShowDims_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkShowDims.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkShowDotFanart_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkShowDotFanart.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -1891,19 +1771,7 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkShowFanartJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkShowFanartJPG.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkShowFolderJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkShowFolderJPG.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub chkShowGenresText_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkShowGenresText.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkShowJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkShowJPG.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -1935,25 +1803,9 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkShowPosterJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkShowPosterJPG.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkShowBannerJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkShowBannerJPG.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkShowPosterTBN_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkShowPosterTBN.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub chkShowProperCase_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkShowProperCase.CheckedChanged
         Me.SetApplyButton(True)
         Me.sResult.NeedsRefresh = True
-    End Sub
-
-    Private Sub chkShowTBN_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkShowTBN.CheckedChanged
-        Me.SetApplyButton(True)
     End Sub
 
     Private Sub chkSingleScrapeImages_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSingleScrapeImages.CheckedChanged
@@ -2565,7 +2417,7 @@ Public Class dlgSettings
                 Me.txtCheckTitleTol.Enabled = True
                 Me.txtCheckTitleTol.Text = Master.eSettings.LevTolerance.ToString
             End If
-            Me.chkMovieRecognizeVTSExpertVTS.Checked = Master.eSettings.ExpertRecognizeVTS
+            Me.chkMovieRecognizeVTSExpertVTS.Checked = Master.eSettings.MovieRecognizeVTSExpertVTS
             Me.cbLanguages.SelectedItem = If(String.IsNullOrEmpty(Master.eSettings.FlagLang), Master.eLang.Disabled, Master.eSettings.FlagLang)
             Me.cboTVMetaDataOverlay.SelectedItem = If(String.IsNullOrEmpty(Master.eSettings.TVFlagLang), Master.eLang.Disabled, Master.eSettings.TVFlagLang)
             Me.cbIntLang.SelectedItem = Master.eSettings.Language
@@ -2623,35 +2475,6 @@ Public Class dlgSettings
             Me.ShowRegex.AddRange(Master.eSettings.TVShowRegexes)
             Me.LoadShowRegex()
             Me.cbRatingRegion.Text = Master.eSettings.ShowRatingRegion
-            Me.chkSeasonAllTBN.Checked = Master.eSettings.SeasonAllTBN
-            Me.chkSeasonAllJPG.Checked = Master.eSettings.SeasonAllJPG
-            Me.chkSeasonAllPosterJPG.Checked = Master.eSettings.SeasonAllPosterJPG
-            Me.chkShowTBN.Checked = Master.eSettings.ShowTBN
-            Me.chkShowJPG.Checked = Master.eSettings.ShowJPG
-            Me.chkShowFolderJPG.Checked = Master.eSettings.ShowFolderJPG
-            Me.chkShowPosterTBN.Checked = Master.eSettings.ShowPosterTBN
-            Me.chkShowPosterJPG.Checked = Master.eSettings.ShowPosterJPG
-            Me.chkShowBannerJPG.Checked = Master.eSettings.ShowBannerJPG
-            Me.chkShowFanartJPG.Checked = Master.eSettings.ShowFanartJPG
-            Me.chkShowDashFanart.Checked = Master.eSettings.ShowDashFanart
-            Me.chkShowDotFanart.Checked = Master.eSettings.ShowDotFanart
-            Me.chkSeasonXXTBN.Checked = Master.eSettings.SeasonXX
-            Me.chkSeasonXTBN.Checked = Master.eSettings.SeasonX
-            Me.chkSeasonXXDashPosterJPG.Checked = Master.eSettings.SeasonXXDashPosterJPG
-            Me.chkSeasonPosterTBN.Checked = Master.eSettings.SeasonPosterTBN
-            Me.chkSeasonPosterJPG.Checked = Master.eSettings.SeasonPosterJPG
-            Me.chkSeasonNameTBN.Checked = Master.eSettings.SeasonNameTBN
-            Me.chkSeasonNameJPG.Checked = Master.eSettings.SeasonNameJPG
-            Me.chkSeasonFolderJPG.Checked = Master.eSettings.SeasonFolderJPG
-            Me.chkSeasonFanartJPG.Checked = Master.eSettings.SeasonFanartJPG
-            Me.chkSeasonDashFanart.Checked = Master.eSettings.SeasonDashFanart
-            Me.chkSeasonXXDashFanartJPG.Checked = Master.eSettings.SeasonXXDashFanartJPG
-            Me.chkSeasonDotFanart.Checked = Master.eSettings.SeasonDotFanart
-            Me.chkEpisodeTBN.Checked = Master.eSettings.EpisodeTBN
-            Me.chkEpisodeJPG.Checked = Master.eSettings.EpisodeJPG
-            Me.chkEpisodeDashThumbJPG.Checked = Master.eSettings.EpisodeDashThumbJPG
-            Me.chkEpisodeDashFanart.Checked = Master.eSettings.EpisodeDashFanart
-            Me.chkEpisodeDotFanart.Checked = Master.eSettings.EpisodeDotFanart
             Me.chkShowPosterCol.Checked = Master.eSettings.ShowPosterCol
             Me.chkShowFanartCol.Checked = Master.eSettings.ShowFanartCol
             Me.chkShowNfoCol.Checked = Master.eSettings.ShowNfoCol
@@ -2723,6 +2546,10 @@ Public Class dlgSettings
             Me.RefreshMovieFilters()
             Me.RefreshValidExts()
 
+            '***************************************************
+            '******************* Movie Part ********************
+            '***************************************************
+
             '*************** XBMC Frodo settings ***************
             Me.chkMovieUseFrodo.Checked = Master.eSettings.MovieUseFrodo
             Me.chkMovieActorThumbsFrodo.Checked = Master.eSettings.MovieActorThumbsFrodo
@@ -2738,7 +2565,7 @@ Public Class dlgSettings
             Me.chkMoviePosterFrodo.Checked = Master.eSettings.MoviePosterFrodo
             Me.chkMovieTrailerFrodo.Checked = Master.eSettings.MovieTrailerFrodo
 
-            '*************** XBMC Eden settings ***************
+            '*************** XBMC Eden settings ****************
             Me.chkMovieUseEden.Checked = Master.eSettings.MovieUseEden
             Me.chkMovieActorThumbsEden.Checked = Master.eSettings.MovieActorThumbsEden
             'Me.chkBannerEden.Checked = Master.eSettings.MovieBannerEden
@@ -2753,11 +2580,11 @@ Public Class dlgSettings
             Me.chkMoviePosterEden.Checked = Master.eSettings.MoviePosterEden
             Me.chkMovieTrailerEden.Checked = Master.eSettings.MovieTrailerEden
 
-            '************* XBMC optional settings *************
+            '************* XBMC optional settings **************
             Me.chkMovieXBMCTrailerFormat.Checked = Master.eSettings.MovieXBMCTrailerFormat
             Me.chkMovieXBMCProtectVTSBDMV.Checked = Master.eSettings.MovieXBMCProtectVTSBDMV
 
-            '****************** YAMJ settings *****************
+            '****************** YAMJ settings ******************
             Me.chkMovieUseYAMJ.Checked = Master.eSettings.MovieUseYAMJ
             'Me.chkActorThumbsYAMJ.Checked = Master.eSettings.MovieActorThumbsYAMJ
             Me.chkMovieBannerYAMJ.Checked = Master.eSettings.MovieBannerYAMJ
@@ -2787,14 +2614,14 @@ Public Class dlgSettings
             Me.chkMoviePosterNMJ.Checked = Master.eSettings.MoviePosterNMJ
             Me.chkMovieTrailerNMJ.Checked = Master.eSettings.MovieTrailerNMJ
 
-            '************** NMJ optional settings *************
+            '************** NMT optional settings **************
             Me.chkMovieYAMJWatchedFile.Checked = Master.eSettings.MovieYAMJWatchedFile
             Me.txtMovieYAMJWatchedFolder.Text = Master.eSettings.MovieYAMJWatchedFolder
 
-            '***************** Expert settings ****************
+            '***************** Expert settings *****************
             Me.chkMovieUseExpert.Checked = Master.eSettings.MovieUseExpert
 
-            '***************** Expert Single ******************
+            '***************** Expert Single *******************
             Me.chkMovieActorThumbsExpertSingle.Checked = Master.eSettings.MovieActorThumbsExpertSingle
             Me.txtMovieActorThumbsExtExpertSingle.Text = Master.eSettings.MovieActorThumbsExtExpertSingle
             Me.txtMovieBannerExpertSingle.Text = Master.eSettings.MovieBannerExpertSingle
@@ -2811,7 +2638,7 @@ Public Class dlgSettings
             Me.txtMovieTrailerExpertSingle.Text = Master.eSettings.MovieTrailerExpertSingle
             Me.chkMovieUnstackExpertSingle.Checked = Master.eSettings.MovieUnstackExpertSingle
 
-            '***************** Expert Multi ******************
+            '******************* Expert Multi ******************
             Me.chkMovieActorThumbsExpertMulti.Checked = Master.eSettings.MovieActorThumbsExpertMulti
             Me.txtMovieActorThumbsExtExpertMulti.Text = Master.eSettings.MovieActorThumbsExtExpertMulti
             Me.txtMovieBannerExpertMulti.Text = Master.eSettings.MovieBannerExpertMulti
@@ -2826,7 +2653,7 @@ Public Class dlgSettings
             Me.txtMovieTrailerExpertMulti.Text = Master.eSettings.MovieTrailerExpertMulti
             Me.chkMovieUnstackExpertMulti.Checked = Master.eSettings.MovieUnstackExpertMulti
 
-            '***************** Expert VTS ******************
+            '******************* Expert VTS *******************
             Me.chkMovieActorThumbsExpertVTS.Checked = Master.eSettings.MovieActorThumbsExpertVTS
             Me.txtMovieActorThumbsExtExpertVTS.Text = Master.eSettings.MovieActorThumbsExtExpertVTS
             Me.txtMovieBannerExpertVTS.Text = Master.eSettings.MovieBannerExpertVTS
@@ -2843,7 +2670,7 @@ Public Class dlgSettings
             Me.txtMovieTrailerExpertVTS.Text = Master.eSettings.MovieTrailerExpertVTS
             Me.chkMovieUseBaseDirectoryExpertVTS.Checked = Master.eSettings.MovieUseBaseDirectoryExpertVTS
 
-            '***************** Expert BDMV ******************
+            '******************* Expert BDMV *******************
             Me.chkMovieActorThumbsExpertBDMV.Checked = Master.eSettings.MovieActorThumbsExpertBDMV
             Me.txtMovieActorThumbsExtExpertBDMV.Text = Master.eSettings.MovieActorThumbsExtExpertBDMV
             Me.txtMovieBannerExpertBDMV.Text = Master.eSettings.MovieBannerExpertBDMV
@@ -2858,6 +2685,43 @@ Public Class dlgSettings
             Me.txtMoviePosterExpertBDMV.Text = Master.eSettings.MoviePosterExpertBDMV
             Me.txtMovieTrailerExpertBDMV.Text = Master.eSettings.MovieTrailerExpertBDMV
             Me.chkMovieUseBaseDirectoryExpertBDMV.Checked = Master.eSettings.MovieUseBaseDirectoryExpertBDMV
+
+
+            '***************************************************
+            '****************** TV Show Part *******************
+            '***************************************************
+
+            '*************** XBMC Frodo settings ***************
+            Me.chkTVUseFrodo.Checked = Master.eSettings.TVUseFrodo
+            Me.chkTVEpisodeActorThumbsFrodo.Checked = Master.eSettings.TVEpisodeActorThumbsFrodo
+            Me.chkTVEpisodeFanartFrodo.Checked = Master.eSettings.TVEpisodeFanartFrodo
+            Me.chkTVEpisodePosterFrodo.Checked = Master.eSettings.TVEpisodePosterFrodo
+            Me.chkTVSeasonBannerFrodo.Checked = Master.eSettings.TVSeasonBannerFrodo
+            Me.chkTVSeasonFanartFrodo.Checked = Master.eSettings.TVSeasonFanartFrodo
+            Me.chkTVSeasonPosterFrodo.Checked = Master.eSettings.TVSeasonPosterFrodo
+            Me.chkTVShowActorThumbsFrodo.Checked = Master.eSettings.TVShowActorThumbsFrodo
+            Me.chkTVShowBannerFrodo.Checked = Master.eSettings.TVShowBannerFrodo
+            Me.chkTVShowFanartFrodo.Checked = Master.eSettings.TVShowFanartFrodo
+            Me.chkTVShowPosterFrodo.Checked = Master.eSettings.TVShowPosterFrodo
+
+            '*************** XBMC Eden settings ****************
+
+            '************* XBMC optional settings **************
+            Me.chkTVSeasonLandscapeXBMC.Checked = Master.eSettings.TVSeasonLandscapeXBMC
+            Me.chkTVShowCharacterArtXBMC.Checked = Master.eSettings.TVShowCharacterArtXBMC
+            Me.chkTVShowClearArtXBMC.Checked = Master.eSettings.TVShowClearArtXBMC
+            Me.chkTVShowClearLogoXBMC.Checked = Master.eSettings.TVShowClearLogoXBMC
+            Me.chkTVShowLandscapeXBMC.Checked = Master.eSettings.TVShowLandscapeXBMC
+            Me.chkTVShowTVThemeXBMC.Checked = Master.eSettings.TVShowTVThemeXBMC
+            Me.txtTVShowTVThemeFolderXBMC.Text = Master.eSettings.TVShowTVThemeFolderXBMC
+
+            '****************** YAMJ settings ******************
+
+            '****************** NMJ settings *******************
+
+            '************** NMT optional settings **************
+
+            '***************** Expert settings *****************
 
         Catch ex As Exception
             Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
@@ -3763,7 +3627,7 @@ Public Class dlgSettings
             If Master.eSettings.SortTokens.Count <= 0 Then Master.eSettings.NoTokens = True
 
             Master.eSettings.LevTolerance = If(Not String.IsNullOrEmpty(Me.txtCheckTitleTol.Text), Convert.ToInt32(Me.txtCheckTitleTol.Text), 0)
-            Master.eSettings.ExpertRecognizeVTS = Me.chkMovieRecognizeVTSExpertVTS.Checked
+            Master.eSettings.MovieRecognizeVTSExpertVTS = Me.chkMovieRecognizeVTSExpertVTS.Checked
             Master.eSettings.FlagLang = If(Me.cbLanguages.Text = Master.eLang.Disabled, String.Empty, Me.cbLanguages.Text)
             Master.eSettings.TVFlagLang = If(Me.cboTVMetaDataOverlay.Text = Master.eLang.Disabled, String.Empty, Me.cboTVMetaDataOverlay.Text)
             Master.eSettings.Language = Me.cbIntLang.Text
@@ -3838,35 +3702,7 @@ Public Class dlgSettings
             Else
                 Master.eSettings.ShowRatingRegion = Me.cbRatingRegion.Text
             End If
-            Master.eSettings.SeasonAllTBN = Me.chkSeasonAllTBN.Checked
-            Master.eSettings.SeasonAllJPG = Me.chkSeasonAllJPG.Checked
-            Master.eSettings.SeasonAllPosterJPG = Me.chkSeasonAllPosterJPG.Checked
-            Master.eSettings.ShowTBN = Me.chkShowTBN.Checked
-            Master.eSettings.ShowJPG = Me.chkShowJPG.Checked
-            Master.eSettings.ShowFolderJPG = Me.chkShowFolderJPG.Checked
-            Master.eSettings.ShowPosterTBN = Me.chkShowPosterTBN.Checked
-            Master.eSettings.ShowPosterJPG = Me.chkShowPosterJPG.Checked
-            Master.eSettings.ShowBannerJPG = Me.chkShowBannerJPG.Checked
-            Master.eSettings.ShowFanartJPG = Me.chkShowFanartJPG.Checked
-            Master.eSettings.ShowDashFanart = Me.chkShowDashFanart.Checked
-            Master.eSettings.ShowDotFanart = Me.chkShowDotFanart.Checked
-            Master.eSettings.SeasonXX = Me.chkSeasonXXTBN.Checked
-            Master.eSettings.SeasonX = Me.chkSeasonXTBN.Checked
-            Master.eSettings.SeasonXXDashPosterJPG = Me.chkSeasonXXDashPosterJPG.Checked
-            Master.eSettings.SeasonPosterTBN = Me.chkSeasonPosterTBN.Checked
-            Master.eSettings.SeasonPosterJPG = Me.chkSeasonPosterJPG.Checked
-            Master.eSettings.SeasonNameTBN = Me.chkSeasonNameTBN.Checked
-            Master.eSettings.SeasonNameJPG = Me.chkSeasonNameJPG.Checked
-            Master.eSettings.SeasonFolderJPG = Me.chkSeasonFolderJPG.Checked
-            Master.eSettings.SeasonFanartJPG = Me.chkSeasonFanartJPG.Checked
-            Master.eSettings.SeasonDashFanart = Me.chkSeasonDashFanart.Checked
-            Master.eSettings.SeasonXXDashFanartJPG = Me.chkSeasonXXDashFanartJPG.Checked
-            Master.eSettings.SeasonDotFanart = Me.chkSeasonDotFanart.Checked
-            Master.eSettings.EpisodeTBN = Me.chkEpisodeTBN.Checked
-            Master.eSettings.EpisodeJPG = Me.chkEpisodeJPG.Checked
-            Master.eSettings.EpisodeDashThumbJPG = Me.chkEpisodeDashThumbJPG.Checked
-            Master.eSettings.EpisodeDashFanart = Me.chkEpisodeDashFanart.Checked
-            Master.eSettings.EpisodeDotFanart = Me.chkEpisodeDotFanart.Checked
+
             Master.eSettings.ShowPosterCol = Me.chkShowPosterCol.Checked
             Master.eSettings.ShowFanartCol = Me.chkShowFanartCol.Checked
             Master.eSettings.ShowNfoCol = Me.chkShowNfoCol.Checked
@@ -3931,6 +3767,10 @@ Public Class dlgSettings
             Master.eSettings.OrderDefault = DirectCast(Me.cbOrdering.SelectedIndex, Enums.Ordering)
             Master.eSettings.OnlyValueForCert = Me.chkOnlyValueForCert.Checked
             Master.eSettings.ScraperActorThumbs = Me.chkMovieScraperActorThumbs.Checked
+
+            '***************************************************
+            '******************* Movie Part ********************
+            '***************************************************
 
             '*************** XBMC Frodo settings ***************
             Master.eSettings.MovieUseFrodo = Me.chkMovieUseFrodo.Checked
@@ -4068,6 +3908,43 @@ Public Class dlgSettings
             Master.eSettings.MovieTrailerExpertBDMV = Me.txtMovieTrailerExpertBDMV.Text
             Master.eSettings.MovieUseBaseDirectoryExpertBDMV = Me.chkMovieUseBaseDirectoryExpertBDMV.Checked
 
+            '***************************************************
+            '****************** TV Show Part *******************
+            '***************************************************
+
+            '*************** XBMC Frodo settings ***************
+            Master.eSettings.TVUseFrodo = Me.chkTVUseFrodo.Checked
+            Master.eSettings.TVEpisodeActorThumbsFrodo = Me.chkTVEpisodeActorThumbsFrodo.Checked
+            Master.eSettings.TVEpisodeFanartFrodo = Me.chkTVEpisodeFanartFrodo.Checked
+            Master.eSettings.TVEpisodePosterFrodo = Me.chkTVEpisodePosterFrodo.Checked
+            Master.eSettings.TVSeasonBannerFrodo = Me.chkTVSeasonBannerFrodo.Checked
+            Master.eSettings.TVSeasonFanartFrodo = Me.chkTVSeasonFanartFrodo.Checked
+            Master.eSettings.TVSeasonPosterFrodo = Me.chkTVSeasonPosterFrodo.Checked
+            Master.eSettings.TVShowActorThumbsFrodo = Me.chkTVShowActorThumbsFrodo.Checked
+            Master.eSettings.TVShowBannerFrodo = Me.chkTVShowBannerFrodo.Checked
+            Master.eSettings.TVShowFanartFrodo = Me.chkTVShowFanartFrodo.Checked
+            Master.eSettings.TVShowPosterFrodo = Me.chkTVShowPosterFrodo.Checked
+
+            '*************** XBMC Eden settings ****************
+
+            '************* XBMC optional settings **************
+            Master.eSettings.TVSeasonLandscapeXBMC = Me.chkTVSeasonLandscapeXBMC.Checked
+            Master.eSettings.TVShowCharacterArtXBMC = Me.chkTVShowCharacterArtXBMC.Checked
+            Master.eSettings.TVShowClearArtXBMC = Me.chkTVShowClearArtXBMC.Checked
+            Master.eSettings.TVShowClearLogoXBMC = Me.chkTVShowClearLogoXBMC.Checked
+            Master.eSettings.TVShowLandscapeXBMC = Me.chkTVShowLandscapeXBMC.Checked
+            Master.eSettings.TVShowTVThemeXBMC = Me.chkTVShowTVThemeXBMC.Checked
+            Master.eSettings.TVShowTVThemeFolderXBMC = Me.txtTVShowTVThemeFolderXBMC.Text
+
+            '****************** YAMJ settings ******************
+
+            '****************** NMJ settings *******************
+
+            '************** NMT optional settings **************
+
+            '***************** Expert settings *****************
+
+
             'Default to Frodo
             If Not (Master.eSettings.MovieUseEden Or Master.eSettings.MovieUseExpert Or Master.eSettings.MovieUseFrodo Or Master.eSettings.MovieUseNMJ Or Master.eSettings.MovieUseYAMJ) Then
                 Master.eSettings.MovieUseFrodo = True
@@ -4191,7 +4068,6 @@ Public Class dlgSettings
         Me.chkMoviePosterCol.Text = Master.eLang.GetString(470, "Hide Poster Column")
         Me.chkMovieWatchedCol.Text = Master.eLang.GetString(982, "Hide Watched Column")
         Me.gbMovieFileNaming.Text = Master.eLang.GetString(471, "File Naming")
-        Me.gbTVNaming.Text = Me.gbMovieFileNaming.Text
         Me.colName.Text = Master.eLang.GetString(232, "Name")
         Me.colPath.Text = Master.eLang.GetString(410, "Path")
         Me.colRecur.Text = Master.eLang.GetString(411, "Recursive")
@@ -4370,12 +4246,6 @@ Public Class dlgSettings
         Me.chkEpisodeFanartCol.Text = Me.chkMovieFanartCol.Text
         Me.chkShowNfoCol.Text = Me.chkMovieInfoCol.Text
         Me.chkEpisodeNfoCol.Text = Me.chkMovieInfoCol.Text
-        Me.gbShowPosters.Text = Master.eLang.GetString(683, "Show Posters")
-        Me.gbShowFanart.Text = Master.eLang.GetString(684, "Show Fanart")
-        Me.gbSeasonPosters.Text = Master.eLang.GetString(685, "Season Posters")
-        Me.gbSeasonFanart.Text = Master.eLang.GetString(686, "Season Fanart")
-        Me.gbEpisodePosters.Text = Master.eLang.GetString(687, "Episode Posters")
-        Me.gbEpisodeFanart.Text = Master.eLang.GetString(688, "Episode Fanart")
         Me.btnEditShowRegex.Text = Master.eLang.GetString(690, "Edit Regex")
         Me.btnRemoveShowRegex.Text = Master.eLang.GetString(30, "Remove")
         Me.gbShowRegex.Text = Master.eLang.GetString(691, "Show Match Regex")
@@ -4432,7 +4302,6 @@ Public Class dlgSettings
         Me.chkSourceFromFolder.Text = Master.eLang.GetString(711, "Include Folder Name in Source Type Check")
         Me.chkSortBeforeScan.Text = Master.eLang.GetString(712, "Sort files into folder before each library update")
         Me.chkNoFilterEpisode.Text = Master.eLang.GetString(734, "Build Episode Title Instead of Filtering")
-        Me.gbAllSeasonPoster.Text = Master.eLang.GetString(735, "All Season Posters")
         Me.lblTVUpdate.Text = Master.eLang.GetString(740, "Re-download Show Information Every:")
         Me.GroupBox33.Text = Master.eLang.GetString(488, "Global Locks")
         Me.gbShowLocks.Text = Master.eLang.GetString(743, "Show")
@@ -4463,7 +4332,7 @@ Public Class dlgSettings
         Me.rbPoster.Text = Me.gbMovieImagesPoster.Text
         Me.rbAllSBanner.Text = Me.rbBanner.Text
         Me.rbAllSPoster.Text = Me.gbMovieImagesPoster.Text
-        Me.gbAllSPosterOpts.Text = Me.gbAllSeasonPoster.Text
+        Me.gbAllSPosterOpts.Text = Master.eLang.GetString(735, "All Season Posters")
         Me.lblAllSPosterSize.Text = Me.lblShowPosterSize.Text
         Me.chkOverwriteAllSPoster.Text = Me.chkMovieOverwritePoster.Text
         Me.chkResizeAllSPoster.Text = Me.chkMovieResizePoster.Text
@@ -4472,7 +4341,6 @@ Public Class dlgSettings
         Me.lblAllSPosterQ.Text = Me.Label24.Text
         Me.btnClearRegex.Text = Master.eLang.GetString(123, "Clear")
         Me.chkAskCheckboxScrape.Text = Master.eLang.GetString(852, "Ask On Click Scrape")
-        Me.btnTVShowFrodo.Text = Master.eLang.GetString(867, "XBMC Frodo")
 
         Me.lvTVSources.Columns(1).Text = Master.eLang.GetString(232, "Name")
         Me.lvTVSources.Columns(2).Text = Master.eLang.GetString(410, "Path")
@@ -5389,6 +5257,143 @@ Public Class dlgSettings
 
     Private Sub chkMovieUseBaseDirectoryExpertBDMV_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieUseBaseDirectoryExpertBDMV.CheckedChanged
         Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkTVUseFrodo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVUseFrodo.CheckedChanged
+        Me.SetApplyButton(True)
+
+        Me.chkTVEpisodeActorThumbsFrodo.Enabled = Me.chkTVUseFrodo.Checked
+        Me.chkTVEpisodeFanartFrodo.Enabled = Me.chkTVUseFrodo.Checked
+        Me.chkTVEpisodePosterFrodo.Enabled = Me.chkTVUseFrodo.Checked
+        Me.chkTVSeasonBannerFrodo.Enabled = Me.chkTVUseFrodo.Checked
+        Me.chkTVSeasonFanartFrodo.Enabled = Me.chkTVUseFrodo.Checked
+        Me.chkTVSeasonLandscapeXBMC.Enabled = Me.chkTVUseFrodo.Checked
+        Me.chkTVSeasonPosterFrodo.Enabled = Me.chkTVUseFrodo.Checked
+        Me.chkTVShowActorThumbsFrodo.Enabled = Me.chkTVUseFrodo.Checked
+        Me.chkTVShowBannerFrodo.Enabled = Me.chkTVUseFrodo.Checked
+        Me.chkTVShowCharacterArtXBMC.Enabled = Me.chkTVUseFrodo.Checked
+        Me.chkTVShowClearArtXBMC.Enabled = Me.chkTVUseFrodo.Checked
+        Me.chkTVShowClearLogoXBMC.Enabled = Me.chkTVUseFrodo.Checked
+        Me.chkTVShowFanartFrodo.Enabled = Me.chkTVUseFrodo.Checked
+        Me.chkTVShowLandscapeXBMC.Enabled = Me.chkTVUseFrodo.Checked
+        Me.chkTVShowPosterFrodo.Enabled = Me.chkTVUseFrodo.Checked
+        Me.chkTVShowTVThemeXBMC.Enabled = Me.chkTVUseFrodo.Checked
+
+        If Not Me.chkTVUseFrodo.Checked Then
+            Me.chkTVEpisodeActorThumbsFrodo.Checked = False
+            Me.chkTVEpisodeFanartFrodo.Checked = False
+            Me.chkTVEpisodePosterFrodo.Checked = False
+            Me.chkTVSeasonBannerFrodo.Checked = False
+            Me.chkTVSeasonFanartFrodo.Checked = False
+            Me.chkTVSeasonLandscapeXBMC.Checked = False
+            Me.chkTVSeasonPosterFrodo.Checked = False
+            Me.chkTVShowActorThumbsFrodo.Checked = False
+            Me.chkTVShowBannerFrodo.Checked = False
+            Me.chkTVShowCharacterArtXBMC.Checked = False
+            Me.chkTVShowClearArtXBMC.Checked = False
+            Me.chkTVShowClearLogoXBMC.Checked = False
+            Me.chkTVShowFanartFrodo.Checked = False
+            Me.chkTVShowLandscapeXBMC.Checked = False
+            Me.chkTVShowPosterFrodo.Checked = False
+            Me.chkTVShowTVThemeXBMC.Checked = False
+        Else
+            Me.chkTVEpisodeActorThumbsFrodo.Checked = True
+            Me.chkTVEpisodeFanartFrodo.Checked = True
+            Me.chkTVEpisodePosterFrodo.Checked = True
+            Me.chkTVSeasonBannerFrodo.Checked = True
+            Me.chkTVSeasonFanartFrodo.Checked = True
+            Me.chkTVSeasonLandscapeXBMC.Checked = True
+            Me.chkTVSeasonPosterFrodo.Checked = True
+            Me.chkTVShowActorThumbsFrodo.Checked = True
+            Me.chkTVShowBannerFrodo.Checked = True
+            Me.chkTVShowCharacterArtXBMC.Checked = True
+            Me.chkTVShowClearArtXBMC.Checked = True
+            Me.chkTVShowClearLogoXBMC.Checked = True
+            Me.chkTVShowFanartFrodo.Checked = True
+            Me.chkTVShowLandscapeXBMC.Checked = True
+            Me.chkTVShowPosterFrodo.Checked = True
+            'Me.chkTVShowTVThemeXBMC.Checked = True
+        End If
+    End Sub
+    Private Sub chkTVEpisodeActorThumbsFrodo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVEpisodeActorThumbsFrodo.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkTVEpisodeFanartFrodo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVEpisodeFanartFrodo.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkTVEpisodePosterFrodo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVEpisodePosterFrodo.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkTVSeasonBannerFrodo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVSeasonBannerFrodo.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkTVSeasonFanartFrodo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVSeasonFanartFrodo.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkTVSeasonLandscapeXBMC_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVSeasonLandscapeXBMC.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkTVSeasonPosterFrodo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVSeasonPosterFrodo.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkTVShowActorThumbsFrodo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowActorThumbsFrodo.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkTVShowBannerFrodo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowBannerFrodo.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkTVShowCharacterArtXBMC_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowCharacterArtXBMC.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkTVShowClearArtXBMC_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowClearArtXBMC.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkTVShowClearLogoXBMC_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowClearLogoXBMC.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkTVShowFanartFrodo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowFanartFrodo.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkTVShowLandscapeXBMC_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowLandscapeXBMC.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkTVShowPosterFrodo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowPosterFrodo.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkTVShowTVThemeXBMC_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowTVThemeXBMC.CheckedChanged
+        Me.SetApplyButton(True)
+
+        Me.btnTVBrowseTVTheme.Enabled = Me.chkTVShowTVThemeXBMC.Checked
+        Me.txtTVShowTVThemeFolderXBMC.Enabled = Me.chkTVShowTVThemeXBMC.Checked
+    End Sub
+
+    Private Sub txtTVShowTVThemeFolderXBMC_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVShowTVThemeFolderXBMC.TextChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub btnTVBrowseTVTheme_Click(sender As Object, e As EventArgs) Handles btnTVBrowseTVTheme.Click
+        With Me.fbdBrowse
+            If .ShowDialog = Windows.Forms.DialogResult.OK Then
+                If Not String.IsNullOrEmpty(.SelectedPath.ToString) AndAlso Directory.Exists(.SelectedPath) Then
+                    Me.txtTVShowTVThemeFolderXBMC.Text = .SelectedPath.ToString
+                End If
+            End If
+        End With
     End Sub
 
 #End Region 'Methods
