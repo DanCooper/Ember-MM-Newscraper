@@ -40,7 +40,7 @@ Partial Class dlgIMDBSearchResults
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.chkManual = New System.Windows.Forms.CheckBox()
         Me.btnVerify = New System.Windows.Forms.Button()
-        Me.lblIMDB = New System.Windows.Forms.Label()
+        Me.lblIMDBID = New System.Windows.Forms.Label()
         Me.lblYearHeader = New System.Windows.Forms.Label()
         Me.lblDirectorHeader = New System.Windows.Forms.Label()
         Me.lblGenreHeader = New System.Windows.Forms.Label()
@@ -242,16 +242,16 @@ Partial Class dlgIMDBSearchResults
         Me.btnVerify.Text = "Verify"
         Me.btnVerify.UseVisualStyleBackColor = True
         '
-        'lblIMDB
+        'lblIMDBID
         '
-        Me.lblIMDB.AutoSize = True
-        Me.lblIMDB.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblIMDB.Location = New System.Drawing.Point(476, 277)
-        Me.lblIMDB.Name = "lblIMDB"
-        Me.lblIMDB.Size = New System.Drawing.Size(35, 13)
-        Me.lblIMDB.TabIndex = 19
-        Me.lblIMDB.Text = "IMDB"
-        Me.lblIMDB.Visible = False
+        Me.lblIMDBID.AutoSize = True
+        Me.lblIMDBID.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblIMDBID.Location = New System.Drawing.Point(476, 277)
+        Me.lblIMDBID.Name = "lblIMDBID"
+        Me.lblIMDBID.Size = New System.Drawing.Size(35, 13)
+        Me.lblIMDBID.TabIndex = 19
+        Me.lblIMDBID.Text = "IMDB"
+        Me.lblIMDBID.Visible = False
         '
         'lblYearHeader
         '
@@ -411,7 +411,7 @@ Partial Class dlgIMDBSearchResults
         Me.Controls.Add(Me.lblGenreHeader)
         Me.Controls.Add(Me.lblDirectorHeader)
         Me.Controls.Add(Me.lblYearHeader)
-        Me.Controls.Add(Me.lblIMDB)
+        Me.Controls.Add(Me.lblIMDBID)
         Me.Controls.Add(Me.btnVerify)
         Me.Controls.Add(Me.chkManual)
         Me.Controls.Add(Me.pnlTop)
@@ -461,7 +461,7 @@ Partial Class dlgIMDBSearchResults
     Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
     Friend WithEvents chkManual As System.Windows.Forms.CheckBox
     Friend WithEvents btnVerify As System.Windows.Forms.Button
-    Friend WithEvents lblIMDB As System.Windows.Forms.Label
+    Friend WithEvents lblIMDBID As System.Windows.Forms.Label
     Friend WithEvents lblYearHeader As System.Windows.Forms.Label
     Friend WithEvents lblDirectorHeader As System.Windows.Forms.Label
     Friend WithEvents lblGenreHeader As System.Windows.Forms.Label

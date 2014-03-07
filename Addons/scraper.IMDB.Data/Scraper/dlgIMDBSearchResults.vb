@@ -173,7 +173,7 @@ Public Class dlgIMDBSearchResults
         Me.lblDirector.Text = String.Empty
         Me.lblGenre.Text = String.Empty
         Me.txtOutline.Text = String.Empty
-        Me.lblIMDB.Text = String.Empty
+        Me.lblIMDBID.Text = String.Empty
         Me.pbPoster.Image = Nothing
 
         Master.tmpMovie.Clear()
@@ -193,7 +193,7 @@ Public Class dlgIMDBSearchResults
         Me.lblTitle.Visible = areVisible
         Me.lblDirector.Visible = areVisible
         Me.lblGenre.Visible = areVisible
-        Me.lblIMDB.Visible = areVisible
+        Me.lblIMDBID.Visible = areVisible
         Me.pbPoster.Visible = areVisible
     End Sub
 
@@ -262,7 +262,7 @@ Public Class dlgIMDBSearchResults
                 Me.lblDirector.Text = Master.tmpMovie.Director
                 Me.lblGenre.Text = Master.tmpMovie.Genre
                 Me.txtOutline.Text = Master.tmpMovie.Outline
-                Me.lblIMDB.Text = Master.tmpMovie.IMDBID
+                Me.lblIMDBID.Text = Master.tmpMovie.IMDBID
 
                 If _PosterCache.ContainsKey(Master.tmpMovie.IMDBID) Then
                     'just set it

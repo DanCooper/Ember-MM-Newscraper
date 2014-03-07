@@ -104,8 +104,10 @@ Public Class dlgTMDBSearchResults
     End Sub
 
     Private Sub btnVerify_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnVerify.Click
+        Dim pOpt As New Structures.ScrapeOptions
+        pOpt = SetPreviewOptions()
         '' The rule is that if there is a tt is an IMDB otherwise is a TMDB
-        TMDBg.GetSearchMovieInfoAsync(Me.txtTMDBID.Text, Master.tmpMovie, Master.DefaultOptions)
+        TMDBg.GetSearchMovieInfoAsync(Me.txtTMDBID.Text, Master.tmpMovie, pOpt)
 
     End Sub
 
@@ -171,7 +173,7 @@ Public Class dlgTMDBSearchResults
         Me.lblDirector.Text = String.Empty
         Me.lblGenre.Text = String.Empty
         Me.txtPlot.Text = String.Empty
-        Me.lblIMDB.Text = String.Empty
+        Me.lblTMDBID.Text = String.Empty
         Me.pbPoster.Image = Nothing
 
         Master.tmpMovie.Clear()
@@ -184,14 +186,14 @@ Public Class dlgTMDBSearchResults
         Me.lblDirectorHeader.Visible = areVisible
         Me.lblGenreHeader.Visible = areVisible
         Me.lblPlotHeader.Visible = areVisible
-        Me.lblIMDBHeader.Visible = areVisible
+        Me.lblTMDBHeader.Visible = areVisible
         Me.txtPlot.Visible = areVisible
         Me.lblYear.Visible = areVisible
         Me.lblTagline.Visible = areVisible
         Me.lblTitle.Visible = areVisible
         Me.lblDirector.Visible = areVisible
         Me.lblGenre.Visible = areVisible
-        Me.lblIMDB.Visible = areVisible
+        Me.lblTMDBID.Visible = areVisible
         Me.pbPoster.Visible = areVisible
     End Sub
 
@@ -199,7 +201,7 @@ Public Class dlgTMDBSearchResults
         Me.AcceptButton = Me.OK_Button
     End Sub
 
-    Private Sub dlgIMDBSearchResults_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Private Sub dlgTMDBSearchResults_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Me.SetUp()
         pnlPicStatus.Visible = False
         'TMDBg.IMDBURL = IMDBURL
@@ -217,7 +219,7 @@ Public Class dlgTMDBSearchResults
         End Try
     End Sub
 
-    Private Sub dlgIMDBSearchResults_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
+    Private Sub dlgTMDBSearchResults_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
         Me.Activate()
         Me.tvResults.Focus()
     End Sub
@@ -253,7 +255,7 @@ Public Class dlgTMDBSearchResults
                 Me.lblDirector.Text = Master.tmpMovie.Director
                 Me.lblGenre.Text = Master.tmpMovie.Genre
                 Me.txtPlot.Text = StringUtils.ShortenOutline(Master.tmpMovie.Plot, 410)
-                Me.lblIMDB.Text = Master.tmpMovie.IMDBID
+                Me.lblTMDBID.Text = Master.tmpMovie.IMDBID
 
                 If _PosterCache.ContainsKey(Master.tmpMovie.TMDBID) Then
                     'just set it
@@ -327,22 +329,7 @@ Public Class dlgTMDBSearchResults
         End Try
     End Sub
 
-    Private Sub SetUp()
-        Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
-        Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
-        Me.Label2.Text = Master.eLang.GetString(836, "View details of each result to find the proper movie.")
-        Me.Label1.Text = Master.eLang.GetString(846, "Movie Search Results")
-        Me.chkManual.Text = Master.eLang.GetString(926, "Manual TMDB Entry:")
-        Me.btnVerify.Text = Master.eLang.GetString(848, "Verify")
-        Me.lblYearHeader.Text = Master.eLang.GetString(49, "Year:")
-        Me.lblDirectorHeader.Text = Master.eLang.GetString(239, "Director:")
-        Me.lblGenreHeader.Text = Master.eLang.GetString(51, "Genre(s):")
-        Me.lblIMDBHeader.Text = Master.eLang.GetString(933, "TMDB ID:")
-        Me.lblPlotHeader.Text = Master.eLang.GetString(242, "Plot Outline:")
-        Me.Label3.Text = Master.eLang.GetString(934, "Searching TMDB...")
-    End Sub
-
-    Private Sub tmrLoad_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrLoad.Tick
+    Private Function SetPreviewOptions() As Structures.ScrapeOptions
         Dim aOpt As New Structures.ScrapeOptions
         aOpt.bCast = False
         aOpt.bCert = False
@@ -364,12 +351,34 @@ Public Class dlgTMDBSearchResults
         aOpt.bStudio = False
         aOpt.bTagline = True
         aOpt.bTitle = True
-        aOpt.bTop250 = True
-        aOpt.bTrailer = True
-        aOpt.buseMPAAForFSK = True
+        aOpt.bTop250 = False
+        aOpt.bTrailer = False
+        aOpt.buseMPAAForFSK = False
         aOpt.bVotes = False
         aOpt.bWriters = False
         aOpt.bYear = True
+
+        Return aOpt
+    End Function
+
+    Private Sub SetUp()
+        Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
+        Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
+        Me.Label2.Text = Master.eLang.GetString(836, "View details of each result to find the proper movie.")
+        Me.Label1.Text = Master.eLang.GetString(846, "Movie Search Results")
+        Me.chkManual.Text = Master.eLang.GetString(926, "Manual TMDB Entry:")
+        Me.btnVerify.Text = Master.eLang.GetString(848, "Verify")
+        Me.lblYearHeader.Text = Master.eLang.GetString(49, "Year:")
+        Me.lblDirectorHeader.Text = Master.eLang.GetString(239, "Director:")
+        Me.lblGenreHeader.Text = Master.eLang.GetString(51, "Genre(s):")
+        Me.lblTMDBHeader.Text = Master.eLang.GetString(933, "TMDB ID:")
+        Me.lblPlotHeader.Text = Master.eLang.GetString(242, "Plot Outline:")
+        Me.Label3.Text = Master.eLang.GetString(934, "Searching TMDB...")
+    End Sub
+
+    Private Sub tmrLoad_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrLoad.Tick
+        Dim pOpt As New Structures.ScrapeOptions
+        pOpt = SetPreviewOptions()
 
         Me.tmrWait.Stop()
         Me.tmrLoad.Stop()
@@ -377,7 +386,7 @@ Public Class dlgTMDBSearchResults
         Me.Label3.Text = Master.eLang.GetString(875, "Downloading details...")
 
         'IMDB.IMDBURL = IMDBURL
-        TMDBg.GetSearchMovieInfoAsync(Me.tvResults.SelectedNode.Tag.ToString, Master.tmpMovie, aOpt)
+        TMDBg.GetSearchMovieInfoAsync(Me.tvResults.SelectedNode.Tag.ToString, Master.tmpMovie, pOpt)
     End Sub
 
     Private Sub tmrWait_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrWait.Tick
@@ -424,11 +433,11 @@ Public Class dlgTMDBSearchResults
         Me.AcceptButton = Me.OK_Button
     End Sub
 
-    Private Sub txtIMDBID_GotFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtTMDBID.GotFocus
+    Private Sub txtTMDBID_GotFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtTMDBID.GotFocus
         Me.AcceptButton = Me.btnVerify
     End Sub
 
-    Private Sub txtIMDBID_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTMDBID.TextChanged
+    Private Sub txtTMDBID_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTMDBID.TextChanged
         If Me.chkManual.Checked Then
             Me.btnVerify.Enabled = True
             Me.OK_Button.Enabled = False

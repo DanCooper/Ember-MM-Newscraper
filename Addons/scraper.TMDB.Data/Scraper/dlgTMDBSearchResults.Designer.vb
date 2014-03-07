@@ -40,11 +40,11 @@ Partial Class dlgTMDBSearchResults
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.chkManual = New System.Windows.Forms.CheckBox()
         Me.btnVerify = New System.Windows.Forms.Button()
-        Me.lblIMDB = New System.Windows.Forms.Label()
+        Me.lblTMDBID = New System.Windows.Forms.Label()
         Me.lblYearHeader = New System.Windows.Forms.Label()
         Me.lblDirectorHeader = New System.Windows.Forms.Label()
         Me.lblGenreHeader = New System.Windows.Forms.Label()
-        Me.lblIMDBHeader = New System.Windows.Forms.Label()
+        Me.lblTMDBHeader = New System.Windows.Forms.Label()
         Me.lblPlotHeader = New System.Windows.Forms.Label()
         Me.btnSearch = New System.Windows.Forms.Button()
         Me.txtSearch = New System.Windows.Forms.TextBox()
@@ -243,16 +243,16 @@ Partial Class dlgTMDBSearchResults
         Me.btnVerify.Text = "Verify"
         Me.btnVerify.UseVisualStyleBackColor = True
         '
-        'lblIMDB
+        'lblTMDBID
         '
-        Me.lblIMDB.AutoSize = True
-        Me.lblIMDB.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblIMDB.Location = New System.Drawing.Point(472, 247)
-        Me.lblIMDB.Name = "lblIMDB"
-        Me.lblIMDB.Size = New System.Drawing.Size(37, 13)
-        Me.lblIMDB.TabIndex = 20
-        Me.lblIMDB.Text = "TMDB"
-        Me.lblIMDB.Visible = False
+        Me.lblTMDBID.AutoSize = True
+        Me.lblTMDBID.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblTMDBID.Location = New System.Drawing.Point(472, 247)
+        Me.lblTMDBID.Name = "lblTMDBID"
+        Me.lblTMDBID.Size = New System.Drawing.Size(37, 13)
+        Me.lblTMDBID.TabIndex = 20
+        Me.lblTMDBID.Text = "TMDB"
+        Me.lblTMDBID.Visible = False
         '
         'lblYearHeader
         '
@@ -287,16 +287,16 @@ Partial Class dlgTMDBSearchResults
         Me.lblGenreHeader.Text = "Genre(s):"
         Me.lblGenreHeader.Visible = False
         '
-        'lblIMDBHeader
+        'lblTMDBHeader
         '
-        Me.lblIMDBHeader.AutoSize = True
-        Me.lblIMDBHeader.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblIMDBHeader.Location = New System.Drawing.Point(410, 247)
-        Me.lblIMDBHeader.Name = "lblIMDBHeader"
-        Me.lblIMDBHeader.Size = New System.Drawing.Size(56, 13)
-        Me.lblIMDBHeader.TabIndex = 19
-        Me.lblIMDBHeader.Text = "TMDB ID:"
-        Me.lblIMDBHeader.Visible = False
+        Me.lblTMDBHeader.AutoSize = True
+        Me.lblTMDBHeader.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblTMDBHeader.Location = New System.Drawing.Point(410, 247)
+        Me.lblTMDBHeader.Name = "lblTMDBHeader"
+        Me.lblTMDBHeader.Size = New System.Drawing.Size(56, 13)
+        Me.lblTMDBHeader.TabIndex = 19
+        Me.lblTMDBHeader.Text = "TMDB ID:"
+        Me.lblTMDBHeader.Visible = False
         '
         'lblPlotHeader
         '
@@ -389,11 +389,11 @@ Partial Class dlgTMDBSearchResults
         Me.Controls.Add(Me.btnSearch)
         Me.Controls.Add(Me.txtSearch)
         Me.Controls.Add(Me.lblPlotHeader)
-        Me.Controls.Add(Me.lblIMDBHeader)
+        Me.Controls.Add(Me.lblTMDBHeader)
         Me.Controls.Add(Me.lblGenreHeader)
         Me.Controls.Add(Me.lblDirectorHeader)
         Me.Controls.Add(Me.lblYearHeader)
-        Me.Controls.Add(Me.lblIMDB)
+        Me.Controls.Add(Me.lblTMDBID)
         Me.Controls.Add(Me.btnVerify)
         Me.Controls.Add(Me.chkManual)
         Me.Controls.Add(Me.pnlTop)
@@ -433,21 +433,21 @@ Partial Class dlgTMDBSearchResults
     Friend WithEvents lblTitle As System.Windows.Forms.Label
     Friend WithEvents lblTagline As System.Windows.Forms.Label
     Friend WithEvents txtPlot As System.Windows.Forms.TextBox
-	Friend WithEvents lblYear As System.Windows.Forms.Label
-	Friend WithEvents lblDirector As System.Windows.Forms.Label
-	Friend WithEvents lblGenre As System.Windows.Forms.Label
-	Friend WithEvents txtTMDBID As System.Windows.Forms.TextBox
-	Friend WithEvents pnlTop As System.Windows.Forms.Panel
-	Friend WithEvents Label2 As System.Windows.Forms.Label
-	Friend WithEvents Label1 As System.Windows.Forms.Label
-	Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
-	Friend WithEvents chkManual As System.Windows.Forms.CheckBox
-	Friend WithEvents btnVerify As System.Windows.Forms.Button
-	Friend WithEvents lblIMDB As System.Windows.Forms.Label
-	Friend WithEvents lblYearHeader As System.Windows.Forms.Label
-	Friend WithEvents lblDirectorHeader As System.Windows.Forms.Label
-	Friend WithEvents lblGenreHeader As System.Windows.Forms.Label
-	Friend WithEvents lblIMDBHeader As System.Windows.Forms.Label
+    Friend WithEvents lblYear As System.Windows.Forms.Label
+    Friend WithEvents lblDirector As System.Windows.Forms.Label
+    Friend WithEvents lblGenre As System.Windows.Forms.Label
+    Friend WithEvents txtTMDBID As System.Windows.Forms.TextBox
+    Friend WithEvents pnlTop As System.Windows.Forms.Panel
+    Friend WithEvents Label2 As System.Windows.Forms.Label
+    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
+    Friend WithEvents chkManual As System.Windows.Forms.CheckBox
+    Friend WithEvents btnVerify As System.Windows.Forms.Button
+    Friend WithEvents lblTMDBID As System.Windows.Forms.Label
+    Friend WithEvents lblYearHeader As System.Windows.Forms.Label
+    Friend WithEvents lblDirectorHeader As System.Windows.Forms.Label
+    Friend WithEvents lblGenreHeader As System.Windows.Forms.Label
+    Friend WithEvents lblTMDBHeader As System.Windows.Forms.Label
 	Friend WithEvents lblPlotHeader As System.Windows.Forms.Label
 	Friend WithEvents btnSearch As System.Windows.Forms.Button
 	Friend WithEvents txtSearch As System.Windows.Forms.TextBox
