@@ -27,6 +27,7 @@ Imports EmberAPI
 
 Public Class Scraper
 
+
 #Region "Fields"
 
     ''' <summary>
@@ -154,28 +155,31 @@ Public Class Scraper
 
 #Region "Fields"
 
-        Dim AllSeasonPoster As TVDBShowPoster
+        Dim AllSeasonPoster As TVDBPoster
+        Dim AllSeasonBanner As TVDBShowBanner
+        Dim AllSeasonFanart As TVDBFanart
         Dim SeasonImageList As List(Of TVDBSeasonImage)
         Dim ShowFanart As TVDBFanart
-        Dim ShowPoster As TVDBShowPoster
+        Dim ShowPoster As TVDBPoster
+        Dim ShowBanner As TVDBShowBanner
 
 #End Region 'Fields
 
 #Region "Methods"
-
+        'TODO: make the new class serializable
         Public Function Clone() As TVImages
             Dim newTVI As New TVImages
-            Try
-                Using ms As New IO.MemoryStream()
-                    Dim bf As New System.Runtime.Serialization.Formatters.Binary.BinaryFormatter()
-                    bf.Serialize(ms, Me)
-                    ms.Position = 0
-                    newTVI = DirectCast(bf.Deserialize(ms), TVImages)
-                    ms.Close()
-                End Using
-            Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
-            End Try
+            'Try
+            '    Using ms As New IO.MemoryStream()
+            '        Dim bf As New System.Runtime.Serialization.Formatters.Binary.BinaryFormatter()
+            '        bf.Serialize(ms, Me)
+            '        ms.Position = 0
+            '        newTVI = DirectCast(bf.Deserialize(ms), TVImages)
+            '        ms.Close()
+            '    End Using
+            'Catch ex As Exception
+            '    Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            'End Try
             Return newTVI
         End Function
 
@@ -891,6 +895,7 @@ Public Class Scraper
                                 Dim cSea = From cSeason As TVDBSeasonImage In TVDBImages.SeasonImageList Where cSeason.Season = iSea Take 1
                                 If cSea.Count > 0 Then
                                     If Not IsNothing(cSea(0).Poster.Image) Then Episode.SeasonPosterPath = cSea(0).Poster.SaveAsSeasonPoster(Episode)
+                                    If Not IsNothing(cSea(0).Banner.Image) Then Episode.SeasonBannerPath = cSea(0).Banner.SaveAsSeasonBanner(Episode)
 
                                     If Me.bwTVDB.CancellationPending Then Return
 
@@ -1230,7 +1235,7 @@ Public Class Scraper
                                ((IsNothing(tImage.Element("Language")) OrElse tImage.Element("Language").Value = "en") AndAlso CBool(AdvancedSettings.GetSetting("AlwaysGetEnglishTVImages", "True"))))) Then
                                 Select Case tImage.Element("BannerType").Value
                                     Case "fanart"
-                                        tmpTVDBShow.Fanart.Add(New TVDBFanart With { _
+                                        tmpTVDBShow.Fanarts.Add(New TVDBFanart With { _
                                                              .URL = String.Format("http://{0}/banners/{1}", _TVDBMirror, tImage.Element("BannerPath").Value), _
                                                              .ThumbnailURL = If(IsNothing(tImage.Element("ThumbnailPath")) OrElse String.IsNullOrEmpty(tImage.Element("ThumbnailPath").Value), String.Empty, String.Format("http://{0}/banners/{1}", _TVDBMirror, tImage.Element("ThumbnailPath").Value)), _
                                                              .Size = If(IsNothing(tImage.Element("BannerType2")) OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), New Size With {.Width = 0, .Height = 0}, StringUtils.StringToSize(tImage.Element("BannerType2").Value)), _
@@ -1244,14 +1249,23 @@ Public Class Scraper
                                                               .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "posters", Path.DirectorySeparatorChar, tImage.Element("BannerPath").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar))), _
                                                               .Language = If(IsNothing(tImage.Element("Language")) OrElse String.IsNullOrEmpty(tImage.Element("Language").Value), String.Empty, tImage.Element("Language").Value)})
                                     Case "season"
-                                        tmpTVDBShow.SeasonPosters.Add(New TVDBSeasonPoster With { _
-                                                                .URL = String.Format("http://{0}/banners/{1}", _TVDBMirror, tImage.Element("BannerPath").Value), _
-                                                                .Season = If(IsNothing(tImage.Element("Season")) OrElse String.IsNullOrEmpty(tImage.Element("Season").Value), 0, Convert.ToInt32(tImage.Element("Season").Value)), _
-                                                                .Type = If(IsNothing(tImage.Element("BannerType2")) OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), Enums.SeasonPosterType.None, StringToSeasonPosterType(tImage.Element("BannerType2").Value)), _
-                                                                .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seasonposters", Path.DirectorySeparatorChar, tImage.Element("BannerPath").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar))), _
-                                                                .Language = If(IsNothing(tImage.Element("Language")) OrElse String.IsNullOrEmpty(tImage.Element("Language").Value), String.Empty, tImage.Element("Language").Value)})
+                                        If tImage.Element("BannerType2").Value.ToLower = "season" Then
+                                            tmpTVDBShow.SeasonPosters.Add(New TVDBSeasonPoster With { _
+                                                                    .URL = String.Format("http://{0}/banners/{1}", _TVDBMirror, tImage.Element("BannerPath").Value), _
+                                                                    .Season = If(IsNothing(tImage.Element("Season")) OrElse String.IsNullOrEmpty(tImage.Element("Season").Value), 0, Convert.ToInt32(tImage.Element("Season").Value)), _
+                                                                    .Type = If(IsNothing(tImage.Element("BannerType2")) OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), Enums.SeasonPosterType.None, StringToSeasonPosterType(tImage.Element("BannerType2").Value)), _
+                                                                    .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seasonposters", Path.DirectorySeparatorChar, tImage.Element("BannerPath").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar))), _
+                                                                    .Language = If(IsNothing(tImage.Element("Language")) OrElse String.IsNullOrEmpty(tImage.Element("Language").Value), String.Empty, tImage.Element("Language").Value)})
+                                        Else
+                                            tmpTVDBShow.SeasonBanners.Add(New TVDBSeasonBanner With { _
+                                                                    .URL = String.Format("http://{0}/banners/{1}", _TVDBMirror, tImage.Element("BannerPath").Value), _
+                                                                    .Season = If(IsNothing(tImage.Element("Season")) OrElse String.IsNullOrEmpty(tImage.Element("Season").Value), 0, Convert.ToInt32(tImage.Element("Season").Value)), _
+                                                                    .Type = If(IsNothing(tImage.Element("BannerType2")) OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), Enums.SeasonPosterType.None, StringToSeasonPosterType(tImage.Element("BannerType2").Value)), _
+                                                                    .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seasonposters", Path.DirectorySeparatorChar, tImage.Element("BannerPath").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar))), _
+                                                                    .Language = If(IsNothing(tImage.Element("Language")) OrElse String.IsNullOrEmpty(tImage.Element("Language").Value), String.Empty, tImage.Element("Language").Value)})
+                                        End If
                                     Case "series"
-                                        tmpTVDBShow.ShowPosters.Add(New TVDBShowPoster With { _
+                                        tmpTVDBShow.ShowBanners.Add(New TVDBShowBanner With { _
                                                               .URL = String.Format("http://{0}/banners/{1}", _TVDBMirror, tImage.Element("BannerPath").Value), _
                                                               .Type = If(IsNothing(tImage.Element("BannerType2")) OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), Enums.ShowBannerType.None, StringToShowPosterType(tImage.Element("BannerType2").Value)), _
                                                               .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriesposters", Path.DirectorySeparatorChar, tImage.Element("BannerPath").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar))), _
@@ -1418,6 +1432,7 @@ Public Class Scraper
 
     End Class
 
+    <Serializable()> _
     Public Class TVDBPoster
 
 #Region "Fields"
@@ -1508,6 +1523,8 @@ Public Class Scraper
 
         Private _fanart As TVDBFanart
         Private _poster As Images
+        Private _banner As Images
+        Private _landscape As Images
         Private _season As Integer
 
 #End Region 'Fields
@@ -1540,6 +1557,24 @@ Public Class Scraper
             End Set
         End Property
 
+        Public Property Banner() As Images
+            Get
+                Return Me._banner
+            End Get
+            Set(ByVal value As Images)
+                Me._banner = value
+            End Set
+        End Property
+
+        Public Property Landscape() As Images
+            Get
+                Return Me._landscape
+            End Get
+            Set(ByVal value As Images)
+                Me._landscape = value
+            End Set
+        End Property
+
         Public Property Season() As Integer
             Get
                 Return Me._season
@@ -1556,6 +1591,8 @@ Public Class Scraper
         Public Sub Clear()
             Me._season = -1
             Me._poster = New Images
+            Me._banner = New Images
+            Me._landscape = New Images
             Me._fanart = New TVDBFanart
         End Sub
 
@@ -1657,17 +1694,112 @@ Public Class Scraper
 
     End Class
 
+    Public Class TVDBSeasonBanner
+
+#Region "Fields"
+
+        Private _image As Images
+        Private _localfile As String
+        Private _season As Integer
+        Private _type As Enums.SeasonPosterType
+        Private _url As String
+        Private _language As String
+
+#End Region 'Fields
+
+#Region "Constructors"
+
+        Public Sub New()
+            Me.Clear()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Properties"
+
+        Public Property Image() As Images
+            Get
+                Return Me._image
+            End Get
+            Set(ByVal value As Images)
+                Me._image = value
+            End Set
+        End Property
+
+        Public Property LocalFile() As String
+            Get
+                Return Me._localfile
+            End Get
+            Set(ByVal value As String)
+                Me._localfile = value
+            End Set
+        End Property
+
+        Public Property Season() As Integer
+            Get
+                Return Me._season
+            End Get
+            Set(ByVal value As Integer)
+                Me._season = value
+            End Set
+        End Property
+
+        Public Property Type() As Enums.SeasonPosterType
+            Get
+                Return Me._type
+            End Get
+            Set(ByVal value As Enums.SeasonPosterType)
+                Me._type = value
+            End Set
+        End Property
+
+        Public Property URL() As String
+            Get
+                Return Me._url
+            End Get
+            Set(ByVal value As String)
+                Me._url = value
+            End Set
+        End Property
+
+        Public Property Language() As String
+            Get
+                Return Me._language
+            End Get
+            Set(ByVal value As String)
+                Me._language = value
+            End Set
+        End Property
+
+#End Region 'Properties
+
+#Region "Methods"
+
+        Public Sub Clear()
+            Me._url = String.Empty
+            Me._season = 0
+            Me._type = Enums.SeasonPosterType.None
+            Me._localfile = String.Empty
+            Me._image = New Images
+            Me._language = String.Empty
+        End Sub
+
+#End Region 'Methods
+
+    End Class
+
     Public Class TVDBShow
 
 #Region "Fields"
 
         Private _allseason As Structures.DBTV
         Private _episodes As New List(Of Structures.DBTV)
-        Private _fanart As New List(Of TVDBFanart)
+        Private _fanarts As New List(Of TVDBFanart)
         Private _posters As New List(Of TVDBPoster)
         Private _seasonposters As New List(Of TVDBSeasonPoster)
+        Private _seasonbanners As New List(Of TVDBSeasonBanner)
         Private _show As Structures.DBTV
-        Private _showposters As New List(Of TVDBShowPoster)
+        Private _showbanners As New List(Of TVDBShowBanner)
 
 #End Region 'Fields
 
@@ -1699,12 +1831,12 @@ Public Class Scraper
             End Set
         End Property
 
-        Public Property Fanart() As List(Of TVDBFanart)
+        Public Property Fanarts() As List(Of TVDBFanart)
             Get
-                Return Me._fanart
+                Return Me._fanarts
             End Get
             Set(ByVal value As List(Of TVDBFanart))
-                Me._fanart = value
+                Me._fanarts = value
             End Set
         End Property
 
@@ -1726,6 +1858,15 @@ Public Class Scraper
             End Set
         End Property
 
+        Public Property SeasonBanners() As List(Of TVDBSeasonBanner)
+            Get
+                Return Me._seasonbanners
+            End Get
+            Set(ByVal value As List(Of TVDBSeasonBanner))
+                Me._seasonbanners = value
+            End Set
+        End Property
+
         Public Property Show() As Structures.DBTV
             Get
                 Return Me._show
@@ -1735,12 +1876,12 @@ Public Class Scraper
             End Set
         End Property
 
-        Public Property ShowPosters() As List(Of TVDBShowPoster)
+        Public Property ShowBanners() As List(Of TVDBShowBanner)
             Get
-                Return Me._showposters
+                Return Me._showbanners
             End Get
-            Set(ByVal value As List(Of TVDBShowPoster))
-                Me._showposters = value
+            Set(ByVal value As List(Of TVDBShowBanner))
+                Me._showbanners = value
             End Set
         End Property
 
@@ -1752,9 +1893,10 @@ Public Class Scraper
             Me._show = New Structures.DBTV
             Me._allseason = New Structures.DBTV
             Me._episodes = New List(Of Structures.DBTV)
-            Me._fanart = New List(Of TVDBFanart)
-            Me._showposters = New List(Of TVDBShowPoster)
+            Me._fanarts = New List(Of TVDBFanart)
+            Me._showbanners = New List(Of TVDBShowBanner)
             Me._seasonposters = New List(Of TVDBSeasonPoster)
+            Me._seasonbanners = New List(Of TVDBSeasonBanner)
             Me._posters = New List(Of TVDBPoster)
         End Sub
 
@@ -1763,7 +1905,7 @@ Public Class Scraper
     End Class
 
     <Serializable()> _
-    Public Class TVDBShowPoster
+    Public Class TVDBShowBanner
 
 #Region "Fields"
 

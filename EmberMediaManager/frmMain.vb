@@ -1418,7 +1418,7 @@ Public Class frmMain
                                     tURL = Trailers.DownloadTrailer(DBScrapeMovie.Filename, DBScrapeMovie.isSingle, tURL)
                                     If Not String.IsNullOrEmpty(tURL) Then
                                         If StringUtils.isValidURL(tURL) Then
-                                            If Master.eSettings.XBMCTrailerFormat Then
+                                            If Master.eSettings.MovieXBMCTrailerFormat Then
                                                 DBScrapeMovie.Movie.Trailer = Replace(tURL, "http://www.youtube.com/watch?v=", "plugin://plugin.video.youtube/?action=play_video&videoid=")
                                             Else
                                                 DBScrapeMovie.Movie.Trailer = tURL
@@ -1437,7 +1437,7 @@ Public Class frmMain
                                     tURL = dTrailerSelect.ShowDialog(DBScrapeMovie, aUrlList)
                                     If Not String.IsNullOrEmpty(tURL) Then
                                         If StringUtils.isValidURL(tURL) Then
-                                            If Master.eSettings.XBMCTrailerFormat Then
+                                            If Master.eSettings.MovieXBMCTrailerFormat Then
                                                 DBScrapeMovie.Movie.Trailer = Replace(tURL, "http://www.youtube.com/watch?v=", "plugin://plugin.video.youtube/?action=play_video&videoid=")
                                             Else
                                                 DBScrapeMovie.Movie.Trailer = tURL
@@ -1467,6 +1467,7 @@ Public Class frmMain
                                             Dim etPath As String = EThumb.SaveAsExtraThumb(DBScrapeMovie)
                                             If Not String.IsNullOrEmpty(etPath) Then
                                                 DBScrapeMovie.EThumbsPath = etPath
+                                                MovieScraperEvent(Enums.MovieScraperEventType.EThumbsItem, True)
                                             End If
                                         End If
                                     Next
@@ -3173,7 +3174,9 @@ doCancel:
             SQLTrans.Commit()
         End Using
 
-        Me.FillSeasons(Convert.ToInt32(Me.dgvTVSeasons.SelectedRows(0).Cells(0).Value))
+        If Me.dgvTVSeasons.RowCount > 0 Then
+            Me.FillSeasons(Convert.ToInt32(Me.dgvTVSeasons.SelectedRows(0).Cells(0).Value))
+        End If
 
         Me.SetTVCount()
     End Sub
@@ -3197,7 +3200,9 @@ doCancel:
             cSeas = Me.currSeasonRow
         End If
 
-        Me.FillEpisodes(Convert.ToInt32(Me.dgvTVSeasons.Item(0, cSeas).Value), Convert.ToInt32(Me.dgvTVSeasons.Item(2, cSeas).Value))
+        If Me.dgvTVEpisodes.RowCount > 0 Then
+            Me.FillEpisodes(Convert.ToInt32(Me.dgvTVSeasons.Item(0, cSeas).Value), Convert.ToInt32(Me.dgvTVSeasons.Item(2, cSeas).Value))
+        End If
 
         Me.SetTVCount()
     End Sub
@@ -3456,18 +3461,80 @@ doCancel:
     Private Sub dgvMediaList_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMovies.CellClick
         Try
 
-            If e.ColumnIndex = 3 OrElse Not Master.eSettings.ClickScrape Then 'Title
-                If Me.dgvMovies.SelectedRows.Count > 0 Then
-                    If Me.dgvMovies.RowCount > 0 Then
-                        If Me.dgvMovies.SelectedRows.Count > 1 Then
-                            Me.SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvMovies.SelectedRows.Count))
-                        ElseIf Me.dgvMovies.SelectedRows.Count = 1 Then
-                            Me.SetStatus(Me.dgvMovies.SelectedRows(0).Cells(1).Value.ToString)
+            If e.ColumnIndex = 3 OrElse e.ColumnIndex = 34 OrElse Not Master.eSettings.ClickScrape Then 'Title
+                If Not e.ColumnIndex = 34 Then
+                    If Me.dgvMovies.SelectedRows.Count > 0 Then
+                        If Me.dgvMovies.RowCount > 0 Then
+                            If Me.dgvMovies.SelectedRows.Count > 1 Then
+                                Me.SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvMovies.SelectedRows.Count))
+                            ElseIf Me.dgvMovies.SelectedRows.Count = 1 Then
+                                Me.SetStatus(Me.dgvMovies.SelectedRows(0).Cells(1).Value.ToString)
+                            End If
                         End If
+                        Me.currRow = Me.dgvMovies.SelectedRows(0).Index
                     End If
-                    Me.currRow = Me.dgvMovies.SelectedRows(0).Index
+                Else
+                    'TODO: maybe we can merge this to one sub/function together with "Private Sub cmnuMovieWatched_Click"
+                    Try
+                        Dim setWatched As Boolean = False
+                        If Me.dgvMovies.SelectedRows.Count > 1 Then
+                            For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
+                                'if any one item is set as not watched, set menu to watched
+                                'else they are all watched so set menu to not watched
+                                If Not Convert.ToBoolean(sRow.Cells(34).Value) Then
+                                    setWatched = True
+                                    Exit For
+                                End If
+                            Next
+                        End If
+
+                        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MediaDBConn.BeginTransaction()
+                            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
+                                Dim parPlaycount As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPlaycount", DbType.String, 0, "Playcount")
+                                Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
+                                SQLcommand.CommandText = "UPDATE movies SET Playcount = (?) WHERE id = (?);"
+                                For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
+                                    Dim currPlaycount As String = String.Empty
+                                    Dim hasWatched As Boolean = False
+                                    Dim newPlaycount As String = String.Empty
+
+                                    currPlaycount = Convert.ToString(sRow.Cells(33).Value)
+                                    hasWatched = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", True, False)
+
+                                    If Me.dgvMovies.SelectedRows.Count > 1 AndAlso setWatched Then
+                                        newPlaycount = If(Not String.IsNullOrEmpty(currPlaycount) AndAlso Not currPlaycount = "0", currPlaycount, "1")
+                                    ElseIf Not hasWatched Then
+                                        newPlaycount = "1"
+                                    Else
+                                        newPlaycount = "0"
+                                    End If
+
+                                    parPlaycount.Value = newPlaycount
+                                    parID.Value = sRow.Cells(0).Value
+                                    SQLcommand.ExecuteNonQuery()
+                                    sRow.Cells(33).Value = newPlaycount
+                                    sRow.Cells(34).Value = If(Me.dgvMovies.SelectedRows.Count > 1, setWatched, Not hasWatched)
+                                Next
+                            End Using
+                            SQLtransaction.Commit()
+
+                        End Using
+
+                        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MediaDBConn.BeginTransaction()
+                            For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
+                                Me.RefreshMovie(Convert.ToInt64(sRow.Cells(0).Value), True, False, True, True)
+                            Next
+                            SQLtransaction.Commit()
+                        End Using
+
+                        Me.LoadInfo(Convert.ToInt32(Me.dgvMovies.Item(0, Me.dgvMovies.CurrentCell.RowIndex).Value), Me.dgvMovies.Item(1, Me.dgvMovies.CurrentCell.RowIndex).Value.ToString, True, False)
+                        Me.dgvMovies.Invalidate()
+
+                    Catch ex As Exception
+                        Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                    End Try
                 End If
-            ElseIf Master.eSettings.ClickScrape AndAlso e.RowIndex >= 0 AndAlso e.ColumnIndex <> 8 AndAlso Not bwMovieScraper.IsBusy Then
+            ElseIf Master.eSettings.ClickScrape AndAlso e.RowIndex >= 0 AndAlso e.ColumnIndex <> 8 AndAlso e.ColumnIndex <> 34 AndAlso Not bwMovieScraper.IsBusy Then
                 Dim movie As Int32 = CType(Me.dgvMovies.Rows(e.RowIndex).Cells(0).Value, Int32)
                 Dim objCell As DataGridViewCell = CType(Me.dgvMovies.Rows(e.RowIndex).Cells(e.ColumnIndex), DataGridViewCell)
 
@@ -6040,6 +6107,7 @@ doCancel:
                 Me.TrayIcon.Text = "Ember Media Manager"
                 Me.TrayIcon.Visible = True
             End If
+            Master.is32Bit = (IntPtr.Size = 4)
 
             Dim Args() As String = Environment.GetCommandLineArgs
 
@@ -6081,7 +6149,11 @@ doCancel:
 
             ' Force initialization of languages for main
             Master.eLang.LoadAllLanguage(Master.eSettings.Language)
-            fLoading.SetVersionMesg(Master.eLang.GetString(865, "Version {0}.{1}.{2}.{3}"))
+            Dim aBit As String = Master.eLang.GetString(1008, "x64")
+            If Master.is32Bit Then
+                Master.eLang.GetString(1007, "x86")
+            End If
+            fLoading.SetVersionMesg(Master.eLang.GetString(865, "Version {0}.{1}.{2}.{3} {4}"), aBit)
 
             fLoading.SetLoadingMesg(Master.eLang.GetString(854, "Basic setup"))
 
@@ -6431,28 +6503,33 @@ doCancel:
                 'Pull Assembly version info from current Ember repo on github
                 Dim HTML As String = sHTTP.DownloadData("https://raw.github.com/DanCooper/Ember-MM-Newscraper/master/EmberMediaManager/My%20Project/AssemblyInfo.vb")
                 sHTTP = Nothing
-                Dim VersionNumber As String = System.String.Format("{0}.{1}.{2}.{3}", My.Application.Info.Version.Major, My.Application.Info.Version.Minor, My.Application.Info.Version.Build, My.Application.Info.Version.Revision)
-
+                Dim aBit As String = Master.eLang.GetString(1008, "x64")
+                If Master.is32Bit Then
+                    Master.eLang.GetString(1007, "x86")
+                End If
+                Dim VersionNumber As String = System.String.Format(Master.eLang.GetString(865, "Version {0}.{1}.{2}.{3} {4}"), My.Application.Info.Version.Major, My.Application.Info.Version.Minor, My.Application.Info.Version.Build, My.Application.Info.Version.Revision, aBit)
+                ' Not localized as is the Assembly file version
+                Dim VersionNumberO As String = System.String.Format("{0}.{1}.{2}.{3}", My.Application.Info.Version.Major, My.Application.Info.Version.Minor, My.Application.Info.Version.Build, My.Application.Info.Version.Revision)
                 If Not String.IsNullOrEmpty(HTML) Then
                     'Example: AssemblyFileVersion("1.3.0.18")>
                     Dim mc As MatchCollection = System.Text.RegularExpressions.Regex.Matches(HTML, "AssemblyFileVersion([^<]+)>")
                     'check to see if at least one entry was found
                     If mc.Count > 0 Then
                         'just use the first match if more are found and compare with running Ember Version
-                        If mc(0).Value.ToString <> "AssemblyFileVersion(""" & VersionNumber & """)>" Then
+                        If mc(0).Value.ToString <> "AssemblyFileVersion(""" & VersionNumberO & """)>" Then
                             'means that running Ember version is outdated!
-                            lblUpdate.ForeColor = Color.DarkRed
-                            lblUpdate.Text = "Ember v." & VersionNumber & " (New version available!)"
+                            mnuVersion.Text = System.String.Format(Master.eLang.GetString(1009, "{0} - (New version available!)"), VersionNumber)
+                            mnuVersion.ForeColor = Color.DarkRed
                         Else
                             'Ember already up to date!
-                            lblUpdate.ForeColor = Color.DarkGreen
-                            lblUpdate.Text = "Ember v." & VersionNumber
+                            mnuVersion.Text = VersionNumber
+                            mnuVersion.ForeColor = Color.DarkGreen
                         End If
                     End If
                     'if no github query possible, than simply display Ember version on form
                 Else
-                    lblUpdate.ForeColor = Color.DarkGreen
-                    lblUpdate.Text = "Ember v." & VersionNumber
+                    mnuVersion.Text = VersionNumber
+                    mnuVersion.ForeColor = Color.DarkBlue
                 End If
 
             Catch ex As Exception
@@ -7390,7 +7467,7 @@ doCancel:
                     dScrapeRow.Item(6) = DirectCast(Parameter, Boolean)
                 Case Enums.MovieScraperEventType.TrailerItem
                     dScrapeRow.Item(7) = DirectCast(Parameter, Boolean)
-                Case Enums.MovieScraperEventType.ThumbsItem
+                Case Enums.MovieScraperEventType.EThumbsItem
                     dScrapeRow.Item(9) = DirectCast(Parameter, Boolean)
                 Case Enums.MovieScraperEventType.SortTitle
                     dScrapeRow.Item(47) = DirectCast(Parameter, String)
@@ -7790,7 +7867,7 @@ doCancel:
                     tmpMovieDb.FileSource = AdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(tmpMovieDb.Filename)), String.Empty, "*EmberAPP")
                 End If
 
-                If Master.eSettings.UseYAMJ AndAlso Master.eSettings.YAMJWatchedFile Then
+                If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
                     For Each a In FileUtils.GetFilenameList.Movie(tmpMovieDb.Filename, tmpMovieDb.isSingle, Enums.ModType.WatchedFile)
                         If delWatched Then
                             If File.Exists(a) Then
@@ -8006,8 +8083,9 @@ doCancel:
 
                 Dim sContainer As New Scanner.TVShowContainer With {.ShowPath = tmpShowDb.ShowPath}
                 fScanner.GetShowFolderContents(sContainer, ID)
-                tmpShowDb.ShowPosterPath = sContainer.Poster
+                tmpShowDb.ShowBannerPath = sContainer.Banner
                 tmpShowDb.ShowFanartPath = sContainer.Fanart
+                tmpShowDb.ShowPosterPath = sContainer.Poster
                 'assume invalid nfo if no title
                 tmpShowDb.ShowNfoPath = If(String.IsNullOrEmpty(tmpShowDb.TVShow.Title), String.Empty, sContainer.Nfo)
 
@@ -8033,6 +8111,14 @@ doCancel:
                 End If
 
                 Master.DB.SaveTVShowToDB(tmpShowDb, False, WithEpisodes, ToNfo)
+
+                ' DanCooper: i'm not shure if this is a proper solution...
+                If Master.eSettings.AllSeasonPosterEnabled Then
+                    tmpShowDb.SeasonBannerPath = sContainer.AllSeasonBanner
+                    tmpShowDb.SeasonFanartPath = sContainer.AllSeasonFanart
+                    tmpShowDb.SeasonPosterPath = sContainer.AllSeasonPoster
+                    Master.DB.SaveTVSeasonToDB(tmpShowDb, False, False)
+                End If
 
                 If Not BatchMode Then
                     Me.tspbLoading.Value += 1
@@ -8605,7 +8691,7 @@ doCancel:
 
 
                 'here for future use
-                Dim EFanartsAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart) AndAlso Master.eSettings.ExtrafanartsFrodo OrElse Master.eSettings.ExtrafanartsEden
+                Dim EFanartsAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart) AndAlso Master.eSettings.MovieExtrafanartsFrodo OrElse Master.eSettings.MovieExtrafanartsEden
                 Me.mnuAllAutoEFanarts.Enabled = EFanartsAllowed
                 Me.mnuAllAskEFanarts.Enabled = EFanartsAllowed
                 Me.mnuMissAutoEFanarts.Enabled = EFanartsAllowed
@@ -8627,7 +8713,7 @@ doCancel:
                 Me.cmnuTrayFilterAutoEFanarts.Enabled = EFanartsAllowed
                 Me.cmnuTrayFilterAskEFanarts.Enabled = EFanartsAllowed
 
-                Dim EThumbsAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart) AndAlso Master.eSettings.ExtrathumbsFrodo OrElse Master.eSettings.ExtrathumbsEden
+                Dim EThumbsAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart) AndAlso Master.eSettings.MovieExtrathumbsFrodo OrElse Master.eSettings.MovieExtrathumbsEden
                 Me.mnuAllAutoEThumbs.Enabled = EThumbsAllowed
                 Me.mnuAllAskEThumbs.Enabled = EThumbsAllowed
                 Me.mnuMissAutoEThumbs.Enabled = EThumbsAllowed
@@ -9571,7 +9657,7 @@ doCancel:
     ''' <param name="e"></param>
     ''' <remarks></remarks>
     Private Sub tmrAni_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles tmrAni.Tick
-         Try
+        Try
             If Master.eSettings.InfoPanelAnim Then
                 If Me.aniRaise Then
                     Me.pnlInfoPanel.Height += 5

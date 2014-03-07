@@ -254,7 +254,7 @@ Public Class dlgEditEpisode
         dFileInfoEdit.Height = pnlFileInfo.Height
         dFileInfoEdit.Show(True)
 
-        If Not (Master.eSettings.EpisodeDashFanart OrElse Master.eSettings.EpisodeDotFanart) Then
+        If Not Master.eSettings.AllSeasonPosterEnabled() Then
             Me.tcEditEpisode.TabPages.Remove(tpFanart)
         End If
         Dim params As New List(Of Object)(New Object() {New Panel})

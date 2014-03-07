@@ -6,12 +6,12 @@ using System.Runtime.InteropServices;
 // Attribute gesteuert. Ändern Sie diese Attributwerte, um die Informationen zu ändern,
 // die mit einer Assembly verknüpft sind.
 [assembly: AssemblyTitle("Trakttv")]
-[assembly: AssemblyDescription("Small Trakttv API Wrapper")]
+[assembly: AssemblyDescription("http://forum.xbmc.org/forumdisplay.php?fid=195")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Cocotus")]
+[assembly: AssemblyCompany("Ember Media Manager")]
 [assembly: AssemblyProduct("Trakttv")]
 [assembly: AssemblyCopyright("Copyright ©  2013")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyTrademark("Cocotus")]
 [assembly: AssemblyCulture("")]
 
 // Durch Festlegen von ComVisible auf "false" werden die Typen in dieser Assembly unsichtbar 
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // Sie können alle Werte angeben oder die standardmäßigen Build- und Revisionsnummern 
 // übernehmen, indem Sie "*" eingeben:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.4.0.0")]
+[assembly: AssemblyFileVersion("1.4.0.0")]

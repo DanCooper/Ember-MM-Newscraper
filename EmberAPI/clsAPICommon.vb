@@ -508,7 +508,7 @@ Public Class Globals
         poster_names(4).size = "w500"
         poster_names(4).width = 500
         poster_names(5).description = "original"
-        poster_names(5).index = Enums.PosterSize.Xlrg
+        poster_names(5).index = Enums.PosterSize.Original
         poster_names(5).size = "original"
         poster_names(5).width = 0
 
@@ -525,7 +525,7 @@ Public Class Globals
         backdrop_names(2).size = "w1280"
         backdrop_names(2).width = 1280
         backdrop_names(3).description = "original"
-        backdrop_names(3).index = Enums.PosterSize.Xlrg
+        backdrop_names(3).index = Enums.PosterSize.Original
         backdrop_names(3).size = "original"
         backdrop_names(3).width = 0
     End Sub
@@ -554,7 +554,7 @@ Public Class Enums
     End Enum
 
     Public Enum FanartSize As Integer
-        Xlrg = 0
+        Original = 0
         Lrg = 1
         Mid = 2
         Small = 3
@@ -623,7 +623,7 @@ Public Class Enums
         PosterItem = 2
         FanartItem = 3
         TrailerItem = 4
-        ThumbsItem = 5
+        EThumbsItem = 5
         SortTitle = 6
         ListTitle = 7
     End Enum
@@ -641,7 +641,7 @@ Public Class Enums
     ''' </summary>
     ''' <remarks></remarks>
     Public Enum PosterSize As Integer
-        Xlrg = 0
+        Original = 0
         Lrg = 1
         Mid = 2
         Small = 3
@@ -712,6 +712,9 @@ Public Class Enums
         Landscape = 7
         EFanarts = 8
         EThumbs = 9
+        CharacterArt = 10
+        ASBanner = 11
+        ASFanart = 12
     End Enum
     ''' <summary>
     ''' Enum representing valid TV image types
@@ -721,11 +724,21 @@ Public Class Enums
         All = 0
         ShowPoster = 1
         ShowFanart = 2
-        SeasonPoster = 3
-        SeasonFanart = 4
-        AllSeasonPoster = 5
-        EpisodePoster = 6
-        EpisodeFanart = 7
+        ShowBanner = 3
+        ShowLandscape = 4
+        ShowClearArt = 5
+        ShowClearLogo = 6
+        ShowCharacterArt = 7
+        SeasonPoster = 8
+        SeasonFanart = 9
+        SeasonBanner = 10
+        SeasonLandscape = 11
+        AllSeasonPoster = 12
+        AllSeasonFanart = 13
+        AllSeasonBanner = 14
+        AllSeasonLandscape = 15
+        EpisodePoster = 16
+        EpisodeFanart = 17
     End Enum
 
     Public Enum TVScraperEventType As Integer
@@ -1548,13 +1561,17 @@ Public Class Structures
         Dim IsMarkShow As Boolean
         Dim SeasonFanartPath As String
         Dim SeasonPosterPath As String
-        Dim ShowFanartPath As String
+        Dim SeasonBannerPath As String
+        Dim SeasonLandscapePath As String
         Dim ShowID As Long
         Dim ShowLanguage As String
         Dim ShowNeedsSave As Boolean
         Dim ShowNfoPath As String
         Dim ShowPath As String
+        Dim ShowFanartPath As String
         Dim ShowPosterPath As String
+        Dim ShowBannerPath As String
+        Dim ShowLandscapePath As String
         Dim Source As String
         Dim TVEp As MediaContainers.EpisodeDetails
         Dim TVShow As MediaContainers.TVShow

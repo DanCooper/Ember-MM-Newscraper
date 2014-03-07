@@ -39,6 +39,7 @@ Public Class Master
     Public Shared eSize As New Globals
     Public Shared GlobalScrapeMod As New Structures.ScrapeModifier
     Public Shared isWindows As Boolean = Functions.CheckIfWindows
+    Public Shared is32Bit As Boolean
     'Public Shared MediaJobLog As New MediaLog
     Public Shared SourcesList As New List(Of String)
     Public Shared TempPath As String = Path.Combine(Functions.AppPath, "Temp")

@@ -68,7 +68,11 @@ Public NotInheritable Class dlgAbout
         SetStyle(ControlStyles.AllPaintingInWmPaint Or ControlStyles.DoubleBuffer Or _
                  ControlStyles.ResizeRedraw Or ControlStyles.UserPaint, True)
 
-        Dim VersionNumber As String = System.String.Format("Version {0}.{1}.{2}.{3}", My.Application.Info.Version.Major, My.Application.Info.Version.Minor, My.Application.Info.Version.Build, My.Application.Info.Version.Revision)
+        Dim aBit As String = Master.eLang.GetString(1008, "x64")
+        If Master.is32Bit Then
+            Master.eLang.GetString(1007, "x86")
+        End If
+        Dim VersionNumber As String = System.String.Format(Master.eLang.GetString(865, "Version {0}.{1}.{2}.{3} {4}"), My.Application.Info.Version.Major, My.Application.Info.Version.Minor, My.Application.Info.Version.Build, My.Application.Info.Version.Revision, aBit)
 
         CredList.Add(New CredLine With {.Text = String.Concat("Ember Media Manager"), .Font = New Font("Microsoft Sans Serif", 24, FontStyle.Bold)})
         CredList.Add(New CredLine With {.Text = VersionNumber, .Font = New Font("Microsoft Sans Serif", 10, FontStyle.Bold)})

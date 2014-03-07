@@ -1125,8 +1125,8 @@ Public Class dlgEditMovie
         Dim ET_i As Integer = 0
 
         '*************** XBMC Frodo & Eden settings ***************
-        If Master.eSettings.UseFrodo OrElse Master.eSettings.UseEden Then
-            If Master.eSettings.ExtrathumbsFrodo OrElse Master.eSettings.ExtrathumbsEden Then
+        If Master.eSettings.MovieUseFrodo OrElse Master.eSettings.MovieUseEden Then
+            If Master.eSettings.MovieExtrathumbsFrodo OrElse Master.eSettings.MovieExtrathumbsEden Then
                 If FileUtils.Common.isVideoTS(Master.currMovie.Filename) Then
                     ET_tPath = Path.Combine(Directory.GetParent(Master.currMovie.Filename).FullName, "extrathumbs")
                 ElseIf FileUtils.Common.isBDRip(Master.currMovie.Filename) Then
@@ -1186,8 +1186,8 @@ Public Class dlgEditMovie
         Dim EF_i As Integer = 0
 
         '*************** XBMC Frodo & Eden settings ***************
-        If Master.eSettings.UseFrodo OrElse Master.eSettings.UseEden Then
-            If Master.eSettings.ExtrafanartsFrodo OrElse Master.eSettings.ExtrafanartsEden Then
+        If Master.eSettings.MovieUseFrodo OrElse Master.eSettings.MovieUseEden Then
+            If Master.eSettings.MovieExtrafanartsFrodo OrElse Master.eSettings.MovieExtrafanartsEden Then
                 If FileUtils.Common.isVideoTS(Master.currMovie.Filename) Then
                     EF_tPath = Path.Combine(Directory.GetParent(Master.currMovie.Filename).FullName, "extrafanart")
                 ElseIf FileUtils.Common.isBDRip(Master.currMovie.Filename) Then
@@ -1489,8 +1489,8 @@ Public Class dlgEditMovie
         Dim tPath As String = String.Empty
         Try
             '*************** XBMC Frodo & Eden settings ***************
-            If Master.eSettings.UseFrodo OrElse Master.eSettings.UseEden Then
-                If Master.eSettings.ExtrathumbsFrodo OrElse Master.eSettings.ExtrathumbsEden Then
+            If Master.eSettings.MovieUseFrodo OrElse Master.eSettings.MovieUseEden Then
+                If Master.eSettings.MovieExtrathumbsFrodo OrElse Master.eSettings.MovieExtrathumbsEden Then
                     If FileUtils.Common.isVideoTS(Master.currMovie.Filename) Then
                         tPath = Path.Combine(Directory.GetParent(Master.currMovie.Filename).FullName, "extrathumbs")
                     ElseIf FileUtils.Common.isBDRip(Master.currMovie.Filename) Then
@@ -1546,8 +1546,8 @@ Public Class dlgEditMovie
         Dim tPath As String = String.Empty
         Try
             '*************** XBMC Frodo & Eden settings ***************
-            If Master.eSettings.UseFrodo OrElse Master.eSettings.UseEden Then
-                If Master.eSettings.ExtrafanartsFrodo OrElse Master.eSettings.ExtrafanartsEden Then
+            If Master.eSettings.MovieUseFrodo OrElse Master.eSettings.MovieUseEden Then
+                If Master.eSettings.MovieExtrafanartsFrodo OrElse Master.eSettings.MovieExtrafanartsEden Then
                     If FileUtils.Common.isVideoTS(Master.currMovie.Filename) Then
                         tPath = Path.Combine(Directory.GetParent(Master.currMovie.Filename).FullName, "extrafanart")
                     ElseIf FileUtils.Common.isBDRip(Master.currMovie.Filename) Then
@@ -1732,7 +1732,7 @@ Public Class dlgEditMovie
                 Master.currMovie.Movie.OldCredits = .txtCredits.Text.Trim
                 Master.currMovie.Movie.Studio = .txtStudio.Text.Trim
 
-                If Master.eSettings.XBMCTrailerFormat Then
+                If Master.eSettings.MovieXBMCTrailerFormat Then
                     Master.currMovie.Movie.Trailer = Replace(.txtTrailer.Text.Trim, "http://www.youtube.com/watch?v=", "plugin://plugin.video.youtube/?action=play_video&videoid=")
                 Else
                     Master.currMovie.Movie.Trailer = .txtTrailer.Text.Trim
@@ -1746,7 +1746,7 @@ Public Class dlgEditMovie
                         Master.currMovie.Movie.PlayCount = "1"
                     End If
 
-                    If Master.eSettings.UseYAMJ AndAlso Master.eSettings.YAMJWatchedFile Then
+                    If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
                         For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.isSingle, Enums.ModType.WatchedFile)
                             If Not File.Exists(a) Then
                                 Dim fs As FileStream = File.Create(a)
@@ -1760,7 +1760,7 @@ Public Class dlgEditMovie
                         Master.currMovie.Movie.PlayCount = ""
                     End If
 
-                    If Master.eSettings.UseYAMJ AndAlso Master.eSettings.YAMJWatchedFile Then
+                    If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
                         For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.isSingle, Enums.ModType.WatchedFile)
                             If File.Exists(a) Then
                                 File.Delete(a)
@@ -1820,7 +1820,7 @@ Public Class dlgEditMovie
                     Master.currMovie.PosterPath = String.Empty
                 End If
 
-                If Master.GlobalScrapeMod.Actors AndAlso Master.eSettings.ScraperActorThumbs AndAlso (Master.eSettings.ActorThumbsFrodo OrElse Master.eSettings.ActorThumbsEden) Then
+                If Master.GlobalScrapeMod.Actors AndAlso Master.eSettings.ScraperActorThumbs AndAlso (Master.eSettings.MovieActorThumbsFrodo OrElse Master.eSettings.MovieActorThumbsEden) Then
                     For Each act As MediaContainers.Person In Master.currMovie.Movie.Actors
                         Dim img As New Images
                         img.FromWeb(act.Thumb)

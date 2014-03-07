@@ -33,9 +33,17 @@ Public Class Settings
 
     Private _actorlimit As Integer
     Private _allsbanner As Boolean
+    Private _allsbannerheight As Integer
+    Private _allsbannerQuality As Integer
+    Private _allsbannersize As Enums.PosterSize
     Private _allsbannertype As Enums.ShowBannerType
+    Private _allsbannerwidth As Integer
+    Private _allsfanartheight As Integer
+    Private _allsfanartquality As Integer
+    Private _allsfanartsize As Enums.FanartSize
+    Private _allsfanartwidth As Integer
     Private _allsposterheight As Integer
-    Private _allsposterQuality As Integer
+    Private _allsposterquality As Integer
     Private _allspostersize As Enums.PosterSize
     Private _allsposterwidth As Integer
     Private _allwaysdisplaygenrestext As Boolean
@@ -43,7 +51,6 @@ Public Class Settings
     Private _clickscrape As Boolean
     Private _askcheckboxscrape As Boolean
     Private _autobd As Boolean
-    Private _expertrecognizevts As Boolean
     Private _bdpath As String
     Private _moviesetspath As String
     Private _castimagesonly As Boolean
@@ -77,14 +84,9 @@ Public Class Settings
     Private _epfanartsize As Enums.FanartSize
     Private _epfanartwidth As Integer
     Private _epfiltercustom As List(Of String)
-    Private _episodedashfanart As Boolean
-    Private _episodedotfanart As Boolean
     Private _episodefanartcol As Boolean
-    Private _episodejpg As Boolean
-    Private _episodedashthumbjpg As Boolean
     Private _episodenfocol As Boolean
     Private _episodepostercol As Boolean
-    Private _episodetbn As Boolean
     Private _eplockplot As Boolean
     Private _eplockrating As Boolean
     Private _eplocktitle As Boolean
@@ -201,18 +203,22 @@ Public Class Settings
     Private _onlyvalueforcert As Boolean
     Private _outlineforplot As Boolean
     Private _outlineplotenglishoverwrite As Boolean
-    Private _overwriteallsPoster As Boolean
+    Private _overwriteallsbanner As Boolean
+    Private _overwriteallsfanart As Boolean
+    Private _overwriteallsposter As Boolean
     Private _overwriteEpFanart As Boolean
     Private _overwriteEpPoster As Boolean
-    Private _overwriteEFanarts As Boolean
-    Private _overwriteEThumbs As Boolean
-    Private _overwriteFanart As Boolean
+    Private _overwriteefanarts As Boolean
+    Private _overwriteethumbs As Boolean
+    Private _overwritefanart As Boolean
     Private _overwritenfo As Boolean
-    Private _overwritePoster As Boolean
-    Private _overwriteSeasonFanart As Boolean
-    Private _overwriteSeasonPoster As Boolean
-    Private _overwriteShowFanart As Boolean
-    Private _overwriteShowPoster As Boolean
+    Private _overwriteposter As Boolean
+    Private _overwriteseasonbanner As Boolean
+    Private _overwriteseasonfanart As Boolean
+    Private _overwriteseasonposter As Boolean
+    Private _overwriteshowbanner As Boolean
+    Private _overwriteshowfanart As Boolean
+    Private _overwriteshowposter As Boolean
     Private _overwritetrailer As Boolean
     Private _plotforoutline As Boolean
     Private _outlinelimit As Integer
@@ -228,6 +234,8 @@ Public Class Settings
     Private _proxycredentials As NetworkCredential
     Private _proxyport As Integer
     Private _proxyuri As String
+    Private _resizeallsbanner As Boolean
+    Private _resizeallsfanart As Boolean
     Private _resizeallsposter As Boolean
     Private _resizeepfanart As Boolean
     Private _resizeepposter As Boolean
@@ -235,8 +243,10 @@ Public Class Settings
     Private _resizeethumbs As Boolean
     Private _resizefanart As Boolean
     Private _resizeposter As Boolean
+    Private _resizeseasonbanner As Boolean
     Private _resizeseasonfanart As Boolean
     Private _resizeseasonposter As Boolean
+    Private _resizeshowbanner As Boolean
     Private _resizeshowfanart As Boolean
     Private _resizeshowposter As Boolean
     Private _runtimemask As String
@@ -266,47 +276,31 @@ Public Class Settings
     Private _scrapershowrating As Boolean
     Private _scrapershowstudio As Boolean
     Private _scrapershowtitle As Boolean
-    Private _seasonalljpg As Boolean
-    Private _seasonalltbn As Boolean
-    Private _seasonallposterjpg As Boolean
-    Private _seasondashfanart As Boolean
-    Private _seasonxxdashfanartjpg As Boolean
-    Private _seasondotfanart As Boolean
     Private _seasonfanartcol As Boolean
     Private _seasonfanartheight As Integer
-    Private _seasonfanartjpg As Boolean
     Private _seasonfanartQuality As Integer
     Private _seasonfanartsize As Enums.FanartSize
     Private _seasonfanartwidth As Integer
-    Private _seasonfolderjpg As Boolean
-    Private _seasonnamejpg As Boolean
-    Private _seasonnametbn As Boolean
     Private _seasonpostercol As Boolean
+    Private _seasonbannerheight As Integer
+    Private _seasonbannerQuality As Integer
+    Private _seasonbannersize As Enums.SeasonPosterType
+    Private _seasonbannerwidth As Integer
     Private _seasonposterheight As Integer
-    Private _seasonposterjpg As Boolean
     Private _seasonposterQuality As Integer
     Private _seasonpostersize As Enums.SeasonPosterType
-    Private _seasonpostertbn As Boolean
     Private _seasonposterwidth As Integer
-    Private _seasonx As Boolean
-    Private _seasonxx As Boolean
-    Private _seasonxxdashposterjpg As Boolean
     Private _sets As New List(Of String)
     Private _showbanner As Boolean
     Private _showbannertype As Enums.ShowBannerType
-    Private _showdashfanart As Boolean
     Private _showdims As Boolean
-    Private _showdotfanart As Boolean
     Private _showfanartcol As Boolean
     Private _showfanartheight As Integer
-    Private _showfanartjpg As Boolean
     Private _showfanartQuality As Integer
     Private _showfanartsize As Enums.FanartSize
     Private _showfanartwidth As Integer
     Private _showfiltercustom As List(Of String)
-    Private _showfolderjpg As Boolean
     Private _showinfopanelstate As Integer
-    Private _showjpg As Boolean
     Private _showlockgenre As Boolean
     Private _showlockplot As Boolean
     Private _showlockrating As Boolean
@@ -314,16 +308,16 @@ Public Class Settings
     Private _showlocktitle As Boolean
     Private _shownfocol As Boolean
     Private _showpostercol As Boolean
+    Private _showbannerheight As Integer
+    Private _showbannerQuality As Integer
+    Private _showbannersize As Enums.PosterSize
+    Private _showbannerwidth As Integer
     Private _showposterheight As Integer
-    Private _showposterjpg As Boolean
-    Private _showbannerjpg As Boolean
     Private _showposterQuality As Integer
     Private _showpostersize As Enums.PosterSize
-    Private _showpostertbn As Boolean
     Private _showposterwidth As Integer
     Private _showproperCase As Boolean
     Private _showratingregion As String
-    Private _showtbn As Boolean
     Private _singlescrapeimages As Boolean
     Private _singlescrapetrailer As Boolean
     Private _skiplessthan As Integer
@@ -377,141 +371,181 @@ Public Class Settings
     Private _scrapertitlefallback As Boolean
     Private _forcetitle As String
 
+
+    '***************************************************
+    '******************* Movie Part ********************
+    '***************************************************
+
     '*************** XBMC Frodo settings ***************
-    Private _usefrodo As Boolean
-    Private _actorthumbsfrodo As Boolean
-    Private _bannerfrodo As Boolean
-    Private _clearartfrodo As Boolean
-    Private _clearlogofrodo As Boolean
-    Private _discartfrodo As Boolean
-    Private _extrafanartsfrodo As Boolean
-    Private _extrathumbsfrodo As Boolean
-    Private _fanartfrodo As Boolean
-    Private _landscapefrodo As Boolean
-    Private _nfofrodo As Boolean
-    Private _posterfrodo As Boolean
-    Private _trailerfrodo As Boolean
+    Private _movieusefrodo As Boolean
+    Private _movieactorthumbsfrodo As Boolean
+    Private _moviebannerfrodo As Boolean
+    Private _movieclearartfrodo As Boolean
+    Private _movieclearlogofrodo As Boolean
+    Private _moviediscartfrodo As Boolean
+    Private _movieextrafanartsfrodo As Boolean
+    Private _movieextrathumbsfrodo As Boolean
+    Private _moviefanartfrodo As Boolean
+    Private _movielandscapefrodo As Boolean
+    Private _movienfofrodo As Boolean
+    Private _movieposterfrodo As Boolean
+    Private _movietrailerfrodo As Boolean
 
     '*************** XBMC Eden settings ***************
-    Private _useeden As Boolean
-    Private _actorthumbseden As Boolean
-    Private _bannereden As Boolean
-    Private _cleararteden As Boolean
-    Private _clearlogoeden As Boolean
-    Private _discarteden As Boolean
-    Private _extrafanartseden As Boolean
-    Private _extrathumbseden As Boolean
-    Private _fanarteden As Boolean
-    Private _landscapeeden As Boolean
-    Private _nfoeden As Boolean
-    Private _postereden As Boolean
-    Private _trailereden As Boolean
+    Private _movieuseeden As Boolean
+    Private _movieactorthumbseden As Boolean
+    Private _moviebannereden As Boolean
+    Private _moviecleararteden As Boolean
+    Private _movieclearlogoeden As Boolean
+    Private _moviediscarteden As Boolean
+    Private _movieextrafanartseden As Boolean
+    Private _movieextrathumbseden As Boolean
+    Private _moviefanarteden As Boolean
+    Private _movielandscapeeden As Boolean
+    Private _movienfoeden As Boolean
+    Private _moviepostereden As Boolean
+    Private _movietrailereden As Boolean
 
     '************* XBMC optional settings *************
-    Private _xbmctrailerformat As Boolean
-    Private _xbmcprotectvtsbdmv As Boolean
+    Private _moviexbmctrailerformat As Boolean
+    Private _moviexbmcprotectvtsbdmv As Boolean
 
     '****************** YAMJ settings *****************
-    Private _useyamj As Boolean
-    Private _actorthumbsyamj As Boolean
-    Private _banneryamj As Boolean
-    Private _clearartyamj As Boolean
-    Private _clearlogoyamj As Boolean
-    Private _discartyamj As Boolean
-    Private _extrafanartyamj As Boolean
-    Private _extrathumbsyamj As Boolean
-    Private _fanartyamj As Boolean
-    Private _landscapeyamj As Boolean
-    Private _nfoyamj As Boolean
-    Private _posteryamj As Boolean
-    Private _traileryamj As Boolean
-    Private _yamjsetscompatible As Boolean
-    Private _yamjwatchedfile As Boolean
-    Private _yamjwatchedfolder As String
+    Private _movieuseyamj As Boolean
+    Private _movieactorthumbsyamj As Boolean
+    Private _moviebanneryamj As Boolean
+    Private _movieclearartyamj As Boolean
+    Private _movieclearlogoyamj As Boolean
+    Private _moviediscartyamj As Boolean
+    Private _movieextrafanartyamj As Boolean
+    Private _movieextrathumbsyamj As Boolean
+    Private _moviefanartyamj As Boolean
+    Private _movielandscapeyamj As Boolean
+    Private _movienfoyamj As Boolean
+    Private _movieposteryamj As Boolean
+    Private _movietraileryamj As Boolean
+    Private _movieyamjsetscompatible As Boolean
+    Private _movieyamjwatchedfile As Boolean
+    Private _movieyamjwatchedfolder As String
 
     '****************** NMJ settings ******************
-    Private _usenmj As Boolean
-    Private _actorthumbsnmj As Boolean
-    Private _bannernmj As Boolean
-    Private _clearartnmj As Boolean
-    Private _clearlogonmj As Boolean
-    Private _discartnmj As Boolean
-    Private _extrafanartnmj As Boolean
-    Private _extrathumbsnmj As Boolean
-    Private _fanartnmj As Boolean
-    Private _landscapenmj As Boolean
-    Private _nfonmj As Boolean
-    Private _posternmj As Boolean
-    Private _trailernmj As Boolean
+    Private _movieusenmj As Boolean
+    Private _movieactorthumbsnmj As Boolean
+    Private _moviebannernmj As Boolean
+    Private _movieclearartnmj As Boolean
+    Private _movieclearlogonmj As Boolean
+    Private _moviediscartnmj As Boolean
+    Private _movieextrafanartnmj As Boolean
+    Private _movieextrathumbsnmj As Boolean
+    Private _moviefanartnmj As Boolean
+    Private _movielandscapenmj As Boolean
+    Private _movienfonmj As Boolean
+    Private _movieposternmj As Boolean
+    Private _movietrailernmj As Boolean
 
     '***************** Expert settings ****************
-    Private _useexpert As Boolean
+    Private _movieuseexpert As Boolean
 
     '***************** Expert Single ****************
-    Private _actorthumbsexpertsingle As Boolean
-    Private _actorthumbsextexpertsingle As String
-    Private _bannerexpertsingle As String
-    Private _clearartexpertsingle As String
-    Private _clearlogoexpertsingle As String
-    Private _discartexpertsingle As String
-    Private _extrafanartsexpertsingle As Boolean
-    Private _extrathumbsexpertsingle As Boolean
-    Private _fanartexpertsingle As String
-    Private _landscapeexpertsingle As String
-    Private _nfoexpertsingle As String
-    Private _posterexpertsingle As String
-    Private _stackexpertsingle As Boolean
-    Private _trailerexpertsingle As String
-    Private _unstackexpertsingle As Boolean
+    Private _movieactorthumbsexpertsingle As Boolean
+    Private _movieactorthumbsextexpertsingle As String
+    Private _moviebannerexpertsingle As String
+    Private _movieclearartexpertsingle As String
+    Private _movieclearlogoexpertsingle As String
+    Private _moviediscartexpertsingle As String
+    Private _movieextrafanartsexpertsingle As Boolean
+    Private _movieextrathumbsexpertsingle As Boolean
+    Private _moviefanartexpertsingle As String
+    Private _movielandscapeexpertsingle As String
+    Private _movienfoexpertsingle As String
+    Private _movieposterexpertsingle As String
+    Private _moviestackexpertsingle As Boolean
+    Private _movietrailerexpertsingle As String
+    Private _movieunstackexpertsingle As Boolean
 
     '***************** Expert Multi ****************
-    Private _actorthumbsexpertmulti As Boolean
-    Private _actorthumbsextexpertmulti As String
-    Private _bannerexpertmulti As String
-    Private _clearartexpertmulti As String
-    Private _clearlogoexpertmulti As String
-    Private _discartexpertmulti As String
-    Private _fanartexpertmulti As String
-    Private _landscapeexpertmulti As String
-    Private _nfoexpertmulti As String
-    Private _posterexpertmulti As String
-    Private _stackexpertmulti As Boolean
-    Private _trailerexpertmulti As String
-    Private _unstackexpertmulti As Boolean
+    Private _movieactorthumbsexpertmulti As Boolean
+    Private _movieactorthumbsextexpertmulti As String
+    Private _moviebannerexpertmulti As String
+    Private _movieclearartexpertmulti As String
+    Private _movieclearlogoexpertmulti As String
+    Private _moviediscartexpertmulti As String
+    Private _moviefanartexpertmulti As String
+    Private _movielandscapeexpertmulti As String
+    Private _movienfoexpertmulti As String
+    Private _movieposterexpertmulti As String
+    Private _moviestackexpertmulti As Boolean
+    Private _movietrailerexpertmulti As String
+    Private _movieunstackexpertmulti As Boolean
 
     '***************** Expert VTS ****************
-    Private _actorthumbsexpertvts As Boolean
-    Private _actorthumbsextexpertvts As String
-    Private _bannerexpertvts As String
-    Private _clearartexpertvts As String
-    Private _clearlogoexpertvts As String
-    Private _discartexpertvts As String
-    Private _extrafanartsexpertvts As Boolean
-    Private _extrathumbsexpertvts As Boolean
-    Private _fanartexpertvts As String
-    Private _landscapeexpertvts As String
-    Private _nfoexpertvts As String
-    Private _posterexpertvts As String
-    Private _recognizevtsexpertvts As Boolean
-    Private _trailerexpertvts As String
-    Private _usebasedirectoryexpertvts As Boolean
+    Private _movieactorthumbsexpertvts As Boolean
+    Private _movieactorthumbsextexpertvts As String
+    Private _moviebannerexpertvts As String
+    Private _movieclearartexpertvts As String
+    Private _movieclearlogoexpertvts As String
+    Private _moviediscartexpertvts As String
+    Private _movieextrafanartsexpertvts As Boolean
+    Private _movieextrathumbsexpertvts As Boolean
+    Private _moviefanartexpertvts As String
+    Private _movielandscapeexpertvts As String
+    Private _movienfoexpertvts As String
+    Private _movieposterexpertvts As String
+    Private _movierecognizevtsexpertvts As Boolean
+    Private _movietrailerexpertvts As String
+    Private _movieusebasedirectoryexpertvts As Boolean
 
     '***************** Expert BDMV ****************
-    Private _actorthumbsexpertbdmv As Boolean
-    Private _actorthumbsextexpertbdmv As String
-    Private _bannerexpertbdmv As String
-    Private _clearartexpertbdmv As String
-    Private _clearlogoexpertbdmv As String
-    Private _discartexpertbdmv As String
-    Private _extrafanartsexpertbdmv As Boolean
-    Private _extrathumbsexpertbdmv As Boolean
-    Private _fanartexpertbdmv As String
-    Private _landscapeexpertbdmv As String
-    Private _nfoexpertbdmv As String
-    Private _posterexpertbdmv As String
-    Private _trailerexpertbdmv As String
-    Private _usebasedirectoryexpertbdmv As Boolean
+    Private _movieactorthumbsexpertbdmv As Boolean
+    Private _movieactorthumbsextexpertbdmv As String
+    Private _moviebannerexpertbdmv As String
+    Private _movieclearartexpertbdmv As String
+    Private _movieclearlogoexpertbdmv As String
+    Private _moviediscartexpertbdmv As String
+    Private _movieextrafanartsexpertbdmv As Boolean
+    Private _movieextrathumbsexpertbdmv As Boolean
+    Private _moviefanartexpertbdmv As String
+    Private _movielandscapeexpertbdmv As String
+    Private _movienfoexpertbdmv As String
+    Private _movieposterexpertbdmv As String
+    Private _movietrailerexpertbdmv As String
+    Private _movieusebasedirectoryexpertbdmv As Boolean
 
+    '***************************************************
+    '****************** TV Show Part *******************
+    '***************************************************
+
+    '*************** XBMC Frodo settings ***************
+    Private _tvusefrodo As Boolean
+    Private _tvepisodeactorthumbsfrodo As Boolean
+    Private _tvepisodefanartfrodo As Boolean
+    Private _tvepisodeposterfrodo As Boolean
+    Private _tvseasonbannerfrodo As Boolean
+    Private _tvseasonfanartfrodo As Boolean
+    Private _tvseasonposterfrodo As Boolean
+    Private _tvshowactorthumbsfrodo As Boolean
+    Private _tvshowbannerfrodo As Boolean
+    Private _tvshowfanartfrodo As Boolean
+    Private _tvshowposterfrodo As Boolean
+
+    '*************** XBMC Eden settings ****************
+
+    '************* XBMC optional settings **************
+    Private _tvseasonlandscapexbmc As Boolean
+    Private _tvshowcharacterartxbmc As Boolean
+    Private _tvshowclearartxbmc As Boolean
+    Private _tvshowclearlogoxbmc As Boolean
+    Private _tvshowlandscapexbmc As Boolean
+    Private _tvshowtvthemefolderxbmc As String
+    Private _tvshowtvthemexbmc As Boolean
+
+    '****************** YAMJ settings ******************
+
+    '****************** NMJ settings *******************
+
+    '************** NMT optional settings **************
+
+    '***************** Expert settings *****************
 
 #End Region 'Fields
 
@@ -541,6 +575,60 @@ Public Class Settings
         End Get
         Set(ByVal value As Integer)
             Me._actorlimit = value
+        End Set
+    End Property
+
+    Public Property AllSBannerHeight() As Integer
+        Get
+            Return Me._allsbannerheight
+        End Get
+        Set(ByVal value As Integer)
+            Me._allsbannerheight = value
+        End Set
+    End Property
+
+    Public Property AllSBannerQuality() As Integer
+        Get
+            Return Me._allsbannerQuality
+        End Get
+        Set(ByVal value As Integer)
+            Me._allsbannerQuality = value
+        End Set
+    End Property
+
+    Public Property AllSBannerWidth() As Integer
+        Get
+            Return Me._allsbannerwidth
+        End Get
+        Set(ByVal value As Integer)
+            Me._allsbannerwidth = value
+        End Set
+    End Property
+
+    Public Property AllSFanartHeight() As Integer
+        Get
+            Return Me._allsFanartheight
+        End Get
+        Set(ByVal value As Integer)
+            Me._allsFanartheight = value
+        End Set
+    End Property
+
+    Public Property AllSFanartQuality() As Integer
+        Get
+            Return Me._allsFanartQuality
+        End Get
+        Set(ByVal value As Integer)
+            Me._allsFanartQuality = value
+        End Set
+    End Property
+
+    Public Property AllSFanartWidth() As Integer
+        Get
+            Return Me._allsFanartwidth
+        End Get
+        Set(ByVal value As Integer)
+            Me._allsFanartwidth = value
         End Set
     End Property
 
@@ -613,15 +701,6 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Me._autobd = value
-        End Set
-    End Property
-
-    Public Property ExpertRecognizeVTS() As Boolean
-        Get
-            Return Me._expertrecognizevts
-        End Get
-        Set(ByVal value As Boolean)
-            Me._expertrecognizevts = value
         End Set
     End Property
 
@@ -924,48 +1003,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property EpisodeDashFanart() As Boolean
-        Get
-            Return Me._episodedashfanart
-        End Get
-        Set(ByVal value As Boolean)
-            Me._episodedashfanart = value
-        End Set
-    End Property
-
-    Public Property EpisodeDotFanart() As Boolean
-        Get
-            Return Me._episodedotfanart
-        End Get
-        Set(ByVal value As Boolean)
-            Me._episodedotfanart = value
-        End Set
-    End Property
-
     Public Property EpisodeFanartCol() As Boolean
         Get
             Return Me._episodefanartcol
         End Get
         Set(ByVal value As Boolean)
             Me._episodefanartcol = value
-        End Set
-    End Property
-
-    Public Property EpisodeJPG() As Boolean
-        Get
-            Return Me._episodejpg
-        End Get
-        Set(ByVal value As Boolean)
-            Me._episodejpg = value
-        End Set
-    End Property
-
-    Public Property EpisodeDashThumbJPG() As Boolean
-        Get
-            Return Me._episodedashthumbjpg
-        End Get
-        Set(ByVal value As Boolean)
-            Me._episodedashthumbjpg = value
         End Set
     End Property
 
@@ -984,15 +1027,6 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Me._episodepostercol = value
-        End Set
-    End Property
-
-    Public Property EpisodeTBN() As Boolean
-        Get
-            Return Me._episodetbn
-        End Get
-        Set(ByVal value As Boolean)
-            Me._episodetbn = value
         End Set
     End Property
 
@@ -2028,12 +2062,30 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property OverwriteAllSPoster() As Boolean
+    Public Property OverwriteAllSBanner() As Boolean
         Get
-            Return Me._overwriteallsPoster
+            Return Me._overwriteallsbanner
         End Get
         Set(ByVal value As Boolean)
-            Me._overwriteallsPoster = value
+            Me._overwriteallsbanner = value
+        End Set
+    End Property
+
+    Public Property OverwriteAllSFanart() As Boolean
+        Get
+            Return Me._overwriteallsfanart
+        End Get
+        Set(ByVal value As Boolean)
+            Me._overwriteallsfanart = value
+        End Set
+    End Property
+
+    Public Property OverwriteAllSPoster() As Boolean
+        Get
+            Return Me._overwriteallsposter
+        End Get
+        Set(ByVal value As Boolean)
+            Me._overwriteallsposter = value
         End Set
     End Property
 
@@ -2100,12 +2152,21 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property OverwriteSeasonFanart() As Boolean
+    Public Property OverwriteSeasonBanner() As Boolean
         Get
-            Return Me._overwriteSeasonFanart
+            Return Me._overwriteseasonbanner
         End Get
         Set(ByVal value As Boolean)
-            Me._overwriteSeasonFanart = value
+            Me._overwriteseasonbanner = value
+        End Set
+    End Property
+
+    Public Property OverwriteSeasonFanart() As Boolean
+        Get
+            Return Me._overwriteseasonfanart
+        End Get
+        Set(ByVal value As Boolean)
+            Me._overwriteseasonfanart = value
         End Set
     End Property
 
@@ -2115,6 +2176,15 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Me._overwriteSeasonPoster = value
+        End Set
+    End Property
+
+    Public Property OverwriteShowBanner() As Boolean
+        Get
+            Return Me._overwriteShowPoster
+        End Get
+        Set(ByVal value As Boolean)
+            Me._overwriteShowPoster = value
         End Set
     End Property
 
@@ -2231,6 +2301,24 @@ Public Class Settings
         End Get
         Set(ByVal value As Enums.ShowBannerType)
             Me._allsbannertype = value
+        End Set
+    End Property
+
+    Public Property PreferredAllSBannerSize() As Enums.PosterSize
+        Get
+            Return Me._allsbannersize
+        End Get
+        Set(ByVal value As Enums.PosterSize)
+            Me._allsbannersize = value
+        End Set
+    End Property
+
+    Public Property PreferredAllSFanartSize() As Enums.FanartSize
+        Get
+            Return Me._allsfanartsize
+        End Get
+        Set(ByVal value As Enums.FanartSize)
+            Me._allsfanartsize = value
         End Set
     End Property
 
@@ -2378,12 +2466,30 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property ResizeAllSBanner() As Boolean
+        Get
+            Return Me._resizeallsbanner
+        End Get
+        Set(ByVal value As Boolean)
+            Me._resizeallsbanner = value
+        End Set
+    End Property
+
     Public Property ResizeAllSPoster() As Boolean
         Get
             Return Me._resizeallsposter
         End Get
         Set(ByVal value As Boolean)
             Me._resizeallsposter = value
+        End Set
+    End Property
+
+    Public Property ResizeAllSFanart() As Boolean
+        Get
+            Return Me._resizeallsfanart
+        End Get
+        Set(ByVal value As Boolean)
+            Me._resizeallsfanart = value
         End Set
     End Property
 
@@ -2441,6 +2547,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property ResizeSeasonBanner() As Boolean
+        Get
+            Return Me._resizeseasonbanner
+        End Get
+        Set(ByVal value As Boolean)
+            Me._resizeseasonbanner = value
+        End Set
+    End Property
+
     Public Property ResizeSeasonFanart() As Boolean
         Get
             Return Me._resizeseasonfanart
@@ -2456,6 +2571,15 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Me._resizeseasonposter = value
+        End Set
+    End Property
+
+    Public Property ResizeShowBanner() As Boolean
+        Get
+            Return Me._resizeshowbanner
+        End Get
+        Set(ByVal value As Boolean)
+            Me._resizeshowbanner = value
         End Set
     End Property
 
@@ -2693,57 +2817,30 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property SeasonAllJPG() As Boolean
+    Public Property SeasonBannerHeight() As Integer
         Get
-            Return Me._seasonalljpg
+            Return Me._seasonbannerheight
         End Get
-        Set(ByVal value As Boolean)
-            Me._seasonalljpg = value
+        Set(ByVal value As Integer)
+            Me._seasonbannerheight = value
         End Set
     End Property
 
-    Public Property SeasonAllTBN() As Boolean
+    Public Property SeasonBannerQuality() As Integer
         Get
-            Return Me._seasonalltbn
+            Return Me._seasonbannerQuality
         End Get
-        Set(ByVal value As Boolean)
-            Me._seasonalltbn = value
+        Set(ByVal value As Integer)
+            Me._seasonbannerQuality = value
         End Set
     End Property
 
-    Public Property SeasonAllPosterJPG() As Boolean
+    Public Property SeasonBannerWidth() As Integer
         Get
-            Return Me._seasonallposterjpg
+            Return Me._seasonbannerwidth
         End Get
-        Set(ByVal value As Boolean)
-            Me._seasonallposterjpg = value
-        End Set
-    End Property
-
-    Public Property SeasonDashFanart() As Boolean
-        Get
-            Return Me._seasondashfanart
-        End Get
-        Set(ByVal value As Boolean)
-            Me._seasondashfanart = value
-        End Set
-    End Property
-
-    Public Property SeasonXXDashFanartJPG() As Boolean
-        Get
-            Return Me._seasonxxdashfanartjpg
-        End Get
-        Set(ByVal value As Boolean)
-            Me._seasonxxdashfanartjpg = value
-        End Set
-    End Property
-
-    Public Property SeasonDotFanart() As Boolean
-        Get
-            Return Me._seasondotfanart
-        End Get
-        Set(ByVal value As Boolean)
-            Me._seasondotfanart = value
+        Set(ByVal value As Integer)
+            Me._seasonbannerwidth = value
         End Set
     End Property
 
@@ -2765,15 +2862,6 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property SeasonFanartJPG() As Boolean
-        Get
-            Return Me._seasonfanartjpg
-        End Get
-        Set(ByVal value As Boolean)
-            Me._seasonfanartjpg = value
-        End Set
-    End Property
-
     Public Property SeasonFanartQuality() As Integer
         Get
             Return Me._seasonfanartQuality
@@ -2789,33 +2877,6 @@ Public Class Settings
         End Get
         Set(ByVal value As Integer)
             Me._seasonfanartwidth = value
-        End Set
-    End Property
-
-    Public Property SeasonFolderJPG() As Boolean
-        Get
-            Return Me._seasonfolderjpg
-        End Get
-        Set(ByVal value As Boolean)
-            Me._seasonfolderjpg = value
-        End Set
-    End Property
-
-    Public Property SeasonNameJPG() As Boolean
-        Get
-            Return Me._seasonnamejpg
-        End Get
-        Set(ByVal value As Boolean)
-            Me._seasonnamejpg = value
-        End Set
-    End Property
-
-    Public Property SeasonNameTBN() As Boolean
-        Get
-            Return Me._seasonnametbn
-        End Get
-        Set(ByVal value As Boolean)
-            Me._seasonnametbn = value
         End Set
     End Property
 
@@ -2837,30 +2898,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property SeasonPosterJPG() As Boolean
-        Get
-            Return Me._seasonposterjpg
-        End Get
-        Set(ByVal value As Boolean)
-            Me._seasonposterjpg = value
-        End Set
-    End Property
-
     Public Property SeasonPosterQuality() As Integer
         Get
             Return Me._seasonposterQuality
         End Get
         Set(ByVal value As Integer)
             Me._seasonposterQuality = value
-        End Set
-    End Property
-
-    Public Property SeasonPosterTBN() As Boolean
-        Get
-            Return Me._seasonpostertbn
-        End Get
-        Set(ByVal value As Boolean)
-            Me._seasonpostertbn = value
         End Set
     End Property
 
@@ -2873,33 +2916,6 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property SeasonX() As Boolean
-        Get
-            Return Me._seasonx
-        End Get
-        Set(ByVal value As Boolean)
-            Me._seasonx = value
-        End Set
-    End Property
-
-    Public Property SeasonXX() As Boolean
-        Get
-            Return Me._seasonxx
-        End Get
-        Set(ByVal value As Boolean)
-            Me._seasonxx = value
-        End Set
-    End Property
-
-    Public Property SeasonXXDashPosterJPG() As Boolean
-        Get
-            Return Me._seasonxxdashposterjpg
-        End Get
-        Set(ByVal value As Boolean)
-            Me._seasonxxdashposterjpg = value
-        End Set
-    End Property
-
     Public Property Sets() As List(Of String)
         Get
             Return Me._sets
@@ -2909,30 +2925,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property ShowDashFanart() As Boolean
-        Get
-            Return Me._showdashfanart
-        End Get
-        Set(ByVal value As Boolean)
-            Me._showdashfanart = value
-        End Set
-    End Property
-
     Public Property ShowDims() As Boolean
         Get
             Return Me._showdims
         End Get
         Set(ByVal value As Boolean)
             Me._showdims = value
-        End Set
-    End Property
-
-    Public Property ShowDotFanart() As Boolean
-        Get
-            Return Me._showdotfanart
-        End Get
-        Set(ByVal value As Boolean)
-            Me._showdotfanart = value
         End Set
     End Property
 
@@ -2951,15 +2949,6 @@ Public Class Settings
         End Get
         Set(ByVal value As Integer)
             Me._showfanartheight = value
-        End Set
-    End Property
-
-    Public Property ShowFanartJPG() As Boolean
-        Get
-            Return Me._showfanartjpg
-        End Get
-        Set(ByVal value As Boolean)
-            Me._showfanartjpg = value
         End Set
     End Property
 
@@ -2990,30 +2979,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property ShowFolderJPG() As Boolean
-        Get
-            Return Me._showfolderjpg
-        End Get
-        Set(ByVal value As Boolean)
-            Me._showfolderjpg = value
-        End Set
-    End Property
-
     Public Property ShowInfoPanelState() As Integer
         Get
             Return Me._showinfopanelstate
         End Get
         Set(ByVal value As Integer)
             Me._showinfopanelstate = value
-        End Set
-    End Property
-
-    Public Property ShowJPG() As Boolean
-        Get
-            Return Me._showjpg
-        End Get
-        Set(ByVal value As Boolean)
-            Me._showjpg = value
         End Set
     End Property
 
@@ -3080,6 +3051,33 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property ShowBannerHeight() As Integer
+        Get
+            Return Me._showbannerheight
+        End Get
+        Set(ByVal value As Integer)
+            Me._showbannerheight = value
+        End Set
+    End Property
+
+    Public Property ShowBannerQuality() As Integer
+        Get
+            Return Me._showbannerQuality
+        End Get
+        Set(ByVal value As Integer)
+            Me._showposterQuality = value
+        End Set
+    End Property
+
+    Public Property ShowBannerWidth() As Integer
+        Get
+            Return Me._showbannerwidth
+        End Get
+        Set(ByVal value As Integer)
+            Me._showbannerwidth = value
+        End Set
+    End Property
+
     Public Property ShowPosterHeight() As Integer
         Get
             Return Me._showposterheight
@@ -3089,39 +3087,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property ShowPosterJPG() As Boolean
-        Get
-            Return Me._showposterjpg
-        End Get
-        Set(ByVal value As Boolean)
-            Me._showposterjpg = value
-        End Set
-    End Property
-
-    Public Property ShowBannerJPG() As Boolean
-        Get
-            Return Me._showbannerjpg
-        End Get
-        Set(ByVal value As Boolean)
-            Me._showbannerjpg = value
-        End Set
-    End Property
-
     Public Property ShowPosterQuality() As Integer
         Get
             Return Me._showposterQuality
         End Get
         Set(ByVal value As Integer)
             Me._showposterQuality = value
-        End Set
-    End Property
-
-    Public Property ShowPosterTBN() As Boolean
-        Get
-            Return Me._showpostertbn
-        End Get
-        Set(ByVal value As Boolean)
-            Me._showpostertbn = value
         End Set
     End Property
 
@@ -3149,15 +3120,6 @@ Public Class Settings
         End Get
         Set(ByVal value As String)
             Me._showratingregion = value
-        End Set
-    End Property
-
-    Public Property ShowTBN() As Boolean
-        Get
-            Return Me._showtbn
-        End Get
-        Set(ByVal value As Boolean)
-            Me._showtbn = value
         End Set
     End Property
 
@@ -3487,10 +3449,10 @@ Public Class Settings
 
     Public Property YAMJSetsCompatible() As Boolean
         Get
-            Return Me._yamjsetscompatible
+            Return Me._movieyamjsetscompatible
         End Get
         Set(ByVal value As Boolean)
-            Me._yamjsetscompatible = value
+            Me._movieyamjsetscompatible = value
         End Set
     End Property
 
@@ -3552,903 +3514,1065 @@ Public Class Settings
     End Property
     'cocotus end
 
-    Public Property UseFrodo() As Boolean
+    Public Property MovieUseFrodo() As Boolean
         Get
-            Return Me._usefrodo
+            Return Me._movieusefrodo
         End Get
         Set(ByVal value As Boolean)
-            Me._usefrodo = value
+            Me._movieusefrodo = value
         End Set
     End Property
 
-    Public Property ActorThumbsFrodo() As Boolean
+    Public Property MovieActorThumbsFrodo() As Boolean
         Get
-            Return Me._actorthumbsfrodo
+            Return Me._movieactorthumbsfrodo
         End Get
         Set(ByVal value As Boolean)
-            Me._actorthumbsfrodo = value
+            Me._movieactorthumbsfrodo = value
         End Set
     End Property
 
-    Public Property BannerFrodo() As Boolean
+    Public Property MovieBannerFrodo() As Boolean
         Get
-            Return Me._bannerfrodo
+            Return Me._moviebannerfrodo
         End Get
         Set(ByVal value As Boolean)
-            Me._bannerfrodo = value
+            Me._moviebannerfrodo = value
         End Set
     End Property
 
-    Public Property ClearArtFrodo() As Boolean
+    Public Property MovieClearArtFrodo() As Boolean
         Get
-            Return Me._clearartfrodo
+            Return Me._movieclearartfrodo
         End Get
         Set(ByVal value As Boolean)
-            Me._clearartfrodo = value
+            Me._movieclearartfrodo = value
         End Set
     End Property
 
-    Public Property ClearLogoFrodo() As Boolean
+    Public Property MovieClearLogoFrodo() As Boolean
         Get
-            Return Me._clearlogofrodo
+            Return Me._movieclearlogofrodo
         End Get
         Set(ByVal value As Boolean)
-            Me._clearlogofrodo = value
+            Me._movieclearlogofrodo = value
         End Set
     End Property
 
-    Public Property DiscArtFrodo() As Boolean
+    Public Property MovieDiscArtFrodo() As Boolean
         Get
-            Return Me._discartfrodo
+            Return Me._moviediscartfrodo
         End Get
         Set(ByVal value As Boolean)
-            Me._discartfrodo = value
+            Me._moviediscartfrodo = value
         End Set
     End Property
 
-    Public Property ExtrafanartsFrodo() As Boolean
+    Public Property MovieExtrafanartsFrodo() As Boolean
         Get
-            Return Me._extrafanartsfrodo
+            Return Me._movieextrafanartsfrodo
         End Get
         Set(ByVal value As Boolean)
-            Me._extrafanartsfrodo = value
+            Me._movieextrafanartsfrodo = value
         End Set
     End Property
 
-    Public Property ExtrathumbsFrodo() As Boolean
+    Public Property MovieExtrathumbsFrodo() As Boolean
         Get
-            Return Me._extrathumbsfrodo
+            Return Me._movieextrathumbsfrodo
         End Get
         Set(ByVal value As Boolean)
-            Me._extrathumbsfrodo = value
+            Me._movieextrathumbsfrodo = value
         End Set
     End Property
 
-    Public Property FanartFrodo() As Boolean
+    Public Property MovieFanartFrodo() As Boolean
         Get
-            Return Me._fanartfrodo
+            Return Me._moviefanartfrodo
         End Get
         Set(ByVal value As Boolean)
-            Me._fanartfrodo = value
+            Me._moviefanartfrodo = value
         End Set
     End Property
 
-    Public Property LandscapeFrodo() As Boolean
+    Public Property MovieLandscapeFrodo() As Boolean
         Get
-            Return Me._landscapefrodo
+            Return Me._movielandscapefrodo
         End Get
         Set(ByVal value As Boolean)
-            Me._landscapefrodo = value
+            Me._movielandscapefrodo = value
         End Set
     End Property
 
-    Public Property NFOFrodo() As Boolean
+    Public Property MovieNFOFrodo() As Boolean
         Get
-            Return Me._NFOfrodo
+            Return Me._movienfofrodo
         End Get
         Set(ByVal value As Boolean)
-            Me._NFOfrodo = value
+            Me._movienfofrodo = value
         End Set
     End Property
 
-    Public Property PosterFrodo() As Boolean
+    Public Property MoviePosterFrodo() As Boolean
         Get
-            Return Me._posterfrodo
+            Return Me._movieposterfrodo
         End Get
         Set(ByVal value As Boolean)
-            Me._posterfrodo = value
+            Me._movieposterfrodo = value
         End Set
     End Property
 
-    Public Property TrailerFrodo() As Boolean
+    Public Property MovieTrailerFrodo() As Boolean
         Get
-            Return Me._trailerfrodo
+            Return Me._movietrailerfrodo
         End Get
         Set(ByVal value As Boolean)
-            Me._trailerfrodo = value
+            Me._movietrailerfrodo = value
         End Set
     End Property
 
-    Public Property UseEden() As Boolean
+    Public Property MovieUseEden() As Boolean
         Get
-            Return Me._useeden
+            Return Me._movieuseeden
         End Get
         Set(ByVal value As Boolean)
-            Me._useeden = value
+            Me._movieuseeden = value
         End Set
     End Property
 
-    Public Property ActorThumbsEden() As Boolean
+    Public Property MovieActorThumbsEden() As Boolean
         Get
-            Return Me._actorthumbseden
+            Return Me._movieactorthumbseden
         End Get
         Set(ByVal value As Boolean)
-            Me._actorthumbseden = value
+            Me._movieactorthumbseden = value
         End Set
     End Property
 
-    Public Property BannerEden() As Boolean
+    Public Property MovieBannerEden() As Boolean
         Get
-            Return Me._bannereden
+            Return Me._moviebannereden
         End Get
         Set(ByVal value As Boolean)
-            Me._bannereden = value
+            Me._moviebannereden = value
         End Set
     End Property
 
-    Public Property ClearArtEden() As Boolean
+    Public Property MovieClearArtEden() As Boolean
         Get
-            Return Me._cleararteden
+            Return Me._moviecleararteden
         End Get
         Set(ByVal value As Boolean)
-            Me._cleararteden = value
+            Me._moviecleararteden = value
         End Set
     End Property
 
-    Public Property ClearLogoEden() As Boolean
+    Public Property MovieClearLogoEden() As Boolean
         Get
-            Return Me._clearlogoeden
+            Return Me._movieclearlogoeden
         End Get
         Set(ByVal value As Boolean)
-            Me._clearlogoeden = value
+            Me._movieclearlogoeden = value
         End Set
     End Property
 
-    Public Property DiscArtEden() As Boolean
+    Public Property MovieDiscArtEden() As Boolean
         Get
-            Return Me._discarteden
+            Return Me._moviediscarteden
         End Get
         Set(ByVal value As Boolean)
-            Me._discarteden = value
+            Me._moviediscarteden = value
         End Set
     End Property
 
-    Public Property ExtrafanartsEden() As Boolean
+    Public Property MovieExtrafanartsEden() As Boolean
         Get
-            Return Me._extrafanartseden
+            Return Me._movieextrafanartseden
         End Get
         Set(ByVal value As Boolean)
-            Me._extrafanartseden = value
+            Me._movieextrafanartseden = value
         End Set
     End Property
 
-    Public Property ExtrathumbsEden() As Boolean
+    Public Property MovieExtrathumbsEden() As Boolean
         Get
-            Return Me._extrathumbseden
+            Return Me._movieextrathumbseden
         End Get
         Set(ByVal value As Boolean)
-            Me._extrathumbseden = value
+            Me._movieextrathumbseden = value
         End Set
     End Property
 
-    Public Property FanartEden() As Boolean
+    Public Property MovieFanartEden() As Boolean
         Get
-            Return Me._fanarteden
+            Return Me._moviefanarteden
         End Get
         Set(ByVal value As Boolean)
-            Me._fanarteden = value
+            Me._moviefanarteden = value
         End Set
     End Property
 
-    Public Property LandscapeEden() As Boolean
+    Public Property MovieLandscapeEden() As Boolean
         Get
-            Return Me._landscapeeden
+            Return Me._movielandscapeeden
         End Get
         Set(ByVal value As Boolean)
-            Me._landscapeeden = value
+            Me._movielandscapeeden = value
         End Set
     End Property
 
-    Public Property NFOEden() As Boolean
+    Public Property MovieNFOEden() As Boolean
         Get
-            Return Me._nfoeden
+            Return Me._movienfoeden
         End Get
         Set(ByVal value As Boolean)
-            Me._nfoeden = value
+            Me._movienfoeden = value
         End Set
     End Property
 
-    Public Property PosterEden() As Boolean
+    Public Property MoviePosterEden() As Boolean
         Get
-            Return Me._postereden
+            Return Me._moviepostereden
         End Get
         Set(ByVal value As Boolean)
-            Me._postereden = value
+            Me._moviepostereden = value
         End Set
     End Property
 
-    Public Property TrailerEden() As Boolean
+    Public Property MovieTrailerEden() As Boolean
         Get
-            Return Me._trailereden
+            Return Me._movietrailereden
         End Get
         Set(ByVal value As Boolean)
-            Me._trailereden = value
+            Me._movietrailereden = value
         End Set
     End Property
 
-    Public Property XBMCTrailerFormat() As Boolean
+    Public Property MovieXBMCTrailerFormat() As Boolean
         Get
-            Return Me._xbmctrailerformat
+            Return Me._moviexbmctrailerformat
         End Get
         Set(ByVal value As Boolean)
-            Me._xbmctrailerformat = value
+            Me._moviexbmctrailerformat = value
         End Set
     End Property
 
-    Public Property XBMCProtectVTSBDMV() As Boolean
+    Public Property MovieXBMCProtectVTSBDMV() As Boolean
         Get
-            Return Me._xbmcprotectvtsbdmv
+            Return Me._moviexbmcprotectvtsbdmv
         End Get
         Set(ByVal value As Boolean)
-            Me._xbmcprotectvtsbdmv = value
+            Me._moviexbmcprotectvtsbdmv = value
         End Set
     End Property
 
-    Public Property UseYAMJ() As Boolean
+    Public Property MovieUseYAMJ() As Boolean
         Get
-            Return Me._useyamj
+            Return Me._movieuseyamj
         End Get
         Set(ByVal value As Boolean)
-            Me._useyamj = value
+            Me._movieuseyamj = value
         End Set
     End Property
 
-    Public Property BannerYAMJ() As Boolean
+    Public Property MovieBannerYAMJ() As Boolean
         Get
-            Return Me._banneryamj
+            Return Me._moviebanneryamj
         End Get
         Set(ByVal value As Boolean)
-            Me._banneryamj = value
+            Me._moviebanneryamj = value
         End Set
     End Property
 
-    Public Property FanartYAMJ() As Boolean
+    Public Property MovieFanartYAMJ() As Boolean
         Get
-            Return Me._fanartyamj
+            Return Me._moviefanartyamj
         End Get
         Set(ByVal value As Boolean)
-            Me._fanartyamj = value
+            Me._moviefanartyamj = value
         End Set
     End Property
 
-    Public Property NFOYAMJ() As Boolean
+    Public Property MovieNFOYAMJ() As Boolean
         Get
-            Return Me._nfoyamj
+            Return Me._movienfoyamj
         End Get
         Set(ByVal value As Boolean)
-            Me._nfoyamj = value
+            Me._movienfoyamj = value
         End Set
     End Property
 
-    Public Property PosterYAMJ() As Boolean
+    Public Property MoviePosterYAMJ() As Boolean
         Get
-            Return Me._posteryamj
+            Return Me._movieposteryamj
         End Get
         Set(ByVal value As Boolean)
-            Me._posteryamj = value
+            Me._movieposteryamj = value
         End Set
     End Property
 
-    Public Property TrailerYAMJ() As Boolean
+    Public Property MovieTrailerYAMJ() As Boolean
         Get
-            Return Me._traileryamj
+            Return Me._movietraileryamj
         End Get
         Set(ByVal value As Boolean)
-            Me._traileryamj = value
+            Me._movietraileryamj = value
         End Set
     End Property
 
-    Public Property YAMJWatchedFile() As Boolean
+    Public Property MovieYAMJWatchedFile() As Boolean
         Get
-            Return Me._yamjwatchedfile
+            Return Me._movieyamjwatchedfile
         End Get
         Set(ByVal value As Boolean)
-            Me._yamjwatchedfile = value
+            Me._movieyamjwatchedfile = value
         End Set
     End Property
 
-    Public Property YAMJWatchedFolder() As String
+    Public Property MovieYAMJWatchedFolder() As String
         Get
-            Return Me._yamjwatchedfolder
+            Return Me._movieyamjwatchedfolder
         End Get
         Set(ByVal value As String)
-            Me._yamjwatchedfolder = value
+            Me._movieyamjwatchedfolder = value
         End Set
     End Property
 
-    Public Property UseNMJ() As Boolean
+    Public Property MovieUseNMJ() As Boolean
         Get
-            Return Me._usenmj
+            Return Me._movieusenmj
         End Get
         Set(ByVal value As Boolean)
-            Me._usenmj = value
+            Me._movieusenmj = value
         End Set
     End Property
 
-    Public Property BannerNMJ() As Boolean
+    Public Property MovieBannerNMJ() As Boolean
         Get
-            Return Me._bannernmj
+            Return Me._moviebannernmj
         End Get
         Set(ByVal value As Boolean)
-            Me._bannernmj = value
+            Me._moviebannernmj = value
         End Set
     End Property
 
-    Public Property FanartNMJ() As Boolean
+    Public Property MovieFanartNMJ() As Boolean
         Get
-            Return Me._fanartnmj
+            Return Me._moviefanartnmj
         End Get
         Set(ByVal value As Boolean)
-            Me._fanartnmj = value
+            Me._moviefanartnmj = value
         End Set
     End Property
 
-    Public Property NFONMJ() As Boolean
+    Public Property MovieNFONMJ() As Boolean
         Get
-            Return Me._nfonmj
+            Return Me._movienfonmj
         End Get
         Set(ByVal value As Boolean)
-            Me._nfonmj = value
+            Me._movienfonmj = value
         End Set
     End Property
 
-    Public Property PosterNMJ() As Boolean
+    Public Property MoviePosterNMJ() As Boolean
         Get
-            Return Me._posternmj
+            Return Me._movieposternmj
         End Get
         Set(ByVal value As Boolean)
-            Me._posternmj = value
+            Me._movieposternmj = value
         End Set
     End Property
 
-    Public Property TrailerNMJ() As Boolean
+    Public Property MovieTrailerNMJ() As Boolean
         Get
-            Return Me._trailernmj
+            Return Me._movietrailernmj
         End Get
         Set(ByVal value As Boolean)
-            Me._trailernmj = value
+            Me._movietrailernmj = value
         End Set
     End Property
 
-    Public Property UseExpert() As Boolean
+    Public Property MovieUseExpert() As Boolean
         Get
-            Return Me._useexpert
+            Return Me._movieuseexpert
         End Get
         Set(ByVal value As Boolean)
-            Me._useexpert = value
+            Me._movieuseexpert = value
         End Set
     End Property
 
-    Public Property ActorThumbsExpertSingle() As Boolean
+    Public Property MovieActorThumbsExpertSingle() As Boolean
         Get
-            Return Me._actorthumbsexpertsingle
+            Return Me._movieactorthumbsexpertsingle
         End Get
         Set(ByVal value As Boolean)
-            Me._actorthumbsexpertsingle = value
+            Me._movieactorthumbsexpertsingle = value
         End Set
     End Property
 
-    Public Property ActorThumbsExtExpertSingle() As String
+    Public Property MovieActorThumbsExtExpertSingle() As String
         Get
-            Return Me._actorthumbsextexpertsingle
+            Return Me._movieactorthumbsextexpertsingle
         End Get
         Set(ByVal value As String)
-            Me._actorthumbsextexpertsingle = value
+            Me._movieactorthumbsextexpertsingle = value
         End Set
     End Property
 
-    Public Property BannerExpertSingle() As String
+    Public Property MovieBannerExpertSingle() As String
         Get
-            Return Me._bannerexpertsingle
+            Return Me._moviebannerexpertsingle
         End Get
         Set(ByVal value As String)
-            Me._bannerexpertsingle = value
+            Me._moviebannerexpertsingle = value
         End Set
     End Property
 
-    Public Property ClearArtExpertSingle() As String
+    Public Property MovieClearArtExpertSingle() As String
         Get
-            Return Me._clearartexpertsingle
+            Return Me._movieclearartexpertsingle
         End Get
         Set(ByVal value As String)
-            Me._clearartexpertsingle = value
+            Me._movieclearartexpertsingle = value
         End Set
     End Property
 
-    Public Property ClearLogoExpertSingle() As String
+    Public Property MovieClearLogoExpertSingle() As String
         Get
-            Return Me._clearlogoexpertsingle
+            Return Me._movieclearlogoexpertsingle
         End Get
         Set(ByVal value As String)
-            Me._clearlogoexpertsingle = value
+            Me._movieclearlogoexpertsingle = value
         End Set
     End Property
 
-    Public Property DiscArtExpertSingle() As String
+    Public Property MovieDiscArtExpertSingle() As String
         Get
-            Return Me._discartexpertsingle
+            Return Me._moviediscartexpertsingle
         End Get
         Set(ByVal value As String)
-            Me._discartexpertsingle = value
+            Me._moviediscartexpertsingle = value
         End Set
     End Property
 
-    Public Property ExtrafanartsExpertSingle() As Boolean
+    Public Property MovieExtrafanartsExpertSingle() As Boolean
         Get
-            Return Me._extrafanartsexpertsingle
+            Return Me._movieextrafanartsexpertsingle
         End Get
         Set(ByVal value As Boolean)
-            Me._extrafanartsexpertsingle = value
+            Me._movieextrafanartsexpertsingle = value
         End Set
     End Property
 
-    Public Property ExtrathumbsExpertSingle() As Boolean
+    Public Property MovieExtrathumbsExpertSingle() As Boolean
         Get
-            Return Me._extrathumbsexpertsingle
+            Return Me._movieextrathumbsexpertsingle
         End Get
         Set(ByVal value As Boolean)
-            Me._extrathumbsexpertsingle = value
+            Me._movieextrathumbsexpertsingle = value
         End Set
     End Property
 
-    Public Property FanartExpertSingle() As String
+    Public Property MovieFanartExpertSingle() As String
         Get
-            Return Me._fanartexpertsingle
+            Return Me._moviefanartexpertsingle
         End Get
         Set(ByVal value As String)
-            Me._fanartexpertsingle = value
+            Me._moviefanartexpertsingle = value
         End Set
     End Property
 
-    Public Property LandscapeExpertSingle() As String
+    Public Property MovieLandscapeExpertSingle() As String
         Get
-            Return Me._landscapeexpertsingle
+            Return Me._movielandscapeexpertsingle
         End Get
         Set(ByVal value As String)
-            Me._landscapeexpertsingle = value
+            Me._movielandscapeexpertsingle = value
         End Set
     End Property
 
-    Public Property NFOExpertSingle() As String
+    Public Property MovieNFOExpertSingle() As String
         Get
-            Return Me._nfoexpertsingle
+            Return Me._movienfoexpertsingle
         End Get
         Set(ByVal value As String)
-            Me._nfoexpertsingle = value
+            Me._movienfoexpertsingle = value
         End Set
     End Property
 
-    Public Property PosterExpertSingle() As String
+    Public Property MoviePosterExpertSingle() As String
         Get
-            Return Me._posterexpertsingle
+            Return Me._movieposterexpertsingle
         End Get
         Set(ByVal value As String)
-            Me._posterexpertsingle = value
+            Me._movieposterexpertsingle = value
         End Set
     End Property
 
-    Public Property StackExpertSingle() As Boolean
+    Public Property MovieStackExpertSingle() As Boolean
         Get
-            Return Me._stackexpertsingle
+            Return Me._moviestackexpertsingle
         End Get
         Set(ByVal value As Boolean)
-            Me._stackexpertsingle = value
+            Me._moviestackexpertsingle = value
         End Set
     End Property
 
-    Public Property TrailerExpertSingle() As String
+    Public Property MovieTrailerExpertSingle() As String
         Get
-            Return Me._trailerexpertsingle
+            Return Me._movietrailerexpertsingle
         End Get
         Set(ByVal value As String)
-            Me._trailerexpertsingle = value
+            Me._movietrailerexpertsingle = value
         End Set
     End Property
 
-    Public Property UnstackExpertSingle() As Boolean
+    Public Property MovieUnstackExpertSingle() As Boolean
         Get
-            Return Me._unstackexpertsingle
+            Return Me._movieunstackexpertsingle
         End Get
         Set(ByVal value As Boolean)
-            Me._unstackexpertsingle = value
+            Me._movieunstackexpertsingle = value
         End Set
     End Property
 
-    Public Property ActorThumbsExpertMulti() As Boolean
+    Public Property MovieActorThumbsExpertMulti() As Boolean
         Get
-            Return Me._actorthumbsexpertmulti
+            Return Me._movieactorthumbsexpertmulti
         End Get
         Set(ByVal value As Boolean)
-            Me._actorthumbsexpertmulti = value
+            Me._movieactorthumbsexpertmulti = value
         End Set
     End Property
 
-    Public Property ActorThumbsExtExpertMulti() As String
+    Public Property MovieActorThumbsExtExpertMulti() As String
         Get
-            Return Me._actorthumbsextexpertmulti
+            Return Me._movieactorthumbsextexpertmulti
         End Get
         Set(ByVal value As String)
-            Me._actorthumbsextexpertmulti = value
+            Me._movieactorthumbsextexpertmulti = value
         End Set
     End Property
 
-    Public Property BannerExpertMulti() As String
+    Public Property MovieBannerExpertMulti() As String
         Get
-            Return Me._bannerexpertmulti
+            Return Me._moviebannerexpertmulti
         End Get
         Set(ByVal value As String)
-            Me._bannerexpertmulti = value
+            Me._moviebannerexpertmulti = value
         End Set
     End Property
 
-    Public Property ClearArtExpertMulti() As String
+    Public Property MovieClearArtExpertMulti() As String
         Get
-            Return Me._clearartexpertmulti
+            Return Me._movieclearartexpertmulti
         End Get
         Set(ByVal value As String)
-            Me._clearartexpertmulti = value
+            Me._movieclearartexpertmulti = value
         End Set
     End Property
 
-    Public Property ClearLogoExpertMulti() As String
+    Public Property MovieClearLogoExpertMulti() As String
         Get
-            Return Me._clearlogoexpertmulti
+            Return Me._movieclearlogoexpertmulti
         End Get
         Set(ByVal value As String)
-            Me._clearlogoexpertmulti = value
+            Me._movieclearlogoexpertmulti = value
         End Set
     End Property
 
-    Public Property DiscArtExpertMulti() As String
+    Public Property MovieDiscArtExpertMulti() As String
         Get
-            Return Me._discartexpertmulti
+            Return Me._moviediscartexpertmulti
         End Get
         Set(ByVal value As String)
-            Me._discartexpertmulti = value
+            Me._moviediscartexpertmulti = value
         End Set
     End Property
 
-    Public Property FanartExpertMulti() As String
+    Public Property MovieFanartExpertMulti() As String
         Get
-            Return Me._fanartexpertmulti
+            Return Me._moviefanartexpertmulti
         End Get
         Set(ByVal value As String)
-            Me._fanartexpertmulti = value
+            Me._moviefanartexpertmulti = value
         End Set
     End Property
 
-    Public Property LandscapeExpertMulti() As String
+    Public Property MovieLandscapeExpertMulti() As String
         Get
-            Return Me._landscapeexpertmulti
+            Return Me._movielandscapeexpertmulti
         End Get
         Set(ByVal value As String)
-            Me._landscapeexpertmulti = value
+            Me._movielandscapeexpertmulti = value
         End Set
     End Property
 
-    Public Property NFOExpertMulti() As String
+    Public Property MovieNFOExpertMulti() As String
         Get
-            Return Me._nfoexpertmulti
+            Return Me._movienfoexpertmulti
         End Get
         Set(ByVal value As String)
-            Me._nfoexpertmulti = value
+            Me._movienfoexpertmulti = value
         End Set
     End Property
 
-    Public Property PosterExpertMulti() As String
+    Public Property MoviePosterExpertMulti() As String
         Get
-            Return Me._posterexpertmulti
+            Return Me._movieposterexpertmulti
         End Get
         Set(ByVal value As String)
-            Me._posterexpertmulti = value
+            Me._movieposterexpertmulti = value
         End Set
     End Property
 
-    Public Property StackExpertMulti() As Boolean
+    Public Property MovieStackExpertMulti() As Boolean
         Get
-            Return Me._stackexpertmulti
+            Return Me._moviestackexpertmulti
         End Get
         Set(ByVal value As Boolean)
-            Me._stackexpertmulti = value
+            Me._moviestackexpertmulti = value
         End Set
     End Property
 
-    Public Property TrailerExpertMulti() As String
+    Public Property MovieTrailerExpertMulti() As String
         Get
-            Return Me._trailerexpertmulti
+            Return Me._movietrailerexpertmulti
         End Get
         Set(ByVal value As String)
-            Me._trailerexpertmulti = value
+            Me._movietrailerexpertmulti = value
         End Set
     End Property
 
-    Public Property UnstackExpertMulti() As Boolean
+    Public Property MovieUnstackExpertMulti() As Boolean
         Get
-            Return Me._unstackexpertmulti
+            Return Me._movieunstackexpertmulti
         End Get
         Set(ByVal value As Boolean)
-            Me._unstackexpertmulti = value
+            Me._movieunstackexpertmulti = value
         End Set
     End Property
 
-    Public Property ActorThumbsExpertVTS() As Boolean
+    Public Property MovieActorThumbsExpertVTS() As Boolean
         Get
-            Return Me._actorthumbsexpertvts
+            Return Me._movieactorthumbsexpertvts
         End Get
         Set(ByVal value As Boolean)
-            Me._actorthumbsexpertvts = value
+            Me._movieactorthumbsexpertvts = value
         End Set
     End Property
 
-    Public Property ActorThumbsExtExpertVTS() As String
+    Public Property MovieActorThumbsExtExpertVTS() As String
         Get
-            Return Me._actorthumbsextexpertvts
+            Return Me._movieactorthumbsextexpertvts
         End Get
         Set(ByVal value As String)
-            Me._actorthumbsextexpertvts = value
+            Me._movieactorthumbsextexpertvts = value
         End Set
     End Property
 
-    Public Property BannerExpertVTS() As String
+    Public Property MovieBannerExpertVTS() As String
         Get
-            Return Me._bannerexpertvts
+            Return Me._moviebannerexpertvts
         End Get
         Set(ByVal value As String)
-            Me._bannerexpertvts = value
+            Me._moviebannerexpertvts = value
         End Set
     End Property
 
-    Public Property ClearArtExpertVTS() As String
+    Public Property MovieClearArtExpertVTS() As String
         Get
-            Return Me._clearartexpertvts
+            Return Me._movieclearartexpertvts
         End Get
         Set(ByVal value As String)
-            Me._clearartexpertvts = value
+            Me._movieclearartexpertvts = value
         End Set
     End Property
 
-    Public Property ClearLogoExpertVTS() As String
+    Public Property MovieClearLogoExpertVTS() As String
         Get
-            Return Me._clearlogoexpertvts
+            Return Me._movieclearlogoexpertvts
         End Get
         Set(ByVal value As String)
-            Me._clearlogoexpertvts = value
+            Me._movieclearlogoexpertvts = value
         End Set
     End Property
 
-    Public Property DiscArtExpertVTS() As String
+    Public Property MovieDiscArtExpertVTS() As String
         Get
-            Return Me._discartexpertvts
+            Return Me._moviediscartexpertvts
         End Get
         Set(ByVal value As String)
-            Me._discartexpertvts = value
+            Me._moviediscartexpertvts = value
         End Set
     End Property
 
-    Public Property ExtrafanartsExpertVTS() As Boolean
+    Public Property MovieExtrafanartsExpertVTS() As Boolean
         Get
-            Return Me._extrafanartsexpertvts
+            Return Me._movieextrafanartsexpertvts
         End Get
         Set(ByVal value As Boolean)
-            Me._extrafanartsexpertvts = value
+            Me._movieextrafanartsexpertvts = value
         End Set
     End Property
 
-    Public Property ExtrathumbsExpertVTS() As Boolean
+    Public Property MovieExtrathumbsExpertVTS() As Boolean
         Get
-            Return Me._extrathumbsexpertvts
+            Return Me._movieextrathumbsexpertvts
         End Get
         Set(ByVal value As Boolean)
-            Me._extrathumbsexpertvts = value
+            Me._movieextrathumbsexpertvts = value
         End Set
     End Property
 
-    Public Property FanartExpertVTS() As String
+    Public Property MovieFanartExpertVTS() As String
         Get
-            Return Me._fanartexpertvts
+            Return Me._moviefanartexpertvts
         End Get
         Set(ByVal value As String)
-            Me._fanartexpertvts = value
+            Me._moviefanartexpertvts = value
         End Set
     End Property
 
-    Public Property LandscapeExpertVTS() As String
+    Public Property MovieLandscapeExpertVTS() As String
         Get
-            Return Me._landscapeexpertvts
+            Return Me._movielandscapeexpertvts
         End Get
         Set(ByVal value As String)
-            Me._landscapeexpertvts = value
+            Me._movielandscapeexpertvts = value
         End Set
     End Property
 
-    Public Property NFOExpertVTS() As String
+    Public Property MovieNFOExpertVTS() As String
         Get
-            Return Me._nfoexpertvts
+            Return Me._movienfoexpertvts
         End Get
         Set(ByVal value As String)
-            Me._nfoexpertvts = value
+            Me._movienfoexpertvts = value
         End Set
     End Property
 
-    Public Property PosterExpertVTS() As String
+    Public Property MoviePosterExpertVTS() As String
         Get
-            Return Me._posterexpertvts
+            Return Me._movieposterexpertvts
         End Get
         Set(ByVal value As String)
-            Me._posterexpertvts = value
+            Me._movieposterexpertvts = value
         End Set
     End Property
 
-    Public Property RecognizeVTSExpertVTS() As Boolean
+    Public Property MovieRecognizeVTSExpertVTS() As Boolean
         Get
-            Return Me._recognizevtsexpertvts
+            Return Me._movierecognizevtsexpertvts
         End Get
         Set(ByVal value As Boolean)
-            Me._recognizevtsexpertvts = value
+            Me._movierecognizevtsexpertvts = value
         End Set
     End Property
 
-    Public Property TrailerExpertVTS() As String
+    Public Property MovieTrailerExpertVTS() As String
         Get
-            Return Me._trailerexpertvts
+            Return Me._movietrailerexpertvts
         End Get
         Set(ByVal value As String)
-            Me._trailerexpertvts = value
+            Me._movietrailerexpertvts = value
         End Set
     End Property
 
-    Public Property UseBaseDirectoryExpertVTS() As Boolean
+    Public Property MovieUseBaseDirectoryExpertVTS() As Boolean
         Get
-            Return Me._usebasedirectoryexpertvts
+            Return Me._movieusebasedirectoryexpertvts
         End Get
         Set(ByVal value As Boolean)
-            Me._usebasedirectoryexpertvts = value
+            Me._movieusebasedirectoryexpertvts = value
         End Set
     End Property
 
-    Public Property ActorThumbsExpertBDMV() As Boolean
+    Public Property MovieActorThumbsExpertBDMV() As Boolean
         Get
-            Return Me._actorthumbsexpertbdmv
+            Return Me._movieactorthumbsexpertbdmv
         End Get
         Set(ByVal value As Boolean)
-            Me._actorthumbsexpertbdmv = value
+            Me._movieactorthumbsexpertbdmv = value
         End Set
     End Property
 
-    Public Property ActorThumbsExtExpertBDMV() As String
+    Public Property MovieActorThumbsExtExpertBDMV() As String
         Get
-            Return Me._actorthumbsextexpertbdmv
+            Return Me._movieactorthumbsextexpertbdmv
         End Get
         Set(ByVal value As String)
-            Me._actorthumbsextexpertbdmv = value
+            Me._movieactorthumbsextexpertbdmv = value
         End Set
     End Property
 
-    Public Property BannerExpertBDMV() As String
+    Public Property MovieBannerExpertBDMV() As String
         Get
-            Return Me._bannerexpertbdmv
+            Return Me._moviebannerexpertbdmv
         End Get
         Set(ByVal value As String)
-            Me._bannerexpertbdmv = value
+            Me._moviebannerexpertbdmv = value
         End Set
     End Property
 
-    Public Property ClearArtExpertBDMV() As String
+    Public Property MovieClearArtExpertBDMV() As String
         Get
-            Return Me._clearartexpertbdmv
+            Return Me._movieclearartexpertbdmv
         End Get
         Set(ByVal value As String)
-            Me._clearartexpertbdmv = value
+            Me._movieclearartexpertbdmv = value
         End Set
     End Property
 
-    Public Property ClearLogoExpertBDMV() As String
+    Public Property MovieClearLogoExpertBDMV() As String
         Get
-            Return Me._clearlogoexpertbdmv
+            Return Me._movieclearlogoexpertbdmv
         End Get
         Set(ByVal value As String)
-            Me._clearlogoexpertbdmv = value
+            Me._movieclearlogoexpertbdmv = value
         End Set
     End Property
 
-    Public Property DiscArtExpertBDMV() As String
+    Public Property MovieDiscArtExpertBDMV() As String
         Get
-            Return Me._discartexpertbdmv
+            Return Me._moviediscartexpertbdmv
         End Get
         Set(ByVal value As String)
-            Me._discartexpertbdmv = value
+            Me._moviediscartexpertbdmv = value
         End Set
     End Property
 
-    Public Property ExtrafanartsExpertBDMV() As Boolean
+    Public Property MovieExtrafanartsExpertBDMV() As Boolean
         Get
-            Return Me._extrafanartsexpertbdmv
+            Return Me._movieextrafanartsexpertbdmv
         End Get
         Set(ByVal value As Boolean)
-            Me._extrafanartsexpertbdmv = value
+            Me._movieextrafanartsexpertbdmv = value
         End Set
     End Property
 
-    Public Property ExtrathumbsExpertBDMV() As Boolean
+    Public Property MovieExtrathumbsExpertBDMV() As Boolean
         Get
-            Return Me._extrathumbsexpertbdmv
+            Return Me._movieextrathumbsexpertbdmv
         End Get
         Set(ByVal value As Boolean)
-            Me._extrathumbsexpertbdmv = value
+            Me._movieextrathumbsexpertbdmv = value
         End Set
     End Property
 
-    Public Property FanartExpertBDMV() As String
+    Public Property MovieFanartExpertBDMV() As String
         Get
-            Return Me._fanartexpertbdmv
+            Return Me._moviefanartexpertbdmv
         End Get
         Set(ByVal value As String)
-            Me._fanartexpertbdmv = value
+            Me._moviefanartexpertbdmv = value
         End Set
     End Property
 
-    Public Property LandscapeExpertBDMV() As String
+    Public Property MovieLandscapeExpertBDMV() As String
         Get
-            Return Me._landscapeexpertbdmv
+            Return Me._movielandscapeexpertbdmv
         End Get
         Set(ByVal value As String)
-            Me._landscapeexpertbdmv = value
+            Me._movielandscapeexpertbdmv = value
         End Set
     End Property
 
-    Public Property NFOExpertBDMV() As String
+    Public Property MovieNFOExpertBDMV() As String
         Get
-            Return Me._nfoexpertbdmv
+            Return Me._movienfoexpertbdmv
         End Get
         Set(ByVal value As String)
-            Me._nfoexpertbdmv = value
+            Me._movienfoexpertbdmv = value
         End Set
     End Property
 
-    Public Property PosterExpertBDMV() As String
+    Public Property MoviePosterExpertBDMV() As String
         Get
-            Return Me._posterexpertbdmv
+            Return Me._movieposterexpertbdmv
         End Get
         Set(ByVal value As String)
-            Me._posterexpertbdmv = value
+            Me._movieposterexpertbdmv = value
         End Set
     End Property
 
-    Public Property TrailerExpertBDMV() As String
+    Public Property MovieTrailerExpertBDMV() As String
         Get
-            Return Me._trailerexpertbdmv
+            Return Me._movietrailerexpertbdmv
         End Get
         Set(ByVal value As String)
-            Me._trailerexpertbdmv = value
+            Me._movietrailerexpertbdmv = value
         End Set
     End Property
 
-    Public Property UseBaseDirectoryExpertBDMV() As Boolean
+    Public Property MovieUseBaseDirectoryExpertBDMV() As Boolean
         Get
-            Return Me._usebasedirectoryexpertbdmv
+            Return Me._movieusebasedirectoryexpertbdmv
         End Get
         Set(ByVal value As Boolean)
-            Me._usebasedirectoryexpertbdmv = value
+            Me._movieusebasedirectoryexpertbdmv = value
+        End Set
+    End Property
+
+    Public Property TVUseFrodo() As Boolean
+        Get
+            Return Me._tvusefrodo
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvusefrodo = value
+        End Set
+    End Property
+
+    Public Property TVShowPosterFrodo() As Boolean
+        Get
+            Return Me._tvshowposterfrodo
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowposterfrodo = value
+        End Set
+    End Property
+
+    Public Property TVShowFanartFrodo() As Boolean
+        Get
+            Return Me._tvshowfanartfrodo
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowfanartfrodo = value
+        End Set
+    End Property
+
+    Public Property TVShowActorThumbsFrodo() As Boolean
+        Get
+            Return Me._tvshowactorthumbsfrodo
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowactorthumbsfrodo = value
+        End Set
+    End Property
+
+    Public Property TVShowBannerFrodo() As Boolean
+        Get
+            Return Me._tvshowbannerfrodo
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowbannerfrodo = value
+        End Set
+    End Property
+
+    Public Property TVSeasonPosterFrodo() As Boolean
+        Get
+            Return Me._tvseasonposterfrodo
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvseasonposterfrodo = value
+        End Set
+    End Property
+
+    Public Property TVSeasonFanartFrodo() As Boolean
+        Get
+            Return Me._tvseasonfanartfrodo
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvseasonfanartfrodo = value
+        End Set
+    End Property
+
+    Public Property TVSeasonBannerFrodo() As Boolean
+        Get
+            Return Me._tvseasonbannerfrodo
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvseasonbannerfrodo = value
+        End Set
+    End Property
+
+    Public Property TVEpisodePosterFrodo() As Boolean
+        Get
+            Return Me._tvepisodeposterfrodo
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvepisodeposterfrodo = value
+        End Set
+    End Property
+
+    Public Property TVEpisodeFanartFrodo() As Boolean
+        Get
+            Return Me._tvepisodefanartfrodo
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvepisodefanartfrodo = value
+        End Set
+    End Property
+
+    Public Property TVEpisodeActorThumbsFrodo() As Boolean
+        Get
+            Return Me._tvepisodeactorthumbsfrodo
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvepisodeactorthumbsfrodo = value
+        End Set
+    End Property
+
+    Public Property TVShowClearLogoXBMC() As Boolean
+        Get
+            Return Me._tvshowclearlogoxbmc
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowclearlogoxbmc = value
+        End Set
+    End Property
+
+    Public Property TVShowClearArtXBMC() As Boolean
+        Get
+            Return Me._tvshowclearartxbmc
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowclearartxbmc = value
+        End Set
+    End Property
+
+    Public Property TVShowCharacterArtXBMC() As Boolean
+        Get
+            Return Me._tvshowcharacterartxbmc
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowcharacterartxbmc = value
+        End Set
+    End Property
+
+    Public Property TVShowTVThemeXBMC() As Boolean
+        Get
+            Return Me._tvshowtvthemexbmc
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowtvthemexbmc = value
+        End Set
+    End Property
+
+    Public Property TVShowTVThemeFolderXBMC() As String
+        Get
+            Return Me._tvshowtvthemefolderxbmc
+        End Get
+        Set(ByVal value As String)
+            Me._tvshowtvthemefolderxbmc = value
+        End Set
+    End Property
+
+    Public Property TVShowLandscapeXBMC() As Boolean
+        Get
+            Return Me._tvshowlandscapexbmc
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowlandscapexbmc = value
+        End Set
+    End Property
+
+    Public Property TVSeasonLandscapeXBMC() As Boolean
+        Get
+            Return Me._tvseasonlandscapexbmc
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvseasonlandscapexbmc = value
         End Set
     End Property
 
@@ -4466,7 +4590,7 @@ Public Class Settings
 #Region "Methods"
 
     Public Function AllSeasonPosterEnabled() As Boolean
-        Return Me._seasonalltbn OrElse Me._seasonalljpg OrElse Me._seasonallposterjpg OrElse AdvancedSettings.GetBooleanSetting("YAMJAllSeasonPoster", False, "multi.Compatibility")
+        Return Me._tvseasonposterfrodo 'Me._seasonalltbn OrElse Me._seasonalljpg OrElse Me._seasonallposterjpg
     End Function
 
     Public Sub Clear()
@@ -4480,27 +4604,27 @@ Public Class Settings
         Me._IMDBURL = "akas.imdb.com"
         Me._PosterPrefSizeOnly = False
         Me._actorlimit = 0
-        Me._actorthumbsexpertbdmv = False
-        Me._actorthumbsexpertmulti = False
-        Me._actorthumbsexpertsingle = False
-        Me._actorthumbsexpertvts = False
-        Me._actorthumbsextexpertbdmv = String.Empty
-        Me._actorthumbsextexpertmulti = String.Empty
-        Me._actorthumbsextexpertsingle = String.Empty
-        Me._actorthumbsextexpertvts = String.Empty
+        Me._movieactorthumbsexpertbdmv = False
+        Me._movieactorthumbsexpertmulti = False
+        Me._movieactorthumbsexpertsingle = False
+        Me._movieactorthumbsexpertvts = False
+        Me._movieactorthumbsextexpertbdmv = String.Empty
+        Me._movieactorthumbsextexpertmulti = String.Empty
+        Me._movieactorthumbsextexpertsingle = String.Empty
+        Me._movieactorthumbsextexpertvts = String.Empty
         Me._allsbanner = False
         Me._allsbannertype = Enums.ShowBannerType.Graphical
         Me._allsposterQuality = 0
         Me._allsposterheight = 0
-        Me._allspostersize = Enums.PosterSize.Xlrg
+        Me._allspostersize = Enums.PosterSize.Original
         Me._allsposterwidth = 0
         Me._allwaysdisplaygenrestext = False
         Me._askcheckboxscrape = True
         Me._autobd = False
-        Me._bannerexpertbdmv = String.Empty
-        Me._bannerexpertmulti = String.Empty
-        Me._bannerexpertsingle = String.Empty
-        Me._bannerexpertvts = String.Empty
+        Me._moviebannerexpertbdmv = String.Empty
+        Me._moviebannerexpertmulti = String.Empty
+        Me._moviebannerexpertsingle = String.Empty
+        Me._moviebannerexpertvts = String.Empty
         Me._bdpath = String.Empty
         Me._castimagesonly = False
         Me._certificationLang = String.Empty
@@ -4521,19 +4645,19 @@ Public Class Settings
         Me._cleanposterTbn = False
         Me._cleanwhitelistexts = New List(Of String)
         Me._cleanwhitelistvideo = False
-        Me._clearartexpertbdmv = String.Empty
-        Me._clearartexpertmulti = String.Empty
-        Me._clearartexpertsingle = String.Empty
-        Me._clearartexpertvts = String.Empty
-        Me._clearlogoexpertbdmv = String.Empty
-        Me._clearlogoexpertmulti = String.Empty
-        Me._clearlogoexpertsingle = String.Empty
-        Me._clearlogoexpertvts = String.Empty
+        Me._movieclearartexpertbdmv = String.Empty
+        Me._movieclearartexpertmulti = String.Empty
+        Me._movieclearartexpertsingle = String.Empty
+        Me._movieclearartexpertvts = String.Empty
+        Me._movieclearlogoexpertbdmv = String.Empty
+        Me._movieclearlogoexpertmulti = String.Empty
+        Me._movieclearlogoexpertsingle = String.Empty
+        Me._movieclearlogoexpertvts = String.Empty
         Me._deletealltrailers = False
-        Me._discartexpertbdmv = String.Empty
-        Me._discartexpertmulti = String.Empty
-        Me._discartexpertsingle = String.Empty
-        Me._discartexpertvts = String.Empty
+        Me._moviediscartexpertbdmv = String.Empty
+        Me._moviediscartexpertmulti = String.Empty
+        Me._moviediscartexpertsingle = String.Empty
+        Me._moviediscartexpertvts = String.Empty
         Me._displayallseason = True
         Me._displaymissingepisodes = False
         Me._displayyear = False
@@ -4544,14 +4668,9 @@ Public Class Settings
         Me._epfanartsize = Enums.FanartSize.Lrg
         Me._epfanartwidth = 0
         Me._epfiltercustom = New List(Of String)
-        Me._episodedashfanart = False
-        Me._episodedashthumbjpg = False
-        Me._episodedotfanart = False
         Me._episodefanartcol = True
-        Me._episodejpg = False
         Me._episodenfocol = False
         Me._episodepostercol = False
-        Me._episodetbn = True
         Me._eplockplot = False
         Me._eplockrating = False
         Me._eplocktitle = False
@@ -4561,21 +4680,20 @@ Public Class Settings
         Me._epproperCase = True
         Me._epruntimemask = "<m>"
         Me._expertcleaner = False
-        Me._expertrecognizevts = True
-        Me._extrafanartsexpertbdmv = False
-        Me._extrafanartsexpertsingle = False
-        Me._extrafanartsexpertvts = False
-        Me._extrathumbsexpertbdmv = False
-        Me._extrathumbsexpertsingle = False
-        Me._extrathumbsexpertvts = False
+        Me._movieextrafanartsexpertbdmv = False
+        Me._movieextrafanartsexpertsingle = False
+        Me._movieextrafanartsexpertvts = False
+        Me._movieextrathumbsexpertbdmv = False
+        Me._movieextrathumbsexpertsingle = False
+        Me._movieextrathumbsexpertvts = False
         Me._fanartQuality = 0
-        Me._fanartexpertbdmv = String.Empty
-        Me._fanartexpertmulti = String.Empty
-        Me._fanartexpertsingle = String.Empty
-        Me._fanartexpertvts = String.Empty
+        Me._moviefanartexpertbdmv = String.Empty
+        Me._moviefanartexpertmulti = String.Empty
+        Me._moviefanartexpertsingle = String.Empty
+        Me._moviefanartexpertvts = String.Empty
         Me._fanartheight = 0
         Me._fanartprefsizeonly = False
-        Me._fanartsize = Enums.FanartSize.Xlrg
+        Me._fanartsize = Enums.FanartSize.Original
         Me._fanartwidth = 0
         Me._field250 = True
         Me._fieldcast = True
@@ -4611,10 +4729,10 @@ Public Class Settings
         Me._imagesglassoverlay = False
         Me._infopanelanim = False
         Me._infopanelstate = 0
-        Me._landscapeexpertbdmv = String.Empty
-        Me._landscapeexpertmulti = String.Empty
-        Me._landscapeexpertsingle = String.Empty
-        Me._landscapeexpertvts = String.Empty
+        Me._movielandscapeexpertbdmv = String.Empty
+        Me._movielandscapeexpertmulti = String.Empty
+        Me._movielandscapeexpertsingle = String.Empty
+        Me._movielandscapeexpertvts = String.Empty
         Me._language = "English_(en_US)"
         Me._languages = New List(Of Containers.TVLanguage)
         Me._levtolerance = 0
@@ -4647,10 +4765,10 @@ Public Class Settings
         Me._movietheme = "Default"
         Me._movietrailerCol = False
         Me._moviewatchedCol = False
-        Me._nfoexpertbdmv = String.Empty
-        Me._nfoexpertmulti = String.Empty
-        Me._nfoexpertsingle = String.Empty
-        Me._nfoexpertvts = String.Empty
+        Me._movienfoexpertbdmv = String.Empty
+        Me._movienfoexpertmulti = String.Empty
+        Me._movienfoexpertsingle = String.Empty
+        Me._movienfoexpertvts = String.Empty
         Me._nodisplayfanart = False
         Me._nodisplayfanartsmall = False
         Me._nodisplayposter = False
@@ -4681,18 +4799,18 @@ Public Class Settings
         Me._password = String.Empty
         Me._plotforoutline = True
         Me._posterQuality = 0
-        Me._posterexpertbdmv = String.Empty
-        Me._posterexpertmulti = String.Empty
-        Me._posterexpertsingle = String.Empty
-        Me._posterexpertvts = String.Empty
+        Me._movieposterexpertbdmv = String.Empty
+        Me._movieposterexpertmulti = String.Empty
+        Me._movieposterexpertsingle = String.Empty
+        Me._movieposterexpertvts = String.Empty
         Me._posterheight = 0
-        Me._postersize = Enums.PosterSize.Xlrg
+        Me._postersize = Enums.PosterSize.Original
         Me._posterwidth = 0
         Me._properCase = True
         Me._proxycredentials = New NetworkCredential
         Me._proxyport = -1
         Me._proxyuri = String.Empty
-        Me._recognizevtsexpertvts = False
+        Me._movierecognizevtsexpertvts = False
         Me._resizeallsposter = False
         Me._resizeepfanart = False
         Me._resizeepposter = False
@@ -4728,48 +4846,26 @@ Public Class Settings
         Me._scrapershowtitle = True
         Me._scseasonstate = 200
         Me._scshowstate = 200
-        Me._seasonalljpg = False
-        Me._seasonallposterjpg = False
-        Me._seasonalltbn = True
-        Me._seasondashfanart = False
-        Me._seasondotfanart = False
         Me._seasonfanartQuality = 0
         Me._seasonfanartcol = True
         Me._seasonfanartheight = 0
-        Me._seasonfanartjpg = False
         Me._seasonfanartsize = Enums.FanartSize.Lrg
         Me._seasonfanartwidth = 0
-        Me._seasonfolderjpg = False
-        Me._seasonnamejpg = False
-        Me._seasonnametbn = False
         Me._seasonposterQuality = 0
         Me._seasonpostercol = False
         Me._seasonposterheight = 0
-        Me._seasonposterjpg = False
         Me._seasonpostersize = Enums.SeasonPosterType.Poster
-        Me._seasonpostertbn = False
         Me._seasonposterwidth = 0
-        Me._seasonx = False
-        Me._seasonxx = True
-        Me._seasonxxdashfanartjpg = False
-        Me._seasonxxdashposterjpg = False
         Me._sets = New List(Of String)
-        Me._showbanner = False
-        Me._showbannerjpg = False
         Me._showbannertype = Enums.ShowBannerType.Graphical
-        Me._showdashfanart = False
         Me._showdims = False
-        Me._showdotfanart = False
         Me._showfanartQuality = 0
         Me._showfanartcol = False
         Me._showfanartheight = 0
-        Me._showfanartjpg = True
         Me._showfanartsize = Enums.FanartSize.Lrg
         Me._showfanartwidth = 0
         Me._showfiltercustom = New List(Of String)
-        Me._showfolderjpg = True
         Me._showinfopanelstate = 0
-        Me._showjpg = False
         Me._showlockgenre = False
         Me._showlockplot = False
         Me._showlockrating = False
@@ -4779,13 +4875,10 @@ Public Class Settings
         Me._showposterQuality = 0
         Me._showpostercol = False
         Me._showposterheight = 0
-        Me._showposterjpg = False
-        Me._showpostersize = Enums.PosterSize.Xlrg
-        Me._showpostertbn = False
+        Me._showpostersize = Enums.PosterSize.Original
         Me._showposterwidth = 0
         Me._showproperCase = True
         Me._showratingregion = "usa"
-        Me._showtbn = False
         Me._singlescrapeimages = True
         Me._singlescrapetrailer = False
         Me._skiplessthan = 0
@@ -4795,12 +4888,12 @@ Public Class Settings
         Me._sortpath = String.Empty
         Me._sorttokens = New List(Of String)
         Me._sourcefromfolder = False
-        Me._stackexpertmulti = False
-        Me._stackexpertsingle = False
-        Me._trailerexpertbdmv = String.Empty
-        Me._trailerexpertmulti = String.Empty
-        Me._trailerexpertsingle = String.Empty
-        Me._trailerexpertvts = String.Empty
+        Me._moviestackexpertmulti = False
+        Me._moviestackexpertsingle = False
+        Me._movietrailerexpertbdmv = String.Empty
+        Me._movietrailerexpertmulti = String.Empty
+        Me._movietrailerexpertsingle = String.Empty
+        Me._movietrailerexpertvts = String.Empty
         Me._trailerquality = Enums.TrailerQuality.HD1080p
         Me._trailertimeout = 2
         Me._tvcleandb = True
@@ -4812,15 +4905,15 @@ Public Class Settings
         Me._tvshowregexes = New List(Of TVShowRegEx)
         Me._tvshowtheme = "Default"
         Me._tvupdatetime = Enums.TVUpdateTime.Always
-        Me._unstackexpertmulti = False
-        Me._unstackexpertsingle = False
+        Me._movieunstackexpertmulti = False
+        Me._movieunstackexpertsingle = False
         Me._updatertrailers = False
         Me._updatertrailersnodownload = False
-        Me._usebasedirectoryexpertbdmv = False
-        Me._usebasedirectoryexpertvts = False
+        Me._movieusebasedirectoryexpertbdmv = False
+        Me._movieusebasedirectoryexpertvts = False
         Me._usecertformpaa = False
         Me._useepduration = False
-        Me._useexpert = False
+        Me._movieuseexpert = False
         Me._usemiduration = False
         Me._username = String.Empty
         Me._validexts = New List(Of String)
@@ -4829,7 +4922,8 @@ Public Class Settings
         Me._windowloc = New Point(If(Screen.PrimaryScreen.WorkingArea.Width <= 1024, 0, Convert.ToInt32((Screen.PrimaryScreen.WorkingArea.Width - 1024) / 2)), If(Screen.PrimaryScreen.WorkingArea.Height <= 768, 0, Convert.ToInt32((Screen.PrimaryScreen.WorkingArea.Height - 768) / 2)))
         Me._windowsize = New Size(1024, 768)
         Me._windowstate = FormWindowState.Normal
-        Me._yamjsetscompatible = False
+        Me._movieyamjsetscompatible = False
+
         Try
             xmlTVDB = XDocument.Parse(My.Resources.Languages_2)
             Dim xLangs = From xLanguages In xmlTVDB.Descendants("Language")
@@ -4846,7 +4940,7 @@ Public Class Settings
     End Sub
 
     Public Function EpisodeFanartEnabled() As Boolean
-        Return Me._episodedashfanart OrElse Me._episodedotfanart
+        Return Me._tvepisodefanartfrodo
     End Function
 
     Public Sub Load()
@@ -4887,21 +4981,21 @@ Public Class Settings
         End If
 
         ' Fix added to avoid to have no NFO saved
-        If Not (Master.eSettings.UseEden Or Master.eSettings.UseExpert Or Master.eSettings.UseFrodo Or Master.eSettings.UseNMJ Or Master.eSettings.UseYAMJ) Then
-            Master.eSettings.UseFrodo = True
-            Master.eSettings.ActorThumbsFrodo = True
-            Master.eSettings.BannerFrodo = True
-            Master.eSettings.ClearArtFrodo = True
-            Master.eSettings.ClearLogoFrodo = True
-            Master.eSettings.DiscArtFrodo = True
-            Master.eSettings.ExtrafanartsFrodo = True
-            Master.eSettings.ExtrathumbsFrodo = True
-            Master.eSettings.FanartFrodo = True
-            Master.eSettings.LandscapeFrodo = True
-            Master.eSettings.NFOFrodo = True
-            Master.eSettings.PosterFrodo = True
-            Master.eSettings.TrailerFrodo = True
-            Master.eSettings.XBMCTrailerFormat = True
+        If Not (Master.eSettings.MovieUseEden Or Master.eSettings.MovieUseExpert Or Master.eSettings.MovieUseFrodo Or Master.eSettings.MovieUseNMJ Or Master.eSettings.MovieUseYAMJ) Then
+            Master.eSettings.MovieUseFrodo = True
+            Master.eSettings.MovieActorThumbsFrodo = True
+            Master.eSettings.MovieBannerFrodo = True
+            Master.eSettings.MovieClearArtFrodo = True
+            Master.eSettings.MovieClearLogoFrodo = True
+            Master.eSettings.MovieDiscArtFrodo = True
+            Master.eSettings.MovieExtrafanartsFrodo = True
+            Master.eSettings.MovieExtrathumbsFrodo = True
+            Master.eSettings.MovieFanartFrodo = True
+            Master.eSettings.MovieLandscapeFrodo = True
+            Master.eSettings.MovieNFOFrodo = True
+            Master.eSettings.MoviePosterFrodo = True
+            Master.eSettings.MovieTrailerFrodo = True
+            Master.eSettings.MovieXBMCTrailerFormat = True
         End If
 
     End Sub
@@ -4931,7 +5025,7 @@ Public Class Settings
     End Sub
 
     Public Function SeasonFanartEnabled() As Boolean
-        Return Master.eSettings.SeasonFanartJPG OrElse Master.eSettings.SeasonDashFanart OrElse Master.eSettings.SeasonDotFanart OrElse Master.eSettings.SeasonXXDashFanartJPG OrElse AdvancedSettings.GetBooleanSetting("YAMJSeasonFanart", False, "multi.Compatibility")
+        Return Master.eSettings.TVSeasonFanartFrodo
     End Function
 
     Public Sub SetDefaultsForLists(ByVal Type As Enums.DefaultType, ByVal Force As Boolean)
