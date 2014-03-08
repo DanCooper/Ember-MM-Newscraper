@@ -18,8 +18,8 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 ' #
-' # Dialog size: 1024; 768
-' # Panel size: 750; 500
+' # Dialog size: 1024, 768
+' # Panel size: 750, 500
 ' # Enlarge it to see all the panels.
 
 Imports System
@@ -4371,13 +4371,13 @@ Public Class dlgSettings
         Me.cbMovieEThumbsSize.Items.Clear()
         Me.cbMovieEThumbsSize.Items.AddRange(New String() {Master.eLang.GetString(322, "X-Large"), Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small")})
         Me.cbShowFanartSize.Items.Clear()
-        Me.cbShowFanartSize.Items.AddRange(New String() {Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small")})
+        Me.cbShowFanartSize.Items.AddRange(New String() {Master.eLang.GetString(322, "X-Large"), Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small")})
         Me.cbEpFanartSize.Items.Clear()
-        Me.cbEpFanartSize.Items.AddRange(New String() {Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small")})
+        Me.cbEpFanartSize.Items.AddRange(New String() {Master.eLang.GetString(322, "X-Large"), Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small")})
         Me.cbSeaPosterSize.Items.Clear()
         Me.cbSeaPosterSize.Items.AddRange(New String() {Master.eLang.GetString(745, "None"), Me.gbMovieImagesPoster.Text, Master.eLang.GetString(558, "Wide")})
         Me.cbSeaFanartSize.Items.Clear()
-        Me.cbSeaFanartSize.Items.AddRange(New String() {Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small")})
+        Me.cbSeaFanartSize.Items.AddRange(New String() {Master.eLang.GetString(322, "X-Large"), Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small")})
 
         Me.cboTVUpdate.Items.Clear()
         Me.cboTVUpdate.Items.AddRange(New String() {Master.eLang.GetString(749, "Week"), Master.eLang.GetString(750, "Bi-Weekly"), Master.eLang.GetString(751, "Month"), Master.eLang.GetString(752, "Never"), Master.eLang.GetString(753, "Always")})
