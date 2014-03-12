@@ -232,6 +232,12 @@ Public Class dlgEditEpisode
     End Sub
 
     Private Sub dlgEditEpisode_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        If Not Master.eSettings.TVEpisodeFanartEnabled Then tcEditEpisode.TabPages.Remove(tpEpisodeFanart)
+        If Not Master.eSettings.TVEpisodePosterEnabled Then
+            tcEditEpisode.TabPages.Remove(tpEpisodePoster)
+            tcEditEpisode.TabPages.Remove(tpFrameExtraction)
+        End If
+
         Me.SetUp()
 
         Me.lvwActorSorter = New ListViewColumnSorter()
@@ -254,9 +260,6 @@ Public Class dlgEditEpisode
         dFileInfoEdit.Height = pnlFileInfo.Height
         dFileInfoEdit.Show(True)
 
-        If Not Master.eSettings.TVASPosterEnabled() Then
-            Me.tcEditEpisode.TabPages.Remove(tpFanart)
-        End If
         Dim params As New List(Of Object)(New Object() {New Panel})
         ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVFrameExtrator, params, Nothing, True)
         pnlFrameExtrator.Controls.Add(DirectCast(params(0), Panel))
@@ -312,7 +315,7 @@ Public Class dlgEditEpisode
             .pbStar5.Tag = tRating
             If tRating > 0 Then .BuildStars(tRating)
 
-            If tcEditEpisode.TabPages.Contains(tpFanart) Then
+            If Master.eSettings.TVEpisodeFanartEnabled Then
                 Fanart.FromFile(Master.currShow.EpFanartPath)
                 If Not IsNothing(Fanart.Image) Then
                     .pbFanart.Image = Fanart.Image
@@ -323,13 +326,15 @@ Public Class dlgEditEpisode
                 End If
             End If
 
-            Poster.FromFile(Master.currShow.EpPosterPath)
-            If Not IsNothing(Poster.Image) Then
-                .pbPoster.Image = Poster.Image
-                .pbPoster.Tag = Poster
+            If Master.eSettings.TVEpisodePosterEnabled Then
+                Poster.FromFile(Master.currShow.EpPosterPath)
+                If Not IsNothing(Poster.Image) Then
+                    .pbPoster.Image = Poster.Image
+                    .pbPoster.Tag = Poster
 
-                .lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbPoster.Image.Width, .pbPoster.Image.Height)
-                .lblPosterSize.Visible = True
+                    .lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbPoster.Image.Width, .pbPoster.Image.Height)
+                    .lblPosterSize.Visible = True
+                End If
             End If
         End With
     End Sub
@@ -544,6 +549,7 @@ Public Class dlgEditEpisode
                     Next
                 End If
 
+                'Episode Fanart
                 If Not IsNothing(.Fanart.Image) Then
                     Master.currShow.EpFanartPath = .Fanart.SaveAsTVEpisodeFanart(Master.currShow)
                 Else
@@ -551,6 +557,7 @@ Public Class dlgEditEpisode
                     Master.currShow.EpFanartPath = String.Empty
                 End If
 
+                'Episode Poster
                 If Not IsNothing(.Poster.Image) Then
                     Master.currShow.EpPosterPath = .Poster.SaveAsTVEpisodePoster(Master.currShow)
                 Else
@@ -572,7 +579,7 @@ Public Class dlgEditEpisode
         Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
         Me.lblTopDetails.Text = Master.eLang.GetString(656, "Edit the details for the selected episode.")
         Me.lblTopTitle.Text = Master.eLang.GetString(657, "Edit Episode")
-        Me.tpDetails.Text = Master.eLang.GetString(26, "Details")
+        Me.tpEpsiodeDetails.Text = Master.eLang.GetString(26, "Details")
         Me.btnManual.Text = Master.eLang.GetString(230, "Manual Edit")
         Me.lblActors.Text = Master.eLang.GetString(231, "Actors:")
         Me.colName.Text = Master.eLang.GetString(232, "Name")
@@ -584,11 +591,11 @@ Public Class dlgEditEpisode
         Me.lblSeason.Text = Master.eLang.GetString(659, "Season:")
         Me.lblEpisode.Text = Master.eLang.GetString(660, "Episode:")
         Me.lblTitle.Text = Master.eLang.GetString(246, "Title:")
-        Me.tpPoster.Text = Master.eLang.GetString(148, "Poster")
+        Me.tpEpisodePoster.Text = Master.eLang.GetString(148, "Poster")
         Me.btnRemovePoster.Text = Master.eLang.GetString(247, "Remove Poster")
         Me.btnSetPosterScrape.Text = Master.eLang.GetString(248, "Change Poster (Scrape)")
         Me.btnSetPoster.Text = Master.eLang.GetString(249, "Change Poster (Local)")
-        Me.tpFanart.Text = Master.eLang.GetString(149, "Fanart")
+        Me.tpEpisodeFanart.Text = Master.eLang.GetString(149, "Fanart")
         Me.btnRemoveFanart.Text = Master.eLang.GetString(250, "Remove Fanart")
         Me.btnSetFanartScrape.Text = Master.eLang.GetString(251, "Change Fanart (Scrape)")
         Me.btnSetFanart.Text = Master.eLang.GetString(252, "Change Fanart (Local)")
@@ -598,7 +605,7 @@ Public Class dlgEditEpisode
         Me.lblCredits.Text = Master.eLang.GetString(228, "Credits:")
         Me.tpFrameExtraction.Text = Master.eLang.GetString(256, "Frame Extraction")
 
-        Me.tpMetaData.Text = Master.eLang.GetString(59, "Meta Data")
+        Me.tpEpisodeMetaData.Text = Master.eLang.GetString(59, "Meta Data")
     End Sub
 
     Private Sub txtEpisode_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtEpisode.KeyPress

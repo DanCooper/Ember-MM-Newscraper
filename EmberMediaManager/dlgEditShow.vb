@@ -672,7 +672,7 @@ Public Class dlgEditShow
         If Not Master.eSettings.TVShowBannerEnabled Then Me.tcEditShow.TabPages.Remove(tpShowBanner)
         If Not Master.eSettings.TVShowFanartEnabled Then Me.tcEditShow.TabPages.Remove(tpShowFanart)
         If Not Master.eSettings.TVShowLandscapeEnabled Then Me.tcEditShow.TabPages.Remove(tpShowLandscape)
-        If Not Master.eSettings.TVShowFanartEnabled Then Me.tcEditShow.TabPages.Remove(tpShowFanart)
+        If Not Master.eSettings.TVShowPosterEnabled Then Me.tcEditShow.TabPages.Remove(tpShowPoster)
 
         Me.SetUp()
 
