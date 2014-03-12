@@ -376,7 +376,7 @@ Public Class dlgOfflineHolder
         If Not String.IsNullOrEmpty(Args.dMovie.Movie.Title) Then
             Dim tTitle As String = StringUtils.FilterTokens(Args.dMovie.Movie.Title)
             Args.dMovie.Movie.SortTitle = tTitle
-            If Master.eSettings.DisplayYear AndAlso Not String.IsNullOrEmpty(Args.dMovie.Movie.Year) Then
+            If Master.eSettings.MovieDisplayYear AndAlso Not String.IsNullOrEmpty(Args.dMovie.Movie.Year) Then
                 Args.dMovie.ListTitle = String.Format("{0} ({1})", tTitle, Args.dMovie.Movie.Year)
             Else
                 Args.dMovie.ListTitle = tTitle
@@ -1034,7 +1034,7 @@ Public Class dlgOfflineHolder
             Functions.SetScraperMod(Enums.ModType.EFanarts, True, False)
             Functions.SetScraperMod(Enums.ModType.Trailer, True, False)
 
-            If Not ModulesManager.Instance.MovieScrapeOnly(sMovie, Enums.ScrapeType.SingleScrape, Master.DefaultOptions) Then
+            If Not ModulesManager.Instance.MovieScrapeOnly(sMovie, Enums.ScrapeType.SingleScrape, Master.DefaultMovieOptions) Then
                 If rbTypeMovieTitle.Checked Then
                     Me.txtFolderNameMovieTitle.Text = String.Format("{0} [OffLine]", sMovie.Movie.Title)
                 End If
@@ -1042,11 +1042,11 @@ Public Class dlgOfflineHolder
 
             If Master.GlobalScrapeMod.Poster Then
                 aList.Clear()
-                If Poster.WebImage.IsAllowedToDownload(sMovie, Enums.ImageType.Posters) Then
+                If Poster.WebImage.IsAllowedToDownload(sMovie, Enums.MovieImageType.Poster) Then
                     If Not ModulesManager.Instance.MovieScrapeImages(sMovie, Enums.ScraperCapabilities.Poster, aList) Then
                         If aList.Count > 0 Then
                             Using dImgSelect As New dlgImgSelect()
-                                If dImgSelect.ShowDialog(sMovie, Enums.ImageType.Posters, aList, etList, efList) = DialogResult.OK Then
+                                If dImgSelect.ShowDialog(sMovie, Enums.MovieImageType.Poster, aList, etList, efList) = DialogResult.OK Then
                                     Poster = dImgSelect.Results
                                     sMovie.PosterPath = ":" & Poster.URL
                                 End If
@@ -1061,11 +1061,11 @@ Public Class dlgOfflineHolder
                 aList.Clear()
                 efList.Clear()
                 etList.Clear()
-                If Fanart.WebImage.IsAllowedToDownload(sMovie, Enums.ImageType.Fanart) Then
+                If Fanart.WebImage.IsAllowedToDownload(sMovie, Enums.MovieImageType.Fanart) Then
                     If Not ModulesManager.Instance.MovieScrapeImages(sMovie, Enums.ScraperCapabilities.Fanart, aList) Then
                         If aList.Count > 0 Then
                             Using dImgSelect As New dlgImgSelect()
-                                If dImgSelect.ShowDialog(sMovie, Enums.ImageType.Fanart, aList, efList, etList) = DialogResult.OK Then
+                                If dImgSelect.ShowDialog(sMovie, Enums.MovieImageType.Fanart, aList, efList, etList) = DialogResult.OK Then
                                     Fanart = dImgSelect.Results
                                     efList = dImgSelect.efList
                                     etList = dImgSelect.etList
@@ -1078,7 +1078,7 @@ Public Class dlgOfflineHolder
                                         Fanart.WebImage.FromWeb(Fanart.URL)
                                     End If
                                     If Not IsNothing(Fanart.WebImage.Image) Then
-                                        fPath = Fanart.WebImage.SaveAsFanart(sMovie)
+                                        fPath = Fanart.WebImage.SaveAsMovieFanart(sMovie)
                                     End If
                                 End If
                             End Using

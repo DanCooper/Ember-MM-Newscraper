@@ -55,7 +55,7 @@ Public Class dlgEditSeason
         Try
             Using dImgManual As New dlgImgManual
                 Dim tImage As Images
-                If dImgManual.ShowDialog(Enums.ImageType.Banner) = DialogResult.OK Then
+                If dImgManual.ShowDialog() = DialogResult.OK Then
                     tImage = dImgManual.Results
                     If Not IsNothing(tImage.Image) Then
                         Banner = tImage
@@ -110,7 +110,7 @@ Public Class dlgEditSeason
         Try
             Using dImgManual As New dlgImgManual
                 Dim tImage As Images
-                If dImgManual.ShowDialog(Enums.ImageType.Fanart) = DialogResult.OK Then
+                If dImgManual.ShowDialog() = DialogResult.OK Then
                     tImage = dImgManual.Results
                     If Not IsNothing(tImage.Image) Then
                         Fanart = tImage
@@ -165,7 +165,7 @@ Public Class dlgEditSeason
         Try
             Using dImgManual As New dlgImgManual
                 Dim tImage As Images
-                If dImgManual.ShowDialog(Enums.ImageType.Posters) = DialogResult.OK Then
+                If dImgManual.ShowDialog() = DialogResult.OK Then
                     tImage = dImgManual.Results
                     If Not IsNothing(tImage.Image) Then
                         Poster = tImage
@@ -222,7 +222,7 @@ Public Class dlgEditSeason
     End Sub
 
     Private Sub dlgEditSeason_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        If Not Master.eSettings.SeasonFanartEnabled Then tcEditSeason.TabPages.Remove(tpSeasonFanart) ' OrElse (String.IsNullOrEmpty(Functions.GetSeasonDirectoryFromShowPath(Master.currShow.ShowPath, Master.currShow.TVEp.Season)) AndAlso (Not Master.eSettings.SeasonXXDashFanartJPG AndAlso Not AdvancedSettings.GetBooleanSetting("YAMJSeasonFanart", False, "multi.Compatibility"))) Then tcEditSeason.TabPages.Remove(tpFanart)
+        If Not Master.eSettings.TVSeasonFanartEnabled Then tcEditSeason.TabPages.Remove(tpSeasonFanart) ' OrElse (String.IsNullOrEmpty(Functions.GetSeasonDirectoryFromShowPath(Master.currShow.ShowPath, Master.currShow.TVEp.Season)) AndAlso (Not Master.eSettings.SeasonXXDashFanartJPG AndAlso Not AdvancedSettings.GetBooleanSetting("YAMJSeasonFanart", False, "multi.Compatibility"))) Then tcEditSeason.TabPages.Remove(tpFanart)
 
         Me.SetUp()
 
@@ -237,34 +237,37 @@ Public Class dlgEditSeason
 
     Private Sub FillInfo()
         With Me
+            If Master.eSettings.TVSeasonBannerEnabled Then
+                Banner.FromFile(Master.currShow.SeasonBannerPath)
+                If Not IsNothing(Banner.Image) Then
+                    .pbSeasonBanner.Image = Banner.Image
+                    .pbSeasonBanner.Tag = Banner
 
-            Banner.FromFile(Master.currShow.SeasonBannerPath)
-            If Not IsNothing(Banner.Image) Then
-                .pbSeasonBanner.Image = Banner.Image
-                .pbSeasonBanner.Tag = Banner
-
-                .lblSeasonBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbSeasonBanner.Image.Width, .pbSeasonBanner.Image.Height)
-                .lblSeasonBannerSize.Visible = True
+                    .lblSeasonBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbSeasonBanner.Image.Width, .pbSeasonBanner.Image.Height)
+                    .lblSeasonBannerSize.Visible = True
+                End If
             End If
 
-            'If Master.eSettings.SeasonFanartEnabled AndAlso Not String.IsNullOrEmpty(Functions.GetSeasonDirectoryFromShowPath(Master.currShow.ShowPath, Master.currShow.TVEp.Season)) Then
-            Fanart.FromFile(Master.currShow.SeasonFanartPath)
-            If Not IsNothing(Fanart.Image) Then
-                .pbSeasonFanart.Image = Fanart.Image
-                .pbSeasonFanart.Tag = Fanart
+            If Master.eSettings.TVSeasonFanartEnabled Then
+                Fanart.FromFile(Master.currShow.SeasonFanartPath)
+                If Not IsNothing(Fanart.Image) Then
+                    .pbSeasonFanart.Image = Fanart.Image
+                    .pbSeasonFanart.Tag = Fanart
 
-                .lblSeasonFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbSeasonFanart.Image.Width, .pbSeasonFanart.Image.Height)
-                .lblSeasonFanartSize.Visible = True
+                    .lblSeasonFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbSeasonFanart.Image.Width, .pbSeasonFanart.Image.Height)
+                    .lblSeasonFanartSize.Visible = True
+                End If
             End If
-            'End If
 
-            Poster.FromFile(Master.currShow.SeasonPosterPath)
-            If Not IsNothing(Poster.Image) Then
-                .pbSeasonPoster.Image = Poster.Image
-                .pbSeasonPoster.Tag = Poster
+            If Master.eSettings.TVSeasonPosterEnabled Then
+                Poster.FromFile(Master.currShow.SeasonPosterPath)
+                If Not IsNothing(Poster.Image) Then
+                    .pbSeasonPoster.Image = Poster.Image
+                    .pbSeasonPoster.Tag = Poster
 
-                .lblSeasonPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbSeasonPoster.Image.Width, .pbSeasonPoster.Image.Height)
-                .lblSeasonPosterSize.Visible = True
+                    .lblSeasonPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbSeasonPoster.Image.Width, .pbSeasonPoster.Image.Height)
+                    .lblSeasonPosterSize.Visible = True
+                End If
             End If
         End With
     End Sub
@@ -288,30 +291,29 @@ Public Class dlgEditSeason
             With Me
 
                 If Not IsNothing(.Banner.Image) Then
-                    Dim fPath As String = .Fanart.SaveAsSeasonBanner(Master.currShow)
+                    Dim fPath As String = .Fanart.SaveAsTVSeasonBanner(Master.currShow)
                     Master.currShow.SeasonBannerPath = fPath
                 Else
-                    .Fanart.DeleteSeasonBanner(Master.currShow)
+                    .Fanart.DeleteTVSeasonBanner(Master.currShow)
                     Master.currShow.SeasonBannerPath = String.Empty
                 End If
 
-                'If Master.eSettings.SeasonFanartEnabled AndAlso Not String.IsNullOrEmpty(Functions.GetSeasonDirectoryFromShowPath(Master.currShow.ShowPath, Master.currShow.TVEp.Season)) Then
                 If Not IsNothing(.Fanart.Image) Then
-                    Dim fPath As String = .Fanart.SaveAsSeasonFanart(Master.currShow)
+                    Dim fPath As String = .Fanart.SaveAsTVSeasonFanart(Master.currShow)
                     Master.currShow.SeasonFanartPath = fPath
                 Else
-                    .Fanart.DeleteSeasonFanart(Master.currShow)
+                    .Fanart.DeleteTVSeasonFanart(Master.currShow)
                     Master.currShow.SeasonFanartPath = String.Empty
                 End If
-                'End If
 
                 If Not IsNothing(.Poster.Image) Then
-                    Dim pPath As String = .Poster.SaveAsSeasonPoster(Master.currShow)
+                    Dim pPath As String = .Poster.SaveAsTVSeasonPoster(Master.currShow)
                     Master.currShow.SeasonPosterPath = pPath
                 Else
-                    .Poster.DeleteSeasonPosters(Master.currShow)
+                    .Poster.DeleteTVSeasonPosters(Master.currShow)
                     Master.currShow.SeasonPosterPath = String.Empty
                 End If
+
             End With
         Catch ex As Exception
             Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")

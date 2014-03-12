@@ -53,7 +53,7 @@ Public Class MediaInfo
 
     Public Shared Function ApplyDefaults(ByVal ext As String) As Fileinfo
         Dim fi As New Fileinfo
-        For Each m As Settings.MetadataPerType In Master.eSettings.MetadataPerFileType
+        For Each m As Settings.MetadataPerType In Master.eSettings.MovieMetadataPerFileType
             If m.FileType = ext Then
                 fi = m.MetaData
                 Return fi
@@ -89,7 +89,7 @@ Public Class MediaInfo
                     ' overwrite only if it get something from Mediainfo
 
 
-                    If Master.eSettings.LockLanguageV Then
+                    If Master.eSettings.MovieLockLanguageV Then
                         Try
                             'sets old language setting if setting is enabled (lock language)
                             'First make sure that there is no completely new video source scanned of the movie --> if so (i.e. more streams) then update!
@@ -106,7 +106,7 @@ Public Class MediaInfo
 
                         End Try
                     End If
-                    If Master.eSettings.LockLanguageA Then
+                    If Master.eSettings.MovieLockLanguageA Then
                         Try
                             'sets old language setting if setting is enabled (lock language)
                             'First make sure that there is no completely new audio source scanned of the movie --> if so (i.e. more streams) then update!
@@ -126,11 +126,11 @@ Public Class MediaInfo
                     End If
                     miMovie.Movie.FileInfo = tinfo
                 End If
-                If miMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 AndAlso Master.eSettings.UseMIDuration Then
+                If miMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 AndAlso Master.eSettings.MovieScraperUseMDDuration Then
                     Dim tVid As MediaInfo.Video = NFO.GetBestVideo(miMovie.Movie.FileInfo)
                     'cocotus 29/02/2014, Added check to only save Runtime in nfo/moviedb if scraped Runtime <> 0! (=Error during Mediainfo Scan)
                     If Not String.IsNullOrEmpty(tVid.Duration) AndAlso Not tVid.Duration.Trim = "0" Then
-                        miMovie.Movie.Runtime = MediaInfo.FormatDuration(tVid.Duration, Master.eSettings.RuntimeMask)
+                        miMovie.Movie.Runtime = MediaInfo.FormatDuration(tVid.Duration, Master.eSettings.MovieScraperDurationRuntimeFormat)
                     End If
                 End If
                 MI = Nothing
@@ -184,7 +184,7 @@ Public Class MediaInfo
             Dim ifoVideo(2) As String
             Dim ifoAudio(2) As String
 
-            If Master.eSettings.EnableIFOScan AndAlso (sExt = ".ifo" OrElse sExt = ".vob" OrElse sExt = ".bup") AndAlso cDVD.fctOpenIFOFile(sPath) Then
+            If Master.eSettings.MovieScraperMetaDataIFOScan AndAlso (sExt = ".ifo" OrElse sExt = ".vob" OrElse sExt = ".bup") AndAlso cDVD.fctOpenIFOFile(sPath) Then
                 Try
                     ifoVideo = cDVD.GetIFOVideo
                     Dim vRes() As String = ifoVideo(1).Split(Convert.ToChar("x"))
@@ -606,9 +606,9 @@ Public Class MediaInfo
 
                     If sExt = ".iso" Then
 
-                        Dim driveletter As String = Master.eSettings.DAEMON_driveletter ' i.e. "F:\"
+                        Dim driveletter As String = Master.eSettings.GeneralDaemonDrive ' i.e. "F:\"
                         'Toolpath either VCDMOUNT.exe or DTLite.exe!
-                        Dim ToolPath As String = Master.eSettings.DAEMON_Programpath
+                        Dim ToolPath As String = Master.eSettings.GeneralDaemonPath
 
                         'Now only use DAEMON Tools to mount ISO if installed on user system
                         If Not String.IsNullOrEmpty(driveletter) AndAlso Not String.IsNullOrEmpty(ToolPath) Then

@@ -53,8 +53,8 @@ Public Class dlgTrailerFormat
             lbFormats.DisplayMember = "Description"
             lbFormats.ValueMember = "URL"
 
-            If YouTube.VideoLinks.ContainsKey(Master.eSettings.PreferredTrailerQuality) Then
-                Me.lbFormats.SelectedIndex = YouTube.VideoLinks.IndexOfKey(Master.eSettings.PreferredTrailerQuality)
+            If YouTube.VideoLinks.ContainsKey(Master.eSettings.MovieTrailerPrefQual) Then
+                Me.lbFormats.SelectedIndex = YouTube.VideoLinks.IndexOfKey(Master.eSettings.MovieTrailerPrefQual)
             ElseIf Me.lbFormats.Items.Count = 1 Then
                 Me.lbFormats.SelectedIndex = 0
             End If

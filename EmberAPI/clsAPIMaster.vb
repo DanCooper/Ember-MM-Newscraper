@@ -29,7 +29,7 @@ Public Class Master
     Public Shared DB As New Database
     Public Shared currMovie As New Structures.DBMovie
     Public Shared currShow As New Structures.DBTV
-    Public Shared DefaultOptions As New Structures.ScrapeOptions
+    Public Shared DefaultMovieOptions As New Structures.ScrapeOptions
     Public Shared DefaultTVOptions As New Structures.TVScrapeOptions
     'Public Shared eAdvancedSettings As New AdvancedSettings
     Public Shared eLang As New Localization

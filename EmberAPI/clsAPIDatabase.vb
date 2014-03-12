@@ -102,12 +102,12 @@ Public Class Database
                         End If
                         Using SQLReader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                             While SQLReader.Read
-                                If Not File.Exists(SQLReader("MoviePath").ToString) OrElse Not Master.eSettings.ValidExts.Contains(Path.GetExtension(SQLReader("MoviePath").ToString).ToLower) Then
+                                If Not File.Exists(SQLReader("MoviePath").ToString) OrElse Not Master.eSettings.FileSystemValidExts.Contains(Path.GetExtension(SQLReader("MoviePath").ToString).ToLower) Then
                                     MoviePaths.Remove(SQLReader("MoviePath").ToString)
                                     Master.DB.DeleteFromDB(Convert.ToInt64(SQLReader("ID")), True)
-                                ElseIf Master.eSettings.SkipLessThan > 0 Then
+                                ElseIf Master.eSettings.MovieSkipLessThan > 0 Then
                                     fInfo = New FileInfo(SQLReader("MoviePath").ToString)
-                                    If ((Not Master.eSettings.SkipStackSizeCheck OrElse Not StringUtils.IsStacked(fInfo.Name)) AndAlso fInfo.Length < Master.eSettings.SkipLessThan * 1048576) Then
+                                    If ((Not Master.eSettings.MovieSkipStackedSizeCheck OrElse Not StringUtils.IsStacked(fInfo.Name)) AndAlso fInfo.Length < Master.eSettings.MovieSkipLessThan * 1048576) Then
                                         MoviePaths.Remove(SQLReader("MoviePath").ToString)
                                         Master.DB.DeleteFromDB(Convert.ToInt64(SQLReader("ID")), True)
                                     End If
@@ -148,7 +148,7 @@ Public Class Database
 
                         Using SQLReader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                             While SQLReader.Read
-                                If Not File.Exists(SQLReader("TVEpPath").ToString) OrElse Not Master.eSettings.ValidExts.Contains(Path.GetExtension(SQLReader("TVEpPath").ToString).ToLower) Then
+                                If Not File.Exists(SQLReader("TVEpPath").ToString) OrElse Not Master.eSettings.FileSystemValidExts.Contains(Path.GetExtension(SQLReader("TVEpPath").ToString).ToLower) Then
                                     Master.DB.DeleteTVEpFromDBByPath(SQLReader("TVEpPath").ToString, False, True)
                                 End If
                             End While
@@ -574,7 +574,7 @@ Public Class Database
                 Using SQLReader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader
                     While SQLReader.Read
                         Using SQLECommand As SQLite.SQLiteCommand = _mediaDBConn.CreateCommand()
-                            If Not Master.eSettings.DisplayMissingEpisodes OrElse Force Then
+                            If Not Master.eSettings.TVDisplayMissingEpisodes OrElse Force Then
                                 SQLECommand.CommandText = String.Concat("DELETE FROM TVEpPaths WHERE ID = ", Convert.ToInt32(SQLReader("TVEpPathID")), ";")
                                 SQLECommand.ExecuteNonQuery()
                                 SQLECommand.CommandText = String.Concat("DELETE FROM TVEps WHERE ID = ", ID, ";")
@@ -623,7 +623,7 @@ Public Class Database
                             Using SQLReader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
                                 While SQLReader.Read
                                     Using SQLECommand As SQLite.SQLiteCommand = _mediaDBConn.CreateCommand()
-                                        If Not Master.eSettings.DisplayMissingEpisodes OrElse Force Then
+                                        If Not Master.eSettings.TVDisplayMissingEpisodes OrElse Force Then
                                             SQLECommand.CommandText = String.Concat("DELETE FROM TVEps WHERE ID = ", SQLReader("ID"), ";")
                                             SQLECommand.ExecuteNonQuery()
                                             SQLECommand.CommandText = String.Concat("DELETE FROM TVEpActors WHERE TVEpID = ", SQLReader("ID"), ";")
@@ -799,7 +799,7 @@ Public Class Database
             Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                 While SQLreader.Read
                     mPath = SQLreader("MoviePath").ToString.ToLower
-                    If Master.eSettings.NoStackExts.Contains(Path.GetExtension(mPath)) Then
+                    If Master.eSettings.FileSystemNoStackExts.Contains(Path.GetExtension(mPath)) Then
                         tList.Add(mPath)
                     Else
                         tList.Add(StringUtils.CleanStackingMarkers(mPath))
@@ -871,7 +871,7 @@ Public Class Database
                             If Not DBNull.Value.Equals(SQLreader("Credits")) Then .OldCredits = SQLreader("Credits").ToString
                             If Not DBNull.Value.Equals(SQLreader("PlayCount")) Then .PlayCount = SQLreader("PlayCount").ToString
                             'If Not DBNull.Value.Equals(SQLreader("Watched")) Then .Watched = SQLreader("Watched").ToString
-                            If Not DBNull.Value.Equals(SQLreader("FanartURL")) AndAlso Not Master.eSettings.NoSaveImagesToNfo Then .Fanart.URL = SQLreader("FanartURL").ToString
+                            If Not DBNull.Value.Equals(SQLreader("FanartURL")) AndAlso Not Master.eSettings.MovieNoSaveImagesToNfo Then .Fanart.URL = SQLreader("FanartURL").ToString
                         End With
                     End If
                 End Using
@@ -960,7 +960,7 @@ Public Class Database
                     End While
                 End Using
             End Using
-            If Not Master.eSettings.NoSaveImagesToNfo Then
+            If Not Master.eSettings.MovieNoSaveImagesToNfo Then
                 Using SQLcommand As SQLite.SQLiteCommand = _mediaDBConn.CreateCommand()
                     SQLcommand.CommandText = String.Concat("SELECT ID, MovieID, preview, thumbs FROM MoviesFanart WHERE MovieID = ", MovieID, ";")
                     Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
@@ -1216,7 +1216,7 @@ Public Class Database
         Return New Structures.DBTV With {.EpID = -1}
     End Function
     ''' <summary>
-    ''' Retrieve details for the given ShowID. If AllSeasonPosterEnabled is <c>True</c>, also retrieve the AllSeasonPoster
+    ''' Retrieve details for the given ShowID. If AllSeasonPosterEnabled is <c>True</c>, also retrieve the AllSeasonsPoster
     ''' </summary>
     ''' <param name="ShowID">Show ID to retrieve</param>
     ''' <returns>Structures.DBDV filled with show information.</returns>
@@ -1224,7 +1224,7 @@ Public Class Database
     Public Function LoadTVFullShowFromDB(ByVal ShowID As Long) As Structures.DBTV
         If ShowID < 0 Then Throw New ArgumentOutOfRangeException("ShowID", "Value must be >= 0, was given: " & ShowID)
 
-        If Master.eSettings.AllSeasonPosterEnabled Then
+        If Master.eSettings.TVASPosterEnabled Then
             Return Master.DB.LoadTVAllSeasonFromDB(ShowID, True)
         Else
             Return Master.DB.LoadTVShowFromDB(ShowID)
@@ -1480,7 +1480,7 @@ Public Class Database
                 'cocotus 20130303 Special DateAddvalue
                 '    parMovieDateAdd.Value = If(IsNew, Functions.ConvertToUnixTimestamp(Now), _movieDB.DateAdd)
                 Try
-                    If Master.eSettings.UseSpecialDateAddvalue Then
+                    If Master.eSettings.GeneralCreationDate Then
                         'Use filecreation date of file instead of simply NOW Date    
                         parMovieDateAdd.Value = If(IsNew, Functions.ConvertToUnixTimestamp(System.IO.File.GetCreationTime(_movieDB.Filename)), _movieDB.DateAdd)
                     Else
@@ -1504,7 +1504,7 @@ Public Class Database
                 parEThumbsPath.Value = _movieDB.EThumbsPath
                 parEFanartsPath.Value = _movieDB.EFanartsPath
 
-                If Not Master.eSettings.NoSaveImagesToNfo Then
+                If Not Master.eSettings.MovieNoSaveImagesToNfo Then
                     parFanartURL.Value = _movieDB.Movie.Fanart.URL
                 Else
                     parFanartURL.Value = String.Empty
@@ -1553,7 +1553,7 @@ Public Class Database
 
                 parSource.Value = _movieDB.Source
                 If IsNew Then
-                    If Master.eSettings.MarkNew Then
+                    If Master.eSettings.MovieGeneralMarkNew Then
                         parMark.Value = True
                     Else
                         parMark.Value = False
@@ -1709,7 +1709,7 @@ Public Class Database
                         SQLcommandMoviesPosters.CommandText = String.Concat("DELETE FROM MoviesPosters WHERE MovieID = ", _movieDB.ID, ";")
                         SQLcommandMoviesPosters.ExecuteNonQuery()
 
-                        If Not Master.eSettings.NoSaveImagesToNfo Then
+                        If Not Master.eSettings.MovieNoSaveImagesToNfo Then
                             SQLcommandMoviesPosters.CommandText = String.Concat("INSERT OR REPLACE INTO MoviesPosters (", _
                                "MovieID, thumbs", _
                                ") VALUES (?,?);")
@@ -1726,7 +1726,7 @@ Public Class Database
                         SQLcommandMoviesFanart.CommandText = String.Concat("DELETE FROM MoviesFanart WHERE MovieID = ", _movieDB.ID, ";")
                         SQLcommandMoviesFanart.ExecuteNonQuery()
 
-                        If Not Master.eSettings.NoSaveImagesToNfo Then
+                        If Not Master.eSettings.MovieNoSaveImagesToNfo Then
                             SQLcommandMoviesFanart.CommandText = String.Concat("INSERT OR REPLACE INTO MoviesFanart (", _
                                  "MovieID, preview, thumbs", _
                                  ") VALUES (?,?,?);")
@@ -1798,7 +1798,7 @@ Public Class Database
             NFO.LoadTVEpDuration(_TVEpDB)
 
             'delete so it will remove if there is a "missing" episode entry already
-            If Master.eSettings.DisplayMissingEpisodes Then
+            If Master.eSettings.TVDisplayMissingEpisodes Then
                 Using SQLCommand As SQLite.SQLiteCommand = _mediaDBConn.CreateCommand()
                     SQLCommand.CommandText = String.Concat("DELETE FROM TVEps WHERE TVShowID = ", _TVEpDB.ShowID, " AND Episode = ", _TVEpDB.TVEp.Episode, " AND Season = ", _TVEpDB.TVEp.Season, ";")
                     SQLCommand.ExecuteNonQuery()
@@ -1912,7 +1912,7 @@ Public Class Database
                 End With
 
                 If IsNew Then
-                    If Master.eSettings.MarkNewEpisodes Then
+                    If Master.eSettings.TVGeneralMarkNewEpisodes Then
                         parMark.Value = True
                     Else
                         parMark.Value = False
@@ -2205,7 +2205,7 @@ Public Class Database
 
 
                 If IsNew Then
-                    If Master.eSettings.MarkNewShows Then
+                    If Master.eSettings.TVGeneralMarkNewShows Then
                         parMark.Value = True
                     Else
                         parMark.Value = False

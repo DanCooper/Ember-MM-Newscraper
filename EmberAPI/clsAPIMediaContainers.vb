@@ -1035,10 +1035,10 @@ Namespace MediaContainers
         <XmlIgnore()> _
         Public Property Sets() As List(Of [Set])
             Get
-                Return If(Master.eSettings.YAMJSetsCompatible, Me._ysets.Sets, Me._xsets)
+                Return If(Master.eSettings.MovieYAMJCompatibleSets, Me._ysets.Sets, Me._xsets)
             End Get
             Set(ByVal value As List(Of [Set]))
-                If Master.eSettings.YAMJSetsCompatible Then
+                If Master.eSettings.MovieYAMJCompatibleSets Then
                     Me._ysets.Sets = value
                 Else
                     Me._xsets = value

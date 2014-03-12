@@ -348,12 +348,12 @@ Public Class StringUtils
     Public Shared Function FilterName(ByVal movieName As String, Optional ByVal doExtras As Boolean = True, Optional ByVal remPunct As Boolean = False) As String
         If String.IsNullOrEmpty(movieName) Then Return String.Empty
 
-        movieName = ApplyFilters(movieName, Master.eSettings.FilterCustom)
+        movieName = ApplyFilters(movieName, Master.eSettings.MovieFilterCustom)
 
         movieName = CleanStackingMarkers(movieName.Trim)
 
         'Convert String To Proper Case
-        If Master.eSettings.ProperCase AndAlso doExtras Then
+        If Master.eSettings.MovieProperCase AndAlso doExtras Then
             movieName = ProperCase(movieName)
         End If
 
@@ -381,15 +381,15 @@ Public Class StringUtils
         If String.IsNullOrEmpty(sTitle) Then Return String.Empty
         Dim newTitle As String = sTitle
 
-        If Master.eSettings.SortTokens.Count > 0 Then
+        If Master.eSettings.MovieSortTokens.Count > 0 Then
             Dim tokenContents As String
             Dim onlyTokenFromTitle As RegularExpressions.Match
             Dim titleWithoutToken As String
-            For Each sToken As String In Master.eSettings.SortTokens
+            For Each sToken As String In Master.eSettings.MovieSortTokens
                 Try
                     If Regex.IsMatch(sTitle, String.Concat("^", sToken), RegexOptions.IgnoreCase) Then
                         tokenContents = Regex.Replace(sToken, "\[(.*?)\]", String.Empty)
- 
+
                         onlyTokenFromTitle = Regex.Match(sTitle, String.Concat("^", tokenContents), RegexOptions.IgnoreCase)
 
                         'cocotus 20140207, Fix for movies like "A.C.O.D." -> check for tokenContents(="A","An","the"..) followed by whitespace at the start of title -> If no space -> don't do anyn filtering!
@@ -425,14 +425,14 @@ Public Class StringUtils
 
             If String.IsNullOrEmpty(TVEpName) Then Return String.Empty
             TVEpName = TVEpName.Trim
-            TVEpName = ApplyFilters(TVEpName, Master.eSettings.EpFilterCustom)
+            TVEpName = ApplyFilters(TVEpName, Master.eSettings.TVEpisodeFilterCustom)
             TVEpName = CleanStackingMarkers(TVEpName)
 
             'remove the show name from the episode name
             If Not String.IsNullOrEmpty(TVShowName) Then TVEpName = Strings.Replace(TVEpName, TVShowName.Trim, String.Empty, 1, -1, CompareMethod.Text)
 
             'Convert String To Proper Case
-            If Master.eSettings.EpProperCase AndAlso doExtras Then
+            If Master.eSettings.TVEpisodeProperCase AndAlso doExtras Then
                 TVEpName = ProperCase(TVEpName.Trim)
             End If
 
@@ -461,11 +461,11 @@ Public Class StringUtils
         '\\
         If String.IsNullOrEmpty(TVShowName) Then Return String.Empty
         TVShowName = TVShowName.Trim
-        TVShowName = ApplyFilters(TVShowName, Master.eSettings.ShowFilterCustom)
+        TVShowName = ApplyFilters(TVShowName, Master.eSettings.TVShowFilterCustom)
         'TVShowName = CleanStackingMarkers(TVShowName)
 
         'Convert String To Proper Case
-        If Master.eSettings.ShowProperCase AndAlso doExtras Then
+        If Master.eSettings.TVShowProperCase AndAlso doExtras Then
             TVShowName = ProperCase(TVShowName)
         End If
 

@@ -373,7 +373,7 @@ Public Class dlgEditMovie
         Try
             Using dImgManual As New dlgImgManual
                 Dim tImage As Images
-                If dImgManual.ShowDialog(Enums.ImageType.Fanart) = DialogResult.OK Then
+                If dImgManual.ShowDialog() = DialogResult.OK Then
                     tImage = dImgManual.Results
                     If Not IsNothing(tImage.Image) Then
                         Fanart = tImage
@@ -402,7 +402,7 @@ Public Class dlgEditMovie
             If Not ModulesManager.Instance.MovieScrapeImages(Master.currMovie, Enums.ScraperCapabilities.Fanart, aList) Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
-                    If dlgImgS.ShowDialog(Master.currMovie, Enums.ImageType.Fanart, aList, efList, etList, True) = DialogResult.OK Then
+                    If dlgImgS.ShowDialog(Master.currMovie, Enums.MovieImageType.Fanart, aList, efList, etList, True) = DialogResult.OK Then
                         pResults = dlgImgS.Results
                         Master.currMovie.etList = dlgImgS.etList
                         Master.currMovie.efList = dlgImgS.efList
@@ -454,7 +454,7 @@ Public Class dlgEditMovie
         Try
             Using dImgManual As New dlgImgManual
                 Dim tImage As Images
-                If dImgManual.ShowDialog(Enums.ImageType.Posters) = DialogResult.OK Then
+                If dImgManual.ShowDialog() = DialogResult.OK Then
                     tImage = dImgManual.Results
                     If Not IsNothing(tImage.Image) Then
                         Poster = tImage
@@ -485,7 +485,7 @@ Public Class dlgEditMovie
             If Not ModulesManager.Instance.MovieScrapeImages(Master.currMovie, Enums.ScraperCapabilities.Poster, aList) Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
-                    If dlgImgS.ShowDialog(Master.currMovie, Enums.ImageType.Posters, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
+                    If dlgImgS.ShowDialog(Master.currMovie, Enums.MovieImageType.Poster, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
                         pResults = dlgImgS.Results
                         If Not String.IsNullOrEmpty(pResults.URL) Then
                             Cursor = Cursors.WaitCursor
@@ -953,9 +953,9 @@ Public Class dlgEditMovie
                 End If
 
                 If Not String.IsNullOrEmpty(Master.currMovie.Movie.Certification) Then
-                    If Not String.IsNullOrEmpty(Master.eSettings.CertificationLang) Then
+                    If Not String.IsNullOrEmpty(Master.eSettings.MovieScraperCertLang) Then
                         Dim lCert() As String = Master.currMovie.Movie.Certification.Trim.Split(Convert.ToChar("/"))
-                        Dim fCert = From eCert In lCert Where Regex.IsMatch(eCert, String.Concat(Regex.Escape(Master.eSettings.CertificationLang), "\:(.*?)"))
+                        Dim fCert = From eCert In lCert Where Regex.IsMatch(eCert, String.Concat(Regex.Escape(Master.eSettings.MovieScraperCertLang), "\:(.*?)"))
                         If fCert.Count > 0 Then
                             .txtCerts.Text = fCert(0).ToString.Trim
                         Else
@@ -975,7 +975,7 @@ Public Class dlgEditMovie
                     End If
                 End If
 
-                .btnDLTrailer.Enabled = Master.eSettings.UpdaterTrailers AndAlso ModulesManager.Instance.QueryTrailerScraperCapabilities(Enums.ScraperCapabilities.Trailer)
+                .btnDLTrailer.Enabled = Master.eSettings.MovieTrailerEnable AndAlso ModulesManager.Instance.QueryTrailerScraperCapabilities(Enums.ScraperCapabilities.Trailer)
 
                 If Not String.IsNullOrEmpty(Master.currMovie.Movie.Studio) Then
                     .txtStudio.Text = Master.currMovie.Movie.Studio
@@ -1520,7 +1520,7 @@ Public Class dlgEditMovie
 
                     'now rename them properly
                     For Each lItem As ExtraImages In EThumbsList
-                        Dim etPath As String = lItem.Image.SaveAsExtraThumb(Master.currMovie)
+                        Dim etPath As String = lItem.Image.SaveAsMovieExtrathumb(Master.currMovie)
                         If lItem.Index = 0 Then
                             Master.currMovie.EThumbsPath = etPath
                         End If
@@ -1577,7 +1577,7 @@ Public Class dlgEditMovie
 
                     'now rename them properly
                     For Each lItem As ExtraImages In EFanartsList
-                        Dim efPath As String = lItem.Image.SaveAsExtraFanart(Master.currMovie, lItem.Name)
+                        Dim efPath As String = lItem.Image.SaveAsMovieExtrafanart(Master.currMovie, lItem.Name)
                         If lItem.Index = 0 Then
                             Master.currMovie.EFanartsPath = efPath
                         End If
@@ -1602,8 +1602,8 @@ Public Class dlgEditMovie
     Private Sub SelectMPAA()
         If Not String.IsNullOrEmpty(Master.currMovie.Movie.MPAA) Then
             Try
-                If Master.eSettings.UseCertForMPAA AndAlso Not Master.eSettings.CertificationLang = "USA" AndAlso Not IsNothing(APIXML.RatingXML.Element("ratings").Element(Master.eSettings.CertificationLang.ToLower)) AndAlso APIXML.RatingXML.Element("ratings").Element(Master.eSettings.CertificationLang.ToLower).Descendants("movie").Count > 0 Then
-                    If Master.eSettings.OnlyValueForCert Then
+                If Master.eSettings.MovieScraperCertForMPAA AndAlso Not Master.eSettings.MovieScraperCertLang = "USA" AndAlso Not IsNothing(APIXML.RatingXML.Element("ratings").Element(Master.eSettings.MovieScraperCertLang.ToLower)) AndAlso APIXML.RatingXML.Element("ratings").Element(Master.eSettings.MovieScraperCertLang.ToLower).Descendants("movie").Count > 0 Then
+                    If Master.eSettings.MovieScraperOnlyValueForMPAA Then
                         Dim sItem As String = String.Empty
                         For i As Integer = 0 To Me.lbMPAA.Items.Count - 1
                             sItem = Me.lbMPAA.Items(i).ToString
@@ -1672,7 +1672,7 @@ Public Class dlgEditMovie
                 Master.currMovie.IsMark = Me.chkMark.Checked
 
                 If Not String.IsNullOrEmpty(.txtTitle.Text) Then
-                    If Master.eSettings.DisplayYear AndAlso Not String.IsNullOrEmpty(.mtxtYear.Text.Trim) Then
+                    If Master.eSettings.MovieDisplayYear AndAlso Not String.IsNullOrEmpty(.mtxtYear.Text.Trim) Then
                         Master.currMovie.ListTitle = String.Format("{0} ({1})", StringUtils.FilterTokens(.txtTitle.Text.Trim), .mtxtYear.Text.Trim)
                     Else
                         Master.currMovie.ListTitle = StringUtils.FilterTokens(.txtTitle.Text.Trim)
@@ -1706,13 +1706,13 @@ Public Class dlgEditMovie
                 Master.currMovie.FileSource = .txtFileSource.Text.Trim
 
                 If .lbMPAA.SelectedIndices.Count > 0 AndAlso Not .lbMPAA.SelectedIndex <= 0 Then
-                    Master.currMovie.Movie.MPAA = String.Concat(If(Master.eSettings.UseCertForMPAA AndAlso Master.eSettings.OnlyValueForCert AndAlso .lbMPAA.SelectedItem.ToString.Contains(":"), .lbMPAA.SelectedItem.ToString.Split(Convert.ToChar(":"))(1), .lbMPAA.SelectedItem.ToString), " ", .txtMPAADesc.Text).Trim
+                    Master.currMovie.Movie.MPAA = String.Concat(If(Master.eSettings.MovieScraperCertForMPAA AndAlso Master.eSettings.MovieScraperOnlyValueForMPAA AndAlso .lbMPAA.SelectedItem.ToString.Contains(":"), .lbMPAA.SelectedItem.ToString.Split(Convert.ToChar(":"))(1), .lbMPAA.SelectedItem.ToString), " ", .txtMPAADesc.Text).Trim
                 Else
-                    If Master.eSettings.UseCertForMPAA AndAlso (Not Master.eSettings.CertificationLang = "USA" OrElse (Master.eSettings.CertificationLang = "USA" AndAlso .lbMPAA.SelectedIndex = 0)) Then
+                    If Master.eSettings.MovieScraperCertForMPAA AndAlso (Not Master.eSettings.MovieScraperCertLang = "USA" OrElse (Master.eSettings.MovieScraperCertLang = "USA" AndAlso .lbMPAA.SelectedIndex = 0)) Then
                         Dim lCert() As String = .txtCerts.Text.Trim.Split(Convert.ToChar("/"))
-                        Dim fCert = From eCert In lCert Where Regex.IsMatch(eCert, String.Concat(Regex.Escape(Master.eSettings.CertificationLang), "\:(.*?)"))
+                        Dim fCert = From eCert In lCert Where Regex.IsMatch(eCert, String.Concat(Regex.Escape(Master.eSettings.MovieScraperCertLang), "\:(.*?)"))
                         If fCert.Count > 0 Then
-                            Master.currMovie.Movie.MPAA = If(Master.eSettings.CertificationLang = "USA", StringUtils.USACertToMPAA(fCert(0).ToString.Trim), If(Master.eSettings.OnlyValueForCert, fCert(0).ToString.Trim.Split(Convert.ToChar(":"))(1), fCert(0).ToString.Trim))
+                            Master.currMovie.Movie.MPAA = If(Master.eSettings.MovieScraperCertLang = "USA", StringUtils.USACertToMPAA(fCert(0).ToString.Trim), If(Master.eSettings.MovieScraperOnlyValueForMPAA, fCert(0).ToString.Trim.Split(Convert.ToChar(":"))(1), fCert(0).ToString.Trim))
                         Else
                             Master.currMovie.Movie.MPAA = String.Empty
                         End If
@@ -1797,35 +1797,35 @@ Public Class dlgEditMovie
                 End If
 
                 If Master.currMovie.ClearFanart Then
-                    .Fanart.DeleteFanart(Master.currMovie)
+                    .Fanart.DeleteMovieFanart(Master.currMovie)
                 End If
 
                 If Master.currMovie.ClearPoster Then
-                    .Poster.DeletePosters(Master.currMovie)
+                    .Poster.DeleteMoviePosters(Master.currMovie)
                 End If
 
                 If Not IsNothing(.Fanart.Image) Then
-                    Dim fPath As String = .Fanart.SaveAsFanart(Master.currMovie)
+                    Dim fPath As String = .Fanart.SaveAsMovieFanart(Master.currMovie)
                     Master.currMovie.FanartPath = fPath
                 Else
-                    .Fanart.DeleteFanart(Master.currMovie)
+                    .Fanart.DeleteMovieFanart(Master.currMovie)
                     Master.currMovie.FanartPath = String.Empty
                 End If
 
                 If Not IsNothing(.Poster.Image) Then
-                    Dim pPath As String = .Poster.SaveAsPoster(Master.currMovie)
+                    Dim pPath As String = .Poster.SaveAsMoviePoster(Master.currMovie)
                     Master.currMovie.PosterPath = pPath
                 Else
-                    .Poster.DeletePosters(Master.currMovie)
+                    .Poster.DeleteMoviePosters(Master.currMovie)
                     Master.currMovie.PosterPath = String.Empty
                 End If
 
-                If Master.GlobalScrapeMod.Actors AndAlso Master.eSettings.ScraperActorThumbs AndAlso (Master.eSettings.MovieActorThumbsFrodo OrElse Master.eSettings.MovieActorThumbsEden) Then
+                If Master.GlobalScrapeMod.Actors AndAlso Master.eSettings.MovieScraperActorThumbs AndAlso (Master.eSettings.MovieActorThumbsFrodo OrElse Master.eSettings.MovieActorThumbsEden) Then
                     For Each act As MediaContainers.Person In Master.currMovie.Movie.Actors
                         Dim img As New Images
                         img.FromWeb(act.Thumb)
                         If Not IsNothing(img.Image) Then
-                            img.SaveAsActorThumb(act, Directory.GetParent(Master.currMovie.Filename).FullName, Master.currMovie)
+                            img.SaveAsMovieActorThumb(act, Directory.GetParent(Master.currMovie.Filename).FullName, Master.currMovie)
                         End If
                     Next
                 End If
@@ -1857,8 +1857,8 @@ Public Class dlgEditMovie
                     MediaStub.SaveDiscStub(StubFile, Title, Message)
                 End If
 
-                If Not Master.eSettings.NoSaveImagesToNfo AndAlso pResults.Posters.Count > 0 Then Master.currMovie.Movie.Thumb = pResults.Posters
-                If Not Master.eSettings.NoSaveImagesToNfo AndAlso fResults.Fanart.Thumb.Count > 0 Then Master.currMovie.Movie.Fanart = pResults.Fanart
+                If Not Master.eSettings.MovieNoSaveImagesToNfo AndAlso pResults.Posters.Count > 0 Then Master.currMovie.Movie.Thumb = pResults.Posters
+                If Not Master.eSettings.MovieNoSaveImagesToNfo AndAlso fResults.Fanart.Thumb.Count > 0 Then Master.currMovie.Movie.Fanart = pResults.Fanart
 
                 .SaveEThumbsList()
                 '.TransferEThumbs()

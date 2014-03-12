@@ -171,7 +171,7 @@ Public Class IMDB_trailer
         Dim _ImdbTrailerPage As String = String.Empty
 
         If Master.GlobalScrapeMod.Trailer Then
-            _ImdbTrailerPage = WebPage.DownloadData(String.Concat("http://", Master.eSettings.IMDBURL, "/title/tt", DBMovie.Movie.IMDBID, "/videogallery/content_type-Trailer"))
+            _ImdbTrailerPage = WebPage.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/title/tt", DBMovie.Movie.IMDBID, "/videogallery/content_type-Trailer"))
             If _ImdbTrailerPage.ToLower.Contains("page not found") Then
                 _ImdbTrailerPage = String.Empty
             End If
@@ -187,7 +187,7 @@ Public Class IMDB_trailer
 
                         For i As Integer = 1 To currPage
                             If Not i = 1 Then
-                                _ImdbTrailerPage = WebPage.DownloadData(String.Concat("http://", Master.eSettings.IMDBURL, "/title/tt", DBMovie.Movie.IMDBID, "/videogallery/content_type-Trailer?page=", i))
+                                _ImdbTrailerPage = WebPage.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/title/tt", DBMovie.Movie.IMDBID, "/videogallery/content_type-Trailer?page=", i))
                             End If
 
                             Links = Regex.Matches(_ImdbTrailerPage, "screenplay/(vi[0-9]+)/")
@@ -198,17 +198,17 @@ Public Class IMDB_trailer
 
                             For Each value As String In linksCollection
                                 If value.Contains("screenplay") Then
-                                    trailerPage = WebPage.DownloadData(String.Concat("http://", Master.eSettings.IMDBURL, "/video/", value, "player"))
+                                    trailerPage = WebPage.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/video/", value, "player"))
                                     trailerUrl = Web.HttpUtility.UrlDecode(Regex.Match(trailerPage, "http.+mp4").Value)
                                     If Not String.IsNullOrEmpty(trailerUrl) AndAlso WebPage.IsValidURL(trailerUrl) Then
                                         Dim tLink As String = String.Empty
                                         If Regex.IsMatch(trailerUrl, "http:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") Then
                                             Dim YT As New YouTube.Scraper
                                             YT.GetVideoLinks(trailerUrl)
-                                            If YT.VideoLinks.ContainsKey(Master.eSettings.PreferredTrailerQuality) Then
-                                                tLink = YT.VideoLinks(Master.eSettings.PreferredTrailerQuality).URL
+                                            If YT.VideoLinks.ContainsKey(Master.eSettings.MovieTrailerPrefQual) Then
+                                                tLink = YT.VideoLinks(Master.eSettings.MovieTrailerPrefQual).URL
                                             Else
-                                                Select Case Master.eSettings.PreferredTrailerQuality
+                                                Select Case Master.eSettings.MovieTrailerPrefQual
                                                     Case Enums.TrailerQuality.HD1080p
                                                         If YT.VideoLinks.ContainsKey(Enums.TrailerQuality.HD720p) Then
                                                             tLink = YT.VideoLinks(Enums.TrailerQuality.HD720p).URL

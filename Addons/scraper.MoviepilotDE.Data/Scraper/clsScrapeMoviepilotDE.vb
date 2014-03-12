@@ -110,17 +110,17 @@ Public Class MoviepilotDE
                 If Not String.IsNullOrEmpty(HTML) Then
 
                     'outline
-                    If String.IsNullOrEmpty(MoviepilotDEMovie.Outline) OrElse Not Master.eSettings.LockOutline Then
+                    If String.IsNullOrEmpty(MoviepilotDEMovie.Outline) OrElse Not Master.eSettings.MovieLockOutline Then
                         _outline = GetPlotAndOutline(HTML, 1)
                     End If
 
                     'full plot
-                    If String.IsNullOrEmpty(MoviepilotDEMovie.Plot) OrElse Not Master.eSettings.LockPlot Then
+                    If String.IsNullOrEmpty(MoviepilotDEMovie.Plot) OrElse Not Master.eSettings.MovieLockPlot Then
                         _plot = GetPlotAndOutline(HTML, 0)
                     End If
 
                     'fsk
-                    If String.IsNullOrEmpty(MoviepilotDEMovie.Certification) OrElse Not Master.eSettings.LockMPAA Then
+                    If String.IsNullOrEmpty(MoviepilotDEMovie.Certification) OrElse Not Master.eSettings.MovieLockMPAA Then
                         _fsk = GetFSK(HTML)
                     End If
 

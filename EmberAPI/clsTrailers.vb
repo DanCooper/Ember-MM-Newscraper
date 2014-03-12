@@ -96,7 +96,7 @@ Public Class Trailers
         Dim tmpNameNoStack As String = Path.Combine(parPath, Path.GetFileNameWithoutExtension(sPath))
 
         Try
-            For Each t As String In Master.eSettings.ValidExts
+            For Each t As String In Master.eSettings.FileSystemValidExts
                 If File.Exists(String.Concat(tmpName, "-trailer", t)) AndAlso Not String.Concat(tmpName, "-trailer", t).ToLower = NewTrailer.ToLower Then
                     File.Delete(String.Concat(tmpName, "-trailer", t))
                 ElseIf File.Exists(String.Concat(tmpName, "[trailer]", t)) AndAlso Not String.Concat(tmpName, "[trailer]", t).ToLower = NewTrailer.ToLower Then
@@ -136,16 +136,16 @@ Public Class Trailers
     Public Shared Function PreferredTrailer(ByRef tUrl As String, ByRef UrlList As List(Of Trailers), ByVal sPath As String, ByVal isSingle As Boolean) As Boolean
         PreferredTrailer = False
         Try
-            If Not Master.eSettings.UpdaterTrailersNoDownload AndAlso IsAllowedToDownload(sPath, isSingle, True) Then
+            If IsAllowedToDownload(sPath, isSingle, True) Then 'TODO: check this
                 For Each aUrl As Trailers In UrlList
                     Dim tLink As String = String.Empty
                     If Regex.IsMatch(aUrl.URL, "http:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") Then
                         Dim YT As New YouTube.Scraper
                         YT.GetVideoLinks(aUrl.URL)
-                        If YT.VideoLinks.ContainsKey(Master.eSettings.PreferredTrailerQuality) Then
-                            tLink = YT.VideoLinks(Master.eSettings.PreferredTrailerQuality).URL
+                        If YT.VideoLinks.ContainsKey(Master.eSettings.MovieTrailerPrefQual) Then
+                            tLink = YT.VideoLinks(Master.eSettings.MovieTrailerPrefQual).URL
                         Else
-                            Select Case Master.eSettings.PreferredTrailerQuality
+                            Select Case Master.eSettings.MovieTrailerPrefQual
                                 Case Enums.TrailerQuality.HD1080p
                                     If YT.VideoLinks.ContainsKey(Enums.TrailerQuality.HD720p) Then
                                         tLink = YT.VideoLinks(Enums.TrailerQuality.HD720p).URL
@@ -267,11 +267,11 @@ Public Class Trailers
         Dim fScanner As New Scanner
 
         If isDL Then
-            If String.IsNullOrEmpty(fScanner.GetTrailerPath(sPath)) OrElse Master.eSettings.OverwriteTrailer Then
+            If String.IsNullOrEmpty(fScanner.GetTrailerPath(sPath)) OrElse Master.eSettings.MovieTrailerOverwrite Then
                 Return True
             Else
                 If isSS AndAlso String.IsNullOrEmpty(fScanner.GetTrailerPath(sPath)) Then
-                    If Not Master.eSettings.LockTrailer Then
+                    If Not Master.eSettings.MovieLockTrailer Then
                         Return True
                     Else
                         Return False
@@ -281,7 +281,7 @@ Public Class Trailers
                 End If
             End If
         Else
-            If Not Master.eSettings.LockTrailer Then
+            If Not Master.eSettings.MovieLockTrailer Then
                 Return True
             Else
                 Return False

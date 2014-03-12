@@ -254,7 +254,7 @@ Public Class dlgEditEpisode
         dFileInfoEdit.Height = pnlFileInfo.Height
         dFileInfoEdit.Show(True)
 
-        If Not Master.eSettings.AllSeasonPosterEnabled() Then
+        If Not Master.eSettings.TVASPosterEnabled() Then
             Me.tcEditEpisode.TabPages.Remove(tpFanart)
         End If
         Dim params As New List(Of Object)(New Object() {New Panel})
@@ -545,16 +545,16 @@ Public Class dlgEditEpisode
                 End If
 
                 If Not IsNothing(.Fanart.Image) Then
-                    Master.currShow.EpFanartPath = .Fanart.SaveAsEpFanart(Master.currShow)
+                    Master.currShow.EpFanartPath = .Fanart.SaveAsTVEpisodeFanart(Master.currShow)
                 Else
-                    .Fanart.DeleteEpFanart(Master.currShow)
+                    .Fanart.DeleteTVEpisodeFanart(Master.currShow)
                     Master.currShow.EpFanartPath = String.Empty
                 End If
 
                 If Not IsNothing(.Poster.Image) Then
-                    Master.currShow.EpPosterPath = .Poster.SaveAsEpPoster(Master.currShow)
+                    Master.currShow.EpPosterPath = .Poster.SaveAsTVEpisodePoster(Master.currShow)
                 Else
-                    .Poster.DeleteEpPosters(Master.currShow)
+                    .Poster.DeleteTVEpisodePosters(Master.currShow)
                     Master.currShow.EpPosterPath = String.Empty
                 End If
             End With
@@ -652,7 +652,7 @@ Public Class dlgEditEpisode
         Try
             Using dImgManual As New dlgImgManual
                 Dim tImage As Images
-                If dImgManual.ShowDialog(Enums.ImageType.Posters) = DialogResult.OK Then
+                If dImgManual.ShowDialog() = DialogResult.OK Then
                     tImage = dImgManual.Results
                     If Not IsNothing(tImage.Image) Then
                         Poster = tImage
@@ -696,7 +696,7 @@ Public Class dlgEditEpisode
         Try
             Using dImgManual As New dlgImgManual
                 Dim tImage As Images
-                If dImgManual.ShowDialog(Enums.ImageType.Fanart) = DialogResult.OK Then
+                If dImgManual.ShowDialog() = DialogResult.OK Then
                     tImage = dImgManual.Results
                     If Not IsNothing(tImage.Image) Then
                         Fanart = tImage

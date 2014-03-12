@@ -79,7 +79,7 @@ Public Class dlgEditShow
     End Sub
 
     Private Sub btnSetASBannerScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetASBannerScrape.Click
-        Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.AllSeasonBanner, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(ASBanner, Images))
+        Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.AllSeasonsBanner, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(ASBanner, Images))
 
         If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
             ASBanner = tImage
@@ -115,7 +115,7 @@ Public Class dlgEditShow
         Try
             Using dImgManual As New dlgImgManual
                 Dim tImage As Images
-                If dImgManual.ShowDialog(Enums.ImageType.ASBanner) = DialogResult.OK Then
+                If dImgManual.ShowDialog() = DialogResult.OK Then
                     tImage = dImgManual.Results
                     If Not IsNothing(tImage.Image) Then
                         ASBanner = tImage
@@ -133,7 +133,7 @@ Public Class dlgEditShow
     End Sub
 
     Private Sub btnSetASFanartScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetASFanartScrape.Click
-        Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.AllSeasonFanart, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(ASFanart, Images))
+        Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.AllSeasonsFanart, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(ASFanart, Images))
 
         If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
             ASFanart = tImage
@@ -169,7 +169,7 @@ Public Class dlgEditShow
         Try
             Using dImgManual As New dlgImgManual
                 Dim tImage As Images
-                If dImgManual.ShowDialog(Enums.ImageType.ASFanart) = DialogResult.OK Then
+                If dImgManual.ShowDialog() = DialogResult.OK Then
                     tImage = dImgManual.Results
                     If Not IsNothing(tImage.Image) Then
                         ASFanart = tImage
@@ -187,7 +187,7 @@ Public Class dlgEditShow
     End Sub
 
     Private Sub btnSetASPosterScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetASPosterScrape.Click
-        Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.AllSeasonPoster, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(ASPoster, Images))
+        Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.AllSeasonsPoster, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(ASPoster, Images))
 
         If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
             ASPoster = tImage
@@ -223,7 +223,7 @@ Public Class dlgEditShow
         Try
             Using dImgManual As New dlgImgManual
                 Dim tImage As Images
-                If dImgManual.ShowDialog(Enums.ImageType.ASPoster) = DialogResult.OK Then
+                If dImgManual.ShowDialog() = DialogResult.OK Then
                     tImage = dImgManual.Results
                     If Not IsNothing(tImage.Image) Then
                         ASPoster = tImage
@@ -277,7 +277,7 @@ Public Class dlgEditShow
         Try
             Using dImgManual As New dlgImgManual
                 Dim tImage As Images
-                If dImgManual.ShowDialog(Enums.ImageType.Banner) = DialogResult.OK Then
+                If dImgManual.ShowDialog() = DialogResult.OK Then
                     tImage = dImgManual.Results
                     If Not IsNothing(tImage.Image) Then
                         Banner = tImage
@@ -353,7 +353,7 @@ Public Class dlgEditShow
         Try
             Using dImgManual As New dlgImgManual
                 Dim tImage As Images
-                If dImgManual.ShowDialog(Enums.ImageType.Fanart) = DialogResult.OK Then
+                If dImgManual.ShowDialog() = DialogResult.OK Then
                     tImage = dImgManual.Results
                     If Not IsNothing(tImage.Image) Then
                         Fanart = tImage
@@ -410,7 +410,7 @@ Public Class dlgEditShow
         Try
             Using dImgManual As New dlgImgManual
                 Dim tImage As Images
-                If dImgManual.ShowDialog(Enums.ImageType.Posters) = DialogResult.OK Then
+                If dImgManual.ShowDialog() = DialogResult.OK Then
                     tImage = dImgManual.Results
                     If Not IsNothing(tImage.Image) Then
                         Poster = tImage
@@ -543,7 +543,7 @@ Public Class dlgEditShow
     End Sub
 
     Private Sub dlgEditShow_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        If Not Master.eSettings.AllSeasonPosterEnabled Then Me.tcEditShow.TabPages.Remove(tpASPoster)
+        If Not Master.eSettings.TVASPosterEnabled Then Me.tcEditShow.TabPages.Remove(tpASPoster)
 
         Me.SetUp()
 
@@ -631,34 +631,40 @@ Public Class dlgEditShow
 
             Me.SelectMPAA()
 
-            Banner.FromFile(Master.currShow.ShowBannerPath)
-            If Not IsNothing(Banner.Image) Then
-                .pbShowBanner.Image = Banner.Image
-                .pbShowBanner.Tag = Banner
+            If Master.eSettings.TVShowBannerEnabled Then
+                Banner.FromFile(Master.currShow.ShowBannerPath)
+                If Not IsNothing(Banner.Image) Then
+                    .pbShowBanner.Image = Banner.Image
+                    .pbShowBanner.Tag = Banner
 
-                .lblShowBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbShowBanner.Image.Width, .pbShowBanner.Image.Height)
-                .lblShowBannerSize.Visible = True
+                    .lblShowBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbShowBanner.Image.Width, .pbShowBanner.Image.Height)
+                    .lblShowBannerSize.Visible = True
+                End If
             End If
 
-            Fanart.FromFile(Master.currShow.ShowFanartPath)
-            If Not IsNothing(Fanart.Image) Then
-                .pbShowFanart.Image = Fanart.Image
-                .pbShowFanart.Tag = Fanart
+            If Master.eSettings.TVShowFanartEnabled Then
+                Fanart.FromFile(Master.currShow.ShowFanartPath)
+                If Not IsNothing(Fanart.Image) Then
+                    .pbShowFanart.Image = Fanart.Image
+                    .pbShowFanart.Tag = Fanart
 
-                .lblShowFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbShowFanart.Image.Width, .pbShowFanart.Image.Height)
-                .lblShowFanartSize.Visible = True
+                    .lblShowFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbShowFanart.Image.Width, .pbShowFanart.Image.Height)
+                    .lblShowFanartSize.Visible = True
+                End If
             End If
 
-            Poster.FromFile(Master.currShow.ShowPosterPath)
-            If Not IsNothing(Poster.Image) Then
-                .pbShowPoster.Image = Poster.Image
-                .pbShowPoster.Tag = Poster
+            If Master.eSettings.TVShowPosterEnabled Then
+                Poster.FromFile(Master.currShow.ShowPosterPath)
+                If Not IsNothing(Poster.Image) Then
+                    .pbShowPoster.Image = Poster.Image
+                    .pbShowPoster.Tag = Poster
 
-                .lblShowPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbShowPoster.Image.Width, .pbShowPoster.Image.Height)
-                .lblShowPosterSize.Visible = True
+                    .lblShowPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbShowPoster.Image.Width, .pbShowPoster.Image.Height)
+                    .lblShowPosterSize.Visible = True
+                End If
             End If
 
-            If Master.eSettings.AllSeasonPosterEnabled Then
+            If Master.eSettings.TVASBannerEnabled Then
                 .ASBanner.FromFile(Master.currShow.SeasonBannerPath)
                 If Not IsNothing(.ASBanner.Image) Then
                     .pbASBanner.Image = .ASBanner.Image
@@ -667,7 +673,9 @@ Public Class dlgEditShow
                     .lblASBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbASBanner.Image.Width, .pbASBanner.Image.Height)
                     .lblASBannerSize.Visible = True
                 End If
+            End If
 
+            If Master.eSettings.TVASPosterEnabled Then
                 .ASPoster.FromFile(Master.currShow.SeasonPosterPath)
                 If Not IsNothing(.ASPoster.Image) Then
                     .pbASPoster.Image = .ASPoster.Image
@@ -676,7 +684,9 @@ Public Class dlgEditShow
                     .lblASPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbASPoster.Image.Width, .pbASPoster.Image.Height)
                     .lblASPosterSize.Visible = True
                 End If
+            End If
 
+            If Master.eSettings.TVASFanartEnabled Then
                 .ASFanart.FromFile(Master.currShow.SeasonFanartPath)
                 If Not IsNothing(.ASFanart.Image) Then
                     .pbASFanart.Image = .ASFanart.Image
@@ -745,7 +755,7 @@ Public Class dlgEditShow
 
             Master.DB.SaveTVShowToDB(Master.currShow, False, False, True)
 
-            If Master.eSettings.AllSeasonPosterEnabled Then Master.DB.SaveTVSeasonToDB(Master.currShow, False)
+            If Master.eSettings.TVASPosterEnabled Then Master.DB.SaveTVSeasonToDB(Master.currShow, False)
 
         Catch ex As Exception
             Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
@@ -898,7 +908,7 @@ Public Class dlgEditShow
     Private Sub SelectMPAA()
         If Not String.IsNullOrEmpty(Master.currShow.TVShow.MPAA) Then
             Try
-                If Not IsNothing(APIXML.RatingXML.Element("ratings").Element(Master.eSettings.ShowRatingRegion.ToLower)) AndAlso APIXML.RatingXML.Element("ratings").Element(Master.eSettings.ShowRatingRegion.ToLower).Descendants("tv").Count > 0 Then
+                If Not IsNothing(APIXML.RatingXML.Element("ratings").Element(Master.eSettings.TVScraperRatingRegion.ToLower)) AndAlso APIXML.RatingXML.Element("ratings").Element(Master.eSettings.TVScraperRatingRegion.ToLower).Descendants("tv").Count > 0 Then
                     Dim l As Integer = Me.lbMPAA.FindString(Strings.Trim(Master.currShow.TVShow.MPAA))
                     Me.lbMPAA.SelectedIndex = l
                     If Me.lbMPAA.SelectedItems.Count = 0 Then
@@ -969,48 +979,47 @@ Public Class dlgEditShow
                 End If
 
                 If Not IsNothing(.Fanart.Image) Then
-                    Master.currShow.ShowFanartPath = .Fanart.SaveAsShowFanart(Master.currShow, "")
+                    Master.currShow.ShowFanartPath = .Fanart.SaveAsTVShowFanart(Master.currShow, "")
                 Else
-                    .Fanart.DeleteShowFanart(Master.currShow)
+                    .Fanart.DeleteTVShowFanart(Master.currShow)
                     Master.currShow.ShowFanartPath = String.Empty
                 End If
 
                 If Not IsNothing(.Poster.Image) Then
-                    Master.currShow.ShowPosterPath = .Poster.SaveAsShowPoster(Master.currShow, "")
+                    Master.currShow.ShowPosterPath = .Poster.SaveAsTVShowPoster(Master.currShow, "")
                 Else
-                    .Poster.DeleteShowPosters(Master.currShow)
+                    .Poster.DeleteTVShowPosters(Master.currShow)
                     Master.currShow.ShowPosterPath = String.Empty
                 End If
 
                 If Not IsNothing(.Banner.Image) Then
-                    Master.currShow.ShowBannerPath = .Banner.SaveAsShowBanner(Master.currShow, "")
+                    Master.currShow.ShowBannerPath = .Banner.SaveAsTVShowBanner(Master.currShow, "")
                 Else
-                    .Banner.DeleteShowBanner(Master.currShow)
+                    .Banner.DeleteTVShowBanner(Master.currShow)
                     Master.currShow.ShowBannerPath = String.Empty
                 End If
 
-                If Master.eSettings.AllSeasonPosterEnabled Then
-                    If Not IsNothing(.ASBanner.Image) Then
-                        Master.currShow.SeasonBannerPath = .ASBanner.SaveAsAllSeasonbanner(Master.currShow, "")
-                    Else
-                        .ASBanner.DeleteAllSeasonbanner(Master.currShow)
-                        Master.currShow.SeasonBannerPath = String.Empty
-                    End If
-
-                    If Not IsNothing(.ASFanart.Image) Then
-                        Master.currShow.SeasonFanartPath = .ASFanart.SaveAsAllSeasonFanart(Master.currShow, "")
-                    Else
-                        .ASFanart.DeleteAllSeasonFanart(Master.currShow)
-                        Master.currShow.SeasonFanartPath = String.Empty
-                    End If
-
-                    If Not IsNothing(.ASPoster.Image) Then
-                        Master.currShow.SeasonPosterPath = .ASPoster.SaveAsAllSeasonPoster(Master.currShow, "")
-                    Else
-                        .ASPoster.DeleteAllSeasonPosters(Master.currShow)
-                        Master.currShow.SeasonPosterPath = String.Empty
-                    End If
+                If Not IsNothing(.ASBanner.Image) Then
+                    Master.currShow.SeasonBannerPath = .ASBanner.SaveAsTVASBanner(Master.currShow, "")
+                Else
+                    .ASBanner.DeleteTVASBanner(Master.currShow)
+                    Master.currShow.SeasonBannerPath = String.Empty
                 End If
+
+                If Not IsNothing(.ASFanart.Image) Then
+                    Master.currShow.SeasonFanartPath = .ASFanart.SaveAsTVASFanart(Master.currShow, "")
+                Else
+                    .ASFanart.DeleteTVASFanart(Master.currShow)
+                    Master.currShow.SeasonFanartPath = String.Empty
+                End If
+
+                If Not IsNothing(.ASPoster.Image) Then
+                    Master.currShow.SeasonPosterPath = .ASPoster.SaveAsTVASPoster(Master.currShow, "")
+                Else
+                    .ASPoster.DeleteTVASPosters(Master.currShow)
+                    Master.currShow.SeasonPosterPath = String.Empty
+                End If
+
             End With
         Catch ex As Exception
             Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")

@@ -51,11 +51,11 @@ Public Class dlgUpdateMedia
             chkNFOMod.Checked = chkAllMod.Checked
             chkPosterMod.Checked = chkAllMod.Checked AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Poster)
             chkFanartMod.Checked = chkAllMod.Checked AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart)
-            chkMetaMod.Checked = chkAllMod.Checked AndAlso Not Me.rbUpdateModifier_Missing.Checked AndAlso Master.eSettings.ScanMediaInfo
-            chkActorMod.Checked = chkAllMod.Checked AndAlso Master.eSettings.ScraperActorThumbs
+            chkMetaMod.Checked = chkAllMod.Checked AndAlso Not Me.rbUpdateModifier_Missing.Checked AndAlso Master.eSettings.MovieScraperMetaDataScan
+            chkActorMod.Checked = chkAllMod.Checked AndAlso Master.eSettings.MovieScraperActorThumbs
             chkTrailerMod.Checked = chkAllMod.Checked AndAlso ModulesManager.Instance.QueryTrailerScraperCapabilities(Enums.ScraperCapabilities.Trailer)
         Else
-            If chkMetaMod.Checked Then chkMetaMod.Checked = Not Me.rbUpdateModifier_Missing.Checked AndAlso Master.eSettings.ScanMediaInfo AndAlso (Not rbUpdate_Ask.Checked OrElse chkNFOMod.Checked)
+            If chkMetaMod.Checked Then chkMetaMod.Checked = Not Me.rbUpdateModifier_Missing.Checked AndAlso Master.eSettings.MovieScraperMetaDataScan AndAlso (Not rbUpdate_Ask.Checked OrElse chkNFOMod.Checked)
         End If
 
         chkNFOMod.Enabled = Not chkAllMod.Checked
@@ -63,8 +63,8 @@ Public Class dlgUpdateMedia
         chkFanartMod.Enabled = Not chkAllMod.Checked AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart)
         chkEFanartsMod.Enabled = Not chkAllMod.Checked AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart)
         chkEThumbsMod.Enabled = Not chkAllMod.Checked AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart)
-        chkMetaMod.Enabled = Not chkAllMod.Checked AndAlso Not Me.rbUpdateModifier_Missing.Checked AndAlso Master.eSettings.ScanMediaInfo AndAlso (Not rbUpdate_Ask.Checked OrElse chkNFOMod.Checked)
-        chkActorMod.Enabled = Not chkAllMod.Checked AndAlso Master.eSettings.ScraperActorThumbs
+        chkMetaMod.Enabled = Not chkAllMod.Checked AndAlso Not Me.rbUpdateModifier_Missing.Checked AndAlso Master.eSettings.MovieScraperMetaDataScan AndAlso (Not rbUpdate_Ask.Checked OrElse chkNFOMod.Checked)
+        chkActorMod.Enabled = Not chkAllMod.Checked AndAlso Master.eSettings.MovieScraperActorThumbs
         chkTrailerMod.Enabled = Not chkAllMod.Checked AndAlso ModulesManager.Instance.QueryTrailerScraperCapabilities(Enums.ScraperCapabilities.Trailer)
 
         If chkAllMod.Checked OrElse chkNFOMod.Checked Then
@@ -270,22 +270,22 @@ Public Class dlgUpdateMedia
             End Using
 
             'disable options that are locked
-            Me.chkPlot.Enabled = Not Master.eSettings.LockPlot
-            Me.chkPlot.Checked = Not Master.eSettings.LockPlot
-            Me.chkOutline.Enabled = Not Master.eSettings.LockOutline
-            Me.chkOutline.Checked = Not Master.eSettings.LockOutline
-            Me.chkTitle.Enabled = Not Master.eSettings.LockTitle
-            Me.chkTitle.Checked = Not Master.eSettings.LockTitle
-            Me.chkTagline.Enabled = Not Master.eSettings.LockTagline
-            Me.chkTagline.Checked = Not Master.eSettings.LockTagline
-            Me.chkRating.Enabled = Not Master.eSettings.LockRating
-            Me.chkRating.Checked = Not Master.eSettings.LockRating
-            Me.chkStudio.Enabled = Not Master.eSettings.LockStudio
-            Me.chkStudio.Checked = Not Master.eSettings.LockStudio
-            Me.chkGenre.Enabled = Not Master.eSettings.LockGenre
-            Me.chkGenre.Checked = Not Master.eSettings.LockGenre
-            Me.chkTrailer.Enabled = Not Master.eSettings.LockTrailer
-            Me.chkTrailer.Checked = Not Master.eSettings.LockTrailer
+            Me.chkPlot.Enabled = Not Master.eSettings.MovieLockPlot
+            Me.chkPlot.Checked = Not Master.eSettings.MovieLockPlot
+            Me.chkOutline.Enabled = Not Master.eSettings.MovieLockOutline
+            Me.chkOutline.Checked = Not Master.eSettings.MovieLockOutline
+            Me.chkTitle.Enabled = Not Master.eSettings.MovieLockTitle
+            Me.chkTitle.Checked = Not Master.eSettings.MovieLockTitle
+            Me.chkTagline.Enabled = Not Master.eSettings.MovieLockTagline
+            Me.chkTagline.Checked = Not Master.eSettings.MovieLockTagline
+            Me.chkRating.Enabled = Not Master.eSettings.MovieLockRating
+            Me.chkRating.Checked = Not Master.eSettings.MovieLockRating
+            Me.chkStudio.Enabled = Not Master.eSettings.MovieLockStudio
+            Me.chkStudio.Checked = Not Master.eSettings.MovieLockStudio
+            Me.chkGenre.Enabled = Not Master.eSettings.MovieLockGenre
+            Me.chkGenre.Checked = Not Master.eSettings.MovieLockGenre
+            Me.chkTrailer.Enabled = Not Master.eSettings.MovieLockTrailer
+            Me.chkTrailer.Checked = Not Master.eSettings.MovieLockTrailer
 
             'set defaults
             CustomUpdater.ScrapeType = Enums.ScrapeType.FullAuto

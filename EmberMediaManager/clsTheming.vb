@@ -45,9 +45,9 @@ Public Class Theming
 
         BuildControlList()
 
-        ParseThemes(_movietheme, "movie", Master.eSettings.MovieTheme)
-        ParseThemes(_showtheme, "tvshow", Master.eSettings.TVShowTheme)
-        ParseThemes(_eptheme, "tvep", Master.eSettings.TVEpTheme)
+        ParseThemes(_movietheme, "movie", Master.eSettings.GeneralMovieTheme)
+        ParseThemes(_showtheme, "tvshow", Master.eSettings.GeneralTVShowTheme)
+        ParseThemes(_eptheme, "tvep", Master.eSettings.GeneralTVEpisodeTheme)
     End Sub
 
 #End Region 'Constructors

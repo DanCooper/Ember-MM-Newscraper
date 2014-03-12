@@ -402,7 +402,7 @@ Public Class TMDB_Data
         If Not String.IsNullOrEmpty(DBMovie.Movie.Title) Then
             tTitle = StringUtils.FilterTokens(DBMovie.Movie.Title)
             If Not OldTitle = DBMovie.Movie.Title OrElse String.IsNullOrEmpty(DBMovie.Movie.SortTitle) Then DBMovie.Movie.SortTitle = tTitle
-            If Master.eSettings.DisplayYear AndAlso Not String.IsNullOrEmpty(DBMovie.Movie.Year) Then
+            If Master.eSettings.MovieDisplayYear AndAlso Not String.IsNullOrEmpty(DBMovie.Movie.Year) Then
                 DBMovie.ListTitle = String.Format("{0} ({1})", tTitle, DBMovie.Movie.Year)
             Else
                 DBMovie.ListTitle = tTitle

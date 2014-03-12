@@ -152,7 +152,7 @@ Public Class dlgExportMovies
             Dim tVid As New MediaInfo.Video
             Dim tAud As New MediaInfo.Audio
             Dim tRes As String = String.Empty
-            Dim htmlPath As String = String.Concat(Functions.AppPath, "Langs", Path.DirectorySeparatorChar, "html", Path.DirectorySeparatorChar, template, Path.DirectorySeparatorChar, Master.eSettings.Language, ".html")
+            Dim htmlPath As String = String.Concat(Functions.AppPath, "Langs", Path.DirectorySeparatorChar, "html", Path.DirectorySeparatorChar, template, Path.DirectorySeparatorChar, Master.eSettings.GeneralLanguage, ".html")
             Dim pattern As String
             If Not File.Exists(htmlPath) Then
                 htmlPath = String.Concat(Functions.AppPath, "Langs", Path.DirectorySeparatorChar, "html", Path.DirectorySeparatorChar, template, Path.DirectorySeparatorChar, "English_(en_US).html")

@@ -143,11 +143,11 @@ Public Class ThumbGenerator
                     If _isedit Then
                         tPath = Path.Combine(Master.TempPath, "extrathumbs")
                         eMovieFile = _movie.Filename
-                    Else
-                        If Master.eSettings.VideoTSParent AndAlso FileUtils.Common.isVideoTS(_movie.Filename) Then
+                    Else 'TODO: chek VIDEO_TS parent
+                        If FileUtils.Common.isVideoTS(_movie.Filename) Then
                             tPath = Path.Combine(Directory.GetParent(Directory.GetParent(_movie.Filename).FullName).FullName, "extrathumbs")
                             eMovieFile = FileUtils.Common.GetLongestFromRip(_movie.Filename)
-                        ElseIf Master.eSettings.VideoTSParent AndAlso FileUtils.Common.isBDRip(_movie.Filename) Then
+                        ElseIf FileUtils.Common.isBDRip(_movie.Filename) Then
                             tPath = Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(_movie.Filename).FullName).FullName).FullName, "extrathumbs")
                             eMovieFile = FileUtils.Common.GetLongestFromRip(_movie.Filename)
                         Else
@@ -242,7 +242,7 @@ Public Class ThumbGenerator
                         Using exFanart As New Images
                             If String.IsNullOrEmpty(_movie.FanartPath) Then
                                 exFanart.FromFile(Path.Combine(tPath, "thumb1.jpg"))
-                                _setfa = exFanart.SaveAsFanart(_movie)
+                                _setfa = exFanart.SaveAsMovieFanart(_movie)
                             End If
                         End Using
                     End If

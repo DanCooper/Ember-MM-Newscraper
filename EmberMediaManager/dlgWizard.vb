@@ -520,9 +520,9 @@ Public Class dlgWizard
         Me.chkMovieUseBaseDirectoryExpertBDMV.Checked = Master.eSettings.MovieUseBaseDirectoryExpertBDMV
 
         'Me.tLangList.AddRange(Master.eSettings.TVDBLanguages)
-        Me.cbTVLanguage.Items.AddRange((From lLang In Master.eSettings.Languages Select lLang.LongLang).ToArray)
+        Me.cbTVLanguage.Items.AddRange((From lLang In Master.eSettings.TVScraperLanguages Select lLang.LongLang).ToArray)
         If Me.cbTVLanguage.Items.Count > 0 Then
-            Me.cbTVLanguage.Text = Master.eSettings.Languages.FirstOrDefault(Function(l) l.ShortLang = AdvancedSettings.GetSetting("TVDBLanguage", "en")).LongLang
+            Me.cbTVLanguage.Text = Master.eSettings.TVScraperLanguages.FirstOrDefault(Function(l) l.ShortLang = AdvancedSettings.GetSetting("TVDBLanguage", "en")).LongLang
         End If
     End Sub
 
@@ -813,8 +813,8 @@ Public Class dlgWizard
         Master.eSettings.MovieUseBaseDirectoryExpertBDMV = Me.chkMovieUseBaseDirectoryExpertBDMV.Checked
 
         Using settings = New AdvancedSettings()
-            If Master.eSettings.Languages.Count > 0 Then
-                Dim tLang As String = Master.eSettings.Languages.FirstOrDefault(Function(l) l.LongLang = Me.cbTVLanguage.Text).ShortLang
+            If Master.eSettings.TVScraperLanguages.Count > 0 Then
+                Dim tLang As String = Master.eSettings.TVScraperLanguages.FirstOrDefault(Function(l) l.LongLang = Me.cbTVLanguage.Text).ShortLang
                 If Not String.IsNullOrEmpty(tLang) Then
                     settings.SetSetting("TVDBLanguage", tLang)
                 Else

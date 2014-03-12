@@ -103,7 +103,7 @@ Public Class TMDB_Poster
             Case Enums.ScraperCapabilities.Poster
                 Return ConfigScrapeModifier.Poster 'True 'ConfigScrapeModifier.Poster
             Case Enums.ScraperCapabilities.Actor
-                If Master.eSettings.ScraperActorThumbs Then Return True
+                If Master.eSettings.MovieScraperActorThumbs Then Return True
         End Select
         Return False
     End Function

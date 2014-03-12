@@ -119,7 +119,7 @@ Public Class dlgDeleteConfirm
                                             Dim oFile As New IO.FileInfo(node.Tag.ToString)
                                             If oFile.Exists Then
                                                 oFile.Delete()
-                                                If _deltype = Enums.DelType.Seasons AndAlso Master.eSettings.ValidExts.Contains(IO.Path.GetExtension(node.Tag.ToString)) Then Master.DB.DeleteTVEpFromDBByPath(node.Tag.ToString, True, True)
+                                                If _deltype = Enums.DelType.Seasons AndAlso Master.eSettings.FileSystemValidExts.Contains(IO.Path.GetExtension(node.Tag.ToString)) Then Master.DB.DeleteTVEpFromDBByPath(node.Tag.ToString, True, True)
                                             End If
                                     End Select
 

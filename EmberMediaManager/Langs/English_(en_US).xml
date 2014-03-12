@@ -733,7 +733,7 @@
 	<string id="732">&lt;h&gt;=Hours &lt;m&gt;=Minutes &lt;s&gt;=Seconds</string>
 	<string id="733">Display Missing Episodes</string>
 	<string id="734">Build Episode Title Instead of Filtering</string>
-	<string id="735">All Season Posters</string>
+	<string id="735">All Seasons Posters</string>
 	<string id="736">Only Get Images for the Selected Language</string>
 	<string id="737">Also Get English Images</string>
 	<string id="738"></string>
@@ -830,7 +830,7 @@
 	<string id="829">Popular Titles ({0})</string>
 	<string id="830">Edit the details for the selected season.</string>
 	<string id="831">Exact Matches ({0})</string>
-	<string id="832">Display All Season Poster</string>
+	<string id="832">Display All Seasons Poster</string>
 	<string id="833">No Matches Found</string>
 	<string id="834">* Inside Season Folder</string>
 	<string id="835">Only Save the Value to NFO</string>
@@ -1101,7 +1101,7 @@
 	<string id="1013">Show ClearArt</string>
 	<string id="1014">All Seasons Banner</string>
 	<string id="1015">All Seasons Fanart</string>
-	<string id="1016">All Season Landscape</string>
+	<string id="1016">All Seasons Landscape</string>
 	<string id="1017">Season Banner</string>
 	<string id="1018">Season Landscape</string>
 	<string id="1019">Season {0} Banner</string>
@@ -1112,4 +1112,5 @@
 	<string id="1024">Remove Banner</string>
 	<string id="1025">All Seasons Banner</string>
 	<string id="1026">All Seasons Fanart</string>
+	<string id="1027">Minimum Quality:</string>
 </strings>
