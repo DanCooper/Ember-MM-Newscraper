@@ -550,7 +550,7 @@
 	<string id="549">Mark New Shows</string>
 	<string id="550">Tagline Top:</string>
 	<string id="551">Information</string>
-	<string id="552">Select the folder where you wish to store your backdrops.</string>
+	<string id="552">Select the folder where you wish to store your backdrops...</string>
 	<string id="553">File System</string>
 	<string id="554">Replace ID field with Boxee Id Field</string>
 	<string id="555">Files and Sources</string>
@@ -1113,4 +1113,7 @@
 	<string id="1025">All Seasons Banner</string>
 	<string id="1026">All Seasons Fanart</string>
 	<string id="1027">Minimum Quality:</string>
+	<string id="1028">Select the folder where you wish to store your tv themes...</string>
+	<string id="1029">Select the folder where you wish to store your watched files...</string>
+	<string id="1030">Select the folder where you wish to store your movie sets images...</string>
 </strings>
