@@ -472,6 +472,7 @@ Public Class dlgSettings
 
     Private Sub btnMovieBackdropsBrowse_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieBackdropsBrowse.Click
         With Me.fbdBrowse
+            fbdBrowse.Description = Master.eLang.GetString(552, "Select the folder where you wish to store your backdrops...")
             If .ShowDialog = Windows.Forms.DialogResult.OK Then
                 If Not String.IsNullOrEmpty(.SelectedPath.ToString) AndAlso Directory.Exists(.SelectedPath) Then
                     Me.txtMovieBackdropsPath.Text = .SelectedPath.ToString
@@ -4521,7 +4522,6 @@ Public Class dlgSettings
         Me.colPath.Text = Master.eLang.GetString(410, "Path")
         Me.colRecur.Text = Master.eLang.GetString(411, "Recursive")
         Me.colSingle.Text = Master.eLang.GetString(413, "Single Video")
-        Me.fbdBrowse.Description = Master.eLang.GetString(552, "Select the folder where you wish to store your backdrops.")
         Me.gbProxyCredsOpts.Text = Master.eLang.GetString(676, "Credentials")
         Me.gbTVEpisodeFilterOpts.Text = Master.eLang.GetString(671, "Episode Folder/File Name Filters")
         Me.gbTVScraperGlobalLocksEpisodeOpts.Text = Master.eLang.GetString(727, "Episode")
@@ -5391,9 +5391,11 @@ Public Class dlgSettings
     Class ListViewItemComparer
         Implements IComparer
         Private col As Integer
+
         Public Sub New()
             col = 0
         End Sub
+
         Public Sub New(ByVal column As Integer)
             col = column
         End Sub
@@ -5403,12 +5405,15 @@ Public Class dlgSettings
             Return [String].Compare(CType(x, ListViewItem).SubItems(col).Text, CType(y, ListViewItem).SubItems(col).Text)
         End Function
     End Class
+
     Private Sub txtMovieMoviesetsPath_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieMoviesetsPath.TextChanged
         Me.SetApplyButton(True)
     End Sub
+
     Private Sub btnMovieMoviesetsBrowse_Click(sender As Object, e As EventArgs) Handles btnMovieMoviesetsBrowse.Click
         Try
             With Me.fbdBrowse
+                fbdBrowse.Description = Master.eLang.GetString(1030, "Select the folder where you wish to store your movie sets images...")
                 If .ShowDialog = Windows.Forms.DialogResult.OK Then
                     If Not String.IsNullOrEmpty(.SelectedPath.ToString) AndAlso Directory.Exists(.SelectedPath) Then
                         Me.txtMovieMoviesetsPath.Text = .SelectedPath.ToString
@@ -5419,15 +5424,17 @@ Public Class dlgSettings
             Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
+
     Private Sub btnMovieYAMJWatchedFilesBrowse_Click(sender As Object, e As EventArgs) Handles btnMovieYAMJWatchedFilesBrowse.Click
         Try
-        With Me.fbdBrowse
-            If .ShowDialog = Windows.Forms.DialogResult.OK Then
-                If Not String.IsNullOrEmpty(.SelectedPath.ToString) AndAlso Directory.Exists(.SelectedPath) Then
-                    Me.txtMovieYAMJWatchedFolder.Text = .SelectedPath.ToString
+            With Me.fbdBrowse
+                fbdBrowse.Description = Master.eLang.GetString(1029, "Select the folder where you wish to store your watched files...")
+                If .ShowDialog = Windows.Forms.DialogResult.OK Then
+                    If Not String.IsNullOrEmpty(.SelectedPath.ToString) AndAlso Directory.Exists(.SelectedPath) Then
+                        Me.txtMovieYAMJWatchedFolder.Text = .SelectedPath.ToString
+                    End If
                 End If
-            End If
-        End With
+            End With
         Catch ex As Exception
             Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
@@ -5881,6 +5888,7 @@ Public Class dlgSettings
 
     Private Sub btnTVShowTVThemeBrowse_Click(sender As Object, e As EventArgs) Handles btnTVShowTVThemeBrowse.Click
         With Me.fbdBrowse
+            fbdBrowse.Description = Master.eLang.GetString(1028, "Select the folder where you wish to store your tv themes...")
             If .ShowDialog = Windows.Forms.DialogResult.OK Then
                 If Not String.IsNullOrEmpty(.SelectedPath.ToString) AndAlso Directory.Exists(.SelectedPath) Then
                     Me.txtTVShowTVThemeFolderXBMC.Text = .SelectedPath.ToString

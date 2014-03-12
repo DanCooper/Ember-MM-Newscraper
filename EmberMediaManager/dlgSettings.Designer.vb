@@ -111,6 +111,7 @@ Partial Class dlgSettings
         Me.gbMovieLandscapeOpts = New System.Windows.Forms.GroupBox()
         Me.chkMovieLandscapeOverwrite = New System.Windows.Forms.CheckBox()
         Me.gbMovieEFanartsOpts = New System.Windows.Forms.GroupBox()
+        Me.lblMovieEFanartsLimit = New System.Windows.Forms.Label()
         Me.txtMovieEFanartsLimit = New System.Windows.Forms.TextBox()
         Me.chkMovieEFanartsPrefOnly = New System.Windows.Forms.CheckBox()
         Me.txtMovieEFanartsWidth = New System.Windows.Forms.TextBox()
@@ -125,6 +126,7 @@ Partial Class dlgSettings
         Me.cbMovieEFanartsPrefSize = New System.Windows.Forms.ComboBox()
         Me.chkMovieEFanartsOverwrite = New System.Windows.Forms.CheckBox()
         Me.gbMovieEThumbsOpts = New System.Windows.Forms.GroupBox()
+        Me.lblMovieEThumbsLimit = New System.Windows.Forms.Label()
         Me.txtMovieEThumbsLimit = New System.Windows.Forms.TextBox()
         Me.chkMovieEThumbsPrefOnly = New System.Windows.Forms.CheckBox()
         Me.txtMovieEThumbsWidth = New System.Windows.Forms.TextBox()
@@ -835,8 +837,6 @@ Partial Class dlgSettings
         Me.chkMovieTrailerOverwrite = New System.Windows.Forms.CheckBox()
         Me.chkMovieTrailerEnable = New System.Windows.Forms.CheckBox()
         Me.fileBrowse = New System.Windows.Forms.OpenFileDialog()
-        Me.lblMovieEFanartsLimit = New System.Windows.Forms.Label()
-        Me.lblMovieEThumbsLimit = New System.Windows.Forms.Label()
         Me.gbGeneralMisc.SuspendLayout
         Me.gbGeneralDaemon.SuspendLayout
         Me.gbGeneralThemes.SuspendLayout
@@ -1924,6 +1924,16 @@ Partial Class dlgSettings
         Me.gbMovieEFanartsOpts.TabStop = false
         Me.gbMovieEFanartsOpts.Text = "Extrafanarts"
         '
+        'lblMovieEFanartsLimit
+        '
+        Me.lblMovieEFanartsLimit.AutoSize = true
+        Me.lblMovieEFanartsLimit.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        Me.lblMovieEFanartsLimit.Location = New System.Drawing.Point(135, 75)
+        Me.lblMovieEFanartsLimit.Name = "lblMovieEFanartsLimit"
+        Me.lblMovieEFanartsLimit.Size = New System.Drawing.Size(34, 13)
+        Me.lblMovieEFanartsLimit.TabIndex = 13
+        Me.lblMovieEFanartsLimit.Text = "Limit:"
+        '
         'txtMovieEFanartsLimit
         '
         Me.txtMovieEFanartsLimit.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
@@ -2078,6 +2088,16 @@ Partial Class dlgSettings
         Me.gbMovieEThumbsOpts.TabIndex = 12
         Me.gbMovieEThumbsOpts.TabStop = false
         Me.gbMovieEThumbsOpts.Text = "Extrathumbs"
+        '
+        'lblMovieEThumbsLimit
+        '
+        Me.lblMovieEThumbsLimit.AutoSize = true
+        Me.lblMovieEThumbsLimit.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        Me.lblMovieEThumbsLimit.Location = New System.Drawing.Point(135, 75)
+        Me.lblMovieEThumbsLimit.Name = "lblMovieEThumbsLimit"
+        Me.lblMovieEThumbsLimit.Size = New System.Drawing.Size(34, 13)
+        Me.lblMovieEThumbsLimit.TabIndex = 14
+        Me.lblMovieEThumbsLimit.Text = "Limit:"
         '
         'txtMovieEThumbsLimit
         '
@@ -6554,10 +6574,6 @@ Partial Class dlgSettings
         Me.colTVShowRegexEpisodeApply.Text = "Apply To"
         Me.colTVShowRegexEpisodeApply.Width = 70
         '
-        'fbdBrowse
-        '
-        Me.fbdBrowse.Description = "Select the folder where you wish to store your backdrops."
-        '
         'pnlTVImages
         '
         Me.pnlTVImages.BackColor = System.Drawing.Color.White
@@ -9822,26 +9838,6 @@ Partial Class dlgSettings
         Me.chkMovieTrailerEnable.TabIndex = 0
         Me.chkMovieTrailerEnable.Text = "Enable Trailer Support"
         Me.chkMovieTrailerEnable.UseVisualStyleBackColor = true
-        '
-        'lblMovieEFanartsLimit
-        '
-        Me.lblMovieEFanartsLimit.AutoSize = true
-        Me.lblMovieEFanartsLimit.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.lblMovieEFanartsLimit.Location = New System.Drawing.Point(135, 75)
-        Me.lblMovieEFanartsLimit.Name = "lblMovieEFanartsLimit"
-        Me.lblMovieEFanartsLimit.Size = New System.Drawing.Size(34, 13)
-        Me.lblMovieEFanartsLimit.TabIndex = 13
-        Me.lblMovieEFanartsLimit.Text = "Limit:"
-        '
-        'lblMovieEThumbsLimit
-        '
-        Me.lblMovieEThumbsLimit.AutoSize = true
-        Me.lblMovieEThumbsLimit.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.lblMovieEThumbsLimit.Location = New System.Drawing.Point(135, 75)
-        Me.lblMovieEThumbsLimit.Name = "lblMovieEThumbsLimit"
-        Me.lblMovieEThumbsLimit.Size = New System.Drawing.Size(34, 13)
-        Me.lblMovieEThumbsLimit.TabIndex = 14
-        Me.lblMovieEThumbsLimit.Text = "Limit:"
         '
         'dlgSettings
         '
