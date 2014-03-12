@@ -756,7 +756,9 @@ Public Class dlgTVImageSelect
             If Not e.Cancelled Then
                 Me.tvList.Enabled = True
                 Me.tvList.Visible = True
-                Me.tvList.SelectedNode = Me.tvList.Nodes(0)
+                If Me.tvList.Nodes.Count > 0 Then
+                    Me.tvList.SelectedNode = Me.tvList.Nodes(0)
+                End If
                 Me.tvList.Focus()
 
                 Me.btnOK.Enabled = True
@@ -764,7 +766,7 @@ Public Class dlgTVImageSelect
 
             Me.pbCurrent.Visible = True
             Me.lblCurrentImage.Visible = True
-        End If
+            End If
     End Sub
 
     Private Sub CheckCurrentImage()

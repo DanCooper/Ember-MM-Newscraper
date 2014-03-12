@@ -1541,6 +1541,10 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
+    Private Sub chkTVASLandscapeOverwrite_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVASLandscapeOverwrite.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
     Private Sub chkTVShowBannerOverwrite_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowBannerOverwrite.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
@@ -2519,6 +2523,7 @@ Public Class dlgSettings
                     Me.txtTVASFanartHeight.Text = .TVASFanartHeight.ToString
                     Me.txtTVASFanartWidth.Text = .TVASFanartWidth.ToString
                 End If
+                Me.chkTVASLandscapeOverwrite.Checked = .TVASLandscapeOverwrite
                 Me.chkTVASPosterOverwrite.Checked = .TVASPosterOverwrite
                 Me.chkTVASPosterResize.Checked = .TVASPosterResize
                 If .TVASPosterResize Then
@@ -3844,6 +3849,7 @@ Public Class dlgSettings
                 .TVASFanartQual = Me.tbTVASFanartQual.Value
                 .TVASFanartResize = Me.chkTVASFanartResize.Checked
                 .TVASFanartWidth = If(Not String.IsNullOrEmpty(Me.txtTVASFanartWidth.Text), Convert.ToInt32(Me.txtTVASFanartWidth.Text), 0)
+                .TVASLandscapeOverwrite = Me.chkTVASLandscapeOverwrite.Checked
                 .TVASPosterHeight = If(Not String.IsNullOrEmpty(Me.txtTVASPosterHeight.Text), Convert.ToInt32(Me.txtTVASPosterHeight.Text), 0)
                 .TVASPosterOverwrite = Me.chkTVASPosterOverwrite.Checked
                 .TVASPosterPrefSize = DirectCast(Me.cbTVASPosterPrefSize.SelectedIndex, Enums.TVPosterSize)

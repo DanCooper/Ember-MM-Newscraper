@@ -192,7 +192,7 @@ Public Class Images
         End If
     End Sub
     ''' <summary>
-    ''' Delete the season banner for the given show/DBTV
+    ''' Delete the AllSeasons banner for the given show/DBTV
     ''' </summary>
     ''' <param name="mShow">Show database record from which the ShowPath is extracted</param>
     ''' <remarks></remarks>
@@ -208,7 +208,7 @@ Public Class Images
         End Try
     End Sub
     ''' <summary>
-    ''' Delete the season posters for the given show/DBTV
+    ''' Delete the AllSeasons posters for the given show/DBTV
     ''' </summary>
     ''' <param name="mShow">Show database record from which the ShowPath is extracted</param>
     ''' <remarks></remarks>
@@ -224,7 +224,23 @@ Public Class Images
         End Try
     End Sub
     ''' <summary>
-    ''' Delete the season posters for the given show/DBTV
+    ''' Delete the AllSeasons landscape for the given show/DBTV
+    ''' </summary>
+    ''' <param name="mShow">Show database record from which the ShowPath is extracted</param>
+    ''' <remarks></remarks>
+    Public Sub DeleteTVASLandscape(ByVal mShow As Structures.DBTV)
+        If String.IsNullOrEmpty(mShow.ShowPath) Then Return
+
+        Try 'TODO
+            'Delete(Path.Combine(mShow.ShowPath, "season-all.tbn"))
+            'Delete(Path.Combine(mShow.ShowPath, "season-all.jpg"))
+            'Delete(Path.Combine(mShow.ShowPath, "season-all-poster.jpg"))
+        Catch ex As Exception
+            Master.eLog.Error(GetType(Images), "Path: <" & mShow.ShowPath & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+    ''' <summary>
+    ''' Delete the AllSeasons posters for the given show/DBTV
     ''' </summary>
     ''' <param name="mShow">Show database record from which the ShowPath is extracted</param>
     ''' <remarks></remarks>
@@ -446,6 +462,45 @@ Public Class Images
 
     End Sub
     ''' <summary>
+    ''' Delete the TV Show's season landscape
+    ''' </summary>
+    ''' <param name="mShow"><c>Structures.DBTV</c> representing the TV Show to work on</param>
+    ''' <remarks></remarks>
+    Public Sub DeleteTVSeasonLandscape(ByVal mShow As Structures.DBTV)
+        If String.IsNullOrEmpty(mShow.ShowPath) Then Return
+
+        'TODO
+
+        'Try
+        '    Dim tPath As String = String.Empty
+        '    tPath = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, mShow.TVEp.Season)
+        '    If Not String.IsNullOrEmpty(tPath) Then
+        '        Delete(Path.Combine(tPath, "Poster.tbn"))
+        '        Delete(Path.Combine(tPath, "Poster.jpg"))
+        '        Delete(Path.Combine(tPath, String.Concat(FileUtils.Common.GetDirectory(tPath), ".tbn")))
+        '        Delete(Path.Combine(tPath, String.Concat(FileUtils.Common.GetDirectory(tPath), ".jpg")))
+        '        Delete(Path.Combine(tPath, "Folder.jpg"))
+        '    End If
+        'Catch ex As Exception
+        '    Master.eLog.Error(GetType(Images), "Show: <" & mShow.ShowPath & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
+        'End Try
+
+        'Try
+        '    If mShow.TVEp.Season = 0 Then
+        '        Delete(Path.Combine(mShow.ShowPath, "season-specials.tbn"))
+        '        Delete(Path.Combine(mShow.ShowPath, "season-specials.jpg"))
+        '        Delete(Path.Combine(mShow.ShowPath, "season-specials-poster.jpg"))
+        '    Else
+        '        Delete(Path.Combine(mShow.ShowPath, String.Format("season{0}.tbn", mShow.TVEp.Season)))
+        '        Delete(Path.Combine(mShow.ShowPath, String.Format("season{0}.tbn", mShow.TVEp.Season.ToString.PadLeft(2, Convert.ToChar("0")))))
+        '        Delete(Path.Combine(mShow.ShowPath, String.Format("season{0}-poster.jpg", mShow.TVEp.Season.ToString.PadLeft(2, Convert.ToChar("0")))))
+        '    End If
+        'Catch ex As Exception
+        '    Master.eLog.Error(GetType(Images), "Show: <" & mShow.ShowPath & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
+        'End Try
+
+    End Sub
+    ''' <summary>
     ''' Delete the TV Show's season posters
     ''' </summary>
     ''' <param name="mShow"><c>Structures.DBTV</c> representing the TV Show to work on</param>
@@ -510,6 +565,22 @@ Public Class Images
             Delete(Path.Combine(mShow.ShowPath, "fanart.jpg"))
             Delete(Path.Combine(mShow.ShowPath, String.Concat(FileUtils.Common.GetDirectory(mShow.ShowPath), "-fanart.jpg")))
             Delete(Path.Combine(mShow.ShowPath, String.Concat(FileUtils.Common.GetDirectory(mShow.ShowPath), ".fanart.jpg")))
+        Catch ex As Exception
+            Master.eLog.Error(GetType(Images), "Show: <" & mShow.ShowPath & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+    ''' <summary>
+    ''' Delete the TV Show's landscape
+    ''' </summary>
+    ''' <param name="mShow"><c>Structures.DBTV</c> representing the TV Show to work on</param>
+    ''' <remarks></remarks>
+    Public Sub DeleteTVShowLandscape(ByVal mShow As Structures.DBTV)
+        If String.IsNullOrEmpty(mShow.ShowPath) Then Return
+
+        Try 'TODO
+            'Delete(Path.Combine(mShow.ShowPath, "folder.jpg"))
+            'Delete(Path.Combine(mShow.ShowPath, "poster.tbn"))
+            'Delete(Path.Combine(mShow.ShowPath, "poster.jpg"))
         Catch ex As Exception
             Master.eLog.Error(GetType(Images), "Show: <" & mShow.ShowPath & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
         End Try
@@ -834,6 +905,47 @@ Public Class Images
             For Each a In FileUtils.GetFilenameList.TVShow(mShow.ShowPath, Enums.TVImageType.AllSeasonsFanart)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVASFanartOverwrite) Then
                     Save(a, Master.eSettings.TVASFanartQual, sURL, doResize)
+                    strReturn = a
+                End If
+            Next
+
+        Catch ex As Exception
+            Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+        End Try
+
+        Return strReturn
+    End Function
+    ''' <summary>
+    ''' Saves the image as the AllSeason landscape
+    ''' </summary>
+    ''' <param name="mShow">The <c>Structures.DBTV</c> representing the show being referenced</param>
+    ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
+    ''' <returns><c>String</c> path to the saved image</returns>
+    ''' <remarks></remarks>
+    Public Function SaveAsTVASLandscape(ByVal mShow As Structures.DBTV, Optional sURL As String = "") As String
+        Dim strReturn As String = String.Empty
+        Dim doResize As Boolean = False
+
+        Try
+            Dim pPath As String = String.Empty
+
+            Try
+                Dim params As New List(Of Object)(New Object() {Enums.TVImageType.AllSeasonsLandscape, mShow, New List(Of String)})
+                Dim doContinue As Boolean = True
+                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
+                For Each s As String In DirectCast(params(2), List(Of String))
+                    If Not File.Exists(s) OrElse (IsEdit OrElse Master.eSettings.TVASLandscapeOverwrite) Then
+                        Save(s, 0, sURL, doResize)
+                        If String.IsNullOrEmpty(strReturn) Then strReturn = s
+                    End If
+                Next
+            Catch ex As Exception
+                Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+            End Try
+
+            For Each a In FileUtils.GetFilenameList.TVShow(mShow.ShowPath, Enums.TVImageType.AllSeasonsLandscape)
+                If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVASLandscapeOverwrite) Then
+                    Save(a, 0, sURL, doResize)
                     strReturn = a
                 End If
             Next
@@ -1236,6 +1348,49 @@ Public Class Images
         Return strReturn
     End Function
     ''' <summary>
+    ''' Save the image as a TV Show's season landscape
+    ''' </summary>
+    ''' <param name="mShow"><c>Structures.DBTV</c> representing the TV Show being referred to</param>
+    ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
+    ''' <returns><c>String</c> path to the saved image</returns>
+    ''' <remarks></remarks>
+    Public Function SaveAsTVSeasonLandscape(ByVal mShow As Structures.DBTV, Optional sURL As String = "") As String
+        Dim strReturn As String = String.Empty
+        Dim doResize As Boolean = False
+
+        Try
+            Dim pPath As String = String.Empty
+
+            Try
+                Dim params As New List(Of Object)(New Object() {Enums.TVImageType.SeasonLandscape, mShow, New List(Of String)})
+                Dim doContinue As Boolean = True
+                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
+                For Each s As String In DirectCast(params(2), List(Of String))
+                    If Not File.Exists(s) OrElse (IsEdit OrElse Master.eSettings.TVSeasonLandscapeOverwrite) Then
+                        Save(s, 0, sURL, doResize)
+                        If String.IsNullOrEmpty(strReturn) Then strReturn = s
+                    End If
+                Next
+                If Not doContinue Then
+                    Return strReturn
+                End If
+            Catch ex As Exception
+                Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+            End Try
+
+            For Each a In FileUtils.GetFilenameList.TVShow(mShow.ShowPath, Enums.TVImageType.SeasonLandscape, mShow.TVEp.Season)
+                If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVSeasonLandscapeOverwrite) Then
+                    Save(a, 0, sURL, doResize)
+                    strReturn = a
+                End If
+            Next
+
+        Catch ex As Exception
+            Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+        End Try
+        Return strReturn
+    End Function
+    ''' <summary>
     ''' Save the image as a TV Show's season poster
     ''' </summary>
     ''' <param name="mShow"><c>Structures.DBTV</c> representing the TV Show being referred to</param>
@@ -1368,6 +1523,49 @@ Public Class Images
             For Each a In FileUtils.GetFilenameList.TVShow(mShow.ShowPath, Enums.TVImageType.ShowFanart)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVShowFanartOverwrite) Then
                     Save(a, Master.eSettings.TVShowFanartQual, sURL, doResize)
+                    strReturn = a
+                End If
+            Next
+
+        Catch ex As Exception
+            Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+        End Try
+        Return strReturn
+    End Function
+    ''' <summary>
+    ''' Save the image as a TV Show's landscape
+    ''' </summary>
+    ''' <param name="mShow"><c>Structures.DBTV</c> representing the TV Show being referred to</param>
+    ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
+    ''' <returns><c>String</c> path to the saved image</returns>
+    ''' <remarks></remarks>
+    Public Function SaveAsTVShowLandscape(ByVal mShow As Structures.DBTV, Optional sURL As String = "") As String
+        Dim strReturn As String = String.Empty
+        Dim doResize As Boolean = False
+
+        If String.IsNullOrEmpty(mShow.ShowPath) Then Return strReturn
+
+        Try
+            Dim pPath As String = String.Empty
+
+            Try
+                Dim params As New List(Of Object)(New Object() {Enums.TVImageType.ShowLandscape, mShow, New List(Of String)})
+                Dim doContinue As Boolean = True
+                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
+                For Each s As String In DirectCast(params(2), List(Of String))
+                    If Not File.Exists(s) OrElse (IsEdit OrElse Master.eSettings.TVShowLandscapeOverwrite) Then
+                        Save(s, 0, sURL, doResize)
+                        If String.IsNullOrEmpty(strReturn) Then strReturn = s
+                    End If
+                Next
+                If Not doContinue Then Return strReturn
+            Catch ex As Exception
+                Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+            End Try
+
+            For Each a In FileUtils.GetFilenameList.TVShow(mShow.ShowPath, Enums.TVImageType.ShowLandscape)
+                If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVShowLandscapeOverwrite) Then
+                    Save(a, 0, sURL, doResize)
                     strReturn = a
                 End If
             Next

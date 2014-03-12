@@ -243,6 +243,7 @@ Public Class Settings
     Private _tvasfanartqual As Integer
     Private _tvasfanartresize As Boolean
     Private _tvasfanartwidth As Integer
+    Private _tvaslandscapeoverwrite As Boolean
     Private _tvasposterheight As Integer
     Private _tvasposteroverwrite As Boolean
     Private _tvasposterprefsize As Enums.TVPosterSize
@@ -2005,6 +2006,15 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Me._tvasfanartoverwrite = value
+        End Set
+    End Property
+
+    Public Property TVASLandscapeOverwrite() As Boolean
+        Get
+            Return Me._tvaslandscapeoverwrite
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvaslandscapeoverwrite = value
         End Set
     End Property
 
@@ -4956,6 +4966,7 @@ Public Class Settings
         Me._tvasfanartqual = 0
         Me._tvasfanartresize = False
         Me._tvasfanartwidth = 0
+        Me._tvaslandscapeoverwrite = True
         Me._tvasposterheight = 0
         Me._tvasposteroverwrite = True
         Me._tvasposterprefsize = Enums.TVPosterSize.HD1000

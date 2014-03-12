@@ -1116,4 +1116,14 @@
 	<string id="1028">Select the folder where you wish to store your tv themes...</string>
 	<string id="1029">Select the folder where you wish to store your watched files...</string>
 	<string id="1030">Select the folder where you wish to store your movie sets images...</string>
+	<string id="1031">Change Landscape (Local)</string>
+	<string id="1032">Change Landscape (Scrape)</string>
+	<string id="1033">Change Landscape (Download)</string>
+	<string id="1034">Remove Landscape</string>
+	<string id="1035">Landscape</string>
+	<string id="1036">Manual Landscape Entry</string>
+	<string id="1037">Manual Banner Entry</string>
+	<string id="1038">Manual CharacterArt Entry</string>
+	<string id="1039">Manual ClearArt Entry</string>
+	<string id="1040">Manual ClearLogo Entry</string>
 </strings>

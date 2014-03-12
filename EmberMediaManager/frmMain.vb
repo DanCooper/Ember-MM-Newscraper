@@ -7731,7 +7731,7 @@ doCancel:
                 End If
 
                 Dim eContainer As New Scanner.EpisodeContainer With {.Filename = tmpShowDb.Filename}
-                fScanner.GetEpFolderContents(eContainer)
+                fScanner.GetTVEpisodeFolderContents(eContainer)
                 tmpShowDb.EpPosterPath = eContainer.Poster
                 tmpShowDb.EpFanartPath = eContainer.Fanart
                 'assume invalid nfo if no title
@@ -8004,7 +8004,7 @@ doCancel:
 
             'fake file just for getting images
             tmpSeasonDb.Filename = Path.Combine(tPath, "file.ext")
-            fScanner.GetSeasonImages(tmpSeasonDb, Season)
+            fScanner.GetTVSeasonImages(tmpSeasonDb, Season)
 
             Dim dRow = From drvRow In dtSeasons.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item(0)) = ShowID AndAlso Convert.ToInt32(DirectCast(drvRow, DataRow).Item(2)) = Season Select drvRow
 
@@ -8082,12 +8082,13 @@ doCancel:
                 End If
 
                 Dim sContainer As New Scanner.TVShowContainer With {.ShowPath = tmpShowDb.ShowPath}
-                fScanner.GetShowFolderContents(sContainer, ID)
-                tmpShowDb.ShowBannerPath = sContainer.Banner
-                tmpShowDb.ShowFanartPath = sContainer.Fanart
-                tmpShowDb.ShowPosterPath = sContainer.Poster
+                fScanner.GetTVShowFolderContents(sContainer, ID)
+                tmpShowDb.ShowBannerPath = sContainer.ShowBanner
+                tmpShowDb.ShowFanartPath = sContainer.ShowFanart
+                tmpShowDb.ShowLandscapePath = sContainer.ShowLandscape
+                tmpShowDb.ShowPosterPath = sContainer.ShowPoster
                 'assume invalid nfo if no title
-                tmpShowDb.ShowNfoPath = If(String.IsNullOrEmpty(tmpShowDb.TVShow.Title), String.Empty, sContainer.Nfo)
+                tmpShowDb.ShowNfoPath = If(String.IsNullOrEmpty(tmpShowDb.TVShow.Title), String.Empty, sContainer.ShowNfo)
 
                 Dim dRow = From drvRow In dtShows.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item(0)) = ID Select drvRow
 
@@ -8097,14 +8098,14 @@ doCancel:
 
                     If Me.InvokeRequired Then
                         Me.Invoke(myDelegate, New Object() {dRow(0), 1, tmpShowDb.TVShow.Title})
-                        Me.Invoke(myDelegate, New Object() {dRow(0), 2, If(String.IsNullOrEmpty(sContainer.Poster), False, True)})
-                        Me.Invoke(myDelegate, New Object() {dRow(0), 3, If(String.IsNullOrEmpty(sContainer.Fanart), False, True)})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 2, If(String.IsNullOrEmpty(sContainer.ShowPoster), False, True)})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 3, If(String.IsNullOrEmpty(sContainer.ShowFanart), False, True)})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 4, If(String.IsNullOrEmpty(tmpShowDb.ShowNfoPath), False, True)})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 5, False})
                     Else
                         DirectCast(dRow(0), DataRow).Item(1) = tmpShowDb.TVShow.Title
-                        DirectCast(dRow(0), DataRow).Item(2) = If(String.IsNullOrEmpty(sContainer.Poster), False, True)
-                        DirectCast(dRow(0), DataRow).Item(3) = If(String.IsNullOrEmpty(sContainer.Fanart), False, True)
+                        DirectCast(dRow(0), DataRow).Item(2) = If(String.IsNullOrEmpty(sContainer.ShowPoster), False, True)
+                        DirectCast(dRow(0), DataRow).Item(3) = If(String.IsNullOrEmpty(sContainer.ShowFanart), False, True)
                         DirectCast(dRow(0), DataRow).Item(4) = If(String.IsNullOrEmpty(tmpShowDb.ShowNfoPath), False, True)
                         DirectCast(dRow(0), DataRow).Item(5) = False
                     End If
@@ -8116,6 +8117,7 @@ doCancel:
                 If Master.eSettings.TVASPosterEnabled Then
                     tmpShowDb.SeasonBannerPath = sContainer.AllSeasonsBanner
                     tmpShowDb.SeasonFanartPath = sContainer.AllSeasonsFanart
+                    tmpShowDb.SeasonLandscapePath = sContainer.AllSeasonsLandscape
                     tmpShowDb.SeasonPosterPath = sContainer.AllSeasonsPoster
                     Master.DB.SaveTVSeasonToDB(tmpShowDb, False, False)
                 End If

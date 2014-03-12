@@ -837,6 +837,8 @@ Partial Class dlgSettings
         Me.chkMovieTrailerOverwrite = New System.Windows.Forms.CheckBox()
         Me.chkMovieTrailerEnable = New System.Windows.Forms.CheckBox()
         Me.fileBrowse = New System.Windows.Forms.OpenFileDialog()
+        Me.gbTVASLandscapeOpts = New System.Windows.Forms.GroupBox()
+        Me.chkTVASLandscapeOverwrite = New System.Windows.Forms.CheckBox()
         Me.gbGeneralMisc.SuspendLayout
         Me.gbGeneralDaemon.SuspendLayout
         Me.gbGeneralThemes.SuspendLayout
@@ -985,6 +987,7 @@ Partial Class dlgSettings
         Me.pnlSettingsHelp.SuspendLayout
         Me.pnlMovieTrailers.SuspendLayout
         Me.gbMovieTrailerOpts.SuspendLayout
+        Me.gbTVASLandscapeOpts.SuspendLayout
         Me.SuspendLayout
         '
         'gbGeneralMisc
@@ -7106,6 +7109,7 @@ Partial Class dlgSettings
         '
         'tpTVAllSeasons
         '
+        Me.tpTVAllSeasons.Controls.Add(Me.gbTVASLandscapeOpts)
         Me.tpTVAllSeasons.Controls.Add(Me.gbTVASFanartOpts)
         Me.tpTVAllSeasons.Controls.Add(Me.gbTVASBannerOpts)
         Me.tpTVAllSeasons.Controls.Add(Me.gbTVASPosterOpts)
@@ -9839,6 +9843,28 @@ Partial Class dlgSettings
         Me.chkMovieTrailerEnable.Text = "Enable Trailer Support"
         Me.chkMovieTrailerEnable.UseVisualStyleBackColor = true
         '
+        'gbTVASLandscapeOpts
+        '
+        Me.gbTVASLandscapeOpts.Controls.Add(Me.chkTVASLandscapeOverwrite)
+        Me.gbTVASLandscapeOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.gbTVASLandscapeOpts.Location = New System.Drawing.Point(6, 179)
+        Me.gbTVASLandscapeOpts.Name = "gbTVASLandscapeOpts"
+        Me.gbTVASLandscapeOpts.Size = New System.Drawing.Size(228, 44)
+        Me.gbTVASLandscapeOpts.TabIndex = 8
+        Me.gbTVASLandscapeOpts.TabStop = false
+        Me.gbTVASLandscapeOpts.Text = "Landscape"
+        '
+        'chkTVASLandscapeOverwrite
+        '
+        Me.chkTVASLandscapeOverwrite.AutoSize = true
+        Me.chkTVASLandscapeOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVASLandscapeOverwrite.Location = New System.Drawing.Point(6, 21)
+        Me.chkTVASLandscapeOverwrite.Name = "chkTVASLandscapeOverwrite"
+        Me.chkTVASLandscapeOverwrite.Size = New System.Drawing.Size(119, 17)
+        Me.chkTVASLandscapeOverwrite.TabIndex = 4
+        Me.chkTVASLandscapeOverwrite.Text = "Overwrite Existing"
+        Me.chkTVASLandscapeOverwrite.UseVisualStyleBackColor = true
+        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -10110,6 +10136,8 @@ Partial Class dlgSettings
         Me.pnlMovieTrailers.ResumeLayout(false)
         Me.gbMovieTrailerOpts.ResumeLayout(false)
         Me.gbMovieTrailerOpts.PerformLayout
+        Me.gbTVASLandscapeOpts.ResumeLayout(false)
+        Me.gbTVASLandscapeOpts.PerformLayout
         Me.ResumeLayout(false)
         Me.PerformLayout
 
@@ -10921,4 +10949,6 @@ End Sub
     Friend WithEvents chkMovieYAMJCompatibleSets As System.Windows.Forms.CheckBox
     Friend WithEvents lblMovieEFanartsLimit As System.Windows.Forms.Label
     Friend WithEvents lblMovieEThumbsLimit As System.Windows.Forms.Label
+    Friend WithEvents gbTVASLandscapeOpts As System.Windows.Forms.GroupBox
+    Friend WithEvents chkTVASLandscapeOverwrite As System.Windows.Forms.CheckBox
 End Class

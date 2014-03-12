@@ -267,10 +267,10 @@ Public Class Trailers
         Dim fScanner As New Scanner
 
         If isDL Then
-            If String.IsNullOrEmpty(fScanner.GetTrailerPath(sPath)) OrElse Master.eSettings.MovieTrailerOverwrite Then
+            If String.IsNullOrEmpty(fScanner.GetMovieTrailerPath(sPath)) OrElse Master.eSettings.MovieTrailerOverwrite Then
                 Return True
             Else
-                If isSS AndAlso String.IsNullOrEmpty(fScanner.GetTrailerPath(sPath)) Then
+                If isSS AndAlso String.IsNullOrEmpty(fScanner.GetMovieTrailerPath(sPath)) Then
                     If Not Master.eSettings.MovieLockTrailer Then
                         Return True
                     Else
