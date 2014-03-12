@@ -70,7 +70,7 @@ Public NotInheritable Class dlgAbout
 
         Dim aBit As String = Master.eLang.GetString(1008, "x64")
         If Master.is32Bit Then
-            Master.eLang.GetString(1007, "x86")
+            aBit = Master.eLang.GetString(1007, "x86")
         End If
         Dim VersionNumber As String = System.String.Format(Master.eLang.GetString(865, "Version {0}.{1}.{2}.{3} {4}"), My.Application.Info.Version.Major, My.Application.Info.Version.Minor, My.Application.Info.Version.Build, My.Application.Info.Version.Revision, aBit)
 
