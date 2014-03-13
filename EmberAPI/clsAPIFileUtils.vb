@@ -20,12 +20,13 @@
 
 Imports System.IO
 Imports System.Text.RegularExpressions
+Imports System.Windows.Forms
 
 Namespace FileUtils
 
     Public Class Common
 
-        #Region "Methods"
+#Region "Methods"
 
         ''' <summary>
         ''' Determine the lowest-level directory from the supplied path string. 
@@ -166,13 +167,13 @@ Namespace FileUtils
             filename = filename.Replace("  ", " ")
             Return filename
         End Function
-#End Region	'Methods
+#End Region 'Methods
 
     End Class
 
     Public Class Delete
 
-        #Region "Methods"
+#Region "Methods"
 
         ''' <summary>
         ''' Safer method of deleting a diretory and all it's contents
@@ -228,14 +229,14 @@ Namespace FileUtils
         ''' <param name="mMovie">DBMovie object to get paths from</param>        
         ''' <returns><c>True</c> if files were found that are to be deleted, <c>False</c> if not.</returns>
         ''' <remarks>Not used for cleaner, needs to be modified to reflect.</remarks>
-		Public Function GetItemsToDelete(ByVal isCleaner As Boolean, ByVal mMovie As Structures.DBMovie) As List(Of IO.FileSystemInfo)
-			Dim dPath As String = String.Empty
-			Dim ItemsToDelete As New List(Of FileSystemInfo)
-			Dim fScanner As New Scanner
+        Public Function GetItemsToDelete(ByVal isCleaner As Boolean, ByVal mMovie As Structures.DBMovie) As List(Of IO.FileSystemInfo)
+            Dim dPath As String = String.Empty
+            Dim ItemsToDelete As New List(Of FileSystemInfo)
+            Dim fScanner As New Scanner
 
-			Try
-				Dim MovieFile As New FileInfo(mMovie.Filename)
-				Dim MovieDir As DirectoryInfo = MovieFile.Directory
+            Try
+                Dim MovieFile As New FileInfo(mMovie.Filename)
+                Dim MovieDir As DirectoryInfo = MovieFile.Directory
                 'TODO: check VIDEO_TS parent
                 If FileUtils.Common.isVideoTS(MovieDir.FullName) Then
                     dPath = String.Concat(Path.Combine(MovieDir.Parent.FullName, MovieDir.Parent.Name), ".ext")
@@ -245,17 +246,17 @@ Namespace FileUtils
                     dPath = mMovie.Filename
                 End If
 
-				Dim sOrName As String = StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(dPath))
-				Dim sPathShort As String = Directory.GetParent(dPath).FullName
-				Dim sPathNoExt As String = Common.RemoveExtFromPath(dPath)
+                Dim sOrName As String = StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(dPath))
+                Dim sPathShort As String = Directory.GetParent(dPath).FullName
+                Dim sPathNoExt As String = Common.RemoveExtFromPath(dPath)
 
-				Dim dirInfo As New DirectoryInfo(sPathShort)
-				Dim ioFi As New List(Of FileSystemInfo)
+                Dim dirInfo As New DirectoryInfo(sPathShort)
+                Dim ioFi As New List(Of FileSystemInfo)
 
-				Try
-					ioFi.AddRange(dirInfo.GetFiles())
-				Catch
-				End Try
+                Try
+                    ioFi.AddRange(dirInfo.GetFiles())
+                Catch
+                End Try
 
                 If isCleaner AndAlso Master.eSettings.FileSystemExpertCleaner Then
 
@@ -432,17 +433,84 @@ Namespace FileUtils
                     End If
                 End If
 
-				ioFi = Nothing
-				dirInfo = Nothing
-			Catch ex As Exception
+                ioFi = Nothing
+                dirInfo = Nothing
+            Catch ex As Exception
                 Master.eLog.Error(GetType(Delete), ex.Message, ex.StackTrace, "Error")
-			End Try
-			Return ItemsToDelete
-		End Function
+            End Try
+            Return ItemsToDelete
+        End Function
 
-#End Region	'Methods
+#End Region 'Methods
 
-	End Class
+    End Class
+
+    Public Class DragAndDrop
+
+#Region "Methods"
+
+        Public Shared Function CheckDroppedImage(ByVal e As DragEventArgs) As Boolean
+            Dim strFile() As String = CType(e.Data.GetData(DataFormats.FileDrop), String())
+            If Not IsNothing(strFile) Then
+                Dim fi As New System.IO.FileInfo(strFile(0))
+                If fi.Extension = ".gif" Or fi.Extension = ".bmp" Or fi.Extension = ".jpg" Or fi.Extension = ".jpeg" Or fi.Extension = ".png" Then
+                    Return True
+                End If
+            End If
+
+            Return False
+        End Function
+
+        Public Shared Function GetDoppedImage(ByVal e As DragEventArgs) As Images
+            Dim tImage As New Images
+            If e.Data.GetDataPresent("HTML FORMAT") Then
+                Dim clipboardHtml As String = CStr(e.Data.GetData("HTML Format"))
+                Dim htmlFragment As String = getHtmlFragment(clipboardHtml)
+                Dim imageSrc As String = parseImageSrc(htmlFragment)
+                Dim baseURL As String = parseBaseURL(clipboardHtml)
+
+                If (imageSrc.ToLower().IndexOf("http://") = 0) Or (imageSrc.ToLower().IndexOf("https://") = 0) Then
+                    tImage.FromWeb(imageSrc)
+                    If Not IsNothing(tImage.Image) Then
+                        Return tImage
+                    End If
+                Else
+                    tImage.FromWeb(baseURL + imageSrc.Substring(1))
+                    If Not IsNothing(tImage.Image) Then
+                        Return tImage
+                    End If
+                End If
+            ElseIf e.Data.GetDataPresent(DataFormats.FileDrop, False) Then
+                Dim localImage() As String = CType(e.Data.GetData(DataFormats.FileDrop), String())
+                tImage.FromFile(localImage(0).ToString)
+                If Not IsNothing(tImage.Image) Then
+                    Return tImage
+                End If
+            End If
+
+            Return tImage
+        End Function
+        Public Shared Function getHtmlFragment(ByVal html As String) As String
+            Dim fragStartPos As Integer
+            Dim fragEndPos As Integer
+
+            fragStartPos = Integer.Parse(Regex.Match(html, "^StartFragment:(\d+)", RegexOptions.Multiline).Groups(1).Value)
+            fragEndPos = Integer.Parse(Regex.Match(html, "^EndFragment:(\d+)", RegexOptions.Multiline).Groups(1).Value)
+
+            Return html.Substring(fragStartPos, fragEndPos - fragStartPos)
+        End Function
+
+        Public Shared Function parseBaseURL(ByVal html As String) As String
+            Return Regex.Match(html, "http(s)?://.*?/", RegexOptions.IgnoreCase).Groups(0).Value
+        End Function
+
+        Public Shared Function parseImageSrc(ByVal html As String) As String
+            Return Regex.Match(html, "<img.*?src=[""""'](.*?)[""""'].*>", RegexOptions.IgnoreCase Or RegexOptions.Singleline).Groups(1).Value
+        End Function
+
+#End Region 'Methods
+
+    End Class
 
     Public Class GetFilenameList
 

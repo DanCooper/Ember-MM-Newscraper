@@ -96,43 +96,43 @@ Partial Class dlgEditMovie
         Me.lblTitle = New System.Windows.Forms.Label()
         Me.txtTitle = New System.Windows.Forms.TextBox()
         Me.tpPoster = New System.Windows.Forms.TabPage()
-        Me.btnSetPosterDL = New System.Windows.Forms.Button()
-        Me.btnRemovePoster = New System.Windows.Forms.Button()
-        Me.lblPosterSize = New System.Windows.Forms.Label()
-        Me.btnSetPosterScrape = New System.Windows.Forms.Button()
-        Me.btnSetPoster = New System.Windows.Forms.Button()
-        Me.pbPoster = New System.Windows.Forms.PictureBox()
+        Me.btnSetMoviePosterDL = New System.Windows.Forms.Button()
+        Me.btnRemoveMoviePoster = New System.Windows.Forms.Button()
+        Me.lblMoviePosterSize = New System.Windows.Forms.Label()
+        Me.btnSetMoviePosterScrape = New System.Windows.Forms.Button()
+        Me.btnSetMoviePosterLocal = New System.Windows.Forms.Button()
+        Me.pbMoviePoster = New System.Windows.Forms.PictureBox()
         Me.tpFanart = New System.Windows.Forms.TabPage()
-        Me.btnSetFanartDL = New System.Windows.Forms.Button()
-        Me.btnRemoveFanart = New System.Windows.Forms.Button()
-        Me.lblFanartSize = New System.Windows.Forms.Label()
-        Me.btnSetFanartScrape = New System.Windows.Forms.Button()
-        Me.btnSetFanart = New System.Windows.Forms.Button()
-        Me.pbFanart = New System.Windows.Forms.PictureBox()
+        Me.btnSetMovieFanartDL = New System.Windows.Forms.Button()
+        Me.btnRemoveMovieFanart = New System.Windows.Forms.Button()
+        Me.lblMovieFanartSize = New System.Windows.Forms.Label()
+        Me.btnSetMovieFanartScrape = New System.Windows.Forms.Button()
+        Me.btnSetMovieFanartLocal = New System.Windows.Forms.Button()
+        Me.pbMovieFanart = New System.Windows.Forms.PictureBox()
         Me.tpEFanarts = New System.Windows.Forms.TabPage()
-        Me.lblEFanartsSize = New System.Windows.Forms.Label()
-        Me.pnlEFanartsBG = New System.Windows.Forms.Panel()
+        Me.lblMovieEFanartsSize = New System.Windows.Forms.Label()
+        Me.pnlMovieEFanartsBG = New System.Windows.Forms.Panel()
         Me.pnlEFanartsSetAsFanart = New System.Windows.Forms.Panel()
-        Me.btnEFanartsSetAsFanart = New System.Windows.Forms.Button()
-        Me.btnEFanartsRefresh = New System.Windows.Forms.Button()
-        Me.btnEFanartsRemove = New System.Windows.Forms.Button()
-        Me.pnlEFanartsQueue = New System.Windows.Forms.Panel()
-        Me.lbEFanartsQueue = New System.Windows.Forms.Label()
-        Me.btnEFanartsTransfer = New System.Windows.Forms.Button()
-        Me.pbEFanarts = New System.Windows.Forms.PictureBox()
+        Me.btnMovieEFanartsSetAsFanart = New System.Windows.Forms.Button()
+        Me.btnMovieEFanartsRefresh = New System.Windows.Forms.Button()
+        Me.btnMovieEFanartsRemove = New System.Windows.Forms.Button()
+        Me.pnlMovieEFanartsQueue = New System.Windows.Forms.Panel()
+        Me.lbMovieEFanartsQueue = New System.Windows.Forms.Label()
+        Me.btnMovieEFanartsTransfer = New System.Windows.Forms.Button()
+        Me.pbMovieEFanarts = New System.Windows.Forms.PictureBox()
         Me.tpEThumbs = New System.Windows.Forms.TabPage()
-        Me.lblEThumbsSize = New System.Windows.Forms.Label()
-        Me.pnlEThumbsBG = New System.Windows.Forms.Panel()
-        Me.pnlETQueue = New System.Windows.Forms.Panel()
-        Me.lbEThumbsQueue = New System.Windows.Forms.Label()
-        Me.btnEThumbsTransfer = New System.Windows.Forms.Button()
+        Me.lblMovieEThumbsSize = New System.Windows.Forms.Label()
+        Me.pnlMovieEThumbsBG = New System.Windows.Forms.Panel()
+        Me.pnlMovieETQueue = New System.Windows.Forms.Panel()
+        Me.lbMovieEThumbsQueue = New System.Windows.Forms.Label()
+        Me.btnMovieEThumbsTransfer = New System.Windows.Forms.Button()
         Me.pnlEThumbsSetAsFanart = New System.Windows.Forms.Panel()
-        Me.btnEThumbsSetAsFanart = New System.Windows.Forms.Button()
-        Me.btnEThumbsRefresh = New System.Windows.Forms.Button()
-        Me.btnEThumbsRemove = New System.Windows.Forms.Button()
-        Me.btnEThumbsDown = New System.Windows.Forms.Button()
-        Me.btnEThumbsUp = New System.Windows.Forms.Button()
-        Me.pbEThumbs = New System.Windows.Forms.PictureBox()
+        Me.btnMovieEThumbsSetAsFanart = New System.Windows.Forms.Button()
+        Me.btnMovieEThumbsRefresh = New System.Windows.Forms.Button()
+        Me.btnMovieEThumbsRemove = New System.Windows.Forms.Button()
+        Me.btnMovieEThumbsDown = New System.Windows.Forms.Button()
+        Me.btnMovieEThumbsUp = New System.Windows.Forms.Button()
+        Me.pbMovieEThumbs = New System.Windows.Forms.PictureBox()
         Me.tpFrameExtraction = New System.Windows.Forms.TabPage()
         Me.pnlFrameExtrator = New System.Windows.Forms.Panel()
         Me.tpMetaData = New System.Windows.Forms.TabPage()
@@ -158,17 +158,17 @@ Partial Class dlgEditMovie
         CType(Me.pbStar2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbStar1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tpPoster.SuspendLayout()
-        CType(Me.pbPoster, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbMoviePoster, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tpFanart.SuspendLayout()
-        CType(Me.pbFanart, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbMovieFanart, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tpEFanarts.SuspendLayout()
         Me.pnlEFanartsSetAsFanart.SuspendLayout()
-        Me.pnlEFanartsQueue.SuspendLayout()
-        CType(Me.pbEFanarts, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.pnlMovieEFanartsQueue.SuspendLayout()
+        CType(Me.pbMovieEFanarts, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tpEThumbs.SuspendLayout()
-        Me.pnlETQueue.SuspendLayout()
+        Me.pnlMovieETQueue.SuspendLayout()
         Me.pnlEThumbsSetAsFanart.SuspendLayout()
-        CType(Me.pbEThumbs, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbMovieEThumbs, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tpFrameExtraction.SuspendLayout()
         Me.tpMetaData.SuspendLayout()
         Me.tpMediaStub.SuspendLayout()
@@ -929,12 +929,12 @@ Partial Class dlgEditMovie
         '
         'tpPoster
         '
-        Me.tpPoster.Controls.Add(Me.btnSetPosterDL)
-        Me.tpPoster.Controls.Add(Me.btnRemovePoster)
-        Me.tpPoster.Controls.Add(Me.lblPosterSize)
-        Me.tpPoster.Controls.Add(Me.btnSetPosterScrape)
-        Me.tpPoster.Controls.Add(Me.btnSetPoster)
-        Me.tpPoster.Controls.Add(Me.pbPoster)
+        Me.tpPoster.Controls.Add(Me.btnSetMoviePosterDL)
+        Me.tpPoster.Controls.Add(Me.btnRemoveMoviePoster)
+        Me.tpPoster.Controls.Add(Me.lblMoviePosterSize)
+        Me.tpPoster.Controls.Add(Me.btnSetMoviePosterScrape)
+        Me.tpPoster.Controls.Add(Me.btnSetMoviePosterLocal)
+        Me.tpPoster.Controls.Add(Me.pbMoviePoster)
         Me.tpPoster.Location = New System.Drawing.Point(4, 22)
         Me.tpPoster.Name = "tpPoster"
         Me.tpPoster.Padding = New System.Windows.Forms.Padding(3)
@@ -943,88 +943,88 @@ Partial Class dlgEditMovie
         Me.tpPoster.Text = "Poster"
         Me.tpPoster.UseVisualStyleBackColor = True
         '
-        'btnSetPosterDL
+        'btnSetMoviePosterDL
         '
-        Me.btnSetPosterDL.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnSetPosterDL.Image = CType(resources.GetObject("btnSetPosterDL.Image"), System.Drawing.Image)
-        Me.btnSetPosterDL.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnSetPosterDL.Location = New System.Drawing.Point(735, 180)
-        Me.btnSetPosterDL.Name = "btnSetPosterDL"
-        Me.btnSetPosterDL.Size = New System.Drawing.Size(96, 83)
-        Me.btnSetPosterDL.TabIndex = 3
-        Me.btnSetPosterDL.Text = "Change Poster (Download)"
-        Me.btnSetPosterDL.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.btnSetPosterDL.UseVisualStyleBackColor = True
+        Me.btnSetMoviePosterDL.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnSetMoviePosterDL.Image = CType(resources.GetObject("btnSetMoviePosterDL.Image"), System.Drawing.Image)
+        Me.btnSetMoviePosterDL.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetMoviePosterDL.Location = New System.Drawing.Point(735, 180)
+        Me.btnSetMoviePosterDL.Name = "btnSetMoviePosterDL"
+        Me.btnSetMoviePosterDL.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetMoviePosterDL.TabIndex = 3
+        Me.btnSetMoviePosterDL.Text = "Change Poster (Download)"
+        Me.btnSetMoviePosterDL.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetMoviePosterDL.UseVisualStyleBackColor = True
         '
-        'btnRemovePoster
+        'btnRemoveMoviePoster
         '
-        Me.btnRemovePoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnRemovePoster.Image = CType(resources.GetObject("btnRemovePoster.Image"), System.Drawing.Image)
-        Me.btnRemovePoster.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnRemovePoster.Location = New System.Drawing.Point(735, 363)
-        Me.btnRemovePoster.Name = "btnRemovePoster"
-        Me.btnRemovePoster.Size = New System.Drawing.Size(96, 83)
-        Me.btnRemovePoster.TabIndex = 4
-        Me.btnRemovePoster.Text = "Remove Poster"
-        Me.btnRemovePoster.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.btnRemovePoster.UseVisualStyleBackColor = True
+        Me.btnRemoveMoviePoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnRemoveMoviePoster.Image = CType(resources.GetObject("btnRemoveMoviePoster.Image"), System.Drawing.Image)
+        Me.btnRemoveMoviePoster.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnRemoveMoviePoster.Location = New System.Drawing.Point(735, 363)
+        Me.btnRemoveMoviePoster.Name = "btnRemoveMoviePoster"
+        Me.btnRemoveMoviePoster.Size = New System.Drawing.Size(96, 83)
+        Me.btnRemoveMoviePoster.TabIndex = 4
+        Me.btnRemoveMoviePoster.Text = "Remove Poster"
+        Me.btnRemoveMoviePoster.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnRemoveMoviePoster.UseVisualStyleBackColor = True
         '
-        'lblPosterSize
+        'lblMoviePosterSize
         '
-        Me.lblPosterSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblPosterSize.Location = New System.Drawing.Point(8, 8)
-        Me.lblPosterSize.Name = "lblPosterSize"
-        Me.lblPosterSize.Size = New System.Drawing.Size(105, 23)
-        Me.lblPosterSize.TabIndex = 0
-        Me.lblPosterSize.Text = "Size: (XXXXxXXXX)"
-        Me.lblPosterSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        Me.lblPosterSize.Visible = False
+        Me.lblMoviePosterSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblMoviePosterSize.Location = New System.Drawing.Point(8, 8)
+        Me.lblMoviePosterSize.Name = "lblMoviePosterSize"
+        Me.lblMoviePosterSize.Size = New System.Drawing.Size(105, 23)
+        Me.lblMoviePosterSize.TabIndex = 0
+        Me.lblMoviePosterSize.Text = "Size: (XXXXxXXXX)"
+        Me.lblMoviePosterSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.lblMoviePosterSize.Visible = False
         '
-        'btnSetPosterScrape
+        'btnSetMoviePosterScrape
         '
-        Me.btnSetPosterScrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnSetPosterScrape.Image = CType(resources.GetObject("btnSetPosterScrape.Image"), System.Drawing.Image)
-        Me.btnSetPosterScrape.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnSetPosterScrape.Location = New System.Drawing.Point(735, 93)
-        Me.btnSetPosterScrape.Name = "btnSetPosterScrape"
-        Me.btnSetPosterScrape.Size = New System.Drawing.Size(96, 83)
-        Me.btnSetPosterScrape.TabIndex = 2
-        Me.btnSetPosterScrape.Text = "Change Poster (Scrape)"
-        Me.btnSetPosterScrape.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.btnSetPosterScrape.UseVisualStyleBackColor = True
+        Me.btnSetMoviePosterScrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnSetMoviePosterScrape.Image = CType(resources.GetObject("btnSetMoviePosterScrape.Image"), System.Drawing.Image)
+        Me.btnSetMoviePosterScrape.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetMoviePosterScrape.Location = New System.Drawing.Point(735, 93)
+        Me.btnSetMoviePosterScrape.Name = "btnSetMoviePosterScrape"
+        Me.btnSetMoviePosterScrape.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetMoviePosterScrape.TabIndex = 2
+        Me.btnSetMoviePosterScrape.Text = "Change Poster (Scrape)"
+        Me.btnSetMoviePosterScrape.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetMoviePosterScrape.UseVisualStyleBackColor = True
         '
-        'btnSetPoster
+        'btnSetMoviePosterLocal
         '
-        Me.btnSetPoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnSetPoster.Image = CType(resources.GetObject("btnSetPoster.Image"), System.Drawing.Image)
-        Me.btnSetPoster.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnSetPoster.Location = New System.Drawing.Point(735, 6)
-        Me.btnSetPoster.Name = "btnSetPoster"
-        Me.btnSetPoster.Size = New System.Drawing.Size(96, 83)
-        Me.btnSetPoster.TabIndex = 1
-        Me.btnSetPoster.Text = "Change Poster (Local Browse)"
-        Me.btnSetPoster.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.btnSetPoster.UseVisualStyleBackColor = True
+        Me.btnSetMoviePosterLocal.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnSetMoviePosterLocal.Image = CType(resources.GetObject("btnSetMoviePosterLocal.Image"), System.Drawing.Image)
+        Me.btnSetMoviePosterLocal.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetMoviePosterLocal.Location = New System.Drawing.Point(735, 6)
+        Me.btnSetMoviePosterLocal.Name = "btnSetMoviePosterLocal"
+        Me.btnSetMoviePosterLocal.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetMoviePosterLocal.TabIndex = 1
+        Me.btnSetMoviePosterLocal.Text = "Change Poster (Local Browse)"
+        Me.btnSetMoviePosterLocal.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetMoviePosterLocal.UseVisualStyleBackColor = True
         '
-        'pbPoster
+        'pbMoviePoster
         '
-        Me.pbPoster.BackColor = System.Drawing.Color.DimGray
-        Me.pbPoster.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pbPoster.Location = New System.Drawing.Point(6, 6)
-        Me.pbPoster.Name = "pbPoster"
-        Me.pbPoster.Size = New System.Drawing.Size(724, 440)
-        Me.pbPoster.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.pbPoster.TabIndex = 0
-        Me.pbPoster.TabStop = False
+        Me.pbMoviePoster.BackColor = System.Drawing.Color.DimGray
+        Me.pbMoviePoster.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pbMoviePoster.Location = New System.Drawing.Point(6, 6)
+        Me.pbMoviePoster.Name = "pbMoviePoster"
+        Me.pbMoviePoster.Size = New System.Drawing.Size(724, 440)
+        Me.pbMoviePoster.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.pbMoviePoster.TabIndex = 0
+        Me.pbMoviePoster.TabStop = False
         '
         'tpFanart
         '
-        Me.tpFanart.Controls.Add(Me.btnSetFanartDL)
-        Me.tpFanart.Controls.Add(Me.btnRemoveFanart)
-        Me.tpFanart.Controls.Add(Me.lblFanartSize)
-        Me.tpFanart.Controls.Add(Me.btnSetFanartScrape)
-        Me.tpFanart.Controls.Add(Me.btnSetFanart)
-        Me.tpFanart.Controls.Add(Me.pbFanart)
+        Me.tpFanart.Controls.Add(Me.btnSetMovieFanartDL)
+        Me.tpFanart.Controls.Add(Me.btnRemoveMovieFanart)
+        Me.tpFanart.Controls.Add(Me.lblMovieFanartSize)
+        Me.tpFanart.Controls.Add(Me.btnSetMovieFanartScrape)
+        Me.tpFanart.Controls.Add(Me.btnSetMovieFanartLocal)
+        Me.tpFanart.Controls.Add(Me.pbMovieFanart)
         Me.tpFanart.Location = New System.Drawing.Point(4, 22)
         Me.tpFanart.Name = "tpFanart"
         Me.tpFanart.Size = New System.Drawing.Size(836, 452)
@@ -1032,89 +1032,89 @@ Partial Class dlgEditMovie
         Me.tpFanart.Text = "Fanart"
         Me.tpFanart.UseVisualStyleBackColor = True
         '
-        'btnSetFanartDL
+        'btnSetMovieFanartDL
         '
-        Me.btnSetFanartDL.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnSetFanartDL.Image = CType(resources.GetObject("btnSetFanartDL.Image"), System.Drawing.Image)
-        Me.btnSetFanartDL.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnSetFanartDL.Location = New System.Drawing.Point(735, 180)
-        Me.btnSetFanartDL.Name = "btnSetFanartDL"
-        Me.btnSetFanartDL.Size = New System.Drawing.Size(96, 83)
-        Me.btnSetFanartDL.TabIndex = 3
-        Me.btnSetFanartDL.Text = "Change Fanart (Download)"
-        Me.btnSetFanartDL.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.btnSetFanartDL.UseVisualStyleBackColor = True
+        Me.btnSetMovieFanartDL.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnSetMovieFanartDL.Image = CType(resources.GetObject("btnSetMovieFanartDL.Image"), System.Drawing.Image)
+        Me.btnSetMovieFanartDL.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetMovieFanartDL.Location = New System.Drawing.Point(735, 180)
+        Me.btnSetMovieFanartDL.Name = "btnSetMovieFanartDL"
+        Me.btnSetMovieFanartDL.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetMovieFanartDL.TabIndex = 3
+        Me.btnSetMovieFanartDL.Text = "Change Fanart (Download)"
+        Me.btnSetMovieFanartDL.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetMovieFanartDL.UseVisualStyleBackColor = True
         '
-        'btnRemoveFanart
+        'btnRemoveMovieFanart
         '
-        Me.btnRemoveFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnRemoveFanart.Image = CType(resources.GetObject("btnRemoveFanart.Image"), System.Drawing.Image)
-        Me.btnRemoveFanart.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnRemoveFanart.Location = New System.Drawing.Point(735, 363)
-        Me.btnRemoveFanart.Name = "btnRemoveFanart"
-        Me.btnRemoveFanart.Size = New System.Drawing.Size(96, 83)
-        Me.btnRemoveFanart.TabIndex = 4
-        Me.btnRemoveFanart.Text = "Remove Fanart"
-        Me.btnRemoveFanart.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.btnRemoveFanart.UseVisualStyleBackColor = True
+        Me.btnRemoveMovieFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnRemoveMovieFanart.Image = CType(resources.GetObject("btnRemoveMovieFanart.Image"), System.Drawing.Image)
+        Me.btnRemoveMovieFanart.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnRemoveMovieFanart.Location = New System.Drawing.Point(735, 363)
+        Me.btnRemoveMovieFanart.Name = "btnRemoveMovieFanart"
+        Me.btnRemoveMovieFanart.Size = New System.Drawing.Size(96, 83)
+        Me.btnRemoveMovieFanart.TabIndex = 4
+        Me.btnRemoveMovieFanart.Text = "Remove Fanart"
+        Me.btnRemoveMovieFanart.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnRemoveMovieFanart.UseVisualStyleBackColor = True
         '
-        'lblFanartSize
+        'lblMovieFanartSize
         '
-        Me.lblFanartSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblFanartSize.Location = New System.Drawing.Point(8, 8)
-        Me.lblFanartSize.Name = "lblFanartSize"
-        Me.lblFanartSize.Size = New System.Drawing.Size(105, 23)
-        Me.lblFanartSize.TabIndex = 0
-        Me.lblFanartSize.Text = "Size: (XXXXxXXXX)"
-        Me.lblFanartSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        Me.lblFanartSize.Visible = False
+        Me.lblMovieFanartSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblMovieFanartSize.Location = New System.Drawing.Point(8, 8)
+        Me.lblMovieFanartSize.Name = "lblMovieFanartSize"
+        Me.lblMovieFanartSize.Size = New System.Drawing.Size(105, 23)
+        Me.lblMovieFanartSize.TabIndex = 0
+        Me.lblMovieFanartSize.Text = "Size: (XXXXxXXXX)"
+        Me.lblMovieFanartSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.lblMovieFanartSize.Visible = False
         '
-        'btnSetFanartScrape
+        'btnSetMovieFanartScrape
         '
-        Me.btnSetFanartScrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnSetFanartScrape.Image = CType(resources.GetObject("btnSetFanartScrape.Image"), System.Drawing.Image)
-        Me.btnSetFanartScrape.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnSetFanartScrape.Location = New System.Drawing.Point(735, 93)
-        Me.btnSetFanartScrape.Name = "btnSetFanartScrape"
-        Me.btnSetFanartScrape.Size = New System.Drawing.Size(96, 83)
-        Me.btnSetFanartScrape.TabIndex = 2
-        Me.btnSetFanartScrape.Text = "Change Fanart (Scrape)"
-        Me.btnSetFanartScrape.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.btnSetFanartScrape.UseVisualStyleBackColor = True
+        Me.btnSetMovieFanartScrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnSetMovieFanartScrape.Image = CType(resources.GetObject("btnSetMovieFanartScrape.Image"), System.Drawing.Image)
+        Me.btnSetMovieFanartScrape.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetMovieFanartScrape.Location = New System.Drawing.Point(735, 93)
+        Me.btnSetMovieFanartScrape.Name = "btnSetMovieFanartScrape"
+        Me.btnSetMovieFanartScrape.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetMovieFanartScrape.TabIndex = 2
+        Me.btnSetMovieFanartScrape.Text = "Change Fanart (Scrape)"
+        Me.btnSetMovieFanartScrape.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetMovieFanartScrape.UseVisualStyleBackColor = True
         '
-        'btnSetFanart
+        'btnSetMovieFanartLocal
         '
-        Me.btnSetFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnSetFanart.Image = CType(resources.GetObject("btnSetFanart.Image"), System.Drawing.Image)
-        Me.btnSetFanart.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnSetFanart.Location = New System.Drawing.Point(735, 6)
-        Me.btnSetFanart.Name = "btnSetFanart"
-        Me.btnSetFanart.Size = New System.Drawing.Size(96, 83)
-        Me.btnSetFanart.TabIndex = 1
-        Me.btnSetFanart.Text = "Change Fanart (Local Browse)"
-        Me.btnSetFanart.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.btnSetFanart.UseVisualStyleBackColor = True
+        Me.btnSetMovieFanartLocal.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnSetMovieFanartLocal.Image = CType(resources.GetObject("btnSetMovieFanartLocal.Image"), System.Drawing.Image)
+        Me.btnSetMovieFanartLocal.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetMovieFanartLocal.Location = New System.Drawing.Point(735, 6)
+        Me.btnSetMovieFanartLocal.Name = "btnSetMovieFanartLocal"
+        Me.btnSetMovieFanartLocal.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetMovieFanartLocal.TabIndex = 1
+        Me.btnSetMovieFanartLocal.Text = "Change Fanart (Local Browse)"
+        Me.btnSetMovieFanartLocal.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetMovieFanartLocal.UseVisualStyleBackColor = True
         '
-        'pbFanart
+        'pbMovieFanart
         '
-        Me.pbFanart.BackColor = System.Drawing.Color.DimGray
-        Me.pbFanart.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pbFanart.Location = New System.Drawing.Point(6, 6)
-        Me.pbFanart.Name = "pbFanart"
-        Me.pbFanart.Size = New System.Drawing.Size(724, 440)
-        Me.pbFanart.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.pbFanart.TabIndex = 1
-        Me.pbFanart.TabStop = False
+        Me.pbMovieFanart.BackColor = System.Drawing.Color.DimGray
+        Me.pbMovieFanart.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pbMovieFanart.Location = New System.Drawing.Point(6, 6)
+        Me.pbMovieFanart.Name = "pbMovieFanart"
+        Me.pbMovieFanart.Size = New System.Drawing.Size(724, 440)
+        Me.pbMovieFanart.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.pbMovieFanart.TabIndex = 1
+        Me.pbMovieFanart.TabStop = False
         '
         'tpEFanarts
         '
-        Me.tpEFanarts.Controls.Add(Me.lblEFanartsSize)
-        Me.tpEFanarts.Controls.Add(Me.pnlEFanartsBG)
+        Me.tpEFanarts.Controls.Add(Me.lblMovieEFanartsSize)
+        Me.tpEFanarts.Controls.Add(Me.pnlMovieEFanartsBG)
         Me.tpEFanarts.Controls.Add(Me.pnlEFanartsSetAsFanart)
-        Me.tpEFanarts.Controls.Add(Me.btnEFanartsRefresh)
-        Me.tpEFanarts.Controls.Add(Me.btnEFanartsRemove)
-        Me.tpEFanarts.Controls.Add(Me.pnlEFanartsQueue)
-        Me.tpEFanarts.Controls.Add(Me.pbEFanarts)
+        Me.tpEFanarts.Controls.Add(Me.btnMovieEFanartsRefresh)
+        Me.tpEFanarts.Controls.Add(Me.btnMovieEFanartsRemove)
+        Me.tpEFanarts.Controls.Add(Me.pnlMovieEFanartsQueue)
+        Me.tpEFanarts.Controls.Add(Me.pbMovieEFanarts)
         Me.tpEFanarts.Location = New System.Drawing.Point(4, 22)
         Me.tpEFanarts.Name = "tpEFanarts"
         Me.tpEFanarts.Padding = New System.Windows.Forms.Padding(3)
@@ -1123,124 +1123,124 @@ Partial Class dlgEditMovie
         Me.tpEFanarts.Text = "Extrafanarts"
         Me.tpEFanarts.UseVisualStyleBackColor = True
         '
-        'lblEFanartsSize
+        'lblMovieEFanartsSize
         '
-        Me.lblEFanartsSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblEFanartsSize.Location = New System.Drawing.Point(178, 10)
-        Me.lblEFanartsSize.Name = "lblEFanartsSize"
-        Me.lblEFanartsSize.Size = New System.Drawing.Size(105, 23)
-        Me.lblEFanartsSize.TabIndex = 16
-        Me.lblEFanartsSize.Text = "Size: (XXXXxXXXX)"
-        Me.lblEFanartsSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        Me.lblEFanartsSize.Visible = False
+        Me.lblMovieEFanartsSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblMovieEFanartsSize.Location = New System.Drawing.Point(178, 10)
+        Me.lblMovieEFanartsSize.Name = "lblMovieEFanartsSize"
+        Me.lblMovieEFanartsSize.Size = New System.Drawing.Size(105, 23)
+        Me.lblMovieEFanartsSize.TabIndex = 16
+        Me.lblMovieEFanartsSize.Text = "Size: (XXXXxXXXX)"
+        Me.lblMovieEFanartsSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.lblMovieEFanartsSize.Visible = False
         '
-        'pnlEFanartsBG
+        'pnlMovieEFanartsBG
         '
-        Me.pnlEFanartsBG.AutoScroll = True
-        Me.pnlEFanartsBG.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlEFanartsBG.Location = New System.Drawing.Point(5, 8)
-        Me.pnlEFanartsBG.Name = "pnlEFanartsBG"
-        Me.pnlEFanartsBG.Size = New System.Drawing.Size(165, 408)
-        Me.pnlEFanartsBG.TabIndex = 15
+        Me.pnlMovieEFanartsBG.AutoScroll = True
+        Me.pnlMovieEFanartsBG.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlMovieEFanartsBG.Location = New System.Drawing.Point(5, 8)
+        Me.pnlMovieEFanartsBG.Name = "pnlMovieEFanartsBG"
+        Me.pnlMovieEFanartsBG.Size = New System.Drawing.Size(165, 408)
+        Me.pnlMovieEFanartsBG.TabIndex = 15
         '
         'pnlEFanartsSetAsFanart
         '
         Me.pnlEFanartsSetAsFanart.BackColor = System.Drawing.Color.LightGray
         Me.pnlEFanartsSetAsFanart.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlEFanartsSetAsFanart.Controls.Add(Me.btnEFanartsSetAsFanart)
+        Me.pnlEFanartsSetAsFanart.Controls.Add(Me.btnMovieEFanartsSetAsFanart)
         Me.pnlEFanartsSetAsFanart.Location = New System.Drawing.Point(718, 403)
         Me.pnlEFanartsSetAsFanart.Name = "pnlEFanartsSetAsFanart"
         Me.pnlEFanartsSetAsFanart.Size = New System.Drawing.Size(109, 39)
         Me.pnlEFanartsSetAsFanart.TabIndex = 14
         '
-        'btnEFanartsSetAsFanart
+        'btnMovieEFanartsSetAsFanart
         '
-        Me.btnEFanartsSetAsFanart.Enabled = False
-        Me.btnEFanartsSetAsFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnEFanartsSetAsFanart.Image = CType(resources.GetObject("btnEFanartsSetAsFanart.Image"), System.Drawing.Image)
-        Me.btnEFanartsSetAsFanart.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnEFanartsSetAsFanart.Location = New System.Drawing.Point(2, 3)
-        Me.btnEFanartsSetAsFanart.Name = "btnEFanartsSetAsFanart"
-        Me.btnEFanartsSetAsFanart.Size = New System.Drawing.Size(103, 32)
-        Me.btnEFanartsSetAsFanart.TabIndex = 0
-        Me.btnEFanartsSetAsFanart.Text = "Set As Fanart"
-        Me.btnEFanartsSetAsFanart.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnEFanartsSetAsFanart.UseVisualStyleBackColor = True
+        Me.btnMovieEFanartsSetAsFanart.Enabled = False
+        Me.btnMovieEFanartsSetAsFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnMovieEFanartsSetAsFanart.Image = CType(resources.GetObject("btnMovieEFanartsSetAsFanart.Image"), System.Drawing.Image)
+        Me.btnMovieEFanartsSetAsFanart.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnMovieEFanartsSetAsFanart.Location = New System.Drawing.Point(2, 3)
+        Me.btnMovieEFanartsSetAsFanart.Name = "btnMovieEFanartsSetAsFanart"
+        Me.btnMovieEFanartsSetAsFanart.Size = New System.Drawing.Size(103, 32)
+        Me.btnMovieEFanartsSetAsFanart.TabIndex = 0
+        Me.btnMovieEFanartsSetAsFanart.Text = "Set As Fanart"
+        Me.btnMovieEFanartsSetAsFanart.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnMovieEFanartsSetAsFanart.UseVisualStyleBackColor = True
         '
-        'btnEFanartsRefresh
+        'btnMovieEFanartsRefresh
         '
-        Me.btnEFanartsRefresh.Image = CType(resources.GetObject("btnEFanartsRefresh.Image"), System.Drawing.Image)
-        Me.btnEFanartsRefresh.Location = New System.Drawing.Point(87, 422)
-        Me.btnEFanartsRefresh.Name = "btnEFanartsRefresh"
-        Me.btnEFanartsRefresh.Size = New System.Drawing.Size(23, 23)
-        Me.btnEFanartsRefresh.TabIndex = 12
-        Me.btnEFanartsRefresh.UseVisualStyleBackColor = True
+        Me.btnMovieEFanartsRefresh.Image = CType(resources.GetObject("btnMovieEFanartsRefresh.Image"), System.Drawing.Image)
+        Me.btnMovieEFanartsRefresh.Location = New System.Drawing.Point(87, 422)
+        Me.btnMovieEFanartsRefresh.Name = "btnMovieEFanartsRefresh"
+        Me.btnMovieEFanartsRefresh.Size = New System.Drawing.Size(23, 23)
+        Me.btnMovieEFanartsRefresh.TabIndex = 12
+        Me.btnMovieEFanartsRefresh.UseVisualStyleBackColor = True
         '
-        'btnEFanartsRemove
+        'btnMovieEFanartsRemove
         '
-        Me.btnEFanartsRemove.Image = CType(resources.GetObject("btnEFanartsRemove.Image"), System.Drawing.Image)
-        Me.btnEFanartsRemove.Location = New System.Drawing.Point(147, 422)
-        Me.btnEFanartsRemove.Name = "btnEFanartsRemove"
-        Me.btnEFanartsRemove.Size = New System.Drawing.Size(23, 23)
-        Me.btnEFanartsRemove.TabIndex = 13
-        Me.btnEFanartsRemove.UseVisualStyleBackColor = True
+        Me.btnMovieEFanartsRemove.Image = CType(resources.GetObject("btnMovieEFanartsRemove.Image"), System.Drawing.Image)
+        Me.btnMovieEFanartsRemove.Location = New System.Drawing.Point(147, 422)
+        Me.btnMovieEFanartsRemove.Name = "btnMovieEFanartsRemove"
+        Me.btnMovieEFanartsRemove.Size = New System.Drawing.Size(23, 23)
+        Me.btnMovieEFanartsRemove.TabIndex = 13
+        Me.btnMovieEFanartsRemove.UseVisualStyleBackColor = True
         '
-        'pnlEFanartsQueue
+        'pnlMovieEFanartsQueue
         '
-        Me.pnlEFanartsQueue.BackColor = System.Drawing.Color.LightGray
-        Me.pnlEFanartsQueue.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlEFanartsQueue.Controls.Add(Me.lbEFanartsQueue)
-        Me.pnlEFanartsQueue.Controls.Add(Me.btnEFanartsTransfer)
-        Me.pnlEFanartsQueue.Location = New System.Drawing.Point(626, 11)
-        Me.pnlEFanartsQueue.Name = "pnlEFanartsQueue"
-        Me.pnlEFanartsQueue.Size = New System.Drawing.Size(201, 69)
-        Me.pnlEFanartsQueue.TabIndex = 8
-        Me.pnlEFanartsQueue.Visible = False
+        Me.pnlMovieEFanartsQueue.BackColor = System.Drawing.Color.LightGray
+        Me.pnlMovieEFanartsQueue.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlMovieEFanartsQueue.Controls.Add(Me.lbMovieEFanartsQueue)
+        Me.pnlMovieEFanartsQueue.Controls.Add(Me.btnMovieEFanartsTransfer)
+        Me.pnlMovieEFanartsQueue.Location = New System.Drawing.Point(626, 11)
+        Me.pnlMovieEFanartsQueue.Name = "pnlMovieEFanartsQueue"
+        Me.pnlMovieEFanartsQueue.Size = New System.Drawing.Size(201, 69)
+        Me.pnlMovieEFanartsQueue.TabIndex = 8
+        Me.pnlMovieEFanartsQueue.Visible = False
         '
-        'lbEFanartsQueue
+        'lbMovieEFanartsQueue
         '
-        Me.lbEFanartsQueue.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lbEFanartsQueue.Location = New System.Drawing.Point(3, 3)
-        Me.lbEFanartsQueue.Name = "lbEFanartsQueue"
-        Me.lbEFanartsQueue.Size = New System.Drawing.Size(193, 26)
-        Me.lbEFanartsQueue.TabIndex = 0
-        Me.lbEFanartsQueue.Text = "You have extrafanarts queued to be transferred to the movie directory."
-        Me.lbEFanartsQueue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.lbMovieEFanartsQueue.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lbMovieEFanartsQueue.Location = New System.Drawing.Point(3, 3)
+        Me.lbMovieEFanartsQueue.Name = "lbMovieEFanartsQueue"
+        Me.lbMovieEFanartsQueue.Size = New System.Drawing.Size(193, 26)
+        Me.lbMovieEFanartsQueue.TabIndex = 0
+        Me.lbMovieEFanartsQueue.Text = "You have extrafanarts queued to be transferred to the movie directory."
+        Me.lbMovieEFanartsQueue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
-        'btnEFanartsTransfer
+        'btnMovieEFanartsTransfer
         '
-        Me.btnEFanartsTransfer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnEFanartsTransfer.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnEFanartsTransfer.Location = New System.Drawing.Point(53, 32)
-        Me.btnEFanartsTransfer.Name = "btnEFanartsTransfer"
-        Me.btnEFanartsTransfer.Size = New System.Drawing.Size(103, 32)
-        Me.btnEFanartsTransfer.TabIndex = 1
-        Me.btnEFanartsTransfer.Text = "Transfer Now"
-        Me.btnEFanartsTransfer.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnEFanartsTransfer.UseVisualStyleBackColor = True
+        Me.btnMovieEFanartsTransfer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnMovieEFanartsTransfer.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnMovieEFanartsTransfer.Location = New System.Drawing.Point(53, 32)
+        Me.btnMovieEFanartsTransfer.Name = "btnMovieEFanartsTransfer"
+        Me.btnMovieEFanartsTransfer.Size = New System.Drawing.Size(103, 32)
+        Me.btnMovieEFanartsTransfer.TabIndex = 1
+        Me.btnMovieEFanartsTransfer.Text = "Transfer Now"
+        Me.btnMovieEFanartsTransfer.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnMovieEFanartsTransfer.UseVisualStyleBackColor = True
         '
-        'pbEFanarts
+        'pbMovieEFanarts
         '
-        Me.pbEFanarts.BackColor = System.Drawing.Color.DimGray
-        Me.pbEFanarts.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pbEFanarts.Location = New System.Drawing.Point(176, 8)
-        Me.pbEFanarts.Name = "pbEFanarts"
-        Me.pbEFanarts.Size = New System.Drawing.Size(653, 437)
-        Me.pbEFanarts.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.pbEFanarts.TabIndex = 10
-        Me.pbEFanarts.TabStop = False
+        Me.pbMovieEFanarts.BackColor = System.Drawing.Color.DimGray
+        Me.pbMovieEFanarts.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pbMovieEFanarts.Location = New System.Drawing.Point(176, 8)
+        Me.pbMovieEFanarts.Name = "pbMovieEFanarts"
+        Me.pbMovieEFanarts.Size = New System.Drawing.Size(653, 437)
+        Me.pbMovieEFanarts.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.pbMovieEFanarts.TabIndex = 10
+        Me.pbMovieEFanarts.TabStop = False
         '
         'tpEThumbs
         '
-        Me.tpEThumbs.Controls.Add(Me.lblEThumbsSize)
-        Me.tpEThumbs.Controls.Add(Me.pnlEThumbsBG)
-        Me.tpEThumbs.Controls.Add(Me.pnlETQueue)
+        Me.tpEThumbs.Controls.Add(Me.lblMovieEThumbsSize)
+        Me.tpEThumbs.Controls.Add(Me.pnlMovieEThumbsBG)
+        Me.tpEThumbs.Controls.Add(Me.pnlMovieETQueue)
         Me.tpEThumbs.Controls.Add(Me.pnlEThumbsSetAsFanart)
-        Me.tpEThumbs.Controls.Add(Me.btnEThumbsRefresh)
-        Me.tpEThumbs.Controls.Add(Me.btnEThumbsRemove)
-        Me.tpEThumbs.Controls.Add(Me.btnEThumbsDown)
-        Me.tpEThumbs.Controls.Add(Me.btnEThumbsUp)
-        Me.tpEThumbs.Controls.Add(Me.pbEThumbs)
+        Me.tpEThumbs.Controls.Add(Me.btnMovieEThumbsRefresh)
+        Me.tpEThumbs.Controls.Add(Me.btnMovieEThumbsRemove)
+        Me.tpEThumbs.Controls.Add(Me.btnMovieEThumbsDown)
+        Me.tpEThumbs.Controls.Add(Me.btnMovieEThumbsUp)
+        Me.tpEThumbs.Controls.Add(Me.pbMovieEThumbs)
         Me.tpEThumbs.Location = New System.Drawing.Point(4, 22)
         Me.tpEThumbs.Name = "tpEThumbs"
         Me.tpEThumbs.Size = New System.Drawing.Size(836, 452)
@@ -1248,134 +1248,134 @@ Partial Class dlgEditMovie
         Me.tpEThumbs.Text = "Extrathumbs"
         Me.tpEThumbs.UseVisualStyleBackColor = True
         '
-        'lblEThumbsSize
+        'lblMovieEThumbsSize
         '
-        Me.lblEThumbsSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblEThumbsSize.Location = New System.Drawing.Point(178, 10)
-        Me.lblEThumbsSize.Name = "lblEThumbsSize"
-        Me.lblEThumbsSize.Size = New System.Drawing.Size(105, 23)
-        Me.lblEThumbsSize.TabIndex = 17
-        Me.lblEThumbsSize.Text = "Size: (XXXXxXXXX)"
-        Me.lblEThumbsSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        Me.lblEThumbsSize.Visible = False
+        Me.lblMovieEThumbsSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblMovieEThumbsSize.Location = New System.Drawing.Point(178, 10)
+        Me.lblMovieEThumbsSize.Name = "lblMovieEThumbsSize"
+        Me.lblMovieEThumbsSize.Size = New System.Drawing.Size(105, 23)
+        Me.lblMovieEThumbsSize.TabIndex = 17
+        Me.lblMovieEThumbsSize.Text = "Size: (XXXXxXXXX)"
+        Me.lblMovieEThumbsSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.lblMovieEThumbsSize.Visible = False
         '
-        'pnlEThumbsBG
+        'pnlMovieEThumbsBG
         '
-        Me.pnlEThumbsBG.AutoScroll = True
-        Me.pnlEThumbsBG.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlEThumbsBG.Location = New System.Drawing.Point(5, 8)
-        Me.pnlEThumbsBG.Name = "pnlEThumbsBG"
-        Me.pnlEThumbsBG.Size = New System.Drawing.Size(165, 408)
-        Me.pnlEThumbsBG.TabIndex = 7
+        Me.pnlMovieEThumbsBG.AutoScroll = True
+        Me.pnlMovieEThumbsBG.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlMovieEThumbsBG.Location = New System.Drawing.Point(5, 8)
+        Me.pnlMovieEThumbsBG.Name = "pnlMovieEThumbsBG"
+        Me.pnlMovieEThumbsBG.Size = New System.Drawing.Size(165, 408)
+        Me.pnlMovieEThumbsBG.TabIndex = 7
         '
-        'pnlETQueue
+        'pnlMovieETQueue
         '
-        Me.pnlETQueue.BackColor = System.Drawing.Color.LightGray
-        Me.pnlETQueue.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlETQueue.Controls.Add(Me.lbEThumbsQueue)
-        Me.pnlETQueue.Controls.Add(Me.btnEThumbsTransfer)
-        Me.pnlETQueue.Location = New System.Drawing.Point(626, 11)
-        Me.pnlETQueue.Name = "pnlETQueue"
-        Me.pnlETQueue.Size = New System.Drawing.Size(201, 69)
-        Me.pnlETQueue.TabIndex = 1
-        Me.pnlETQueue.Visible = False
+        Me.pnlMovieETQueue.BackColor = System.Drawing.Color.LightGray
+        Me.pnlMovieETQueue.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlMovieETQueue.Controls.Add(Me.lbMovieEThumbsQueue)
+        Me.pnlMovieETQueue.Controls.Add(Me.btnMovieEThumbsTransfer)
+        Me.pnlMovieETQueue.Location = New System.Drawing.Point(626, 11)
+        Me.pnlMovieETQueue.Name = "pnlMovieETQueue"
+        Me.pnlMovieETQueue.Size = New System.Drawing.Size(201, 69)
+        Me.pnlMovieETQueue.TabIndex = 1
+        Me.pnlMovieETQueue.Visible = False
         '
-        'lbEThumbsQueue
+        'lbMovieEThumbsQueue
         '
-        Me.lbEThumbsQueue.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lbEThumbsQueue.Location = New System.Drawing.Point(3, 3)
-        Me.lbEThumbsQueue.Name = "lbEThumbsQueue"
-        Me.lbEThumbsQueue.Size = New System.Drawing.Size(193, 26)
-        Me.lbEThumbsQueue.TabIndex = 0
-        Me.lbEThumbsQueue.Text = "You have extrathumbs queued to be transferred to the movie directory."
-        Me.lbEThumbsQueue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.lbMovieEThumbsQueue.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lbMovieEThumbsQueue.Location = New System.Drawing.Point(3, 3)
+        Me.lbMovieEThumbsQueue.Name = "lbMovieEThumbsQueue"
+        Me.lbMovieEThumbsQueue.Size = New System.Drawing.Size(193, 26)
+        Me.lbMovieEThumbsQueue.TabIndex = 0
+        Me.lbMovieEThumbsQueue.Text = "You have extrathumbs queued to be transferred to the movie directory."
+        Me.lbMovieEThumbsQueue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
-        'btnEThumbsTransfer
+        'btnMovieEThumbsTransfer
         '
-        Me.btnEThumbsTransfer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnEThumbsTransfer.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnEThumbsTransfer.Location = New System.Drawing.Point(53, 32)
-        Me.btnEThumbsTransfer.Name = "btnEThumbsTransfer"
-        Me.btnEThumbsTransfer.Size = New System.Drawing.Size(103, 32)
-        Me.btnEThumbsTransfer.TabIndex = 1
-        Me.btnEThumbsTransfer.Text = "Transfer Now"
-        Me.btnEThumbsTransfer.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnEThumbsTransfer.UseVisualStyleBackColor = True
+        Me.btnMovieEThumbsTransfer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnMovieEThumbsTransfer.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnMovieEThumbsTransfer.Location = New System.Drawing.Point(53, 32)
+        Me.btnMovieEThumbsTransfer.Name = "btnMovieEThumbsTransfer"
+        Me.btnMovieEThumbsTransfer.Size = New System.Drawing.Size(103, 32)
+        Me.btnMovieEThumbsTransfer.TabIndex = 1
+        Me.btnMovieEThumbsTransfer.Text = "Transfer Now"
+        Me.btnMovieEThumbsTransfer.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnMovieEThumbsTransfer.UseVisualStyleBackColor = True
         '
         'pnlEThumbsSetAsFanart
         '
         Me.pnlEThumbsSetAsFanart.BackColor = System.Drawing.Color.LightGray
         Me.pnlEThumbsSetAsFanart.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlEThumbsSetAsFanart.Controls.Add(Me.btnEThumbsSetAsFanart)
+        Me.pnlEThumbsSetAsFanart.Controls.Add(Me.btnMovieEThumbsSetAsFanart)
         Me.pnlEThumbsSetAsFanart.Location = New System.Drawing.Point(718, 403)
         Me.pnlEThumbsSetAsFanart.Name = "pnlEThumbsSetAsFanart"
         Me.pnlEThumbsSetAsFanart.Size = New System.Drawing.Size(109, 39)
         Me.pnlEThumbsSetAsFanart.TabIndex = 6
         '
-        'btnEThumbsSetAsFanart
+        'btnMovieEThumbsSetAsFanart
         '
-        Me.btnEThumbsSetAsFanart.Enabled = False
-        Me.btnEThumbsSetAsFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnEThumbsSetAsFanart.Image = CType(resources.GetObject("btnEThumbsSetAsFanart.Image"), System.Drawing.Image)
-        Me.btnEThumbsSetAsFanart.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnEThumbsSetAsFanart.Location = New System.Drawing.Point(2, 3)
-        Me.btnEThumbsSetAsFanart.Name = "btnEThumbsSetAsFanart"
-        Me.btnEThumbsSetAsFanart.Size = New System.Drawing.Size(103, 32)
-        Me.btnEThumbsSetAsFanart.TabIndex = 0
-        Me.btnEThumbsSetAsFanart.Text = "Set As Fanart"
-        Me.btnEThumbsSetAsFanart.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnEThumbsSetAsFanart.UseVisualStyleBackColor = True
+        Me.btnMovieEThumbsSetAsFanart.Enabled = False
+        Me.btnMovieEThumbsSetAsFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnMovieEThumbsSetAsFanart.Image = CType(resources.GetObject("btnMovieEThumbsSetAsFanart.Image"), System.Drawing.Image)
+        Me.btnMovieEThumbsSetAsFanart.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnMovieEThumbsSetAsFanart.Location = New System.Drawing.Point(2, 3)
+        Me.btnMovieEThumbsSetAsFanart.Name = "btnMovieEThumbsSetAsFanart"
+        Me.btnMovieEThumbsSetAsFanart.Size = New System.Drawing.Size(103, 32)
+        Me.btnMovieEThumbsSetAsFanart.TabIndex = 0
+        Me.btnMovieEThumbsSetAsFanart.Text = "Set As Fanart"
+        Me.btnMovieEThumbsSetAsFanart.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnMovieEThumbsSetAsFanart.UseVisualStyleBackColor = True
         '
-        'btnEThumbsRefresh
+        'btnMovieEThumbsRefresh
         '
-        Me.btnEThumbsRefresh.Image = CType(resources.GetObject("btnEThumbsRefresh.Image"), System.Drawing.Image)
-        Me.btnEThumbsRefresh.Location = New System.Drawing.Point(87, 422)
-        Me.btnEThumbsRefresh.Name = "btnEThumbsRefresh"
-        Me.btnEThumbsRefresh.Size = New System.Drawing.Size(23, 23)
-        Me.btnEThumbsRefresh.TabIndex = 4
-        Me.btnEThumbsRefresh.UseVisualStyleBackColor = True
+        Me.btnMovieEThumbsRefresh.Image = CType(resources.GetObject("btnMovieEThumbsRefresh.Image"), System.Drawing.Image)
+        Me.btnMovieEThumbsRefresh.Location = New System.Drawing.Point(87, 422)
+        Me.btnMovieEThumbsRefresh.Name = "btnMovieEThumbsRefresh"
+        Me.btnMovieEThumbsRefresh.Size = New System.Drawing.Size(23, 23)
+        Me.btnMovieEThumbsRefresh.TabIndex = 4
+        Me.btnMovieEThumbsRefresh.UseVisualStyleBackColor = True
         '
-        'btnEThumbsRemove
+        'btnMovieEThumbsRemove
         '
-        Me.btnEThumbsRemove.Image = CType(resources.GetObject("btnEThumbsRemove.Image"), System.Drawing.Image)
-        Me.btnEThumbsRemove.Location = New System.Drawing.Point(147, 422)
-        Me.btnEThumbsRemove.Name = "btnEThumbsRemove"
-        Me.btnEThumbsRemove.Size = New System.Drawing.Size(23, 23)
-        Me.btnEThumbsRemove.TabIndex = 5
-        Me.btnEThumbsRemove.UseVisualStyleBackColor = True
+        Me.btnMovieEThumbsRemove.Image = CType(resources.GetObject("btnMovieEThumbsRemove.Image"), System.Drawing.Image)
+        Me.btnMovieEThumbsRemove.Location = New System.Drawing.Point(147, 422)
+        Me.btnMovieEThumbsRemove.Name = "btnMovieEThumbsRemove"
+        Me.btnMovieEThumbsRemove.Size = New System.Drawing.Size(23, 23)
+        Me.btnMovieEThumbsRemove.TabIndex = 5
+        Me.btnMovieEThumbsRemove.UseVisualStyleBackColor = True
         '
-        'btnEThumbsDown
+        'btnMovieEThumbsDown
         '
-        Me.btnEThumbsDown.Enabled = False
-        Me.btnEThumbsDown.Image = CType(resources.GetObject("btnEThumbsDown.Image"), System.Drawing.Image)
-        Me.btnEThumbsDown.Location = New System.Drawing.Point(28, 422)
-        Me.btnEThumbsDown.Name = "btnEThumbsDown"
-        Me.btnEThumbsDown.Size = New System.Drawing.Size(23, 23)
-        Me.btnEThumbsDown.TabIndex = 3
-        Me.btnEThumbsDown.UseVisualStyleBackColor = True
-        Me.btnEThumbsDown.Visible = False
+        Me.btnMovieEThumbsDown.Enabled = False
+        Me.btnMovieEThumbsDown.Image = CType(resources.GetObject("btnMovieEThumbsDown.Image"), System.Drawing.Image)
+        Me.btnMovieEThumbsDown.Location = New System.Drawing.Point(28, 422)
+        Me.btnMovieEThumbsDown.Name = "btnMovieEThumbsDown"
+        Me.btnMovieEThumbsDown.Size = New System.Drawing.Size(23, 23)
+        Me.btnMovieEThumbsDown.TabIndex = 3
+        Me.btnMovieEThumbsDown.UseVisualStyleBackColor = True
+        Me.btnMovieEThumbsDown.Visible = False
         '
-        'btnEThumbsUp
+        'btnMovieEThumbsUp
         '
-        Me.btnEThumbsUp.Enabled = False
-        Me.btnEThumbsUp.Image = CType(resources.GetObject("btnEThumbsUp.Image"), System.Drawing.Image)
-        Me.btnEThumbsUp.Location = New System.Drawing.Point(4, 422)
-        Me.btnEThumbsUp.Name = "btnEThumbsUp"
-        Me.btnEThumbsUp.Size = New System.Drawing.Size(23, 23)
-        Me.btnEThumbsUp.TabIndex = 2
-        Me.btnEThumbsUp.UseVisualStyleBackColor = True
-        Me.btnEThumbsUp.Visible = False
+        Me.btnMovieEThumbsUp.Enabled = False
+        Me.btnMovieEThumbsUp.Image = CType(resources.GetObject("btnMovieEThumbsUp.Image"), System.Drawing.Image)
+        Me.btnMovieEThumbsUp.Location = New System.Drawing.Point(4, 422)
+        Me.btnMovieEThumbsUp.Name = "btnMovieEThumbsUp"
+        Me.btnMovieEThumbsUp.Size = New System.Drawing.Size(23, 23)
+        Me.btnMovieEThumbsUp.TabIndex = 2
+        Me.btnMovieEThumbsUp.UseVisualStyleBackColor = True
+        Me.btnMovieEThumbsUp.Visible = False
         '
-        'pbEThumbs
+        'pbMovieEThumbs
         '
-        Me.pbEThumbs.BackColor = System.Drawing.Color.DimGray
-        Me.pbEThumbs.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pbEThumbs.Location = New System.Drawing.Point(176, 8)
-        Me.pbEThumbs.Name = "pbEThumbs"
-        Me.pbEThumbs.Size = New System.Drawing.Size(653, 437)
-        Me.pbEThumbs.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.pbEThumbs.TabIndex = 2
-        Me.pbEThumbs.TabStop = False
+        Me.pbMovieEThumbs.BackColor = System.Drawing.Color.DimGray
+        Me.pbMovieEThumbs.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pbMovieEThumbs.Location = New System.Drawing.Point(176, 8)
+        Me.pbMovieEThumbs.Name = "pbMovieEThumbs"
+        Me.pbMovieEThumbs.Size = New System.Drawing.Size(653, 437)
+        Me.pbMovieEThumbs.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.pbMovieEThumbs.TabIndex = 2
+        Me.pbMovieEThumbs.TabStop = False
         '
         'tpFrameExtraction
         '
@@ -1547,17 +1547,17 @@ Partial Class dlgEditMovie
         CType(Me.pbStar2, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbStar1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tpPoster.ResumeLayout(False)
-        CType(Me.pbPoster, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbMoviePoster, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tpFanart.ResumeLayout(False)
-        CType(Me.pbFanart, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbMovieFanart, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tpEFanarts.ResumeLayout(False)
         Me.pnlEFanartsSetAsFanart.ResumeLayout(False)
-        Me.pnlEFanartsQueue.ResumeLayout(False)
-        CType(Me.pbEFanarts, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlMovieEFanartsQueue.ResumeLayout(False)
+        CType(Me.pbMovieEFanarts, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tpEThumbs.ResumeLayout(False)
-        Me.pnlETQueue.ResumeLayout(False)
+        Me.pnlMovieETQueue.ResumeLayout(False)
         Me.pnlEThumbsSetAsFanart.ResumeLayout(False)
-        CType(Me.pbEThumbs, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbMovieEThumbs, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tpFrameExtraction.ResumeLayout(False)
         Me.tpMetaData.ResumeLayout(False)
         Me.tpMediaStub.ResumeLayout(False)
@@ -1612,10 +1612,10 @@ Partial Class dlgEditMovie
     Friend WithEvents txtTitle As System.Windows.Forms.TextBox
     Friend WithEvents tpPoster As System.Windows.Forms.TabPage
     Friend WithEvents tpFanart As System.Windows.Forms.TabPage
-    Friend WithEvents btnSetPoster As System.Windows.Forms.Button
-    Friend WithEvents pbPoster As System.Windows.Forms.PictureBox
-    Friend WithEvents btnSetFanart As System.Windows.Forms.Button
-    Friend WithEvents pbFanart As System.Windows.Forms.PictureBox
+    Friend WithEvents btnSetMoviePosterLocal As System.Windows.Forms.Button
+    Friend WithEvents pbMoviePoster As System.Windows.Forms.PictureBox
+    Friend WithEvents btnSetMovieFanartLocal As System.Windows.Forms.Button
+    Friend WithEvents pbMovieFanart As System.Windows.Forms.PictureBox
     Friend WithEvents ofdImage As System.Windows.Forms.OpenFileDialog
     Friend WithEvents lblRuntime As System.Windows.Forms.Label
     Friend WithEvents txtRuntime As System.Windows.Forms.TextBox
@@ -1627,36 +1627,36 @@ Partial Class dlgEditMovie
     Friend WithEvents txtCerts As System.Windows.Forms.TextBox
     Friend WithEvents lblTrailer As System.Windows.Forms.Label
     Friend WithEvents txtTrailer As System.Windows.Forms.TextBox
-    Friend WithEvents btnSetPosterScrape As System.Windows.Forms.Button
-    Friend WithEvents btnSetFanartScrape As System.Windows.Forms.Button
-    Friend WithEvents lblPosterSize As System.Windows.Forms.Label
-    Friend WithEvents lblFanartSize As System.Windows.Forms.Label
+    Friend WithEvents btnSetMoviePosterScrape As System.Windows.Forms.Button
+    Friend WithEvents btnSetMovieFanartScrape As System.Windows.Forms.Button
+    Friend WithEvents lblMoviePosterSize As System.Windows.Forms.Label
+    Friend WithEvents lblMovieFanartSize As System.Windows.Forms.Label
     Friend WithEvents lblStudio As System.Windows.Forms.Label
     Friend WithEvents txtStudio As System.Windows.Forms.TextBox
     Friend WithEvents tpFrameExtraction As System.Windows.Forms.TabPage
     Friend WithEvents chkMark As System.Windows.Forms.CheckBox
     Friend WithEvents tpEThumbs As System.Windows.Forms.TabPage
-    Friend WithEvents pbEThumbs As System.Windows.Forms.PictureBox
-    Friend WithEvents btnEThumbsDown As System.Windows.Forms.Button
-    Friend WithEvents btnEThumbsUp As System.Windows.Forms.Button
-    Friend WithEvents btnEThumbsRemove As System.Windows.Forms.Button
+    Friend WithEvents pbMovieEThumbs As System.Windows.Forms.PictureBox
+    Friend WithEvents btnMovieEThumbsDown As System.Windows.Forms.Button
+    Friend WithEvents btnMovieEThumbsUp As System.Windows.Forms.Button
+    Friend WithEvents btnMovieEThumbsRemove As System.Windows.Forms.Button
     Friend WithEvents btnRescrape As System.Windows.Forms.Button
     Friend WithEvents btnChangeMovie As System.Windows.Forms.Button
-    Friend WithEvents btnRemovePoster As System.Windows.Forms.Button
-    Friend WithEvents btnRemoveFanart As System.Windows.Forms.Button
-    Friend WithEvents btnEThumbsRefresh As System.Windows.Forms.Button
+    Friend WithEvents btnRemoveMoviePoster As System.Windows.Forms.Button
+    Friend WithEvents btnRemoveMovieFanart As System.Windows.Forms.Button
+    Friend WithEvents btnMovieEThumbsRefresh As System.Windows.Forms.Button
     Friend WithEvents btnStudio As System.Windows.Forms.Button
     Friend WithEvents clbGenre As System.Windows.Forms.CheckedListBox
     Friend WithEvents pnlEThumbsSetAsFanart As System.Windows.Forms.Panel
-    Friend WithEvents btnEThumbsSetAsFanart As System.Windows.Forms.Button
+    Friend WithEvents btnMovieEThumbsSetAsFanart As System.Windows.Forms.Button
     Friend WithEvents btnDLTrailer As System.Windows.Forms.Button
     Friend WithEvents btnPlayTrailer As System.Windows.Forms.Button
     Friend WithEvents lblLocalTrailer As System.Windows.Forms.Label
-    Friend WithEvents pnlETQueue As System.Windows.Forms.Panel
-    Friend WithEvents lbEThumbsQueue As System.Windows.Forms.Label
-    Friend WithEvents btnEThumbsTransfer As System.Windows.Forms.Button
-    Friend WithEvents btnSetPosterDL As System.Windows.Forms.Button
-    Friend WithEvents btnSetFanartDL As System.Windows.Forms.Button
+    Friend WithEvents pnlMovieETQueue As System.Windows.Forms.Panel
+    Friend WithEvents lbMovieEThumbsQueue As System.Windows.Forms.Label
+    Friend WithEvents btnMovieEThumbsTransfer As System.Windows.Forms.Button
+    Friend WithEvents btnSetMoviePosterDL As System.Windows.Forms.Button
+    Friend WithEvents btnSetMovieFanartDL As System.Windows.Forms.Button
     Friend WithEvents tpMetaData As System.Windows.Forms.TabPage
     Friend WithEvents pnlFileInfo As System.Windows.Forms.Panel
     Friend WithEvents lblSortTilte As System.Windows.Forms.Label
@@ -1674,17 +1674,17 @@ Partial Class dlgEditMovie
     Friend WithEvents chkWatched As System.Windows.Forms.CheckBox
     Friend WithEvents tpEFanarts As System.Windows.Forms.TabPage
     Friend WithEvents pnlEFanartsSetAsFanart As System.Windows.Forms.Panel
-    Friend WithEvents btnEFanartsSetAsFanart As System.Windows.Forms.Button
-    Friend WithEvents btnEFanartsRefresh As System.Windows.Forms.Button
-    Friend WithEvents btnEFanartsRemove As System.Windows.Forms.Button
-    Friend WithEvents pnlEFanartsQueue As System.Windows.Forms.Panel
-    Friend WithEvents lbEFanartsQueue As System.Windows.Forms.Label
-    Friend WithEvents btnEFanartsTransfer As System.Windows.Forms.Button
-    Friend WithEvents pbEFanarts As System.Windows.Forms.PictureBox
-    Friend WithEvents pnlEThumbsBG As System.Windows.Forms.Panel
-    Friend WithEvents pnlEFanartsBG As System.Windows.Forms.Panel
-    Friend WithEvents lblEFanartsSize As System.Windows.Forms.Label
-    Friend WithEvents lblEThumbsSize As System.Windows.Forms.Label
+    Friend WithEvents btnMovieEFanartsSetAsFanart As System.Windows.Forms.Button
+    Friend WithEvents btnMovieEFanartsRefresh As System.Windows.Forms.Button
+    Friend WithEvents btnMovieEFanartsRemove As System.Windows.Forms.Button
+    Friend WithEvents pnlMovieEFanartsQueue As System.Windows.Forms.Panel
+    Friend WithEvents lbMovieEFanartsQueue As System.Windows.Forms.Label
+    Friend WithEvents btnMovieEFanartsTransfer As System.Windows.Forms.Button
+    Friend WithEvents pbMovieEFanarts As System.Windows.Forms.PictureBox
+    Friend WithEvents pnlMovieEThumbsBG As System.Windows.Forms.Panel
+    Friend WithEvents pnlMovieEFanartsBG As System.Windows.Forms.Panel
+    Friend WithEvents lblMovieEFanartsSize As System.Windows.Forms.Label
+    Friend WithEvents lblMovieEThumbsSize As System.Windows.Forms.Label
     Friend WithEvents tpMediaStub As System.Windows.Forms.TabPage
     Friend WithEvents lblMediaStubMessage As System.Windows.Forms.Label
     Friend WithEvents lblMediaStubTitle As System.Windows.Forms.Label

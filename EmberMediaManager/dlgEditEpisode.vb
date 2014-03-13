@@ -26,9 +26,9 @@ Public Class dlgEditEpisode
 
 #Region "Fields"
 
-    Private Fanart As New Images With {.IsEdit = True}
+    Private EpisodeFanart As New Images With {.IsEdit = True}
     Private lvwActorSorter As ListViewColumnSorter
-    Private Poster As New Images With {.IsEdit = True}
+    Private EpisodePoster As New Images With {.IsEdit = True}
     Private PreviousFrameValue As Integer
     Private tmpRating As String
 
@@ -92,45 +92,45 @@ Public Class dlgEditEpisode
         End Try
     End Sub
 
-    Private Sub btnRemoveFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveFanart.Click
-		Me.pbFanart.Image = Nothing
-		Me.pbFanart.Tag = Nothing
-        Me.Fanart.Dispose()
+    Private Sub btnRemoveEpisodeFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveEpisodeFanart.Click
+        Me.pbEpisodeFanart.Image = Nothing
+        Me.pbEpisodeFanart.Tag = Nothing
+        Me.EpisodeFanart.Dispose()
     End Sub
 
-    Private Sub btnRemovePoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemovePoster.Click
-		Me.pbPoster.Image = Nothing
-		Me.pbPoster.Tag = Nothing
-        Me.Poster.Dispose()
+    Private Sub btnRemoveEpisodePoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveEpisodePoster.Click
+        Me.pbEpisodePoster.Image = Nothing
+        Me.pbEpisodePoster.Tag = Nothing
+        Me.EpisodePoster.Dispose()
     End Sub
 
     Private Sub btnRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemove.Click
         Me.DeleteActors()
     End Sub
 
-    Private Sub btnSetFanartScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetFanartScrape.Click
-        Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.EpisodeFanart, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(Fanart, Images))
+    Private Sub btnSetEpisodeFanartScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetEpisodeFanartScrape.Click
+        Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.EpisodeFanart, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(EpisodeFanart, Images))
 
         If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
-            Fanart = tImage
-            Me.pbFanart.Image = tImage.Image
-            Me.pbFanart.Tag = tImage
+            EpisodeFanart = tImage
+            Me.pbEpisodeFanart.Image = tImage.Image
+            Me.pbEpisodeFanart.Tag = tImage
 
-            Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
-            Me.lblFanartSize.Visible = True
+            Me.lblEpisodeFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbEpisodeFanart.Image.Width, Me.pbEpisodeFanart.Image.Height)
+            Me.lblEpisodeFanartSize.Visible = True
         End If
     End Sub
 
-    Private Sub btnSetPosterScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetPosterScrape.Click
-        Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.EpisodePoster, Master.currShow.TVEp.Season, Master.currShow.TVEp.Episode, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(Poster, Images))
+    Private Sub btnSetEpisodePosterScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetEpisodePosterScrape.Click
+        Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.EpisodePoster, Master.currShow.TVEp.Season, Master.currShow.TVEp.Episode, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(EpisodePoster, Images))
 
         If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
-            Poster = tImage
-            Me.pbPoster.Image = tImage.Image
-            Me.pbPoster.Tag = tImage
+            EpisodePoster = tImage
+            Me.pbEpisodePoster.Image = tImage.Image
+            Me.pbEpisodePoster.Tag = tImage
 
-            Me.lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
-            Me.lblPosterSize.Visible = True
+            Me.lblEpisodePosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbEpisodePoster.Image.Width, Me.pbEpisodePoster.Image.Height)
+            Me.lblEpisodePosterSize.Visible = True
         End If
     End Sub
 
@@ -238,6 +238,9 @@ Public Class dlgEditEpisode
             tcEditEpisode.TabPages.Remove(tpFrameExtraction)
         End If
 
+        Me.pbEpisodeFanart.AllowDrop = True
+        Me.pbEpisodePoster.AllowDrop = True
+
         Me.SetUp()
 
         Me.lvwActorSorter = New ListViewColumnSorter()
@@ -316,24 +319,24 @@ Public Class dlgEditEpisode
             If tRating > 0 Then .BuildStars(tRating)
 
             If Master.eSettings.TVEpisodeFanartEnabled Then
-                Fanart.FromFile(Master.currShow.EpFanartPath)
-                If Not IsNothing(Fanart.Image) Then
-                    .pbFanart.Image = Fanart.Image
-                    .pbFanart.Tag = Fanart
+                EpisodeFanart.FromFile(Master.currShow.EpFanartPath)
+                If Not IsNothing(EpisodeFanart.Image) Then
+                    .pbEpisodeFanart.Image = EpisodeFanart.Image
+                    .pbEpisodeFanart.Tag = EpisodeFanart
 
-                    .lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbFanart.Image.Width, .pbFanart.Image.Height)
-                    .lblFanartSize.Visible = True
+                    .lblEpisodeFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbEpisodeFanart.Image.Width, .pbEpisodeFanart.Image.Height)
+                    .lblEpisodeFanartSize.Visible = True
                 End If
             End If
 
             If Master.eSettings.TVEpisodePosterEnabled Then
-                Poster.FromFile(Master.currShow.EpPosterPath)
-                If Not IsNothing(Poster.Image) Then
-                    .pbPoster.Image = Poster.Image
-                    .pbPoster.Tag = Poster
+                EpisodePoster.FromFile(Master.currShow.EpPosterPath)
+                If Not IsNothing(EpisodePoster.Image) Then
+                    .pbEpisodePoster.Image = EpisodePoster.Image
+                    .pbEpisodePoster.Tag = EpisodePoster
 
-                    .lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbPoster.Image.Width, .pbPoster.Image.Height)
-                    .lblPosterSize.Visible = True
+                    .lblEpisodePosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbEpisodePoster.Image.Width, .pbEpisodePoster.Image.Height)
+                    .lblEpisodePosterSize.Visible = True
                 End If
             End If
         End With
@@ -381,6 +384,44 @@ Public Class dlgEditEpisode
 
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()
+    End Sub
+
+    Private Sub pbEpisodeFanart_DragDrop(sender As Object, e As DragEventArgs) Handles pbEpisodeFanart.DragDrop
+        Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
+        If Not IsNothing(tImage.Image) Then
+            EpisodeFanart = tImage
+            Me.pbEpisodeFanart.Image = EpisodeFanart.Image
+            Me.pbEpisodeFanart.Tag = EpisodeFanart
+            Me.lblEpisodeFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbEpisodeFanart.Image.Width, Me.pbEpisodeFanart.Image.Height)
+            Me.lblEpisodeFanartSize.Visible = True
+        End If
+    End Sub
+
+    Private Sub pbEpisodeFanart_DragEnter(sender As Object, e As DragEventArgs) Handles pbEpisodeFanart.DragEnter
+        If FileUtils.DragAndDrop.CheckDroppedImage(e) Then
+            e.Effect = DragDropEffects.Copy
+        Else
+            e.Effect = DragDropEffects.None
+        End If
+    End Sub
+
+    Private Sub pbEpisodePoster_DragDrop(sender As Object, e As DragEventArgs) Handles pbEpisodePoster.DragDrop
+        Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
+        If Not IsNothing(tImage.Image) Then
+            EpisodePoster = tImage
+            Me.pbEpisodePoster.Image = EpisodePoster.Image
+            Me.pbEpisodePoster.Tag = EpisodePoster
+            Me.lblEpisodePosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbEpisodePoster.Image.Width, Me.pbEpisodePoster.Image.Height)
+            Me.lblEpisodePosterSize.Visible = True
+        End If
+    End Sub
+
+    Private Sub pbEpisodePoster_DragEnter(sender As Object, e As DragEventArgs) Handles pbEpisodePoster.DragEnter
+        If FileUtils.DragAndDrop.CheckDroppedImage(e) Then
+            e.Effect = DragDropEffects.Copy
+        Else
+            e.Effect = DragDropEffects.None
+        End If
     End Sub
 
     Private Sub pbStar1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbStar1.Click
@@ -550,18 +591,18 @@ Public Class dlgEditEpisode
                 End If
 
                 'Episode Fanart
-                If Not IsNothing(.Fanart.Image) Then
-                    Master.currShow.EpFanartPath = .Fanart.SaveAsTVEpisodeFanart(Master.currShow)
+                If Not IsNothing(.EpisodeFanart.Image) Then
+                    Master.currShow.EpFanartPath = .EpisodeFanart.SaveAsTVEpisodeFanart(Master.currShow)
                 Else
-                    .Fanart.DeleteTVEpisodeFanart(Master.currShow)
+                    .EpisodeFanart.DeleteTVEpisodeFanart(Master.currShow)
                     Master.currShow.EpFanartPath = String.Empty
                 End If
 
                 'Episode Poster
-                If Not IsNothing(.Poster.Image) Then
-                    Master.currShow.EpPosterPath = .Poster.SaveAsTVEpisodePoster(Master.currShow)
+                If Not IsNothing(.EpisodePoster.Image) Then
+                    Master.currShow.EpPosterPath = .EpisodePoster.SaveAsTVEpisodePoster(Master.currShow)
                 Else
-                    .Poster.DeleteTVEpisodePosters(Master.currShow)
+                    .EpisodePoster.DeleteTVEpisodePosters(Master.currShow)
                     Master.currShow.EpPosterPath = String.Empty
                 End If
             End With
@@ -592,15 +633,15 @@ Public Class dlgEditEpisode
         Me.lblEpisode.Text = Master.eLang.GetString(660, "Episode:")
         Me.lblTitle.Text = Master.eLang.GetString(246, "Title:")
         Me.tpEpisodePoster.Text = Master.eLang.GetString(148, "Poster")
-        Me.btnRemovePoster.Text = Master.eLang.GetString(247, "Remove Poster")
-        Me.btnSetPosterScrape.Text = Master.eLang.GetString(248, "Change Poster (Scrape)")
-        Me.btnSetPoster.Text = Master.eLang.GetString(249, "Change Poster (Local)")
+        Me.btnRemoveEpisodePoster.Text = Master.eLang.GetString(247, "Remove Poster")
+        Me.btnSetEpisodePosterScrape.Text = Master.eLang.GetString(248, "Change Poster (Scrape)")
+        Me.btnSetEpisodePoster.Text = Master.eLang.GetString(249, "Change Poster (Local)")
         Me.tpEpisodeFanart.Text = Master.eLang.GetString(149, "Fanart")
-        Me.btnRemoveFanart.Text = Master.eLang.GetString(250, "Remove Fanart")
-        Me.btnSetFanartScrape.Text = Master.eLang.GetString(251, "Change Fanart (Scrape)")
-        Me.btnSetFanart.Text = Master.eLang.GetString(252, "Change Fanart (Local)")
-        Me.btnSetPosterDL.Text = Master.eLang.GetString(265, "Change Poster (Download)")
-        Me.btnSetFanartDL.Text = Master.eLang.GetString(266, "Change Fanart (Download)")
+        Me.btnRemoveEpisodeFanart.Text = Master.eLang.GetString(250, "Remove Fanart")
+        Me.btnSetEpisodeFanartScrape.Text = Master.eLang.GetString(251, "Change Fanart (Scrape)")
+        Me.btnSetEpisodeFanart.Text = Master.eLang.GetString(252, "Change Fanart (Local)")
+        Me.btnSetEpisodePosterDL.Text = Master.eLang.GetString(265, "Change Poster (Download)")
+        Me.btnSetEpisodeFanartDL.Text = Master.eLang.GetString(266, "Change Fanart (Download)")
         Me.lblDirector.Text = Master.eLang.GetString(239, "Director:")
         Me.lblCredits.Text = Master.eLang.GetString(228, "Credits:")
         Me.tpFrameExtraction.Text = Master.eLang.GetString(256, "Frame Extraction")
@@ -618,13 +659,13 @@ Public Class dlgEditEpisode
 
     Sub GenericRunCallBack(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
         If mType = Enums.ModuleEventType.TVFrameExtrator Then
-            Poster.FromFile(Path.Combine(Master.TempPath, "frame.jpg"))
-            If Not IsNothing(Poster.Image) Then
-                Me.pbPoster.Image = Poster.Image
-                Me.pbPoster.Tag = Poster
+            EpisodePoster.FromFile(Path.Combine(Master.TempPath, "frame.jpg"))
+            If Not IsNothing(EpisodePoster.Image) Then
+                Me.pbEpisodePoster.Image = EpisodePoster.Image
+                Me.pbEpisodePoster.Tag = EpisodePoster
 
-                Me.lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
-                Me.lblPosterSize.Visible = True
+                Me.lblEpisodePosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbEpisodePoster.Image.Width, Me.pbEpisodePoster.Image.Height)
+                Me.lblEpisodePosterSize.Visible = True
             End If
             'Me.Poster.Image = DirectCast(_params(0), Bitmap)   'New Bitmap(pbFrame.Image)
             ' Me.pbPoster.Image = DirectCast(_params(1), Image)   'pbFrame.Image
@@ -632,7 +673,7 @@ Public Class dlgEditEpisode
     End Sub
 
 
-    Private Sub btnSetPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetPoster.Click
+    Private Sub btnSetEpisodePoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetEpisodePoster.Click
         Try
             With ofdImage
                 .InitialDirectory = Directory.GetParent(Master.currShow.Filename).FullName
@@ -641,13 +682,13 @@ Public Class dlgEditEpisode
             End With
 
             If ofdImage.ShowDialog() = DialogResult.OK Then
-                Poster.FromFile(ofdImage.FileName)
-                If Not IsNothing(Poster.Image) Then
-                    Me.pbPoster.Image = Poster.Image
-                    Me.pbPoster.Tag = Poster
+                EpisodePoster.FromFile(ofdImage.FileName)
+                If Not IsNothing(EpisodePoster.Image) Then
+                    Me.pbEpisodePoster.Image = EpisodePoster.Image
+                    Me.pbEpisodePoster.Tag = EpisodePoster
 
-                    Me.lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
-                    Me.lblPosterSize.Visible = True
+                    Me.lblEpisodePosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbEpisodePoster.Image.Width, Me.pbEpisodePoster.Image.Height)
+                    Me.lblEpisodePosterSize.Visible = True
                 End If
             End If
         Catch ex As Exception
@@ -655,19 +696,19 @@ Public Class dlgEditEpisode
         End Try
     End Sub
 
-    Private Sub btnSetPosterDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetPosterDL.Click
+    Private Sub btnSetEpisodePosterDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetEpisodePosterDL.Click
         Try
             Using dImgManual As New dlgImgManual
                 Dim tImage As Images
                 If dImgManual.ShowDialog() = DialogResult.OK Then
                     tImage = dImgManual.Results
                     If Not IsNothing(tImage.Image) Then
-                        Poster = tImage
-                        Me.pbPoster.Image = Poster.Image
-                        Me.pbPoster.Tag = Poster
+                        EpisodePoster = tImage
+                        Me.pbEpisodePoster.Image = EpisodePoster.Image
+                        Me.pbEpisodePoster.Tag = EpisodePoster
 
-                        Me.lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
-                        Me.lblPosterSize.Visible = True
+                        Me.lblEpisodePosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbEpisodePoster.Image.Width, Me.pbEpisodePoster.Image.Height)
+                        Me.lblEpisodePosterSize.Visible = True
                     End If
                 End If
             End Using
@@ -676,7 +717,7 @@ Public Class dlgEditEpisode
         End Try
     End Sub
 
-    Private Sub btnSetFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetFanart.Click
+    Private Sub btnSetEpisodeFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetEpisodeFanart.Click
         Try
             With ofdImage
                 .InitialDirectory = Directory.GetParent(Master.currShow.Filename).FullName
@@ -685,13 +726,13 @@ Public Class dlgEditEpisode
             End With
 
             If ofdImage.ShowDialog() = DialogResult.OK Then
-                Fanart.FromFile(ofdImage.FileName)
-                If Not IsNothing(Fanart.Image) Then
-                    Me.pbFanart.Image = Fanart.Image
-                    Me.pbFanart.Tag = Fanart
+                EpisodeFanart.FromFile(ofdImage.FileName)
+                If Not IsNothing(EpisodeFanart.Image) Then
+                    Me.pbEpisodeFanart.Image = EpisodeFanart.Image
+                    Me.pbEpisodeFanart.Tag = EpisodeFanart
 
-                    Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
-                    Me.lblFanartSize.Visible = True
+                    Me.lblEpisodeFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbEpisodeFanart.Image.Width, Me.pbEpisodeFanart.Image.Height)
+                    Me.lblEpisodeFanartSize.Visible = True
                 End If
             End If
         Catch ex As Exception
@@ -699,19 +740,19 @@ Public Class dlgEditEpisode
         End Try
     End Sub
 
-    Private Sub btnSetFanartDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetFanartDL.Click
+    Private Sub btnSetEpisodeFanartDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetEpisodeFanartDL.Click
         Try
             Using dImgManual As New dlgImgManual
                 Dim tImage As Images
                 If dImgManual.ShowDialog() = DialogResult.OK Then
                     tImage = dImgManual.Results
                     If Not IsNothing(tImage.Image) Then
-                        Fanart = tImage
-                        Me.pbFanart.Image = Fanart.Image
-                        Me.pbFanart.Tag = Fanart
+                        EpisodeFanart = tImage
+                        Me.pbEpisodeFanart.Image = EpisodeFanart.Image
+                        Me.pbEpisodeFanart.Tag = EpisodeFanart
 
-                        Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
-                        Me.lblFanartSize.Visible = True
+                        Me.lblEpisodeFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbEpisodeFanart.Image.Width, Me.pbEpisodeFanart.Image.Height)
+                        Me.lblEpisodeFanartSize.Visible = True
                     End If
                 End If
             End Using

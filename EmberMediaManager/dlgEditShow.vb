@@ -29,11 +29,11 @@ Public Class dlgEditShow
     Private ASFanart As New Images With {.IsEdit = True}
     Private ASLandscape As New Images With {.IsEdit = True}
     Private ASPoster As New Images With {.IsEdit = True}
-    Private Banner As New Images With {.IsEdit = True}
-    Private Fanart As New Images With {.IsEdit = True}
-    Private Landscape As New Images With {.IsEdit = True}
     Private lvwActorSorter As ListViewColumnSorter
-    Private Poster As New Images With {.IsEdit = True}
+    Private ShowBanner As New Images With {.IsEdit = True}
+    Private ShowFanart As New Images With {.IsEdit = True}
+    Private ShowLandscape As New Images With {.IsEdit = True}
+    Private ShowPoster As New Images With {.IsEdit = True}
     Private tmpRating As String
 
 #End Region 'Fields
@@ -122,25 +122,25 @@ Public Class dlgEditShow
     Private Sub btnRemoveShowBanner_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveShowBanner.Click
         Me.pbShowBanner.Image = Nothing
         Me.pbShowBanner.Tag = Nothing
-        Me.Banner.Dispose()
+        Me.ShowBanner.Dispose()
     End Sub
 
     Private Sub btnRemoveShowFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveShowFanart.Click
         Me.pbShowFanart.Image = Nothing
         Me.pbShowFanart.Tag = Nothing
-        Me.Fanart.Dispose()
+        Me.ShowFanart.Dispose()
     End Sub
 
     Private Sub btnRemoveShowLandscape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveShowLandscape.Click
         Me.pbShowLandscape.Image = Nothing
         Me.pbShowLandscape.Tag = Nothing
-        Me.Landscape.Dispose()
+        Me.ShowLandscape.Dispose()
     End Sub
 
     Private Sub btnRemoveShowPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveShowPoster.Click
         Me.pbShowPoster.Image = Nothing
         Me.pbShowPoster.Tag = Nothing
-        Me.Poster.Dispose()
+        Me.ShowPoster.Dispose()
     End Sub
 
     Private Sub btnRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemove.Click
@@ -363,17 +363,17 @@ Public Class dlgEditShow
         End Try
     End Sub
 
-    Private Sub btnSetBannerScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowBannerScrape.Click
-        Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.ShowBanner, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(Banner, Images))
+    Private Sub btnSetShowBannerScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowBannerScrape.Click
+        Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.ShowBanner, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(ShowBanner, Images))
 
         If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
-            Banner = tImage
+            ShowBanner = tImage
             Me.pbShowBanner.Image = tImage.Image
             Me.pbShowBanner.Tag = tImage
         End If
     End Sub
 
-    Private Sub btnSetBannerLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowBannerLocal.Click
+    Private Sub btnSetShowBannerLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowBannerLocal.Click
         Try
             With ofdImage
                 .InitialDirectory = Master.currShow.ShowPath
@@ -382,10 +382,10 @@ Public Class dlgEditShow
             End With
 
             If ofdImage.ShowDialog() = DialogResult.OK Then
-                Banner.FromFile(ofdImage.FileName)
-                If Not IsNothing(Banner.Image) Then
-                    Me.pbShowBanner.Image = Banner.Image
-                    Me.pbShowBanner.Tag = Banner
+                ShowBanner.FromFile(ofdImage.FileName)
+                If Not IsNothing(ShowBanner.Image) Then
+                    Me.pbShowBanner.Image = ShowBanner.Image
+                    Me.pbShowBanner.Tag = ShowBanner
 
                     Me.lblShowBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbShowBanner.Image.Width, Me.pbShowBanner.Image.Height)
                     Me.lblShowBannerSize.Visible = True
@@ -396,16 +396,16 @@ Public Class dlgEditShow
         End Try
     End Sub
 
-    Private Sub btnSetBannerDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowBannerDL.Click
+    Private Sub btnSetShowBannerDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowBannerDL.Click
         Try
             Using dImgManual As New dlgImgManual
                 Dim tImage As Images
                 If dImgManual.ShowDialog() = DialogResult.OK Then
                     tImage = dImgManual.Results
                     If Not IsNothing(tImage.Image) Then
-                        Banner = tImage
-                        Me.pbShowBanner.Image = Banner.Image
-                        Me.pbShowBanner.Tag = Banner
+                        ShowBanner = tImage
+                        Me.pbShowBanner.Image = ShowBanner.Image
+                        Me.pbShowBanner.Tag = ShowBanner
 
                         Me.lblShowBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbShowBanner.Image.Width, Me.pbShowBanner.Image.Height)
                         Me.lblShowBannerSize.Visible = True
@@ -417,16 +417,16 @@ Public Class dlgEditShow
         End Try
     End Sub
 
-    Private Sub btnSetFanartDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowFanartDL.Click
+    Private Sub btnSetShowFanartDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowFanartDL.Click
         Try
             Using dImgManual As New dlgImgManual
                 Dim tImage As Images
                 If dImgManual.ShowDialog() = DialogResult.OK Then
                     tImage = dImgManual.Results
                     If Not IsNothing(tImage.Image) Then
-                        Fanart = tImage
-                        Me.pbShowFanart.Image = Fanart.Image
-                        Me.pbShowFanart.Tag = Fanart
+                        ShowFanart = tImage
+                        Me.pbShowFanart.Image = ShowFanart.Image
+                        Me.pbShowFanart.Tag = ShowFanart
 
                         Me.lblShowFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbShowFanart.Image.Width, Me.pbShowFanart.Image.Height)
                         Me.lblShowFanartSize.Visible = True
@@ -438,11 +438,11 @@ Public Class dlgEditShow
         End Try
     End Sub
 
-    Private Sub btnSetFanartScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowFanartScrape.Click
-        Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.ShowFanart, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(Fanart, Images))
+    Private Sub btnSetShowFanartScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowFanartScrape.Click
+        Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.ShowFanart, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(ShowFanart, Images))
 
         If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
-            Fanart = tImage
+            ShowFanart = tImage
             Me.pbShowFanart.Image = tImage.Image
             Me.pbShowFanart.Tag = tImage
 
@@ -451,7 +451,7 @@ Public Class dlgEditShow
         End If
     End Sub
 
-    Private Sub btnSetFanartLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowFanartLocal.Click
+    Private Sub btnSetShowFanartLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowFanartLocal.Click
         Try
             With ofdImage
                 .InitialDirectory = Master.currShow.ShowPath
@@ -460,10 +460,10 @@ Public Class dlgEditShow
             End With
 
             If ofdImage.ShowDialog() = DialogResult.OK Then
-                Fanart.FromFile(ofdImage.FileName)
-                If Not IsNothing(Fanart.Image) Then
-                    Me.pbShowFanart.Image = Fanart.Image
-                    Me.pbShowFanart.Tag = Fanart
+                ShowFanart.FromFile(ofdImage.FileName)
+                If Not IsNothing(ShowFanart.Image) Then
+                    Me.pbShowFanart.Image = ShowFanart.Image
+                    Me.pbShowFanart.Tag = ShowFanart
 
                     Me.lblShowFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbShowFanart.Image.Width, Me.pbShowFanart.Image.Height)
                     Me.lblShowFanartSize.Visible = True
@@ -474,17 +474,17 @@ Public Class dlgEditShow
         End Try
     End Sub
 
-    Private Sub btnSetLandscapeScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowLandscapeScrape.Click
-        Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.ShowLandscape, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(Landscape, Images))
+    Private Sub btnSetShowLandscapeScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowLandscapeScrape.Click
+        Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.ShowLandscape, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(ShowLandscape, Images))
 
         If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
-            Landscape = tImage
+            ShowLandscape = tImage
             Me.pbShowLandscape.Image = tImage.Image
             Me.pbShowLandscape.Tag = tImage
         End If
     End Sub
 
-    Private Sub btnSetLandscapeLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowLandscapeLocal.Click
+    Private Sub btnSetShowLandscapeLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowLandscapeLocal.Click
         Try
             With ofdImage
                 .InitialDirectory = Master.currShow.ShowPath
@@ -493,10 +493,10 @@ Public Class dlgEditShow
             End With
 
             If ofdImage.ShowDialog() = DialogResult.OK Then
-                Landscape.FromFile(ofdImage.FileName)
-                If Not IsNothing(Landscape.Image) Then
-                    Me.pbShowLandscape.Image = Landscape.Image
-                    Me.pbShowLandscape.Tag = Landscape
+                ShowLandscape.FromFile(ofdImage.FileName)
+                If Not IsNothing(ShowLandscape.Image) Then
+                    Me.pbShowLandscape.Image = ShowLandscape.Image
+                    Me.pbShowLandscape.Tag = ShowLandscape
 
                     Me.lblShowLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbShowLandscape.Image.Width, Me.pbShowLandscape.Image.Height)
                     Me.lblShowLandscapeSize.Visible = True
@@ -507,16 +507,16 @@ Public Class dlgEditShow
         End Try
     End Sub
 
-    Private Sub btnSetLandscapeDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowLandscapeDL.Click
+    Private Sub btnSetShowLandscapeDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowLandscapeDL.Click
         Try
             Using dImgManual As New dlgImgManual
                 Dim tImage As Images
                 If dImgManual.ShowDialog() = DialogResult.OK Then
                     tImage = dImgManual.Results
                     If Not IsNothing(tImage.Image) Then
-                        Landscape = tImage
-                        Me.pbShowLandscape.Image = Landscape.Image
-                        Me.pbShowLandscape.Tag = Landscape
+                        ShowLandscape = tImage
+                        Me.pbShowLandscape.Image = ShowLandscape.Image
+                        Me.pbShowLandscape.Tag = ShowLandscape
 
                         Me.lblShowLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbShowLandscape.Image.Width, Me.pbShowLandscape.Image.Height)
                         Me.lblShowLandscapeSize.Visible = True
@@ -528,16 +528,16 @@ Public Class dlgEditShow
         End Try
     End Sub
 
-    Private Sub btnSetPosterDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowPosterDL.Click
+    Private Sub btnSetShowPosterDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowPosterDL.Click
         Try
             Using dImgManual As New dlgImgManual
                 Dim tImage As Images
                 If dImgManual.ShowDialog() = DialogResult.OK Then
                     tImage = dImgManual.Results
                     If Not IsNothing(tImage.Image) Then
-                        Poster = tImage
-                        Me.pbShowPoster.Image = Poster.Image
-                        Me.pbShowPoster.Tag = Poster
+                        ShowPoster = tImage
+                        Me.pbShowPoster.Image = ShowPoster.Image
+                        Me.pbShowPoster.Tag = ShowPoster
 
                         Me.lblShowPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbShowPoster.Image.Width, Me.pbShowPoster.Image.Height)
                         Me.lblShowPosterSize.Visible = True
@@ -549,11 +549,11 @@ Public Class dlgEditShow
         End Try
     End Sub
 
-    Private Sub btnSetPosterScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowPosterScrape.Click
-        Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.ShowPoster, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(Poster, Images))
+    Private Sub btnSetShowPosterScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowPosterScrape.Click
+        Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.ShowPoster, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(ShowPoster, Images))
 
         If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
-            Poster = tImage
+            ShowPoster = tImage
             Me.pbShowPoster.Image = tImage.Image
             Me.pbShowPoster.Tag = tImage
 
@@ -562,7 +562,7 @@ Public Class dlgEditShow
         End If
     End Sub
 
-    Private Sub btnSetPosterLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowPosterLocal.Click
+    Private Sub btnSetShowPosterLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowPosterLocal.Click
         Try
             With ofdImage
                 .InitialDirectory = Master.currShow.ShowPath
@@ -571,9 +571,9 @@ Public Class dlgEditShow
             End With
 
             If ofdImage.ShowDialog() = DialogResult.OK Then
-                Poster.FromFile(ofdImage.FileName)
-                Me.pbShowPoster.Image = Poster.Image
-                Me.pbShowPoster.Tag = Poster
+                ShowPoster.FromFile(ofdImage.FileName)
+                Me.pbShowPoster.Image = ShowPoster.Image
+                Me.pbShowPoster.Tag = ShowPoster
 
                 Me.lblShowPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbShowPoster.Image.Width, Me.pbShowPoster.Image.Height)
                 Me.lblShowPosterSize.Visible = True
@@ -673,6 +673,15 @@ Public Class dlgEditShow
         If Not Master.eSettings.TVShowFanartEnabled Then Me.tcEditShow.TabPages.Remove(tpShowFanart)
         If Not Master.eSettings.TVShowLandscapeEnabled Then Me.tcEditShow.TabPages.Remove(tpShowLandscape)
         If Not Master.eSettings.TVShowPosterEnabled Then Me.tcEditShow.TabPages.Remove(tpShowPoster)
+
+        Me.pbASBanner.AllowDrop = True
+        Me.pbASFanart.AllowDrop = True
+        Me.pbASLandscape.AllowDrop = True
+        Me.pbASPoster.AllowDrop = True
+        Me.pbShowBanner.AllowDrop = True
+        Me.pbShowFanart.AllowDrop = True
+        Me.pbShowLandscape.AllowDrop = True
+        Me.pbShowPoster.AllowDrop = True
 
         Me.SetUp()
 
@@ -805,10 +814,10 @@ Public Class dlgEditShow
             End If
 
             If Master.eSettings.TVShowBannerEnabled Then
-                Banner.FromFile(Master.currShow.ShowBannerPath)
-                If Not IsNothing(Banner.Image) Then
-                    .pbShowBanner.Image = Banner.Image
-                    .pbShowBanner.Tag = Banner
+                ShowBanner.FromFile(Master.currShow.ShowBannerPath)
+                If Not IsNothing(ShowBanner.Image) Then
+                    .pbShowBanner.Image = ShowBanner.Image
+                    .pbShowBanner.Tag = ShowBanner
 
                     .lblShowBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbShowBanner.Image.Width, .pbShowBanner.Image.Height)
                     .lblShowBannerSize.Visible = True
@@ -816,10 +825,10 @@ Public Class dlgEditShow
             End If
 
             If Master.eSettings.TVShowFanartEnabled Then
-                Fanart.FromFile(Master.currShow.ShowFanartPath)
-                If Not IsNothing(Fanart.Image) Then
-                    .pbShowFanart.Image = Fanart.Image
-                    .pbShowFanart.Tag = Fanart
+                ShowFanart.FromFile(Master.currShow.ShowFanartPath)
+                If Not IsNothing(ShowFanart.Image) Then
+                    .pbShowFanart.Image = ShowFanart.Image
+                    .pbShowFanart.Tag = ShowFanart
 
                     .lblShowFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbShowFanart.Image.Width, .pbShowFanart.Image.Height)
                     .lblShowFanartSize.Visible = True
@@ -827,10 +836,10 @@ Public Class dlgEditShow
             End If
 
             If Master.eSettings.TVShowLandscapeEnabled Then
-                Landscape.FromFile(Master.currShow.ShowLandscapePath)
-                If Not IsNothing(Landscape.Image) Then
-                    .pbShowLandscape.Image = Landscape.Image
-                    .pbShowLandscape.Tag = Landscape
+                ShowLandscape.FromFile(Master.currShow.ShowLandscapePath)
+                If Not IsNothing(ShowLandscape.Image) Then
+                    .pbShowLandscape.Image = ShowLandscape.Image
+                    .pbShowLandscape.Tag = ShowLandscape
 
                     .lblShowLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbShowLandscape.Image.Width, .pbShowLandscape.Image.Height)
                     .lblShowLandscapeSize.Visible = True
@@ -838,10 +847,10 @@ Public Class dlgEditShow
             End If
 
             If Master.eSettings.TVShowPosterEnabled Then
-                Poster.FromFile(Master.currShow.ShowPosterPath)
-                If Not IsNothing(Poster.Image) Then
-                    .pbShowPoster.Image = Poster.Image
-                    .pbShowPoster.Tag = Poster
+                ShowPoster.FromFile(Master.currShow.ShowPosterPath)
+                If Not IsNothing(ShowPoster.Image) Then
+                    .pbShowPoster.Image = ShowPoster.Image
+                    .pbShowPoster.Tag = ShowPoster
 
                     .lblShowPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbShowPoster.Image.Width, .pbShowPoster.Image.Height)
                     .lblShowPosterSize.Visible = True
@@ -914,6 +923,158 @@ Public Class dlgEditShow
 
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()
+    End Sub
+
+    Private Sub pbASBanner_DragDrop(sender As Object, e As DragEventArgs) Handles pbASBanner.DragDrop
+        Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
+        If Not IsNothing(tImage.Image) Then
+            ASBanner = tImage
+            Me.pbASBanner.Image = ASBanner.Image
+            Me.pbASBanner.Tag = ASBanner
+            Me.lblASBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbASBanner.Image.Width, Me.pbASBanner.Image.Height)
+            Me.lblASBannerSize.Visible = True
+        End If
+    End Sub
+
+    Private Sub pbASBanner_DragEnter(sender As Object, e As DragEventArgs) Handles pbASBanner.DragEnter
+        If FileUtils.DragAndDrop.CheckDroppedImage(e) Then
+            e.Effect = DragDropEffects.Copy
+        Else
+            e.Effect = DragDropEffects.None
+        End If
+    End Sub
+
+    Private Sub pbASFanart_DragDrop(sender As Object, e As DragEventArgs) Handles pbASFanart.DragDrop
+        Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
+        If Not IsNothing(tImage.Image) Then
+            ASFanart = tImage
+            Me.pbASFanart.Image = ASFanart.Image
+            Me.pbASFanart.Tag = ASFanart
+            Me.lblASFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbASFanart.Image.Width, Me.pbASFanart.Image.Height)
+            Me.lblASFanartSize.Visible = True
+        End If
+    End Sub
+
+    Private Sub pbASFanart_DragEnter(sender As Object, e As DragEventArgs) Handles pbASFanart.DragEnter
+        If FileUtils.DragAndDrop.CheckDroppedImage(e) Then
+            e.Effect = DragDropEffects.Copy
+        Else
+            e.Effect = DragDropEffects.None
+        End If
+    End Sub
+
+    Private Sub pbASLandscape_DragDrop(sender As Object, e As DragEventArgs) Handles pbASLandscape.DragDrop
+        Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
+        If Not IsNothing(tImage.Image) Then
+            ASLandscape = tImage
+            Me.pbASLandscape.Image = ASLandscape.Image
+            Me.pbASLandscape.Tag = ASLandscape
+            Me.lblASLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbASLandscape.Image.Width, Me.pbASLandscape.Image.Height)
+            Me.lblASLandscapeSize.Visible = True
+        End If
+    End Sub
+
+    Private Sub pbASLandscape_DragEnter(sender As Object, e As DragEventArgs) Handles pbASLandscape.DragEnter
+        If FileUtils.DragAndDrop.CheckDroppedImage(e) Then
+            e.Effect = DragDropEffects.Copy
+        Else
+            e.Effect = DragDropEffects.None
+        End If
+    End Sub
+
+    Private Sub pbASPoster_DragDrop(sender As Object, e As DragEventArgs) Handles pbASPoster.DragDrop
+        Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
+        If Not IsNothing(tImage.Image) Then
+            ASPoster = tImage
+            Me.pbASPoster.Image = ASPoster.Image
+            Me.pbASPoster.Tag = ASPoster
+            Me.lblASPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbASPoster.Image.Width, Me.pbASPoster.Image.Height)
+            Me.lblASPosterSize.Visible = True
+        End If
+    End Sub
+
+    Private Sub pbASPoster_DragEnter(sender As Object, e As DragEventArgs) Handles pbASPoster.DragEnter
+        If FileUtils.DragAndDrop.CheckDroppedImage(e) Then
+            e.Effect = DragDropEffects.Copy
+        Else
+            e.Effect = DragDropEffects.None
+        End If
+    End Sub
+
+    Private Sub pbShowBanner_DragDrop(sender As Object, e As DragEventArgs) Handles pbShowBanner.DragDrop
+        Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
+        If Not IsNothing(tImage.Image) Then
+            ShowBanner = tImage
+            Me.pbShowBanner.Image = ShowBanner.Image
+            Me.pbShowBanner.Tag = ShowBanner
+            Me.lblShowBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbShowBanner.Image.Width, Me.pbShowBanner.Image.Height)
+            Me.lblShowBannerSize.Visible = True
+        End If
+    End Sub
+
+    Private Sub pbShowBanner_DragEnter(sender As Object, e As DragEventArgs) Handles pbShowBanner.DragEnter
+        If FileUtils.DragAndDrop.CheckDroppedImage(e) Then
+            e.Effect = DragDropEffects.Copy
+        Else
+            e.Effect = DragDropEffects.None
+        End If
+    End Sub
+
+    Private Sub pbShowFanart_DragDrop(sender As Object, e As DragEventArgs) Handles pbShowFanart.DragDrop
+        Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
+        If Not IsNothing(tImage.Image) Then
+            ShowFanart = tImage
+            Me.pbShowFanart.Image = ShowFanart.Image
+            Me.pbShowFanart.Tag = ShowFanart
+            Me.lblShowFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbShowFanart.Image.Width, Me.pbShowFanart.Image.Height)
+            Me.lblShowFanartSize.Visible = True
+        End If
+    End Sub
+
+    Private Sub pbShowFanart_DragEnter(sender As Object, e As DragEventArgs) Handles pbShowFanart.DragEnter
+        If FileUtils.DragAndDrop.CheckDroppedImage(e) Then
+            e.Effect = DragDropEffects.Copy
+        Else
+            e.Effect = DragDropEffects.None
+        End If
+    End Sub
+
+    Private Sub pbShowLandscape_DragDrop(sender As Object, e As DragEventArgs) Handles pbShowLandscape.DragDrop
+        Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
+        If Not IsNothing(tImage.Image) Then
+            ShowLandscape = tImage
+            Me.pbShowLandscape.Image = ShowLandscape.Image
+            Me.pbShowLandscape.Tag = ShowLandscape
+            Me.lblShowLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbShowLandscape.Image.Width, Me.pbShowLandscape.Image.Height)
+            Me.lblShowLandscapeSize.Visible = True
+        End If
+    End Sub
+
+    Private Sub pbShowLandscape_DragEnter(sender As Object, e As DragEventArgs) Handles pbShowLandscape.DragEnter
+        If FileUtils.DragAndDrop.CheckDroppedImage(e) Then
+            e.Effect = DragDropEffects.Copy
+        Else
+            e.Effect = DragDropEffects.None
+        End If
+    End Sub
+
+    Private Sub pbShowPoster_DragDrop(sender As Object, e As DragEventArgs) Handles pbShowPoster.DragDrop
+        Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
+        If Not IsNothing(tImage.Image) Then
+            ShowPoster = tImage
+            Me.pbShowPoster.Image = ShowPoster.Image
+            Me.pbShowPoster.Tag = ShowPoster
+            Me.lblShowPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbShowPoster.Image.Width, Me.pbShowPoster.Image.Height)
+            Me.lblShowPosterSize.Visible = True
+        End If
+    End Sub
+
+    Private Sub pbShowPoster_DragEnter(sender As Object, e As DragEventArgs) Handles pbShowPoster.DragEnter
+        If FileUtils.DragAndDrop.CheckDroppedImage(e) Then
+            e.Effect = DragDropEffects.Copy
+        Else
+            e.Effect = DragDropEffects.None
+        End If
     End Sub
 
     Private Sub pbStar1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbStar1.Click
@@ -1162,34 +1323,34 @@ Public Class dlgEditShow
                 End If
 
                 'Show Banner 
-                If Not IsNothing(.Banner.Image) Then
-                    Master.currShow.ShowBannerPath = .Banner.SaveAsTVShowBanner(Master.currShow, "")
+                If Not IsNothing(.ShowBanner.Image) Then
+                    Master.currShow.ShowBannerPath = .ShowBanner.SaveAsTVShowBanner(Master.currShow, "")
                 Else
-                    .Banner.DeleteTVShowBanner(Master.currShow)
+                    .ShowBanner.DeleteTVShowBanner(Master.currShow)
                     Master.currShow.ShowBannerPath = String.Empty
                 End If
 
                 'Show Fanart
-                If Not IsNothing(.Fanart.Image) Then
-                    Master.currShow.ShowFanartPath = .Fanart.SaveAsTVShowFanart(Master.currShow, "")
+                If Not IsNothing(.ShowFanart.Image) Then
+                    Master.currShow.ShowFanartPath = .ShowFanart.SaveAsTVShowFanart(Master.currShow, "")
                 Else
-                    .Fanart.DeleteTVShowFanart(Master.currShow)
+                    .ShowFanart.DeleteTVShowFanart(Master.currShow)
                     Master.currShow.ShowFanartPath = String.Empty
                 End If
 
                 'Show Landscape
-                If Not IsNothing(.Landscape.Image) Then
-                    Master.currShow.ShowLandscapePath = .Landscape.SaveAsTVShowLandscape(Master.currShow, "")
+                If Not IsNothing(.ShowLandscape.Image) Then
+                    Master.currShow.ShowLandscapePath = .ShowLandscape.SaveAsTVShowLandscape(Master.currShow, "")
                 Else
-                    .Landscape.DeleteTVShowLandscape(Master.currShow)
+                    .ShowLandscape.DeleteTVShowLandscape(Master.currShow)
                     Master.currShow.ShowLandscapePath = String.Empty
                 End If
 
                 'Show Poster
-                If Not IsNothing(.Poster.Image) Then
-                    Master.currShow.ShowPosterPath = .Poster.SaveAsTVShowPoster(Master.currShow, "")
+                If Not IsNothing(.ShowPoster.Image) Then
+                    Master.currShow.ShowPosterPath = .ShowPoster.SaveAsTVShowPoster(Master.currShow, "")
                 Else
-                    .Poster.DeleteTVShowPosters(Master.currShow)
+                    .ShowPoster.DeleteTVShowPosters(Master.currShow)
                     Master.currShow.ShowPosterPath = String.Empty
                 End If
 

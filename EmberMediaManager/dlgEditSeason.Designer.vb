@@ -42,6 +42,13 @@ Partial Class dlgEditSeason
         Me.btnSetSeasonBannerScrape = New System.Windows.Forms.Button()
         Me.btnSetSeasonBannerLocal = New System.Windows.Forms.Button()
         Me.pbSeasonBanner = New System.Windows.Forms.PictureBox()
+        Me.tpSeasonLandscape = New System.Windows.Forms.TabPage()
+        Me.btnSetSeasonLandscapeDL = New System.Windows.Forms.Button()
+        Me.btnRemoveSeasonLandscape = New System.Windows.Forms.Button()
+        Me.lblSeasonLandscapeSize = New System.Windows.Forms.Label()
+        Me.btnSetSeasonLandscapeScrape = New System.Windows.Forms.Button()
+        Me.btnSetSeasonLandscapeLocal = New System.Windows.Forms.Button()
+        Me.pbSeasonLandscape = New System.Windows.Forms.PictureBox()
         Me.tpSeasonFanart = New System.Windows.Forms.TabPage()
         Me.btnSetSeasonFanartDL = New System.Windows.Forms.Button()
         Me.btnRemoveSeasonFanart = New System.Windows.Forms.Button()
@@ -52,13 +59,6 @@ Partial Class dlgEditSeason
         Me.Cancel_Button = New System.Windows.Forms.Button()
         Me.OK_Button = New System.Windows.Forms.Button()
         Me.ofdImage = New System.Windows.Forms.OpenFileDialog()
-        Me.tpSeasonLandscape = New System.Windows.Forms.TabPage()
-        Me.btnSetSeasonLandscapeDL = New System.Windows.Forms.Button()
-        Me.btnRemoveSeasonLandscape = New System.Windows.Forms.Button()
-        Me.lblSeasonLandscapeSize = New System.Windows.Forms.Label()
-        Me.btnSetSeasonLandscapeScrape = New System.Windows.Forms.Button()
-        Me.btnSetSeasonLandscapeLocal = New System.Windows.Forms.Button()
-        Me.pbSeasonLandscape = New System.Windows.Forms.PictureBox()
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tcEditSeason.SuspendLayout()
@@ -66,10 +66,10 @@ Partial Class dlgEditSeason
         CType(Me.pbSeasonPoster, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tpSeasonBanner.SuspendLayout()
         CType(Me.pbSeasonBanner, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.tpSeasonFanart.SuspendLayout()
-        CType(Me.pbSeasonFanart, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tpSeasonLandscape.SuspendLayout()
         CType(Me.pbSeasonLandscape, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.tpSeasonFanart.SuspendLayout()
+        CType(Me.pbSeasonFanart, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'pnlTop
@@ -313,6 +313,95 @@ Partial Class dlgEditSeason
         Me.pbSeasonBanner.TabIndex = 6
         Me.pbSeasonBanner.TabStop = False
         '
+        'tpSeasonLandscape
+        '
+        Me.tpSeasonLandscape.Controls.Add(Me.btnSetSeasonLandscapeDL)
+        Me.tpSeasonLandscape.Controls.Add(Me.btnRemoveSeasonLandscape)
+        Me.tpSeasonLandscape.Controls.Add(Me.lblSeasonLandscapeSize)
+        Me.tpSeasonLandscape.Controls.Add(Me.btnSetSeasonLandscapeScrape)
+        Me.tpSeasonLandscape.Controls.Add(Me.btnSetSeasonLandscapeLocal)
+        Me.tpSeasonLandscape.Controls.Add(Me.pbSeasonLandscape)
+        Me.tpSeasonLandscape.Location = New System.Drawing.Point(4, 22)
+        Me.tpSeasonLandscape.Name = "tpSeasonLandscape"
+        Me.tpSeasonLandscape.Size = New System.Drawing.Size(836, 452)
+        Me.tpSeasonLandscape.TabIndex = 4
+        Me.tpSeasonLandscape.Text = "Landscape"
+        Me.tpSeasonLandscape.UseVisualStyleBackColor = True
+        '
+        'btnSetSeasonLandscapeDL
+        '
+        Me.btnSetSeasonLandscapeDL.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnSetSeasonLandscapeDL.Image = CType(resources.GetObject("btnSetSeasonLandscapeDL.Image"), System.Drawing.Image)
+        Me.btnSetSeasonLandscapeDL.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetSeasonLandscapeDL.Location = New System.Drawing.Point(735, 180)
+        Me.btnSetSeasonLandscapeDL.Name = "btnSetSeasonLandscapeDL"
+        Me.btnSetSeasonLandscapeDL.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetSeasonLandscapeDL.TabIndex = 15
+        Me.btnSetSeasonLandscapeDL.Text = "Change Landscape (Download)"
+        Me.btnSetSeasonLandscapeDL.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetSeasonLandscapeDL.UseVisualStyleBackColor = True
+        '
+        'btnRemoveSeasonLandscape
+        '
+        Me.btnRemoveSeasonLandscape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnRemoveSeasonLandscape.Image = CType(resources.GetObject("btnRemoveSeasonLandscape.Image"), System.Drawing.Image)
+        Me.btnRemoveSeasonLandscape.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnRemoveSeasonLandscape.Location = New System.Drawing.Point(735, 363)
+        Me.btnRemoveSeasonLandscape.Name = "btnRemoveSeasonLandscape"
+        Me.btnRemoveSeasonLandscape.Size = New System.Drawing.Size(96, 83)
+        Me.btnRemoveSeasonLandscape.TabIndex = 16
+        Me.btnRemoveSeasonLandscape.Text = "Remove Landscape"
+        Me.btnRemoveSeasonLandscape.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnRemoveSeasonLandscape.UseVisualStyleBackColor = True
+        '
+        'lblSeasonLandscapeSize
+        '
+        Me.lblSeasonLandscapeSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblSeasonLandscapeSize.Location = New System.Drawing.Point(8, 8)
+        Me.lblSeasonLandscapeSize.Name = "lblSeasonLandscapeSize"
+        Me.lblSeasonLandscapeSize.Size = New System.Drawing.Size(105, 23)
+        Me.lblSeasonLandscapeSize.TabIndex = 11
+        Me.lblSeasonLandscapeSize.Text = "Size: (XXXXxXXXX)"
+        Me.lblSeasonLandscapeSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.lblSeasonLandscapeSize.Visible = False
+        '
+        'btnSetSeasonLandscapeScrape
+        '
+        Me.btnSetSeasonLandscapeScrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnSetSeasonLandscapeScrape.Image = CType(resources.GetObject("btnSetSeasonLandscapeScrape.Image"), System.Drawing.Image)
+        Me.btnSetSeasonLandscapeScrape.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetSeasonLandscapeScrape.Location = New System.Drawing.Point(735, 93)
+        Me.btnSetSeasonLandscapeScrape.Name = "btnSetSeasonLandscapeScrape"
+        Me.btnSetSeasonLandscapeScrape.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetSeasonLandscapeScrape.TabIndex = 14
+        Me.btnSetSeasonLandscapeScrape.Text = "Change Landscape (Scrape)"
+        Me.btnSetSeasonLandscapeScrape.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetSeasonLandscapeScrape.UseVisualStyleBackColor = True
+        '
+        'btnSetSeasonLandscapeLocal
+        '
+        Me.btnSetSeasonLandscapeLocal.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnSetSeasonLandscapeLocal.Image = CType(resources.GetObject("btnSetSeasonLandscapeLocal.Image"), System.Drawing.Image)
+        Me.btnSetSeasonLandscapeLocal.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetSeasonLandscapeLocal.Location = New System.Drawing.Point(735, 6)
+        Me.btnSetSeasonLandscapeLocal.Name = "btnSetSeasonLandscapeLocal"
+        Me.btnSetSeasonLandscapeLocal.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetSeasonLandscapeLocal.TabIndex = 13
+        Me.btnSetSeasonLandscapeLocal.Text = "Change Landscape (Local)"
+        Me.btnSetSeasonLandscapeLocal.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetSeasonLandscapeLocal.UseVisualStyleBackColor = True
+        '
+        'pbSeasonLandscape
+        '
+        Me.pbSeasonLandscape.BackColor = System.Drawing.Color.DimGray
+        Me.pbSeasonLandscape.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pbSeasonLandscape.Location = New System.Drawing.Point(6, 6)
+        Me.pbSeasonLandscape.Name = "pbSeasonLandscape"
+        Me.pbSeasonLandscape.Size = New System.Drawing.Size(724, 440)
+        Me.pbSeasonLandscape.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.pbSeasonLandscape.TabIndex = 12
+        Me.pbSeasonLandscape.TabStop = False
+        '
         'tpSeasonFanart
         '
         Me.tpSeasonFanart.Controls.Add(Me.btnSetSeasonFanartDL)
@@ -419,95 +508,6 @@ Partial Class dlgEditSeason
         Me.OK_Button.TabIndex = 0
         Me.OK_Button.Text = "OK"
         '
-        'tpSeasonLandscape
-        '
-        Me.tpSeasonLandscape.Controls.Add(Me.btnSetSeasonLandscapeDL)
-        Me.tpSeasonLandscape.Controls.Add(Me.btnRemoveSeasonLandscape)
-        Me.tpSeasonLandscape.Controls.Add(Me.lblSeasonLandscapeSize)
-        Me.tpSeasonLandscape.Controls.Add(Me.btnSetSeasonLandscapeScrape)
-        Me.tpSeasonLandscape.Controls.Add(Me.btnSetSeasonLandscapeLocal)
-        Me.tpSeasonLandscape.Controls.Add(Me.pbSeasonLandscape)
-        Me.tpSeasonLandscape.Location = New System.Drawing.Point(4, 22)
-        Me.tpSeasonLandscape.Name = "tpSeasonLandscape"
-        Me.tpSeasonLandscape.Size = New System.Drawing.Size(836, 452)
-        Me.tpSeasonLandscape.TabIndex = 4
-        Me.tpSeasonLandscape.Text = "Landscape"
-        Me.tpSeasonLandscape.UseVisualStyleBackColor = True
-        '
-        'btnSetSeasonLandscapeDL
-        '
-        Me.btnSetSeasonLandscapeDL.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnSetSeasonLandscapeDL.Image = CType(resources.GetObject("btnSetSeasonLandscapeDL.Image"), System.Drawing.Image)
-        Me.btnSetSeasonLandscapeDL.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnSetSeasonLandscapeDL.Location = New System.Drawing.Point(735, 180)
-        Me.btnSetSeasonLandscapeDL.Name = "btnSetSeasonLandscapeDL"
-        Me.btnSetSeasonLandscapeDL.Size = New System.Drawing.Size(96, 83)
-        Me.btnSetSeasonLandscapeDL.TabIndex = 15
-        Me.btnSetSeasonLandscapeDL.Text = "Change Landscape (Download)"
-        Me.btnSetSeasonLandscapeDL.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.btnSetSeasonLandscapeDL.UseVisualStyleBackColor = True
-        '
-        'btnRemoveSeasonLandscape
-        '
-        Me.btnRemoveSeasonLandscape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnRemoveSeasonLandscape.Image = CType(resources.GetObject("btnRemoveSeasonLandscape.Image"), System.Drawing.Image)
-        Me.btnRemoveSeasonLandscape.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnRemoveSeasonLandscape.Location = New System.Drawing.Point(735, 363)
-        Me.btnRemoveSeasonLandscape.Name = "btnRemoveSeasonLandscape"
-        Me.btnRemoveSeasonLandscape.Size = New System.Drawing.Size(96, 83)
-        Me.btnRemoveSeasonLandscape.TabIndex = 16
-        Me.btnRemoveSeasonLandscape.Text = "Remove Landscape"
-        Me.btnRemoveSeasonLandscape.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.btnRemoveSeasonLandscape.UseVisualStyleBackColor = True
-        '
-        'lblSeasonLandscapeSize
-        '
-        Me.lblSeasonLandscapeSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblSeasonLandscapeSize.Location = New System.Drawing.Point(8, 8)
-        Me.lblSeasonLandscapeSize.Name = "lblSeasonLandscapeSize"
-        Me.lblSeasonLandscapeSize.Size = New System.Drawing.Size(105, 23)
-        Me.lblSeasonLandscapeSize.TabIndex = 11
-        Me.lblSeasonLandscapeSize.Text = "Size: (XXXXxXXXX)"
-        Me.lblSeasonLandscapeSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        Me.lblSeasonLandscapeSize.Visible = False
-        '
-        'btnSetSeasonLandscapeScrape
-        '
-        Me.btnSetSeasonLandscapeScrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnSetSeasonLandscapeScrape.Image = CType(resources.GetObject("btnSetSeasonLandscapeScrape.Image"), System.Drawing.Image)
-        Me.btnSetSeasonLandscapeScrape.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnSetSeasonLandscapeScrape.Location = New System.Drawing.Point(735, 93)
-        Me.btnSetSeasonLandscapeScrape.Name = "btnSetSeasonLandscapeScrape"
-        Me.btnSetSeasonLandscapeScrape.Size = New System.Drawing.Size(96, 83)
-        Me.btnSetSeasonLandscapeScrape.TabIndex = 14
-        Me.btnSetSeasonLandscapeScrape.Text = "Change Landscape (Scrape)"
-        Me.btnSetSeasonLandscapeScrape.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.btnSetSeasonLandscapeScrape.UseVisualStyleBackColor = True
-        '
-        'btnSetSeasonLandscapeLocal
-        '
-        Me.btnSetSeasonLandscapeLocal.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnSetSeasonLandscapeLocal.Image = CType(resources.GetObject("btnSetSeasonLandscapeLocal.Image"), System.Drawing.Image)
-        Me.btnSetSeasonLandscapeLocal.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnSetSeasonLandscapeLocal.Location = New System.Drawing.Point(735, 6)
-        Me.btnSetSeasonLandscapeLocal.Name = "btnSetSeasonLandscapeLocal"
-        Me.btnSetSeasonLandscapeLocal.Size = New System.Drawing.Size(96, 83)
-        Me.btnSetSeasonLandscapeLocal.TabIndex = 13
-        Me.btnSetSeasonLandscapeLocal.Text = "Change Landscape (Local)"
-        Me.btnSetSeasonLandscapeLocal.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.btnSetSeasonLandscapeLocal.UseVisualStyleBackColor = True
-        '
-        'pbSeasonLandscape
-        '
-        Me.pbSeasonLandscape.BackColor = System.Drawing.Color.DimGray
-        Me.pbSeasonLandscape.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pbSeasonLandscape.Location = New System.Drawing.Point(6, 6)
-        Me.pbSeasonLandscape.Name = "pbSeasonLandscape"
-        Me.pbSeasonLandscape.Size = New System.Drawing.Size(724, 440)
-        Me.pbSeasonLandscape.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.pbSeasonLandscape.TabIndex = 12
-        Me.pbSeasonLandscape.TabStop = False
-        '
         'dlgEditSeason
         '
         Me.AcceptButton = Me.OK_Button
@@ -536,10 +536,10 @@ Partial Class dlgEditSeason
         CType(Me.pbSeasonPoster, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tpSeasonBanner.ResumeLayout(False)
         CType(Me.pbSeasonBanner, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.tpSeasonFanart.ResumeLayout(False)
-        CType(Me.pbSeasonFanart, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tpSeasonLandscape.ResumeLayout(False)
         CType(Me.pbSeasonLandscape, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.tpSeasonFanart.ResumeLayout(False)
+        CType(Me.pbSeasonFanart, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub

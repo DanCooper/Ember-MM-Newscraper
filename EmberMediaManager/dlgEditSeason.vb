@@ -25,10 +25,10 @@ Public Class dlgEditSeason
 
 #Region "Fields"
 
-    Private Banner As New Images With {.IsEdit = True}
-    Private Fanart As New Images With {.IsEdit = True}
-    Private Landscape As New Images With {.IsEdit = True}
-    Private Poster As New Images With {.IsEdit = True}
+    Private SeasonBanner As New Images With {.IsEdit = True}
+    Private SeasonFanart As New Images With {.IsEdit = True}
+    Private SeasonLandscape As New Images With {.IsEdit = True}
+    Private SeasonPoster As New Images With {.IsEdit = True}
 
 #End Region 'Fields
 
@@ -37,25 +37,25 @@ Public Class dlgEditSeason
     Private Sub btnRemoveSeasonBanner_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveSeasonBanner.Click
         Me.pbSeasonBanner.Image = Nothing
         Me.pbSeasonBanner.Tag = Nothing
-        Me.Banner.Dispose()
+        Me.SeasonBanner.Dispose()
     End Sub
 
     Private Sub btnRemoveSeasonFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveSeasonFanart.Click
         Me.pbSeasonFanart.Image = Nothing
         Me.pbSeasonFanart.Tag = Nothing
-        Me.Fanart.Dispose()
+        Me.SeasonFanart.Dispose()
     End Sub
 
     Private Sub btnRemoveSeasonLandscape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveSeasonLandscape.Click
         Me.pbSeasonLandscape.Image = Nothing
         Me.pbSeasonLandscape.Tag = Nothing
-        Me.Landscape.Dispose()
+        Me.SeasonLandscape.Dispose()
     End Sub
 
     Private Sub btnRemoveSeasonPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveSeasonPoster.Click
         Me.pbSeasonPoster.Image = Nothing
         Me.pbSeasonPoster.Tag = Nothing
-        Me.Poster.Dispose()
+        Me.SeasonPoster.Dispose()
     End Sub
 
     Private Sub btnSetSeasonBannerDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetSeasonBannerDL.Click
@@ -65,9 +65,9 @@ Public Class dlgEditSeason
                 If dImgManual.ShowDialog() = DialogResult.OK Then
                     tImage = dImgManual.Results
                     If Not IsNothing(tImage.Image) Then
-                        Banner = tImage
-                        Me.pbSeasonBanner.Image = Banner.Image
-                        Me.pbSeasonBanner.Tag = Banner
+                        SeasonBanner = tImage
+                        Me.pbSeasonBanner.Image = SeasonBanner.Image
+                        Me.pbSeasonBanner.Tag = SeasonBanner
 
                         Me.lblSeasonBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbSeasonBanner.Image.Width, Me.pbSeasonBanner.Image.Height)
                         Me.lblSeasonBannerSize.Visible = True
@@ -80,12 +80,12 @@ Public Class dlgEditSeason
     End Sub
 
     Private Sub btnSetSeasonBannerScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetSeasonBannerScrape.Click
-        Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.SeasonBanner, Master.currShow.TVEp.Season, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(Banner, Images))
+        Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.SeasonBanner, Master.currShow.TVEp.Season, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(SeasonBanner, Images))
 
         If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
-            Banner = tImage
-            Me.pbSeasonBanner.Image = tImage.Image
-            Me.pbSeasonBanner.Tag = tImage
+            SeasonBanner = tImage
+            Me.pbSeasonBanner.Image = SeasonBanner.Image
+            Me.pbSeasonBanner.Tag = SeasonBanner
 
             Me.lblSeasonBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbSeasonBanner.Image.Width, Me.pbSeasonBanner.Image.Height)
             Me.lblSeasonBannerSize.Visible = True
@@ -101,9 +101,9 @@ Public Class dlgEditSeason
             End With
 
             If ofdImage.ShowDialog() = DialogResult.OK Then
-                Banner.FromFile(ofdImage.FileName)
-                Me.pbSeasonBanner.Image = Banner.Image
-                Me.pbSeasonBanner.Tag = Banner
+                SeasonBanner.FromFile(ofdImage.FileName)
+                Me.pbSeasonBanner.Image = SeasonBanner.Image
+                Me.pbSeasonBanner.Tag = SeasonBanner
 
                 Me.lblSeasonBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbSeasonBanner.Image.Width, Me.pbSeasonBanner.Image.Height)
                 Me.lblSeasonBannerSize.Visible = True
@@ -120,9 +120,9 @@ Public Class dlgEditSeason
                 If dImgManual.ShowDialog() = DialogResult.OK Then
                     tImage = dImgManual.Results
                     If Not IsNothing(tImage.Image) Then
-                        Fanart = tImage
-                        Me.pbSeasonFanart.Image = Fanart.Image
-                        Me.pbSeasonFanart.Tag = Fanart
+                        SeasonFanart = tImage
+                        Me.pbSeasonFanart.Image = SeasonFanart.Image
+                        Me.pbSeasonFanart.Tag = SeasonFanart
 
                         Me.lblSeasonFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbSeasonFanart.Image.Width, Me.pbSeasonFanart.Image.Height)
                         Me.lblSeasonFanartSize.Visible = True
@@ -135,12 +135,12 @@ Public Class dlgEditSeason
     End Sub
 
     Private Sub btnSetSeasonFanartScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetSeasonFanartScrape.Click
-        Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.SeasonFanart, Master.currShow.TVEp.Season, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(Fanart, Images))
+        Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.SeasonFanart, Master.currShow.TVEp.Season, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(SeasonFanart, Images))
 
         If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
-            Fanart = tImage
-            Me.pbSeasonFanart.Image = tImage.Image
-            Me.pbSeasonFanart.Tag = tImage
+            SeasonFanart = tImage
+            Me.pbSeasonFanart.Image = SeasonFanart.Image
+            Me.pbSeasonFanart.Tag = SeasonFanart
 
             Me.lblSeasonFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbSeasonFanart.Image.Width, Me.pbSeasonFanart.Image.Height)
             Me.lblSeasonFanartSize.Visible = True
@@ -156,9 +156,9 @@ Public Class dlgEditSeason
             End With
 
             If ofdImage.ShowDialog() = DialogResult.OK Then
-                Fanart.FromFile(ofdImage.FileName)
-                Me.pbSeasonFanart.Image = Fanart.Image
-                Me.pbSeasonFanart.Tag = Fanart
+                SeasonFanart.FromFile(ofdImage.FileName)
+                Me.pbSeasonFanart.Image = SeasonFanart.Image
+                Me.pbSeasonFanart.Tag = SeasonFanart
 
                 Me.lblSeasonFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbSeasonFanart.Image.Width, Me.pbSeasonFanart.Image.Height)
                 Me.lblSeasonFanartSize.Visible = True
@@ -175,9 +175,9 @@ Public Class dlgEditSeason
                 If dImgManual.ShowDialog() = DialogResult.OK Then
                     tImage = dImgManual.Results
                     If Not IsNothing(tImage.Image) Then
-                        Landscape = tImage
-                        Me.pbSeasonLandscape.Image = Landscape.Image
-                        Me.pbSeasonLandscape.Tag = Landscape
+                        SeasonLandscape = tImage
+                        Me.pbSeasonLandscape.Image = SeasonLandscape.Image
+                        Me.pbSeasonLandscape.Tag = SeasonLandscape
 
                         Me.lblSeasonLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbSeasonLandscape.Image.Width, Me.pbSeasonLandscape.Image.Height)
                         Me.lblSeasonLandscapeSize.Visible = True
@@ -190,12 +190,12 @@ Public Class dlgEditSeason
     End Sub
 
     Private Sub btnSetSeasonLandscapeScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetSeasonLandscapeScrape.Click
-        Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.SeasonLandscape, Master.currShow.TVEp.Season, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(Landscape, Images))
+        Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.SeasonLandscape, Master.currShow.TVEp.Season, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(SeasonLandscape, Images))
 
         If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
-            Landscape = tImage
-            Me.pbSeasonLandscape.Image = tImage.Image
-            Me.pbSeasonLandscape.Tag = tImage
+            SeasonLandscape = tImage
+            Me.pbSeasonLandscape.Image = SeasonLandscape.Image
+            Me.pbSeasonLandscape.Tag = SeasonLandscape
 
             Me.lblSeasonLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbSeasonLandscape.Image.Width, Me.pbSeasonLandscape.Image.Height)
             Me.lblSeasonLandscapeSize.Visible = True
@@ -211,9 +211,9 @@ Public Class dlgEditSeason
             End With
 
             If ofdImage.ShowDialog() = DialogResult.OK Then
-                Landscape.FromFile(ofdImage.FileName)
-                Me.pbSeasonLandscape.Image = Landscape.Image
-                Me.pbSeasonLandscape.Tag = Landscape
+                SeasonLandscape.FromFile(ofdImage.FileName)
+                Me.pbSeasonLandscape.Image = SeasonLandscape.Image
+                Me.pbSeasonLandscape.Tag = SeasonLandscape
 
                 Me.lblSeasonLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbSeasonLandscape.Image.Width, Me.pbSeasonLandscape.Image.Height)
                 Me.lblSeasonLandscapeSize.Visible = True
@@ -230,9 +230,9 @@ Public Class dlgEditSeason
                 If dImgManual.ShowDialog() = DialogResult.OK Then
                     tImage = dImgManual.Results
                     If Not IsNothing(tImage.Image) Then
-                        Poster = tImage
-                        Me.pbSeasonPoster.Image = Poster.Image
-                        Me.pbSeasonPoster.Tag = Poster
+                        SeasonPoster = tImage
+                        Me.pbSeasonPoster.Image = SeasonPoster.Image
+                        Me.pbSeasonPoster.Tag = SeasonPoster
 
                         Me.lblSeasonPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbSeasonPoster.Image.Width, Me.pbSeasonPoster.Image.Height)
                         Me.lblSeasonPosterSize.Visible = True
@@ -245,12 +245,12 @@ Public Class dlgEditSeason
     End Sub
 
     Private Sub btnSetSeasonPosterScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetSeasonPosterScrape.Click
-        Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.SeasonPoster, Master.currShow.TVEp.Season, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(Poster, Images))
+        Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.SeasonPoster, Master.currShow.TVEp.Season, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(SeasonPoster, Images))
 
         If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
-            Poster = tImage
-            Me.pbSeasonPoster.Image = tImage.Image
-            Me.pbSeasonPoster.Tag = tImage
+            SeasonPoster = tImage
+            Me.pbSeasonPoster.Image = SeasonPoster.Image
+            Me.pbSeasonPoster.Tag = SeasonPoster
 
             Me.lblSeasonPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbSeasonPoster.Image.Width, Me.pbSeasonPoster.Image.Height)
             Me.lblSeasonPosterSize.Visible = True
@@ -266,9 +266,9 @@ Public Class dlgEditSeason
             End With
 
             If ofdImage.ShowDialog() = DialogResult.OK Then
-                Poster.FromFile(ofdImage.FileName)
-                Me.pbSeasonPoster.Image = Poster.Image
-                Me.pbSeasonPoster.Tag = Poster
+                SeasonPoster.FromFile(ofdImage.FileName)
+                Me.pbSeasonPoster.Image = SeasonPoster.Image
+                Me.pbSeasonPoster.Tag = SeasonPoster
 
                 Me.lblSeasonPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbSeasonPoster.Image.Width, Me.pbSeasonPoster.Image.Height)
                 Me.lblSeasonPosterSize.Visible = True
@@ -289,6 +289,11 @@ Public Class dlgEditSeason
         If Not Master.eSettings.TVSeasonLandscapeEnabled Then tcEditSeason.TabPages.Remove(tpSeasonLandscape)
         If Not Master.eSettings.TVSeasonPosterEnabled Then tcEditSeason.TabPages.Remove(tpSeasonPoster)
 
+        Me.pbSeasonBanner.AllowDrop = True
+        Me.pbSeasonFanart.AllowDrop = True
+        Me.pbSeasonLandscape.AllowDrop = True
+        Me.pbSeasonPoster.AllowDrop = True
+
         Me.SetUp()
 
         Dim iBackground As New Bitmap(Me.pnlTop.Width, Me.pnlTop.Height)
@@ -303,10 +308,10 @@ Public Class dlgEditSeason
     Private Sub FillInfo()
         With Me
             If Master.eSettings.TVSeasonBannerEnabled Then
-                Banner.FromFile(Master.currShow.SeasonBannerPath)
-                If Not IsNothing(Banner.Image) Then
-                    .pbSeasonBanner.Image = Banner.Image
-                    .pbSeasonBanner.Tag = Banner
+                SeasonBanner.FromFile(Master.currShow.SeasonBannerPath)
+                If Not IsNothing(SeasonBanner.Image) Then
+                    .pbSeasonBanner.Image = SeasonBanner.Image
+                    .pbSeasonBanner.Tag = SeasonBanner
 
                     .lblSeasonBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbSeasonBanner.Image.Width, .pbSeasonBanner.Image.Height)
                     .lblSeasonBannerSize.Visible = True
@@ -314,10 +319,10 @@ Public Class dlgEditSeason
             End If
 
             If Master.eSettings.TVSeasonFanartEnabled Then
-                Fanart.FromFile(Master.currShow.SeasonFanartPath)
-                If Not IsNothing(Fanart.Image) Then
-                    .pbSeasonFanart.Image = Fanart.Image
-                    .pbSeasonFanart.Tag = Fanart
+                SeasonFanart.FromFile(Master.currShow.SeasonFanartPath)
+                If Not IsNothing(SeasonFanart.Image) Then
+                    .pbSeasonFanart.Image = SeasonFanart.Image
+                    .pbSeasonFanart.Tag = SeasonFanart
 
                     .lblSeasonFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbSeasonFanart.Image.Width, .pbSeasonFanart.Image.Height)
                     .lblSeasonFanartSize.Visible = True
@@ -325,10 +330,10 @@ Public Class dlgEditSeason
             End If
 
             If Master.eSettings.TVSeasonLandscapeEnabled Then
-                Landscape.FromFile(Master.currShow.SeasonLandscapePath)
-                If Not IsNothing(Landscape.Image) Then
-                    .pbSeasonLandscape.Image = Landscape.Image
-                    .pbSeasonLandscape.Tag = Landscape
+                SeasonLandscape.FromFile(Master.currShow.SeasonLandscapePath)
+                If Not IsNothing(SeasonLandscape.Image) Then
+                    .pbSeasonLandscape.Image = SeasonLandscape.Image
+                    .pbSeasonLandscape.Tag = SeasonLandscape
 
                     .lblSeasonLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbSeasonLandscape.Image.Width, .pbSeasonLandscape.Image.Height)
                     .lblSeasonLandscapeSize.Visible = True
@@ -336,10 +341,10 @@ Public Class dlgEditSeason
             End If
 
             If Master.eSettings.TVSeasonPosterEnabled Then
-                Poster.FromFile(Master.currShow.SeasonPosterPath)
-                If Not IsNothing(Poster.Image) Then
-                    .pbSeasonPoster.Image = Poster.Image
-                    .pbSeasonPoster.Tag = Poster
+                SeasonPoster.FromFile(Master.currShow.SeasonPosterPath)
+                If Not IsNothing(SeasonPoster.Image) Then
+                    .pbSeasonPoster.Image = SeasonPoster.Image
+                    .pbSeasonPoster.Tag = SeasonPoster
 
                     .lblSeasonPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbSeasonPoster.Image.Width, .pbSeasonPoster.Image.Height)
                     .lblSeasonPosterSize.Visible = True
@@ -362,43 +367,119 @@ Public Class dlgEditSeason
         Me.Close()
     End Sub
 
+    Private Sub pbSeasonBanner_DragDrop(sender As Object, e As DragEventArgs) Handles pbSeasonBanner.DragDrop
+        Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
+        If Not IsNothing(tImage.Image) Then
+            SeasonBanner = tImage
+            Me.pbSeasonBanner.Image = SeasonBanner.Image
+            Me.pbSeasonBanner.Tag = SeasonBanner
+            Me.lblSeasonBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbSeasonBanner.Image.Width, Me.pbSeasonBanner.Image.Height)
+            Me.lblSeasonBannerSize.Visible = True
+        End If
+    End Sub
+
+    Private Sub pbSeasonBanner_DragEnter(sender As Object, e As DragEventArgs) Handles pbSeasonBanner.DragEnter
+        If FileUtils.DragAndDrop.CheckDroppedImage(e) Then
+            e.Effect = DragDropEffects.Copy
+        Else
+            e.Effect = DragDropEffects.None
+        End If
+    End Sub
+
+    Private Sub pbSeasonFanart_DragDrop(sender As Object, e As DragEventArgs) Handles pbSeasonFanart.DragDrop
+        Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
+        If Not IsNothing(tImage.Image) Then
+            SeasonFanart = tImage
+            Me.pbSeasonFanart.Image = SeasonFanart.Image
+            Me.pbSeasonFanart.Tag = SeasonFanart
+            Me.lblSeasonFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbSeasonFanart.Image.Width, Me.pbSeasonFanart.Image.Height)
+            Me.lblSeasonFanartSize.Visible = True
+        End If
+    End Sub
+
+    Private Sub pbSeasonFanart_DragEnter(sender As Object, e As DragEventArgs) Handles pbSeasonFanart.DragEnter
+        If FileUtils.DragAndDrop.CheckDroppedImage(e) Then
+            e.Effect = DragDropEffects.Copy
+        Else
+            e.Effect = DragDropEffects.None
+        End If
+    End Sub
+
+    Private Sub pbSeasonLandscape_DragDrop(sender As Object, e As DragEventArgs) Handles pbSeasonLandscape.DragDrop
+        Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
+        If Not IsNothing(tImage.Image) Then
+            SeasonLandscape = tImage
+            Me.pbSeasonLandscape.Image = SeasonLandscape.Image
+            Me.pbSeasonLandscape.Tag = SeasonLandscape
+            Me.lblSeasonLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbSeasonLandscape.Image.Width, Me.pbSeasonLandscape.Image.Height)
+            Me.lblSeasonLandscapeSize.Visible = True
+        End If
+    End Sub
+
+    Private Sub pbSeasonLandscape_DragEnter(sender As Object, e As DragEventArgs) Handles pbSeasonLandscape.DragEnter
+        If FileUtils.DragAndDrop.CheckDroppedImage(e) Then
+            e.Effect = DragDropEffects.Copy
+        Else
+            e.Effect = DragDropEffects.None
+        End If
+    End Sub
+
+    Private Sub pbSeasonPoster_DragDrop(sender As Object, e As DragEventArgs) Handles pbSeasonPoster.DragDrop
+        Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
+        If Not IsNothing(tImage.Image) Then
+            SeasonPoster = tImage
+            Me.pbSeasonPoster.Image = SeasonPoster.Image
+            Me.pbSeasonPoster.Tag = SeasonPoster
+            Me.lblSeasonPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbSeasonPoster.Image.Width, Me.pbSeasonPoster.Image.Height)
+            Me.lblSeasonPosterSize.Visible = True
+        End If
+    End Sub
+
+    Private Sub pbSeasonPoster_DragEnter(sender As Object, e As DragEventArgs) Handles pbSeasonPoster.DragEnter
+        If FileUtils.DragAndDrop.CheckDroppedImage(e) Then
+            e.Effect = DragDropEffects.Copy
+        Else
+            e.Effect = DragDropEffects.None
+        End If
+    End Sub
+
     Private Sub SetInfo()
         Try
             With Me
 
                 'Banner
-                If Not IsNothing(.Banner.Image) Then
-                    Dim fPath As String = .Banner.SaveAsTVSeasonBanner(Master.currShow)
+                If Not IsNothing(.SeasonBanner.Image) Then
+                    Dim fPath As String = .SeasonBanner.SaveAsTVSeasonBanner(Master.currShow)
                     Master.currShow.SeasonBannerPath = fPath
                 Else
-                    .Fanart.DeleteTVSeasonBanner(Master.currShow)
+                    .SeasonBanner.DeleteTVSeasonBanner(Master.currShow)
                     Master.currShow.SeasonBannerPath = String.Empty
                 End If
 
                 'Fanart
-                If Not IsNothing(.Fanart.Image) Then
-                    Dim fPath As String = .Fanart.SaveAsTVSeasonFanart(Master.currShow)
+                If Not IsNothing(.SeasonFanart.Image) Then
+                    Dim fPath As String = .SeasonFanart.SaveAsTVSeasonFanart(Master.currShow)
                     Master.currShow.SeasonFanartPath = fPath
                 Else
-                    .Fanart.DeleteTVSeasonFanart(Master.currShow)
+                    .SeasonFanart.DeleteTVSeasonFanart(Master.currShow)
                     Master.currShow.SeasonFanartPath = String.Empty
                 End If
 
                 'Landscape
-                If Not IsNothing(.Landscape.Image) Then
-                    Dim fPath As String = .Landscape.SaveAsTVSeasonLandscape(Master.currShow)
+                If Not IsNothing(.SeasonLandscape.Image) Then
+                    Dim fPath As String = .SeasonLandscape.SaveAsTVSeasonLandscape(Master.currShow)
                     Master.currShow.SeasonLandscapePath = fPath
                 Else
-                    .Landscape.DeleteTVSeasonLandscape(Master.currShow)
+                    .SeasonLandscape.DeleteTVSeasonLandscape(Master.currShow)
                     Master.currShow.SeasonLandscapePath = String.Empty
                 End If
 
                 'Poster
-                If Not IsNothing(.Poster.Image) Then
-                    Dim pPath As String = .Poster.SaveAsTVSeasonPoster(Master.currShow)
+                If Not IsNothing(.SeasonPoster.Image) Then
+                    Dim pPath As String = .SeasonPoster.SaveAsTVSeasonPoster(Master.currShow)
                     Master.currShow.SeasonPosterPath = pPath
                 Else
-                    .Poster.DeleteTVSeasonPosters(Master.currShow)
+                    .SeasonPoster.DeleteTVSeasonPosters(Master.currShow)
                     Master.currShow.SeasonPosterPath = String.Empty
                 End If
 
