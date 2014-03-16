@@ -251,7 +251,21 @@ Public Class dlgTVImageSelect
                             tSeaF = GenericFanartList.FirstOrDefault(Function(f) Not IsNothing(f.Image.Image) AndAlso Me.GetFanartDims(f.Size) = Master.eSettings.TVSeasonFanartPrefSize AndAlso f.Language = AdvancedSettings.GetSetting("TVDBLang", "en"))
                             If IsNothing(tSeaF) Then tSeaF = GenericFanartList.FirstOrDefault(Function(f) Not IsNothing(f.Image.Image) AndAlso Me.GetFanartDims(f.Size) = Master.eSettings.TVSeasonFanartPrefSize)
                             If IsNothing(tSeaF) Then tSeaF = GenericFanartList.FirstOrDefault(Function(f) Not IsNothing(f.Image.Image))
-                            If Not IsNothing(tSeaF) Then cSeason.Fanart = tSeaF
+                            If Not IsNothing(tSeaF) Then
+                                If Not String.IsNullOrEmpty(tSeaF.LocalFile) AndAlso File.Exists(tSeaF.LocalFile) Then
+                                    cSeason.Fanart.Image.FromFile(tSeaF.LocalFile)
+                                    cSeason.Fanart.LocalFile = tSeaF.LocalFile
+                                    cSeason.Fanart.URL = tSeaF.URL
+                                ElseIf Not String.IsNullOrEmpty(tSeaF.LocalFile) AndAlso Not String.IsNullOrEmpty(tSeaF.URL) Then
+                                    cSeason.Fanart.Image.FromWeb(tSeaF.URL)
+                                    If Not IsNothing(cSeason.Fanart.Image.Image) Then
+                                        Directory.CreateDirectory(Directory.GetParent(tSeaF.LocalFile).FullName)
+                                        cSeason.Fanart.Image.Save(tSeaF.LocalFile, , , False)
+                                        cSeason.Fanart.LocalFile = tSeaF.LocalFile
+                                        cSeason.Fanart.URL = tSeaF.URL
+                                    End If
+                                End If
+                            End If
                         End If
 
                         'Season Poster
@@ -416,24 +430,42 @@ Public Class dlgTVImageSelect
             Me.lblStatus.Text = Master.eLang.GetString(952, "Downloading Fullsize Fanart Image...")
             Me.pbStatus.Style = ProgressBarStyle.Marquee
             Me.pnlStatus.Visible = True
-            Master.currShow.ShowBannerPath = Scraper.TVDBImages.ShowBanner.LocalFile
-            Master.currShow.ShowPosterPath = Scraper.TVDBImages.ShowPoster.LocalFile
-            If Not String.IsNullOrEmpty(Scraper.TVDBImages.ShowFanart.LocalFile) AndAlso File.Exists(Scraper.TVDBImages.ShowFanart.LocalFile) Then
-                Scraper.TVDBImages.ShowFanart.Image.FromFile(Scraper.TVDBImages.ShowFanart.LocalFile)
-                Master.currShow.ShowFanartPath = Scraper.TVDBImages.ShowFanart.LocalFile
-            ElseIf Not String.IsNullOrEmpty(Scraper.TVDBImages.ShowFanart.URL) AndAlso Not String.IsNullOrEmpty(Scraper.TVDBImages.ShowFanart.LocalFile) Then
-                Scraper.TVDBImages.ShowFanart.Image.Clear()
-                Scraper.TVDBImages.ShowFanart.Image.FromWeb(Scraper.TVDBImages.ShowFanart.URL)
-                If Not IsNothing(Scraper.TVDBImages.ShowFanart.Image.Image) Then
-                    Directory.CreateDirectory(Directory.GetParent(Scraper.TVDBImages.ShowFanart.LocalFile).FullName)
-                    Scraper.TVDBImages.ShowFanart.Image.Save(Scraper.TVDBImages.ShowFanart.LocalFile, , , False)
+
+            'Show Banner
+            If Master.eSettings.TVShowBannerEnabled Then
+                Master.currShow.ShowBannerPath = Scraper.TVDBImages.ShowBanner.LocalFile
+            End If
+
+            'Show Fanart
+            If Master.eSettings.TVShowFanartEnabled Then
+                If Not String.IsNullOrEmpty(Scraper.TVDBImages.ShowFanart.LocalFile) AndAlso File.Exists(Scraper.TVDBImages.ShowFanart.LocalFile) Then
+                    Scraper.TVDBImages.ShowFanart.Image.FromFile(Scraper.TVDBImages.ShowFanart.LocalFile)
                     Master.currShow.ShowFanartPath = Scraper.TVDBImages.ShowFanart.LocalFile
+                ElseIf Not String.IsNullOrEmpty(Scraper.TVDBImages.ShowFanart.URL) AndAlso Not String.IsNullOrEmpty(Scraper.TVDBImages.ShowFanart.LocalFile) Then
+                    Scraper.TVDBImages.ShowFanart.Image.Clear()
+                    Scraper.TVDBImages.ShowFanart.Image.FromWeb(Scraper.TVDBImages.ShowFanart.URL)
+                    If Not IsNothing(Scraper.TVDBImages.ShowFanart.Image.Image) Then
+                        Directory.CreateDirectory(Directory.GetParent(Scraper.TVDBImages.ShowFanart.LocalFile).FullName)
+                        Scraper.TVDBImages.ShowFanart.Image.Save(Scraper.TVDBImages.ShowFanart.LocalFile, , , False)
+                        Master.currShow.ShowFanartPath = Scraper.TVDBImages.ShowFanart.LocalFile
+                    End If
                 End If
             End If
-            If Master.eSettings.TVASPosterEnabled Then
+
+            'Show Poster
+            If Master.eSettings.TVShowPosterEnabled Then
+                Master.currShow.ShowPosterPath = Scraper.TVDBImages.ShowPoster.LocalFile
+            End If
+
+            'AS Banner
+            If Master.eSettings.TVASBannerEnabled Then
                 If Not IsNothing(Scraper.TVDBImages.AllSeasonsBanner.Image.Image) Then
                     Master.currShow.SeasonBannerPath = Scraper.TVDBImages.AllSeasonsBanner.LocalFile
                 End If
+            End If
+
+            'AS Fanart
+            If Master.eSettings.TVASFanartEnabled Then
                 If Not String.IsNullOrEmpty(Scraper.TVDBImages.AllSeasonsFanart.LocalFile) AndAlso File.Exists(Scraper.TVDBImages.AllSeasonsFanart.LocalFile) Then
                     Scraper.TVDBImages.AllSeasonsFanart.Image.FromFile(Scraper.TVDBImages.AllSeasonsFanart.LocalFile)
                     Master.currShow.SeasonFanartPath = Scraper.TVDBImages.AllSeasonsFanart.LocalFile
@@ -446,10 +478,15 @@ Public Class dlgTVImageSelect
                         Master.currShow.SeasonFanartPath = Scraper.TVDBImages.AllSeasonsFanart.LocalFile
                     End If
                 End If
+            End If
+
+            'AS Poster
+            If Master.eSettings.TVASPosterEnabled Then
                 If Not IsNothing(Scraper.TVDBImages.AllSeasonsPoster.Image.Image) Then
                     Master.currShow.SeasonPosterPath = Scraper.TVDBImages.AllSeasonsPoster.LocalFile
                 End If
             End If
+
         ElseIf Me._type = Enums.TVImageType.AllSeasonsFanart AndAlso Me._fanartchanged Then
             Me.lblStatus.Text = Master.eLang.GetString(952, "Downloading Fullsize Fanart Image...")
             Me.pbStatus.Style = ProgressBarStyle.Marquee
@@ -1280,12 +1317,9 @@ Public Class dlgTVImageSelect
             ElseIf Me.SelIsBanner Then
                 Scraper.TVDBImages.SeasonImageList.FirstOrDefault(Function(s) s.Season = Me.SelSeason).Banner = SelTag.ImageObj
             Else
-                Dim tFan As Scraper.TVDBFanart = Scraper.TVDBImages.SeasonImageList.FirstOrDefault(Function(s) s.Season = Me.SelSeason).Fanart
-                If Not IsNothing(tFan) Then
-                    tFan.Image = SelTag.ImageObj
-                    tFan.LocalFile = SelTag.Path
-                    tFan.URL = SelTag.URL
-                End If
+                Scraper.TVDBImages.SeasonImageList.FirstOrDefault(Function(s) s.Season = Me.SelSeason).Fanart.Image = SelTag.ImageObj
+                Scraper.TVDBImages.SeasonImageList.FirstOrDefault(Function(s) s.Season = Me.SelSeason).Fanart.LocalFile = SelTag.Path
+                Scraper.TVDBImages.SeasonImageList.FirstOrDefault(Function(s) s.Season = Me.SelSeason).Fanart.URL = SelTag.URL
             End If
         End If
     End Sub
