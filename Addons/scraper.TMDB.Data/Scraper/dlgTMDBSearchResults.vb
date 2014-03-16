@@ -19,6 +19,7 @@
 ' ################################################################################
 
 Imports System.Text.RegularExpressions
+Imports System.IO
 Imports EmberAPI
 Imports WatTmdb
 
@@ -74,7 +75,7 @@ Public Class dlgTMDBSearchResults
         Return MyBase.ShowDialog()
     End Function
 
-    Public Overloads Function ShowDialog(ByVal Res As TMDBg.MovieSearchResults, ByVal sMovieTitle As String) As Windows.Forms.DialogResult
+    Public Overloads Function ShowDialog(ByVal Res As TMDBg.MovieSearchResults, ByVal sMovieTitle As String, ByVal sMovieFilename As String) As Windows.Forms.DialogResult
         Me.tmrWait.Enabled = False
         Me.tmrWait.Interval = 250
         Me.tmrLoad.Enabled = False
@@ -82,6 +83,7 @@ Public Class dlgTMDBSearchResults
 
         Me.Text = String.Concat(Master.eLang.GetString(794, "Search Results"), " - ", sMovieTitle)
         Me.txtSearch.Text = sMovieTitle
+        Me.txtFileName.Text = sMovieFilename
         SearchResultsDownloaded(Res)
 
         Return MyBase.ShowDialog()
@@ -109,6 +111,14 @@ Public Class dlgTMDBSearchResults
         '' The rule is that if there is a tt is an IMDB otherwise is a TMDB
         TMDBg.GetSearchMovieInfoAsync(Me.txtTMDBID.Text, Master.tmpMovie, pOpt)
 
+    End Sub
+
+    Private Sub btnOpenFolder_Click(sender As Object, e As EventArgs) Handles btnOpenFolder.Click
+        Dim fPath As String = Directory.GetParent(Me.txtFileName.Text).FullName
+
+        If Not String.IsNullOrEmpty(fPath) Then
+            Shell("Explorer.exe " & fPath, vbNormalFocus)
+        End If
     End Sub
 
     Private Sub bwDownloadPic_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDownloadPic.DoWork

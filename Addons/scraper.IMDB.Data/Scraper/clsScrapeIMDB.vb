@@ -784,7 +784,7 @@ mPlot:          'MOVIE PLOT
                         Else
                             Master.tmpMovie.Clear()
                             Using dIMDB As New dlgIMDBSearchResults
-                                If dIMDB.ShowDialog(r, sMovieName) = Windows.Forms.DialogResult.OK Then
+                                If dIMDB.ShowDialog(r, sMovieName, dbMovie.Filename) = Windows.Forms.DialogResult.OK Then
                                     If String.IsNullOrEmpty(Master.tmpMovie.IMDBID) Then
                                         b = False
                                     Else

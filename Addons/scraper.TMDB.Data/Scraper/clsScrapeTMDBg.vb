@@ -581,7 +581,7 @@ Namespace TMDBg
                             Master.tmpMovie.Clear()
                             Using dIMDB As New dlgTMDBSearchResults(_MySettings, Me)
 
-                                If dIMDB.ShowDialog(r, sMovieName) = Windows.Forms.DialogResult.OK Then
+                                If dIMDB.ShowDialog(r, sMovieName, dbMovie.Filename) = Windows.Forms.DialogResult.OK Then
                                     If String.IsNullOrEmpty(Master.tmpMovie.TMDBID) Then
                                         b = False
                                     Else

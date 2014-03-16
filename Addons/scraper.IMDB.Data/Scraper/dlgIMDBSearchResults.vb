@@ -63,14 +63,15 @@ Public Class dlgIMDBSearchResults
         Return MyBase.ShowDialog()
     End Function
 
-    Public Overloads Function ShowDialog(ByVal Res As IMDB.MovieSearchResults, ByVal sMovieTitle As String) As Windows.Forms.DialogResult
+    Public Overloads Function ShowDialog(ByVal Res As IMDB.MovieSearchResults, ByVal sMovieTitle As String, ByVal sMovieFilename As String) As Windows.Forms.DialogResult
         Me.tmrWait.Enabled = False
         Me.tmrWait.Interval = 250
         Me.tmrLoad.Enabled = False
         Me.tmrLoad.Interval = 100
 
         Me.Text = String.Concat(Master.eLang.GetString(794, "Search Results"), " - ", sMovieTitle)
-		Me.txtSearch.Text = sMovieTitle
+        Me.txtSearch.Text = sMovieTitle
+        Me.txtFileName.Text = sMovieFilename
         SearchResultsDownloaded(Res)
 
         Return MyBase.ShowDialog()
@@ -146,7 +147,7 @@ Public Class dlgIMDBSearchResults
     End Sub
 
     Private Sub btnOpenFolder_Click(sender As Object, e As EventArgs) Handles btnOpenFolder.Click
-        Dim fPath As String = Directory.GetParent(Master.currMovie.Filename).FullName
+        Dim fPath As String = Directory.GetParent(Me.txtFileName.Text).FullName
 
         If Not String.IsNullOrEmpty(fPath) Then
             Shell("Explorer.exe " & fPath, vbNormalFocus)
