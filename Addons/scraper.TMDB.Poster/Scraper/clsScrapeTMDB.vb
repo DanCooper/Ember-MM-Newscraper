@@ -85,80 +85,81 @@ Namespace TMDB
 
             ';If bwTMDB.CancellationPending Then Return Nothing
             Try
-                images = _TMDBApiA.GetMovieImages(CInt(TMDBID))
-                If Type = Enums.ScraperCapabilities.Poster Then
-                    If IsNothing(images.posters) OrElse images.posters.Count = 0 Then
-                        images = _TMDBApiE.GetMovieImages(CInt(TMDBID))
+                If Not String.IsNullOrEmpty(TMDBID) Then
+                    images = _TMDBApiA.GetMovieImages(CInt(TMDBID))
+                    If Type = Enums.ScraperCapabilities.Poster Then
                         If IsNothing(images.posters) OrElse images.posters.Count = 0 Then
-                            Return alPosters
-                        End If
-                    End If
-                Else
-                    If IsNothing(images.backdrops) OrElse images.backdrops.Count = 0 Then
-                        images = _TMDBApiE.GetMovieImages(CInt(TMDBID))
-                        If IsNothing(images.backdrops) OrElse images.backdrops.Count = 0 Then
-                            Return alPosters
-                        End If
-                    End If
-                End If
-
-                'If bwTMDB.WorkerReportsProgress Then
-                '    bwTMDB.ReportProgress(1)
-                'End If
-
-                'If bwTMDB.CancellationPending Then Return Nothing
-
-                If Type = Enums.ScraperCapabilities.Poster Then
-                    For Each tmdbI As V3.Poster In images.posters
-                        'If bwTMDB.CancellationPending Then Return Nothing
-                        For Each aSize In Master.eSize.poster_names
-                            Select Case aSize.size
-                                Case Master.eSize.poster_names(5).description
-                                    aW = tmdbI.width
-                                    aH = tmdbI.height
-                                Case Else
-                                    aW = aSize.width
-                                    aH = CInt(aW / tmdbI.aspect_ratio)
-                            End Select
-                            Dim tmpPoster As New MediaContainers.Image With {.ShortLang = tmdbI.iso_639_1, .LongLang = If(String.IsNullOrEmpty(tmdbI.iso_639_1), "", Localization.ISOGetLangByCode2(tmdbI.iso_639_1)), .URL = _TMDBConf.images.base_url & aSize.size & tmdbI.file_path, .Description = aSize.description, .Width = CStr(aW), .Height = CStr(aH), .ParentID = tmdbI.file_path}
-                            If tmpPoster.ShortLang = _MySettings.TMDBLanguage Then
-                                alPostersP.Add(tmpPoster)
-                            ElseIf tmpPoster.ShortLang = "en" Then
-                                alPostersE.Add(tmpPoster)
-                            ElseIf tmpPoster.ShortLang = "xx" Then
-                                alPostersN.Add(tmpPoster)
-                            ElseIf String.IsNullOrEmpty(tmpPoster.ShortLang) Then
-                                alPostersN.Add(tmpPoster)
-                            Else
-                                alPostersO.Add(tmpPoster)
+                            images = _TMDBApiE.GetMovieImages(CInt(TMDBID))
+                            If IsNothing(images.posters) OrElse images.posters.Count = 0 Then
+                                Return alPosters
                             End If
-                        Next
-                    Next
-                    For Each xPoster As MediaContainers.Image In alPostersO.OrderBy(Function(p) (p.LongLang))
-                        alPostersOs.Add(xPoster)
-                    Next
-                    alPosters.AddRange(alPostersP)
-                    alPosters.AddRange(alPostersE)
-                    alPosters.AddRange(alPostersOs)
-                    alPosters.AddRange(alPostersN)
-                ElseIf Type = Enums.ScraperCapabilities.Fanart Then
-                    For Each tmdbI As V3.Backdrop In images.backdrops
-                        'If bwTMDB.CancellationPending Then Return Nothing
-                        For Each aSize In Master.eSize.backdrop_names
-                            Select Case aSize.size
-                                Case Master.eSize.backdrop_names(3).description
-                                    aW = tmdbI.width
-                                    aH = tmdbI.height
-                                Case Else
-                                    aW = aSize.width
-                                    aH = CInt(aW / tmdbI.aspect_ratio)
-                            End Select
-                            Dim tmpPoster As New MediaContainers.Image With {.ShortLang = tmdbI.iso_639_1, .LongLang = If(String.IsNullOrEmpty(tmdbI.iso_639_1), "", Localization.ISOGetLangByCode2(tmdbI.iso_639_1)), .URL = _TMDBConf.images.base_url & aSize.size & tmdbI.file_path, .Description = aSize.description, .Width = CStr(aW), .Height = CStr(aH), .ParentID = tmdbI.file_path}
-                            alPosters.Add(tmpPoster)
-                        Next
-                    Next
-                End If
+                        End If
+                    Else
+                        If IsNothing(images.backdrops) OrElse images.backdrops.Count = 0 Then
+                            images = _TMDBApiE.GetMovieImages(CInt(TMDBID))
+                            If IsNothing(images.backdrops) OrElse images.backdrops.Count = 0 Then
+                                Return alPosters
+                            End If
+                        End If
+                    End If
 
+                    'If bwTMDB.WorkerReportsProgress Then
+                    '    bwTMDB.ReportProgress(1)
+                    'End If
+
+                    'If bwTMDB.CancellationPending Then Return Nothing
+
+                    If Type = Enums.ScraperCapabilities.Poster Then
+                        For Each tmdbI As V3.Poster In images.posters
+                            'If bwTMDB.CancellationPending Then Return Nothing
+                            For Each aSize In Master.eSize.poster_names
+                                Select Case aSize.size
+                                    Case Master.eSize.poster_names(5).description
+                                        aW = tmdbI.width
+                                        aH = tmdbI.height
+                                    Case Else
+                                        aW = aSize.width
+                                        aH = CInt(aW / tmdbI.aspect_ratio)
+                                End Select
+                                Dim tmpPoster As New MediaContainers.Image With {.ShortLang = tmdbI.iso_639_1, .LongLang = If(String.IsNullOrEmpty(tmdbI.iso_639_1), "", Localization.ISOGetLangByCode2(tmdbI.iso_639_1)), .URL = _TMDBConf.images.base_url & aSize.size & tmdbI.file_path, .Description = aSize.description, .Width = CStr(aW), .Height = CStr(aH), .ParentID = tmdbI.file_path}
+                                If tmpPoster.ShortLang = _MySettings.TMDBLanguage Then
+                                    alPostersP.Add(tmpPoster)
+                                ElseIf tmpPoster.ShortLang = "en" Then
+                                    alPostersE.Add(tmpPoster)
+                                ElseIf tmpPoster.ShortLang = "xx" Then
+                                    alPostersN.Add(tmpPoster)
+                                ElseIf String.IsNullOrEmpty(tmpPoster.ShortLang) Then
+                                    alPostersN.Add(tmpPoster)
+                                Else
+                                    alPostersO.Add(tmpPoster)
+                                End If
+                            Next
+                        Next
+                        For Each xPoster As MediaContainers.Image In alPostersO.OrderBy(Function(p) (p.LongLang))
+                            alPostersOs.Add(xPoster)
+                        Next
+                        alPosters.AddRange(alPostersP)
+                        alPosters.AddRange(alPostersE)
+                        alPosters.AddRange(alPostersOs)
+                        alPosters.AddRange(alPostersN)
+                    ElseIf Type = Enums.ScraperCapabilities.Fanart Then
+                        For Each tmdbI As V3.Backdrop In images.backdrops
+                            'If bwTMDB.CancellationPending Then Return Nothing
+                            For Each aSize In Master.eSize.backdrop_names
+                                Select Case aSize.size
+                                    Case Master.eSize.backdrop_names(3).description
+                                        aW = tmdbI.width
+                                        aH = tmdbI.height
+                                    Case Else
+                                        aW = aSize.width
+                                        aH = CInt(aW / tmdbI.aspect_ratio)
+                                End Select
+                                Dim tmpPoster As New MediaContainers.Image With {.ShortLang = tmdbI.iso_639_1, .LongLang = If(String.IsNullOrEmpty(tmdbI.iso_639_1), "", Localization.ISOGetLangByCode2(tmdbI.iso_639_1)), .URL = _TMDBConf.images.base_url & aSize.size & tmdbI.file_path, .Description = aSize.description, .Width = CStr(aW), .Height = CStr(aH), .ParentID = tmdbI.file_path}
+                                alPosters.Add(tmpPoster)
+                            Next
+                        Next
+                    End If
+                End If
                 'If bwTMDB.WorkerReportsProgress Then
                 '    bwTMDB.ReportProgress(3)
                 'End If

@@ -80,18 +80,20 @@ Namespace TMDBtrailer
             Dim tName As String
 
             Try
-                trailers = _TMDBApi.GetMovieTrailers(CInt(TMDBID), _MySettings.TMDBLanguage)
-                If IsNothing(trailers.youtube) OrElse trailers.youtube.Count = 0 Then
-                    trailers = _TMDBApiE.GetMovieTrailers(CInt(TMDBID))
+                If Not String.IsNullOrEmpty(TMDBID) Then
+                    trailers = _TMDBApi.GetMovieTrailers(CInt(TMDBID), _MySettings.TMDBLanguage)
                     If IsNothing(trailers.youtube) OrElse trailers.youtube.Count = 0 Then
-                        Return alTrailers
+                        trailers = _TMDBApiE.GetMovieTrailers(CInt(TMDBID))
+                        If IsNothing(trailers.youtube) OrElse trailers.youtube.Count = 0 Then
+                            Return alTrailers
+                        End If
                     End If
+                    For Each YTb As V3.Youtube In trailers.youtube
+                        tLink = String.Format("http://www.youtube.com/watch?v={0}", YTb.source)
+                        tName = GetYouTubeTitle(tLink)
+                        alTrailers.Add(New Trailers With {.URL = tLink, .Description = tName})
+                    Next
                 End If
-                For Each YTb As V3.Youtube In trailers.youtube
-                    tLink = String.Format("http://www.youtube.com/watch?v={0}", YTb.source)
-                    tName = GetYouTubeTitle(tLink)
-                    alTrailers.Add(New Trailers With {.URL = tLink, .Description = tName})
-                Next
 
             Catch ex As Exception
                 Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
