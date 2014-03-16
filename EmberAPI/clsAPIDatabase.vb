@@ -398,6 +398,7 @@ Public Class Database
             Dim doAddColumnWatched As Boolean = False
             Dim doAddColumnDisplaySE As Boolean = False
             Dim doAddColumnMovies As Boolean = False
+            Dim doAddColumnTVBannerAndLandscape As Boolean = False
             Dim strlistSQLCommands As New List(Of String)
 
             SQLpathcommand.CommandText = "pragma table_info(TVEps);"
@@ -425,6 +426,7 @@ Public Class Database
             Catch ex As Exception
                 'TODO
             End Try
+
             SQLpathcommand.CommandText = "pragma table_info(Movies);"
             Try
                 doAddColumnMovies = True
@@ -434,6 +436,22 @@ Public Class Database
                         If SQLreader("name").ToString.ToLower = "efanartspath" Then
                             'Column does exist in current database of Ember --> asume: if one columns missing, all new mediainfo columns must be added
                             doAddColumnMovies = False
+                        End If
+                    End While
+                End Using
+            Catch ex As Exception
+                'TODO
+            End Try
+
+            SQLpathcommand.CommandText = "pragma table_info(TVShows);"
+            Try
+                doAddColumnTVBannerAndLandscape = True
+                Using SQLreader As SQLite.SQLiteDataReader = SQLpathcommand.ExecuteReader
+                    While SQLreader.Read
+                        'Debug.Print(SQLreader("name").ToString.ToLower())
+                        If SQLreader("name").ToString.ToLower = "hasbanner" Then
+                            'Column does exist in current database of Ember --> asume: if one columns missing, all new banner and landscape columns must be added
+                            doAddColumnTVBannerAndLandscape = False
                         End If
                     End While
                 End Using
@@ -464,6 +482,16 @@ Public Class Database
                 strlistSQLCommands.Add("alter table Movies add EThumbsPath text;")
                 strlistSQLCommands.Add("alter table Movies add HasEThumbs BOOL;")
                 strlistSQLCommands.Add("alter table Movies add HasEFanarts BOOL;")
+            End If
+            If doAddColumnTVBannerAndLandscape = True Then
+                strlistSQLCommands.Add("alter table TVShows add HasBanner BOOL;")
+                strlistSQLCommands.Add("alter table TVShows add BannerPath text;")
+                strlistSQLCommands.Add("alter table TVShows add HasLandscape BOOL;")
+                strlistSQLCommands.Add("alter table TVShows add LandscapePath text;")
+                strlistSQLCommands.Add("alter table TVSeason add HasBanner BOOL;")
+                strlistSQLCommands.Add("alter table TVSeason add BannerPath text;")
+                strlistSQLCommands.Add("alter table TVSeason add HasLandscape BOOL;")
+                strlistSQLCommands.Add("alter table TVSeason add LandscapePath text;")
             End If
 
             Using transaction As SQLite.SQLiteTransaction = _mediaDBConn.BeginTransaction()
