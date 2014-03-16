@@ -656,16 +656,21 @@ Public Class Enums
         SingleScrape = 0
         FullAuto = 1
         FullAsk = 2
-        UpdateAuto = 3
-        UpdateAsk = 4
-        CleanFolders = 6
-        NewAuto = 7
-        NewAsk = 8
-        MarkAuto = 9
-        MarkAsk = 10
-        FilterAuto = 11
-        FilterAsk = 12
-        CopyBD = 13
+        FullSkip = 3
+        UpdateAuto = 4
+        UpdateAsk = 5
+        UpdateSkip = 6
+        CleanFolders = 7
+        NewAuto = 8
+        NewAsk = 9
+        NewSkip = 10
+        MarkAuto = 11
+        MarkAsk = 12
+        MarkSkip = 13
+        FilterAuto = 14
+        FilterAsk = 15
+        FilterSkip = 16
+        CopyBackdrops = 17
         None = 99 ' 
     End Enum
 

@@ -1606,7 +1606,7 @@ Public Class frmMain
                                     Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error", False)
                                 End Try
                             Next
-                        Case Enums.ScrapeType.CopyBD 'TODO: check MovieBackdropsPath and VIDEO_TS parent
+                        Case Enums.ScrapeType.CopyBackdrops 'TODO: check MovieBackdropsPath and VIDEO_TS parent
                             Dim sPath As String = String.Empty
                             For Each drvRow As DataRow In Me.dtMedia.Rows
                                 Try
@@ -1652,7 +1652,7 @@ Public Class frmMain
                     End Select
 
 doCancel:
-                    If Not Args.scrapeType = Enums.ScrapeType.CopyBD Then
+                    If Not Args.scrapeType = Enums.ScrapeType.CopyBackdrops Then
                         SQLtransaction.Commit()
                     End If
                 End If
@@ -3334,7 +3334,7 @@ doCancel:
     End Sub
 
     Private Sub CopyExistingFanartToBackdropsFolderToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsBackdrops.Click, cmnuTrayToolsBackdrops.Click
-        Me.NonScrape(Enums.ScrapeType.CopyBD, Nothing)
+        Me.NonScrape(Enums.ScrapeType.CopyBackdrops, Nothing)
     End Sub
     ''' <summary>
     ''' Populate the form's Genre panel and picture box arrays with the 
@@ -6945,6 +6945,11 @@ doCancel:
         Me.MovieScrapeData(False, Enums.ScrapeType.FullAuto, Master.DefaultMovieOptions)
     End Sub
 
+    Private Sub mnuAllSkipAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllSkipAll.Click, cmnuTrayAllSkipAll.Click
+        Functions.SetScraperMod(Enums.ModType.All, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.FullSkip, Master.DefaultMovieOptions)
+    End Sub
+
     Private Sub mnuFilterAskAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAskAll.Click, cmnuTrayFilterAskAll.Click
         Functions.SetScraperMod(Enums.ModType.All, True)
         Me.MovieScrapeData(False, Enums.ScrapeType.FilterAsk, Master.DefaultMovieOptions)
@@ -7023,6 +7028,11 @@ doCancel:
     Private Sub mnuFilterAutoTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAutoTrailer.Click, cmnuTrayFilterAutoTrailer.Click
         Functions.SetScraperMod(Enums.ModType.Trailer, True)
         Me.MovieScrapeData(False, Enums.ScrapeType.FilterAuto, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub mnuFilterSkipAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterSkipAll.Click, cmnuTrayFilterSkipAll.Click
+        Functions.SetScraperMod(Enums.ModType.All, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.FilterSkip, Master.DefaultMovieOptions)
     End Sub
 
     Private Sub mnuMarkAskAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAskAll.Click, cmnuTrayMarkAskAll.Click
@@ -7110,6 +7120,11 @@ doCancel:
         Me.MovieScrapeData(False, Enums.ScrapeType.MarkAuto, Master.DefaultMovieOptions)
     End Sub
 
+    Private Sub mnuMarkSkipAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkSkipAll.Click, cmnuTrayMarkSkipAll.Click
+        Functions.SetScraperMod(Enums.ModType.All, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.MarkSkip, Master.DefaultMovieOptions)
+    End Sub
+
     Private Sub mnuMissAskAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAskAll.Click, cmnuTrayMissAskAll.Click
         Functions.SetScraperMod(Enums.ModType.All, True)
         Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAsk, Master.DefaultMovieOptions)
@@ -7178,6 +7193,11 @@ doCancel:
     Private Sub mnuMissAutoTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAutoTrailer.Click, cmnuTrayMissAutoTrailer.Click
         Functions.SetScraperMod(Enums.ModType.Trailer, True)
         Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAuto, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub mnuMissSkipAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissSkipAll.Click, cmnuTrayMissSkipAll.Click
+        Functions.SetScraperMod(Enums.ModType.All, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.UpdateSkip, Master.DefaultMovieOptions)
     End Sub
 
     Private Sub mnuNewAskAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAskAll.Click, cmnuTrayNewAskAll.Click
@@ -7258,6 +7278,11 @@ doCancel:
     Private Sub mnuNewAutoTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAutoTrailer.Click, cmnuTrayNewAutoTrailer.Click
         Functions.SetScraperMod(Enums.ModType.Trailer, True)
         Me.MovieScrapeData(False, Enums.ScrapeType.NewAuto, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub mnuNewSkipAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewSkipAll.Click, cmnuTrayNewSkipAll.Click
+        Functions.SetScraperMod(Enums.ModType.All, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.NewSkip, Master.DefaultMovieOptions)
     End Sub
 
     Private Sub Mono_Shown()
@@ -7379,14 +7404,14 @@ doCancel:
                 If Convert.ToBoolean(drvRow.Item(14)) Then Continue For
 
                 Select Case sType
-                    Case Enums.ScrapeType.NewAsk, Enums.ScrapeType.NewAuto
+                    Case Enums.ScrapeType.NewAsk, Enums.ScrapeType.NewAuto, Enums.ScrapeType.NewSkip
                         If Not Convert.ToBoolean(drvRow.Item(10)) Then Continue For
-                    Case Enums.ScrapeType.MarkAsk, Enums.ScrapeType.MarkAuto
+                    Case Enums.ScrapeType.MarkAsk, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.MarkSkip
                         If Not Convert.ToBoolean(drvRow.Item(11)) Then Continue For
-                    Case Enums.ScrapeType.FilterAsk, Enums.ScrapeType.FilterAuto
+                    Case Enums.ScrapeType.FilterAsk, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FilterSkip
                         Dim index As Integer = Me.bsMedia.Find("id", drvRow.Item(0))
                         If Not index >= 0 Then Continue For
-                    Case Enums.ScrapeType.UpdateAsk, Enums.ScrapeType.UpdateAuto
+                    Case Enums.ScrapeType.UpdateAsk, Enums.ScrapeType.UpdateAuto, Enums.ScrapeType.UpdateSkip
                         If Not ((Master.GlobalScrapeMod.Poster AndAlso Master.eSettings.MovieMissingPoster AndAlso PosterAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(4))) OrElse _
                                 (Master.GlobalScrapeMod.Fanart AndAlso Master.eSettings.MovieMissingFanart AndAlso FanartAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(5))) OrElse _
                                 (Master.GlobalScrapeMod.NFO AndAlso Master.eSettings.MovieMissingNFO AndAlso Not Convert.ToBoolean(drvRow.Item(6))) OrElse _
@@ -7417,22 +7442,32 @@ doCancel:
                 Me.tslLoading.Text = Master.eLang.GetString(127, "Scraping Media (All Movies - Ask):")
             Case Enums.ScrapeType.FullAuto
                 Me.tslLoading.Text = Master.eLang.GetString(128, "Scraping Media (All Movies - Auto):")
+            Case Enums.ScrapeType.FullSkip
+                Me.tslLoading.Text = Master.eLang.GetString(853, "Scraping Media (All Movies - Skip):")
             Case Enums.ScrapeType.UpdateAuto
                 Me.tslLoading.Text = Master.eLang.GetString(132, "Scraping Media (Movies Missing Items - Auto):")
             Case Enums.ScrapeType.UpdateAsk
                 Me.tslLoading.Text = Master.eLang.GetString(133, "Scraping Media (Movies Missing Items - Ask):")
+            Case Enums.ScrapeType.UpdateSkip
+                Me.tslLoading.Text = Master.eLang.GetString(1042, "Scraping Media (Movies Missing Items - Skip):")
             Case Enums.ScrapeType.NewAsk
                 Me.tslLoading.Text = Master.eLang.GetString(134, "Scraping Media (New Movies - Ask):")
             Case Enums.ScrapeType.NewAuto
                 Me.tslLoading.Text = Master.eLang.GetString(135, "Scraping Media (New Movies - Auto):")
+            Case Enums.ScrapeType.NewSkip
+                Me.tslLoading.Text = Master.eLang.GetString(1043, "Scraping Media (New Movies - Skip):")
             Case Enums.ScrapeType.MarkAsk
                 Me.tslLoading.Text = Master.eLang.GetString(136, "Scraping Media (Marked Movies - Ask):")
             Case Enums.ScrapeType.MarkAuto
                 Me.tslLoading.Text = Master.eLang.GetString(137, "Scraping Media (Marked Movies - Auto):")
+            Case Enums.ScrapeType.MarkSkip
+                Me.tslLoading.Text = Master.eLang.GetString(1044, "Scraping Media (Marked Movies - Skip):")
             Case Enums.ScrapeType.FilterAsk
                 Me.tslLoading.Text = Master.eLang.GetString(622, "Scraping Media (Current Filter - Ask):")
             Case Enums.ScrapeType.FilterAuto
                 Me.tslLoading.Text = Master.eLang.GetString(623, "Scraping Media (Current Filter - Auto):")
+            Case Enums.ScrapeType.FilterAuto
+                Me.tslLoading.Text = Master.eLang.GetString(1045, "Scraping Media (Current Filter - Skip):")
             Case Enums.ScrapeType.SingleScrape
                 Me.tslLoading.Text = Master.eLang.GetString(139, "Scraping:")
         End Select
@@ -7496,7 +7531,7 @@ doCancel:
                 Me.btnCancel.Text = Master.eLang.GetString(120, "Cancel Cleaner")
                 Me.lblCanceling.Text = Master.eLang.GetString(119, "Canceling File Cleaner...")
                 Me.tslLoading.Text = Master.eLang.GetString(129, "Cleaning Files:")
-            Case Enums.ScrapeType.CopyBD
+            Case Enums.ScrapeType.CopyBackdrops
                 Me.btnCancel.Text = Master.eLang.GetString(122, "Cancel Copy")
                 Me.lblCanceling.Text = Master.eLang.GetString(121, "Canceling Backdrop Copy...")
                 Me.tslLoading.Text = Master.eLang.GetString(130, "Copying Fanart to Backdrops Folder:")
@@ -8386,6 +8421,11 @@ doCancel:
         MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultMovieOptions)
     End Sub
 
+    Private Sub cmnuMovieReSelSkipAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelSkipAll.Click
+        Functions.SetScraperMod(Enums.ModType.All, True)
+        MovieScrapeData(True, Enums.ScrapeType.FullSkip, Master.DefaultMovieOptions)
+    End Sub
+
     Private Sub SelectEpisodeRow(ByVal iRow As Integer)
         Try
             If Not Convert.ToBoolean(Me.dgvTVEpisodes.Item(4, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvTVEpisodes.Item(5, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvTVEpisodes.Item(6, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvTVEpisodes.Item(22, iRow).Value) Then
@@ -9176,29 +9216,53 @@ doCancel:
                 .cmnuTrayFilterAsk.Text = .mnuAllAsk.Text
                 .cmnuMovieReSelAsk.Text = .mnuAllAsk.Text
 
+                ' Scrape Media Menu: Skip
+                .mnuAllSkip.Text = Master.eLang.GetString(1041, "Skip (Skip If More Than One Match)")
+                .mnuMissSkip.Text = .mnuAllSkip.Text
+                .mnuNewSkip.Text = .mnuAllSkip.Text
+                .mnuMarkSkip.Text = .mnuAllSkip.Text
+                .mnuFilterSkip.Text = .mnuAllSkip.Text
+                .cmnuTrayAllSkip.Text = .mnuAllSkip.Text
+                .cmnuTrayMissSkip.Text = .mnuAllSkip.Text
+                .cmnuTrayNewSkip.Text = .mnuAllSkip.Text
+                .cmnuTrayMarkSkip.Text = .mnuAllSkip.Text
+                .cmnuTrayFilterSkip.Text = .mnuAllSkip.Text
+                .cmnuMovieReSelSkip.Text = .mnuAllSkip.Text
+
                 ' Scrape Media Content: All Items
                 .mnuAllAutoAll.Text = Master.eLang.GetString(70, "All Items")
                 .mnuAllAskAll.Text = mnuAllAutoAll.Text
+                .mnuAllSkipAll.Text = mnuAllAutoAll.Text
                 .mnuMissAutoAll.Text = .mnuAllAutoAll.Text
                 .mnuMissAskAll.Text = .mnuAllAutoAll.Text
+                .mnuMissSkipAll.Text = .mnuAllAutoAll.Text
                 .mnuNewAutoAll.Text = .mnuAllAutoAll.Text
                 .mnuNewAskAll.Text = .mnuAllAutoAll.Text
+                .mnuNewSkipAll.Text = .mnuAllAutoAll.Text
                 .mnuMarkAutoAll.Text = .mnuAllAutoAll.Text
                 .mnuMarkAskAll.Text = .mnuAllAutoAll.Text
+                .mnuMarkSkipAll.Text = .mnuAllAutoAll.Text
                 .mnuFilterAutoAll.Text = .mnuAllAutoAll.Text
                 .mnuFilterAskAll.Text = .mnuAllAutoAll.Text
+                .mnuFilterSkipAll.Text = .mnuAllAutoAll.Text
                 .cmnuTrayAllAutoAll.Text = .mnuAllAutoAll.Text
                 .cmnuTrayAllAskAll.Text = mnuAllAutoAll.Text
+                .cmnuTrayAllSkipAll.Text = mnuAllAutoAll.Text
                 .cmnuTrayMissAutoAll.Text = .mnuAllAutoAll.Text
                 .cmnuTrayMissAskAll.Text = .mnuAllAutoAll.Text
+                .cmnuTrayMissSkipAll.Text = .mnuAllAutoAll.Text
                 .cmnuTrayNewAutoAll.Text = .mnuAllAutoAll.Text
                 .cmnuTrayNewAskAll.Text = .mnuAllAutoAll.Text
+                .cmnuTrayNewSkipAll.Text = .mnuAllAutoAll.Text
                 .cmnuTrayMarkAutoAll.Text = .mnuAllAutoAll.Text
                 .cmnuTrayMarkAskAll.Text = .mnuAllAutoAll.Text
+                .cmnuTrayMarkSkipAll.Text = .mnuAllAutoAll.Text
                 .cmnuTrayFilterAutoAll.Text = .mnuAllAutoAll.Text
                 .cmnuTrayFilterAskAll.Text = .mnuAllAutoAll.Text
+                .cmnuTrayFilterSkipAll.Text = .mnuAllAutoAll.Text
                 .cmnuMovieReSelAskAll.Text = .mnuAllAutoAll.Text
                 .cmnuMovieReSelAutoAll.Text = .mnuAllAutoAll.Text
+                .cmnuMovieReSelSkipAll.Text = .mnuAllAutoAll.Text
 
                 ' Scrape Media Content: NFO
                 .mnuAllAutoNfo.Text = Master.eLang.GetString(71, "NFO Only")

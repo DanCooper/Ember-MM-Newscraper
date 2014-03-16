@@ -1126,4 +1126,9 @@
 	<string id="1038">Manual CharacterArt Entry</string>
 	<string id="1039">Manual ClearArt Entry</string>
 	<string id="1040">Manual ClearLogo Entry</string>
+	<string id="1041">Skip (Skip If More Than One Match)</string>
+	<string id="1042">Scraping Media (Movies Missing Items - Skip):</string>
+	<string id="1043">Scraping Media (New Movies - Skip):</string>
+	<string id="1044">Scraping Media (Marked Movies - Skip):</string>
+	<string id="1045">Scraping Media (Current Filter - Skip):</string>
 </strings>

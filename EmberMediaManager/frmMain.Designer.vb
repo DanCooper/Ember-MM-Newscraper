@@ -115,6 +115,8 @@ Partial Class frmMain
         Me.cmnuMovieReSelAskTrailer = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieReSelAskMetaData = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieReSelAskActor = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuMovieReSelSkip = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuMovieReSelSkipAll = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieChange = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuSep2 = New System.Windows.Forms.ToolStripSeparator()
         Me.cmnuMovieOpenFolder = New System.Windows.Forms.ToolStripMenuItem()
@@ -314,6 +316,8 @@ Partial Class frmMain
         Me.mnuAllAskTrailer = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuAllAskMI = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuAllAskActor = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuAllSkip = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuAllSkipAll = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuMiss = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuMissAuto = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuMissAutoAll = New System.Windows.Forms.ToolStripMenuItem()
@@ -333,6 +337,8 @@ Partial Class frmMain
         Me.mnuMissAskEFanarts = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuMissAskTrailer = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuMissAskActor = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuMissSkip = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuMissSkipAll = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuNew = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuNewAuto = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuNewAutoAll = New System.Windows.Forms.ToolStripMenuItem()
@@ -354,6 +360,8 @@ Partial Class frmMain
         Me.mnuNewAskTrailer = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuNewAskMI = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuNewAskActor = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuNewSkip = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuNewSkipAll = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuMark = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuMarkAuto = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuMarkAutoAll = New System.Windows.Forms.ToolStripMenuItem()
@@ -375,6 +383,8 @@ Partial Class frmMain
         Me.mnuMarkAskTrailer = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuMarkAskMI = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuMarkAskActor = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuMarkSkip = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuMarkSkipAll = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuFilter = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuFilterAuto = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuFilterAutoAll = New System.Windows.Forms.ToolStripMenuItem()
@@ -396,6 +406,8 @@ Partial Class frmMain
         Me.mnuFilterAskTrailer = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuFilterAskMI = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuFilterAskActor = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuFilterSkip = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuFilterSkipAll = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuCustom = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuUpdate = New System.Windows.Forms.ToolStripSplitButton()
         Me.mnuUpdateMovies = New System.Windows.Forms.ToolStripMenuItem()
@@ -442,6 +454,8 @@ Partial Class frmMain
         Me.cmnuTrayAllAskTrailer = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayAllAskMI = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayAllAskActor = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuTrayAllSkip = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuTrayAllSkipAll = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayMiss = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayMissAuto = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayMissAutoAll = New System.Windows.Forms.ToolStripMenuItem()
@@ -461,6 +475,8 @@ Partial Class frmMain
         Me.cmnuTrayMissAskEFanarts = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayMissAskTrailer = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayMissAskActor = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuTrayMissSkip = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuTrayMissSkipAll = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayNew = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayNewAuto = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayNewAutoAll = New System.Windows.Forms.ToolStripMenuItem()
@@ -482,6 +498,8 @@ Partial Class frmMain
         Me.cmnuTrayNewAskTrailer = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayNewAskMI = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayNewAskActor = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuTrayNewSkip = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuTrayNewSkipAll = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayMark = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayMarkAuto = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayMarkAutoAll = New System.Windows.Forms.ToolStripMenuItem()
@@ -503,6 +521,8 @@ Partial Class frmMain
         Me.cmnuTrayMarkAskTrailer = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayMarkAskMI = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayMarkAskActor = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuTrayMarkSkip = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuTrayMarkSkipAll = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayFilter = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayFilterAuto = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayFilterAutoAll = New System.Windows.Forms.ToolStripMenuItem()
@@ -524,6 +544,8 @@ Partial Class frmMain
         Me.cmnuTrayFilterAskTrailer = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayFilterAskMI = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayFilterAskActor = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuTrayFilterSkip = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuTrayFilterSkipAll = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayCustom = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayMediaCenters = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator23 = New System.Windows.Forms.ToolStripSeparator()
@@ -1222,7 +1244,7 @@ Partial Class frmMain
         '
         'cmnuMovieReSel
         '
-        Me.cmnuMovieReSel.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuMovieReSelAuto, Me.cmnuMovieReSelAsk})
+        Me.cmnuMovieReSel.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuMovieReSelAuto, Me.cmnuMovieReSelAsk, Me.cmnuMovieReSelSkip})
         Me.cmnuMovieReSel.Image = CType(resources.GetObject("cmnuMovieReSel.Image"), System.Drawing.Image)
         Me.cmnuMovieReSel.Name = "cmnuMovieReSel"
         Me.cmnuMovieReSel.Size = New System.Drawing.Size(246, 22)
@@ -1349,6 +1371,19 @@ Partial Class frmMain
         Me.cmnuMovieReSelAskActor.Name = "cmnuMovieReSelAskActor"
         Me.cmnuMovieReSelAskActor.Size = New System.Drawing.Size(178, 22)
         Me.cmnuMovieReSelAskActor.Text = "Actor Thumbs Only"
+        '
+        'cmnuMovieReSelSkip
+        '
+        Me.cmnuMovieReSelSkip.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuMovieReSelSkipAll})
+        Me.cmnuMovieReSelSkip.Name = "cmnuMovieReSelSkip"
+        Me.cmnuMovieReSelSkip.Size = New System.Drawing.Size(271, 22)
+        Me.cmnuMovieReSelSkip.Text = "Skip (Skip If More Than One Match)"
+        '
+        'cmnuMovieReSelSkipAll
+        '
+        Me.cmnuMovieReSelSkipAll.Name = "cmnuMovieReSelSkipAll"
+        Me.cmnuMovieReSelSkipAll.Size = New System.Drawing.Size(152, 22)
+        Me.cmnuMovieReSelSkipAll.Text = "All Items"
         '
         'cmnuMovieChange
         '
@@ -3254,7 +3289,7 @@ Partial Class frmMain
         '
         'mnuAll
         '
-        Me.mnuAll.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuAllAuto, Me.mnuAllAsk})
+        Me.mnuAll.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuAllAuto, Me.mnuAllAsk, Me.mnuAllSkip})
         Me.mnuAll.Name = "mnuAll"
         Me.mnuAll.Size = New System.Drawing.Size(183, 22)
         Me.mnuAll.Text = "All Movies"
@@ -3381,9 +3416,22 @@ Partial Class frmMain
         Me.mnuAllAskActor.Size = New System.Drawing.Size(171, 22)
         Me.mnuAllAskActor.Text = "Actor Thumbs Only"
         '
+        'mnuAllSkip
+        '
+        Me.mnuAllSkip.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuAllSkipAll})
+        Me.mnuAllSkip.Name = "mnuAllSkip"
+        Me.mnuAllSkip.Size = New System.Drawing.Size(264, 22)
+        Me.mnuAllSkip.Text = "Skip (Skip If More Than One Match)"
+        '
+        'mnuAllSkipAll
+        '
+        Me.mnuAllSkipAll.Name = "mnuAllSkipAll"
+        Me.mnuAllSkipAll.Size = New System.Drawing.Size(117, 22)
+        Me.mnuAllSkipAll.Text = "All Items"
+        '
         'mnuMiss
         '
-        Me.mnuMiss.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMissAuto, Me.mnuMissAsk})
+        Me.mnuMiss.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMissAuto, Me.mnuMissAsk, Me.mnuMissSkip})
         Me.mnuMiss.Name = "mnuMiss"
         Me.mnuMiss.Size = New System.Drawing.Size(183, 22)
         Me.mnuMiss.Text = "Movies Missing Items"
@@ -3498,9 +3546,22 @@ Partial Class frmMain
         Me.mnuMissAskActor.Size = New System.Drawing.Size(171, 22)
         Me.mnuMissAskActor.Text = "Actor Thumbs Only"
         '
+        'mnuMissSkip
+        '
+        Me.mnuMissSkip.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMissSkipAll})
+        Me.mnuMissSkip.Name = "mnuMissSkip"
+        Me.mnuMissSkip.Size = New System.Drawing.Size(264, 22)
+        Me.mnuMissSkip.Text = "Skip (Skip If More Than One Match)"
+        '
+        'mnuMissSkipAll
+        '
+        Me.mnuMissSkipAll.Name = "mnuMissSkipAll"
+        Me.mnuMissSkipAll.Size = New System.Drawing.Size(117, 22)
+        Me.mnuMissSkipAll.Text = "All Items"
+        '
         'mnuNew
         '
-        Me.mnuNew.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuNewAuto, Me.mnuNewAsk})
+        Me.mnuNew.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuNewAuto, Me.mnuNewAsk, Me.mnuNewSkip})
         Me.mnuNew.Name = "mnuNew"
         Me.mnuNew.Size = New System.Drawing.Size(183, 22)
         Me.mnuNew.Text = "New Movies"
@@ -3627,9 +3688,22 @@ Partial Class frmMain
         Me.mnuNewAskActor.Size = New System.Drawing.Size(171, 22)
         Me.mnuNewAskActor.Text = "Actor Thumbs Only"
         '
+        'mnuNewSkip
+        '
+        Me.mnuNewSkip.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuNewSkipAll})
+        Me.mnuNewSkip.Name = "mnuNewSkip"
+        Me.mnuNewSkip.Size = New System.Drawing.Size(264, 22)
+        Me.mnuNewSkip.Text = "Skip (Skip If More Than One Match)"
+        '
+        'mnuNewSkipAll
+        '
+        Me.mnuNewSkipAll.Name = "mnuNewSkipAll"
+        Me.mnuNewSkipAll.Size = New System.Drawing.Size(117, 22)
+        Me.mnuNewSkipAll.Text = "All Items"
+        '
         'mnuMark
         '
-        Me.mnuMark.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMarkAuto, Me.mnuMarkAsk})
+        Me.mnuMark.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMarkAuto, Me.mnuMarkAsk, Me.mnuMarkSkip})
         Me.mnuMark.Name = "mnuMark"
         Me.mnuMark.Size = New System.Drawing.Size(183, 22)
         Me.mnuMark.Text = "Marked Movies"
@@ -3756,9 +3830,22 @@ Partial Class frmMain
         Me.mnuMarkAskActor.Size = New System.Drawing.Size(171, 22)
         Me.mnuMarkAskActor.Text = "Actor Thumbs Only"
         '
+        'mnuMarkSkip
+        '
+        Me.mnuMarkSkip.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMarkSkipAll})
+        Me.mnuMarkSkip.Name = "mnuMarkSkip"
+        Me.mnuMarkSkip.Size = New System.Drawing.Size(264, 22)
+        Me.mnuMarkSkip.Text = "Skip (Skip If More Than One Match)"
+        '
+        'mnuMarkSkipAll
+        '
+        Me.mnuMarkSkipAll.Name = "mnuMarkSkipAll"
+        Me.mnuMarkSkipAll.Size = New System.Drawing.Size(117, 22)
+        Me.mnuMarkSkipAll.Text = "All Items"
+        '
         'mnuFilter
         '
-        Me.mnuFilter.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuFilterAuto, Me.mnuFilterAsk})
+        Me.mnuFilter.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuFilterAuto, Me.mnuFilterAsk, Me.mnuFilterSkip})
         Me.mnuFilter.Name = "mnuFilter"
         Me.mnuFilter.Size = New System.Drawing.Size(183, 22)
         Me.mnuFilter.Text = "Current Filter"
@@ -3884,6 +3971,19 @@ Partial Class frmMain
         Me.mnuFilterAskActor.Name = "mnuFilterAskActor"
         Me.mnuFilterAskActor.Size = New System.Drawing.Size(171, 22)
         Me.mnuFilterAskActor.Text = "Actor Thumbs Only"
+        '
+        'mnuFilterSkip
+        '
+        Me.mnuFilterSkip.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuFilterSkipAll})
+        Me.mnuFilterSkip.Name = "mnuFilterSkip"
+        Me.mnuFilterSkip.Size = New System.Drawing.Size(264, 22)
+        Me.mnuFilterSkip.Text = "Skip (Skip If More Than One Match)"
+        '
+        'mnuFilterSkipAll
+        '
+        Me.mnuFilterSkipAll.Name = "mnuFilterSkipAll"
+        Me.mnuFilterSkipAll.Size = New System.Drawing.Size(117, 22)
+        Me.mnuFilterSkipAll.Text = "All Items"
         '
         'mnuCustom
         '
@@ -4035,7 +4135,7 @@ Partial Class frmMain
         '
         'cmnuTrayAll
         '
-        Me.cmnuTrayAll.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayAllAuto, Me.cmnuTrayAllAsk})
+        Me.cmnuTrayAll.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayAllAuto, Me.cmnuTrayAllAsk, Me.cmnuTrayAllSkip})
         Me.cmnuTrayAll.Name = "cmnuTrayAll"
         Me.cmnuTrayAll.Size = New System.Drawing.Size(188, 22)
         Me.cmnuTrayAll.Text = "All Movies"
@@ -4162,9 +4262,22 @@ Partial Class frmMain
         Me.cmnuTrayAllAskActor.Size = New System.Drawing.Size(178, 22)
         Me.cmnuTrayAllAskActor.Text = "Actor Thumbs Only"
         '
+        'cmnuTrayAllSkip
+        '
+        Me.cmnuTrayAllSkip.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayAllSkipAll})
+        Me.cmnuTrayAllSkip.Name = "cmnuTrayAllSkip"
+        Me.cmnuTrayAllSkip.Size = New System.Drawing.Size(271, 22)
+        Me.cmnuTrayAllSkip.Text = "Skip (Skip If More Than One Match)"
+        '
+        'cmnuTrayAllSkipAll
+        '
+        Me.cmnuTrayAllSkipAll.Name = "cmnuTrayAllSkipAll"
+        Me.cmnuTrayAllSkipAll.Size = New System.Drawing.Size(120, 22)
+        Me.cmnuTrayAllSkipAll.Text = "All Items"
+        '
         'cmnuTrayMiss
         '
-        Me.cmnuTrayMiss.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayMissAuto, Me.cmnuTrayMissAsk})
+        Me.cmnuTrayMiss.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayMissAuto, Me.cmnuTrayMissAsk, Me.cmnuTrayMissSkip})
         Me.cmnuTrayMiss.Name = "cmnuTrayMiss"
         Me.cmnuTrayMiss.Size = New System.Drawing.Size(188, 22)
         Me.cmnuTrayMiss.Text = "Movies Missing Items"
@@ -4279,9 +4392,22 @@ Partial Class frmMain
         Me.cmnuTrayMissAskActor.Size = New System.Drawing.Size(178, 22)
         Me.cmnuTrayMissAskActor.Text = "Actor Thumbs Only"
         '
+        'cmnuTrayMissSkip
+        '
+        Me.cmnuTrayMissSkip.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayMissSkipAll})
+        Me.cmnuTrayMissSkip.Name = "cmnuTrayMissSkip"
+        Me.cmnuTrayMissSkip.Size = New System.Drawing.Size(271, 22)
+        Me.cmnuTrayMissSkip.Text = "Skip (Skip If More Than One Match)"
+        '
+        'cmnuTrayMissSkipAll
+        '
+        Me.cmnuTrayMissSkipAll.Name = "cmnuTrayMissSkipAll"
+        Me.cmnuTrayMissSkipAll.Size = New System.Drawing.Size(120, 22)
+        Me.cmnuTrayMissSkipAll.Text = "All Items"
+        '
         'cmnuTrayNew
         '
-        Me.cmnuTrayNew.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayNewAuto, Me.cmnuTrayNewAsk})
+        Me.cmnuTrayNew.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayNewAuto, Me.cmnuTrayNewAsk, Me.cmnuTrayNewSkip})
         Me.cmnuTrayNew.Name = "cmnuTrayNew"
         Me.cmnuTrayNew.Size = New System.Drawing.Size(188, 22)
         Me.cmnuTrayNew.Text = "New Movies"
@@ -4408,9 +4534,22 @@ Partial Class frmMain
         Me.cmnuTrayNewAskActor.Size = New System.Drawing.Size(178, 22)
         Me.cmnuTrayNewAskActor.Text = "Actor Thumbs Only"
         '
+        'cmnuTrayNewSkip
+        '
+        Me.cmnuTrayNewSkip.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayNewSkipAll})
+        Me.cmnuTrayNewSkip.Name = "cmnuTrayNewSkip"
+        Me.cmnuTrayNewSkip.Size = New System.Drawing.Size(271, 22)
+        Me.cmnuTrayNewSkip.Text = "Skip (Skip If More Than One Match)"
+        '
+        'cmnuTrayNewSkipAll
+        '
+        Me.cmnuTrayNewSkipAll.Name = "cmnuTrayNewSkipAll"
+        Me.cmnuTrayNewSkipAll.Size = New System.Drawing.Size(120, 22)
+        Me.cmnuTrayNewSkipAll.Text = "All Items"
+        '
         'cmnuTrayMark
         '
-        Me.cmnuTrayMark.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayMarkAuto, Me.cmnuTrayMarkAsk})
+        Me.cmnuTrayMark.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayMarkAuto, Me.cmnuTrayMarkAsk, Me.cmnuTrayMarkSkip})
         Me.cmnuTrayMark.Name = "cmnuTrayMark"
         Me.cmnuTrayMark.Size = New System.Drawing.Size(188, 22)
         Me.cmnuTrayMark.Text = "Marked Movies"
@@ -4537,9 +4676,22 @@ Partial Class frmMain
         Me.cmnuTrayMarkAskActor.Size = New System.Drawing.Size(178, 22)
         Me.cmnuTrayMarkAskActor.Text = "Actor Thumbs Only"
         '
+        'cmnuTrayMarkSkip
+        '
+        Me.cmnuTrayMarkSkip.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayMarkSkipAll})
+        Me.cmnuTrayMarkSkip.Name = "cmnuTrayMarkSkip"
+        Me.cmnuTrayMarkSkip.Size = New System.Drawing.Size(271, 22)
+        Me.cmnuTrayMarkSkip.Text = "Skip (Skip If More Than One Match)"
+        '
+        'cmnuTrayMarkSkipAll
+        '
+        Me.cmnuTrayMarkSkipAll.Name = "cmnuTrayMarkSkipAll"
+        Me.cmnuTrayMarkSkipAll.Size = New System.Drawing.Size(120, 22)
+        Me.cmnuTrayMarkSkipAll.Text = "All Items"
+        '
         'cmnuTrayFilter
         '
-        Me.cmnuTrayFilter.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayFilterAuto, Me.cmnuTrayFilterAsk})
+        Me.cmnuTrayFilter.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayFilterAuto, Me.cmnuTrayFilterAsk, Me.cmnuTrayFilterSkip})
         Me.cmnuTrayFilter.Name = "cmnuTrayFilter"
         Me.cmnuTrayFilter.Size = New System.Drawing.Size(188, 22)
         Me.cmnuTrayFilter.Text = "Current Filter"
@@ -4665,6 +4817,19 @@ Partial Class frmMain
         Me.cmnuTrayFilterAskActor.Name = "cmnuTrayFilterAskActor"
         Me.cmnuTrayFilterAskActor.Size = New System.Drawing.Size(178, 22)
         Me.cmnuTrayFilterAskActor.Text = "Actor Thumbs Only"
+        '
+        'cmnuTrayFilterSkip
+        '
+        Me.cmnuTrayFilterSkip.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayFilterSkipAll})
+        Me.cmnuTrayFilterSkip.Name = "cmnuTrayFilterSkip"
+        Me.cmnuTrayFilterSkip.Size = New System.Drawing.Size(271, 22)
+        Me.cmnuTrayFilterSkip.Text = "Skip (Skip If More Than One Match)"
+        '
+        'cmnuTrayFilterSkipAll
+        '
+        Me.cmnuTrayFilterSkipAll.Name = "cmnuTrayFilterSkipAll"
+        Me.cmnuTrayFilterSkipAll.Size = New System.Drawing.Size(120, 22)
+        Me.cmnuTrayFilterSkipAll.Text = "All Items"
         '
         'cmnuTrayCustom
         '
@@ -5483,4 +5648,26 @@ Partial Class frmMain
     Friend WithEvents mnuMainToolsOfflineHolder As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuTrayToolsOfflineHolder As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnuVersion As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuMovieReSelSkip As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuMovieReSelSkipAll As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuAllSkip As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuAllSkipAll As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuMissSkip As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuMissSkipAll As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuNewSkip As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuNewSkipAll As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuMarkSkip As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuMarkSkipAll As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuFilterSkip As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuFilterSkipAll As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuTrayAllSkip As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuTrayAllSkipAll As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuTrayMissSkip As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuTrayMissSkipAll As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuTrayNewSkip As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuTrayNewSkipAll As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuTrayMarkSkip As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuTrayMarkSkipAll As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuTrayFilterSkip As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuTrayFilterSkipAll As System.Windows.Forms.ToolStripMenuItem
 End Class
