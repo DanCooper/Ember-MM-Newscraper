@@ -1137,11 +1137,9 @@ Public Class dlgSettings
             Me.chkMovieTrailerDeleteExisting.Checked = False
             Me.cbMovieTrailerMinQual.Enabled = False
             Me.cbMovieTrailerPrefQual.Enabled = False
-            'Me.cbTrailerQuality.SelectedIndex = -1
         Else
             Me.cbMovieTrailerMinQual.Enabled = True
             Me.cbMovieTrailerPrefQual.Enabled = True
-            'Me.cbTrailerQuality.SelectedValue = Master.eSettings.PreferredTrailerQuality
         End If
     End Sub
 
@@ -2357,8 +2355,8 @@ Public Class dlgSettings
                 Me.cbMovieFanartPrefSize.SelectedIndex = .MovieFanartPrefSize
                 Me.cbMovieLanguageOverlay.SelectedItem = If(String.IsNullOrEmpty(.MovieGeneralFlagLang), Master.eLang.Disabled, .MovieGeneralFlagLang)
                 Me.cbMoviePosterPrefSize.SelectedIndex = .MoviePosterPrefSize
-                Me.cbMovieTrailerMinQual.SelectedValue = .MovieTrailerMinQual
-                Me.cbMovieTrailerPrefQual.SelectedValue = .MovieTrailerPrefQual
+                Me.cbMovieTrailerMinQual.SelectedIndex = .MovieTrailerMinQual
+                Me.cbMovieTrailerPrefQual.SelectedIndex = .MovieTrailerPrefQual
                 Me.cbTVASBannerPrefType.SelectedIndex = .TVASBannerPrefType
                 Me.cbTVASFanartPrefSize.SelectedIndex = .TVASFanartPrefSize
                 Me.cbTVASPosterPrefSize.SelectedIndex = .TVASPosterPrefSize
@@ -3842,8 +3840,8 @@ Public Class dlgSettings
                 .MovieTrailerDeleteExisting = Me.chkMovieTrailerDeleteExisting.Checked
                 .MovieTrailerEnable = Me.chkMovieTrailerEnable.Checked
                 .MovieTrailerOverwrite = Me.chkMovieTrailerOverwrite.Checked
-                .MovieTrailerMinQual = DirectCast(Me.cbMovieTrailerMinQual.SelectedValue, Enums.TrailerQuality)
-                .MovieTrailerPrefQual = DirectCast(Me.cbMovieTrailerPrefQual.SelectedValue, Enums.TrailerQuality)
+                .MovieTrailerMinQual = DirectCast(Me.cbMovieTrailerMinQual.SelectedIndex, Enums.TrailerQuality)
+                .MovieTrailerPrefQual = DirectCast(Me.cbMovieTrailerPrefQual.SelectedIndex, Enums.TrailerQuality)
                 .MovieWatchedCol = Me.chkMovieWatchedCol.Checked
                 .TVASBannerHeight = If(Not String.IsNullOrEmpty(Me.txtTVASBannerHeight.Text), Convert.ToInt32(Me.txtTVASBannerHeight.Text), 0)
                 .TVASBannerOverwrite = Me.chkTVASBannerOverwrite.Checked
