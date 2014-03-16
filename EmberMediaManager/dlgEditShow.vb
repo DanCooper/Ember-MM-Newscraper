@@ -915,7 +915,7 @@ Public Class dlgEditShow
 
             Master.DB.SaveTVShowToDB(Master.currShow, False, False, True)
 
-            If Master.eSettings.TVASPosterEnabled Then Master.DB.SaveTVSeasonToDB(Master.currShow, False)
+            If Master.eSettings.TVASAnyEnabled Then Master.DB.SaveTVSeasonToDB(Master.currShow, False)
 
         Catch ex As Exception
             Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")

@@ -905,116 +905,174 @@ Namespace FileUtils
             Return FilenameList
         End Function
 
-        Public Shared Function TVShow(ByVal mPath As String, ByVal mType As Enums.TVImageType, Optional ByVal mSeason As Integer = -1) As List(Of String)
+        Public Shared Function TVEpisode(ByVal EpisodePath As String, ByVal mType As Enums.TVImageType, Optional ByVal mSeason As Integer = -1) As List(Of String)
             Dim FilenameList As New List(Of String)
 
-            Dim fPath As String = mPath
-            Dim ePath As String = FileUtils.Common.RemoveExtFromPath(mPath)
-
+            Dim fEpisodePath As String = FileUtils.Common.RemoveExtFromPath(EpisodePath)
             Dim sSeason As String = mSeason.ToString.PadLeft(2, Convert.ToChar("0"))
 
             Select Case mType
-                Case Enums.TVImageType.AllSeasonsBanner
-                    With Master.eSettings
-                        If .TVUseFrodo AndAlso .TVSeasonBannerFrodo Then FilenameList.Add(Path.Combine(fPath, "season-all-banner.jpg"))
-                    End With
-
-                Case Enums.TVImageType.AllSeasonsFanart
-                    With Master.eSettings
-                        If .TVUseFrodo AndAlso .TVSeasonFanartFrodo Then FilenameList.Add(Path.Combine(fPath, "season-all-fanart.jpg"))
-                    End With
-
-                Case Enums.TVImageType.AllSeasonsLandscape
-                    With Master.eSettings
-                        If .TVUseFrodo AndAlso .TVSeasonLandscapeXBMC Then FilenameList.Add(Path.Combine(fPath, "season-all-landscape.jpg"))
-                    End With
-
-                Case Enums.TVImageType.AllSeasonsPoster
-                    With Master.eSettings
-                        If .TVUseFrodo AndAlso .TVSeasonPosterFrodo Then FilenameList.Add(Path.Combine(fPath, "season-all-poster.jpg"))
-                    End With
-
                 Case Enums.TVImageType.EpisodeFanart
                     With Master.eSettings
-                        If .TVUseFrodo AndAlso .TVEpisodePosterFrodo Then FilenameList.Add(String.Concat(ePath, "-fanart.jpg"))
+                        If .TVUseFrodo AndAlso .TVEpisodePosterFrodo Then FilenameList.Add(String.Concat(fEpisodePath, "-fanart.jpg"))
                     End With
 
                 Case Enums.TVImageType.EpisodePoster
                     With Master.eSettings
-                        If .TVUseFrodo AndAlso .TVEpisodePosterFrodo Then FilenameList.Add(String.Concat(ePath, "-thumb.jpg"))
+                        If .TVUseFrodo AndAlso .TVEpisodePosterFrodo Then FilenameList.Add(String.Concat(fEpisodePath, "-thumb.jpg"))
+                        If .TVUseYAMJ AndAlso .TVEpisodePosterYAMJ Then FilenameList.Add(String.Concat(fEpisodePath, ".videoimage.jpg"))
                     End With
+            End Select
 
+            FilenameList = FilenameList.Distinct().ToList() 'remove double entries
+            Return FilenameList
+        End Function
+
+        Public Shared Function TVSeason(ByVal ShowPath As String, ByVal SeasonPath As String, ByVal mSeason As Integer, ByVal FirstEpisode As String, ByVal mType As Enums.TVImageType) As List(Of String)
+            Dim FilenameList As New List(Of String)
+            Dim bInside As Boolean = False
+
+            Dim fEpsiodePath As String = Path.Combine(Directory.GetParent(FirstEpisode).FullName, Path.GetFileNameWithoutExtension(FirstEpisode))
+            Dim fSeasonPath As String = SeasonPath
+            Dim fShowPath As String = ShowPath
+            Dim sSeason As String = mSeason.ToString.PadLeft(2, Convert.ToChar("0"))
+            Dim fSeasonFolder As String = Path.GetFileName(fSeasonPath)
+
+            'checks if there are separate season folders
+            If Not String.IsNullOrEmpty(fSeasonPath) AndAlso Not fSeasonPath = fShowPath Then
+                bInside = True
+            End If
+
+            Select Case mType
                 Case Enums.TVImageType.SeasonBanner
                     With Master.eSettings
                         If mSeason = 0 Then 'season specials
-                            If .TVUseFrodo AndAlso .TVSeasonFanartFrodo Then FilenameList.Add(Path.Combine(fPath, "season-specials-banner.jpg"))
+                            If .TVUseFrodo AndAlso .TVSeasonFanartFrodo Then FilenameList.Add(Path.Combine(fShowPath, "season-specials-banner.jpg"))
+                            If .TVUseYAMJ AndAlso .TVSeasonBannerYAMJ AndAlso bInside Then FilenameList.Add(Path.Combine(fSeasonPath, String.Concat(fSeasonFolder, ".banner.jpg")))
+                            If .TVUseYAMJ AndAlso .TVSeasonBannerYAMJ AndAlso Not bInside Then
+                                FilenameList.Add(String.Concat(fEpsiodePath, ".banner.jpg"))
+                            End If
                         Else
-                            If .TVUseFrodo AndAlso .TVSeasonBannerFrodo Then FilenameList.Add(Path.Combine(fPath, String.Format("season{0}-banner.jpg", sSeason)))
+                            If .TVUseFrodo AndAlso .TVSeasonBannerFrodo Then FilenameList.Add(Path.Combine(fShowPath, String.Format("season{0}-banner.jpg", sSeason)))
+                            If .TVUseYAMJ AndAlso .TVSeasonBannerYAMJ AndAlso bInside Then FilenameList.Add(Path.Combine(fSeasonPath, String.Concat(fSeasonFolder, ".banner.jpg")))
+                            If .TVUseYAMJ AndAlso .TVSeasonBannerYAMJ AndAlso Not bInside Then
+                                FilenameList.Add(String.Concat(fEpsiodePath, ".banner.jpg"))
+                            End If
                         End If
                     End With
 
                 Case Enums.TVImageType.SeasonFanart
                     With Master.eSettings
                         If mSeason = 0 Then 'season specials
-                            If .TVUseFrodo AndAlso .TVSeasonFanartFrodo Then FilenameList.Add(Path.Combine(fPath, "season-specials-fanart.jpg"))
+                            If .TVUseFrodo AndAlso .TVSeasonFanartFrodo Then FilenameList.Add(Path.Combine(fShowPath, "season-specials-fanart.jpg"))
+                            If .TVUseYAMJ AndAlso .TVSeasonFanartYAMJ AndAlso bInside Then FilenameList.Add(Path.Combine(fSeasonPath, String.Concat(fSeasonFolder, ".fanart.jpg")))
+                            If .TVUseYAMJ AndAlso .TVSeasonFanartYAMJ AndAlso Not bInside Then
+                                FilenameList.Add(String.Concat(fEpsiodePath, ".fanart.jpg"))
+                            End If
                         Else
-                            If .TVUseFrodo AndAlso .TVSeasonFanartFrodo Then FilenameList.Add(Path.Combine(fPath, String.Format("season{0}-fanart.jpg", sSeason)))
+                            If .TVUseFrodo AndAlso .TVSeasonFanartFrodo Then FilenameList.Add(Path.Combine(fShowPath, String.Format("season{0}-fanart.jpg", sSeason)))
+                            If .TVUseYAMJ AndAlso .TVSeasonFanartYAMJ AndAlso bInside Then FilenameList.Add(Path.Combine(fSeasonPath, String.Concat(fSeasonFolder, ".fanart.jpg")))
+                            If .TVUseYAMJ AndAlso .TVSeasonFanartYAMJ AndAlso Not bInside Then
+                                FilenameList.Add(String.Concat(fEpsiodePath, ".fanart.jpg"))
+                            End If
                         End If
                     End With
 
                 Case Enums.TVImageType.SeasonLandscape
                     With Master.eSettings
                         If mSeason = 0 Then 'season specials
-                            If .TVUseFrodo AndAlso .TVSeasonLandscapeXBMC Then FilenameList.Add(Path.Combine(fPath, "season-specials-landscape.jpg"))
+                            If .TVUseFrodo AndAlso .TVSeasonLandscapeXBMC Then FilenameList.Add(Path.Combine(fShowPath, "season-specials-landscape.jpg"))
                         Else
-                            If .TVUseFrodo AndAlso .TVSeasonLandscapeXBMC Then FilenameList.Add(Path.Combine(fPath, String.Format("season{0}-landscape.jpg", sSeason)))
+                            If .TVUseFrodo AndAlso .TVSeasonLandscapeXBMC Then FilenameList.Add(Path.Combine(fShowPath, String.Format("season{0}-landscape.jpg", sSeason)))
                         End If
                     End With
 
                 Case Enums.TVImageType.SeasonPoster
                     With Master.eSettings
                         If mSeason = 0 Then 'season specials
-                            If .TVUseFrodo AndAlso .TVSeasonPosterFrodo Then FilenameList.Add(Path.Combine(fPath, "season-specials-poster.jpg"))
+                            If .TVUseFrodo AndAlso .TVSeasonPosterFrodo Then FilenameList.Add(Path.Combine(fShowPath, "season-specials-poster.jpg"))
+                            If .TVUseYAMJ AndAlso .TVSeasonPosterYAMJ AndAlso bInside Then FilenameList.Add(Path.Combine(fSeasonPath, String.Concat(fSeasonFolder, ".jpg")))
+                            If .TVUseYAMJ AndAlso .TVSeasonPosterYAMJ AndAlso Not bInside Then
+                                FilenameList.Add(String.Concat(fEpsiodePath, ".jpg"))
+                            End If
                         Else
-                            If .TVUseFrodo AndAlso .TVSeasonPosterFrodo Then FilenameList.Add(Path.Combine(fPath, String.Format("season{0}-poster.jpg", sSeason)))
+                            If .TVUseFrodo AndAlso .TVSeasonPosterFrodo Then FilenameList.Add(Path.Combine(fShowPath, String.Format("season{0}-poster.jpg", sSeason)))
+                            If .TVUseYAMJ AndAlso .TVSeasonPosterYAMJ AndAlso bInside Then FilenameList.Add(Path.Combine(fSeasonPath, String.Concat(fSeasonFolder, ".jpg")))
+                            If .TVUseYAMJ AndAlso .TVSeasonPosterYAMJ AndAlso Not bInside Then
+                                FilenameList.Add(String.Concat(fEpsiodePath, ".jpg"))
+                            End If
                         End If
+                    End With
+            End Select
+
+            FilenameList = FilenameList.Distinct().ToList() 'remove double entries
+            Return FilenameList
+        End Function
+
+        Public Shared Function TVShow(ByVal ShowPath As String, ByVal mType As Enums.TVImageType) As List(Of String)
+            Dim FilenameList As New List(Of String)
+
+            Dim fShowPath As String = ShowPath
+            Dim fShowFolder As String = Path.GetFileName(fShowPath)
+
+            Select Case mType
+                Case Enums.TVImageType.AllSeasonsBanner
+                    With Master.eSettings
+                        If .TVUseFrodo AndAlso .TVSeasonBannerFrodo Then FilenameList.Add(Path.Combine(fShowPath, "season-all-banner.jpg"))
+                    End With
+
+                Case Enums.TVImageType.AllSeasonsFanart
+                    With Master.eSettings
+                        If .TVUseFrodo AndAlso .TVSeasonFanartFrodo Then FilenameList.Add(Path.Combine(fShowPath, "season-all-fanart.jpg"))
+                    End With
+
+                Case Enums.TVImageType.AllSeasonsLandscape
+                    With Master.eSettings
+                        If .TVUseFrodo AndAlso .TVSeasonLandscapeXBMC Then FilenameList.Add(Path.Combine(fShowPath, "season-all-landscape.jpg"))
+                    End With
+
+                Case Enums.TVImageType.AllSeasonsPoster
+                    With Master.eSettings
+                        If .TVUseFrodo AndAlso .TVSeasonPosterFrodo Then FilenameList.Add(Path.Combine(fShowPath, "season-all-poster.jpg"))
                     End With
 
                 Case Enums.TVImageType.ShowBanner
                     With Master.eSettings
-                        If .TVUseFrodo AndAlso .TVShowBannerFrodo Then FilenameList.Add(Path.Combine(fPath, "banner.jpg"))
+                        If .TVUseFrodo AndAlso .TVShowBannerFrodo Then FilenameList.Add(Path.Combine(fShowPath, "banner.jpg"))
+                        If .TVUseYAMJ AndAlso .TVShowBannerYAMJ Then FilenameList.Add(Path.Combine(fShowPath, String.Concat("Set_", fShowFolder, "_1.banner.jpg")))
                     End With
 
                 Case Enums.TVImageType.ShowCharacterArt
                     With Master.eSettings
-                        If .TVUseFrodo AndAlso .TVShowCharacterArtXBMC Then FilenameList.Add(Path.Combine(fPath, "character.png"))
+                        If .TVUseFrodo AndAlso .TVShowCharacterArtXBMC Then FilenameList.Add(Path.Combine(fShowPath, "character.png"))
                     End With
 
                 Case Enums.TVImageType.ShowClearArt
                     With Master.eSettings
-                        If .TVUseFrodo AndAlso .TVShowClearArtXBMC Then FilenameList.Add(Path.Combine(fPath, "clearart.png"))
+                        If .TVUseFrodo AndAlso .TVShowClearArtXBMC Then FilenameList.Add(Path.Combine(fShowPath, "clearart.png"))
                     End With
 
                 Case Enums.TVImageType.ShowClearLogo
                     With Master.eSettings
-                        If .TVUseFrodo AndAlso .TVShowClearLogoXBMC Then FilenameList.Add(Path.Combine(fPath, "logo.png"))
+                        If .TVUseFrodo AndAlso .TVShowClearLogoXBMC Then FilenameList.Add(Path.Combine(fShowPath, "logo.png"))
                     End With
 
                 Case Enums.TVImageType.ShowFanart
                     With Master.eSettings
-                        If .TVUseFrodo AndAlso .TVShowFanartFrodo Then FilenameList.Add(Path.Combine(fPath, "fanart.jpg"))
+                        If .TVUseFrodo AndAlso .TVShowFanartFrodo Then FilenameList.Add(Path.Combine(fShowPath, "fanart.jpg"))
+                        If .TVUseYAMJ AndAlso .TVShowFanartYAMJ Then FilenameList.Add(Path.Combine(fShowPath, String.Concat("Set_", fShowFolder, "_1.fanart.jpg")))
                     End With
 
                 Case Enums.TVImageType.ShowLandscape
                     With Master.eSettings
-                        If .TVUseFrodo AndAlso .TVShowLandscapeXBMC Then FilenameList.Add(Path.Combine(fPath, "landscape.jpg"))
+                        If .TVUseFrodo AndAlso .TVShowLandscapeXBMC Then FilenameList.Add(Path.Combine(ShowPath, "landscape.jpg"))
                     End With
 
                 Case Enums.TVImageType.ShowPoster
                     With Master.eSettings
-                        If .TVUseFrodo AndAlso .TVShowPosterFrodo Then FilenameList.Add(Path.Combine(fPath, "poster.jpg"))
+                        If .TVUseFrodo AndAlso .TVShowPosterFrodo Then FilenameList.Add(Path.Combine(fShowPath, "poster.jpg"))
+                        If .TVUseYAMJ AndAlso .TVShowPosterYAMJ Then FilenameList.Add(Path.Combine(fShowPath, String.Concat("Set_", fShowFolder, "_1.jpg")))
                     End With
-
             End Select
 
             FilenameList = FilenameList.Distinct().ToList() 'remove double entries

@@ -1430,7 +1430,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkTVEpsiodeNoFilter_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVEpisodeNoFilter.CheckedChanged
+    Private Sub chkTVEpisodeNoFilter_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVEpisodeNoFilter.CheckedChanged
         Me.SetApplyButton(True)
 
         Me.chkTVEpisodeProperCase.Enabled = Not Me.chkTVEpisodeNoFilter.Checked
@@ -2902,6 +2902,14 @@ Public Class dlgSettings
                 Me.txtTVShowTVThemeFolderXBMC.Text = .TVShowTVThemeFolderXBMC
 
                 '****************** YAMJ settings ******************
+                Me.chkTVUseYAMJ.Checked = .TVUseYAMJ
+                Me.chkTVEpisodePosterYAMJ.Checked = .TVEpisodePosterYAMJ
+                Me.chkTVSeasonBannerYAMJ.Checked = .TVSeasonBannerYAMJ
+                Me.chkTVSeasonFanartYAMJ.Checked = .TVSeasonFanartYAMJ
+                Me.chkTVSeasonPosterYAMJ.Checked = .TVSeasonPosterYAMJ
+                Me.chkTVShowBannerYAMJ.Checked = .TVShowBannerYAMJ
+                Me.chkTVShowFanartYAMJ.Checked = .TVShowFanartYAMJ
+                Me.chkTVShowPosterYAMJ.Checked = .TVShowPosterYAMJ
 
                 '****************** NMJ settings *******************
 
@@ -4214,6 +4222,14 @@ Public Class dlgSettings
                 .TVShowTVThemeFolderXBMC = Me.txtTVShowTVThemeFolderXBMC.Text
 
                 '****************** YAMJ settings ******************
+                .TVUseYAMJ = Me.chkTVUseYAMJ.Checked
+                .TVEpisodePosterYAMJ = Me.chkTVEpisodePosterYAMJ.Checked
+                .TVSeasonBannerYAMJ = Me.chkTVSeasonBannerYAMJ.Checked
+                .TVSeasonFanartYAMJ = Me.chkTVSeasonFanartYAMJ.Checked
+                .TVSeasonPosterYAMJ = Me.chkTVSeasonPosterYAMJ.Checked
+                .TVShowBannerYAMJ = Me.chkTVShowBannerYAMJ.Checked
+                .TVShowFanartYAMJ = Me.chkTVShowFanartYAMJ.Checked
+                .TVShowPosterYAMJ = Me.chkTVShowPosterYAMJ.Checked
 
                 '****************** NMJ settings *******************
 
@@ -4223,7 +4239,7 @@ Public Class dlgSettings
 
 
                 'Default to Frodo for movies
-                If Not (.MovieUseEden Or .MovieUseExpert Or .MovieUseFrodo Or .MovieUseNMJ Or .MovieUseYAMJ) Then
+                If Not (.MovieUseEden OrElse .MovieUseExpert OrElse .MovieUseFrodo OrElse .MovieUseNMJ OrElse .MovieUseYAMJ) Then
                     .MovieUseFrodo = True
                     .MovieActorThumbsFrodo = True
                     .MovieBannerFrodo = True
@@ -5901,6 +5917,64 @@ Public Class dlgSettings
                 End If
             End If
         End With
+    End Sub
+
+    Private Sub chkTVUseYAMJ_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVUseYAMJ.CheckedChanged
+        Me.SetApplyButton(True)
+
+        Me.chkTVEpisodePosterYAMJ.Enabled = Me.chkTVUseYAMJ.Checked
+        Me.chkTVSeasonBannerYAMJ.Enabled = Me.chkTVUseYAMJ.Checked
+        Me.chkTVSeasonFanartYAMJ.Enabled = Me.chkTVUseYAMJ.Checked
+        Me.chkTVSeasonPosterYAMJ.Enabled = Me.chkTVUseYAMJ.Checked
+        Me.chkTVShowBannerYAMJ.Enabled = Me.chkTVUseYAMJ.Checked
+        Me.chkTVShowFanartYAMJ.Enabled = Me.chkTVUseYAMJ.Checked
+        Me.chkTVShowPosterYAMJ.Enabled = Me.chkTVUseYAMJ.Checked
+
+        If Not Me.chkTVUseYAMJ.Checked Then
+            Me.chkTVEpisodePosterYAMJ.Checked = False
+            Me.chkTVSeasonBannerYAMJ.Checked = False
+            Me.chkTVSeasonFanartYAMJ.Checked = False
+            Me.chkTVSeasonPosterYAMJ.Checked = False
+            Me.chkTVShowBannerYAMJ.Checked = False
+            Me.chkTVShowFanartYAMJ.Checked = False
+            Me.chkTVShowPosterYAMJ.Checked = False
+        Else
+            Me.chkTVEpisodePosterYAMJ.Checked = True
+            Me.chkTVSeasonBannerYAMJ.Checked = True
+            Me.chkTVSeasonFanartYAMJ.Checked = True
+            Me.chkTVSeasonPosterYAMJ.Checked = True
+            Me.chkTVShowBannerYAMJ.Checked = True
+            Me.chkTVShowFanartYAMJ.Checked = True
+            Me.chkTVShowPosterYAMJ.Checked = True
+        End If
+    End Sub
+
+    Private Sub chkTVEpisodePosterYAMJ_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVEpisodePosterYAMJ.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkTVSeasonBannerYAMJ_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVSeasonBannerYAMJ.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkTVSeasonFanartYAMJ_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVSeasonFanartYAMJ.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkTVSeasonPosterYAMJ_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVSeasonPosterYAMJ.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkTVShowBannerYAMJ_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowBannerYAMJ.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkTVShowFanartYAMJ_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowFanartYAMJ.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkTVShowPosterYAMJ_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowPosterYAMJ.CheckedChanged
+        Me.SetApplyButton(True)
     End Sub
 
 #End Region 'Methods
