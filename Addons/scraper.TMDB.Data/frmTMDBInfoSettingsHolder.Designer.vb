@@ -24,22 +24,23 @@ Partial Class frmTMDBInfoSettingsHolder
 	Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmTMDBInfoSettingsHolder))
         Me.lblVersion = New System.Windows.Forms.Label()
-        Me.GroupBox30 = New System.Windows.Forms.GroupBox()
-        Me.pbTMDB = New System.Windows.Forms.PictureBox()
+        Me.gbTMDBGlobalOpts = New System.Windows.Forms.GroupBox()
+        Me.chkGetAdultItems = New System.Windows.Forms.CheckBox()
+        Me.pbTMDBApiKeyInfo = New System.Windows.Forms.PictureBox()
         Me.chkFallBackEng = New System.Windows.Forms.CheckBox()
         Me.cbTMDBPrefLanguage = New System.Windows.Forms.ComboBox()
-        Me.Label3 = New System.Windows.Forms.Label()
-        Me.Label18 = New System.Windows.Forms.Label()
+        Me.lblTMDBPrefLanguage = New System.Windows.Forms.Label()
+        Me.lblTMDBApiKey = New System.Windows.Forms.Label()
         Me.txtTMDBApiKey = New System.Windows.Forms.TextBox()
         Me.cbEnabled = New System.Windows.Forms.CheckBox()
         Me.Panel1 = New System.Windows.Forms.Panel()
-        Me.Label2 = New System.Windows.Forms.Label()
+        Me.lblScraperOrder = New System.Windows.Forms.Label()
         Me.btnDown = New System.Windows.Forms.Button()
         Me.btnUp = New System.Windows.Forms.Button()
         Me.pnlSettings = New System.Windows.Forms.Panel()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
-        Me.gbOptions = New System.Windows.Forms.GroupBox()
+        Me.gbTMDBScraperOpts = New System.Windows.Forms.GroupBox()
         Me.chkTMDBCleanPlotOutline = New System.Windows.Forms.CheckBox()
         Me.chkCrew = New System.Windows.Forms.CheckBox()
         Me.chkCountry = New System.Windows.Forms.CheckBox()
@@ -56,12 +57,12 @@ Partial Class frmTMDBInfoSettingsHolder
         Me.chkMPAA = New System.Windows.Forms.CheckBox()
         Me.chkYear = New System.Windows.Forms.CheckBox()
         Me.chkTitle = New System.Windows.Forms.CheckBox()
-        Me.GroupBox30.SuspendLayout()
-        CType(Me.pbTMDB, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.gbTMDBGlobalOpts.SuspendLayout()
+        CType(Me.pbTMDBApiKeyInfo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel1.SuspendLayout()
         Me.pnlSettings.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.gbOptions.SuspendLayout()
+        Me.gbTMDBScraperOpts.SuspendLayout()
         Me.SuspendLayout()
         '
         'lblVersion
@@ -72,30 +73,42 @@ Partial Class frmTMDBInfoSettingsHolder
         Me.lblVersion.TabIndex = 74
         Me.lblVersion.Text = "Version:"
         '
-        'GroupBox30
+        'gbTMDBGlobalOpts
         '
-        Me.GroupBox30.Controls.Add(Me.pbTMDB)
-        Me.GroupBox30.Controls.Add(Me.chkFallBackEng)
-        Me.GroupBox30.Controls.Add(Me.cbTMDBPrefLanguage)
-        Me.GroupBox30.Controls.Add(Me.Label3)
-        Me.GroupBox30.Controls.Add(Me.Label18)
-        Me.GroupBox30.Controls.Add(Me.txtTMDBApiKey)
-        Me.GroupBox30.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GroupBox30.Location = New System.Drawing.Point(11, 31)
-        Me.GroupBox30.Name = "GroupBox30"
-        Me.GroupBox30.Size = New System.Drawing.Size(513, 102)
-        Me.GroupBox30.TabIndex = 1
-        Me.GroupBox30.TabStop = False
-        Me.GroupBox30.Text = "TMDB"
+        Me.gbTMDBGlobalOpts.Controls.Add(Me.chkGetAdultItems)
+        Me.gbTMDBGlobalOpts.Controls.Add(Me.pbTMDBApiKeyInfo)
+        Me.gbTMDBGlobalOpts.Controls.Add(Me.chkFallBackEng)
+        Me.gbTMDBGlobalOpts.Controls.Add(Me.cbTMDBPrefLanguage)
+        Me.gbTMDBGlobalOpts.Controls.Add(Me.lblTMDBPrefLanguage)
+        Me.gbTMDBGlobalOpts.Controls.Add(Me.lblTMDBApiKey)
+        Me.gbTMDBGlobalOpts.Controls.Add(Me.txtTMDBApiKey)
+        Me.gbTMDBGlobalOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbTMDBGlobalOpts.Location = New System.Drawing.Point(11, 31)
+        Me.gbTMDBGlobalOpts.Name = "gbTMDBGlobalOpts"
+        Me.gbTMDBGlobalOpts.Size = New System.Drawing.Size(513, 102)
+        Me.gbTMDBGlobalOpts.TabIndex = 1
+        Me.gbTMDBGlobalOpts.TabStop = False
+        Me.gbTMDBGlobalOpts.Text = "TMDB"
         '
-        'pbTMDB
+        'chkGetAdultItems
         '
-        Me.pbTMDB.Image = CType(resources.GetObject("pbTMDB.Image"), System.Drawing.Image)
-        Me.pbTMDB.Location = New System.Drawing.Point(491, 32)
-        Me.pbTMDB.Name = "pbTMDB"
-        Me.pbTMDB.Size = New System.Drawing.Size(16, 16)
-        Me.pbTMDB.TabIndex = 5
-        Me.pbTMDB.TabStop = False
+        Me.chkGetAdultItems.AutoSize = True
+        Me.chkGetAdultItems.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        Me.chkGetAdultItems.Location = New System.Drawing.Point(339, 67)
+        Me.chkGetAdultItems.Name = "chkGetAdultItems"
+        Me.chkGetAdultItems.Size = New System.Drawing.Size(125, 17)
+        Me.chkGetAdultItems.TabIndex = 6
+        Me.chkGetAdultItems.Text = "Include Adult Items"
+        Me.chkGetAdultItems.UseVisualStyleBackColor = True
+        '
+        'pbTMDBApiKeyInfo
+        '
+        Me.pbTMDBApiKeyInfo.Image = CType(resources.GetObject("pbTMDBApiKeyInfo.Image"), System.Drawing.Image)
+        Me.pbTMDBApiKeyInfo.Location = New System.Drawing.Point(491, 32)
+        Me.pbTMDBApiKeyInfo.Name = "pbTMDBApiKeyInfo"
+        Me.pbTMDBApiKeyInfo.Size = New System.Drawing.Size(16, 16)
+        Me.pbTMDBApiKeyInfo.TabIndex = 5
+        Me.pbTMDBApiKeyInfo.TabStop = False
         '
         'chkFallBackEng
         '
@@ -119,25 +132,25 @@ Partial Class frmTMDBInfoSettingsHolder
         Me.cbTMDBPrefLanguage.Size = New System.Drawing.Size(45, 21)
         Me.cbTMDBPrefLanguage.TabIndex = 3
         '
-        'Label3
+        'lblTMDBPrefLanguage
         '
-        Me.Label3.AutoSize = True
-        Me.Label3.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.Label3.Location = New System.Drawing.Point(6, 68)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(111, 13)
-        Me.Label3.TabIndex = 2
-        Me.Label3.Text = "Preferred Language:"
+        Me.lblTMDBPrefLanguage.AutoSize = True
+        Me.lblTMDBPrefLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        Me.lblTMDBPrefLanguage.Location = New System.Drawing.Point(6, 68)
+        Me.lblTMDBPrefLanguage.Name = "lblTMDBPrefLanguage"
+        Me.lblTMDBPrefLanguage.Size = New System.Drawing.Size(111, 13)
+        Me.lblTMDBPrefLanguage.TabIndex = 2
+        Me.lblTMDBPrefLanguage.Text = "Preferred Language:"
         '
-        'Label18
+        'lblTMDBApiKey
         '
-        Me.Label18.AutoSize = True
-        Me.Label18.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label18.Location = New System.Drawing.Point(6, 18)
-        Me.Label18.Name = "Label18"
-        Me.Label18.Size = New System.Drawing.Size(79, 13)
-        Me.Label18.TabIndex = 0
-        Me.Label18.Text = "TMDB API Key:"
+        Me.lblTMDBApiKey.AutoSize = True
+        Me.lblTMDBApiKey.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblTMDBApiKey.Location = New System.Drawing.Point(6, 18)
+        Me.lblTMDBApiKey.Name = "lblTMDBApiKey"
+        Me.lblTMDBApiKey.Size = New System.Drawing.Size(79, 13)
+        Me.lblTMDBApiKey.TabIndex = 0
+        Me.lblTMDBApiKey.Text = "TMDB API Key:"
         '
         'txtTMDBApiKey
         '
@@ -163,7 +176,7 @@ Partial Class frmTMDBInfoSettingsHolder
         Me.Panel1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Panel1.BackColor = System.Drawing.Color.WhiteSmoke
-        Me.Panel1.Controls.Add(Me.Label2)
+        Me.Panel1.Controls.Add(Me.lblScraperOrder)
         Me.Panel1.Controls.Add(Me.btnDown)
         Me.Panel1.Controls.Add(Me.cbEnabled)
         Me.Panel1.Controls.Add(Me.btnUp)
@@ -172,15 +185,15 @@ Partial Class frmTMDBInfoSettingsHolder
         Me.Panel1.Size = New System.Drawing.Size(1125, 25)
         Me.Panel1.TabIndex = 0
         '
-        'Label2
+        'lblScraperOrder
         '
-        Me.Label2.AutoSize = True
-        Me.Label2.Font = New System.Drawing.Font("Segoe UI", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label2.Location = New System.Drawing.Point(500, 7)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(58, 12)
-        Me.Label2.TabIndex = 1
-        Me.Label2.Text = "Scraper order"
+        Me.lblScraperOrder.AutoSize = True
+        Me.lblScraperOrder.Font = New System.Drawing.Font("Segoe UI", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblScraperOrder.Location = New System.Drawing.Point(500, 7)
+        Me.lblScraperOrder.Name = "lblScraperOrder"
+        Me.lblScraperOrder.Size = New System.Drawing.Size(58, 12)
+        Me.lblScraperOrder.TabIndex = 1
+        Me.lblScraperOrder.Text = "Scraper order"
         '
         'btnDown
         '
@@ -207,8 +220,8 @@ Partial Class frmTMDBInfoSettingsHolder
         Me.pnlSettings.Controls.Add(Me.Label1)
         Me.pnlSettings.Controls.Add(Me.PictureBox1)
         Me.pnlSettings.Controls.Add(Me.Panel1)
-        Me.pnlSettings.Controls.Add(Me.GroupBox30)
-        Me.pnlSettings.Controls.Add(Me.gbOptions)
+        Me.pnlSettings.Controls.Add(Me.gbTMDBGlobalOpts)
+        Me.pnlSettings.Controls.Add(Me.gbTMDBScraperOpts)
         Me.pnlSettings.Location = New System.Drawing.Point(12, 4)
         Me.pnlSettings.Name = "pnlSettings"
         Me.pnlSettings.Size = New System.Drawing.Size(617, 369)
@@ -238,31 +251,31 @@ Partial Class frmTMDBInfoSettingsHolder
         Me.PictureBox1.TabIndex = 96
         Me.PictureBox1.TabStop = False
         '
-        'gbOptions
+        'gbTMDBScraperOpts
         '
-        Me.gbOptions.Controls.Add(Me.chkTMDBCleanPlotOutline)
-        Me.gbOptions.Controls.Add(Me.chkCrew)
-        Me.gbOptions.Controls.Add(Me.chkCountry)
-        Me.gbOptions.Controls.Add(Me.chkStudio)
-        Me.gbOptions.Controls.Add(Me.chkRuntime)
-        Me.gbOptions.Controls.Add(Me.chkPlot)
-        Me.gbOptions.Controls.Add(Me.chkGenre)
-        Me.gbOptions.Controls.Add(Me.chkTagline)
-        Me.gbOptions.Controls.Add(Me.chkCast)
-        Me.gbOptions.Controls.Add(Me.chkVotes)
-        Me.gbOptions.Controls.Add(Me.chkTrailer)
-        Me.gbOptions.Controls.Add(Me.chkRating)
-        Me.gbOptions.Controls.Add(Me.chkRelease)
-        Me.gbOptions.Controls.Add(Me.chkMPAA)
-        Me.gbOptions.Controls.Add(Me.chkYear)
-        Me.gbOptions.Controls.Add(Me.chkTitle)
-        Me.gbOptions.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.gbOptions.Location = New System.Drawing.Point(11, 139)
-        Me.gbOptions.Name = "gbOptions"
-        Me.gbOptions.Size = New System.Drawing.Size(513, 150)
-        Me.gbOptions.TabIndex = 3
-        Me.gbOptions.TabStop = False
-        Me.gbOptions.Text = "Scraper Fields"
+        Me.gbTMDBScraperOpts.Controls.Add(Me.chkTMDBCleanPlotOutline)
+        Me.gbTMDBScraperOpts.Controls.Add(Me.chkCrew)
+        Me.gbTMDBScraperOpts.Controls.Add(Me.chkCountry)
+        Me.gbTMDBScraperOpts.Controls.Add(Me.chkStudio)
+        Me.gbTMDBScraperOpts.Controls.Add(Me.chkRuntime)
+        Me.gbTMDBScraperOpts.Controls.Add(Me.chkPlot)
+        Me.gbTMDBScraperOpts.Controls.Add(Me.chkGenre)
+        Me.gbTMDBScraperOpts.Controls.Add(Me.chkTagline)
+        Me.gbTMDBScraperOpts.Controls.Add(Me.chkCast)
+        Me.gbTMDBScraperOpts.Controls.Add(Me.chkVotes)
+        Me.gbTMDBScraperOpts.Controls.Add(Me.chkTrailer)
+        Me.gbTMDBScraperOpts.Controls.Add(Me.chkRating)
+        Me.gbTMDBScraperOpts.Controls.Add(Me.chkRelease)
+        Me.gbTMDBScraperOpts.Controls.Add(Me.chkMPAA)
+        Me.gbTMDBScraperOpts.Controls.Add(Me.chkYear)
+        Me.gbTMDBScraperOpts.Controls.Add(Me.chkTitle)
+        Me.gbTMDBScraperOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.gbTMDBScraperOpts.Location = New System.Drawing.Point(11, 139)
+        Me.gbTMDBScraperOpts.Name = "gbTMDBScraperOpts"
+        Me.gbTMDBScraperOpts.Size = New System.Drawing.Size(513, 150)
+        Me.gbTMDBScraperOpts.TabIndex = 3
+        Me.gbTMDBScraperOpts.TabStop = False
+        Me.gbTMDBScraperOpts.Text = "Scraper Fields"
         '
         'chkTMDBCleanPlotOutline
         '
@@ -455,31 +468,31 @@ Partial Class frmTMDBInfoSettingsHolder
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Scraper Setup"
-        Me.GroupBox30.ResumeLayout(False)
-        Me.GroupBox30.PerformLayout()
-        CType(Me.pbTMDB, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.gbTMDBGlobalOpts.ResumeLayout(False)
+        Me.gbTMDBGlobalOpts.PerformLayout()
+        CType(Me.pbTMDBApiKeyInfo, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
         Me.pnlSettings.ResumeLayout(False)
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.gbOptions.ResumeLayout(False)
-        Me.gbOptions.PerformLayout()
+        Me.gbTMDBScraperOpts.ResumeLayout(False)
+        Me.gbTMDBScraperOpts.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
     Friend WithEvents lblVersion As System.Windows.Forms.Label
-    Friend WithEvents GroupBox30 As System.Windows.Forms.GroupBox
-    Friend WithEvents Label18 As System.Windows.Forms.Label
+    Friend WithEvents gbTMDBGlobalOpts As System.Windows.Forms.GroupBox
+    Friend WithEvents lblTMDBApiKey As System.Windows.Forms.Label
     Friend WithEvents txtTMDBApiKey As System.Windows.Forms.TextBox
     Friend WithEvents cbEnabled As System.Windows.Forms.CheckBox
     Friend WithEvents Panel1 As System.Windows.Forms.Panel
     Friend WithEvents pnlSettings As System.Windows.Forms.Panel
     Friend WithEvents btnDown As System.Windows.Forms.Button
     Friend WithEvents btnUp As System.Windows.Forms.Button
-    Friend WithEvents Label2 As System.Windows.Forms.Label
+    Friend WithEvents lblScraperOrder As System.Windows.Forms.Label
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
-    Friend WithEvents gbOptions As System.Windows.Forms.GroupBox
+    Friend WithEvents gbTMDBScraperOpts As System.Windows.Forms.GroupBox
     Friend WithEvents chkCountry As System.Windows.Forms.CheckBox
     Friend WithEvents chkStudio As System.Windows.Forms.CheckBox
     Friend WithEvents chkRuntime As System.Windows.Forms.CheckBox
@@ -496,9 +509,10 @@ Partial Class frmTMDBInfoSettingsHolder
     Friend WithEvents chkTitle As System.Windows.Forms.CheckBox
     Friend WithEvents chkFallBackEng As System.Windows.Forms.CheckBox
     Friend WithEvents cbTMDBPrefLanguage As System.Windows.Forms.ComboBox
-    Friend WithEvents Label3 As System.Windows.Forms.Label
+    Friend WithEvents lblTMDBPrefLanguage As System.Windows.Forms.Label
     Friend WithEvents chkCrew As System.Windows.Forms.CheckBox
-    Friend WithEvents pbTMDB As System.Windows.Forms.PictureBox
+    Friend WithEvents pbTMDBApiKeyInfo As System.Windows.Forms.PictureBox
     Friend WithEvents chkTMDBCleanPlotOutline As System.Windows.Forms.CheckBox
+    Friend WithEvents chkGetAdultItems As System.Windows.Forms.CheckBox
 
 End Class

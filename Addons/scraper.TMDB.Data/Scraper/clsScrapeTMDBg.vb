@@ -104,6 +104,7 @@ Namespace TMDBg
             _MySettings.TMDBAPIKey = AdvancedSettings.GetSetting("TMDBAPIKey", "Get your API Key from http://www.themoviedb.org")
             _MySettings.FallBackEng = AdvancedSettings.GetBooleanSetting("FallBackEn", False)
             _MySettings.TMDBLanguage = AdvancedSettings.GetSetting("TMDBLanguage", "en")
+            _MySettings.GetAdultItems = AdvancedSettings.GetBooleanSetting("GetAdultItems", False)
 
             _TMDBApi = tTMDBApi
             _TMDBConf = tTMDBConf
@@ -746,13 +747,13 @@ Namespace TMDBg
                 'If sYear Is Nothing Then
                 'Movies = _TMDBApi.SearchMovie(sMovie, Page, _MySettings.TMDBLanguage)
                 'Else
-                Movies = _TMDBApi.SearchMovie(sMovie, Page, _MySettings.TMDBLanguage, , sYear)
+                Movies = _TMDBApi.SearchMovie(sMovie, Page, _MySettings.TMDBLanguage, _MySettings.GetAdultItems, sYear)
                 'End If
                 If Movies.total_results = 0 And _MySettings.FallBackEng Then
                     'If sYear Is Nothing Then
                     ' Movies = _TMDBApiE.SearchMovie(sMovie, Page)
                     'Else
-                    Movies = _TMDBApiE.SearchMovie(sMovie, Page, , , sYear)
+                    Movies = _TMDBApiE.SearchMovie(sMovie, Page, , _MySettings.GetAdultItems, sYear)
                     'End If
                     aE = True
                 End If
@@ -784,13 +785,13 @@ Namespace TMDBg
                             'If sYear Is Nothing Then
                             'Movies = _TMDBApiE.SearchMovie(sMovie, Page)
                             'Else
-                            Movies = _TMDBApiE.SearchMovie(sMovie, Page, , , sYear)
+                            Movies = _TMDBApiE.SearchMovie(sMovie, Page, , _MySettings.GetAdultItems, sYear)
                             'End If
                         Else
                             'If sYear Is Nothing Then
                             'Movies = _TMDBApi.SearchMovie(sMovie, Page, _MySettings.TMDBLanguage)
                             'Else
-                            Movies = _TMDBApi.SearchMovie(sMovie, Page, _MySettings.TMDBLanguage, , sYear)
+                            Movies = _TMDBApi.SearchMovie(sMovie, Page, _MySettings.TMDBLanguage, _MySettings.GetAdultItems, sYear)
                             'End If
                         End If
 
