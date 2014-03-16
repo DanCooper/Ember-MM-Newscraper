@@ -340,7 +340,7 @@ Public Class IMDB_Data
                             tmpTitle = StringUtils.FilterName(If(DBMovie.isSingle, Directory.GetParent(DBMovie.Filename).Name, Path.GetFileNameWithoutExtension(DBMovie.Filename)))
                         End If
                     End If
-                    If dSearch.ShowDialog(tmpTitle, filterOptions) = Windows.Forms.DialogResult.OK Then
+                    If dSearch.ShowDialog(tmpTitle, DBMovie.Filename, filterOptions) = Windows.Forms.DialogResult.OK Then
                         If Not String.IsNullOrEmpty(Master.tmpMovie.IMDBID) Then
                             ' if we changed the ID tipe we need to clear everything and rescrape
                             If Not String.IsNullOrEmpty(DBMovie.Movie.IMDBID) AndAlso Not (DBMovie.Movie.IMDBID = Master.tmpMovie.IMDBID) Then

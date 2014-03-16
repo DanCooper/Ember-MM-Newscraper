@@ -47,16 +47,17 @@ Public Class dlgIMDBSearchResults
 
     #Region "Methods"
 
-    Public Overloads Function ShowDialog(ByVal sMovieTitle As String, ByVal filterOptions As Structures.ScrapeOptions) As Windows.Forms.DialogResult
+    Public Overloads Function ShowDialog(ByVal sMovieTitle As String, ByVal sMovieFilename As String, ByVal filterOptions As Structures.ScrapeOptions) As Windows.Forms.DialogResult
         Me.tmrWait.Enabled = False
         Me.tmrWait.Interval = 250
         Me.tmrLoad.Enabled = False
         Me.tmrLoad.Interval = 100
 
-		_filterOptions = filterOptions        
+        _filterOptions = filterOptions
 
         Me.Text = String.Concat(Master.eLang.GetString(794, "Search Results"), " - ", sMovieTitle)
-		Me.txtSearch.Text = sMovieTitle
+        Me.txtSearch.Text = sMovieTitle
+        Me.txtFileName.Text = sMovieFilename
         chkManual.Enabled = False
         IMDB.SearchMovieAsync(sMovieTitle, _filterOptions)
 
@@ -124,10 +125,9 @@ Public Class dlgIMDBSearchResults
 
         Try
             Me.pbPoster.Image = Res.Result
-            'TODO: fix this part. Ends in an app crash after second picture when reselecting an older entry... i don't know why...
-            'If Not _PosterCache.ContainsKey(Res.IMDBId) Then
-            '    _PosterCache.Add(Res.IMDBId, Res.Result)
-            'End If
+            If Not _PosterCache.ContainsKey(Res.IMDBId) Then
+                _PosterCache.Add(Res.IMDBId, CType(Res.Result.Clone, Image))
+            End If
         Catch ex As Exception
             Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         Finally
@@ -509,25 +509,18 @@ Public Class dlgIMDBSearchResults
     End Sub
 
     Private Function GetMovieClone(ByVal original As MediaContainers.Movie) As MediaContainers.Movie
-        'have to do this the old-fashioned way because it is not serializable
-        Dim result As New MediaContainers.Movie
-        With result
-            .IMDBID = original.IMDBID
-            .Genre = original.Genre
-            .Title = original.Title
-            .Tagline = original.Tagline
-            .Year = original.Year
-            .Director = original.Director
-            .Genre = original.Genre
-            .Outline = original.Outline
-        End With
-        Return result
-        'Using mem As New IO.MemoryStream()
-        '    Dim bin As New System.Runtime.Serialization.Formatters.Binary.BinaryFormatter(Nothing, New System.Runtime.Serialization.StreamingContext(Runtime.Serialization.StreamingContextStates.Clone))
-        '    bin.Serialize(mem, original)
-        '    mem.Seek(0, IO.SeekOrigin.Begin)
-        '    Return DirectCast(bin.Deserialize(mem), MediaContainers.Movie)
-        'End Using
+         Try
+            Using mem As New IO.MemoryStream()
+                Dim bin As New System.Runtime.Serialization.Formatters.Binary.BinaryFormatter(Nothing, New System.Runtime.Serialization.StreamingContext(Runtime.Serialization.StreamingContextStates.Clone))
+                bin.Serialize(mem, original)
+                mem.Seek(0, IO.SeekOrigin.Begin)
+                Return DirectCast(bin.Deserialize(mem), MediaContainers.Movie)
+            End Using
+        Catch ex As Exception
+            Master.eLog.Error(GetType(MediaContainers.Movie), ex.Message, ex.StackTrace, "Error", False)
+        End Try
+
+        Return Nothing
     End Function
 
 

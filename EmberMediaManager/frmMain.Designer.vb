@@ -1120,7 +1120,7 @@ Partial Class frmMain
         '
         Me.cmnuMovie.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuMovieTitle, Me.ToolStripSeparator3, Me.cmnuMovieReload, Me.cmnuMovieMark, Me.cmnuMovieLock, Me.cmnuMovieWatched, Me.ToolStripMenuItem1, Me.cmnuMovieEdit, Me.cmnuMovieEditMetaData, Me.cmnuMovieGenres, Me.cmnuSep, Me.cmnuMovieRescrape, Me.cmnuMovieReSel, Me.cmnuMovieChange, Me.cmnuSep2, Me.cmnuMovieOpenFolder, Me.ToolStripSeparator1, Me.cmnuMovieRemove})
         Me.cmnuMovie.Name = "mnuMediaList"
-        Me.cmnuMovie.Size = New System.Drawing.Size(247, 320)
+        Me.cmnuMovie.Size = New System.Drawing.Size(247, 342)
         '
         'cmnuMovieTitle
         '
@@ -1382,7 +1382,7 @@ Partial Class frmMain
         'cmnuMovieReSelSkipAll
         '
         Me.cmnuMovieReSelSkipAll.Name = "cmnuMovieReSelSkipAll"
-        Me.cmnuMovieReSelSkipAll.Size = New System.Drawing.Size(152, 22)
+        Me.cmnuMovieReSelSkipAll.Size = New System.Drawing.Size(120, 22)
         Me.cmnuMovieReSelSkipAll.Text = "All Items"
         '
         'cmnuMovieChange

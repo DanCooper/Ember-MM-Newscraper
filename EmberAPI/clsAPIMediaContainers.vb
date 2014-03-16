@@ -366,6 +366,7 @@ Namespace MediaContainers
 
     End Class
 
+    <Serializable()> _
     Public Class Fanart
 
 #Region "Fields"
@@ -418,6 +419,7 @@ Namespace MediaContainers
 
     End Class
 
+    <Serializable()> _
     <XmlRoot("movie")> _
     Public Class Movie
         Implements IComparable(Of Movie)
@@ -1130,6 +1132,7 @@ Namespace MediaContainers
             End Get
         End Property
 
+        <Serializable()> _
         Class _MovieID
             Private _imdbid As String
             Private _moviedb As String
@@ -1332,6 +1335,7 @@ Namespace MediaContainers
 #End Region 'Methods
     End Class
 
+    <Serializable()> _
     Public Class Person
 
 #Region "Fields"
@@ -1410,6 +1414,7 @@ Namespace MediaContainers
 
     End Class
 
+    <Serializable()> _
     Public Class SetContainer
 
 #Region "Fields"
@@ -1457,6 +1462,7 @@ Namespace MediaContainers
 
     End Class
 
+    <Serializable()> _
     Public Class Thumb
 
 #Region "Fields"
@@ -1862,6 +1868,7 @@ Namespace MediaContainers
 #End Region
     End Class
 
+    <Serializable()> _
     Public Class [Set]
 
 #Region "Fields"

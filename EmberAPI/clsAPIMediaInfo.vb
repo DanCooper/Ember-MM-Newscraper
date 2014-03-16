@@ -24,6 +24,7 @@ Imports System.Text
 Imports System.Text.RegularExpressions
 Imports System.Xml.Serialization
 
+<Serializable()> _
 Public Class MediaInfo
 
 #Region "Fields"
@@ -64,7 +65,7 @@ Public Class MediaInfo
 
     Public Shared Function ApplyTVDefaults(ByVal ext As String) As Fileinfo
         Dim fi As New Fileinfo
-        For Each m As Settings.MetadataPerType In Master.eSettings.TVMetadataperFileType
+        For Each m As Settings.MetadataPerType In Master.eSettings.TVMetadataPerFileType
             If m.FileType = ext Then
                 fi = m.MetaData
                 Return fi
@@ -646,7 +647,7 @@ Public Class MediaInfo
 
                                     'Biggest VOB File! -> Get Languages out of IFO and Bitrate data out of biggest VOB file!
                                     If Not myFilesIFO Is Nothing AndAlso myFilesIFO.Count > 0 AndAlso myFilesIFO.Last.Length > 6 Then
-     
+
                                         Dim myFiles = From file In di.GetFiles(Path.GetFileName(myFilesIFO.Last).Substring(0, Path.GetFileName(myFilesIFO.Last).Length - 6) & "*.VOB") _
                                             Order By file.Length _
                                             Select file.FullName
@@ -1286,6 +1287,7 @@ Public Class MediaInfo
 
 #Region "Nested Types"
 
+    <Serializable()> _
     Public Class Audio
 
 #Region "Fields"
@@ -1399,6 +1401,7 @@ Public Class MediaInfo
 
     End Class
 
+    <Serializable()> _
     <XmlRoot("fileinfo")> _
     Public Class Fileinfo
 
@@ -1433,6 +1436,7 @@ Public Class MediaInfo
 
     End Class
 
+    <Serializable()> _
     <XmlRoot("streamdata")> _
     Public Class StreamData
 
@@ -1501,6 +1505,7 @@ Public Class MediaInfo
 
     End Class
 
+    <Serializable()> _
     Public Class Subtitle
 
 #Region "Fields"
@@ -1572,6 +1577,7 @@ Public Class MediaInfo
 
     End Class
 
+    <Serializable()> _
     Public Class Video
 
 #Region "Fields"
