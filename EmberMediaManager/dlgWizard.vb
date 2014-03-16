@@ -805,7 +805,9 @@ Public Class dlgWizard
     Private Sub SaveSettings()
 
         With Master.eSettings
-            
+
+            .GeneralLanguage = tLang
+
             '***************************************************
             '******************* Movie Part ********************
             '***************************************************
