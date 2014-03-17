@@ -543,7 +543,8 @@ Public Class Enums
 		ShowFilters = 2
 		EpFilters = 3
 		ValidExts = 4
-		ShowRegex = 5
+        ShowRegex = 5
+        TrailerCodec = 6
 	End Enum
 
     Public Enum DelType As Integer
@@ -726,12 +727,12 @@ Public Class Enums
     Public Enum TrailerQuality As Integer
         All = 0
         HD1080p = 1
-        HD720p = 3
-        HQ480p = 5
-        SQ360p = 6
-        SQ240p = 7
-        SQ144p = 8
-        OTHERS = 10
+        HD720p = 2
+        HQ480p = 3
+        SQ360p = 4
+        SQ240p = 5
+        SQ144p = 6
+        OTHERS = 7
     End Enum
     ''' <summary>
     ''' Enum represeting valid movie image types
