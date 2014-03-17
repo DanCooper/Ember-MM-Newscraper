@@ -1514,6 +1514,7 @@ Namespace MediaContainers
         Private _plot As String
         Private _actors As New List(Of Person)
         Private _boxeeTvDb As String
+        Private _status As String
 
 #End Region 'Fields
 
@@ -1708,6 +1709,23 @@ Namespace MediaContainers
             End Get
         End Property
 
+        <XmlElement("status")> _
+        Public Property Status() As String
+            Get
+                Return Me._status
+            End Get
+            Set(ByVal value As String)
+                Me._status = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property StatusSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._status)
+            End Get
+        End Property
+
         <XmlElement("plot")> _
         Public Property Plot() As String
             Get
@@ -1784,6 +1802,7 @@ Namespace MediaContainers
             _mpaa = String.Empty
             _genres.Clear()
             _premiered = String.Empty
+            _status = String.Empty
             _studio = String.Empty
             _actors.Clear()
         End Sub

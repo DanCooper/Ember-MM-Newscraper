@@ -506,6 +506,24 @@ Partial Class dlgSettings
         Me.chkTVShowFanartFrodo = New System.Windows.Forms.CheckBox()
         Me.chkTVShowPosterFrodo = New System.Windows.Forms.CheckBox()
         Me.tpTVFileNamingNMT = New System.Windows.Forms.TabPage()
+        Me.gbTVNMT = New System.Windows.Forms.GroupBox()
+        Me.chkTVSeasonPosterNMJ = New System.Windows.Forms.CheckBox()
+        Me.chkTVShowBannerNMJ = New System.Windows.Forms.CheckBox()
+        Me.chkTVSeasonBannerNMJ = New System.Windows.Forms.CheckBox()
+        Me.chkTVEpisodePosterNMJ = New System.Windows.Forms.CheckBox()
+        Me.chkTVSeasonFanartNMJ = New System.Windows.Forms.CheckBox()
+        Me.chkTVShowFanartNMJ = New System.Windows.Forms.CheckBox()
+        Me.chkTVShowPosterNMJ = New System.Windows.Forms.CheckBox()
+        Me.chkTVUseNMJ = New System.Windows.Forms.CheckBox()
+        Me.gbTVYAMJ = New System.Windows.Forms.GroupBox()
+        Me.chkTVSeasonPosterYAMJ = New System.Windows.Forms.CheckBox()
+        Me.chkTVShowBannerYAMJ = New System.Windows.Forms.CheckBox()
+        Me.chkTVSeasonBannerYAMJ = New System.Windows.Forms.CheckBox()
+        Me.chkTVEpisodePosterYAMJ = New System.Windows.Forms.CheckBox()
+        Me.chkTVSeasonFanartYAMJ = New System.Windows.Forms.CheckBox()
+        Me.chkTVShowFanartYAMJ = New System.Windows.Forms.CheckBox()
+        Me.chkTVShowPosterYAMJ = New System.Windows.Forms.CheckBox()
+        Me.chkTVUseYAMJ = New System.Windows.Forms.CheckBox()
         Me.tpTVFileNamingExpert = New System.Windows.Forms.TabPage()
         Me.lvTVSources = New System.Windows.Forms.ListView()
         Me.ColumnHeader1 = CType(New System.Windows.Forms.ColumnHeader(),System.Windows.Forms.ColumnHeader)
@@ -839,24 +857,8 @@ Partial Class dlgSettings
         Me.chkMovieTrailerOverwrite = New System.Windows.Forms.CheckBox()
         Me.chkMovieTrailerEnable = New System.Windows.Forms.CheckBox()
         Me.fileBrowse = New System.Windows.Forms.OpenFileDialog()
-        Me.gbTVNMT = New System.Windows.Forms.GroupBox()
-        Me.chkTVUseNMJ = New System.Windows.Forms.CheckBox()
-        Me.gbTVYAMJ = New System.Windows.Forms.GroupBox()
-        Me.chkTVUseYAMJ = New System.Windows.Forms.CheckBox()
-        Me.chkTVSeasonPosterYAMJ = New System.Windows.Forms.CheckBox()
-        Me.chkTVShowBannerYAMJ = New System.Windows.Forms.CheckBox()
-        Me.chkTVSeasonBannerYAMJ = New System.Windows.Forms.CheckBox()
-        Me.chkTVEpisodePosterYAMJ = New System.Windows.Forms.CheckBox()
-        Me.chkTVSeasonFanartYAMJ = New System.Windows.Forms.CheckBox()
-        Me.chkTVShowFanartYAMJ = New System.Windows.Forms.CheckBox()
-        Me.chkTVShowPosterYAMJ = New System.Windows.Forms.CheckBox()
-        Me.chkTVSeasonPosterNMJ = New System.Windows.Forms.CheckBox()
-        Me.chkTVShowBannerNMJ = New System.Windows.Forms.CheckBox()
-        Me.chkTVSeasonBannerNMJ = New System.Windows.Forms.CheckBox()
-        Me.chkTVEpisodePosterNMJ = New System.Windows.Forms.CheckBox()
-        Me.chkTVSeasonFanartNMJ = New System.Windows.Forms.CheckBox()
-        Me.chkTVShowFanartNMJ = New System.Windows.Forms.CheckBox()
-        Me.chkTVShowPosterNMJ = New System.Windows.Forms.CheckBox()
+        Me.chkTVLockShowStatus = New System.Windows.Forms.CheckBox()
+        Me.chkTVScraperShowStatus = New System.Windows.Forms.CheckBox()
         Me.gbGeneralMisc.SuspendLayout
         Me.gbGeneralDaemon.SuspendLayout
         Me.gbGeneralThemes.SuspendLayout
@@ -947,6 +949,8 @@ Partial Class dlgSettings
         Me.gbTVXBMCAdditional.SuspendLayout
         Me.gbTVFrodo.SuspendLayout
         Me.tpTVFileNamingNMT.SuspendLayout
+        Me.gbTVNMT.SuspendLayout
+        Me.gbTVYAMJ.SuspendLayout
         Me.gbTVSourcesMiscOpts.SuspendLayout
         Me.tpTVSourcesRegex.SuspendLayout
         Me.gbTVShowRegex.SuspendLayout
@@ -1007,8 +1011,6 @@ Partial Class dlgSettings
         Me.pnlSettingsHelp.SuspendLayout
         Me.pnlMovieTrailers.SuspendLayout
         Me.gbMovieTrailerOpts.SuspendLayout
-        Me.gbTVNMT.SuspendLayout
-        Me.gbTVYAMJ.SuspendLayout
         Me.SuspendLayout
         '
         'gbGeneralMisc
@@ -6196,6 +6198,216 @@ Partial Class dlgSettings
         Me.tpTVFileNamingNMT.Text = "NMT"
         Me.tpTVFileNamingNMT.UseVisualStyleBackColor = true
         '
+        'gbTVNMT
+        '
+        Me.gbTVNMT.Controls.Add(Me.chkTVSeasonPosterNMJ)
+        Me.gbTVNMT.Controls.Add(Me.chkTVShowBannerNMJ)
+        Me.gbTVNMT.Controls.Add(Me.chkTVSeasonBannerNMJ)
+        Me.gbTVNMT.Controls.Add(Me.chkTVEpisodePosterNMJ)
+        Me.gbTVNMT.Controls.Add(Me.chkTVSeasonFanartNMJ)
+        Me.gbTVNMT.Controls.Add(Me.chkTVShowFanartNMJ)
+        Me.gbTVNMT.Controls.Add(Me.chkTVShowPosterNMJ)
+        Me.gbTVNMT.Controls.Add(Me.chkTVUseNMJ)
+        Me.gbTVNMT.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.gbTVNMT.Location = New System.Drawing.Point(164, 9)
+        Me.gbTVNMT.Name = "gbTVNMT"
+        Me.gbTVNMT.Size = New System.Drawing.Size(152, 289)
+        Me.gbTVNMT.TabIndex = 19
+        Me.gbTVNMT.TabStop = false
+        Me.gbTVNMT.Text = "NMJ"
+        '
+        'chkTVSeasonPosterNMJ
+        '
+        Me.chkTVSeasonPosterNMJ.AutoSize = true
+        Me.chkTVSeasonPosterNMJ.Enabled = false
+        Me.chkTVSeasonPosterNMJ.Location = New System.Drawing.Point(6, 136)
+        Me.chkTVSeasonPosterNMJ.Name = "chkTVSeasonPosterNMJ"
+        Me.chkTVSeasonPosterNMJ.Size = New System.Drawing.Size(98, 17)
+        Me.chkTVSeasonPosterNMJ.TabIndex = 26
+        Me.chkTVSeasonPosterNMJ.Text = "Season Poster"
+        Me.chkTVSeasonPosterNMJ.UseVisualStyleBackColor = true
+        '
+        'chkTVShowBannerNMJ
+        '
+        Me.chkTVShowBannerNMJ.AutoSize = true
+        Me.chkTVShowBannerNMJ.Enabled = false
+        Me.chkTVShowBannerNMJ.Location = New System.Drawing.Point(6, 113)
+        Me.chkTVShowBannerNMJ.Name = "chkTVShowBannerNMJ"
+        Me.chkTVShowBannerNMJ.Size = New System.Drawing.Size(95, 17)
+        Me.chkTVShowBannerNMJ.TabIndex = 25
+        Me.chkTVShowBannerNMJ.Text = "Show Banner"
+        Me.chkTVShowBannerNMJ.UseVisualStyleBackColor = true
+        '
+        'chkTVSeasonBannerNMJ
+        '
+        Me.chkTVSeasonBannerNMJ.AutoSize = true
+        Me.chkTVSeasonBannerNMJ.Enabled = false
+        Me.chkTVSeasonBannerNMJ.Location = New System.Drawing.Point(6, 182)
+        Me.chkTVSeasonBannerNMJ.Name = "chkTVSeasonBannerNMJ"
+        Me.chkTVSeasonBannerNMJ.Size = New System.Drawing.Size(103, 17)
+        Me.chkTVSeasonBannerNMJ.TabIndex = 23
+        Me.chkTVSeasonBannerNMJ.Text = "Season Banner"
+        Me.chkTVSeasonBannerNMJ.UseVisualStyleBackColor = true
+        '
+        'chkTVEpisodePosterNMJ
+        '
+        Me.chkTVEpisodePosterNMJ.AutoSize = true
+        Me.chkTVEpisodePosterNMJ.Enabled = false
+        Me.chkTVEpisodePosterNMJ.Location = New System.Drawing.Point(6, 205)
+        Me.chkTVEpisodePosterNMJ.Name = "chkTVEpisodePosterNMJ"
+        Me.chkTVEpisodePosterNMJ.Size = New System.Drawing.Size(102, 17)
+        Me.chkTVEpisodePosterNMJ.TabIndex = 21
+        Me.chkTVEpisodePosterNMJ.Text = "Episode Poster"
+        Me.chkTVEpisodePosterNMJ.UseVisualStyleBackColor = true
+        '
+        'chkTVSeasonFanartNMJ
+        '
+        Me.chkTVSeasonFanartNMJ.AutoSize = true
+        Me.chkTVSeasonFanartNMJ.Enabled = false
+        Me.chkTVSeasonFanartNMJ.Location = New System.Drawing.Point(6, 159)
+        Me.chkTVSeasonFanartNMJ.Name = "chkTVSeasonFanartNMJ"
+        Me.chkTVSeasonFanartNMJ.Size = New System.Drawing.Size(99, 17)
+        Me.chkTVSeasonFanartNMJ.TabIndex = 19
+        Me.chkTVSeasonFanartNMJ.Text = "Season Fanart"
+        Me.chkTVSeasonFanartNMJ.UseVisualStyleBackColor = true
+        '
+        'chkTVShowFanartNMJ
+        '
+        Me.chkTVShowFanartNMJ.AutoSize = true
+        Me.chkTVShowFanartNMJ.Enabled = false
+        Me.chkTVShowFanartNMJ.Location = New System.Drawing.Point(6, 67)
+        Me.chkTVShowFanartNMJ.Name = "chkTVShowFanartNMJ"
+        Me.chkTVShowFanartNMJ.Size = New System.Drawing.Size(91, 17)
+        Me.chkTVShowFanartNMJ.TabIndex = 18
+        Me.chkTVShowFanartNMJ.Text = "Show Fanart"
+        Me.chkTVShowFanartNMJ.UseVisualStyleBackColor = true
+        '
+        'chkTVShowPosterNMJ
+        '
+        Me.chkTVShowPosterNMJ.AutoSize = true
+        Me.chkTVShowPosterNMJ.Enabled = false
+        Me.chkTVShowPosterNMJ.Location = New System.Drawing.Point(6, 44)
+        Me.chkTVShowPosterNMJ.Name = "chkTVShowPosterNMJ"
+        Me.chkTVShowPosterNMJ.Size = New System.Drawing.Size(90, 17)
+        Me.chkTVShowPosterNMJ.TabIndex = 17
+        Me.chkTVShowPosterNMJ.Text = "Show Poster"
+        Me.chkTVShowPosterNMJ.UseVisualStyleBackColor = true
+        '
+        'chkTVUseNMJ
+        '
+        Me.chkTVUseNMJ.AutoSize = true
+        Me.chkTVUseNMJ.Location = New System.Drawing.Point(6, 21)
+        Me.chkTVUseNMJ.Name = "chkTVUseNMJ"
+        Me.chkTVUseNMJ.Size = New System.Drawing.Size(45, 17)
+        Me.chkTVUseNMJ.TabIndex = 16
+        Me.chkTVUseNMJ.Text = "Use"
+        Me.chkTVUseNMJ.UseVisualStyleBackColor = true
+        '
+        'gbTVYAMJ
+        '
+        Me.gbTVYAMJ.Controls.Add(Me.chkTVSeasonPosterYAMJ)
+        Me.gbTVYAMJ.Controls.Add(Me.chkTVShowBannerYAMJ)
+        Me.gbTVYAMJ.Controls.Add(Me.chkTVSeasonBannerYAMJ)
+        Me.gbTVYAMJ.Controls.Add(Me.chkTVEpisodePosterYAMJ)
+        Me.gbTVYAMJ.Controls.Add(Me.chkTVSeasonFanartYAMJ)
+        Me.gbTVYAMJ.Controls.Add(Me.chkTVShowFanartYAMJ)
+        Me.gbTVYAMJ.Controls.Add(Me.chkTVShowPosterYAMJ)
+        Me.gbTVYAMJ.Controls.Add(Me.chkTVUseYAMJ)
+        Me.gbTVYAMJ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.gbTVYAMJ.Location = New System.Drawing.Point(6, 6)
+        Me.gbTVYAMJ.Name = "gbTVYAMJ"
+        Me.gbTVYAMJ.Size = New System.Drawing.Size(152, 289)
+        Me.gbTVYAMJ.TabIndex = 18
+        Me.gbTVYAMJ.TabStop = false
+        Me.gbTVYAMJ.Text = "YAMJ"
+        '
+        'chkTVSeasonPosterYAMJ
+        '
+        Me.chkTVSeasonPosterYAMJ.AutoSize = true
+        Me.chkTVSeasonPosterYAMJ.Enabled = false
+        Me.chkTVSeasonPosterYAMJ.Location = New System.Drawing.Point(6, 136)
+        Me.chkTVSeasonPosterYAMJ.Name = "chkTVSeasonPosterYAMJ"
+        Me.chkTVSeasonPosterYAMJ.Size = New System.Drawing.Size(98, 17)
+        Me.chkTVSeasonPosterYAMJ.TabIndex = 26
+        Me.chkTVSeasonPosterYAMJ.Text = "Season Poster"
+        Me.chkTVSeasonPosterYAMJ.UseVisualStyleBackColor = true
+        '
+        'chkTVShowBannerYAMJ
+        '
+        Me.chkTVShowBannerYAMJ.AutoSize = true
+        Me.chkTVShowBannerYAMJ.Enabled = false
+        Me.chkTVShowBannerYAMJ.Location = New System.Drawing.Point(6, 113)
+        Me.chkTVShowBannerYAMJ.Name = "chkTVShowBannerYAMJ"
+        Me.chkTVShowBannerYAMJ.Size = New System.Drawing.Size(95, 17)
+        Me.chkTVShowBannerYAMJ.TabIndex = 25
+        Me.chkTVShowBannerYAMJ.Text = "Show Banner"
+        Me.chkTVShowBannerYAMJ.UseVisualStyleBackColor = true
+        '
+        'chkTVSeasonBannerYAMJ
+        '
+        Me.chkTVSeasonBannerYAMJ.AutoSize = true
+        Me.chkTVSeasonBannerYAMJ.Enabled = false
+        Me.chkTVSeasonBannerYAMJ.Location = New System.Drawing.Point(6, 182)
+        Me.chkTVSeasonBannerYAMJ.Name = "chkTVSeasonBannerYAMJ"
+        Me.chkTVSeasonBannerYAMJ.Size = New System.Drawing.Size(103, 17)
+        Me.chkTVSeasonBannerYAMJ.TabIndex = 23
+        Me.chkTVSeasonBannerYAMJ.Text = "Season Banner"
+        Me.chkTVSeasonBannerYAMJ.UseVisualStyleBackColor = true
+        '
+        'chkTVEpisodePosterYAMJ
+        '
+        Me.chkTVEpisodePosterYAMJ.AutoSize = true
+        Me.chkTVEpisodePosterYAMJ.Enabled = false
+        Me.chkTVEpisodePosterYAMJ.Location = New System.Drawing.Point(6, 205)
+        Me.chkTVEpisodePosterYAMJ.Name = "chkTVEpisodePosterYAMJ"
+        Me.chkTVEpisodePosterYAMJ.Size = New System.Drawing.Size(102, 17)
+        Me.chkTVEpisodePosterYAMJ.TabIndex = 21
+        Me.chkTVEpisodePosterYAMJ.Text = "Episode Poster"
+        Me.chkTVEpisodePosterYAMJ.UseVisualStyleBackColor = true
+        '
+        'chkTVSeasonFanartYAMJ
+        '
+        Me.chkTVSeasonFanartYAMJ.AutoSize = true
+        Me.chkTVSeasonFanartYAMJ.Enabled = false
+        Me.chkTVSeasonFanartYAMJ.Location = New System.Drawing.Point(6, 159)
+        Me.chkTVSeasonFanartYAMJ.Name = "chkTVSeasonFanartYAMJ"
+        Me.chkTVSeasonFanartYAMJ.Size = New System.Drawing.Size(99, 17)
+        Me.chkTVSeasonFanartYAMJ.TabIndex = 19
+        Me.chkTVSeasonFanartYAMJ.Text = "Season Fanart"
+        Me.chkTVSeasonFanartYAMJ.UseVisualStyleBackColor = true
+        '
+        'chkTVShowFanartYAMJ
+        '
+        Me.chkTVShowFanartYAMJ.AutoSize = true
+        Me.chkTVShowFanartYAMJ.Enabled = false
+        Me.chkTVShowFanartYAMJ.Location = New System.Drawing.Point(6, 67)
+        Me.chkTVShowFanartYAMJ.Name = "chkTVShowFanartYAMJ"
+        Me.chkTVShowFanartYAMJ.Size = New System.Drawing.Size(91, 17)
+        Me.chkTVShowFanartYAMJ.TabIndex = 18
+        Me.chkTVShowFanartYAMJ.Text = "Show Fanart"
+        Me.chkTVShowFanartYAMJ.UseVisualStyleBackColor = true
+        '
+        'chkTVShowPosterYAMJ
+        '
+        Me.chkTVShowPosterYAMJ.AutoSize = true
+        Me.chkTVShowPosterYAMJ.Enabled = false
+        Me.chkTVShowPosterYAMJ.Location = New System.Drawing.Point(6, 44)
+        Me.chkTVShowPosterYAMJ.Name = "chkTVShowPosterYAMJ"
+        Me.chkTVShowPosterYAMJ.Size = New System.Drawing.Size(90, 17)
+        Me.chkTVShowPosterYAMJ.TabIndex = 17
+        Me.chkTVShowPosterYAMJ.Text = "Show Poster"
+        Me.chkTVShowPosterYAMJ.UseVisualStyleBackColor = true
+        '
+        'chkTVUseYAMJ
+        '
+        Me.chkTVUseYAMJ.AutoSize = true
+        Me.chkTVUseYAMJ.Location = New System.Drawing.Point(6, 21)
+        Me.chkTVUseYAMJ.Name = "chkTVUseYAMJ"
+        Me.chkTVUseYAMJ.Size = New System.Drawing.Size(45, 17)
+        Me.chkTVUseYAMJ.TabIndex = 16
+        Me.chkTVUseYAMJ.Text = "Use"
+        Me.chkTVUseYAMJ.UseVisualStyleBackColor = true
+        '
         'tpTVFileNamingExpert
         '
         Me.tpTVFileNamingExpert.Location = New System.Drawing.Point(4, 22)
@@ -8332,6 +8544,7 @@ Partial Class dlgSettings
         '
         'gbTVScraperFieldsShowOpts
         '
+        Me.gbTVScraperFieldsShowOpts.Controls.Add(Me.chkTVScraperShowStatus)
         Me.gbTVScraperFieldsShowOpts.Controls.Add(Me.chkTVScraperShowRating)
         Me.gbTVScraperFieldsShowOpts.Controls.Add(Me.chkTVScraperShowActors)
         Me.gbTVScraperFieldsShowOpts.Controls.Add(Me.chkTVScraperShowStudio)
@@ -8566,7 +8779,7 @@ Partial Class dlgSettings
         Me.gbTVScraperGlobalLocksEpisodeOpts.Controls.Add(Me.chkTVLockEpisodeRating)
         Me.gbTVScraperGlobalLocksEpisodeOpts.Controls.Add(Me.chkTVLockEpisodePlot)
         Me.gbTVScraperGlobalLocksEpisodeOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.gbTVScraperGlobalLocksEpisodeOpts.Location = New System.Drawing.Point(5, 112)
+        Me.gbTVScraperGlobalLocksEpisodeOpts.Location = New System.Drawing.Point(5, 129)
         Me.gbTVScraperGlobalLocksEpisodeOpts.Name = "gbTVScraperGlobalLocksEpisodeOpts"
         Me.gbTVScraperGlobalLocksEpisodeOpts.Size = New System.Drawing.Size(181, 66)
         Me.gbTVScraperGlobalLocksEpisodeOpts.TabIndex = 1
@@ -8605,6 +8818,7 @@ Partial Class dlgSettings
         '
         'gbTVScraperGlobalLocksShowOpts
         '
+        Me.gbTVScraperGlobalLocksShowOpts.Controls.Add(Me.chkTVLockShowStatus)
         Me.gbTVScraperGlobalLocksShowOpts.Controls.Add(Me.chkTVLockShowPlot)
         Me.gbTVScraperGlobalLocksShowOpts.Controls.Add(Me.chkTVLockShowGenre)
         Me.gbTVScraperGlobalLocksShowOpts.Controls.Add(Me.chkTVLockShowStudio)
@@ -8613,7 +8827,7 @@ Partial Class dlgSettings
         Me.gbTVScraperGlobalLocksShowOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.gbTVScraperGlobalLocksShowOpts.Location = New System.Drawing.Point(5, 13)
         Me.gbTVScraperGlobalLocksShowOpts.Name = "gbTVScraperGlobalLocksShowOpts"
-        Me.gbTVScraperGlobalLocksShowOpts.Size = New System.Drawing.Size(181, 96)
+        Me.gbTVScraperGlobalLocksShowOpts.Size = New System.Drawing.Size(181, 111)
         Me.gbTVScraperGlobalLocksShowOpts.TabIndex = 0
         Me.gbTVScraperGlobalLocksShowOpts.TabStop = false
         Me.gbTVScraperGlobalLocksShowOpts.Text = "Show"
@@ -8641,7 +8855,7 @@ Partial Class dlgSettings
         'chkTVLockShowStudio
         '
         Me.chkTVLockShowStudio.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkTVLockShowStudio.Location = New System.Drawing.Point(6, 77)
+        Me.chkTVLockShowStudio.Location = New System.Drawing.Point(6, 93)
         Me.chkTVLockShowStudio.Name = "chkTVLockShowStudio"
         Me.chkTVLockShowStudio.Size = New System.Drawing.Size(168, 17)
         Me.chkTVLockShowStudio.TabIndex = 4
@@ -9888,215 +10102,25 @@ Partial Class dlgSettings
         Me.chkMovieTrailerEnable.Text = "Enable Trailer Support"
         Me.chkMovieTrailerEnable.UseVisualStyleBackColor = true
         '
-        'gbTVNMT
+        'chkTVLockShowStatus
         '
-        Me.gbTVNMT.Controls.Add(Me.chkTVSeasonPosterNMJ)
-        Me.gbTVNMT.Controls.Add(Me.chkTVShowBannerNMJ)
-        Me.gbTVNMT.Controls.Add(Me.chkTVSeasonBannerNMJ)
-        Me.gbTVNMT.Controls.Add(Me.chkTVEpisodePosterNMJ)
-        Me.gbTVNMT.Controls.Add(Me.chkTVSeasonFanartNMJ)
-        Me.gbTVNMT.Controls.Add(Me.chkTVShowFanartNMJ)
-        Me.gbTVNMT.Controls.Add(Me.chkTVShowPosterNMJ)
-        Me.gbTVNMT.Controls.Add(Me.chkTVUseNMJ)
-        Me.gbTVNMT.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.gbTVNMT.Location = New System.Drawing.Point(164, 9)
-        Me.gbTVNMT.Name = "gbTVNMT"
-        Me.gbTVNMT.Size = New System.Drawing.Size(152, 289)
-        Me.gbTVNMT.TabIndex = 19
-        Me.gbTVNMT.TabStop = false
-        Me.gbTVNMT.Text = "NMJ"
+        Me.chkTVLockShowStatus.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVLockShowStatus.Location = New System.Drawing.Point(6, 77)
+        Me.chkTVLockShowStatus.Name = "chkTVLockShowStatus"
+        Me.chkTVLockShowStatus.Size = New System.Drawing.Size(168, 17)
+        Me.chkTVLockShowStatus.TabIndex = 5
+        Me.chkTVLockShowStatus.Text = "Lock Status"
+        Me.chkTVLockShowStatus.UseVisualStyleBackColor = true
         '
-        'chkTVUseNMJ
+        'chkTVScraperShowStatus
         '
-        Me.chkTVUseNMJ.AutoSize = true
-        Me.chkTVUseNMJ.Location = New System.Drawing.Point(6, 21)
-        Me.chkTVUseNMJ.Name = "chkTVUseNMJ"
-        Me.chkTVUseNMJ.Size = New System.Drawing.Size(45, 17)
-        Me.chkTVUseNMJ.TabIndex = 16
-        Me.chkTVUseNMJ.Text = "Use"
-        Me.chkTVUseNMJ.UseVisualStyleBackColor = true
-        '
-        'gbTVYAMJ
-        '
-        Me.gbTVYAMJ.Controls.Add(Me.chkTVSeasonPosterYAMJ)
-        Me.gbTVYAMJ.Controls.Add(Me.chkTVShowBannerYAMJ)
-        Me.gbTVYAMJ.Controls.Add(Me.chkTVSeasonBannerYAMJ)
-        Me.gbTVYAMJ.Controls.Add(Me.chkTVEpisodePosterYAMJ)
-        Me.gbTVYAMJ.Controls.Add(Me.chkTVSeasonFanartYAMJ)
-        Me.gbTVYAMJ.Controls.Add(Me.chkTVShowFanartYAMJ)
-        Me.gbTVYAMJ.Controls.Add(Me.chkTVShowPosterYAMJ)
-        Me.gbTVYAMJ.Controls.Add(Me.chkTVUseYAMJ)
-        Me.gbTVYAMJ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.gbTVYAMJ.Location = New System.Drawing.Point(6, 6)
-        Me.gbTVYAMJ.Name = "gbTVYAMJ"
-        Me.gbTVYAMJ.Size = New System.Drawing.Size(152, 289)
-        Me.gbTVYAMJ.TabIndex = 18
-        Me.gbTVYAMJ.TabStop = false
-        Me.gbTVYAMJ.Text = "YAMJ"
-        '
-        'chkTVUseYAMJ
-        '
-        Me.chkTVUseYAMJ.AutoSize = true
-        Me.chkTVUseYAMJ.Location = New System.Drawing.Point(6, 21)
-        Me.chkTVUseYAMJ.Name = "chkTVUseYAMJ"
-        Me.chkTVUseYAMJ.Size = New System.Drawing.Size(45, 17)
-        Me.chkTVUseYAMJ.TabIndex = 16
-        Me.chkTVUseYAMJ.Text = "Use"
-        Me.chkTVUseYAMJ.UseVisualStyleBackColor = true
-        '
-        'chkTVSeasonPosterYAMJ
-        '
-        Me.chkTVSeasonPosterYAMJ.AutoSize = true
-        Me.chkTVSeasonPosterYAMJ.Enabled = false
-        Me.chkTVSeasonPosterYAMJ.Location = New System.Drawing.Point(6, 136)
-        Me.chkTVSeasonPosterYAMJ.Name = "chkTVSeasonPosterYAMJ"
-        Me.chkTVSeasonPosterYAMJ.Size = New System.Drawing.Size(98, 17)
-        Me.chkTVSeasonPosterYAMJ.TabIndex = 26
-        Me.chkTVSeasonPosterYAMJ.Text = "Season Poster"
-        Me.chkTVSeasonPosterYAMJ.UseVisualStyleBackColor = true
-        '
-        'chkTVShowBannerYAMJ
-        '
-        Me.chkTVShowBannerYAMJ.AutoSize = true
-        Me.chkTVShowBannerYAMJ.Enabled = false
-        Me.chkTVShowBannerYAMJ.Location = New System.Drawing.Point(6, 113)
-        Me.chkTVShowBannerYAMJ.Name = "chkTVShowBannerYAMJ"
-        Me.chkTVShowBannerYAMJ.Size = New System.Drawing.Size(95, 17)
-        Me.chkTVShowBannerYAMJ.TabIndex = 25
-        Me.chkTVShowBannerYAMJ.Text = "Show Banner"
-        Me.chkTVShowBannerYAMJ.UseVisualStyleBackColor = true
-        '
-        'chkTVSeasonBannerYAMJ
-        '
-        Me.chkTVSeasonBannerYAMJ.AutoSize = true
-        Me.chkTVSeasonBannerYAMJ.Enabled = false
-        Me.chkTVSeasonBannerYAMJ.Location = New System.Drawing.Point(6, 182)
-        Me.chkTVSeasonBannerYAMJ.Name = "chkTVSeasonBannerYAMJ"
-        Me.chkTVSeasonBannerYAMJ.Size = New System.Drawing.Size(103, 17)
-        Me.chkTVSeasonBannerYAMJ.TabIndex = 23
-        Me.chkTVSeasonBannerYAMJ.Text = "Season Banner"
-        Me.chkTVSeasonBannerYAMJ.UseVisualStyleBackColor = true
-        '
-        'chkTVEpisodePosterYAMJ
-        '
-        Me.chkTVEpisodePosterYAMJ.AutoSize = true
-        Me.chkTVEpisodePosterYAMJ.Enabled = false
-        Me.chkTVEpisodePosterYAMJ.Location = New System.Drawing.Point(6, 205)
-        Me.chkTVEpisodePosterYAMJ.Name = "chkTVEpisodePosterYAMJ"
-        Me.chkTVEpisodePosterYAMJ.Size = New System.Drawing.Size(102, 17)
-        Me.chkTVEpisodePosterYAMJ.TabIndex = 21
-        Me.chkTVEpisodePosterYAMJ.Text = "Episode Poster"
-        Me.chkTVEpisodePosterYAMJ.UseVisualStyleBackColor = true
-        '
-        'chkTVSeasonFanartYAMJ
-        '
-        Me.chkTVSeasonFanartYAMJ.AutoSize = true
-        Me.chkTVSeasonFanartYAMJ.Enabled = false
-        Me.chkTVSeasonFanartYAMJ.Location = New System.Drawing.Point(6, 159)
-        Me.chkTVSeasonFanartYAMJ.Name = "chkTVSeasonFanartYAMJ"
-        Me.chkTVSeasonFanartYAMJ.Size = New System.Drawing.Size(99, 17)
-        Me.chkTVSeasonFanartYAMJ.TabIndex = 19
-        Me.chkTVSeasonFanartYAMJ.Text = "Season Fanart"
-        Me.chkTVSeasonFanartYAMJ.UseVisualStyleBackColor = true
-        '
-        'chkTVShowFanartYAMJ
-        '
-        Me.chkTVShowFanartYAMJ.AutoSize = true
-        Me.chkTVShowFanartYAMJ.Enabled = false
-        Me.chkTVShowFanartYAMJ.Location = New System.Drawing.Point(6, 67)
-        Me.chkTVShowFanartYAMJ.Name = "chkTVShowFanartYAMJ"
-        Me.chkTVShowFanartYAMJ.Size = New System.Drawing.Size(91, 17)
-        Me.chkTVShowFanartYAMJ.TabIndex = 18
-        Me.chkTVShowFanartYAMJ.Text = "Show Fanart"
-        Me.chkTVShowFanartYAMJ.UseVisualStyleBackColor = true
-        '
-        'chkTVShowPosterYAMJ
-        '
-        Me.chkTVShowPosterYAMJ.AutoSize = true
-        Me.chkTVShowPosterYAMJ.Enabled = false
-        Me.chkTVShowPosterYAMJ.Location = New System.Drawing.Point(6, 44)
-        Me.chkTVShowPosterYAMJ.Name = "chkTVShowPosterYAMJ"
-        Me.chkTVShowPosterYAMJ.Size = New System.Drawing.Size(90, 17)
-        Me.chkTVShowPosterYAMJ.TabIndex = 17
-        Me.chkTVShowPosterYAMJ.Text = "Show Poster"
-        Me.chkTVShowPosterYAMJ.UseVisualStyleBackColor = true
-        '
-        'chkTVSeasonPosterNMJ
-        '
-        Me.chkTVSeasonPosterNMJ.AutoSize = true
-        Me.chkTVSeasonPosterNMJ.Enabled = false
-        Me.chkTVSeasonPosterNMJ.Location = New System.Drawing.Point(6, 136)
-        Me.chkTVSeasonPosterNMJ.Name = "chkTVSeasonPosterNMJ"
-        Me.chkTVSeasonPosterNMJ.Size = New System.Drawing.Size(98, 17)
-        Me.chkTVSeasonPosterNMJ.TabIndex = 26
-        Me.chkTVSeasonPosterNMJ.Text = "Season Poster"
-        Me.chkTVSeasonPosterNMJ.UseVisualStyleBackColor = true
-        '
-        'chkTVShowBannerNMJ
-        '
-        Me.chkTVShowBannerNMJ.AutoSize = true
-        Me.chkTVShowBannerNMJ.Enabled = false
-        Me.chkTVShowBannerNMJ.Location = New System.Drawing.Point(6, 113)
-        Me.chkTVShowBannerNMJ.Name = "chkTVShowBannerNMJ"
-        Me.chkTVShowBannerNMJ.Size = New System.Drawing.Size(95, 17)
-        Me.chkTVShowBannerNMJ.TabIndex = 25
-        Me.chkTVShowBannerNMJ.Text = "Show Banner"
-        Me.chkTVShowBannerNMJ.UseVisualStyleBackColor = true
-        '
-        'chkTVSeasonBannerNMJ
-        '
-        Me.chkTVSeasonBannerNMJ.AutoSize = true
-        Me.chkTVSeasonBannerNMJ.Enabled = false
-        Me.chkTVSeasonBannerNMJ.Location = New System.Drawing.Point(6, 182)
-        Me.chkTVSeasonBannerNMJ.Name = "chkTVSeasonBannerNMJ"
-        Me.chkTVSeasonBannerNMJ.Size = New System.Drawing.Size(103, 17)
-        Me.chkTVSeasonBannerNMJ.TabIndex = 23
-        Me.chkTVSeasonBannerNMJ.Text = "Season Banner"
-        Me.chkTVSeasonBannerNMJ.UseVisualStyleBackColor = true
-        '
-        'chkTVEpisodePosterNMJ
-        '
-        Me.chkTVEpisodePosterNMJ.AutoSize = true
-        Me.chkTVEpisodePosterNMJ.Enabled = false
-        Me.chkTVEpisodePosterNMJ.Location = New System.Drawing.Point(6, 205)
-        Me.chkTVEpisodePosterNMJ.Name = "chkTVEpisodePosterNMJ"
-        Me.chkTVEpisodePosterNMJ.Size = New System.Drawing.Size(102, 17)
-        Me.chkTVEpisodePosterNMJ.TabIndex = 21
-        Me.chkTVEpisodePosterNMJ.Text = "Episode Poster"
-        Me.chkTVEpisodePosterNMJ.UseVisualStyleBackColor = true
-        '
-        'chkTVSeasonFanartNMJ
-        '
-        Me.chkTVSeasonFanartNMJ.AutoSize = true
-        Me.chkTVSeasonFanartNMJ.Enabled = false
-        Me.chkTVSeasonFanartNMJ.Location = New System.Drawing.Point(6, 159)
-        Me.chkTVSeasonFanartNMJ.Name = "chkTVSeasonFanartNMJ"
-        Me.chkTVSeasonFanartNMJ.Size = New System.Drawing.Size(99, 17)
-        Me.chkTVSeasonFanartNMJ.TabIndex = 19
-        Me.chkTVSeasonFanartNMJ.Text = "Season Fanart"
-        Me.chkTVSeasonFanartNMJ.UseVisualStyleBackColor = true
-        '
-        'chkTVShowFanartNMJ
-        '
-        Me.chkTVShowFanartNMJ.AutoSize = true
-        Me.chkTVShowFanartNMJ.Enabled = false
-        Me.chkTVShowFanartNMJ.Location = New System.Drawing.Point(6, 67)
-        Me.chkTVShowFanartNMJ.Name = "chkTVShowFanartNMJ"
-        Me.chkTVShowFanartNMJ.Size = New System.Drawing.Size(91, 17)
-        Me.chkTVShowFanartNMJ.TabIndex = 18
-        Me.chkTVShowFanartNMJ.Text = "Show Fanart"
-        Me.chkTVShowFanartNMJ.UseVisualStyleBackColor = true
-        '
-        'chkTVShowPosterNMJ
-        '
-        Me.chkTVShowPosterNMJ.AutoSize = true
-        Me.chkTVShowPosterNMJ.Enabled = false
-        Me.chkTVShowPosterNMJ.Location = New System.Drawing.Point(6, 44)
-        Me.chkTVShowPosterNMJ.Name = "chkTVShowPosterNMJ"
-        Me.chkTVShowPosterNMJ.Size = New System.Drawing.Size(90, 17)
-        Me.chkTVShowPosterNMJ.TabIndex = 17
-        Me.chkTVShowPosterNMJ.Text = "Show Poster"
-        Me.chkTVShowPosterNMJ.UseVisualStyleBackColor = true
+        Me.chkTVScraperShowStatus.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVScraperShowStatus.Location = New System.Drawing.Point(130, 77)
+        Me.chkTVScraperShowStatus.Name = "chkTVScraperShowStatus"
+        Me.chkTVScraperShowStatus.Size = New System.Drawing.Size(78, 17)
+        Me.chkTVScraperShowStatus.TabIndex = 9
+        Me.chkTVScraperShowStatus.Text = "Status"
+        Me.chkTVScraperShowStatus.UseVisualStyleBackColor = true
         '
         'dlgSettings
         '
@@ -10282,6 +10306,10 @@ Partial Class dlgSettings
         Me.gbTVFrodo.ResumeLayout(false)
         Me.gbTVFrodo.PerformLayout
         Me.tpTVFileNamingNMT.ResumeLayout(false)
+        Me.gbTVNMT.ResumeLayout(false)
+        Me.gbTVNMT.PerformLayout
+        Me.gbTVYAMJ.ResumeLayout(false)
+        Me.gbTVYAMJ.PerformLayout
         Me.gbTVSourcesMiscOpts.ResumeLayout(false)
         Me.gbTVSourcesMiscOpts.PerformLayout
         Me.tpTVSourcesRegex.ResumeLayout(false)
@@ -10372,10 +10400,6 @@ Partial Class dlgSettings
         Me.pnlMovieTrailers.ResumeLayout(false)
         Me.gbMovieTrailerOpts.ResumeLayout(false)
         Me.gbMovieTrailerOpts.PerformLayout
-        Me.gbTVNMT.ResumeLayout(false)
-        Me.gbTVNMT.PerformLayout
-        Me.gbTVYAMJ.ResumeLayout(false)
-        Me.gbTVYAMJ.PerformLayout
         Me.ResumeLayout(false)
         Me.PerformLayout
 
@@ -11207,4 +11231,6 @@ End Sub
     Friend WithEvents chkTVShowFanartYAMJ As System.Windows.Forms.CheckBox
     Friend WithEvents chkTVShowPosterYAMJ As System.Windows.Forms.CheckBox
     Friend WithEvents chkTVUseYAMJ As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVLockShowStatus As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVScraperShowStatus As System.Windows.Forms.CheckBox
 End Class

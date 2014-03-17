@@ -62,6 +62,7 @@ Partial Class frmTVInfoSettingsHolder
         Me.txtTVDBApiKey = New System.Windows.Forms.TextBox()
         Me.lblModuleInfo = New System.Windows.Forms.Label()
         Me.pbModuleLogo = New System.Windows.Forms.PictureBox()
+        Me.chkScraperShowStatus = New System.Windows.Forms.CheckBox()
         Me.Panel1.SuspendLayout()
         Me.pnlSettings.SuspendLayout()
         Me.gbScraperFields.SuspendLayout()
@@ -161,6 +162,7 @@ Partial Class frmTVInfoSettingsHolder
         '
         'gbScraperFieldsShow
         '
+        Me.gbScraperFieldsShow.Controls.Add(Me.chkScraperShowStatus)
         Me.gbScraperFieldsShow.Controls.Add(Me.chkScraperShowRating)
         Me.gbScraperFieldsShow.Controls.Add(Me.chkScraperShowActors)
         Me.gbScraperFieldsShow.Controls.Add(Me.chkScraperShowStudio)
@@ -493,6 +495,16 @@ Partial Class frmTVInfoSettingsHolder
         Me.pbModuleLogo.TabIndex = 96
         Me.pbModuleLogo.TabStop = False
         '
+        'chkScraperShowStatus
+        '
+        Me.chkScraperShowStatus.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkScraperShowStatus.Location = New System.Drawing.Point(130, 77)
+        Me.chkScraperShowStatus.Name = "chkScraperShowStatus"
+        Me.chkScraperShowStatus.Size = New System.Drawing.Size(78, 17)
+        Me.chkScraperShowStatus.TabIndex = 9
+        Me.chkScraperShowStatus.Text = "Status"
+        Me.chkScraperShowStatus.UseVisualStyleBackColor = True
+        '
         'frmTVInfoSettingsHolder
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -563,5 +575,6 @@ Partial Class frmTVInfoSettingsHolder
     Friend WithEvents gbLanguage As System.Windows.Forms.GroupBox
     Friend WithEvents lblTVLanguagePreferred As System.Windows.Forms.Label
     Friend WithEvents cbTVScraperLanguage As System.Windows.Forms.ComboBox
+    Friend WithEvents chkScraperShowStatus As System.Windows.Forms.CheckBox
 
 End Class

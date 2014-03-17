@@ -160,7 +160,8 @@ CREATE TABLE TVShows(
 	HasBanner BOOL NOT NULL DEFAULT False,
 	BannerPath TEXT,
 	HasLandscape BOOL NOT NULL DEFAULT False,
-	LandscapePath TEXT
+	LandscapePath TEXT,
+	Status TEXT
 	);
 CREATE UNIQUE INDEX UniqueTVShowPath ON TVShows (TVShowPath);
 

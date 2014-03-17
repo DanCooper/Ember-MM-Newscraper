@@ -1844,6 +1844,10 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
+    Private Sub chkTVScraperShowStatus_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVScraperShowStatus.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
     Private Sub chkTVScraperShowStudio_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVScraperShowStudio.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
@@ -1936,6 +1940,10 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
+    Private Sub chkTVLockShowStatus_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVLockShowStatus.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
     Private Sub chkTVLockShowStudio_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVLockShowStudio.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
@@ -1965,7 +1973,7 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkMovieScraperStudio_CheckedChanged_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperStudio.CheckedChanged
+    Private Sub chkMovieScraperStudio_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperStudio.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -2557,6 +2565,7 @@ Public Class dlgSettings
                 Me.chkTVLockShowGenre.Checked = .TVLockShowGenre
                 Me.chkTVLockShowPlot.Checked = .TVLockShowPlot
                 Me.chkTVLockShowRating.Checked = .TVLockShowRating
+                Me.chkTVLockShowStatus.Checked = .TVLockShowStatus
                 Me.chkTVLockShowStudio.Checked = .TVLockShowStudio
                 Me.chkTVLockShowTitle.Checked = .TVLockShowTitle
                 Me.chkTVScanOrderModify.Checked = .TVScanOrderModify
@@ -2577,6 +2586,7 @@ Public Class dlgSettings
                 Me.chkTVScraperShowPlot.Checked = .TVScraperShowPlot
                 Me.chkTVScraperShowPremiered.Checked = .TVScraperShowPremiered
                 Me.chkTVScraperShowRating.Checked = .TVScraperShowRating
+                Me.chkTVScraperShowStatus.Checked = .TVScraperShowStatus
                 Me.chkTVScraperShowStudio.Checked = .TVScraperShowStudio
                 Me.chkTVScraperShowTitle.Checked = .TVScraperShowTitle
                 Me.chkTVScraperUseMDDuration.Checked = .TVScraperUseMDDuration
@@ -3894,6 +3904,7 @@ Public Class dlgSettings
                 .TVLockShowGenre = Me.chkTVLockShowGenre.Checked
                 .TVLockShowPlot = Me.chkTVLockShowPlot.Checked
                 .TVLockShowRating = Me.chkTVLockShowRating.Checked
+                .TVLockShowStatus = Me.chkTVLockShowStatus.Checked
                 .TVLockShowStudio = Me.chkTVLockShowStudio.Checked
                 .TVLockShowTitle = Me.chkTVLockShowTitle.Checked
                 .TVMetadataPerFileType.Clear()
@@ -3923,6 +3934,7 @@ Public Class dlgSettings
                 .TVScraperShowPlot = Me.chkTVScraperShowPlot.Checked
                 .TVScraperShowPremiered = Me.chkTVScraperShowPremiered.Checked
                 .TVScraperShowRating = Me.chkTVScraperShowRating.Checked
+                .TVScraperShowStatus = Me.chkTVScraperShowStatus.Checked
                 .TVScraperShowStudio = Me.chkTVScraperShowStudio.Checked
                 .TVScraperShowTitle = Me.chkTVScraperShowTitle.Checked
                 .TVScraperUpdateTime = DirectCast(Me.cbTVScraperUpdateTime.SelectedIndex, Enums.TVScraperUpdateTime)
@@ -4485,6 +4497,7 @@ Public Class dlgSettings
         Me.chkTVScraperShowPlot.Text = Master.eLang.GetString(65, "Plot")
         Me.chkTVScraperShowPremiered.Text = Master.eLang.GetString(724, "Premiered")
         Me.chkTVScraperShowRating.Text = Master.eLang.GetString(400, "Rating")
+        Me.chkTVScraperShowStatus.Text = Master.eLang.GetString(215, "Status")
         Me.chkTVScraperShowStudio.Text = Master.eLang.GetString(395, "Studio")
         Me.chkTVScraperShowTitle.Text = Master.eLang.GetString(21, "Title")
         Me.chkTVSeasonFanartCol.Text = Me.chkMovieFanartCol.Text
@@ -4495,6 +4508,7 @@ Public Class dlgSettings
         Me.chkTVLockShowGenre.Text = Master.eLang.GetString(490, "Lock Genre")
         Me.chkTVLockShowPlot.Text = Master.eLang.GetString(496, "Lock Plot")
         Me.chkTVLockShowRating.Text = Master.eLang.GetString(492, "Lock Rating")
+        Me.chkTVLockShowStatus.Text = Master.eLang.GetString(1047, "Lock Status")
         Me.chkTVLockShowStudio.Text = Master.eLang.GetString(491, "Lock Studio")
         Me.chkTVLockShowTitle.Text = Master.eLang.GetString(494, "Lock Title")
         Me.chkTVShowNfoCol.Text = Me.chkMovieInfoCol.Text

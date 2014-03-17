@@ -281,6 +281,7 @@ Public Class Settings
     Private _tvlockshowgenre As Boolean
     Private _tvlockshowplot As Boolean
     Private _tvlockshowrating As Boolean
+    Private _tvlockshowstatus As Boolean
     Private _tvlockshowstudio As Boolean
     Private _tvlockshowtitle As Boolean
     Private _tvmetadataperfiletype As List(Of MetadataPerType)
@@ -306,6 +307,7 @@ Public Class Settings
     Private _tvscrapershowplot As Boolean
     Private _tvscrapershowpremiered As Boolean
     Private _tvscrapershowrating As Boolean
+    Private _tvscrapershowstatus As Boolean
     Private _tvscrapershowstudio As Boolean
     Private _tvscrapershowtitle As Boolean
     Private _tvscraperupdatetime As Enums.TVScraperUpdateTime
@@ -2880,6 +2882,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVScraperShowStatus() As Boolean
+        Get
+            Return Me._tvscrapershowstatus
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvscrapershowstatus = value
+        End Set
+    End Property
+
     Public Property TVScraperShowStudio() As Boolean
         Get
             Return Me._tvscrapershowstudio
@@ -3156,6 +3167,15 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Me._tvlockshowrating = value
+        End Set
+    End Property
+
+    Public Property TVLockShowStatus() As Boolean
+        Get
+            Return Me._tvlockshowstatus
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvlockshowstatus = value
         End Set
     End Property
 
@@ -5087,6 +5107,7 @@ Public Class Settings
         Me._tvlockshowgenre = False
         Me._tvlockshowplot = False
         Me._tvlockshowrating = False
+        Me._tvlockshowstatus = False
         Me._tvlockshowstudio = False
         Me._tvlockshowtitle = False
         Me._tvmetadataperfiletype = New List(Of MetadataPerType)

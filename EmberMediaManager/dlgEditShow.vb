@@ -729,6 +729,7 @@ Public Class dlgEditShow
             If Not String.IsNullOrEmpty(Master.currShow.TVShow.Title) Then .txtTitle.Text = Master.currShow.TVShow.Title
             If Not String.IsNullOrEmpty(Master.currShow.TVShow.Plot) Then .txtPlot.Text = Master.currShow.TVShow.Plot
             If Not String.IsNullOrEmpty(Master.currShow.TVShow.Premiered) Then .txtPremiered.Text = Master.currShow.TVShow.Premiered
+            If Not String.IsNullOrEmpty(Master.currShow.TVShow.Status) Then .txtStatus.Text = Master.currShow.TVShow.Status
             If Not String.IsNullOrEmpty(Master.currShow.TVShow.Studio) Then .txtStudio.Text = Master.currShow.TVShow.Studio
 
             For i As Integer = 0 To .clbGenre.Items.Count - 1
@@ -1256,6 +1257,7 @@ Public Class dlgEditShow
                 Master.currShow.TVShow.Title = .txtTitle.Text.Trim
                 Master.currShow.TVShow.Plot = .txtPlot.Text.Trim
                 Master.currShow.TVShow.Premiered = .txtPremiered.Text.Trim
+                Master.currShow.TVShow.Status = .txtStatus.Text.Trim
                 Master.currShow.TVShow.Studio = .txtStudio.Text.Trim
 
                 If .lbMPAA.SelectedIndices.Count > 0 AndAlso Not .lbMPAA.SelectedIndex <= 0 Then
@@ -1409,6 +1411,7 @@ Public Class dlgEditShow
         Me.lblPlot.Text = Master.eLang.GetString(241, "Plot:")
         Me.lblPremiered.Text = Master.eLang.GetString(665, "Premiered:")
         Me.lblRating.Text = Master.eLang.GetString(245, "Rating:")
+        Me.lblStatus.Text = Master.eLang.GetString(1048, "Status:")
         Me.lblStudio.Text = Master.eLang.GetString(226, "Studio:")
         Me.lblTitle.Text = Master.eLang.GetString(246, "Title:")
         Me.lblTopDetails.Text = Master.eLang.GetString(664, "Edit the details for the selected show.")

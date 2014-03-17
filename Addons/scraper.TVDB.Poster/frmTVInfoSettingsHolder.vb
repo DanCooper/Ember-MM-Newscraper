@@ -154,6 +154,10 @@ Public Class frmTVInfoSettingsHolder
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
+    Private Sub chkScraperShowStatus_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperShowStatus.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
     Private Sub chkScraperShowStudio_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperShowStudio.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
@@ -214,6 +218,7 @@ Public Class frmTVInfoSettingsHolder
         Me.chkScraperShowPlot.Text = Master.eLang.GetString(65, "Plot")
         Me.chkScraperShowPremiered.Text = Master.eLang.GetString(724, "Premiered")
         Me.chkScraperShowRating.Text = Master.eLang.GetString(400, "Rating")
+        Me.chkScraperShowStatus.Text = Master.eLang.GetString(215, "Status")
         Me.chkScraperShowStudio.Text = Master.eLang.GetString(395, "Studio")
         Me.chkScraperShowTitle.Text = Master.eLang.GetString(21, "Title")
     End Sub

@@ -119,6 +119,8 @@ Partial Class dlgEditShow
         Me.ofdImage = New System.Windows.Forms.OpenFileDialog()
         Me.cbOrdering = New System.Windows.Forms.ComboBox()
         Me.lblOrdering = New System.Windows.Forms.Label()
+        Me.lblStatus = New System.Windows.Forms.Label()
+        Me.txtStatus = New System.Windows.Forms.TextBox()
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tcEditShow.SuspendLayout()
@@ -214,6 +216,8 @@ Partial Class dlgEditShow
         '
         'tpShowDetails
         '
+        Me.tpShowDetails.Controls.Add(Me.lblStatus)
+        Me.tpShowDetails.Controls.Add(Me.txtStatus)
         Me.tpShowDetails.Controls.Add(Me.btnActorDown)
         Me.tpShowDetails.Controls.Add(Me.btnActorUp)
         Me.tpShowDetails.Controls.Add(Me.txtPremiered)
@@ -1255,6 +1259,24 @@ Partial Class dlgEditShow
         Me.lblOrdering.TabIndex = 4
         Me.lblOrdering.Text = "Episode Ordering:"
         '
+        'lblStatus
+        '
+        Me.lblStatus.AutoSize = True
+        Me.lblStatus.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblStatus.Location = New System.Drawing.Point(635, 330)
+        Me.lblStatus.Name = "lblStatus"
+        Me.lblStatus.Size = New System.Drawing.Size(42, 13)
+        Me.lblStatus.TabIndex = 68
+        Me.lblStatus.Text = "Status:"
+        '
+        'txtStatus
+        '
+        Me.txtStatus.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtStatus.Location = New System.Drawing.Point(635, 346)
+        Me.txtStatus.Name = "txtStatus"
+        Me.txtStatus.Size = New System.Drawing.Size(193, 22)
+        Me.txtStatus.TabIndex = 69
+        '
         'dlgEditShow
         '
         Me.AcceptButton = Me.OK_Button
@@ -1404,5 +1426,7 @@ Partial Class dlgEditShow
     Friend WithEvents btnSetASLandscapeScrape As System.Windows.Forms.Button
     Friend WithEvents btnSetASLandscapeLocal As System.Windows.Forms.Button
     Friend WithEvents pbASLandscape As System.Windows.Forms.PictureBox
+    Friend WithEvents lblStatus As System.Windows.Forms.Label
+    Friend WithEvents txtStatus As System.Windows.Forms.TextBox
 
 End Class
