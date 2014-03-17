@@ -144,75 +144,119 @@ Namespace YouTube
                             ' **********************************************************************
                             Case "5"
                                 Link.Description = "240p (FLV, H.263)"
-                                Link.FormatQuality = Enums.TrailerQuality.OTHERS
+                                Link.FormatCodec = Enums.TrailerCodec.FLV
+                                Link.FormatQuality = Enums.TrailerQuality.SQ240p
                             Case "6"
                                 Link.Description = "270p (FLV, H.263)"
+                                Link.FormatCodec = Enums.TrailerCodec.FLV
                                 Link.FormatQuality = Enums.TrailerQuality.OTHERS
                             Case "13"
                                 Link.Description = "144p (3GP, MPEG-4)"
-                                Link.FormatQuality = Enums.TrailerQuality.OTHERS
+                                Link.FormatCodec = Enums.TrailerCodec.v3GP
+                                Link.FormatQuality = Enums.TrailerQuality.SQ144p
                             Case "17"
                                 Link.Description = "144p (3GP, MPEG-4)"
-                                Link.FormatQuality = Enums.TrailerQuality.OTHERS
+                                Link.FormatCodec = Enums.TrailerCodec.v3GP
+                                Link.FormatQuality = Enums.TrailerQuality.SQ144p
                             Case "18"
                                 Link.Description = "360p (MP4, H.264)"
-                                Link.FormatQuality = Enums.TrailerQuality.SQMP4
+                                Link.FormatCodec = Enums.TrailerCodec.MP4
+                                Link.FormatQuality = Enums.TrailerQuality.SQ360p
                             Case "22"
                                 Link.Description = "720p (MP4, H.264)"
+                                Link.FormatCodec = Enums.TrailerCodec.MP4
                                 Link.FormatQuality = Enums.TrailerQuality.HD720p
                             Case "34"
                                 Link.Description = "360p (FLV, H.264)"
-                                Link.FormatQuality = Enums.TrailerQuality.SQFLV
+                                Link.FormatCodec = Enums.TrailerCodec.FLV
+                                Link.FormatQuality = Enums.TrailerQuality.SQ360p
                             Case "35"
                                 Link.Description = "480p (FLV, H.264)"
-                                Link.FormatQuality = Enums.TrailerQuality.HQFLV
+                                Link.FormatCodec = Enums.TrailerCodec.FLV
+                                Link.FormatQuality = Enums.TrailerQuality.HQ480p
                             Case "36"
                                 Link.Description = "240p (3GP, MPEG-4)"
-                                Link.FormatQuality = Enums.TrailerQuality.OTHERS
+                                Link.FormatCodec = Enums.TrailerCodec.v3GP
+                                Link.FormatQuality = Enums.TrailerQuality.SQ240p
                             Case "37"
                                 Link.Description = "1080p (MP4, H.264)"
+                                Link.FormatCodec = Enums.TrailerCodec.MP4
                                 Link.FormatQuality = Enums.TrailerQuality.HD1080p
                             Case "38"
                                 Link.Description = "1536p (MP4, H.264)"
+                                Link.FormatCodec = Enums.TrailerCodec.MP4
                                 Link.FormatQuality = Enums.TrailerQuality.OTHERS
                             Case "43"
                                 Link.Description = "360p (WebM, VP8)"
-                                Link.FormatQuality = Enums.TrailerQuality.SQVP8
+                                Link.FormatCodec = Enums.TrailerCodec.WebM
+                                Link.FormatQuality = Enums.TrailerQuality.SQ360p
                             Case "44"
                                 Link.Description = "480p (WebM, VP8)"
-                                Link.FormatQuality = Enums.TrailerQuality.HQVP8
+                                Link.FormatCodec = Enums.TrailerCodec.WebM
+                                Link.FormatQuality = Enums.TrailerQuality.HQ480p
                             Case "45"
                                 Link.Description = "720p (WebM, VP8)"
-                                Link.FormatQuality = Enums.TrailerQuality.HD720pVP8
+                                Link.FormatCodec = Enums.TrailerCodec.WebM
+                                Link.FormatQuality = Enums.TrailerQuality.HD720p
                             Case "46"
                                 Link.Description = "1080p (WebM, VP8)"
-                                Link.FormatQuality = Enums.TrailerQuality.HD1080pVP8
+                                Link.FormatCodec = Enums.TrailerCodec.WebM
+                                Link.FormatQuality = Enums.TrailerQuality.HD1080p
                             Case "82"
                                 Link.Description = "3D 360p (MP4, H.264)"
-                                Link.FormatQuality = Enums.TrailerQuality.OTHERS
+                                Link.FormatCodec = Enums.TrailerCodec.MP4
+                                Link.FormatQuality = Enums.TrailerQuality.SQ360p
                             Case "83"
                                 Link.Description = "3D 480p (MP4, H.264)"
-                                Link.FormatQuality = Enums.TrailerQuality.OTHERS
+                                Link.FormatCodec = Enums.TrailerCodec.MP4
+                                Link.FormatQuality = Enums.TrailerQuality.HQ480p
                             Case "84"
                                 Link.Description = "3D 720p (MP4, H.264)"
-                                Link.FormatQuality = Enums.TrailerQuality.OTHERS
+                                Link.FormatCodec = Enums.TrailerCodec.MP4
+                                Link.FormatQuality = Enums.TrailerQuality.HD720p
                             Case "85"
                                 Link.Description = "3D 520p (MP4, H.264)"
+                                Link.FormatCodec = Enums.TrailerCodec.MP4
                                 Link.FormatQuality = Enums.TrailerQuality.OTHERS
                             Case "100"
                                 Link.Description = "3D 360p (WebM, VP8)"
-                                Link.FormatQuality = Enums.TrailerQuality.OTHERS
+                                Link.FormatCodec = Enums.TrailerCodec.WebM
+                                Link.FormatQuality = Enums.TrailerQuality.SQ360p
                             Case "101"
                                 Link.Description = "3D 480p (WebM, VP8)"
-                                Link.FormatQuality = Enums.TrailerQuality.OTHERS
+                                Link.FormatCodec = Enums.TrailerCodec.WebM
+                                Link.FormatQuality = Enums.TrailerQuality.HQ480p
                             Case "102"
                                 Link.Description = "3D 720p (WebM, VP8)"
-                                Link.FormatQuality = Enums.TrailerQuality.OTHERS
+                                Link.FormatCodec = Enums.TrailerCodec.WebM
+                                Link.FormatQuality = Enums.TrailerQuality.HD720p
                             Case "120"
                                 Link.Description = "720p LiveStream (FLV, AVC)"
-                                Link.FormatQuality = Enums.TrailerQuality.OTHERS
+                                Link.FormatCodec = Enums.TrailerCodec.FLV
+                                Link.FormatQuality = Enums.TrailerQuality.HD720p
+                            Case "133"
+                                Link.Description = "240p ? (MP4, ?)"
+                                Link.FormatCodec = Enums.TrailerCodec.MP4
+                                Link.FormatQuality = Enums.TrailerQuality.SQ240p
+                            Case "134"
+                                Link.Description = "360p ? (MP4, ?)"
+                                Link.FormatCodec = Enums.TrailerCodec.MP4
+                                Link.FormatQuality = Enums.TrailerQuality.SQ360p
+                            Case "135"
+                                Link.Description = "480p ? (MP4, ?)"
+                                Link.FormatCodec = Enums.TrailerCodec.MP4
+                                Link.FormatQuality = Enums.TrailerQuality.HQ480p
+                            Case "136"
+                                Link.Description = "720p ? (MP4, ?)"
+                                Link.FormatCodec = Enums.TrailerCodec.MP4
+                                Link.FormatQuality = Enums.TrailerQuality.HD720p
+                            Case "137"
+                                Link.Description = "1080p ? (MP4, ?)"
+                                Link.FormatCodec = Enums.TrailerCodec.MP4
+                                Link.FormatQuality = Enums.TrailerQuality.HD1080p
                             Case Else
                                 Link.Description = "Other"
+                                Link.FormatCodec = Enums.TrailerCodec.OTHERS
                                 Link.FormatQuality = Enums.TrailerQuality.OTHERS
                                 'Continue For
                         End Select
@@ -276,6 +320,7 @@ Namespace YouTube
 #Region "Fields"
 
         Private _Description As String
+        Private _FormatCodec As Enums.TrailerCodec
         Private _FormatQuality As Enums.TrailerQuality
         Private _URL As String
 
@@ -298,6 +343,15 @@ Namespace YouTube
             End Get
             Set(ByVal value As String)
                 _URL = value
+            End Set
+        End Property
+
+        Friend Property FormatCodec() As Enums.TrailerCodec
+            Get
+                Return _FormatCodec
+            End Get
+            Set(ByVal value As Enums.TrailerCodec)
+                _FormatCodec = value
             End Set
         End Property
 

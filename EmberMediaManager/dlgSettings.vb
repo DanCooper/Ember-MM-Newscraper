@@ -3183,14 +3183,11 @@ Public Class dlgSettings
         Dim items As New Dictionary(Of String, Enums.TrailerQuality)
         items.Add(Master.eLang.GetString(569, "All"), Enums.TrailerQuality.All)
         items.Add("1080p", Enums.TrailerQuality.HD1080p)
-        items.Add("1080p (VP8)", Enums.TrailerQuality.HD1080pVP8)
         items.Add("720p", Enums.TrailerQuality.HD720p)
-        items.Add("720p (VP8)", Enums.TrailerQuality.HD720pVP8)
-        items.Add("SQ (MP4)", Enums.TrailerQuality.SQMP4)
-        items.Add("HQ (FLV)", Enums.TrailerQuality.HQFLV)
-        items.Add("HQ (VP8)", Enums.TrailerQuality.HQVP8)
-        items.Add("SQ (FLV)", Enums.TrailerQuality.SQFLV)
-        items.Add("SQ (VP8)", Enums.TrailerQuality.SQVP8)
+        items.Add("480p", Enums.TrailerQuality.HQ480p)
+        items.Add("360p", Enums.TrailerQuality.SQ360p)
+        items.Add("240p", Enums.TrailerQuality.SQ240p)
+        items.Add("144p", Enums.TrailerQuality.SQ144p)
         Me.cbMovieTrailerMinQual.DataSource = items.ToList
         Me.cbMovieTrailerMinQual.DisplayMember = "Key"
         Me.cbMovieTrailerMinQual.ValueMember = "Value"

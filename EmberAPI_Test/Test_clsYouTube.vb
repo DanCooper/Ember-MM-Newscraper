@@ -174,7 +174,7 @@ Namespace EmberTests
             Dim secondItemToAdd = New YouTube.VideoLinkItem()
             secondItemToAdd.Description = "Second item to add"
             secondItemToAdd.URL = "Random URL 2"
-            secondItemToAdd.FormatQuality = Enums.TrailerQuality.SQFLV
+            secondItemToAdd.FormatQuality = Enums.TrailerQuality.SQ360p
 
             Dim duplicateItemToAdd = New YouTube.VideoLinkItem()
             duplicateItemToAdd.Description = "Duplicate item to add"

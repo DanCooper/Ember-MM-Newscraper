@@ -709,20 +709,28 @@ Public Class Enums
         Text = 3        'will show the series name as plain text in an Arial font
     End Enum
     ''' <summary>
+    ''' Enum representing the trailer codec options
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Enum TrailerCodec As Integer
+        MP4 = 0
+        WebM = 1
+        v3GP = 2
+        FLV = 3
+        OTHERS = 4
+    End Enum
+    ''' <summary>
     ''' Enum representing the trailer quality options
     ''' </summary>
     ''' <remarks></remarks>
     Public Enum TrailerQuality As Integer
         All = 0
         HD1080p = 1
-        HD1080pVP8 = 2
         HD720p = 3
-        HD720pVP8 = 4
-        SQMP4 = 5
-        HQFLV = 6
-        HQVP8 = 7
-        SQFLV = 8
-        SQVP8 = 9
+        HQ480p = 5
+        SQ360p = 6
+        SQ240p = 7
+        SQ144p = 8
         OTHERS = 10
     End Enum
     ''' <summary>
