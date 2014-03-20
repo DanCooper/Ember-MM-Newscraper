@@ -914,7 +914,6 @@ Namespace FileUtils
             Select Case mType
                 Case Enums.TVImageType.EpisodeFanart
                     With Master.eSettings
-                        If .TVUseFrodo AndAlso .TVEpisodePosterFrodo Then FilenameList.Add(String.Concat(fEpisodePath, "-fanart.jpg"))
                     End With
 
                 Case Enums.TVImageType.EpisodePoster
