@@ -499,7 +499,6 @@ Partial Class dlgSettings
         Me.chkTVUseFrodo = New System.Windows.Forms.CheckBox()
         Me.chkTVEpisodeActorThumbsFrodo = New System.Windows.Forms.CheckBox()
         Me.chkTVSeasonBannerFrodo = New System.Windows.Forms.CheckBox()
-        Me.chkTVEpisodeFanartFrodo = New System.Windows.Forms.CheckBox()
         Me.chkTVEpisodePosterFrodo = New System.Windows.Forms.CheckBox()
         Me.chkTVShowActorThumbsFrodo = New System.Windows.Forms.CheckBox()
         Me.chkTVSeasonFanartFrodo = New System.Windows.Forms.CheckBox()
@@ -720,6 +719,7 @@ Partial Class dlgSettings
         Me.txtTVScraperDurationRuntimeFormat = New System.Windows.Forms.TextBox()
         Me.gbTVScraperFieldsOpts = New System.Windows.Forms.GroupBox()
         Me.gbTVScraperFieldsShowOpts = New System.Windows.Forms.GroupBox()
+        Me.chkTVScraperShowStatus = New System.Windows.Forms.CheckBox()
         Me.chkTVScraperShowRating = New System.Windows.Forms.CheckBox()
         Me.chkTVScraperShowActors = New System.Windows.Forms.CheckBox()
         Me.chkTVScraperShowStudio = New System.Windows.Forms.CheckBox()
@@ -745,6 +745,7 @@ Partial Class dlgSettings
         Me.chkTVLockEpisodeRating = New System.Windows.Forms.CheckBox()
         Me.chkTVLockEpisodePlot = New System.Windows.Forms.CheckBox()
         Me.gbTVScraperGlobalLocksShowOpts = New System.Windows.Forms.GroupBox()
+        Me.chkTVLockShowStatus = New System.Windows.Forms.CheckBox()
         Me.chkTVLockShowPlot = New System.Windows.Forms.CheckBox()
         Me.chkTVLockShowGenre = New System.Windows.Forms.CheckBox()
         Me.chkTVLockShowStudio = New System.Windows.Forms.CheckBox()
@@ -857,8 +858,6 @@ Partial Class dlgSettings
         Me.chkMovieTrailerOverwrite = New System.Windows.Forms.CheckBox()
         Me.chkMovieTrailerEnable = New System.Windows.Forms.CheckBox()
         Me.fileBrowse = New System.Windows.Forms.OpenFileDialog()
-        Me.chkTVLockShowStatus = New System.Windows.Forms.CheckBox()
-        Me.chkTVScraperShowStatus = New System.Windows.Forms.CheckBox()
         Me.gbGeneralMisc.SuspendLayout
         Me.gbGeneralDaemon.SuspendLayout
         Me.gbGeneralThemes.SuspendLayout
@@ -6052,7 +6051,6 @@ Partial Class dlgSettings
         Me.gbTVFrodo.Controls.Add(Me.chkTVUseFrodo)
         Me.gbTVFrodo.Controls.Add(Me.chkTVEpisodeActorThumbsFrodo)
         Me.gbTVFrodo.Controls.Add(Me.chkTVSeasonBannerFrodo)
-        Me.gbTVFrodo.Controls.Add(Me.chkTVEpisodeFanartFrodo)
         Me.gbTVFrodo.Controls.Add(Me.chkTVEpisodePosterFrodo)
         Me.gbTVFrodo.Controls.Add(Me.chkTVShowActorThumbsFrodo)
         Me.gbTVFrodo.Controls.Add(Me.chkTVSeasonFanartFrodo)
@@ -6119,17 +6117,6 @@ Partial Class dlgSettings
         Me.chkTVSeasonBannerFrodo.TabIndex = 8
         Me.chkTVSeasonBannerFrodo.Text = "Season Banner"
         Me.chkTVSeasonBannerFrodo.UseVisualStyleBackColor = true
-        '
-        'chkTVEpisodeFanartFrodo
-        '
-        Me.chkTVEpisodeFanartFrodo.AutoSize = true
-        Me.chkTVEpisodeFanartFrodo.Enabled = false
-        Me.chkTVEpisodeFanartFrodo.Location = New System.Drawing.Point(6, 228)
-        Me.chkTVEpisodeFanartFrodo.Name = "chkTVEpisodeFanartFrodo"
-        Me.chkTVEpisodeFanartFrodo.Size = New System.Drawing.Size(103, 17)
-        Me.chkTVEpisodeFanartFrodo.TabIndex = 6
-        Me.chkTVEpisodeFanartFrodo.Text = "Episode Fanart"
-        Me.chkTVEpisodeFanartFrodo.UseVisualStyleBackColor = true
         '
         'chkTVEpisodePosterFrodo
         '
@@ -8562,6 +8549,16 @@ Partial Class dlgSettings
         Me.gbTVScraperFieldsShowOpts.TabStop = false
         Me.gbTVScraperFieldsShowOpts.Text = "Show"
         '
+        'chkTVScraperShowStatus
+        '
+        Me.chkTVScraperShowStatus.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVScraperShowStatus.Location = New System.Drawing.Point(130, 77)
+        Me.chkTVScraperShowStatus.Name = "chkTVScraperShowStatus"
+        Me.chkTVScraperShowStatus.Size = New System.Drawing.Size(78, 17)
+        Me.chkTVScraperShowStatus.TabIndex = 9
+        Me.chkTVScraperShowStatus.Text = "Status"
+        Me.chkTVScraperShowStatus.UseVisualStyleBackColor = true
+        '
         'chkTVScraperShowRating
         '
         Me.chkTVScraperShowRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
@@ -8831,6 +8828,16 @@ Partial Class dlgSettings
         Me.gbTVScraperGlobalLocksShowOpts.TabIndex = 0
         Me.gbTVScraperGlobalLocksShowOpts.TabStop = false
         Me.gbTVScraperGlobalLocksShowOpts.Text = "Show"
+        '
+        'chkTVLockShowStatus
+        '
+        Me.chkTVLockShowStatus.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVLockShowStatus.Location = New System.Drawing.Point(6, 77)
+        Me.chkTVLockShowStatus.Name = "chkTVLockShowStatus"
+        Me.chkTVLockShowStatus.Size = New System.Drawing.Size(168, 17)
+        Me.chkTVLockShowStatus.TabIndex = 5
+        Me.chkTVLockShowStatus.Text = "Lock Status"
+        Me.chkTVLockShowStatus.UseVisualStyleBackColor = true
         '
         'chkTVLockShowPlot
         '
@@ -10102,26 +10109,6 @@ Partial Class dlgSettings
         Me.chkMovieTrailerEnable.Text = "Enable Trailer Support"
         Me.chkMovieTrailerEnable.UseVisualStyleBackColor = true
         '
-        'chkTVLockShowStatus
-        '
-        Me.chkTVLockShowStatus.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkTVLockShowStatus.Location = New System.Drawing.Point(6, 77)
-        Me.chkTVLockShowStatus.Name = "chkTVLockShowStatus"
-        Me.chkTVLockShowStatus.Size = New System.Drawing.Size(168, 17)
-        Me.chkTVLockShowStatus.TabIndex = 5
-        Me.chkTVLockShowStatus.Text = "Lock Status"
-        Me.chkTVLockShowStatus.UseVisualStyleBackColor = true
-        '
-        'chkTVScraperShowStatus
-        '
-        Me.chkTVScraperShowStatus.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkTVScraperShowStatus.Location = New System.Drawing.Point(130, 77)
-        Me.chkTVScraperShowStatus.Name = "chkTVScraperShowStatus"
-        Me.chkTVScraperShowStatus.Size = New System.Drawing.Size(78, 17)
-        Me.chkTVScraperShowStatus.TabIndex = 9
-        Me.chkTVScraperShowStatus.Text = "Status"
-        Me.chkTVScraperShowStatus.UseVisualStyleBackColor = true
-        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -11092,7 +11079,6 @@ End Sub
     Friend WithEvents chkTVUseFrodo As System.Windows.Forms.CheckBox
     Friend WithEvents chkTVEpisodeActorThumbsFrodo As System.Windows.Forms.CheckBox
     Friend WithEvents chkTVSeasonBannerFrodo As System.Windows.Forms.CheckBox
-    Friend WithEvents chkTVEpisodeFanartFrodo As System.Windows.Forms.CheckBox
     Friend WithEvents chkTVEpisodePosterFrodo As System.Windows.Forms.CheckBox
     Friend WithEvents chkTVShowActorThumbsFrodo As System.Windows.Forms.CheckBox
     Friend WithEvents chkTVSeasonFanartFrodo As System.Windows.Forms.CheckBox

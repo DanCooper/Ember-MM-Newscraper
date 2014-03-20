@@ -2888,7 +2888,6 @@ Public Class dlgSettings
                 '*************** XBMC Frodo settings ***************
                 Me.chkTVUseFrodo.Checked = .TVUseFrodo
                 Me.chkTVEpisodeActorThumbsFrodo.Checked = .TVEpisodeActorThumbsFrodo
-                Me.chkTVEpisodeFanartFrodo.Checked = .TVEpisodeFanartFrodo
                 Me.chkTVEpisodePosterFrodo.Checked = .TVEpisodePosterFrodo
                 Me.chkTVSeasonBannerFrodo.Checked = .TVSeasonBannerFrodo
                 Me.chkTVSeasonFanartFrodo.Checked = .TVSeasonFanartFrodo
@@ -4207,7 +4206,6 @@ Public Class dlgSettings
                 '*************** XBMC Frodo settings ***************
                 .TVUseFrodo = Me.chkTVUseFrodo.Checked
                 .TVEpisodeActorThumbsFrodo = Me.chkTVEpisodeActorThumbsFrodo.Checked
-                .TVEpisodeFanartFrodo = Me.chkTVEpisodeFanartFrodo.Checked
                 .TVEpisodePosterFrodo = Me.chkTVEpisodePosterFrodo.Checked
                 .TVSeasonBannerFrodo = Me.chkTVSeasonBannerFrodo.Checked
                 .TVSeasonFanartFrodo = Me.chkTVSeasonFanartFrodo.Checked
@@ -5794,7 +5792,6 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
 
         Me.chkTVEpisodeActorThumbsFrodo.Enabled = Me.chkTVUseFrodo.Checked
-        Me.chkTVEpisodeFanartFrodo.Enabled = Me.chkTVUseFrodo.Checked
         Me.chkTVEpisodePosterFrodo.Enabled = Me.chkTVUseFrodo.Checked
         Me.chkTVSeasonBannerFrodo.Enabled = Me.chkTVUseFrodo.Checked
         Me.chkTVSeasonFanartFrodo.Enabled = Me.chkTVUseFrodo.Checked
@@ -5812,7 +5809,6 @@ Public Class dlgSettings
 
         If Not Me.chkTVUseFrodo.Checked Then
             Me.chkTVEpisodeActorThumbsFrodo.Checked = False
-            Me.chkTVEpisodeFanartFrodo.Checked = False
             Me.chkTVEpisodePosterFrodo.Checked = False
             Me.chkTVSeasonBannerFrodo.Checked = False
             Me.chkTVSeasonFanartFrodo.Checked = False
@@ -5829,7 +5825,6 @@ Public Class dlgSettings
             Me.chkTVShowTVThemeXBMC.Checked = False
         Else
             Me.chkTVEpisodeActorThumbsFrodo.Checked = True
-            Me.chkTVEpisodeFanartFrodo.Checked = True
             Me.chkTVEpisodePosterFrodo.Checked = True
             Me.chkTVSeasonBannerFrodo.Checked = True
             Me.chkTVSeasonFanartFrodo.Checked = True
@@ -5847,10 +5842,6 @@ Public Class dlgSettings
         End If
     End Sub
     Private Sub chkTVEpisodeActorThumbsFrodo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVEpisodeActorThumbsFrodo.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVEpisodeFanartFrodo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVEpisodeFanartFrodo.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 

@@ -238,7 +238,6 @@ Partial Class dlgWizard
         Me.chkTVUseFrodo = New System.Windows.Forms.CheckBox()
         Me.chkTVEpisodeActorThumbsFrodo = New System.Windows.Forms.CheckBox()
         Me.chkTVSeasonBannerFrodo = New System.Windows.Forms.CheckBox()
-        Me.chkTVEpisodeFanartFrodo = New System.Windows.Forms.CheckBox()
         Me.chkTVEpisodePosterFrodo = New System.Windows.Forms.CheckBox()
         Me.chkTVShowActorThumbsFrodo = New System.Windows.Forms.CheckBox()
         Me.chkTVSeasonFanartFrodo = New System.Windows.Forms.CheckBox()
@@ -2476,7 +2475,6 @@ Partial Class dlgWizard
         Me.gbTVFrodo.Controls.Add(Me.chkTVUseFrodo)
         Me.gbTVFrodo.Controls.Add(Me.chkTVEpisodeActorThumbsFrodo)
         Me.gbTVFrodo.Controls.Add(Me.chkTVSeasonBannerFrodo)
-        Me.gbTVFrodo.Controls.Add(Me.chkTVEpisodeFanartFrodo)
         Me.gbTVFrodo.Controls.Add(Me.chkTVEpisodePosterFrodo)
         Me.gbTVFrodo.Controls.Add(Me.chkTVShowActorThumbsFrodo)
         Me.gbTVFrodo.Controls.Add(Me.chkTVSeasonFanartFrodo)
@@ -2543,17 +2541,6 @@ Partial Class dlgWizard
         Me.chkTVSeasonBannerFrodo.TabIndex = 8
         Me.chkTVSeasonBannerFrodo.Text = "Season Banner"
         Me.chkTVSeasonBannerFrodo.UseVisualStyleBackColor = True
-        '
-        'chkTVEpisodeFanartFrodo
-        '
-        Me.chkTVEpisodeFanartFrodo.AutoSize = True
-        Me.chkTVEpisodeFanartFrodo.Enabled = False
-        Me.chkTVEpisodeFanartFrodo.Location = New System.Drawing.Point(6, 228)
-        Me.chkTVEpisodeFanartFrodo.Name = "chkTVEpisodeFanartFrodo"
-        Me.chkTVEpisodeFanartFrodo.Size = New System.Drawing.Size(103, 17)
-        Me.chkTVEpisodeFanartFrodo.TabIndex = 6
-        Me.chkTVEpisodeFanartFrodo.Text = "Episode Fanart"
-        Me.chkTVEpisodeFanartFrodo.UseVisualStyleBackColor = True
         '
         'chkTVEpisodePosterFrodo
         '
@@ -2945,7 +2932,6 @@ Partial Class dlgWizard
     Friend WithEvents chkTVUseFrodo As System.Windows.Forms.CheckBox
     Friend WithEvents chkTVEpisodeActorThumbsFrodo As System.Windows.Forms.CheckBox
     Friend WithEvents chkTVSeasonBannerFrodo As System.Windows.Forms.CheckBox
-    Friend WithEvents chkTVEpisodeFanartFrodo As System.Windows.Forms.CheckBox
     Friend WithEvents chkTVEpisodePosterFrodo As System.Windows.Forms.CheckBox
     Friend WithEvents chkTVShowActorThumbsFrodo As System.Windows.Forms.CheckBox
     Friend WithEvents chkTVSeasonFanartFrodo As System.Windows.Forms.CheckBox

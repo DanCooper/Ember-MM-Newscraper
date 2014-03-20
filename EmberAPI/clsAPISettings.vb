@@ -513,7 +513,6 @@ Public Class Settings
     '*************** XBMC Frodo settings ***************
     Private _tvusefrodo As Boolean
     Private _tvepisodeactorthumbsfrodo As Boolean
-    Private _tvepisodefanartfrodo As Boolean
     Private _tvepisodeposterfrodo As Boolean
     Private _tvseasonbannerfrodo As Boolean
     Private _tvseasonfanartfrodo As Boolean
@@ -4637,15 +4636,6 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property TVEpisodeFanartFrodo() As Boolean
-        Get
-            Return Me._tvepisodefanartfrodo
-        End Get
-        Set(ByVal value As Boolean)
-            Me._tvepisodefanartfrodo = value
-        End Set
-    End Property
-
     Public Property TVEpisodeActorThumbsFrodo() As Boolean
         Get
             Return Me._tvepisodeactorthumbsfrodo
@@ -5077,7 +5067,6 @@ Public Class Settings
         Me._tvdisplaymissingepisodes = True
         Me._tvepisodeactorthumbsfrodo = False
         Me._tvepisodefanartcol = True
-        Me._tvepisodefanartfrodo = False
         Me._tvepisodefanartheight = 0
         Me._tvepisodefanartoverwrite = True
         Me._tvepisodefanartprefsize = Enums.TVFanartSize.HD1080
@@ -5284,10 +5273,9 @@ Public Class Settings
         End If
 
         ' Fix added to avoid to have no tv show NFO saved
-        If Not Master.eSettings.TVUseYAMJ Then
+        If Not (Master.eSettings.TVUseFrodo OrElse Master.eSettings.TVUseYAMJ) Then
             Master.eSettings.TVUseFrodo = True
             Master.eSettings.TVEpisodeActorThumbsFrodo = True
-            Master.eSettings.TVEpisodeFanartFrodo = True
             Master.eSettings.TVEpisodePosterFrodo = True
             Master.eSettings.TVSeasonBannerFrodo = True
             Master.eSettings.TVSeasonFanartFrodo = True
@@ -5457,7 +5445,7 @@ Public Class Settings
     End Function
 
     Public Function TVEpisodeFanartEnabled() As Boolean
-        Return Master.eSettings.TVEpisodeFanartFrodo
+        Return False
     End Function
 
     Public Function TVSeasonBannerEnabled() As Boolean
