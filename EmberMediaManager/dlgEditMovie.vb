@@ -838,6 +838,9 @@ Public Class dlgEditMovie
             Dim params As New List(Of Object)(New Object() {New Panel})
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieFrameExtrator, params, Nothing, True)
             pnlFrameExtrator.Controls.Add(DirectCast(params(0), Panel))
+            If String.IsNullOrEmpty(pnlFrameExtrator.Controls.Item(0).Name) Then
+                tcEditMovie.TabPages.Remove(tpFrameExtraction)
+            End If
 
             Me.FillInfo()
 
