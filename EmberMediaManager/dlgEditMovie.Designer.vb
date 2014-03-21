@@ -177,7 +177,7 @@ Partial Class dlgEditMovie
         'OK_Button
         '
         Me.OK_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.OK_Button.Location = New System.Drawing.Point(708, 553)
+        Me.OK_Button.Location = New System.Drawing.Point(708, 569)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(67, 23)
         Me.OK_Button.TabIndex = 0
@@ -187,7 +187,7 @@ Partial Class dlgEditMovie
         '
         Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Cancel_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Cancel_Button.Location = New System.Drawing.Point(781, 553)
+        Me.Cancel_Button.Location = New System.Drawing.Point(781, 569)
         Me.Cancel_Button.Name = "Cancel_Button"
         Me.Cancel_Button.Size = New System.Drawing.Size(67, 23)
         Me.Cancel_Button.TabIndex = 1
@@ -255,7 +255,7 @@ Partial Class dlgEditMovie
         Me.tcEditMovie.Location = New System.Drawing.Point(4, 70)
         Me.tcEditMovie.Name = "tcEditMovie"
         Me.tcEditMovie.SelectedIndex = 0
-        Me.tcEditMovie.Size = New System.Drawing.Size(844, 478)
+        Me.tcEditMovie.Size = New System.Drawing.Size(844, 494)
         Me.tcEditMovie.TabIndex = 3
         '
         'tpDetails
@@ -323,7 +323,7 @@ Partial Class dlgEditMovie
         Me.tpDetails.Location = New System.Drawing.Point(4, 22)
         Me.tpDetails.Name = "tpDetails"
         Me.tpDetails.Padding = New System.Windows.Forms.Padding(3)
-        Me.tpDetails.Size = New System.Drawing.Size(836, 452)
+        Me.tpDetails.Size = New System.Drawing.Size(836, 468)
         Me.tpDetails.TabIndex = 0
         Me.tpDetails.Text = "Details"
         Me.tpDetails.UseVisualStyleBackColor = True
@@ -1383,7 +1383,7 @@ Partial Class dlgEditMovie
         Me.tpFrameExtraction.Location = New System.Drawing.Point(4, 22)
         Me.tpFrameExtraction.Name = "tpFrameExtraction"
         Me.tpFrameExtraction.Padding = New System.Windows.Forms.Padding(3)
-        Me.tpFrameExtraction.Size = New System.Drawing.Size(836, 452)
+        Me.tpFrameExtraction.Size = New System.Drawing.Size(836, 468)
         Me.tpFrameExtraction.TabIndex = 3
         Me.tpFrameExtraction.Text = "Frame Extraction"
         Me.tpFrameExtraction.UseVisualStyleBackColor = True
@@ -1392,7 +1392,7 @@ Partial Class dlgEditMovie
         '
         Me.pnlFrameExtrator.Location = New System.Drawing.Point(0, 0)
         Me.pnlFrameExtrator.Name = "pnlFrameExtrator"
-        Me.pnlFrameExtrator.Size = New System.Drawing.Size(834, 452)
+        Me.pnlFrameExtrator.Size = New System.Drawing.Size(834, 468)
         Me.pnlFrameExtrator.TabIndex = 0
         '
         'tpMetaData
@@ -1464,7 +1464,7 @@ Partial Class dlgEditMovie
         '
         Me.chkMark.AutoSize = True
         Me.chkMark.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMark.Location = New System.Drawing.Point(4, 559)
+        Me.chkMark.Location = New System.Drawing.Point(4, 575)
         Me.chkMark.Name = "chkMark"
         Me.chkMark.Size = New System.Drawing.Size(86, 17)
         Me.chkMark.TabIndex = 5
@@ -1476,7 +1476,7 @@ Partial Class dlgEditMovie
         Me.btnRescrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnRescrape.Image = CType(resources.GetObject("btnRescrape.Image"), System.Drawing.Image)
         Me.btnRescrape.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnRescrape.Location = New System.Drawing.Point(310, 554)
+        Me.btnRescrape.Location = New System.Drawing.Point(310, 569)
         Me.btnRescrape.Name = "btnRescrape"
         Me.btnRescrape.Size = New System.Drawing.Size(98, 23)
         Me.btnRescrape.TabIndex = 7
@@ -1489,7 +1489,7 @@ Partial Class dlgEditMovie
         Me.btnChangeMovie.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnChangeMovie.Image = CType(resources.GetObject("btnChangeMovie.Image"), System.Drawing.Image)
         Me.btnChangeMovie.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnChangeMovie.Location = New System.Drawing.Point(429, 554)
+        Me.btnChangeMovie.Location = New System.Drawing.Point(429, 569)
         Me.btnChangeMovie.Name = "btnChangeMovie"
         Me.btnChangeMovie.Size = New System.Drawing.Size(107, 23)
         Me.btnChangeMovie.TabIndex = 8
@@ -1505,7 +1505,7 @@ Partial Class dlgEditMovie
         '
         Me.chkWatched.AutoSize = True
         Me.chkWatched.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkWatched.Location = New System.Drawing.Point(96, 559)
+        Me.chkWatched.Location = New System.Drawing.Point(96, 575)
         Me.chkWatched.Name = "chkWatched"
         Me.chkWatched.Size = New System.Drawing.Size(72, 17)
         Me.chkWatched.TabIndex = 6
@@ -1518,7 +1518,7 @@ Partial Class dlgEditMovie
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(854, 582)
+        Me.ClientSize = New System.Drawing.Size(854, 598)
         Me.Controls.Add(Me.chkWatched)
         Me.Controls.Add(Me.btnChangeMovie)
         Me.Controls.Add(Me.btnRescrape)

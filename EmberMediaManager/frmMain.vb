@@ -2228,7 +2228,7 @@ doCancel:
             Functions.SetScraperMod(Enums.ModType.All, False, True)
 
             Using dEditMovie As New dlgEditMovie
-                'AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
+                AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
                 Select Case dEditMovie.ShowDialog()
                     Case Windows.Forms.DialogResult.OK
                         ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieScraperRDYtoSave, Nothing, Master.currMovie)
@@ -2257,7 +2257,7 @@ doCancel:
                             Me.SetControlsEnabled(True)
                         End If
                 End Select
-                'RemoveHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
+                RemoveHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
             End Using
         Catch ex As Exception
             Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
@@ -3586,7 +3586,7 @@ doCancel:
             Functions.SetScraperMod(Enums.ModType.All, False, True)
 
             Using dEditMovie As New dlgEditMovie
-                'AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
+                AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
                 Select Case dEditMovie.ShowDialog()
                     Case Windows.Forms.DialogResult.OK
                         ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieScraperRDYtoSave, Nothing, Master.currMovie)
@@ -3605,7 +3605,7 @@ doCancel:
                     Case Else
                         If Me.InfoCleared Then Me.LoadInfo(ID, Me.dgvMovies.Item(1, indX).Value.ToString, True, False)
                 End Select
-                'RemoveHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
+                RemoveHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
             End Using
         Catch ex As Exception
             Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
@@ -3880,7 +3880,7 @@ doCancel:
                 Me.SetStatus(Master.currMovie.Filename)
 
                 Using dEditMovie As New dlgEditMovie
-                    'AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
+                    AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
                     Select Case dEditMovie.ShowDialog()
                         Case Windows.Forms.DialogResult.OK
                             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieScraperRDYtoSave, Nothing, Master.currMovie)
@@ -3899,7 +3899,7 @@ doCancel:
                         Case Else
                             If Me.InfoCleared Then Me.LoadInfo(ID, Me.dgvMovies.Item(1, indX).Value.ToString, True, False)
                     End Select
-                    'RemoveHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
+                    RemoveHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
                 End Using
 
             End If
@@ -7327,7 +7327,7 @@ doCancel:
                 Application.DoEvents()
 
                 Using dEditMovie As New dlgEditMovie
-                    'AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
+                    AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
                     Select Case dEditMovie.ShowDialog()
                         Case Windows.Forms.DialogResult.OK
                             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieScraperRDYtoSave, Nothing, Master.currMovie)
@@ -7354,7 +7354,7 @@ doCancel:
                         Case Else
                             If Me.InfoCleared Then Me.LoadInfo(ID, Me.dgvMovies.Item(1, indX).Value.ToString, True, False)
                     End Select
-                    'RemoveHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
+                    RemoveHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
                 End Using
 
             End If

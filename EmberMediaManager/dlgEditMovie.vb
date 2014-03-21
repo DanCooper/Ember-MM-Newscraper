@@ -46,6 +46,7 @@ Public Class dlgEditMovie
     Private etDeleteList As New List(Of String)
     Private EThumbsIndex As Integer = -1
     Private EThumbsList As New List(Of ExtraImages)
+    Private EThumbsExtractor As New List(Of String)
     Private hasClearedET As Boolean = False
     Private iETCounter As Integer = 0
     Private iETLeft As Integer = 1
@@ -57,6 +58,7 @@ Public Class dlgEditMovie
     Private efDeleteList As New List(Of String)
     Private EFanartsIndex As Integer = -1
     Private EFanartsList As New List(Of ExtraImages)
+    Private EFanartsExtractor As New List(Of String)
     Private hasClearedEF As Boolean = False
     Private iEFCounter As Integer = 0
     Private iEFLeft As Integer = 1
@@ -545,20 +547,6 @@ Public Class dlgEditMovie
     Private Sub btnMovieEFanartsRefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieEFanartsRefresh.Click
         Me.RefreshEFanarts()
     End Sub
-
-    ' temporarily disabled
-    'Private Sub btnEThumbsTransfer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEThumbsTransfer.Click
-    '    Me.TransferEThumbs()
-    '    Me.RefreshEThumbs()
-    '    Me.pnlETQueue.Visible = False
-    'End Sub
-
-    ' temporarily disabled
-    'Private Sub btnEFanartsTransfer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEFanartsTransfer.Click
-    '    Me.TransferEFanarts()
-    '    Me.RefreshEFanarts()
-    '    Me.pnlETQueue.Visible = False
-    'End Sub
 
     ' temporarily disabled
     'Private Sub btnEThumbsUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEThumbsUp.Click
@@ -1178,6 +1166,19 @@ Public Class dlgEditMovie
                 Next
             End If
 
+            'load MovieExtractor Extrathumbs
+            If EThumbsExtractor.Count > 0 Then
+                For Each thumb As String In EThumbsExtractor
+                    Dim ETImage As New Images
+                    If Me.bwEThumbs.CancellationPending Then Return
+                    If Not Me.etDeleteList.Contains(thumb) Then
+                        ETImage.FromFile(thumb)
+                        EThumbsList.Add(New ExtraImages With {.Image = ETImage, .Name = Path.GetFileName(thumb), .Index = ET_i, .Path = thumb})
+                        ET_i += 1
+                    End If
+                Next
+            End If
+
         Catch ex As Exception
             Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
@@ -1234,6 +1235,19 @@ Public Class dlgEditMovie
                     End If
                     If Not IsNothing(EFImage.Image) Then
                         EFanartsList.Add(New ExtraImages With {.Image = EFImage, .Name = Path.GetFileName(fanart), .Index = EF_i, .Path = fanart})
+                        EF_i += 1
+                    End If
+                Next
+            End If
+
+            'load MovieExtractor Extrafanarts
+            If EFanartsExtractor.Count > 0 Then
+                For Each thumb As String In EFanartsExtractor
+                    Dim EFImage As New Images
+                    If Me.bwEThumbs.CancellationPending Then Return
+                    If Not Me.etDeleteList.Contains(thumb) Then
+                        EFImage.FromFile(thumb)
+                        EFanartsList.Add(New ExtraImages With {.Image = EFImage, .Name = Path.GetFileName(thumb), .Index = EF_i, .Path = thumb})
                         EF_i += 1
                     End If
                 Next
@@ -1904,10 +1918,8 @@ Public Class dlgEditMovie
                 If Not Master.eSettings.MovieNoSaveImagesToNfo AndAlso fResults.Fanart.Thumb.Count > 0 Then Master.currMovie.Movie.Fanart = pResults.Fanart
 
                 .SaveEThumbsList()
-                '.TransferEThumbs()
 
                 .SaveEFanartsList()
-                '.TransferEFanarts()
 
             End With
         Catch ex As Exception
@@ -1986,127 +1998,6 @@ Public Class dlgEditMovie
         Me.tpMetaData.Text = Master.eLang.GetString(866, "Metadata")
     End Sub
 
-    ' temporarily disabled
-    'Private Sub tcEditMovie_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tcEditMovie.SelectedIndexChanged
-    '    Try
-    '        If tcEditMovie.SelectedIndex = 3 Then
-    '            If File.Exists(String.Concat(Master.TempPath, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")) Then
-    '                Me.pnlETQueue.Visible = True
-    '            Else
-    '                Me.pnlETQueue.Visible = False
-    '            End If
-    '        End If
-    '    Catch ex As Exception
-    '        Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
-    '    End Try
-    'End Sub
-
-    ' temporarily disabled
-    'Private Sub TransferEThumbs()
-    '    Try
-    '        If Directory.Exists(Path.Combine(Master.TempPath, "extrathumbs")) Then
-    '            Dim ePath As String = String.Empty
-    '            If Master.eSettings.VideoTSParent AndAlso FileUtils.Common.isVideoTS(Master.currMovie.Filename) Then
-    '                ePath = Path.Combine(Directory.GetParent(Directory.GetParent(Master.currMovie.Filename).FullName).FullName, "extrathumbs")
-    '                'ElseIf Master.eSettings.VideoTSParentXBMC AndAlso FileUtils.Common.isVideoTS(Master.currMovie.Filename) Then
-    '                '    ePath = Path.Combine(Directory.GetParent(Master.currMovie.Filename).FullName, "extrathumbs")
-    '            ElseIf Master.eSettings.VideoTSParent AndAlso FileUtils.Common.isBDRip(Master.currMovie.Filename) Then
-    '                ePath = Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(Master.currMovie.Filename).FullName).FullName).FullName, "extrathumbs")
-    '            ElseIf Master.eSettings.VideoTSParentXBMC AndAlso FileUtils.Common.isBDRip(Master.currMovie.Filename) Then
-    '                ePath = Path.Combine(Directory.GetParent(Directory.GetParent(Master.currMovie.Filename).FullName).FullName, "extrathumbs")
-    '            Else
-    '                ePath = Path.Combine(Directory.GetParent(Master.currMovie.Filename).FullName, "extrathumbs")
-    '            End If
-
-    '            If Master.currMovie.ClearEThumbs AndAlso Not hasCleared Then
-    '                FileUtils.Delete.DeleteDirectory(ePath)
-    '                hasCleared = True
-    '            End If
-
-    '            Dim iMod As Integer = Functions.GetExtraModifier(ePath)
-    '            Dim iVal As Integer = iMod + 1
-    '            Dim hasET As Boolean = Not iMod = 0
-    '            Dim fList As New List(Of String)
-
-    '            Try
-    '                fList.AddRange(Directory.GetFiles(Path.Combine(Master.TempPath, "extrathumbs"), "thumb*.jpg"))
-    '            Catch
-    '            End Try
-
-    '            If fList.Count > 0 Then
-
-    '                If Not hasET Then
-    '                    Directory.CreateDirectory(ePath)
-    '                End If
-
-    '                For Each sFile As String In fList
-    '                    FileUtils.Common.MoveFileWithStream(sFile, Path.Combine(ePath, String.Concat("thumb", iVal, ".jpg")))
-    '                    iVal += 1
-    '                Next
-    '            End If
-
-    '            Master.currMovie.EThumbsPath = ePath
-
-    '            FileUtils.Delete.DeleteDirectory(Path.Combine(Master.TempPath, "extrathumbs"))
-    '        End If
-    '    Catch ex As Exception
-    '        Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
-    '    End Try
-    'End Sub
-
-    ' temporarily disabled
-    'Private Sub TransferEFanarts()
-    '    Try
-    '        If Directory.Exists(Path.Combine(Master.TempPath, "extrafanart")) Then
-    '            Dim ePath As String = String.Empty
-    '            If Master.eSettings.VideoTSParent AndAlso FileUtils.Common.isVideoTS(Master.currMovie.Filename) Then
-    '                ePath = Path.Combine(Directory.GetParent(Directory.GetParent(Master.currMovie.Filename).FullName).FullName, "extrafanart")
-    '                'ElseIf Master.eSettings.VideoTSParentXBMC AndAlso FileUtils.Common.isVideoTS(Master.currMovie.Filename) Then
-    '                '    ePath = Path.Combine(Directory.GetParent(Master.currMovie.Filename).FullName, "extrathumbs")
-    '            ElseIf Master.eSettings.VideoTSParent AndAlso FileUtils.Common.isBDRip(Master.currMovie.Filename) Then
-    '                ePath = Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(Master.currMovie.Filename).FullName).FullName).FullName, "extrafanart")
-    '            ElseIf Master.eSettings.VideoTSParentXBMC AndAlso FileUtils.Common.isBDRip(Master.currMovie.Filename) Then
-    '                ePath = Path.Combine(Directory.GetParent(Directory.GetParent(Master.currMovie.Filename).FullName).FullName, "extrafanart")
-    '            Else
-    '                ePath = Path.Combine(Directory.GetParent(Master.currMovie.Filename).FullName, "extrafanart")
-    '            End If
-
-    '            If Master.currMovie.ClearEFanarts AndAlso Not hasCleared Then
-    '                FileUtils.Delete.DeleteDirectory(ePath)
-    '                hasCleared = True
-    '            End If
-
-    '            Dim iMod As Integer = Functions.GetExtraModifier(ePath)
-    '            Dim iVal As Integer = iMod + 1
-    '            Dim hasET As Boolean = Not iMod = 0
-    '            Dim fList As New List(Of String)
-
-    '            Try
-    '                fList.AddRange(Directory.GetFiles(Path.Combine(Master.TempPath, "extrafanart"), "fanart*.jpg"))
-    '            Catch
-    '            End Try
-
-    '            If fList.Count > 0 Then
-
-    '                If Not hasET Then
-    '                    Directory.CreateDirectory(ePath)
-    '                End If
-
-    '                For Each sFile As String In fList
-    '                    FileUtils.Common.MoveFileWithStream(sFile, Path.Combine(ePath, String.Concat("fanart", iVal, ".jpg")))
-    '                    iVal += 1
-    '                Next
-    '            End If
-
-    '            Master.currMovie.EFanartsPath = ePath
-
-    '            FileUtils.Delete.DeleteDirectory(Path.Combine(Master.TempPath, "extrafanart"))
-    '        End If
-    '    Catch ex As Exception
-    '        Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
-    '    End Try
-    'End Sub
-
     Private Sub txtThumbCount_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs)
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
@@ -2124,8 +2015,29 @@ Public Class dlgEditMovie
     End Sub
 
     Sub GenericRunCallBack(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
-        If mType = Enums.ModuleEventType.MovieFrameExtrator Then
-            Me.RefreshEThumbs()
+        If mType = Enums.ModuleEventType.MovieFrameExtrator AndAlso Not IsNothing(_params) Then
+            If _params(0).ToString = "FanartToSave" Then
+                MovieFanart.FromFile(Path.Combine(Master.TempPath, "frame.jpg"))
+                If Not IsNothing(MovieFanart.Image) Then
+                    Me.pbMovieFanart.Image = MovieFanart.Image
+                    Me.pbMovieFanart.Tag = MovieFanart
+
+                    Me.lblMovieFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieFanart.Image.Width, Me.pbMovieFanart.Image.Height)
+                    Me.lblMovieFanartSize.Visible = True
+                End If
+            ElseIf _params(0).ToString = "EFanartToSave" Then
+                Dim fPath As String = _params(1).ToString
+                If Not String.IsNullOrEmpty(fPath) AndAlso File.Exists(fPath) Then
+                    EFanartsExtractor.Add(fPath)
+                    Me.RefreshEFanarts()
+                End If
+            ElseIf _params(0).ToString = "EThumbToSave" Then
+                Dim fPath As String = _params(1).ToString
+                If Not String.IsNullOrEmpty(fPath) AndAlso File.Exists(fPath) Then
+                    EThumbsExtractor.Add(fPath)
+                    Me.RefreshEThumbs()
+                End If
+            End If
         End If
 
     End Sub

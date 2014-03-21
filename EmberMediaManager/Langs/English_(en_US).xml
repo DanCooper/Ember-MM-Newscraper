@@ -303,7 +303,7 @@
 	<string id="302">Original Title</string>
 	<string id="303"># to Create:</string>
 	<string id="304">Auto-Gen</string>
-	<string id="305">Save Extrathumb</string>
+	<string id="305">Save as Extrathumb</string>
 	<string id="306">Extracting Frame...</string>
 	<string id="307">Load Movie</string>
 	<string id="308">Load Episode</string>
@@ -1133,5 +1133,7 @@
 	<string id="1045">Scraping Media (Current Filter - Skip):</string>
 	<string id="1046">Include Adult Items</string>
 	<string id="1047">Lock Status</string>
-	<string id="1048">Status:</string>
+	<string id="1048">Status:</string>	
+	<string id="1049">Save as Fanart</string>	
+	<string id="1050">Save as Extrafanart</string>
 </strings>

@@ -729,15 +729,26 @@ Public Class Images
         End Try
     End Function
 
-    Public Sub ResizeExtraThumb(ByVal fromPath As String, ByVal toPath As String)
+    Public Sub ResizeExtraFanart(ByVal fromPath As String, ByVal toPath As String)
         'Debug.Print("---------- ResizeExtraThumb ----------")
-        'Me.FromFile(fromPath)
+        Me.FromFile(fromPath)
         'If Not Master.eSettings.ETNative Then
         '	Dim iWidth As Integer = Master.eSettings.ETWidth
         '	Dim iHeight As Integer = Master.eSettings.ETHeight
         '	ImageUtils.ResizeImage(_image, iWidth, iHeight, Master.eSettings.ETPadding, Color.Black.ToArgb)
         'End If
-        'Me.Save(toPath)
+        Me.Save(toPath)
+    End Sub
+
+    Public Sub ResizeExtraThumb(ByVal fromPath As String, ByVal toPath As String)
+        'Debug.Print("---------- ResizeExtraThumb ----------")
+        Me.FromFile(fromPath)
+        'If Not Master.eSettings.ETNative Then
+        '	Dim iWidth As Integer = Master.eSettings.ETWidth
+        '	Dim iHeight As Integer = Master.eSettings.ETHeight
+        '	ImageUtils.ResizeImage(_image, iWidth, iHeight, Master.eSettings.ETPadding, Color.Black.ToArgb)
+        'End If
+        Me.Save(toPath)
     End Sub
     ''' <summary>
     ''' Stores the Image to the supplied <paramref name="sPath"/>
