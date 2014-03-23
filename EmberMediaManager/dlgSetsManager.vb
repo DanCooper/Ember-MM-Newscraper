@@ -138,7 +138,7 @@ Public Class dlgSetsManager
 
         Try
 
-            For Each sSet As String In Master.eSettings.Sets
+            For Each sSet As String In Master.eSettings.MovieSets
                 If Not String.IsNullOrEmpty(sSet) Then alSets.Add(sSet)
             Next
 
@@ -510,7 +510,7 @@ Public Class dlgSetsManager
     End Sub
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
-        Master.eSettings.Sets = alSets
+        Master.eSettings.MovieSets = alSets
         Master.eSettings.Save()
 
         If Me.currSet.Movies.Count > 0 AndAlso needsSave Then SaveSet(currSet)
@@ -554,7 +554,7 @@ Public Class dlgSetsManager
 
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MediaDBConn.BeginTransaction()
                 For Each tMovie As Movies In mSet.Movies
-                    If Not Master.eSettings.YAMJSetsCompatible Then
+                    If Not Master.eSettings.MovieYAMJCompatibleSets Then
                         tMovie.DBMovie.Movie.AddSet(mSet.Set, 0)
                     Else
                         tMovie.DBMovie.Movie.AddSet(mSet.Set, tMovie.Order)
@@ -588,7 +588,7 @@ Public Class dlgSetsManager
     End Sub
 
     Private Sub SetUp()
-        If Not Master.eSettings.YAMJSetsCompatible Then
+        If Not Master.eSettings.MovieYAMJCompatibleSets Then
             btnUp.Visible = False
             btnDown.Visible = False
         End If
@@ -604,7 +604,7 @@ Public Class dlgSetsManager
         Me.lblTopDetails.Text = Master.eLang.GetString(371, "Add and configure movie boxed sets.")
         Me.lblTopTitle.Text = Me.Text
 
-        collectionartwork_path = Master.eSettings.MovieSetsPath & "\"
+        collectionartwork_path = Master.eSettings.MovieMoviesetsPath & "\"
         Me.txtSourcePath.Enabled = False
         Me.txtSourcePath.Text = collectionartwork_path
         Me.lblSourcePath.Text = Master.eLang.GetString(986, "Movieset Artwork Folder")
@@ -782,7 +782,7 @@ Public Class dlgSetsManager
                 If Not ModulesManager.Instance.MovieScrapeImages(collectionMovie, Enums.ScraperCapabilities.Poster, aList) Then
                     If aList.Count > 0 Then
                         dlgImgS = New dlgImgSelect()
-                        If dlgImgS.ShowDialog(collectionMovie, Enums.ImageType.Posters, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
+                        If dlgImgS.ShowDialog(collectionMovie, Enums.MovieImageType.Poster, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
                             pResults = dlgImgS.Results
                             If Not String.IsNullOrEmpty(pResults.URL) Then
                                 Cursor = Cursors.WaitCursor
@@ -819,7 +819,7 @@ Public Class dlgSetsManager
                 If Not ModulesManager.Instance.MovieScrapeImages(collectionMovie, Enums.ScraperCapabilities.Fanart, aList) Then
                     If aList.Count > 0 Then
                         dlgImgS = New dlgImgSelect()
-                        If dlgImgS.ShowDialog(collectionMovie, Enums.ImageType.Fanart, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
+                        If dlgImgS.ShowDialog(collectionMovie, Enums.MovieImageType.Fanart, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
                             pResults = dlgImgS.Results
                             If Not String.IsNullOrEmpty(pResults.URL) Then
                                 Cursor = Cursors.WaitCursor
@@ -846,7 +846,7 @@ Public Class dlgSetsManager
 
         If Not String.IsNullOrEmpty(collectionartwork_path) AndAlso IO.Directory.Exists(collectionartwork_path) Then
             If Not IsNothing(Fanart.Image) Then
-                Dim fPath As String = Fanart.SaveCollectionFanart(collectionartwork_path, currSet.Set)
+                Dim fPath As String = Fanart.SaveAsMovieCollectionFanart(collectionartwork_path, currSet.Set)
                 ' Master.currMovie.FanartPath = fPath
             Else
                 ' Fanart.DeleteFanart(Master.currMovie)
@@ -854,7 +854,7 @@ Public Class dlgSetsManager
             End If
 
             If Not IsNothing(Poster.Image) Then
-                Dim pPath As String = Poster.SaveCollectionPoster(collectionartwork_path, currSet.Set)
+                Dim pPath As String = Poster.SaveAsMovieCollectionPoster(collectionartwork_path, currSet.Set)
                 ' Master.currMovie.PosterPath = pPath
             Else
                 '         Poster.DeletePosters(Master.currMovie)

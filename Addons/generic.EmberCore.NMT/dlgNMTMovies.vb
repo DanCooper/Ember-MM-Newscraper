@@ -85,11 +85,11 @@ Public Class dlgNMTMovies
             'End If
             'If dtShows Is Nothing Then
             dtShows = New DataTable
-            Master.DB.FillDataTable(dtShows, "SELECT ID, Title, HasPoster, HasFanart, HasNfo, New, Mark, TVShowPath, Source, TVDB, Lock, EpisodeGuide, Plot, Genre, Premiered, Studio, MPAA, Rating, PosterPath, FanartPath, NfoPath, NeedsSave, Language, Ordering FROM TVShows ORDER BY Title COLLATE NOCASE;")
+            Master.DB.FillDataTable(dtShows, "SELECT ID, Title, HasPoster, HasFanart, HasNfo, New, Mark, TVShowPath, Source, TVDB, Lock, EpisodeGuide, Plot, Genre, Premiered, Studio, MPAA, Rating, PosterPath, FanartPath, NfoPath, NeedsSave, Language, Ordering, HasBanner, BannerPath, HasLandscape, LandscapePath, Status FROM TVShows ORDER BY Title COLLATE NOCASE;")
             'End If
             'If dtSeasons Is Nothing Then
             dtSeasons = New DataTable
-            Master.DB.FillDataTable(dtSeasons, "SELECT TVShowID, SeasonText, Season, HasPoster, HasFanart, PosterPath, FanartPath, Lock , Mark , New FROM TVSeason ORDER BY Season COLLATE NOCASE;")
+            Master.DB.FillDataTable(dtSeasons, "SELECT TVShowID, SeasonText, Season, HasPoster, HasFanart, PosterPath, FanartPath, Lock , Mark , New, HasBanner, BannerPath, HasLandscape, LandscapePath FROM TVSeason ORDER BY Season COLLATE NOCASE;")
             'End If
             'If dtEpisodes Is Nothing Then
             dtEpisodes = New DataTable

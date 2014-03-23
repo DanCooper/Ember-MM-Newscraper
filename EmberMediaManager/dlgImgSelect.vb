@@ -35,7 +35,7 @@ Public Class dlgImgSelect
     Private chkImageEF() As CheckBox
     Private pnlImageET() As Panel
     Private pnlImageEF() As Panel
-    Private DLType As Enums.ImageType
+    Private DLType As Enums.MovieImageType
     Private isWorkerDone As Boolean = False
     'Private ETHashes As New List(Of String)
     Private iCounter As Integer = 0
@@ -108,7 +108,7 @@ Public Class dlgImgSelect
         InitializeComponent()
     End Sub
 
-    Public Overloads Function ShowDialog(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ImageType, ByRef ImageList As List(Of MediaContainers.Image), ByRef efList As List(Of String), ByRef etList As List(Of String), Optional ByVal _isEdit As Boolean = False) As DialogResult
+    Public Overloads Function ShowDialog(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.MovieImageType, ByRef ImageList As List(Of MediaContainers.Image), ByRef efList As List(Of String), ByRef etList As List(Of String), Optional ByVal _isEdit As Boolean = False) As DialogResult
         '//
         ' Overload to pass data
         '\\
@@ -121,9 +121,9 @@ Public Class dlgImgSelect
         Me.isEdit = _isEdit
         'Me.isShown = True
         Select Case DLType
-            Case Enums.ImageType.Posters
+            Case Enums.MovieImageType.Poster
                 aDes = Master.eSize.poster_names(0).description
-            Case Enums.ImageType.Fanart
+            Case Enums.MovieImageType.Fanart
                 aDes = Master.eSize.backdrop_names(0).description
         End Select
 
@@ -201,7 +201,7 @@ Public Class dlgImgSelect
             AddHandler pbImage(iIndex).MouseWheel, AddressOf MouseWheelEvent
             AddHandler pnlImage(iIndex).MouseWheel, AddressOf MouseWheelEvent
 
-            If Me.DLType = Enums.ImageType.Fanart Then
+            If Me.DLType = Enums.MovieImageType.Fanart Then
                 ReDim Preserve Me.chkImageET(iIndex)
                 ReDim Preserve Me.chkImageEF(iIndex)
                 ReDim Preserve Me.pnlImageET(iIndex)
@@ -432,9 +432,9 @@ Public Class dlgImgSelect
             FillListView(aDes)
         Else
             Select Case DLType
-                Case Enums.ImageType.Posters
+                Case Enums.MovieImageType.Poster
                     FillListView(Master.eSize.poster_names(Me.cbFilterSize.SelectedIndex - 1).description)
-                Case Enums.ImageType.Fanart
+                Case Enums.MovieImageType.Fanart
                     FillListView(Master.eSize.backdrop_names(Me.cbFilterSize.SelectedIndex - 1).description)
             End Select
         End If
@@ -460,7 +460,7 @@ Public Class dlgImgSelect
             For i As Integer = 0 To UBound(Me.pnlImage)
                 Me.pnlImage(i).BackColor = Color.White
 
-                If DLType = Enums.ImageType.Fanart Then
+                If DLType = Enums.MovieImageType.Fanart Then
                     Me.lblImage(i).BackColor = Color.White
                     Me.lblImage(i).ForeColor = Color.Black
                 Else
@@ -472,7 +472,7 @@ Public Class dlgImgSelect
             'set selected pnl color to blue
             Me.pnlImage(iIndex).BackColor = Color.Blue
 
-            If DLType = Enums.ImageType.Fanart Then
+            If DLType = Enums.MovieImageType.Fanart Then
                 Me.lblImage(iIndex).BackColor = Color.Blue
                 Me.lblImage(iIndex).ForeColor = Color.White
             Else
@@ -514,8 +514,8 @@ Public Class dlgImgSelect
         Dim ParentID As String = poster.ParentID
         Dim prefETSize As String = String.Empty
 
-        Select Case Master.eSettings.PreferredEThumbsSize
-            Case Enums.FanartSize.Original
+        Select Case Master.eSettings.MovieEThumbsPrefSize
+            Case Enums.FanartSize.Xlrg
                 prefETSize = "original"
             Case Enums.FanartSize.Lrg
                 prefETSize = "w1280"
@@ -547,8 +547,8 @@ Public Class dlgImgSelect
         Dim ParentID As String = poster.ParentID
         Dim prefEFSize As String = String.Empty
 
-        Select Case Master.eSettings.PreferredEFanartsSize
-            Case Enums.FanartSize.Original
+        Select Case Master.eSettings.MovieEFanartsPrefSize
+            Case Enums.FanartSize.Xlrg
                 prefEFSize = "original"
             Case Enums.FanartSize.Lrg
                 prefEFSize = "w1280"
@@ -611,7 +611,7 @@ Public Class dlgImgSelect
                 End Select
             End If
 
-            If Me.DLType = Enums.ImageType.Fanart Then
+            If Me.DLType = Enums.MovieImageType.Fanart Then
                 Dim iMod As Integer = 0
                 Dim iVal As Integer = 1
                 Dim etPath As String = String.Empty
@@ -690,7 +690,7 @@ Public Class dlgImgSelect
 
             Functions.PNLDoubleBuffer(Me.pnlBG)
 
-            If Me.DLType = Enums.ImageType.Posters Then
+            If Me.DLType = Enums.MovieImageType.Poster Then
                 Me.Text = String.Concat(Master.eLang.GetString(877, "Select Poster"), " - ", If(Not String.IsNullOrEmpty(Me.tMovie.Movie.Title), Me.tMovie.Movie.Title, Me.tMovie.ListTitle))
                 Me.pnlDwld.Visible = True
                 Me.cbFilterSize.Items.Clear()
@@ -705,7 +705,7 @@ Public Class dlgImgSelect
             Me.cbFilterSize.SelectedIndex = 0
             lblSize.Text = Master.eLang.GetString(957, "Show the ones with size:")
 
-            'CachePath = String.Concat(Master.TempPath, Path.DirectorySeparatorChar, tMovie.Movie.IMDBID, Path.DirectorySeparatorChar, If(Me.DLType = Enums.ImageType.Posters, "posters", "fanart"))
+            'CachePath = String.Concat(Master.TempPath, Path.DirectorySeparatorChar, tMovie.Movie.IMDBID, Path.DirectorySeparatorChar, If(Me.DLType = Enums.MovieImageType.Posters, "posters", "fanart"))
 
             Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
             Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
@@ -742,7 +742,7 @@ Public Class dlgImgSelect
             Me.rbMedium.Enabled = False
             Me.rbSmall.Checked = False
             Me.rbSmall.Enabled = False
-            'If Me.DLType = Enums.ImageType.Fanart Then
+            'If Me.DLType = Enums.MovieImageType.Fanart Then
             '    rbLarge.Text = Master.eSize.backdrop_names(2).description
             '    rbMedium.Text = Master.eSize.backdrop_names(1).description
             '    rbSmall.Text = Master.eSize.backdrop_names(0).description
@@ -755,7 +755,7 @@ Public Class dlgImgSelect
 
             For Each TMDBPoster As MediaContainers.Image In _ImageList.Where(Function(f) f.ParentID = ParentID)
                 If Not (TMDBPoster.Width = "n/a") AndAlso Not (TMDBPoster.Height = "n/a") Then
-                    If Me.DLType = Enums.ImageType.Posters Then
+                    If Me.DLType = Enums.MovieImageType.Poster Then
                         'Debug.Print("{0}  {1} {2}", TMDBPoster.Description, TMDBPoster.URL, TMDBPoster.ParentID)
                         Select Case TMDBPoster.Description
                             Case Master.eSize.poster_names(5).description
@@ -803,7 +803,7 @@ Public Class dlgImgSelect
                         End Select
                     End If
                 Else
-                    If Me.DLType = Enums.ImageType.Posters Then
+                    If Me.DLType = Enums.MovieImageType.Poster Then
                         Select Case TMDBPoster.Description
                             Case Master.eSize.poster_names(5).description
                                 ' xlarge
@@ -844,26 +844,26 @@ Public Class dlgImgSelect
                 End If
             Next
 
-            If Me.DLType = Enums.ImageType.Fanart Then
-                Select Case Master.eSettings.PreferredFanartSize
+            If Me.DLType = Enums.MovieImageType.Fanart Then
+                Select Case Master.eSettings.MovieFanartPrefSize
                     Case Enums.FanartSize.Small
                         Me.rbSmall.Checked = rbSmall.Enabled
                     Case Enums.FanartSize.Mid
                         Me.rbMedium.Checked = rbMedium.Enabled
                     Case Enums.FanartSize.Lrg
                         Me.rbLarge.Checked = rbLarge.Enabled
-                    Case Enums.FanartSize.Original
+                    Case Enums.FanartSize.Xlrg
                         Me.rbXLarge.Checked = rbXLarge.Enabled
                 End Select
             Else
-                Select Case Master.eSettings.PreferredPosterSize
+                Select Case Master.eSettings.MoviePosterPrefSize
                     Case Enums.PosterSize.Small
                         Me.rbSmall.Checked = rbSmall.Enabled
                     Case Enums.PosterSize.Mid
                         Me.rbMedium.Checked = rbMedium.Enabled
                     Case Enums.PosterSize.Lrg
                         Me.rbLarge.Checked = rbLarge.Enabled
-                    Case Enums.PosterSize.Original
+                    Case Enums.PosterSize.Xlrg
                         Me.rbXLarge.Checked = rbXLarge.Enabled
                 End Select
             End If

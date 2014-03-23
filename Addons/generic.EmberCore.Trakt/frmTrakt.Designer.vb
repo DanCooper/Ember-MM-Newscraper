@@ -22,13 +22,13 @@ Partial Class frmTrakt
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.txtTraktUser = New System.Windows.Forms.TextBox()
-        Me.lblTraktUser = New System.Windows.Forms.Label()
+        Me.txtTraktUsername = New System.Windows.Forms.TextBox()
+        Me.lblTraktUsername = New System.Windows.Forms.Label()
         Me.btGetMoviesTrakt = New System.Windows.Forms.Button()
         Me.chkUseTrakt = New System.Windows.Forms.CheckBox()
         Me.pnlTrakt = New System.Windows.Forms.Panel()
         Me.btGetSeriesTrakt = New System.Windows.Forms.Button()
-        Me.btnSavetraktsettings = New System.Windows.Forms.Button()
+        Me.btnSaveTraktSettings = New System.Windows.Forms.Button()
         Me.lblTraktPassword = New System.Windows.Forms.Label()
         Me.txtTraktPassword = New System.Windows.Forms.TextBox()
         Me.lblstate = New System.Windows.Forms.Label()
@@ -41,22 +41,22 @@ Partial Class frmTrakt
         CType(Me.dgvTraktWatched, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
-        'txtTraktUser
+        'txtTraktUsername
         '
-        Me.txtTraktUser.Enabled = False
-        Me.txtTraktUser.Location = New System.Drawing.Point(78, 51)
-        Me.txtTraktUser.Name = "txtTraktUser"
-        Me.txtTraktUser.Size = New System.Drawing.Size(167, 20)
-        Me.txtTraktUser.TabIndex = 0
+        Me.txtTraktUsername.Enabled = False
+        Me.txtTraktUsername.Location = New System.Drawing.Point(78, 51)
+        Me.txtTraktUsername.Name = "txtTraktUsername"
+        Me.txtTraktUsername.Size = New System.Drawing.Size(167, 20)
+        Me.txtTraktUsername.TabIndex = 0
         '
-        'lblTraktUser
+        'lblTraktUsername
         '
-        Me.lblTraktUser.AutoSize = True
-        Me.lblTraktUser.Location = New System.Drawing.Point(19, 51)
-        Me.lblTraktUser.Name = "lblTraktUser"
-        Me.lblTraktUser.Size = New System.Drawing.Size(55, 13)
-        Me.lblTraktUser.TabIndex = 1
-        Me.lblTraktUser.Text = "Username"
+        Me.lblTraktUsername.AutoSize = True
+        Me.lblTraktUsername.Location = New System.Drawing.Point(19, 51)
+        Me.lblTraktUsername.Name = "lblTraktUsername"
+        Me.lblTraktUsername.Size = New System.Drawing.Size(55, 13)
+        Me.lblTraktUsername.TabIndex = 1
+        Me.lblTraktUsername.Text = "Username"
         '
         'btGetMoviesTrakt
         '
@@ -81,7 +81,7 @@ Partial Class frmTrakt
         'pnlTrakt
         '
         Me.pnlTrakt.Controls.Add(Me.btGetSeriesTrakt)
-        Me.pnlTrakt.Controls.Add(Me.btnSavetraktsettings)
+        Me.pnlTrakt.Controls.Add(Me.btnSaveTraktSettings)
         Me.pnlTrakt.Controls.Add(Me.lblTraktPassword)
         Me.pnlTrakt.Controls.Add(Me.txtTraktPassword)
         Me.pnlTrakt.Controls.Add(Me.lblstate)
@@ -90,8 +90,8 @@ Partial Class frmTrakt
         Me.pnlTrakt.Controls.Add(Me.dgvTraktWatched)
         Me.pnlTrakt.Controls.Add(Me.chkUseTrakt)
         Me.pnlTrakt.Controls.Add(Me.btGetMoviesTrakt)
-        Me.pnlTrakt.Controls.Add(Me.lblTraktUser)
-        Me.pnlTrakt.Controls.Add(Me.txtTraktUser)
+        Me.pnlTrakt.Controls.Add(Me.lblTraktUsername)
+        Me.pnlTrakt.Controls.Add(Me.txtTraktUsername)
         Me.pnlTrakt.Location = New System.Drawing.Point(0, 0)
         Me.pnlTrakt.Name = "pnlTrakt"
         Me.pnlTrakt.Size = New System.Drawing.Size(627, 367)
@@ -107,14 +107,14 @@ Partial Class frmTrakt
         Me.btGetSeriesTrakt.Text = "Get watched episodes"
         Me.btGetSeriesTrakt.UseVisualStyleBackColor = True
         '
-        'btnSavetraktsettings
+        'btnSaveTraktSettings
         '
-        Me.btnSavetraktsettings.Location = New System.Drawing.Point(78, 104)
-        Me.btnSavetraktsettings.Name = "btnSavetraktsettings"
-        Me.btnSavetraktsettings.Size = New System.Drawing.Size(75, 23)
-        Me.btnSavetraktsettings.TabIndex = 38
-        Me.btnSavetraktsettings.Text = "Save "
-        Me.btnSavetraktsettings.UseVisualStyleBackColor = True
+        Me.btnSaveTraktSettings.Location = New System.Drawing.Point(78, 104)
+        Me.btnSaveTraktSettings.Name = "btnSaveTraktSettings"
+        Me.btnSaveTraktSettings.Size = New System.Drawing.Size(75, 23)
+        Me.btnSaveTraktSettings.TabIndex = 38
+        Me.btnSaveTraktSettings.Text = "Save "
+        Me.btnSaveTraktSettings.UseVisualStyleBackColor = True
         '
         'lblTraktPassword
         '
@@ -217,8 +217,8 @@ Partial Class frmTrakt
         Me.ResumeLayout(False)
 
     End Sub
-    Friend WithEvents txtTraktUser As System.Windows.Forms.TextBox
-    Friend WithEvents lblTraktUser As System.Windows.Forms.Label
+    Friend WithEvents txtTraktUsername As System.Windows.Forms.TextBox
+    Friend WithEvents lblTraktUsername As System.Windows.Forms.Label
     Friend WithEvents btGetMoviesTrakt As System.Windows.Forms.Button
     Friend WithEvents chkUseTrakt As System.Windows.Forms.CheckBox
     Friend WithEvents pnlTrakt As System.Windows.Forms.Panel
@@ -230,6 +230,6 @@ Partial Class frmTrakt
     Friend WithEvents col2 As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents txtTraktPassword As System.Windows.Forms.TextBox
     Friend WithEvents lblTraktPassword As System.Windows.Forms.Label
-    Friend WithEvents btnSavetraktsettings As System.Windows.Forms.Button
+    Friend WithEvents btnSaveTraktSettings As System.Windows.Forms.Button
     Friend WithEvents btGetSeriesTrakt As System.Windows.Forms.Button
 End Class

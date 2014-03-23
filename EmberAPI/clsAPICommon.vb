@@ -508,7 +508,7 @@ Public Class Globals
         poster_names(4).size = "w500"
         poster_names(4).width = 500
         poster_names(5).description = "original"
-        poster_names(5).index = Enums.PosterSize.Original
+        poster_names(5).index = Enums.PosterSize.Xlrg
         poster_names(5).size = "original"
         poster_names(5).width = 0
 
@@ -525,7 +525,7 @@ Public Class Globals
         backdrop_names(2).size = "w1280"
         backdrop_names(2).width = 1280
         backdrop_names(3).description = "original"
-        backdrop_names(3).index = Enums.PosterSize.Original
+        backdrop_names(3).index = Enums.PosterSize.Xlrg
         backdrop_names(3).size = "original"
         backdrop_names(3).width = 0
     End Sub
@@ -543,7 +543,8 @@ Public Class Enums
 		ShowFilters = 2
 		EpFilters = 3
 		ValidExts = 4
-		ShowRegex = 5
+        ShowRegex = 5
+        TrailerCodec = 6
 	End Enum
 
     Public Enum DelType As Integer
@@ -554,7 +555,7 @@ Public Class Enums
     End Enum
 
     Public Enum FanartSize As Integer
-        Original = 0
+        Xlrg = 0
         Lrg = 1
         Mid = 2
         Small = 3
@@ -641,7 +642,7 @@ Public Class Enums
     ''' </summary>
     ''' <remarks></remarks>
     Public Enum PosterSize As Integer
-        Original = 0
+        Xlrg = 0
         Lrg = 1
         Mid = 2
         Small = 3
@@ -656,65 +657,98 @@ Public Class Enums
         SingleScrape = 0
         FullAuto = 1
         FullAsk = 2
-        UpdateAuto = 3
-        UpdateAsk = 4
-        CleanFolders = 6
-        NewAuto = 7
-        NewAsk = 8
-        MarkAuto = 9
-        MarkAsk = 10
-        FilterAuto = 11
-        FilterAsk = 12
-        CopyBD = 13
+        FullSkip = 3
+        UpdateAuto = 4
+        UpdateAsk = 5
+        UpdateSkip = 6
+        CleanFolders = 7
+        NewAuto = 8
+        NewAsk = 9
+        NewSkip = 10
+        MarkAuto = 11
+        MarkAsk = 12
+        MarkSkip = 13
+        FilterAuto = 14
+        FilterAsk = 15
+        FilterSkip = 16
+        CopyBackdrops = 17
         None = 99 ' 
     End Enum
 
-    Public Enum SeasonPosterType As Integer
+    Public Enum TVFanartSize As Integer
+        HD1080 = 0      'TVDB has only 1280x720 and 1920x1080
+        HD720 = 1
+    End Enum
+
+    Public Enum TVPosterSize As Integer
+        HD1000 = 0      'TVDB has only 680x1000
+    End Enum
+
+    Public Enum TVSeasonPosterType As Integer
         None = 0
         Poster = 1
         Wide = 2
     End Enum
 
-    Public Enum ShowBannerType As Integer
+    Public Enum MovieBannerType As Integer 'TODO: add correct fanart.tv types
         None = 0
         Blank = 1
         Graphical = 2
         Text = 3
+    End Enum
+
+    Public Enum TVSeasonBannerType As Integer
+        Blank = 0       'will leave the title and show logo off the banner
+        Graphical = 1   'will show the series name in the show's official font or will display the actual logo for the show
+        Text = 2        'will show the series name as plain text in an Arial font
+    End Enum
+
+    Public Enum TVShowBannerType As Integer
+        None = 0
+        Blank = 1       'will leave the title and show logo off the banner
+        Graphical = 2   'will show the series name in the show's official font or will display the actual logo for the show
+        Text = 3        'will show the series name as plain text in an Arial font
+    End Enum
+    ''' <summary>
+    ''' Enum representing the trailer codec options
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Enum TrailerCodec As Integer
+        MP4 = 0
+        WebM = 1
+        v3GP = 2
+        FLV = 3
+        OTHERS = 4
     End Enum
     ''' <summary>
     ''' Enum representing the trailer quality options
     ''' </summary>
     ''' <remarks></remarks>
     Public Enum TrailerQuality As Integer
-        HD1080p = 0
-        HD1080pVP8 = 1
+        All = 0
+        HD1080p = 1
         HD720p = 2
-        HD720pVP8 = 3
-        SQMP4 = 4
-        HQFLV = 5
-        HQVP8 = 6
-        SQFLV = 7
-        SQVP8 = 8
-        OTHERS = 9
+        HQ480p = 3
+        SQ360p = 4
+        SQ240p = 5
+        SQ144p = 6
+        OTHERS = 7
     End Enum
     ''' <summary>
     ''' Enum represeting valid movie image types
     ''' </summary>
     ''' <remarks></remarks>
-    Public Enum ImageType As Integer
-        Posters = 0
-        Fanart = 1
-        ASPoster = 2
-        Banner = 3
-        ClearArt = 4
-        ClearLogo = 5
-        DiscArt = 6
-        Landscape = 7
-        EFanarts = 8
-        EThumbs = 9
-        CharacterArt = 10
-        ASBanner = 11
-        ASFanart = 12
+    Public Enum MovieImageType As Integer
+        Banner = 0
+        CharacterArt = 1
+        ClearArt = 2
+        ClearLogo = 3
+        DiscArt = 4
+        EFanarts = 5
+        EThumbs = 6
+        Fanart = 7
+        Landscape = 8
+        Poster = 9
     End Enum
     ''' <summary>
     ''' Enum representing valid TV image types
@@ -722,23 +756,23 @@ Public Class Enums
     ''' <remarks></remarks>
     Public Enum TVImageType As Integer
         All = 0
-        ShowPoster = 1
-        ShowFanart = 2
-        ShowBanner = 3
-        ShowLandscape = 4
-        ShowClearArt = 5
-        ShowClearLogo = 6
-        ShowCharacterArt = 7
-        SeasonPoster = 8
-        SeasonFanart = 9
-        SeasonBanner = 10
-        SeasonLandscape = 11
-        AllSeasonPoster = 12
-        AllSeasonFanart = 13
-        AllSeasonBanner = 14
-        AllSeasonLandscape = 15
-        EpisodePoster = 16
-        EpisodeFanart = 17
+        AllSeasonsBanner = 1
+        AllSeasonsFanart = 2
+        AllSeasonsLandscape = 3
+        AllSeasonsPoster = 4
+        EpisodeFanart = 5
+        EpisodePoster = 6
+        SeasonBanner = 7
+        SeasonFanart = 8
+        SeasonLandscape = 9
+        SeasonPoster = 10
+        ShowBanner = 11
+        ShowCharacterArt = 12
+        ShowClearArt = 13
+        ShowClearLogo = 14
+        ShowFanart = 15
+        ShowLandscape = 16
+        ShowPoster = 17
     End Enum
 
     Public Enum TVScraperEventType As Integer
@@ -756,7 +790,7 @@ Public Class Enums
         SaveAuto = 11
     End Enum
 
-    Public Enum TVUpdateTime As Integer
+    Public Enum TVScraperUpdateTime As Integer
         Week = 0
         BiWeekly = 1
         Month = 2
@@ -890,25 +924,25 @@ Public Class Functions
             .bDirector = True
             .bFullCast = True
             .bFullCrew = True
-            .bGenre = Not Master.eSettings.LockGenre    'Dekker500 This used to just be =True
+            .bGenre = Not Master.eSettings.MovieLockGenre    'Dekker500 This used to just be =True
             .bMPAA = True
             .bMusicBy = True
             .bOtherCrew = True
-            .bOutline = Not Master.eSettings.LockOutline
-            .bPlot = Not Master.eSettings.LockPlot
+            .bOutline = Not Master.eSettings.MovieLockOutline
+            .bPlot = Not Master.eSettings.MovieLockPlot
             .bProducers = True
-            .bRating = Not Master.eSettings.LockRating
-            .bLanguageV = Not Master.eSettings.LockLanguageV
-            .bLanguageA = Not Master.eSettings.LockLanguageA
-            .buseMPAAForFSK = Not Master.eSettings.UseMPAAForFSK
+            .bRating = Not Master.eSettings.MovieLockRating
+            .bLanguageV = Not Master.eSettings.MovieLockLanguageV
+            .bLanguageA = Not Master.eSettings.MovieLockLanguageA
+            .buseMPAAForFSK = Not Master.eSettings.MovieScraperUseMPAAFSK
             .bRelease = True
             .bRuntime = True
-            .bStudio = Not Master.eSettings.LockStudio
-            .bTagline = Not Master.eSettings.LockTagline
-            .bTitle = Not Master.eSettings.LockTitle
+            .bStudio = Not Master.eSettings.MovieLockStudio
+            .bTagline = Not Master.eSettings.MovieLockTagline
+            .bTitle = Not Master.eSettings.MovieLockTitle
             .bTop250 = True
             .bCountry = True
-            .bTrailer = Not Master.eSettings.LockTrailer
+            .bTrailer = Not Master.eSettings.MovieLockTrailer
             .bVotes = True
             .bWriters = True
             .bYear = True
@@ -924,56 +958,57 @@ Public Class Functions
     ''' <remarks></remarks>
     Public Shared Sub CreateDefaultOptions()
         'TODO need proper unit test
-        With Master.DefaultOptions
-            .bCast = Master.eSettings.FieldCast
-            .bCert = Master.eSettings.FieldCert
-            .bDirector = Master.eSettings.FieldDirector
-            .bFullCast = Master.eSettings.FullCast
-            .bFullCrew = Master.eSettings.FullCrew
-            .bGenre = Master.eSettings.FieldGenre
-            .bMPAA = Master.eSettings.FieldMPAA
-            .bMusicBy = Master.eSettings.FieldMusic
-            .bOtherCrew = Master.eSettings.FieldCrew
-            .bOutline = Master.eSettings.FieldOutline
-            .bPlot = Master.eSettings.FieldPlot
-            .bProducers = Master.eSettings.FieldProducers
-            .bRating = Master.eSettings.FieldRating
+        With Master.DefaultMovieOptions
+            .bCast = Master.eSettings.MovieScraperCast
+            .bCert = Master.eSettings.MovieScraperCertification
+            .bDirector = Master.eSettings.MovieScraperDirector
+            .bFullCast = Master.eSettings.MovieScraperFullCast
+            .bFullCrew = Master.eSettings.MovieScraperFullCrew
+            .bGenre = Master.eSettings.MovieScraperGenre
+            .bMPAA = Master.eSettings.MovieScraperMPAA
+            .bMusicBy = Master.eSettings.MovieScraperMusicBy
+            .bOtherCrew = Master.eSettings.MovieScraperCrew
+            .bOutline = Master.eSettings.MovieScraperOutline
+            .bPlot = Master.eSettings.MovieScraperPlot
+            .bProducers = Master.eSettings.MovieScraperProducers
+            .bRating = Master.eSettings.MovieScraperRating
             'TODO Dekker500 - These seem to be missing Add fields to Master!!!???
             '.bLanguageV = Master.eSettings.FieldLanguageV
             '.bLanguageA = Master.eSettings.FieldLanguageA
             '.buseMPAAForFSK = Master.eSettings.UseMPAAForFSK
-            .bRelease = Master.eSettings.FieldRelease
-            .bRuntime = Master.eSettings.FieldRuntime
-            .bStudio = Master.eSettings.FieldStudio
-            .bTagline = Master.eSettings.FieldTagline
-            .bTitle = Master.eSettings.FieldTitle
-            .bTop250 = Master.eSettings.Field250
-            .bCountry = Master.eSettings.FieldCountry
-            .bTrailer = Master.eSettings.FieldTrailer
-            .bVotes = Master.eSettings.FieldVotes
-            .bWriters = Master.eSettings.FieldWriters
-            .bYear = Master.eSettings.FieldYear
+            .bRelease = Master.eSettings.MovieScraperRelease
+            .bRuntime = Master.eSettings.MovieScraperRuntime
+            .bStudio = Master.eSettings.MovieScraperStudio
+            .bTagline = Master.eSettings.MovieScraperTagline
+            .bTitle = Master.eSettings.MovieScraperTitle
+            .bTop250 = Master.eSettings.MovieScraperTop250
+            .bCountry = Master.eSettings.MovieScraperCountry
+            .bTrailer = Master.eSettings.MovieScraperTrailer
+            .bVotes = Master.eSettings.MovieScraperVotes
+            .bWriters = Master.eSettings.MovieScraperWriters
+            .bYear = Master.eSettings.MovieScraperYear
         End With
 
         With Master.DefaultTVOptions
-            .bEpActors = Master.eSettings.ScraperEpActors
-            .bEpAired = Master.eSettings.ScraperEpAired
-            .bEpCredits = Master.eSettings.ScraperEpCredits
-            .bEpDirector = Master.eSettings.ScraperEpDirector
-            .bEpEpisode = Master.eSettings.ScraperEpEpisode
-            .bEpPlot = Master.eSettings.ScraperEpPlot
-            .bEpRating = Master.eSettings.ScraperEpRating
-            .bEpSeason = Master.eSettings.ScraperEpSeason
-            .bEpTitle = Master.eSettings.ScraperEpTitle
-            .bShowActors = Master.eSettings.ScraperShowActors
-            .bShowEpisodeGuide = Master.eSettings.ScraperShowEGU
-            .bShowGenre = Master.eSettings.ScraperShowGenre
-            .bShowMPAA = Master.eSettings.ScraperShowMPAA
-            .bShowPlot = Master.eSettings.ScraperShowPlot
-            .bShowPremiered = Master.eSettings.ScraperShowPremiered
-            .bShowRating = Master.eSettings.ScraperShowRating
-            .bShowStudio = Master.eSettings.ScraperShowStudio
-            .bShowTitle = Master.eSettings.ScraperShowTitle
+            .bEpActors = Master.eSettings.TVScraperEpisodeActors
+            .bEpAired = Master.eSettings.TVScraperEpisodeAired
+            .bEpCredits = Master.eSettings.TVScraperEpisodeCredits
+            .bEpDirector = Master.eSettings.TVScraperEpisodeDirector
+            .bEpEpisode = Master.eSettings.TVScraperEpisodeEpisode
+            .bEpPlot = Master.eSettings.TVScraperEpisodePlot
+            .bEpRating = Master.eSettings.TVScraperEpisodeRating
+            .bEpSeason = Master.eSettings.TVScraperEpisodeSeason
+            .bEpTitle = Master.eSettings.TVScraperEpisodeTitle
+            .bShowActors = Master.eSettings.TVScraperShowActors
+            .bShowEpisodeGuide = Master.eSettings.TVScraperShowEpiGuideURL
+            .bShowGenre = Master.eSettings.TVScraperShowGenre
+            .bShowMPAA = Master.eSettings.TVScraperShowMPAA
+            .bShowPlot = Master.eSettings.TVScraperShowPlot
+            .bShowPremiered = Master.eSettings.TVScraperShowPremiered
+            .bShowRating = Master.eSettings.TVScraperShowRating
+            .bShowStatus = Master.eSettings.TVScraperShowStatus
+            .bShowStudio = Master.eSettings.TVScraperShowStudio
+            .bShowTitle = Master.eSettings.TVScraperShowTitle
         End With
     End Sub
     ''' <summary>
@@ -1272,6 +1307,7 @@ Public Class Functions
         filterOptions.bShowPlot = Options.bShowPlot AndAlso Options2.bShowPlot
         filterOptions.bShowPremiered = Options.bShowPremiered AndAlso Options2.bShowPremiered
         filterOptions.bShowRating = Options.bShowRating AndAlso Options2.bShowRating
+        filterOptions.bShowStatus = Options.bShowStatus AndAlso Options2.bShowStatus
         filterOptions.bShowStudio = Options.bShowStudio AndAlso Options2.bShowStudio
         filterOptions.bShowTitle = Options.bShowTitle AndAlso Options2.bShowTitle
         Return filterOptions
@@ -1307,7 +1343,7 @@ Public Class Functions
                     .Meta = MValue
                     .NFO = MValue
                     .Poster = MValue
-                    .Trailer = If(Master.eSettings.UpdaterTrailers, MValue, False)
+                    .Trailer = If(Master.eSettings.MovieTrailerEnable, MValue, False)
                     .Actors = MValue
                 Case Enums.ModType.EThumbs
                     .EThumbs = MValue
@@ -1633,6 +1669,7 @@ Public Class Structures
         Dim bCleanPlotOutline As Boolean
         Dim bRelease As Boolean
         Dim bRuntime As Boolean
+        Dim bStatus As Boolean
         Dim bStudio As Boolean
         Dim bTagline As Boolean
         Dim bTitle As Boolean
@@ -1671,6 +1708,7 @@ Public Class Structures
         Dim bShowPlot As Boolean
         Dim bShowPremiered As Boolean
         Dim bShowRating As Boolean
+        Dim bShowStatus As Boolean
         Dim bShowStudio As Boolean
         Dim bShowTitle As Boolean
     End Structure

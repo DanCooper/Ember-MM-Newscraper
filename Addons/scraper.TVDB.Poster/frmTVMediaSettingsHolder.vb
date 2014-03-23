@@ -67,7 +67,7 @@ Public Class frmTVMediaSettingsHolder
         RaiseEvent SetupPostScraperChanged(cbEnabled.Checked, 0)
     End Sub
 
-    Private Sub cbTVLanguage_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbTVLanguage.SelectedIndexChanged
+    Private Sub cbTVLanguage_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbTVScraperLanguage.SelectedIndexChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
@@ -114,7 +114,7 @@ Public Class frmTVMediaSettingsHolder
         Me.gbLanguage.Text = Master.eLang.GetString(610, "Language")
         Me.lblTVDBMirror.Text = Master.eLang.GetString(801, "TVDB Mirror")
 
-        Me.cbTVLanguage.Items.AddRange((From lLang In Master.eSettings.Languages Select lLang.LongLang).ToArray)
+        Me.cbTVScraperLanguage.Items.AddRange((From lLang In Master.eSettings.TVScraperLanguages Select lLang.LongLang).ToArray)
     End Sub
 
     Private Sub txtTVDBApiKey_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVDBApiKey.TextChanged

@@ -303,7 +303,7 @@
 	<string id="302">Original Title</string>
 	<string id="303"># to Create:</string>
 	<string id="304">Auto-Gen</string>
-	<string id="305">Save Extrathumb</string>
+	<string id="305">Save as Extrathumb</string>
 	<string id="306">Extracting Frame...</string>
 	<string id="307">Load Movie</string>
 	<string id="308">Load Episode</string>
@@ -550,7 +550,7 @@
 	<string id="549">Mark New Shows</string>
 	<string id="550">Tagline Top:</string>
 	<string id="551">Information</string>
-	<string id="552">Select the folder where you wish to store your backdrops.</string>
+	<string id="552">Select the folder where you wish to store your backdrops...</string>
 	<string id="553">File System</string>
 	<string id="554">Replace ID field with Boxee Id Field</string>
 	<string id="555">Files and Sources</string>
@@ -733,7 +733,7 @@
 	<string id="732">&lt;h&gt;=Hours &lt;m&gt;=Minutes &lt;s&gt;=Seconds</string>
 	<string id="733">Display Missing Episodes</string>
 	<string id="734">Build Episode Title Instead of Filtering</string>
-	<string id="735">All Season Posters</string>
+	<string id="735">All Seasons Posters</string>
 	<string id="736">Only Get Images for the Selected Language</string>
 	<string id="737">Also Get English Images</string>
 	<string id="738"></string>
@@ -830,7 +830,7 @@
 	<string id="829">Popular Titles ({0})</string>
 	<string id="830">Edit the details for the selected season.</string>
 	<string id="831">Exact Matches ({0})</string>
-	<string id="832">Display All Season Poster</string>
+	<string id="832">Display All Seasons Poster</string>
 	<string id="833">No Matches Found</string>
 	<string id="834">* Inside Season Folder</string>
 	<string id="835">Only Save the Value to NFO</string>
@@ -1101,7 +1101,7 @@
 	<string id="1013">Show ClearArt</string>
 	<string id="1014">All Seasons Banner</string>
 	<string id="1015">All Seasons Fanart</string>
-	<string id="1016">All Season Landscape</string>
+	<string id="1016">All Seasons Landscape</string>
 	<string id="1017">Season Banner</string>
 	<string id="1018">Season Landscape</string>
 	<string id="1019">Season {0} Banner</string>
@@ -1112,4 +1112,28 @@
 	<string id="1024">Remove Banner</string>
 	<string id="1025">All Seasons Banner</string>
 	<string id="1026">All Seasons Fanart</string>
+	<string id="1027">Minimum Quality:</string>
+	<string id="1028">Select the folder where you wish to store your tv themes...</string>
+	<string id="1029">Select the folder where you wish to store your watched files...</string>
+	<string id="1030">Select the folder where you wish to store your movie sets images...</string>
+	<string id="1031">Change Landscape (Local)</string>
+	<string id="1032">Change Landscape (Scrape)</string>
+	<string id="1033">Change Landscape (Download)</string>
+	<string id="1034">Remove Landscape</string>
+	<string id="1035">Landscape</string>
+	<string id="1036">Manual Landscape Entry</string>
+	<string id="1037">Manual Banner Entry</string>
+	<string id="1038">Manual CharacterArt Entry</string>
+	<string id="1039">Manual ClearArt Entry</string>
+	<string id="1040">Manual ClearLogo Entry</string>
+	<string id="1041">Skip (Skip If More Than One Match)</string>
+	<string id="1042">Scraping Media (Movies Missing Items - Skip):</string>
+	<string id="1043">Scraping Media (New Movies - Skip):</string>
+	<string id="1044">Scraping Media (Marked Movies - Skip):</string>
+	<string id="1045">Scraping Media (Current Filter - Skip):</string>
+	<string id="1046">Include Adult Items</string>
+	<string id="1047">Lock Status</string>
+	<string id="1048">Status:</string>	
+	<string id="1049">Save as Fanart</string>	
+	<string id="1050">Save as Extrafanart</string>
 </strings>

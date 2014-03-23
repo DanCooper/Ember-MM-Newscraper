@@ -25,21 +25,23 @@ Partial Class frmMovieExtractor
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMovieExtractor))
         Me.pnlExtrator = New System.Windows.Forms.Panel()
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.btnFrameSaveAsEFanart = New System.Windows.Forms.Button()
+        Me.btnFrameSaveAsFanart = New System.Windows.Forms.Button()
+        Me.gbAutoGenerate = New System.Windows.Forms.GroupBox()
         Me.txtThumbCount = New System.Windows.Forms.TextBox()
-        Me.Label5 = New System.Windows.Forms.Label()
+        Me.lblToCreate = New System.Windows.Forms.Label()
         Me.btnAutoGen = New System.Windows.Forms.Button()
-        Me.btnFrameSave = New System.Windows.Forms.Button()
+        Me.btnFrameSaveAsEThumb = New System.Windows.Forms.Button()
         Me.pnlFrameProgress = New System.Windows.Forms.Panel()
-        Me.Label3 = New System.Windows.Forms.Label()
-        Me.ProgressBar1 = New System.Windows.Forms.ProgressBar()
+        Me.lblExtractingFrame = New System.Windows.Forms.Label()
+        Me.prbExtractingFrame = New System.Windows.Forms.ProgressBar()
         Me.lblTime = New System.Windows.Forms.Label()
         Me.tbFrame = New System.Windows.Forms.TrackBar()
         Me.btnFrameLoad = New System.Windows.Forms.Button()
         Me.pbFrame = New System.Windows.Forms.PictureBox()
         Me.tmrDelay = New System.Windows.Forms.Timer(Me.components)
         Me.pnlExtrator.SuspendLayout()
-        Me.GroupBox1.SuspendLayout()
+        Me.gbAutoGenerate.SuspendLayout()
         Me.pnlFrameProgress.SuspendLayout()
         CType(Me.tbFrame, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbFrame, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -48,8 +50,10 @@ Partial Class frmMovieExtractor
         'pnlExtrator
         '
         Me.pnlExtrator.BackColor = System.Drawing.Color.White
-        Me.pnlExtrator.Controls.Add(Me.GroupBox1)
-        Me.pnlExtrator.Controls.Add(Me.btnFrameSave)
+        Me.pnlExtrator.Controls.Add(Me.btnFrameSaveAsEFanart)
+        Me.pnlExtrator.Controls.Add(Me.btnFrameSaveAsFanart)
+        Me.pnlExtrator.Controls.Add(Me.gbAutoGenerate)
+        Me.pnlExtrator.Controls.Add(Me.btnFrameSaveAsEThumb)
         Me.pnlExtrator.Controls.Add(Me.pnlFrameProgress)
         Me.pnlExtrator.Controls.Add(Me.lblTime)
         Me.pnlExtrator.Controls.Add(Me.tbFrame)
@@ -57,20 +61,48 @@ Partial Class frmMovieExtractor
         Me.pnlExtrator.Controls.Add(Me.pbFrame)
         Me.pnlExtrator.Location = New System.Drawing.Point(2, 2)
         Me.pnlExtrator.Name = "pnlExtrator"
-        Me.pnlExtrator.Size = New System.Drawing.Size(836, 452)
+        Me.pnlExtrator.Size = New System.Drawing.Size(834, 468)
         Me.pnlExtrator.TabIndex = 0
         '
-        'GroupBox1
+        'btnFrameSaveAsEFanart
         '
-        Me.GroupBox1.Controls.Add(Me.txtThumbCount)
-        Me.GroupBox1.Controls.Add(Me.Label5)
-        Me.GroupBox1.Controls.Add(Me.btnAutoGen)
-        Me.GroupBox1.Location = New System.Drawing.Point(734, 161)
-        Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(99, 100)
-        Me.GroupBox1.TabIndex = 1
-        Me.GroupBox1.TabStop = False
-        Me.GroupBox1.Text = "Auto-Generate"
+        Me.btnFrameSaveAsEFanart.Enabled = False
+        Me.btnFrameSaveAsEFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnFrameSaveAsEFanart.Image = CType(resources.GetObject("btnFrameSaveAsEFanart.Image"), System.Drawing.Image)
+        Me.btnFrameSaveAsEFanart.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnFrameSaveAsEFanart.Location = New System.Drawing.Point(735, 377)
+        Me.btnFrameSaveAsEFanart.Name = "btnFrameSaveAsEFanart"
+        Me.btnFrameSaveAsEFanart.Size = New System.Drawing.Size(96, 83)
+        Me.btnFrameSaveAsEFanart.TabIndex = 18
+        Me.btnFrameSaveAsEFanart.Text = "Save as Extrafanart"
+        Me.btnFrameSaveAsEFanart.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnFrameSaveAsEFanart.UseVisualStyleBackColor = True
+        '
+        'btnFrameSaveAsFanart
+        '
+        Me.btnFrameSaveAsFanart.Enabled = False
+        Me.btnFrameSaveAsFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnFrameSaveAsFanart.Image = CType(resources.GetObject("btnFrameSaveAsFanart.Image"), System.Drawing.Image)
+        Me.btnFrameSaveAsFanart.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnFrameSaveAsFanart.Location = New System.Drawing.Point(735, 199)
+        Me.btnFrameSaveAsFanart.Name = "btnFrameSaveAsFanart"
+        Me.btnFrameSaveAsFanart.Size = New System.Drawing.Size(96, 83)
+        Me.btnFrameSaveAsFanart.TabIndex = 17
+        Me.btnFrameSaveAsFanart.Text = "Save as Fanart"
+        Me.btnFrameSaveAsFanart.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnFrameSaveAsFanart.UseVisualStyleBackColor = True
+        '
+        'gbAutoGenerate
+        '
+        Me.gbAutoGenerate.Controls.Add(Me.txtThumbCount)
+        Me.gbAutoGenerate.Controls.Add(Me.lblToCreate)
+        Me.gbAutoGenerate.Controls.Add(Me.btnAutoGen)
+        Me.gbAutoGenerate.Location = New System.Drawing.Point(734, 93)
+        Me.gbAutoGenerate.Name = "gbAutoGenerate"
+        Me.gbAutoGenerate.Size = New System.Drawing.Size(99, 100)
+        Me.gbAutoGenerate.TabIndex = 1
+        Me.gbAutoGenerate.TabStop = False
+        Me.gbAutoGenerate.Text = "Auto-Generate"
         '
         'txtThumbCount
         '
@@ -79,15 +111,15 @@ Partial Class frmMovieExtractor
         Me.txtThumbCount.Size = New System.Drawing.Size(25, 22)
         Me.txtThumbCount.TabIndex = 1
         '
-        'Label5
+        'lblToCreate
         '
-        Me.Label5.AutoSize = True
-        Me.Label5.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label5.Location = New System.Drawing.Point(2, 23)
-        Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(67, 13)
-        Me.Label5.TabIndex = 0
-        Me.Label5.Text = "# to Create:"
+        Me.lblToCreate.AutoSize = True
+        Me.lblToCreate.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblToCreate.Location = New System.Drawing.Point(2, 23)
+        Me.lblToCreate.Name = "lblToCreate"
+        Me.lblToCreate.Size = New System.Drawing.Size(67, 13)
+        Me.lblToCreate.TabIndex = 0
+        Me.lblToCreate.Text = "# to Create:"
         '
         'btnAutoGen
         '
@@ -103,50 +135,50 @@ Partial Class frmMovieExtractor
         Me.btnAutoGen.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnAutoGen.UseVisualStyleBackColor = True
         '
-        'btnFrameSave
+        'btnFrameSaveAsEThumb
         '
-        Me.btnFrameSave.Enabled = False
-        Me.btnFrameSave.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnFrameSave.Image = CType(resources.GetObject("btnFrameSave.Image"), System.Drawing.Image)
-        Me.btnFrameSave.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnFrameSave.Location = New System.Drawing.Point(735, 361)
-        Me.btnFrameSave.Name = "btnFrameSave"
-        Me.btnFrameSave.Size = New System.Drawing.Size(96, 83)
-        Me.btnFrameSave.TabIndex = 2
-        Me.btnFrameSave.Text = "Save Extrathumb"
-        Me.btnFrameSave.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.btnFrameSave.UseVisualStyleBackColor = True
+        Me.btnFrameSaveAsEThumb.Enabled = False
+        Me.btnFrameSaveAsEThumb.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnFrameSaveAsEThumb.Image = CType(resources.GetObject("btnFrameSaveAsEThumb.Image"), System.Drawing.Image)
+        Me.btnFrameSaveAsEThumb.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnFrameSaveAsEThumb.Location = New System.Drawing.Point(735, 288)
+        Me.btnFrameSaveAsEThumb.Name = "btnFrameSaveAsEThumb"
+        Me.btnFrameSaveAsEThumb.Size = New System.Drawing.Size(96, 83)
+        Me.btnFrameSaveAsEThumb.TabIndex = 2
+        Me.btnFrameSaveAsEThumb.Text = "Save as Extrathumb"
+        Me.btnFrameSaveAsEThumb.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnFrameSaveAsEThumb.UseVisualStyleBackColor = True
         '
         'pnlFrameProgress
         '
         Me.pnlFrameProgress.BackColor = System.Drawing.Color.White
         Me.pnlFrameProgress.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlFrameProgress.Controls.Add(Me.Label3)
-        Me.pnlFrameProgress.Controls.Add(Me.ProgressBar1)
+        Me.pnlFrameProgress.Controls.Add(Me.lblExtractingFrame)
+        Me.pnlFrameProgress.Controls.Add(Me.prbExtractingFrame)
         Me.pnlFrameProgress.Location = New System.Drawing.Point(241, 173)
         Me.pnlFrameProgress.Name = "pnlFrameProgress"
         Me.pnlFrameProgress.Size = New System.Drawing.Size(252, 51)
         Me.pnlFrameProgress.TabIndex = 0
         Me.pnlFrameProgress.Visible = False
         '
-        'Label3
+        'lblExtractingFrame
         '
-        Me.Label3.AutoSize = True
-        Me.Label3.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label3.Location = New System.Drawing.Point(2, 7)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(103, 13)
-        Me.Label3.TabIndex = 0
-        Me.Label3.Text = "Extracting Frame..."
+        Me.lblExtractingFrame.AutoSize = True
+        Me.lblExtractingFrame.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblExtractingFrame.Location = New System.Drawing.Point(2, 7)
+        Me.lblExtractingFrame.Name = "lblExtractingFrame"
+        Me.lblExtractingFrame.Size = New System.Drawing.Size(103, 13)
+        Me.lblExtractingFrame.TabIndex = 0
+        Me.lblExtractingFrame.Text = "Extracting Frame..."
         '
-        'ProgressBar1
+        'prbExtractingFrame
         '
-        Me.ProgressBar1.Location = New System.Drawing.Point(4, 26)
-        Me.ProgressBar1.MarqueeAnimationSpeed = 25
-        Me.ProgressBar1.Name = "ProgressBar1"
-        Me.ProgressBar1.Size = New System.Drawing.Size(242, 16)
-        Me.ProgressBar1.Style = System.Windows.Forms.ProgressBarStyle.Marquee
-        Me.ProgressBar1.TabIndex = 1
+        Me.prbExtractingFrame.Location = New System.Drawing.Point(4, 26)
+        Me.prbExtractingFrame.MarqueeAnimationSpeed = 25
+        Me.prbExtractingFrame.Name = "prbExtractingFrame"
+        Me.prbExtractingFrame.Size = New System.Drawing.Size(242, 16)
+        Me.prbExtractingFrame.Style = System.Windows.Forms.ProgressBarStyle.Marquee
+        Me.prbExtractingFrame.TabIndex = 1
         '
         'lblTime
         '
@@ -198,7 +230,7 @@ Partial Class frmMovieExtractor
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
-        Me.ClientSize = New System.Drawing.Size(843, 455)
+        Me.ClientSize = New System.Drawing.Size(837, 471)
         Me.Controls.Add(Me.pnlExtrator)
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
@@ -210,8 +242,8 @@ Partial Class frmMovieExtractor
         Me.Text = "frmExtrator"
         Me.pnlExtrator.ResumeLayout(False)
         Me.pnlExtrator.PerformLayout()
-        Me.GroupBox1.ResumeLayout(False)
-        Me.GroupBox1.PerformLayout()
+        Me.gbAutoGenerate.ResumeLayout(False)
+        Me.gbAutoGenerate.PerformLayout()
         Me.pnlFrameProgress.ResumeLayout(False)
         Me.pnlFrameProgress.PerformLayout()
         CType(Me.tbFrame, System.ComponentModel.ISupportInitialize).EndInit()
@@ -220,18 +252,20 @@ Partial Class frmMovieExtractor
 
     End Sub
     Friend WithEvents pnlExtrator As System.Windows.Forms.Panel
-    Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
+    Friend WithEvents gbAutoGenerate As System.Windows.Forms.GroupBox
     Friend WithEvents txtThumbCount As System.Windows.Forms.TextBox
-    Friend WithEvents Label5 As System.Windows.Forms.Label
+    Friend WithEvents lblToCreate As System.Windows.Forms.Label
     Friend WithEvents btnAutoGen As System.Windows.Forms.Button
-    Friend WithEvents btnFrameSave As System.Windows.Forms.Button
+    Friend WithEvents btnFrameSaveAsEThumb As System.Windows.Forms.Button
     Friend WithEvents pnlFrameProgress As System.Windows.Forms.Panel
-    Friend WithEvents Label3 As System.Windows.Forms.Label
-    Friend WithEvents ProgressBar1 As System.Windows.Forms.ProgressBar
+    Friend WithEvents lblExtractingFrame As System.Windows.Forms.Label
+    Friend WithEvents prbExtractingFrame As System.Windows.Forms.ProgressBar
     Friend WithEvents lblTime As System.Windows.Forms.Label
     Friend WithEvents tbFrame As System.Windows.Forms.TrackBar
     Friend WithEvents btnFrameLoad As System.Windows.Forms.Button
     Friend WithEvents pbFrame As System.Windows.Forms.PictureBox
     Friend WithEvents tmrDelay As System.Windows.Forms.Timer
+    Friend WithEvents btnFrameSaveAsFanart As System.Windows.Forms.Button
+    Friend WithEvents btnFrameSaveAsEFanart As System.Windows.Forms.Button
 
 End Class

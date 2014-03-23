@@ -31,346 +31,341 @@ Public Class Settings
 #Region "Fields"
     'TODO Dekker500 This class is a MONSTER. It needs to be broken down to a more manageable granularity
 
-    Private _actorlimit As Integer
-    Private _allsbanner As Boolean
-    Private _allsbannerheight As Integer
-    Private _allsbannerQuality As Integer
-    Private _allsbannersize As Enums.PosterSize
-    Private _allsbannertype As Enums.ShowBannerType
-    Private _allsbannerwidth As Integer
-    Private _allsfanartheight As Integer
-    Private _allsfanartquality As Integer
-    Private _allsfanartsize As Enums.FanartSize
-    Private _allsfanartwidth As Integer
-    Private _allsposterheight As Integer
-    Private _allsposterquality As Integer
-    Private _allspostersize As Enums.PosterSize
-    Private _allsposterwidth As Integer
-    Private _allwaysdisplaygenrestext As Boolean
-    'Private _alwaysgetenglishtvimages As Boolean
-    Private _clickscrape As Boolean
-    Private _askcheckboxscrape As Boolean
-    Private _autobd As Boolean
-    Private _bdpath As String
-    Private _moviesetspath As String
-    Private _castimagesonly As Boolean
-    Private _certificationLang As String
-    Private _checkupdates As Boolean
-    Private _cleandb As Boolean
-    Private _cleandotfanartJpg As Boolean
+    Private _cleandotfanartjpg As Boolean
     Private _cleanextrathumbs As Boolean
-    Private _cleanfanartJpg As Boolean
-    Private _cleanfolderJpg As Boolean
-    Private _cleanmoviefanartJpg As Boolean
-    Private _cleanmovieJpg As Boolean
-    Private _cleanmovienameJpg As Boolean
-    Private _cleanmovieNfo As Boolean
-    Private _cleanmovieNfoB As Boolean
-    Private _cleanmovieTbn As Boolean
-    Private _cleanmovieTbnB As Boolean
-    Private _cleanposterJpg As Boolean
-    Private _cleanposterTbn As Boolean
-    Private _cleanwhitelistexts As List(Of String)
-    Private _cleanwhitelistvideo As Boolean
-    Private _deletealltrailers As Boolean
-    Private _displayallseason As Boolean
-    Private _displaymissingepisodes As Boolean
-    Private _displayyear As Boolean
-    Private _orderdefault As Enums.Ordering
-    Private _emberModules As List(Of ModulesManager._XMLEmberModuleClass)
-    Private _enableifoscan As Boolean
-    Private _epfanartheight As Integer
-    Private _epfanartQuality As Integer
-    Private _epfanartsize As Enums.FanartSize
-    Private _epfanartwidth As Integer
-    Private _epfiltercustom As List(Of String)
-    Private _episodefanartcol As Boolean
-    Private _episodenfocol As Boolean
-    Private _episodepostercol As Boolean
-    Private _eplockplot As Boolean
-    Private _eplockrating As Boolean
-    Private _eplocktitle As Boolean
-    Private _epposterheight As Integer
-    Private _epposterQuality As Integer
-    Private _epposterwidth As Integer
-    Private _epproperCase As Boolean
-    Private _expertcleaner As Boolean
-    'Private _externaltvdbapikey As String
-    Private _efanartsheight As Integer
-    Private _ethumbsheight As Integer
-    Private _fanartheight As Integer
-    Private _efanartsprefsizeonly As Boolean
-    Private _ethumbsprefsizeonly As Boolean
-    Private _efanartswidth As Integer
-    Private _ethumbswidth As Integer
-    Private _fanartprefsizeonly As Boolean
-    Private _fanartQuality As Integer
-    Private _fanartsize As Enums.FanartSize
-    Private _efanartssize As Enums.FanartSize
-    Private _ethumbssize As Enums.FanartSize
-    Private _fanartwidth As Integer
-    Private _field250 As Boolean
-    Private _fieldcountry As Boolean
-    Private _fieldcast As Boolean
-    Private _fieldcert As Boolean
-    Private _fieldcrew As Boolean
-    Private _fielddirector As Boolean
-    Private _fieldgenre As Boolean
-    Private _fieldmpaa As Boolean
-    Private _fieldmusic As Boolean
-    Private _fieldoutline As Boolean
-    Private _fieldplot As Boolean
-    Private _fieldproducers As Boolean
-    Private _fieldrating As Boolean
-    Private _fieldrelease As Boolean
-    Private _fieldruntime As Boolean
-    Private _fieldstudio As Boolean
-    Private _fieldtagline As Boolean
-    Private _fieldtitle As Boolean
-    Private _fieldtrailer As Boolean
-    Private _fieldvotes As Boolean
-    Private _fieldwriters As Boolean
-    Private _fieldyear As Boolean
-    Private _fieldcleanPlotOutline As Boolean
-    Private _filterCustom As List(Of String)
-    Private _filterPanelState As Boolean
-    Private _flaglang As String
-    Private _fullcast As Boolean
-    Private _fullcrew As Boolean
+    Private _cleanfanartjpg As Boolean
+    Private _cleanfolderjpg As Boolean
+    Private _cleanmoviejpg As Boolean
+    Private _cleanmovienfo As Boolean
+    Private _cleanmovienfob As Boolean
+    Private _cleanmovietbn As Boolean
+    Private _cleanmovietbnb As Boolean
+    Private _cleanmoviefanartjpg As Boolean
+    Private _cleanmovienamejpg As Boolean
+    Private _cleanposterjpg As Boolean
+    Private _cleanpostertbn As Boolean
+    Private _embermodules As List(Of ModulesManager._XMLEmberModuleClass)
+    Private _filesystemcleanerwhitelist As Boolean
+    Private _filesystemcleanerwhitelistexts As List(Of String)
+    Private _filesystemexpertcleaner As Boolean
+    Private _filesystemnostackexts As List(Of String)
+    Private _filesystemvalidexts As List(Of String)
+    Private _generalcheckupdates As Boolean
+    Private _generalcreationdate As Boolean
+    Private _generaldaemondrive As String
+    Private _generaldaemonpath As String
+    Private _generalfilterpanelstate As Boolean
+    Private _generalhidefanart As Boolean
+    Private _generalhidefanartsmall As Boolean
+    Private _generalhideposter As Boolean
+    Private _generalimagesglassoverlay As Boolean
+    Private _generalinfopanelanim As Boolean
+    Private _generallanguage As String
+    Private _generalmainsplitterpanelstate As Integer
+    Private _generalmovieinfopanelstate As Integer
+    Private _generalmovietheme As String
+    Private _generaloverwritenfo As Boolean
+    Private _generalseasonsplitterpanelstate As Integer
+    Private _generalshowgenrestext As Boolean
+    Private _generalshowimgdims As Boolean
+    Private _generalshowsplitterpanelstate As Integer
+    Private _generalsourcefromfolder As Boolean
+    Private _generaltvepisodetheme As String
+    Private _generaltvshowinfopanelstate As Integer
+    Private _generaltvshowtheme As String
+    Private _generalwindowloc As New Point
+    Private _generalwindowsize As New Size
+    Private _generalwindowstate As FormWindowState
     Private _genrefilter As String
-    Private _genrelimit As Integer
-    Private _ignorelastscan As Boolean
-    Private _infopanelanim As Boolean
-    Private _infopanelstate As Integer
-    Private _language As String
-    Private _levtolerance As Integer
-    Private _lockgenre As Boolean
-    Private _lockoutline As Boolean
-    Private _lockplot As Boolean
-    Private _lockrating As Boolean
-    Private _locklanguageV As Boolean
-    Private _locklanguageA As Boolean
-    Private _lockMPAA As Boolean
-    Private _useMPAAForFSK As Boolean
-    Private _lockstudio As Boolean
-    Private _locktagline As Boolean
-    Private _locktitle As Boolean
-    Private _locktrailer As Boolean
-    Private _marknew As Boolean
-    Private _marknewepisodes As Boolean
-    Private _marknewshows As Boolean
-    Private _metadatapertype As List(Of MetadataPerType)
-    Private _missingfilterethumbs As Boolean
-    Private _missingfilterefanarts As Boolean
-    Private _missingfilterfanart As Boolean
-    Private _missingfilternfo As Boolean
-    Private _missingfilterposter As Boolean
-    Private _missingfiltersubs As Boolean
-    Private _missingfiltertrailer As Boolean
-    Private _movieefanartsCol As Boolean
-    Private _movieethumbsCol As Boolean
-    Private _moviefanartCol As Boolean
-    Private _movieinfoCol As Boolean
-    Private _movieposterCol As Boolean
-    Private _moviesubCol As Boolean
-    Private _movietheme As String
-    Private _daemon_programpath As String
-    Private _daemon_driveletter As String
-    Private _movietrailerCol As Boolean
-    Private _moviewatchedCol As Boolean
-    Private _nodisplayfanart As Boolean
-    Private _nodisplayposter As Boolean
-    Private _nodisplayfanartsmall As Boolean
-    Private _noepfilters As Boolean
-    Private _nofilterepisode As Boolean
-    Private _nofilters As Boolean
-    Private _nosaveimagestonfo As Boolean
-    Private _noshowfilters As Boolean
-    Private _nostackexts As List(Of String)
-    Private _notokens As Boolean
-    'Private _onlytvimagesforselectedlangauge As Boolean
-    'Private _ommdummybgcolor As Color
-    'Private _ommdummyfont As Font
-    'Private _ommdummyfontcolor As Color
+    Private _movieactorthumbsoverwrite As Boolean
+    Private _movieactorthumbsqual As Integer
+    Private _moviebackdropsauto As Boolean
+    Private _moviebackdropspath As String
+    Private _moviebannerheight As Integer
+    Private _moviebanneroverwrite As Boolean
+    Private _moviebannerprefonly As Boolean
+    Private _moviebannerpreftype As Enums.MovieBannerType
+    Private _moviebannerqual As Integer
+    Private _moviebannerresize As Boolean
+    Private _moviebannerwidth As Integer
+    Private _moviecleandb As Boolean
+    Private _movieclearartoverwrite As Boolean
+    Private _movieclearlogooverwrite As Boolean
+    Private _movieclickscrape As Boolean
+    Private _movieclickscrapeask As Boolean
+    Private _moviediscartoverwrite As Boolean
+    Private _moviedisplayyear As Boolean
+    Private _movieefanartscol As Boolean
+    Private _movieefanartsheight As Integer
+    Private _movieefanartslimit As Integer
+    Private _movieefanartsoverwrite As Boolean
+    Private _movieefanartsprefonly As Boolean
+    Private _movieefanartsprefsize As Enums.FanartSize
+    Private _movieefanartsqual As Integer
+    Private _movieefanartsresize As Boolean
+    Private _movieefanartswidth As Integer
+    Private _movieethumbscol As Boolean
+    Private _movieethumbsheight As Integer
+    Private _movieethumbslimit As Integer
+    Private _movieethumbsoverwrite As Boolean
+    Private _movieethumbsprefonly As Boolean
+    Private _movieethumbsprefsize As Enums.FanartSize
+    Private _movieethumbsqual As Integer
+    Private _movieethumbsresize As Boolean
+    Private _movieethumbswidth As Integer
+    Private _moviefanartcol As Boolean
+    Private _moviefanartheight As Integer
+    Private _moviefanartoverwrite As Boolean
+    Private _moviefanartprefonly As Boolean
+    Private _moviefanartprefsize As Enums.FanartSize
+    Private _moviefanartqual As Integer
+    Private _moviefanartresize As Boolean
+    Private _moviefanartwidth As Integer
+    Private _moviefiltercustom As List(Of String)
+    Private _moviefiltercustomisempty As Boolean
+    Private _moviegeneralflaglang As String
+    Private _moviegeneralignorelastscan As Boolean
+    Private _moviegeneralmarknew As Boolean
+    Private _movieimdburl As String
+    Private _movieinfocol As Boolean
+    Private _movielandscapeoverwrite As Boolean
+    Private _movielevtolerance As Integer
+    Private _movielockgenre As Boolean
+    Private _movielocklanguagea As Boolean
+    Private _movielocklanguagev As Boolean
+    Private _movielockmpaa As Boolean
+    Private _movielockoutline As Boolean
+    Private _movielockplot As Boolean
+    Private _movielockrating As Boolean
+    Private _movielockstudio As Boolean
+    Private _movielocktagline As Boolean
+    Private _movielocktitle As Boolean
+    Private _movielocktrailer As Boolean
+    Private _moviemetadataperfiletype As List(Of MetadataPerType)
+    Private _moviemissingefanarts As Boolean
+    Private _moviemissingethumbs As Boolean
+    Private _moviemissingfanart As Boolean
+    Private _moviemissingnfo As Boolean
+    Private _moviemissingposter As Boolean
+    Private _moviemissingsubs As Boolean
+    Private _moviemissingtrailer As Boolean
+    Private _moviemoviesetspath As String
+    Private _movienosaveimagestonfo As Boolean
+    Private _moviepostercol As Boolean
+    Private _movieposterheight As Integer
+    Private _movieposteroverwrite As Boolean
+    Private _movieposterprefonly As Boolean
+    Private _movieposterprefsize As Enums.PosterSize
+    Private _movieposterqual As Integer
+    Private _movieposterresize As Boolean
+    Private _movieposterwidth As Integer
+    Private _moviepropercase As Boolean
+    Private _moviescanordermodify As Boolean
+    Private _moviescraperactorthumbs As Boolean
+    Private _moviescrapercast As Boolean
+    Private _moviescrapercastlimit As Integer
+    Private _moviescrapercastwithimgonly As Boolean
+    Private _moviescrapercertformpaa As Boolean
+    Private _moviescrapercertification As Boolean
+    Private _moviescrapercertlang As String
+    Private _moviescrapercountry As Boolean
+    Private _moviescrapercrew As Boolean
+    Private _moviescraperdirector As Boolean
+    Private _moviescraperdurationruntimeformat As String
+    Private _moviescraperforcetitle As String
+    Private _moviescraperfullcast As Boolean
+    Private _moviescraperfullcrew As Boolean
+    Private _moviescrapergenre As Boolean
+    Private _moviescrapergenrelimit As Integer
+    Private _moviescrapermetadataifoscan As Boolean
+    Private _moviescrapermetadatascan As Boolean
+    Private _moviescrapermpaa As Boolean
+    Private _moviescrapermusicby As Boolean
+    Private _moviescraperonlyvalueformpaa As Boolean
+    Private _moviescraperoutline As Boolean
+    Private _moviescraperoutlineforplot As Boolean
+    Private _moviescraperoutlinelimit As Integer
+    Private _moviescraperoutlineplotenglishoverwrite As Boolean
+    Private _moviescraperplot As Boolean
+    Private _moviescraperplotforoutline As Boolean
+    Private _moviescraperproducers As Boolean
+    Private _moviescraperrating As Boolean
+    Private _moviescraperrelease As Boolean
+    Private _moviescraperruntime As Boolean
+    Private _moviescraperstudio As Boolean
+    Private _moviescrapertagline As Boolean
+    Private _moviescrapertitle As Boolean
+    Private _moviescrapertitlefallback As Boolean
+    Private _moviescrapertop250 As Boolean
+    Private _moviescrapertrailer As Boolean
+    Private _moviescraperusemdduration As Boolean
+    Private _moviescraperusempaafsk As Boolean
+    Private _moviescrapervotes As Boolean
+    Private _moviescraperwriters As Boolean
+    Private _moviescraperyear As Boolean
+    Private _moviesets As New List(Of String)
+    Private _movieskiplessthan As Integer
+    Private _movieskipstackedsizecheck As Boolean
+    Private _moviesortbeforescan As Boolean
+    Private _moviesorttokens As List(Of String)
+    Private _moviesorttokensisempty As Boolean
+    Private _moviesubcol As Boolean
+    Private _movietrailercol As Boolean
+    Private _movietrailerdeleteexisting As Boolean
+    Private _movietrailerenable As Boolean
+    Private _movietraileroverwrite As Boolean
+    Private _movietrailerminqual As Enums.TrailerQuality
+    Private _movietrailerprefqual As Enums.TrailerQuality
+    Private _moviewatchedcol As Boolean
     Private _ommdummyformat As Integer
     Private _ommdummytagline As String
     Private _ommdummytop As String
-    'Private _ommdummytextcolor As Color
     Private _ommdummyusebackground As Boolean
     Private _ommdummyusefanart As Boolean
     Private _ommdummyuseoverlay As Boolean
     Private _ommmediastubtagline As String
-    Private _onlyvalueforcert As Boolean
-    Private _outlineforplot As Boolean
-    Private _outlineplotenglishoverwrite As Boolean
-    Private _overwriteallsbanner As Boolean
-    Private _overwriteallsfanart As Boolean
-    Private _overwriteallsposter As Boolean
-    Private _overwriteEpFanart As Boolean
-    Private _overwriteEpPoster As Boolean
-    Private _overwriteefanarts As Boolean
-    Private _overwriteethumbs As Boolean
-    Private _overwritefanart As Boolean
-    Private _overwritenfo As Boolean
-    Private _overwriteposter As Boolean
-    Private _overwriteseasonbanner As Boolean
-    Private _overwriteseasonfanart As Boolean
-    Private _overwriteseasonposter As Boolean
-    Private _overwriteshowbanner As Boolean
-    Private _overwriteshowfanart As Boolean
-    Private _overwriteshowposter As Boolean
-    Private _overwritetrailer As Boolean
-    Private _plotforoutline As Boolean
-    Private _outlinelimit As Integer
-    Private _imagesglassoverlay As Boolean
-    Private _posterheight As Integer
-    Private _PosterPrefSizeOnly As Boolean
-    Private _efanartsQuality As Integer
-    Private _ethumbsQuality As Integer
-    Private _posterQuality As Integer
-    Private _postersize As Enums.PosterSize
-    Private _posterwidth As Integer
-    Private _properCase As Boolean
+    Private _password As String
     Private _proxycredentials As NetworkCredential
     Private _proxyport As Integer
     Private _proxyuri As String
-    Private _resizeallsbanner As Boolean
-    Private _resizeallsfanart As Boolean
-    Private _resizeallsposter As Boolean
-    Private _resizeepfanart As Boolean
-    Private _resizeepposter As Boolean
-    Private _resizeefanarts As Boolean
-    Private _resizeethumbs As Boolean
-    Private _resizefanart As Boolean
-    Private _resizeposter As Boolean
-    Private _resizeseasonbanner As Boolean
-    Private _resizeseasonfanart As Boolean
-    Private _resizeseasonposter As Boolean
-    Private _resizeshowbanner As Boolean
-    Private _resizeshowfanart As Boolean
-    Private _resizeshowposter As Boolean
-    Private _runtimemask As String
-    Private _epruntimemask As String
-    Private _scanmediainfo As Boolean
-    Private _scanordermodify As Boolean
-    Private _scantvmediainfo As Boolean
-    Private _scmainstate As Integer
-    Private _scshowstate As Integer
-    Private _scseasonstate As Integer
-    Private _scraperactorthumbs As Boolean
-    Private _scraperepactors As Boolean
-    Private _scraperepaired As Boolean
-    Private _scraperepcredits As Boolean
-    Private _scraperepdirector As Boolean
-    Private _scraperepepisode As Boolean
-    Private _scraperepplot As Boolean
-    Private _scrapereprating As Boolean
-    Private _scraperepseason As Boolean
-    Private _scrapereptitle As Boolean
-    Private _scrapershowactors As Boolean
-    Private _scrapershowegu As Boolean
-    Private _scrapershowgenre As Boolean
-    Private _scrapershowmpaa As Boolean
-    Private _scrapershowplot As Boolean
-    Private _scrapershowpremiered As Boolean
-    Private _scrapershowrating As Boolean
-    Private _scrapershowstudio As Boolean
-    Private _scrapershowtitle As Boolean
-    Private _seasonfanartcol As Boolean
-    Private _seasonfanartheight As Integer
-    Private _seasonfanartQuality As Integer
-    Private _seasonfanartsize As Enums.FanartSize
-    Private _seasonfanartwidth As Integer
-    Private _seasonpostercol As Boolean
-    Private _seasonbannerheight As Integer
-    Private _seasonbannerQuality As Integer
-    Private _seasonbannersize As Enums.SeasonPosterType
-    Private _seasonbannerwidth As Integer
-    Private _seasonposterheight As Integer
-    Private _seasonposterQuality As Integer
-    Private _seasonpostersize As Enums.SeasonPosterType
-    Private _seasonposterwidth As Integer
-    Private _sets As New List(Of String)
-    Private _showbanner As Boolean
-    Private _showbannertype As Enums.ShowBannerType
-    Private _showdims As Boolean
-    Private _showfanartcol As Boolean
-    Private _showfanartheight As Integer
-    Private _showfanartQuality As Integer
-    Private _showfanartsize As Enums.FanartSize
-    Private _showfanartwidth As Integer
-    Private _showfiltercustom As List(Of String)
-    Private _showinfopanelstate As Integer
-    Private _showlockgenre As Boolean
-    Private _showlockplot As Boolean
-    Private _showlockrating As Boolean
-    Private _showlockstudio As Boolean
-    Private _showlocktitle As Boolean
-    Private _shownfocol As Boolean
-    Private _showpostercol As Boolean
-    Private _showbannerheight As Integer
-    Private _showbannerQuality As Integer
-    Private _showbannersize As Enums.PosterSize
-    Private _showbannerwidth As Integer
-    Private _showposterheight As Integer
-    Private _showposterQuality As Integer
-    Private _showpostersize As Enums.PosterSize
-    Private _showposterwidth As Integer
-    Private _showproperCase As Boolean
-    Private _showratingregion As String
-    Private _singlescrapeimages As Boolean
-    Private _singlescrapetrailer As Boolean
-    Private _skiplessthan As Integer
-    Private _skipstacksizecheck As Boolean
-    Private _skiplessthanep As Integer
-    Private _sortbeforescan As Boolean
     Private _sortpath As String
-    Private _sorttokens As List(Of String)
-    Private _sourcefromfolder As Boolean
-    Private _trailerquality As Enums.TrailerQuality
-    Private _trailertimeout As Integer
-    Private _tvcleandb As Boolean
-    'Private _tvdblanguage As String
-    Private _languages As List(Of Containers.TVLanguage)
-    'Private _tvdbmirror As String
-    Private _tveptheme As String
-    Private _tvflaglang As String
-    Private _tvignorelastscan As Boolean
-    Private _tvmetadatapertype As List(Of MetadataPerType)
-    Private _tvscanordermodify As Boolean
-    Private _tvshowregexes As List(Of TVShowRegEx)
-    Private _tvshowtheme As String
-    Private _tvupdatetime As Enums.TVUpdateTime
-    Private _updatertrailers As Boolean
-    Private _updatertrailersnodownload As Boolean
-    Private _usecertformpaa As Boolean
-    Private _usemiduration As Boolean
-    Private _useepduration As Boolean
-    Private _validexts As List(Of String)
-    Private _version As String
-    Private _videotsparent As Boolean
-    Private _windowloc As New Point
-    Private _windowsize As New Size
-    Private _windowstate As FormWindowState
-    Private _username As String
-    Private _password As String
-    Private _IMDBURL As String
-    '  cocotus 2013/02 Trakt.tv syncing
-    'Adding Settings
-    Private _traktuser As String
     Private _traktpassword As String
+    Private _traktusername As String
+    Private _tvasbannerheight As Integer
+    Private _tvasbanneroverwrite As Boolean
+    Private _tvasbannerpreftype As Enums.TVShowBannerType
+    Private _tvasbannerqual As Integer
+    Private _tvasbannerresize As Boolean
+    Private _tvasbannerwidth As Integer
+    Private _tvasfanartheight As Integer
+    Private _tvasfanartoverwrite As Boolean
+    Private _tvasfanartprefsize As Enums.TVFanartSize
+    Private _tvasfanartqual As Integer
+    Private _tvasfanartresize As Boolean
+    Private _tvasfanartwidth As Integer
+    Private _tvaslandscapeoverwrite As Boolean
+    Private _tvasposterheight As Integer
+    Private _tvasposteroverwrite As Boolean
+    Private _tvasposterprefsize As Enums.TVPosterSize
+    Private _tvasposterqual As Integer
+    Private _tvasposterresize As Boolean
+    Private _tvasposterwidth As Integer
+    Private _tvcleandb As Boolean
+    Private _tvdisplaymissingepisodes As Boolean
+    Private _tvepisodefanartcol As Boolean
+    Private _tvepisodefanartheight As Integer
+    Private _tvepisodefanartoverwrite As Boolean
+    Private _tvepisodefanartprefsize As Enums.TVFanartSize
+    Private _tvepisodefanartqual As Integer
+    Private _tvepisodefanartresize As Boolean
+    Private _tvepisodefanartwidth As Integer
+    Private _tvepisodefiltercustom As List(Of String)
+    Private _tvepisodefiltercustomisempty As Boolean
+    Private _tvepisodenfocol As Boolean
+    Private _tvepisodenofilter As Boolean
+    Private _tvepisodepostercol As Boolean
+    Private _tvepisodeposterheight As Integer
+    Private _tvepisodeposteroverwrite As Boolean
+    Private _tvepisodeposterqual As Integer
+    Private _tvepisodeposterresize As Boolean
+    Private _tvepisodeposterwidth As Integer
+    Private _tvepisodepropercase As Boolean
+    Private _tvgeneraldisplayasposter As Boolean
+    Private _tvgeneralflaglang As String
+    Private _tvgeneralignorelastscan As Boolean
+    Private _tvgeneralmarknewepisodes As Boolean
+    Private _tvgeneralmarknewshows As Boolean
+    Private _tvlockepisodeplot As Boolean
+    Private _tvlockepisoderating As Boolean
+    Private _tvlockepisodetitle As Boolean
+    Private _tvlockshowgenre As Boolean
+    Private _tvlockshowplot As Boolean
+    Private _tvlockshowrating As Boolean
+    Private _tvlockshowstatus As Boolean
+    Private _tvlockshowstudio As Boolean
+    Private _tvlockshowtitle As Boolean
+    Private _tvmetadataperfiletype As List(Of MetadataPerType)
+    Private _tvscanordermodify As Boolean
+    Private _tvscraperdurationruntimeformat As String
+    Private _tvscraperepisodeactors As Boolean
+    Private _tvscraperepisodeaired As Boolean
+    Private _tvscraperepisodecredits As Boolean
+    Private _tvscraperepisodedirector As Boolean
+    Private _tvscraperepisodeepisode As Boolean
+    Private _tvscraperepisodeplot As Boolean
+    Private _tvscraperepisoderating As Boolean
+    Private _tvscraperepisodeseason As Boolean
+    Private _tvscraperepisodetitle As Boolean
+    Private _tvscraperlanguages As List(Of Containers.TVLanguage)
+    Private _tvscrapermetadatascan As Boolean
+    Private _tvscraperoptionsordering As Enums.Ordering
+    Private _tvscraperratingregion As String
+    Private _tvscrapershowactors As Boolean
+    Private _tvscrapershowepiguideurl As Boolean
+    Private _tvscrapershowgenre As Boolean
+    Private _tvscrapershowmpaa As Boolean
+    Private _tvscrapershowplot As Boolean
+    Private _tvscrapershowpremiered As Boolean
+    Private _tvscrapershowrating As Boolean
+    Private _tvscrapershowstatus As Boolean
+    Private _tvscrapershowstudio As Boolean
+    Private _tvscrapershowtitle As Boolean
+    Private _tvscraperupdatetime As Enums.TVScraperUpdateTime
+    Private _tvscraperusemdduration As Boolean
+    Private _tvseasonbannerheight As Integer
+    Private _tvseasonbanneroverwrite As Boolean
+    Private _tvseasonbannerpreftype As Enums.TVSeasonBannerType
+    Private _tvseasonbannerqual As Integer
+    Private _tvseasonbannerresize As Boolean
+    Private _tvseasonbannerwidth As Integer
+    Private _tvseasonfanartcol As Boolean
+    Private _tvseasonfanartheight As Integer
+    Private _tvseasonfanartoverwrite As Boolean
+    Private _tvseasonfanartprefsize As Enums.TVFanartSize
+    Private _tvseasonfanartqual As Integer
+    Private _tvseasonfanartresize As Boolean
+    Private _tvseasonfanartwidth As Integer
+    Private _tvseasonlandscapeoverwrite As Boolean
+    Private _tvseasonpostercol As Boolean
+    Private _tvseasonposterheight As Integer
+    Private _tvseasonposteroverwrite As Boolean
+    Private _tvseasonposterprefsize As Enums.TVPosterSize
+    Private _tvseasonposterqual As Integer
+    Private _tvseasonposterresize As Boolean
+    Private _tvseasonposterwidth As Integer
+    Private _tvshowbannerheight As Integer
+    Private _tvshowbanneroverwrite As Boolean
+    Private _tvshowbannerpreftype As Enums.TVShowBannerType
+    Private _tvshowbannerqual As Integer
+    Private _tvshowbannerresize As Boolean
+    Private _tvshowbannerwidth As Integer
+    Private _tvshowcharacterartoverwrite As Boolean
+    Private _tvshowclearartoverwrite As Boolean
+    Private _tvshowclearlogooverwrite As Boolean
+    Private _tvshowfanartcol As Boolean
+    Private _tvshowfanartheight As Integer
+    Private _tvshowfanartoverwrite As Boolean
+    Private _tvshowfanartprefsize As Enums.TVFanartSize
+    Private _tvshowfanartqual As Integer
+    Private _tvshowfanartresize As Boolean
+    Private _tvshowfanartwidth As Integer
+    Private _tvshowfiltercustom As List(Of String)
+    Private _tvshowfiltercustomisempty As Boolean
+    Private _tvshowlandscapeoverwrite As Boolean
+    Private _tvshownfocol As Boolean
+    Private _tvshowpostercol As Boolean
+    Private _tvshowposterheight As Integer
+    Private _tvshowposteroverwrite As Boolean
+    Private _tvshowposterprefsize As Enums.TVPosterSize
+    Private _tvshowposterqual As Integer
+    Private _tvshowposterresize As Boolean
+    Private _tvshowposterwidth As Integer
+    Private _tvshowpropercase As Boolean
+    Private _tvshowregexes As List(Of TVShowRegEx)
+    Private _tvskiplessthan As Integer
+    Private _username As String
     Private _usetrakt As Boolean
-    'cocotus end
-
-    'cocotus 20130303 Special DateAddvalue
-    'Adding Settings
-    Private _usespecialdateadd As Boolean
-    'cocotus end
-
-    '*************** Scraper Data Misc. settings ***************
-    Private _scrapertitlefallback As Boolean
-    Private _forcetitle As String
-
+    Private _version As String
 
     '***************************************************
     '******************* Movie Part ********************
@@ -417,14 +412,14 @@ Public Class Settings
     Private _movieclearartyamj As Boolean
     Private _movieclearlogoyamj As Boolean
     Private _moviediscartyamj As Boolean
-    Private _movieextrafanartyamj As Boolean
+    Private _movieextrafanartsyamj As Boolean
     Private _movieextrathumbsyamj As Boolean
     Private _moviefanartyamj As Boolean
     Private _movielandscapeyamj As Boolean
     Private _movienfoyamj As Boolean
     Private _movieposteryamj As Boolean
     Private _movietraileryamj As Boolean
-    Private _movieyamjsetscompatible As Boolean
+    Private _movieyamjcompatiblesets As Boolean
     Private _movieyamjwatchedfile As Boolean
     Private _movieyamjwatchedfolder As String
 
@@ -435,7 +430,7 @@ Public Class Settings
     Private _movieclearartnmj As Boolean
     Private _movieclearlogonmj As Boolean
     Private _moviediscartnmj As Boolean
-    Private _movieextrafanartnmj As Boolean
+    Private _movieextrafanartsnmj As Boolean
     Private _movieextrathumbsnmj As Boolean
     Private _moviefanartnmj As Boolean
     Private _movielandscapenmj As Boolean
@@ -518,7 +513,6 @@ Public Class Settings
     '*************** XBMC Frodo settings ***************
     Private _tvusefrodo As Boolean
     Private _tvepisodeactorthumbsfrodo As Boolean
-    Private _tvepisodefanartfrodo As Boolean
     Private _tvepisodeposterfrodo As Boolean
     Private _tvseasonbannerfrodo As Boolean
     Private _tvseasonfanartfrodo As Boolean
@@ -540,6 +534,14 @@ Public Class Settings
     Private _tvshowtvthemexbmc As Boolean
 
     '****************** YAMJ settings ******************
+    Private _tvuseyamj As Boolean
+    Private _tvepisodeposteryamj As Boolean
+    Private _tvseasonbanneryamj As Boolean
+    Private _tvseasonfanartyamj As Boolean
+    Private _tvseasonposteryamj As Boolean
+    Private _tvshowbanneryamj As Boolean
+    Private _tvshowfanartyamj As Boolean
+    Private _tvshowposteryamj As Boolean
 
     '****************** NMJ settings *******************
 
@@ -569,201 +571,192 @@ Public Class Settings
 
 #Region "Properties"
 
-    Public Property ActorLimit() As Integer
+    Public Property MovieScraperCastLimit() As Integer
         Get
-            Return Me._actorlimit
+            Return Me._moviescrapercastlimit
         End Get
         Set(ByVal value As Integer)
-            Me._actorlimit = value
+            Me._moviescrapercastlimit = value
         End Set
     End Property
 
-    Public Property AllSBannerHeight() As Integer
+    Public Property MovieActorThumbsOverwrite() As Boolean
         Get
-            Return Me._allsbannerheight
-        End Get
-        Set(ByVal value As Integer)
-            Me._allsbannerheight = value
-        End Set
-    End Property
-
-    Public Property AllSBannerQuality() As Integer
-        Get
-            Return Me._allsbannerQuality
-        End Get
-        Set(ByVal value As Integer)
-            Me._allsbannerQuality = value
-        End Set
-    End Property
-
-    Public Property AllSBannerWidth() As Integer
-        Get
-            Return Me._allsbannerwidth
-        End Get
-        Set(ByVal value As Integer)
-            Me._allsbannerwidth = value
-        End Set
-    End Property
-
-    Public Property AllSFanartHeight() As Integer
-        Get
-            Return Me._allsFanartheight
-        End Get
-        Set(ByVal value As Integer)
-            Me._allsFanartheight = value
-        End Set
-    End Property
-
-    Public Property AllSFanartQuality() As Integer
-        Get
-            Return Me._allsFanartQuality
-        End Get
-        Set(ByVal value As Integer)
-            Me._allsFanartQuality = value
-        End Set
-    End Property
-
-    Public Property AllSFanartWidth() As Integer
-        Get
-            Return Me._allsFanartwidth
-        End Get
-        Set(ByVal value As Integer)
-            Me._allsFanartwidth = value
-        End Set
-    End Property
-
-    Public Property AllSPosterHeight() As Integer
-        Get
-            Return Me._allsposterheight
-        End Get
-        Set(ByVal value As Integer)
-            Me._allsposterheight = value
-        End Set
-    End Property
-
-    Public Property AllSPosterQuality() As Integer
-        Get
-            Return Me._allsposterQuality
-        End Get
-        Set(ByVal value As Integer)
-            Me._allsposterQuality = value
-        End Set
-    End Property
-
-    Public Property AllSPosterWidth() As Integer
-        Get
-            Return Me._allsposterwidth
-        End Get
-        Set(ByVal value As Integer)
-            Me._allsposterwidth = value
-        End Set
-    End Property
-
-    Public Property AllwaysDisplayGenresText() As Boolean
-        Get
-            Return Me._allwaysdisplaygenrestext
+            Return Me._movieactorthumbsoverwrite
         End Get
         Set(ByVal value As Boolean)
-            Me._allwaysdisplaygenrestext = value
+            Me._movieactorthumbsoverwrite = value
         End Set
     End Property
 
-    'Public Property AlwaysGetEnglishTVImages() As Boolean
-    '    Get
-    '        Return Me._alwaysgetenglishtvimages
-    '    End Get
-    '    Set(ByVal value As Boolean)
-    '        Me._alwaysgetenglishtvimages = value
-    '    End Set
-    'End Property
-
-    Public Property ClickScrape() As Boolean
+    Public Property TVASPosterHeight() As Integer
         Get
-            Return Me._clickscrape
+            Return Me._tvasposterheight
+        End Get
+        Set(ByVal value As Integer)
+            Me._tvasposterheight = value
+        End Set
+    End Property
+
+    Public Property MovieActorThumbsQual() As Integer
+        Get
+            Return Me._movieactorthumbsqual
+        End Get
+        Set(ByVal value As Integer)
+            Me._movieactorthumbsqual = value
+        End Set
+    End Property
+
+    Public Property TVASPosterQual() As Integer
+        Get
+            Return Me._tvasposterqual
+        End Get
+        Set(ByVal value As Integer)
+            Me._tvasposterqual = value
+        End Set
+    End Property
+
+    Public Property TVASBannerQual() As Integer
+        Get
+            Return Me._tvasbannerqual
+        End Get
+        Set(ByVal value As Integer)
+            Me._tvasbannerqual = value
+        End Set
+    End Property
+
+    Public Property TVASFanartQual() As Integer
+        Get
+            Return Me._tvasfanartqual
+        End Get
+        Set(ByVal value As Integer)
+            Me._tvasfanartqual = value
+        End Set
+    End Property
+
+    Public Property TVSeasonBannerQual() As Integer
+        Get
+            Return Me._tvseasonbannerqual
+        End Get
+        Set(ByVal value As Integer)
+            Me._tvseasonbannerqual = value
+        End Set
+    End Property
+
+    Public Property TVShowBannerQual() As Integer
+        Get
+            Return Me._tvshowbannerqual
+        End Get
+        Set(ByVal value As Integer)
+            Me._tvshowbannerqual = value
+        End Set
+    End Property
+
+    Public Property TVASPosterWidth() As Integer
+        Get
+            Return Me._tvasposterwidth
+        End Get
+        Set(ByVal value As Integer)
+            Me._tvasposterwidth = value
+        End Set
+    End Property
+
+    Public Property GeneralShowGenresText() As Boolean
+        Get
+            Return Me._generalshowgenrestext
         End Get
         Set(ByVal value As Boolean)
-            Me._clickscrape = value
+            Me._generalshowgenrestext = value
         End Set
     End Property
 
-    Public Property AskCheckboxScrape() As Boolean
+    Public Property MovieClickScrape() As Boolean
         Get
-            Return Me._askcheckboxscrape
+            Return Me._movieclickscrape
         End Get
         Set(ByVal value As Boolean)
-            Me._askcheckboxscrape = value
+            Me._movieclickscrape = value
         End Set
     End Property
 
-    Public Property AutoBD() As Boolean
+    Public Property MovieClickScrapeAsk() As Boolean
         Get
-            Return Me._autobd
+            Return Me._movieclickscrapeask
         End Get
         Set(ByVal value As Boolean)
-            Me._autobd = value
+            Me._movieclickscrapeask = value
         End Set
     End Property
 
-    Public Property IMDBURL() As String
+    Public Property MovieBackdropsAuto() As Boolean
         Get
-            Return Me._IMDBURL
+            Return Me._moviebackdropsauto
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviebackdropsauto = value
+        End Set
+    End Property
+
+    Public Property MovieIMDBURL() As String
+        Get
+            Return Me._movieimdburl
         End Get
         Set(ByVal value As String)
-            Me._IMDBURL = value
+            Me._movieimdburl = value
         End Set
     End Property
 
-    Public Property BDPath() As String
+    Public Property MovieBackdropsPath() As String
         Get
-            Return Me._bdpath
+            Return Me._moviebackdropspath
         End Get
         Set(ByVal value As String)
-            Me._bdpath = value
+            Me._moviebackdropspath = value
         End Set
     End Property
 
-    Public Property MovieSetsPath() As String
+    Public Property MovieMoviesetsPath() As String
         Get
-            Return Me._moviesetspath
+            Return Me._moviemoviesetspath
         End Get
         Set(ByVal value As String)
-            Me._moviesetspath = value
+            Me._moviemoviesetspath = value
         End Set
     End Property
 
-    Public Property CastImagesOnly() As Boolean
+    Public Property MovieScraperCastWithImgOnly() As Boolean
         Get
-            Return Me._castimagesonly
+            Return Me._moviescrapercastwithimgonly
         End Get
         Set(ByVal value As Boolean)
-            Me._castimagesonly = value
+            Me._moviescrapercastwithimgonly = value
         End Set
     End Property
 
-    Public Property CertificationLang() As String
+    Public Property MovieScraperCertLang() As String
         Get
-            Return Me._certificationLang
+            Return Me._moviescrapercertlang
         End Get
         Set(ByVal value As String)
-            Me._certificationLang = value
+            Me._moviescrapercertlang = value
         End Set
     End Property
 
-    Public Property CheckUpdates() As Boolean
+    Public Property GeneralCheckUpdates() As Boolean
         Get
-            Return Me._checkupdates
+            Return Me._generalcheckupdates
         End Get
         Set(ByVal value As Boolean)
-            Me._checkupdates = value
+            Me._generalcheckupdates = value
         End Set
     End Property
 
-    Public Property CleanDB() As Boolean
+    Public Property MovieCleanDB() As Boolean
         Get
-            Return Me._cleandb
+            Return Me._moviecleandb
         End Get
         Set(ByVal value As Boolean)
-            Me._cleandb = value
+            Me._moviecleandb = value
         End Set
     End Property
 
@@ -776,7 +769,7 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property CleanExtraThumbs() As Boolean
+    Public Property CleanExtrathumbs() As Boolean
         Get
             Return Me._cleanextrathumbs
         End Get
@@ -884,66 +877,66 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property CleanWhitelistExts() As List(Of String)
+    Public Property FileSystemCleanerWhitelistExts() As List(Of String)
         Get
-            Return Me._cleanwhitelistexts
+            Return Me._filesystemcleanerwhitelistexts
         End Get
         Set(ByVal value As List(Of String))
-            Me._cleanwhitelistexts = value
+            Me._filesystemcleanerwhitelistexts = value
         End Set
     End Property
 
-    Public Property CleanWhitelistVideo() As Boolean
+    Public Property FileSystemCleanerWhitelist() As Boolean
         Get
-            Return Me._cleanwhitelistvideo
+            Return Me._filesystemcleanerwhitelist
         End Get
         Set(ByVal value As Boolean)
-            Me._cleanwhitelistvideo = value
+            Me._filesystemcleanerwhitelist = value
         End Set
     End Property
 
-    Public Property DeleteAllTrailers() As Boolean
+    Public Property MovieTrailerDeleteExisting() As Boolean
         Get
-            Return Me._deletealltrailers
+            Return Me._movietrailerdeleteexisting
         End Get
         Set(ByVal value As Boolean)
-            Me._deletealltrailers = value
+            Me._movietrailerdeleteexisting = value
         End Set
     End Property
 
-    Public Property DisplayAllSeason() As Boolean
+    Public Property TVGeneralDisplayASPoster() As Boolean
         Get
-            Return Me._displayallseason
+            Return Me._tvgeneraldisplayasposter
         End Get
         Set(ByVal value As Boolean)
-            Me._displayallseason = value
+            Me._tvgeneraldisplayasposter = value
         End Set
     End Property
 
-    Public Property DisplayMissingEpisodes() As Boolean
+    Public Property TVDisplayMissingEpisodes() As Boolean
         Get
-            Return Me._displaymissingepisodes
+            Return Me._tvdisplaymissingepisodes
         End Get
         Set(ByVal value As Boolean)
-            Me._displaymissingepisodes = value
+            Me._tvdisplaymissingepisodes = value
         End Set
     End Property
 
-    Public Property DisplayYear() As Boolean
+    Public Property MovieDisplayYear() As Boolean
         Get
-            Return Me._displayyear
+            Return Me._moviedisplayyear
         End Get
         Set(ByVal value As Boolean)
-            Me._displayyear = value
+            Me._moviedisplayyear = value
         End Set
     End Property
 
-    Public Property OrderDefault() As Enums.Ordering
+    Public Property TVScraperOptionsOrdering() As Enums.Ordering
         Get
-            Return Me._orderdefault
+            Return Me._tvscraperoptionsordering
         End Get
         Set(ByVal value As Enums.Ordering)
-            Me._orderdefault = value
+            Me._tvscraperoptionsordering = value
         End Set
     End Property
 
@@ -958,499 +951,507 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property EnableIFOScan() As Boolean
+    Public Property MovieScraperMetaDataIFOScan() As Boolean
         Get
-            Return Me._enableifoscan
+            Return Me._moviescrapermetadataifoscan
         End Get
         Set(ByVal value As Boolean)
-            Me._enableifoscan = value
+            Me._moviescrapermetadataifoscan = value
         End Set
     End Property
 
-    Public Property EpFanartHeight() As Integer
+    Public Property TVEpisodeFanartHeight() As Integer
         Get
-            Return Me._epfanartheight
+            Return Me._tvepisodefanartheight
         End Get
         Set(ByVal value As Integer)
-            Me._epfanartheight = value
+            Me._tvepisodefanartheight = value
         End Set
     End Property
 
-    Public Property EpFanartQuality() As Integer
+    Public Property TVEpisodeFanartQual() As Integer
         Get
-            Return Me._epfanartQuality
+            Return Me._tvepisodefanartqual
         End Get
         Set(ByVal value As Integer)
-            Me._epfanartQuality = value
+            Me._tvepisodefanartqual = value
         End Set
     End Property
 
-    Public Property EpFanartWidth() As Integer
+    Public Property TVEpisodeFanartWidth() As Integer
         Get
-            Return Me._epfanartwidth
+            Return Me._tvepisodefanartwidth
         End Get
         Set(ByVal value As Integer)
-            Me._epfanartwidth = value
+            Me._tvepisodefanartwidth = value
         End Set
     End Property
 
-    Public Property EpFilterCustom() As List(Of String)
+    Public Property TVEpisodeFilterCustom() As List(Of String)
         Get
-            Return Me._epfiltercustom
+            Return Me._tvepisodefiltercustom
         End Get
         Set(ByVal value As List(Of String))
-            Me._epfiltercustom = value
+            Me._tvepisodefiltercustom = value
         End Set
     End Property
 
-    Public Property EpisodeFanartCol() As Boolean
+    Public Property TVEpisodeFanartCol() As Boolean
         Get
-            Return Me._episodefanartcol
+            Return Me._tvepisodefanartcol
         End Get
         Set(ByVal value As Boolean)
-            Me._episodefanartcol = value
+            Me._tvepisodefanartcol = value
         End Set
     End Property
 
-    Public Property EpisodeNfoCol() As Boolean
+    Public Property TVEpisodeNfoCol() As Boolean
         Get
-            Return Me._episodenfocol
+            Return Me._tvepisodenfocol
         End Get
         Set(ByVal value As Boolean)
-            Me._episodenfocol = value
+            Me._tvepisodenfocol = value
         End Set
     End Property
 
-    Public Property EpisodePosterCol() As Boolean
+    Public Property TVEpisodePosterCol() As Boolean
         Get
-            Return Me._episodepostercol
+            Return Me._tvepisodepostercol
         End Get
         Set(ByVal value As Boolean)
-            Me._episodepostercol = value
+            Me._tvepisodepostercol = value
         End Set
     End Property
 
-    Public Property EpLockPlot() As Boolean
+    Public Property TVLockEpisodePlot() As Boolean
         Get
-            Return Me._eplockplot
+            Return Me._tvlockepisodeplot
         End Get
         Set(ByVal value As Boolean)
-            Me._eplockplot = value
+            Me._tvlockepisodeplot = value
         End Set
     End Property
 
-    Public Property EpLockRating() As Boolean
+    Public Property TVLockEpisodeRating() As Boolean
         Get
-            Return Me._eplockrating
+            Return Me._tvlockepisoderating
         End Get
         Set(ByVal value As Boolean)
-            Me._eplockrating = value
+            Me._tvlockepisoderating = value
         End Set
     End Property
 
-    Public Property EpLockTitle() As Boolean
+    Public Property TVLockEpisodeTitle() As Boolean
         Get
-            Return Me._eplocktitle
+            Return Me._tvlockepisodetitle
         End Get
         Set(ByVal value As Boolean)
-            Me._eplocktitle = value
+            Me._tvlockepisodetitle = value
         End Set
     End Property
 
-    Public Property EpPosterHeight() As Integer
+    Public Property TVEpisodePosterHeight() As Integer
         Get
-            Return Me._epposterheight
+            Return Me._tvepisodeposterheight
         End Get
         Set(ByVal value As Integer)
-            Me._epposterheight = value
+            Me._tvepisodeposterheight = value
         End Set
     End Property
 
-    Public Property EpPosterQuality() As Integer
+    Public Property TVEpisodePosterQual() As Integer
         Get
-            Return Me._epposterQuality
+            Return Me._tvepisodeposterqual
         End Get
         Set(ByVal value As Integer)
-            Me._epposterQuality = value
+            Me._tvepisodeposterqual = value
         End Set
     End Property
 
-    Public Property EpPosterWidth() As Integer
+    Public Property TVEpisodePosterWidth() As Integer
         Get
-            Return Me._epposterwidth
+            Return Me._tvepisodeposterwidth
         End Get
         Set(ByVal value As Integer)
-            Me._epposterwidth = value
+            Me._tvepisodeposterwidth = value
         End Set
     End Property
 
-    Public Property EpProperCase() As Boolean
+    Public Property TVEpisodeProperCase() As Boolean
         Get
-            Return Me._epproperCase
+            Return Me._tvepisodepropercase
         End Get
         Set(ByVal value As Boolean)
-            Me._epproperCase = value
+            Me._tvepisodepropercase = value
         End Set
     End Property
 
-    Public Property ExpertCleaner() As Boolean
+    Public Property FileSystemExpertCleaner() As Boolean
         Get
-            Return Me._expertcleaner
+            Return Me._filesystemexpertcleaner
         End Get
         Set(ByVal value As Boolean)
-            Me._expertcleaner = value
+            Me._filesystemexpertcleaner = value
         End Set
     End Property
 
-    'Public Property ExternalTVDBAPIKey() As String
-    '    Get
-    '        Return Me._externaltvdbapikey
-    '    End Get
-    '    Set(ByVal value As String)
-    '        Me._externaltvdbapikey = value
-    '    End Set
-    'End Property
-
-    Public Property EFanartsHeight() As Integer
+    Public Property MovieEFanartsHeight() As Integer
         Get
-            Return Me._efanartsheight
+            Return Me._movieefanartsheight
         End Get
         Set(ByVal value As Integer)
-            Me._efanartsheight = value
+            Me._movieefanartsheight = value
         End Set
     End Property
 
-    Public Property EThumbsHeight() As Integer
+    Public Property MovieEThumbsHeight() As Integer
         Get
-            Return Me._ethumbsheight
+            Return Me._movieethumbsheight
         End Get
         Set(ByVal value As Integer)
-            Me._ethumbsheight = value
+            Me._movieethumbsheight = value
         End Set
     End Property
 
-    Public Property FanartHeight() As Integer
+    Public Property MovieEThumbsLimit() As Integer
         Get
-            Return Me._fanartheight
+            Return Me._movieethumbslimit
         End Get
         Set(ByVal value As Integer)
-            Me._fanartheight = value
+            Me._movieethumbslimit = value
         End Set
     End Property
 
-    Public Property EFanartsPrefSizeOnly() As Boolean
+    Public Property MovieEFanartsLimit() As Integer
         Get
-            Return Me._efanartsprefsizeonly
-        End Get
-        Set(ByVal value As Boolean)
-            Me._efanartsprefsizeonly = value
-        End Set
-    End Property
-
-    Public Property EThumbsPrefSizeOnly() As Boolean
-        Get
-            Return Me._ethumbsprefsizeonly
-        End Get
-        Set(ByVal value As Boolean)
-            Me._ethumbsprefsizeonly = value
-        End Set
-    End Property
-
-    Public Property FanartPrefSizeOnly() As Boolean
-        Get
-            Return Me._fanartprefsizeonly
-        End Get
-        Set(ByVal value As Boolean)
-            Me._fanartprefsizeonly = value
-        End Set
-    End Property
-
-    Public Property FanartQuality() As Integer
-        Get
-            Return Me._fanartQuality
+            Return Me._movieefanartslimit
         End Get
         Set(ByVal value As Integer)
-            Me._fanartQuality = value
+            Me._movieefanartslimit = value
         End Set
     End Property
 
-    Public Property EFanartsWidth() As Integer
+    Public Property MovieFanartHeight() As Integer
         Get
-            Return Me._efanartswidth
+            Return Me._moviefanartheight
         End Get
         Set(ByVal value As Integer)
-            Me._efanartswidth = value
+            Me._moviefanartheight = value
         End Set
     End Property
 
-    Public Property EThumbsWidth() As Integer
+    Public Property MovieEFanartsPrefOnly() As Boolean
         Get
-            Return Me._ethumbswidth
+            Return Me._movieefanartsprefonly
+        End Get
+        Set(ByVal value As Boolean)
+            Me._movieefanartsprefonly = value
+        End Set
+    End Property
+
+    Public Property MovieEThumbsPrefOnly() As Boolean
+        Get
+            Return Me._movieethumbsprefonly
+        End Get
+        Set(ByVal value As Boolean)
+            Me._movieethumbsprefonly = value
+        End Set
+    End Property
+
+    Public Property MovieFanartPrefOnly() As Boolean
+        Get
+            Return Me._moviefanartprefonly
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviefanartprefonly = value
+        End Set
+    End Property
+
+    Public Property MovieFanartQual() As Integer
+        Get
+            Return Me._moviefanartqual
         End Get
         Set(ByVal value As Integer)
-            Me._ethumbswidth = value
+            Me._moviefanartqual = value
         End Set
     End Property
 
-    Public Property FanartWidth() As Integer
+    Public Property MovieEFanartsWidth() As Integer
         Get
-            Return Me._fanartwidth
+            Return Me._movieefanartswidth
         End Get
         Set(ByVal value As Integer)
-            Me._fanartwidth = value
+            Me._movieefanartswidth = value
         End Set
     End Property
 
-    Public Property Field250() As Boolean
+    Public Property MovieEThumbsWidth() As Integer
         Get
-            Return Me._field250
+            Return Me._movieethumbswidth
+        End Get
+        Set(ByVal value As Integer)
+            Me._movieethumbswidth = value
+        End Set
+    End Property
+
+    Public Property MovieFanartWidth() As Integer
+        Get
+            Return Me._moviefanartwidth
+        End Get
+        Set(ByVal value As Integer)
+            Me._moviefanartwidth = value
+        End Set
+    End Property
+
+    Public Property MovieScraperTop250() As Boolean
+        Get
+            Return Me._moviescrapertop250
         End Get
         Set(ByVal value As Boolean)
-            Me._field250 = value
+            Me._moviescrapertop250 = value
         End Set
     End Property
 
-    Public Property FieldCountry() As Boolean
+    Public Property MovieScraperCountry() As Boolean
         Get
-            Return Me._fieldcountry
+            Return Me._moviescrapercountry
         End Get
         Set(ByVal value As Boolean)
-            Me._fieldcountry = value
+            Me._moviescrapercountry = value
         End Set
     End Property
 
-    Public Property FieldCast() As Boolean
+    Public Property MovieScraperCast() As Boolean
         Get
-            Return Me._fieldcast
+            Return Me._moviescrapercast
         End Get
         Set(ByVal value As Boolean)
-            Me._fieldcast = value
+            Me._moviescrapercast = value
         End Set
     End Property
 
-    Public Property FieldCert() As Boolean
+    Public Property MovieScraperCertification() As Boolean
         Get
-            Return Me._fieldcert
+            Return Me._moviescrapercertification
         End Get
         Set(ByVal value As Boolean)
-            Me._fieldcert = value
+            Me._moviescrapercertification = value
         End Set
     End Property
 
-    Public Property FieldCrew() As Boolean
+    Public Property MovieScraperCrew() As Boolean
         Get
-            Return Me._fieldcrew
+            Return Me._moviescrapercrew
         End Get
         Set(ByVal value As Boolean)
-            Me._fieldcrew = value
+            Me._moviescrapercrew = value
         End Set
     End Property
 
-    Public Property FieldDirector() As Boolean
+    Public Property MovieScraperDirector() As Boolean
         Get
-            Return Me._fielddirector
+            Return Me._moviescraperdirector
         End Get
         Set(ByVal value As Boolean)
-            Me._fielddirector = value
+            Me._moviescraperdirector = value
         End Set
     End Property
 
-    Public Property FieldGenre() As Boolean
+    Public Property MovieScraperGenre() As Boolean
         Get
-            Return Me._fieldgenre
+            Return Me._moviescrapergenre
         End Get
         Set(ByVal value As Boolean)
-            Me._fieldgenre = value
+            Me._moviescrapergenre = value
         End Set
     End Property
 
-    Public Property FieldMPAA() As Boolean
+    Public Property MovieScraperMPAA() As Boolean
         Get
-            Return Me._fieldmpaa
+            Return Me._moviescrapermpaa
         End Get
         Set(ByVal value As Boolean)
-            Me._fieldmpaa = value
+            Me._moviescrapermpaa = value
         End Set
     End Property
 
-    Public Property FieldMusic() As Boolean
+    Public Property MovieScraperMusicBy() As Boolean
         Get
-            Return Me._fieldmusic
+            Return Me._moviescrapermusicby
         End Get
         Set(ByVal value As Boolean)
-            Me._fieldmusic = value
+            Me._moviescrapermusicby = value
         End Set
     End Property
 
-    Public Property FieldOutline() As Boolean
+    Public Property MovieScraperOutline() As Boolean
         Get
-            Return Me._fieldoutline
+            Return Me._moviescraperoutline
         End Get
         Set(ByVal value As Boolean)
-            Me._fieldoutline = value
+            Me._moviescraperoutline = value
         End Set
     End Property
 
-    Public Property FieldPlot() As Boolean
+    Public Property MovieScraperPlot() As Boolean
         Get
-            Return Me._fieldplot
+            Return Me._moviescraperplot
         End Get
         Set(ByVal value As Boolean)
-            Me._fieldplot = value
+            Me._moviescraperplot = value
         End Set
     End Property
 
-    Public Property FieldProducers() As Boolean
+    Public Property MovieScraperProducers() As Boolean
         Get
-            Return Me._fieldproducers
+            Return Me._moviescraperproducers
         End Get
         Set(ByVal value As Boolean)
-            Me._fieldproducers = value
+            Me._moviescraperproducers = value
         End Set
     End Property
 
-    Public Property FieldRating() As Boolean
+    Public Property MovieScraperRating() As Boolean
         Get
-            Return Me._fieldrating
+            Return Me._moviescraperrating
         End Get
         Set(ByVal value As Boolean)
-            Me._fieldrating = value
+            Me._moviescraperrating = value
         End Set
     End Property
 
-    Public Property FieldRelease() As Boolean
+    Public Property MovieScraperRelease() As Boolean
         Get
-            Return Me._fieldrelease
+            Return Me._moviescraperrelease
         End Get
         Set(ByVal value As Boolean)
-            Me._fieldrelease = value
+            Me._moviescraperrelease = value
         End Set
     End Property
 
-    Public Property FieldRuntime() As Boolean
+    Public Property MovieScraperRuntime() As Boolean
         Get
-            Return Me._fieldruntime
+            Return Me._moviescraperruntime
         End Get
         Set(ByVal value As Boolean)
-            Me._fieldruntime = value
+            Me._moviescraperruntime = value
         End Set
     End Property
 
-    Public Property FieldStudio() As Boolean
+    Public Property MovieScraperStudio() As Boolean
         Get
-            Return Me._fieldstudio
+            Return Me._moviescraperstudio
         End Get
         Set(ByVal value As Boolean)
-            Me._fieldstudio = value
+            Me._moviescraperstudio = value
         End Set
     End Property
 
-    Public Property FieldTagline() As Boolean
+    Public Property MovieScraperTagline() As Boolean
         Get
-            Return Me._fieldtagline
+            Return Me._moviescrapertagline
         End Get
         Set(ByVal value As Boolean)
-            Me._fieldtagline = value
+            Me._moviescrapertagline = value
         End Set
     End Property
 
-    Public Property FieldTitle() As Boolean
+    Public Property MovieScraperTitle() As Boolean
         Get
-            Return Me._fieldtitle
+            Return Me._moviescrapertitle
         End Get
         Set(ByVal value As Boolean)
-            Me._fieldtitle = value
+            Me._moviescrapertitle = value
         End Set
     End Property
 
-    Public Property FieldTrailer() As Boolean
+    Public Property MovieScraperTrailer() As Boolean
         Get
-            Return Me._fieldtrailer
+            Return Me._moviescrapertrailer
         End Get
         Set(ByVal value As Boolean)
-            Me._fieldtrailer = value
+            Me._moviescrapertrailer = value
         End Set
     End Property
 
-    Public Property FieldVotes() As Boolean
+    Public Property MovieScraperVotes() As Boolean
         Get
-            Return Me._fieldvotes
+            Return Me._moviescrapervotes
         End Get
         Set(ByVal value As Boolean)
-            Me._fieldvotes = value
+            Me._moviescrapervotes = value
         End Set
     End Property
 
-    Public Property FieldWriters() As Boolean
+    Public Property MovieScraperWriters() As Boolean
         Get
-            Return Me._fieldwriters
+            Return Me._moviescraperwriters
         End Get
         Set(ByVal value As Boolean)
-            Me._fieldwriters = value
+            Me._moviescraperwriters = value
         End Set
     End Property
 
-    Public Property FieldYear() As Boolean
+    Public Property MovieScraperYear() As Boolean
         Get
-            Return Me._fieldyear
+            Return Me._moviescraperyear
         End Get
         Set(ByVal value As Boolean)
-            Me._fieldyear = value
+            Me._moviescraperyear = value
         End Set
     End Property
 
-
-    Public Property FilterCustom() As List(Of String)
+    Public Property MovieFilterCustom() As List(Of String)
         Get
-            Return Me._filterCustom
+            Return Me._moviefiltercustom
         End Get
         Set(ByVal value As List(Of String))
-            Me._filterCustom = value
+            Me._moviefiltercustom = value
         End Set
     End Property
 
-    Public Property FilterPanelState() As Boolean
+    Public Property GeneralFilterPanelState() As Boolean
         Get
-            Return Me._filterPanelState
+            Return Me._generalfilterpanelstate
         End Get
         Set(ByVal value As Boolean)
-            Me._filterPanelState = value
+            Me._generalfilterpanelstate = value
         End Set
     End Property
 
-    Public Property FlagLang() As String
+    Public Property MovieGeneralFlagLang() As String
         Get
-            Return Me._flaglang
+            Return Me._moviegeneralflaglang
         End Get
         Set(ByVal value As String)
-            Me._flaglang = value
+            Me._moviegeneralflaglang = value
         End Set
     End Property
 
-    Public Property ForceTitle() As String
+    Public Property MovieScraperForceTitle() As String
         Get
-            Return Me._forcetitle
+            Return Me._moviescraperforcetitle
         End Get
         Set(ByVal value As String)
-            Me._forcetitle = value
+            Me._moviescraperforcetitle = value
         End Set
     End Property
 
-    Public Property FullCast() As Boolean
+    Public Property MovieScraperFullCast() As Boolean
         Get
-            Return Me._fullcast
+            Return Me._moviescraperfullcast
         End Get
         Set(ByVal value As Boolean)
-            Me._fullcast = value
+            Me._moviescraperfullcast = value
         End Set
     End Property
 
-    Public Property FullCrew() As Boolean
+    Public Property MovieScraperFullCrew() As Boolean
         Get
-            Return Me._fullcrew
+            Return Me._moviescraperfullcrew
         End Get
         Set(ByVal value As Boolean)
-            Me._fullcrew = value
+            Me._moviescraperfullcrew = value
         End Set
     End Property
 
@@ -1463,496 +1464,451 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property GenreLimit() As Integer
+    Public Property MovieScraperGenreLimit() As Integer
         Get
-            Return Me._genrelimit
+            Return Me._moviescrapergenrelimit
         End Get
         Set(ByVal value As Integer)
-            Me._genrelimit = value
+            Me._moviescrapergenrelimit = value
         End Set
     End Property
 
-    Public Property IgnoreLastScan() As Boolean
+    Public Property MovieGeneralIgnoreLastScan() As Boolean
         Get
-            Return Me._ignorelastscan
+            Return Me._moviegeneralignorelastscan
         End Get
         Set(ByVal value As Boolean)
-            Me._ignorelastscan = value
+            Me._moviegeneralignorelastscan = value
         End Set
     End Property
 
-    Public Property InfoPanelAnim() As Boolean
+    Public Property GeneralInfoPanelAnim() As Boolean
         Get
-            Return Me._infopanelanim
+            Return Me._generalinfopanelanim
         End Get
         Set(ByVal value As Boolean)
-            Me._infopanelanim = value
+            Me._generalinfopanelanim = value
         End Set
     End Property
 
-    Public Property InfoPanelState() As Integer
+    Public Property GeneralMovieInfoPanelState() As Integer
         Get
-            Return Me._infopanelstate
+            Return Me._generalmovieinfopanelstate
         End Get
         Set(ByVal value As Integer)
-            Me._infopanelstate = value
+            Me._generalmovieinfopanelstate = value
         End Set
     End Property
 
-    Public Property IsAllSBanner() As Boolean
+    Public Property GeneralLanguage() As String
         Get
-            Return Me._allsbanner
-        End Get
-        Set(ByVal value As Boolean)
-            Me._allsbanner = value
-        End Set
-    End Property
-
-    Public Property IsShowBanner() As Boolean
-        Get
-            Return Me._showbanner
-        End Get
-        Set(ByVal value As Boolean)
-            Me._showbanner = value
-        End Set
-    End Property
-
-    Public Property Language() As String
-        Get
-            Return Me._language
+            Return Me._generallanguage
         End Get
         Set(ByVal value As String)
-            Me._language = value
+            Me._generallanguage = value
         End Set
     End Property
 
-    Public Property LevTolerance() As Integer
+    Public Property MovieLevTolerance() As Integer
         Get
-            Return Me._levtolerance
+            Return Me._movielevtolerance
         End Get
         Set(ByVal value As Integer)
-            Me._levtolerance = value
+            Me._movielevtolerance = value
         End Set
     End Property
 
-    Public Property LockGenre() As Boolean
+    Public Property MovieLockGenre() As Boolean
         Get
-            Return Me._lockgenre
+            Return Me._movielockgenre
         End Get
         Set(ByVal value As Boolean)
-            Me._lockgenre = value
+            Me._movielockgenre = value
         End Set
     End Property
 
-    Public Property LockOutline() As Boolean
+    Public Property MovieLockOutline() As Boolean
         Get
-            Return Me._lockoutline
+            Return Me._movielockoutline
         End Get
         Set(ByVal value As Boolean)
-            Me._lockoutline = value
+            Me._movielockoutline = value
         End Set
     End Property
 
-    Public Property LockPlot() As Boolean
+    Public Property MovieLockPlot() As Boolean
         Get
-            Return Me._lockplot
+            Return Me._movielockplot
         End Get
         Set(ByVal value As Boolean)
-            Me._lockplot = value
+            Me._movielockplot = value
         End Set
     End Property
 
-    Public Property LockRating() As Boolean
+    Public Property MovieLockRating() As Boolean
         Get
-            Return Me._lockrating
+            Return Me._movielockrating
         End Get
         Set(ByVal value As Boolean)
-            Me._lockrating = value
+            Me._movielockrating = value
         End Set
     End Property
 
-    Public Property LockLanguageV() As Boolean
+    Public Property MovieLockLanguageV() As Boolean
         Get
-            Return Me._locklanguageV
+            Return Me._movielocklanguagev
         End Get
         Set(ByVal value As Boolean)
-            Me._locklanguageV = value
+            Me._movielocklanguagev = value
         End Set
     End Property
-    Public Property LockLanguageA() As Boolean
+    Public Property MovieLockLanguageA() As Boolean
         Get
-            Return Me._locklanguageA
+            Return Me._movielocklanguagea
         End Get
         Set(ByVal value As Boolean)
-            Me._locklanguageA = value
+            Me._movielocklanguagea = value
         End Set
     End Property
-    Public Property LockMPAA() As Boolean
+    Public Property MovieLockMPAA() As Boolean
         Get
-            Return Me._lockMPAA
+            Return Me._movielockmpaa
         End Get
         Set(ByVal value As Boolean)
-            Me._lockMPAA = value
+            Me._movielockmpaa = value
         End Set
     End Property
-    Public Property UseMPAAForFSK() As Boolean
+    Public Property MovieScraperUseMPAAFSK() As Boolean
         Get
-            Return Me._useMPAAForFSK
+            Return Me._moviescraperusempaafsk
         End Get
         Set(ByVal value As Boolean)
-            Me._useMPAAForFSK = value
+            Me._moviescraperusempaafsk = value
         End Set
     End Property
-    Public Property LockStudio() As Boolean
+    Public Property MovieLockStudio() As Boolean
         Get
-            Return Me._lockstudio
+            Return Me._movielockstudio
         End Get
         Set(ByVal value As Boolean)
-            Me._lockstudio = value
-        End Set
-    End Property
-
-    Public Property LockTagline() As Boolean
-        Get
-            Return Me._locktagline
-        End Get
-        Set(ByVal value As Boolean)
-            Me._locktagline = value
+            Me._movielockstudio = value
         End Set
     End Property
 
-    Public Property LockTitle() As Boolean
+    Public Property MovieLockTagline() As Boolean
         Get
-            Return Me._locktitle
+            Return Me._movielocktagline
         End Get
         Set(ByVal value As Boolean)
-            Me._locktitle = value
+            Me._movielocktagline = value
         End Set
     End Property
 
-    Public Property LockTrailer() As Boolean
+    Public Property MovieLockTitle() As Boolean
         Get
-            Return Me._locktrailer
+            Return Me._movielocktitle
         End Get
         Set(ByVal value As Boolean)
-            Me._locktrailer = value
+            Me._movielocktitle = value
         End Set
     End Property
 
-    Public Property MarkNew() As Boolean
+    Public Property MovieLockTrailer() As Boolean
         Get
-            Return Me._marknew
+            Return Me._movielocktrailer
         End Get
         Set(ByVal value As Boolean)
-            Me._marknew = value
+            Me._movielocktrailer = value
         End Set
     End Property
 
-    Public Property MarkNewEpisodes() As Boolean
+    Public Property MovieGeneralMarkNew() As Boolean
         Get
-            Return Me._marknewepisodes
+            Return Me._moviegeneralmarknew
         End Get
         Set(ByVal value As Boolean)
-            Me._marknewepisodes = value
+            Me._moviegeneralmarknew = value
         End Set
     End Property
 
-    Public Property MarkNewShows() As Boolean
+    Public Property TVGeneralMarkNewEpisodes() As Boolean
         Get
-            Return Me._marknewshows
+            Return Me._tvgeneralmarknewepisodes
         End Get
         Set(ByVal value As Boolean)
-            Me._marknewshows = value
+            Me._tvgeneralmarknewepisodes = value
         End Set
     End Property
 
-    Public Property MetadataPerFileType() As List(Of MetadataPerType)
+    Public Property TVGeneralMarkNewShows() As Boolean
         Get
-            Return Me._metadatapertype
+            Return Me._tvgeneralmarknewshows
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvgeneralmarknewshows = value
+        End Set
+    End Property
+
+    Public Property MovieMetadataPerFileType() As List(Of MetadataPerType)
+        Get
+            Return Me._moviemetadataperfiletype
         End Get
         Set(ByVal value As List(Of MetadataPerType))
-            Me._metadatapertype = value
+            Me._moviemetadataperfiletype = value
         End Set
     End Property
 
-    Public Property MissingFilterEThumbs() As Boolean
+    Public Property MovieMissingEThumbs() As Boolean
         Get
-            Return Me._missingfilterethumbs
+            Return Me._moviemissingethumbs
         End Get
         Set(ByVal value As Boolean)
-            Me._missingfilterethumbs = value
+            Me._moviemissingethumbs = value
         End Set
     End Property
 
-    Public Property MissingFilterEFanarts() As Boolean
+    Public Property MovieMissingEFanarts() As Boolean
         Get
-            Return Me._missingfilterefanarts
+            Return Me._moviemissingefanarts
         End Get
         Set(ByVal value As Boolean)
-            Me._missingfilterefanarts = value
+            Me._moviemissingefanarts = value
         End Set
     End Property
 
-    Public Property MissingFilterFanart() As Boolean
+    Public Property MovieMissingFanart() As Boolean
         Get
-            Return Me._missingfilterfanart
+            Return Me._moviemissingfanart
         End Get
         Set(ByVal value As Boolean)
-            Me._missingfilterfanart = value
+            Me._moviemissingfanart = value
         End Set
     End Property
 
-    Public Property MissingFilterNFO() As Boolean
+    Public Property MovieMissingNFO() As Boolean
         Get
-            Return Me._missingfilternfo
+            Return Me._moviemissingnfo
         End Get
         Set(ByVal value As Boolean)
-            Me._missingfilternfo = value
+            Me._moviemissingnfo = value
         End Set
     End Property
 
-    Public Property MissingFilterPoster() As Boolean
+    Public Property MovieMissingPoster() As Boolean
         Get
-            Return Me._missingfilterposter
+            Return Me._moviemissingposter
         End Get
         Set(ByVal value As Boolean)
-            Me._missingfilterposter = value
+            Me._moviemissingposter = value
         End Set
     End Property
 
-    Public Property MissingFilterSubs() As Boolean
+    Public Property MovieMissingSubs() As Boolean
         Get
-            Return Me._missingfiltersubs
+            Return Me._moviemissingsubs
         End Get
         Set(ByVal value As Boolean)
-            Me._missingfiltersubs = value
+            Me._moviemissingsubs = value
         End Set
     End Property
 
-    Public Property MissingFilterTrailer() As Boolean
+    Public Property MovieMissingTrailer() As Boolean
         Get
-            Return Me._missingfiltertrailer
+            Return Me._moviemissingtrailer
         End Get
         Set(ByVal value As Boolean)
-            Me._missingfiltertrailer = value
+            Me._moviemissingtrailer = value
         End Set
     End Property
 
     Public Property MovieEFanartsCol() As Boolean
         Get
-            Return Me._movieefanartsCol
+            Return Me._movieefanartscol
         End Get
         Set(ByVal value As Boolean)
-            Me._movieefanartsCol = value
+            Me._movieefanartscol = value
         End Set
     End Property
 
     Public Property MovieEThumbsCol() As Boolean
         Get
-            Return Me._movieethumbsCol
+            Return Me._movieethumbscol
         End Get
         Set(ByVal value As Boolean)
-            Me._movieethumbsCol = value
+            Me._movieethumbscol = value
         End Set
     End Property
 
     Public Property MovieFanartCol() As Boolean
         Get
-            Return Me._moviefanartCol
+            Return Me._moviefanartcol
         End Get
         Set(ByVal value As Boolean)
-            Me._moviefanartCol = value
+            Me._moviefanartcol = value
         End Set
     End Property
 
     Public Property MovieInfoCol() As Boolean
         Get
-            Return Me._movieinfoCol
+            Return Me._movieinfocol
         End Get
         Set(ByVal value As Boolean)
-            Me._movieinfoCol = value
+            Me._movieinfocol = value
         End Set
     End Property
 
     Public Property MoviePosterCol() As Boolean
         Get
-            Return Me._movieposterCol
+            Return Me._moviepostercol
         End Get
         Set(ByVal value As Boolean)
-            Me._movieposterCol = value
+            Me._moviepostercol = value
         End Set
     End Property
 
     Public Property MovieSubCol() As Boolean
         Get
-            Return Me._moviesubCol
+            Return Me._moviesubcol
         End Get
         Set(ByVal value As Boolean)
-            Me._moviesubCol = value
+            Me._moviesubcol = value
         End Set
     End Property
 
-    Public Property MovieTheme() As String
+    Public Property GeneralMovieTheme() As String
         Get
-            Return Me._movietheme
+            Return Me._generalmovietheme
         End Get
         Set(ByVal value As String)
-            Me._movietheme = value
+            Me._generalmovietheme = value
         End Set
     End Property
 
-    Public Property DAEMON_Programpath() As String
+    Public Property GeneralDaemonPath() As String
         Get
-            Return Me._daemon_programpath
+            Return Me._generaldaemonpath
         End Get
         Set(ByVal value As String)
-            Me._daemon_programpath = value
+            Me._generaldaemonpath = value
         End Set
     End Property
 
-    Public Property DAEMON_driveletter() As String
+    Public Property GeneralDaemonDrive() As String
         Get
-            Return Me._daemon_driveletter
+            Return Me._generaldaemondrive
         End Get
         Set(ByVal value As String)
-            Me._daemon_driveletter = value
+            Me._generaldaemondrive = value
         End Set
     End Property
 
     Public Property MovieTrailerCol() As Boolean
         Get
-            Return Me._movietrailerCol
+            Return Me._movietrailercol
         End Get
         Set(ByVal value As Boolean)
-            Me._movietrailerCol = value
+            Me._movietrailercol = value
         End Set
     End Property
 
     Public Property MovieWatchedCol() As Boolean
         Get
-            Return Me._moviewatchedCol
+            Return Me._moviewatchedcol
         End Get
         Set(ByVal value As Boolean)
-            Me._moviewatchedCol = value
+            Me._moviewatchedcol = value
         End Set
     End Property
 
-    Public Property NoDisplayFanart() As Boolean
+    Public Property GeneralHideFanart() As Boolean
         Get
-            Return Me._nodisplayfanart
+            Return Me._generalhidefanart
         End Get
         Set(ByVal value As Boolean)
-            Me._nodisplayfanart = value
+            Me._generalhidefanart = value
         End Set
     End Property
 
-    Public Property NoDisplayPoster() As Boolean
+    Public Property GeneralHidePoster() As Boolean
         Get
-            Return Me._nodisplayposter
+            Return Me._generalhideposter
         End Get
         Set(ByVal value As Boolean)
-            Me._nodisplayposter = value
+            Me._generalhideposter = value
         End Set
     End Property
 
-    Public Property NoDisplayFanartSmall() As Boolean
+    Public Property GeneralHideFanartSmall() As Boolean
         Get
-            Return Me._nodisplayfanartsmall
+            Return Me._generalhidefanartsmall
         End Get
         Set(ByVal value As Boolean)
-            Me._nodisplayfanartsmall = value
+            Me._generalhidefanartsmall = value
         End Set
     End Property
 
-    Public Property NoEpFilters() As Boolean
+    Public Property TVEpisodeFilterCustomIsEmpty() As Boolean
         Get
-            Return Me._noepfilters
+            Return Me._tvepisodefiltercustomisempty
         End Get
         Set(ByVal value As Boolean)
-            Me._noepfilters = value
+            Me._tvepisodefiltercustomisempty = value
         End Set
     End Property
 
-    Public Property NoFilterEpisode() As Boolean
+    Public Property TVEpisodeNoFilter() As Boolean
         Get
-            Return Me._nofilterepisode
+            Return Me._tvepisodenofilter
         End Get
         Set(ByVal value As Boolean)
-            Me._nofilterepisode = value
+            Me._tvepisodenofilter = value
         End Set
     End Property
 
-    Public Property NoFilters() As Boolean
+    Public Property MovieFilterCustomIsEmpty() As Boolean
         Get
-            Return Me._nofilters
+            Return Me._moviefiltercustomisempty
         End Get
         Set(ByVal value As Boolean)
-            Me._nofilters = value
+            Me._moviefiltercustomisempty = value
         End Set
     End Property
 
-    Public Property NoSaveImagesToNfo() As Boolean
+    Public Property MovieNoSaveImagesToNfo() As Boolean
         Get
-            Return Me._nosaveimagestonfo
+            Return Me._movienosaveimagestonfo
         End Get
         Set(ByVal value As Boolean)
-            Me._nosaveimagestonfo = value
+            Me._movienosaveimagestonfo = value
         End Set
     End Property
 
-    Public Property NoShowFilters() As Boolean
+    Public Property TVShowFilterCustomIsEmpty() As Boolean
         Get
-            Return Me._noshowfilters
+            Return Me._tvshowfiltercustomisempty
         End Get
         Set(ByVal value As Boolean)
-            Me._noshowfilters = value
+            Me._tvshowfiltercustomisempty = value
         End Set
     End Property
 
-    Public Property NoStackExts() As List(Of String)
+    Public Property FileSystemNoStackExts() As List(Of String)
         Get
-            Return Me._nostackexts
+            Return Me._filesystemnostackexts
         End Get
         Set(ByVal value As List(Of String))
-            Me._nostackexts = value
+            Me._filesystemnostackexts = value
         End Set
     End Property
 
-    Public Property NoTokens() As Boolean
+    Public Property MovieSortTokensIsEmpty() As Boolean
         Get
-            Return Me._notokens
+            Return Me._moviesorttokensisempty
         End Get
         Set(ByVal value As Boolean)
-            Me._notokens = value
+            Me._moviesorttokensisempty = value
         End Set
     End Property
-
-    'Public Property OMMDummyBGColor() As Color
-    '    Get
-    '        Return Me._ommdummybgcolor
-    '    End Get
-    '    Set(ByVal value As Color)
-    '        Me._ommdummybgcolor = value
-    '    End Set
-    'End Property
-
-    'Public Property OMMDummyFont() As Font
-    '    Get
-    '        Return Me._ommdummyfont
-    '    End Get
-    '    Set(ByVal value As Font)
-    '        Me._ommdummyfont = value
-    '    End Set
-    'End Property
-
-    'Public Property OMMDummyFontColor() As Color
-    '    Get
-    '        Return Me._ommdummyfontcolor
-    '    End Get
-    '    Set(ByVal value As Color)
-    '        Me._ommdummyfontcolor = value
-    '    End Set
-    'End Property
 
     Public Property OMMDummyFormat() As Integer
         Get
@@ -1980,15 +1936,6 @@ Public Class Settings
             Me._ommdummytop = value
         End Set
     End Property
-
-    'Public Property OMMDummyTextColor() As Color
-    '    Get
-    '        Return Me._ommdummytextcolor
-    '    End Get
-    '    Set(ByVal value As Color)
-    '        Me._ommdummytextcolor = value
-    '    End Set
-    'End Property
 
     Public Property OMMDummyUseBackground() As Boolean
         Get
@@ -2026,416 +1973,551 @@ Public Class Settings
         End Set
     End Property
 
-    'Public Property OnlyGetTVImagesForSelectedLanguage() As Boolean
-    '    Get
-    '        Return Me._onlytvimagesforselectedlangauge
-    '    End Get
-    '    Set(ByVal value As Boolean)
-    '        Me._onlytvimagesforselectedlangauge = value
-    '    End Set
-    'End Property
-
-    Public Property OnlyValueForCert() As Boolean
+    Public Property MovieScraperOnlyValueForMPAA() As Boolean
         Get
-            Return Me._onlyvalueforcert
+            Return Me._moviescraperonlyvalueformpaa
         End Get
         Set(ByVal value As Boolean)
-            Me._onlyvalueforcert = value
+            Me._moviescraperonlyvalueformpaa = value
         End Set
     End Property
 
-    Public Property OutlineForPlot() As Boolean
+    Public Property MovieScraperOutlineForPlot() As Boolean
         Get
-            Return Me._outlineforplot
+            Return Me._moviescraperoutlineforplot
         End Get
         Set(ByVal value As Boolean)
-            Me._outlineforplot = value
+            Me._moviescraperoutlineforplot = value
         End Set
     End Property
 
-    Public Property OutlinePlotEnglishOverwrite() As Boolean
+    Public Property MovieScraperOutlinePlotEnglishOverwrite() As Boolean
         Get
-            Return Me._outlineplotenglishoverwrite
+            Return Me._moviescraperoutlineplotenglishoverwrite
         End Get
         Set(ByVal value As Boolean)
-            Me._outlineplotenglishoverwrite = value
+            Me._moviescraperoutlineplotenglishoverwrite = value
         End Set
     End Property
 
-    Public Property OverwriteAllSBanner() As Boolean
+    Public Property TVASBannerOverwrite() As Boolean
         Get
-            Return Me._overwriteallsbanner
+            Return Me._tvasbanneroverwrite
         End Get
         Set(ByVal value As Boolean)
-            Me._overwriteallsbanner = value
+            Me._tvasbanneroverwrite = value
         End Set
     End Property
 
-    Public Property OverwriteAllSFanart() As Boolean
+    Public Property TVASFanartOverwrite() As Boolean
         Get
-            Return Me._overwriteallsfanart
+            Return Me._tvasfanartoverwrite
         End Get
         Set(ByVal value As Boolean)
-            Me._overwriteallsfanart = value
+            Me._tvasfanartoverwrite = value
         End Set
     End Property
 
-    Public Property OverwriteAllSPoster() As Boolean
+    Public Property TVASLandscapeOverwrite() As Boolean
         Get
-            Return Me._overwriteallsposter
+            Return Me._tvaslandscapeoverwrite
         End Get
         Set(ByVal value As Boolean)
-            Me._overwriteallsposter = value
+            Me._tvaslandscapeoverwrite = value
         End Set
     End Property
 
-    Public Property OverwriteEpFanart() As Boolean
+    Public Property TVASPosterOverwrite() As Boolean
         Get
-            Return Me._overwriteEpFanart
+            Return Me._tvasposteroverwrite
         End Get
         Set(ByVal value As Boolean)
-            Me._overwriteEpFanart = value
+            Me._tvasposteroverwrite = value
         End Set
     End Property
 
-    Public Property OverwriteEpPoster() As Boolean
+    Public Property TVEpisodeFanartOverwrite() As Boolean
         Get
-            Return Me._overwriteEpPoster
+            Return Me._tvepisodefanartoverwrite
         End Get
         Set(ByVal value As Boolean)
-            Me._overwriteEpPoster = value
+            Me._tvepisodefanartoverwrite = value
         End Set
     End Property
 
-    Public Property OverwriteEFanarts() As Boolean
+    Public Property TVEpisodePosterOverwrite() As Boolean
         Get
-            Return Me._overwriteEFanarts
+            Return Me._tvepisodeposteroverwrite
         End Get
         Set(ByVal value As Boolean)
-            Me._overwriteEFanarts = value
+            Me._tvepisodeposteroverwrite = value
         End Set
     End Property
 
-    Public Property OverwriteEThumbs() As Boolean
+    Public Property MovieEFanartsOverwrite() As Boolean
         Get
-            Return Me._overwriteEThumbs
+            Return Me._movieefanartsoverwrite
         End Get
         Set(ByVal value As Boolean)
-            Me._overwriteEThumbs = value
+            Me._movieefanartsoverwrite = value
         End Set
     End Property
 
-    Public Property OverwriteFanart() As Boolean
+    Public Property MovieEThumbsOverwrite() As Boolean
         Get
-            Return Me._overwriteFanart
+            Return Me._movieethumbsoverwrite
         End Get
         Set(ByVal value As Boolean)
-            Me._overwriteFanart = value
+            Me._movieethumbsoverwrite = value
         End Set
     End Property
 
-    Public Property OverwriteNfo() As Boolean
+    Public Property MovieFanartOverwrite() As Boolean
         Get
-            Return Me._overwritenfo
+            Return Me._moviefanartoverwrite
         End Get
         Set(ByVal value As Boolean)
-            Me._overwritenfo = value
+            Me._moviefanartoverwrite = value
         End Set
     End Property
 
-    Public Property OverwritePoster() As Boolean
+    Public Property GeneralOverwriteNfo() As Boolean
         Get
-            Return Me._overwritePoster
+            Return Me._generaloverwritenfo
         End Get
         Set(ByVal value As Boolean)
-            Me._overwritePoster = value
+            Me._generaloverwritenfo = value
         End Set
     End Property
 
-    Public Property OverwriteSeasonBanner() As Boolean
+    Public Property MoviePosterOverwrite() As Boolean
         Get
-            Return Me._overwriteseasonbanner
+            Return Me._movieposteroverwrite
         End Get
         Set(ByVal value As Boolean)
-            Me._overwriteseasonbanner = value
+            Me._movieposteroverwrite = value
         End Set
     End Property
 
-    Public Property OverwriteSeasonFanart() As Boolean
+    Public Property TVSeasonBannerOverwrite() As Boolean
         Get
-            Return Me._overwriteseasonfanart
+            Return Me._tvseasonbanneroverwrite
         End Get
         Set(ByVal value As Boolean)
-            Me._overwriteseasonfanart = value
+            Me._tvseasonbanneroverwrite = value
         End Set
     End Property
 
-    Public Property OverwriteSeasonPoster() As Boolean
+    Public Property TVShowCharacterArtOverwrite() As Boolean
         Get
-            Return Me._overwriteSeasonPoster
+            Return Me._tvshowcharacterartoverwrite
         End Get
         Set(ByVal value As Boolean)
-            Me._overwriteSeasonPoster = value
+            Me._tvshowcharacterartoverwrite = value
         End Set
     End Property
 
-    Public Property OverwriteShowBanner() As Boolean
+    Public Property TVShowClearArtOverwrite() As Boolean
         Get
-            Return Me._overwriteShowPoster
+            Return Me._tvshowclearartoverwrite
         End Get
         Set(ByVal value As Boolean)
-            Me._overwriteShowPoster = value
+            Me._tvshowclearartoverwrite = value
         End Set
     End Property
 
-    Public Property OverwriteShowFanart() As Boolean
+    Public Property TVShowClearLogoOverwrite() As Boolean
         Get
-            Return Me._overwriteShowFanart
+            Return Me._tvshowclearlogooverwrite
         End Get
         Set(ByVal value As Boolean)
-            Me._overwriteShowFanart = value
+            Me._tvshowclearlogooverwrite = value
         End Set
     End Property
 
-    Public Property OverwriteShowPoster() As Boolean
+    Public Property TVSeasonLandscapeOverwrite() As Boolean
         Get
-            Return Me._overwriteShowPoster
+            Return Me._tvseasonlandscapeoverwrite
         End Get
         Set(ByVal value As Boolean)
-            Me._overwriteShowPoster = value
+            Me._tvseasonlandscapeoverwrite = value
         End Set
     End Property
 
-    Public Property OverwriteTrailer() As Boolean
+    Public Property TVShowLandscapeOverwrite() As Boolean
         Get
-            Return Me._overwritetrailer
+            Return Me._tvshowlandscapeoverwrite
         End Get
         Set(ByVal value As Boolean)
-            Me._overwritetrailer = value
-        End Set
-    End Property
-    Public Property PlotForOutline() As Boolean
-        Get
-            Return Me._plotforoutline
-        End Get
-        Set(ByVal value As Boolean)
-            Me._plotforoutline = value
+            Me._tvshowlandscapeoverwrite = value
         End Set
     End Property
 
-    Public Property OutlineLimit() As Integer
+    Public Property TVSeasonFanartOverwrite() As Boolean
         Get
-            Return Me._outlinelimit
+            Return Me._tvseasonfanartoverwrite
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvseasonfanartoverwrite = value
+        End Set
+    End Property
+
+    Public Property TVSeasonPosterOverwrite() As Boolean
+        Get
+            Return Me._tvseasonposteroverwrite
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvseasonposteroverwrite = value
+        End Set
+    End Property
+
+    Public Property TVShowBannerOverwrite() As Boolean
+        Get
+            Return Me._tvshowbanneroverwrite
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowbanneroverwrite = value
+        End Set
+    End Property
+
+    Public Property TVShowFanartOverwrite() As Boolean
+        Get
+            Return Me._tvshowfanartoverwrite
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowfanartoverwrite = value
+        End Set
+    End Property
+
+    Public Property TVShowPosterOverwrite() As Boolean
+        Get
+            Return Me._tvshowposteroverwrite
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowposteroverwrite = value
+        End Set
+    End Property
+
+    Public Property MovieBannerOverwrite() As Boolean
+        Get
+            Return Me._moviebanneroverwrite
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviebanneroverwrite = value
+        End Set
+    End Property
+
+    Public Property MovieDiscArtOverwrite() As Boolean
+        Get
+            Return Me._moviediscartoverwrite
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviediscartoverwrite = value
+        End Set
+    End Property
+
+    Public Property MovieLandscapeOverwrite() As Boolean
+        Get
+            Return Me._movielandscapeoverwrite
+        End Get
+        Set(ByVal value As Boolean)
+            Me._movielandscapeoverwrite = value
+        End Set
+    End Property
+
+    Public Property MovieClearArtOverwrite() As Boolean
+        Get
+            Return Me._movieclearartoverwrite
+        End Get
+        Set(ByVal value As Boolean)
+            Me._movieclearartoverwrite = value
+        End Set
+    End Property
+
+    Public Property MovieClearLogoOverwrite() As Boolean
+        Get
+            Return Me._movieclearlogooverwrite
+        End Get
+        Set(ByVal value As Boolean)
+            Me._movieclearlogooverwrite = value
+        End Set
+    End Property
+
+    Public Property MovieBannerPrefOnly() As Boolean
+        Get
+            Return Me._moviebannerprefonly
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviebannerprefonly = value
+        End Set
+    End Property
+
+    Public Property MovieBannerResize() As Boolean
+        Get
+            Return Me._moviebannerresize
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviebannerresize = value
+        End Set
+    End Property
+
+    Public Property MovieTrailerOverwrite() As Boolean
+        Get
+            Return Me._movietraileroverwrite
+        End Get
+        Set(ByVal value As Boolean)
+            Me._movietraileroverwrite = value
+        End Set
+    End Property
+    Public Property MovieScraperPlotForOutline() As Boolean
+        Get
+            Return Me._moviescraperplotforoutline
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviescraperplotforoutline = value
+        End Set
+    End Property
+
+    Public Property MovieScraperOutlineLimit() As Integer
+        Get
+            Return Me._moviescraperoutlinelimit
         End Get
         Set(ByVal value As Integer)
-            Me._outlinelimit = value
+            Me._moviescraperoutlinelimit = value
         End Set
     End Property
 
-    Public Property ImagesGlassOverlay() As Boolean
+    Public Property GeneralImagesGlassOverlay() As Boolean
         Get
-            Return Me._imagesglassoverlay
+            Return Me._generalimagesglassoverlay
         End Get
         Set(ByVal value As Boolean)
-            Me._imagesglassoverlay = value
+            Me._generalimagesglassoverlay = value
         End Set
     End Property
 
-    Public Property PosterHeight() As Integer
+    Public Property MoviePosterHeight() As Integer
         Get
-            Return Me._posterheight
+            Return Me._movieposterheight
         End Get
         Set(ByVal value As Integer)
-            Me._posterheight = value
+            Me._movieposterheight = value
         End Set
     End Property
 
-    Public Property PosterPrefSizeOnly() As Boolean
+    Public Property MoviePosterPrefOnly() As Boolean
         Get
-            Return Me._PosterPrefSizeOnly
+            Return Me._movieposterprefonly
         End Get
         Set(ByVal value As Boolean)
-            Me._PosterPrefSizeOnly = value
+            Me._movieposterprefonly = value
         End Set
     End Property
 
-    Public Property EThumbsQuality() As Integer
+    Public Property MovieBannerQual() As Integer
         Get
-            Return Me._ethumbsQuality
+            Return Me._moviebannerqual
         End Get
         Set(ByVal value As Integer)
-            Me._ethumbsQuality = value
+            Me._moviebannerqual = value
         End Set
     End Property
 
-    Public Property EFanartsQuality() As Integer
+    Public Property MovieEThumbsQual() As Integer
         Get
-            Return Me._efanartsQuality
+            Return Me._movieethumbsqual
         End Get
         Set(ByVal value As Integer)
-            Me._efanartsQuality = value
+            Me._movieethumbsqual = value
         End Set
     End Property
 
-    Public Property PosterQuality() As Integer
+    Public Property MovieEFanartsQual() As Integer
         Get
-            Return Me._posterQuality
+            Return Me._movieefanartsqual
         End Get
         Set(ByVal value As Integer)
-            Me._posterQuality = value
+            Me._movieefanartsqual = value
         End Set
     End Property
 
-    Public Property PosterWidth() As Integer
+    Public Property MoviePosterQual() As Integer
         Get
-            Return Me._posterwidth
+            Return Me._movieposterqual
         End Get
         Set(ByVal value As Integer)
-            Me._posterwidth = value
+            Me._movieposterqual = value
         End Set
     End Property
 
-    Public Property PreferredAllSBannerType() As Enums.ShowBannerType
+    Public Property MoviePosterWidth() As Integer
         Get
-            Return Me._allsbannertype
+            Return Me._movieposterwidth
         End Get
-        Set(ByVal value As Enums.ShowBannerType)
-            Me._allsbannertype = value
+        Set(ByVal value As Integer)
+            Me._movieposterwidth = value
         End Set
     End Property
 
-    Public Property PreferredAllSBannerSize() As Enums.PosterSize
+    Public Property TVASPosterPrefSize() As Enums.TVPosterSize
         Get
-            Return Me._allsbannersize
+            Return Me._tvasposterprefsize
+        End Get
+        Set(ByVal value As Enums.TVPosterSize)
+            Me._tvasposterprefsize = value
+        End Set
+    End Property
+
+    Public Property TVEpisodeFanartPrefSize() As Enums.TVFanartSize
+        Get
+            Return Me._tvepisodefanartprefsize
+        End Get
+        Set(ByVal value As Enums.TVFanartSize)
+            Me._tvepisodefanartprefsize = value
+        End Set
+    End Property
+
+    Public Property MovieFanartPrefSize() As Enums.FanartSize
+        Get
+            Return Me._moviefanartprefsize
+        End Get
+        Set(ByVal value As Enums.FanartSize)
+            Me._moviefanartprefsize = value
+        End Set
+    End Property
+
+    Public Property MovieEFanartsPrefSize() As Enums.FanartSize
+        Get
+            Return Me._movieefanartsprefsize
+        End Get
+        Set(ByVal value As Enums.FanartSize)
+            Me._movieefanartsprefsize = value
+        End Set
+    End Property
+
+    Public Property MovieEThumbsPrefSize() As Enums.FanartSize
+        Get
+            Return Me._movieethumbsprefsize
+        End Get
+        Set(ByVal value As Enums.FanartSize)
+            Me._movieethumbsprefsize = value
+        End Set
+    End Property
+
+    Public Property MoviePosterPrefSize() As Enums.PosterSize
+        Get
+            Return Me._movieposterprefsize
         End Get
         Set(ByVal value As Enums.PosterSize)
-            Me._allsbannersize = value
+            Me._movieposterprefsize = value
         End Set
     End Property
 
-    Public Property PreferredAllSFanartSize() As Enums.FanartSize
+    Public Property TVSeasonFanartPrefSize() As Enums.TVFanartSize
         Get
-            Return Me._allsfanartsize
+            Return Me._tvseasonfanartprefsize
         End Get
-        Set(ByVal value As Enums.FanartSize)
-            Me._allsfanartsize = value
+        Set(ByVal value As Enums.TVFanartSize)
+            Me._tvseasonfanartprefsize = value
         End Set
     End Property
 
-    Public Property PreferredAllSPosterSize() As Enums.PosterSize
+    Public Property TVASFanartPrefSize() As Enums.TVFanartSize
         Get
-            Return Me._allspostersize
+            Return Me._tvasfanartprefsize
         End Get
-        Set(ByVal value As Enums.PosterSize)
-            Me._allspostersize = value
+        Set(ByVal value As Enums.TVFanartSize)
+            Me._tvasfanartprefsize = value
         End Set
     End Property
 
-    Public Property PreferredEpFanartSize() As Enums.FanartSize
+    Public Property TVSeasonPosterPrefSize() As Enums.TVPosterSize
         Get
-            Return Me._epfanartsize
+            Return Me._tvseasonposterprefsize
         End Get
-        Set(ByVal value As Enums.FanartSize)
-            Me._epfanartsize = value
+        Set(ByVal value As Enums.TVPosterSize)
+            Me._tvseasonposterprefsize = value
         End Set
     End Property
 
-    Public Property PreferredFanartSize() As Enums.FanartSize
+    Public Property TVShowBannerPrefType() As Enums.TVShowBannerType
         Get
-            Return Me._fanartsize
+            Return Me._tvshowbannerpreftype
         End Get
-        Set(ByVal value As Enums.FanartSize)
-            Me._fanartsize = value
+        Set(ByVal value As Enums.TVShowBannerType)
+            Me._tvshowbannerpreftype = value
         End Set
     End Property
 
-    Public Property PreferredEFanartsSize() As Enums.FanartSize
+    Public Property MovieBannerPrefType() As Enums.MovieBannerType
         Get
-            Return Me._efanartssize
+            Return Me._moviebannerpreftype
         End Get
-        Set(ByVal value As Enums.FanartSize)
-            Me._efanartssize = value
+        Set(ByVal value As Enums.MovieBannerType)
+            Me._moviebannerpreftype = value
         End Set
     End Property
 
-    Public Property PreferredEThumbsSize() As Enums.FanartSize
+    Public Property TVASBannerPrefType() As Enums.TVShowBannerType
         Get
-            Return Me._ethumbssize
+            Return Me._tvasbannerpreftype
         End Get
-        Set(ByVal value As Enums.FanartSize)
-            Me._ethumbssize = value
+        Set(ByVal value As Enums.TVShowBannerType)
+            Me._tvasbannerpreftype = value
         End Set
     End Property
 
-    Public Property PreferredPosterSize() As Enums.PosterSize
+    Public Property TVSeasonBannerPrefType() As Enums.TVSeasonBannerType
         Get
-            Return Me._postersize
+            Return Me._tvseasonbannerpreftype
         End Get
-        Set(ByVal value As Enums.PosterSize)
-            Me._postersize = value
+        Set(ByVal value As Enums.TVSeasonBannerType)
+            Me._tvseasonbannerpreftype = value
         End Set
     End Property
 
-    Public Property PreferredSeasonFanartSize() As Enums.FanartSize
+    Public Property TVShowFanartPrefSize() As Enums.TVFanartSize
         Get
-            Return Me._seasonfanartsize
+            Return Me._tvshowfanartprefsize
         End Get
-        Set(ByVal value As Enums.FanartSize)
-            Me._seasonfanartsize = value
+        Set(ByVal value As Enums.TVFanartSize)
+            Me._tvshowfanartprefsize = value
         End Set
     End Property
 
-    Public Property PreferredSeasonPosterSize() As Enums.SeasonPosterType
+    Public Property TVShowPosterPrefSize() As Enums.TVPosterSize
         Get
-            Return Me._seasonpostersize
+            Return Me._tvshowposterprefsize
         End Get
-        Set(ByVal value As Enums.SeasonPosterType)
-            Me._seasonpostersize = value
+        Set(ByVal value As Enums.TVPosterSize)
+            Me._tvshowposterprefsize = value
         End Set
     End Property
 
-    Public Property PreferredShowBannerType() As Enums.ShowBannerType
+    Public Property MovieTrailerMinQual() As Enums.TrailerQuality
         Get
-            Return Me._showbannertype
-        End Get
-        Set(ByVal value As Enums.ShowBannerType)
-            Me._showbannertype = value
-        End Set
-    End Property
-
-    Public Property PreferredShowFanartSize() As Enums.FanartSize
-        Get
-            Return Me._showfanartsize
-        End Get
-        Set(ByVal value As Enums.FanartSize)
-            Me._showfanartsize = value
-        End Set
-    End Property
-
-    Public Property PreferredShowPosterSize() As Enums.PosterSize
-        Get
-            Return Me._showpostersize
-        End Get
-        Set(ByVal value As Enums.PosterSize)
-            Me._showpostersize = value
-        End Set
-    End Property
-
-    Public Property PreferredTrailerQuality() As Enums.TrailerQuality
-        Get
-            Return Me._trailerquality
+            Return Me._movietrailerminqual
         End Get
         Set(ByVal value As Enums.TrailerQuality)
-            Me._trailerquality = value
+            Me._movietrailerminqual = value
         End Set
     End Property
 
-    Public Property ProperCase() As Boolean
+    Public Property MovieTrailerPrefQual() As Enums.TrailerQuality
         Get
-            Return Me._properCase
+            Return Me._movietrailerprefqual
+        End Get
+        Set(ByVal value As Enums.TrailerQuality)
+            Me._movietrailerprefqual = value
+        End Set
+    End Property
+
+    Public Property MovieProperCase() As Boolean
+        Get
+            Return Me._moviepropercase
         End Get
         Set(ByVal value As Boolean)
-            Me._properCase = value
+            Me._moviepropercase = value
         End Set
     End Property
 
@@ -2466,714 +2548,750 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property ResizeAllSBanner() As Boolean
+    Public Property TVASBannerResize() As Boolean
         Get
-            Return Me._resizeallsbanner
+            Return Me._tvasbannerresize
         End Get
         Set(ByVal value As Boolean)
-            Me._resizeallsbanner = value
+            Me._tvasbannerresize = value
         End Set
     End Property
 
-    Public Property ResizeAllSPoster() As Boolean
+    Public Property TVASPosterResize() As Boolean
         Get
-            Return Me._resizeallsposter
+            Return Me._tvasposterresize
         End Get
         Set(ByVal value As Boolean)
-            Me._resizeallsposter = value
+            Me._tvasposterresize = value
         End Set
     End Property
 
-    Public Property ResizeAllSFanart() As Boolean
+    Public Property TVASFanartResize() As Boolean
         Get
-            Return Me._resizeallsfanart
+            Return Me._tvasfanartresize
         End Get
         Set(ByVal value As Boolean)
-            Me._resizeallsfanart = value
+            Me._tvasfanartresize = value
         End Set
     End Property
 
-    Public Property ResizeEpFanart() As Boolean
+    Public Property TVEpisodeFanartResize() As Boolean
         Get
-            Return Me._resizeepfanart
+            Return Me._tvepisodefanartresize
         End Get
         Set(ByVal value As Boolean)
-            Me._resizeepfanart = value
+            Me._tvepisodefanartresize = value
         End Set
     End Property
 
-    Public Property ResizeEpPoster() As Boolean
+    Public Property TVEpisodePosterResize() As Boolean
         Get
-            Return Me._resizeepposter
+            Return Me._tvepisodeposterresize
         End Get
         Set(ByVal value As Boolean)
-            Me._resizeepposter = value
+            Me._tvepisodeposterresize = value
         End Set
     End Property
 
-    Public Property ResizeEFanarts() As Boolean
+    Public Property MovieEFanartsResize() As Boolean
         Get
-            Return Me._resizeefanarts
+            Return Me._movieefanartsresize
         End Get
         Set(ByVal value As Boolean)
-            Me._resizeefanarts = value
+            Me._movieefanartsresize = value
         End Set
     End Property
 
-    Public Property ResizeEThumbs() As Boolean
+    Public Property MovieEThumbsResize() As Boolean
         Get
-            Return Me._resizeethumbs
+            Return Me._movieethumbsresize
         End Get
         Set(ByVal value As Boolean)
-            Me._resizeethumbs = value
+            Me._movieethumbsresize = value
         End Set
     End Property
 
-    Public Property ResizeFanart() As Boolean
+    Public Property MovieFanartResize() As Boolean
         Get
-            Return Me._resizefanart
+            Return Me._moviefanartresize
         End Get
         Set(ByVal value As Boolean)
-            Me._resizefanart = value
+            Me._moviefanartresize = value
         End Set
     End Property
 
-    Public Property ResizePoster() As Boolean
+    Public Property MoviePosterResize() As Boolean
         Get
-            Return Me._resizeposter
+            Return Me._movieposterresize
         End Get
         Set(ByVal value As Boolean)
-            Me._resizeposter = value
+            Me._movieposterresize = value
         End Set
     End Property
 
-    Public Property ResizeSeasonBanner() As Boolean
+    Public Property TVSeasonBannerResize() As Boolean
         Get
-            Return Me._resizeseasonbanner
+            Return Me._tvseasonbannerresize
         End Get
         Set(ByVal value As Boolean)
-            Me._resizeseasonbanner = value
+            Me._tvseasonbannerresize = value
         End Set
     End Property
 
-    Public Property ResizeSeasonFanart() As Boolean
+    Public Property TVSeasonFanartResize() As Boolean
         Get
-            Return Me._resizeseasonfanart
+            Return Me._tvseasonfanartresize
         End Get
         Set(ByVal value As Boolean)
-            Me._resizeseasonfanart = value
+            Me._tvseasonfanartresize = value
         End Set
     End Property
 
-    Public Property ResizeSeasonPoster() As Boolean
+    Public Property TVSeasonPosterResize() As Boolean
         Get
-            Return Me._resizeseasonposter
+            Return Me._tvseasonposterresize
         End Get
         Set(ByVal value As Boolean)
-            Me._resizeseasonposter = value
+            Me._tvseasonposterresize = value
         End Set
     End Property
 
-    Public Property ResizeShowBanner() As Boolean
+    Public Property TVShowBannerResize() As Boolean
         Get
-            Return Me._resizeshowbanner
+            Return Me._tvshowbannerresize
         End Get
         Set(ByVal value As Boolean)
-            Me._resizeshowbanner = value
+            Me._tvshowbannerresize = value
         End Set
     End Property
 
-    Public Property ResizeShowFanart() As Boolean
+    Public Property TVShowFanartResize() As Boolean
         Get
-            Return Me._resizeshowfanart
+            Return Me._tvshowfanartresize
         End Get
         Set(ByVal value As Boolean)
-            Me._resizeshowfanart = value
+            Me._tvshowfanartresize = value
         End Set
     End Property
 
-    Public Property ResizeShowPoster() As Boolean
+    Public Property TVShowPosterResize() As Boolean
         Get
-            Return Me._resizeshowposter
+            Return Me._tvshowposterresize
         End Get
         Set(ByVal value As Boolean)
-            Me._resizeshowposter = value
+            Me._tvshowposterresize = value
         End Set
     End Property
 
-    Public Property RuntimeMask() As String
+    Public Property MovieScraperDurationRuntimeFormat() As String
         Get
-            Return Me._runtimemask
+            Return Me._moviescraperdurationruntimeformat
         End Get
         Set(ByVal value As String)
-            Me._runtimemask = value
+            Me._moviescraperdurationruntimeformat = value
         End Set
     End Property
 
-    Public Property EPRuntimeMask() As String
+    Public Property TVScraperDurationRuntimeFormat() As String
         Get
-            Return Me._epruntimemask
+            Return Me._tvscraperdurationruntimeformat
         End Get
         Set(ByVal value As String)
-            Me._epruntimemask = value
+            Me._tvscraperdurationruntimeformat = value
         End Set
     End Property
 
-    Public Property ScanMediaInfo() As Boolean
+    Public Property MovieScraperMetaDataScan() As Boolean
         Get
-            Return Me._scanmediainfo
+            Return Me._moviescrapermetadatascan
         End Get
         Set(ByVal value As Boolean)
-            Me._scanmediainfo = value
+            Me._moviescrapermetadatascan = value
         End Set
     End Property
 
-    Public Property ScanOrderModify() As Boolean
+    Public Property MovieScanOrderModify() As Boolean
         Get
-            Return Me._scanordermodify
+            Return Me._moviescanordermodify
         End Get
         Set(ByVal value As Boolean)
-            Me._scanordermodify = value
+            Me._moviescanordermodify = value
         End Set
     End Property
 
-    Public Property ScanTVMediaInfo() As Boolean
+    Public Property TVScraperMetaDataScan() As Boolean
         Get
-            Return Me._scantvmediainfo
+            Return Me._tvscrapermetadatascan
         End Get
         Set(ByVal value As Boolean)
-            Me._scantvmediainfo = value
+            Me._tvscrapermetadatascan = value
         End Set
     End Property
 
-    Public Property ScraperActorThumbs() As Boolean
+    Public Property MovieScraperActorThumbs() As Boolean
         Get
-            Return Me._scraperactorthumbs
+            Return Me._moviescraperactorthumbs
         End Get
         Set(ByVal value As Boolean)
-            Me._scraperactorthumbs = value
+            Me._moviescraperactorthumbs = value
         End Set
     End Property
 
-    Public Property ScraperEpActors() As Boolean
+    Public Property TVScraperEpisodeActors() As Boolean
         Get
-            Return Me._scraperepactors
+            Return Me._tvscraperepisodeactors
         End Get
         Set(ByVal value As Boolean)
-            Me._scraperepactors = value
+            Me._tvscraperepisodeactors = value
         End Set
     End Property
 
-    Public Property ScraperEpAired() As Boolean
+    Public Property TVScraperEpisodeAired() As Boolean
         Get
-            Return Me._scraperepaired
+            Return Me._tvscraperepisodeaired
         End Get
         Set(ByVal value As Boolean)
-            Me._scraperepaired = value
+            Me._tvscraperepisodeaired = value
         End Set
     End Property
 
-    Public Property ScraperEpCredits() As Boolean
+    Public Property TVScraperEpisodeCredits() As Boolean
         Get
-            Return Me._scraperepcredits
+            Return Me._tvscraperepisodecredits
         End Get
         Set(ByVal value As Boolean)
-            Me._scraperepcredits = value
+            Me._tvscraperepisodecredits = value
         End Set
     End Property
 
-    Public Property ScraperEpDirector() As Boolean
+    Public Property TVScraperEpisodeDirector() As Boolean
         Get
-            Return Me._scraperepdirector
+            Return Me._tvscraperepisodedirector
         End Get
         Set(ByVal value As Boolean)
-            Me._scraperepdirector = value
+            Me._tvscraperepisodedirector = value
         End Set
     End Property
 
-    Public Property ScraperEpEpisode() As Boolean
+    Public Property TVScraperEpisodeEpisode() As Boolean
         Get
-            Return Me._scraperepepisode
+            Return Me._tvscraperepisodeepisode
         End Get
         Set(ByVal value As Boolean)
-            Me._scraperepepisode = value
+            Me._tvscraperepisodeepisode = value
         End Set
     End Property
 
-    Public Property ScraperEpPlot() As Boolean
+    Public Property TVScraperEpisodePlot() As Boolean
         Get
-            Return Me._scraperepplot
+            Return Me._tvscraperepisodeplot
         End Get
         Set(ByVal value As Boolean)
-            Me._scraperepplot = value
+            Me._tvscraperepisodeplot = value
         End Set
     End Property
 
-    Public Property ScraperEpRating() As Boolean
+    Public Property TVScraperEpisodeRating() As Boolean
         Get
-            Return Me._scrapereprating
+            Return Me._tvscraperepisoderating
         End Get
         Set(ByVal value As Boolean)
-            Me._scrapereprating = value
+            Me._tvscraperepisoderating = value
         End Set
     End Property
 
-    Public Property ScraperEpSeason() As Boolean
+    Public Property TVScraperEpisodeSeason() As Boolean
         Get
-            Return Me._scraperepseason
+            Return Me._tvscraperepisodeseason
         End Get
         Set(ByVal value As Boolean)
-            Me._scraperepseason = value
+            Me._tvscraperepisodeseason = value
         End Set
     End Property
 
-    Public Property ScraperEpTitle() As Boolean
+    Public Property TVScraperEpisodeTitle() As Boolean
         Get
-            Return Me._scrapereptitle
+            Return Me._tvscraperepisodetitle
         End Get
         Set(ByVal value As Boolean)
-            Me._scrapereptitle = value
+            Me._tvscraperepisodetitle = value
         End Set
     End Property
 
-    Public Property ScraperShowActors() As Boolean
+    Public Property TVScraperShowActors() As Boolean
         Get
-            Return Me._scrapershowactors
+            Return Me._tvscrapershowactors
         End Get
         Set(ByVal value As Boolean)
-            Me._scrapershowactors = value
+            Me._tvscrapershowactors = value
         End Set
     End Property
 
-    Public Property ScraperShowEGU() As Boolean
+    Public Property TVScraperShowEpiGuideURL() As Boolean
         Get
-            Return Me._scrapershowegu
+            Return Me._tvscrapershowepiguideurl
         End Get
         Set(ByVal value As Boolean)
-            Me._scrapershowegu = value
+            Me._tvscrapershowepiguideurl = value
         End Set
     End Property
 
-    Public Property ScraperShowGenre() As Boolean
+    Public Property TVScraperShowGenre() As Boolean
         Get
-            Return Me._scrapershowgenre
+            Return Me._tvscrapershowgenre
         End Get
         Set(ByVal value As Boolean)
-            Me._scrapershowgenre = value
+            Me._tvscrapershowgenre = value
         End Set
     End Property
 
-    Public Property ScraperShowMPAA() As Boolean
+    Public Property TVScraperShowMPAA() As Boolean
         Get
-            Return Me._scrapershowmpaa
+            Return Me._tvscrapershowmpaa
         End Get
         Set(ByVal value As Boolean)
-            Me._scrapershowmpaa = value
+            Me._tvscrapershowmpaa = value
         End Set
     End Property
 
-    Public Property ScraperShowPlot() As Boolean
+    Public Property TVScraperShowPlot() As Boolean
         Get
-            Return Me._scrapershowplot
+            Return Me._tvscrapershowplot
         End Get
         Set(ByVal value As Boolean)
-            Me._scrapershowplot = value
+            Me._tvscrapershowplot = value
         End Set
     End Property
 
-    Public Property ScraperShowPremiered() As Boolean
+    Public Property TVScraperShowPremiered() As Boolean
         Get
-            Return Me._scrapershowpremiered
+            Return Me._tvscrapershowpremiered
         End Get
         Set(ByVal value As Boolean)
-            Me._scrapershowpremiered = value
+            Me._tvscrapershowpremiered = value
         End Set
     End Property
 
-    Public Property ScraperShowRating() As Boolean
+    Public Property TVScraperShowRating() As Boolean
         Get
-            Return Me._scrapershowrating
+            Return Me._tvscrapershowrating
         End Get
         Set(ByVal value As Boolean)
-            Me._scrapershowrating = value
+            Me._tvscrapershowrating = value
         End Set
     End Property
 
-    Public Property ScraperShowStudio() As Boolean
+    Public Property TVScraperShowStatus() As Boolean
         Get
-            Return Me._scrapershowstudio
+            Return Me._tvscrapershowstatus
         End Get
         Set(ByVal value As Boolean)
-            Me._scrapershowstudio = value
+            Me._tvscrapershowstatus = value
         End Set
     End Property
 
-    Public Property ScraperShowTitle() As Boolean
+    Public Property TVScraperShowStudio() As Boolean
         Get
-            Return Me._scrapershowtitle
+            Return Me._tvscrapershowstudio
         End Get
         Set(ByVal value As Boolean)
-            Me._scrapershowtitle = value
+            Me._tvscrapershowstudio = value
         End Set
     End Property
 
-    Public Property SeasonBannerHeight() As Integer
+    Public Property TVScraperShowTitle() As Boolean
         Get
-            Return Me._seasonbannerheight
+            Return Me._tvscrapershowtitle
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvscrapershowtitle = value
+        End Set
+    End Property
+
+    Public Property TVSeasonFanartCol() As Boolean
+        Get
+            Return Me._tvseasonfanartcol
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvseasonfanartcol = value
+        End Set
+    End Property
+
+    Public Property TVSeasonFanartHeight() As Integer
+        Get
+            Return Me._tvseasonfanartheight
         End Get
         Set(ByVal value As Integer)
-            Me._seasonbannerheight = value
+            Me._tvseasonfanartheight = value
         End Set
     End Property
 
-    Public Property SeasonBannerQuality() As Integer
+    Public Property TVSeasonFanartQual() As Integer
         Get
-            Return Me._seasonbannerQuality
+            Return Me._tvseasonfanartqual
         End Get
         Set(ByVal value As Integer)
-            Me._seasonbannerQuality = value
+            Me._tvseasonfanartqual = value
         End Set
     End Property
 
-    Public Property SeasonBannerWidth() As Integer
+    Public Property TVSeasonFanartWidth() As Integer
         Get
-            Return Me._seasonbannerwidth
+            Return Me._tvseasonfanartwidth
         End Get
         Set(ByVal value As Integer)
-            Me._seasonbannerwidth = value
+            Me._tvseasonfanartwidth = value
         End Set
     End Property
 
-    Public Property SeasonFanartCol() As Boolean
+    Public Property TVASBannerWidth() As Integer
         Get
-            Return Me._seasonfanartcol
+            Return Me._tvasbannerwidth
+        End Get
+        Set(ByVal value As Integer)
+            Me._tvasbannerwidth = value
+        End Set
+    End Property
+
+    Public Property TVSeasonBannerWidth() As Integer
+        Get
+            Return Me._tvseasonbannerwidth
+        End Get
+        Set(ByVal value As Integer)
+            Me._tvseasonbannerwidth = value
+        End Set
+    End Property
+
+    Public Property TVASFanartWidth() As Integer
+        Get
+            Return Me._tvasfanartwidth
+        End Get
+        Set(ByVal value As Integer)
+            Me._tvasfanartwidth = value
+        End Set
+    End Property
+
+    Public Property TVShowBannerWidth() As Integer
+        Get
+            Return Me._tvshowbannerwidth
+        End Get
+        Set(ByVal value As Integer)
+            Me._tvshowbannerwidth = value
+        End Set
+    End Property
+
+    Public Property MovieBannerWidth() As Integer
+        Get
+            Return Me._moviebannerwidth
+        End Get
+        Set(ByVal value As Integer)
+            Me._moviebannerwidth = value
+        End Set
+    End Property
+
+    Public Property TVASBannerHeight() As Integer
+        Get
+            Return Me._tvasbannerheight
+        End Get
+        Set(ByVal value As Integer)
+            Me._tvasbannerheight = value
+        End Set
+    End Property
+
+    Public Property TVSeasonBannerHeight() As Integer
+        Get
+            Return Me._tvseasonbannerheight
+        End Get
+        Set(ByVal value As Integer)
+            Me._tvseasonbannerheight = value
+        End Set
+    End Property
+
+    Public Property TVASFanartHeight() As Integer
+        Get
+            Return Me._tvasfanartheight
+        End Get
+        Set(ByVal value As Integer)
+            Me._tvasfanartheight = value
+        End Set
+    End Property
+
+    Public Property TVShowBannerHeight() As Integer
+        Get
+            Return Me._tvshowbannerheight
+        End Get
+        Set(ByVal value As Integer)
+            Me._tvshowbannerheight = value
+        End Set
+    End Property
+
+    Public Property MovieBannerHeight() As Integer
+        Get
+            Return Me._moviebannerheight
+        End Get
+        Set(ByVal value As Integer)
+            Me._moviebannerheight = value
+        End Set
+    End Property
+
+    Public Property TVSeasonPosterCol() As Boolean
+        Get
+            Return Me._tvseasonpostercol
         End Get
         Set(ByVal value As Boolean)
-            Me._seasonfanartcol = value
+            Me._tvseasonpostercol = value
         End Set
     End Property
 
-    Public Property SeasonFanartHeight() As Integer
+    Public Property TVSeasonPosterHeight() As Integer
         Get
-            Return Me._seasonfanartheight
+            Return Me._tvseasonposterheight
         End Get
         Set(ByVal value As Integer)
-            Me._seasonfanartheight = value
+            Me._tvseasonposterheight = value
         End Set
     End Property
 
-    Public Property SeasonFanartQuality() As Integer
+    Public Property TVSeasonPosterQual() As Integer
         Get
-            Return Me._seasonfanartQuality
+            Return Me._tvseasonposterqual
         End Get
         Set(ByVal value As Integer)
-            Me._seasonfanartQuality = value
+            Me._tvseasonposterqual = value
         End Set
     End Property
 
-    Public Property SeasonFanartWidth() As Integer
+    Public Property TVSeasonPosterWidth() As Integer
         Get
-            Return Me._seasonfanartwidth
+            Return Me._tvseasonposterwidth
         End Get
         Set(ByVal value As Integer)
-            Me._seasonfanartwidth = value
+            Me._tvseasonposterwidth = value
         End Set
     End Property
 
-    Public Property SeasonPosterCol() As Boolean
+    Public Property MovieSets() As List(Of String)
         Get
-            Return Me._seasonpostercol
-        End Get
-        Set(ByVal value As Boolean)
-            Me._seasonpostercol = value
-        End Set
-    End Property
-
-    Public Property SeasonPosterHeight() As Integer
-        Get
-            Return Me._seasonposterheight
-        End Get
-        Set(ByVal value As Integer)
-            Me._seasonposterheight = value
-        End Set
-    End Property
-
-    Public Property SeasonPosterQuality() As Integer
-        Get
-            Return Me._seasonposterQuality
-        End Get
-        Set(ByVal value As Integer)
-            Me._seasonposterQuality = value
-        End Set
-    End Property
-
-    Public Property SeasonPosterWidth() As Integer
-        Get
-            Return Me._seasonposterwidth
-        End Get
-        Set(ByVal value As Integer)
-            Me._seasonposterwidth = value
-        End Set
-    End Property
-
-    Public Property Sets() As List(Of String)
-        Get
-            Return Me._sets
+            Return Me._moviesets
         End Get
         Set(ByVal value As List(Of String))
-            Me._sets = value
+            Me._moviesets = value
         End Set
     End Property
 
-    Public Property ShowDims() As Boolean
+    Public Property GeneralShowImgDims() As Boolean
         Get
-            Return Me._showdims
+            Return Me._generalshowimgdims
         End Get
         Set(ByVal value As Boolean)
-            Me._showdims = value
+            Me._generalshowimgdims = value
         End Set
     End Property
 
-    Public Property ShowFanartCol() As Boolean
+    Public Property TVShowFanartCol() As Boolean
         Get
-            Return Me._showfanartcol
+            Return Me._tvshowfanartcol
         End Get
         Set(ByVal value As Boolean)
-            Me._showfanartcol = value
+            Me._tvshowfanartcol = value
         End Set
     End Property
 
-    Public Property ShowFanartHeight() As Integer
+    Public Property TVShowFanartHeight() As Integer
         Get
-            Return Me._showfanartheight
+            Return Me._tvshowfanartheight
         End Get
         Set(ByVal value As Integer)
-            Me._showfanartheight = value
+            Me._tvshowfanartheight = value
         End Set
     End Property
 
-    Public Property ShowFanartQuality() As Integer
+    Public Property TVShowFanartQual() As Integer
         Get
-            Return Me._showfanartQuality
+            Return Me._tvshowfanartqual
         End Get
         Set(ByVal value As Integer)
-            Me._showfanartQuality = value
+            Me._tvshowfanartqual = value
         End Set
     End Property
 
-    Public Property ShowFanartWidth() As Integer
+    Public Property TVShowFanartWidth() As Integer
         Get
-            Return Me._showfanartwidth
+            Return Me._tvshowfanartwidth
         End Get
         Set(ByVal value As Integer)
-            Me._showfanartwidth = value
+            Me._tvshowfanartwidth = value
         End Set
     End Property
 
-    Public Property ShowFilterCustom() As List(Of String)
+    Public Property TVShowFilterCustom() As List(Of String)
         Get
-            Return Me._showfiltercustom
+            Return Me._tvshowfiltercustom
         End Get
         Set(ByVal value As List(Of String))
-            Me._showfiltercustom = value
+            Me._tvshowfiltercustom = value
         End Set
     End Property
 
-    Public Property ShowInfoPanelState() As Integer
+    Public Property GeneralTVShowInfoPanelState() As Integer
         Get
-            Return Me._showinfopanelstate
+            Return Me._generaltvshowinfopanelstate
         End Get
         Set(ByVal value As Integer)
-            Me._showinfopanelstate = value
+            Me._generaltvshowinfopanelstate = value
         End Set
     End Property
 
-    Public Property ShowLockGenre() As Boolean
+    Public Property TVLockShowGenre() As Boolean
         Get
-            Return Me._showlockgenre
+            Return Me._tvlockshowgenre
         End Get
         Set(ByVal value As Boolean)
-            Me._showlockgenre = value
+            Me._tvlockshowgenre = value
         End Set
     End Property
 
-    Public Property ShowLockPlot() As Boolean
+    Public Property TVLockShowPlot() As Boolean
         Get
-            Return Me._showlockplot
+            Return Me._tvlockshowplot
         End Get
         Set(ByVal value As Boolean)
-            Me._showlockplot = value
+            Me._tvlockshowplot = value
         End Set
     End Property
 
-    Public Property ShowLockRating() As Boolean
+    Public Property TVLockShowRating() As Boolean
         Get
-            Return Me._showlockrating
+            Return Me._tvlockshowrating
         End Get
         Set(ByVal value As Boolean)
-            Me._showlockrating = value
+            Me._tvlockshowrating = value
         End Set
     End Property
 
-    Public Property ShowLockStudio() As Boolean
+    Public Property TVLockShowStatus() As Boolean
         Get
-            Return Me._showlockstudio
+            Return Me._tvlockshowstatus
         End Get
         Set(ByVal value As Boolean)
-            Me._showlockstudio = value
+            Me._tvlockshowstatus = value
         End Set
     End Property
 
-    Public Property ShowLockTitle() As Boolean
+    Public Property TVLockShowStudio() As Boolean
         Get
-            Return Me._showlocktitle
+            Return Me._tvlockshowstudio
         End Get
         Set(ByVal value As Boolean)
-            Me._showlocktitle = value
+            Me._tvlockshowstudio = value
         End Set
     End Property
 
-    Public Property ShowNfoCol() As Boolean
+    Public Property TVLockShowTitle() As Boolean
         Get
-            Return Me._shownfocol
+            Return Me._tvlockshowtitle
         End Get
         Set(ByVal value As Boolean)
-            Me._shownfocol = value
+            Me._tvlockshowtitle = value
         End Set
     End Property
 
-    Public Property ShowPosterCol() As Boolean
+    Public Property TVShowNfoCol() As Boolean
         Get
-            Return Me._showpostercol
+            Return Me._tvshownfocol
         End Get
         Set(ByVal value As Boolean)
-            Me._showpostercol = value
+            Me._tvshownfocol = value
         End Set
     End Property
 
-    Public Property ShowBannerHeight() As Integer
+    Public Property TVShowPosterCol() As Boolean
         Get
-            Return Me._showbannerheight
+            Return Me._tvshowpostercol
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowpostercol = value
+        End Set
+    End Property
+
+    Public Property TVShowPosterHeight() As Integer
+        Get
+            Return Me._tvshowposterheight
         End Get
         Set(ByVal value As Integer)
-            Me._showbannerheight = value
+            Me._tvshowposterheight = value
         End Set
     End Property
 
-    Public Property ShowBannerQuality() As Integer
+    Public Property TVShowPosterQual() As Integer
         Get
-            Return Me._showbannerQuality
+            Return Me._tvshowposterqual
         End Get
         Set(ByVal value As Integer)
-            Me._showposterQuality = value
+            Me._tvshowposterqual = value
         End Set
     End Property
 
-    Public Property ShowBannerWidth() As Integer
+    Public Property TVShowPosterWidth() As Integer
         Get
-            Return Me._showbannerwidth
+            Return Me._tvshowposterwidth
         End Get
         Set(ByVal value As Integer)
-            Me._showbannerwidth = value
+            Me._tvshowposterwidth = value
         End Set
     End Property
 
-    Public Property ShowPosterHeight() As Integer
+    Public Property TVShowProperCase() As Boolean
         Get
-            Return Me._showposterheight
-        End Get
-        Set(ByVal value As Integer)
-            Me._showposterheight = value
-        End Set
-    End Property
-
-    Public Property ShowPosterQuality() As Integer
-        Get
-            Return Me._showposterQuality
-        End Get
-        Set(ByVal value As Integer)
-            Me._showposterQuality = value
-        End Set
-    End Property
-
-    Public Property ShowPosterWidth() As Integer
-        Get
-            Return Me._showposterwidth
-        End Get
-        Set(ByVal value As Integer)
-            Me._showposterwidth = value
-        End Set
-    End Property
-
-    Public Property ShowProperCase() As Boolean
-        Get
-            Return Me._showproperCase
+            Return Me._tvshowpropercase
         End Get
         Set(ByVal value As Boolean)
-            Me._showproperCase = value
+            Me._tvshowpropercase = value
         End Set
     End Property
 
-    Public Property ShowRatingRegion() As String
+    Public Property TVScraperRatingRegion() As String
         Get
-            Return Me._showratingregion
+            Return Me._tvscraperratingregion
         End Get
         Set(ByVal value As String)
-            Me._showratingregion = value
+            Me._tvscraperratingregion = value
         End Set
     End Property
 
-    Public Property SingleScrapeImages() As Boolean
+    Public Property MovieSkipLessThan() As Integer
         Get
-            Return Me._singlescrapeimages
-        End Get
-        Set(ByVal value As Boolean)
-            Me._singlescrapeimages = value
-        End Set
-    End Property
-
-    Public Property SingleScrapeTrailer() As Boolean
-        Get
-            Return Me._singlescrapetrailer
-        End Get
-        Set(ByVal value As Boolean)
-            Me._singlescrapetrailer = value
-        End Set
-    End Property
-
-    Public Property SkipLessThan() As Integer
-        Get
-            Return Me._skiplessthan
+            Return Me._movieskiplessthan
         End Get
         Set(ByVal value As Integer)
-            Me._skiplessthan = value
+            Me._movieskiplessthan = value
         End Set
     End Property
 
-    Public Property SkipStackSizeCheck() As Boolean
+    Public Property MovieSkipStackedSizeCheck() As Boolean
         Get
-            Return Me._skipstacksizecheck
+            Return Me._movieskipstackedsizecheck
         End Get
         Set(ByVal value As Boolean)
-            Me._skipstacksizecheck = value
+            Me._movieskipstackedsizecheck = value
         End Set
     End Property
 
-    Public Property SkipLessThanEp() As Integer
+    Public Property TVSkipLessThan() As Integer
         Get
-            Return Me._skiplessthanep
+            Return Me._tvskiplessthan
         End Get
         Set(ByVal value As Integer)
-            Me._skiplessthanep = value
+            Me._tvskiplessthan = value
         End Set
     End Property
 
-    Public Property SortBeforeScan() As Boolean
+    Public Property MovieSortBeforeScan() As Boolean
         Get
-            Return Me._sortbeforescan
+            Return Me._moviesortbeforescan
         End Get
         Set(ByVal value As Boolean)
-            Me._sortbeforescan = value
+            Me._moviesortbeforescan = value
         End Set
     End Property
 
@@ -3186,57 +3304,48 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property SortTokens() As List(Of String)
+    Public Property MovieSortTokens() As List(Of String)
         Get
-            Return Me._sorttokens
+            Return Me._moviesorttokens
         End Get
         Set(ByVal value As List(Of String))
-            Me._sorttokens = value
+            Me._moviesorttokens = value
         End Set
     End Property
 
-    Public Property SourceFromFolder() As Boolean
+    Public Property GeneralSourceFromFolder() As Boolean
         Get
-            Return Me._sourcefromfolder
+            Return Me._generalsourcefromfolder
         End Get
         Set(ByVal value As Boolean)
-            Me._sourcefromfolder = value
+            Me._generalsourcefromfolder = value
         End Set
     End Property
 
-    Public Property SplitterPanelState() As Integer
+    Public Property GeneralMainSplitterPanelState() As Integer
         Get
-            Return Me._scmainstate
+            Return Me._generalmainsplitterpanelstate
         End Get
         Set(ByVal value As Integer)
-            Me._scmainstate = value
+            Me._generalmainsplitterpanelstate = value
         End Set
     End Property
 
-    Public Property ShowSplitterPanelState() As Integer
+    Public Property GeneralShowSplitterPanelState() As Integer
         Get
-            Return Me._scshowstate
+            Return Me._generalshowsplitterpanelstate
         End Get
         Set(ByVal value As Integer)
-            Me._scshowstate = value
+            Me._generalshowsplitterpanelstate = value
         End Set
     End Property
 
-    Public Property SeasonSplitterPanelState() As Integer
+    Public Property GeneralSeasonSplitterPanelState() As Integer
         Get
-            Return Me._scseasonstate
+            Return Me._generalseasonsplitterpanelstate
         End Get
         Set(ByVal value As Integer)
-            Me._scseasonstate = value
-        End Set
-    End Property
-
-    Public Property TrailerTimeout() As Integer
-        Get
-            Return Me._trailertimeout
-        End Get
-        Set(ByVal value As Integer)
-            Me._trailertimeout = value
+            Me._generalseasonsplitterpanelstate = value
         End Set
     End Property
 
@@ -3249,66 +3358,48 @@ Public Class Settings
         End Set
     End Property
 
-    'Public Property TVDBLanguage() As String
-    '    Get
-    '        Return Me._tvdblanguage
-    '    End Get
-    '    Set(ByVal value As String)
-    '        Me._tvdblanguage = If(String.IsNullOrEmpty(value), "en", value)
-    '    End Set
-    'End Property
-
-    Public ReadOnly Property Languages() As List(Of Containers.TVLanguage)
+    Public ReadOnly Property TVScraperLanguages() As List(Of Containers.TVLanguage)
         Get
-            Return Me._languages
+            Return Me._tvscraperlanguages
         End Get
         'Set(ByVal value As List(Of Containers.TVLanguage))
         '    Me._tvdblanguages = value
         'End Set
     End Property
 
-    'Public Property TVDBMirror() As String
-    '    Get
-    '        Return Me._tvdbmirror
-    '    End Get
-    '    Set(ByVal value As String)
-    '        Me._tvdbmirror = value
-    '    End Set
-    'End Property
-
-    Public Property TVEpTheme() As String
+    Public Property GeneralTVEpisodeTheme() As String
         Get
-            Return Me._tveptheme
+            Return Me._generaltvepisodetheme
         End Get
         Set(ByVal value As String)
-            Me._tveptheme = value
+            Me._generaltvepisodetheme = value
         End Set
     End Property
 
-    Public Property TVFlagLang() As String
+    Public Property TVGeneralFlagLang() As String
         Get
-            Return Me._tvflaglang
+            Return Me._tvgeneralflaglang
         End Get
         Set(ByVal value As String)
-            Me._tvflaglang = value
+            Me._tvgeneralflaglang = value
         End Set
     End Property
 
-    Public Property TVIgnoreLastScan() As Boolean
+    Public Property TVGeneralIgnoreLastScan() As Boolean
         Get
-            Return Me._tvignorelastscan
+            Return Me._tvgeneralignorelastscan
         End Get
         Set(ByVal value As Boolean)
-            Me._tvignorelastscan = value
+            Me._tvgeneralignorelastscan = value
         End Set
     End Property
 
-    Public Property TVMetadataperFileType() As List(Of MetadataPerType)
+    Public Property TVMetadataPerFileType() As List(Of MetadataPerType)
         Get
-            Return Me._tvmetadatapertype
+            Return Me._tvmetadataperfiletype
         End Get
         Set(ByVal value As List(Of MetadataPerType))
-            Me._tvmetadatapertype = value
+            Me._tvmetadataperfiletype = value
         End Set
     End Property
 
@@ -3330,75 +3421,66 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property TVShowTheme() As String
+    Public Property GeneralTVShowTheme() As String
         Get
-            Return Me._tvshowtheme
+            Return Me._generaltvshowtheme
         End Get
         Set(ByVal value As String)
-            Me._tvshowtheme = value
+            Me._generaltvshowtheme = value
         End Set
     End Property
 
-    Public Property TVUpdateTime() As Enums.TVUpdateTime
+    Public Property TVScraperUpdateTime() As Enums.TVScraperUpdateTime
         Get
-            Return Me._tvupdatetime
+            Return Me._tvscraperupdatetime
         End Get
-        Set(ByVal value As Enums.TVUpdateTime)
-            Me._tvupdatetime = value
+        Set(ByVal value As Enums.TVScraperUpdateTime)
+            Me._tvscraperupdatetime = value
         End Set
     End Property
 
-    Public Property UpdaterTrailers() As Boolean
+    Public Property MovieTrailerEnable() As Boolean
         Get
-            Return Me._updatertrailers
-        End Get
-        Set(ByVal value As Boolean)
-            Me._updatertrailers = value
-        End Set
-    End Property
-
-    Public Property UpdaterTrailersNoDownload() As Boolean
-        Get
-            Return Me._updatertrailersnodownload
+            Return Me._movietrailerenable
         End Get
         Set(ByVal value As Boolean)
-            Me._updatertrailersnodownload = value
+            Me._movietrailerenable = value
         End Set
     End Property
 
-    Public Property UseCertForMPAA() As Boolean
+    Public Property MovieScraperCertForMPAA() As Boolean
         Get
-            Return Me._usecertformpaa
+            Return Me._moviescrapercertformpaa
         End Get
         Set(ByVal value As Boolean)
-            Me._usecertformpaa = value
+            Me._moviescrapercertformpaa = value
         End Set
     End Property
 
-    Public Property UseMIDuration() As Boolean
+    Public Property MovieScraperUseMDDuration() As Boolean
         Get
-            Return Me._usemiduration
+            Return Me._moviescraperusemdduration
         End Get
         Set(ByVal value As Boolean)
-            Me._usemiduration = value
+            Me._moviescraperusemdduration = value
         End Set
     End Property
 
-    Public Property UseEPDuration() As Boolean
+    Public Property TVScraperUseMDDuration() As Boolean
         Get
-            Return Me._useepduration
+            Return Me._tvscraperusemdduration
         End Get
         Set(ByVal value As Boolean)
-            Me._useepduration = value
+            Me._tvscraperusemdduration = value
         End Set
     End Property
 
-    Public Property ValidExts() As List(Of String)
+    Public Property FileSystemValidExts() As List(Of String)
         Get
-            Return Me._validexts
+            Return Me._filesystemvalidexts
         End Get
         Set(ByVal value As List(Of String))
-            Me._validexts = value
+            Me._filesystemvalidexts = value
         End Set
     End Property
 
@@ -3411,48 +3493,30 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property VideoTSParent() As Boolean
+    Public Property GeneralWindowLoc() As Point
         Get
-            Return Me._videotsparent
-        End Get
-        Set(ByVal value As Boolean)
-            Me._videotsparent = value
-        End Set
-    End Property
-
-    Public Property WindowLoc() As Point
-        Get
-            Return Me._windowloc
+            Return Me._generalwindowloc
         End Get
         Set(ByVal value As Point)
-            Me._windowloc = value
+            Me._generalwindowloc = value
         End Set
     End Property
 
-    Public Property WindowSize() As Size
+    Public Property GeneralWindowSize() As Size
         Get
-            Return Me._windowsize
+            Return Me._generalwindowsize
         End Get
         Set(ByVal value As Size)
-            Me._windowsize = value
+            Me._generalwindowsize = value
         End Set
     End Property
 
-    Public Property WindowState() As FormWindowState
+    Public Property GeneralWindowState() As FormWindowState
         Get
-            Return Me._windowstate
+            Return Me._generalwindowstate
         End Get
         Set(ByVal value As FormWindowState)
-            Me._windowstate = value
-        End Set
-    End Property
-
-    Public Property YAMJSetsCompatible() As Boolean
-        Get
-            Return Me._movieyamjsetscompatible
-        End Get
-        Set(ByVal value As Boolean)
-            Me._movieyamjsetscompatible = value
+            Me._generalwindowstate = value
         End Set
     End Property
 
@@ -3473,17 +3537,16 @@ Public Class Settings
             Me._password = value
         End Set
     End Property
-    ' cocotus 2013/02 Trakt.tv syncing
-    'Adding new settings
-    Public Property TraktUser() As String
+
+    Public Property TraktUsername() As String
         Get
-            Return Me._traktuser
+            Return Me._traktusername
         End Get
         Set(ByVal value As String)
-            Me._traktuser = value
+            Me._traktusername = value
         End Set
     End Property
-    'Adding new settings
+
     Public Property TraktPassword() As String
         Get
             Return Me._traktpassword
@@ -3501,18 +3564,15 @@ Public Class Settings
             Me._usetrakt = value
         End Set
     End Property
-    'cocotus end
 
-    'cocotus 20130303 Special DateAddvalue
-    Public Property UseSpecialDateAddvalue() As Boolean
+    Public Property GeneralCreationDate() As Boolean
         Get
-            Return Me._usespecialdateadd
+            Return Me._generalcreationdate
         End Get
         Set(ByVal value As Boolean)
-            Me._usespecialdateadd = value
+            Me._generalcreationdate = value
         End Set
     End Property
-    'cocotus end
 
     Public Property MovieUseFrodo() As Boolean
         Get
@@ -3817,6 +3877,15 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Me._movietraileryamj = value
+        End Set
+    End Property
+
+    Public Property MovieYAMJCompatibleSets() As Boolean
+        Get
+            Return Me._movieyamjcompatiblesets
+        End Get
+        Set(ByVal value As Boolean)
+            Me._movieyamjcompatiblesets = value
         End Set
     End Property
 
@@ -4423,30 +4492,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property TVShowPosterFrodo() As Boolean
+    Public Property TVUseYAMJ() As Boolean
         Get
-            Return Me._tvshowposterfrodo
+            Return Me._tvuseyamj
         End Get
         Set(ByVal value As Boolean)
-            Me._tvshowposterfrodo = value
-        End Set
-    End Property
-
-    Public Property TVShowFanartFrodo() As Boolean
-        Get
-            Return Me._tvshowfanartfrodo
-        End Get
-        Set(ByVal value As Boolean)
-            Me._tvshowfanartfrodo = value
-        End Set
-    End Property
-
-    Public Property TVShowActorThumbsFrodo() As Boolean
-        Get
-            Return Me._tvshowactorthumbsfrodo
-        End Get
-        Set(ByVal value As Boolean)
-            Me._tvshowactorthumbsfrodo = value
+            Me._tvuseyamj = value
         End Set
     End Property
 
@@ -4459,12 +4510,75 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVShowBannerYAMJ() As Boolean
+        Get
+            Return Me._tvshowbanneryamj
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowbanneryamj = value
+        End Set
+    End Property
+
+    Public Property TVShowFanartFrodo() As Boolean
+        Get
+            Return Me._tvshowfanartfrodo
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowfanartfrodo = value
+        End Set
+    End Property
+
+    Public Property TVShowFanartYAMJ() As Boolean
+        Get
+            Return Me._tvshowfanartyamj
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowfanartyamj = value
+        End Set
+    End Property
+
+    Public Property TVShowPosterFrodo() As Boolean
+        Get
+            Return Me._tvshowposterfrodo
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowposterfrodo = value
+        End Set
+    End Property
+
+    Public Property TVShowPosterYAMJ() As Boolean
+        Get
+            Return Me._tvshowposteryamj
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowposteryamj = value
+        End Set
+    End Property
+
+    Public Property TVShowActorThumbsFrodo() As Boolean
+        Get
+            Return Me._tvshowactorthumbsfrodo
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowactorthumbsfrodo = value
+        End Set
+    End Property
+
     Public Property TVSeasonPosterFrodo() As Boolean
         Get
             Return Me._tvseasonposterfrodo
         End Get
         Set(ByVal value As Boolean)
             Me._tvseasonposterfrodo = value
+        End Set
+    End Property
+
+    Public Property TVSeasonPosterYAMJ() As Boolean
+        Get
+            Return Me._tvseasonposteryamj
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvseasonposteryamj = value
         End Set
     End Property
 
@@ -4477,12 +4591,30 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVSeasonFanartYAMJ() As Boolean
+        Get
+            Return Me._tvseasonfanartyamj
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvseasonfanartyamj = value
+        End Set
+    End Property
+
     Public Property TVSeasonBannerFrodo() As Boolean
         Get
             Return Me._tvseasonbannerfrodo
         End Get
         Set(ByVal value As Boolean)
             Me._tvseasonbannerfrodo = value
+        End Set
+    End Property
+
+    Public Property TVSeasonBannerYAMJ() As Boolean
+        Get
+            Return Me._tvseasonbanneryamj
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvseasonbanneryamj = value
         End Set
     End Property
 
@@ -4495,12 +4627,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property TVEpisodeFanartFrodo() As Boolean
+    Public Property TVEpisodePosterYAMJ() As Boolean
         Get
-            Return Me._tvepisodefanartfrodo
+            Return Me._tvepisodeposteryamj
         End Get
         Set(ByVal value As Boolean)
-            Me._tvepisodefanartfrodo = value
+            Me._tvepisodeposteryamj = value
         End Set
     End Property
 
@@ -4576,12 +4708,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property UseTitleFallback() As Boolean
+    Public Property MovieScraperTitleFallback() As Boolean
         Get
-            Return Me._scrapertitlefallback
+            Return Me._moviescrapertitlefallback
         End Get
         Set(ByVal value As Boolean)
-            Me._scrapertitlefallback = value
+            Me._moviescrapertitlefallback = value
         End Set
     End Property
 
@@ -4589,21 +4721,61 @@ Public Class Settings
 
 #Region "Methods"
 
-    Public Function AllSeasonPosterEnabled() As Boolean
-        Return Me._tvseasonposterfrodo 'Me._seasonalltbn OrElse Me._seasonalljpg OrElse Me._seasonallposterjpg
-    End Function
-
+    ''' <summary>
+    ''' Defines all default settings for a new installation
+    ''' </summary>
+    ''' <remarks></remarks>
     Public Sub Clear()
-        'Me._alwaysgetenglishtvimages = True
-        'Me._externaltvdbapikey = String.Empty
-        'Me._onlytvimagesforselectedlangauge = True
-        'Me._tvdblanguage = "en"
-        'Me._tvdbmirror = "thetvdb.com"
         Dim cLang As Containers.TVLanguage
         Dim xmlTVDB As XDocument
-        Me._IMDBURL = "akas.imdb.com"
-        Me._PosterPrefSizeOnly = False
-        Me._actorlimit = 0
+
+        Me._cleandotfanartjpg = False
+        Me._cleanextrathumbs = False
+        Me._cleanfanartjpg = False
+        Me._cleanfolderjpg = False
+        Me._cleanmoviejpg = False
+        Me._cleanmovienfo = False
+        Me._cleanmovienfob = False
+        Me._cleanmovietbn = False
+        Me._cleanmovietbnb = False
+        Me._cleanmoviefanartjpg = False
+        Me._cleanmovienamejpg = False
+        Me._cleanposterjpg = False
+        Me._cleanpostertbn = False
+        Me._embermodules = New List(Of ModulesManager._XMLEmberModuleClass)
+        Me._filesystemcleanerwhitelist = False
+        Me._filesystemcleanerwhitelistexts = New List(Of String)
+        Me._filesystemexpertcleaner = False
+        Me._filesystemnostackexts = New List(Of String)
+        Me._filesystemvalidexts = New List(Of String)
+        Me._generalcheckupdates = True
+        Me._generalcreationdate = False
+        Me._generaldaemondrive = String.Empty
+        Me._generaldaemonpath = String.Empty
+        Me._generalfilterpanelstate = False
+        Me._generalhidefanart = False
+        Me._generalhidefanartsmall = False
+        Me._generalhideposter = False
+        Me._generalimagesglassoverlay = False
+        Me._generalinfopanelanim = False
+        Me._generallanguage = "English_(en_US)"
+        Me._generalmainsplitterpanelstate = 364
+        Me._generalmovieinfopanelstate = 0
+        Me._generalmovietheme = "Default"
+        Me._generaloverwritenfo = False
+        Me._generalseasonsplitterpanelstate = 200
+        Me._generalshowgenrestext = True
+        Me._generalshowimgdims = True
+        Me._generalshowsplitterpanelstate = 200
+        Me._generalsourcefromfolder = True
+        Me._generaltvepisodetheme = "Default"
+        Me._generaltvshowinfopanelstate = 0
+        Me._generaltvshowtheme = "Default"
+        Me._generalwindowloc = New Point(If(Screen.PrimaryScreen.WorkingArea.Width <= 1024, 0, Convert.ToInt32((Screen.PrimaryScreen.WorkingArea.Width - 1024) / 2)), If(Screen.PrimaryScreen.WorkingArea.Height <= 768, 0, Convert.ToInt32((Screen.PrimaryScreen.WorkingArea.Height - 768) / 2)))
+        Me._generalwindowsize = New Size(1024, 768)
+        Me._generalwindowstate = FormWindowState.Maximized
+        Me._genrefilter = "English"
+        Me._movieactorthumbseden = False
         Me._movieactorthumbsexpertbdmv = False
         Me._movieactorthumbsexpertmulti = False
         Me._movieactorthumbsexpertsingle = False
@@ -4612,317 +4784,424 @@ Public Class Settings
         Me._movieactorthumbsextexpertmulti = String.Empty
         Me._movieactorthumbsextexpertsingle = String.Empty
         Me._movieactorthumbsextexpertvts = String.Empty
-        Me._allsbanner = False
-        Me._allsbannertype = Enums.ShowBannerType.Graphical
-        Me._allsposterQuality = 0
-        Me._allsposterheight = 0
-        Me._allspostersize = Enums.PosterSize.Original
-        Me._allsposterwidth = 0
-        Me._allwaysdisplaygenrestext = False
-        Me._askcheckboxscrape = True
-        Me._autobd = False
+        Me._movieactorthumbsfrodo = False
+        Me._movieactorthumbsnmj = False
+        Me._movieactorthumbsoverwrite = True
+        Me._movieactorthumbsqual = 0
+        Me._movieactorthumbsyamj = False
+        Me._moviebackdropsauto = False
+        Me._moviebackdropspath = String.Empty
+        Me._moviebannereden = False
         Me._moviebannerexpertbdmv = String.Empty
         Me._moviebannerexpertmulti = String.Empty
         Me._moviebannerexpertsingle = String.Empty
         Me._moviebannerexpertvts = String.Empty
-        Me._bdpath = String.Empty
-        Me._castimagesonly = False
-        Me._certificationLang = String.Empty
-        Me._checkupdates = True
-        Me._cleandb = True
-        Me._cleandotfanartJpg = False
-        Me._cleanextrathumbs = False
-        Me._cleanfanartJpg = False
-        Me._cleanfolderJpg = False
-        Me._cleanmovieJpg = False
-        Me._cleanmovieNfo = False
-        Me._cleanmovieNfoB = False
-        Me._cleanmovieTbn = False
-        Me._cleanmovieTbnB = False
-        Me._cleanmoviefanartJpg = False
-        Me._cleanmovienameJpg = False
-        Me._cleanposterJpg = False
-        Me._cleanposterTbn = False
-        Me._cleanwhitelistexts = New List(Of String)
-        Me._cleanwhitelistvideo = False
+        Me._moviebannerfrodo = False
+        Me._moviebannerheight = 0
+        Me._moviebannernmj = False
+        Me._moviebanneroverwrite = True
+        Me._moviebannerprefonly = False
+        Me._moviebannerpreftype = Enums.MovieBannerType.Graphical
+        Me._moviebannerqual = 0
+        Me._moviebannerresize = False
+        Me._moviebannerwidth = 0
+        Me._moviebanneryamj = False
+        Me._moviecleandb = True
+        Me._moviecleararteden = False
         Me._movieclearartexpertbdmv = String.Empty
         Me._movieclearartexpertmulti = String.Empty
         Me._movieclearartexpertsingle = String.Empty
         Me._movieclearartexpertvts = String.Empty
+        Me._movieclearartfrodo = False
+        Me._movieclearartnmj = False
+        Me._movieclearartoverwrite = True
+        Me._movieclearartyamj = False
+        Me._movieclearlogoeden = False
         Me._movieclearlogoexpertbdmv = String.Empty
         Me._movieclearlogoexpertmulti = String.Empty
         Me._movieclearlogoexpertsingle = String.Empty
         Me._movieclearlogoexpertvts = String.Empty
-        Me._deletealltrailers = False
+        Me._movieclearlogofrodo = False
+        Me._movieclearlogonmj = False
+        Me._movieclearlogooverwrite = True
+        Me._movieclearlogoyamj = False
+        Me._movieclickscrape = False
+        Me._movieclickscrapeask = False
+        Me._moviediscarteden = False
         Me._moviediscartexpertbdmv = String.Empty
         Me._moviediscartexpertmulti = String.Empty
         Me._moviediscartexpertsingle = String.Empty
         Me._moviediscartexpertvts = String.Empty
-        Me._displayallseason = True
-        Me._displaymissingepisodes = False
-        Me._displayyear = False
-        Me._emberModules = New List(Of ModulesManager._XMLEmberModuleClass)
-        Me._enableifoscan = True
-        Me._epfanartQuality = 0
-        Me._epfanartheight = 0
-        Me._epfanartsize = Enums.FanartSize.Lrg
-        Me._epfanartwidth = 0
-        Me._epfiltercustom = New List(Of String)
-        Me._episodefanartcol = True
-        Me._episodenfocol = False
-        Me._episodepostercol = False
-        Me._eplockplot = False
-        Me._eplockrating = False
-        Me._eplocktitle = False
-        Me._epposterQuality = 0
-        Me._epposterheight = 0
-        Me._epposterwidth = 0
-        Me._epproperCase = True
-        Me._epruntimemask = "<m>"
-        Me._expertcleaner = False
+        Me._moviediscartfrodo = False
+        Me._moviediscartnmj = False
+        Me._moviediscartoverwrite = True
+        Me._moviediscartyamj = False
+        Me._moviedisplayyear = False
+        Me._movieefanartscol = True
+        Me._movieefanartsheight = 0
+        Me._movieefanartslimit = 0
+        Me._movieefanartsoverwrite = True
+        Me._movieefanartsprefonly = False
+        Me._movieefanartsprefsize = Enums.FanartSize.Xlrg
+        Me._movieefanartsqual = 0
+        Me._movieefanartsresize = False
+        Me._movieefanartswidth = 0
+        Me._movieethumbscol = True
+        Me._movieethumbsheight = 0
+        Me._movieethumbslimit = 0
+        Me._movieethumbsoverwrite = True
+        Me._movieethumbsprefonly = False
+        Me._movieethumbsprefsize = Enums.FanartSize.Xlrg
+        Me._movieethumbsqual = 0
+        Me._movieethumbsresize = False
+        Me._movieethumbswidth = 0
+        Me._movieextrafanartseden = False
         Me._movieextrafanartsexpertbdmv = False
         Me._movieextrafanartsexpertsingle = False
         Me._movieextrafanartsexpertvts = False
+        Me._movieextrafanartsfrodo = False
+        Me._movieextrafanartsnmj = False
+        Me._movieextrafanartsyamj = False
+        Me._movieextrathumbseden = False
         Me._movieextrathumbsexpertbdmv = False
         Me._movieextrathumbsexpertsingle = False
         Me._movieextrathumbsexpertvts = False
-        Me._fanartQuality = 0
+        Me._movieextrathumbsfrodo = False
+        Me._movieextrathumbsnmj = False
+        Me._movieextrathumbsyamj = False
+        Me._moviefanartcol = False
+        Me._moviefanarteden = False
         Me._moviefanartexpertbdmv = String.Empty
         Me._moviefanartexpertmulti = String.Empty
         Me._moviefanartexpertsingle = String.Empty
         Me._moviefanartexpertvts = String.Empty
-        Me._fanartheight = 0
-        Me._fanartprefsizeonly = False
-        Me._fanartsize = Enums.FanartSize.Original
-        Me._fanartwidth = 0
-        Me._field250 = True
-        Me._fieldcast = True
-        Me._fieldcert = True
-        Me._fieldcountry = True
-        Me._fieldcrew = True
-        Me._fielddirector = True
-        Me._fieldgenre = True
-        Me._fieldmpaa = True
-        Me._fieldmusic = True
-        Me._fieldoutline = True
-        Me._fieldplot = True
-        Me._fieldproducers = True
-        Me._fieldrating = True
-        Me._fieldrelease = True
-        Me._fieldruntime = True
-        Me._fieldstudio = True
-        Me._fieldtagline = True
-        Me._fieldtitle = True
-        Me._fieldtrailer = True
-        Me._fieldvotes = True
-        Me._fieldwriters = True
-        Me._fieldyear = True
-        Me._filterCustom = New List(Of String)
-        Me._filterPanelState = False
-        Me._flaglang = String.Empty
-        Me._forcetitle = String.Empty
-        Me._fullcast = True
-        Me._fullcrew = False
-        Me._genrefilter = "English"
-        Me._genrelimit = 0
-        Me._ignorelastscan = True
-        Me._imagesglassoverlay = False
-        Me._infopanelanim = False
-        Me._infopanelstate = 0
+        Me._moviefanartfrodo = False
+        Me._moviefanartheight = 0
+        Me._moviefanartnmj = False
+        Me._moviefanartoverwrite = True
+        Me._moviefanartprefonly = False
+        Me._moviefanartprefsize = Enums.FanartSize.Xlrg
+        Me._moviefanartqual = 0
+        Me._moviefanartresize = False
+        Me._moviefanartwidth = 0
+        Me._moviefanartyamj = False
+        Me._moviefiltercustom = New List(Of String)
+        Me._moviefiltercustomisempty = False
+        Me._moviegeneralflaglang = String.Empty
+        Me._moviegeneralignorelastscan = True
+        Me._moviegeneralmarknew = False
+        Me._movieimdburl = "akas.imdb.com"
+        Me._movieinfocol = False
+        Me._movielandscapeeden = False
         Me._movielandscapeexpertbdmv = String.Empty
         Me._movielandscapeexpertmulti = String.Empty
         Me._movielandscapeexpertsingle = String.Empty
         Me._movielandscapeexpertvts = String.Empty
-        Me._language = "English_(en_US)"
-        Me._languages = New List(Of Containers.TVLanguage)
-        Me._levtolerance = 0
-        Me._lockoutline = False
-        Me._lockplot = False
-        Me._lockrating = False
-        Me._lockrating = False
-        Me._lockstudio = False
-        Me._locktagline = False
-        Me._locktitle = False
-        Me._locktrailer = False
-        Me._marknew = False
-        Me._marknewepisodes = False
-        Me._marknewshows = False
-        Me._metadatapertype = New List(Of MetadataPerType)
-        Me._missingfilterefanarts = True
-        Me._missingfilterethumbs = True
-        Me._missingfilterfanart = True
-        Me._missingfilternfo = True
-        Me._missingfilterposter = True
-        Me._missingfiltersubs = True
-        Me._missingfiltertrailer = True
-        Me._movieefanartsCol = False
-        Me._movieethumbsCol = False
-        Me._moviefanartCol = False
-        Me._movieinfoCol = False
-        Me._movieposterCol = False
-        Me._moviesetspath = String.Empty
-        Me._moviesubCol = False
-        Me._movietheme = "Default"
-        Me._movietrailerCol = False
-        Me._moviewatchedCol = False
+        Me._movielandscapefrodo = False
+        Me._movielandscapenmj = False
+        Me._movielandscapeoverwrite = True
+        Me._movielandscapeyamj = False
+        Me._movielevtolerance = 0
+        Me._movielockgenre = False
+        Me._movielocklanguagea = False
+        Me._movielocklanguagev = False
+        Me._movielockmpaa = False
+        Me._movielockoutline = False
+        Me._movielockplot = False
+        Me._movielockrating = False
+        Me._movielockstudio = False
+        Me._movielocktagline = False
+        Me._movielocktitle = False
+        Me._movielocktrailer = False
+        Me._moviemetadataperfiletype = New List(Of MetadataPerType)
+        Me._moviemissingefanarts = True
+        Me._moviemissingethumbs = True
+        Me._moviemissingfanart = True
+        Me._moviemissingnfo = True
+        Me._moviemissingposter = True
+        Me._moviemissingsubs = False
+        Me._moviemissingtrailer = True
+        Me._moviemoviesetspath = String.Empty
+        Me._movienfoeden = False
         Me._movienfoexpertbdmv = String.Empty
         Me._movienfoexpertmulti = String.Empty
         Me._movienfoexpertsingle = String.Empty
         Me._movienfoexpertvts = String.Empty
-        Me._nodisplayfanart = False
-        Me._nodisplayfanartsmall = False
-        Me._nodisplayposter = False
-        Me._noepfilters = False
-        Me._nofilterepisode = True
-        Me._nofilters = False
-        Me._nosaveimagestonfo = False
-        Me._noshowfilters = False
-        Me._nostackexts = New List(Of String)
-        Me._notokens = False
-        Me._onlyvalueforcert = False
-        Me._orderdefault = Enums.Ordering.Standard
-        Me._outlineforplot = False
-        Me._outlinelimit = 350
-        Me._overwriteEpFanart = True
-        Me._overwriteEpPoster = True
-        Me._overwriteFanart = True
-        Me._overwritePoster = True
-        Me._overwriteSeasonFanart = True
-        Me._overwriteSeasonPoster = True
-        Me._overwriteShowFanart = True
-        Me._overwriteShowPoster = True
-        Me._overwriteallsPoster = True
-        Me._overwritenfo = False
-        Me._overwritenfo = False
-        Me._overwritenfo = False
-        Me._overwritetrailer = False
-        Me._password = String.Empty
-        Me._plotforoutline = True
-        Me._posterQuality = 0
+        Me._movienfofrodo = False
+        Me._movienfonmj = False
+        Me._movienfoyamj = False
+        Me._movienosaveimagestonfo = False
+        Me._moviepostercol = False
+        Me._moviepostereden = False
         Me._movieposterexpertbdmv = String.Empty
         Me._movieposterexpertmulti = String.Empty
         Me._movieposterexpertsingle = String.Empty
         Me._movieposterexpertvts = String.Empty
-        Me._posterheight = 0
-        Me._postersize = Enums.PosterSize.Original
-        Me._posterwidth = 0
-        Me._properCase = True
-        Me._proxycredentials = New NetworkCredential
-        Me._proxyport = -1
-        Me._proxyuri = String.Empty
+        Me._movieposterfrodo = False
+        Me._movieposterheight = 0
+        Me._movieposternmj = False
+        Me._movieposteroverwrite = True
+        Me._movieposterprefonly = False
+        Me._movieposterprefsize = Enums.PosterSize.Xlrg
+        Me._movieposterqual = 0
+        Me._movieposterresize = False
+        Me._movieposterwidth = 0
+        Me._movieposteryamj = False
+        Me._moviepropercase = True
         Me._movierecognizevtsexpertvts = False
-        Me._resizeallsposter = False
-        Me._resizeepfanart = False
-        Me._resizeepposter = False
-        Me._resizefanart = False
-        Me._resizeposter = False
-        Me._resizeseasonfanart = False
-        Me._resizeseasonposter = False
-        Me._resizeshowfanart = False
-        Me._resizeshowposter = False
-        Me._runtimemask = "<m>"
-        Me._scanmediainfo = True
-        Me._scanordermodify = False
-        Me._scantvmediainfo = True
-        Me._scmainstate = 364
-        Me._scraperactorthumbs = True
-        Me._scraperepactors = True
-        Me._scraperepaired = True
-        Me._scraperepcredits = True
-        Me._scraperepdirector = True
-        Me._scraperepepisode = True
-        Me._scraperepplot = True
-        Me._scrapereprating = True
-        Me._scraperepseason = True
-        Me._scrapereptitle = True
-        Me._scrapershowactors = True
-        Me._scrapershowegu = True
-        Me._scrapershowgenre = True
-        Me._scrapershowmpaa = True
-        Me._scrapershowplot = True
-        Me._scrapershowpremiered = True
-        Me._scrapershowrating = True
-        Me._scrapershowstudio = True
-        Me._scrapershowtitle = True
-        Me._scseasonstate = 200
-        Me._scshowstate = 200
-        Me._seasonfanartQuality = 0
-        Me._seasonfanartcol = True
-        Me._seasonfanartheight = 0
-        Me._seasonfanartsize = Enums.FanartSize.Lrg
-        Me._seasonfanartwidth = 0
-        Me._seasonposterQuality = 0
-        Me._seasonpostercol = False
-        Me._seasonposterheight = 0
-        Me._seasonpostersize = Enums.SeasonPosterType.Poster
-        Me._seasonposterwidth = 0
-        Me._sets = New List(Of String)
-        Me._showbannertype = Enums.ShowBannerType.Graphical
-        Me._showdims = False
-        Me._showfanartQuality = 0
-        Me._showfanartcol = False
-        Me._showfanartheight = 0
-        Me._showfanartsize = Enums.FanartSize.Lrg
-        Me._showfanartwidth = 0
-        Me._showfiltercustom = New List(Of String)
-        Me._showinfopanelstate = 0
-        Me._showlockgenre = False
-        Me._showlockplot = False
-        Me._showlockrating = False
-        Me._showlockstudio = False
-        Me._showlocktitle = False
-        Me._shownfocol = False
-        Me._showposterQuality = 0
-        Me._showpostercol = False
-        Me._showposterheight = 0
-        Me._showpostersize = Enums.PosterSize.Original
-        Me._showposterwidth = 0
-        Me._showproperCase = True
-        Me._showratingregion = "usa"
-        Me._singlescrapeimages = True
-        Me._singlescrapetrailer = False
-        Me._skiplessthan = 0
-        Me._skiplessthanep = 0
-        Me._skipstacksizecheck = False
-        Me._sortbeforescan = False
-        Me._sortpath = String.Empty
-        Me._sorttokens = New List(Of String)
-        Me._sourcefromfolder = False
+        Me._moviescanordermodify = False
+        Me._moviescraperactorthumbs = True
+        Me._moviescrapercast = True
+        Me._moviescrapercastlimit = 0
+        Me._moviescrapercastwithimgonly = False
+        Me._moviescrapercertformpaa = False
+        Me._moviescrapercertification = True
+        Me._moviescrapercertlang = String.Empty
+        Me._moviescrapercountry = True
+        Me._moviescrapercrew = True
+        Me._moviescraperdirector = True
+        Me._moviescraperdurationruntimeformat = "<m>"
+        Me._moviescraperforcetitle = String.Empty
+        Me._moviescraperfullcast = True
+        Me._moviescraperfullcrew = False
+        Me._moviescrapergenre = True
+        Me._moviescrapergenrelimit = 0
+        Me._moviescrapermetadataifoscan = True
+        Me._moviescrapermetadatascan = True
+        Me._moviescrapermpaa = True
+        Me._moviescrapermusicby = True
+        Me._moviescraperonlyvalueformpaa = False
+        Me._moviescraperoutline = True
+        Me._moviescraperoutlineforplot = False
+        Me._moviescraperoutlinelimit = 350
+        Me._moviescraperoutlineplotenglishoverwrite = False 'TODO: check
+        Me._moviescraperplot = True
+        Me._moviescraperplotforoutline = True
+        Me._moviescraperproducers = True
+        Me._moviescraperrating = True
+        Me._moviescraperrelease = True
+        Me._moviescraperruntime = True
+        Me._moviescraperstudio = True
+        Me._moviescrapertagline = True
+        Me._moviescrapertitle = True
+        Me._moviescrapertitlefallback = True 'TODO: check
+        Me._moviescrapertop250 = True
+        Me._moviescrapertrailer = True
+        Me._moviescraperusemdduration = True
+        Me._moviescraperusempaafsk = False 'TODO: check
+        Me._moviescrapervotes = True
+        Me._moviescraperwriters = True
+        Me._moviescraperyear = True
+        Me._moviesets = New List(Of String)
+        Me._movieskiplessthan = 0
+        Me._movieskipstackedsizecheck = False
+        Me._moviesortbeforescan = False
+        Me._moviesorttokens = New List(Of String)
+        Me._moviesorttokensisempty = False
         Me._moviestackexpertmulti = False
         Me._moviestackexpertsingle = False
+        Me._moviesubcol = False
+        Me._movietrailercol = False
+        Me._movietrailerdeleteexisting = True
+        Me._movietrailereden = False
+        Me._movietrailerenable = True
         Me._movietrailerexpertbdmv = String.Empty
         Me._movietrailerexpertmulti = String.Empty
         Me._movietrailerexpertsingle = String.Empty
         Me._movietrailerexpertvts = String.Empty
-        Me._trailerquality = Enums.TrailerQuality.HD1080p
-        Me._trailertimeout = 2
-        Me._tvcleandb = True
-        Me._tveptheme = "Default"
-        Me._tvflaglang = String.Empty
-        Me._tvignorelastscan = True
-        Me._tvmetadatapertype = New List(Of MetadataPerType)
-        Me._tvscanordermodify = False
-        Me._tvshowregexes = New List(Of TVShowRegEx)
-        Me._tvshowtheme = "Default"
-        Me._tvupdatetime = Enums.TVUpdateTime.Always
+        Me._movietrailerfrodo = False
+        Me._movietrailerminqual = Enums.TrailerQuality.All
+        Me._movietrailernmj = False
+        Me._movietraileroverwrite = True
+        Me._movietrailerprefqual = Enums.TrailerQuality.HD720p
+        Me._movietraileryamj = False
         Me._movieunstackexpertmulti = False
         Me._movieunstackexpertsingle = False
-        Me._updatertrailers = False
-        Me._updatertrailersnodownload = False
         Me._movieusebasedirectoryexpertbdmv = False
         Me._movieusebasedirectoryexpertvts = False
-        Me._usecertformpaa = False
-        Me._useepduration = False
+        Me._movieuseeden = False
         Me._movieuseexpert = False
-        Me._usemiduration = False
+        Me._movieusefrodo = False
+        Me._movieusenmj = False
+        Me._movieuseyamj = False
+        Me._moviewatchedcol = False
+        Me._moviexbmcprotectvtsbdmv = False
+        Me._moviexbmctrailerformat = False
+        Me._movieyamjcompatiblesets = False
+        Me._movieyamjwatchedfile = False
+        Me._movieyamjwatchedfolder = String.Empty
+        Me._ommdummyformat = 0 'TODO: check
+        Me._ommdummytagline = String.Empty 'TODO: check
+        Me._ommdummytop = "0" 'TODO: check
+        Me._ommdummyusebackground = True 'TODO: check
+        Me._ommdummyusefanart = True 'TODO: check
+        Me._ommdummyuseoverlay = True 'TODO: check
+        Me._ommmediastubtagline = String.Empty 'TODO: check
+        Me._password = String.Empty
+        Me._proxycredentials = New NetworkCredential
+        Me._proxyport = -1
+        Me._proxyuri = String.Empty
+        Me._sortpath = String.Empty
+        Me._traktpassword = String.Empty
+        Me._traktusername = String.Empty
+        Me._tvasbannerheight = 0
+        Me._tvasbanneroverwrite = True
+        Me._tvasbannerpreftype = Enums.TVShowBannerType.Graphical
+        Me._tvasbannerqual = 0
+        Me._tvasbannerresize = False
+        Me._tvasbannerwidth = 0
+        Me._tvasfanartheight = 0
+        Me._tvasfanartoverwrite = True
+        Me._tvasfanartprefsize = Enums.TVFanartSize.HD1080
+        Me._tvasfanartqual = 0
+        Me._tvasfanartresize = False
+        Me._tvasfanartwidth = 0
+        Me._tvaslandscapeoverwrite = True
+        Me._tvasposterheight = 0
+        Me._tvasposteroverwrite = True
+        Me._tvasposterprefsize = Enums.TVPosterSize.HD1000
+        Me._tvasposterqual = 0
+        Me._tvasposterresize = False
+        Me._tvasposterwidth = 0
+        Me._tvcleandb = True
+        Me._tvdisplaymissingepisodes = True
+        Me._tvepisodeactorthumbsfrodo = False
+        Me._tvepisodefanartcol = True
+        Me._tvepisodefanartheight = 0
+        Me._tvepisodefanartoverwrite = True
+        Me._tvepisodefanartprefsize = Enums.TVFanartSize.HD1080
+        Me._tvepisodefanartqual = 0
+        Me._tvepisodefanartresize = False
+        Me._tvepisodefanartwidth = 0
+        Me._tvepisodefiltercustom = New List(Of String)
+        Me._tvepisodefiltercustomisempty = False
+        Me._tvepisodenfocol = False
+        Me._tvepisodenofilter = True
+        Me._tvepisodepostercol = False
+        Me._tvepisodeposterfrodo = False
+        Me._tvepisodeposterheight = 0
+        Me._tvepisodeposteroverwrite = True
+        Me._tvepisodeposterqual = 0
+        Me._tvepisodeposterresize = False
+        Me._tvepisodeposterwidth = 0
+        Me._tvepisodepropercase = True
+        Me._tvgeneraldisplayasposter = True
+        Me._tvgeneralflaglang = String.Empty
+        Me._tvgeneralignorelastscan = True
+        Me._tvgeneralmarknewepisodes = False
+        Me._tvgeneralmarknewshows = False
+        Me._tvlockepisodeplot = False
+        Me._tvlockepisoderating = False
+        Me._tvlockepisodetitle = False
+        Me._tvlockshowgenre = False
+        Me._tvlockshowplot = False
+        Me._tvlockshowrating = False
+        Me._tvlockshowstatus = False
+        Me._tvlockshowstudio = False
+        Me._tvlockshowtitle = False
+        Me._tvmetadataperfiletype = New List(Of MetadataPerType)
+        Me._tvscanordermodify = False
+        Me._tvscraperdurationruntimeformat = "<m>"
+        Me._tvscraperepisodeactors = True
+        Me._tvscraperepisodeaired = True
+        Me._tvscraperepisodecredits = True
+        Me._tvscraperepisodedirector = True
+        Me._tvscraperepisodeepisode = True
+        Me._tvscraperepisodeplot = True
+        Me._tvscraperepisoderating = True
+        Me._tvscraperepisodeseason = True
+        Me._tvscraperepisodetitle = True
+        Me._tvscraperlanguages = New List(Of Containers.TVLanguage)
+        Me._tvscrapermetadatascan = True
+        Me._tvscraperoptionsordering = Enums.Ordering.Standard
+        Me._tvscraperratingregion = "usa"
+        Me._tvscrapershowactors = True
+        Me._tvscrapershowepiguideurl = True
+        Me._tvscrapershowgenre = True
+        Me._tvscrapershowmpaa = True
+        Me._tvscrapershowplot = True
+        Me._tvscrapershowpremiered = True
+        Me._tvscrapershowrating = True
+        Me._tvscrapershowstudio = True
+        Me._tvscrapershowtitle = True
+        Me._tvscraperupdatetime = Enums.TVScraperUpdateTime.Always
+        Me._tvscraperusemdduration = True
+        Me._tvseasonbannerfrodo = False
+        Me._tvseasonbannerheight = 0
+        Me._tvseasonbanneroverwrite = True
+        Me._tvseasonbannerpreftype = Enums.TVSeasonBannerType.Graphical
+        Me._tvseasonbannerqual = 0
+        Me._tvseasonbannerresize = False
+        Me._tvseasonbannerwidth = 0
+        Me._tvseasonbanneryamj = False
+        Me._tvseasonfanartcol = True
+        Me._tvseasonfanartfrodo = False
+        Me._tvseasonfanartheight = 0
+        Me._tvseasonfanartoverwrite = True
+        Me._tvseasonfanartprefsize = Enums.TVFanartSize.HD1080
+        Me._tvseasonfanartqual = 0
+        Me._tvseasonfanartresize = False
+        Me._tvseasonfanartwidth = 0
+        Me._tvseasonfanartyamj = False
+        Me._tvseasonlandscapeoverwrite = True
+        Me._tvseasonlandscapexbmc = False
+        Me._tvseasonpostercol = False
+        Me._tvseasonposterfrodo = False
+        Me._tvseasonposterheight = 0
+        Me._tvseasonposteroverwrite = True
+        Me._tvseasonposterprefsize = Enums.TVPosterSize.HD1000
+        Me._tvseasonposterqual = 0
+        Me._tvseasonposterresize = False
+        Me._tvseasonposterwidth = 0
+        Me._tvseasonposteryamj = False
+        Me._tvshowactorthumbsfrodo = False
+        Me._tvshowbannerfrodo = False
+        Me._tvshowbannerheight = 0
+        Me._tvshowbanneroverwrite = True
+        Me._tvshowbannerpreftype = Enums.TVShowBannerType.Graphical
+        Me._tvshowbannerqual = 0
+        Me._tvshowbannerresize = False
+        Me._tvshowbannerwidth = 0
+        Me._tvshowbanneryamj = False
+        Me._tvshowcharacterartoverwrite = True
+        Me._tvshowcharacterartxbmc = False
+        Me._tvshowclearartoverwrite = True
+        Me._tvshowclearartxbmc = False
+        Me._tvshowclearlogooverwrite = True
+        Me._tvshowclearlogoxbmc = False
+        Me._tvshowfanartcol = False
+        Me._tvshowfanartfrodo = False
+        Me._tvshowfanartheight = 0
+        Me._tvshowfanartoverwrite = True
+        Me._tvshowfanartprefsize = Enums.TVFanartSize.HD1080
+        Me._tvshowfanartqual = 0
+        Me._tvshowfanartresize = False
+        Me._tvshowfanartwidth = 0
+        Me._tvshowfanartyamj = False
+        Me._tvshowfiltercustom = New List(Of String)
+        Me._tvshowfiltercustomisempty = False
+        Me._tvshowlandscapeoverwrite = True
+        Me._tvshowlandscapexbmc = False
+        Me._tvshownfocol = False
+        Me._tvshowpostercol = False
+        Me._tvshowposterfrodo = False
+        Me._tvshowposterheight = 0
+        Me._tvshowposteroverwrite = True
+        Me._tvshowposterprefsize = Enums.TVPosterSize.HD1000
+        Me._tvshowposterqual = 0
+        Me._tvshowposterresize = False
+        Me._tvshowposterwidth = 0
+        Me._tvshowposteryamj = False
+        Me._tvshowpropercase = True
+        Me._tvshowregexes = New List(Of TVShowRegEx)
+        Me._tvshowtvthemefolderxbmc = String.Empty
+        Me._tvshowtvthemexbmc = False
+        Me._tvskiplessthan = 0
+        Me._tvusefrodo = False
+        Me._tvuseyamj = False
         Me._username = String.Empty
-        Me._validexts = New List(Of String)
+        Me._usetrakt = False
         Me._version = String.Empty
-        Me._videotsparent = False
-        Me._windowloc = New Point(If(Screen.PrimaryScreen.WorkingArea.Width <= 1024, 0, Convert.ToInt32((Screen.PrimaryScreen.WorkingArea.Width - 1024) / 2)), If(Screen.PrimaryScreen.WorkingArea.Height <= 768, 0, Convert.ToInt32((Screen.PrimaryScreen.WorkingArea.Height - 768) / 2)))
-        Me._windowsize = New Size(1024, 768)
-        Me._windowstate = FormWindowState.Normal
-        Me._movieyamjsetscompatible = False
 
         Try
             xmlTVDB = XDocument.Parse(My.Resources.Languages_2)
@@ -4931,22 +5210,17 @@ Public Class Settings
                 cLang = New Containers.TVLanguage
                 cLang.LongLang = xL.Element("name").Value
                 cLang.ShortLang = xL.Element("abbreviation").Value
-                _languages.Add(cLang)
+                _tvscraperlanguages.Add(cLang)
             Next
-            _languages.Sort(AddressOf CompareLanguagesLong)
+            _tvscraperlanguages.Sort(AddressOf CompareLanguagesLong)
         Catch
 
         End Try
     End Sub
 
-    Public Function EpisodeFanartEnabled() As Boolean
-        Return Me._tvepisodefanartfrodo
-    End Function
-
     Public Sub Load()
         Try
             Dim xmlSerial As New XmlSerializer(GetType(Settings))
-
 
             'Cocotus, Load from central "Settings" folder if it exists!
             Dim configpath As String = String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar, "Settings.xml")
@@ -4980,7 +5254,7 @@ Public Class Settings
             SetDefaultsForLists(Enums.DefaultType.All, False)
         End If
 
-        ' Fix added to avoid to have no NFO saved
+        ' Fix added to avoid to have no movie NFO saved
         If Not (Master.eSettings.MovieUseEden Or Master.eSettings.MovieUseExpert Or Master.eSettings.MovieUseFrodo Or Master.eSettings.MovieUseNMJ Or Master.eSettings.MovieUseYAMJ) Then
             Master.eSettings.MovieUseFrodo = True
             Master.eSettings.MovieActorThumbsFrodo = True
@@ -4996,6 +5270,22 @@ Public Class Settings
             Master.eSettings.MoviePosterFrodo = True
             Master.eSettings.MovieTrailerFrodo = True
             Master.eSettings.MovieXBMCTrailerFormat = True
+        End If
+
+        ' Fix added to avoid to have no tv show NFO saved
+        If Not (Master.eSettings.TVUseFrodo OrElse Master.eSettings.TVUseYAMJ) Then
+            Master.eSettings.TVUseFrodo = True
+            Master.eSettings.TVEpisodeActorThumbsFrodo = True
+            Master.eSettings.TVEpisodePosterFrodo = True
+            Master.eSettings.TVSeasonBannerFrodo = True
+            Master.eSettings.TVSeasonFanartFrodo = True
+            Master.eSettings.TVSeasonLandscapeXBMC = True
+            Master.eSettings.TVSeasonPosterFrodo = True
+            Master.eSettings.TVShowActorThumbsFrodo = True
+            Master.eSettings.TVShowBannerFrodo = True
+            Master.eSettings.TVShowFanartFrodo = True
+            Master.eSettings.TVShowLandscapeXBMC = True
+            Master.eSettings.TVShowPosterFrodo = True
         End If
 
     End Sub
@@ -5024,104 +5314,100 @@ Public Class Settings
         End Try
     End Sub
 
-    Public Function SeasonFanartEnabled() As Boolean
-        Return Master.eSettings.TVSeasonFanartFrodo
-    End Function
-
     Public Sub SetDefaultsForLists(ByVal Type As Enums.DefaultType, ByVal Force As Boolean)
-        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.MovieFilters) AndAlso (Force OrElse (Master.eSettings.FilterCustom.Count <= 0 AndAlso Not Master.eSettings.NoFilters)) Then
-            Master.eSettings.FilterCustom.Clear()
-            Master.eSettings.FilterCustom.Add("[\W_]\(?\d{4}\)?.*")
-            Master.eSettings.FilterCustom.Add("(?i)[\W_]blu[\W_]?ray.*")
-            Master.eSettings.FilterCustom.Add("(?i)[\W_]bd[\W_]?rip.*")
-            Master.eSettings.FilterCustom.Add("(?i)[\W_]dvd.*")
-            Master.eSettings.FilterCustom.Add("(?i)[\W_]720.*")
-            Master.eSettings.FilterCustom.Add("(?i)[\W_]1080.*") 'not really needed because the year title will catch this one, but just in case a user doesn't want the year filter but wants to filter 1080
-            Master.eSettings.FilterCustom.Add("(?i)[\W_]ac3.*")
-            Master.eSettings.FilterCustom.Add("(?i)[\W_]dts.*")
-            Master.eSettings.FilterCustom.Add("(?i)[\W_]divx.*")
-            Master.eSettings.FilterCustom.Add("(?i)[\W_]xvid.*")
-            Master.eSettings.FilterCustom.Add("(?i)[\W_]dc[\W_]?.*")
-            Master.eSettings.FilterCustom.Add("(?i)[\W_]dir(ector'?s?)?\s?cut.*")
-            Master.eSettings.FilterCustom.Add("(?i)[\W_]extended.*")
-            Master.eSettings.FilterCustom.Add("(?i)[\W_]hd(tv)?.*")
-            Master.eSettings.FilterCustom.Add("(?i)[\W_]unrated.*")
-            Master.eSettings.FilterCustom.Add("(?i)[\W_]uncut.*")
-            Master.eSettings.FilterCustom.Add("(?i)[\W_]([a-z]{3}|multi)[sd]ub.*")
-            Master.eSettings.FilterCustom.Add("(?i)[\W_]\[offline\].*")
-            Master.eSettings.FilterCustom.Add("(?i)[\W_]ntsc.*")
-            Master.eSettings.FilterCustom.Add("[\W_]PAL[\W_]?.*")
-            Master.eSettings.FilterCustom.Add("\.[->] ")
+        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.MovieFilters) AndAlso (Force OrElse (Master.eSettings.MovieFilterCustom.Count <= 0 AndAlso Not Master.eSettings.MovieFilterCustomIsEmpty)) Then
+            Master.eSettings.MovieFilterCustom.Clear()
+            Master.eSettings.MovieFilterCustom.Add("[\W_]\(?\d{4}\)?.*")
+            Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]blu[\W_]?ray.*")
+            Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]bd[\W_]?rip.*")
+            Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]dvd.*")
+            Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]720.*")
+            Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]1080.*") 'not really needed because the year title will catch this one, but just in case a user doesn't want the year filter but wants to filter 1080
+            Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]ac3.*")
+            Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]dts.*")
+            Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]divx.*")
+            Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]xvid.*")
+            Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]dc[\W_]?.*")
+            Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]dir(ector'?s?)?\s?cut.*")
+            Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]extended.*")
+            Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]hd(tv)?.*")
+            Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]unrated.*")
+            Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]uncut.*")
+            Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]([a-z]{3}|multi)[sd]ub.*")
+            Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]\[offline\].*")
+            Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]ntsc.*")
+            Master.eSettings.MovieFilterCustom.Add("[\W_]PAL[\W_]?.*")
+            Master.eSettings.MovieFilterCustom.Add("\.[->] ")
         End If
 
-        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.ShowFilters) AndAlso (Force OrElse (Master.eSettings.ShowFilterCustom.Count <= 0 AndAlso Not Master.eSettings.NoShowFilters)) Then
-            Master.eSettings.ShowFilterCustom.Clear()
-            Master.eSettings.ShowFilterCustom.Add("[\W_]\(?\d{4}\)?.*")
+        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.ShowFilters) AndAlso (Force OrElse (Master.eSettings.TVShowFilterCustom.Count <= 0 AndAlso Not Master.eSettings.TVShowFilterCustomIsEmpty)) Then
+            Master.eSettings.TVShowFilterCustom.Clear()
+            Master.eSettings.TVShowFilterCustom.Add("[\W_]\(?\d{4}\)?.*")
             'would there ever be season or episode info in the show folder name??
-            'Master.eSettings.ShowFilterCustom.Add("(?i)([\W_]+\s?)?s[0-9]+[\W_]*e[0-9]+(\])*")
-            'Master.eSettings.ShowFilterCustom.Add("(?i)([\W_]+\s?)?[0-9]+x[0-9]+(\])*")
-            'Master.eSettings.ShowFilterCustom.Add("(?i)([\W_]+\s?)?s(eason)?[\W_]*[0-9]+(\])*")
-            'Master.eSettings.ShowFilterCustom.Add("(?i)([\W_]+\s?)?e(pisode)?[\W_]*[0-9]+(\])*")
-            Master.eSettings.ShowFilterCustom.Add("(?i)[\W_]blu[\W_]?ray.*")
-            Master.eSettings.ShowFilterCustom.Add("(?i)[\W_]bd[\W_]?rip.*")
-            Master.eSettings.ShowFilterCustom.Add("(?i)[\W_]dvd.*")
-            Master.eSettings.ShowFilterCustom.Add("(?i)[\W_]720.*")
-            Master.eSettings.ShowFilterCustom.Add("(?i)[\W_]1080.*") 'not really needed because the year title will catch this one, but just in case a user doesn't want the year filter but wants to filter 1080
-            Master.eSettings.ShowFilterCustom.Add("(?i)[\W_]ac3.*")
-            Master.eSettings.ShowFilterCustom.Add("(?i)[\W_]dts.*")
-            Master.eSettings.ShowFilterCustom.Add("(?i)[\W_]divx.*")
-            Master.eSettings.ShowFilterCustom.Add("(?i)[\W_]xvid.*")
-            Master.eSettings.ShowFilterCustom.Add("(?i)[\W_]dc[\W_]?.*")
-            Master.eSettings.ShowFilterCustom.Add("(?i)[\W_]dir(ector'?s?)?\s?cut.*")
-            Master.eSettings.ShowFilterCustom.Add("(?i)[\W_]extended.*")
-            Master.eSettings.ShowFilterCustom.Add("(?i)[\W_]hd(tv)?.*")
-            Master.eSettings.ShowFilterCustom.Add("(?i)[\W_]unrated.*")
-            Master.eSettings.ShowFilterCustom.Add("(?i)[\W_]uncut.*")
-            Master.eSettings.ShowFilterCustom.Add("(?i)[\W_]([a-z]{3}|multi)[sd]ub.*")
-            Master.eSettings.ShowFilterCustom.Add("(?i)[\W_]\[offline\].*")
-            Master.eSettings.ShowFilterCustom.Add("(?i)[\W_]ntsc.*")
-            Master.eSettings.ShowFilterCustom.Add("[\W_]PAL[\W_]?.*")
-            Master.eSettings.ShowFilterCustom.Add("\.[->] ")
+            'Master.eSettings.TVShowFilterCustom.Add("(?i)([\W_]+\s?)?s[0-9]+[\W_]*e[0-9]+(\])*")
+            'Master.eSettings.TVShowFilterCustom.Add("(?i)([\W_]+\s?)?[0-9]+x[0-9]+(\])*")
+            'Master.eSettings.TVShowFilterCustom.Add("(?i)([\W_]+\s?)?s(eason)?[\W_]*[0-9]+(\])*")
+            'Master.eSettings.TVShowFilterCustom.Add("(?i)([\W_]+\s?)?e(pisode)?[\W_]*[0-9]+(\])*")
+            Master.eSettings.TVShowFilterCustom.Add("(?i)[\W_]blu[\W_]?ray.*")
+            Master.eSettings.TVShowFilterCustom.Add("(?i)[\W_]bd[\W_]?rip.*")
+            Master.eSettings.TVShowFilterCustom.Add("(?i)[\W_]dvd.*")
+            Master.eSettings.TVShowFilterCustom.Add("(?i)[\W_]720.*")
+            Master.eSettings.TVShowFilterCustom.Add("(?i)[\W_]1080.*") 'not really needed because the year title will catch this one, but just in case a user doesn't want the year filter but wants to filter 1080
+            Master.eSettings.TVShowFilterCustom.Add("(?i)[\W_]ac3.*")
+            Master.eSettings.TVShowFilterCustom.Add("(?i)[\W_]dts.*")
+            Master.eSettings.TVShowFilterCustom.Add("(?i)[\W_]divx.*")
+            Master.eSettings.TVShowFilterCustom.Add("(?i)[\W_]xvid.*")
+            Master.eSettings.TVShowFilterCustom.Add("(?i)[\W_]dc[\W_]?.*")
+            Master.eSettings.TVShowFilterCustom.Add("(?i)[\W_]dir(ector'?s?)?\s?cut.*")
+            Master.eSettings.TVShowFilterCustom.Add("(?i)[\W_]extended.*")
+            Master.eSettings.TVShowFilterCustom.Add("(?i)[\W_]hd(tv)?.*")
+            Master.eSettings.TVShowFilterCustom.Add("(?i)[\W_]unrated.*")
+            Master.eSettings.TVShowFilterCustom.Add("(?i)[\W_]uncut.*")
+            Master.eSettings.TVShowFilterCustom.Add("(?i)[\W_]([a-z]{3}|multi)[sd]ub.*")
+            Master.eSettings.TVShowFilterCustom.Add("(?i)[\W_]\[offline\].*")
+            Master.eSettings.TVShowFilterCustom.Add("(?i)[\W_]ntsc.*")
+            Master.eSettings.TVShowFilterCustom.Add("[\W_]PAL[\W_]?.*")
+            Master.eSettings.TVShowFilterCustom.Add("\.[->] ")
         End If
 
-        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.EpFilters) AndAlso (Force OrElse (Master.eSettings.EpFilterCustom.Count <= 0 AndAlso Not Master.eSettings.NoEpFilters)) Then
-            Master.eSettings.EpFilterCustom.Clear()
-            Master.eSettings.EpFilterCustom.Add("[\W_]\(?\d{4}\)?.*")
-            Master.eSettings.EpFilterCustom.Add("(?i)([\W_]+\s?)?s[0-9]+[\W_]*([-e][0-9]+)+(\])*")
-            Master.eSettings.EpFilterCustom.Add("(?i)([\W_]+\s?)?[0-9]+([-x][0-9]+)+(\])*")
-            Master.eSettings.EpFilterCustom.Add("(?i)([\W_]+\s?)?s(eason)?[\W_]*[0-9]+(\])*")
-            Master.eSettings.EpFilterCustom.Add("(?i)([\W_]+\s?)?e(pisode)?[\W_]*[0-9]+(\])*")
-            Master.eSettings.EpFilterCustom.Add("(?i)[\W_]blu[\W_]?ray.*")
-            Master.eSettings.EpFilterCustom.Add("(?i)[\W_]bd[\W_]?rip.*")
-            Master.eSettings.EpFilterCustom.Add("(?i)[\W_]dvd.*")
-            Master.eSettings.EpFilterCustom.Add("(?i)[\W_]720.*")
-            Master.eSettings.EpFilterCustom.Add("(?i)[\W_]1080.*") 'not really needed because the year title will catch this one, but just in case a user doesn't want the year filter but wants to filter 1080
-            Master.eSettings.EpFilterCustom.Add("(?i)[\W_]ac3.*")
-            Master.eSettings.EpFilterCustom.Add("(?i)[\W_]dts.*")
-            Master.eSettings.EpFilterCustom.Add("(?i)[\W_]divx.*")
-            Master.eSettings.EpFilterCustom.Add("(?i)[\W_]xvid.*")
-            Master.eSettings.EpFilterCustom.Add("(?i)[\W_]dc[\W_]?.*")
-            Master.eSettings.EpFilterCustom.Add("(?i)[\W_]dir(ector'?s?)?\s?cut.*")
-            Master.eSettings.EpFilterCustom.Add("(?i)[\W_]extended.*")
-            Master.eSettings.EpFilterCustom.Add("(?i)[\W_]hd(tv)?.*")
-            Master.eSettings.EpFilterCustom.Add("(?i)[\W_]unrated.*")
-            Master.eSettings.EpFilterCustom.Add("(?i)[\W_]uncut.*")
-            Master.eSettings.EpFilterCustom.Add("(?i)[\W_]([a-z]{3}|multi)[sd]ub.*")
-            Master.eSettings.EpFilterCustom.Add("(?i)[\W_]\[offline\].*")
-            Master.eSettings.EpFilterCustom.Add("(?i)[\W_]ntsc.*")
-            Master.eSettings.EpFilterCustom.Add("[\W_]PAL[\W_]?.*")
-            Master.eSettings.EpFilterCustom.Add("\.[->] ")
+        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.EpFilters) AndAlso (Force OrElse (Master.eSettings.TVEpisodeFilterCustom.Count <= 0 AndAlso Not Master.eSettings.TVEpisodeFilterCustomIsEmpty)) Then
+            Master.eSettings.TVEpisodeFilterCustom.Clear()
+            Master.eSettings.TVEpisodeFilterCustom.Add("[\W_]\(?\d{4}\)?.*")
+            Master.eSettings.TVEpisodeFilterCustom.Add("(?i)([\W_]+\s?)?s[0-9]+[\W_]*([-e][0-9]+)+(\])*")
+            Master.eSettings.TVEpisodeFilterCustom.Add("(?i)([\W_]+\s?)?[0-9]+([-x][0-9]+)+(\])*")
+            Master.eSettings.TVEpisodeFilterCustom.Add("(?i)([\W_]+\s?)?s(eason)?[\W_]*[0-9]+(\])*")
+            Master.eSettings.TVEpisodeFilterCustom.Add("(?i)([\W_]+\s?)?e(pisode)?[\W_]*[0-9]+(\])*")
+            Master.eSettings.TVEpisodeFilterCustom.Add("(?i)[\W_]blu[\W_]?ray.*")
+            Master.eSettings.TVEpisodeFilterCustom.Add("(?i)[\W_]bd[\W_]?rip.*")
+            Master.eSettings.TVEpisodeFilterCustom.Add("(?i)[\W_]dvd.*")
+            Master.eSettings.TVEpisodeFilterCustom.Add("(?i)[\W_]720.*")
+            Master.eSettings.TVEpisodeFilterCustom.Add("(?i)[\W_]1080.*") 'not really needed because the year title will catch this one, but just in case a user doesn't want the year filter but wants to filter 1080
+            Master.eSettings.TVEpisodeFilterCustom.Add("(?i)[\W_]ac3.*")
+            Master.eSettings.TVEpisodeFilterCustom.Add("(?i)[\W_]dts.*")
+            Master.eSettings.TVEpisodeFilterCustom.Add("(?i)[\W_]divx.*")
+            Master.eSettings.TVEpisodeFilterCustom.Add("(?i)[\W_]xvid.*")
+            Master.eSettings.TVEpisodeFilterCustom.Add("(?i)[\W_]dc[\W_]?.*")
+            Master.eSettings.TVEpisodeFilterCustom.Add("(?i)[\W_]dir(ector'?s?)?\s?cut.*")
+            Master.eSettings.TVEpisodeFilterCustom.Add("(?i)[\W_]extended.*")
+            Master.eSettings.TVEpisodeFilterCustom.Add("(?i)[\W_]hd(tv)?.*")
+            Master.eSettings.TVEpisodeFilterCustom.Add("(?i)[\W_]unrated.*")
+            Master.eSettings.TVEpisodeFilterCustom.Add("(?i)[\W_]uncut.*")
+            Master.eSettings.TVEpisodeFilterCustom.Add("(?i)[\W_]([a-z]{3}|multi)[sd]ub.*")
+            Master.eSettings.TVEpisodeFilterCustom.Add("(?i)[\W_]\[offline\].*")
+            Master.eSettings.TVEpisodeFilterCustom.Add("(?i)[\W_]ntsc.*")
+            Master.eSettings.TVEpisodeFilterCustom.Add("[\W_]PAL[\W_]?.*")
+            Master.eSettings.TVEpisodeFilterCustom.Add("\.[->] ")
         End If
 
-        If Type = Enums.DefaultType.All AndAlso Master.eSettings.SortTokens.Count <= 0 AndAlso Not Master.eSettings.NoTokens Then
-            Master.eSettings.SortTokens.Add("the[\W_]")
-            Master.eSettings.SortTokens.Add("a[\W_]")
-            Master.eSettings.SortTokens.Add("an[\W_]")
+        If Type = Enums.DefaultType.All AndAlso Master.eSettings.MovieSortTokens.Count <= 0 AndAlso Not Master.eSettings.MovieSortTokensIsEmpty Then
+            Master.eSettings.MovieSortTokens.Add("the[\W_]")
+            Master.eSettings.MovieSortTokens.Add("a[\W_]")
+            Master.eSettings.MovieSortTokens.Add("an[\W_]")
         End If
 
-        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.ValidExts) AndAlso (Force OrElse Master.eSettings.ValidExts.Count <= 0) Then
-            Master.eSettings.ValidExts.Clear()
-            Master.eSettings.ValidExts.AddRange(Strings.Split(".avi,.divx,.mkv,.iso,.mpg,.mp4,.mpeg,.wmv,.wma,.mov,.mts,.m2t,.img,.dat,.bin,.cue,.ifo,.vob,.dvb,.evo,.asf,.asx,.avs,.nsv,.ram,.ogg,.ogm,.ogv,.flv,.swf,.nut,.viv,.rar,.m2ts,.dvr-ms,.ts,.m4v,.rmvb,.webm,.disc", ","))
+        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.ValidExts) AndAlso (Force OrElse Master.eSettings.FileSystemValidExts.Count <= 0) Then
+            Master.eSettings.FileSystemValidExts.Clear()
+            Master.eSettings.FileSystemValidExts.AddRange(Strings.Split(".avi,.divx,.mkv,.iso,.mpg,.mp4,.mpeg,.wmv,.wma,.mov,.mts,.m2t,.img,.dat,.bin,.cue,.ifo,.vob,.dvb,.evo,.asf,.asx,.avs,.nsv,.ram,.ogg,.ogm,.ogv,.flv,.swf,.nut,.viv,.rar,.m2ts,.dvr-ms,.ts,.m4v,.rmvb,.webm,.disc", ","))
         End If
 
         If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.ShowRegex) AndAlso (Force OrElse Master.eSettings.TVShowRegexes.Count <= 0) Then
@@ -5135,42 +5421,117 @@ Public Class Settings
         End If
     End Sub
 
+    Public Function TVASAnyEnabled() As Boolean
+        Return TVASBannerEnabled() OrElse TVASFanartEnabled() OrElse TVASLandscapeEnabled() OrElse TVASPosterEnabled()
+    End Function
+    Public Function TVASBannerEnabled() As Boolean
+        Return Master.eSettings.TVSeasonBannerFrodo
+    End Function
+
+    Public Function TVASFanartEnabled() As Boolean
+        Return Master.eSettings.TVSeasonFanartFrodo
+    End Function
+
+    Public Function TVASLandscapeEnabled() As Boolean
+        Return Master.eSettings.TVSeasonLandscapeXBMC
+    End Function
+
+    Public Function TVASPosterEnabled() As Boolean
+        Return Master.eSettings.TVSeasonPosterFrodo
+    End Function
+
+    Public Function TVEpisodePosterEnabled() As Boolean
+        Return Master.eSettings.TVEpisodePosterFrodo OrElse Master.eSettings.TVEpisodePosterYAMJ
+    End Function
+
+    Public Function TVEpisodeFanartEnabled() As Boolean
+        Return False
+    End Function
+
+    Public Function TVSeasonBannerEnabled() As Boolean
+        Return Master.eSettings.TVSeasonBannerFrodo OrElse TVSeasonBannerYAMJ
+    End Function
+
+    Public Function TVSeasonFanartEnabled() As Boolean
+        Return Master.eSettings.TVSeasonFanartFrodo OrElse TVSeasonFanartYAMJ
+    End Function
+
+    Public Function TVSeasonLandscapeEnabled() As Boolean
+        Return Master.eSettings.TVSeasonLandscapeXBMC
+    End Function
+
+    Public Function TVSeasonPosterEnabled() As Boolean
+        Return Master.eSettings.TVSeasonPosterFrodo OrElse TVSeasonPosterYAMJ
+    End Function
+
+    Public Function TVShowBannerEnabled() As Boolean
+        Return Master.eSettings.TVShowBannerFrodo OrElse TVShowBannerYAMJ
+    End Function
+
+    Public Function TVShowCharacterEnabled() As Boolean
+        Return Master.eSettings.TVShowCharacterArtXBMC
+    End Function
+
+    Public Function TVShowClearArtEnabled() As Boolean
+        Return Master.eSettings.TVShowClearArtXBMC
+    End Function
+
+    Public Function TVShowClearLogoEnabled() As Boolean
+        Return Master.eSettings.TVShowClearLogoXBMC
+    End Function
+
+    Public Function TVShowFanartEnabled() As Boolean
+        Return Master.eSettings.TVShowFanartFrodo OrElse TVShowFanartYAMJ
+    End Function
+
+    Public Function TVShowLandscapeEnabled() As Boolean
+        Return Master.eSettings.TVShowLandscapeXBMC
+    End Function
+
+    Public Function TVShowPosterEnabled() As Boolean
+        Return Master.eSettings.TVShowPosterFrodo OrElse TVShowPosterYAMJ
+    End Function
+
+    Public Function TVShowTVThemeEnabled() As Boolean
+        Return Master.eSettings.TVShowTVThemeXBMC
+    End Function
+
     Private Shared Function CompareLanguagesLong( _
         ByVal x As Containers.TVLanguage, ByVal y As Containers.TVLanguage) As Integer
 
         If x Is Nothing Then
             If y Is Nothing Then
-                ' If x is Nothing and y is Nothing, they're 
-                ' equal.  
+                ' If x is Nothing and y is Nothing, they're
+                ' equal.
                 Return 0
             Else
-                ' If x is Nothing and y is not Nothing, y 
-                ' is greater.  
+                ' If x is Nothing and y is not Nothing, y
+                ' is greater.
                 Return -1
             End If
         Else
-            ' If x is not Nothing... 
-            ' 
+            ' If x is not Nothing...
+            '
             If y Is Nothing Then
-                ' ...and y is Nothing, x is greater. 
+                ' ...and y is Nothing, x is greater.
                 Return 1
             Else
-                ' ...and y is not Nothing, compare the  
-                ' lengths of the two strings. 
-                ' 
+                ' ...and y is not Nothing, compare the
+                ' lengths of the two strings.
+                '
 
                 'Dim retval As Integer = _
                 '    x.LongLang.Length.CompareTo(y.LongLang.Length)
 
                 'If retval <> 0 Then
-                '    ' If the strings are not of equal length, 
-                '    ' the longer string is greater. 
-                '    ' 
+                '    ' If the strings are not of equal length,
+                '    ' the longer string is greater.
+                '    '
                 '    Return retval
                 'Else
-                '    ' If the strings are of equal length, 
-                '    ' sort them with ordinary string comparison. 
-                '    ' 
+                '    ' If the strings are of equal length,
+                '    ' sort them with ordinary string comparison.
+                '    '
                 Return x.LongLang.CompareTo(y.LongLang)
                 'End If
             End If
@@ -5183,37 +5544,37 @@ Public Class Settings
 
         If x Is Nothing Then
             If y Is Nothing Then
-                ' If x is Nothing and y is Nothing, they're 
-                ' equal.  
+                ' If x is Nothing and y is Nothing, they're
+                ' equal.
                 Return 0
             Else
-                ' If x is Nothing and y is not Nothing, y 
-                ' is greater.  
+                ' If x is Nothing and y is not Nothing, y
+                ' is greater.
                 Return -1
             End If
         Else
-            ' If x is not Nothing... 
-            ' 
+            ' If x is not Nothing...
+            '
             If y Is Nothing Then
-                ' ...and y is Nothing, x is greater. 
+                ' ...and y is Nothing, x is greater.
                 Return 1
             Else
-                ' ...and y is not Nothing, compare the  
-                ' lengths of the two strings. 
-                ' 
+                ' ...and y is not Nothing, compare the
+                ' lengths of the two strings.
+                '
 
                 'Dim retval As Integer = _
                 '    x.ShortLang.Length.CompareTo(y.ShortLang.Length)
 
                 'If retval <> 0 Then
-                '    ' If the strings are not of equal length, 
-                '    ' the longer string is greater. 
-                '    ' 
+                '    ' If the strings are not of equal length,
+                '    ' the longer string is greater.
+                '    '
                 '    Return retval
                 'Else
-                '    ' If the strings are of equal length, 
-                '    ' sort them with ordinary string comparison. 
-                '    ' 
+                '    ' If the strings are of equal length,
+                '    ' sort them with ordinary string comparison.
+                '    '
                 Return x.ShortLang.CompareTo(y.ShortLang)
                 'End If
             End If

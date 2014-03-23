@@ -251,7 +251,7 @@ Public Class APIXML
             ElseIf FileUtils.Common.isBDRip(sPath) Then
                 Return "bluray"
             Else
-                sourceCheck = If(Master.eSettings.SourceFromFolder, String.Concat(Directory.GetParent(sPath).Name.ToLower, Path.DirectorySeparatorChar, Path.GetFileName(sPath).ToLower), Path.GetFileName(sPath).ToLower)
+                sourceCheck = If(Master.eSettings.GeneralSourceFromFolder, String.Concat(Directory.GetParent(sPath).Name.ToLower, Path.DirectorySeparatorChar, Path.GetFileName(sPath).ToLower), Path.GetFileName(sPath).ToLower)
                 Dim mySources As New Hashtable
                 mySources = AdvancedSettings.GetComplexSetting("MovieSources")
                 If Not mySources Is Nothing Then
@@ -385,8 +385,8 @@ Public Class APIXML
 
             Try
 
-                If Master.eSettings.UseCertForMPAA AndAlso Not Master.eSettings.CertificationLang = "USA" AndAlso Not IsNothing(RatingXML.Element("ratings").Element(Master.eSettings.CertificationLang.ToLower)) AndAlso RatingXML.Element("ratings").Element(Master.eSettings.CertificationLang.ToLower)...<movie>.Descendants.Count > 0 Then
-                    Dim xRating = From xRat In RatingXML.Element("ratings").Element(Master.eSettings.CertificationLang.ToLower)...<movie>...<name> Where strRating.ToLower = xRat.@searchstring.ToLower OrElse strRating.ToLower = xRat.@searchstring.ToLower.Split(Convert.ToChar(":"))(1) Select xRat.<icon>.Value
+                If Master.eSettings.MovieScraperCertForMPAA AndAlso Not Master.eSettings.MovieScraperCertLang = "USA" AndAlso Not IsNothing(RatingXML.Element("ratings").Element(Master.eSettings.MovieScraperCertLang.ToLower)) AndAlso RatingXML.Element("ratings").Element(Master.eSettings.MovieScraperCertLang.ToLower)...<movie>.Descendants.Count > 0 Then
+                    Dim xRating = From xRat In RatingXML.Element("ratings").Element(Master.eSettings.MovieScraperCertLang.ToLower)...<movie>...<name> Where strRating.ToLower = xRat.@searchstring.ToLower OrElse strRating.ToLower = xRat.@searchstring.ToLower.Split(Convert.ToChar(":"))(1) Select xRat.<icon>.Value
                     If xRating.Count > 0 Then
                         imgRatingStr = Path.Combine(mePath, xRating(xRating.Count - 1).ToString)
                     End If
@@ -414,8 +414,8 @@ Public Class APIXML
     Public Shared Function GetRatingList() As Object()
         Dim retRatings As New List(Of String)
         Try
-            If Master.eSettings.UseCertForMPAA AndAlso Not Master.eSettings.CertificationLang = "USA" AndAlso Not IsNothing(RatingXML.Element("ratings").Element(Master.eSettings.CertificationLang.ToLower)) AndAlso RatingXML.Element("ratings").Element(Master.eSettings.CertificationLang.ToLower).Descendants("movie").Count > 0 Then
-                Dim xRating = From xRat In RatingXML.Element("ratings").Element(Master.eSettings.CertificationLang.ToLower)...<movie>...<name> Select xRat.@searchstring
+            If Master.eSettings.MovieScraperCertForMPAA AndAlso Not Master.eSettings.MovieScraperCertLang = "USA" AndAlso Not IsNothing(RatingXML.Element("ratings").Element(Master.eSettings.MovieScraperCertLang.ToLower)) AndAlso RatingXML.Element("ratings").Element(Master.eSettings.MovieScraperCertLang.ToLower).Descendants("movie").Count > 0 Then
+                Dim xRating = From xRat In RatingXML.Element("ratings").Element(Master.eSettings.MovieScraperCertLang.ToLower)...<movie>...<name> Select xRat.@searchstring
                 If xRating.Count > 0 Then
                     retRatings.AddRange(xRating.ToArray)
                 End If
@@ -468,8 +468,8 @@ Public Class APIXML
 
             Try
 
-                If Master.eSettings.ShowRatingRegion = "usa" AndAlso RatingXML.Element("ratings").Element(Master.eSettings.ShowRatingRegion.ToLower)...<tv>.Descendants.Count > 0 Then
-                    Dim xRating = From xRat In RatingXML.Element("ratings").Element(Master.eSettings.ShowRatingRegion.ToLower)...<tv>...<name> Where strRating.ToLower = xRat.@searchstring.ToLower Select xRat.<icon>.Value
+                If Master.eSettings.TVScraperRatingRegion = "usa" AndAlso RatingXML.Element("ratings").Element(Master.eSettings.TVScraperRatingRegion.ToLower)...<tv>.Descendants.Count > 0 Then
+                    Dim xRating = From xRat In RatingXML.Element("ratings").Element(Master.eSettings.TVScraperRatingRegion.ToLower)...<tv>...<name> Where strRating.ToLower = xRat.@searchstring.ToLower Select xRat.<icon>.Value
                     If xRating.Count > 0 Then
                         imgRatingStr = Path.Combine(mePath, xRating(xRating.Count - 1).ToString)
                     End If
@@ -497,8 +497,8 @@ Public Class APIXML
     Public Shared Function GetTVRatingList() As Object()
         Dim retRatings As New List(Of String)
         Try
-            If Not Master.eSettings.ShowRatingRegion = "USA" AndAlso RatingXML.Element("ratings").Element(Master.eSettings.ShowRatingRegion.ToLower).Descendants("tv").Count > 0 Then
-                Dim xRating = From xRat In RatingXML.Element("ratings").Element(Master.eSettings.ShowRatingRegion.ToLower)...<tv>...<name> Select xRat.@searchstring
+            If Not Master.eSettings.TVScraperRatingRegion = "USA" AndAlso RatingXML.Element("ratings").Element(Master.eSettings.TVScraperRatingRegion.ToLower).Descendants("tv").Count > 0 Then
+                Dim xRating = From xRat In RatingXML.Element("ratings").Element(Master.eSettings.TVScraperRatingRegion.ToLower)...<tv>...<name> Select xRat.@searchstring
                 If xRating.Count > 0 Then
                     retRatings.AddRange(xRating.ToArray)
                 End If

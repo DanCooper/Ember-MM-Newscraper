@@ -141,9 +141,9 @@ Public Class NFO
                 End If
 
                 If ForTV Then
-                    If Not String.IsNullOrEmpty(Master.eSettings.TVFlagLang) AndAlso miAudio.LongLanguage.ToLower = Master.eSettings.TVFlagLang.ToLower Then fiaOut.HasPreferred = True
+                    If Not String.IsNullOrEmpty(Master.eSettings.TVGeneralFlagLang) AndAlso miAudio.LongLanguage.ToLower = Master.eSettings.TVGeneralFlagLang.ToLower Then fiaOut.HasPreferred = True
                 Else
-                    If Not String.IsNullOrEmpty(Master.eSettings.FlagLang) AndAlso miAudio.LongLanguage.ToLower = Master.eSettings.FlagLang.ToLower Then fiaOut.HasPreferred = True
+                    If Not String.IsNullOrEmpty(Master.eSettings.MovieGeneralFlagLang) AndAlso miAudio.LongLanguage.ToLower = Master.eSettings.MovieGeneralFlagLang.ToLower Then fiaOut.HasPreferred = True
                 End If
             Next
 
@@ -547,7 +547,7 @@ Public Class NFO
                 If Not String.IsNullOrEmpty(sPath) Then
 
                     'go ahead and rename it now, will still be picked up in getimdbfromnonconf
-                    If Not Master.eSettings.OverwriteNfo Then
+                    If Not Master.eSettings.GeneralOverwriteNfo Then
                         RenameNonConfNfo(sPath, True)
                     End If
 
@@ -611,14 +611,14 @@ Public Class NFO
 
                 Else
                     'not really anything else to do with non-conforming nfos aside from rename them
-                    If Not Master.eSettings.OverwriteNfo Then
+                    If Not Master.eSettings.GeneralOverwriteNfo Then
                         RenameEpNonConfNfo(sPath, True)
                     End If
                 End If
 
             Catch
                 'not really anything else to do with non-conforming nfos aside from rename them
-                If Not Master.eSettings.OverwriteNfo Then
+                If Not Master.eSettings.GeneralOverwriteNfo Then
                     RenameEpNonConfNfo(sPath, True)
                 End If
             End Try
@@ -641,14 +641,14 @@ Public Class NFO
                     End Using
                 Else
                     'not really anything else to do with non-conforming nfos aside from rename them
-                    If Not Master.eSettings.OverwriteNfo Then
+                    If Not Master.eSettings.GeneralOverwriteNfo Then
                         RenameShowNonConfNfo(sPath)
                     End If
                 End If
 
             Catch
                 'not really anything else to do with non-conforming nfos aside from rename them
-                If Not Master.eSettings.OverwriteNfo Then
+                If Not Master.eSettings.GeneralOverwriteNfo Then
                     RenameShowNonConfNfo(sPath)
                 End If
             End Try
@@ -689,7 +689,7 @@ Public Class NFO
                 Dim fAttWritable As Boolean = True
 
                 For Each a In FileUtils.GetFilenameList.Movie(movieToSave.Filename, movieToSave.isSingle, Enums.ModType.NFO)
-                    If Not Master.eSettings.OverwriteNfo Then
+                    If Not Master.eSettings.GeneralOverwriteNfo Then
                         RenameNonConfNfo(a, False)
                     End If
 
@@ -768,7 +768,7 @@ Public Class NFO
                 Dim tmpName As String = Path.GetFileNameWithoutExtension(tvEpToSave.Filename)
                 tPath = String.Concat(Path.Combine(Directory.GetParent(tvEpToSave.Filename).FullName, tmpName), ".nfo")
 
-                If Not Master.eSettings.OverwriteNfo Then
+                If Not Master.eSettings.GeneralOverwriteNfo Then
                     RenameEpNonConfNfo(tPath, False)
                 End If
 
@@ -855,7 +855,7 @@ Public Class NFO
 
                 tPath = Path.Combine(tvShowToSave.ShowPath, "tvshow.nfo")
 
-                If Not Master.eSettings.OverwriteNfo Then
+                If Not Master.eSettings.GeneralOverwriteNfo Then
                     RenameShowNonConfNfo(tPath)
                 End If
 
@@ -948,7 +948,7 @@ Public Class NFO
                 For Each tVid As MediaInfo.Video In _TVEpDB.TVEp.FileInfo.StreamDetails.Video
                     cTotal = cTotal + tVid.Duration
                 Next
-                _TVEpDB.TVEp.Runtime = MediaInfo.FormatDuration(MediaInfo.DurationToSeconds(cTotal, True), Master.eSettings.EPRuntimeMask)
+                _TVEpDB.TVEp.Runtime = MediaInfo.FormatDuration(MediaInfo.DurationToSeconds(cTotal, True), Master.eSettings.TVScraperDurationRuntimeFormat)
             End If
         Catch ex As Exception
             Master.eLog.Error(GetType(NFO), ex.Message, ex.StackTrace, "Error")

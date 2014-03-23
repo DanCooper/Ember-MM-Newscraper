@@ -26,7 +26,7 @@ Public Class dlgImgManual
 
 #Region "Fields"
 
-    Dim DLType As New Enums.ImageType
+    'Dim DLType As New Enums.MovieImageType
     Dim tImage As New Images
 
 #End Region 'Fields
@@ -46,12 +46,12 @@ Public Class dlgImgManual
 
 #Region "Methods"
 
-    Public Overloads Function ShowDialog(ByVal _DLType As Enums.ImageType) As DialogResult
+    Public Overloads Function ShowDialog() As DialogResult '(ByVal _DLType As Enums.MovieImageType) As DialogResult
         '//
         ' Overload to pass data
         '\\
 
-        Me.DLType = _DLType
+        'Me.DLType = _DLType
         Return MyBase.ShowDialog()
     End Function
 
@@ -84,15 +84,16 @@ Public Class dlgImgManual
     Private Sub dlgImgManual_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Me.SetUp()
 
-        If Me.DLType = Enums.ImageType.Fanart Then
-            Me.Text = Master.eLang.GetString(182, "Manual Fanart Entry")
-        Else
-            Me.Text = Master.eLang.GetString(183, "Manual Poster Entry")
-        End If
+        'If Me.DLType = Enums.MovieImageType.Fanart Then
+        '    Me.Text = Master.eLang.GetString(182, "Manual Fanart Entry")
+        'Else
+        '    Me.Text = Master.eLang.GetString(183, "Manual Poster Entry")
+        'End If
     End Sub
 
     Private Sub dlgImgManual_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
         Me.Activate()
+        Me.txtURL.Focus()
     End Sub
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click

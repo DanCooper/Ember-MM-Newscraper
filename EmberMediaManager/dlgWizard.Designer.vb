@@ -64,7 +64,7 @@ Partial Class dlgWizard
         Me.chkMovieNFOFrodo = New System.Windows.Forms.CheckBox()
         Me.tpMovieFileNamingNMT = New System.Windows.Forms.TabPage()
         Me.gbMovieNMTOptional = New System.Windows.Forms.GroupBox()
-        Me.btnMovieBrowseWatchedFiles = New System.Windows.Forms.Button()
+        Me.btnMovieYAMJWatchedFilesBrowse = New System.Windows.Forms.Button()
         Me.txtMovieYAMJWatchedFolder = New System.Windows.Forms.TextBox()
         Me.chkMovieYAMJWatchedFile = New System.Windows.Forms.CheckBox()
         Me.gbMovieNMJ = New System.Windows.Forms.GroupBox()
@@ -212,17 +212,41 @@ Partial Class dlgWizard
         Me.Label6 = New System.Windows.Forms.Label()
         Me.Label7 = New System.Windows.Forms.Label()
         Me.pnlTVShowSource = New System.Windows.Forms.Panel()
-        Me.Label10 = New System.Windows.Forms.Label()
         Me.lvTVSources = New System.Windows.Forms.ListView()
         Me.ColumnHeader1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader2 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader3 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.cbTVLanguage = New System.Windows.Forms.ComboBox()
         Me.btnTVRemoveSource = New System.Windows.Forms.Button()
         Me.btnTVAddSource = New System.Windows.Forms.Button()
         Me.Label9 = New System.Windows.Forms.Label()
         Me.pnlTVShowSettings = New System.Windows.Forms.Panel()
+        Me.gbTVFileNaming = New System.Windows.Forms.GroupBox()
+        Me.tcTVFileNaming = New System.Windows.Forms.TabControl()
+        Me.tpTVFileNamingXBMC = New System.Windows.Forms.TabPage()
+        Me.gbTVXBMCAdditional = New System.Windows.Forms.GroupBox()
+        Me.btnTVShowTVThemeBrowse = New System.Windows.Forms.Button()
+        Me.txtTVShowTVThemeFolderXBMC = New System.Windows.Forms.TextBox()
+        Me.chkTVShowTVThemeXBMC = New System.Windows.Forms.CheckBox()
+        Me.chkTVSeasonLandscapeXBMC = New System.Windows.Forms.CheckBox()
+        Me.chkTVShowLandscapeXBMC = New System.Windows.Forms.CheckBox()
+        Me.chkTVShowCharacterArtXBMC = New System.Windows.Forms.CheckBox()
+        Me.chkTVShowClearArtXBMC = New System.Windows.Forms.CheckBox()
+        Me.chkTVShowClearLogoXBMC = New System.Windows.Forms.CheckBox()
+        Me.gbTVFrodo = New System.Windows.Forms.GroupBox()
+        Me.chkTVSeasonPosterFrodo = New System.Windows.Forms.CheckBox()
+        Me.chkTVShowBannerFrodo = New System.Windows.Forms.CheckBox()
+        Me.chkTVUseFrodo = New System.Windows.Forms.CheckBox()
+        Me.chkTVEpisodeActorThumbsFrodo = New System.Windows.Forms.CheckBox()
+        Me.chkTVSeasonBannerFrodo = New System.Windows.Forms.CheckBox()
+        Me.chkTVEpisodePosterFrodo = New System.Windows.Forms.CheckBox()
+        Me.chkTVShowActorThumbsFrodo = New System.Windows.Forms.CheckBox()
+        Me.chkTVSeasonFanartFrodo = New System.Windows.Forms.CheckBox()
+        Me.chkTVShowFanartFrodo = New System.Windows.Forms.CheckBox()
+        Me.chkTVShowPosterFrodo = New System.Windows.Forms.CheckBox()
+        Me.tpTVFileNamingNMT = New System.Windows.Forms.TabPage()
+        Me.tpTVFileNamingExpert = New System.Windows.Forms.TabPage()
         Me.Label11 = New System.Windows.Forms.Label()
+        Me.fbdBrowse = New System.Windows.Forms.FolderBrowserDialog()
         Me.pnlWelcome.SuspendLayout()
         Me.pnlMovieSettings.SuspendLayout()
         Me.gbMovieFileNaming.SuspendLayout()
@@ -255,6 +279,11 @@ Partial Class dlgWizard
         Me.pnlDone.SuspendLayout()
         Me.pnlTVShowSource.SuspendLayout()
         Me.pnlTVShowSettings.SuspendLayout()
+        Me.gbTVFileNaming.SuspendLayout()
+        Me.tcTVFileNaming.SuspendLayout()
+        Me.tpTVFileNamingXBMC.SuspendLayout()
+        Me.gbTVXBMCAdditional.SuspendLayout()
+        Me.gbTVFrodo.SuspendLayout()
         Me.SuspendLayout()
         '
         'OK_Button
@@ -715,7 +744,7 @@ Partial Class dlgWizard
         '
         'gbMovieNMTOptional
         '
-        Me.gbMovieNMTOptional.Controls.Add(Me.btnMovieBrowseWatchedFiles)
+        Me.gbMovieNMTOptional.Controls.Add(Me.btnMovieYAMJWatchedFilesBrowse)
         Me.gbMovieNMTOptional.Controls.Add(Me.txtMovieYAMJWatchedFolder)
         Me.gbMovieNMTOptional.Controls.Add(Me.chkMovieYAMJWatchedFile)
         Me.gbMovieNMTOptional.Location = New System.Drawing.Point(238, 6)
@@ -725,16 +754,16 @@ Partial Class dlgWizard
         Me.gbMovieNMTOptional.TabStop = False
         Me.gbMovieNMTOptional.Text = "Optional Settings"
         '
-        'btnMovieBrowseWatchedFiles
+        'btnMovieYAMJWatchedFilesBrowse
         '
-        Me.btnMovieBrowseWatchedFiles.Enabled = False
-        Me.btnMovieBrowseWatchedFiles.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnMovieBrowseWatchedFiles.Location = New System.Drawing.Point(230, 44)
-        Me.btnMovieBrowseWatchedFiles.Name = "btnMovieBrowseWatchedFiles"
-        Me.btnMovieBrowseWatchedFiles.Size = New System.Drawing.Size(25, 22)
-        Me.btnMovieBrowseWatchedFiles.TabIndex = 2
-        Me.btnMovieBrowseWatchedFiles.Text = "..."
-        Me.btnMovieBrowseWatchedFiles.UseVisualStyleBackColor = True
+        Me.btnMovieYAMJWatchedFilesBrowse.Enabled = False
+        Me.btnMovieYAMJWatchedFilesBrowse.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnMovieYAMJWatchedFilesBrowse.Location = New System.Drawing.Point(230, 44)
+        Me.btnMovieYAMJWatchedFilesBrowse.Name = "btnMovieYAMJWatchedFilesBrowse"
+        Me.btnMovieYAMJWatchedFilesBrowse.Size = New System.Drawing.Size(25, 22)
+        Me.btnMovieYAMJWatchedFilesBrowse.TabIndex = 2
+        Me.btnMovieYAMJWatchedFilesBrowse.Text = "..."
+        Me.btnMovieYAMJWatchedFilesBrowse.UseVisualStyleBackColor = True
         '
         'txtMovieYAMJWatchedFolder
         '
@@ -2216,9 +2245,7 @@ Partial Class dlgWizard
         '
         Me.pnlTVShowSource.BackColor = System.Drawing.Color.White
         Me.pnlTVShowSource.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlTVShowSource.Controls.Add(Me.Label10)
         Me.pnlTVShowSource.Controls.Add(Me.lvTVSources)
-        Me.pnlTVShowSource.Controls.Add(Me.cbTVLanguage)
         Me.pnlTVShowSource.Controls.Add(Me.btnTVRemoveSource)
         Me.pnlTVShowSource.Controls.Add(Me.btnTVAddSource)
         Me.pnlTVShowSource.Controls.Add(Me.Label9)
@@ -2227,17 +2254,6 @@ Partial Class dlgWizard
         Me.pnlTVShowSource.Size = New System.Drawing.Size(530, 490)
         Me.pnlTVShowSource.TabIndex = 7
         Me.pnlTVShowSource.Visible = False
-        '
-        'Label10
-        '
-        Me.Label10.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label10.Location = New System.Drawing.Point(3, 220)
-        Me.Label10.Name = "Label10"
-        Me.Label10.Size = New System.Drawing.Size(507, 41)
-        Me.Label10.TabIndex = 4
-        Me.Label10.Text = "Now select the default language you would like Ember to look for when scraping TV" & _
-    " Show items."
-        Me.Label10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'lvTVSources
         '
@@ -2266,15 +2282,6 @@ Partial Class dlgWizard
         '
         Me.ColumnHeader3.Text = "Path"
         Me.ColumnHeader3.Width = 261
-        '
-        'cbTVLanguage
-        '
-        Me.cbTVLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbTVLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.cbTVLanguage.Location = New System.Drawing.Point(163, 265)
-        Me.cbTVLanguage.Name = "cbTVLanguage"
-        Me.cbTVLanguage.Size = New System.Drawing.Size(166, 21)
-        Me.cbTVLanguage.TabIndex = 6
         '
         'btnTVRemoveSource
         '
@@ -2317,6 +2324,7 @@ Partial Class dlgWizard
         '
         Me.pnlTVShowSettings.BackColor = System.Drawing.Color.White
         Me.pnlTVShowSettings.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlTVShowSettings.Controls.Add(Me.gbTVFileNaming)
         Me.pnlTVShowSettings.Controls.Add(Me.Label11)
         Me.pnlTVShowSettings.Location = New System.Drawing.Point(717, 577)
         Me.pnlTVShowSettings.Name = "pnlTVShowSettings"
@@ -2324,12 +2332,296 @@ Partial Class dlgWizard
         Me.pnlTVShowSettings.TabIndex = 8
         Me.pnlTVShowSettings.Visible = False
         '
+        'gbTVFileNaming
+        '
+        Me.gbTVFileNaming.Controls.Add(Me.tcTVFileNaming)
+        Me.gbTVFileNaming.Location = New System.Drawing.Point(3, 97)
+        Me.gbTVFileNaming.Name = "gbTVFileNaming"
+        Me.gbTVFileNaming.Size = New System.Drawing.Size(521, 384)
+        Me.gbTVFileNaming.TabIndex = 7
+        Me.gbTVFileNaming.TabStop = False
+        Me.gbTVFileNaming.Text = "File Naming"
+        '
+        'tcTVFileNaming
+        '
+        Me.tcTVFileNaming.Controls.Add(Me.tpTVFileNamingXBMC)
+        Me.tcTVFileNaming.Controls.Add(Me.tpTVFileNamingNMT)
+        Me.tcTVFileNaming.Controls.Add(Me.tpTVFileNamingExpert)
+        Me.tcTVFileNaming.Location = New System.Drawing.Point(6, 18)
+        Me.tcTVFileNaming.Name = "tcTVFileNaming"
+        Me.tcTVFileNaming.SelectedIndex = 0
+        Me.tcTVFileNaming.Size = New System.Drawing.Size(513, 362)
+        Me.tcTVFileNaming.TabIndex = 0
+        '
+        'tpTVFileNamingXBMC
+        '
+        Me.tpTVFileNamingXBMC.Controls.Add(Me.gbTVXBMCAdditional)
+        Me.tpTVFileNamingXBMC.Controls.Add(Me.gbTVFrodo)
+        Me.tpTVFileNamingXBMC.Location = New System.Drawing.Point(4, 22)
+        Me.tpTVFileNamingXBMC.Name = "tpTVFileNamingXBMC"
+        Me.tpTVFileNamingXBMC.Padding = New System.Windows.Forms.Padding(3)
+        Me.tpTVFileNamingXBMC.Size = New System.Drawing.Size(505, 336)
+        Me.tpTVFileNamingXBMC.TabIndex = 0
+        Me.tpTVFileNamingXBMC.Text = "XBMC"
+        Me.tpTVFileNamingXBMC.UseVisualStyleBackColor = True
+        '
+        'gbTVXBMCAdditional
+        '
+        Me.gbTVXBMCAdditional.Controls.Add(Me.btnTVShowTVThemeBrowse)
+        Me.gbTVXBMCAdditional.Controls.Add(Me.txtTVShowTVThemeFolderXBMC)
+        Me.gbTVXBMCAdditional.Controls.Add(Me.chkTVShowTVThemeXBMC)
+        Me.gbTVXBMCAdditional.Controls.Add(Me.chkTVSeasonLandscapeXBMC)
+        Me.gbTVXBMCAdditional.Controls.Add(Me.chkTVShowLandscapeXBMC)
+        Me.gbTVXBMCAdditional.Controls.Add(Me.chkTVShowCharacterArtXBMC)
+        Me.gbTVXBMCAdditional.Controls.Add(Me.chkTVShowClearArtXBMC)
+        Me.gbTVXBMCAdditional.Controls.Add(Me.chkTVShowClearLogoXBMC)
+        Me.gbTVXBMCAdditional.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        Me.gbTVXBMCAdditional.Location = New System.Drawing.Point(299, 6)
+        Me.gbTVXBMCAdditional.Name = "gbTVXBMCAdditional"
+        Me.gbTVXBMCAdditional.Size = New System.Drawing.Size(200, 199)
+        Me.gbTVXBMCAdditional.TabIndex = 2
+        Me.gbTVXBMCAdditional.TabStop = False
+        Me.gbTVXBMCAdditional.Text = "Additional Stuff"
+        '
+        'btnTVShowTVThemeBrowse
+        '
+        Me.btnTVShowTVThemeBrowse.Enabled = False
+        Me.btnTVShowTVThemeBrowse.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnTVShowTVThemeBrowse.Location = New System.Drawing.Point(169, 166)
+        Me.btnTVShowTVThemeBrowse.Name = "btnTVShowTVThemeBrowse"
+        Me.btnTVShowTVThemeBrowse.Size = New System.Drawing.Size(25, 22)
+        Me.btnTVShowTVThemeBrowse.TabIndex = 7
+        Me.btnTVShowTVThemeBrowse.Text = "..."
+        Me.btnTVShowTVThemeBrowse.UseVisualStyleBackColor = True
+        '
+        'txtTVShowTVThemeFolderXBMC
+        '
+        Me.txtTVShowTVThemeFolderXBMC.Enabled = False
+        Me.txtTVShowTVThemeFolderXBMC.Location = New System.Drawing.Point(7, 166)
+        Me.txtTVShowTVThemeFolderXBMC.Name = "txtTVShowTVThemeFolderXBMC"
+        Me.txtTVShowTVThemeFolderXBMC.Size = New System.Drawing.Size(156, 22)
+        Me.txtTVShowTVThemeFolderXBMC.TabIndex = 6
+        '
+        'chkTVShowTVThemeXBMC
+        '
+        Me.chkTVShowTVThemeXBMC.AutoSize = True
+        Me.chkTVShowTVThemeXBMC.Enabled = False
+        Me.chkTVShowTVThemeXBMC.Location = New System.Drawing.Point(7, 142)
+        Me.chkTVShowTVThemeXBMC.Name = "chkTVShowTVThemeXBMC"
+        Me.chkTVShowTVThemeXBMC.Size = New System.Drawing.Size(74, 17)
+        Me.chkTVShowTVThemeXBMC.TabIndex = 5
+        Me.chkTVShowTVThemeXBMC.Text = "TV Theme"
+        Me.chkTVShowTVThemeXBMC.UseVisualStyleBackColor = True
+        '
+        'chkTVSeasonLandscapeXBMC
+        '
+        Me.chkTVSeasonLandscapeXBMC.AutoSize = True
+        Me.chkTVSeasonLandscapeXBMC.Enabled = False
+        Me.chkTVSeasonLandscapeXBMC.Location = New System.Drawing.Point(7, 118)
+        Me.chkTVSeasonLandscapeXBMC.Name = "chkTVSeasonLandscapeXBMC"
+        Me.chkTVSeasonLandscapeXBMC.Size = New System.Drawing.Size(120, 17)
+        Me.chkTVSeasonLandscapeXBMC.TabIndex = 4
+        Me.chkTVSeasonLandscapeXBMC.Text = "Season Landscape"
+        Me.chkTVSeasonLandscapeXBMC.UseVisualStyleBackColor = True
+        '
+        'chkTVShowLandscapeXBMC
+        '
+        Me.chkTVShowLandscapeXBMC.AutoSize = True
+        Me.chkTVShowLandscapeXBMC.Enabled = False
+        Me.chkTVShowLandscapeXBMC.Location = New System.Drawing.Point(7, 94)
+        Me.chkTVShowLandscapeXBMC.Name = "chkTVShowLandscapeXBMC"
+        Me.chkTVShowLandscapeXBMC.Size = New System.Drawing.Size(112, 17)
+        Me.chkTVShowLandscapeXBMC.TabIndex = 3
+        Me.chkTVShowLandscapeXBMC.Text = "Show Landscape"
+        Me.chkTVShowLandscapeXBMC.UseVisualStyleBackColor = True
+        '
+        'chkTVShowCharacterArtXBMC
+        '
+        Me.chkTVShowCharacterArtXBMC.AutoSize = True
+        Me.chkTVShowCharacterArtXBMC.Enabled = False
+        Me.chkTVShowCharacterArtXBMC.Location = New System.Drawing.Point(7, 70)
+        Me.chkTVShowCharacterArtXBMC.Name = "chkTVShowCharacterArtXBMC"
+        Me.chkTVShowCharacterArtXBMC.Size = New System.Drawing.Size(90, 17)
+        Me.chkTVShowCharacterArtXBMC.TabIndex = 2
+        Me.chkTVShowCharacterArtXBMC.Text = "CharacterArt"
+        Me.chkTVShowCharacterArtXBMC.UseVisualStyleBackColor = True
+        '
+        'chkTVShowClearArtXBMC
+        '
+        Me.chkTVShowClearArtXBMC.AutoSize = True
+        Me.chkTVShowClearArtXBMC.Enabled = False
+        Me.chkTVShowClearArtXBMC.Location = New System.Drawing.Point(7, 46)
+        Me.chkTVShowClearArtXBMC.Name = "chkTVShowClearArtXBMC"
+        Me.chkTVShowClearArtXBMC.Size = New System.Drawing.Size(67, 17)
+        Me.chkTVShowClearArtXBMC.TabIndex = 1
+        Me.chkTVShowClearArtXBMC.Text = "ClearArt"
+        Me.chkTVShowClearArtXBMC.UseVisualStyleBackColor = True
+        '
+        'chkTVShowClearLogoXBMC
+        '
+        Me.chkTVShowClearLogoXBMC.AutoSize = True
+        Me.chkTVShowClearLogoXBMC.Enabled = False
+        Me.chkTVShowClearLogoXBMC.Location = New System.Drawing.Point(7, 22)
+        Me.chkTVShowClearLogoXBMC.Name = "chkTVShowClearLogoXBMC"
+        Me.chkTVShowClearLogoXBMC.Size = New System.Drawing.Size(78, 17)
+        Me.chkTVShowClearLogoXBMC.TabIndex = 0
+        Me.chkTVShowClearLogoXBMC.Text = "ClearLogo"
+        Me.chkTVShowClearLogoXBMC.UseVisualStyleBackColor = True
+        '
+        'gbTVFrodo
+        '
+        Me.gbTVFrodo.Controls.Add(Me.chkTVSeasonPosterFrodo)
+        Me.gbTVFrodo.Controls.Add(Me.chkTVShowBannerFrodo)
+        Me.gbTVFrodo.Controls.Add(Me.chkTVUseFrodo)
+        Me.gbTVFrodo.Controls.Add(Me.chkTVEpisodeActorThumbsFrodo)
+        Me.gbTVFrodo.Controls.Add(Me.chkTVSeasonBannerFrodo)
+        Me.gbTVFrodo.Controls.Add(Me.chkTVEpisodePosterFrodo)
+        Me.gbTVFrodo.Controls.Add(Me.chkTVShowActorThumbsFrodo)
+        Me.gbTVFrodo.Controls.Add(Me.chkTVSeasonFanartFrodo)
+        Me.gbTVFrodo.Controls.Add(Me.chkTVShowFanartFrodo)
+        Me.gbTVFrodo.Controls.Add(Me.chkTVShowPosterFrodo)
+        Me.gbTVFrodo.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.gbTVFrodo.Location = New System.Drawing.Point(6, 6)
+        Me.gbTVFrodo.Name = "gbTVFrodo"
+        Me.gbTVFrodo.Size = New System.Drawing.Size(152, 289)
+        Me.gbTVFrodo.TabIndex = 1
+        Me.gbTVFrodo.TabStop = False
+        Me.gbTVFrodo.Text = "Frodo"
+        '
+        'chkTVSeasonPosterFrodo
+        '
+        Me.chkTVSeasonPosterFrodo.AutoSize = True
+        Me.chkTVSeasonPosterFrodo.Enabled = False
+        Me.chkTVSeasonPosterFrodo.Location = New System.Drawing.Point(6, 136)
+        Me.chkTVSeasonPosterFrodo.Name = "chkTVSeasonPosterFrodo"
+        Me.chkTVSeasonPosterFrodo.Size = New System.Drawing.Size(98, 17)
+        Me.chkTVSeasonPosterFrodo.TabIndex = 12
+        Me.chkTVSeasonPosterFrodo.Text = "Season Poster"
+        Me.chkTVSeasonPosterFrodo.UseVisualStyleBackColor = True
+        '
+        'chkTVShowBannerFrodo
+        '
+        Me.chkTVShowBannerFrodo.AutoSize = True
+        Me.chkTVShowBannerFrodo.Enabled = False
+        Me.chkTVShowBannerFrodo.Location = New System.Drawing.Point(6, 113)
+        Me.chkTVShowBannerFrodo.Name = "chkTVShowBannerFrodo"
+        Me.chkTVShowBannerFrodo.Size = New System.Drawing.Size(95, 17)
+        Me.chkTVShowBannerFrodo.TabIndex = 11
+        Me.chkTVShowBannerFrodo.Text = "Show Banner"
+        Me.chkTVShowBannerFrodo.UseVisualStyleBackColor = True
+        '
+        'chkTVUseFrodo
+        '
+        Me.chkTVUseFrodo.AutoSize = True
+        Me.chkTVUseFrodo.Location = New System.Drawing.Point(6, 21)
+        Me.chkTVUseFrodo.Name = "chkTVUseFrodo"
+        Me.chkTVUseFrodo.Size = New System.Drawing.Size(45, 17)
+        Me.chkTVUseFrodo.TabIndex = 10
+        Me.chkTVUseFrodo.Text = "Use"
+        Me.chkTVUseFrodo.UseVisualStyleBackColor = True
+        '
+        'chkTVEpisodeActorThumbsFrodo
+        '
+        Me.chkTVEpisodeActorThumbsFrodo.AutoSize = True
+        Me.chkTVEpisodeActorThumbsFrodo.Enabled = False
+        Me.chkTVEpisodeActorThumbsFrodo.Location = New System.Drawing.Point(6, 251)
+        Me.chkTVEpisodeActorThumbsFrodo.Name = "chkTVEpisodeActorThumbsFrodo"
+        Me.chkTVEpisodeActorThumbsFrodo.Size = New System.Drawing.Size(140, 17)
+        Me.chkTVEpisodeActorThumbsFrodo.TabIndex = 9
+        Me.chkTVEpisodeActorThumbsFrodo.Text = "Epsiode Actor Thumbs"
+        Me.chkTVEpisodeActorThumbsFrodo.UseVisualStyleBackColor = True
+        '
+        'chkTVSeasonBannerFrodo
+        '
+        Me.chkTVSeasonBannerFrodo.AutoSize = True
+        Me.chkTVSeasonBannerFrodo.Enabled = False
+        Me.chkTVSeasonBannerFrodo.Location = New System.Drawing.Point(6, 182)
+        Me.chkTVSeasonBannerFrodo.Name = "chkTVSeasonBannerFrodo"
+        Me.chkTVSeasonBannerFrodo.Size = New System.Drawing.Size(103, 17)
+        Me.chkTVSeasonBannerFrodo.TabIndex = 8
+        Me.chkTVSeasonBannerFrodo.Text = "Season Banner"
+        Me.chkTVSeasonBannerFrodo.UseVisualStyleBackColor = True
+        '
+        'chkTVEpisodePosterFrodo
+        '
+        Me.chkTVEpisodePosterFrodo.AutoSize = True
+        Me.chkTVEpisodePosterFrodo.Enabled = False
+        Me.chkTVEpisodePosterFrodo.Location = New System.Drawing.Point(6, 205)
+        Me.chkTVEpisodePosterFrodo.Name = "chkTVEpisodePosterFrodo"
+        Me.chkTVEpisodePosterFrodo.Size = New System.Drawing.Size(102, 17)
+        Me.chkTVEpisodePosterFrodo.TabIndex = 5
+        Me.chkTVEpisodePosterFrodo.Text = "Episode Poster"
+        Me.chkTVEpisodePosterFrodo.UseVisualStyleBackColor = True
+        '
+        'chkTVShowActorThumbsFrodo
+        '
+        Me.chkTVShowActorThumbsFrodo.AutoSize = True
+        Me.chkTVShowActorThumbsFrodo.Enabled = False
+        Me.chkTVShowActorThumbsFrodo.Location = New System.Drawing.Point(6, 90)
+        Me.chkTVShowActorThumbsFrodo.Name = "chkTVShowActorThumbsFrodo"
+        Me.chkTVShowActorThumbsFrodo.Size = New System.Drawing.Size(128, 17)
+        Me.chkTVShowActorThumbsFrodo.TabIndex = 4
+        Me.chkTVShowActorThumbsFrodo.Text = "Show Actor Thumbs"
+        Me.chkTVShowActorThumbsFrodo.UseVisualStyleBackColor = True
+        '
+        'chkTVSeasonFanartFrodo
+        '
+        Me.chkTVSeasonFanartFrodo.AutoSize = True
+        Me.chkTVSeasonFanartFrodo.Enabled = False
+        Me.chkTVSeasonFanartFrodo.Location = New System.Drawing.Point(6, 159)
+        Me.chkTVSeasonFanartFrodo.Name = "chkTVSeasonFanartFrodo"
+        Me.chkTVSeasonFanartFrodo.Size = New System.Drawing.Size(99, 17)
+        Me.chkTVSeasonFanartFrodo.TabIndex = 3
+        Me.chkTVSeasonFanartFrodo.Text = "Season Fanart"
+        Me.chkTVSeasonFanartFrodo.UseVisualStyleBackColor = True
+        '
+        'chkTVShowFanartFrodo
+        '
+        Me.chkTVShowFanartFrodo.AutoSize = True
+        Me.chkTVShowFanartFrodo.Enabled = False
+        Me.chkTVShowFanartFrodo.Location = New System.Drawing.Point(6, 67)
+        Me.chkTVShowFanartFrodo.Name = "chkTVShowFanartFrodo"
+        Me.chkTVShowFanartFrodo.Size = New System.Drawing.Size(91, 17)
+        Me.chkTVShowFanartFrodo.TabIndex = 2
+        Me.chkTVShowFanartFrodo.Text = "Show Fanart"
+        Me.chkTVShowFanartFrodo.UseVisualStyleBackColor = True
+        '
+        'chkTVShowPosterFrodo
+        '
+        Me.chkTVShowPosterFrodo.AutoSize = True
+        Me.chkTVShowPosterFrodo.Enabled = False
+        Me.chkTVShowPosterFrodo.Location = New System.Drawing.Point(6, 44)
+        Me.chkTVShowPosterFrodo.Name = "chkTVShowPosterFrodo"
+        Me.chkTVShowPosterFrodo.Size = New System.Drawing.Size(90, 17)
+        Me.chkTVShowPosterFrodo.TabIndex = 1
+        Me.chkTVShowPosterFrodo.Text = "Show Poster"
+        Me.chkTVShowPosterFrodo.UseVisualStyleBackColor = True
+        '
+        'tpTVFileNamingNMT
+        '
+        Me.tpTVFileNamingNMT.Location = New System.Drawing.Point(4, 22)
+        Me.tpTVFileNamingNMT.Name = "tpTVFileNamingNMT"
+        Me.tpTVFileNamingNMT.Padding = New System.Windows.Forms.Padding(3)
+        Me.tpTVFileNamingNMT.Size = New System.Drawing.Size(505, 336)
+        Me.tpTVFileNamingNMT.TabIndex = 1
+        Me.tpTVFileNamingNMT.Text = "NMT"
+        Me.tpTVFileNamingNMT.UseVisualStyleBackColor = True
+        '
+        'tpTVFileNamingExpert
+        '
+        Me.tpTVFileNamingExpert.Location = New System.Drawing.Point(4, 22)
+        Me.tpTVFileNamingExpert.Name = "tpTVFileNamingExpert"
+        Me.tpTVFileNamingExpert.Size = New System.Drawing.Size(505, 336)
+        Me.tpTVFileNamingExpert.TabIndex = 2
+        Me.tpTVFileNamingExpert.Text = "Expert"
+        Me.tpTVFileNamingExpert.UseVisualStyleBackColor = True
+        '
         'Label11
         '
         Me.Label11.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label11.Location = New System.Drawing.Point(14, 4)
+        Me.Label11.Location = New System.Drawing.Point(3, 4)
         Me.Label11.Name = "Label11"
-        Me.Label11.Size = New System.Drawing.Size(341, 58)
+        Me.Label11.Size = New System.Drawing.Size(522, 58)
         Me.Label11.TabIndex = 0
         Me.Label11.Text = resources.GetString("Label11.Text")
         Me.Label11.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -2340,7 +2632,7 @@ Partial Class dlgWizard
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(1908, 1045)
+        Me.ClientSize = New System.Drawing.Size(704, 531)
         Me.Controls.Add(Me.pnlMovieSettings)
         Me.Controls.Add(Me.PictureBox1)
         Me.Controls.Add(Me.btnBack)
@@ -2414,6 +2706,13 @@ Partial Class dlgWizard
         Me.pnlDone.PerformLayout()
         Me.pnlTVShowSource.ResumeLayout(False)
         Me.pnlTVShowSettings.ResumeLayout(False)
+        Me.gbTVFileNaming.ResumeLayout(False)
+        Me.tcTVFileNaming.ResumeLayout(False)
+        Me.tpTVFileNamingXBMC.ResumeLayout(False)
+        Me.gbTVXBMCAdditional.ResumeLayout(False)
+        Me.gbTVXBMCAdditional.PerformLayout()
+        Me.gbTVFrodo.ResumeLayout(False)
+        Me.gbTVFrodo.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -2454,8 +2753,6 @@ Partial Class dlgWizard
     Friend WithEvents ColumnHeader3 As System.Windows.Forms.ColumnHeader
     Friend WithEvents pnlTVShowSettings As System.Windows.Forms.Panel
     Friend WithEvents Label11 As System.Windows.Forms.Label
-    Friend WithEvents Label10 As System.Windows.Forms.Label
-    Friend WithEvents cbTVLanguage As System.Windows.Forms.ComboBox
     Friend WithEvents gbMovieFileNaming As System.Windows.Forms.GroupBox
     Friend WithEvents tbcMovieFileNaming As System.Windows.Forms.TabControl
     Friend WithEvents tpMovieFileNamingXBMC As System.Windows.Forms.TabPage
@@ -2487,7 +2784,7 @@ Partial Class dlgWizard
     Friend WithEvents chkMovieNFOFrodo As System.Windows.Forms.CheckBox
     Friend WithEvents tpMovieFileNamingNMT As System.Windows.Forms.TabPage
     Friend WithEvents gbMovieNMTOptional As System.Windows.Forms.GroupBox
-    Friend WithEvents btnMovieBrowseWatchedFiles As System.Windows.Forms.Button
+    Friend WithEvents btnMovieYAMJWatchedFilesBrowse As System.Windows.Forms.Button
     Friend WithEvents txtMovieYAMJWatchedFolder As System.Windows.Forms.TextBox
     Friend WithEvents chkMovieYAMJWatchedFile As System.Windows.Forms.CheckBox
     Friend WithEvents gbMovieNMJ As System.Windows.Forms.GroupBox
@@ -2617,4 +2914,30 @@ Partial Class dlgWizard
     Friend WithEvents txtMovieNFOExpertBDMV As System.Windows.Forms.TextBox
     Friend WithEvents lblMovieNFOExpertBDMV As System.Windows.Forms.Label
     Friend WithEvents chkMovieUseExpert As System.Windows.Forms.CheckBox
+    Friend WithEvents gbTVFileNaming As System.Windows.Forms.GroupBox
+    Friend WithEvents tcTVFileNaming As System.Windows.Forms.TabControl
+    Friend WithEvents tpTVFileNamingXBMC As System.Windows.Forms.TabPage
+    Friend WithEvents gbTVXBMCAdditional As System.Windows.Forms.GroupBox
+    Friend WithEvents btnTVShowTVThemeBrowse As System.Windows.Forms.Button
+    Friend WithEvents txtTVShowTVThemeFolderXBMC As System.Windows.Forms.TextBox
+    Friend WithEvents chkTVShowTVThemeXBMC As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVSeasonLandscapeXBMC As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVShowLandscapeXBMC As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVShowCharacterArtXBMC As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVShowClearArtXBMC As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVShowClearLogoXBMC As System.Windows.Forms.CheckBox
+    Friend WithEvents gbTVFrodo As System.Windows.Forms.GroupBox
+    Friend WithEvents chkTVSeasonPosterFrodo As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVShowBannerFrodo As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVUseFrodo As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVEpisodeActorThumbsFrodo As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVSeasonBannerFrodo As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVEpisodePosterFrodo As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVShowActorThumbsFrodo As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVSeasonFanartFrodo As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVShowFanartFrodo As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVShowPosterFrodo As System.Windows.Forms.CheckBox
+    Friend WithEvents tpTVFileNamingNMT As System.Windows.Forms.TabPage
+    Friend WithEvents tpTVFileNamingExpert As System.Windows.Forms.TabPage
+    Friend WithEvents fbdBrowse As System.Windows.Forms.FolderBrowserDialog
 End Class

@@ -157,7 +157,7 @@ Public Class OFDB
 
                 If Not String.IsNullOrEmpty(Html) Then
                     'title
-                    If String.IsNullOrEmpty(OFDBMovie.Title) OrElse Not Master.eSettings.LockTitle Then
+                    If String.IsNullOrEmpty(OFDBMovie.Title) OrElse Not Master.eSettings.MovieLockTitle Then
                         Dim OFDBTitle As String = CleanTitle(Web.HttpUtility.HtmlDecode(Regex.Match(HTML, "<td width=""99\%""><h1 itemprop=""name""><font face=""Arial,Helvetica,sans-serif"" size=""3""><b>([^<]+)</b></font></h1></td>").Groups(1).Value.ToString))
                         If OFDBTitle.EndsWith(", Der") Then
                             _title = String.Concat("Der ", OFDBTitle.Replace(", Der", " ")).Trim
@@ -180,7 +180,7 @@ Public Class OFDB
                     Dim tmpHTML As String
 
                     'outline
-                    If String.IsNullOrEmpty(OFDBMovie.Outline) OrElse Not Master.eSettings.LockOutline Then
+                    If String.IsNullOrEmpty(OFDBMovie.Outline) OrElse Not Master.eSettings.MovieLockOutline Then
                         D = HTML.IndexOf("<b>Inhalt:</b>")
                         Dq = HTML.IndexOf("<b>Inhalt:</b> <font style=")
 
@@ -196,7 +196,7 @@ Public Class OFDB
 
                     'full plot
                     D = 0 : Dq = 0 : W = 0
-                    If String.IsNullOrEmpty(OFDBMovie.Plot) OrElse Not Master.eSettings.LockPlot Then
+                    If String.IsNullOrEmpty(OFDBMovie.Plot) OrElse Not Master.eSettings.MovieLockPlot Then
                         D = HTML.IndexOf("<b>Inhalt:</b>")
                         Dq = HTML.IndexOf("<b>Inhalt:</b> <font style=")
 
@@ -231,7 +231,7 @@ Public Class OFDB
 
                     'genre
                     D = 0 : W = 0
-                    If String.IsNullOrEmpty(OFDBMovie.Genre) OrElse Not Master.eSettings.LockGenre Then
+                    If String.IsNullOrEmpty(OFDBMovie.Genre) OrElse Not Master.eSettings.MovieLockGenre Then
                         D = HTML.IndexOf("class=""Normal"">Genre(s):</font></td>")
                         If D > 0 Then
                             W = HTML.IndexOf("</table>", D)

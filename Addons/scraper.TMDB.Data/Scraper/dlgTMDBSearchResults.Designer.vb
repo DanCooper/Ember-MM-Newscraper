@@ -53,6 +53,8 @@ Partial Class dlgTMDBSearchResults
         Me.ProgressBar1 = New System.Windows.Forms.ProgressBar()
         Me.pnlPicStatus = New System.Windows.Forms.Panel()
         Me.Label4 = New System.Windows.Forms.Label()
+        Me.btnOpenFolder = New System.Windows.Forms.Button()
+        Me.txtFileName = New System.Windows.Forms.TextBox()
         CType(Me.pbPoster, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlTop.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -64,7 +66,7 @@ Partial Class dlgTMDBSearchResults
         '
         Me.OK_Button.Enabled = False
         Me.OK_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.OK_Button.Location = New System.Drawing.Point(497, 401)
+        Me.OK_Button.Location = New System.Drawing.Point(501, 431)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(67, 22)
         Me.OK_Button.TabIndex = 0
@@ -74,7 +76,7 @@ Partial Class dlgTMDBSearchResults
         '
         Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Cancel_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Cancel_Button.Location = New System.Drawing.Point(570, 401)
+        Me.Cancel_Button.Location = New System.Drawing.Point(574, 431)
         Me.Cancel_Button.Name = "Cancel_Button"
         Me.Cancel_Button.Size = New System.Drawing.Size(67, 22)
         Me.Cancel_Button.TabIndex = 1
@@ -84,7 +86,7 @@ Partial Class dlgTMDBSearchResults
         '
         Me.tvResults.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.tvResults.HideSelection = False
-        Me.tvResults.Location = New System.Drawing.Point(4, 96)
+        Me.tvResults.Location = New System.Drawing.Point(8, 126)
         Me.tvResults.Name = "tvResults"
         Me.tvResults.ShowLines = False
         Me.tvResults.ShowPlusMinus = False
@@ -94,7 +96,7 @@ Partial Class dlgTMDBSearchResults
         '
         'pbPoster
         '
-        Me.pbPoster.Location = New System.Drawing.Point(294, 130)
+        Me.pbPoster.Location = New System.Drawing.Point(298, 160)
         Me.pbPoster.Name = "pbPoster"
         Me.pbPoster.Size = New System.Drawing.Size(110, 130)
         Me.pbPoster.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
@@ -105,7 +107,7 @@ Partial Class dlgTMDBSearchResults
         'lblTitle
         '
         Me.lblTitle.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblTitle.Location = New System.Drawing.Point(291, 70)
+        Me.lblTitle.Location = New System.Drawing.Point(295, 100)
         Me.lblTitle.Name = "lblTitle"
         Me.lblTitle.Size = New System.Drawing.Size(346, 19)
         Me.lblTitle.TabIndex = 9
@@ -115,7 +117,7 @@ Partial Class dlgTMDBSearchResults
         'lblTagline
         '
         Me.lblTagline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblTagline.Location = New System.Drawing.Point(291, 89)
+        Me.lblTagline.Location = New System.Drawing.Point(295, 119)
         Me.lblTagline.Name = "lblTagline"
         Me.lblTagline.Size = New System.Drawing.Size(346, 16)
         Me.lblTagline.TabIndex = 10
@@ -125,7 +127,7 @@ Partial Class dlgTMDBSearchResults
         'txtPlot
         '
         Me.txtPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtPlot.Location = New System.Drawing.Point(294, 295)
+        Me.txtPlot.Location = New System.Drawing.Point(298, 325)
         Me.txtPlot.Multiline = True
         Me.txtPlot.Name = "txtPlot"
         Me.txtPlot.Size = New System.Drawing.Size(343, 100)
@@ -137,7 +139,7 @@ Partial Class dlgTMDBSearchResults
         '
         Me.lblYear.AutoSize = True
         Me.lblYear.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblYear.Location = New System.Drawing.Point(472, 130)
+        Me.lblYear.Location = New System.Drawing.Point(476, 160)
         Me.lblYear.Name = "lblYear"
         Me.lblYear.Size = New System.Drawing.Size(31, 13)
         Me.lblYear.TabIndex = 13
@@ -147,7 +149,7 @@ Partial Class dlgTMDBSearchResults
         'lblDirector
         '
         Me.lblDirector.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblDirector.Location = New System.Drawing.Point(472, 156)
+        Me.lblDirector.Location = New System.Drawing.Point(476, 186)
         Me.lblDirector.Name = "lblDirector"
         Me.lblDirector.Size = New System.Drawing.Size(165, 16)
         Me.lblDirector.TabIndex = 15
@@ -157,7 +159,7 @@ Partial Class dlgTMDBSearchResults
         'lblGenre
         '
         Me.lblGenre.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblGenre.Location = New System.Drawing.Point(472, 183)
+        Me.lblGenre.Location = New System.Drawing.Point(470, 240)
         Me.lblGenre.Name = "lblGenre"
         Me.lblGenre.Size = New System.Drawing.Size(165, 52)
         Me.lblGenre.TabIndex = 17
@@ -168,7 +170,7 @@ Partial Class dlgTMDBSearchResults
         '
         Me.txtTMDBID.Enabled = False
         Me.txtTMDBID.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTMDBID.Location = New System.Drawing.Point(139, 399)
+        Me.txtTMDBID.Location = New System.Drawing.Point(143, 429)
         Me.txtTMDBID.Name = "txtTMDBID"
         Me.txtTMDBID.Size = New System.Drawing.Size(100, 22)
         Me.txtTMDBID.TabIndex = 6
@@ -183,7 +185,7 @@ Partial Class dlgTMDBSearchResults
         Me.pnlTop.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlTop.Location = New System.Drawing.Point(0, 0)
         Me.pnlTop.Name = "pnlTop"
-        Me.pnlTop.Size = New System.Drawing.Size(643, 64)
+        Me.pnlTop.Size = New System.Drawing.Size(654, 64)
         Me.pnlTop.TabIndex = 8
         '
         'Label2
@@ -225,7 +227,7 @@ Partial Class dlgTMDBSearchResults
         '
         Me.chkManual.AutoSize = True
         Me.chkManual.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkManual.Location = New System.Drawing.Point(4, 403)
+        Me.chkManual.Location = New System.Drawing.Point(8, 433)
         Me.chkManual.Name = "chkManual"
         Me.chkManual.Size = New System.Drawing.Size(130, 17)
         Me.chkManual.TabIndex = 5
@@ -236,7 +238,7 @@ Partial Class dlgTMDBSearchResults
         '
         Me.btnVerify.Enabled = False
         Me.btnVerify.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnVerify.Location = New System.Drawing.Point(245, 399)
+        Me.btnVerify.Location = New System.Drawing.Point(249, 429)
         Me.btnVerify.Name = "btnVerify"
         Me.btnVerify.Size = New System.Drawing.Size(75, 22)
         Me.btnVerify.TabIndex = 7
@@ -247,7 +249,7 @@ Partial Class dlgTMDBSearchResults
         '
         Me.lblTMDBID.AutoSize = True
         Me.lblTMDBID.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblTMDBID.Location = New System.Drawing.Point(472, 247)
+        Me.lblTMDBID.Location = New System.Drawing.Point(476, 277)
         Me.lblTMDBID.Name = "lblTMDBID"
         Me.lblTMDBID.Size = New System.Drawing.Size(37, 13)
         Me.lblTMDBID.TabIndex = 20
@@ -258,7 +260,7 @@ Partial Class dlgTMDBSearchResults
         '
         Me.lblYearHeader.AutoSize = True
         Me.lblYearHeader.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblYearHeader.Location = New System.Drawing.Point(410, 130)
+        Me.lblYearHeader.Location = New System.Drawing.Point(414, 160)
         Me.lblYearHeader.Name = "lblYearHeader"
         Me.lblYearHeader.Size = New System.Drawing.Size(32, 13)
         Me.lblYearHeader.TabIndex = 12
@@ -269,7 +271,7 @@ Partial Class dlgTMDBSearchResults
         '
         Me.lblDirectorHeader.AutoSize = True
         Me.lblDirectorHeader.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblDirectorHeader.Location = New System.Drawing.Point(410, 156)
+        Me.lblDirectorHeader.Location = New System.Drawing.Point(414, 186)
         Me.lblDirectorHeader.Name = "lblDirectorHeader"
         Me.lblDirectorHeader.Size = New System.Drawing.Size(51, 13)
         Me.lblDirectorHeader.TabIndex = 14
@@ -280,7 +282,7 @@ Partial Class dlgTMDBSearchResults
         '
         Me.lblGenreHeader.AutoSize = True
         Me.lblGenreHeader.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblGenreHeader.Location = New System.Drawing.Point(410, 183)
+        Me.lblGenreHeader.Location = New System.Drawing.Point(408, 240)
         Me.lblGenreHeader.Name = "lblGenreHeader"
         Me.lblGenreHeader.Size = New System.Drawing.Size(54, 13)
         Me.lblGenreHeader.TabIndex = 16
@@ -291,7 +293,7 @@ Partial Class dlgTMDBSearchResults
         '
         Me.lblTMDBHeader.AutoSize = True
         Me.lblTMDBHeader.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblTMDBHeader.Location = New System.Drawing.Point(410, 247)
+        Me.lblTMDBHeader.Location = New System.Drawing.Point(414, 277)
         Me.lblTMDBHeader.Name = "lblTMDBHeader"
         Me.lblTMDBHeader.Size = New System.Drawing.Size(56, 13)
         Me.lblTMDBHeader.TabIndex = 19
@@ -302,7 +304,7 @@ Partial Class dlgTMDBSearchResults
         '
         Me.lblPlotHeader.AutoSize = True
         Me.lblPlotHeader.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblPlotHeader.Location = New System.Drawing.Point(291, 279)
+        Me.lblPlotHeader.Location = New System.Drawing.Point(295, 309)
         Me.lblPlotHeader.Name = "lblPlotHeader"
         Me.lblPlotHeader.Size = New System.Drawing.Size(83, 13)
         Me.lblPlotHeader.TabIndex = 21
@@ -312,7 +314,7 @@ Partial Class dlgTMDBSearchResults
         'btnSearch
         '
         Me.btnSearch.Image = CType(resources.GetObject("btnSearch.Image"), System.Drawing.Image)
-        Me.btnSearch.Location = New System.Drawing.Point(262, 70)
+        Me.btnSearch.Location = New System.Drawing.Point(266, 100)
         Me.btnSearch.Name = "btnSearch"
         Me.btnSearch.Size = New System.Drawing.Size(23, 23)
         Me.btnSearch.TabIndex = 3
@@ -320,7 +322,7 @@ Partial Class dlgTMDBSearchResults
         '
         'txtSearch
         '
-        Me.txtSearch.Location = New System.Drawing.Point(4, 71)
+        Me.txtSearch.Location = New System.Drawing.Point(8, 101)
         Me.txtSearch.Name = "txtSearch"
         Me.txtSearch.Size = New System.Drawing.Size(252, 22)
         Me.txtSearch.TabIndex = 2
@@ -331,7 +333,7 @@ Partial Class dlgTMDBSearchResults
         Me.pnlLoading.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pnlLoading.Controls.Add(Me.Label3)
         Me.pnlLoading.Controls.Add(Me.ProgressBar1)
-        Me.pnlLoading.Location = New System.Drawing.Point(364, 183)
+        Me.pnlLoading.Location = New System.Drawing.Point(368, 213)
         Me.pnlLoading.Name = "pnlLoading"
         Me.pnlLoading.Size = New System.Drawing.Size(200, 54)
         Me.pnlLoading.TabIndex = 18
@@ -360,7 +362,7 @@ Partial Class dlgTMDBSearchResults
         Me.pnlPicStatus.BackColor = System.Drawing.Color.LightSteelBlue
         Me.pnlPicStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pnlPicStatus.Controls.Add(Me.Label4)
-        Me.pnlPicStatus.Location = New System.Drawing.Point(308, 155)
+        Me.pnlPicStatus.Location = New System.Drawing.Point(312, 185)
         Me.pnlPicStatus.Name = "pnlPicStatus"
         Me.pnlPicStatus.Size = New System.Drawing.Size(81, 45)
         Me.pnlPicStatus.TabIndex = 11
@@ -374,14 +376,33 @@ Partial Class dlgTMDBSearchResults
         Me.Label4.Text = "Fetching Poster..."
         Me.Label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
+        'btnOpenFolder
+        '
+        Me.btnOpenFolder.Location = New System.Drawing.Point(612, 73)
+        Me.btnOpenFolder.Name = "btnOpenFolder"
+        Me.btnOpenFolder.Size = New System.Drawing.Size(29, 23)
+        Me.btnOpenFolder.TabIndex = 25
+        Me.btnOpenFolder.Text = "..."
+        Me.btnOpenFolder.UseVisualStyleBackColor = True
+        '
+        'txtFileName
+        '
+        Me.txtFileName.Enabled = False
+        Me.txtFileName.Location = New System.Drawing.Point(8, 73)
+        Me.txtFileName.Name = "txtFileName"
+        Me.txtFileName.Size = New System.Drawing.Size(598, 22)
+        Me.txtFileName.TabIndex = 24
+        '
         'dlgTMDBSearchResults
         '
         Me.AcceptButton = Me.OK_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(643, 454)
+        Me.ClientSize = New System.Drawing.Size(654, 461)
         Me.ControlBox = False
+        Me.Controls.Add(Me.btnOpenFolder)
+        Me.Controls.Add(Me.txtFileName)
         Me.Controls.Add(Me.pnlLoading)
         Me.Controls.Add(Me.pnlPicStatus)
         Me.Controls.Add(Me.Cancel_Button)
@@ -410,7 +431,7 @@ Partial Class dlgTMDBSearchResults
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.MinimumSize = New System.Drawing.Size(649, 460)
+        Me.MinimumSize = New System.Drawing.Size(670, 500)
         Me.Name = "dlgTMDBSearchResults"
         Me.ShowIcon = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
@@ -455,6 +476,8 @@ Partial Class dlgTMDBSearchResults
 	Friend WithEvents Label3 As System.Windows.Forms.Label
 	Friend WithEvents ProgressBar1 As System.Windows.Forms.ProgressBar
 	Friend WithEvents pnlPicStatus As System.Windows.Forms.Panel
-	Friend WithEvents Label4 As System.Windows.Forms.Label
+    Friend WithEvents Label4 As System.Windows.Forms.Label
+    Friend WithEvents btnOpenFolder As System.Windows.Forms.Button
+    Friend WithEvents txtFileName As System.Windows.Forms.TextBox
 
 End Class

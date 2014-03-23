@@ -119,7 +119,7 @@ Public Class dlgTrailerSelect
 
         If Me.txtManual.Text.Length > 0 Then
             Me.lblStatus.Text = Master.eLang.GetString(907, "Copying specified file to trailer...")
-            If Master.eSettings.ValidExts.Contains(Path.GetExtension(Me.txtManual.Text)) AndAlso File.Exists(Me.txtManual.Text) Then
+            If Master.eSettings.FileSystemValidExts.Contains(Path.GetExtension(Me.txtManual.Text)) AndAlso File.Exists(Me.txtManual.Text) Then
                 If CloseDialog Then
 
                     Dim tFile As String = Path.Combine(Master.TempPath, "trailer" & Path.GetExtension(Me.txtManual.Text))
@@ -202,7 +202,7 @@ Public Class dlgTrailerSelect
         Try
             With ofdTrailer
                 .InitialDirectory = Directory.GetParent(Master.currMovie.Filename).FullName
-                .Filter = String.Concat("Supported Trailer Formats|*", Functions.ListToStringWithSeparator(Master.eSettings.ValidExts.ToArray(), ";*"))
+                .Filter = String.Concat("Supported Trailer Formats|*", Functions.ListToStringWithSeparator(Master.eSettings.FileSystemValidExts.ToArray(), ";*"))
                 .FilterIndex = 0
             End With
 
@@ -299,7 +299,7 @@ Public Class dlgTrailerSelect
     Private Sub btnSetNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetNfo.Click
 
         If Me.btnSetNfo.Text = Master.eLang.GetString(910, "Move") Then
-            If Master.eSettings.ValidExts.Contains(Path.GetExtension(Me.txtManual.Text)) AndAlso File.Exists(Me.txtManual.Text) Then
+            If Master.eSettings.FileSystemValidExts.Contains(Path.GetExtension(Me.txtManual.Text)) AndAlso File.Exists(Me.txtManual.Text) Then
                 Me.OK_Button.Enabled = False
                 Me.btnSetNfo.Enabled = False
                 Me.btnPlayTrailer.Enabled = False

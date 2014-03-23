@@ -92,7 +92,7 @@ Public Class genericMediaBrowser
 		Dim SPanel As New Containers.SettingsPanel
 		Me.fMediaBrowser = New frmMediaBrowser
 		Me.fMediaBrowser.chkEnabled.Checked = Me._enabled
-		Me.fMediaBrowser.chkVideoTSParent.Checked = Master.eSettings.VideoTSParent
+        'Me.fMediaBrowser.chkVideoTSParent.Checked = Master.eSettings.VideoTSParent
 		Me.fMediaBrowser.chkMyMovies.Checked = AdvancedSettings.GetBooleanSetting("MediaBrowserMyMovie", False)
 		Me.fMediaBrowser.chkBackdrop.Checked = AdvancedSettings.GetBooleanSetting("MediaBrowserBackdrop", False)
 		SPanel.Name = _name
@@ -147,7 +147,7 @@ Public Class genericMediaBrowser
 							Dim fPath As String = Path.Combine(Path.GetDirectoryName(mMovie.Filename), "backdrop.jpg")
 							Dim eimage As New Images
 							eimage = _image
-							eimage.Save(fPath, Master.eSettings.FanartQuality, , False)
+                            eimage.Save(fPath, Master.eSettings.MovieFanartQual, , False)
 						End If
 				End Select
 
@@ -169,14 +169,14 @@ Public Class genericMediaBrowser
 	Sub SyncSettings(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
 		If mType = Enums.ModuleEventType.SyncModuleSettings AndAlso Not IsNothing(Me.fMediaBrowser) Then
 			RemoveHandler fMediaBrowser.GenericEvent, AddressOf DeploySyncSettings
-			Me.fMediaBrowser.chkVideoTSParent.Checked = Master.eSettings.VideoTSParent
+            'Me.fMediaBrowser.chkVideoTSParent.Checked = Master.eSettings.VideoTSParent
 			AddHandler fMediaBrowser.GenericEvent, AddressOf DeploySyncSettings
 		End If
 	End Sub
 
 	Sub DeploySyncSettings(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
 		If Not IsNothing(Me.fMediaBrowser) Then
-			Master.eSettings.VideoTSParent = Me.fMediaBrowser.chkVideoTSParent.Checked
+            'Master.eSettings.VideoTSParent = Me.fMediaBrowser.chkVideoTSParent.Checked
 			RaiseEvent GenericEvent(mType, _params)
 		End If
 	End Sub

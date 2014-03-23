@@ -36,7 +36,7 @@ Partial Class frmTVMediaSettingsHolder
         Me.gbTVDB = New System.Windows.Forms.GroupBox()
         Me.gbLanguage = New System.Windows.Forms.GroupBox()
         Me.lblTVLanguagePreferred = New System.Windows.Forms.Label()
-        Me.cbTVLanguage = New System.Windows.Forms.ComboBox()
+        Me.cbTVScraperLanguage = New System.Windows.Forms.ComboBox()
         Me.lblTVDBMirror = New System.Windows.Forms.Label()
         Me.txtTVDBMirror = New System.Windows.Forms.TextBox()
         Me.pbTVDB = New System.Windows.Forms.PictureBox()
@@ -181,7 +181,7 @@ Partial Class frmTVMediaSettingsHolder
         'gbLanguage
         '
         Me.gbLanguage.Controls.Add(Me.lblTVLanguagePreferred)
-        Me.gbLanguage.Controls.Add(Me.cbTVLanguage)
+        Me.gbLanguage.Controls.Add(Me.cbTVScraperLanguage)
         Me.gbLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbLanguage.Location = New System.Drawing.Point(407, 13)
         Me.gbLanguage.Name = "gbLanguage"
@@ -200,14 +200,14 @@ Partial Class frmTVMediaSettingsHolder
         Me.lblTVLanguagePreferred.TabIndex = 0
         Me.lblTVLanguagePreferred.Text = "Preferred Language:"
         '
-        'cbTVLanguage
+        'cbTVScraperLanguage
         '
-        Me.cbTVLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbTVLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.cbTVLanguage.Location = New System.Drawing.Point(12, 39)
-        Me.cbTVLanguage.Name = "cbTVLanguage"
-        Me.cbTVLanguage.Size = New System.Drawing.Size(166, 21)
-        Me.cbTVLanguage.TabIndex = 1
+        Me.cbTVScraperLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbTVScraperLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbTVScraperLanguage.Location = New System.Drawing.Point(12, 39)
+        Me.cbTVScraperLanguage.Name = "cbTVScraperLanguage"
+        Me.cbTVScraperLanguage.Size = New System.Drawing.Size(166, 21)
+        Me.cbTVScraperLanguage.TabIndex = 1
         '
         'lblTVDBMirror
         '
@@ -326,7 +326,7 @@ Partial Class frmTVMediaSettingsHolder
     Friend WithEvents txtTVDBMirror As System.Windows.Forms.TextBox
     Friend WithEvents gbLanguage As System.Windows.Forms.GroupBox
     Friend WithEvents lblTVLanguagePreferred As System.Windows.Forms.Label
-    Friend WithEvents cbTVLanguage As System.Windows.Forms.ComboBox
+    Friend WithEvents cbTVScraperLanguage As System.Windows.Forms.ComboBox
     Friend WithEvents chkGetEnglishImages As System.Windows.Forms.CheckBox
     Friend WithEvents chkOnlyTVImagesLanguage As System.Windows.Forms.CheckBox
     Friend WithEvents gbScraperFields As System.Windows.Forms.GroupBox

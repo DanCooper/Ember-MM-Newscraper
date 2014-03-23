@@ -225,12 +225,12 @@ Public Class OFDB_Data
 
         Dim filterOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(Options, ConfigOptions)
 
-        If filterOptions.bTitle AndAlso (String.IsNullOrEmpty(DBMovie.Movie.Title) OrElse Not Master.eSettings.LockTitle) Then
+        If filterOptions.bTitle AndAlso (String.IsNullOrEmpty(DBMovie.Movie.Title) OrElse Not Master.eSettings.MovieLockTitle) Then
             If Not String.IsNullOrEmpty(tOFDB.Title) Then
                 DBMovie.Movie.Title = tOFDB.Title
             End If
         End If
-        If filterOptions.bOutline AndAlso (String.IsNullOrEmpty(DBMovie.Movie.Outline) OrElse Not Master.eSettings.LockOutline OrElse (Master.eSettings.OutlinePlotEnglishOverwrite AndAlso StringUtils.isEnglishText(DBMovie.Movie.Plot))) Then
+        If filterOptions.bOutline AndAlso (String.IsNullOrEmpty(DBMovie.Movie.Outline) OrElse Not Master.eSettings.MovieLockOutline OrElse (Master.eSettings.MovieScraperOutlinePlotEnglishOverwrite AndAlso StringUtils.isEnglishText(DBMovie.Movie.Plot))) Then
 
             If Not String.IsNullOrEmpty(tOFDB.Outline) Then
                 'check if brackets should be removed...
@@ -243,7 +243,7 @@ Public Class OFDB_Data
             End If
         End If
 
-        If filterOptions.bPlot AndAlso (String.IsNullOrEmpty(DBMovie.Movie.Plot) OrElse Not Master.eSettings.LockPlot OrElse (Master.eSettings.OutlinePlotEnglishOverwrite AndAlso StringUtils.isEnglishText(DBMovie.Movie.Plot))) Then
+        If filterOptions.bPlot AndAlso (String.IsNullOrEmpty(DBMovie.Movie.Plot) OrElse Not Master.eSettings.MovieLockPlot OrElse (Master.eSettings.MovieScraperOutlinePlotEnglishOverwrite AndAlso StringUtils.isEnglishText(DBMovie.Movie.Plot))) Then
             If Not String.IsNullOrEmpty(tOFDB.Plot) Then
                 'check if brackets should be removed...
                 If ConfigOptions.bCleanPlotOutline Then
@@ -254,7 +254,7 @@ Public Class OFDB_Data
             End If
         End If
 
-        If filterOptions.bGenre AndAlso (String.IsNullOrEmpty(DBMovie.Movie.Genre) OrElse Not Master.eSettings.LockGenre) Then
+        If filterOptions.bGenre AndAlso (String.IsNullOrEmpty(DBMovie.Movie.Genre) OrElse Not Master.eSettings.MovieLockGenre) Then
             If Not String.IsNullOrEmpty(tOFDB.Genre) Then
                 DBMovie.Movie.Genre = tOFDB.Genre
             End If

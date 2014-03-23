@@ -26,12 +26,12 @@ Public Class frmTrakt
         chkUseTrakt.Text = Master.eLang.GetString(778, "Use trakt.tv as source for ""Playcount""")
         btGetMoviesTrakt.Text = Master.eLang.GetString(779, "Get watched movies")
         btSaveMoviesTrakt.Text = Master.eLang.GetString(780, "Save playcount to database/Nfo")
-        txtTraktUser.Text = Master.eSettings.TraktUser
-        lblTraktUser.Text = Master.eLang.GetString(425, "Username")
+        txtTraktUsername.Text = Master.eSettings.TraktUsername
+        lblTraktUsername.Text = Master.eLang.GetString(425, "Username")
         txtTraktPassword.Text = Master.eSettings.TraktPassword
         lblTraktPassword.Text = Master.eLang.GetString(426, "Password")
         btGetSeriesTrakt.Text = Master.eLang.GetString(781, "Get watched episodes")
-        btnSavetraktsettings.Text = Master.eLang.GetString(273, "Save")
+        btnSaveTraktSettings.Text = Master.eLang.GetString(273, "Save")
         txtTraktPassword.PasswordChar = "*"c
 
         If Not String.IsNullOrEmpty(Master.eSettings.UseTrakt.ToString) Then
@@ -41,9 +41,9 @@ Public Class frmTrakt
         dgvTraktWatched.Rows.Clear()
 
         If Master.eSettings.UseTrakt = True Then
-            txtTraktUser.Enabled = True
+            txtTraktUsername.Enabled = True
             txtTraktPassword.Enabled = True
-            If Not String.IsNullOrEmpty(Master.eSettings.TraktUser) AndAlso Not String.IsNullOrEmpty(Master.eSettings.TraktPassword) Then
+            If Not String.IsNullOrEmpty(Master.eSettings.TraktUsername) AndAlso Not String.IsNullOrEmpty(Master.eSettings.TraktPassword) Then
                 btGetMoviesTrakt.Enabled = True
                 btGetSeriesTrakt.Enabled = True
             Else
@@ -53,30 +53,30 @@ Public Class frmTrakt
         Else
             btGetMoviesTrakt.Enabled = False
             btGetSeriesTrakt.Enabled = False
-            txtTraktUser.Enabled = False
+            txtTraktUsername.Enabled = False
         End If
     End Sub
     'Little Control over Form-Controls
     Private Sub chkUseTrakt_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUseTrakt.CheckedChanged
         If chkUseTrakt.Checked = True Then
-            If Not String.IsNullOrEmpty(txtTraktUser.Text) AndAlso Not String.IsNullOrEmpty(txtTraktPassword.Text) Then
+            If Not String.IsNullOrEmpty(txtTraktUsername.Text) AndAlso Not String.IsNullOrEmpty(txtTraktPassword.Text) Then
                 btGetMoviesTrakt.Enabled = True
                 btGetSeriesTrakt.Enabled = True
             End If
-            txtTraktUser.Enabled = True
+            txtTraktUsername.Enabled = True
             txtTraktPassword.Enabled = True
         Else
             btGetMoviesTrakt.Enabled = False
             btGetSeriesTrakt.Enabled = False
-            txtTraktUser.Enabled = False
+            txtTraktUsername.Enabled = False
             txtTraktPassword.Enabled = False
         End If
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub txtTraktUser_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTraktUser.TextChanged
+    Private Sub txtTraktUser_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTraktUsername.TextChanged
         RaiseEvent ModuleSettingsChanged()
-        If Not String.IsNullOrEmpty(txtTraktUser.Text) AndAlso txtTraktUser.Enabled = True Then
+        If Not String.IsNullOrEmpty(txtTraktUsername.Text) AndAlso txtTraktUsername.Enabled = True Then
             btGetMoviesTrakt.Enabled = True
             btGetSeriesTrakt.Enabled = True
         Else
@@ -105,7 +105,7 @@ Public Class frmTrakt
         dgvTraktWatched.Rows.Clear()
         ' myWatchedMovies.Clear()
 
-        If Not String.IsNullOrEmpty(txtTraktUser.Text) AndAlso chkUseTrakt.Checked = True AndAlso Not String.IsNullOrEmpty(txtTraktPassword.Text) Then
+        If Not String.IsNullOrEmpty(txtTraktUsername.Text) AndAlso chkUseTrakt.Checked = True AndAlso Not String.IsNullOrEmpty(txtTraktPassword.Text) Then
             'Old method - not using Trakt.tv API wrapper
             ' myWatchedMovies = GetWatchedMoviesFromTrakt(txtTraktUser.Text, txtTraktPassword.Text)
 
@@ -117,9 +117,9 @@ Public Class frmTrakt
             Dim dictMovieWatched As New Dictionary(Of String, KeyValuePair(Of String, Integer))
 
             ' Use new Trakttv wrapper class to get watched data!
-            Trakttv.TraktSettings.Username = txtTraktUser.Text
+            Trakttv.TraktSettings.Username = txtTraktUsername.Text
             Trakttv.TraktSettings.Password = txtTraktPassword.Text
-            Dim traktWatchedMovies As IEnumerable(Of TraktAPI.Model.TraktWatchedMovie) = TraktAPI.TrakttvAPI.GetUserWatchedMovies(txtTraktUser.Text)
+            Dim traktWatchedMovies As IEnumerable(Of TraktAPI.Model.TraktWatchedMovie) = TraktAPI.TrakttvAPI.GetUserWatchedMovies(txtTraktUsername.Text)
 
             ' Go through each item in collection	 
             For Each Item In traktWatchedMovies
@@ -159,7 +159,7 @@ Public Class frmTrakt
         dgvTraktWatched.Rows.Clear()
         '  myWatchedMovies.Clear()
 
-        If Not String.IsNullOrEmpty(txtTraktUser.Text) AndAlso chkUseTrakt.Checked = True AndAlso Not String.IsNullOrEmpty(txtTraktPassword.Text) Then
+        If Not String.IsNullOrEmpty(txtTraktUsername.Text) AndAlso chkUseTrakt.Checked = True AndAlso Not String.IsNullOrEmpty(txtTraktPassword.Text) Then
             'Old method - not using Trakt.tv API wrapper
             '  myWatchedEpisodes = GetWatchedEpisodesFromTrakt(txtTraktUser.Text, txtTraktPassword.Text)
 
@@ -171,9 +171,9 @@ Public Class frmTrakt
             Dim dictEpisodesWatched As New Dictionary(Of String, KeyValuePair(Of String, List(Of TraktAPI.Model.TraktWatchedEpisode.SeasonsWatched)))
 
             ' Use new Trakttv wrapper class to get watched data!
-            Trakttv.TraktSettings.Username = txtTraktUser.Text
+            Trakttv.TraktSettings.Username = txtTraktUsername.Text
             Trakttv.TraktSettings.Password = txtTraktPassword.Text
-            Dim traktWatchedEpisodes As IEnumerable(Of TraktAPI.Model.TraktWatchedEpisode) = TraktAPI.TrakttvAPI.GetUserWatchedEpisodes(txtTraktUser.Text)
+            Dim traktWatchedEpisodes As IEnumerable(Of TraktAPI.Model.TraktWatchedEpisode) = TraktAPI.TrakttvAPI.GetUserWatchedEpisodes(txtTraktUsername.Text)
             ' Go through each item in collection	
             If traktWatchedEpisodes Is Nothing = False Then
                 For Each episode In traktWatchedEpisodes
@@ -207,15 +207,15 @@ Public Class frmTrakt
         End If
     End Sub
 
-    Private Sub btnSavetraktsettings_Click(sender As Object, e As EventArgs) Handles btnSavetraktsettings.Click
+    Private Sub btnSavetraktsettings_Click(sender As Object, e As EventArgs) Handles btnSaveTraktSettings.Click
         SaveChanges()
     End Sub
 
     Public Sub SaveChanges()
-        Master.eSettings.TraktUser = txtTraktUser.Text
+        Master.eSettings.TraktUsername = txtTraktUsername.Text
         Master.eSettings.TraktPassword = txtTraktPassword.Text
         Master.eSettings.UseTrakt = chkUseTrakt.Checked
-        If Not String.IsNullOrEmpty(Master.eSettings.TraktUser) AndAlso Master.eSettings.UseTrakt = True AndAlso Not String.IsNullOrEmpty(Master.eSettings.TraktPassword) Then
+        If Not String.IsNullOrEmpty(Master.eSettings.TraktUsername) AndAlso Master.eSettings.UseTrakt = True AndAlso Not String.IsNullOrEmpty(Master.eSettings.TraktPassword) Then
             btGetMoviesTrakt.Enabled = True
             btGetSeriesTrakt.Enabled = True
         Else
@@ -225,7 +225,7 @@ Public Class frmTrakt
     End Sub
 
     Private Sub btSaveMoviesTrakt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btSaveMoviesTrakt.Click
-        If Not String.IsNullOrEmpty(txtTraktUser.Text) AndAlso chkUseTrakt.Checked = True AndAlso Not String.IsNullOrEmpty(txtTraktPassword.Text) Then
+        If Not String.IsNullOrEmpty(txtTraktUsername.Text) AndAlso chkUseTrakt.Checked = True AndAlso Not String.IsNullOrEmpty(txtTraktPassword.Text) Then
             'Movies
             If Not myWatchedMovies Is Nothing Then
                 prgtrakt.Value = 0

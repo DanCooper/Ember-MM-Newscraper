@@ -149,8 +149,8 @@
     <Compile Include="clsAPISorter.vb" />
     <Compile Include="clsAPIStringUtils.vb" />
     <Compile Include="clsAPIXML.vb" />
-    <Compile Include="clsYouTube.vb" />
-    <Compile Include="clsTrailers.vb" />
+    <Compile Include="clsAPIYouTube.vb" />
+    <Compile Include="clsAPITrailers.vb" />
     <Compile Include="dlgCompatibility.designer.vb">
       <DependentUpon>dlgCompatibility.vb</DependentUpon>
     </Compile>

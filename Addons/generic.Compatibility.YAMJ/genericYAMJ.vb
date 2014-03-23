@@ -88,8 +88,8 @@ Public Class genericYAMJ
 		Dim SPanel As New Containers.SettingsPanel
 		Me.fYAMJ = New frmYAMJ
 		Me.fYAMJ.chkEnabled.Checked = Me._enabled
-		Me.fYAMJ.chkVideoTSParent.Checked = Master.eSettings.VideoTSParent
-		Me.fYAMJ.chkYAMJCompatibleSets.Checked = Master.eSettings.YAMJSetsCompatible
+        'Me.fYAMJ.chkVideoTSParent.Checked = Master.eSettings.VideoTSParent
+        Me.fYAMJ.chkYAMJCompatibleSets.Checked = Master.eSettings.MovieYAMJCompatibleSets
 		Me.fYAMJ.chkYAMJCompatibleTVImages.Checked = AdvancedSettings.GetBooleanSetting("YAMJTVImageNaming", False)
 		Me.fYAMJ.chkYAMJnfoFields.Checked = AdvancedSettings.GetBooleanSetting("YAMJnfoFields", False)
 		Me.fYAMJ.chkShowPoster.Checked = AdvancedSettings.GetBooleanSetting("YAMJShowPoster", False)
@@ -124,7 +124,7 @@ Public Class genericYAMJ
 	Public Sub SaveSetup(ByVal DoDispose As Boolean) Implements EmberAPI.Interfaces.EmberExternalModule.SaveSetup
 		Me.Enabled = Me.fYAMJ.chkEnabled.Checked
 		'Master.eSettings.VideoTSParent = Me.fYAMJ.chkVideoTSParent.Checked
-        Master.eSettings.YAMJSetsCompatible = Me.fYAMJ.chkYAMJCompatibleSets.Checked
+        Master.eSettings.MovieYAMJCompatibleSets = Me.fYAMJ.chkYAMJCompatibleSets.Checked
         Using settings = New AdvancedSettings()
             settings.SetBooleanSetting("YAMJTVImageNaming", Me.fYAMJ.chkYAMJCompatibleTVImages.Checked)
             settings.SetBooleanSetting("YAMJnfoFields", Me.fYAMJ.chkYAMJnfoFields.Checked)
@@ -154,7 +154,7 @@ Public Class genericYAMJ
 							doContinue = DirectCast(_refparam, Boolean)
 							Dim tPath As String = String.Empty
 							Select Case iType
-								Case Enums.TVImageType.AllSeasonPoster
+								Case Enums.TVImageType.AllSeasonsPoster
 									If AdvancedSettings.GetBooleanSetting("YAMJAllSeasonPoster", False) Then
 										Dim seasonPath As String = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, 0)
 										If String.IsNullOrEmpty(seasonPath) Then
@@ -264,14 +264,14 @@ Public Class genericYAMJ
 	Sub SyncSettings(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
 		If mType = Enums.ModuleEventType.SyncModuleSettings AndAlso Not IsNothing(Me.fYAMJ) Then
 			RemoveHandler fYAMJ.GenericEvent, AddressOf DeploySyncSettings
-			Me.fYAMJ.chkVideoTSParent.Checked = Master.eSettings.VideoTSParent
+            'Me.fYAMJ.chkVideoTSParent.Checked = Master.eSettings.VideoTSParent
 			AddHandler fYAMJ.GenericEvent, AddressOf DeploySyncSettings
 		End If
 	End Sub
 
 	Sub DeploySyncSettings(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
 		If Not IsNothing(Me.fYAMJ) Then
-			Master.eSettings.VideoTSParent = Me.fYAMJ.chkVideoTSParent.Checked
+            'Master.eSettings.VideoTSParent = Me.fYAMJ.chkVideoTSParent.Checked
 			RaiseEvent GenericEvent(mType, _params)
 		End If
 

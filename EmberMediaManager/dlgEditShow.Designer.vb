@@ -72,6 +72,13 @@ Partial Class dlgEditShow
         Me.btnSetShowBannerScrape = New System.Windows.Forms.Button()
         Me.btnSetShowBannerLocal = New System.Windows.Forms.Button()
         Me.pbShowBanner = New System.Windows.Forms.PictureBox()
+        Me.tpShowLandscape = New System.Windows.Forms.TabPage()
+        Me.btnSetShowLandscapeDL = New System.Windows.Forms.Button()
+        Me.btnRemoveShowLandscape = New System.Windows.Forms.Button()
+        Me.lblShowLandscapeSize = New System.Windows.Forms.Label()
+        Me.btnSetShowLandscapeScrape = New System.Windows.Forms.Button()
+        Me.btnSetShowLandscapeLocal = New System.Windows.Forms.Button()
+        Me.pbShowLandscape = New System.Windows.Forms.PictureBox()
         Me.tpShowFanart = New System.Windows.Forms.TabPage()
         Me.btnSetShowFanartDL = New System.Windows.Forms.Button()
         Me.btnRemoveShowFanart = New System.Windows.Forms.Button()
@@ -93,6 +100,13 @@ Partial Class dlgEditShow
         Me.btnSetASBannerScrape = New System.Windows.Forms.Button()
         Me.btnSetASBannerLocal = New System.Windows.Forms.Button()
         Me.pbASBanner = New System.Windows.Forms.PictureBox()
+        Me.tpASLandscape = New System.Windows.Forms.TabPage()
+        Me.btnSetASLandscapeDL = New System.Windows.Forms.Button()
+        Me.btnRemoveASLandscape = New System.Windows.Forms.Button()
+        Me.lblASLandscapeSize = New System.Windows.Forms.Label()
+        Me.btnSetASLandscapeScrape = New System.Windows.Forms.Button()
+        Me.btnSetASLandscapeLocal = New System.Windows.Forms.Button()
+        Me.pbASLandscape = New System.Windows.Forms.PictureBox()
         Me.tpASFanart = New System.Windows.Forms.TabPage()
         Me.btnSetASFanartDL = New System.Windows.Forms.Button()
         Me.btnRemoveASFanart = New System.Windows.Forms.Button()
@@ -105,6 +119,8 @@ Partial Class dlgEditShow
         Me.ofdImage = New System.Windows.Forms.OpenFileDialog()
         Me.cbOrdering = New System.Windows.Forms.ComboBox()
         Me.lblOrdering = New System.Windows.Forms.Label()
+        Me.lblStatus = New System.Windows.Forms.Label()
+        Me.txtStatus = New System.Windows.Forms.TextBox()
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tcEditShow.SuspendLayout()
@@ -118,12 +134,16 @@ Partial Class dlgEditShow
         CType(Me.pbShowPoster, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tpShowBanner.SuspendLayout()
         CType(Me.pbShowBanner, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.tpShowLandscape.SuspendLayout()
+        CType(Me.pbShowLandscape, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tpShowFanart.SuspendLayout()
         CType(Me.pbShowFanart, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tpASPoster.SuspendLayout()
         CType(Me.pbASPoster, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tpASBanner.SuspendLayout()
         CType(Me.pbASBanner, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.tpASLandscape.SuspendLayout()
+        CType(Me.pbASLandscape, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tpASFanart.SuspendLayout()
         CType(Me.pbASFanart, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -181,9 +201,11 @@ Partial Class dlgEditShow
         Me.tcEditShow.Controls.Add(Me.tpShowDetails)
         Me.tcEditShow.Controls.Add(Me.tpShowPoster)
         Me.tcEditShow.Controls.Add(Me.tpShowBanner)
+        Me.tcEditShow.Controls.Add(Me.tpShowLandscape)
         Me.tcEditShow.Controls.Add(Me.tpShowFanart)
         Me.tcEditShow.Controls.Add(Me.tpASPoster)
         Me.tcEditShow.Controls.Add(Me.tpASBanner)
+        Me.tcEditShow.Controls.Add(Me.tpASLandscape)
         Me.tcEditShow.Controls.Add(Me.tpASFanart)
         Me.tcEditShow.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.tcEditShow.Location = New System.Drawing.Point(4, 70)
@@ -194,6 +216,8 @@ Partial Class dlgEditShow
         '
         'tpShowDetails
         '
+        Me.tpShowDetails.Controls.Add(Me.lblStatus)
+        Me.tpShowDetails.Controls.Add(Me.txtStatus)
         Me.tpShowDetails.Controls.Add(Me.btnActorDown)
         Me.tpShowDetails.Controls.Add(Me.btnActorUp)
         Me.tpShowDetails.Controls.Add(Me.txtPremiered)
@@ -664,6 +688,95 @@ Partial Class dlgEditShow
         Me.pbShowBanner.TabIndex = 6
         Me.pbShowBanner.TabStop = False
         '
+        'tpShowLandscape
+        '
+        Me.tpShowLandscape.Controls.Add(Me.btnSetShowLandscapeDL)
+        Me.tpShowLandscape.Controls.Add(Me.btnRemoveShowLandscape)
+        Me.tpShowLandscape.Controls.Add(Me.lblShowLandscapeSize)
+        Me.tpShowLandscape.Controls.Add(Me.btnSetShowLandscapeScrape)
+        Me.tpShowLandscape.Controls.Add(Me.btnSetShowLandscapeLocal)
+        Me.tpShowLandscape.Controls.Add(Me.pbShowLandscape)
+        Me.tpShowLandscape.Location = New System.Drawing.Point(4, 22)
+        Me.tpShowLandscape.Name = "tpShowLandscape"
+        Me.tpShowLandscape.Size = New System.Drawing.Size(836, 452)
+        Me.tpShowLandscape.TabIndex = 7
+        Me.tpShowLandscape.Text = "Landscape"
+        Me.tpShowLandscape.UseVisualStyleBackColor = True
+        '
+        'btnSetShowLandscapeDL
+        '
+        Me.btnSetShowLandscapeDL.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnSetShowLandscapeDL.Image = CType(resources.GetObject("btnSetShowLandscapeDL.Image"), System.Drawing.Image)
+        Me.btnSetShowLandscapeDL.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetShowLandscapeDL.Location = New System.Drawing.Point(735, 180)
+        Me.btnSetShowLandscapeDL.Name = "btnSetShowLandscapeDL"
+        Me.btnSetShowLandscapeDL.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetShowLandscapeDL.TabIndex = 9
+        Me.btnSetShowLandscapeDL.Text = "Change Landscape (Download)"
+        Me.btnSetShowLandscapeDL.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetShowLandscapeDL.UseVisualStyleBackColor = True
+        '
+        'btnRemoveShowLandscape
+        '
+        Me.btnRemoveShowLandscape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnRemoveShowLandscape.Image = CType(resources.GetObject("btnRemoveShowLandscape.Image"), System.Drawing.Image)
+        Me.btnRemoveShowLandscape.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnRemoveShowLandscape.Location = New System.Drawing.Point(735, 363)
+        Me.btnRemoveShowLandscape.Name = "btnRemoveShowLandscape"
+        Me.btnRemoveShowLandscape.Size = New System.Drawing.Size(96, 83)
+        Me.btnRemoveShowLandscape.TabIndex = 10
+        Me.btnRemoveShowLandscape.Text = "Remove Landscape"
+        Me.btnRemoveShowLandscape.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnRemoveShowLandscape.UseVisualStyleBackColor = True
+        '
+        'lblShowLandscapeSize
+        '
+        Me.lblShowLandscapeSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblShowLandscapeSize.Location = New System.Drawing.Point(8, 8)
+        Me.lblShowLandscapeSize.Name = "lblShowLandscapeSize"
+        Me.lblShowLandscapeSize.Size = New System.Drawing.Size(104, 23)
+        Me.lblShowLandscapeSize.TabIndex = 5
+        Me.lblShowLandscapeSize.Text = "Size: (XXXXxXXXX)"
+        Me.lblShowLandscapeSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.lblShowLandscapeSize.Visible = False
+        '
+        'btnSetShowLandscapeScrape
+        '
+        Me.btnSetShowLandscapeScrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnSetShowLandscapeScrape.Image = CType(resources.GetObject("btnSetShowLandscapeScrape.Image"), System.Drawing.Image)
+        Me.btnSetShowLandscapeScrape.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetShowLandscapeScrape.Location = New System.Drawing.Point(735, 93)
+        Me.btnSetShowLandscapeScrape.Name = "btnSetShowLandscapeScrape"
+        Me.btnSetShowLandscapeScrape.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetShowLandscapeScrape.TabIndex = 8
+        Me.btnSetShowLandscapeScrape.Text = "Change Landscape (Scrape)"
+        Me.btnSetShowLandscapeScrape.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetShowLandscapeScrape.UseVisualStyleBackColor = True
+        '
+        'btnSetShowLandscapeLocal
+        '
+        Me.btnSetShowLandscapeLocal.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnSetShowLandscapeLocal.Image = CType(resources.GetObject("btnSetShowLandscapeLocal.Image"), System.Drawing.Image)
+        Me.btnSetShowLandscapeLocal.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetShowLandscapeLocal.Location = New System.Drawing.Point(735, 6)
+        Me.btnSetShowLandscapeLocal.Name = "btnSetShowLandscapeLocal"
+        Me.btnSetShowLandscapeLocal.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetShowLandscapeLocal.TabIndex = 7
+        Me.btnSetShowLandscapeLocal.Text = "Change Landscape (Local)"
+        Me.btnSetShowLandscapeLocal.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetShowLandscapeLocal.UseVisualStyleBackColor = True
+        '
+        'pbShowLandscape
+        '
+        Me.pbShowLandscape.BackColor = System.Drawing.Color.DimGray
+        Me.pbShowLandscape.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pbShowLandscape.Location = New System.Drawing.Point(6, 6)
+        Me.pbShowLandscape.Name = "pbShowLandscape"
+        Me.pbShowLandscape.Size = New System.Drawing.Size(724, 440)
+        Me.pbShowLandscape.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.pbShowLandscape.TabIndex = 6
+        Me.pbShowLandscape.TabStop = False
+        '
         'tpShowFanart
         '
         Me.tpShowFanart.Controls.Add(Me.btnSetShowFanartDL)
@@ -932,6 +1045,95 @@ Partial Class dlgEditShow
         Me.pbASBanner.TabIndex = 12
         Me.pbASBanner.TabStop = False
         '
+        'tpASLandscape
+        '
+        Me.tpASLandscape.Controls.Add(Me.btnSetASLandscapeDL)
+        Me.tpASLandscape.Controls.Add(Me.btnRemoveASLandscape)
+        Me.tpASLandscape.Controls.Add(Me.lblASLandscapeSize)
+        Me.tpASLandscape.Controls.Add(Me.btnSetASLandscapeScrape)
+        Me.tpASLandscape.Controls.Add(Me.btnSetASLandscapeLocal)
+        Me.tpASLandscape.Controls.Add(Me.pbASLandscape)
+        Me.tpASLandscape.Location = New System.Drawing.Point(4, 22)
+        Me.tpASLandscape.Name = "tpASLandscape"
+        Me.tpASLandscape.Size = New System.Drawing.Size(836, 452)
+        Me.tpASLandscape.TabIndex = 8
+        Me.tpASLandscape.Text = "All Seasons Landscape"
+        Me.tpASLandscape.UseVisualStyleBackColor = True
+        '
+        'btnSetASLandscapeDL
+        '
+        Me.btnSetASLandscapeDL.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnSetASLandscapeDL.Image = CType(resources.GetObject("btnSetASLandscapeDL.Image"), System.Drawing.Image)
+        Me.btnSetASLandscapeDL.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetASLandscapeDL.Location = New System.Drawing.Point(735, 180)
+        Me.btnSetASLandscapeDL.Name = "btnSetASLandscapeDL"
+        Me.btnSetASLandscapeDL.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetASLandscapeDL.TabIndex = 15
+        Me.btnSetASLandscapeDL.Text = "Change Landscape (Download)"
+        Me.btnSetASLandscapeDL.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetASLandscapeDL.UseVisualStyleBackColor = True
+        '
+        'btnRemoveASLandscape
+        '
+        Me.btnRemoveASLandscape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnRemoveASLandscape.Image = CType(resources.GetObject("btnRemoveASLandscape.Image"), System.Drawing.Image)
+        Me.btnRemoveASLandscape.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnRemoveASLandscape.Location = New System.Drawing.Point(735, 363)
+        Me.btnRemoveASLandscape.Name = "btnRemoveASLandscape"
+        Me.btnRemoveASLandscape.Size = New System.Drawing.Size(96, 83)
+        Me.btnRemoveASLandscape.TabIndex = 16
+        Me.btnRemoveASLandscape.Text = "Remove Landscape"
+        Me.btnRemoveASLandscape.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnRemoveASLandscape.UseVisualStyleBackColor = True
+        '
+        'lblASLandscapeSize
+        '
+        Me.lblASLandscapeSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblASLandscapeSize.Location = New System.Drawing.Point(8, 8)
+        Me.lblASLandscapeSize.Name = "lblASLandscapeSize"
+        Me.lblASLandscapeSize.Size = New System.Drawing.Size(104, 23)
+        Me.lblASLandscapeSize.TabIndex = 11
+        Me.lblASLandscapeSize.Text = "Size: (XXXXxXXXX)"
+        Me.lblASLandscapeSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.lblASLandscapeSize.Visible = False
+        '
+        'btnSetASLandscapeScrape
+        '
+        Me.btnSetASLandscapeScrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnSetASLandscapeScrape.Image = CType(resources.GetObject("btnSetASLandscapeScrape.Image"), System.Drawing.Image)
+        Me.btnSetASLandscapeScrape.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetASLandscapeScrape.Location = New System.Drawing.Point(735, 93)
+        Me.btnSetASLandscapeScrape.Name = "btnSetASLandscapeScrape"
+        Me.btnSetASLandscapeScrape.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetASLandscapeScrape.TabIndex = 14
+        Me.btnSetASLandscapeScrape.Text = "Change Landscape (Scrape)"
+        Me.btnSetASLandscapeScrape.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetASLandscapeScrape.UseVisualStyleBackColor = True
+        '
+        'btnSetASLandscapeLocal
+        '
+        Me.btnSetASLandscapeLocal.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnSetASLandscapeLocal.Image = CType(resources.GetObject("btnSetASLandscapeLocal.Image"), System.Drawing.Image)
+        Me.btnSetASLandscapeLocal.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetASLandscapeLocal.Location = New System.Drawing.Point(735, 6)
+        Me.btnSetASLandscapeLocal.Name = "btnSetASLandscapeLocal"
+        Me.btnSetASLandscapeLocal.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetASLandscapeLocal.TabIndex = 13
+        Me.btnSetASLandscapeLocal.Text = "Change Landscape (Local)"
+        Me.btnSetASLandscapeLocal.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetASLandscapeLocal.UseVisualStyleBackColor = True
+        '
+        'pbASLandscape
+        '
+        Me.pbASLandscape.BackColor = System.Drawing.Color.DimGray
+        Me.pbASLandscape.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pbASLandscape.Location = New System.Drawing.Point(6, 6)
+        Me.pbASLandscape.Name = "pbASLandscape"
+        Me.pbASLandscape.Size = New System.Drawing.Size(724, 440)
+        Me.pbASLandscape.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.pbASLandscape.TabIndex = 12
+        Me.pbASLandscape.TabStop = False
+        '
         'tpASFanart
         '
         Me.tpASFanart.Controls.Add(Me.btnSetASFanartDL)
@@ -1057,6 +1259,24 @@ Partial Class dlgEditShow
         Me.lblOrdering.TabIndex = 4
         Me.lblOrdering.Text = "Episode Ordering:"
         '
+        'lblStatus
+        '
+        Me.lblStatus.AutoSize = True
+        Me.lblStatus.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblStatus.Location = New System.Drawing.Point(635, 330)
+        Me.lblStatus.Name = "lblStatus"
+        Me.lblStatus.Size = New System.Drawing.Size(42, 13)
+        Me.lblStatus.TabIndex = 68
+        Me.lblStatus.Text = "Status:"
+        '
+        'txtStatus
+        '
+        Me.txtStatus.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtStatus.Location = New System.Drawing.Point(635, 346)
+        Me.txtStatus.Name = "txtStatus"
+        Me.txtStatus.Size = New System.Drawing.Size(193, 22)
+        Me.txtStatus.TabIndex = 69
+        '
         'dlgEditShow
         '
         Me.AcceptButton = Me.OK_Button
@@ -1094,12 +1314,16 @@ Partial Class dlgEditShow
         CType(Me.pbShowPoster, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tpShowBanner.ResumeLayout(False)
         CType(Me.pbShowBanner, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.tpShowLandscape.ResumeLayout(False)
+        CType(Me.pbShowLandscape, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tpShowFanart.ResumeLayout(False)
         CType(Me.pbShowFanart, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tpASPoster.ResumeLayout(False)
         CType(Me.pbASPoster, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tpASBanner.ResumeLayout(False)
         CType(Me.pbASBanner, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.tpASLandscape.ResumeLayout(False)
+        CType(Me.pbASLandscape, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tpASFanart.ResumeLayout(False)
         CType(Me.pbASFanart, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
@@ -1188,5 +1412,21 @@ Partial Class dlgEditShow
     Friend WithEvents btnSetASFanartScrape As System.Windows.Forms.Button
     Friend WithEvents btnSetASFanartLocal As System.Windows.Forms.Button
     Friend WithEvents pbASFanart As System.Windows.Forms.PictureBox
+    Friend WithEvents tpShowLandscape As System.Windows.Forms.TabPage
+    Friend WithEvents btnSetShowLandscapeDL As System.Windows.Forms.Button
+    Friend WithEvents btnRemoveShowLandscape As System.Windows.Forms.Button
+    Friend WithEvents lblShowLandscapeSize As System.Windows.Forms.Label
+    Friend WithEvents btnSetShowLandscapeScrape As System.Windows.Forms.Button
+    Friend WithEvents btnSetShowLandscapeLocal As System.Windows.Forms.Button
+    Friend WithEvents pbShowLandscape As System.Windows.Forms.PictureBox
+    Friend WithEvents tpASLandscape As System.Windows.Forms.TabPage
+    Friend WithEvents btnSetASLandscapeDL As System.Windows.Forms.Button
+    Friend WithEvents btnRemoveASLandscape As System.Windows.Forms.Button
+    Friend WithEvents lblASLandscapeSize As System.Windows.Forms.Label
+    Friend WithEvents btnSetASLandscapeScrape As System.Windows.Forms.Button
+    Friend WithEvents btnSetASLandscapeLocal As System.Windows.Forms.Button
+    Friend WithEvents pbASLandscape As System.Windows.Forms.PictureBox
+    Friend WithEvents lblStatus As System.Windows.Forms.Label
+    Friend WithEvents txtStatus As System.Windows.Forms.TextBox
 
 End Class

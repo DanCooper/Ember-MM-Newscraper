@@ -134,29 +134,29 @@ Public Class TMDB_Data
         Dim SPanel As New Containers.SettingsPanel
         _setup = New frmTMDBInfoSettingsHolder
         LoadSettings()
+        _setup.API = _setup.txtTMDBApiKey.Text
+        _setup.Lang = _setup.cbTMDBPrefLanguage.Text
         _setup.cbEnabled.Checked = _ScraperEnabled
-        _setup.chkTitle.Checked = ConfigOptions.bTitle
-        _setup.chkYear.Checked = ConfigOptions.bYear
-        _setup.chkMPAA.Checked = ConfigOptions.bMPAA
-        _setup.chkRelease.Checked = ConfigOptions.bRelease
-        _setup.chkRuntime.Checked = ConfigOptions.bRuntime
-        _setup.chkRating.Checked = ConfigOptions.bRating
-        _setup.chkVotes.Checked = ConfigOptions.bVotes
-        _setup.chkStudio.Checked = ConfigOptions.bStudio
-        _setup.chkTagline.Checked = ConfigOptions.bTagline
-        _setup.chkPlot.Checked = ConfigOptions.bPlot
+        _setup.cbTMDBPrefLanguage.Text = _MySettings.TMDBLanguage
         _setup.chkCast.Checked = ConfigOptions.bFullCast
-        _setup.chkGenre.Checked = ConfigOptions.bGenre
-        _setup.chkTrailer.Checked = ConfigOptions.bTrailer
         _setup.chkCountry.Checked = ConfigOptions.bCountry
         _setup.chkCrew.Checked = ConfigOptions.bFullCrew
-        _setup.txtTMDBApiKey.Text = strPrivateAPIKey
-        _setup.cbTMDBPrefLanguage.Text = _MySettings.TMDBLanguage
         _setup.chkFallBackEng.Checked = _MySettings.FallBackEng
-        _setup.Lang = _setup.cbTMDBPrefLanguage.Text
-        _setup.API = _setup.txtTMDBApiKey.Text
+        _setup.chkGenre.Checked = ConfigOptions.bGenre
+        _setup.chkGetAdultItems.Checked = _MySettings.GetAdultItems
+        _setup.chkMPAA.Checked = ConfigOptions.bMPAA
+        _setup.chkPlot.Checked = ConfigOptions.bPlot
+        _setup.chkRating.Checked = ConfigOptions.bRating
+        _setup.chkRelease.Checked = ConfigOptions.bRelease
+        _setup.chkRuntime.Checked = ConfigOptions.bRuntime
+        _setup.chkStudio.Checked = ConfigOptions.bStudio
         _setup.chkTMDBCleanPlotOutline.Checked = ConfigOptions.bCleanPlotOutline
-
+        _setup.chkTagline.Checked = ConfigOptions.bTagline
+        _setup.chkTitle.Checked = ConfigOptions.bTitle
+        _setup.chkTrailer.Checked = ConfigOptions.bTrailer
+        _setup.chkVotes.Checked = ConfigOptions.bVotes
+        _setup.chkYear.Checked = ConfigOptions.bYear
+        _setup.txtTMDBApiKey.Text = strPrivateAPIKey
         _setup.orderChanged()
 
         SPanel.Name = String.Concat(Me._Name, "Scraper")
@@ -174,119 +174,118 @@ Public Class TMDB_Data
     End Function
 
     Sub LoadSettings()
-        ConfigOptions.bTitle = AdvancedSettings.GetBooleanSetting("DoTitle", True)
-        ConfigOptions.bYear = AdvancedSettings.GetBooleanSetting("DoYear", True)
-        ConfigOptions.bMPAA = AdvancedSettings.GetBooleanSetting("DoMPAA", True)
-        ConfigOptions.bRelease = AdvancedSettings.GetBooleanSetting("DoRelease", True)
-        ConfigOptions.bRuntime = AdvancedSettings.GetBooleanSetting("DoRuntime", True)
-        ConfigOptions.bRating = AdvancedSettings.GetBooleanSetting("DoRating", True)
-        ConfigOptions.bVotes = AdvancedSettings.GetBooleanSetting("DoVotes", True)
-        ConfigOptions.bStudio = AdvancedSettings.GetBooleanSetting("DoStudio", True)
-        ConfigOptions.bTagline = AdvancedSettings.GetBooleanSetting("DoTagline", True)
-        ConfigOptions.bOutline = AdvancedSettings.GetBooleanSetting("DoOutline", True)
-        ConfigOptions.bPlot = AdvancedSettings.GetBooleanSetting("DoPlot", True)
         ConfigOptions.bCast = AdvancedSettings.GetBooleanSetting("DoCast", True)
+        ConfigOptions.bCert = AdvancedSettings.GetBooleanSetting("DoCert", True)
+        ConfigOptions.bCleanPlotOutline = AdvancedSettings.GetBooleanSetting("CleanPlotOutline", True)
+        ConfigOptions.bCountry = AdvancedSettings.GetBooleanSetting("DoCountry", True)
         ConfigOptions.bDirector = AdvancedSettings.GetBooleanSetting("DoDirector", True)
-        ConfigOptions.bWriters = AdvancedSettings.GetBooleanSetting("DoWriters", True)
-        ConfigOptions.bProducers = AdvancedSettings.GetBooleanSetting("DoProducers", True)
+        ConfigOptions.bFullCast = AdvancedSettings.GetBooleanSetting("DoFullCast", True)
+        ConfigOptions.bFullCast = AdvancedSettings.GetBooleanSetting("FullCast", True)
+        ConfigOptions.bFullCrew = AdvancedSettings.GetBooleanSetting("DoFullCrews", True)
+        ConfigOptions.bFullCrew = AdvancedSettings.GetBooleanSetting("FullCrew", True)
         ConfigOptions.bGenre = AdvancedSettings.GetBooleanSetting("DoGenres", True)
-        ConfigOptions.bTrailer = AdvancedSettings.GetBooleanSetting("DoTrailer", True)
+        ConfigOptions.bMPAA = AdvancedSettings.GetBooleanSetting("DoMPAA", True)
         ConfigOptions.bMusicBy = AdvancedSettings.GetBooleanSetting("DoMusic", True)
         ConfigOptions.bOtherCrew = AdvancedSettings.GetBooleanSetting("DoOtherCrews", True)
-        ConfigOptions.bFullCast = AdvancedSettings.GetBooleanSetting("DoFullCast", True)
-        ConfigOptions.bFullCrew = AdvancedSettings.GetBooleanSetting("DoFullCrews", True)
+        ConfigOptions.bOutline = AdvancedSettings.GetBooleanSetting("DoOutline", True)
+        ConfigOptions.bPlot = AdvancedSettings.GetBooleanSetting("DoPlot", True)
+        ConfigOptions.bProducers = AdvancedSettings.GetBooleanSetting("DoProducers", True)
+        ConfigOptions.bRating = AdvancedSettings.GetBooleanSetting("DoRating", True)
+        ConfigOptions.bRelease = AdvancedSettings.GetBooleanSetting("DoRelease", True)
+        ConfigOptions.bRuntime = AdvancedSettings.GetBooleanSetting("DoRuntime", True)
+        ConfigOptions.bStudio = AdvancedSettings.GetBooleanSetting("DoStudio", True)
+        ConfigOptions.bTagline = AdvancedSettings.GetBooleanSetting("DoTagline", True)
+        ConfigOptions.bTitle = AdvancedSettings.GetBooleanSetting("DoTitle", True)
         ConfigOptions.bTop250 = AdvancedSettings.GetBooleanSetting("DoTop250", True)
-        ConfigOptions.bCountry = AdvancedSettings.GetBooleanSetting("DoCountry", True)
-        ConfigOptions.bCert = AdvancedSettings.GetBooleanSetting("DoCert", True)
-        ConfigOptions.bFullCast = AdvancedSettings.GetBooleanSetting("FullCast", True)
-        ConfigOptions.bFullCrew = AdvancedSettings.GetBooleanSetting("FullCrew", True)
-        ConfigOptions.bCleanPlotOutline = AdvancedSettings.GetBooleanSetting("CleanPlotOutline", True)
+        ConfigOptions.bTrailer = AdvancedSettings.GetBooleanSetting("DoTrailer", True)
+        ConfigOptions.bVotes = AdvancedSettings.GetBooleanSetting("DoVotes", True)
+        ConfigOptions.bWriters = AdvancedSettings.GetBooleanSetting("DoWriters", True)
+        ConfigOptions.bYear = AdvancedSettings.GetBooleanSetting("DoYear", True)
 
         strPrivateAPIKey = AdvancedSettings.GetSetting("TMDBAPIKey", "")
-        _MySettings.TMDBAPIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "44810eefccd9cb1fa1d57e7b0d67b08d", strPrivateAPIKey)
         _MySettings.FallBackEng = AdvancedSettings.GetBooleanSetting("FallBackEn", False)
+        _MySettings.GetAdultItems = AdvancedSettings.GetBooleanSetting("GetAdultItems", False)
+        _MySettings.TMDBAPIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "44810eefccd9cb1fa1d57e7b0d67b08d", strPrivateAPIKey)
         _MySettings.TMDBLanguage = AdvancedSettings.GetSetting("TMDBLanguage", "en")
 
+        ConfigScrapeModifier.Actors = True
         ConfigScrapeModifier.DoSearch = True
+        ConfigScrapeModifier.EFanarts = True
+        ConfigScrapeModifier.EThumbs = True
+        ConfigScrapeModifier.Fanart = AdvancedSettings.GetBooleanSetting("DoFanart", True)
         ConfigScrapeModifier.Meta = True
         ConfigScrapeModifier.NFO = True
-        ConfigScrapeModifier.EThumbs = True
-        ConfigScrapeModifier.EFanarts = True
-        ConfigScrapeModifier.Actors = True
-
         ConfigScrapeModifier.Poster = AdvancedSettings.GetBooleanSetting("DoPoster", True)
-        ConfigScrapeModifier.Fanart = AdvancedSettings.GetBooleanSetting("DoFanart", True)
         ConfigScrapeModifier.Trailer = AdvancedSettings.GetBooleanSetting("DoTrailer", True)
     End Sub
 
     Sub SaveSettings()
         Using settings = New AdvancedSettings()
+            settings.SetBooleanSetting("CleanPlotOutline", ConfigOptions.bCleanPlotOutline)
+            settings.SetBooleanSetting("DoCast", ConfigOptions.bCast)
+            settings.SetBooleanSetting("DoCert", ConfigOptions.bCert)
+            settings.SetBooleanSetting("DoCountry", ConfigOptions.bCountry)
+            settings.SetBooleanSetting("DoDirector", ConfigOptions.bDirector)
+            settings.SetBooleanSetting("DoFanart", ConfigScrapeModifier.Fanart)
             settings.SetBooleanSetting("DoFullCast", ConfigOptions.bFullCast)
             settings.SetBooleanSetting("DoFullCrews", ConfigOptions.bFullCrew)
-            settings.SetBooleanSetting("DoTitle", ConfigOptions.bTitle)
-            settings.SetBooleanSetting("DoYear", ConfigOptions.bYear)
-            settings.SetBooleanSetting("DoMPAA", ConfigOptions.bMPAA)
-            settings.SetBooleanSetting("DoRelease", ConfigOptions.bRelease)
-            settings.SetBooleanSetting("DoRuntime", ConfigOptions.bRuntime)
-            settings.SetBooleanSetting("DoRating", ConfigOptions.bRating)
-            settings.SetBooleanSetting("DoVotes", ConfigOptions.bVotes)
-            settings.SetBooleanSetting("DoStudio", ConfigOptions.bStudio)
-            settings.SetBooleanSetting("DoTagline", ConfigOptions.bTagline)
-            settings.SetBooleanSetting("DoOutline", ConfigOptions.bOutline)
-            settings.SetBooleanSetting("DoPlot", ConfigOptions.bPlot)
-            settings.SetBooleanSetting("DoCast", ConfigOptions.bCast)
-            settings.SetBooleanSetting("DoDirector", ConfigOptions.bDirector)
-            settings.SetBooleanSetting("DoWriters", ConfigOptions.bWriters)
-            settings.SetBooleanSetting("DoProducers", ConfigOptions.bProducers)
             settings.SetBooleanSetting("DoGenres", ConfigOptions.bGenre)
-            settings.SetBooleanSetting("DoTrailer", ConfigOptions.bTrailer)
+            settings.SetBooleanSetting("DoMPAA", ConfigOptions.bMPAA)
             settings.SetBooleanSetting("DoMusic", ConfigOptions.bMusicBy)
             settings.SetBooleanSetting("DoOtherCrews", ConfigOptions.bOtherCrew)
-            settings.SetBooleanSetting("DoCountry", ConfigOptions.bCountry)
+            settings.SetBooleanSetting("DoOutline", ConfigOptions.bOutline)
+            settings.SetBooleanSetting("DoPlot", ConfigOptions.bPlot)
+            settings.SetBooleanSetting("DoPoster", ConfigScrapeModifier.Poster)
+            settings.SetBooleanSetting("DoProducers", ConfigOptions.bProducers)
+            settings.SetBooleanSetting("DoRating", ConfigOptions.bRating)
+            settings.SetBooleanSetting("DoRelease", ConfigOptions.bRelease)
+            settings.SetBooleanSetting("DoRuntime", ConfigOptions.bRuntime)
+            settings.SetBooleanSetting("DoStudio", ConfigOptions.bStudio)
+            settings.SetBooleanSetting("DoTagline", ConfigOptions.bTagline)
+            settings.SetBooleanSetting("DoTitle", ConfigOptions.bTitle)
             settings.SetBooleanSetting("DoTop250", ConfigOptions.bTop250)
-            settings.SetBooleanSetting("DoCert", ConfigOptions.bCert)
-            settings.SetBooleanSetting("CleanPlotOutline", ConfigOptions.bCleanPlotOutline)
-
+            settings.SetBooleanSetting("DoTrailer", ConfigOptions.bTrailer)
+            settings.SetBooleanSetting("DoVotes", ConfigOptions.bVotes)
+            settings.SetBooleanSetting("DoWriters", ConfigOptions.bWriters)
+            settings.SetBooleanSetting("DoYear", ConfigOptions.bYear)
+            settings.SetBooleanSetting("FallBackEn", _MySettings.FallBackEng)
             settings.SetBooleanSetting("FullCast", ConfigOptions.bFullCast)
             settings.SetBooleanSetting("FullCrew", ConfigOptions.bFullCrew)
-
-            settings.SetBooleanSetting("DoPoster", ConfigScrapeModifier.Poster)
-            settings.SetBooleanSetting("DoFanart", ConfigScrapeModifier.Fanart)
-
+            settings.SetBooleanSetting("GetAdultItems", _MySettings.GetAdultItems)
             settings.SetSetting("TMDBAPIKey", _setup.txtTMDBApiKey.Text)
-            settings.SetBooleanSetting("FallBackEn", _MySettings.FallBackEng)
             settings.SetSetting("TMDBLanguage", _MySettings.TMDBLanguage)
         End Using
     End Sub
 
     Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.EmberMovieScraperModule_Data.SaveSetupScraper
-        _MySettings.TMDBLanguage = _setup.cbTMDBPrefLanguage.Text
-        _MySettings.FallBackEng = _setup.chkFallBackEng.Checked
-        ConfigOptions.bTitle = _setup.chkTitle.Checked
-        ConfigOptions.bYear = _setup.chkYear.Checked
-        ConfigOptions.bMPAA = _setup.chkMPAA.Checked
-        ConfigOptions.bRelease = _setup.chkRelease.Checked
-        ConfigOptions.bRuntime = _setup.chkRuntime.Checked
-        ConfigOptions.bRating = _setup.chkRating.Checked
-        ConfigOptions.bVotes = _setup.chkVotes.Checked
-        ConfigOptions.bStudio = _setup.chkStudio.Checked
-        ConfigOptions.bTagline = _setup.chkTagline.Checked
-        ConfigOptions.bOutline = _setup.chkPlot.Checked
-        ConfigOptions.bPlot = _setup.chkPlot.Checked
         ConfigOptions.bCast = _setup.chkCast.Checked
-        ConfigOptions.bDirector = _setup.chkCrew.Checked
-        ConfigOptions.bWriters = _setup.chkCrew.Checked
-        ConfigOptions.bProducers = _setup.chkCrew.Checked
-        ConfigOptions.bGenre = _setup.chkGenre.Checked
-        ConfigOptions.bTrailer = _setup.chkTrailer.Checked
-        ConfigOptions.bMusicBy = _setup.chkCrew.Checked
-        ConfigOptions.bOtherCrew = _setup.chkCrew.Checked
-        ConfigOptions.bCountry = _setup.chkCountry.Checked
-        ConfigOptions.bTop250 = False
-        ConfigOptions.bFullCrew = _setup.chkCrew.Checked
-        ConfigOptions.bFullCast = _setup.chkCast.Checked
         ConfigOptions.bCert = ConfigOptions.bMPAA
         ConfigOptions.bCleanPlotOutline = _setup.chkTMDBCleanPlotOutline.Checked
+        ConfigOptions.bCountry = _setup.chkCountry.Checked
+        ConfigOptions.bDirector = _setup.chkCrew.Checked
+        ConfigOptions.bFullCast = _setup.chkCast.Checked
+        ConfigOptions.bFullCrew = _setup.chkCrew.Checked
+        ConfigOptions.bGenre = _setup.chkGenre.Checked
+        ConfigOptions.bMPAA = _setup.chkMPAA.Checked
+        ConfigOptions.bMusicBy = _setup.chkCrew.Checked
+        ConfigOptions.bOtherCrew = _setup.chkCrew.Checked
+        ConfigOptions.bOutline = _setup.chkPlot.Checked
+        ConfigOptions.bPlot = _setup.chkPlot.Checked
+        ConfigOptions.bProducers = _setup.chkCrew.Checked
+        ConfigOptions.bRating = _setup.chkRating.Checked
+        ConfigOptions.bRelease = _setup.chkRelease.Checked
+        ConfigOptions.bRuntime = _setup.chkRuntime.Checked
+        ConfigOptions.bStudio = _setup.chkStudio.Checked
+        ConfigOptions.bTagline = _setup.chkTagline.Checked
+        ConfigOptions.bTitle = _setup.chkTitle.Checked
+        ConfigOptions.bTop250 = False
+        ConfigOptions.bTrailer = _setup.chkTrailer.Checked
+        ConfigOptions.bVotes = _setup.chkVotes.Checked
+        ConfigOptions.bWriters = _setup.chkCrew.Checked
+        ConfigOptions.bYear = _setup.chkYear.Checked
+        _MySettings.FallBackEng = _setup.chkFallBackEng.Checked
+        _MySettings.GetAdultItems = _setup.chkGetAdultItems.Checked
+        _MySettings.TMDBLanguage = _setup.cbTMDBPrefLanguage.Text
         SaveSettings()
         'ModulesManager.Instance.SaveSettings()
         If DoDispose Then
@@ -370,7 +369,7 @@ Public Class TMDB_Data
                         tmpTitle = StringUtils.FilterName(If(DBMovie.isSingle, Directory.GetParent(DBMovie.Filename).Name, Path.GetFileNameWithoutExtension(DBMovie.Filename)))
                     End If
                 End If
-                If dSearch.ShowDialog(tmpTitle, filterOptions, tmpYear) = Windows.Forms.DialogResult.OK Then
+                If dSearch.ShowDialog(tmpTitle, DBMovie.Filename, filterOptions, tmpYear) = Windows.Forms.DialogResult.OK Then
                     If Not String.IsNullOrEmpty(Master.tmpMovie.TMDBID) Then
                         ' if we changed the ID tipe we need to clear everything and rescrape
                         ' TODO: check TMDB if IMDB NullOrEmpty
@@ -402,7 +401,7 @@ Public Class TMDB_Data
         If Not String.IsNullOrEmpty(DBMovie.Movie.Title) Then
             tTitle = StringUtils.FilterTokens(DBMovie.Movie.Title)
             If Not OldTitle = DBMovie.Movie.Title OrElse String.IsNullOrEmpty(DBMovie.Movie.SortTitle) Then DBMovie.Movie.SortTitle = tTitle
-            If Master.eSettings.DisplayYear AndAlso Not String.IsNullOrEmpty(DBMovie.Movie.Year) Then
+            If Master.eSettings.MovieDisplayYear AndAlso Not String.IsNullOrEmpty(DBMovie.Movie.Year) Then
                 DBMovie.ListTitle = String.Format("{0} ({1})", tTitle, DBMovie.Movie.Year)
             Else
                 DBMovie.ListTitle = tTitle
@@ -436,9 +435,10 @@ Public Class TMDB_Data
     Structure sMySettings
 
 #Region "Fields"
+        Dim FallBackEng As Boolean
+        Dim GetAdultItems As Boolean
         Dim TMDBAPIKey As String
         Dim TMDBLanguage As String
-        Dim FallBackEng As Boolean
 #End Region 'Fields
 
     End Structure

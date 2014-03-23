@@ -366,6 +366,7 @@ Namespace MediaContainers
 
     End Class
 
+    <Serializable()> _
     Public Class Fanart
 
 #Region "Fields"
@@ -418,6 +419,7 @@ Namespace MediaContainers
 
     End Class
 
+    <Serializable()> _
     <XmlRoot("movie")> _
     Public Class Movie
         Implements IComparable(Of Movie)
@@ -1035,10 +1037,10 @@ Namespace MediaContainers
         <XmlIgnore()> _
         Public Property Sets() As List(Of [Set])
             Get
-                Return If(Master.eSettings.YAMJSetsCompatible, Me._ysets.Sets, Me._xsets)
+                Return If(Master.eSettings.MovieYAMJCompatibleSets, Me._ysets.Sets, Me._xsets)
             End Get
             Set(ByVal value As List(Of [Set]))
-                If Master.eSettings.YAMJSetsCompatible Then
+                If Master.eSettings.MovieYAMJCompatibleSets Then
                     Me._ysets.Sets = value
                 Else
                     Me._xsets = value
@@ -1130,6 +1132,7 @@ Namespace MediaContainers
             End Get
         End Property
 
+        <Serializable()> _
         Class _MovieID
             Private _imdbid As String
             Private _moviedb As String
@@ -1332,6 +1335,7 @@ Namespace MediaContainers
 #End Region 'Methods
     End Class
 
+    <Serializable()> _
     Public Class Person
 
 #Region "Fields"
@@ -1410,6 +1414,7 @@ Namespace MediaContainers
 
     End Class
 
+    <Serializable()> _
     Public Class SetContainer
 
 #Region "Fields"
@@ -1457,6 +1462,7 @@ Namespace MediaContainers
 
     End Class
 
+    <Serializable()> _
     Public Class Thumb
 
 #Region "Fields"
@@ -1508,6 +1514,7 @@ Namespace MediaContainers
         Private _plot As String
         Private _actors As New List(Of Person)
         Private _boxeeTvDb As String
+        Private _status As String
 
 #End Region 'Fields
 
@@ -1702,6 +1709,23 @@ Namespace MediaContainers
             End Get
         End Property
 
+        <XmlElement("status")> _
+        Public Property Status() As String
+            Get
+                Return Me._status
+            End Get
+            Set(ByVal value As String)
+                Me._status = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property StatusSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._status)
+            End Get
+        End Property
+
         <XmlElement("plot")> _
         Public Property Plot() As String
             Get
@@ -1778,6 +1802,7 @@ Namespace MediaContainers
             _mpaa = String.Empty
             _genres.Clear()
             _premiered = String.Empty
+            _status = String.Empty
             _studio = String.Empty
             _actors.Clear()
         End Sub
@@ -1862,6 +1887,7 @@ Namespace MediaContainers
 #End Region
     End Class
 
+    <Serializable()> _
     Public Class [Set]
 
 #Region "Fields"

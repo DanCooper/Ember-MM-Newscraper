@@ -153,7 +153,7 @@ Public Class frmTVExtrator
     End Sub
 
     Sub SetUp()
-        Me.Label3.Text = Master.eLang.GetString(306, "Extracting Frame...")
+        Me.lblExtractingFrame.Text = Master.eLang.GetString(306, "Extracting Frame...")
         Me.btnFrameLoad.Text = Master.eLang.GetString(308, "Load Episode")
         Me.btnFrameSave.Text = Master.eLang.GetString(309, "Save as Poster")
     End Sub

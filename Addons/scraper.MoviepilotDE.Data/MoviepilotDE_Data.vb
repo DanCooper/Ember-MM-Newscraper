@@ -218,42 +218,42 @@ Public Class MoviepilotDE_Data
         Dim filterOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(Options, ConfigOptions)
 
         'Use Moviepilot FSK?
-        If filterOptions.bCert AndAlso (String.IsNullOrEmpty(DBMovie.Movie.Certification) OrElse Not Master.eSettings.LockMPAA) Then
+        If filterOptions.bCert AndAlso (String.IsNullOrEmpty(DBMovie.Movie.Certification) OrElse Not Master.eSettings.MovieLockMPAA) Then
 
 
             If Not String.IsNullOrEmpty(tMoviepilotDE.FSK) Then
                 Select Case CInt(tMoviepilotDE.FSK)
                     Case 0
                         DBMovie.Movie.Certification = "Germany:0"
-                        If Master.eSettings.OnlyValueForCert = False Then
+                        If Master.eSettings.MovieScraperOnlyValueForMPAA = False Then
                             DBMovie.Movie.MPAA = "Germany:0"
                         Else
                             DBMovie.Movie.MPAA = "0"
                         End If
                     Case 6
                         DBMovie.Movie.Certification = "Germany:6"
-                        If Master.eSettings.OnlyValueForCert = False Then
+                        If Master.eSettings.MovieScraperOnlyValueForMPAA = False Then
                             DBMovie.Movie.MPAA = "Germany:6"
                         Else
                             DBMovie.Movie.MPAA = "6"
                         End If
                     Case 16
                         DBMovie.Movie.Certification = "Germany:16"
-                        If Master.eSettings.OnlyValueForCert = False Then
+                        If Master.eSettings.MovieScraperOnlyValueForMPAA = False Then
                             DBMovie.Movie.MPAA = "Germany:16"
                         Else
                             DBMovie.Movie.MPAA = "16"
                         End If
                     Case 12
                         DBMovie.Movie.Certification = "Germany:12"
-                        If Master.eSettings.OnlyValueForCert = False Then
+                        If Master.eSettings.MovieScraperOnlyValueForMPAA = False Then
                             DBMovie.Movie.MPAA = "Germany:12"
                         Else
                             DBMovie.Movie.MPAA = "12"
                         End If
                     Case 18
                         DBMovie.Movie.Certification = "Germany:18"
-                        If Master.eSettings.OnlyValueForCert = False Then
+                        If Master.eSettings.MovieScraperOnlyValueForMPAA = False Then
                             DBMovie.Movie.MPAA = "Germany:18"
                         Else
                             DBMovie.Movie.MPAA = "18"
@@ -264,7 +264,7 @@ Public Class MoviepilotDE_Data
         End If
 
         'Use Moviepilot Outline?
-        If filterOptions.bOutline AndAlso (String.IsNullOrEmpty(DBMovie.Movie.Outline) OrElse Not Master.eSettings.LockOutline OrElse (Master.eSettings.OutlinePlotEnglishOverwrite AndAlso StringUtils.isEnglishText(DBMovie.Movie.Outline))) Then
+        If filterOptions.bOutline AndAlso (String.IsNullOrEmpty(DBMovie.Movie.Outline) OrElse Not Master.eSettings.MovieLockOutline OrElse (Master.eSettings.MovieScraperOutlinePlotEnglishOverwrite AndAlso StringUtils.isEnglishText(DBMovie.Movie.Outline))) Then
 
             If Not String.IsNullOrEmpty(tMoviepilotDE.Outline) Then
                 'check if brackets should be removed...
@@ -277,19 +277,19 @@ Public Class MoviepilotDE_Data
         End If
 
         'Use Moviepilot Plot?
-        If filterOptions.bPlot AndAlso (String.IsNullOrEmpty(DBMovie.Movie.Plot) OrElse Not Master.eSettings.LockPlot OrElse (Master.eSettings.OutlinePlotEnglishOverwrite AndAlso StringUtils.isEnglishText(DBMovie.Movie.Plot))) Then
+        If filterOptions.bPlot AndAlso (String.IsNullOrEmpty(DBMovie.Movie.Plot) OrElse Not Master.eSettings.MovieLockPlot OrElse (Master.eSettings.MovieScraperOutlinePlotEnglishOverwrite AndAlso StringUtils.isEnglishText(DBMovie.Movie.Plot))) Then
 
-                If Not String.IsNullOrEmpty(tMoviepilotDE.Plot) Then
-                    'check if brackets should be removed...
-                    If ConfigOptions.bCleanPlotOutline Then
-                        DBMovie.Movie.Plot = StringUtils.RemoveBrackets(tMoviepilotDE.Plot)
-                    Else
-                        DBMovie.Movie.Plot = tMoviepilotDE.Plot
-                    End If
+            If Not String.IsNullOrEmpty(tMoviepilotDE.Plot) Then
+                'check if brackets should be removed...
+                If ConfigOptions.bCleanPlotOutline Then
+                    DBMovie.Movie.Plot = StringUtils.RemoveBrackets(tMoviepilotDE.Plot)
+                Else
+                    DBMovie.Movie.Plot = tMoviepilotDE.Plot
                 End If
-
-
             End If
+
+
+        End If
 
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function

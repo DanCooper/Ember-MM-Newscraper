@@ -90,7 +90,7 @@ Public Class IMDB_Poster
             Case Enums.ScraperCapabilities.Poster
                 Return True
             Case Enums.ScraperCapabilities.Actor
-                If Master.eSettings.ScraperActorThumbs Then Return True
+                If Master.eSettings.MovieScraperActorThumbs Then Return True
         End Select
         Return False
     End Function

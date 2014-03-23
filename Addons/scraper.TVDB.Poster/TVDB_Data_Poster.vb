@@ -166,8 +166,8 @@ Public Class TVDB_Data_Poster
 
         _setupPost.chkOnlyTVImagesLanguage.Checked = CBool(AdvancedSettings.GetSetting("OnlyGetTVImagesForSelectedLanguage", "True"))
         _setupPost.chkGetEnglishImages.Checked = CBool(AdvancedSettings.GetSetting("AlwaysGetEnglishTVImages", "True"))
-        If _setupPost.cbTVLanguage.Items.Count > 0 Then
-            _setupPost.cbTVLanguage.Text = Master.eSettings.Languages.FirstOrDefault(Function(l) l.ShortLang = _Lang).LongLang
+        If _setupPost.cbTVScraperLanguage.Items.Count > 0 Then
+            _setupPost.cbTVScraperLanguage.Text = Master.eSettings.TVScraperLanguages.FirstOrDefault(Function(l) l.ShortLang = _Lang).LongLang
         End If
         _setupPost.txtTVDBMirror.Text = _TVDBMirror
 
@@ -193,8 +193,8 @@ Public Class TVDB_Data_Poster
         _setup.txtTVDBApiKey.Text = strPrivateAPIKey
         _setup.cbEnabled.Checked = _ScraperEnabled
 
-        If _setup.cbTVLanguage.Items.Count > 0 Then
-            _setup.cbTVLanguage.Text = Master.eSettings.Languages.FirstOrDefault(Function(l) l.ShortLang = _Lang).LongLang
+        If _setup.cbTVScraperLanguage.Items.Count > 0 Then
+            _setup.cbTVScraperLanguage.Text = Master.eSettings.TVScraperLanguages.FirstOrDefault(Function(l) l.ShortLang = _Lang).LongLang
         End If
 
         _setup.txtTVDBMirror.Text = _TVDBMirror
@@ -205,6 +205,7 @@ Public Class TVDB_Data_Poster
         _setup.chkScraperShowPlot.Checked = ConfigOptions.bShowPlot
         _setup.chkScraperShowPremiered.Checked = ConfigOptions.bShowPremiered
         _setup.chkScraperShowRating.Checked = ConfigOptions.bShowRating
+        _setup.chkScraperShowStatus.Checked = ConfigOptions.bShowStatus
         _setup.chkScraperShowStudio.Checked = ConfigOptions.bShowStudio
         _setup.chkScraperShowActors.Checked = ConfigOptions.bShowActors
         _setup.chkScraperEpTitle.Checked = ConfigOptions.bEpTitle
@@ -234,20 +235,20 @@ Public Class TVDB_Data_Poster
     Private Sub Handle_ModuleSettingsChanged()
         strPrivateAPIKey = _setup.txtTVDBApiKey.Text
         _TVDBMirror = _setup.txtTVDBMirror.Text
-        _Lang = Master.eSettings.Languages.FirstOrDefault(Function(l) l.LongLang = _setup.cbTVLanguage.Text).ShortLang
+        _Lang = Master.eSettings.TVScraperLanguages.FirstOrDefault(Function(l) l.LongLang = _setup.cbTVScraperLanguage.Text).ShortLang
         _setupPost.txtTVDBApiKey.Text = _setup.txtTVDBApiKey.Text
         _setupPost.txtTVDBMirror = _setup.txtTVDBMirror
-        _setupPost.cbTVLanguage.Text = _setup.cbTVLanguage.Text
+        _setupPost.cbTVScraperLanguage.Text = _setup.cbTVScraperLanguage.Text
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
     Private Sub Handle_PostModuleSettingsChanged()
         strPrivateAPIKey = _setupPost.txtTVDBApiKey.Text
-        _Lang = Master.eSettings.Languages.FirstOrDefault(Function(l) l.LongLang = _setupPost.cbTVLanguage.Text).ShortLang
+        _Lang = Master.eSettings.TVScraperLanguages.FirstOrDefault(Function(l) l.LongLang = _setupPost.cbTVScraperLanguage.Text).ShortLang
         _TVDBMirror = _setupPost.txtTVDBMirror.Text
         _setup.txtTVDBApiKey.Text = _setupPost.txtTVDBApiKey.Text
         _setup.txtTVDBMirror = _setupPost.txtTVDBMirror
-        _setup.cbTVLanguage.Text = _setupPost.cbTVLanguage.Text
+        _setup.cbTVScraperLanguage.Text = _setupPost.cbTVScraperLanguage.Text
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
@@ -278,6 +279,7 @@ Public Class TVDB_Data_Poster
         ConfigOptions.bShowPlot = AdvancedSettings.GetBooleanSetting("ScraperShowPlot", True)
         ConfigOptions.bShowPremiered = AdvancedSettings.GetBooleanSetting("ScraperShowPremiered", True)
         ConfigOptions.bShowRating = AdvancedSettings.GetBooleanSetting("ScraperShowRating", True)
+        ConfigOptions.bShowStatus = AdvancedSettings.GetBooleanSetting("ScraperShowStatus", True)
         ConfigOptions.bShowStudio = AdvancedSettings.GetBooleanSetting("ScraperShowStudio", True)
         ConfigOptions.bShowTitle = AdvancedSettings.GetBooleanSetting("ScraperShowTitle", True)
     End Sub
@@ -338,6 +340,7 @@ Public Class TVDB_Data_Poster
             settings.SetBooleanSetting("ScraperShowPlot", _setup.chkScraperShowPlot.Checked)
             settings.SetBooleanSetting("ScraperShowPremiered", _setup.chkScraperShowPremiered.Checked)
             settings.SetBooleanSetting("ScraperShowRating", _setup.chkScraperShowRating.Checked)
+            settings.SetBooleanSetting("ScraperShowStatus", _setup.chkScraperShowStatus.Checked)
             settings.SetBooleanSetting("ScraperShowStudio", _setup.chkScraperShowStudio.Checked)
             settings.SetBooleanSetting("ScraperShowActors", _setup.chkScraperShowActors.Checked)
             settings.SetBooleanSetting("ScraperEpTitle", _setup.chkScraperEpTitle.Checked)

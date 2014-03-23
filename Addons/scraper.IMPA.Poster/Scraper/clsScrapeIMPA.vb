@@ -97,14 +97,14 @@ Namespace IMPA
                 Dim sPoster As String
                 Dim sURLRequest As HttpWebRequest
 
-                Dim HTML As String = sHTTP.DownloadData(String.Concat("http://", Master.eSettings.IMDBURL, "/title/tt", IMDBID, "/posters"))
+                Dim HTML As String = sHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/title/tt", IMDBID, "/posters"))
                 sHTTP = Nothing
 
                 Dim mcIMPA As MatchCollection = Regex.Matches(HTML, "/offsite.*impawards.*""")
                 If mcIMPA.Count > 0 Then
                     sPoster = mcIMPA(0).Value.ToString
                     sPoster = sPoster.Replace("""", String.Empty)
-                    sPoster = String.Concat("http://", Master.eSettings.IMDBURL, sPoster)
+                    sPoster = String.Concat("http://", Master.eSettings.MovieIMDBURL, sPoster)
                     sURLRequest = DirectCast(WebRequest.Create(sPoster), HttpWebRequest)
                     Using sURLResponse As HttpWebResponse = DirectCast(sURLRequest.GetResponse(), HttpWebResponse)
                         Return sURLResponse.ResponseUri.ToString
