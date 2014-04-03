@@ -59,7 +59,7 @@
   !define MUI_COMPONENTSPAGE_SMALLDESC
   !define MUI_FINISHPAGE_LINK "Please visit http://embermediamanager.org for more information."
   !define MUI_FINISHPAGE_LINK_LOCATION "http://embermediamanager.org"
-  !define MUI_FINISHPAGE_RUN "$INSTDIR\Ember Media Manager.exe"
+  !define MUI_FINISHPAGE_RUN "$INSTDIR\${emm_filename}"
   !define MUI_FINISHPAGE_RUN_NOTCHECKED
   !define MUI_ABORTWARNING
 ;--------------------------------
@@ -107,7 +107,7 @@ Section "Ember Media Manager" SecEmberMediaManager
   SectionIn 1 2 3 #section is in install type Portable/UserFolder/Minimal
   ;ADD YOUR OWN FILES HERE...
   SetOutPath "$INSTDIR"
-  File "${emm_root}\${emm_folder}\Ember Media Manager.exe"
+  File "${emm_root}\${emm_folder}\${emm_filename}"
   File "${emm_root}\${emm_folder}\*.config"
   File "${emm_root}\${emm_folder}\*.xml"
   File "${emm_root}\${emm_folder}\*.dll"
@@ -153,8 +153,8 @@ Section "Ember Media Manager" SecEmberMediaManager
   SetOutPath "$INSTDIR"
 
   CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
-  CreateShortCut "$SMPROGRAMS\$StartMenuFolder\${emm_appname}.lnk" "$INSTDIR\${emm_appname}.exe" \
-    "" "$INSTDIR\Ember Media Manager.exe" 0 SW_SHOWNORMAL \
+  CreateShortCut "$SMPROGRAMS\$StartMenuFolder\${emm_appname}.lnk" "$INSTDIR\${emm_filename}" \
+    "" "$INSTDIR\${emm_filename}" 0 SW_SHOWNORMAL \
     "" "Start ${emm_appname}."
   CreateShortCut "$SMPROGRAMS\$StartMenuFolder\Uninstall ${emm_appname}.lnk" "$INSTDIR\Uninstall.exe" \
     "" "$INSTDIR\Uninstall.exe" 0 SW_SHOWNORMAL \
@@ -175,7 +175,7 @@ Section "Ember Media Manager" SecEmberMediaManager
   WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\${emm_appname}" \
                  "InstallLocation" "$INSTDIR"
   WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\${emm_appname}" \
-                 "DisplayIcon" "$INSTDIR\Ember Media Manager.exe,0"
+                 "DisplayIcon" "$INSTDIR\${emm_filename},0"
   WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\${emm_appname}" \
                  "Publisher" "Team Ember Media Manager"
   WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\${emm_appname}" \
@@ -214,7 +214,7 @@ SectionEnd
 ;Descriptions
 
   ;Language strings
-  LangString DESC_SecXBMC ${LANG_ENGLISH} "${emm_appname}"
+  LangString DESC_SecEmberMediaManager ${LANG_ENGLISH} "${emm_appname}"
 
   ;Assign language strings to sections
   !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
@@ -299,7 +299,7 @@ Section "Uninstall"
   SetShellVarContext current
 
   ;ADD YOUR OWN FILES HERE...
-  Delete "$INSTDIR\Ember Media Manager.exe"
+  Delete "$INSTDIR\${emm_filename}"
   Delete "$INSTDIR\*.dll"
   Delete "$INSTDIR\*.xml"
   Delete "$INSTDIR\*.config"
@@ -329,6 +329,7 @@ Section "Uninstall"
   ${ElseIf} ${FileExists} '$INSTDIR\Temp'
   ${Else}
       RMDir "$INSTDIR"
+      DeleteRegKey /ifempty HKCU "Software\${emm_appname}"
   ${EndIf}
 
 
@@ -338,8 +339,6 @@ Section "Uninstall"
   Delete "$SMPROGRAMS\$StartMenuFolder\Visit ${emm_appname} Online.url"
   RMDir "$SMPROGRAMS\$StartMenuFolder"
   DeleteRegKey HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\${emm_appname}"
-
-  DeleteRegKey /ifempty HKCU "Software\${emm_appname}"
 
 SectionEnd
 

@@ -1,6 +1,7 @@
 ECHO OFF
 rem build settings for x86
-rem EMM_APPNAME must match the Emm-exe
+rem EMM_FILENAME must match the Emm-exe
+SET EMM_FILENAME=Ember Media Manager.exe
 SET EMM_APPNAME=Ember Media Manager BETA
 SET EMM_ROOT=%CD%\..
 SET EMM_FOLDER=EmberMM - Release - x86
@@ -72,7 +73,7 @@ ECHO *             PLEASE WAIT                 *
 ECHO *******************************************
 IF NOT EXIST Builds MD Builds
 SET NSISExe=%NSISExePath%\makensis.exe
-"%NSISExe%" /V1 /X"SetCompressor /FINAL lzma" /Demm_addlangpath="%EMM_ADDLANGPATH%" /Demm_appname="%EMM_APPNAME%" /Demm_root="%EMM_ROOT%" /Demm_folder="%EMM_FOLDER%" /Demm_outfile="%EMM_OUTFILE%" "Beta_1.4_InstallerScript.nsi"
+"%NSISExe%" /V1 /X"SetCompressor /FINAL lzma" /Demm_addlangpath="%EMM_ADDLANGPATH%" /Demm_filename="%EMM_FILENAME%" /Demm_appname="%EMM_APPNAME%" /Demm_root="%EMM_ROOT%" /Demm_folder="%EMM_FOLDER%" /Demm_outfile="%EMM_OUTFILE%" "Beta_1.4_InstallerScript.nsi"
 CLS
 ECHO ************************************************
 ECHO DONE!
