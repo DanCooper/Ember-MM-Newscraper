@@ -26,6 +26,10 @@ obj/
 _ReSharper*/
 [Tt]est[Rr]esult*
 EmberMM*/
-+#ignore files downloaded by Transifex Downloader
+#ignore files downloaded by Transifex Downloader
 Transifex/.tx/*
 Transifex/translations/*
+#ignore files from BuildSetup that not needed
+BuildSetup/.tx/*
+BuildSetup/translations/*
+BuildSetup/Builds/*
