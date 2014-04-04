@@ -149,9 +149,9 @@ Public Class TMDB_Poster
         _setup.chkScrapePoster.Checked = ConfigScrapeModifier.Poster
         _setup.chkScrapeFanart.Checked = ConfigScrapeModifier.Fanart
         _setup.txtTMDBApiKey.Text = strPrivateAPIKey
-        _setup.cbTMDBPrefLanguage.Text = _MySettings.TMDBLanguage
+        _setup.cbTMDBLanguage.Text = _MySettings.TMDBLanguage
         _setup.chkFallBackEng.Checked = _MySettings.FallBackEng
-        _setup.Lang = _setup.cbTMDBPrefLanguage.Text
+        _setup.Lang = _setup.cbTMDBLanguage.Text
         _setup.API = _setup.txtTMDBApiKey.Text
 
         _setup.orderChanged()
@@ -229,7 +229,7 @@ Public Class TMDB_Poster
     End Sub
 
     Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.EmberMovieScraperModule_Poster.SaveSetupScraper
-        _MySettings.TMDBLanguage = _setup.cbTMDBPrefLanguage.Text
+        _MySettings.TMDBLanguage = _setup.cbTMDBLanguage.Text
         _MySettings.FallBackEng = _setup.chkFallBackEng.Checked
         ConfigScrapeModifier.Poster = _setup.chkScrapePoster.Checked
         ConfigScrapeModifier.Fanart = _setup.chkScrapeFanart.Checked

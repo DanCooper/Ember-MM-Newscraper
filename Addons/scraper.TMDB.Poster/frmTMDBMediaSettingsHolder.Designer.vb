@@ -27,7 +27,7 @@ Partial Class frmTMDBMediaSettingsHolder
         Me.GroupBox30 = New System.Windows.Forms.GroupBox()
         Me.pbTMDB = New System.Windows.Forms.PictureBox()
         Me.chkFallBackEng = New System.Windows.Forms.CheckBox()
-        Me.cbTMDBPrefLanguage = New System.Windows.Forms.ComboBox()
+        Me.cbTMDBLanguage = New System.Windows.Forms.ComboBox()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label18 = New System.Windows.Forms.Label()
         Me.txtTMDBApiKey = New System.Windows.Forms.TextBox()
@@ -65,7 +65,7 @@ Partial Class frmTMDBMediaSettingsHolder
         '
         Me.GroupBox30.Controls.Add(Me.pbTMDB)
         Me.GroupBox30.Controls.Add(Me.chkFallBackEng)
-        Me.GroupBox30.Controls.Add(Me.cbTMDBPrefLanguage)
+        Me.GroupBox30.Controls.Add(Me.cbTMDBLanguage)
         Me.GroupBox30.Controls.Add(Me.Label2)
         Me.GroupBox30.Controls.Add(Me.Label18)
         Me.GroupBox30.Controls.Add(Me.txtTMDBApiKey)
@@ -97,16 +97,16 @@ Partial Class frmTMDBMediaSettingsHolder
         Me.chkFallBackEng.Text = "Fall back on english"
         Me.chkFallBackEng.UseVisualStyleBackColor = True
         '
-        'cbTMDBPrefLanguage
+        'cbTMDBLanguage
         '
-        Me.cbTMDBPrefLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbTMDBPrefLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.cbTMDBPrefLanguage.FormattingEnabled = True
-        Me.cbTMDBPrefLanguage.Items.AddRange(New Object() {"bg", "cs", "da", "de", "el", "en", "es", "fi", "fr", "he", "hu", "it", "nb", "nl", "no", "pl", "pt", "ru", "sk", "sv", "ta", "tr", "uk", "vi", "xx", "zh"})
-        Me.cbTMDBPrefLanguage.Location = New System.Drawing.Point(123, 65)
-        Me.cbTMDBPrefLanguage.Name = "cbTMDBPrefLanguage"
-        Me.cbTMDBPrefLanguage.Size = New System.Drawing.Size(45, 21)
-        Me.cbTMDBPrefLanguage.TabIndex = 3
+        Me.cbTMDBLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbTMDBLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        Me.cbTMDBLanguage.FormattingEnabled = True
+        Me.cbTMDBLanguage.Items.AddRange(New Object() {"bg", "cs", "da", "de", "el", "en", "es", "fi", "fr", "he", "hu", "it", "nb", "nl", "no", "pl", "pt", "ru", "sk", "sv", "ta", "tr", "uk", "vi", "xx", "zh"})
+        Me.cbTMDBLanguage.Location = New System.Drawing.Point(123, 65)
+        Me.cbTMDBLanguage.Name = "cbTMDBLanguage"
+        Me.cbTMDBLanguage.Size = New System.Drawing.Size(45, 21)
+        Me.cbTMDBLanguage.TabIndex = 3
         '
         'Label2
         '
@@ -276,21 +276,21 @@ Partial Class frmTMDBMediaSettingsHolder
         Me.ResumeLayout(False)
 
     End Sub
-	Friend WithEvents pnlSettings As System.Windows.Forms.Panel
-	Friend WithEvents chkScrapeFanart As System.Windows.Forms.CheckBox
-	Friend WithEvents chkScrapePoster As System.Windows.Forms.CheckBox
+    Friend WithEvents pnlSettings As System.Windows.Forms.Panel
+    Friend WithEvents chkScrapeFanart As System.Windows.Forms.CheckBox
+    Friend WithEvents chkScrapePoster As System.Windows.Forms.CheckBox
     Friend WithEvents Panel2 As System.Windows.Forms.Panel
-	Friend WithEvents cbEnabled As System.Windows.Forms.CheckBox
+    Friend WithEvents cbEnabled As System.Windows.Forms.CheckBox
     Friend WithEvents GroupBox3 As System.Windows.Forms.GroupBox
     Friend WithEvents Label3 As System.Windows.Forms.Label
-	Friend WithEvents btnDown As System.Windows.Forms.Button
-	Friend WithEvents btnUp As System.Windows.Forms.Button
-	Friend WithEvents Label1 As System.Windows.Forms.Label
-	Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
+    Friend WithEvents btnDown As System.Windows.Forms.Button
+    Friend WithEvents btnUp As System.Windows.Forms.Button
+    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
     Friend WithEvents GroupBox30 As System.Windows.Forms.GroupBox
     Friend WithEvents pbTMDB As System.Windows.Forms.PictureBox
     Friend WithEvents chkFallBackEng As System.Windows.Forms.CheckBox
-    Friend WithEvents cbTMDBPrefLanguage As System.Windows.Forms.ComboBox
+    Friend WithEvents cbTMDBLanguage As System.Windows.Forms.ComboBox
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents Label18 As System.Windows.Forms.Label
     Friend WithEvents txtTMDBApiKey As System.Windows.Forms.TextBox
