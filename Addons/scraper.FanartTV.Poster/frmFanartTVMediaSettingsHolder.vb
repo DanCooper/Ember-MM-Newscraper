@@ -34,6 +34,35 @@ Public Class frmFanartTVMediaSettingsHolder
 
 #End Region 'Events
 
+#Region "Fields"
+
+    Private _api As String
+    Private _language As String
+
+#End Region 'Fields
+
+#Region "Properties"
+
+    Public Property API() As String
+        Get
+            Return Me._api
+        End Get
+        Set(ByVal value As String)
+            Me._api = value
+        End Set
+    End Property
+
+    Public Property Lang() As String
+        Get
+            Return Me._language
+        End Get
+        Set(ByVal value As String)
+            Me._language = value
+        End Set
+    End Property
+
+#End Region 'Properties
+
 #Region "Methods"
 
     Public Sub New()
@@ -65,6 +94,14 @@ Public Class frmFanartTVMediaSettingsHolder
         RaiseEvent SetupScraperChanged(cbEnabled.Checked, 0)
     End Sub
 
+    Private Sub chkScrapeFanart_CheckedChanged(sender As Object, e As EventArgs) Handles chkScrapeFanart.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkScrapePoster_CheckedChanged(sender As Object, e As EventArgs) Handles chkScrapePoster.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
     Sub orderChanged()
         Dim order As Integer = ModulesManager.Instance.externalPosterScrapersModules.FirstOrDefault(Function(p) p.AssemblyName = FanartTV_Poster._AssemblyName).ScraperOrder
         If ModulesManager.Instance.externalPosterScrapersModules.Count > 0 Then
@@ -77,14 +114,28 @@ Public Class frmFanartTVMediaSettingsHolder
     End Sub
 
     Sub SetUp()
-        Me.Label5.Text = Master.eLang.GetString(789, "Fanart.tv API Key:")
+        Me.chkScrapePoster.Text = Master.eLang.GetString(939, "Get Posters")
+        Me.chkScrapeFanart.Text = Master.eLang.GetString(940, "Get Fanart")
+        Me.lblAPIKey.Text = Master.eLang.GetString(789, "Fanart.tv API Key:")
+        Me.lblFANARTTVPrefLanguage.Text = Master.eLang.GetString(741, "Preferred Language:")
         Me.Label3.Text = Master.eLang.GetString(168, "Scrape Order")
-        Me.GroupBox1.Text = Master.eLang.GetString(788, "Fanart.tv")
+        Me.gbAPIKey.Text = Master.eLang.GetString(788, "Fanart.tv")
         Me.cbEnabled.Text = Master.eLang.GetString(774, "Enabled")
         Me.Label1.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), vbCrLf)
     End Sub
 
+    Private Sub txtFANARTTVApiKey_TextEnter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFANARTTVApiKey.Enter
+        _api = txtFANARTTVApiKey.Text
+    End Sub
+
     Private Sub txtFANARTTVApiKey_TextChanged(sender As System.Object, e As System.EventArgs) Handles txtFANARTTVApiKey.TextChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub cbFANARTTVLanguage_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cbFANARTTVLanguage.SelectedIndexChanged
+        If Not (_language = cbFANARTTVLanguage.Text) Then
+            RaiseEvent SetupNeedsRestart()
+        End If
         RaiseEvent ModuleSettingsChanged()
     End Sub
 

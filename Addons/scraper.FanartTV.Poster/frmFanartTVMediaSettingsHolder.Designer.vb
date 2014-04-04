@@ -24,9 +24,14 @@ Partial Class frmFanartTVMediaSettingsHolder
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmFanartTVMediaSettingsHolder))
         Me.pnlSettings = New System.Windows.Forms.Panel()
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.gbImages = New System.Windows.Forms.GroupBox()
+        Me.chkScrapePoster = New System.Windows.Forms.CheckBox()
+        Me.chkScrapeFanart = New System.Windows.Forms.CheckBox()
+        Me.gbAPIKey = New System.Windows.Forms.GroupBox()
+        Me.cbFANARTTVLanguage = New System.Windows.Forms.ComboBox()
+        Me.lblFANARTTVPrefLanguage = New System.Windows.Forms.Label()
         Me.pbFANARTTV = New System.Windows.Forms.PictureBox()
-        Me.Label5 = New System.Windows.Forms.Label()
+        Me.lblAPIKey = New System.Windows.Forms.Label()
         Me.txtFANARTTVApiKey = New System.Windows.Forms.TextBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
@@ -36,7 +41,8 @@ Partial Class frmFanartTVMediaSettingsHolder
         Me.btnUp = New System.Windows.Forms.Button()
         Me.cbEnabled = New System.Windows.Forms.CheckBox()
         Me.pnlSettings.SuspendLayout()
-        Me.GroupBox1.SuspendLayout()
+        Me.gbImages.SuspendLayout()
+        Me.gbAPIKey.SuspendLayout()
         CType(Me.pbFANARTTV, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel2.SuspendLayout()
@@ -44,7 +50,8 @@ Partial Class frmFanartTVMediaSettingsHolder
         '
         'pnlSettings
         '
-        Me.pnlSettings.Controls.Add(Me.GroupBox1)
+        Me.pnlSettings.Controls.Add(Me.gbImages)
+        Me.pnlSettings.Controls.Add(Me.gbAPIKey)
         Me.pnlSettings.Controls.Add(Me.Label1)
         Me.pnlSettings.Controls.Add(Me.PictureBox1)
         Me.pnlSettings.Controls.Add(Me.Panel2)
@@ -53,18 +60,77 @@ Partial Class frmFanartTVMediaSettingsHolder
         Me.pnlSettings.Size = New System.Drawing.Size(617, 369)
         Me.pnlSettings.TabIndex = 0
         '
-        'GroupBox1
+        'gbImages
         '
-        Me.GroupBox1.Controls.Add(Me.pbFANARTTV)
-        Me.GroupBox1.Controls.Add(Me.Label5)
-        Me.GroupBox1.Controls.Add(Me.txtFANARTTVApiKey)
-        Me.GroupBox1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.GroupBox1.Location = New System.Drawing.Point(11, 31)
-        Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(510, 71)
-        Me.GroupBox1.TabIndex = 95
-        Me.GroupBox1.TabStop = False
-        Me.GroupBox1.Text = "Fanart.tv"
+        Me.gbImages.Controls.Add(Me.chkScrapePoster)
+        Me.gbImages.Controls.Add(Me.chkScrapeFanart)
+        Me.gbImages.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.gbImages.Location = New System.Drawing.Point(11, 139)
+        Me.gbImages.Name = "gbImages"
+        Me.gbImages.Size = New System.Drawing.Size(130, 64)
+        Me.gbImages.TabIndex = 96
+        Me.gbImages.TabStop = False
+        Me.gbImages.Text = "Images"
+        '
+        'chkScrapePoster
+        '
+        Me.chkScrapePoster.CheckAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkScrapePoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkScrapePoster.Location = New System.Drawing.Point(6, 19)
+        Me.chkScrapePoster.Name = "chkScrapePoster"
+        Me.chkScrapePoster.Size = New System.Drawing.Size(114, 15)
+        Me.chkScrapePoster.TabIndex = 0
+        Me.chkScrapePoster.Text = "Get Posters"
+        Me.chkScrapePoster.TextAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkScrapePoster.UseVisualStyleBackColor = True
+        '
+        'chkScrapeFanart
+        '
+        Me.chkScrapeFanart.CheckAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkScrapeFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkScrapeFanart.Location = New System.Drawing.Point(6, 37)
+        Me.chkScrapeFanart.Name = "chkScrapeFanart"
+        Me.chkScrapeFanart.Size = New System.Drawing.Size(84, 16)
+        Me.chkScrapeFanart.TabIndex = 1
+        Me.chkScrapeFanart.Text = "Get Fanart"
+        Me.chkScrapeFanart.TextAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkScrapeFanart.UseVisualStyleBackColor = True
+        '
+        'gbAPIKey
+        '
+        Me.gbAPIKey.Controls.Add(Me.cbFANARTTVLanguage)
+        Me.gbAPIKey.Controls.Add(Me.lblFANARTTVPrefLanguage)
+        Me.gbAPIKey.Controls.Add(Me.pbFANARTTV)
+        Me.gbAPIKey.Controls.Add(Me.lblAPIKey)
+        Me.gbAPIKey.Controls.Add(Me.txtFANARTTVApiKey)
+        Me.gbAPIKey.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbAPIKey.Location = New System.Drawing.Point(11, 31)
+        Me.gbAPIKey.Name = "gbAPIKey"
+        Me.gbAPIKey.Size = New System.Drawing.Size(513, 102)
+        Me.gbAPIKey.TabIndex = 95
+        Me.gbAPIKey.TabStop = False
+        Me.gbAPIKey.Text = "Fanart.tv"
+        '
+        'cbFANARTTVLanguage
+        '
+        Me.cbFANARTTVLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbFANARTTVLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        Me.cbFANARTTVLanguage.FormattingEnabled = True
+        Me.cbFANARTTVLanguage.Items.AddRange(New Object() {"bg", "cs", "da", "de", "el", "en", "es", "fi", "fr", "he", "hu", "it", "nb", "nl", "no", "pl", "pt", "ru", "sk", "sv", "ta", "tr", "uk", "vi", "xx", "zh"})
+        Me.cbFANARTTVLanguage.Location = New System.Drawing.Point(123, 65)
+        Me.cbFANARTTVLanguage.Name = "cbFANARTTVLanguage"
+        Me.cbFANARTTVLanguage.Size = New System.Drawing.Size(45, 21)
+        Me.cbFANARTTVLanguage.TabIndex = 8
+        '
+        'lblFANARTTVPrefLanguage
+        '
+        Me.lblFANARTTVPrefLanguage.AutoSize = True
+        Me.lblFANARTTVPrefLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        Me.lblFANARTTVPrefLanguage.Location = New System.Drawing.Point(6, 68)
+        Me.lblFANARTTVPrefLanguage.Name = "lblFANARTTVPrefLanguage"
+        Me.lblFANARTTVPrefLanguage.Size = New System.Drawing.Size(111, 13)
+        Me.lblFANARTTVPrefLanguage.TabIndex = 7
+        Me.lblFANARTTVPrefLanguage.Text = "Preferred Language:"
         '
         'pbFANARTTV
         '
@@ -75,15 +141,15 @@ Partial Class frmFanartTVMediaSettingsHolder
         Me.pbFANARTTV.TabIndex = 6
         Me.pbFANARTTV.TabStop = False
         '
-        'Label5
+        'lblAPIKey
         '
-        Me.Label5.AutoSize = True
-        Me.Label5.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label5.Location = New System.Drawing.Point(6, 18)
-        Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(94, 13)
-        Me.Label5.TabIndex = 0
-        Me.Label5.Text = "Fanart.tv API Key:"
+        Me.lblAPIKey.AutoSize = True
+        Me.lblAPIKey.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblAPIKey.Location = New System.Drawing.Point(6, 18)
+        Me.lblAPIKey.Name = "lblAPIKey"
+        Me.lblAPIKey.Size = New System.Drawing.Size(94, 13)
+        Me.lblAPIKey.TabIndex = 0
+        Me.lblAPIKey.Text = "Fanart.tv API Key:"
         '
         'txtFANARTTVApiKey
         '
@@ -187,8 +253,9 @@ Partial Class frmFanartTVMediaSettingsHolder
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Scraper Setup"
         Me.pnlSettings.ResumeLayout(False)
-        Me.GroupBox1.ResumeLayout(False)
-        Me.GroupBox1.PerformLayout()
+        Me.gbImages.ResumeLayout(False)
+        Me.gbAPIKey.ResumeLayout(False)
+        Me.gbAPIKey.PerformLayout()
         CType(Me.pbFANARTTV, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Panel2.ResumeLayout(False)
@@ -204,9 +271,14 @@ Partial Class frmFanartTVMediaSettingsHolder
     Friend WithEvents btnUp As System.Windows.Forms.Button
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
-    Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
+    Friend WithEvents gbAPIKey As System.Windows.Forms.GroupBox
     Friend WithEvents pbFANARTTV As System.Windows.Forms.PictureBox
-    Friend WithEvents Label5 As System.Windows.Forms.Label
+    Friend WithEvents lblAPIKey As System.Windows.Forms.Label
     Friend WithEvents txtFANARTTVApiKey As System.Windows.Forms.TextBox
+    Friend WithEvents gbImages As System.Windows.Forms.GroupBox
+    Friend WithEvents chkScrapePoster As System.Windows.Forms.CheckBox
+    Friend WithEvents chkScrapeFanart As System.Windows.Forms.CheckBox
+    Friend WithEvents cbFANARTTVLanguage As System.Windows.Forms.ComboBox
+    Friend WithEvents lblFANARTTVPrefLanguage As System.Windows.Forms.Label
 
 End Class

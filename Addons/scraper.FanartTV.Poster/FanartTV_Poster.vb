@@ -93,7 +93,9 @@ Public Class FanartTV_Poster
     Function QueryPostScraperCapabilities(ByVal cap As Enums.ScraperCapabilities) As Boolean Implements Interfaces.EmberMovieScraperModule_Poster.QueryScraperCapabilities
         Select Case cap
             Case Enums.ScraperCapabilities.Fanart
-                Return True
+                Return ConfigScrapeModifier.Fanart
+            Case Enums.ScraperCapabilities.Poster
+                Return ConfigScrapeModifier.Poster
         End Select
         Return False
     End Function
@@ -127,7 +129,10 @@ Public Class FanartTV_Poster
         _setup = New frmFanartTVMediaSettingsHolder
         LoadSettings()
         _setup.cbEnabled.Checked = _ScraperEnabled
+        _setup.chkScrapePoster.Checked = ConfigScrapeModifier.Poster
+        _setup.chkScrapeFanart.Checked = ConfigScrapeModifier.Fanart
         _setup.txtFANARTTVApiKey.Text = strPrivateAPIKey
+        _setup.cbFANARTTVLanguage.Text = _MySettings.FANARTTVLanguage
 
         _setup.orderChanged()
         Spanel.Name = String.Concat(Me._Name, "Scraper")
@@ -148,6 +153,7 @@ Public Class FanartTV_Poster
     Sub LoadSettings()
         strPrivateAPIKey = AdvancedSettings.GetSetting("FANARTTVApiKey", "")
         _MySettings.FANARTTVApiKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "ea68f9d0847c1b7643813c70cbfc0196", strPrivateAPIKey)
+        _MySettings.FANARTTVLanguage = AdvancedSettings.GetSetting("FANARTTVLanguage", "en")
         ConfigScrapeModifier.DoSearch = True
         ConfigScrapeModifier.Meta = True
         ConfigScrapeModifier.NFO = True
@@ -155,19 +161,24 @@ Public Class FanartTV_Poster
         ConfigScrapeModifier.EFanarts = True
         ConfigScrapeModifier.Actors = True
 
-        ConfigScrapeModifier.Poster = False
+        ConfigScrapeModifier.Poster = AdvancedSettings.GetBooleanSetting("DoPoster", True)
         ConfigScrapeModifier.Fanart = AdvancedSettings.GetBooleanSetting("DoFanart", True)
         ConfigScrapeModifier.Trailer = False
     End Sub
 
     Sub SaveSettings()
         Using settings = New AdvancedSettings()
+            settings.SetBooleanSetting("DoPoster", ConfigScrapeModifier.Poster)
             settings.SetBooleanSetting("DoFanart", ConfigScrapeModifier.Fanart)
             settings.SetSetting("FANARTTVApiKey", _setup.txtFANARTTVApiKey.Text)
+            settings.SetSetting("FANARTTVLanguage", _MySettings.FANARTTVLanguage)
         End Using
     End Sub
 
     Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.EmberMovieScraperModule_Poster.SaveSetupScraper
+        _MySettings.FANARTTVLanguage = _setup.cbFANARTTVLanguage.Text
+        ConfigScrapeModifier.Poster = _setup.chkScrapePoster.Checked
+        ConfigScrapeModifier.Fanart = _setup.chkScrapeFanart.Checked
         SaveSettings()
         'ModulesManager.Instance.SaveSettings()
         If DoDispose Then
@@ -185,7 +196,7 @@ Public Class FanartTV_Poster
 
         LoadSettings()
 
-        ImageList = _fanartTV.GetFANARTTVImages(DBMovie.Movie.ID)
+        ImageList = _fanartTV.GetFANARTTVImages(DBMovie.Movie.ID, Type)
 
         Master.eLog.Trace(Me.GetType(), "Finished scrape", New Diagnostics.StackTrace().ToString(), Nothing, False)
         Return New Interfaces.ModuleResult With {.breakChain = False}
@@ -203,6 +214,8 @@ Public Class FanartTV_Poster
 
 #Region "Fields"
         Dim FANARTTVApiKey As String
+        Dim TMDBLanguage As String
+        Dim FANARTTVLanguage As String
 #End Region 'Fields
 
     End Structure
