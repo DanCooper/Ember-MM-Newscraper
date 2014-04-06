@@ -98,12 +98,12 @@ Public Class TMDB_Poster
 #Region "Methods"
     Function QueryScraperCapabilities(ByVal cap As Enums.ScraperCapabilities) As Boolean Implements Interfaces.EmberMovieScraperModule_Poster.QueryScraperCapabilities
         Select Case cap
-            Case Enums.ScraperCapabilities.Fanart
-                Return ConfigScrapeModifier.Fanart 'True ' ConfigScrapeModifier.Fanart
-            Case Enums.ScraperCapabilities.Poster
-                Return ConfigScrapeModifier.Poster 'True 'ConfigScrapeModifier.Poster
             Case Enums.ScraperCapabilities.Actor
-                If Master.eSettings.MovieScraperActorThumbs Then Return True
+                Return ConfigScrapeModifier.Actors
+            Case Enums.ScraperCapabilities.Fanart
+                Return ConfigScrapeModifier.Fanart
+            Case Enums.ScraperCapabilities.Poster
+                Return ConfigScrapeModifier.Poster
         End Select
         Return False
     End Function

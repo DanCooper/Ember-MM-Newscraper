@@ -1267,12 +1267,20 @@ Public Class dlgEditMovie
                         .lblMoviePosterSize.Visible = True
                     End If
 
-                    If Not ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Poster) Then
-                        .btnSetMoviePosterScrape.Enabled = False
+                    If Not ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Banner) Then
+                        .btnSetMovieBannerScrape.Enabled = False
                     End If
 
                     If Not ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart) Then
                         .btnSetMovieFanartScrape.Enabled = False
+                    End If
+
+                    If Not ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Landscape) Then
+                        .btnSetMovieLandscapeScrape.Enabled = False
+                    End If
+
+                    If Not ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Poster) Then
+                        .btnSetMoviePosterScrape.Enabled = False
                     End If
 
                     If Path.GetExtension(Master.currMovie.Filename).ToLower = ".disc" Then

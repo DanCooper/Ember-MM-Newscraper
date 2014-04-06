@@ -857,6 +857,29 @@ Public Class dlgEditShow
                     .lblShowPosterSize.Visible = True
                 End If
             End If
+
+            'TODO: add ScraperCapabilities for tv shows (need splitted data and poster scraper for tv shows)
+
+            'If Not ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Banner) Then
+            '    .btnSetASBannerScrape.Enabled = False
+            '    .btnSetShowBannerScrape.Enabled = False
+            'End If
+
+            'If Not ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart) Then
+            '    .btnSetASFanartScrape.Enabled = False
+            '    .btnSetShowFanartScrape.Enabled = False
+            'End If
+
+            'If Not ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Landscape) Then
+            '    .btnSetASLandscapeScrape.Enabled = False
+            '    .btnSetShowLandscapeScrape.Enabled = False
+            'End If
+
+            'If Not ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Poster) Then
+            '    .btnSetASPosterScrape.Enabled = False
+            '    .btnSetShowPosterScrape.Enabled = False
+            'End If
+
         End With
     End Sub
 
