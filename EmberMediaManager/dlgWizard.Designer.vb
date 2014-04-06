@@ -212,6 +212,9 @@ Partial Class dlgWizard
         Me.Label6 = New System.Windows.Forms.Label()
         Me.Label7 = New System.Windows.Forms.Label()
         Me.pnlTVShowSource = New System.Windows.Forms.Panel()
+        Me.Label10 = New System.Windows.Forms.Label()
+        Me.btnTVLanguageFetch = New System.Windows.Forms.Button()
+        Me.cbTVLanguage = New System.Windows.Forms.ComboBox()
         Me.lvTVSources = New System.Windows.Forms.ListView()
         Me.ColumnHeader1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader2 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
@@ -2245,6 +2248,9 @@ Partial Class dlgWizard
         '
         Me.pnlTVShowSource.BackColor = System.Drawing.Color.White
         Me.pnlTVShowSource.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlTVShowSource.Controls.Add(Me.Label10)
+        Me.pnlTVShowSource.Controls.Add(Me.btnTVLanguageFetch)
+        Me.pnlTVShowSource.Controls.Add(Me.cbTVLanguage)
         Me.pnlTVShowSource.Controls.Add(Me.lvTVSources)
         Me.pnlTVShowSource.Controls.Add(Me.btnTVRemoveSource)
         Me.pnlTVShowSource.Controls.Add(Me.btnTVAddSource)
@@ -2254,6 +2260,36 @@ Partial Class dlgWizard
         Me.pnlTVShowSource.Size = New System.Drawing.Size(530, 490)
         Me.pnlTVShowSource.TabIndex = 7
         Me.pnlTVShowSource.Visible = False
+        '
+        'Label10
+        '
+        Me.Label10.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.Label10.Location = New System.Drawing.Point(101, 278)
+        Me.Label10.Name = "Label10"
+        Me.Label10.Size = New System.Drawing.Size(332, 41)
+        Me.Label10.TabIndex = 7
+        Me.Label10.Text = "Now select the default language you would like Ember to look for when scraping TV" & _
+    " Show items."
+        Me.Label10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'btnTVLanguageFetch
+        '
+        Me.btnTVLanguageFetch.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnTVLanguageFetch.Location = New System.Drawing.Point(184, 351)
+        Me.btnTVLanguageFetch.Name = "btnTVLanguageFetch"
+        Me.btnTVLanguageFetch.Size = New System.Drawing.Size(166, 23)
+        Me.btnTVLanguageFetch.TabIndex = 8
+        Me.btnTVLanguageFetch.Text = "Fetch Available Languages"
+        Me.btnTVLanguageFetch.UseVisualStyleBackColor = True
+        '
+        'cbTVLanguage
+        '
+        Me.cbTVLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbTVLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbTVLanguage.Location = New System.Drawing.Point(184, 326)
+        Me.cbTVLanguage.Name = "cbTVLanguage"
+        Me.cbTVLanguage.Size = New System.Drawing.Size(166, 21)
+        Me.cbTVLanguage.TabIndex = 9
         '
         'lvTVSources
         '
@@ -2528,7 +2564,7 @@ Partial Class dlgWizard
         Me.chkTVEpisodeActorThumbsFrodo.Name = "chkTVEpisodeActorThumbsFrodo"
         Me.chkTVEpisodeActorThumbsFrodo.Size = New System.Drawing.Size(140, 17)
         Me.chkTVEpisodeActorThumbsFrodo.TabIndex = 9
-        Me.chkTVEpisodeActorThumbsFrodo.Text = "Epsiode Actor Thumbs"
+        Me.chkTVEpisodeActorThumbsFrodo.Text = "Episode Actor Thumbs"
         Me.chkTVEpisodeActorThumbsFrodo.UseVisualStyleBackColor = True
         '
         'chkTVSeasonBannerFrodo
@@ -2940,4 +2976,7 @@ Partial Class dlgWizard
     Friend WithEvents tpTVFileNamingNMT As System.Windows.Forms.TabPage
     Friend WithEvents tpTVFileNamingExpert As System.Windows.Forms.TabPage
     Friend WithEvents fbdBrowse As System.Windows.Forms.FolderBrowserDialog
+    Friend WithEvents Label10 As System.Windows.Forms.Label
+    Friend WithEvents btnTVLanguageFetch As System.Windows.Forms.Button
+    Friend WithEvents cbTVLanguage As System.Windows.Forms.ComboBox
 End Class

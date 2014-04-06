@@ -26,13 +26,14 @@ Imports EmberAPI
 
 Public Class dlgWizard
 
+    Private tLangList As New List(Of Containers.TVLanguage)
     Private tLang As String
     Private tmppath As String = String.Empty
 
 #Region "Methods"
 
-	Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
-		Select Case True
+    Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+        Select Case True
             Case Me.pnlMovieSource.Visible
                 Me.btnBack.Enabled = False
                 Me.pnlMovieSource.Visible = False
@@ -468,6 +469,13 @@ Public Class dlgWizard
         Me.RefreshSources()
         Me.RefreshTVSources()
 
+        'Me.tLangList.Clear()
+        'Me.tLangList.AddRange(Master.eSettings.TVDBLanguages)
+        'Me.cbTVLanguage.Items.AddRange((From lLang In Master.eSettings.TVDBLanguages Select lLang.LongLang).ToArray)
+        'If Me.cbTVLanguage.Items.Count > 0 Then
+        '    Me.cbTVLanguage.Text = Me.tLangList.FirstOrDefault(Function(l) l.ShortLang = Master.eSettings.TVDBLanguage).LongLang
+        'End If
+
         With Master.eSettings
 
             '***************************************************
@@ -798,11 +806,33 @@ Public Class dlgWizard
         End Try
     End Sub
 
+    'Private Sub btnTVLanguageFetch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    '    Me.tLangList.Clear()
+    '    Me.tLangList.AddRange(ModulesManager.Instance.TVGetLangs(Master.eSettings.TVScraperLanguages))
+    '    Me.cbTVLanguage.Items.AddRange((From lLang In tLangList Select lLang.LongLang).ToArray)
+
+    '    If Me.cbTVLanguage.Items.Count > 0 Then
+    '        Me.cbTVLanguage.Text = Me.tLangList.FirstOrDefault(Function(l) l.ShortLang = Master.eSettings.TVDBLanguage).LongLang
+    '    End If
+    'End Sub
+
     Private Sub SaveSettings()
 
         With Master.eSettings
 
             .GeneralLanguage = tLang
+
+            'If tLangList.Count > 0 Then
+            '    Dim tLang As String = tLangList.FirstOrDefault(Function(l) l.LongLang = Me.cbTVLanguage.Text).ShortLang
+            '    If Not String.IsNullOrEmpty(tLang) Then
+            '        Master.eSettings.TVDBLanguage = tLang
+            '    Else
+            '        Master.eSettings.TVDBLanguage = "en"
+            '    End If
+            'Else
+            '    Master.eSettings.TVDBLanguage = "en"
+            'End If
+            'Master.eSettings.TVDBLanguages = Me.tLangList
 
             '***************************************************
             '******************* Movie Part ********************
@@ -1020,8 +1050,8 @@ Public Class dlgWizard
         Me.pnlTVShowSource.Location = New Point(166, 7)
         Me.pnlTVShowSettings.Location = New Point(166, 7)
         Me.pnlDone.Location = New Point(166, 7)
-	End Sub
+    End Sub
 
-#End Region	'Methods
+#End Region 'Methods
 
 End Class

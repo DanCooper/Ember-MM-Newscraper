@@ -6104,7 +6104,7 @@ Partial Class dlgSettings
         Me.chkTVEpisodeActorThumbsFrodo.Name = "chkTVEpisodeActorThumbsFrodo"
         Me.chkTVEpisodeActorThumbsFrodo.Size = New System.Drawing.Size(140, 17)
         Me.chkTVEpisodeActorThumbsFrodo.TabIndex = 9
-        Me.chkTVEpisodeActorThumbsFrodo.Text = "Epsiode Actor Thumbs"
+        Me.chkTVEpisodeActorThumbsFrodo.Text = "Episode Actor Thumbs"
         Me.chkTVEpisodeActorThumbsFrodo.UseVisualStyleBackColor = true
         '
         'chkTVSeasonBannerFrodo
