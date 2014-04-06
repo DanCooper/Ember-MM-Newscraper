@@ -5122,6 +5122,7 @@ Public Class Settings
         Me._tvscrapershowplot = True
         Me._tvscrapershowpremiered = True
         Me._tvscrapershowrating = True
+        Me._tvscrapershowstatus = True
         Me._tvscrapershowstudio = True
         Me._tvscrapershowtitle = True
         Me._tvscraperupdatetime = Enums.TVScraperUpdateTime.Always
