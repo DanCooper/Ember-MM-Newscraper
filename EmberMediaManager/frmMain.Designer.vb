@@ -141,6 +141,7 @@ Partial Class frmMain
         Me.cmnuShowEdit = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator7 = New System.Windows.Forms.ToolStripSeparator()
         Me.cmnuShowRescrape = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuShowRefresh = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuShowChange = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator11 = New System.Windows.Forms.ToolStripSeparator()
         Me.cmnuShowOpenFolder = New System.Windows.Forms.ToolStripMenuItem()
@@ -742,7 +743,7 @@ Partial Class frmMain
         '
         Me.mnuMainFileExit.Image = CType(resources.GetObject("mnuMainFileExit.Image"), System.Drawing.Image)
         Me.mnuMainFileExit.Name = "mnuMainFileExit"
-        Me.mnuMainFileExit.Size = New System.Drawing.Size(92, 22)
+        Me.mnuMainFileExit.Size = New System.Drawing.Size(152, 22)
         Me.mnuMainFileExit.Text = "E&xit"
         '
         'mnuMainEdit
@@ -757,7 +758,7 @@ Partial Class frmMain
         '
         Me.mnuMainEditSettings.Image = CType(resources.GetObject("mnuMainEditSettings.Image"), System.Drawing.Image)
         Me.mnuMainEditSettings.Name = "mnuMainEditSettings"
-        Me.mnuMainEditSettings.Size = New System.Drawing.Size(125, 22)
+        Me.mnuMainEditSettings.Size = New System.Drawing.Size(152, 22)
         Me.mnuMainEditSettings.Text = "&Settings..."
         '
         'mnuMainHelp
@@ -1164,7 +1165,7 @@ Partial Class frmMain
         '
         Me.cmnuMovie.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuMovieTitle, Me.ToolStripSeparator3, Me.cmnuMovieReload, Me.cmnuMovieMark, Me.cmnuMovieLock, Me.cmnuMovieWatched, Me.ToolStripMenuItem1, Me.cmnuMovieEdit, Me.cmnuMovieEditMetaData, Me.cmnuMovieGenres, Me.cmnuSep, Me.cmnuMovieRescrape, Me.cmnuMovieReSel, Me.cmnuMovieChange, Me.cmnuSep2, Me.cmnuMovieOpenFolder, Me.ToolStripSeparator1, Me.cmnuMovieRemove})
         Me.cmnuMovie.Name = "mnuMediaList"
-        Me.cmnuMovie.Size = New System.Drawing.Size(247, 342)
+        Me.cmnuMovie.Size = New System.Drawing.Size(247, 320)
         '
         'cmnuMovieTitle
         '
@@ -1554,9 +1555,9 @@ Partial Class frmMain
         '
         'cmnuShow
         '
-        Me.cmnuShow.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuShowTitle, Me.ToolStripMenuItem2, Me.cmnuShowReload, Me.cmnuShowMark, Me.cmnuShowLock, Me.cmnuShowWatched, Me.ToolStripSeparator8, Me.cmnuShowEdit, Me.ToolStripSeparator7, Me.cmnuShowRescrape, Me.cmnuShowChange, Me.ToolStripSeparator11, Me.cmnuShowOpenFolder, Me.ToolStripSeparator20, Me.cmnuShowRemove})
+        Me.cmnuShow.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuShowTitle, Me.ToolStripMenuItem2, Me.cmnuShowReload, Me.cmnuShowMark, Me.cmnuShowLock, Me.cmnuShowWatched, Me.ToolStripSeparator8, Me.cmnuShowEdit, Me.ToolStripSeparator7, Me.cmnuShowRescrape, Me.cmnuShowRefresh, Me.cmnuShowChange, Me.ToolStripSeparator11, Me.cmnuShowOpenFolder, Me.ToolStripSeparator20, Me.cmnuShowRemove})
         Me.cmnuShow.Name = "mnuShows"
-        Me.cmnuShow.Size = New System.Drawing.Size(247, 254)
+        Me.cmnuShow.Size = New System.Drawing.Size(247, 298)
         '
         'cmnuShowTitle
         '
@@ -1628,6 +1629,13 @@ Partial Class frmMain
         Me.cmnuShowRescrape.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.I), System.Windows.Forms.Keys)
         Me.cmnuShowRescrape.Size = New System.Drawing.Size(246, 22)
         Me.cmnuShowRescrape.Text = "(Re)Scrape Show"
+        '
+        'cmnuShowRefresh
+        '
+        Me.cmnuShowRefresh.Name = "cmnuShowRefresh"
+        Me.cmnuShowRefresh.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.R), System.Windows.Forms.Keys)
+        Me.cmnuShowRefresh.Size = New System.Drawing.Size(246, 22)
+        Me.cmnuShowRefresh.Text = "Refresh Data"
         '
         'cmnuShowChange
         '
@@ -6022,4 +6030,5 @@ Partial Class frmMain
     Friend WithEvents cmnuTrayFilterAutoLandscape As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuTrayFilterAskBanner As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuTrayFilterAskLandscape As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuShowRefresh As System.Windows.Forms.ToolStripMenuItem
 End Class

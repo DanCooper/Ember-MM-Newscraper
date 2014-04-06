@@ -3331,15 +3331,37 @@ doCancel:
         ModulesManager.Instance.TVScrapeEpisode(Convert.ToInt32(Me.dgvTVEpisodes.Item(1, Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Me.tmpTitle, Me.tmpTVDB, Convert.ToInt32(Me.dgvTVEpisodes.Item(2, Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Convert.ToInt32(Me.dgvTVEpisodes.Item(12, Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Me.tmpLang, Me.tmpOrdering, Master.DefaultTVOptions)
     End Sub
 
-    Private Sub cmnuRescrapeShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowRescrape.Click
+    Private Sub cmnuShowRefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowRefresh.Click
+        Me.SetControlsEnabled(False, True)
+        TVShowRefreshData()
+    End Sub
+
+    Private Sub cmnuShowRescrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowRescrape.Click
         Me.SetControlsEnabled(False, True)
         TVShowScrapeData()
+    End Sub
+
+    Sub TVShowRefreshData()
+        Me.SetControlsEnabled(False)
+        For Each s As DataGridViewRow In Me.dgvTVShows.SelectedRows
+            ' Temporary Scrapetype
+            Dim ScrapeType As Enums.ScrapeType
+            'If Me.dgvTVShows.SelectedRows.Count = 1 Then
+            'ScrapeType = Enums.ScrapeType.FullAsk
+            'Else
+            'ScrapeType = Enums.ScrapeType.FullAuto
+            'End If
+            ScrapeType = Enums.ScrapeType.FullAuto
+            Dim Lang As String = Me.dgvTVShows.Item(22, s.Index).Value.ToString
+            ModulesManager.Instance.TVScrapeOnly(Convert.ToInt32(Me.dgvTVShows.Item(0, s.Index).Value), Me.dgvTVShows.Item(1, s.Index).Value.ToString, Me.dgvTVShows.Item(9, s.Index).Value.ToString, If(String.IsNullOrEmpty(Lang), AdvancedSettings.GetSetting("TVDBLanguage", "en"), Lang), DirectCast(Convert.ToInt32(Me.dgvTVShows.Item(23, s.Index).Value), Enums.Ordering), Master.DefaultTVOptions, ScrapeType, True)
+        Next
+        Me.SetControlsEnabled(True)
     End Sub
 
     Sub TVShowScrapeData()
         Me.SetControlsEnabled(False)
         For Each s As DataGridViewRow In Me.dgvTVShows.SelectedRows
-            ' Temporary Scratetype
+            ' Temporary Scrapetype
             Dim ScrapeType As Enums.ScrapeType
             'If Me.dgvTVShows.SelectedRows.Count = 1 Then
             'ScrapeType = Enums.ScrapeType.FullAsk
@@ -4855,6 +4877,7 @@ doCancel:
                         Me.ToolStripSeparator8.Visible = True
                         Me.cmnuShowEdit.Visible = True
                         Me.ToolStripSeparator7.Visible = True
+                        Me.cmnuShowRefresh.Visible = True
                         Me.cmnuShowRescrape.Visible = True
                         Me.cmnuShowChange.Visible = True
                         Me.cmnuShowOpenFolder.Visible = True
@@ -5239,7 +5262,26 @@ doCancel:
                         .dgvTVShows.Columns(4).SortMode = DataGridViewColumnSortMode.Automatic
                         .dgvTVShows.Columns(4).Visible = Not Master.eSettings.TVShowNfoCol
                         .dgvTVShows.Columns(4).ToolTipText = Master.eLang.GetString(150, "Nfo")
-                        For i As Integer = 5 To .dgvTVShows.Columns.Count - 1
+                        .dgvTVShows.Columns(5).Visible = False
+                        .dgvTVShows.Columns(6).Visible = False
+                        .dgvTVShows.Columns(7).Visible = False
+                        .dgvTVShows.Columns(8).Visible = False
+                        .dgvTVShows.Columns(9).Visible = False
+                        .dgvTVShows.Columns(10).Visible = False
+                        .dgvTVShows.Columns(11).Visible = False
+                        .dgvTVShows.Columns(12).Visible = False
+                        .dgvTVShows.Columns(13).Visible = False
+                        .dgvTVShows.Columns(14).Visible = False
+                        .dgvTVShows.Columns(15).Visible = False
+                        .dgvTVShows.Columns(16).Visible = False
+                        .dgvTVShows.Columns(17).Visible = False
+                        .dgvTVShows.Columns(18).Visible = False
+                        .dgvTVShows.Columns(19).Visible = False
+                        .dgvTVShows.Columns(20).Visible = False
+                        .dgvTVShows.Columns(21).Visible = False
+                        .dgvTVShows.Columns(22).Visible = False
+                        .dgvTVShows.Columns(23).Visible = False
+                        For i As Integer = 24 To .dgvTVShows.Columns.Count - 1
                             .dgvTVShows.Columns(i).Visible = False
                         Next
 
@@ -9862,6 +9904,7 @@ doCancel:
                 .cmnuShowRemove.Text = Master.eLang.GetString(30, "Remove")
                 .cmnuShowRemoveFromDB.Text = Master.eLang.GetString(646, "Remove from Database")
                 .cmnuShowRemoveFromDisk.Text = Master.eLang.GetString(768, "Delete TV Show")
+                .cmnuShowRefresh.Text = Master.eLang.GetString(1066, "Refresh Data")
                 .cmnuShowRescrape.Text = Master.eLang.GetString(766, "(Re)Scrape Show")
                 .cmnuTrayExit.Text = Master.eLang.GetString(2, "E&xit")
                 .cmnuTrayScrape.Text = Master.eLang.GetString(67, "Scrape Media")
