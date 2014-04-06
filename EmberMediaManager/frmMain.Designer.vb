@@ -105,6 +105,8 @@ Partial Class frmMain
         Me.cmnuMovieReSelAutoTrailer = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieReSelAutoMetaData = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieReSelAutoActor = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuMovieReSelAutoBanner = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuMovieReSelAutoLandscape = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieReSelAsk = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieReSelAskAll = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieReSelAskNfo = New System.Windows.Forms.ToolStripMenuItem()
@@ -115,6 +117,8 @@ Partial Class frmMain
         Me.cmnuMovieReSelAskTrailer = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieReSelAskMetaData = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieReSelAskActor = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuMovieReSelAskBanner = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuMovieReSelAskLandscape = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieReSelSkip = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieReSelSkipAll = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieChange = New System.Windows.Forms.ToolStripMenuItem()
@@ -306,6 +310,8 @@ Partial Class frmMain
         Me.mnuAllAutoTrailer = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuAllAutoMI = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuAllAutoActor = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuAllAutoBanner = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuAllAutoLandscape = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuAllAsk = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuAllAskAll = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuAllAskNfo = New System.Windows.Forms.ToolStripMenuItem()
@@ -316,6 +322,8 @@ Partial Class frmMain
         Me.mnuAllAskTrailer = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuAllAskMI = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuAllAskActor = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuAllAskBanner = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuAllAskLandscape = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuAllSkip = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuAllSkipAll = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuMiss = New System.Windows.Forms.ToolStripMenuItem()
@@ -328,6 +336,8 @@ Partial Class frmMain
         Me.mnuMissAutoEFanarts = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuMissAutoTrailer = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuMissAutoActor = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuMissAutoBanner = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuMissAutoLandscape = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuMissAsk = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuMissAskAll = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuMissAskNfo = New System.Windows.Forms.ToolStripMenuItem()
@@ -337,6 +347,8 @@ Partial Class frmMain
         Me.mnuMissAskEFanarts = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuMissAskTrailer = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuMissAskActor = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuMissAskBanner = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuMissAskLandscape = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuMissSkip = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuMissSkipAll = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuNew = New System.Windows.Forms.ToolStripMenuItem()
@@ -350,6 +362,8 @@ Partial Class frmMain
         Me.mnuNewAutoTrailer = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuNewAutoMI = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuNewAutoActor = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuNewAutoBanner = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuNewAutoLandscape = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuNewAsk = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuNewAskAll = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuNewAskNfo = New System.Windows.Forms.ToolStripMenuItem()
@@ -360,6 +374,8 @@ Partial Class frmMain
         Me.mnuNewAskTrailer = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuNewAskMI = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuNewAskActor = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuNewAskBanner = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuNewAskLandscape = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuNewSkip = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuNewSkipAll = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuMark = New System.Windows.Forms.ToolStripMenuItem()
@@ -373,6 +389,8 @@ Partial Class frmMain
         Me.mnuMarkAutoTrailer = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuMarkAutoMI = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuMarkAutoActor = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuMarkAutoBanner = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuMarkAutoLandscape = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuMarkAsk = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuMarkAskAll = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuMarkAskNfo = New System.Windows.Forms.ToolStripMenuItem()
@@ -383,6 +401,8 @@ Partial Class frmMain
         Me.mnuMarkAskTrailer = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuMarkAskMI = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuMarkAskActor = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuMarkAskBanner = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuMarkAskLandscape = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuMarkSkip = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuMarkSkipAll = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuFilter = New System.Windows.Forms.ToolStripMenuItem()
@@ -396,6 +416,8 @@ Partial Class frmMain
         Me.mnuFilterAutoTrailer = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuFilterAutoMI = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuFilterAutoActor = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuFilterAutoBanner = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuFilterAutoLandscape = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuFilterAsk = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuFilterAskAll = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuFilterAskNfo = New System.Windows.Forms.ToolStripMenuItem()
@@ -406,6 +428,8 @@ Partial Class frmMain
         Me.mnuFilterAskTrailer = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuFilterAskMI = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuFilterAskActor = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuFilterAskBanner = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuFilterAskLandscape = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuFilterSkip = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuFilterSkipAll = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuCustom = New System.Windows.Forms.ToolStripMenuItem()
@@ -444,6 +468,8 @@ Partial Class frmMain
         Me.cmnuTrayAllAutoTrailer = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayAllAutoMetaData = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayAllAutoActor = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuTrayAllAutoBanner = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuTrayAllAutoLandscape = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayAllAsk = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayAllAskAll = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayAllAskNfo = New System.Windows.Forms.ToolStripMenuItem()
@@ -454,6 +480,8 @@ Partial Class frmMain
         Me.cmnuTrayAllAskTrailer = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayAllAskMI = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayAllAskActor = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuTrayAllAskBanner = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuTrayAllAskLandscape = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayAllSkip = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayAllSkipAll = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayMiss = New System.Windows.Forms.ToolStripMenuItem()
@@ -466,6 +494,8 @@ Partial Class frmMain
         Me.cmnuTrayMissAutoEFanarts = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayMissAutoTrailer = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayMissAutoActor = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuTrayMissAutoBanner = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuTrayMissAutoLandscape = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayMissAsk = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayMissAskAll = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayMissAskNfo = New System.Windows.Forms.ToolStripMenuItem()
@@ -475,6 +505,8 @@ Partial Class frmMain
         Me.cmnuTrayMissAskEFanarts = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayMissAskTrailer = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayMissAskActor = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuTrayMissAskBanner = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuTrayMissAskLandscape = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayMissSkip = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayMissSkipAll = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayNew = New System.Windows.Forms.ToolStripMenuItem()
@@ -488,6 +520,8 @@ Partial Class frmMain
         Me.cmnuTrayNewAutoTrailer = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayNewAutoMI = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayNewAutoActor = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuTrayNewAutoBanner = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuTrayNewAutoLandscape = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayNewAsk = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayNewAskAll = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayNewAskNfo = New System.Windows.Forms.ToolStripMenuItem()
@@ -498,6 +532,8 @@ Partial Class frmMain
         Me.cmnuTrayNewAskTrailer = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayNewAskMI = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayNewAskActor = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuTrayNewAskBanner = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuTrayNewAskLandscape = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayNewSkip = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayNewSkipAll = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayMark = New System.Windows.Forms.ToolStripMenuItem()
@@ -511,6 +547,8 @@ Partial Class frmMain
         Me.cmnuTrayMarkAutoTrailer = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayMarkAutoMI = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayMarkAutoActor = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuTrayMarkAutoBanner = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuTrayMarkAutoLandscape = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayMarkAsk = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayMarkAskAll = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayMarkAskNfo = New System.Windows.Forms.ToolStripMenuItem()
@@ -521,6 +559,8 @@ Partial Class frmMain
         Me.cmnuTrayMarkAskTrailer = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayMarkAskMI = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayMarkAskActor = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuTrayMarkAskBanner = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuTrayMarkAskLandscape = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayMarkSkip = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayMarkSkipAll = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayFilter = New System.Windows.Forms.ToolStripMenuItem()
@@ -534,6 +574,8 @@ Partial Class frmMain
         Me.cmnuTrayFilterAutoTrailer = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayFilterAutoMI = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayFilterAutoActor = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuTrayFilterAutoBanner = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuTrayFilterAutoLandscape = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayFilterAsk = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayFilterAskAll = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayFilterAskNfo = New System.Windows.Forms.ToolStripMenuItem()
@@ -544,6 +586,8 @@ Partial Class frmMain
         Me.cmnuTrayFilterAskTrailer = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayFilterAskMI = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayFilterAskActor = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuTrayFilterAskBanner = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuTrayFilterAskLandscape = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayFilterSkip = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayFilterSkipAll = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayCustom = New System.Windows.Forms.ToolStripMenuItem()
@@ -1252,7 +1296,7 @@ Partial Class frmMain
         '
         'cmnuMovieReSelAuto
         '
-        Me.cmnuMovieReSelAuto.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuMovieReSelAutoAll, Me.cmnuMovieReSelAutoNfo, Me.cmnuMovieReSelAutoPoster, Me.cmnuMovieReSelAutoFanart, Me.cmnuMovieReSelAutoEThumbs, Me.cmnuMovieReSelAutoEFanarts, Me.cmnuMovieReSelAutoTrailer, Me.cmnuMovieReSelAutoMetaData, Me.cmnuMovieReSelAutoActor})
+        Me.cmnuMovieReSelAuto.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuMovieReSelAutoAll, Me.cmnuMovieReSelAutoNfo, Me.cmnuMovieReSelAutoPoster, Me.cmnuMovieReSelAutoFanart, Me.cmnuMovieReSelAutoEThumbs, Me.cmnuMovieReSelAutoEFanarts, Me.cmnuMovieReSelAutoTrailer, Me.cmnuMovieReSelAutoMetaData, Me.cmnuMovieReSelAutoActor, Me.cmnuMovieReSelAutoBanner, Me.cmnuMovieReSelAutoLandscape})
         Me.cmnuMovieReSelAuto.Name = "cmnuMovieReSelAuto"
         Me.cmnuMovieReSelAuto.Size = New System.Drawing.Size(271, 22)
         Me.cmnuMovieReSelAuto.Text = "Automatic (Force Best Match)"
@@ -1311,9 +1355,21 @@ Partial Class frmMain
         Me.cmnuMovieReSelAutoActor.Size = New System.Drawing.Size(178, 22)
         Me.cmnuMovieReSelAutoActor.Text = "Actor Thumbs Only"
         '
+        'cmnuMovieReSelAutoBanner
+        '
+        Me.cmnuMovieReSelAutoBanner.Name = "cmnuMovieReSelAutoBanner"
+        Me.cmnuMovieReSelAutoBanner.Size = New System.Drawing.Size(178, 22)
+        Me.cmnuMovieReSelAutoBanner.Text = "Banner Only"
+        '
+        'cmnuMovieReSelAutoLandscape
+        '
+        Me.cmnuMovieReSelAutoLandscape.Name = "cmnuMovieReSelAutoLandscape"
+        Me.cmnuMovieReSelAutoLandscape.Size = New System.Drawing.Size(178, 22)
+        Me.cmnuMovieReSelAutoLandscape.Text = "Landscape Only"
+        '
         'cmnuMovieReSelAsk
         '
-        Me.cmnuMovieReSelAsk.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuMovieReSelAskAll, Me.cmnuMovieReSelAskNfo, Me.cmnuMovieReSelAskPoster, Me.cmnuMovieReSelAskFanart, Me.cmnuMovieReSelAskEThumbs, Me.cmnuMovieReSelAskEFanarts, Me.cmnuMovieReSelAskTrailer, Me.cmnuMovieReSelAskMetaData, Me.cmnuMovieReSelAskActor})
+        Me.cmnuMovieReSelAsk.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuMovieReSelAskAll, Me.cmnuMovieReSelAskNfo, Me.cmnuMovieReSelAskPoster, Me.cmnuMovieReSelAskFanart, Me.cmnuMovieReSelAskEThumbs, Me.cmnuMovieReSelAskEFanarts, Me.cmnuMovieReSelAskTrailer, Me.cmnuMovieReSelAskMetaData, Me.cmnuMovieReSelAskActor, Me.cmnuMovieReSelAskBanner, Me.cmnuMovieReSelAskLandscape})
         Me.cmnuMovieReSelAsk.Name = "cmnuMovieReSelAsk"
         Me.cmnuMovieReSelAsk.Size = New System.Drawing.Size(271, 22)
         Me.cmnuMovieReSelAsk.Text = "Ask (Require Input If No Exact Match)"
@@ -1371,6 +1427,18 @@ Partial Class frmMain
         Me.cmnuMovieReSelAskActor.Name = "cmnuMovieReSelAskActor"
         Me.cmnuMovieReSelAskActor.Size = New System.Drawing.Size(178, 22)
         Me.cmnuMovieReSelAskActor.Text = "Actor Thumbs Only"
+        '
+        'cmnuMovieReSelAskBanner
+        '
+        Me.cmnuMovieReSelAskBanner.Name = "cmnuMovieReSelAskBanner"
+        Me.cmnuMovieReSelAskBanner.Size = New System.Drawing.Size(178, 22)
+        Me.cmnuMovieReSelAskBanner.Text = "Banner Only"
+        '
+        'cmnuMovieReSelAskLandscape
+        '
+        Me.cmnuMovieReSelAskLandscape.Name = "cmnuMovieReSelAskLandscape"
+        Me.cmnuMovieReSelAskLandscape.Size = New System.Drawing.Size(178, 22)
+        Me.cmnuMovieReSelAskLandscape.Text = "Landscape Only"
         '
         'cmnuMovieReSelSkip
         '
@@ -3296,7 +3364,7 @@ Partial Class frmMain
         '
         'mnuAllAuto
         '
-        Me.mnuAllAuto.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuAllAutoAll, Me.mnuAllAutoNfo, Me.mnuAllAutoPoster, Me.mnuAllAutoFanart, Me.mnuAllAutoEThumbs, Me.mnuAllAutoEFanarts, Me.mnuAllAutoTrailer, Me.mnuAllAutoMI, Me.mnuAllAutoActor})
+        Me.mnuAllAuto.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuAllAutoAll, Me.mnuAllAutoNfo, Me.mnuAllAutoPoster, Me.mnuAllAutoFanart, Me.mnuAllAutoEThumbs, Me.mnuAllAutoEFanarts, Me.mnuAllAutoTrailer, Me.mnuAllAutoMI, Me.mnuAllAutoActor, Me.mnuAllAutoBanner, Me.mnuAllAutoLandscape})
         Me.mnuAllAuto.Name = "mnuAllAuto"
         Me.mnuAllAuto.Size = New System.Drawing.Size(264, 22)
         Me.mnuAllAuto.Text = "Automatic (Force Best Match)"
@@ -3355,9 +3423,21 @@ Partial Class frmMain
         Me.mnuAllAutoActor.Size = New System.Drawing.Size(171, 22)
         Me.mnuAllAutoActor.Text = "Actor Thumbs Only"
         '
+        'mnuAllAutoBanner
+        '
+        Me.mnuAllAutoBanner.Name = "mnuAllAutoBanner"
+        Me.mnuAllAutoBanner.Size = New System.Drawing.Size(171, 22)
+        Me.mnuAllAutoBanner.Text = "Banner Only"
+        '
+        'mnuAllAutoLandscape
+        '
+        Me.mnuAllAutoLandscape.Name = "mnuAllAutoLandscape"
+        Me.mnuAllAutoLandscape.Size = New System.Drawing.Size(171, 22)
+        Me.mnuAllAutoLandscape.Text = "Landscape Only"
+        '
         'mnuAllAsk
         '
-        Me.mnuAllAsk.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuAllAskAll, Me.mnuAllAskNfo, Me.mnuAllAskPoster, Me.mnuAllAskFanart, Me.mnuAllAskEThumbs, Me.mnuAllAskEFanarts, Me.mnuAllAskTrailer, Me.mnuAllAskMI, Me.mnuAllAskActor})
+        Me.mnuAllAsk.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuAllAskAll, Me.mnuAllAskNfo, Me.mnuAllAskPoster, Me.mnuAllAskFanart, Me.mnuAllAskEThumbs, Me.mnuAllAskEFanarts, Me.mnuAllAskTrailer, Me.mnuAllAskMI, Me.mnuAllAskActor, Me.mnuAllAskBanner, Me.mnuAllAskLandscape})
         Me.mnuAllAsk.Name = "mnuAllAsk"
         Me.mnuAllAsk.Size = New System.Drawing.Size(264, 22)
         Me.mnuAllAsk.Text = "Ask (Require Input If No Exact Match)"
@@ -3416,6 +3496,18 @@ Partial Class frmMain
         Me.mnuAllAskActor.Size = New System.Drawing.Size(171, 22)
         Me.mnuAllAskActor.Text = "Actor Thumbs Only"
         '
+        'mnuAllAskBanner
+        '
+        Me.mnuAllAskBanner.Name = "mnuAllAskBanner"
+        Me.mnuAllAskBanner.Size = New System.Drawing.Size(171, 22)
+        Me.mnuAllAskBanner.Text = "Banner Only"
+        '
+        'mnuAllAskLandscape
+        '
+        Me.mnuAllAskLandscape.Name = "mnuAllAskLandscape"
+        Me.mnuAllAskLandscape.Size = New System.Drawing.Size(171, 22)
+        Me.mnuAllAskLandscape.Text = "Landscape Only"
+        '
         'mnuAllSkip
         '
         Me.mnuAllSkip.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuAllSkipAll})
@@ -3438,7 +3530,7 @@ Partial Class frmMain
         '
         'mnuMissAuto
         '
-        Me.mnuMissAuto.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMissAutoAll, Me.mnuMissAutoNfo, Me.mnuMissAutoPoster, Me.mnuMissAutoFanart, Me.mnuMissAutoEThumbs, Me.mnuMissAutoEFanarts, Me.mnuMissAutoTrailer, Me.mnuMissAutoActor})
+        Me.mnuMissAuto.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMissAutoAll, Me.mnuMissAutoNfo, Me.mnuMissAutoPoster, Me.mnuMissAutoFanart, Me.mnuMissAutoEThumbs, Me.mnuMissAutoEFanarts, Me.mnuMissAutoTrailer, Me.mnuMissAutoActor, Me.mnuMissAutoBanner, Me.mnuMissAutoLandscape})
         Me.mnuMissAuto.Name = "mnuMissAuto"
         Me.mnuMissAuto.Size = New System.Drawing.Size(264, 22)
         Me.mnuMissAuto.Text = "Automatic (Force Best Match)"
@@ -3491,9 +3583,21 @@ Partial Class frmMain
         Me.mnuMissAutoActor.Size = New System.Drawing.Size(171, 22)
         Me.mnuMissAutoActor.Text = "Actor Thumbs Only"
         '
+        'mnuMissAutoBanner
+        '
+        Me.mnuMissAutoBanner.Name = "mnuMissAutoBanner"
+        Me.mnuMissAutoBanner.Size = New System.Drawing.Size(171, 22)
+        Me.mnuMissAutoBanner.Text = "Banner Only"
+        '
+        'mnuMissAutoLandscape
+        '
+        Me.mnuMissAutoLandscape.Name = "mnuMissAutoLandscape"
+        Me.mnuMissAutoLandscape.Size = New System.Drawing.Size(171, 22)
+        Me.mnuMissAutoLandscape.Text = "Landscape Only"
+        '
         'mnuMissAsk
         '
-        Me.mnuMissAsk.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMissAskAll, Me.mnuMissAskNfo, Me.mnuMissAskPoster, Me.mnuMissAskFanart, Me.mnuMissAskEThumbs, Me.mnuMissAskEFanarts, Me.mnuMissAskTrailer, Me.mnuMissAskActor})
+        Me.mnuMissAsk.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMissAskAll, Me.mnuMissAskNfo, Me.mnuMissAskPoster, Me.mnuMissAskFanart, Me.mnuMissAskEThumbs, Me.mnuMissAskEFanarts, Me.mnuMissAskTrailer, Me.mnuMissAskActor, Me.mnuMissAskBanner, Me.mnuMissAskLandscape})
         Me.mnuMissAsk.Name = "mnuMissAsk"
         Me.mnuMissAsk.Size = New System.Drawing.Size(264, 22)
         Me.mnuMissAsk.Text = "Ask (Require Input If No Exact Match)"
@@ -3546,6 +3650,18 @@ Partial Class frmMain
         Me.mnuMissAskActor.Size = New System.Drawing.Size(171, 22)
         Me.mnuMissAskActor.Text = "Actor Thumbs Only"
         '
+        'mnuMissAskBanner
+        '
+        Me.mnuMissAskBanner.Name = "mnuMissAskBanner"
+        Me.mnuMissAskBanner.Size = New System.Drawing.Size(171, 22)
+        Me.mnuMissAskBanner.Text = "Banner Only"
+        '
+        'mnuMissAskLandscape
+        '
+        Me.mnuMissAskLandscape.Name = "mnuMissAskLandscape"
+        Me.mnuMissAskLandscape.Size = New System.Drawing.Size(171, 22)
+        Me.mnuMissAskLandscape.Text = "Landscape Only"
+        '
         'mnuMissSkip
         '
         Me.mnuMissSkip.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMissSkipAll})
@@ -3568,7 +3684,7 @@ Partial Class frmMain
         '
         'mnuNewAuto
         '
-        Me.mnuNewAuto.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuNewAutoAll, Me.mnuNewAutoNfo, Me.mnuNewAutoPoster, Me.mnuNewAutoFanart, Me.mnuNewAutoEThumbs, Me.mnuNewAutoEFanarts, Me.mnuNewAutoTrailer, Me.mnuNewAutoMI, Me.mnuNewAutoActor})
+        Me.mnuNewAuto.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuNewAutoAll, Me.mnuNewAutoNfo, Me.mnuNewAutoPoster, Me.mnuNewAutoFanart, Me.mnuNewAutoEThumbs, Me.mnuNewAutoEFanarts, Me.mnuNewAutoTrailer, Me.mnuNewAutoMI, Me.mnuNewAutoActor, Me.mnuNewAutoBanner, Me.mnuNewAutoLandscape})
         Me.mnuNewAuto.Name = "mnuNewAuto"
         Me.mnuNewAuto.Size = New System.Drawing.Size(264, 22)
         Me.mnuNewAuto.Text = "Automatic (Force Best Match)"
@@ -3627,9 +3743,21 @@ Partial Class frmMain
         Me.mnuNewAutoActor.Size = New System.Drawing.Size(171, 22)
         Me.mnuNewAutoActor.Text = "Actor Thumbs Only"
         '
+        'mnuNewAutoBanner
+        '
+        Me.mnuNewAutoBanner.Name = "mnuNewAutoBanner"
+        Me.mnuNewAutoBanner.Size = New System.Drawing.Size(171, 22)
+        Me.mnuNewAutoBanner.Text = "Banner Only"
+        '
+        'mnuNewAutoLandscape
+        '
+        Me.mnuNewAutoLandscape.Name = "mnuNewAutoLandscape"
+        Me.mnuNewAutoLandscape.Size = New System.Drawing.Size(171, 22)
+        Me.mnuNewAutoLandscape.Text = "Landscape Only"
+        '
         'mnuNewAsk
         '
-        Me.mnuNewAsk.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuNewAskAll, Me.mnuNewAskNfo, Me.mnuNewAskPoster, Me.mnuNewAskFanart, Me.mnuNewAskEThumbs, Me.mnuNewAskEFanarts, Me.mnuNewAskTrailer, Me.mnuNewAskMI, Me.mnuNewAskActor})
+        Me.mnuNewAsk.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuNewAskAll, Me.mnuNewAskNfo, Me.mnuNewAskPoster, Me.mnuNewAskFanart, Me.mnuNewAskEThumbs, Me.mnuNewAskEFanarts, Me.mnuNewAskTrailer, Me.mnuNewAskMI, Me.mnuNewAskActor, Me.mnuNewAskBanner, Me.mnuNewAskLandscape})
         Me.mnuNewAsk.Name = "mnuNewAsk"
         Me.mnuNewAsk.Size = New System.Drawing.Size(264, 22)
         Me.mnuNewAsk.Text = "Ask (Require Input If No Exact Match)"
@@ -3688,6 +3816,18 @@ Partial Class frmMain
         Me.mnuNewAskActor.Size = New System.Drawing.Size(171, 22)
         Me.mnuNewAskActor.Text = "Actor Thumbs Only"
         '
+        'mnuNewAskBanner
+        '
+        Me.mnuNewAskBanner.Name = "mnuNewAskBanner"
+        Me.mnuNewAskBanner.Size = New System.Drawing.Size(171, 22)
+        Me.mnuNewAskBanner.Text = "Banner Only"
+        '
+        'mnuNewAskLandscape
+        '
+        Me.mnuNewAskLandscape.Name = "mnuNewAskLandscape"
+        Me.mnuNewAskLandscape.Size = New System.Drawing.Size(171, 22)
+        Me.mnuNewAskLandscape.Text = "Landscape Only"
+        '
         'mnuNewSkip
         '
         Me.mnuNewSkip.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuNewSkipAll})
@@ -3710,7 +3850,7 @@ Partial Class frmMain
         '
         'mnuMarkAuto
         '
-        Me.mnuMarkAuto.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMarkAutoAll, Me.mnuMarkAutoNfo, Me.mnuMarkAutoPoster, Me.mnuMarkAutoFanart, Me.mnuMarkAutoEThumbs, Me.mnuMarkAutoEFanarts, Me.mnuMarkAutoTrailer, Me.mnuMarkAutoMI, Me.mnuMarkAutoActor})
+        Me.mnuMarkAuto.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMarkAutoAll, Me.mnuMarkAutoNfo, Me.mnuMarkAutoPoster, Me.mnuMarkAutoFanart, Me.mnuMarkAutoEThumbs, Me.mnuMarkAutoEFanarts, Me.mnuMarkAutoTrailer, Me.mnuMarkAutoMI, Me.mnuMarkAutoActor, Me.mnuMarkAutoBanner, Me.mnuMarkAutoLandscape})
         Me.mnuMarkAuto.Name = "mnuMarkAuto"
         Me.mnuMarkAuto.Size = New System.Drawing.Size(264, 22)
         Me.mnuMarkAuto.Text = "Automatic (Force Best Match)"
@@ -3769,9 +3909,21 @@ Partial Class frmMain
         Me.mnuMarkAutoActor.Size = New System.Drawing.Size(171, 22)
         Me.mnuMarkAutoActor.Text = "Actor Thumbs Only"
         '
+        'mnuMarkAutoBanner
+        '
+        Me.mnuMarkAutoBanner.Name = "mnuMarkAutoBanner"
+        Me.mnuMarkAutoBanner.Size = New System.Drawing.Size(171, 22)
+        Me.mnuMarkAutoBanner.Text = "Banner Only"
+        '
+        'mnuMarkAutoLandscape
+        '
+        Me.mnuMarkAutoLandscape.Name = "mnuMarkAutoLandscape"
+        Me.mnuMarkAutoLandscape.Size = New System.Drawing.Size(171, 22)
+        Me.mnuMarkAutoLandscape.Text = "Landscape Only"
+        '
         'mnuMarkAsk
         '
-        Me.mnuMarkAsk.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMarkAskAll, Me.mnuMarkAskNfo, Me.mnuMarkAskPoster, Me.mnuMarkAskFanart, Me.mnuMarkAskEThumbs, Me.mnuMarkAskEFanarts, Me.mnuMarkAskTrailer, Me.mnuMarkAskMI, Me.mnuMarkAskActor})
+        Me.mnuMarkAsk.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMarkAskAll, Me.mnuMarkAskNfo, Me.mnuMarkAskPoster, Me.mnuMarkAskFanart, Me.mnuMarkAskEThumbs, Me.mnuMarkAskEFanarts, Me.mnuMarkAskTrailer, Me.mnuMarkAskMI, Me.mnuMarkAskActor, Me.mnuMarkAskBanner, Me.mnuMarkAskLandscape})
         Me.mnuMarkAsk.Name = "mnuMarkAsk"
         Me.mnuMarkAsk.Size = New System.Drawing.Size(264, 22)
         Me.mnuMarkAsk.Text = "Ask (Require Input If No Exact Match)"
@@ -3830,6 +3982,18 @@ Partial Class frmMain
         Me.mnuMarkAskActor.Size = New System.Drawing.Size(171, 22)
         Me.mnuMarkAskActor.Text = "Actor Thumbs Only"
         '
+        'mnuMarkAskBanner
+        '
+        Me.mnuMarkAskBanner.Name = "mnuMarkAskBanner"
+        Me.mnuMarkAskBanner.Size = New System.Drawing.Size(171, 22)
+        Me.mnuMarkAskBanner.Text = "Banner Only"
+        '
+        'mnuMarkAskLandscape
+        '
+        Me.mnuMarkAskLandscape.Name = "mnuMarkAskLandscape"
+        Me.mnuMarkAskLandscape.Size = New System.Drawing.Size(171, 22)
+        Me.mnuMarkAskLandscape.Text = "Landscape Only"
+        '
         'mnuMarkSkip
         '
         Me.mnuMarkSkip.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMarkSkipAll})
@@ -3852,7 +4016,7 @@ Partial Class frmMain
         '
         'mnuFilterAuto
         '
-        Me.mnuFilterAuto.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuFilterAutoAll, Me.mnuFilterAutoNfo, Me.mnuFilterAutoPoster, Me.mnuFilterAutoFanart, Me.mnuFilterAutoEThumbs, Me.mnuFilterAutoEFanarts, Me.mnuFilterAutoTrailer, Me.mnuFilterAutoMI, Me.mnuFilterAutoActor})
+        Me.mnuFilterAuto.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuFilterAutoAll, Me.mnuFilterAutoNfo, Me.mnuFilterAutoPoster, Me.mnuFilterAutoFanart, Me.mnuFilterAutoEThumbs, Me.mnuFilterAutoEFanarts, Me.mnuFilterAutoTrailer, Me.mnuFilterAutoMI, Me.mnuFilterAutoActor, Me.mnuFilterAutoBanner, Me.mnuFilterAutoLandscape})
         Me.mnuFilterAuto.Name = "mnuFilterAuto"
         Me.mnuFilterAuto.Size = New System.Drawing.Size(264, 22)
         Me.mnuFilterAuto.Text = "Automatic (Force Best Match)"
@@ -3911,9 +4075,21 @@ Partial Class frmMain
         Me.mnuFilterAutoActor.Size = New System.Drawing.Size(171, 22)
         Me.mnuFilterAutoActor.Text = "Actor Thumbs Only"
         '
+        'mnuFilterAutoBanner
+        '
+        Me.mnuFilterAutoBanner.Name = "mnuFilterAutoBanner"
+        Me.mnuFilterAutoBanner.Size = New System.Drawing.Size(171, 22)
+        Me.mnuFilterAutoBanner.Text = "Banner Only"
+        '
+        'mnuFilterAutoLandscape
+        '
+        Me.mnuFilterAutoLandscape.Name = "mnuFilterAutoLandscape"
+        Me.mnuFilterAutoLandscape.Size = New System.Drawing.Size(171, 22)
+        Me.mnuFilterAutoLandscape.Text = "Landscape Only"
+        '
         'mnuFilterAsk
         '
-        Me.mnuFilterAsk.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuFilterAskAll, Me.mnuFilterAskNfo, Me.mnuFilterAskPoster, Me.mnuFilterAskFanart, Me.mnuFilterAskEThumbs, Me.mnuFilterAskEFanarts, Me.mnuFilterAskTrailer, Me.mnuFilterAskMI, Me.mnuFilterAskActor})
+        Me.mnuFilterAsk.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuFilterAskAll, Me.mnuFilterAskNfo, Me.mnuFilterAskPoster, Me.mnuFilterAskFanart, Me.mnuFilterAskEThumbs, Me.mnuFilterAskEFanarts, Me.mnuFilterAskTrailer, Me.mnuFilterAskMI, Me.mnuFilterAskActor, Me.mnuFilterAskBanner, Me.mnuFilterAskLandscape})
         Me.mnuFilterAsk.Name = "mnuFilterAsk"
         Me.mnuFilterAsk.Size = New System.Drawing.Size(264, 22)
         Me.mnuFilterAsk.Text = "Ask (Require Input If No Exact Match)"
@@ -3971,6 +4147,18 @@ Partial Class frmMain
         Me.mnuFilterAskActor.Name = "mnuFilterAskActor"
         Me.mnuFilterAskActor.Size = New System.Drawing.Size(171, 22)
         Me.mnuFilterAskActor.Text = "Actor Thumbs Only"
+        '
+        'mnuFilterAskBanner
+        '
+        Me.mnuFilterAskBanner.Name = "mnuFilterAskBanner"
+        Me.mnuFilterAskBanner.Size = New System.Drawing.Size(171, 22)
+        Me.mnuFilterAskBanner.Text = "Banner Only"
+        '
+        'mnuFilterAskLandscape
+        '
+        Me.mnuFilterAskLandscape.Name = "mnuFilterAskLandscape"
+        Me.mnuFilterAskLandscape.Size = New System.Drawing.Size(171, 22)
+        Me.mnuFilterAskLandscape.Text = "Landscape Only"
         '
         'mnuFilterSkip
         '
@@ -4142,7 +4330,7 @@ Partial Class frmMain
         '
         'cmnuTrayAllAuto
         '
-        Me.cmnuTrayAllAuto.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayAllAutoAll, Me.cmnuTrayAllAutoNfo, Me.cmnuTrayAllAutoPoster, Me.cmnuTrayAllAutoFanart, Me.cmnuTrayAllAutoEThumbs, Me.cmnuTrayAllAutoEFanarts, Me.cmnuTrayAllAutoTrailer, Me.cmnuTrayAllAutoMetaData, Me.cmnuTrayAllAutoActor})
+        Me.cmnuTrayAllAuto.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayAllAutoAll, Me.cmnuTrayAllAutoNfo, Me.cmnuTrayAllAutoPoster, Me.cmnuTrayAllAutoFanart, Me.cmnuTrayAllAutoEThumbs, Me.cmnuTrayAllAutoEFanarts, Me.cmnuTrayAllAutoTrailer, Me.cmnuTrayAllAutoMetaData, Me.cmnuTrayAllAutoActor, Me.cmnuTrayAllAutoBanner, Me.cmnuTrayAllAutoLandscape})
         Me.cmnuTrayAllAuto.Name = "cmnuTrayAllAuto"
         Me.cmnuTrayAllAuto.Size = New System.Drawing.Size(271, 22)
         Me.cmnuTrayAllAuto.Text = "Automatic (Force Best Match)"
@@ -4201,9 +4389,21 @@ Partial Class frmMain
         Me.cmnuTrayAllAutoActor.Size = New System.Drawing.Size(178, 22)
         Me.cmnuTrayAllAutoActor.Text = "Actor Thumbs Only"
         '
+        'cmnuTrayAllAutoBanner
+        '
+        Me.cmnuTrayAllAutoBanner.Name = "cmnuTrayAllAutoBanner"
+        Me.cmnuTrayAllAutoBanner.Size = New System.Drawing.Size(178, 22)
+        Me.cmnuTrayAllAutoBanner.Text = "Banner Only"
+        '
+        'cmnuTrayAllAutoLandscape
+        '
+        Me.cmnuTrayAllAutoLandscape.Name = "cmnuTrayAllAutoLandscape"
+        Me.cmnuTrayAllAutoLandscape.Size = New System.Drawing.Size(178, 22)
+        Me.cmnuTrayAllAutoLandscape.Text = "Landscape Only"
+        '
         'cmnuTrayAllAsk
         '
-        Me.cmnuTrayAllAsk.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayAllAskAll, Me.cmnuTrayAllAskNfo, Me.cmnuTrayAllAskPoster, Me.cmnuTrayAllAskFanart, Me.cmnuTrayAllAskEThumbs, Me.cmnuTrayAllAskEFanarts, Me.cmnuTrayAllAskTrailer, Me.cmnuTrayAllAskMI, Me.cmnuTrayAllAskActor})
+        Me.cmnuTrayAllAsk.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayAllAskAll, Me.cmnuTrayAllAskNfo, Me.cmnuTrayAllAskPoster, Me.cmnuTrayAllAskFanart, Me.cmnuTrayAllAskEThumbs, Me.cmnuTrayAllAskEFanarts, Me.cmnuTrayAllAskTrailer, Me.cmnuTrayAllAskMI, Me.cmnuTrayAllAskActor, Me.cmnuTrayAllAskBanner, Me.cmnuTrayAllAskLandscape})
         Me.cmnuTrayAllAsk.Name = "cmnuTrayAllAsk"
         Me.cmnuTrayAllAsk.Size = New System.Drawing.Size(271, 22)
         Me.cmnuTrayAllAsk.Text = "Ask (Require Input If No Exact Match)"
@@ -4262,6 +4462,18 @@ Partial Class frmMain
         Me.cmnuTrayAllAskActor.Size = New System.Drawing.Size(178, 22)
         Me.cmnuTrayAllAskActor.Text = "Actor Thumbs Only"
         '
+        'cmnuTrayAllAskBanner
+        '
+        Me.cmnuTrayAllAskBanner.Name = "cmnuTrayAllAskBanner"
+        Me.cmnuTrayAllAskBanner.Size = New System.Drawing.Size(178, 22)
+        Me.cmnuTrayAllAskBanner.Text = "Banner Only"
+        '
+        'cmnuTrayAllAskLandscape
+        '
+        Me.cmnuTrayAllAskLandscape.Name = "cmnuTrayAllAskLandscape"
+        Me.cmnuTrayAllAskLandscape.Size = New System.Drawing.Size(178, 22)
+        Me.cmnuTrayAllAskLandscape.Text = "Landscape Only"
+        '
         'cmnuTrayAllSkip
         '
         Me.cmnuTrayAllSkip.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayAllSkipAll})
@@ -4284,7 +4496,7 @@ Partial Class frmMain
         '
         'cmnuTrayMissAuto
         '
-        Me.cmnuTrayMissAuto.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayMissAutoAll, Me.cmnuTrayMissAutoNfo, Me.cmnuTrayMissAutoPoster, Me.cmnuTrayMissAutoFanart, Me.cmnuTrayMissAutoEThumbs, Me.cmnuTrayMissAutoEFanarts, Me.cmnuTrayMissAutoTrailer, Me.cmnuTrayMissAutoActor})
+        Me.cmnuTrayMissAuto.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayMissAutoAll, Me.cmnuTrayMissAutoNfo, Me.cmnuTrayMissAutoPoster, Me.cmnuTrayMissAutoFanart, Me.cmnuTrayMissAutoEThumbs, Me.cmnuTrayMissAutoEFanarts, Me.cmnuTrayMissAutoTrailer, Me.cmnuTrayMissAutoActor, Me.cmnuTrayMissAutoBanner, Me.cmnuTrayMissAutoLandscape})
         Me.cmnuTrayMissAuto.Name = "cmnuTrayMissAuto"
         Me.cmnuTrayMissAuto.Size = New System.Drawing.Size(271, 22)
         Me.cmnuTrayMissAuto.Text = "Automatic (Force Best Match)"
@@ -4337,9 +4549,21 @@ Partial Class frmMain
         Me.cmnuTrayMissAutoActor.Size = New System.Drawing.Size(178, 22)
         Me.cmnuTrayMissAutoActor.Text = "Actor Thumbs Only"
         '
+        'cmnuTrayMissAutoBanner
+        '
+        Me.cmnuTrayMissAutoBanner.Name = "cmnuTrayMissAutoBanner"
+        Me.cmnuTrayMissAutoBanner.Size = New System.Drawing.Size(178, 22)
+        Me.cmnuTrayMissAutoBanner.Text = "Banner Only"
+        '
+        'cmnuTrayMissAutoLandscape
+        '
+        Me.cmnuTrayMissAutoLandscape.Name = "cmnuTrayMissAutoLandscape"
+        Me.cmnuTrayMissAutoLandscape.Size = New System.Drawing.Size(178, 22)
+        Me.cmnuTrayMissAutoLandscape.Text = "Landscape Only"
+        '
         'cmnuTrayMissAsk
         '
-        Me.cmnuTrayMissAsk.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayMissAskAll, Me.cmnuTrayMissAskNfo, Me.cmnuTrayMissAskPoster, Me.cmnuTrayMissAskFanart, Me.cmnuTrayMissAskEThumbs, Me.cmnuTrayMissAskEFanarts, Me.cmnuTrayMissAskTrailer, Me.cmnuTrayMissAskActor})
+        Me.cmnuTrayMissAsk.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayMissAskAll, Me.cmnuTrayMissAskNfo, Me.cmnuTrayMissAskPoster, Me.cmnuTrayMissAskFanart, Me.cmnuTrayMissAskEThumbs, Me.cmnuTrayMissAskEFanarts, Me.cmnuTrayMissAskTrailer, Me.cmnuTrayMissAskActor, Me.cmnuTrayMissAskBanner, Me.cmnuTrayMissAskLandscape})
         Me.cmnuTrayMissAsk.Name = "cmnuTrayMissAsk"
         Me.cmnuTrayMissAsk.Size = New System.Drawing.Size(271, 22)
         Me.cmnuTrayMissAsk.Text = "Ask (Require Input If No Exact Match)"
@@ -4392,6 +4616,18 @@ Partial Class frmMain
         Me.cmnuTrayMissAskActor.Size = New System.Drawing.Size(178, 22)
         Me.cmnuTrayMissAskActor.Text = "Actor Thumbs Only"
         '
+        'cmnuTrayMissAskBanner
+        '
+        Me.cmnuTrayMissAskBanner.Name = "cmnuTrayMissAskBanner"
+        Me.cmnuTrayMissAskBanner.Size = New System.Drawing.Size(178, 22)
+        Me.cmnuTrayMissAskBanner.Text = "Banner Only"
+        '
+        'cmnuTrayMissAskLandscape
+        '
+        Me.cmnuTrayMissAskLandscape.Name = "cmnuTrayMissAskLandscape"
+        Me.cmnuTrayMissAskLandscape.Size = New System.Drawing.Size(178, 22)
+        Me.cmnuTrayMissAskLandscape.Text = "Landscape Only"
+        '
         'cmnuTrayMissSkip
         '
         Me.cmnuTrayMissSkip.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayMissSkipAll})
@@ -4414,7 +4650,7 @@ Partial Class frmMain
         '
         'cmnuTrayNewAuto
         '
-        Me.cmnuTrayNewAuto.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayNewAutoAll, Me.cmnuTrayNewAutoNfo, Me.cmnuTrayNewAutoPoster, Me.cmnuTrayNewAutoFanart, Me.cmnuTrayNewAutoEThumbs, Me.cmnuTrayNewAutoEFanarts, Me.cmnuTrayNewAutoTrailer, Me.cmnuTrayNewAutoMI, Me.cmnuTrayNewAutoActor})
+        Me.cmnuTrayNewAuto.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayNewAutoAll, Me.cmnuTrayNewAutoNfo, Me.cmnuTrayNewAutoPoster, Me.cmnuTrayNewAutoFanart, Me.cmnuTrayNewAutoEThumbs, Me.cmnuTrayNewAutoEFanarts, Me.cmnuTrayNewAutoTrailer, Me.cmnuTrayNewAutoMI, Me.cmnuTrayNewAutoActor, Me.cmnuTrayNewAutoBanner, Me.cmnuTrayNewAutoLandscape})
         Me.cmnuTrayNewAuto.Name = "cmnuTrayNewAuto"
         Me.cmnuTrayNewAuto.Size = New System.Drawing.Size(271, 22)
         Me.cmnuTrayNewAuto.Text = "Automatic (Force Best Match)"
@@ -4473,9 +4709,21 @@ Partial Class frmMain
         Me.cmnuTrayNewAutoActor.Size = New System.Drawing.Size(178, 22)
         Me.cmnuTrayNewAutoActor.Text = "Actor Thumbs Only"
         '
+        'cmnuTrayNewAutoBanner
+        '
+        Me.cmnuTrayNewAutoBanner.Name = "cmnuTrayNewAutoBanner"
+        Me.cmnuTrayNewAutoBanner.Size = New System.Drawing.Size(178, 22)
+        Me.cmnuTrayNewAutoBanner.Text = "Banner Only"
+        '
+        'cmnuTrayNewAutoLandscape
+        '
+        Me.cmnuTrayNewAutoLandscape.Name = "cmnuTrayNewAutoLandscape"
+        Me.cmnuTrayNewAutoLandscape.Size = New System.Drawing.Size(178, 22)
+        Me.cmnuTrayNewAutoLandscape.Text = "Landscape Only"
+        '
         'cmnuTrayNewAsk
         '
-        Me.cmnuTrayNewAsk.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayNewAskAll, Me.cmnuTrayNewAskNfo, Me.cmnuTrayNewAskPoster, Me.cmnuTrayNewAskFanart, Me.cmnuTrayNewAskEThumbs, Me.cmnuTrayNewAskEFanarts, Me.cmnuTrayNewAskTrailer, Me.cmnuTrayNewAskMI, Me.cmnuTrayNewAskActor})
+        Me.cmnuTrayNewAsk.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayNewAskAll, Me.cmnuTrayNewAskNfo, Me.cmnuTrayNewAskPoster, Me.cmnuTrayNewAskFanart, Me.cmnuTrayNewAskEThumbs, Me.cmnuTrayNewAskEFanarts, Me.cmnuTrayNewAskTrailer, Me.cmnuTrayNewAskMI, Me.cmnuTrayNewAskActor, Me.cmnuTrayNewAskBanner, Me.cmnuTrayNewAskLandscape})
         Me.cmnuTrayNewAsk.Name = "cmnuTrayNewAsk"
         Me.cmnuTrayNewAsk.Size = New System.Drawing.Size(271, 22)
         Me.cmnuTrayNewAsk.Text = "Ask (Require Input If No Exact Match)"
@@ -4534,6 +4782,18 @@ Partial Class frmMain
         Me.cmnuTrayNewAskActor.Size = New System.Drawing.Size(178, 22)
         Me.cmnuTrayNewAskActor.Text = "Actor Thumbs Only"
         '
+        'cmnuTrayNewAskBanner
+        '
+        Me.cmnuTrayNewAskBanner.Name = "cmnuTrayNewAskBanner"
+        Me.cmnuTrayNewAskBanner.Size = New System.Drawing.Size(178, 22)
+        Me.cmnuTrayNewAskBanner.Text = "Banner Only"
+        '
+        'cmnuTrayNewAskLandscape
+        '
+        Me.cmnuTrayNewAskLandscape.Name = "cmnuTrayNewAskLandscape"
+        Me.cmnuTrayNewAskLandscape.Size = New System.Drawing.Size(178, 22)
+        Me.cmnuTrayNewAskLandscape.Text = "Landscape Only"
+        '
         'cmnuTrayNewSkip
         '
         Me.cmnuTrayNewSkip.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayNewSkipAll})
@@ -4556,7 +4816,7 @@ Partial Class frmMain
         '
         'cmnuTrayMarkAuto
         '
-        Me.cmnuTrayMarkAuto.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayMarkAutoAll, Me.cmnuTrayMarkAutoNfo, Me.cmnuTrayMarkAutoPoster, Me.cmnuTrayMarkAutoFanart, Me.cmnuTrayMarkAutoEThumbs, Me.cmnuTrayMarkAutoEFanarts, Me.cmnuTrayMarkAutoTrailer, Me.cmnuTrayMarkAutoMI, Me.cmnuTrayMarkAutoActor})
+        Me.cmnuTrayMarkAuto.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayMarkAutoAll, Me.cmnuTrayMarkAutoNfo, Me.cmnuTrayMarkAutoPoster, Me.cmnuTrayMarkAutoFanart, Me.cmnuTrayMarkAutoEThumbs, Me.cmnuTrayMarkAutoEFanarts, Me.cmnuTrayMarkAutoTrailer, Me.cmnuTrayMarkAutoMI, Me.cmnuTrayMarkAutoActor, Me.cmnuTrayMarkAutoBanner, Me.cmnuTrayMarkAutoLandscape})
         Me.cmnuTrayMarkAuto.Name = "cmnuTrayMarkAuto"
         Me.cmnuTrayMarkAuto.Size = New System.Drawing.Size(271, 22)
         Me.cmnuTrayMarkAuto.Text = "Automatic (Force Best Match)"
@@ -4615,9 +4875,21 @@ Partial Class frmMain
         Me.cmnuTrayMarkAutoActor.Size = New System.Drawing.Size(178, 22)
         Me.cmnuTrayMarkAutoActor.Text = "Actor Thumbs Only"
         '
+        'cmnuTrayMarkAutoBanner
+        '
+        Me.cmnuTrayMarkAutoBanner.Name = "cmnuTrayMarkAutoBanner"
+        Me.cmnuTrayMarkAutoBanner.Size = New System.Drawing.Size(178, 22)
+        Me.cmnuTrayMarkAutoBanner.Text = "Banner Only"
+        '
+        'cmnuTrayMarkAutoLandscape
+        '
+        Me.cmnuTrayMarkAutoLandscape.Name = "cmnuTrayMarkAutoLandscape"
+        Me.cmnuTrayMarkAutoLandscape.Size = New System.Drawing.Size(178, 22)
+        Me.cmnuTrayMarkAutoLandscape.Text = "Landscape Only"
+        '
         'cmnuTrayMarkAsk
         '
-        Me.cmnuTrayMarkAsk.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayMarkAskAll, Me.cmnuTrayMarkAskNfo, Me.cmnuTrayMarkAskPoster, Me.cmnuTrayMarkAskFanart, Me.cmnuTrayMarkAskEThumbs, Me.cmnuTrayMarkAskEFanarts, Me.cmnuTrayMarkAskTrailer, Me.cmnuTrayMarkAskMI, Me.cmnuTrayMarkAskActor})
+        Me.cmnuTrayMarkAsk.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayMarkAskAll, Me.cmnuTrayMarkAskNfo, Me.cmnuTrayMarkAskPoster, Me.cmnuTrayMarkAskFanart, Me.cmnuTrayMarkAskEThumbs, Me.cmnuTrayMarkAskEFanarts, Me.cmnuTrayMarkAskTrailer, Me.cmnuTrayMarkAskMI, Me.cmnuTrayMarkAskActor, Me.cmnuTrayMarkAskBanner, Me.cmnuTrayMarkAskLandscape})
         Me.cmnuTrayMarkAsk.Name = "cmnuTrayMarkAsk"
         Me.cmnuTrayMarkAsk.Size = New System.Drawing.Size(271, 22)
         Me.cmnuTrayMarkAsk.Text = "Ask (Require Input If No Exact Match)"
@@ -4676,6 +4948,18 @@ Partial Class frmMain
         Me.cmnuTrayMarkAskActor.Size = New System.Drawing.Size(178, 22)
         Me.cmnuTrayMarkAskActor.Text = "Actor Thumbs Only"
         '
+        'cmnuTrayMarkAskBanner
+        '
+        Me.cmnuTrayMarkAskBanner.Name = "cmnuTrayMarkAskBanner"
+        Me.cmnuTrayMarkAskBanner.Size = New System.Drawing.Size(178, 22)
+        Me.cmnuTrayMarkAskBanner.Text = "Banner Only"
+        '
+        'cmnuTrayMarkAskLandscape
+        '
+        Me.cmnuTrayMarkAskLandscape.Name = "cmnuTrayMarkAskLandscape"
+        Me.cmnuTrayMarkAskLandscape.Size = New System.Drawing.Size(178, 22)
+        Me.cmnuTrayMarkAskLandscape.Text = "Landscape Only"
+        '
         'cmnuTrayMarkSkip
         '
         Me.cmnuTrayMarkSkip.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayMarkSkipAll})
@@ -4698,7 +4982,7 @@ Partial Class frmMain
         '
         'cmnuTrayFilterAuto
         '
-        Me.cmnuTrayFilterAuto.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayFilterAutoAll, Me.cmnuTrayFilterAutoNfo, Me.cmnuTrayFilterAutoPoster, Me.cmnuTrayFilterAutoFanart, Me.cmnuTrayFilterAutoEThumbs, Me.cmnuTrayFilterAutoEFanarts, Me.cmnuTrayFilterAutoTrailer, Me.cmnuTrayFilterAutoMI, Me.cmnuTrayFilterAutoActor})
+        Me.cmnuTrayFilterAuto.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayFilterAutoAll, Me.cmnuTrayFilterAutoNfo, Me.cmnuTrayFilterAutoPoster, Me.cmnuTrayFilterAutoFanart, Me.cmnuTrayFilterAutoEThumbs, Me.cmnuTrayFilterAutoEFanarts, Me.cmnuTrayFilterAutoTrailer, Me.cmnuTrayFilterAutoMI, Me.cmnuTrayFilterAutoActor, Me.cmnuTrayFilterAutoBanner, Me.cmnuTrayFilterAutoLandscape})
         Me.cmnuTrayFilterAuto.Name = "cmnuTrayFilterAuto"
         Me.cmnuTrayFilterAuto.Size = New System.Drawing.Size(271, 22)
         Me.cmnuTrayFilterAuto.Text = "Automatic (Force Best Match)"
@@ -4757,9 +5041,21 @@ Partial Class frmMain
         Me.cmnuTrayFilterAutoActor.Size = New System.Drawing.Size(178, 22)
         Me.cmnuTrayFilterAutoActor.Text = "Actor Thumbs Only"
         '
+        'cmnuTrayFilterAutoBanner
+        '
+        Me.cmnuTrayFilterAutoBanner.Name = "cmnuTrayFilterAutoBanner"
+        Me.cmnuTrayFilterAutoBanner.Size = New System.Drawing.Size(178, 22)
+        Me.cmnuTrayFilterAutoBanner.Text = "Banner Only"
+        '
+        'cmnuTrayFilterAutoLandscape
+        '
+        Me.cmnuTrayFilterAutoLandscape.Name = "cmnuTrayFilterAutoLandscape"
+        Me.cmnuTrayFilterAutoLandscape.Size = New System.Drawing.Size(178, 22)
+        Me.cmnuTrayFilterAutoLandscape.Text = "Landscape Only"
+        '
         'cmnuTrayFilterAsk
         '
-        Me.cmnuTrayFilterAsk.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayFilterAskAll, Me.cmnuTrayFilterAskNfo, Me.cmnuTrayFilterAskPoster, Me.cmnuTrayFilterAskFanart, Me.cmnuTrayFilterAskEThumbs, Me.cmnuTrayFilterAskEFanarts, Me.cmnuTrayFilterAskTrailer, Me.cmnuTrayFilterAskMI, Me.cmnuTrayFilterAskActor})
+        Me.cmnuTrayFilterAsk.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayFilterAskAll, Me.cmnuTrayFilterAskNfo, Me.cmnuTrayFilterAskPoster, Me.cmnuTrayFilterAskFanart, Me.cmnuTrayFilterAskEThumbs, Me.cmnuTrayFilterAskEFanarts, Me.cmnuTrayFilterAskTrailer, Me.cmnuTrayFilterAskMI, Me.cmnuTrayFilterAskActor, Me.cmnuTrayFilterAskBanner, Me.cmnuTrayFilterAskLandscape})
         Me.cmnuTrayFilterAsk.Name = "cmnuTrayFilterAsk"
         Me.cmnuTrayFilterAsk.Size = New System.Drawing.Size(271, 22)
         Me.cmnuTrayFilterAsk.Text = "Ask (Require Input If No Exact Match)"
@@ -4817,6 +5113,18 @@ Partial Class frmMain
         Me.cmnuTrayFilterAskActor.Name = "cmnuTrayFilterAskActor"
         Me.cmnuTrayFilterAskActor.Size = New System.Drawing.Size(178, 22)
         Me.cmnuTrayFilterAskActor.Text = "Actor Thumbs Only"
+        '
+        'cmnuTrayFilterAskBanner
+        '
+        Me.cmnuTrayFilterAskBanner.Name = "cmnuTrayFilterAskBanner"
+        Me.cmnuTrayFilterAskBanner.Size = New System.Drawing.Size(178, 22)
+        Me.cmnuTrayFilterAskBanner.Text = "Banner Only"
+        '
+        'cmnuTrayFilterAskLandscape
+        '
+        Me.cmnuTrayFilterAskLandscape.Name = "cmnuTrayFilterAskLandscape"
+        Me.cmnuTrayFilterAskLandscape.Size = New System.Drawing.Size(178, 22)
+        Me.cmnuTrayFilterAskLandscape.Text = "Landscape Only"
         '
         'cmnuTrayFilterSkip
         '
@@ -5670,4 +5978,48 @@ Partial Class frmMain
     Friend WithEvents cmnuTrayMarkSkipAll As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuTrayFilterSkip As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuTrayFilterSkipAll As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuAllAutoBanner As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuAllAutoLandscape As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuAllAskBanner As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuAllAskLandscape As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuMissAutoBanner As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuMissAutoLandscape As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuMissAskBanner As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuMissAskLandscape As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuNewAutoBanner As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuNewAutoLandscape As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuNewAskBanner As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuNewAskLandscape As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuMarkAutoBanner As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuMarkAutoLandscape As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuMarkAskBanner As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuMarkAskLandscape As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuFilterAutoBanner As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuFilterAutoLandscape As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuFilterAskBanner As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuFilterAskLandscape As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuMovieReSelAutoBanner As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuMovieReSelAutoLandscape As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuMovieReSelAskBanner As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuMovieReSelAskLandscape As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuTrayAllAutoBanner As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuTrayAllAutoLandscape As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuTrayAllAskBanner As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuTrayAllAskLandscape As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuTrayMissAutoBanner As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuTrayMissAutoLandscape As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuTrayMissAskBanner As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuTrayMissAskLandscape As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuTrayNewAutoBanner As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuTrayNewAutoLandscape As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuTrayNewAskBanner As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuTrayNewAskLandscape As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuTrayMarkAutoBanner As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuTrayMarkAutoLandscape As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuTrayMarkAskBanner As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuTrayMarkAskLandscape As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuTrayFilterAutoBanner As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuTrayFilterAutoLandscape As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuTrayFilterAskBanner As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuTrayFilterAskLandscape As System.Windows.Forms.ToolStripMenuItem
 End Class

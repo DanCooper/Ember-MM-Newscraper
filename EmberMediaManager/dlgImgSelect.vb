@@ -121,10 +121,14 @@ Public Class dlgImgSelect
         Me.isEdit = _isEdit
         'Me.isShown = True
         Select Case DLType
+            Case Enums.MovieImageType.Banner
+                aDes = Master.eSize.poster_names(0).description
             Case Enums.MovieImageType.Poster
                 aDes = Master.eSize.poster_names(0).description
             Case Enums.MovieImageType.Fanart
                 aDes = Master.eSize.backdrop_names(0).description
+            Case Enums.MovieImageType.Landscape
+                aDes = Master.eSize.poster_names(0).description
         End Select
 
         Me.SetUp()
@@ -692,6 +696,16 @@ Public Class dlgImgSelect
 
             If Me.DLType = Enums.MovieImageType.Poster Then
                 Me.Text = String.Concat(Master.eLang.GetString(877, "Select Poster"), " - ", If(Not String.IsNullOrEmpty(Me.tMovie.Movie.Title), Me.tMovie.Movie.Title, Me.tMovie.ListTitle))
+                Me.pnlDwld.Visible = True
+                Me.cbFilterSize.Items.Clear()
+                Me.cbFilterSize.Items.AddRange(New String() {Master.eLang.GetString(569, "All"), Master.eLang.GetString(322, "X-Large"), Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small"), Master.eLang.GetString(558, "Wide")})
+            ElseIf Me.DLType = Enums.MovieImageType.Banner Then
+                Me.Text = String.Concat(Master.eLang.GetString(1064, "Select Banner"), " - ", If(Not String.IsNullOrEmpty(Me.tMovie.Movie.Title), Me.tMovie.Movie.Title, Me.tMovie.ListTitle))
+                Me.pnlDwld.Visible = True
+                Me.cbFilterSize.Items.Clear()
+                Me.cbFilterSize.Items.AddRange(New String() {Master.eLang.GetString(569, "All"), Master.eLang.GetString(322, "X-Large"), Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small"), Master.eLang.GetString(558, "Wide")})
+            ElseIf Me.DLType = Enums.MovieImageType.Landscape Then
+                Me.Text = String.Concat(Master.eLang.GetString(1065, "Select Landscape"), " - ", If(Not String.IsNullOrEmpty(Me.tMovie.Movie.Title), Me.tMovie.Movie.Title, Me.tMovie.ListTitle))
                 Me.pnlDwld.Visible = True
                 Me.cbFilterSize.Items.Clear()
                 Me.cbFilterSize.Items.AddRange(New String() {Master.eLang.GetString(569, "All"), Master.eLang.GetString(322, "X-Large"), Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small"), Master.eLang.GetString(558, "Wide")})

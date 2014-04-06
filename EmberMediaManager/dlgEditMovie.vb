@@ -36,7 +36,9 @@ Public Class dlgEditMovie
     Private lvwActorSorter As ListViewColumnSorter
     'Private lvwEThumbsSorter As ListViewColumnSorter
     'Private lvwEFanartsSorter As ListViewColumnSorter
+    Private MovieBanner As New Images With {.IsEdit = True}
     Private MovieFanart As New Images With {.IsEdit = True}
+    Private MovieLandscape As New Images With {.IsEdit = True}
     Private MoviePoster As New Images With {.IsEdit = True}
     Private pResults As New Containers.ImgResult
     Private PreviousFrameValue As Integer
@@ -304,10 +306,22 @@ Public Class dlgEditMovie
         End Try
     End Sub
 
+    Private Sub btnRemoveMovieBanner_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveMovieBanner.Click
+        Me.pbMovieBanner.Image = Nothing
+        Me.pbMovieBanner.Tag = Nothing
+        Me.MovieBanner.Dispose()
+    End Sub
+
     Private Sub btnRemoveMovieFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveMovieFanart.Click
         Me.pbMovieFanart.Image = Nothing
         Me.pbMovieFanart.Tag = Nothing
         Me.MovieFanart.Dispose()
+    End Sub
+
+    Private Sub btnRemoveMovieLandscape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveMovieLandscape.Click
+        Me.pbMovieLandscape.Image = Nothing
+        Me.pbMovieLandscape.Tag = Nothing
+        Me.MovieLandscape.Dispose()
     End Sub
 
     Private Sub btnRemoveMoviePoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveMoviePoster.Click
@@ -339,6 +353,85 @@ Public Class dlgEditMovie
         ' ***
         Me.DialogResult = System.Windows.Forms.DialogResult.Retry
         Me.Close()
+    End Sub
+
+    Private Sub btnSetMovieBannerDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieBannerDL.Click
+        Try
+            Using dImgManual As New dlgImgManual
+                Dim tImage As Images
+                If dImgManual.ShowDialog() = DialogResult.OK Then
+                    tImage = dImgManual.Results
+                    If Not IsNothing(tImage.Image) Then
+                        MovieBanner = tImage
+                        Me.pbMovieBanner.Image = MovieBanner.Image
+                        Me.pbMovieBanner.Tag = MovieBanner
+
+                        Me.lblMovieBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieBanner.Image.Width, Me.pbMovieBanner.Image.Height)
+                        Me.lblMovieBannerSize.Visible = True
+                    End If
+                End If
+            End Using
+        Catch ex As Exception
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub btnSetMovieBannerScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieBannerScrape.Click
+        Dim pResults As New MediaContainers.Image
+        Dim dlgImgS As dlgImgSelect
+        Dim aList As New List(Of MediaContainers.Image)
+        Dim efList As New List(Of String)
+        Dim etList As New List(Of String)
+
+        Try
+            Dim sPath As String = Path.Combine(Master.TempPath, "Banner.jpg")
+
+            'Public Function MovieScrapeImages(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Boolean
+            If Not ModulesManager.Instance.MovieScrapeImages(Master.currMovie, Enums.ScraperCapabilities.Banner, aList) Then
+                If aList.Count > 0 Then
+                    dlgImgS = New dlgImgSelect()
+                    If dlgImgS.ShowDialog(Master.currMovie, Enums.MovieImageType.Banner, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
+                        pResults = dlgImgS.Results
+                        If Not String.IsNullOrEmpty(pResults.URL) Then
+                            Cursor = Cursors.WaitCursor
+                            pResults.WebImage.FromWeb(pResults.URL)
+                            If Not IsNothing(pResults.WebImage.Image) Then
+                                pbMovieBanner.Image = CType(pResults.WebImage.Image.Clone(), Image)
+                                Me.lblMovieBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieBanner.Image.Width, Me.pbMovieBanner.Image.Height)
+                                Me.lblMovieBannerSize.Visible = True
+                            End If
+                            Cursor = Cursors.Default
+                        End If
+                        MovieBanner = pResults.WebImage
+                    End If
+                Else
+                    MsgBox(Master.eLang.GetString(1057, "No banner images could be found. Please check to see if any banner scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(972, "No Banners Found"))
+                End If
+            End If
+        Catch ex As Exception
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub btnSetMovieBannerLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieBannerLocal.Click
+        Try
+            With ofdImage
+                .InitialDirectory = Directory.GetParent(Master.currMovie.Filename).FullName
+                .Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
+                .FilterIndex = 0
+            End With
+
+            If ofdImage.ShowDialog() = DialogResult.OK Then
+                MovieBanner.FromFile(ofdImage.FileName)
+                Me.pbMovieBanner.Image = MovieBanner.Image
+                Me.pbMovieBanner.Tag = MovieBanner
+
+                Me.lblMovieBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieBanner.Image.Width, Me.pbMovieBanner.Image.Height)
+                Me.lblMovieBannerSize.Visible = True
+            End If
+        Catch ex As Exception
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
 
     Private Sub btnMovieEThumbsSetAsFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieEThumbsSetAsFanart.Click
@@ -446,6 +539,85 @@ Public Class dlgEditMovie
 
                 Me.lblMovieFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieFanart.Image.Width, Me.pbMovieFanart.Image.Height)
                 Me.lblMovieFanartSize.Visible = True
+            End If
+        Catch ex As Exception
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub btnSetMovieLandscapeDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieLandscapeDL.Click
+        Try
+            Using dImgManual As New dlgImgManual
+                Dim tImage As Images
+                If dImgManual.ShowDialog() = DialogResult.OK Then
+                    tImage = dImgManual.Results
+                    If Not IsNothing(tImage.Image) Then
+                        MovieLandscape = tImage
+                        Me.pbMovieLandscape.Image = MovieLandscape.Image
+                        Me.pbMovieLandscape.Tag = MovieLandscape
+
+                        Me.lblMovieLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieLandscape.Image.Width, Me.pbMovieLandscape.Image.Height)
+                        Me.lblMovieLandscapeSize.Visible = True
+                    End If
+                End If
+            End Using
+        Catch ex As Exception
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub btnSetMovieLandscapeScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieLandscapeScrape.Click
+        Dim pResults As New MediaContainers.Image
+        Dim dlgImgS As dlgImgSelect
+        Dim aList As New List(Of MediaContainers.Image)
+        Dim efList As New List(Of String)
+        Dim etList As New List(Of String)
+
+        Try
+            Dim sPath As String = Path.Combine(Master.TempPath, "Landscape.jpg")
+
+            'Public Function MovieScrapeImages(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Boolean
+            If Not ModulesManager.Instance.MovieScrapeImages(Master.currMovie, Enums.ScraperCapabilities.Landscape, aList) Then
+                If aList.Count > 0 Then
+                    dlgImgS = New dlgImgSelect()
+                    If dlgImgS.ShowDialog(Master.currMovie, Enums.MovieImageType.Landscape, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
+                        pResults = dlgImgS.Results
+                        If Not String.IsNullOrEmpty(pResults.URL) Then
+                            Cursor = Cursors.WaitCursor
+                            pResults.WebImage.FromWeb(pResults.URL)
+                            If Not IsNothing(pResults.WebImage.Image) Then
+                                pbMovieLandscape.Image = CType(pResults.WebImage.Image.Clone(), Image)
+                                Me.lblMovieLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieLandscape.Image.Width, Me.pbMovieLandscape.Image.Height)
+                                Me.lblMovieLandscapeSize.Visible = True
+                            End If
+                            Cursor = Cursors.Default
+                        End If
+                        MovieLandscape = pResults.WebImage
+                    End If
+                Else
+                    MsgBox(Master.eLang.GetString(1058, "No landscape images could be found. Please check to see if any landscape scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(972, "No Landscapes Found"))
+                End If
+            End If
+        Catch ex As Exception
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub btnSetMovieLandscapeLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieLandscapeLocal.Click
+        Try
+            With ofdImage
+                .InitialDirectory = Directory.GetParent(Master.currMovie.Filename).FullName
+                .Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
+                .FilterIndex = 0
+            End With
+
+            If ofdImage.ShowDialog() = DialogResult.OK Then
+                MovieLandscape.FromFile(ofdImage.FileName)
+                Me.pbMovieLandscape.Image = MovieLandscape.Image
+                Me.pbMovieLandscape.Tag = MovieLandscape
+
+                Me.lblMovieLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieLandscape.Image.Width, Me.pbMovieLandscape.Image.Height)
+                Me.lblMovieLandscapeSize.Visible = True
             End If
         Catch ex As Exception
             Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
@@ -763,6 +935,9 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub dlgEditMovie_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
+        Me.MovieBanner.Dispose()
+        Me.MovieBanner = Nothing
+
         Me.MoviePoster.Dispose()
         Me.MoviePoster = Nothing
 
@@ -774,6 +949,9 @@ Public Class dlgEditMovie
 
         Me.EFanartsList.Clear()
         Me.EFanartsList = Nothing
+
+        Me.MovieLandscape.Dispose()
+        Me.MovieLandscape = Nothing
     End Sub
 
     Private Sub dlgEditMovie_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
@@ -792,7 +970,9 @@ Public Class dlgEditMovie
 
     Private Sub dlgEditMovie_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
+            Me.pbMovieBanner.AllowDrop = True
             Me.pbMovieFanart.AllowDrop = True
+            Me.pbMovieLandscape.AllowDrop = True
             Me.pbMoviePoster.AllowDrop = True
 
             Me.SetUp()
@@ -1035,6 +1215,19 @@ Public Class dlgEditMovie
                         End If
                     End If
 
+                    If Not String.IsNullOrEmpty(Master.currMovie.BannerPath) AndAlso Master.currMovie.BannerPath.Substring(0, 1) = ":" Then
+                        MovieBanner.FromWeb(Master.currMovie.BannerPath.Substring(1, Master.currMovie.BannerPath.Length - 1))
+                    Else
+                        MovieBanner.FromFile(Master.currMovie.BannerPath)
+                    End If
+                    If Not IsNothing(MovieBanner.Image) Then
+                        .pbMovieBanner.Image = MovieBanner.Image
+                        .pbMovieBanner.Tag = MovieBanner
+
+                        .lblMovieBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbMovieBanner.Image.Width, .pbMovieBanner.Image.Height)
+                        .lblMovieBannerSize.Visible = True
+                    End If
+
                     If Not String.IsNullOrEmpty(Master.currMovie.FanartPath) AndAlso Master.currMovie.FanartPath.Substring(0, 1) = ":" Then
                         MovieFanart.FromWeb(Master.currMovie.FanartPath.Substring(1, Master.currMovie.FanartPath.Length - 1))
                     Else
@@ -1046,6 +1239,19 @@ Public Class dlgEditMovie
 
                         .lblMovieFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbMovieFanart.Image.Width, .pbMovieFanart.Image.Height)
                         .lblMovieFanartSize.Visible = True
+                    End If
+
+                    If Not String.IsNullOrEmpty(Master.currMovie.LandscapePath) AndAlso Master.currMovie.LandscapePath.Substring(0, 1) = ":" Then
+                        MovieLandscape.FromWeb(Master.currMovie.LandscapePath.Substring(1, Master.currMovie.LandscapePath.Length - 1))
+                    Else
+                        MovieLandscape.FromFile(Master.currMovie.LandscapePath)
+                    End If
+                    If Not IsNothing(MovieLandscape.Image) Then
+                        .pbMovieLandscape.Image = MovieLandscape.Image
+                        .pbMovieLandscape.Tag = MovieLandscape
+
+                        .lblMovieLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbMovieLandscape.Image.Width, .pbMovieLandscape.Image.Height)
+                        .lblMovieLandscapeSize.Visible = True
                     End If
 
                     If Not String.IsNullOrEmpty(Master.currMovie.PosterPath) AndAlso Master.currMovie.PosterPath.Substring(0, 1) = ":" Then
@@ -1316,6 +1522,25 @@ Public Class dlgEditMovie
         Me.Close()
     End Sub
 
+    Private Sub pbMovieBanner_DragDrop(sender As Object, e As DragEventArgs) Handles pbMovieBanner.DragDrop
+        Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
+        If Not IsNothing(tImage.Image) Then
+            MovieBanner = tImage
+            Me.pbMovieBanner.Image = MovieBanner.Image
+            Me.pbMovieBanner.Tag = MovieBanner
+            Me.lblMovieBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieBanner.Image.Width, Me.pbMovieBanner.Image.Height)
+            Me.lblMovieBannerSize.Visible = True
+        End If
+    End Sub
+
+    Private Sub pbMovieBanner_DragEnter(sender As Object, e As DragEventArgs) Handles pbMovieBanner.DragEnter
+        If FileUtils.DragAndDrop.CheckDroppedImage(e) Then
+            e.Effect = DragDropEffects.Copy
+        Else
+            e.Effect = DragDropEffects.None
+        End If
+    End Sub
+
     Private Sub pbMovieFanart_DragDrop(sender As Object, e As DragEventArgs) Handles pbMovieFanart.DragDrop
         Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
         If Not IsNothing(tImage.Image) Then
@@ -1328,6 +1553,25 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub pbMovieFanart_DragEnter(sender As Object, e As DragEventArgs) Handles pbMovieFanart.DragEnter
+        If FileUtils.DragAndDrop.CheckDroppedImage(e) Then
+            e.Effect = DragDropEffects.Copy
+        Else
+            e.Effect = DragDropEffects.None
+        End If
+    End Sub
+
+    Private Sub pbMovieLandscape_DragDrop(sender As Object, e As DragEventArgs) Handles pbMovieLandscape.DragDrop
+        Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
+        If Not IsNothing(tImage.Image) Then
+            MovieLandscape = tImage
+            Me.pbMovieLandscape.Image = MovieLandscape.Image
+            Me.pbMovieLandscape.Tag = MovieLandscape
+            Me.lblMovieLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieLandscape.Image.Width, Me.pbMovieLandscape.Image.Height)
+            Me.lblMovieLandscapeSize.Visible = True
+        End If
+    End Sub
+
+    Private Sub pbMovieLandscape_DragEnter(sender As Object, e As DragEventArgs) Handles pbMovieLandscape.DragEnter
         If FileUtils.DragAndDrop.CheckDroppedImage(e) Then
             e.Effect = DragDropEffects.Copy
         Else
@@ -1853,12 +2097,28 @@ Public Class dlgEditMovie
                     Next
                 End If
 
+                If Master.currMovie.ClearBanner Then
+                    .MovieBanner.DeleteMovieBanner(Master.currMovie)
+                End If
+
                 If Master.currMovie.ClearFanart Then
                     .MovieFanart.DeleteMovieFanart(Master.currMovie)
                 End If
 
+                If Master.currMovie.ClearLandscape Then
+                    .MovieLandscape.DeleteMovieLandscape(Master.currMovie)
+                End If
+
                 If Master.currMovie.ClearPoster Then
                     .MoviePoster.DeleteMoviePosters(Master.currMovie)
+                End If
+
+                If Not IsNothing(.MovieBanner.Image) Then
+                    Dim fPath As String = .MovieBanner.SaveAsMovieBanner(Master.currMovie)
+                    Master.currMovie.BannerPath = fPath
+                Else
+                    .MovieBanner.DeleteMovieBanner(Master.currMovie)
+                    Master.currMovie.BannerPath = String.Empty
                 End If
 
                 If Not IsNothing(.MovieFanart.Image) Then
@@ -1867,6 +2127,14 @@ Public Class dlgEditMovie
                 Else
                     .MovieFanart.DeleteMovieFanart(Master.currMovie)
                     Master.currMovie.FanartPath = String.Empty
+                End If
+
+                If Not IsNothing(.MovieLandscape.Image) Then
+                    Dim fPath As String = .MovieLandscape.SaveAsMovieLandscape(Master.currMovie)
+                    Master.currMovie.LandscapePath = fPath
+                Else
+                    .MovieLandscape.DeleteMovieLandscape(Master.currMovie)
+                    Master.currMovie.LandscapePath = String.Empty
                 End If
 
                 If Not IsNothing(.MoviePoster.Image) Then
@@ -1940,62 +2208,70 @@ Public Class dlgEditMovie
         End If
         Dim sTitle As String = String.Concat(Master.eLang.GetString(25, "Edit Movie"), If(String.IsNullOrEmpty(mTitle), String.Empty, String.Concat(" - ", mTitle)), If(String.IsNullOrEmpty(mShortPath), String.Empty, String.Concat(" | ", mShortPath)))
         Me.Text = sTitle
-        Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
         Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
-        Me.lblTopDetails.Text = Master.eLang.GetString(224, "Edit the details for the selected movie.")
-        Me.lblTopTitle.Text = Master.eLang.GetString(25, "Edit Movie")
-        Me.tpDetails.Text = Master.eLang.GetString(26, "Details")
-        Me.lblLocalTrailer.Text = Master.eLang.GetString(225, "Local Trailer Found")
-        Me.lblStudio.Text = Master.eLang.GetString(226, "Studio:")
-        Me.lblTrailer.Text = Master.eLang.GetString(227, "Trailer URL:")
-        Me.lblReleaseDate.Text = Master.eLang.GetString(236, "Release Date:")
-        Me.lblCredits.Text = Master.eLang.GetString(228, "Credits:")
-        Me.lblCerts.Text = Master.eLang.GetString(237, "Certification(s):")
-        Me.lblRuntime.Text = Master.eLang.GetString(238, "Runtime:")
-        Me.lblMPAADesc.Text = Master.eLang.GetString(229, "MPAA Rating Description:")
+        Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
+        Me.btnChangeMovie.Text = Master.eLang.GetString(32, "Change Movie")
         Me.btnManual.Text = Master.eLang.GetString(230, "Manual Edit")
-        Me.lblActors.Text = Master.eLang.GetString(231, "Actors:")
+        Me.btnMovieEFanartsSetAsFanart.Text = Me.btnMovieEThumbsSetAsFanart.Text
+        Me.btnMovieEFanartsTransfer.Text = Me.btnMovieEThumbsTransfer.Text
+        Me.btnMovieEThumbsSetAsFanart.Text = Master.eLang.GetString(255, "Set As Fanart")
+        Me.btnMovieEThumbsTransfer.Text = Master.eLang.GetString(254, "Transfer Now")
+        Me.btnRemoveMovieFanart.Text = Master.eLang.GetString(250, "Remove Fanart")
+        Me.btnRemoveMoviePoster.Text = Master.eLang.GetString(247, "Remove Poster")
+        Me.btnRescrape.Text = Master.eLang.GetString(716, "Re-Scrape")
+        Me.btnSetMovieBannerDL.Text = Master.eLang.GetString(1023, "Change Banner (Download)")
+        Me.btnSetMovieBannerLocal.Text = Master.eLang.GetString(1021, "Change Banner (Local)")
+        Me.btnSetMovieBannerScrape.Text = Master.eLang.GetString(1022, "Change Banner (Scrape)")
+        Me.btnSetMovieFanartDL.Text = Master.eLang.GetString(266, "Change Fanart (Download)")
+        Me.btnSetMovieFanartLocal.Text = Master.eLang.GetString(252, "Change Fanart (Local)")
+        Me.btnSetMovieFanartScrape.Text = Master.eLang.GetString(251, "Change Fanart (Scrape)")
+        Me.btnSetMovieLandscapeDL.Text = Master.eLang.GetString(1033, "Change Landscape (Download)")
+        Me.btnSetMovieLandscapeLocal.Text = Master.eLang.GetString(1031, "Change Landscape (Local)")
+        Me.btnSetMovieLandscapeScrape.Text = Master.eLang.GetString(1032, "Change Landscape (Scrape)")
+        Me.btnSetMoviePosterDL.Text = Master.eLang.GetString(265, "Change Poster (Download)")
+        Me.btnSetMoviePosterLocal.Text = Master.eLang.GetString(249, "Change Poster (Local)")
+        Me.btnSetMoviePosterScrape.Text = Master.eLang.GetString(248, "Change Poster (Scrape)")
+        Me.chkMark.Text = Master.eLang.GetString(23, "Mark")
+        Me.chkWatched.Text = Master.eLang.GetString(981, "Watched")
         Me.colName.Text = Master.eLang.GetString(232, "Name")
         Me.colRole.Text = Master.eLang.GetString(233, "Role")
         Me.colThumb.Text = Master.eLang.GetString(234, "Thumb")
-        Me.lblGenre.Text = Master.eLang.GetString(51, "Genre(s):")
-        Me.lblMPAA.Text = Master.eLang.GetString(235, "MPAA Rating:")
-        Me.lblDirector.Text = Master.eLang.GetString(239, "Director:")
-        Me.lblTop250.Text = Master.eLang.GetString(240, "Top 250:")
-        Me.lblCountry.Text = String.Concat(Master.eLang.GetString(301, "Country"), ":")
-        Me.lblPlot.Text = Master.eLang.GetString(241, "Plot:")
-        Me.lblOutline.Text = Master.eLang.GetString(242, "Plot Outline:")
-        Me.lblTagline.Text = Master.eLang.GetString(243, "Tagline:")
-        Me.lblVotes.Text = Master.eLang.GetString(244, "Votes:")
-        Me.lblRating.Text = Master.eLang.GetString(245, "Rating:")
-        Me.lblYear.Text = Master.eLang.GetString(49, "Year:")
-        Me.lblTitle.Text = Master.eLang.GetString(246, "Title:")
-        Me.tpPoster.Text = Master.eLang.GetString(148, "Poster")
-        Me.btnRemoveMoviePoster.Text = Master.eLang.GetString(247, "Remove Poster")
-        Me.btnSetMoviePosterScrape.Text = Master.eLang.GetString(248, "Change Poster (Scrape)")
-        Me.btnSetMoviePosterLocal.Text = Master.eLang.GetString(249, "Change Poster (Local)")
-        Me.tpFanart.Text = Master.eLang.GetString(149, "Fanart")
-        Me.btnRemoveMovieFanart.Text = Master.eLang.GetString(250, "Remove Fanart")
-        Me.btnSetMovieFanartScrape.Text = Master.eLang.GetString(251, "Change Fanart (Scrape)")
-        Me.btnSetMovieFanartLocal.Text = Master.eLang.GetString(252, "Change Fanart (Local)")
-        Me.tpEThumbs.Text = Master.eLang.GetString(153, "Extrathumbs")
-        Me.lbMovieEThumbsQueue.Text = Master.eLang.GetString(253, "You have extrathumbs queued to be transferred to the movie directory.")
-        Me.btnMovieEThumbsTransfer.Text = Master.eLang.GetString(254, "Transfer Now")
-        Me.btnMovieEThumbsSetAsFanart.Text = Master.eLang.GetString(255, "Set As Fanart")
         Me.lbMovieEFanartsQueue.Text = Master.eLang.GetString(974, "You have extratfanarts queued to be transferred to the movie directory.")
-        Me.btnMovieEFanartsTransfer.Text = Me.btnMovieEThumbsTransfer.Text
-        Me.btnMovieEFanartsSetAsFanart.Text = Me.btnMovieEThumbsSetAsFanart.Text
-        Me.tpFrameExtraction.Text = Master.eLang.GetString(256, "Frame Extraction")
-        Me.chkMark.Text = Master.eLang.GetString(23, "Mark")
-        Me.chkWatched.Text = Master.eLang.GetString(981, "Watched")
-        Me.btnRescrape.Text = Master.eLang.GetString(716, "Re-Scrape")
-        Me.btnChangeMovie.Text = Master.eLang.GetString(32, "Change Movie")
-        Me.btnSetMoviePosterDL.Text = Master.eLang.GetString(265, "Change Poster (Download)")
-        Me.btnSetMovieFanartDL.Text = Master.eLang.GetString(266, "Change Fanart (Download)")
-        Me.lblSortTilte.Text = String.Concat(Master.eLang.GetString(642, "Sort Title"), ":")
-        Me.lblOriginalTitle.Text = String.Concat(Master.eLang.GetString(302, "Original Title"), ":")
+        Me.lbMovieEThumbsQueue.Text = Master.eLang.GetString(253, "You have extrathumbs queued to be transferred to the movie directory.")
+        Me.lblActors.Text = Master.eLang.GetString(231, "Actors:")
+        Me.lblCerts.Text = Master.eLang.GetString(237, "Certification(s):")
+        Me.lblCountry.Text = String.Concat(Master.eLang.GetString(301, "Country"), ":")
+        Me.lblCredits.Text = Master.eLang.GetString(228, "Credits:")
+        Me.lblDirector.Text = Master.eLang.GetString(239, "Director:")
         Me.lblFileSource.Text = Master.eLang.GetString(824, "Video Source:")
+        Me.lblGenre.Text = Master.eLang.GetString(51, "Genre(s):")
+        Me.lblLocalTrailer.Text = Master.eLang.GetString(225, "Local Trailer Found")
+        Me.lblMPAA.Text = Master.eLang.GetString(235, "MPAA Rating:")
+        Me.lblMPAADesc.Text = Master.eLang.GetString(229, "MPAA Rating Description:")
+        Me.lblOriginalTitle.Text = String.Concat(Master.eLang.GetString(302, "Original Title"), ":")
+        Me.lblOutline.Text = Master.eLang.GetString(242, "Plot Outline:")
+        Me.lblPlot.Text = Master.eLang.GetString(241, "Plot:")
+        Me.lblRating.Text = Master.eLang.GetString(245, "Rating:")
+        Me.lblReleaseDate.Text = Master.eLang.GetString(236, "Release Date:")
+        Me.lblRuntime.Text = Master.eLang.GetString(238, "Runtime:")
+        Me.lblSortTilte.Text = String.Concat(Master.eLang.GetString(642, "Sort Title"), ":")
+        Me.lblStudio.Text = Master.eLang.GetString(226, "Studio:")
+        Me.lblTagline.Text = Master.eLang.GetString(243, "Tagline:")
+        Me.lblTitle.Text = Master.eLang.GetString(246, "Title:")
+        Me.lblTop250.Text = Master.eLang.GetString(240, "Top 250:")
+        Me.lblTopDetails.Text = Master.eLang.GetString(224, "Edit the details for the selected movie.")
+        Me.lblTopTitle.Text = Master.eLang.GetString(25, "Edit Movie")
+        Me.lblTrailer.Text = Master.eLang.GetString(227, "Trailer URL:")
+        Me.lblVotes.Text = Master.eLang.GetString(244, "Votes:")
+        Me.lblYear.Text = Master.eLang.GetString(49, "Year:")
+        Me.tpBanner.Text = Master.eLang.GetString(838, "Banner")
+        Me.tpDetails.Text = Master.eLang.GetString(26, "Details")
+        Me.tpEThumbs.Text = Master.eLang.GetString(153, "Extrathumbs")
+        Me.tpFanart.Text = Master.eLang.GetString(149, "Fanart")
+        Me.tpFrameExtraction.Text = Master.eLang.GetString(256, "Frame Extraction")
+        Me.tpLandscape.Text = Master.eLang.GetString(1059, "Landscape")
         Me.tpMetaData.Text = Master.eLang.GetString(866, "Metadata")
+        Me.tpPoster.Text = Master.eLang.GetString(148, "Poster")
     End Sub
 
     Private Sub txtThumbCount_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs)

@@ -29,6 +29,14 @@ namespace FanartTV.V1
         public string likes { get; set; }
     }
 
+    public class MovieBanner
+    {
+        public string id { get; set; }
+        public string url { get; set; }
+        public string lang { get; set; }
+        public string likes { get; set; }
+    }
+
 	public class MovieBackground
 	{
 		public string id { get; set; }
@@ -78,6 +86,7 @@ namespace FanartTV.V1
 		public List<MovieLogo> movielogo { get; set; }
         public List<MovieArt> movieart { get; set; }
         public List<MoviePoster> movieposter { get; set; }
+        public List<MovieBanner> moviebanner { get; set; }
 		public List<MovieBackground> moviebackground { get; set; }
 		public List<MovieDisc> moviedisc { get; set; }
 		public List<MovieThumb> moviethumb { get; set; }

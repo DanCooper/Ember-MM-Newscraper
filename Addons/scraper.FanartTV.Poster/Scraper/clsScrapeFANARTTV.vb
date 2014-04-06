@@ -47,8 +47,10 @@ Namespace FANARTTVs
 
         Private _MySettings As FanartTV_Poster.sMySettings
         Private _FanartTV As FanartTV.V1.FanartTV
-        Friend WithEvents bwFANARTTV As New System.ComponentModel.BackgroundWorker
         Private _APIInvalid As Boolean = False
+
+        Friend WithEvents bwFANARTTV As New System.ComponentModel.BackgroundWorker
+
 #End Region 'Fields
 
         '#Region "Events"
@@ -100,7 +102,7 @@ Namespace FANARTTVs
             Dim alPostersE As New List(Of MediaContainers.Image) 'english poster list
             Dim alPostersO As New List(Of MediaContainers.Image) 'all others poster list
             Dim alPostersOs As New List(Of MediaContainers.Image) 'all others sorted poster list
-            Dim alPostersN As New List(Of MediaContainers.Image) 'neutral/none language poster list
+            Dim alPostersN As New List(Of MediaContainers.Image) 'neutral/none language poster list (lang="00")
             Dim ParentID As String
 
             If _APIInvalid Then
@@ -123,9 +125,6 @@ Namespace FANARTTVs
                         ElseIf image.lang = "00" Then
                             alPostersN.Add(New MediaContainers.Image With {.Description = Master.eSize.backdrop_names(3).description, .URL = image.url, .Width = "1000", .Height = "1426", .ParentID = image.url, .ShortLang = image.lang, .LongLang = If(String.IsNullOrEmpty(image.lang), "", Localization.ISOGetLangByCode2(image.lang))})
                             alPostersN.Add(New MediaContainers.Image With {.Description = Master.eSize.backdrop_names(0).description, .URL = image.url & "/preview", .Width = "200", .Height = "285", .ParentID = image.url, .ShortLang = image.lang, .LongLang = If(String.IsNullOrEmpty(image.lang), "", Localization.ISOGetLangByCode2(image.lang))})
-                        ElseIf String.IsNullOrEmpty(image.lang) Then
-                            alPostersN.Add(New MediaContainers.Image With {.Description = Master.eSize.backdrop_names(3).description, .URL = image.url, .Width = "1000", .Height = "1426", .ParentID = image.url, .ShortLang = image.lang, .LongLang = If(String.IsNullOrEmpty(image.lang), "", Localization.ISOGetLangByCode2(image.lang))})
-                            alPostersN.Add(New MediaContainers.Image With {.Description = Master.eSize.backdrop_names(0).description, .URL = image.url & "/preview", .Width = "200", .Height = "285", .ParentID = image.url, .ShortLang = image.lang, .LongLang = If(String.IsNullOrEmpty(image.lang), "", Localization.ISOGetLangByCode2(image.lang))})
                         Else
                             alPostersO.Add(New MediaContainers.Image With {.Description = Master.eSize.backdrop_names(3).description, .URL = image.url, .Width = "1000", .Height = "1426", .ParentID = image.url, .ShortLang = image.lang, .LongLang = If(String.IsNullOrEmpty(image.lang), "", Localization.ISOGetLangByCode2(image.lang))})
                             alPostersO.Add(New MediaContainers.Image With {.Description = Master.eSize.backdrop_names(0).description, .URL = image.url & "/preview", .Width = "200", .Height = "285", .ParentID = image.url, .ShortLang = image.lang, .LongLang = If(String.IsNullOrEmpty(image.lang), "", Localization.ISOGetLangByCode2(image.lang))})
@@ -144,6 +143,33 @@ Namespace FANARTTVs
                     For Each image In Result.movieinfo.moviebackground
                         ParentID = image.url.Substring(image.url.LastIndexOf("/") + 1, image.url.Length - (image.url.LastIndexOf("/") + 1))
                         alPosters.Add(New MediaContainers.Image With {.Description = Master.eSize.backdrop_names(3).description, .URL = image.url, .Width = "1920", .Height = "1080", .ParentID = image.url, .ShortLang = image.lang, .LongLang = If(String.IsNullOrEmpty(image.lang), "", Localization.ISOGetLangByCode2(image.lang))})
+                        alPosters.Add(New MediaContainers.Image With {.Description = Master.eSize.backdrop_names(0).description, .URL = image.url & "/preview", .Width = "200", .Height = "112", .ParentID = image.url, .ShortLang = image.lang, .LongLang = If(String.IsNullOrEmpty(image.lang), "", Localization.ISOGetLangByCode2(image.lang))})
+                    Next
+                ElseIf Type = Enums.ScraperCapabilities.Banner Then
+                    If IsNothing(Result) Then Return alPosters
+                    If IsNothing(Result.movieinfo.moviebanner) Then Return alPosters
+                    For Each image In Result.movieinfo.moviebanner
+                        ParentID = image.url.Substring(image.url.LastIndexOf("/") + 1, image.url.Length - (image.url.LastIndexOf("/") + 1))
+                        alPosters.Add(New MediaContainers.Image With {.Description = Master.eSize.backdrop_names(3).description, .URL = image.url, .Width = "1000", .Height = "185", .ParentID = image.url, .ShortLang = image.lang, .LongLang = If(String.IsNullOrEmpty(image.lang), "", Localization.ISOGetLangByCode2(image.lang))})
+                        alPosters.Add(New MediaContainers.Image With {.Description = Master.eSize.backdrop_names(0).description, .URL = image.url & "/preview", .Width = "200", .Height = "37", .ParentID = image.url, .ShortLang = image.lang, .LongLang = If(String.IsNullOrEmpty(image.lang), "", Localization.ISOGetLangByCode2(image.lang))})
+                    Next
+                ElseIf Type = Enums.ScraperCapabilities.CharacterArt Then
+                ElseIf Type = Enums.ScraperCapabilities.ClearArt Then
+                ElseIf Type = Enums.ScraperCapabilities.ClearLogo Then
+                    If IsNothing(Result) Then Return alPosters
+                    If IsNothing(Result.movieinfo.hdmovielogo) Then Return alPosters
+                    For Each image In Result.movieinfo.hdmovielogo
+                        ParentID = image.url.Substring(image.url.LastIndexOf("/") + 1, image.url.Length - (image.url.LastIndexOf("/") + 1))
+                        alPosters.Add(New MediaContainers.Image With {.Description = Master.eSize.backdrop_names(3).description, .URL = image.url, .Width = "800", .Height = "310", .ParentID = image.url, .ShortLang = image.lang, .LongLang = If(String.IsNullOrEmpty(image.lang), "", Localization.ISOGetLangByCode2(image.lang))})
+                        alPosters.Add(New MediaContainers.Image With {.Description = Master.eSize.backdrop_names(0).description, .URL = image.url & "/preview", .Width = "200", .Height = "77", .ParentID = image.url, .ShortLang = image.lang, .LongLang = If(String.IsNullOrEmpty(image.lang), "", Localization.ISOGetLangByCode2(image.lang))})
+                    Next
+                ElseIf Type = Enums.ScraperCapabilities.DiscArt Then
+                ElseIf Type = Enums.ScraperCapabilities.Landscape Then
+                    If IsNothing(Result) Then Return alPosters
+                    If IsNothing(Result.movieinfo.moviethumb) Then Return alPosters
+                    For Each image In Result.movieinfo.moviethumb
+                        ParentID = image.url.Substring(image.url.LastIndexOf("/") + 1, image.url.Length - (image.url.LastIndexOf("/") + 1))
+                        alPosters.Add(New MediaContainers.Image With {.Description = Master.eSize.backdrop_names(3).description, .URL = image.url, .Width = "1000", .Height = "562", .ParentID = image.url, .ShortLang = image.lang, .LongLang = If(String.IsNullOrEmpty(image.lang), "", Localization.ISOGetLangByCode2(image.lang))})
                         alPosters.Add(New MediaContainers.Image With {.Description = Master.eSize.backdrop_names(0).description, .URL = image.url & "/preview", .Width = "200", .Height = "112", .ParentID = image.url, .ShortLang = image.lang, .LongLang = If(String.IsNullOrEmpty(image.lang), "", Localization.ISOGetLangByCode2(image.lang))})
                     Next
                 End If

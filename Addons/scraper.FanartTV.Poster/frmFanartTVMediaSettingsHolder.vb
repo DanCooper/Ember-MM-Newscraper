@@ -94,7 +94,31 @@ Public Class frmFanartTVMediaSettingsHolder
         RaiseEvent SetupScraperChanged(cbEnabled.Checked, 0)
     End Sub
 
+    Private Sub chkScrapeBanner_CheckedChanged(sender As Object, e As EventArgs) Handles chkScrapeBanner.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkScrapeCharacterArt_CheckedChanged(sender As Object, e As EventArgs) Handles chkScrapeCharacterArt.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkScrapeClearArt_CheckedChanged(sender As Object, e As EventArgs) Handles chkScrapeClearArt.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkScrapeClearLogo_CheckedChanged(sender As Object, e As EventArgs) Handles chkScrapeClearLogo.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkScrapeDiscArt_CheckedChanged(sender As Object, e As EventArgs) Handles chkScrapeDiscArt.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
     Private Sub chkScrapeFanart_CheckedChanged(sender As Object, e As EventArgs) Handles chkScrapeFanart.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkScrapeLandscape_CheckedChanged(sender As Object, e As EventArgs) Handles chkScrapeLandscape.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
@@ -114,8 +138,14 @@ Public Class frmFanartTVMediaSettingsHolder
     End Sub
 
     Sub SetUp()
-        Me.chkScrapePoster.Text = Master.eLang.GetString(939, "Get Posters")
+        Me.chkScrapePoster.Text = Master.eLang.GetString(939, "Get Poster")
         Me.chkScrapeFanart.Text = Master.eLang.GetString(940, "Get Fanart")
+        Me.chkScrapeBanner.Text = Master.eLang.GetString(1051, "Get Banner")
+        Me.chkScrapeCharacterArt.Text = Master.eLang.GetString(1052, "Get CharacterArt")
+        Me.chkScrapeClearArt.Text = Master.eLang.GetString(1053, "Get ClearArt")
+        Me.chkScrapeClearLogo.Text = Master.eLang.GetString(1054, "Get ClearLogo")
+        Me.chkScrapeDiscArt.Text = Master.eLang.GetString(1055, "Get DiscArt")
+        Me.chkScrapeLandscape.Text = Master.eLang.GetString(1056, "Get Landscape")
         Me.lblAPIKey.Text = Master.eLang.GetString(789, "Fanart.tv API Key:")
         Me.lblFANARTTVPrefLanguage.Text = Master.eLang.GetString(741, "Preferred Language:")
         Me.Label3.Text = Master.eLang.GetString(168, "Scrape Order")

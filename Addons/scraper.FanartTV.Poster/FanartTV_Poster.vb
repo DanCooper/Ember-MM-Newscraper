@@ -92,8 +92,20 @@ Public Class FanartTV_Poster
 #Region "Methods"
     Function QueryPostScraperCapabilities(ByVal cap As Enums.ScraperCapabilities) As Boolean Implements Interfaces.EmberMovieScraperModule_Poster.QueryScraperCapabilities
         Select Case cap
+            Case Enums.ScraperCapabilities.Banner
+                Return ConfigScrapeModifier.Banner
+            Case Enums.ScraperCapabilities.CharacterArt
+                Return ConfigScrapeModifier.CharacterArt
+            Case Enums.ScraperCapabilities.ClearArt
+                Return ConfigScrapeModifier.ClearArt
+            Case Enums.ScraperCapabilities.ClearLogo
+                Return ConfigScrapeModifier.ClearLogo
+            Case Enums.ScraperCapabilities.DiscArt
+                Return ConfigScrapeModifier.DiscArt
             Case Enums.ScraperCapabilities.Fanart
                 Return ConfigScrapeModifier.Fanart
+            Case Enums.ScraperCapabilities.Landscape
+                Return ConfigScrapeModifier.Landscape
             Case Enums.ScraperCapabilities.Poster
                 Return ConfigScrapeModifier.Poster
         End Select
@@ -131,6 +143,12 @@ Public Class FanartTV_Poster
         _setup.cbEnabled.Checked = _ScraperEnabled
         _setup.chkScrapePoster.Checked = ConfigScrapeModifier.Poster
         _setup.chkScrapeFanart.Checked = ConfigScrapeModifier.Fanart
+        _setup.chkScrapeBanner.Checked = ConfigScrapeModifier.Banner
+        _setup.chkScrapeCharacterArt.Checked = ConfigScrapeModifier.CharacterArt
+        _setup.chkScrapeClearArt.Checked = ConfigScrapeModifier.ClearArt
+        _setup.chkScrapeClearLogo.Checked = ConfigScrapeModifier.ClearLogo
+        _setup.chkScrapeDiscArt.Checked = ConfigScrapeModifier.DiscArt
+        _setup.chkScrapeLandscape.Checked = ConfigScrapeModifier.Landscape
         _setup.txtFANARTTVApiKey.Text = strPrivateAPIKey
         _setup.cbFANARTTVLanguage.Text = _MySettings.FANARTTVLanguage
 
@@ -163,6 +181,12 @@ Public Class FanartTV_Poster
 
         ConfigScrapeModifier.Poster = AdvancedSettings.GetBooleanSetting("DoPoster", True)
         ConfigScrapeModifier.Fanart = AdvancedSettings.GetBooleanSetting("DoFanart", True)
+        ConfigScrapeModifier.Banner = AdvancedSettings.GetBooleanSetting("DoBanner", True)
+        ConfigScrapeModifier.CharacterArt = AdvancedSettings.GetBooleanSetting("DoCharacterArt", True)
+        ConfigScrapeModifier.ClearArt = AdvancedSettings.GetBooleanSetting("DoClearArt", True)
+        ConfigScrapeModifier.ClearLogo = AdvancedSettings.GetBooleanSetting("DoClearLogo", True)
+        ConfigScrapeModifier.DiscArt = AdvancedSettings.GetBooleanSetting("DoDiscArt", True)
+        ConfigScrapeModifier.Landscape = AdvancedSettings.GetBooleanSetting("DoLandscape", True)
         ConfigScrapeModifier.Trailer = False
     End Sub
 
@@ -170,6 +194,12 @@ Public Class FanartTV_Poster
         Using settings = New AdvancedSettings()
             settings.SetBooleanSetting("DoPoster", ConfigScrapeModifier.Poster)
             settings.SetBooleanSetting("DoFanart", ConfigScrapeModifier.Fanart)
+            settings.SetBooleanSetting("DoBanner", ConfigScrapeModifier.Banner)
+            settings.SetBooleanSetting("DoCharacterArt", ConfigScrapeModifier.CharacterArt)
+            settings.SetBooleanSetting("DoClearArt", ConfigScrapeModifier.ClearArt)
+            settings.SetBooleanSetting("DoClearLogo", ConfigScrapeModifier.ClearLogo)
+            settings.SetBooleanSetting("DoDiscArt", ConfigScrapeModifier.DiscArt)
+            settings.SetBooleanSetting("DoLandscape", ConfigScrapeModifier.Landscape)
             settings.SetSetting("FANARTTVApiKey", _setup.txtFANARTTVApiKey.Text)
             settings.SetSetting("FANARTTVLanguage", _MySettings.FANARTTVLanguage)
         End Using
@@ -179,6 +209,12 @@ Public Class FanartTV_Poster
         _MySettings.FANARTTVLanguage = _setup.cbFANARTTVLanguage.Text
         ConfigScrapeModifier.Poster = _setup.chkScrapePoster.Checked
         ConfigScrapeModifier.Fanart = _setup.chkScrapeFanart.Checked
+        ConfigScrapeModifier.Banner = _setup.chkScrapeBanner.Checked
+        ConfigScrapeModifier.CharacterArt = _setup.chkScrapeCharacterArt.Checked
+        ConfigScrapeModifier.ClearArt = _setup.chkScrapeClearArt.Checked
+        ConfigScrapeModifier.ClearLogo = _setup.chkScrapeClearLogo.Checked
+        ConfigScrapeModifier.DiscArt = _setup.chkScrapeDiscArt.Checked
+        ConfigScrapeModifier.Landscape = _setup.chkScrapeLandscape.Checked
         SaveSettings()
         'ModulesManager.Instance.SaveSettings()
         If DoDispose Then

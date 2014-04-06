@@ -279,11 +279,27 @@ Public Class Scanner
                 End If
             End If
 
+            'banner
+            If String.IsNullOrEmpty(Movie.Banner) Then
+                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType.Banner)
+                    Movie.Banner = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                    If Not String.IsNullOrEmpty(Movie.Banner) Then Exit For
+                Next
+            End If
+
             'fanart
             If String.IsNullOrEmpty(Movie.Fanart) Then
                 For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType.Fanart)
                     Movie.Fanart = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
                     If Not String.IsNullOrEmpty(Movie.Fanart) Then Exit For
+                Next
+            End If
+
+            'landscape
+            If String.IsNullOrEmpty(Movie.Landscape) Then
+                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType.Landscape)
+                    Movie.Landscape = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                    If Not String.IsNullOrEmpty(Movie.Landscape) Then Exit For
                 Next
             End If
 
@@ -1205,7 +1221,7 @@ Public Class Scanner
                     tmpTVDB.IsMarkShow = False
                     tmpTVDB.Source = TVContainer.Source
                     tmpTVDB.Ordering = Master.eSettings.TVScraperOptionsOrdering
-                    tmpTVDB.ShowLanguage = AdvancedSettings.GetSetting("TVDBLanguage", "en")
+                    tmpTVDB.ShowLanguage = AdvancedSettings.GetSetting("TVDBLanguage", "en", "scraper.TVDB")
 
                     Master.DB.SaveTVShowToDB(tmpTVDB, True, True)
 
@@ -1433,10 +1449,12 @@ Public Class Scanner
 
 #Region "Fields"
 
+        Private _banner As String
         Private _ethumbs As String
         Private _efanarts As String
         Private _fanart As String
         Private _filename As String
+        Private _landscape As String
         Private _nfo As String
         Private _poster As String
         Private _single As Boolean
@@ -1456,6 +1474,15 @@ Public Class Scanner
 #End Region 'Constructors
 
 #Region "Properties"
+
+        Public Property Banner() As String
+            Get
+                Return _banner
+            End Get
+            Set(ByVal value As String)
+                _banner = value
+            End Set
+        End Property
 
         Public Property EThumbs() As String
             Get
@@ -1499,6 +1526,15 @@ Public Class Scanner
             End Get
             Set(ByVal value As Boolean)
                 _single = value
+            End Set
+        End Property
+
+        Public Property Landscape() As String
+            Get
+                Return _landscape
+            End Get
+            Set(ByVal value As String)
+                _landscape = value
             End Set
         End Property
 
@@ -1561,10 +1597,12 @@ Public Class Scanner
 #Region "Methods"
 
         Public Sub Clear()
+            _banner = String.Empty
             _filename = String.Empty
             _source = String.Empty
             _single = False
             _usefolder = False
+            _landscape = String.Empty
             _poster = String.Empty
             _fanart = String.Empty
             _nfo = String.Empty
