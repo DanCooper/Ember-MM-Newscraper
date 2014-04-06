@@ -45,7 +45,7 @@ Public Class dlgIMDBSearchResults
 
 #End Region 'Fields
 
-    #Region "Methods"
+#Region "Methods"
 
     Public Overloads Function ShowDialog(ByVal sMovieTitle As String, ByVal sMovieFilename As String, ByVal filterOptions As Structures.ScrapeOptions) As Windows.Forms.DialogResult
         Me.tmrWait.Enabled = False
@@ -509,7 +509,7 @@ Public Class dlgIMDBSearchResults
     End Sub
 
     Private Function GetMovieClone(ByVal original As MediaContainers.Movie) As MediaContainers.Movie
-         Try
+        Try
             Using mem As New IO.MemoryStream()
                 Dim bin As New System.Runtime.Serialization.Formatters.Binary.BinaryFormatter(Nothing, New System.Runtime.Serialization.StreamingContext(Runtime.Serialization.StreamingContextStates.Clone))
                 bin.Serialize(mem, original)
@@ -524,7 +524,7 @@ Public Class dlgIMDBSearchResults
     End Function
 
 
-    #End Region 'Methods
+#End Region 'Methods
 
     #Region "Nested Types"
 

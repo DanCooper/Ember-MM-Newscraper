@@ -305,7 +305,7 @@ Public Class dlgTMDBSearchResults
 
     Private Sub SearchResultsDownloaded(ByVal M As TMDBg.MovieSearchResults)
         '//
-        ' Process the results that IMDB gave us
+        ' Process the results that TMDB gave us
         '\\
         'Dim TnP As New TreeNode
         'Dim selNode As New TreeNode
@@ -314,17 +314,9 @@ Public Class dlgTMDBSearchResults
             Me.tvResults.Nodes.Clear()
             Me.ClearInfo()
             If Not IsNothing(M) AndAlso M.Matches.Count > 0 Then
-
-                'M.Matches.Sort()
                 For Each Movie As MediaContainers.Movie In M.Matches
-                    'TnP.Nodes.Add(New TreeNode() With {.Text = String.Concat(Movie.Title, If(Not String.IsNullOrEmpty(Movie.Year), String.Format(" ({0})", Movie.Year), String.Empty)), .Tag = Movie.IMDBID})
                     Me.tvResults.Nodes.Add(New TreeNode() With {.Text = String.Concat(Movie.Title, If(Not String.IsNullOrEmpty(Movie.Year), String.Format(" ({0})", Movie.Year), String.Empty)), .Tag = Movie.TMDBID})
                 Next
-                'TnP.Expand()
-                'Me.tvResults.Nodes.Add(TnP)
-                'selNode = Me.tvResults.Nodes(0)
-                'selNode = TnP.FirstNode
-                'selNode = Me.tvResults.Nodes(0)
                 Me.tvResults.SelectedNode = Me.tvResults.Nodes(0)
 
                 Me._prevnode = -2
@@ -396,7 +388,6 @@ Public Class dlgTMDBSearchResults
         Me.pnlLoading.Visible = True
         Me.Label3.Text = Master.eLang.GetString(875, "Downloading details...")
 
-        'IMDB.IMDBURL = IMDBURL
         TMDBg.GetSearchMovieInfoAsync(Me.tvResults.SelectedNode.Tag.ToString, Master.tmpMovie, pOpt)
     End Sub
 
