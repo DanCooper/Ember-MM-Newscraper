@@ -53,10 +53,10 @@ CREATE TABLE Movies (
 	SortTitle TEXT,
 	DateAdd INTEGER,
 	HasEFanarts BOOL,
-	EFanartsPath TEXT;
-	HasBanner BOOL;
-	BannerPath TEXT;
-	HasLandscape BOOL;
+	EFanartsPath TEXT,
+	HasBanner BOOL,
+	BannerPath TEXT,
+	HasLandscape BOOL,
 	LandscapePath
 	);
 
