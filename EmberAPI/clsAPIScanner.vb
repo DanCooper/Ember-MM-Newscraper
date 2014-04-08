@@ -1221,7 +1221,15 @@ Public Class Scanner
                     tmpTVDB.IsMarkShow = False
                     tmpTVDB.Source = TVContainer.Source
                     tmpTVDB.Ordering = Master.eSettings.TVScraperOptionsOrdering
-                    tmpTVDB.ShowLanguage = AdvancedSettings.GetSetting("TVDBLanguage", "en", "scraper.TVDB")
+                    'get the install wizard selected language for initial scan
+                    Dim ShowLang As String = AdvancedSettings.GetSetting("TVDBLanguage", String.Empty, "scraper.TVDB")
+                    If Not String.IsNullOrEmpty(ShowLang) Then
+                        tmpTVDB.ShowLanguage = ShowLang
+                    ElseIf Not String.IsNullOrEmpty(Master.eSettings.GeneralTVDBLanguage) Then
+                        tmpTVDB.ShowLanguage = Master.eSettings.GeneralTVDBLanguage
+                    Else
+                        tmpTVDB.ShowLanguage = "en"
+                    End If
 
                     Master.DB.SaveTVShowToDB(tmpTVDB, True, True)
 

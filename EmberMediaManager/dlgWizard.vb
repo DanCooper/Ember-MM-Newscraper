@@ -55,6 +55,16 @@ Public Class dlgWizard
         End Select
     End Sub
 
+    Private Sub btnTVLanguageFetch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVLanguageFetch.Click
+        Me.tLangList.Clear()
+        Me.tLangList.AddRange(ModulesManager.Instance.TVGetLangs("thetvdb.com"))
+        Me.cbTVLanguage.Items.AddRange((From lLang In tLangList Select lLang.LongLang).ToArray)
+
+        If Me.cbTVLanguage.Items.Count > 0 Then
+            Me.cbTVLanguage.Text = Me.tLangList.FirstOrDefault(Function(l) l.ShortLang = Master.eSettings.GeneralTVDBLanguage).LongLang
+        End If
+    End Sub
+
     Private Sub btnMovieAddFolders_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieAddFolder.Click
         Using dSource As New dlgMovieSource()
             If dSource.ShowDialog(tmppath) = Windows.Forms.DialogResult.OK Then
@@ -469,12 +479,12 @@ Public Class dlgWizard
         Me.RefreshSources()
         Me.RefreshTVSources()
 
-        'Me.tLangList.Clear()
-        'Me.tLangList.AddRange(Master.eSettings.TVDBLanguages)
-        'Me.cbTVLanguage.Items.AddRange((From lLang In Master.eSettings.TVDBLanguages Select lLang.LongLang).ToArray)
-        'If Me.cbTVLanguage.Items.Count > 0 Then
-        '    Me.cbTVLanguage.Text = Me.tLangList.FirstOrDefault(Function(l) l.ShortLang = Master.eSettings.TVDBLanguage).LongLang
-        'End If
+        Me.tLangList.Clear()
+        Me.tLangList.AddRange(Master.eSettings.GeneralTVDBLanguages)
+        Me.cbTVLanguage.Items.AddRange((From lLang In Master.eSettings.GeneralTVDBLanguages Select lLang.LongLang).ToArray)
+        If Me.cbTVLanguage.Items.Count > 0 Then
+            Me.cbTVLanguage.Text = Me.tLangList.FirstOrDefault(Function(l) l.ShortLang = Master.eSettings.GeneralTVDBLanguage).LongLang
+        End If
 
         With Master.eSettings
 
@@ -806,33 +816,23 @@ Public Class dlgWizard
         End Try
     End Sub
 
-    'Private Sub btnTVLanguageFetch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-    '    Me.tLangList.Clear()
-    '    Me.tLangList.AddRange(ModulesManager.Instance.TVGetLangs(Master.eSettings.TVScraperLanguages))
-    '    Me.cbTVLanguage.Items.AddRange((From lLang In tLangList Select lLang.LongLang).ToArray)
-
-    '    If Me.cbTVLanguage.Items.Count > 0 Then
-    '        Me.cbTVLanguage.Text = Me.tLangList.FirstOrDefault(Function(l) l.ShortLang = Master.eSettings.TVDBLanguage).LongLang
-    '    End If
-    'End Sub
-
     Private Sub SaveSettings()
 
         With Master.eSettings
 
             .GeneralLanguage = tLang
 
-            'If tLangList.Count > 0 Then
-            '    Dim tLang As String = tLangList.FirstOrDefault(Function(l) l.LongLang = Me.cbTVLanguage.Text).ShortLang
-            '    If Not String.IsNullOrEmpty(tLang) Then
-            '        Master.eSettings.TVDBLanguage = tLang
-            '    Else
-            '        Master.eSettings.TVDBLanguage = "en"
-            '    End If
-            'Else
-            '    Master.eSettings.TVDBLanguage = "en"
-            'End If
-            'Master.eSettings.TVDBLanguages = Me.tLangList
+            If tLangList.Count > 0 Then
+                Dim tLang As String = tLangList.FirstOrDefault(Function(l) l.LongLang = Me.cbTVLanguage.Text).ShortLang
+                If Not String.IsNullOrEmpty(tLang) Then
+                    Master.eSettings.GeneralTVDBLanguage = tLang
+                Else
+                    Master.eSettings.GeneralTVDBLanguage = "en"
+                End If
+            Else
+                Master.eSettings.GeneralTVDBLanguage = "en"
+            End If
+            Master.eSettings.GeneralTVDBLanguages = Me.tLangList
 
             '***************************************************
             '******************* Movie Part ********************
@@ -1038,6 +1038,8 @@ Public Class dlgWizard
         Me.Label32.Text = Master.eLang.GetString(430, "Interface Language")
         Me.Label9.Text = Master.eLang.GetString(803, "Next, let's tell Ember Media Manager where to locate all your TV Shows. You can add as many sources as you wish.")
         Me.Label11.Text = Master.eLang.GetString(804, "And finally, let's tell Ember Media Manager what TV Show files to look for.  Simply select any combination of files type you wish Ember Media Manager to load from and save to.  You can select more than one from each section if you wish.")
+        Me.Label10.Text = Master.eLang.GetString(113, "Now select the default language you would like Ember to look for when scraping TV Show items.")
+        Me.btnTVLanguageFetch.Text = Master.eLang.GetString(742, "Fetch Available Languages")
         Me.pnlWelcome.Location = New Point(166, 7)
         Me.pnlWelcome.Visible = True
         Me.pnlMovieSource.Visible = False

@@ -70,6 +70,8 @@ Public Class Settings
     Private _generalshowimgdims As Boolean
     Private _generalshowsplitterpanelstate As Integer
     Private _generalsourcefromfolder As Boolean
+    Private _generaltvdblanguage As String
+    Private _generaltvdblanguages As List(Of Containers.TVLanguage)
     Private _generaltvepisodetheme As String
     Private _generaltvshowinfopanelstate As Integer
     Private _generaltvshowtheme As String
@@ -667,6 +669,24 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Me._generalshowgenrestext = value
+        End Set
+    End Property
+
+    Public Property GeneralTVDBLanguage() As String
+        Get
+            Return Me._generaltvdblanguage
+        End Get
+        Set(ByVal value As String)
+            Me._generaltvdblanguage = If(String.IsNullOrEmpty(value), "en", value)
+        End Set
+    End Property
+
+    Public Property GeneralTVDBLanguages() As List(Of Containers.TVLanguage)
+        Get
+            Return Me._generaltvdblanguages
+        End Get
+        Set(ByVal value As List(Of Containers.TVLanguage))
+            Me._generaltvdblanguages = value
         End Set
     End Property
 
@@ -4768,6 +4788,8 @@ Public Class Settings
         Me._generalshowimgdims = True
         Me._generalshowsplitterpanelstate = 200
         Me._generalsourcefromfolder = True
+        Me._generaltvdblanguage = "en"
+        Me._generaltvdblanguages = New List(Of Containers.TVLanguage)
         Me._generaltvepisodetheme = "Default"
         Me._generaltvshowinfopanelstate = 0
         Me._generaltvshowtheme = "Default"
