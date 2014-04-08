@@ -108,7 +108,9 @@ Section "Ember Media Manager" SecEmberMediaManager
   ;ADD YOUR OWN FILES HERE...
   SetOutPath "$INSTDIR"
   File "${emm_root}\${emm_folder}\${emm_filename}"
-  File "${emm_root}\${emm_folder}\*.config"
+  File "${emm_root}\${emm_folder}\${emm_filename}.config"
+  File "${emm_root}\${emm_folder}\EmberAPI.dll.config"
+  File "${emm_root}\${emm_folder}\NLog.config"
   File "${emm_root}\${emm_folder}\*.xml"
   File "${emm_root}\${emm_folder}\*.dll"
   SetOutPath "$INSTDIR\Bin"
