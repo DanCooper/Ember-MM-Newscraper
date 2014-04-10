@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.30110.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EmberMediaManager", "EmberMediaManager\EmberMediaManager.vbproj", "{9B57D3AB-AF12-4012-B945-284C2448DC81}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -323,9 +323,7 @@ Global
 		{859C1085-518B-49D2-9C84-D91C4094097F}.Debug|x86.ActiveCfg = Debug|x86
 		{859C1085-518B-49D2-9C84-D91C4094097F}.Debug|x86.Build.0 = Debug|x86
 		{859C1085-518B-49D2-9C84-D91C4094097F}.Release|x64.ActiveCfg = Release|x64
-		{859C1085-518B-49D2-9C84-D91C4094097F}.Release|x64.Build.0 = Release|x64
 		{859C1085-518B-49D2-9C84-D91C4094097F}.Release|x86.ActiveCfg = Release|x86
-		{859C1085-518B-49D2-9C84-D91C4094097F}.Release|x86.Build.0 = Release|x86
 		{2918A276-E3E5-4625-A411-6863C6D29EE6}.Debug|x64.ActiveCfg = Debug|x64
 		{2918A276-E3E5-4625-A411-6863C6D29EE6}.Debug|x64.Build.0 = Debug|x64
 		{2918A276-E3E5-4625-A411-6863C6D29EE6}.Debug|x86.ActiveCfg = Debug|x86
