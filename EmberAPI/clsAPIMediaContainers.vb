@@ -1151,10 +1151,10 @@ Namespace MediaContainers
             <XmlText()> _
             Public Property ID() As String
                 Get
-                    Return If(Strings.Left(_imdbid, 2) = "tt", If(Not String.IsNullOrEmpty(_moviedb) AndAlso _imdbid.Trim = "tt-1", _imdbid.Replace("tt", String.Empty), _imdbid.Trim), If(Not _imdbid.Trim = "tt-1", String.Concat("tt", _imdbid), _imdbid))
+                    Return If(Strings.Left(_imdbid, 2) = "tt", If(Not String.IsNullOrEmpty(_moviedb) AndAlso _imdbid.Trim = "tt-1", _imdbid.Replace("tt", String.Empty), _imdbid.Trim), If(Not _imdbid.Trim = "tt-1", If(Not String.IsNullOrEmpty(_imdbid), String.Concat("tt", _imdbid), String.Empty), _imdbid))
                 End Get
                 Set(ByVal value As String)
-                    _imdbid = If(Strings.Left(value, 2) = "tt", value.Trim, String.Concat("tt", value))
+                    _imdbid = If(Not String.IsNullOrEmpty(value), If(Strings.Left(value, 2) = "tt", value.Trim, String.Concat("tt", value)), String.Empty)
                 End Set
             End Property
 
@@ -1314,6 +1314,41 @@ Namespace MediaContainers
             Me._xsets.Clear()
             Me._lev = 0
             Me._videosource = String.Empty
+            Me.MovieID.Clear()
+        End Sub
+
+
+        Public Sub ClearForOfflineHolder()
+            'Me._imdbid = String.Empty
+            'Me._title = String.Empty
+            Me._originaltitle = String.Empty
+            Me._sorttitle = String.Empty
+            'Me._year = String.Empty
+            Me._rating = String.Empty
+            Me._votes = String.Empty
+            Me._mpaa = String.Empty
+            Me._top250 = String.Empty
+            Me._countries.Clear()
+            Me._outline = String.Empty
+            Me._plot = String.Empty
+            Me._tagline = String.Empty
+            Me._trailer = String.Empty
+            Me._certification = String.Empty
+            Me._genres.Clear()
+            Me._runtime = String.Empty
+            Me._releaseDate = String.Empty
+            Me._studio = String.Empty
+            Me._directors.Clear()
+            Me._credits.Clear()
+            Me._playcount = String.Empty
+            Me._thumb.Clear()
+            Me._fanart = New Fanart
+            Me._actors.Clear()
+            ' Me._fileInfo = New MediaInfo.Fileinfo
+            Me._ysets = New SetContainer
+            Me._xsets.Clear()
+            Me._lev = 0
+            'Me._videosource = String.Empty
             Me.MovieID.Clear()
         End Sub
 
