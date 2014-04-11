@@ -1433,7 +1433,7 @@ Public Class frmMain
                             ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
                                 If aList.Count > 0 Then
                                     If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
-                                        MsgBox(Master.eLang.GetString(1062, "A banner of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(929, "No Preferred Size"))
+                                        MsgBox(Master.eLang.GetString(1062, "A banner of your preferred type could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(929, "No Preferred Size"))
                                     End If
                                     Using dImgSelect As New dlgImgSelect()
                                         If dImgSelect.ShowDialog(DBScrapeMovie, Enums.MovieImageType.Banner, aList, etList, efList) = DialogResult.OK Then
