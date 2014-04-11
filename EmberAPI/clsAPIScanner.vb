@@ -706,6 +706,9 @@ Public Class Scanner
                 ElseIf String.IsNullOrEmpty(tmpMovieDB.FileSource) AndAlso AdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
                     tmpMovieDB.FileSource = AdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(tmpMovieDB.Filename)), String.Empty, "*EmberAPP")
                 End If
+                If String.IsNullOrEmpty(tmpMovieDB.FileSource) AndAlso Not String.IsNullOrEmpty(tmpMovieDB.Movie.VideoSource) Then
+                    tmpMovieDB.FileSource = tmpMovieDB.Movie.VideoSource
+                End If
                 tmpMovieDB.IsLock = False
                 tmpMovieDB.IsMark = Master.eSettings.MovieGeneralMarkNew
                 'Do the Save

@@ -932,6 +932,7 @@ Public Class Database
                             If Not DBNull.Value.Equals(SQLreader("PlayCount")) Then .PlayCount = SQLreader("PlayCount").ToString
                             'If Not DBNull.Value.Equals(SQLreader("Watched")) Then .Watched = SQLreader("Watched").ToString
                             If Not DBNull.Value.Equals(SQLreader("FanartURL")) AndAlso Not Master.eSettings.MovieNoSaveImagesToNfo Then .Fanart.URL = SQLreader("FanartURL").ToString
+                            If Not DBNull.Value.Equals(SQLreader("FileSource")) Then .VideoSource = SQLreader("FileSource").ToString
                         End With
                     End If
                 End Using

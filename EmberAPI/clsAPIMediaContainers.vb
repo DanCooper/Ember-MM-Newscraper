@@ -1115,7 +1115,7 @@ Namespace MediaContainers
             End Set
         End Property
 
-        <XmlElement("videoSource")> _
+        <XmlElement("videosource")> _
         Public Property VideoSource() As String
             Get
                 Return Me._videosource
