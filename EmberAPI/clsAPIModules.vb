@@ -443,13 +443,14 @@ Public Class ModulesManager
         Else
             For Each _externalScraperModule As _externalScraperModuleClass_Data In modules
                 If Master.eLog.IsTraceEnabled(Me.GetType) Then
-                    Master.eLog.Trace(Me.GetType(), String.Format("Scraping movies trailers using <{0}>", _externalScraperModule.ProcessorModule.ModuleName), New StackTrace().ToString(), Nothing, False)
+                    Master.eLog.Trace(Me.GetType(), String.Format("Scraping movie data using <{0}>", _externalScraperModule.ProcessorModule.ModuleName), New StackTrace().ToString(), Nothing, False)
                 End If
                 AddHandler _externalScraperModule.ProcessorModule.MovieScraperEvent, AddressOf Handler_MovieScraperEvent
                 Try
                     'Debug.Print("MovieScrapeOnly" & vbTab & DBMovie.ID & vbTab & ScrapeType)
                     ret = _externalScraperModule.ProcessorModule.Scraper(DBMovie, ScrapeType, Options)
                 Catch ex As Exception
+                    Master.eLog.Error(Me.GetType(), String.Format("Error scraping movie data using <{0}>", _externalScraperModule.ProcessorModule.ModuleName), ex.StackTrace().ToString(), "Error", True)
                 End Try
                 RemoveHandler _externalScraperModule.ProcessorModule.MovieScraperEvent, AddressOf Handler_MovieScraperEvent
                 If ret.breakChain Then Exit For
@@ -476,7 +477,7 @@ Public Class ModulesManager
         Else
             For Each _externalScraperModule As _externalScraperModuleClass_Poster In modules
                 If Master.eLog.IsTraceEnabled(Me.GetType) Then
-                    Master.eLog.Trace(Me.GetType(), String.Format("Scraping movies images using <{0}>", _externalScraperModule.ProcessorModule.ModuleName), New StackTrace().ToString(), Nothing, False)
+                    Master.eLog.Trace(Me.GetType(), String.Format("Scraping movie images using <{0}>", _externalScraperModule.ProcessorModule.ModuleName), New StackTrace().ToString(), Nothing, False)
                 End If
                 If _externalScraperModule.ProcessorModule.QueryScraperCapabilities(Type) Then
                     AddHandler _externalScraperModule.ProcessorModule.MovieScraperEvent, AddressOf Handler_MovieScraperEvent
@@ -490,7 +491,7 @@ Public Class ModulesManager
                             Next
                         End If
                     Catch ex As Exception
-                        Master.eLog.Error(Me.GetType(), String.Format("Error scraping movies images using <{0}>", _externalScraperModule.ProcessorModule.ModuleName), ex.StackTrace().ToString(), "Error", True)
+                        Master.eLog.Error(Me.GetType(), String.Format("Error scraping movie images using <{0}>", _externalScraperModule.ProcessorModule.ModuleName), ex.StackTrace().ToString(), "Error", True)
                     End Try
                     RemoveHandler _externalScraperModule.ProcessorModule.MovieScraperEvent, AddressOf Handler_MovieScraperEvent
                     If ret.breakChain Then Exit For
@@ -518,7 +519,7 @@ Public Class ModulesManager
         Else
             For Each _externalScraperModule As _externalScraperModuleClass_Trailer In modules
                 If Master.eLog.IsTraceEnabled(Me.GetType) Then
-                    Master.eLog.Trace(Me.GetType(), String.Format("Scraping movies trailers using <{0}>", _externalScraperModule.ProcessorModule.ModuleName), New StackTrace().ToString(), Nothing, False)
+                    Master.eLog.Trace(Me.GetType(), String.Format("Scraping movie trailers using <{0}>", _externalScraperModule.ProcessorModule.ModuleName), New StackTrace().ToString(), Nothing, False)
                 End If
                 AddHandler _externalScraperModule.ProcessorModule.MovieScraperEvent, AddressOf Handler_MovieScraperEvent
                 Try
@@ -531,7 +532,7 @@ Public Class ModulesManager
                         Next
                     End If
                 Catch ex As Exception
-                    Master.eLog.Error(Me.GetType(), String.Format("Error scraping movies images using <{0}>", _externalScraperModule.ProcessorModule.ModuleName), ex.StackTrace().ToString(), "Error", True)
+                    Master.eLog.Error(Me.GetType(), String.Format("Error scraping movie trailers using <{0}>", _externalScraperModule.ProcessorModule.ModuleName), ex.StackTrace().ToString(), "Error", True)
                 End Try
                 RemoveHandler _externalScraperModule.ProcessorModule.MovieScraperEvent, AddressOf Handler_MovieScraperEvent
                 If ret.breakChain Then Exit For
