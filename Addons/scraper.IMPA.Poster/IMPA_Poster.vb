@@ -84,7 +84,7 @@ Public Class IMPA_Poster
     Function QueryScraperCapabilities(ByVal cap As Enums.ScraperCapabilities) As Boolean Implements Interfaces.EmberMovieScraperModule_Poster.QueryScraperCapabilities
         Select Case cap
             Case Enums.ScraperCapabilities.Poster
-                Return True
+                Return ConfigScrapeModifier.Poster
         End Select
         Return False
     End Function
@@ -134,16 +134,7 @@ Public Class IMPA_Poster
     End Function
 
     Sub LoadSettings()
-        ConfigScrapeModifier.DoSearch = True
-        ConfigScrapeModifier.Meta = True
-        ConfigScrapeModifier.NFO = True
-        ConfigScrapeModifier.EThumbs = True
-        ConfigScrapeModifier.EFanarts = True
-        ConfigScrapeModifier.Actors = True
-
         ConfigScrapeModifier.Poster = AdvancedSettings.GetBooleanSetting("DoPoster", True)
-        ConfigScrapeModifier.Fanart = AdvancedSettings.GetBooleanSetting("DoFanart", False)
-        ConfigScrapeModifier.Trailer = AdvancedSettings.GetBooleanSetting("DoTrailer", False)
     End Sub
 
     Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule_Poster.Scraper
@@ -158,8 +149,6 @@ Public Class IMPA_Poster
     Sub SaveSettings()
         Using settings = New AdvancedSettings()
             settings.SetBooleanSetting("DoPoster", ConfigScrapeModifier.Poster)
-            settings.SetBooleanSetting("DoFanart", ConfigScrapeModifier.Fanart)
-            settings.SetBooleanSetting("DoTrailer", ConfigScrapeModifier.Trailer)
         End Using
     End Sub
 

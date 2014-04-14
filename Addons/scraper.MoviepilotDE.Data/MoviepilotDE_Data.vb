@@ -124,44 +124,10 @@ Public Class MoviepilotDE_Data
 
     Sub LoadSettings()
         ' Only the ones we can get
-        ConfigOptions.bTitle = False
-        ConfigOptions.bYear = False
-        ConfigOptions.bMPAA = False
-        ConfigOptions.bRelease = False
-        ConfigOptions.bRuntime = False
-        ConfigOptions.bRating = False
-        ConfigOptions.bVotes = False
-        ConfigOptions.bStudio = False
-        ConfigOptions.bTagline = False
         ConfigOptions.bOutline = AdvancedSettings.GetBooleanSetting("DoOutline", False)
         ConfigOptions.bPlot = AdvancedSettings.GetBooleanSetting("DoPlot", False)
-        ConfigOptions.bCast = False
-        ConfigOptions.bDirector = False
-        ConfigOptions.bWriters = False
-        ConfigOptions.bProducers = False
-        ConfigOptions.bGenre = False
-        ConfigOptions.bTrailer = False
-        ConfigOptions.bMusicBy = False
-        ConfigOptions.bOtherCrew = False
-        ConfigOptions.bFullCast = False
-        ConfigOptions.bFullCrew = False
-        ConfigOptions.bTop250 = False
-        ConfigOptions.bCountry = False
         ConfigOptions.bCert = AdvancedSettings.GetBooleanSetting("DoCert", False)
-        ConfigOptions.bFullCast = False
-        ConfigOptions.bFullCrew = False
         ConfigOptions.bCleanPlotOutline = AdvancedSettings.GetBooleanSetting("CleanPlotOutline", True)
-
-        ConfigScrapeModifier.DoSearch = True
-        ConfigScrapeModifier.Meta = True
-        ConfigScrapeModifier.NFO = True
-        ConfigScrapeModifier.EThumbs = True
-        ConfigScrapeModifier.EFanarts = True
-        ConfigScrapeModifier.Actors = True
-
-        ConfigScrapeModifier.Poster = AdvancedSettings.GetBooleanSetting("DoPoster", True)
-        ConfigScrapeModifier.Fanart = AdvancedSettings.GetBooleanSetting("DoFanart", True)
-        ConfigScrapeModifier.Trailer = AdvancedSettings.GetBooleanSetting("DoTrailer", True)
     End Sub
 
     Sub SaveSettings()
@@ -170,9 +136,6 @@ Public Class MoviepilotDE_Data
             settings.SetBooleanSetting("DoPlot", ConfigOptions.bPlot)
             settings.SetBooleanSetting("DoCert", ConfigOptions.bCert)
             settings.SetBooleanSetting("CleanPlotOutline", ConfigOptions.bCleanPlotOutline)
-
-            'settings.SetBooleanSetting("DoPoster", ConfigScrapeModifier.Poster)
-            'settings.SetBooleanSetting("DoFanart", ConfigScrapeModifier.Fanart)
         End Using
     End Sub
 

@@ -86,7 +86,7 @@ Public Class dlgUpdateMedia
         If Me.chkAllMod.Checked Then
             Functions.SetScraperMod(Enums.ModType.All, True)
         Else
-            Functions.SetScraperMod(Enums.ModType.Actor, chkActorMod.Checked, False)
+            Functions.SetScraperMod(Enums.ModType.ActorThumbs, chkActorMod.Checked, False)
             Functions.SetScraperMod(Enums.ModType.EThumbs, chkEThumbsMod.Checked, False)
             Functions.SetScraperMod(Enums.ModType.EFanarts, chkEFanartsMod.Checked, False)
             Functions.SetScraperMod(Enums.ModType.Fanart, chkFanartMod.Checked, False)

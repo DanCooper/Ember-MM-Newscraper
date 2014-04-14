@@ -573,7 +573,7 @@ Public Class Enums
         Meta = 5
         All = 6
         DoSearch = 7
-        Actor = 8
+        ActorThumbs = 8
         EFanarts = 9
         Banner = 10
         DiscArt = 11
@@ -1250,7 +1250,7 @@ Public Class Functions
         filterModifier.NFO = Options.NFO AndAlso Options2.NFO
         filterModifier.Poster = Options.Poster AndAlso Options2.Poster
         filterModifier.Trailer = Options.Trailer AndAlso Options2.Trailer
-        filterModifier.Actors = Options.Actors AndAlso Options2.Actors
+        filterModifier.ActorThumbs = Options.ActorThumbs AndAlso Options2.ActorThumbs
         Return filterModifier
     End Function
     ''' <summary>
@@ -1334,7 +1334,7 @@ Public Class Functions
     Public Shared Sub SetScraperMod(ByVal MType As Enums.ModType, ByVal MValue As Boolean, Optional ByVal DoClear As Boolean = True)
         With Master.GlobalScrapeMod
             If DoClear Then
-                .Actors = False
+                .ActorThumbs = False
                 .Banner = False
                 .CharacterArt = False
                 .ClearArt = False
@@ -1354,7 +1354,7 @@ Public Class Functions
             Select Case MType
                 Case Enums.ModType.All
                     '.DoSearch should not be set here as it is only needed for a re-search of a movie (first scraping or movie change).
-                    .Actors = MValue
+                    .ActorThumbs = MValue
                     .Banner = MValue
                     .CharacterArt = MValue
                     .ClearArt = MValue
@@ -1368,8 +1368,8 @@ Public Class Functions
                     .NFO = MValue
                     .Poster = MValue
                     .Trailer = MValue
-                Case Enums.ModType.Actor
-                    .Actors = MValue
+                Case Enums.ModType.ActorThumbs
+                    .ActorThumbs = MValue
                 Case Enums.ModType.Banner
                     .Banner = MValue
                 Case Enums.ModType.CharacterArt
@@ -1683,7 +1683,7 @@ Public Class Structures
         Dim NFO As Boolean
         Dim Poster As Boolean
         Dim Trailer As Boolean
-        Dim Actors As Boolean
+        Dim ActorThumbs As Boolean
         Dim Banner As Boolean
         Dim CharacterArt As Boolean
         Dim ClearArt As Boolean

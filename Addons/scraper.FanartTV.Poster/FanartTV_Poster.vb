@@ -92,7 +92,7 @@ Public Class FanartTV_Poster
 #Region "Methods"
     Function QueryPostScraperCapabilities(ByVal cap As Enums.ScraperCapabilities) As Boolean Implements Interfaces.EmberMovieScraperModule_Poster.QueryScraperCapabilities
         Select Case cap
-            Case Enums.ScraperCapabilities.Banner
+            Case Enums.ScraperCapabilities.Poster
                 Return ConfigScrapeModifier.Banner
             Case Enums.ScraperCapabilities.CharacterArt
                 Return ConfigScrapeModifier.CharacterArt
@@ -172,12 +172,6 @@ Public Class FanartTV_Poster
         strPrivateAPIKey = AdvancedSettings.GetSetting("FANARTTVApiKey", "")
         _MySettings.FANARTTVApiKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "ea68f9d0847c1b7643813c70cbfc0196", strPrivateAPIKey)
         _MySettings.FANARTTVLanguage = AdvancedSettings.GetSetting("FANARTTVLanguage", "en")
-        ConfigScrapeModifier.DoSearch = True
-        ConfigScrapeModifier.Meta = True
-        ConfigScrapeModifier.NFO = True
-        ConfigScrapeModifier.EThumbs = True
-        ConfigScrapeModifier.EFanarts = True
-        ConfigScrapeModifier.Actors = True
 
         ConfigScrapeModifier.Poster = AdvancedSettings.GetBooleanSetting("DoPoster", True)
         ConfigScrapeModifier.Fanart = AdvancedSettings.GetBooleanSetting("DoFanart", True)
@@ -187,7 +181,8 @@ Public Class FanartTV_Poster
         ConfigScrapeModifier.ClearLogo = AdvancedSettings.GetBooleanSetting("DoClearLogo", True)
         ConfigScrapeModifier.DiscArt = AdvancedSettings.GetBooleanSetting("DoDiscArt", True)
         ConfigScrapeModifier.Landscape = AdvancedSettings.GetBooleanSetting("DoLandscape", True)
-        ConfigScrapeModifier.Trailer = False
+        ConfigScrapeModifier.EThumbs = ConfigScrapeModifier.Fanart
+        ConfigScrapeModifier.EFanarts = ConfigScrapeModifier.Fanart
     End Sub
 
     Sub SaveSettings()

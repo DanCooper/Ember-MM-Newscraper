@@ -198,13 +198,6 @@ Public Class IMDB_Data
         ConfigScrapeModifier.DoSearch = True
         ConfigScrapeModifier.Meta = True
         ConfigScrapeModifier.NFO = True
-        ConfigScrapeModifier.EThumbs = True
-        ConfigScrapeModifier.EFanarts = True
-        ConfigScrapeModifier.Actors = True
-
-        ConfigScrapeModifier.Poster = AdvancedSettings.GetBooleanSetting("DoPoster", True)
-        ConfigScrapeModifier.Fanart = AdvancedSettings.GetBooleanSetting("DoFanart", True)
-        ConfigScrapeModifier.Trailer = AdvancedSettings.GetBooleanSetting("DoTrailer", True)
 
         _MySettings.SearchPartialTitles = AdvancedSettings.GetBooleanSetting("SearchPartialTitles", True)
         _MySettings.SearchPopularTitles = AdvancedSettings.GetBooleanSetting("SearchPopularTitles", True)

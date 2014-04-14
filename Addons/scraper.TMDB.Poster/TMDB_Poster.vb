@@ -98,8 +98,6 @@ Public Class TMDB_Poster
 #Region "Methods"
     Function QueryScraperCapabilities(ByVal cap As Enums.ScraperCapabilities) As Boolean Implements Interfaces.EmberMovieScraperModule_Poster.QueryScraperCapabilities
         Select Case cap
-            Case Enums.ScraperCapabilities.Actor
-                Return ConfigScrapeModifier.Actors
             Case Enums.ScraperCapabilities.Fanart
                 Return ConfigScrapeModifier.Fanart
             Case Enums.ScraperCapabilities.Poster
@@ -175,19 +173,11 @@ Public Class TMDB_Poster
 
         strPrivateAPIKey = AdvancedSettings.GetSetting("TMDBAPIKey", "")
         _MySettings.TMDBAPIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "44810eefccd9cb1fa1d57e7b0d67b08d", strPrivateAPIKey)
-        _MySettings.FallBackEng = AdvancedSettings.GetBooleanSetting("FallBackEn", False)
+        _MySettings.FallBackEng = AdvancedSettings.GetBooleanSetting("FallBackEn", True)
         _MySettings.TMDBLanguage = AdvancedSettings.GetSetting("TMDBLanguage", "en")
-
-        ConfigScrapeModifier.DoSearch = True
-        ConfigScrapeModifier.Meta = True
-        ConfigScrapeModifier.NFO = True
-        ConfigScrapeModifier.EThumbs = True
-        ConfigScrapeModifier.EFanarts = True
-        ConfigScrapeModifier.Actors = True
 
         ConfigScrapeModifier.Poster = AdvancedSettings.GetBooleanSetting("DoPoster", True)
         ConfigScrapeModifier.Fanart = AdvancedSettings.GetBooleanSetting("DoFanart", True)
-        ConfigScrapeModifier.Trailer = False
 
     End Sub
 

@@ -893,7 +893,7 @@ Namespace FileUtils
                         End If
                     End With
 
-                Case Enums.ModType.Actor
+                Case Enums.ModType.ActorThumbs
                     With Master.eSettings
                         If isVideoTS Then
                             If .MovieUseFrodo AndAlso .MovieActorThumbsFrodo AndAlso Not .MovieXBMCProtectVTSBDMV Then FilenameList.Add(String.Concat(fileParPath, "/.actors", "/<placeholder>.jpg"))

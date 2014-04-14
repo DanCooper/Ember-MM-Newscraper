@@ -1270,7 +1270,7 @@ Public Class frmMain
                     End If
                 Else
                     ' if we do not have the movie ID we need to retrive it even if is just a Poster/Fanart/Trailer/Actors update
-                    If String.IsNullOrEmpty(DBScrapeMovie.Movie.ID) AndAlso (Master.GlobalScrapeMod.Fanart Or Master.GlobalScrapeMod.Poster Or Master.GlobalScrapeMod.Trailer Or Master.GlobalScrapeMod.Actors) Then
+                    If String.IsNullOrEmpty(DBScrapeMovie.Movie.ID) AndAlso (Master.GlobalScrapeMod.Fanart Or Master.GlobalScrapeMod.Poster Or Master.GlobalScrapeMod.Trailer Or Master.GlobalScrapeMod.ActorThumbs) Then
                         Dim tOpt As New Structures.ScrapeOptions 'all false value not to override any field
                         If ModulesManager.Instance.MovieScrapeOnly(DBScrapeMovie, Args.scrapeType, tOpt) Then
                             Exit For
@@ -1605,7 +1605,7 @@ Public Class frmMain
                         End If
                     End If
                 End If
-                If Master.GlobalScrapeMod.Actors AndAlso Master.eSettings.MovieScraperActorThumbs Then
+                If Master.GlobalScrapeMod.ActorThumbs AndAlso Master.eSettings.MovieScraperActorThumbs Then
                     If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
                         For Each act As MediaContainers.Person In DBScrapeMovie.Movie.Actors
                             Dim img As New Images
@@ -7109,7 +7109,7 @@ doCancel:
     End Sub
 
     Private Sub mnuAllAutoActor_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoActor.Click, cmnuTrayAllAutoActor.Click
-        Functions.SetScraperMod(Enums.ModType.Actor, True)
+        Functions.SetScraperMod(Enums.ModType.ActorThumbs, True)
         Me.MovieScrapeData(False, Enums.ScrapeType.FullAuto, Master.DefaultMovieOptions)
     End Sub
 
@@ -7324,7 +7324,7 @@ doCancel:
     End Sub
 
     Private Sub mnuMarkAutoActor_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAutoActor.Click, cmnuTrayMarkAutoActor.Click
-        Functions.SetScraperMod(Enums.ModType.Actor, True)
+        Functions.SetScraperMod(Enums.ModType.ActorThumbs, True)
         Me.MovieScrapeData(False, Enums.ScrapeType.MarkAuto, Master.DefaultMovieOptions)
     End Sub
 

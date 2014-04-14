@@ -207,16 +207,9 @@ Public Class TMDB_Data
         _MySettings.GetAdultItems = AdvancedSettings.GetBooleanSetting("GetAdultItems", False)
         _MySettings.TMDBAPIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "44810eefccd9cb1fa1d57e7b0d67b08d", strPrivateAPIKey)
         _MySettings.TMDBLanguage = AdvancedSettings.GetSetting("TMDBLanguage", "en")
-
-        ConfigScrapeModifier.Actors = True
         ConfigScrapeModifier.DoSearch = True
-        ConfigScrapeModifier.EFanarts = True
-        ConfigScrapeModifier.EThumbs = True
-        ConfigScrapeModifier.Fanart = AdvancedSettings.GetBooleanSetting("DoFanart", True)
         ConfigScrapeModifier.Meta = True
         ConfigScrapeModifier.NFO = True
-        ConfigScrapeModifier.Poster = AdvancedSettings.GetBooleanSetting("DoPoster", True)
-        ConfigScrapeModifier.Trailer = AdvancedSettings.GetBooleanSetting("DoTrailer", True)
     End Sub
 
     Sub SaveSettings()
@@ -300,12 +293,6 @@ Public Class TMDB_Data
     End Function
 
     Function Scraper(ByRef DBMovie As Structures.DBMovie, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule_Data.Scraper
-        'LoadSettings()
-        ''TMDBg.IMDBURL = MySettings.IMDBURL
-        ''TMDBg.UseOFDBTitle = MySettings.UseOFDBTitle
-        ''TMDBg.UseOFDBOutline = MySettings.UseOFDBOutline
-        ''TMDBg.UseOFDBPlot = MySettings.UseOFDBPlot
-        ''TMDBg.UseOFDBGenre = MySettings.UseOFDBGenre
         Dim tTitle As String = String.Empty
         Dim OldTitle As String = DBMovie.Movie.Title
         Dim filterOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(Options, ConfigOptions)

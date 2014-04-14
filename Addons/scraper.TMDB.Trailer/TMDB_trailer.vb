@@ -159,17 +159,7 @@ Public Class TMDB_Trailer
         _MySettings.TMDBAPIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "44810eefccd9cb1fa1d57e7b0d67b08d", strPrivateAPIKey)
         _MySettings.FallBackEng = AdvancedSettings.GetBooleanSetting("FallBackEn", False)
         _MySettings.TMDBLanguage = AdvancedSettings.GetSetting("TMDBLanguage", "en")
-
-        ConfigScrapeModifier.DoSearch = True
-        ConfigScrapeModifier.Meta = True
-        ConfigScrapeModifier.NFO = True
-        ConfigScrapeModifier.EThumbs = True
-        ConfigScrapeModifier.EFanarts = True
-        ConfigScrapeModifier.Actors = True
-
-        ConfigScrapeModifier.Poster = False
-        ConfigScrapeModifier.Fanart = False
-        ConfigScrapeModifier.Trailer = True
+        ConfigScrapeModifier.Trailer = AdvancedSettings.GetBooleanSetting("DoTrailer", True)
 
     End Sub
 
@@ -190,6 +180,7 @@ Public Class TMDB_Trailer
             settings.SetSetting("TMDBAPIKey", _setup.txtTMDBApiKey.Text)
             settings.SetBooleanSetting("FallBackEn", _MySettings.FallBackEng)
             settings.SetSetting("TMDBLanguage", _MySettings.TMDBLanguage)
+            settings.SetBooleanSetting("DoTrailer", ConfigScrapeModifier.Trailer)
         End Using
     End Sub
 
