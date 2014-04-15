@@ -306,7 +306,7 @@
   <string control="Core_chkFanartOnly">If enabled, Ember will only retrieve fanart of the selected size. (NOTE: If there are no fanart images of the selected size available, no fanart images will be retrieved)</string>
   <string control="Core_tbFanartQual">Adjust the quality of the fanart files. (0 = original quality)</string>
   <string control="Core_chkResizeFanart">Resize fanart files before saving.</string>
-  <string control="Core_cbFanartSize">Select the preferred fanart size you would like to retrieve from the image servers. Durint automatic scrapers, Ember will attempt to find a fanart image of this size first. If a fanart image of the selected size cannot be found, the first available image</string>
+  <string control="Core_cbFanartSize">Select the preferred fanart size you would like to retrieve from the image servers. During automatic scrapers, Ember will attempt to find a fanart image of this size first. If a fanart image of the selected size cannot be found, the first available image</string>
   <string control="Core_chkOverwriteFanart">If enabled, existing fanart files will be overwritten if new ones are selected. If disabled, fanart files will only be saved if a current one does not already exist.</string>
   <string control="Core_chkPosterOnly"></string>
   <string control="Core_txtPosterWidth">Resize poster files to the entered width.</string>
