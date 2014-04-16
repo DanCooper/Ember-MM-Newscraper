@@ -306,14 +306,14 @@
   <string control="Core_chkFanartOnly">If enabled, Ember will only retrieve fanart of the selected size. (NOTE: If there are no fanart images of the selected size available, no fanart images will be retrieved)</string>
   <string control="Core_tbFanartQual">Adjust the quality of the fanart files. (0 = original quality)</string>
   <string control="Core_chkResizeFanart">Resize fanart files before saving.</string>
-  <string control="Core_cbFanartSize">Select the preferred fanart size you would like to retrieve from the image servers. During automatic scrapers, Ember will attempt to find a fanart image of this size first. If a fanart image of the selected size cannot be found, the first available image</string>
+  <string control="Core_cbFanartSize">Select the preferred fanart size you would like to retrieve from the image servers. During automatic scrapers, Ember will attempt to find a fanart image of this size first. If a fanart image of the selected size cannot be found, the first available image will be used.</string>
   <string control="Core_chkOverwriteFanart">If enabled, existing fanart files will be overwritten if new ones are selected. If disabled, fanart files will only be saved if a current one does not already exist.</string>
   <string control="Core_chkPosterOnly"></string>
   <string control="Core_txtPosterWidth">Resize poster files to the entered width.</string>
   <string control="Core_txtPosterHeight">Resize poster files to the entered height.</string>
   <string control="Core_tbPosterQual">Adjust the quality of the poster files. (0 = original quality)</string>
   <string control="Core_chkResizePoster">Resize poster files before saving.</string>
-  <string control="Core_cbPosterSize">Select the preferred poster size you would like to retreive from the image servers. During automatic scrapers, Ember will attempt to find a poster of this size first. If a poster of the selected size cannot be found, the first available image will be used</string>
+  <string control="Core_cbPosterSize">Select the preferred poster size you would like to retreive from the image servers. During automatic scrapers, Ember will attempt to find a poster of this size first. If a poster of the selected size cannot be found, the first available image will be used.</string>
   <string control="Core_chkOverwritePoster">If enabled, existing poster files will be overwritten if new ones are selected. If disabled, poster files will only be saved if a current one does not already exist.</string>
   <string control="Core_chkLockMPAA">If enabled, the certification/MPAA field will not be updated.</string>
   <string control="Core_chkLockLanguageA">If enabled, the language field (audio metadata) will not be updated.</string>
@@ -383,7 +383,7 @@
   <string control="Core_chkProperCase">Automatically apply proper casing to movie titles. (Example: "the dark knight" becomes "The Dark Knight")</string>
   <string control="Core_btnRemoveFilter">Remove the selected filter from the list.</string>
   <string control="Core_btnAddFilter">Add the entered filter to the list.</string>
-  <string control="Core_txtFilter">Enter text or regex to use as a filter. Special: "a[->]b" = replace all occurrances of "a" with "b" (Example: ".[->]_" will replace all periods in the title with underscores.)</string>
+  <string control="Core_txtFilter">Enter text or regex to use as a filter. Special: "a[->]b" = replace all occurrences of "a" with "b" (Example: ".[->]_" will replace all periods in the title with underscores.)</string>
   <string control="Core_lstFilters">The list of all current filters that will be used when generating titles for movies.</string>
   <string control="Core_chkMissingExtra">If enabled, Ember will display movies missing extrathumbs when utilizing the Missing Items Filter.</string>
   <string control="Core_chkMissingSubs">If enabled, Ember will display movies missing subtitle files when utilizing the Missing Items Filter.</string>
@@ -392,7 +392,7 @@
   <string control="Core_chkMissingFanart">If enabled, Ember will display movies missing fanart when utilizing the Missing Items Filter.</string>
   <string control="Core_chkMissingPoster">If enabled, Ember will display movies missing posters when utilizing the Missing Items Filter.</string>
   <string control="Core_chkClickScrape">Enable Click Scrape on main screen column marks.</string>
-  <string control="Core_chkAskCheckboxScrape">If enabled, when clicking on a checkbox in the movies list a non-automatic will be used. If disabled, an automatic scrape will be used.</string>
+  <string control="Core_chkAskCheckboxScrape">If enabled, when clicking on a checkbox in the movies list a non-automatic scrape will be used. If disabled, an automatic scrape will be used.</string>
   <string control="Core_chkMarkNew">If enabled, new movies will be "marked". If disabled, new movies will still be colored green until updated or the next Ember session.</string>
   <string control="Core_txtCheckTitleTol">Enter the tolerance level you would like Ember to use when title matching. The higher the number, the more lenient the algorithm is. 0 = disabled</string>
   <string control="Core_chkCheckTitles">Enable this to have Ember check the differences between the title of the movie and it's file name. This is useful to make sure that the scraped data is actually for the selected movie file.</string>
@@ -421,25 +421,25 @@
   <string control="Core_txtShowPosterHeight">Resize show poster files to the entered height.</string>
   <string control="Core_tbShowPosterQual">Adjust the quality of the show poster files. (0 = original quality)</string>
   <string control="Core_chkResizeShowPoster">Resize show poster files before saving.</string>
-  <string control="Core_cbShowPosterSize">Select the preferred show poster type you would like to retreive from the image servers. During the show scraper, Ember will attempt to find a poster of this type first. If a poster of the selected size cannot be found, the first available image will be u</string>
+  <string control="Core_cbShowPosterSize">Select the preferred show poster type you would like to retreive from the image servers. During the show scraper, Ember will attempt to find a poster of this type first. If a poster of the selected size cannot be found, the first available image will be used.</string>
   <string control="Core_chkOverwriteShowPoster">If enabled, existing show poster files will be overwritten if new ones are selected. If disabled, show poster files will only be saved if a current one does not already exist.</string>
   <string control="Core_txtShowFanartWidth">Resize show fanart files to the entered width.</string>
   <string control="Core_txtShowFanartHeight">Resize show fanart files to the entered height.</string>
   <string control="Core_tbShowFanartQual">Adjust the quality of the show fanart files. (0 = original quality)</string>
   <string control="Core_chkResizeShowFanart">Resize show fanart files before saving.</string>
-  <string control="Core_cbShowFanartSize">Select the preferred fanart size you would like to retreive from the image servers. During the show scraper, Ember will attempt to find a fanart image of this size first. If a fanart image of the selected size cannot be found, the first available image wi</string>
+  <string control="Core_cbShowFanartSize">Select the preferred fanart size you would like to retreive from the image servers. During the show scraper, Ember will attempt to find a fanart image of this size first. If a fanart image of the selected size cannot be found, the first available image will be used.</string>
   <string control="Core_chkOverwriteShowFanart">If enabled, existing show fanart files will be overwritten if new ones are selected. If disabled, show fanart files will only be saved if a current one does not already exist.</string>
   <string control="Core_txtSeaPosterWidth">Resize season poster files to the entered width.</string>
   <string control="Core_txtSeaPosterHeight">Resize season poster files to the entered height.</string>
   <string control="Core_tbSeaPosterQual">Adjust the quality of the season poster files. (0 = original quality)</string>
   <string control="Core_chkSeaResizePoster">Resize season poster files before saving.</string>
-  <string control="Core_cbSeaPosterSize">Select the preferred season poster type you would like to retreive from the image servers. During the show scraper, Ember will attempt to find a poster of this type first. If a poster of the selected size cannot be found, the first available image will be</string>
+  <string control="Core_cbSeaPosterSize">Select the preferred season poster type you would like to retreive from the image servers. During the show scraper, Ember will attempt to find a poster of this type first. If a poster of the selected size cannot be found, the first available image will be used.</string>
   <string control="Core_chkSeaOverwritePoster">If enabled, existing season poster files will be overwritten if new ones are selected. If disabled, season poster files will only be saved if a current one does not already exist.</string>
   <string control="Core_txtSeaFanartWidth">Resize season fanart files to the entered width.</string>
   <string control="Core_txtSeaFanartHeight">Resize season fanart files to the entered height.</string>
   <string control="Core_tbSeaFanartQual">Adjust the quality of the season fanart files. (0 = original quality)</string>
   <string control="Core_chkSeaResizeFanart">Resize season fanart files before saving.</string>
-  <string control="Core_cbSeaFanartSize">Select the preferred fanart size you would like to retreive from the image servers. During the show scraper, Ember will attempt to find a fanart image of this size first. If a fanart image of the selected size cannot be found, the first available image wi</string>
+  <string control="Core_cbSeaFanartSize">Select the preferred fanart size you would like to retreive from the image servers. During the show scraper, Ember will attempt to find a fanart image of this size first. If a fanart image of the selected size cannot be found, the first available image will be used.</string>
   <string control="Core_chkSeaOverwriteFanart">If enabled, existing season fanart files will be overwritten if new ones are selected. If disabled, season fanart files will only be saved if a current one does not already exist.</string>
   <string control="Core_txtEpPosterWidth">Resize episode poster files to the entered width.</string>
   <string control="Core_txtEpPosterHeight">Resize episode poster files to the entered height.</string>
@@ -450,7 +450,7 @@
   <string control="Core_txtEpFanartHeight">Resize episode fanart files to the entered height.</string>
   <string control="Core_tbEpFanartQual">Adjust the quality of the episode fanart files. (0 = original quality)</string>
   <string control="Core_chkResizeEpFanart">Resize episode fanart files before saving.</string>
-  <string control="Core_cbEpFanartSize">Select the preferred fanart size you would like to retreive from the image servers. During the show scraper, Ember will attempt to find a fanart image of this size first. If a fanart image of the selected size cannot be found, the first available image wi</string>
+  <string control="Core_cbEpFanartSize">Select the preferred fanart size you would like to retreive from the image servers. During the show scraper, Ember will attempt to find a fanart image of this size first. If a fanart image of the selected size cannot be found, the first available image will be used.</string>
   <string control="Core_chkOverwriteEpFanart">If enabled, existing episode fanart files will be overwritten if new ones are selected. If disabled, episode fanart files will only be saved if a current one does not already exist.</string>
   <string control="Core_chkGetEnglishImages">If enabled, all English images will be retrieved, regardless of the selected language.</string>
   <string control="Core_chkOnlyTVImagesLanguage">If enabled, only images for the preferred language will be retrieved.</string>
