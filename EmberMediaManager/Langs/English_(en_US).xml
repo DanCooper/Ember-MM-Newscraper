@@ -142,7 +142,7 @@
 	<string id="141">New path</string>
 	<string id="142">New File Name</string>
 	<string id="143">Update {0} Only</string>
-	<string id="144">An error occured while attempting to rename the folder:{0}{0}{1}{0}{0}Please ensure that you are not accessing this folder or any of its files from another program (including browsing via Windows Explorer</string>
+	<string id="144">An error occured while attempting to rename the folder:{0}{0}{1}{0}{0}Please ensure that you are not accessing this folder or any of its files from another program (including browsing via Windows Explorer).</string>
 	<string id="145">Only</string>
 	<string id="146">(Re)Scrape Season</string>
 	<string id="147">(Re)Scrape Episode</string>
