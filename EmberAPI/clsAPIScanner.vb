@@ -274,8 +274,12 @@ Public Class Scanner
                     Movie.EThumbs = String.Concat(Directory.GetParent(Movie.Filename).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")
                 End If
 
-                If Movie.isSingle AndAlso File.Exists(String.Concat(Directory.GetParent(Movie.Filename).FullName, Path.DirectorySeparatorChar, "extrafanart", Path.DirectorySeparatorChar, "fanart1.jpg")) Then
-                    Movie.EFanarts = String.Concat(Directory.GetParent(Movie.Filename).FullName, Path.DirectorySeparatorChar, "extrafanart", Path.DirectorySeparatorChar, "fanart1.jpg")
+                If Movie.isSingle Then
+                    Dim eflist As New List(Of String)
+                    efList.AddRange(Directory.GetFiles(String.Concat(Directory.GetParent(Movie.Filename).FullName, Path.DirectorySeparatorChar, "extrafanart")))
+                    If eflist.Count > 0 Then
+                        Movie.EFanarts = eflist.Item(0).ToString
+                    End If
                 End If
             End If
 

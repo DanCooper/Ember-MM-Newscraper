@@ -1247,6 +1247,7 @@ Public Class frmMain
         Dim aUrlList As New List(Of Trailers)
         Dim efList As New List(Of String)
         Dim etList As New List(Of String)
+        Dim tUrlList As New List(Of Theme)
         Dim DBScrapeMovie As New Structures.DBMovie
 
         Master.eLog.Trace(Me.GetType, "Starting MOVIE scrape", New StackTrace().ToString, Nothing, False)
@@ -1511,6 +1512,15 @@ Public Class frmMain
                                     End Using
                                 End If
                             End If
+                        End If
+                    End If
+                End If
+                If Master.GlobalScrapeMod.Theme Then
+                    tUrlList.Clear()
+                    tURL = String.Empty
+                    If Not ModulesManager.Instance.MovieScrapeTheme(DBScrapeMovie, tUrlList) Then
+                        If tUrlList.Count > 0 Then
+
                         End If
                     End If
                 End If

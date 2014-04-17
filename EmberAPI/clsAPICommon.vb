@@ -582,6 +582,7 @@ Public Class Enums
         Landscape = 14
         WatchedFile = 15
         CharacterArt = 16
+        Theme = 17
     End Enum
     ''' <summary>
     ''' Enum representing possible scraper capabilities
@@ -1349,6 +1350,7 @@ Public Class Functions
                 .NFO = False
                 .Poster = False
                 .Trailer = False
+                .Theme = False
             End If
 
             Select Case MType
@@ -1368,6 +1370,7 @@ Public Class Functions
                     .NFO = MValue
                     .Poster = MValue
                     .Trailer = MValue
+                    .Theme = MValue
                 Case Enums.ModType.ActorThumbs
                     .ActorThumbs = MValue
                 Case Enums.ModType.Banner
@@ -1398,6 +1401,8 @@ Public Class Functions
                     .Poster = MValue
                 Case Enums.ModType.Trailer
                     .Trailer = MValue
+                Case Enums.ModType.Theme
+                    .Theme = MValue
             End Select
 
         End With
@@ -1690,6 +1695,7 @@ Public Class Structures
         Dim ClearLogo As Boolean
         Dim DiscArt As Boolean
         Dim Landscape As Boolean
+        Dim Theme As Boolean
     End Structure
     ''' <summary>
     ''' Structure representing posible scrape fields for movies

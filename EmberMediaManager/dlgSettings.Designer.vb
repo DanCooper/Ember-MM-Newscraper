@@ -858,6 +858,8 @@ Partial Class dlgSettings
         Me.chkMovieTrailerOverwrite = New System.Windows.Forms.CheckBox()
         Me.chkMovieTrailerEnable = New System.Windows.Forms.CheckBox()
         Me.fileBrowse = New System.Windows.Forms.OpenFileDialog()
+        Me.pnlMovieThemes = New System.Windows.Forms.Panel()
+        Me.Label1 = New System.Windows.Forms.Label()
         Me.gbGeneralMisc.SuspendLayout
         Me.gbGeneralDaemon.SuspendLayout
         Me.gbGeneralThemes.SuspendLayout
@@ -1010,6 +1012,7 @@ Partial Class dlgSettings
         Me.pnlSettingsHelp.SuspendLayout
         Me.pnlMovieTrailers.SuspendLayout
         Me.gbMovieTrailerOpts.SuspendLayout
+        Me.pnlMovieThemes.SuspendLayout
         Me.SuspendLayout
         '
         'gbGeneralMisc
@@ -2962,6 +2965,7 @@ Partial Class dlgSettings
         Me.ilSettings.Images.SetKeyName(8, "favorite_film.png")
         Me.ilSettings.Images.SetKeyName(9, "settingscheck.png")
         Me.ilSettings.Images.SetKeyName(10, "settingsx.png")
+        Me.ilSettings.Images.SetKeyName(11, "note.png")
         '
         'tvSettingsList
         '
@@ -10109,6 +10113,26 @@ Partial Class dlgSettings
         Me.chkMovieTrailerEnable.Text = "Enable Trailer Support"
         Me.chkMovieTrailerEnable.UseVisualStyleBackColor = true
         '
+        'pnlMovieThemes
+        '
+        Me.pnlMovieThemes.BackColor = System.Drawing.Color.White
+        Me.pnlMovieThemes.Controls.Add(Me.Label1)
+        Me.pnlMovieThemes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.pnlMovieThemes.Location = New System.Drawing.Point(900, 900)
+        Me.pnlMovieThemes.Name = "pnlMovieThemes"
+        Me.pnlMovieThemes.Size = New System.Drawing.Size(750, 500)
+        Me.pnlMovieThemes.TabIndex = 22
+        Me.pnlMovieThemes.Visible = false
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = true
+        Me.Label1.Location = New System.Drawing.Point(206, 235)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(158, 13)
+        Me.Label1.TabIndex = 0
+        Me.Label1.Text = "Movie Themes Dummy Label"
+        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -10116,6 +10140,7 @@ Partial Class dlgSettings
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.btnCancel
         Me.ClientSize = New System.Drawing.Size(1008, 729)
+        Me.Controls.Add(Me.pnlMovieThemes)
         Me.Controls.Add(Me.pnlProxy)
         Me.Controls.Add(Me.pnlMovieScraper)
         Me.Controls.Add(Me.pnlTVScraper)
@@ -10387,6 +10412,8 @@ Partial Class dlgSettings
         Me.pnlMovieTrailers.ResumeLayout(false)
         Me.gbMovieTrailerOpts.ResumeLayout(false)
         Me.gbMovieTrailerOpts.PerformLayout
+        Me.pnlMovieThemes.ResumeLayout(false)
+        Me.pnlMovieThemes.PerformLayout
         Me.ResumeLayout(false)
         Me.PerformLayout
 
@@ -11219,4 +11246,6 @@ End Sub
     Friend WithEvents chkTVUseYAMJ As System.Windows.Forms.CheckBox
     Friend WithEvents chkTVLockShowStatus As System.Windows.Forms.CheckBox
     Friend WithEvents chkTVScraperShowStatus As System.Windows.Forms.CheckBox
+    Friend WithEvents pnlMovieThemes As System.Windows.Forms.Panel
+    Friend WithEvents Label1 As System.Windows.Forms.Label
 End Class
