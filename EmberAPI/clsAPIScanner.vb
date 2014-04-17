@@ -205,9 +205,10 @@ Public Class Scanner
     ''' <param name="Movie">MovieContainer object.</param>
     Public Sub GetMovieFolderContents(ByRef Movie As MovieContainer)
         Dim currname As String = String.Empty
-        Dim fList As New List(Of String)
+        Dim efList As New List(Of String)   'extrafanart list
+        Dim etList As New List(Of String)   'extrathumbs list
+        Dim fList As New List(Of String)    'all other files list
         Dim fName As String = String.Empty
-        'Dim pList As New List(Of String)
 
         Dim parPath As String = String.Empty
 
@@ -218,7 +219,7 @@ Public Class Scanner
         Dim fileParPath As String = Directory.GetParent(filePath).FullName
 
         Try
-
+            'first add files to filelists
             If FileUtils.Common.isVideoTS(Movie.Filename) Then
                 parPath = Directory.GetParent(Directory.GetParent(Movie.Filename).FullName).FullName
 
@@ -231,12 +232,20 @@ Public Class Scanner
                 Catch
                 End Try
 
-                If Movie.isSingle AndAlso File.Exists(String.Concat(Directory.GetParent(Movie.Filename).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")) Then
-                    Movie.EThumbs = String.Concat(Directory.GetParent(Movie.Filename).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")
+                If Movie.isSingle Then
+                    For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType.EFanarts)
+                        If Directory.Exists(a) Then
+                            efList.AddRange(Directory.GetFiles(a))
+                        End If
+                    Next
                 End If
 
-                If Movie.isSingle AndAlso File.Exists(String.Concat(Directory.GetParent(Movie.Filename).FullName, Path.DirectorySeparatorChar, "extrafanart", Path.DirectorySeparatorChar, "fanart1.jpg")) Then
-                    Movie.EFanarts = String.Concat(Directory.GetParent(Movie.Filename).FullName, Path.DirectorySeparatorChar, "extrafanart", Path.DirectorySeparatorChar, "fanart1.jpg")
+                If Movie.isSingle Then
+                    For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType.EThumbs)
+                        If Directory.Exists(a) Then
+                            etList.AddRange(Directory.GetFiles(a))
+                        End If
+                    Next
                 End If
             ElseIf FileUtils.Common.isBDRip(Movie.Filename) Then
                 parPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(Movie.Filename).FullName).FullName).FullName
@@ -250,12 +259,20 @@ Public Class Scanner
                 Catch
                 End Try
 
-                If Movie.isSingle AndAlso File.Exists(String.Concat(Directory.GetParent(Directory.GetParent(Movie.Filename).FullName).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")) Then
-                    Movie.EThumbs = String.Concat(Directory.GetParent(Directory.GetParent(Movie.Filename).FullName).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")
+                If Movie.isSingle Then
+                    For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType.EFanarts)
+                        If Directory.Exists(a) Then
+                            efList.AddRange(Directory.GetFiles(a))
+                        End If
+                    Next
                 End If
 
-                If Movie.isSingle AndAlso File.Exists(String.Concat(Directory.GetParent(Directory.GetParent(Movie.Filename).FullName).FullName, Path.DirectorySeparatorChar, "extrafanart", Path.DirectorySeparatorChar, "fanart1.jpg")) Then
-                    Movie.EFanarts = String.Concat(Directory.GetParent(Directory.GetParent(Movie.Filename).FullName).FullName, Path.DirectorySeparatorChar, "extrafanart", Path.DirectorySeparatorChar, "fanart1.jpg")
+                If Movie.isSingle Then
+                    For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType.EThumbs)
+                        If Directory.Exists(a) Then
+                            etList.AddRange(Directory.GetFiles(a))
+                        End If
+                    Next
                 End If
             Else
                 parPath = Directory.GetParent(Movie.Filename).FullName
@@ -270,16 +287,20 @@ Public Class Scanner
                     End Try
                 End If
 
-                If Movie.isSingle AndAlso File.Exists(String.Concat(Directory.GetParent(Movie.Filename).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")) Then
-                    Movie.EThumbs = String.Concat(Directory.GetParent(Movie.Filename).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")
+                If Movie.isSingle Then
+                    For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType.EFanarts)
+                        If Directory.Exists(a) Then
+                            efList.AddRange(Directory.GetFiles(a))
+                        End If
+                    Next
                 End If
 
                 If Movie.isSingle Then
-                    Dim eflist As New List(Of String)
-                    efList.AddRange(Directory.GetFiles(String.Concat(Directory.GetParent(Movie.Filename).FullName, Path.DirectorySeparatorChar, "extrafanart")))
-                    If eflist.Count > 0 Then
-                        Movie.EFanarts = eflist.Item(0).ToString
-                    End If
+                    For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType.EThumbs)
+                        If Directory.Exists(a) Then
+                            etList.AddRange(Directory.GetFiles(a))
+                        End If
+                    Next
                 End If
             End If
 
@@ -289,6 +310,20 @@ Public Class Scanner
                     Movie.Banner = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
                     If Not String.IsNullOrEmpty(Movie.Banner) Then Exit For
                 Next
+            End If
+
+            'extrafanart
+            If String.IsNullOrEmpty(Movie.EFanarts) Then
+                If eflist.Count > 0 Then
+                    Movie.EFanarts = efList.Item(0).ToString
+                End If
+            End If
+
+            'extrathumbs
+            If String.IsNullOrEmpty(Movie.EThumbs) Then
+                If etList.Count > 0 Then
+                    Movie.EThumbs = etList.Item(0).ToString
+                End If
             End If
 
             'fanart
@@ -356,6 +391,8 @@ Public Class Scanner
             Master.eLog.Error(GetType(Scanner), ex.Message, ex.StackTrace, "Error")
         End Try
 
+        efList = Nothing
+        etList = Nothing
         fList = Nothing
     End Sub
 
