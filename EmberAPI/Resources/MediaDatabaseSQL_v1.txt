@@ -57,7 +57,9 @@ CREATE TABLE Movies (
 	HasBanner BOOL,
 	BannerPath TEXT,
 	HasLandscape BOOL,
-	LandscapePath
+	LandscapePath,
+	HasTheme BOOL,
+	ThemePath TEXT
 	);
 
 CREATE TABLE MoviesSets(
@@ -165,7 +167,9 @@ CREATE TABLE TVShows(
 	BannerPath TEXT,
 	HasLandscape BOOL NOT NULL DEFAULT False,
 	LandscapePath TEXT,
-	Status TEXT
+	Status TEXT,
+	HasTheme BOOL,
+	ThemePath TEXT
 	);
 CREATE UNIQUE INDEX UniqueTVShowPath ON TVShows (TVShowPath);
 
