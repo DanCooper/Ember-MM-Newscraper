@@ -34,20 +34,20 @@ Public Class frmGoEarInfoSettingsHolder
 #Region "Methods"
 
     Private Sub btnDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDown.Click
-        Dim order As Integer = ModulesManager.Instance.externalDataScrapersModules.FirstOrDefault(Function(p) p.AssemblyName = goear_Theme._AssemblyName).ScraperOrder
-        If order < ModulesManager.Instance.externalDataScrapersModules.Count - 1 Then
-            ModulesManager.Instance.externalDataScrapersModules.FirstOrDefault(Function(p) p.ScraperOrder = order + 1).ScraperOrder = order
-            ModulesManager.Instance.externalDataScrapersModules.FirstOrDefault(Function(p) p.AssemblyName = goear_Theme._AssemblyName).ScraperOrder = order + 1
+        Dim order As Integer = ModulesManager.Instance.externalThemeScrapersModules.FirstOrDefault(Function(p) p.AssemblyName = GoEar_Theme._AssemblyName).ScraperOrder
+        If order < ModulesManager.Instance.externalThemeScrapersModules.Count - 1 Then
+            ModulesManager.Instance.externalThemeScrapersModules.FirstOrDefault(Function(p) p.ScraperOrder = order + 1).ScraperOrder = order
+            ModulesManager.Instance.externalThemeScrapersModules.FirstOrDefault(Function(p) p.AssemblyName = GoEar_Theme._AssemblyName).ScraperOrder = order + 1
             RaiseEvent SetupScraperChanged(cbEnabled.Checked, 1)
             orderChanged()
         End If
     End Sub
 
     Private Sub btnUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUp.Click
-        Dim order As Integer = ModulesManager.Instance.externalDataScrapersModules.FirstOrDefault(Function(p) p.AssemblyName = goear_Theme._AssemblyName).ScraperOrder
+        Dim order As Integer = ModulesManager.Instance.externalThemeScrapersModules.FirstOrDefault(Function(p) p.AssemblyName = GoEar_Theme._AssemblyName).ScraperOrder
         If order > 0 Then
-            ModulesManager.Instance.externalDataScrapersModules.FirstOrDefault(Function(p) p.ScraperOrder = order - 1).ScraperOrder = order
-            ModulesManager.Instance.externalDataScrapersModules.FirstOrDefault(Function(p) p.AssemblyName = goear_Theme._AssemblyName).ScraperOrder = order - 1
+            ModulesManager.Instance.externalThemeScrapersModules.FirstOrDefault(Function(p) p.ScraperOrder = order - 1).ScraperOrder = order
+            ModulesManager.Instance.externalThemeScrapersModules.FirstOrDefault(Function(p) p.AssemblyName = GoEar_Theme._AssemblyName).ScraperOrder = order - 1
             RaiseEvent SetupScraperChanged(cbEnabled.Checked, -1)
             orderChanged()
         End If

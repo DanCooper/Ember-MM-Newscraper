@@ -1520,7 +1520,27 @@ Public Class frmMain
                     tURL = String.Empty
                     If Not ModulesManager.Instance.MovieScrapeTheme(DBScrapeMovie, tUrlList) Then
                         If tUrlList.Count > 0 Then
-
+                            If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
+                                tURL = tUrlList.Item(0).URL.ToString
+                                If Not String.IsNullOrEmpty(tURL) Then
+                                    tURL = Theme.DownloadTheme(DBScrapeMovie.Filename, DBScrapeMovie.isSingle, tURL)
+                                    If Not String.IsNullOrEmpty(tURL) Then
+                                        DBScrapeMovie.ThemePath = tURL
+                                        MovieScraperEvent(Enums.MovieScraperEventType.ThemeItem, True)
+                                    End If
+                                End If
+                                'ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
+                                '    If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
+                                '        MsgBox(Master.eLang.GetString(930, "Trailer of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(929, "No Preferred Size:"))
+                                '    End If
+                                '    Using dThemeSelect As New dlgThemeSelect()
+                                '        tURL = dThemeSelect.ShowDialog(DBScrapeMovie, tUrlList)
+                                '        If Not String.IsNullOrEmpty(tURL) Then
+                                '            DBScrapeMovie.ThemePath = tURL
+                                '            MovieScraperEvent(Enums.MovieScraperEventType.ThemeItem, True)
+                                '        End If
+                                '    End Using
+                            End If
                         End If
                     End If
                 End If
@@ -1545,25 +1565,25 @@ Public Class frmMain
                                         End If
                                     End If
                                 End If
-                            ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
-                                If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
-                                    MsgBox(Master.eLang.GetString(930, "Trailer of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(929, "No Preferred Size:"))
-                                End If
-                                Using dTrailerSelect As New dlgTrailerSelect()
-                                    tURL = dTrailerSelect.ShowDialog(DBScrapeMovie, aUrlList)
-                                    If Not String.IsNullOrEmpty(tURL) Then
-                                        If StringUtils.isValidURL(tURL) Then
-                                            If Master.eSettings.MovieXBMCTrailerFormat Then
-                                                DBScrapeMovie.Movie.Trailer = Replace(tURL, "http://www.youtube.com/watch?v=", "plugin://plugin.video.youtube/?action=play_video&videoid=")
-                                            Else
-                                                DBScrapeMovie.Movie.Trailer = tURL
-                                            End If
-                                        Else
-                                            DBScrapeMovie.TrailerPath = tURL
-                                            MovieScraperEvent(Enums.MovieScraperEventType.TrailerItem, True)
-                                        End If
-                                    End If
-                                End Using
+                                'ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
+                                '    If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
+                                '        MsgBox(Master.eLang.GetString(930, "Trailer of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(929, "No Preferred Size:"))
+                                '    End If
+                                '    Using dTrailerSelect As New dlgTrailerSelect()
+                                '        tURL = dTrailerSelect.ShowDialog(DBScrapeMovie, aUrlList)
+                                '        If Not String.IsNullOrEmpty(tURL) Then
+                                '            If StringUtils.isValidURL(tURL) Then
+                                '                If Master.eSettings.MovieXBMCTrailerFormat Then
+                                '                    DBScrapeMovie.Movie.Trailer = Replace(tURL, "http://www.youtube.com/watch?v=", "plugin://plugin.video.youtube/?action=play_video&videoid=")
+                                '                Else
+                                '                    DBScrapeMovie.Movie.Trailer = tURL
+                                '                End If
+                                '            Else
+                                '                DBScrapeMovie.TrailerPath = tURL
+                                '                MovieScraperEvent(Enums.MovieScraperEventType.TrailerItem, True)
+                                '            End If
+                                '        End If
+                                '    End Using
                             End If
                         End If
                     End If
@@ -3921,7 +3941,7 @@ doCancel:
             End If
 
             'icons
-            If e.ColumnIndex >= 4 AndAlso e.ColumnIndex <= 34 AndAlso e.RowIndex = -1 Then
+            If e.ColumnIndex >= 4 AndAlso e.ColumnIndex <= 55 AndAlso e.RowIndex = -1 Then
                 e.PaintBackground(e.ClipBounds, False)
 
                 Dim pt As Point = e.CellBounds.Location
@@ -3931,6 +3951,14 @@ doCancel:
                 pt.Y = 3
                 If e.ColumnIndex = 34 Then
                     Me.ilColumnIcons.Draw(e.Graphics, pt, e.ColumnIndex - 26)
+                ElseIf e.ColumnIndex = 49 Then
+                    Me.ilColumnIcons.Draw(e.Graphics, pt, e.ColumnIndex - 40)
+                ElseIf e.ColumnIndex = 51 Then
+                    Me.ilColumnIcons.Draw(e.Graphics, pt, e.ColumnIndex - 41)
+                ElseIf e.ColumnIndex = 53 Then
+                    Me.ilColumnIcons.Draw(e.Graphics, pt, e.ColumnIndex - 42)
+                ElseIf e.ColumnIndex = 55 Then
+                    Me.ilColumnIcons.Draw(e.Graphics, pt, e.ColumnIndex - 43)
                 Else
                     Me.ilColumnIcons.Draw(e.Graphics, pt, e.ColumnIndex - 4)
                 End If
@@ -3956,7 +3984,7 @@ doCancel:
                 End If
             End If
 
-            If e.ColumnIndex >= 3 AndAlso e.ColumnIndex <= 34 AndAlso e.RowIndex >= 0 Then
+            If e.ColumnIndex >= 3 AndAlso e.ColumnIndex <= 55 AndAlso e.RowIndex >= 0 Then
                 If Convert.ToBoolean(Me.dgvMovies.Item(14, e.RowIndex).Value) Then                  'is locked
                     e.CellStyle.BackColor = Color.LightSteelBlue
                     e.CellStyle.SelectionBackColor = Color.DarkTurquoise
@@ -3968,7 +3996,7 @@ doCancel:
                     e.CellStyle.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
                 End If
 
-                If e.ColumnIndex >= 4 AndAlso e.ColumnIndex <= 34 Then
+                If e.ColumnIndex >= 4 AndAlso e.ColumnIndex <= 55 Then
                     e.PaintBackground(e.ClipBounds, True)
 
                     Dim pt As Point = e.CellBounds.Location
@@ -5123,18 +5151,31 @@ doCancel:
             Me.ClearInfo()
 
             If Not String.IsNullOrEmpty(Me.filSearch) AndAlso Me.cbSearch.Text = Master.eLang.GetString(100, "Actor") Then
-                Master.DB.FillDataTable(Me.dtMedia, String.Concat("SELECT ID, MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasEThumbs, New, Mark, Source, Imdb, Lock, Title, OriginalTitle, Year, Rating, Votes, MPAA, Top250, Country, Outline, Plot, Tagline, Certification, Genre, Studio, Runtime, ReleaseDate, Director, Credits, Playcount, HasWatched, Trailer, PosterPath, FanartPath, EThumbsPath, NfoPath, TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, FileSource, NeedsSave, SortTitle, DateAdd, HasEFanarts, EFanartsPath FROM movies WHERE ID IN (SELECT MovieID FROM MoviesActors WHERE ActorName LIKE '%", Me.filSearch, "%') ORDER BY ListTitle COLLATE NOCASE;"))
+                Master.DB.FillDataTable(Me.dtMedia, String.Concat("SELECT ID, MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, ", _
+                                                                  "HasTrailer, HasSub, HasEThumbs, New, Mark, Source, Imdb, Lock, Title, OriginalTitle, ", _
+                                                                  "Year, Rating, Votes, MPAA, Top250, Country, Outline, Plot, Tagline, Certification, Genre, ", _
+                                                                  "Studio, Runtime, ReleaseDate, Director, Credits, Playcount, HasWatched, Trailer, PosterPath, ", _
+                                                                  "FanartPath, EThumbsPath, NfoPath, TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, ", _
+                                                                  "FileSource, NeedsSave, SortTitle, DateAdd, HasEFanarts, EFanartsPath, HasBanner, BannerPath, ", _
+                                                                  "HasLandscape, LandscapePath, HasTheme, ThemePath FROM movies WHERE ID IN ", _
+                                                                  "(SELECT MovieID FROM MoviesActors WHERE ActorName LIKE '%", Me.filSearch, "%') ORDER BY ListTitle COLLATE NOCASE;"))
             ElseIf Not String.IsNullOrEmpty(Me.filSearch) AndAlso Me.cbSearch.Text = Master.eLang.GetString(233, "Role") Then
-                Master.DB.FillDataTable(Me.dtMedia, String.Concat("SELECT ID, MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasEThumbs, New, Mark, Source, Imdb, Lock, Title, OriginalTitle, Year, Rating, Votes, MPAA, Top250, Country, Outline, Plot, Tagline, Certification, Genre, Studio, Runtime, ReleaseDate, Director, Credits, Playcount, HasWatched, Trailer, PosterPath, FanartPath, EThumbsPath, NfoPath, TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, FileSource, NeedsSave, SortTitle, DateAdd, HasEFanarts, EFanartsPath FROM movies WHERE ID IN (SELECT MovieID FROM MoviesActors WHERE Role LIKE '%", Me.filSearch, "%') ORDER BY ListTitle COLLATE NOCASE;"))
+                Master.DB.FillDataTable(Me.dtMedia, String.Concat("SELECT ID, MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, ", _
+                                                                  "HasSub, HasEThumbs, New, Mark, Source, Imdb, Lock, Title, OriginalTitle, Year, Rating, Votes, ", _
+                                                                  "MPAA, Top250, Country, Outline, Plot, Tagline, Certification, Genre, Studio, Runtime, ReleaseDate, ", _
+                                                                  "Director, Credits, Playcount, HasWatched, Trailer, PosterPath, FanartPath, EThumbsPath, NfoPath, ", _
+                                                                  "TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, FileSource, NeedsSave, SortTitle, DateAdd, ", _
+                                                                  "HasEFanarts, EFanartsPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasTheme, ThemePath FROM movies ", _
+                                                                  "WHERE ID IN (SELECT MovieID FROM MoviesActors WHERE Role LIKE '%", Me.filSearch, "%') ORDER BY ListTitle COLLATE NOCASE;"))
             Else
                 If Me.chkFilterDupe.Checked Then
-                    Master.DB.FillDataTable(Me.dtMedia, "SELECT ID, MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasEThumbs, New, Mark, Source, Imdb, Lock, Title, OriginalTitle, Year, Rating, Votes, MPAA, Top250, Country, Outline, Plot, Tagline, Certification, Genre, Studio, Runtime, ReleaseDate, Director, Credits, Playcount, HasWatched, Trailer, PosterPath, FanartPath, EThumbsPath, NfoPath, TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, FileSource, NeedsSave, SortTitle, DateAdd, HasEFanarts, EFanartsPath FROM movies WHERE imdb IN (SELECT imdb FROM movies WHERE imdb IS NOT NULL AND LENGTH(imdb) > 0 GROUP BY imdb HAVING ( COUNT(imdb) > 1 )) ORDER BY ListTitle COLLATE NOCASE;")
+                    Master.DB.FillDataTable(Me.dtMedia, "SELECT ID, MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasEThumbs, New, Mark, Source, Imdb, Lock, Title, OriginalTitle, Year, Rating, Votes, MPAA, Top250, Country, Outline, Plot, Tagline, Certification, Genre, Studio, Runtime, ReleaseDate, Director, Credits, Playcount, HasWatched, Trailer, PosterPath, FanartPath, EThumbsPath, NfoPath, TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, FileSource, NeedsSave, SortTitle, DateAdd, HasEFanarts, EFanartsPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasTheme, ThemePath FROM movies WHERE imdb IN (SELECT imdb FROM movies WHERE imdb IS NOT NULL AND LENGTH(imdb) > 0 GROUP BY imdb HAVING ( COUNT(imdb) > 1 )) ORDER BY ListTitle COLLATE NOCASE;")
                 Else
-                    Master.DB.FillDataTable(Me.dtMedia, "SELECT ID, MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasEThumbs, New, Mark, Source, Imdb, Lock, Title, OriginalTitle, Year, Rating, Votes, MPAA, Top250, Country, Outline, Plot, Tagline, Certification, Genre, Studio, Runtime, ReleaseDate, Director, Credits, Playcount, HasWatched, Trailer, PosterPath, FanartPath, EThumbsPath, NfoPath, TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, FileSource, NeedsSave, SortTitle, DateAdd, HasEFanarts, EFanartsPath FROM movies ORDER BY ListTitle COLLATE NOCASE;")
+                    Master.DB.FillDataTable(Me.dtMedia, "SELECT ID, MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasEThumbs, New, Mark, Source, Imdb, Lock, Title, OriginalTitle, Year, Rating, Votes, MPAA, Top250, Country, Outline, Plot, Tagline, Certification, Genre, Studio, Runtime, ReleaseDate, Director, Credits, Playcount, HasWatched, Trailer, PosterPath, FanartPath, EThumbsPath, NfoPath, TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, FileSource, NeedsSave, SortTitle, DateAdd, HasEFanarts, EFanartsPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasTheme, ThemePath FROM movies ORDER BY ListTitle COLLATE NOCASE;")
                 End If
             End If
 
-            Master.DB.FillDataTable(Me.dtShows, "SELECT ID, Title, HasPoster, HasFanart, HasNfo, New, Mark, TVShowPath, Source, TVDB, Lock, EpisodeGuide, Plot, Genre, Premiered, Studio, MPAA, Rating, PosterPath, FanartPath, NfoPath, NeedsSave, Language, Ordering, HasBanner, BannerPath, HasLandscape, LandscapePath, Status FROM TVShows ORDER BY Title COLLATE NOCASE;")
+            Master.DB.FillDataTable(Me.dtShows, "SELECT ID, Title, HasPoster, HasFanart, HasNfo, New, Mark, TVShowPath, Source, TVDB, Lock, EpisodeGuide, Plot, Genre, Premiered, Studio, MPAA, Rating, PosterPath, FanartPath, NfoPath, NeedsSave, Language, Ordering, HasBanner, BannerPath, HasLandscape, LandscapePath, Status, HasTheme, ThemePath FROM TVShows ORDER BY Title COLLATE NOCASE;")
 
             If isCL Then
                 Me.LoadingDone = True
@@ -5170,7 +5211,7 @@ doCancel:
                         .dgvMovies.Columns(6).Resizable = DataGridViewTriState.False
                         .dgvMovies.Columns(6).ReadOnly = True
                         .dgvMovies.Columns(6).SortMode = DataGridViewColumnSortMode.Automatic
-                        .dgvMovies.Columns(6).Visible = Not Master.eSettings.MovieInfoCol
+                        .dgvMovies.Columns(6).Visible = Not Master.eSettings.MovieNFOCol
                         .dgvMovies.Columns(6).ToolTipText = Master.eLang.GetString(150, "Nfo")
                         .dgvMovies.Columns(7).Width = 20
                         .dgvMovies.Columns(7).Resizable = DataGridViewTriState.False
@@ -5220,8 +5261,49 @@ doCancel:
                         .dgvMovies.Columns(34).SortMode = DataGridViewColumnSortMode.Automatic
                         .dgvMovies.Columns(34).Visible = Not Master.eSettings.MovieWatchedCol
                         .dgvMovies.Columns(34).ToolTipText = Master.eLang.GetString(981, "Watched")
+                        .dgvMovies.Columns(35).Visible = False
+                        .dgvMovies.Columns(36).Visible = False
+                        .dgvMovies.Columns(37).Visible = False
+                        .dgvMovies.Columns(38).Visible = False
+                        .dgvMovies.Columns(39).Visible = False
+                        .dgvMovies.Columns(40).Visible = False
+                        .dgvMovies.Columns(41).Visible = False
+                        .dgvMovies.Columns(42).Visible = False
+                        .dgvMovies.Columns(43).Visible = False
+                        .dgvMovies.Columns(44).Visible = False
+                        .dgvMovies.Columns(45).Visible = False
+                        .dgvMovies.Columns(46).Visible = False
+                        .dgvMovies.Columns(47).Visible = False
+                        .dgvMovies.Columns(48).Visible = False
+                        .dgvMovies.Columns(49).Width = 20
+                        .dgvMovies.Columns(49).Resizable = DataGridViewTriState.False
+                        .dgvMovies.Columns(49).ReadOnly = True
+                        .dgvMovies.Columns(49).SortMode = DataGridViewColumnSortMode.Automatic
+                        .dgvMovies.Columns(49).Visible = Not Master.eSettings.MovieEFanartsCol
+                        .dgvMovies.Columns(49).ToolTipText = Master.eLang.GetString(992, "Extrafanarts")
+                        .dgvMovies.Columns(50).Visible = False
+                        .dgvMovies.Columns(51).Width = 20
+                        .dgvMovies.Columns(51).Resizable = DataGridViewTriState.False
+                        .dgvMovies.Columns(51).ReadOnly = True
+                        .dgvMovies.Columns(51).SortMode = DataGridViewColumnSortMode.Automatic
+                        .dgvMovies.Columns(51).Visible = Not Master.eSettings.MovieBannerCol
+                        .dgvMovies.Columns(51).ToolTipText = Master.eLang.GetString(838, "Banner")
+                        .dgvMovies.Columns(52).Visible = False
+                        .dgvMovies.Columns(53).Width = 20
+                        .dgvMovies.Columns(53).Resizable = DataGridViewTriState.False
+                        .dgvMovies.Columns(53).ReadOnly = True
+                        .dgvMovies.Columns(53).SortMode = DataGridViewColumnSortMode.Automatic
+                        .dgvMovies.Columns(53).Visible = Not Master.eSettings.MovieLandscapeCol
+                        .dgvMovies.Columns(53).ToolTipText = Master.eLang.GetString(1035, "Landscape")
+                        .dgvMovies.Columns(54).Visible = False
+                        .dgvMovies.Columns(55).Width = 20
+                        .dgvMovies.Columns(55).Resizable = DataGridViewTriState.False
+                        .dgvMovies.Columns(55).ReadOnly = True
+                        .dgvMovies.Columns(55).SortMode = DataGridViewColumnSortMode.Automatic
+                        .dgvMovies.Columns(55).Visible = Not Master.eSettings.MovieThemeCol
+                        .dgvMovies.Columns(55).ToolTipText = Master.eLang.GetString(629, "Themes")
 
-                        For i As Integer = 35 To .dgvMovies.Columns.Count - 1
+                        For i As Integer = 56 To .dgvMovies.Columns.Count - 1
                             .dgvMovies.Columns(i).Visible = False
                         Next
 
@@ -8091,14 +8173,15 @@ doCancel:
         Dim selRow As DataRow = Nothing
 
         Dim hasBanner As Boolean = False
+        Dim hasEFanarts As Boolean = False
+        Dim hasEThumbs As Boolean = False
         Dim hasFanart As Boolean = False
         Dim hasLandscape As Boolean = False
-        Dim hasPoster As Boolean = False
         Dim hasNfo As Boolean = False
+        Dim hasPoster As Boolean = False
+        Dim hasTheme As Boolean = False
         Dim hasTrailer As Boolean = False
         Dim hasSub As Boolean = False
-        Dim hasEThumbs As Boolean = False
-        Dim hasEFanarts As Boolean = False
         Dim hasWatched As Boolean = False
 
         Dim myDelegate As New MydtListUpdate(AddressOf dtListUpdate)
@@ -8188,21 +8271,22 @@ doCancel:
                 Dim mContainer As New Scanner.MovieContainer With {.Filename = tmpMovieDb.Filename, .isSingle = tmpMovieDb.isSingle}
                 fScanner.GetMovieFolderContents(mContainer)
                 tmpMovieDb.BannerPath = mContainer.Banner
+                tmpMovieDb.EFanartsPath = mContainer.EFanarts
+                tmpMovieDb.EThumbsPath = mContainer.EThumbs
                 tmpMovieDb.FanartPath = mContainer.Fanart
                 tmpMovieDb.LandscapePath = mContainer.Landscape
+                tmpMovieDb.NfoPath = If(String.IsNullOrEmpty(tmpMovieDb.Movie.Title), String.Empty, mContainer.Nfo) 'assume invalid nfo if no title
                 tmpMovieDb.PosterPath = mContainer.Poster
-                'assume invalid nfo if no title
-                tmpMovieDb.NfoPath = If(String.IsNullOrEmpty(tmpMovieDb.Movie.Title), String.Empty, mContainer.Nfo)
-                tmpMovieDb.TrailerPath = mContainer.Trailer
                 tmpMovieDb.SubPath = mContainer.Subs
-                tmpMovieDb.EThumbsPath = mContainer.EThumbs
-                tmpMovieDb.EFanartsPath = mContainer.EFanarts
+                tmpMovieDb.ThemePath = mContainer.Theme
+                tmpMovieDb.TrailerPath = mContainer.Trailer
 
                 hasBanner = Not String.IsNullOrEmpty(mContainer.Banner)
                 hasFanart = Not String.IsNullOrEmpty(mContainer.Fanart)
                 hasLandscape = Not String.IsNullOrEmpty(mContainer.Landscape)
                 hasPoster = Not String.IsNullOrEmpty(mContainer.Poster)
                 hasNfo = Not String.IsNullOrEmpty(tmpMovieDb.NfoPath)
+                hasTheme = Not String.IsNullOrEmpty(mContainer.Theme)
                 hasTrailer = Not String.IsNullOrEmpty(mContainer.Trailer)
                 hasSub = Not String.IsNullOrEmpty(mContainer.Subs)
                 hasEThumbs = Not String.IsNullOrEmpty(mContainer.EThumbs)
@@ -8230,6 +8314,10 @@ doCancel:
                         Me.Invoke(myDelegate, New Object() {dRow(0), 47, tmpMovieDb.Movie.SortTitle})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 27, tmpMovieDb.Movie.Genre})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 34, hasWatched})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 49, hasEFanarts})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 51, hasBanner})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 53, hasLandscape})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 55, hasTheme})
                     Else
                         selRow.Item(1) = tmpMovieDb.Filename
                         selRow.Item(3) = tmpMovieDb.ListTitle
@@ -8244,6 +8332,10 @@ doCancel:
                         selRow.Item(47) = tmpMovieDb.Movie.SortTitle
                         selRow.Item(27) = tmpMovieDb.Movie.Genre
                         selRow.Item(34) = hasWatched
+                        selRow.Item(49) = hasEFanarts
+                        selRow.Item(51) = hasBanner
+                        selRow.Item(53) = hasLandscape
+                        selRow.Item(55) = hasTheme
                     End If
                 End If
                 'Why on earth resave the movie if we just refreshed its data (causes issues with saving rescrapes_
@@ -8545,7 +8637,7 @@ doCancel:
                 Me.dgvMovies.Columns(3).Width = Me.dgvMovies.Width - _
                 If(Master.eSettings.MoviePosterCol, 0, 20) - _
                 If(Master.eSettings.MovieFanartCol, 0, 20) - _
-                If(Master.eSettings.MovieInfoCol, 0, 20) - _
+                If(Master.eSettings.MovieNFOCol, 0, 20) - _
                 If(Master.eSettings.MovieTrailerCol, 0, 20) - _
                 If(Master.eSettings.MovieSubCol, 0, 20) - _
                 If(Master.eSettings.MovieEThumbsCol, 0, 20) - _
@@ -9400,7 +9492,7 @@ doCancel:
             If Me.dgvMovies.RowCount > 0 Then
                 Me.dgvMovies.Columns(4).Visible = Not Master.eSettings.MoviePosterCol
                 Me.dgvMovies.Columns(5).Visible = Not Master.eSettings.MovieFanartCol
-                Me.dgvMovies.Columns(6).Visible = Not Master.eSettings.MovieInfoCol
+                Me.dgvMovies.Columns(6).Visible = Not Master.eSettings.MovieNFOCol
                 Me.dgvMovies.Columns(7).Visible = Not Master.eSettings.MovieTrailerCol
                 Me.dgvMovies.Columns(8).Visible = Not Master.eSettings.MovieSubCol
                 Me.dgvMovies.Columns(9).Visible = Not Master.eSettings.MovieEThumbsCol

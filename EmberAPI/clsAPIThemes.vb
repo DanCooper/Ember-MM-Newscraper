@@ -18,6 +18,9 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
+Imports System.IO
+Imports EmberAPI
+
 Public Class Theme
 
 #Region "Fields"
@@ -129,6 +132,78 @@ Public Class Theme
     Public Shared Sub DeleteThemes(ByVal sPath As String, ByVal NewTheme As String)
 
     End Sub
+    ''' <summary>
+    ''' Downloads the theme found at the supplied <paramref name="sURL"/> and places
+    ''' it in the supplied <paramref name="sPath"/>. 
+    ''' </summary>
+    ''' <param name="sPath">Path into which the theme should be saved</param>
+    ''' <param name="sURL">URL from which to get the theme</param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public Shared Function DownloadTheme(ByVal sPath As String, ByVal isSingle As Boolean, ByVal sURL As String) As String
+        Dim WebPage As New HTTP
+        Dim tURL As String = String.Empty
+        Dim lhttp As New HTTP
+        Dim tTheme As String = String.Empty
+        'AddHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
+
+        tTheme = lhttp.DownloadFile(sURL, Path.Combine(Master.TempPath, "theme"), False, "theme")
+        Dim fExt As String = Path.GetExtension(tTheme)
+        For Each a In FileUtils.GetFilenameList.Movie(sPath, isSingle, Enums.ModType.Theme)
+            If File.Exists(a & fExt) Then
+                File.Delete(a & fExt)
+            End If
+            File.Copy(tTheme, a & fExt)
+            tURL = a & fExt
+        Next
+        File.Delete(tTheme)
+        RemoveHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
+        Return tURL
+    End Function
+    ''' <summary>
+    ''' Determines whether a theme is allowed to be downloaded. This is determined
+    ''' by a combination of the Master.eSettings.LockTheme settings,
+    ''' whether the path is valid, and whether the Master.eSettings.OverwriteTheme
+    ''' flag is set. 
+    ''' </summary>
+    ''' <param name="sPath">The intended path to save the theme</param>
+    ''' <param name="isDL">Flag to indicate whether the file is intended to be saved to the file system or not</param>
+    ''' <param name="isSS">Flag to indicate whether a scrape of a single item was requested (Enums.ScrapeType.SingleScrape), or whether this is part of a multi-item scrape</param>
+    ''' <returns><c>True</c> if a download is allowed, <c>False</c> otherwise</returns>
+    ''' <remarks></remarks>
+    Public Shared Function IsAllowedToDownload(ByVal sPath As String, ByVal isDL As Boolean, Optional ByVal isSS As Boolean = False) As Boolean
+        'TODO Dekker500 - MUST VALIDATE whether these parameters are correct! I believe isDL and isSS are reversed in meanings (at least from the calling method's perspective)!!!!
+
+        'Dim fScanner As New Scanner
+        If Master.eSettings.MovieThemeOverwrite Then
+            Return True
+        Else
+            Return False
+        End If
+
+        'If isDL Then
+        '    'If String.IsNullOrEmpty(fScanner.GetMovieTrailerPath(sPath)) OrElse Master.eSettings.MovieThemeOverwrite Then
+        '    If Master.eSettings.MovieThemeOverwrite Then
+        '        Return True
+        '    Else
+        '        If isSS AndAlso String.IsNullOrEmpty(fScanner.GetMovieTrailerPath(sPath)) Then
+        '            If Not Master.eSettings.MovieLockTheme Then
+        '                Return True
+        '            Else
+        '                Return False
+        '            End If
+        '        Else
+        '            Return False
+        '        End If
+        '    End If
+        'Else
+        '    If Not Master.eSettings.MovieLockTheme Then
+        '        Return True
+        '    Else
+        '        Return False
+        '    End If
+        'End If
+    End Function
     ''' <summary>
     ''' Raises the ProgressUpdated event, passing the iPercent value to indicate percent completed.
     ''' </summary>

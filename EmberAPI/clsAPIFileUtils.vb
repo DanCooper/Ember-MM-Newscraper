@@ -774,6 +774,15 @@ Namespace FileUtils
                         End If
                     End With
 
+                Case Enums.ModType.Theme
+                    With Master.eSettings
+                        If .MovieUseFrodo AndAlso .MovieXBMCThemeEnable Then
+                            If .MovieXBMCThemeMovie Then FilenameList.Add(Path.Combine(fileParPath, "theme"))
+                            If .MovieXBMCThemeCustom AndAlso Not String.IsNullOrEmpty(.MovieXBMCThemeCustomPath) Then FilenameList.Add(Path.Combine(.MovieXBMCThemeCustomPath, "theme"))
+                            If .MovieXBMCThemeSub AndAlso Not String.IsNullOrEmpty(.MovieXBMCThemeSubDir) Then FilenameList.Add(String.Concat(.MovieXBMCThemeSubDir, "theme"))
+                        End If
+                    End With
+
                 Case Enums.ModType.Trailer
                     With Master.eSettings
                         If isVideoTS Then

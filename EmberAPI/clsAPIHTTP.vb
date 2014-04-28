@@ -278,12 +278,18 @@ Public Class HTTP
 
                 Try
                     urlExt = Path.GetExtension(URL)
+                    'urlExtWeb = Path.GetExtension(wrResponse.ResponseUri.AbsoluteUri)
                     urlExtWeb = String.Concat(".", wrResponse.ContentType.Replace("video/", String.Empty).Trim)
+                    urlExtWeb = urlExtWeb.Replace("audio/", String.Empty).Trim
                 Catch
                 End Try
 
                 If Type = "trailer" Then
                     outFile = LocalFile & urlExtWeb
+                ElseIf Type = "theme" Then
+                    If urlExtWeb = ".mpeg" Then
+                        outFile = LocalFile & ".mp3"
+                    End If
                 ElseIf Type = "other" Then
                     outFile = LocalFile
                 End If

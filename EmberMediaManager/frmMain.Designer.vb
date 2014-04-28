@@ -743,7 +743,7 @@ Partial Class frmMain
         '
         Me.mnuMainFileExit.Image = CType(resources.GetObject("mnuMainFileExit.Image"), System.Drawing.Image)
         Me.mnuMainFileExit.Name = "mnuMainFileExit"
-        Me.mnuMainFileExit.Size = New System.Drawing.Size(152, 22)
+        Me.mnuMainFileExit.Size = New System.Drawing.Size(92, 22)
         Me.mnuMainFileExit.Text = "E&xit"
         '
         'mnuMainEdit
@@ -758,7 +758,7 @@ Partial Class frmMain
         '
         Me.mnuMainEditSettings.Image = CType(resources.GetObject("mnuMainEditSettings.Image"), System.Drawing.Image)
         Me.mnuMainEditSettings.Name = "mnuMainEditSettings"
-        Me.mnuMainEditSettings.Size = New System.Drawing.Size(152, 22)
+        Me.mnuMainEditSettings.Size = New System.Drawing.Size(125, 22)
         Me.mnuMainEditSettings.Text = "&Settings..."
         '
         'mnuMainHelp
@@ -1557,7 +1557,7 @@ Partial Class frmMain
         '
         Me.cmnuShow.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuShowTitle, Me.ToolStripMenuItem2, Me.cmnuShowReload, Me.cmnuShowMark, Me.cmnuShowLock, Me.cmnuShowWatched, Me.ToolStripSeparator8, Me.cmnuShowEdit, Me.ToolStripSeparator7, Me.cmnuShowRescrape, Me.cmnuShowRefresh, Me.cmnuShowChange, Me.ToolStripSeparator11, Me.cmnuShowOpenFolder, Me.ToolStripSeparator20, Me.cmnuShowRemove})
         Me.cmnuShow.Name = "mnuShows"
-        Me.cmnuShow.Size = New System.Drawing.Size(247, 298)
+        Me.cmnuShow.Size = New System.Drawing.Size(247, 276)
         '
         'cmnuShowTitle
         '
@@ -4234,6 +4234,10 @@ Partial Class frmMain
         Me.ilColumnIcons.Images.SetKeyName(6, "listcheck.png")
         Me.ilColumnIcons.Images.SetKeyName(7, "listdotgrey.png")
         Me.ilColumnIcons.Images.SetKeyName(8, "haswatched.png")
+        Me.ilColumnIcons.Images.SetKeyName(9, "hasefanarts.png")
+        Me.ilColumnIcons.Images.SetKeyName(10, "hasbanner.png")
+        Me.ilColumnIcons.Images.SetKeyName(11, "haslandscape.png")
+        Me.ilColumnIcons.Images.SetKeyName(12, "hastheme.png")
         '
         'tmrWait
         '

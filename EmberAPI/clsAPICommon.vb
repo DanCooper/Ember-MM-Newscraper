@@ -545,6 +545,7 @@ Public Class Enums
 		ValidExts = 4
         ShowRegex = 5
         TrailerCodec = 6
+        ValidThemeExts = 7
 	End Enum
 
     Public Enum DelType As Integer
@@ -599,6 +600,7 @@ Public Class Enums
         ClearLogo = 7
         DiscArt = 8
         Landscape = 9
+        Theme = 10
     End Enum
 
     Public Enum ModuleEventType As Integer
@@ -639,6 +641,7 @@ Public Class Enums
         ListTitle = 7
         BannerItem = 8
         LandscapeItem = 9
+        ThemeItem = 10
     End Enum
     ''' <summary>
     ''' Enum representing valid TV series ordering.
@@ -1612,6 +1615,7 @@ Public Class Structures
         Dim PosterPath As String
         Dim Source As String
         Dim SubPath As String
+        Dim ThemePath As String
         Dim TrailerPath As String
         Dim UseFolder As Boolean
         Dim efList As List(Of String)
@@ -1653,6 +1657,7 @@ Public Class Structures
         Dim ShowPosterPath As String
         Dim ShowBannerPath As String
         Dim ShowLandscapePath As String
+        Dim ShowThemePath As String
         Dim Source As String
         Dim TVEp As MediaContainers.EpisodeDetails
         Dim TVShow As MediaContainers.TVShow

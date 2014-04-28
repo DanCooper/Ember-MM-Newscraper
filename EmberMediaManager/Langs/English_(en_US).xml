@@ -339,7 +339,7 @@
 	<string id="338"></string>
 	<string id="339">Choose a template</string>
 	<string id="340">Jukebox Builder</string>
-	<string id="341">Outpur Folder</string>
+	<string id="341">Output Folder</string>
 	<string id="342">Save Settings</string>
 	<string id="343">Build</string>
 	<string id="344">Property</string>
@@ -466,7 +466,7 @@
 	<string id="465">Hide Extrathumb Column</string>
 	<string id="466">Hide Sub Column</string>
 	<string id="467">Hide Trailer Column</string>
-	<string id="468">Hide Info Column</string>
+	<string id="468">Hide NFO Column</string>
 	<string id="469">Hide Fanart Column</string>
 	<string id="470">Hide Poster Column</string>
 	<string id="471">File Naming</string>
@@ -1154,4 +1154,18 @@
 	<string id="1066">Refresh Data</string>
 	<string id="1067">DVD</string>
 	<string id="1068">Scrapers - Themes</string>
+	<string id="1069">Select Theme</string>
+	<string id="1070">Hide Banner Column</string>
+	<string id="1071">Hide Landscape Column</string>
+	<string id="1072">Hide Theme Column</string>
+	<string id="1073">Check for Banner</string>
+	<string id="1074">Check for Landscape</string>
+	<string id="1075">Check for Theme</string>
+	<string id="1076">Theme Settings</string>
+	<string id="1077">Select the folder where you wish to store your themes...</string>
+	<string id="1078">The theme could not be played. This could due be you don't have the proper player to play the theme type.</string>
+	<string id="1079">Error Playing Theme</string>
+	<string id="1080">Are you sure you want to reset to the default list of valid theme extensions?</string>
+	<string id="1081">Valid Theme Extensions</string>
+	<string id="1082">Enable Theme Support</string>
 </strings>

@@ -30,15 +30,17 @@ Public Class GoEar
 #Region "Fields"
 
     Private originaltitle As String
+    Private listtitle As String
     Private _themelist As New List(Of Theme)
 
 #End Region 'Fields
 
 #Region "Constructors"
 
-    Public Sub New(ByVal soriginaltitle As String)
+    Public Sub New(ByVal sOriginalTitle As String, ByVal sListTitle As String)
         Clear()
-        originaltitle = soriginaltitle
+        originaltitle = sOriginalTitle
+        listtitle = sListTitle
         GetMovieThemes()
     End Sub
 
@@ -66,11 +68,21 @@ Public Class GoEar
     Private Sub GetMovieThemes()
         Dim BaseURL As String = "http://www.goear.com/search/"
         Dim DownloadURL As String = "http://www.goear.com/action/sound/get/"
-        Dim SearchTitle As String = Web.HttpUtility.UrlEncode(originaltitle)
-        Dim SearchURL As String = String.Concat(BaseURL, SearchTitle)
+        Dim SearchTitle As String
+        Dim SearchURL As String
+
+        If Not String.IsNullOrEmpty(originaltitle) Then
+            SearchTitle = Web.HttpUtility.UrlEncode(originaltitle)
+            SearchURL = String.Concat(BaseURL, SearchTitle)
+        ElseIf Not String.IsNullOrEmpty(listtitle) Then
+            SearchTitle = Web.HttpUtility.UrlEncode(listtitle)
+            SearchURL = String.Concat(BaseURL, SearchTitle)
+        Else
+            SearchURL = String.Empty
+        End If
 
         Try
-            If Not String.IsNullOrEmpty(SearchTitle) Then
+            If Not String.IsNullOrEmpty(SearchURL) Then
                 Dim tTitle As String = String.Empty
                 Dim tID As String = String.Empty
                 Dim tWebURL As String = String.Empty
@@ -101,7 +113,10 @@ Public Class GoEar
                         tDescription = sResult.Item(ctr).Groups(5).Value
                         tID = GetFileID(tWebURL)
                         tURL = String.Concat(DownloadURL, tID)
-                        _themelist.Add(New Theme With {.Title = tTitle, .ID = tID, .URL = tURL, .Description = tDescription, .Length = tLength, .Bitrate = tBitrate})
+
+                        If Not String.IsNullOrEmpty(tID) Then
+                            _themelist.Add(New Theme With {.Title = tTitle, .ID = tID, .URL = tURL, .Description = tDescription, .Length = tLength, .Bitrate = tBitrate})
+                        End If
                     Next
                 End If
             End If

@@ -50,6 +50,7 @@ Public Class Settings
     Private _filesystemexpertcleaner As Boolean
     Private _filesystemnostackexts As List(Of String)
     Private _filesystemvalidexts As List(Of String)
+    Private _filesystemvalidthemeexts As List(Of String)
     Private _generalcheckupdates As Boolean
     Private _generalcreationdate As Boolean
     Private _generaldaemondrive As String
@@ -83,6 +84,7 @@ Public Class Settings
     Private _movieactorthumbsqual As Integer
     Private _moviebackdropsauto As Boolean
     Private _moviebackdropspath As String
+    Private _moviebannercol As Boolean
     Private _moviebannerheight As Integer
     Private _moviebanneroverwrite As Boolean
     Private _moviebannerprefonly As Boolean
@@ -129,7 +131,7 @@ Public Class Settings
     Private _moviegeneralignorelastscan As Boolean
     Private _moviegeneralmarknew As Boolean
     Private _movieimdburl As String
-    Private _movieinfocol As Boolean
+    Private _movielandscapecol As Boolean
     Private _movielandscapeoverwrite As Boolean
     Private _movielevtolerance As Integer
     Private _movielockgenre As Boolean
@@ -144,14 +146,18 @@ Public Class Settings
     Private _movielocktitle As Boolean
     Private _movielocktrailer As Boolean
     Private _moviemetadataperfiletype As List(Of MetadataPerType)
+    Private _moviemissingbanner As Boolean
     Private _moviemissingefanarts As Boolean
     Private _moviemissingethumbs As Boolean
     Private _moviemissingfanart As Boolean
+    Private _moviemissinglandscape As Boolean
     Private _moviemissingnfo As Boolean
     Private _moviemissingposter As Boolean
     Private _moviemissingsubs As Boolean
+    Private _moviemissingtheme As Boolean
     Private _moviemissingtrailer As Boolean
     Private _moviemoviesetspath As String
+    Private _movienfocol As Boolean
     Private _movienosaveimagestonfo As Boolean
     Private _moviepostercol As Boolean
     Private _movieposterheight As Integer
@@ -212,6 +218,9 @@ Public Class Settings
     Private _moviesorttokens As List(Of String)
     Private _moviesorttokensisempty As Boolean
     Private _moviesubcol As Boolean
+    Private _moviethemecol As Boolean
+    Private _moviethemeenable As Boolean
+    Private _moviethemeoverwrite As Boolean
     Private _movietrailercol As Boolean
     Private _movietrailerdeleteexisting As Boolean
     Private _movietrailerenable As Boolean
@@ -406,6 +415,14 @@ Public Class Settings
     '************* XBMC optional settings *************
     Private _moviexbmctrailerformat As Boolean
     Private _moviexbmcprotectvtsbdmv As Boolean
+
+    '*************** XBMC theme settings ***************
+    Private _moviexbmcthemeenable As Boolean
+    Private _moviexbmcthemecustom As Boolean
+    Private _moviexbmcthememovie As Boolean
+    Private _moviexbmcthemesub As Boolean
+    Private _moviexbmcthemecustompath As String
+    Private _moviexbmcthemesubdir As String
 
     '****************** YAMJ settings *****************
     Private _movieuseyamj As Boolean
@@ -1678,6 +1695,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property MovieMissingBanner() As Boolean
+        Get
+            Return Me._moviemissingbanner
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviemissingbanner = value
+        End Set
+    End Property
+
     Public Property MovieMissingEThumbs() As Boolean
         Get
             Return Me._moviemissingethumbs
@@ -1702,6 +1728,15 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Me._moviemissingfanart = value
+        End Set
+    End Property
+
+    Public Property MovieMissingLandscape() As Boolean
+        Get
+            Return Me._moviemissinglandscape
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviemissinglandscape = value
         End Set
     End Property
 
@@ -1732,12 +1767,30 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property MovieMissingTheme() As Boolean
+        Get
+            Return Me._moviemissingtheme
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviemissingtheme = value
+        End Set
+    End Property
+
     Public Property MovieMissingTrailer() As Boolean
         Get
             Return Me._moviemissingtrailer
         End Get
         Set(ByVal value As Boolean)
             Me._moviemissingtrailer = value
+        End Set
+    End Property
+
+    Public Property MovieBannerCol() As Boolean
+        Get
+            Return Me._moviebannercol
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviebannercol = value
         End Set
     End Property
 
@@ -1768,12 +1821,21 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieInfoCol() As Boolean
+    Public Property MovieLandscapeCol() As Boolean
         Get
-            Return Me._movieinfocol
+            Return Me._movielandscapecol
         End Get
         Set(ByVal value As Boolean)
-            Me._movieinfocol = value
+            Me._movielandscapecol = value
+        End Set
+    End Property
+
+    Public Property MovieNFOCol() As Boolean
+        Get
+            Return Me._movienfocol
+        End Get
+        Set(ByVal value As Boolean)
+            Me._movienfocol = value
         End Set
     End Property
 
@@ -1819,6 +1881,15 @@ Public Class Settings
         End Get
         Set(ByVal value As String)
             Me._generaldaemondrive = value
+        End Set
+    End Property
+
+    Public Property MovieThemeCol() As Boolean
+        Get
+            Return Me._moviethemecol
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviethemecol = value
         End Set
     End Property
 
@@ -2287,6 +2358,15 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Me._movietraileroverwrite = value
+        End Set
+    End Property
+
+    Public Property MovieThemeOverwrite() As Boolean
+        Get
+            Return Me._moviethemeoverwrite
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviethemeoverwrite = value
         End Set
     End Property
     Public Property MovieScraperPlotForOutline() As Boolean
@@ -3468,6 +3548,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property MovieThemeEnable() As Boolean
+        Get
+            Return Me._moviethemeenable
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviethemeenable = value
+        End Set
+    End Property
+
     Public Property MovieScraperCertForMPAA() As Boolean
         Get
             Return Me._moviescrapercertformpaa
@@ -3501,6 +3590,15 @@ Public Class Settings
         End Get
         Set(ByVal value As List(Of String))
             Me._filesystemvalidexts = value
+        End Set
+    End Property
+
+    Public Property FileSystemValidThemeExts() As List(Of String)
+        Get
+            Return Me._filesystemvalidthemeexts
+        End Get
+        Set(ByVal value As List(Of String))
+            Me._filesystemvalidthemeexts = value
         End Set
     End Property
 
@@ -3825,6 +3923,60 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Me._movietrailereden = value
+        End Set
+    End Property
+
+    Public Property MovieXBMCThemeEnable() As Boolean
+        Get
+            Return Me._moviexbmcthemeenable
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviexbmcthemeenable = value
+        End Set
+    End Property
+
+    Public Property MovieXBMCThemeCustom() As Boolean
+        Get
+            Return Me._moviexbmcthemecustom
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviexbmcthemecustom = value
+        End Set
+    End Property
+
+    Public Property MovieXBMCThemeMovie() As Boolean
+        Get
+            Return Me._moviexbmcthememovie
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviexbmcthememovie = value
+        End Set
+    End Property
+
+    Public Property MovieXBMCThemeSub() As Boolean
+        Get
+            Return Me._moviexbmcthemesub
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviexbmcthemesub = value
+        End Set
+    End Property
+
+    Public Property MovieXBMCThemeCustomPath() As String
+        Get
+            Return Me._moviexbmcthemecustompath
+        End Get
+        Set(ByVal value As String)
+            Me._moviexbmcthemecustompath = value
+        End Set
+    End Property
+
+    Public Property MovieXBMCThemeSubDir() As String
+        Get
+            Return Me._moviexbmcthemesubdir
+        End Get
+        Set(ByVal value As String)
+            Me._moviexbmcthemesubdir = value
         End Set
     End Property
 
@@ -4768,6 +4920,7 @@ Public Class Settings
         Me._filesystemexpertcleaner = False
         Me._filesystemnostackexts = New List(Of String)
         Me._filesystemvalidexts = New List(Of String)
+        Me._filesystemvalidthemeexts = New List(Of String)
         Me._generalcheckupdates = True
         Me._generalcreationdate = False
         Me._generaldaemondrive = String.Empty
@@ -4813,6 +4966,7 @@ Public Class Settings
         Me._movieactorthumbsyamj = False
         Me._moviebackdropsauto = False
         Me._moviebackdropspath = String.Empty
+        Me._moviebannercol = False
         Me._moviebannereden = False
         Me._moviebannerexpertbdmv = String.Empty
         Me._moviebannerexpertmulti = String.Empty
@@ -4913,7 +5067,7 @@ Public Class Settings
         Me._moviegeneralignorelastscan = True
         Me._moviegeneralmarknew = False
         Me._movieimdburl = "akas.imdb.com"
-        Me._movieinfocol = False
+        Me._movielandscapecol = False
         Me._movielandscapeeden = False
         Me._movielandscapeexpertbdmv = String.Empty
         Me._movielandscapeexpertmulti = String.Empty
@@ -4936,14 +5090,18 @@ Public Class Settings
         Me._movielocktitle = False
         Me._movielocktrailer = False
         Me._moviemetadataperfiletype = New List(Of MetadataPerType)
+        Me._moviemissingbanner = True
         Me._moviemissingefanarts = True
         Me._moviemissingethumbs = True
         Me._moviemissingfanart = True
+        Me._moviemissinglandscape = True
         Me._moviemissingnfo = True
         Me._moviemissingposter = True
         Me._moviemissingsubs = False
+        Me._moviemissingtheme = True
         Me._moviemissingtrailer = True
         Me._moviemoviesetspath = String.Empty
+        Me._movienfocol = False
         Me._movienfoeden = False
         Me._movienfoexpertbdmv = String.Empty
         Me._movienfoexpertmulti = String.Empty
@@ -5023,6 +5181,9 @@ Public Class Settings
         Me._moviestackexpertmulti = False
         Me._moviestackexpertsingle = False
         Me._moviesubcol = False
+        Me._moviethemecol = False
+        Me._moviethemeenable = True
+        Me._moviethemeoverwrite = True
         Me._movietrailercol = False
         Me._movietrailerdeleteexisting = True
         Me._movietrailereden = False
@@ -5047,6 +5208,12 @@ Public Class Settings
         Me._movieusenmj = False
         Me._movieuseyamj = False
         Me._moviewatchedcol = False
+        Me._moviexbmcthemecustom = False
+        Me._moviexbmcthemecustompath = String.Empty
+        Me._moviexbmcthemeenable = False
+        Me._moviexbmcthememovie = False
+        Me._moviexbmcthemesub = False
+        Me._moviexbmcthemesubdir = "Theme"
         Me._moviexbmcprotectvtsbdmv = False
         Me._moviexbmctrailerformat = False
         Me._movieyamjcompatiblesets = False
@@ -5431,6 +5598,11 @@ Public Class Settings
         If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.ValidExts) AndAlso (Force OrElse Master.eSettings.FileSystemValidExts.Count <= 0) Then
             Master.eSettings.FileSystemValidExts.Clear()
             Master.eSettings.FileSystemValidExts.AddRange(Strings.Split(".avi,.divx,.mkv,.iso,.mpg,.mp4,.mpeg,.wmv,.wma,.mov,.mts,.m2t,.img,.dat,.bin,.cue,.ifo,.vob,.dvb,.evo,.asf,.asx,.avs,.nsv,.ram,.ogg,.ogm,.ogv,.flv,.swf,.nut,.viv,.rar,.m2ts,.dvr-ms,.ts,.m4v,.rmvb,.webm,.disc", ","))
+        End If
+
+        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.ValidThemeExts) AndAlso (Force OrElse Master.eSettings.FileSystemValidThemeExts.Count <= 0) Then
+            Master.eSettings.FileSystemValidThemeExts.Clear()
+            Master.eSettings.FileSystemValidThemeExts.AddRange(Strings.Split(".flac,.m4a,.mp3,.wav,.wma", ","))
         End If
 
         If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.ShowRegex) AndAlso (Force OrElse Master.eSettings.TVShowRegexes.Count <= 0) Then

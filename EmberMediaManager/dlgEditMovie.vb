@@ -226,6 +226,23 @@ Public Class dlgEditMovie
         Me.Close()
     End Sub
 
+    Private Sub btnDLTheme_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDLTheme.Click
+        Dim aUrlList As New List(Of Theme )
+        Dim tURL As String = String.Empty
+        If Not ModulesManager.Instance.MovieScrapeTheme(Master.currMovie, aUrlList) Then
+            Using dThemeSelect As New dlgThemeSelect()
+                tURL = dThemeSelect.ShowDialog(Master.currMovie, aUrlList)
+            End Using
+        End If
+
+        If Not String.IsNullOrEmpty(tURL) Then
+            Me.btnPlayTheme.Enabled = True
+            If StringUtils.isValidURL(tURL) Then
+                Master.currMovie.ThemePath = tURL
+            End If
+        End If
+    End Sub
+
     Private Sub btnDLTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDLTrailer.Click
         Dim aUrlList As New List(Of Trailers)
         Dim tURL As String = String.Empty
@@ -303,6 +320,33 @@ Public Class dlgEditMovie
 
         Catch
             MsgBox(Master.eLang.GetString(270, "The trailer could not be played. This could be due to an invalid URI or you do not have the proper player to play the trailer type."), MsgBoxStyle.Critical, Master.eLang.GetString(271, "Error Playing Trailer"))
+        End Try
+    End Sub
+
+    Private Sub btnPlayTheme_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPlayTheme.Click
+        'TODO 2013/12/18 Dekker500 - This should be re-factored to use Functions.Launch. Why is the URL different for non-windows??? Need to test first before editing
+        Try
+
+            Dim tPath As String = String.Empty
+
+            If Not String.IsNullOrEmpty(Master.currMovie.ThemePath) Then
+                tPath = String.Concat("""", Master.currMovie.ThemePath, """")
+            End If
+
+            If Not String.IsNullOrEmpty(tPath) Then
+                If Master.isWindows Then
+                    Process.Start(tPath)
+                Else
+                    Using Explorer As New Process
+                        Explorer.StartInfo.FileName = "xdg-open"
+                        Explorer.StartInfo.Arguments = tPath
+                        Explorer.Start()
+                    End Using
+                End If
+            End If
+
+        Catch
+            MsgBox(Master.eLang.GetString(1078, "The theme could not be played. This could due be you don't have the proper player to play the theme type."), MsgBoxStyle.Critical, Master.eLang.GetString(1079, "Error Playing Theme"))
         End Try
     End Sub
 
@@ -1138,6 +1182,12 @@ Public Class dlgEditMovie
                         .txtCerts.Text = Master.currMovie.Movie.Certification
                     End If
                 End If
+
+                If String.IsNullOrEmpty(Master.currMovie.ThemePath) Then
+                    .btnPlayTheme.Enabled = False
+                End If
+
+                .btnDLTheme.Enabled = Master.eSettings.MovieThemeEnable AndAlso ModulesManager.Instance.QueryTrailerScraperCapabilities(Enums.ScraperCapabilities.Theme)
 
                 Me.lblLocalTrailer.Visible = Not String.IsNullOrEmpty(Master.currMovie.TrailerPath)
                 If Not String.IsNullOrEmpty(Master.currMovie.Movie.Trailer) Then
@@ -2163,6 +2213,18 @@ Public Class dlgEditMovie
                     Next
                 End If
 
+                If Not String.IsNullOrEmpty(Master.currMovie.ThemePath) Then
+                    Dim lhttp As New HTTP
+                    Master.currMovie.ThemePath = lhttp.DownloadFile(Master.currMovie.ThemePath.Replace(":http", "http"), Path.Combine(Master.TempPath, "theme"), False, "theme")
+                    Dim TargetTheme As String = String.Empty
+                    Dim fExt As String = Path.GetExtension(Master.currMovie.ThemePath)
+                    For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.isSingle, Enums.ModType.Theme)
+                        File.Copy(Master.currMovie.ThemePath, a & fExt)
+                        TargetTheme = a & fExt
+                    Next
+                    Master.currMovie.ThemePath = TargetTheme
+                End If
+
                 If Not String.IsNullOrEmpty(Master.currMovie.TrailerPath) AndAlso Master.currMovie.TrailerPath.Contains(Master.TempPath) Then
                     Dim TargetTrailer As String = String.Empty
                     Dim fExt As String = Path.GetExtension(Master.currMovie.TrailerPath)
@@ -2269,7 +2331,7 @@ Public Class dlgEditMovie
         Me.lblTop250.Text = Master.eLang.GetString(240, "Top 250:")
         Me.lblTopDetails.Text = Master.eLang.GetString(224, "Edit the details for the selected movie.")
         Me.lblTopTitle.Text = Master.eLang.GetString(25, "Edit Movie")
-        Me.lblTrailer.Text = Master.eLang.GetString(227, "Trailer URL:")
+        Me.lblTrailerURL.Text = Master.eLang.GetString(227, "Trailer URL:")
         Me.lblVotes.Text = Master.eLang.GetString(244, "Votes:")
         Me.lblYear.Text = Master.eLang.GetString(49, "Year:")
         Me.tpBanner.Text = Master.eLang.GetString(838, "Banner")

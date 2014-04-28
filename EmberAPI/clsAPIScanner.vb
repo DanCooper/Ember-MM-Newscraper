@@ -358,6 +358,16 @@ Public Class Scanner
                 Next
             End If
 
+            'theme
+            If String.IsNullOrEmpty(Movie.Theme) Then
+                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType.Theme)
+                    For Each t As String In Master.eSettings.FileSystemValidThemeExts
+                        Movie.Theme = fList.FirstOrDefault(Function(s) s.ToLower = (String.Concat(a.ToLower, t)))
+                        If Not String.IsNullOrEmpty(Movie.Theme) Then Exit For
+                    Next
+                Next
+            End If
+
             'trailer
             If String.IsNullOrEmpty(Movie.Trailer) Then
                 For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType.Trailer)
@@ -1502,8 +1512,8 @@ Public Class Scanner
 #Region "Fields"
 
         Private _banner As String
-        Private _ethumbs As String
         Private _efanarts As String
+        Private _ethumbs As String
         Private _fanart As String
         Private _filename As String
         Private _landscape As String
@@ -1512,6 +1522,7 @@ Public Class Scanner
         Private _single As Boolean
         Private _source As String
         Private _subs As String
+        Private _theme As String
         Private _trailer As String
         Private _usefolder As Boolean
 
@@ -1536,21 +1547,21 @@ Public Class Scanner
             End Set
         End Property
 
-        Public Property EThumbs() As String
-            Get
-                Return _ethumbs
-            End Get
-            Set(ByVal value As String)
-                _ethumbs = value
-            End Set
-        End Property
-
         Public Property EFanarts() As String
             Get
                 Return _efanarts
             End Get
             Set(ByVal value As String)
                 _efanarts = value
+            End Set
+        End Property
+
+        Public Property EThumbs() As String
+            Get
+                Return _ethumbs
+            End Get
+            Set(ByVal value As String)
+                _ethumbs = value
             End Set
         End Property
 
@@ -1626,6 +1637,15 @@ Public Class Scanner
             End Set
         End Property
 
+        Public Property Theme() As String
+            Get
+                Return _theme
+            End Get
+            Set(ByVal value As String)
+                _theme = value
+            End Set
+        End Property
+
         Public Property Trailer() As String
             Get
                 Return _trailer
@@ -1660,6 +1680,7 @@ Public Class Scanner
             _nfo = String.Empty
             _ethumbs = String.Empty
             _efanarts = String.Empty
+            _theme = String.Empty
             _trailer = String.Empty
             _subs = String.Empty
         End Sub
