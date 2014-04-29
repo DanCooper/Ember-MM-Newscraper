@@ -163,6 +163,10 @@ Public Class frmIMDBInfoSettingsHolder
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
+    Private Sub chkVideoTitles_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkVideoTitles.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
     Private Sub chkVotes_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkVotes.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub

@@ -62,6 +62,7 @@ Partial Class frmIMDBInfoSettingsHolder
         Me.chkMPAA = New System.Windows.Forms.CheckBox()
         Me.chkYear = New System.Windows.Forms.CheckBox()
         Me.chkTitle = New System.Windows.Forms.CheckBox()
+        Me.chkVideoTitles = New System.Windows.Forms.CheckBox()
         Me.Panel1.SuspendLayout()
         Me.pnlSettings.SuspendLayout()
         Me.gbScraperOptions.SuspendLayout()
@@ -146,13 +147,14 @@ Partial Class frmIMDBInfoSettingsHolder
         '
         'gbScraperOptions
         '
+        Me.gbScraperOptions.Controls.Add(Me.chkVideoTitles)
         Me.gbScraperOptions.Controls.Add(Me.chkTvTitles)
         Me.gbScraperOptions.Controls.Add(Me.chkPartialTitles)
         Me.gbScraperOptions.Controls.Add(Me.chkPopularTitles)
         Me.gbScraperOptions.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbScraperOptions.Location = New System.Drawing.Point(10, 199)
         Me.gbScraperOptions.Name = "gbScraperOptions"
-        Me.gbScraperOptions.Size = New System.Drawing.Size(589, 99)
+        Me.gbScraperOptions.Size = New System.Drawing.Size(589, 130)
         Me.gbScraperOptions.TabIndex = 97
         Me.gbScraperOptions.TabStop = False
         Me.gbScraperOptions.Text = "Scraper Options"
@@ -526,6 +528,17 @@ Partial Class frmIMDBInfoSettingsHolder
         Me.chkTitle.Text = "Title"
         Me.chkTitle.UseVisualStyleBackColor = True
         '
+        'chkVideoTitles
+        '
+        Me.chkVideoTitles.AutoSize = True
+        Me.chkVideoTitles.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkVideoTitles.Location = New System.Drawing.Point(6, 92)
+        Me.chkVideoTitles.Name = "chkVideoTitles"
+        Me.chkVideoTitles.Size = New System.Drawing.Size(85, 17)
+        Me.chkVideoTitles.TabIndex = 3
+        Me.chkVideoTitles.Text = "Video Titles"
+        Me.chkVideoTitles.UseVisualStyleBackColor = True
+        '
         'frmIMDBInfoSettingsHolder
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -592,5 +605,6 @@ Partial Class frmIMDBInfoSettingsHolder
     Friend WithEvents chkTvTitles As System.Windows.Forms.CheckBox
     Friend WithEvents chkPartialTitles As System.Windows.Forms.CheckBox
     Friend WithEvents chkPopularTitles As System.Windows.Forms.CheckBox
+    Friend WithEvents chkVideoTitles As System.Windows.Forms.CheckBox
 
 End Class

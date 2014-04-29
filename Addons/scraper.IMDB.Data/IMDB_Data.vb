@@ -151,6 +151,7 @@ Public Class IMDB_Data
         _setup.chkPartialTitles.Checked = _MySettings.SearchPartialTitles
         _setup.chkPopularTitles.Checked = _MySettings.SearchPopularTitles
         _setup.chkTvTitles.Checked = _MySettings.SearchTvTitles
+        _setup.chkVideoTitles.Checked = _MySettings.SearchVideoTitles
 
         _setup.orderChanged()
         SPanel.Name = String.Concat(Me._Name, "Scraper")
@@ -202,6 +203,7 @@ Public Class IMDB_Data
         _MySettings.SearchPartialTitles = AdvancedSettings.GetBooleanSetting("SearchPartialTitles", True)
         _MySettings.SearchPopularTitles = AdvancedSettings.GetBooleanSetting("SearchPopularTitles", True)
         _MySettings.SearchTvTitles = AdvancedSettings.GetBooleanSetting("SearchTvTitles", False)
+        _MySettings.SearchVideoTitles = AdvancedSettings.GetBooleanSetting("SearchVideoTitles", False)
     End Sub
 
     Sub SaveSettings()
@@ -237,6 +239,7 @@ Public Class IMDB_Data
             settings.SetBooleanSetting("SearchPartialTitles", _MySettings.SearchPartialTitles)
             settings.SetBooleanSetting("SearchPopularTitles", _MySettings.SearchPopularTitles)
             settings.SetBooleanSetting("SearchTvTitles", _MySettings.SearchTvTitles)
+            settings.SetBooleanSetting("SearchVideoTitles", _MySettings.SearchVideoTitles)
         End Using
     End Sub
 
@@ -270,6 +273,7 @@ Public Class IMDB_Data
         _MySettings.SearchPartialTitles = _setup.chkPartialTitles.Checked
         _MySettings.SearchPopularTitles = _setup.chkPopularTitles.Checked
         _MySettings.SearchTvTitles = _setup.chkTvTitles.Checked
+        _MySettings.SearchVideoTitles = _setup.chkVideoTitles.Checked
 
         SaveSettings()
         'ModulesManager.Instance.SaveSettings()
@@ -402,6 +406,7 @@ Public Class IMDB_Data
         Dim SearchPartialTitles As Boolean
         Dim SearchPopularTitles As Boolean
         Dim SearchTvTitles As Boolean
+        Dim SearchVideoTitles As Boolean
 #End Region 'Fields
 
     End Structure

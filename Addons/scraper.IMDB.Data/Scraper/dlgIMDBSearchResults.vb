@@ -337,6 +337,20 @@ Public Class dlgIMDBSearchResults
                         selNode = TnP.FirstNode
                     End If
 
+                    If M.VideoTitles.Count > 0 Then
+                        M.VideoTitles.Sort()
+                        If M.PartialMatches.Count > 0 Then
+                            Me.tvResults.Nodes(TnP.Index).Collapse()
+                        End If
+                        TnP = New TreeNode(String.Format(Master.eLang.GetString(1083, "Video Titles ({0})"), M.VideoTitles.Count))
+                        For Each Movie As MediaContainers.Movie In M.VideoTitles
+                            TnP.Nodes.Add(New TreeNode() With {.Text = String.Concat(Movie.Title, If(Not String.IsNullOrEmpty(Movie.Year), String.Format(" ({0})", Movie.Year), String.Empty)), .Tag = Movie.IMDBID})
+                        Next
+                        TnP.Expand()
+                        Me.tvResults.Nodes.Add(TnP)
+                        selNode = TnP.FirstNode
+                    End If
+
                     If M.PopularTitles.Count > 0 Then
                         M.PopularTitles.Sort()
                         If M.PartialMatches.Count > 0 OrElse M.TvTitles.Count > 0 Then
