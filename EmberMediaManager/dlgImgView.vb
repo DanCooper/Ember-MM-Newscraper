@@ -72,8 +72,8 @@ Public Class dlgImgView
 
             ImageUtils.ResizePB(Me.pbPicture, Me.pbCache, My.Computer.Screen.WorkingArea.Height - 60, My.Computer.Screen.WorkingArea.Width)
 
-            Me.Width = Me.pbPicture.Width
-            Me.Height = Me.pbPicture.Height + 53
+            Me.Width = Me.pbPicture.Width + 16
+            Me.Height = Me.pbPicture.Height + 64
             Me.Left = Convert.ToInt32((My.Computer.Screen.WorkingArea.Width - Me.Width) / 2)
             Me.Top = Convert.ToInt32((My.Computer.Screen.WorkingArea.Height - Me.Height) / 2)
 
@@ -93,6 +93,7 @@ Public Class dlgImgView
             Me.Visible = False 'hide form until resizing is done... hides Full -> Fit position whackiness not fixable by .SuspendLayout
             Dim screenHeight As Integer = My.Computer.Screen.WorkingArea.Height
             Dim screenWidth As Integer = My.Computer.Screen.WorkingArea.Width
+            Dim HasVertBar As Boolean = False
 
             Me.ResetScroll()
             Me.isFull = True
@@ -105,15 +106,20 @@ Public Class dlgImgView
 
             If Me.pbPicture.Height >= (screenHeight - 32) Then
                 Me.Height = screenHeight
+                HasVertBar = True
             Else
-                Me.Height = pbPicture.Height + 32
+                Me.Height = pbPicture.Height + 64
             End If
             Me.Top = Convert.ToInt32((screenHeight - Me.Height) / 2)
 
             If Me.pbPicture.Width >= (screenWidth - 25) Then
                 Me.Width = screenWidth
             Else
-                Me.Width = Me.pbPicture.Width + 25
+                If HasVertBar Then
+                    Me.Width = Me.pbPicture.Width + 33
+                Else
+                    Me.Width = Me.pbPicture.Width + 16
+                End If
             End If
             Me.Left = Convert.ToInt32((screenWidth - Me.Width) / 2)
 
