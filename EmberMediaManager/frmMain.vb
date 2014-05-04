@@ -10381,6 +10381,78 @@ doCancel:
                 .cmnuMovieReSelAskBanner.Text = .mnuAllAutoBanner.Text
                 .cmnuMovieReSelAutoBanner.Text = .mnuAllAutoBanner.Text
 
+                ' Scrape Media Content: ClearArt
+                .mnuAllAutoClearArt.Text = Master.eLang.GetString(1122, "ClearArt Only")
+                .mnuAllAskClearArt.Text = .mnuAllAutoClearArt.Text
+                .mnuMissAutoClearArt.Text = .mnuAllAutoClearArt.Text
+                .mnuMissAskClearArt.Text = .mnuAllAutoClearArt.Text
+                .mnuNewAutoClearArt.Text = .mnuAllAutoClearArt.Text
+                .mnuNewAskClearArt.Text = .mnuAllAutoClearArt.Text
+                .mnuMarkAutoClearArt.Text = .mnuAllAutoClearArt.Text
+                .mnuMarkAskClearArt.Text = .mnuAllAutoClearArt.Text
+                .mnuFilterAutoClearArt.Text = .mnuAllAutoClearArt.Text
+                .mnuFilterAskClearArt.Text = .mnuAllAutoClearArt.Text
+                .cmnuTrayAllAutoClearArt.Text = .mnuAllAutoClearArt.Text
+                .cmnuTrayAllAskClearArt.Text = .mnuAllAutoClearArt.Text
+                .cmnuTrayMissAutoClearArt.Text = .mnuAllAutoClearArt.Text
+                .cmnuTrayMissAskClearArt.Text = .mnuAllAutoClearArt.Text
+                .cmnuTrayNewAutoClearArt.Text = .mnuAllAutoClearArt.Text
+                .cmnuTrayNewAskClearArt.Text = .mnuAllAutoClearArt.Text
+                .cmnuTrayMarkAutoClearArt.Text = .mnuAllAutoClearArt.Text
+                .cmnuTrayMarkAskClearArt.Text = .mnuAllAutoClearArt.Text
+                .cmnuTrayFilterAutoClearArt.Text = .mnuAllAutoClearArt.Text
+                .cmnuTrayFilterAskClearArt.Text = .mnuAllAutoClearArt.Text
+                .cmnuMovieReSelAskClearArt.Text = .mnuAllAutoClearArt.Text
+                .cmnuMovieReSelAutoClearArt.Text = .mnuAllAutoClearArt.Text
+
+                ' Scrape Media Content: ClearLogo
+                .mnuAllAutoClearLogo.Text = Master.eLang.GetString(1123, "ClearLogo Only")
+                .mnuAllAskClearLogo.Text = .mnuAllAutoClearLogo.Text
+                .mnuMissAutoClearLogo.Text = .mnuAllAutoClearLogo.Text
+                .mnuMissAskClearLogo.Text = .mnuAllAutoClearLogo.Text
+                .mnuNewAutoClearLogo.Text = .mnuAllAutoClearLogo.Text
+                .mnuNewAskClearLogo.Text = .mnuAllAutoClearLogo.Text
+                .mnuMarkAutoClearLogo.Text = .mnuAllAutoClearLogo.Text
+                .mnuMarkAskClearLogo.Text = .mnuAllAutoClearLogo.Text
+                .mnuFilterAutoClearLogo.Text = .mnuAllAutoClearLogo.Text
+                .mnuFilterAskClearLogo.Text = .mnuAllAutoClearLogo.Text
+                .cmnuTrayAllAutoClearLogo.Text = .mnuAllAutoClearLogo.Text
+                .cmnuTrayAllAskClearLogo.Text = .mnuAllAutoClearLogo.Text
+                .cmnuTrayMissAutoClearLogo.Text = .mnuAllAutoClearLogo.Text
+                .cmnuTrayMissAskClearLogo.Text = .mnuAllAutoClearLogo.Text
+                .cmnuTrayNewAutoClearLogo.Text = .mnuAllAutoClearLogo.Text
+                .cmnuTrayNewAskClearLogo.Text = .mnuAllAutoClearLogo.Text
+                .cmnuTrayMarkAutoClearLogo.Text = .mnuAllAutoClearLogo.Text
+                .cmnuTrayMarkAskClearLogo.Text = .mnuAllAutoClearLogo.Text
+                .cmnuTrayFilterAutoClearLogo.Text = .mnuAllAutoClearLogo.Text
+                .cmnuTrayFilterAskClearLogo.Text = .mnuAllAutoClearLogo.Text
+                .cmnuMovieReSelAskClearLogo.Text = .mnuAllAutoClearLogo.Text
+                .cmnuMovieReSelAutoClearLogo.Text = .mnuAllAutoClearLogo.Text
+
+                ' Scrape Media Content: DiscArt
+                .mnuAllAutoDiscArt.Text = Master.eLang.GetString(1124, "DiscArt Only")
+                .mnuAllAskDiscArt.Text = .mnuAllAutoDiscArt.Text
+                .mnuMissAutoDiscArt.Text = .mnuAllAutoDiscArt.Text
+                .mnuMissAskDiscArt.Text = .mnuAllAutoDiscArt.Text
+                .mnuNewAutoDiscArt.Text = .mnuAllAutoDiscArt.Text
+                .mnuNewAskDiscArt.Text = .mnuAllAutoDiscArt.Text
+                .mnuMarkAutoDiscArt.Text = .mnuAllAutoDiscArt.Text
+                .mnuMarkAskDiscArt.Text = .mnuAllAutoDiscArt.Text
+                .mnuFilterAutoDiscArt.Text = .mnuAllAutoDiscArt.Text
+                .mnuFilterAskDiscArt.Text = .mnuAllAutoDiscArt.Text
+                .cmnuTrayAllAutoDiscArt.Text = .mnuAllAutoDiscArt.Text
+                .cmnuTrayAllAskDiscArt.Text = .mnuAllAutoDiscArt.Text
+                .cmnuTrayMissAutoDiscArt.Text = .mnuAllAutoDiscArt.Text
+                .cmnuTrayMissAskDiscArt.Text = .mnuAllAutoDiscArt.Text
+                .cmnuTrayNewAutoDiscArt.Text = .mnuAllAutoDiscArt.Text
+                .cmnuTrayNewAskDiscArt.Text = .mnuAllAutoDiscArt.Text
+                .cmnuTrayMarkAutoDiscArt.Text = .mnuAllAutoDiscArt.Text
+                .cmnuTrayMarkAskDiscArt.Text = .mnuAllAutoDiscArt.Text
+                .cmnuTrayFilterAutoDiscArt.Text = .mnuAllAutoDiscArt.Text
+                .cmnuTrayFilterAskDiscArt.Text = .mnuAllAutoDiscArt.Text
+                .cmnuMovieReSelAskDiscArt.Text = .mnuAllAutoDiscArt.Text
+                .cmnuMovieReSelAutoDiscArt.Text = .mnuAllAutoDiscArt.Text
+
                 ' Scrape Media Content: Landscape
                 .mnuAllAutoLandscape.Text = Master.eLang.GetString(1061, "Landscape Only")
                 .mnuAllAskLandscape.Text = .mnuAllAutoLandscape.Text
@@ -10500,6 +10572,30 @@ doCancel:
                 .cmnuTrayFilterAskEFanarts.Text = .mnuAllAutoEFanarts.Text
                 .cmnuMovieReSelAskEFanarts.Text = .mnuAllAutoEFanarts.Text
                 .cmnuMovieReSelAutoEFanarts.Text = .mnuAllAutoEFanarts.Text
+
+                ' Scrape Media Content: Theme
+                .mnuAllAutoTheme.Text = Master.eLang.GetString(1125, "Theme Only")
+                .mnuAllAskTheme.Text = .mnuAllAutoTheme.Text
+                .mnuMissAutoTheme.Text = .mnuAllAutoTheme.Text
+                .mnuMissAskTheme.Text = .mnuAllAutoTheme.Text
+                .mnuNewAutoTheme.Text = .mnuAllAutoTheme.Text
+                .mnuNewAskTheme.Text = .mnuAllAutoTheme.Text
+                .mnuMarkAutoTheme.Text = .mnuAllAutoTheme.Text
+                .mnuMarkAskTheme.Text = .mnuAllAutoTheme.Text
+                .mnuFilterAutoTheme.Text = .mnuAllAutoTheme.Text
+                .mnuFilterAskTheme.Text = .mnuAllAutoTheme.Text
+                .cmnuTrayAllAutoTheme.Text = .mnuAllAutoTheme.Text
+                .cmnuTrayAllAskTheme.Text = .mnuAllAutoTheme.Text
+                .cmnuTrayMissAutoTheme.Text = .mnuAllAutoTheme.Text
+                .cmnuTrayMissAskTheme.Text = .mnuAllAutoTheme.Text
+                .cmnuTrayNewAutoTheme.Text = .mnuAllAutoTheme.Text
+                .cmnuTrayNewAskTheme.Text = .mnuAllAutoTheme.Text
+                .cmnuTrayMarkAutoTheme.Text = .mnuAllAutoTheme.Text
+                .cmnuTrayMarkAskTheme.Text = .mnuAllAutoTheme.Text
+                .cmnuTrayFilterAutoTheme.Text = .mnuAllAutoTheme.Text
+                .cmnuTrayFilterAskTheme.Text = .mnuAllAutoTheme.Text
+                .cmnuMovieReSelAskTheme.Text = .mnuAllAutoTheme.Text
+                .cmnuMovieReSelAutoTheme.Text = .mnuAllAutoTheme.Text
 
                 ' Scrape Media Content: Trailer
                 .mnuAllAutoTrailer.Text = Master.eLang.GetString(75, "Trailer Only")
