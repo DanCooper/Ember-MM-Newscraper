@@ -1404,6 +1404,18 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
+    Private Sub chkMovieMissingClearArt_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieMissingClearArt.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMovieMissingClearLogo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieMissingClearLogo.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMovieMissingDiscArt_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieMissingDiscArt.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
     Private Sub chkMovieMissingEThumbs_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieMissingEThumbs.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
@@ -1441,6 +1453,18 @@ Public Class dlgSettings
     End Sub
 
     Private Sub chkMovieBannerCol_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieBannerCol.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMovieClearArtCol_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieClearArtCol.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMoviechkMovieClearLogoCol_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieClearLogoCol.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMovieDiscArtCol_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieDiscArtCol.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -2606,10 +2630,13 @@ Public Class dlgSettings
                     Me.txtMovieBannerWidth.Text = .MovieBannerWidth.ToString
                 End If
                 Me.chkMovieCleanDB.Checked = .MovieCleanDB
+                Me.chkMovieClearArtCol.Checked = .MovieClearArtCol
                 Me.chkMovieClearArtOverwrite.Checked = .MovieClearArtOverwrite
+                Me.chkMovieClearLogoCol.Checked = .MovieClearLogoCol
                 Me.chkMovieClearLogoOverwrite.Checked = .MovieClearLogoOverwrite
                 Me.chkMovieClickScrape.Checked = .MovieClickScrape
                 Me.chkMovieClickScrapeAsk.Checked = .MovieClickScrapeAsk
+                Me.chkMovieDiscArtCol.Checked = .MovieDiscArtCol
                 Me.chkMovieDiscArtOverwrite.Checked = .MovieDiscArtOverwrite
                 Me.chkMovieDisplayYear.Checked = .MovieDisplayYear
                 Me.chkMovieEFanartsCol.Checked = .MovieEFanartsCol
@@ -2653,6 +2680,9 @@ Public Class dlgSettings
                 Me.chkMovieLockTitle.Checked = .MovieLockTitle
                 Me.chkMovieLockTrailer.Checked = .MovieLockTrailer
                 Me.chkMovieMissingBanner.Checked = .MovieMissingBanner
+                Me.chkMovieMissingClearArt.Checked = .MovieMissingClearArt
+                Me.chkMovieMissingClearLogo.Checked = .MovieMissingClearLogo
+                Me.chkMovieMissingDiscArt.Checked = .MovieMissingDiscArt
                 Me.chkMovieMissingEFanarts.Checked = .MovieMissingEFanarts
                 Me.chkMovieMissingEThumbs.Checked = .MovieMissingEThumbs
                 Me.chkMovieMissingFanart.Checked = .MovieMissingFanart
@@ -3934,10 +3964,13 @@ Public Class dlgSettings
                 .MovieBannerResize = Me.chkMovieBannerResize.Checked
                 .MovieBannerWidth = If(Not String.IsNullOrEmpty(Me.txtMovieBannerWidth.Text), Convert.ToInt32(Me.txtMovieBannerWidth.Text), 0)
                 .MovieCleanDB = Me.chkMovieCleanDB.Checked
+                .MovieClearArtCol = Me.chkMovieClearArtCol.Checked
                 .MovieClearArtOverwrite = Me.chkMovieClearArtOverwrite.Checked
+                .MovieClearLogoCol = Me.chkMovieClearLogoCol.Checked
                 .MovieClearLogoOverwrite = Me.chkMovieClearLogoOverwrite.Checked
                 .MovieClickScrape = Me.chkMovieClickScrape.Checked
                 .MovieClickScrapeAsk = Me.chkMovieClickScrapeAsk.Checked
+                .MovieDiscArtCol = Me.chkMovieDiscArtCol.Checked
                 .MovieDiscArtOverwrite = Me.chkMovieDiscArtOverwrite.Checked
                 .MovieDisplayYear = Me.chkMovieDisplayYear.Checked
                 .MovieEFanartsCol = Me.chkMovieEFanartsCol.Checked
@@ -3995,6 +4028,9 @@ Public Class dlgSettings
                 .MovieMetadataPerFileType.Clear()
                 .MovieMetadataPerFileType.AddRange(Me.MovieMeta)
                 .MovieMissingBanner = Me.chkMovieMissingBanner.Checked
+                .MovieMissingClearArt = Me.chkMovieMissingClearArt.Checked
+                .MovieMissingClearLogo = Me.chkMovieMissingClearLogo.Checked
+                .MovieMissingDiscArt = Me.chkMovieMissingDiscArt.Checked
                 .MovieMissingEFanarts = Me.chkMovieMissingEFanarts.Checked
                 .MovieMissingEThumbs = Me.chkMovieMissingEThumbs.Checked
                 .MovieMissingFanart = Me.chkMovieMissingFanart.Checked
@@ -4703,6 +4739,9 @@ Public Class dlgSettings
         Me.chkTVGeneralMarkNewEpisodes.Text = Master.eLang.GetString(621, "Mark New Episodes")
         Me.chkTVGeneralMarkNewShows.Text = Master.eLang.GetString(549, "Mark New Shows")
         Me.chkMovieMissingBanner.Text = Master.eLang.GetString(1073, "Check for Banner")
+        Me.chkMovieMissingClearArt.Text = Master.eLang.GetString(1112, "Check for ClearArt")
+        Me.chkMovieMissingClearLogo.Text = Master.eLang.GetString(1113, "Check for ClearLogo")
+        Me.chkMovieMissingDiscArt.Text = Master.eLang.GetString(1114, "Check for DiscArt")
         Me.chkMovieMissingEFanarts.Text = Master.eLang.GetString(976, "Check for Extrafanarts")
         Me.chkMovieMissingEThumbs.Text = Master.eLang.GetString(587, "Check for Extrathumbs")
         Me.chkMovieMissingFanart.Text = Master.eLang.GetString(583, "Check for Fanart")
@@ -4713,6 +4752,9 @@ Public Class dlgSettings
         Me.chkMovieMissingTheme.Text = Master.eLang.GetString(1075, "Check for Theme")
         Me.chkMovieMissingTrailer.Text = Master.eLang.GetString(585, "Check for Trailer")
         Me.chkMovieBannerCol.Text = Master.eLang.GetString(1070, "Hide Banner Column")
+        Me.chkMovieClearArtCol.Text = Master.eLang.GetString(1115, "Hide ClearArt Column")
+        Me.chkMovieClearLogoCol.Text = Master.eLang.GetString(1116, "Hide ClearLogo Column")
+        Me.chkMovieDiscArtCol.Text = Master.eLang.GetString(1117, "Hide DiscArt Column")
         Me.chkMovieEFanartsCol.Text = Master.eLang.GetString(983, "Hide Extrafanart Column")
         Me.chkMovieEThumbsCol.Text = Master.eLang.GetString(465, "Hide Extrathumb Column")
         Me.chkMovieFanartCol.Text = Master.eLang.GetString(469, "Hide Fanart Column")

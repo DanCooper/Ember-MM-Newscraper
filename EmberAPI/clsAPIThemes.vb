@@ -28,6 +28,7 @@ Public Class Theme
     Private _title As String
     Private _id As String
     Private _url As String
+    Private _weburl As String
     Private _description As String
     Private _length As String
     Private _bitrate As String
@@ -98,6 +99,15 @@ Public Class Theme
         End Set
     End Property
 
+    Public Property WebURL() As String
+        Get
+            Return _weburl
+        End Get
+        Set(ByVal value As String)
+            _weburl = value
+        End Set
+    End Property
+
 #End Region 'Properties
 
 #Region "Events"
@@ -112,6 +122,7 @@ Public Class Theme
         _title = String.Empty
         _id = String.Empty
         _url = String.Empty
+        _weburl = String.Empty
         _description = String.Empty
         _length = String.Empty
         _bitrate = String.Empty
@@ -140,14 +151,14 @@ Public Class Theme
     ''' <param name="sURL">URL from which to get the theme</param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Shared Function DownloadTheme(ByVal sPath As String, ByVal isSingle As Boolean, ByVal sURL As String) As String
+    Public Shared Function DownloadTheme(ByVal sPath As String, ByVal isSingle As Boolean, ByVal sURL As String, ByVal sWebURL As String) As String
         Dim WebPage As New HTTP
         Dim tURL As String = String.Empty
         Dim lhttp As New HTTP
         Dim tTheme As String = String.Empty
         'AddHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
 
-        tTheme = lhttp.DownloadFile(sURL, Path.Combine(Master.TempPath, "theme"), False, "theme")
+        tTheme = lhttp.DownloadFile(sURL, Path.Combine(Master.TempPath, "theme"), False, "theme", sWebURL)
         Dim fExt As String = Path.GetExtension(tTheme)
         For Each a In FileUtils.GetFilenameList.Movie(sPath, isSingle, Enums.ModType.Theme)
             If File.Exists(a & fExt) Then

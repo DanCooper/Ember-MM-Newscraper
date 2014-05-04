@@ -312,6 +312,30 @@ Public Class Scanner
                 Next
             End If
 
+            'clearart
+            If String.IsNullOrEmpty(Movie.ClearArt) Then
+                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType.ClearArt)
+                    Movie.ClearArt = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                    If Not String.IsNullOrEmpty(Movie.ClearArt) Then Exit For
+                Next
+            End If
+
+            'clearlogo
+            If String.IsNullOrEmpty(Movie.ClearLogo) Then
+                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType.ClearLogo)
+                    Movie.ClearLogo = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                    If Not String.IsNullOrEmpty(Movie.ClearLogo) Then Exit For
+                Next
+            End If
+
+            'discart
+            If String.IsNullOrEmpty(Movie.DiscArt) Then
+                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType.DiscArt)
+                    Movie.DiscArt = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                    If Not String.IsNullOrEmpty(Movie.DiscArt) Then Exit For
+                Next
+            End If
+
             'extrafanart
             If String.IsNullOrEmpty(Movie.EFanarts) Then
                 If eflist.Count > 0 Then
@@ -1512,6 +1536,9 @@ Public Class Scanner
 #Region "Fields"
 
         Private _banner As String
+        Private _clearart As String
+        Private _clearlogo As String
+        Private _discart As String
         Private _efanarts As String
         Private _ethumbs As String
         Private _fanart As String
@@ -1544,6 +1571,33 @@ Public Class Scanner
             End Get
             Set(ByVal value As String)
                 _banner = value
+            End Set
+        End Property
+
+        Public Property ClearArt() As String
+            Get
+                Return _clearart
+            End Get
+            Set(ByVal value As String)
+                _clearart = value
+            End Set
+        End Property
+
+        Public Property ClearLogo() As String
+            Get
+                Return _clearlogo
+            End Get
+            Set(ByVal value As String)
+                _clearlogo = value
+            End Set
+        End Property
+
+        Public Property DiscArt() As String
+            Get
+                Return _discart
+            End Get
+            Set(ByVal value As String)
+                _discart = value
             End Set
         End Property
 
@@ -1670,6 +1724,9 @@ Public Class Scanner
 
         Public Sub Clear()
             _banner = String.Empty
+            _clearart = String.Empty
+            _clearlogo = String.Empty
+            _discart = String.Empty
             _filename = String.Empty
             _source = String.Empty
             _single = False

@@ -596,6 +596,22 @@
     <None Include="Resources\Wizard.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\hasBanner.png" />
+    <None Include="Resources\hasCharacterArt.png" />
+    <None Include="Resources\hasClearArt.png" />
+    <None Include="Resources\hasClearLogo.png" />
+    <None Include="Resources\hasDiscArt.png" />
+    <None Include="Resources\hasExtrafanart.png" />
+    <None Include="Resources\hasExtrathumb.png" />
+    <None Include="Resources\hasFanart.png" />
+    <None Include="Resources\hasNfo.png" />
+    <None Include="Resources\hasPoster.png" />
+    <None Include="Resources\hasSubtitle.png" />
+    <None Include="Resources\hasTheme.png" />
+    <None Include="Resources\hasTrailer.png" />
+    <None Include="Resources\haslandscape.png" />
+    <None Include="Resources\hasMeta.png" />
+    <None Include="Resources\hasActorThumb.png" />
     <Content Include="x64\SQLite.Interop.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

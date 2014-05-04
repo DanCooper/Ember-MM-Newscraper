@@ -104,9 +104,29 @@ Public Class frmFanartTVMediaSettingsHolder
 
     Private Sub chkScrapeClearArt_CheckedChanged(sender As Object, e As EventArgs) Handles chkScrapeClearArt.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
+
+        Me.chkScrapeClearArtOnlyHD.Enabled = Me.chkScrapeClearArt.Checked
+
+        If Not Me.chkScrapeClearArt.Checked Then
+            Me.chkScrapeClearArtOnlyHD.Checked = False
+        End If
+    End Sub
+
+    Private Sub chkScrapeClearArtOnlyHD_CheckedChanged(sender As Object, e As EventArgs) Handles chkScrapeClearArtOnlyHD.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
     End Sub
 
     Private Sub chkScrapeClearLogo_CheckedChanged(sender As Object, e As EventArgs) Handles chkScrapeClearLogo.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+
+        Me.chkScrapeClearLogoOnlyHD.Enabled = Me.chkScrapeClearLogo.Checked
+
+        If Not Me.chkScrapeClearLogo.Checked Then
+            Me.chkScrapeClearLogoOnlyHD.Checked = False
+        End If
+    End Sub
+
+    Private Sub chkScrapeClearLogoOnlyHD_CheckedChanged(sender As Object, e As EventArgs) Handles chkScrapeClearLogoOnlyHD.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
@@ -143,7 +163,9 @@ Public Class frmFanartTVMediaSettingsHolder
         Me.chkScrapeBanner.Text = Master.eLang.GetString(1051, "Get Banner")
         Me.chkScrapeCharacterArt.Text = Master.eLang.GetString(1052, "Get CharacterArt")
         Me.chkScrapeClearArt.Text = Master.eLang.GetString(1053, "Get ClearArt")
+        Me.chkScrapeClearArtOnlyHD.Text = Master.eLang.GetString(1105, "Only HD")
         Me.chkScrapeClearLogo.Text = Master.eLang.GetString(1054, "Get ClearLogo")
+        Me.chkScrapeClearLogoOnlyHD.Text = Me.chkScrapeClearArtOnlyHD.Text
         Me.chkScrapeDiscArt.Text = Master.eLang.GetString(1055, "Get DiscArt")
         Me.chkScrapeLandscape.Text = Master.eLang.GetString(1056, "Get Landscape")
         Me.lblAPIKey.Text = Master.eLang.GetString(789, "Fanart.tv API Key:")

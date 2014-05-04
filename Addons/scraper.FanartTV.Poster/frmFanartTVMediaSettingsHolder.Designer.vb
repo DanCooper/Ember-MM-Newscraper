@@ -25,6 +25,7 @@ Partial Class frmFanartTVMediaSettingsHolder
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmFanartTVMediaSettingsHolder))
         Me.pnlSettings = New System.Windows.Forms.Panel()
         Me.gbImages = New System.Windows.Forms.GroupBox()
+        Me.chkScrapeClearLogoOnlyHD = New System.Windows.Forms.CheckBox()
         Me.chkScrapeLandscape = New System.Windows.Forms.CheckBox()
         Me.chkScrapeDiscArt = New System.Windows.Forms.CheckBox()
         Me.chkScrapeCharacterArt = New System.Windows.Forms.CheckBox()
@@ -46,6 +47,7 @@ Partial Class frmFanartTVMediaSettingsHolder
         Me.btnDown = New System.Windows.Forms.Button()
         Me.btnUp = New System.Windows.Forms.Button()
         Me.cbEnabled = New System.Windows.Forms.CheckBox()
+        Me.chkScrapeClearArtOnlyHD = New System.Windows.Forms.CheckBox()
         Me.pnlSettings.SuspendLayout()
         Me.gbImages.SuspendLayout()
         Me.gbAPIKey.SuspendLayout()
@@ -68,6 +70,8 @@ Partial Class frmFanartTVMediaSettingsHolder
         '
         'gbImages
         '
+        Me.gbImages.Controls.Add(Me.chkScrapeClearArtOnlyHD)
+        Me.gbImages.Controls.Add(Me.chkScrapeClearLogoOnlyHD)
         Me.gbImages.Controls.Add(Me.chkScrapeLandscape)
         Me.gbImages.Controls.Add(Me.chkScrapeDiscArt)
         Me.gbImages.Controls.Add(Me.chkScrapeCharacterArt)
@@ -79,10 +83,22 @@ Partial Class frmFanartTVMediaSettingsHolder
         Me.gbImages.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbImages.Location = New System.Drawing.Point(11, 139)
         Me.gbImages.Name = "gbImages"
-        Me.gbImages.Size = New System.Drawing.Size(306, 116)
+        Me.gbImages.Size = New System.Drawing.Size(410, 116)
         Me.gbImages.TabIndex = 96
         Me.gbImages.TabStop = False
         Me.gbImages.Text = "Images"
+        '
+        'chkScrapeClearLogoOnlyHD
+        '
+        Me.chkScrapeClearLogoOnlyHD.AutoSize = True
+        Me.chkScrapeClearLogoOnlyHD.Enabled = False
+        Me.chkScrapeClearLogoOnlyHD.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        Me.chkScrapeClearLogoOnlyHD.Location = New System.Drawing.Point(308, 67)
+        Me.chkScrapeClearLogoOnlyHD.Name = "chkScrapeClearLogoOnlyHD"
+        Me.chkScrapeClearLogoOnlyHD.Size = New System.Drawing.Size(69, 17)
+        Me.chkScrapeClearLogoOnlyHD.TabIndex = 8
+        Me.chkScrapeClearLogoOnlyHD.Text = "Only HD"
+        Me.chkScrapeClearLogoOnlyHD.UseVisualStyleBackColor = True
         '
         'chkScrapeLandscape
         '
@@ -329,6 +345,18 @@ Partial Class frmFanartTVMediaSettingsHolder
         Me.cbEnabled.Text = "Enabled"
         Me.cbEnabled.UseVisualStyleBackColor = True
         '
+        'chkScrapeClearArtOnlyHD
+        '
+        Me.chkScrapeClearArtOnlyHD.AutoSize = True
+        Me.chkScrapeClearArtOnlyHD.Enabled = False
+        Me.chkScrapeClearArtOnlyHD.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        Me.chkScrapeClearArtOnlyHD.Location = New System.Drawing.Point(308, 44)
+        Me.chkScrapeClearArtOnlyHD.Name = "chkScrapeClearArtOnlyHD"
+        Me.chkScrapeClearArtOnlyHD.Size = New System.Drawing.Size(69, 17)
+        Me.chkScrapeClearArtOnlyHD.TabIndex = 9
+        Me.chkScrapeClearArtOnlyHD.Text = "Only HD"
+        Me.chkScrapeClearArtOnlyHD.UseVisualStyleBackColor = True
+        '
         'frmFanartTVMediaSettingsHolder
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -379,5 +407,7 @@ Partial Class frmFanartTVMediaSettingsHolder
     Friend WithEvents chkScrapeClearArt As System.Windows.Forms.CheckBox
     Friend WithEvents chkScrapeClearLogo As System.Windows.Forms.CheckBox
     Friend WithEvents chkScrapeBanner As System.Windows.Forms.CheckBox
+    Friend WithEvents chkScrapeClearLogoOnlyHD As System.Windows.Forms.CheckBox
+    Friend WithEvents chkScrapeClearArtOnlyHD As System.Windows.Forms.CheckBox
 
 End Class

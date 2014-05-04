@@ -44,6 +44,7 @@ Public Class HTTP
     Private _responseuri As String
     Private _URL As String = String.Empty
     Private _isJPG As Boolean = False
+    Private _isPNG As Boolean = False
     Private _defaultRequestTimeout As Integer = 20000  'request timeout in milliseconds
 #End Region 'Fields
 
@@ -75,6 +76,12 @@ Public Class HTTP
     Public ReadOnly Property isJPG() As Boolean
         Get
             Return Me._isJPG
+        End Get
+    End Property
+
+    Public ReadOnly Property isPNG() As Boolean
+        Get
+            Return Me._isPNG
         End Get
     End Property
 
@@ -262,13 +269,24 @@ Public Class HTTP
     ''' <remarks>
     ''' 2013/11/08 Dekker500 - Refactored the main Case statement to simplify the conditions and improve performance
     ''' </remarks>
-    Public Function DownloadFile(ByVal URL As String, ByVal LocalFile As String, ByVal ReportUpdate As Boolean, ByVal Type As String) As String
+    Public Function DownloadFile(ByVal URL As String, ByVal LocalFile As String, ByVal ReportUpdate As Boolean, ByVal Type As String, Optional WebURL As String = "") As String
         Dim outFile As String = String.Empty
         Dim urlExt As String = String.Empty
         Dim urlExtWeb As String = String.Empty
 
         Me._cancelRequested = False
         Try
+            If URL.Contains("goear") Then
+                'GoEar needs a existing connection to download files, otherwise you will be blocked
+                If Not String.IsNullOrEmpty(WebURL) Then
+                    Dim dummyclient As New WebClient
+                    dummyclient.OpenRead(WebURL)
+                    dummyclient.Dispose()
+                Else
+                    Return outFile
+                End If
+            End If
+
             Me.wrRequest = DirectCast(WebRequest.Create(URL), HttpWebRequest)
             Me.wrRequest.Timeout = _defaultRequestTimeout
 
@@ -338,6 +356,7 @@ Public Class HTTP
     Public Sub DownloadImage()
         Try
             Me._isJPG = False
+            Me._isPNG = False
             If StringUtils.isValidURL(Me._URL) Then
                 Me.wrRequest = DirectCast(HttpWebRequest.Create(Me._URL), HttpWebRequest)
                 Me.wrRequest.Timeout = _defaultRequestTimeout
@@ -355,6 +374,9 @@ Public Class HTTP
                         If Me._cancelRequested Then Return
                         If wrResponse.ContentType.ToLower.Contains("jpeg") Then
                             _isJPG = True
+                        End If
+                        If wrResponse.ContentType.ToLower.Contains("png") Then
+                            _isPNG = True
                         End If
                         Using SourceStream As System.IO.Stream = wrResponse.GetResponseStream()
                             Dim count = Convert.ToInt32(wrResponse.ContentLength)

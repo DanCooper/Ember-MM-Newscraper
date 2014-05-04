@@ -59,7 +59,13 @@ CREATE TABLE Movies (
 	HasLandscape BOOL,
 	LandscapePath,
 	HasTheme BOOL,
-	ThemePath TEXT
+	ThemePath TEXT,
+	HasDiscArt BOOL,
+	DiscArtPath TEXT,
+	HasClearLogo BOOL,
+	ClearLogoPath TEXT,
+	HasClearArt BOOL,
+	ClearArtPath TEXT
 	);
 
 CREATE TABLE MoviesSets(
@@ -169,7 +175,13 @@ CREATE TABLE TVShows(
 	LandscapePath TEXT,
 	Status TEXT,
 	HasTheme BOOL,
-	ThemePath TEXT
+	ThemePath TEXT,
+	HasCharacterArt BOOL,
+	CharacterArtPath TEXT,
+	HasClearLogo BOOL,
+	ClearLogoPath TEXT,
+	HasClearArt BOOL,
+	ClearArtPath TEXT
 	);
 CREATE UNIQUE INDEX UniqueTVShowPath ON TVShows (TVShowPath);
 

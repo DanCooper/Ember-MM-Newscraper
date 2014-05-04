@@ -970,17 +970,31 @@ Public Class dlgOfflineHolder
                     'End If
                     ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieSync, Nothing, Master.currMovie)
                 Case Windows.Forms.DialogResult.Retry
+                    Master.currMovie.ClearBanner = False
+                    Master.currMovie.ClearClearArt = False
+                    Master.currMovie.ClearClearLogo = False
+                    Master.currMovie.ClearDiscArt = False
                     Master.currMovie.ClearEThumbs = False
                     Master.currMovie.ClearEFanarts = False
                     Master.currMovie.ClearFanart = False
+                    Master.currMovie.ClearLandscape = False
                     Master.currMovie.ClearPoster = False
+                    Master.currMovie.ClearTheme = False
+                    Master.currMovie.ClearTrailer = False
                     Functions.SetScraperMod(Enums.ModType.All, True, True)
                     'Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions) ', ID)
                 Case Windows.Forms.DialogResult.Abort
+                    Master.currMovie.ClearBanner = False
+                    Master.currMovie.ClearClearArt = False
+                    Master.currMovie.ClearClearLogo = False
+                    Master.currMovie.ClearDiscArt = False
                     Master.currMovie.ClearEThumbs = False
                     Master.currMovie.ClearEFanarts = False
                     Master.currMovie.ClearFanart = False
+                    Master.currMovie.ClearLandscape = False
                     Master.currMovie.ClearPoster = False
+                    Master.currMovie.ClearTheme = False
+                    Master.currMovie.ClearTrailer = False
                     Functions.SetScraperMod(Enums.ModType.DoSearch, True)
                     Functions.SetScraperMod(Enums.ModType.All, True, False)
                     'Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions) ', ID, True)

@@ -146,7 +146,9 @@ Public Class FanartTV_Poster
         _setup.chkScrapeBanner.Checked = ConfigScrapeModifier.Banner
         _setup.chkScrapeCharacterArt.Checked = ConfigScrapeModifier.CharacterArt
         _setup.chkScrapeClearArt.Checked = ConfigScrapeModifier.ClearArt
+        _setup.chkScrapeClearArtOnlyHD.Checked = _MySettings.ClearArtOnlyHD
         _setup.chkScrapeClearLogo.Checked = ConfigScrapeModifier.ClearLogo
+        _setup.chkScrapeClearLogoOnlyHD.Checked = _MySettings.ClearLogoOnlyHD
         _setup.chkScrapeDiscArt.Checked = ConfigScrapeModifier.DiscArt
         _setup.chkScrapeLandscape.Checked = ConfigScrapeModifier.Landscape
         _setup.txtFANARTTVApiKey.Text = strPrivateAPIKey
@@ -172,6 +174,8 @@ Public Class FanartTV_Poster
         strPrivateAPIKey = AdvancedSettings.GetSetting("FANARTTVApiKey", "")
         _MySettings.FANARTTVApiKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "ea68f9d0847c1b7643813c70cbfc0196", strPrivateAPIKey)
         _MySettings.FANARTTVLanguage = AdvancedSettings.GetSetting("FANARTTVLanguage", "en")
+        _MySettings.ClearArtOnlyHD = AdvancedSettings.GetBooleanSetting("ClearArtOnlyHD", False)
+        _MySettings.ClearLogoOnlyHD = AdvancedSettings.GetBooleanSetting("ClearLogoOnlyHD", False)
 
         ConfigScrapeModifier.Poster = AdvancedSettings.GetBooleanSetting("DoPoster", True)
         ConfigScrapeModifier.Fanart = AdvancedSettings.GetBooleanSetting("DoFanart", True)
@@ -187,6 +191,8 @@ Public Class FanartTV_Poster
 
     Sub SaveSettings()
         Using settings = New AdvancedSettings()
+            settings.SetBooleanSetting("ClearArtOnlyHD", _MySettings.ClearArtOnlyHD)
+            settings.SetBooleanSetting("ClearLogoOnlyHD", _MySettings.ClearLogoOnlyHD)
             settings.SetBooleanSetting("DoPoster", ConfigScrapeModifier.Poster)
             settings.SetBooleanSetting("DoFanart", ConfigScrapeModifier.Fanart)
             settings.SetBooleanSetting("DoBanner", ConfigScrapeModifier.Banner)
@@ -202,6 +208,8 @@ Public Class FanartTV_Poster
 
     Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.EmberMovieScraperModule_Poster.SaveSetupScraper
         _MySettings.FANARTTVLanguage = _setup.cbFANARTTVLanguage.Text
+        _MySettings.ClearArtOnlyHD = _setup.chkScrapeClearArtOnlyHD.Checked
+        _MySettings.ClearLogoOnlyHD = _setup.chkScrapeClearLogoOnlyHD.Checked
         ConfigScrapeModifier.Poster = _setup.chkScrapePoster.Checked
         ConfigScrapeModifier.Fanart = _setup.chkScrapeFanart.Checked
         ConfigScrapeModifier.Banner = _setup.chkScrapeBanner.Checked
@@ -244,8 +252,9 @@ Public Class FanartTV_Poster
     Structure sMySettings
 
 #Region "Fields"
+        Dim ClearArtOnlyHD As Boolean
+        Dim ClearLogoOnlyHD As Boolean
         Dim FANARTTVApiKey As String
-        Dim TMDBLanguage As String
         Dim FANARTTVLanguage As String
 #End Region 'Fields
 

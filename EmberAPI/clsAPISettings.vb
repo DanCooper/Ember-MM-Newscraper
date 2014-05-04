@@ -93,10 +93,13 @@ Public Class Settings
     Private _moviebannerresize As Boolean
     Private _moviebannerwidth As Integer
     Private _moviecleandb As Boolean
+    Private _movieclearartcol As Boolean
     Private _movieclearartoverwrite As Boolean
+    Private _movieclearlogocol As Boolean
     Private _movieclearlogooverwrite As Boolean
     Private _movieclickscrape As Boolean
     Private _movieclickscrapeask As Boolean
+    Private _moviediscartcol As Boolean
     Private _moviediscartoverwrite As Boolean
     Private _moviedisplayyear As Boolean
     Private _movieefanartscol As Boolean
@@ -147,6 +150,9 @@ Public Class Settings
     Private _movielocktrailer As Boolean
     Private _moviemetadataperfiletype As List(Of MetadataPerType)
     Private _moviemissingbanner As Boolean
+    Private _moviemissingclearart As Boolean
+    Private _moviemissingclearlogo As Boolean
+    Private _moviemissingdiscart As Boolean
     Private _moviemissingefanarts As Boolean
     Private _moviemissingethumbs As Boolean
     Private _moviemissingfanart As Boolean
@@ -1704,6 +1710,33 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property MovieMissingClearArt() As Boolean
+        Get
+            Return Me._moviemissingclearart
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviemissingclearart = value
+        End Set
+    End Property
+
+    Public Property MovieMissingClearLogo() As Boolean
+        Get
+            Return Me._moviemissingclearlogo
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviemissingclearlogo = value
+        End Set
+    End Property
+
+    Public Property MovieMissingDiscArt() As Boolean
+        Get
+            Return Me._moviemissingdiscart
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviemissingdiscart = value
+        End Set
+    End Property
+
     Public Property MovieMissingEThumbs() As Boolean
         Get
             Return Me._moviemissingethumbs
@@ -1791,6 +1824,33 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Me._moviebannercol = value
+        End Set
+    End Property
+
+    Public Property MovieClearArtCol() As Boolean
+        Get
+            Return Me._movieclearartcol
+        End Get
+        Set(ByVal value As Boolean)
+            Me._movieclearartcol = value
+        End Set
+    End Property
+
+    Public Property MovieClearLogoCol() As Boolean
+        Get
+            Return Me._movieclearlogocol
+        End Get
+        Set(ByVal value As Boolean)
+            Me._movieclearlogocol = value
+        End Set
+    End Property
+
+    Public Property MovieDiscArtCol() As Boolean
+        Get
+            Return Me._moviediscartcol
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviediscartcol = value
         End Set
     End Property
 
@@ -4983,6 +5043,7 @@ Public Class Settings
         Me._moviebannerwidth = 0
         Me._moviebanneryamj = False
         Me._moviecleandb = True
+        Me._movieclearartcol = False
         Me._moviecleararteden = False
         Me._movieclearartexpertbdmv = String.Empty
         Me._movieclearartexpertmulti = String.Empty
@@ -4992,6 +5053,7 @@ Public Class Settings
         Me._movieclearartnmj = False
         Me._movieclearartoverwrite = True
         Me._movieclearartyamj = False
+        Me._movieclearlogocol = False
         Me._movieclearlogoeden = False
         Me._movieclearlogoexpertbdmv = String.Empty
         Me._movieclearlogoexpertmulti = String.Empty
@@ -5003,6 +5065,7 @@ Public Class Settings
         Me._movieclearlogoyamj = False
         Me._movieclickscrape = False
         Me._movieclickscrapeask = False
+        Me._moviediscartcol = False
         Me._moviediscarteden = False
         Me._moviediscartexpertbdmv = String.Empty
         Me._moviediscartexpertmulti = String.Empty
@@ -5091,6 +5154,9 @@ Public Class Settings
         Me._movielocktrailer = False
         Me._moviemetadataperfiletype = New List(Of MetadataPerType)
         Me._moviemissingbanner = True
+        Me._moviemissingclearart = True
+        Me._moviemissingclearlogo = True
+        Me._moviemissingdiscart = True
         Me._moviemissingefanarts = True
         Me._moviemissingethumbs = True
         Me._moviemissingfanart = True

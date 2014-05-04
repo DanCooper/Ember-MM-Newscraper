@@ -306,17 +306,30 @@ Public Class IMDB_Data
         If ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.GlobalScrapeMod.DoSearch _
             AndAlso ModulesManager.Instance.externalDataScrapersModules.OrderBy(Function(y) y.ScraperOrder).FirstOrDefault(Function(e) e.ProcessorModule.ScraperEnabled).AssemblyName = _AssemblyName Then
             DBMovie.Movie.IMDBID = String.Empty
+            DBMovie.ClearBanner = True
+            DBMovie.ClearClearArt = True
+            DBMovie.ClearClearLogo = True
+            DBMovie.ClearDiscArt = True
             DBMovie.ClearEThumbs = True
             DBMovie.ClearEFanarts = True
             DBMovie.ClearFanart = True
+            DBMovie.ClearLandscape = True
             DBMovie.ClearPoster = True
-            DBMovie.PosterPath = String.Empty
-            DBMovie.FanartPath = String.Empty
-            DBMovie.TrailerPath = String.Empty
-            DBMovie.EThumbsPath = String.Empty
+            DBMovie.ClearTheme = True
+            DBMovie.ClearTrailer = True
+            DBMovie.BannerPath = String.Empty
+            DBMovie.ClearArtPath = String.Empty
+            DBMovie.ClearLogoPath = String.Empty
+            DBMovie.DiscArtPath = String.Empty
             DBMovie.EFanartsPath = String.Empty
-            DBMovie.SubPath = String.Empty
+            DBMovie.EThumbsPath = String.Empty
+            DBMovie.FanartPath = String.Empty
             DBMovie.NfoPath = String.Empty
+            DBMovie.LandscapePath = String.Empty
+            DBMovie.PosterPath = String.Empty
+            DBMovie.SubPath = String.Empty
+            DBMovie.ThemePath = String.Empty
+            DBMovie.TrailerPath = String.Empty
             DBMovie.Movie.Clear()
         End If
 
@@ -341,17 +354,30 @@ Public Class IMDB_Data
                         If Not String.IsNullOrEmpty(Master.tmpMovie.IMDBID) Then
                             ' if we changed the ID tipe we need to clear everything and rescrape
                             If Not String.IsNullOrEmpty(DBMovie.Movie.IMDBID) AndAlso Not (DBMovie.Movie.IMDBID = Master.tmpMovie.IMDBID) Then
+                                Master.currMovie.ClearBanner = True
+                                Master.currMovie.ClearClearArt = True
+                                Master.currMovie.ClearClearLogo = True
+                                Master.currMovie.ClearDiscArt = True
                                 Master.currMovie.ClearEThumbs = True
                                 Master.currMovie.ClearEFanarts = True
                                 Master.currMovie.ClearFanart = True
+                                Master.currMovie.ClearLandscape = True
                                 Master.currMovie.ClearPoster = True
-                                Master.currMovie.PosterPath = String.Empty
-                                Master.currMovie.FanartPath = String.Empty
-                                Master.currMovie.TrailerPath = String.Empty
-                                Master.currMovie.EThumbsPath = String.Empty
+                                Master.currMovie.ClearTheme = True
+                                Master.currMovie.ClearTrailer = True
+                                Master.currMovie.BannerPath = String.Empty
+                                Master.currMovie.ClearArtPath = String.Empty
+                                Master.currMovie.ClearLogoPath = String.Empty
+                                Master.currMovie.DiscArtPath = String.Empty
                                 Master.currMovie.EFanartsPath = String.Empty
-                                Master.currMovie.SubPath = String.Empty
+                                Master.currMovie.EThumbsPath = String.Empty
+                                Master.currMovie.FanartPath = String.Empty
                                 Master.currMovie.NfoPath = String.Empty
+                                Master.currMovie.LandscapePath = String.Empty
+                                Master.currMovie.PosterPath = String.Empty
+                                Master.currMovie.SubPath = String.Empty
+                                Master.currMovie.ThemePath = String.Empty
+                                Master.currMovie.TrailerPath = String.Empty
                             End If
                             DBMovie.Movie.IMDBID = Master.tmpMovie.IMDBID
                         End If

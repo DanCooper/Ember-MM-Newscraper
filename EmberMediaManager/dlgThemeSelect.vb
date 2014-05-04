@@ -57,12 +57,13 @@ Public Class dlgThemeSelect
         Me.lvThemes.Columns.Add(Master.eLang.GetString(979, "Description"), -2, HorizontalAlignment.Left)
         Me.lvThemes.Columns.Add("Length", -2, HorizontalAlignment.Left)
         Me.lvThemes.Columns.Add("Bitrate", -2, HorizontalAlignment.Left)
+        Me.lvThemes.Columns.Add("WebURL", 0, HorizontalAlignment.Left)
 
         'Me.txtYouTubeSearch.Text = DBMovie.Movie.Title & " Trailer"
 
         Me._UrlList = tURLList
         Dim ID As Integer = 1
-        Dim str(6) As String
+        Dim str(7) As String
         For Each aUrl In _UrlList
             Dim itm As ListViewItem
             str(0) = ID.ToString
@@ -71,6 +72,7 @@ Public Class dlgThemeSelect
             str(3) = aUrl.Description.ToString
             str(4) = aUrl.Length.ToString
             str(5) = aUrl.Bitrate.ToString
+            str(6) = aUrl.WebURL.ToString
             itm = New ListViewItem(str)
             lvThemes.Items.Add(itm)
             ID = ID + 1
@@ -109,9 +111,13 @@ Public Class dlgThemeSelect
 
     Private Sub lvThemes_DoubleClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lvThemes.DoubleClick
         Dim tURL As String = Me.lvThemes.SelectedItems(0).SubItems(1).Text.ToString
+        Dim tWebURL As String = Me.lvThemes.SelectedItems(0).SubItems(6).Text.ToString
 
         If tURL.Contains("goear") Then
-            Dim request As HttpWebRequest = CType(HttpWebRequest.Create("http://www.goear.com/listen/2b6ac87/avatar-avatar"), HttpWebRequest)
+            'GoEar needs a existing connection to download files, otherwise you will be blocked
+            Dim dummyclient As New WebClient
+            dummyclient.OpenRead(tWebURL)
+            dummyclient.Dispose()
         End If
         Me.vlcPlayer.playlist.items.clear()
         Me.vlcPlayer.playlist.add(tURL)

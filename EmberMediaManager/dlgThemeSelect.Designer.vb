@@ -38,7 +38,7 @@ Partial Class dlgThemeSelect
         Me.vlcPlayer.Location = New System.Drawing.Point(12, 258)
         Me.vlcPlayer.Name = "vlcPlayer"
         Me.vlcPlayer.OcxState = CType(resources.GetObject("vlcPlayer.OcxState"), System.Windows.Forms.AxHost.State)
-        Me.vlcPlayer.Size = New System.Drawing.Size(460, 56)
+        Me.vlcPlayer.Size = New System.Drawing.Size(460, 57)
         Me.vlcPlayer.TabIndex = 0
         '
         'OK_Button
@@ -65,7 +65,7 @@ Partial Class dlgThemeSelect
         Me.gbSelectTheme.Controls.Add(Me.lvThemes)
         Me.gbSelectTheme.Location = New System.Drawing.Point(12, 12)
         Me.gbSelectTheme.Name = "gbSelectTheme"
-        Me.gbSelectTheme.Size = New System.Drawing.Size(460, 240)
+        Me.gbSelectTheme.Size = New System.Drawing.Size(614, 240)
         Me.gbSelectTheme.TabIndex = 3
         Me.gbSelectTheme.TabStop = False
         Me.gbSelectTheme.Text = "Select Theme to Scrape"
@@ -75,7 +75,7 @@ Partial Class dlgThemeSelect
         Me.lvThemes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lvThemes.Location = New System.Drawing.Point(6, 19)
         Me.lvThemes.Name = "lvThemes"
-        Me.lvThemes.Size = New System.Drawing.Size(445, 173)
+        Me.lvThemes.Size = New System.Drawing.Size(602, 215)
         Me.lvThemes.TabIndex = 5
         Me.lvThemes.UseCompatibleStateImageBehavior = False
         Me.lvThemes.View = System.Windows.Forms.View.Details
