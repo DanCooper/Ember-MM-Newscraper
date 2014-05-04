@@ -776,10 +776,24 @@ Namespace FileUtils
 
                 Case Enums.ModType.Theme
                     With Master.eSettings
-                        If .MovieUseFrodo AndAlso .MovieXBMCThemeEnable Then
-                            If .MovieXBMCThemeMovie Then FilenameList.Add(Path.Combine(fileParPath, "theme"))
-                            If .MovieXBMCThemeCustom AndAlso Not String.IsNullOrEmpty(.MovieXBMCThemeCustomPath) Then FilenameList.Add(Path.Combine(.MovieXBMCThemeCustomPath, "theme"))
-                            If .MovieXBMCThemeSub AndAlso Not String.IsNullOrEmpty(.MovieXBMCThemeSubDir) Then FilenameList.Add(String.Concat(.MovieXBMCThemeSubDir, "theme"))
+                        If isVideoTS Then
+                            If .MovieUseFrodo AndAlso .MovieXBMCThemeEnable Then
+                                If .MovieXBMCThemeMovie Then FilenameList.Add(Path.Combine(basePath, "theme"))
+                                If .MovieXBMCThemeCustom AndAlso Not String.IsNullOrEmpty(.MovieXBMCThemeCustomPath) Then FilenameList.Add(Path.Combine(.MovieXBMCThemeCustomPath, "theme"))
+                                If .MovieXBMCThemeSub AndAlso Not String.IsNullOrEmpty(.MovieXBMCThemeSubDir) Then FilenameList.Add(String.Concat(basePath, Path.DirectorySeparatorChar, .MovieXBMCThemeSubDir, Path.DirectorySeparatorChar, "theme"))
+                            End If
+                        ElseIf isBDRip Then
+                            If .MovieUseFrodo AndAlso .MovieXBMCThemeEnable Then
+                                If .MovieXBMCThemeMovie Then FilenameList.Add(Path.Combine(basePath, "theme"))
+                                If .MovieXBMCThemeCustom AndAlso Not String.IsNullOrEmpty(.MovieXBMCThemeCustomPath) Then FilenameList.Add(Path.Combine(.MovieXBMCThemeCustomPath, "theme"))
+                                If .MovieXBMCThemeSub AndAlso Not String.IsNullOrEmpty(.MovieXBMCThemeSubDir) Then FilenameList.Add(String.Concat(basePath, Path.DirectorySeparatorChar, .MovieXBMCThemeSubDir, Path.DirectorySeparatorChar, "theme"))
+                            End If
+                        Else
+                            If .MovieUseFrodo AndAlso .MovieXBMCThemeEnable Then
+                                If .MovieXBMCThemeMovie Then FilenameList.Add(Path.Combine(fileParPath, "theme"))
+                                If .MovieXBMCThemeCustom AndAlso Not String.IsNullOrEmpty(.MovieXBMCThemeCustomPath) Then FilenameList.Add(Path.Combine(.MovieXBMCThemeCustomPath, "theme"))
+                                If .MovieXBMCThemeSub AndAlso Not String.IsNullOrEmpty(.MovieXBMCThemeSubDir) Then FilenameList.Add(String.Concat(fileParPath, Path.DirectorySeparatorChar, .MovieXBMCThemeSubDir, Path.DirectorySeparatorChar, "theme"))
+                            End If
                         End If
                     End With
 

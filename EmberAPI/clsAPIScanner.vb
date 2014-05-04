@@ -207,6 +207,7 @@ Public Class Scanner
         Dim currname As String = String.Empty
         Dim efList As New List(Of String)   'extrafanart list
         Dim etList As New List(Of String)   'extrathumbs list
+        Dim tList As New List(Of String)    'theme files list
         Dim fList As New List(Of String)    'all other files list
         Dim fName As String = String.Empty
 
@@ -247,6 +248,14 @@ Public Class Scanner
                         End If
                     Next
                 End If
+
+                If Movie.isSingle Then
+                    For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType.Theme)
+                        If Directory.Exists(Directory.GetParent(a).FullName) Then
+                            tList.AddRange(Directory.GetFiles(Directory.GetParent(a).FullName))
+                        End If
+                    Next
+                End If
             ElseIf FileUtils.Common.isBDRip(Movie.Filename) Then
                 parPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(Movie.Filename).FullName).FullName).FullName
 
@@ -271,6 +280,14 @@ Public Class Scanner
                     For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType.EThumbs)
                         If Directory.Exists(a) Then
                             etList.AddRange(Directory.GetFiles(a))
+                        End If
+                    Next
+                End If
+
+                If Movie.isSingle Then
+                    For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType.Theme)
+                        If Directory.Exists(Directory.GetParent(a).FullName) Then
+                            tList.AddRange(Directory.GetFiles(Directory.GetParent(a).FullName))
                         End If
                     Next
                 End If
@@ -299,6 +316,14 @@ Public Class Scanner
                     For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType.EThumbs)
                         If Directory.Exists(a) Then
                             etList.AddRange(Directory.GetFiles(a))
+                        End If
+                    Next
+                End If
+
+                If Movie.isSingle Then
+                    For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType.Theme)
+                        If Directory.Exists(Directory.GetParent(a).FullName) Then
+                            tList.AddRange(Directory.GetFiles(Directory.GetParent(a).FullName))
                         End If
                     Next
                 End If
@@ -386,7 +411,7 @@ Public Class Scanner
             If String.IsNullOrEmpty(Movie.Theme) Then
                 For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType.Theme)
                     For Each t As String In Master.eSettings.FileSystemValidThemeExts
-                        Movie.Theme = fList.FirstOrDefault(Function(s) s.ToLower = (String.Concat(a.ToLower, t)))
+                        Movie.Theme = tList.FirstOrDefault(Function(s) s.ToLower = (String.Concat(a.ToLower, t)))
                         If Not String.IsNullOrEmpty(Movie.Theme) Then Exit For
                     Next
                 Next
