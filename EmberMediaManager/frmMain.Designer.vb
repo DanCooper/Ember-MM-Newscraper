@@ -705,6 +705,7 @@ Partial Class frmMain
         Me.pnlLoadSettings = New System.Windows.Forms.Panel()
         Me.tmrAppExit = New System.Windows.Forms.Timer(Me.components)
         Me.tmrKeyBuffer = New System.Windows.Forms.Timer(Me.components)
+        Me.StatusStrip.SuspendLayout()
         Me.mnuMain.SuspendLayout()
         CType(Me.scMain, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.scMain.Panel1.SuspendLayout()
@@ -901,6 +902,7 @@ Partial Class frmMain
         'StatusStrip
         '
         Me.StatusStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Visible
+        Me.StatusStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tslStatus, Me.tsSpring, Me.tslLoading, Me.tspbLoading})
         Me.StatusStrip.Location = New System.Drawing.Point(5, 711)
         Me.StatusStrip.Name = "StatusStrip"
         Me.StatusStrip.Size = New System.Drawing.Size(1344, 22)
@@ -6270,6 +6272,8 @@ Partial Class frmMain
         Me.Name = "frmMain"
         Me.Padding = New System.Windows.Forms.Padding(5, 0, 5, 0)
         Me.Text = "Ember Media Manager"
+        Me.StatusStrip.ResumeLayout(False)
+        Me.StatusStrip.PerformLayout()
         Me.mnuMain.ResumeLayout(False)
         Me.mnuMain.PerformLayout()
         Me.scMain.Panel1.ResumeLayout(False)
