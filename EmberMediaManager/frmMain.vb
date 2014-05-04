@@ -1245,6 +1245,7 @@ Public Class frmMain
         Dim Fanart As New MediaContainers.Image
         Dim Landscape As New MediaContainers.Image
         Dim Poster As New MediaContainers.Image
+        Dim Theme As New Theme
         Dim tURL As String = String.Empty
         Dim aList As New List(Of MediaContainers.Image)
         Dim aUrlList As New List(Of Trailers)
@@ -1676,10 +1677,9 @@ Public Class frmMain
                     If Not ModulesManager.Instance.MovieScrapeTheme(DBScrapeMovie, tUrlList) Then
                         If tUrlList.Count > 0 Then
                             If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
-                                tURL = tUrlList.Item(0).URL.ToString
-                                Dim tWebURL = tUrlList.Item(0).WebURL.ToString
-                                If Not String.IsNullOrEmpty(tURL) Then
-                                    tURL = Theme.DownloadTheme(DBScrapeMovie.Filename, DBScrapeMovie.isSingle, tURL, tWebURL)
+                                Theme = tUrlList.Item(0)
+                                If Not String.IsNullOrEmpty(Theme.URL) Then
+                                    tURL = Theme.DownloadTheme(DBScrapeMovie.Filename, DBScrapeMovie.isSingle, Theme)
                                     If Not String.IsNullOrEmpty(tURL) Then
                                         DBScrapeMovie.ThemePath = tURL
                                         MovieScraperEvent(Enums.MovieScraperEventType.ThemeItem, True)

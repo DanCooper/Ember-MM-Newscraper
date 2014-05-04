@@ -33,6 +33,7 @@ Public Class dlgThemeSelect
     Private _UrlList As List(Of Theme)
     Private tURL As String = String.Empty
     Private sPath As String
+    Private tTheme As New Theme
 
 #End Region 'Fields
 
@@ -89,23 +90,23 @@ Public Class dlgThemeSelect
         End If
     End Sub
 
-    Public Overloads Function ShowDialog(ByRef DBMovie As Structures.DBMovie, ByRef tURLList As List(Of Theme)) As String
+    Public Overloads Function ShowDialog(ByRef DBMovie As Structures.DBMovie, ByRef tURLList As List(Of Theme)) As Theme
         CreateTable(tURLList)
 
         If MyBase.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
-            Return Me.tURL
+            Return Me.tTheme
         Else
-            Return String.Empty
+            Return Nothing
         End If
     End Function
 
-    Public Overloads Function ShowDialog(ByRef DBTV As Structures.DBTV, ByRef tURLList As List(Of Theme)) As String
+    Public Overloads Function ShowDialog(ByRef DBTV As Structures.DBTV, ByRef tURLList As List(Of Theme)) As Theme
         CreateTable(tURLList)
 
         If MyBase.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
-            Return Me.tURL
+            Return Me.tTheme
         Else
-            Return String.Empty
+            Return Nothing
         End If
     End Function
 
@@ -124,7 +125,8 @@ Public Class dlgThemeSelect
         Me.vlcPlayer.playlist.play()
     End Sub
     Private Sub OK_Button_Click(sender As Object, e As EventArgs) Handles OK_Button.Click
-        Me.tURL = Me.lvThemes.SelectedItems(0).SubItems(1).Text.ToString
+        Dim selID As Integer = CInt(Me.lvThemes.SelectedItems(0).SubItems(0).Text) - 1
+        Me.tTheme = _UrlList.Item(selID)
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()
     End Sub

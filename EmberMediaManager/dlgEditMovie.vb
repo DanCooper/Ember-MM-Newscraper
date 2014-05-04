@@ -45,6 +45,7 @@ Public Class dlgEditMovie
     Private MoviePoster As New Images With {.IsEdit = True}
     Private pResults As New Containers.ImgResult
     Private PreviousFrameValue As Integer
+    Private MovieTheme As New Theme
     Private tmpRating As String = String.Empty
 
     'Extrathumbs
@@ -236,15 +237,12 @@ Public Class dlgEditMovie
         Dim tURL As String = String.Empty
         If Not ModulesManager.Instance.MovieScrapeTheme(Master.currMovie, aUrlList) Then
             Using dThemeSelect As New dlgThemeSelect()
-                tURL = dThemeSelect.ShowDialog(Master.currMovie, aUrlList)
+                MovieTheme = dThemeSelect.ShowDialog(Master.currMovie, aUrlList)
             End Using
         End If
 
-        If Not String.IsNullOrEmpty(tURL) Then
+        If Not String.IsNullOrEmpty(MovieTheme.URL) Then
             Me.btnPlayTheme.Enabled = True
-            If StringUtils.isValidURL(tURL) Then
-                Master.currMovie.ThemePath = tURL
-            End If
         End If
     End Sub
 
@@ -2649,18 +2647,8 @@ Public Class dlgEditMovie
                     Next
                 End If
 
-                If Not String.IsNullOrEmpty(Master.currMovie.ThemePath) Then
-                    Dim lhttp As New HTTP
-                    Master.currMovie.ThemePath = lhttp.DownloadFile(Master.currMovie.ThemePath.Replace(":http", "http"), Path.Combine(Master.TempPath, "theme"), False, "theme")
-                    If Not String.IsNullOrEmpty(Master.currMovie.ThemePath) Then
-                        Dim TargetTheme As String = String.Empty
-                        Dim fExt As String = Path.GetExtension(Master.currMovie.ThemePath)
-                        For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.isSingle, Enums.ModType.Theme)
-                            File.Copy(Master.currMovie.ThemePath, a & fExt)
-                            TargetTheme = a & fExt
-                        Next
-                        Master.currMovie.ThemePath = TargetTheme
-                    End If
+                If Not String.IsNullOrEmpty(.MovieTheme.URL) Then
+                    Master.currMovie.ThemePath = Theme.DownloadTheme(Master.currMovie.Filename, Master.currMovie.isSingle, .MovieTheme)
                 End If
 
                 If Not String.IsNullOrEmpty(Master.currMovie.TrailerPath) AndAlso Master.currMovie.TrailerPath.Contains(Master.TempPath) Then

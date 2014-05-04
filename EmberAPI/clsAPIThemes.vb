@@ -148,26 +148,33 @@ Public Class Theme
     ''' it in the supplied <paramref name="sPath"/>. 
     ''' </summary>
     ''' <param name="sPath">Path into which the theme should be saved</param>
-    ''' <param name="sURL">URL from which to get the theme</param>
+    ''' <param name="sTheme">theme container</param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Shared Function DownloadTheme(ByVal sPath As String, ByVal isSingle As Boolean, ByVal sURL As String, ByVal sWebURL As String) As String
+    Public Shared Function DownloadTheme(ByVal sPath As String, ByVal isSingle As Boolean, ByVal sTheme As Theme) As String
         Dim WebPage As New HTTP
         Dim tURL As String = String.Empty
+        Dim sURL As String = sTheme.URL
+        Dim sWebURL As String = sTheme.WebURL
         Dim lhttp As New HTTP
         Dim tTheme As String = String.Empty
         'AddHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
 
         tTheme = lhttp.DownloadFile(sURL, Path.Combine(Master.TempPath, "theme"), False, "theme", sWebURL)
-        Dim fExt As String = Path.GetExtension(tTheme)
-        For Each a In FileUtils.GetFilenameList.Movie(sPath, isSingle, Enums.ModType.Theme)
-            If File.Exists(a & fExt) Then
-                File.Delete(a & fExt)
-            End If
-            File.Copy(tTheme, a & fExt)
-            tURL = a & fExt
-        Next
-        File.Delete(tTheme)
+        If Not String.IsNullOrEmpty(tTheme) Then
+            Dim fExt As String = Path.GetExtension(tTheme)
+            For Each a In FileUtils.GetFilenameList.Movie(sPath, isSingle, Enums.ModType.Theme)
+                If Not File.Exists(a & fExt) OrElse Master.eSettings.MovieThemeOverwrite Then
+                    If File.Exists(a & fExt) Then
+                        File.Delete(a & fExt)
+                    End If
+                    Directory.CreateDirectory(Directory.GetParent(a & fExt).FullName)
+                    File.Copy(tTheme, a & fExt)
+                    tURL = a & fExt
+                End If
+            Next
+            File.Delete(tTheme)
+        End If
         RemoveHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
         Return tURL
     End Function
