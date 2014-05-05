@@ -57,7 +57,7 @@ CREATE TABLE Movies (
 	HasBanner BOOL,
 	BannerPath TEXT,
 	HasLandscape BOOL,
-	LandscapePath,
+	LandscapePath TEXT,
 	HasTheme BOOL,
 	ThemePath TEXT,
 	HasDiscArt BOOL,
