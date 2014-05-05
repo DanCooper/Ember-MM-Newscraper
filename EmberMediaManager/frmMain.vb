@@ -1789,6 +1789,7 @@ Public Class frmMain
                                             Dim efPath As String = EFanart.SaveAsMovieExtrafanart(DBScrapeMovie, Path.GetFileName(lItem))
                                             If Not String.IsNullOrEmpty(efPath) Then
                                                 DBScrapeMovie.EFanartsPath = efPath
+                                                MovieScraperEvent(Enums.MovieScraperEventType.EFanartsItem, True)
                                             End If
                                         End If
                                     Next
