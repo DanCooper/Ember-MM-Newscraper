@@ -50,7 +50,7 @@ Partial Class frmSettingsHolder
         Me.pnlSettings.Controls.Add(Me.pnlEnable)
         Me.pnlSettings.Location = New System.Drawing.Point(13, 15)
         Me.pnlSettings.Name = "pnlSettings"
-        Me.pnlSettings.Size = New System.Drawing.Size(617, 354)
+        Me.pnlSettings.Size = New System.Drawing.Size(713, 436)
         Me.pnlSettings.TabIndex = 84
         '
         'lblTips
@@ -58,7 +58,7 @@ Partial Class frmSettingsHolder
         Me.lblTips.AutoSize = True
         Me.lblTips.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.lblTips.Location = New System.Drawing.Point(224, 54)
-        Me.lblTips.MaximumSize = New System.Drawing.Size(372, 290)
+        Me.lblTips.MaximumSize = New System.Drawing.Size(475, 360)
         Me.lblTips.Name = "lblTips"
         Me.lblTips.Size = New System.Drawing.Size(42, 15)
         Me.lblTips.TabIndex = 4
@@ -167,7 +167,7 @@ Partial Class frmSettingsHolder
         Me.pnlEnable.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlEnable.Location = New System.Drawing.Point(0, 0)
         Me.pnlEnable.Name = "pnlEnable"
-        Me.pnlEnable.Size = New System.Drawing.Size(617, 25)
+        Me.pnlEnable.Size = New System.Drawing.Size(713, 25)
         Me.pnlEnable.TabIndex = 0
         '
         'chkEnabled
@@ -184,7 +184,7 @@ Partial Class frmSettingsHolder
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
-        Me.ClientSize = New System.Drawing.Size(643, 381)
+        Me.ClientSize = New System.Drawing.Size(736, 463)
         Me.Controls.Add(Me.pnlSettings)
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Name = "frmSettingsHolder"

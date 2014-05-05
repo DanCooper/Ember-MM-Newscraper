@@ -104,9 +104,11 @@ Public Class FileFolderRenamer
                     strCond = ApplyPattern(strCond, "L", f.ListTitle)
                     strCond = ApplyPattern(strCond, "M", f.MPAARate)
                     strCond = ApplyPattern(strCond, "O", f.OriginalTitle)
+                    strCond = ApplyPattern(strCond, "P", String.Format("{0:0.0}", CDbl(f.Rating)))
                     strCond = ApplyPattern(strCond, "R", f.Resolution)
                     strCond = ApplyPattern(strCond, "S", strSource)
                     strCond = ApplyPattern(strCond, "T", f.Title)
+                    strCond = ApplyPattern(strCond, "V", f.MultiView)
                     strCond = ApplyPattern(strCond, "Y", f.Year)
                     joinIndex = strCond.IndexOf("$G")
                     If Not joinIndex = -1 Then
@@ -160,9 +162,11 @@ Public Class FileFolderRenamer
             pattern = ApplyPattern(pattern, "L", f.ListTitle)
             pattern = ApplyPattern(pattern, "M", f.MPAARate)
             pattern = ApplyPattern(pattern, "O", f.OriginalTitle)
+            pattern = ApplyPattern(pattern, "P", String.Format("{0:0.0}", CDbl(f.Rating)))
             pattern = ApplyPattern(pattern, "R", f.Resolution)
             pattern = ApplyPattern(pattern, "S", strSource)
             pattern = ApplyPattern(pattern, "T", f.Title)
+            pattern = ApplyPattern(pattern, "V", f.MultiView)
             pattern = ApplyPattern(pattern, "Y", f.Year)
             nextC = pattern.IndexOf("$G")
             If Not nextC = -1 Then
@@ -255,25 +259,37 @@ Public Class FileFolderRenamer
                 Else
                     MovieFile.Audio = String.Empty
                 End If
+
+                If _tmpMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
+                    If Not String.IsNullOrEmpty(_tmpMovie.Movie.FileInfo.StreamDetails.Video.Item(0).MultiView) AndAlso CDbl(_tmpMovie.Movie.FileInfo.StreamDetails.Video.Item(0).MultiView) > 1 Then
+                        MovieFile.MultiView = "3D"
+                    Else
+                        MovieFile.MultiView = String.Empty
+                    End If
+                Else
+                    MovieFile.MultiView = String.Empty
+                End If
             Catch ex As Exception
                 Master.eLog.Error(GetType(FileFolderRenamer), ex.Message, ex.StackTrace, "Error FileInfo")
             End Try
         Else
-            MovieFile.Resolution = String.Empty
             MovieFile.Audio = String.Empty
+            MovieFile.Resolution = String.Empty
+            MovieFile.MultiView = String.Empty
         End If
 
-        MovieFile.Title = _tmpMovie.Movie.Title
-        MovieFile.ListTitle = _tmpMovie.ListTitle
-        MovieFile.OriginalTitle = _tmpMovie.Movie.OriginalTitle
-        MovieFile.Year = _tmpMovie.Movie.Year
-        MovieFile.IsSingle = _tmpMovie.isSingle
-        MovieFile.SortTitle = _tmpMovie.Movie.SortTitle
-        MovieFile.Genre = _tmpMovie.Movie.Genre
+        MovieFile.Country = _tmpMovie.Movie.Country
         MovieFile.Director = _tmpMovie.Movie.Director
         MovieFile.FileSource = _tmpMovie.FileSource
-        MovieFile.Country = _tmpMovie.Movie.Country
+        MovieFile.Genre = _tmpMovie.Movie.Genre
         MovieFile.IMDBID = _tmpMovie.Movie.IMDBID
+        MovieFile.IsSingle = _tmpMovie.isSingle
+        MovieFile.ListTitle = _tmpMovie.ListTitle
+        MovieFile.OriginalTitle = _tmpMovie.Movie.OriginalTitle
+        MovieFile.Rating = _tmpMovie.Movie.Rating
+        MovieFile.SortTitle = _tmpMovie.Movie.SortTitle
+        MovieFile.Title = _tmpMovie.Movie.Title
+        MovieFile.Year = _tmpMovie.Movie.Year
         Dim mFolders As New List(Of String)
         Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
             SQLNewcommand.CommandText = String.Concat("SELECT Path FROM Sources;")
@@ -794,13 +810,19 @@ Public Class FileFolderRenamer
     End Sub
 
     Private Shared Sub UpdateFaSPaths(ByRef _DBM As Structures.DBMovie, ByVal oldPath As String, ByVal newPath As String, ByVal oldFile As String, ByVal newFile As String)
-        If Not String.IsNullOrEmpty(_DBM.FanartPath) Then _DBM.FanartPath = Path.Combine(Directory.GetParent(_DBM.FanartPath).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBM.FanartPath).Replace(oldFile, newFile))
-        If Not String.IsNullOrEmpty(_DBM.EThumbsPath) Then _DBM.EThumbsPath = Path.Combine(Directory.GetParent(_DBM.EThumbsPath).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBM.EThumbsPath).Replace(oldFile, newFile))
+        If Not String.IsNullOrEmpty(_DBM.BannerPath) Then _DBM.BannerPath = Path.Combine(Directory.GetParent(_DBM.BannerPath).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBM.BannerPath).Replace(oldFile, newFile))
+        If Not String.IsNullOrEmpty(_DBM.ClearArtPath) Then _DBM.ClearArtPath = Path.Combine(Directory.GetParent(_DBM.ClearArtPath).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBM.ClearArtPath).Replace(oldFile, newFile))
+        If Not String.IsNullOrEmpty(_DBM.ClearLogoPath) Then _DBM.ClearLogoPath = Path.Combine(Directory.GetParent(_DBM.ClearLogoPath).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBM.ClearLogoPath).Replace(oldFile, newFile))
+        If Not String.IsNullOrEmpty(_DBM.DiscArtPath) Then _DBM.DiscArtPath = Path.Combine(Directory.GetParent(_DBM.DiscArtPath).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBM.DiscArtPath).Replace(oldFile, newFile))
         If Not String.IsNullOrEmpty(_DBM.EFanartsPath) Then _DBM.EFanartsPath = Path.Combine(Directory.GetParent(_DBM.EFanartsPath).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBM.EFanartsPath).Replace(oldFile, newFile))
+        If Not String.IsNullOrEmpty(_DBM.EThumbsPath) Then _DBM.EThumbsPath = Path.Combine(Directory.GetParent(_DBM.EThumbsPath).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBM.EThumbsPath).Replace(oldFile, newFile))
+        If Not String.IsNullOrEmpty(_DBM.FanartPath) Then _DBM.FanartPath = Path.Combine(Directory.GetParent(_DBM.FanartPath).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBM.FanartPath).Replace(oldFile, newFile))
         If Not String.IsNullOrEmpty(_DBM.Filename) Then _DBM.Filename = Path.Combine(Directory.GetParent(_DBM.Filename).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBM.Filename).Replace(oldFile, newFile))
+        If Not String.IsNullOrEmpty(_DBM.LandscapePath) Then _DBM.LandscapePath = Path.Combine(Directory.GetParent(_DBM.LandscapePath).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBM.LandscapePath).Replace(oldFile, newFile))
         If Not String.IsNullOrEmpty(_DBM.NfoPath) Then _DBM.NfoPath = Path.Combine(Directory.GetParent(_DBM.NfoPath).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBM.NfoPath).Replace(oldFile, newFile))
         If Not String.IsNullOrEmpty(_DBM.PosterPath) Then _DBM.PosterPath = Path.Combine(Directory.GetParent(_DBM.PosterPath).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBM.PosterPath).Replace(oldFile, newFile))
         If Not String.IsNullOrEmpty(_DBM.SubPath) Then _DBM.SubPath = Path.Combine(Directory.GetParent(_DBM.SubPath).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBM.SubPath).Replace(oldFile, newFile))
+        If Not String.IsNullOrEmpty(_DBM.ThemePath) Then _DBM.ThemePath = Path.Combine(Directory.GetParent(_DBM.ThemePath).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBM.ThemePath).Replace(oldFile, newFile))
         If Not String.IsNullOrEmpty(_DBM.TrailerPath) Then _DBM.TrailerPath = Path.Combine(Directory.GetParent(_DBM.TrailerPath).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBM.TrailerPath).Replace(oldFile, newFile))
     End Sub
 
@@ -825,12 +847,14 @@ Public Class FileFolderRenamer
         Private _isvideo_ts As Boolean
         Private _listtitle As String
         Private _mpaarate As String
+        Private _multiview As String
         Private _newFileName As String
         Private _newPath As String
         Private _oldpath As String
         Private _originalTitle As String
         Private _parent As String
         Private _path As String
+        Private _rating As String
         Private _resolution As String
         Private _title As String
         Private _year As String
@@ -962,6 +986,15 @@ Public Class FileFolderRenamer
             End Set
         End Property
 
+        Public Property MultiView() As String
+            Get
+                Return Me._multiview
+            End Get
+            Set(ByVal value As String)
+                Me._multiview = value
+            End Set
+        End Property
+
         Public Property NewFileName() As String
             Get
                 Return Me._newFileName
@@ -1013,6 +1046,15 @@ Public Class FileFolderRenamer
             End Get
             Set(ByVal value As String)
                 Me._path = value.Trim
+            End Set
+        End Property
+
+        Public Property Rating() As String
+            Get
+                Return Me._rating
+            End Get
+            Set(ByVal value As String)
+                Me._rating = value
             End Set
         End Property
 
@@ -1120,6 +1162,8 @@ Public Class FileFolderRenamer
             _isSingle = True
             _isRenamed = False
             _mpaarate = String.Empty
+            _multiview = String.Empty
+            _rating = String.Empty
             _resolution = String.Empty
             _audio = String.Empty
             _originalTitle = String.Empty
