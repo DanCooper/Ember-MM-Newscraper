@@ -918,7 +918,7 @@ Public Class Images
             Select Case fType
                 Case Enums.MovieImageType.Fanart
                     If (isChange OrElse (String.IsNullOrEmpty(mMovie.FanartPath) OrElse Master.eSettings.MovieFanartOverwrite)) AndAlso _
-                    (Master.eSettings.MovieFanartFrodo OrElse Master.eSettings.MovieFanartEden OrElse Master.eSettings.MovieFanartYAMJ OrElse _
+                    (Master.eSettings.MovieFanartBoxee OrElse Master.eSettings.MovieFanartFrodo OrElse Master.eSettings.MovieFanartEden OrElse Master.eSettings.MovieFanartYAMJ OrElse _
                      Master.eSettings.MovieFanartNMJ OrElse (Master.eSettings.MovieUseExpert AndAlso (Not String.IsNullOrEmpty(Master.eSettings.MovieFanartExpertBDMV) OrElse _
                      Not String.IsNullOrEmpty(Master.eSettings.MovieFanartExpertMulti) OrElse Not String.IsNullOrEmpty(Master.eSettings.MovieFanartExpertSingle) OrElse _
                      Not String.IsNullOrEmpty(Master.eSettings.MovieFanartExpertVTS)))) Then
@@ -929,20 +929,22 @@ Public Class Images
                         Return False
                     End If
                 Case Enums.MovieImageType.EFanarts 'TODO: move Overwrite to SaveAsExtraFanart, add all new expert settings
-                    If (isChange OrElse (String.IsNullOrEmpty(mMovie.EFanartsPath) OrElse Master.eSettings.MovieEFanartsOverwrite) AndAlso (Master.eSettings.MovieExtrafanartsEden OrElse Master.eSettings.MovieExtrafanartsFrodo)) Then
+                    If (isChange OrElse (String.IsNullOrEmpty(mMovie.EFanartsPath) OrElse Master.eSettings.MovieEFanartsOverwrite) AndAlso _
+                        (Master.eSettings.MovieExtrafanartsEden OrElse Master.eSettings.MovieExtrafanartsFrodo)) Then
                         Return True
                     Else
                         Return False
                     End If
                 Case Enums.MovieImageType.EThumbs 'TODO: move Overwrite to SaveAsExtraThumb, add all new expert settings
-                    If (isChange OrElse (String.IsNullOrEmpty(mMovie.EThumbsPath) OrElse Master.eSettings.MovieEThumbsOverwrite) AndAlso (Master.eSettings.MovieExtrathumbsEden OrElse Master.eSettings.MovieExtrathumbsFrodo)) Then
+                    If (isChange OrElse (String.IsNullOrEmpty(mMovie.EThumbsPath) OrElse Master.eSettings.MovieEThumbsOverwrite) AndAlso _
+                        (Master.eSettings.MovieExtrathumbsEden OrElse Master.eSettings.MovieExtrathumbsFrodo)) Then
                         Return True
                     Else
                         Return False
                     End If
-                Case Else
+                Case Enums.MovieImageType.Poster
                     If (isChange OrElse (String.IsNullOrEmpty(mMovie.PosterPath) OrElse Master.eSettings.MoviePosterOverwrite)) AndAlso _
-                    (Master.eSettings.MoviePosterFrodo OrElse Master.eSettings.MoviePosterEden OrElse Master.eSettings.MoviePosterYAMJ OrElse _
+                    (Master.eSettings.MoviePosterBoxee OrElse Master.eSettings.MoviePosterFrodo OrElse Master.eSettings.MoviePosterEden OrElse Master.eSettings.MoviePosterYAMJ OrElse _
                      Master.eSettings.MoviePosterNMJ OrElse (Master.eSettings.MovieUseExpert AndAlso (Not String.IsNullOrEmpty(Master.eSettings.MoviePosterExpertBDMV) OrElse _
                      Not String.IsNullOrEmpty(Master.eSettings.MoviePosterExpertMulti) OrElse Not String.IsNullOrEmpty(Master.eSettings.MoviePosterExpertSingle) OrElse _
                      Not String.IsNullOrEmpty(Master.eSettings.MoviePosterExpertVTS)))) Then

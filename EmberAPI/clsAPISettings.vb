@@ -463,6 +463,12 @@ Public Class Settings
     Private _movieposternmj As Boolean
     Private _movietrailernmj As Boolean
 
+    '***************** Boxee settings ******************
+    Private _movieuseboxee As Boolean
+    Private _moviefanartboxee As Boolean
+    Private _movienfoboxee As Boolean
+    Private _movieposterboxee As Boolean
+
     '***************** Expert settings ****************
     Private _movieuseexpert As Boolean
 
@@ -4193,6 +4199,42 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property MovieUseBoxee() As Boolean
+        Get
+            Return Me._movieuseBoxee
+        End Get
+        Set(ByVal value As Boolean)
+            Me._movieuseBoxee = value
+        End Set
+    End Property
+
+    Public Property MovieFanartBoxee() As Boolean
+        Get
+            Return Me._moviefanartBoxee
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviefanartBoxee = value
+        End Set
+    End Property
+
+    Public Property MovieNFOBoxee() As Boolean
+        Get
+            Return Me._movienfoBoxee
+        End Get
+        Set(ByVal value As Boolean)
+            Me._movienfoBoxee = value
+        End Set
+    End Property
+
+    Public Property MoviePosterBoxee() As Boolean
+        Get
+            Return Me._movieposterBoxee
+        End Get
+        Set(ByVal value As Boolean)
+            Me._movieposterBoxee = value
+        End Set
+    End Property
+
     Public Property MovieUseExpert() As Boolean
         Get
             Return Me._movieuseexpert
@@ -5108,6 +5150,7 @@ Public Class Settings
         Me._movieextrathumbsfrodo = False
         Me._movieextrathumbsnmj = False
         Me._movieextrathumbsyamj = False
+        Me._moviefanartboxee = False
         Me._moviefanartcol = False
         Me._moviefanarteden = False
         Me._moviefanartexpertbdmv = String.Empty
@@ -5167,6 +5210,7 @@ Public Class Settings
         Me._moviemissingtheme = True
         Me._moviemissingtrailer = True
         Me._moviemoviesetspath = String.Empty
+        Me._movienfoboxee = False
         Me._movienfocol = False
         Me._movienfoeden = False
         Me._movienfoexpertbdmv = String.Empty
@@ -5177,6 +5221,7 @@ Public Class Settings
         Me._movienfonmj = False
         Me._movienfoyamj = False
         Me._movienosaveimagestonfo = False
+        Me._movieposterboxee = False
         Me._moviepostercol = False
         Me._moviepostereden = False
         Me._movieposterexpertbdmv = String.Empty
@@ -5268,6 +5313,7 @@ Public Class Settings
         Me._movieunstackexpertsingle = False
         Me._movieusebasedirectoryexpertbdmv = False
         Me._movieusebasedirectoryexpertvts = False
+        Me._movieuseboxee = False
         Me._movieuseeden = False
         Me._movieuseexpert = False
         Me._movieusefrodo = False
@@ -5511,7 +5557,7 @@ Public Class Settings
         End If
 
         ' Fix added to avoid to have no movie NFO saved
-        If Not (Master.eSettings.MovieUseEden Or Master.eSettings.MovieUseExpert Or Master.eSettings.MovieUseFrodo Or Master.eSettings.MovieUseNMJ Or Master.eSettings.MovieUseYAMJ) Then
+        If Not (Master.eSettings.MovieUseBoxee Or Master.eSettings.MovieUseEden Or Master.eSettings.MovieUseExpert Or Master.eSettings.MovieUseFrodo Or Master.eSettings.MovieUseNMJ Or Master.eSettings.MovieUseYAMJ) Then
             Master.eSettings.MovieUseFrodo = True
             Master.eSettings.MovieActorThumbsFrodo = True
             Master.eSettings.MovieBannerFrodo = True
@@ -5524,6 +5570,8 @@ Public Class Settings
             Master.eSettings.MovieLandscapeFrodo = True
             Master.eSettings.MovieNFOFrodo = True
             Master.eSettings.MoviePosterFrodo = True
+            Master.eSettings.MovieXBMCThemeEnable = True
+            Master.eSettings.MovieXBMCThemeMovie = True
             Master.eSettings.MovieTrailerFrodo = True
             Master.eSettings.MovieXBMCTrailerFormat = True
         End If

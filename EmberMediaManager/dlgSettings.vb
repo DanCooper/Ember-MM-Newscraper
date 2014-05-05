@@ -2161,6 +2161,51 @@ Public Class dlgSettings
         If Not Me.chkMovieScraperCertForMPAA.Checked Then Me.chkMovieScraperUseMPAAFSK.Checked = False
     End Sub
 
+    Private Sub chkMovieUseBoxee_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieUseBoxee.CheckedChanged
+        Me.SetApplyButton(True)
+
+        'Me.chkActorThumbsBoxee.Enabled = Me.chkMovieUseBoxee.Checked
+        'Me.chkMovieBannerBoxee.Enabled = Me.chkMovieUseBoxee.Checked
+        'Me.chkClearArtBoxee.Enabled = Me.chkMovieUseBoxee.Checked
+        'Me.chkClearLogoBoxee.Enabled = Me.chkMovieUseBoxee.Checked
+        'Me.chkExtrafanartBoxee.Enabled = Me.chkMovieUseBoxee.Checked
+        'Me.chkExtrathumbsBoxee.Enabled = Me.chkMovieUseBoxee.Checked
+        'Me.chkDiscArtBoxee.Enabled = Me.chkMovieUseBoxee.Checked
+        Me.chkMovieFanartBoxee.Enabled = Me.chkMovieUseBoxee.Checked
+        'Me.chkLandscapeBoxee.Enabled = Me.chkMovieUseBoxee.Checked
+        Me.chkMovieNFOBoxee.Enabled = Me.chkMovieUseBoxee.Checked
+        Me.chkMoviePosterBoxee.Enabled = Me.chkMovieUseBoxee.Checked
+        'Me.chkMovieTrailerBoxee.Enabled = Me.chkMovieUseBoxee.Checked
+
+        If Not Me.chkMovieUseBoxee.Checked Then
+            ' Me.chkActorThumbsBoxee.Checked = False
+            'Me.chkMovieBannerBoxee.Checked = False
+            'Me.chkClearArtBoxee.Checked = False
+            'Me.chkClearLogoBoxee.Checked = False
+            'Me.chkDiscArtBoxee.Checked = False
+            'Me.chkExtrafanartBoxee.Checked = False
+            'Me.chkExtrathumbsBoxee.Checked = False
+            Me.chkMovieFanartBoxee.Checked = False
+            'Me.chkLandscapeBoxee.Checked = False
+            Me.chkMovieNFOBoxee.Checked = False
+            Me.chkMoviePosterBoxee.Checked = False
+            'Me.chkMovieTrailerBoxee.Checked = False
+        Else
+            'Me.chkActorThumbsBoxee.Checked = True
+            'Me.chkMovieBannerBoxee.Checked = True
+            'Me.chkClearArtBoxee.Checked = True
+            'Me.chkClearLogoBoxee.Checked = True
+            'Me.chkDiscArtBoxee.Checked = True
+            'Me.chkExtrafanartBoxee.Checked = True
+            'Me.chkExtrathumbsBoxee.Checked = True
+            Me.chkMovieFanartBoxee.Checked = True
+            'Me.chkLandscapeBoxee.Checked = True
+            Me.chkMovieNFOBoxee.Checked = True
+            Me.chkMoviePosterBoxee.Checked = True
+            'Me.chkMovieTrailerBoxee.Checked = True
+        End If
+    End Sub
+
     Private Sub chkMovieUseFrodo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieUseFrodo.CheckedChanged
         Me.SetApplyButton(True)
 
@@ -2265,7 +2310,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkMovieUseYAMJCheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieUseYAMJ.CheckedChanged
+    Private Sub chkMovieUseYAMJ_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieUseYAMJ.CheckedChanged
         Me.SetApplyButton(True)
 
         'Me.chkActorThumbsYAMJ.Enabled = Me.chkMovieUseYAMJ.Checked
@@ -2312,7 +2357,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkMovieUseNMJCheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieUseNMJ.CheckedChanged
+    Private Sub chkMovieUseNMJ_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieUseNMJ.CheckedChanged
         Me.SetApplyButton(True)
 
         'Me.chkActorThumbsNMJ.Enabled = Me.chkMovieUseNMJ.Checked
@@ -3049,6 +3094,21 @@ Public Class dlgSettings
                 Me.chkMovieYAMJCompatibleSets.Checked = .MovieYAMJCompatibleSets
                 Me.chkMovieYAMJWatchedFile.Checked = .MovieYAMJWatchedFile
                 Me.txtMovieYAMJWatchedFolder.Text = .MovieYAMJWatchedFolder
+
+                '***************** Boxee settings ******************
+                Me.chkMovieUseBoxee.Checked = .MovieUseBoxee
+                'Me.chkActorThumbsBoxee.Checked = .MovieActorThumbsBoxee
+                'Me.chkMovieBannerBoxee.Checked = .MovieBannerBoxee
+                'Me.chkClearArtBoxee.Checked = .MovieClearArtBoxee
+                'Me.chkClearLogoBoxee.Checked = .MovieClearLogoBoxee
+                'Me.chkDiscArtBoxee.Checked = .MovieDiscArtBoxee
+                'Me.chkExtrafanartBoxee.Checked = .MovieExtrafanartBoxee
+                'Me.chkExtrathumbsBoxee.Checked = .MovieExtrathumbsBoxee
+                Me.chkMovieFanartBoxee.Checked = .MovieFanartBoxee
+                'Me.chkLandscapeBoxee.Checked = .MovieLandscapeBoxee
+                Me.chkMovieNFOBoxee.Checked = .MovieNFOBoxee
+                Me.chkMoviePosterBoxee.Checked = .MoviePosterBoxee
+                'Me.chkMovieTrailerBoxee.Checked = .MovieTrailerBoxee
 
                 '***************** Expert settings *****************
                 Me.chkMovieUseExpert.Checked = .MovieUseExpert
@@ -4418,6 +4478,21 @@ Public Class dlgSettings
                 .MovieYAMJWatchedFile = Me.chkMovieYAMJWatchedFile.Checked
                 .MovieYAMJWatchedFolder = Me.txtMovieYAMJWatchedFolder.Text
 
+                '***************** Boxee settings *****************
+                .MovieUseBoxee = Me.chkMovieUseBoxee.Checked
+                '.MovieActorThumbsBoxee = Me.chkActorThumbsBoxee.Checked
+                '.MovieBannerBoxee = Me.chkMovieBannerBoxee.Checked
+                '.MovieClearArtBoxee = Me.chkClearArtBoxee.Checked
+                '.MovieClearLogoBoxee = Me.chkClearLogoBoxee.Checked
+                '.MovieDiscArtBoxee = Me.chkDiscArtBoxee.Checked
+                '.MovieExtrafanartBoxee = Me.chkExtrafanartBoxee.Checked
+                '.MovieExtrathumbsBoxee = Me.chkExtrathumbsBoxee.Checked
+                .MovieFanartBoxee = Me.chkMovieFanartBoxee.Checked
+                '.MovieLandscapeBoxee = Me.chkLandscapeBoxee.Checked
+                .MovieNFOBoxee = Me.chkMovieNFOBoxee.Checked
+                .MoviePosterBoxee = Me.chkMoviePosterBoxee.Checked
+                '.MovieTrailerBoxee = Me.chkMovieTrailerBoxee.Checked
+
                 '***************** Expert settings ****************
                 .MovieUseExpert = Me.chkMovieUseExpert.Checked
 
@@ -4531,7 +4606,7 @@ Public Class dlgSettings
 
 
                 'Default to Frodo for movies
-                If Not (.MovieUseEden OrElse .MovieUseExpert OrElse .MovieUseFrodo OrElse .MovieUseNMJ OrElse .MovieUseYAMJ) Then
+                If Not (.MovieUseBoxee OrElse .MovieUseEden OrElse .MovieUseExpert OrElse .MovieUseFrodo OrElse .MovieUseNMJ OrElse .MovieUseYAMJ) Then
                     .MovieUseFrodo = True
                     .MovieActorThumbsFrodo = True
                     .MovieBannerFrodo = True
