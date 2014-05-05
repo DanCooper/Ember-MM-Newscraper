@@ -504,46 +504,46 @@ Public Class Database
             If doAddColumnMovies = True Then
                 strlistSQLCommands.Add("alter table Movies add EFanartsPath TEXT;")
                 strlistSQLCommands.Add("alter table Movies add EThumbsPath TEXT;")
-                strlistSQLCommands.Add("alter table Movies add HasEThumbs BOOL;")
-                strlistSQLCommands.Add("alter table Movies add HasEFanarts BOOL;")
+                strlistSQLCommands.Add("alter table Movies add HasEThumbs BOOL DEFAULT FALSE;")
+                strlistSQLCommands.Add("alter table Movies add HasEFanarts BOOL DEFAULT FALSE;")
             End If
             If doAddColumnTVBannerAndLandscape = True Then
-                strlistSQLCommands.Add("alter table TVShows add HasBanner BOOL;")
+                strlistSQLCommands.Add("alter table TVShows add HasBanner BOOL DEFAULT FALSE;")
                 strlistSQLCommands.Add("alter table TVShows add BannerPath TEXT;")
-                strlistSQLCommands.Add("alter table TVShows add HasLandscape BOOL;")
+                strlistSQLCommands.Add("alter table TVShows add HasLandscape BOOL DEFAULT FALSE;")
                 strlistSQLCommands.Add("alter table TVShows add LandscapePath TEXT;")
-                strlistSQLCommands.Add("alter table TVSeason add HasBanner BOOL;")
+                strlistSQLCommands.Add("alter table TVSeason add HasBanner BOOL DEFAULT FALSE;")
                 strlistSQLCommands.Add("alter table TVSeason add BannerPath TEXT;")
-                strlistSQLCommands.Add("alter table TVSeason add HasLandscape BOOL;")
+                strlistSQLCommands.Add("alter table TVSeason add HasLandscape BOOL DEFAULT FALSE;")
                 strlistSQLCommands.Add("alter table TVSeason add LandscapePath TEXT;")
             End If
             If doAddColumnTVShowStatus = True Then
                 strlistSQLCommands.Add("alter table TVShows add Status TEXT;")
             End If
             If doAddColumnMovieBannerAndLandscape = True Then
-                strlistSQLCommands.Add("alter table Movies add HasBanner BOOL;")
+                strlistSQLCommands.Add("alter table Movies add HasBanner BOOL DEFAULT FALSE;")
                 strlistSQLCommands.Add("alter table Movies add BannerPath TEXT;")
-                strlistSQLCommands.Add("alter table Movies add HasLandscape BOOL;")
+                strlistSQLCommands.Add("alter table Movies add HasLandscape BOOL DEFAULT FALSE;")
                 strlistSQLCommands.Add("alter table Movies add LandscapePath TEXT;")
             End If
             If doAddColumnMovieAndTVTheme = True Then
-                strlistSQLCommands.Add("alter table Movies add HasTheme BOOL;")
+                strlistSQLCommands.Add("alter table Movies add HasTheme BOOL DEFAULT FALSE;")
                 strlistSQLCommands.Add("alter table Movies add ThemePath TEXT;")
-                strlistSQLCommands.Add("alter table TVShows add HasTheme BOOL;")
+                strlistSQLCommands.Add("alter table TVShows add HasTheme BOOL DEFAULT FALSE;")
                 strlistSQLCommands.Add("alter table TVShows add ThemePath TEXT;")
             End If
             If doAddColumnMovieAndTVLogoDiscAndClearArt = True Then
-                strlistSQLCommands.Add("alter table Movies add HasDiscArt BOOL;")
+                strlistSQLCommands.Add("alter table Movies add HasDiscArt BOOL DEFAULT FALSE;")
                 strlistSQLCommands.Add("alter table Movies add DiscArtPath TEXT;")
-                strlistSQLCommands.Add("alter table Movies add HasClearLogo BOOL;")
+                strlistSQLCommands.Add("alter table Movies add HasClearLogo BOOL DEFAULT FALSE;")
                 strlistSQLCommands.Add("alter table Movies add ClearLogoPath TEXT;")
-                strlistSQLCommands.Add("alter table Movies add HasClearArt BOOL;")
+                strlistSQLCommands.Add("alter table Movies add HasClearArt BOOL DEFAULT FALSE;")
                 strlistSQLCommands.Add("alter table Movies add ClearArtPath TEXT;")
-                strlistSQLCommands.Add("alter table TVShows add HasCharacterArt BOOL;")
+                strlistSQLCommands.Add("alter table TVShows add HasCharacterArt BOOL DEFAULT FALSE;")
                 strlistSQLCommands.Add("alter table TVShows add CharacterArtPath TEXT;")
-                strlistSQLCommands.Add("alter table TVShows add HasClearLogo BOOL;")
+                strlistSQLCommands.Add("alter table TVShows add HasClearLogo BOOL DEFAULT FALSE;")
                 strlistSQLCommands.Add("alter table TVShows add ClearLogoPath TEXT;")
-                strlistSQLCommands.Add("alter table TVShows add HasClearArt BOOL;")
+                strlistSQLCommands.Add("alter table TVShows add HasClearArt BOOL DEFAULT FALSE;")
                 strlistSQLCommands.Add("alter table TVShows add ClearArtPath TEXT;")
             End If
 
