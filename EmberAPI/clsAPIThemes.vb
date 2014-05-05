@@ -184,43 +184,25 @@ Public Class Theme
     ''' whether the path is valid, and whether the Master.eSettings.OverwriteTheme
     ''' flag is set. 
     ''' </summary>
-    ''' <param name="sPath">The intended path to save the theme</param>
-    ''' <param name="isDL">Flag to indicate whether the file is intended to be saved to the file system or not</param>
-    ''' <param name="isSS">Flag to indicate whether a scrape of a single item was requested (Enums.ScrapeType.SingleScrape), or whether this is part of a multi-item scrape</param>
+    ''' <param name="mMovie">The intended path to save the theme</param>
     ''' <returns><c>True</c> if a download is allowed, <c>False</c> otherwise</returns>
     ''' <remarks></remarks>
-    Public Shared Function IsAllowedToDownload(ByVal sPath As String, ByVal isDL As Boolean, Optional ByVal isSS As Boolean = False) As Boolean
-        'TODO Dekker500 - MUST VALIDATE whether these parameters are correct! I believe isDL and isSS are reversed in meanings (at least from the calling method's perspective)!!!!
-
-        'Dim fScanner As New Scanner
-        If Master.eSettings.MovieThemeOverwrite Then
-            Return True
-        Else
+    Public Function IsAllowedToDownload(ByVal mMovie As Structures.DBMovie) As Boolean
+        Try
+            With Master.eSettings
+                If (String.IsNullOrEmpty(mMovie.ThemePath) OrElse .MovieThemeOverwrite) AndAlso .MovieXBMCThemeEnable AndAlso _
+                    (mMovie.isSingle AndAlso .MovieXBMCThemeMovie) OrElse _
+                    (mMovie.isSingle AndAlso .MovieXBMCThemeSub AndAlso Not String.IsNullOrEmpty(.MovieXBMCThemeSubDir)) OrElse _
+                    (.MovieXBMCThemeCustom AndAlso Not String.IsNullOrEmpty(.MovieXBMCThemeCustomPath)) Then
+                    Return True
+                Else
+                    Return False
+                End If
+            End With
+        Catch ex As Exception
+            Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
             Return False
-        End If
-
-        'If isDL Then
-        '    'If String.IsNullOrEmpty(fScanner.GetMovieTrailerPath(sPath)) OrElse Master.eSettings.MovieThemeOverwrite Then
-        '    If Master.eSettings.MovieThemeOverwrite Then
-        '        Return True
-        '    Else
-        '        If isSS AndAlso String.IsNullOrEmpty(fScanner.GetMovieTrailerPath(sPath)) Then
-        '            If Not Master.eSettings.MovieLockTheme Then
-        '                Return True
-        '            Else
-        '                Return False
-        '            End If
-        '        Else
-        '            Return False
-        '        End If
-        '    End If
-        'Else
-        '    If Not Master.eSettings.MovieLockTheme Then
-        '        Return True
-        '    Else
-        '        Return False
-        '    End If
-        'End If
+        End Try
     End Function
     ''' <summary>
     ''' Raises the ProgressUpdated event, passing the iPercent value to indicate percent completed.

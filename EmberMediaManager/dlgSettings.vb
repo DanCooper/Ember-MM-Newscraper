@@ -1904,10 +1904,6 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkMovieScraperActorThumbs_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperActorThumbs.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub chkTVScraperEpisodeActors_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVScraperEpisodeActors.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
@@ -2748,7 +2744,6 @@ Public Class dlgSettings
                 End If
                 Me.chkMovieProperCase.Checked = .MovieProperCase
                 Me.chkMovieScanOrderModify.Checked = .MovieScanOrderModify
-                Me.chkMovieScraperActorThumbs.Checked = .MovieScraperActorThumbs
                 Me.chkMovieScraperCast.Checked = .MovieScraperCast
                 Me.chkMovieScraperCastWithImg.Checked = .MovieScraperCastWithImgOnly
                 Me.chkMovieScraperCertification.Checked = .MovieScraperCertification
@@ -4112,7 +4107,6 @@ Public Class dlgSettings
                 .MoviePosterWidth = If(Not String.IsNullOrEmpty(Me.txtMoviePosterWidth.Text), Convert.ToInt32(Me.txtMoviePosterWidth.Text), 0)
                 .MovieProperCase = Me.chkMovieProperCase.Checked
                 .MovieScanOrderModify = Me.chkMovieScanOrderModify.Checked
-                .MovieScraperActorThumbs = Me.chkMovieScraperActorThumbs.Checked
                 .MovieScraperCast = Me.chkMovieScraperCast.Checked
                 If Not String.IsNullOrEmpty(Me.txtMovieScraperCastLimit.Text) Then
                     .MovieScraperCastLimit = Convert.ToInt32(Me.txtMovieScraperCastLimit.Text)
@@ -4844,7 +4838,6 @@ Public Class dlgSettings
         Me.chkMovieRecognizeVTSExpertVTS.Text = Master.eLang.GetString(537, "Automatically Detect VIDEO_TS Folders Even if They Are Not Named ""VIDEO_TS""")
         Me.chkMovieFanartResize.Text = Me.chkMoviePosterResize.Text
         Me.chkMoviePosterResize.Text = Master.eLang.GetString(481, "Automatically Resize:")
-        Me.chkMovieScraperActorThumbs.Text = Master.eLang.GetString(828, "Enable Actor Thumbs")
         Me.chkMovieSubCol.Text = Master.eLang.GetString(466, "Hide Sub Column")
         Me.chkMovieThemeCol.Text = Master.eLang.GetString(1072, "Hide Theme Column")
         Me.chkMovieThemeOverwrite.Text = Master.eLang.GetString(483, "Overwrite Existing")

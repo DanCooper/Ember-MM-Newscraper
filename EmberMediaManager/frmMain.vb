@@ -1246,6 +1246,7 @@ Public Class frmMain
         Dim Landscape As New MediaContainers.Image
         Dim Poster As New MediaContainers.Image
         Dim Theme As New Theme
+        Dim Trailer As New Trailers
         Dim tURL As String = String.Empty
         Dim aList As New List(Of MediaContainers.Image)
         Dim aUrlList As New List(Of Trailers)
@@ -1674,28 +1675,30 @@ Public Class frmMain
                 If Master.GlobalScrapeMod.Theme Then
                     tUrlList.Clear()
                     tURL = String.Empty
-                    If Not ModulesManager.Instance.MovieScrapeTheme(DBScrapeMovie, tUrlList) Then
-                        If tUrlList.Count > 0 Then
-                            If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
-                                Theme = tUrlList.Item(0)
-                                If Not String.IsNullOrEmpty(Theme.URL) Then
-                                    tURL = Theme.DownloadTheme(DBScrapeMovie.Filename, DBScrapeMovie.isSingle, Theme)
-                                    If Not String.IsNullOrEmpty(tURL) Then
-                                        DBScrapeMovie.ThemePath = tURL
-                                        MovieScraperEvent(Enums.MovieScraperEventType.ThemeItem, True)
+                    If Theme.IsAllowedToDownload(DBScrapeMovie) Then
+                        If Not ModulesManager.Instance.MovieScrapeTheme(DBScrapeMovie, tUrlList) Then
+                            If tUrlList.Count > 0 Then
+                                If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
+                                    Theme = tUrlList.Item(0)
+                                    If Not String.IsNullOrEmpty(Theme.URL) Then
+                                        tURL = Theme.DownloadTheme(DBScrapeMovie.Filename, DBScrapeMovie.isSingle, Theme)
+                                        If Not String.IsNullOrEmpty(tURL) Then
+                                            DBScrapeMovie.ThemePath = tURL
+                                            MovieScraperEvent(Enums.MovieScraperEventType.ThemeItem, True)
+                                        End If
                                     End If
+                                    'ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
+                                    '    If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
+                                    '        MsgBox(Master.eLang.GetString(930, "Trailer of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(929, "No Preferred Size:"))
+                                    '    End If
+                                    '    Using dThemeSelect As New dlgThemeSelect()
+                                    '        tURL = dThemeSelect.ShowDialog(DBScrapeMovie, tUrlList)
+                                    '        If Not String.IsNullOrEmpty(tURL) Then
+                                    '            DBScrapeMovie.ThemePath = tURL
+                                    '            MovieScraperEvent(Enums.MovieScraperEventType.ThemeItem, True)
+                                    '        End If
+                                    '    End Using
                                 End If
-                                'ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
-                                '    If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
-                                '        MsgBox(Master.eLang.GetString(930, "Trailer of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(929, "No Preferred Size:"))
-                                '    End If
-                                '    Using dThemeSelect As New dlgThemeSelect()
-                                '        tURL = dThemeSelect.ShowDialog(DBScrapeMovie, tUrlList)
-                                '        If Not String.IsNullOrEmpty(tURL) Then
-                                '            DBScrapeMovie.ThemePath = tURL
-                                '            MovieScraperEvent(Enums.MovieScraperEventType.ThemeItem, True)
-                                '        End If
-                                '    End Using
                             End If
                         End If
                     End If
@@ -1705,43 +1708,45 @@ Public Class frmMain
                 If Master.GlobalScrapeMod.Trailer Then
                     aUrlList.Clear()
                     tURL = String.Empty
-                    If Not ModulesManager.Instance.MovieScrapeTrailer(DBScrapeMovie, Enums.ScraperCapabilities.Trailer, aUrlList) Then
-                        If aUrlList.Count > 0 Then
-                            If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) AndAlso Trailers.PreferredTrailer(tURL, aUrlList, DBScrapeMovie.Filename, (Args.scrapeType = Enums.ScrapeType.SingleScrape)) Then
-                                If Not String.IsNullOrEmpty(tURL) Then
-                                    tURL = Trailers.DownloadTrailer(DBScrapeMovie.Filename, DBScrapeMovie.isSingle, tURL)
+                    If Trailer.IsAllowedToDownload(DBScrapeMovie) Then
+                        If Not ModulesManager.Instance.MovieScrapeTrailer(DBScrapeMovie, Enums.ScraperCapabilities.Trailer, aUrlList) Then
+                            If aUrlList.Count > 0 Then
+                                If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) AndAlso Trailers.PreferredTrailer(tURL, aUrlList, DBScrapeMovie.Filename, (Args.scrapeType = Enums.ScrapeType.SingleScrape)) Then
                                     If Not String.IsNullOrEmpty(tURL) Then
-                                        If StringUtils.isValidURL(tURL) Then
-                                            If Master.eSettings.MovieXBMCTrailerFormat Then
-                                                DBScrapeMovie.Movie.Trailer = Replace(tURL, "http://www.youtube.com/watch?v=", "plugin://plugin.video.youtube/?action=play_video&videoid=")
+                                        tURL = Trailers.DownloadTrailer(DBScrapeMovie.Filename, DBScrapeMovie.isSingle, tURL)
+                                        If Not String.IsNullOrEmpty(tURL) Then
+                                            If StringUtils.isValidURL(tURL) Then
+                                                If Master.eSettings.MovieXBMCTrailerFormat Then
+                                                    DBScrapeMovie.Movie.Trailer = Replace(tURL, "http://www.youtube.com/watch?v=", "plugin://plugin.video.youtube/?action=play_video&videoid=")
+                                                Else
+                                                    DBScrapeMovie.Movie.Trailer = tURL
+                                                End If
                                             Else
-                                                DBScrapeMovie.Movie.Trailer = tURL
+                                                DBScrapeMovie.TrailerPath = tURL
+                                                MovieScraperEvent(Enums.MovieScraperEventType.TrailerItem, True)
                                             End If
-                                        Else
-                                            DBScrapeMovie.TrailerPath = tURL
-                                            MovieScraperEvent(Enums.MovieScraperEventType.TrailerItem, True)
                                         End If
                                     End If
+                                    'ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
+                                    '    If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
+                                    '        MsgBox(Master.eLang.GetString(930, "Trailer of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(929, "No Preferred Size:"))
+                                    '    End If
+                                    '    Using dTrailerSelect As New dlgTrailerSelect()
+                                    '        tURL = dTrailerSelect.ShowDialog(DBScrapeMovie, aUrlList)
+                                    '        If Not String.IsNullOrEmpty(tURL) Then
+                                    '            If StringUtils.isValidURL(tURL) Then
+                                    '                If Master.eSettings.MovieXBMCTrailerFormat Then
+                                    '                    DBScrapeMovie.Movie.Trailer = Replace(tURL, "http://www.youtube.com/watch?v=", "plugin://plugin.video.youtube/?action=play_video&videoid=")
+                                    '                Else
+                                    '                    DBScrapeMovie.Movie.Trailer = tURL
+                                    '                End If
+                                    '            Else
+                                    '                DBScrapeMovie.TrailerPath = tURL
+                                    '                MovieScraperEvent(Enums.MovieScraperEventType.TrailerItem, True)
+                                    '            End If
+                                    '        End If
+                                    '    End Using
                                 End If
-                                'ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
-                                '    If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
-                                '        MsgBox(Master.eLang.GetString(930, "Trailer of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(929, "No Preferred Size:"))
-                                '    End If
-                                '    Using dTrailerSelect As New dlgTrailerSelect()
-                                '        tURL = dTrailerSelect.ShowDialog(DBScrapeMovie, aUrlList)
-                                '        If Not String.IsNullOrEmpty(tURL) Then
-                                '            If StringUtils.isValidURL(tURL) Then
-                                '                If Master.eSettings.MovieXBMCTrailerFormat Then
-                                '                    DBScrapeMovie.Movie.Trailer = Replace(tURL, "http://www.youtube.com/watch?v=", "plugin://plugin.video.youtube/?action=play_video&videoid=")
-                                '                Else
-                                '                    DBScrapeMovie.Movie.Trailer = tURL
-                                '                End If
-                                '            Else
-                                '                DBScrapeMovie.TrailerPath = tURL
-                                '                MovieScraperEvent(Enums.MovieScraperEventType.TrailerItem, True)
-                                '            End If
-                                '        End If
-                                '    End Using
                             End If
                         End If
                     End If
@@ -1770,8 +1775,8 @@ Public Class frmMain
                                 End If
                             End If
                         End If
+                        End If
                     End If
-                End If
 
                 'Extrafanarts
                 If Master.GlobalScrapeMod.EFanarts Then
@@ -1800,7 +1805,7 @@ Public Class frmMain
                 End If
 
                 'ActorThumbs
-                If Master.GlobalScrapeMod.ActorThumbs AndAlso Master.eSettings.MovieScraperActorThumbs Then
+                If Master.GlobalScrapeMod.ActorThumbs AndAlso (Master.eSettings.MovieActorThumbsFrodo OrElse Master.eSettings.MovieActorThumbsEden) Then
                     If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
                         For Each act As MediaContainers.Person In DBScrapeMovie.Movie.Actors
                             Dim img As New Images

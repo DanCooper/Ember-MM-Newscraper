@@ -915,46 +915,94 @@ Public Class Images
         '2013/11/26 Dekker500 - Need to figure out exactly what this method is doing so it can be documented
 
         Try
-            Select Case fType
-                Case Enums.MovieImageType.Fanart
-                    If (isChange OrElse (String.IsNullOrEmpty(mMovie.FanartPath) OrElse Master.eSettings.MovieFanartOverwrite)) AndAlso _
-                    (Master.eSettings.MovieFanartBoxee OrElse Master.eSettings.MovieFanartFrodo OrElse Master.eSettings.MovieFanartEden OrElse Master.eSettings.MovieFanartYAMJ OrElse _
-                     Master.eSettings.MovieFanartNMJ OrElse (Master.eSettings.MovieUseExpert AndAlso (Not String.IsNullOrEmpty(Master.eSettings.MovieFanartExpertBDMV) OrElse _
-                     Not String.IsNullOrEmpty(Master.eSettings.MovieFanartExpertMulti) OrElse Not String.IsNullOrEmpty(Master.eSettings.MovieFanartExpertSingle) OrElse _
-                     Not String.IsNullOrEmpty(Master.eSettings.MovieFanartExpertVTS)))) Then
-                        ' Removed as there is not ONLY the TMDB scraper. Also the GetSetting is bound the calling procedure, is always true 
-                        ' AndAlso AdvancedSettings.GetBooleanSetting("UseTMDB", True) Then
-                        Return True
-                    Else
-                        Return False
-                    End If
-                Case Enums.MovieImageType.EFanarts 'TODO: move Overwrite to SaveAsExtraFanart, add all new expert settings
-                    If (isChange OrElse (String.IsNullOrEmpty(mMovie.EFanartsPath) OrElse Master.eSettings.MovieEFanartsOverwrite) AndAlso _
-                        (Master.eSettings.MovieExtrafanartsEden OrElse Master.eSettings.MovieExtrafanartsFrodo)) Then
-                        Return True
-                    Else
-                        Return False
-                    End If
-                Case Enums.MovieImageType.EThumbs 'TODO: move Overwrite to SaveAsExtraThumb, add all new expert settings
-                    If (isChange OrElse (String.IsNullOrEmpty(mMovie.EThumbsPath) OrElse Master.eSettings.MovieEThumbsOverwrite) AndAlso _
-                        (Master.eSettings.MovieExtrathumbsEden OrElse Master.eSettings.MovieExtrathumbsFrodo)) Then
-                        Return True
-                    Else
-                        Return False
-                    End If
-                Case Enums.MovieImageType.Poster
-                    If (isChange OrElse (String.IsNullOrEmpty(mMovie.PosterPath) OrElse Master.eSettings.MoviePosterOverwrite)) AndAlso _
-                    (Master.eSettings.MoviePosterBoxee OrElse Master.eSettings.MoviePosterFrodo OrElse Master.eSettings.MoviePosterEden OrElse Master.eSettings.MoviePosterYAMJ OrElse _
-                     Master.eSettings.MoviePosterNMJ OrElse (Master.eSettings.MovieUseExpert AndAlso (Not String.IsNullOrEmpty(Master.eSettings.MoviePosterExpertBDMV) OrElse _
-                     Not String.IsNullOrEmpty(Master.eSettings.MoviePosterExpertMulti) OrElse Not String.IsNullOrEmpty(Master.eSettings.MoviePosterExpertSingle) OrElse _
-                     Not String.IsNullOrEmpty(Master.eSettings.MoviePosterExpertVTS)))) Then
-                        ' Removed as there is not ONLY the Native scraper scraper. Also the GetSetting is bound the calling procedure, is always true 
-                        ' AndAlso (AdvancedSettings.GetBooleanSetting("UseIMPA", False) OrElse AdvancedSettings.GetBooleanSetting("UseMPDB", False) OrElse AdvancedSettings.GetBooleanSetting("UseTMDB", True)) Then
-                        Return True
-                    Else
-                        Return False
-                    End If
-            End Select
+            With Master.eSettings
+                Select Case fType
+                    Case Enums.MovieImageType.Banner
+                        If (isChange OrElse (String.IsNullOrEmpty(mMovie.BannerPath) OrElse .MovieBannerOverwrite) AndAlso _
+                            (.MovieBannerEden OrElse .MovieBannerFrodo OrElse .MovieBannerNMJ OrElse .MovieBannerYAMJ OrElse _
+                             (.MovieUseExpert AndAlso (Not String.IsNullOrEmpty(.MovieBannerExpertBDMV) OrElse _
+                         Not String.IsNullOrEmpty(.MovieBannerExpertMulti) OrElse Not String.IsNullOrEmpty(.MovieBannerExpertSingle) OrElse _
+                         Not String.IsNullOrEmpty(.MovieBannerExpertVTS))))) Then
+                            Return True
+                        Else
+                            Return False
+                        End If
+                    Case Enums.MovieImageType.ClearArt
+                        If (isChange OrElse (String.IsNullOrEmpty(mMovie.ClearArtPath) OrElse .MovieClearArtOverwrite) AndAlso _
+                            (.MovieClearArtEden OrElse .MovieClearArtFrodo OrElse _
+                             (.MovieUseExpert AndAlso (Not String.IsNullOrEmpty(.MovieClearArtExpertBDMV) OrElse _
+                         Not String.IsNullOrEmpty(.MovieClearArtExpertMulti) OrElse Not String.IsNullOrEmpty(.MovieClearArtExpertSingle) OrElse _
+                         Not String.IsNullOrEmpty(.MovieClearArtExpertVTS))))) Then
+                            Return True
+                        Else
+                            Return False
+                        End If
+                    Case Enums.MovieImageType.ClearLogo
+                        If (isChange OrElse (String.IsNullOrEmpty(mMovie.ClearLogoPath) OrElse .MovieClearLogoOverwrite) AndAlso _
+                            (.MovieClearLogoEden OrElse .MovieClearLogoFrodo OrElse _
+                             (.MovieUseExpert AndAlso (Not String.IsNullOrEmpty(.MovieClearLogoExpertBDMV) OrElse _
+                         Not String.IsNullOrEmpty(.MovieClearLogoExpertMulti) OrElse Not String.IsNullOrEmpty(.MovieClearLogoExpertSingle) OrElse _
+                         Not String.IsNullOrEmpty(.MovieClearLogoExpertVTS))))) Then
+                            Return True
+                        Else
+                            Return False
+                        End If
+                    Case Enums.MovieImageType.DiscArt
+                        If (isChange OrElse (String.IsNullOrEmpty(mMovie.DiscArtPath) OrElse .MovieDiscArtOverwrite) AndAlso _
+                            (.MovieDiscArtEden OrElse .MovieDiscArtFrodo OrElse _
+                             (.MovieUseExpert AndAlso (Not String.IsNullOrEmpty(.MovieDiscArtExpertBDMV) OrElse _
+                         Not String.IsNullOrEmpty(.MovieDiscArtExpertMulti) OrElse Not String.IsNullOrEmpty(.MovieDiscArtExpertSingle) OrElse _
+                         Not String.IsNullOrEmpty(.MovieDiscArtExpertVTS))))) Then
+                            Return True
+                        Else
+                            Return False
+                        End If
+                    Case Enums.MovieImageType.EFanarts
+                        If (isChange OrElse (String.IsNullOrEmpty(mMovie.EFanartsPath) OrElse .MovieEFanartsOverwrite) AndAlso _
+                            (.MovieExtrafanartsEden OrElse .MovieExtrafanartsFrodo)) Then
+                            Return True
+                        Else
+                            Return False
+                        End If
+                    Case Enums.MovieImageType.EThumbs
+                        If (isChange OrElse (String.IsNullOrEmpty(mMovie.EThumbsPath) OrElse .MovieEThumbsOverwrite) AndAlso _
+                            (.MovieExtrathumbsEden OrElse .MovieExtrathumbsFrodo)) Then
+                            Return True
+                        Else
+                            Return False
+                        End If
+                    Case Enums.MovieImageType.Fanart
+                        If (isChange OrElse (String.IsNullOrEmpty(mMovie.FanartPath) OrElse .MovieFanartOverwrite)) AndAlso _
+                        (.MovieFanartBoxee OrElse .MovieFanartFrodo OrElse .MovieFanartEden OrElse .MovieFanartYAMJ OrElse _
+                         .MovieFanartNMJ OrElse (.MovieUseExpert AndAlso (Not String.IsNullOrEmpty(.MovieFanartExpertBDMV) OrElse _
+                         Not String.IsNullOrEmpty(.MovieFanartExpertMulti) OrElse Not String.IsNullOrEmpty(.MovieFanartExpertSingle) OrElse _
+                         Not String.IsNullOrEmpty(.MovieFanartExpertVTS)))) Then
+                            Return True
+                        Else
+                            Return False
+                        End If
+                    Case Enums.MovieImageType.Landscape
+                        If (isChange OrElse (String.IsNullOrEmpty(mMovie.LandscapePath) OrElse .MovieLandscapeOverwrite) AndAlso _
+                            (.MovieLandscapeEden OrElse .MovieLandscapeFrodo OrElse _
+                             (.MovieUseExpert AndAlso (Not String.IsNullOrEmpty(.MovieLandscapeExpertBDMV) OrElse _
+                         Not String.IsNullOrEmpty(.MovieLandscapeExpertMulti) OrElse Not String.IsNullOrEmpty(.MovieLandscapeExpertSingle) OrElse _
+                         Not String.IsNullOrEmpty(.MovieLandscapeExpertVTS))))) Then
+                            Return True
+                        Else
+                            Return False
+                        End If
+                    Case Enums.MovieImageType.Poster
+                        If (isChange OrElse (String.IsNullOrEmpty(mMovie.PosterPath) OrElse .MoviePosterOverwrite)) AndAlso _
+                        (.MoviePosterBoxee OrElse .MoviePosterFrodo OrElse .MoviePosterEden OrElse .MoviePosterNMJ OrElse _
+                         .MoviePosterYAMJ OrElse (.MovieUseExpert AndAlso (Not String.IsNullOrEmpty(.MoviePosterExpertBDMV) OrElse _
+                         Not String.IsNullOrEmpty(.MoviePosterExpertMulti) OrElse Not String.IsNullOrEmpty(.MoviePosterExpertSingle) OrElse _
+                         Not String.IsNullOrEmpty(.MoviePosterExpertVTS)))) Then
+                            Return True
+                        Else
+                            Return False
+                        End If
+                End Select
+            End With
         Catch ex As Exception
             Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
             Return False

@@ -141,7 +141,6 @@ Partial Class dlgSettings
         Me.cbMovieEThumbsPrefSize = New System.Windows.Forms.ComboBox()
         Me.chkMovieEThumbsOverwrite = New System.Windows.Forms.CheckBox()
         Me.gbMovieImagesOpts = New System.Windows.Forms.GroupBox()
-        Me.chkMovieScraperActorThumbs = New System.Windows.Forms.CheckBox()
         Me.chkMovieNoSaveImagesToNfo = New System.Windows.Forms.CheckBox()
         Me.gbMovieFanartOpts = New System.Windows.Forms.GroupBox()
         Me.txtMovieFanartWidth = New System.Windows.Forms.TextBox()
@@ -344,6 +343,12 @@ Partial Class dlgSettings
         Me.chkMovieFanartYAMJ = New System.Windows.Forms.CheckBox()
         Me.chkMoviePosterYAMJ = New System.Windows.Forms.CheckBox()
         Me.chkMovieNFOYAMJ = New System.Windows.Forms.CheckBox()
+        Me.tpMovieFileNamingBoxee = New System.Windows.Forms.TabPage()
+        Me.gbMovieBoxee = New System.Windows.Forms.GroupBox()
+        Me.chkMovieUseBoxee = New System.Windows.Forms.CheckBox()
+        Me.chkMovieFanartBoxee = New System.Windows.Forms.CheckBox()
+        Me.chkMoviePosterBoxee = New System.Windows.Forms.CheckBox()
+        Me.chkMovieNFOBoxee = New System.Windows.Forms.CheckBox()
         Me.tpMovieFileNamingExpert = New System.Windows.Forms.TabPage()
         Me.gbMovieExpert = New System.Windows.Forms.GroupBox()
         Me.tcMovieFileNamingExpert = New System.Windows.Forms.TabControl()
@@ -890,12 +895,6 @@ Partial Class dlgSettings
         Me.chkMovieThemeEnable = New System.Windows.Forms.CheckBox()
         Me.pnlTVThemes = New System.Windows.Forms.Panel()
         Me.Label2 = New System.Windows.Forms.Label()
-        Me.tpMovieFileNamingBoxee = New System.Windows.Forms.TabPage()
-        Me.gbMovieBoxee = New System.Windows.Forms.GroupBox()
-        Me.chkMovieUseBoxee = New System.Windows.Forms.CheckBox()
-        Me.chkMovieFanartBoxee = New System.Windows.Forms.CheckBox()
-        Me.chkMoviePosterBoxee = New System.Windows.Forms.CheckBox()
-        Me.chkMovieNFOBoxee = New System.Windows.Forms.CheckBox()
         Me.gbGeneralMisc.SuspendLayout
         Me.gbGeneralDaemon.SuspendLayout
         Me.gbGeneralThemes.SuspendLayout
@@ -955,6 +954,8 @@ Partial Class dlgSettings
         Me.gbMovieNMTOptional.SuspendLayout
         Me.gbMovieNMJ.SuspendLayout
         Me.gbMovieYAMJ.SuspendLayout
+        Me.tpMovieFileNamingBoxee.SuspendLayout
+        Me.gbMovieBoxee.SuspendLayout
         Me.tpMovieFileNamingExpert.SuspendLayout
         Me.gbMovieExpert.SuspendLayout
         Me.tcMovieFileNamingExpert.SuspendLayout
@@ -1053,8 +1054,6 @@ Partial Class dlgSettings
         Me.pnlMovieThemes.SuspendLayout
         Me.gbMovieThemeOpts.SuspendLayout
         Me.pnlTVThemes.SuspendLayout
-        Me.tpMovieFileNamingBoxee.SuspendLayout
-        Me.gbMovieBoxee.SuspendLayout
         Me.SuspendLayout
         '
         'gbGeneralMisc
@@ -2302,33 +2301,20 @@ Partial Class dlgSettings
         '
         'gbMovieImagesOpts
         '
-        Me.gbMovieImagesOpts.Controls.Add(Me.chkMovieScraperActorThumbs)
         Me.gbMovieImagesOpts.Controls.Add(Me.chkMovieNoSaveImagesToNfo)
         Me.gbMovieImagesOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.gbMovieImagesOpts.Location = New System.Drawing.Point(4, 4)
         Me.gbMovieImagesOpts.Name = "gbMovieImagesOpts"
-        Me.gbMovieImagesOpts.Size = New System.Drawing.Size(217, 74)
+        Me.gbMovieImagesOpts.Size = New System.Drawing.Size(217, 48)
         Me.gbMovieImagesOpts.TabIndex = 0
         Me.gbMovieImagesOpts.TabStop = false
         Me.gbMovieImagesOpts.Text = "Images"
-        '
-        'chkMovieScraperActorThumbs
-        '
-        Me.chkMovieScraperActorThumbs.CheckAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkMovieScraperActorThumbs.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkMovieScraperActorThumbs.Location = New System.Drawing.Point(6, 21)
-        Me.chkMovieScraperActorThumbs.Name = "chkMovieScraperActorThumbs"
-        Me.chkMovieScraperActorThumbs.Size = New System.Drawing.Size(173, 19)
-        Me.chkMovieScraperActorThumbs.TabIndex = 1
-        Me.chkMovieScraperActorThumbs.Text = "Enable Actor Thumbs"
-        Me.chkMovieScraperActorThumbs.TextAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkMovieScraperActorThumbs.UseVisualStyleBackColor = true
         '
         'chkMovieNoSaveImagesToNfo
         '
         Me.chkMovieNoSaveImagesToNfo.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkMovieNoSaveImagesToNfo.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkMovieNoSaveImagesToNfo.Location = New System.Drawing.Point(6, 46)
+        Me.chkMovieNoSaveImagesToNfo.Location = New System.Drawing.Point(6, 21)
         Me.chkMovieNoSaveImagesToNfo.Name = "chkMovieNoSaveImagesToNfo"
         Me.chkMovieNoSaveImagesToNfo.Size = New System.Drawing.Size(188, 18)
         Me.chkMovieNoSaveImagesToNfo.TabIndex = 2
@@ -4553,6 +4539,73 @@ Partial Class dlgSettings
         Me.chkMovieNFOYAMJ.TabIndex = 11
         Me.chkMovieNFOYAMJ.Text = "NFO"
         Me.chkMovieNFOYAMJ.UseVisualStyleBackColor = true
+        '
+        'tpMovieFileNamingBoxee
+        '
+        Me.tpMovieFileNamingBoxee.Controls.Add(Me.gbMovieBoxee)
+        Me.tpMovieFileNamingBoxee.Location = New System.Drawing.Point(4, 22)
+        Me.tpMovieFileNamingBoxee.Name = "tpMovieFileNamingBoxee"
+        Me.tpMovieFileNamingBoxee.Size = New System.Drawing.Size(505, 336)
+        Me.tpMovieFileNamingBoxee.TabIndex = 4
+        Me.tpMovieFileNamingBoxee.Text = "Boxee"
+        Me.tpMovieFileNamingBoxee.UseVisualStyleBackColor = true
+        '
+        'gbMovieBoxee
+        '
+        Me.gbMovieBoxee.Controls.Add(Me.chkMovieUseBoxee)
+        Me.gbMovieBoxee.Controls.Add(Me.chkMovieFanartBoxee)
+        Me.gbMovieBoxee.Controls.Add(Me.chkMoviePosterBoxee)
+        Me.gbMovieBoxee.Controls.Add(Me.chkMovieNFOBoxee)
+        Me.gbMovieBoxee.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.gbMovieBoxee.Location = New System.Drawing.Point(6, 6)
+        Me.gbMovieBoxee.Name = "gbMovieBoxee"
+        Me.gbMovieBoxee.Size = New System.Drawing.Size(110, 324)
+        Me.gbMovieBoxee.TabIndex = 4
+        Me.gbMovieBoxee.TabStop = false
+        Me.gbMovieBoxee.Text = "Boxee"
+        '
+        'chkMovieUseBoxee
+        '
+        Me.chkMovieUseBoxee.AutoSize = true
+        Me.chkMovieUseBoxee.Location = New System.Drawing.Point(6, 21)
+        Me.chkMovieUseBoxee.Name = "chkMovieUseBoxee"
+        Me.chkMovieUseBoxee.Size = New System.Drawing.Size(45, 17)
+        Me.chkMovieUseBoxee.TabIndex = 16
+        Me.chkMovieUseBoxee.Text = "Use"
+        Me.chkMovieUseBoxee.UseVisualStyleBackColor = true
+        '
+        'chkMovieFanartBoxee
+        '
+        Me.chkMovieFanartBoxee.AutoSize = true
+        Me.chkMovieFanartBoxee.Enabled = false
+        Me.chkMovieFanartBoxee.Location = New System.Drawing.Point(6, 90)
+        Me.chkMovieFanartBoxee.Name = "chkMovieFanartBoxee"
+        Me.chkMovieFanartBoxee.Size = New System.Drawing.Size(59, 17)
+        Me.chkMovieFanartBoxee.TabIndex = 13
+        Me.chkMovieFanartBoxee.Text = "Fanart"
+        Me.chkMovieFanartBoxee.UseVisualStyleBackColor = true
+        '
+        'chkMoviePosterBoxee
+        '
+        Me.chkMoviePosterBoxee.AutoSize = true
+        Me.chkMoviePosterBoxee.Enabled = false
+        Me.chkMoviePosterBoxee.Location = New System.Drawing.Point(6, 67)
+        Me.chkMoviePosterBoxee.Name = "chkMoviePosterBoxee"
+        Me.chkMoviePosterBoxee.Size = New System.Drawing.Size(58, 17)
+        Me.chkMoviePosterBoxee.TabIndex = 12
+        Me.chkMoviePosterBoxee.Text = "Poster"
+        Me.chkMoviePosterBoxee.UseVisualStyleBackColor = true
+        '
+        'chkMovieNFOBoxee
+        '
+        Me.chkMovieNFOBoxee.AutoSize = true
+        Me.chkMovieNFOBoxee.Enabled = false
+        Me.chkMovieNFOBoxee.Location = New System.Drawing.Point(6, 44)
+        Me.chkMovieNFOBoxee.Name = "chkMovieNFOBoxee"
+        Me.chkMovieNFOBoxee.Size = New System.Drawing.Size(49, 17)
+        Me.chkMovieNFOBoxee.TabIndex = 11
+        Me.chkMovieNFOBoxee.Text = "NFO"
+        Me.chkMovieNFOBoxee.UseVisualStyleBackColor = true
         '
         'tpMovieFileNamingExpert
         '
@@ -10509,73 +10562,6 @@ Partial Class dlgSettings
         Me.Label2.TabIndex = 0
         Me.Label2.Text = "TV Themes Dummy Label"
         '
-        'tpMovieFileNamingBoxee
-        '
-        Me.tpMovieFileNamingBoxee.Controls.Add(Me.gbMovieBoxee)
-        Me.tpMovieFileNamingBoxee.Location = New System.Drawing.Point(4, 22)
-        Me.tpMovieFileNamingBoxee.Name = "tpMovieFileNamingBoxee"
-        Me.tpMovieFileNamingBoxee.Size = New System.Drawing.Size(505, 336)
-        Me.tpMovieFileNamingBoxee.TabIndex = 4
-        Me.tpMovieFileNamingBoxee.Text = "Boxee"
-        Me.tpMovieFileNamingBoxee.UseVisualStyleBackColor = true
-        '
-        'gbMovieBoxee
-        '
-        Me.gbMovieBoxee.Controls.Add(Me.chkMovieUseBoxee)
-        Me.gbMovieBoxee.Controls.Add(Me.chkMovieFanartBoxee)
-        Me.gbMovieBoxee.Controls.Add(Me.chkMoviePosterBoxee)
-        Me.gbMovieBoxee.Controls.Add(Me.chkMovieNFOBoxee)
-        Me.gbMovieBoxee.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.gbMovieBoxee.Location = New System.Drawing.Point(6, 6)
-        Me.gbMovieBoxee.Name = "gbMovieBoxee"
-        Me.gbMovieBoxee.Size = New System.Drawing.Size(110, 324)
-        Me.gbMovieBoxee.TabIndex = 4
-        Me.gbMovieBoxee.TabStop = false
-        Me.gbMovieBoxee.Text = "Boxee"
-        '
-        'chkMovieUseBoxee
-        '
-        Me.chkMovieUseBoxee.AutoSize = true
-        Me.chkMovieUseBoxee.Location = New System.Drawing.Point(6, 21)
-        Me.chkMovieUseBoxee.Name = "chkMovieUseBoxee"
-        Me.chkMovieUseBoxee.Size = New System.Drawing.Size(45, 17)
-        Me.chkMovieUseBoxee.TabIndex = 16
-        Me.chkMovieUseBoxee.Text = "Use"
-        Me.chkMovieUseBoxee.UseVisualStyleBackColor = true
-        '
-        'chkMovieFanartBoxee
-        '
-        Me.chkMovieFanartBoxee.AutoSize = true
-        Me.chkMovieFanartBoxee.Enabled = false
-        Me.chkMovieFanartBoxee.Location = New System.Drawing.Point(6, 90)
-        Me.chkMovieFanartBoxee.Name = "chkMovieFanartBoxee"
-        Me.chkMovieFanartBoxee.Size = New System.Drawing.Size(59, 17)
-        Me.chkMovieFanartBoxee.TabIndex = 13
-        Me.chkMovieFanartBoxee.Text = "Fanart"
-        Me.chkMovieFanartBoxee.UseVisualStyleBackColor = true
-        '
-        'chkMoviePosterBoxee
-        '
-        Me.chkMoviePosterBoxee.AutoSize = true
-        Me.chkMoviePosterBoxee.Enabled = false
-        Me.chkMoviePosterBoxee.Location = New System.Drawing.Point(6, 67)
-        Me.chkMoviePosterBoxee.Name = "chkMoviePosterBoxee"
-        Me.chkMoviePosterBoxee.Size = New System.Drawing.Size(58, 17)
-        Me.chkMoviePosterBoxee.TabIndex = 12
-        Me.chkMoviePosterBoxee.Text = "Poster"
-        Me.chkMoviePosterBoxee.UseVisualStyleBackColor = true
-        '
-        'chkMovieNFOBoxee
-        '
-        Me.chkMovieNFOBoxee.AutoSize = true
-        Me.chkMovieNFOBoxee.Enabled = false
-        Me.chkMovieNFOBoxee.Location = New System.Drawing.Point(6, 44)
-        Me.chkMovieNFOBoxee.Name = "chkMovieNFOBoxee"
-        Me.chkMovieNFOBoxee.Size = New System.Drawing.Size(49, 17)
-        Me.chkMovieNFOBoxee.TabIndex = 11
-        Me.chkMovieNFOBoxee.Text = "NFO"
-        Me.chkMovieNFOBoxee.UseVisualStyleBackColor = true
-        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -10711,6 +10697,9 @@ Partial Class dlgSettings
         Me.gbMovieNMJ.PerformLayout
         Me.gbMovieYAMJ.ResumeLayout(false)
         Me.gbMovieYAMJ.PerformLayout
+        Me.tpMovieFileNamingBoxee.ResumeLayout(false)
+        Me.gbMovieBoxee.ResumeLayout(false)
+        Me.gbMovieBoxee.PerformLayout
         Me.tpMovieFileNamingExpert.ResumeLayout(false)
         Me.gbMovieExpert.ResumeLayout(false)
         Me.gbMovieExpert.PerformLayout
@@ -10865,9 +10854,6 @@ Partial Class dlgSettings
         Me.gbMovieThemeOpts.PerformLayout
         Me.pnlTVThemes.ResumeLayout(false)
         Me.pnlTVThemes.PerformLayout
-        Me.tpMovieFileNamingBoxee.ResumeLayout(false)
-        Me.gbMovieBoxee.ResumeLayout(false)
-        Me.gbMovieBoxee.PerformLayout
         Me.ResumeLayout(false)
         Me.PerformLayout
 
@@ -11322,7 +11308,6 @@ End Sub
     Friend WithEvents btnTVShowRegexGet As System.Windows.Forms.Button
     Friend WithEvents chkMovieClickScrapeAsk As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieClickScrape As System.Windows.Forms.CheckBox
-    Friend WithEvents chkMovieScraperActorThumbs As System.Windows.Forms.CheckBox
     Friend WithEvents chkMoviePosterPrefOnly As System.Windows.Forms.CheckBox
     Friend WithEvents chkGeneralCreationDate As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieLockLanguageV As System.Windows.Forms.CheckBox

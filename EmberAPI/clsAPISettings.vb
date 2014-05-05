@@ -175,7 +175,6 @@ Public Class Settings
     Private _movieposterwidth As Integer
     Private _moviepropercase As Boolean
     Private _moviescanordermodify As Boolean
-    Private _moviescraperactorthumbs As Boolean
     Private _moviescrapercast As Boolean
     Private _moviescrapercastlimit As Integer
     Private _moviescrapercastwithimgonly As Boolean
@@ -2894,15 +2893,6 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieScraperActorThumbs() As Boolean
-        Get
-            Return Me._moviescraperactorthumbs
-        End Get
-        Set(ByVal value As Boolean)
-            Me._moviescraperactorthumbs = value
-        End Set
-    End Property
-
     Public Property TVScraperEpisodeActors() As Boolean
         Get
             Return Me._tvscraperepisodeactors
@@ -5241,7 +5231,6 @@ Public Class Settings
         Me._moviepropercase = True
         Me._movierecognizevtsexpertvts = False
         Me._moviescanordermodify = False
-        Me._moviescraperactorthumbs = True
         Me._moviescrapercast = True
         Me._moviescrapercastlimit = 0
         Me._moviescrapercastwithimgonly = False

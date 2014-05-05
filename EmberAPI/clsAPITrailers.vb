@@ -136,114 +136,112 @@ Public Class Trailers
     Public Shared Function PreferredTrailer(ByRef tUrl As String, ByRef UrlList As List(Of Trailers), ByVal sPath As String, ByVal isSingle As Boolean) As Boolean
         PreferredTrailer = False
         Try
-            If IsAllowedToDownload(sPath, isSingle, True) Then 'TODO: check this
-                For Each aUrl As Trailers In UrlList
-                    Dim tLink As String = String.Empty
-                    If Regex.IsMatch(aUrl.URL, "http:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") Then
-                        Dim YT As New YouTube.Scraper
-                        YT.GetVideoLinks(aUrl.URL)
-                        If YT.VideoLinks.ContainsKey(Master.eSettings.MovieTrailerPrefQual) Then
-                            tLink = YT.VideoLinks(Master.eSettings.MovieTrailerPrefQual).URL
-                        Else
-                            Select Case Master.eSettings.MovieTrailerMinQual
-                                Case Enums.TrailerQuality.All
-                                    If YT.VideoLinks.ContainsKey(Enums.TrailerQuality.HD1080p) Then
-                                        tLink = YT.VideoLinks(Enums.TrailerQuality.HD1080p).URL
-                                    ElseIf YT.VideoLinks.ContainsKey(Enums.TrailerQuality.HD720p) Then
-                                        tLink = YT.VideoLinks(Enums.TrailerQuality.HD720p).URL
-                                    ElseIf YT.VideoLinks.ContainsKey(Enums.TrailerQuality.HQ480p) Then
-                                        tLink = YT.VideoLinks(Enums.TrailerQuality.HQ480p).URL
-                                    ElseIf YT.VideoLinks.ContainsKey(Enums.TrailerQuality.SQ360p) Then
-                                        tLink = YT.VideoLinks(Enums.TrailerQuality.SQ360p).URL
-                                    ElseIf YT.VideoLinks.ContainsKey(Enums.TrailerQuality.SQ240p) Then
-                                        tLink = YT.VideoLinks(Enums.TrailerQuality.SQ240p).URL
-                                    ElseIf YT.VideoLinks.ContainsKey(Enums.TrailerQuality.SQ144p) Then
-                                        tLink = YT.VideoLinks(Enums.TrailerQuality.SQ144p).URL
-                                    ElseIf YT.VideoLinks.ContainsKey(Enums.TrailerQuality.OTHERS) Then
-                                        tLink = YT.VideoLinks(Enums.TrailerQuality.OTHERS).URL
-                                    End If
-                                Case Enums.TrailerQuality.HD1080p
-                                    If YT.VideoLinks.ContainsKey(Enums.TrailerQuality.HD1080p) Then
-                                        tLink = YT.VideoLinks(Enums.TrailerQuality.HD1080p).URL
-                                    End If
-                                Case Enums.TrailerQuality.HD720p
-                                    If YT.VideoLinks.ContainsKey(Enums.TrailerQuality.HD1080p) Then
-                                        tLink = YT.VideoLinks(Enums.TrailerQuality.HD1080p).URL
-                                    ElseIf YT.VideoLinks.ContainsKey(Enums.TrailerQuality.HD720p) Then
-                                        tLink = YT.VideoLinks(Enums.TrailerQuality.HD720p).URL
-                                    End If
-                                Case Enums.TrailerQuality.HQ480p
-                                    If YT.VideoLinks.ContainsKey(Enums.TrailerQuality.HD1080p) Then
-                                        tLink = YT.VideoLinks(Enums.TrailerQuality.HD1080p).URL
-                                    ElseIf YT.VideoLinks.ContainsKey(Enums.TrailerQuality.HD720p) Then
-                                        tLink = YT.VideoLinks(Enums.TrailerQuality.HD720p).URL
-                                    ElseIf YT.VideoLinks.ContainsKey(Enums.TrailerQuality.HQ480p) Then
-                                        tLink = YT.VideoLinks(Enums.TrailerQuality.HQ480p).URL
-                                    End If
-                                Case Enums.TrailerQuality.SQ360p
-                                    If YT.VideoLinks.ContainsKey(Enums.TrailerQuality.HD1080p) Then
-                                        tLink = YT.VideoLinks(Enums.TrailerQuality.HD1080p).URL
-                                    ElseIf YT.VideoLinks.ContainsKey(Enums.TrailerQuality.HD720p) Then
-                                        tLink = YT.VideoLinks(Enums.TrailerQuality.HD720p).URL
-                                    ElseIf YT.VideoLinks.ContainsKey(Enums.TrailerQuality.HQ480p) Then
-                                        tLink = YT.VideoLinks(Enums.TrailerQuality.HQ480p).URL
-                                    ElseIf YT.VideoLinks.ContainsKey(Enums.TrailerQuality.SQ360p) Then
-                                        tLink = YT.VideoLinks(Enums.TrailerQuality.SQ360p).URL
-                                    End If
-                                Case Enums.TrailerQuality.SQ240p
-                                    If YT.VideoLinks.ContainsKey(Enums.TrailerQuality.HD1080p) Then
-                                        tLink = YT.VideoLinks(Enums.TrailerQuality.HD1080p).URL
-                                    ElseIf YT.VideoLinks.ContainsKey(Enums.TrailerQuality.HD720p) Then
-                                        tLink = YT.VideoLinks(Enums.TrailerQuality.HD720p).URL
-                                    ElseIf YT.VideoLinks.ContainsKey(Enums.TrailerQuality.HQ480p) Then
-                                        tLink = YT.VideoLinks(Enums.TrailerQuality.HQ480p).URL
-                                    ElseIf YT.VideoLinks.ContainsKey(Enums.TrailerQuality.SQ360p) Then
-                                        tLink = YT.VideoLinks(Enums.TrailerQuality.SQ360p).URL
-                                    ElseIf YT.VideoLinks.ContainsKey(Enums.TrailerQuality.SQ240p) Then
-                                        tLink = YT.VideoLinks(Enums.TrailerQuality.SQ240p).URL
-                                    End If
-                                Case Enums.TrailerQuality.SQ144p
-                                    If YT.VideoLinks.ContainsKey(Enums.TrailerQuality.HD1080p) Then
-                                        tLink = YT.VideoLinks(Enums.TrailerQuality.HD1080p).URL
-                                    ElseIf YT.VideoLinks.ContainsKey(Enums.TrailerQuality.HD720p) Then
-                                        tLink = YT.VideoLinks(Enums.TrailerQuality.HD720p).URL
-                                    ElseIf YT.VideoLinks.ContainsKey(Enums.TrailerQuality.HQ480p) Then
-                                        tLink = YT.VideoLinks(Enums.TrailerQuality.HQ480p).URL
-                                    ElseIf YT.VideoLinks.ContainsKey(Enums.TrailerQuality.SQ360p) Then
-                                        tLink = YT.VideoLinks(Enums.TrailerQuality.SQ360p).URL
-                                    ElseIf YT.VideoLinks.ContainsKey(Enums.TrailerQuality.SQ240p) Then
-                                        tLink = YT.VideoLinks(Enums.TrailerQuality.SQ240p).URL
-                                    ElseIf YT.VideoLinks.ContainsKey(Enums.TrailerQuality.SQ144p) Then
-                                        tLink = YT.VideoLinks(Enums.TrailerQuality.SQ144p).URL
-                                    End If
-                                Case Enums.TrailerQuality.OTHERS
-                                    If YT.VideoLinks.ContainsKey(Enums.TrailerQuality.HD1080p) Then
-                                        tLink = YT.VideoLinks(Enums.TrailerQuality.HD1080p).URL
-                                    ElseIf YT.VideoLinks.ContainsKey(Enums.TrailerQuality.HD720p) Then
-                                        tLink = YT.VideoLinks(Enums.TrailerQuality.HD720p).URL
-                                    ElseIf YT.VideoLinks.ContainsKey(Enums.TrailerQuality.HQ480p) Then
-                                        tLink = YT.VideoLinks(Enums.TrailerQuality.HQ480p).URL
-                                    ElseIf YT.VideoLinks.ContainsKey(Enums.TrailerQuality.SQ360p) Then
-                                        tLink = YT.VideoLinks(Enums.TrailerQuality.SQ360p).URL
-                                    ElseIf YT.VideoLinks.ContainsKey(Enums.TrailerQuality.SQ240p) Then
-                                        tLink = YT.VideoLinks(Enums.TrailerQuality.SQ240p).URL
-                                    ElseIf YT.VideoLinks.ContainsKey(Enums.TrailerQuality.SQ144p) Then
-                                        tLink = YT.VideoLinks(Enums.TrailerQuality.SQ144p).URL
-                                    ElseIf YT.VideoLinks.ContainsKey(Enums.TrailerQuality.OTHERS) Then
-                                        tLink = YT.VideoLinks(Enums.TrailerQuality.OTHERS).URL
-                                    End If
-                            End Select
-                        End If
+            For Each aUrl As Trailers In UrlList
+                Dim tLink As String = String.Empty
+                If Regex.IsMatch(aUrl.URL, "http:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") Then
+                    Dim YT As New YouTube.Scraper
+                    YT.GetVideoLinks(aUrl.URL)
+                    If YT.VideoLinks.ContainsKey(Master.eSettings.MovieTrailerPrefQual) Then
+                        tLink = YT.VideoLinks(Master.eSettings.MovieTrailerPrefQual).URL
                     Else
-                        tLink = String.Empty
+                        Select Case Master.eSettings.MovieTrailerMinQual
+                            Case Enums.TrailerQuality.All
+                                If YT.VideoLinks.ContainsKey(Enums.TrailerQuality.HD1080p) Then
+                                    tLink = YT.VideoLinks(Enums.TrailerQuality.HD1080p).URL
+                                ElseIf YT.VideoLinks.ContainsKey(Enums.TrailerQuality.HD720p) Then
+                                    tLink = YT.VideoLinks(Enums.TrailerQuality.HD720p).URL
+                                ElseIf YT.VideoLinks.ContainsKey(Enums.TrailerQuality.HQ480p) Then
+                                    tLink = YT.VideoLinks(Enums.TrailerQuality.HQ480p).URL
+                                ElseIf YT.VideoLinks.ContainsKey(Enums.TrailerQuality.SQ360p) Then
+                                    tLink = YT.VideoLinks(Enums.TrailerQuality.SQ360p).URL
+                                ElseIf YT.VideoLinks.ContainsKey(Enums.TrailerQuality.SQ240p) Then
+                                    tLink = YT.VideoLinks(Enums.TrailerQuality.SQ240p).URL
+                                ElseIf YT.VideoLinks.ContainsKey(Enums.TrailerQuality.SQ144p) Then
+                                    tLink = YT.VideoLinks(Enums.TrailerQuality.SQ144p).URL
+                                ElseIf YT.VideoLinks.ContainsKey(Enums.TrailerQuality.OTHERS) Then
+                                    tLink = YT.VideoLinks(Enums.TrailerQuality.OTHERS).URL
+                                End If
+                            Case Enums.TrailerQuality.HD1080p
+                                If YT.VideoLinks.ContainsKey(Enums.TrailerQuality.HD1080p) Then
+                                    tLink = YT.VideoLinks(Enums.TrailerQuality.HD1080p).URL
+                                End If
+                            Case Enums.TrailerQuality.HD720p
+                                If YT.VideoLinks.ContainsKey(Enums.TrailerQuality.HD1080p) Then
+                                    tLink = YT.VideoLinks(Enums.TrailerQuality.HD1080p).URL
+                                ElseIf YT.VideoLinks.ContainsKey(Enums.TrailerQuality.HD720p) Then
+                                    tLink = YT.VideoLinks(Enums.TrailerQuality.HD720p).URL
+                                End If
+                            Case Enums.TrailerQuality.HQ480p
+                                If YT.VideoLinks.ContainsKey(Enums.TrailerQuality.HD1080p) Then
+                                    tLink = YT.VideoLinks(Enums.TrailerQuality.HD1080p).URL
+                                ElseIf YT.VideoLinks.ContainsKey(Enums.TrailerQuality.HD720p) Then
+                                    tLink = YT.VideoLinks(Enums.TrailerQuality.HD720p).URL
+                                ElseIf YT.VideoLinks.ContainsKey(Enums.TrailerQuality.HQ480p) Then
+                                    tLink = YT.VideoLinks(Enums.TrailerQuality.HQ480p).URL
+                                End If
+                            Case Enums.TrailerQuality.SQ360p
+                                If YT.VideoLinks.ContainsKey(Enums.TrailerQuality.HD1080p) Then
+                                    tLink = YT.VideoLinks(Enums.TrailerQuality.HD1080p).URL
+                                ElseIf YT.VideoLinks.ContainsKey(Enums.TrailerQuality.HD720p) Then
+                                    tLink = YT.VideoLinks(Enums.TrailerQuality.HD720p).URL
+                                ElseIf YT.VideoLinks.ContainsKey(Enums.TrailerQuality.HQ480p) Then
+                                    tLink = YT.VideoLinks(Enums.TrailerQuality.HQ480p).URL
+                                ElseIf YT.VideoLinks.ContainsKey(Enums.TrailerQuality.SQ360p) Then
+                                    tLink = YT.VideoLinks(Enums.TrailerQuality.SQ360p).URL
+                                End If
+                            Case Enums.TrailerQuality.SQ240p
+                                If YT.VideoLinks.ContainsKey(Enums.TrailerQuality.HD1080p) Then
+                                    tLink = YT.VideoLinks(Enums.TrailerQuality.HD1080p).URL
+                                ElseIf YT.VideoLinks.ContainsKey(Enums.TrailerQuality.HD720p) Then
+                                    tLink = YT.VideoLinks(Enums.TrailerQuality.HD720p).URL
+                                ElseIf YT.VideoLinks.ContainsKey(Enums.TrailerQuality.HQ480p) Then
+                                    tLink = YT.VideoLinks(Enums.TrailerQuality.HQ480p).URL
+                                ElseIf YT.VideoLinks.ContainsKey(Enums.TrailerQuality.SQ360p) Then
+                                    tLink = YT.VideoLinks(Enums.TrailerQuality.SQ360p).URL
+                                ElseIf YT.VideoLinks.ContainsKey(Enums.TrailerQuality.SQ240p) Then
+                                    tLink = YT.VideoLinks(Enums.TrailerQuality.SQ240p).URL
+                                End If
+                            Case Enums.TrailerQuality.SQ144p
+                                If YT.VideoLinks.ContainsKey(Enums.TrailerQuality.HD1080p) Then
+                                    tLink = YT.VideoLinks(Enums.TrailerQuality.HD1080p).URL
+                                ElseIf YT.VideoLinks.ContainsKey(Enums.TrailerQuality.HD720p) Then
+                                    tLink = YT.VideoLinks(Enums.TrailerQuality.HD720p).URL
+                                ElseIf YT.VideoLinks.ContainsKey(Enums.TrailerQuality.HQ480p) Then
+                                    tLink = YT.VideoLinks(Enums.TrailerQuality.HQ480p).URL
+                                ElseIf YT.VideoLinks.ContainsKey(Enums.TrailerQuality.SQ360p) Then
+                                    tLink = YT.VideoLinks(Enums.TrailerQuality.SQ360p).URL
+                                ElseIf YT.VideoLinks.ContainsKey(Enums.TrailerQuality.SQ240p) Then
+                                    tLink = YT.VideoLinks(Enums.TrailerQuality.SQ240p).URL
+                                ElseIf YT.VideoLinks.ContainsKey(Enums.TrailerQuality.SQ144p) Then
+                                    tLink = YT.VideoLinks(Enums.TrailerQuality.SQ144p).URL
+                                End If
+                            Case Enums.TrailerQuality.OTHERS
+                                If YT.VideoLinks.ContainsKey(Enums.TrailerQuality.HD1080p) Then
+                                    tLink = YT.VideoLinks(Enums.TrailerQuality.HD1080p).URL
+                                ElseIf YT.VideoLinks.ContainsKey(Enums.TrailerQuality.HD720p) Then
+                                    tLink = YT.VideoLinks(Enums.TrailerQuality.HD720p).URL
+                                ElseIf YT.VideoLinks.ContainsKey(Enums.TrailerQuality.HQ480p) Then
+                                    tLink = YT.VideoLinks(Enums.TrailerQuality.HQ480p).URL
+                                ElseIf YT.VideoLinks.ContainsKey(Enums.TrailerQuality.SQ360p) Then
+                                    tLink = YT.VideoLinks(Enums.TrailerQuality.SQ360p).URL
+                                ElseIf YT.VideoLinks.ContainsKey(Enums.TrailerQuality.SQ240p) Then
+                                    tLink = YT.VideoLinks(Enums.TrailerQuality.SQ240p).URL
+                                ElseIf YT.VideoLinks.ContainsKey(Enums.TrailerQuality.SQ144p) Then
+                                    tLink = YT.VideoLinks(Enums.TrailerQuality.SQ144p).URL
+                                ElseIf YT.VideoLinks.ContainsKey(Enums.TrailerQuality.OTHERS) Then
+                                    tLink = YT.VideoLinks(Enums.TrailerQuality.OTHERS).URL
+                                End If
+                        End Select
                     End If
+                Else
+                    tLink = String.Empty
+                End If
 
-                    If Not String.IsNullOrEmpty(tLink) Then
-                        tUrl = tLink
-                        Return True
-                    End If
-                Next
-            End If
+                If Not String.IsNullOrEmpty(tLink) Then
+                    tUrl = tLink
+                    Return True
+                End If
+            Next
         Catch ex As Exception
             Master.eLog.Error(GetType(Trailers), ex.Message, ex.StackTrace, "Error")
         End Try
@@ -292,37 +290,25 @@ Public Class Trailers
     ''' whether the path is valid, and whether the Master.eSettings.OverwriteTrailer
     ''' flag is set. 
     ''' </summary>
-    ''' <param name="sPath">The intended path to save the trailer</param>
-    ''' <param name="isDL">Flag to indicate whether the file is intended to be saved to the file system or not</param>
-    ''' <param name="isSS">Flag to indicate whether a scrape of a single item was requested (Enums.ScrapeType.SingleScrape), or whether this is part of a multi-item scrape</param>
+    ''' <param name="mMovie">The intended path to save the trailer</param>
     ''' <returns><c>True</c> if a download is allowed, <c>False</c> otherwise</returns>
     ''' <remarks></remarks>
-    Public Shared Function IsAllowedToDownload(ByVal sPath As String, ByVal isDL As Boolean, Optional ByVal isSS As Boolean = False) As Boolean
-        'TODO Dekker500 - MUST VALIDATE whether these parameters are correct! I believe isDL and isSS are reversed in meanings (at least from the calling method's perspective)!!!!
-
-        Dim fScanner As New Scanner
-
-        If isDL Then
-            If String.IsNullOrEmpty(fScanner.GetMovieTrailerPath(sPath)) OrElse Master.eSettings.MovieTrailerOverwrite Then
-                Return True
-            Else
-                If isSS AndAlso String.IsNullOrEmpty(fScanner.GetMovieTrailerPath(sPath)) Then
-                    If Not Master.eSettings.MovieLockTrailer Then
-                        Return True
-                    Else
-                        Return False
-                    End If
+    Public Function IsAllowedToDownload(ByVal mMovie As Structures.DBMovie) As Boolean
+        Try
+            With Master.eSettings
+                If (String.IsNullOrEmpty(mMovie.TrailerPath) OrElse .MovieTrailerOverwrite) AndAlso .MovieTrailerEnable AndAlso _
+                    (.MovieTrailerEden OrElse .MovieTrailerFrodo OrElse .MovieTrailerNMJ OrElse .MovieTrailerYAMJ) OrElse _
+                    (.MovieUseExpert AndAlso (Not String.IsNullOrEmpty(.MovieTrailerExpertBDMV) OrElse Not String.IsNullOrEmpty(.MovieTrailerExpertMulti) OrElse _
+                            Not String.IsNullOrEmpty(.MovieTrailerExpertMulti) OrElse Not String.IsNullOrEmpty(.MovieTrailerExpertSingle))) Then
+                    Return True
                 Else
                     Return False
                 End If
-            End If
-        Else
-            If Not Master.eSettings.MovieLockTrailer Then
-                Return True
-            Else
-                Return False
-            End If
-        End If
+            End With
+        Catch ex As Exception
+            Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+            Return False
+        End Try
     End Function
 
 #End Region 'Methods

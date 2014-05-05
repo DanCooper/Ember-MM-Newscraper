@@ -52,7 +52,7 @@ Public Class dlgUpdateMedia
             chkPosterMod.Checked = chkAllMod.Checked AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Poster)
             chkFanartMod.Checked = chkAllMod.Checked AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart)
             chkMetaMod.Checked = chkAllMod.Checked AndAlso Not Me.rbUpdateModifier_Missing.Checked AndAlso Master.eSettings.MovieScraperMetaDataScan
-            chkActorMod.Checked = chkAllMod.Checked AndAlso Master.eSettings.MovieScraperActorThumbs
+            chkActorMod.Checked = chkAllMod.Checked
             chkTrailerMod.Checked = chkAllMod.Checked AndAlso ModulesManager.Instance.QueryTrailerScraperCapabilities(Enums.ScraperCapabilities.Trailer)
         Else
             If chkMetaMod.Checked Then chkMetaMod.Checked = Not Me.rbUpdateModifier_Missing.Checked AndAlso Master.eSettings.MovieScraperMetaDataScan AndAlso (Not rbUpdate_Ask.Checked OrElse chkNFOMod.Checked)
@@ -64,7 +64,7 @@ Public Class dlgUpdateMedia
         chkEFanartsMod.Enabled = Not chkAllMod.Checked AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart)
         chkEThumbsMod.Enabled = Not chkAllMod.Checked AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart)
         chkMetaMod.Enabled = Not chkAllMod.Checked AndAlso Not Me.rbUpdateModifier_Missing.Checked AndAlso Master.eSettings.MovieScraperMetaDataScan AndAlso (Not rbUpdate_Ask.Checked OrElse chkNFOMod.Checked)
-        chkActorMod.Enabled = Not chkAllMod.Checked AndAlso Master.eSettings.MovieScraperActorThumbs
+        chkActorMod.Enabled = Not chkAllMod.Checked
         chkTrailerMod.Enabled = Not chkAllMod.Checked AndAlso ModulesManager.Instance.QueryTrailerScraperCapabilities(Enums.ScraperCapabilities.Trailer)
 
         If chkAllMod.Checked OrElse chkNFOMod.Checked Then
