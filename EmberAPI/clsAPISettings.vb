@@ -5494,6 +5494,7 @@ Public Class Settings
         Me._usetrakt = False
         Me._version = String.Empty
 
+        'TODO: i have tried to remove that no longer needed code, but it ends in a resource error. I don't know why in hell...
         Try
             xmlTVDB = XDocument.Parse(My.Resources.Languages_2)
             Dim xLangs = From xLanguages In xmlTVDB.Descendants("Language")
@@ -5501,7 +5502,7 @@ Public Class Settings
                 cLang = New Containers.TVLanguage
                 cLang.LongLang = xL.Element("name").Value
                 cLang.ShortLang = xL.Element("abbreviation").Value
-                _tvscraperlanguages.Add(cLang)
+                '_tvscraperlanguages.Add(cLang) 
             Next
             _tvscraperlanguages.Sort(AddressOf CompareLanguagesLong)
         Catch
