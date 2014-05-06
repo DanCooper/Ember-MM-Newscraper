@@ -687,6 +687,7 @@ Namespace FileUtils
                             If .MovieUseEden AndAlso .MovieFanartEden Then FilenameList.Add(String.Concat(filePath, ".tbn"))
                             If .MovieUseYAMJ AndAlso .MovieFanartYAMJ Then FilenameList.Add(String.Concat(String.Concat(filePath, ".jpg")))
                             If .MovieUseNMJ AndAlso .MovieFanartNMJ Then FilenameList.Add(String.Concat(filePathStack, ".jpg"))
+                            If .MovieUseBoxee AndAlso .MoviePosterBoxee Then FilenameList.Add(Path.Combine(filePath, ".tbn"))
                             If .MovieUseExpert AndAlso Not String.IsNullOrEmpty(.MoviePosterExpertMulti) Then
                                 For Each a In .MoviePosterExpertMulti.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
                                     If .MovieStackExpertMulti Then
