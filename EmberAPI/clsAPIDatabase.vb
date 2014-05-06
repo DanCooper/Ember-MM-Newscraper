@@ -1898,8 +1898,10 @@ Public Class Database
                            ") VALUES (?);")
                         Dim parSets_SetName As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_SetName", DbType.String, 0, "SetName")
                         For Each s As MediaContainers.Set In _movieDB.Movie.Sets
-                            parSets_SetName.Value = s.Set
-                            SQLcommandSets.ExecuteNonQuery()
+                            If s.SetSpecified Then
+                                parSets_SetName.Value = s.Set
+                                SQLcommandSets.ExecuteNonQuery()
+                            End If
                         Next
                     End Using
                     Using SQLcommandMoviesSets As SQLite.SQLiteCommand = _mediaDBConn.CreateCommand()
@@ -1913,10 +1915,12 @@ Public Class Database
                         Dim parMovieSets_SetName As SQLite.SQLiteParameter = SQLcommandMoviesSets.Parameters.Add("parMovieSets_SetName", DbType.String, 0, "SetName")
                         Dim parMovieSets_SetOrder As SQLite.SQLiteParameter = SQLcommandMoviesSets.Parameters.Add("parMovieSets_SetOrder", DbType.String, 0, "SetOrder")
                         For Each s As MediaContainers.Set In _movieDB.Movie.Sets
-                            parMovieSets_MovieID.Value = _movieDB.ID
-                            parMovieSets_SetName.Value = s.Set
-                            parMovieSets_SetOrder.Value = s.Order
-                            SQLcommandMoviesSets.ExecuteNonQuery()
+                            If s.SetSpecified Then
+                                parMovieSets_MovieID.Value = _movieDB.ID
+                                parMovieSets_SetName.Value = s.Set
+                                parMovieSets_SetOrder.Value = s.Order
+                                SQLcommandMoviesSets.ExecuteNonQuery()
+                            End If
                         Next
                     End Using
                 End If
