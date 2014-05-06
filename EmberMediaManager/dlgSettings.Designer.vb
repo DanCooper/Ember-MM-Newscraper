@@ -473,6 +473,9 @@ Partial Class dlgSettings
         Me.txtMovieSkipLessThan = New System.Windows.Forms.TextBox()
         Me.lblMovieSkipLessThan = New System.Windows.Forms.Label()
         Me.pnlTVGeneral = New System.Windows.Forms.Panel()
+        Me.gbTVGeneralLangOpts = New System.Windows.Forms.GroupBox()
+        Me.btnTVGeneralLangFetch = New System.Windows.Forms.Button()
+        Me.cbTVGeneralLang = New System.Windows.Forms.ComboBox()
         Me.gbTVGeneralMediaListOpts = New System.Windows.Forms.GroupBox()
         Me.chkTVDisplayMissingEpisodes = New System.Windows.Forms.CheckBox()
         Me.gbTVGeneralListEpisodeOpts = New System.Windows.Forms.GroupBox()
@@ -973,6 +976,7 @@ Partial Class dlgSettings
         Me.gbMovieExpertBDMVOptionalImages.SuspendLayout
         Me.gbMovieMiscOpts.SuspendLayout
         Me.pnlTVGeneral.SuspendLayout
+        Me.gbTVGeneralLangOpts.SuspendLayout
         Me.gbTVGeneralMediaListOpts.SuspendLayout
         Me.gbTVGeneralListEpisodeOpts.SuspendLayout
         Me.gbTVGeneralListSeasonOpts.SuspendLayout
@@ -5858,6 +5862,7 @@ Partial Class dlgSettings
         'pnlTVGeneral
         '
         Me.pnlTVGeneral.BackColor = System.Drawing.Color.White
+        Me.pnlTVGeneral.Controls.Add(Me.gbTVGeneralLangOpts)
         Me.pnlTVGeneral.Controls.Add(Me.gbTVGeneralMediaListOpts)
         Me.pnlTVGeneral.Controls.Add(Me.gbTVEpisodeFilterOpts)
         Me.pnlTVGeneral.Controls.Add(Me.gbTVGeneralMiscOpts)
@@ -5868,6 +5873,37 @@ Partial Class dlgSettings
         Me.pnlTVGeneral.TabIndex = 20
         Me.pnlTVGeneral.Visible = false
         '
+        'gbTVGeneralLangOpts
+        '
+        Me.gbTVGeneralLangOpts.Controls.Add(Me.btnTVGeneralLangFetch)
+        Me.gbTVGeneralLangOpts.Controls.Add(Me.cbTVGeneralLang)
+        Me.gbTVGeneralLangOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.gbTVGeneralLangOpts.Location = New System.Drawing.Point(7, 361)
+        Me.gbTVGeneralLangOpts.Name = "gbTVGeneralLangOpts"
+        Me.gbTVGeneralLangOpts.Size = New System.Drawing.Size(218, 126)
+        Me.gbTVGeneralLangOpts.TabIndex = 4
+        Me.gbTVGeneralLangOpts.TabStop = false
+        Me.gbTVGeneralLangOpts.Text = "Language Options"
+        '
+        'btnTVGeneralLangFetch
+        '
+        Me.btnTVGeneralLangFetch.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.btnTVGeneralLangFetch.Location = New System.Drawing.Point(16, 70)
+        Me.btnTVGeneralLangFetch.Name = "btnTVGeneralLangFetch"
+        Me.btnTVGeneralLangFetch.Size = New System.Drawing.Size(166, 23)
+        Me.btnTVGeneralLangFetch.TabIndex = 10
+        Me.btnTVGeneralLangFetch.Text = "Fetch Available Languages"
+        Me.btnTVGeneralLangFetch.UseVisualStyleBackColor = true
+        '
+        'cbTVGeneralLang
+        '
+        Me.cbTVGeneralLang.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbTVGeneralLang.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.cbTVGeneralLang.Location = New System.Drawing.Point(16, 45)
+        Me.cbTVGeneralLang.Name = "cbTVGeneralLang"
+        Me.cbTVGeneralLang.Size = New System.Drawing.Size(166, 21)
+        Me.cbTVGeneralLang.TabIndex = 11
+        '
         'gbTVGeneralMediaListOpts
         '
         Me.gbTVGeneralMediaListOpts.Controls.Add(Me.chkTVDisplayMissingEpisodes)
@@ -5875,7 +5911,7 @@ Partial Class dlgSettings
         Me.gbTVGeneralMediaListOpts.Controls.Add(Me.gbTVGeneralListSeasonOpts)
         Me.gbTVGeneralMediaListOpts.Controls.Add(Me.gbTVGeneralListShowOpts)
         Me.gbTVGeneralMediaListOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.gbTVGeneralMediaListOpts.Location = New System.Drawing.Point(6, 150)
+        Me.gbTVGeneralMediaListOpts.Location = New System.Drawing.Point(6, 109)
         Me.gbTVGeneralMediaListOpts.Name = "gbTVGeneralMediaListOpts"
         Me.gbTVGeneralMediaListOpts.Size = New System.Drawing.Size(219, 245)
         Me.gbTVGeneralMediaListOpts.TabIndex = 1
@@ -6132,7 +6168,7 @@ Partial Class dlgSettings
         Me.gbTVGeneralMiscOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.gbTVGeneralMiscOpts.Location = New System.Drawing.Point(6, 7)
         Me.gbTVGeneralMiscOpts.Name = "gbTVGeneralMiscOpts"
-        Me.gbTVGeneralMiscOpts.Size = New System.Drawing.Size(219, 142)
+        Me.gbTVGeneralMiscOpts.Size = New System.Drawing.Size(219, 96)
         Me.gbTVGeneralMiscOpts.TabIndex = 0
         Me.gbTVGeneralMiscOpts.TabStop = false
         Me.gbTVGeneralMiscOpts.Text = "Miscellaneous"
@@ -6140,7 +6176,7 @@ Partial Class dlgSettings
         'chkTVGeneralMarkNewShows
         '
         Me.chkTVGeneralMarkNewShows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkTVGeneralMarkNewShows.Location = New System.Drawing.Point(8, 90)
+        Me.chkTVGeneralMarkNewShows.Location = New System.Drawing.Point(6, 44)
         Me.chkTVGeneralMarkNewShows.Name = "chkTVGeneralMarkNewShows"
         Me.chkTVGeneralMarkNewShows.Size = New System.Drawing.Size(204, 17)
         Me.chkTVGeneralMarkNewShows.TabIndex = 3
@@ -6150,7 +6186,7 @@ Partial Class dlgSettings
         'chkTVGeneralMarkNewEpisodes
         '
         Me.chkTVGeneralMarkNewEpisodes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkTVGeneralMarkNewEpisodes.Location = New System.Drawing.Point(8, 113)
+        Me.chkTVGeneralMarkNewEpisodes.Location = New System.Drawing.Point(6, 67)
         Me.chkTVGeneralMarkNewEpisodes.Name = "chkTVGeneralMarkNewEpisodes"
         Me.chkTVGeneralMarkNewEpisodes.Size = New System.Drawing.Size(204, 17)
         Me.chkTVGeneralMarkNewEpisodes.TabIndex = 4
@@ -6160,7 +6196,7 @@ Partial Class dlgSettings
         'chkTVGeneralDisplayASPoster
         '
         Me.chkTVGeneralDisplayASPoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkTVGeneralDisplayASPoster.Location = New System.Drawing.Point(8, 67)
+        Me.chkTVGeneralDisplayASPoster.Location = New System.Drawing.Point(6, 21)
         Me.chkTVGeneralDisplayASPoster.Name = "chkTVGeneralDisplayASPoster"
         Me.chkTVGeneralDisplayASPoster.Size = New System.Drawing.Size(204, 17)
         Me.chkTVGeneralDisplayASPoster.TabIndex = 2
@@ -10731,6 +10767,7 @@ Partial Class dlgSettings
         Me.gbMovieMiscOpts.ResumeLayout(false)
         Me.gbMovieMiscOpts.PerformLayout
         Me.pnlTVGeneral.ResumeLayout(false)
+        Me.gbTVGeneralLangOpts.ResumeLayout(false)
         Me.gbTVGeneralMediaListOpts.ResumeLayout(false)
         Me.gbTVGeneralMediaListOpts.PerformLayout
         Me.gbTVGeneralListEpisodeOpts.ResumeLayout(false)
@@ -11723,4 +11760,7 @@ End Sub
     Friend WithEvents chkMovieFanartBoxee As System.Windows.Forms.CheckBox
     Friend WithEvents chkMoviePosterBoxee As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieNFOBoxee As System.Windows.Forms.CheckBox
+    Friend WithEvents gbTVGeneralLangOpts As System.Windows.Forms.GroupBox
+    Friend WithEvents btnTVGeneralLangFetch As System.Windows.Forms.Button
+    Friend WithEvents cbTVGeneralLang As System.Windows.Forms.ComboBox
 End Class

@@ -71,8 +71,6 @@ Public Class Settings
     Private _generalshowimgdims As Boolean
     Private _generalshowsplitterpanelstate As Integer
     Private _generalsourcefromfolder As Boolean
-    Private _generaltvdblanguage As String
-    Private _generaltvdblanguages As List(Of Containers.TVLanguage)
     Private _generaltvepisodetheme As String
     Private _generaltvshowinfopanelstate As Integer
     Private _generaltvshowtheme As String
@@ -289,6 +287,8 @@ Public Class Settings
     Private _tvgeneraldisplayasposter As Boolean
     Private _tvgeneralflaglang As String
     Private _tvgeneralignorelastscan As Boolean
+    Private _tvgenerallanguage As String
+    Private _tvgenerallanguages As List(Of Containers.TVLanguage)
     Private _tvgeneralmarknewepisodes As Boolean
     Private _tvgeneralmarknewshows As Boolean
     Private _tvlockepisodeplot As Boolean
@@ -312,7 +312,6 @@ Public Class Settings
     Private _tvscraperepisoderating As Boolean
     Private _tvscraperepisodeseason As Boolean
     Private _tvscraperepisodetitle As Boolean
-    Private _tvscraperlanguages As List(Of Containers.TVLanguage)
     Private _tvscrapermetadatascan As Boolean
     Private _tvscraperoptionsordering As Enums.Ordering
     Private _tvscraperratingregion As String
@@ -700,21 +699,21 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property GeneralTVDBLanguage() As String
+    Public Property TVGeneralLanguage() As String
         Get
-            Return Me._generaltvdblanguage
+            Return Me._tvgenerallanguage
         End Get
         Set(ByVal value As String)
-            Me._generaltvdblanguage = If(String.IsNullOrEmpty(value), "en", value)
+            Me._tvgenerallanguage = If(String.IsNullOrEmpty(value), "en", value)
         End Set
     End Property
 
-    Public Property GeneralTVDBLanguages() As List(Of Containers.TVLanguage)
+    Public Property TVGeneralLanguages() As List(Of Containers.TVLanguage)
         Get
-            Return Me._generaltvdblanguages
+            Return Me._tvgenerallanguages
         End Get
         Set(ByVal value As List(Of Containers.TVLanguage))
-            Me._generaltvdblanguages = value
+            Me._tvgenerallanguages = value
         End Set
     End Property
 
@@ -3514,15 +3513,6 @@ Public Class Settings
         End Set
     End Property
 
-    Public ReadOnly Property TVScraperLanguages() As List(Of Containers.TVLanguage)
-        Get
-            Return Me._tvscraperlanguages
-        End Get
-        'Set(ByVal value As List(Of Containers.TVLanguage))
-        '    Me._tvdblanguages = value
-        'End Set
-    End Property
-
     Public Property GeneralTVEpisodeTheme() As String
         Get
             Return Me._generaltvepisodetheme
@@ -5033,8 +5023,6 @@ Public Class Settings
         Me._generalshowimgdims = True
         Me._generalshowsplitterpanelstate = 200
         Me._generalsourcefromfolder = True
-        Me._generaltvdblanguage = "en"
-        Me._generaltvdblanguages = New List(Of Containers.TVLanguage)
         Me._generaltvepisodetheme = "Default"
         Me._generaltvshowinfopanelstate = 0
         Me._generaltvshowtheme = "Default"
@@ -5378,6 +5366,8 @@ Public Class Settings
         Me._tvgeneraldisplayasposter = True
         Me._tvgeneralflaglang = String.Empty
         Me._tvgeneralignorelastscan = True
+        Me._tvgenerallanguage = "en"
+        Me._tvgenerallanguages = New List(Of Containers.TVLanguage)
         Me._tvgeneralmarknewepisodes = False
         Me._tvgeneralmarknewshows = False
         Me._tvlockepisodeplot = False
@@ -5401,7 +5391,6 @@ Public Class Settings
         Me._tvscraperepisoderating = True
         Me._tvscraperepisodeseason = True
         Me._tvscraperepisodetitle = True
-        Me._tvscraperlanguages = New List(Of Containers.TVLanguage)
         Me._tvscrapermetadatascan = True
         Me._tvscraperoptionsordering = Enums.Ordering.Standard
         Me._tvscraperratingregion = "usa"
@@ -5504,7 +5493,7 @@ Public Class Settings
                 cLang.ShortLang = xL.Element("abbreviation").Value
                 '_tvscraperlanguages.Add(cLang) 
             Next
-            _tvscraperlanguages.Sort(AddressOf CompareLanguagesLong)
+            '_tvscraperlanguages.Sort(AddressOf CompareLanguagesLong)
         Catch
 
         End Try

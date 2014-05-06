@@ -26,7 +26,6 @@ Imports EmberAPI
 
 Public Class dlgWizard
 
-    Private tLangList As New List(Of Containers.TVLanguage)
     Private tLang As String
     Private tmppath As String = String.Empty
 
@@ -56,12 +55,12 @@ Public Class dlgWizard
     End Sub
 
     Private Sub btnTVLanguageFetch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVLanguageFetch.Click
-        Me.tLangList.Clear()
-        Me.tLangList.AddRange(ModulesManager.Instance.TVGetLangs("thetvdb.com"))
-        Me.cbTVLanguage.Items.AddRange((From lLang In tLangList Select lLang.LongLang).ToArray)
+        Master.eSettings.TVGeneralLanguages.Clear()
+        Master.eSettings.TVGeneralLanguages.AddRange(ModulesManager.Instance.TVGetLangs("thetvdb.com"))
+        Me.cbTVLanguage.Items.AddRange((From lLang In Master.eSettings.TVGeneralLanguages Select lLang.LongLang).ToArray)
 
         If Me.cbTVLanguage.Items.Count > 0 Then
-            Me.cbTVLanguage.Text = Me.tLangList.FirstOrDefault(Function(l) l.ShortLang = Master.eSettings.GeneralTVDBLanguage).LongLang
+            Me.cbTVLanguage.Text = Master.eSettings.TVGeneralLanguages.FirstOrDefault(Function(l) l.ShortLang = Master.eSettings.TVGeneralLanguage).LongLang
         End If
     End Sub
 
@@ -479,11 +478,9 @@ Public Class dlgWizard
         Me.RefreshSources()
         Me.RefreshTVSources()
 
-        Me.tLangList.Clear()
-        Me.tLangList.AddRange(Master.eSettings.GeneralTVDBLanguages)
-        Me.cbTVLanguage.Items.AddRange((From lLang In Master.eSettings.GeneralTVDBLanguages Select lLang.LongLang).ToArray)
+        Me.cbTVLanguage.Items.AddRange((From lLang In Master.eSettings.TVGeneralLanguages Select lLang.LongLang).ToArray)
         If Me.cbTVLanguage.Items.Count > 0 Then
-            Me.cbTVLanguage.Text = Me.tLangList.FirstOrDefault(Function(l) l.ShortLang = Master.eSettings.GeneralTVDBLanguage).LongLang
+            Me.cbTVLanguage.Text = Master.eSettings.TVGeneralLanguages.FirstOrDefault(Function(l) l.ShortLang = Master.eSettings.TVGeneralLanguage).LongLang
         End If
 
         With Master.eSettings
@@ -822,17 +819,16 @@ Public Class dlgWizard
 
             .GeneralLanguage = tLang
 
-            If tLangList.Count > 0 Then
-                Dim tLang As String = tLangList.FirstOrDefault(Function(l) l.LongLang = Me.cbTVLanguage.Text).ShortLang
+            If Master.eSettings.TVGeneralLanguages.Count > 0 Then
+                Dim tLang As String = Master.eSettings.TVGeneralLanguages.FirstOrDefault(Function(l) l.LongLang = Me.cbTVLanguage.Text).ShortLang
                 If Not String.IsNullOrEmpty(tLang) Then
-                    Master.eSettings.GeneralTVDBLanguage = tLang
+                    Master.eSettings.TVGeneralLanguage = tLang
                 Else
-                    Master.eSettings.GeneralTVDBLanguage = "en"
+                    Master.eSettings.TVGeneralLanguage = "en"
                 End If
             Else
-                Master.eSettings.GeneralTVDBLanguage = "en"
+                Master.eSettings.TVGeneralLanguage = "en"
             End If
-            Master.eSettings.GeneralTVDBLanguages = Me.tLangList
 
             '***************************************************
             '******************* Movie Part ********************

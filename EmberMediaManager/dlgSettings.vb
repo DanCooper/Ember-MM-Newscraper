@@ -881,6 +881,16 @@ Public Class dlgSettings
         Me.RemoveMovieSortToken()
     End Sub
 
+    Private Sub btnTVGeneralLangFetch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVGeneralLangFetch.Click
+        Master.eSettings.TVGeneralLanguages.Clear()
+        Master.eSettings.TVGeneralLanguages.AddRange(ModulesManager.Instance.TVGetLangs("thetvdb.com"))
+        Me.cbTVGeneralLang.Items.AddRange((From lLang In Master.eSettings.TVGeneralLanguages Select lLang.LongLang).ToArray)
+
+        If Me.cbTVGeneralLang.Items.Count > 0 Then
+            Me.cbTVGeneralLang.Text = Master.eSettings.TVGeneralLanguages.FirstOrDefault(Function(l) l.ShortLang = Master.eSettings.TVGeneralLanguage).LongLang
+        End If
+    End Sub
+
     Private Sub btnTVScraperDefFIExtRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVScraperDefFIExtRemove.Click
         Me.RemoveTVMetaData()
     End Sub
@@ -980,6 +990,10 @@ Public Class dlgSettings
     End Sub
 
     Private Sub cbGeneralMovieTheme_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbGeneralMovieTheme.SelectedIndexChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub cbTVGeneralLang_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbTVGeneralLang.SelectedIndexChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -2979,8 +2993,10 @@ Public Class dlgSettings
                 Me.TVShowRegex.AddRange(.TVShowRegexes)
                 Me.LoadTVShowRegex()
 
-                'Me.tLangList.Clear()
-                'Me.tLangList.AddRange(.TVDBLanguages)
+                Me.cbTVGeneralLang.Items.AddRange((From lLang In .TVGeneralLanguages Select lLang.LongLang).ToArray)
+                If Me.cbTVGeneralLang.Items.Count > 0 Then
+                    Me.cbTVGeneralLang.Text = .TVGeneralLanguages.FirstOrDefault(Function(l) l.ShortLang = .TVGeneralLanguage).LongLang
+                End If
 
                 If Not String.IsNullOrEmpty(.ProxyURI) AndAlso .ProxyPort >= 0 Then
                     Me.chkProxyEnable.Checked = True
@@ -4225,6 +4241,7 @@ Public Class dlgSettings
                 .TVGeneralDisplayASPoster = Me.chkTVGeneralDisplayASPoster.Checked
                 .TVGeneralFlagLang = If(Me.cbTVLanguageOverlay.Text = Master.eLang.Disabled, String.Empty, Me.cbTVLanguageOverlay.Text)
                 .TVGeneralIgnoreLastScan = Me.chkTVGeneralIgnoreLastScan.Checked
+                .TVGeneralLanguage = Master.eSettings.TVGeneralLanguages.FirstOrDefault(Function(l) l.LongLang = cbTVGeneralLang.Text).ShortLang
                 .TVGeneralMarkNewEpisodes = Me.chkTVGeneralMarkNewEpisodes.Checked
                 .TVGeneralMarkNewShows = Me.chkTVGeneralMarkNewShows.Checked
                 .TVLockEpisodePlot = Me.chkTVLockEpisodePlot.Checked
