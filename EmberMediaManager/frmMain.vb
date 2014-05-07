@@ -1301,8 +1301,10 @@ Public Class frmMain
                     bwMovieScraper.ReportProgress(0, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldTitle, NewTitle))
                 End If
 
-                MovieScraperEvent(Enums.MovieScraperEventType.ListTitle, NewTitle)
-                MovieScraperEvent(Enums.MovieScraperEventType.SortTitle, DBScrapeMovie.Movie.SortTitle)
+                If Not Args.scrapeType = Enums.ScrapeType.SingleScrape Then
+                    MovieScraperEvent(Enums.MovieScraperEventType.ListTitle, NewTitle)
+                    MovieScraperEvent(Enums.MovieScraperEventType.SortTitle, DBScrapeMovie.Movie.SortTitle)
+                End If
 
                 '-----
 
