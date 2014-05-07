@@ -232,8 +232,8 @@ Public Class dlgEditEpisode
     End Sub
 
     Private Sub dlgEditEpisode_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        If Not Master.eSettings.TVEpisodeFanartEnabled Then tcEditEpisode.TabPages.Remove(tpEpisodeFanart)
-        If Not Master.eSettings.TVEpisodePosterEnabled Then
+        If Not Master.eSettings.TVEpisodeFanartAnyEnabled Then tcEditEpisode.TabPages.Remove(tpEpisodeFanart)
+        If Not Master.eSettings.TVEpisodePosterAnyEnabled Then
             tcEditEpisode.TabPages.Remove(tpEpisodePoster)
             tcEditEpisode.TabPages.Remove(tpFrameExtraction)
         End If
@@ -322,7 +322,7 @@ Public Class dlgEditEpisode
             .pbStar5.Tag = tRating
             If tRating > 0 Then .BuildStars(tRating)
 
-            If Master.eSettings.TVEpisodeFanartEnabled Then
+            If Master.eSettings.TVEpisodeFanartAnyEnabled Then
                 EpisodeFanart.FromFile(Master.currShow.EpFanartPath)
                 If Not IsNothing(EpisodeFanart.Image) Then
                     .pbEpisodeFanart.Image = EpisodeFanart.Image
@@ -333,7 +333,7 @@ Public Class dlgEditEpisode
                 End If
             End If
 
-            If Master.eSettings.TVEpisodePosterEnabled Then
+            If Master.eSettings.TVEpisodePosterAnyEnabled Then
                 EpisodePoster.FromFile(Master.currShow.EpPosterPath)
                 If Not IsNothing(EpisodePoster.Image) Then
                     .pbEpisodePoster.Image = EpisodePoster.Image

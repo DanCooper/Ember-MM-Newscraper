@@ -5771,79 +5771,126 @@ Public Class Settings
             Master.eSettings.TVShowRegexes.Add(New TVShowRegEx With {.ID = 5, .SeasonRegex = "[^\w]s(eason)?[\W_]*(?<season>[0-9]+)", .SeasonFromDirectory = True, .EpisodeRegex = "[^a-zA-Z]e(pisode[\W_]*)?(?<episode>[0-9]+)", .EpisodeRetrieve = EpRetrieve.FromFilename})
         End If
     End Sub
+    Public Function MovieActorThumbsAnyEnabled() As Boolean
+        Return MovieActorThumbsEden OrElse MovieActorThumbsFrodo OrElse _
+            (MovieUseExpert AndAlso ((MovieActorThumbsExpertBDMV AndAlso Not String.IsNullOrEmpty(MovieActorThumbsExtExpertBDMV)) OrElse (MovieActorThumbsExpertMulti AndAlso Not String.IsNullOrEmpty(MovieActorThumbsExtExpertMulti)) OrElse (MovieActorThumbsExpertSingle AndAlso Not String.IsNullOrEmpty(MovieActorThumbsExtExpertSingle)) OrElse (MovieActorThumbsExpertVTS AndAlso Not String.IsNullOrEmpty(MovieActorThumbsExtExpertVTS))))
+    End Function
+    Public Function MovieBannerAnyEnabled() As Boolean
+        Return MovieBannerEden OrElse MovieBannerFrodo OrElse MovieBannerNMJ OrElse MovieBannerYAMJ OrElse _
+            (MovieUseExpert AndAlso (Not String.IsNullOrEmpty(MovieBannerExpertBDMV) OrElse Not String.IsNullOrEmpty(MovieBannerExpertMulti) OrElse Not String.IsNullOrEmpty(MovieBannerExpertSingle) OrElse Not String.IsNullOrEmpty(MovieBannerExpertVTS)))
+    End Function
+    Public Function MovieClearArtAnyEnabled() As Boolean
+        Return MovieClearArtEden OrElse MovieClearArtFrodo OrElse _
+            (MovieUseExpert AndAlso (Not String.IsNullOrEmpty(MovieClearArtExpertBDMV) OrElse Not String.IsNullOrEmpty(MovieClearArtExpertMulti) OrElse Not String.IsNullOrEmpty(MovieClearArtExpertSingle) OrElse Not String.IsNullOrEmpty(MovieClearArtExpertVTS)))
+    End Function
+    Public Function MovieClearLogoAnyEnabled() As Boolean
+        Return MovieClearLogoEden OrElse MovieClearLogoFrodo OrElse _
+            (MovieUseExpert AndAlso (Not String.IsNullOrEmpty(MovieClearLogoExpertBDMV) OrElse Not String.IsNullOrEmpty(MovieClearLogoExpertMulti) OrElse Not String.IsNullOrEmpty(MovieClearLogoExpertSingle) OrElse Not String.IsNullOrEmpty(MovieClearLogoExpertVTS)))
+    End Function
+    Public Function MovieDiscArtAnyEnabled() As Boolean
+        Return MovieDiscArtEden OrElse MovieDiscArtFrodo OrElse _
+            (MovieUseExpert AndAlso (Not String.IsNullOrEmpty(MovieDiscArtExpertBDMV) OrElse Not String.IsNullOrEmpty(MovieDiscArtExpertMulti) OrElse Not String.IsNullOrEmpty(MovieDiscArtExpertSingle) OrElse Not String.IsNullOrEmpty(MovieDiscArtExpertVTS)))
+    End Function
+    Public Function MovieEFanartsAnyEnabled() As Boolean
+        Return MovieExtrafanartsEden OrElse MovieExtrafanartsFrodo OrElse _
+            (MovieUseExpert AndAlso (MovieExtrafanartsExpertBDMV OrElse MovieExtrafanartsExpertSingle OrElse MovieExtrafanartsExpertVTS))
+    End Function
+    Public Function MovieEThumbsAnyEnabled() As Boolean
+        Return MovieExtrathumbsEden OrElse MovieExtrathumbsFrodo OrElse _
+            (MovieUseExpert AndAlso (MovieExtrathumbsExpertBDMV OrElse MovieExtrathumbsExpertSingle OrElse MovieExtrathumbsExpertVTS))
+    End Function
+    Public Function MovieFanartAnyEnabled() As Boolean
+        Return MovieFanartBoxee OrElse MovieFanartEden OrElse MovieFanartFrodo OrElse MovieFanartNMJ OrElse MovieFanartYAMJ OrElse _
+            (MovieUseExpert AndAlso (Not String.IsNullOrEmpty(MovieFanartExpertBDMV) OrElse Not String.IsNullOrEmpty(MovieFanartExpertMulti) OrElse Not String.IsNullOrEmpty(MovieFanartExpertSingle) OrElse Not String.IsNullOrEmpty(MovieFanartExpertVTS)))
+    End Function
+    Public Function MovieLandscapeAnyEnabled() As Boolean
+        Return MovieLandscapeEden OrElse MovieLandscapeFrodo OrElse _
+            (MovieUseExpert AndAlso (Not String.IsNullOrEmpty(MovieLandscapeExpertBDMV) OrElse Not String.IsNullOrEmpty(MovieLandscapeExpertMulti) OrElse Not String.IsNullOrEmpty(MovieLandscapeExpertSingle) OrElse Not String.IsNullOrEmpty(MovieLandscapeExpertVTS)))
+    End Function
+    Public Function MoviePosterAnyEnabled() As Boolean
+        Return MoviePosterBoxee OrElse MoviePosterEden OrElse MoviePosterFrodo OrElse MoviePosterNMJ OrElse MoviePosterYAMJ OrElse _
+            (MovieUseExpert AndAlso (Not String.IsNullOrEmpty(MoviePosterExpertBDMV) OrElse Not String.IsNullOrEmpty(MoviePosterExpertMulti) OrElse Not String.IsNullOrEmpty(MoviePosterExpertSingle) OrElse Not String.IsNullOrEmpty(MoviePosterExpertVTS)))
+    End Function
+    Public Function MovieThemeAnyEnabled() As Boolean
+        Return MovieXBMCThemeEnable AndAlso (MovieXBMCThemeMovie OrElse (MovieXBMCThemeCustom AndAlso Not String.IsNullOrEmpty(MovieXBMCThemeCustomPath) OrElse (MovieXBMCThemeSub AndAlso Not String.IsNullOrEmpty(MovieXBMCThemeSubDir))))
+    End Function
+    Public Function MovieTrailerAnyEnabled() As Boolean
+        Return MovieTrailerEden OrElse MovieTrailerFrodo OrElse MovieTrailerNMJ OrElse MovieTrailerYAMJ OrElse _
+            (MovieUseExpert AndAlso (Not String.IsNullOrEmpty(MovieTrailerExpertBDMV) OrElse Not String.IsNullOrEmpty(MovieTrailerExpertMulti) OrElse Not String.IsNullOrEmpty(MovieTrailerExpertSingle) OrElse Not String.IsNullOrEmpty(MovieTrailerExpertVTS)))
+    End Function
 
     Public Function TVASAnyEnabled() As Boolean
-        Return TVASBannerEnabled() OrElse TVASFanartEnabled() OrElse TVASLandscapeEnabled() OrElse TVASPosterEnabled()
+        Return TVASBannerAnyEnabled() OrElse TVASFanartAnyEnabled() OrElse TVASLandscapeAnyEnabled() OrElse TVASPosterAnyEnabled()
     End Function
-    Public Function TVASBannerEnabled() As Boolean
+    Public Function TVASBannerAnyEnabled() As Boolean
         Return TVSeasonBannerFrodo OrElse TVSeasonBannerYAMJ
     End Function
 
-    Public Function TVASFanartEnabled() As Boolean
+    Public Function TVASFanartAnyEnabled() As Boolean
         Return TVSeasonFanartFrodo
     End Function
 
-    Public Function TVASLandscapeEnabled() As Boolean
+    Public Function TVASLandscapeAnyEnabled() As Boolean
         Return TVSeasonLandscapeXBMC
     End Function
 
-    Public Function TVASPosterEnabled() As Boolean
+    Public Function TVASPosterAnyEnabled() As Boolean
         Return TVSeasonPosterFrodo
     End Function
 
-    Public Function TVEpisodePosterEnabled() As Boolean
+    Public Function TVEpisodePosterAnyEnabled() As Boolean
         Return TVEpisodePosterBoxee OrElse TVEpisodePosterFrodo OrElse TVEpisodePosterYAMJ
     End Function
 
-    Public Function TVEpisodeFanartEnabled() As Boolean
+    Public Function TVEpisodeFanartAnyEnabled() As Boolean
         Return False
     End Function
 
-    Public Function TVSeasonBannerEnabled() As Boolean
+    Public Function TVSeasonBannerAnyEnabled() As Boolean
         Return TVSeasonBannerFrodo OrElse TVSeasonBannerYAMJ
     End Function
 
-    Public Function TVSeasonFanartEnabled() As Boolean
+    Public Function TVSeasonFanartAnyEnabled() As Boolean
         Return TVSeasonFanartFrodo OrElse TVSeasonFanartYAMJ
     End Function
 
-    Public Function TVSeasonLandscapeEnabled() As Boolean
+    Public Function TVSeasonLandscapeAnyEnabled() As Boolean
         Return TVSeasonLandscapeXBMC
     End Function
 
-    Public Function TVSeasonPosterEnabled() As Boolean
+    Public Function TVSeasonPosterAnyEnabled() As Boolean
         Return TVSeasonPosterBoxee OrElse TVSeasonPosterFrodo OrElse TVSeasonPosterYAMJ
     End Function
 
-    Public Function TVShowBannerEnabled() As Boolean
+    Public Function TVShowBannerAnyEnabled() As Boolean
         Return TVShowBannerBoxee OrElse TVShowBannerFrodo OrElse TVShowBannerYAMJ
     End Function
 
-    Public Function TVShowCharacterEnabled() As Boolean
+    Public Function TVShowCharacterAnyEnabled() As Boolean
         Return TVShowCharacterArtXBMC
     End Function
 
-    Public Function TVShowClearArtEnabled() As Boolean
+    Public Function TVShowClearArtAnyEnabled() As Boolean
         Return TVShowClearArtXBMC
     End Function
 
-    Public Function TVShowClearLogoEnabled() As Boolean
+    Public Function TVShowClearLogoAnyEnabled() As Boolean
         Return TVShowClearLogoXBMC
     End Function
 
-    Public Function TVShowFanartEnabled() As Boolean
+    Public Function TVShowFanartAnyEnabled() As Boolean
         Return TVShowFanartBoxee OrElse TVShowFanartFrodo OrElse TVShowFanartYAMJ
     End Function
 
-    Public Function TVShowLandscapeEnabled() As Boolean
+    Public Function TVShowLandscapeAnyEnabled() As Boolean
         Return TVShowLandscapeXBMC
     End Function
 
-    Public Function TVShowPosterEnabled() As Boolean
+    Public Function TVShowPosterAnyEnabled() As Boolean
         Return TVShowPosterBoxee OrElse TVShowPosterFrodo OrElse TVShowPosterYAMJ
     End Function
 
-    Public Function TVShowTVThemeEnabled() As Boolean
+    Public Function TVShowTVThemeAnyEnabled() As Boolean
         Return TVShowTVThemeXBMC
     End Function
 

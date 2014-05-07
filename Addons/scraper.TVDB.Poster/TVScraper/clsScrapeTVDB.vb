@@ -888,7 +888,7 @@ Public Class Scraper
 
                                 If Me.bwTVDB.CancellationPending Then Return
 
-                                If Master.eSettings.TVEpisodeFanartEnabled AndAlso Not IsNothing(Episode.TVEp.Fanart.Image) Then Episode.EpFanartPath = Episode.TVEp.Fanart.SaveAsTVEpisodeFanart(Episode, )
+                                If Master.eSettings.TVEpisodeFanartAnyEnabled AndAlso Not IsNothing(Episode.TVEp.Fanart.Image) Then Episode.EpFanartPath = Episode.TVEp.Fanart.SaveAsTVEpisodeFanart(Episode, )
 
                                 If Me.bwTVDB.CancellationPending Then Return
 
@@ -899,7 +899,7 @@ Public Class Scraper
 
                                     If Me.bwTVDB.CancellationPending Then Return
 
-                                    If Master.eSettings.TVSeasonFanartEnabled Then
+                                    If Master.eSettings.TVSeasonFanartAnyEnabled Then
                                         If Not String.IsNullOrEmpty(cSea(0).Fanart.LocalFile) AndAlso File.Exists(cSea(0).Fanart.LocalFile) Then
                                             cSea(0).Fanart.Image.FromFile(cSea(0).Fanart.LocalFile)
                                             Episode.SeasonFanartPath = cSea(0).Fanart.Image.SaveAsTVSeasonFanart(Episode)

@@ -1097,7 +1097,7 @@ Public Class frmMain
             If Not Master.eSettings.GeneralHidePoster Then Me.MainPoster.FromFile(Master.currShow.ShowPosterPath)
             If Not Master.eSettings.GeneralHideFanartSmall Then Me.MainFanartSmall.FromFile(Master.currShow.ShowFanartPath)
 
-            If Master.eSettings.TVGeneralDisplayASPoster AndAlso Master.eSettings.TVASPosterEnabled Then
+            If Master.eSettings.TVGeneralDisplayASPoster AndAlso Master.eSettings.TVASPosterAnyEnabled Then
                 Me.MainAllSeason.FromFile(Master.currShow.SeasonPosterPath)
             End If
 
@@ -9022,7 +9022,7 @@ doCancel:
                 Master.DB.SaveTVShowToDB(tmpShowDb, False, WithEpisodes, ToNfo)
 
                 ' DanCooper: i'm not shure if this is a proper solution...
-                If Master.eSettings.TVASPosterEnabled Then
+                If Master.eSettings.TVASPosterAnyEnabled Then
                     tmpShowDb.SeasonBannerPath = sContainer.AllSeasonsBanner
                     tmpShowDb.SeasonFanartPath = sContainer.AllSeasonsFanart
                     tmpShowDb.SeasonLandscapePath = sContainer.AllSeasonsLandscape
@@ -9320,11 +9320,6 @@ doCancel:
         End Try
     End Sub
 
-    Private Sub cmnuMovieReSelAskEThumbs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskEThumbs.Click
-        Functions.SetScraperMod(Enums.ModType.EThumbs, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions)
-    End Sub
-
     Private Sub cmnuMovieReSelAskBanner_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskBanner.Click
         Functions.SetScraperMod(Enums.ModType.Banner, True)
         MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions)
@@ -9345,18 +9340,48 @@ doCancel:
         MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions)
     End Sub
 
-    Private Sub cmnuMovieReSelAskTheme_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskTheme.Click
-        Functions.SetScraperMod(Enums.ModType.Theme, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions)
-    End Sub
-
     Private Sub cmnuMovieReSelAskEFanarts_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskEFanarts.Click
         Functions.SetScraperMod(Enums.ModType.EFanarts, True)
         MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions)
     End Sub
 
+    Private Sub cmnuMovieReSelAskEThumbs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskEThumbs.Click
+        Functions.SetScraperMod(Enums.ModType.EThumbs, True)
+        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub cmnuMovieReSelAskFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskFanart.Click
+        Functions.SetScraperMod(Enums.ModType.Fanart, True)
+        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions)
+    End Sub
+
     Private Sub cmnuMovieReSelAskLandscape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskLandscape.Click
         Functions.SetScraperMod(Enums.ModType.Landscape, True)
+        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub cmnuMovieReSelAskMetaData_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskMetaData.Click
+        Functions.SetScraperMod(Enums.ModType.Meta, True)
+        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub cmnuMovieReSelAskNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskNfo.Click
+        Functions.SetScraperMod(Enums.ModType.NFO, True)
+        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub cmnuMovieReSelAskPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskPoster.Click
+        Functions.SetScraperMod(Enums.ModType.Poster, True)
+        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub cmnuMovieReSelAskTheme_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskTheme.Click
+        Functions.SetScraperMod(Enums.ModType.Theme, True)
+        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub cmnuMovieReSelAskTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskTrailer.Click
+        Functions.SetScraperMod(Enums.ModType.Trailer, True)
         MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions)
     End Sub
 
@@ -9380,8 +9405,8 @@ doCancel:
         MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultMovieOptions)
     End Sub
 
-    Private Sub cmnuMovieReSelAutoTheme_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAutoTheme.Click
-        Functions.SetScraperMod(Enums.ModType.Theme, True)
+    Private Sub cmnuMovieReSelAutoEFanarts_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAutoEFanarts.Click
+        Functions.SetScraperMod(Enums.ModType.EFanarts, True)
         MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultMovieOptions)
     End Sub
 
@@ -9390,14 +9415,9 @@ doCancel:
         MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultMovieOptions)
     End Sub
 
-    Private Sub cmnuMovieReSelAutoEFanarts_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAutoEFanarts.Click
-        Functions.SetScraperMod(Enums.ModType.EFanarts, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultMovieOptions)
-    End Sub
-
-    Private Sub cmnuMovieReSelAskFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskFanart.Click
+    Private Sub cmnuMovieReSelAutoFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAutoFanart.Click
         Functions.SetScraperMod(Enums.ModType.Fanart, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions)
+        MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultMovieOptions)
     End Sub
 
     Private Sub cmnuMovieReSelAutoLandscape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAutoLandscape.Click
@@ -9405,29 +9425,9 @@ doCancel:
         MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultMovieOptions)
     End Sub
 
-    Private Sub cmnuMovieReSelAutoFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAutoFanart.Click
-        Functions.SetScraperMod(Enums.ModType.Fanart, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultMovieOptions)
-    End Sub
-
-    Private Sub cmnuMovieReSelAskTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskTrailer.Click
-        Functions.SetScraperMod(Enums.ModType.Trailer, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions)
-    End Sub
-
-    Private Sub cmnuMovieReSelAskMetaData_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskMetaData.Click
-        Functions.SetScraperMod(Enums.ModType.Meta, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions)
-    End Sub
-
     Private Sub cmnuMovieReSelAutoMetaData_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAutoMetaData.Click
         Functions.SetScraperMod(Enums.ModType.Meta, True)
         MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultMovieOptions)
-    End Sub
-
-    Private Sub cmnuMovieReSelAskNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskNfo.Click
-        Functions.SetScraperMod(Enums.ModType.NFO, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions)
     End Sub
 
     Private Sub cmnuMovieReSelAutoNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAutoNfo.Click
@@ -9440,9 +9440,14 @@ doCancel:
         MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultMovieOptions)
     End Sub
 
-    Private Sub cmnuMovieReSelAskPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskPoster.Click
-        Functions.SetScraperMod(Enums.ModType.Poster, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions)
+    Private Sub cmnuMovieReSelAutoTheme_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAutoTheme.Click
+        Functions.SetScraperMod(Enums.ModType.Theme, True)
+        MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub cmnuMovieReSelAutoTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAutoTrailer.Click
+        Functions.SetScraperMod(Enums.ModType.Trailer, True)
+        MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultMovieOptions)
     End Sub
     ''' <summary>
     ''' Updates the media info panels (right side of disiplay) when the movie selector changes (left side of display)
@@ -9526,11 +9531,6 @@ doCancel:
         Catch ex As Exception
             Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
-    End Sub
-
-    Private Sub cmnuSelAutoTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAutoTrailer.Click
-        Functions.SetScraperMod(Enums.ModType.Trailer, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultMovieOptions)
     End Sub
 
     Private Sub SetAVImages(ByVal aImage As Image())
@@ -9670,7 +9670,7 @@ doCancel:
                 'Me.mnuFilterAskExtra.Enabled = .AutoThumbs > 0 OrElse .AutoET
 
                 'Actor Thumbs
-                Dim ActorAllowed As Boolean = True 'ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.ActorThumbs)
+                Dim ActorAllowed As Boolean = .MovieActorThumbsAnyEnabled
                 Me.mnuAllAutoActor.Enabled = ActorAllowed
                 Me.mnuAllAskActor.Enabled = ActorAllowed
                 Me.mnuMissAutoActor.Enabled = ActorAllowed
@@ -9695,7 +9695,7 @@ doCancel:
                 Me.cmnuTrayFilterAskActor.Enabled = ActorAllowed
 
                 'Banner
-                Dim BannerAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Banner)
+                Dim BannerAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Banner) AndAlso .MovieBannerAnyEnabled
                 Me.mnuAllAutoBanner.Enabled = BannerAllowed
                 Me.mnuAllAskBanner.Enabled = BannerAllowed
                 Me.mnuMissAutoBanner.Enabled = BannerAllowed
@@ -9720,7 +9720,7 @@ doCancel:
                 Me.cmnuTrayFilterAskBanner.Enabled = BannerAllowed
 
                 'ClearArt
-                Dim ClearArtAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.ClearArt)
+                Dim ClearArtAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.ClearArt) AndAlso .MovieClearArtAnyEnabled
                 Me.mnuAllAutoClearArt.Enabled = ClearArtAllowed
                 Me.mnuAllAskClearArt.Enabled = ClearArtAllowed
                 Me.mnuMissAutoClearArt.Enabled = ClearArtAllowed
@@ -9745,7 +9745,7 @@ doCancel:
                 Me.cmnuTrayFilterAskClearArt.Enabled = ClearArtAllowed
 
                 'ClearLogo
-                Dim ClearLogoAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.ClearLogo)
+                Dim ClearLogoAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.ClearLogo) AndAlso .MovieClearLogoAnyEnabled
                 Me.mnuAllAutoClearLogo.Enabled = ClearLogoAllowed
                 Me.mnuAllAskClearLogo.Enabled = ClearLogoAllowed
                 Me.mnuMissAutoClearLogo.Enabled = ClearLogoAllowed
@@ -9770,7 +9770,7 @@ doCancel:
                 Me.cmnuTrayFilterAskClearLogo.Enabled = ClearLogoAllowed
 
                 'DiscArt
-                Dim DiscArtAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.DiscArt)
+                Dim DiscArtAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.DiscArt) AndAlso .MovieDiscArtAnyEnabled
                 Me.mnuAllAutoDiscArt.Enabled = DiscArtAllowed
                 Me.mnuAllAskDiscArt.Enabled = DiscArtAllowed
                 Me.mnuMissAutoDiscArt.Enabled = DiscArtAllowed
@@ -9795,7 +9795,7 @@ doCancel:
                 Me.cmnuTrayFilterAskDiscArt.Enabled = DiscArtAllowed
 
                 'Extrafanart
-                Dim EFanartsAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart) AndAlso Master.eSettings.MovieExtrafanartsFrodo OrElse Master.eSettings.MovieExtrafanartsEden
+                Dim EFanartsAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart) AndAlso .MovieEFanartsAnyEnabled
                 Me.mnuAllAutoEFanarts.Enabled = EFanartsAllowed
                 Me.mnuAllAskEFanarts.Enabled = EFanartsAllowed
                 Me.mnuMissAutoEFanarts.Enabled = EFanartsAllowed
@@ -9820,7 +9820,7 @@ doCancel:
                 Me.cmnuTrayFilterAskEFanarts.Enabled = EFanartsAllowed
 
                 'Extrathumb
-                Dim EThumbsAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart) AndAlso Master.eSettings.MovieExtrathumbsFrodo OrElse Master.eSettings.MovieExtrathumbsEden
+                Dim EThumbsAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart) AndAlso .MovieEThumbsAnyEnabled
                 Me.mnuAllAutoEThumbs.Enabled = EThumbsAllowed
                 Me.mnuAllAskEThumbs.Enabled = EThumbsAllowed
                 Me.mnuMissAutoEThumbs.Enabled = EThumbsAllowed
@@ -9845,7 +9845,7 @@ doCancel:
                 Me.cmnuTrayFilterAskEThumbs.Enabled = EThumbsAllowed
 
                 'Fanart
-                Dim FanartAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart)
+                Dim FanartAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart) AndAlso .MoviefanartAnyEnabled
                 Me.mnuAllAutoFanart.Enabled = FanartAllowed
                 Me.mnuAllAskFanart.Enabled = FanartAllowed
                 Me.mnuMissAutoFanart.Enabled = FanartAllowed
@@ -9870,7 +9870,7 @@ doCancel:
                 Me.cmnuTrayFilterAskFanart.Enabled = FanartAllowed
 
                 'Landscape
-                Dim LandscapeAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Landscape)
+                Dim LandscapeAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Landscape) AndAlso .MovieLandscapeAnyEnabled
                 Me.mnuAllAutoLandscape.Enabled = LandscapeAllowed
                 Me.mnuAllAskLandscape.Enabled = LandscapeAllowed
                 Me.mnuMissAutoLandscape.Enabled = LandscapeAllowed
@@ -9915,7 +9915,7 @@ doCancel:
                 Me.cmnuTrayFilterAutoMI.Enabled = .MovieScraperMetaDataScan
 
                 'Poster
-                Dim PosterAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Poster)
+                Dim PosterAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Poster) AndAlso .MoviePosterAnyEnabled
                 Me.mnuAllAutoPoster.Enabled = PosterAllowed
                 Me.mnuAllAskPoster.Enabled = PosterAllowed
                 Me.mnuMissAutoPoster.Enabled = PosterAllowed
@@ -9940,7 +9940,7 @@ doCancel:
                 Me.cmnuTrayFilterAskPoster.Enabled = PosterAllowed
 
                 'Theme
-                Dim ThemeAllowed As Boolean = True 'ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Theme)
+                Dim ThemeAllowed As Boolean = .MovieTrailerAnyEnabled ' AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Theme) 'TODO
                 Me.mnuAllAutoTheme.Enabled = ThemeAllowed
                 Me.mnuAllAskTheme.Enabled = ThemeAllowed
                 Me.mnuMissAutoTheme.Enabled = ThemeAllowed
@@ -9965,7 +9965,7 @@ doCancel:
                 Me.cmnuTrayFilterAskTheme.Enabled = ThemeAllowed
 
                 'Trailer
-                Dim TrailerAllowed As Boolean = ModulesManager.Instance.QueryTrailerScraperCapabilities(Enums.ScraperCapabilities.Trailer)
+                Dim TrailerAllowed As Boolean = ModulesManager.Instance.QueryTrailerScraperCapabilities(Enums.ScraperCapabilities.Trailer) AndAlso .MovieTrailerAnyEnabled
                 Me.mnuAllAutoTrailer.Enabled = TrailerAllowed
                 Me.mnuAllAskTrailer.Enabled = TrailerAllowed
                 Me.mnuMissAutoTrailer.Enabled = TrailerAllowed
@@ -10336,6 +10336,30 @@ doCancel:
                 .cmnuTrayFilterSkip.Text = .mnuAllSkip.Text
                 .cmnuMovieReSelSkip.Text = .mnuAllSkip.Text
 
+                ' Scrape Media Content: Actor Thumbs
+                .mnuAllAutoActor.Text = Master.eLang.GetString(973, "Actor Thumbs Only")
+                .mnuAllAskActor.Text = .mnuAllAutoActor.Text
+                .mnuMissAutoActor.Text = .mnuAllAutoActor.Text
+                .mnuMissAskActor.Text = .mnuAllAutoActor.Text
+                .mnuNewAutoActor.Text = .mnuAllAutoActor.Text
+                .mnuNewAskActor.Text = .mnuAllAutoActor.Text
+                .mnuMarkAutoActor.Text = .mnuAllAutoActor.Text
+                .mnuMarkAskActor.Text = .mnuAllAutoActor.Text
+                .mnuFilterAutoActor.Text = .mnuAllAutoActor.Text
+                .mnuFilterAskActor.Text = .mnuAllAutoActor.Text
+                .cmnuTrayAllAutoActor.Text = .mnuAllAutoActor.Text
+                .cmnuTrayAllAskActor.Text = .mnuAllAutoActor.Text
+                .cmnuTrayMissAutoActor.Text = .mnuAllAutoActor.Text
+                .cmnuTrayMissAskActor.Text = .mnuAllAutoActor.Text
+                .cmnuTrayNewAutoActor.Text = .mnuAllAutoActor.Text
+                .cmnuTrayNewAskActor.Text = .mnuAllAutoActor.Text
+                .cmnuTrayMarkAutoActor.Text = .mnuAllAutoActor.Text
+                .cmnuTrayMarkAskActor.Text = .mnuAllAutoActor.Text
+                .cmnuTrayFilterAutoActor.Text = .mnuAllAutoActor.Text
+                .cmnuTrayFilterAskActor.Text = .mnuAllAutoActor.Text
+                .cmnuMovieReSelAskActor.Text = .mnuAllAutoActor.Text
+                .cmnuMovieReSelAutoActor.Text = .mnuAllAutoActor.Text
+
                 ' Scrape Media Content: All Items
                 .mnuAllAutoAll.Text = Master.eLang.GetString(70, "All Items")
                 .mnuAllAskAll.Text = mnuAllAutoAll.Text
@@ -10370,30 +10394,6 @@ doCancel:
                 .cmnuMovieReSelAskAll.Text = .mnuAllAutoAll.Text
                 .cmnuMovieReSelAutoAll.Text = .mnuAllAutoAll.Text
                 .cmnuMovieReSelSkipAll.Text = .mnuAllAutoAll.Text
-
-                ' Scrape Media Content: NFO
-                .mnuAllAutoNfo.Text = Master.eLang.GetString(71, "NFO Only")
-                .mnuAllAskNfo.Text = .mnuAllAutoNfo.Text
-                .mnuMissAutoNfo.Text = .mnuAllAutoNfo.Text
-                .mnuMissAskNfo.Text = .mnuAllAutoNfo.Text
-                .mnuNewAutoNfo.Text = .mnuAllAutoNfo.Text
-                .mnuNewAskNfo.Text = .mnuAllAutoNfo.Text
-                .mnuMarkAutoNfo.Text = .mnuAllAutoNfo.Text
-                .mnuMarkAskNfo.Text = .mnuAllAutoNfo.Text
-                .mnuFilterAutoNfo.Text = .mnuAllAutoNfo.Text
-                .mnuFilterAskNfo.Text = .mnuAllAutoNfo.Text
-                .cmnuTrayAllAutoNfo.Text = .mnuAllAutoNfo.Text
-                .cmnuTrayAllAskNfo.Text = .mnuAllAutoNfo.Text
-                .cmnuTrayMissAutoNfo.Text = .mnuAllAutoNfo.Text
-                .cmnuTrayMissAskNfo.Text = .mnuAllAutoNfo.Text
-                .cmnuTrayNewAutoNfo.Text = .mnuAllAutoNfo.Text
-                .cmnuTrayNewAskNfo.Text = .mnuAllAutoNfo.Text
-                .cmnuTrayMarkAutoNfo.Text = .mnuAllAutoNfo.Text
-                .cmnuTrayMarkAskNfo.Text = .mnuAllAutoNfo.Text
-                .cmnuTrayFilterAutoNfo.Text = .mnuAllAutoNfo.Text
-                .cmnuTrayFilterAskNfo.Text = .mnuAllAutoNfo.Text
-                .cmnuMovieReSelAskNfo.Text = .mnuAllAutoNfo.Text
-                .cmnuMovieReSelAutoNfo.Text = .mnuAllAutoNfo.Text
 
                 ' Scrape Media Content: Banner
                 .mnuAllAutoBanner.Text = Master.eLang.GetString(1060, "Banner Only")
@@ -10491,77 +10491,29 @@ doCancel:
                 .cmnuMovieReSelAskDiscArt.Text = .mnuAllAutoDiscArt.Text
                 .cmnuMovieReSelAutoDiscArt.Text = .mnuAllAutoDiscArt.Text
 
-                ' Scrape Media Content: Landscape
-                .mnuAllAutoLandscape.Text = Master.eLang.GetString(1061, "Landscape Only")
-                .mnuAllAskLandscape.Text = .mnuAllAutoLandscape.Text
-                .mnuMissAutoLandscape.Text = .mnuAllAutoLandscape.Text
-                .mnuMissAskLandscape.Text = .mnuAllAutoLandscape.Text
-                .mnuNewAutoLandscape.Text = .mnuAllAutoLandscape.Text
-                .mnuNewAskLandscape.Text = .mnuAllAutoLandscape.Text
-                .mnuMarkAutoLandscape.Text = .mnuAllAutoLandscape.Text
-                .mnuMarkAskLandscape.Text = .mnuAllAutoLandscape.Text
-                .mnuFilterAutoLandscape.Text = .mnuAllAutoLandscape.Text
-                .mnuFilterAskLandscape.Text = .mnuAllAutoLandscape.Text
-                .cmnuTrayAllAutoLandscape.Text = .mnuAllAutoLandscape.Text
-                .cmnuTrayAllAskLandscape.Text = .mnuAllAutoLandscape.Text
-                .cmnuTrayMissAutoLandscape.Text = .mnuAllAutoLandscape.Text
-                .cmnuTrayMissAskLandscape.Text = .mnuAllAutoLandscape.Text
-                .cmnuTrayNewAutoLandscape.Text = .mnuAllAutoLandscape.Text
-                .cmnuTrayNewAskLandscape.Text = .mnuAllAutoLandscape.Text
-                .cmnuTrayMarkAutoLandscape.Text = .mnuAllAutoLandscape.Text
-                .cmnuTrayMarkAskLandscape.Text = .mnuAllAutoLandscape.Text
-                .cmnuTrayFilterAutoLandscape.Text = .mnuAllAutoLandscape.Text
-                .cmnuTrayFilterAskLandscape.Text = .mnuAllAutoLandscape.Text
-                .cmnuMovieReSelAskLandscape.Text = .mnuAllAutoLandscape.Text
-                .cmnuMovieReSelAutoLandscape.Text = .mnuAllAutoLandscape.Text
-
-                ' Scrape Media Content: Poster
-                .mnuAllAutoPoster.Text = Master.eLang.GetString(72, "Poster Only")
-                .mnuAllAskPoster.Text = .mnuAllAutoPoster.Text
-                .mnuMissAutoPoster.Text = .mnuAllAutoPoster.Text
-                .mnuMissAskPoster.Text = .mnuAllAutoPoster.Text
-                .mnuNewAutoPoster.Text = .mnuAllAutoPoster.Text
-                .mnuNewAskPoster.Text = .mnuAllAutoPoster.Text
-                .mnuMarkAutoPoster.Text = .mnuAllAutoPoster.Text
-                .mnuMarkAskPoster.Text = .mnuAllAutoPoster.Text
-                .mnuFilterAutoPoster.Text = .mnuAllAutoPoster.Text
-                .mnuFilterAskPoster.Text = .mnuAllAutoPoster.Text
-                .cmnuTrayAllAutoPoster.Text = .mnuAllAutoPoster.Text
-                .cmnuTrayAllAskPoster.Text = .mnuAllAutoPoster.Text
-                .cmnuTrayMissAutoPoster.Text = .mnuAllAutoPoster.Text
-                .cmnuTrayMissAskPoster.Text = .mnuAllAutoPoster.Text
-                .cmnuTrayNewAutoPoster.Text = .mnuAllAutoPoster.Text
-                .cmnuTrayNewAskPoster.Text = .mnuAllAutoPoster.Text
-                .cmnuTrayMarkAutoPoster.Text = .mnuAllAutoPoster.Text
-                .cmnuTrayMarkAskPoster.Text = .mnuAllAutoPoster.Text
-                .cmnuTrayFilterAutoPoster.Text = .mnuAllAutoPoster.Text
-                .cmnuTrayFilterAskPoster.Text = .mnuAllAutoPoster.Text
-                .cmnuMovieReSelAskPoster.Text = .mnuAllAutoPoster.Text
-                .cmnuMovieReSelAutoPoster.Text = .mnuAllAutoPoster.Text
-
-                ' Scrape Media Content: Fanart
-                .mnuAllAutoFanart.Text = Master.eLang.GetString(73, "Fanart Only")
-                .mnuAllAskFanart.Text = .mnuAllAutoFanart.Text
-                .mnuMissAutoFanart.Text = .mnuAllAutoFanart.Text
-                .mnuMissAskFanart.Text = .mnuAllAutoFanart.Text
-                .mnuNewAutoFanart.Text = .mnuAllAutoFanart.Text
-                .mnuNewAskFanart.Text = .mnuAllAutoFanart.Text
-                .mnuMarkAutoFanart.Text = .mnuAllAutoFanart.Text
-                .mnuMarkAskFanart.Text = .mnuAllAutoFanart.Text
-                .mnuFilterAutoFanart.Text = .mnuAllAutoFanart.Text
-                .mnuFilterAskFanart.Text = .mnuAllAutoFanart.Text
-                .cmnuTrayAllAutoFanart.Text = .mnuAllAutoFanart.Text
-                .cmnuTrayAllAskFanart.Text = .mnuAllAutoFanart.Text
-                .cmnuTrayMissAutoFanart.Text = .mnuAllAutoFanart.Text
-                .cmnuTrayMissAskFanart.Text = .mnuAllAutoFanart.Text
-                .cmnuTrayNewAutoFanart.Text = .mnuAllAutoFanart.Text
-                .cmnuTrayNewAskFanart.Text = .mnuAllAutoFanart.Text
-                .cmnuTrayMarkAutoFanart.Text = .mnuAllAutoFanart.Text
-                .cmnuTrayMarkAskFanart.Text = .mnuAllAutoFanart.Text
-                .cmnuTrayFilterAutoFanart.Text = .mnuAllAutoFanart.Text
-                .cmnuTrayFilterAskFanart.Text = .mnuAllAutoFanart.Text
-                .cmnuMovieReSelAskFanart.Text = .mnuAllAutoFanart.Text
-                .cmnuMovieReSelAutoFanart.Text = .mnuAllAutoFanart.Text
+                ' Scrape Media Content: Extrafanarts
+                .mnuAllAutoEFanarts.Text = Master.eLang.GetString(975, "Extrafanarts Only")
+                .mnuAllAskEFanarts.Text = .mnuAllAutoEFanarts.Text
+                .mnuMissAutoEFanarts.Text = .mnuAllAutoEFanarts.Text
+                .mnuMissAskEFanarts.Text = .mnuAllAutoEFanarts.Text
+                .mnuNewAutoEFanarts.Text = .mnuAllAutoEFanarts.Text
+                .mnuNewAskEFanarts.Text = .mnuAllAutoEFanarts.Text
+                .mnuMarkAutoEFanarts.Text = .mnuAllAutoEFanarts.Text
+                .mnuMarkAskEFanarts.Text = .mnuAllAutoEFanarts.Text
+                .mnuFilterAutoEFanarts.Text = .mnuAllAutoEFanarts.Text
+                .mnuFilterAskEFanarts.Text = .mnuAllAutoEFanarts.Text
+                .cmnuTrayAllAutoEFanarts.Text = .mnuAllAutoEFanarts.Text
+                .cmnuTrayAllAskEFanarts.Text = .mnuAllAutoEFanarts.Text
+                .cmnuTrayMissAutoEFanarts.Text = .mnuAllAutoEFanarts.Text
+                .cmnuTrayMissAskEFanarts.Text = .mnuAllAutoEFanarts.Text
+                .cmnuTrayNewAutoEFanarts.Text = .mnuAllAutoEFanarts.Text
+                .cmnuTrayNewAskEFanarts.Text = .mnuAllAutoEFanarts.Text
+                .cmnuTrayMarkAutoEFanarts.Text = .mnuAllAutoEFanarts.Text
+                .cmnuTrayMarkAskEFanarts.Text = .mnuAllAutoEFanarts.Text
+                .cmnuTrayFilterAutoEFanarts.Text = .mnuAllAutoEFanarts.Text
+                .cmnuTrayFilterAskEFanarts.Text = .mnuAllAutoEFanarts.Text
+                .cmnuMovieReSelAskEFanarts.Text = .mnuAllAutoEFanarts.Text
+                .cmnuMovieReSelAutoEFanarts.Text = .mnuAllAutoEFanarts.Text
 
                 ' Scrape Media Content: Extrathumbs
                 .mnuAllAutoEThumbs.Text = Master.eLang.GetString(74, "Extrathumbs Only")
@@ -10587,29 +10539,121 @@ doCancel:
                 .cmnuMovieReSelAskEThumbs.Text = .mnuAllAutoEThumbs.Text
                 .cmnuMovieReSelAutoEThumbs.Text = .mnuAllAutoEThumbs.Text
 
-                ' Scrape Media Content: Extrafanarts
-                .mnuAllAutoEFanarts.Text = Master.eLang.GetString(975, "Extrafanarts Only")
-                .mnuAllAskEFanarts.Text = .mnuAllAutoEFanarts.Text
-                .mnuMissAutoEFanarts.Text = .mnuAllAutoEFanarts.Text
-                .mnuMissAskEFanarts.Text = .mnuAllAutoEFanarts.Text
-                .mnuNewAutoEFanarts.Text = .mnuAllAutoEFanarts.Text
-                .mnuNewAskEFanarts.Text = .mnuAllAutoEFanarts.Text
-                .mnuMarkAutoEFanarts.Text = .mnuAllAutoEFanarts.Text
-                .mnuMarkAskEFanarts.Text = .mnuAllAutoEFanarts.Text
-                .mnuFilterAutoEFanarts.Text = .mnuAllAutoEFanarts.Text
-                .mnuFilterAskEFanarts.Text = .mnuAllAutoEFanarts.Text
-                .cmnuTrayAllAutoEFanarts.Text = .mnuAllAutoEFanarts.Text
-                .cmnuTrayAllAskEFanarts.Text = .mnuAllAutoEFanarts.Text
-                .cmnuTrayMissAutoEFanarts.Text = .mnuAllAutoEFanarts.Text
-                .cmnuTrayMissAskEFanarts.Text = .mnuAllAutoEFanarts.Text
-                .cmnuTrayNewAutoEFanarts.Text = .mnuAllAutoEFanarts.Text
-                .cmnuTrayNewAskEFanarts.Text = .mnuAllAutoEFanarts.Text
-                .cmnuTrayMarkAutoEFanarts.Text = .mnuAllAutoEFanarts.Text
-                .cmnuTrayMarkAskEFanarts.Text = .mnuAllAutoEFanarts.Text
-                .cmnuTrayFilterAutoEFanarts.Text = .mnuAllAutoEFanarts.Text
-                .cmnuTrayFilterAskEFanarts.Text = .mnuAllAutoEFanarts.Text
-                .cmnuMovieReSelAskEFanarts.Text = .mnuAllAutoEFanarts.Text
-                .cmnuMovieReSelAutoEFanarts.Text = .mnuAllAutoEFanarts.Text
+                ' Scrape Media Content: Fanart
+                .mnuAllAutoFanart.Text = Master.eLang.GetString(73, "Fanart Only")
+                .mnuAllAskFanart.Text = .mnuAllAutoFanart.Text
+                .mnuMissAutoFanart.Text = .mnuAllAutoFanart.Text
+                .mnuMissAskFanart.Text = .mnuAllAutoFanart.Text
+                .mnuNewAutoFanart.Text = .mnuAllAutoFanart.Text
+                .mnuNewAskFanart.Text = .mnuAllAutoFanart.Text
+                .mnuMarkAutoFanart.Text = .mnuAllAutoFanart.Text
+                .mnuMarkAskFanart.Text = .mnuAllAutoFanart.Text
+                .mnuFilterAutoFanart.Text = .mnuAllAutoFanart.Text
+                .mnuFilterAskFanart.Text = .mnuAllAutoFanart.Text
+                .cmnuTrayAllAutoFanart.Text = .mnuAllAutoFanart.Text
+                .cmnuTrayAllAskFanart.Text = .mnuAllAutoFanart.Text
+                .cmnuTrayMissAutoFanart.Text = .mnuAllAutoFanart.Text
+                .cmnuTrayMissAskFanart.Text = .mnuAllAutoFanart.Text
+                .cmnuTrayNewAutoFanart.Text = .mnuAllAutoFanart.Text
+                .cmnuTrayNewAskFanart.Text = .mnuAllAutoFanart.Text
+                .cmnuTrayMarkAutoFanart.Text = .mnuAllAutoFanart.Text
+                .cmnuTrayMarkAskFanart.Text = .mnuAllAutoFanart.Text
+                .cmnuTrayFilterAutoFanart.Text = .mnuAllAutoFanart.Text
+                .cmnuTrayFilterAskFanart.Text = .mnuAllAutoFanart.Text
+                .cmnuMovieReSelAskFanart.Text = .mnuAllAutoFanart.Text
+                .cmnuMovieReSelAutoFanart.Text = .mnuAllAutoFanart.Text
+
+                ' Scrape Media Content: Landscape
+                .mnuAllAutoLandscape.Text = Master.eLang.GetString(1061, "Landscape Only")
+                .mnuAllAskLandscape.Text = .mnuAllAutoLandscape.Text
+                .mnuMissAutoLandscape.Text = .mnuAllAutoLandscape.Text
+                .mnuMissAskLandscape.Text = .mnuAllAutoLandscape.Text
+                .mnuNewAutoLandscape.Text = .mnuAllAutoLandscape.Text
+                .mnuNewAskLandscape.Text = .mnuAllAutoLandscape.Text
+                .mnuMarkAutoLandscape.Text = .mnuAllAutoLandscape.Text
+                .mnuMarkAskLandscape.Text = .mnuAllAutoLandscape.Text
+                .mnuFilterAutoLandscape.Text = .mnuAllAutoLandscape.Text
+                .mnuFilterAskLandscape.Text = .mnuAllAutoLandscape.Text
+                .cmnuTrayAllAutoLandscape.Text = .mnuAllAutoLandscape.Text
+                .cmnuTrayAllAskLandscape.Text = .mnuAllAutoLandscape.Text
+                .cmnuTrayMissAutoLandscape.Text = .mnuAllAutoLandscape.Text
+                .cmnuTrayMissAskLandscape.Text = .mnuAllAutoLandscape.Text
+                .cmnuTrayNewAutoLandscape.Text = .mnuAllAutoLandscape.Text
+                .cmnuTrayNewAskLandscape.Text = .mnuAllAutoLandscape.Text
+                .cmnuTrayMarkAutoLandscape.Text = .mnuAllAutoLandscape.Text
+                .cmnuTrayMarkAskLandscape.Text = .mnuAllAutoLandscape.Text
+                .cmnuTrayFilterAutoLandscape.Text = .mnuAllAutoLandscape.Text
+                .cmnuTrayFilterAskLandscape.Text = .mnuAllAutoLandscape.Text
+                .cmnuMovieReSelAskLandscape.Text = .mnuAllAutoLandscape.Text
+                .cmnuMovieReSelAutoLandscape.Text = .mnuAllAutoLandscape.Text
+
+                ' Scrape Media Content: Meta Data
+                .mnuAllAutoMI.Text = Master.eLang.GetString(76, "Meta Data Only")
+                .mnuAllAskMI.Text = .mnuAllAutoMI.Text
+                .mnuNewAutoMI.Text = .mnuAllAutoMI.Text
+                .mnuNewAskMI.Text = .mnuAllAutoMI.Text
+                .mnuMarkAutoMI.Text = .mnuAllAutoMI.Text
+                .mnuMarkAskMI.Text = .mnuAllAutoMI.Text
+                .mnuFilterAutoMI.Text = .mnuAllAutoMI.Text
+                .mnuFilterAskMI.Text = .mnuAllAutoMI.Text
+                .cmnuTrayAllAutoMetaData.Text = .mnuAllAutoMI.Text
+                .cmnuTrayAllAskMI.Text = .mnuAllAutoMI.Text
+                .cmnuTrayNewAutoMI.Text = .mnuAllAutoMI.Text
+                .cmnuTrayNewAskMI.Text = .mnuAllAutoMI.Text
+                .cmnuTrayMarkAutoMI.Text = .mnuAllAutoMI.Text
+                .cmnuTrayMarkAskMI.Text = .mnuAllAutoMI.Text
+                .cmnuTrayFilterAutoMI.Text = .mnuAllAutoMI.Text
+                .cmnuTrayFilterAskMI.Text = .mnuAllAutoMI.Text
+                .cmnuMovieReSelAskMetaData.Text = .mnuAllAutoMI.Text
+                .cmnuMovieReSelAutoMetaData.Text = .mnuAllAutoMI.Text
+
+                ' Scrape Media Content: NFO
+                .mnuAllAutoNfo.Text = Master.eLang.GetString(71, "NFO Only")
+                .mnuAllAskNfo.Text = .mnuAllAutoNfo.Text
+                .mnuMissAutoNfo.Text = .mnuAllAutoNfo.Text
+                .mnuMissAskNfo.Text = .mnuAllAutoNfo.Text
+                .mnuNewAutoNfo.Text = .mnuAllAutoNfo.Text
+                .mnuNewAskNfo.Text = .mnuAllAutoNfo.Text
+                .mnuMarkAutoNfo.Text = .mnuAllAutoNfo.Text
+                .mnuMarkAskNfo.Text = .mnuAllAutoNfo.Text
+                .mnuFilterAutoNfo.Text = .mnuAllAutoNfo.Text
+                .mnuFilterAskNfo.Text = .mnuAllAutoNfo.Text
+                .cmnuTrayAllAutoNfo.Text = .mnuAllAutoNfo.Text
+                .cmnuTrayAllAskNfo.Text = .mnuAllAutoNfo.Text
+                .cmnuTrayMissAutoNfo.Text = .mnuAllAutoNfo.Text
+                .cmnuTrayMissAskNfo.Text = .mnuAllAutoNfo.Text
+                .cmnuTrayNewAutoNfo.Text = .mnuAllAutoNfo.Text
+                .cmnuTrayNewAskNfo.Text = .mnuAllAutoNfo.Text
+                .cmnuTrayMarkAutoNfo.Text = .mnuAllAutoNfo.Text
+                .cmnuTrayMarkAskNfo.Text = .mnuAllAutoNfo.Text
+                .cmnuTrayFilterAutoNfo.Text = .mnuAllAutoNfo.Text
+                .cmnuTrayFilterAskNfo.Text = .mnuAllAutoNfo.Text
+                .cmnuMovieReSelAskNfo.Text = .mnuAllAutoNfo.Text
+                .cmnuMovieReSelAutoNfo.Text = .mnuAllAutoNfo.Text
+
+                ' Scrape Media Content: Poster
+                .mnuAllAutoPoster.Text = Master.eLang.GetString(72, "Poster Only")
+                .mnuAllAskPoster.Text = .mnuAllAutoPoster.Text
+                .mnuMissAutoPoster.Text = .mnuAllAutoPoster.Text
+                .mnuMissAskPoster.Text = .mnuAllAutoPoster.Text
+                .mnuNewAutoPoster.Text = .mnuAllAutoPoster.Text
+                .mnuNewAskPoster.Text = .mnuAllAutoPoster.Text
+                .mnuMarkAutoPoster.Text = .mnuAllAutoPoster.Text
+                .mnuMarkAskPoster.Text = .mnuAllAutoPoster.Text
+                .mnuFilterAutoPoster.Text = .mnuAllAutoPoster.Text
+                .mnuFilterAskPoster.Text = .mnuAllAutoPoster.Text
+                .cmnuTrayAllAutoPoster.Text = .mnuAllAutoPoster.Text
+                .cmnuTrayAllAskPoster.Text = .mnuAllAutoPoster.Text
+                .cmnuTrayMissAutoPoster.Text = .mnuAllAutoPoster.Text
+                .cmnuTrayMissAskPoster.Text = .mnuAllAutoPoster.Text
+                .cmnuTrayNewAutoPoster.Text = .mnuAllAutoPoster.Text
+                .cmnuTrayNewAskPoster.Text = .mnuAllAutoPoster.Text
+                .cmnuTrayMarkAutoPoster.Text = .mnuAllAutoPoster.Text
+                .cmnuTrayMarkAskPoster.Text = .mnuAllAutoPoster.Text
+                .cmnuTrayFilterAutoPoster.Text = .mnuAllAutoPoster.Text
+                .cmnuTrayFilterAskPoster.Text = .mnuAllAutoPoster.Text
+                .cmnuMovieReSelAskPoster.Text = .mnuAllAutoPoster.Text
+                .cmnuMovieReSelAutoPoster.Text = .mnuAllAutoPoster.Text
 
                 ' Scrape Media Content: Theme
                 .mnuAllAutoTheme.Text = Master.eLang.GetString(1125, "Theme Only")
@@ -10658,50 +10702,6 @@ doCancel:
                 .cmnuTrayFilterAskTrailer.Text = .mnuAllAutoTrailer.Text
                 .cmnuMovieReSelAskTrailer.Text = .mnuAllAutoTrailer.Text
                 .cmnuMovieReSelAutoTrailer.Text = .mnuAllAutoTrailer.Text
-
-                ' Scrape Media Content: Meta Data
-                .mnuAllAutoMI.Text = Master.eLang.GetString(76, "Meta Data Only")
-                .mnuAllAskMI.Text = .mnuAllAutoMI.Text
-                .mnuNewAutoMI.Text = .mnuAllAutoMI.Text
-                .mnuNewAskMI.Text = .mnuAllAutoMI.Text
-                .mnuMarkAutoMI.Text = .mnuAllAutoMI.Text
-                .mnuMarkAskMI.Text = .mnuAllAutoMI.Text
-                .mnuFilterAutoMI.Text = .mnuAllAutoMI.Text
-                .mnuFilterAskMI.Text = .mnuAllAutoMI.Text
-                .cmnuTrayAllAutoMetaData.Text = .mnuAllAutoMI.Text
-                .cmnuTrayAllAskMI.Text = .mnuAllAutoMI.Text
-                .cmnuTrayNewAutoMI.Text = .mnuAllAutoMI.Text
-                .cmnuTrayNewAskMI.Text = .mnuAllAutoMI.Text
-                .cmnuTrayMarkAutoMI.Text = .mnuAllAutoMI.Text
-                .cmnuTrayMarkAskMI.Text = .mnuAllAutoMI.Text
-                .cmnuTrayFilterAutoMI.Text = .mnuAllAutoMI.Text
-                .cmnuTrayFilterAskMI.Text = .mnuAllAutoMI.Text
-                .cmnuMovieReSelAskMetaData.Text = .mnuAllAutoMI.Text
-                .cmnuMovieReSelAutoMetaData.Text = .mnuAllAutoMI.Text
-
-                ' Scrape Media Content: Actor Thumbs
-                .mnuAllAutoActor.Text = Master.eLang.GetString(973, "Actor Thumbs Only")
-                .mnuAllAskActor.Text = .mnuAllAutoActor.Text
-                .mnuMissAutoActor.Text = .mnuAllAutoActor.Text
-                .mnuMissAskActor.Text = .mnuAllAutoActor.Text
-                .mnuNewAutoActor.Text = .mnuAllAutoActor.Text
-                .mnuNewAskActor.Text = .mnuAllAutoActor.Text
-                .mnuMarkAutoActor.Text = .mnuAllAutoActor.Text
-                .mnuMarkAskActor.Text = .mnuAllAutoActor.Text
-                .mnuFilterAutoActor.Text = .mnuAllAutoActor.Text
-                .mnuFilterAskActor.Text = .mnuAllAutoActor.Text
-                .cmnuTrayAllAutoActor.Text = .mnuAllAutoActor.Text
-                .cmnuTrayAllAskActor.Text = .mnuAllAutoActor.Text
-                .cmnuTrayMissAutoActor.Text = .mnuAllAutoActor.Text
-                .cmnuTrayMissAskActor.Text = .mnuAllAutoActor.Text
-                .cmnuTrayNewAutoActor.Text = .mnuAllAutoActor.Text
-                .cmnuTrayNewAskActor.Text = .mnuAllAutoActor.Text
-                .cmnuTrayMarkAutoActor.Text = .mnuAllAutoActor.Text
-                .cmnuTrayMarkAskActor.Text = .mnuAllAutoActor.Text
-                .cmnuTrayFilterAutoActor.Text = .mnuAllAutoActor.Text
-                .cmnuTrayFilterAskActor.Text = .mnuAllAutoActor.Text
-                .cmnuMovieReSelAskActor.Text = .mnuAllAutoActor.Text
-                .cmnuMovieReSelAutoActor.Text = .mnuAllAutoActor.Text
 
                 ' others
                 .btnCancel.Text = Master.eLang.GetString(54, "Cancel Scraper")

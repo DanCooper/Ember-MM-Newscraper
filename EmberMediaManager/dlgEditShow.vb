@@ -665,14 +665,14 @@ Public Class dlgEditShow
     End Sub
 
     Private Sub dlgEditShow_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        If Not Master.eSettings.TVASBannerEnabled Then Me.tcEditShow.TabPages.Remove(tpASBanner)
-        If Not Master.eSettings.TVASFanartEnabled Then Me.tcEditShow.TabPages.Remove(tpASFanart)
-        If Not Master.eSettings.TVASLandscapeEnabled Then Me.tcEditShow.TabPages.Remove(tpASLandscape)
-        If Not Master.eSettings.TVASPosterEnabled Then Me.tcEditShow.TabPages.Remove(tpASPoster)
-        If Not Master.eSettings.TVShowBannerEnabled Then Me.tcEditShow.TabPages.Remove(tpShowBanner)
-        If Not Master.eSettings.TVShowFanartEnabled Then Me.tcEditShow.TabPages.Remove(tpShowFanart)
-        If Not Master.eSettings.TVShowLandscapeEnabled Then Me.tcEditShow.TabPages.Remove(tpShowLandscape)
-        If Not Master.eSettings.TVShowPosterEnabled Then Me.tcEditShow.TabPages.Remove(tpShowPoster)
+        If Not Master.eSettings.TVASBannerAnyEnabled Then Me.tcEditShow.TabPages.Remove(tpASBanner)
+        If Not Master.eSettings.TVASFanartAnyEnabled Then Me.tcEditShow.TabPages.Remove(tpASFanart)
+        If Not Master.eSettings.TVASLandscapeAnyEnabled Then Me.tcEditShow.TabPages.Remove(tpASLandscape)
+        If Not Master.eSettings.TVASPosterAnyEnabled Then Me.tcEditShow.TabPages.Remove(tpASPoster)
+        If Not Master.eSettings.TVShowBannerAnyEnabled Then Me.tcEditShow.TabPages.Remove(tpShowBanner)
+        If Not Master.eSettings.TVShowFanartAnyEnabled Then Me.tcEditShow.TabPages.Remove(tpShowFanart)
+        If Not Master.eSettings.TVShowLandscapeAnyEnabled Then Me.tcEditShow.TabPages.Remove(tpShowLandscape)
+        If Not Master.eSettings.TVShowPosterAnyEnabled Then Me.tcEditShow.TabPages.Remove(tpShowPoster)
 
         Me.pbASBanner.AllowDrop = True
         Me.pbASFanart.AllowDrop = True
@@ -770,7 +770,7 @@ Public Class dlgEditShow
 
             Me.SelectMPAA()
 
-            If Master.eSettings.TVASBannerEnabled Then
+            If Master.eSettings.TVASBannerAnyEnabled Then
                 .ASBanner.FromFile(Master.currShow.SeasonBannerPath)
                 If Not IsNothing(.ASBanner.Image) Then
                     .pbASBanner.Image = .ASBanner.Image
@@ -781,7 +781,7 @@ Public Class dlgEditShow
                 End If
             End If
 
-            If Master.eSettings.TVASFanartEnabled Then
+            If Master.eSettings.TVASFanartAnyEnabled Then
                 .ASFanart.FromFile(Master.currShow.SeasonFanartPath)
                 If Not IsNothing(.ASFanart.Image) Then
                     .pbASFanart.Image = .ASFanart.Image
@@ -792,7 +792,7 @@ Public Class dlgEditShow
                 End If
             End If
 
-            If Master.eSettings.TVASLandscapeEnabled Then
+            If Master.eSettings.TVASLandscapeAnyEnabled Then
                 .ASLandscape.FromFile(Master.currShow.SeasonLandscapePath)
                 If Not IsNothing(.ASLandscape.Image) Then
                     .pbASLandscape.Image = .ASLandscape.Image
@@ -803,7 +803,7 @@ Public Class dlgEditShow
                 End If
             End If
 
-            If Master.eSettings.TVASPosterEnabled Then
+            If Master.eSettings.TVASPosterAnyEnabled Then
                 .ASPoster.FromFile(Master.currShow.SeasonPosterPath)
                 If Not IsNothing(.ASPoster.Image) Then
                     .pbASPoster.Image = .ASPoster.Image
@@ -814,7 +814,7 @@ Public Class dlgEditShow
                 End If
             End If
 
-            If Master.eSettings.TVShowBannerEnabled Then
+            If Master.eSettings.TVShowBannerAnyEnabled Then
                 ShowBanner.FromFile(Master.currShow.ShowBannerPath)
                 If Not IsNothing(ShowBanner.Image) Then
                     .pbShowBanner.Image = ShowBanner.Image
@@ -825,7 +825,7 @@ Public Class dlgEditShow
                 End If
             End If
 
-            If Master.eSettings.TVShowFanartEnabled Then
+            If Master.eSettings.TVShowFanartAnyEnabled Then
                 ShowFanart.FromFile(Master.currShow.ShowFanartPath)
                 If Not IsNothing(ShowFanart.Image) Then
                     .pbShowFanart.Image = ShowFanart.Image
@@ -836,7 +836,7 @@ Public Class dlgEditShow
                 End If
             End If
 
-            If Master.eSettings.TVShowLandscapeEnabled Then
+            If Master.eSettings.TVShowLandscapeAnyEnabled Then
                 ShowLandscape.FromFile(Master.currShow.ShowLandscapePath)
                 If Not IsNothing(ShowLandscape.Image) Then
                     .pbShowLandscape.Image = ShowLandscape.Image
@@ -847,7 +847,7 @@ Public Class dlgEditShow
                 End If
             End If
 
-            If Master.eSettings.TVShowPosterEnabled Then
+            If Master.eSettings.TVShowPosterAnyEnabled Then
                 ShowPoster.FromFile(Master.currShow.ShowPosterPath)
                 If Not IsNothing(ShowPoster.Image) Then
                     .pbShowPoster.Image = ShowPoster.Image

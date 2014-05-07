@@ -1336,7 +1336,7 @@ Public Class Database
     Public Function LoadTVFullShowFromDB(ByVal ShowID As Long) As Structures.DBTV
         If ShowID < 0 Then Throw New ArgumentOutOfRangeException("ShowID", "Value must be >= 0, was given: " & ShowID)
 
-        If Master.eSettings.TVASPosterEnabled Then
+        If Master.eSettings.TVASPosterAnyEnabled Then
             Return Master.DB.LoadTVAllSeasonFromDB(ShowID, True)
         Else
             Return Master.DB.LoadTVShowFromDB(ShowID)
