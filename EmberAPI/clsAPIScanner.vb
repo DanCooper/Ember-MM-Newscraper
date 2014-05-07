@@ -438,12 +438,7 @@ Public Class Scanner
                     End If
                 End If
 
-                If Not String.IsNullOrEmpty(Movie.Poster) AndAlso Not String.IsNullOrEmpty(Movie.Fanart) _
-                AndAlso Not String.IsNullOrEmpty(Movie.Nfo) AndAlso Not String.IsNullOrEmpty(Movie.Trailer) _
-                AndAlso Not String.IsNullOrEmpty(Movie.Subs) AndAlso Not String.IsNullOrEmpty(Movie.EThumbs) _
-                AndAlso Not String.IsNullOrEmpty(Movie.EFanarts) Then
-                    Exit For
-                End If
+                If Not String.IsNullOrEmpty(Movie.Subs) Then Exit For
             Next
 
         Catch ex As Exception
