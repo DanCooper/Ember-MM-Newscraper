@@ -166,9 +166,9 @@ Public Class Database
                         SQLcommand.CommandText = "DELETE FROM TVEpPaths WHERE NOT EXISTS (SELECT TVEps.TVEpPathID FROM TVEps WHERE TVEps.TVEpPathID = TVEpPaths.ID AND TVEps.Missing = 0)"
                         SQLcommand.ExecuteNonQuery()
                     End Using
-                End If
 
-                CleanSeasons(True)
+                    CleanSeasons(True)
+                End If
 
                 SQLtransaction.Commit()
             End Using

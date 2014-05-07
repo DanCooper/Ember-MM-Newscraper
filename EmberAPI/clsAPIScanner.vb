@@ -1261,9 +1261,12 @@ Public Class Scanner
                 End Using
             End If
 
-            Me.bwPrelim.ReportProgress(3, New ProgressValue With {.Type = -1, .Message = String.Empty})
-            'remove any db entries that no longer exist
-            Master.DB.Clean(Master.eSettings.MovieCleanDB AndAlso Args.Scan.Movies, Master.eSettings.TVCleanDB AndAlso Args.Scan.TV, Args.SourceName)
+            If (Master.eSettings.MovieCleanDB AndAlso Args.Scan.Movies) OrElse (Master.eSettings.TVCleanDB AndAlso Args.Scan.TV) Then
+                Me.bwPrelim.ReportProgress(3, New ProgressValue With {.Type = -1, .Message = String.Empty})
+                'remove any db entries that no longer exist
+                Master.DB.Clean(Master.eSettings.MovieCleanDB AndAlso Args.Scan.Movies, Master.eSettings.TVCleanDB AndAlso Args.Scan.TV, Args.SourceName)
+            End If
+
         Catch ex As Exception
             Master.eLog.Error(GetType(Scanner), ex.Message, ex.StackTrace, "Error")
             e.Cancel = True
