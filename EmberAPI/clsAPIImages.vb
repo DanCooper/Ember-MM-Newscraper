@@ -199,10 +199,12 @@ Public Class Images
     Public Sub DeleteTVASBanner(ByVal mShow As Structures.DBTV)
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return
 
-        Try 'TODO
-            'Delete(Path.Combine(mShow.ShowPath, "season-all.tbn"))
-            'Delete(Path.Combine(mShow.ShowPath, "season-all.jpg"))
-            'Delete(Path.Combine(mShow.ShowPath, "season-all-poster.jpg"))
+        Try
+            For Each a In FileUtils.GetFilenameList.TVShow(mShow.ShowPath, Enums.TVImageType.AllSeasonsBanner)
+                If File.Exists(a) Then
+                    Delete(a)
+                End If
+            Next
         Catch ex As Exception
             Master.eLog.Error(GetType(Images), "Path: <" & mShow.ShowPath & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
         End Try
@@ -215,10 +217,12 @@ Public Class Images
     Public Sub DeleteTVASFanart(ByVal mShow As Structures.DBTV)
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return
 
-        Try 'TODO
-            'Delete(Path.Combine(mShow.ShowPath, "season-all.tbn"))
-            'Delete(Path.Combine(mShow.ShowPath, "season-all.jpg"))
-            'Delete(Path.Combine(mShow.ShowPath, "season-all-poster.jpg"))
+        Try 
+            For Each a In FileUtils.GetFilenameList.TVShow(mShow.ShowPath, Enums.TVImageType.AllSeasonsFanart)
+                If File.Exists(a) Then
+                    Delete(a)
+                End If
+            Next
         Catch ex As Exception
             Master.eLog.Error(GetType(Images), "Path: <" & mShow.ShowPath & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
         End Try
@@ -231,10 +235,12 @@ Public Class Images
     Public Sub DeleteTVASLandscape(ByVal mShow As Structures.DBTV)
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return
 
-        Try 'TODO
-            'Delete(Path.Combine(mShow.ShowPath, "season-all.tbn"))
-            'Delete(Path.Combine(mShow.ShowPath, "season-all.jpg"))
-            'Delete(Path.Combine(mShow.ShowPath, "season-all-poster.jpg"))
+        Try
+            For Each a In FileUtils.GetFilenameList.TVShow(mShow.ShowPath, Enums.TVImageType.AllSeasonsLandscape)
+                If File.Exists(a) Then
+                    Delete(a)
+                End If
+            Next
         Catch ex As Exception
             Master.eLog.Error(GetType(Images), "Path: <" & mShow.ShowPath & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
         End Try
@@ -248,9 +254,11 @@ Public Class Images
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return
 
         Try
-            Delete(Path.Combine(mShow.ShowPath, "season-all.tbn"))
-            Delete(Path.Combine(mShow.ShowPath, "season-all.jpg"))
-            Delete(Path.Combine(mShow.ShowPath, "season-all-poster.jpg"))
+            For Each a In FileUtils.GetFilenameList.TVShow(mShow.ShowPath, Enums.TVImageType.AllSeasonsPoster)
+                If File.Exists(a) Then
+                    Delete(a)
+                End If
+            Next
         Catch ex As Exception
             Master.eLog.Error(GetType(Images), "Path: <" & mShow.ShowPath & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
         End Try
@@ -263,12 +271,12 @@ Public Class Images
     Public Sub DeleteTVEpisodeFanart(ByVal mShow As Structures.DBTV)
         If String.IsNullOrEmpty(mShow.Filename) Then Return
 
-        Dim tPath As String = FileUtils.Common.RemoveExtFromPath(mShow.Filename)
-        If String.IsNullOrEmpty(tPath) Then Return
-
         Try
-            Delete(String.Concat(tPath, "-fanart.jpg"))
-            Delete(String.Concat(tPath, ".fanart.jpg"))
+            For Each a In FileUtils.GetFilenameList.TVEpisode(mShow.Filename, Enums.TVImageType.EpisodeFanart)
+                If File.Exists(a) Then
+                    Delete(a)
+                End If
+            Next
         Catch ex As Exception
             Master.eLog.Error(GetType(Images), "Path: <" & mShow.ShowPath & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
         End Try
@@ -281,13 +289,12 @@ Public Class Images
     Public Sub DeleteTVEpisodePosters(ByVal mShow As Structures.DBTV)
         If String.IsNullOrEmpty(mShow.Filename) Then Return
 
-        Dim tPath As String = FileUtils.Common.RemoveExtFromPath(mShow.Filename)
-        If String.IsNullOrEmpty(tPath) Then Return
-
         Try
-            Delete(String.Concat(tPath, ".tbn"))
-            Delete(String.Concat(tPath, ".jpg"))
-            Delete(String.Concat(tPath, "-thumb.jpg"))
+            For Each a In FileUtils.GetFilenameList.TVEpisode(mShow.Filename, Enums.TVImageType.EpisodePoster)
+                If File.Exists(a) Then
+                    Delete(a)
+                End If
+            Next
         Catch ex As Exception
             Master.eLog.Error(GetType(Images), "Path: <" & mShow.ShowPath & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
         End Try
@@ -299,44 +306,16 @@ Public Class Images
     ''' <remarks></remarks>
     Public Sub DeleteMovieBanner(ByVal mMovie As Structures.DBMovie)
         If String.IsNullOrEmpty(mMovie.Filename) Then Return
-        'TODO
-        'Try
-        '    Dim tPath As String = Directory.GetParent(mMovie.Filename).FullName
-        '    Dim params As New List(Of Object)(New Object() {mMovie})
-        '    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieFanartDelete, params, Nothing, False)
 
-        '    If FileUtils.Common.isVideoTS(mMovie.Filename) Then
-        '        Delete(String.Concat(Directory.GetParent(tPath).FullName, Path.DirectorySeparatorChar, "fanart.jpg"))
-        '        Delete(String.Concat(Directory.GetParent(tPath).FullName, Path.DirectorySeparatorChar, ".fanart.jpg"))
-        '        Delete(String.Concat(Path.Combine(Directory.GetParent(tPath).FullName, Directory.GetParent(tPath).Name), "-fanart.jpg"))
-        '        Delete(String.Concat(Path.Combine(Directory.GetParent(tPath).FullName, Directory.GetParent(tPath).Name), ".fanart.jpg"))
-        '    ElseIf FileUtils.Common.isBDRip(mMovie.Filename) Then
-        '        Delete(String.Concat(Directory.GetParent(Directory.GetParent(tPath).FullName).FullName, Path.DirectorySeparatorChar, "fanart.jpg"))
-        '        Delete(String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(tPath).FullName).FullName, Directory.GetParent(Directory.GetParent(tPath).FullName).Name), "-fanart.jpg"))
-        '        Delete(String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(tPath).FullName).FullName, Directory.GetParent(Directory.GetParent(tPath).FullName).Name), ".fanart.jpg"))
-        '    Else
-        '        If mMovie.isSingle Then
-        '            Delete(Path.Combine(tPath, "fanart.jpg"))
-        '        End If
-
-        '        If FileUtils.Common.isVideoTS(mMovie.Filename) Then
-        '            Delete(Path.Combine(tPath, "video_ts-fanart.jpg"))
-        '            Delete(Path.Combine(tPath, "video_ts.fanart.jpg"))
-        '        ElseIf FileUtils.Common.isBDRip(mMovie.Filename) Then
-        '            Delete(Path.Combine(tPath, "index-fanart.jpg"))
-        '            Delete(Path.Combine(tPath, "index.fanart.jpg"))
-        '        Else
-        '            Dim fPath As String = Path.Combine(tPath, Path.GetFileNameWithoutExtension(mMovie.Filename))
-        '            Dim fPathStack As String = Path.Combine(tPath, StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(mMovie.Filename)))
-        '            Delete(String.Concat(fPath, "-fanart.jpg"))
-        '            Delete(String.Concat(fPath, ".fanart.jpg"))
-        '            Delete(String.Concat(fPathStack, "-fanart.jpg"))
-        '        End If
-
-        '    End If
-        'Catch ex As Exception
-        '    Master.eLog.Error(GetType(Images), "Movie: <" & mMovie.Filename & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
-        'End Try
+        Try
+            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.isSingle, Enums.ModType.Banner)
+                If File.Exists(a) Then
+                    Delete(a)
+                End If
+            Next
+        Catch ex As Exception
+            Master.eLog.Error(GetType(Images), "Movie: <" & mMovie.Filename & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
     ''' <summary>
     ''' Delete the movie's ClearArt
@@ -345,44 +324,16 @@ Public Class Images
     ''' <remarks></remarks>
     Public Sub DeleteMovieClearArt(ByVal mMovie As Structures.DBMovie)
         If String.IsNullOrEmpty(mMovie.Filename) Then Return
-        'TODO
-        'Try
-        '    Dim tPath As String = Directory.GetParent(mMovie.Filename).FullName
-        '    Dim params As New List(Of Object)(New Object() {mMovie})
-        '    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieFanartDelete, params, Nothing, False)
 
-        '    If FileUtils.Common.isVideoTS(mMovie.Filename) Then
-        '        Delete(String.Concat(Directory.GetParent(tPath).FullName, Path.DirectorySeparatorChar, "fanart.jpg"))
-        '        Delete(String.Concat(Directory.GetParent(tPath).FullName, Path.DirectorySeparatorChar, ".fanart.jpg"))
-        '        Delete(String.Concat(Path.Combine(Directory.GetParent(tPath).FullName, Directory.GetParent(tPath).Name), "-fanart.jpg"))
-        '        Delete(String.Concat(Path.Combine(Directory.GetParent(tPath).FullName, Directory.GetParent(tPath).Name), ".fanart.jpg"))
-        '    ElseIf FileUtils.Common.isBDRip(mMovie.Filename) Then
-        '        Delete(String.Concat(Directory.GetParent(Directory.GetParent(tPath).FullName).FullName, Path.DirectorySeparatorChar, "fanart.jpg"))
-        '        Delete(String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(tPath).FullName).FullName, Directory.GetParent(Directory.GetParent(tPath).FullName).Name), "-fanart.jpg"))
-        '        Delete(String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(tPath).FullName).FullName, Directory.GetParent(Directory.GetParent(tPath).FullName).Name), ".fanart.jpg"))
-        '    Else
-        '        If mMovie.isSingle Then
-        '            Delete(Path.Combine(tPath, "fanart.jpg"))
-        '        End If
-
-        '        If FileUtils.Common.isVideoTS(mMovie.Filename) Then
-        '            Delete(Path.Combine(tPath, "video_ts-fanart.jpg"))
-        '            Delete(Path.Combine(tPath, "video_ts.fanart.jpg"))
-        '        ElseIf FileUtils.Common.isBDRip(mMovie.Filename) Then
-        '            Delete(Path.Combine(tPath, "index-fanart.jpg"))
-        '            Delete(Path.Combine(tPath, "index.fanart.jpg"))
-        '        Else
-        '            Dim fPath As String = Path.Combine(tPath, Path.GetFileNameWithoutExtension(mMovie.Filename))
-        '            Dim fPathStack As String = Path.Combine(tPath, StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(mMovie.Filename)))
-        '            Delete(String.Concat(fPath, "-fanart.jpg"))
-        '            Delete(String.Concat(fPath, ".fanart.jpg"))
-        '            Delete(String.Concat(fPathStack, "-fanart.jpg"))
-        '        End If
-
-        '    End If
-        'Catch ex As Exception
-        '    Master.eLog.Error(GetType(Images), "Movie: <" & mMovie.Filename & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
-        'End Try
+        Try
+            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.isSingle, Enums.ModType.ClearArt)
+                If File.Exists(a) Then
+                    Delete(a)
+                End If
+            Next
+        Catch ex As Exception
+            Master.eLog.Error(GetType(Images), "Movie: <" & mMovie.Filename & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
     ''' <summary>
     ''' Delete the movie's ClearLogo
@@ -391,44 +342,16 @@ Public Class Images
     ''' <remarks></remarks>
     Public Sub DeleteMovieClearLogo(ByVal mMovie As Structures.DBMovie)
         If String.IsNullOrEmpty(mMovie.Filename) Then Return
-        'TODO
-        'Try
-        '    Dim tPath As String = Directory.GetParent(mMovie.Filename).FullName
-        '    Dim params As New List(Of Object)(New Object() {mMovie})
-        '    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieFanartDelete, params, Nothing, False)
 
-        '    If FileUtils.Common.isVideoTS(mMovie.Filename) Then
-        '        Delete(String.Concat(Directory.GetParent(tPath).FullName, Path.DirectorySeparatorChar, "fanart.jpg"))
-        '        Delete(String.Concat(Directory.GetParent(tPath).FullName, Path.DirectorySeparatorChar, ".fanart.jpg"))
-        '        Delete(String.Concat(Path.Combine(Directory.GetParent(tPath).FullName, Directory.GetParent(tPath).Name), "-fanart.jpg"))
-        '        Delete(String.Concat(Path.Combine(Directory.GetParent(tPath).FullName, Directory.GetParent(tPath).Name), ".fanart.jpg"))
-        '    ElseIf FileUtils.Common.isBDRip(mMovie.Filename) Then
-        '        Delete(String.Concat(Directory.GetParent(Directory.GetParent(tPath).FullName).FullName, Path.DirectorySeparatorChar, "fanart.jpg"))
-        '        Delete(String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(tPath).FullName).FullName, Directory.GetParent(Directory.GetParent(tPath).FullName).Name), "-fanart.jpg"))
-        '        Delete(String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(tPath).FullName).FullName, Directory.GetParent(Directory.GetParent(tPath).FullName).Name), ".fanart.jpg"))
-        '    Else
-        '        If mMovie.isSingle Then
-        '            Delete(Path.Combine(tPath, "fanart.jpg"))
-        '        End If
-
-        '        If FileUtils.Common.isVideoTS(mMovie.Filename) Then
-        '            Delete(Path.Combine(tPath, "video_ts-fanart.jpg"))
-        '            Delete(Path.Combine(tPath, "video_ts.fanart.jpg"))
-        '        ElseIf FileUtils.Common.isBDRip(mMovie.Filename) Then
-        '            Delete(Path.Combine(tPath, "index-fanart.jpg"))
-        '            Delete(Path.Combine(tPath, "index.fanart.jpg"))
-        '        Else
-        '            Dim fPath As String = Path.Combine(tPath, Path.GetFileNameWithoutExtension(mMovie.Filename))
-        '            Dim fPathStack As String = Path.Combine(tPath, StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(mMovie.Filename)))
-        '            Delete(String.Concat(fPath, "-fanart.jpg"))
-        '            Delete(String.Concat(fPath, ".fanart.jpg"))
-        '            Delete(String.Concat(fPathStack, "-fanart.jpg"))
-        '        End If
-
-        '    End If
-        'Catch ex As Exception
-        '    Master.eLog.Error(GetType(Images), "Movie: <" & mMovie.Filename & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
-        'End Try
+        Try
+            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.isSingle, Enums.ModType.ClearLogo)
+                If File.Exists(a) Then
+                    Delete(a)
+                End If
+            Next
+        Catch ex As Exception
+            Master.eLog.Error(GetType(Images), "Movie: <" & mMovie.Filename & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
     ''' <summary>
     ''' Delete the movie's DiscArt
@@ -437,44 +360,16 @@ Public Class Images
     ''' <remarks></remarks>
     Public Sub DeleteMovieDiscArt(ByVal mMovie As Structures.DBMovie)
         If String.IsNullOrEmpty(mMovie.Filename) Then Return
-        'TODO
-        'Try
-        '    Dim tPath As String = Directory.GetParent(mMovie.Filename).FullName
-        '    Dim params As New List(Of Object)(New Object() {mMovie})
-        '    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieFanartDelete, params, Nothing, False)
 
-        '    If FileUtils.Common.isVideoTS(mMovie.Filename) Then
-        '        Delete(String.Concat(Directory.GetParent(tPath).FullName, Path.DirectorySeparatorChar, "fanart.jpg"))
-        '        Delete(String.Concat(Directory.GetParent(tPath).FullName, Path.DirectorySeparatorChar, ".fanart.jpg"))
-        '        Delete(String.Concat(Path.Combine(Directory.GetParent(tPath).FullName, Directory.GetParent(tPath).Name), "-fanart.jpg"))
-        '        Delete(String.Concat(Path.Combine(Directory.GetParent(tPath).FullName, Directory.GetParent(tPath).Name), ".fanart.jpg"))
-        '    ElseIf FileUtils.Common.isBDRip(mMovie.Filename) Then
-        '        Delete(String.Concat(Directory.GetParent(Directory.GetParent(tPath).FullName).FullName, Path.DirectorySeparatorChar, "fanart.jpg"))
-        '        Delete(String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(tPath).FullName).FullName, Directory.GetParent(Directory.GetParent(tPath).FullName).Name), "-fanart.jpg"))
-        '        Delete(String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(tPath).FullName).FullName, Directory.GetParent(Directory.GetParent(tPath).FullName).Name), ".fanart.jpg"))
-        '    Else
-        '        If mMovie.isSingle Then
-        '            Delete(Path.Combine(tPath, "fanart.jpg"))
-        '        End If
-
-        '        If FileUtils.Common.isVideoTS(mMovie.Filename) Then
-        '            Delete(Path.Combine(tPath, "video_ts-fanart.jpg"))
-        '            Delete(Path.Combine(tPath, "video_ts.fanart.jpg"))
-        '        ElseIf FileUtils.Common.isBDRip(mMovie.Filename) Then
-        '            Delete(Path.Combine(tPath, "index-fanart.jpg"))
-        '            Delete(Path.Combine(tPath, "index.fanart.jpg"))
-        '        Else
-        '            Dim fPath As String = Path.Combine(tPath, Path.GetFileNameWithoutExtension(mMovie.Filename))
-        '            Dim fPathStack As String = Path.Combine(tPath, StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(mMovie.Filename)))
-        '            Delete(String.Concat(fPath, "-fanart.jpg"))
-        '            Delete(String.Concat(fPath, ".fanart.jpg"))
-        '            Delete(String.Concat(fPathStack, "-fanart.jpg"))
-        '        End If
-
-        '    End If
-        'Catch ex As Exception
-        '    Master.eLog.Error(GetType(Images), "Movie: <" & mMovie.Filename & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
-        'End Try
+        Try
+            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.isSingle, Enums.ModType.DiscArt)
+                If File.Exists(a) Then
+                    Delete(a)
+                End If
+            Next
+        Catch ex As Exception
+            Master.eLog.Error(GetType(Images), "Movie: <" & mMovie.Filename & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
     ''' <summary>
     ''' Delete the movie's fanart
@@ -485,39 +380,11 @@ Public Class Images
         If String.IsNullOrEmpty(mMovie.Filename) Then Return
 
         Try
-            Dim tPath As String = Directory.GetParent(mMovie.Filename).FullName
-            Dim params As New List(Of Object)(New Object() {mMovie})
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieFanartDelete, params, Nothing, False)
-
-            If FileUtils.Common.isVideoTS(mMovie.Filename) Then
-                Delete(String.Concat(Directory.GetParent(tPath).FullName, Path.DirectorySeparatorChar, "fanart.jpg"))
-                Delete(String.Concat(Directory.GetParent(tPath).FullName, Path.DirectorySeparatorChar, ".fanart.jpg"))
-                Delete(String.Concat(Path.Combine(Directory.GetParent(tPath).FullName, Directory.GetParent(tPath).Name), "-fanart.jpg"))
-                Delete(String.Concat(Path.Combine(Directory.GetParent(tPath).FullName, Directory.GetParent(tPath).Name), ".fanart.jpg"))
-            ElseIf FileUtils.Common.isBDRip(mMovie.Filename) Then
-                Delete(String.Concat(Directory.GetParent(Directory.GetParent(tPath).FullName).FullName, Path.DirectorySeparatorChar, "fanart.jpg"))
-                Delete(String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(tPath).FullName).FullName, Directory.GetParent(Directory.GetParent(tPath).FullName).Name), "-fanart.jpg"))
-                Delete(String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(tPath).FullName).FullName, Directory.GetParent(Directory.GetParent(tPath).FullName).Name), ".fanart.jpg"))
-            Else
-                If mMovie.isSingle Then
-                    Delete(Path.Combine(tPath, "fanart.jpg"))
+            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.isSingle, Enums.ModType.Fanart)
+                If File.Exists(a) Then
+                    Delete(a)
                 End If
-
-                If FileUtils.Common.isVideoTS(mMovie.Filename) Then
-                    Delete(Path.Combine(tPath, "video_ts-fanart.jpg"))
-                    Delete(Path.Combine(tPath, "video_ts.fanart.jpg"))
-                ElseIf FileUtils.Common.isBDRip(mMovie.Filename) Then
-                    Delete(Path.Combine(tPath, "index-fanart.jpg"))
-                    Delete(Path.Combine(tPath, "index.fanart.jpg"))
-                Else
-                    Dim fPath As String = Path.Combine(tPath, Path.GetFileNameWithoutExtension(mMovie.Filename))
-                    Dim fPathStack As String = Path.Combine(tPath, StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(mMovie.Filename)))
-                    Delete(String.Concat(fPath, "-fanart.jpg"))
-                    Delete(String.Concat(fPath, ".fanart.jpg"))
-                    Delete(String.Concat(fPathStack, "-fanart.jpg"))
-                End If
-
-            End If
+            Next
         Catch ex As Exception
             Master.eLog.Error(GetType(Images), "Movie: <" & mMovie.Filename & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
         End Try
@@ -529,44 +396,16 @@ Public Class Images
     ''' <remarks></remarks>
     Public Sub DeleteMovieLandscape(ByVal mMovie As Structures.DBMovie)
         If String.IsNullOrEmpty(mMovie.Filename) Then Return
-        'TODO
-        'Try
-        '    Dim tPath As String = Directory.GetParent(mMovie.Filename).FullName
-        '    Dim params As New List(Of Object)(New Object() {mMovie})
-        '    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieFanartDelete, params, Nothing, False)
 
-        '    If FileUtils.Common.isVideoTS(mMovie.Filename) Then
-        '        Delete(String.Concat(Directory.GetParent(tPath).FullName, Path.DirectorySeparatorChar, "fanart.jpg"))
-        '        Delete(String.Concat(Directory.GetParent(tPath).FullName, Path.DirectorySeparatorChar, ".fanart.jpg"))
-        '        Delete(String.Concat(Path.Combine(Directory.GetParent(tPath).FullName, Directory.GetParent(tPath).Name), "-fanart.jpg"))
-        '        Delete(String.Concat(Path.Combine(Directory.GetParent(tPath).FullName, Directory.GetParent(tPath).Name), ".fanart.jpg"))
-        '    ElseIf FileUtils.Common.isBDRip(mMovie.Filename) Then
-        '        Delete(String.Concat(Directory.GetParent(Directory.GetParent(tPath).FullName).FullName, Path.DirectorySeparatorChar, "fanart.jpg"))
-        '        Delete(String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(tPath).FullName).FullName, Directory.GetParent(Directory.GetParent(tPath).FullName).Name), "-fanart.jpg"))
-        '        Delete(String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(tPath).FullName).FullName, Directory.GetParent(Directory.GetParent(tPath).FullName).Name), ".fanart.jpg"))
-        '    Else
-        '        If mMovie.isSingle Then
-        '            Delete(Path.Combine(tPath, "fanart.jpg"))
-        '        End If
-
-        '        If FileUtils.Common.isVideoTS(mMovie.Filename) Then
-        '            Delete(Path.Combine(tPath, "video_ts-fanart.jpg"))
-        '            Delete(Path.Combine(tPath, "video_ts.fanart.jpg"))
-        '        ElseIf FileUtils.Common.isBDRip(mMovie.Filename) Then
-        '            Delete(Path.Combine(tPath, "index-fanart.jpg"))
-        '            Delete(Path.Combine(tPath, "index.fanart.jpg"))
-        '        Else
-        '            Dim fPath As String = Path.Combine(tPath, Path.GetFileNameWithoutExtension(mMovie.Filename))
-        '            Dim fPathStack As String = Path.Combine(tPath, StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(mMovie.Filename)))
-        '            Delete(String.Concat(fPath, "-fanart.jpg"))
-        '            Delete(String.Concat(fPath, ".fanart.jpg"))
-        '            Delete(String.Concat(fPathStack, "-fanart.jpg"))
-        '        End If
-
-        '    End If
-        'Catch ex As Exception
-        '    Master.eLog.Error(GetType(Images), "Movie: <" & mMovie.Filename & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
-        'End Try
+        Try
+            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.isSingle, Enums.ModType.Landscape)
+                If File.Exists(a) Then
+                    Delete(a)
+                End If
+            Next
+        Catch ex As Exception
+            Master.eLog.Error(GetType(Images), "Movie: <" & mMovie.Filename & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
     ''' <summary>
     ''' Delete the movie's posters
@@ -577,54 +416,11 @@ Public Class Images
         If String.IsNullOrEmpty(mMovie.Filename) Then Return
 
         Try
-            Dim tPath As String = Directory.GetParent(mMovie.Filename).FullName
-            Dim params As New List(Of Object)(New Object() {mMovie})
-
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMoviePosterDelete, params, Nothing, False)
-
-            If FileUtils.Common.isVideoTS(mMovie.Filename) Then
-                Delete(String.Concat(Directory.GetParent(tPath).FullName, Path.DirectorySeparatorChar, "movie.jpg"))
-                Delete(String.Concat(Directory.GetParent(tPath).FullName, Path.DirectorySeparatorChar, "movie.tbn"))
-                Delete(String.Concat(Directory.GetParent(tPath).FullName, Path.DirectorySeparatorChar, "folder.jpg"))
-                Delete(String.Concat(Directory.GetParent(tPath).FullName, Path.DirectorySeparatorChar, "poster.jpg"))
-                Delete(String.Concat(Directory.GetParent(tPath).FullName, Path.DirectorySeparatorChar, "poster.tbn"))
-                Delete(String.Concat(Path.Combine(Directory.GetParent(tPath).FullName, Directory.GetParent(tPath).Name), ".jpg"))
-                Delete(String.Concat(Path.Combine(Directory.GetParent(tPath).FullName, Directory.GetParent(tPath).Name), ".tbn"))
-            ElseIf FileUtils.Common.isBDRip(mMovie.Filename) Then
-                Delete(String.Concat(Directory.GetParent(tPath).FullName, Path.DirectorySeparatorChar, "poster.jpg"))
-                Delete(String.Concat(Directory.GetParent(Directory.GetParent(tPath).FullName).FullName, Path.DirectorySeparatorChar, "movie.jpg"))
-                Delete(String.Concat(Directory.GetParent(Directory.GetParent(tPath).FullName).FullName, Path.DirectorySeparatorChar, "movie.tbn"))
-                Delete(String.Concat(Directory.GetParent(Directory.GetParent(tPath).FullName).FullName, Path.DirectorySeparatorChar, "folder.jpg"))
-                Delete(String.Concat(Directory.GetParent(Directory.GetParent(tPath).FullName).FullName, Path.DirectorySeparatorChar, "poster.jpg"))
-                Delete(String.Concat(Directory.GetParent(Directory.GetParent(tPath).FullName).FullName, Path.DirectorySeparatorChar, "poster.tbn"))
-                Delete(String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(tPath).FullName).FullName, Directory.GetParent(Directory.GetParent(tPath).FullName).Name), ".jpg"))
-                Delete(String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(tPath).FullName).FullName, Directory.GetParent(Directory.GetParent(tPath).FullName).Name), ".tbn"))
-            Else
-
-                If mMovie.isSingle Then
-                    Delete(Path.Combine(tPath, "movie.tbn"))
-                    Delete(Path.Combine(tPath, "movie.jpg"))
-                    Delete(Path.Combine(tPath, "poster.tbn"))
-                    Delete(Path.Combine(tPath, "poster.jpg"))
-                    Delete(Path.Combine(tPath, "folder.jpg"))
+            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.isSingle, Enums.ModType.Poster)
+                If File.Exists(a) Then
+                    Delete(a)
                 End If
-
-                If FileUtils.Common.isVideoTS(mMovie.Filename) Then
-                    Delete(Path.Combine(tPath, "video_ts.tbn"))
-                    Delete(Path.Combine(tPath, "video_ts.jpg"))
-                ElseIf FileUtils.Common.isBDRip(mMovie.Filename) Then
-                    Delete(Path.Combine(tPath, "index.tbn"))
-                    Delete(Path.Combine(tPath, "index.jpg"))
-                Else
-                    Dim pPath As String = Path.Combine(tPath, Path.GetFileNameWithoutExtension(mMovie.Filename))
-                    Dim pPathStack As String = Path.Combine(tPath, StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(mMovie.Filename)))
-                    Delete(String.Concat(pPath, ".tbn"))
-                    Delete(String.Concat(pPath, ".jpg"))
-                    Delete(String.Concat(pPath, "-poster.jpg"))
-                    Delete(String.Concat(pPathStack, "-poster.jpg"))
-                End If
-
-            End If
+            Next
         Catch ex As Exception
             Master.eLog.Error(GetType(Images), "Movie: <" & mMovie.Filename & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
         End Try
@@ -637,36 +433,31 @@ Public Class Images
     Public Sub DeleteTVSeasonBanner(ByVal mShow As Structures.DBTV)
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return
 
-        'TODO
+        Try
+            Dim Season As Integer = mShow.TVEp.Season
+            Dim SeasonPath As String = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, mShow.TVEp.Season)
+            Dim ShowPath As String = mShow.ShowPath
+            Dim SeasonFirstEpisodePath As String = String.Empty
 
-        'Try
-        '    Dim tPath As String = String.Empty
-        '    tPath = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, mShow.TVEp.Season)
-        '    If Not String.IsNullOrEmpty(tPath) Then
-        '        Delete(Path.Combine(tPath, "Poster.tbn"))
-        '        Delete(Path.Combine(tPath, "Poster.jpg"))
-        '        Delete(Path.Combine(tPath, String.Concat(FileUtils.Common.GetDirectory(tPath), ".tbn")))
-        '        Delete(Path.Combine(tPath, String.Concat(FileUtils.Common.GetDirectory(tPath), ".jpg")))
-        '        Delete(Path.Combine(tPath, "Folder.jpg"))
-        '    End If
-        'Catch ex As Exception
-        '    Master.eLog.Error(GetType(Images), "Show: <" & mShow.ShowPath & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
-        'End Try
+            'get first episode of season (YAMJ need that for epsiodes without separate season folders)
+            Try
+                Dim dtEpisodes As New DataTable
+                Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM TVEps INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE TVShowID = ", mShow.ShowID, " AND Season = ", mShow.TVEp.Season, " ORDER BY Episode;"))
+                If dtEpisodes.Rows.Count > 0 Then
+                    SeasonFirstEpisodePath = dtEpisodes.Rows(0).Item("TVEpPath").ToString
+                End If
+            Catch ex As Exception
+                Master.eLog.Error(GetType(Database), ex.Message, ex.StackTrace, "Error", False)
+            End Try
 
-        'Try
-        '    If mShow.TVEp.Season = 0 Then
-        '        Delete(Path.Combine(mShow.ShowPath, "season-specials.tbn"))
-        '        Delete(Path.Combine(mShow.ShowPath, "season-specials.jpg"))
-        '        Delete(Path.Combine(mShow.ShowPath, "season-specials-poster.jpg"))
-        '    Else
-        '        Delete(Path.Combine(mShow.ShowPath, String.Format("season{0}.tbn", mShow.TVEp.Season)))
-        '        Delete(Path.Combine(mShow.ShowPath, String.Format("season{0}.tbn", mShow.TVEp.Season.ToString.PadLeft(2, Convert.ToChar("0")))))
-        '        Delete(Path.Combine(mShow.ShowPath, String.Format("season{0}-poster.jpg", mShow.TVEp.Season.ToString.PadLeft(2, Convert.ToChar("0")))))
-        '    End If
-        'Catch ex As Exception
-        '    Master.eLog.Error(GetType(Images), "Show: <" & mShow.ShowPath & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
-        'End Try
-
+            For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.TVImageType.SeasonBanner)
+                If File.Exists(a) Then
+                    Delete(a)
+                End If
+            Next
+        Catch ex As Exception
+            Master.eLog.Error(GetType(Images), "Path: <" & mShow.ShowPath & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
     ''' <summary>
     ''' Delete the TV Show's season fanart
@@ -677,19 +468,30 @@ Public Class Images
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return
 
         Try
-            Dim tPath As String = String.Empty
+            Dim Season As Integer = mShow.TVEp.Season
+            Dim SeasonPath As String = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, mShow.TVEp.Season)
+            Dim ShowPath As String = mShow.ShowPath
+            Dim SeasonFirstEpisodePath As String = String.Empty
 
-            tPath = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, mShow.TVEp.Season)
-            If Not String.IsNullOrEmpty(tPath) Then
-                Delete(Path.Combine(tPath, String.Concat(FileUtils.Common.GetDirectory(tPath), ".fanart.jpg")))
-                Delete(Path.Combine(tPath, String.Concat(FileUtils.Common.GetDirectory(tPath), "-fanart.jpg")))
-                Delete(Path.Combine(tPath, "Fanart.jpg"))
-            End If
-            Delete(Path.Combine(mShow.ShowPath, String.Format("season{0}-fanart.jpg", mShow.TVEp.Season.ToString.PadLeft(2, "0"c))))    'Convert.ToChar("0")
+            'get first episode of season (YAMJ need that for epsiodes without separate season folders)
+            Try
+                Dim dtEpisodes As New DataTable
+                Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM TVEps INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE TVShowID = ", mShow.ShowID, " AND Season = ", mShow.TVEp.Season, " ORDER BY Episode;"))
+                If dtEpisodes.Rows.Count > 0 Then
+                    SeasonFirstEpisodePath = dtEpisodes.Rows(0).Item("TVEpPath").ToString
+                End If
+            Catch ex As Exception
+                Master.eLog.Error(GetType(Database), ex.Message, ex.StackTrace, "Error", False)
+            End Try
+
+            For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.TVImageType.SeasonFanart)
+                If File.Exists(a) Then
+                    Delete(a)
+                End If
+            Next
         Catch ex As Exception
-            Master.eLog.Error(GetType(Images), "Show: <" & mShow.ShowPath & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(Images), "Path: <" & mShow.ShowPath & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
         End Try
-
     End Sub
     ''' <summary>
     ''' Delete the TV Show's season landscape
@@ -699,36 +501,31 @@ Public Class Images
     Public Sub DeleteTVSeasonLandscape(ByVal mShow As Structures.DBTV)
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return
 
-        'TODO
+        Try
+            Dim Season As Integer = mShow.TVEp.Season
+            Dim SeasonPath As String = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, mShow.TVEp.Season)
+            Dim ShowPath As String = mShow.ShowPath
+            Dim SeasonFirstEpisodePath As String = String.Empty
 
-        'Try
-        '    Dim tPath As String = String.Empty
-        '    tPath = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, mShow.TVEp.Season)
-        '    If Not String.IsNullOrEmpty(tPath) Then
-        '        Delete(Path.Combine(tPath, "Poster.tbn"))
-        '        Delete(Path.Combine(tPath, "Poster.jpg"))
-        '        Delete(Path.Combine(tPath, String.Concat(FileUtils.Common.GetDirectory(tPath), ".tbn")))
-        '        Delete(Path.Combine(tPath, String.Concat(FileUtils.Common.GetDirectory(tPath), ".jpg")))
-        '        Delete(Path.Combine(tPath, "Folder.jpg"))
-        '    End If
-        'Catch ex As Exception
-        '    Master.eLog.Error(GetType(Images), "Show: <" & mShow.ShowPath & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
-        'End Try
+            'get first episode of season (YAMJ need that for epsiodes without separate season folders)
+            Try
+                Dim dtEpisodes As New DataTable
+                Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM TVEps INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE TVShowID = ", mShow.ShowID, " AND Season = ", mShow.TVEp.Season, " ORDER BY Episode;"))
+                If dtEpisodes.Rows.Count > 0 Then
+                    SeasonFirstEpisodePath = dtEpisodes.Rows(0).Item("TVEpPath").ToString
+                End If
+            Catch ex As Exception
+                Master.eLog.Error(GetType(Database), ex.Message, ex.StackTrace, "Error", False)
+            End Try
 
-        'Try
-        '    If mShow.TVEp.Season = 0 Then
-        '        Delete(Path.Combine(mShow.ShowPath, "season-specials.tbn"))
-        '        Delete(Path.Combine(mShow.ShowPath, "season-specials.jpg"))
-        '        Delete(Path.Combine(mShow.ShowPath, "season-specials-poster.jpg"))
-        '    Else
-        '        Delete(Path.Combine(mShow.ShowPath, String.Format("season{0}.tbn", mShow.TVEp.Season)))
-        '        Delete(Path.Combine(mShow.ShowPath, String.Format("season{0}.tbn", mShow.TVEp.Season.ToString.PadLeft(2, Convert.ToChar("0")))))
-        '        Delete(Path.Combine(mShow.ShowPath, String.Format("season{0}-poster.jpg", mShow.TVEp.Season.ToString.PadLeft(2, Convert.ToChar("0")))))
-        '    End If
-        'Catch ex As Exception
-        '    Master.eLog.Error(GetType(Images), "Show: <" & mShow.ShowPath & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
-        'End Try
-
+            For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.TVImageType.SeasonLandscape)
+                If File.Exists(a) Then
+                    Delete(a)
+                End If
+            Next
+        Catch ex As Exception
+            Master.eLog.Error(GetType(Images), "Path: <" & mShow.ShowPath & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
     ''' <summary>
     ''' Delete the TV Show's season posters
@@ -739,33 +536,30 @@ Public Class Images
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return
 
         Try
-            Dim tPath As String = String.Empty
-            tPath = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, mShow.TVEp.Season)
-            If Not String.IsNullOrEmpty(tPath) Then
-                Delete(Path.Combine(tPath, "Poster.tbn"))
-                Delete(Path.Combine(tPath, "Poster.jpg"))
-                Delete(Path.Combine(tPath, String.Concat(FileUtils.Common.GetDirectory(tPath), ".tbn")))
-                Delete(Path.Combine(tPath, String.Concat(FileUtils.Common.GetDirectory(tPath), ".jpg")))
-                Delete(Path.Combine(tPath, "Folder.jpg"))
-            End If
-        Catch ex As Exception
-            Master.eLog.Error(GetType(Images), "Show: <" & mShow.ShowPath & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
-        End Try
+            Dim Season As Integer = mShow.TVEp.Season
+            Dim SeasonPath As String = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, mShow.TVEp.Season)
+            Dim ShowPath As String = mShow.ShowPath
+            Dim SeasonFirstEpisodePath As String = String.Empty
 
-        Try
-            If mShow.TVEp.Season = 0 Then
-                Delete(Path.Combine(mShow.ShowPath, "season-specials.tbn"))
-                Delete(Path.Combine(mShow.ShowPath, "season-specials.jpg"))
-                Delete(Path.Combine(mShow.ShowPath, "season-specials-poster.jpg"))
-            Else
-                Delete(Path.Combine(mShow.ShowPath, String.Format("season{0}.tbn", mShow.TVEp.Season)))
-                Delete(Path.Combine(mShow.ShowPath, String.Format("season{0}.tbn", mShow.TVEp.Season.ToString.PadLeft(2, Convert.ToChar("0")))))
-                Delete(Path.Combine(mShow.ShowPath, String.Format("season{0}-poster.jpg", mShow.TVEp.Season.ToString.PadLeft(2, Convert.ToChar("0")))))
-            End If
-        Catch ex As Exception
-            Master.eLog.Error(GetType(Images), "Show: <" & mShow.ShowPath & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
-        End Try
+            'get first episode of season (YAMJ need that for epsiodes without separate season folders)
+            Try
+                Dim dtEpisodes As New DataTable
+                Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM TVEps INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE TVShowID = ", mShow.ShowID, " AND Season = ", mShow.TVEp.Season, " ORDER BY Episode;"))
+                If dtEpisodes.Rows.Count > 0 Then
+                    SeasonFirstEpisodePath = dtEpisodes.Rows(0).Item("TVEpPath").ToString
+                End If
+            Catch ex As Exception
+                Master.eLog.Error(GetType(Database), ex.Message, ex.StackTrace, "Error", False)
+            End Try
 
+            For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.TVImageType.SeasonPoster)
+                If File.Exists(a) Then
+                    Delete(a)
+                End If
+            Next
+        Catch ex As Exception
+            Master.eLog.Error(GetType(Images), "Path: <" & mShow.ShowPath & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
     ''' <summary>
     ''' Delete the TV Show's banner
@@ -775,12 +569,14 @@ Public Class Images
     Public Sub DeleteTVShowBanner(ByVal mShow As Structures.DBTV)
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return
 
-        Try 'TODO
-            'Delete(Path.Combine(mShow.ShowPath, "folder.jpg"))
-            'Delete(Path.Combine(mShow.ShowPath, "poster.tbn"))
-            'Delete(Path.Combine(mShow.ShowPath, "poster.jpg"))
+        Try
+            For Each a In FileUtils.GetFilenameList.TVShow(mShow.ShowPath, Enums.TVImageType.ShowBanner)
+                If File.Exists(a) Then
+                    Delete(a)
+                End If
+            Next
         Catch ex As Exception
-            Master.eLog.Error(GetType(Images), "Show: <" & mShow.ShowPath & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(Images), "Path: <" & mShow.ShowPath & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
     ''' <summary>
@@ -792,11 +588,13 @@ Public Class Images
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return
 
         Try
-            Delete(Path.Combine(mShow.ShowPath, "fanart.jpg"))
-            Delete(Path.Combine(mShow.ShowPath, String.Concat(FileUtils.Common.GetDirectory(mShow.ShowPath), "-fanart.jpg")))
-            Delete(Path.Combine(mShow.ShowPath, String.Concat(FileUtils.Common.GetDirectory(mShow.ShowPath), ".fanart.jpg")))
+            For Each a In FileUtils.GetFilenameList.TVShow(mShow.ShowPath, Enums.TVImageType.ShowFanart)
+                If File.Exists(a) Then
+                    Delete(a)
+                End If
+            Next
         Catch ex As Exception
-            Master.eLog.Error(GetType(Images), "Show: <" & mShow.ShowPath & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(Images), "Path: <" & mShow.ShowPath & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
     ''' <summary>
@@ -807,12 +605,14 @@ Public Class Images
     Public Sub DeleteTVShowLandscape(ByVal mShow As Structures.DBTV)
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return
 
-        Try 'TODO
-            'Delete(Path.Combine(mShow.ShowPath, "folder.jpg"))
-            'Delete(Path.Combine(mShow.ShowPath, "poster.tbn"))
-            'Delete(Path.Combine(mShow.ShowPath, "poster.jpg"))
+        Try
+            For Each a In FileUtils.GetFilenameList.TVShow(mShow.ShowPath, Enums.TVImageType.ShowLandscape)
+                If File.Exists(a) Then
+                    Delete(a)
+                End If
+            Next
         Catch ex As Exception
-            Master.eLog.Error(GetType(Images), "Show: <" & mShow.ShowPath & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(Images), "Path: <" & mShow.ShowPath & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
     ''' <summary>
@@ -824,11 +624,13 @@ Public Class Images
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return
 
         Try
-            Delete(Path.Combine(mShow.ShowPath, "folder.jpg"))
-            Delete(Path.Combine(mShow.ShowPath, "poster.tbn"))
-            Delete(Path.Combine(mShow.ShowPath, "poster.jpg"))
+            For Each a In FileUtils.GetFilenameList.TVShow(mShow.ShowPath, Enums.TVImageType.ShowPoster)
+                If File.Exists(a) Then
+                    Delete(a)
+                End If
+            Next
         Catch ex As Exception
-            Master.eLog.Error(GetType(Images), "Show: <" & mShow.ShowPath & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
+            Master.eLog.Error(GetType(Images), "Path: <" & mShow.ShowPath & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
     ''' <summary>
