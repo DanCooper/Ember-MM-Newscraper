@@ -7381,13 +7381,13 @@ doCancel:
         Me.MovieScrapeData(False, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions)
     End Sub
 
-    Private Sub mnuAllAskEThumbs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAskEThumbs.Click, cmnuTrayAllAskEThumbs.Click
-        Functions.SetScraperMod(Enums.ModType.EThumbs, True)
+    Private Sub mnuAllAskEFanarts_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAskEFanarts.Click, cmnuTrayAllAskEFanarts.Click
+        Functions.SetScraperMod(Enums.ModType.EFanarts, True)
         Me.MovieScrapeData(False, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions)
     End Sub
 
-    Private Sub mnuAllAskEFanarts_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAskEFanarts.Click, cmnuTrayAllAskEFanarts.Click
-        Functions.SetScraperMod(Enums.ModType.EFanarts, True)
+    Private Sub mnuAllAskEThumbs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAskEThumbs.Click, cmnuTrayAllAskEThumbs.Click
+        Functions.SetScraperMod(Enums.ModType.EThumbs, True)
         Me.MovieScrapeData(False, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions)
     End Sub
 
@@ -7451,13 +7451,13 @@ doCancel:
         Me.MovieScrapeData(False, Enums.ScrapeType.FullAuto, Master.DefaultMovieOptions)
     End Sub
 
-    Private Sub mnuAllAutoEThumbs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoEThumbs.Click, cmnuTrayAllAutoEThumbs.Click
-        Functions.SetScraperMod(Enums.ModType.EThumbs, True)
+    Private Sub mnuAllAutoEFanarts_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoEFanarts.Click, cmnuTrayAllAutoEFanarts.Click
+        Functions.SetScraperMod(Enums.ModType.EFanarts, True)
         Me.MovieScrapeData(False, Enums.ScrapeType.FullAuto, Master.DefaultMovieOptions)
     End Sub
 
-    Private Sub mnuAllAutoEFanarts_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoEFanarts.Click, cmnuTrayAllAutoEFanarts.Click
-        Functions.SetScraperMod(Enums.ModType.EFanarts, True)
+    Private Sub mnuAllAutoEThumbs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoEThumbs.Click, cmnuTrayAllAutoEThumbs.Click
+        Functions.SetScraperMod(Enums.ModType.EThumbs, True)
         Me.MovieScrapeData(False, Enums.ScrapeType.FullAuto, Master.DefaultMovieOptions)
     End Sub
 
@@ -7531,13 +7531,13 @@ doCancel:
         Me.MovieScrapeData(False, Enums.ScrapeType.FilterAsk, Master.DefaultMovieOptions)
     End Sub
 
-    Private Sub mnuFilterAskEThumbs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAskEThumbs.Click, cmnuTrayFilterAskEThumbs.Click
-        Functions.SetScraperMod(Enums.ModType.EThumbs, True)
+    Private Sub mnuFilterAskEFanarts_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAskEFanarts.Click, cmnuTrayFilterAskEFanarts.Click
+        Functions.SetScraperMod(Enums.ModType.EFanarts, True)
         Me.MovieScrapeData(False, Enums.ScrapeType.FilterAsk, Master.DefaultMovieOptions)
     End Sub
 
-    Private Sub mnuFilterAskEFanarts_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAskEFanarts.Click, cmnuTrayFilterAskEFanarts.Click
-        Functions.SetScraperMod(Enums.ModType.EFanarts, True)
+    Private Sub mnuFilterAskEThumbs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAskEThumbs.Click, cmnuTrayFilterAskEThumbs.Click
+        Functions.SetScraperMod(Enums.ModType.EThumbs, True)
         Me.MovieScrapeData(False, Enums.ScrapeType.FilterAsk, Master.DefaultMovieOptions)
     End Sub
 
@@ -7601,13 +7601,13 @@ doCancel:
         Me.MovieScrapeData(False, Enums.ScrapeType.FilterAuto, Master.DefaultMovieOptions)
     End Sub
 
-    Private Sub mnuFilterAutoEThumbs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAutoEThumbs.Click, cmnuTrayFilterAutoEThumbs.Click
-        Functions.SetScraperMod(Enums.ModType.EThumbs, True)
+    Private Sub mnuFilterAutoEFanarts_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAutoEFanarts.Click, cmnuTrayFilterAutoEFanarts.Click
+        Functions.SetScraperMod(Enums.ModType.EFanarts, True)
         Me.MovieScrapeData(False, Enums.ScrapeType.FilterAuto, Master.DefaultMovieOptions)
     End Sub
 
-    Private Sub mnuFilterAutoEFanarts_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAutoEFanarts.Click, cmnuTrayFilterAutoEFanarts.Click
-        Functions.SetScraperMod(Enums.ModType.EFanarts, True)
+    Private Sub mnuFilterAutoEThumbs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAutoEThumbs.Click, cmnuTrayFilterAutoEThumbs.Click
+        Functions.SetScraperMod(Enums.ModType.EThumbs, True)
         Me.MovieScrapeData(False, Enums.ScrapeType.FilterAuto, Master.DefaultMovieOptions)
     End Sub
 
@@ -7676,13 +7676,13 @@ doCancel:
         Me.MovieScrapeData(False, Enums.ScrapeType.MarkAsk, Master.DefaultMovieOptions)
     End Sub
 
-    Private Sub mnuMarkAskEThumbs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAskEThumbs.Click, cmnuTrayMarkAskEThumbs.Click
-        Functions.SetScraperMod(Enums.ModType.EThumbs, True)
+    Private Sub mnuMarkAskEFanarts_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAskEFanarts.Click, cmnuTrayMarkAskEFanarts.Click
+        Functions.SetScraperMod(Enums.ModType.EFanarts, True)
         Me.MovieScrapeData(False, Enums.ScrapeType.MarkAsk, Master.DefaultMovieOptions)
     End Sub
 
-    Private Sub mnuMarkAskEFanarts_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAskEFanarts.Click, cmnuTrayMarkAskEFanarts.Click
-        Functions.SetScraperMod(Enums.ModType.EFanarts, True)
+    Private Sub mnuMarkAskEThumbs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAskEThumbs.Click, cmnuTrayMarkAskEThumbs.Click
+        Functions.SetScraperMod(Enums.ModType.EThumbs, True)
         Me.MovieScrapeData(False, Enums.ScrapeType.MarkAsk, Master.DefaultMovieOptions)
     End Sub
 
@@ -7746,13 +7746,13 @@ doCancel:
         Me.MovieScrapeData(False, Enums.ScrapeType.MarkAuto, Master.DefaultMovieOptions)
     End Sub
 
-    Private Sub mnuMarkAutoEThumbs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAutoEThumbs.Click, cmnuTrayMarkAutoEThumbs.Click
-        Functions.SetScraperMod(Enums.ModType.EThumbs, True)
+    Private Sub mnuMarkAutoEFanarts_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAutoEFanarts.Click, cmnuTrayMarkAutoEFanarts.Click
+        Functions.SetScraperMod(Enums.ModType.EFanarts, True)
         Me.MovieScrapeData(False, Enums.ScrapeType.MarkAuto, Master.DefaultMovieOptions)
     End Sub
 
-    Private Sub mnuMarkAutoEFanarts_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAutoEFanarts.Click, cmnuTrayMarkAutoEFanarts.Click
-        Functions.SetScraperMod(Enums.ModType.EFanarts, True)
+    Private Sub mnuMarkAutoEThumbs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAutoEThumbs.Click, cmnuTrayMarkAutoEThumbs.Click
+        Functions.SetScraperMod(Enums.ModType.EThumbs, True)
         Me.MovieScrapeData(False, Enums.ScrapeType.MarkAuto, Master.DefaultMovieOptions)
     End Sub
 
@@ -7826,13 +7826,13 @@ doCancel:
         Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAsk, Master.DefaultMovieOptions)
     End Sub
 
-    Private Sub mnuMissAskEThumbs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAskEThumbs.Click, cmnuTrayMissAskEThumbs.Click
-        Functions.SetScraperMod(Enums.ModType.EThumbs, True)
+    Private Sub mnuMissAskEFanarts_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAskEFanarts.Click, cmnuTrayMissAskEFanarts.Click
+        Functions.SetScraperMod(Enums.ModType.EFanarts, True)
         Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAsk, Master.DefaultMovieOptions)
     End Sub
 
-    Private Sub mnuMissAskEFanarts_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAskEFanarts.Click, cmnuTrayMissAskEFanarts.Click
-        Functions.SetScraperMod(Enums.ModType.EFanarts, True)
+    Private Sub mnuMissAskEThumbs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAskEThumbs.Click, cmnuTrayMissAskEThumbs.Click
+        Functions.SetScraperMod(Enums.ModType.EThumbs, True)
         Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAsk, Master.DefaultMovieOptions)
     End Sub
 
@@ -7891,13 +7891,13 @@ doCancel:
         Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAuto, Master.DefaultMovieOptions)
     End Sub
 
-    Private Sub mnuMissAutoEThumbs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAutoEThumbs.Click, cmnuTrayMissAutoEThumbs.Click
-        Functions.SetScraperMod(Enums.ModType.EThumbs, True)
+    Private Sub mnuMissAutoEFanarts_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAutoEFanarts.Click, cmnuTrayMissAutoEFanarts.Click
+        Functions.SetScraperMod(Enums.ModType.EFanarts, True)
         Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAuto, Master.DefaultMovieOptions)
     End Sub
 
-    Private Sub mnuMissAutoEFanarts_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAutoEFanarts.Click, cmnuTrayMissAutoEFanarts.Click
-        Functions.SetScraperMod(Enums.ModType.EFanarts, True)
+    Private Sub mnuMissAutoEThumbs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAutoEThumbs.Click, cmnuTrayMissAutoEThumbs.Click
+        Functions.SetScraperMod(Enums.ModType.EThumbs, True)
         Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAuto, Master.DefaultMovieOptions)
     End Sub
 
@@ -7961,13 +7961,13 @@ doCancel:
         Me.MovieScrapeData(False, Enums.ScrapeType.NewAsk, Master.DefaultMovieOptions)
     End Sub
 
-    Private Sub mnuNewAskEThumbs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAskEThumbs.Click, cmnuTrayNewAskEThumbs.Click
-        Functions.SetScraperMod(Enums.ModType.EThumbs, True)
+    Private Sub mnuNewAskEFanarts_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAskEFanarts.Click, cmnuTrayNewAskEFanarts.Click
+        Functions.SetScraperMod(Enums.ModType.EFanarts, True)
         Me.MovieScrapeData(False, Enums.ScrapeType.NewAsk, Master.DefaultMovieOptions)
     End Sub
 
-    Private Sub mnuNewAskEFanarts_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAskEFanarts.Click, cmnuTrayNewAskEFanarts.Click
-        Functions.SetScraperMod(Enums.ModType.EFanarts, True)
+    Private Sub mnuNewAskEThumbs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAskEThumbs.Click, cmnuTrayNewAskEThumbs.Click
+        Functions.SetScraperMod(Enums.ModType.EThumbs, True)
         Me.MovieScrapeData(False, Enums.ScrapeType.NewAsk, Master.DefaultMovieOptions)
     End Sub
 
@@ -8031,13 +8031,13 @@ doCancel:
         Me.MovieScrapeData(False, Enums.ScrapeType.NewAuto, Master.DefaultMovieOptions)
     End Sub
 
-    Private Sub mnuNewAutoEThumbs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAutoEThumbs.Click, cmnuTrayNewAutoEThumbs.Click
-        Functions.SetScraperMod(Enums.ModType.EThumbs, True)
+    Private Sub mnuNewAutoEFanarts_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAutoEFanarts.Click, cmnuTrayNewAutoEFanarts.Click
+        Functions.SetScraperMod(Enums.ModType.EFanarts, True)
         Me.MovieScrapeData(False, Enums.ScrapeType.NewAuto, Master.DefaultMovieOptions)
     End Sub
 
-    Private Sub mnuNewAutoEFanarts_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAutoEFanarts.Click, cmnuTrayNewAutoEFanarts.Click
-        Functions.SetScraperMod(Enums.ModType.EFanarts, True)
+    Private Sub mnuNewAutoEThumbs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAutoEThumbs.Click, cmnuTrayNewAutoEThumbs.Click
+        Functions.SetScraperMod(Enums.ModType.EThumbs, True)
         Me.MovieScrapeData(False, Enums.ScrapeType.NewAuto, Master.DefaultMovieOptions)
     End Sub
 
