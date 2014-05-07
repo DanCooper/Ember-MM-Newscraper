@@ -694,7 +694,8 @@ Public Class Enums
         FilterAsk = 15
         FilterSkip = 16
         CopyBackdrops = 17
-        None = 99 ' 
+        SingleField = 18
+        None = 99
     End Enum
 
     Public Enum TVFanartSize As Integer

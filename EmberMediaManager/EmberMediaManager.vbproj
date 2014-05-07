@@ -612,6 +612,7 @@
     <None Include="Resources\haslandscape.png" />
     <None Include="Resources\hasMeta.png" />
     <None Include="Resources\hasActorThumb.png" />
+    <None Include="Resources\doRating.png" />
     <Content Include="x64\SQLite.Interop.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -129,6 +129,8 @@ Partial Class frmMain
         Me.cmnuMovieReSelAskTrailer = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieReSelSkip = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieReSelSkipAll = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuMovieUpSel = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuMovieUpSelRating = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieChange = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuSep2 = New System.Windows.Forms.ToolStripSeparator()
         Me.cmnuMovieOpenFolder = New System.Windows.Forms.ToolStripMenuItem()
@@ -1251,9 +1253,9 @@ Partial Class frmMain
         '
         'cmnuMovie
         '
-        Me.cmnuMovie.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuMovieTitle, Me.ToolStripSeparator3, Me.cmnuMovieReload, Me.cmnuMovieMark, Me.cmnuMovieLock, Me.cmnuMovieWatched, Me.ToolStripMenuItem1, Me.cmnuMovieEdit, Me.cmnuMovieEditMetaData, Me.cmnuMovieGenres, Me.cmnuSep, Me.cmnuMovieRescrape, Me.cmnuMovieReSel, Me.cmnuMovieChange, Me.cmnuSep2, Me.cmnuMovieOpenFolder, Me.ToolStripSeparator1, Me.cmnuMovieRemove})
+        Me.cmnuMovie.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuMovieTitle, Me.ToolStripSeparator3, Me.cmnuMovieReload, Me.cmnuMovieMark, Me.cmnuMovieLock, Me.cmnuMovieWatched, Me.ToolStripMenuItem1, Me.cmnuMovieEdit, Me.cmnuMovieEditMetaData, Me.cmnuMovieGenres, Me.cmnuSep, Me.cmnuMovieRescrape, Me.cmnuMovieReSel, Me.cmnuMovieUpSel, Me.cmnuMovieChange, Me.cmnuSep2, Me.cmnuMovieOpenFolder, Me.ToolStripSeparator1, Me.cmnuMovieRemove})
         Me.cmnuMovie.Name = "mnuMediaList"
-        Me.cmnuMovie.Size = New System.Drawing.Size(247, 320)
+        Me.cmnuMovie.Size = New System.Drawing.Size(247, 364)
         '
         'cmnuMovieTitle
         '
@@ -1617,6 +1619,20 @@ Partial Class frmMain
         Me.cmnuMovieReSelSkipAll.Name = "cmnuMovieReSelSkipAll"
         Me.cmnuMovieReSelSkipAll.Size = New System.Drawing.Size(120, 22)
         Me.cmnuMovieReSelSkipAll.Text = "All Items"
+        '
+        'cmnuMovieUpSel
+        '
+        Me.cmnuMovieUpSel.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuMovieUpSelRating})
+        Me.cmnuMovieUpSel.Name = "cmnuMovieUpSel"
+        Me.cmnuMovieUpSel.Size = New System.Drawing.Size(246, 22)
+        Me.cmnuMovieUpSel.Text = "Update Single Field"
+        '
+        'cmnuMovieUpSelRating
+        '
+        Me.cmnuMovieUpSelRating.Image = Global.Ember_Media_Manager.My.Resources.Resources.doRating
+        Me.cmnuMovieUpSelRating.Name = "cmnuMovieUpSelRating"
+        Me.cmnuMovieUpSelRating.Size = New System.Drawing.Size(152, 22)
+        Me.cmnuMovieUpSelRating.Text = "Rating / Votes"
         '
         'cmnuMovieChange
         '
@@ -7046,4 +7062,6 @@ Partial Class frmMain
     Friend WithEvents cmnuTrayFilterAskClearLogo As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuTrayFilterAskDiscArt As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuTrayFilterAskTheme As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuMovieUpSel As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuMovieUpSelRating As System.Windows.Forms.ToolStripMenuItem
 End Class

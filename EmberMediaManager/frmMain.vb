@@ -1276,7 +1276,10 @@ Public Class frmMain
                     End If
                 Else
                     ' if we do not have the movie ID we need to retrive it even if is just a Poster/Fanart/Trailer/Actors update
-                    If String.IsNullOrEmpty(DBScrapeMovie.Movie.ID) AndAlso (Master.GlobalScrapeMod.Fanart Or Master.GlobalScrapeMod.Poster Or Master.GlobalScrapeMod.Trailer Or Master.GlobalScrapeMod.ActorThumbs) Then
+                    If String.IsNullOrEmpty(DBScrapeMovie.Movie.ID) AndAlso (Master.GlobalScrapeMod.ActorThumbs Or Master.GlobalScrapeMod.Banner Or Master.GlobalScrapeMod.ClearArt Or _
+                                                                             Master.GlobalScrapeMod.ClearLogo Or Master.GlobalScrapeMod.DiscArt Or Master.GlobalScrapeMod.EFanarts Or _
+                                                                             Master.GlobalScrapeMod.EThumbs Or Master.GlobalScrapeMod.Fanart Or Master.GlobalScrapeMod.Landscape Or _
+                                                                             Master.GlobalScrapeMod.Poster Or Master.GlobalScrapeMod.Trailer) Then
                         Dim tOpt As New Structures.ScrapeOptions 'all false value not to override any field
                         If ModulesManager.Instance.MovieScrapeOnly(DBScrapeMovie, Args.scrapeType, tOpt) Then
                             Exit For
@@ -1689,8 +1692,8 @@ Public Class frmMain
                                             MovieScraperEvent(Enums.MovieScraperEventType.ThemeItem, True)
                                         End If
                                     End If
-                                    'ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
-                                    '    If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
+                                    'ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk  OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
+                                    '    If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk  OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
                                     '        MsgBox(Master.eLang.GetString(930, "Trailer of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(929, "No Preferred Size:"))
                                     '    End If
                                     '    Using dThemeSelect As New dlgThemeSelect()
@@ -1729,8 +1732,8 @@ Public Class frmMain
                                             End If
                                         End If
                                     End If
-                                    'ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
-                                    '    If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
+                                    'ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk  OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
+                                    '    If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk  OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
                                     '        MsgBox(Master.eLang.GetString(930, "Trailer of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(929, "No Preferred Size:"))
                                     '    End If
                                     '    Using dTrailerSelect As New dlgTrailerSelect()
@@ -4002,12 +4005,13 @@ doCancel:
                 If e.RowIndex >= 0 AndAlso dgvMovies.SelectedRows.Count > 0 Then
 
                     Me.cmnuMovie.Enabled = True
+                    Me.cmnuMovieChange.Visible = False
                     Me.cmnuMovieEdit.Visible = False
+                    Me.cmnuMovieEditMetaData.Visible = False
                     Me.cmnuMovieReSel.Visible = True
                     Me.cmnuMovieRescrape.Visible = False
-                    Me.cmnuMovieChange.Visible = False
+                    Me.cmnuMovieUpSel.Visible = True
                     'Me.cmuRenamer.Visible = False
-                    Me.cmnuMovieEditMetaData.Visible = False
                     Me.cmnuSep2.Visible = False
 
                     If Me.dgvMovies.SelectedRows.Count > 1 AndAlso Me.dgvMovies.Rows(e.RowIndex).Selected Then
@@ -4048,11 +4052,12 @@ doCancel:
                         Me.cmnuMovieGenresSet.Enabled = False
                         Me.cmnuMovieGenresRemove.Enabled = False
                     Else
+                        Me.cmnuMovieChange.Visible = True
                         Me.cmnuMovieEdit.Visible = True
+                        Me.cmnuMovieEditMetaData.Visible = True
                         Me.cmnuMovieReSel.Visible = True
                         Me.cmnuMovieRescrape.Visible = True
-                        Me.cmnuMovieChange.Visible = True
-                        Me.cmnuMovieEditMetaData.Visible = True
+                        Me.cmnuMovieUpSel.Visible = True
                         Me.cmnuSep.Visible = True
                         Me.cmnuSep2.Visible = True
 
@@ -8213,15 +8218,15 @@ doCancel:
                 ScrapeList.Add(DirectCast(sRow.DataBoundItem, DataRowView).Row)
             Next
         Else
-            Dim BannerAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Banner)
-            Dim ClearArtAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.ClearArt)
-            Dim ClearLogoAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.ClearLogo)
-            Dim DiscArtAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.DiscArt)
-            Dim FanartAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart)
-            Dim LandscapeAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Landscape)
-            Dim PosterAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Poster)
-            Dim ThemeAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Theme)
-            Dim TrailerAllowed As Boolean = ModulesManager.Instance.QueryTrailerScraperCapabilities(Enums.ScraperCapabilities.Trailer)
+            Dim BannerAllowed As Boolean = Master.eSettings.MovieBannerAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Banner)
+            Dim ClearArtAllowed As Boolean = Master.eSettings.MovieClearArtAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.ClearArt)
+            Dim ClearLogoAllowed As Boolean = Master.eSettings.MovieClearLogoAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.ClearLogo)
+            Dim DiscArtAllowed As Boolean = Master.eSettings.MovieDiscArtAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.DiscArt)
+            Dim FanartAllowed As Boolean = Master.eSettings.MovieFanartAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart)
+            Dim LandscapeAllowed As Boolean = Master.eSettings.MovieLandscapeAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Landscape)
+            Dim PosterAllowed As Boolean = Master.eSettings.MoviePosterAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Poster)
+            Dim ThemeAllowed As Boolean = Master.eSettings.MovieThemeAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Theme)
+            Dim TrailerAllowed As Boolean = Master.eSettings.MovieTrailerAnyEnabled AndAlso ModulesManager.Instance.QueryTrailerScraperCapabilities(Enums.ScraperCapabilities.Trailer)
 
             'create list of movies acording to scrapetype
             For Each drvRow As DataRow In Me.dtMedia.Rows
@@ -8268,40 +8273,53 @@ doCancel:
             Me.tspbLoading.Style = ProgressBarStyle.Marquee
         End If
 
-        Select Case sType
-            Case Enums.ScrapeType.FullAsk
-                Me.tslLoading.Text = Master.eLang.GetString(127, "Scraping Media (All Movies - Ask):")
-            Case Enums.ScrapeType.FullAuto
-                Me.tslLoading.Text = Master.eLang.GetString(128, "Scraping Media (All Movies - Auto):")
-            Case Enums.ScrapeType.FullSkip
-                Me.tslLoading.Text = Master.eLang.GetString(853, "Scraping Media (All Movies - Skip):")
-            Case Enums.ScrapeType.UpdateAuto
-                Me.tslLoading.Text = Master.eLang.GetString(132, "Scraping Media (Movies Missing Items - Auto):")
-            Case Enums.ScrapeType.UpdateAsk
-                Me.tslLoading.Text = Master.eLang.GetString(133, "Scraping Media (Movies Missing Items - Ask):")
-            Case Enums.ScrapeType.UpdateSkip
-                Me.tslLoading.Text = Master.eLang.GetString(1042, "Scraping Media (Movies Missing Items - Skip):")
-            Case Enums.ScrapeType.NewAsk
-                Me.tslLoading.Text = Master.eLang.GetString(134, "Scraping Media (New Movies - Ask):")
-            Case Enums.ScrapeType.NewAuto
-                Me.tslLoading.Text = Master.eLang.GetString(135, "Scraping Media (New Movies - Auto):")
-            Case Enums.ScrapeType.NewSkip
-                Me.tslLoading.Text = Master.eLang.GetString(1043, "Scraping Media (New Movies - Skip):")
-            Case Enums.ScrapeType.MarkAsk
-                Me.tslLoading.Text = Master.eLang.GetString(136, "Scraping Media (Marked Movies - Ask):")
-            Case Enums.ScrapeType.MarkAuto
-                Me.tslLoading.Text = Master.eLang.GetString(137, "Scraping Media (Marked Movies - Auto):")
-            Case Enums.ScrapeType.MarkSkip
-                Me.tslLoading.Text = Master.eLang.GetString(1044, "Scraping Media (Marked Movies - Skip):")
-            Case Enums.ScrapeType.FilterAsk
-                Me.tslLoading.Text = Master.eLang.GetString(622, "Scraping Media (Current Filter - Ask):")
-            Case Enums.ScrapeType.FilterAuto
-                Me.tslLoading.Text = Master.eLang.GetString(623, "Scraping Media (Current Filter - Auto):")
-            Case Enums.ScrapeType.FilterAuto
-                Me.tslLoading.Text = Master.eLang.GetString(1045, "Scraping Media (Current Filter - Skip):")
-            Case Enums.ScrapeType.SingleScrape
-                Me.tslLoading.Text = Master.eLang.GetString(139, "Scraping:")
-        End Select
+        If Not selected Then
+            Select Case sType
+                Case Enums.ScrapeType.FullAsk
+                    Me.tslLoading.Text = Master.eLang.GetString(127, "Scraping Media (All Movies - Ask):")
+                Case Enums.ScrapeType.FullAuto
+                    Me.tslLoading.Text = Master.eLang.GetString(128, "Scraping Media (All Movies - Auto):")
+                Case Enums.ScrapeType.FullSkip
+                    Me.tslLoading.Text = Master.eLang.GetString(853, "Scraping Media (All Movies - Skip):")
+                Case Enums.ScrapeType.UpdateAuto
+                    Me.tslLoading.Text = Master.eLang.GetString(132, "Scraping Media (Movies Missing Items - Auto):")
+                Case Enums.ScrapeType.UpdateAsk
+                    Me.tslLoading.Text = Master.eLang.GetString(133, "Scraping Media (Movies Missing Items - Ask):")
+                Case Enums.ScrapeType.UpdateSkip
+                    Me.tslLoading.Text = Master.eLang.GetString(1042, "Scraping Media (Movies Missing Items - Skip):")
+                Case Enums.ScrapeType.NewAsk
+                    Me.tslLoading.Text = Master.eLang.GetString(134, "Scraping Media (New Movies - Ask):")
+                Case Enums.ScrapeType.NewAuto
+                    Me.tslLoading.Text = Master.eLang.GetString(135, "Scraping Media (New Movies - Auto):")
+                Case Enums.ScrapeType.NewSkip
+                    Me.tslLoading.Text = Master.eLang.GetString(1043, "Scraping Media (New Movies - Skip):")
+                Case Enums.ScrapeType.MarkAsk
+                    Me.tslLoading.Text = Master.eLang.GetString(136, "Scraping Media (Marked Movies - Ask):")
+                Case Enums.ScrapeType.MarkAuto
+                    Me.tslLoading.Text = Master.eLang.GetString(137, "Scraping Media (Marked Movies - Auto):")
+                Case Enums.ScrapeType.MarkSkip
+                    Me.tslLoading.Text = Master.eLang.GetString(1044, "Scraping Media (Marked Movies - Skip):")
+                Case Enums.ScrapeType.FilterAsk
+                    Me.tslLoading.Text = Master.eLang.GetString(622, "Scraping Media (Current Filter - Ask):")
+                Case Enums.ScrapeType.FilterAuto
+                    Me.tslLoading.Text = Master.eLang.GetString(623, "Scraping Media (Current Filter - Auto):")
+                Case Enums.ScrapeType.FilterAuto
+                    Me.tslLoading.Text = Master.eLang.GetString(1045, "Scraping Media (Current Filter - Skip):")
+                Case Enums.ScrapeType.SingleScrape
+                    Me.tslLoading.Text = Master.eLang.GetString(139, "Scraping:")
+            End Select
+        Else
+            Select Case sType
+                Case Enums.ScrapeType.FullAsk
+                    Me.tslLoading.Text = Master.eLang.GetString(1128, "Scraping Media (Selected Movies - Ask):")
+                Case Enums.ScrapeType.FullAuto
+                    Me.tslLoading.Text = Master.eLang.GetString(1129, "Scraping Media (Selected Movies - Auto):")
+                Case Enums.ScrapeType.FullSkip
+                    Me.tslLoading.Text = Master.eLang.GetString(1130, "Scraping Media (Selected Movies - Skip):")
+                Case Enums.ScrapeType.SingleField
+                    Me.tslLoading.Text = Master.eLang.GetString(1127, "Scraping Media (Selected Movies - Single Field):")
+            End Select
+        End If
 
         If Not sType = Enums.ScrapeType.SingleScrape Then
             Me.btnCancel.Text = Master.eLang.GetString(54, "Cancel Scraper")
@@ -9286,21 +9304,6 @@ doCancel:
         End Try
     End Sub
 
-    Private Sub cmnuMovieReSelAskAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskAll.Click
-        Functions.SetScraperMod(Enums.ModType.All, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions)
-    End Sub
-
-    Private Sub cmnuMovieReSelAutoAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAutoAll.Click
-        Functions.SetScraperMod(Enums.ModType.All, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultMovieOptions)
-    End Sub
-
-    Private Sub cmnuMovieReSelSkipAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelSkipAll.Click
-        Functions.SetScraperMod(Enums.ModType.All, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullSkip, Master.DefaultMovieOptions)
-    End Sub
-
     Private Sub SelectEpisodeRow(ByVal iRow As Integer)
         Try
             If Not Convert.ToBoolean(Me.dgvTVEpisodes.Item(4, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvTVEpisodes.Item(5, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvTVEpisodes.Item(6, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvTVEpisodes.Item(22, iRow).Value) Then
@@ -9320,6 +9323,11 @@ doCancel:
         Catch ex As Exception
             Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
+    End Sub
+
+    Private Sub cmnuMovieReSelAskAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskAll.Click
+        Functions.SetScraperMod(Enums.ModType.All, True)
+        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions)
     End Sub
 
     Private Sub cmnuMovieReSelAskBanner_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskBanner.Click
@@ -9387,6 +9395,11 @@ doCancel:
         MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions)
     End Sub
 
+    Private Sub cmnuMovieReSelAutoAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAutoAll.Click
+        Functions.SetScraperMod(Enums.ModType.All, True)
+        MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultMovieOptions)
+    End Sub
+
     Private Sub cmnuMovieReSelAutoBanner_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAutoBanner.Click
         Functions.SetScraperMod(Enums.ModType.Banner, True)
         MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultMovieOptions)
@@ -9450,6 +9463,19 @@ doCancel:
     Private Sub cmnuMovieReSelAutoTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAutoTrailer.Click
         Functions.SetScraperMod(Enums.ModType.Trailer, True)
         MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub cmnuMovieReSelSkipAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelSkipAll.Click
+        Functions.SetScraperMod(Enums.ModType.All, True)
+        MovieScrapeData(True, Enums.ScrapeType.FullSkip, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub cmnuMovieUpSelRating_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelRating.Click
+        Dim cScrapeOptions As New Structures.ScrapeOptions
+        cScrapeOptions.bRating = True
+        cScrapeOptions.bVotes = True
+        Functions.SetScraperMod(Enums.ModType.NFO, True)
+        MovieScrapeData(True, Enums.ScrapeType.SingleField, cScrapeOptions)
     End Sub
     ''' <summary>
     ''' Updates the media info panels (right side of disiplay) when the movie selector changes (left side of display)
@@ -10749,8 +10775,9 @@ doCancel:
                 .cmnuMovieRemoveFromDisk.Text = Master.eLang.GetString(34, "Delete Movie")
                 .cmnuMovieRescrape.Text = Master.eLang.GetString(163, "(Re)Scrape Movie")
                 .cmnuMovieReSel.Text = Master.eLang.GetString(31, "(Re)Scrape Selected Movies")
-                .cmnuMovieReSel.Text = Master.eLang.GetString(31, "(Re)Scrape Selected Movies")
+                .cmnuMovieUpSelRating.Text = String.Concat(Master.eLang.GetString(400, "Rating"), " / ", Master.eLang.GetString(399, "Votes"))
                 .cmnuMovieTitle.Text = Master.eLang.GetString(21, "Title")
+                .cmnuMovieUpSel.Text = Master.eLang.GetString(1126, "Update Single Field")
                 .cmnuRemoveSeasonFromDB.Text = Master.eLang.GetString(646, "Remove from Database")
                 .cmnuSeasonChangeImages.Text = Master.eLang.GetString(770, "Change Images")
                 .cmnuSeasonLock.Text = Master.eLang.GetString(24, "Lock")

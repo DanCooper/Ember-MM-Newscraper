@@ -1211,4 +1211,9 @@
 	<string id="1123">ClearLogo Only</string>
 	<string id="1124">DiscArt Only</string>
 	<string id="1125">Theme Only</string>
+	<string id="1126">Update Single Field</string>
+	<string id="1127">Scraping Media (Selected Movies - Single Field):</string>
+	<string id="1128">Scraping Media (Selected Movies - Ask):</string>
+	<string id="1129">Scraping Media (Selected Movies - Auto):</string>
+	<string id="1130">Scraping Media (Selected Movies - Skip):</string>
 </strings>
