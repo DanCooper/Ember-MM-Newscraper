@@ -264,6 +264,14 @@ Partial Class dlgWizard
         Me.tpTVFileNamingExpert = New System.Windows.Forms.TabPage()
         Me.Label11 = New System.Windows.Forms.Label()
         Me.fbdBrowse = New System.Windows.Forms.FolderBrowserDialog()
+        Me.tpTVFileNamingBoxee = New System.Windows.Forms.TabPage()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.chkTVSeasonPosterBoxee = New System.Windows.Forms.CheckBox()
+        Me.chkTVShowBannerBoxee = New System.Windows.Forms.CheckBox()
+        Me.chkTVEpisodePosterBoxee = New System.Windows.Forms.CheckBox()
+        Me.chkTVShowFanartBoxee = New System.Windows.Forms.CheckBox()
+        Me.chkTVShowPosterBoxee = New System.Windows.Forms.CheckBox()
+        Me.chkTVUseBoxee = New System.Windows.Forms.CheckBox()
         Me.pnlWelcome.SuspendLayout()
         Me.pnlMovieSettings.SuspendLayout()
         Me.gbMovieFileNaming.SuspendLayout()
@@ -304,6 +312,8 @@ Partial Class dlgWizard
         Me.tpTVFileNamingXBMC.SuspendLayout()
         Me.gbTVXBMCAdditional.SuspendLayout()
         Me.gbTVFrodo.SuspendLayout()
+        Me.tpTVFileNamingBoxee.SuspendLayout()
+        Me.GroupBox1.SuspendLayout()
         Me.SuspendLayout()
         '
         'OK_Button
@@ -2556,6 +2566,7 @@ Partial Class dlgWizard
         '
         Me.tcTVFileNaming.Controls.Add(Me.tpTVFileNamingXBMC)
         Me.tcTVFileNaming.Controls.Add(Me.tpTVFileNamingNMT)
+        Me.tcTVFileNaming.Controls.Add(Me.tpTVFileNamingBoxee)
         Me.tcTVFileNaming.Controls.Add(Me.tpTVFileNamingExpert)
         Me.tcTVFileNaming.Location = New System.Drawing.Point(6, 18)
         Me.tcTVFileNaming.Name = "tcTVFileNaming"
@@ -2836,6 +2847,97 @@ Partial Class dlgWizard
         Me.Label11.Text = resources.GetString("Label11.Text")
         Me.Label11.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
+        'tpTVFileNamingBoxee
+        '
+        Me.tpTVFileNamingBoxee.Controls.Add(Me.GroupBox1)
+        Me.tpTVFileNamingBoxee.Location = New System.Drawing.Point(4, 22)
+        Me.tpTVFileNamingBoxee.Name = "tpTVFileNamingBoxee"
+        Me.tpTVFileNamingBoxee.Size = New System.Drawing.Size(505, 336)
+        Me.tpTVFileNamingBoxee.TabIndex = 3
+        Me.tpTVFileNamingBoxee.Text = "Boxee"
+        Me.tpTVFileNamingBoxee.UseVisualStyleBackColor = True
+        '
+        'GroupBox1
+        '
+        Me.GroupBox1.Controls.Add(Me.chkTVSeasonPosterBoxee)
+        Me.GroupBox1.Controls.Add(Me.chkTVShowBannerBoxee)
+        Me.GroupBox1.Controls.Add(Me.chkTVEpisodePosterBoxee)
+        Me.GroupBox1.Controls.Add(Me.chkTVShowFanartBoxee)
+        Me.GroupBox1.Controls.Add(Me.chkTVShowPosterBoxee)
+        Me.GroupBox1.Controls.Add(Me.chkTVUseBoxee)
+        Me.GroupBox1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GroupBox1.Location = New System.Drawing.Point(6, 6)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(152, 289)
+        Me.GroupBox1.TabIndex = 20
+        Me.GroupBox1.TabStop = False
+        Me.GroupBox1.Text = "Boxee"
+        '
+        'chkTVSeasonPosterBoxee
+        '
+        Me.chkTVSeasonPosterBoxee.AutoSize = True
+        Me.chkTVSeasonPosterBoxee.Enabled = False
+        Me.chkTVSeasonPosterBoxee.Location = New System.Drawing.Point(6, 113)
+        Me.chkTVSeasonPosterBoxee.Name = "chkTVSeasonPosterBoxee"
+        Me.chkTVSeasonPosterBoxee.Size = New System.Drawing.Size(98, 17)
+        Me.chkTVSeasonPosterBoxee.TabIndex = 26
+        Me.chkTVSeasonPosterBoxee.Text = "Season Poster"
+        Me.chkTVSeasonPosterBoxee.UseVisualStyleBackColor = True
+        '
+        'chkTVShowBannerBoxee
+        '
+        Me.chkTVShowBannerBoxee.AutoSize = True
+        Me.chkTVShowBannerBoxee.Enabled = False
+        Me.chkTVShowBannerBoxee.Location = New System.Drawing.Point(6, 90)
+        Me.chkTVShowBannerBoxee.Name = "chkTVShowBannerBoxee"
+        Me.chkTVShowBannerBoxee.Size = New System.Drawing.Size(95, 17)
+        Me.chkTVShowBannerBoxee.TabIndex = 25
+        Me.chkTVShowBannerBoxee.Text = "Show Banner"
+        Me.chkTVShowBannerBoxee.UseVisualStyleBackColor = True
+        '
+        'chkTVEpisodePosterBoxee
+        '
+        Me.chkTVEpisodePosterBoxee.AutoSize = True
+        Me.chkTVEpisodePosterBoxee.Enabled = False
+        Me.chkTVEpisodePosterBoxee.Location = New System.Drawing.Point(6, 136)
+        Me.chkTVEpisodePosterBoxee.Name = "chkTVEpisodePosterBoxee"
+        Me.chkTVEpisodePosterBoxee.Size = New System.Drawing.Size(102, 17)
+        Me.chkTVEpisodePosterBoxee.TabIndex = 21
+        Me.chkTVEpisodePosterBoxee.Text = "Episode Poster"
+        Me.chkTVEpisodePosterBoxee.UseVisualStyleBackColor = True
+        '
+        'chkTVShowFanartBoxee
+        '
+        Me.chkTVShowFanartBoxee.AutoSize = True
+        Me.chkTVShowFanartBoxee.Enabled = False
+        Me.chkTVShowFanartBoxee.Location = New System.Drawing.Point(6, 67)
+        Me.chkTVShowFanartBoxee.Name = "chkTVShowFanartBoxee"
+        Me.chkTVShowFanartBoxee.Size = New System.Drawing.Size(91, 17)
+        Me.chkTVShowFanartBoxee.TabIndex = 18
+        Me.chkTVShowFanartBoxee.Text = "Show Fanart"
+        Me.chkTVShowFanartBoxee.UseVisualStyleBackColor = True
+        '
+        'chkTVShowPosterBoxee
+        '
+        Me.chkTVShowPosterBoxee.AutoSize = True
+        Me.chkTVShowPosterBoxee.Enabled = False
+        Me.chkTVShowPosterBoxee.Location = New System.Drawing.Point(6, 44)
+        Me.chkTVShowPosterBoxee.Name = "chkTVShowPosterBoxee"
+        Me.chkTVShowPosterBoxee.Size = New System.Drawing.Size(90, 17)
+        Me.chkTVShowPosterBoxee.TabIndex = 17
+        Me.chkTVShowPosterBoxee.Text = "Show Poster"
+        Me.chkTVShowPosterBoxee.UseVisualStyleBackColor = True
+        '
+        'chkTVUseBoxee
+        '
+        Me.chkTVUseBoxee.AutoSize = True
+        Me.chkTVUseBoxee.Location = New System.Drawing.Point(6, 21)
+        Me.chkTVUseBoxee.Name = "chkTVUseBoxee"
+        Me.chkTVUseBoxee.Size = New System.Drawing.Size(45, 17)
+        Me.chkTVUseBoxee.TabIndex = 16
+        Me.chkTVUseBoxee.Text = "Use"
+        Me.chkTVUseBoxee.UseVisualStyleBackColor = True
+        '
         'dlgWizard
         '
         Me.AcceptButton = Me.OK_Button
@@ -2928,6 +3030,9 @@ Partial Class dlgWizard
         Me.gbTVXBMCAdditional.PerformLayout()
         Me.gbTVFrodo.ResumeLayout(False)
         Me.gbTVFrodo.PerformLayout()
+        Me.tpTVFileNamingBoxee.ResumeLayout(False)
+        Me.GroupBox1.ResumeLayout(False)
+        Me.GroupBox1.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -3172,4 +3277,12 @@ Partial Class dlgWizard
     Friend WithEvents txtMovieXBMCThemeCustomPath As System.Windows.Forms.TextBox
     Friend WithEvents chkMovieXBMCThemeCustom As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieXBMCThemeEnable As System.Windows.Forms.CheckBox
+    Friend WithEvents tpTVFileNamingBoxee As System.Windows.Forms.TabPage
+    Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
+    Friend WithEvents chkTVSeasonPosterBoxee As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVShowBannerBoxee As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVEpisodePosterBoxee As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVShowFanartBoxee As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVShowPosterBoxee As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVUseBoxee As System.Windows.Forms.CheckBox
 End Class

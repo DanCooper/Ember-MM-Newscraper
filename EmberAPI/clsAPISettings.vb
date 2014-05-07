@@ -576,6 +576,14 @@ Public Class Settings
 
     '************** NMT optional settings **************
 
+    '***************** Boxee settings ******************
+    Private _tvuseboxee As Boolean
+    Private _tvepisodeposterboxee As Boolean
+    Private _tvseasonposterboxee As Boolean
+    Private _tvshowbannerboxee As Boolean
+    Private _tvshowfanartboxee As Boolean
+    Private _tvshowposterboxee As Boolean
+
     '***************** Expert settings *****************
 
 #End Region 'Fields
@@ -4737,6 +4745,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVUseBoxee() As Boolean
+        Get
+            Return Me._tvuseboxee
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvuseboxee = value
+        End Set
+    End Property
+
     Public Property TVUseFrodo() As Boolean
         Get
             Return Me._tvusefrodo
@@ -4752,6 +4769,15 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Me._tvuseyamj = value
+        End Set
+    End Property
+
+    Public Property TVShowBannerBoxee() As Boolean
+        Get
+            Return Me._tvshowbannerboxee
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowbannerboxee = value
         End Set
     End Property
 
@@ -4773,6 +4799,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVShowFanartBoxee() As Boolean
+        Get
+            Return Me._tvshowfanartboxee
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowfanartboxee = value
+        End Set
+    End Property
+
     Public Property TVShowFanartFrodo() As Boolean
         Get
             Return Me._tvshowfanartfrodo
@@ -4788,6 +4823,15 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Me._tvshowfanartyamj = value
+        End Set
+    End Property
+
+    Public Property TVShowPosterBoxee() As Boolean
+        Get
+            Return Me._tvshowposterboxee
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowposterboxee = value
         End Set
     End Property
 
@@ -4815,6 +4859,15 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Me._tvshowactorthumbsfrodo = value
+        End Set
+    End Property
+
+    Public Property TVSeasonPosterBoxee() As Boolean
+        Get
+            Return Me._tvseasonposterboxee
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvseasonposterboxee = value
         End Set
     End Property
 
@@ -4869,6 +4922,15 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Me._tvseasonbanneryamj = value
+        End Set
+    End Property
+
+    Public Property TVEpisodePosterBoxee() As Boolean
+        Get
+            Return Me._tvepisodeposterboxee
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvepisodeposterboxee = value
         End Set
     End Property
 
@@ -5477,6 +5539,7 @@ Public Class Settings
         Me._tvshowtvthemefolderxbmc = String.Empty
         Me._tvshowtvthemexbmc = False
         Me._tvskiplessthan = 0
+        Me._tvuseboxee = False
         Me._tvusefrodo = False
         Me._tvuseyamj = False
         Me._username = String.Empty
@@ -5556,7 +5619,7 @@ Public Class Settings
         End If
 
         ' Fix added to avoid to have no tv show NFO saved
-        If Not (Master.eSettings.TVUseFrodo OrElse Master.eSettings.TVUseYAMJ) Then
+        If Not (Master.eSettings.TVUseBoxee OrElse Master.eSettings.TVUseFrodo OrElse Master.eSettings.TVUseYAMJ) Then
             Master.eSettings.TVUseFrodo = True
             Master.eSettings.TVEpisodeActorThumbsFrodo = True
             Master.eSettings.TVEpisodePosterFrodo = True
@@ -5713,23 +5776,23 @@ Public Class Settings
         Return TVASBannerEnabled() OrElse TVASFanartEnabled() OrElse TVASLandscapeEnabled() OrElse TVASPosterEnabled()
     End Function
     Public Function TVASBannerEnabled() As Boolean
-        Return Master.eSettings.TVSeasonBannerFrodo
+        Return TVSeasonBannerFrodo OrElse TVSeasonBannerYAMJ
     End Function
 
     Public Function TVASFanartEnabled() As Boolean
-        Return Master.eSettings.TVSeasonFanartFrodo
+        Return TVSeasonFanartFrodo
     End Function
 
     Public Function TVASLandscapeEnabled() As Boolean
-        Return Master.eSettings.TVSeasonLandscapeXBMC
+        Return TVSeasonLandscapeXBMC
     End Function
 
     Public Function TVASPosterEnabled() As Boolean
-        Return Master.eSettings.TVSeasonPosterFrodo
+        Return TVSeasonPosterFrodo
     End Function
 
     Public Function TVEpisodePosterEnabled() As Boolean
-        Return Master.eSettings.TVEpisodePosterFrodo OrElse Master.eSettings.TVEpisodePosterYAMJ
+        Return TVEpisodePosterBoxee OrElse TVEpisodePosterFrodo OrElse TVEpisodePosterYAMJ
     End Function
 
     Public Function TVEpisodeFanartEnabled() As Boolean
@@ -5737,51 +5800,51 @@ Public Class Settings
     End Function
 
     Public Function TVSeasonBannerEnabled() As Boolean
-        Return Master.eSettings.TVSeasonBannerFrodo OrElse TVSeasonBannerYAMJ
+        Return TVSeasonBannerFrodo OrElse TVSeasonBannerYAMJ
     End Function
 
     Public Function TVSeasonFanartEnabled() As Boolean
-        Return Master.eSettings.TVSeasonFanartFrodo OrElse TVSeasonFanartYAMJ
+        Return TVSeasonFanartFrodo OrElse TVSeasonFanartYAMJ
     End Function
 
     Public Function TVSeasonLandscapeEnabled() As Boolean
-        Return Master.eSettings.TVSeasonLandscapeXBMC
+        Return TVSeasonLandscapeXBMC
     End Function
 
     Public Function TVSeasonPosterEnabled() As Boolean
-        Return Master.eSettings.TVSeasonPosterFrodo OrElse TVSeasonPosterYAMJ
+        Return TVSeasonPosterBoxee OrElse TVSeasonPosterFrodo OrElse TVSeasonPosterYAMJ
     End Function
 
     Public Function TVShowBannerEnabled() As Boolean
-        Return Master.eSettings.TVShowBannerFrodo OrElse TVShowBannerYAMJ
+        Return TVShowBannerBoxee OrElse TVShowBannerFrodo OrElse TVShowBannerYAMJ
     End Function
 
     Public Function TVShowCharacterEnabled() As Boolean
-        Return Master.eSettings.TVShowCharacterArtXBMC
+        Return TVShowCharacterArtXBMC
     End Function
 
     Public Function TVShowClearArtEnabled() As Boolean
-        Return Master.eSettings.TVShowClearArtXBMC
+        Return TVShowClearArtXBMC
     End Function
 
     Public Function TVShowClearLogoEnabled() As Boolean
-        Return Master.eSettings.TVShowClearLogoXBMC
+        Return TVShowClearLogoXBMC
     End Function
 
     Public Function TVShowFanartEnabled() As Boolean
-        Return Master.eSettings.TVShowFanartFrodo OrElse TVShowFanartYAMJ
+        Return TVShowFanartBoxee OrElse TVShowFanartFrodo OrElse TVShowFanartYAMJ
     End Function
 
     Public Function TVShowLandscapeEnabled() As Boolean
-        Return Master.eSettings.TVShowLandscapeXBMC
+        Return TVShowLandscapeXBMC
     End Function
 
     Public Function TVShowPosterEnabled() As Boolean
-        Return Master.eSettings.TVShowPosterFrodo OrElse TVShowPosterYAMJ
+        Return TVShowPosterBoxee OrElse TVShowPosterFrodo OrElse TVShowPosterYAMJ
     End Function
 
     Public Function TVShowTVThemeEnabled() As Boolean
-        Return Master.eSettings.TVShowTVThemeXBMC
+        Return TVShowTVThemeXBMC
     End Function
 
     Private Shared Function CompareLanguagesLong( _

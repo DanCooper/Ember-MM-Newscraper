@@ -3231,6 +3231,14 @@ Public Class dlgSettings
 
                 '************** NMT optional settings **************
 
+                '***************** Boxee settings ******************
+                Me.chkTVUseBoxee.Checked = .TVUseBoxee
+                Me.chkTVEpisodePosterBoxee.Checked = .TVEpisodePosterBoxee
+                Me.chkTVSeasonPosterBoxee.Checked = .TVSeasonPosterBoxee
+                Me.chkTVShowBannerBoxee.Checked = .TVShowBannerBoxee
+                Me.chkTVShowFanartBoxee.Checked = .TVShowFanartBoxee
+                Me.chkTVShowPosterBoxee.Checked = .TVShowPosterBoxee
+
                 '***************** Expert settings *****************
 
             End With
@@ -4612,6 +4620,14 @@ Public Class dlgSettings
                 '****************** NMJ settings *******************
 
                 '************** NMT optional settings **************
+
+                '***************** Boxee settings ******************
+                .TVUseBoxee = Me.chkTVUseBoxee.Checked
+                .TVEpisodePosterBoxee = Me.chkTVEpisodePosterBoxee.Checked
+                .TVSeasonPosterBoxee = Me.chkTVSeasonPosterBoxee.Checked
+                .TVShowBannerBoxee = Me.chkTVShowBannerBoxee.Checked
+                .TVShowFanartBoxee = Me.chkTVShowFanartBoxee.Checked
+                .TVShowPosterBoxee = Me.chkTVShowPosterBoxee.Checked
 
                 '***************** Expert settings *****************
 
@@ -6204,6 +6220,50 @@ Public Class dlgSettings
     End Sub
 
     Private Sub chkMovieYAMJCompatibleSets_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieYAMJCompatibleSets.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkTVUseBoxee_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVUseBoxee.CheckedChanged
+        Me.SetApplyButton(True)
+
+        Me.chkTVEpisodePosterBoxee.Enabled = Me.chkTVUseBoxee.Checked
+        Me.chkTVSeasonPosterBoxee.Enabled = Me.chkTVUseBoxee.Checked
+        Me.chkTVShowBannerBoxee.Enabled = Me.chkTVUseBoxee.Checked
+        Me.chkTVShowFanartBoxee.Enabled = Me.chkTVUseBoxee.Checked
+        Me.chkTVShowPosterBoxee.Enabled = Me.chkTVUseBoxee.Checked
+
+        If Not Me.chkTVUseBoxee.Checked Then
+            Me.chkTVEpisodePosterBoxee.Checked = False
+            Me.chkTVSeasonPosterBoxee.Checked = False
+            Me.chkTVShowBannerBoxee.Checked = False
+            Me.chkTVShowFanartBoxee.Checked = False
+            Me.chkTVShowPosterBoxee.Checked = False
+        Else
+            Me.chkTVEpisodePosterBoxee.Checked = True
+            Me.chkTVSeasonPosterBoxee.Checked = True
+            Me.chkTVShowBannerBoxee.Checked = True
+            Me.chkTVShowFanartBoxee.Checked = True
+            Me.chkTVShowPosterBoxee.Checked = True
+        End If
+    End Sub
+
+    Private Sub chkTVEpisodePosterBoxee_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVEpisodePosterBoxee.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkTVSeasonPosterBoxee_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVSeasonPosterBoxee.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkTVShowBannerBoxee_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowBannerBoxee.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkTVShowFanartBoxee_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowFanartBoxee.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkTVShowPosterBoxee_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowPosterBoxee.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 

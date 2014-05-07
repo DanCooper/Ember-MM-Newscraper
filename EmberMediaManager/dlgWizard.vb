@@ -517,6 +517,29 @@ Public Class dlgWizard
         End With
     End Sub
 
+    Private Sub chkTVUseBoxee_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVUseBoxee.CheckedChanged
+
+        Me.chkTVEpisodePosterBoxee.Enabled = Me.chkTVUseBoxee.Checked
+        Me.chkTVSeasonPosterBoxee.Enabled = Me.chkTVUseBoxee.Checked
+        Me.chkTVShowBannerBoxee.Enabled = Me.chkTVUseBoxee.Checked
+        Me.chkTVShowFanartBoxee.Enabled = Me.chkTVUseBoxee.Checked
+        Me.chkTVShowPosterBoxee.Enabled = Me.chkTVUseBoxee.Checked
+
+        If Not Me.chkTVUseBoxee.Checked Then
+            Me.chkTVEpisodePosterBoxee.Checked = False
+            Me.chkTVSeasonPosterBoxee.Checked = False
+            Me.chkTVShowBannerBoxee.Checked = False
+            Me.chkTVShowFanartBoxee.Checked = False
+            Me.chkTVShowPosterBoxee.Checked = False
+        Else
+            Me.chkTVEpisodePosterBoxee.Checked = True
+            Me.chkTVSeasonPosterBoxee.Checked = True
+            Me.chkTVShowBannerBoxee.Checked = True
+            Me.chkTVShowFanartBoxee.Checked = True
+            Me.chkTVShowPosterBoxee.Checked = True
+        End If
+    End Sub
+
     Private Sub chkTVUseFrodo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVUseFrodo.CheckedChanged
 
         Me.chkTVEpisodeActorThumbsFrodo.Enabled = Me.chkTVUseFrodo.Checked
@@ -800,6 +823,14 @@ Public Class dlgWizard
             '****************** NMJ settings *******************
 
             '************** NMT optional settings **************
+
+            '***************** Boxee settings ******************
+            Me.chkTVUseBoxee.Checked = .TVUseBoxee
+            Me.chkTVEpisodePosterBoxee.Checked = .TVEpisodePosterBoxee
+            Me.chkTVSeasonPosterBoxee.Checked = .TVSeasonPosterBoxee
+            Me.chkTVShowBannerBoxee.Checked = .TVShowBannerBoxee
+            Me.chkTVShowFanartBoxee.Checked = .TVShowFanartBoxee
+            Me.chkTVShowPosterBoxee.Checked = .TVShowPosterBoxee
 
             '***************** Expert settings *****************
 
@@ -1167,6 +1198,14 @@ Public Class dlgWizard
             '****************** NMJ settings *******************
 
             '************** NMT optional settings **************
+
+            '***************** Boxee settings ******************
+            .TVUseBoxee = Me.chkTVUseBoxee.Checked
+            .TVEpisodePosterBoxee = Me.chkTVEpisodePosterBoxee.Checked
+            .TVSeasonPosterBoxee = Me.chkTVSeasonPosterBoxee.Checked
+            .TVShowBannerBoxee = Me.chkTVShowBannerBoxee.Checked
+            .TVShowFanartBoxee = Me.chkTVShowFanartBoxee.Checked
+            .TVShowPosterBoxee = Me.chkTVShowPosterBoxee.Checked
 
             '***************** Expert settings *****************
 
