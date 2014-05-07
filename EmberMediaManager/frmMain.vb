@@ -1766,6 +1766,8 @@ Public Class frmMain
                             If Not ModulesManager.Instance.MovieScrapeImages(DBScrapeMovie, Enums.ScraperCapabilities.Fanart, aList) Then
                                 etList = Images.GetPreferredEThumbs(aList)
                                 If etList.Count > 0 Then
+                                    Dim eti As Integer = 0
+                                    Dim etMax As Integer = Master.eSettings.MovieEThumbsLimit
                                     For Each lItem As String In etList
                                         Dim EThumb As New Images
                                         EThumb.FromWeb(lItem)
@@ -1774,8 +1776,10 @@ Public Class frmMain
                                             If Not String.IsNullOrEmpty(etPath) Then
                                                 DBScrapeMovie.EThumbsPath = etPath
                                                 MovieScraperEvent(Enums.MovieScraperEventType.EThumbsItem, True)
+                                                eti = eti + 1
                                             End If
                                         End If
+                                        If etMax > 0 AndAlso eti >= etMax Then Exit For
                                     Next
                                 End If
                             End If
@@ -1792,6 +1796,8 @@ Public Class frmMain
                             If Not ModulesManager.Instance.MovieScrapeImages(DBScrapeMovie, Enums.ScraperCapabilities.Fanart, aList) Then
                                 efList = Images.GetPreferredEFanarts(aList)
                                 If efList.Count > 0 Then
+                                    Dim efi As Integer = 0
+                                    Dim efMax As Integer = Master.eSettings.MovieEFanartsLimit
                                     For Each lItem As String In efList
                                         Dim EFanart As New Images
                                         EFanart.FromWeb(lItem)
@@ -1800,8 +1806,10 @@ Public Class frmMain
                                             If Not String.IsNullOrEmpty(efPath) Then
                                                 DBScrapeMovie.EFanartsPath = efPath
                                                 MovieScraperEvent(Enums.MovieScraperEventType.EFanartsItem, True)
+                                                efi = efi + 1
                                             End If
                                         End If
+                                        If efMax > 0 AndAlso efi >= efMax Then Exit For
                                     Next
                                 End If
                             End If
