@@ -6725,17 +6725,26 @@ doCancel:
                     Case "-fullauto"
                         clScrapeType = Enums.ScrapeType.FullAuto
                         clAsk = False
+                    Case "-fullskip"
+                        clScrapeType = Enums.ScrapeType.FullSkip
+                        clAsk = False
                     Case "-missask"
                         clScrapeType = Enums.ScrapeType.UpdateAsk
                         clAsk = True
                     Case "-missauto"
                         clScrapeType = Enums.ScrapeType.UpdateAuto
                         clAsk = False
+                    Case "-missskip"
+                        clScrapeType = Enums.ScrapeType.UpdateSkip
+                        clAsk = True
                     Case "-newask"
                         clScrapeType = Enums.ScrapeType.NewAsk
                         clAsk = True
                     Case "-newauto"
                         clScrapeType = Enums.ScrapeType.NewAuto
+                        clAsk = False
+                    Case "-newskip"
+                        clScrapeType = Enums.ScrapeType.NewSkip
                         clAsk = False
                     Case "-markask"
                         clScrapeType = Enums.ScrapeType.MarkAsk
@@ -6743,6 +6752,9 @@ doCancel:
                     Case "-markauto"
                         clScrapeType = Enums.ScrapeType.MarkAuto
                         clAsk = False
+                    Case "-markskip"
+                        clScrapeType = Enums.ScrapeType.MarkSkip
+                        clAsk = True
                     Case "-file"
                         If Args.Count - 1 > i Then
                             isSingle = False
@@ -6788,16 +6800,30 @@ doCancel:
                         End If
                     Case "-all"
                         Functions.SetScraperMod(Enums.ModType.All, True)
+                    Case "-banner"
+                        Functions.SetScraperMod(Enums.ModType.Banner, True)
+                    Case "-clearart"
+                        Functions.SetScraperMod(Enums.ModType.ClearArt, True)
+                    Case "-clearlogo"
+                        Functions.SetScraperMod(Enums.ModType.ClearLogo, True)
+                    Case "-discart"
+                        Functions.SetScraperMod(Enums.ModType.DiscArt, True)
+                    Case "-efanarts"
+                        Functions.SetScraperMod(Enums.ModType.EFanarts, True)
+                    Case "-ethumbs"
+                        Functions.SetScraperMod(Enums.ModType.EThumbs, True)
+                    Case "-fanart"
+                        Functions.SetScraperMod(Enums.ModType.Fanart, True)
+                    Case "-landscape"
+                        Functions.SetScraperMod(Enums.ModType.Landscape, True)
                     Case "-nfo"
                         Functions.SetScraperMod(Enums.ModType.NFO, True)
                     Case "-posters"
                         Functions.SetScraperMod(Enums.ModType.Poster, True)
-                    Case "-fanart"
-                        Functions.SetScraperMod(Enums.ModType.Fanart, True)
-                    Case "-ethumbs"
-                        Functions.SetScraperMod(Enums.ModType.EThumbs, True)
-                    Case "-efanarts"
-                        Functions.SetScraperMod(Enums.ModType.EFanarts, True)
+                    Case "-theme"
+                        Functions.SetScraperMod(Enums.ModType.Theme, True)
+                    Case "-trailer"
+                        Functions.SetScraperMod(Enums.ModType.Trailer, True)
                     Case "--verbose"
                         clAsk = True
                     Case "-nowindow"
@@ -6906,16 +6932,22 @@ doCancel:
 
                                 If Not String.IsNullOrEmpty(Master.currMovie.ListTitle) Then
                                     Master.currMovie.NfoPath = sFile.Nfo
-                                    Master.currMovie.PosterPath = sFile.Poster
-                                    Master.currMovie.FanartPath = sFile.Fanart
-                                    Master.currMovie.TrailerPath = sFile.Trailer
-                                    Master.currMovie.SubPath = sFile.Subs
+                                    Master.currMovie.BannerPath = sFile.Banner
+                                    Master.currMovie.ClearArtPath = sFile.ClearArt
+                                    Master.currMovie.ClearLogoPath = sFile.ClearLogo
+                                    Master.currMovie.DiscArtPath = sFile.DiscArt
                                     Master.currMovie.EThumbsPath = sFile.EThumbs
                                     Master.currMovie.EFanartsPath = sFile.EFanarts
+                                    Master.currMovie.FanartPath = sFile.Fanart
+                                    Master.currMovie.LandscapePath = sFile.Landscape
                                     Master.currMovie.Filename = sFile.Filename
                                     Master.currMovie.isSingle = sFile.isSingle
-                                    Master.currMovie.UseFolder = sFile.UseFolder
+                                    Master.currMovie.PosterPath = sFile.Poster
                                     Master.currMovie.Source = sFile.Source
+                                    Master.currMovie.SubPath = sFile.Subs
+                                    Master.currMovie.ThemePath = sFile.Theme
+                                    Master.currMovie.TrailerPath = sFile.Trailer
+                                    Master.currMovie.UseFolder = sFile.UseFolder
                                 End If
                                 Master.tmpMovie = Master.currMovie.Movie
                             End If
