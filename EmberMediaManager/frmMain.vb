@@ -9697,7 +9697,7 @@ doCancel:
                 Me.cmnuTrayFilterAskActor.Enabled = ActorAllowed
 
                 'Banner
-                Dim BannerAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Banner) AndAlso .MovieBannerAnyEnabled
+                Dim BannerAllowed As Boolean = .MovieBannerAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Banner)
                 Me.mnuAllAutoBanner.Enabled = BannerAllowed
                 Me.mnuAllAskBanner.Enabled = BannerAllowed
                 Me.mnuMissAutoBanner.Enabled = BannerAllowed
@@ -9722,7 +9722,7 @@ doCancel:
                 Me.cmnuTrayFilterAskBanner.Enabled = BannerAllowed
 
                 'ClearArt
-                Dim ClearArtAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.ClearArt) AndAlso .MovieClearArtAnyEnabled
+                Dim ClearArtAllowed As Boolean = .MovieClearArtAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.ClearArt)
                 Me.mnuAllAutoClearArt.Enabled = ClearArtAllowed
                 Me.mnuAllAskClearArt.Enabled = ClearArtAllowed
                 Me.mnuMissAutoClearArt.Enabled = ClearArtAllowed
@@ -9747,7 +9747,7 @@ doCancel:
                 Me.cmnuTrayFilterAskClearArt.Enabled = ClearArtAllowed
 
                 'ClearLogo
-                Dim ClearLogoAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.ClearLogo) AndAlso .MovieClearLogoAnyEnabled
+                Dim ClearLogoAllowed As Boolean = .MovieClearLogoAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.ClearLogo)
                 Me.mnuAllAutoClearLogo.Enabled = ClearLogoAllowed
                 Me.mnuAllAskClearLogo.Enabled = ClearLogoAllowed
                 Me.mnuMissAutoClearLogo.Enabled = ClearLogoAllowed
@@ -9772,7 +9772,7 @@ doCancel:
                 Me.cmnuTrayFilterAskClearLogo.Enabled = ClearLogoAllowed
 
                 'DiscArt
-                Dim DiscArtAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.DiscArt) AndAlso .MovieDiscArtAnyEnabled
+                Dim DiscArtAllowed As Boolean = .MovieDiscArtAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.DiscArt)
                 Me.mnuAllAutoDiscArt.Enabled = DiscArtAllowed
                 Me.mnuAllAskDiscArt.Enabled = DiscArtAllowed
                 Me.mnuMissAutoDiscArt.Enabled = DiscArtAllowed
@@ -9797,7 +9797,7 @@ doCancel:
                 Me.cmnuTrayFilterAskDiscArt.Enabled = DiscArtAllowed
 
                 'Extrafanart
-                Dim EFanartsAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart) AndAlso .MovieEFanartsAnyEnabled
+                Dim EFanartsAllowed As Boolean = .MovieEFanartsAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart)
                 Me.mnuAllAutoEFanarts.Enabled = EFanartsAllowed
                 Me.mnuAllAskEFanarts.Enabled = EFanartsAllowed
                 Me.mnuMissAutoEFanarts.Enabled = EFanartsAllowed
@@ -9822,7 +9822,7 @@ doCancel:
                 Me.cmnuTrayFilterAskEFanarts.Enabled = EFanartsAllowed
 
                 'Extrathumb
-                Dim EThumbsAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart) AndAlso .MovieEThumbsAnyEnabled
+                Dim EThumbsAllowed As Boolean = .MovieEThumbsAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart)
                 Me.mnuAllAutoEThumbs.Enabled = EThumbsAllowed
                 Me.mnuAllAskEThumbs.Enabled = EThumbsAllowed
                 Me.mnuMissAutoEThumbs.Enabled = EThumbsAllowed
@@ -9847,7 +9847,7 @@ doCancel:
                 Me.cmnuTrayFilterAskEThumbs.Enabled = EThumbsAllowed
 
                 'Fanart
-                Dim FanartAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart) AndAlso .MoviefanartAnyEnabled
+                Dim FanartAllowed As Boolean = .MovieFanartAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart)
                 Me.mnuAllAutoFanart.Enabled = FanartAllowed
                 Me.mnuAllAskFanart.Enabled = FanartAllowed
                 Me.mnuMissAutoFanart.Enabled = FanartAllowed
@@ -9872,7 +9872,7 @@ doCancel:
                 Me.cmnuTrayFilterAskFanart.Enabled = FanartAllowed
 
                 'Landscape
-                Dim LandscapeAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Landscape) AndAlso .MovieLandscapeAnyEnabled
+                Dim LandscapeAllowed As Boolean = .MovieLandscapeAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Landscape)
                 Me.mnuAllAutoLandscape.Enabled = LandscapeAllowed
                 Me.mnuAllAskLandscape.Enabled = LandscapeAllowed
                 Me.mnuMissAutoLandscape.Enabled = LandscapeAllowed
@@ -9917,7 +9917,7 @@ doCancel:
                 Me.cmnuTrayFilterAutoMI.Enabled = .MovieScraperMetaDataScan
 
                 'Poster
-                Dim PosterAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Poster) AndAlso .MoviePosterAnyEnabled
+                Dim PosterAllowed As Boolean = .MoviePosterAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Poster)
                 Me.mnuAllAutoPoster.Enabled = PosterAllowed
                 Me.mnuAllAskPoster.Enabled = PosterAllowed
                 Me.mnuMissAutoPoster.Enabled = PosterAllowed
@@ -9942,7 +9942,7 @@ doCancel:
                 Me.cmnuTrayFilterAskPoster.Enabled = PosterAllowed
 
                 'Theme
-                Dim ThemeAllowed As Boolean = .MovieTrailerAnyEnabled ' AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Theme) 'TODO
+                Dim ThemeAllowed As Boolean = .MovieThemeAnyEnabled ' AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Theme) 'TODO
                 Me.mnuAllAutoTheme.Enabled = ThemeAllowed
                 Me.mnuAllAskTheme.Enabled = ThemeAllowed
                 Me.mnuMissAutoTheme.Enabled = ThemeAllowed
@@ -9967,7 +9967,7 @@ doCancel:
                 Me.cmnuTrayFilterAskTheme.Enabled = ThemeAllowed
 
                 'Trailer
-                Dim TrailerAllowed As Boolean = ModulesManager.Instance.QueryTrailerScraperCapabilities(Enums.ScraperCapabilities.Trailer) AndAlso .MovieTrailerAnyEnabled
+                Dim TrailerAllowed As Boolean = .MovieTrailerAnyEnabled AndAlso ModulesManager.Instance.QueryTrailerScraperCapabilities(Enums.ScraperCapabilities.Trailer)
                 Me.mnuAllAutoTrailer.Enabled = TrailerAllowed
                 Me.mnuAllAskTrailer.Enabled = TrailerAllowed
                 Me.mnuMissAutoTrailer.Enabled = TrailerAllowed
