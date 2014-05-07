@@ -8793,15 +8793,15 @@ doCancel:
                 hasClearArt = Not String.IsNullOrEmpty(mContainer.ClearArt)
                 hasClearLogo = Not String.IsNullOrEmpty(mContainer.ClearLogo)
                 hasDiscArt = Not String.IsNullOrEmpty(mContainer.DiscArt)
+                hasEFanarts = Not String.IsNullOrEmpty(mContainer.EFanarts)
+                hasEThumbs = Not String.IsNullOrEmpty(mContainer.EThumbs)
                 hasFanart = Not String.IsNullOrEmpty(mContainer.Fanart)
                 hasLandscape = Not String.IsNullOrEmpty(mContainer.Landscape)
-                hasPoster = Not String.IsNullOrEmpty(mContainer.Poster)
                 hasNfo = Not String.IsNullOrEmpty(tmpMovieDb.NfoPath)
+                hasPoster = Not String.IsNullOrEmpty(mContainer.Poster)
+                hasSub = Not String.IsNullOrEmpty(mContainer.Subs)
                 hasTheme = Not String.IsNullOrEmpty(mContainer.Theme)
                 hasTrailer = Not String.IsNullOrEmpty(mContainer.Trailer)
-                hasSub = Not String.IsNullOrEmpty(mContainer.Subs)
-                hasEThumbs = Not String.IsNullOrEmpty(mContainer.EThumbs)
-                hasEFanarts = Not String.IsNullOrEmpty(mContainer.EFanarts)
                 hasWatched = Not String.IsNullOrEmpty(tmpMovieDb.Movie.PlayCount) AndAlso Not tmpMovieDb.Movie.PlayCount = "0"
 
                 Dim dRow = From drvRow In dtMedia.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item(0)) = ID Select drvRow
@@ -8829,9 +8829,9 @@ doCancel:
                         Me.Invoke(myDelegate, New Object() {dRow(0), 51, hasBanner})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 53, hasLandscape})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 55, hasTheme})
-                        Me.Invoke(myDelegate, New Object() {dRow(0), 57, hasClearArt})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 57, hasDiscArt})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 59, hasClearLogo})
-                        Me.Invoke(myDelegate, New Object() {dRow(0), 61, hasDiscArt})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 61, hasClearArt})
                     Else
                         selRow.Item(1) = tmpMovieDb.Filename
                         selRow.Item(3) = tmpMovieDb.ListTitle
@@ -8850,9 +8850,9 @@ doCancel:
                         selRow.Item(51) = hasBanner
                         selRow.Item(53) = hasLandscape
                         selRow.Item(55) = hasTheme
-                        selRow.Item(57) = hasClearArt
+                        selRow.Item(57) = hasDiscArt
                         selRow.Item(59) = hasClearLogo
-                        selRow.Item(61) = hasDiscArt
+                        selRow.Item(61) = hasClearArt
                     End If
                 End If
                 'Why on earth resave the movie if we just refreshed its data (causes issues with saving rescrapes_
