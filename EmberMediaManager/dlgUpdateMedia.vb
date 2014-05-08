@@ -94,7 +94,9 @@ Public Class dlgUpdateMedia
                 Else
                     Update_Button.Enabled = False
                 End If
-            ElseIf chkModPoster.Checked OrElse chkModFanart.Checked OrElse chkModMeta.Checked OrElse chkModEFanarts.Checked OrElse chkModEThumbs.Checked OrElse chkModTrailer.Checked Then
+            ElseIf chkModActorThumbs.Checked OrElse chkModBanner.Checked OrElse chkModClearArt.Checked OrElse chkModClearLogo.Checked OrElse _
+                chkModDiscArt.Checked OrElse chkModEFanarts.Checked OrElse chkModEThumbs.Checked OrElse chkModFanart.Checked OrElse _
+                chkModLandscape.Checked OrElse chkModMeta.Checked OrElse chkModPoster.Checked OrElse chkModTheme.Checked OrElse chkModTrailer.Checked Then
                 Update_Button.Enabled = True
             Else
                 Update_Button.Enabled = False
