@@ -1723,6 +1723,7 @@ Public Class frmMain
                                             If StringUtils.isValidURL(tURL) Then
                                                 If Master.eSettings.MovieXBMCTrailerFormat Then
                                                     DBScrapeMovie.Movie.Trailer = Replace(tURL, "http://www.youtube.com/watch?v=", "plugin://plugin.video.youtube/?action=play_video&videoid=")
+                                                    DBScrapeMovie.Movie.Trailer = Replace(DBScrapeMovie.Movie.Trailer, "http://www.youtube.com/watch?hd=1&v=", "plugin://plugin.video.youtube/?action=play_video&videoid=")
                                                 Else
                                                     DBScrapeMovie.Movie.Trailer = tURL
                                                 End If

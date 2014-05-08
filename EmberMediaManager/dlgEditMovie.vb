@@ -2491,6 +2491,7 @@ Public Class dlgEditMovie
 
                 If Master.eSettings.MovieXBMCTrailerFormat Then
                     Master.currMovie.Movie.Trailer = Replace(.txtTrailer.Text.Trim, "http://www.youtube.com/watch?v=", "plugin://plugin.video.youtube/?action=play_video&videoid=")
+                    Master.currMovie.Movie.Trailer = Replace(Master.currMovie.Movie.Trailer, "http://www.youtube.com/watch?hd=1&v=", "plugin://plugin.video.youtube/?action=play_video&videoid=")
                 Else
                     Master.currMovie.Movie.Trailer = .txtTrailer.Text.Trim
                 End If
