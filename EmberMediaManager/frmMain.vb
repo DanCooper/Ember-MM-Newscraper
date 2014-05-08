@@ -8233,8 +8233,8 @@ doCancel:
             Dim FanartAllowed As Boolean = Master.eSettings.MovieFanartAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart)
             Dim LandscapeAllowed As Boolean = Master.eSettings.MovieLandscapeAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Landscape)
             Dim PosterAllowed As Boolean = Master.eSettings.MoviePosterAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Poster)
-            Dim ThemeAllowed As Boolean = Master.eSettings.MovieThemeAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Theme)
-            Dim TrailerAllowed As Boolean = Master.eSettings.MovieTrailerAnyEnabled AndAlso ModulesManager.Instance.QueryTrailerScraperCapabilities(Enums.ScraperCapabilities.Trailer)
+            Dim ThemeAllowed As Boolean = Master.eSettings.MovieThemeEnable AndAlso Master.eSettings.MovieThemeAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Theme)
+            Dim TrailerAllowed As Boolean = Master.eSettings.MovieTrailerEnable AndAlso Master.eSettings.MovieTrailerAnyEnabled AndAlso ModulesManager.Instance.QueryTrailerScraperCapabilities(Enums.ScraperCapabilities.Trailer)
 
             'create list of movies acording to scrapetype
             For Each drvRow As DataRow In Me.dtMedia.Rows
@@ -9976,7 +9976,7 @@ doCancel:
                 Me.cmnuTrayFilterAskPoster.Enabled = PosterAllowed
 
                 'Theme
-                Dim ThemeAllowed As Boolean = .MovieThemeAnyEnabled ' AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Theme) 'TODO
+                Dim ThemeAllowed As Boolean = .MovieThemeEnable AndAlso .MovieThemeAnyEnabled ' AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Theme) 'TODO
                 Me.mnuAllAutoTheme.Enabled = ThemeAllowed
                 Me.mnuAllAskTheme.Enabled = ThemeAllowed
                 Me.mnuMissAutoTheme.Enabled = ThemeAllowed
@@ -10001,7 +10001,7 @@ doCancel:
                 Me.cmnuTrayFilterAskTheme.Enabled = ThemeAllowed
 
                 'Trailer
-                Dim TrailerAllowed As Boolean = .MovieTrailerAnyEnabled AndAlso ModulesManager.Instance.QueryTrailerScraperCapabilities(Enums.ScraperCapabilities.Trailer)
+                Dim TrailerAllowed As Boolean = .MovieTrailerEnable AndAlso .MovieTrailerAnyEnabled AndAlso ModulesManager.Instance.QueryTrailerScraperCapabilities(Enums.ScraperCapabilities.Trailer)
                 Me.mnuAllAutoTrailer.Enabled = TrailerAllowed
                 Me.mnuAllAskTrailer.Enabled = TrailerAllowed
                 Me.mnuMissAutoTrailer.Enabled = TrailerAllowed
