@@ -1133,6 +1133,56 @@ Public Class Database
     End Function
 
     ''' <summary>
+    ''' Load all the information for a movieset.
+    ''' </summary>
+    ''' <param name="MovieSetName">Name of the movieset to load, as stored in the database</param>
+    ''' <returns>Structures.DBMovie object</returns>
+    Public Function LoadMovieSetFromDB(ByVal MovieSetName As String) As Structures.DBMovieSet
+        Dim _moviesetDB As New Structures.DBMovieSet
+
+        Try
+            _moviesetDB.Setname = MovieSetName
+            Using SQLcommand As SQLite.SQLiteCommand = _mediaDBConn.CreateCommand()
+                SQLcommand.CommandText = String.Concat("SELECT SetName, HasNfo, NfoPath, HasPoster, PosterPath, HasFanart, ", _
+                                                       "FanartPath, HasBanner, BannerPath, HasLandscape, LandscapePath,", _
+                                                       "HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ", _
+                                                       "ClearArtPath FROM sets WHERE setname = ", MovieSetName, ";")
+                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                    If SQLreader.HasRows Then
+                        SQLreader.Read()
+                        If Not DBNull.Value.Equals(SQLreader("FanartPath")) Then _moviesetDB.FanartPath = SQLreader("FanartPath").ToString
+                        If Not DBNull.Value.Equals(SQLreader("PosterPath")) Then _moviesetDB.PosterPath = SQLreader("PosterPath").ToString
+                        If Not DBNull.Value.Equals(SQLreader("NfoPath")) Then _moviesetDB.NfoPath = SQLreader("NfoPath").ToString
+                        If Not DBNull.Value.Equals(SQLreader("BannerPath")) Then _moviesetDB.BannerPath = SQLreader("BannerPath").ToString
+                        If Not DBNull.Value.Equals(SQLreader("LandscapePath")) Then _moviesetDB.LandscapePath = SQLreader("LandscapePath").ToString
+                        If Not DBNull.Value.Equals(SQLreader("DiscArtPath")) Then _moviesetDB.DiscArtPath = SQLreader("DiscArtPath").ToString
+                        If Not DBNull.Value.Equals(SQLreader("ClearLogoPath")) Then _moviesetDB.ClearLogoPath = SQLreader("ClearLogoPath").ToString
+                        If Not DBNull.Value.Equals(SQLreader("ClearArtPath")) Then _moviesetDB.ClearArtPath = SQLreader("ClearArtPath").ToString
+                    End If
+                End Using
+            End Using
+
+            'Using SQLcommand As SQLite.SQLiteCommand = _mediaDBConn.CreateCommand()
+            '    SQLcommand.CommandText = String.Concat("SELECT MA.MovieID, MA.ActorName , MA.Role ,Act.Name,Act.thumb FROM MoviesActors AS MA ", _
+            '                "INNER JOIN Actors AS Act ON (MA.ActorName = Act.Name) WHERE MA.MovieID = ", _movieDB.ID, " ORDER BY MA.ROWID;")
+            '    Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+            '        Dim person As MediaContainers.Person
+            '        While SQLreader.Read
+            '            person = New MediaContainers.Person
+            '            person.Name = SQLreader("ActorName").ToString
+            '            person.Role = SQLreader("Role").ToString
+            '            person.Thumb = SQLreader("thumb").ToString
+            '            _movieDB.Movie.Actors.Add(person)
+            '        End While
+            '    End Using
+            'End Using
+        Catch ex As Exception
+            Master.eLog.Error(GetType(Database), ex.Message, ex.StackTrace, "Error")
+        End Try
+        Return _moviesetDB
+    End Function
+
+    ''' <summary>
     ''' Load all the information for a movie (by movie path)
     ''' </summary>
     ''' <param name="sPath">Full path to the movie file</param>

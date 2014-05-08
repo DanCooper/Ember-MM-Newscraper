@@ -140,7 +140,7 @@ Partial Class frmMain
         Me.cmnuMovieRemoveFromDB = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieRemoveFromDisk = New System.Windows.Forms.ToolStripMenuItem()
         Me.dgvMovieSets = New System.Windows.Forms.DataGridView()
-        Me.cmnuMovieSets = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.cmnuMovieSet = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.TestToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.scTV = New System.Windows.Forms.SplitContainer()
         Me.dgvTVShows = New System.Windows.Forms.DataGridView()
@@ -712,6 +712,8 @@ Partial Class frmMain
         Me.pnlLoadSettings = New System.Windows.Forms.Panel()
         Me.tmrAppExit = New System.Windows.Forms.Timer(Me.components)
         Me.tmrKeyBuffer = New System.Windows.Forms.Timer(Me.components)
+        Me.tmrLoadMovieSet = New System.Windows.Forms.Timer(Me.components)
+        Me.tmrWaitMovieSet = New System.Windows.Forms.Timer(Me.components)
         Me.StatusStrip.SuspendLayout()
         Me.mnuMain.SuspendLayout()
         CType(Me.scMain, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -723,7 +725,7 @@ Partial Class frmMain
         CType(Me.dgvMovies, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.cmnuMovie.SuspendLayout()
         CType(Me.dgvMovieSets, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.cmnuMovieSets.SuspendLayout()
+        Me.cmnuMovieSet.SuspendLayout()
         CType(Me.scTV, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.scTV.Panel1.SuspendLayout()
         Me.scTV.Panel2.SuspendLayout()
@@ -1704,7 +1706,7 @@ Partial Class frmMain
         Me.dgvMovieSets.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
         Me.dgvMovieSets.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable
         Me.dgvMovieSets.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.dgvMovieSets.ContextMenuStrip = Me.cmnuMovieSets
+        Me.dgvMovieSets.ContextMenuStrip = Me.cmnuMovieSet
         Me.dgvMovieSets.Dock = System.Windows.Forms.DockStyle.Fill
         Me.dgvMovieSets.GridColor = System.Drawing.Color.FromArgb(CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer))
         Me.dgvMovieSets.Location = New System.Drawing.Point(0, 56)
@@ -1718,16 +1720,16 @@ Partial Class frmMain
         Me.dgvMovieSets.StandardTab = True
         Me.dgvMovieSets.TabIndex = 17
         '
-        'cmnuMovieSets
+        'cmnuMovieSet
         '
-        Me.cmnuMovieSets.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.TestToolStripMenuItem})
-        Me.cmnuMovieSets.Name = "cmnuMovieSets"
-        Me.cmnuMovieSets.Size = New System.Drawing.Size(97, 26)
+        Me.cmnuMovieSet.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.TestToolStripMenuItem})
+        Me.cmnuMovieSet.Name = "cmnuMovieSets"
+        Me.cmnuMovieSet.Size = New System.Drawing.Size(153, 48)
         '
         'TestToolStripMenuItem
         '
         Me.TestToolStripMenuItem.Name = "TestToolStripMenuItem"
-        Me.TestToolStripMenuItem.Size = New System.Drawing.Size(96, 22)
+        Me.TestToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
         Me.TestToolStripMenuItem.Text = "Test"
         '
         'scTV
@@ -6327,6 +6329,13 @@ Partial Class frmMain
         '
         Me.tmrKeyBuffer.Interval = 1000
         '
+        'tmrLoadMovieSet
+        '
+        '
+        'tmrWaitMovieSet
+        '
+        Me.tmrWaitMovieSet.Interval = 250
+        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -6360,7 +6369,7 @@ Partial Class frmMain
         CType(Me.dgvMovies, System.ComponentModel.ISupportInitialize).EndInit()
         Me.cmnuMovie.ResumeLayout(False)
         CType(Me.dgvMovieSets, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.cmnuMovieSets.ResumeLayout(False)
+        Me.cmnuMovieSet.ResumeLayout(False)
         Me.scTV.Panel1.ResumeLayout(False)
         Me.scTV.Panel2.ResumeLayout(False)
         CType(Me.scTV, System.ComponentModel.ISupportInitialize).EndInit()
@@ -7124,6 +7133,8 @@ Partial Class frmMain
     Friend WithEvents tpMovieSets As System.Windows.Forms.TabPage
     Friend WithEvents dgvMovieSets As System.Windows.Forms.DataGridView
     Friend WithEvents dgvMovies As System.Windows.Forms.DataGridView
-    Friend WithEvents cmnuMovieSets As System.Windows.Forms.ContextMenuStrip
+    Friend WithEvents cmnuMovieSet As System.Windows.Forms.ContextMenuStrip
     Friend WithEvents TestToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents tmrLoadMovieSet As System.Windows.Forms.Timer
+    Friend WithEvents tmrWaitMovieSet As System.Windows.Forms.Timer
 End Class

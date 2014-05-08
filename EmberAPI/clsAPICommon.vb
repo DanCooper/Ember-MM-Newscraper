@@ -1643,6 +1643,28 @@ Public Class Structures
         Dim OfflineHolderFoldername As String
     End Structure
     ''' <summary>
+    ''' Structure representing a movieset in the database
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Structure DBMovieSet
+        Dim BannerPath As String
+        Dim ClearArtPath As String
+        Dim ClearLogoPath As String
+        Dim ClearBanner As Boolean
+        Dim ClearClearArt As Boolean
+        Dim ClearClearLogo As Boolean
+        Dim ClearDiscArt As Boolean
+        Dim ClearFanart As Boolean
+        Dim ClearLandscape As Boolean
+        Dim ClearPoster As Boolean
+        Dim DiscArtPath As String
+        Dim FanartPath As String
+        Dim SetName As String
+        Dim LandscapePath As String
+        Dim NfoPath As String
+        Dim PosterPath As String
+    End Structure
+    ''' <summary>
     ''' Structure representing a TV show in the database
     ''' </summary>
     ''' <remarks></remarks>

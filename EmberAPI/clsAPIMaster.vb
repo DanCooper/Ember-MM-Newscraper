@@ -28,6 +28,7 @@ Public Class Master
     Public Shared CanScanDiscImage As Boolean
     Public Shared DB As New Database
     Public Shared currMovie As New Structures.DBMovie
+    Public Shared currMovieSet As New Structures.DBMovieSet
     Public Shared currShow As New Structures.DBTV
     Public Shared DefaultMovieOptions As New Structures.ScrapeOptions
     Public Shared DefaultTVOptions As New Structures.TVScrapeOptions

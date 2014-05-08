@@ -30,6 +30,7 @@ Public Class Theming
     Private _availablecontrols As New List(Of Controls)
     Private _eptheme As New Theme
     Private _movietheme As New Theme
+    Private _moviesettheme As New Theme
     Private _showtheme As New Theme
 
 #End Region 'Fields
@@ -55,9 +56,10 @@ Public Class Theming
 #Region "Enumerations"
 
     Public Enum ThemeType As Integer
-        Movies = 0
+        Movie = 0
         Show = 1
         Episode = 2
+        MovieSet = 3
     End Enum
 
 #End Region 'Enumerations
@@ -68,8 +70,10 @@ Public Class Theming
         Dim xTheme As New Theme
         Dim xControl As New Control
         Select Case tType
-            Case ThemeType.Movies
+            Case ThemeType.Movie
                 xTheme = _movietheme
+            Case ThemeType.MovieSet
+                xTheme = _moviesettheme
             Case ThemeType.Show
                 xTheme = _showtheme
             Case ThemeType.Episode
@@ -219,6 +223,8 @@ Public Class Theming
             Select Case tType
                 Case "movie"
                     ThemeXML = XDocument.Parse(My.Resources.movie_Default)
+                Case "movieset"
+                    ThemeXML = XDocument.Parse(My.Resources.movieset_Default)
                 Case "tvshow"
                     ThemeXML = XDocument.Parse(My.Resources.tvshow_Default)
                 Case "tvep"
