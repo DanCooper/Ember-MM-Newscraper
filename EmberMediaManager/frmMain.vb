@@ -53,11 +53,13 @@ Public Class frmMain
     Private bsEpisodes As New BindingSource
 
     Private bsMedia As New BindingSource
+    Private bsMovieSets As New BindingSource
     Private bsSeasons As New BindingSource
     Private bsShows As New BindingSource
 
     Private dtEpisodes As New DataTable
     Private dtMedia As New DataTable
+    Private dtMovieSets As New DataTable
     Private dtSeasons As New DataTable
     Private dtShows As New DataTable
     Private dScrapeRow As DataRow = Nothing
@@ -358,6 +360,7 @@ Public Class frmMain
 
             Me.SetControlsEnabled(False)
             Me.tpMovies.Text = Master.eLang.GetString(36, "Movies")
+            Me.tpMovieSets.Text = Master.eLang.GetString(366, "Sets")
             Me.tpShows.Text = Master.eLang.GetString(653, "TV")
             Me.txtSearch.Text = String.Empty
 
@@ -365,6 +368,10 @@ Public Class frmMain
 
             If Scan.Movies Then
                 Me.dgvMovies.DataSource = Nothing
+            End If
+
+            If Scan.Movies Then
+                Me.dgvMovieSets.DataSource = Nothing
             End If
 
             If Scan.TV Then
@@ -495,6 +502,8 @@ Public Class frmMain
                     Me.btnDown.Enabled = False
                 End If
             Case 2
+
+            Case 3
                 If Me.btnUp.Visible Then
                     Me.pnlInfoPanel.Height = Me._ipup
                     Me.btnUp.Enabled = False
@@ -569,6 +578,8 @@ Public Class frmMain
         Me.tcMain.Focus()
         If Me.tcMain.SelectedIndex = 0 Then
             Me.aniType = 0
+        ElseIf Me.tcMain.SelectedIndex = 1 Then
+
         Else
             Me.aniShowType = 0
         End If
@@ -642,6 +653,8 @@ Public Class frmMain
 
         If Me.tcMain.SelectedIndex = 0 Then
             Me.aniType = 1
+        ElseIf Me.tcMain.SelectedIndex = 1 Then
+
         Else
             Me.aniShowType = 1
         End If
@@ -658,6 +671,8 @@ Public Class frmMain
             If Not String.IsNullOrEmpty(Master.currMovie.Filename) AndAlso Me.dgvMovies.SelectedRows.Count > 0 Then
                 Me.LoadInfo(Convert.ToInt32(Master.currMovie.ID), Master.currMovie.Filename, False, True, True)
             End If
+        ElseIf Me.tcMain.SelectedIndex = 1 Then
+
         ElseIf Not String.IsNullOrEmpty(Master.currShow.Filename) AndAlso Me.dgvTVEpisodes.SelectedRows.Count > 0 Then
             Me.SetControlsEnabled(False, True)
 
@@ -737,6 +752,8 @@ Public Class frmMain
         Me.tcMain.Focus()
         If Me.tcMain.SelectedIndex = 0 Then
             Me.aniType = 2
+        ElseIf Me.tcMain.SelectedIndex = 1 Then
+
         Else
             Me.aniShowType = 2
         End If
@@ -1203,7 +1220,8 @@ Public Class frmMain
                 Me.mnuUpdate.Enabled = True
                 Me.cmnuTrayUpdate.Enabled = True
                 If (Me.tcMain.SelectedIndex = 0 AndAlso Me.dgvMovies.RowCount > 0) OrElse _
-                   (Me.tcMain.SelectedIndex = 1 AndAlso Me.dgvTVShows.RowCount > 0) Then
+                    (Me.tcMain.SelectedIndex = 1 AndAlso Me.dgvMovieSets.RowCount > 0) OrElse _
+                    (Me.tcMain.SelectedIndex = 2 AndAlso Me.dgvTVShows.RowCount > 0) Then
                     Me.SetControlsEnabled(True)
                 End If
             End If
@@ -2111,7 +2129,7 @@ doCancel:
         Me.currText = Me.txtSearch.Text
 
         Me.tmrSearchWait.Enabled = False
-        Me.tmrSearch.Enabled = False
+        Me.tmrSearchMovie.Enabled = False
         Me.tmrSearchWait.Enabled = True
 
     End Sub
@@ -3813,7 +3831,7 @@ doCancel:
         End Try
     End Sub
 
-    Private Sub dgvMediaList_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMovies.CellClick
+    Private Sub dgvMovies_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMovies.CellClick
         Try
 
             If e.ColumnIndex = 3 OrElse e.ColumnIndex = 34 OrElse Not Master.eSettings.MovieClickScrape Then 'Title
@@ -3939,7 +3957,7 @@ doCancel:
         End Try
     End Sub
 
-    Private Sub dgvMediaList_CellDoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMovies.CellDoubleClick
+    Private Sub dgvMovies_CellDoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMovies.CellDoubleClick
         Try
 
             If e.RowIndex < 0 Then Exit Sub
@@ -3979,28 +3997,28 @@ doCancel:
         End Try
     End Sub
 
-    Private Sub dgvMediaList_CellEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMovies.CellEnter
+    Private Sub dgvMovies_CellEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMovies.CellEnter
         Try
             If Not Me.tcMain.SelectedIndex = 0 Then Return
 
             Me.tmrWaitShow.Stop()
             Me.tmrWaitSeason.Stop()
             Me.tmrWaitEp.Stop()
-            Me.tmrWait.Stop()
+            Me.tmrWaitMovie.Stop()
             Me.tmrLoadShow.Stop()
             Me.tmrLoadSeason.Stop()
             Me.tmrLoadEp.Stop()
-            Me.tmrLoad.Stop()
+            Me.tmrLoadMovie.Stop()
 
             Me.currRow = e.RowIndex
-            Me.tmrWait.Start()
+            Me.tmrWaitMovie.Start()
 
         Catch ex As Exception
             Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
-    Private Sub dgvMediaList_CellMouseDown(sender As Object, e As System.Windows.Forms.DataGridViewCellMouseEventArgs) Handles dgvMovies.CellMouseDown
+    Private Sub dgvMovies_CellMouseDown(sender As Object, e As System.Windows.Forms.DataGridViewCellMouseEventArgs) Handles dgvMovies.CellMouseDown
         Try
             If e.Button = Windows.Forms.MouseButtons.Right And Me.dgvMovies.RowCount > 0 Then
                 If bwCleanDB.IsBusy OrElse bwMovieScraper.IsBusy OrElse bwNonScrape.IsBusy Then
@@ -4104,7 +4122,7 @@ doCancel:
     End Sub
 
 
-    Private Sub dgvMediaList_CellMouseEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMovies.CellMouseEnter
+    Private Sub dgvMovies_CellMouseEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMovies.CellMouseEnter
         'EMM not able to scrape subtitles yet.
         'So don't set status for it, but leave the option open for the future.
         If Master.eSettings.MovieClickScrape AndAlso e.RowIndex > 0 AndAlso e.ColumnIndex > 3 AndAlso e.ColumnIndex < 11 AndAlso e.ColumnIndex <> 8 AndAlso Not bwMovieScraper.IsBusy Then
@@ -4139,7 +4157,7 @@ doCancel:
         End If
     End Sub
 
-    Private Sub dgvMediaList_CellMouseLeave(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMovies.CellMouseLeave
+    Private Sub dgvMovies_CellMouseLeave(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMovies.CellMouseLeave
         If Not String.IsNullOrEmpty(oldStatus) Then Me.SetStatus(oldStatus)
     End Sub
 
@@ -4226,20 +4244,20 @@ doCancel:
                 End If
             End If
 
-                Me.tpMovies.Text = String.Format("{0} ({1})", Master.eLang.GetString(36, "Movies"), Me.dgvMovies.RowCount)
+            Me.tpMovies.Text = String.Format("{0} ({1})", Master.eLang.GetString(36, "Movies"), Me.dgvMovies.RowCount)
 
         Catch ex As Exception
             Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
-    Private Sub dgvMediaList_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles dgvMovies.KeyDown
+    Private Sub dgvMovies_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles dgvMovies.KeyDown
         'stop enter key from selecting next list item
         e.Handled = (e.KeyCode = Keys.Enter)
         If e.Modifiers = Keys.Control AndAlso e.KeyCode = Keys.S Then txtSearch.Focus()
     End Sub
 
-    Private Sub dgvMediaList_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles dgvMovies.KeyPress
+    Private Sub dgvMovies_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles dgvMovies.KeyPress
         Try
             If StringUtils.AlphaNumericOnly(e.KeyChar) Then
                 KeyBuffer = String.Concat(KeyBuffer, e.KeyChar.ToString.ToLower)
@@ -4291,11 +4309,11 @@ doCancel:
         End Try
     End Sub
 
-    Private Sub dgvMediaList_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvMovies.Resize
+    Private Sub dgvMovies_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvMovies.Resize
         ResizeMediaList()
     End Sub
 
-    Private Sub dgvMediaList_Sorted(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvMovies.Sorted
+    Private Sub dgvMovies_Sorted(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvMovies.Sorted
         Me.prevRow = -1
         If Me.dgvMovies.RowCount > 0 Then
             Me.dgvMovies.CurrentCell = Nothing
@@ -4303,6 +4321,94 @@ doCancel:
             Me.dgvMovies.Rows(0).Selected = True
             Me.dgvMovies.CurrentCell = Me.dgvMovies.Rows(0).Cells(3)
         End If
+    End Sub
+
+    Private Sub dgvMovieSets_CellPainting(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellPaintingEventArgs) Handles dgvMovieSets.CellPainting
+        Try
+
+            If Master.isWindows AndAlso e.RowIndex >= 0 AndAlso Not Me.dgvMovieSets.Item(e.ColumnIndex, e.RowIndex).Displayed Then
+                e.Handled = True
+                Return
+            End If
+
+            'icons
+            If e.ColumnIndex >= 1 AndAlso e.ColumnIndex <= 16 AndAlso e.RowIndex = -1 Then
+                e.PaintBackground(e.ClipBounds, False)
+
+                Dim pt As Point = e.CellBounds.Location
+                Dim offset As Integer = Convert.ToInt32((e.CellBounds.Width - Me.ilColumnIcons.ImageSize.Width) / 2)
+
+                pt.X += offset
+                pt.Y = 3
+                If e.ColumnIndex = 1 Then
+                    Me.ilColumnIcons.Draw(e.Graphics, pt, 2)
+                ElseIf e.ColumnIndex = 3 Then
+                    Me.ilColumnIcons.Draw(e.Graphics, pt, 0)
+                ElseIf e.ColumnIndex = 5 Then
+                    Me.ilColumnIcons.Draw(e.Graphics, pt, 1)
+                ElseIf e.ColumnIndex = 7 Then
+                    Me.ilColumnIcons.Draw(e.Graphics, pt, 10)
+                ElseIf e.ColumnIndex = 9 Then
+                    Me.ilColumnIcons.Draw(e.Graphics, pt, 11)
+                ElseIf e.ColumnIndex = 11 Then
+                    Me.ilColumnIcons.Draw(e.Graphics, pt, 13)
+                ElseIf e.ColumnIndex = 13 Then
+                    Me.ilColumnIcons.Draw(e.Graphics, pt, 14)
+                ElseIf e.ColumnIndex = 15 Then
+                    Me.ilColumnIcons.Draw(e.Graphics, pt, 15)
+                End If
+
+                e.Handled = True
+
+            End If
+
+            ''text
+            'If e.ColumnIndex = 3 AndAlso e.RowIndex >= 0 Then
+            '    If Convert.ToBoolean(Me.dgvMovies.Item(11, e.RowIndex).Value) Then                  'is marked
+            '        e.CellStyle.ForeColor = Color.Crimson
+            '        e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
+            '        e.CellStyle.SelectionForeColor = Color.Crimson
+            '    ElseIf Convert.ToBoolean(Me.dgvMovies.Item(10, e.RowIndex).Value) Then              'is new
+            '        e.CellStyle.ForeColor = Color.Green
+            '        e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
+            '        e.CellStyle.SelectionForeColor = Color.Green
+            '    Else
+            e.CellStyle.ForeColor = Color.Black
+            e.CellStyle.Font = New Font("Segoe UI", 8.25, FontStyle.Regular)
+            e.CellStyle.SelectionForeColor = Color.FromKnownColor(KnownColor.HighlightText)
+            '    End If
+            'End If
+
+            If e.ColumnIndex >= 0 AndAlso e.ColumnIndex <= 16 AndAlso e.RowIndex >= 0 Then
+                'If Convert.ToBoolean(Me.dgvMovies.Item(14, e.RowIndex).Value) Then                  'is locked
+                '    e.CellStyle.BackColor = Color.LightSteelBlue
+                '    e.CellStyle.SelectionBackColor = Color.DarkTurquoise
+                'ElseIf Convert.ToBoolean(Me.dgvMovies.Item(44, e.RowIndex).Value) Then              'use folder
+                '    e.CellStyle.BackColor = Color.MistyRose
+                '    e.CellStyle.SelectionBackColor = Color.DarkMagenta
+                'Else
+                e.CellStyle.BackColor = Color.White
+                e.CellStyle.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
+                'End If
+
+                If e.ColumnIndex >= 1 AndAlso e.ColumnIndex <= 16 Then
+                    e.PaintBackground(e.ClipBounds, True)
+
+                    Dim pt As Point = e.CellBounds.Location
+                    Dim offset As Integer = Convert.ToInt32((e.CellBounds.Width - Me.ilColumnIcons.ImageSize.Width) / 2)
+
+                    pt.X += offset
+                    pt.Y = e.CellBounds.Top + 3
+                    Me.ilColumnIcons.Draw(e.Graphics, pt, If(Convert.ToBoolean(e.Value), 6, 7))
+                    e.Handled = True
+                End If
+            End If
+
+            Me.tpMovieSets.Text = String.Format("{0} ({1})", Master.eLang.GetString(366, "Sets"), Me.dgvMovieSets.RowCount)
+
+        Catch ex As Exception
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
 
     Private Sub dgvTVEpisodes_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVEpisodes.CellClick
@@ -4352,15 +4458,15 @@ doCancel:
 
     Private Sub dgvTVEpisodes_CellEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVEpisodes.CellEnter
         Try
-            If Not Me.tcMain.SelectedIndex = 1 OrElse Not Me.currList = 2 Then Return
+            If Not Me.tcMain.SelectedIndex = 2 OrElse Not Me.currList = 2 Then Return
 
             Me.tmrWaitShow.Stop()
             Me.tmrWaitSeason.Stop()
-            Me.tmrWait.Stop()
+            Me.tmrWaitMovie.Stop()
             Me.tmrWaitEp.Stop()
             Me.tmrLoadShow.Stop()
             Me.tmrLoadSeason.Stop()
-            Me.tmrLoad.Stop()
+            Me.tmrLoadMovie.Stop()
             Me.tmrLoadEp.Stop()
 
             Me.currEpRow = e.RowIndex
@@ -4692,14 +4798,14 @@ doCancel:
     Private Sub dgvTVSeasons_CellEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVSeasons.CellEnter
         Try
 
-            If Not Me.tcMain.SelectedIndex = 1 OrElse Not Me.currList = 1 Then Return
+            If Not Me.tcMain.SelectedIndex = 2 OrElse Not Me.currList = 1 Then Return
 
             Me.tmrWaitShow.Stop()
-            Me.tmrWait.Stop()
+            Me.tmrWaitMovie.Stop()
             Me.tmrWaitEp.Stop()
             Me.tmrWaitSeason.Stop()
             Me.tmrLoadShow.Stop()
-            Me.tmrLoad.Stop()
+            Me.tmrLoadMovie.Stop()
             Me.tmrLoadEp.Stop()
             Me.tmrLoadSeason.Stop()
 
@@ -4956,13 +5062,13 @@ doCancel:
 
     Private Sub dgvTVShows_CellEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVShows.CellEnter
         Try
-            If Not Me.tcMain.SelectedIndex = 1 OrElse Not Me.currList = 0 Then Return
+            If Not Me.tcMain.SelectedIndex = 2 OrElse Not Me.currList = 0 Then Return
 
-            Me.tmrWait.Stop()
+            Me.tmrWaitMovie.Stop()
             Me.tmrWaitSeason.Stop()
             Me.tmrWaitEp.Stop()
             Me.tmrWaitShow.Stop()
-            Me.tmrLoad.Stop()
+            Me.tmrLoadMovie.Stop()
             Me.tmrLoadSeason.Stop()
             Me.tmrLoadEp.Stop()
             Me.tmrLoadShow.Stop()
@@ -5358,6 +5464,8 @@ doCancel:
         Try
             Me.bsMedia.DataSource = Nothing
             Me.dgvMovies.DataSource = Nothing
+            Me.bsMovieSets.DataSource = Nothing
+            Me.dgvMovieSets.DataSource = Nothing
             Me.bsShows.DataSource = Nothing
             Me.dgvTVShows.DataSource = Nothing
             Me.bsSeasons.DataSource = Nothing
@@ -5393,6 +5501,8 @@ doCancel:
                     Master.DB.FillDataTable(Me.dtMedia, "SELECT ID, MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasEThumbs, New, Mark, Source, Imdb, Lock, Title, OriginalTitle, Year, Rating, Votes, MPAA, Top250, Country, Outline, Plot, Tagline, Certification, Genre, Studio, Runtime, ReleaseDate, Director, Credits, Playcount, HasWatched, Trailer, PosterPath, FanartPath, EThumbsPath, NfoPath, TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, FileSource, NeedsSave, SortTitle, DateAdd, HasEFanarts, EFanartsPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasTheme, ThemePath, HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath FROM movies ORDER BY ListTitle COLLATE NOCASE;")
                 End If
             End If
+
+            Master.DB.FillDataTable(Me.dtMovieSets, "SELECT SetName, HasNfo, NfoPath, HasPoster, PosterPath, HasFanart, FanartPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath FROM sets ORDER BY SetName COLLATE NOCASE;")
 
             Master.DB.FillDataTable(Me.dtShows, "SELECT ID, Title, HasPoster, HasFanart, HasNfo, New, Mark, TVShowPath, Source, TVDB, Lock, EpisodeGuide, Plot, Genre, Premiered, Studio, MPAA, Rating, PosterPath, FanartPath, NfoPath, NeedsSave, Language, Ordering, HasBanner, BannerPath, HasLandscape, LandscapePath, Status, HasTheme, ThemePath, HasCharacterArt, CharacterArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath FROM TVShows ORDER BY Title COLLATE NOCASE;")
 
@@ -5547,16 +5657,103 @@ doCancel:
                             .dgvMovies.Columns(i).Visible = False
                         Next
 
-                            .dgvMovies.Columns(0).ValueType = GetType(Int32)
+                        .dgvMovies.Columns(0).ValueType = GetType(Int32)
 
-                            If Master.isWindows Then .dgvMovies.Columns(3).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
-                            ResizeMediaList()
+                        If Master.isWindows Then .dgvMovies.Columns(3).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+                        ResizeMediaList()
 
-                            If .dgvMovies.RowCount > 0 AndAlso Me.tcMain.SelectedIndex = 0 Then
-                                .dgvMovies.Sort(.dgvMovies.Columns(3), ComponentModel.ListSortDirection.Ascending)
+                        If .dgvMovies.RowCount > 0 AndAlso Me.tcMain.SelectedIndex = 0 Then
+                            .dgvMovies.Sort(.dgvMovies.Columns(3), ComponentModel.ListSortDirection.Ascending)
 
-                                .SetControlsEnabled(True)
-                            End If
+                            .SetControlsEnabled(True)
+                        End If
+
+                    End With
+                End If
+
+                Me.dgvMovieSets.Enabled = False
+                If Me.dtMovieSets.Rows.Count > 0 Then
+                    With Me
+                        .bsMovieSets.DataSource = .dtMovieSets
+                        .dgvMovieSets.DataSource = .bsMovieSets
+
+                        .dgvMovieSets.Columns(0).Resizable = DataGridViewTriState.True
+                        .dgvMovieSets.Columns(0).ReadOnly = True
+                        .dgvMovieSets.Columns(0).MinimumWidth = 83
+                        .dgvMovieSets.Columns(0).SortMode = DataGridViewColumnSortMode.Automatic
+                        .dgvMovieSets.Columns(0).ToolTipText = Master.eLang.GetString(21, "Title")
+                        .dgvMovieSets.Columns(0).HeaderText = Master.eLang.GetString(21, "Title")
+                        .dgvMovieSets.Columns(1).Width = 20
+                        .dgvMovieSets.Columns(1).Resizable = DataGridViewTriState.False
+                        .dgvMovieSets.Columns(1).ReadOnly = True
+                        .dgvMovieSets.Columns(1).SortMode = DataGridViewColumnSortMode.Automatic
+                        .dgvMovieSets.Columns(1).Visible = False 'no NFO support for moviesets Not Master.eSettings.MovieNFOCol
+                        .dgvMovieSets.Columns(1).ToolTipText = Master.eLang.GetString(150, "Nfo")
+                        .dgvMovieSets.Columns(2).Visible = False
+                        .dgvMovieSets.Columns(3).Width = 20
+                        .dgvMovieSets.Columns(3).Resizable = DataGridViewTriState.False
+                        .dgvMovieSets.Columns(3).ReadOnly = True
+                        .dgvMovieSets.Columns(3).SortMode = DataGridViewColumnSortMode.Automatic
+                        .dgvMovieSets.Columns(3).Visible = True 'Not Master.eSettings.MoviePosterCol
+                        .dgvMovieSets.Columns(3).ToolTipText = Master.eLang.GetString(148, "Poster")
+                        .dgvMovieSets.Columns(4).Visible = False
+                        .dgvMovieSets.Columns(5).Width = 20
+                        .dgvMovieSets.Columns(5).Resizable = DataGridViewTriState.False
+                        .dgvMovieSets.Columns(5).ReadOnly = True
+                        .dgvMovieSets.Columns(5).SortMode = DataGridViewColumnSortMode.Automatic
+                        .dgvMovieSets.Columns(5).Visible = True 'Not Master.eSettings.MovieFanartCol
+                        .dgvMovieSets.Columns(5).ToolTipText = Master.eLang.GetString(149, "Fanart")
+                        .dgvMovieSets.Columns(6).Visible = False
+                        .dgvMovieSets.Columns(7).Width = 20
+                        .dgvMovieSets.Columns(7).Resizable = DataGridViewTriState.False
+                        .dgvMovieSets.Columns(7).ReadOnly = True
+                        .dgvMovieSets.Columns(7).SortMode = DataGridViewColumnSortMode.Automatic
+                        .dgvMovieSets.Columns(7).Visible = True 'Not Master.eSettings.MovieBannerCol
+                        .dgvMovieSets.Columns(7).ToolTipText = Master.eLang.GetString(838, "Banner")
+                        .dgvMovieSets.Columns(8).Visible = False
+                        .dgvMovieSets.Columns(9).Width = 20
+                        .dgvMovieSets.Columns(9).Resizable = DataGridViewTriState.False
+                        .dgvMovieSets.Columns(9).ReadOnly = True
+                        .dgvMovieSets.Columns(9).SortMode = DataGridViewColumnSortMode.Automatic
+                        .dgvMovieSets.Columns(9).Visible = True 'Not Master.eSettings.MovieLandscapeCol
+                        .dgvMovieSets.Columns(9).ToolTipText = Master.eLang.GetString(1035, "Landscape")
+                        .dgvMovieSets.Columns(10).Visible = False
+                        .dgvMovieSets.Columns(11).Width = 20
+                        .dgvMovieSets.Columns(11).Resizable = DataGridViewTriState.False
+                        .dgvMovieSets.Columns(11).ReadOnly = True
+                        .dgvMovieSets.Columns(11).SortMode = DataGridViewColumnSortMode.Automatic
+                        .dgvMovieSets.Columns(11).Visible = True ' Not Master.eSettings.MovieDiscArtCol
+                        .dgvMovieSets.Columns(11).ToolTipText = Master.eLang.GetString(1098, "DiscArt")
+                        .dgvMovieSets.Columns(12).Visible = False
+                        .dgvMovieSets.Columns(13).Width = 20
+                        .dgvMovieSets.Columns(13).Resizable = DataGridViewTriState.False
+                        .dgvMovieSets.Columns(13).ReadOnly = True
+                        .dgvMovieSets.Columns(13).SortMode = DataGridViewColumnSortMode.Automatic
+                        .dgvMovieSets.Columns(13).Visible = True ' Not Master.eSettings.MovieClearLogoCol
+                        .dgvMovieSets.Columns(13).ToolTipText = Master.eLang.GetString(1097, "ClearLogo")
+                        .dgvMovieSets.Columns(14).Visible = False
+                        .dgvMovieSets.Columns(15).Width = 20
+                        .dgvMovieSets.Columns(15).Resizable = DataGridViewTriState.False
+                        .dgvMovieSets.Columns(15).ReadOnly = True
+                        .dgvMovieSets.Columns(15).SortMode = DataGridViewColumnSortMode.Automatic
+                        .dgvMovieSets.Columns(15).Visible = True 'Not Master.eSettings.MovieClearArtCol
+                        .dgvMovieSets.Columns(15).ToolTipText = Master.eLang.GetString(1096, "ClearArt")
+                        .dgvMovieSets.Columns(16).Visible = False
+
+                        For i As Integer = 17 To .dgvMovieSets.Columns.Count - 1
+                            .dgvMovieSets.Columns(i).Visible = False
+                        Next
+
+                        .dgvMovieSets.Columns(0).ValueType = GetType(Int32)
+
+                        If Master.isWindows Then .dgvMovieSets.Columns(0).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+                        ResizeMediaList()
+
+                        If .dgvMovieSets.RowCount > 0 AndAlso Me.tcMain.SelectedIndex = 1 Then
+                            .dgvMovieSets.Sort(.dgvMovieSets.Columns(0), ComponentModel.ListSortDirection.Ascending)
+
+                            .SetControlsEnabled(True)
+                        End If
 
                     End With
                 End If
@@ -9303,6 +9500,8 @@ doCancel:
                     Case 0
                         Me.dgvMovies.Focus()
                     Case 1
+                        Me.dgvMovieSets.Focus()
+                    Case 2
                         Me.dgvTVShows.Focus()
                 End Select
 
@@ -9591,7 +9790,7 @@ doCancel:
                     o.Enabled = isEnabled AndAlso (Me.dgvMovies.RowCount > 0 OrElse Me.dgvTVShows.RowCount > 0) AndAlso tcMain.SelectedIndex = 0
                 ElseIf TypeOf o.Tag Is Structures.ModulesMenus Then
                     Dim tagmenu As Structures.ModulesMenus = DirectCast(o.Tag, Structures.ModulesMenus)
-                    o.Enabled = (isEnabled OrElse Not withTools) AndAlso (((Me.dgvMovies.RowCount > 0 OrElse tagmenu.IfNoMovies) AndAlso tcMain.SelectedIndex = 0) OrElse ((Me.dgvTVShows.RowCount > 0 OrElse tagmenu.IfNoTVShow) AndAlso tcMain.SelectedIndex = 1))
+                    o.Enabled = (isEnabled OrElse Not withTools) AndAlso (((Me.dgvMovies.RowCount > 0 OrElse tagmenu.IfNoMovies) AndAlso tcMain.SelectedIndex = 0) OrElse ((Me.dgvTVShows.RowCount > 0 OrElse tagmenu.IfNoTVShow) AndAlso tcMain.SelectedIndex = 2))
                 End If
             ElseIf TypeOf i Is ToolStripSeparator Then
                 Dim o As ToolStripSeparator = DirectCast(i, ToolStripSeparator)
@@ -10864,6 +11063,7 @@ doCancel:
                 .rbFilterAnd.Text = Master.eLang.GetString(45, "And")
                 .rbFilterOr.Text = Master.eLang.GetString(46, "Or")
                 .tpMovies.Text = Master.eLang.GetString(36, "Movies")
+                .tpMovieSets.Text = Master.eLang.GetString(366, "Sets")
                 .tpShows.Text = Master.eLang.GetString(653, "TV")
                 .tsbAutoPilot.Text = Master.eLang.GetString(67, "Scrape Media")
                 .tsbMediaCenters.Text = Master.eLang.GetString(83, "Media Centers")
@@ -10963,6 +11163,7 @@ doCancel:
                 Me.pnlListTop.Height = 56
                 Me.btnMarkAll.Visible = True
                 Me.scTV.Visible = False
+                Me.dgvMovieSets.Visible = False
                 Me.dgvMovies.Visible = True
                 Me.ApplyTheme(Theming.ThemeType.Movies)
                 If Me.bwLoadEpInfo.IsBusy Then Me.bwLoadEpInfo.CancelAsync()
@@ -10981,10 +11182,38 @@ doCancel:
                 End If
             Case 1
                 Me.mnuMainTools.Enabled = True
+                Me.cmnuTrayTools.Enabled = True
+                Me.pnlFilter.Visible = True
+                Me.pnlListTop.Height = 56
+                Me.btnMarkAll.Visible = False
+                Me.scTV.Visible = False
+                Me.dgvMovieSets.Visible = True
+                Me.dgvMovies.Visible = False
+                Me.ApplyTheme(Theming.ThemeType.Movies)
+                If Me.bwLoadInfo.IsBusy Then Me.bwLoadInfo.CancelAsync()
+                If Me.bwDownloadPic.IsBusy Then Me.bwDownloadPic.CancelAsync()
+                If Me.bwLoadEpInfo.IsBusy Then Me.bwLoadEpInfo.CancelAsync()
+                If Me.bwLoadSeasonInfo.IsBusy Then Me.bwLoadSeasonInfo.CancelAsync()
+                If Me.bwLoadShowInfo.IsBusy Then Me.bwLoadShowInfo.CancelAsync()
+                If Me.bwDownloadPic.IsBusy Then Me.bwDownloadPic.CancelAsync()
+                If Me.dgvMovieSets.RowCount > 0 Then
+                    Me.prevRow = -1
+
+                    Me.dgvMovieSets.CurrentCell = Nothing
+                    Me.dgvMovieSets.ClearSelection()
+                    Me.dgvMovieSets.Rows(0).Selected = True
+                    Me.dgvMovieSets.CurrentCell = Me.dgvMovieSets.Rows(0).Cells(0)
+
+                    Me.dgvMovieSets.Focus()
+                End If
+
+            Case 2
+                Me.mnuMainTools.Enabled = True
                 Me.cmnuTrayTools.Enabled = False
                 Me.tsbAutoPilot.Enabled = False
                 Me.cmnuTrayScrape.Enabled = False
                 Me.dgvMovies.Visible = False
+                Me.dgvMovieSets.Visible = False
                 Me.pnlFilter.Visible = False
                 Me.pnlListTop.Height = 23
                 Me.btnMarkAll.Visible = False
@@ -11163,9 +11392,9 @@ doCancel:
         End Try
     End Sub
 
-    Private Sub tmrLoad_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles tmrLoad.Tick
-        Me.tmrWait.Stop()
-        Me.tmrLoad.Stop()
+    Private Sub tmrLoad_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles tmrLoadMovie.Tick
+        Me.tmrWaitMovie.Stop()
+        Me.tmrLoadMovie.Stop()
         Try
             If Me.dgvMovies.SelectedRows.Count > 0 Then
 
@@ -11182,17 +11411,17 @@ doCancel:
     End Sub
 
     Private Sub tmrSearchWait_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrSearchWait.Tick
-        Me.tmrSearch.Enabled = False
+        Me.tmrSearchMovie.Enabled = False
         If Me.prevText = Me.currText Then
-            Me.tmrSearch.Enabled = True
+            Me.tmrSearchMovie.Enabled = True
         Else
             Me.prevText = Me.currText
         End If
     End Sub
 
-    Private Sub tmrSearch_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrSearch.Tick
+    Private Sub tmrSearch_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrSearchMovie.Tick
         Me.tmrSearchWait.Enabled = False
-        Me.tmrSearch.Enabled = False
+        Me.tmrSearchMovie.Enabled = False
         bDoingSearch = True
         Try
             If Not String.IsNullOrEmpty(Me.txtSearch.Text) Then
@@ -11277,14 +11506,14 @@ doCancel:
         End If
     End Sub
 
-    Private Sub tmrWait_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles tmrWait.Tick
+    Private Sub tmrWait_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles tmrWaitMovie.Tick
         If Not Me.prevRow = Me.currRow Then
             Me.prevRow = Me.currRow
-            Me.tmrWait.Stop()
-            Me.tmrLoad.Start()
+            Me.tmrWaitMovie.Stop()
+            Me.tmrLoadMovie.Start()
         Else
-            Me.tmrLoad.Stop()
-            Me.tmrWait.Stop()
+            Me.tmrLoadMovie.Stop()
+            Me.tmrWaitMovie.Stop()
         End If
     End Sub
 
@@ -11445,7 +11674,7 @@ doCancel:
         Me.currText = Me.txtSearch.Text
 
         Me.tmrSearchWait.Enabled = False
-        Me.tmrSearch.Enabled = False
+        Me.tmrSearchMovie.Enabled = False
         Me.tmrSearchWait.Enabled = True
     End Sub
 

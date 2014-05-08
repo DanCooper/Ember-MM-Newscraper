@@ -28,6 +28,7 @@ Partial Class frmMain
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.BottomToolStripPanel = New System.Windows.Forms.ToolStripPanel()
         Me.TopToolStripPanel = New System.Windows.Forms.ToolStripPanel()
         Me.RightToolStripPanel = New System.Windows.Forms.ToolStripPanel()
@@ -138,6 +139,9 @@ Partial Class frmMain
         Me.cmnuMovieRemove = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieRemoveFromDB = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieRemoveFromDisk = New System.Windows.Forms.ToolStripMenuItem()
+        Me.dgvMovieSets = New System.Windows.Forms.DataGridView()
+        Me.cmnuMovieSets = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.TestToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.scTV = New System.Windows.Forms.SplitContainer()
         Me.dgvTVShows = New System.Windows.Forms.DataGridView()
         Me.cmnuShow = New System.Windows.Forms.ContextMenuStrip(Me.components)
@@ -205,6 +209,7 @@ Partial Class frmMain
         Me.txtSearch = New System.Windows.Forms.TextBox()
         Me.tcMain = New System.Windows.Forms.TabControl()
         Me.tpMovies = New System.Windows.Forms.TabPage()
+        Me.tpMovieSets = New System.Windows.Forms.TabPage()
         Me.tpShows = New System.Windows.Forms.TabPage()
         Me.pnlFilter = New System.Windows.Forms.Panel()
         Me.gbSort = New System.Windows.Forms.GroupBox()
@@ -489,10 +494,10 @@ Partial Class frmMain
         Me.mnuUpdateShows = New System.Windows.Forms.ToolStripMenuItem()
         Me.tsbMediaCenters = New System.Windows.Forms.ToolStripSplitButton()
         Me.ilColumnIcons = New System.Windows.Forms.ImageList(Me.components)
-        Me.tmrWait = New System.Windows.Forms.Timer(Me.components)
-        Me.tmrLoad = New System.Windows.Forms.Timer(Me.components)
+        Me.tmrWaitMovie = New System.Windows.Forms.Timer(Me.components)
+        Me.tmrLoadMovie = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearchWait = New System.Windows.Forms.Timer(Me.components)
-        Me.tmrSearch = New System.Windows.Forms.Timer(Me.components)
+        Me.tmrSearchMovie = New System.Windows.Forms.Timer(Me.components)
         Me.tmrFilterAni = New System.Windows.Forms.Timer(Me.components)
         Me.ToolTips = New System.Windows.Forms.ToolTip(Me.components)
         Me.tmrWaitShow = New System.Windows.Forms.Timer(Me.components)
@@ -717,6 +722,8 @@ Partial Class frmMain
         Me.pnlFilterSource.SuspendLayout()
         CType(Me.dgvMovies, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.cmnuMovie.SuspendLayout()
+        CType(Me.dgvMovieSets, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.cmnuMovieSets.SuspendLayout()
         CType(Me.scTV, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.scTV.Panel1.SuspendLayout()
         Me.scTV.Panel2.SuspendLayout()
@@ -1094,6 +1101,7 @@ Partial Class frmMain
         Me.scMain.Panel1.Controls.Add(Me.pnlFilterGenre)
         Me.scMain.Panel1.Controls.Add(Me.pnlFilterSource)
         Me.scMain.Panel1.Controls.Add(Me.dgvMovies)
+        Me.scMain.Panel1.Controls.Add(Me.dgvMovieSets)
         Me.scMain.Panel1.Controls.Add(Me.scTV)
         Me.scMain.Panel1.Controls.Add(Me.pnlListTop)
         Me.scMain.Panel1.Controls.Add(Me.pnlFilter)
@@ -1255,7 +1263,7 @@ Partial Class frmMain
         '
         Me.cmnuMovie.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuMovieTitle, Me.ToolStripSeparator3, Me.cmnuMovieReload, Me.cmnuMovieMark, Me.cmnuMovieLock, Me.cmnuMovieWatched, Me.ToolStripMenuItem1, Me.cmnuMovieEdit, Me.cmnuMovieEditMetaData, Me.cmnuMovieGenres, Me.cmnuSep, Me.cmnuMovieRescrape, Me.cmnuMovieReSel, Me.cmnuMovieUpSel, Me.cmnuMovieChange, Me.cmnuSep2, Me.cmnuMovieOpenFolder, Me.ToolStripSeparator1, Me.cmnuMovieRemove})
         Me.cmnuMovie.Name = "mnuMediaList"
-        Me.cmnuMovie.Size = New System.Drawing.Size(247, 364)
+        Me.cmnuMovie.Size = New System.Drawing.Size(247, 342)
         '
         'cmnuMovieTitle
         '
@@ -1631,7 +1639,7 @@ Partial Class frmMain
         '
         Me.cmnuMovieUpSelRating.Image = Global.Ember_Media_Manager.My.Resources.Resources.doRating
         Me.cmnuMovieUpSelRating.Name = "cmnuMovieUpSelRating"
-        Me.cmnuMovieUpSelRating.Size = New System.Drawing.Size(152, 22)
+        Me.cmnuMovieUpSelRating.Size = New System.Drawing.Size(148, 22)
         Me.cmnuMovieUpSelRating.Text = "Rating / Votes"
         '
         'cmnuMovieChange
@@ -1684,6 +1692,44 @@ Partial Class frmMain
         Me.cmnuMovieRemoveFromDisk.Size = New System.Drawing.Size(225, 22)
         Me.cmnuMovieRemoveFromDisk.Text = "Delete Movie"
         '
+        'dgvMovieSets
+        '
+        Me.dgvMovieSets.AllowUserToAddRows = False
+        Me.dgvMovieSets.AllowUserToDeleteRows = False
+        Me.dgvMovieSets.AllowUserToResizeRows = False
+        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.dgvMovieSets.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
+        Me.dgvMovieSets.BackgroundColor = System.Drawing.Color.White
+        Me.dgvMovieSets.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+        Me.dgvMovieSets.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
+        Me.dgvMovieSets.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable
+        Me.dgvMovieSets.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgvMovieSets.ContextMenuStrip = Me.cmnuMovieSets
+        Me.dgvMovieSets.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.dgvMovieSets.GridColor = System.Drawing.Color.FromArgb(CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer))
+        Me.dgvMovieSets.Location = New System.Drawing.Point(0, 56)
+        Me.dgvMovieSets.Name = "dgvMovieSets"
+        Me.dgvMovieSets.ReadOnly = True
+        Me.dgvMovieSets.RowHeadersVisible = False
+        Me.dgvMovieSets.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+        Me.dgvMovieSets.ShowCellErrors = False
+        Me.dgvMovieSets.ShowRowErrors = False
+        Me.dgvMovieSets.Size = New System.Drawing.Size(364, 451)
+        Me.dgvMovieSets.StandardTab = True
+        Me.dgvMovieSets.TabIndex = 17
+        '
+        'cmnuMovieSets
+        '
+        Me.cmnuMovieSets.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.TestToolStripMenuItem})
+        Me.cmnuMovieSets.Name = "cmnuMovieSets"
+        Me.cmnuMovieSets.Size = New System.Drawing.Size(97, 26)
+        '
+        'TestToolStripMenuItem
+        '
+        Me.TestToolStripMenuItem.Name = "TestToolStripMenuItem"
+        Me.TestToolStripMenuItem.Size = New System.Drawing.Size(96, 22)
+        Me.TestToolStripMenuItem.Text = "Test"
+        '
         'scTV
         '
         Me.scTV.BackColor = System.Drawing.Color.Gainsboro
@@ -1712,8 +1758,8 @@ Partial Class frmMain
         Me.dgvTVShows.AllowUserToAddRows = False
         Me.dgvTVShows.AllowUserToDeleteRows = False
         Me.dgvTVShows.AllowUserToResizeRows = False
-        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
-        Me.dgvTVShows.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.dgvTVShows.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle3
         Me.dgvTVShows.BackgroundColor = System.Drawing.Color.White
         Me.dgvTVShows.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvTVShows.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -1892,8 +1938,8 @@ Partial Class frmMain
         Me.dgvTVSeasons.AllowUserToAddRows = False
         Me.dgvTVSeasons.AllowUserToDeleteRows = False
         Me.dgvTVSeasons.AllowUserToResizeRows = False
-        DataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
-        Me.dgvTVSeasons.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.dgvTVSeasons.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle4
         Me.dgvTVSeasons.BackgroundColor = System.Drawing.Color.White
         Me.dgvTVSeasons.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvTVSeasons.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -2037,8 +2083,8 @@ Partial Class frmMain
         Me.dgvTVEpisodes.AllowUserToAddRows = False
         Me.dgvTVEpisodes.AllowUserToDeleteRows = False
         Me.dgvTVEpisodes.AllowUserToResizeRows = False
-        DataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
-        Me.dgvTVEpisodes.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle4
+        DataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.dgvTVEpisodes.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle5
         Me.dgvTVEpisodes.BackgroundColor = System.Drawing.Color.White
         Me.dgvTVEpisodes.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvTVEpisodes.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -2260,6 +2306,7 @@ Partial Class frmMain
         'tcMain
         '
         Me.tcMain.Controls.Add(Me.tpMovies)
+        Me.tcMain.Controls.Add(Me.tpMovieSets)
         Me.tcMain.Controls.Add(Me.tpShows)
         Me.tcMain.Dock = System.Windows.Forms.DockStyle.Top
         Me.tcMain.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
@@ -2280,6 +2327,15 @@ Partial Class frmMain
         Me.tpMovies.TabIndex = 0
         Me.tpMovies.Text = "Movies"
         Me.tpMovies.UseVisualStyleBackColor = True
+        '
+        'tpMovieSets
+        '
+        Me.tpMovieSets.Location = New System.Drawing.Point(4, 23)
+        Me.tpMovieSets.Name = "tpMovieSets"
+        Me.tpMovieSets.Size = New System.Drawing.Size(356, 0)
+        Me.tpMovieSets.TabIndex = 2
+        Me.tpMovieSets.Text = "Sets"
+        Me.tpMovieSets.UseVisualStyleBackColor = True
         '
         'tpShows
         '
@@ -4800,20 +4856,20 @@ Partial Class frmMain
         Me.ilColumnIcons.Images.SetKeyName(14, "hasClearLogo.png")
         Me.ilColumnIcons.Images.SetKeyName(15, "hasClearArt.png")
         '
-        'tmrWait
+        'tmrWaitMovie
         '
-        Me.tmrWait.Interval = 250
+        Me.tmrWaitMovie.Interval = 250
         '
-        'tmrLoad
+        'tmrLoadMovie
         '
         '
         'tmrSearchWait
         '
         Me.tmrSearchWait.Interval = 250
         '
-        'tmrSearch
+        'tmrSearchMovie
         '
-        Me.tmrSearch.Interval = 250
+        Me.tmrSearchMovie.Interval = 250
         '
         'tmrFilterAni
         '
@@ -6303,6 +6359,8 @@ Partial Class frmMain
         Me.pnlFilterSource.PerformLayout()
         CType(Me.dgvMovies, System.ComponentModel.ISupportInitialize).EndInit()
         Me.cmnuMovie.ResumeLayout(False)
+        CType(Me.dgvMovieSets, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.cmnuMovieSets.ResumeLayout(False)
         Me.scTV.Panel1.ResumeLayout(False)
         Me.scTV.Panel2.ResumeLayout(False)
         CType(Me.scTV, System.ComponentModel.ISupportInitialize).EndInit()
@@ -6451,13 +6509,13 @@ Partial Class frmMain
     Friend WithEvents mnuMiss As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnuMissAuto As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnuMissAsk As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents tmrWait As System.Windows.Forms.Timer
-    Friend WithEvents tmrLoad As System.Windows.Forms.Timer
+    Friend WithEvents tmrWaitMovie As System.Windows.Forms.Timer
+    Friend WithEvents tmrLoadMovie As System.Windows.Forms.Timer
     Friend WithEvents pnlSearch As System.Windows.Forms.Panel
     Friend WithEvents picSearch As System.Windows.Forms.PictureBox
     Friend WithEvents txtSearch As System.Windows.Forms.TextBox
     Friend WithEvents tmrSearchWait As System.Windows.Forms.Timer
-    Friend WithEvents tmrSearch As System.Windows.Forms.Timer
+    Friend WithEvents tmrSearchMovie As System.Windows.Forms.Timer
     Friend WithEvents lblNoInfo As System.Windows.Forms.Label
     Friend WithEvents pbNoInfo As System.Windows.Forms.PictureBox
     Friend WithEvents mnuMainTools As System.Windows.Forms.ToolStripMenuItem
@@ -6617,7 +6675,6 @@ Partial Class frmMain
     Friend WithEvents ToolTips As System.Windows.Forms.ToolTip
     Friend WithEvents btnIMDBRating As System.Windows.Forms.Button
     Friend WithEvents tpShows As System.Windows.Forms.TabPage
-    Friend WithEvents dgvMovies As System.Windows.Forms.DataGridView
     Friend WithEvents scTV As System.Windows.Forms.SplitContainer
     Friend WithEvents scTVSeasonsEpisodes As System.Windows.Forms.SplitContainer
     Friend WithEvents pnlListTop As System.Windows.Forms.Panel
@@ -7064,4 +7121,9 @@ Partial Class frmMain
     Friend WithEvents cmnuTrayFilterAskTheme As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuMovieUpSel As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuMovieUpSelRating As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents tpMovieSets As System.Windows.Forms.TabPage
+    Friend WithEvents dgvMovieSets As System.Windows.Forms.DataGridView
+    Friend WithEvents dgvMovies As System.Windows.Forms.DataGridView
+    Friend WithEvents cmnuMovieSets As System.Windows.Forms.ContextMenuStrip
+    Friend WithEvents TestToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 End Class

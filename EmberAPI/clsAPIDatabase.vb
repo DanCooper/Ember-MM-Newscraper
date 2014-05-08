@@ -403,6 +403,7 @@ Public Class Database
             Dim doAddColumnMovieBannerAndLandscape As Boolean = False
             Dim doAddColumnMovieAndTVTheme As Boolean = False
             Dim doAddColumnMovieAndTVLogoDiscAndClearArt As Boolean = False
+            Dim doAddColumnMovieSetsImages As Boolean = False
             Dim strlistSQLCommands As New List(Of String)
 
             SQLpathcommand.CommandText = "pragma table_info(TVEps);"
@@ -482,6 +483,22 @@ Public Class Database
                 'TODO
             End Try
 
+            SQLpathcommand.CommandText = "pragma table_info(Sets);"
+            Try
+                doAddColumnMovieSetsImages = True
+                Using SQLreader As SQLite.SQLiteDataReader = SQLpathcommand.ExecuteReader
+                    While SQLreader.Read
+                        'Debug.Print(SQLreader("name").ToString.ToLower())
+                        If SQLreader("name").ToString.ToLower = "HasNfo" Then
+                            'Column does exist in current database of Ember --> asume: if one columns missing, all new columns must be added
+                            doAddColumnMovieSetsImages = False
+                        End If
+                    End While
+                End Using
+            Catch ex As Exception
+                'TODO
+            End Try
+
             'Now add new columns to current database if needed
             If doAddColumns = True Then
                 strlistSQLCommands.Add("alter table MoviesAStreams add Audio_Bitrate TEXT;")
@@ -495,7 +512,7 @@ Public Class Database
                 strlistSQLCommands.Add("alter table TVEps add Playcount TEXT;")
             End If
             If doAddColumnWatched = True Then
-                strlistSQLCommands.Add("alter table TVEps add HasWatched BOOL NOT NULL DEFAULT 0;")
+                strlistSQLCommands.Add("alter table TVEps add HasWatched BOOL NOT NULL DEFAULT False;")
             End If
             If doAddColumnDisplaySE = True Then
                 strlistSQLCommands.Add("alter table TVEps add DisplaySeason integer;")
@@ -545,6 +562,24 @@ Public Class Database
                 strlistSQLCommands.Add("alter table TVShows add ClearLogoPath TEXT;")
                 strlistSQLCommands.Add("alter table TVShows add HasClearArt BOOL NOT NULL DEFAULT False;")
                 strlistSQLCommands.Add("alter table TVShows add ClearArtPath TEXT;")
+            End If
+            If doAddColumnMovieSetsImages = True Then
+                strlistSQLCommands.Add("alter table Sets add HasNfo BOOL NOT NULL DEFAULT False;")
+                strlistSQLCommands.Add("alter table Sets add NfoPath TEXT;")
+                strlistSQLCommands.Add("alter table Sets add HasPoster BOOL NOT NULL DEFAULT False;")
+                strlistSQLCommands.Add("alter table Sets add PosterPath TEXT;")
+                strlistSQLCommands.Add("alter table Sets add HasFanart BOOL NOT NULL DEFAULT False;")
+                strlistSQLCommands.Add("alter table Sets add FanartPath TEXT;")
+                strlistSQLCommands.Add("alter table Sets add HasBanner BOOL NOT NULL DEFAULT False;")
+                strlistSQLCommands.Add("alter table Sets add BannerPath TEXT;")
+                strlistSQLCommands.Add("alter table Sets add HasLandscape BOOL NOT NULL DEFAULT False;")
+                strlistSQLCommands.Add("alter table Sets add LandscapePath TEXT;")
+                strlistSQLCommands.Add("alter table Sets add HasDiscArt BOOL NOT NULL DEFAULT False;")
+                strlistSQLCommands.Add("alter table Sets add DiscArtPath TEXT;")
+                strlistSQLCommands.Add("alter table Sets add HasClearLogo BOOL NOT NULL DEFAULT False;")
+                strlistSQLCommands.Add("alter table Sets add ClearLogoPath TEXT;")
+                strlistSQLCommands.Add("alter table Sets add HasClearArt BOOL NOT NULL DEFAULT False;")
+                strlistSQLCommands.Add("alter table Sets add ClearArtPath TEXT;")
             End If
 
             Using transaction As SQLite.SQLiteTransaction = _mediaDBConn.BeginTransaction()
