@@ -41,7 +41,8 @@ Public Class frmMain
     Friend WithEvents bwLoadMovieSetInfo As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwLoadSeasonInfo As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwLoadShowInfo As New System.ComponentModel.BackgroundWorker
-    Friend WithEvents bwMovieInfo As New System.ComponentModel.BackgroundWorker
+    Friend WithEvents bwMetaInfo As New System.ComponentModel.BackgroundWorker
+    Friend WithEvents bwMovieSetInfo As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwMovieScraper As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwNonScrape As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwRefreshMovies As New System.ComponentModel.BackgroundWorker
@@ -54,13 +55,13 @@ Public Class frmMain
     Private aniType As Integer = 0 '0 = down, 1 = mid, 2 = up
     Private bsEpisodes As New BindingSource
 
-    Private bsMedia As New BindingSource
+    Private bsMovies As New BindingSource
     Private bsMovieSets As New BindingSource
     Private bsSeasons As New BindingSource
     Private bsShows As New BindingSource
 
     Private dtEpisodes As New DataTable
-    Private dtMedia As New DataTable
+    Private dtMovies As New DataTable
     Private dtMovieSets As New DataTable
     Private dtSeasons As New DataTable
     Private dtShows As New DataTable
@@ -397,7 +398,7 @@ Public Class frmMain
 
     Public Sub SetMovieListItemAfterEdit(ByVal iID As Integer, ByVal iRow As Integer)
         Try
-            Dim dRow = From drvRow In dtMedia.Rows Where Convert.ToInt32(DirectCast(drvRow, DataRow).Item(0)) = iID Select drvRow
+            Dim dRow = From drvRow In dtMovies.Rows Where Convert.ToInt32(DirectCast(drvRow, DataRow).Item(0)) = iID Select drvRow
 
             Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
                 SQLcommand.CommandText = String.Concat("SELECT mark, SortTitle FROM movies WHERE id = ", iID, ";")
@@ -412,18 +413,18 @@ Public Class frmMain
         End Try
     End Sub
 
-    Public Sub SetMovieSetListItemAfterEdit(ByVal iID As Integer, ByVal iRow As Integer)
+    Public Sub SetMovieSetListItemAfterEdit(ByVal iSetName As String, ByVal iRow As Integer)
         Try
-            Dim dRow = From drvRow In dtMedia.Rows Where Convert.ToInt32(DirectCast(drvRow, DataRow).Item(0)) = iID Select drvRow
+            'Dim dRow = From drvRow In dtMovieSets.Rows Where Convert.ToInt32(DirectCast(drvRow, DataRow).Item(0)) = iSetName Select drvRow
 
-            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
-                SQLcommand.CommandText = String.Concat("SELECT mark, SortTitle FROM movies WHERE id = ", iID, ";")
-                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                    SQLreader.Read()
-                    DirectCast(dRow(0), DataRow).Item(11) = Convert.ToBoolean(SQLreader("mark"))
-                    If Not DBNull.Value.Equals(SQLreader("SortTitle")) Then DirectCast(dRow(0), DataRow).Item(47) = SQLreader("SortTitle").ToString
-                End Using
-            End Using
+            'Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
+            '    SQLcommand.CommandText = String.Concat("SELECT mark, SortTitle FROM movies WHERE id = ", iSetName, ";")
+            '    Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+            '        SQLreader.Read()
+            '        DirectCast(dRow(0), DataRow).Item(11) = Convert.ToBoolean(SQLreader("mark"))
+            '        If Not DBNull.Value.Equals(SQLreader("SortTitle")) Then DirectCast(dRow(0), DataRow).Item(47) = SQLreader("SortTitle").ToString
+            '    End Using
+            'End Using
         Catch ex As Exception
             Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
@@ -651,7 +652,7 @@ Public Class frmMain
                 End Using
                 SQLtransaction.Commit()
             End Using
-            For Each drvRow As DataRow In dtMedia.Rows
+            For Each drvRow As DataRow In dtMovies.Rows
                 drvRow.Item(11) = MarkAll
             Next
             dgvMovies.Refresh()
@@ -698,14 +699,14 @@ Public Class frmMain
         ElseIf Not String.IsNullOrEmpty(Master.currShow.Filename) AndAlso Me.dgvTVEpisodes.SelectedRows.Count > 0 Then
             Me.SetControlsEnabled(False, True)
 
-            If Me.bwMovieInfo.IsBusy Then Me.bwMovieInfo.CancelAsync()
+            If Me.bwMetaInfo.IsBusy Then Me.bwMetaInfo.CancelAsync()
 
             Me.txtMetaData.Clear()
             Me.pbMILoading.Visible = True
 
-            Me.bwMovieInfo = New System.ComponentModel.BackgroundWorker
-            Me.bwMovieInfo.WorkerSupportsCancellation = True
-            Me.bwMovieInfo.RunWorkerAsync(New Arguments With {.TVShow = Master.currShow, .IsTV = True, .setEnabled = True})
+            Me.bwMetaInfo = New System.ComponentModel.BackgroundWorker
+            Me.bwMetaInfo.WorkerSupportsCancellation = True
+            Me.bwMetaInfo.RunWorkerAsync(New Arguments With {.TVShow = Master.currShow, .IsTV = True, .setEnabled = True})
         End If
     End Sub
     ''' <summary>
@@ -954,7 +955,7 @@ Public Class frmMain
             End If
 
             'wait for mediainfo to update the nfo
-            While bwMovieInfo.IsBusy
+            While bwMetaInfo.IsBusy
                 Application.DoEvents()
                 Threading.Thread.Sleep(50)
             End While
@@ -984,7 +985,7 @@ Public Class frmMain
         End Try
     End Sub
 
-    Private Sub bwLoadInfo_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadMovieInfo.DoWork
+    Private Sub bwLoadMovieInfo_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadMovieInfo.DoWork
         Try
 
             Dim Args As Arguments = DirectCast(e.Argument, Arguments)
@@ -1016,7 +1017,7 @@ Public Class frmMain
             'read nfo if it's there
 
             'wait for mediainfo to update the nfo
-            While bwMovieInfo.IsBusy
+            While bwMetaInfo.IsBusy
                 Application.DoEvents()
                 Threading.Thread.Sleep(50)
             End While
@@ -1032,7 +1033,7 @@ Public Class frmMain
         End Try
     End Sub
 
-    Private Sub bwLoadInfo_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwLoadMovieInfo.RunWorkerCompleted
+    Private Sub bwLoadMovieInfo_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwLoadMovieInfo.RunWorkerCompleted
         Try
             If Not e.Cancelled Then
                 Me.fillScreenInfoWithMovie()
@@ -1045,6 +1046,72 @@ Public Class frmMain
                 End If
             End If
             Me.dgvMovies.ResumeLayout()
+        Catch ex As Exception
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub bwLoadMovieSetInfo_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadMovieSetInfo.DoWork
+        Try
+
+            Dim Args As Arguments = DirectCast(e.Argument, Arguments)
+            Me.MainFanart.Clear()
+            Me.MainPoster.Clear()
+            Me.MainFanartSmall.Clear()
+
+            If bwLoadMovieSetInfo.CancellationPending Then
+                e.Cancel = True
+                Return
+            End If
+
+            Master.currMovieSet = Master.DB.LoadMovieSetFromDB(Args.SetName)
+
+            If bwLoadMovieSetInfo.CancellationPending Then
+                e.Cancel = True
+                Return
+            End If
+
+            If Not Master.eSettings.GeneralHideFanart Then Me.MainFanart.FromFile(Master.currMovieSet.FanartPath)
+
+            If bwLoadMovieSetInfo.CancellationPending Then
+                e.Cancel = True
+                Return
+            End If
+
+            If Not Master.eSettings.GeneralHidePoster Then Me.MainPoster.FromFile(Master.currMovieSet.PosterPath)
+            If Not Master.eSettings.GeneralHideFanartSmall Then Me.MainFanartSmall.FromFile(Master.currMovieSet.FanartPath)
+            'read nfo if it's there
+
+            'wait for mediainfo to update the nfo
+            While bwMovieSetInfo.IsBusy
+                Application.DoEvents()
+                Threading.Thread.Sleep(50)
+            End While
+
+            If bwLoadMovieSetInfo.CancellationPending Then
+                e.Cancel = True
+                Return
+            End If
+
+        Catch ex As Exception
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error", False)
+            e.Cancel = True
+        End Try
+    End Sub
+
+    Private Sub bwLoadMovieSetInfo_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwLoadMovieSetInfo.RunWorkerCompleted
+        Try
+            If Not e.Cancelled Then
+                Me.fillScreenInfoWithMovieSet()
+            Else
+                If Not bwMovieScraper.IsBusy AndAlso Not bwRefreshMovieSets.IsBusy AndAlso Not bwCleanDB.IsBusy AndAlso Not bwNonScrape.IsBusy Then
+                    Me.SetControlsEnabled(True)
+                    Me.EnableFilters(True)
+                Else
+                    Me.dgvMovieSets.Enabled = True
+                End If
+            End If
+            Me.dgvMovieSets.ResumeLayout()
         Catch ex As Exception
             Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
@@ -1164,7 +1231,7 @@ Public Class frmMain
         End Try
     End Sub
 
-    Private Sub bwMovieInfo_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwMovieInfo.DoWork
+    Private Sub bwMetaInfo_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwMetaInfo.DoWork
         '//
         ' Thread to procure technical and tag information about media via MediaInfo.dll
         '\\
@@ -1181,7 +1248,7 @@ Public Class frmMain
                 e.Result = New Results With {.fileinfo = NFO.FIToString(Args.Movie.Movie.FileInfo, False), .setEnabled = Args.setEnabled, .Path = Args.Path, .Movie = Args.Movie}
             End If
 
-            If Me.bwMovieInfo.CancellationPending Then
+            If Me.bwMetaInfo.CancellationPending Then
                 e.Cancel = True
                 Return
             End If
@@ -1193,7 +1260,7 @@ Public Class frmMain
         End Try
     End Sub
 
-    Private Sub bwMovieInfo_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwMovieInfo.RunWorkerCompleted
+    Private Sub bwMetaInfo_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwMetaInfo.RunWorkerCompleted
         '//
         ' Thread finished: fill textbox with result
         '\\
@@ -1942,12 +2009,12 @@ Public Class frmMain
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MediaDBConn.BeginTransaction()
 
             Try
-                If Me.dtMedia.Rows.Count > 0 Then
+                If Me.dtMovies.Rows.Count > 0 Then
 
                     Select Case Args.scrapeType
                         Case Enums.ScrapeType.CleanFolders
                             Dim fDeleter As New FileUtils.Delete
-                            For Each drvRow As DataRow In Me.dtMedia.Rows
+                            For Each drvRow As DataRow In Me.dtMovies.Rows
                                 Try
                                     Me.bwNonScrape.ReportProgress(iCount, drvRow.Item(15))
                                     iCount += 1
@@ -1968,7 +2035,7 @@ Public Class frmMain
                             Next
                         Case Enums.ScrapeType.CopyBackdrops 'TODO: check MovieBackdropsPath and VIDEO_TS parent
                             Dim sPath As String = String.Empty
-                            For Each drvRow As DataRow In Me.dtMedia.Rows
+                            For Each drvRow As DataRow In Me.dtMovies.Rows
                                 Try
                                     Me.bwNonScrape.ReportProgress(iCount, drvRow.Item(15).ToString)
                                     iCount += 1
@@ -2045,7 +2112,7 @@ doCancel:
         Dim iCount As Integer = 0
         Dim MovieIDs As New Dictionary(Of Long, String)
 
-        For Each sRow As DataRow In Me.dtMedia.Rows
+        For Each sRow As DataRow In Me.dtMovies.Rows
             MovieIDs.Add(Convert.ToInt64(sRow.Item(0)), sRow.Item(3).ToString)
         Next
 
@@ -2080,7 +2147,7 @@ doCancel:
 
     Private Sub cbFilterFileSource_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbFilterFileSource.SelectedIndexChanged
         Try
-            While Me.fScanner.IsBusy OrElse Me.bwMovieInfo.IsBusy OrElse Me.bwLoadMovieInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwCleanDB.IsBusy
+            While Me.fScanner.IsBusy OrElse Me.bwMetaInfo.IsBusy OrElse Me.bwLoadMovieInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwCleanDB.IsBusy
                 Application.DoEvents()
                 Threading.Thread.Sleep(50)
             End While
@@ -2371,7 +2438,7 @@ doCancel:
 
     Private Sub ClearFilters(Optional ByVal Reload As Boolean = False)
         Try
-            Me.bsMedia.RemoveFilter()
+            Me.bsMovies.RemoveFilter()
             Me.FilterArray.Clear()
             Me.filSearch = String.Empty
             Me.filGenre = String.Empty
@@ -3430,6 +3497,10 @@ doCancel:
         ReloadMovie()
     End Sub
 
+    Private Sub cmnuMovieSetReload_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieSetReload.Click
+        ReloadMovieSet()
+    End Sub
+
     Private Sub cmnuReloadEp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeReload.Click
         Try
             Me.dgvTVShows.Cursor = Cursors.WaitCursor
@@ -3984,7 +4055,7 @@ doCancel:
 
             If e.RowIndex < 0 Then Exit Sub
 
-            If Me.fScanner.IsBusy OrElse Me.bwMovieInfo.IsBusy OrElse Me.bwLoadMovieInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
+            If Me.fScanner.IsBusy OrElse Me.bwMetaInfo.IsBusy OrElse Me.bwLoadMovieInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
 
             Dim indX As Integer = Me.dgvMovies.SelectedRows(0).Index
             Dim ID As Integer = Convert.ToInt32(Me.dgvMovies.Item(0, indX).Value)
@@ -4295,7 +4366,7 @@ doCancel:
                     End If
                 Next
             ElseIf e.KeyChar = Chr(13) Then
-                If Me.fScanner.IsBusy OrElse Me.bwMovieInfo.IsBusy OrElse Me.bwLoadMovieInfo.IsBusy OrElse _
+                If Me.fScanner.IsBusy OrElse Me.bwMetaInfo.IsBusy OrElse Me.bwLoadMovieInfo.IsBusy OrElse _
                 Me.bwDownloadPic.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy _
                 OrElse Me.bwCleanDB.IsBusy Then Return
 
@@ -4402,7 +4473,7 @@ doCancel:
 
             If e.RowIndex < 0 Then Exit Sub
 
-            If Me.fScanner.IsBusy OrElse Me.bwMovieInfo.IsBusy OrElse Me.bwLoadMovieInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
+            If Me.fScanner.IsBusy OrElse Me.bwMetaInfo.IsBusy OrElse Me.bwLoadMovieInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
 
             Dim indX As Integer = Me.dgvMovieSets.SelectedRows(0).Index
             Dim SetName As String = CStr(Convert.ToInt32(Me.dgvMovieSets.Item(0, indX).Value))
@@ -4410,9 +4481,9 @@ doCancel:
 
             Functions.SetScraperMod(Enums.ModType.All, False, True)
 
-            Using dEditMovie As New dlgEditMovie
-                AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
-                Select Case dEditMovie.ShowDialog()
+            Using dEditMovieSet As New dlgEditMovieSet
+                AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovieSet.GenericRunCallBack
+                Select Case dEditMovieSet.ShowDialog()
                     Case Windows.Forms.DialogResult.OK
                         ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieScraperRDYtoSave, Nothing, Master.currMovieSet)
                         Me.SetMovieSetListItemAfterEdit(SetName, indX)
@@ -4430,7 +4501,7 @@ doCancel:
                     Case Else
                         If Me.InfoCleared Then Me.LoadMovieSetInfo(SetName, Me.dgvMovieSets.Item(1, indX).Value.ToString, True, False)
                 End Select
-                RemoveHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
+                RemoveHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovieSet.GenericRunCallBack
             End Using
         Catch ex As Exception
             Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
@@ -4711,25 +4782,25 @@ doCancel:
                     End If
                 Next
             ElseIf e.KeyChar = Chr(13) Then
-                If Me.fScanner.IsBusy OrElse Me.bwMovieInfo.IsBusy OrElse Me.bwLoadMovieInfo.IsBusy OrElse _
-                Me.bwDownloadPic.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy _
+                If Me.fScanner.IsBusy OrElse Me.bwMovieSetInfo.IsBusy OrElse Me.bwLoadMovieSetInfo.IsBusy OrElse _
+                Me.bwDownloadPic.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwRefreshMovieSets.IsBusy _
                 OrElse Me.bwCleanDB.IsBusy Then Return
 
                 Dim indX As Integer = Me.dgvMovieSets.SelectedRows(0).Index
-                Dim ID As Integer = Convert.ToInt32(Me.dgvMovieSets.Item(0, indX).Value)
-                Master.currMovie = Master.DB.LoadMovieFromDB(ID)
-                Me.SetStatus(Master.currMovie.Filename)
+                Dim SetName As String = CStr(Me.dgvMovieSets.Item(0, indX).Value)
+                Master.currMovieSet = Master.DB.LoadMovieSetFromDB(SetName)
+                Me.SetStatus(Master.currMovieSet.SetName)
 
-                Using dEditMovie As New dlgEditMovie
-                    AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
-                    Select Case dEditMovie.ShowDialog()
+                Using dEditMovieSet As New dlgEditMovieSet
+                    AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovieSet.GenericRunCallBack
+                    Select Case dEditMovieSet.ShowDialog()
                         Case Windows.Forms.DialogResult.OK
-                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieScraperRDYtoSave, Nothing, Master.currMovie)
-                            Me.SetMovieSetListItemAfterEdit(ID, indX)
-                            If Me.RefreshMovie(ID) Then
+                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieScraperRDYtoSave, Nothing, Master.currMovieSet)
+                            Me.SetMovieSetListItemAfterEdit(SetName, indX)
+                            If Me.RefreshMovieSet(SetName) Then
                                 Me.FillList(0)
                             End If
-                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieSync, Nothing, Master.currMovie)
+                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieSync, Nothing, Master.currMovieSet)
                         Case Windows.Forms.DialogResult.Retry
                             Functions.SetScraperMod(Enums.ModType.All, True, True)
                             Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultMovieOptions)
@@ -4738,9 +4809,9 @@ doCancel:
                             Functions.SetScraperMod(Enums.ModType.All, True, False)
                             Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultMovieOptions)
                         Case Else
-                            If Me.InfoCleared Then Me.LoadMovieSetInfo(ID, Me.dgvMovies.Item(1, indX).Value.ToString, True, False)
+                            If Me.InfoCleared Then Me.LoadMovieSetInfo(SetName, Me.dgvMovieSets.Item(1, indX).Value.ToString, True, False)
                     End Select
-                    RemoveHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
+                    RemoveHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovieSet.GenericRunCallBack
                 End Using
 
             End If
@@ -4787,7 +4858,7 @@ doCancel:
 
             If e.RowIndex < 0 Then Exit Sub
 
-            If Me.fScanner.IsBusy OrElse Me.bwMovieInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
+            If Me.fScanner.IsBusy OrElse Me.bwMetaInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
 
             Dim indX As Integer = Me.dgvTVEpisodes.SelectedRows(0).Index
             Dim ID As Integer = Convert.ToInt32(Me.dgvTVEpisodes.Item(0, indX).Value)
@@ -4922,7 +4993,7 @@ doCancel:
                     End If
                 Next
             ElseIf e.KeyChar = Chr(13) Then
-                If Me.fScanner.IsBusy OrElse Me.bwMovieInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
+                If Me.fScanner.IsBusy OrElse Me.bwMetaInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
 
                 Dim indX As Integer = Me.dgvTVEpisodes.SelectedRows(0).Index
                 Dim ID As Integer = Convert.ToInt32(Me.dgvTVEpisodes.Item(0, indX).Value)
@@ -5128,7 +5199,7 @@ doCancel:
 
             If e.RowIndex < 0 Then Exit Sub
 
-            If Me.fScanner.IsBusy OrElse Me.bwMovieInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadSeasonInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
+            If Me.fScanner.IsBusy OrElse Me.bwMetaInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadSeasonInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
 
             Dim indX As Integer = Me.dgvTVSeasons.SelectedRows(0).Index
             Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item(0, indX).Value)
@@ -5256,7 +5327,7 @@ doCancel:
                     End If
                 Next
             ElseIf e.KeyChar = Chr(13) Then
-                If Me.fScanner.IsBusy OrElse Me.bwMovieInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadSeasonInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
+                If Me.fScanner.IsBusy OrElse Me.bwMetaInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadSeasonInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
 
                 Dim indX As Integer = Me.dgvTVSeasons.SelectedRows(0).Index
                 Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item(0, indX).Value)
@@ -5393,7 +5464,7 @@ doCancel:
 
             If e.RowIndex < 0 Then Exit Sub
 
-            If Me.fScanner.IsBusy OrElse Me.bwMovieInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadSeasonInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
+            If Me.fScanner.IsBusy OrElse Me.bwMetaInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadSeasonInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
 
             Dim indX As Integer = Me.dgvTVShows.SelectedRows(0).Index
             Dim ID As Integer = Convert.ToInt32(Me.dgvTVShows.Item(0, indX).Value)
@@ -5520,7 +5591,7 @@ doCancel:
                     End If
                 Next
             ElseIf e.KeyChar = Chr(13) Then
-                If Me.fScanner.IsBusy OrElse Me.bwMovieInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadSeasonInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
+                If Me.fScanner.IsBusy OrElse Me.bwMetaInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadSeasonInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
 
                 Dim indX As Integer = Me.dgvTVShows.SelectedRows(0).Index
                 Dim ID As Integer = Convert.ToInt32(Me.dgvTVShows.Item(0, indX).Value)
@@ -5818,7 +5889,7 @@ doCancel:
 
     Private Sub FillList(ByVal iIndex As Integer)
         Try
-            Me.bsMedia.DataSource = Nothing
+            Me.bsMovies.DataSource = Nothing
             Me.dgvMovies.DataSource = Nothing
             Me.bsMovieSets.DataSource = Nothing
             Me.dgvMovieSets.DataSource = Nothing
@@ -5832,7 +5903,7 @@ doCancel:
             Me.ClearInfo()
 
             If Not String.IsNullOrEmpty(Me.filSearch) AndAlso Me.cbSearch.Text = Master.eLang.GetString(100, "Actor") Then
-                Master.DB.FillDataTable(Me.dtMedia, String.Concat("SELECT ID, MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, ", _
+                Master.DB.FillDataTable(Me.dtMovies, String.Concat("SELECT ID, MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, ", _
                                                                   "HasTrailer, HasSub, HasEThumbs, New, Mark, Source, Imdb, Lock, Title, OriginalTitle, ", _
                                                                   "Year, Rating, Votes, MPAA, Top250, Country, Outline, Plot, Tagline, Certification, Genre, ", _
                                                                   "Studio, Runtime, ReleaseDate, Director, Credits, Playcount, HasWatched, Trailer, PosterPath, ", _
@@ -5842,7 +5913,7 @@ doCancel:
                                                                   "HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath FROM movies WHERE ID IN ", _
                                                                   "(SELECT MovieID FROM MoviesActors WHERE ActorName LIKE '%", Me.filSearch, "%') ORDER BY ListTitle COLLATE NOCASE;"))
             ElseIf Not String.IsNullOrEmpty(Me.filSearch) AndAlso Me.cbSearch.Text = Master.eLang.GetString(233, "Role") Then
-                Master.DB.FillDataTable(Me.dtMedia, String.Concat("SELECT ID, MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, ", _
+                Master.DB.FillDataTable(Me.dtMovies, String.Concat("SELECT ID, MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, ", _
                                                                   "HasSub, HasEThumbs, New, Mark, Source, Imdb, Lock, Title, OriginalTitle, Year, Rating, Votes, ", _
                                                                   "MPAA, Top250, Country, Outline, Plot, Tagline, Certification, Genre, Studio, Runtime, ReleaseDate, ", _
                                                                   "Director, Credits, Playcount, HasWatched, Trailer, PosterPath, FanartPath, EThumbsPath, NfoPath, ", _
@@ -5852,9 +5923,9 @@ doCancel:
                                                                   "WHERE ID IN (SELECT MovieID FROM MoviesActors WHERE Role LIKE '%", Me.filSearch, "%') ORDER BY ListTitle COLLATE NOCASE;"))
             Else
                 If Me.chkFilterDupe.Checked Then
-                    Master.DB.FillDataTable(Me.dtMedia, "SELECT ID, MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasEThumbs, New, Mark, Source, Imdb, Lock, Title, OriginalTitle, Year, Rating, Votes, MPAA, Top250, Country, Outline, Plot, Tagline, Certification, Genre, Studio, Runtime, ReleaseDate, Director, Credits, Playcount, HasWatched, Trailer, PosterPath, FanartPath, EThumbsPath, NfoPath, TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, FileSource, NeedsSave, SortTitle, DateAdd, HasEFanarts, EFanartsPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasTheme, ThemePath, HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath FROM movies WHERE imdb IN (SELECT imdb FROM movies WHERE imdb IS NOT NULL AND LENGTH(imdb) > 0 GROUP BY imdb HAVING ( COUNT(imdb) > 1 )) ORDER BY ListTitle COLLATE NOCASE;")
+                    Master.DB.FillDataTable(Me.dtMovies, "SELECT ID, MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasEThumbs, New, Mark, Source, Imdb, Lock, Title, OriginalTitle, Year, Rating, Votes, MPAA, Top250, Country, Outline, Plot, Tagline, Certification, Genre, Studio, Runtime, ReleaseDate, Director, Credits, Playcount, HasWatched, Trailer, PosterPath, FanartPath, EThumbsPath, NfoPath, TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, FileSource, NeedsSave, SortTitle, DateAdd, HasEFanarts, EFanartsPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasTheme, ThemePath, HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath FROM movies WHERE imdb IN (SELECT imdb FROM movies WHERE imdb IS NOT NULL AND LENGTH(imdb) > 0 GROUP BY imdb HAVING ( COUNT(imdb) > 1 )) ORDER BY ListTitle COLLATE NOCASE;")
                 Else
-                    Master.DB.FillDataTable(Me.dtMedia, "SELECT ID, MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasEThumbs, New, Mark, Source, Imdb, Lock, Title, OriginalTitle, Year, Rating, Votes, MPAA, Top250, Country, Outline, Plot, Tagline, Certification, Genre, Studio, Runtime, ReleaseDate, Director, Credits, Playcount, HasWatched, Trailer, PosterPath, FanartPath, EThumbsPath, NfoPath, TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, FileSource, NeedsSave, SortTitle, DateAdd, HasEFanarts, EFanartsPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasTheme, ThemePath, HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath FROM movies ORDER BY ListTitle COLLATE NOCASE;")
+                    Master.DB.FillDataTable(Me.dtMovies, "SELECT ID, MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasEThumbs, New, Mark, Source, Imdb, Lock, Title, OriginalTitle, Year, Rating, Votes, MPAA, Top250, Country, Outline, Plot, Tagline, Certification, Genre, Studio, Runtime, ReleaseDate, Director, Credits, Playcount, HasWatched, Trailer, PosterPath, FanartPath, EThumbsPath, NfoPath, TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, FileSource, NeedsSave, SortTitle, DateAdd, HasEFanarts, EFanartsPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasTheme, ThemePath, HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath FROM movies ORDER BY ListTitle COLLATE NOCASE;")
                 End If
             End If
 
@@ -5865,11 +5936,11 @@ doCancel:
             If isCL Then
                 Me.LoadingDone = True
             Else
-                If Me.dtMedia.Rows.Count > 0 Then
+                If Me.dtMovies.Rows.Count > 0 Then
 
                     With Me
-                        .bsMedia.DataSource = .dtMedia
-                        .dgvMovies.DataSource = .bsMedia
+                        .bsMovies.DataSource = .dtMovies
+                        .dgvMovies.DataSource = .bsMovies
 
                         .dgvMovies.Columns(0).Visible = False
                         .dgvMovies.Columns(1).Visible = False
@@ -6184,7 +6255,7 @@ doCancel:
                 Me.dgvTVShows.Enabled = True
             End If
 
-            If Me.dtMedia.Rows.Count = 0 AndAlso Me.dtShows.Rows.Count = 0 Then
+            If Me.dtMovies.Rows.Count = 0 AndAlso Me.dtShows.Rows.Count = 0 Then
                 Me.SetControlsEnabled(False, False, False)
                 Me.SetStatus(String.Empty)
                 Me.ClearInfo()
@@ -7285,7 +7356,7 @@ doCancel:
             End If
 
             If Me.fScanner.IsBusy Then Me.fScanner.Cancel()
-            If Me.bwMovieInfo.IsBusy Then Me.bwMovieInfo.CancelAsync()
+            If Me.bwMetaInfo.IsBusy Then Me.bwMetaInfo.CancelAsync()
             If Me.bwLoadMovieInfo.IsBusy Then Me.bwLoadMovieInfo.CancelAsync()
             If Me.bwLoadShowInfo.IsBusy Then Me.bwLoadShowInfo.CancelAsync()
             If Me.bwLoadSeasonInfo.IsBusy Then Me.bwLoadSeasonInfo.CancelAsync()
@@ -7303,7 +7374,7 @@ doCancel:
             pnlCancel.Visible = True
             Me.Refresh()
 
-            While Me.fScanner.IsBusy OrElse Me.bwMovieInfo.IsBusy OrElse Me.bwLoadMovieInfo.IsBusy _
+            While Me.fScanner.IsBusy OrElse Me.bwMetaInfo.IsBusy OrElse Me.bwLoadMovieInfo.IsBusy _
             OrElse Me.bwDownloadPic.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy _
             OrElse Me.bwCleanDB.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy _
             OrElse Me.bwLoadSeasonInfo.IsBusy OrElse ModulesManager.Instance.TVIsBusy
@@ -8041,14 +8112,14 @@ doCancel:
             Me.ShowNoInfo(False)
 
             If doMI Then
-                If Me.bwMovieInfo.IsBusy Then Me.bwMovieInfo.CancelAsync()
+                If Me.bwMetaInfo.IsBusy Then Me.bwMetaInfo.CancelAsync()
 
                 Me.txtMetaData.Clear()
                 Me.pbMILoading.Visible = True
 
-                Me.bwMovieInfo = New System.ComponentModel.BackgroundWorker
-                Me.bwMovieInfo.WorkerSupportsCancellation = True
-                Me.bwMovieInfo.RunWorkerAsync(New Arguments With {.setEnabled = setEnabled, .Path = sPath, .Movie = Master.currMovie})
+                Me.bwMetaInfo = New System.ComponentModel.BackgroundWorker
+                Me.bwMetaInfo.WorkerSupportsCancellation = True
+                Me.bwMetaInfo.RunWorkerAsync(New Arguments With {.setEnabled = setEnabled, .Path = sPath, .Movie = Master.currMovie})
             End If
 
             If doInfo Then
@@ -8066,19 +8137,19 @@ doCancel:
 
     Private Sub LoadMovieSetInfo(ByVal SetName As String, ByVal sPath As String, ByVal doInfo As Boolean, ByVal doMI As Boolean, Optional ByVal setEnabled As Boolean = False)
         Try
-            Me.dgvMovies.SuspendLayout()
+            Me.dgvMovieSets.SuspendLayout()
             Me.SetControlsEnabled(False, True)
             Me.ShowNoInfo(False)
 
             If doMI Then
-                If Me.bwMovieInfo.IsBusy Then Me.bwMovieInfo.CancelAsync()
+                If Me.bwMovieSetInfo.IsBusy Then Me.bwMovieSetInfo.CancelAsync()
 
                 Me.txtMetaData.Clear()
                 Me.pbMILoading.Visible = True
 
-                Me.bwMovieInfo = New System.ComponentModel.BackgroundWorker
-                Me.bwMovieInfo.WorkerSupportsCancellation = True
-                Me.bwMovieInfo.RunWorkerAsync(New Arguments With {.setEnabled = setEnabled, .Path = sPath, .Movie = Master.currMovie})
+                Me.bwMovieSetInfo = New System.ComponentModel.BackgroundWorker
+                Me.bwMovieSetInfo.WorkerSupportsCancellation = True
+                Me.bwMovieSetInfo.RunWorkerAsync(New Arguments With {.setEnabled = setEnabled, .Path = sPath, .MovieSet = Master.currMovieSet})
             End If
 
             If doInfo Then
@@ -9040,7 +9111,7 @@ doCancel:
             Dim TrailerAllowed As Boolean = Master.eSettings.MovieTrailerEnable AndAlso Master.eSettings.MovieTrailerAnyEnabled AndAlso ModulesManager.Instance.QueryTrailerScraperCapabilities(Enums.ScraperCapabilities.Trailer)
 
             'create list of movies acording to scrapetype
-            For Each drvRow As DataRow In Me.dtMedia.Rows
+            For Each drvRow As DataRow In Me.dtMovies.Rows
 
                 If Convert.ToBoolean(drvRow.Item(14)) Then Continue For
 
@@ -9050,7 +9121,7 @@ doCancel:
                     Case Enums.ScrapeType.MarkAsk, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.MarkSkip
                         If Not Convert.ToBoolean(drvRow.Item(11)) Then Continue For
                     Case Enums.ScrapeType.FilterAsk, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FilterSkip
-                        Dim index As Integer = Me.bsMedia.Find("id", drvRow.Item(0))
+                        Dim index As Integer = Me.bsMovies.Find("id", drvRow.Item(0))
                         If Not index >= 0 Then Continue For
                     Case Enums.ScrapeType.UpdateAsk, Enums.ScrapeType.UpdateAuto, Enums.ScrapeType.UpdateSkip
                         If Not ((Master.GlobalScrapeMod.Banner AndAlso Master.eSettings.MovieMissingBanner AndAlso BannerAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(51))) OrElse _
@@ -9218,7 +9289,7 @@ doCancel:
         Me.pnlCancel.Visible = True
         Me.tslLoading.Visible = True
         Me.tspbLoading.Value = 0
-        Me.tspbLoading.Maximum = Me.dtMedia.Rows.Count
+        Me.tspbLoading.Maximum = Me.dtMovies.Rows.Count
         Me.tspbLoading.Visible = True
         Me.SetControlsEnabled(False, True)
         Me.EnableFilters(False)
@@ -9382,13 +9453,13 @@ doCancel:
     End Sub
 
     Private Sub RefreshAllMovies()
-        If Me.dtMedia.Rows.Count > 0 Then
+        If Me.dtMovies.Rows.Count > 0 Then
             Me.Cursor = Cursors.WaitCursor
             Me.SetControlsEnabled(False, True)
             Me.tspbLoading.Style = ProgressBarStyle.Continuous
             Me.EnableFilters(False)
 
-            Me.tspbLoading.Maximum = Me.dtMedia.Rows.Count + 1
+            Me.tspbLoading.Maximum = Me.dtMovies.Rows.Count + 1
             Me.tspbLoading.Value = 0
             Me.tslLoading.Text = Master.eLang.GetString(110, "Refreshing Media:")
             Me.tspbLoading.Visible = True
@@ -9635,7 +9706,7 @@ doCancel:
                 hasTrailer = Not String.IsNullOrEmpty(mContainer.Trailer)
                 hasWatched = Not String.IsNullOrEmpty(tmpMovieDb.Movie.PlayCount) AndAlso Not tmpMovieDb.Movie.PlayCount = "0"
 
-                Dim dRow = From drvRow In dtMedia.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item(0)) = ID Select drvRow
+                Dim dRow = From drvRow In dtMovies.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item(0)) = ID Select drvRow
 
                 If Not IsNothing(dRow(0)) Then
                     selRow = DirectCast(dRow(0), DataRow)
@@ -9723,220 +9794,95 @@ doCancel:
         Return False
     End Function
 
-    Private Function RefreshMovieSet(ByVal ID As Long, Optional ByVal BatchMode As Boolean = False, Optional ByVal FromNfo As Boolean = True, Optional ByVal ToNfo As Boolean = False, Optional ByVal delWatched As Boolean = False) As Boolean
-        Dim tmpMovie As New MediaContainers.Movie
-        Dim tmpMovieDb As New Structures.DBMovie
-        Dim OldTitle As String = String.Empty
+    Private Function RefreshMovieSet(ByVal SetName As String, Optional ByVal BatchMode As Boolean = False, Optional ByVal FromNfo As Boolean = True, Optional ByVal ToNfo As Boolean = False, Optional ByVal delWatched As Boolean = False) As Boolean
+        'Dim tmpMovieSet As New MediaContainers.Movie
+        Dim tmpMovieSetDb As New Structures.DBMovieSet
+        'Dim OldTitle As String = String.Empty
         Dim selRow As DataRow = Nothing
 
         Dim hasBanner As Boolean = False
         Dim hasClearArt As Boolean = False
         Dim hasClearLogo As Boolean = False
         Dim hasDiscArt As Boolean = False
-        Dim hasEFanarts As Boolean = False
-        Dim hasEThumbs As Boolean = False
         Dim hasFanart As Boolean = False
         Dim hasLandscape As Boolean = False
         Dim hasNfo As Boolean = False
         Dim hasPoster As Boolean = False
-        Dim hasTheme As Boolean = False
-        Dim hasTrailer As Boolean = False
-        Dim hasSub As Boolean = False
-        Dim hasWatched As Boolean = False
 
         Dim myDelegate As New MydtListUpdate(AddressOf dtListUpdate)
 
         Try
 
-            tmpMovieDb = Master.DB.LoadMovieFromDB(ID)
+            tmpMovieSetDb = Master.DB.LoadMovieSetFromDB(SetName)
 
-            OldTitle = tmpMovieDb.Movie.Title
+            Dim mContainer As New Scanner.MovieSetContainer With {.SetName = tmpMovieSetDb.SetName}
+            fScanner.GetMovieSetFolderContents(mContainer)
+            tmpMovieSetDb.BannerPath = mContainer.Banner
+            tmpMovieSetDb.ClearArtPath = mContainer.ClearArt
+            tmpMovieSetDb.ClearLogoPath = mContainer.ClearLogo
+            tmpMovieSetDb.DiscArtPath = mContainer.DiscArt
+            tmpMovieSetDb.FanartPath = mContainer.Fanart
+            tmpMovieSetDb.LandscapePath = mContainer.Landscape
+            tmpMovieSetDb.NfoPath = mContainer.Nfo
+            tmpMovieSetDb.PosterPath = mContainer.Poster
 
-            If Directory.Exists(Directory.GetParent(tmpMovieDb.Filename).FullName) Then
+            hasBanner = Not String.IsNullOrEmpty(mContainer.Banner)
+            hasClearArt = Not String.IsNullOrEmpty(mContainer.ClearArt)
+            hasClearLogo = Not String.IsNullOrEmpty(mContainer.ClearLogo)
+            hasDiscArt = Not String.IsNullOrEmpty(mContainer.DiscArt)
+            hasFanart = Not String.IsNullOrEmpty(mContainer.Fanart)
+            hasLandscape = Not String.IsNullOrEmpty(mContainer.Landscape)
+            hasNfo = Not String.IsNullOrEmpty(mContainer.Nfo)
+            hasPoster = Not String.IsNullOrEmpty(mContainer.Poster)
 
-                If FromNfo Then
-                    If String.IsNullOrEmpty(tmpMovieDb.NfoPath) Then
-                        Dim sNFO As String = NFO.GetNfoPath(tmpMovieDb.Filename, tmpMovieDb.isSingle)
-                        tmpMovieDb.NfoPath = sNFO
-                        tmpMovie = NFO.LoadMovieFromNFO(sNFO, tmpMovieDb.isSingle)
-                    Else
-                        tmpMovie = NFO.LoadMovieFromNFO(tmpMovieDb.NfoPath, tmpMovieDb.isSingle)
-                    End If
-                    'subsType and subsPath not in NFO , try to load it from DB
-                    For x = 0 To tmpMovie.FileInfo.StreamDetails.Subtitle.Count - 1
-                        If tmpMovieDb.Movie.FileInfo.StreamDetails.Subtitle.Count > 0 AndAlso Not tmpMovieDb.Movie.FileInfo.StreamDetails.Subtitle(x) Is Nothing AndAlso tmpMovieDb.Movie.FileInfo.StreamDetails.Subtitle(x).Language = tmpMovie.FileInfo.StreamDetails.Subtitle(x).Language Then
-                            tmpMovie.FileInfo.StreamDetails.Subtitle(x).SubsType = tmpMovieDb.Movie.FileInfo.StreamDetails.Subtitle(x).SubsType
-                            tmpMovie.FileInfo.StreamDetails.Subtitle(x).SubsPath = tmpMovieDb.Movie.FileInfo.StreamDetails.Subtitle(x).SubsPath
-                        End If
-                    Next
-                    tmpMovieDb.Movie = tmpMovie
-                End If
+            Dim dRow = From drvRow In dtMovieSets.Rows Where CStr(DirectCast(drvRow, DataRow).Item(0)) = SetName Select drvRow
 
-                If String.IsNullOrEmpty(tmpMovieDb.Movie.Title) Then
-                    If FileUtils.Common.isVideoTS(tmpMovieDb.Filename) Then
-                        tmpMovieDb.ListTitle = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(tmpMovieDb.Filename).FullName).Name)
-                        tmpMovieDb.Movie.Title = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(tmpMovieDb.Filename).FullName).Name, False)
-                    ElseIf FileUtils.Common.isBDRip(tmpMovieDb.Filename) Then
-                        tmpMovieDb.ListTitle = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(Directory.GetParent(tmpMovieDb.Filename).FullName).FullName).Name)
-                        tmpMovieDb.Movie.Title = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(Directory.GetParent(tmpMovieDb.Filename).FullName).FullName).Name, False)
-                    Else
-                        If tmpMovieDb.UseFolder AndAlso tmpMovieDb.isSingle Then
-                            tmpMovieDb.ListTitle = StringUtils.FilterName(Directory.GetParent(tmpMovieDb.Filename).Name)
-                            tmpMovieDb.Movie.Title = StringUtils.FilterName(Directory.GetParent(tmpMovieDb.Filename).Name, False)
-                        Else
-                            tmpMovieDb.ListTitle = StringUtils.FilterName(Path.GetFileNameWithoutExtension(tmpMovieDb.Filename))
-                            tmpMovieDb.Movie.Title = StringUtils.FilterName(Path.GetFileNameWithoutExtension(tmpMovieDb.Filename), False)
-                        End If
-                    End If
-                    If Not OldTitle = tmpMovieDb.Movie.Title OrElse String.IsNullOrEmpty(tmpMovieDb.Movie.SortTitle) Then tmpMovieDb.Movie.SortTitle = tmpMovieDb.ListTitle
+            If Not IsNothing(dRow(0)) Then
+                selRow = DirectCast(dRow(0), DataRow)
+
+                If Me.InvokeRequired Then
+                    Me.Invoke(myDelegate, New Object() {dRow(0), 0, tmpMovieSetDb.SetName})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), 1, hasNfo})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), 3, hasPoster})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), 5, hasFanart})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), 7, hasBanner})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), 9, hasLandscape})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), 11, hasDiscArt})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), 13, hasClearLogo})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), 15, hasClearArt})
                 Else
-                    Dim tTitle As String = StringUtils.FilterTokens(tmpMovieDb.Movie.Title)
-                    If Not OldTitle = tmpMovieDb.Movie.Title OrElse String.IsNullOrEmpty(tmpMovieDb.Movie.SortTitle) Then tmpMovieDb.Movie.SortTitle = tTitle
-                    If Master.eSettings.MovieDisplayYear AndAlso Not String.IsNullOrEmpty(tmpMovieDb.Movie.Year) Then
-                        tmpMovieDb.ListTitle = String.Format("{0} ({1})", tTitle, tmpMovieDb.Movie.Year)
-                    Else
-                        tmpMovieDb.ListTitle = tTitle
-                    End If
+                    selRow.Item(0) = tmpMovieSetDb.SetName
+                    selRow.Item(1) = hasNfo
+                    selRow.Item(3) = hasPoster
+                    selRow.Item(5) = hasFanart
+                    selRow.Item(7) = hasBanner
+                    selRow.Item(9) = hasLandscape
+                    selRow.Item(11) = hasDiscArt
+                    selRow.Item(13) = hasClearLogo
+                    selRow.Item(15) = hasClearArt
                 End If
-                Dim fromFile As String = APIXML.GetFileSource(tmpMovieDb.Filename)
-                If Not String.IsNullOrEmpty(fromFile) Then
-                    tmpMovieDb.FileSource = fromFile
-                ElseIf String.IsNullOrEmpty(tmpMovieDb.FileSource) AndAlso AdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
-                    tmpMovieDb.FileSource = AdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(tmpMovieDb.Filename)), String.Empty, "*EmberAPP")
-                End If
-
-                If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
-                    For Each a In FileUtils.GetFilenameList.Movie(tmpMovieDb.Filename, tmpMovieDb.isSingle, Enums.ModType.WatchedFile)
-                        If delWatched Then
-                            If File.Exists(a) Then
-                                File.Delete(a)
-                            End If
-                        End If
-                        If Not String.IsNullOrEmpty(tmpMovieDb.Movie.PlayCount) AndAlso Not tmpMovieDb.Movie.PlayCount = "0" Then
-                            If Not File.Exists(a) Then
-                                Dim fs As FileStream = File.Create(a)
-                                fs.Close()
-                            End If
-                        Else
-                            If File.Exists(a) Then
-                                tmpMovieDb.Movie.PlayCount = "1"
-                                If Not tmpMovieDb.NfoPath = tmpMovieDb.Filename AndAlso Not String.IsNullOrEmpty(tmpMovieDb.NfoPath) Then
-                                    ToNfo = True
-                                End If
-                            End If
-                        End If
-                    Next
-                End If
-
-                Dim mContainer As New Scanner.MovieContainer With {.Filename = tmpMovieDb.Filename, .isSingle = tmpMovieDb.isSingle}
-                fScanner.GetMovieFolderContents(mContainer)
-                tmpMovieDb.BannerPath = mContainer.Banner
-                tmpMovieDb.ClearArtPath = mContainer.ClearArt
-                tmpMovieDb.ClearLogoPath = mContainer.ClearLogo
-                tmpMovieDb.DiscArtPath = mContainer.DiscArt
-                tmpMovieDb.EFanartsPath = mContainer.EFanarts
-                tmpMovieDb.EThumbsPath = mContainer.EThumbs
-                tmpMovieDb.FanartPath = mContainer.Fanart
-                tmpMovieDb.LandscapePath = mContainer.Landscape
-                tmpMovieDb.NfoPath = If(String.IsNullOrEmpty(tmpMovieDb.Movie.Title), String.Empty, mContainer.Nfo) 'assume invalid nfo if no title
-                tmpMovieDb.PosterPath = mContainer.Poster
-                tmpMovieDb.SubPath = mContainer.Subs
-                tmpMovieDb.ThemePath = mContainer.Theme
-                tmpMovieDb.TrailerPath = mContainer.Trailer
-
-                hasBanner = Not String.IsNullOrEmpty(mContainer.Banner)
-                hasClearArt = Not String.IsNullOrEmpty(mContainer.ClearArt)
-                hasClearLogo = Not String.IsNullOrEmpty(mContainer.ClearLogo)
-                hasDiscArt = Not String.IsNullOrEmpty(mContainer.DiscArt)
-                hasEFanarts = Not String.IsNullOrEmpty(mContainer.EFanarts)
-                hasEThumbs = Not String.IsNullOrEmpty(mContainer.EThumbs)
-                hasFanart = Not String.IsNullOrEmpty(mContainer.Fanart)
-                hasLandscape = Not String.IsNullOrEmpty(mContainer.Landscape)
-                hasNfo = Not String.IsNullOrEmpty(tmpMovieDb.NfoPath)
-                hasPoster = Not String.IsNullOrEmpty(mContainer.Poster)
-                hasSub = Not String.IsNullOrEmpty(mContainer.Subs)
-                hasTheme = Not String.IsNullOrEmpty(mContainer.Theme)
-                hasTrailer = Not String.IsNullOrEmpty(mContainer.Trailer)
-                hasWatched = Not String.IsNullOrEmpty(tmpMovieDb.Movie.PlayCount) AndAlso Not tmpMovieDb.Movie.PlayCount = "0"
-
-                Dim dRow = From drvRow In dtMedia.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item(0)) = ID Select drvRow
-
-                If Not IsNothing(dRow(0)) Then
-                    selRow = DirectCast(dRow(0), DataRow)
-                    tmpMovieDb.IsMark = Convert.ToBoolean(selRow.Item(11))
-                    tmpMovieDb.IsLock = Convert.ToBoolean(selRow.Item(14))
-
-                    If Me.InvokeRequired Then
-                        Me.Invoke(myDelegate, New Object() {dRow(0), 1, tmpMovieDb.Filename})
-                        Me.Invoke(myDelegate, New Object() {dRow(0), 3, tmpMovieDb.ListTitle})
-                        Me.Invoke(myDelegate, New Object() {dRow(0), 4, hasPoster})
-                        Me.Invoke(myDelegate, New Object() {dRow(0), 5, hasFanart})
-                        Me.Invoke(myDelegate, New Object() {dRow(0), 6, hasNfo})
-                        Me.Invoke(myDelegate, New Object() {dRow(0), 7, hasTrailer})
-                        Me.Invoke(myDelegate, New Object() {dRow(0), 8, hasSub})
-                        Me.Invoke(myDelegate, New Object() {dRow(0), 9, hasEThumbs})
-                        Me.Invoke(myDelegate, New Object() {dRow(0), 10, False})
-                        Me.Invoke(myDelegate, New Object() {dRow(0), 15, tmpMovieDb.Movie.Title})
-                        Me.Invoke(myDelegate, New Object() {dRow(0), 47, tmpMovieDb.Movie.SortTitle})
-                        Me.Invoke(myDelegate, New Object() {dRow(0), 27, tmpMovieDb.Movie.Genre})
-                        Me.Invoke(myDelegate, New Object() {dRow(0), 34, hasWatched})
-                        Me.Invoke(myDelegate, New Object() {dRow(0), 49, hasEFanarts})
-                        Me.Invoke(myDelegate, New Object() {dRow(0), 51, hasBanner})
-                        Me.Invoke(myDelegate, New Object() {dRow(0), 53, hasLandscape})
-                        Me.Invoke(myDelegate, New Object() {dRow(0), 55, hasTheme})
-                        Me.Invoke(myDelegate, New Object() {dRow(0), 57, hasDiscArt})
-                        Me.Invoke(myDelegate, New Object() {dRow(0), 59, hasClearLogo})
-                        Me.Invoke(myDelegate, New Object() {dRow(0), 61, hasClearArt})
-                    Else
-                        selRow.Item(1) = tmpMovieDb.Filename
-                        selRow.Item(3) = tmpMovieDb.ListTitle
-                        selRow.Item(4) = hasPoster
-                        selRow.Item(5) = hasFanart
-                        selRow.Item(6) = hasNfo
-                        selRow.Item(7) = hasTrailer
-                        selRow.Item(8) = hasSub
-                        selRow.Item(9) = hasEThumbs
-                        selRow.Item(10) = False
-                        selRow.Item(15) = tmpMovieDb.Movie.Title
-                        selRow.Item(47) = tmpMovieDb.Movie.SortTitle
-                        selRow.Item(27) = tmpMovieDb.Movie.Genre
-                        selRow.Item(34) = hasWatched
-                        selRow.Item(49) = hasEFanarts
-                        selRow.Item(51) = hasBanner
-                        selRow.Item(53) = hasLandscape
-                        selRow.Item(55) = hasTheme
-                        selRow.Item(57) = hasDiscArt
-                        selRow.Item(59) = hasClearLogo
-                        selRow.Item(61) = hasClearArt
-                    End If
-                End If
-
-                Master.DB.SaveMovieToDB(tmpMovieDb, False, BatchMode, ToNfo)
-
-            Else
-                Master.DB.DeleteFromDB(ID, BatchMode)
-                Return True
             End If
 
+            Master.DB.SaveMovieSetToDB(tmpMovieSetDb, False, BatchMode, ToNfo)
+
             If Not BatchMode Then
-                Me.DoTitleCheck()
 
                 Dim selI As Integer = 0
 
-                If Me.dgvMovies.SelectedRows.Count > 0 Then selI = Me.dgvMovies.SelectedRows(0).Index
+                If Me.dgvMovieSets.SelectedRows.Count > 0 Then selI = Me.dgvMovieSets.SelectedRows(0).Index
 
-                Me.dgvMovies.ClearSelection()
-                Me.dgvMovies.CurrentCell = Nothing
+                Me.dgvMovieSets.ClearSelection()
+                Me.dgvMovieSets.CurrentCell = Nothing
 
-                If Me.dgvMovies.RowCount - 1 < selI Then selI = Me.dgvMovies.RowCount
+                If Me.dgvMovieSets.RowCount - 1 < selI Then selI = Me.dgvMovieSets.RowCount
 
                 Me.ClearInfo()
-                Me.currMovieRow = -2
-                Me.currMovieRow = -1
+                Me.currMovieSetRow = -2
+                Me.currMovieSetRow = -1
 
-                If Me.dgvMovies.RowCount > 0 Then
-                    Me.dgvMovies.Rows(selI).Cells(3).Selected = True
-                    Me.dgvMovies.CurrentCell = Me.dgvMovies.Rows(selI).Cells(3)
+                If Me.dgvMovieSets.RowCount > 0 Then
+                    Me.dgvMovieSets.Rows(selI).Cells(0).Selected = True
+                    Me.dgvMovieSets.CurrentCell = Me.dgvMovieSets.Rows(selI).Cells(0)
                 End If
             End If
 
@@ -10157,6 +10103,33 @@ doCancel:
         End Try
     End Sub
 
+    Private Sub ReloadMovieSet()
+        Try
+            Me.dgvMovieSets.Cursor = Cursors.WaitCursor
+            Me.SetControlsEnabled(False, True)
+
+            Dim doFill As Boolean = False
+            Dim tFill As Boolean = False
+
+            Dim doBatch As Boolean = Not Me.dgvMovieSets.SelectedRows.Count = 1
+
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MediaDBConn.BeginTransaction()
+                For Each sRow As DataGridViewRow In Me.dgvMovieSets.SelectedRows
+                    tFill = Me.RefreshMovieSet(CStr(sRow.Cells(0).Value), doBatch)
+                    If tFill Then doFill = True
+                Next
+                SQLtransaction.Commit()
+            End Using
+
+            Me.dgvMovieSets.Cursor = Cursors.Default
+            Me.SetControlsEnabled(True)
+
+            If doFill Then FillList(0) Else DoTitleCheck()
+        Catch ex As Exception
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
     Private Sub cmnuMovieRemoveFromDatabase_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieRemoveFromDB.Click
         Try
             Me.ClearInfo()
@@ -10230,13 +10203,14 @@ doCancel:
         If Not Master.isWindows Then
             If Me.dgvMovieSets.ColumnCount > 0 Then
                 Me.dgvMovieSets.Columns(0).Width = Me.dgvMovieSets.Width - _
-                If(Master.eSettings.MoviePosterCol, 0, 20) - _
-                If(Master.eSettings.MovieFanartCol, 0, 20) - _
-                If(Master.eSettings.MovieNFOCol, 0, 20) - _
-                If(Master.eSettings.MovieTrailerCol, 0, 20) - _
-                If(Master.eSettings.MovieSubCol, 0, 20) - _
-                If(Master.eSettings.MovieEThumbsCol, 0, 20) - _
-                If(Master.eSettings.MovieWatchedCol, 0, 20) - _
+                If(Master.eSettings.MovieSetNfoCol, 0, 20) - _
+                If(Master.eSettings.MovieSetPosterCol, 0, 20) - _
+                If(Master.eSettings.MovieSetFanartCol, 0, 20) - _
+                If(Master.eSettings.MovieSetBannerCol, 0, 20) - _
+                If(Master.eSettings.MovieSetLandscapeCol, 0, 20) - _
+                If(Master.eSettings.MovieSetDiscArtCol, 0, 20) - _
+                If(Master.eSettings.MovieSetClearLogoCol, 0, 20) - _
+                If(Master.eSettings.MovieSetClearArtCol, 0, 20) - _
                 If(Me.dgvMovieSets.DisplayRectangle.Height > Me.dgvMovieSets.ClientRectangle.Height, 0, SystemInformation.VerticalScrollBarWidth)
             End If
         End If
@@ -10292,9 +10266,9 @@ doCancel:
                         FilterString = Microsoft.VisualBasic.Strings.Join(FilterArray.ToArray, " OR ")
                     End If
 
-                    bsMedia.Filter = FilterString
+                    bsMovies.Filter = FilterString
                 Else
-                    bsMedia.RemoveFilter()
+                    bsMovies.RemoveFilter()
                 End If
 
                 If doFill Then
@@ -10373,7 +10347,7 @@ doCancel:
                 Master.currShow = Master.DB.LoadTVEpFromDB(Convert.ToInt32(Me.dgvTVEpisodes.Item(0, iRow).Value), True)
                 Me.fillScreenInfoWithEpisode()
 
-                If Not Convert.ToBoolean(Me.dgvTVEpisodes.Item(22, iRow).Value) AndAlso Not Me.fScanner.IsBusy AndAlso Not Me.bwMovieInfo.IsBusy AndAlso Not Me.bwLoadMovieInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadSeasonInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
+                If Not Convert.ToBoolean(Me.dgvTVEpisodes.Item(22, iRow).Value) AndAlso Not Me.fScanner.IsBusy AndAlso Not Me.bwMetaInfo.IsBusy AndAlso Not Me.bwLoadMovieInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadSeasonInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
                     Me.cmnuEpisode.Enabled = True
                 End If
             Else
@@ -10550,7 +10524,7 @@ doCancel:
                 Master.currMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(Me.dgvMovies.Item(0, iRow).Value))
                 Me.fillScreenInfoWithMovie()
 
-                If Not Me.bwMovieScraper.IsBusy AndAlso Not Me.bwNonScrape.IsBusy AndAlso Not Me.fScanner.IsBusy AndAlso Not Me.bwMovieInfo.IsBusy AndAlso Not Me.bwLoadMovieInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadSeasonInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
+                If Not Me.bwMovieScraper.IsBusy AndAlso Not Me.bwNonScrape.IsBusy AndAlso Not Me.fScanner.IsBusy AndAlso Not Me.bwMetaInfo.IsBusy AndAlso Not Me.bwLoadMovieInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadSeasonInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
                     Me.cmnuMovie.Enabled = True
                 End If
             Else
@@ -10568,13 +10542,13 @@ doCancel:
     ''' <remarks></remarks>
     Private Sub SelectMovieSetRow(ByVal iRow As Integer)
         Try
-            If Not Convert.ToBoolean(Me.dgvMovieSets.Item(4, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvMovieSets.Item(5, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvMovieSets.Item(6, iRow).Value) Then
+            If Not Convert.ToBoolean(Me.dgvMovieSets.Item(3, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvMovieSets.Item(5, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvMovieSets.Item(1, iRow).Value) Then
                 Me.ClearInfo()
                 Me.ShowNoInfo(True, 0)
                 Master.currMovieSet = Master.DB.LoadMovieSetFromDB(CStr(Me.dgvMovies.Item(0, iRow).Value))
                 Me.fillScreenInfoWithMovieSet()
 
-                If Not Me.bwMovieScraper.IsBusy AndAlso Not Me.bwNonScrape.IsBusy AndAlso Not Me.fScanner.IsBusy AndAlso Not Me.bwMovieInfo.IsBusy AndAlso Not Me.bwLoadMovieInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadSeasonInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
+                If Not Me.bwMovieScraper.IsBusy AndAlso Not Me.bwNonScrape.IsBusy AndAlso Not Me.fScanner.IsBusy AndAlso Not Me.bwMetaInfo.IsBusy AndAlso Not Me.bwLoadMovieInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadSeasonInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
                     Me.cmnuMovie.Enabled = True
                 End If
             Else
@@ -10602,7 +10576,7 @@ doCancel:
 
                 Me.FillEpisodes(Convert.ToInt32(Me.dgvTVSeasons.Item(0, iRow).Value), Convert.ToInt32(Me.dgvTVSeasons.Item(2, iRow).Value))
 
-                If Not Me.fScanner.IsBusy AndAlso Not Me.bwMovieInfo.IsBusy AndAlso Not Me.bwLoadMovieInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadSeasonInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
+                If Not Me.fScanner.IsBusy AndAlso Not Me.bwMetaInfo.IsBusy AndAlso Not Me.bwLoadMovieInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadSeasonInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
                     Me.cmnuSeason.Enabled = True
                 End If
             Else
@@ -10633,7 +10607,7 @@ doCancel:
 
                 Me.FillSeasons(Convert.ToInt32(Me.dgvTVShows.Item(0, iRow).Value))
 
-                If Not Me.fScanner.IsBusy AndAlso Not Me.bwMovieInfo.IsBusy AndAlso Not Me.bwLoadMovieInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadSeasonInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
+                If Not Me.fScanner.IsBusy AndAlso Not Me.bwMetaInfo.IsBusy AndAlso Not Me.bwLoadMovieInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadSeasonInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
                     Me.cmnuShow.Enabled = True
                 End If
             Else
@@ -11293,7 +11267,7 @@ doCancel:
             End If
 
             'might as well wait for these
-            While Me.bwMovieInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy
+            While Me.bwMetaInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy
                 Application.DoEvents()
                 Threading.Thread.Sleep(50)
             End While
@@ -11946,9 +11920,10 @@ doCancel:
                 .tslLoading.Text = Master.eLang.GetString(7, "Loading Media:")
 
                 .cmnuEpisodeOpenFolder.Text = .cmnuMovieOpenFolder.Text
+                .cmnuMovieSetReload.Text = cmnuMovieReload.Text
                 .cmnuSeasonOpenFolder.Text = .cmnuMovieOpenFolder.Text
-                .cmnuTrayMediaCenters.Text = .tsbMediaCenters.Text
                 .cmnuShowOpenFolder.Text = .cmnuMovieOpenFolder.Text
+                .cmnuTrayMediaCenters.Text = .tsbMediaCenters.Text
                 .cmnuTrayToolsBackdrops.Text = .mnuMainToolsBackdrops.Text
                 .cmnuTrayToolsCleanFiles.Text = .mnuMainToolsCleanFiles.Text
                 .cmnuTrayToolsClearCache.Text = .mnuMainToolsClearCache.Text
@@ -12658,6 +12633,7 @@ doCancel:
         Dim ID As Integer
         Dim IsTV As Boolean
         Dim Movie As Structures.DBMovie
+        Dim MovieSet As Structures.DBMovieSet
         Dim Options As Structures.ScrapeOptions
         Dim Path As String
         Dim pURL As String

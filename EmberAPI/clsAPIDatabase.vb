@@ -1133,6 +1133,30 @@ Public Class Database
     End Function
 
     ''' <summary>
+    ''' Load all the information for a movie (by movie path)
+    ''' </summary>
+    ''' <param name="sPath">Full path to the movie file</param>
+    ''' <returns>Structures.DBMovie object</returns>
+    Public Function LoadMovieFromDB(ByVal sPath As String) As Structures.DBMovie
+        Try
+            Using SQLcommand As SQLite.SQLiteCommand = _mediaDBConn.CreateCommand()
+                ' One more Query Better then re-write all function again
+                SQLcommand.CommandText = String.Concat("SELECT ID FROM movies WHERE MoviePath = ", sPath, ";")
+                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                    If SQLreader.Read Then
+                        Return LoadMovieFromDB(Convert.ToInt64(SQLreader("ID")))
+                    Else
+                        Return New Structures.DBMovie With {.Id = -1} ' No Movie Found
+                    End If
+                End Using
+            End Using
+        Catch ex As Exception
+            Master.eLog.Error(GetType(Database), ex.Message, ex.StackTrace, "Error")
+        End Try
+        Return New Structures.DBMovie With {.Id = -1}
+    End Function
+
+    ''' <summary>
     ''' Load all the information for a movieset.
     ''' </summary>
     ''' <param name="MovieSetName">Name of the movieset to load, as stored in the database</param>
@@ -1180,30 +1204,6 @@ Public Class Database
             Master.eLog.Error(GetType(Database), ex.Message, ex.StackTrace, "Error")
         End Try
         Return _moviesetDB
-    End Function
-
-    ''' <summary>
-    ''' Load all the information for a movie (by movie path)
-    ''' </summary>
-    ''' <param name="sPath">Full path to the movie file</param>
-    ''' <returns>Structures.DBMovie object</returns>
-    Public Function LoadMovieFromDB(ByVal sPath As String) As Structures.DBMovie
-        Try
-            Using SQLcommand As SQLite.SQLiteCommand = _mediaDBConn.CreateCommand()
-                ' One more Query Better then re-write all function again
-                SQLcommand.CommandText = String.Concat("SELECT ID FROM movies WHERE MoviePath = ", sPath, ";")
-                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                    If SQLreader.Read Then
-                        Return LoadMovieFromDB(Convert.ToInt64(SQLreader("ID")))
-                    Else
-                        Return New Structures.DBMovie With {.Id = -1} ' No Movie Found
-                    End If
-                End Using
-            End Using
-        Catch ex As Exception
-            Master.eLog.Error(GetType(Database), ex.Message, ex.StackTrace, "Error")
-        End Try
-        Return New Structures.DBMovie With {.Id = -1}
     End Function
 
     ''' <summary>
@@ -2016,6 +2016,102 @@ Public Class Database
             Master.eLog.Error(GetType(Database), ex.Message, ex.StackTrace, "Error")
         End Try
         Return _movieDB
+    End Function
+    ''' <summary>
+    ''' Saves all information from a Structures.DBMovieSet object to the database
+    ''' </summary>
+    ''' <param name="_moviesetDB">Media.Movie object to save to the database</param>
+    ''' <param name="IsNew">Is this a new movieset (not already present in database)?</param>
+    ''' <param name="BatchMode">Is the function already part of a transaction?</param>
+    ''' <param name="ToNfo">Save the information to an nfo file?</param>
+    ''' <returns>Structures.DBMovieSet object</returns>
+    Public Function SaveMovieSetToDB(ByVal _moviesetDB As Structures.DBMovieSet, ByVal IsNew As Boolean, Optional ByVal BatchMode As Boolean = False, Optional ByVal ToNfo As Boolean = False) As Structures.DBMovieSet
+        'TODO Must add parameter checking. Needs thought to ensure calling routines are not broken if exception thrown. 
+        'TODO Break this method into smaller chunks. Too important to be this complex
+        Try
+            Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
+            If Not BatchMode Then SQLtransaction = _mediaDBConn.BeginTransaction()
+            Using SQLcommand As SQLite.SQLiteCommand = _mediaDBConn.CreateCommand()
+                If IsNew Then
+                    SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO sets (", _
+                     "HasNfo, NfoPath, HasPoster, PosterPath, HasFanart, ", _
+                     "FanartPath, HasBanner, BannerPath, HasLandscape, LandscapePath,", _
+                     "HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ", _
+                     "ClearArtPath ", _
+                     ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM sets;")
+                Else
+                    SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO sets (", _
+                     "SetName, HasNfo, NfoPath, HasPoster, PosterPath, HasFanart, ", _
+                     "FanartPath, HasBanner, BannerPath, HasLandscape, LandscapePath,", _
+                     "HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ", _
+                     "ClearArtPath ", _
+                     ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM set;")
+                    Dim parMovieSetSetName As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSetName", DbType.String, 0, "SetName")
+                    parMovieSetSetName.Value = _moviesetDB.SetName
+                End If
+                Dim parHasNfo As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasInfo", DbType.Boolean, 0, "HasNfo")
+                Dim parNfoPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parNfoPath", DbType.String, 0, "NfoPath")
+                Dim parHasPoster As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasPoster", DbType.Boolean, 0, "HasPoster")
+                Dim parPosterPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPosterPath", DbType.String, 0, "PosterPath")
+                Dim parHasFanart As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasFanart", DbType.Boolean, 0, "HasFanart")
+                Dim parFanartPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parFanartPath", DbType.String, 0, "FanartPath")
+                Dim parHasBanner As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasBanner", DbType.Boolean, 0, "HasBanner")
+                Dim parBannerPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parBannerPath", DbType.String, 0, "BannerPath")
+                Dim parHasLandscape As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasLandscape", DbType.Boolean, 0, "HasLandscape")
+                Dim parLandscapePath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLandscapePath", DbType.String, 0, "LandscapePath")
+                Dim parHasDiscArt As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasDiscArt", DbType.Boolean, 0, "HasDiscArt")
+                Dim parDiscArtPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parDiscArtPath", DbType.String, 0, "DiscArtPath")
+                Dim parHasClearLogo As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasClearLogo", DbType.Boolean, 0, "HasClearLogo")
+                Dim parClearLogoPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parClearLogoPath", DbType.String, 0, "ClearLogoPath")
+                Dim parHasClearArt As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasClearArt", DbType.Boolean, 0, "HasClearArt")
+                Dim parClearArtPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parClearArtPath", DbType.String, 0, "ClearArtPath")
+
+                ' First let's save it to NFO, even because we will need the NFO path
+                'If ToNfo AndAlso Not String.IsNullOrEmpty(_movieDB.Movie.IMDBID) Then NFO.SaveMovieToNFO(_movieDB)
+                'Why do we need IMDB to save to NFO?
+                If ToNfo Then NFO.SaveMovieSetToNFO(_moviesetDB)
+
+                parBannerPath.Value = _moviesetDB.BannerPath
+                parClearArtPath.Value = _moviesetDB.ClearArtPath
+                parClearLogoPath.Value = _moviesetDB.ClearLogoPath
+                parDiscArtPath.Value = _moviesetDB.DiscArtPath
+                parFanartPath.Value = _moviesetDB.FanartPath
+                parLandscapePath.Value = _moviesetDB.LandscapePath
+                parNfoPath.Value = _moviesetDB.NfoPath
+                parPosterPath.Value = _moviesetDB.PosterPath
+
+                parHasBanner.Value = Not String.IsNullOrEmpty(_moviesetDB.BannerPath)
+                parHasClearArt.Value = Not String.IsNullOrEmpty(_moviesetDB.ClearArtPath)
+                parHasClearLogo.Value = Not String.IsNullOrEmpty(_moviesetDB.ClearLogoPath)
+                parHasDiscArt.Value = Not String.IsNullOrEmpty(_moviesetDB.DiscArtPath)
+                parHasFanart.Value = Not String.IsNullOrEmpty(_moviesetDB.FanartPath)
+                parHasLandscape.Value = Not String.IsNullOrEmpty(_moviesetDB.LandscapePath)
+                parHasNfo.Value = Not String.IsNullOrEmpty(_moviesetDB.NfoPath)
+                parHasPoster.Value = Not String.IsNullOrEmpty(_moviesetDB.PosterPath)
+
+                'If IsNew Then
+                '    Using rdrMovieSet As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                '        If rdrMovieSet.Read Then
+                '            _moviesetDB.SetName = Convert.ToInt64(rdrMovieSet(0))
+                '        Else
+                '            Master.eLog.Error(GetType(Database), "Something very wrong here: SaveMovieSetToDB", _moviesetDB.ToString, "Error")
+                '            _moviesetDB.SetName = "SETERROR"
+                '            Return _moviesetDB
+                '        End If
+                '    End Using
+                'Else
+
+                SQLcommand.ExecuteNonQuery()
+
+                'End If
+
+            End Using
+            If Not BatchMode Then SQLtransaction.Commit()
+
+        Catch ex As Exception
+            Master.eLog.Error(GetType(Database), ex.Message, ex.StackTrace, "Error")
+        End Try
+        Return _moviesetDB
     End Function
 
     ''' <summary>

@@ -141,7 +141,6 @@ Partial Class frmMain
         Me.cmnuMovieRemoveFromDisk = New System.Windows.Forms.ToolStripMenuItem()
         Me.dgvMovieSets = New System.Windows.Forms.DataGridView()
         Me.cmnuMovieSet = New System.Windows.Forms.ContextMenuStrip(Me.components)
-        Me.TestToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.scTV = New System.Windows.Forms.SplitContainer()
         Me.dgvTVShows = New System.Windows.Forms.DataGridView()
         Me.cmnuShow = New System.Windows.Forms.ContextMenuStrip(Me.components)
@@ -714,6 +713,7 @@ Partial Class frmMain
         Me.tmrKeyBuffer = New System.Windows.Forms.Timer(Me.components)
         Me.tmrLoadMovieSet = New System.Windows.Forms.Timer(Me.components)
         Me.tmrWaitMovieSet = New System.Windows.Forms.Timer(Me.components)
+        Me.cmnuMovieSetReload = New System.Windows.Forms.ToolStripMenuItem()
         Me.StatusStrip.SuspendLayout()
         Me.mnuMain.SuspendLayout()
         CType(Me.scMain, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -1722,15 +1722,9 @@ Partial Class frmMain
         '
         'cmnuMovieSet
         '
-        Me.cmnuMovieSet.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.TestToolStripMenuItem})
+        Me.cmnuMovieSet.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuMovieSetReload})
         Me.cmnuMovieSet.Name = "cmnuMovieSets"
         Me.cmnuMovieSet.Size = New System.Drawing.Size(153, 48)
-        '
-        'TestToolStripMenuItem
-        '
-        Me.TestToolStripMenuItem.Name = "TestToolStripMenuItem"
-        Me.TestToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
-        Me.TestToolStripMenuItem.Text = "Test"
         '
         'scTV
         '
@@ -6336,6 +6330,14 @@ Partial Class frmMain
         '
         Me.tmrWaitMovieSet.Interval = 250
         '
+        'cmnuMovieSetReload
+        '
+        Me.cmnuMovieSetReload.Image = CType(resources.GetObject("cmnuMovieSetReload.Image"), System.Drawing.Image)
+        Me.cmnuMovieSetReload.Name = "cmnuMovieSetReload"
+        Me.cmnuMovieSetReload.ShortcutKeys = System.Windows.Forms.Keys.F5
+        Me.cmnuMovieSetReload.Size = New System.Drawing.Size(152, 22)
+        Me.cmnuMovieSetReload.Text = "Reload"
+        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -7134,7 +7136,7 @@ Partial Class frmMain
     Friend WithEvents dgvMovieSets As System.Windows.Forms.DataGridView
     Friend WithEvents dgvMovies As System.Windows.Forms.DataGridView
     Friend WithEvents cmnuMovieSet As System.Windows.Forms.ContextMenuStrip
-    Friend WithEvents TestToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents tmrLoadMovieSet As System.Windows.Forms.Timer
     Friend WithEvents tmrWaitMovieSet As System.Windows.Forms.Timer
+    Friend WithEvents cmnuMovieSetReload As System.Windows.Forms.ToolStripMenuItem
 End Class

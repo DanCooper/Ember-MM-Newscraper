@@ -214,6 +214,14 @@ Public Class Settings
     Private _moviescrapervotes As Boolean
     Private _moviescraperwriters As Boolean
     Private _moviescraperyear As Boolean
+    Private _moviesetbannercol As Boolean
+    Private _moviesetclearartcol As Boolean
+    Private _moviesetclearlogocol As Boolean
+    Private _moviesetdiscartcol As Boolean
+    Private _moviesetfanartcol As Boolean
+    Private _moviesetlandscapecol As Boolean
+    Private _moviesetnfocol As Boolean
+    Private _moviesetpostercol As Boolean
     Private _moviesets As New List(Of String)
     Private _movieskiplessthan As Integer
     Private _movieskipstackedsizecheck As Boolean
@@ -1926,6 +1934,78 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Me._moviesubcol = value
+        End Set
+    End Property
+
+    Public Property MovieSetBannerCol() As Boolean
+        Get
+            Return Me._moviesetbannercol
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetbannercol = value
+        End Set
+    End Property
+
+    Public Property MovieSetClearArtCol() As Boolean
+        Get
+            Return Me._moviesetclearartcol
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetclearartcol = value
+        End Set
+    End Property
+
+    Public Property MovieSetClearLogoCol() As Boolean
+        Get
+            Return Me._moviesetclearlogocol
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetclearlogocol = value
+        End Set
+    End Property
+
+    Public Property MovieSetDiscArtCol() As Boolean
+        Get
+            Return Me._moviesetdiscartcol
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetdiscartcol = value
+        End Set
+    End Property
+
+    Public Property MovieSetFanartCol() As Boolean
+        Get
+            Return Me._moviesetfanartcol
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetfanartcol = value
+        End Set
+    End Property
+
+    Public Property MovieSetLandscapeCol() As Boolean
+        Get
+            Return Me._moviesetlandscapecol
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetlandscapecol = value
+        End Set
+    End Property
+
+    Public Property MovieSetNfoCol() As Boolean
+        Get
+            Return Me._moviesetnfocol
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetnfocol = value
+        End Set
+    End Property
+
+    Public Property MovieSetPosterCol() As Boolean
+        Get
+            Return Me._moviesetpostercol
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetpostercol = value
         End Set
     End Property
 
@@ -5322,6 +5402,14 @@ Public Class Settings
         Me._moviescrapervotes = True
         Me._moviescraperwriters = True
         Me._moviescraperyear = True
+        Me._moviesetbannercol = False
+        Me._moviesetclearartcol = False
+        Me._moviesetclearlogocol = False
+        Me._moviesetdiscartcol = False
+        Me._moviesetfanartcol = False
+        Me._moviesetlandscapecol = False
+        Me._moviesetnfocol = False
+        Me._moviesetpostercol = False
         Me._moviesets = New List(Of String)
         Me._movieskiplessthan = 0
         Me._movieskipstackedsizecheck = False

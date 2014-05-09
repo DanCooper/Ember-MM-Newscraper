@@ -1190,6 +1190,63 @@ Namespace FileUtils
             FilenameList = FilenameList.Distinct().ToList() 'remove double entries
             Return FilenameList
         End Function
+        ''' <summary>
+        ''' Creates a list of filenames to save or read movie content
+        ''' </summary>
+        ''' <param name="mType"></param>
+        ''' <returns><c>List(Of String)</c> all filenames with full path</returns>
+        ''' <remarks></remarks>
+        Public Shared Function MovieSet(ByVal SetName As String, ByVal mType As Enums.ModType) As List(Of String)
+            Dim FilenameList As New List(Of String)
+
+            Dim fSetName As String = SetName
+            Dim fPath As String = Master.eSettings.MovieMoviesetsPath
+
+            Select Case mType
+                Case Enums.ModType.NFO
+                    With Master.eSettings
+                        FilenameList.Add(Path.Combine(fPath, String.Concat(fSetName, ".nfo")))
+                    End With
+
+                Case Enums.ModType.Poster
+                    With Master.eSettings
+                        FilenameList.Add(Path.Combine(fPath, String.Concat(fSetName, "-poster.jpg")))
+                    End With
+
+                Case Enums.ModType.Fanart
+                    With Master.eSettings
+                        FilenameList.Add(Path.Combine(fPath, String.Concat(fSetName, "-fanart.jpg")))
+                    End With
+
+                Case Enums.ModType.Banner
+                    With Master.eSettings
+                        FilenameList.Add(Path.Combine(fPath, String.Concat(fSetName, "-banner.jpg")))
+                    End With
+
+                Case Enums.ModType.ClearLogo
+                    With Master.eSettings
+                        FilenameList.Add(Path.Combine(fPath, String.Concat(fSetName, "-clearlogo.jpg")))
+                    End With
+
+                Case Enums.ModType.ClearArt
+                    With Master.eSettings
+                        FilenameList.Add(Path.Combine(fPath, String.Concat(fSetName, "-clearart.jpg")))
+                    End With
+
+                Case Enums.ModType.DiscArt
+                    With Master.eSettings
+                        FilenameList.Add(Path.Combine(fPath, String.Concat(fSetName, "-discart.jpg")))
+                    End With
+
+                Case Enums.ModType.Landscape
+                    With Master.eSettings
+                        FilenameList.Add(Path.Combine(fPath, String.Concat(fSetName, "-landscape.jpg")))
+                    End With
+            End Select
+
+            FilenameList = FilenameList.Distinct().ToList() 'remove double entries
+            Return FilenameList
+        End Function
 
         Public Shared Function TVEpisode(ByVal EpisodePath As String, ByVal mType As Enums.TVImageType, Optional ByVal mSeason As Integer = -1) As List(Of String)
             Dim FilenameList As New List(Of String)

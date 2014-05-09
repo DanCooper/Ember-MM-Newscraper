@@ -16,6 +16,8 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <TargetFrameworkProfile />
     <PublishUrl>veröffentlichen\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -28,10 +30,8 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup>
     <OptionExplicit>On</OptionExplicit>
@@ -184,6 +184,12 @@
       <DependentUpon>dlgEditEpisode.vb</DependentUpon>
     </Compile>
     <Compile Include="dlgEditEpisode.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="dlgEditMovieSet.Designer.vb">
+      <DependentUpon>dlgEditMovieSet.vb</DependentUpon>
+    </Compile>
+    <Compile Include="dlgEditMovieSet.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="dlgEditMovie.Designer.vb">
@@ -392,6 +398,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="dlgEditEpisode.resx">
       <DependentUpon>dlgEditEpisode.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="dlgEditMovieSet.resx">
+      <DependentUpon>dlgEditMovieSet.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="dlgEditMovie.resx">
       <DependentUpon>dlgEditMovie.vb</DependentUpon>
