@@ -51,8 +51,9 @@ Public Class frmMain
     Private alActors As New List(Of String)
     Private aniFilterRaise As Boolean = False
     Private aniRaise As Boolean = False
+    Private aniMovieType As Integer = 0 '0 = down, 1 = mid, 2 = up
+    Private aniMovieSetType As Integer = 0 '0 = down, 1 = mid, 2 = up
     Private aniShowType As Integer = 0 '0 = down, 1 = mid, 2 = up
-    Private aniType As Integer = 0 '0 = down, 1 = mid, 2 = up
     Private bsEpisodes As New BindingSource
 
     Private bsMovies As New BindingSource
@@ -496,7 +497,7 @@ Public Class frmMain
 
         Me.tmrAni.Stop()
 
-        Select Case If(Me.tcMain.SelectedIndex = 0, aniType, aniShowType)
+        Select Case If(Me.tcMain.SelectedIndex = 0, aniMovieType, If(Me.tcMain.SelectedIndex = 1, aniMovieSetType, aniShowType))
             Case 1
                 If Me.btnMid.Visible Then
                     Me.pnlInfoPanel.Height = Me._ipmid
@@ -506,7 +507,9 @@ Public Class frmMain
                 ElseIf Me.btnUp.Visible Then
                     Me.pnlInfoPanel.Height = Me._ipup
                     If Me.tcMain.SelectedIndex = 0 Then
-                        aniType = 2
+                        aniMovieType = 2
+                    ElseIf Me.tcMain.SelectedIndex = 1 Then
+                        aniMovieSetType = 2
                     Else
                         aniShowType = 2
                     End If
@@ -516,7 +519,9 @@ Public Class frmMain
                 Else
                     Me.pnlInfoPanel.Height = 25
                     If Me.tcMain.SelectedIndex = 0 Then
-                        aniType = 0
+                        aniMovieType = 0
+                    ElseIf Me.tcMain.SelectedIndex = 1 Then
+                        aniMovieSetType = 0
                     Else
                         aniShowType = 0
                     End If
@@ -525,6 +530,36 @@ Public Class frmMain
                     Me.btnDown.Enabled = False
                 End If
             Case 2
+                If Me.btnMid.Visible Then
+                    Me.pnlInfoPanel.Height = Me._ipmid
+                    Me.btnUp.Enabled = True
+                    Me.btnMid.Enabled = False
+                    Me.btnDown.Enabled = True
+                ElseIf Me.btnUp.Visible Then
+                    Me.pnlInfoPanel.Height = Me._ipup
+                    If Me.tcMain.SelectedIndex = 0 Then
+                        aniMovieType = 2
+                    ElseIf Me.tcMain.SelectedIndex = 1 Then
+                        aniMovieSetType = 2
+                    Else
+                        aniShowType = 2
+                    End If
+                    Me.btnUp.Enabled = False
+                    Me.btnMid.Enabled = True
+                    Me.btnDown.Enabled = True
+                Else
+                    Me.pnlInfoPanel.Height = 25
+                    If Me.tcMain.SelectedIndex = 0 Then
+                        aniMovieType = 0
+                    ElseIf Me.tcMain.SelectedIndex = 1 Then
+                        aniMovieSetType = 0
+                    Else
+                        aniShowType = 0
+                    End If
+                    Me.btnUp.Enabled = True
+                    Me.btnMid.Enabled = True
+                    Me.btnDown.Enabled = False
+                End If
 
             Case 3
                 If Me.btnUp.Visible Then
@@ -536,7 +571,9 @@ Public Class frmMain
                     Me.pnlInfoPanel.Height = Me._ipmid
 
                     If Me.tcMain.SelectedIndex = 0 Then
-                        aniType = 1
+                        aniMovieType = 1
+                    ElseIf Me.tcMain.SelectedIndex = 1 Then
+                        aniMovieSetType = 1
                     Else
                         aniShowType = 1
                     End If
@@ -547,7 +584,9 @@ Public Class frmMain
                 Else
                     Me.pnlInfoPanel.Height = 25
                     If Me.tcMain.SelectedIndex = 0 Then
-                        aniType = 0
+                        aniMovieType = 0
+                    ElseIf Me.tcMain.SelectedIndex = 1 Then
+                        aniMovieSetType = 0
                     Else
                         aniShowType = 0
                     End If
@@ -558,7 +597,9 @@ Public Class frmMain
             Case Else
                 Me.pnlInfoPanel.Height = 25
                 If Me.tcMain.SelectedIndex = 0 Then
-                    aniType = 0
+                    aniMovieType = 0
+                ElseIf Me.tcMain.SelectedIndex = 1 Then
+                    aniMovieSetType = 0
                 Else
                     aniShowType = 0
                 End If
@@ -600,9 +641,9 @@ Public Class frmMain
 
         Me.tcMain.Focus()
         If Me.tcMain.SelectedIndex = 0 Then
-            Me.aniType = 0
+            Me.aniMovieType = 0
         ElseIf Me.tcMain.SelectedIndex = 1 Then
-
+            Me.aniMovieSetType = 0
         Else
             Me.aniShowType = 0
         End If
@@ -675,9 +716,9 @@ Public Class frmMain
         End If
 
         If Me.tcMain.SelectedIndex = 0 Then
-            Me.aniType = 1
+            Me.aniMovieType = 1
         ElseIf Me.tcMain.SelectedIndex = 1 Then
-
+            Me.aniMovieSetType = 1
         Else
             Me.aniShowType = 1
         End If
@@ -695,7 +736,7 @@ Public Class frmMain
                 Me.LoadMovieInfo(Convert.ToInt32(Master.currMovie.ID), Master.currMovie.Filename, False, True, True)
             End If
         ElseIf Me.tcMain.SelectedIndex = 1 Then
-
+            'no NFO support for MovieSets
         ElseIf Not String.IsNullOrEmpty(Master.currShow.Filename) AndAlso Me.dgvTVEpisodes.SelectedRows.Count > 0 Then
             Me.SetControlsEnabled(False, True)
 
@@ -774,9 +815,9 @@ Public Class frmMain
 
         Me.tcMain.Focus()
         If Me.tcMain.SelectedIndex = 0 Then
-            Me.aniType = 2
+            Me.aniMovieType = 2
         ElseIf Me.tcMain.SelectedIndex = 1 Then
-
+            Me.aniMovieSetType = 2
         Else
             Me.aniShowType = 2
         End If
@@ -4535,7 +4576,7 @@ doCancel:
         Try
             If e.Button = Windows.Forms.MouseButtons.Right And Me.dgvMovieSets.RowCount > 0 Then
                 If bwCleanDB.IsBusy OrElse bwMovieScraper.IsBusy OrElse bwNonScrape.IsBusy Then
-                    Me.cmnuMovieTitle.Text = Master.eLang.GetString(845, ">> No Item Selected <<")
+                    Me.cmnuMovieSetTitle.Text = Master.eLang.GetString(845, ">> No Item Selected <<")
                     Return
                 End If
 
@@ -4545,14 +4586,8 @@ doCancel:
                 If e.RowIndex >= 0 AndAlso dgvMovieSets.SelectedRows.Count > 0 Then
 
                     Me.cmnuMovieSet.Enabled = True
-                    Me.cmnuMovieChange.Visible = False
-                    Me.cmnuMovieEdit.Visible = False
-                    Me.cmnuMovieEditMetaData.Visible = False
-                    Me.cmnuMovieReSel.Visible = True
-                    Me.cmnuMovieRescrape.Visible = False
-                    Me.cmnuMovieUpSel.Visible = True
-                    'Me.cmuRenamer.Visible = False
-                    Me.cmnuSep2.Visible = False
+                    Me.cmnuMovieSetReload.Visible = True
+                    Me.cmnuMovieSetSep1.Visible = True
 
                     If Me.dgvMovieSets.SelectedRows.Count > 1 AndAlso Me.dgvMovieSets.Rows(e.RowIndex).Selected Then
                         Dim setMark As Boolean = False
@@ -4561,47 +4596,31 @@ doCancel:
 
                         Me.cmnuMovieTitle.Text = Master.eLang.GetString(106, ">> Multiple <<")
 
-                        For Each sRow As DataGridViewRow In Me.dgvMovieSets.SelectedRows
-                            'if any one item is set as unmarked, set menu to mark
-                            'else they are all marked, so set menu to unmark
-                            If Not Convert.ToBoolean(sRow.Cells(11).Value) Then
-                                setMark = True
-                                If setLock AndAlso setWatched Then Exit For
-                            End If
-                            'if any one item is set as unlocked, set menu to lock
-                            'else they are all locked so set menu to unlock
-                            If Not Convert.ToBoolean(sRow.Cells(14).Value) Then
-                                setLock = True
-                                If setMark AndAlso setWatched Then Exit For
-                            End If
-                            'if any one item is set as unwatched, set menu to watched
-                            'else they are all watched so set menu to not watched
-                            If Not Convert.ToBoolean(sRow.Cells(34).Value) Then
-                                setWatched = True
-                                If setLock AndAlso setMark Then Exit For
-                            End If
-                        Next
+                        'For Each sRow As DataGridViewRow In Me.dgvMovieSets.SelectedRows
+                        '    'if any one item is set as unmarked, set menu to mark
+                        '    'else they are all marked, so set menu to unmark
+                        '    If Not Convert.ToBoolean(sRow.Cells(11).Value) Then
+                        '        setMark = True
+                        '        If setLock AndAlso setWatched Then Exit For
+                        '    End If
+                        '    'if any one item is set as unlocked, set menu to lock
+                        '    'else they are all locked so set menu to unlock
+                        '    If Not Convert.ToBoolean(sRow.Cells(14).Value) Then
+                        '        setLock = True
+                        '        If setMark AndAlso setWatched Then Exit For
+                        '    End If
+                        '    'if any one item is set as unwatched, set menu to watched
+                        '    'else they are all watched so set menu to not watched
+                        '    If Not Convert.ToBoolean(sRow.Cells(34).Value) Then
+                        '        setWatched = True
+                        '        If setLock AndAlso setMark Then Exit For
+                        '    End If
+                        'Next
 
-                        Me.cmnuMovieMark.Text = If(setMark, Master.eLang.GetString(23, "Mark"), Master.eLang.GetString(107, "Unmark"))
-                        Me.cmnuMovieLock.Text = If(setLock, Master.eLang.GetString(24, "Lock"), Master.eLang.GetString(108, "Unlock"))
-                        Me.cmnuMovieWatched.Text = If(setWatched, Master.eLang.GetString(981, "Watched"), Master.eLang.GetString(980, "Not Watched"))
-
-                        Me.cmnuMovieGenresGenre.Items.Insert(0, Master.eLang.GetString(98, "Select Genre..."))
-                        Me.cmnuMovieGenresGenre.SelectedItem = Master.eLang.GetString(98, "Select Genre...")
-                        Me.cmnuMovieGenresAdd.Enabled = False
-                        Me.cmnuMovieGenresSet.Enabled = False
-                        Me.cmnuMovieGenresRemove.Enabled = False
                     Else
-                        Me.cmnuMovieChange.Visible = True
-                        Me.cmnuMovieEdit.Visible = True
-                        Me.cmnuMovieEditMetaData.Visible = True
-                        Me.cmnuMovieReSel.Visible = True
-                        Me.cmnuMovieRescrape.Visible = True
-                        Me.cmnuMovieUpSel.Visible = True
-                        Me.cmnuSep.Visible = True
-                        Me.cmnuSep2.Visible = True
+                        Me.cmnuMovieSetReload.Visible = True
 
-                        cmnuMovieTitle.Text = String.Concat(">> ", Me.dgvMovies.Item(0, e.RowIndex).Value, " <<")
+                        cmnuMovieSetTitle.Text = String.Concat(">> ", Me.dgvMovieSets.Item(0, e.RowIndex).Value, " <<")
 
                         If Not Me.dgvMovieSets.Rows(e.RowIndex).Selected Then
                             Me.prevMovieSetRow = -1
@@ -4610,23 +4629,13 @@ doCancel:
                             Me.dgvMovieSets.Rows(e.RowIndex).Selected = True
                             Me.dgvMovieSets.CurrentCell = Me.dgvMovieSets.Item(0, e.RowIndex)
                         Else
-                            Me.cmnuMovie.Enabled = True
+                            Me.cmnuMovieSet.Enabled = True
                         End If
 
-                        Me.cmnuMovieMark.Text = If(Convert.ToBoolean(Me.dgvMovieSets.Item(11, e.RowIndex).Value), Master.eLang.GetString(107, "Unmark"), Master.eLang.GetString(23, "Mark"))
-                        Me.cmnuMovieLock.Text = If(Convert.ToBoolean(Me.dgvMovieSets.Item(14, e.RowIndex).Value), Master.eLang.GetString(108, "Unlock"), Master.eLang.GetString(24, "Lock"))
-                        Me.cmnuMovieWatched.Text = If(Convert.ToBoolean(Me.dgvMovieSets.Item(34, e.RowIndex).Value), Master.eLang.GetString(980, "Not Watched"), Master.eLang.GetString(981, "Watched"))
-
-                        Me.cmnuMovieGenresGenre.Tag = Me.dgvMovies.Item(27, e.RowIndex).Value
-                        Me.cmnuMovieGenresGenre.Items.Insert(0, Master.eLang.GetString(98, "Select Genre..."))
-                        Me.cmnuMovieGenresGenre.SelectedItem = Master.eLang.GetString(98, "Select Genre...")
-                        Me.cmnuMovieGenresAdd.Enabled = False
-                        Me.cmnuMovieGenresSet.Enabled = False
-                        Me.cmnuMovieGenresRemove.Enabled = False
                     End If
                 Else
-                    Me.cmnuMovie.Enabled = False
-                    Me.cmnuMovieTitle.Text = Master.eLang.GetString(845, ">> No Item Selected <<")
+                    Me.cmnuMovieSet.Enabled = False
+                    Me.cmnuMovieSetTitle.Text = Master.eLang.GetString(845, ">> No Item Selected <<")
                 End If
             End If
         Catch ex As Exception
@@ -5492,10 +5501,12 @@ doCancel:
             If Not Me.tcMain.SelectedIndex = 2 OrElse Not Me.currList = 0 Then Return
 
             Me.tmrWaitMovie.Stop()
+            Me.tmrWaitMovieSet.Stop()
             Me.tmrWaitSeason.Stop()
             Me.tmrWaitEp.Stop()
             Me.tmrWaitShow.Stop()
             Me.tmrLoadMovie.Stop()
+            Me.tmrLoadMovieSet.Stop()
             Me.tmrLoadSeason.Stop()
             Me.tmrLoadEp.Stop()
             Me.tmrLoadShow.Stop()
@@ -6171,7 +6182,7 @@ doCancel:
                             .dgvMovieSets.Columns(i).Visible = False
                         Next
 
-                        .dgvMovieSets.Columns(0).ValueType = GetType(Int32)
+                        .dgvMovieSets.Columns(0).ValueType = GetType(String)
 
                         If Master.isWindows Then .dgvMovieSets.Columns(0).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
                         ResizeMovieSetsList()
@@ -6183,6 +6194,7 @@ doCancel:
                         End If
 
                     End With
+                    Me.dgvMovieSets.Enabled = True
                 End If
 
                 Me.dgvTVShows.Enabled = False
@@ -6255,7 +6267,7 @@ doCancel:
                 Me.dgvTVShows.Enabled = True
             End If
 
-            If Me.dtMovies.Rows.Count = 0 AndAlso Me.dtShows.Rows.Count = 0 Then
+            If Me.dtMovies.Rows.Count = 0 AndAlso Me.dtMovieSets.Rows.Count = 0 AndAlso Me.dtShows.Rows.Count = 0 Then
                 Me.SetControlsEnabled(False, False, False)
                 Me.SetStatus(String.Empty)
                 Me.ClearInfo()
@@ -6278,6 +6290,7 @@ doCancel:
             Me.tcMain.Enabled = True
             Me.DoTitleCheck()
             Me.EnableFilters(True)
+            Me.SetMovieSetCount()
             Me.SetTVCount()
         End If
     End Sub
@@ -6694,110 +6707,110 @@ doCancel:
 
         Try
             Me.SuspendLayout()
-            If Not String.IsNullOrEmpty(Master.currMovie.Movie.Title) AndAlso Not String.IsNullOrEmpty(Master.currMovie.Movie.Year) Then
-                Me.lblTitle.Text = String.Format("{0} ({1})", Master.currMovie.Movie.Title, Master.currMovie.Movie.Year)
-            ElseIf Not String.IsNullOrEmpty(Master.currMovie.Movie.Title) AndAlso String.IsNullOrEmpty(Master.currMovie.Movie.Year) Then
-                Me.lblTitle.Text = Master.currMovie.Movie.Title
-            ElseIf String.IsNullOrEmpty(Master.currMovie.Movie.Title) AndAlso Not String.IsNullOrEmpty(Master.currMovie.Movie.Year) Then
-                Me.lblTitle.Text = String.Format(Master.eLang.GetString(117, "Unknown Movie ({0})"), Master.currMovie.Movie.Year)
+            If Not String.IsNullOrEmpty(Master.currMovieSet.SetName) AndAlso Not String.IsNullOrEmpty("") Then
+                Me.lblTitle.Text = String.Format("{0} ({1})", Master.currMovieSet.SetName, Master.currMovie.Movie.Year)
+            ElseIf Not String.IsNullOrEmpty(Master.currMovieSet.SetName) AndAlso String.IsNullOrEmpty("") Then
+                Me.lblTitle.Text = Master.currMovieSet.SetName
+            ElseIf String.IsNullOrEmpty(Master.currMovieSet.SetName) AndAlso Not String.IsNullOrEmpty("") Then
+                Me.lblTitle.Text = String.Format(Master.eLang.GetString(117, "Unknown Movie ({0})"), "need usefull text")
             End If
 
-            If Not String.IsNullOrEmpty(Master.currMovie.Movie.OriginalTitle) AndAlso Master.currMovie.Movie.OriginalTitle <> StringUtils.FilterTokens(Master.currMovie.Movie.Title) Then
-                Me.lblOriginalTitle.Text = String.Format(String.Concat(Master.eLang.GetString(302, "Original Title"), ": {0}"), Master.currMovie.Movie.OriginalTitle)
-            Else
-                Me.lblOriginalTitle.Text = String.Empty
-            End If
+            'If Not String.IsNullOrEmpty(Master.currMovie.Movie.OriginalTitle) AndAlso Master.currMovie.Movie.OriginalTitle <> StringUtils.FilterTokens(Master.currMovie.Movie.Title) Then
+            '    Me.lblOriginalTitle.Text = String.Format(String.Concat(Master.eLang.GetString(302, "Original Title"), ": {0}"), Master.currMovie.Movie.OriginalTitle)
+            'Else
+            '    Me.lblOriginalTitle.Text = String.Empty
+            'End If
 
-            If Not String.IsNullOrEmpty(Master.currMovie.Movie.Votes) Then
-                Me.lblVotes.Text = String.Format(Master.eLang.GetString(118, "{0} Votes"), Master.currMovie.Movie.Votes)
-            End If
+            'If Not String.IsNullOrEmpty(Master.currMovie.Movie.Votes) Then
+            '    Me.lblVotes.Text = String.Format(Master.eLang.GetString(118, "{0} Votes"), Master.currMovie.Movie.Votes)
+            'End If
 
-            If Not String.IsNullOrEmpty(Master.currMovie.Movie.Runtime) Then
-                Me.lblRuntime.Text = String.Format(Master.eLang.GetString(112, "Runtime: {0}"), If(Master.currMovie.Movie.Runtime.Contains("|"), Microsoft.VisualBasic.Strings.Left(Master.currMovie.Movie.Runtime, Master.currMovie.Movie.Runtime.IndexOf("|")), Master.currMovie.Movie.Runtime)).Trim
-            End If
+            'If Not String.IsNullOrEmpty(Master.currMovie.Movie.Runtime) Then
+            '    Me.lblRuntime.Text = String.Format(Master.eLang.GetString(112, "Runtime: {0}"), If(Master.currMovie.Movie.Runtime.Contains("|"), Microsoft.VisualBasic.Strings.Left(Master.currMovie.Movie.Runtime, Master.currMovie.Movie.Runtime.IndexOf("|")), Master.currMovie.Movie.Runtime)).Trim
+            'End If
 
-            If Not String.IsNullOrEmpty(Master.currMovie.Movie.Top250) AndAlso IsNumeric(Master.currMovie.Movie.Top250) AndAlso (IsNumeric(Master.currMovie.Movie.Top250) AndAlso Convert.ToInt32(Master.currMovie.Movie.Top250) > 0) Then
-                Me.pnlTop250.Visible = True
-                Me.lblTop250.Text = Master.currMovie.Movie.Top250
-            Else
-                Me.pnlTop250.Visible = False
-            End If
+            'If Not String.IsNullOrEmpty(Master.currMovie.Movie.Top250) AndAlso IsNumeric(Master.currMovie.Movie.Top250) AndAlso (IsNumeric(Master.currMovie.Movie.Top250) AndAlso Convert.ToInt32(Master.currMovie.Movie.Top250) > 0) Then
+            '    Me.pnlTop250.Visible = True
+            '    Me.lblTop250.Text = Master.currMovie.Movie.Top250
+            'Else
+            '    Me.pnlTop250.Visible = False
+            'End If
 
-            Me.txtOutline.Text = Master.currMovie.Movie.Outline
-            Me.txtPlot.Text = Master.currMovie.Movie.Plot
-            Me.lblTagline.Text = Master.currMovie.Movie.Tagline
+            'Me.txtOutline.Text = Master.currMovie.Movie.Outline
+            'Me.txtPlot.Text = Master.currMovie.Movie.Plot
+            'Me.lblTagline.Text = Master.currMovie.Movie.Tagline
 
-            Me.alActors = New List(Of String)
+            'Me.alActors = New List(Of String)
 
-            If Master.currMovie.Movie.Actors.Count > 0 Then
-                Me.pbActors.Image = My.Resources.actor_silhouette
-                For Each imdbAct As MediaContainers.Person In Master.currMovie.Movie.Actors
-                    If Not String.IsNullOrEmpty(imdbAct.Thumb) Then
-                        If Not imdbAct.Thumb.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not imdbAct.Thumb.ToLower.IndexOf("no_photo") > 0 Then
-                            Me.alActors.Add(imdbAct.Thumb)
-                        Else
-                            Me.alActors.Add("none")
-                        End If
-                    Else
-                        Me.alActors.Add("none")
-                    End If
+            'If Master.currMovie.Movie.Actors.Count > 0 Then
+            '    Me.pbActors.Image = My.Resources.actor_silhouette
+            '    For Each imdbAct As MediaContainers.Person In Master.currMovie.Movie.Actors
+            '        If Not String.IsNullOrEmpty(imdbAct.Thumb) Then
+            '            If Not imdbAct.Thumb.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not imdbAct.Thumb.ToLower.IndexOf("no_photo") > 0 Then
+            '                Me.alActors.Add(imdbAct.Thumb)
+            '            Else
+            '                Me.alActors.Add("none")
+            '            End If
+            '        Else
+            '            Me.alActors.Add("none")
+            '        End If
 
-                    If String.IsNullOrEmpty(imdbAct.Role.Trim) Then
-                        Me.lstActors.Items.Add(imdbAct.Name.Trim)
-                    Else
-                        Me.lstActors.Items.Add(String.Format(Master.eLang.GetString(131, "{0} as {1}"), imdbAct.Name.Trim, imdbAct.Role.Trim))
-                    End If
-                Next
-                Me.lstActors.SelectedIndex = 0
-            End If
+            '        If String.IsNullOrEmpty(imdbAct.Role.Trim) Then
+            '            Me.lstActors.Items.Add(imdbAct.Name.Trim)
+            '        Else
+            '            Me.lstActors.Items.Add(String.Format(Master.eLang.GetString(131, "{0} as {1}"), imdbAct.Name.Trim, imdbAct.Role.Trim))
+            '        End If
+            '    Next
+            '    Me.lstActors.SelectedIndex = 0
+            'End If
 
-            If Not String.IsNullOrEmpty(Master.currMovie.Movie.MPAA) Then
-                Dim tmpRatingImg As Image = APIXML.GetRatingImage(Master.currMovie.Movie.MPAA)
-                If Not IsNothing(tmpRatingImg) Then
-                    Me.pbMPAA.Image = tmpRatingImg
-                    Me.MoveMPAA()
-                End If
-            End If
+            'If Not String.IsNullOrEmpty(Master.currMovie.Movie.MPAA) Then
+            '    Dim tmpRatingImg As Image = APIXML.GetRatingImage(Master.currMovie.Movie.MPAA)
+            '    If Not IsNothing(tmpRatingImg) Then
+            '        Me.pbMPAA.Image = tmpRatingImg
+            '        Me.MoveMPAA()
+            '    End If
+            'End If
 
-            Dim tmpRating As Single = NumUtils.ConvertToSingle(Master.currMovie.Movie.Rating)
-            If tmpRating > 0 Then
-                Me.BuildStars(tmpRating)
-            End If
+            'Dim tmpRating As Single = NumUtils.ConvertToSingle(Master.currMovie.Movie.Rating)
+            'If tmpRating > 0 Then
+            '    Me.BuildStars(tmpRating)
+            'End If
 
-            If Master.currMovie.Movie.Genres.Count > 0 Then
-                Me.createGenreThumbs(Master.currMovie.Movie.Genres)
-            End If
+            'If Master.currMovie.Movie.Genres.Count > 0 Then
+            '    Me.createGenreThumbs(Master.currMovie.Movie.Genres)
+            'End If
 
-            If Not String.IsNullOrEmpty(Master.currMovie.Movie.Studio) Then
-                Me.pbStudio.Image = APIXML.GetStudioImage(Master.currMovie.Movie.Studio.ToLower) 'ByDef all images file a lower case
-                Me.pbStudio.Tag = Master.currMovie.Movie.Studio
-            Else
-                Me.pbStudio.Image = APIXML.GetStudioImage("####")
-                Me.pbStudio.Tag = String.Empty
-            End If
-            If AdvancedSettings.GetBooleanSetting("StudioTagAlwaysOn", False) Then
-                lblStudio.Text = pbStudio.Tag.ToString
-            End If
-            If Master.eSettings.MovieScraperMetaDataScan Then
-                'Me.SetAVImages(APIXML.GetAVImages(Master.currMovie.Movie.FileInfo, Master.currMovie.Filename, False))
-                Me.SetAVImages(APIXML.GetAVImages(Master.currMovie.Movie.FileInfo, Master.currMovie.Filename, False, Master.currMovie.FileSource))
-                Me.pnlInfoIcons.Width = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + pbStudio.Width + 6
-                Me.pbStudio.Left = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + 5
-            Else
-                Me.pnlInfoIcons.Width = pbStudio.Width + 1
-                Me.pbStudio.Left = 0
-            End If
+            'If Not String.IsNullOrEmpty(Master.currMovie.Movie.Studio) Then
+            '    Me.pbStudio.Image = APIXML.GetStudioImage(Master.currMovie.Movie.Studio.ToLower) 'ByDef all images file a lower case
+            '    Me.pbStudio.Tag = Master.currMovie.Movie.Studio
+            'Else
+            '    Me.pbStudio.Image = APIXML.GetStudioImage("####")
+            '    Me.pbStudio.Tag = String.Empty
+            'End If
+            'If AdvancedSettings.GetBooleanSetting("StudioTagAlwaysOn", False) Then
+            '    lblStudio.Text = pbStudio.Tag.ToString
+            'End If
+            'If Master.eSettings.MovieScraperMetaDataScan Then
+            '    'Me.SetAVImages(APIXML.GetAVImages(Master.currMovie.Movie.FileInfo, Master.currMovie.Filename, False))
+            '    Me.SetAVImages(APIXML.GetAVImages(Master.currMovie.Movie.FileInfo, Master.currMovie.Filename, False, Master.currMovie.FileSource))
+            '    Me.pnlInfoIcons.Width = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + pbStudio.Width + 6
+            '    Me.pbStudio.Left = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + 5
+            'Else
+            '    Me.pnlInfoIcons.Width = pbStudio.Width + 1
+            '    Me.pbStudio.Left = 0
+            'End If
 
-            Me.lblDirector.Text = Master.currMovie.Movie.Director
+            'Me.lblDirector.Text = Master.currMovie.Movie.Director
 
-            Me.txtIMDBID.Text = Master.currMovie.Movie.IMDBID
+            'Me.txtIMDBID.Text = Master.currMovie.Movie.IMDBID
 
-            Me.txtFilePath.Text = Master.currMovie.Filename
+            'Me.txtFilePath.Text = Master.currMovie.Filename
 
-            Me.lblReleaseDate.Text = Master.currMovie.Movie.ReleaseDate
-            Me.txtCerts.Text = Master.currMovie.Movie.Certification
+            'Me.lblReleaseDate.Text = Master.currMovie.Movie.ReleaseDate
+            'Me.txtCerts.Text = Master.currMovie.Movie.Certification
 
-            Me.txtMetaData.Text = NFO.FIToString(Master.currMovie.Movie.FileInfo, False)
+            'Me.txtMetaData.Text = NFO.FIToString(Master.currMovie.Movie.FileInfo, False)
 
             If Not IsNothing(Me.MainPoster.Image) Then
                 Me.pbPosterCache.Image = Me.MainPoster.Image
@@ -6876,17 +6889,17 @@ doCancel:
 
             Me.InfoCleared = False
 
-            If Not bwMovieScraper.IsBusy AndAlso Not bwRefreshMovies.IsBusy AndAlso Not bwCleanDB.IsBusy AndAlso Not Me.bwNonScrape.IsBusy Then
+            If Not bwMovieScraper.IsBusy AndAlso Not bwRefreshMovieSets.IsBusy AndAlso Not bwCleanDB.IsBusy AndAlso Not Me.bwNonScrape.IsBusy Then
                 Me.SetControlsEnabled(True)
                 Me.EnableFilters(True)
             Else
-                Me.dgvMovies.Enabled = True
+                Me.dgvMovieSets.Enabled = True
             End If
             If bDoingSearch Then
                 Me.txtSearch.Focus()
                 bDoingSearch = False
             Else
-                Me.dgvMovies.Focus()
+                Me.dgvMovieSets.Focus()
             End If
 
 
@@ -7358,6 +7371,7 @@ doCancel:
             If Me.fScanner.IsBusy Then Me.fScanner.Cancel()
             If Me.bwMetaInfo.IsBusy Then Me.bwMetaInfo.CancelAsync()
             If Me.bwLoadMovieInfo.IsBusy Then Me.bwLoadMovieInfo.CancelAsync()
+            If Me.bwLoadMovieSetInfo.IsBusy Then Me.bwLoadMovieSetInfo.CancelAsync()
             If Me.bwLoadShowInfo.IsBusy Then Me.bwLoadShowInfo.CancelAsync()
             If Me.bwLoadSeasonInfo.IsBusy Then Me.bwLoadSeasonInfo.CancelAsync()
             If Me.bwLoadEpInfo.IsBusy Then Me.bwLoadEpInfo.CancelAsync()
@@ -7375,9 +7389,10 @@ doCancel:
             Me.Refresh()
 
             While Me.fScanner.IsBusy OrElse Me.bwMetaInfo.IsBusy OrElse Me.bwLoadMovieInfo.IsBusy _
-            OrElse Me.bwDownloadPic.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy _
-            OrElse Me.bwCleanDB.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy _
-            OrElse Me.bwLoadSeasonInfo.IsBusy OrElse ModulesManager.Instance.TVIsBusy
+            OrElse Me.bwLoadMovieSetInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy OrElse Me.bwMovieScraper.IsBusy _
+            OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwRefreshMovieSets.IsBusy OrElse Me.bwCleanDB.IsBusy _
+            OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwLoadSeasonInfo.IsBusy _
+            OrElse ModulesManager.Instance.TVIsBusy
                 Application.DoEvents()
                 Threading.Thread.Sleep(50)
             End While
@@ -7392,7 +7407,8 @@ doCancel:
                 Master.eSettings.GeneralWindowLoc = Me.Location
                 Master.eSettings.GeneralWindowSize = Me.Size
                 Master.eSettings.GeneralWindowState = Me.WindowState
-                Master.eSettings.GeneralMovieInfoPanelState = Me.aniType
+                Master.eSettings.GeneralMovieInfoPanelState = Me.aniMovieType
+                Master.eSettings.GeneralMovieSetInfoPanelState = Me.aniMovieSetType
                 Master.eSettings.GeneralTVShowInfoPanelState = Me.aniShowType
                 Master.eSettings.GeneralFilterPanelState = Me.aniFilterRaise
                 Master.eSettings.GeneralMainSplitterPanelState = Me.scMain.SplitterDistance
@@ -7902,8 +7918,8 @@ doCancel:
                 Me.Size = Master.eSettings.GeneralWindowSize
                 Me.WindowState = Master.eSettings.GeneralWindowState
 
-                Me.aniType = Master.eSettings.GeneralMovieInfoPanelState
-                Select Case Me.aniType
+                Me.aniMovieType = Master.eSettings.GeneralMovieInfoPanelState
+                Select Case Me.aniMovieType
                     Case 0
                         Me.pnlInfoPanel.Height = 25
                         Me.btnDown.Enabled = False
@@ -7920,6 +7936,8 @@ doCancel:
                         Me.btnDown.Enabled = True
                         Me.btnMid.Enabled = True
                 End Select
+
+                Me.aniMovieSetType = Master.eSettings.GeneralMovieSetInfoPanelState
 
                 Me.aniShowType = Master.eSettings.GeneralTVShowInfoPanelState
 
@@ -10124,7 +10142,7 @@ doCancel:
             Me.dgvMovieSets.Cursor = Cursors.Default
             Me.SetControlsEnabled(True)
 
-            If doFill Then FillList(0) Else DoTitleCheck()
+            If doFill Then FillList(0)
         Catch ex As Exception
             Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
@@ -10545,7 +10563,7 @@ doCancel:
             If Not Convert.ToBoolean(Me.dgvMovieSets.Item(3, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvMovieSets.Item(5, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvMovieSets.Item(1, iRow).Value) Then
                 Me.ClearInfo()
                 Me.ShowNoInfo(True, 0)
-                Master.currMovieSet = Master.DB.LoadMovieSetFromDB(CStr(Me.dgvMovies.Item(0, iRow).Value))
+                Master.currMovieSet = Master.DB.LoadMovieSetFromDB(CStr(Me.dgvMovieSets.Item(0, iRow).Value))
                 Me.fillScreenInfoWithMovieSet()
 
                 If Not Me.bwMovieScraper.IsBusy AndAlso Not Me.bwNonScrape.IsBusy AndAlso Not Me.fScanner.IsBusy AndAlso Not Me.bwMetaInfo.IsBusy AndAlso Not Me.bwLoadMovieInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadSeasonInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
@@ -10637,7 +10655,7 @@ doCancel:
             If TypeOf i Is ToolStripMenuItem Then
                 Dim o As ToolStripMenuItem = DirectCast(i, ToolStripMenuItem)
                 If o.Tag Is Nothing Then
-                    o.Enabled = isEnabled AndAlso (Me.dgvMovies.RowCount > 0 OrElse Me.dgvTVShows.RowCount > 0) AndAlso tcMain.SelectedIndex = 0
+                    o.Enabled = isEnabled AndAlso (Me.dgvMovies.RowCount > 0 OrElse Me.dgvMovieSets.RowCount > 0 OrElse Me.dgvTVShows.RowCount > 0) AndAlso tcMain.SelectedIndex = 0
                 ElseIf TypeOf o.Tag Is Structures.ModulesMenus Then
                     Dim tagmenu As Structures.ModulesMenus = DirectCast(o.Tag, Structures.ModulesMenus)
                     o.Enabled = (isEnabled OrElse Not withTools) AndAlso (((Me.dgvMovies.RowCount > 0 OrElse tagmenu.IfNoMovies) AndAlso tcMain.SelectedIndex = 0) OrElse ((Me.dgvTVShows.RowCount > 0 OrElse tagmenu.IfNoTVShow) AndAlso tcMain.SelectedIndex = 2))
@@ -10662,6 +10680,7 @@ doCancel:
         Me.mnuUpdate.Enabled = isEnabled
         Me.tsbMediaCenters.Enabled = isEnabled
         Me.cmnuMovie.Enabled = isEnabled
+        Me.cmnuMovieSet.Enabled = isEnabled
         Me.cmnuShow.Enabled = isEnabled
         Me.cmnuSeason.Enabled = isEnabled
         Me.cmnuEpisode.Enabled = isEnabled
@@ -10682,10 +10701,12 @@ doCancel:
 
         If withLists OrElse isEnabled Then
             Me.dgvMovies.TabStop = isEnabled
+            Me.dgvMovieSets.TabStop = isEnabled
             Me.dgvTVShows.TabStop = isEnabled
             Me.dgvTVSeasons.TabStop = isEnabled
             Me.dgvTVEpisodes.TabStop = isEnabled
             Me.dgvMovies.Enabled = isEnabled
+            Me.dgvMovieSets.Enabled = isEnabled
             Me.dgvTVShows.Enabled = isEnabled
             Me.dgvTVSeasons.Enabled = isEnabled
             Me.dgvTVEpisodes.Enabled = isEnabled
@@ -11324,6 +11345,24 @@ doCancel:
             Me.mnuMainEditSettings.Enabled = True
             Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
+    End Sub
+    ''' <summary>
+    ''' Update the displayed moviesets counts
+    ''' </summary>
+    ''' <remarks></remarks>
+    Private Sub SetMovieSetCount()
+        Dim MovieSetCount As Integer = 0
+
+        Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
+            SQLCommand.CommandText = "SELECT COUNT(SetName) AS COUNT FROM Sets"
+            MovieSetCount = Convert.ToInt32(SQLCommand.ExecuteScalar)
+        End Using
+
+        If MovieSetCount > 0 Then
+            Me.tpMovieSets.Text = String.Format("{0} ({1})", Master.eLang.GetString(366, "Sets"), MovieSetCount)
+        Else
+            Me.tpMovieSets.Text = Master.eLang.GetString(366, "Sets")
+        End If
     End Sub
     ''' <summary>
     ''' Update the displayed show/episode counts
@@ -12102,7 +12141,7 @@ doCancel:
                     Me.pnlInfoPanel.Height -= 5
                 End If
             Else
-                Select Case If(Me.tcMain.SelectedIndex = 0, Me.aniType, Me.aniShowType)
+                Select Case If(Me.tcMain.SelectedIndex = 0, Me.aniMovieType, Me.aniShowType)
                     Case 0
                         Me.pnlInfoPanel.Height = 25
 
@@ -12118,7 +12157,7 @@ doCancel:
             Me.MoveGenres()
             Me.MoveMPAA()
 
-            Dim aType As Integer = If(Me.tcMain.SelectedIndex = 0, Me.aniType, Me.aniShowType)
+            Dim aType As Integer = If(Me.tcMain.SelectedIndex = 0, Me.aniMovieType, Me.aniShowType)
             Select Case aType
                 Case 0
                     If Me.pnlInfoPanel.Height = 25 Then

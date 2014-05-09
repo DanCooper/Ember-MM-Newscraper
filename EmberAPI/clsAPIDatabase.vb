@@ -1168,15 +1168,15 @@ Public Class Database
             _moviesetDB.Setname = MovieSetName
             Using SQLcommand As SQLite.SQLiteCommand = _mediaDBConn.CreateCommand()
                 SQLcommand.CommandText = String.Concat("SELECT SetName, HasNfo, NfoPath, HasPoster, PosterPath, HasFanart, ", _
-                                                       "FanartPath, HasBanner, BannerPath, HasLandscape, LandscapePath,", _
+                                                       "FanartPath, HasBanner, BannerPath, HasLandscape, LandscapePath, ", _
                                                        "HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ", _
-                                                       "ClearArtPath FROM sets WHERE setname = ", MovieSetName, ";")
+                                                       "ClearArtPath FROM sets WHERE SetName = """, MovieSetName, """;")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     If SQLreader.HasRows Then
                         SQLreader.Read()
-                        If Not DBNull.Value.Equals(SQLreader("FanartPath")) Then _moviesetDB.FanartPath = SQLreader("FanartPath").ToString
-                        If Not DBNull.Value.Equals(SQLreader("PosterPath")) Then _moviesetDB.PosterPath = SQLreader("PosterPath").ToString
                         If Not DBNull.Value.Equals(SQLreader("NfoPath")) Then _moviesetDB.NfoPath = SQLreader("NfoPath").ToString
+                        If Not DBNull.Value.Equals(SQLreader("PosterPath")) Then _moviesetDB.PosterPath = SQLreader("PosterPath").ToString
+                        If Not DBNull.Value.Equals(SQLreader("FanartPath")) Then _moviesetDB.FanartPath = SQLreader("FanartPath").ToString
                         If Not DBNull.Value.Equals(SQLreader("BannerPath")) Then _moviesetDB.BannerPath = SQLreader("BannerPath").ToString
                         If Not DBNull.Value.Equals(SQLreader("LandscapePath")) Then _moviesetDB.LandscapePath = SQLreader("LandscapePath").ToString
                         If Not DBNull.Value.Equals(SQLreader("DiscArtPath")) Then _moviesetDB.DiscArtPath = SQLreader("DiscArtPath").ToString
@@ -2035,19 +2035,19 @@ Public Class Database
                 If IsNew Then
                     SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO sets (", _
                      "HasNfo, NfoPath, HasPoster, PosterPath, HasFanart, ", _
-                     "FanartPath, HasBanner, BannerPath, HasLandscape, LandscapePath,", _
+                     "FanartPath, HasBanner, BannerPath, HasLandscape, LandscapePath, ", _
                      "HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ", _
                      "ClearArtPath ", _
                      ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM sets;")
                 Else
                     SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO sets (", _
                      "SetName, HasNfo, NfoPath, HasPoster, PosterPath, HasFanart, ", _
-                     "FanartPath, HasBanner, BannerPath, HasLandscape, LandscapePath,", _
+                     "FanartPath, HasBanner, BannerPath, HasLandscape, LandscapePath, ", _
                      "HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ", _
                      "ClearArtPath ", _
-                     ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM set;")
-                    Dim parMovieSetSetName As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSetName", DbType.String, 0, "SetName")
-                    parMovieSetSetName.Value = _moviesetDB.SetName
+                     ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM sets;")
+                    Dim parSetName As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSetName", DbType.String, 0, "SetName")
+                    parSetName.Value = _moviesetDB.SetName
                 End If
                 Dim parHasNfo As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasInfo", DbType.Boolean, 0, "HasNfo")
                 Dim parNfoPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parNfoPath", DbType.String, 0, "NfoPath")

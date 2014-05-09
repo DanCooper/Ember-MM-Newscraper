@@ -64,6 +64,7 @@ Public Class Settings
     Private _generallanguage As String
     Private _generalmainsplitterpanelstate As Integer
     Private _generalmovieinfopanelstate As Integer
+    Private _generalmoviesetinfopanelstate As Integer
     Private _generalmovietheme As String
     Private _generaloverwritenfo As Boolean
     Private _generalseasonsplitterpanelstate As Integer
@@ -1560,6 +1561,15 @@ Public Class Settings
         End Get
         Set(ByVal value As Integer)
             Me._generalmovieinfopanelstate = value
+        End Set
+    End Property
+
+    Public Property GeneralMovieSetInfoPanelState() As Integer
+        Get
+            Return Me._generalmoviesetinfopanelstate
+        End Get
+        Set(ByVal value As Integer)
+            Me._generalmoviesetinfopanelstate = value
         End Set
     End Property
 

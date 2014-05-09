@@ -1225,17 +1225,17 @@ Namespace FileUtils
 
                 Case Enums.ModType.ClearLogo
                     With Master.eSettings
-                        FilenameList.Add(Path.Combine(fPath, String.Concat(fSetName, "-clearlogo.jpg")))
+                        FilenameList.Add(Path.Combine(fPath, String.Concat(fSetName, "-logo.png")))
                     End With
 
                 Case Enums.ModType.ClearArt
                     With Master.eSettings
-                        FilenameList.Add(Path.Combine(fPath, String.Concat(fSetName, "-clearart.jpg")))
+                        FilenameList.Add(Path.Combine(fPath, String.Concat(fSetName, "-clearart.png")))
                     End With
 
                 Case Enums.ModType.DiscArt
                     With Master.eSettings
-                        FilenameList.Add(Path.Combine(fPath, String.Concat(fSetName, "-discart.jpg")))
+                        FilenameList.Add(Path.Combine(fPath, String.Concat(fSetName, "-discart.png")))
                     End With
 
                 Case Enums.ModType.Landscape
