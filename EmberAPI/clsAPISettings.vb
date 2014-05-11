@@ -216,13 +216,20 @@ Public Class Settings
     Private _moviescraperwriters As Boolean
     Private _moviescraperyear As Boolean
     Private _moviesetbannercol As Boolean
+    Private _moviesetbanneroverwrite As Boolean
     Private _moviesetclearartcol As Boolean
+    Private _moviesetclearartoverwrite As Boolean
     Private _moviesetclearlogocol As Boolean
+    Private _moviesetclearlogooverwrite As Boolean
     Private _moviesetdiscartcol As Boolean
+    Private _moviesetdiscartoverwrite As Boolean
     Private _moviesetfanartcol As Boolean
+    Private _moviesetfanartoverwrite As Boolean
     Private _moviesetlandscapecol As Boolean
+    Private _moviesetlandscapeoverwrite As Boolean
     Private _moviesetnfocol As Boolean
     Private _moviesetpostercol As Boolean
+    Private _moviesetposteroverwrite As Boolean
     Private _moviesets As New List(Of String)
     Private _movieskiplessthan As Integer
     Private _movieskipstackedsizecheck As Boolean
@@ -2493,6 +2500,69 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Me._movieclearlogooverwrite = value
+        End Set
+    End Property
+
+    Public Property MovieSetBannerOverwrite() As Boolean
+        Get
+            Return Me._moviesetbanneroverwrite
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetbanneroverwrite = value
+        End Set
+    End Property
+
+    Public Property MovieSetClearArtOverwrite() As Boolean
+        Get
+            Return Me._moviesetclearartoverwrite
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetclearartoverwrite = value
+        End Set
+    End Property
+
+    Public Property MovieSetClearLogoOverwrite() As Boolean
+        Get
+            Return Me._moviesetclearlogooverwrite
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetclearlogooverwrite = value
+        End Set
+    End Property
+
+    Public Property MovieSetDiscArtOverwrite() As Boolean
+        Get
+            Return Me._moviesetdiscartoverwrite
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetdiscartoverwrite = value
+        End Set
+    End Property
+
+    Public Property MovieSetFanartOverwrite() As Boolean
+        Get
+            Return Me._moviesetfanartoverwrite
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetfanartoverwrite = value
+        End Set
+    End Property
+
+    Public Property MovieSetLandscapeOverwrite() As Boolean
+        Get
+            Return Me._moviesetlandscapeoverwrite
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetlandscapeoverwrite = value
+        End Set
+    End Property
+
+    Public Property MovieSetPosterOverwrite() As Boolean
+        Get
+            Return Me._moviesetposteroverwrite
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetposteroverwrite = value
         End Set
     End Property
 
@@ -5413,13 +5483,20 @@ Public Class Settings
         Me._moviescraperwriters = True
         Me._moviescraperyear = True
         Me._moviesetbannercol = False
+        Me._moviesetbanneroverwrite = True
         Me._moviesetclearartcol = False
+        Me._moviesetclearartoverwrite = True
         Me._moviesetclearlogocol = False
+        Me._moviesetclearlogooverwrite = True
         Me._moviesetdiscartcol = False
+        Me._moviesetdiscartoverwrite = True
         Me._moviesetfanartcol = False
+        Me._moviesetfanartoverwrite = True
         Me._moviesetlandscapecol = False
-        Me._moviesetnfocol = False
+        Me._moviesetlandscapeoverwrite = True
+        Me._moviesetnfocol = True
         Me._moviesetpostercol = False
+        Me._moviesetposteroverwrite = True
         Me._moviesets = New List(Of String)
         Me._movieskiplessthan = 0
         Me._movieskipstackedsizecheck = False

@@ -142,7 +142,7 @@ Public Class dlgSetsManager
                 If Not String.IsNullOrEmpty(sSet) Then alSets.Add(sSet)
             Next
 
-            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
+            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                 Dim tmpMovie As New Structures.DBMovie
                 Dim iProg As Integer = 0
                 SQLcommand.CommandText = String.Concat("SELECT COUNT(id) AS mcount FROM movies;")
@@ -552,7 +552,7 @@ Public Class dlgSetsManager
         Try
             Me.SetControlsEnabled(False)
 
-            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MediaDBConn.BeginTransaction()
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 For Each tMovie As Movies In mSet.Movies
                     If Not Master.eSettings.MovieYAMJCompatibleSets Then
                         tMovie.DBMovie.Movie.AddSet(mSet.Set, 0)

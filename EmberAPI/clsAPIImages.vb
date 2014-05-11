@@ -412,7 +412,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="mMovie">Structures.DBMovie representing the movie to be worked on</param>
     ''' <remarks></remarks>
-    Public Sub DeleteMoviePosters(ByVal mMovie As Structures.DBMovie)
+    Public Sub DeleteMoviePoster(ByVal mMovie As Structures.DBMovie)
         If String.IsNullOrEmpty(mMovie.Filename) Then Return
 
         Try
@@ -423,6 +423,132 @@ Public Class Images
             Next
         Catch ex As Exception
             Master.eLog.Error(GetType(Images), "Movie: <" & mMovie.Filename & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+    ''' <summary>
+    ''' Delete the movieset's banner
+    ''' </summary>
+    ''' <param name="mMovieSet"><c>DBMovieSet</c> structure representing the movie on which we should operate</param>
+    ''' <remarks></remarks>
+    Public Sub DeleteMovieSetBanner(ByVal mMovieSet As Structures.DBMovieSet)
+        If String.IsNullOrEmpty(mMovieSet.SetName) Then Return
+
+        Try
+            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.SetName, Enums.ModType.Banner)
+                If File.Exists(a) Then
+                    Delete(a)
+                End If
+            Next
+        Catch ex As Exception
+            Master.eLog.Error(GetType(Images), "MovieSet: <" & mMovieSet.SetName & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+    ''' <summary>
+    ''' Delete the movieset's ClearArt
+    ''' </summary>
+    ''' <param name="mMovieSet"><c>DBMovieSet</c> structure representing the movie on which we should operate</param>
+    ''' <remarks></remarks>
+    Public Sub DeleteMovieSetClearArt(ByVal mMovieSet As Structures.DBMovieSet)
+        If String.IsNullOrEmpty(mMovieSet.SetName) Then Return
+
+        Try
+            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.SetName, Enums.ModType.ClearArt)
+                If File.Exists(a) Then
+                    Delete(a)
+                End If
+            Next
+        Catch ex As Exception
+            Master.eLog.Error(GetType(Images), "MovieSet: <" & mMovieSet.SetName & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+    ''' <summary>
+    ''' Delete the movieset's ClearLogo
+    ''' </summary>
+    ''' <param name="mMovieSet"><c>DBMovieSet</c> structure representing the movie on which we should operate</param>
+    ''' <remarks></remarks>
+    Public Sub DeleteMovieSetClearLogo(ByVal mMovieSet As Structures.DBMovieSet)
+        If String.IsNullOrEmpty(mMovieSet.SetName) Then Return
+
+        Try
+            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.SetName, Enums.ModType.ClearLogo)
+                If File.Exists(a) Then
+                    Delete(a)
+                End If
+            Next
+        Catch ex As Exception
+            Master.eLog.Error(GetType(Images), "MovieSet: <" & mMovieSet.SetName & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+    ''' <summary>
+    ''' Delete the movieset's DiscArt
+    ''' </summary>
+    ''' <param name="mMovieSet"><c>DBMovieSet</c> structure representing the movie on which we should operate</param>
+    ''' <remarks></remarks>
+    Public Sub DeleteMovieSetDiscArt(ByVal mMovieSet As Structures.DBMovieSet)
+        If String.IsNullOrEmpty(mMovieSet.SetName) Then Return
+
+        Try
+            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.SetName, Enums.ModType.DiscArt)
+                If File.Exists(a) Then
+                    Delete(a)
+                End If
+            Next
+        Catch ex As Exception
+            Master.eLog.Error(GetType(Images), "MovieSet: <" & mMovieSet.SetName & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+    ''' <summary>
+    ''' Delete the movieset's fanart
+    ''' </summary>
+    ''' <param name="mMovieSet"><c>DBMovieSet</c> structure representing the movie on which we should operate</param>
+    ''' <remarks></remarks>
+    Public Sub DeleteMovieSetFanart(ByVal mMovieSet As Structures.DBMovieSet)
+        If String.IsNullOrEmpty(mMovieSet.SetName) Then Return
+
+        Try
+            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.SetName, Enums.ModType.Fanart)
+                If File.Exists(a) Then
+                    Delete(a)
+                End If
+            Next
+        Catch ex As Exception
+            Master.eLog.Error(GetType(Images), "MovieSet: <" & mMovieSet.SetName & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+    ''' <summary>
+    ''' Delete the movieset's landscape
+    ''' </summary>
+    ''' <param name="mMovieSet"><c>DBMovieSet</c> structure representing the movie on which we should operate</param>
+    ''' <remarks></remarks>
+    Public Sub DeleteMovieSetLandscape(ByVal mMovieSet As Structures.DBMovieSet)
+        If String.IsNullOrEmpty(mMovieSet.SetName) Then Return
+
+        Try
+            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.SetName, Enums.ModType.Landscape)
+                If File.Exists(a) Then
+                    Delete(a)
+                End If
+            Next
+        Catch ex As Exception
+            Master.eLog.Error(GetType(Images), "MovieSet: <" & mMovieSet.SetName & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+    ''' <summary>
+    ''' Delete the movieset's poster
+    ''' </summary>
+    ''' <param name="mMovieSet"><c>DBMovieSet</c> structure representing the movie on which we should operate</param>
+    ''' <remarks></remarks>
+    Public Sub DeleteMovieSetPoster(ByVal mMovieSet As Structures.DBMovieSet)
+        If String.IsNullOrEmpty(mMovieSet.SetName) Then Return
+
+        Try
+            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.SetName, Enums.ModType.Poster)
+                If File.Exists(a) Then
+                    Delete(a)
+                End If
+            Next
+        Catch ex As Exception
+            Master.eLog.Error(GetType(Images), "MovieSet: <" & mMovieSet.SetName & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
     ''' <summary>
@@ -1474,6 +1600,216 @@ Public Class Images
             For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.isSingle, Enums.ModType.Poster)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MoviePosterOverwrite) Then
                     Save(a, Master.eSettings.MoviePosterQual, sURL, doResize)
+                    strReturn = a
+                End If
+            Next
+
+        Catch ex As Exception
+            Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+        End Try
+        Return strReturn
+    End Function
+    ''' <summary>
+    ''' Save the image as a movieset banner
+    ''' </summary>
+    ''' <param name="mMovieSet"><c>Structures.DBMovieSet</c> representing the movieset being referred to</param>
+    ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
+    ''' <returns><c>String</c> path to the saved image</returns>
+    ''' <remarks></remarks>
+    Public Function SaveAsMovieSetBanner(ByVal mMovieSet As Structures.DBMovieSet, Optional sURL As String = "") As String
+        Dim strReturn As String = String.Empty
+        Dim doResize As Boolean = False
+
+        Try
+            'Try
+            '    Dim params As New List(Of Object)(New Object() {mMovie})
+            '    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieBannerSave, params, _image, False)
+            'Catch ex As Exception
+            'End Try
+
+            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.SetName, Enums.ModType.Banner)
+                If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieSetBannerOverwrite) Then
+                    Save(a, 0, sURL, doResize)
+                    strReturn = a
+                End If
+            Next
+
+        Catch ex As Exception
+            Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+        End Try
+        Return strReturn
+    End Function
+    ''' <summary>
+    ''' Save the image as a movieset ClearArt
+    ''' </summary>
+    ''' <param name="mMovieSet"><c>Structures.DBMovieSet</c> representing the movieset being referred to</param>
+    ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
+    ''' <returns><c>String</c> path to the saved image</returns>
+    ''' <remarks></remarks>
+    Public Function SaveAsMovieSetClearArt(ByVal mMovieSet As Structures.DBMovieSet, Optional sURL As String = "") As String
+        Dim strReturn As String = String.Empty
+        Dim doResize As Boolean = False
+
+        Try
+            'Try
+            '    Dim params As New List(Of Object)(New Object() {mMovie})
+            '    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieBannerSave, params, _image, False)
+            'Catch ex As Exception
+            'End Try
+
+            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.SetName, Enums.ModType.ClearArt)
+                If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieSetClearArtOverwrite) Then
+                    Save(a, 0, sURL, doResize)
+                    strReturn = a
+                End If
+            Next
+
+        Catch ex As Exception
+            Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+        End Try
+        Return strReturn
+    End Function
+    ''' <summary>
+    ''' Save the image as a movieset ClearLogo
+    ''' </summary>
+    ''' <param name="mMovieSet"><c>Structures.DBMovieSet</c> representing the movieset being referred to</param>
+    ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
+    ''' <returns><c>String</c> path to the saved image</returns>
+    ''' <remarks></remarks>
+    Public Function SaveAsMovieSetClearLogo(ByVal mMovieSet As Structures.DBMovieSet, Optional sURL As String = "") As String
+        Dim strReturn As String = String.Empty
+        Dim doResize As Boolean = False
+
+        Try
+            'Try
+            '    Dim params As New List(Of Object)(New Object() {mMovie})
+            '    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieBannerSave, params, _image, False)
+            'Catch ex As Exception
+            'End Try
+
+            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.SetName, Enums.ModType.ClearLogo)
+                If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieSetClearLogoOverwrite) Then
+                    Save(a, 0, sURL, doResize)
+                    strReturn = a
+                End If
+            Next
+
+        Catch ex As Exception
+            Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+        End Try
+        Return strReturn
+    End Function
+    ''' <summary>
+    ''' Save the image as a movieset DiscArt
+    ''' </summary>
+    ''' <param name="mMovieSet"><c>Structures.DBMovieSet</c> representing the movieset being referred to</param>
+    ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
+    ''' <returns><c>String</c> path to the saved image</returns>
+    ''' <remarks></remarks>
+    Public Function SaveAsMovieSetDiscArt(ByVal mMovieSet As Structures.DBMovieSet, Optional sURL As String = "") As String
+        Dim strReturn As String = String.Empty
+        Dim doResize As Boolean = False
+
+        Try
+            'Try
+            '    Dim params As New List(Of Object)(New Object() {mMovie})
+            '    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieBannerSave, params, _image, False)
+            'Catch ex As Exception
+            'End Try
+
+            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.SetName, Enums.ModType.DiscArt)
+                If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieSetDiscArtOverwrite) Then
+                    Save(a, 0, sURL, doResize)
+                    strReturn = a
+                End If
+            Next
+
+        Catch ex As Exception
+            Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+        End Try
+        Return strReturn
+    End Function
+    ''' <summary>
+    ''' Save the image as a movieset Fanart
+    ''' </summary>
+    ''' <param name="mMovieSet"><c>Structures.DBMovieSet</c> representing the movieset being referred to</param>
+    ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
+    ''' <returns><c>String</c> path to the saved image</returns>
+    ''' <remarks></remarks>
+    Public Function SaveAsMovieSetFanart(ByVal mMovieSet As Structures.DBMovieSet, Optional sURL As String = "") As String
+        Dim strReturn As String = String.Empty
+        Dim doResize As Boolean = False
+
+        Try
+            'Try
+            '    Dim params As New List(Of Object)(New Object() {mMovie})
+            '    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieBannerSave, params, _image, False)
+            'Catch ex As Exception
+            'End Try
+
+            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.SetName, Enums.ModType.Fanart)
+                If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieSetFanartOverwrite) Then
+                    Save(a, 0, sURL, doResize)
+                    strReturn = a
+                End If
+            Next
+
+        Catch ex As Exception
+            Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+        End Try
+        Return strReturn
+    End Function
+    ''' <summary>
+    ''' Save the image as a movieset Landscape
+    ''' </summary>
+    ''' <param name="mMovieSet"><c>Structures.DBMovieSet</c> representing the movieset being referred to</param>
+    ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
+    ''' <returns><c>String</c> path to the saved image</returns>
+    ''' <remarks></remarks>
+    Public Function SaveAsMovieSetLandscape(ByVal mMovieSet As Structures.DBMovieSet, Optional sURL As String = "") As String
+        Dim strReturn As String = String.Empty
+        Dim doResize As Boolean = False
+
+        Try
+            'Try
+            '    Dim params As New List(Of Object)(New Object() {mMovie})
+            '    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieBannerSave, params, _image, False)
+            'Catch ex As Exception
+            'End Try
+
+            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.SetName, Enums.ModType.Landscape)
+                If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieSetLandscapeOverwrite) Then
+                    Save(a, 0, sURL, doResize)
+                    strReturn = a
+                End If
+            Next
+
+        Catch ex As Exception
+            Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+        End Try
+        Return strReturn
+    End Function
+    ''' <summary>
+    ''' Save the image as a movieset Poster
+    ''' </summary>
+    ''' <param name="mMovieSet"><c>Structures.DBMovieSet</c> representing the movieset being referred to</param>
+    ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
+    ''' <returns><c>String</c> path to the saved image</returns>
+    ''' <remarks></remarks>
+    Public Function SaveAsMovieSetPoster(ByVal mMovieSet As Structures.DBMovieSet, Optional sURL As String = "") As String
+        Dim strReturn As String = String.Empty
+        Dim doResize As Boolean = False
+
+        Try
+            'Try
+            '    Dim params As New List(Of Object)(New Object() {mMovie})
+            '    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieBannerSave, params, _image, False)
+            'Catch ex As Exception
+            'End Try
+
+            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.SetName, Enums.ModType.Poster)
+                If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieSetPosterOverwrite) Then
+                    Save(a, 0, sURL, doResize)
                     strReturn = a
                 End If
             Next

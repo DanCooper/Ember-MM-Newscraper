@@ -90,7 +90,7 @@ Public Class dlgDeleteConfirm
             With tvFiles
                 If .Nodes.Count = 0 Then Return False
 
-                Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MediaDBConn.BeginTransaction() 'Only on Batch Mode
+                Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction() 'Only on Batch Mode
                     For Each ItemParentNode As TreeNode In .Nodes
                         Select Case Me._deltype
                             Case Enums.DelType.Movies
@@ -222,7 +222,7 @@ Public Class dlgDeleteConfirm
                     Case Enums.DelType.Seasons
                         Dim tSeason As New Structures.DBTV
 
-                        Using SQLDelCommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
+                        Using SQLDelCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                             For Each Season As KeyValuePair(Of Long, Long) In ItemsToDelete
                                 hadError = False
 
@@ -235,7 +235,7 @@ Public Class dlgDeleteConfirm
                                 SQLDelCommand.CommandText = String.Concat("SELECT ID, TVEpPathID FROM TVEps WHERE TVShowID = ", Season.Value, " AND Season = ", Season.Key, ";")
                                 Using SQLDelReader As SQLite.SQLiteDataReader = SQLDelCommand.ExecuteReader
                                     While SQLDelReader.Read
-                                        Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
+                                        Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                                             SQLCommand.CommandText = String.Concat("SELECT TVEpPath FROM TVEpPaths WHERE ID = ", SQLDelReader("TVEpPathID"), ";")
                                             Using SQLReader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
                                                 If SQLReader.HasRows Then
@@ -287,7 +287,7 @@ Public Class dlgDeleteConfirm
                     Case Enums.DelType.Episodes
                         Dim tEp As New Structures.DBTV
 
-                        Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
+                        Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                             For Each Ep As Long In ItemsToDelete.Keys
                                 hadError = False
 

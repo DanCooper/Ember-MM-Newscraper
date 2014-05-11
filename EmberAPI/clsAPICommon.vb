@@ -1127,14 +1127,14 @@ Public Class Functions
     ''' </summary>
 	Public Shared Sub GetListOfSources()
 		Master.SourcesList.Clear()
-		Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
-			SQLcommand.CommandText = "SELECT sources.Path FROM sources;"
-			Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-				While SQLreader.Read
-					Master.SourcesList.Add(SQLreader("Path").ToString)
-				End While
-			End Using
-		End Using
+        Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+            SQLcommand.CommandText = "SELECT sources.Path FROM sources;"
+            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    Master.SourcesList.Add(SQLreader("Path").ToString)
+                End While
+            End Using
+        End Using
 	End Sub
     ''' <summary>
     ''' Determines the path to the desired season of a given show
@@ -1659,6 +1659,7 @@ Public Class Structures
         Dim ClearPoster As Boolean
         Dim DiscArtPath As String
         Dim FanartPath As String
+        Dim ID As Long
         Dim SetName As String
         Dim LandscapePath As String
         Dim NfoPath As String
@@ -1706,6 +1707,7 @@ Public Class Structures
 
     Public Structure Scans
         Dim Movies As Boolean
+        Dim MovieSets As Boolean
         Dim TV As Boolean
     End Structure
 

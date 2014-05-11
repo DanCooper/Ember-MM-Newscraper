@@ -215,7 +215,7 @@ Public Class Scraper
                 tmpTVDBShow.Show = Master.DB.LoadTVFullShowFromDB(_ID)
                 tmpTVDBShow.AllSeason = Master.DB.LoadTVAllSeasonFromDB(_ID)
 
-                Using SQLCount As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
+                Using SQLCount As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                     If OnlySeason = 999 Then
                         SQLCount.CommandText = String.Concat("SELECT COUNT(ID) AS eCount FROM TVEps WHERE TVShowID = ", _ID, " AND Missing = 0;")
                     Else
@@ -225,7 +225,7 @@ Public Class Scraper
                         If SQLRCount.HasRows Then
                             SQLRCount.Read()
                             If Convert.ToInt32(SQLRCount("eCount")) > 0 Then
-                                Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
+                                Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                                     If OnlySeason = 999 Then
                                         SQLCommand.CommandText = String.Concat("SELECT ID, Lock FROM TVEps WHERE TVShowID = ", _ID, " AND Missing = 0;")
                                     Else
@@ -854,10 +854,10 @@ Public Class Scraper
 
             Me.bwTVDB.ReportProgress(tmpTVDBShow.Episodes.Count, "max")
 
-            Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.MediaDBConn.BeginTransaction()
+            Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 If Master.eSettings.TVDisplayMissingEpisodes Then
                     'clear old missing episode from db
-                    Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
+                    Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                         SQLCommand.CommandText = String.Concat("DELETE FROM TVEps WHERE Missing = 1 AND TVShowID = ", Master.currShow.ShowID, ";")
                         SQLCommand.ExecuteNonQuery()
                     End Using
