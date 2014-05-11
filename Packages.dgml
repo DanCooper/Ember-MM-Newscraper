@@ -1,66 +1,83 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <DirectedGraph GraphDirection="LeftToRight" xmlns="http://schemas.microsoft.com/vs/2009/dgml">
   <Nodes>
-    <Node Id="Removed\generic.EmberCore.WebServer" Label="generic.EmberCore.WebServer" Category="Project" />
-    <Node Id="System.Data.SQLite 1.0.84.0" Label="System.Data.SQLite 1.0.84.0" Category="Package" />
-    <Node Id="RottenTomatoesAPI" Label="RottenTomatoesAPI" Category="Project" />
-    <Node Id="RestSharp 104.1" Label="RestSharp 104.1" Category="Package" />
-    <Node Id="FanartTVAPI" Label="FanartTVAPI" Category="Project" />
-    <Node Id="RestSharp 104.1" Label="RestSharp 104.1" Category="Package" />
-    <Node Id="WatTmdb" Label="WatTmdb" Category="Project" />
-    <Node Id="RestSharp 104.1" Label="RestSharp 104.1" Category="Package" />
-    <Node Id="Addons\scraper.EmberCore.TMDB" Label="scraper.EmberCore.TMDB" Category="Project" />
-    <Node Id="RestSharp 104.1" Label="RestSharp 104.1" Category="Package" />
-    <Node Id="SharpZipLib 0.86.0" Label="SharpZipLib 0.86.0" Category="Package" />
-    <Node Id="Addons\scraper.EmberCore.XML" Label="scraper.EmberCore.XML" Category="Project" />
-    <Node Id="SharpZipLib 0.86.0" Label="SharpZipLib 0.86.0" Category="Package" />
-    <Node Id="Addons\scraper.EmberCore" Label="scraper.EmberCore" Category="Project" />
-    <Node Id="SharpZipLib 0.86.0" Label="SharpZipLib 0.86.0" Category="Package" />
-    <Node Id="System.Data.SQLite 1.0.84.0" Label="System.Data.SQLite 1.0.84.0" Category="Package" />
-    <Node Id="Addons\generic.EmberCore.OfflineHolder" Label="generic.EmberCore.OfflineHolder" Category="Project" />
-    <Node Id="System.Data.SQLite 1.0.84.0" Label="System.Data.SQLite 1.0.84.0" Category="Package" />
-    <Node Id="Addons\generic.EmberCore.NMT" Label="generic.EmberCore.NMT" Category="Project" />
-    <Node Id="SharpZipLib 0.86.0" Label="SharpZipLib 0.86.0" Category="Package" />
-    <Node Id="System.Data.SQLite 1.0.84.0" Label="System.Data.SQLite 1.0.84.0" Category="Package" />
-    <Node Id="Addons\generic.EmberCore.MovieExporter" Label="generic.EmberCore.MovieExporter" Category="Project" />
-    <Node Id="System.Data.SQLite 1.0.84.0" Label="System.Data.SQLite 1.0.84.0" Category="Package" />
-    <Node Id="Addons\generic.EmberCore.BulkRename" Label="generic.EmberCore.BulkRename" Category="Project" />
-    <Node Id="System.Data.SQLite 1.0.84.0" Label="System.Data.SQLite 1.0.84.0" Category="Package" />
-    <Node Id="EmberAPI" Label="EmberAPI" Category="Project" />
-    <Node Id="System.Data.SQLite 1.0.84.0" Label="System.Data.SQLite 1.0.84.0" Category="Package" />
-    <Node Id="Ember Media Manager" Label="Ember Media Manager" Category="Project" />
-    <Node Id="RestSharp 104.1" Label="RestSharp 104.1" Category="Package" />
-    <Node Id="SharpZipLib 0.86.0" Label="SharpZipLib 0.86.0" Category="Package" />
-    <Node Id="System.Data.SQLite 1.0.84.0" Label="System.Data.SQLite 1.0.84.0" Category="Package" />
+    <Node Id="EmberAPI_Test" Label="EmberAPI_Test" Category="Projekt" />
+    <Node Id="NLog 2.1.0" Label="NLog 2.1.0" Category="Paket" />
+    <Node Id="RottenTomatoesAPI" Label="RottenTomatoesAPI" Category="Projekt" />
+    <Node Id="RestSharp 104.4.0" Label="RestSharp 104.4.0" Category="Paket" />
+    <Node Id="FanartTVAPI" Label="FanartTVAPI" Category="Projekt" />
+    <Node Id="RestSharp 104.4.0" Label="RestSharp 104.4.0" Category="Paket" />
+    <Node Id="WatTmdb" Label="WatTmdb" Category="Projekt" />
+    <Node Id="RestSharp 104.4.0" Label="RestSharp 104.4.0" Category="Paket" />
+    <Node Id="Addons\scraper.TVDB.Data.Poster" Label="scraper.TVDB.Data.Poster" Category="Projekt" />
+    <Node Id="SharpZipLib 0.86.0" Label="SharpZipLib 0.86.0" Category="Paket" />
+    <Node Id="System.Data.SQLite 1.0.90.0" Label="System.Data.SQLite 1.0.90.0" Category="Paket" />
+    <Node Id="Addons\scraper.TMDB.Data" Label="scraper.TMDB.Data" Category="Projekt" />
+    <Node Id="RestSharp 104.4.0" Label="RestSharp 104.4.0" Category="Paket" />
+    <Node Id="Addons\scraper.MPDB.Poster" Label="scraper.MPDB.Poster" Category="Projekt" />
+    <Node Id="RestSharp 104.4.0" Label="RestSharp 104.4.0" Category="Paket" />
+    <Node Id="SharpZipLib 0.86.0" Label="SharpZipLib 0.86.0" Category="Paket" />
+    <Node Id="Addons\scraper.IMPA.Poster" Label="scraper.IMPA.Poster" Category="Projekt" />
+    <Node Id="RestSharp 104.4.0" Label="RestSharp 104.4.0" Category="Paket" />
+    <Node Id="SharpZipLib 0.86.0" Label="SharpZipLib 0.86.0" Category="Paket" />
+    <Node Id="Addons\scraper.FanartTV.Poster" Label="scraper.FanartTV.Poster" Category="Projekt" />
+    <Node Id="RestSharp 104.4.0" Label="RestSharp 104.4.0" Category="Paket" />
+    <Node Id="SharpZipLib 0.86.0" Label="SharpZipLib 0.86.0" Category="Paket" />
+    <Node Id="Addons\generic.Compatibility.NMT" Label="generic.Compatibility.NMT" Category="Projekt" />
+    <Node Id="SharpZipLib 0.86.0" Label="SharpZipLib 0.86.0" Category="Paket" />
+    <Node Id="System.Data.SQLite 1.0.90.0" Label="System.Data.SQLite 1.0.90.0" Category="Paket" />
+    <Node Id="Addons\generic.EmberCore.MovieExporter" Label="generic.EmberCore.MovieExporter" Category="Projekt" />
+    <Node Id="System.Data.SQLite 1.0.90.0" Label="System.Data.SQLite 1.0.90.0" Category="Paket" />
+    <Node Id="Addons\generic.EmberCore.BulkRename" Label="generic.EmberCore.BulkRename" Category="Projekt" />
+    <Node Id="System.Data.SQLite 1.0.90.0" Label="System.Data.SQLite 1.0.90.0" Category="Paket" />
+    <Node Id="EmberAPI" Label="EmberAPI" Category="Projekt" />
+    <Node Id="NLog 2.1.0" Label="NLog 2.1.0" Category="Paket" />
+    <Node Id="NLog.Config 2.1.0" Label="NLog.Config 2.1.0" Category="Paket" />
+    <Node Id="NLog.Schema 2.1.0" Label="NLog.Schema 2.1.0" Category="Paket" />
+    <Node Id="System.Data.SQLite 1.0.90.0" Label="System.Data.SQLite 1.0.90.0" Category="Paket" />
+    <Node Id="EmberMediaManager" Label="EmberMediaManager" Category="Projekt" />
+    <Node Id="RestSharp 104.4.0" Label="RestSharp 104.4.0" Category="Paket" />
+    <Node Id="SharpZipLib 0.86.0" Label="SharpZipLib 0.86.0" Category="Paket" />
+    <Node Id="System.Data.SQLite 1.0.90.0" Label="System.Data.SQLite 1.0.90.0" Category="Paket" />
   </Nodes>
   <Links>
-    <Link Source="Removed\generic.EmberCore.WebServer" Target="System.Data.SQLite 1.0.84.0" Category="Installed Package" />
-    <Link Source="RottenTomatoesAPI" Target="RestSharp 104.1" Category="Installed Package" />
-    <Link Source="FanartTVAPI" Target="RestSharp 104.1" Category="Installed Package" />
-    <Link Source="WatTmdb" Target="RestSharp 104.1" Category="Installed Package" />
-    <Link Source="Addons\scraper.EmberCore.TMDB" Target="RestSharp 104.1" Category="Installed Package" />
-    <Link Source="Addons\scraper.EmberCore.TMDB" Target="SharpZipLib 0.86.0" Category="Installed Package" />
-    <Link Source="Addons\scraper.EmberCore.XML" Target="SharpZipLib 0.86.0" Category="Installed Package" />
-    <Link Source="Addons\scraper.EmberCore" Target="SharpZipLib 0.86.0" Category="Installed Package" />
-    <Link Source="Addons\scraper.EmberCore" Target="System.Data.SQLite 1.0.84.0" Category="Installed Package" />
-    <Link Source="Addons\generic.EmberCore.OfflineHolder" Target="System.Data.SQLite 1.0.84.0" Category="Installed Package" />
-    <Link Source="Addons\generic.EmberCore.NMT" Target="SharpZipLib 0.86.0" Category="Installed Package" />
-    <Link Source="Addons\generic.EmberCore.NMT" Target="System.Data.SQLite 1.0.84.0" Category="Installed Package" />
-    <Link Source="Addons\generic.EmberCore.MovieExporter" Target="System.Data.SQLite 1.0.84.0" Category="Installed Package" />
-    <Link Source="Addons\generic.EmberCore.BulkRename" Target="System.Data.SQLite 1.0.84.0" Category="Installed Package" />
-    <Link Source="EmberAPI" Target="System.Data.SQLite 1.0.84.0" Category="Installed Package" />
-    <Link Source="Ember Media Manager" Target="RestSharp 104.1" Category="Installed Package" />
-    <Link Source="Ember Media Manager" Target="SharpZipLib 0.86.0" Category="Installed Package" />
-    <Link Source="Ember Media Manager" Target="System.Data.SQLite 1.0.84.0" Category="Installed Package" />
+    <Link Source="EmberAPI_Test" Target="NLog 2.1.0" Category="Installiertes Paket" />
+    <Link Source="RottenTomatoesAPI" Target="RestSharp 104.4.0" Category="Installiertes Paket" />
+    <Link Source="FanartTVAPI" Target="RestSharp 104.4.0" Category="Installiertes Paket" />
+    <Link Source="WatTmdb" Target="RestSharp 104.4.0" Category="Installiertes Paket" />
+    <Link Source="Addons\scraper.TVDB.Data.Poster" Target="SharpZipLib 0.86.0" Category="Installiertes Paket" />
+    <Link Source="Addons\scraper.TVDB.Data.Poster" Target="System.Data.SQLite 1.0.90.0" Category="Installiertes Paket" />
+    <Link Source="Addons\scraper.TMDB.Data" Target="RestSharp 104.4.0" Category="Installiertes Paket" />
+    <Link Source="Addons\scraper.MPDB.Poster" Target="RestSharp 104.4.0" Category="Installiertes Paket" />
+    <Link Source="Addons\scraper.MPDB.Poster" Target="SharpZipLib 0.86.0" Category="Installiertes Paket" />
+    <Link Source="Addons\scraper.IMPA.Poster" Target="RestSharp 104.4.0" Category="Installiertes Paket" />
+    <Link Source="Addons\scraper.IMPA.Poster" Target="SharpZipLib 0.86.0" Category="Installiertes Paket" />
+    <Link Source="Addons\scraper.FanartTV.Poster" Target="RestSharp 104.4.0" Category="Installiertes Paket" />
+    <Link Source="Addons\scraper.FanartTV.Poster" Target="SharpZipLib 0.86.0" Category="Installiertes Paket" />
+    <Link Source="Addons\generic.Compatibility.NMT" Target="SharpZipLib 0.86.0" Category="Installiertes Paket" />
+    <Link Source="Addons\generic.Compatibility.NMT" Target="System.Data.SQLite 1.0.90.0" Category="Installiertes Paket" />
+    <Link Source="Addons\generic.EmberCore.MovieExporter" Target="System.Data.SQLite 1.0.90.0" Category="Installiertes Paket" />
+    <Link Source="Addons\generic.EmberCore.BulkRename" Target="System.Data.SQLite 1.0.90.0" Category="Installiertes Paket" />
+    <Link Source="NLog.Config 2.1.0" Target="NLog 2.1.0" Category="Paketabhängigkeit" />
+    <Link Source="NLog.Config 2.1.0" Target="NLog.Schema 2.1.0" Category="Paketabhängigkeit" />
+    <Link Source="EmberAPI" Target="NLog.Config 2.1.0" Category="Installiertes Paket" />
+    <Link Source="EmberAPI" Target="System.Data.SQLite 1.0.90.0" Category="Installiertes Paket" />
+    <Link Source="EmberMediaManager" Target="RestSharp 104.4.0" Category="Installiertes Paket" />
+    <Link Source="EmberMediaManager" Target="SharpZipLib 0.86.0" Category="Installiertes Paket" />
+    <Link Source="EmberMediaManager" Target="System.Data.SQLite 1.0.90.0" Category="Installiertes Paket" />
   </Links>
   <Categories>
-    <Category Id="Project" />
-    <Category Id="Package" />
+    <Category Id="Projekt" />
+    <Category Id="Paket" />
   </Categories>
   <Styles>
-    <Style TargetType="Node" GroupLabel="Project" ValueLabel="True">
-      <Condition Expression="HasCategory('Project')" />
+    <Style TargetType="Node" GroupLabel="Projekt" ValueLabel="True">
+      <Condition Expression="HasCategory('Projekt')" />
       <Setter Property="Background" Value="Blue" />
+    </Style>
+    <Style TargetType="Link" GroupLabel="Paketabhängigkeit" ValueLabel="True">
+      <Condition Expression="HasCategory('Paketabhängigkeit')" />
+      <Setter Property="Background" Value="Yellow" />
     </Style>
   </Styles>
 </DirectedGraph>

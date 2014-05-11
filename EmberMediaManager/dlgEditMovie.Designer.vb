@@ -32,6 +32,8 @@ Partial Class dlgEditMovie
         Me.pbTopLogo = New System.Windows.Forms.PictureBox()
         Me.tcEditMovie = New System.Windows.Forms.TabControl()
         Me.tpDetails = New System.Windows.Forms.TabPage()
+        Me.btnPlayTheme = New System.Windows.Forms.Button()
+        Me.btnDLTheme = New System.Windows.Forms.Button()
         Me.txtOriginalTitle = New System.Windows.Forms.TextBox()
         Me.lblOriginalTitle = New System.Windows.Forms.Label()
         Me.txtCountry = New System.Windows.Forms.TextBox()
@@ -49,7 +51,7 @@ Partial Class dlgEditMovie
         Me.btnStudio = New System.Windows.Forms.Button()
         Me.lblStudio = New System.Windows.Forms.Label()
         Me.txtStudio = New System.Windows.Forms.TextBox()
-        Me.lblTrailer = New System.Windows.Forms.Label()
+        Me.lblTrailerURL = New System.Windows.Forms.Label()
         Me.txtTrailer = New System.Windows.Forms.TextBox()
         Me.txtReleaseDate = New System.Windows.Forms.TextBox()
         Me.lblReleaseDate = New System.Windows.Forms.Label()
@@ -102,6 +104,41 @@ Partial Class dlgEditMovie
         Me.btnSetMoviePosterScrape = New System.Windows.Forms.Button()
         Me.btnSetMoviePosterLocal = New System.Windows.Forms.Button()
         Me.pbMoviePoster = New System.Windows.Forms.PictureBox()
+        Me.tpBanner = New System.Windows.Forms.TabPage()
+        Me.btnSetMovieBannerDL = New System.Windows.Forms.Button()
+        Me.btnRemoveMovieBanner = New System.Windows.Forms.Button()
+        Me.lblMovieBannerSize = New System.Windows.Forms.Label()
+        Me.btnSetMovieBannerScrape = New System.Windows.Forms.Button()
+        Me.btnSetMovieBannerLocal = New System.Windows.Forms.Button()
+        Me.pbMovieBanner = New System.Windows.Forms.PictureBox()
+        Me.tpLandscape = New System.Windows.Forms.TabPage()
+        Me.btnSetMovieLandscapeDL = New System.Windows.Forms.Button()
+        Me.btnRemoveMovieLandscape = New System.Windows.Forms.Button()
+        Me.lblMovieLandscapeSize = New System.Windows.Forms.Label()
+        Me.btnSetMovieLandscapeScrape = New System.Windows.Forms.Button()
+        Me.btnSetMovieLandscapeLocal = New System.Windows.Forms.Button()
+        Me.pbMovieLandscape = New System.Windows.Forms.PictureBox()
+        Me.tpClearArt = New System.Windows.Forms.TabPage()
+        Me.btnSetMovieClearArtDL = New System.Windows.Forms.Button()
+        Me.btnRemoveMovieClearArt = New System.Windows.Forms.Button()
+        Me.lblMovieClearArtSize = New System.Windows.Forms.Label()
+        Me.btnSetMovieClearArtScrape = New System.Windows.Forms.Button()
+        Me.btnSetMovieClearArtLocal = New System.Windows.Forms.Button()
+        Me.pbMovieClearArt = New System.Windows.Forms.PictureBox()
+        Me.tpClearLogo = New System.Windows.Forms.TabPage()
+        Me.btnSetMovieClearLogoDL = New System.Windows.Forms.Button()
+        Me.btnRemoveMovieClearLogo = New System.Windows.Forms.Button()
+        Me.lblMovieClearLogoSize = New System.Windows.Forms.Label()
+        Me.btnSetMovieClearLogoScrape = New System.Windows.Forms.Button()
+        Me.btnSetMovieClearLogoLocal = New System.Windows.Forms.Button()
+        Me.pbMovieClearLogo = New System.Windows.Forms.PictureBox()
+        Me.tpDiscArt = New System.Windows.Forms.TabPage()
+        Me.btnSetMovieDiscArtDL = New System.Windows.Forms.Button()
+        Me.btnRemoveMovieDiscArt = New System.Windows.Forms.Button()
+        Me.lblMovieDiscArtSize = New System.Windows.Forms.Label()
+        Me.btnSetMovieDiscArtScrape = New System.Windows.Forms.Button()
+        Me.btnSetMovieDiscArtLocal = New System.Windows.Forms.Button()
+        Me.pbMovieDiscArt = New System.Windows.Forms.PictureBox()
         Me.tpFanart = New System.Windows.Forms.TabPage()
         Me.btnSetMovieFanartDL = New System.Windows.Forms.Button()
         Me.btnRemoveMovieFanart = New System.Windows.Forms.Button()
@@ -148,6 +185,7 @@ Partial Class dlgEditMovie
         Me.btnChangeMovie = New System.Windows.Forms.Button()
         Me.tmrDelay = New System.Windows.Forms.Timer(Me.components)
         Me.chkWatched = New System.Windows.Forms.CheckBox()
+        Me.lblTheme = New System.Windows.Forms.Label()
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tcEditMovie.SuspendLayout()
@@ -159,6 +197,16 @@ Partial Class dlgEditMovie
         CType(Me.pbStar1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tpPoster.SuspendLayout()
         CType(Me.pbMoviePoster, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.tpBanner.SuspendLayout()
+        CType(Me.pbMovieBanner, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.tpLandscape.SuspendLayout()
+        CType(Me.pbMovieLandscape, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.tpClearArt.SuspendLayout()
+        CType(Me.pbMovieClearArt, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.tpClearLogo.SuspendLayout()
+        CType(Me.pbMovieClearLogo, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.tpDiscArt.SuspendLayout()
+        CType(Me.pbMovieDiscArt, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tpFanart.SuspendLayout()
         CType(Me.pbMovieFanart, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tpEFanarts.SuspendLayout()
@@ -177,7 +225,7 @@ Partial Class dlgEditMovie
         'OK_Button
         '
         Me.OK_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.OK_Button.Location = New System.Drawing.Point(708, 569)
+        Me.OK_Button.Location = New System.Drawing.Point(708, 592)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(67, 23)
         Me.OK_Button.TabIndex = 0
@@ -187,7 +235,7 @@ Partial Class dlgEditMovie
         '
         Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Cancel_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Cancel_Button.Location = New System.Drawing.Point(781, 569)
+        Me.Cancel_Button.Location = New System.Drawing.Point(781, 592)
         Me.Cancel_Button.Name = "Cancel_Button"
         Me.Cancel_Button.Size = New System.Drawing.Size(67, 23)
         Me.Cancel_Button.TabIndex = 1
@@ -245,6 +293,11 @@ Partial Class dlgEditMovie
         '
         Me.tcEditMovie.Controls.Add(Me.tpDetails)
         Me.tcEditMovie.Controls.Add(Me.tpPoster)
+        Me.tcEditMovie.Controls.Add(Me.tpBanner)
+        Me.tcEditMovie.Controls.Add(Me.tpLandscape)
+        Me.tcEditMovie.Controls.Add(Me.tpClearArt)
+        Me.tcEditMovie.Controls.Add(Me.tpClearLogo)
+        Me.tcEditMovie.Controls.Add(Me.tpDiscArt)
         Me.tcEditMovie.Controls.Add(Me.tpFanart)
         Me.tcEditMovie.Controls.Add(Me.tpEFanarts)
         Me.tcEditMovie.Controls.Add(Me.tpEThumbs)
@@ -255,11 +308,14 @@ Partial Class dlgEditMovie
         Me.tcEditMovie.Location = New System.Drawing.Point(4, 70)
         Me.tcEditMovie.Name = "tcEditMovie"
         Me.tcEditMovie.SelectedIndex = 0
-        Me.tcEditMovie.Size = New System.Drawing.Size(844, 494)
+        Me.tcEditMovie.Size = New System.Drawing.Size(844, 517)
         Me.tcEditMovie.TabIndex = 3
         '
         'tpDetails
         '
+        Me.tpDetails.Controls.Add(Me.lblTheme)
+        Me.tpDetails.Controls.Add(Me.btnPlayTheme)
+        Me.tpDetails.Controls.Add(Me.btnDLTheme)
         Me.tpDetails.Controls.Add(Me.txtOriginalTitle)
         Me.tpDetails.Controls.Add(Me.lblOriginalTitle)
         Me.tpDetails.Controls.Add(Me.txtCountry)
@@ -277,7 +333,7 @@ Partial Class dlgEditMovie
         Me.tpDetails.Controls.Add(Me.btnStudio)
         Me.tpDetails.Controls.Add(Me.lblStudio)
         Me.tpDetails.Controls.Add(Me.txtStudio)
-        Me.tpDetails.Controls.Add(Me.lblTrailer)
+        Me.tpDetails.Controls.Add(Me.lblTrailerURL)
         Me.tpDetails.Controls.Add(Me.txtTrailer)
         Me.tpDetails.Controls.Add(Me.txtReleaseDate)
         Me.tpDetails.Controls.Add(Me.lblReleaseDate)
@@ -323,10 +379,29 @@ Partial Class dlgEditMovie
         Me.tpDetails.Location = New System.Drawing.Point(4, 22)
         Me.tpDetails.Name = "tpDetails"
         Me.tpDetails.Padding = New System.Windows.Forms.Padding(3)
-        Me.tpDetails.Size = New System.Drawing.Size(836, 468)
+        Me.tpDetails.Size = New System.Drawing.Size(836, 491)
         Me.tpDetails.TabIndex = 0
         Me.tpDetails.Text = "Details"
         Me.tpDetails.UseVisualStyleBackColor = True
+        '
+        'btnPlayTheme
+        '
+        Me.btnPlayTheme.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnPlayTheme.Image = Global.Ember_Media_Manager.My.Resources.Resources.Play_Icon
+        Me.btnPlayTheme.Location = New System.Drawing.Point(579, 462)
+        Me.btnPlayTheme.Name = "btnPlayTheme"
+        Me.btnPlayTheme.Size = New System.Drawing.Size(23, 23)
+        Me.btnPlayTheme.TabIndex = 69
+        Me.btnPlayTheme.UseVisualStyleBackColor = True
+        '
+        'btnDLTheme
+        '
+        Me.btnDLTheme.Image = CType(resources.GetObject("btnDLTheme.Image"), System.Drawing.Image)
+        Me.btnDLTheme.Location = New System.Drawing.Point(602, 462)
+        Me.btnDLTheme.Name = "btnDLTheme"
+        Me.btnDLTheme.Size = New System.Drawing.Size(23, 23)
+        Me.btnDLTheme.TabIndex = 68
+        Me.btnDLTheme.UseVisualStyleBackColor = True
         '
         'txtOriginalTitle
         '
@@ -495,15 +570,15 @@ Partial Class dlgEditMovie
         Me.txtStudio.Size = New System.Drawing.Size(167, 22)
         Me.txtStudio.TabIndex = 43
         '
-        'lblTrailer
+        'lblTrailerURL
         '
-        Me.lblTrailer.AutoSize = True
-        Me.lblTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblTrailer.Location = New System.Drawing.Point(215, 410)
-        Me.lblTrailer.Name = "lblTrailer"
-        Me.lblTrailer.Size = New System.Drawing.Size(65, 13)
-        Me.lblTrailer.TabIndex = 49
-        Me.lblTrailer.Text = "Trailer URL:"
+        Me.lblTrailerURL.AutoSize = True
+        Me.lblTrailerURL.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblTrailerURL.Location = New System.Drawing.Point(215, 410)
+        Me.lblTrailerURL.Name = "lblTrailerURL"
+        Me.lblTrailerURL.Size = New System.Drawing.Size(65, 13)
+        Me.lblTrailerURL.TabIndex = 49
+        Me.lblTrailerURL.Text = "Trailer URL:"
         '
         'txtTrailer
         '
@@ -631,7 +706,7 @@ Partial Class dlgEditMovie
         'btnManual
         '
         Me.btnManual.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnManual.Location = New System.Drawing.Point(738, 423)
+        Me.btnManual.Location = New System.Drawing.Point(738, 446)
         Me.btnManual.Name = "btnManual"
         Me.btnManual.Size = New System.Drawing.Size(92, 23)
         Me.btnManual.TabIndex = 54
@@ -938,7 +1013,7 @@ Partial Class dlgEditMovie
         Me.tpPoster.Location = New System.Drawing.Point(4, 22)
         Me.tpPoster.Name = "tpPoster"
         Me.tpPoster.Padding = New System.Windows.Forms.Padding(3)
-        Me.tpPoster.Size = New System.Drawing.Size(836, 452)
+        Me.tpPoster.Size = New System.Drawing.Size(836, 491)
         Me.tpPoster.TabIndex = 1
         Me.tpPoster.Text = "Poster"
         Me.tpPoster.UseVisualStyleBackColor = True
@@ -1017,6 +1092,452 @@ Partial Class dlgEditMovie
         Me.pbMoviePoster.TabIndex = 0
         Me.pbMoviePoster.TabStop = False
         '
+        'tpBanner
+        '
+        Me.tpBanner.Controls.Add(Me.btnSetMovieBannerDL)
+        Me.tpBanner.Controls.Add(Me.btnRemoveMovieBanner)
+        Me.tpBanner.Controls.Add(Me.lblMovieBannerSize)
+        Me.tpBanner.Controls.Add(Me.btnSetMovieBannerScrape)
+        Me.tpBanner.Controls.Add(Me.btnSetMovieBannerLocal)
+        Me.tpBanner.Controls.Add(Me.pbMovieBanner)
+        Me.tpBanner.Location = New System.Drawing.Point(4, 22)
+        Me.tpBanner.Name = "tpBanner"
+        Me.tpBanner.Padding = New System.Windows.Forms.Padding(3)
+        Me.tpBanner.Size = New System.Drawing.Size(836, 491)
+        Me.tpBanner.TabIndex = 8
+        Me.tpBanner.Text = "Banner"
+        Me.tpBanner.UseVisualStyleBackColor = True
+        '
+        'btnSetMovieBannerDL
+        '
+        Me.btnSetMovieBannerDL.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnSetMovieBannerDL.Image = CType(resources.GetObject("btnSetMovieBannerDL.Image"), System.Drawing.Image)
+        Me.btnSetMovieBannerDL.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetMovieBannerDL.Location = New System.Drawing.Point(735, 180)
+        Me.btnSetMovieBannerDL.Name = "btnSetMovieBannerDL"
+        Me.btnSetMovieBannerDL.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetMovieBannerDL.TabIndex = 9
+        Me.btnSetMovieBannerDL.Text = "Change Banner (Download)"
+        Me.btnSetMovieBannerDL.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetMovieBannerDL.UseVisualStyleBackColor = True
+        '
+        'btnRemoveMovieBanner
+        '
+        Me.btnRemoveMovieBanner.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnRemoveMovieBanner.Image = CType(resources.GetObject("btnRemoveMovieBanner.Image"), System.Drawing.Image)
+        Me.btnRemoveMovieBanner.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnRemoveMovieBanner.Location = New System.Drawing.Point(735, 363)
+        Me.btnRemoveMovieBanner.Name = "btnRemoveMovieBanner"
+        Me.btnRemoveMovieBanner.Size = New System.Drawing.Size(96, 83)
+        Me.btnRemoveMovieBanner.TabIndex = 10
+        Me.btnRemoveMovieBanner.Text = "Remove Banner"
+        Me.btnRemoveMovieBanner.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnRemoveMovieBanner.UseVisualStyleBackColor = True
+        '
+        'lblMovieBannerSize
+        '
+        Me.lblMovieBannerSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblMovieBannerSize.Location = New System.Drawing.Point(8, 8)
+        Me.lblMovieBannerSize.Name = "lblMovieBannerSize"
+        Me.lblMovieBannerSize.Size = New System.Drawing.Size(105, 23)
+        Me.lblMovieBannerSize.TabIndex = 5
+        Me.lblMovieBannerSize.Text = "Size: (XXXXxXXXX)"
+        Me.lblMovieBannerSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.lblMovieBannerSize.Visible = False
+        '
+        'btnSetMovieBannerScrape
+        '
+        Me.btnSetMovieBannerScrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnSetMovieBannerScrape.Image = CType(resources.GetObject("btnSetMovieBannerScrape.Image"), System.Drawing.Image)
+        Me.btnSetMovieBannerScrape.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetMovieBannerScrape.Location = New System.Drawing.Point(735, 93)
+        Me.btnSetMovieBannerScrape.Name = "btnSetMovieBannerScrape"
+        Me.btnSetMovieBannerScrape.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetMovieBannerScrape.TabIndex = 8
+        Me.btnSetMovieBannerScrape.Text = "Change Banner (Scrape)"
+        Me.btnSetMovieBannerScrape.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetMovieBannerScrape.UseVisualStyleBackColor = True
+        '
+        'btnSetMovieBannerLocal
+        '
+        Me.btnSetMovieBannerLocal.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnSetMovieBannerLocal.Image = CType(resources.GetObject("btnSetMovieBannerLocal.Image"), System.Drawing.Image)
+        Me.btnSetMovieBannerLocal.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetMovieBannerLocal.Location = New System.Drawing.Point(735, 6)
+        Me.btnSetMovieBannerLocal.Name = "btnSetMovieBannerLocal"
+        Me.btnSetMovieBannerLocal.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetMovieBannerLocal.TabIndex = 7
+        Me.btnSetMovieBannerLocal.Text = "Change Banner (Local Browse)"
+        Me.btnSetMovieBannerLocal.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetMovieBannerLocal.UseVisualStyleBackColor = True
+        '
+        'pbMovieBanner
+        '
+        Me.pbMovieBanner.BackColor = System.Drawing.Color.DimGray
+        Me.pbMovieBanner.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pbMovieBanner.Location = New System.Drawing.Point(6, 6)
+        Me.pbMovieBanner.Name = "pbMovieBanner"
+        Me.pbMovieBanner.Size = New System.Drawing.Size(724, 440)
+        Me.pbMovieBanner.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.pbMovieBanner.TabIndex = 6
+        Me.pbMovieBanner.TabStop = False
+        '
+        'tpLandscape
+        '
+        Me.tpLandscape.Controls.Add(Me.btnSetMovieLandscapeDL)
+        Me.tpLandscape.Controls.Add(Me.btnRemoveMovieLandscape)
+        Me.tpLandscape.Controls.Add(Me.lblMovieLandscapeSize)
+        Me.tpLandscape.Controls.Add(Me.btnSetMovieLandscapeScrape)
+        Me.tpLandscape.Controls.Add(Me.btnSetMovieLandscapeLocal)
+        Me.tpLandscape.Controls.Add(Me.pbMovieLandscape)
+        Me.tpLandscape.Location = New System.Drawing.Point(4, 22)
+        Me.tpLandscape.Name = "tpLandscape"
+        Me.tpLandscape.Size = New System.Drawing.Size(836, 491)
+        Me.tpLandscape.TabIndex = 9
+        Me.tpLandscape.Text = "Landscape"
+        Me.tpLandscape.UseVisualStyleBackColor = True
+        '
+        'btnSetMovieLandscapeDL
+        '
+        Me.btnSetMovieLandscapeDL.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnSetMovieLandscapeDL.Image = CType(resources.GetObject("btnSetMovieLandscapeDL.Image"), System.Drawing.Image)
+        Me.btnSetMovieLandscapeDL.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetMovieLandscapeDL.Location = New System.Drawing.Point(735, 180)
+        Me.btnSetMovieLandscapeDL.Name = "btnSetMovieLandscapeDL"
+        Me.btnSetMovieLandscapeDL.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetMovieLandscapeDL.TabIndex = 9
+        Me.btnSetMovieLandscapeDL.Text = "Change Landscape (Download)"
+        Me.btnSetMovieLandscapeDL.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetMovieLandscapeDL.UseVisualStyleBackColor = True
+        '
+        'btnRemoveMovieLandscape
+        '
+        Me.btnRemoveMovieLandscape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnRemoveMovieLandscape.Image = CType(resources.GetObject("btnRemoveMovieLandscape.Image"), System.Drawing.Image)
+        Me.btnRemoveMovieLandscape.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnRemoveMovieLandscape.Location = New System.Drawing.Point(735, 363)
+        Me.btnRemoveMovieLandscape.Name = "btnRemoveMovieLandscape"
+        Me.btnRemoveMovieLandscape.Size = New System.Drawing.Size(96, 83)
+        Me.btnRemoveMovieLandscape.TabIndex = 10
+        Me.btnRemoveMovieLandscape.Text = "Remove Landscape"
+        Me.btnRemoveMovieLandscape.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnRemoveMovieLandscape.UseVisualStyleBackColor = True
+        '
+        'lblMovieLandscapeSize
+        '
+        Me.lblMovieLandscapeSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblMovieLandscapeSize.Location = New System.Drawing.Point(8, 8)
+        Me.lblMovieLandscapeSize.Name = "lblMovieLandscapeSize"
+        Me.lblMovieLandscapeSize.Size = New System.Drawing.Size(105, 23)
+        Me.lblMovieLandscapeSize.TabIndex = 5
+        Me.lblMovieLandscapeSize.Text = "Size: (XXXXxXXXX)"
+        Me.lblMovieLandscapeSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.lblMovieLandscapeSize.Visible = False
+        '
+        'btnSetMovieLandscapeScrape
+        '
+        Me.btnSetMovieLandscapeScrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnSetMovieLandscapeScrape.Image = CType(resources.GetObject("btnSetMovieLandscapeScrape.Image"), System.Drawing.Image)
+        Me.btnSetMovieLandscapeScrape.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetMovieLandscapeScrape.Location = New System.Drawing.Point(735, 93)
+        Me.btnSetMovieLandscapeScrape.Name = "btnSetMovieLandscapeScrape"
+        Me.btnSetMovieLandscapeScrape.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetMovieLandscapeScrape.TabIndex = 8
+        Me.btnSetMovieLandscapeScrape.Text = "Change Landscape (Scrape)"
+        Me.btnSetMovieLandscapeScrape.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetMovieLandscapeScrape.UseVisualStyleBackColor = True
+        '
+        'btnSetMovieLandscapeLocal
+        '
+        Me.btnSetMovieLandscapeLocal.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnSetMovieLandscapeLocal.Image = CType(resources.GetObject("btnSetMovieLandscapeLocal.Image"), System.Drawing.Image)
+        Me.btnSetMovieLandscapeLocal.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetMovieLandscapeLocal.Location = New System.Drawing.Point(735, 6)
+        Me.btnSetMovieLandscapeLocal.Name = "btnSetMovieLandscapeLocal"
+        Me.btnSetMovieLandscapeLocal.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetMovieLandscapeLocal.TabIndex = 7
+        Me.btnSetMovieLandscapeLocal.Text = "Change Landscape (Local Browse)"
+        Me.btnSetMovieLandscapeLocal.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetMovieLandscapeLocal.UseVisualStyleBackColor = True
+        '
+        'pbMovieLandscape
+        '
+        Me.pbMovieLandscape.BackColor = System.Drawing.Color.DimGray
+        Me.pbMovieLandscape.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pbMovieLandscape.Location = New System.Drawing.Point(6, 6)
+        Me.pbMovieLandscape.Name = "pbMovieLandscape"
+        Me.pbMovieLandscape.Size = New System.Drawing.Size(724, 440)
+        Me.pbMovieLandscape.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.pbMovieLandscape.TabIndex = 6
+        Me.pbMovieLandscape.TabStop = False
+        '
+        'tpClearArt
+        '
+        Me.tpClearArt.Controls.Add(Me.btnSetMovieClearArtDL)
+        Me.tpClearArt.Controls.Add(Me.btnRemoveMovieClearArt)
+        Me.tpClearArt.Controls.Add(Me.lblMovieClearArtSize)
+        Me.tpClearArt.Controls.Add(Me.btnSetMovieClearArtScrape)
+        Me.tpClearArt.Controls.Add(Me.btnSetMovieClearArtLocal)
+        Me.tpClearArt.Controls.Add(Me.pbMovieClearArt)
+        Me.tpClearArt.Location = New System.Drawing.Point(4, 22)
+        Me.tpClearArt.Name = "tpClearArt"
+        Me.tpClearArt.Size = New System.Drawing.Size(836, 491)
+        Me.tpClearArt.TabIndex = 11
+        Me.tpClearArt.Text = "ClearArt"
+        Me.tpClearArt.UseVisualStyleBackColor = True
+        '
+        'btnSetMovieClearArtDL
+        '
+        Me.btnSetMovieClearArtDL.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnSetMovieClearArtDL.Image = CType(resources.GetObject("btnSetMovieClearArtDL.Image"), System.Drawing.Image)
+        Me.btnSetMovieClearArtDL.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetMovieClearArtDL.Location = New System.Drawing.Point(735, 180)
+        Me.btnSetMovieClearArtDL.Name = "btnSetMovieClearArtDL"
+        Me.btnSetMovieClearArtDL.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetMovieClearArtDL.TabIndex = 9
+        Me.btnSetMovieClearArtDL.Text = "Change ClearArt (Download)"
+        Me.btnSetMovieClearArtDL.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetMovieClearArtDL.UseVisualStyleBackColor = True
+        '
+        'btnRemoveMovieClearArt
+        '
+        Me.btnRemoveMovieClearArt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnRemoveMovieClearArt.Image = CType(resources.GetObject("btnRemoveMovieClearArt.Image"), System.Drawing.Image)
+        Me.btnRemoveMovieClearArt.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnRemoveMovieClearArt.Location = New System.Drawing.Point(735, 363)
+        Me.btnRemoveMovieClearArt.Name = "btnRemoveMovieClearArt"
+        Me.btnRemoveMovieClearArt.Size = New System.Drawing.Size(96, 83)
+        Me.btnRemoveMovieClearArt.TabIndex = 10
+        Me.btnRemoveMovieClearArt.Text = "Remove ClearArt"
+        Me.btnRemoveMovieClearArt.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnRemoveMovieClearArt.UseVisualStyleBackColor = True
+        '
+        'lblMovieClearArtSize
+        '
+        Me.lblMovieClearArtSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblMovieClearArtSize.Location = New System.Drawing.Point(8, 8)
+        Me.lblMovieClearArtSize.Name = "lblMovieClearArtSize"
+        Me.lblMovieClearArtSize.Size = New System.Drawing.Size(105, 23)
+        Me.lblMovieClearArtSize.TabIndex = 5
+        Me.lblMovieClearArtSize.Text = "Size: (XXXXxXXXX)"
+        Me.lblMovieClearArtSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.lblMovieClearArtSize.Visible = False
+        '
+        'btnSetMovieClearArtScrape
+        '
+        Me.btnSetMovieClearArtScrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnSetMovieClearArtScrape.Image = CType(resources.GetObject("btnSetMovieClearArtScrape.Image"), System.Drawing.Image)
+        Me.btnSetMovieClearArtScrape.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetMovieClearArtScrape.Location = New System.Drawing.Point(735, 93)
+        Me.btnSetMovieClearArtScrape.Name = "btnSetMovieClearArtScrape"
+        Me.btnSetMovieClearArtScrape.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetMovieClearArtScrape.TabIndex = 8
+        Me.btnSetMovieClearArtScrape.Text = "Change ClearArt (Scrape)"
+        Me.btnSetMovieClearArtScrape.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetMovieClearArtScrape.UseVisualStyleBackColor = True
+        '
+        'btnSetMovieClearArtLocal
+        '
+        Me.btnSetMovieClearArtLocal.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnSetMovieClearArtLocal.Image = CType(resources.GetObject("btnSetMovieClearArtLocal.Image"), System.Drawing.Image)
+        Me.btnSetMovieClearArtLocal.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetMovieClearArtLocal.Location = New System.Drawing.Point(735, 6)
+        Me.btnSetMovieClearArtLocal.Name = "btnSetMovieClearArtLocal"
+        Me.btnSetMovieClearArtLocal.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetMovieClearArtLocal.TabIndex = 7
+        Me.btnSetMovieClearArtLocal.Text = "Change ClearArt (Local Browse)"
+        Me.btnSetMovieClearArtLocal.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetMovieClearArtLocal.UseVisualStyleBackColor = True
+        '
+        'pbMovieClearArt
+        '
+        Me.pbMovieClearArt.BackColor = System.Drawing.Color.DimGray
+        Me.pbMovieClearArt.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pbMovieClearArt.Location = New System.Drawing.Point(6, 6)
+        Me.pbMovieClearArt.Name = "pbMovieClearArt"
+        Me.pbMovieClearArt.Size = New System.Drawing.Size(724, 440)
+        Me.pbMovieClearArt.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.pbMovieClearArt.TabIndex = 6
+        Me.pbMovieClearArt.TabStop = False
+        '
+        'tpClearLogo
+        '
+        Me.tpClearLogo.Controls.Add(Me.btnSetMovieClearLogoDL)
+        Me.tpClearLogo.Controls.Add(Me.btnRemoveMovieClearLogo)
+        Me.tpClearLogo.Controls.Add(Me.lblMovieClearLogoSize)
+        Me.tpClearLogo.Controls.Add(Me.btnSetMovieClearLogoScrape)
+        Me.tpClearLogo.Controls.Add(Me.btnSetMovieClearLogoLocal)
+        Me.tpClearLogo.Controls.Add(Me.pbMovieClearLogo)
+        Me.tpClearLogo.Location = New System.Drawing.Point(4, 22)
+        Me.tpClearLogo.Name = "tpClearLogo"
+        Me.tpClearLogo.Size = New System.Drawing.Size(836, 491)
+        Me.tpClearLogo.TabIndex = 12
+        Me.tpClearLogo.Text = "ClearLogo"
+        Me.tpClearLogo.UseVisualStyleBackColor = True
+        '
+        'btnSetMovieClearLogoDL
+        '
+        Me.btnSetMovieClearLogoDL.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnSetMovieClearLogoDL.Image = CType(resources.GetObject("btnSetMovieClearLogoDL.Image"), System.Drawing.Image)
+        Me.btnSetMovieClearLogoDL.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetMovieClearLogoDL.Location = New System.Drawing.Point(735, 180)
+        Me.btnSetMovieClearLogoDL.Name = "btnSetMovieClearLogoDL"
+        Me.btnSetMovieClearLogoDL.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetMovieClearLogoDL.TabIndex = 9
+        Me.btnSetMovieClearLogoDL.Text = "Change ClearLogo (Download)"
+        Me.btnSetMovieClearLogoDL.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetMovieClearLogoDL.UseVisualStyleBackColor = True
+        '
+        'btnRemoveMovieClearLogo
+        '
+        Me.btnRemoveMovieClearLogo.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnRemoveMovieClearLogo.Image = CType(resources.GetObject("btnRemoveMovieClearLogo.Image"), System.Drawing.Image)
+        Me.btnRemoveMovieClearLogo.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnRemoveMovieClearLogo.Location = New System.Drawing.Point(735, 363)
+        Me.btnRemoveMovieClearLogo.Name = "btnRemoveMovieClearLogo"
+        Me.btnRemoveMovieClearLogo.Size = New System.Drawing.Size(96, 83)
+        Me.btnRemoveMovieClearLogo.TabIndex = 10
+        Me.btnRemoveMovieClearLogo.Text = "Remove ClearLogo"
+        Me.btnRemoveMovieClearLogo.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnRemoveMovieClearLogo.UseVisualStyleBackColor = True
+        '
+        'lblMovieClearLogoSize
+        '
+        Me.lblMovieClearLogoSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblMovieClearLogoSize.Location = New System.Drawing.Point(8, 8)
+        Me.lblMovieClearLogoSize.Name = "lblMovieClearLogoSize"
+        Me.lblMovieClearLogoSize.Size = New System.Drawing.Size(105, 23)
+        Me.lblMovieClearLogoSize.TabIndex = 5
+        Me.lblMovieClearLogoSize.Text = "Size: (XXXXxXXXX)"
+        Me.lblMovieClearLogoSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.lblMovieClearLogoSize.Visible = False
+        '
+        'btnSetMovieClearLogoScrape
+        '
+        Me.btnSetMovieClearLogoScrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnSetMovieClearLogoScrape.Image = CType(resources.GetObject("btnSetMovieClearLogoScrape.Image"), System.Drawing.Image)
+        Me.btnSetMovieClearLogoScrape.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetMovieClearLogoScrape.Location = New System.Drawing.Point(735, 93)
+        Me.btnSetMovieClearLogoScrape.Name = "btnSetMovieClearLogoScrape"
+        Me.btnSetMovieClearLogoScrape.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetMovieClearLogoScrape.TabIndex = 8
+        Me.btnSetMovieClearLogoScrape.Text = "Change ClearLogo (Scrape)"
+        Me.btnSetMovieClearLogoScrape.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetMovieClearLogoScrape.UseVisualStyleBackColor = True
+        '
+        'btnSetMovieClearLogoLocal
+        '
+        Me.btnSetMovieClearLogoLocal.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnSetMovieClearLogoLocal.Image = CType(resources.GetObject("btnSetMovieClearLogoLocal.Image"), System.Drawing.Image)
+        Me.btnSetMovieClearLogoLocal.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetMovieClearLogoLocal.Location = New System.Drawing.Point(735, 6)
+        Me.btnSetMovieClearLogoLocal.Name = "btnSetMovieClearLogoLocal"
+        Me.btnSetMovieClearLogoLocal.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetMovieClearLogoLocal.TabIndex = 7
+        Me.btnSetMovieClearLogoLocal.Text = "Change ClearLogo (Local Browse)"
+        Me.btnSetMovieClearLogoLocal.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetMovieClearLogoLocal.UseVisualStyleBackColor = True
+        '
+        'pbMovieClearLogo
+        '
+        Me.pbMovieClearLogo.BackColor = System.Drawing.Color.DimGray
+        Me.pbMovieClearLogo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pbMovieClearLogo.Location = New System.Drawing.Point(6, 6)
+        Me.pbMovieClearLogo.Name = "pbMovieClearLogo"
+        Me.pbMovieClearLogo.Size = New System.Drawing.Size(724, 440)
+        Me.pbMovieClearLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.pbMovieClearLogo.TabIndex = 6
+        Me.pbMovieClearLogo.TabStop = False
+        '
+        'tpDiscArt
+        '
+        Me.tpDiscArt.Controls.Add(Me.btnSetMovieDiscArtDL)
+        Me.tpDiscArt.Controls.Add(Me.btnRemoveMovieDiscArt)
+        Me.tpDiscArt.Controls.Add(Me.lblMovieDiscArtSize)
+        Me.tpDiscArt.Controls.Add(Me.btnSetMovieDiscArtScrape)
+        Me.tpDiscArt.Controls.Add(Me.btnSetMovieDiscArtLocal)
+        Me.tpDiscArt.Controls.Add(Me.pbMovieDiscArt)
+        Me.tpDiscArt.Location = New System.Drawing.Point(4, 22)
+        Me.tpDiscArt.Name = "tpDiscArt"
+        Me.tpDiscArt.Size = New System.Drawing.Size(836, 491)
+        Me.tpDiscArt.TabIndex = 10
+        Me.tpDiscArt.Text = "DiscArt"
+        Me.tpDiscArt.UseVisualStyleBackColor = True
+        '
+        'btnSetMovieDiscArtDL
+        '
+        Me.btnSetMovieDiscArtDL.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnSetMovieDiscArtDL.Image = CType(resources.GetObject("btnSetMovieDiscArtDL.Image"), System.Drawing.Image)
+        Me.btnSetMovieDiscArtDL.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetMovieDiscArtDL.Location = New System.Drawing.Point(735, 180)
+        Me.btnSetMovieDiscArtDL.Name = "btnSetMovieDiscArtDL"
+        Me.btnSetMovieDiscArtDL.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetMovieDiscArtDL.TabIndex = 9
+        Me.btnSetMovieDiscArtDL.Text = "Change DiscArt (Download)"
+        Me.btnSetMovieDiscArtDL.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetMovieDiscArtDL.UseVisualStyleBackColor = True
+        '
+        'btnRemoveMovieDiscArt
+        '
+        Me.btnRemoveMovieDiscArt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnRemoveMovieDiscArt.Image = CType(resources.GetObject("btnRemoveMovieDiscArt.Image"), System.Drawing.Image)
+        Me.btnRemoveMovieDiscArt.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnRemoveMovieDiscArt.Location = New System.Drawing.Point(735, 363)
+        Me.btnRemoveMovieDiscArt.Name = "btnRemoveMovieDiscArt"
+        Me.btnRemoveMovieDiscArt.Size = New System.Drawing.Size(96, 83)
+        Me.btnRemoveMovieDiscArt.TabIndex = 10
+        Me.btnRemoveMovieDiscArt.Text = "Remove DiscArt"
+        Me.btnRemoveMovieDiscArt.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnRemoveMovieDiscArt.UseVisualStyleBackColor = True
+        '
+        'lblMovieDiscArtSize
+        '
+        Me.lblMovieDiscArtSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblMovieDiscArtSize.Location = New System.Drawing.Point(8, 8)
+        Me.lblMovieDiscArtSize.Name = "lblMovieDiscArtSize"
+        Me.lblMovieDiscArtSize.Size = New System.Drawing.Size(105, 23)
+        Me.lblMovieDiscArtSize.TabIndex = 5
+        Me.lblMovieDiscArtSize.Text = "Size: (XXXXxXXXX)"
+        Me.lblMovieDiscArtSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.lblMovieDiscArtSize.Visible = False
+        '
+        'btnSetMovieDiscArtScrape
+        '
+        Me.btnSetMovieDiscArtScrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnSetMovieDiscArtScrape.Image = CType(resources.GetObject("btnSetMovieDiscArtScrape.Image"), System.Drawing.Image)
+        Me.btnSetMovieDiscArtScrape.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetMovieDiscArtScrape.Location = New System.Drawing.Point(735, 93)
+        Me.btnSetMovieDiscArtScrape.Name = "btnSetMovieDiscArtScrape"
+        Me.btnSetMovieDiscArtScrape.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetMovieDiscArtScrape.TabIndex = 8
+        Me.btnSetMovieDiscArtScrape.Text = "Change DiscArt (Scrape)"
+        Me.btnSetMovieDiscArtScrape.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetMovieDiscArtScrape.UseVisualStyleBackColor = True
+        '
+        'btnSetMovieDiscArtLocal
+        '
+        Me.btnSetMovieDiscArtLocal.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnSetMovieDiscArtLocal.Image = CType(resources.GetObject("btnSetMovieDiscArtLocal.Image"), System.Drawing.Image)
+        Me.btnSetMovieDiscArtLocal.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetMovieDiscArtLocal.Location = New System.Drawing.Point(735, 6)
+        Me.btnSetMovieDiscArtLocal.Name = "btnSetMovieDiscArtLocal"
+        Me.btnSetMovieDiscArtLocal.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetMovieDiscArtLocal.TabIndex = 7
+        Me.btnSetMovieDiscArtLocal.Text = "Change DiscArt (Local Browse)"
+        Me.btnSetMovieDiscArtLocal.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetMovieDiscArtLocal.UseVisualStyleBackColor = True
+        '
+        'pbMovieDiscArt
+        '
+        Me.pbMovieDiscArt.BackColor = System.Drawing.Color.DimGray
+        Me.pbMovieDiscArt.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pbMovieDiscArt.Location = New System.Drawing.Point(6, 6)
+        Me.pbMovieDiscArt.Name = "pbMovieDiscArt"
+        Me.pbMovieDiscArt.Size = New System.Drawing.Size(724, 440)
+        Me.pbMovieDiscArt.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.pbMovieDiscArt.TabIndex = 6
+        Me.pbMovieDiscArt.TabStop = False
+        '
         'tpFanart
         '
         Me.tpFanart.Controls.Add(Me.btnSetMovieFanartDL)
@@ -1027,7 +1548,7 @@ Partial Class dlgEditMovie
         Me.tpFanart.Controls.Add(Me.pbMovieFanart)
         Me.tpFanart.Location = New System.Drawing.Point(4, 22)
         Me.tpFanart.Name = "tpFanart"
-        Me.tpFanart.Size = New System.Drawing.Size(836, 452)
+        Me.tpFanart.Size = New System.Drawing.Size(836, 491)
         Me.tpFanart.TabIndex = 2
         Me.tpFanart.Text = "Fanart"
         Me.tpFanart.UseVisualStyleBackColor = True
@@ -1118,7 +1639,7 @@ Partial Class dlgEditMovie
         Me.tpEFanarts.Location = New System.Drawing.Point(4, 22)
         Me.tpEFanarts.Name = "tpEFanarts"
         Me.tpEFanarts.Padding = New System.Windows.Forms.Padding(3)
-        Me.tpEFanarts.Size = New System.Drawing.Size(836, 452)
+        Me.tpEFanarts.Size = New System.Drawing.Size(836, 491)
         Me.tpEFanarts.TabIndex = 6
         Me.tpEFanarts.Text = "Extrafanarts"
         Me.tpEFanarts.UseVisualStyleBackColor = True
@@ -1243,7 +1764,7 @@ Partial Class dlgEditMovie
         Me.tpEThumbs.Controls.Add(Me.pbMovieEThumbs)
         Me.tpEThumbs.Location = New System.Drawing.Point(4, 22)
         Me.tpEThumbs.Name = "tpEThumbs"
-        Me.tpEThumbs.Size = New System.Drawing.Size(836, 452)
+        Me.tpEThumbs.Size = New System.Drawing.Size(836, 491)
         Me.tpEThumbs.TabIndex = 4
         Me.tpEThumbs.Text = "Extrathumbs"
         Me.tpEThumbs.UseVisualStyleBackColor = True
@@ -1383,7 +1904,7 @@ Partial Class dlgEditMovie
         Me.tpFrameExtraction.Location = New System.Drawing.Point(4, 22)
         Me.tpFrameExtraction.Name = "tpFrameExtraction"
         Me.tpFrameExtraction.Padding = New System.Windows.Forms.Padding(3)
-        Me.tpFrameExtraction.Size = New System.Drawing.Size(836, 468)
+        Me.tpFrameExtraction.Size = New System.Drawing.Size(836, 491)
         Me.tpFrameExtraction.TabIndex = 3
         Me.tpFrameExtraction.Text = "Frame Extraction"
         Me.tpFrameExtraction.UseVisualStyleBackColor = True
@@ -1401,7 +1922,7 @@ Partial Class dlgEditMovie
         Me.tpMetaData.Location = New System.Drawing.Point(4, 22)
         Me.tpMetaData.Name = "tpMetaData"
         Me.tpMetaData.Padding = New System.Windows.Forms.Padding(3)
-        Me.tpMetaData.Size = New System.Drawing.Size(836, 452)
+        Me.tpMetaData.Size = New System.Drawing.Size(836, 491)
         Me.tpMetaData.TabIndex = 5
         Me.tpMetaData.Text = "Meta Data"
         Me.tpMetaData.UseVisualStyleBackColor = True
@@ -1421,7 +1942,7 @@ Partial Class dlgEditMovie
         Me.tpMediaStub.Controls.Add(Me.txtMediaStubTitle)
         Me.tpMediaStub.Location = New System.Drawing.Point(4, 22)
         Me.tpMediaStub.Name = "tpMediaStub"
-        Me.tpMediaStub.Size = New System.Drawing.Size(836, 452)
+        Me.tpMediaStub.Size = New System.Drawing.Size(836, 491)
         Me.tpMediaStub.TabIndex = 7
         Me.tpMediaStub.Text = "Media Stub"
         Me.tpMediaStub.UseVisualStyleBackColor = True
@@ -1464,7 +1985,7 @@ Partial Class dlgEditMovie
         '
         Me.chkMark.AutoSize = True
         Me.chkMark.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMark.Location = New System.Drawing.Point(4, 575)
+        Me.chkMark.Location = New System.Drawing.Point(4, 598)
         Me.chkMark.Name = "chkMark"
         Me.chkMark.Size = New System.Drawing.Size(86, 17)
         Me.chkMark.TabIndex = 5
@@ -1476,7 +1997,7 @@ Partial Class dlgEditMovie
         Me.btnRescrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnRescrape.Image = CType(resources.GetObject("btnRescrape.Image"), System.Drawing.Image)
         Me.btnRescrape.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnRescrape.Location = New System.Drawing.Point(310, 569)
+        Me.btnRescrape.Location = New System.Drawing.Point(310, 592)
         Me.btnRescrape.Name = "btnRescrape"
         Me.btnRescrape.Size = New System.Drawing.Size(98, 23)
         Me.btnRescrape.TabIndex = 7
@@ -1489,7 +2010,7 @@ Partial Class dlgEditMovie
         Me.btnChangeMovie.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnChangeMovie.Image = CType(resources.GetObject("btnChangeMovie.Image"), System.Drawing.Image)
         Me.btnChangeMovie.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnChangeMovie.Location = New System.Drawing.Point(429, 569)
+        Me.btnChangeMovie.Location = New System.Drawing.Point(429, 592)
         Me.btnChangeMovie.Name = "btnChangeMovie"
         Me.btnChangeMovie.Size = New System.Drawing.Size(107, 23)
         Me.btnChangeMovie.TabIndex = 8
@@ -1505,12 +2026,22 @@ Partial Class dlgEditMovie
         '
         Me.chkWatched.AutoSize = True
         Me.chkWatched.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkWatched.Location = New System.Drawing.Point(96, 575)
+        Me.chkWatched.Location = New System.Drawing.Point(96, 598)
         Me.chkWatched.Name = "chkWatched"
         Me.chkWatched.Size = New System.Drawing.Size(72, 17)
         Me.chkWatched.TabIndex = 6
         Me.chkWatched.Text = "Watched"
         Me.chkWatched.UseVisualStyleBackColor = True
+        '
+        'lblTheme
+        '
+        Me.lblTheme.AutoSize = True
+        Me.lblTheme.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblTheme.Location = New System.Drawing.Point(528, 467)
+        Me.lblTheme.Name = "lblTheme"
+        Me.lblTheme.Size = New System.Drawing.Size(45, 13)
+        Me.lblTheme.TabIndex = 70
+        Me.lblTheme.Text = "Theme:"
         '
         'dlgEditMovie
         '
@@ -1518,7 +2049,7 @@ Partial Class dlgEditMovie
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(854, 598)
+        Me.ClientSize = New System.Drawing.Size(854, 621)
         Me.Controls.Add(Me.chkWatched)
         Me.Controls.Add(Me.btnChangeMovie)
         Me.Controls.Add(Me.btnRescrape)
@@ -1548,6 +2079,16 @@ Partial Class dlgEditMovie
         CType(Me.pbStar1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tpPoster.ResumeLayout(False)
         CType(Me.pbMoviePoster, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.tpBanner.ResumeLayout(False)
+        CType(Me.pbMovieBanner, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.tpLandscape.ResumeLayout(False)
+        CType(Me.pbMovieLandscape, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.tpClearArt.ResumeLayout(False)
+        CType(Me.pbMovieClearArt, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.tpClearLogo.ResumeLayout(False)
+        CType(Me.pbMovieClearLogo, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.tpDiscArt.ResumeLayout(False)
+        CType(Me.pbMovieDiscArt, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tpFanart.ResumeLayout(False)
         CType(Me.pbMovieFanart, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tpEFanarts.ResumeLayout(False)
@@ -1625,7 +2166,7 @@ Partial Class dlgEditMovie
     Friend WithEvents txtCredits As System.Windows.Forms.TextBox
     Friend WithEvents lblCerts As System.Windows.Forms.Label
     Friend WithEvents txtCerts As System.Windows.Forms.TextBox
-    Friend WithEvents lblTrailer As System.Windows.Forms.Label
+    Friend WithEvents lblTrailerURL As System.Windows.Forms.Label
     Friend WithEvents txtTrailer As System.Windows.Forms.TextBox
     Friend WithEvents btnSetMoviePosterScrape As System.Windows.Forms.Button
     Friend WithEvents btnSetMovieFanartScrape As System.Windows.Forms.Button
@@ -1690,5 +2231,43 @@ Partial Class dlgEditMovie
     Friend WithEvents lblMediaStubTitle As System.Windows.Forms.Label
     Friend WithEvents txtMediaStubMessage As System.Windows.Forms.TextBox
     Friend WithEvents txtMediaStubTitle As System.Windows.Forms.TextBox
+    Friend WithEvents tpBanner As System.Windows.Forms.TabPage
+    Friend WithEvents btnSetMovieBannerDL As System.Windows.Forms.Button
+    Friend WithEvents btnRemoveMovieBanner As System.Windows.Forms.Button
+    Friend WithEvents lblMovieBannerSize As System.Windows.Forms.Label
+    Friend WithEvents btnSetMovieBannerScrape As System.Windows.Forms.Button
+    Friend WithEvents btnSetMovieBannerLocal As System.Windows.Forms.Button
+    Friend WithEvents pbMovieBanner As System.Windows.Forms.PictureBox
+    Friend WithEvents tpLandscape As System.Windows.Forms.TabPage
+    Friend WithEvents btnSetMovieLandscapeDL As System.Windows.Forms.Button
+    Friend WithEvents btnRemoveMovieLandscape As System.Windows.Forms.Button
+    Friend WithEvents lblMovieLandscapeSize As System.Windows.Forms.Label
+    Friend WithEvents btnSetMovieLandscapeScrape As System.Windows.Forms.Button
+    Friend WithEvents btnSetMovieLandscapeLocal As System.Windows.Forms.Button
+    Friend WithEvents pbMovieLandscape As System.Windows.Forms.PictureBox
+    Friend WithEvents btnDLTheme As System.Windows.Forms.Button
+    Friend WithEvents btnPlayTheme As System.Windows.Forms.Button
+    Friend WithEvents tpClearArt As System.Windows.Forms.TabPage
+    Friend WithEvents btnSetMovieClearArtDL As System.Windows.Forms.Button
+    Friend WithEvents btnRemoveMovieClearArt As System.Windows.Forms.Button
+    Friend WithEvents lblMovieClearArtSize As System.Windows.Forms.Label
+    Friend WithEvents btnSetMovieClearArtScrape As System.Windows.Forms.Button
+    Friend WithEvents btnSetMovieClearArtLocal As System.Windows.Forms.Button
+    Friend WithEvents pbMovieClearArt As System.Windows.Forms.PictureBox
+    Friend WithEvents tpClearLogo As System.Windows.Forms.TabPage
+    Friend WithEvents btnSetMovieClearLogoDL As System.Windows.Forms.Button
+    Friend WithEvents btnRemoveMovieClearLogo As System.Windows.Forms.Button
+    Friend WithEvents lblMovieClearLogoSize As System.Windows.Forms.Label
+    Friend WithEvents btnSetMovieClearLogoScrape As System.Windows.Forms.Button
+    Friend WithEvents btnSetMovieClearLogoLocal As System.Windows.Forms.Button
+    Friend WithEvents pbMovieClearLogo As System.Windows.Forms.PictureBox
+    Friend WithEvents tpDiscArt As System.Windows.Forms.TabPage
+    Friend WithEvents btnSetMovieDiscArtDL As System.Windows.Forms.Button
+    Friend WithEvents btnRemoveMovieDiscArt As System.Windows.Forms.Button
+    Friend WithEvents lblMovieDiscArtSize As System.Windows.Forms.Label
+    Friend WithEvents btnSetMovieDiscArtScrape As System.Windows.Forms.Button
+    Friend WithEvents btnSetMovieDiscArtLocal As System.Windows.Forms.Button
+    Friend WithEvents pbMovieDiscArt As System.Windows.Forms.PictureBox
+    Friend WithEvents lblTheme As System.Windows.Forms.Label
 
 End Class

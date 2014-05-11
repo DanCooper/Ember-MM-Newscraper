@@ -43,6 +43,7 @@ BRC32 /NOFOLDERS /RECURSIVE /PATTERN:"*.xml" /REPLACECS:(pt_PT):Portuguese_(pt_P
 BRC32 /NOFOLDERS /RECURSIVE /PATTERN:"*.xml" /REPLACECS:(sv):Swedish_(sv) /EXECUTE /QUIET
 BRC32 /NOFOLDERS /RECURSIVE /PATTERN:"*.xml" /REPLACECS:(vi):Vietnamese_(vi) /EXECUTE /QUIET
 BRC32 /NOFOLDERS /RECURSIVE /PATTERN:"*.xml" /REPLACECS:(zh):Chinese_(zh) /EXECUTE /QUIET
+BRC32 /NOFOLDERS /RECURSIVE /PATTERN:"*.xml" /REPLACECS:(ro_RO):Romanian_(ro_RO) /EXECUTE /QUIET
 CLS
 ECHO *******************************************
 ECHO *                  DONE!                  *

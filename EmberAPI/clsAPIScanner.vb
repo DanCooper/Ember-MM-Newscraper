@@ -205,9 +205,11 @@ Public Class Scanner
     ''' <param name="Movie">MovieContainer object.</param>
     Public Sub GetMovieFolderContents(ByRef Movie As MovieContainer)
         Dim currname As String = String.Empty
-        Dim fList As New List(Of String)
+        Dim efList As New List(Of String)   'extrafanart list
+        Dim etList As New List(Of String)   'extrathumbs list
+        Dim tList As New List(Of String)    'theme files list
+        Dim fList As New List(Of String)    'all other files list
         Dim fName As String = String.Empty
-        'Dim pList As New List(Of String)
 
         Dim parPath As String = String.Empty
 
@@ -218,7 +220,7 @@ Public Class Scanner
         Dim fileParPath As String = Directory.GetParent(filePath).FullName
 
         Try
-
+            'first add files to filelists
             If FileUtils.Common.isVideoTS(Movie.Filename) Then
                 parPath = Directory.GetParent(Directory.GetParent(Movie.Filename).FullName).FullName
 
@@ -231,12 +233,28 @@ Public Class Scanner
                 Catch
                 End Try
 
-                If Movie.isSingle AndAlso File.Exists(String.Concat(Directory.GetParent(Movie.Filename).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")) Then
-                    Movie.EThumbs = String.Concat(Directory.GetParent(Movie.Filename).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")
+                If Movie.isSingle Then
+                    For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType.EFanarts)
+                        If Directory.Exists(a) Then
+                            efList.AddRange(Directory.GetFiles(a))
+                        End If
+                    Next
                 End If
 
-                If Movie.isSingle AndAlso File.Exists(String.Concat(Directory.GetParent(Movie.Filename).FullName, Path.DirectorySeparatorChar, "extrafanart", Path.DirectorySeparatorChar, "fanart1.jpg")) Then
-                    Movie.EFanarts = String.Concat(Directory.GetParent(Movie.Filename).FullName, Path.DirectorySeparatorChar, "extrafanart", Path.DirectorySeparatorChar, "fanart1.jpg")
+                If Movie.isSingle Then
+                    For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType.EThumbs)
+                        If Directory.Exists(a) Then
+                            etList.AddRange(Directory.GetFiles(a))
+                        End If
+                    Next
+                End If
+
+                If Movie.isSingle Then
+                    For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType.Theme)
+                        If Directory.Exists(Directory.GetParent(a).FullName) Then
+                            tList.AddRange(Directory.GetFiles(Directory.GetParent(a).FullName))
+                        End If
+                    Next
                 End If
             ElseIf FileUtils.Common.isBDRip(Movie.Filename) Then
                 parPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(Movie.Filename).FullName).FullName).FullName
@@ -250,12 +268,28 @@ Public Class Scanner
                 Catch
                 End Try
 
-                If Movie.isSingle AndAlso File.Exists(String.Concat(Directory.GetParent(Directory.GetParent(Movie.Filename).FullName).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")) Then
-                    Movie.EThumbs = String.Concat(Directory.GetParent(Directory.GetParent(Movie.Filename).FullName).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")
+                If Movie.isSingle Then
+                    For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType.EFanarts)
+                        If Directory.Exists(a) Then
+                            efList.AddRange(Directory.GetFiles(a))
+                        End If
+                    Next
                 End If
 
-                If Movie.isSingle AndAlso File.Exists(String.Concat(Directory.GetParent(Directory.GetParent(Movie.Filename).FullName).FullName, Path.DirectorySeparatorChar, "extrafanart", Path.DirectorySeparatorChar, "fanart1.jpg")) Then
-                    Movie.EFanarts = String.Concat(Directory.GetParent(Directory.GetParent(Movie.Filename).FullName).FullName, Path.DirectorySeparatorChar, "extrafanart", Path.DirectorySeparatorChar, "fanart1.jpg")
+                If Movie.isSingle Then
+                    For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType.EThumbs)
+                        If Directory.Exists(a) Then
+                            etList.AddRange(Directory.GetFiles(a))
+                        End If
+                    Next
+                End If
+
+                If Movie.isSingle Then
+                    For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType.Theme)
+                        If Directory.Exists(Directory.GetParent(a).FullName) Then
+                            tList.AddRange(Directory.GetFiles(Directory.GetParent(a).FullName))
+                        End If
+                    Next
                 End If
             Else
                 parPath = Directory.GetParent(Movie.Filename).FullName
@@ -270,12 +304,74 @@ Public Class Scanner
                     End Try
                 End If
 
-                If Movie.isSingle AndAlso File.Exists(String.Concat(Directory.GetParent(Movie.Filename).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")) Then
-                    Movie.EThumbs = String.Concat(Directory.GetParent(Movie.Filename).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")
+                If Movie.isSingle Then
+                    For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType.EFanarts)
+                        If Directory.Exists(a) Then
+                            efList.AddRange(Directory.GetFiles(a))
+                        End If
+                    Next
                 End If
 
-                If Movie.isSingle AndAlso File.Exists(String.Concat(Directory.GetParent(Movie.Filename).FullName, Path.DirectorySeparatorChar, "extrafanart", Path.DirectorySeparatorChar, "fanart1.jpg")) Then
-                    Movie.EFanarts = String.Concat(Directory.GetParent(Movie.Filename).FullName, Path.DirectorySeparatorChar, "extrafanart", Path.DirectorySeparatorChar, "fanart1.jpg")
+                If Movie.isSingle Then
+                    For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType.EThumbs)
+                        If Directory.Exists(a) Then
+                            etList.AddRange(Directory.GetFiles(a))
+                        End If
+                    Next
+                End If
+
+                If Movie.isSingle Then
+                    For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType.Theme)
+                        If Directory.Exists(Directory.GetParent(a).FullName) Then
+                            tList.AddRange(Directory.GetFiles(Directory.GetParent(a).FullName))
+                        End If
+                    Next
+                End If
+            End If
+
+            'banner
+            If String.IsNullOrEmpty(Movie.Banner) Then
+                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType.Banner)
+                    Movie.Banner = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                    If Not String.IsNullOrEmpty(Movie.Banner) Then Exit For
+                Next
+            End If
+
+            'clearart
+            If String.IsNullOrEmpty(Movie.ClearArt) Then
+                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType.ClearArt)
+                    Movie.ClearArt = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                    If Not String.IsNullOrEmpty(Movie.ClearArt) Then Exit For
+                Next
+            End If
+
+            'clearlogo
+            If String.IsNullOrEmpty(Movie.ClearLogo) Then
+                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType.ClearLogo)
+                    Movie.ClearLogo = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                    If Not String.IsNullOrEmpty(Movie.ClearLogo) Then Exit For
+                Next
+            End If
+
+            'discart
+            If String.IsNullOrEmpty(Movie.DiscArt) Then
+                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType.DiscArt)
+                    Movie.DiscArt = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                    If Not String.IsNullOrEmpty(Movie.DiscArt) Then Exit For
+                Next
+            End If
+
+            'extrafanart
+            If String.IsNullOrEmpty(Movie.EFanarts) Then
+                If eflist.Count > 0 Then
+                    Movie.EFanarts = efList.Item(0).ToString
+                End If
+            End If
+
+            'extrathumbs
+            If String.IsNullOrEmpty(Movie.EThumbs) Then
+                If etList.Count > 0 Then
+                    Movie.EThumbs = etList.Item(0).ToString
                 End If
             End If
 
@@ -284,6 +380,14 @@ Public Class Scanner
                 For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType.Fanart)
                     Movie.Fanart = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
                     If Not String.IsNullOrEmpty(Movie.Fanart) Then Exit For
+                Next
+            End If
+
+            'landscape
+            If String.IsNullOrEmpty(Movie.Landscape) Then
+                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType.Landscape)
+                    Movie.Landscape = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                    If Not String.IsNullOrEmpty(Movie.Landscape) Then Exit For
                 Next
             End If
 
@@ -300,6 +404,16 @@ Public Class Scanner
                 For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType.NFO)
                     Movie.Nfo = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
                     If Not String.IsNullOrEmpty(Movie.Nfo) Then Exit For
+                Next
+            End If
+
+            'theme
+            If String.IsNullOrEmpty(Movie.Theme) Then
+                For Each a In FileUtils.GetFilenameList.Movie(Movie.Filename, Movie.isSingle, Enums.ModType.Theme)
+                    For Each t As String In Master.eSettings.FileSystemValidThemeExts
+                        Movie.Theme = tList.FirstOrDefault(Function(s) s.ToLower = (String.Concat(a.ToLower, t)))
+                        If Not String.IsNullOrEmpty(Movie.Theme) Then Exit For
+                    Next
                 Next
             End If
 
@@ -324,18 +438,15 @@ Public Class Scanner
                     End If
                 End If
 
-                If Not String.IsNullOrEmpty(Movie.Poster) AndAlso Not String.IsNullOrEmpty(Movie.Fanart) _
-                AndAlso Not String.IsNullOrEmpty(Movie.Nfo) AndAlso Not String.IsNullOrEmpty(Movie.Trailer) _
-                AndAlso Not String.IsNullOrEmpty(Movie.Subs) AndAlso Not String.IsNullOrEmpty(Movie.EThumbs) _
-                AndAlso Not String.IsNullOrEmpty(Movie.EFanarts) Then
-                    Exit For
-                End If
+                If Not String.IsNullOrEmpty(Movie.Subs) Then Exit For
             Next
 
         Catch ex As Exception
             Master.eLog.Error(GetType(Scanner), ex.Message, ex.StackTrace, "Error")
         End Try
 
+        efList = Nothing
+        etList = Nothing
         fList = Nothing
     End Sub
 
@@ -689,6 +800,9 @@ Public Class Scanner
                     tmpMovieDB.FileSource = fSource
                 ElseIf String.IsNullOrEmpty(tmpMovieDB.FileSource) AndAlso AdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
                     tmpMovieDB.FileSource = AdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(tmpMovieDB.Filename)), String.Empty, "*EmberAPP")
+                End If
+                If String.IsNullOrEmpty(tmpMovieDB.FileSource) AndAlso Not String.IsNullOrEmpty(tmpMovieDB.Movie.VideoSource) Then
+                    tmpMovieDB.FileSource = tmpMovieDB.Movie.VideoSource
                 End If
                 tmpMovieDB.IsLock = False
                 tmpMovieDB.IsMark = Master.eSettings.MovieGeneralMarkNew
@@ -1142,9 +1256,12 @@ Public Class Scanner
                 End Using
             End If
 
-            Me.bwPrelim.ReportProgress(3, New ProgressValue With {.Type = -1, .Message = String.Empty})
-            'remove any db entries that no longer exist
-            Master.DB.Clean(Master.eSettings.MovieCleanDB AndAlso Args.Scan.Movies, Master.eSettings.TVCleanDB AndAlso Args.Scan.TV, Args.SourceName)
+            If (Master.eSettings.MovieCleanDB AndAlso Args.Scan.Movies) OrElse (Master.eSettings.TVCleanDB AndAlso Args.Scan.TV) Then
+                Me.bwPrelim.ReportProgress(3, New ProgressValue With {.Type = -1, .Message = String.Empty})
+                'remove any db entries that no longer exist
+                Master.DB.Clean(Master.eSettings.MovieCleanDB AndAlso Args.Scan.Movies, Master.eSettings.TVCleanDB AndAlso Args.Scan.TV, Args.SourceName)
+            End If
+
         Catch ex As Exception
             Master.eLog.Error(GetType(Scanner), ex.Message, ex.StackTrace, "Error")
             e.Cancel = True
@@ -1205,7 +1322,15 @@ Public Class Scanner
                     tmpTVDB.IsMarkShow = False
                     tmpTVDB.Source = TVContainer.Source
                     tmpTVDB.Ordering = Master.eSettings.TVScraperOptionsOrdering
-                    tmpTVDB.ShowLanguage = AdvancedSettings.GetSetting("TVDBLanguage", "en")
+                    'get the install wizard selected language for initial scan
+                    Dim ShowLang As String = AdvancedSettings.GetSetting("TVDBLanguage", String.Empty, "scraper.TVDB")
+                    If Not String.IsNullOrEmpty(ShowLang) Then
+                        tmpTVDB.ShowLanguage = ShowLang
+                    ElseIf Not String.IsNullOrEmpty(Master.eSettings.TVGeneralLanguage) Then
+                        tmpTVDB.ShowLanguage = Master.eSettings.TVGeneralLanguage
+                    Else
+                        tmpTVDB.ShowLanguage = "en"
+                    End If
 
                     Master.DB.SaveTVShowToDB(tmpTVDB, True, True)
 
@@ -1433,15 +1558,21 @@ Public Class Scanner
 
 #Region "Fields"
 
-        Private _ethumbs As String
+        Private _banner As String
+        Private _clearart As String
+        Private _clearlogo As String
+        Private _discart As String
         Private _efanarts As String
+        Private _ethumbs As String
         Private _fanart As String
         Private _filename As String
+        Private _landscape As String
         Private _nfo As String
         Private _poster As String
         Private _single As Boolean
         Private _source As String
         Private _subs As String
+        Private _theme As String
         Private _trailer As String
         Private _usefolder As Boolean
 
@@ -1457,12 +1588,39 @@ Public Class Scanner
 
 #Region "Properties"
 
-        Public Property EThumbs() As String
+        Public Property Banner() As String
             Get
-                Return _ethumbs
+                Return _banner
             End Get
             Set(ByVal value As String)
-                _ethumbs = value
+                _banner = value
+            End Set
+        End Property
+
+        Public Property ClearArt() As String
+            Get
+                Return _clearart
+            End Get
+            Set(ByVal value As String)
+                _clearart = value
+            End Set
+        End Property
+
+        Public Property ClearLogo() As String
+            Get
+                Return _clearlogo
+            End Get
+            Set(ByVal value As String)
+                _clearlogo = value
+            End Set
+        End Property
+
+        Public Property DiscArt() As String
+            Get
+                Return _discart
+            End Get
+            Set(ByVal value As String)
+                _discart = value
             End Set
         End Property
 
@@ -1472,6 +1630,15 @@ Public Class Scanner
             End Get
             Set(ByVal value As String)
                 _efanarts = value
+            End Set
+        End Property
+
+        Public Property EThumbs() As String
+            Get
+                Return _ethumbs
+            End Get
+            Set(ByVal value As String)
+                _ethumbs = value
             End Set
         End Property
 
@@ -1499,6 +1666,15 @@ Public Class Scanner
             End Get
             Set(ByVal value As Boolean)
                 _single = value
+            End Set
+        End Property
+
+        Public Property Landscape() As String
+            Get
+                Return _landscape
+            End Get
+            Set(ByVal value As String)
+                _landscape = value
             End Set
         End Property
 
@@ -1538,6 +1714,15 @@ Public Class Scanner
             End Set
         End Property
 
+        Public Property Theme() As String
+            Get
+                Return _theme
+            End Get
+            Set(ByVal value As String)
+                _theme = value
+            End Set
+        End Property
+
         Public Property Trailer() As String
             Get
                 Return _trailer
@@ -1561,15 +1746,21 @@ Public Class Scanner
 #Region "Methods"
 
         Public Sub Clear()
+            _banner = String.Empty
+            _clearart = String.Empty
+            _clearlogo = String.Empty
+            _discart = String.Empty
             _filename = String.Empty
             _source = String.Empty
             _single = False
             _usefolder = False
+            _landscape = String.Empty
             _poster = String.Empty
             _fanart = String.Empty
             _nfo = String.Empty
             _ethumbs = String.Empty
             _efanarts = String.Empty
+            _theme = String.Empty
             _trailer = String.Empty
             _subs = String.Empty
         End Sub

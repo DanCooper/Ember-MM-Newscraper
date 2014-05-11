@@ -36,6 +36,14 @@ Partial Class dlgWizard
         Me.gbMovieFileNaming = New System.Windows.Forms.GroupBox()
         Me.tbcMovieFileNaming = New System.Windows.Forms.TabControl()
         Me.tpMovieFileNamingXBMC = New System.Windows.Forms.TabPage()
+        Me.gbMovieXBMCTheme = New System.Windows.Forms.GroupBox()
+        Me.chkMovieXBMCThemeMovie = New System.Windows.Forms.CheckBox()
+        Me.btnMovieXBMCThemeCustomPathBrowse = New System.Windows.Forms.Button()
+        Me.chkMovieXBMCThemeSub = New System.Windows.Forms.CheckBox()
+        Me.txtMovieXBMCThemeSubDir = New System.Windows.Forms.TextBox()
+        Me.txtMovieXBMCThemeCustomPath = New System.Windows.Forms.TextBox()
+        Me.chkMovieXBMCThemeCustom = New System.Windows.Forms.CheckBox()
+        Me.chkMovieXBMCThemeEnable = New System.Windows.Forms.CheckBox()
         Me.gbMovieXBMCOptional = New System.Windows.Forms.GroupBox()
         Me.chkMovieXBMCProtectVTSBDMV = New System.Windows.Forms.CheckBox()
         Me.chkMovieXBMCTrailerFormat = New System.Windows.Forms.CheckBox()
@@ -81,6 +89,12 @@ Partial Class dlgWizard
         Me.chkMovieFanartYAMJ = New System.Windows.Forms.CheckBox()
         Me.chkMoviePosterYAMJ = New System.Windows.Forms.CheckBox()
         Me.chkMovieNFOYAMJ = New System.Windows.Forms.CheckBox()
+        Me.tpMovieFileNamingBoxee = New System.Windows.Forms.TabPage()
+        Me.gbMovieBoxee = New System.Windows.Forms.GroupBox()
+        Me.chkMovieUseBoxee = New System.Windows.Forms.CheckBox()
+        Me.chkMovieFanartBoxee = New System.Windows.Forms.CheckBox()
+        Me.chkMoviePosterBoxee = New System.Windows.Forms.CheckBox()
+        Me.chkMovieNFOBoxee = New System.Windows.Forms.CheckBox()
         Me.tpMovieFileNamingExpert = New System.Windows.Forms.TabPage()
         Me.gbMovieExpert = New System.Windows.Forms.GroupBox()
         Me.tbcMovieFileNamingExpert = New System.Windows.Forms.TabControl()
@@ -212,6 +226,9 @@ Partial Class dlgWizard
         Me.Label6 = New System.Windows.Forms.Label()
         Me.Label7 = New System.Windows.Forms.Label()
         Me.pnlTVShowSource = New System.Windows.Forms.Panel()
+        Me.Label10 = New System.Windows.Forms.Label()
+        Me.btnTVLanguageFetch = New System.Windows.Forms.Button()
+        Me.cbTVLanguage = New System.Windows.Forms.ComboBox()
         Me.lvTVSources = New System.Windows.Forms.ListView()
         Me.ColumnHeader1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader2 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
@@ -247,11 +264,20 @@ Partial Class dlgWizard
         Me.tpTVFileNamingExpert = New System.Windows.Forms.TabPage()
         Me.Label11 = New System.Windows.Forms.Label()
         Me.fbdBrowse = New System.Windows.Forms.FolderBrowserDialog()
+        Me.tpTVFileNamingBoxee = New System.Windows.Forms.TabPage()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.chkTVSeasonPosterBoxee = New System.Windows.Forms.CheckBox()
+        Me.chkTVShowBannerBoxee = New System.Windows.Forms.CheckBox()
+        Me.chkTVEpisodePosterBoxee = New System.Windows.Forms.CheckBox()
+        Me.chkTVShowFanartBoxee = New System.Windows.Forms.CheckBox()
+        Me.chkTVShowPosterBoxee = New System.Windows.Forms.CheckBox()
+        Me.chkTVUseBoxee = New System.Windows.Forms.CheckBox()
         Me.pnlWelcome.SuspendLayout()
         Me.pnlMovieSettings.SuspendLayout()
         Me.gbMovieFileNaming.SuspendLayout()
         Me.tbcMovieFileNaming.SuspendLayout()
         Me.tpMovieFileNamingXBMC.SuspendLayout()
+        Me.gbMovieXBMCTheme.SuspendLayout()
         Me.gbMovieXBMCOptional.SuspendLayout()
         Me.gbMovieEden.SuspendLayout()
         Me.gbMovieFrodo.SuspendLayout()
@@ -259,6 +285,8 @@ Partial Class dlgWizard
         Me.gbMovieNMTOptional.SuspendLayout()
         Me.gbMovieNMJ.SuspendLayout()
         Me.gbMovieYAMJ.SuspendLayout()
+        Me.tpMovieFileNamingBoxee.SuspendLayout()
+        Me.gbMovieBoxee.SuspendLayout()
         Me.tpMovieFileNamingExpert.SuspendLayout()
         Me.gbMovieExpert.SuspendLayout()
         Me.tbcMovieFileNamingExpert.SuspendLayout()
@@ -284,6 +312,8 @@ Partial Class dlgWizard
         Me.tpTVFileNamingXBMC.SuspendLayout()
         Me.gbTVXBMCAdditional.SuspendLayout()
         Me.gbTVFrodo.SuspendLayout()
+        Me.tpTVFileNamingBoxee.SuspendLayout()
+        Me.GroupBox1.SuspendLayout()
         Me.SuspendLayout()
         '
         'OK_Button
@@ -406,6 +436,7 @@ Partial Class dlgWizard
         '
         Me.tbcMovieFileNaming.Controls.Add(Me.tpMovieFileNamingXBMC)
         Me.tbcMovieFileNaming.Controls.Add(Me.tpMovieFileNamingNMT)
+        Me.tbcMovieFileNaming.Controls.Add(Me.tpMovieFileNamingBoxee)
         Me.tbcMovieFileNaming.Controls.Add(Me.tpMovieFileNamingExpert)
         Me.tbcMovieFileNaming.Location = New System.Drawing.Point(6, 18)
         Me.tbcMovieFileNaming.Name = "tbcMovieFileNaming"
@@ -415,6 +446,7 @@ Partial Class dlgWizard
         '
         'tpMovieFileNamingXBMC
         '
+        Me.tpMovieFileNamingXBMC.Controls.Add(Me.gbMovieXBMCTheme)
         Me.tpMovieFileNamingXBMC.Controls.Add(Me.gbMovieXBMCOptional)
         Me.tpMovieFileNamingXBMC.Controls.Add(Me.gbMovieEden)
         Me.tpMovieFileNamingXBMC.Controls.Add(Me.gbMovieFrodo)
@@ -425,6 +457,94 @@ Partial Class dlgWizard
         Me.tpMovieFileNamingXBMC.TabIndex = 1
         Me.tpMovieFileNamingXBMC.Text = "XBMC"
         Me.tpMovieFileNamingXBMC.UseVisualStyleBackColor = True
+        '
+        'gbMovieXBMCTheme
+        '
+        Me.gbMovieXBMCTheme.Controls.Add(Me.chkMovieXBMCThemeMovie)
+        Me.gbMovieXBMCTheme.Controls.Add(Me.btnMovieXBMCThemeCustomPathBrowse)
+        Me.gbMovieXBMCTheme.Controls.Add(Me.chkMovieXBMCThemeSub)
+        Me.gbMovieXBMCTheme.Controls.Add(Me.txtMovieXBMCThemeSubDir)
+        Me.gbMovieXBMCTheme.Controls.Add(Me.txtMovieXBMCThemeCustomPath)
+        Me.gbMovieXBMCTheme.Controls.Add(Me.chkMovieXBMCThemeCustom)
+        Me.gbMovieXBMCTheme.Controls.Add(Me.chkMovieXBMCThemeEnable)
+        Me.gbMovieXBMCTheme.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        Me.gbMovieXBMCTheme.Location = New System.Drawing.Point(238, 78)
+        Me.gbMovieXBMCTheme.Name = "gbMovieXBMCTheme"
+        Me.gbMovieXBMCTheme.Size = New System.Drawing.Size(261, 174)
+        Me.gbMovieXBMCTheme.TabIndex = 4
+        Me.gbMovieXBMCTheme.TabStop = False
+        Me.gbMovieXBMCTheme.Text = "Theme Settings"
+        '
+        'chkMovieXBMCThemeMovie
+        '
+        Me.chkMovieXBMCThemeMovie.AutoSize = True
+        Me.chkMovieXBMCThemeMovie.Enabled = False
+        Me.chkMovieXBMCThemeMovie.Location = New System.Drawing.Point(7, 46)
+        Me.chkMovieXBMCThemeMovie.Name = "chkMovieXBMCThemeMovie"
+        Me.chkMovieXBMCThemeMovie.Size = New System.Drawing.Size(187, 17)
+        Me.chkMovieXBMCThemeMovie.TabIndex = 6
+        Me.chkMovieXBMCThemeMovie.Text = "Store themes in movie directory"
+        Me.chkMovieXBMCThemeMovie.UseVisualStyleBackColor = True
+        '
+        'btnMovieXBMCThemeCustomPathBrowse
+        '
+        Me.btnMovieXBMCThemeCustomPathBrowse.Enabled = False
+        Me.btnMovieXBMCThemeCustomPathBrowse.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnMovieXBMCThemeCustomPathBrowse.Location = New System.Drawing.Point(229, 93)
+        Me.btnMovieXBMCThemeCustomPathBrowse.Name = "btnMovieXBMCThemeCustomPathBrowse"
+        Me.btnMovieXBMCThemeCustomPathBrowse.Size = New System.Drawing.Size(25, 22)
+        Me.btnMovieXBMCThemeCustomPathBrowse.TabIndex = 5
+        Me.btnMovieXBMCThemeCustomPathBrowse.Text = "..."
+        Me.btnMovieXBMCThemeCustomPathBrowse.UseVisualStyleBackColor = True
+        '
+        'chkMovieXBMCThemeSub
+        '
+        Me.chkMovieXBMCThemeSub.AutoSize = True
+        Me.chkMovieXBMCThemeSub.Enabled = False
+        Me.chkMovieXBMCThemeSub.Location = New System.Drawing.Point(7, 122)
+        Me.chkMovieXBMCThemeSub.Name = "chkMovieXBMCThemeSub"
+        Me.chkMovieXBMCThemeSub.Size = New System.Drawing.Size(181, 17)
+        Me.chkMovieXBMCThemeSub.TabIndex = 4
+        Me.chkMovieXBMCThemeSub.Text = "Store themes in sub directorys"
+        Me.chkMovieXBMCThemeSub.UseVisualStyleBackColor = True
+        '
+        'txtMovieXBMCThemeSubDir
+        '
+        Me.txtMovieXBMCThemeSubDir.Enabled = False
+        Me.txtMovieXBMCThemeSubDir.Location = New System.Drawing.Point(7, 145)
+        Me.txtMovieXBMCThemeSubDir.Name = "txtMovieXBMCThemeSubDir"
+        Me.txtMovieXBMCThemeSubDir.Size = New System.Drawing.Size(216, 22)
+        Me.txtMovieXBMCThemeSubDir.TabIndex = 3
+        '
+        'txtMovieXBMCThemeCustomPath
+        '
+        Me.txtMovieXBMCThemeCustomPath.Enabled = False
+        Me.txtMovieXBMCThemeCustomPath.Location = New System.Drawing.Point(7, 93)
+        Me.txtMovieXBMCThemeCustomPath.Name = "txtMovieXBMCThemeCustomPath"
+        Me.txtMovieXBMCThemeCustomPath.Size = New System.Drawing.Size(216, 22)
+        Me.txtMovieXBMCThemeCustomPath.TabIndex = 2
+        '
+        'chkMovieXBMCThemeCustom
+        '
+        Me.chkMovieXBMCThemeCustom.AutoSize = True
+        Me.chkMovieXBMCThemeCustom.Enabled = False
+        Me.chkMovieXBMCThemeCustom.Location = New System.Drawing.Point(7, 69)
+        Me.chkMovieXBMCThemeCustom.Name = "chkMovieXBMCThemeCustom"
+        Me.chkMovieXBMCThemeCustom.Size = New System.Drawing.Size(182, 17)
+        Me.chkMovieXBMCThemeCustom.TabIndex = 1
+        Me.chkMovieXBMCThemeCustom.Text = "Store themes in a custom path"
+        Me.chkMovieXBMCThemeCustom.UseVisualStyleBackColor = True
+        '
+        'chkMovieXBMCThemeEnable
+        '
+        Me.chkMovieXBMCThemeEnable.AutoSize = True
+        Me.chkMovieXBMCThemeEnable.Enabled = False
+        Me.chkMovieXBMCThemeEnable.Location = New System.Drawing.Point(7, 22)
+        Me.chkMovieXBMCThemeEnable.Name = "chkMovieXBMCThemeEnable"
+        Me.chkMovieXBMCThemeEnable.Size = New System.Drawing.Size(97, 17)
+        Me.chkMovieXBMCThemeEnable.TabIndex = 0
+        Me.chkMovieXBMCThemeEnable.Text = "Enable Theme"
+        Me.chkMovieXBMCThemeEnable.UseVisualStyleBackColor = True
         '
         'gbMovieXBMCOptional
         '
@@ -947,6 +1067,73 @@ Partial Class dlgWizard
         Me.chkMovieNFOYAMJ.TabIndex = 11
         Me.chkMovieNFOYAMJ.Text = "NFO"
         Me.chkMovieNFOYAMJ.UseVisualStyleBackColor = True
+        '
+        'tpMovieFileNamingBoxee
+        '
+        Me.tpMovieFileNamingBoxee.Controls.Add(Me.gbMovieBoxee)
+        Me.tpMovieFileNamingBoxee.Location = New System.Drawing.Point(4, 22)
+        Me.tpMovieFileNamingBoxee.Name = "tpMovieFileNamingBoxee"
+        Me.tpMovieFileNamingBoxee.Size = New System.Drawing.Size(505, 336)
+        Me.tpMovieFileNamingBoxee.TabIndex = 4
+        Me.tpMovieFileNamingBoxee.Text = "Boxee"
+        Me.tpMovieFileNamingBoxee.UseVisualStyleBackColor = True
+        '
+        'gbMovieBoxee
+        '
+        Me.gbMovieBoxee.Controls.Add(Me.chkMovieUseBoxee)
+        Me.gbMovieBoxee.Controls.Add(Me.chkMovieFanartBoxee)
+        Me.gbMovieBoxee.Controls.Add(Me.chkMoviePosterBoxee)
+        Me.gbMovieBoxee.Controls.Add(Me.chkMovieNFOBoxee)
+        Me.gbMovieBoxee.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.gbMovieBoxee.Location = New System.Drawing.Point(6, 6)
+        Me.gbMovieBoxee.Name = "gbMovieBoxee"
+        Me.gbMovieBoxee.Size = New System.Drawing.Size(110, 324)
+        Me.gbMovieBoxee.TabIndex = 5
+        Me.gbMovieBoxee.TabStop = False
+        Me.gbMovieBoxee.Text = "Boxee"
+        '
+        'chkMovieUseBoxee
+        '
+        Me.chkMovieUseBoxee.AutoSize = True
+        Me.chkMovieUseBoxee.Location = New System.Drawing.Point(6, 21)
+        Me.chkMovieUseBoxee.Name = "chkMovieUseBoxee"
+        Me.chkMovieUseBoxee.Size = New System.Drawing.Size(45, 17)
+        Me.chkMovieUseBoxee.TabIndex = 16
+        Me.chkMovieUseBoxee.Text = "Use"
+        Me.chkMovieUseBoxee.UseVisualStyleBackColor = True
+        '
+        'chkMovieFanartBoxee
+        '
+        Me.chkMovieFanartBoxee.AutoSize = True
+        Me.chkMovieFanartBoxee.Enabled = False
+        Me.chkMovieFanartBoxee.Location = New System.Drawing.Point(6, 90)
+        Me.chkMovieFanartBoxee.Name = "chkMovieFanartBoxee"
+        Me.chkMovieFanartBoxee.Size = New System.Drawing.Size(59, 17)
+        Me.chkMovieFanartBoxee.TabIndex = 13
+        Me.chkMovieFanartBoxee.Text = "Fanart"
+        Me.chkMovieFanartBoxee.UseVisualStyleBackColor = True
+        '
+        'chkMoviePosterBoxee
+        '
+        Me.chkMoviePosterBoxee.AutoSize = True
+        Me.chkMoviePosterBoxee.Enabled = False
+        Me.chkMoviePosterBoxee.Location = New System.Drawing.Point(6, 67)
+        Me.chkMoviePosterBoxee.Name = "chkMoviePosterBoxee"
+        Me.chkMoviePosterBoxee.Size = New System.Drawing.Size(58, 17)
+        Me.chkMoviePosterBoxee.TabIndex = 12
+        Me.chkMoviePosterBoxee.Text = "Poster"
+        Me.chkMoviePosterBoxee.UseVisualStyleBackColor = True
+        '
+        'chkMovieNFOBoxee
+        '
+        Me.chkMovieNFOBoxee.AutoSize = True
+        Me.chkMovieNFOBoxee.Enabled = False
+        Me.chkMovieNFOBoxee.Location = New System.Drawing.Point(6, 44)
+        Me.chkMovieNFOBoxee.Name = "chkMovieNFOBoxee"
+        Me.chkMovieNFOBoxee.Size = New System.Drawing.Size(49, 17)
+        Me.chkMovieNFOBoxee.TabIndex = 11
+        Me.chkMovieNFOBoxee.Text = "NFO"
+        Me.chkMovieNFOBoxee.UseVisualStyleBackColor = True
         '
         'tpMovieFileNamingExpert
         '
@@ -2245,6 +2432,9 @@ Partial Class dlgWizard
         '
         Me.pnlTVShowSource.BackColor = System.Drawing.Color.White
         Me.pnlTVShowSource.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlTVShowSource.Controls.Add(Me.Label10)
+        Me.pnlTVShowSource.Controls.Add(Me.btnTVLanguageFetch)
+        Me.pnlTVShowSource.Controls.Add(Me.cbTVLanguage)
         Me.pnlTVShowSource.Controls.Add(Me.lvTVSources)
         Me.pnlTVShowSource.Controls.Add(Me.btnTVRemoveSource)
         Me.pnlTVShowSource.Controls.Add(Me.btnTVAddSource)
@@ -2254,6 +2444,36 @@ Partial Class dlgWizard
         Me.pnlTVShowSource.Size = New System.Drawing.Size(530, 490)
         Me.pnlTVShowSource.TabIndex = 7
         Me.pnlTVShowSource.Visible = False
+        '
+        'Label10
+        '
+        Me.Label10.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.Label10.Location = New System.Drawing.Point(101, 278)
+        Me.Label10.Name = "Label10"
+        Me.Label10.Size = New System.Drawing.Size(332, 41)
+        Me.Label10.TabIndex = 7
+        Me.Label10.Text = "Now select the default language you would like Ember to look for when scraping TV" & _
+    " Show items."
+        Me.Label10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'btnTVLanguageFetch
+        '
+        Me.btnTVLanguageFetch.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnTVLanguageFetch.Location = New System.Drawing.Point(184, 351)
+        Me.btnTVLanguageFetch.Name = "btnTVLanguageFetch"
+        Me.btnTVLanguageFetch.Size = New System.Drawing.Size(166, 23)
+        Me.btnTVLanguageFetch.TabIndex = 8
+        Me.btnTVLanguageFetch.Text = "Fetch Available Languages"
+        Me.btnTVLanguageFetch.UseVisualStyleBackColor = True
+        '
+        'cbTVLanguage
+        '
+        Me.cbTVLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbTVLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbTVLanguage.Location = New System.Drawing.Point(184, 326)
+        Me.cbTVLanguage.Name = "cbTVLanguage"
+        Me.cbTVLanguage.Size = New System.Drawing.Size(166, 21)
+        Me.cbTVLanguage.TabIndex = 9
         '
         'lvTVSources
         '
@@ -2346,6 +2566,7 @@ Partial Class dlgWizard
         '
         Me.tcTVFileNaming.Controls.Add(Me.tpTVFileNamingXBMC)
         Me.tcTVFileNaming.Controls.Add(Me.tpTVFileNamingNMT)
+        Me.tcTVFileNaming.Controls.Add(Me.tpTVFileNamingBoxee)
         Me.tcTVFileNaming.Controls.Add(Me.tpTVFileNamingExpert)
         Me.tcTVFileNaming.Location = New System.Drawing.Point(6, 18)
         Me.tcTVFileNaming.Name = "tcTVFileNaming"
@@ -2528,7 +2749,7 @@ Partial Class dlgWizard
         Me.chkTVEpisodeActorThumbsFrodo.Name = "chkTVEpisodeActorThumbsFrodo"
         Me.chkTVEpisodeActorThumbsFrodo.Size = New System.Drawing.Size(140, 17)
         Me.chkTVEpisodeActorThumbsFrodo.TabIndex = 9
-        Me.chkTVEpisodeActorThumbsFrodo.Text = "Epsiode Actor Thumbs"
+        Me.chkTVEpisodeActorThumbsFrodo.Text = "Episode Actor Thumbs"
         Me.chkTVEpisodeActorThumbsFrodo.UseVisualStyleBackColor = True
         '
         'chkTVSeasonBannerFrodo
@@ -2626,6 +2847,97 @@ Partial Class dlgWizard
         Me.Label11.Text = resources.GetString("Label11.Text")
         Me.Label11.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
+        'tpTVFileNamingBoxee
+        '
+        Me.tpTVFileNamingBoxee.Controls.Add(Me.GroupBox1)
+        Me.tpTVFileNamingBoxee.Location = New System.Drawing.Point(4, 22)
+        Me.tpTVFileNamingBoxee.Name = "tpTVFileNamingBoxee"
+        Me.tpTVFileNamingBoxee.Size = New System.Drawing.Size(505, 336)
+        Me.tpTVFileNamingBoxee.TabIndex = 3
+        Me.tpTVFileNamingBoxee.Text = "Boxee"
+        Me.tpTVFileNamingBoxee.UseVisualStyleBackColor = True
+        '
+        'GroupBox1
+        '
+        Me.GroupBox1.Controls.Add(Me.chkTVSeasonPosterBoxee)
+        Me.GroupBox1.Controls.Add(Me.chkTVShowBannerBoxee)
+        Me.GroupBox1.Controls.Add(Me.chkTVEpisodePosterBoxee)
+        Me.GroupBox1.Controls.Add(Me.chkTVShowFanartBoxee)
+        Me.GroupBox1.Controls.Add(Me.chkTVShowPosterBoxee)
+        Me.GroupBox1.Controls.Add(Me.chkTVUseBoxee)
+        Me.GroupBox1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GroupBox1.Location = New System.Drawing.Point(6, 6)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(152, 289)
+        Me.GroupBox1.TabIndex = 20
+        Me.GroupBox1.TabStop = False
+        Me.GroupBox1.Text = "Boxee"
+        '
+        'chkTVSeasonPosterBoxee
+        '
+        Me.chkTVSeasonPosterBoxee.AutoSize = True
+        Me.chkTVSeasonPosterBoxee.Enabled = False
+        Me.chkTVSeasonPosterBoxee.Location = New System.Drawing.Point(6, 113)
+        Me.chkTVSeasonPosterBoxee.Name = "chkTVSeasonPosterBoxee"
+        Me.chkTVSeasonPosterBoxee.Size = New System.Drawing.Size(98, 17)
+        Me.chkTVSeasonPosterBoxee.TabIndex = 26
+        Me.chkTVSeasonPosterBoxee.Text = "Season Poster"
+        Me.chkTVSeasonPosterBoxee.UseVisualStyleBackColor = True
+        '
+        'chkTVShowBannerBoxee
+        '
+        Me.chkTVShowBannerBoxee.AutoSize = True
+        Me.chkTVShowBannerBoxee.Enabled = False
+        Me.chkTVShowBannerBoxee.Location = New System.Drawing.Point(6, 90)
+        Me.chkTVShowBannerBoxee.Name = "chkTVShowBannerBoxee"
+        Me.chkTVShowBannerBoxee.Size = New System.Drawing.Size(95, 17)
+        Me.chkTVShowBannerBoxee.TabIndex = 25
+        Me.chkTVShowBannerBoxee.Text = "Show Banner"
+        Me.chkTVShowBannerBoxee.UseVisualStyleBackColor = True
+        '
+        'chkTVEpisodePosterBoxee
+        '
+        Me.chkTVEpisodePosterBoxee.AutoSize = True
+        Me.chkTVEpisodePosterBoxee.Enabled = False
+        Me.chkTVEpisodePosterBoxee.Location = New System.Drawing.Point(6, 136)
+        Me.chkTVEpisodePosterBoxee.Name = "chkTVEpisodePosterBoxee"
+        Me.chkTVEpisodePosterBoxee.Size = New System.Drawing.Size(102, 17)
+        Me.chkTVEpisodePosterBoxee.TabIndex = 21
+        Me.chkTVEpisodePosterBoxee.Text = "Episode Poster"
+        Me.chkTVEpisodePosterBoxee.UseVisualStyleBackColor = True
+        '
+        'chkTVShowFanartBoxee
+        '
+        Me.chkTVShowFanartBoxee.AutoSize = True
+        Me.chkTVShowFanartBoxee.Enabled = False
+        Me.chkTVShowFanartBoxee.Location = New System.Drawing.Point(6, 67)
+        Me.chkTVShowFanartBoxee.Name = "chkTVShowFanartBoxee"
+        Me.chkTVShowFanartBoxee.Size = New System.Drawing.Size(91, 17)
+        Me.chkTVShowFanartBoxee.TabIndex = 18
+        Me.chkTVShowFanartBoxee.Text = "Show Fanart"
+        Me.chkTVShowFanartBoxee.UseVisualStyleBackColor = True
+        '
+        'chkTVShowPosterBoxee
+        '
+        Me.chkTVShowPosterBoxee.AutoSize = True
+        Me.chkTVShowPosterBoxee.Enabled = False
+        Me.chkTVShowPosterBoxee.Location = New System.Drawing.Point(6, 44)
+        Me.chkTVShowPosterBoxee.Name = "chkTVShowPosterBoxee"
+        Me.chkTVShowPosterBoxee.Size = New System.Drawing.Size(90, 17)
+        Me.chkTVShowPosterBoxee.TabIndex = 17
+        Me.chkTVShowPosterBoxee.Text = "Show Poster"
+        Me.chkTVShowPosterBoxee.UseVisualStyleBackColor = True
+        '
+        'chkTVUseBoxee
+        '
+        Me.chkTVUseBoxee.AutoSize = True
+        Me.chkTVUseBoxee.Location = New System.Drawing.Point(6, 21)
+        Me.chkTVUseBoxee.Name = "chkTVUseBoxee"
+        Me.chkTVUseBoxee.Size = New System.Drawing.Size(45, 17)
+        Me.chkTVUseBoxee.TabIndex = 16
+        Me.chkTVUseBoxee.Text = "Use"
+        Me.chkTVUseBoxee.UseVisualStyleBackColor = True
+        '
         'dlgWizard
         '
         Me.AcceptButton = Me.OK_Button
@@ -2659,6 +2971,8 @@ Partial Class dlgWizard
         Me.gbMovieFileNaming.ResumeLayout(False)
         Me.tbcMovieFileNaming.ResumeLayout(False)
         Me.tpMovieFileNamingXBMC.ResumeLayout(False)
+        Me.gbMovieXBMCTheme.ResumeLayout(False)
+        Me.gbMovieXBMCTheme.PerformLayout()
         Me.gbMovieXBMCOptional.ResumeLayout(False)
         Me.gbMovieXBMCOptional.PerformLayout()
         Me.gbMovieEden.ResumeLayout(False)
@@ -2672,6 +2986,9 @@ Partial Class dlgWizard
         Me.gbMovieNMJ.PerformLayout()
         Me.gbMovieYAMJ.ResumeLayout(False)
         Me.gbMovieYAMJ.PerformLayout()
+        Me.tpMovieFileNamingBoxee.ResumeLayout(False)
+        Me.gbMovieBoxee.ResumeLayout(False)
+        Me.gbMovieBoxee.PerformLayout()
         Me.tpMovieFileNamingExpert.ResumeLayout(False)
         Me.gbMovieExpert.ResumeLayout(False)
         Me.gbMovieExpert.PerformLayout()
@@ -2713,6 +3030,9 @@ Partial Class dlgWizard
         Me.gbTVXBMCAdditional.PerformLayout()
         Me.gbTVFrodo.ResumeLayout(False)
         Me.gbTVFrodo.PerformLayout()
+        Me.tpTVFileNamingBoxee.ResumeLayout(False)
+        Me.GroupBox1.ResumeLayout(False)
+        Me.GroupBox1.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -2940,4 +3260,29 @@ Partial Class dlgWizard
     Friend WithEvents tpTVFileNamingNMT As System.Windows.Forms.TabPage
     Friend WithEvents tpTVFileNamingExpert As System.Windows.Forms.TabPage
     Friend WithEvents fbdBrowse As System.Windows.Forms.FolderBrowserDialog
+    Friend WithEvents Label10 As System.Windows.Forms.Label
+    Friend WithEvents btnTVLanguageFetch As System.Windows.Forms.Button
+    Friend WithEvents cbTVLanguage As System.Windows.Forms.ComboBox
+    Friend WithEvents tpMovieFileNamingBoxee As System.Windows.Forms.TabPage
+    Friend WithEvents gbMovieBoxee As System.Windows.Forms.GroupBox
+    Friend WithEvents chkMovieUseBoxee As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMovieFanartBoxee As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMoviePosterBoxee As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMovieNFOBoxee As System.Windows.Forms.CheckBox
+    Friend WithEvents gbMovieXBMCTheme As System.Windows.Forms.GroupBox
+    Friend WithEvents chkMovieXBMCThemeMovie As System.Windows.Forms.CheckBox
+    Friend WithEvents btnMovieXBMCThemeCustomPathBrowse As System.Windows.Forms.Button
+    Friend WithEvents chkMovieXBMCThemeSub As System.Windows.Forms.CheckBox
+    Friend WithEvents txtMovieXBMCThemeSubDir As System.Windows.Forms.TextBox
+    Friend WithEvents txtMovieXBMCThemeCustomPath As System.Windows.Forms.TextBox
+    Friend WithEvents chkMovieXBMCThemeCustom As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMovieXBMCThemeEnable As System.Windows.Forms.CheckBox
+    Friend WithEvents tpTVFileNamingBoxee As System.Windows.Forms.TabPage
+    Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
+    Friend WithEvents chkTVSeasonPosterBoxee As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVShowBannerBoxee As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVEpisodePosterBoxee As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVShowFanartBoxee As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVShowPosterBoxee As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVUseBoxee As System.Windows.Forms.CheckBox
 End Class

@@ -580,9 +580,9 @@ Namespace TMDBg
                             b = GetMovieInfo(r.Matches.Item(0).TMDBID, imdbMovie, Master.eSettings.MovieScraperFullCrew, Master.eSettings.MovieScraperFullCast, False, Options, True)
                         Else
                             Master.tmpMovie.Clear()
-                            Using dIMDB As New dlgTMDBSearchResults(_MySettings, Me)
+                            Using dTMDB As New dlgTMDBSearchResults(_MySettings, Me)
 
-                                If dIMDB.ShowDialog(r, sMovieName, dbMovie.Filename) = Windows.Forms.DialogResult.OK Then
+                                If dTMDB.ShowDialog(r, sMovieName, dbMovie.Filename) = Windows.Forms.DialogResult.OK Then
                                     If String.IsNullOrEmpty(Master.tmpMovie.TMDBID) Then
                                         b = False
                                     Else

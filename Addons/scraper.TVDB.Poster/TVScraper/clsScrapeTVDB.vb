@@ -888,7 +888,7 @@ Public Class Scraper
 
                                 If Me.bwTVDB.CancellationPending Then Return
 
-                                If Master.eSettings.TVEpisodeFanartEnabled AndAlso Not IsNothing(Episode.TVEp.Fanart.Image) Then Episode.EpFanartPath = Episode.TVEp.Fanart.SaveAsTVEpisodeFanart(Episode, )
+                                If Master.eSettings.TVEpisodeFanartAnyEnabled AndAlso Not IsNothing(Episode.TVEp.Fanart.Image) Then Episode.EpFanartPath = Episode.TVEp.Fanart.SaveAsTVEpisodeFanart(Episode, )
 
                                 If Me.bwTVDB.CancellationPending Then Return
 
@@ -899,7 +899,7 @@ Public Class Scraper
 
                                     If Me.bwTVDB.CancellationPending Then Return
 
-                                    If Master.eSettings.TVSeasonFanartEnabled Then
+                                    If Master.eSettings.TVSeasonFanartAnyEnabled Then
                                         If Not String.IsNullOrEmpty(cSea(0).Fanart.LocalFile) AndAlso File.Exists(cSea(0).Fanart.LocalFile) Then
                                             cSea(0).Fanart.Image.FromFile(cSea(0).Fanart.LocalFile)
                                             Episode.SeasonFanartPath = cSea(0).Fanart.Image.SaveAsTVSeasonFanart(Episode)
@@ -1020,9 +1020,9 @@ Public Class Scraper
                                     cResult = New TVSearchResults
                                     cResult.ID = Convert.ToInt32(tSer.Element("id").Value)
                                     cResult.Name = If(Not IsNothing(tSer.Element("SeriesName")), tSer.Element("SeriesName").Value, String.Empty)
-                                    If Not IsNothing(tSer.Element("Language")) AndAlso Master.eSettings.TVScraperLanguages.Count > 0 Then
+                                    If Not IsNothing(tSer.Element("Language")) AndAlso Master.eSettings.TVGeneralLanguages.Count > 0 Then
                                         sLang = tSer.Element("Language").Value
-                                        cResult.Language = Master.eSettings.TVScraperLanguages.FirstOrDefault(Function(s) s.ShortLang = sLang)
+                                        cResult.Language = Master.eSettings.TVGeneralLanguages.FirstOrDefault(Function(s) s.ShortLang = sLang)
                                     ElseIf Not IsNothing(tSer.Element("Language")) Then
                                         sLang = tSer.Element("Language").Value
                                         cResult.Language = New Containers.TVLanguage With {.LongLang = String.Format("Unknown ({0})", sLang), .ShortLang = sLang}
@@ -1048,9 +1048,9 @@ Public Class Scraper
                         cResult = New TVSearchResults
                         cResult.ID = Convert.ToInt32(xS.Element("seriesid").Value)
                         cResult.Name = If(Not IsNothing(xS.Element("SeriesName")), xS.Element("SeriesName").Value, String.Empty)
-                        If Not IsNothing(xS.Element("language")) AndAlso Master.eSettings.TVScraperLanguages.Count > 0 Then
+                        If Not IsNothing(xS.Element("language")) AndAlso Master.eSettings.TVGeneralLanguages.Count > 0 Then
                             sLang = xS.Element("language").Value
-                            cResult.Language = Master.eSettings.TVScraperLanguages.FirstOrDefault(Function(s) s.ShortLang = sLang)
+                            cResult.Language = Master.eSettings.TVGeneralLanguages.FirstOrDefault(Function(s) s.ShortLang = sLang)
                         ElseIf Not IsNothing(xS.Element("language")) Then
                             sLang = xS.Element("language").Value
                             cResult.Language = New Containers.TVLanguage With {.LongLang = String.Format("Unknown ({0})", sLang), .ShortLang = sLang}

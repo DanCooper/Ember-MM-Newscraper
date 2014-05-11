@@ -137,43 +137,10 @@ Public Class OFDB_Data
     Sub LoadSettings()
         ' Only the ones we can get
         ConfigOptions.bTitle = AdvancedSettings.GetBooleanSetting("DoTitle", True)
-        ConfigOptions.bYear = False
-        ConfigOptions.bMPAA = False
-        ConfigOptions.bRelease = False
-        ConfigOptions.bRuntime = False
-        ConfigOptions.bRating = False
-        ConfigOptions.bVotes = False
-        ConfigOptions.bStudio = False
-        ConfigOptions.bTagline = False
         ConfigOptions.bOutline = AdvancedSettings.GetBooleanSetting("DoOutline", True)
         ConfigOptions.bPlot = AdvancedSettings.GetBooleanSetting("DoPlot", True)
-        ConfigOptions.bCast = False
-        ConfigOptions.bDirector = False
-        ConfigOptions.bWriters = False
-        ConfigOptions.bProducers = False
         ConfigOptions.bGenre = AdvancedSettings.GetBooleanSetting("DoGenres", True)
-        ConfigOptions.bTrailer = False
-        ConfigOptions.bMusicBy = False
-        ConfigOptions.bOtherCrew = False
-        ConfigOptions.bFullCast = False
-        ConfigOptions.bFullCrew = False
-        ConfigOptions.bTop250 = False
-        ConfigOptions.bCountry = False
-        ConfigOptions.bCert = False
-        ConfigOptions.bFullCast = False
-        ConfigOptions.bFullCrew = False
         ConfigOptions.bCleanPlotOutline = AdvancedSettings.GetBooleanSetting("CleanPlotOutline", False)
-
-        ConfigScrapeModifier.DoSearch = True
-        ConfigScrapeModifier.Meta = True
-        ConfigScrapeModifier.NFO = True
-        ConfigScrapeModifier.EThumbs = True
-        ConfigScrapeModifier.EFanarts = True
-        ConfigScrapeModifier.Actors = True
-
-        ConfigScrapeModifier.Poster = AdvancedSettings.GetBooleanSetting("DoPoster", True)
-        ConfigScrapeModifier.Fanart = AdvancedSettings.GetBooleanSetting("DoFanart", True)
-        ConfigScrapeModifier.Trailer = AdvancedSettings.GetBooleanSetting("DoTrailer", True)
     End Sub
 
     Sub SaveSettings()
@@ -183,10 +150,6 @@ Public Class OFDB_Data
             settings.SetBooleanSetting("DoPlot", ConfigOptions.bPlot)
             settings.SetBooleanSetting("DoGenres", ConfigOptions.bGenre)
             settings.SetBooleanSetting("CleanPlotOutline", ConfigOptions.bCleanPlotOutline)
-
-            settings.SetBooleanSetting("DoPoster", ConfigScrapeModifier.Poster)
-            settings.SetBooleanSetting("DoFanart", ConfigScrapeModifier.Fanart)
-            'settings.SetBooleanSetting("DoTrailer", ConfigScrapeModifier.Trailer)
         End Using
     End Sub
 
@@ -230,8 +193,8 @@ Public Class OFDB_Data
                 DBMovie.Movie.Title = tOFDB.Title
             End If
         End If
-        If filterOptions.bOutline AndAlso (String.IsNullOrEmpty(DBMovie.Movie.Outline) OrElse Not Master.eSettings.MovieLockOutline OrElse (Master.eSettings.MovieScraperOutlinePlotEnglishOverwrite AndAlso StringUtils.isEnglishText(DBMovie.Movie.Plot))) Then
 
+        If filterOptions.bOutline AndAlso (String.IsNullOrEmpty(DBMovie.Movie.Outline) OrElse Not Master.eSettings.MovieLockOutline OrElse (Master.eSettings.MovieScraperOutlinePlotEnglishOverwrite AndAlso StringUtils.isEnglishText(DBMovie.Movie.Plot))) Then
             If Not String.IsNullOrEmpty(tOFDB.Outline) Then
                 'check if brackets should be removed...
                 If ConfigOptions.bCleanPlotOutline Then

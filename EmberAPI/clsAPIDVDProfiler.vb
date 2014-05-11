@@ -94,6 +94,7 @@ Public Class DVDProfiler
 
         tMovie.DVDProfilerTitle = cMovie.Title
         tMovie.Movie.Title = cMovie.Title
+        tMovie.OfflineHolderFoldername = String.Concat(cMovie.Title, " [Offline]")
         tMovie.Movie.Year = cMovie.ProductionYear
         tMovie.DVDProfilerCaseType = cMovie.CaseType
         If cMovie.Discs.Disc.Count > 0 Then

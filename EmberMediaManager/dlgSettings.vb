@@ -191,6 +191,13 @@ Public Class dlgSettings
              .Panel = Me.pnlMovieTrailers, _
              .Order = 500})
         Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
+             .Name = "pnlMovieTheme", _
+             .Text = Master.eLang.GetString(1068, "Scrapers - Themes"), _
+             .ImageIndex = 11, _
+             .Type = Master.eLang.GetString(36, "Movies"), _
+             .Panel = Me.pnlMovieThemes, _
+             .Order = 600})
+        Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
              .Name = "pnlShows", _
              .Text = Master.eLang.GetString(38, "General"), _
              .ImageIndex = 7, _
@@ -218,6 +225,13 @@ Public Class dlgSettings
              .Type = Master.eLang.GetString(653, "TV Shows"), _
              .Panel = Me.pnlTVImages, _
              .Order = 400})
+        Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
+             .Name = "pnlTVTheme", _
+             .Text = Master.eLang.GetString(1068, "Scrapers - Themes"), _
+             .ImageIndex = 11, _
+             .Type = Master.eLang.GetString(653, "TV Shows"), _
+             .Panel = Me.pnlTVThemes, _
+             .Order = 500})
         Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
              .Name = "pnlGeneral", _
              .Text = Master.eLang.GetString(38, "General"), _
@@ -267,6 +281,17 @@ Public Class dlgSettings
             Me.AddHelpHandlers(tPanel.Panel, tPanel.Prefix)
         Next
         ModuleCounter = 1
+        For Each s As ModulesManager._externalScraperModuleClass_Theme In ModulesManager.Instance.externalThemeScrapersModules.OrderBy(Function(x) x.ScraperOrder)
+            tPanel = s.ProcessorModule.InjectSetupScraper
+            tPanel.Order += ModuleCounter
+            Me.SettingsPanels.Add(tPanel)
+            ModuleCounter += 1
+            AddHandler s.ProcessorModule.ScraperSetupChanged, AddressOf Handle_ModuleSetupChanged
+            AddHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+            AddHandler s.ProcessorModule.SetupNeedsRestart, AddressOf Handle_SetupNeedsRestart
+            Me.AddHelpHandlers(tPanel.Panel, tPanel.Prefix)
+        Next
+        ModuleCounter = 1
         For Each s As ModulesManager._externalScraperModuleClass_Trailer In ModulesManager.Instance.externalTrailerScrapersModules.OrderBy(Function(x) x.ScraperOrder)
             tPanel = s.ProcessorModule.InjectSetupScraper
             tPanel.Order += ModuleCounter
@@ -299,6 +324,17 @@ Public Class dlgSettings
             Me.AddHelpHandlers(tPanel.Panel, tPanel.Prefix)
         Next
         ModuleCounter = 1
+        For Each s As ModulesManager._externalTVScraperModuleClass_Theme In ModulesManager.Instance.externalTVThemeScrapersModules.OrderBy(Function(x) x.ScraperOrder)
+            tPanel = s.ProcessorModule.InjectSetupScraper
+            tPanel.Order += ModuleCounter
+            Me.SettingsPanels.Add(tPanel)
+            ModuleCounter += 1
+            AddHandler s.ProcessorModule.ScraperSetupChanged, AddressOf Handle_ModuleSetupChanged
+            AddHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+            AddHandler s.ProcessorModule.SetupNeedsRestart, AddressOf Handle_SetupNeedsRestart
+            Me.AddHelpHandlers(tPanel.Panel, tPanel.Prefix)
+        Next
+        ModuleCounter = 1
         For Each s As ModulesManager._externalGenericModuleClass In ModulesManager.Instance.externalProcessorModules
             tPanel = s.ProcessorModule.InjectSetup
             If Not tPanel Is Nothing Then
@@ -327,6 +363,11 @@ Public Class dlgSettings
             RemoveHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
             RemoveHandler s.ProcessorModule.SetupNeedsRestart, AddressOf Handle_SetupNeedsRestart
         Next
+        For Each s As ModulesManager._externalScraperModuleClass_Theme In ModulesManager.Instance.externalThemeScrapersModules.OrderBy(Function(x) x.ScraperOrder)
+            RemoveHandler s.ProcessorModule.ScraperSetupChanged, AddressOf Handle_ModuleSetupChanged
+            RemoveHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+            RemoveHandler s.ProcessorModule.SetupNeedsRestart, AddressOf Handle_SetupNeedsRestart
+        Next
         For Each s As ModulesManager._externalScraperModuleClass_Trailer In ModulesManager.Instance.externalTrailerScrapersModules.OrderBy(Function(x) x.ScraperOrder)
             RemoveHandler s.ProcessorModule.ScraperSetupChanged, AddressOf Handle_ModuleSetupChanged
             RemoveHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
@@ -337,7 +378,11 @@ Public Class dlgSettings
             RemoveHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
             RemoveHandler s.ProcessorModule.SetupNeedsRestart, AddressOf Handle_SetupNeedsRestart
         Next
-
+        For Each s As ModulesManager._externalTVScraperModuleClass_Theme In ModulesManager.Instance.externalTVThemeScrapersModules.OrderBy(Function(x) x.ScraperOrder)
+            RemoveHandler s.ProcessorModule.ScraperSetupChanged, AddressOf Handle_ModuleSetupChanged
+            RemoveHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+            RemoveHandler s.ProcessorModule.SetupNeedsRestart, AddressOf Handle_SetupNeedsRestart
+        Next
         For Each s As ModulesManager._externalGenericModuleClass In ModulesManager.Instance.externalProcessorModules
             RemoveHandler s.ProcessorModule.ModuleSetupChanged, AddressOf Handle_ModuleSetupChanged
             RemoveHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
@@ -379,6 +424,19 @@ Public Class dlgSettings
                 Me.sResult.NeedsUpdate = True
                 txtFileSystemValidExts.Text = String.Empty
                 txtFileSystemValidExts.Focus()
+            End If
+        End If
+    End Sub
+
+    Private Sub btnFileSystemValidThemeExtsAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFileSystemValidThemeExtsAdd.Click
+        If Not String.IsNullOrEmpty(txtFileSystemValidThemeExts.Text) Then
+            If Not Strings.Left(txtFileSystemValidThemeExts.Text, 1) = "." Then txtFileSystemValidThemeExts.Text = String.Concat(".", txtFileSystemValidThemeExts.Text)
+            If Not lstFileSystemValidThemeExts.Items.Contains(txtFileSystemValidThemeExts.Text.ToLower) Then
+                lstFileSystemValidThemeExts.Items.Add(txtFileSystemValidThemeExts.Text.ToLower)
+                Me.SetApplyButton(True)
+                Me.sResult.NeedsUpdate = True
+                txtFileSystemValidThemeExts.Text = String.Empty
+                txtFileSystemValidThemeExts.Focus()
             End If
         End If
     End Sub
@@ -757,6 +815,14 @@ Public Class dlgSettings
         End If
     End Sub
 
+    Private Sub btnFileSystemValidThemeExtsReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFileSystemValidThemeExtsReset.Click
+        If MsgBox(Master.eLang.GetString(1080, "Are you sure you want to reset to the default list of valid theme extensions?"), MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are You Sure?")) = MsgBoxResult.Yes Then
+            Master.eSettings.SetDefaultsForLists(Enums.DefaultType.ValidThemeExts, True)
+            Me.RefreshFileSystemValidThemeExts()
+            Me.SetApplyButton(True)
+        End If
+    End Sub
+
     Private Sub btnTVShowRegexGet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVShowRegexGet.Click
         Using dd As New dlgTVRegExProfiles
             If dd.ShowDialog() = Windows.Forms.DialogResult.OK Then
@@ -781,6 +847,10 @@ Public Class dlgSettings
 
     Private Sub btnFileSystemValidExtsRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFileSystemValidExtsRemove.Click
         Me.RemoveFileSystemValidExts()
+    End Sub
+
+    Private Sub btnFileSystemValidThemeExtsRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFileSystemValidThemeExtsRemove.Click
+        Me.RemoveFileSystemValidThemeExts()
     End Sub
 
     Private Sub btnTVEpisodeFilterRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVEpisodeFilterRemove.Click
@@ -809,6 +879,16 @@ Public Class dlgSettings
 
     Private Sub btnMovieSortTokenRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieSortTokenRemove.Click
         Me.RemoveMovieSortToken()
+    End Sub
+
+    Private Sub btnTVGeneralLangFetch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVGeneralLangFetch.Click
+        Master.eSettings.TVGeneralLanguages.Clear()
+        Master.eSettings.TVGeneralLanguages.AddRange(ModulesManager.Instance.TVGetLangs("thetvdb.com"))
+        Me.cbTVGeneralLang.Items.AddRange((From lLang In Master.eSettings.TVGeneralLanguages Select lLang.LongLang).ToArray)
+
+        If Me.cbTVGeneralLang.Items.Count > 0 Then
+            Me.cbTVGeneralLang.Text = Master.eSettings.TVGeneralLanguages.FirstOrDefault(Function(l) l.ShortLang = Master.eSettings.TVGeneralLanguage).LongLang
+        End If
     End Sub
 
     Private Sub btnTVScraperDefFIExtRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVScraperDefFIExtRemove.Click
@@ -910,6 +990,10 @@ Public Class dlgSettings
     End Sub
 
     Private Sub cbGeneralMovieTheme_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbGeneralMovieTheme.SelectedIndexChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub cbTVGeneralLang_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbTVGeneralLang.SelectedIndexChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -1126,6 +1210,16 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
+    Private Sub chkMovieThemeEnable_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieThemeEnable.CheckedChanged
+        Me.SetApplyButton(True)
+
+        Me.chkMovieThemeOverwrite.Enabled = Me.chkMovieThemeEnable.Checked
+
+        If Not Me.chkMovieThemeEnable.Checked Then
+            Me.chkMovieThemeOverwrite.Checked = False
+        End If
+    End Sub
+
     Private Sub chkMovieTrailerEnable_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieTrailerEnable.CheckedChanged
         Me.SetApplyButton(True)
 
@@ -1320,6 +1414,22 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
+    Private Sub chkMovieMissingBanner_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieMissingBanner.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMovieMissingClearArt_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieMissingClearArt.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMovieMissingClearLogo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieMissingClearLogo.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMovieMissingDiscArt_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieMissingDiscArt.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
     Private Sub chkMovieMissingEThumbs_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieMissingEThumbs.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
@@ -1329,6 +1439,10 @@ Public Class dlgSettings
     End Sub
 
     Private Sub chkMovieMissingFanart_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieMissingFanart.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMovieMissingLandscape_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieMissingLandscape.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -1344,7 +1458,27 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
+    Private Sub chkMovieMissingTheme_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieMissingTheme.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
     Private Sub chkMovieMissingTrailer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieMissingTrailer.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMovieBannerCol_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieBannerCol.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMovieClearArtCol_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieClearArtCol.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMoviechkMovieClearLogoCol_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieClearLogoCol.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMovieDiscArtCol_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieDiscArtCol.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -1360,7 +1494,11 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkMovieInfoCol_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieInfoCol.CheckedChanged
+    Private Sub chkMovieLandscapeCol_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieLandscapeCol.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMovieNFOCol_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieNFOCol.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -1369,6 +1507,10 @@ Public Class dlgSettings
     End Sub
 
     Private Sub chkMovieSubCol_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSubCol.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMovieThemeCol_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieThemeCol.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -1776,10 +1918,6 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkMovieScraperActorThumbs_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperActorThumbs.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub chkTVScraperEpisodeActors_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVScraperEpisodeActors.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
@@ -2033,6 +2171,51 @@ Public Class dlgSettings
         If Not Me.chkMovieScraperCertForMPAA.Checked Then Me.chkMovieScraperUseMPAAFSK.Checked = False
     End Sub
 
+    Private Sub chkMovieUseBoxee_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieUseBoxee.CheckedChanged
+        Me.SetApplyButton(True)
+
+        'Me.chkActorThumbsBoxee.Enabled = Me.chkMovieUseBoxee.Checked
+        'Me.chkMovieBannerBoxee.Enabled = Me.chkMovieUseBoxee.Checked
+        'Me.chkClearArtBoxee.Enabled = Me.chkMovieUseBoxee.Checked
+        'Me.chkClearLogoBoxee.Enabled = Me.chkMovieUseBoxee.Checked
+        'Me.chkExtrafanartBoxee.Enabled = Me.chkMovieUseBoxee.Checked
+        'Me.chkExtrathumbsBoxee.Enabled = Me.chkMovieUseBoxee.Checked
+        'Me.chkDiscArtBoxee.Enabled = Me.chkMovieUseBoxee.Checked
+        Me.chkMovieFanartBoxee.Enabled = Me.chkMovieUseBoxee.Checked
+        'Me.chkLandscapeBoxee.Enabled = Me.chkMovieUseBoxee.Checked
+        Me.chkMovieNFOBoxee.Enabled = Me.chkMovieUseBoxee.Checked
+        Me.chkMoviePosterBoxee.Enabled = Me.chkMovieUseBoxee.Checked
+        'Me.chkMovieTrailerBoxee.Enabled = Me.chkMovieUseBoxee.Checked
+
+        If Not Me.chkMovieUseBoxee.Checked Then
+            ' Me.chkActorThumbsBoxee.Checked = False
+            'Me.chkMovieBannerBoxee.Checked = False
+            'Me.chkClearArtBoxee.Checked = False
+            'Me.chkClearLogoBoxee.Checked = False
+            'Me.chkDiscArtBoxee.Checked = False
+            'Me.chkExtrafanartBoxee.Checked = False
+            'Me.chkExtrathumbsBoxee.Checked = False
+            Me.chkMovieFanartBoxee.Checked = False
+            'Me.chkLandscapeBoxee.Checked = False
+            Me.chkMovieNFOBoxee.Checked = False
+            Me.chkMoviePosterBoxee.Checked = False
+            'Me.chkMovieTrailerBoxee.Checked = False
+        Else
+            'Me.chkActorThumbsBoxee.Checked = True
+            'Me.chkMovieBannerBoxee.Checked = True
+            'Me.chkClearArtBoxee.Checked = True
+            'Me.chkClearLogoBoxee.Checked = True
+            'Me.chkDiscArtBoxee.Checked = True
+            'Me.chkExtrafanartBoxee.Checked = True
+            'Me.chkExtrathumbsBoxee.Checked = True
+            Me.chkMovieFanartBoxee.Checked = True
+            'Me.chkLandscapeBoxee.Checked = True
+            Me.chkMovieNFOBoxee.Checked = True
+            Me.chkMoviePosterBoxee.Checked = True
+            'Me.chkMovieTrailerBoxee.Checked = True
+        End If
+    End Sub
+
     Private Sub chkMovieUseFrodo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieUseFrodo.CheckedChanged
         Me.SetApplyButton(True)
 
@@ -2048,6 +2231,7 @@ Public Class dlgSettings
         Me.chkMovieNFOFrodo.Enabled = Me.chkMovieUseFrodo.Checked
         Me.chkMoviePosterFrodo.Enabled = Me.chkMovieUseFrodo.Checked
         Me.chkMovieTrailerFrodo.Enabled = Me.chkMovieUseFrodo.Checked
+        Me.chkMovieXBMCThemeEnable.Enabled = Me.chkMovieUseFrodo.Checked OrElse Me.chkMovieUseEden.Checked
         Me.chkMovieXBMCProtectVTSBDMV.Enabled = Me.chkMovieUseFrodo.Checked AndAlso Not Me.chkMovieUseEden.Checked
 
         If Not Me.chkMovieUseFrodo.Checked Then
@@ -2078,6 +2262,10 @@ Public Class dlgSettings
             Me.chkMoviePosterFrodo.Checked = True
             Me.chkMovieTrailerFrodo.Checked = True
         End If
+
+        If Not Me.chkMovieUseFrodo.Checked AndAlso Not Me.chkMovieUseEden.Checked Then
+            Me.chkMovieXBMCThemeEnable.Checked = False
+        End If
     End Sub
 
     Private Sub chkMovieUseEden_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieUseEden.CheckedChanged
@@ -2095,6 +2283,7 @@ Public Class dlgSettings
         Me.chkMovieNFOEden.Enabled = Me.chkMovieUseEden.Checked
         Me.chkMoviePosterEden.Enabled = Me.chkMovieUseEden.Checked
         Me.chkMovieTrailerEden.Enabled = Me.chkMovieUseEden.Checked
+        Me.chkMovieXBMCThemeEnable.Enabled = Me.chkMovieUseEden.Checked OrElse Me.chkMovieUseFrodo.Checked
         Me.chkMovieXBMCProtectVTSBDMV.Enabled = Not Me.chkMovieUseEden.Checked AndAlso Me.chkMovieUseFrodo.Checked
 
         If Not Me.chkMovieUseEden.Checked Then
@@ -2125,9 +2314,13 @@ Public Class dlgSettings
             Me.chkMovieTrailerEden.Checked = True
             Me.chkMovieXBMCProtectVTSBDMV.Checked = False
         End If
+
+        If Not Me.chkMovieUseEden.Checked AndAlso Not Me.chkMovieUseFrodo.Checked Then
+            Me.chkMovieXBMCThemeEnable.Checked = False
+        End If
     End Sub
 
-    Private Sub chkMovieUseYAMJCheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieUseYAMJ.CheckedChanged
+    Private Sub chkMovieUseYAMJ_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieUseYAMJ.CheckedChanged
         Me.SetApplyButton(True)
 
         'Me.chkActorThumbsYAMJ.Enabled = Me.chkMovieUseYAMJ.Checked
@@ -2174,7 +2367,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkMovieUseNMJCheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieUseNMJ.CheckedChanged
+    Private Sub chkMovieUseNMJ_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieUseNMJ.CheckedChanged
         Me.SetApplyButton(True)
 
         'Me.chkActorThumbsNMJ.Enabled = Me.chkMovieUseNMJ.Checked
@@ -2242,6 +2435,83 @@ Public Class dlgSettings
     End Sub
 
     Private Sub chkMovieXBMCProtectVTSBDMV_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieXBMCProtectVTSBDMV.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMovieXBMCThemeCustomPath_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieXBMCThemeCustom.CheckedChanged
+        Me.SetApplyButton(True)
+
+        Me.txtMovieXBMCThemeCustomPath.Enabled = Me.chkMovieXBMCThemeCustom.Checked
+        Me.btnMovieXBMCThemeCustomPathBrowse.Enabled = Me.chkMovieXBMCThemeCustom.Checked
+
+        If Me.chkMovieXBMCThemeCustom.Checked Then
+            Me.chkMovieXBMCThemeMovie.Enabled = False
+            Me.chkMovieXBMCThemeMovie.Checked = False
+            Me.chkMovieXBMCThemeSub.Enabled = False
+            Me.chkMovieXBMCThemeSub.Checked = False
+        End If
+
+        If Not Me.chkMovieXBMCThemeCustom.Checked AndAlso Me.chkMovieXBMCThemeEnable.Checked Then
+            Me.chkMovieXBMCThemeMovie.Enabled = True
+            Me.chkMovieXBMCThemeSub.Enabled = True
+        End If
+    End Sub
+
+    Private Sub chkMovieXBMCThemeEnable_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieXBMCThemeEnable.CheckedChanged
+        Me.SetApplyButton(True)
+
+        Me.chkMovieXBMCThemeCustom.Enabled = Me.chkMovieXBMCThemeEnable.Checked
+        Me.chkMovieXBMCThemeMovie.Enabled = Me.chkMovieXBMCThemeEnable.Checked
+        Me.chkMovieXBMCThemeSub.Enabled = Me.chkMovieXBMCThemeEnable.Checked
+
+        If Not Me.chkMovieXBMCThemeEnable.Checked Then
+            Me.chkMovieXBMCThemeCustom.Checked = False
+            Me.chkMovieXBMCThemeMovie.Checked = False
+            Me.chkMovieXBMCThemeSub.Checked = False
+        Else
+            Me.chkMovieXBMCThemeMovie.Checked = True
+        End If
+    End Sub
+
+    Private Sub chkMovieXBMCThemeMovie_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieXBMCThemeMovie.CheckedChanged
+        Me.SetApplyButton(True)
+
+        If Me.chkMovieXBMCThemeMovie.Checked Then
+            Me.chkMovieXBMCThemeCustom.Enabled = False
+            Me.chkMovieXBMCThemeCustom.Checked = False
+            Me.chkMovieXBMCThemeSub.Enabled = False
+            Me.chkMovieXBMCThemeSub.Checked = False
+        End If
+
+        If Not Me.chkMovieXBMCThemeMovie.Checked AndAlso Me.chkMovieXBMCThemeEnable.Checked Then
+            Me.chkMovieXBMCThemeCustom.Enabled = True
+            Me.chkMovieXBMCThemeSub.Enabled = True
+        End If
+    End Sub
+
+    Private Sub chkMovieXBMCThemeSubPath_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieXBMCThemeSub.CheckedChanged
+        Me.SetApplyButton(True)
+
+        Me.txtMovieXBMCThemeSubDir.Enabled = Me.chkMovieXBMCThemeSub.Checked
+
+        If Me.chkMovieXBMCThemeSub.Checked Then
+            Me.chkMovieXBMCThemeCustom.Enabled = False
+            Me.chkMovieXBMCThemeCustom.Checked = False
+            Me.chkMovieXBMCThemeMovie.Enabled = False
+            Me.chkMovieXBMCThemeMovie.Checked = False
+        End If
+
+        If Not Me.chkMovieXBMCThemeSub.Checked AndAlso Me.chkMovieXBMCThemeEnable.Checked Then
+            Me.chkMovieXBMCThemeCustom.Enabled = True
+            Me.chkMovieXBMCThemeMovie.Enabled = True
+        End If
+    End Sub
+
+    Private Sub txtMovieXBMCThemeCustomPath_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieXBMCThemeCustomPath.TextChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub txtMovieXBMCThemeSubDir_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieXBMCThemeSubDir.TextChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -2406,6 +2676,7 @@ Public Class dlgSettings
                 Me.chkGeneralSourceFromFolder.Checked = .GeneralSourceFromFolder
                 Me.chkMovieActorThumbsOverwrite.Checked = .MovieActorThumbsOverwrite
                 Me.chkMovieBackdropsAuto.Checked = .MovieBackdropsAuto
+                Me.chkMovieBannerCol.Checked = .MovieBannerCol
                 Me.chkMovieBannerOverwrite.Checked = .MovieBannerOverwrite
                 Me.chkMovieBannerPrefOnly.Checked = .MovieBannerPrefOnly
                 Me.chkMovieBannerResize.Checked = .MovieBannerResize
@@ -2414,10 +2685,13 @@ Public Class dlgSettings
                     Me.txtMovieBannerWidth.Text = .MovieBannerWidth.ToString
                 End If
                 Me.chkMovieCleanDB.Checked = .MovieCleanDB
+                Me.chkMovieClearArtCol.Checked = .MovieClearArtCol
                 Me.chkMovieClearArtOverwrite.Checked = .MovieClearArtOverwrite
+                Me.chkMovieClearLogoCol.Checked = .MovieClearLogoCol
                 Me.chkMovieClearLogoOverwrite.Checked = .MovieClearLogoOverwrite
                 Me.chkMovieClickScrape.Checked = .MovieClickScrape
                 Me.chkMovieClickScrapeAsk.Checked = .MovieClickScrapeAsk
+                Me.chkMovieDiscArtCol.Checked = .MovieDiscArtCol
                 Me.chkMovieDiscArtOverwrite.Checked = .MovieDiscArtOverwrite
                 Me.chkMovieDisplayYear.Checked = .MovieDisplayYear
                 Me.chkMovieEFanartsCol.Checked = .MovieEFanartsCol
@@ -2446,7 +2720,8 @@ Public Class dlgSettings
                 End If
                 Me.chkMovieGeneralIgnoreLastScan.Checked = .MovieGeneralIgnoreLastScan
                 Me.chkMovieGeneralMarkNew.Checked = .MovieGeneralMarkNew
-                Me.chkMovieInfoCol.Checked = .MovieInfoCol
+                Me.chkMovieNFOCol.Checked = .MovieNFOCol
+                Me.chkMovieLandscapeCol.Checked = .MovieLandscapeCol
                 Me.chkMovieLandscapeOverwrite.Checked = .MovieLandscapeOverwrite
                 Me.chkMovieLockGenre.Checked = .MovieLockGenre
                 Me.chkMovieLockLanguageA.Checked = .MovieLockLanguageA
@@ -2459,12 +2734,18 @@ Public Class dlgSettings
                 Me.chkMovieLockTagline.Checked = .MovieLockTagline
                 Me.chkMovieLockTitle.Checked = .MovieLockTitle
                 Me.chkMovieLockTrailer.Checked = .MovieLockTrailer
+                Me.chkMovieMissingBanner.Checked = .MovieMissingBanner
+                Me.chkMovieMissingClearArt.Checked = .MovieMissingClearArt
+                Me.chkMovieMissingClearLogo.Checked = .MovieMissingClearLogo
+                Me.chkMovieMissingDiscArt.Checked = .MovieMissingDiscArt
                 Me.chkMovieMissingEFanarts.Checked = .MovieMissingEFanarts
                 Me.chkMovieMissingEThumbs.Checked = .MovieMissingEThumbs
                 Me.chkMovieMissingFanart.Checked = .MovieMissingFanart
+                Me.chkMovieMissingLandscape.Checked = .MovieMissingLandscape
                 Me.chkMovieMissingNFO.Checked = .MovieMissingNFO
                 Me.chkMovieMissingPoster.Checked = .MovieMissingPoster
                 Me.chkMovieMissingSubs.Checked = .MovieMissingSubs
+                Me.chkMovieMissingTheme.Checked = .MovieMissingTheme
                 Me.chkMovieMissingTrailer.Checked = .MovieMissingTrailer
                 Me.chkMovieNoSaveImagesToNfo.Checked = .MovieNoSaveImagesToNfo
                 Me.chkMoviePosterCol.Checked = .MoviePosterCol
@@ -2477,7 +2758,6 @@ Public Class dlgSettings
                 End If
                 Me.chkMovieProperCase.Checked = .MovieProperCase
                 Me.chkMovieScanOrderModify.Checked = .MovieScanOrderModify
-                Me.chkMovieScraperActorThumbs.Checked = .MovieScraperActorThumbs
                 Me.chkMovieScraperCast.Checked = .MovieScraperCast
                 Me.chkMovieScraperCastWithImg.Checked = .MovieScraperCastWithImgOnly
                 Me.chkMovieScraperCertification.Checked = .MovieScraperCertification
@@ -2512,6 +2792,9 @@ Public Class dlgSettings
                 Me.chkMovieSkipStackedSizeCheck.Checked = .MovieSkipStackedSizeCheck
                 Me.chkMovieSortBeforeScan.Checked = .MovieSortBeforeScan
                 Me.chkMovieSubCol.Checked = .MovieSubCol
+                Me.chkMovieThemeCol.Checked = .MovieThemeCol
+                Me.chkMovieThemeEnable.Checked = .MovieThemeEnable
+                Me.chkMovieThemeOverwrite.Checked = .MovieThemeOverwrite
                 Me.chkMovieTrailerCol.Checked = .MovieTrailerCol
                 Me.chkMovieTrailerDeleteExisting.Checked = .MovieTrailerDeleteExisting
                 Me.chkMovieTrailerEnable.Checked = .MovieTrailerEnable
@@ -2710,8 +2993,10 @@ Public Class dlgSettings
                 Me.TVShowRegex.AddRange(.TVShowRegexes)
                 Me.LoadTVShowRegex()
 
-                'Me.tLangList.Clear()
-                'Me.tLangList.AddRange(.TVDBLanguages)
+                Me.cbTVGeneralLang.Items.AddRange((From lLang In .TVGeneralLanguages Select lLang.LongLang).ToArray)
+                If Me.cbTVGeneralLang.Items.Count > 0 Then
+                    Me.cbTVGeneralLang.Text = .TVGeneralLanguages.FirstOrDefault(Function(l) l.ShortLang = .TVGeneralLanguage).LongLang
+                End If
 
                 If Not String.IsNullOrEmpty(.ProxyURI) AndAlso .ProxyPort >= 0 Then
                     Me.chkProxyEnable.Checked = True
@@ -2738,6 +3023,7 @@ Public Class dlgSettings
                 Me.RefreshTVEpisodeFilters()
                 Me.RefreshMovieFilters()
                 Me.RefreshFileSystemValidExts()
+                Me.RefreshFileSystemValidThemeExts()
 
                 '***************************************************
                 '******************* Movie Part ********************
@@ -2777,6 +3063,14 @@ Public Class dlgSettings
                 Me.chkMovieXBMCTrailerFormat.Checked = .MovieXBMCTrailerFormat
                 Me.chkMovieXBMCProtectVTSBDMV.Checked = .MovieXBMCProtectVTSBDMV
 
+                '*************** XBMC theme settings ***************
+                Me.chkMovieXBMCThemeEnable.Checked = .MovieXBMCThemeEnable
+                Me.chkMovieXBMCThemeCustom.Checked = .MovieXBMCThemeCustom
+                Me.chkMovieXBMCThemeMovie.Checked = .MovieXBMCThemeMovie
+                Me.chkMovieXBMCThemeSub.Checked = .MovieXBMCThemeSub
+                Me.txtMovieXBMCThemeCustomPath.Text = .MovieXBMCThemeCustomPath
+                Me.txtMovieXBMCThemeSubDir.Text = .MovieXBMCThemeSubDir
+
                 '****************** YAMJ settings ******************
                 Me.chkMovieUseYAMJ.Checked = .MovieUseYAMJ
                 'Me.chkActorThumbsYAMJ.Checked = .MovieActorThumbsYAMJ
@@ -2811,6 +3105,21 @@ Public Class dlgSettings
                 Me.chkMovieYAMJCompatibleSets.Checked = .MovieYAMJCompatibleSets
                 Me.chkMovieYAMJWatchedFile.Checked = .MovieYAMJWatchedFile
                 Me.txtMovieYAMJWatchedFolder.Text = .MovieYAMJWatchedFolder
+
+                '***************** Boxee settings ******************
+                Me.chkMovieUseBoxee.Checked = .MovieUseBoxee
+                'Me.chkActorThumbsBoxee.Checked = .MovieActorThumbsBoxee
+                'Me.chkMovieBannerBoxee.Checked = .MovieBannerBoxee
+                'Me.chkClearArtBoxee.Checked = .MovieClearArtBoxee
+                'Me.chkClearLogoBoxee.Checked = .MovieClearLogoBoxee
+                'Me.chkDiscArtBoxee.Checked = .MovieDiscArtBoxee
+                'Me.chkExtrafanartBoxee.Checked = .MovieExtrafanartBoxee
+                'Me.chkExtrathumbsBoxee.Checked = .MovieExtrathumbsBoxee
+                Me.chkMovieFanartBoxee.Checked = .MovieFanartBoxee
+                'Me.chkLandscapeBoxee.Checked = .MovieLandscapeBoxee
+                Me.chkMovieNFOBoxee.Checked = .MovieNFOBoxee
+                Me.chkMoviePosterBoxee.Checked = .MoviePosterBoxee
+                'Me.chkMovieTrailerBoxee.Checked = .MovieTrailerBoxee
 
                 '***************** Expert settings *****************
                 Me.chkMovieUseExpert.Checked = .MovieUseExpert
@@ -2922,6 +3231,14 @@ Public Class dlgSettings
 
                 '************** NMT optional settings **************
 
+                '***************** Boxee settings ******************
+                Me.chkTVUseBoxee.Checked = .TVUseBoxee
+                Me.chkTVEpisodePosterBoxee.Checked = .TVEpisodePosterBoxee
+                Me.chkTVSeasonPosterBoxee.Checked = .TVSeasonPosterBoxee
+                Me.chkTVShowBannerBoxee.Checked = .TVShowBannerBoxee
+                Me.chkTVShowFanartBoxee.Checked = .TVShowFanartBoxee
+                Me.chkTVShowPosterBoxee.Checked = .TVShowPosterBoxee
+
                 '***************** Expert settings *****************
 
             End With
@@ -3019,6 +3336,9 @@ Public Class dlgSettings
                 For Each s As ModulesManager._externalScraperModuleClass_Poster In (ModulesManager.Instance.externalPosterScrapersModules.Where(Function(y) y.AssemblyName <> Name))
                     s.ProcessorModule.ScraperOrderChanged()
                 Next
+                For Each s As ModulesManager._externalScraperModuleClass_Theme In (ModulesManager.Instance.externalThemeScrapersModules.Where(Function(y) y.AssemblyName <> Name))
+                    s.ProcessorModule.ScraperOrderChanged()
+                Next
                 For Each s As ModulesManager._externalScraperModuleClass_Trailer In (ModulesManager.Instance.externalTrailerScrapersModules.Where(Function(y) y.AssemblyName <> Name))
                     s.ProcessorModule.ScraperOrderChanged()
                 Next
@@ -3027,6 +3347,9 @@ Public Class dlgSettings
                 Next
                 For Each s As ModulesManager._externalTVScraperModuleClass In ModulesManager.Instance.externalTVScrapersModules.Where(Function(y) y.ProcessorModule.IsPostScraper).OrderBy(Function(x) x.PostScraperOrder)
                     RemoveHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+                Next
+                For Each s As ModulesManager._externalTVScraperModuleClass_Theme In (ModulesManager.Instance.externalTVThemeScrapersModules.Where(Function(y) y.AssemblyName <> Name))
+                    s.ProcessorModule.ScraperOrderChanged()
                 Next
             Catch ex As Exception
                 Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
@@ -3308,6 +3631,10 @@ Public Class dlgSettings
         If e.KeyCode = Keys.Delete Then Me.RemoveFileSystemValidExts()
     End Sub
 
+    Private Sub lstFileSystemValidThemeExts_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lstFileSystemValidThemeExts.KeyDown
+        If e.KeyCode = Keys.Delete Then Me.RemoveFileSystemValidThemeExts()
+    End Sub
+
     Private Sub lstFileSystemNoStackExts_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lstFileSystemNoStackExts.KeyDown
         If e.KeyCode = Keys.Delete Then Me.RemoveFileSystemNoStackExts()
     End Sub
@@ -3470,6 +3797,11 @@ Public Class dlgSettings
         Me.lstFileSystemValidExts.Items.AddRange(Master.eSettings.FileSystemValidExts.ToArray)
     End Sub
 
+    Private Sub RefreshFileSystemValidThemeExts()
+        Me.lstFileSystemValidThemeExts.Items.Clear()
+        Me.lstFileSystemValidThemeExts.Items.AddRange(Master.eSettings.FileSystemValidThemeExts.ToArray)
+    End Sub
+
     Private Sub RemoveCurrPanel()
         If Me.pnlSettingsMain.Controls.Count > 0 Then
             Me.pnlSettingsMain.Controls.Remove(Me.currPanel)
@@ -3513,6 +3845,16 @@ Public Class dlgSettings
         If lstFileSystemValidExts.Items.Count > 0 AndAlso lstFileSystemValidExts.SelectedItems.Count > 0 Then
             While Me.lstFileSystemValidExts.SelectedItems.Count > 0
                 Me.lstFileSystemValidExts.Items.Remove(Me.lstFileSystemValidExts.SelectedItems(0))
+            End While
+            Me.SetApplyButton(True)
+            Me.sResult.NeedsUpdate = True
+        End If
+    End Sub
+
+    Private Sub RemoveFileSystemValidThemeExts()
+        If lstFileSystemValidThemeExts.Items.Count > 0 AndAlso lstFileSystemValidThemeExts.SelectedItems.Count > 0 Then
+            While Me.lstFileSystemValidThemeExts.SelectedItems.Count > 0
+                Me.lstFileSystemValidThemeExts.Items.Remove(Me.lstFileSystemValidThemeExts.SelectedItems(0))
             End While
             Me.SetApplyButton(True)
             Me.sResult.NeedsUpdate = True
@@ -3665,6 +4007,8 @@ Public Class dlgSettings
                 .FileSystemNoStackExts.AddRange(lstFileSystemNoStackExts.Items.OfType(Of String).ToList)
                 .FileSystemValidExts.Clear()
                 .FileSystemValidExts.AddRange(lstFileSystemValidExts.Items.OfType(Of String).ToList)
+                .FileSystemValidThemeExts.Clear()
+                .FileSystemValidThemeExts.AddRange(lstFileSystemValidThemeExts.Items.OfType(Of String).ToList)
                 .GeneralCheckUpdates = chkGeneralCheckUpdates.Checked
                 .GeneralCreationDate = Me.chkGeneralCreationDate.Checked
                 .GeneralDaemonDrive = Me.cbGeneralDaemonDrive.Text
@@ -3690,6 +4034,7 @@ Public Class dlgSettings
                 Else
                     .MovieBackdropsAuto = False
                 End If
+                .MovieBannerCol = Me.chkMovieBannerCol.Checked
                 .MovieBannerHeight = If(Not String.IsNullOrEmpty(Me.txtMovieBannerHeight.Text), Convert.ToInt32(Me.txtMovieBannerHeight.Text), 0)
                 .MovieBannerOverwrite = Me.chkMovieBannerOverwrite.Checked
                 .MovieBannerPrefOnly = Me.chkMovieBannerPrefOnly.Checked
@@ -3698,10 +4043,13 @@ Public Class dlgSettings
                 .MovieBannerResize = Me.chkMovieBannerResize.Checked
                 .MovieBannerWidth = If(Not String.IsNullOrEmpty(Me.txtMovieBannerWidth.Text), Convert.ToInt32(Me.txtMovieBannerWidth.Text), 0)
                 .MovieCleanDB = Me.chkMovieCleanDB.Checked
+                .MovieClearArtCol = Me.chkMovieClearArtCol.Checked
                 .MovieClearArtOverwrite = Me.chkMovieClearArtOverwrite.Checked
+                .MovieClearLogoCol = Me.chkMovieClearLogoCol.Checked
                 .MovieClearLogoOverwrite = Me.chkMovieClearLogoOverwrite.Checked
                 .MovieClickScrape = Me.chkMovieClickScrape.Checked
                 .MovieClickScrapeAsk = Me.chkMovieClickScrapeAsk.Checked
+                .MovieDiscArtCol = Me.chkMovieDiscArtCol.Checked
                 .MovieDiscArtOverwrite = Me.chkMovieDiscArtOverwrite.Checked
                 .MovieDisplayYear = Me.chkMovieDisplayYear.Checked
                 .MovieEFanartsCol = Me.chkMovieEFanartsCol.Checked
@@ -3741,7 +4089,8 @@ Public Class dlgSettings
                 Else
                     .MovieIMDBURL = "akas.imdb.com"
                 End If
-                .MovieInfoCol = Me.chkMovieInfoCol.Checked
+                .MovieNFOCol = Me.chkMovieNFOCol.Checked
+                .MovieLandscapeCol = Me.chkMovieLandscapeCol.Checked
                 .MovieLandscapeOverwrite = Me.chkMovieLandscapeOverwrite.Checked
                 .MovieLevTolerance = If(Not String.IsNullOrEmpty(Me.txtMovieLevTolerance.Text), Convert.ToInt32(Me.txtMovieLevTolerance.Text), 0)
                 .MovieLockGenre = Me.chkMovieLockGenre.Checked
@@ -3757,12 +4106,18 @@ Public Class dlgSettings
                 .MovieLockTrailer = Me.chkMovieLockTrailer.Checked
                 .MovieMetadataPerFileType.Clear()
                 .MovieMetadataPerFileType.AddRange(Me.MovieMeta)
+                .MovieMissingBanner = Me.chkMovieMissingBanner.Checked
+                .MovieMissingClearArt = Me.chkMovieMissingClearArt.Checked
+                .MovieMissingClearLogo = Me.chkMovieMissingClearLogo.Checked
+                .MovieMissingDiscArt = Me.chkMovieMissingDiscArt.Checked
                 .MovieMissingEFanarts = Me.chkMovieMissingEFanarts.Checked
                 .MovieMissingEThumbs = Me.chkMovieMissingEThumbs.Checked
                 .MovieMissingFanart = Me.chkMovieMissingFanart.Checked
+                .MovieMissingLandscape = Me.chkMovieMissingLandscape.Checked
                 .MovieMissingNFO = Me.chkMovieMissingNFO.Checked
                 .MovieMissingPoster = Me.chkMovieMissingPoster.Checked
                 .MovieMissingSubs = Me.chkMovieMissingSubs.Checked
+                .MovieMissingTheme = Me.chkMovieMissingTheme.Checked
                 .MovieMissingTrailer = Me.chkMovieMissingTrailer.Checked
                 .MovieMoviesetsPath = Me.txtMovieMoviesetsPath.Text
                 .MovieNoSaveImagesToNfo = Me.chkMovieNoSaveImagesToNfo.Checked
@@ -3776,7 +4131,6 @@ Public Class dlgSettings
                 .MoviePosterWidth = If(Not String.IsNullOrEmpty(Me.txtMoviePosterWidth.Text), Convert.ToInt32(Me.txtMoviePosterWidth.Text), 0)
                 .MovieProperCase = Me.chkMovieProperCase.Checked
                 .MovieScanOrderModify = Me.chkMovieScanOrderModify.Checked
-                .MovieScraperActorThumbs = Me.chkMovieScraperActorThumbs.Checked
                 .MovieScraperCast = Me.chkMovieScraperCast.Checked
                 If Not String.IsNullOrEmpty(Me.txtMovieScraperCastLimit.Text) Then
                     .MovieScraperCastLimit = Convert.ToInt32(Me.txtMovieScraperCastLimit.Text)
@@ -3842,6 +4196,9 @@ Public Class dlgSettings
                 .MovieSortTokens.AddRange(lstMovieSortTokens.Items.OfType(Of String).ToList)
                 If .MovieSortTokens.Count <= 0 Then .MovieSortTokensIsEmpty = True
                 .MovieSubCol = Me.chkMovieSubCol.Checked
+                .MovieThemeCol = Me.chkMovieThemeCol.Checked
+                .MovieThemeEnable = Me.chkMovieThemeEnable.Checked
+                .MovieThemeOverwrite = Me.chkMovieThemeOverwrite.Checked
                 .MovieTrailerCol = Me.chkMovieTrailerCol.Checked
                 .MovieTrailerDeleteExisting = Me.chkMovieTrailerDeleteExisting.Checked
                 .MovieTrailerEnable = Me.chkMovieTrailerEnable.Checked
@@ -3892,6 +4249,7 @@ Public Class dlgSettings
                 .TVGeneralDisplayASPoster = Me.chkTVGeneralDisplayASPoster.Checked
                 .TVGeneralFlagLang = If(Me.cbTVLanguageOverlay.Text = Master.eLang.Disabled, String.Empty, Me.cbTVLanguageOverlay.Text)
                 .TVGeneralIgnoreLastScan = Me.chkTVGeneralIgnoreLastScan.Checked
+                .TVGeneralLanguage = Master.eSettings.TVGeneralLanguages.FirstOrDefault(Function(l) l.LongLang = cbTVGeneralLang.Text).ShortLang
                 .TVGeneralMarkNewEpisodes = Me.chkTVGeneralMarkNewEpisodes.Checked
                 .TVGeneralMarkNewShows = Me.chkTVGeneralMarkNewShows.Checked
                 .TVLockEpisodePlot = Me.chkTVLockEpisodePlot.Checked
@@ -4096,6 +4454,14 @@ Public Class dlgSettings
                 .MovieXBMCTrailerFormat = Me.chkMovieXBMCTrailerFormat.Checked
                 .MovieXBMCProtectVTSBDMV = Me.chkMovieXBMCProtectVTSBDMV.Checked
 
+                '*************** XBMC theme settings ***************
+                .MovieXBMCThemeCustom = Me.chkMovieXBMCThemeCustom.Checked
+                .MovieXBMCThemeCustomPath = Me.txtMovieXBMCThemeCustomPath.Text
+                .MovieXBMCThemeEnable = Me.chkMovieXBMCThemeEnable.Checked
+                .MovieXBMCThemeMovie = Me.chkMovieXBMCThemeMovie.Checked
+                .MovieXBMCThemeSub = Me.chkMovieXBMCThemeSub.Checked
+                .MovieXBMCThemeSubDir = Me.txtMovieXBMCThemeSubDir.Text
+
                 '****************** YAMJ settings *****************
                 .MovieUseYAMJ = Me.chkMovieUseYAMJ.Checked
                 '.MovieActorThumbsYAMJ = Me.chkActorThumbsYAMJ.Checked
@@ -4130,6 +4496,21 @@ Public Class dlgSettings
                 .MovieYAMJCompatibleSets = Me.chkMovieYAMJCompatibleSets.Checked
                 .MovieYAMJWatchedFile = Me.chkMovieYAMJWatchedFile.Checked
                 .MovieYAMJWatchedFolder = Me.txtMovieYAMJWatchedFolder.Text
+
+                '***************** Boxee settings *****************
+                .MovieUseBoxee = Me.chkMovieUseBoxee.Checked
+                '.MovieActorThumbsBoxee = Me.chkActorThumbsBoxee.Checked
+                '.MovieBannerBoxee = Me.chkMovieBannerBoxee.Checked
+                '.MovieClearArtBoxee = Me.chkClearArtBoxee.Checked
+                '.MovieClearLogoBoxee = Me.chkClearLogoBoxee.Checked
+                '.MovieDiscArtBoxee = Me.chkDiscArtBoxee.Checked
+                '.MovieExtrafanartBoxee = Me.chkExtrafanartBoxee.Checked
+                '.MovieExtrathumbsBoxee = Me.chkExtrathumbsBoxee.Checked
+                .MovieFanartBoxee = Me.chkMovieFanartBoxee.Checked
+                '.MovieLandscapeBoxee = Me.chkLandscapeBoxee.Checked
+                .MovieNFOBoxee = Me.chkMovieNFOBoxee.Checked
+                .MoviePosterBoxee = Me.chkMoviePosterBoxee.Checked
+                '.MovieTrailerBoxee = Me.chkMovieTrailerBoxee.Checked
 
                 '***************** Expert settings ****************
                 .MovieUseExpert = Me.chkMovieUseExpert.Checked
@@ -4240,11 +4621,19 @@ Public Class dlgSettings
 
                 '************** NMT optional settings **************
 
+                '***************** Boxee settings ******************
+                .TVUseBoxee = Me.chkTVUseBoxee.Checked
+                .TVEpisodePosterBoxee = Me.chkTVEpisodePosterBoxee.Checked
+                .TVSeasonPosterBoxee = Me.chkTVSeasonPosterBoxee.Checked
+                .TVShowBannerBoxee = Me.chkTVShowBannerBoxee.Checked
+                .TVShowFanartBoxee = Me.chkTVShowFanartBoxee.Checked
+                .TVShowPosterBoxee = Me.chkTVShowPosterBoxee.Checked
+
                 '***************** Expert settings *****************
 
 
                 'Default to Frodo for movies
-                If Not (.MovieUseEden OrElse .MovieUseExpert OrElse .MovieUseFrodo OrElse .MovieUseNMJ OrElse .MovieUseYAMJ) Then
+                If Not (.MovieUseBoxee OrElse .MovieUseEden OrElse .MovieUseExpert OrElse .MovieUseFrodo OrElse .MovieUseNMJ OrElse .MovieUseYAMJ) Then
                     .MovieUseFrodo = True
                     .MovieActorThumbsFrodo = True
                     .MovieBannerFrodo = True
@@ -4279,6 +4668,13 @@ Public Class dlgSettings
                     Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
                 End Try
             Next
+            For Each s As ModulesManager._externalScraperModuleClass_Theme In ModulesManager.Instance.externalThemeScrapersModules
+                Try
+                    s.ProcessorModule.SaveSetupScraper(Not isApply)
+                Catch ex As Exception
+                    Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                End Try
+            Next
             For Each s As ModulesManager._externalScraperModuleClass_Trailer In ModulesManager.Instance.externalTrailerScrapersModules
                 Try
                     s.ProcessorModule.SaveSetupScraper(Not isApply)
@@ -4294,7 +4690,13 @@ Public Class dlgSettings
                     Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
                 End Try
             Next
-
+            For Each s As ModulesManager._externalTVScraperModuleClass_Theme In ModulesManager.Instance.externalTVThemeScrapersModules
+                Try
+                    s.ProcessorModule.SaveSetupScraper(Not isApply)
+                Catch ex As Exception
+                    Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                End Try
+            Next
             For Each s As ModulesManager._externalGenericModuleClass In ModulesManager.Instance.externalProcessorModules
                 Try
                     s.ProcessorModule.SaveSetup(Not isApply)
@@ -4313,6 +4715,10 @@ Public Class dlgSettings
         If Not NoUpdate Then Me.btnApply.Enabled = v
     End Sub
 
+    Private Sub chkMovieThemeOverwrite_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieThemeOverwrite.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
     Private Sub chkMovieTrailerOverwrite_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieTrailerOverwrite.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
@@ -4326,6 +4732,7 @@ Public Class dlgSettings
         Me.gbMovieScraperGlobalLocksOpts.Text = Master.eLang.GetString(488, "Global Locks")
         Me.gbMovieGeneralMiscOpts.Text = Me.gbGeneralMisc.Text
         Me.gbFileSystemValidExts.Text = Master.eLang.GetString(534, "Valid Video Extensions")
+        Me.gbFileSystemValidThemeExts.Text = Master.eLang.GetString(1081, "Valid Theme Extensions")
         Me.gbMovieGeneralMediaListOpts.Text = Master.eLang.GetString(460, "Media List Options")
         Me.gbFileSystemNoStackExts.Text = Master.eLang.GetString(530, "No Stack Extensions")
         Me.gbMovieSortTokensOpts.Text = Master.eLang.GetString(463, "Sort Tokens to Ignore")
@@ -4399,6 +4806,7 @@ Public Class dlgSettings
         Me.chkTVGeneralDisplayASPoster.Text = Master.eLang.GetString(832, "Display All Season Poster")
         Me.chkTVDisplayMissingEpisodes.Text = Master.eLang.GetString(733, "Display Missing Episodes")
         Me.chkMovieDisplayYear.Text = Master.eLang.GetString(464, "Display Year in List Title")
+        Me.chkMovieThemeEnable.Text = Master.eLang.GetString(1082, "Enable Theme Support")
         Me.chkMovieTrailerEnable.Text = Master.eLang.GetString(529, "Enable Trailer Support")
         Me.chkProxyCredsEnable.Text = Master.eLang.GetString(677, "Enable Credentials")
         Me.chkProxyEnable.Text = Master.eLang.GetString(673, "Enable Proxy")
@@ -4407,7 +4815,7 @@ Public Class dlgSettings
         Me.chkTVLockEpisodeTitle.Text = Master.eLang.GetString(494, "Lock Title")
         Me.chkTVEpisodeProperCase.Text = Me.chkMovieProperCase.Text
         Me.chkTVEpisodeFanartCol.Text = Me.chkMovieFanartCol.Text
-        Me.chkTVEpisodeNfoCol.Text = Me.chkMovieInfoCol.Text
+        Me.chkTVEpisodeNfoCol.Text = Me.chkMovieNFOCol.Text
         Me.chkTVEpisodePosterCol.Text = Me.chkMoviePosterCol.Text
         Me.chkMovieScraperForceTitle.Text = Master.eLang.GetString(710, "Force Title Language:")
         Me.chkMovieScraperFullCast.Text = Master.eLang.GetString(512, "Scrape Full Cast")
@@ -4432,18 +4840,29 @@ Public Class dlgSettings
         Me.chkMovieGeneralMarkNew.Text = Master.eLang.GetString(459, "Mark New Movies")
         Me.chkTVGeneralMarkNewEpisodes.Text = Master.eLang.GetString(621, "Mark New Episodes")
         Me.chkTVGeneralMarkNewShows.Text = Master.eLang.GetString(549, "Mark New Shows")
+        Me.chkMovieMissingBanner.Text = Master.eLang.GetString(1073, "Check for Banner")
+        Me.chkMovieMissingClearArt.Text = Master.eLang.GetString(1112, "Check for ClearArt")
+        Me.chkMovieMissingClearLogo.Text = Master.eLang.GetString(1113, "Check for ClearLogo")
+        Me.chkMovieMissingDiscArt.Text = Master.eLang.GetString(1114, "Check for DiscArt")
         Me.chkMovieMissingEFanarts.Text = Master.eLang.GetString(976, "Check for Extrafanarts")
         Me.chkMovieMissingEThumbs.Text = Master.eLang.GetString(587, "Check for Extrathumbs")
         Me.chkMovieMissingFanart.Text = Master.eLang.GetString(583, "Check for Fanart")
+        Me.chkMovieMissingLandscape.Text = Master.eLang.GetString(1074, "Check for Landscape")
         Me.chkMovieMissingNFO.Text = Master.eLang.GetString(584, "Check for NFO")
         Me.chkMovieMissingPoster.Text = Master.eLang.GetString(582, "Check for Poster")
         Me.chkMovieMissingSubs.Text = Master.eLang.GetString(586, "Check for Subs")
+        Me.chkMovieMissingTheme.Text = Master.eLang.GetString(1075, "Check for Theme")
         Me.chkMovieMissingTrailer.Text = Master.eLang.GetString(585, "Check for Trailer")
+        Me.chkMovieBannerCol.Text = Master.eLang.GetString(1070, "Hide Banner Column")
+        Me.chkMovieClearArtCol.Text = Master.eLang.GetString(1115, "Hide ClearArt Column")
+        Me.chkMovieClearLogoCol.Text = Master.eLang.GetString(1116, "Hide ClearLogo Column")
+        Me.chkMovieDiscArtCol.Text = Master.eLang.GetString(1117, "Hide DiscArt Column")
         Me.chkMovieEFanartsCol.Text = Master.eLang.GetString(983, "Hide Extrafanart Column")
         Me.chkMovieEThumbsCol.Text = Master.eLang.GetString(465, "Hide Extrathumb Column")
         Me.chkMovieFanartCol.Text = Master.eLang.GetString(469, "Hide Fanart Column")
         Me.chkMovieFanartPrefOnly.Text = Master.eLang.GetString(145, "Only")
-        Me.chkMovieInfoCol.Text = Master.eLang.GetString(468, "Hide Info Column")
+        Me.chkMovieLandscapeCol.Text = Master.eLang.GetString(1071, "Hide Landscape Column")
+        Me.chkMovieNFOCol.Text = Master.eLang.GetString(468, "Hide NFO Column")
         Me.chkMovieNoSaveImagesToNfo.Text = Master.eLang.GetString(498, "Do Not Save URLs to Nfo")
         Me.chkMovieFanartOverwrite.Text = Me.chkMoviePosterOverwrite.Text
         Me.chkMoviePosterOverwrite.Text = Master.eLang.GetString(483, "Overwrite Existing")
@@ -4452,8 +4871,9 @@ Public Class dlgSettings
         Me.chkMovieRecognizeVTSExpertVTS.Text = Master.eLang.GetString(537, "Automatically Detect VIDEO_TS Folders Even if They Are Not Named ""VIDEO_TS""")
         Me.chkMovieFanartResize.Text = Me.chkMoviePosterResize.Text
         Me.chkMoviePosterResize.Text = Master.eLang.GetString(481, "Automatically Resize:")
-        Me.chkMovieScraperActorThumbs.Text = Master.eLang.GetString(828, "Enable Actor Thumbs")
         Me.chkMovieSubCol.Text = Master.eLang.GetString(466, "Hide Sub Column")
+        Me.chkMovieThemeCol.Text = Master.eLang.GetString(1072, "Hide Theme Column")
+        Me.chkMovieThemeOverwrite.Text = Master.eLang.GetString(483, "Overwrite Existing")
         Me.chkMovieTrailerCol.Text = Master.eLang.GetString(467, "Hide Trailer Column")
         Me.chkMovieWatchedCol.Text = Master.eLang.GetString(982, "Hide Watched Column")
         Me.chkMovieScraperMusicBy.Text = Master.eLang.GetString(392, "Music By")
@@ -4506,7 +4926,7 @@ Public Class dlgSettings
         Me.chkTVLockShowStatus.Text = Master.eLang.GetString(1047, "Lock Status")
         Me.chkTVLockShowStudio.Text = Master.eLang.GetString(491, "Lock Studio")
         Me.chkTVLockShowTitle.Text = Master.eLang.GetString(494, "Lock Title")
-        Me.chkTVShowNfoCol.Text = Me.chkMovieInfoCol.Text
+        Me.chkTVShowNfoCol.Text = Me.chkMovieNFOCol.Text
         Me.chkTVShowPosterCol.Text = Me.chkMoviePosterCol.Text
         Me.chkTVShowProperCase.Text = Me.chkMovieProperCase.Text
         Me.chkMovieSkipStackedSizeCheck.Text = Master.eLang.GetString(538, "Skip Size Check of Stacked Files")
@@ -5454,6 +5874,21 @@ Public Class dlgSettings
         End Try
     End Sub
 
+    Private Sub btnMovieXBMCThemeCustomPathBrowse_Click(sender As Object, e As EventArgs) Handles btnMovieXBMCThemeCustomPathBrowse.Click
+        Try
+            With Me.fbdBrowse
+                fbdBrowse.Description = Master.eLang.GetString(1077, "Select the folder where you wish to store your themes...")
+                If .ShowDialog = Windows.Forms.DialogResult.OK Then
+                    If Not String.IsNullOrEmpty(.SelectedPath.ToString) AndAlso Directory.Exists(.SelectedPath) Then
+                        Me.txtMovieXBMCThemeCustomPath.Text = .SelectedPath.ToString
+                    End If
+                End If
+            End With
+        Catch ex As Exception
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
     Private Sub btnMovieYAMJWatchedFilesBrowse_Click(sender As Object, e As EventArgs) Handles btnMovieYAMJWatchedFilesBrowse.Click
         Try
             With Me.fbdBrowse
@@ -5785,6 +6220,50 @@ Public Class dlgSettings
     End Sub
 
     Private Sub chkMovieYAMJCompatibleSets_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieYAMJCompatibleSets.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkTVUseBoxee_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVUseBoxee.CheckedChanged
+        Me.SetApplyButton(True)
+
+        Me.chkTVEpisodePosterBoxee.Enabled = Me.chkTVUseBoxee.Checked
+        Me.chkTVSeasonPosterBoxee.Enabled = Me.chkTVUseBoxee.Checked
+        Me.chkTVShowBannerBoxee.Enabled = Me.chkTVUseBoxee.Checked
+        Me.chkTVShowFanartBoxee.Enabled = Me.chkTVUseBoxee.Checked
+        Me.chkTVShowPosterBoxee.Enabled = Me.chkTVUseBoxee.Checked
+
+        If Not Me.chkTVUseBoxee.Checked Then
+            Me.chkTVEpisodePosterBoxee.Checked = False
+            Me.chkTVSeasonPosterBoxee.Checked = False
+            Me.chkTVShowBannerBoxee.Checked = False
+            Me.chkTVShowFanartBoxee.Checked = False
+            Me.chkTVShowPosterBoxee.Checked = False
+        Else
+            Me.chkTVEpisodePosterBoxee.Checked = True
+            Me.chkTVSeasonPosterBoxee.Checked = True
+            Me.chkTVShowBannerBoxee.Checked = True
+            Me.chkTVShowFanartBoxee.Checked = True
+            Me.chkTVShowPosterBoxee.Checked = True
+        End If
+    End Sub
+
+    Private Sub chkTVEpisodePosterBoxee_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVEpisodePosterBoxee.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkTVSeasonPosterBoxee_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVSeasonPosterBoxee.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkTVShowBannerBoxee_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowBannerBoxee.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkTVShowFanartBoxee_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowFanartBoxee.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkTVShowPosterBoxee_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowPosterBoxee.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 

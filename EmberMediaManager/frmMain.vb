@@ -1097,7 +1097,7 @@ Public Class frmMain
             If Not Master.eSettings.GeneralHidePoster Then Me.MainPoster.FromFile(Master.currShow.ShowPosterPath)
             If Not Master.eSettings.GeneralHideFanartSmall Then Me.MainFanartSmall.FromFile(Master.currShow.ShowFanartPath)
 
-            If Master.eSettings.TVGeneralDisplayASPoster AndAlso Master.eSettings.TVASPosterEnabled Then
+            If Master.eSettings.TVGeneralDisplayASPoster AndAlso Master.eSettings.TVASPosterAnyEnabled Then
                 Me.MainAllSeason.FromFile(Master.currShow.SeasonPosterPath)
             End If
 
@@ -1238,13 +1238,21 @@ Public Class frmMain
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         Dim OldTitle As String = String.Empty
         Dim NewTitle As String = String.Empty
-        Dim Poster As New MediaContainers.Image
+        Dim Banner As New MediaContainers.Image
+        Dim ClearArt As New MediaContainers.Image
+        Dim ClearLogo As New MediaContainers.Image
+        Dim DiscArt As New MediaContainers.Image
         Dim Fanart As New MediaContainers.Image
+        Dim Landscape As New MediaContainers.Image
+        Dim Poster As New MediaContainers.Image
+        Dim Theme As New Theme
+        Dim Trailer As New Trailers
         Dim tURL As String = String.Empty
         Dim aList As New List(Of MediaContainers.Image)
         Dim aUrlList As New List(Of Trailers)
         Dim efList As New List(Of String)
         Dim etList As New List(Of String)
+        Dim tUrlList As New List(Of Theme)
         Dim DBScrapeMovie As New Structures.DBMovie
 
         Master.eLog.Trace(Me.GetType, "Starting MOVIE scrape", New StackTrace().ToString, Nothing, False)
@@ -1268,7 +1276,10 @@ Public Class frmMain
                     End If
                 Else
                     ' if we do not have the movie ID we need to retrive it even if is just a Poster/Fanart/Trailer/Actors update
-                    If String.IsNullOrEmpty(DBScrapeMovie.Movie.ID) AndAlso (Master.GlobalScrapeMod.Fanart Or Master.GlobalScrapeMod.Poster Or Master.GlobalScrapeMod.Trailer Or Master.GlobalScrapeMod.Actors) Then
+                    If String.IsNullOrEmpty(DBScrapeMovie.Movie.ID) AndAlso (Master.GlobalScrapeMod.ActorThumbs Or Master.GlobalScrapeMod.Banner Or Master.GlobalScrapeMod.ClearArt Or _
+                                                                             Master.GlobalScrapeMod.ClearLogo Or Master.GlobalScrapeMod.DiscArt Or Master.GlobalScrapeMod.EFanarts Or _
+                                                                             Master.GlobalScrapeMod.EThumbs Or Master.GlobalScrapeMod.Fanart Or Master.GlobalScrapeMod.Landscape Or _
+                                                                             Master.GlobalScrapeMod.Poster Or Master.GlobalScrapeMod.Trailer) Then
                         Dim tOpt As New Structures.ScrapeOptions 'all false value not to override any field
                         If ModulesManager.Instance.MovieScrapeOnly(DBScrapeMovie, Args.scrapeType, tOpt) Then
                             Exit For
@@ -1293,11 +1304,14 @@ Public Class frmMain
                     bwMovieScraper.ReportProgress(0, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldTitle, NewTitle))
                 End If
 
-                MovieScraperEvent(Enums.MovieScraperEventType.ListTitle, NewTitle)
-                MovieScraperEvent(Enums.MovieScraperEventType.SortTitle, DBScrapeMovie.Movie.SortTitle)
+                If Not Args.scrapeType = Enums.ScrapeType.SingleScrape Then
+                    MovieScraperEvent(Enums.MovieScraperEventType.ListTitle, NewTitle)
+                    MovieScraperEvent(Enums.MovieScraperEventType.SortTitle, DBScrapeMovie.Movie.SortTitle)
+                End If
 
                 '-----
 
+                'Poster
                 If Master.GlobalScrapeMod.Poster Then
                     Poster.Clear()
                     aList.Clear()
@@ -1350,6 +1364,8 @@ Public Class frmMain
                         End If
                     End If
                 End If
+
+                'Fanart
                 If Master.GlobalScrapeMod.Fanart Then
                     Fanart.Clear()
                     aList.Clear()
@@ -1408,50 +1424,341 @@ Public Class frmMain
                         End If
                     End If
                 End If
-                If Master.GlobalScrapeMod.Trailer Then
-                    aUrlList.Clear()
+
+                'Banner
+                If Master.GlobalScrapeMod.Banner Then
+                    Banner.Clear()
+                    aList.Clear()
                     tURL = String.Empty
-                    If Not ModulesManager.Instance.MovieScrapeTrailer(DBScrapeMovie, Enums.ScraperCapabilities.Trailer, aUrlList) Then
-                        If aUrlList.Count > 0 Then
-                            If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) AndAlso Trailers.PreferredTrailer(tURL, aUrlList, DBScrapeMovie.Filename, (Args.scrapeType = Enums.ScrapeType.SingleScrape)) Then
-                                If Not String.IsNullOrEmpty(tURL) Then
-                                    tURL = Trailers.DownloadTrailer(DBScrapeMovie.Filename, DBScrapeMovie.isSingle, tURL)
+                    If Banner.WebImage.IsAllowedToDownload(DBScrapeMovie, Enums.MovieImageType.Banner) Then
+                        If Not ModulesManager.Instance.MovieScrapeImages(DBScrapeMovie, Enums.ScraperCapabilities.Banner, aList) Then
+                            If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then 'AndAlso Images.GetPreferredPoster(aList, Banner) Then 'TODO: Check if we need PreferredBanner
+                                If aList.Count > 0 Then Banner = aList.Item(0)
+                                If Not String.IsNullOrEmpty(Banner.URL) AndAlso IsNothing(Banner.WebImage.Image) Then
+                                    Banner.WebImage.FromWeb(Banner.URL)
+                                End If
+                                If Not IsNothing(Banner.WebImage.Image) Then
+                                    tURL = Banner.WebImage.SaveAsMovieBanner(DBScrapeMovie)
                                     If Not String.IsNullOrEmpty(tURL) Then
-                                        If StringUtils.isValidURL(tURL) Then
-                                            If Master.eSettings.MovieXBMCTrailerFormat Then
-                                                DBScrapeMovie.Movie.Trailer = Replace(tURL, "http://www.youtube.com/watch?v=", "plugin://plugin.video.youtube/?action=play_video&videoid=")
-                                            Else
-                                                DBScrapeMovie.Movie.Trailer = tURL
-                                            End If
-                                        Else
-                                            DBScrapeMovie.TrailerPath = tURL
-                                            MovieScraperEvent(Enums.MovieScraperEventType.TrailerItem, True)
-                                        End If
+                                        DBScrapeMovie.BannerPath = tURL
+                                        MovieScraperEvent(Enums.MovieScraperEventType.BannerItem, True)
+                                        'If Master.GlobalScrapeMod.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
+                                        '    DBScrapeMovie.Movie.Thumb = pResults.Posters
+                                        'End If
                                     End If
                                 End If
                             ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
-                                If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
-                                    MsgBox(Master.eLang.GetString(930, "Trailer of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(929, "No Preferred Size:"))
-                                End If
-                                Using dTrailerSelect As New dlgTrailerSelect()
-                                    tURL = dTrailerSelect.ShowDialog(DBScrapeMovie, aUrlList)
-                                    If Not String.IsNullOrEmpty(tURL) Then
-                                        If StringUtils.isValidURL(tURL) Then
-                                            If Master.eSettings.MovieXBMCTrailerFormat Then
-                                                DBScrapeMovie.Movie.Trailer = Replace(tURL, "http://www.youtube.com/watch?v=", "plugin://plugin.video.youtube/?action=play_video&videoid=")
-                                            Else
-                                                DBScrapeMovie.Movie.Trailer = tURL
-                                            End If
-                                        Else
-                                            DBScrapeMovie.TrailerPath = tURL
-                                            MovieScraperEvent(Enums.MovieScraperEventType.TrailerItem, True)
-                                        End If
+                                If aList.Count > 0 Then
+                                    If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
+                                        MsgBox(Master.eLang.GetString(1062, "A banner of your preferred type could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(929, "No Preferred Size"))
                                     End If
-                                End Using
+                                    Using dImgSelect As New dlgImgSelect()
+                                        If dImgSelect.ShowDialog(DBScrapeMovie, Enums.MovieImageType.Banner, aList, etList, efList) = DialogResult.OK Then
+                                            Banner = dImgSelect.Results
+                                            If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
+                                                If Not String.IsNullOrEmpty(Banner.URL) AndAlso IsNothing(Banner.WebImage.Image) Then
+                                                    Banner.WebImage.FromWeb(Banner.URL)
+                                                End If
+                                                If Not IsNothing(Banner.WebImage.Image) Then
+                                                    tURL = Banner.WebImage.SaveAsMovieBanner(DBScrapeMovie)
+                                                    If Not String.IsNullOrEmpty(tURL) Then
+                                                        DBScrapeMovie.BannerPath = tURL
+                                                        MovieScraperEvent(Enums.MovieScraperEventType.BannerItem, True)
+                                                        'If Master.GlobalScrapeMod.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
+                                                        '    DBScrapeMovie.Movie.Thumb = pResults.Posters
+                                                        'End If
+                                                    End If
+                                                End If
+                                            Else
+                                                DBScrapeMovie.BannerPath = ":" & Banner.URL
+                                            End If
+                                        End If
+                                    End Using
+                                End If
                             End If
                         End If
                     End If
                 End If
+
+                'Landscape
+                If Master.GlobalScrapeMod.Landscape Then
+                    Landscape.Clear()
+                    aList.Clear()
+                    tURL = String.Empty
+                    If Landscape.WebImage.IsAllowedToDownload(DBScrapeMovie, Enums.MovieImageType.Landscape) Then
+                        If Not ModulesManager.Instance.MovieScrapeImages(DBScrapeMovie, Enums.ScraperCapabilities.Landscape, aList) Then
+                            If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then 'AndAlso Images.GetPreferredPoster(aList, Landscape) Then
+                                If aList.Count > 0 Then Landscape = aList.Item(0)
+                                If Not String.IsNullOrEmpty(Landscape.URL) AndAlso IsNothing(Landscape.WebImage.Image) Then
+                                    Landscape.WebImage.FromWeb(Landscape.URL)
+                                End If
+                                If Not IsNothing(Landscape.WebImage.Image) Then
+                                    tURL = Landscape.WebImage.SaveAsMovieLandscape(DBScrapeMovie)
+                                    If Not String.IsNullOrEmpty(tURL) Then
+                                        DBScrapeMovie.LandscapePath = tURL
+                                        MovieScraperEvent(Enums.MovieScraperEventType.LandscapeItem, True)
+                                    End If
+                                End If
+                            ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
+                                If aList.Count > 0 Then
+                                    If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
+                                        MsgBox(Master.eLang.GetString(1063, "A landscape of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(929, "No Preferred Size"))
+                                    End If
+                                    Using dImgSelect As New dlgImgSelect()
+                                        If dImgSelect.ShowDialog(DBScrapeMovie, Enums.MovieImageType.Landscape, aList, etList, efList) = DialogResult.OK Then
+                                            Landscape = dImgSelect.Results
+                                            If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
+                                                If Not String.IsNullOrEmpty(Landscape.URL) AndAlso IsNothing(Landscape.WebImage.Image) Then
+                                                    Landscape.WebImage.FromWeb(Landscape.URL)
+                                                End If
+                                                If Not IsNothing(Landscape.WebImage.Image) Then
+                                                    tURL = Landscape.WebImage.SaveAsMovieLandscape(DBScrapeMovie)
+                                                    If Not String.IsNullOrEmpty(tURL) Then
+                                                        DBScrapeMovie.LandscapePath = tURL
+                                                        MovieScraperEvent(Enums.MovieScraperEventType.LandscapeItem, True)
+                                                    End If
+                                                End If
+                                            Else
+                                                DBScrapeMovie.LandscapePath = ":" & Landscape.URL
+                                            End If
+                                        End If
+                                    End Using
+                                End If
+                            End If
+                        End If
+                    End If
+                End If
+
+                'ClearArt
+                If Master.GlobalScrapeMod.ClearArt Then
+                    ClearArt.Clear()
+                    aList.Clear()
+                    tURL = String.Empty
+                    If ClearArt.WebImage.IsAllowedToDownload(DBScrapeMovie, Enums.MovieImageType.ClearArt) Then
+                        If Not ModulesManager.Instance.MovieScrapeImages(DBScrapeMovie, Enums.ScraperCapabilities.ClearArt, aList) Then
+                            If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then ' AndAlso Images.GetPreferredPoster(aList, ClearArt) Then
+                                If aList.Count > 0 Then ClearArt = aList.Item(0)
+                                If Not String.IsNullOrEmpty(ClearArt.URL) AndAlso IsNothing(ClearArt.WebImage.Image) Then
+                                    ClearArt.WebImage.FromWeb(ClearArt.URL)
+                                End If
+                                If Not IsNothing(ClearArt.WebImage.Image) Then
+                                    tURL = ClearArt.WebImage.SaveAsMovieClearArt(DBScrapeMovie)
+                                    If Not String.IsNullOrEmpty(tURL) Then
+                                        DBScrapeMovie.ClearArtPath = tURL
+                                        MovieScraperEvent(Enums.MovieScraperEventType.ClearArtItem, True)
+                                    End If
+                                End If
+                            ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
+                                If aList.Count > 0 Then
+                                    If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
+                                        MsgBox(Master.eLang.GetString(1106, "A ClearArt of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(929, "No Preferred Size"))
+                                    End If
+                                    Using dImgSelect As New dlgImgSelect()
+                                        If dImgSelect.ShowDialog(DBScrapeMovie, Enums.MovieImageType.ClearArt, aList, etList, efList) = DialogResult.OK Then
+                                            ClearArt = dImgSelect.Results
+                                            If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
+                                                If Not String.IsNullOrEmpty(ClearArt.URL) AndAlso IsNothing(ClearArt.WebImage.Image) Then
+                                                    ClearArt.WebImage.FromWeb(ClearArt.URL)
+                                                End If
+                                                If Not IsNothing(ClearArt.WebImage.Image) Then
+                                                    tURL = ClearArt.WebImage.SaveAsMovieLandscape(DBScrapeMovie)
+                                                    If Not String.IsNullOrEmpty(tURL) Then
+                                                        DBScrapeMovie.ClearArtPath = tURL
+                                                        MovieScraperEvent(Enums.MovieScraperEventType.ClearArtItem, True)
+                                                    End If
+                                                End If
+                                            Else
+                                                DBScrapeMovie.ClearArtPath = ":" & ClearArt.URL
+                                            End If
+                                        End If
+                                    End Using
+                                End If
+                            End If
+                        End If
+                    End If
+                End If
+
+                'ClearLogo
+                If Master.GlobalScrapeMod.ClearLogo Then
+                    ClearLogo.Clear()
+                    aList.Clear()
+                    tURL = String.Empty
+                    If ClearLogo.WebImage.IsAllowedToDownload(DBScrapeMovie, Enums.MovieImageType.ClearLogo) Then
+                        If Not ModulesManager.Instance.MovieScrapeImages(DBScrapeMovie, Enums.ScraperCapabilities.ClearLogo, aList) Then
+                            If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then ' AndAlso Images.GetPreferredPoster(aList, ClearLogo) Then
+                                If aList.Count > 0 Then ClearLogo = aList.Item(0)
+                                If Not String.IsNullOrEmpty(ClearLogo.URL) AndAlso IsNothing(ClearLogo.WebImage.Image) Then
+                                    ClearLogo.WebImage.FromWeb(ClearLogo.URL)
+                                End If
+                                If Not IsNothing(ClearLogo.WebImage.Image) Then
+                                    tURL = ClearLogo.WebImage.SaveAsMovieClearLogo(DBScrapeMovie)
+                                    If Not String.IsNullOrEmpty(tURL) Then
+                                        DBScrapeMovie.ClearLogoPath = tURL
+                                        MovieScraperEvent(Enums.MovieScraperEventType.ClearLogoItem, True)
+                                    End If
+                                End If
+                            ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
+                                If aList.Count > 0 Then
+                                    If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
+                                        MsgBox(Master.eLang.GetString(1107, "A ClearLogo of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(929, "No Preferred Size"))
+                                    End If
+                                    Using dImgSelect As New dlgImgSelect()
+                                        If dImgSelect.ShowDialog(DBScrapeMovie, Enums.MovieImageType.ClearLogo, aList, etList, efList) = DialogResult.OK Then
+                                            ClearLogo = dImgSelect.Results
+                                            If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
+                                                If Not String.IsNullOrEmpty(ClearLogo.URL) AndAlso IsNothing(ClearLogo.WebImage.Image) Then
+                                                    ClearLogo.WebImage.FromWeb(ClearLogo.URL)
+                                                End If
+                                                If Not IsNothing(ClearLogo.WebImage.Image) Then
+                                                    tURL = ClearLogo.WebImage.SaveAsMovieLandscape(DBScrapeMovie)
+                                                    If Not String.IsNullOrEmpty(tURL) Then
+                                                        DBScrapeMovie.ClearLogoPath = tURL
+                                                        MovieScraperEvent(Enums.MovieScraperEventType.ClearLogoItem, True)
+                                                    End If
+                                                End If
+                                            Else
+                                                DBScrapeMovie.ClearLogoPath = ":" & ClearLogo.URL
+                                            End If
+                                        End If
+                                    End Using
+                                End If
+                            End If
+                        End If
+                    End If
+                End If
+
+                'DiscArt
+                If Master.GlobalScrapeMod.DiscArt Then
+                    DiscArt.Clear()
+                    aList.Clear()
+                    tURL = String.Empty
+                    If DiscArt.WebImage.IsAllowedToDownload(DBScrapeMovie, Enums.MovieImageType.DiscArt) Then
+                        If Not ModulesManager.Instance.MovieScrapeImages(DBScrapeMovie, Enums.ScraperCapabilities.DiscArt, aList) Then
+                            If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then ' AndAlso Images.GetPreferredPoster(aList, DiscArt) Then
+                                If aList.Count > 0 Then DiscArt = aList.Item(0)
+                                If Not String.IsNullOrEmpty(DiscArt.URL) AndAlso IsNothing(DiscArt.WebImage.Image) Then
+                                    DiscArt.WebImage.FromWeb(DiscArt.URL)
+                                End If
+                                If Not IsNothing(DiscArt.WebImage.Image) Then
+                                    tURL = DiscArt.WebImage.SaveAsMovieDiscArt(DBScrapeMovie)
+                                    If Not String.IsNullOrEmpty(tURL) Then
+                                        DBScrapeMovie.DiscArtPath = tURL
+                                        MovieScraperEvent(Enums.MovieScraperEventType.DiscArtItem, True)
+                                    End If
+                                End If
+                            ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
+                                If aList.Count > 0 Then
+                                    If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
+                                        MsgBox(Master.eLang.GetString(1108, "A DiscArt of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(929, "No Preferred Size"))
+                                    End If
+                                    Using dImgSelect As New dlgImgSelect()
+                                        If dImgSelect.ShowDialog(DBScrapeMovie, Enums.MovieImageType.DiscArt, aList, etList, efList) = DialogResult.OK Then
+                                            DiscArt = dImgSelect.Results
+                                            If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
+                                                If Not String.IsNullOrEmpty(DiscArt.URL) AndAlso IsNothing(DiscArt.WebImage.Image) Then
+                                                    DiscArt.WebImage.FromWeb(DiscArt.URL)
+                                                End If
+                                                If Not IsNothing(DiscArt.WebImage.Image) Then
+                                                    tURL = DiscArt.WebImage.SaveAsMovieLandscape(DBScrapeMovie)
+                                                    If Not String.IsNullOrEmpty(tURL) Then
+                                                        DBScrapeMovie.DiscArtPath = tURL
+                                                        MovieScraperEvent(Enums.MovieScraperEventType.DiscArtItem, True)
+                                                    End If
+                                                End If
+                                            Else
+                                                DBScrapeMovie.DiscArtPath = ":" & DiscArt.URL
+                                            End If
+                                        End If
+                                    End Using
+                                End If
+                            End If
+                        End If
+                    End If
+                End If
+
+                'Theme
+                If Master.GlobalScrapeMod.Theme Then
+                    tUrlList.Clear()
+                    tURL = String.Empty
+                    If Theme.IsAllowedToDownload(DBScrapeMovie) Then
+                        If Not ModulesManager.Instance.MovieScrapeTheme(DBScrapeMovie, tUrlList) Then
+                            If tUrlList.Count > 0 Then
+                                If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
+                                    Theme = tUrlList.Item(0)
+                                    If Not String.IsNullOrEmpty(Theme.URL) Then
+                                        tURL = Theme.DownloadTheme(DBScrapeMovie.Filename, DBScrapeMovie.isSingle, Theme)
+                                        If Not String.IsNullOrEmpty(tURL) Then
+                                            DBScrapeMovie.ThemePath = tURL
+                                            MovieScraperEvent(Enums.MovieScraperEventType.ThemeItem, True)
+                                        End If
+                                    End If
+                                    'ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk  OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
+                                    '    If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk  OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
+                                    '        MsgBox(Master.eLang.GetString(930, "Trailer of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(929, "No Preferred Size:"))
+                                    '    End If
+                                    '    Using dThemeSelect As New dlgThemeSelect()
+                                    '        tURL = dThemeSelect.ShowDialog(DBScrapeMovie, tUrlList)
+                                    '        If Not String.IsNullOrEmpty(tURL) Then
+                                    '            DBScrapeMovie.ThemePath = tURL
+                                    '            MovieScraperEvent(Enums.MovieScraperEventType.ThemeItem, True)
+                                    '        End If
+                                    '    End Using
+                                End If
+                            End If
+                        End If
+                    End If
+                End If
+
+                'Trailer
+                If Master.GlobalScrapeMod.Trailer Then
+                    aUrlList.Clear()
+                    tURL = String.Empty
+                    If Trailer.IsAllowedToDownload(DBScrapeMovie) Then
+                        If Not ModulesManager.Instance.MovieScrapeTrailer(DBScrapeMovie, Enums.ScraperCapabilities.Trailer, aUrlList) Then
+                            If aUrlList.Count > 0 Then
+                                If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) AndAlso Trailers.PreferredTrailer(tURL, aUrlList, DBScrapeMovie.Filename, (Args.scrapeType = Enums.ScrapeType.SingleScrape)) Then
+                                    If Not String.IsNullOrEmpty(tURL) Then
+                                        tURL = Trailers.DownloadTrailer(DBScrapeMovie.Filename, DBScrapeMovie.isSingle, tURL)
+                                        If Not String.IsNullOrEmpty(tURL) Then
+                                            If StringUtils.isValidURL(tURL) Then
+                                                If Master.eSettings.MovieXBMCTrailerFormat Then
+                                                    DBScrapeMovie.Movie.Trailer = Replace(tURL, "http://www.youtube.com/watch?v=", "plugin://plugin.video.youtube/?action=play_video&videoid=")
+                                                    DBScrapeMovie.Movie.Trailer = Replace(DBScrapeMovie.Movie.Trailer, "http://www.youtube.com/watch?hd=1&v=", "plugin://plugin.video.youtube/?action=play_video&videoid=")
+                                                Else
+                                                    DBScrapeMovie.Movie.Trailer = tURL
+                                                End If
+                                            Else
+                                                DBScrapeMovie.TrailerPath = tURL
+                                                MovieScraperEvent(Enums.MovieScraperEventType.TrailerItem, True)
+                                            End If
+                                        End If
+                                    End If
+                                    'ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk  OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
+                                    '    If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk  OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
+                                    '        MsgBox(Master.eLang.GetString(930, "Trailer of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(929, "No Preferred Size:"))
+                                    '    End If
+                                    '    Using dTrailerSelect As New dlgTrailerSelect()
+                                    '        tURL = dTrailerSelect.ShowDialog(DBScrapeMovie, aUrlList)
+                                    '        If Not String.IsNullOrEmpty(tURL) Then
+                                    '            If StringUtils.isValidURL(tURL) Then
+                                    '                If Master.eSettings.MovieXBMCTrailerFormat Then
+                                    '                    DBScrapeMovie.Movie.Trailer = Replace(tURL, "http://www.youtube.com/watch?v=", "plugin://plugin.video.youtube/?action=play_video&videoid=")
+                                    '                Else
+                                    '                    DBScrapeMovie.Movie.Trailer = tURL
+                                    '                End If
+                                    '            Else
+                                    '                DBScrapeMovie.TrailerPath = tURL
+                                    '                MovieScraperEvent(Enums.MovieScraperEventType.TrailerItem, True)
+                                    '            End If
+                                    '        End If
+                                    '    End Using
+                                End If
+                            End If
+                        End If
+                    End If
+                End If
+
+                'Extrathumbs
                 If Master.GlobalScrapeMod.EThumbs Then
                     If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
                         aList.Clear()
@@ -1460,6 +1767,8 @@ Public Class frmMain
                             If Not ModulesManager.Instance.MovieScrapeImages(DBScrapeMovie, Enums.ScraperCapabilities.Fanart, aList) Then
                                 etList = Images.GetPreferredEThumbs(aList)
                                 If etList.Count > 0 Then
+                                    Dim eti As Integer = 0
+                                    Dim etMax As Integer = Master.eSettings.MovieEThumbsLimit
                                     For Each lItem As String In etList
                                         Dim EThumb As New Images
                                         EThumb.FromWeb(lItem)
@@ -1468,14 +1777,18 @@ Public Class frmMain
                                             If Not String.IsNullOrEmpty(etPath) Then
                                                 DBScrapeMovie.EThumbsPath = etPath
                                                 MovieScraperEvent(Enums.MovieScraperEventType.EThumbsItem, True)
+                                                eti = eti + 1
                                             End If
                                         End If
+                                        If etMax > 0 AndAlso eti >= etMax Then Exit For
                                     Next
                                 End If
                             End If
                         End If
+                        End If
                     End If
-                End If
+
+                'Extrafanarts
                 If Master.GlobalScrapeMod.EFanarts Then
                     If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
                         aList.Clear()
@@ -1484,6 +1797,8 @@ Public Class frmMain
                             If Not ModulesManager.Instance.MovieScrapeImages(DBScrapeMovie, Enums.ScraperCapabilities.Fanart, aList) Then
                                 efList = Images.GetPreferredEFanarts(aList)
                                 If efList.Count > 0 Then
+                                    Dim efi As Integer = 0
+                                    Dim efMax As Integer = Master.eSettings.MovieEFanartsLimit
                                     For Each lItem As String In efList
                                         Dim EFanart As New Images
                                         EFanart.FromWeb(lItem)
@@ -1491,15 +1806,20 @@ Public Class frmMain
                                             Dim efPath As String = EFanart.SaveAsMovieExtrafanart(DBScrapeMovie, Path.GetFileName(lItem))
                                             If Not String.IsNullOrEmpty(efPath) Then
                                                 DBScrapeMovie.EFanartsPath = efPath
+                                                MovieScraperEvent(Enums.MovieScraperEventType.EFanartsItem, True)
+                                                efi = efi + 1
                                             End If
                                         End If
+                                        If efMax > 0 AndAlso efi >= efMax Then Exit For
                                     Next
                                 End If
                             End If
                         End If
                     End If
                 End If
-                If Master.GlobalScrapeMod.Actors AndAlso Master.eSettings.MovieScraperActorThumbs Then
+
+                'ActorThumbs
+                If Master.GlobalScrapeMod.ActorThumbs AndAlso (Master.eSettings.MovieActorThumbsFrodo OrElse Master.eSettings.MovieActorThumbsEden) Then
                     If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
                         For Each act As MediaContainers.Person In DBScrapeMovie.Movie.Actors
                             Dim img As New Images
@@ -1833,13 +2153,19 @@ doCancel:
             Dim MissingFilter As New List(Of String)
             If Me.chkFilterMissing.Checked Then
                 With Master.eSettings
-                    If .MovieMissingPoster Then MissingFilter.Add("HasPoster = 0")
-                    If .MovieMissingFanart Then MissingFilter.Add("HasFanart = 0")
-                    If .MovieMissingNFO Then MissingFilter.Add("HasNfo = 0")
-                    If .MovieMissingTrailer Then MissingFilter.Add("HasTrailer = 0")
-                    If .MovieMissingSubs Then MissingFilter.Add("HasSub = 0")
-                    If .MovieMissingEThumbs Then MissingFilter.Add("HasEThumbs = 0")
+                    If .MovieMissingBanner Then MissingFilter.Add("HasBanner = 0")
+                    If .MovieMissingClearArt Then MissingFilter.Add("HasClearArt = 0")
+                    If .MovieMissingClearLogo Then MissingFilter.Add("HasClearLogo = 0")
+                    If .MovieMissingDiscArt Then MissingFilter.Add("HasDiscArt = 0")
                     If .MovieMissingEFanarts Then MissingFilter.Add("HasEFanarts = 0")
+                    If .MovieMissingEThumbs Then MissingFilter.Add("HasEThumbs = 0")
+                    If .MovieMissingFanart Then MissingFilter.Add("HasFanart = 0")
+                    If .MovieMissingLandscape Then MissingFilter.Add("HasLandscape = 0")
+                    If .MovieMissingNFO Then MissingFilter.Add("HasNfo = 0")
+                    If .MovieMissingPoster Then MissingFilter.Add("HasPoster = 0")
+                    If .MovieMissingSubs Then MissingFilter.Add("HasSub = 0")
+                    If .MovieMissingTheme Then MissingFilter.Add("HasTheme = 0")
+                    If .MovieMissingTrailer Then MissingFilter.Add("HasTrailer = 0")
                 End With
                 filMissing = Microsoft.VisualBasic.Strings.Join(MissingFilter.ToArray, " OR ")
                 Me.FilterArray.Add(filMissing)
@@ -2243,10 +2569,17 @@ doCancel:
                         Functions.SetScraperMod(Enums.ModType.All, True, True)
                         Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultMovieOptions)
                     Case Windows.Forms.DialogResult.Abort
+                        Master.currMovie.ClearBanner = False
+                        Master.currMovie.ClearClearArt = False
+                        Master.currMovie.ClearClearLogo = False
+                        Master.currMovie.ClearDiscArt = False
                         Master.currMovie.ClearEThumbs = False
                         Master.currMovie.ClearEFanarts = False
                         Master.currMovie.ClearFanart = False
+                        Master.currMovie.ClearLandscape = False
                         Master.currMovie.ClearPoster = False
+                        Master.currMovie.ClearTheme = False
+                        Master.currMovie.ClearTrailer = False
                         Functions.SetScraperMod(Enums.ModType.DoSearch, True)
                         Functions.SetScraperMod(Enums.ModType.All, True, False)
                         Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultMovieOptions)
@@ -3225,15 +3558,37 @@ doCancel:
         ModulesManager.Instance.TVScrapeEpisode(Convert.ToInt32(Me.dgvTVEpisodes.Item(1, Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Me.tmpTitle, Me.tmpTVDB, Convert.ToInt32(Me.dgvTVEpisodes.Item(2, Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Convert.ToInt32(Me.dgvTVEpisodes.Item(12, Me.dgvTVEpisodes.SelectedRows(0).Index).Value), Me.tmpLang, Me.tmpOrdering, Master.DefaultTVOptions)
     End Sub
 
-    Private Sub cmnuRescrapeShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowRescrape.Click
+    Private Sub cmnuShowRefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowRefresh.Click
+        Me.SetControlsEnabled(False, True)
+        TVShowRefreshData()
+    End Sub
+
+    Private Sub cmnuShowRescrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowRescrape.Click
         Me.SetControlsEnabled(False, True)
         TVShowScrapeData()
+    End Sub
+
+    Sub TVShowRefreshData()
+        Me.SetControlsEnabled(False)
+        For Each s As DataGridViewRow In Me.dgvTVShows.SelectedRows
+            ' Temporary Scrapetype
+            Dim ScrapeType As Enums.ScrapeType
+            'If Me.dgvTVShows.SelectedRows.Count = 1 Then
+            'ScrapeType = Enums.ScrapeType.FullAsk
+            'Else
+            'ScrapeType = Enums.ScrapeType.FullAuto
+            'End If
+            ScrapeType = Enums.ScrapeType.FullAuto
+            Dim Lang As String = Me.dgvTVShows.Item(22, s.Index).Value.ToString
+            ModulesManager.Instance.TVScrapeOnly(Convert.ToInt32(Me.dgvTVShows.Item(0, s.Index).Value), Me.dgvTVShows.Item(1, s.Index).Value.ToString, Me.dgvTVShows.Item(9, s.Index).Value.ToString, If(String.IsNullOrEmpty(Lang), AdvancedSettings.GetSetting("TVDBLanguage", "en"), Lang), DirectCast(Convert.ToInt32(Me.dgvTVShows.Item(23, s.Index).Value), Enums.Ordering), Master.DefaultTVOptions, ScrapeType, True)
+        Next
+        Me.SetControlsEnabled(True)
     End Sub
 
     Sub TVShowScrapeData()
         Me.SetControlsEnabled(False)
         For Each s As DataGridViewRow In Me.dgvTVShows.SelectedRows
-            ' Temporary Scratetype
+            ' Temporary Scrapetype
             Dim ScrapeType As Enums.ScrapeType
             'If Me.dgvTVShows.SelectedRows.Count = 1 Then
             'ScrapeType = Enums.ScrapeType.FullAsk
@@ -3534,7 +3889,7 @@ doCancel:
                         Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
                     End Try
                 End If
-            ElseIf Master.eSettings.MovieClickScrape AndAlso e.RowIndex >= 0 AndAlso e.ColumnIndex <> 8 AndAlso e.ColumnIndex <> 34 AndAlso Not bwMovieScraper.IsBusy Then
+            ElseIf Master.eSettings.MovieClickScrape AndAlso e.RowIndex >= 0 AndAlso e.ColumnIndex <> 8 AndAlso e.ColumnIndex <> 62 AndAlso Not bwMovieScraper.IsBusy Then
                 Dim movie As Int32 = CType(Me.dgvMovies.Rows(e.RowIndex).Cells(0).Value, Int32)
                 Dim objCell As DataGridViewCell = CType(Me.dgvMovies.Rows(e.RowIndex).Cells(e.ColumnIndex), DataGridViewCell)
 
@@ -3558,8 +3913,20 @@ doCancel:
                         Functions.SetScraperMod(Enums.ModType.EThumbs, True)
                     Case 10 'Metadata - need to add this column to the view.
                         Functions.SetScraperMod(Enums.ModType.Meta, True)
-                    Case 11 'Extrafanart - need to add this column to the view.
+                    Case 49 'Extrafanart
                         Functions.SetScraperMod(Enums.ModType.EFanarts, True)
+                    Case 51 'Banner
+                        Functions.SetScraperMod(Enums.ModType.Banner, True)
+                    Case 53 'Landscape
+                        Functions.SetScraperMod(Enums.ModType.Landscape, True)
+                    Case 55 'Theme
+                        Functions.SetScraperMod(Enums.ModType.Theme, True)
+                    Case 57 'DiscArt
+                        Functions.SetScraperMod(Enums.ModType.DiscArt, True)
+                    Case 59 'ClearLogo
+                        Functions.SetScraperMod(Enums.ModType.ClearLogo, True)
+                    Case 61 'ClearArt
+                        Functions.SetScraperMod(Enums.ModType.ClearArt, True)
                 End Select
                 If Master.eSettings.MovieClickScrapeAsk Then
                     MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions)
@@ -3647,12 +4014,13 @@ doCancel:
                 If e.RowIndex >= 0 AndAlso dgvMovies.SelectedRows.Count > 0 Then
 
                     Me.cmnuMovie.Enabled = True
+                    Me.cmnuMovieChange.Visible = False
                     Me.cmnuMovieEdit.Visible = False
+                    Me.cmnuMovieEditMetaData.Visible = False
                     Me.cmnuMovieReSel.Visible = True
                     Me.cmnuMovieRescrape.Visible = False
-                    Me.cmnuMovieChange.Visible = False
+                    Me.cmnuMovieUpSel.Visible = True
                     'Me.cmuRenamer.Visible = False
-                    Me.cmnuMovieEditMetaData.Visible = False
                     Me.cmnuSep2.Visible = False
 
                     If Me.dgvMovies.SelectedRows.Count > 1 AndAlso Me.dgvMovies.Rows(e.RowIndex).Selected Then
@@ -3693,11 +4061,12 @@ doCancel:
                         Me.cmnuMovieGenresSet.Enabled = False
                         Me.cmnuMovieGenresRemove.Enabled = False
                     Else
+                        Me.cmnuMovieChange.Visible = True
                         Me.cmnuMovieEdit.Visible = True
+                        Me.cmnuMovieEditMetaData.Visible = True
                         Me.cmnuMovieReSel.Visible = True
                         Me.cmnuMovieRescrape.Visible = True
-                        Me.cmnuMovieChange.Visible = True
-                        Me.cmnuMovieEditMetaData.Visible = True
+                        Me.cmnuMovieUpSel.Visible = True
                         Me.cmnuSep.Visible = True
                         Me.cmnuSep2.Visible = True
 
@@ -3783,7 +4152,7 @@ doCancel:
             End If
 
             'icons
-            If e.ColumnIndex >= 4 AndAlso e.ColumnIndex <= 34 AndAlso e.RowIndex = -1 Then
+            If e.ColumnIndex >= 4 AndAlso e.ColumnIndex <= 61 AndAlso e.RowIndex = -1 Then
                 e.PaintBackground(e.ClipBounds, False)
 
                 Dim pt As Point = e.CellBounds.Location
@@ -3793,6 +4162,20 @@ doCancel:
                 pt.Y = 3
                 If e.ColumnIndex = 34 Then
                     Me.ilColumnIcons.Draw(e.Graphics, pt, e.ColumnIndex - 26)
+                ElseIf e.ColumnIndex = 49 Then
+                    Me.ilColumnIcons.Draw(e.Graphics, pt, e.ColumnIndex - 40)
+                ElseIf e.ColumnIndex = 51 Then
+                    Me.ilColumnIcons.Draw(e.Graphics, pt, e.ColumnIndex - 41)
+                ElseIf e.ColumnIndex = 53 Then
+                    Me.ilColumnIcons.Draw(e.Graphics, pt, e.ColumnIndex - 42)
+                ElseIf e.ColumnIndex = 55 Then
+                    Me.ilColumnIcons.Draw(e.Graphics, pt, e.ColumnIndex - 43)
+                ElseIf e.ColumnIndex = 57 Then
+                    Me.ilColumnIcons.Draw(e.Graphics, pt, e.ColumnIndex - 44)
+                ElseIf e.ColumnIndex = 59 Then
+                    Me.ilColumnIcons.Draw(e.Graphics, pt, e.ColumnIndex - 45)
+                ElseIf e.ColumnIndex = 61 Then
+                    Me.ilColumnIcons.Draw(e.Graphics, pt, e.ColumnIndex - 46)
                 Else
                     Me.ilColumnIcons.Draw(e.Graphics, pt, e.ColumnIndex - 4)
                 End If
@@ -3818,7 +4201,7 @@ doCancel:
                 End If
             End If
 
-            If e.ColumnIndex >= 3 AndAlso e.ColumnIndex <= 34 AndAlso e.RowIndex >= 0 Then
+            If e.ColumnIndex >= 3 AndAlso e.ColumnIndex <= 61 AndAlso e.RowIndex >= 0 Then
                 If Convert.ToBoolean(Me.dgvMovies.Item(14, e.RowIndex).Value) Then                  'is locked
                     e.CellStyle.BackColor = Color.LightSteelBlue
                     e.CellStyle.SelectionBackColor = Color.DarkTurquoise
@@ -3830,7 +4213,7 @@ doCancel:
                     e.CellStyle.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
                 End If
 
-                If e.ColumnIndex >= 4 AndAlso e.ColumnIndex <= 34 Then
+                If e.ColumnIndex >= 4 AndAlso e.ColumnIndex <= 61 Then
                     e.PaintBackground(e.ClipBounds, True)
 
                     Dim pt As Point = e.CellBounds.Location
@@ -4749,6 +5132,7 @@ doCancel:
                         Me.ToolStripSeparator8.Visible = True
                         Me.cmnuShowEdit.Visible = True
                         Me.ToolStripSeparator7.Visible = True
+                        Me.cmnuShowRefresh.Visible = True
                         Me.cmnuShowRescrape.Visible = True
                         Me.cmnuShowChange.Visible = True
                         Me.cmnuShowOpenFolder.Visible = True
@@ -4984,18 +5368,33 @@ doCancel:
             Me.ClearInfo()
 
             If Not String.IsNullOrEmpty(Me.filSearch) AndAlso Me.cbSearch.Text = Master.eLang.GetString(100, "Actor") Then
-                Master.DB.FillDataTable(Me.dtMedia, String.Concat("SELECT ID, MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasEThumbs, New, Mark, Source, Imdb, Lock, Title, OriginalTitle, Year, Rating, Votes, MPAA, Top250, Country, Outline, Plot, Tagline, Certification, Genre, Studio, Runtime, ReleaseDate, Director, Credits, Playcount, HasWatched, Trailer, PosterPath, FanartPath, EThumbsPath, NfoPath, TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, FileSource, NeedsSave, SortTitle, DateAdd, HasEFanarts, EFanartsPath FROM movies WHERE ID IN (SELECT MovieID FROM MoviesActors WHERE ActorName LIKE '%", Me.filSearch, "%') ORDER BY ListTitle COLLATE NOCASE;"))
+                Master.DB.FillDataTable(Me.dtMedia, String.Concat("SELECT ID, MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, ", _
+                                                                  "HasTrailer, HasSub, HasEThumbs, New, Mark, Source, Imdb, Lock, Title, OriginalTitle, ", _
+                                                                  "Year, Rating, Votes, MPAA, Top250, Country, Outline, Plot, Tagline, Certification, Genre, ", _
+                                                                  "Studio, Runtime, ReleaseDate, Director, Credits, Playcount, HasWatched, Trailer, PosterPath, ", _
+                                                                  "FanartPath, EThumbsPath, NfoPath, TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, ", _
+                                                                  "FileSource, NeedsSave, SortTitle, DateAdd, HasEFanarts, EFanartsPath, HasBanner, BannerPath, ", _
+                                                                  "HasLandscape, LandscapePath, HasTheme, ThemePath, HasDiscArt, DiscArtPath, ", _
+                                                                  "HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath FROM movies WHERE ID IN ", _
+                                                                  "(SELECT MovieID FROM MoviesActors WHERE ActorName LIKE '%", Me.filSearch, "%') ORDER BY ListTitle COLLATE NOCASE;"))
             ElseIf Not String.IsNullOrEmpty(Me.filSearch) AndAlso Me.cbSearch.Text = Master.eLang.GetString(233, "Role") Then
-                Master.DB.FillDataTable(Me.dtMedia, String.Concat("SELECT ID, MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasEThumbs, New, Mark, Source, Imdb, Lock, Title, OriginalTitle, Year, Rating, Votes, MPAA, Top250, Country, Outline, Plot, Tagline, Certification, Genre, Studio, Runtime, ReleaseDate, Director, Credits, Playcount, HasWatched, Trailer, PosterPath, FanartPath, EThumbsPath, NfoPath, TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, FileSource, NeedsSave, SortTitle, DateAdd, HasEFanarts, EFanartsPath FROM movies WHERE ID IN (SELECT MovieID FROM MoviesActors WHERE Role LIKE '%", Me.filSearch, "%') ORDER BY ListTitle COLLATE NOCASE;"))
+                Master.DB.FillDataTable(Me.dtMedia, String.Concat("SELECT ID, MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, ", _
+                                                                  "HasSub, HasEThumbs, New, Mark, Source, Imdb, Lock, Title, OriginalTitle, Year, Rating, Votes, ", _
+                                                                  "MPAA, Top250, Country, Outline, Plot, Tagline, Certification, Genre, Studio, Runtime, ReleaseDate, ", _
+                                                                  "Director, Credits, Playcount, HasWatched, Trailer, PosterPath, FanartPath, EThumbsPath, NfoPath, ", _
+                                                                  "TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, FileSource, NeedsSave, SortTitle, DateAdd, ", _
+                                                                  "HasEFanarts, EFanartsPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasTheme, ThemePath, HasDiscArt, DiscArtPath, ", _
+                                                                  "HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath FROM movies ", _
+                                                                  "WHERE ID IN (SELECT MovieID FROM MoviesActors WHERE Role LIKE '%", Me.filSearch, "%') ORDER BY ListTitle COLLATE NOCASE;"))
             Else
                 If Me.chkFilterDupe.Checked Then
-                    Master.DB.FillDataTable(Me.dtMedia, "SELECT ID, MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasEThumbs, New, Mark, Source, Imdb, Lock, Title, OriginalTitle, Year, Rating, Votes, MPAA, Top250, Country, Outline, Plot, Tagline, Certification, Genre, Studio, Runtime, ReleaseDate, Director, Credits, Playcount, HasWatched, Trailer, PosterPath, FanartPath, EThumbsPath, NfoPath, TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, FileSource, NeedsSave, SortTitle, DateAdd, HasEFanarts, EFanartsPath FROM movies WHERE imdb IN (SELECT imdb FROM movies WHERE imdb IS NOT NULL AND LENGTH(imdb) > 0 GROUP BY imdb HAVING ( COUNT(imdb) > 1 )) ORDER BY ListTitle COLLATE NOCASE;")
+                    Master.DB.FillDataTable(Me.dtMedia, "SELECT ID, MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasEThumbs, New, Mark, Source, Imdb, Lock, Title, OriginalTitle, Year, Rating, Votes, MPAA, Top250, Country, Outline, Plot, Tagline, Certification, Genre, Studio, Runtime, ReleaseDate, Director, Credits, Playcount, HasWatched, Trailer, PosterPath, FanartPath, EThumbsPath, NfoPath, TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, FileSource, NeedsSave, SortTitle, DateAdd, HasEFanarts, EFanartsPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasTheme, ThemePath, HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath FROM movies WHERE imdb IN (SELECT imdb FROM movies WHERE imdb IS NOT NULL AND LENGTH(imdb) > 0 GROUP BY imdb HAVING ( COUNT(imdb) > 1 )) ORDER BY ListTitle COLLATE NOCASE;")
                 Else
-                    Master.DB.FillDataTable(Me.dtMedia, "SELECT ID, MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasEThumbs, New, Mark, Source, Imdb, Lock, Title, OriginalTitle, Year, Rating, Votes, MPAA, Top250, Country, Outline, Plot, Tagline, Certification, Genre, Studio, Runtime, ReleaseDate, Director, Credits, Playcount, HasWatched, Trailer, PosterPath, FanartPath, EThumbsPath, NfoPath, TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, FileSource, NeedsSave, SortTitle, DateAdd, HasEFanarts, EFanartsPath FROM movies ORDER BY ListTitle COLLATE NOCASE;")
+                    Master.DB.FillDataTable(Me.dtMedia, "SELECT ID, MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasEThumbs, New, Mark, Source, Imdb, Lock, Title, OriginalTitle, Year, Rating, Votes, MPAA, Top250, Country, Outline, Plot, Tagline, Certification, Genre, Studio, Runtime, ReleaseDate, Director, Credits, Playcount, HasWatched, Trailer, PosterPath, FanartPath, EThumbsPath, NfoPath, TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, FileSource, NeedsSave, SortTitle, DateAdd, HasEFanarts, EFanartsPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasTheme, ThemePath, HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath FROM movies ORDER BY ListTitle COLLATE NOCASE;")
                 End If
             End If
 
-            Master.DB.FillDataTable(Me.dtShows, "SELECT ID, Title, HasPoster, HasFanart, HasNfo, New, Mark, TVShowPath, Source, TVDB, Lock, EpisodeGuide, Plot, Genre, Premiered, Studio, MPAA, Rating, PosterPath, FanartPath, NfoPath, NeedsSave, Language, Ordering, HasBanner, BannerPath, HasLandscape, LandscapePath, Status FROM TVShows ORDER BY Title COLLATE NOCASE;")
+            Master.DB.FillDataTable(Me.dtShows, "SELECT ID, Title, HasPoster, HasFanart, HasNfo, New, Mark, TVShowPath, Source, TVDB, Lock, EpisodeGuide, Plot, Genre, Premiered, Studio, MPAA, Rating, PosterPath, FanartPath, NfoPath, NeedsSave, Language, Ordering, HasBanner, BannerPath, HasLandscape, LandscapePath, Status, HasTheme, ThemePath, HasCharacterArt, CharacterArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath FROM TVShows ORDER BY Title COLLATE NOCASE;")
 
             If isCL Then
                 Me.LoadingDone = True
@@ -5031,7 +5430,7 @@ doCancel:
                         .dgvMovies.Columns(6).Resizable = DataGridViewTriState.False
                         .dgvMovies.Columns(6).ReadOnly = True
                         .dgvMovies.Columns(6).SortMode = DataGridViewColumnSortMode.Automatic
-                        .dgvMovies.Columns(6).Visible = Not Master.eSettings.MovieInfoCol
+                        .dgvMovies.Columns(6).Visible = Not Master.eSettings.MovieNFOCol
                         .dgvMovies.Columns(6).ToolTipText = Master.eLang.GetString(150, "Nfo")
                         .dgvMovies.Columns(7).Width = 20
                         .dgvMovies.Columns(7).Resizable = DataGridViewTriState.False
@@ -5081,8 +5480,70 @@ doCancel:
                         .dgvMovies.Columns(34).SortMode = DataGridViewColumnSortMode.Automatic
                         .dgvMovies.Columns(34).Visible = Not Master.eSettings.MovieWatchedCol
                         .dgvMovies.Columns(34).ToolTipText = Master.eLang.GetString(981, "Watched")
+                        .dgvMovies.Columns(35).Visible = False
+                        .dgvMovies.Columns(36).Visible = False
+                        .dgvMovies.Columns(37).Visible = False
+                        .dgvMovies.Columns(38).Visible = False
+                        .dgvMovies.Columns(39).Visible = False
+                        .dgvMovies.Columns(40).Visible = False
+                        .dgvMovies.Columns(41).Visible = False
+                        .dgvMovies.Columns(42).Visible = False
+                        .dgvMovies.Columns(43).Visible = False
+                        .dgvMovies.Columns(44).Visible = False
+                        .dgvMovies.Columns(45).Visible = False
+                        .dgvMovies.Columns(46).Visible = False
+                        .dgvMovies.Columns(47).Visible = False
+                        .dgvMovies.Columns(48).Visible = False
+                        .dgvMovies.Columns(49).Width = 20
+                        .dgvMovies.Columns(49).Resizable = DataGridViewTriState.False
+                        .dgvMovies.Columns(49).ReadOnly = True
+                        .dgvMovies.Columns(49).SortMode = DataGridViewColumnSortMode.Automatic
+                        .dgvMovies.Columns(49).Visible = Not Master.eSettings.MovieEFanartsCol
+                        .dgvMovies.Columns(49).ToolTipText = Master.eLang.GetString(992, "Extrafanarts")
+                        .dgvMovies.Columns(50).Visible = False
+                        .dgvMovies.Columns(51).Width = 20
+                        .dgvMovies.Columns(51).Resizable = DataGridViewTriState.False
+                        .dgvMovies.Columns(51).ReadOnly = True
+                        .dgvMovies.Columns(51).SortMode = DataGridViewColumnSortMode.Automatic
+                        .dgvMovies.Columns(51).Visible = Not Master.eSettings.MovieBannerCol
+                        .dgvMovies.Columns(51).ToolTipText = Master.eLang.GetString(838, "Banner")
+                        .dgvMovies.Columns(52).Visible = False
+                        .dgvMovies.Columns(53).Width = 20
+                        .dgvMovies.Columns(53).Resizable = DataGridViewTriState.False
+                        .dgvMovies.Columns(53).ReadOnly = True
+                        .dgvMovies.Columns(53).SortMode = DataGridViewColumnSortMode.Automatic
+                        .dgvMovies.Columns(53).Visible = Not Master.eSettings.MovieLandscapeCol
+                        .dgvMovies.Columns(53).ToolTipText = Master.eLang.GetString(1035, "Landscape")
+                        .dgvMovies.Columns(54).Visible = False
+                        .dgvMovies.Columns(55).Width = 20
+                        .dgvMovies.Columns(55).Resizable = DataGridViewTriState.False
+                        .dgvMovies.Columns(55).ReadOnly = True
+                        .dgvMovies.Columns(55).SortMode = DataGridViewColumnSortMode.Automatic
+                        .dgvMovies.Columns(55).Visible = Not Master.eSettings.MovieThemeCol
+                        .dgvMovies.Columns(55).ToolTipText = Master.eLang.GetString(1118, "Theme")
+                        .dgvMovies.Columns(56).Visible = False
+                        .dgvMovies.Columns(57).Width = 20
+                        .dgvMovies.Columns(57).Resizable = DataGridViewTriState.False
+                        .dgvMovies.Columns(57).ReadOnly = True
+                        .dgvMovies.Columns(57).SortMode = DataGridViewColumnSortMode.Automatic
+                        .dgvMovies.Columns(57).Visible = Not Master.eSettings.MovieDiscArtCol
+                        .dgvMovies.Columns(57).ToolTipText = Master.eLang.GetString(1098, "DiscArt")
+                        .dgvMovies.Columns(58).Visible = False
+                        .dgvMovies.Columns(59).Width = 20
+                        .dgvMovies.Columns(59).Resizable = DataGridViewTriState.False
+                        .dgvMovies.Columns(59).ReadOnly = True
+                        .dgvMovies.Columns(59).SortMode = DataGridViewColumnSortMode.Automatic
+                        .dgvMovies.Columns(59).Visible = Not Master.eSettings.MovieClearLogoCol
+                        .dgvMovies.Columns(59).ToolTipText = Master.eLang.GetString(1097, "ClearLogo")
+                        .dgvMovies.Columns(60).Visible = False
+                        .dgvMovies.Columns(61).Width = 20
+                        .dgvMovies.Columns(61).Resizable = DataGridViewTriState.False
+                        .dgvMovies.Columns(61).ReadOnly = True
+                        .dgvMovies.Columns(61).SortMode = DataGridViewColumnSortMode.Automatic
+                        .dgvMovies.Columns(61).Visible = Not Master.eSettings.MovieClearArtCol
+                        .dgvMovies.Columns(61).ToolTipText = Master.eLang.GetString(1096, "ClearArt")
 
-                        For i As Integer = 35 To .dgvMovies.Columns.Count - 1
+                        For i As Integer = 62 To .dgvMovies.Columns.Count - 1
                             .dgvMovies.Columns(i).Visible = False
                         Next
 
@@ -5133,7 +5594,26 @@ doCancel:
                         .dgvTVShows.Columns(4).SortMode = DataGridViewColumnSortMode.Automatic
                         .dgvTVShows.Columns(4).Visible = Not Master.eSettings.TVShowNfoCol
                         .dgvTVShows.Columns(4).ToolTipText = Master.eLang.GetString(150, "Nfo")
-                        For i As Integer = 5 To .dgvTVShows.Columns.Count - 1
+                        .dgvTVShows.Columns(5).Visible = False
+                        .dgvTVShows.Columns(6).Visible = False
+                        .dgvTVShows.Columns(7).Visible = False
+                        .dgvTVShows.Columns(8).Visible = False
+                        .dgvTVShows.Columns(9).Visible = False
+                        .dgvTVShows.Columns(10).Visible = False
+                        .dgvTVShows.Columns(11).Visible = False
+                        .dgvTVShows.Columns(12).Visible = False
+                        .dgvTVShows.Columns(13).Visible = False
+                        .dgvTVShows.Columns(14).Visible = False
+                        .dgvTVShows.Columns(15).Visible = False
+                        .dgvTVShows.Columns(16).Visible = False
+                        .dgvTVShows.Columns(17).Visible = False
+                        .dgvTVShows.Columns(18).Visible = False
+                        .dgvTVShows.Columns(19).Visible = False
+                        .dgvTVShows.Columns(20).Visible = False
+                        .dgvTVShows.Columns(21).Visible = False
+                        .dgvTVShows.Columns(22).Visible = False
+                        .dgvTVShows.Columns(23).Visible = False
+                        For i As Integer = 24 To .dgvTVShows.Columns.Count - 1
                             .dgvTVShows.Columns(i).Visible = False
                         Next
 
@@ -6261,17 +6741,26 @@ doCancel:
                     Case "-fullauto"
                         clScrapeType = Enums.ScrapeType.FullAuto
                         clAsk = False
+                    Case "-fullskip"
+                        clScrapeType = Enums.ScrapeType.FullSkip
+                        clAsk = False
                     Case "-missask"
                         clScrapeType = Enums.ScrapeType.UpdateAsk
                         clAsk = True
                     Case "-missauto"
                         clScrapeType = Enums.ScrapeType.UpdateAuto
                         clAsk = False
+                    Case "-missskip"
+                        clScrapeType = Enums.ScrapeType.UpdateSkip
+                        clAsk = True
                     Case "-newask"
                         clScrapeType = Enums.ScrapeType.NewAsk
                         clAsk = True
                     Case "-newauto"
                         clScrapeType = Enums.ScrapeType.NewAuto
+                        clAsk = False
+                    Case "-newskip"
+                        clScrapeType = Enums.ScrapeType.NewSkip
                         clAsk = False
                     Case "-markask"
                         clScrapeType = Enums.ScrapeType.MarkAsk
@@ -6279,6 +6768,9 @@ doCancel:
                     Case "-markauto"
                         clScrapeType = Enums.ScrapeType.MarkAuto
                         clAsk = False
+                    Case "-markskip"
+                        clScrapeType = Enums.ScrapeType.MarkSkip
+                        clAsk = True
                     Case "-file"
                         If Args.Count - 1 > i Then
                             isSingle = False
@@ -6324,16 +6816,30 @@ doCancel:
                         End If
                     Case "-all"
                         Functions.SetScraperMod(Enums.ModType.All, True)
+                    Case "-banner"
+                        Functions.SetScraperMod(Enums.ModType.Banner, True)
+                    Case "-clearart"
+                        Functions.SetScraperMod(Enums.ModType.ClearArt, True)
+                    Case "-clearlogo"
+                        Functions.SetScraperMod(Enums.ModType.ClearLogo, True)
+                    Case "-discart"
+                        Functions.SetScraperMod(Enums.ModType.DiscArt, True)
+                    Case "-efanarts"
+                        Functions.SetScraperMod(Enums.ModType.EFanarts, True)
+                    Case "-ethumbs"
+                        Functions.SetScraperMod(Enums.ModType.EThumbs, True)
+                    Case "-fanart"
+                        Functions.SetScraperMod(Enums.ModType.Fanart, True)
+                    Case "-landscape"
+                        Functions.SetScraperMod(Enums.ModType.Landscape, True)
                     Case "-nfo"
                         Functions.SetScraperMod(Enums.ModType.NFO, True)
                     Case "-posters"
                         Functions.SetScraperMod(Enums.ModType.Poster, True)
-                    Case "-fanart"
-                        Functions.SetScraperMod(Enums.ModType.Fanart, True)
-                    Case "-ethumbs"
-                        Functions.SetScraperMod(Enums.ModType.EThumbs, True)
-                    Case "-efanarts"
-                        Functions.SetScraperMod(Enums.ModType.EFanarts, True)
+                    Case "-theme"
+                        Functions.SetScraperMod(Enums.ModType.Theme, True)
+                    Case "-trailer"
+                        Functions.SetScraperMod(Enums.ModType.Trailer, True)
                     Case "--verbose"
                         clAsk = True
                     Case "-nowindow"
@@ -6442,16 +6948,22 @@ doCancel:
 
                                 If Not String.IsNullOrEmpty(Master.currMovie.ListTitle) Then
                                     Master.currMovie.NfoPath = sFile.Nfo
-                                    Master.currMovie.PosterPath = sFile.Poster
-                                    Master.currMovie.FanartPath = sFile.Fanart
-                                    Master.currMovie.TrailerPath = sFile.Trailer
-                                    Master.currMovie.SubPath = sFile.Subs
+                                    Master.currMovie.BannerPath = sFile.Banner
+                                    Master.currMovie.ClearArtPath = sFile.ClearArt
+                                    Master.currMovie.ClearLogoPath = sFile.ClearLogo
+                                    Master.currMovie.DiscArtPath = sFile.DiscArt
                                     Master.currMovie.EThumbsPath = sFile.EThumbs
                                     Master.currMovie.EFanartsPath = sFile.EFanarts
+                                    Master.currMovie.FanartPath = sFile.Fanart
+                                    Master.currMovie.LandscapePath = sFile.Landscape
                                     Master.currMovie.Filename = sFile.Filename
                                     Master.currMovie.isSingle = sFile.isSingle
-                                    Master.currMovie.UseFolder = sFile.UseFolder
+                                    Master.currMovie.PosterPath = sFile.Poster
                                     Master.currMovie.Source = sFile.Source
+                                    Master.currMovie.SubPath = sFile.Subs
+                                    Master.currMovie.ThemePath = sFile.Theme
+                                    Master.currMovie.TrailerPath = sFile.Trailer
+                                    Master.currMovie.UseFolder = sFile.UseFolder
                                 End If
                                 Master.tmpMovie = Master.currMovie.Movie
                             End If
@@ -6865,8 +7377,23 @@ doCancel:
         Me.MovieScrapeData(False, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions)
     End Sub
 
-    Private Sub mnuAllAskEThumbs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAskEThumbs.Click, cmnuTrayAllAskEThumbs.Click
-        Functions.SetScraperMod(Enums.ModType.EThumbs, True)
+    Private Sub mnuAllAskBanner_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAskBanner.Click, cmnuTrayAllAskBanner.Click
+        Functions.SetScraperMod(Enums.ModType.Banner, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub mnuAllAskClearArt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAskClearArt.Click, cmnuTrayAllAskClearArt.Click
+        Functions.SetScraperMod(Enums.ModType.ClearArt, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub mnuAllAskClearLogo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAskClearLogo.Click, cmnuTrayAllAskClearLogo.Click
+        Functions.SetScraperMod(Enums.ModType.ClearLogo, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub mnuAllAskDiscArt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAskDiscArt.Click, cmnuTrayAllAskDiscArt.Click
+        Functions.SetScraperMod(Enums.ModType.DiscArt, True)
         Me.MovieScrapeData(False, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions)
     End Sub
 
@@ -6875,8 +7402,18 @@ doCancel:
         Me.MovieScrapeData(False, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions)
     End Sub
 
+    Private Sub mnuAllAskEThumbs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAskEThumbs.Click, cmnuTrayAllAskEThumbs.Click
+        Functions.SetScraperMod(Enums.ModType.EThumbs, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions)
+    End Sub
+
     Private Sub mnuAllAskFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAskFanart.Click, cmnuTrayAllAskFanart.Click
         Functions.SetScraperMod(Enums.ModType.Fanart, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub mnuAllAskLandscape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAskLandscape.Click, cmnuTrayAllAskLandscape.Click
+        Functions.SetScraperMod(Enums.ModType.Landscape, True)
         Me.MovieScrapeData(False, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions)
     End Sub
 
@@ -6895,6 +7432,11 @@ doCancel:
         Me.MovieScrapeData(False, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions)
     End Sub
 
+    Private Sub mnuAllAskTheme_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAskTheme.Click, cmnuTrayAllAskTheme.Click
+        Functions.SetScraperMod(Enums.ModType.Theme, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions)
+    End Sub
+
     Private Sub mnuAllAskTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAskTrailer.Click, cmnuTrayAllAskTrailer.Click
         Functions.SetScraperMod(Enums.ModType.Trailer, True)
         Me.MovieScrapeData(False, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions)
@@ -6905,8 +7447,23 @@ doCancel:
         Me.MovieScrapeData(False, Enums.ScrapeType.FullAuto, Master.DefaultMovieOptions)
     End Sub
 
-    Private Sub mnuAllAutoEThumbs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoEThumbs.Click, cmnuTrayAllAutoEThumbs.Click
-        Functions.SetScraperMod(Enums.ModType.EThumbs, True)
+    Private Sub mnuAllAutoBanner_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoBanner.Click, cmnuTrayAllAutoBanner.Click
+        Functions.SetScraperMod(Enums.ModType.Banner, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.FullAuto, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub mnuAllAutoClearArt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoClearArt.Click, cmnuTrayAllAutoClearArt.Click
+        Functions.SetScraperMod(Enums.ModType.ClearArt, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.FullAuto, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub mnuAllAutoClearLogo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoClearLogo.Click, cmnuTrayAllAutoClearLogo.Click
+        Functions.SetScraperMod(Enums.ModType.ClearLogo, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.FullAuto, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub mnuAllAutoDiscArt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoDiscArt.Click, cmnuTrayAllAutoDiscArt.Click
+        Functions.SetScraperMod(Enums.ModType.DiscArt, True)
         Me.MovieScrapeData(False, Enums.ScrapeType.FullAuto, Master.DefaultMovieOptions)
     End Sub
 
@@ -6915,8 +7472,18 @@ doCancel:
         Me.MovieScrapeData(False, Enums.ScrapeType.FullAuto, Master.DefaultMovieOptions)
     End Sub
 
+    Private Sub mnuAllAutoEThumbs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoEThumbs.Click, cmnuTrayAllAutoEThumbs.Click
+        Functions.SetScraperMod(Enums.ModType.EThumbs, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.FullAuto, Master.DefaultMovieOptions)
+    End Sub
+
     Private Sub mnuAllAutoFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoFanart.Click, cmnuTrayAllAutoFanart.Click
         Functions.SetScraperMod(Enums.ModType.Fanart, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.FullAuto, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub mnuAllAutoLandscape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoLandscape.Click, cmnuTrayAllAutoLandscape.Click
+        Functions.SetScraperMod(Enums.ModType.Landscape, True)
         Me.MovieScrapeData(False, Enums.ScrapeType.FullAuto, Master.DefaultMovieOptions)
     End Sub
 
@@ -6935,13 +7502,18 @@ doCancel:
         Me.MovieScrapeData(False, Enums.ScrapeType.FullAuto, Master.DefaultMovieOptions)
     End Sub
 
+    Private Sub mnuAllAutoTheme_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoTheme.Click, cmnuTrayAllAutoTheme.Click
+        Functions.SetScraperMod(Enums.ModType.Theme, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.FullAuto, Master.DefaultMovieOptions)
+    End Sub
+
     Private Sub mnuAllAutoTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoTrailer.Click, cmnuTrayAllAutoTrailer.Click
         Functions.SetScraperMod(Enums.ModType.Trailer, True)
         Me.MovieScrapeData(False, Enums.ScrapeType.FullAuto, Master.DefaultMovieOptions)
     End Sub
 
     Private Sub mnuAllAutoActor_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoActor.Click, cmnuTrayAllAutoActor.Click
-        Functions.SetScraperMod(Enums.ModType.Actor, True)
+        Functions.SetScraperMod(Enums.ModType.ActorThumbs, True)
         Me.MovieScrapeData(False, Enums.ScrapeType.FullAuto, Master.DefaultMovieOptions)
     End Sub
 
@@ -6955,8 +7527,23 @@ doCancel:
         Me.MovieScrapeData(False, Enums.ScrapeType.FilterAsk, Master.DefaultMovieOptions)
     End Sub
 
-    Private Sub mnuFilterAskEThumbs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAskEThumbs.Click, cmnuTrayFilterAskEThumbs.Click
-        Functions.SetScraperMod(Enums.ModType.EThumbs, True)
+    Private Sub mnuFilterAskBanner_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAskBanner.Click, cmnuTrayFilterAskBanner.Click
+        Functions.SetScraperMod(Enums.ModType.Banner, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.FilterAsk, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub mnuFilterAskClearArt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAskClearArt.Click, cmnuTrayFilterAskClearArt.Click
+        Functions.SetScraperMod(Enums.ModType.ClearArt, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.FilterAsk, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub mnuFilterAskClearLogo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAskClearLogo.Click, cmnuTrayFilterAskClearLogo.Click
+        Functions.SetScraperMod(Enums.ModType.ClearLogo, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.FilterAsk, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub mnuFilterAskDiscArt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAskDiscArt.Click, cmnuTrayFilterAskDiscArt.Click
+        Functions.SetScraperMod(Enums.ModType.DiscArt, True)
         Me.MovieScrapeData(False, Enums.ScrapeType.FilterAsk, Master.DefaultMovieOptions)
     End Sub
 
@@ -6965,8 +7552,18 @@ doCancel:
         Me.MovieScrapeData(False, Enums.ScrapeType.FilterAsk, Master.DefaultMovieOptions)
     End Sub
 
+    Private Sub mnuFilterAskEThumbs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAskEThumbs.Click, cmnuTrayFilterAskEThumbs.Click
+        Functions.SetScraperMod(Enums.ModType.EThumbs, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.FilterAsk, Master.DefaultMovieOptions)
+    End Sub
+
     Private Sub mnuFilterAskFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAskFanart.Click, cmnuTrayFilterAskFanart.Click
         Functions.SetScraperMod(Enums.ModType.Fanart, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.FilterAsk, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub mnuFilterAskLandscape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAskLandscape.Click, cmnuTrayFilterAskLandscape.Click
+        Functions.SetScraperMod(Enums.ModType.Landscape, True)
         Me.MovieScrapeData(False, Enums.ScrapeType.FilterAsk, Master.DefaultMovieOptions)
     End Sub
 
@@ -6985,6 +7582,11 @@ doCancel:
         Me.MovieScrapeData(False, Enums.ScrapeType.FilterAsk, Master.DefaultMovieOptions)
     End Sub
 
+    Private Sub mnuFilterAskTheme_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAskTheme.Click, cmnuTrayFilterAskTheme.Click
+        Functions.SetScraperMod(Enums.ModType.Theme, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.FilterAsk, Master.DefaultMovieOptions)
+    End Sub
+
     Private Sub mnuFilterAskTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAskTrailer.Click, cmnuTrayFilterAskTrailer.Click
         Functions.SetScraperMod(Enums.ModType.Trailer, True)
         Me.MovieScrapeData(False, Enums.ScrapeType.FilterAsk, Master.DefaultMovieOptions)
@@ -6995,8 +7597,23 @@ doCancel:
         Me.MovieScrapeData(False, Enums.ScrapeType.FilterAuto, Master.DefaultMovieOptions)
     End Sub
 
-    Private Sub mnuFilterAutoEThumbs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAutoEThumbs.Click, cmnuTrayFilterAutoEThumbs.Click
-        Functions.SetScraperMod(Enums.ModType.EThumbs, True)
+    Private Sub mnuFilterAutoBanner_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAutoBanner.Click, cmnuTrayFilterAutoBanner.Click
+        Functions.SetScraperMod(Enums.ModType.Banner, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.FilterAuto, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub mnuFilterAutoClearArt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAutoClearArt.Click, cmnuTrayFilterAutoClearArt.Click
+        Functions.SetScraperMod(Enums.ModType.ClearArt, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.FilterAuto, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub mnuFilterAutoClearLogo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAutoClearLogo.Click, cmnuTrayFilterAutoClearLogo.Click
+        Functions.SetScraperMod(Enums.ModType.ClearLogo, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.FilterAuto, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub mnuFilterAutoDiscArt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAutoDiscArt.Click, cmnuTrayFilterAutoDiscArt.Click
+        Functions.SetScraperMod(Enums.ModType.DiscArt, True)
         Me.MovieScrapeData(False, Enums.ScrapeType.FilterAuto, Master.DefaultMovieOptions)
     End Sub
 
@@ -7005,8 +7622,18 @@ doCancel:
         Me.MovieScrapeData(False, Enums.ScrapeType.FilterAuto, Master.DefaultMovieOptions)
     End Sub
 
+    Private Sub mnuFilterAutoEThumbs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAutoEThumbs.Click, cmnuTrayFilterAutoEThumbs.Click
+        Functions.SetScraperMod(Enums.ModType.EThumbs, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.FilterAuto, Master.DefaultMovieOptions)
+    End Sub
+
     Private Sub mnuFilterAutoFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAutoFanart.Click, cmnuTrayFilterAutoFanart.Click
         Functions.SetScraperMod(Enums.ModType.Fanart, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.FilterAuto, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub mnuFilterAutoLandscape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAutoLandscape.Click, cmnuTrayFilterAutoLandscape.Click
+        Functions.SetScraperMod(Enums.ModType.Landscape, True)
         Me.MovieScrapeData(False, Enums.ScrapeType.FilterAuto, Master.DefaultMovieOptions)
     End Sub
 
@@ -7025,6 +7652,11 @@ doCancel:
         Me.MovieScrapeData(False, Enums.ScrapeType.FilterAuto, Master.DefaultMovieOptions)
     End Sub
 
+    Private Sub mnuFilterAutoTheme_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAutoTheme.Click, cmnuTrayFilterAutoTheme.Click
+        Functions.SetScraperMod(Enums.ModType.Theme, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.FilterAuto, Master.DefaultMovieOptions)
+    End Sub
+
     Private Sub mnuFilterAutoTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAutoTrailer.Click, cmnuTrayFilterAutoTrailer.Click
         Functions.SetScraperMod(Enums.ModType.Trailer, True)
         Me.MovieScrapeData(False, Enums.ScrapeType.FilterAuto, Master.DefaultMovieOptions)
@@ -7040,8 +7672,23 @@ doCancel:
         Me.MovieScrapeData(False, Enums.ScrapeType.MarkAsk, Master.DefaultMovieOptions)
     End Sub
 
-    Private Sub mnuMarkAskEThumbs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAskEThumbs.Click, cmnuTrayMarkAskEThumbs.Click
-        Functions.SetScraperMod(Enums.ModType.EThumbs, True)
+    Private Sub mnuMarkAskBanner_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAskBanner.Click, cmnuTrayMarkAskBanner.Click
+        Functions.SetScraperMod(Enums.ModType.Banner, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.MarkAsk, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub mnuMarkAskClearArt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAskClearArt.Click, cmnuTrayMarkAskClearArt.Click
+        Functions.SetScraperMod(Enums.ModType.ClearArt, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.MarkAsk, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub mnuMarkAskClearLogo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAskClearLogo.Click, cmnuTrayMarkAskClearLogo.Click
+        Functions.SetScraperMod(Enums.ModType.ClearLogo, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.MarkAsk, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub mnuMarkAskDiscArt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAskDiscArt.Click, cmnuTrayMarkAskDiscArt.Click
+        Functions.SetScraperMod(Enums.ModType.DiscArt, True)
         Me.MovieScrapeData(False, Enums.ScrapeType.MarkAsk, Master.DefaultMovieOptions)
     End Sub
 
@@ -7050,8 +7697,18 @@ doCancel:
         Me.MovieScrapeData(False, Enums.ScrapeType.MarkAsk, Master.DefaultMovieOptions)
     End Sub
 
+    Private Sub mnuMarkAskEThumbs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAskEThumbs.Click, cmnuTrayMarkAskEThumbs.Click
+        Functions.SetScraperMod(Enums.ModType.EThumbs, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.MarkAsk, Master.DefaultMovieOptions)
+    End Sub
+
     Private Sub mnuMarkAskFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAskFanart.Click, cmnuTrayMarkAskFanart.Click
         Functions.SetScraperMod(Enums.ModType.Fanart, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.MarkAsk, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub mnuMarkAskLandscape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAskLandscape.Click, cmnuTrayMarkAskLandscape.Click
+        Functions.SetScraperMod(Enums.ModType.Landscape, True)
         Me.MovieScrapeData(False, Enums.ScrapeType.MarkAsk, Master.DefaultMovieOptions)
     End Sub
 
@@ -7070,6 +7727,11 @@ doCancel:
         Me.MovieScrapeData(False, Enums.ScrapeType.MarkAsk, Master.DefaultMovieOptions)
     End Sub
 
+    Private Sub mnuMarkAskTheme_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAskTheme.Click, cmnuTrayMarkAskTheme.Click
+        Functions.SetScraperMod(Enums.ModType.Theme, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.MarkAsk, Master.DefaultMovieOptions)
+    End Sub '
+
     Private Sub mnuMarkAskTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAskTrailer.Click, cmnuTrayMarkAskTrailer.Click
         Functions.SetScraperMod(Enums.ModType.Trailer, True)
         Me.MovieScrapeData(False, Enums.ScrapeType.MarkAsk, Master.DefaultMovieOptions)
@@ -7080,8 +7742,23 @@ doCancel:
         Me.MovieScrapeData(False, Enums.ScrapeType.MarkAuto, Master.DefaultMovieOptions)
     End Sub
 
-    Private Sub mnuMarkAutoEThumbs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAutoEThumbs.Click, cmnuTrayMarkAutoEThumbs.Click
-        Functions.SetScraperMod(Enums.ModType.EThumbs, True)
+    Private Sub mnuMarkAutoBanner_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAutoBanner.Click, cmnuTrayMarkAutoBanner.Click
+        Functions.SetScraperMod(Enums.ModType.Banner, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.MarkAuto, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub mnuMarkAutoClearArt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAutoClearArt.Click, cmnuTrayMarkAutoClearArt.Click
+        Functions.SetScraperMod(Enums.ModType.ClearArt, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.MarkAuto, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub mnuMarkAutoClearLogo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAutoClearLogo.Click, cmnuTrayMarkAutoClearLogo.Click
+        Functions.SetScraperMod(Enums.ModType.ClearLogo, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.MarkAuto, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub mnuMarkAutoDiscArt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAutoDiscArt.Click, cmnuTrayMarkAutoDiscArt.Click
+        Functions.SetScraperMod(Enums.ModType.DiscArt, True)
         Me.MovieScrapeData(False, Enums.ScrapeType.MarkAuto, Master.DefaultMovieOptions)
     End Sub
 
@@ -7090,8 +7767,18 @@ doCancel:
         Me.MovieScrapeData(False, Enums.ScrapeType.MarkAuto, Master.DefaultMovieOptions)
     End Sub
 
+    Private Sub mnuMarkAutoEThumbs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAutoEThumbs.Click, cmnuTrayMarkAutoEThumbs.Click
+        Functions.SetScraperMod(Enums.ModType.EThumbs, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.MarkAuto, Master.DefaultMovieOptions)
+    End Sub
+
     Private Sub mnuMarkAutoFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAutoFanart.Click, cmnuTrayMarkAutoFanart.Click
         Functions.SetScraperMod(Enums.ModType.Fanart, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.MarkAuto, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub mnuMarkAutoLandscape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAutoLandscape.Click, cmnuTrayMarkAutoLandscape.Click
+        Functions.SetScraperMod(Enums.ModType.Landscape, True)
         Me.MovieScrapeData(False, Enums.ScrapeType.MarkAuto, Master.DefaultMovieOptions)
     End Sub
 
@@ -7110,13 +7797,18 @@ doCancel:
         Me.MovieScrapeData(False, Enums.ScrapeType.MarkAuto, Master.DefaultMovieOptions)
     End Sub
 
+    Private Sub mnuMarkAutoTheme_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAutoTheme.Click, cmnuTrayMarkAutoTheme.Click
+        Functions.SetScraperMod(Enums.ModType.Theme, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.MarkAuto, Master.DefaultMovieOptions)
+    End Sub
+
     Private Sub mnuMarkAutoTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAutoTrailer.Click, cmnuTrayMarkAutoTrailer.Click
         Functions.SetScraperMod(Enums.ModType.Trailer, True)
         Me.MovieScrapeData(False, Enums.ScrapeType.MarkAuto, Master.DefaultMovieOptions)
     End Sub
 
     Private Sub mnuMarkAutoActor_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAutoActor.Click, cmnuTrayMarkAutoActor.Click
-        Functions.SetScraperMod(Enums.ModType.Actor, True)
+        Functions.SetScraperMod(Enums.ModType.ActorThumbs, True)
         Me.MovieScrapeData(False, Enums.ScrapeType.MarkAuto, Master.DefaultMovieOptions)
     End Sub
 
@@ -7130,8 +7822,23 @@ doCancel:
         Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAsk, Master.DefaultMovieOptions)
     End Sub
 
-    Private Sub mnuMissAskEThumbs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAskEThumbs.Click, cmnuTrayMissAskEThumbs.Click
-        Functions.SetScraperMod(Enums.ModType.EThumbs, True)
+    Private Sub mnuMissAskBanner_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAskBanner.Click, cmnuTrayMissAskBanner.Click
+        Functions.SetScraperMod(Enums.ModType.Banner, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAsk, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub mnuMissAskClearArt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAskClearArt.Click, cmnuTrayMissAskClearArt.Click
+        Functions.SetScraperMod(Enums.ModType.ClearArt, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAsk, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub mnuMissAskClearLogo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAskClearLogo.Click, cmnuTrayMissAskClearLogo.Click
+        Functions.SetScraperMod(Enums.ModType.ClearLogo, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAsk, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub mnuMissAskDiscArt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAskDiscArt.Click, cmnuTrayMissAskDiscArt.Click
+        Functions.SetScraperMod(Enums.ModType.DiscArt, True)
         Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAsk, Master.DefaultMovieOptions)
     End Sub
 
@@ -7140,8 +7847,18 @@ doCancel:
         Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAsk, Master.DefaultMovieOptions)
     End Sub
 
+    Private Sub mnuMissAskEThumbs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAskEThumbs.Click, cmnuTrayMissAskEThumbs.Click
+        Functions.SetScraperMod(Enums.ModType.EThumbs, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAsk, Master.DefaultMovieOptions)
+    End Sub
+
     Private Sub mnuMissAskFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAskFanart.Click, cmnuTrayMissAskFanart.Click
         Functions.SetScraperMod(Enums.ModType.Fanart, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAsk, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub mnuMissAskLandscape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAskLandscape.Click, cmnuTrayMissAskLandscape.Click
+        Functions.SetScraperMod(Enums.ModType.Landscape, True)
         Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAsk, Master.DefaultMovieOptions)
     End Sub
 
@@ -7155,6 +7872,11 @@ doCancel:
         Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAsk, Master.DefaultMovieOptions)
     End Sub
 
+    Private Sub mnuMissAskTheme_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAskTheme.Click, cmnuTrayMissAskTheme.Click
+        Functions.SetScraperMod(Enums.ModType.Theme, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAsk, Master.DefaultMovieOptions)
+    End Sub
+
     Private Sub mnuMissAskTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAskTrailer.Click, cmnuTrayMissAskTrailer.Click
         Functions.SetScraperMod(Enums.ModType.Trailer, True)
         Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAsk, Master.DefaultMovieOptions)
@@ -7165,8 +7887,23 @@ doCancel:
         Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAuto, Master.DefaultMovieOptions)
     End Sub
 
-    Private Sub mnuMissAutoEThumbs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAutoEThumbs.Click, cmnuTrayMissAutoEThumbs.Click
-        Functions.SetScraperMod(Enums.ModType.EThumbs, True)
+    Private Sub mnuMissAutoBanner_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAutoBanner.Click, cmnuTrayMissAutoBanner.Click
+        Functions.SetScraperMod(Enums.ModType.Banner, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAuto, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub mnuMissAutoClearArt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAutoClearArt.Click, cmnuTrayMissAutoClearArt.Click
+        Functions.SetScraperMod(Enums.ModType.ClearArt, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAuto, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub mnuMissAutoClearLogo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAutoClearLogo.Click, cmnuTrayMissAutoClearLogo.Click
+        Functions.SetScraperMod(Enums.ModType.ClearLogo, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAuto, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub mnuMissAutoDiscArt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAutoDiscArt.Click, cmnuTrayMissAutoDiscArt.Click
+        Functions.SetScraperMod(Enums.ModType.DiscArt, True)
         Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAuto, Master.DefaultMovieOptions)
     End Sub
 
@@ -7175,8 +7912,18 @@ doCancel:
         Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAuto, Master.DefaultMovieOptions)
     End Sub
 
+    Private Sub mnuMissAutoEThumbs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAutoEThumbs.Click, cmnuTrayMissAutoEThumbs.Click
+        Functions.SetScraperMod(Enums.ModType.EThumbs, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAuto, Master.DefaultMovieOptions)
+    End Sub
+
     Private Sub mnuMissAutoFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAutoFanart.Click, cmnuTrayMissAutoFanart.Click
         Functions.SetScraperMod(Enums.ModType.Fanart, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAuto, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub mnuMissAutoLandscape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAutoLandscape.Click, cmnuTrayMissAutoLandscape.Click
+        Functions.SetScraperMod(Enums.ModType.Landscape, True)
         Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAuto, Master.DefaultMovieOptions)
     End Sub
 
@@ -7187,6 +7934,11 @@ doCancel:
 
     Private Sub mnuMissAutoPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAutoPoster.Click, cmnuTrayMissAutoPoster.Click
         Functions.SetScraperMod(Enums.ModType.Poster, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAuto, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub mnuMissAutoTheme_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAutoTheme.Click, cmnuTrayMissAutoTheme.Click
+        Functions.SetScraperMod(Enums.ModType.Theme, True)
         Me.MovieScrapeData(False, Enums.ScrapeType.UpdateAuto, Master.DefaultMovieOptions)
     End Sub
 
@@ -7205,8 +7957,23 @@ doCancel:
         Me.MovieScrapeData(False, Enums.ScrapeType.NewAsk, Master.DefaultMovieOptions)
     End Sub
 
-    Private Sub mnuNewAskEThumbs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAskEThumbs.Click, cmnuTrayNewAskEThumbs.Click
-        Functions.SetScraperMod(Enums.ModType.EThumbs, True)
+    Private Sub mnuNewAskBanner_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAskBanner.Click, cmnuTrayNewAskBanner.Click
+        Functions.SetScraperMod(Enums.ModType.Banner, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.NewAsk, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub mnuNewAskClearArt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAskClearArt.Click, cmnuTrayNewAskClearArt.Click
+        Functions.SetScraperMod(Enums.ModType.ClearArt, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.NewAsk, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub mnuNewAskClearLogo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAskClearLogo.Click, cmnuTrayNewAskClearLogo.Click
+        Functions.SetScraperMod(Enums.ModType.ClearLogo, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.NewAsk, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub mnuNewAskDiscArt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAskDiscArt.Click, cmnuTrayNewAskDiscArt.Click
+        Functions.SetScraperMod(Enums.ModType.DiscArt, True)
         Me.MovieScrapeData(False, Enums.ScrapeType.NewAsk, Master.DefaultMovieOptions)
     End Sub
 
@@ -7215,8 +7982,18 @@ doCancel:
         Me.MovieScrapeData(False, Enums.ScrapeType.NewAsk, Master.DefaultMovieOptions)
     End Sub
 
+    Private Sub mnuNewAskEThumbs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAskEThumbs.Click, cmnuTrayNewAskEThumbs.Click
+        Functions.SetScraperMod(Enums.ModType.EThumbs, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.NewAsk, Master.DefaultMovieOptions)
+    End Sub
+
     Private Sub mnuNewAskFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAskFanart.Click, cmnuTrayNewAskFanart.Click
         Functions.SetScraperMod(Enums.ModType.Fanart, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.NewAsk, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub mnuNewAskLandscape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAskLandscape.Click, cmnuTrayNewAskLandscape.Click
+        Functions.SetScraperMod(Enums.ModType.Landscape, True)
         Me.MovieScrapeData(False, Enums.ScrapeType.NewAsk, Master.DefaultMovieOptions)
     End Sub
 
@@ -7235,6 +8012,11 @@ doCancel:
         Me.MovieScrapeData(False, Enums.ScrapeType.NewAsk, Master.DefaultMovieOptions)
     End Sub
 
+    Private Sub mnuNewAskTheme_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAskTheme.Click, cmnuTrayNewAskTheme.Click
+        Functions.SetScraperMod(Enums.ModType.Theme, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.NewAsk, Master.DefaultMovieOptions)
+    End Sub
+
     Private Sub mnuNewAskTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAskTrailer.Click, cmnuTrayNewAskTrailer.Click
         Functions.SetScraperMod(Enums.ModType.Trailer, True)
         Me.MovieScrapeData(False, Enums.ScrapeType.NewAsk, Master.DefaultMovieOptions)
@@ -7245,8 +8027,23 @@ doCancel:
         Me.MovieScrapeData(False, Enums.ScrapeType.NewAuto, Master.DefaultMovieOptions)
     End Sub
 
-    Private Sub mnuNewAutoEThumbs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAutoEThumbs.Click, cmnuTrayNewAutoEThumbs.Click
-        Functions.SetScraperMod(Enums.ModType.EThumbs, True)
+    Private Sub mnuNewAutoBanner_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAutoBanner.Click, cmnuTrayNewAutoBanner.Click
+        Functions.SetScraperMod(Enums.ModType.Banner, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.NewAuto, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub mnuNewAutoClearArt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAutoClearArt.Click, cmnuTrayNewAutoClearArt.Click
+        Functions.SetScraperMod(Enums.ModType.Banner, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.NewAuto, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub mnuNewAutoClearLogo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAutoClearLogo.Click, cmnuTrayNewAutoClearLogo.Click
+        Functions.SetScraperMod(Enums.ModType.Banner, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.NewAuto, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub mnuNewAutoDiscArt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAutoDiscArt.Click, cmnuTrayNewAutoDiscArt.Click
+        Functions.SetScraperMod(Enums.ModType.DiscArt, True)
         Me.MovieScrapeData(False, Enums.ScrapeType.NewAuto, Master.DefaultMovieOptions)
     End Sub
 
@@ -7255,8 +8052,18 @@ doCancel:
         Me.MovieScrapeData(False, Enums.ScrapeType.NewAuto, Master.DefaultMovieOptions)
     End Sub
 
+    Private Sub mnuNewAutoEThumbs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAutoEThumbs.Click, cmnuTrayNewAutoEThumbs.Click
+        Functions.SetScraperMod(Enums.ModType.EThumbs, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.NewAuto, Master.DefaultMovieOptions)
+    End Sub
+
     Private Sub mnuNewAutoFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAutoFanart.Click, cmnuTrayNewAutoFanart.Click
         Functions.SetScraperMod(Enums.ModType.Fanart, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.NewAuto, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub mnuNewAutoLandscape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAutoLandscape.Click, cmnuTrayNewAutoLandscape.Click
+        Functions.SetScraperMod(Enums.ModType.Landscape, True)
         Me.MovieScrapeData(False, Enums.ScrapeType.NewAuto, Master.DefaultMovieOptions)
     End Sub
 
@@ -7272,6 +8079,11 @@ doCancel:
 
     Private Sub mnuNewAutoPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAutoPoster.Click, cmnuTrayNewAutoPoster.Click
         Functions.SetScraperMod(Enums.ModType.Poster, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.NewAuto, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub mnuNewAutoTheme_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAutoTheme.Click, cmnuTrayNewAutoTheme.Click
+        Functions.SetScraperMod(Enums.ModType.Theme, True)
         Me.MovieScrapeData(False, Enums.ScrapeType.NewAuto, Master.DefaultMovieOptions)
     End Sub
 
@@ -7337,17 +8149,31 @@ doCancel:
                             End If
                             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieSync, Nothing, Master.currMovie)
                         Case Windows.Forms.DialogResult.Retry
+                            Master.currMovie.ClearBanner = False
+                            Master.currMovie.ClearClearArt = False
+                            Master.currMovie.ClearClearLogo = False
+                            Master.currMovie.ClearDiscArt = False
                             Master.currMovie.ClearEThumbs = False
                             Master.currMovie.ClearEFanarts = False
                             Master.currMovie.ClearFanart = False
+                            Master.currMovie.ClearLandscape = False
                             Master.currMovie.ClearPoster = False
+                            Master.currMovie.ClearTheme = False
+                            Master.currMovie.ClearTrailer = False
                             Functions.SetScraperMod(Enums.ModType.All, True, True)
                             Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultMovieOptions) ', ID)
                         Case Windows.Forms.DialogResult.Abort
+                            Master.currMovie.ClearBanner = False
+                            Master.currMovie.ClearClearArt = False
+                            Master.currMovie.ClearClearLogo = False
+                            Master.currMovie.ClearDiscArt = False
                             Master.currMovie.ClearEThumbs = False
                             Master.currMovie.ClearEFanarts = False
                             Master.currMovie.ClearFanart = False
+                            Master.currMovie.ClearLandscape = False
                             Master.currMovie.ClearPoster = False
+                            Master.currMovie.ClearTheme = False
+                            Master.currMovie.ClearTrailer = False
                             Functions.SetScraperMod(Enums.ModType.DoSearch, True)
                             Functions.SetScraperMod(Enums.ModType.All, True, False)
                             Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultMovieOptions) ', ID, True)
@@ -7362,10 +8188,17 @@ doCancel:
             Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
 
+        Master.currMovie.ClearBanner = False
+        Master.currMovie.ClearClearArt = False
+        Master.currMovie.ClearClearLogo = False
+        Master.currMovie.ClearDiscArt = False
         Master.currMovie.ClearEThumbs = False
         Master.currMovie.ClearEFanarts = False
         Master.currMovie.ClearFanart = False
+        Master.currMovie.ClearLandscape = False
         Master.currMovie.ClearPoster = False
+        Master.currMovie.ClearTheme = False
+        Master.currMovie.ClearTrailer = False
 
         Me.pnlCancel.Visible = False
         Me.tslLoading.Visible = False
@@ -7394,9 +8227,15 @@ doCancel:
                 ScrapeList.Add(DirectCast(sRow.DataBoundItem, DataRowView).Row)
             Next
         Else
-            Dim PosterAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Poster)
-            Dim FanartAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart)
-            Dim TrailerAllowed As Boolean = ModulesManager.Instance.QueryTrailerScraperCapabilities(Enums.ScraperCapabilities.Trailer)
+            Dim BannerAllowed As Boolean = Master.eSettings.MovieBannerAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Banner)
+            Dim ClearArtAllowed As Boolean = Master.eSettings.MovieClearArtAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.ClearArt)
+            Dim ClearLogoAllowed As Boolean = Master.eSettings.MovieClearLogoAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.ClearLogo)
+            Dim DiscArtAllowed As Boolean = Master.eSettings.MovieDiscArtAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.DiscArt)
+            Dim FanartAllowed As Boolean = Master.eSettings.MovieFanartAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart)
+            Dim LandscapeAllowed As Boolean = Master.eSettings.MovieLandscapeAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Landscape)
+            Dim PosterAllowed As Boolean = Master.eSettings.MoviePosterAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Poster)
+            Dim ThemeAllowed As Boolean = Master.eSettings.MovieThemeEnable AndAlso Master.eSettings.MovieThemeAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Theme)
+            Dim TrailerAllowed As Boolean = Master.eSettings.MovieTrailerEnable AndAlso Master.eSettings.MovieTrailerAnyEnabled AndAlso ModulesManager.Instance.QueryTrailerScraperCapabilities(Enums.ScraperCapabilities.Trailer)
 
             'create list of movies acording to scrapetype
             For Each drvRow As DataRow In Me.dtMedia.Rows
@@ -7412,12 +8251,18 @@ doCancel:
                         Dim index As Integer = Me.bsMedia.Find("id", drvRow.Item(0))
                         If Not index >= 0 Then Continue For
                     Case Enums.ScrapeType.UpdateAsk, Enums.ScrapeType.UpdateAuto, Enums.ScrapeType.UpdateSkip
-                        If Not ((Master.GlobalScrapeMod.Poster AndAlso Master.eSettings.MovieMissingPoster AndAlso PosterAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(4))) OrElse _
+                        If Not ((Master.GlobalScrapeMod.Banner AndAlso Master.eSettings.MovieMissingBanner AndAlso BannerAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(51))) OrElse _
+                                (Master.GlobalScrapeMod.ClearArt AndAlso Master.eSettings.MovieMissingClearArt AndAlso ClearArtAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(61))) OrElse _
+                                (Master.GlobalScrapeMod.ClearLogo AndAlso Master.eSettings.MovieMissingClearLogo AndAlso ClearLogoAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(59))) OrElse _
+                                (Master.GlobalScrapeMod.DiscArt AndAlso Master.eSettings.MovieMissingDiscArt AndAlso DiscArtAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(57))) OrElse _
+                                (Master.GlobalScrapeMod.EFanarts AndAlso Master.eSettings.MovieMissingEFanarts AndAlso FanartAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(49))) OrElse _
+                                (Master.GlobalScrapeMod.EThumbs AndAlso Master.eSettings.MovieMissingEThumbs AndAlso FanartAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(9))) OrElse _
                                 (Master.GlobalScrapeMod.Fanart AndAlso Master.eSettings.MovieMissingFanart AndAlso FanartAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(5))) OrElse _
+                                (Master.GlobalScrapeMod.Landscape AndAlso Master.eSettings.MovieMissingLandscape AndAlso LandscapeAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(53))) OrElse _
                                 (Master.GlobalScrapeMod.NFO AndAlso Master.eSettings.MovieMissingNFO AndAlso Not Convert.ToBoolean(drvRow.Item(6))) OrElse _
-                                (Master.GlobalScrapeMod.Trailer AndAlso Master.eSettings.MovieMissingTrailer AndAlso TrailerAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(7))) OrElse _
-                                (Master.GlobalScrapeMod.EThumbs AndAlso Master.eSettings.MovieMissingEThumbs AndAlso Not Convert.ToBoolean(drvRow.Item(9))) OrElse _
-                                (Master.GlobalScrapeMod.EFanarts AndAlso Master.eSettings.MovieMissingEFanarts AndAlso Not Convert.ToBoolean(drvRow.Item(49)))) Then
+                                (Master.GlobalScrapeMod.Poster AndAlso Master.eSettings.MovieMissingPoster AndAlso PosterAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(4))) OrElse _
+                                (Master.GlobalScrapeMod.Theme AndAlso Master.eSettings.MovieMissingTheme AndAlso ThemeAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(55))) OrElse _
+                                (Master.GlobalScrapeMod.Trailer AndAlso Master.eSettings.MovieMissingTrailer AndAlso TrailerAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(7)))) Then
                             Continue For
                         End If
                 End Select
@@ -7437,40 +8282,53 @@ doCancel:
             Me.tspbLoading.Style = ProgressBarStyle.Marquee
         End If
 
-        Select Case sType
-            Case Enums.ScrapeType.FullAsk
-                Me.tslLoading.Text = Master.eLang.GetString(127, "Scraping Media (All Movies - Ask):")
-            Case Enums.ScrapeType.FullAuto
-                Me.tslLoading.Text = Master.eLang.GetString(128, "Scraping Media (All Movies - Auto):")
-            Case Enums.ScrapeType.FullSkip
-                Me.tslLoading.Text = Master.eLang.GetString(853, "Scraping Media (All Movies - Skip):")
-            Case Enums.ScrapeType.UpdateAuto
-                Me.tslLoading.Text = Master.eLang.GetString(132, "Scraping Media (Movies Missing Items - Auto):")
-            Case Enums.ScrapeType.UpdateAsk
-                Me.tslLoading.Text = Master.eLang.GetString(133, "Scraping Media (Movies Missing Items - Ask):")
-            Case Enums.ScrapeType.UpdateSkip
-                Me.tslLoading.Text = Master.eLang.GetString(1042, "Scraping Media (Movies Missing Items - Skip):")
-            Case Enums.ScrapeType.NewAsk
-                Me.tslLoading.Text = Master.eLang.GetString(134, "Scraping Media (New Movies - Ask):")
-            Case Enums.ScrapeType.NewAuto
-                Me.tslLoading.Text = Master.eLang.GetString(135, "Scraping Media (New Movies - Auto):")
-            Case Enums.ScrapeType.NewSkip
-                Me.tslLoading.Text = Master.eLang.GetString(1043, "Scraping Media (New Movies - Skip):")
-            Case Enums.ScrapeType.MarkAsk
-                Me.tslLoading.Text = Master.eLang.GetString(136, "Scraping Media (Marked Movies - Ask):")
-            Case Enums.ScrapeType.MarkAuto
-                Me.tslLoading.Text = Master.eLang.GetString(137, "Scraping Media (Marked Movies - Auto):")
-            Case Enums.ScrapeType.MarkSkip
-                Me.tslLoading.Text = Master.eLang.GetString(1044, "Scraping Media (Marked Movies - Skip):")
-            Case Enums.ScrapeType.FilterAsk
-                Me.tslLoading.Text = Master.eLang.GetString(622, "Scraping Media (Current Filter - Ask):")
-            Case Enums.ScrapeType.FilterAuto
-                Me.tslLoading.Text = Master.eLang.GetString(623, "Scraping Media (Current Filter - Auto):")
-            Case Enums.ScrapeType.FilterAuto
-                Me.tslLoading.Text = Master.eLang.GetString(1045, "Scraping Media (Current Filter - Skip):")
-            Case Enums.ScrapeType.SingleScrape
-                Me.tslLoading.Text = Master.eLang.GetString(139, "Scraping:")
-        End Select
+        If Not selected Then
+            Select Case sType
+                Case Enums.ScrapeType.FullAsk
+                    Me.tslLoading.Text = Master.eLang.GetString(127, "Scraping Media (All Movies - Ask):")
+                Case Enums.ScrapeType.FullAuto
+                    Me.tslLoading.Text = Master.eLang.GetString(128, "Scraping Media (All Movies - Auto):")
+                Case Enums.ScrapeType.FullSkip
+                    Me.tslLoading.Text = Master.eLang.GetString(853, "Scraping Media (All Movies - Skip):")
+                Case Enums.ScrapeType.UpdateAuto
+                    Me.tslLoading.Text = Master.eLang.GetString(132, "Scraping Media (Movies Missing Items - Auto):")
+                Case Enums.ScrapeType.UpdateAsk
+                    Me.tslLoading.Text = Master.eLang.GetString(133, "Scraping Media (Movies Missing Items - Ask):")
+                Case Enums.ScrapeType.UpdateSkip
+                    Me.tslLoading.Text = Master.eLang.GetString(1042, "Scraping Media (Movies Missing Items - Skip):")
+                Case Enums.ScrapeType.NewAsk
+                    Me.tslLoading.Text = Master.eLang.GetString(134, "Scraping Media (New Movies - Ask):")
+                Case Enums.ScrapeType.NewAuto
+                    Me.tslLoading.Text = Master.eLang.GetString(135, "Scraping Media (New Movies - Auto):")
+                Case Enums.ScrapeType.NewSkip
+                    Me.tslLoading.Text = Master.eLang.GetString(1043, "Scraping Media (New Movies - Skip):")
+                Case Enums.ScrapeType.MarkAsk
+                    Me.tslLoading.Text = Master.eLang.GetString(136, "Scraping Media (Marked Movies - Ask):")
+                Case Enums.ScrapeType.MarkAuto
+                    Me.tslLoading.Text = Master.eLang.GetString(137, "Scraping Media (Marked Movies - Auto):")
+                Case Enums.ScrapeType.MarkSkip
+                    Me.tslLoading.Text = Master.eLang.GetString(1044, "Scraping Media (Marked Movies - Skip):")
+                Case Enums.ScrapeType.FilterAsk
+                    Me.tslLoading.Text = Master.eLang.GetString(622, "Scraping Media (Current Filter - Ask):")
+                Case Enums.ScrapeType.FilterAuto
+                    Me.tslLoading.Text = Master.eLang.GetString(623, "Scraping Media (Current Filter - Auto):")
+                Case Enums.ScrapeType.FilterAuto
+                    Me.tslLoading.Text = Master.eLang.GetString(1045, "Scraping Media (Current Filter - Skip):")
+                Case Enums.ScrapeType.SingleScrape
+                    Me.tslLoading.Text = Master.eLang.GetString(139, "Scraping:")
+            End Select
+        Else
+            Select Case sType
+                Case Enums.ScrapeType.FullAsk
+                    Me.tslLoading.Text = Master.eLang.GetString(1128, "Scraping Media (Selected Movies - Ask):")
+                Case Enums.ScrapeType.FullAuto
+                    Me.tslLoading.Text = Master.eLang.GetString(1129, "Scraping Media (Selected Movies - Auto):")
+                Case Enums.ScrapeType.FullSkip
+                    Me.tslLoading.Text = Master.eLang.GetString(1130, "Scraping Media (Selected Movies - Skip):")
+                Case Enums.ScrapeType.SingleField
+                    Me.tslLoading.Text = Master.eLang.GetString(1127, "Scraping Media (Selected Movies - Single Field):")
+            End Select
+        End If
 
         If Not sType = Enums.ScrapeType.SingleScrape Then
             Me.btnCancel.Text = Master.eLang.GetString(54, "Cancel Scraper")
@@ -7494,21 +8352,34 @@ doCancel:
             Me.Invoke(New DelegateEvent(AddressOf MovieScraperEvent), New Object() {eType, Parameter})
         Else
             Select Case eType
-                Case Enums.MovieScraperEventType.PosterItem
-                    dScrapeRow.Item(4) = DirectCast(Parameter, Boolean)
-                Case Enums.MovieScraperEventType.FanartItem
-                    dScrapeRow.Item(5) = DirectCast(Parameter, Boolean)
-                Case Enums.MovieScraperEventType.NFOItem
-                    dScrapeRow.Item(6) = DirectCast(Parameter, Boolean)
-                Case Enums.MovieScraperEventType.TrailerItem
-                    dScrapeRow.Item(7) = DirectCast(Parameter, Boolean)
+                Case Enums.MovieScraperEventType.BannerItem
+                    dScrapeRow.Item(51) = DirectCast(Parameter, Boolean)
+                Case Enums.MovieScraperEventType.ClearArtItem
+                    dScrapeRow.Item(61) = DirectCast(Parameter, Boolean)
+                Case Enums.MovieScraperEventType.ClearLogoItem
+                    dScrapeRow.Item(59) = DirectCast(Parameter, Boolean)
+                Case Enums.MovieScraperEventType.DiscArtItem
+                    dScrapeRow.Item(57) = DirectCast(Parameter, Boolean)
+                Case Enums.MovieScraperEventType.EFanartsItem
+                    dScrapeRow.Item(49) = DirectCast(Parameter, Boolean)
                 Case Enums.MovieScraperEventType.EThumbsItem
                     dScrapeRow.Item(9) = DirectCast(Parameter, Boolean)
-                Case Enums.MovieScraperEventType.SortTitle
-                    dScrapeRow.Item(47) = DirectCast(Parameter, String)
+                Case Enums.MovieScraperEventType.FanartItem
+                    dScrapeRow.Item(5) = DirectCast(Parameter, Boolean)
+                Case Enums.MovieScraperEventType.LandscapeItem
+                    dScrapeRow.Item(53) = DirectCast(Parameter, Boolean)
                 Case Enums.MovieScraperEventType.ListTitle
                     dScrapeRow.Item(3) = DirectCast(Parameter, String)
-
+                Case Enums.MovieScraperEventType.NFOItem
+                    dScrapeRow.Item(6) = DirectCast(Parameter, Boolean)
+                Case Enums.MovieScraperEventType.PosterItem
+                    dScrapeRow.Item(4) = DirectCast(Parameter, Boolean)
+                Case Enums.MovieScraperEventType.SortTitle
+                    dScrapeRow.Item(47) = DirectCast(Parameter, String)
+                Case Enums.MovieScraperEventType.ThemeItem
+                    dScrapeRow.Item(55) = DirectCast(Parameter, Boolean)
+                Case Enums.MovieScraperEventType.TrailerItem
+                    dScrapeRow.Item(7) = DirectCast(Parameter, Boolean)
             End Select
             Me.dgvMovies.Invalidate()
         End If
@@ -7832,13 +8703,19 @@ doCancel:
         Dim OldTitle As String = String.Empty
         Dim selRow As DataRow = Nothing
 
-        Dim hasPoster As Boolean = False
+        Dim hasBanner As Boolean = False
+        Dim hasClearArt As Boolean = False
+        Dim hasClearLogo As Boolean = False
+        Dim hasDiscArt As Boolean = False
+        Dim hasEFanarts As Boolean = False
+        Dim hasEThumbs As Boolean = False
         Dim hasFanart As Boolean = False
+        Dim hasLandscape As Boolean = False
         Dim hasNfo As Boolean = False
+        Dim hasPoster As Boolean = False
+        Dim hasTheme As Boolean = False
         Dim hasTrailer As Boolean = False
         Dim hasSub As Boolean = False
-        Dim hasEThumbs As Boolean = False
-        Dim hasEFanarts As Boolean = False
         Dim hasWatched As Boolean = False
 
         Dim myDelegate As New MydtListUpdate(AddressOf dtListUpdate)
@@ -7927,22 +8804,33 @@ doCancel:
 
                 Dim mContainer As New Scanner.MovieContainer With {.Filename = tmpMovieDb.Filename, .isSingle = tmpMovieDb.isSingle}
                 fScanner.GetMovieFolderContents(mContainer)
-                tmpMovieDb.PosterPath = mContainer.Poster
-                tmpMovieDb.FanartPath = mContainer.Fanart
-                'assume invalid nfo if no title
-                tmpMovieDb.NfoPath = If(String.IsNullOrEmpty(tmpMovieDb.Movie.Title), String.Empty, mContainer.Nfo)
-                tmpMovieDb.TrailerPath = mContainer.Trailer
-                tmpMovieDb.SubPath = mContainer.Subs
-                tmpMovieDb.EThumbsPath = mContainer.EThumbs
+                tmpMovieDb.BannerPath = mContainer.Banner
+                tmpMovieDb.ClearArtPath = mContainer.ClearArt
+                tmpMovieDb.ClearLogoPath = mContainer.ClearLogo
+                tmpMovieDb.DiscArtPath = mContainer.DiscArt
                 tmpMovieDb.EFanartsPath = mContainer.EFanarts
+                tmpMovieDb.EThumbsPath = mContainer.EThumbs
+                tmpMovieDb.FanartPath = mContainer.Fanart
+                tmpMovieDb.LandscapePath = mContainer.Landscape
+                tmpMovieDb.NfoPath = If(String.IsNullOrEmpty(tmpMovieDb.Movie.Title), String.Empty, mContainer.Nfo) 'assume invalid nfo if no title
+                tmpMovieDb.PosterPath = mContainer.Poster
+                tmpMovieDb.SubPath = mContainer.Subs
+                tmpMovieDb.ThemePath = mContainer.Theme
+                tmpMovieDb.TrailerPath = mContainer.Trailer
 
-                hasPoster = Not String.IsNullOrEmpty(mContainer.Poster)
-                hasFanart = Not String.IsNullOrEmpty(mContainer.Fanart)
-                hasNfo = Not String.IsNullOrEmpty(tmpMovieDb.NfoPath)
-                hasTrailer = Not String.IsNullOrEmpty(mContainer.Trailer)
-                hasSub = Not String.IsNullOrEmpty(mContainer.Subs)
-                hasEThumbs = Not String.IsNullOrEmpty(mContainer.EThumbs)
+                hasBanner = Not String.IsNullOrEmpty(mContainer.Banner)
+                hasClearArt = Not String.IsNullOrEmpty(mContainer.ClearArt)
+                hasClearLogo = Not String.IsNullOrEmpty(mContainer.ClearLogo)
+                hasDiscArt = Not String.IsNullOrEmpty(mContainer.DiscArt)
                 hasEFanarts = Not String.IsNullOrEmpty(mContainer.EFanarts)
+                hasEThumbs = Not String.IsNullOrEmpty(mContainer.EThumbs)
+                hasFanart = Not String.IsNullOrEmpty(mContainer.Fanart)
+                hasLandscape = Not String.IsNullOrEmpty(mContainer.Landscape)
+                hasNfo = Not String.IsNullOrEmpty(tmpMovieDb.NfoPath)
+                hasPoster = Not String.IsNullOrEmpty(mContainer.Poster)
+                hasSub = Not String.IsNullOrEmpty(mContainer.Subs)
+                hasTheme = Not String.IsNullOrEmpty(mContainer.Theme)
+                hasTrailer = Not String.IsNullOrEmpty(mContainer.Trailer)
                 hasWatched = Not String.IsNullOrEmpty(tmpMovieDb.Movie.PlayCount) AndAlso Not tmpMovieDb.Movie.PlayCount = "0"
 
                 Dim dRow = From drvRow In dtMedia.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item(0)) = ID Select drvRow
@@ -7966,6 +8854,13 @@ doCancel:
                         Me.Invoke(myDelegate, New Object() {dRow(0), 47, tmpMovieDb.Movie.SortTitle})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 27, tmpMovieDb.Movie.Genre})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 34, hasWatched})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 49, hasEFanarts})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 51, hasBanner})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 53, hasLandscape})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 55, hasTheme})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 57, hasDiscArt})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 59, hasClearLogo})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 61, hasClearArt})
                     Else
                         selRow.Item(1) = tmpMovieDb.Filename
                         selRow.Item(3) = tmpMovieDb.ListTitle
@@ -7980,6 +8875,13 @@ doCancel:
                         selRow.Item(47) = tmpMovieDb.Movie.SortTitle
                         selRow.Item(27) = tmpMovieDb.Movie.Genre
                         selRow.Item(34) = hasWatched
+                        selRow.Item(49) = hasEFanarts
+                        selRow.Item(51) = hasBanner
+                        selRow.Item(53) = hasLandscape
+                        selRow.Item(55) = hasTheme
+                        selRow.Item(57) = hasDiscArt
+                        selRow.Item(59) = hasClearLogo
+                        selRow.Item(61) = hasClearArt
                     End If
                 End If
                 'Why on earth resave the movie if we just refreshed its data (causes issues with saving rescrapes_
@@ -8149,7 +9051,7 @@ doCancel:
                 Master.DB.SaveTVShowToDB(tmpShowDb, False, WithEpisodes, ToNfo)
 
                 ' DanCooper: i'm not shure if this is a proper solution...
-                If Master.eSettings.TVASPosterEnabled Then
+                If Master.eSettings.TVASPosterAnyEnabled Then
                     tmpShowDb.SeasonBannerPath = sContainer.AllSeasonsBanner
                     tmpShowDb.SeasonFanartPath = sContainer.AllSeasonsFanart
                     tmpShowDb.SeasonLandscapePath = sContainer.AllSeasonsLandscape
@@ -8281,7 +9183,7 @@ doCancel:
                 Me.dgvMovies.Columns(3).Width = Me.dgvMovies.Width - _
                 If(Master.eSettings.MoviePosterCol, 0, 20) - _
                 If(Master.eSettings.MovieFanartCol, 0, 20) - _
-                If(Master.eSettings.MovieInfoCol, 0, 20) - _
+                If(Master.eSettings.MovieNFOCol, 0, 20) - _
                 If(Master.eSettings.MovieTrailerCol, 0, 20) - _
                 If(Master.eSettings.MovieSubCol, 0, 20) - _
                 If(Master.eSettings.MovieEThumbsCol, 0, 20) - _
@@ -8411,21 +9313,6 @@ doCancel:
         End Try
     End Sub
 
-    Private Sub cmnuMovieReSelAskAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskAll.Click
-        Functions.SetScraperMod(Enums.ModType.All, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions)
-    End Sub
-
-    Private Sub cmnuMovieReSelAutoAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAutoAll.Click
-        Functions.SetScraperMod(Enums.ModType.All, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultMovieOptions)
-    End Sub
-
-    Private Sub cmnuMovieReSelSkipAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelSkipAll.Click
-        Functions.SetScraperMod(Enums.ModType.All, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullSkip, Master.DefaultMovieOptions)
-    End Sub
-
     Private Sub SelectEpisodeRow(ByVal iRow As Integer)
         Try
             If Not Convert.ToBoolean(Me.dgvTVEpisodes.Item(4, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvTVEpisodes.Item(5, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvTVEpisodes.Item(6, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvTVEpisodes.Item(22, iRow).Value) Then
@@ -8447,8 +9334,28 @@ doCancel:
         End Try
     End Sub
 
-    Private Sub cmnuMovieReSelAskEThumbs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskEThumbs.Click
-        Functions.SetScraperMod(Enums.ModType.EThumbs, True)
+    Private Sub cmnuMovieReSelAskAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskAll.Click
+        Functions.SetScraperMod(Enums.ModType.All, True)
+        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub cmnuMovieReSelAskBanner_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskBanner.Click
+        Functions.SetScraperMod(Enums.ModType.Banner, True)
+        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub cmnuMovieReSelAskClearArt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskClearArt.Click
+        Functions.SetScraperMod(Enums.ModType.ClearArt, True)
+        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub cmnuMovieReSelAskClearLogo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskClearLogo.Click
+        Functions.SetScraperMod(Enums.ModType.ClearLogo, True)
+        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub cmnuMovieReSelAskDiscArt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskDiscArt.Click
+        Functions.SetScraperMod(Enums.ModType.DiscArt, True)
         MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions)
     End Sub
 
@@ -8457,8 +9364,68 @@ doCancel:
         MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions)
     End Sub
 
-    Private Sub cmnuMovieReSelAutoEThumbs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAutoEThumbs.Click
+    Private Sub cmnuMovieReSelAskEThumbs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskEThumbs.Click
         Functions.SetScraperMod(Enums.ModType.EThumbs, True)
+        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub cmnuMovieReSelAskFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskFanart.Click
+        Functions.SetScraperMod(Enums.ModType.Fanart, True)
+        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub cmnuMovieReSelAskLandscape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskLandscape.Click
+        Functions.SetScraperMod(Enums.ModType.Landscape, True)
+        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub cmnuMovieReSelAskMetaData_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskMetaData.Click
+        Functions.SetScraperMod(Enums.ModType.Meta, True)
+        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub cmnuMovieReSelAskNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskNfo.Click
+        Functions.SetScraperMod(Enums.ModType.NFO, True)
+        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub cmnuMovieReSelAskPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskPoster.Click
+        Functions.SetScraperMod(Enums.ModType.Poster, True)
+        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub cmnuMovieReSelAskTheme_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskTheme.Click
+        Functions.SetScraperMod(Enums.ModType.Theme, True)
+        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub cmnuMovieReSelAskTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskTrailer.Click
+        Functions.SetScraperMod(Enums.ModType.Trailer, True)
+        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub cmnuMovieReSelAutoAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAutoAll.Click
+        Functions.SetScraperMod(Enums.ModType.All, True)
+        MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub cmnuMovieReSelAutoBanner_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAutoBanner.Click
+        Functions.SetScraperMod(Enums.ModType.Banner, True)
+        MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub cmnuMovieReSelAutoClearArt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAutoClearArt.Click
+        Functions.SetScraperMod(Enums.ModType.ClearArt, True)
+        MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub cmnuMovieReSelAutoClearLogo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAutoClearLogo.Click
+        Functions.SetScraperMod(Enums.ModType.ClearLogo, True)
+        MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub cmnuMovieReSelAutoDiscArt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAutoDiscArt.Click
+        Functions.SetScraperMod(Enums.ModType.DiscArt, True)
         MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultMovieOptions)
     End Sub
 
@@ -8467,9 +9434,9 @@ doCancel:
         MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultMovieOptions)
     End Sub
 
-    Private Sub cmnuMovieReSelAskFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskFanart.Click
-        Functions.SetScraperMod(Enums.ModType.Fanart, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions)
+    Private Sub cmnuMovieReSelAutoEThumbs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAutoEThumbs.Click
+        Functions.SetScraperMod(Enums.ModType.EThumbs, True)
+        MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultMovieOptions)
     End Sub
 
     Private Sub cmnuMovieReSelAutoFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAutoFanart.Click
@@ -8477,19 +9444,14 @@ doCancel:
         MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultMovieOptions)
     End Sub
 
-    Private Sub cmnuMovieReSelAskMetaData_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskMetaData.Click
-        Functions.SetScraperMod(Enums.ModType.Meta, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions)
+    Private Sub cmnuMovieReSelAutoLandscape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAutoLandscape.Click
+        Functions.SetScraperMod(Enums.ModType.Landscape, True)
+        MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultMovieOptions)
     End Sub
 
     Private Sub cmnuMovieReSelAutoMetaData_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAutoMetaData.Click
         Functions.SetScraperMod(Enums.ModType.Meta, True)
         MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultMovieOptions)
-    End Sub
-
-    Private Sub cmnuMovieReSelAskNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskNfo.Click
-        Functions.SetScraperMod(Enums.ModType.NFO, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions)
     End Sub
 
     Private Sub cmnuMovieReSelAutoNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAutoNfo.Click
@@ -8502,9 +9464,27 @@ doCancel:
         MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultMovieOptions)
     End Sub
 
-    Private Sub cmnuMovieReSelAskPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskPoster.Click
-        Functions.SetScraperMod(Enums.ModType.Poster, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions)
+    Private Sub cmnuMovieReSelAutoTheme_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAutoTheme.Click
+        Functions.SetScraperMod(Enums.ModType.Theme, True)
+        MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub cmnuMovieReSelAutoTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAutoTrailer.Click
+        Functions.SetScraperMod(Enums.ModType.Trailer, True)
+        MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub cmnuMovieReSelSkipAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelSkipAll.Click
+        Functions.SetScraperMod(Enums.ModType.All, True)
+        MovieScrapeData(True, Enums.ScrapeType.FullSkip, Master.DefaultMovieOptions)
+    End Sub
+
+    Private Sub cmnuMovieUpSelRating_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelRating.Click
+        Dim cScrapeOptions As New Structures.ScrapeOptions
+        cScrapeOptions.bRating = True
+        cScrapeOptions.bVotes = True
+        Functions.SetScraperMod(Enums.ModType.NFO, True)
+        MovieScrapeData(True, Enums.ScrapeType.SingleField, cScrapeOptions)
     End Sub
     ''' <summary>
     ''' Updates the media info panels (right side of disiplay) when the movie selector changes (left side of display)
@@ -8588,11 +9568,6 @@ doCancel:
         Catch ex As Exception
             Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
-    End Sub
-
-    Private Sub cmnuSelAutoTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAutoTrailer.Click
-        Functions.SetScraperMod(Enums.ModType.Trailer, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultMovieOptions)
     End Sub
 
     Private Sub SetAVImages(ByVal aImage As Image())
@@ -8731,9 +9706,133 @@ doCancel:
                 'Me.mnuFilterAutoExtra.Enabled = .AutoThumbs > 0 OrElse .AutoET
                 'Me.mnuFilterAskExtra.Enabled = .AutoThumbs > 0 OrElse .AutoET
 
+                'Actor Thumbs
+                Dim ActorAllowed As Boolean = .MovieActorThumbsAnyEnabled
+                Me.mnuAllAutoActor.Enabled = ActorAllowed
+                Me.mnuAllAskActor.Enabled = ActorAllowed
+                Me.mnuMissAutoActor.Enabled = ActorAllowed
+                Me.mnuMissAskActor.Enabled = ActorAllowed
+                Me.mnuNewAutoActor.Enabled = ActorAllowed
+                Me.mnuNewAskActor.Enabled = ActorAllowed
+                Me.mnuMarkAutoActor.Enabled = ActorAllowed
+                Me.mnuMarkAskActor.Enabled = ActorAllowed
+                Me.mnuFilterAutoActor.Enabled = ActorAllowed
+                Me.mnuFilterAskActor.Enabled = ActorAllowed
+                Me.cmnuMovieReSelAskActor.Enabled = ActorAllowed
+                Me.cmnuMovieReSelAutoActor.Enabled = ActorAllowed
+                Me.cmnuTrayAllAutoActor.Enabled = ActorAllowed
+                Me.cmnuTrayAllAskActor.Enabled = ActorAllowed
+                Me.cmnuTrayMissAutoActor.Enabled = ActorAllowed
+                Me.cmnuTrayMissAskActor.Enabled = ActorAllowed
+                Me.cmnuTrayNewAutoActor.Enabled = ActorAllowed
+                Me.cmnuTrayNewAskActor.Enabled = ActorAllowed
+                Me.cmnuTrayMarkAutoActor.Enabled = ActorAllowed
+                Me.cmnuTrayMarkAskActor.Enabled = ActorAllowed
+                Me.cmnuTrayFilterAutoActor.Enabled = ActorAllowed
+                Me.cmnuTrayFilterAskActor.Enabled = ActorAllowed
 
-                'here for future use
-                Dim EFanartsAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart) AndAlso Master.eSettings.MovieExtrafanartsFrodo OrElse Master.eSettings.MovieExtrafanartsEden
+                'Banner
+                Dim BannerAllowed As Boolean = .MovieBannerAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Banner)
+                Me.mnuAllAutoBanner.Enabled = BannerAllowed
+                Me.mnuAllAskBanner.Enabled = BannerAllowed
+                Me.mnuMissAutoBanner.Enabled = BannerAllowed
+                Me.mnuMissAskBanner.Enabled = BannerAllowed
+                Me.mnuNewAutoBanner.Enabled = BannerAllowed
+                Me.mnuNewAskBanner.Enabled = BannerAllowed
+                Me.mnuMarkAutoBanner.Enabled = BannerAllowed
+                Me.mnuMarkAskBanner.Enabled = BannerAllowed
+                Me.mnuFilterAutoBanner.Enabled = BannerAllowed
+                Me.mnuFilterAskBanner.Enabled = BannerAllowed
+                Me.cmnuMovieReSelAskBanner.Enabled = BannerAllowed
+                Me.cmnuMovieReSelAutoBanner.Enabled = BannerAllowed
+                Me.cmnuTrayAllAutoBanner.Enabled = BannerAllowed
+                Me.cmnuTrayAllAskBanner.Enabled = BannerAllowed
+                Me.cmnuTrayMissAutoBanner.Enabled = BannerAllowed
+                Me.cmnuTrayMissAskBanner.Enabled = BannerAllowed
+                Me.cmnuTrayNewAutoBanner.Enabled = BannerAllowed
+                Me.cmnuTrayNewAskBanner.Enabled = BannerAllowed
+                Me.cmnuTrayMarkAutoBanner.Enabled = BannerAllowed
+                Me.cmnuTrayMarkAskBanner.Enabled = BannerAllowed
+                Me.cmnuTrayFilterAutoBanner.Enabled = BannerAllowed
+                Me.cmnuTrayFilterAskBanner.Enabled = BannerAllowed
+
+                'ClearArt
+                Dim ClearArtAllowed As Boolean = .MovieClearArtAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.ClearArt)
+                Me.mnuAllAutoClearArt.Enabled = ClearArtAllowed
+                Me.mnuAllAskClearArt.Enabled = ClearArtAllowed
+                Me.mnuMissAutoClearArt.Enabled = ClearArtAllowed
+                Me.mnuMissAskClearArt.Enabled = ClearArtAllowed
+                Me.mnuNewAutoClearArt.Enabled = ClearArtAllowed
+                Me.mnuNewAskClearArt.Enabled = ClearArtAllowed
+                Me.mnuMarkAutoClearArt.Enabled = ClearArtAllowed
+                Me.mnuMarkAskClearArt.Enabled = ClearArtAllowed
+                Me.mnuFilterAutoClearArt.Enabled = ClearArtAllowed
+                Me.mnuFilterAskClearArt.Enabled = ClearArtAllowed
+                Me.cmnuMovieReSelAskClearArt.Enabled = ClearArtAllowed
+                Me.cmnuMovieReSelAutoClearArt.Enabled = ClearArtAllowed
+                Me.cmnuTrayAllAutoClearArt.Enabled = ClearArtAllowed
+                Me.cmnuTrayAllAskClearArt.Enabled = ClearArtAllowed
+                Me.cmnuTrayMissAutoClearArt.Enabled = ClearArtAllowed
+                Me.cmnuTrayMissAskClearArt.Enabled = ClearArtAllowed
+                Me.cmnuTrayNewAutoClearArt.Enabled = ClearArtAllowed
+                Me.cmnuTrayNewAskClearArt.Enabled = ClearArtAllowed
+                Me.cmnuTrayMarkAutoClearArt.Enabled = ClearArtAllowed
+                Me.cmnuTrayMarkAskClearArt.Enabled = ClearArtAllowed
+                Me.cmnuTrayFilterAutoClearArt.Enabled = ClearArtAllowed
+                Me.cmnuTrayFilterAskClearArt.Enabled = ClearArtAllowed
+
+                'ClearLogo
+                Dim ClearLogoAllowed As Boolean = .MovieClearLogoAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.ClearLogo)
+                Me.mnuAllAutoClearLogo.Enabled = ClearLogoAllowed
+                Me.mnuAllAskClearLogo.Enabled = ClearLogoAllowed
+                Me.mnuMissAutoClearLogo.Enabled = ClearLogoAllowed
+                Me.mnuMissAskClearLogo.Enabled = ClearLogoAllowed
+                Me.mnuNewAutoClearLogo.Enabled = ClearLogoAllowed
+                Me.mnuNewAskClearLogo.Enabled = ClearLogoAllowed
+                Me.mnuMarkAutoClearLogo.Enabled = ClearLogoAllowed
+                Me.mnuMarkAskClearLogo.Enabled = ClearLogoAllowed
+                Me.mnuFilterAutoClearLogo.Enabled = ClearLogoAllowed
+                Me.mnuFilterAskClearLogo.Enabled = ClearLogoAllowed
+                Me.cmnuMovieReSelAskClearLogo.Enabled = ClearLogoAllowed
+                Me.cmnuMovieReSelAutoClearLogo.Enabled = ClearLogoAllowed
+                Me.cmnuTrayAllAutoClearLogo.Enabled = ClearLogoAllowed
+                Me.cmnuTrayAllAskClearLogo.Enabled = ClearLogoAllowed
+                Me.cmnuTrayMissAutoClearLogo.Enabled = ClearLogoAllowed
+                Me.cmnuTrayMissAskClearLogo.Enabled = ClearLogoAllowed
+                Me.cmnuTrayNewAutoClearLogo.Enabled = ClearLogoAllowed
+                Me.cmnuTrayNewAskClearLogo.Enabled = ClearLogoAllowed
+                Me.cmnuTrayMarkAutoClearLogo.Enabled = ClearLogoAllowed
+                Me.cmnuTrayMarkAskClearLogo.Enabled = ClearLogoAllowed
+                Me.cmnuTrayFilterAutoClearLogo.Enabled = ClearLogoAllowed
+                Me.cmnuTrayFilterAskClearLogo.Enabled = ClearLogoAllowed
+
+                'DiscArt
+                Dim DiscArtAllowed As Boolean = .MovieDiscArtAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.DiscArt)
+                Me.mnuAllAutoDiscArt.Enabled = DiscArtAllowed
+                Me.mnuAllAskDiscArt.Enabled = DiscArtAllowed
+                Me.mnuMissAutoDiscArt.Enabled = DiscArtAllowed
+                Me.mnuMissAskDiscArt.Enabled = DiscArtAllowed
+                Me.mnuNewAutoDiscArt.Enabled = DiscArtAllowed
+                Me.mnuNewAskDiscArt.Enabled = DiscArtAllowed
+                Me.mnuMarkAutoDiscArt.Enabled = DiscArtAllowed
+                Me.mnuMarkAskDiscArt.Enabled = DiscArtAllowed
+                Me.mnuFilterAutoDiscArt.Enabled = DiscArtAllowed
+                Me.mnuFilterAskDiscArt.Enabled = DiscArtAllowed
+                Me.cmnuMovieReSelAskDiscArt.Enabled = DiscArtAllowed
+                Me.cmnuMovieReSelAutoDiscArt.Enabled = DiscArtAllowed
+                Me.cmnuTrayAllAutoDiscArt.Enabled = DiscArtAllowed
+                Me.cmnuTrayAllAskDiscArt.Enabled = DiscArtAllowed
+                Me.cmnuTrayMissAutoDiscArt.Enabled = DiscArtAllowed
+                Me.cmnuTrayMissAskDiscArt.Enabled = DiscArtAllowed
+                Me.cmnuTrayNewAutoDiscArt.Enabled = DiscArtAllowed
+                Me.cmnuTrayNewAskDiscArt.Enabled = DiscArtAllowed
+                Me.cmnuTrayMarkAutoDiscArt.Enabled = DiscArtAllowed
+                Me.cmnuTrayMarkAskDiscArt.Enabled = DiscArtAllowed
+                Me.cmnuTrayFilterAutoDiscArt.Enabled = DiscArtAllowed
+                Me.cmnuTrayFilterAskDiscArt.Enabled = DiscArtAllowed
+
+                'Extrafanart
+                Dim EFanartsAllowed As Boolean = .MovieEFanartsAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart)
                 Me.mnuAllAutoEFanarts.Enabled = EFanartsAllowed
                 Me.mnuAllAskEFanarts.Enabled = EFanartsAllowed
                 Me.mnuMissAutoEFanarts.Enabled = EFanartsAllowed
@@ -8744,6 +9843,8 @@ doCancel:
                 Me.mnuNewAskEFanarts.Enabled = EFanartsAllowed
                 Me.mnuFilterAutoEFanarts.Enabled = EFanartsAllowed
                 Me.mnuFilterAskEFanarts.Enabled = EFanartsAllowed
+                Me.cmnuMovieReSelAskEFanarts.Enabled = EFanartsAllowed
+                Me.cmnuMovieReSelAutoEFanarts.Enabled = EFanartsAllowed
                 Me.cmnuTrayAllAutoEFanarts.Enabled = EFanartsAllowed
                 Me.cmnuTrayAllAskEFanarts.Enabled = EFanartsAllowed
                 Me.cmnuTrayMissAutoEFanarts.Enabled = EFanartsAllowed
@@ -8755,7 +9856,8 @@ doCancel:
                 Me.cmnuTrayFilterAutoEFanarts.Enabled = EFanartsAllowed
                 Me.cmnuTrayFilterAskEFanarts.Enabled = EFanartsAllowed
 
-                Dim EThumbsAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart) AndAlso Master.eSettings.MovieExtrathumbsFrodo OrElse Master.eSettings.MovieExtrathumbsEden
+                'Extrathumb
+                Dim EThumbsAllowed As Boolean = .MovieEThumbsAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart)
                 Me.mnuAllAutoEThumbs.Enabled = EThumbsAllowed
                 Me.mnuAllAskEThumbs.Enabled = EThumbsAllowed
                 Me.mnuMissAutoEThumbs.Enabled = EThumbsAllowed
@@ -8766,6 +9868,8 @@ doCancel:
                 Me.mnuNewAskEThumbs.Enabled = EThumbsAllowed
                 Me.mnuFilterAutoEThumbs.Enabled = EThumbsAllowed
                 Me.mnuFilterAskEThumbs.Enabled = EThumbsAllowed
+                Me.cmnuMovieReSelAskEThumbs.Enabled = EThumbsAllowed
+                Me.cmnuMovieReSelAutoEThumbs.Enabled = EThumbsAllowed
                 Me.cmnuTrayAllAutoEThumbs.Enabled = EThumbsAllowed
                 Me.cmnuTrayAllAskEThumbs.Enabled = EThumbsAllowed
                 Me.cmnuTrayMissAutoEThumbs.Enabled = EThumbsAllowed
@@ -8777,29 +9881,8 @@ doCancel:
                 Me.cmnuTrayFilterAutoEThumbs.Enabled = EThumbsAllowed
                 Me.cmnuTrayFilterAskEThumbs.Enabled = EThumbsAllowed
 
-                Dim PosterAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Poster)
-                Me.mnuAllAutoPoster.Enabled = PosterAllowed
-                Me.mnuAllAskPoster.Enabled = PosterAllowed
-                Me.mnuMissAutoPoster.Enabled = PosterAllowed
-                Me.mnuMissAskPoster.Enabled = PosterAllowed
-                Me.mnuMarkAutoPoster.Enabled = PosterAllowed
-                Me.mnuMarkAskPoster.Enabled = PosterAllowed
-                Me.mnuNewAutoPoster.Enabled = PosterAllowed
-                Me.mnuNewAskPoster.Enabled = PosterAllowed
-                Me.mnuFilterAutoPoster.Enabled = PosterAllowed
-                Me.mnuFilterAskPoster.Enabled = PosterAllowed
-                Me.cmnuTrayAllAutoPoster.Enabled = PosterAllowed
-                Me.cmnuTrayAllAskPoster.Enabled = PosterAllowed
-                Me.cmnuTrayMissAutoPoster.Enabled = PosterAllowed
-                Me.cmnuTrayMissAskPoster.Enabled = PosterAllowed
-                Me.cmnuTrayMarkAutoPoster.Enabled = PosterAllowed
-                Me.cmnuTrayMarkAskPoster.Enabled = PosterAllowed
-                Me.cmnuTrayNewAutoPoster.Enabled = PosterAllowed
-                Me.cmnuTrayNewAskPoster.Enabled = PosterAllowed
-                Me.cmnuTrayFilterAutoPoster.Enabled = PosterAllowed
-                Me.cmnuTrayFilterAskPoster.Enabled = PosterAllowed
-
-                Dim FanartAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart)
+                'Fanart
+                Dim FanartAllowed As Boolean = .MovieFanartAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart)
                 Me.mnuAllAutoFanart.Enabled = FanartAllowed
                 Me.mnuAllAskFanart.Enabled = FanartAllowed
                 Me.mnuMissAutoFanart.Enabled = FanartAllowed
@@ -8810,6 +9893,8 @@ doCancel:
                 Me.mnuNewAskFanart.Enabled = FanartAllowed
                 Me.mnuFilterAutoFanart.Enabled = FanartAllowed
                 Me.mnuFilterAskFanart.Enabled = FanartAllowed
+                Me.cmnuMovieReSelAskFanart.Enabled = FanartAllowed
+                Me.cmnuMovieReSelAutoFanart.Enabled = FanartAllowed
                 Me.cmnuTrayAllAutoFanart.Enabled = FanartAllowed
                 Me.cmnuTrayAllAskFanart.Enabled = FanartAllowed
                 Me.cmnuTrayMissAutoFanart.Enabled = FanartAllowed
@@ -8821,6 +9906,32 @@ doCancel:
                 Me.cmnuTrayFilterAutoFanart.Enabled = FanartAllowed
                 Me.cmnuTrayFilterAskFanart.Enabled = FanartAllowed
 
+                'Landscape
+                Dim LandscapeAllowed As Boolean = .MovieLandscapeAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Landscape)
+                Me.mnuAllAutoLandscape.Enabled = LandscapeAllowed
+                Me.mnuAllAskLandscape.Enabled = LandscapeAllowed
+                Me.mnuMissAutoLandscape.Enabled = LandscapeAllowed
+                Me.mnuMissAskLandscape.Enabled = LandscapeAllowed
+                Me.mnuNewAutoLandscape.Enabled = LandscapeAllowed
+                Me.mnuNewAskLandscape.Enabled = LandscapeAllowed
+                Me.mnuMarkAutoLandscape.Enabled = LandscapeAllowed
+                Me.mnuMarkAskLandscape.Enabled = LandscapeAllowed
+                Me.mnuFilterAutoLandscape.Enabled = LandscapeAllowed
+                Me.mnuFilterAskLandscape.Enabled = LandscapeAllowed
+                Me.cmnuMovieReSelAskLandscape.Enabled = LandscapeAllowed
+                Me.cmnuMovieReSelAutoLandscape.Enabled = LandscapeAllowed
+                Me.cmnuTrayAllAutoLandscape.Enabled = LandscapeAllowed
+                Me.cmnuTrayAllAskLandscape.Enabled = LandscapeAllowed
+                Me.cmnuTrayMissAutoLandscape.Enabled = LandscapeAllowed
+                Me.cmnuTrayMissAskLandscape.Enabled = LandscapeAllowed
+                Me.cmnuTrayNewAutoLandscape.Enabled = LandscapeAllowed
+                Me.cmnuTrayNewAskLandscape.Enabled = LandscapeAllowed
+                Me.cmnuTrayMarkAutoLandscape.Enabled = LandscapeAllowed
+                Me.cmnuTrayMarkAskLandscape.Enabled = LandscapeAllowed
+                Me.cmnuTrayFilterAutoLandscape.Enabled = LandscapeAllowed
+                Me.cmnuTrayFilterAskLandscape.Enabled = LandscapeAllowed
+
+                'Metadata
                 Me.mnuAllAskMI.Enabled = .MovieScraperMetaDataScan
                 Me.mnuAllAutoMI.Enabled = .MovieScraperMetaDataScan
                 Me.mnuNewAskMI.Enabled = .MovieScraperMetaDataScan
@@ -8829,6 +9940,8 @@ doCancel:
                 Me.mnuMarkAutoMI.Enabled = .MovieScraperMetaDataScan
                 Me.mnuFilterAskMI.Enabled = .MovieScraperMetaDataScan
                 Me.mnuFilterAutoMI.Enabled = .MovieScraperMetaDataScan
+                Me.cmnuMovieReSelAskMetaData.Enabled = .MovieScraperMetaDataScan
+                Me.cmnuMovieReSelAutoMetaData.Enabled = .MovieScraperMetaDataScan
                 Me.cmnuTrayAllAskMI.Enabled = .MovieScraperMetaDataScan
                 Me.cmnuTrayAllAutoMetaData.Enabled = .MovieScraperMetaDataScan
                 Me.cmnuTrayNewAskMI.Enabled = .MovieScraperMetaDataScan
@@ -8838,7 +9951,58 @@ doCancel:
                 Me.cmnuTrayFilterAskMI.Enabled = .MovieScraperMetaDataScan
                 Me.cmnuTrayFilterAutoMI.Enabled = .MovieScraperMetaDataScan
 
-                Dim TrailerAllowed As Boolean = ModulesManager.Instance.QueryTrailerScraperCapabilities(Enums.ScraperCapabilities.Trailer)
+                'Poster
+                Dim PosterAllowed As Boolean = .MoviePosterAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Poster)
+                Me.mnuAllAutoPoster.Enabled = PosterAllowed
+                Me.mnuAllAskPoster.Enabled = PosterAllowed
+                Me.mnuMissAutoPoster.Enabled = PosterAllowed
+                Me.mnuMissAskPoster.Enabled = PosterAllowed
+                Me.mnuMarkAutoPoster.Enabled = PosterAllowed
+                Me.mnuMarkAskPoster.Enabled = PosterAllowed
+                Me.mnuNewAutoPoster.Enabled = PosterAllowed
+                Me.mnuNewAskPoster.Enabled = PosterAllowed
+                Me.mnuFilterAutoPoster.Enabled = PosterAllowed
+                Me.mnuFilterAskPoster.Enabled = PosterAllowed
+                Me.cmnuMovieReSelAskPoster.Enabled = PosterAllowed
+                Me.cmnuMovieReSelAutoPoster.Enabled = PosterAllowed
+                Me.cmnuTrayAllAutoPoster.Enabled = PosterAllowed
+                Me.cmnuTrayAllAskPoster.Enabled = PosterAllowed
+                Me.cmnuTrayMissAutoPoster.Enabled = PosterAllowed
+                Me.cmnuTrayMissAskPoster.Enabled = PosterAllowed
+                Me.cmnuTrayMarkAutoPoster.Enabled = PosterAllowed
+                Me.cmnuTrayMarkAskPoster.Enabled = PosterAllowed
+                Me.cmnuTrayNewAutoPoster.Enabled = PosterAllowed
+                Me.cmnuTrayNewAskPoster.Enabled = PosterAllowed
+                Me.cmnuTrayFilterAutoPoster.Enabled = PosterAllowed
+                Me.cmnuTrayFilterAskPoster.Enabled = PosterAllowed
+
+                'Theme
+                Dim ThemeAllowed As Boolean = .MovieThemeEnable AndAlso .MovieThemeAnyEnabled ' AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Theme) 'TODO
+                Me.mnuAllAutoTheme.Enabled = ThemeAllowed
+                Me.mnuAllAskTheme.Enabled = ThemeAllowed
+                Me.mnuMissAutoTheme.Enabled = ThemeAllowed
+                Me.mnuMissAskTheme.Enabled = ThemeAllowed
+                Me.mnuNewAutoTheme.Enabled = ThemeAllowed
+                Me.mnuNewAskTheme.Enabled = ThemeAllowed
+                Me.mnuMarkAutoTheme.Enabled = ThemeAllowed
+                Me.mnuMarkAskTheme.Enabled = ThemeAllowed
+                Me.mnuFilterAutoTheme.Enabled = ThemeAllowed
+                Me.mnuFilterAskTheme.Enabled = ThemeAllowed
+                Me.cmnuMovieReSelAskTheme.Enabled = ThemeAllowed
+                Me.cmnuMovieReSelAutoTheme.Enabled = ThemeAllowed
+                Me.cmnuTrayAllAutoTheme.Enabled = ThemeAllowed
+                Me.cmnuTrayAllAskTheme.Enabled = ThemeAllowed
+                Me.cmnuTrayMissAutoTheme.Enabled = ThemeAllowed
+                Me.cmnuTrayMissAskTheme.Enabled = ThemeAllowed
+                Me.cmnuTrayNewAutoTheme.Enabled = ThemeAllowed
+                Me.cmnuTrayNewAskTheme.Enabled = ThemeAllowed
+                Me.cmnuTrayMarkAutoTheme.Enabled = ThemeAllowed
+                Me.cmnuTrayMarkAskTheme.Enabled = ThemeAllowed
+                Me.cmnuTrayFilterAutoTheme.Enabled = ThemeAllowed
+                Me.cmnuTrayFilterAskTheme.Enabled = ThemeAllowed
+
+                'Trailer
+                Dim TrailerAllowed As Boolean = .MovieTrailerEnable AndAlso .MovieTrailerAnyEnabled AndAlso ModulesManager.Instance.QueryTrailerScraperCapabilities(Enums.ScraperCapabilities.Trailer)
                 Me.mnuAllAutoTrailer.Enabled = TrailerAllowed
                 Me.mnuAllAskTrailer.Enabled = TrailerAllowed
                 Me.mnuMissAutoTrailer.Enabled = TrailerAllowed
@@ -8849,6 +10013,8 @@ doCancel:
                 Me.mnuMarkAskTrailer.Enabled = TrailerAllowed
                 Me.mnuFilterAutoTrailer.Enabled = TrailerAllowed
                 Me.mnuFilterAskTrailer.Enabled = TrailerAllowed
+                Me.cmnuMovieReSelAskTrailer.Enabled = TrailerAllowed
+                Me.cmnuMovieReSelAutoTrailer.Enabled = TrailerAllowed
                 Me.cmnuTrayAllAutoTrailer.Enabled = TrailerAllowed
                 Me.cmnuTrayAllAskTrailer.Enabled = TrailerAllowed
                 Me.cmnuTrayMissAutoTrailer.Enabled = TrailerAllowed
@@ -8859,28 +10025,6 @@ doCancel:
                 Me.cmnuTrayMarkAskTrailer.Enabled = TrailerAllowed
                 Me.cmnuTrayFilterAutoTrailer.Enabled = TrailerAllowed
                 Me.cmnuTrayFilterAskTrailer.Enabled = TrailerAllowed
-
-                Dim ActorAllowed As Boolean = ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Actor)
-                Me.mnuAllAutoActor.Enabled = ActorAllowed
-                Me.mnuAllAskActor.Enabled = ActorAllowed
-                Me.mnuMissAutoActor.Enabled = ActorAllowed
-                Me.mnuMissAskActor.Enabled = ActorAllowed
-                Me.mnuNewAutoActor.Enabled = ActorAllowed
-                Me.mnuNewAskActor.Enabled = ActorAllowed
-                Me.mnuMarkAutoActor.Enabled = ActorAllowed
-                Me.mnuMarkAskActor.Enabled = ActorAllowed
-                Me.mnuFilterAutoActor.Enabled = ActorAllowed
-                Me.mnuFilterAskActor.Enabled = ActorAllowed
-                Me.cmnuTrayAllAutoActor.Enabled = ActorAllowed
-                Me.cmnuTrayAllAskActor.Enabled = ActorAllowed
-                Me.cmnuTrayMissAutoActor.Enabled = ActorAllowed
-                Me.cmnuTrayMissAskActor.Enabled = ActorAllowed
-                Me.cmnuTrayNewAutoActor.Enabled = ActorAllowed
-                Me.cmnuTrayNewAskActor.Enabled = ActorAllowed
-                Me.cmnuTrayMarkAutoActor.Enabled = ActorAllowed
-                Me.cmnuTrayMarkAskActor.Enabled = ActorAllowed
-                Me.cmnuTrayFilterAutoActor.Enabled = ActorAllowed
-                Me.cmnuTrayFilterAskActor.Enabled = ActorAllowed
 
                 Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
                     SQLNewcommand.CommandText = String.Concat("SELECT COUNT(id) AS mcount FROM movies WHERE mark = 1;")
@@ -9049,7 +10193,7 @@ doCancel:
             If Me.dgvMovies.RowCount > 0 Then
                 Me.dgvMovies.Columns(4).Visible = Not Master.eSettings.MoviePosterCol
                 Me.dgvMovies.Columns(5).Visible = Not Master.eSettings.MovieFanartCol
-                Me.dgvMovies.Columns(6).Visible = Not Master.eSettings.MovieInfoCol
+                Me.dgvMovies.Columns(6).Visible = Not Master.eSettings.MovieNFOCol
                 Me.dgvMovies.Columns(7).Visible = Not Master.eSettings.MovieTrailerCol
                 Me.dgvMovies.Columns(8).Visible = Not Master.eSettings.MovieSubCol
                 Me.dgvMovies.Columns(9).Visible = Not Master.eSettings.MovieEThumbsCol
@@ -9229,6 +10373,30 @@ doCancel:
                 .cmnuTrayFilterSkip.Text = .mnuAllSkip.Text
                 .cmnuMovieReSelSkip.Text = .mnuAllSkip.Text
 
+                ' Scrape Media Content: Actor Thumbs
+                .mnuAllAutoActor.Text = Master.eLang.GetString(973, "Actor Thumbs Only")
+                .mnuAllAskActor.Text = .mnuAllAutoActor.Text
+                .mnuMissAutoActor.Text = .mnuAllAutoActor.Text
+                .mnuMissAskActor.Text = .mnuAllAutoActor.Text
+                .mnuNewAutoActor.Text = .mnuAllAutoActor.Text
+                .mnuNewAskActor.Text = .mnuAllAutoActor.Text
+                .mnuMarkAutoActor.Text = .mnuAllAutoActor.Text
+                .mnuMarkAskActor.Text = .mnuAllAutoActor.Text
+                .mnuFilterAutoActor.Text = .mnuAllAutoActor.Text
+                .mnuFilterAskActor.Text = .mnuAllAutoActor.Text
+                .cmnuTrayAllAutoActor.Text = .mnuAllAutoActor.Text
+                .cmnuTrayAllAskActor.Text = .mnuAllAutoActor.Text
+                .cmnuTrayMissAutoActor.Text = .mnuAllAutoActor.Text
+                .cmnuTrayMissAskActor.Text = .mnuAllAutoActor.Text
+                .cmnuTrayNewAutoActor.Text = .mnuAllAutoActor.Text
+                .cmnuTrayNewAskActor.Text = .mnuAllAutoActor.Text
+                .cmnuTrayMarkAutoActor.Text = .mnuAllAutoActor.Text
+                .cmnuTrayMarkAskActor.Text = .mnuAllAutoActor.Text
+                .cmnuTrayFilterAutoActor.Text = .mnuAllAutoActor.Text
+                .cmnuTrayFilterAskActor.Text = .mnuAllAutoActor.Text
+                .cmnuMovieReSelAskActor.Text = .mnuAllAutoActor.Text
+                .cmnuMovieReSelAutoActor.Text = .mnuAllAutoActor.Text
+
                 ' Scrape Media Content: All Items
                 .mnuAllAutoAll.Text = Master.eLang.GetString(70, "All Items")
                 .mnuAllAskAll.Text = mnuAllAutoAll.Text
@@ -9263,6 +10431,218 @@ doCancel:
                 .cmnuMovieReSelAskAll.Text = .mnuAllAutoAll.Text
                 .cmnuMovieReSelAutoAll.Text = .mnuAllAutoAll.Text
                 .cmnuMovieReSelSkipAll.Text = .mnuAllAutoAll.Text
+
+                ' Scrape Media Content: Banner
+                .mnuAllAutoBanner.Text = Master.eLang.GetString(1060, "Banner Only")
+                .mnuAllAskBanner.Text = .mnuAllAutoBanner.Text
+                .mnuMissAutoBanner.Text = .mnuAllAutoBanner.Text
+                .mnuMissAskBanner.Text = .mnuAllAutoBanner.Text
+                .mnuNewAutoBanner.Text = .mnuAllAutoBanner.Text
+                .mnuNewAskBanner.Text = .mnuAllAutoBanner.Text
+                .mnuMarkAutoBanner.Text = .mnuAllAutoBanner.Text
+                .mnuMarkAskBanner.Text = .mnuAllAutoBanner.Text
+                .mnuFilterAutoBanner.Text = .mnuAllAutoBanner.Text
+                .mnuFilterAskBanner.Text = .mnuAllAutoBanner.Text
+                .cmnuTrayAllAutoBanner.Text = .mnuAllAutoBanner.Text
+                .cmnuTrayAllAskBanner.Text = .mnuAllAutoBanner.Text
+                .cmnuTrayMissAutoBanner.Text = .mnuAllAutoBanner.Text
+                .cmnuTrayMissAskBanner.Text = .mnuAllAutoBanner.Text
+                .cmnuTrayNewAutoBanner.Text = .mnuAllAutoBanner.Text
+                .cmnuTrayNewAskBanner.Text = .mnuAllAutoBanner.Text
+                .cmnuTrayMarkAutoBanner.Text = .mnuAllAutoBanner.Text
+                .cmnuTrayMarkAskBanner.Text = .mnuAllAutoBanner.Text
+                .cmnuTrayFilterAutoBanner.Text = .mnuAllAutoBanner.Text
+                .cmnuTrayFilterAskBanner.Text = .mnuAllAutoBanner.Text
+                .cmnuMovieReSelAskBanner.Text = .mnuAllAutoBanner.Text
+                .cmnuMovieReSelAutoBanner.Text = .mnuAllAutoBanner.Text
+
+                ' Scrape Media Content: ClearArt
+                .mnuAllAutoClearArt.Text = Master.eLang.GetString(1122, "ClearArt Only")
+                .mnuAllAskClearArt.Text = .mnuAllAutoClearArt.Text
+                .mnuMissAutoClearArt.Text = .mnuAllAutoClearArt.Text
+                .mnuMissAskClearArt.Text = .mnuAllAutoClearArt.Text
+                .mnuNewAutoClearArt.Text = .mnuAllAutoClearArt.Text
+                .mnuNewAskClearArt.Text = .mnuAllAutoClearArt.Text
+                .mnuMarkAutoClearArt.Text = .mnuAllAutoClearArt.Text
+                .mnuMarkAskClearArt.Text = .mnuAllAutoClearArt.Text
+                .mnuFilterAutoClearArt.Text = .mnuAllAutoClearArt.Text
+                .mnuFilterAskClearArt.Text = .mnuAllAutoClearArt.Text
+                .cmnuTrayAllAutoClearArt.Text = .mnuAllAutoClearArt.Text
+                .cmnuTrayAllAskClearArt.Text = .mnuAllAutoClearArt.Text
+                .cmnuTrayMissAutoClearArt.Text = .mnuAllAutoClearArt.Text
+                .cmnuTrayMissAskClearArt.Text = .mnuAllAutoClearArt.Text
+                .cmnuTrayNewAutoClearArt.Text = .mnuAllAutoClearArt.Text
+                .cmnuTrayNewAskClearArt.Text = .mnuAllAutoClearArt.Text
+                .cmnuTrayMarkAutoClearArt.Text = .mnuAllAutoClearArt.Text
+                .cmnuTrayMarkAskClearArt.Text = .mnuAllAutoClearArt.Text
+                .cmnuTrayFilterAutoClearArt.Text = .mnuAllAutoClearArt.Text
+                .cmnuTrayFilterAskClearArt.Text = .mnuAllAutoClearArt.Text
+                .cmnuMovieReSelAskClearArt.Text = .mnuAllAutoClearArt.Text
+                .cmnuMovieReSelAutoClearArt.Text = .mnuAllAutoClearArt.Text
+
+                ' Scrape Media Content: ClearLogo
+                .mnuAllAutoClearLogo.Text = Master.eLang.GetString(1123, "ClearLogo Only")
+                .mnuAllAskClearLogo.Text = .mnuAllAutoClearLogo.Text
+                .mnuMissAutoClearLogo.Text = .mnuAllAutoClearLogo.Text
+                .mnuMissAskClearLogo.Text = .mnuAllAutoClearLogo.Text
+                .mnuNewAutoClearLogo.Text = .mnuAllAutoClearLogo.Text
+                .mnuNewAskClearLogo.Text = .mnuAllAutoClearLogo.Text
+                .mnuMarkAutoClearLogo.Text = .mnuAllAutoClearLogo.Text
+                .mnuMarkAskClearLogo.Text = .mnuAllAutoClearLogo.Text
+                .mnuFilterAutoClearLogo.Text = .mnuAllAutoClearLogo.Text
+                .mnuFilterAskClearLogo.Text = .mnuAllAutoClearLogo.Text
+                .cmnuTrayAllAutoClearLogo.Text = .mnuAllAutoClearLogo.Text
+                .cmnuTrayAllAskClearLogo.Text = .mnuAllAutoClearLogo.Text
+                .cmnuTrayMissAutoClearLogo.Text = .mnuAllAutoClearLogo.Text
+                .cmnuTrayMissAskClearLogo.Text = .mnuAllAutoClearLogo.Text
+                .cmnuTrayNewAutoClearLogo.Text = .mnuAllAutoClearLogo.Text
+                .cmnuTrayNewAskClearLogo.Text = .mnuAllAutoClearLogo.Text
+                .cmnuTrayMarkAutoClearLogo.Text = .mnuAllAutoClearLogo.Text
+                .cmnuTrayMarkAskClearLogo.Text = .mnuAllAutoClearLogo.Text
+                .cmnuTrayFilterAutoClearLogo.Text = .mnuAllAutoClearLogo.Text
+                .cmnuTrayFilterAskClearLogo.Text = .mnuAllAutoClearLogo.Text
+                .cmnuMovieReSelAskClearLogo.Text = .mnuAllAutoClearLogo.Text
+                .cmnuMovieReSelAutoClearLogo.Text = .mnuAllAutoClearLogo.Text
+
+                ' Scrape Media Content: DiscArt
+                .mnuAllAutoDiscArt.Text = Master.eLang.GetString(1124, "DiscArt Only")
+                .mnuAllAskDiscArt.Text = .mnuAllAutoDiscArt.Text
+                .mnuMissAutoDiscArt.Text = .mnuAllAutoDiscArt.Text
+                .mnuMissAskDiscArt.Text = .mnuAllAutoDiscArt.Text
+                .mnuNewAutoDiscArt.Text = .mnuAllAutoDiscArt.Text
+                .mnuNewAskDiscArt.Text = .mnuAllAutoDiscArt.Text
+                .mnuMarkAutoDiscArt.Text = .mnuAllAutoDiscArt.Text
+                .mnuMarkAskDiscArt.Text = .mnuAllAutoDiscArt.Text
+                .mnuFilterAutoDiscArt.Text = .mnuAllAutoDiscArt.Text
+                .mnuFilterAskDiscArt.Text = .mnuAllAutoDiscArt.Text
+                .cmnuTrayAllAutoDiscArt.Text = .mnuAllAutoDiscArt.Text
+                .cmnuTrayAllAskDiscArt.Text = .mnuAllAutoDiscArt.Text
+                .cmnuTrayMissAutoDiscArt.Text = .mnuAllAutoDiscArt.Text
+                .cmnuTrayMissAskDiscArt.Text = .mnuAllAutoDiscArt.Text
+                .cmnuTrayNewAutoDiscArt.Text = .mnuAllAutoDiscArt.Text
+                .cmnuTrayNewAskDiscArt.Text = .mnuAllAutoDiscArt.Text
+                .cmnuTrayMarkAutoDiscArt.Text = .mnuAllAutoDiscArt.Text
+                .cmnuTrayMarkAskDiscArt.Text = .mnuAllAutoDiscArt.Text
+                .cmnuTrayFilterAutoDiscArt.Text = .mnuAllAutoDiscArt.Text
+                .cmnuTrayFilterAskDiscArt.Text = .mnuAllAutoDiscArt.Text
+                .cmnuMovieReSelAskDiscArt.Text = .mnuAllAutoDiscArt.Text
+                .cmnuMovieReSelAutoDiscArt.Text = .mnuAllAutoDiscArt.Text
+
+                ' Scrape Media Content: Extrafanarts
+                .mnuAllAutoEFanarts.Text = Master.eLang.GetString(975, "Extrafanarts Only")
+                .mnuAllAskEFanarts.Text = .mnuAllAutoEFanarts.Text
+                .mnuMissAutoEFanarts.Text = .mnuAllAutoEFanarts.Text
+                .mnuMissAskEFanarts.Text = .mnuAllAutoEFanarts.Text
+                .mnuNewAutoEFanarts.Text = .mnuAllAutoEFanarts.Text
+                .mnuNewAskEFanarts.Text = .mnuAllAutoEFanarts.Text
+                .mnuMarkAutoEFanarts.Text = .mnuAllAutoEFanarts.Text
+                .mnuMarkAskEFanarts.Text = .mnuAllAutoEFanarts.Text
+                .mnuFilterAutoEFanarts.Text = .mnuAllAutoEFanarts.Text
+                .mnuFilterAskEFanarts.Text = .mnuAllAutoEFanarts.Text
+                .cmnuTrayAllAutoEFanarts.Text = .mnuAllAutoEFanarts.Text
+                .cmnuTrayAllAskEFanarts.Text = .mnuAllAutoEFanarts.Text
+                .cmnuTrayMissAutoEFanarts.Text = .mnuAllAutoEFanarts.Text
+                .cmnuTrayMissAskEFanarts.Text = .mnuAllAutoEFanarts.Text
+                .cmnuTrayNewAutoEFanarts.Text = .mnuAllAutoEFanarts.Text
+                .cmnuTrayNewAskEFanarts.Text = .mnuAllAutoEFanarts.Text
+                .cmnuTrayMarkAutoEFanarts.Text = .mnuAllAutoEFanarts.Text
+                .cmnuTrayMarkAskEFanarts.Text = .mnuAllAutoEFanarts.Text
+                .cmnuTrayFilterAutoEFanarts.Text = .mnuAllAutoEFanarts.Text
+                .cmnuTrayFilterAskEFanarts.Text = .mnuAllAutoEFanarts.Text
+                .cmnuMovieReSelAskEFanarts.Text = .mnuAllAutoEFanarts.Text
+                .cmnuMovieReSelAutoEFanarts.Text = .mnuAllAutoEFanarts.Text
+
+                ' Scrape Media Content: Extrathumbs
+                .mnuAllAutoEThumbs.Text = Master.eLang.GetString(74, "Extrathumbs Only")
+                .mnuAllAskEThumbs.Text = .mnuAllAutoEThumbs.Text
+                .mnuMissAutoEThumbs.Text = .mnuAllAutoEThumbs.Text
+                .mnuMissAskEThumbs.Text = .mnuAllAutoEThumbs.Text
+                .mnuNewAutoEThumbs.Text = .mnuAllAutoEThumbs.Text
+                .mnuNewAskEThumbs.Text = .mnuAllAutoEThumbs.Text
+                .mnuMarkAutoEThumbs.Text = .mnuAllAutoEThumbs.Text
+                .mnuMarkAskEThumbs.Text = .mnuAllAutoEThumbs.Text
+                .mnuFilterAutoEThumbs.Text = .mnuAllAutoEThumbs.Text
+                .mnuFilterAskEThumbs.Text = .mnuAllAutoEThumbs.Text
+                .cmnuTrayAllAutoEThumbs.Text = .mnuAllAutoEThumbs.Text
+                .cmnuTrayAllAskEThumbs.Text = .mnuAllAutoEThumbs.Text
+                .cmnuTrayMissAutoEThumbs.Text = .mnuAllAutoEThumbs.Text
+                .cmnuTrayMissAskEThumbs.Text = .mnuAllAutoEThumbs.Text
+                .cmnuTrayNewAutoEThumbs.Text = .mnuAllAutoEThumbs.Text
+                .cmnuTrayNewAskEThumbs.Text = .mnuAllAutoEThumbs.Text
+                .cmnuTrayMarkAutoEThumbs.Text = .mnuAllAutoEThumbs.Text
+                .cmnuTrayMarkAskEThumbs.Text = .mnuAllAutoEThumbs.Text
+                .cmnuTrayFilterAutoEThumbs.Text = .mnuAllAutoEThumbs.Text
+                .cmnuTrayFilterAskEThumbs.Text = .mnuAllAutoEThumbs.Text
+                .cmnuMovieReSelAskEThumbs.Text = .mnuAllAutoEThumbs.Text
+                .cmnuMovieReSelAutoEThumbs.Text = .mnuAllAutoEThumbs.Text
+
+                ' Scrape Media Content: Fanart
+                .mnuAllAutoFanart.Text = Master.eLang.GetString(73, "Fanart Only")
+                .mnuAllAskFanart.Text = .mnuAllAutoFanart.Text
+                .mnuMissAutoFanart.Text = .mnuAllAutoFanart.Text
+                .mnuMissAskFanart.Text = .mnuAllAutoFanart.Text
+                .mnuNewAutoFanart.Text = .mnuAllAutoFanart.Text
+                .mnuNewAskFanart.Text = .mnuAllAutoFanart.Text
+                .mnuMarkAutoFanart.Text = .mnuAllAutoFanart.Text
+                .mnuMarkAskFanart.Text = .mnuAllAutoFanart.Text
+                .mnuFilterAutoFanart.Text = .mnuAllAutoFanart.Text
+                .mnuFilterAskFanart.Text = .mnuAllAutoFanart.Text
+                .cmnuTrayAllAutoFanart.Text = .mnuAllAutoFanart.Text
+                .cmnuTrayAllAskFanart.Text = .mnuAllAutoFanart.Text
+                .cmnuTrayMissAutoFanart.Text = .mnuAllAutoFanart.Text
+                .cmnuTrayMissAskFanart.Text = .mnuAllAutoFanart.Text
+                .cmnuTrayNewAutoFanart.Text = .mnuAllAutoFanart.Text
+                .cmnuTrayNewAskFanart.Text = .mnuAllAutoFanart.Text
+                .cmnuTrayMarkAutoFanart.Text = .mnuAllAutoFanart.Text
+                .cmnuTrayMarkAskFanart.Text = .mnuAllAutoFanart.Text
+                .cmnuTrayFilterAutoFanart.Text = .mnuAllAutoFanart.Text
+                .cmnuTrayFilterAskFanart.Text = .mnuAllAutoFanart.Text
+                .cmnuMovieReSelAskFanart.Text = .mnuAllAutoFanart.Text
+                .cmnuMovieReSelAutoFanart.Text = .mnuAllAutoFanart.Text
+
+                ' Scrape Media Content: Landscape
+                .mnuAllAutoLandscape.Text = Master.eLang.GetString(1061, "Landscape Only")
+                .mnuAllAskLandscape.Text = .mnuAllAutoLandscape.Text
+                .mnuMissAutoLandscape.Text = .mnuAllAutoLandscape.Text
+                .mnuMissAskLandscape.Text = .mnuAllAutoLandscape.Text
+                .mnuNewAutoLandscape.Text = .mnuAllAutoLandscape.Text
+                .mnuNewAskLandscape.Text = .mnuAllAutoLandscape.Text
+                .mnuMarkAutoLandscape.Text = .mnuAllAutoLandscape.Text
+                .mnuMarkAskLandscape.Text = .mnuAllAutoLandscape.Text
+                .mnuFilterAutoLandscape.Text = .mnuAllAutoLandscape.Text
+                .mnuFilterAskLandscape.Text = .mnuAllAutoLandscape.Text
+                .cmnuTrayAllAutoLandscape.Text = .mnuAllAutoLandscape.Text
+                .cmnuTrayAllAskLandscape.Text = .mnuAllAutoLandscape.Text
+                .cmnuTrayMissAutoLandscape.Text = .mnuAllAutoLandscape.Text
+                .cmnuTrayMissAskLandscape.Text = .mnuAllAutoLandscape.Text
+                .cmnuTrayNewAutoLandscape.Text = .mnuAllAutoLandscape.Text
+                .cmnuTrayNewAskLandscape.Text = .mnuAllAutoLandscape.Text
+                .cmnuTrayMarkAutoLandscape.Text = .mnuAllAutoLandscape.Text
+                .cmnuTrayMarkAskLandscape.Text = .mnuAllAutoLandscape.Text
+                .cmnuTrayFilterAutoLandscape.Text = .mnuAllAutoLandscape.Text
+                .cmnuTrayFilterAskLandscape.Text = .mnuAllAutoLandscape.Text
+                .cmnuMovieReSelAskLandscape.Text = .mnuAllAutoLandscape.Text
+                .cmnuMovieReSelAutoLandscape.Text = .mnuAllAutoLandscape.Text
+
+                ' Scrape Media Content: Meta Data
+                .mnuAllAutoMI.Text = Master.eLang.GetString(76, "Meta Data Only")
+                .mnuAllAskMI.Text = .mnuAllAutoMI.Text
+                .mnuNewAutoMI.Text = .mnuAllAutoMI.Text
+                .mnuNewAskMI.Text = .mnuAllAutoMI.Text
+                .mnuMarkAutoMI.Text = .mnuAllAutoMI.Text
+                .mnuMarkAskMI.Text = .mnuAllAutoMI.Text
+                .mnuFilterAutoMI.Text = .mnuAllAutoMI.Text
+                .mnuFilterAskMI.Text = .mnuAllAutoMI.Text
+                .cmnuTrayAllAutoMetaData.Text = .mnuAllAutoMI.Text
+                .cmnuTrayAllAskMI.Text = .mnuAllAutoMI.Text
+                .cmnuTrayNewAutoMI.Text = .mnuAllAutoMI.Text
+                .cmnuTrayNewAskMI.Text = .mnuAllAutoMI.Text
+                .cmnuTrayMarkAutoMI.Text = .mnuAllAutoMI.Text
+                .cmnuTrayMarkAskMI.Text = .mnuAllAutoMI.Text
+                .cmnuTrayFilterAutoMI.Text = .mnuAllAutoMI.Text
+                .cmnuTrayFilterAskMI.Text = .mnuAllAutoMI.Text
+                .cmnuMovieReSelAskMetaData.Text = .mnuAllAutoMI.Text
+                .cmnuMovieReSelAutoMetaData.Text = .mnuAllAutoMI.Text
 
                 ' Scrape Media Content: NFO
                 .mnuAllAutoNfo.Text = Master.eLang.GetString(71, "NFO Only")
@@ -9312,77 +10692,29 @@ doCancel:
                 .cmnuMovieReSelAskPoster.Text = .mnuAllAutoPoster.Text
                 .cmnuMovieReSelAutoPoster.Text = .mnuAllAutoPoster.Text
 
-                ' Scrape Media Content: Fanart
-                .mnuAllAutoFanart.Text = Master.eLang.GetString(73, "Fanart Only")
-                .mnuAllAskFanart.Text = .mnuAllAutoFanart.Text
-                .mnuMissAutoFanart.Text = .mnuAllAutoFanart.Text
-                .mnuMissAskFanart.Text = .mnuAllAutoFanart.Text
-                .mnuNewAutoFanart.Text = .mnuAllAutoFanart.Text
-                .mnuNewAskFanart.Text = .mnuAllAutoFanart.Text
-                .mnuMarkAutoFanart.Text = .mnuAllAutoFanart.Text
-                .mnuMarkAskFanart.Text = .mnuAllAutoFanart.Text
-                .mnuFilterAutoFanart.Text = .mnuAllAutoFanart.Text
-                .mnuFilterAskFanart.Text = .mnuAllAutoFanart.Text
-                .cmnuTrayAllAutoFanart.Text = .mnuAllAutoFanart.Text
-                .cmnuTrayAllAskFanart.Text = .mnuAllAutoFanart.Text
-                .cmnuTrayMissAutoFanart.Text = .mnuAllAutoFanart.Text
-                .cmnuTrayMissAskFanart.Text = .mnuAllAutoFanart.Text
-                .cmnuTrayNewAutoFanart.Text = .mnuAllAutoFanart.Text
-                .cmnuTrayNewAskFanart.Text = .mnuAllAutoFanart.Text
-                .cmnuTrayMarkAutoFanart.Text = .mnuAllAutoFanart.Text
-                .cmnuTrayMarkAskFanart.Text = .mnuAllAutoFanart.Text
-                .cmnuTrayFilterAutoFanart.Text = .mnuAllAutoFanart.Text
-                .cmnuTrayFilterAskFanart.Text = .mnuAllAutoFanart.Text
-                .cmnuMovieReSelAskFanart.Text = .mnuAllAutoFanart.Text
-                .cmnuMovieReSelAutoFanart.Text = .mnuAllAutoFanart.Text
-
-                ' Scrape Media Content: Extrathumbs
-                .mnuAllAutoEThumbs.Text = Master.eLang.GetString(74, "Extrathumbs Only")
-                .mnuAllAskEThumbs.Text = .mnuAllAutoEThumbs.Text
-                .mnuMissAutoEThumbs.Text = .mnuAllAutoEThumbs.Text
-                .mnuMissAskEThumbs.Text = .mnuAllAutoEThumbs.Text
-                .mnuNewAutoEThumbs.Text = .mnuAllAutoEThumbs.Text
-                .mnuNewAskEThumbs.Text = .mnuAllAutoEThumbs.Text
-                .mnuMarkAutoEThumbs.Text = .mnuAllAutoEThumbs.Text
-                .mnuMarkAskEThumbs.Text = .mnuAllAutoEThumbs.Text
-                .mnuFilterAutoEThumbs.Text = .mnuAllAutoEThumbs.Text
-                .mnuFilterAskEThumbs.Text = .mnuAllAutoEThumbs.Text
-                .cmnuTrayAllAutoEThumbs.Text = .mnuAllAutoEThumbs.Text
-                .cmnuTrayAllAskEThumbs.Text = .mnuAllAutoEThumbs.Text
-                .cmnuTrayMissAutoEThumbs.Text = .mnuAllAutoEThumbs.Text
-                .cmnuTrayMissAskEThumbs.Text = .mnuAllAutoEThumbs.Text
-                .cmnuTrayNewAutoEThumbs.Text = .mnuAllAutoEThumbs.Text
-                .cmnuTrayNewAskEThumbs.Text = .mnuAllAutoEThumbs.Text
-                .cmnuTrayMarkAutoEThumbs.Text = .mnuAllAutoEThumbs.Text
-                .cmnuTrayMarkAskEThumbs.Text = .mnuAllAutoEThumbs.Text
-                .cmnuTrayFilterAutoEThumbs.Text = .mnuAllAutoEThumbs.Text
-                .cmnuTrayFilterAskEThumbs.Text = .mnuAllAutoEThumbs.Text
-                .cmnuMovieReSelAskEThumbs.Text = .mnuAllAutoEThumbs.Text
-                .cmnuMovieReSelAutoEThumbs.Text = .mnuAllAutoEThumbs.Text
-
-                ' Scrape Media Content: Extrafanarts
-                .mnuAllAutoEFanarts.Text = Master.eLang.GetString(975, "Extrafanarts Only")
-                .mnuAllAskEFanarts.Text = .mnuAllAutoEFanarts.Text
-                .mnuMissAutoEFanarts.Text = .mnuAllAutoEFanarts.Text
-                .mnuMissAskEFanarts.Text = .mnuAllAutoEFanarts.Text
-                .mnuNewAutoEFanarts.Text = .mnuAllAutoEFanarts.Text
-                .mnuNewAskEFanarts.Text = .mnuAllAutoEFanarts.Text
-                .mnuMarkAutoEFanarts.Text = .mnuAllAutoEFanarts.Text
-                .mnuMarkAskEFanarts.Text = .mnuAllAutoEFanarts.Text
-                .mnuFilterAutoEFanarts.Text = .mnuAllAutoEFanarts.Text
-                .mnuFilterAskEFanarts.Text = .mnuAllAutoEFanarts.Text
-                .cmnuTrayAllAutoEFanarts.Text = .mnuAllAutoEFanarts.Text
-                .cmnuTrayAllAskEFanarts.Text = .mnuAllAutoEFanarts.Text
-                .cmnuTrayMissAutoEFanarts.Text = .mnuAllAutoEFanarts.Text
-                .cmnuTrayMissAskEFanarts.Text = .mnuAllAutoEFanarts.Text
-                .cmnuTrayNewAutoEFanarts.Text = .mnuAllAutoEFanarts.Text
-                .cmnuTrayNewAskEFanarts.Text = .mnuAllAutoEFanarts.Text
-                .cmnuTrayMarkAutoEFanarts.Text = .mnuAllAutoEFanarts.Text
-                .cmnuTrayMarkAskEFanarts.Text = .mnuAllAutoEFanarts.Text
-                .cmnuTrayFilterAutoEFanarts.Text = .mnuAllAutoEFanarts.Text
-                .cmnuTrayFilterAskEFanarts.Text = .mnuAllAutoEFanarts.Text
-                .cmnuMovieReSelAskEFanarts.Text = .mnuAllAutoEFanarts.Text
-                .cmnuMovieReSelAutoEFanarts.Text = .mnuAllAutoEFanarts.Text
+                ' Scrape Media Content: Theme
+                .mnuAllAutoTheme.Text = Master.eLang.GetString(1125, "Theme Only")
+                .mnuAllAskTheme.Text = .mnuAllAutoTheme.Text
+                .mnuMissAutoTheme.Text = .mnuAllAutoTheme.Text
+                .mnuMissAskTheme.Text = .mnuAllAutoTheme.Text
+                .mnuNewAutoTheme.Text = .mnuAllAutoTheme.Text
+                .mnuNewAskTheme.Text = .mnuAllAutoTheme.Text
+                .mnuMarkAutoTheme.Text = .mnuAllAutoTheme.Text
+                .mnuMarkAskTheme.Text = .mnuAllAutoTheme.Text
+                .mnuFilterAutoTheme.Text = .mnuAllAutoTheme.Text
+                .mnuFilterAskTheme.Text = .mnuAllAutoTheme.Text
+                .cmnuTrayAllAutoTheme.Text = .mnuAllAutoTheme.Text
+                .cmnuTrayAllAskTheme.Text = .mnuAllAutoTheme.Text
+                .cmnuTrayMissAutoTheme.Text = .mnuAllAutoTheme.Text
+                .cmnuTrayMissAskTheme.Text = .mnuAllAutoTheme.Text
+                .cmnuTrayNewAutoTheme.Text = .mnuAllAutoTheme.Text
+                .cmnuTrayNewAskTheme.Text = .mnuAllAutoTheme.Text
+                .cmnuTrayMarkAutoTheme.Text = .mnuAllAutoTheme.Text
+                .cmnuTrayMarkAskTheme.Text = .mnuAllAutoTheme.Text
+                .cmnuTrayFilterAutoTheme.Text = .mnuAllAutoTheme.Text
+                .cmnuTrayFilterAskTheme.Text = .mnuAllAutoTheme.Text
+                .cmnuMovieReSelAskTheme.Text = .mnuAllAutoTheme.Text
+                .cmnuMovieReSelAutoTheme.Text = .mnuAllAutoTheme.Text
 
                 ' Scrape Media Content: Trailer
                 .mnuAllAutoTrailer.Text = Master.eLang.GetString(75, "Trailer Only")
@@ -9407,50 +10739,6 @@ doCancel:
                 .cmnuTrayFilterAskTrailer.Text = .mnuAllAutoTrailer.Text
                 .cmnuMovieReSelAskTrailer.Text = .mnuAllAutoTrailer.Text
                 .cmnuMovieReSelAutoTrailer.Text = .mnuAllAutoTrailer.Text
-
-                ' Scrape Media Content: Meta Data
-                .mnuAllAutoMI.Text = Master.eLang.GetString(76, "Meta Data Only")
-                .mnuAllAskMI.Text = .mnuAllAutoMI.Text
-                .mnuNewAutoMI.Text = .mnuAllAutoMI.Text
-                .mnuNewAskMI.Text = .mnuAllAutoMI.Text
-                .mnuMarkAutoMI.Text = .mnuAllAutoMI.Text
-                .mnuMarkAskMI.Text = .mnuAllAutoMI.Text
-                .mnuFilterAutoMI.Text = .mnuAllAutoMI.Text
-                .mnuFilterAskMI.Text = .mnuAllAutoMI.Text
-                .cmnuTrayAllAutoMetaData.Text = .mnuAllAutoMI.Text
-                .cmnuTrayAllAskMI.Text = .mnuAllAutoMI.Text
-                .cmnuTrayNewAutoMI.Text = .mnuAllAutoMI.Text
-                .cmnuTrayNewAskMI.Text = .mnuAllAutoMI.Text
-                .cmnuTrayMarkAutoMI.Text = .mnuAllAutoMI.Text
-                .cmnuTrayMarkAskMI.Text = .mnuAllAutoMI.Text
-                .cmnuTrayFilterAutoMI.Text = .mnuAllAutoMI.Text
-                .cmnuTrayFilterAskMI.Text = .mnuAllAutoMI.Text
-                .cmnuMovieReSelAskMetaData.Text = .mnuAllAutoMI.Text
-                .cmnuMovieReSelAutoMetaData.Text = .mnuAllAutoMI.Text
-
-                ' Scrape Media Content: Actor Thumbs
-                .mnuAllAutoActor.Text = Master.eLang.GetString(973, "Actor Thumbs Only")
-                .mnuAllAskActor.Text = .mnuAllAutoActor.Text
-                .mnuMissAutoActor.Text = .mnuAllAutoActor.Text
-                .mnuMissAskActor.Text = .mnuAllAutoActor.Text
-                .mnuNewAutoActor.Text = .mnuAllAutoActor.Text
-                .mnuNewAskActor.Text = .mnuAllAutoActor.Text
-                .mnuMarkAutoActor.Text = .mnuAllAutoActor.Text
-                .mnuMarkAskActor.Text = .mnuAllAutoActor.Text
-                .mnuFilterAutoActor.Text = .mnuAllAutoActor.Text
-                .mnuFilterAskActor.Text = .mnuAllAutoActor.Text
-                .cmnuTrayAllAutoActor.Text = .mnuAllAutoActor.Text
-                .cmnuTrayAllAskActor.Text = .mnuAllAutoActor.Text
-                .cmnuTrayMissAutoActor.Text = .mnuAllAutoActor.Text
-                .cmnuTrayMissAskActor.Text = .mnuAllAutoActor.Text
-                .cmnuTrayNewAutoActor.Text = .mnuAllAutoActor.Text
-                .cmnuTrayNewAskActor.Text = .mnuAllAutoActor.Text
-                .cmnuTrayMarkAutoActor.Text = .mnuAllAutoActor.Text
-                .cmnuTrayMarkAskActor.Text = .mnuAllAutoActor.Text
-                .cmnuTrayFilterAutoActor.Text = .mnuAllAutoActor.Text
-                .cmnuTrayFilterAskActor.Text = .mnuAllAutoActor.Text
-                .cmnuMovieReSelAskActor.Text = .mnuAllAutoActor.Text
-                .cmnuMovieReSelAutoActor.Text = .mnuAllAutoActor.Text
 
                 ' others
                 .btnCancel.Text = Master.eLang.GetString(54, "Cancel Scraper")
@@ -9496,8 +10784,9 @@ doCancel:
                 .cmnuMovieRemoveFromDisk.Text = Master.eLang.GetString(34, "Delete Movie")
                 .cmnuMovieRescrape.Text = Master.eLang.GetString(163, "(Re)Scrape Movie")
                 .cmnuMovieReSel.Text = Master.eLang.GetString(31, "(Re)Scrape Selected Movies")
-                .cmnuMovieReSel.Text = Master.eLang.GetString(31, "(Re)Scrape Selected Movies")
+                .cmnuMovieUpSelRating.Text = String.Concat(Master.eLang.GetString(400, "Rating"), " / ", Master.eLang.GetString(399, "Votes"))
                 .cmnuMovieTitle.Text = Master.eLang.GetString(21, "Title")
+                .cmnuMovieUpSel.Text = Master.eLang.GetString(1126, "Update Single Field")
                 .cmnuRemoveSeasonFromDB.Text = Master.eLang.GetString(646, "Remove from Database")
                 .cmnuSeasonChangeImages.Text = Master.eLang.GetString(770, "Change Images")
                 .cmnuSeasonLock.Text = Master.eLang.GetString(24, "Lock")
@@ -9515,6 +10804,7 @@ doCancel:
                 .cmnuShowRemove.Text = Master.eLang.GetString(30, "Remove")
                 .cmnuShowRemoveFromDB.Text = Master.eLang.GetString(646, "Remove from Database")
                 .cmnuShowRemoveFromDisk.Text = Master.eLang.GetString(768, "Delete TV Show")
+                .cmnuShowRefresh.Text = Master.eLang.GetString(1066, "Refresh Data")
                 .cmnuShowRescrape.Text = Master.eLang.GetString(766, "(Re)Scrape Show")
                 .cmnuTrayExit.Text = Master.eLang.GetString(2, "E&xit")
                 .cmnuTrayScrape.Text = Master.eLang.GetString(67, "Scrape Media")
@@ -9996,11 +11286,6 @@ doCancel:
             Me.tmrLoad.Stop()
             Me.tmrWait.Stop()
         End If
-    End Sub
-
-    Private Sub cmnuMovieReSelAskTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieReSelAskTrailer.Click
-        Functions.SetScraperMod(Enums.ModType.Trailer, True)
-        MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions)
     End Sub
 
     Private Sub mnuUpdate_ButtonClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuUpdate.ButtonClick

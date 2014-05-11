@@ -124,6 +124,7 @@ Partial Class dlgOfflineHolder
         Me.rbModeSingle = New System.Windows.Forms.RadioButton()
         Me.gbSource = New System.Windows.Forms.GroupBox()
         Me.gbDVDProfiler = New System.Windows.Forms.GroupBox()
+        Me.btnSaveOfflineFolderName = New System.Windows.Forms.Button()
         Me.txtFolderNameDVDProfiler = New System.Windows.Forms.TextBox()
         Me.lblTitle = New System.Windows.Forms.Label()
         Me.txtDVDTitle = New System.Windows.Forms.TextBox()
@@ -139,15 +140,17 @@ Partial Class dlgOfflineHolder
         Me.btnLoadCollectionXML = New System.Windows.Forms.Button()
         Me.gbScraperType = New System.Windows.Forms.GroupBox()
         Me.btnSearchBatch = New System.Windows.Forms.Button()
+        Me.rbScraperTypeManually = New System.Windows.Forms.RadioButton()
         Me.rbScraperTypeAsk = New System.Windows.Forms.RadioButton()
-        Me.rbScraperTypeAuto = New System.Windows.Forms.RadioButton()
         Me.gbInfoBatch = New System.Windows.Forms.GroupBox()
         Me.pbProgressBatch = New System.Windows.Forms.ProgressBar()
         Me.lvStatusBatch = New System.Windows.Forms.ListView()
-        Me.ColumnHeader1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader2 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colMovieName = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colFolderStatus = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.ofdLoadXML = New System.Windows.Forms.OpenFileDialog()
+        Me.tmrBatch = New System.Windows.Forms.Timer(Me.components)
+        Me.tmrBatchWait = New System.Windows.Forms.Timer(Me.components)
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbPreview, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -786,6 +789,7 @@ Partial Class dlgOfflineHolder
         '
         'gbDVDProfiler
         '
+        Me.gbDVDProfiler.Controls.Add(Me.btnSaveOfflineFolderName)
         Me.gbDVDProfiler.Controls.Add(Me.txtFolderNameDVDProfiler)
         Me.gbDVDProfiler.Controls.Add(Me.lblTitle)
         Me.gbDVDProfiler.Controls.Add(Me.txtDVDTitle)
@@ -808,12 +812,21 @@ Partial Class dlgOfflineHolder
         Me.gbDVDProfiler.TabStop = False
         Me.gbDVDProfiler.Text = "4. DVD Profiler"
         '
+        'btnSaveOfflineFolderName
+        '
+        Me.btnSaveOfflineFolderName.Image = CType(resources.GetObject("btnSaveOfflineFolderName.Image"), System.Drawing.Image)
+        Me.btnSaveOfflineFolderName.Location = New System.Drawing.Point(295, 48)
+        Me.btnSaveOfflineFolderName.Name = "btnSaveOfflineFolderName"
+        Me.btnSaveOfflineFolderName.Size = New System.Drawing.Size(26, 26)
+        Me.btnSaveOfflineFolderName.TabIndex = 22
+        Me.btnSaveOfflineFolderName.UseVisualStyleBackColor = True
+        '
         'txtFolderNameDVDProfiler
         '
         Me.txtFolderNameDVDProfiler.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.txtFolderNameDVDProfiler.Location = New System.Drawing.Point(6, 50)
         Me.txtFolderNameDVDProfiler.Name = "txtFolderNameDVDProfiler"
-        Me.txtFolderNameDVDProfiler.Size = New System.Drawing.Size(318, 22)
+        Me.txtFolderNameDVDProfiler.Size = New System.Drawing.Size(282, 22)
         Me.txtFolderNameDVDProfiler.TabIndex = 21
         '
         'lblTitle
@@ -939,8 +952,8 @@ Partial Class dlgOfflineHolder
         'gbScraperType
         '
         Me.gbScraperType.Controls.Add(Me.btnSearchBatch)
+        Me.gbScraperType.Controls.Add(Me.rbScraperTypeManually)
         Me.gbScraperType.Controls.Add(Me.rbScraperTypeAsk)
-        Me.gbScraperType.Controls.Add(Me.rbScraperTypeAuto)
         Me.gbScraperType.Enabled = False
         Me.gbScraperType.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold)
         Me.gbScraperType.Location = New System.Drawing.Point(366, 10)
@@ -952,6 +965,7 @@ Partial Class dlgOfflineHolder
         '
         'btnSearchBatch
         '
+        Me.btnSearchBatch.Enabled = False
         Me.btnSearchBatch.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnSearchBatch.Location = New System.Drawing.Point(47, 40)
         Me.btnSearchBatch.Name = "btnSearchBatch"
@@ -960,29 +974,29 @@ Partial Class dlgOfflineHolder
         Me.btnSearchBatch.Text = "Search Movies"
         Me.btnSearchBatch.UseVisualStyleBackColor = True
         '
+        'rbScraperTypeManually
+        '
+        Me.rbScraperTypeManually.AutoSize = True
+        Me.rbScraperTypeManually.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        Me.rbScraperTypeManually.Location = New System.Drawing.Point(117, 21)
+        Me.rbScraperTypeManually.Name = "rbScraperTypeManually"
+        Me.rbScraperTypeManually.Size = New System.Drawing.Size(72, 17)
+        Me.rbScraperTypeManually.TabIndex = 1
+        Me.rbScraperTypeManually.TabStop = True
+        Me.rbScraperTypeManually.Text = "Manually"
+        Me.rbScraperTypeManually.UseVisualStyleBackColor = True
+        '
         'rbScraperTypeAsk
         '
         Me.rbScraperTypeAsk.AutoSize = True
         Me.rbScraperTypeAsk.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.rbScraperTypeAsk.Location = New System.Drawing.Point(117, 21)
+        Me.rbScraperTypeAsk.Location = New System.Drawing.Point(6, 21)
         Me.rbScraperTypeAsk.Name = "rbScraperTypeAsk"
-        Me.rbScraperTypeAsk.Size = New System.Drawing.Size(72, 17)
-        Me.rbScraperTypeAsk.TabIndex = 1
+        Me.rbScraperTypeAsk.Size = New System.Drawing.Size(43, 17)
+        Me.rbScraperTypeAsk.TabIndex = 0
         Me.rbScraperTypeAsk.TabStop = True
-        Me.rbScraperTypeAsk.Text = "Manually"
+        Me.rbScraperTypeAsk.Text = "Ask"
         Me.rbScraperTypeAsk.UseVisualStyleBackColor = True
-        '
-        'rbScraperTypeAuto
-        '
-        Me.rbScraperTypeAuto.AutoSize = True
-        Me.rbScraperTypeAuto.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.rbScraperTypeAuto.Location = New System.Drawing.Point(6, 21)
-        Me.rbScraperTypeAuto.Name = "rbScraperTypeAuto"
-        Me.rbScraperTypeAuto.Size = New System.Drawing.Size(50, 17)
-        Me.rbScraperTypeAuto.TabIndex = 0
-        Me.rbScraperTypeAuto.TabStop = True
-        Me.rbScraperTypeAuto.Text = "Auto"
-        Me.rbScraperTypeAuto.UseVisualStyleBackColor = True
         '
         'gbInfoBatch
         '
@@ -1008,7 +1022,7 @@ Partial Class dlgOfflineHolder
         '
         'lvStatusBatch
         '
-        Me.lvStatusBatch.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2})
+        Me.lvStatusBatch.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colMovieName, Me.colFolderStatus})
         Me.lvStatusBatch.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lvStatusBatch.FullRowSelect = True
         Me.lvStatusBatch.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable
@@ -1020,15 +1034,15 @@ Partial Class dlgOfflineHolder
         Me.lvStatusBatch.UseCompatibleStateImageBehavior = False
         Me.lvStatusBatch.View = System.Windows.Forms.View.Details
         '
-        'ColumnHeader1
+        'colMovieName
         '
-        Me.ColumnHeader1.Text = "Condition"
-        Me.ColumnHeader1.Width = 236
+        Me.colMovieName.Text = "Movie Name"
+        Me.colMovieName.Width = 236
         '
-        'ColumnHeader2
+        'colFolderStatus
         '
-        Me.ColumnHeader2.Text = "Status"
-        Me.ColumnHeader2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.colFolderStatus.Text = "Status"
+        Me.colFolderStatus.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'TableLayoutPanel1
         '
@@ -1044,6 +1058,14 @@ Partial Class dlgOfflineHolder
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.TableLayoutPanel1.Size = New System.Drawing.Size(182, 28)
         Me.TableLayoutPanel1.TabIndex = 4
+        '
+        'tmrBatch
+        '
+        Me.tmrBatch.Interval = 250
+        '
+        'tmrBatchWait
+        '
+        Me.tmrBatchWait.Interval = 250
         '
         'dlgOfflineHolder
         '
@@ -1131,15 +1153,18 @@ Partial Class dlgOfflineHolder
     Friend WithEvents txtMovieTitle As System.Windows.Forms.TextBox
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents gbScraperType As System.Windows.Forms.GroupBox
+    Friend WithEvents rbScraperTypeManually As System.Windows.Forms.RadioButton
     Friend WithEvents rbScraperTypeAsk As System.Windows.Forms.RadioButton
-    Friend WithEvents rbScraperTypeAuto As System.Windows.Forms.RadioButton
     Friend WithEvents gbInfoBatch As System.Windows.Forms.GroupBox
     Friend WithEvents pbProgressBatch As System.Windows.Forms.ProgressBar
     Friend WithEvents lvStatusBatch As System.Windows.Forms.ListView
-    Friend WithEvents ColumnHeader1 As System.Windows.Forms.ColumnHeader
-    Friend WithEvents ColumnHeader2 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents colMovieName As System.Windows.Forms.ColumnHeader
+    Friend WithEvents colFolderStatus As System.Windows.Forms.ColumnHeader
     Friend WithEvents btnSearchBatch As System.Windows.Forms.Button
     Friend WithEvents txtFolderNameDVDProfiler As System.Windows.Forms.TextBox
+    Friend WithEvents tmrBatch As System.Windows.Forms.Timer
+    Friend WithEvents tmrBatchWait As System.Windows.Forms.Timer
+    Friend WithEvents btnSaveOfflineFolderName As System.Windows.Forms.Button
 
 #End Region 'Methods
 

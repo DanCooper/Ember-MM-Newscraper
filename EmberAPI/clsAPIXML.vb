@@ -250,6 +250,8 @@ Public Class APIXML
                 Return "dvd"
             ElseIf FileUtils.Common.isBDRip(sPath) Then
                 Return "bluray"
+            ElseIf Path.GetFileName(sPath).ToLower = "video_ts.ifo" Then
+                Return "dvd"
             Else
                 sourceCheck = If(Master.eSettings.GeneralSourceFromFolder, String.Concat(Directory.GetParent(sPath).Name.ToLower, Path.DirectorySeparatorChar, Path.GetFileName(sPath).ToLower), Path.GetFileName(sPath).ToLower)
                 Dim mySources As New Hashtable

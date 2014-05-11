@@ -94,6 +94,10 @@ Public Class frmTMDBMediaSettingsHolder
         RaiseEvent SetupScraperChanged(cbEnabled.Checked, 0)
     End Sub
 
+    Private Sub chkScrapeFanart_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScrapeFanart.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
     Private Sub chkScrapePoster_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScrapePoster.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
@@ -136,8 +140,8 @@ Public Class frmTMDBMediaSettingsHolder
         End If
     End Sub
 
-    Private Sub cbTMDBPrefLanguage_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cbTMDBPrefLanguage.SelectedIndexChanged
-        If Not (_language = cbTMDBPrefLanguage.Text) Then
+    Private Sub cbTMDBLanguage_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cbTMDBLanguage.SelectedIndexChanged
+        If Not (_language = cbTMDBLanguage.Text) Then
             RaiseEvent SetupNeedsRestart()
         End If
         RaiseEvent ModuleSettingsChanged()

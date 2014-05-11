@@ -99,11 +99,9 @@ Public Class TMDB_Poster
     Function QueryScraperCapabilities(ByVal cap As Enums.ScraperCapabilities) As Boolean Implements Interfaces.EmberMovieScraperModule_Poster.QueryScraperCapabilities
         Select Case cap
             Case Enums.ScraperCapabilities.Fanart
-                Return ConfigScrapeModifier.Fanart 'True ' ConfigScrapeModifier.Fanart
+                Return ConfigScrapeModifier.Fanart
             Case Enums.ScraperCapabilities.Poster
-                Return ConfigScrapeModifier.Poster 'True 'ConfigScrapeModifier.Poster
-            Case Enums.ScraperCapabilities.Actor
-                If Master.eSettings.MovieScraperActorThumbs Then Return True
+                Return ConfigScrapeModifier.Poster
         End Select
         Return False
     End Function
@@ -149,9 +147,9 @@ Public Class TMDB_Poster
         _setup.chkScrapePoster.Checked = ConfigScrapeModifier.Poster
         _setup.chkScrapeFanart.Checked = ConfigScrapeModifier.Fanart
         _setup.txtTMDBApiKey.Text = strPrivateAPIKey
-        _setup.cbTMDBPrefLanguage.Text = _MySettings.TMDBLanguage
+        _setup.cbTMDBLanguage.Text = _MySettings.TMDBLanguage
         _setup.chkFallBackEng.Checked = _MySettings.FallBackEng
-        _setup.Lang = _setup.cbTMDBPrefLanguage.Text
+        _setup.Lang = _setup.cbTMDBLanguage.Text
         _setup.API = _setup.txtTMDBApiKey.Text
 
         _setup.orderChanged()
@@ -175,19 +173,11 @@ Public Class TMDB_Poster
 
         strPrivateAPIKey = AdvancedSettings.GetSetting("TMDBAPIKey", "")
         _MySettings.TMDBAPIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "44810eefccd9cb1fa1d57e7b0d67b08d", strPrivateAPIKey)
-        _MySettings.FallBackEng = AdvancedSettings.GetBooleanSetting("FallBackEn", False)
+        _MySettings.FallBackEng = AdvancedSettings.GetBooleanSetting("FallBackEn", True)
         _MySettings.TMDBLanguage = AdvancedSettings.GetSetting("TMDBLanguage", "en")
-
-        ConfigScrapeModifier.DoSearch = True
-        ConfigScrapeModifier.Meta = True
-        ConfigScrapeModifier.NFO = True
-        ConfigScrapeModifier.EThumbs = True
-        ConfigScrapeModifier.EFanarts = True
-        ConfigScrapeModifier.Actors = True
 
         ConfigScrapeModifier.Poster = AdvancedSettings.GetBooleanSetting("DoPoster", True)
         ConfigScrapeModifier.Fanart = AdvancedSettings.GetBooleanSetting("DoFanart", True)
-        ConfigScrapeModifier.Trailer = False
 
     End Sub
 
@@ -229,7 +219,7 @@ Public Class TMDB_Poster
     End Sub
 
     Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.EmberMovieScraperModule_Poster.SaveSetupScraper
-        _MySettings.TMDBLanguage = _setup.cbTMDBPrefLanguage.Text
+        _MySettings.TMDBLanguage = _setup.cbTMDBLanguage.Text
         _MySettings.FallBackEng = _setup.chkFallBackEng.Checked
         ConfigScrapeModifier.Poster = _setup.chkScrapePoster.Checked
         ConfigScrapeModifier.Fanart = _setup.chkScrapeFanart.Checked

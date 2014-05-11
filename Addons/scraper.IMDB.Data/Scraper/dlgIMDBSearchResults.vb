@@ -45,7 +45,7 @@ Public Class dlgIMDBSearchResults
 
 #End Region 'Fields
 
-    #Region "Methods"
+#Region "Methods"
 
     Public Overloads Function ShowDialog(ByVal sMovieTitle As String, ByVal sMovieFilename As String, ByVal filterOptions As Structures.ScrapeOptions) As Windows.Forms.DialogResult
         Me.tmrWait.Enabled = False
@@ -337,6 +337,20 @@ Public Class dlgIMDBSearchResults
                         selNode = TnP.FirstNode
                     End If
 
+                    If M.VideoTitles.Count > 0 Then
+                        M.VideoTitles.Sort()
+                        If M.PartialMatches.Count > 0 Then
+                            Me.tvResults.Nodes(TnP.Index).Collapse()
+                        End If
+                        TnP = New TreeNode(String.Format(Master.eLang.GetString(1083, "Video Titles ({0})"), M.VideoTitles.Count))
+                        For Each Movie As MediaContainers.Movie In M.VideoTitles
+                            TnP.Nodes.Add(New TreeNode() With {.Text = String.Concat(Movie.Title, If(Not String.IsNullOrEmpty(Movie.Year), String.Format(" ({0})", Movie.Year), String.Empty)), .Tag = Movie.IMDBID})
+                        Next
+                        TnP.Expand()
+                        Me.tvResults.Nodes.Add(TnP)
+                        selNode = TnP.FirstNode
+                    End If
+
                     If M.PopularTitles.Count > 0 Then
                         M.PopularTitles.Sort()
                         If M.PartialMatches.Count > 0 OrElse M.TvTitles.Count > 0 Then
@@ -509,7 +523,7 @@ Public Class dlgIMDBSearchResults
     End Sub
 
     Private Function GetMovieClone(ByVal original As MediaContainers.Movie) As MediaContainers.Movie
-         Try
+        Try
             Using mem As New IO.MemoryStream()
                 Dim bin As New System.Runtime.Serialization.Formatters.Binary.BinaryFormatter(Nothing, New System.Runtime.Serialization.StreamingContext(Runtime.Serialization.StreamingContextStates.Clone))
                 bin.Serialize(mem, original)
@@ -524,7 +538,7 @@ Public Class dlgIMDBSearchResults
     End Function
 
 
-    #End Region 'Methods
+#End Region 'Methods
 
     #Region "Nested Types"
 

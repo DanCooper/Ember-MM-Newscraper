@@ -545,6 +545,7 @@ Public Class Enums
 		ValidExts = 4
         ShowRegex = 5
         TrailerCodec = 6
+        ValidThemeExts = 7
 	End Enum
 
     Public Enum DelType As Integer
@@ -573,7 +574,7 @@ Public Class Enums
         Meta = 5
         All = 6
         DoSearch = 7
-        Actor = 8
+        ActorThumbs = 8
         EFanarts = 9
         Banner = 10
         DiscArt = 11
@@ -581,16 +582,25 @@ Public Class Enums
         ClearArt = 13
         Landscape = 14
         WatchedFile = 15
+        CharacterArt = 16
+        Theme = 17
     End Enum
     ''' <summary>
     ''' Enum representing possible scraper capabilities
     ''' </summary>
     ''' <remarks></remarks>
     Public Enum ScraperCapabilities
-        Poster = 1
-        Fanart = 2
-        Trailer = 3
-        Actor = 4
+        Poster = 0
+        Fanart = 1
+        Trailer = 2
+        ActorThumbs = 3
+        Banner = 4
+        CharacterArt = 5
+        ClearArt = 6
+        ClearLogo = 7
+        DiscArt = 8
+        Landscape = 9
+        Theme = 10
     End Enum
 
     Public Enum ModuleEventType As Integer
@@ -617,16 +627,28 @@ Public Class Enums
         SyncModuleSettings = 20
         OnTVShowNFOSave = 21
         OnTVShowNFORead = 22
+        OnMovieLandscapeSave = 23
+        OnMovieBannerSave = 24
+        OnMovieClearArtSave = 24
+        OnMovieClearLogoSave = 24
+        OnMovieDiscArtSave = 24
     End Enum
 
     Public Enum MovieScraperEventType As Integer
-        NFOItem = 1
-        PosterItem = 2
-        FanartItem = 3
-        TrailerItem = 4
-        EThumbsItem = 5
-        SortTitle = 6
-        ListTitle = 7
+        NFOItem = 0
+        PosterItem = 1
+        FanartItem = 2
+        TrailerItem = 3
+        EThumbsItem = 4
+        SortTitle = 5
+        ListTitle = 6
+        BannerItem = 7
+        LandscapeItem = 8
+        ThemeItem = 9
+        ClearArtItem = 10
+        ClearLogoItem = 11
+        DiscArtItem = 12
+        EFanartsItem = 13
     End Enum
     ''' <summary>
     ''' Enum representing valid TV series ordering.
@@ -672,7 +694,8 @@ Public Class Enums
         FilterAsk = 15
         FilterSkip = 16
         CopyBackdrops = 17
-        None = 99 ' 
+        SingleField = 18
+        None = 99
     End Enum
 
     Public Enum TVFanartSize As Integer
@@ -1239,7 +1262,7 @@ Public Class Functions
         filterModifier.NFO = Options.NFO AndAlso Options2.NFO
         filterModifier.Poster = Options.Poster AndAlso Options2.Poster
         filterModifier.Trailer = Options.Trailer AndAlso Options2.Trailer
-        filterModifier.Actors = Options.Actors AndAlso Options2.Actors
+        filterModifier.ActorThumbs = Options.ActorThumbs AndAlso Options2.ActorThumbs
         Return filterModifier
     End Function
     ''' <summary>
@@ -1323,36 +1346,64 @@ Public Class Functions
     Public Shared Sub SetScraperMod(ByVal MType As Enums.ModType, ByVal MValue As Boolean, Optional ByVal DoClear As Boolean = True)
         With Master.GlobalScrapeMod
             If DoClear Then
-                .EThumbs = False
-                .EFanarts = False
+                .ActorThumbs = False
+                .Banner = False
+                .CharacterArt = False
+                .ClearArt = False
+                .ClearLogo = False
+                .DiscArt = False
                 .DoSearch = False
+                .EFanarts = False
+                .EThumbs = False
                 .Fanart = False
+                .Landscape = False
                 .Meta = False
                 .NFO = False
                 .Poster = False
                 .Trailer = False
-                .Actors = False
+                .Theme = False
             End If
 
             Select Case MType
                 Case Enums.ModType.All
                     '.DoSearch should not be set here as it is only needed for a re-search of a movie (first scraping or movie change).
-                    .EThumbs = MValue
+                    .ActorThumbs = MValue
+                    .Banner = MValue
+                    .CharacterArt = MValue
+                    .ClearArt = MValue
+                    .ClearLogo = MValue
+                    .DiscArt = MValue
                     .EFanarts = MValue
+                    .EThumbs = MValue
                     .Fanart = MValue
+                    .Landscape = MValue
                     .Meta = MValue
                     .NFO = MValue
                     .Poster = MValue
-                    .Trailer = If(Master.eSettings.MovieTrailerEnable, MValue, False)
-                    .Actors = MValue
-                Case Enums.ModType.EThumbs
-                    .EThumbs = MValue
-                Case Enums.ModType.EFanarts
-                    .EFanarts = MValue
+                    .Trailer = MValue
+                    .Theme = MValue
+                Case Enums.ModType.ActorThumbs
+                    .ActorThumbs = MValue
+                Case Enums.ModType.Banner
+                    .Banner = MValue
+                Case Enums.ModType.CharacterArt
+                    .CharacterArt = MValue
+                Case Enums.ModType.ClearArt
+                    .ClearArt = MValue
+                Case Enums.ModType.ClearLogo
+                    .ClearLogo = MValue
+                Case Enums.ModType.DiscArt
+                    .DiscArt = MValue
                 Case Enums.ModType.DoSearch
                     .DoSearch = MValue
+                Case Enums.ModType.EFanarts
+                    .EFanarts = MValue
+                Case Enums.ModType.EThumbs
+                    .EThumbs = MValue
                 Case Enums.ModType.Fanart
                     .Fanart = MValue
+                Case Enums.ModType.Landscape
+                    .Landscape = MValue
                 Case Enums.ModType.Meta
                     .Meta = MValue
                 Case Enums.ModType.NFO
@@ -1361,8 +1412,8 @@ Public Class Functions
                     .Poster = MValue
                 Case Enums.ModType.Trailer
                     .Trailer = MValue
-                Case Enums.ModType.Actor
-                    .Actors = MValue
+                Case Enums.ModType.Theme
+                    .Theme = MValue
             End Select
 
         End With
@@ -1544,12 +1595,22 @@ Public Class Structures
     ''' </summary>
     ''' <remarks></remarks>
     Public Structure DBMovie
+        Dim BannerPath As String
+        Dim ClearArtPath As String
+        Dim ClearLogoPath As String
+        Dim ClearBanner As Boolean
+        Dim ClearClearArt As Boolean
+        Dim ClearClearLogo As Boolean
+        Dim ClearDiscArt As Boolean
         Dim ClearEThumbs As Boolean
         Dim ClearEFanarts As Boolean
         Dim ClearFanart As Boolean
+        Dim ClearLandscape As Boolean
         Dim ClearPoster As Boolean
+        Dim ClearTheme As Boolean
         Dim ClearTrailer As Boolean
         Dim DateAdd As Long
+        Dim DiscArtPath As String
         Dim EThumbsPath As String
         Dim EFanartsPath As String
         Dim FanartPath As String
@@ -1560,6 +1621,7 @@ Public Class Structures
         Dim IsMark As Boolean
         Dim isSingle As Boolean
         Dim OriginalTitle As String
+        Dim LandscapePath As String
         Dim ListTitle As String
         Dim Movie As MediaContainers.Movie
         Dim NeedsSave As Boolean
@@ -1568,6 +1630,7 @@ Public Class Structures
         Dim PosterPath As String
         Dim Source As String
         Dim SubPath As String
+        Dim ThemePath As String
         Dim TrailerPath As String
         Dim UseFolder As Boolean
         Dim efList As List(Of String)
@@ -1577,6 +1640,7 @@ Public Class Structures
         Dim DVDProfilerSlot As String
         Dim DVDProfilerTitle As String
         Dim DVDProfilerMediaType As String
+        Dim OfflineHolderFoldername As String
     End Structure
     ''' <summary>
     ''' Structure representing a TV show in the database
@@ -1595,23 +1659,27 @@ Public Class Structures
         Dim IsMarkEp As Boolean
         Dim IsMarkSeason As Boolean
         Dim IsMarkShow As Boolean
-        Dim SeasonFanartPath As String
-        Dim SeasonPosterPath As String
+        Dim Ordering As Enums.Ordering
         Dim SeasonBannerPath As String
+        Dim SeasonFanartPath As String
         Dim SeasonLandscapePath As String
+        Dim SeasonPosterPath As String
+        Dim ShowBannerPath As String
+        Dim ShowCharacterArtPath As String
+        Dim ShowClearArtPath As String
+        Dim ShowClearLogoPath As String
+        Dim ShowFanartPath As String
         Dim ShowID As Long
+        Dim ShowLandscapePath As String
         Dim ShowLanguage As String
         Dim ShowNeedsSave As Boolean
         Dim ShowNfoPath As String
         Dim ShowPath As String
-        Dim ShowFanartPath As String
         Dim ShowPosterPath As String
-        Dim ShowBannerPath As String
-        Dim ShowLandscapePath As String
+        Dim ShowThemePath As String
         Dim Source As String
         Dim TVEp As MediaContainers.EpisodeDetails
         Dim TVShow As MediaContainers.TVShow
-        Dim Ordering As Enums.Ordering
     End Structure
 
     Public Structure Scans
@@ -1643,7 +1711,14 @@ Public Class Structures
         Dim NFO As Boolean
         Dim Poster As Boolean
         Dim Trailer As Boolean
-        Dim Actors As Boolean
+        Dim ActorThumbs As Boolean
+        Dim Banner As Boolean
+        Dim CharacterArt As Boolean
+        Dim ClearArt As Boolean
+        Dim ClearLogo As Boolean
+        Dim DiscArt As Boolean
+        Dim Landscape As Boolean
+        Dim Theme As Boolean
     End Structure
     ''' <summary>
     ''' Structure representing posible scrape fields for movies

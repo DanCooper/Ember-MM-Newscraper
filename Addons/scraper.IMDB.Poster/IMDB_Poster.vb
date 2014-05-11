@@ -88,9 +88,7 @@ Public Class IMDB_Poster
     Function QueryScraperCapabilities(ByVal cap As Enums.ScraperCapabilities) As Boolean Implements Interfaces.EmberMovieScraperModule_Poster.QueryScraperCapabilities
         Select Case cap
             Case Enums.ScraperCapabilities.Poster
-                Return True
-            Case Enums.ScraperCapabilities.Actor
-                If Master.eSettings.MovieScraperActorThumbs Then Return True
+                Return ConfigScrapeModifier.Poster
         End Select
         Return False
     End Function
@@ -139,16 +137,7 @@ Public Class IMDB_Poster
     End Function
 
     Sub LoadSettings()
-        ConfigScrapeModifier.DoSearch = True
-        ConfigScrapeModifier.Meta = True
-        ConfigScrapeModifier.NFO = True
-        ConfigScrapeModifier.EThumbs = True
-        ConfigScrapeModifier.EFanarts = True
-        ConfigScrapeModifier.Actors = True
-
         ConfigScrapeModifier.Poster = AdvancedSettings.GetBooleanSetting("DoPoster", True)
-        ConfigScrapeModifier.Fanart = AdvancedSettings.GetBooleanSetting("DoFanart", False)
-        ConfigScrapeModifier.Trailer = AdvancedSettings.GetBooleanSetting("DoTrailer", False)
     End Sub
 
     Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule_Poster.Scraper

@@ -7,14 +7,14 @@ CREATE TABLE Movies (
 	MoviePath TEXT,
 	Type BOOL,
 	ListTitle TEXT,
-	HasPoster BOOL,
-	HasFanart BOOL,
-	HasNfo BOOL,
-	HasTrailer BOOL,
-	HasSub BOOL,
-	HasEThumbs BOOL,
-	New BOOL,
-	Mark BOOL,
+	HasPoster BOOL NOT NULL DEFAULT False,
+	HasFanart BOOL NOT NULL DEFAULT False,
+	HasNfo BOOL NOT NULL DEFAULT False,
+	HasTrailer BOOL NOT NULL DEFAULT False,
+	HasSub BOOL NOT NULL DEFAULT False,
+	HasEThumbs BOOL NOT NULL DEFAULT False,
+	New BOOL NOT NULL DEFAULT False,
+	Mark BOOL NOT NULL DEFAULT False,
 	Source TEXT,
 	Imdb TEXT,
 	Lock BOOL,
@@ -37,7 +37,7 @@ CREATE TABLE Movies (
 	Director TEXT,
 	Credits TEXT,
 	Playcount TEXT,
-	HasWatched BOOL,
+	HasWatched BOOL NOT NULL DEFAULT False,
 	Trailer TEXT,
 	PosterPath TEXT,
 	FanartPath TEXT,
@@ -52,8 +52,20 @@ CREATE TABLE Movies (
 	NeedsSave BOOL,
 	SortTitle TEXT,
 	DateAdd INTEGER,
-	HasEFanarts BOOL,
-	EFanartsPath TEXT
+	HasEFanarts BOOL NOT NULL DEFAULT False,
+	EFanartsPath TEXT,
+	HasBanner BOOL NOT NULL DEFAULT False,
+	BannerPath TEXT,
+	HasLandscape BOOL NOT NULL DEFAULT False,
+	LandscapePath TEXT,
+	HasTheme BOOL NOT NULL DEFAULT False,
+	ThemePath TEXT,
+	HasDiscArt BOOL NOT NULL DEFAULT False,
+	DiscArtPath TEXT,
+	HasClearLogo BOOL NOT NULL DEFAULT False,
+	ClearLogoPath TEXT,
+	HasClearArt BOOL NOT NULL DEFAULT False,
+	ClearArtPath TEXT
 	);
 
 CREATE TABLE MoviesSets(
@@ -161,7 +173,15 @@ CREATE TABLE TVShows(
 	BannerPath TEXT,
 	HasLandscape BOOL NOT NULL DEFAULT False,
 	LandscapePath TEXT,
-	Status TEXT
+	Status TEXT,
+	HasTheme BOOL NOT NULL DEFAULT False,
+	ThemePath TEXT,
+	HasCharacterArt BOOL NOT NULL DEFAULT False,
+	CharacterArtPath TEXT,
+	HasClearLogo BOOL NOT NULL DEFAULT False,
+	ClearLogoPath TEXT,
+	HasClearArt BOOL NOT NULL DEFAULT False,
+	ClearArtPath TEXT
 	);
 CREATE UNIQUE INDEX UniqueTVShowPath ON TVShows (TVShowPath);
 

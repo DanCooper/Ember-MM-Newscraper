@@ -89,7 +89,7 @@ Public Class MPDB_Poster
     Function QueryScraperCapabilities(ByVal cap As Enums.ScraperCapabilities) As Boolean Implements Interfaces.EmberMovieScraperModule_Poster.QueryScraperCapabilities
         Select Case cap
             Case Enums.ScraperCapabilities.Poster
-                Return True
+                Return ConfigScrapeModifier.Poster
         End Select
         Return False
     End Function
@@ -140,13 +140,6 @@ Public Class MPDB_Poster
     End Function
 
     Sub LoadSettings()
-        ConfigScrapeModifier.DoSearch = True
-        ConfigScrapeModifier.Meta = True
-        ConfigScrapeModifier.NFO = True
-        ConfigScrapeModifier.EThumbs = True
-        ConfigScrapeModifier.EFanarts = True
-        ConfigScrapeModifier.Actors = True
-
         ConfigScrapeModifier.Poster = AdvancedSettings.GetBooleanSetting("DoPoster", True)
     End Sub
 
