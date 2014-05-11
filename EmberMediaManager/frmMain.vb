@@ -7807,23 +7807,23 @@ doCancel:
                                 End If
 
                                 If Not String.IsNullOrEmpty(Master.currMovie.ListTitle) Then
-                                    Master.currMovie.NfoPath = sFile.Nfo
                                     Master.currMovie.BannerPath = sFile.Banner
                                     Master.currMovie.ClearArtPath = sFile.ClearArt
                                     Master.currMovie.ClearLogoPath = sFile.ClearLogo
                                     Master.currMovie.DiscArtPath = sFile.DiscArt
-                                    Master.currMovie.EThumbsPath = sFile.EThumbs
                                     Master.currMovie.EFanartsPath = sFile.EFanarts
+                                    Master.currMovie.EThumbsPath = sFile.EThumbs
                                     Master.currMovie.FanartPath = sFile.Fanart
-                                    Master.currMovie.LandscapePath = sFile.Landscape
                                     Master.currMovie.Filename = sFile.Filename
-                                    Master.currMovie.isSingle = sFile.isSingle
+                                    Master.currMovie.LandscapePath = sFile.Landscape
+                                    Master.currMovie.NfoPath = sFile.Nfo
                                     Master.currMovie.PosterPath = sFile.Poster
                                     Master.currMovie.Source = sFile.Source
                                     Master.currMovie.SubPath = sFile.Subs
                                     Master.currMovie.ThemePath = sFile.Theme
                                     Master.currMovie.TrailerPath = sFile.Trailer
                                     Master.currMovie.UseFolder = sFile.UseFolder
+                                    Master.currMovie.isSingle = sFile.isSingle
                                 End If
                                 Master.tmpMovie = Master.currMovie.Movie
                             End If
@@ -9797,7 +9797,7 @@ doCancel:
                 If Me.dgvMovies.RowCount - 1 < selI Then selI = Me.dgvMovies.RowCount
 
                 Me.ClearInfo()
-                Me.currMovieRow = -2
+                Me.prevMovieRow = -2
                 Me.currMovieRow = -1
 
                 If Me.dgvMovies.RowCount > 0 Then
@@ -9896,7 +9896,7 @@ doCancel:
                 If Me.dgvMovieSets.RowCount - 1 < selI Then selI = Me.dgvMovieSets.RowCount
 
                 Me.ClearInfo()
-                Me.currMovieSetRow = -2
+                Me.prevMovieSetRow = -2
                 Me.currMovieSetRow = -1
 
                 If Me.dgvMovieSets.RowCount > 0 Then

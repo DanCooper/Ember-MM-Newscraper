@@ -2668,7 +2668,7 @@ Public Class Database
         End Try
     End Sub
     ''' <summary>
-    ''' Load Movie Sources from the DB. This populates the Master.MovieSources list of TV Sources
+    ''' Load Movie Sources from the DB. This populates the Master.MovieSources list of movie Sources
     ''' </summary>
     ''' <remarks></remarks>
     Public Sub LoadMovieSourcesFromDB()
