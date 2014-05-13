@@ -1927,6 +1927,7 @@ Namespace MediaContainers
 
 #Region "Fields"
 
+        Private _id As Long
         Private _order As String
         Private _set As String
 
@@ -1941,6 +1942,16 @@ Namespace MediaContainers
 #End Region 'Constructors
 
 #Region "Properties"
+
+        <XmlIgnore()> _
+        Public Property ID() As Long
+            Get
+                Return _id
+            End Get
+            Set(ByVal value As Long)
+                _id = value
+            End Set
+        End Property
 
         <XmlAttribute("order")> _
         Public Property Order() As String
@@ -1981,6 +1992,7 @@ Namespace MediaContainers
 #Region "Methods"
 
         Public Sub Clear()
+            _id = -1
             _set = String.Empty
             _order = String.Empty
         End Sub

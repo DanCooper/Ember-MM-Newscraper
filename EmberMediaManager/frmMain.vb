@@ -4839,7 +4839,7 @@ doCancel:
             Me.dgvMovieSets.CurrentCell = Nothing
             Me.dgvMovieSets.ClearSelection()
             Me.dgvMovieSets.Rows(0).Selected = True
-            Me.dgvMovieSets.CurrentCell = Me.dgvMovieSets.Rows(0).Cells(0)
+            Me.dgvMovieSets.CurrentCell = Me.dgvMovieSets.Rows(0).Cells(1)
         End If
     End Sub
 
