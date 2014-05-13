@@ -2041,12 +2041,6 @@ Public Class Database
                                     End Using
                                 Else
                                     'create new Set
-                                    'Dim _newMovieSet As New Structures.DBMovieSet
-                                    '_newMovieSet.SetName = s.Set
-
-                                    'SaveMovieSetToDB(_newMovieSet, True, False, False)
-                                    's.ID = CInt(_newMovieSet.ID)
-
                                     Using SQLcommandSets As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
                                         SQLcommandSets.CommandText = String.Concat("INSERT OR REPLACE INTO Sets (", _
                                                                                          "SetName, HasNfo, NfoPath, HasPoster, PosterPath, HasFanart, ", _
@@ -2117,56 +2111,6 @@ Public Class Database
                             End If
                         End If
                     Next
-
-                    'Using SQLcommandSets As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                    '    SQLcommandSets.CommandText = String.Concat("SELECT ID, SetName FROM sets WHERE SetName LIKE '%", "", "%';")
-
-                    '    Dim parSets_ID As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_ID", DbType.Int32, 0, "ID")
-                    '    Dim parSets_SetName As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_SetName", DbType.String, 0, "SetName")
-                    '    Dim parSets_HasNfo As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSets_HasInfo", DbType.Boolean, 0, "HasNfo")
-                    '    Dim parSets_NfoPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSets_NfoPath", DbType.String, 0, "NfoPath")
-                    '    Dim parSets_HasPoster As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSets_HasPoster", DbType.Boolean, 0, "HasPoster")
-                    '    Dim parSets_PosterPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSets_PosterPath", DbType.String, 0, "PosterPath")
-                    '    Dim parSets_HasFanart As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSets_HasFanart", DbType.Boolean, 0, "HasFanart")
-                    '    Dim parSets_FanartPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSets_FanartPath", DbType.String, 0, "FanartPath")
-                    '    Dim parSets_HasBanner As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSets_HasBanner", DbType.Boolean, 0, "HasBanner")
-                    '    Dim parSets_BannerPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSets_BannerPath", DbType.String, 0, "BannerPath")
-                    '    Dim parSets_HasLandscape As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSets_HasLandscape", DbType.Boolean, 0, "HasLandscape")
-                    '    Dim parSets_LandscapePath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSets_LandscapePath", DbType.String, 0, "LandscapePath")
-                    '    Dim parSets_HasDiscArt As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSets_HasDiscArt", DbType.Boolean, 0, "HasDiscArt")
-                    '    Dim parSets_DiscArtPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSets_DiscArtPath", DbType.String, 0, "DiscArtPath")
-                    '    Dim parSets_HasClearLogo As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSets_HasClearLogo", DbType.Boolean, 0, "HasClearLogo")
-                    '    Dim parSets_ClearLogoPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSets_ClearLogoPath", DbType.String, 0, "ClearLogoPath")
-                    '    Dim parSets_HasClearArt As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSets_HasClearArt", DbType.Boolean, 0, "HasClearArt")
-                    '    Dim parSets_ClearArtPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSets_ClearArtPath", DbType.String, 0, "ClearArtPath")
-                    '    For Each s As MediaContainers.Set In _movieDB.Movie.Sets
-                    '        If s.SetSpecified Then
-                    '            parSets_SetName.Value = s.Set
-                    '            SQLcommandSets.ExecuteNonQuery()
-                    '        End If
-                    '    Next
-                    'End Using
-
-                    'Using SQLcommandMoviesSets As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                    '    SQLcommandMoviesSets.CommandText = String.Concat("DELETE FROM MoviesSets WHERE MovieID = ", _movieDB.ID, ";")
-                    '    SQLcommandMoviesSets.ExecuteNonQuery()
-
-                    '    SQLcommandMoviesSets.CommandText = String.Concat("INSERT OR REPLACE INTO MoviesSets (", _
-                    '       "MovieID,SetID,SetOrder", _
-                    '       ") VALUES (?,?,?);")
-                    '    Dim parMovieSets_MovieID As SQLite.SQLiteParameter = SQLcommandMoviesSets.Parameters.Add("parMovieSets_MovieID", DbType.UInt64, 0, "MovieID")
-                    '    Dim parMovieSets_SetID As SQLite.SQLiteParameter = SQLcommandMoviesSets.Parameters.Add("parMovieSets_SetID", DbType.UInt64, 0, "SetID")
-                    '    Dim parMovieSets_SetOrder As SQLite.SQLiteParameter = SQLcommandMoviesSets.Parameters.Add("parMovieSets_SetOrder", DbType.String, 0, "SetOrder")
-                    '    For Each s As MediaContainers.Set In _movieDB.Movie.Sets
-                    '        If s.SetSpecified Then
-                    '            parMovieSets_MovieID.Value = _movieDB.ID
-                    '            parMovieSets_SetID.Value = s.Set
-                    '            parMovieSets_SetOrder.Value = s.Order
-                    '            SQLcommandMoviesSets.ExecuteNonQuery()
-                    '        End If
-                    '    Next
-                    'End Using
-
                 End If
             End Using
             If Not BatchMode Then SQLtransaction.Commit()
