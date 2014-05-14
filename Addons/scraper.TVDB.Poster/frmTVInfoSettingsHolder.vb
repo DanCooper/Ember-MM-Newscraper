@@ -131,6 +131,10 @@ Public Class frmTVInfoSettingsHolder
     End Sub
 
     Private Sub chkScraperShowEGU_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperShowEGU.CheckedChanged
+        If String.IsNullOrEmpty(txtTVDBApiKey.Text) AndAlso chkScraperShowEGU.Checked Then
+            MsgBox(Master.eLang.GetString(1133, "You need your own API key for that"), MsgBoxStyle.OkOnly, Master.eLang.GetString(1134, "Error"))
+            chkScraperShowEGU.Checked = False
+        End If
         RaiseEvent ModuleSettingsChanged()
     End Sub
 

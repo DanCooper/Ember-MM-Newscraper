@@ -1218,4 +1218,6 @@
 	<string id="1130">Scraping Media (Selected Movies - Skip):</string>
 	<string id="1131">Edit Movieset</string>
 	<string id="1132">Edit the details for the selected movieset.</string>
+	<string id="1133">You need your own API key for that</string>
+	<string id="1134">Error</string>
 </strings>
