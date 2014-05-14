@@ -3542,6 +3542,21 @@ doCancel:
         ReloadMovieSet()
     End Sub
 
+    Private Sub cmnuMovieSetRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieSetRemove.Click
+        Try
+            Me.ClearInfo()
+
+            For Each sRow As DataGridViewRow In Me.dgvMovieSets.SelectedRows
+                Master.DB.DeleteMovieSetFromDB(Convert.ToInt64(sRow.Cells(0).Value))
+            Next
+
+            Me.FillList(0)
+
+        Catch ex As Exception
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
     Private Sub cmnuReloadEp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeReload.Click
         Try
             Me.dgvTVShows.Cursor = Cursors.WaitCursor
@@ -3940,7 +3955,7 @@ doCancel:
         End Using
     End Sub
 
-    Private Sub cmnuMovieRemoveDeleteMovie_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieRemoveFromDisk.Click
+    Private Sub cmnuMovieRemoveFromDisc_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieRemoveFromDisc.Click
         Try
             Dim MoviesToDelete As New Dictionary(Of Long, Long)
             Dim MovieId As Int64 = -1
@@ -6115,7 +6130,7 @@ doCancel:
                         .bsMovieSets.DataSource = .dtMovieSets
                         .dgvMovieSets.DataSource = .bsMovieSets
 
-                        .dgvMovieSets.Columns(0).Visible = False 
+                        .dgvMovieSets.Columns(0).Visible = False
                         .dgvMovieSets.Columns(1).Resizable = DataGridViewTriState.True
                         .dgvMovieSets.Columns(1).ReadOnly = True
                         .dgvMovieSets.Columns(1).MinimumWidth = 83
@@ -9780,7 +9795,7 @@ doCancel:
                 Master.DB.SaveMovieToDB(tmpMovieDb, False, BatchMode, ToNfo)
 
             Else
-                Master.DB.DeleteFromDB(ID, BatchMode)
+                Master.DB.DeleteMovieFromDB(ID, BatchMode)
                 Return True
             End If
 
@@ -10154,7 +10169,7 @@ doCancel:
             Me.ClearInfo()
 
             For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
-                Master.DB.DeleteFromDB(Convert.ToInt64(sRow.Cells(0).Value))
+                Master.DB.DeleteMovieFromDB(Convert.ToInt64(sRow.Cells(0).Value))
             Next
 
             Me.FillList(0)
@@ -11870,7 +11885,7 @@ doCancel:
                 .cmnuMovieReload.Text = Master.eLang.GetString(22, "Reload")
                 .cmnuMovieRemove.Text = Master.eLang.GetString(30, "Remove")
                 .cmnuMovieRemoveFromDB.Text = Master.eLang.GetString(646, "Remove From Database")
-                .cmnuMovieRemoveFromDisk.Text = Master.eLang.GetString(34, "Delete Movie")
+                .cmnuMovieRemoveFromDisc.Text = Master.eLang.GetString(34, "Delete Movie")
                 .cmnuMovieRescrape.Text = Master.eLang.GetString(163, "(Re)Scrape Movie")
                 .cmnuMovieReSel.Text = Master.eLang.GetString(31, "(Re)Scrape Selected Movies")
                 .cmnuMovieUpSelRating.Text = String.Concat(Master.eLang.GetString(400, "Rating"), " / ", Master.eLang.GetString(399, "Votes"))

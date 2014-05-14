@@ -3875,7 +3875,7 @@ Public Class dlgSettings
                                 SQLcommand.CommandText = "SELECT Id FROM movies WHERE source = (?);"
                                 Using SQLReader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                                     While SQLReader.Read
-                                        Master.DB.DeleteFromDB(Convert.ToInt64(SQLReader("ID")), True)
+                                        Master.DB.DeleteMovieFromDB(Convert.ToInt64(SQLReader("ID")), True)
                                     End While
                                 End Using
                                 SQLcommand.CommandText = String.Concat("DELETE FROM sources WHERE name = (?);")

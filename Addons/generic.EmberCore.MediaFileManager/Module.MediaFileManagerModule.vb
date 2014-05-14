@@ -232,7 +232,7 @@ Public Class FileManagerExternalModule
                                 If MsgBox(String.Format(Master.eLang.GetString(314, "Move from {0} To {1}"), ItemsToWork(0).ToString, Path.Combine(tMItem.Tag.ToString, Path.GetFileName(ItemsToWork(0).ToString))), MsgBoxStyle.YesNo, "Move") = MsgBoxResult.Yes Then
                                     'TODO:  need to test it better
                                     DirectoryMove(ItemsToWork(0).ToString, Path.Combine(tMItem.Tag.ToString, Path.GetFileName(ItemsToWork(0).ToString)), Master.eLang.GetString(316, "Moving Movie"))
-                                    Master.DB.DeleteFromDB(MovieId)
+                                    Master.DB.DeleteMovieFromDB(MovieId)
                                     ModulesManager.Instance.RuntimeObjects.InvokeLoadMedia(New Structures.Scans With {.Movies = True}, String.Empty)
                                 End If
 

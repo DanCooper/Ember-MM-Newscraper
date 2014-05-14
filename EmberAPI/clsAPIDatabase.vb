@@ -104,12 +104,12 @@ Public Class Database
                             While SQLReader.Read
                                 If Not File.Exists(SQLReader("MoviePath").ToString) OrElse Not Master.eSettings.FileSystemValidExts.Contains(Path.GetExtension(SQLReader("MoviePath").ToString).ToLower) Then
                                     MoviePaths.Remove(SQLReader("MoviePath").ToString)
-                                    Master.DB.DeleteFromDB(Convert.ToInt64(SQLReader("ID")), True)
+                                    Master.DB.DeleteMovieFromDB(Convert.ToInt64(SQLReader("ID")), True)
                                 ElseIf Master.eSettings.MovieSkipLessThan > 0 Then
                                     fInfo = New FileInfo(SQLReader("MoviePath").ToString)
                                     If ((Not Master.eSettings.MovieSkipStackedSizeCheck OrElse Not StringUtils.IsStacked(fInfo.Name)) AndAlso fInfo.Length < Master.eSettings.MovieSkipLessThan * 1048576) Then
                                         MoviePaths.Remove(SQLReader("MoviePath").ToString)
-                                        Master.DB.DeleteFromDB(Convert.ToInt64(SQLReader("ID")), True)
+                                        Master.DB.DeleteMovieFromDB(Convert.ToInt64(SQLReader("ID")), True)
                                     End If
                                 Else
                                     tSource = SourceList.OrderByDescending(Function(s) s.Path).FirstOrDefault(Function(s) s.Name = SQLReader("Source").ToString)
@@ -122,15 +122,15 @@ Public Class Database
                                         sPath = FileUtils.Common.GetDirectory(tPath).ToLower
                                         If tSource.Recursive = False AndAlso tPath.Length > tSource.Path.Length AndAlso If(sPath = "video_ts" OrElse sPath = "bdmv", tPath.Substring(tSource.Path.Length).Trim(Path.DirectorySeparatorChar).Split(Path.DirectorySeparatorChar).Count > 2, tPath.Substring(tSource.Path.Length).Trim(Path.DirectorySeparatorChar).Split(Path.DirectorySeparatorChar).Count > 1) Then
                                             MoviePaths.Remove(SQLReader("MoviePath").ToString)
-                                            Master.DB.DeleteFromDB(Convert.ToInt64(SQLReader("ID")), True)
+                                            Master.DB.DeleteMovieFromDB(Convert.ToInt64(SQLReader("ID")), True)
                                         ElseIf Not Convert.ToBoolean(SQLReader("Type")) AndAlso tSource.isSingle AndAlso Not MoviePaths.Where(Function(s) SQLReader("MoviePath").ToString.ToLower.StartsWith(tSource.Path.ToLower)).Count = 1 Then
                                             MoviePaths.Remove(SQLReader("MoviePath").ToString)
-                                            Master.DB.DeleteFromDB(Convert.ToInt64(SQLReader("ID")), True)
+                                            Master.DB.DeleteMovieFromDB(Convert.ToInt64(SQLReader("ID")), True)
                                         End If
                                     Else
                                         'orphaned
                                         MoviePaths.Remove(SQLReader("MoviePath").ToString)
-                                        Master.DB.DeleteFromDB(Convert.ToInt64(SQLReader("ID")), True)
+                                        Master.DB.DeleteMovieFromDB(Convert.ToInt64(SQLReader("ID")), True)
                                     End If
                                 End If
                             End While
@@ -654,7 +654,7 @@ Public Class Database
     ''' <param name="ID">ID of the movie to remove, as stored in the database.</param>
     ''' <param name="BatchMode">Is this function already part of a transaction?</param>
     ''' <returns>True if successful, false if deletion failed.</returns>
-    Public Function DeleteFromDB(ByVal ID As Long, Optional ByVal BatchMode As Boolean = False) As Boolean
+    Public Function DeleteMovieFromDB(ByVal ID As Long, Optional ByVal BatchMode As Boolean = False) As Boolean
         Try
             Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
             If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
@@ -674,6 +674,29 @@ Public Class Database
                 SQLcommand.CommandText = String.Concat("DELETE FROM MoviesFanart WHERE MovieID = ", ID, ";")
                 SQLcommand.ExecuteNonQuery()
                 SQLcommand.CommandText = String.Concat("DELETE FROM MoviesSets WHERE MovieID = ", ID, ";")
+                SQLcommand.ExecuteNonQuery()
+            End Using
+            If Not BatchMode Then SQLtransaction.Commit()
+        Catch ex As Exception
+            Return False
+        End Try
+        Return True
+    End Function
+
+    ''' <summary>
+    ''' Remove all information related to a movie from the database.
+    ''' </summary>
+    ''' <param name="ID">ID of the movieset to remove, as stored in the database.</param>
+    ''' <param name="BatchMode">Is this function already part of a transaction?</param>
+    ''' <returns>True if successful, false if deletion failed.</returns>
+    Public Function DeleteMovieSetFromDB(ByVal ID As Long, Optional ByVal BatchMode As Boolean = False) As Boolean
+        Try
+            Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
+            If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
+            Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                SQLcommand.CommandText = String.Concat("DELETE FROM Sets WHERE ID = ", ID, ";")
+                SQLcommand.ExecuteNonQuery()
+                SQLcommand.CommandText = String.Concat("DELETE FROM MovieSets WHERE SetID = ", ID, ";")
                 SQLcommand.ExecuteNonQuery()
             End Using
             If Not BatchMode Then SQLtransaction.Commit()

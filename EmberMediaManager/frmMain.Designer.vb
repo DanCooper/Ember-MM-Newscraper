@@ -138,12 +138,14 @@ Partial Class frmMain
         Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
         Me.cmnuMovieRemove = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieRemoveFromDB = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieRemoveFromDisk = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuMovieRemoveFromDisc = New System.Windows.Forms.ToolStripMenuItem()
         Me.dgvMovieSets = New System.Windows.Forms.DataGridView()
         Me.cmnuMovieSet = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.cmnuMovieSetTitle = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieSetSep1 = New System.Windows.Forms.ToolStripSeparator()
+        Me.cmnuMovieSetNew = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieSetReload = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuMovieSetRemove = New System.Windows.Forms.ToolStripMenuItem()
         Me.scTV = New System.Windows.Forms.SplitContainer()
         Me.dgvTVShows = New System.Windows.Forms.DataGridView()
         Me.cmnuShow = New System.Windows.Forms.ContextMenuStrip(Me.components)
@@ -1674,7 +1676,7 @@ Partial Class frmMain
         '
         'cmnuMovieRemove
         '
-        Me.cmnuMovieRemove.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuMovieRemoveFromDB, Me.cmnuMovieRemoveFromDisk})
+        Me.cmnuMovieRemove.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuMovieRemoveFromDB, Me.cmnuMovieRemoveFromDisc})
         Me.cmnuMovieRemove.Image = CType(resources.GetObject("cmnuMovieRemove.Image"), System.Drawing.Image)
         Me.cmnuMovieRemove.Name = "cmnuMovieRemove"
         Me.cmnuMovieRemove.Size = New System.Drawing.Size(246, 22)
@@ -1688,13 +1690,13 @@ Partial Class frmMain
         Me.cmnuMovieRemoveFromDB.Size = New System.Drawing.Size(225, 22)
         Me.cmnuMovieRemoveFromDB.Text = "Remove from Database"
         '
-        'cmnuMovieRemoveFromDisk
+        'cmnuMovieRemoveFromDisc
         '
-        Me.cmnuMovieRemoveFromDisk.Image = CType(resources.GetObject("cmnuMovieRemoveFromDisk.Image"), System.Drawing.Image)
-        Me.cmnuMovieRemoveFromDisk.Name = "cmnuMovieRemoveFromDisk"
-        Me.cmnuMovieRemoveFromDisk.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Delete), System.Windows.Forms.Keys)
-        Me.cmnuMovieRemoveFromDisk.Size = New System.Drawing.Size(225, 22)
-        Me.cmnuMovieRemoveFromDisk.Text = "Delete Movie"
+        Me.cmnuMovieRemoveFromDisc.Image = CType(resources.GetObject("cmnuMovieRemoveFromDisc.Image"), System.Drawing.Image)
+        Me.cmnuMovieRemoveFromDisc.Name = "cmnuMovieRemoveFromDisc"
+        Me.cmnuMovieRemoveFromDisc.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Delete), System.Windows.Forms.Keys)
+        Me.cmnuMovieRemoveFromDisc.Size = New System.Drawing.Size(225, 22)
+        Me.cmnuMovieRemoveFromDisc.Text = "Delete Movie"
         '
         'dgvMovieSets
         '
@@ -1724,30 +1726,44 @@ Partial Class frmMain
         '
         'cmnuMovieSet
         '
-        Me.cmnuMovieSet.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuMovieSetTitle, Me.cmnuMovieSetSep1, Me.cmnuMovieSetReload})
+        Me.cmnuMovieSet.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuMovieSetTitle, Me.cmnuMovieSetSep1, Me.cmnuMovieSetNew, Me.cmnuMovieSetReload, Me.cmnuMovieSetRemove})
         Me.cmnuMovieSet.Name = "cmnuMovieSets"
-        Me.cmnuMovieSet.Size = New System.Drawing.Size(130, 54)
+        Me.cmnuMovieSet.Size = New System.Drawing.Size(155, 98)
         '
         'cmnuMovieSetTitle
         '
         Me.cmnuMovieSetTitle.Enabled = False
         Me.cmnuMovieSetTitle.Image = CType(resources.GetObject("cmnuMovieSetTitle.Image"), System.Drawing.Image)
         Me.cmnuMovieSetTitle.Name = "cmnuMovieSetTitle"
-        Me.cmnuMovieSetTitle.Size = New System.Drawing.Size(129, 22)
+        Me.cmnuMovieSetTitle.Size = New System.Drawing.Size(154, 22)
         Me.cmnuMovieSetTitle.Text = "Title"
         '
         'cmnuMovieSetSep1
         '
         Me.cmnuMovieSetSep1.Name = "cmnuMovieSetSep1"
-        Me.cmnuMovieSetSep1.Size = New System.Drawing.Size(126, 6)
+        Me.cmnuMovieSetSep1.Size = New System.Drawing.Size(151, 6)
+        '
+        'cmnuMovieSetNew
+        '
+        Me.cmnuMovieSetNew.Image = Global.Ember_Media_Manager.My.Resources.Resources.menuAdd
+        Me.cmnuMovieSetNew.Name = "cmnuMovieSetNew"
+        Me.cmnuMovieSetNew.Size = New System.Drawing.Size(154, 22)
+        Me.cmnuMovieSetNew.Text = "Create New Set"
         '
         'cmnuMovieSetReload
         '
         Me.cmnuMovieSetReload.Image = CType(resources.GetObject("cmnuMovieSetReload.Image"), System.Drawing.Image)
         Me.cmnuMovieSetReload.Name = "cmnuMovieSetReload"
         Me.cmnuMovieSetReload.ShortcutKeys = System.Windows.Forms.Keys.F5
-        Me.cmnuMovieSetReload.Size = New System.Drawing.Size(129, 22)
+        Me.cmnuMovieSetReload.Size = New System.Drawing.Size(154, 22)
         Me.cmnuMovieSetReload.Text = "Reload"
+        '
+        'cmnuMovieSetRemove
+        '
+        Me.cmnuMovieSetRemove.Image = CType(resources.GetObject("cmnuMovieSetRemove.Image"), System.Drawing.Image)
+        Me.cmnuMovieSetRemove.Name = "cmnuMovieSetRemove"
+        Me.cmnuMovieSetRemove.Size = New System.Drawing.Size(154, 22)
+        Me.cmnuMovieSetRemove.Text = "Remove"
         '
         'scTV
         '
@@ -6616,7 +6632,7 @@ Partial Class frmMain
     Friend WithEvents pnlCancel As System.Windows.Forms.Panel
     Friend WithEvents cmnuSep2 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents cmnuMovieOpenFolder As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuMovieRemoveFromDisk As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuMovieRemoveFromDisc As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuMovieLock As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnuMainToolsBackdrops As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents btnMarkAll As System.Windows.Forms.Button
@@ -7156,4 +7172,6 @@ Partial Class frmMain
     Friend WithEvents cmnuMovieSetReload As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuMovieSetTitle As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuMovieSetSep1 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents cmnuMovieSetNew As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuMovieSetRemove As System.Windows.Forms.ToolStripMenuItem
 End Class

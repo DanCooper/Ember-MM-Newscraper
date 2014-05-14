@@ -94,7 +94,7 @@ Public Class dlgDeleteConfirm
                     For Each ItemParentNode As TreeNode In .Nodes
                         Select Case Me._deltype
                             Case Enums.DelType.Movies
-                                Master.DB.DeleteFromDB(Convert.ToInt64(ItemParentNode.Tag), True)
+                                Master.DB.DeleteMovieFromDB(Convert.ToInt64(ItemParentNode.Tag), True)
                             Case Enums.DelType.Shows
                                 Master.DB.DeleteTVShowFromDB(Convert.ToInt64(ItemParentNode.Tag), True)
                             Case Enums.DelType.Seasons
