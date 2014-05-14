@@ -403,7 +403,7 @@ Public Class Scraper
                                             .Episode = If(IsNothing(Episode.Element("EpisodeNumber")) OrElse String.IsNullOrEmpty(Episode.Element("EpisodeNumber").Value), 0, Convert.ToInt32(Episode.Element("EpisodeNumber").Value))
                                         End If
                                         If Not IsNothing(Episode.Element("airsafter_season")) AndAlso Not String.IsNullOrEmpty(Episode.Element("airsafter_season").Value) Then
-                                            .DisplaySeason = Convert.ToInt32(Episode.Element("airsafter_season").Value) + 1
+                                            .DisplaySeason = Convert.ToInt32(Episode.Element("airsafter_season").Value)
                                             .DisplayEpisode = 0
                                             .displaySEset = True
                                         End If
@@ -412,7 +412,7 @@ Public Class Scraper
                                             .displaySEset = True
                                         End If
                                         If Not IsNothing(Episode.Element("airsbefore_episode")) AndAlso Not String.IsNullOrEmpty(Episode.Element("airsbefore_episode").Value) Then
-                                            .DisplayEpisode = Convert.ToInt32(CLng(Episode.Element("airsbefore_episode").Value)) - 1
+                                            .DisplayEpisode = Convert.ToInt32(CLng(Episode.Element("airsbefore_episode").Value))
                                             .displaySEset = True
                                         End If
 
