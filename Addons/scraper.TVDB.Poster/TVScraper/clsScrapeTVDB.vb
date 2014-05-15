@@ -404,7 +404,7 @@ Public Class Scraper
                                         End If
                                         If Not IsNothing(Episode.Element("airsafter_season")) AndAlso Not String.IsNullOrEmpty(Episode.Element("airsafter_season").Value) Then
                                             .DisplaySeason = Convert.ToInt32(Episode.Element("airsafter_season").Value)
-                                            .DisplayEpisode = 0
+                                            .DisplayEpisode = 4096
                                             .displaySEset = True
                                         End If
                                         If Not IsNothing(Episode.Element("airsbefore_season")) AndAlso Not String.IsNullOrEmpty(Episode.Element("airsbefore_season").Value) Then
