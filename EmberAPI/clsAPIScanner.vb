@@ -869,17 +869,23 @@ Public Class Scanner
             End If
 
             If Not String.IsNullOrEmpty(tmpMovieDB.ListTitle) Then
+                tmpMovieDB.BannerPath = mContainer.Banner
+                tmpMovieDB.ClearArtPath = mContainer.ClearArt
+                tmpMovieDB.ClearLogoPath = mContainer.ClearLogo
+                tmpMovieDB.DiscArtPath = mContainer.DiscArt
+                tmpMovieDB.EFanartsPath = mContainer.EFanarts
+                tmpMovieDB.EThumbsPath = mContainer.EThumbs
+                tmpMovieDB.FanartPath = mContainer.Fanart
+                tmpMovieDB.Filename = mContainer.Filename
+                tmpMovieDB.LandscapePath = mContainer.Landscape
                 tmpMovieDB.NfoPath = mContainer.Nfo
                 tmpMovieDB.PosterPath = mContainer.Poster
-                tmpMovieDB.FanartPath = mContainer.Fanart
-                tmpMovieDB.TrailerPath = mContainer.Trailer
-                tmpMovieDB.SubPath = mContainer.Subs
-                tmpMovieDB.EThumbsPath = mContainer.EThumbs
-                tmpMovieDB.EFanartsPath = mContainer.EFanarts
-                tmpMovieDB.Filename = mContainer.Filename
-                tmpMovieDB.isSingle = mContainer.isSingle
-                tmpMovieDB.UseFolder = mContainer.UseFolder
                 tmpMovieDB.Source = mContainer.Source
+                tmpMovieDB.SubPath = mContainer.Subs
+                tmpMovieDB.ThemePath = mContainer.Theme
+                tmpMovieDB.TrailerPath = mContainer.Trailer
+                tmpMovieDB.UseFolder = mContainer.UseFolder
+                tmpMovieDB.isSingle = mContainer.isSingle
                 Dim fSource As String = APIXML.GetFileSource(mContainer.Filename)
                 If Not String.IsNullOrEmpty(fSource) Then
                     tmpMovieDB.FileSource = fSource
