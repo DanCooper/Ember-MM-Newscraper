@@ -449,7 +449,6 @@ Public Class dlgIMDBSearchResults
         Me.lblIMDBHeader.Text = Master.eLang.GetString(873, "IMDB ID:")
         Me.lblPlotHeader.Text = Master.eLang.GetString(242, "Plot Outline:")
         Me.Label3.Text = Master.eLang.GetString(798, "Searching IMDB...")
-        Me.txtFileName.Text = Master.currMovie.Filename
     End Sub
 
     Private Sub tmrLoad_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrLoad.Tick
