@@ -5539,7 +5539,7 @@ Public Class Settings
         Me._moviexbmcthemeenable = False
         Me._moviexbmcthememovie = False
         Me._moviexbmcthemesub = False
-        Me._moviexbmcthemesubdir = "Theme"
+        Me._moviexbmcthemesubdir = "Themes"
         Me._moviexbmcprotectvtsbdmv = False
         Me._moviexbmctrailerformat = False
         Me._movieyamjcompatiblesets = False
