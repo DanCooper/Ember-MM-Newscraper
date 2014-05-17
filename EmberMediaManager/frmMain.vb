@@ -3538,6 +3538,60 @@ doCancel:
         ReloadMovie()
     End Sub
 
+    Private Sub cmnuMovieSetEdit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieSetEdit.Click
+        If Me.dgvMovieSets.SelectedRows.Count > 1 Then Return
+        Try
+            Dim indX As Integer = Me.dgvMovieSets.SelectedRows(0).Index
+            Dim ID As Integer = Convert.ToInt32(Me.dgvMovieSets.Item(0, indX).Value)
+
+            Me.SetControlsEnabled(False)
+
+            'Functions.SetScraperMod(Enums.ModType.All, False, True)
+
+            Using dEditMovieSet As New dlgEditMovieSet
+                'AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovieSet.GenericRunCallBack
+                Select Case dEditMovieSet.ShowDialog()
+                    Case Windows.Forms.DialogResult.OK
+                        'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieScraperRDYtoSave, Nothing, Master.currMovie)
+                        Me.SetMovieSetListItemAfterEdit(ID, indX)
+                        If Me.RefreshMovieSet(ID) Then
+                            Me.FillList(0)
+                        Else
+                            Me.SetControlsEnabled(True)
+                        End If
+                        'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieSync, Nothing, Master.currMovie)
+                    Case Windows.Forms.DialogResult.Retry
+                        'Functions.SetScraperMod(Enums.ModType.All, True, True)
+                        'Me.MoviesetScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultMovieOptions)
+                    Case Windows.Forms.DialogResult.Abort
+                        'Master.currMovie.ClearBanner = False
+                        'Master.currMovie.ClearClearArt = False
+                        'Master.currMovie.ClearClearLogo = False
+                        'Master.currMovie.ClearDiscArt = False
+                        'Master.currMovie.ClearEThumbs = False
+                        'Master.currMovie.ClearEFanarts = False
+                        'Master.currMovie.ClearFanart = False
+                        'Master.currMovie.ClearLandscape = False
+                        'Master.currMovie.ClearPoster = False
+                        'Master.currMovie.ClearTheme = False
+                        'Master.currMovie.ClearTrailer = False
+                        'Functions.SetScraperMod(Enums.ModType.DoSearch, True)
+                        'Functions.SetScraperMod(Enums.ModType.All, True, False)
+                        'Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultMovieOptions)
+                    Case Else
+                        If Me.InfoCleared Then
+                            Me.LoadMovieSetInfo(ID, Me.dgvMovieSets.Item(1, indX).Value.ToString, True, False)
+                        Else
+                            Me.SetControlsEnabled(True)
+                        End If
+                End Select
+                'RemoveHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
+            End Using
+        Catch ex As Exception
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
     Private Sub cmnuMovieSetReload_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieSetReload.Click
         ReloadMovieSet()
     End Sub
@@ -4635,14 +4689,14 @@ doCancel:
                     Else
                         Me.cmnuMovieSetReload.Visible = True
 
-                        cmnuMovieSetTitle.Text = String.Concat(">> ", Me.dgvMovieSets.Item(0, e.RowIndex).Value, " <<")
+                        cmnuMovieSetTitle.Text = String.Concat(">> ", Me.dgvMovieSets.Item(1, e.RowIndex).Value, " <<")
 
                         If Not Me.dgvMovieSets.Rows(e.RowIndex).Selected Then
                             Me.prevMovieSetRow = -1
                             Me.dgvMovieSets.CurrentCell = Nothing
                             Me.dgvMovieSets.ClearSelection()
                             Me.dgvMovieSets.Rows(e.RowIndex).Selected = True
-                            Me.dgvMovieSets.CurrentCell = Me.dgvMovieSets.Item(0, e.RowIndex)
+                            Me.dgvMovieSets.CurrentCell = Me.dgvMovieSets.Item(1, e.RowIndex)
                         Else
                             Me.cmnuMovieSet.Enabled = True
                         End If

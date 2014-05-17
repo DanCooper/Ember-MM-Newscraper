@@ -1121,19 +1121,22 @@ Public Class Database
                     End While
                 End Using
             End Using
-            'TEMP DanCooper
-            'Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-            '    SQLcommand.CommandText = String.Concat("SELECT MovieID, SetID, SetOrder FROM MoviesSets WHERE MovieID = ", MovieID, ";")
-            '    Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-            '        Dim sets As MediaContainers.Set
-            '        While SQLreader.Read
-            '            sets = New MediaContainers.Set
-            '            If Not DBNull.Value.Equals(SQLreader("SetName")) Then sets.Set = SQLreader("SetName").ToString
-            '            If Not DBNull.Value.Equals(SQLreader("SetOrder")) Then sets.Order = SQLreader("SetOrder").ToString
-            '            _movieDB.Movie.Sets.Add(sets)
-            '        End While
-            '    End Using
-            'End Using
+
+            Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                SQLcommand.CommandText = String.Concat("SELECT MS.MovieID, MS.SetID, MS.SetOrder, SE.ID, SE.SetName FROM MoviesSets ", _
+                                                       "AS MS INNER JOIN Sets AS SE ON (MS.SetID = SE.ID) WHERE MS.MovieID = ", MovieID, ";")
+                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                    Dim sets As MediaContainers.Set
+                    While SQLreader.Read
+                        sets = New MediaContainers.Set
+                        If Not DBNull.Value.Equals(SQLreader("SetID")) Then sets.ID = Convert.ToInt64(SQLreader("SetID"))
+                        If Not DBNull.Value.Equals(SQLreader("SetOrder")) Then sets.Order = SQLreader("SetOrder").ToString
+                        If Not DBNull.Value.Equals(SQLreader("SetName")) Then sets.Set = SQLreader("SetName").ToString
+                        _movieDB.Movie.Sets.Add(sets)
+                    End While
+                End Using
+            End Using
+
             If Not Master.eSettings.MovieNoSaveImagesToNfo Then
                 Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
                     SQLcommand.CommandText = String.Concat("SELECT ID, MovieID, preview, thumbs FROM MoviesFanart WHERE MovieID = ", MovieID, ";")
@@ -2090,14 +2093,14 @@ Public Class Database
                                         Dim parSets_ClearArtPath As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_ClearArtPath", DbType.String, 0, "ClearArtPath")
 
                                         parSets_SetName.Value = s.Set
-                                        parSets_BannerPath.Value = ""
-                                        parSets_ClearArtPath.Value = ""
-                                        parSets_ClearLogoPath.Value = ""
-                                        parSets_DiscArtPath.Value = ""
-                                        parSets_FanartPath.Value = ""
-                                        parSets_LandscapePath.Value = ""
-                                        parSets_NfoPath.Value = ""
-                                        parSets_PosterPath.Value = ""
+                                        parSets_BannerPath.Value = String.Empty
+                                        parSets_ClearArtPath.Value = String.Empty
+                                        parSets_ClearLogoPath.Value = String.Empty
+                                        parSets_DiscArtPath.Value = String.Empty
+                                        parSets_FanartPath.Value = String.Empty
+                                        parSets_LandscapePath.Value = String.Empty
+                                        parSets_NfoPath.Value = String.Empty
+                                        parSets_PosterPath.Value = String.Empty
                                         parSets_HasBanner.Value = False
                                         parSets_HasClearArt.Value = False
                                         parSets_HasClearLogo.Value = False

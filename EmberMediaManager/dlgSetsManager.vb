@@ -555,9 +555,9 @@ Public Class dlgSetsManager
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 For Each tMovie As Movies In mSet.Movies
                     If Not Master.eSettings.MovieYAMJCompatibleSets Then
-                        tMovie.DBMovie.Movie.AddSet(mSet.Set, 0)
+                        'tMovie.DBMovie.Movie.AddSet(mSet.Set, 0)
                     Else
-                        tMovie.DBMovie.Movie.AddSet(mSet.Set, tMovie.Order)
+                        'tMovie.DBMovie.Movie.AddSet(mSet.Set, tMovie.Order)
                     End If
                     Master.DB.SaveMovieToDB(tMovie.DBMovie, False, True, True)
                 Next
@@ -778,8 +778,7 @@ Public Class dlgSetsManager
             If currSet.Movies.Count > 0 Then
                 Dim collectionMovie As New Structures.DBMovie
                 collectionMovie = currSet.Movies.Item(0).DBMovie
-                collectionMovie.OriginalTitle = "GETSETIMAGES"
-                If Not ModulesManager.Instance.MovieScrapeImages(collectionMovie, Enums.ScraperCapabilities.Poster, aList) Then
+                If Not ModulesManager.Instance.MovieScrapeImages(collectionMovie, Enums.ScraperCapabilities.Poster, aList, True) Then
                     If aList.Count > 0 Then
                         dlgImgS = New dlgImgSelect()
                         If dlgImgS.ShowDialog(collectionMovie, Enums.MovieImageType.Poster, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
@@ -815,8 +814,7 @@ Public Class dlgSetsManager
             If currSet.Movies.Count > 0 Then
                 Dim collectionMovie As New Structures.DBMovie
                 collectionMovie = currSet.Movies.Item(0).DBMovie
-                collectionMovie.OriginalTitle = "GETSETIMAGES"
-                If Not ModulesManager.Instance.MovieScrapeImages(collectionMovie, Enums.ScraperCapabilities.Fanart, aList) Then
+                If Not ModulesManager.Instance.MovieScrapeImages(collectionMovie, Enums.ScraperCapabilities.Fanart, aList, True) Then
                     If aList.Count > 0 Then
                         dlgImgS = New dlgImgSelect()
                         If dlgImgS.ShowDialog(collectionMovie, Enums.MovieImageType.Fanart, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then

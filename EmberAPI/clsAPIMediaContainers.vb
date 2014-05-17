@@ -1197,14 +1197,14 @@ Namespace MediaContainers
 
 #Region "Methods"
 
-        Public Sub AddSet(ByVal SetName As String, ByVal Order As Integer)
+        Public Sub AddSet(ByVal SetID As Long, ByVal SetName As String, ByVal Order As Integer)
             Dim tSet = From bSet As [Set] In Sets Where bSet.Set = SetName
 
             If tSet.Count > 0 Then
                 Sets.Remove(tSet(0))
             End If
 
-            Sets.Add(New [Set] With {.Set = SetName, .Order = If(Order > 0, Order.ToString, String.Empty)})
+            Sets.Add(New [Set] With {.ID = SetID, .Set = SetName, .Order = If(Order > 0, Order.ToString, String.Empty)})
         End Sub
 
         Public Sub AddGenre(ByVal value As String)
