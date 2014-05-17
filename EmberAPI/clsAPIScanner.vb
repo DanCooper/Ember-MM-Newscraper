@@ -1403,11 +1403,11 @@ Public Class Scanner
                         If String.IsNullOrEmpty(tmpTVDB.TVShow.Title) Then tmpTVDB.TVShow.Title = FileUtils.Common.GetDirectory(TVContainer.ShowPath)
                     End If
 
-                    tmpTVDB.ShowPath = TVContainer.ShowPath
-                    tmpTVDB.ShowNfoPath = TVContainer.ShowNfo
                     tmpTVDB.ShowBannerPath = TVContainer.ShowBanner
                     tmpTVDB.ShowFanartPath = TVContainer.ShowFanart
                     tmpTVDB.ShowLandscapePath = TVContainer.ShowLandscape
+                    tmpTVDB.ShowNfoPath = TVContainer.ShowNfo
+                    tmpTVDB.ShowPath = TVContainer.ShowPath
                     tmpTVDB.ShowPosterPath = TVContainer.ShowPoster
                     tmpTVDB.IsLockShow = False
                     tmpTVDB.IsMarkShow = False
