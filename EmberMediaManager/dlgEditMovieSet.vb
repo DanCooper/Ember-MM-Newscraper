@@ -44,6 +44,8 @@ Public Class dlgEditMovieSet
     'Private lMovies As New List(Of Movies)
     Private currSet As New Sets
     Private currMovieSet As Structures.DBMovieSet = Master.currMovieSet
+    Private lMovies As New List(Of Movies)
+    Private sListTitle As String = String.Empty
 
 
 #End Region 'Fields
@@ -52,15 +54,61 @@ Public Class dlgEditMovieSet
 
     Private Sub btnMovieUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieUp.Click
         Try
-            If Me.lbMovies.Items.Count > 0 AndAlso Not IsNothing(Me.lbMovies.SelectedItem) AndAlso Me.lbMovies.SelectedIndex > 0 Then
+            If Me.lbMoviesInSet.Items.Count > 0 AndAlso Not IsNothing(Me.lbMoviesInSet.SelectedItem) AndAlso Me.lbMoviesInSet.SelectedIndex > 0 Then
                 'needsSave = True
-                Dim iIndex As Integer = Me.lbMovies.SelectedIndex
-                Me.currSet.Movies(iIndex).Order = Me.lbMovies.SelectedIndex - 1
+                Dim iIndex As Integer = Me.lbMoviesInSet.SelectedIndex
+                Me.currSet.Movies(iIndex).Order = Me.lbMoviesInSet.SelectedIndex - 1
                 Me.currSet.Movies(iIndex - 1).Order += 1
                 'Me.LoadCurrSet()
-                Me.lbMovies.SelectedIndex = iIndex - 1
-                Me.lbMovies.Focus()
+                Me.lbMoviesInSet.SelectedIndex = iIndex - 1
+                Me.lbMoviesInSet.Focus()
             End If
+        Catch ex As Exception
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub lbMoviesInSet_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lbMoviesInSet.KeyDown
+        If e.KeyCode = Keys.Delete Then Me.DeleteFromSet()
+    End Sub
+
+    Private Sub btnMovieRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieRemove.Click
+        Me.DeleteFromSet()
+    End Sub
+
+    Private Sub DeleteFromSet()
+        Dim lMov As New Movies
+
+        If Me.lbMoviesInSet.SelectedItems.Count > 0 Then
+            Me.SetControlsEnabled(False)
+            While Me.lbMoviesInSet.SelectedItems.Count > 0
+                Me.sListTitle = Me.lbMoviesInSet.SelectedItems(0).ToString
+                lMov = Me.currSet.Movies.Find(AddressOf FindMovie)
+                If Not IsNothing(lMov) Then
+                    Me.RemoveFromSet(lMov, False)
+                Else
+                    Me.lbMoviesInSet.Items.Remove(Me.lbMoviesInSet.SelectedItems(0))
+                End If
+
+            End While
+            Me.LoadCurrSet()
+            'Me.FillMovies()
+            Me.SetControlsEnabled(True)
+            Me.btnMovieUp.Enabled = False
+            Me.btnMovieDown.Enabled = False
+            Me.btnMovieRemove.Enabled = False
+        End If
+    End Sub
+
+    Private Function FindMovie(ByVal lMov As Movies) As Boolean
+        If lMov.ListTitle = sListTitle Then Return True Else  : Return False
+    End Function
+
+    Private Sub RemoveFromSet(ByVal lMov As Movies, ByVal isEdit As Boolean)
+        Try
+            lMov.DBMovie.Movie.RemoveSet(Me.currSet.SetID)
+            Master.DB.SaveMovieToDB(lMov.DBMovie, False, False, True)
+            If Not isEdit Then Me.currSet.Movies.Remove(lMov)
         Catch ex As Exception
             Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
@@ -151,10 +199,10 @@ Public Class dlgEditMovieSet
             Dim sPath As String = Path.Combine(Master.TempPath, "Banner.jpg")
 
             'Public Function MovieScrapeImages(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Boolean
-            If Not ModulesManager.Instance.MovieScrapeImages(Master.currMovie, Enums.ScraperCapabilities.Banner, aList) Then
+            If Not ModulesManager.Instance.MovieScrapeImages(currSet.Movies.Item(0).DBMovie, Enums.ScraperCapabilities.Banner, aList, True) Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
-                    If dlgImgS.ShowDialog(Master.currMovie, Enums.MovieImageType.Banner, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
+                    If dlgImgS.ShowDialog(currSet.Movies.Item(0).DBMovie, Enums.MovieImageType.Banner, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
                         pResults = dlgImgS.Results
                         If Not String.IsNullOrEmpty(pResults.URL) Then
                             Cursor = Cursors.WaitCursor
@@ -230,10 +278,10 @@ Public Class dlgEditMovieSet
             Dim sPath As String = Path.Combine(Master.TempPath, "ClearArt.png")
 
             'Public Function MovieScrapeImages(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Boolean
-            If Not ModulesManager.Instance.MovieScrapeImages(Master.currMovie, Enums.ScraperCapabilities.ClearArt, aList) Then
+            If Not ModulesManager.Instance.MovieScrapeImages(currSet.Movies.Item(0).DBMovie, Enums.ScraperCapabilities.ClearArt, aList, True) Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
-                    If dlgImgS.ShowDialog(Master.currMovie, Enums.MovieImageType.ClearArt, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
+                    If dlgImgS.ShowDialog(currSet.Movies.Item(0).DBMovie, Enums.MovieImageType.ClearArt, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
                         pResults = dlgImgS.Results
                         If Not String.IsNullOrEmpty(pResults.URL) Then
                             Cursor = Cursors.WaitCursor
@@ -309,10 +357,10 @@ Public Class dlgEditMovieSet
             Dim sPath As String = Path.Combine(Master.TempPath, "ClearLogo.png")
 
             'Public Function MovieScrapeImages(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Boolean
-            If Not ModulesManager.Instance.MovieScrapeImages(Master.currMovie, Enums.ScraperCapabilities.ClearLogo, aList) Then
+            If Not ModulesManager.Instance.MovieScrapeImages(currSet.Movies.Item(0).DBMovie, Enums.ScraperCapabilities.ClearLogo, aList, True) Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
-                    If dlgImgS.ShowDialog(Master.currMovie, Enums.MovieImageType.ClearLogo, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
+                    If dlgImgS.ShowDialog(currSet.Movies.Item(0).DBMovie, Enums.MovieImageType.ClearLogo, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
                         pResults = dlgImgS.Results
                         If Not String.IsNullOrEmpty(pResults.URL) Then
                             Cursor = Cursors.WaitCursor
@@ -388,10 +436,10 @@ Public Class dlgEditMovieSet
             Dim sPath As String = Path.Combine(Master.TempPath, "DiscArt.png")
 
             'Public Function MovieScrapeImages(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Boolean
-            If Not ModulesManager.Instance.MovieScrapeImages(Master.currMovie, Enums.ScraperCapabilities.DiscArt, aList) Then
+            If Not ModulesManager.Instance.MovieScrapeImages(currSet.Movies.Item(0).DBMovie, Enums.ScraperCapabilities.DiscArt, aList, True) Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
-                    If dlgImgS.ShowDialog(Master.currMovie, Enums.MovieImageType.DiscArt, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
+                    If dlgImgS.ShowDialog(currSet.Movies.Item(0).DBMovie, Enums.MovieImageType.DiscArt, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
                         pResults = dlgImgS.Results
                         If Not String.IsNullOrEmpty(pResults.URL) Then
                             Cursor = Cursors.WaitCursor
@@ -465,10 +513,10 @@ Public Class dlgEditMovieSet
 
         Try
             'Public Function MovieScrapeImages(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Boolean
-            If Not ModulesManager.Instance.MovieScrapeImages(Master.currMovie, Enums.ScraperCapabilities.Fanart, aList) Then
+            If Not ModulesManager.Instance.MovieScrapeImages(currSet.Movies.Item(0).DBMovie, Enums.ScraperCapabilities.Fanart, aList, True) Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
-                    If dlgImgS.ShowDialog(Master.currMovie, Enums.MovieImageType.Fanart, aList, efList, etList, True) = DialogResult.OK Then
+                    If dlgImgS.ShowDialog(currSet.Movies.Item(0).DBMovie, Enums.MovieImageType.Fanart, aList, efList, etList, True) = DialogResult.OK Then
                         pResults = dlgImgS.Results
                         If Not String.IsNullOrEmpty(pResults.URL) Then
                             Cursor = Cursors.WaitCursor
@@ -544,10 +592,10 @@ Public Class dlgEditMovieSet
             Dim sPath As String = Path.Combine(Master.TempPath, "Landscape.jpg")
 
             'Public Function MovieScrapeImages(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Boolean
-            If Not ModulesManager.Instance.MovieScrapeImages(Master.currMovie, Enums.ScraperCapabilities.Landscape, aList) Then
+            If Not ModulesManager.Instance.MovieScrapeImages(currSet.Movies.Item(0).DBMovie, Enums.ScraperCapabilities.Landscape, aList, True) Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
-                    If dlgImgS.ShowDialog(Master.currMovie, Enums.MovieImageType.Landscape, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
+                    If dlgImgS.ShowDialog(currSet.Movies.Item(0).DBMovie, Enums.MovieImageType.Landscape, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
                         pResults = dlgImgS.Results
                         If Not String.IsNullOrEmpty(pResults.URL) Then
                             Cursor = Cursors.WaitCursor
@@ -623,10 +671,10 @@ Public Class dlgEditMovieSet
             Dim sPath As String = Path.Combine(Master.TempPath, "poster.jpg")
 
             'Public Function MovieScrapeImages(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Boolean
-            If Not ModulesManager.Instance.MovieScrapeImages(Master.currMovie, Enums.ScraperCapabilities.Poster, aList) Then
+            If Not ModulesManager.Instance.MovieScrapeImages(currSet.Movies.Item(0).DBMovie, Enums.ScraperCapabilities.Poster, aList, True) Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
-                    If dlgImgS.ShowDialog(Master.currMovie, Enums.MovieImageType.Poster, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
+                    If dlgImgS.ShowDialog(currSet.Movies.Item(0).DBMovie, Enums.MovieImageType.Poster, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
                         pResults = dlgImgS.Results
                         If Not String.IsNullOrEmpty(pResults.URL) Then
                             Cursor = Cursors.WaitCursor
@@ -686,10 +734,9 @@ Public Class dlgEditMovieSet
                             If bwLoadMovies.CancellationPending Then Return
                             tmpMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(SQLreader("MovieID")))
                             If Not String.IsNullOrEmpty(tmpMovie.Movie.Title) Then
-
-                                currSet.Movies.Add(New Movies With {.DBMovie = tmpMovie, .ListTitle = String.Concat(StringUtils.FilterTokens(tmpMovie.Movie.Title), If(Not String.IsNullOrEmpty(tmpMovie.Movie.Year), String.Format(" ({0})", tmpMovie.Movie.Year), String.Empty))})
-
-                            End If
+                                Dim tmpSetOrder As Integer = If(Not String.IsNullOrEmpty(SQLreader("SetOrder").ToString), CInt(SQLreader("SetOrder").ToString), Nothing)
+                                currSet.AddMovie(New Movies With {.DBMovie = tmpMovie, .ListTitle = String.Concat(StringUtils.FilterTokens(tmpMovie.Movie.Title), If(Not String.IsNullOrEmpty(tmpMovie.Movie.Year), String.Format(" ({0})", tmpMovie.Movie.Year), String.Empty)), .Order = tmpSetOrder}, tmpSetOrder)
+                                End If
                             Me.bwLoadMovies.ReportProgress(iProg, tmpMovie.Movie.Title)
                             iProg += 1
                         End While
@@ -718,15 +765,37 @@ Public Class dlgEditMovieSet
         ' Thread finished: fill movie list
         '\\
 
-        Me.FillMovies()
+        If Me.currSet.Movies.Count > 0 Then
+            Me.LoadCurrSet()
+        End If
 
         Me.pnlCancel.Visible = False
 
-        Me.lbMovies.Enabled = True
+        Me.lbMoviesInSet.Enabled = True
         Me.btnMovieUp.Enabled = True
         Me.btnMovieDown.Enabled = True
         Me.btnMovieRemove.Enabled = True
         Me.btnMovieAdd.Enabled = True
+    End Sub
+
+    Private Sub LoadCurrSet()
+        Try
+            Me.lbMoviesInSet.SuspendLayout()
+
+            Me.lbMoviesInSet.Items.Clear()
+            Me.currSet.Movies.Sort()
+            For Each tMovie As Movies In Me.currSet.Movies
+                Me.lbMoviesInSet.Items.Add(tMovie.ListTitle)
+                tMovie.Order = Me.lbMoviesInSet.Items.Count
+            Next
+
+            Me.lbMoviesInSet.ResumeLayout()
+            Me.btnMovieUp.Enabled = False
+            Me.btnMovieDown.Enabled = False
+            Me.btnMovieRemove.Enabled = False
+        Catch ex As Exception
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
@@ -981,24 +1050,6 @@ Public Class dlgEditMovieSet
             Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
-    ''' <summary>
-    ''' Loads all movies from set in ListBox
-    ''' </summary>
-    ''' <remarks></remarks>
-    Private Sub FillMovies()
-        Try
-            Me.lbMovies.SuspendLayout()
-
-            Me.lbMovies.Items.Clear()
-            For Each lMov As Movies In currSet.Movies
-                Me.lbMovies.Items.Add(lMov.ListTitle)
-            Next
-
-            Me.lbMovies.ResumeLayout()
-        Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
         Try
@@ -1173,7 +1224,7 @@ Public Class dlgEditMovieSet
 
     Private Sub SetControlsEnabled(ByVal isEnabled As Boolean)
         Me.pnlSaving.Visible = Not isEnabled
-        Me.lbMovies.Enabled = isEnabled
+        Me.lbMoviesInSet.Enabled = isEnabled
         Me.btnMovieUp.Enabled = isEnabled
         Me.btnMovieDown.Enabled = isEnabled
         Me.btnMovieRemove.Enabled = isEnabled

@@ -1367,6 +1367,13 @@ Namespace MediaContainers
             End If
         End Sub
 
+        Public Sub RemoveSet(ByVal SetID As Long)
+            Dim tSet = From bSet As [Set] In Sets Where bSet.ID = SetID
+            If tSet.Count > 0 Then
+                Sets.Remove(tSet(0))
+            End If
+        End Sub
+
 #End Region 'Methods
     End Class
 

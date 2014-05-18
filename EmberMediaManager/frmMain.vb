@@ -3599,13 +3599,17 @@ doCancel:
     Private Sub cmnuMovieSetRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieSetRemove.Click
         Try
             Me.ClearInfo()
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
 
-            For Each sRow As DataGridViewRow In Me.dgvMovieSets.SelectedRows
-                Master.DB.DeleteMovieSetFromDB(Convert.ToInt64(sRow.Cells(0).Value))
-            Next
+                For Each sRow As DataGridViewRow In Me.dgvMovieSets.SelectedRows
+                    Master.DB.DeleteMovieSetFromDB(Convert.ToInt64(sRow.Cells(0).Value), True)
+                Next
+
+                SQLtransaction.Commit()
+            End Using
 
             Me.FillList(0)
-
+            
         Catch ex As Exception
             Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
         End Try

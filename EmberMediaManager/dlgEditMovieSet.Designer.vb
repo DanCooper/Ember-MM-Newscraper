@@ -95,7 +95,7 @@ Partial Class dlgEditMovieSet
         Me.lblFile = New System.Windows.Forms.Label()
         Me.lblCanceling = New System.Windows.Forms.Label()
         Me.btnCancel = New System.Windows.Forms.Button()
-        Me.lbMovies = New System.Windows.Forms.ListBox()
+        Me.lbMoviesInSet = New System.Windows.Forms.ListBox()
         Me.btnMovieDown = New System.Windows.Forms.Button()
         Me.btnMovieUp = New System.Windows.Forms.Button()
         Me.btnMovieAdd = New System.Windows.Forms.Button()
@@ -879,7 +879,7 @@ Partial Class dlgEditMovieSet
         'tpDetails
         '
         Me.tpDetails.Controls.Add(Me.pnlCancel)
-        Me.tpDetails.Controls.Add(Me.lbMovies)
+        Me.tpDetails.Controls.Add(Me.lbMoviesInSet)
         Me.tpDetails.Controls.Add(Me.btnMovieDown)
         Me.tpDetails.Controls.Add(Me.btnMovieUp)
         Me.tpDetails.Controls.Add(Me.btnMovieAdd)
@@ -995,17 +995,17 @@ Partial Class dlgEditMovieSet
         Me.btnCancel.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnCancel.UseVisualStyleBackColor = True
         '
-        'lbMovies
+        'lbMoviesInSet
         '
-        Me.lbMovies.Enabled = False
-        Me.lbMovies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lbMovies.FormattingEnabled = True
-        Me.lbMovies.HorizontalScrollbar = True
-        Me.lbMovies.Location = New System.Drawing.Point(107, 69)
-        Me.lbMovies.Name = "lbMovies"
-        Me.lbMovies.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
-        Me.lbMovies.Size = New System.Drawing.Size(252, 381)
-        Me.lbMovies.TabIndex = 36
+        Me.lbMoviesInSet.Enabled = False
+        Me.lbMoviesInSet.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lbMoviesInSet.FormattingEnabled = True
+        Me.lbMoviesInSet.HorizontalScrollbar = True
+        Me.lbMoviesInSet.Location = New System.Drawing.Point(107, 69)
+        Me.lbMoviesInSet.Name = "lbMoviesInSet"
+        Me.lbMoviesInSet.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
+        Me.lbMoviesInSet.Size = New System.Drawing.Size(252, 381)
+        Me.lbMoviesInSet.TabIndex = 36
         '
         'btnMovieDown
         '
@@ -1215,7 +1215,7 @@ Partial Class dlgEditMovieSet
     Friend WithEvents txtTitle As System.Windows.Forms.TextBox
     Friend WithEvents lblTitle As System.Windows.Forms.Label
     Friend WithEvents tcEditMovie As System.Windows.Forms.TabControl
-    Friend WithEvents lbMovies As System.Windows.Forms.ListBox
+    Friend WithEvents lbMoviesInSet As System.Windows.Forms.ListBox
     Friend WithEvents pnlCancel As System.Windows.Forms.Panel
     Friend WithEvents pnlSaving As System.Windows.Forms.Panel
     Friend WithEvents lblSaving As System.Windows.Forms.Label
