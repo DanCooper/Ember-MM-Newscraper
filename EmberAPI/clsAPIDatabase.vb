@@ -678,6 +678,7 @@ Public Class Database
             End Using
             If Not BatchMode Then SQLtransaction.Commit()
         Catch ex As Exception
+            Master.eLog.Error(GetType(Database), ex.Message, ex.StackTrace, "Error")
             Return False
         End Try
         Return True
@@ -696,11 +697,12 @@ Public Class Database
             Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
                 SQLcommand.CommandText = String.Concat("DELETE FROM Sets WHERE ID = ", ID, ";")
                 SQLcommand.ExecuteNonQuery()
-                SQLcommand.CommandText = String.Concat("DELETE FROM MovieSets WHERE SetID = ", ID, ";")
+                SQLcommand.CommandText = String.Concat("DELETE FROM MoviesSets WHERE SetID = ", ID, ";")
                 SQLcommand.ExecuteNonQuery()
             End Using
             If Not BatchMode Then SQLtransaction.Commit()
         Catch ex As Exception
+            Master.eLog.Error(GetType(Database), ex.Message, ex.StackTrace, "Error")
             Return False
         End Try
         Return True
@@ -2014,6 +2016,11 @@ Public Class Database
                     End Using
 
                     'MovieSets part
+                    Using SQLcommandMovieSets As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                        SQLcommandMovieSets.CommandText = String.Concat("DELETE FROM MoviesSets WHERE MovieID = ", _movieDB.ID, ";")
+                        SQLcommandMovieSets.ExecuteNonQuery()
+                    End Using
+                        
                     Dim IsNewSet As Boolean
                     For Each s As MediaContainers.Set In _movieDB.Movie.Sets
                         If s.SetSpecified Then
@@ -2038,7 +2045,7 @@ Public Class Database
                                     SQLcommandSets.CommandText = String.Concat("SELECT ID, SetName, HasNfo, NfoPath, HasPoster, PosterPath, HasFanart, ", _
                                                                            "FanartPath, HasBanner, BannerPath, HasLandscape, LandscapePath, ", _
                                                                            "HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ", _
-                                                                           "ClearArtPath FROM Sets WHERE SetName LIKE '%", s.Set, "%';")
+                                                                           "ClearArtPath FROM Sets WHERE SetName LIKE """, s.Set, """;")
                                     Using SQLreader As SQLite.SQLiteDataReader = SQLcommandSets.ExecuteReader()
                                         If SQLreader.HasRows Then
                                             SQLreader.Read()
