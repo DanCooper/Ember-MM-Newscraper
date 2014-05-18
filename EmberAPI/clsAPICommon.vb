@@ -944,10 +944,15 @@ Public Class Functions
         With options
             .bCast = True
             .bCert = True
+            .bCleanPlotOutline = True
+            .bCollection = True
+            .bCountry = True
             .bDirector = True
             .bFullCast = True
             .bFullCrew = True
             .bGenre = Not Master.eSettings.MovieLockGenre    'Dekker500 This used to just be =True
+            .bLanguageA = Not Master.eSettings.MovieLockLanguageA
+            .bLanguageV = Not Master.eSettings.MovieLockLanguageV
             .bMPAA = True
             .bMusicBy = True
             .bOtherCrew = True
@@ -955,21 +960,17 @@ Public Class Functions
             .bPlot = Not Master.eSettings.MovieLockPlot
             .bProducers = True
             .bRating = Not Master.eSettings.MovieLockRating
-            .bLanguageV = Not Master.eSettings.MovieLockLanguageV
-            .bLanguageA = Not Master.eSettings.MovieLockLanguageA
-            .buseMPAAForFSK = Not Master.eSettings.MovieScraperUseMPAAFSK
             .bRelease = True
             .bRuntime = True
             .bStudio = Not Master.eSettings.MovieLockStudio
             .bTagline = Not Master.eSettings.MovieLockTagline
             .bTitle = Not Master.eSettings.MovieLockTitle
             .bTop250 = True
-            .bCountry = True
             .bTrailer = Not Master.eSettings.MovieLockTrailer
             .bVotes = True
             .bWriters = True
             .bYear = True
-            .bCleanPlotOutline = True
+            .buseMPAAForFSK = Not Master.eSettings.MovieScraperUseMPAAFSK
         End With
         Return options
     End Function
@@ -982,8 +983,14 @@ Public Class Functions
     Public Shared Sub CreateDefaultOptions()
         'TODO need proper unit test
         With Master.DefaultMovieOptions
+            'TODO Dekker500 - These seem to be missing Add fields to Master!!!???
+            '.bLanguageA = Master.eSettings.FieldLanguageA
+            '.bLanguageV = Master.eSettings.FieldLanguageV
+            '.buseMPAAForFSK = Master.eSettings.UseMPAAForFSK
             .bCast = Master.eSettings.MovieScraperCast
             .bCert = Master.eSettings.MovieScraperCertification
+            .bCollection = Master.eSettings.MovieScraperCollection
+            .bCountry = Master.eSettings.MovieScraperCountry
             .bDirector = Master.eSettings.MovieScraperDirector
             .bFullCast = Master.eSettings.MovieScraperFullCast
             .bFullCrew = Master.eSettings.MovieScraperFullCrew
@@ -995,17 +1002,12 @@ Public Class Functions
             .bPlot = Master.eSettings.MovieScraperPlot
             .bProducers = Master.eSettings.MovieScraperProducers
             .bRating = Master.eSettings.MovieScraperRating
-            'TODO Dekker500 - These seem to be missing Add fields to Master!!!???
-            '.bLanguageV = Master.eSettings.FieldLanguageV
-            '.bLanguageA = Master.eSettings.FieldLanguageA
-            '.buseMPAAForFSK = Master.eSettings.UseMPAAForFSK
             .bRelease = Master.eSettings.MovieScraperRelease
             .bRuntime = Master.eSettings.MovieScraperRuntime
             .bStudio = Master.eSettings.MovieScraperStudio
             .bTagline = Master.eSettings.MovieScraperTagline
             .bTitle = Master.eSettings.MovieScraperTitle
             .bTop250 = Master.eSettings.MovieScraperTop250
-            .bCountry = Master.eSettings.MovieScraperCountry
             .bTrailer = Master.eSettings.MovieScraperTrailer
             .bVotes = Master.eSettings.MovieScraperVotes
             .bWriters = Master.eSettings.MovieScraperWriters
@@ -1276,10 +1278,15 @@ Public Class Functions
         Dim filterOptions As New Structures.ScrapeOptions
         filterOptions.bCast = Options.bCast AndAlso Options2.bCast
         filterOptions.bCert = Options.bCert AndAlso Options2.bCert
+        filterOptions.bCleanPlotOutline = Options.bCleanPlotOutline AndAlso Options2.bCleanPlotOutline
+        filterOptions.bCollection = Options.bCollection AndAlso Options2.bCollection
+        filterOptions.bCountry = Options.bCountry AndAlso Options2.bCountry
         filterOptions.bDirector = Options.bDirector AndAlso Options2.bDirector
-        filterOptions.bFullCrew = Options.bFullCrew AndAlso Options2.bFullCrew
         filterOptions.bFullCast = Options.bFullCast AndAlso Options2.bFullCast
+        filterOptions.bFullCrew = Options.bFullCrew AndAlso Options2.bFullCrew
         filterOptions.bGenre = Options.bGenre AndAlso Options2.bGenre
+        filterOptions.bLanguageA = Options.bLanguageA AndAlso Options2.bLanguageA
+        filterOptions.bLanguageV = Options.bLanguageV AndAlso Options2.bLanguageV
         filterOptions.bMPAA = Options.bMPAA AndAlso Options2.bMPAA
         filterOptions.bMusicBy = Options.bMusicBy AndAlso Options2.bMusicBy
         filterOptions.bOtherCrew = Options.bOtherCrew AndAlso Options2.bOtherCrew
@@ -1287,21 +1294,17 @@ Public Class Functions
         filterOptions.bPlot = Options.bPlot AndAlso Options2.bPlot
         filterOptions.bProducers = Options.bProducers AndAlso Options2.bProducers
         filterOptions.bRating = Options.bRating AndAlso Options2.bRating
-        filterOptions.bLanguageV = Options.bLanguageV AndAlso Options2.bLanguageV
-        filterOptions.bLanguageA = Options.bLanguageA AndAlso Options2.bLanguageA
-        filterOptions.buseMPAAForFSK = Options.buseMPAAForFSK AndAlso Options2.buseMPAAForFSK
         filterOptions.bRelease = Options.bRelease AndAlso Options2.bRelease
         filterOptions.bRuntime = Options.bRuntime AndAlso Options2.bRuntime
         filterOptions.bStudio = Options.bStudio AndAlso Options2.bStudio
         filterOptions.bTagline = Options.bTagline AndAlso Options2.bTagline
         filterOptions.bTitle = Options.bTitle AndAlso Options2.bTitle
         filterOptions.bTop250 = Options.bTop250 AndAlso Options2.bTop250
-        filterOptions.bCountry = Options.bCountry AndAlso Options2.bCountry
         filterOptions.bTrailer = Options.bTrailer AndAlso Options2.bTrailer
         filterOptions.bVotes = Options.bVotes AndAlso Options2.bVotes
         filterOptions.bWriters = Options.bWriters AndAlso Options2.bWriters
         filterOptions.bYear = Options.bYear AndAlso Options2.bYear
-        filterOptions.bCleanPlotOutline = Options.bCleanPlotOutline AndAlso Options2.bCleanPlotOutline
+        filterOptions.buseMPAAForFSK = Options.buseMPAAForFSK AndAlso Options2.buseMPAAForFSK
         Return filterOptions
     End Function
     ''' <summary>
@@ -1751,6 +1754,7 @@ Public Class Structures
     Public Structure ScrapeOptions
         Dim bCast As Boolean
         Dim bCert As Boolean
+        Dim bCollection As Boolean
         Dim bDirector As Boolean
         Dim bFullCast As Boolean
         Dim bFullCrew As Boolean

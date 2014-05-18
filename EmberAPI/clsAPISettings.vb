@@ -180,6 +180,7 @@ Public Class Settings
     Private _moviescrapercertformpaa As Boolean
     Private _moviescrapercertification As Boolean
     Private _moviescrapercertlang As String
+    Private _moviescrapercollection As Boolean
     Private _moviescrapercountry As Boolean
     Private _moviescrapercrew As Boolean
     Private _moviescraperdirector As Boolean
@@ -1280,6 +1281,15 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Me._moviescrapertop250 = value
+        End Set
+    End Property
+
+    Public Property MovieScraperCollection() As Boolean
+        Get
+            Return Me._moviescrapercollection
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviescrapercollection = value
         End Set
     End Property
 
@@ -5447,6 +5457,7 @@ Public Class Settings
         Me._moviescrapercertformpaa = False
         Me._moviescrapercertification = True
         Me._moviescrapercertlang = String.Empty
+        Me._moviescrapercollection = True
         Me._moviescrapercountry = True
         Me._moviescrapercrew = True
         Me._moviescraperdirector = True

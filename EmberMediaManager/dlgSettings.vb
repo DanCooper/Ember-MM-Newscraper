@@ -2127,6 +2127,10 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
+    Private Sub chkMovieScraperCollection_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperCollection.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
     Private Sub chkMovieScraperCountry_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperCountry.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
@@ -2761,6 +2765,7 @@ Public Class dlgSettings
                 Me.chkMovieScraperCast.Checked = .MovieScraperCast
                 Me.chkMovieScraperCastWithImg.Checked = .MovieScraperCastWithImgOnly
                 Me.chkMovieScraperCertification.Checked = .MovieScraperCertification
+                Me.chkMovieScraperCollection.Checked = .MovieScraperCollection
                 Me.chkMovieScraperCountry.Checked = .MovieScraperCountry
                 Me.chkMovieScraperDirector.Checked = .MovieScraperDirector
                 Me.chkMovieScraperFullCast.Checked = .MovieScraperFullCast
@@ -4146,6 +4151,7 @@ Public Class dlgSettings
                 Else
                     .MovieScraperCertForMPAA = False
                 End If
+                .MovieScraperCollection = Me.chkMovieScraperCollection.Checked
                 .MovieScraperCountry = Me.chkMovieScraperCountry.Checked
                 .MovieScraperCrew = Me.chkMovieScraperCrew.Checked
                 .MovieScraperDirector = Me.chkMovieScraperDirector.Checked
@@ -4799,6 +4805,7 @@ Public Class dlgSettings
         Me.chkMovieLevTolerance.Text = Master.eLang.GetString(462, "Check Title Match Confidence")
         Me.chkMovieCleanDB.Text = Master.eLang.GetString(668, "Clean database after updating library")
         Me.chkMovieClickScrape.Text = Master.eLang.GetString(849, "Enable Click Scrape")
+        Me.chkMovieScraperCollection.Text = Master.eLang.GetString(1135, "Collection")
         Me.chkMovieScraperCountry.Text = Master.eLang.GetString(301, "Country")
         Me.chkMovieScraperCrew.Text = Master.eLang.GetString(391, "Other Crew")
         Me.chkMovieTrailerDeleteExisting.Text = Master.eLang.GetString(522, "Delete All Existing")

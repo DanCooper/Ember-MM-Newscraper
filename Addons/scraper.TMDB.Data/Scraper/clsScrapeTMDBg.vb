@@ -24,42 +24,43 @@ Imports System.IO.Compression
 Imports System.Text
 Imports System.Text.RegularExpressions
 Imports EmberAPI
+Imports EmberAPI.MediaContainers
 Imports RestSharp
 Imports WatTmdb
 
 
 Namespace TMDBg
 
-	Public Class MovieSearchResults
+    Public Class MovieSearchResults
 
 #Region "Fields"
 
-		Private _Matches As New List(Of MediaContainers.Movie)
+        Private _Matches As New List(Of MediaContainers.Movie)
 
-#End Region	'Fields
+#End Region 'Fields
 
 #Region "Properties"
 
-		Public Property Matches() As List(Of MediaContainers.Movie)
-			Get
-				Return _Matches
-			End Get
-			Set(ByVal value As List(Of MediaContainers.Movie))
-				_Matches = value
-			End Set
-		End Property
+        Public Property Matches() As List(Of MediaContainers.Movie)
+            Get
+                Return _Matches
+            End Get
+            Set(ByVal value As List(Of MediaContainers.Movie))
+                _Matches = value
+            End Set
+        End Property
 
-#End Region	'Properties
+#End Region 'Properties
 
-	End Class
+    End Class
 
-	Public Class Scraper
+    Public Class Scraper
 
 #Region "Fields"
 
-		Private _TMDBConf As V3.TmdbConfiguration
-		Private _TMDBConfE As V3.TmdbConfiguration
-		Private _TMDBApi As V3.Tmdb
+        Private _TMDBConf As V3.TmdbConfiguration
+        Private _TMDBConfE As V3.TmdbConfiguration
+        Private _TMDBApi As V3.Tmdb
         Private _TMDBApiE As V3.Tmdb
         Private _TMDBApiA As V3.Tmdb
         Private _MySettings As TMDB_Data.sMySettings
@@ -68,35 +69,35 @@ Namespace TMDBg
 
         Private _sPoster As String
 
-#End Region	'Fields
+#End Region 'Fields
 
 #Region "Properties"
-		Public ReadOnly Property TMDBConf() As V3.TmdbConfiguration
-			Get
-				Return _TMDBConf
-			End Get
-		End Property
+        Public ReadOnly Property TMDBConf() As V3.TmdbConfiguration
+            Get
+                Return _TMDBConf
+            End Get
+        End Property
 #End Region
 
 #Region "Enumerations"
 
-		Private Enum SearchType
-			Movies = 0
-			Details = 1
-			SearchDetails = 2
-		End Enum
+        Private Enum SearchType
+            Movies = 0
+            Details = 1
+            SearchDetails = 2
+        End Enum
 
-#End Region	'Enumerations
+#End Region 'Enumerations
 
 #Region "Events"
 
-		Public Event Exception(ByVal ex As Exception)
+        Public Event Exception(ByVal ex As Exception)
 
-		Public Event SearchMovieInfoDownloaded(ByVal sPoster As String, ByVal bSuccess As Boolean)
+        Public Event SearchMovieInfoDownloaded(ByVal sPoster As String, ByVal bSuccess As Boolean)
 
-		Public Event SearchResultsDownloaded(ByVal mResults As TMDBg.MovieSearchResults)
+        Public Event SearchResultsDownloaded(ByVal mResults As TMDBg.MovieSearchResults)
 
-#End Region	'Events
+#End Region 'Events
 
 #Region "Methods"
 
@@ -227,6 +228,19 @@ Namespace TMDBg
                         Else
                             DBMovie.Title = Movie.title
                         End If
+                    End If
+                End If
+
+                If bwTMDBg.CancellationPending Then Return Nothing
+
+                'Get collection information
+                If Options.bCollection Then
+                    If String.IsNullOrEmpty(Movie.belongs_to_collection.name) Then
+                        If _MySettings.FallBackEng Then
+                            DBMovie.AddSet(-1, MovieE.belongs_to_collection.name, 0)
+                        End If
+                    Else
+                        DBMovie.AddSet(Nothing, Movie.belongs_to_collection.name, Nothing)
                     End If
                 End If
 
@@ -809,40 +823,40 @@ Namespace TMDBg
 
 #Region "Nested Types"
 
-		Private Structure Arguments
+        Private Structure Arguments
 
 #Region "Fields"
 
-			Dim FullCast As Boolean
-			Dim FullCrew As Boolean
-			Dim IMDBMovie As MediaContainers.Movie
-			Dim Options As Structures.ScrapeOptions
-			Dim Parameter As String
+            Dim FullCast As Boolean
+            Dim FullCrew As Boolean
+            Dim IMDBMovie As MediaContainers.Movie
+            Dim Options As Structures.ScrapeOptions
+            Dim Parameter As String
             Dim Search As SearchType
             Dim Year As Integer
-			'Dim TMDBConf As V3.TmdbConfiguration
-			'Dim TMDBApi As V3.Tmdb
-			'Dim FallBackEng As Boolean
-			'Dim TMDBLang As String
-#End Region	'Fields
+            'Dim TMDBConf As V3.TmdbConfiguration
+            'Dim TMDBApi As V3.Tmdb
+            'Dim FallBackEng As Boolean
+            'Dim TMDBLang As String
+#End Region 'Fields
 
-		End Structure
+        End Structure
 
-		Private Structure Results
+        Private Structure Results
 
 #Region "Fields"
 
-			Dim Result As Object
-			Dim ResultType As SearchType
-			Dim Success As Boolean
+            Dim Result As Object
+            Dim ResultType As SearchType
+            Dim Success As Boolean
 
-#End Region	'Fields
+#End Region 'Fields
 
-		End Structure
+        End Structure
 
-#End Region	'Nested Types
+#End Region 'Nested Types
 
-	End Class
+    End Class
 
 End Namespace
 

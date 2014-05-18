@@ -139,6 +139,7 @@ Public Class TMDB_Data
         _setup.cbEnabled.Checked = _ScraperEnabled
         _setup.cbTMDBPrefLanguage.Text = _MySettings.TMDBLanguage
         _setup.chkCast.Checked = ConfigOptions.bFullCast
+        _setup.chkCollection.Checked = ConfigOptions.bCollection
         _setup.chkCountry.Checked = ConfigOptions.bCountry
         _setup.chkCrew.Checked = ConfigOptions.bFullCrew
         _setup.chkFallBackEng.Checked = _MySettings.FallBackEng
@@ -177,6 +178,7 @@ Public Class TMDB_Data
         ConfigOptions.bCast = AdvancedSettings.GetBooleanSetting("DoCast", True)
         ConfigOptions.bCert = AdvancedSettings.GetBooleanSetting("DoCert", True)
         ConfigOptions.bCleanPlotOutline = AdvancedSettings.GetBooleanSetting("CleanPlotOutline", True)
+        ConfigOptions.bCollection = AdvancedSettings.GetBooleanSetting("DoCollection", True)
         ConfigOptions.bCountry = AdvancedSettings.GetBooleanSetting("DoCountry", True)
         ConfigOptions.bDirector = AdvancedSettings.GetBooleanSetting("DoDirector", True)
         ConfigOptions.bFullCast = AdvancedSettings.GetBooleanSetting("DoFullCast", True)
@@ -217,6 +219,7 @@ Public Class TMDB_Data
             settings.SetBooleanSetting("CleanPlotOutline", ConfigOptions.bCleanPlotOutline)
             settings.SetBooleanSetting("DoCast", ConfigOptions.bCast)
             settings.SetBooleanSetting("DoCert", ConfigOptions.bCert)
+            settings.SetBooleanSetting("DoCollection", ConfigOptions.bCollection)
             settings.SetBooleanSetting("DoCountry", ConfigOptions.bCountry)
             settings.SetBooleanSetting("DoDirector", ConfigOptions.bDirector)
             settings.SetBooleanSetting("DoFanart", ConfigScrapeModifier.Fanart)
@@ -254,6 +257,7 @@ Public Class TMDB_Data
         ConfigOptions.bCast = _setup.chkCast.Checked
         ConfigOptions.bCert = ConfigOptions.bMPAA
         ConfigOptions.bCleanPlotOutline = _setup.chkTMDBCleanPlotOutline.Checked
+        ConfigOptions.bCollection = _setup.chkCollection.Checked
         ConfigOptions.bCountry = _setup.chkCountry.Checked
         ConfigOptions.bDirector = _setup.chkCrew.Checked
         ConfigOptions.bFullCast = _setup.chkCast.Checked
