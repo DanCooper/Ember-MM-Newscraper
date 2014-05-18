@@ -235,9 +235,11 @@ Namespace TMDBg
 
                 'Get collection information
                 If Options.bCollection Then
-                    If String.IsNullOrEmpty(Movie.belongs_to_collection.name) Then
+                    If IsNothing(Movie.belongs_to_collection) Then
                         If _MySettings.FallBackEng Then
-                            DBMovie.AddSet(-1, MovieE.belongs_to_collection.name, 0)
+                            If Not IsNothing(MovieE.belongs_to_collection) Then
+                                DBMovie.AddSet(Nothing, MovieE.belongs_to_collection.name, Nothing)
+                            End If
                         End If
                     Else
                         DBMovie.AddSet(Nothing, Movie.belongs_to_collection.name, Nothing)
