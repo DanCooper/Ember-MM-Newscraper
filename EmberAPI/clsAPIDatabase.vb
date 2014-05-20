@@ -2553,45 +2553,50 @@ Public Class Database
     Public Sub SaveTVSeasonToDB(ByRef _TVSeasonDB As Structures.DBTV, ByVal IsNew As Boolean, Optional ByVal BatchMode As Boolean = False)
         'TODO Must add parameter checking. Needs thought to ensure calling routines are not broken if exception thrown. 
         'TODO Break this method into smaller chunks. Too important to be this complex
-        Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
-        If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
+        Try
+            Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
+            If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
 
-        Using SQLcommandTVSeason As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-            SQLcommandTVSeason.CommandText = String.Concat("INSERT OR ", If(IsNew, "IGNORE", "REPLACE"), " INTO TVSeason (", _
-              "TVShowID, SeasonText, Season, HasPoster, HasFanart, PosterPath, FanartPath, Lock, Mark, New, HasBanner, BannerPath, HasLandscape, LandscapePath", _
-              ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?);")
-            Dim parSeasonShowID As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("parSeasonShowID", DbType.UInt64, 0, "TVShowID")
-            Dim parSeasonSeasonText As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("parSeasonSeasonText", DbType.String, 0, "SeasonText")
-            Dim parSeasonSeason As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("parSeasonSeason", DbType.Int32, 0, "Season")
-            Dim parSeasonHasPoster As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("parSeasonHasPoster", DbType.Boolean, 0, "HasPoster")
-            Dim parSeasonHasFanart As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("parSeasonHasFanart", DbType.Boolean, 0, "HasFanart")
-            Dim parSeasonPosterPath As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("parSeasonPosterPath", DbType.String, 0, "PosterPath")
-            Dim parSeasonFanartPath As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("parSeasonFanartPath", DbType.String, 0, "FanartPath")
-            Dim parSeasonLock As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("parSeasonLock", DbType.Boolean, 0, "Lock")
-            Dim parSeasonMark As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("parSeasonMark", DbType.Boolean, 0, "Mark")
-            Dim parSeasonNew As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("parSeasonNew", DbType.Boolean, 0, "New")
-            Dim parSeasonHasBanner As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("parSeasonHasBanner", DbType.Boolean, 0, "HasBanner")
-            Dim parSeasonBannerPath As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("parSeasonBannerPath", DbType.String, 0, "BannerPath")
-            Dim parSeasonHasLandscape As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("parSeasonHasLandscape", DbType.Boolean, 0, "HasLandscape")
-            Dim parSeasonLandscapePath As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("parSeasonLandscapePath", DbType.String, 0, "LandscapePath")
-            parSeasonShowID.Value = _TVSeasonDB.ShowID
-            parSeasonSeasonText.Value = StringUtils.FormatSeasonText(_TVSeasonDB.TVEp.Season)
-            parSeasonSeason.Value = _TVSeasonDB.TVEp.Season
-            parSeasonHasPoster.Value = Not String.IsNullOrEmpty(_TVSeasonDB.SeasonPosterPath)
-            parSeasonHasBanner.Value = Not String.IsNullOrEmpty(_TVSeasonDB.SeasonBannerPath)
-            parSeasonHasFanart.Value = Not String.IsNullOrEmpty(_TVSeasonDB.SeasonFanartPath)
-            parSeasonHasLandscape.Value = Not String.IsNullOrEmpty(_TVSeasonDB.SeasonLandscapePath)
-            parSeasonPosterPath.Value = _TVSeasonDB.SeasonPosterPath
-            parSeasonBannerPath.Value = _TVSeasonDB.SeasonBannerPath
-            parSeasonFanartPath.Value = _TVSeasonDB.SeasonFanartPath
-            parSeasonLandscapePath.Value = _TVSeasonDB.SeasonLandscapePath
-            parSeasonLock.Value = _TVSeasonDB.IsLockSeason
-            parSeasonMark.Value = _TVSeasonDB.IsMarkSeason
-            parSeasonNew.Value = IsNew
-            SQLcommandTVSeason.ExecuteNonQuery()
-        End Using
+            Using SQLcommandTVSeason As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                SQLcommandTVSeason.CommandText = String.Concat("INSERT OR ", If(IsNew, "IGNORE", "REPLACE"), " INTO TVSeason (", _
+                  "TVShowID, SeasonText, Season, HasPoster, HasFanart, PosterPath, FanartPath, Lock, Mark, New, HasBanner, BannerPath, HasLandscape, LandscapePath", _
+                  ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?);")
+                Dim parSeasonShowID As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("parSeasonShowID", DbType.UInt64, 0, "TVShowID")
+                Dim parSeasonSeasonText As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("parSeasonSeasonText", DbType.String, 0, "SeasonText")
+                Dim parSeasonSeason As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("parSeasonSeason", DbType.Int32, 0, "Season")
+                Dim parSeasonHasPoster As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("parSeasonHasPoster", DbType.Boolean, 0, "HasPoster")
+                Dim parSeasonHasFanart As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("parSeasonHasFanart", DbType.Boolean, 0, "HasFanart")
+                Dim parSeasonPosterPath As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("parSeasonPosterPath", DbType.String, 0, "PosterPath")
+                Dim parSeasonFanartPath As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("parSeasonFanartPath", DbType.String, 0, "FanartPath")
+                Dim parSeasonLock As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("parSeasonLock", DbType.Boolean, 0, "Lock")
+                Dim parSeasonMark As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("parSeasonMark", DbType.Boolean, 0, "Mark")
+                Dim parSeasonNew As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("parSeasonNew", DbType.Boolean, 0, "New")
+                Dim parSeasonHasBanner As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("parSeasonHasBanner", DbType.Boolean, 0, "HasBanner")
+                Dim parSeasonBannerPath As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("parSeasonBannerPath", DbType.String, 0, "BannerPath")
+                Dim parSeasonHasLandscape As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("parSeasonHasLandscape", DbType.Boolean, 0, "HasLandscape")
+                Dim parSeasonLandscapePath As SQLite.SQLiteParameter = SQLcommandTVSeason.Parameters.Add("parSeasonLandscapePath", DbType.String, 0, "LandscapePath")
+                parSeasonShowID.Value = _TVSeasonDB.ShowID
+                parSeasonSeasonText.Value = StringUtils.FormatSeasonText(_TVSeasonDB.TVEp.Season)
+                parSeasonSeason.Value = _TVSeasonDB.TVEp.Season
+                parSeasonHasPoster.Value = Not String.IsNullOrEmpty(_TVSeasonDB.SeasonPosterPath)
+                parSeasonHasBanner.Value = Not String.IsNullOrEmpty(_TVSeasonDB.SeasonBannerPath)
+                parSeasonHasFanart.Value = Not String.IsNullOrEmpty(_TVSeasonDB.SeasonFanartPath)
+                parSeasonHasLandscape.Value = Not String.IsNullOrEmpty(_TVSeasonDB.SeasonLandscapePath)
+                parSeasonPosterPath.Value = _TVSeasonDB.SeasonPosterPath
+                parSeasonBannerPath.Value = _TVSeasonDB.SeasonBannerPath
+                parSeasonFanartPath.Value = _TVSeasonDB.SeasonFanartPath
+                parSeasonLandscapePath.Value = _TVSeasonDB.SeasonLandscapePath
+                parSeasonLock.Value = _TVSeasonDB.IsLockSeason
+                parSeasonMark.Value = _TVSeasonDB.IsMarkSeason
+                parSeasonNew.Value = IsNew
+                SQLcommandTVSeason.ExecuteNonQuery()
+            End Using
 
-        If Not BatchMode Then SQLtransaction.Commit()
+            If Not BatchMode Then SQLtransaction.Commit()
+
+        Catch ex As Exception
+            Master.eLog.Error(GetType(Database), ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
     ''' <summary>
     ''' Saves all show information from a Structures.DBTV object to the database

@@ -6009,7 +6009,7 @@ Public Class Settings
         Return TVASBannerAnyEnabled() OrElse TVASFanartAnyEnabled() OrElse TVASLandscapeAnyEnabled() OrElse TVASPosterAnyEnabled()
     End Function
     Public Function TVASBannerAnyEnabled() As Boolean
-        Return TVSeasonBannerFrodo OrElse TVSeasonBannerYAMJ
+        Return TVSeasonBannerFrodo
     End Function
 
     Public Function TVASFanartAnyEnabled() As Boolean
