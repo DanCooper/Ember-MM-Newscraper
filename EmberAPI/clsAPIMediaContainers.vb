@@ -1198,7 +1198,7 @@ Namespace MediaContainers
 #Region "Methods"
 
         Public Sub AddSet(ByVal SetID As Long, ByVal SetName As String, ByVal Order As Integer)
-            Dim tSet = From bSet As [Set] In Sets Where bSet.Set = SetName
+            Dim tSet = From bSet As [Set] In Sets Where bSet.ID = SetID
 
             If tSet.Count > 0 Then
                 Sets.Remove(tSet(0))

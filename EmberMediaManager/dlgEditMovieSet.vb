@@ -46,6 +46,7 @@ Public Class dlgEditMovieSet
     Private currMovieSet As Structures.DBMovieSet = Master.currMovieSet
     Private lMovies As New List(Of Movies)
     Private sListTitle As String = String.Empty
+    Private needMovieUpdate As Boolean = False
 
 
 #End Region 'Fields
@@ -1092,6 +1093,10 @@ Public Class dlgEditMovieSet
 
             Master.DB.SaveMovieSetToDB(Master.currMovieSet, False, False, True)
 
+            If needMovieUpdate Then
+                SaveSetToMovies(currSet)
+            End If
+
             Me.CleanUp()
 
         Catch ex As Exception
@@ -1235,7 +1240,7 @@ Public Class dlgEditMovieSet
         End If
     End Sub
 
-    Private Sub SaveSet(ByVal mSet As Sets)
+    Private Sub SaveSetToMovies(ByVal mSet As Sets)
         Try
             Me.SetControlsEnabled(False)
 
@@ -1244,7 +1249,7 @@ Public Class dlgEditMovieSet
                     'If Not Master.eSettings.MovieYAMJCompatibleSets Then
                     '    tMovie.DBMovie.Movie.AddSet(mSet.Set, 0)
                     'Else
-                    tMovie.DBMovie.Movie.AddSet(currMovieSet.ID, currMovieSet.SetName, tMovie.Order)
+                    tMovie.DBMovie.Movie.AddSet(Master.currMovieSet.ID, Master.currMovieSet.SetName, tMovie.Order)
                     'End If
                     Master.DB.SaveMovieToDB(tMovie.DBMovie, False, True, True)
                 Next
@@ -1370,8 +1375,6 @@ Public Class dlgEditMovieSet
                     Master.currMovieSet.PosterPath = String.Empty
                 End If
 
-                SaveSet(currSet)
-
             End With
         Catch ex As Exception
             Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
@@ -1433,6 +1436,11 @@ Public Class dlgEditMovieSet
         Me.tpLandscape.Text = Master.eLang.GetString(1059, "Landscape")
         Me.tpPoster.Text = Master.eLang.GetString(148, "Poster")
     End Sub
+
+    Private Sub txtTitle_TextChanged(sender As Object, e As EventArgs) Handles txtTitle.TextChanged
+        Me.needMovieUpdate = True
+    End Sub
+
 
 #End Region 'Methods
 
@@ -1573,5 +1581,4 @@ Public Class dlgEditMovieSet
     End Class
 
 #End Region 'Nested Types
-
 End Class
