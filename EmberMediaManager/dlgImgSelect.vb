@@ -302,7 +302,6 @@ Public Class dlgImgSelect
         Else
             Me.iLeft += 271
         End If
-
     End Sub
 
     Private Sub btnPreview_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPreview.Click
@@ -388,7 +387,6 @@ Public Class dlgImgSelect
         '//
         ' Thread finished: process the pics
         '\\
-        Me.SuspendLayout()
 
         If Not e.Cancelled Then
             isWorkerDone = True
@@ -405,6 +403,10 @@ Public Class dlgImgSelect
         If Not isWorkerDone Then
             Exit Sub
         End If
+
+        Me.SuspendLayout()
+        Me.pnlBG.AutoScroll = False
+
 
         'Me.LargeImageList.Images.Clear()
         'Me.LargeImageList.ImageSize = New Size(250, 250) 'Size(CInt(poster.Width), CInt(poster.Height))
@@ -432,8 +434,11 @@ Public Class dlgImgSelect
         Me.pnlBG.Visible = True
         Me.lblSize.Visible = True
         Me.cbFilterSize.Visible = True
+        Application.DoEvents()
         Me.ResumeLayout(True)
+        Me.pnlBG.AutoScroll = False
         Me.Activate()
+        Application.DoEvents()
 
     End Sub
 
