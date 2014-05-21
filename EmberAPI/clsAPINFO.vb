@@ -661,6 +661,14 @@ Public Class NFO
             Catch ex As Exception
             End Try
 
+            'Boxee support
+            If Master.eSettings.TVUseBoxee Then
+                If xmlShow.BoxeeIDSpecified() Then
+                    xmlShow.ID = xmlShow.BoxeeTvDb
+                    xmlShow.BlankBoxeeId()
+                End If
+            End If
+
             If Not IsNothing(xmlSer) Then
                 xmlSer = Nothing
             End If
@@ -905,6 +913,14 @@ Public Class NFO
 
                 If Not Master.eSettings.GeneralOverwriteNfo Then
                     RenameShowNonConfNfo(tPath)
+                End If
+
+                'Boxee support
+                If Master.eSettings.TVUseBoxee Then
+                    If tvShowToSave.TVShow.IDSpecified() Then
+                        tvShowToSave.TVShow.BoxeeTvDb = tvShowToSave.TVShow.ID
+                        tvShowToSave.TVShow.BlankId()
+                    End If
                 End If
 
                 doesExist = File.Exists(tPath)
