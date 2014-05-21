@@ -4249,7 +4249,11 @@ Public Class dlgSettings
                 .TVGeneralDisplayASPoster = Me.chkTVGeneralDisplayASPoster.Checked
                 .TVGeneralFlagLang = If(Me.cbTVLanguageOverlay.Text = Master.eLang.Disabled, String.Empty, Me.cbTVLanguageOverlay.Text)
                 .TVGeneralIgnoreLastScan = Me.chkTVGeneralIgnoreLastScan.Checked
-                .TVGeneralLanguage = Master.eSettings.TVGeneralLanguages.FirstOrDefault(Function(l) l.LongLang = cbTVGeneralLang.Text).ShortLang
+                'cocotus, 2014/05/21 Fixed: If cbTVGeneralLang.Text is empty it will crash here -> no AdvancedSettings.xml will be built/saved!!(happens when user has not yet set TVLanguage via Fetch language button!)
+                'old:    .TVGeneralLanguage = Master.eSettings.TVGeneralLanguages.FirstOrDefault(Function(l) l.LongLang = cbTVGeneralLang.Text).ShortLang
+                If cbTVGeneralLang.Text <> String.Empty Then
+                    .TVGeneralLanguage = Master.eSettings.TVGeneralLanguages.FirstOrDefault(Function(l) l.LongLang = cbTVGeneralLang.Text).ShortLang
+                End If
                 .TVGeneralMarkNewEpisodes = Me.chkTVGeneralMarkNewEpisodes.Checked
                 .TVGeneralMarkNewShows = Me.chkTVGeneralMarkNewShows.Checked
                 .TVLockEpisodePlot = Me.chkTVLockEpisodePlot.Checked
