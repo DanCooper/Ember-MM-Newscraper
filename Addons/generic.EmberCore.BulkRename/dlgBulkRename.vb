@@ -82,7 +82,7 @@ Public Class dlgBulkRenamer
             Dim _curMovie As New Structures.DBMovie
 
             ' Load nfo movies using path from DB
-            Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
+            Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                 Dim _tmpPath As String = String.Empty
                 Dim iProg As Integer = 0
                 SQLNewcommand.CommandText = String.Concat("SELECT COUNT(id) AS mcount FROM movies;")

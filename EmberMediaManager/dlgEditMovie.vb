@@ -1240,20 +1240,29 @@ Public Class dlgEditMovie
         Me.MovieBanner.Dispose()
         Me.MovieBanner = Nothing
 
-        Me.MoviePoster.Dispose()
-        Me.MoviePoster = Nothing
+        Me.MovieClearArt.Dispose()
+        Me.MovieClearArt = Nothing
 
-        Me.MovieFanart.Dispose()
-        Me.MovieFanart = Nothing
+        Me.MovieClearLogo.Dispose()
+        Me.MovieClearLogo = Nothing
 
-        Me.EThumbsList.Clear()
-        Me.EThumbsList = Nothing
+        Me.MovieDiscArt.Dispose()
+        Me.MovieDiscArt = Nothing
 
         Me.EFanartsList.Clear()
         Me.EFanartsList = Nothing
 
+        Me.EThumbsList.Clear()
+        Me.EThumbsList = Nothing
+
+        Me.MovieFanart.Dispose()
+        Me.MovieFanart = Nothing
+
         Me.MovieLandscape.Dispose()
         Me.MovieLandscape = Nothing
+
+        Me.MoviePoster.Dispose()
+        Me.MoviePoster = Nothing
     End Sub
 
     Private Sub dlgEditMovie_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
@@ -2579,7 +2588,7 @@ Public Class dlgEditMovie
                 End If
 
                 If Master.currMovie.ClearPoster Then
-                    .MoviePoster.DeleteMoviePosters(Master.currMovie)
+                    .MoviePoster.DeleteMoviePoster(Master.currMovie)
                 End If
 
                 If Not IsNothing(.MovieBanner.Image) Then
@@ -2634,7 +2643,7 @@ Public Class dlgEditMovie
                     Dim pPath As String = .MoviePoster.SaveAsMoviePoster(Master.currMovie)
                     Master.currMovie.PosterPath = pPath
                 Else
-                    .MoviePoster.DeleteMoviePosters(Master.currMovie)
+                    .MoviePoster.DeleteMoviePoster(Master.currMovie)
                     Master.currMovie.PosterPath = String.Empty
                 End If
 
@@ -2780,6 +2789,7 @@ Public Class dlgEditMovie
         Me.tpClearLogo.Text = Master.eLang.GetString(1097, "ClearLogo")
         Me.tpDetails.Text = Master.eLang.GetString(1098, "DiscArt")
         Me.tpDetails.Text = Master.eLang.GetString(26, "Details")
+        Me.tpEFanarts.Text = Master.eLang.GetString(992, "Extrafanarts")
         Me.tpEThumbs.Text = Master.eLang.GetString(153, "Extrathumbs")
         Me.tpFanart.Text = Master.eLang.GetString(149, "Fanart")
         Me.tpFrameExtraction.Text = Master.eLang.GetString(256, "Frame Extraction")

@@ -450,6 +450,91 @@ Public Class Scanner
         fList = Nothing
     End Sub
 
+    ''' <summary>
+    ''' Check if a directory contains supporting files (nfo, poster, fanart, etc)
+    ''' </summary>
+    ''' <param name="MovieSet">MovieSetContainer object.</param>
+    Public Sub GetMovieSetFolderContents(ByRef MovieSet As MovieSetContainer)
+        Dim fList As New List(Of String)    'all other files list
+        Dim fPath As String = Master.eSettings.MovieMoviesetsPath
+
+        Try
+            'first add files to filelists
+            If Not String.IsNullOrEmpty(fPath) AndAlso Directory.Exists(fPath) Then
+                fList.AddRange(Directory.GetFiles(fPath))
+            End If
+
+            'banner
+            If String.IsNullOrEmpty(MovieSet.Banner) Then
+                For Each a In FileUtils.GetFilenameList.MovieSet(MovieSet.SetName, Enums.ModType.Banner)
+                    MovieSet.Banner = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                    If Not String.IsNullOrEmpty(MovieSet.Banner) Then Exit For
+                Next
+            End If
+
+            'clearart
+            If String.IsNullOrEmpty(MovieSet.ClearArt) Then
+                For Each a In FileUtils.GetFilenameList.MovieSet(MovieSet.SetName, Enums.ModType.ClearArt)
+                    MovieSet.ClearArt = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                    If Not String.IsNullOrEmpty(MovieSet.ClearArt) Then Exit For
+                Next
+            End If
+
+            'clearlogo
+            If String.IsNullOrEmpty(MovieSet.ClearLogo) Then
+                For Each a In FileUtils.GetFilenameList.MovieSet(MovieSet.SetName, Enums.ModType.ClearLogo)
+                    MovieSet.ClearLogo = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                    If Not String.IsNullOrEmpty(MovieSet.ClearLogo) Then Exit For
+                Next
+            End If
+
+            'discart
+            If String.IsNullOrEmpty(MovieSet.DiscArt) Then
+                For Each a In FileUtils.GetFilenameList.MovieSet(MovieSet.SetName, Enums.ModType.DiscArt)
+                    MovieSet.DiscArt = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                    If Not String.IsNullOrEmpty(MovieSet.DiscArt) Then Exit For
+                Next
+            End If
+
+            'fanart
+            If String.IsNullOrEmpty(MovieSet.Fanart) Then
+                For Each a In FileUtils.GetFilenameList.MovieSet(MovieSet.SetName, Enums.ModType.Fanart)
+                    MovieSet.Fanart = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                    If Not String.IsNullOrEmpty(MovieSet.Fanart) Then Exit For
+                Next
+            End If
+
+            'landscape
+            If String.IsNullOrEmpty(MovieSet.Landscape) Then
+                For Each a In FileUtils.GetFilenameList.MovieSet(MovieSet.SetName, Enums.ModType.Landscape)
+                    MovieSet.Landscape = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                    If Not String.IsNullOrEmpty(MovieSet.Landscape) Then Exit For
+                Next
+            End If
+
+            'poster
+            If String.IsNullOrEmpty(MovieSet.Poster) Then
+                For Each a In FileUtils.GetFilenameList.MovieSet(MovieSet.SetName, Enums.ModType.Poster)
+                    MovieSet.Poster = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                    If Not String.IsNullOrEmpty(MovieSet.Poster) Then Exit For
+                Next
+            End If
+
+            'nfo
+            If String.IsNullOrEmpty(MovieSet.Nfo) Then
+                For Each a In FileUtils.GetFilenameList.MovieSet(MovieSet.SetName, Enums.ModType.NFO)
+                    MovieSet.Nfo = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                    If Not String.IsNullOrEmpty(MovieSet.Nfo) Then Exit For
+                Next
+            End If
+
+        Catch ex As Exception
+            Master.eLog.Error(GetType(Scanner), ex.Message, ex.StackTrace, "Error")
+        End Try
+
+        fList = Nothing
+    End Sub
+
     Public Sub GetTVSeasonImages(ByRef TVDB As Structures.DBTV, ByVal sSeason As Integer)
         Dim Season As Integer = sSeason
         Dim SeasonFirstEpisodePath As String = String.Empty
@@ -784,17 +869,23 @@ Public Class Scanner
             End If
 
             If Not String.IsNullOrEmpty(tmpMovieDB.ListTitle) Then
+                tmpMovieDB.BannerPath = mContainer.Banner
+                tmpMovieDB.ClearArtPath = mContainer.ClearArt
+                tmpMovieDB.ClearLogoPath = mContainer.ClearLogo
+                tmpMovieDB.DiscArtPath = mContainer.DiscArt
+                tmpMovieDB.EFanartsPath = mContainer.EFanarts
+                tmpMovieDB.EThumbsPath = mContainer.EThumbs
+                tmpMovieDB.FanartPath = mContainer.Fanart
+                tmpMovieDB.Filename = mContainer.Filename
+                tmpMovieDB.LandscapePath = mContainer.Landscape
                 tmpMovieDB.NfoPath = mContainer.Nfo
                 tmpMovieDB.PosterPath = mContainer.Poster
-                tmpMovieDB.FanartPath = mContainer.Fanart
-                tmpMovieDB.TrailerPath = mContainer.Trailer
-                tmpMovieDB.SubPath = mContainer.Subs
-                tmpMovieDB.EThumbsPath = mContainer.EThumbs
-                tmpMovieDB.EFanartsPath = mContainer.EFanarts
-                tmpMovieDB.Filename = mContainer.Filename
-                tmpMovieDB.isSingle = mContainer.isSingle
-                tmpMovieDB.UseFolder = mContainer.UseFolder
                 tmpMovieDB.Source = mContainer.Source
+                tmpMovieDB.SubPath = mContainer.Subs
+                tmpMovieDB.ThemePath = mContainer.Theme
+                tmpMovieDB.TrailerPath = mContainer.Trailer
+                tmpMovieDB.UseFolder = mContainer.UseFolder
+                tmpMovieDB.isSingle = mContainer.isSingle
                 Dim fSource As String = APIXML.GetFileSource(mContainer.Filename)
                 If Not String.IsNullOrEmpty(fSource) Then
                     tmpMovieDB.FileSource = fSource
@@ -1144,8 +1235,8 @@ Public Class Scanner
 
             If Args.Scan.Movies Then
                 Me.MoviePaths = Master.DB.GetMoviePaths
-                Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.MediaDBConn.BeginTransaction()
-                    Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
+                Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+                    Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                         If Not String.IsNullOrEmpty(Args.SourceName) Then
                             SQLcommand.CommandText = String.Format("SELECT ID, Name, path, Recursive, Foldername, Single, LastScan FROM sources WHERE Name = ""{0}"";", Args.SourceName)
                         Else
@@ -1153,7 +1244,7 @@ Public Class Scanner
                         End If
 
                         Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                            Using SQLUpdatecommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
+                            Using SQLUpdatecommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                                 SQLUpdatecommand.CommandText = "UPDATE sources SET LastScan = (?) WHERE ID = (?);"
                                 Dim parLastScan As SQLite.SQLiteParameter = SQLUpdatecommand.Parameters.Add("parLastScan", DbType.String, 0, "LastScan")
                                 Dim parID As SQLite.SQLiteParameter = SQLUpdatecommand.Parameters.Add("parID", DbType.Int32, 0, "ID")
@@ -1193,7 +1284,7 @@ Public Class Scanner
                 bwPrelim.ReportProgress(2, New ProgressValue With {.Type = -1, .Message = String.Empty})
 
                 htTVShows.Clear()
-                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
+                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                     SQLcommand.CommandText = "SELECT ID, TVShowPath FROM TVShows;"
                     Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                         While SQLreader.Read
@@ -1207,7 +1298,7 @@ Public Class Scanner
                 End Using
 
                 TVPaths.Clear()
-                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
+                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                     SQLcommand.CommandText = "SELECT TVEpPath FROM TVEpPaths;"
                     Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                         While SQLreader.Read
@@ -1220,8 +1311,8 @@ Public Class Scanner
                     End Using
                 End Using
 
-                Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.MediaDBConn.BeginTransaction()
-                    Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
+                Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+                    Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                         If Not String.IsNullOrEmpty(Args.SourceName) Then
                             SQLcommand.CommandText = String.Format("SELECT ID, Name, path, LastScan FROM TVSources WHERE Name = ""{0}"";", Args.SourceName)
                         Else
@@ -1229,7 +1320,7 @@ Public Class Scanner
                         End If
 
                         Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                            Using SQLUpdatecommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
+                            Using SQLUpdatecommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                                 SQLUpdatecommand.CommandText = "UPDATE TVSources SET LastScan = (?) WHERE ID = (?);"
                                 Dim parLastScan As SQLite.SQLiteParameter = SQLUpdatecommand.Parameters.Add("parLastScan", DbType.String, 0, "LastScan")
                                 Dim parID As SQLite.SQLiteParameter = SQLUpdatecommand.Parameters.Add("parID", DbType.Int32, 0, "ID")
@@ -1312,11 +1403,11 @@ Public Class Scanner
                         If String.IsNullOrEmpty(tmpTVDB.TVShow.Title) Then tmpTVDB.TVShow.Title = FileUtils.Common.GetDirectory(TVContainer.ShowPath)
                     End If
 
-                    tmpTVDB.ShowPath = TVContainer.ShowPath
-                    tmpTVDB.ShowNfoPath = TVContainer.ShowNfo
                     tmpTVDB.ShowBannerPath = TVContainer.ShowBanner
                     tmpTVDB.ShowFanartPath = TVContainer.ShowFanart
                     tmpTVDB.ShowLandscapePath = TVContainer.ShowLandscape
+                    tmpTVDB.ShowNfoPath = TVContainer.ShowNfo
+                    tmpTVDB.ShowPath = TVContainer.ShowPath
                     tmpTVDB.ShowPosterPath = TVContainer.ShowPoster
                     tmpTVDB.IsLockShow = False
                     tmpTVDB.IsMarkShow = False
@@ -1350,7 +1441,7 @@ Public Class Scanner
                             tmpTVDB.IsLockSeason = False
                             tmpTVDB.IsMarkSeason = False
 
-                            Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
+                            Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                                 SQLCommand.CommandText = String.Concat("SELECT MIN(Episode) AS MinE FROM TVEps WHERE TVShowID = ", tmpTVDB.ShowID, ";")
                                 tRes = SQLCommand.ExecuteScalar
                                 If Not TypeOf tRes Is DBNull Then
@@ -1763,6 +1854,133 @@ Public Class Scanner
             _theme = String.Empty
             _trailer = String.Empty
             _subs = String.Empty
+        End Sub
+
+#End Region 'Methods
+
+    End Class
+
+    Public Class MovieSetContainer
+
+#Region "Fields"
+
+        Private _banner As String
+        Private _clearart As String
+        Private _clearlogo As String
+        Private _discart As String
+        Private _fanart As String
+        Private _landscape As String
+        Private _nfo As String
+        Private _poster As String
+        Private _setname As String
+
+#End Region 'Fields
+
+#Region "Constructors"
+
+        Public Sub New()
+            Clear()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Properties"
+
+        Public Property Banner() As String
+            Get
+                Return _banner
+            End Get
+            Set(ByVal value As String)
+                _banner = value
+            End Set
+        End Property
+
+        Public Property ClearArt() As String
+            Get
+                Return _clearart
+            End Get
+            Set(ByVal value As String)
+                _clearart = value
+            End Set
+        End Property
+
+        Public Property ClearLogo() As String
+            Get
+                Return _clearlogo
+            End Get
+            Set(ByVal value As String)
+                _clearlogo = value
+            End Set
+        End Property
+
+        Public Property DiscArt() As String
+            Get
+                Return _discart
+            End Get
+            Set(ByVal value As String)
+                _discart = value
+            End Set
+        End Property
+
+        Public Property Fanart() As String
+            Get
+                Return _fanart
+            End Get
+            Set(ByVal value As String)
+                _fanart = value
+            End Set
+        End Property
+
+        Public Property Landscape() As String
+            Get
+                Return _landscape
+            End Get
+            Set(ByVal value As String)
+                _landscape = value
+            End Set
+        End Property
+
+        Public Property Nfo() As String
+            Get
+                Return _nfo
+            End Get
+            Set(ByVal value As String)
+                _nfo = value
+            End Set
+        End Property
+
+        Public Property Poster() As String
+            Get
+                Return _poster
+            End Get
+            Set(ByVal value As String)
+                _poster = value
+            End Set
+        End Property
+
+        Public Property SetName() As String
+            Get
+                Return _setname
+            End Get
+            Set(ByVal value As String)
+                _setname = value
+            End Set
+        End Property
+
+#End Region 'Properties
+
+#Region "Methods"
+
+        Public Sub Clear()
+            _banner = String.Empty
+            _clearart = String.Empty
+            _clearlogo = String.Empty
+            _discart = String.Empty
+            _landscape = String.Empty
+            _poster = String.Empty
+            _fanart = String.Empty
+            _nfo = String.Empty
+            _setname = String.Empty
         End Sub
 
 #End Region 'Methods

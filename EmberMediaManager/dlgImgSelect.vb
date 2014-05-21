@@ -612,12 +612,16 @@ Public Class dlgImgSelect
                 Select Case True
                     Case Me.rbXLarge.Checked
                         Results = CType(Me.rbXLarge.Tag, MediaContainers.Image)
+                        Results.WebImage.IsEdit = Me.isEdit
                     Case Me.rbLarge.Checked
                         Results = CType(Me.rbLarge.Tag, MediaContainers.Image)
+                        Results.WebImage.IsEdit = Me.isEdit
                     Case Me.rbMedium.Checked
                         Results = CType(Me.rbMedium.Tag, MediaContainers.Image)
+                        Results.WebImage.IsEdit = Me.isEdit
                     Case Me.rbSmall.Checked
                         Results = CType(Me.rbSmall.Tag, MediaContainers.Image)
+                        Results.WebImage.IsEdit = Me.isEdit
                 End Select
             End If
 

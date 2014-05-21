@@ -64,6 +64,7 @@ Public Class Settings
     Private _generallanguage As String
     Private _generalmainsplitterpanelstate As Integer
     Private _generalmovieinfopanelstate As Integer
+    Private _generalmoviesetinfopanelstate As Integer
     Private _generalmovietheme As String
     Private _generaloverwritenfo As Boolean
     Private _generalseasonsplitterpanelstate As Integer
@@ -179,6 +180,7 @@ Public Class Settings
     Private _moviescrapercertformpaa As Boolean
     Private _moviescrapercertification As Boolean
     Private _moviescrapercertlang As String
+    Private _moviescrapercollection As Boolean
     Private _moviescrapercountry As Boolean
     Private _moviescrapercrew As Boolean
     Private _moviescraperdirector As Boolean
@@ -214,6 +216,21 @@ Public Class Settings
     Private _moviescrapervotes As Boolean
     Private _moviescraperwriters As Boolean
     Private _moviescraperyear As Boolean
+    Private _moviesetbannercol As Boolean
+    Private _moviesetbanneroverwrite As Boolean
+    Private _moviesetclearartcol As Boolean
+    Private _moviesetclearartoverwrite As Boolean
+    Private _moviesetclearlogocol As Boolean
+    Private _moviesetclearlogooverwrite As Boolean
+    Private _moviesetdiscartcol As Boolean
+    Private _moviesetdiscartoverwrite As Boolean
+    Private _moviesetfanartcol As Boolean
+    Private _moviesetfanartoverwrite As Boolean
+    Private _moviesetlandscapecol As Boolean
+    Private _moviesetlandscapeoverwrite As Boolean
+    Private _moviesetnfocol As Boolean
+    Private _moviesetpostercol As Boolean
+    Private _moviesetposteroverwrite As Boolean
     Private _moviesets As New List(Of String)
     Private _movieskiplessthan As Integer
     Private _movieskipstackedsizecheck As Boolean
@@ -1267,6 +1284,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property MovieScraperCollection() As Boolean
+        Get
+            Return Me._moviescrapercollection
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviescrapercollection = value
+        End Set
+    End Property
+
     Public Property MovieScraperCountry() As Boolean
         Get
             Return Me._moviescrapercountry
@@ -1552,6 +1578,15 @@ Public Class Settings
         End Get
         Set(ByVal value As Integer)
             Me._generalmovieinfopanelstate = value
+        End Set
+    End Property
+
+    Public Property GeneralMovieSetInfoPanelState() As Integer
+        Get
+            Return Me._generalmoviesetinfopanelstate
+        End Get
+        Set(ByVal value As Integer)
+            Me._generalmoviesetinfopanelstate = value
         End Set
     End Property
 
@@ -1926,6 +1961,78 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Me._moviesubcol = value
+        End Set
+    End Property
+
+    Public Property MovieSetBannerCol() As Boolean
+        Get
+            Return Me._moviesetbannercol
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetbannercol = value
+        End Set
+    End Property
+
+    Public Property MovieSetClearArtCol() As Boolean
+        Get
+            Return Me._moviesetclearartcol
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetclearartcol = value
+        End Set
+    End Property
+
+    Public Property MovieSetClearLogoCol() As Boolean
+        Get
+            Return Me._moviesetclearlogocol
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetclearlogocol = value
+        End Set
+    End Property
+
+    Public Property MovieSetDiscArtCol() As Boolean
+        Get
+            Return Me._moviesetdiscartcol
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetdiscartcol = value
+        End Set
+    End Property
+
+    Public Property MovieSetFanartCol() As Boolean
+        Get
+            Return Me._moviesetfanartcol
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetfanartcol = value
+        End Set
+    End Property
+
+    Public Property MovieSetLandscapeCol() As Boolean
+        Get
+            Return Me._moviesetlandscapecol
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetlandscapecol = value
+        End Set
+    End Property
+
+    Public Property MovieSetNfoCol() As Boolean
+        Get
+            Return Me._moviesetnfocol
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetnfocol = value
+        End Set
+    End Property
+
+    Public Property MovieSetPosterCol() As Boolean
+        Get
+            Return Me._moviesetpostercol
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetpostercol = value
         End Set
     End Property
 
@@ -2403,6 +2510,69 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Me._movieclearlogooverwrite = value
+        End Set
+    End Property
+
+    Public Property MovieSetBannerOverwrite() As Boolean
+        Get
+            Return Me._moviesetbanneroverwrite
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetbanneroverwrite = value
+        End Set
+    End Property
+
+    Public Property MovieSetClearArtOverwrite() As Boolean
+        Get
+            Return Me._moviesetclearartoverwrite
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetclearartoverwrite = value
+        End Set
+    End Property
+
+    Public Property MovieSetClearLogoOverwrite() As Boolean
+        Get
+            Return Me._moviesetclearlogooverwrite
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetclearlogooverwrite = value
+        End Set
+    End Property
+
+    Public Property MovieSetDiscArtOverwrite() As Boolean
+        Get
+            Return Me._moviesetdiscartoverwrite
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetdiscartoverwrite = value
+        End Set
+    End Property
+
+    Public Property MovieSetFanartOverwrite() As Boolean
+        Get
+            Return Me._moviesetfanartoverwrite
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetfanartoverwrite = value
+        End Set
+    End Property
+
+    Public Property MovieSetLandscapeOverwrite() As Boolean
+        Get
+            Return Me._moviesetlandscapeoverwrite
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetlandscapeoverwrite = value
+        End Set
+    End Property
+
+    Public Property MovieSetPosterOverwrite() As Boolean
+        Get
+            Return Me._moviesetposteroverwrite
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetposteroverwrite = value
         End Set
     End Property
 
@@ -5287,6 +5457,7 @@ Public Class Settings
         Me._moviescrapercertformpaa = False
         Me._moviescrapercertification = True
         Me._moviescrapercertlang = String.Empty
+        Me._moviescrapercollection = True
         Me._moviescrapercountry = True
         Me._moviescrapercrew = True
         Me._moviescraperdirector = True
@@ -5322,6 +5493,21 @@ Public Class Settings
         Me._moviescrapervotes = True
         Me._moviescraperwriters = True
         Me._moviescraperyear = True
+        Me._moviesetbannercol = False
+        Me._moviesetbanneroverwrite = True
+        Me._moviesetclearartcol = False
+        Me._moviesetclearartoverwrite = True
+        Me._moviesetclearlogocol = False
+        Me._moviesetclearlogooverwrite = True
+        Me._moviesetdiscartcol = False
+        Me._moviesetdiscartoverwrite = True
+        Me._moviesetfanartcol = False
+        Me._moviesetfanartoverwrite = True
+        Me._moviesetlandscapecol = False
+        Me._moviesetlandscapeoverwrite = True
+        Me._moviesetnfocol = True
+        Me._moviesetpostercol = False
+        Me._moviesetposteroverwrite = True
         Me._moviesets = New List(Of String)
         Me._movieskiplessthan = 0
         Me._movieskipstackedsizecheck = False
@@ -5364,7 +5550,7 @@ Public Class Settings
         Me._moviexbmcthemeenable = False
         Me._moviexbmcthememovie = False
         Me._moviexbmcthemesub = False
-        Me._moviexbmcthemesubdir = "Theme"
+        Me._moviexbmcthemesubdir = "Themes"
         Me._moviexbmcprotectvtsbdmv = False
         Me._moviexbmctrailerformat = False
         Me._movieyamjcompatiblesets = False
@@ -5823,7 +6009,7 @@ Public Class Settings
         Return TVASBannerAnyEnabled() OrElse TVASFanartAnyEnabled() OrElse TVASLandscapeAnyEnabled() OrElse TVASPosterAnyEnabled()
     End Function
     Public Function TVASBannerAnyEnabled() As Boolean
-        Return TVSeasonBannerFrodo OrElse TVSeasonBannerYAMJ
+        Return TVSeasonBannerFrodo
     End Function
 
     Public Function TVASFanartAnyEnabled() As Boolean

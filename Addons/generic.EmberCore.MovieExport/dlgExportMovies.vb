@@ -452,7 +452,7 @@ Public Class dlgExportMovies
         Dim ReturnString As String = ""
         Try
 
-            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
+            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                 SQLcommand.CommandText = String.Concat("SELECT SetName FROM MoviesSets;")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     If SQLreader.HasRows Then
@@ -489,7 +489,7 @@ Public Class dlgExportMovies
         Dim ReturnString As String = ""
         Try
 
-            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
+            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                 SQLcommand.CommandText = String.Concat("SELECT * FROM TVShows ORDER BY Title COLLATE NOCASE;")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     If SQLreader.HasRows Then
@@ -521,7 +521,7 @@ Public Class dlgExportMovies
     Private Function GetSeasonInfo(ByVal Id As String) As String
         Dim ReturnString As String = ""
         Try
-            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
+            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                 Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
                 SQLcommand.CommandText = "SELECT * FROM TVSeason WHERE TVShowID = (?);"
                 parID.Value = Id
@@ -611,7 +611,7 @@ Public Class dlgExportMovies
             ' Clean up Movies List if any
             _movies.Clear()
             ' Load nfo movies using path from DB
-            Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
+            Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                 Dim _tmpMovie As New Structures.DBMovie
                 Dim _ID As Integer
                 Dim iProg As Integer = 0

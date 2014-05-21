@@ -557,6 +557,14 @@ Partial Class dlgSettings
         Me.chkTVShowFanartYAMJ = New System.Windows.Forms.CheckBox()
         Me.chkTVShowPosterYAMJ = New System.Windows.Forms.CheckBox()
         Me.chkTVUseYAMJ = New System.Windows.Forms.CheckBox()
+        Me.tpTVFileNamingBoxee = New System.Windows.Forms.TabPage()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.chkTVSeasonPosterBoxee = New System.Windows.Forms.CheckBox()
+        Me.chkTVShowBannerBoxee = New System.Windows.Forms.CheckBox()
+        Me.chkTVEpisodePosterBoxee = New System.Windows.Forms.CheckBox()
+        Me.chkTVShowFanartBoxee = New System.Windows.Forms.CheckBox()
+        Me.chkTVShowPosterBoxee = New System.Windows.Forms.CheckBox()
+        Me.chkTVUseBoxee = New System.Windows.Forms.CheckBox()
         Me.tpTVFileNamingExpert = New System.Windows.Forms.TabPage()
         Me.lvTVSources = New System.Windows.Forms.ListView()
         Me.ColumnHeader1 = CType(New System.Windows.Forms.ColumnHeader(),System.Windows.Forms.ColumnHeader)
@@ -898,14 +906,7 @@ Partial Class dlgSettings
         Me.chkMovieThemeEnable = New System.Windows.Forms.CheckBox()
         Me.pnlTVThemes = New System.Windows.Forms.Panel()
         Me.Label2 = New System.Windows.Forms.Label()
-        Me.tpTVFileNamingBoxee = New System.Windows.Forms.TabPage()
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
-        Me.chkTVSeasonPosterBoxee = New System.Windows.Forms.CheckBox()
-        Me.chkTVShowBannerBoxee = New System.Windows.Forms.CheckBox()
-        Me.chkTVEpisodePosterBoxee = New System.Windows.Forms.CheckBox()
-        Me.chkTVShowFanartBoxee = New System.Windows.Forms.CheckBox()
-        Me.chkTVShowPosterBoxee = New System.Windows.Forms.CheckBox()
-        Me.chkTVUseBoxee = New System.Windows.Forms.CheckBox()
+        Me.chkMovieScraperCollection = New System.Windows.Forms.CheckBox()
         Me.gbGeneralMisc.SuspendLayout
         Me.gbGeneralDaemon.SuspendLayout
         Me.gbGeneralThemes.SuspendLayout
@@ -1003,6 +1004,8 @@ Partial Class dlgSettings
         Me.tpTVFileNamingNMT.SuspendLayout
         Me.gbTVNMT.SuspendLayout
         Me.gbTVYAMJ.SuspendLayout
+        Me.tpTVFileNamingBoxee.SuspendLayout
+        Me.GroupBox1.SuspendLayout
         Me.gbTVSourcesMiscOpts.SuspendLayout
         Me.tpTVSourcesRegex.SuspendLayout
         Me.gbTVShowRegex.SuspendLayout
@@ -1066,8 +1069,6 @@ Partial Class dlgSettings
         Me.pnlMovieThemes.SuspendLayout
         Me.gbMovieThemeOpts.SuspendLayout
         Me.pnlTVThemes.SuspendLayout
-        Me.tpTVFileNamingBoxee.SuspendLayout
-        Me.GroupBox1.SuspendLayout
         Me.SuspendLayout
         '
         'gbGeneralMisc
@@ -6830,6 +6831,97 @@ Partial Class dlgSettings
         Me.chkTVUseYAMJ.Text = "Use"
         Me.chkTVUseYAMJ.UseVisualStyleBackColor = true
         '
+        'tpTVFileNamingBoxee
+        '
+        Me.tpTVFileNamingBoxee.Controls.Add(Me.GroupBox1)
+        Me.tpTVFileNamingBoxee.Location = New System.Drawing.Point(4, 22)
+        Me.tpTVFileNamingBoxee.Name = "tpTVFileNamingBoxee"
+        Me.tpTVFileNamingBoxee.Size = New System.Drawing.Size(547, 301)
+        Me.tpTVFileNamingBoxee.TabIndex = 3
+        Me.tpTVFileNamingBoxee.Text = "Boxee"
+        Me.tpTVFileNamingBoxee.UseVisualStyleBackColor = true
+        '
+        'GroupBox1
+        '
+        Me.GroupBox1.Controls.Add(Me.chkTVSeasonPosterBoxee)
+        Me.GroupBox1.Controls.Add(Me.chkTVShowBannerBoxee)
+        Me.GroupBox1.Controls.Add(Me.chkTVEpisodePosterBoxee)
+        Me.GroupBox1.Controls.Add(Me.chkTVShowFanartBoxee)
+        Me.GroupBox1.Controls.Add(Me.chkTVShowPosterBoxee)
+        Me.GroupBox1.Controls.Add(Me.chkTVUseBoxee)
+        Me.GroupBox1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.GroupBox1.Location = New System.Drawing.Point(6, 6)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(152, 289)
+        Me.GroupBox1.TabIndex = 19
+        Me.GroupBox1.TabStop = false
+        Me.GroupBox1.Text = "Boxee"
+        '
+        'chkTVSeasonPosterBoxee
+        '
+        Me.chkTVSeasonPosterBoxee.AutoSize = true
+        Me.chkTVSeasonPosterBoxee.Enabled = false
+        Me.chkTVSeasonPosterBoxee.Location = New System.Drawing.Point(6, 113)
+        Me.chkTVSeasonPosterBoxee.Name = "chkTVSeasonPosterBoxee"
+        Me.chkTVSeasonPosterBoxee.Size = New System.Drawing.Size(98, 17)
+        Me.chkTVSeasonPosterBoxee.TabIndex = 26
+        Me.chkTVSeasonPosterBoxee.Text = "Season Poster"
+        Me.chkTVSeasonPosterBoxee.UseVisualStyleBackColor = true
+        '
+        'chkTVShowBannerBoxee
+        '
+        Me.chkTVShowBannerBoxee.AutoSize = true
+        Me.chkTVShowBannerBoxee.Enabled = false
+        Me.chkTVShowBannerBoxee.Location = New System.Drawing.Point(6, 90)
+        Me.chkTVShowBannerBoxee.Name = "chkTVShowBannerBoxee"
+        Me.chkTVShowBannerBoxee.Size = New System.Drawing.Size(95, 17)
+        Me.chkTVShowBannerBoxee.TabIndex = 25
+        Me.chkTVShowBannerBoxee.Text = "Show Banner"
+        Me.chkTVShowBannerBoxee.UseVisualStyleBackColor = true
+        '
+        'chkTVEpisodePosterBoxee
+        '
+        Me.chkTVEpisodePosterBoxee.AutoSize = true
+        Me.chkTVEpisodePosterBoxee.Enabled = false
+        Me.chkTVEpisodePosterBoxee.Location = New System.Drawing.Point(6, 136)
+        Me.chkTVEpisodePosterBoxee.Name = "chkTVEpisodePosterBoxee"
+        Me.chkTVEpisodePosterBoxee.Size = New System.Drawing.Size(102, 17)
+        Me.chkTVEpisodePosterBoxee.TabIndex = 21
+        Me.chkTVEpisodePosterBoxee.Text = "Episode Poster"
+        Me.chkTVEpisodePosterBoxee.UseVisualStyleBackColor = true
+        '
+        'chkTVShowFanartBoxee
+        '
+        Me.chkTVShowFanartBoxee.AutoSize = true
+        Me.chkTVShowFanartBoxee.Enabled = false
+        Me.chkTVShowFanartBoxee.Location = New System.Drawing.Point(6, 67)
+        Me.chkTVShowFanartBoxee.Name = "chkTVShowFanartBoxee"
+        Me.chkTVShowFanartBoxee.Size = New System.Drawing.Size(91, 17)
+        Me.chkTVShowFanartBoxee.TabIndex = 18
+        Me.chkTVShowFanartBoxee.Text = "Show Fanart"
+        Me.chkTVShowFanartBoxee.UseVisualStyleBackColor = true
+        '
+        'chkTVShowPosterBoxee
+        '
+        Me.chkTVShowPosterBoxee.AutoSize = true
+        Me.chkTVShowPosterBoxee.Enabled = false
+        Me.chkTVShowPosterBoxee.Location = New System.Drawing.Point(6, 44)
+        Me.chkTVShowPosterBoxee.Name = "chkTVShowPosterBoxee"
+        Me.chkTVShowPosterBoxee.Size = New System.Drawing.Size(90, 17)
+        Me.chkTVShowPosterBoxee.TabIndex = 17
+        Me.chkTVShowPosterBoxee.Text = "Show Poster"
+        Me.chkTVShowPosterBoxee.UseVisualStyleBackColor = true
+        '
+        'chkTVUseBoxee
+        '
+        Me.chkTVUseBoxee.AutoSize = true
+        Me.chkTVUseBoxee.Location = New System.Drawing.Point(6, 21)
+        Me.chkTVUseBoxee.Name = "chkTVUseBoxee"
+        Me.chkTVUseBoxee.Size = New System.Drawing.Size(45, 17)
+        Me.chkTVUseBoxee.TabIndex = 16
+        Me.chkTVUseBoxee.Text = "Use"
+        Me.chkTVUseBoxee.UseVisualStyleBackColor = true
+        '
         'tpTVFileNamingExpert
         '
         Me.tpTVFileNamingExpert.Location = New System.Drawing.Point(4, 22)
@@ -9525,6 +9617,7 @@ Partial Class dlgSettings
         '
         'gbMovieScraperFieldsOpts
         '
+        Me.gbMovieScraperFieldsOpts.Controls.Add(Me.chkMovieScraperCollection)
         Me.gbMovieScraperFieldsOpts.Controls.Add(Me.chkMovieScraperCertification)
         Me.gbMovieScraperFieldsOpts.Controls.Add(Me.chkMovieScraperTop250)
         Me.gbMovieScraperFieldsOpts.Controls.Add(Me.chkMovieScraperCountry)
@@ -9554,7 +9647,7 @@ Partial Class dlgSettings
         Me.gbMovieScraperFieldsOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.gbMovieScraperFieldsOpts.Location = New System.Drawing.Point(3, 218)
         Me.gbMovieScraperFieldsOpts.Name = "gbMovieScraperFieldsOpts"
-        Me.gbMovieScraperFieldsOpts.Size = New System.Drawing.Size(302, 179)
+        Me.gbMovieScraperFieldsOpts.Size = New System.Drawing.Size(302, 212)
         Me.gbMovieScraperFieldsOpts.TabIndex = 67
         Me.gbMovieScraperFieldsOpts.TabStop = false
         Me.gbMovieScraperFieldsOpts.Text = "Scraper Fields - Global"
@@ -10609,96 +10702,16 @@ Partial Class dlgSettings
         Me.Label2.TabIndex = 0
         Me.Label2.Text = "TV Themes Dummy Label"
         '
-        'tpTVFileNamingBoxee
+        'chkMovieScraperCollection
         '
-        Me.tpTVFileNamingBoxee.Controls.Add(Me.GroupBox1)
-        Me.tpTVFileNamingBoxee.Location = New System.Drawing.Point(4, 22)
-        Me.tpTVFileNamingBoxee.Name = "tpTVFileNamingBoxee"
-        Me.tpTVFileNamingBoxee.Size = New System.Drawing.Size(547, 301)
-        Me.tpTVFileNamingBoxee.TabIndex = 3
-        Me.tpTVFileNamingBoxee.Text = "Boxee"
-        Me.tpTVFileNamingBoxee.UseVisualStyleBackColor = true
-        '
-        'GroupBox1
-        '
-        Me.GroupBox1.Controls.Add(Me.chkTVSeasonPosterBoxee)
-        Me.GroupBox1.Controls.Add(Me.chkTVShowBannerBoxee)
-        Me.GroupBox1.Controls.Add(Me.chkTVEpisodePosterBoxee)
-        Me.GroupBox1.Controls.Add(Me.chkTVShowFanartBoxee)
-        Me.GroupBox1.Controls.Add(Me.chkTVShowPosterBoxee)
-        Me.GroupBox1.Controls.Add(Me.chkTVUseBoxee)
-        Me.GroupBox1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.GroupBox1.Location = New System.Drawing.Point(6, 6)
-        Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(152, 289)
-        Me.GroupBox1.TabIndex = 19
-        Me.GroupBox1.TabStop = false
-        Me.GroupBox1.Text = "Boxee"
-        '
-        'chkTVSeasonPosterBoxee
-        '
-        Me.chkTVSeasonPosterBoxee.AutoSize = true
-        Me.chkTVSeasonPosterBoxee.Enabled = false
-        Me.chkTVSeasonPosterBoxee.Location = New System.Drawing.Point(6, 113)
-        Me.chkTVSeasonPosterBoxee.Name = "chkTVSeasonPosterBoxee"
-        Me.chkTVSeasonPosterBoxee.Size = New System.Drawing.Size(98, 17)
-        Me.chkTVSeasonPosterBoxee.TabIndex = 26
-        Me.chkTVSeasonPosterBoxee.Text = "Season Poster"
-        Me.chkTVSeasonPosterBoxee.UseVisualStyleBackColor = true
-        '
-        'chkTVShowBannerBoxee
-        '
-        Me.chkTVShowBannerBoxee.AutoSize = true
-        Me.chkTVShowBannerBoxee.Enabled = false
-        Me.chkTVShowBannerBoxee.Location = New System.Drawing.Point(6, 90)
-        Me.chkTVShowBannerBoxee.Name = "chkTVShowBannerBoxee"
-        Me.chkTVShowBannerBoxee.Size = New System.Drawing.Size(95, 17)
-        Me.chkTVShowBannerBoxee.TabIndex = 25
-        Me.chkTVShowBannerBoxee.Text = "Show Banner"
-        Me.chkTVShowBannerBoxee.UseVisualStyleBackColor = true
-        '
-        'chkTVEpisodePosterBoxee
-        '
-        Me.chkTVEpisodePosterBoxee.AutoSize = true
-        Me.chkTVEpisodePosterBoxee.Enabled = false
-        Me.chkTVEpisodePosterBoxee.Location = New System.Drawing.Point(6, 136)
-        Me.chkTVEpisodePosterBoxee.Name = "chkTVEpisodePosterBoxee"
-        Me.chkTVEpisodePosterBoxee.Size = New System.Drawing.Size(102, 17)
-        Me.chkTVEpisodePosterBoxee.TabIndex = 21
-        Me.chkTVEpisodePosterBoxee.Text = "Episode Poster"
-        Me.chkTVEpisodePosterBoxee.UseVisualStyleBackColor = true
-        '
-        'chkTVShowFanartBoxee
-        '
-        Me.chkTVShowFanartBoxee.AutoSize = true
-        Me.chkTVShowFanartBoxee.Enabled = false
-        Me.chkTVShowFanartBoxee.Location = New System.Drawing.Point(6, 67)
-        Me.chkTVShowFanartBoxee.Name = "chkTVShowFanartBoxee"
-        Me.chkTVShowFanartBoxee.Size = New System.Drawing.Size(91, 17)
-        Me.chkTVShowFanartBoxee.TabIndex = 18
-        Me.chkTVShowFanartBoxee.Text = "Show Fanart"
-        Me.chkTVShowFanartBoxee.UseVisualStyleBackColor = true
-        '
-        'chkTVShowPosterBoxee
-        '
-        Me.chkTVShowPosterBoxee.AutoSize = true
-        Me.chkTVShowPosterBoxee.Enabled = false
-        Me.chkTVShowPosterBoxee.Location = New System.Drawing.Point(6, 44)
-        Me.chkTVShowPosterBoxee.Name = "chkTVShowPosterBoxee"
-        Me.chkTVShowPosterBoxee.Size = New System.Drawing.Size(90, 17)
-        Me.chkTVShowPosterBoxee.TabIndex = 17
-        Me.chkTVShowPosterBoxee.Text = "Show Poster"
-        Me.chkTVShowPosterBoxee.UseVisualStyleBackColor = true
-        '
-        'chkTVUseBoxee
-        '
-        Me.chkTVUseBoxee.AutoSize = true
-        Me.chkTVUseBoxee.Location = New System.Drawing.Point(6, 21)
-        Me.chkTVUseBoxee.Name = "chkTVUseBoxee"
-        Me.chkTVUseBoxee.Size = New System.Drawing.Size(45, 17)
-        Me.chkTVUseBoxee.TabIndex = 16
-        Me.chkTVUseBoxee.Text = "Use"
-        Me.chkTVUseBoxee.UseVisualStyleBackColor = true
+        Me.chkMovieScraperCollection.AutoSize = true
+        Me.chkMovieScraperCollection.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperCollection.Location = New System.Drawing.Point(6, 175)
+        Me.chkMovieScraperCollection.Name = "chkMovieScraperCollection"
+        Me.chkMovieScraperCollection.Size = New System.Drawing.Size(78, 17)
+        Me.chkMovieScraperCollection.TabIndex = 26
+        Me.chkMovieScraperCollection.Text = "Collection"
+        Me.chkMovieScraperCollection.UseVisualStyleBackColor = true
         '
         'dlgSettings
         '
@@ -10898,6 +10911,9 @@ Partial Class dlgSettings
         Me.gbTVNMT.PerformLayout
         Me.gbTVYAMJ.ResumeLayout(false)
         Me.gbTVYAMJ.PerformLayout
+        Me.tpTVFileNamingBoxee.ResumeLayout(false)
+        Me.GroupBox1.ResumeLayout(false)
+        Me.GroupBox1.PerformLayout
         Me.gbTVSourcesMiscOpts.ResumeLayout(false)
         Me.gbTVSourcesMiscOpts.PerformLayout
         Me.tpTVSourcesRegex.ResumeLayout(false)
@@ -10993,9 +11009,6 @@ Partial Class dlgSettings
         Me.gbMovieThemeOpts.PerformLayout
         Me.pnlTVThemes.ResumeLayout(false)
         Me.pnlTVThemes.PerformLayout
-        Me.tpTVFileNamingBoxee.ResumeLayout(false)
-        Me.GroupBox1.ResumeLayout(false)
-        Me.GroupBox1.PerformLayout
         Me.ResumeLayout(false)
         Me.PerformLayout
 
@@ -11876,4 +11889,5 @@ End Sub
     Friend WithEvents chkTVShowFanartBoxee As System.Windows.Forms.CheckBox
     Friend WithEvents chkTVShowPosterBoxee As System.Windows.Forms.CheckBox
     Friend WithEvents chkTVUseBoxee As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMovieScraperCollection As System.Windows.Forms.CheckBox
 End Class

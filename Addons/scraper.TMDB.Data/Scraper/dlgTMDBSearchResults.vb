@@ -336,6 +336,7 @@ Public Class dlgTMDBSearchResults
         Dim aOpt As New Structures.ScrapeOptions
         aOpt.bCast = False
         aOpt.bCert = False
+        aOpt.bCollection = False
         aOpt.bCountry = False
         aOpt.bDirector = True
         aOpt.bFullCast = False

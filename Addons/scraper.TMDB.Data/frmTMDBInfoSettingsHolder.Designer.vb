@@ -57,6 +57,7 @@ Partial Class frmTMDBInfoSettingsHolder
         Me.chkMPAA = New System.Windows.Forms.CheckBox()
         Me.chkYear = New System.Windows.Forms.CheckBox()
         Me.chkTitle = New System.Windows.Forms.CheckBox()
+        Me.chkCollection = New System.Windows.Forms.CheckBox()
         Me.gbTMDBGlobalOpts.SuspendLayout()
         CType(Me.pbTMDBApiKeyInfo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel1.SuspendLayout()
@@ -253,6 +254,7 @@ Partial Class frmTMDBInfoSettingsHolder
         '
         'gbTMDBScraperOpts
         '
+        Me.gbTMDBScraperOpts.Controls.Add(Me.chkCollection)
         Me.gbTMDBScraperOpts.Controls.Add(Me.chkTMDBCleanPlotOutline)
         Me.gbTMDBScraperOpts.Controls.Add(Me.chkCrew)
         Me.gbTMDBScraperOpts.Controls.Add(Me.chkCountry)
@@ -452,6 +454,17 @@ Partial Class frmTMDBInfoSettingsHolder
         Me.chkTitle.Text = "Title"
         Me.chkTitle.UseVisualStyleBackColor = True
         '
+        'chkCollection
+        '
+        Me.chkCollection.AutoSize = True
+        Me.chkCollection.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkCollection.Location = New System.Drawing.Point(315, 53)
+        Me.chkCollection.Name = "chkCollection"
+        Me.chkCollection.Size = New System.Drawing.Size(78, 17)
+        Me.chkCollection.TabIndex = 76
+        Me.chkCollection.Text = "Collection"
+        Me.chkCollection.UseVisualStyleBackColor = True
+        '
         'frmTMDBInfoSettingsHolder
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -514,5 +527,6 @@ Partial Class frmTMDBInfoSettingsHolder
     Friend WithEvents pbTMDBApiKeyInfo As System.Windows.Forms.PictureBox
     Friend WithEvents chkTMDBCleanPlotOutline As System.Windows.Forms.CheckBox
     Friend WithEvents chkGetAdultItems As System.Windows.Forms.CheckBox
+    Friend WithEvents chkCollection As System.Windows.Forms.CheckBox
 
 End Class

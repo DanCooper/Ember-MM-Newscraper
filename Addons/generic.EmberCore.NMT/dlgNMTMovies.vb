@@ -814,7 +814,7 @@ Public Class dlgNMTMovies
 
     Private Function GetMovieFileInfo(ByVal MovieID As String) As MediaInfo.Fileinfo
         Dim fi As New MediaInfo.Fileinfo
-        Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
+        Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
             SQLcommand.CommandText = String.Concat("SELECT MovieID, StreamID, Video_Width, Video_Height, Video_Codec, Video_Duration, Video_ScanType, Video_AspectDisplayRatio, Video_Language, Video_LongLanguage, Video_Bitrate, Video_MultiView, Video_EncodedSettings FROM MoviesVStreams WHERE MovieID = ", MovieID, ";")
             Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                 Dim video As MediaInfo.Video
@@ -833,7 +833,7 @@ Public Class dlgNMTMovies
             End Using
         End Using
 
-        Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
+        Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
             SQLcommand.CommandText = String.Concat("SELECT MovieID, StreamID, Audio_Language, Audio_LongLanguage, Audio_Codec, Audio_Channel, Audio_Bitrate FROM MoviesAStreams WHERE MovieID = ", MovieID, ";")
             Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                 Dim audio As MediaInfo.Audio
@@ -847,7 +847,7 @@ Public Class dlgNMTMovies
                 End While
             End Using
         End Using
-        Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
+        Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
             SQLcommand.CommandText = String.Concat("SELECT MovieID, StreamID, Subs_Language, Subs_LongLanguage, Subs_Type, Subs_Path FROM MoviesSubs WHERE MovieID = ", MovieID, ";")
             Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                 Dim subtitle As MediaInfo.Subtitle

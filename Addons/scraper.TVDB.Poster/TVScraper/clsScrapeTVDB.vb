@@ -215,7 +215,7 @@ Public Class Scraper
                 tmpTVDBShow.Show = Master.DB.LoadTVFullShowFromDB(_ID)
                 tmpTVDBShow.AllSeason = Master.DB.LoadTVAllSeasonFromDB(_ID)
 
-                Using SQLCount As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
+                Using SQLCount As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                     If OnlySeason = 999 Then
                         SQLCount.CommandText = String.Concat("SELECT COUNT(ID) AS eCount FROM TVEps WHERE TVShowID = ", _ID, " AND Missing = 0;")
                     Else
@@ -225,7 +225,7 @@ Public Class Scraper
                         If SQLRCount.HasRows Then
                             SQLRCount.Read()
                             If Convert.ToInt32(SQLRCount("eCount")) > 0 Then
-                                Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
+                                Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                                     If OnlySeason = 999 Then
                                         SQLCommand.CommandText = String.Concat("SELECT ID, Lock FROM TVEps WHERE TVShowID = ", _ID, " AND Missing = 0;")
                                     Else
@@ -403,8 +403,8 @@ Public Class Scraper
                                             .Episode = If(IsNothing(Episode.Element("EpisodeNumber")) OrElse String.IsNullOrEmpty(Episode.Element("EpisodeNumber").Value), 0, Convert.ToInt32(Episode.Element("EpisodeNumber").Value))
                                         End If
                                         If Not IsNothing(Episode.Element("airsafter_season")) AndAlso Not String.IsNullOrEmpty(Episode.Element("airsafter_season").Value) Then
-                                            .DisplaySeason = Convert.ToInt32(Episode.Element("airsafter_season").Value) + 1
-                                            .DisplayEpisode = 0
+                                            .DisplaySeason = Convert.ToInt32(Episode.Element("airsafter_season").Value)
+                                            .DisplayEpisode = 4096
                                             .displaySEset = True
                                         End If
                                         If Not IsNothing(Episode.Element("airsbefore_season")) AndAlso Not String.IsNullOrEmpty(Episode.Element("airsbefore_season").Value) Then
@@ -412,7 +412,7 @@ Public Class Scraper
                                             .displaySEset = True
                                         End If
                                         If Not IsNothing(Episode.Element("airsbefore_episode")) AndAlso Not String.IsNullOrEmpty(Episode.Element("airsbefore_episode").Value) Then
-                                            .DisplayEpisode = Convert.ToInt32(CLng(Episode.Element("airsbefore_episode").Value)) - 1
+                                            .DisplayEpisode = Convert.ToInt32(CLng(Episode.Element("airsbefore_episode").Value))
                                             .displaySEset = True
                                         End If
 
@@ -854,10 +854,10 @@ Public Class Scraper
 
             Me.bwTVDB.ReportProgress(tmpTVDBShow.Episodes.Count, "max")
 
-            Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.MediaDBConn.BeginTransaction()
+            Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 If Master.eSettings.TVDisplayMissingEpisodes Then
                     'clear old missing episode from db
-                    Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
+                    Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                         SQLCommand.CommandText = String.Concat("DELETE FROM TVEps WHERE Missing = 1 AND TVShowID = ", Master.currShow.ShowID, ";")
                         SQLCommand.ExecuteNonQuery()
                     End Using

@@ -717,6 +717,54 @@ Public Class NFO
         End Try
     End Sub
 
+    Public Shared Sub SaveMovieSetToNFO(ByRef moviesetToSave As Structures.DBMovieSet)
+        '//
+        ' Serialize MediaContainers.MovieSet to an NFO
+        '\\
+        Try
+            'Try
+            '    Dim params As New List(Of Object)(New Object() {moviesetToSave})
+            '    Dim doContinue As Boolean = True
+            '    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieNFOSave, params, doContinue, False)
+            '    If Not doContinue Then Return
+            'Catch ex As Exception
+            'End Try
+
+            'If Not String.IsNullOrEmpty(moviesetToSave.SetName) Then
+            '    Dim xmlSer As New XmlSerializer(GetType(MediaContainers.Movie))
+            '    Dim doesExist As Boolean = False
+            '    Dim fAtt As New FileAttributes
+            '    Dim fAttWritable As Boolean = True
+
+            '    For Each a In FileUtils.GetFilenameList.Movie(moviesetToSave.SetName, moviesetToSave.isSingle, Enums.ModType.NFO)
+            '        If Not Master.eSettings.GeneralOverwriteNfo Then
+            '            RenameNonConfNfo(a, False)
+            '        End If
+
+            '        doesExist = File.Exists(a)
+            '        If Not doesExist OrElse (Not CBool(File.GetAttributes(a) And FileAttributes.ReadOnly)) Then
+            '            If doesExist Then
+            '                fAtt = File.GetAttributes(a)
+            '                Try
+            '                    File.SetAttributes(a, FileAttributes.Normal)
+            '                Catch ex As Exception
+            '                    fAttWritable = False
+            '                End Try
+            '            End If
+            '            Using xmlSW As New StreamWriter(a)
+            '                movieToSave.NfoPath = a
+            '                xmlSer.Serialize(xmlSW, movieToSave.Movie)
+            '            End Using
+            '            If doesExist And fAttWritable Then File.SetAttributes(a, fAtt)
+            '        End If
+            '    Next
+            'End If
+
+        Catch ex As Exception
+            Master.eLog.Error(GetType(NFO), ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
     Public Shared Sub SaveSingleNFOItem(ByVal sPath As String, ByVal strToWrite As String, ByVal strNode As String)
         '//
         ' Save just one item of an NFO file
@@ -784,7 +832,7 @@ Public Class NFO
                         End Try
                     End If
 
-                    Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
+                    Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                         SQLCommand.CommandText = "SELECT ID FROM TVEps WHERE ID <> (?) AND TVEpPathID IN (SELECT ID FROM TVEpPaths WHERE TVEpPath = (?)) ORDER BY Episode"
                         Dim parID As SQLite.SQLiteParameter = SQLCommand.Parameters.Add("parID", DbType.Int64, 0, "ID")
                         Dim parTVEpPath As SQLite.SQLiteParameter = SQLCommand.Parameters.Add("parTVEpPath", DbType.String, 0, "TVEpPath")
