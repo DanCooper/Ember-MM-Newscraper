@@ -3592,6 +3592,58 @@ doCancel:
         End Try
     End Sub
 
+    Private Sub cmnuMovieSetNew_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieSetNew.Click
+        Master.currMovieSet = New Structures.DBMovieSet
+
+        Try
+            Me.SetControlsEnabled(False)
+
+            Using dEditMovieSet As New dlgEditMovieSet
+                'AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovieSet.GenericRunCallBack
+                Select Case dEditMovieSet.ShowDialog()
+                    Case Windows.Forms.DialogResult.OK
+                        'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieScraperRDYtoSave, Nothing, Master.currMovie)
+                        'Me.SetMovieSetListItemAfterEdit(ID, indX)
+                        'If Me.RefreshMovieSet(ID) Then
+                        Me.FillList(0)
+                        'Else
+                        Me.SetControlsEnabled(True)
+                        'End If
+                        'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieSync, Nothing, Master.currMovie)
+                    Case Windows.Forms.DialogResult.Retry
+                        'Functions.SetScraperMod(Enums.ModType.All, True, True)
+                        'Me.MoviesetScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultMovieOptions)
+                    Case Windows.Forms.DialogResult.Abort
+                        'Master.currMovie.ClearBanner = False
+                        'Master.currMovie.ClearClearArt = False
+                        'Master.currMovie.ClearClearLogo = False
+                        'Master.currMovie.ClearDiscArt = False
+                        'Master.currMovie.ClearEThumbs = False
+                        'Master.currMovie.ClearEFanarts = False
+                        'Master.currMovie.ClearFanart = False
+                        'Master.currMovie.ClearLandscape = False
+                        'Master.currMovie.ClearPoster = False
+                        'Master.currMovie.ClearTheme = False
+                        'Master.currMovie.ClearTrailer = False
+                        'Functions.SetScraperMod(Enums.ModType.DoSearch, True)
+                        'Functions.SetScraperMod(Enums.ModType.All, True, False)
+                        'Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultMovieOptions)
+                    Case Else
+                        'If Me.InfoCleared Then
+                        '    Me.LoadMovieSetInfo(ID, Me.dgvMovieSets.Item(1, indX).Value.ToString, True, False)
+                        'Else
+                        Me.SetControlsEnabled(True)
+                        'End If
+                End Select
+                'RemoveHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
+            End Using
+
+        Catch ex As Exception
+
+        End Try
+
+    End Sub
+
     Private Sub cmnuMovieSetReload_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieSetReload.Click
         ReloadMovieSet()
     End Sub

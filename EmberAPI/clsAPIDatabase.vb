@@ -685,15 +685,40 @@ Public Class Database
     End Function
 
     ''' <summary>
-    ''' Remove all information related to a movie from the database.
+    ''' Remove all information related to a movieset from the database.
     ''' </summary>
     ''' <param name="ID">ID of the movieset to remove, as stored in the database.</param>
     ''' <param name="BatchMode">Is this function already part of a transaction?</param>
     ''' <returns>True if successful, false if deletion failed.</returns>
     Public Function DeleteMovieSetFromDB(ByVal ID As Long, Optional ByVal BatchMode As Boolean = False) As Boolean
         Try
+            'first get a list of all movies in the movieset to remove the movieset information from NFO
+            Dim moviesToSave As New List(Of Structures.DBMovie)
+
             Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
             If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
+            Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                SQLcommand.CommandText = String.Concat("SELECT MovieID, SetID, SetOrder FROM MoviesSets ", _
+                                                       "WHERE SetID = ", ID, ";")
+                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+
+                    While SQLreader.Read
+                        Dim movie As New Structures.DBMovie
+                        If Not DBNull.Value.Equals(SQLreader("MovieID")) Then movie = LoadMovieFromDB(Convert.ToInt64(SQLreader("MovieID")))
+                        moviesToSave.Add(movie)
+                    End While
+                End Using
+            End Using
+
+            'remove the movieset from movie and write new NFO
+            If moviesToSave.Count > 0 Then
+                For Each movie In moviesToSave
+                    movie.Movie.RemoveSet(ID)
+                    SaveMovieToDB(movie, False, BatchMode, True)
+                Next
+            End If
+
+            'remove the movieset and still existing moviessets entries
             Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
                 SQLcommand.CommandText = String.Concat("DELETE FROM Sets WHERE ID = ", ID, ";")
                 SQLcommand.ExecuteNonQuery()
@@ -1223,20 +1248,6 @@ Public Class Database
                 End Using
             End Using
 
-            'Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-            '    SQLcommand.CommandText = String.Concat("SELECT MA.MovieID, MA.ActorName , MA.Role ,Act.Name,Act.thumb FROM MoviesActors AS MA ", _
-            '                "INNER JOIN Actors AS Act ON (MA.ActorName = Act.Name) WHERE MA.MovieID = ", _movieDB.ID, " ORDER BY MA.ROWID;")
-            '    Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-            '        Dim person As MediaContainers.Person
-            '        While SQLreader.Read
-            '            person = New MediaContainers.Person
-            '            person.Name = SQLreader("ActorName").ToString
-            '            person.Role = SQLreader("Role").ToString
-            '            person.Thumb = SQLreader("thumb").ToString
-            '            _movieDB.Movie.Actors.Add(person)
-            '        End While
-            '    End Using
-            'End Using
         Catch ex As Exception
             Master.eLog.Error(GetType(Database), ex.Message, ex.StackTrace, "Error")
         End Try
