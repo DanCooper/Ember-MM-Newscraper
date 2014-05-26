@@ -18,10 +18,10 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System.Globalization
-Imports System.IO
-Imports System.IO.Compression
-Imports System.Text
+'Imports System.Globalization
+'Imports System.IO
+'Imports System.IO.Compression
+'Imports System.Text
 Imports System.Text.RegularExpressions
 Imports EmberAPI
 
@@ -71,7 +71,7 @@ Public Class TelevisionTunes
 
         If Not String.IsNullOrEmpty(originaltitle) Then
             SearchTitle = Web.HttpUtility.UrlEncode(originaltitle)
-            SearchURL = String.Format(BaseURL, SearchTitle)
+            SearchURL = String.Concat(BaseURL, SearchTitle)
         Else
             SearchURL = String.Empty
         End If
