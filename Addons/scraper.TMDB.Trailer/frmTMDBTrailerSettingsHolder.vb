@@ -108,7 +108,7 @@ Public Class frmTMDBTrailerSettingsHolder
         Me.cbEnabled.Text = Master.eLang.GetString(774, "Enabled")
         Me.Label1.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), vbCrLf)
         Me.Label18.Text = Master.eLang.GetString(870, "TMDB API Key")
-        Me.GroupBox30.Text = Master.eLang.GetString(937, "TMDB")
+        Me.gbSettings.Text = Master.eLang.GetString(937, "TMDB")
         Me.chkFallBackEng.Text = Master.eLang.GetString(922, "Fall back on english")
         Me.Label2.Text = Master.eLang.GetString(741, "Preferred Language:")
     End Sub

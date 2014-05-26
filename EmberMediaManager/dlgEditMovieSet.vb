@@ -27,7 +27,8 @@ Public Class dlgEditMovieSet
 
 #Region "Fields"
 
-    Friend WithEvents bwLoadMovies As New System.ComponentModel.BackgroundWorker
+    Friend WithEvents bwLoadMoviesInSet As New System.ComponentModel.BackgroundWorker
+    Friend WithEvents bwLoadMoviesFromDB As New System.ComponentModel.BackgroundWorker
 
     Private CachePath As String = String.Empty
     Private fResults As New Containers.ImgResult
@@ -41,12 +42,11 @@ Public Class dlgEditMovieSet
     Private MoviePoster As New Images With {.IsEdit = True}
     Private pResults As New Containers.ImgResult
 
-    'Private lMovies As New List(Of Movies)
-    Private currSet As New Sets
     Private currMovieSet As Structures.DBMovieSet = Master.currMovieSet
-    Private lMovies As New List(Of Movies)
+    Private currSet As New Sets 'list of all movies in this movieset
+    Private lMovies As New List(Of Movies) 'list of all movies loaded from DB
     Private sListTitle As String = String.Empty
-    Private needMovieUpdate As Boolean = False
+    Private needsMovieUpdate As Boolean = False
 
 
 #End Region 'Fields
@@ -77,6 +77,26 @@ Public Class dlgEditMovieSet
         Me.DeleteFromSet()
     End Sub
 
+    Private Sub btnLoadMoviesFromDB_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnLoadMoviesFromDB.Click, btnMovieRemove.Click
+        Try
+            Me.SetControlsEnabled(False)
+
+            btnCancel.Visible = True
+            lblCompiling.Visible = True
+            prbCompile.Visible = True
+            prbCompile.Style = ProgressBarStyle.Continuous
+            lblCanceling.Visible = False
+            pnlCancel.Visible = True
+            Application.DoEvents()
+
+            Me.bwLoadMoviesFromDB.WorkerSupportsCancellation = True
+            Me.bwLoadMoviesFromDB.WorkerReportsProgress = True
+            Me.bwLoadMoviesFromDB.RunWorkerAsync()
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
     Private Sub DeleteFromSet()
         Dim lMov As New Movies
 
@@ -92,13 +112,72 @@ Public Class dlgEditMovieSet
                 End If
 
             End While
+
             Me.LoadCurrSet()
-            'Me.FillMovies()
+            Me.FillMovies()
             Me.SetControlsEnabled(True)
             Me.btnMovieUp.Enabled = False
             Me.btnMovieDown.Enabled = False
             Me.btnMovieRemove.Enabled = False
         End If
+    End Sub
+
+    Private Sub lbMoviesInDB_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lbMoviesInDB.SelectedIndexChanged
+        If Me.lbMoviesInDB.SelectedItems.Count > 0 Then
+            Me.btnMovieAdd.Enabled = True
+        Else
+            Me.btnMovieAdd.Enabled = False
+        End If
+    End Sub
+
+    Private Sub lbMoviesInDB_DoubleClick(sender As Object, e As EventArgs) Handles lbMoviesInDB.DoubleClick
+        If Me.lbMoviesInDB.SelectedItems.Count = 1 Then
+            AddMovieToSet()
+        End If
+    End Sub
+
+    Private Sub lbMoviesInSet_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lbMoviesInSet.SelectedIndexChanged
+        If Me.lbMoviesInSet.SelectedItems.Count > 0 Then
+            Me.btnMovieDown.Enabled = True
+            Me.btnMovieRemove.Enabled = True
+            Me.btnMovieUp.Enabled = True
+        Else
+            Me.btnMovieDown.Enabled = False
+            Me.btnMovieRemove.Enabled = False
+            Me.btnMovieUp.Enabled = False
+        End If
+    End Sub
+
+    Private Sub btnMovieAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieAdd.Click
+        AddMovieToSet()
+    End Sub
+
+    Private Sub AddMovieToSet()
+        Try
+            Dim lMov As New Movies
+
+
+            While lbMoviesInDB.SelectedItems.Count > 0
+                If Not Me.lbMoviesInSet.Items.Contains(lbMoviesInDB.SelectedItems(0)) Then
+                    Me.sListTitle = lbMoviesInDB.SelectedItems(0).ToString
+                    lMov = lMovies.Find(AddressOf FindMovie)
+                    If Not IsNothing(lMov) Then
+                        Me.currSet.AddMovie(lMov, Me.currSet.Movies.Count + 1)
+                        needsMovieUpdate = True
+                        Me.lbMoviesInDB.Items.Remove(lbMoviesInDB.SelectedItems(0))
+                        If Not String.IsNullOrEmpty(lMov.DBMovie.Movie.Title) Then
+                            currSet.AddMovie(New Movies With {.DBMovie = lMov.DBMovie, .ListTitle = String.Concat(StringUtils.FilterTokens(lMov.DBMovie.Movie.Title), If(Not String.IsNullOrEmpty(lMov.DBMovie.Movie.Year), String.Format(" ({0})", lMov.DBMovie.Movie.Year), String.Empty)), .Order = Nothing}, Nothing)
+                        End If
+                    End If
+                End If
+            End While
+
+            lbMoviesInDB.SelectedIndex = -1
+            Me.LoadCurrSet()
+
+        Catch ex As Exception
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
 
     Private Function FindMovie(ByVal lMov As Movies) As Boolean
@@ -754,9 +833,9 @@ Public Class dlgEditMovieSet
         End Try
     End Sub
 
-    Private Sub bwLoadMovies_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadMovies.DoWork
+    Private Sub bwLoadMoviesInSet_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadMoviesInSet.DoWork
         '//
-        ' Start thread to load movie information from nfo
+        ' Start thread to load movieset information from database
         '\\
 
         Try
@@ -767,13 +846,13 @@ Public Class dlgEditMovieSet
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     If SQLreader.HasRows Then
                         While SQLreader.Read()
-                            If bwLoadMovies.CancellationPending Then Return
+                            If bwLoadMoviesInSet.CancellationPending Then Return
                             tmpMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(SQLreader("MovieID")))
                             If Not String.IsNullOrEmpty(tmpMovie.Movie.Title) Then
                                 Dim tmpSetOrder As Integer = If(Not String.IsNullOrEmpty(SQLreader("SetOrder").ToString), CInt(SQLreader("SetOrder").ToString), Nothing)
                                 currSet.AddMovie(New Movies With {.DBMovie = tmpMovie, .ListTitle = String.Concat(StringUtils.FilterTokens(tmpMovie.Movie.Title), If(Not String.IsNullOrEmpty(tmpMovie.Movie.Year), String.Format(" ({0})", tmpMovie.Movie.Year), String.Empty)), .Order = tmpSetOrder}, tmpSetOrder)
-                                End If
-                            Me.bwLoadMovies.ReportProgress(iProg, tmpMovie.Movie.Title)
+                            End If
+                            Me.bwLoadMoviesInSet.ReportProgress(iProg, tmpMovie.Movie.Title)
                             iProg += 1
                         End While
                     End If
@@ -787,7 +866,7 @@ Public Class dlgEditMovieSet
         End Try
     End Sub
 
-    Private Sub bwLoadMovies_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwLoadMovies.ProgressChanged
+    Private Sub bwLoadMoviesInSet_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwLoadMoviesInSet.ProgressChanged
         If e.ProgressPercentage >= 0 Then
             Me.prbCompile.Value = e.ProgressPercentage
             Me.lblFile.Text = e.UserState.ToString
@@ -796,7 +875,7 @@ Public Class dlgEditMovieSet
         End If
     End Sub
 
-    Private Sub bwLoadMovies_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwLoadMovies.RunWorkerCompleted
+    Private Sub bwLoadMoviesInSet_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwLoadMoviesInSet.RunWorkerCompleted
         '//
         ' Thread finished: fill movie list
         '\\
@@ -812,6 +891,98 @@ Public Class dlgEditMovieSet
         Me.btnMovieDown.Enabled = True
         Me.btnMovieRemove.Enabled = True
         Me.btnMovieAdd.Enabled = True
+    End Sub
+
+    Private Sub bwLoadMoviesFromDB_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadMoviesFromDB.DoWork
+        '//
+        ' Start thread to load movie information from nfo
+        '\\
+
+        Try
+            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                Dim tmpMovie As New Structures.DBMovie
+                Dim iProg As Integer = 0
+                SQLcommand.CommandText = String.Concat("SELECT COUNT(id) AS mcount FROM movies;")
+                Using SQLcount As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                    SQLcount.Read()
+                    Me.bwLoadMoviesFromDB.ReportProgress(-1, SQLcount("mcount"))
+                End Using
+                SQLcommand.CommandText = String.Concat("SELECT ID FROM movies ORDER BY ListTitle ASC;")
+                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                    If SQLreader.HasRows Then
+                        While SQLreader.Read()
+                            If bwLoadMoviesFromDB.CancellationPending Then Return
+                            tmpMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(SQLreader("ID")))
+                            If Not String.IsNullOrEmpty(tmpMovie.Movie.Title) Then
+
+                                'cocotus build up tempmovie list which contains all movies belonging to one movieset! this is used to filter right side movies(used in FillList)!
+                                'If tmpMovie.Movie.Sets.Count > 0 Then
+                                '    lMoviesinSets.Add(String.Concat(StringUtils.FilterTokens(tmpMovie.Movie.Title), If(Not String.IsNullOrEmpty(tmpMovie.Movie.Year), String.Format(" ({0})", tmpMovie.Movie.Year), String.Empty)))
+                                'End If
+
+                                lMovies.Add(New Movies With {.DBMovie = tmpMovie, .ListTitle = String.Concat(StringUtils.FilterTokens(tmpMovie.Movie.Title), If(Not String.IsNullOrEmpty(tmpMovie.Movie.Year), String.Format(" ({0})", tmpMovie.Movie.Year), String.Empty))})
+
+                                'If tmpMovie.Movie.Sets.Count > 0 Then
+                                '    For Each mSet As MediaContainers.Set In tmpMovie.Movie.Sets
+                                '        If Not alSets.Contains(mSet.Set) AndAlso Not String.IsNullOrEmpty(mSet.Set) Then
+                                '            alSets.Add(mSet.Set)
+                                '        End If
+                                '    Next
+                                'End If
+
+                            End If
+                            Me.bwLoadMoviesFromDB.ReportProgress(iProg, tmpMovie.Movie.Title)
+                            iProg += 1
+                        End While
+                    End If
+                End Using
+            End Using
+
+        Catch ex As Exception
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub bwLoadMoviesFromDB_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwLoadMoviesFromDB.ProgressChanged
+        If e.ProgressPercentage >= 0 Then
+            Me.prbCompile.Value = e.ProgressPercentage
+            Me.lblFile.Text = e.UserState.ToString
+        Else
+            Me.prbCompile.Maximum = Convert.ToInt32(e.UserState)
+        End If
+    End Sub
+
+    Private Sub bwLoadMoviesFromDB_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwLoadMoviesFromDB.RunWorkerCompleted
+        '//
+        ' Thread finished: fill movie list
+        '\\
+        
+        Me.FillMovies()
+
+        Me.pnlCancel.Visible = False
+
+        SetControlsEnabled(True)
+        Me.btnMovieAdd.Enabled = False
+    End Sub
+
+    Private Sub FillMovies()
+        Try
+            Me.lbMoviesInDB.SuspendLayout()
+
+            Me.lbMoviesInDB.Items.Clear()
+
+            For Each lMov As Movies In lMovies
+                'cocotus from now on only show movie on right side if not already part in movieset! (XMBC doesnT support movie belonging to multiple sets!)
+                'If Not Me.lbMoviesInSet.Items.Contains(lMov.ListTitle) Then Me.lbMoviesInDB.Items.Add(lMov.ListTitle)
+                'If lMoviesinSets.Contains(lMov.ListTitle) = False Then
+                If Not Me.lbMoviesInSet.Items.Contains(lMov.ListTitle) Then Me.lbMoviesInDB.Items.Add(lMov.ListTitle)
+                'End If
+            Next
+
+            Me.lbMoviesInDB.ResumeLayout()
+        Catch ex As Exception
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
 
     Private Sub LoadCurrSet()
@@ -939,9 +1110,9 @@ Public Class dlgEditMovieSet
         pnlCancel.Visible = True
         Application.DoEvents()
 
-        Me.bwLoadMovies.WorkerSupportsCancellation = True
-        Me.bwLoadMovies.WorkerReportsProgress = True
-        Me.bwLoadMovies.RunWorkerAsync()
+        Me.bwLoadMoviesInSet.WorkerSupportsCancellation = True
+        Me.bwLoadMoviesInSet.WorkerReportsProgress = True
+        Me.bwLoadMoviesInSet.RunWorkerAsync()
     End Sub
 
     Private Sub FillInfo(Optional ByVal DoAll As Boolean = True)
@@ -1093,7 +1264,7 @@ Public Class dlgEditMovieSet
 
             Master.DB.SaveMovieSetToDB(Master.currMovieSet, False, False, True)
 
-            If needMovieUpdate Then
+            If needsMovieUpdate Then
                 SaveSetToMovies(currSet)
             End If
 
@@ -1264,12 +1435,15 @@ Public Class dlgEditMovieSet
 
     Private Sub SetControlsEnabled(ByVal isEnabled As Boolean)
         Me.pnlSaving.Visible = Not isEnabled
-        Me.lbMoviesInSet.Enabled = isEnabled
-        Me.btnMovieUp.Enabled = isEnabled
+        Me.OK_Button.Enabled = isEnabled
+        Me.btnLoadMoviesFromDB.Enabled = isEnabled
+        Me.btnMovieAdd.Enabled = isEnabled
         Me.btnMovieDown.Enabled = isEnabled
         Me.btnMovieRemove.Enabled = isEnabled
-        Me.btnMovieAdd.Enabled = isEnabled
-        Me.OK_Button.Enabled = isEnabled
+        Me.btnMovieUp.Enabled = isEnabled
+        Me.lbMoviesInDB.Enabled = isEnabled
+        Me.lbMoviesInSet.Enabled = isEnabled
+
         Application.DoEvents()
     End Sub
 
@@ -1279,17 +1453,10 @@ Public Class dlgEditMovieSet
 
                 Me.OK_Button.Enabled = False
                 Me.Cancel_Button.Enabled = False
+                Me.btnLoadMoviesFromDB.Enabled = False
                 Me.btnRescrape.Enabled = False
-                Me.btnChangeMovie.Enabled = False
 
-                'If Not String.IsNullOrEmpty(.txtTitle.Text) Then
-                '    If Master.eSettings.MovieDisplayYear AndAlso Not String.IsNullOrEmpty(.mtxtYear.Text.Trim) Then
-                '        Master.currMovie.ListTitle = String.Format("{0} ({1})", StringUtils.FilterTokens(.txtTitle.Text.Trim), .mtxtYear.Text.Trim)
-                '    Else
-                '        Master.currMovie.ListTitle = StringUtils.FilterTokens(.txtTitle.Text.Trim)
-                '    End If
                 Master.currMovieSet.SetName = .txtTitle.Text.Trim
-                'End If
 
                 If Master.currMovieSet.ClearBanner Then
                     .MovieBanner.DeleteMovieSetBanner(Master.currMovieSet)
@@ -1438,7 +1605,7 @@ Public Class dlgEditMovieSet
     End Sub
 
     Private Sub txtTitle_TextChanged(sender As Object, e As EventArgs) Handles txtTitle.TextChanged
-        Me.needMovieUpdate = True
+        Me.needsMovieUpdate = True
     End Sub
 
 
@@ -1581,4 +1748,5 @@ Public Class dlgEditMovieSet
     End Class
 
 #End Region 'Nested Types
+
 End Class
