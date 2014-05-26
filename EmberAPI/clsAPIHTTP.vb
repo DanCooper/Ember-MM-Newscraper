@@ -290,20 +290,28 @@ Public Class HTTP
             Me.wrRequest = DirectCast(WebRequest.Create(URL), HttpWebRequest)
             Me.wrRequest.Timeout = _defaultRequestTimeout
 
+            'needed for apple trailer website
+            If URL.Contains("apple") Then
+                Me.wrRequest.UserAgent = "QuickTime/7.2 (qtver=7.2;os=Windows NT 5.1Service Pack 3)"
+            End If
+
             PrepareProxy()
 
             Using wrResponse As HttpWebResponse = DirectCast(Me.wrRequest.GetResponse(), HttpWebResponse)
 
                 Try
                     urlExt = Path.GetExtension(URL)
-                    'urlExtWeb = Path.GetExtension(wrResponse.ResponseUri.AbsoluteUri)
                     urlExtWeb = String.Concat(".", wrResponse.ContentType.Replace("video/", String.Empty).Trim)
                     urlExtWeb = urlExtWeb.Replace("audio/", String.Empty).Trim
                 Catch
                 End Try
 
                 If Type = "trailer" Then
-                    outFile = LocalFile & urlExtWeb
+                    If urlExt = ".mov" Then
+                        outFile = LocalFile & urlExt
+                    Else
+                        outFile = LocalFile & urlExtWeb
+                    End If
                 ElseIf Type = "theme" Then
                     If urlExtWeb = ".mpeg" Then
                         outFile = LocalFile & ".mp3"

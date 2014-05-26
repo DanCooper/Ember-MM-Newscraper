@@ -30,8 +30,11 @@ Public Class Trailers
 
 #Region "Fields"
 
-    Private _url As String
     Private _description As String
+    Private _length As String
+    Private _resolution As Enums.TrailerQuality
+    Private _url As String
+    Private _weburl As String
 
 #End Region 'Fields
 
@@ -44,7 +47,54 @@ Public Class Trailers
 #End Region 'Constructors
 
 #Region "Properties"
-
+    ''' <summary>
+    ''' description or title of the trailer
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public Property Description() As String
+        Get
+            Return _description
+        End Get
+        Set(ByVal value As String)
+            _description = value
+        End Set
+    End Property
+    ''' <summary>
+    ''' lenght of the trailer
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public Property Lenght() As String
+        Get
+            Return _length
+        End Get
+        Set(ByVal value As String)
+            _length = value
+        End Set
+    End Property
+    ''' <summary>
+    ''' resolution/quality of the trailer
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public Property Resolution() As Enums.TrailerQuality
+        Get
+            Return _resolution
+        End Get
+        Set(ByVal value As Enums.TrailerQuality)
+            _resolution = value
+        End Set
+    End Property
+    ''' <summary>
+    ''' download URL of the trailer
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public Property URL() As String
         Get
             Return _url
@@ -53,13 +103,18 @@ Public Class Trailers
             _url = value
         End Set
     End Property
-
-    Public Property Description() As String
+    ''' <summary>
+    ''' website URL of the trailer for preview in browser
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public Property WebURL() As String
         Get
-            Return _description
+            Return _weburl
         End Get
         Set(ByVal value As String)
-            _description = value
+            _weburl = value
         End Set
     End Property
 
@@ -74,8 +129,11 @@ Public Class Trailers
 #Region "Methods"
 
     Private Sub Clear()
-        _url = String.Empty
         _description = String.Empty
+        _length = String.Empty
+        _resolution = Enums.TrailerQuality.OTHERS
+        _url = String.Empty
+        _weburl = String.Empty
     End Sub
 
     Public Sub Cancel()
@@ -259,7 +317,7 @@ Public Class Trailers
         Dim tURL As String = String.Empty
         Dim lhttp As New HTTP
         Dim tTrailer As String = String.Empty
-        'AddHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
+        AddHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
 
         tTrailer = lhttp.DownloadFile(sURL, Path.Combine(Master.TempPath, "trailer"), False, "trailer")
         Dim fExt As String = Path.GetExtension(tTrailer)
