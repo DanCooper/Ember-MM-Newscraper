@@ -304,8 +304,10 @@ Namespace YouTube
 
             For ctr As Integer = 0 To Result.Count - 1
                 tName = Web.HttpUtility.HtmlDecode(Result.Item(ctr).Groups(1).Value)
-                tLink = String.Concat("http://www.youtube.com/", Result.Item(ctr).Groups(2).Value)
-                tList.Add(New Trailers With {.URL = tLink, .Description = tName})
+                tLink = String.Concat("http://www.youtube.com", Result.Item(ctr).Groups(2).Value)
+                If Not tName = "__title__" Then
+                    tList.Add(New Trailers With {.URL = tLink, .WebURL = tLink, .Description = tName})
+                End If
             Next
 
             Return tList
