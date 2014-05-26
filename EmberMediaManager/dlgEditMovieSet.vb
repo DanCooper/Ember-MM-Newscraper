@@ -165,9 +165,6 @@ Public Class dlgEditMovieSet
                         Me.currSet.AddMovie(lMov, Me.currSet.Movies.Count + 1)
                         needsMovieUpdate = True
                         Me.lbMoviesInDB.Items.Remove(lbMoviesInDB.SelectedItems(0))
-                        If Not String.IsNullOrEmpty(lMov.DBMovie.Movie.Title) Then
-                            currSet.AddMovie(New Movies With {.DBMovie = lMov.DBMovie, .ListTitle = String.Concat(StringUtils.FilterTokens(lMov.DBMovie.Movie.Title), If(Not String.IsNullOrEmpty(lMov.DBMovie.Movie.Year), String.Format(" ({0})", lMov.DBMovie.Movie.Year), String.Empty)), .Order = Nothing}, Nothing)
-                        End If
                     End If
                 End If
             End While
@@ -899,6 +896,8 @@ Public Class dlgEditMovieSet
         '\\
 
         Try
+            lMovies.Clear()
+
             Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                 Dim tmpMovie As New Structures.DBMovie
                 Dim iProg As Integer = 0
