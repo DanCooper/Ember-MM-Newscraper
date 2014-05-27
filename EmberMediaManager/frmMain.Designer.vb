@@ -314,6 +314,12 @@ Partial Class frmMain
         Me.pbFanartSmallCache = New System.Windows.Forms.PictureBox()
         Me.pnlFanartSmall = New System.Windows.Forms.Panel()
         Me.pbFanartSmall = New System.Windows.Forms.PictureBox()
+        Me.pnlLandscape = New System.Windows.Forms.Panel()
+        Me.pbLandscape = New System.Windows.Forms.PictureBox()
+        Me.pbLandscapeCache = New System.Windows.Forms.PictureBox()
+        Me.pnlClearArt = New System.Windows.Forms.Panel()
+        Me.pbClearArt = New System.Windows.Forms.PictureBox()
+        Me.pbClearArtCache = New System.Windows.Forms.PictureBox()
         Me.pnlMPAA = New System.Windows.Forms.Panel()
         Me.pbMPAA = New System.Windows.Forms.PictureBox()
         Me.pbFanartCache = New System.Windows.Forms.PictureBox()
@@ -788,6 +794,12 @@ Partial Class frmMain
         CType(Me.pbFanartSmallCache, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlFanartSmall.SuspendLayout()
         CType(Me.pbFanartSmall, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.pnlLandscape.SuspendLayout()
+        CType(Me.pbLandscape, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbLandscapeCache, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.pnlClearArt.SuspendLayout()
+        CType(Me.pbClearArt, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbClearArtCache, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlMPAA.SuspendLayout()
         CType(Me.pbMPAA, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbFanartCache, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -1128,6 +1140,10 @@ Partial Class frmMain
         Me.scMain.Panel2.Controls.Add(Me.pbPosterCache)
         Me.scMain.Panel2.Controls.Add(Me.pbFanartSmallCache)
         Me.scMain.Panel2.Controls.Add(Me.pnlFanartSmall)
+        Me.scMain.Panel2.Controls.Add(Me.pnlLandscape)
+        Me.scMain.Panel2.Controls.Add(Me.pbLandscapeCache)
+        Me.scMain.Panel2.Controls.Add(Me.pnlClearArt)
+        Me.scMain.Panel2.Controls.Add(Me.pbClearArtCache)
         Me.scMain.Panel2.Controls.Add(Me.pnlMPAA)
         Me.scMain.Panel2.Controls.Add(Me.pbFanartCache)
         Me.scMain.Panel2.Controls.Add(Me.pbFanart)
@@ -3580,6 +3596,64 @@ Partial Class frmMain
         Me.pbFanartSmall.Size = New System.Drawing.Size(283, 159)
         Me.pbFanartSmall.TabIndex = 0
         Me.pbFanartSmall.TabStop = False
+        '
+        'pnlLandscape
+        '
+        Me.pnlLandscape.BackColor = System.Drawing.Color.Gainsboro
+        Me.pnlLandscape.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlLandscape.Controls.Add(Me.pbLandscape)
+        Me.pnlLandscape.Location = New System.Drawing.Point(445, 112)
+        Me.pnlLandscape.Name = "pnlLandscape"
+        Me.pnlLandscape.Size = New System.Drawing.Size(293, 169)
+        Me.pnlLandscape.TabIndex = 15
+        Me.pnlLandscape.Visible = False
+        '
+        'pbLandscape
+        '
+        Me.pbLandscape.BackColor = System.Drawing.SystemColors.Control
+        Me.pbLandscape.Location = New System.Drawing.Point(4, 4)
+        Me.pbLandscape.Name = "pbLandscape"
+        Me.pbLandscape.Size = New System.Drawing.Size(283, 159)
+        Me.pbLandscape.TabIndex = 0
+        Me.pbLandscape.TabStop = False
+        '
+        'pbLandscapeCache
+        '
+        Me.pbLandscapeCache.Location = New System.Drawing.Point(697, 228)
+        Me.pbLandscapeCache.Name = "pbLandscapeCache"
+        Me.pbLandscapeCache.Size = New System.Drawing.Size(115, 111)
+        Me.pbLandscapeCache.TabIndex = 16
+        Me.pbLandscapeCache.TabStop = False
+        Me.pbLandscapeCache.Visible = False
+        '
+        'pnlClearArt
+        '
+        Me.pnlClearArt.BackColor = System.Drawing.Color.Gainsboro
+        Me.pnlClearArt.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlClearArt.Controls.Add(Me.pbClearArt)
+        Me.pnlClearArt.Location = New System.Drawing.Point(445, 282)
+        Me.pnlClearArt.Name = "pnlClearArt"
+        Me.pnlClearArt.Size = New System.Drawing.Size(293, 169)
+        Me.pnlClearArt.TabIndex = 16
+        Me.pnlClearArt.Visible = False
+        '
+        'pbClearArt
+        '
+        Me.pbClearArt.BackColor = System.Drawing.SystemColors.Control
+        Me.pbClearArt.Location = New System.Drawing.Point(4, 4)
+        Me.pbClearArt.Name = "pbClearArt"
+        Me.pbClearArt.Size = New System.Drawing.Size(283, 159)
+        Me.pbClearArt.TabIndex = 0
+        Me.pbClearArt.TabStop = False
+        '
+        'pbClearArtCache
+        '
+        Me.pbClearArtCache.Location = New System.Drawing.Point(818, 107)
+        Me.pbClearArtCache.Name = "pbClearArtCache"
+        Me.pbClearArtCache.Size = New System.Drawing.Size(115, 111)
+        Me.pbClearArtCache.TabIndex = 17
+        Me.pbClearArtCache.TabStop = False
+        Me.pbClearArtCache.Visible = False
         '
         'pnlMPAA
         '
@@ -6480,6 +6554,12 @@ Partial Class frmMain
         CType(Me.pbFanartSmallCache, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlFanartSmall.ResumeLayout(False)
         CType(Me.pbFanartSmall, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlLandscape.ResumeLayout(False)
+        CType(Me.pbLandscape, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbLandscapeCache, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlClearArt.ResumeLayout(False)
+        CType(Me.pbClearArt, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbClearArtCache, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlMPAA.ResumeLayout(False)
         Me.pnlMPAA.PerformLayout()
         CType(Me.pbMPAA, System.ComponentModel.ISupportInitialize).EndInit()
@@ -6516,7 +6596,6 @@ Partial Class frmMain
     Friend WithEvents pbFanartCache As System.Windows.Forms.PictureBox
     Friend WithEvents pnlPoster As System.Windows.Forms.Panel
     Friend WithEvents pbPoster As System.Windows.Forms.PictureBox
-    Friend WithEvents pbFanart As System.Windows.Forms.PictureBox
     Friend WithEvents tcMain As System.Windows.Forms.TabControl
     Friend WithEvents pnlMPAA As System.Windows.Forms.Panel
     Friend WithEvents pbMPAA As System.Windows.Forms.PictureBox
@@ -7186,4 +7265,11 @@ Partial Class frmMain
     Friend WithEvents cmnuMovieSetNew As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuMovieSetRemove As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuMovieSetEdit As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents pnlLandscape As System.Windows.Forms.Panel
+    Friend WithEvents pbLandscape As System.Windows.Forms.PictureBox
+    Friend WithEvents pbFanart As System.Windows.Forms.PictureBox
+    Friend WithEvents pbLandscapeCache As System.Windows.Forms.PictureBox
+    Friend WithEvents pnlClearArt As System.Windows.Forms.Panel
+    Friend WithEvents pbClearArt As System.Windows.Forms.PictureBox
+    Friend WithEvents pbClearArtCache As System.Windows.Forms.PictureBox
 End Class

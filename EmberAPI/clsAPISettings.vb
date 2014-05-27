@@ -56,8 +56,10 @@ Public Class Settings
     Private _generaldaemondrive As String
     Private _generaldaemonpath As String
     Private _generalfilterpanelstate As Boolean
+    Private _generalhideclearart As Boolean
     Private _generalhidefanart As Boolean
     Private _generalhidefanartsmall As Boolean
+    Private _generalhidelandscape As Boolean
     Private _generalhideposter As Boolean
     Private _generalimagesglassoverlay As Boolean
     Private _generalinfopanelanim As Boolean
@@ -2090,6 +2092,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property GeneralHideClearArt() As Boolean
+        Get
+            Return Me._generalhideclearart
+        End Get
+        Set(ByVal value As Boolean)
+            Me._generalhideclearart = value
+        End Set
+    End Property
+
     Public Property GeneralHideFanart() As Boolean
         Get
             Return Me._generalhidefanart
@@ -2114,6 +2125,15 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Me._generalhidefanartsmall = value
+        End Set
+    End Property
+
+    Public Property GeneralHideLandscape() As Boolean
+        Get
+            Return Me._generalhidelandscape
+        End Get
+        Set(ByVal value As Boolean)
+            Me._generalhidelandscape = value
         End Set
     End Property
 
@@ -5240,8 +5260,10 @@ Public Class Settings
         Me._generaldaemondrive = String.Empty
         Me._generaldaemonpath = String.Empty
         Me._generalfilterpanelstate = False
+        Me._generalhideclearart = False
         Me._generalhidefanart = False
         Me._generalhidefanartsmall = False
+        Me._generalhidelandscape = False
         Me._generalhideposter = False
         Me._generalimagesglassoverlay = False
         Me._generalinfopanelanim = False

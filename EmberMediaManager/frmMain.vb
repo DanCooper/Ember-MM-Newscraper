@@ -74,9 +74,11 @@ Public Class frmMain
     Private isCL As Boolean = False
     Private LoadingDone As Boolean = False
     Private MainAllSeason As New Images
+    Private MainClearArt As New Images
     Private MainFanart As New Images
     Private MainPoster As New Images
     Private MainFanartSmall As New Images
+    Private MainLandscape As New Images
     Private pbGenre() As PictureBox = Nothing
     Private pnlGenre() As Panel = Nothing
     Private prevText As String = String.Empty
@@ -114,10 +116,14 @@ Public Class frmMain
     Private filMissing As String = String.Empty
 
     'Theme Information
+    Private _clearartmaxheight As Integer = 160
+    Private _clearartmaxwidth As Integer = 285
     Private _postermaxheight As Integer = 160
     Private _postermaxwidth As Integer = 160
     Private _fanartsmallmaxheight As Integer = 160
     Private _fanartsmallmaxwidth As Integer = 285
+    Private _landscapemaxheight As Integer = 160
+    Private _landscapemaxwidth As Integer = 285
     Private tTheme As New Theming
     Private _genrepanelcolor As Color = Color.Gainsboro
     Private _ipmid As Integer = 280
@@ -170,6 +176,24 @@ Public Class frmMain
         End Set
     End Property
 
+    Public Property ClearArtMaxHeight() As Integer
+        Get
+            Return _clearartmaxheight
+        End Get
+        Set(ByVal value As Integer)
+            _clearartmaxheight = value
+        End Set
+    End Property
+
+    Public Property ClearArtMaxWidth() As Integer
+        Get
+            Return _clearartmaxwidth
+        End Get
+        Set(ByVal value As Integer)
+            _clearartmaxwidth = value
+        End Set
+    End Property
+
     Public Property PosterMaxHeight() As Integer
         Get
             Return _postermaxheight
@@ -203,6 +227,24 @@ Public Class frmMain
         End Get
         Set(ByVal value As Integer)
             _fanartsmallmaxwidth = value
+        End Set
+    End Property
+
+    Public Property LandscapeMaxHeight() As Integer
+        Get
+            Return _landscapemaxheight
+        End Get
+        Set(ByVal value As Integer)
+            _landscapemaxheight = value
+        End Set
+    End Property
+
+    Public Property LandscapeMaxWidth() As Integer
+        Get
+            Return _landscapemaxwidth
+        End Get
+        Set(ByVal value As Integer)
+            _landscapemaxwidth = value
         End Set
     End Property
 
@@ -261,6 +303,13 @@ Public Class frmMain
                 End If
                 .MainFanart.Clear()
 
+                If Not IsNothing(.pbClearArt.Image) Then
+                    .pbClearArt.Image.Dispose()
+                    .pbClearArt.Image = Nothing
+                End If
+                .pnlClearArt.Visible = False
+                .MainClearArt.Clear()
+
                 If Not IsNothing(.pbPoster.Image) Then
                     .pbPoster.Image.Dispose()
                     .pbPoster.Image = Nothing
@@ -274,6 +323,13 @@ Public Class frmMain
                 End If
                 .pnlFanartSmall.Visible = False
                 .MainFanartSmall.Clear()
+
+                If Not IsNothing(.pbLandscape.Image) Then
+                    .pbLandscape.Image.Dispose()
+                    .pbLandscape.Image = Nothing
+                End If
+                .pnlLandscape.Visible = False
+                .MainLandscape.Clear()
 
                 If WithAllSeasons Then
                     If Not IsNothing(.pbAllSeason.Image) Then
@@ -953,9 +1009,11 @@ Public Class frmMain
         Try
 
             Dim Args As Arguments = DirectCast(e.Argument, Arguments)
+            Me.MainClearArt.Clear()
             Me.MainPoster.Clear()
             Me.MainFanart.Clear()
             Me.MainFanartSmall.Clear()
+            Me.MainLandscape.Clear()
 
             If bwLoadEpInfo.CancellationPending Then
                 e.Cancel = True
@@ -1030,9 +1088,11 @@ Public Class frmMain
         Try
 
             Dim Args As Arguments = DirectCast(e.Argument, Arguments)
+            Me.MainClearArt.Clear()
             Me.MainFanart.Clear()
             Me.MainPoster.Clear()
             Me.MainFanartSmall.Clear()
+            Me.MainLandscape.Clear()
 
             If bwLoadMovieInfo.CancellationPending Then
                 e.Cancel = True
@@ -1053,8 +1113,10 @@ Public Class frmMain
                 Return
             End If
 
+            If Not Master.eSettings.GeneralHideClearArt Then Me.MainClearArt.FromFile(Master.currMovie.ClearArtPath)
             If Not Master.eSettings.GeneralHidePoster Then Me.MainPoster.FromFile(Master.currMovie.PosterPath)
             If Not Master.eSettings.GeneralHideFanartSmall Then Me.MainFanartSmall.FromFile(Master.currMovie.FanartPath)
+            If Not Master.eSettings.GeneralHideLandscape Then Me.MainLandscape.FromFile(Master.currMovie.LandscapePath)
             'read nfo if it's there
 
             'wait for mediainfo to update the nfo
@@ -1096,9 +1158,11 @@ Public Class frmMain
         Try
 
             Dim Args As Arguments = DirectCast(e.Argument, Arguments)
+            Me.MainClearArt.Clear()
             Me.MainFanart.Clear()
             Me.MainPoster.Clear()
             Me.MainFanartSmall.Clear()
+            Me.MainLandscape.Clear()
 
             If bwLoadMovieSetInfo.CancellationPending Then
                 e.Cancel = True
@@ -1119,8 +1183,10 @@ Public Class frmMain
                 Return
             End If
 
+            If Not Master.eSettings.GeneralHideClearArt Then Me.MainClearArt.FromFile(Master.currMovieSet.ClearArtPath)
             If Not Master.eSettings.GeneralHidePoster Then Me.MainPoster.FromFile(Master.currMovieSet.PosterPath)
             If Not Master.eSettings.GeneralHideFanartSmall Then Me.MainFanartSmall.FromFile(Master.currMovieSet.FanartPath)
+            If Not Master.eSettings.GeneralHideLandscape Then Me.MainLandscape.FromFile(Master.currMovieSet.LandscapePath)
             'read nfo if it's there
 
             'wait for mediainfo to update the nfo
@@ -1162,9 +1228,11 @@ Public Class frmMain
         Try
 
             Dim Args As Arguments = DirectCast(e.Argument, Arguments)
+            Me.MainClearArt.Clear()
             Me.MainPoster.Clear()
             Me.MainFanart.Clear()
             Me.MainFanartSmall.Clear()
+            Me.MainLandscape.Clear()
 
             Master.currShow = Master.DB.LoadTVSeasonFromDB(Args.ID, Args.Season, True)
 
@@ -1175,6 +1243,7 @@ Public Class frmMain
 
             If Not Master.eSettings.GeneralHidePoster Then Me.MainPoster.FromFile(Master.currShow.SeasonPosterPath)
             If Not Master.eSettings.GeneralHideFanartSmall Then Me.MainFanartSmall.FromFile(Master.currShow.SeasonFanartPath)
+            If Not Master.eSettings.GeneralHideLandscape Then Me.MainLandscape.FromFile(Master.currShow.SeasonLandscapePath)
 
             If bwLoadSeasonInfo.CancellationPending Then
                 e.Cancel = True
@@ -1218,9 +1287,11 @@ Public Class frmMain
         Try
 
             Dim Args As Arguments = DirectCast(e.Argument, Arguments)
+            Me.MainClearArt.Clear()
             Me.MainFanart.Clear()
             Me.MainPoster.Clear()
             Me.MainFanartSmall.Clear()
+            Me.MainLandscape.Clear()
 
             If bwLoadShowInfo.CancellationPending Then
                 e.Cancel = True
@@ -1241,8 +1312,10 @@ Public Class frmMain
                 Return
             End If
 
+            If Not Master.eSettings.GeneralHideClearArt Then Me.MainClearArt.FromFile(Master.currShow.ShowClearArtPath)
             If Not Master.eSettings.GeneralHidePoster Then Me.MainPoster.FromFile(Master.currShow.ShowPosterPath)
             If Not Master.eSettings.GeneralHideFanartSmall Then Me.MainFanartSmall.FromFile(Master.currShow.ShowFanartPath)
+            If Not Master.eSettings.GeneralHideLandscape Then Me.MainLandscape.FromFile(Master.currShow.ShowLandscapePath)
 
             If Master.eSettings.TVGeneralDisplayASPoster AndAlso Master.eSettings.TVASPosterAnyEnabled Then
                 Me.MainAllSeason.FromFile(Master.currShow.SeasonPosterPath)
@@ -6550,6 +6623,56 @@ doCancel:
                 End If
             End If
 
+            If Not IsNothing(Me.MainLandscape.Image) Then
+                Me.pbLandscapeCache.Image = Me.MainLandscape.Image
+                ImageUtils.ResizePB(Me.pbLandscape, Me.pbLandscapeCache, Me.LandscapeMaxHeight, Me.LandscapeMaxWidth)
+                If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbLandscape)
+                Me.pnlLandscape.Size = New Size(Me.pbLandscape.Width + 10, Me.pbLandscape.Height + 10)
+                Me.pnlLandscape.Location = New Point(Me.pnlFanartSmall.Location.X + Me.pnlFanartSmall.Width + 10, Me.pnlFanartSmall.Location.Y)
+
+                If Master.eSettings.GeneralShowImgDims Then
+                    g = Graphics.FromImage(pbLandscape.Image)
+                    g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+                    strSize = String.Format("{0} x {1}", Me.MainLandscape.Image.Width, Me.MainLandscape.Image.Height)
+                    lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
+                    rect = New Rectangle(Convert.ToInt32((pbLandscape.Image.Width - lenSize) / 2 - 15), Me.pbLandscape.Height - 25, lenSize + 30, 25)
+                    ImageUtils.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
+                    g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((pbLandscape.Image.Width - lenSize) / 2), Me.pbLandscape.Height - 20)
+                End If
+
+                Me.pbLandscape.Location = New Point(4, 4)
+            Else
+                If Not IsNothing(Me.pbLandscape.Image) Then
+                    Me.pbLandscape.Image.Dispose()
+                    Me.pbLandscape.Image = Nothing
+                End If
+            End If
+
+            If Not IsNothing(Me.MainClearArt.Image) Then
+                Me.pbClearArtCache.Image = Me.MainClearArt.Image
+                ImageUtils.ResizePB(Me.pbClearArt, Me.pbClearArtCache, Me.ClearArtMaxHeight, Me.ClearArtMaxWidth)
+                If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbClearArt)
+                Me.pnlClearArt.Size = New Size(Me.pbClearArt.Width + 10, Me.pbClearArt.Height + 10)
+                Me.pnlClearArt.Location = New Point(Me.pnlLandscape.Location.X + Me.pnlLandscape.Width + 10, Me.pnlLandscape.Location.Y)
+
+                If Master.eSettings.GeneralShowImgDims Then
+                    g = Graphics.FromImage(pbClearArt.Image)
+                    g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+                    strSize = String.Format("{0} x {1}", Me.MainClearArt.Image.Width, Me.MainClearArt.Image.Height)
+                    lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
+                    rect = New Rectangle(Convert.ToInt32((pbClearArt.Image.Width - lenSize) / 2 - 15), Me.pbClearArt.Height - 25, lenSize + 30, 25)
+                    ImageUtils.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
+                    g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((pbClearArt.Image.Width - lenSize) / 2), Me.pbClearArt.Height - 20)
+                End If
+
+                Me.pbClearArt.Location = New Point(4, 4)
+            Else
+                If Not IsNothing(Me.pbClearArt.Image) Then
+                    Me.pbClearArt.Image.Dispose()
+                    Me.pbClearArt.Image = Nothing
+                End If
+            End If
+
             If Not IsNothing(Me.MainFanart.Image) Then
                 Me.pbFanartCache.Image = Me.MainFanart.Image
 
@@ -6592,8 +6715,10 @@ doCancel:
 
             Me.pnlTop.Visible = True
             If Not IsNothing(Me.pbAllSeason.Image) Then Me.pnlAllSeason.Visible = True
+            If Not IsNothing(Me.pbClearArt.Image) Then Me.pnlClearArt.Visible = True
             If Not IsNothing(Me.pbPoster.Image) Then Me.pnlPoster.Visible = True
             If Not IsNothing(Me.pbFanartSmall.Image) Then Me.pnlFanartSmall.Visible = True
+            If Not IsNothing(Me.pbLandscape.Image) Then Me.pnlLandscape.Visible = True
             If Not IsNothing(Me.pbMPAA.Image) Then Me.pnlMPAA.Visible = True
             For i As Integer = 0 To UBound(Me.pnlGenre)
                 Me.pnlGenre(i).Visible = True
@@ -6767,6 +6892,56 @@ doCancel:
                 End If
             End If
 
+            If Not IsNothing(Me.MainLandscape.Image) Then
+                Me.pbLandscapeCache.Image = Me.MainLandscape.Image
+                ImageUtils.ResizePB(Me.pbLandscape, Me.pbLandscapeCache, Me.LandscapeMaxHeight, Me.LandscapeMaxWidth)
+                If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbLandscape)
+                Me.pnlLandscape.Size = New Size(Me.pbLandscape.Width + 10, Me.pbLandscape.Height + 10)
+                Me.pnlLandscape.Location = New Point(Me.pnlFanartSmall.Location.X + Me.pnlFanartSmall.Width + 10, Me.pnlFanartSmall.Location.Y)
+
+                If Master.eSettings.GeneralShowImgDims Then
+                    g = Graphics.FromImage(pbLandscape.Image)
+                    g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+                    strSize = String.Format("{0} x {1}", Me.MainLandscape.Image.Width, Me.MainLandscape.Image.Height)
+                    lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
+                    rect = New Rectangle(Convert.ToInt32((pbLandscape.Image.Width - lenSize) / 2 - 15), Me.pbLandscape.Height - 25, lenSize + 30, 25)
+                    ImageUtils.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
+                    g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((pbLandscape.Image.Width - lenSize) / 2), Me.pbLandscape.Height - 20)
+                End If
+
+                Me.pbLandscape.Location = New Point(4, 4)
+            Else
+                If Not IsNothing(Me.pbLandscape.Image) Then
+                    Me.pbLandscape.Image.Dispose()
+                    Me.pbLandscape.Image = Nothing
+                End If
+            End If
+
+            If Not IsNothing(Me.MainClearArt.Image) Then
+                Me.pbClearArtCache.Image = Me.MainClearArt.Image
+                ImageUtils.ResizePB(Me.pbClearArt, Me.pbClearArtCache, Me.ClearArtMaxHeight, Me.ClearArtMaxWidth)
+                If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbClearArt)
+                Me.pnlClearArt.Size = New Size(Me.pbClearArt.Width + 10, Me.pbClearArt.Height + 10)
+                Me.pnlClearArt.Location = New Point(Me.pnlLandscape.Location.X + Me.pnlLandscape.Width + 10, Me.pnlLandscape.Location.Y)
+
+                If Master.eSettings.GeneralShowImgDims Then
+                    g = Graphics.FromImage(pbClearArt.Image)
+                    g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+                    strSize = String.Format("{0} x {1}", Me.MainClearArt.Image.Width, Me.MainClearArt.Image.Height)
+                    lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
+                    rect = New Rectangle(Convert.ToInt32((pbClearArt.Image.Width - lenSize) / 2 - 15), Me.pbClearArt.Height - 25, lenSize + 30, 25)
+                    ImageUtils.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
+                    g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((pbClearArt.Image.Width - lenSize) / 2), Me.pbClearArt.Height - 20)
+                End If
+
+                Me.pbClearArt.Location = New Point(4, 4)
+            Else
+                If Not IsNothing(Me.pbClearArt.Image) Then
+                    Me.pbClearArt.Image.Dispose()
+                    Me.pbClearArt.Image = Nothing
+                End If
+            End If
+
             If Not IsNothing(Me.MainFanart.Image) Then
                 Me.pbFanartCache.Image = Me.MainFanart.Image
 
@@ -6812,8 +6987,10 @@ doCancel:
             Application.DoEvents()
 
             Me.pnlTop.Visible = True
+            If Not IsNothing(Me.pbClearArt.Image) Then Me.pnlClearArt.Visible = True
             If Not IsNothing(Me.pbPoster.Image) Then Me.pnlPoster.Visible = True
             If Not IsNothing(Me.pbFanartSmall.Image) Then Me.pnlFanartSmall.Visible = True
+            If Not IsNothing(Me.pbLandscape.Image) Then Me.pnlLandscape.Visible = True
             If Not IsNothing(Me.pbMPAA.Image) Then Me.pnlMPAA.Visible = True
             For i As Integer = 0 To UBound(Me.pnlGenre)
                 Me.pnlGenre(i).Visible = True
@@ -6987,6 +7164,56 @@ doCancel:
                 End If
             End If
 
+            If Not IsNothing(Me.MainLandscape.Image) Then
+                Me.pbLandscapeCache.Image = Me.MainLandscape.Image
+                ImageUtils.ResizePB(Me.pbLandscape, Me.pbLandscapeCache, Me.LandscapeMaxHeight, Me.LandscapeMaxWidth)
+                If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbLandscape)
+                Me.pnlLandscape.Size = New Size(Me.pbLandscape.Width + 10, Me.pbLandscape.Height + 10)
+                Me.pnlLandscape.Location = New Point(Me.pnlFanartSmall.Location.X + Me.pnlFanartSmall.Width + 10, Me.pnlFanartSmall.Location.Y)
+
+                If Master.eSettings.GeneralShowImgDims Then
+                    g = Graphics.FromImage(pbLandscape.Image)
+                    g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+                    strSize = String.Format("{0} x {1}", Me.MainLandscape.Image.Width, Me.MainLandscape.Image.Height)
+                    lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
+                    rect = New Rectangle(Convert.ToInt32((pbLandscape.Image.Width - lenSize) / 2 - 15), Me.pbLandscape.Height - 25, lenSize + 30, 25)
+                    ImageUtils.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
+                    g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((pbLandscape.Image.Width - lenSize) / 2), Me.pbLandscape.Height - 20)
+                End If
+
+                Me.pbLandscape.Location = New Point(4, 4)
+            Else
+                If Not IsNothing(Me.pbLandscape.Image) Then
+                    Me.pbLandscape.Image.Dispose()
+                    Me.pbLandscape.Image = Nothing
+                End If
+            End If
+
+            If Not IsNothing(Me.MainClearArt.Image) Then
+                Me.pbClearArtCache.Image = Me.MainClearArt.Image
+                ImageUtils.ResizePB(Me.pbClearArt, Me.pbClearArtCache, Me.ClearArtMaxHeight, Me.ClearArtMaxWidth)
+                If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbClearArt)
+                Me.pnlClearArt.Size = New Size(Me.pbClearArt.Width + 10, Me.pbClearArt.Height + 10)
+                Me.pnlClearArt.Location = New Point(Me.pnlLandscape.Location.X + Me.pnlLandscape.Width + 10, Me.pnlLandscape.Location.Y)
+
+                If Master.eSettings.GeneralShowImgDims Then
+                    g = Graphics.FromImage(pbClearArt.Image)
+                    g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+                    strSize = String.Format("{0} x {1}", Me.MainClearArt.Image.Width, Me.MainClearArt.Image.Height)
+                    lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
+                    rect = New Rectangle(Convert.ToInt32((pbClearArt.Image.Width - lenSize) / 2 - 15), Me.pbClearArt.Height - 25, lenSize + 30, 25)
+                    ImageUtils.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
+                    g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((pbClearArt.Image.Width - lenSize) / 2), Me.pbClearArt.Height - 20)
+                End If
+
+                Me.pbClearArt.Location = New Point(4, 4)
+            Else
+                If Not IsNothing(Me.pbClearArt.Image) Then
+                    Me.pbClearArt.Image.Dispose()
+                    Me.pbClearArt.Image = Nothing
+                End If
+            End If
+
             If Not IsNothing(Me.MainFanart.Image) Then
                 Me.pbFanartCache.Image = Me.MainFanart.Image
 
@@ -7032,8 +7259,10 @@ doCancel:
             Application.DoEvents()
 
             Me.pnlTop.Visible = True
+            If Not IsNothing(Me.pbClearArt.Image) Then Me.pnlClearArt.Visible = True
             If Not IsNothing(Me.pbPoster.Image) Then Me.pnlPoster.Visible = True
             If Not IsNothing(Me.pbFanartSmall.Image) Then Me.pnlFanartSmall.Visible = True
+            If Not IsNothing(Me.pbLandscape.Image) Then Me.pnlLandscape.Visible = True
             If Not IsNothing(Me.pbMPAA.Image) Then Me.pnlMPAA.Visible = True
             For i As Integer = 0 To UBound(Me.pnlGenre)
                 Me.pnlGenre(i).Visible = True
@@ -7161,6 +7390,31 @@ doCancel:
                 End If
             End If
 
+            If Not IsNothing(Me.MainLandscape.Image) Then
+                Me.pbLandscapeCache.Image = Me.MainLandscape.Image
+                ImageUtils.ResizePB(Me.pbLandscape, Me.pbLandscapeCache, Me.LandscapeMaxHeight, Me.LandscapeMaxWidth)
+                If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbLandscape)
+                Me.pnlLandscape.Size = New Size(Me.pbLandscape.Width + 10, Me.pbLandscape.Height + 10)
+                Me.pnlLandscape.Location = New Point(Me.pnlFanartSmall.Location.X + Me.pnlFanartSmall.Width + 10, Me.pnlFanartSmall.Location.Y)
+
+                If Master.eSettings.GeneralShowImgDims Then
+                    g = Graphics.FromImage(pbLandscape.Image)
+                    g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+                    strSize = String.Format("{0} x {1}", Me.MainLandscape.Image.Width, Me.MainLandscape.Image.Height)
+                    lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
+                    rect = New Rectangle(Convert.ToInt32((pbLandscape.Image.Width - lenSize) / 2 - 15), Me.pbLandscape.Height - 25, lenSize + 30, 25)
+                    ImageUtils.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
+                    g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((pbLandscape.Image.Width - lenSize) / 2), Me.pbLandscape.Height - 20)
+                End If
+
+                Me.pbLandscape.Location = New Point(4, 4)
+            Else
+                If Not IsNothing(Me.pbLandscape.Image) Then
+                    Me.pbLandscape.Image.Dispose()
+                    Me.pbLandscape.Image = Nothing
+                End If
+            End If
+
             If Not IsNothing(Me.MainFanart.Image) Then
                 Me.pbFanartCache.Image = Me.MainFanart.Image
 
@@ -7205,6 +7459,7 @@ doCancel:
             If Not IsNothing(Me.pbPoster.Image) Then Me.pnlPoster.Visible = True
             If Not IsNothing(Me.pbAllSeason.Image) Then Me.pnlAllSeason.Visible = True
             If Not IsNothing(Me.pbFanartSmall.Image) Then Me.pnlFanartSmall.Visible = True
+            If Not IsNothing(Me.pbLandscape.Image) Then Me.pnlLandscape.Visible = True
             If Not IsNothing(Me.pbMPAA.Image) Then Me.pnlMPAA.Visible = True
             For i As Integer = 0 To UBound(Me.pnlGenre)
                 Me.pnlGenre(i).Visible = True
@@ -7333,6 +7588,56 @@ doCancel:
                 End If
             End If
 
+            If Not IsNothing(Me.MainLandscape.Image) Then
+                Me.pbLandscapeCache.Image = Me.MainLandscape.Image
+                ImageUtils.ResizePB(Me.pbLandscape, Me.pbLandscapeCache, Me.LandscapeMaxHeight, Me.LandscapeMaxWidth)
+                If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbLandscape)
+                Me.pnlLandscape.Size = New Size(Me.pbLandscape.Width + 10, Me.pbLandscape.Height + 10)
+                Me.pnlLandscape.Location = New Point(Me.pnlFanartSmall.Location.X + Me.pnlFanartSmall.Width + 10, Me.pnlFanartSmall.Location.Y)
+
+                If Master.eSettings.GeneralShowImgDims Then
+                    g = Graphics.FromImage(pbLandscape.Image)
+                    g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+                    strSize = String.Format("{0} x {1}", Me.MainLandscape.Image.Width, Me.MainLandscape.Image.Height)
+                    lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
+                    rect = New Rectangle(Convert.ToInt32((pbLandscape.Image.Width - lenSize) / 2 - 15), Me.pbLandscape.Height - 25, lenSize + 30, 25)
+                    ImageUtils.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
+                    g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((pbLandscape.Image.Width - lenSize) / 2), Me.pbLandscape.Height - 20)
+                End If
+
+                Me.pbLandscape.Location = New Point(4, 4)
+            Else
+                If Not IsNothing(Me.pbLandscape.Image) Then
+                    Me.pbLandscape.Image.Dispose()
+                    Me.pbLandscape.Image = Nothing
+                End If
+            End If
+
+            If Not IsNothing(Me.MainClearArt.Image) Then
+                Me.pbClearArtCache.Image = Me.MainClearArt.Image
+                ImageUtils.ResizePB(Me.pbClearArt, Me.pbClearArtCache, Me.ClearArtMaxHeight, Me.ClearArtMaxWidth)
+                If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(Me.pbClearArt)
+                Me.pnlClearArt.Size = New Size(Me.pbClearArt.Width + 10, Me.pbClearArt.Height + 10)
+                Me.pnlClearArt.Location = New Point(Me.pnlLandscape.Location.X + Me.pnlLandscape.Width + 10, Me.pnlLandscape.Location.Y)
+
+                If Master.eSettings.GeneralShowImgDims Then
+                    g = Graphics.FromImage(pbClearArt.Image)
+                    g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+                    strSize = String.Format("{0} x {1}", Me.MainClearArt.Image.Width, Me.MainClearArt.Image.Height)
+                    lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
+                    rect = New Rectangle(Convert.ToInt32((pbClearArt.Image.Width - lenSize) / 2 - 15), Me.pbClearArt.Height - 25, lenSize + 30, 25)
+                    ImageUtils.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
+                    g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((pbClearArt.Image.Width - lenSize) / 2), Me.pbClearArt.Height - 20)
+                End If
+
+                Me.pbClearArt.Location = New Point(4, 4)
+            Else
+                If Not IsNothing(Me.pbClearArt.Image) Then
+                    Me.pbClearArt.Image.Dispose()
+                    Me.pbClearArt.Image = Nothing
+                End If
+            End If
+
             If Not IsNothing(Me.MainFanart.Image) Then
                 Me.pbFanartCache.Image = Me.MainFanart.Image
 
@@ -7400,8 +7705,10 @@ doCancel:
 
             Me.pnlTop.Visible = True
             If Not IsNothing(Me.pbAllSeason.Image) Then Me.pnlAllSeason.Visible = True
+            If Not IsNothing(Me.pbClearArt.Image) Then Me.pnlClearArt.Visible = True
             If Not IsNothing(Me.pbPoster.Image) Then Me.pnlPoster.Visible = True
             If Not IsNothing(Me.pbFanartSmall.Image) Then Me.pnlFanartSmall.Visible = True
+            If Not IsNothing(Me.pbLandscape.Image) Then Me.pnlLandscape.Visible = True
             If Not IsNothing(Me.pbMPAA.Image) Then Me.pnlMPAA.Visible = True
             For i As Integer = 0 To UBound(Me.pnlGenre)
                 Me.pnlGenre(i).Visible = True
@@ -9512,6 +9819,18 @@ doCancel:
         DirectCast(sender, PictureBox).Image = GenreImage
     End Sub
 
+    Private Sub pbClearArt_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbClearArt.DoubleClick
+        Try
+            If Not IsNothing(Me.pbClearArt.Image) Then
+                Using dImgView As New dlgImgView
+                    dImgView.ShowDialog(Me.pbClearArtCache.Image)
+                End Using
+            End If
+        Catch ex As Exception
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
     Private Sub pbPoster_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbPoster.DoubleClick
         Try
             If Not IsNothing(Me.pbPoster.Image) Then
@@ -9529,6 +9848,18 @@ doCancel:
             If Not IsNothing(Me.pbFanartSmall.Image) Then
                 Using dImgView As New dlgImgView
                     dImgView.ShowDialog(Me.pbFanartSmallCache.Image)
+                End Using
+            End If
+        Catch ex As Exception
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub pbLandscape_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbLandscape.DoubleClick
+        Try
+            If Not IsNothing(Me.pbLandscape.Image) Then
+                Using dImgView As New dlgImgView
+                    dImgView.ShowDialog(Me.pbLandscapeCache.Image)
                 End Using
             End If
         Catch ex As Exception
@@ -12807,6 +13138,7 @@ doCancel:
         Dim setEnabled As Boolean
         Dim TVShow As Structures.DBTV
         Dim SetName As String
+        Dim MouseButton As MouseButtons
 
 #End Region 'Fields
 
