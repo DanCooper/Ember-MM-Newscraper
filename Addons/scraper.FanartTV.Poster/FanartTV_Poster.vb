@@ -235,7 +235,9 @@ Public Class FanartTV_Poster
 
         LoadSettings()
 
-        ImageList = _fanartTV.GetFANARTTVImages(DBMovie.Movie.ID, Type)
+        If Not isMovieSet Then
+            ImageList = _fanartTV.GetFANARTTVImages(DBMovie.Movie.ID, Type)
+        End If
 
         Master.eLog.Trace(Me.GetType(), "Finished scrape", New Diagnostics.StackTrace().ToString(), Nothing, False)
         Return New Interfaces.ModuleResult With {.breakChain = False}

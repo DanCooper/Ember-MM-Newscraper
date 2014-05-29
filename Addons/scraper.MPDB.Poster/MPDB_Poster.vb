@@ -147,7 +147,9 @@ Public Class MPDB_Poster
 
         LoadSettings()
 
-        ImageList = MPDB.GetMPDBPosters(DBMovie.Movie.IMDBID)
+        If Not isMovieSet Then
+            ImageList = MPDB.GetMPDBPosters(DBMovie.Movie.IMDBID)
+        End If
 
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function

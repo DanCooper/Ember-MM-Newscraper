@@ -141,7 +141,9 @@ Public Class IMPA_Poster
 
         LoadSettings()
 
-        ImageList = IMPA.GetIMPAPosters(DBMovie.Movie.IMDBID)
+        If Not isMovieSet Then
+            ImageList = IMPA.GetIMPAPosters(DBMovie.Movie.IMDBID)
+        End If
 
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function

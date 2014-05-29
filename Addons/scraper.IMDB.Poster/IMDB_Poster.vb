@@ -144,7 +144,9 @@ Public Class IMDB_Poster
         Master.eLog.Trace(Me.GetType(), "Started scrape", New StackTrace().ToString(), Nothing, False)
         LoadSettings()
 
-        ImageList = IMDB.GetIMDBPosters(DBMovie.Movie.IMDBID)
+        If Not isMovieSet Then
+            ImageList = IMDB.GetIMDBPosters(DBMovie.Movie.IMDBID)
+        End If
 
         Master.eLog.Trace(Me.GetType(), "Finished scrape", New StackTrace().ToString(), Nothing, False)
         Return New Interfaces.ModuleResult With {.breakChain = False}
