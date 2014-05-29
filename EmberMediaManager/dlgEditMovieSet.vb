@@ -1250,6 +1250,16 @@ Public Class dlgEditMovieSet
                         .btnSetMoviePosterScrape.Enabled = False
                     End If
                 End If
+
+                If String.IsNullOrEmpty(Master.eSettings.MovieMoviesetsPath) Then
+                    tcEditMovie.TabPages.Remove(tpBanner)
+                    tcEditMovie.TabPages.Remove(tpClearArt)
+                    tcEditMovie.TabPages.Remove(tpClearLogo)
+                    tcEditMovie.TabPages.Remove(tpDiscArt)
+                    tcEditMovie.TabPages.Remove(tpFanart)
+                    tcEditMovie.TabPages.Remove(tpLandscape)
+                    tcEditMovie.TabPages.Remove(tpPoster)
+                End If
             End With
 
         Catch ex As Exception
@@ -1540,7 +1550,6 @@ Public Class dlgEditMovieSet
                     .MoviePoster.DeleteMovieSetPoster(Master.currMovieSet)
                     Master.currMovieSet.PosterPath = String.Empty
                 End If
-
             End With
         Catch ex As Exception
             Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
