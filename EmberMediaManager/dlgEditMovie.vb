@@ -2514,7 +2514,7 @@ Public Class dlgEditMovie
                     End If
 
                     If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
-                        For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.isSingle, Enums.ModType.WatchedFile)
+                        For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.isSingle, Enums.MovieModType.WatchedFile)
                             If Not File.Exists(a) Then
                                 Dim fs As FileStream = File.Create(a)
                                 fs.Close()
@@ -2528,7 +2528,7 @@ Public Class dlgEditMovie
                     End If
 
                     If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
-                        For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.isSingle, Enums.ModType.WatchedFile)
+                        For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.isSingle, Enums.MovieModType.WatchedFile)
                             If File.Exists(a) Then
                                 File.Delete(a)
                             End If
@@ -2664,7 +2664,7 @@ Public Class dlgEditMovie
                 If Not String.IsNullOrEmpty(Master.currMovie.TrailerPath) AndAlso Master.currMovie.TrailerPath.Contains(Master.TempPath) Then
                     Dim TargetTrailer As String = String.Empty
                     Dim fExt As String = Path.GetExtension(Master.currMovie.TrailerPath)
-                    For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.isSingle, Enums.ModType.Trailer)
+                    For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.isSingle, Enums.MovieModType.Trailer)
                         File.Copy(Master.currMovie.TrailerPath, a & fExt)
                         TargetTrailer = a & fExt
                     Next
@@ -2674,7 +2674,7 @@ Public Class dlgEditMovie
                     Master.currMovie.TrailerPath = lhttp.DownloadFile(Master.currMovie.TrailerPath.Replace(":http", "http"), Path.Combine(Master.TempPath, "trailer"), False, "trailer")
                     Dim TargetTrailer As String = String.Empty
                     Dim fExt As String = Path.GetExtension(Master.currMovie.TrailerPath)
-                    For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.isSingle, Enums.ModType.Trailer)
+                    For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.isSingle, Enums.MovieModType.Trailer)
                         File.Copy(Master.currMovie.TrailerPath, a & fExt)
                         TargetTrailer = a & fExt
                     Next

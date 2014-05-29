@@ -232,22 +232,22 @@ Public Class dlgUpdateMedia
             End If
 
             If Me.chkModAll.Checked Then
-                Functions.SetScraperMod(Enums.ModType.All, True)
+                Functions.SetScraperMod(Enums.MovieModType.All, True)
             Else
-                Functions.SetScraperMod(Enums.ModType.ActorThumbs, chkModActorThumbs.Checked, False)
-                Functions.SetScraperMod(Enums.ModType.ClearArt, chkModClearArt.Checked, False)
-                Functions.SetScraperMod(Enums.ModType.ClearLogo, chkModClearLogo.Checked, False)
-                Functions.SetScraperMod(Enums.ModType.DiscArt, chkModDiscArt.Checked, False)
-                Functions.SetScraperMod(Enums.ModType.Fanart, chkModFanart.Checked, False)
-                Functions.SetScraperMod(Enums.ModType.EThumbs, chkModEThumbs.Checked, False)
-                Functions.SetScraperMod(Enums.ModType.EFanarts, chkModEFanarts.Checked, False)
-                Functions.SetScraperMod(Enums.ModType.Fanart, chkModFanart.Checked, False)
-                Functions.SetScraperMod(Enums.ModType.Landscape, chkModLandscape.Checked, False)
-                Functions.SetScraperMod(Enums.ModType.Meta, chkModMeta.Checked, False)
-                Functions.SetScraperMod(Enums.ModType.NFO, chkModNFO.Checked, False)
-                Functions.SetScraperMod(Enums.ModType.Poster, chkModPoster.Checked, False)
-                Functions.SetScraperMod(Enums.ModType.Theme, chkModTheme.Checked, False)
-                Functions.SetScraperMod(Enums.ModType.Trailer, chkModTrailer.Checked, False)
+                Functions.SetScraperMod(Enums.MovieModType.ActorThumbs, chkModActorThumbs.Checked, False)
+                Functions.SetScraperMod(Enums.MovieModType.ClearArt, chkModClearArt.Checked, False)
+                Functions.SetScraperMod(Enums.MovieModType.ClearLogo, chkModClearLogo.Checked, False)
+                Functions.SetScraperMod(Enums.MovieModType.DiscArt, chkModDiscArt.Checked, False)
+                Functions.SetScraperMod(Enums.MovieModType.Fanart, chkModFanart.Checked, False)
+                Functions.SetScraperMod(Enums.MovieModType.EThumbs, chkModEThumbs.Checked, False)
+                Functions.SetScraperMod(Enums.MovieModType.EFanarts, chkModEFanarts.Checked, False)
+                Functions.SetScraperMod(Enums.MovieModType.Fanart, chkModFanart.Checked, False)
+                Functions.SetScraperMod(Enums.MovieModType.Landscape, chkModLandscape.Checked, False)
+                Functions.SetScraperMod(Enums.MovieModType.Meta, chkModMeta.Checked, False)
+                Functions.SetScraperMod(Enums.MovieModType.NFO, chkModNFO.Checked, False)
+                Functions.SetScraperMod(Enums.MovieModType.Poster, chkModPoster.Checked, False)
+                Functions.SetScraperMod(Enums.MovieModType.Theme, chkModTheme.Checked, False)
+                Functions.SetScraperMod(Enums.MovieModType.Trailer, chkModTrailer.Checked, False)
             End If
 
         End With
@@ -473,7 +473,7 @@ Public Class dlgUpdateMedia
 
             'set defaults
             CustomUpdater.ScrapeType = Enums.ScrapeType.FullAuto
-            Functions.SetScraperMod(Enums.ModType.All, True)
+            Functions.SetScraperMod(Enums.MovieModType.All, True)
 
             Me.CheckEnable()
 

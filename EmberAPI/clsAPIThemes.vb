@@ -163,7 +163,7 @@ Public Class Theme
         tTheme = lhttp.DownloadFile(sURL, Path.Combine(Master.TempPath, "theme"), False, "theme", sWebURL)
         If Not String.IsNullOrEmpty(tTheme) Then
             Dim fExt As String = Path.GetExtension(tTheme)
-            For Each a In FileUtils.GetFilenameList.Movie(sPath, isSingle, Enums.ModType.Theme)
+            For Each a In FileUtils.GetFilenameList.Movie(sPath, isSingle, Enums.MovieModType.Theme)
                 If Not File.Exists(a & fExt) OrElse Master.eSettings.MovieThemeOverwrite Then
                     If File.Exists(a & fExt) Then
                         File.Delete(a & fExt)

@@ -4975,6 +4975,7 @@ Partial Class frmMain
         Me.ilColumnIcons.Images.SetKeyName(13, "hasDiscArt.png")
         Me.ilColumnIcons.Images.SetKeyName(14, "hasClearLogo.png")
         Me.ilColumnIcons.Images.SetKeyName(15, "hasClearArt.png")
+        Me.ilColumnIcons.Images.SetKeyName(16, "hasCharacterArt.png")
         '
         'tmrWaitMovie
         '

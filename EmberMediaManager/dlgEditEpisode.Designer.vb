@@ -81,6 +81,7 @@ Partial Class dlgEditEpisode
         Me.Cancel_Button = New System.Windows.Forms.Button()
         Me.OK_Button = New System.Windows.Forms.Button()
         Me.ofdImage = New System.Windows.Forms.OpenFileDialog()
+        Me.chkWatched = New System.Windows.Forms.CheckBox()
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tcEditEpisode.SuspendLayout()
@@ -703,6 +704,17 @@ Partial Class dlgEditEpisode
         Me.OK_Button.TabIndex = 0
         Me.OK_Button.Text = "OK"
         '
+        'chkWatched
+        '
+        Me.chkWatched.AutoSize = True
+        Me.chkWatched.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkWatched.Location = New System.Drawing.Point(12, 557)
+        Me.chkWatched.Name = "chkWatched"
+        Me.chkWatched.Size = New System.Drawing.Size(72, 17)
+        Me.chkWatched.TabIndex = 7
+        Me.chkWatched.Text = "Watched"
+        Me.chkWatched.UseVisualStyleBackColor = True
+        '
         'dlgEditEpisode
         '
         Me.AcceptButton = Me.OK_Button
@@ -710,6 +722,7 @@ Partial Class dlgEditEpisode
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
         Me.ClientSize = New System.Drawing.Size(854, 582)
+        Me.Controls.Add(Me.chkWatched)
         Me.Controls.Add(Me.tcEditEpisode)
         Me.Controls.Add(Me.Cancel_Button)
         Me.Controls.Add(Me.OK_Button)
@@ -741,6 +754,7 @@ Partial Class dlgEditEpisode
         Me.tpFrameExtraction.ResumeLayout(False)
         Me.tpEpisodeMetaData.ResumeLayout(False)
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
     Friend WithEvents pnlTop As System.Windows.Forms.Panel
@@ -801,5 +815,6 @@ Partial Class dlgEditEpisode
     Friend WithEvents btnActorUp As System.Windows.Forms.Button
     Friend WithEvents pnlFrameExtrator As System.Windows.Forms.Panel
     Friend WithEvents ofdImage As System.Windows.Forms.OpenFileDialog
+    Friend WithEvents chkWatched As System.Windows.Forms.CheckBox
 
 End Class

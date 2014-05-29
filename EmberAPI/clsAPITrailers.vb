@@ -321,7 +321,7 @@ Public Class Trailers
 
         tTrailer = lhttp.DownloadFile(sURL, Path.Combine(Master.TempPath, "trailer"), False, "trailer")
         Dim fExt As String = Path.GetExtension(tTrailer)
-        For Each a In FileUtils.GetFilenameList.Movie(sPath, isSingle, Enums.ModType.Trailer)
+        For Each a In FileUtils.GetFilenameList.Movie(sPath, isSingle, Enums.MovieModType.Trailer)
             If File.Exists(a & fExt) Then
                 File.Delete(a & fExt)
             End If

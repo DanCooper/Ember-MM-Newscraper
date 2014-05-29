@@ -565,7 +565,7 @@ Public Class Enums
     ''' Enum representing possible scrape data types
     ''' </summary>
     ''' <remarks></remarks>
-    Public Enum ModType As Integer
+    Public Enum MovieModType As Integer
         NFO = 0
         Poster = 1
         Fanart = 2
@@ -584,6 +584,35 @@ Public Class Enums
         WatchedFile = 15
         CharacterArt = 16
         Theme = 17
+    End Enum
+    ''' <summary>
+    ''' Enum representing possible scrape data types
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Enum TVModType As Integer
+        All = 0
+        DoSearch = 1
+        AllSeasonsBanner = 2
+        AllSeasonsFanart = 3
+        AllSeasonsLandscape = 4
+        AllSeasonsPoster = 5
+        EpisodeFanart = 6
+        EpisodeMeta = 7
+        EpisodeNfo = 8
+        EpisodePoster = 9
+        SeasonBanner = 10
+        SeasonFanart = 11
+        SeasonLandscape = 12
+        SeasonPoster = 13
+        ShowBanner = 14
+        ShowCharacterArt = 15
+        ShowClearArt = 16
+        ShowClearLogo = 17
+        ShowFanart = 18
+        ShowLandscape = 19
+        ShowNfo = 20
+        ShowPoster = 21
+        ShowTheme = 22
     End Enum
     ''' <summary>
     ''' Enum representing possible scraper capabilities
@@ -933,11 +962,11 @@ Public Class Functions
     ''' <param name="data">A valid VB-style DateTime</param>
     ''' <returns>A value representing the DateTime as a unix-style timestamp <c>Double</c></returns>
     ''' <remarks></remarks>
-	Public Shared Function ConvertToUnixTimestamp(ByVal data As DateTime) As Double
-		Dim origin As DateTime = New DateTime(1970, 1, 1, 0, 0, 0, 0)
-		Dim diff As System.TimeSpan = data - origin
-		Return Math.Floor(diff.TotalSeconds)
-	End Function
+    Public Shared Function ConvertToUnixTimestamp(ByVal data As DateTime) As Double
+        Dim origin As DateTime = New DateTime(1970, 1, 1, 0, 0, 0, 0)
+        Dim diff As System.TimeSpan = data - origin
+        Return Math.Floor(diff.TotalSeconds)
+    End Function
     ' TODO DOC Need appropriate header and tests
     Public Shared Function LocksToOptions() As Structures.ScrapeOptions
         Dim options As New Structures.ScrapeOptions
@@ -1083,52 +1112,52 @@ Public Class Functions
     ''' </summary>
     ''' <param name="sPath">Full path to extrathumbs directory</param>
     ''' <returns>Last detected number of the discovered extrathumbs.</returns>
-	Public Shared Function GetExtraModifier(ByVal sPath As String) As Integer
-		Dim iMod As Integer = 0
-		Dim lThumbs As New List(Of String)
+    Public Shared Function GetExtraModifier(ByVal sPath As String) As Integer
+        Dim iMod As Integer = 0
+        Dim lThumbs As New List(Of String)
 
-		Try
-			If Directory.Exists(sPath) Then
+        Try
+            If Directory.Exists(sPath) Then
 
-				Try
-					lThumbs.AddRange(Directory.GetFiles(sPath, "thumb*.jpg"))
-				Catch
-				End Try
+                Try
+                    lThumbs.AddRange(Directory.GetFiles(sPath, "thumb*.jpg"))
+                Catch
+                End Try
 
-				If lThumbs.Count > 0 Then
-					Dim cur As Integer = 0
-					For Each t As String In lThumbs
-						cur = Convert.ToInt32(Regex.Match(t, "(\d+).jpg").Groups(1).ToString)
-						iMod = Math.Max(iMod, cur)
-					Next
-				End If
-			End If
+                If lThumbs.Count > 0 Then
+                    Dim cur As Integer = 0
+                    For Each t As String In lThumbs
+                        cur = Convert.ToInt32(Regex.Match(t, "(\d+).jpg").Groups(1).ToString)
+                        iMod = Math.Max(iMod, cur)
+                    Next
+                End If
+            End If
 
-		Catch ex As Exception
+        Catch ex As Exception
             Master.eLog.Error(GetType(Functions), ex.Message & " - Failed trying to identify last thumb from path: " & sPath, ex.StackTrace, "Error")
-		End Try
+        End Try
 
-		Return iMod
-	End Function
+        Return iMod
+    End Function
     ''' <summary>
     ''' Get a path to the ffmpeg included with the Ember distribution
     ''' </summary>
     ''' <returns>A path to an instance of ffmpeg</returns>
     ''' <remarks>Windows distributions have ffmpeg in the Bin subdirectory.
     ''' Note that no validation is done to ensure that ffmpeg actually exists.</remarks>
-	Public Shared Function GetFFMpeg() As String
-		If Master.isWindows Then
-			Return String.Concat(Functions.AppPath, "Bin", Path.DirectorySeparatorChar, "ffmpeg.exe")
-		Else
-			Return "ffmpeg"
-		End If
-	End Function
+    Public Shared Function GetFFMpeg() As String
+        If Master.isWindows Then
+            Return String.Concat(Functions.AppPath, "Bin", Path.DirectorySeparatorChar, "ffmpeg.exe")
+        Else
+            Return "ffmpeg"
+        End If
+    End Function
 
     ''' <summary>
     ''' Populate Master.SourcesList with a list of paths to all (media?) sources stored in the database
     ''' </summary>
-	Public Shared Sub GetListOfSources()
-		Master.SourcesList.Clear()
+    Public Shared Sub GetListOfSources()
+        Master.SourcesList.Clear()
         Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
             SQLcommand.CommandText = "SELECT sources.Path FROM sources;"
             Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
@@ -1137,7 +1166,7 @@ Public Class Functions
                 End While
             End Using
         End Using
-	End Sub
+    End Sub
     ''' <summary>
     ''' Determines the path to the desired season of a given show
     ''' </summary>
@@ -1199,14 +1228,14 @@ Public Class Functions
     ''' <returns>String of separated List values.
     ''' If the list is empty, an empty string will be returned.
     ''' If the separator is empty or missing, assume "," is the separator</returns>
-	Public Shared Function ListToStringWithSeparator(Of T)(ByVal source As IList(Of T), ByVal separator As String) As String
+    Public Shared Function ListToStringWithSeparator(Of T)(ByVal source As IList(Of T), ByVal separator As String) As String
         If source Is Nothing Then Return String.Empty
         If String.IsNullOrEmpty(separator) Then separator = ","
 
-		Dim values As String() = source.Cast(Of Object)().Where(Function(n) n IsNot Nothing).Select(Function(s) s.ToString).ToArray
+        Dim values As String() = source.Cast(Of Object)().Where(Function(n) n IsNot Nothing).Select(Function(s) s.ToString).ToArray
 
-		Return String.Join(separator, values)
-	End Function
+        Return String.Join(separator, values)
+    End Function
     ''' <summary>
     ''' Set the DoubleBuffered property of the supplied Panel. This will tell the control to redraw its surface using a 
     ''' secondary buffer to reduce/prevent flicker.
@@ -1346,7 +1375,7 @@ Public Class Functions
     ''' <param name="DoClear">If <c>True</c>, pre-initialize all Mod values to False before setting the options. 
     ''' If <c>False</c>, leave the existing options untouched wile setting the options</param>
     ''' <remarks></remarks>
-    Public Shared Sub SetScraperMod(ByVal MType As Enums.ModType, ByVal MValue As Boolean, Optional ByVal DoClear As Boolean = True)
+    Public Shared Sub SetScraperMod(ByVal MType As Enums.MovieModType, ByVal MValue As Boolean, Optional ByVal DoClear As Boolean = True)
         With Master.GlobalScrapeMod
             If DoClear Then
                 .ActorThumbs = False
@@ -1368,7 +1397,7 @@ Public Class Functions
             End If
 
             Select Case MType
-                Case Enums.ModType.All
+                Case Enums.MovieModType.All
                     '.DoSearch should not be set here as it is only needed for a re-search of a movie (first scraping or movie change).
                     .ActorThumbs = MValue
                     .Banner = MValue
@@ -1385,37 +1414,37 @@ Public Class Functions
                     .Poster = MValue
                     .Trailer = MValue
                     .Theme = MValue
-                Case Enums.ModType.ActorThumbs
+                Case Enums.MovieModType.ActorThumbs
                     .ActorThumbs = MValue
-                Case Enums.ModType.Banner
+                Case Enums.MovieModType.Banner
                     .Banner = MValue
-                Case Enums.ModType.CharacterArt
+                Case Enums.MovieModType.CharacterArt
                     .CharacterArt = MValue
-                Case Enums.ModType.ClearArt
+                Case Enums.MovieModType.ClearArt
                     .ClearArt = MValue
-                Case Enums.ModType.ClearLogo
+                Case Enums.MovieModType.ClearLogo
                     .ClearLogo = MValue
-                Case Enums.ModType.DiscArt
+                Case Enums.MovieModType.DiscArt
                     .DiscArt = MValue
-                Case Enums.ModType.DoSearch
+                Case Enums.MovieModType.DoSearch
                     .DoSearch = MValue
-                Case Enums.ModType.EFanarts
+                Case Enums.MovieModType.EFanarts
                     .EFanarts = MValue
-                Case Enums.ModType.EThumbs
+                Case Enums.MovieModType.EThumbs
                     .EThumbs = MValue
-                Case Enums.ModType.Fanart
+                Case Enums.MovieModType.Fanart
                     .Fanart = MValue
-                Case Enums.ModType.Landscape
+                Case Enums.MovieModType.Landscape
                     .Landscape = MValue
-                Case Enums.ModType.Meta
+                Case Enums.MovieModType.Meta
                     .Meta = MValue
-                Case Enums.ModType.NFO
+                Case Enums.MovieModType.NFO
                     .NFO = MValue
-                Case Enums.ModType.Poster
+                Case Enums.MovieModType.Poster
                     .Poster = MValue
-                Case Enums.ModType.Trailer
+                Case Enums.MovieModType.Trailer
                     .Trailer = MValue
-                Case Enums.ModType.Theme
+                Case Enums.MovieModType.Theme
                     .Theme = MValue
             End Select
 
