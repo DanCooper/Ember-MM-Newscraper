@@ -47,6 +47,7 @@ Public Class frmMain
     Friend WithEvents bwNonScrape As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwRefreshMovies As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwRefreshMovieSets As New System.ComponentModel.BackgroundWorker
+    Friend WithEvents bwCheckVersion As New System.ComponentModel.BackgroundWorker
 
     Private alActors As New List(Of String)
     Private aniFilterRaise As Boolean = False
@@ -8039,11 +8040,14 @@ doCancel:
 
             ' Force initialization of languages for main
             Master.eLang.LoadAllLanguage(Master.eSettings.GeneralLanguage)
+
             Dim aBit As String = Master.eLang.GetString(1008, "x64")
             If Master.is32Bit Then
                 aBit = Master.eLang.GetString(1007, "x86")
             End If
             fLoading.SetVersionMesg(Master.eLang.GetString(865, "Version {0}.{1}.{2}.{3} {4}"), aBit)
+
+            Me.bwCheckVersion.RunWorkerAsync()
 
             fLoading.SetLoadingMesg(Master.eLang.GetString(854, "Basic setup"))
 
@@ -8420,43 +8424,14 @@ doCancel:
             '    End If
             'End If
 
-            Try
-                Dim sHTTP As New EmberAPI.HTTP
-                'Pull Assembly version info from current Ember repo on github
-                Dim HTML As String = sHTTP.DownloadData("https://raw.github.com/DanCooper/Ember-MM-Newscraper/master/EmberMediaManager/My%20Project/AssemblyInfo.vb")
-                sHTTP = Nothing
-                Dim aBit As String = Master.eLang.GetString(1008, "x64")
-                If Master.is32Bit Then
-                    aBit = Master.eLang.GetString(1007, "x86")
-                End If
-                Dim VersionNumber As String = System.String.Format(Master.eLang.GetString(865, "Version {0}.{1}.{2}.{3} {4}"), My.Application.Info.Version.Major, My.Application.Info.Version.Minor, My.Application.Info.Version.Build, My.Application.Info.Version.Revision, aBit)
-                ' Not localized as is the Assembly file version
-                Dim VersionNumberO As String = System.String.Format("{0}.{1}.{2}.{3}", My.Application.Info.Version.Major, My.Application.Info.Version.Minor, My.Application.Info.Version.Build, My.Application.Info.Version.Revision)
-                If Not String.IsNullOrEmpty(HTML) Then
-                    'Example: AssemblyFileVersion("1.3.0.18")>
-                    Dim mc As MatchCollection = System.Text.RegularExpressions.Regex.Matches(HTML, "AssemblyFileVersion([^<]+)>")
-                    'check to see if at least one entry was found
-                    If mc.Count > 0 Then
-                        'just use the first match if more are found and compare with running Ember Version
-                        If mc(0).Value.ToString <> "AssemblyFileVersion(""" & VersionNumberO & """)>" Then
-                            'means that running Ember version is outdated!
-                            mnuVersion.Text = System.String.Format(Master.eLang.GetString(1009, "{0} - (New version available!)"), VersionNumber)
-                            mnuVersion.ForeColor = Color.DarkRed
-                        Else
-                            'Ember already up to date!
-                            mnuVersion.Text = VersionNumber
-                            mnuVersion.ForeColor = Color.DarkGreen
-                        End If
-                    End If
-                    'if no github query possible, than simply display Ember version on form
-                Else
-                    mnuVersion.Text = VersionNumber
-                    mnuVersion.ForeColor = Color.DarkBlue
-                End If
+            Dim aBit As String = Master.eLang.GetString(1008, "x64")
+            If Master.is32Bit Then
+                aBit = Master.eLang.GetString(1007, "x86")
+            End If
+            Dim VersionNumber As String = System.String.Format(Master.eLang.GetString(865, "Version {0}.{1}.{2}.{3} {4}"), My.Application.Info.Version.Major, My.Application.Info.Version.Minor, My.Application.Info.Version.Build, My.Application.Info.Version.Revision, aBit)
+            ' Not localized as is the Assembly file version
+            Dim VersionNumberO As String = System.String.Format("{0}.{1}.{2}.{3}", My.Application.Info.Version.Major, My.Application.Info.Version.Minor, My.Application.Info.Version.Build, My.Application.Info.Version.Revision)
 
-            Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
-            End Try
             If Not CloseApp Then
                 fLoading.SetLoadingMesg(Master.eLang.GetString(862, "Loading translations..."))
                 APIXML.CacheXMLs()
@@ -13291,6 +13266,50 @@ doCancel:
         KeyBuffer = String.Empty
     End Sub
 
+    Private Sub bwCheckVersion_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwCheckVersion.DoWork
+        Try
+            Dim sHTTP As New EmberAPI.HTTP
+            'Pull Assembly version info from current Ember repo on github
+            Dim HTML As String
+            HTML = sHTTP.DownloadData("https://raw.github.com/DanCooper/Ember-MM-Newscraper/master/EmberMediaManager/My%20Project/AssemblyInfo.vb")
+            sHTTP = Nothing
+            Dim aBit As String = Master.eLang.GetString(1008, "x64")
+            If Master.is32Bit Then
+                aBit = Master.eLang.GetString(1007, "x86")
+            End If
+            Dim VersionNumber As String = System.String.Format(Master.eLang.GetString(865, "Version {0}.{1}.{2}.{3} {4}"), My.Application.Info.Version.Major, My.Application.Info.Version.Minor, My.Application.Info.Version.Build, My.Application.Info.Version.Revision, aBit)
+            ' Not localized as is the Assembly file version
+            Dim VersionNumberO As String = System.String.Format("{0}.{1}.{2}.{3}", My.Application.Info.Version.Major, My.Application.Info.Version.Minor, My.Application.Info.Version.Build, My.Application.Info.Version.Revision)
+            If Not String.IsNullOrEmpty(HTML) Then
+                'Example: AssemblyFileVersion("1.3.0.18")>
+                Dim mc As MatchCollection = System.Text.RegularExpressions.Regex.Matches(HTML, "AssemblyFileVersion([^<]+)>")
+                'check to see if at least one entry was found
+                If mc.Count > 0 Then
+                    'just use the first match if more are found and compare with running Ember Version
+                    If mc(0).Value.ToString <> "AssemblyFileVersion(""" & VersionNumberO & """)>" Then
+                        'means that running Ember version is outdated!
+                        Me.Invoke(New UpdatemnuVersionDel(AddressOf UpdatemnuVersion), System.String.Format(Master.eLang.GetString(1009, "{0} - (New version available!)"), VersionNumber), Color.DarkRed)
+                    Else
+                        'Ember already up to date!
+                        Me.Invoke(New UpdatemnuVersionDel(AddressOf UpdatemnuVersion), VersionNumber, Color.DarkGreen)
+                    End If
+                End If
+                'if no github query possible, than simply display Ember version on form
+            Else
+                Me.Invoke(New UpdatemnuVersionDel(AddressOf UpdatemnuVersion), VersionNumber, Color.DarkBlue)
+            End If
+
+        Catch ex As Exception
+            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Public Delegate Sub UpdatemnuVersionDel(sText As String, sForeColor As Color)
+
+    Private Sub UpdatemnuVersion(sText As String, sForeColor As Color)
+        mnuVersion.Text = sText
+        mnuVersion.ForeColor = sForeColor
+    End Sub
 #End Region 'Methods
 
 #Region "Nested Types"
