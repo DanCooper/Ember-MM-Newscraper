@@ -436,7 +436,7 @@ Public Class dlgImgSelect
         Me.cbFilterSize.Visible = True
         Application.DoEvents()
         Me.ResumeLayout(True)
-        Me.pnlBG.AutoScroll = False
+        Me.pnlBG.AutoScroll = True
         Me.Activate()
         Application.DoEvents()
 
