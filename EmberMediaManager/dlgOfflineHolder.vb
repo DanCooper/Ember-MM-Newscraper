@@ -550,7 +550,7 @@ Public Class dlgOfflineHolder
                 End If
 
                 If cbSources.SelectedIndex >= 0 Then
-                    Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
+                    Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                         SQLNewcommand.CommandText = String.Concat("SELECT Path FROM Sources WHERE Name = """, cbSources.SelectedItem.ToString, """;")
                         Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                             If SQLReader.Read Then
@@ -604,7 +604,7 @@ Public Class dlgOfflineHolder
             'End If
 
             'If cbSources.SelectedIndex >= 0 Then
-            '    Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
+            '    Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
             '        SQLNewcommand.CommandText = String.Concat("SELECT Path FROM Sources WHERE Name = """, cbSources.SelectedItem.ToString, """;")
             '        Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
             '            If SQLReader.Read Then
@@ -727,7 +727,7 @@ Public Class dlgOfflineHolder
             End If
 
             If cbSources.SelectedIndex >= 0 Then
-                Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
+                Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                     SQLNewcommand.CommandText = String.Concat("SELECT Path FROM Sources WHERE Name = """, cbSources.SelectedItem.ToString, """;")
                     Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                         If SQLReader.Read Then
@@ -981,7 +981,7 @@ Public Class dlgOfflineHolder
                     Master.currMovie.ClearPoster = False
                     Master.currMovie.ClearTheme = False
                     Master.currMovie.ClearTrailer = False
-                    Functions.SetScraperMod(Enums.ModType.All, True, True)
+                    Functions.SetScraperMod(Enums.MovieModType.All, True, True)
                     'Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions) ', ID)
                 Case Windows.Forms.DialogResult.Abort
                     Master.currMovie.ClearBanner = False
@@ -995,8 +995,8 @@ Public Class dlgOfflineHolder
                     Master.currMovie.ClearPoster = False
                     Master.currMovie.ClearTheme = False
                     Master.currMovie.ClearTrailer = False
-                    Functions.SetScraperMod(Enums.ModType.DoSearch, True)
-                    Functions.SetScraperMod(Enums.ModType.All, True, False)
+                    Functions.SetScraperMod(Enums.MovieModType.DoSearch, True)
+                    Functions.SetScraperMod(Enums.MovieModType.All, True, False)
                     'Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions) ', ID, True)
                 Case Else
                     'If Me.InfoCleared Then Me.LoadInfo(ID, Me.dgvMovies.Item(1, indX).Value.ToString, True, False)
@@ -1088,7 +1088,7 @@ Public Class dlgOfflineHolder
             End Using
 
             'load all the movie sources from settings
-            Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
+            Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                 SQLNewcommand.CommandText = String.Concat("SELECT Name FROM Sources;")
                 Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                     While SQLReader.Read
@@ -1325,12 +1325,12 @@ Public Class dlgOfflineHolder
             Me.CleanUp()
             fPath = String.Empty
             'Functions.SetScraperMod(Enums.ModType.DoSearch, True)
-            Functions.SetScraperMod(Enums.ModType.NFO, True, True)
-            Functions.SetScraperMod(Enums.ModType.Poster, True, False)
-            Functions.SetScraperMod(Enums.ModType.Fanart, True, False)
-            Functions.SetScraperMod(Enums.ModType.EThumbs, True, False)
-            Functions.SetScraperMod(Enums.ModType.EFanarts, True, False)
-            Functions.SetScraperMod(Enums.ModType.Trailer, True, False)
+            Functions.SetScraperMod(Enums.MovieModType.NFO, True, True)
+            Functions.SetScraperMod(Enums.MovieModType.Poster, True, False)
+            Functions.SetScraperMod(Enums.MovieModType.Fanart, True, False)
+            Functions.SetScraperMod(Enums.MovieModType.EThumbs, True, False)
+            Functions.SetScraperMod(Enums.MovieModType.EFanarts, True, False)
+            Functions.SetScraperMod(Enums.MovieModType.Trailer, True, False)
 
             If Not ModulesManager.Instance.MovieScrapeOnly(sMovie, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions) Then
                 If rbTypeMovieTitle.Checked Then
@@ -1393,12 +1393,12 @@ Public Class dlgOfflineHolder
             Me.CleanUp()
             fPath = String.Empty
             'Functions.SetScraperMod(Enums.ModType.DoSearch, True)
-            Functions.SetScraperMod(Enums.ModType.NFO, True, True)
-            Functions.SetScraperMod(Enums.ModType.Poster, True, False)
-            Functions.SetScraperMod(Enums.ModType.Fanart, True, False)
-            Functions.SetScraperMod(Enums.ModType.EThumbs, True, False)
-            Functions.SetScraperMod(Enums.ModType.EFanarts, True, False)
-            Functions.SetScraperMod(Enums.ModType.Trailer, True, False)
+            Functions.SetScraperMod(Enums.MovieModType.NFO, True, True)
+            Functions.SetScraperMod(Enums.MovieModType.Poster, True, False)
+            Functions.SetScraperMod(Enums.MovieModType.Fanart, True, False)
+            Functions.SetScraperMod(Enums.MovieModType.EThumbs, True, False)
+            Functions.SetScraperMod(Enums.MovieModType.EFanarts, True, False)
+            Functions.SetScraperMod(Enums.MovieModType.Trailer, True, False)
 
             If Not ModulesManager.Instance.MovieScrapeOnly(sMovie, Enums.ScrapeType.SingleScrape, Master.DefaultMovieOptions) Then
                 If rbTypeMovieTitle.Checked Then

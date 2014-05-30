@@ -358,8 +358,8 @@ Namespace EmberTests
             options.bTrailer = False
 
             'These simulate the "allowed" scrape items
-            Functions.SetScraperMod(ModType.All, True)
-            Functions.SetScraperMod(ModType.Trailer, False, False)
+            Functions.SetScraperMod(MovieModType.All, True)
+            Functions.SetScraperMod(MovieModType.Trailer, False, False)
 
             Dim provider As EmberMovieScraperModule_Data = GetProvider()
 

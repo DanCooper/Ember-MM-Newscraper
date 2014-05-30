@@ -56,14 +56,17 @@ Public Class Settings
     Private _generaldaemondrive As String
     Private _generaldaemonpath As String
     Private _generalfilterpanelstate As Boolean
+    Private _generalhideclearart As Boolean
     Private _generalhidefanart As Boolean
     Private _generalhidefanartsmall As Boolean
+    Private _generalhidelandscape As Boolean
     Private _generalhideposter As Boolean
     Private _generalimagesglassoverlay As Boolean
     Private _generalinfopanelanim As Boolean
     Private _generallanguage As String
     Private _generalmainsplitterpanelstate As Integer
     Private _generalmovieinfopanelstate As Integer
+    Private _generalmoviesetinfopanelstate As Integer
     Private _generalmovietheme As String
     Private _generaloverwritenfo As Boolean
     Private _generalseasonsplitterpanelstate As Integer
@@ -179,6 +182,7 @@ Public Class Settings
     Private _moviescrapercertformpaa As Boolean
     Private _moviescrapercertification As Boolean
     Private _moviescrapercertlang As String
+    Private _moviescrapercollection As Boolean
     Private _moviescrapercountry As Boolean
     Private _moviescrapercrew As Boolean
     Private _moviescraperdirector As Boolean
@@ -214,6 +218,21 @@ Public Class Settings
     Private _moviescrapervotes As Boolean
     Private _moviescraperwriters As Boolean
     Private _moviescraperyear As Boolean
+    Private _moviesetbannercol As Boolean
+    Private _moviesetbanneroverwrite As Boolean
+    Private _moviesetclearartcol As Boolean
+    Private _moviesetclearartoverwrite As Boolean
+    Private _moviesetclearlogocol As Boolean
+    Private _moviesetclearlogooverwrite As Boolean
+    Private _moviesetdiscartcol As Boolean
+    Private _moviesetdiscartoverwrite As Boolean
+    Private _moviesetfanartcol As Boolean
+    Private _moviesetfanartoverwrite As Boolean
+    Private _moviesetlandscapecol As Boolean
+    Private _moviesetlandscapeoverwrite As Boolean
+    Private _moviesetnfocol As Boolean
+    Private _moviesetpostercol As Boolean
+    Private _moviesetposteroverwrite As Boolean
     Private _moviesets As New List(Of String)
     Private _movieskiplessthan As Integer
     Private _movieskipstackedsizecheck As Boolean
@@ -284,6 +303,7 @@ Public Class Settings
     Private _tvepisodeposterresize As Boolean
     Private _tvepisodeposterwidth As Integer
     Private _tvepisodepropercase As Boolean
+    Private _tvepisodewatchedcol As Boolean
     Private _tvgeneraldisplayasposter As Boolean
     Private _tvgeneralflaglang As String
     Private _tvgeneralignorelastscan As Boolean
@@ -327,6 +347,7 @@ Public Class Settings
     Private _tvscrapershowtitle As Boolean
     Private _tvscraperupdatetime As Enums.TVScraperUpdateTime
     Private _tvscraperusemdduration As Boolean
+    Private _tvseasonbannercol As Boolean
     Private _tvseasonbannerheight As Integer
     Private _tvseasonbanneroverwrite As Boolean
     Private _tvseasonbannerpreftype As Enums.TVSeasonBannerType
@@ -340,6 +361,7 @@ Public Class Settings
     Private _tvseasonfanartqual As Integer
     Private _tvseasonfanartresize As Boolean
     Private _tvseasonfanartwidth As Integer
+    Private _tvseasonlandscapecol As Boolean
     Private _tvseasonlandscapeoverwrite As Boolean
     Private _tvseasonpostercol As Boolean
     Private _tvseasonposterheight As Integer
@@ -348,14 +370,18 @@ Public Class Settings
     Private _tvseasonposterqual As Integer
     Private _tvseasonposterresize As Boolean
     Private _tvseasonposterwidth As Integer
+    Private _tvshowbannercol As Boolean
     Private _tvshowbannerheight As Integer
     Private _tvshowbanneroverwrite As Boolean
     Private _tvshowbannerpreftype As Enums.TVShowBannerType
     Private _tvshowbannerqual As Integer
     Private _tvshowbannerresize As Boolean
     Private _tvshowbannerwidth As Integer
+    Private _tvshowcharacterartcol As Boolean
     Private _tvshowcharacterartoverwrite As Boolean
+    Private _tvshowclearartcol As Boolean
     Private _tvshowclearartoverwrite As Boolean
+    Private _tvshowclearlogocol As Boolean
     Private _tvshowclearlogooverwrite As Boolean
     Private _tvshowfanartcol As Boolean
     Private _tvshowfanartheight As Integer
@@ -366,6 +392,7 @@ Public Class Settings
     Private _tvshowfanartwidth As Integer
     Private _tvshowfiltercustom As List(Of String)
     Private _tvshowfiltercustomisempty As Boolean
+    Private _tvshowlandscapecol As Boolean
     Private _tvshowlandscapeoverwrite As Boolean
     Private _tvshownfocol As Boolean
     Private _tvshowpostercol As Boolean
@@ -378,6 +405,7 @@ Public Class Settings
     Private _tvshowpropercase As Boolean
     Private _tvshowregexes As List(Of TVShowRegEx)
     Private _tvskiplessthan As Integer
+    Private _tvshowthemecol As Boolean
     Private _username As String
     Private _usetrakt As Boolean
     Private _version As String
@@ -1141,6 +1169,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVEpisodeWatchedCol() As Boolean
+        Get
+            Return Me._tvepisodewatchedcol
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvepisodewatchedcol = value
+        End Set
+    End Property
+
     Public Property FileSystemExpertCleaner() As Boolean
         Get
             Return Me._filesystemexpertcleaner
@@ -1264,6 +1301,15 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Me._moviescrapertop250 = value
+        End Set
+    End Property
+
+    Public Property MovieScraperCollection() As Boolean
+        Get
+            Return Me._moviescrapercollection
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviescrapercollection = value
         End Set
     End Property
 
@@ -1552,6 +1598,15 @@ Public Class Settings
         End Get
         Set(ByVal value As Integer)
             Me._generalmovieinfopanelstate = value
+        End Set
+    End Property
+
+    Public Property GeneralMovieSetInfoPanelState() As Integer
+        Get
+            Return Me._generalmoviesetinfopanelstate
+        End Get
+        Set(ByVal value As Integer)
+            Me._generalmoviesetinfopanelstate = value
         End Set
     End Property
 
@@ -1929,6 +1984,78 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property MovieSetBannerCol() As Boolean
+        Get
+            Return Me._moviesetbannercol
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetbannercol = value
+        End Set
+    End Property
+
+    Public Property MovieSetClearArtCol() As Boolean
+        Get
+            Return Me._moviesetclearartcol
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetclearartcol = value
+        End Set
+    End Property
+
+    Public Property MovieSetClearLogoCol() As Boolean
+        Get
+            Return Me._moviesetclearlogocol
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetclearlogocol = value
+        End Set
+    End Property
+
+    Public Property MovieSetDiscArtCol() As Boolean
+        Get
+            Return Me._moviesetdiscartcol
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetdiscartcol = value
+        End Set
+    End Property
+
+    Public Property MovieSetFanartCol() As Boolean
+        Get
+            Return Me._moviesetfanartcol
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetfanartcol = value
+        End Set
+    End Property
+
+    Public Property MovieSetLandscapeCol() As Boolean
+        Get
+            Return Me._moviesetlandscapecol
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetlandscapecol = value
+        End Set
+    End Property
+
+    Public Property MovieSetNfoCol() As Boolean
+        Get
+            Return Me._moviesetnfocol
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetnfocol = value
+        End Set
+    End Property
+
+    Public Property MovieSetPosterCol() As Boolean
+        Get
+            Return Me._moviesetpostercol
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetpostercol = value
+        End Set
+    End Property
+
     Public Property GeneralMovieTheme() As String
         Get
             Return Me._generalmovietheme
@@ -1983,6 +2110,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property GeneralHideClearArt() As Boolean
+        Get
+            Return Me._generalhideclearart
+        End Get
+        Set(ByVal value As Boolean)
+            Me._generalhideclearart = value
+        End Set
+    End Property
+
     Public Property GeneralHideFanart() As Boolean
         Get
             Return Me._generalhidefanart
@@ -2007,6 +2143,15 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Me._generalhidefanartsmall = value
+        End Set
+    End Property
+
+    Public Property GeneralHideLandscape() As Boolean
+        Get
+            Return Me._generalhidelandscape
+        End Get
+        Set(ByVal value As Boolean)
+            Me._generalhidelandscape = value
         End Set
     End Property
 
@@ -2298,6 +2443,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVSeasonLandscapeCol() As Boolean
+        Get
+            Return Me._tvseasonlandscapecol
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvseasonlandscapecol = value
+        End Set
+    End Property
+
     Public Property TVSeasonLandscapeOverwrite() As Boolean
         Get
             Return Me._tvseasonlandscapeoverwrite
@@ -2403,6 +2557,69 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Me._movieclearlogooverwrite = value
+        End Set
+    End Property
+
+    Public Property MovieSetBannerOverwrite() As Boolean
+        Get
+            Return Me._moviesetbanneroverwrite
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetbanneroverwrite = value
+        End Set
+    End Property
+
+    Public Property MovieSetClearArtOverwrite() As Boolean
+        Get
+            Return Me._moviesetclearartoverwrite
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetclearartoverwrite = value
+        End Set
+    End Property
+
+    Public Property MovieSetClearLogoOverwrite() As Boolean
+        Get
+            Return Me._moviesetclearlogooverwrite
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetclearlogooverwrite = value
+        End Set
+    End Property
+
+    Public Property MovieSetDiscArtOverwrite() As Boolean
+        Get
+            Return Me._moviesetdiscartoverwrite
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetdiscartoverwrite = value
+        End Set
+    End Property
+
+    Public Property MovieSetFanartOverwrite() As Boolean
+        Get
+            Return Me._moviesetfanartoverwrite
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetfanartoverwrite = value
+        End Set
+    End Property
+
+    Public Property MovieSetLandscapeOverwrite() As Boolean
+        Get
+            Return Me._moviesetlandscapeoverwrite
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetlandscapeoverwrite = value
+        End Set
+    End Property
+
+    Public Property MovieSetPosterOverwrite() As Boolean
+        Get
+            Return Me._moviesetposteroverwrite
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetposteroverwrite = value
         End Set
     End Property
 
@@ -3107,6 +3324,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVSeasonBannerCol() As Boolean
+        Get
+            Return Me._tvseasonbannercol
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvseasonbannercol = value
+        End Set
+    End Property
+
     Public Property TVASBannerWidth() As Integer
         Get
             Return Me._tvasbannerwidth
@@ -3356,6 +3582,60 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Me._tvlockshowtitle = value
+        End Set
+    End Property
+
+    Public Property TVShowBannerCol() As Boolean
+        Get
+            Return Me._tvshowbannercol
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowbannercol = value
+        End Set
+    End Property
+
+    Public Property TVShowCharacterArtCol() As Boolean
+        Get
+            Return Me._tvshowcharacterartcol
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowcharacterartcol = value
+        End Set
+    End Property
+
+    Public Property TVShowClearArtCol() As Boolean
+        Get
+            Return Me._tvshowclearartcol
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowclearartcol = value
+        End Set
+    End Property
+
+    Public Property TVShowClearLogoCol() As Boolean
+        Get
+            Return Me._tvshowclearlogocol
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowclearlogocol = value
+        End Set
+    End Property
+
+    Public Property TVShowLandscapeCol() As Boolean
+        Get
+            Return Me._tvshowlandscapecol
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowlandscapecol = value
+        End Set
+    End Property
+
+    Public Property TVShowThemeCol() As Boolean
+        Get
+            Return Me._tvshowthemecol
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowthemecol = value
         End Set
     End Property
 
@@ -5070,8 +5350,10 @@ Public Class Settings
         Me._generaldaemondrive = String.Empty
         Me._generaldaemonpath = String.Empty
         Me._generalfilterpanelstate = False
+        Me._generalhideclearart = False
         Me._generalhidefanart = False
         Me._generalhidefanartsmall = False
+        Me._generalhidelandscape = False
         Me._generalhideposter = False
         Me._generalimagesglassoverlay = False
         Me._generalinfopanelanim = False
@@ -5287,6 +5569,7 @@ Public Class Settings
         Me._moviescrapercertformpaa = False
         Me._moviescrapercertification = True
         Me._moviescrapercertlang = String.Empty
+        Me._moviescrapercollection = True
         Me._moviescrapercountry = True
         Me._moviescrapercrew = True
         Me._moviescraperdirector = True
@@ -5322,6 +5605,21 @@ Public Class Settings
         Me._moviescrapervotes = True
         Me._moviescraperwriters = True
         Me._moviescraperyear = True
+        Me._moviesetbannercol = False
+        Me._moviesetbanneroverwrite = True
+        Me._moviesetclearartcol = False
+        Me._moviesetclearartoverwrite = True
+        Me._moviesetclearlogocol = False
+        Me._moviesetclearlogooverwrite = True
+        Me._moviesetdiscartcol = False
+        Me._moviesetdiscartoverwrite = True
+        Me._moviesetfanartcol = False
+        Me._moviesetfanartoverwrite = True
+        Me._moviesetlandscapecol = False
+        Me._moviesetlandscapeoverwrite = True
+        Me._moviesetnfocol = False
+        Me._moviesetpostercol = False
+        Me._moviesetposteroverwrite = True
         Me._moviesets = New List(Of String)
         Me._movieskiplessthan = 0
         Me._movieskipstackedsizecheck = False
@@ -5364,7 +5662,7 @@ Public Class Settings
         Me._moviexbmcthemeenable = False
         Me._moviexbmcthememovie = False
         Me._moviexbmcthemesub = False
-        Me._moviexbmcthemesubdir = "Theme"
+        Me._moviexbmcthemesubdir = "Themes"
         Me._moviexbmcprotectvtsbdmv = False
         Me._moviexbmctrailerformat = False
         Me._movieyamjcompatiblesets = False
@@ -5406,7 +5704,7 @@ Public Class Settings
         Me._tvcleandb = True
         Me._tvdisplaymissingepisodes = True
         Me._tvepisodeactorthumbsfrodo = False
-        Me._tvepisodefanartcol = True
+        Me._tvepisodefanartcol = False
         Me._tvepisodefanartheight = 0
         Me._tvepisodefanartoverwrite = True
         Me._tvepisodefanartprefsize = Enums.TVFanartSize.HD1080
@@ -5425,6 +5723,7 @@ Public Class Settings
         Me._tvepisodeposterresize = False
         Me._tvepisodeposterwidth = 0
         Me._tvepisodepropercase = True
+        Me._tvepisodewatchedcol = False
         Me._tvgeneraldisplayasposter = True
         Me._tvgeneralflaglang = String.Empty
         Me._tvgeneralignorelastscan = True
@@ -5468,6 +5767,7 @@ Public Class Settings
         Me._tvscrapershowtitle = True
         Me._tvscraperupdatetime = Enums.TVScraperUpdateTime.Always
         Me._tvscraperusemdduration = True
+        Me._tvseasonbannercol = False
         Me._tvseasonbannerfrodo = False
         Me._tvseasonbannerheight = 0
         Me._tvseasonbanneroverwrite = True
@@ -5476,7 +5776,7 @@ Public Class Settings
         Me._tvseasonbannerresize = False
         Me._tvseasonbannerwidth = 0
         Me._tvseasonbanneryamj = False
-        Me._tvseasonfanartcol = True
+        Me._tvseasonfanartcol = False
         Me._tvseasonfanartfrodo = False
         Me._tvseasonfanartheight = 0
         Me._tvseasonfanartoverwrite = True
@@ -5485,6 +5785,7 @@ Public Class Settings
         Me._tvseasonfanartresize = False
         Me._tvseasonfanartwidth = 0
         Me._tvseasonfanartyamj = False
+        Me._tvseasonlandscapecol = False
         Me._tvseasonlandscapeoverwrite = True
         Me._tvseasonlandscapexbmc = False
         Me._tvseasonpostercol = False
@@ -5497,6 +5798,7 @@ Public Class Settings
         Me._tvseasonposterwidth = 0
         Me._tvseasonposteryamj = False
         Me._tvshowactorthumbsfrodo = False
+        Me._tvshowbannercol = False
         Me._tvshowbannerfrodo = False
         Me._tvshowbannerheight = 0
         Me._tvshowbanneroverwrite = True
@@ -5505,10 +5807,13 @@ Public Class Settings
         Me._tvshowbannerresize = False
         Me._tvshowbannerwidth = 0
         Me._tvshowbanneryamj = False
+        Me._tvshowcharacterartcol = False
         Me._tvshowcharacterartoverwrite = True
         Me._tvshowcharacterartxbmc = False
+        Me._tvshowclearartcol = False
         Me._tvshowclearartoverwrite = True
         Me._tvshowclearartxbmc = False
+        Me._tvshowclearlogocol = False
         Me._tvshowclearlogooverwrite = True
         Me._tvshowclearlogoxbmc = False
         Me._tvshowfanartcol = False
@@ -5522,6 +5827,7 @@ Public Class Settings
         Me._tvshowfanartyamj = False
         Me._tvshowfiltercustom = New List(Of String)
         Me._tvshowfiltercustomisempty = False
+        Me._tvshowlandscapecol = False
         Me._tvshowlandscapeoverwrite = True
         Me._tvshowlandscapexbmc = False
         Me._tvshownfocol = False
@@ -5539,6 +5845,7 @@ Public Class Settings
         Me._tvshowtvthemefolderxbmc = String.Empty
         Me._tvshowtvthemexbmc = False
         Me._tvskiplessthan = 0
+        Me._tvshowthemecol = False
         Me._tvuseboxee = False
         Me._tvusefrodo = False
         Me._tvuseyamj = False
@@ -5823,7 +6130,7 @@ Public Class Settings
         Return TVASBannerAnyEnabled() OrElse TVASFanartAnyEnabled() OrElse TVASLandscapeAnyEnabled() OrElse TVASPosterAnyEnabled()
     End Function
     Public Function TVASBannerAnyEnabled() As Boolean
-        Return TVSeasonBannerFrodo OrElse TVSeasonBannerYAMJ
+        Return TVSeasonBannerFrodo
     End Function
 
     Public Function TVASFanartAnyEnabled() As Boolean

@@ -408,6 +408,7 @@ Public Class dlgIMDBSearchResults
         Dim aOpt As New Structures.ScrapeOptions
         aOpt.bCast = False
         aOpt.bCert = False
+        aOpt.bCollection = False
         aOpt.bCountry = False
         aOpt.bDirector = True
         aOpt.bFullCast = False
@@ -449,7 +450,6 @@ Public Class dlgIMDBSearchResults
         Me.lblIMDBHeader.Text = Master.eLang.GetString(873, "IMDB ID:")
         Me.lblPlotHeader.Text = Master.eLang.GetString(242, "Plot Outline:")
         Me.Label3.Text = Master.eLang.GetString(798, "Searching IMDB...")
-        Me.txtFileName.Text = Master.currMovie.Filename
     End Sub
 
     Private Sub tmrLoad_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrLoad.Tick

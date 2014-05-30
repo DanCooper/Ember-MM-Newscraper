@@ -228,14 +228,16 @@ Public Class FanartTV_Poster
         End If
     End Sub
 
-    Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule_Poster.Scraper
+    Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image), Optional ByVal isMovieSet As Boolean = False) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule_Poster.Scraper
         Master.eLog.Trace(Me.GetType(), "Started scrape", New Diagnostics.StackTrace().ToString(), Nothing, False)
         'LoadSettings()
         Dim Poster As New Images
 
         LoadSettings()
 
-        ImageList = _fanartTV.GetFANARTTVImages(DBMovie.Movie.ID, Type)
+        If Not isMovieSet Then
+            ImageList = _fanartTV.GetFANARTTVImages(DBMovie.Movie.ID, Type)
+        End If
 
         Master.eLog.Trace(Me.GetType(), "Finished scrape", New Diagnostics.StackTrace().ToString(), Nothing, False)
         Return New Interfaces.ModuleResult With {.breakChain = False}

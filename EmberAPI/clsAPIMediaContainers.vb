@@ -1197,14 +1197,14 @@ Namespace MediaContainers
 
 #Region "Methods"
 
-        Public Sub AddSet(ByVal SetName As String, ByVal Order As Integer)
-            Dim tSet = From bSet As [Set] In Sets Where bSet.Set = SetName
+        Public Sub AddSet(ByVal SetID As Long, ByVal SetName As String, ByVal Order As Integer)
+            Dim tSet = From bSet As [Set] In Sets Where bSet.ID = SetID
 
             If tSet.Count > 0 Then
                 Sets.Remove(tSet(0))
             End If
 
-            Sets.Add(New [Set] With {.Set = SetName, .Order = If(Order > 0, Order.ToString, String.Empty)})
+            Sets.Add(New [Set] With {.ID = SetID, .Set = SetName, .Order = If(Order > 0, Order.ToString, String.Empty)})
         End Sub
 
         Public Sub AddGenre(ByVal value As String)
@@ -1362,6 +1362,13 @@ Namespace MediaContainers
 
         Public Sub RemoveSet(ByVal SetName As String)
             Dim tSet = From bSet As [Set] In Sets Where bSet.Set = SetName
+            If tSet.Count > 0 Then
+                Sets.Remove(tSet(0))
+            End If
+        End Sub
+
+        Public Sub RemoveSet(ByVal SetID As Long)
+            Dim tSet = From bSet As [Set] In Sets Where bSet.ID = SetID
             If tSet.Count > 0 Then
                 Sets.Remove(tSet(0))
             End If
@@ -1927,6 +1934,7 @@ Namespace MediaContainers
 
 #Region "Fields"
 
+        Private _id As Long
         Private _order As String
         Private _set As String
 
@@ -1941,6 +1949,16 @@ Namespace MediaContainers
 #End Region 'Constructors
 
 #Region "Properties"
+
+        <XmlIgnore()> _
+        Public Property ID() As Long
+            Get
+                Return _id
+            End Get
+            Set(ByVal value As Long)
+                _id = value
+            End Set
+        End Property
 
         <XmlAttribute("order")> _
         Public Property Order() As String
@@ -1981,6 +1999,7 @@ Namespace MediaContainers
 #Region "Methods"
 
         Public Sub Clear()
+            _id = -1
             _set = String.Empty
             _order = String.Empty
         End Sub

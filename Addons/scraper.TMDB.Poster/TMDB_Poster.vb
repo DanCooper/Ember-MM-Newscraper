@@ -181,13 +181,12 @@ Public Class TMDB_Poster
 
     End Sub
 
-    Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule_Poster.Scraper
+    Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image), Optional ByVal isMovieSet As Boolean = False) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule_Poster.Scraper
 
         LoadSettings()
 
-        'Cocotus 12/21/2013, Support of MOviesetPoster - TODO better way to handle this?!
-        Dim collectionID As String = ""
-        If DBMovie.OriginalTitle = "GETSETIMAGES" Then
+        Dim collectionID As String = String.Empty
+        If isMovieSet Then
             collectionID = _TMDBg.GetMovieCollectionID(DBMovie.Movie.ID)
             ImageList = TMDB.GetTMDBCollectionImages(collectionID, Type)
         Else
@@ -196,13 +195,6 @@ Public Class TMDB_Poster
             End If
             ImageList = TMDB.GetTMDBImages(DBMovie.Movie.TMDBID, Type)
         End If
-
-        'old way
-        'If String.IsNullOrEmpty(DBMovie.Movie.TMDBID) Then
-        '    _TMDBg.GetMovieID(DBMovie)
-        'End If
-
-        'ImageList = TMDB.GetTMDBImages(DBMovie.Movie.TMDBID, Type)
 
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function

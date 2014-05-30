@@ -1,5 +1,21 @@
 CREATE TABLE Sets(
-	SetName TEXT NOT NULL PRIMARY KEY
+	SetName TEXT NOT NULL PRIMARY KEY,
+	HasNfo BOOL NOT NULL DEFAULT False,
+	NfoPath TEXT,
+	HasPoster BOOL NOT NULL DEFAULT False,
+	PosterPath TEXT,
+	HasFanart BOOL NOT NULL DEFAULT False,
+	FanartPath TEXT,
+	HasBanner BOOL NOT NULL DEFAULT False,
+	BannerPath TEXT,
+	HasLandscape BOOL NOT NULL DEFAULT False,
+	LandscapePath TEXT,
+	HasDiscArt BOOL NOT NULL DEFAULT False,
+	DiscArtPath TEXT,
+	HasClearLogo BOOL NOT NULL DEFAULT False,
+	ClearLogoPath TEXT,
+	HasClearArt BOOL NOT NULL DEFAULT False,
+	ClearArtPath TEXT
 	);
 
 CREATE TABLE Movies (

@@ -27,7 +27,7 @@ Public Class dlgImgManual
 #Region "Fields"
 
     'Dim DLType As New Enums.MovieImageType
-    Dim tImage As New Images
+    Dim tImage As New Images With {.IsEdit = True}
 
 #End Region 'Fields
 
