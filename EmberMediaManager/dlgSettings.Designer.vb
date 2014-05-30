@@ -6441,7 +6441,7 @@ Partial Class dlgSettings
         '
         Me.pnlTVSources.BackColor = System.Drawing.Color.White
         Me.pnlTVSources.Controls.Add(Me.tcTVSources)
-        Me.pnlTVSources.Location = New System.Drawing.Point(0, 0)
+        Me.pnlTVSources.Location = New System.Drawing.Point(900, 900)
         Me.pnlTVSources.Name = "pnlTVSources"
         Me.pnlTVSources.Size = New System.Drawing.Size(750, 500)
         Me.pnlTVSources.TabIndex = 11
@@ -6533,9 +6533,9 @@ Partial Class dlgSettings
         Me.chkTVShowExtrafanartsXBMC.Enabled = false
         Me.chkTVShowExtrafanartsXBMC.Location = New System.Drawing.Point(7, 93)
         Me.chkTVShowExtrafanartsXBMC.Name = "chkTVShowExtrafanartsXBMC"
-        Me.chkTVShowExtrafanartsXBMC.Size = New System.Drawing.Size(119, 17)
+        Me.chkTVShowExtrafanartsXBMC.Size = New System.Drawing.Size(87, 17)
         Me.chkTVShowExtrafanartsXBMC.TabIndex = 8
-        Me.chkTVShowExtrafanartsXBMC.Text = "Show Extrafanarts"
+        Me.chkTVShowExtrafanartsXBMC.Text = "Extrafanarts"
         Me.chkTVShowExtrafanartsXBMC.UseVisualStyleBackColor = true
         '
         'btnTVShowTVThemeBrowse

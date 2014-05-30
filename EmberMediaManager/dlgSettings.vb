@@ -5031,7 +5031,7 @@ Public Class dlgSettings
         Me.chkTVSeasonFanartResize.Text = Me.chkMovieFanartResize.Text
         Me.chkTVSeasonPosterOverwrite.Text = Me.chkMoviePosterOverwrite.Text
         Me.chkTVSeasonPosterResize.Text = Me.chkMoviePosterResize.Text
-        Me.chkTVShowExtrafanartsXBMC.Text = Master.eLang.GetString(1142, "Show Extrafanarts")
+        Me.chkTVShowExtrafanartsXBMC.Text = Master.eLang.GetString(992, "Extrafanarts")
         Me.chkTVShowFanartOverwrite.Text = Me.chkMovieFanartOverwrite.Text
         Me.chkTVShowFanartResize.Text = Me.chkMovieFanartResize.Text
         Me.chkTVShowPosterOverwrite.Text = Me.chkMoviePosterOverwrite.Text
