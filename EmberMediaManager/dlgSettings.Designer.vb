@@ -481,11 +481,19 @@ Partial Class dlgSettings
         Me.gbTVGeneralListEpisodeOpts = New System.Windows.Forms.GroupBox()
         Me.chkTVEpisodeNfoCol = New System.Windows.Forms.CheckBox()
         Me.chkTVEpisodeFanartCol = New System.Windows.Forms.CheckBox()
+        Me.chkTVEpisodeWatchedCol = New System.Windows.Forms.CheckBox()
         Me.chkTVEpisodePosterCol = New System.Windows.Forms.CheckBox()
         Me.gbTVGeneralListSeasonOpts = New System.Windows.Forms.GroupBox()
         Me.chkTVSeasonFanartCol = New System.Windows.Forms.CheckBox()
         Me.chkTVSeasonPosterCol = New System.Windows.Forms.CheckBox()
         Me.gbTVGeneralListShowOpts = New System.Windows.Forms.GroupBox()
+        Me.chkTVShowClearLogoCol = New System.Windows.Forms.CheckBox()
+        Me.chkTVShowClearArtCol = New System.Windows.Forms.CheckBox()
+        Me.chkTVShowCharacterArtCol = New System.Windows.Forms.CheckBox()
+        Me.chkTVShowEFanartsCol = New System.Windows.Forms.CheckBox()
+        Me.chkTVShowThemeCol = New System.Windows.Forms.CheckBox()
+        Me.chkTVShowLandscapeCol = New System.Windows.Forms.CheckBox()
+        Me.chkTVShowBannerCol = New System.Windows.Forms.CheckBox()
         Me.chkTVShowNfoCol = New System.Windows.Forms.CheckBox()
         Me.chkTVShowFanartCol = New System.Windows.Forms.CheckBox()
         Me.chkTVShowPosterCol = New System.Windows.Forms.CheckBox()
@@ -812,6 +820,7 @@ Partial Class dlgSettings
         Me.lblTVScraperUpdateTime = New System.Windows.Forms.Label()
         Me.cbTVScraperUpdateTime = New System.Windows.Forms.ComboBox()
         Me.gbMovieScraperFieldsOpts = New System.Windows.Forms.GroupBox()
+        Me.chkMovieScraperCollection = New System.Windows.Forms.CheckBox()
         Me.chkMovieScraperCertification = New System.Windows.Forms.CheckBox()
         Me.chkMovieScraperTop250 = New System.Windows.Forms.CheckBox()
         Me.chkMovieScraperCountry = New System.Windows.Forms.CheckBox()
@@ -906,7 +915,8 @@ Partial Class dlgSettings
         Me.chkMovieThemeEnable = New System.Windows.Forms.CheckBox()
         Me.pnlTVThemes = New System.Windows.Forms.Panel()
         Me.Label2 = New System.Windows.Forms.Label()
-        Me.chkMovieScraperCollection = New System.Windows.Forms.CheckBox()
+        Me.chkTVSeasonBannerCol = New System.Windows.Forms.CheckBox()
+        Me.chkTVSeasonLandscapeCol = New System.Windows.Forms.CheckBox()
         Me.gbGeneralMisc.SuspendLayout
         Me.gbGeneralDaemon.SuspendLayout
         Me.gbGeneralThemes.SuspendLayout
@@ -5889,9 +5899,9 @@ Partial Class dlgSettings
         Me.gbTVGeneralLangOpts.Controls.Add(Me.btnTVGeneralLangFetch)
         Me.gbTVGeneralLangOpts.Controls.Add(Me.cbTVGeneralLang)
         Me.gbTVGeneralLangOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.gbTVGeneralLangOpts.Location = New System.Drawing.Point(7, 361)
+        Me.gbTVGeneralLangOpts.Location = New System.Drawing.Point(229, 396)
         Me.gbTVGeneralLangOpts.Name = "gbTVGeneralLangOpts"
-        Me.gbTVGeneralLangOpts.Size = New System.Drawing.Size(218, 126)
+        Me.gbTVGeneralLangOpts.Size = New System.Drawing.Size(198, 84)
         Me.gbTVGeneralLangOpts.TabIndex = 4
         Me.gbTVGeneralLangOpts.TabStop = false
         Me.gbTVGeneralLangOpts.Text = "Language Options"
@@ -5899,7 +5909,7 @@ Partial Class dlgSettings
         'btnTVGeneralLangFetch
         '
         Me.btnTVGeneralLangFetch.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.btnTVGeneralLangFetch.Location = New System.Drawing.Point(16, 70)
+        Me.btnTVGeneralLangFetch.Location = New System.Drawing.Point(16, 48)
         Me.btnTVGeneralLangFetch.Name = "btnTVGeneralLangFetch"
         Me.btnTVGeneralLangFetch.Size = New System.Drawing.Size(166, 23)
         Me.btnTVGeneralLangFetch.TabIndex = 10
@@ -5910,7 +5920,7 @@ Partial Class dlgSettings
         '
         Me.cbTVGeneralLang.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbTVGeneralLang.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.cbTVGeneralLang.Location = New System.Drawing.Point(16, 45)
+        Me.cbTVGeneralLang.Location = New System.Drawing.Point(16, 21)
         Me.cbTVGeneralLang.Name = "cbTVGeneralLang"
         Me.cbTVGeneralLang.Size = New System.Drawing.Size(166, 21)
         Me.cbTVGeneralLang.TabIndex = 11
@@ -5922,9 +5932,9 @@ Partial Class dlgSettings
         Me.gbTVGeneralMediaListOpts.Controls.Add(Me.gbTVGeneralListSeasonOpts)
         Me.gbTVGeneralMediaListOpts.Controls.Add(Me.gbTVGeneralListShowOpts)
         Me.gbTVGeneralMediaListOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.gbTVGeneralMediaListOpts.Location = New System.Drawing.Point(6, 109)
+        Me.gbTVGeneralMediaListOpts.Location = New System.Drawing.Point(6, 83)
         Me.gbTVGeneralMediaListOpts.Name = "gbTVGeneralMediaListOpts"
-        Me.gbTVGeneralMediaListOpts.Size = New System.Drawing.Size(219, 245)
+        Me.gbTVGeneralMediaListOpts.Size = New System.Drawing.Size(219, 414)
         Me.gbTVGeneralMediaListOpts.TabIndex = 1
         Me.gbTVGeneralMediaListOpts.TabStop = false
         Me.gbTVGeneralMediaListOpts.Text = "Media List Options"
@@ -5933,7 +5943,7 @@ Partial Class dlgSettings
         '
         Me.chkTVDisplayMissingEpisodes.AutoSize = true
         Me.chkTVDisplayMissingEpisodes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkTVDisplayMissingEpisodes.Location = New System.Drawing.Point(10, 224)
+        Me.chkTVDisplayMissingEpisodes.Location = New System.Drawing.Point(9, 391)
         Me.chkTVDisplayMissingEpisodes.Name = "chkTVDisplayMissingEpisodes"
         Me.chkTVDisplayMissingEpisodes.Size = New System.Drawing.Size(155, 17)
         Me.chkTVDisplayMissingEpisodes.TabIndex = 3
@@ -5944,11 +5954,12 @@ Partial Class dlgSettings
         '
         Me.gbTVGeneralListEpisodeOpts.Controls.Add(Me.chkTVEpisodeNfoCol)
         Me.gbTVGeneralListEpisodeOpts.Controls.Add(Me.chkTVEpisodeFanartCol)
+        Me.gbTVGeneralListEpisodeOpts.Controls.Add(Me.chkTVEpisodeWatchedCol)
         Me.gbTVGeneralListEpisodeOpts.Controls.Add(Me.chkTVEpisodePosterCol)
         Me.gbTVGeneralListEpisodeOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.gbTVGeneralListEpisodeOpts.Location = New System.Drawing.Point(10, 143)
+        Me.gbTVGeneralListEpisodeOpts.Location = New System.Drawing.Point(9, 295)
         Me.gbTVGeneralListEpisodeOpts.Name = "gbTVGeneralListEpisodeOpts"
-        Me.gbTVGeneralListEpisodeOpts.Size = New System.Drawing.Size(199, 68)
+        Me.gbTVGeneralListEpisodeOpts.Size = New System.Drawing.Size(199, 87)
         Me.gbTVGeneralListEpisodeOpts.TabIndex = 2
         Me.gbTVGeneralListEpisodeOpts.TabStop = false
         Me.gbTVGeneralListEpisodeOpts.Text = "Episodes"
@@ -5957,29 +5968,40 @@ Partial Class dlgSettings
         '
         Me.chkTVEpisodeNfoCol.AutoSize = true
         Me.chkTVEpisodeNfoCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkTVEpisodeNfoCol.Location = New System.Drawing.Point(7, 48)
+        Me.chkTVEpisodeNfoCol.Location = New System.Drawing.Point(6, 32)
         Me.chkTVEpisodeNfoCol.Name = "chkTVEpisodeNfoCol"
-        Me.chkTVEpisodeNfoCol.Size = New System.Drawing.Size(117, 17)
+        Me.chkTVEpisodeNfoCol.Size = New System.Drawing.Size(119, 17)
         Me.chkTVEpisodeNfoCol.TabIndex = 2
-        Me.chkTVEpisodeNfoCol.Text = "Hide Info Column"
+        Me.chkTVEpisodeNfoCol.Text = "Hide NFO Column"
         Me.chkTVEpisodeNfoCol.UseVisualStyleBackColor = true
         '
         'chkTVEpisodeFanartCol
         '
         Me.chkTVEpisodeFanartCol.AutoSize = true
         Me.chkTVEpisodeFanartCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkTVEpisodeFanartCol.Location = New System.Drawing.Point(7, 32)
+        Me.chkTVEpisodeFanartCol.Location = New System.Drawing.Point(6, 16)
         Me.chkTVEpisodeFanartCol.Name = "chkTVEpisodeFanartCol"
         Me.chkTVEpisodeFanartCol.Size = New System.Drawing.Size(129, 17)
         Me.chkTVEpisodeFanartCol.TabIndex = 1
         Me.chkTVEpisodeFanartCol.Text = "Hide Fanart Column"
         Me.chkTVEpisodeFanartCol.UseVisualStyleBackColor = true
         '
+        'chkTVEpisodeWatchedCol
+        '
+        Me.chkTVEpisodeWatchedCol.AutoSize = true
+        Me.chkTVEpisodeWatchedCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVEpisodeWatchedCol.Location = New System.Drawing.Point(6, 64)
+        Me.chkTVEpisodeWatchedCol.Name = "chkTVEpisodeWatchedCol"
+        Me.chkTVEpisodeWatchedCol.Size = New System.Drawing.Size(142, 17)
+        Me.chkTVEpisodeWatchedCol.TabIndex = 83
+        Me.chkTVEpisodeWatchedCol.Text = "Hide Watched Column"
+        Me.chkTVEpisodeWatchedCol.UseVisualStyleBackColor = true
+        '
         'chkTVEpisodePosterCol
         '
         Me.chkTVEpisodePosterCol.AutoSize = true
         Me.chkTVEpisodePosterCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkTVEpisodePosterCol.Location = New System.Drawing.Point(7, 16)
+        Me.chkTVEpisodePosterCol.Location = New System.Drawing.Point(6, 48)
         Me.chkTVEpisodePosterCol.Name = "chkTVEpisodePosterCol"
         Me.chkTVEpisodePosterCol.Size = New System.Drawing.Size(128, 17)
         Me.chkTVEpisodePosterCol.TabIndex = 0
@@ -5988,12 +6010,14 @@ Partial Class dlgSettings
         '
         'gbTVGeneralListSeasonOpts
         '
+        Me.gbTVGeneralListSeasonOpts.Controls.Add(Me.chkTVSeasonLandscapeCol)
+        Me.gbTVGeneralListSeasonOpts.Controls.Add(Me.chkTVSeasonBannerCol)
         Me.gbTVGeneralListSeasonOpts.Controls.Add(Me.chkTVSeasonFanartCol)
         Me.gbTVGeneralListSeasonOpts.Controls.Add(Me.chkTVSeasonPosterCol)
         Me.gbTVGeneralListSeasonOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.gbTVGeneralListSeasonOpts.Location = New System.Drawing.Point(10, 87)
+        Me.gbTVGeneralListSeasonOpts.Location = New System.Drawing.Point(9, 202)
         Me.gbTVGeneralListSeasonOpts.Name = "gbTVGeneralListSeasonOpts"
-        Me.gbTVGeneralListSeasonOpts.Size = New System.Drawing.Size(199, 52)
+        Me.gbTVGeneralListSeasonOpts.Size = New System.Drawing.Size(199, 87)
         Me.gbTVGeneralListSeasonOpts.TabIndex = 1
         Me.gbTVGeneralListSeasonOpts.TabStop = false
         Me.gbTVGeneralListSeasonOpts.Text = "Seasons"
@@ -6002,7 +6026,7 @@ Partial Class dlgSettings
         '
         Me.chkTVSeasonFanartCol.AutoSize = true
         Me.chkTVSeasonFanartCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkTVSeasonFanartCol.Location = New System.Drawing.Point(7, 32)
+        Me.chkTVSeasonFanartCol.Location = New System.Drawing.Point(6, 32)
         Me.chkTVSeasonFanartCol.Name = "chkTVSeasonFanartCol"
         Me.chkTVSeasonFanartCol.Size = New System.Drawing.Size(129, 17)
         Me.chkTVSeasonFanartCol.TabIndex = 1
@@ -6013,7 +6037,7 @@ Partial Class dlgSettings
         '
         Me.chkTVSeasonPosterCol.AutoSize = true
         Me.chkTVSeasonPosterCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkTVSeasonPosterCol.Location = New System.Drawing.Point(7, 16)
+        Me.chkTVSeasonPosterCol.Location = New System.Drawing.Point(6, 64)
         Me.chkTVSeasonPosterCol.Name = "chkTVSeasonPosterCol"
         Me.chkTVSeasonPosterCol.Size = New System.Drawing.Size(128, 17)
         Me.chkTVSeasonPosterCol.TabIndex = 0
@@ -6022,33 +6046,117 @@ Partial Class dlgSettings
         '
         'gbTVGeneralListShowOpts
         '
+        Me.gbTVGeneralListShowOpts.Controls.Add(Me.chkTVShowClearLogoCol)
+        Me.gbTVGeneralListShowOpts.Controls.Add(Me.chkTVShowClearArtCol)
+        Me.gbTVGeneralListShowOpts.Controls.Add(Me.chkTVShowCharacterArtCol)
+        Me.gbTVGeneralListShowOpts.Controls.Add(Me.chkTVShowEFanartsCol)
+        Me.gbTVGeneralListShowOpts.Controls.Add(Me.chkTVShowThemeCol)
+        Me.gbTVGeneralListShowOpts.Controls.Add(Me.chkTVShowLandscapeCol)
+        Me.gbTVGeneralListShowOpts.Controls.Add(Me.chkTVShowBannerCol)
         Me.gbTVGeneralListShowOpts.Controls.Add(Me.chkTVShowNfoCol)
         Me.gbTVGeneralListShowOpts.Controls.Add(Me.chkTVShowFanartCol)
         Me.gbTVGeneralListShowOpts.Controls.Add(Me.chkTVShowPosterCol)
         Me.gbTVGeneralListShowOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.gbTVGeneralListShowOpts.Location = New System.Drawing.Point(9, 16)
         Me.gbTVGeneralListShowOpts.Name = "gbTVGeneralListShowOpts"
-        Me.gbTVGeneralListShowOpts.Size = New System.Drawing.Size(199, 68)
+        Me.gbTVGeneralListShowOpts.Size = New System.Drawing.Size(199, 180)
         Me.gbTVGeneralListShowOpts.TabIndex = 0
         Me.gbTVGeneralListShowOpts.TabStop = false
         Me.gbTVGeneralListShowOpts.Text = "Shows"
+        '
+        'chkTVShowClearLogoCol
+        '
+        Me.chkTVShowClearLogoCol.AutoSize = true
+        Me.chkTVShowClearLogoCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVShowClearLogoCol.Location = New System.Drawing.Point(6, 64)
+        Me.chkTVShowClearLogoCol.Name = "chkTVShowClearLogoCol"
+        Me.chkTVShowClearLogoCol.Size = New System.Drawing.Size(148, 17)
+        Me.chkTVShowClearLogoCol.TabIndex = 88
+        Me.chkTVShowClearLogoCol.Text = "Hide ClearLogo Column"
+        Me.chkTVShowClearLogoCol.UseVisualStyleBackColor = true
+        '
+        'chkTVShowClearArtCol
+        '
+        Me.chkTVShowClearArtCol.AutoSize = true
+        Me.chkTVShowClearArtCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVShowClearArtCol.Location = New System.Drawing.Point(6, 48)
+        Me.chkTVShowClearArtCol.Name = "chkTVShowClearArtCol"
+        Me.chkTVShowClearArtCol.Size = New System.Drawing.Size(137, 17)
+        Me.chkTVShowClearArtCol.TabIndex = 87
+        Me.chkTVShowClearArtCol.Text = "Hide ClearArt Column"
+        Me.chkTVShowClearArtCol.UseVisualStyleBackColor = true
+        '
+        'chkTVShowCharacterArtCol
+        '
+        Me.chkTVShowCharacterArtCol.AutoSize = true
+        Me.chkTVShowCharacterArtCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVShowCharacterArtCol.Location = New System.Drawing.Point(6, 32)
+        Me.chkTVShowCharacterArtCol.Name = "chkTVShowCharacterArtCol"
+        Me.chkTVShowCharacterArtCol.Size = New System.Drawing.Size(160, 17)
+        Me.chkTVShowCharacterArtCol.TabIndex = 89
+        Me.chkTVShowCharacterArtCol.Text = "Hide CharacterArt Column"
+        Me.chkTVShowCharacterArtCol.UseVisualStyleBackColor = true
+        '
+        'chkTVShowEFanartsCol
+        '
+        Me.chkTVShowEFanartsCol.AutoSize = true
+        Me.chkTVShowEFanartsCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVShowEFanartsCol.Location = New System.Drawing.Point(6, 80)
+        Me.chkTVShowEFanartsCol.Name = "chkTVShowEFanartsCol"
+        Me.chkTVShowEFanartsCol.Size = New System.Drawing.Size(152, 17)
+        Me.chkTVShowEFanartsCol.TabIndex = 82
+        Me.chkTVShowEFanartsCol.Text = "Hide Extrafanart Column"
+        Me.chkTVShowEFanartsCol.UseVisualStyleBackColor = true
+        '
+        'chkTVShowThemeCol
+        '
+        Me.chkTVShowThemeCol.AutoSize = true
+        Me.chkTVShowThemeCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVShowThemeCol.Location = New System.Drawing.Point(6, 160)
+        Me.chkTVShowThemeCol.Name = "chkTVShowThemeCol"
+        Me.chkTVShowThemeCol.Size = New System.Drawing.Size(129, 17)
+        Me.chkTVShowThemeCol.TabIndex = 85
+        Me.chkTVShowThemeCol.Text = "Hide Theme Column"
+        Me.chkTVShowThemeCol.UseVisualStyleBackColor = true
+        '
+        'chkTVShowLandscapeCol
+        '
+        Me.chkTVShowLandscapeCol.AutoSize = true
+        Me.chkTVShowLandscapeCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVShowLandscapeCol.Location = New System.Drawing.Point(6, 112)
+        Me.chkTVShowLandscapeCol.Name = "chkTVShowLandscapeCol"
+        Me.chkTVShowLandscapeCol.Size = New System.Drawing.Size(150, 17)
+        Me.chkTVShowLandscapeCol.TabIndex = 84
+        Me.chkTVShowLandscapeCol.Text = "Hide Landscape Column"
+        Me.chkTVShowLandscapeCol.UseVisualStyleBackColor = true
+        '
+        'chkTVShowBannerCol
+        '
+        Me.chkTVShowBannerCol.AutoSize = true
+        Me.chkTVShowBannerCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVShowBannerCol.Location = New System.Drawing.Point(6, 16)
+        Me.chkTVShowBannerCol.Name = "chkTVShowBannerCol"
+        Me.chkTVShowBannerCol.Size = New System.Drawing.Size(133, 17)
+        Me.chkTVShowBannerCol.TabIndex = 86
+        Me.chkTVShowBannerCol.Text = "Hide Banner Column"
+        Me.chkTVShowBannerCol.UseVisualStyleBackColor = true
         '
         'chkTVShowNfoCol
         '
         Me.chkTVShowNfoCol.AutoSize = true
         Me.chkTVShowNfoCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkTVShowNfoCol.Location = New System.Drawing.Point(7, 48)
+        Me.chkTVShowNfoCol.Location = New System.Drawing.Point(6, 128)
         Me.chkTVShowNfoCol.Name = "chkTVShowNfoCol"
-        Me.chkTVShowNfoCol.Size = New System.Drawing.Size(117, 17)
+        Me.chkTVShowNfoCol.Size = New System.Drawing.Size(119, 17)
         Me.chkTVShowNfoCol.TabIndex = 2
-        Me.chkTVShowNfoCol.Text = "Hide Info Column"
+        Me.chkTVShowNfoCol.Text = "Hide NFO Column"
         Me.chkTVShowNfoCol.UseVisualStyleBackColor = true
         '
         'chkTVShowFanartCol
         '
         Me.chkTVShowFanartCol.AutoSize = true
         Me.chkTVShowFanartCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkTVShowFanartCol.Location = New System.Drawing.Point(7, 32)
+        Me.chkTVShowFanartCol.Location = New System.Drawing.Point(6, 96)
         Me.chkTVShowFanartCol.Name = "chkTVShowFanartCol"
         Me.chkTVShowFanartCol.Size = New System.Drawing.Size(129, 17)
         Me.chkTVShowFanartCol.TabIndex = 1
@@ -6059,7 +6167,7 @@ Partial Class dlgSettings
         '
         Me.chkTVShowPosterCol.AutoSize = true
         Me.chkTVShowPosterCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkTVShowPosterCol.Location = New System.Drawing.Point(7, 16)
+        Me.chkTVShowPosterCol.Location = New System.Drawing.Point(6, 144)
         Me.chkTVShowPosterCol.Name = "chkTVShowPosterCol"
         Me.chkTVShowPosterCol.Size = New System.Drawing.Size(128, 17)
         Me.chkTVShowPosterCol.TabIndex = 0
@@ -6179,7 +6287,7 @@ Partial Class dlgSettings
         Me.gbTVGeneralMiscOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.gbTVGeneralMiscOpts.Location = New System.Drawing.Point(6, 7)
         Me.gbTVGeneralMiscOpts.Name = "gbTVGeneralMiscOpts"
-        Me.gbTVGeneralMiscOpts.Size = New System.Drawing.Size(219, 96)
+        Me.gbTVGeneralMiscOpts.Size = New System.Drawing.Size(219, 70)
         Me.gbTVGeneralMiscOpts.TabIndex = 0
         Me.gbTVGeneralMiscOpts.TabStop = false
         Me.gbTVGeneralMiscOpts.Text = "Miscellaneous"
@@ -6187,7 +6295,7 @@ Partial Class dlgSettings
         'chkTVGeneralMarkNewShows
         '
         Me.chkTVGeneralMarkNewShows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkTVGeneralMarkNewShows.Location = New System.Drawing.Point(6, 44)
+        Me.chkTVGeneralMarkNewShows.Location = New System.Drawing.Point(6, 32)
         Me.chkTVGeneralMarkNewShows.Name = "chkTVGeneralMarkNewShows"
         Me.chkTVGeneralMarkNewShows.Size = New System.Drawing.Size(204, 17)
         Me.chkTVGeneralMarkNewShows.TabIndex = 3
@@ -6197,7 +6305,7 @@ Partial Class dlgSettings
         'chkTVGeneralMarkNewEpisodes
         '
         Me.chkTVGeneralMarkNewEpisodes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkTVGeneralMarkNewEpisodes.Location = New System.Drawing.Point(6, 67)
+        Me.chkTVGeneralMarkNewEpisodes.Location = New System.Drawing.Point(6, 48)
         Me.chkTVGeneralMarkNewEpisodes.Name = "chkTVGeneralMarkNewEpisodes"
         Me.chkTVGeneralMarkNewEpisodes.Size = New System.Drawing.Size(204, 17)
         Me.chkTVGeneralMarkNewEpisodes.TabIndex = 4
@@ -6207,7 +6315,7 @@ Partial Class dlgSettings
         'chkTVGeneralDisplayASPoster
         '
         Me.chkTVGeneralDisplayASPoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkTVGeneralDisplayASPoster.Location = New System.Drawing.Point(6, 21)
+        Me.chkTVGeneralDisplayASPoster.Location = New System.Drawing.Point(6, 16)
         Me.chkTVGeneralDisplayASPoster.Name = "chkTVGeneralDisplayASPoster"
         Me.chkTVGeneralDisplayASPoster.Size = New System.Drawing.Size(204, 17)
         Me.chkTVGeneralDisplayASPoster.TabIndex = 2
@@ -9652,6 +9760,17 @@ Partial Class dlgSettings
         Me.gbMovieScraperFieldsOpts.TabStop = false
         Me.gbMovieScraperFieldsOpts.Text = "Scraper Fields - Global"
         '
+        'chkMovieScraperCollection
+        '
+        Me.chkMovieScraperCollection.AutoSize = true
+        Me.chkMovieScraperCollection.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieScraperCollection.Location = New System.Drawing.Point(6, 175)
+        Me.chkMovieScraperCollection.Name = "chkMovieScraperCollection"
+        Me.chkMovieScraperCollection.Size = New System.Drawing.Size(78, 17)
+        Me.chkMovieScraperCollection.TabIndex = 26
+        Me.chkMovieScraperCollection.Text = "Collection"
+        Me.chkMovieScraperCollection.UseVisualStyleBackColor = true
+        '
         'chkMovieScraperCertification
         '
         Me.chkMovieScraperCertification.AutoSize = true
@@ -10702,16 +10821,27 @@ Partial Class dlgSettings
         Me.Label2.TabIndex = 0
         Me.Label2.Text = "TV Themes Dummy Label"
         '
-        'chkMovieScraperCollection
+        'chkTVSeasonBannerCol
         '
-        Me.chkMovieScraperCollection.AutoSize = true
-        Me.chkMovieScraperCollection.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkMovieScraperCollection.Location = New System.Drawing.Point(6, 175)
-        Me.chkMovieScraperCollection.Name = "chkMovieScraperCollection"
-        Me.chkMovieScraperCollection.Size = New System.Drawing.Size(78, 17)
-        Me.chkMovieScraperCollection.TabIndex = 26
-        Me.chkMovieScraperCollection.Text = "Collection"
-        Me.chkMovieScraperCollection.UseVisualStyleBackColor = true
+        Me.chkTVSeasonBannerCol.AutoSize = true
+        Me.chkTVSeasonBannerCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVSeasonBannerCol.Location = New System.Drawing.Point(6, 16)
+        Me.chkTVSeasonBannerCol.Name = "chkTVSeasonBannerCol"
+        Me.chkTVSeasonBannerCol.Size = New System.Drawing.Size(133, 17)
+        Me.chkTVSeasonBannerCol.TabIndex = 2
+        Me.chkTVSeasonBannerCol.Text = "Hide Banner Column"
+        Me.chkTVSeasonBannerCol.UseVisualStyleBackColor = true
+        '
+        'chkTVSeasonLandscapeCol
+        '
+        Me.chkTVSeasonLandscapeCol.AutoSize = true
+        Me.chkTVSeasonLandscapeCol.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVSeasonLandscapeCol.Location = New System.Drawing.Point(6, 48)
+        Me.chkTVSeasonLandscapeCol.Name = "chkTVSeasonLandscapeCol"
+        Me.chkTVSeasonLandscapeCol.Size = New System.Drawing.Size(150, 17)
+        Me.chkTVSeasonLandscapeCol.TabIndex = 3
+        Me.chkTVSeasonLandscapeCol.Text = "Hide Landscape Column"
+        Me.chkTVSeasonLandscapeCol.UseVisualStyleBackColor = true
         '
         'dlgSettings
         '
@@ -11890,4 +12020,14 @@ End Sub
     Friend WithEvents chkTVShowPosterBoxee As System.Windows.Forms.CheckBox
     Friend WithEvents chkTVUseBoxee As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieScraperCollection As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVEpisodeWatchedCol As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVShowClearLogoCol As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVShowClearArtCol As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVShowCharacterArtCol As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVShowEFanartsCol As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVShowThemeCol As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVShowLandscapeCol As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVShowBannerCol As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVSeasonLandscapeCol As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVSeasonBannerCol As System.Windows.Forms.CheckBox
 End Class

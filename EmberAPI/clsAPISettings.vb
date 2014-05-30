@@ -383,6 +383,7 @@ Public Class Settings
     Private _tvshowclearartoverwrite As Boolean
     Private _tvshowclearlogocol As Boolean
     Private _tvshowclearlogooverwrite As Boolean
+    Private _tvshowefanartscol As Boolean
     Private _tvshowfanartcol As Boolean
     Private _tvshowfanartheight As Integer
     Private _tvshowfanartoverwrite As Boolean
@@ -3621,6 +3622,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVShowEFanartsCol() As Boolean
+        Get
+            Return Me._tvshowefanartscol
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowefanartscol = value
+        End Set
+    End Property
+
     Public Property TVShowLandscapeCol() As Boolean
         Get
             Return Me._tvshowlandscapecol
@@ -4469,37 +4479,37 @@ Public Class Settings
 
     Public Property MovieUseBoxee() As Boolean
         Get
-            Return Me._movieuseBoxee
+            Return Me._movieuseboxee
         End Get
         Set(ByVal value As Boolean)
-            Me._movieuseBoxee = value
+            Me._movieuseboxee = value
         End Set
     End Property
 
     Public Property MovieFanartBoxee() As Boolean
         Get
-            Return Me._moviefanartBoxee
+            Return Me._moviefanartboxee
         End Get
         Set(ByVal value As Boolean)
-            Me._moviefanartBoxee = value
+            Me._moviefanartboxee = value
         End Set
     End Property
 
     Public Property MovieNFOBoxee() As Boolean
         Get
-            Return Me._movienfoBoxee
+            Return Me._movienfoboxee
         End Get
         Set(ByVal value As Boolean)
-            Me._movienfoBoxee = value
+            Me._movienfoboxee = value
         End Set
     End Property
 
     Public Property MoviePosterBoxee() As Boolean
         Get
-            Return Me._movieposterBoxee
+            Return Me._movieposterboxee
         End Get
         Set(ByVal value As Boolean)
-            Me._movieposterBoxee = value
+            Me._movieposterboxee = value
         End Set
     End Property
 
@@ -5816,6 +5826,7 @@ Public Class Settings
         Me._tvshowclearlogocol = False
         Me._tvshowclearlogooverwrite = True
         Me._tvshowclearlogoxbmc = False
+        Me._tvshowefanartscol = False
         Me._tvshowfanartcol = False
         Me._tvshowfanartfrodo = False
         Me._tvshowfanartheight = 0
