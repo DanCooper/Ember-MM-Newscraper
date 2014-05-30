@@ -3268,6 +3268,7 @@ Public Class dlgSettings
                 Me.chkTVShowCharacterArtXBMC.Checked = .TVShowCharacterArtXBMC
                 Me.chkTVShowClearArtXBMC.Checked = .TVShowClearArtXBMC
                 Me.chkTVShowClearLogoXBMC.Checked = .TVShowClearLogoXBMC
+                Me.chkTVShowExtrafanartsXBMC.Checked = .TVShowExtrafanartsXBMC
                 Me.chkTVShowLandscapeXBMC.Checked = .TVShowLandscapeXBMC
                 Me.chkTVShowTVThemeXBMC.Checked = .TVShowTVThemeXBMC
                 Me.txtTVShowTVThemeFolderXBMC.Text = .TVShowTVThemeFolderXBMC
@@ -4673,6 +4674,7 @@ Public Class dlgSettings
                 .TVShowCharacterArtXBMC = Me.chkTVShowCharacterArtXBMC.Checked
                 .TVShowClearArtXBMC = Me.chkTVShowClearArtXBMC.Checked
                 .TVShowClearLogoXBMC = Me.chkTVShowClearLogoXBMC.Checked
+                .TVShowExtrafanartsXBMC = Me.chkTVShowExtrafanartsXBMC.Checked
                 .TVShowLandscapeXBMC = Me.chkTVShowLandscapeXBMC.Checked
                 .TVShowTVThemeXBMC = Me.chkTVShowTVThemeXBMC.Checked
                 .TVShowTVThemeFolderXBMC = Me.txtTVShowTVThemeFolderXBMC.Text
@@ -5029,6 +5031,7 @@ Public Class dlgSettings
         Me.chkTVSeasonFanartResize.Text = Me.chkMovieFanartResize.Text
         Me.chkTVSeasonPosterOverwrite.Text = Me.chkMoviePosterOverwrite.Text
         Me.chkTVSeasonPosterResize.Text = Me.chkMoviePosterResize.Text
+        Me.chkTVShowExtrafanartsXBMC.Text = Master.eLang.GetString(1142, "Show Extrafanarts")
         Me.chkTVShowFanartOverwrite.Text = Me.chkMovieFanartOverwrite.Text
         Me.chkTVShowFanartResize.Text = Me.chkMovieFanartResize.Text
         Me.chkTVShowPosterOverwrite.Text = Me.chkMoviePosterOverwrite.Text
@@ -6362,6 +6365,7 @@ Public Class dlgSettings
         Me.chkTVShowCharacterArtXBMC.Enabled = Me.chkTVUseFrodo.Checked
         Me.chkTVShowClearArtXBMC.Enabled = Me.chkTVUseFrodo.Checked
         Me.chkTVShowClearLogoXBMC.Enabled = Me.chkTVUseFrodo.Checked
+        Me.chkTVShowExtrafanartsXBMC.Enabled = Me.chkTVUseFrodo.Checked
         Me.chkTVShowFanartFrodo.Enabled = Me.chkTVUseFrodo.Checked
         Me.chkTVShowLandscapeXBMC.Enabled = Me.chkTVUseFrodo.Checked
         Me.chkTVShowPosterFrodo.Enabled = Me.chkTVUseFrodo.Checked
@@ -6379,6 +6383,7 @@ Public Class dlgSettings
             Me.chkTVShowCharacterArtXBMC.Checked = False
             Me.chkTVShowClearArtXBMC.Checked = False
             Me.chkTVShowClearLogoXBMC.Checked = False
+            Me.chkTVShowExtrafanartsXBMC.Checked = False
             Me.chkTVShowFanartFrodo.Checked = False
             Me.chkTVShowLandscapeXBMC.Checked = False
             Me.chkTVShowPosterFrodo.Checked = False
@@ -6395,6 +6400,7 @@ Public Class dlgSettings
             Me.chkTVShowCharacterArtXBMC.Checked = True
             Me.chkTVShowClearArtXBMC.Checked = True
             Me.chkTVShowClearLogoXBMC.Checked = True
+            Me.chkTVShowExtrafanartsXBMC.Checked = True
             Me.chkTVShowFanartFrodo.Checked = True
             Me.chkTVShowLandscapeXBMC.Checked = True
             Me.chkTVShowPosterFrodo.Checked = True
@@ -6442,6 +6448,10 @@ Public Class dlgSettings
     End Sub
 
     Private Sub chkTVShowClearLogoXBMC_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowClearLogoXBMC.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkTVShowExtrafanartsXBMC_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowExtrafanartsXBMC.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 

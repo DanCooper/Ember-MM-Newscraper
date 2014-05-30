@@ -627,12 +627,19 @@ Public Class Scanner
     ''' <param name="tShow">TVShowContainer object.</param>
     Public Sub GetTVShowFolderContents(ByRef tShow As TVShowContainer, Optional ByVal ID As Long = 0)
         Dim ShowPath As String = tShow.ShowPath
+        Dim efList As New List(Of String)
         Dim fList As New List(Of String)
         Dim fName As String = String.Empty
 
         Try
             Try
                 fList.AddRange(Directory.GetFiles(tShow.ShowPath))
+
+                For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.TVModType.ShowEFanarts)
+                    If Directory.Exists(a) Then
+                        efList.AddRange(Directory.GetFiles(a))
+                    End If
+                Next
             Catch
             End Try
 
@@ -698,6 +705,13 @@ Public Class Scanner
                     tShow.ShowClearLogo = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
                     If Not String.IsNullOrEmpty(tShow.ShowClearLogo) Then Exit For
                 Next
+            End If
+
+            'extrafanart
+            If String.IsNullOrEmpty(tShow.ShowEFanarts) Then
+                If eflist.Count > 0 Then
+                    tShow.ShowEFanarts = efList.Item(0).ToString
+                End If
             End If
 
             'show fanart
@@ -2090,6 +2104,7 @@ Public Class Scanner
         Private _showcharacterart As String
         Private _showclearart As String
         Private _showclearlogo As String
+        Private _showefanarts As String
         Private _showfanart As String
         Private _showlandscape As String
         Private _shownfo As String
@@ -2191,6 +2206,15 @@ Public Class Scanner
             End Set
         End Property
 
+        Public Property ShowEFanarts() As String
+            Get
+                Return _showefanarts
+            End Get
+            Set(ByVal value As String)
+                _showefanarts = value
+            End Set
+        End Property
+
         Public Property ShowFanart() As String
             Get
                 Return Me._showfanart
@@ -2268,6 +2292,7 @@ Public Class Scanner
             Me._showcharacterart = String.Empty
             Me._showclearart = String.Empty
             Me._showclearlogo = String.Empty
+            Me._showefanarts = String.Empty
             Me._showfanart = String.Empty
             Me._showlandscape = String.Empty
             Me._shownfo = String.Empty

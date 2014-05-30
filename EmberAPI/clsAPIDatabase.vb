@@ -411,6 +411,7 @@ Public Class Database
             Dim doAddColumnMovieAndTVTheme As Boolean = False
             Dim doAddColumnMovieAndTVLogoDiscAndClearArt As Boolean = False
             Dim doAddColumnMovieSetsImages As Boolean = False
+            Dim doAddColumnTVShowEFanarts As Boolean = False
             Dim strlistSQLCommands As New List(Of String)
 
             SQLpathcommand.CommandText = "pragma table_info(TVEps);"
@@ -474,6 +475,7 @@ Public Class Database
             Try
                 doAddColumnTVBannerAndLandscape = True
                 doAddColumnTVShowStatus = True
+                doAddColumnTVShowEFanarts = True
                 Using SQLreader As SQLite.SQLiteDataReader = SQLpathcommand.ExecuteReader
                     While SQLreader.Read
                         'Debug.Print(SQLreader("name").ToString.ToLower())
@@ -483,6 +485,9 @@ Public Class Database
                         End If
                         If SQLreader("name").ToString.ToLower = "status" Then
                             doAddColumnTVShowStatus = False
+                        End If
+                        If SQLreader("name").ToString.ToLower = "hasefanarts" Then
+                            doAddColumnTVShowEFanarts = False
                         End If
                     End While
                 End Using
@@ -587,6 +592,10 @@ Public Class Database
                 strlistSQLCommands.Add("alter table Sets add ClearLogoPath TEXT;")
                 strlistSQLCommands.Add("alter table Sets add HasClearArt BOOL NOT NULL DEFAULT False;")
                 strlistSQLCommands.Add("alter table Sets add ClearArtPath TEXT;")
+            End If
+            If doAddColumnTVShowEFanarts = True Then
+                strlistSQLCommands.Add("alter table TVShows add HasEFanarts BOOL NOT NULL DEFAULT False;")
+                strlistSQLCommands.Add("alter table TVShows add EFanartsPath TEXT;")
             End If
 
             Using transaction As SQLite.SQLiteTransaction = _myvideosDBConn.BeginTransaction()
@@ -959,19 +968,21 @@ Public Class Database
 
         _TVDB.IsLockShow = _tmpTVDB.IsLockShow
         _TVDB.IsMarkShow = _tmpTVDB.IsMarkShow
+        _TVDB.Ordering = _tmpTVDB.Ordering
         _TVDB.ShowBannerPath = _tmpTVDB.ShowBannerPath
         _TVDB.ShowCharacterArtPath = _tmpTVDB.ShowCharacterArtPath
         _TVDB.ShowClearArtPath = _tmpTVDB.ShowClearArtPath
         _TVDB.ShowClearLogoPath = _tmpTVDB.ShowClearLogoPath
+        _TVDB.ShowEFanartsPath = _tmpTVDB.ShowEFanartsPath
         _TVDB.ShowFanartPath = _tmpTVDB.ShowFanartPath
         _TVDB.ShowLandscapePath = _tmpTVDB.ShowLandscapePath
-        _TVDB.ShowPosterPath = _tmpTVDB.ShowPosterPath
+        _TVDB.ShowLanguage = _tmpTVDB.ShowLanguage
         _TVDB.ShowNeedsSave = _tmpTVDB.ShowNeedsSave
         _TVDB.ShowNfoPath = _tmpTVDB.ShowNfoPath
         _TVDB.ShowPath = _tmpTVDB.ShowPath
+        _TVDB.ShowPosterPath = _tmpTVDB.ShowPosterPath
+        _TVDB.ShowThemePath = _tmpTVDB.ShowThemePath
         _TVDB.Source = _tmpTVDB.Source
-        _TVDB.ShowLanguage = _tmpTVDB.ShowLanguage
-        _TVDB.Ordering = _tmpTVDB.Ordering
         _TVDB.TVShow = _tmpTVDB.TVShow
     End Sub
 
@@ -1530,7 +1541,7 @@ Public Class Database
                 SQLcommand.CommandText = String.Concat("SELECT ID, Title, HasPoster, HasFanart, HasNfo, New, Mark, TVShowPath, Source, TVDB, Lock, EpisodeGuide, ", _
                                                        "Plot, Genre, Premiered, Studio, MPAA, Rating, PosterPath, FanartPath, NfoPath, NeedsSave, Language, Ordering, ", _
                                                        "HasBanner, BannerPath, HasLandscape, LandscapePath, Status, HasTheme, ThemePath, HasCharacterArt, CharacterArtPath, ", _
-                                                       "HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath FROM TVShows WHERE id = ", ShowID, ";")
+                                                       "HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, HasEFanarts, EFanartsPath FROM TVShows WHERE id = ", ShowID, ";")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     If SQLreader.HasRows Then
                         SQLreader.Read()
@@ -1538,6 +1549,7 @@ Public Class Database
                         If Not DBNull.Value.Equals(SQLreader("ClearArtPath")) Then _TVDB.ShowClearArtPath = SQLreader("ClearArtPath").ToString
                         If Not DBNull.Value.Equals(SQLreader("ClearLogoPath")) Then _TVDB.ShowClearLogoPath = SQLreader("ClearLogoPath").ToString
                         If Not DBNull.Value.Equals(SQLreader("BannerPath")) Then _TVDB.ShowBannerPath = SQLreader("BannerPath").ToString
+                        If Not DBNull.Value.Equals(SQLreader("EFanartsPath")) Then _TVDB.ShowEFanartsPath = SQLreader("EFanartsPath").ToString
                         If Not DBNull.Value.Equals(SQLreader("FanartPath")) Then _TVDB.ShowFanartPath = SQLreader("FanartPath").ToString
                         If Not DBNull.Value.Equals(SQLreader("LandscapePath")) Then _TVDB.ShowLandscapePath = SQLreader("LandscapePath").ToString
                         If Not DBNull.Value.Equals(SQLreader("Language")) Then _TVDB.ShowLanguage = SQLreader("Language").ToString
@@ -2627,15 +2639,15 @@ Public Class Database
                      "TVShowPath, HasPoster, HasFanart, HasNfo, New, Mark, Source, TVDB, Lock, Title, EpisodeGuide, ", _
                      "Plot, Genre, Premiered, Studio, MPAA, Rating, PosterPath, FanartPath, NfoPath, NeedsSave, Language, Ordering, ", _
                      "HasBanner, BannerPath, HasLandscape, LandscapePath, Status, HasTheme, ThemePath, HasCharacterArt, CharacterArtPath, ", _
-                     "HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath", _
-                     ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM TVShows;")
+                     "HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, HasEFanarts, EFanartsPath", _
+                     ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM TVShows;")
                 Else
                     SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO TVShows (", _
                      "ID, TVShowPath, HasPoster, HasFanart, HasNfo, New, Mark, Source, TVDB, Lock, Title, EpisodeGuide, ", _
                      "Plot, Genre, Premiered, Studio, MPAA, Rating, PosterPath, FanartPath, NfoPath, NeedsSave, Language, Ordering, ", _
                      "HasBanner, BannerPath, HasLandscape, LandscapePath, Status, HasTheme, ThemePath, HasCharacterArt, CharacterArtPath, ", _
-                     "HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath", _
-                     ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM TVShows;")
+                     "HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, HasEFanarts, EFanartsPath", _
+                     ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM TVShows;")
                     Dim parTVShowID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTVShowID", DbType.UInt64, 0, "ID")
                     parTVShowID.Value = _TVShowDB.ShowID
                 End If
@@ -2676,6 +2688,8 @@ Public Class Database
                 Dim parClearLogoPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parClearLogoPath", DbType.String, 0, "ClearLogoPath")
                 Dim parHasClearArt As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasClearArt", DbType.Boolean, 0, "HasClearArt")
                 Dim parClearArtPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parClearArtPath", DbType.String, 0, "ClearArtPath")
+                Dim parHasEFanarts As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasEFanarts", DbType.Boolean, 0, "HasEFanarts")
+                Dim parEFanartsPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parEFanartsPath", DbType.String, 0, "EFanartsPath")
 
                 With _TVShowDB.TVShow
                     parTVDB.Value = .ID
@@ -2697,6 +2711,7 @@ Public Class Database
                 parCharacterArtPath.Value = _TVShowDB.ShowCharacterArtPath
                 parClearArtPath.Value = _TVShowDB.ShowClearArtPath
                 parClearLogoPath.Value = _TVShowDB.ShowClearLogoPath
+                parEFanartsPath.Value = _TVShowDB.ShowEFanartsPath
                 parFanartPath.Value = _TVShowDB.ShowFanartPath
                 parLandscapePath.Value = _TVShowDB.ShowLandscapePath
                 parNfoPath.Value = _TVShowDB.ShowNfoPath
@@ -2707,6 +2722,7 @@ Public Class Database
                 parHasCharacterArt.Value = Not String.IsNullOrEmpty(_TVShowDB.ShowCharacterArtPath)
                 parHasClearArt.Value = Not String.IsNullOrEmpty(_TVShowDB.ShowClearArtPath)
                 parHasClearLogo.Value = Not String.IsNullOrEmpty(_TVShowDB.ShowClearLogoPath)
+                parHasEFanarts.Value = Not String.IsNullOrEmpty(_TVShowDB.ShowEFanartsPath)
                 parHasFanart.Value = Not String.IsNullOrEmpty(_TVShowDB.ShowFanartPath)
                 parHasLandscape.Value = Not String.IsNullOrEmpty(_TVShowDB.ShowLandscapePath)
                 parHasNfo.Value = Not String.IsNullOrEmpty(_TVShowDB.ShowNfoPath)

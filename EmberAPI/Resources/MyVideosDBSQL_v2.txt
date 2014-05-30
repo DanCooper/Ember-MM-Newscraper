@@ -198,7 +198,9 @@ CREATE TABLE TVShows(
 	HasClearLogo BOOL NOT NULL DEFAULT False,
 	ClearLogoPath TEXT,
 	HasClearArt BOOL NOT NULL DEFAULT False,
-	ClearArtPath TEXT
+	ClearArtPath TEXT,
+	HasEFanarts BOOL NOT NULL DEFAULT False,
+	EFanartsPath TEXT
 	);
 CREATE UNIQUE INDEX UniqueTVShowPath ON TVShows (TVShowPath);
 

@@ -608,11 +608,12 @@ Public Class Enums
         ShowCharacterArt = 15
         ShowClearArt = 16
         ShowClearLogo = 17
-        ShowFanart = 18
-        ShowLandscape = 19
-        ShowNfo = 20
-        ShowPoster = 21
-        ShowTheme = 22
+        ShowEFanarts = 18
+        ShowFanart = 19
+        ShowLandscape = 20
+        ShowNfo = 21
+        ShowPoster = 22
+        ShowTheme = 23
     End Enum
     ''' <summary>
     ''' Enum representing possible scraper capabilities
@@ -1723,6 +1724,7 @@ Public Class Structures
         Dim ShowCharacterArtPath As String
         Dim ShowClearArtPath As String
         Dim ShowClearLogoPath As String
+        Dim ShowEFanartsPath As String
         Dim ShowFanartPath As String
         Dim ShowID As Long
         Dim ShowLandscapePath As String

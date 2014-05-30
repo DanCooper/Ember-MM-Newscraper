@@ -581,12 +581,14 @@ Public Class Settings
     Private _tvshowposterfrodo As Boolean
 
     '*************** XBMC Eden settings ****************
+    Private _tvuseeden As Boolean
 
     '************* XBMC optional settings **************
     Private _tvseasonlandscapexbmc As Boolean
     Private _tvshowcharacterartxbmc As Boolean
     Private _tvshowclearartxbmc As Boolean
     Private _tvshowclearlogoxbmc As Boolean
+    Private _tvshowextrafanartsxbmc As Boolean
     Private _tvshowlandscapexbmc As Boolean
     Private _tvshowtvthemefolderxbmc As String
     Private _tvshowtvthemexbmc As Boolean
@@ -5044,6 +5046,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVUseEden() As Boolean
+        Get
+            Return Me._tvuseeden
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvuseeden = value
+        End Set
+    End Property
+
     Public Property TVUseFrodo() As Boolean
         Get
             Return Me._tvusefrodo
@@ -5086,6 +5097,15 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Me._tvshowbanneryamj = value
+        End Set
+    End Property
+
+    Public Property TVShowExtrafanartsXBMC() As Boolean
+        Get
+            Return Me._tvshowextrafanartsxbmc
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowextrafanartsxbmc = value
         End Set
     End Property
 
@@ -5826,6 +5846,7 @@ Public Class Settings
         Me._tvshowclearlogocol = False
         Me._tvshowclearlogooverwrite = True
         Me._tvshowclearlogoxbmc = False
+        Me._tvshowextrafanartsxbmc = False
         Me._tvshowefanartscol = False
         Me._tvshowfanartcol = False
         Me._tvshowfanartfrodo = False

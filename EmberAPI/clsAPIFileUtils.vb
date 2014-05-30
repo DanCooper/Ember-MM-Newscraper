@@ -1403,6 +1403,12 @@ Namespace FileUtils
                         If .TVUseFrodo AndAlso .TVShowClearLogoXBMC Then FilenameList.Add(Path.Combine(fShowPath, "logo.png"))
                     End With
 
+                Case Enums.TVModType.ShowEFanarts
+                    With Master.eSettings
+                        If .TVUseEden AndAlso .TVShowExtrafanartsXBMC Then FilenameList.Add(Path.Combine(fShowPath, "extrafanart"))
+                        If .TVUseFrodo AndAlso .TVShowExtrafanartsXBMC Then FilenameList.Add(Path.Combine(fShowPath, "extrafanart"))
+                    End With
+
                 Case Enums.TVModType.ShowFanart
                     With Master.eSettings
                         If .TVUseBoxee AndAlso .TVShowFanartBoxee Then FilenameList.Add(Path.Combine(fShowPath, "fanart.jpg"))

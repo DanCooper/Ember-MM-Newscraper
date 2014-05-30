@@ -5738,7 +5738,7 @@ doCancel:
             End If
 
             'icons
-            If e.ColumnIndex >= 2 AndAlso e.ColumnIndex <= 36 AndAlso e.RowIndex = -1 Then
+            If e.ColumnIndex >= 2 AndAlso e.ColumnIndex <= 38 AndAlso e.RowIndex = -1 Then
                 e.PaintBackground(e.ClipBounds, False)
 
                 Dim pt As Point = e.CellBounds.Location
@@ -5764,6 +5764,8 @@ doCancel:
                     Me.ilColumnIcons.Draw(e.Graphics, pt, 14)
                 ElseIf e.ColumnIndex = 35 Then 'ClearArt
                     Me.ilColumnIcons.Draw(e.Graphics, pt, 15)
+                ElseIf e.ColumnIndex = 37 Then 'Extrafanarts
+                    Me.ilColumnIcons.Draw(e.Graphics, pt, 9)
                 End If
 
                 e.Handled = True
@@ -5786,7 +5788,7 @@ doCancel:
                 End If
             End If
 
-            If e.ColumnIndex >= 1 AndAlso e.ColumnIndex <= 36 AndAlso e.RowIndex >= 0 Then
+            If e.ColumnIndex >= 1 AndAlso e.ColumnIndex <= 38 AndAlso e.RowIndex >= 0 Then
 
                 If Convert.ToBoolean(Me.dgvTVShows.Item(10, e.RowIndex).Value) Then
                     e.CellStyle.BackColor = Color.LightSteelBlue
@@ -5796,7 +5798,7 @@ doCancel:
                     e.CellStyle.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
                 End If
 
-                If e.ColumnIndex >= 2 AndAlso e.ColumnIndex <= 36 Then
+                If e.ColumnIndex >= 2 AndAlso e.ColumnIndex <= 38 Then
                     e.PaintBackground(e.ClipBounds, True)
 
                     Dim pt As Point = e.CellBounds.Location
@@ -6196,7 +6198,7 @@ doCancel:
 
             Master.DB.FillDataTable(Me.dtMovieSets, "SELECT ID, SetName, HasNfo, NfoPath, HasPoster, PosterPath, HasFanart, FanartPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath FROM sets ORDER BY SetName COLLATE NOCASE;")
 
-            Master.DB.FillDataTable(Me.dtShows, "SELECT ID, Title, HasPoster, HasFanart, HasNfo, New, Mark, TVShowPath, Source, TVDB, Lock, EpisodeGuide, Plot, Genre, Premiered, Studio, MPAA, Rating, PosterPath, FanartPath, NfoPath, NeedsSave, Language, Ordering, HasBanner, BannerPath, HasLandscape, LandscapePath, Status, HasTheme, ThemePath, HasCharacterArt, CharacterArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath FROM TVShows ORDER BY Title COLLATE NOCASE;")
+            Master.DB.FillDataTable(Me.dtShows, "SELECT ID, Title, HasPoster, HasFanart, HasNfo, New, Mark, TVShowPath, Source, TVDB, Lock, EpisodeGuide, Plot, Genre, Premiered, Studio, MPAA, Rating, PosterPath, FanartPath, NfoPath, NeedsSave, Language, Ordering, HasBanner, BannerPath, HasLandscape, LandscapePath, Status, HasTheme, ThemePath, HasCharacterArt, CharacterArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, HasEFanarts, EFanartsPath FROM TVShows ORDER BY Title COLLATE NOCASE;")
 
             If isCL Then
                 Me.LoadingDone = True
@@ -6546,7 +6548,14 @@ doCancel:
                         .dgvTVShows.Columns(35).Visible = Not Master.eSettings.TVShowClearArtCol
                         .dgvTVShows.Columns(35).ToolTipText = Master.eLang.GetString(1096, "ClearArt")
                         .dgvTVShows.Columns(36).Visible = False
-                        For i As Integer = 37 To .dgvTVShows.Columns.Count - 1
+                        .dgvTVShows.Columns(37).Width = 20
+                        .dgvTVShows.Columns(37).Resizable = DataGridViewTriState.False
+                        .dgvTVShows.Columns(37).ReadOnly = True
+                        .dgvTVShows.Columns(37).SortMode = DataGridViewColumnSortMode.Automatic
+                        .dgvTVShows.Columns(37).Visible = Not Master.eSettings.TVShowEFanartsCol
+                        .dgvTVShows.Columns(37).ToolTipText = Master.eLang.GetString(992, "Extrafanarts")
+                        .dgvTVShows.Columns(38).Visible = False
+                        For i As Integer = 39 To .dgvTVShows.Columns.Count - 1
                             .dgvTVShows.Columns(i).Visible = False
                         Next
 
@@ -10618,6 +10627,7 @@ doCancel:
                 tmpShowDb.ShowCharacterArtPath = sContainer.ShowCharacterArt
                 tmpShowDb.ShowClearArtPath = sContainer.ShowClearArt
                 tmpShowDb.ShowClearLogoPath = sContainer.ShowClearLogo
+                tmpShowDb.ShowEFanartsPath = sContainer.ShowEFanarts
                 tmpShowDb.ShowFanartPath = sContainer.ShowFanart
                 tmpShowDb.ShowLandscapePath = sContainer.ShowLandscape
                 tmpShowDb.ShowPosterPath = sContainer.ShowPoster
@@ -10629,7 +10639,7 @@ doCancel:
                 hasCharacterArt = Not String.IsNullOrEmpty(sContainer.ShowCharacterArt)
                 hasClearArt = Not String.IsNullOrEmpty(sContainer.ShowClearArt)
                 hasClearLogo = Not String.IsNullOrEmpty(sContainer.ShowClearLogo)
-                'hasEFanarts = Not String.IsNullOrEmpty(sContainer.ShowEFanarts)
+                hasEFanarts = Not String.IsNullOrEmpty(sContainer.ShowEFanarts)
                 hasFanart = Not String.IsNullOrEmpty(sContainer.ShowFanart)
                 hasLandscape = Not String.IsNullOrEmpty(sContainer.ShowLandscape)
                 hasPoster = Not String.IsNullOrEmpty(sContainer.ShowPoster)
@@ -10653,6 +10663,7 @@ doCancel:
                         Me.Invoke(myDelegate, New Object() {dRow(0), 31, hasCharacterArt})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 33, hasClearLogo})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 35, hasClearArt})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 37, hasEFanarts})
                     Else
                         DirectCast(dRow(0), DataRow).Item(1) = tmpShowDb.TVShow.Title
                         DirectCast(dRow(0), DataRow).Item(2) = hasPoster
@@ -10665,6 +10676,7 @@ doCancel:
                         DirectCast(dRow(0), DataRow).Item(31) = hasCharacterArt
                         DirectCast(dRow(0), DataRow).Item(33) = hasClearLogo
                         DirectCast(dRow(0), DataRow).Item(35) = hasClearArt
+                        DirectCast(dRow(0), DataRow).Item(37) = hasEFanarts
                     End If
                 End If
 
