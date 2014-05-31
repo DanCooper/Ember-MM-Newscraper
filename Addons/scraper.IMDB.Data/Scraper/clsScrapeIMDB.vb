@@ -353,9 +353,9 @@ Namespace IMDB
                 'MOVIE RELEASEDATE
                 If Options.bRelease Then
                     Dim RelDate As Date
-                    Dim sRelDate As String = Regex.Match(HTML, "\d+\s\w+\s\d\d\d\d\s").ToString.Trim
-                    If Not sRelDate = String.Empty Then
-                        If Date.TryParse(sRelDate, RelDate) Then
+                    Dim sRelDate As MatchCollection = Regex.Matches(HTML, "<h5>Release Date:</h5>.*?(?<DATE>\d+\s\w+\s\d\d\d\d\s)", RegexOptions.Singleline)
+                    If sRelDate.Count > 0 Then
+                        If Date.TryParse(sRelDate.Item(0).Groups(1).Value, RelDate) Then
                             DBMovie.ReleaseDate = Strings.FormatDateTime(RelDate, DateFormat.ShortDate).ToString
                         End If
                     End If
