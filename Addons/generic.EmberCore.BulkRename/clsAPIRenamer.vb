@@ -93,14 +93,16 @@ Public Class FileFolderRenamer
                     strNoFlags = strCond
                     strBase = strCond
                     strCond = ApplyPattern(strCond, "1", f.SortTitle.Substring(0, 1))
-                    strCond = ApplyPattern(strCond, "A", f.Audio)
+                    strCond = ApplyPattern(strCond, "A", f.AudioChannels)
                     strCond = ApplyPattern(strCond, "B", String.Empty) 'This is not need here, Only to HaveBase
                     strCond = ApplyPattern(strCond, "C", f.Director)
                     strCond = ApplyPattern(strCond, "D", f.Parent) '.Replace("\", String.Empty))
                     strCond = ApplyPattern(strCond, "E", f.SortTitle)
                     strCond = ApplyPattern(strCond, "F", f.FileName.Replace("\", String.Empty))
                     '                                G   Genres
+                    strCond = ApplyPattern(strCond, "H", f.VideoCodec)
                     strCond = ApplyPattern(strCond, "I", If(Not String.IsNullOrEmpty(f.IMDBID), String.Concat("tt", f.IMDBID), String.Empty))
+                    strCond = ApplyPattern(strCond, "J", f.AudioCodec)
                     strCond = ApplyPattern(strCond, "L", f.ListTitle)
                     strCond = ApplyPattern(strCond, "M", f.MPAARate)
                     strCond = ApplyPattern(strCond, "O", f.OriginalTitle)
@@ -136,7 +138,7 @@ Public Class FileFolderRenamer
                             strCond = ApplyPattern(strCond, "U", f.Country.Replace(" / ", " "))
                         End If
                     End If
-                    strNoFlags = Regex.Replace(strNoFlags, "\$((?:[1ABCDEFILMORSTY]|G[. -]|U[. -]?))", String.Empty) '"(?i)\$([DFTYRAS])"  "\$((?i:[DFTYRAS]))"
+                    strNoFlags = Regex.Replace(strNoFlags, "\$((?:[1ABCDEFHIJLMORSTVY]|G[. -]|U[. -]?))", String.Empty) '"(?i)\$([DFTYRAS])"  "\$((?i:[DFTYRAS]))"
                     If strCond.Trim = strNoFlags.Trim Then
                         strCond = String.Empty
                     Else
@@ -151,14 +153,16 @@ Public Class FileFolderRenamer
                 nextEB = pattern.IndexOf("}")
             End While
             pattern = ApplyPattern(pattern, "1", f.SortTitle.Substring(0, 1))
-            pattern = ApplyPattern(pattern, "A", f.Audio)
+            pattern = ApplyPattern(pattern, "A", f.AudioChannels)
             pattern = ApplyPattern(pattern, "B", String.Empty) 'This is not need here, Only to HaveBase
             pattern = ApplyPattern(pattern, "C", f.Director)
             pattern = ApplyPattern(pattern, "D", f.Parent) '.Replace("\", String.Empty))
             pattern = ApplyPattern(pattern, "E", f.SortTitle)
             pattern = ApplyPattern(pattern, "F", f.FileName.Replace("\", String.Empty))
             '                                G   Genres
+            pattern = ApplyPattern(pattern, "H", f.VideoCodec)
             pattern = ApplyPattern(pattern, "I", If(Not String.IsNullOrEmpty(f.IMDBID), String.Concat("tt", f.IMDBID), String.Empty))
+            pattern = ApplyPattern(pattern, "J", f.AudioCodec)
             pattern = ApplyPattern(pattern, "L", f.ListTitle)
             pattern = ApplyPattern(pattern, "M", f.MPAARate)
             pattern = ApplyPattern(pattern, "O", f.OriginalTitle)
@@ -255,9 +259,22 @@ Public Class FileFolderRenamer
 
                 If _tmpMovie.Movie.FileInfo.StreamDetails.Audio.Count > 0 Then
                     Dim tAud As MediaInfo.Audio = NFO.GetBestAudio(_tmpMovie.Movie.FileInfo, False)
-                    MovieFile.Audio = String.Format("{0}-{1}ch", If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(138, "Unknown"), tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(138, "Unknown"), tAud.Channels))
+
+                    If tAud.ChannelsSpecified Then
+                        MovieFile.AudioChannels = String.Format("{0}ch", tAud.Channels)
+                    Else
+                        MovieFile.AudioChannels = String.Empty
+                    End If
+
+                    If tAud.CodecSpecified Then
+                        MovieFile.AudioCodec = tAud.Codec
+                    Else
+                        MovieFile.AudioCodec = String.Empty
+                    End If
+                    'MovieFile.AudioChannels = String.Format("{0}-{1}ch", If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(138, "Unknown"), tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(138, "Unknown"), tAud.Channels))
                 Else
-                    MovieFile.Audio = String.Empty
+                    MovieFile.AudioChannels = String.Empty
+                    MovieFile.AudioCodec = String.Empty
                 End If
 
                 If _tmpMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
@@ -273,9 +290,11 @@ Public Class FileFolderRenamer
                 Master.eLog.Error(GetType(FileFolderRenamer), ex.Message, ex.StackTrace, "Error FileInfo")
             End Try
         Else
-            MovieFile.Audio = String.Empty
+            MovieFile.AudioChannels = String.Empty
+            MovieFile.AudioCodec = String.Empty
             MovieFile.Resolution = String.Empty
             MovieFile.MultiView = String.Empty
+            MovieFile.VideoCodec = String.Empty
         End If
 
         MovieFile.Country = _tmpMovie.Movie.Country
@@ -834,7 +853,8 @@ Public Class FileFolderRenamer
 
 #Region "Fields"
 
-        Private _audio As String
+        Private _audiochannels As String
+        Private _audiocodec As String
         Private _basePath As String
         Private _dirExist As Boolean
         Private _fileExist As Boolean
@@ -864,17 +884,27 @@ Public Class FileFolderRenamer
         Private _genre As String
         Private _director As String
         Private _filesource As String
+        Private _videocodec As String
 
 #End Region 'Fields
 
 #Region "Properties"
 
-        Public Property Audio() As String
+        Public Property AudioChannels() As String
             Get
-                Return Me._audio
+                Return Me._audiochannels
             End Get
             Set(ByVal value As String)
-                Me._audio = value
+                Me._audiochannels = value
+            End Set
+        End Property
+
+        Public Property AudioCodec() As String
+            Get
+                Return Me._audiocodec
+            End Get
+            Set(ByVal value As String)
+                Me._audiocodec = value
             End Set
         End Property
 
@@ -1094,6 +1124,15 @@ Public Class FileFolderRenamer
             End Set
         End Property
 
+        Public Property VideoCodec() As String
+            Get
+                Return Me._videocodec
+            End Get
+            Set(ByVal value As String)
+                Me._videocodec = value
+            End Set
+        End Property
+
         Public Property Year() As String
             Get
                 Return Me._year
@@ -1165,13 +1204,15 @@ Public Class FileFolderRenamer
             _multiview = String.Empty
             _rating = String.Empty
             _resolution = String.Empty
-            _audio = String.Empty
+            _audiochannels = String.Empty
+            _audiocodec = String.Empty
             _originalTitle = String.Empty
             _isvideo_ts = False
             _isbdmv = False
             _genre = String.Empty
             _director = String.Empty
             _country = String.Empty
+            _videocodec = String.Empty
         End Sub
 
 #End Region 'Methods
