@@ -918,6 +918,13 @@ Partial Class dlgSettings
         Me.chkMovieThemeEnable = New System.Windows.Forms.CheckBox()
         Me.pnlTVThemes = New System.Windows.Forms.Panel()
         Me.Label2 = New System.Windows.Forms.Label()
+        Me.gbGeneralMainWindow = New System.Windows.Forms.GroupBox()
+        Me.chkGeneralHideBanner = New System.Windows.Forms.CheckBox()
+        Me.chkGeneralHideClearArt = New System.Windows.Forms.CheckBox()
+        Me.chkGeneralHideCharacterArt = New System.Windows.Forms.CheckBox()
+        Me.chkGeneralHideClearLogo = New System.Windows.Forms.CheckBox()
+        Me.chkGeneralHideDiscArt = New System.Windows.Forms.CheckBox()
+        Me.chkGeneralHideLandscape = New System.Windows.Forms.CheckBox()
         Me.gbGeneralMisc.SuspendLayout
         Me.gbGeneralDaemon.SuspendLayout
         Me.gbGeneralThemes.SuspendLayout
@@ -1080,27 +1087,20 @@ Partial Class dlgSettings
         Me.pnlMovieThemes.SuspendLayout
         Me.gbMovieThemeOpts.SuspendLayout
         Me.pnlTVThemes.SuspendLayout
+        Me.gbGeneralMainWindow.SuspendLayout
         Me.SuspendLayout
         '
         'gbGeneralMisc
         '
-        Me.gbGeneralMisc.Controls.Add(Me.gbGeneralDaemon)
-        Me.gbGeneralMisc.Controls.Add(Me.chkGeneralImagesGlassOverlay)
-        Me.gbGeneralMisc.Controls.Add(Me.chkGeneralHideFanartSmall)
         Me.gbGeneralMisc.Controls.Add(Me.chkGeneralCreationDate)
-        Me.gbGeneralMisc.Controls.Add(Me.chkGeneralShowGenresText)
         Me.gbGeneralMisc.Controls.Add(Me.chkGeneralSourceFromFolder)
-        Me.gbGeneralMisc.Controls.Add(Me.chkGeneralHideFanart)
-        Me.gbGeneralMisc.Controls.Add(Me.chkGeneralInfoPanelAnim)
-        Me.gbGeneralMisc.Controls.Add(Me.chkGeneralHidePoster)
-        Me.gbGeneralMisc.Controls.Add(Me.chkGeneralShowImgDims)
         Me.gbGeneralMisc.Controls.Add(Me.chkGeneralCheckUpdates)
         Me.gbGeneralMisc.Controls.Add(Me.chkGeneralOverwriteNfo)
         Me.gbGeneralMisc.Controls.Add(Me.lblGeneralOverwriteNfo)
         Me.gbGeneralMisc.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.gbGeneralMisc.Location = New System.Drawing.Point(210, 3)
         Me.gbGeneralMisc.Name = "gbGeneralMisc"
-        Me.gbGeneralMisc.Size = New System.Drawing.Size(537, 494)
+        Me.gbGeneralMisc.Size = New System.Drawing.Size(537, 142)
         Me.gbGeneralMisc.TabIndex = 1
         Me.gbGeneralMisc.TabStop = false
         Me.gbGeneralMisc.Text = "Miscellaneous"
@@ -1112,9 +1112,10 @@ Partial Class dlgSettings
         Me.gbGeneralDaemon.Controls.Add(Me.btnGeneralDaemonPathBrowse)
         Me.gbGeneralDaemon.Controls.Add(Me.txtGeneralDaemonPath)
         Me.gbGeneralDaemon.Controls.Add(Me.lblGeneralDaemonPath)
-        Me.gbGeneralDaemon.Location = New System.Drawing.Point(6, 256)
+        Me.gbGeneralDaemon.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.gbGeneralDaemon.Location = New System.Drawing.Point(210, 391)
         Me.gbGeneralDaemon.Name = "gbGeneralDaemon"
-        Me.gbGeneralDaemon.Size = New System.Drawing.Size(396, 122)
+        Me.gbGeneralDaemon.Size = New System.Drawing.Size(537, 104)
         Me.gbGeneralDaemon.TabIndex = 13
         Me.gbGeneralDaemon.TabStop = false
         Me.gbGeneralDaemon.Text = "DAEMON Tools"
@@ -1123,7 +1124,7 @@ Partial Class dlgSettings
         '
         Me.lblGeneralDaemonDrive.AutoSize = true
         Me.lblGeneralDaemonDrive.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.lblGeneralDaemonDrive.Location = New System.Drawing.Point(7, 29)
+        Me.lblGeneralDaemonDrive.Location = New System.Drawing.Point(6, 24)
         Me.lblGeneralDaemonDrive.Name = "lblGeneralDaemonDrive"
         Me.lblGeneralDaemonDrive.Size = New System.Drawing.Size(63, 13)
         Me.lblGeneralDaemonDrive.TabIndex = 6
@@ -1135,14 +1136,14 @@ Partial Class dlgSettings
         Me.cbGeneralDaemonDrive.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.cbGeneralDaemonDrive.FormattingEnabled = true
         Me.cbGeneralDaemonDrive.Items.AddRange(New Object() {"", "A:\", "B:\", "D:\", "E:\", "F:\", "G:\", "H:\", "I:\", "J:\", "K:\", "L:\", "M:\", "N:\", "O:\", "P:\", "Q:\", "R:\", "S:\", "T:\", "U:\", "V:\", "W:\", "X:\", "Y:\", "Z:\"})
-        Me.cbGeneralDaemonDrive.Location = New System.Drawing.Point(77, 30)
+        Me.cbGeneralDaemonDrive.Location = New System.Drawing.Point(93, 21)
         Me.cbGeneralDaemonDrive.Name = "cbGeneralDaemonDrive"
         Me.cbGeneralDaemonDrive.Size = New System.Drawing.Size(48, 21)
         Me.cbGeneralDaemonDrive.TabIndex = 7
         '
         'btnGeneralDaemonPathBrowse
         '
-        Me.btnGeneralDaemonPathBrowse.Location = New System.Drawing.Point(259, 82)
+        Me.btnGeneralDaemonPathBrowse.Location = New System.Drawing.Point(256, 70)
         Me.btnGeneralDaemonPathBrowse.Name = "btnGeneralDaemonPathBrowse"
         Me.btnGeneralDaemonPathBrowse.Size = New System.Drawing.Size(25, 23)
         Me.btnGeneralDaemonPathBrowse.TabIndex = 4
@@ -1153,7 +1154,7 @@ Partial Class dlgSettings
         '
         Me.txtGeneralDaemonPath.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtGeneralDaemonPath.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.txtGeneralDaemonPath.Location = New System.Drawing.Point(9, 82)
+        Me.txtGeneralDaemonPath.Location = New System.Drawing.Point(9, 70)
         Me.txtGeneralDaemonPath.Name = "txtGeneralDaemonPath"
         Me.txtGeneralDaemonPath.Size = New System.Drawing.Size(241, 22)
         Me.txtGeneralDaemonPath.TabIndex = 3
@@ -1162,7 +1163,7 @@ Partial Class dlgSettings
         '
         Me.lblGeneralDaemonPath.AutoSize = true
         Me.lblGeneralDaemonPath.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblGeneralDaemonPath.Location = New System.Drawing.Point(6, 68)
+        Me.lblGeneralDaemonPath.Location = New System.Drawing.Point(6, 54)
         Me.lblGeneralDaemonPath.Name = "lblGeneralDaemonPath"
         Me.lblGeneralDaemonPath.Size = New System.Drawing.Size(136, 13)
         Me.lblGeneralDaemonPath.TabIndex = 2
@@ -1172,7 +1173,7 @@ Partial Class dlgSettings
         '
         Me.chkGeneralImagesGlassOverlay.AutoSize = true
         Me.chkGeneralImagesGlassOverlay.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkGeneralImagesGlassOverlay.Location = New System.Drawing.Point(10, 233)
+        Me.chkGeneralImagesGlassOverlay.Location = New System.Drawing.Point(6, 90)
         Me.chkGeneralImagesGlassOverlay.Name = "chkGeneralImagesGlassOverlay"
         Me.chkGeneralImagesGlassOverlay.Size = New System.Drawing.Size(171, 17)
         Me.chkGeneralImagesGlassOverlay.TabIndex = 12
@@ -1183,7 +1184,7 @@ Partial Class dlgSettings
         '
         Me.chkGeneralHideFanartSmall.AutoSize = true
         Me.chkGeneralHideFanartSmall.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkGeneralHideFanartSmall.Location = New System.Drawing.Point(10, 210)
+        Me.chkGeneralHideFanartSmall.Location = New System.Drawing.Point(299, 136)
         Me.chkGeneralHideFanartSmall.Name = "chkGeneralHideFanartSmall"
         Me.chkGeneralHideFanartSmall.Size = New System.Drawing.Size(169, 17)
         Me.chkGeneralHideFanartSmall.TabIndex = 11
@@ -1194,7 +1195,7 @@ Partial Class dlgSettings
         '
         Me.chkGeneralCreationDate.AutoSize = true
         Me.chkGeneralCreationDate.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkGeneralCreationDate.Location = New System.Drawing.Point(10, 195)
+        Me.chkGeneralCreationDate.Location = New System.Drawing.Point(10, 119)
         Me.chkGeneralCreationDate.Name = "chkGeneralCreationDate"
         Me.chkGeneralCreationDate.Size = New System.Drawing.Size(196, 17)
         Me.chkGeneralCreationDate.TabIndex = 10
@@ -1205,7 +1206,7 @@ Partial Class dlgSettings
         '
         Me.chkGeneralShowGenresText.AutoSize = true
         Me.chkGeneralShowGenresText.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkGeneralShowGenresText.Location = New System.Drawing.Point(10, 178)
+        Me.chkGeneralShowGenresText.Location = New System.Drawing.Point(6, 44)
         Me.chkGeneralShowGenresText.Name = "chkGeneralShowGenresText"
         Me.chkGeneralShowGenresText.Size = New System.Drawing.Size(166, 17)
         Me.chkGeneralShowGenresText.TabIndex = 9
@@ -1217,7 +1218,7 @@ Partial Class dlgSettings
         Me.chkGeneralSourceFromFolder.AutoSize = true
         Me.chkGeneralSourceFromFolder.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkGeneralSourceFromFolder.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkGeneralSourceFromFolder.Location = New System.Drawing.Point(10, 110)
+        Me.chkGeneralSourceFromFolder.Location = New System.Drawing.Point(10, 101)
         Me.chkGeneralSourceFromFolder.Name = "chkGeneralSourceFromFolder"
         Me.chkGeneralSourceFromFolder.Size = New System.Drawing.Size(243, 17)
         Me.chkGeneralSourceFromFolder.TabIndex = 5
@@ -1228,7 +1229,7 @@ Partial Class dlgSettings
         '
         Me.chkGeneralHideFanart.AutoSize = true
         Me.chkGeneralHideFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkGeneralHideFanart.Location = New System.Drawing.Point(10, 144)
+        Me.chkGeneralHideFanart.Location = New System.Drawing.Point(299, 113)
         Me.chkGeneralHideFanart.Name = "chkGeneralHideFanart"
         Me.chkGeneralHideFanart.Size = New System.Drawing.Size(139, 17)
         Me.chkGeneralHideFanart.TabIndex = 7
@@ -1239,7 +1240,7 @@ Partial Class dlgSettings
         '
         Me.chkGeneralInfoPanelAnim.AutoSize = true
         Me.chkGeneralInfoPanelAnim.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkGeneralInfoPanelAnim.Location = New System.Drawing.Point(10, 94)
+        Me.chkGeneralInfoPanelAnim.Location = New System.Drawing.Point(6, 21)
         Me.chkGeneralInfoPanelAnim.Name = "chkGeneralInfoPanelAnim"
         Me.chkGeneralInfoPanelAnim.Size = New System.Drawing.Size(148, 17)
         Me.chkGeneralInfoPanelAnim.TabIndex = 4
@@ -1250,7 +1251,7 @@ Partial Class dlgSettings
         '
         Me.chkGeneralHidePoster.AutoSize = true
         Me.chkGeneralHidePoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkGeneralHidePoster.Location = New System.Drawing.Point(10, 127)
+        Me.chkGeneralHidePoster.Location = New System.Drawing.Point(299, 182)
         Me.chkGeneralHidePoster.Name = "chkGeneralHidePoster"
         Me.chkGeneralHidePoster.Size = New System.Drawing.Size(138, 17)
         Me.chkGeneralHidePoster.TabIndex = 6
@@ -1261,7 +1262,7 @@ Partial Class dlgSettings
         '
         Me.chkGeneralShowImgDims.AutoSize = true
         Me.chkGeneralShowImgDims.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkGeneralShowImgDims.Location = New System.Drawing.Point(10, 161)
+        Me.chkGeneralShowImgDims.Location = New System.Drawing.Point(6, 67)
         Me.chkGeneralShowImgDims.Name = "chkGeneralShowImgDims"
         Me.chkGeneralShowImgDims.Size = New System.Drawing.Size(160, 17)
         Me.chkGeneralShowImgDims.TabIndex = 8
@@ -1283,7 +1284,7 @@ Partial Class dlgSettings
         '
         Me.chkGeneralOverwriteNfo.AutoSize = true
         Me.chkGeneralOverwriteNfo.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkGeneralOverwriteNfo.Location = New System.Drawing.Point(10, 54)
+        Me.chkGeneralOverwriteNfo.Location = New System.Drawing.Point(10, 43)
         Me.chkGeneralOverwriteNfo.Name = "chkGeneralOverwriteNfo"
         Me.chkGeneralOverwriteNfo.Size = New System.Drawing.Size(191, 17)
         Me.chkGeneralOverwriteNfo.TabIndex = 2
@@ -1293,7 +1294,7 @@ Partial Class dlgSettings
         'lblGeneralOverwriteNfo
         '
         Me.lblGeneralOverwriteNfo.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblGeneralOverwriteNfo.Location = New System.Drawing.Point(20, 68)
+        Me.lblGeneralOverwriteNfo.Location = New System.Drawing.Point(39, 64)
         Me.lblGeneralOverwriteNfo.Name = "lblGeneralOverwriteNfo"
         Me.lblGeneralOverwriteNfo.Size = New System.Drawing.Size(165, 24)
         Me.lblGeneralOverwriteNfo.TabIndex = 3
@@ -3111,6 +3112,8 @@ Partial Class dlgSettings
         'pnlGeneral
         '
         Me.pnlGeneral.BackColor = System.Drawing.Color.White
+        Me.pnlGeneral.Controls.Add(Me.gbGeneralDaemon)
+        Me.pnlGeneral.Controls.Add(Me.gbGeneralMainWindow)
         Me.pnlGeneral.Controls.Add(Me.gbGeneralInterface)
         Me.pnlGeneral.Controls.Add(Me.gbGeneralMisc)
         Me.pnlGeneral.Location = New System.Drawing.Point(900, 900)
@@ -3127,7 +3130,7 @@ Partial Class dlgSettings
         Me.gbGeneralInterface.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.gbGeneralInterface.Location = New System.Drawing.Point(7, 3)
         Me.gbGeneralInterface.Name = "gbGeneralInterface"
-        Me.gbGeneralInterface.Size = New System.Drawing.Size(196, 344)
+        Me.gbGeneralInterface.Size = New System.Drawing.Size(196, 242)
         Me.gbGeneralInterface.TabIndex = 0
         Me.gbGeneralInterface.TabStop = false
         Me.gbGeneralInterface.Text = "Interface"
@@ -10856,6 +10859,95 @@ Partial Class dlgSettings
         Me.Label2.TabIndex = 0
         Me.Label2.Text = "TV Themes Dummy Label"
         '
+        'gbGeneralMainWindow
+        '
+        Me.gbGeneralMainWindow.Controls.Add(Me.chkGeneralHideLandscape)
+        Me.gbGeneralMainWindow.Controls.Add(Me.chkGeneralHideDiscArt)
+        Me.gbGeneralMainWindow.Controls.Add(Me.chkGeneralHideClearArt)
+        Me.gbGeneralMainWindow.Controls.Add(Me.chkGeneralHideFanartSmall)
+        Me.gbGeneralMainWindow.Controls.Add(Me.chkGeneralHideBanner)
+        Me.gbGeneralMainWindow.Controls.Add(Me.chkGeneralHidePoster)
+        Me.gbGeneralMainWindow.Controls.Add(Me.chkGeneralHideClearLogo)
+        Me.gbGeneralMainWindow.Controls.Add(Me.chkGeneralHideFanart)
+        Me.gbGeneralMainWindow.Controls.Add(Me.chkGeneralHideCharacterArt)
+        Me.gbGeneralMainWindow.Controls.Add(Me.chkGeneralInfoPanelAnim)
+        Me.gbGeneralMainWindow.Controls.Add(Me.chkGeneralShowGenresText)
+        Me.gbGeneralMainWindow.Controls.Add(Me.chkGeneralImagesGlassOverlay)
+        Me.gbGeneralMainWindow.Controls.Add(Me.chkGeneralShowImgDims)
+        Me.gbGeneralMainWindow.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.gbGeneralMainWindow.Location = New System.Drawing.Point(210, 151)
+        Me.gbGeneralMainWindow.Name = "gbGeneralMainWindow"
+        Me.gbGeneralMainWindow.Size = New System.Drawing.Size(537, 234)
+        Me.gbGeneralMainWindow.TabIndex = 14
+        Me.gbGeneralMainWindow.TabStop = false
+        Me.gbGeneralMainWindow.Text = "Main Window"
+        '
+        'chkGeneralHideBanner
+        '
+        Me.chkGeneralHideBanner.AutoSize = true
+        Me.chkGeneralHideBanner.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkGeneralHideBanner.Location = New System.Drawing.Point(6, 113)
+        Me.chkGeneralHideBanner.Name = "chkGeneralHideBanner"
+        Me.chkGeneralHideBanner.Size = New System.Drawing.Size(143, 17)
+        Me.chkGeneralHideBanner.TabIndex = 13
+        Me.chkGeneralHideBanner.Text = "Do Not Display Banner"
+        Me.chkGeneralHideBanner.UseVisualStyleBackColor = true
+        '
+        'chkGeneralHideClearArt
+        '
+        Me.chkGeneralHideClearArt.AutoSize = true
+        Me.chkGeneralHideClearArt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkGeneralHideClearArt.Location = New System.Drawing.Point(6, 159)
+        Me.chkGeneralHideClearArt.Name = "chkGeneralHideClearArt"
+        Me.chkGeneralHideClearArt.Size = New System.Drawing.Size(147, 17)
+        Me.chkGeneralHideClearArt.TabIndex = 14
+        Me.chkGeneralHideClearArt.Text = "Do Not Display ClearArt"
+        Me.chkGeneralHideClearArt.UseVisualStyleBackColor = true
+        '
+        'chkGeneralHideCharacterArt
+        '
+        Me.chkGeneralHideCharacterArt.AutoSize = true
+        Me.chkGeneralHideCharacterArt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkGeneralHideCharacterArt.Location = New System.Drawing.Point(6, 136)
+        Me.chkGeneralHideCharacterArt.Name = "chkGeneralHideCharacterArt"
+        Me.chkGeneralHideCharacterArt.Size = New System.Drawing.Size(170, 17)
+        Me.chkGeneralHideCharacterArt.TabIndex = 15
+        Me.chkGeneralHideCharacterArt.Text = "Do Not Display CharacterArt"
+        Me.chkGeneralHideCharacterArt.UseVisualStyleBackColor = true
+        '
+        'chkGeneralHideClearLogo
+        '
+        Me.chkGeneralHideClearLogo.AutoSize = true
+        Me.chkGeneralHideClearLogo.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkGeneralHideClearLogo.Location = New System.Drawing.Point(6, 182)
+        Me.chkGeneralHideClearLogo.Name = "chkGeneralHideClearLogo"
+        Me.chkGeneralHideClearLogo.Size = New System.Drawing.Size(158, 17)
+        Me.chkGeneralHideClearLogo.TabIndex = 16
+        Me.chkGeneralHideClearLogo.Text = "Do Not Display ClearLogo"
+        Me.chkGeneralHideClearLogo.UseVisualStyleBackColor = true
+        '
+        'chkGeneralHideDiscArt
+        '
+        Me.chkGeneralHideDiscArt.AutoSize = true
+        Me.chkGeneralHideDiscArt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkGeneralHideDiscArt.Location = New System.Drawing.Point(6, 205)
+        Me.chkGeneralHideDiscArt.Name = "chkGeneralHideDiscArt"
+        Me.chkGeneralHideDiscArt.Size = New System.Drawing.Size(142, 17)
+        Me.chkGeneralHideDiscArt.TabIndex = 17
+        Me.chkGeneralHideDiscArt.Text = "Do Not Display DiscArt"
+        Me.chkGeneralHideDiscArt.UseVisualStyleBackColor = true
+        '
+        'chkGeneralHideLandscape
+        '
+        Me.chkGeneralHideLandscape.AutoSize = true
+        Me.chkGeneralHideLandscape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkGeneralHideLandscape.Location = New System.Drawing.Point(299, 159)
+        Me.chkGeneralHideLandscape.Name = "chkGeneralHideLandscape"
+        Me.chkGeneralHideLandscape.Size = New System.Drawing.Size(160, 17)
+        Me.chkGeneralHideLandscape.TabIndex = 18
+        Me.chkGeneralHideLandscape.Text = "Do Not Display Landscape"
+        Me.chkGeneralHideLandscape.UseVisualStyleBackColor = true
+        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -11152,6 +11244,8 @@ Partial Class dlgSettings
         Me.gbMovieThemeOpts.PerformLayout
         Me.pnlTVThemes.ResumeLayout(false)
         Me.pnlTVThemes.PerformLayout
+        Me.gbGeneralMainWindow.ResumeLayout(false)
+        Me.gbGeneralMainWindow.PerformLayout
         Me.ResumeLayout(false)
         Me.PerformLayout
 
@@ -12044,4 +12138,11 @@ End Sub
     Friend WithEvents chkTVSeasonLandscapeCol As System.Windows.Forms.CheckBox
     Friend WithEvents chkTVSeasonBannerCol As System.Windows.Forms.CheckBox
     Friend WithEvents chkTVShowExtrafanartsXBMC As System.Windows.Forms.CheckBox
+    Friend WithEvents gbGeneralMainWindow As System.Windows.Forms.GroupBox
+    Friend WithEvents chkGeneralHideLandscape As System.Windows.Forms.CheckBox
+    Friend WithEvents chkGeneralHideDiscArt As System.Windows.Forms.CheckBox
+    Friend WithEvents chkGeneralHideClearArt As System.Windows.Forms.CheckBox
+    Friend WithEvents chkGeneralHideBanner As System.Windows.Forms.CheckBox
+    Friend WithEvents chkGeneralHideClearLogo As System.Windows.Forms.CheckBox
+    Friend WithEvents chkGeneralHideCharacterArt As System.Windows.Forms.CheckBox
 End Class

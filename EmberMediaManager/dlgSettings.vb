@@ -1076,6 +1076,17 @@ Public Class dlgSettings
     Private Sub cbTVEpisodeFanartPrefSize_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbTVEpisodeFanartPrefSize.SelectedIndexChanged
         Me.SetApplyButton(True)
     End Sub
+
+    Private Sub CheckHideSettings()
+        If chkGeneralHideBanner.Checked AndAlso chkGeneralHideCharacterArt.Checked AndAlso chkGeneralHideClearArt.Checked AndAlso chkGeneralHideClearLogo.Checked AndAlso _
+              chkGeneralHideDiscArt.Checked AndAlso chkGeneralHideFanart.Checked AndAlso chkGeneralHideFanartSmall.Checked AndAlso chkGeneralHideLandscape.Checked AndAlso chkGeneralHidePoster.Checked Then
+            Me.chkGeneralImagesGlassOverlay.Enabled = False
+            Me.chkGeneralShowImgDims.Enabled = False
+        Else
+            Me.chkGeneralImagesGlassOverlay.Enabled = True
+            Me.chkGeneralShowImgDims.Enabled = True
+        End If
+    End Sub
     Private Sub chkMovieClickScrape_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieClickScrape.CheckedChanged
         chkMovieClickScrapeAsk.Enabled = chkMovieClickScrape.Checked
         Me.SetApplyButton(True)
@@ -1544,34 +1555,49 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
+    Private Sub chkGeneralHideBanner_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGeneralHideBanner.CheckedChanged
+        Me.SetApplyButton(True)
+        CheckHideSettings
+    End Sub
+
+    Private Sub chkGeneralHideCharacterArt_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGeneralHideCharacterArt.CheckedChanged
+        Me.SetApplyButton(True)
+        CheckHideSettings
+    End Sub
+
+    Private Sub chkGeneralHideClearArt_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGeneralHideClearArt.CheckedChanged
+        Me.SetApplyButton(True)
+        CheckHideSettings
+    End Sub
+
+    Private Sub chkGeneralHideClearLogo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGeneralHideClearLogo.CheckedChanged
+        Me.SetApplyButton(True)
+        CheckHideSettings
+    End Sub
+
+    Private Sub chkGeneralHideDiscArt_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGeneralHideDiscArt.CheckedChanged
+        Me.SetApplyButton(True)
+        CheckHideSettings
+    End Sub
+
     Private Sub chkGeneralHideFanart_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGeneralHideFanart.CheckedChanged
         Me.SetApplyButton(True)
-        If Me.chkGeneralHideFanart.Checked AndAlso Me.chkGeneralHidePoster.Checked AndAlso Me.chkGeneralHideFanartSmall.Checked Then
-            Me.chkGeneralShowImgDims.Enabled = False
-            Me.chkGeneralShowImgDims.Checked = False
-        Else
-            Me.chkGeneralShowImgDims.Enabled = True
-        End If
+        CheckHideSettings
+    End Sub
+
+    Private Sub chkGeneralHideLandscape_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGeneralHideLandscape.CheckedChanged
+        Me.SetApplyButton(True)
+        CheckHideSettings
     End Sub
 
     Private Sub chkGeneralHidePoster_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGeneralHidePoster.CheckedChanged
         Me.SetApplyButton(True)
-        If Me.chkGeneralHideFanart.Checked AndAlso Me.chkGeneralHidePoster.Checked AndAlso Me.chkGeneralHideFanartSmall.Checked Then
-            Me.chkGeneralShowImgDims.Enabled = False
-            Me.chkGeneralShowImgDims.Checked = False
-        Else
-            Me.chkGeneralShowImgDims.Enabled = True
-        End If
+        CheckHideSettings
     End Sub
 
     Private Sub chkGeneralHideFanartSmall_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGeneralHideFanartSmall.CheckedChanged
         Me.SetApplyButton(True)
-        If Me.chkGeneralHideFanart.Checked AndAlso Me.chkGeneralHidePoster.Checked AndAlso Me.chkGeneralHideFanartSmall.Checked Then
-            Me.chkGeneralShowImgDims.Enabled = False
-            Me.chkGeneralShowImgDims.Checked = False
-        Else
-            Me.chkGeneralShowImgDims.Enabled = True
-        End If
+        CheckHideSettings
     End Sub
 
     Private Sub chkTVEpisodeNoFilter_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVEpisodeNoFilter.CheckedChanged
@@ -2709,8 +2735,14 @@ Public Class dlgSettings
                 Me.chkFileSystemCleanerWhitelist.Checked = .FileSystemCleanerWhitelist
                 Me.chkGeneralCheckUpdates.Checked = .GeneralCheckUpdates
                 Me.chkGeneralCreationDate.Checked = .GeneralCreationDate
+                Me.chkGeneralHideBanner.Checked = .GeneralHideBanner
+                Me.chkGeneralHideCharacterArt.Checked = .GeneralHideCharacterArt
+                Me.chkGeneralHideClearArt.Checked = .GeneralHideClearArt
+                Me.chkGeneralHideClearLogo.Checked = .GeneralHideClearLogo
+                Me.chkGeneralHideDiscArt.Checked = .GeneralHideDiscArt
                 Me.chkGeneralHideFanart.Checked = .GeneralHideFanart
                 Me.chkGeneralHideFanartSmall.Checked = .GeneralHideFanartSmall
+                Me.chkGeneralHideLandscape.Checked = .GeneralHideLandscape
                 Me.chkGeneralHidePoster.Checked = .GeneralHidePoster
                 Me.chkGeneralImagesGlassOverlay.Checked = .GeneralImagesGlassOverlay
                 Me.chkGeneralInfoPanelAnim.Checked = .GeneralInfoPanelAnim
@@ -4069,8 +4101,14 @@ Public Class dlgSettings
                 .GeneralCreationDate = Me.chkGeneralCreationDate.Checked
                 .GeneralDaemonDrive = Me.cbGeneralDaemonDrive.Text
                 .GeneralDaemonPath = Me.txtGeneralDaemonPath.Text
+                .GeneralHideBanner = Me.chkGeneralHideBanner.Checked
+                .GeneralHideCharacterArt = Me.chkGeneralHideCharacterArt.Checked
+                .GeneralHideClearArt = Me.chkGeneralHideClearArt.Checked
+                .GeneralHideClearLogo = Me.chkGeneralHideClearLogo.Checked
+                .GeneralHideDiscArt = Me.chkGeneralHideDiscArt.Checked
                 .GeneralHideFanart = Me.chkGeneralHideFanart.Checked
                 .GeneralHideFanartSmall = Me.chkGeneralHideFanartSmall.Checked
+                .GeneralHideLandscape = Me.chkGeneralHideLandscape.Checked
                 .GeneralHidePoster = Me.chkGeneralHidePoster.Checked
                 .GeneralImagesGlassOverlay = Me.chkGeneralImagesGlassOverlay.Checked
                 .GeneralInfoPanelAnim = chkGeneralInfoPanelAnim.Checked
@@ -4811,6 +4849,7 @@ Public Class dlgSettings
         Me.gbMovieScraperMetaDataOpts.Text = Master.eLang.GetString(59, "Meta Data")
         Me.gbMovieGeneralMissingItemsOpts.Text = Master.eLang.GetString(581, "Missing Items Filter")
         Me.gbMovieScraperDefFIExtOpts.Text = Master.eLang.GetString(625, "Defaults by File Type")
+        Me.gbGeneralMainWindow.Text = Master.eLang.GetString(1152, "Main Window")
         Me.gbGeneralThemes.Text = Master.eLang.GetString(629, "Themes")
         Me.gbFileSystemCleanFiles.Text = Master.eLang.GetString(437, "Clean Files")
         Me.gbTVScraperMetaDataOpts.Text = Me.gbMovieScraperMetaDataOpts.Text
@@ -4951,8 +4990,14 @@ Public Class dlgSettings
         Me.chkMovieTrailerCol.Text = Master.eLang.GetString(467, "Hide Trailer Column")
         Me.chkMovieWatchedCol.Text = Master.eLang.GetString(982, "Hide Watched Column")
         Me.chkMovieScraperMusicBy.Text = Master.eLang.GetString(392, "Music By")
+        Me.chkGeneralHideBanner.Text = Master.eLang.GetString(1146, "Do Not Display Banner")
+        Me.chkGeneralHideCharacterArt.Text = Master.eLang.GetString(1147, "Do Not Display CharacterArt")
+        Me.chkGeneralHideClearArt.Text = Master.eLang.GetString(1148, "Do Not Display ClearArt")
+        Me.chkGeneralHideClearLogo.Text = Master.eLang.GetString(1149, "Do Not Display ClearLogo")
+        Me.chkGeneralHideDiscArt.Text = Master.eLang.GetString(1150, "Do Not Display DiscArt")
         Me.chkGeneralHideFanart.Text = Master.eLang.GetString(455, "Do Not Display Fanart")
         Me.chkGeneralHideFanartSmall.Text = Master.eLang.GetString(967, "Do Not Display Small Fanart")
+        Me.chkGeneralHideLandscape.Text = Master.eLang.GetString(1151, "Do Not Display Landscape")
         Me.chkGeneralHidePoster.Text = Master.eLang.GetString(456, "Do Not Display Poster")
         Me.chkTVEpisodeNoFilter.Text = Master.eLang.GetString(734, "Build Episode Title Instead of Filtering")
         Me.chkMovieScraperOnlyValueForMPAA.Text = Master.eLang.GetString(835, "Only Save the Value to NFO")

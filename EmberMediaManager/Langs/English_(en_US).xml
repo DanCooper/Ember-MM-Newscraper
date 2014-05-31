@@ -1231,4 +1231,11 @@
 	<string id="1143">Change CharacterArt (Scrape)</string>
 	<string id="1144">Change CharacterArt (Download)</string>
 	<string id="1145">Remove CharacterArt</string>
+	<string id="1146">Do Not Display Banner</string>
+	<string id="1147">Do Not Display CharacterArt</string>
+	<string id="1148">Do Not Display ClearArt</string>
+	<string id="1149">Do Not Display ClearLogo</string>
+	<string id="1150">Do Not Display DiscArt</string>
+	<string id="1151">Do Not Display Landscape</string>
+	<string id="1152">Main Window</string>
 </strings>

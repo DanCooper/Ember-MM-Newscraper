@@ -56,7 +56,11 @@ Public Class Settings
     Private _generaldaemondrive As String
     Private _generaldaemonpath As String
     Private _generalfilterpanelstate As Boolean
+    Private _generalhidebanner As Boolean
+    Private _generalhidecharacterart As Boolean
     Private _generalhideclearart As Boolean
+    Private _generalhideclearlogo As Boolean
+    Private _generalhidediscart As Boolean
     Private _generalhidefanart As Boolean
     Private _generalhidefanartsmall As Boolean
     Private _generalhidelandscape As Boolean
@@ -2113,6 +2117,24 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property GeneralHideBanner() As Boolean
+        Get
+            Return Me._generalhidebanner
+        End Get
+        Set(ByVal value As Boolean)
+            Me._generalhidebanner = value
+        End Set
+    End Property
+
+    Public Property GeneralHideCharacterArt() As Boolean
+        Get
+            Return Me._generalhidecharacterart
+        End Get
+        Set(ByVal value As Boolean)
+            Me._generalhidecharacterart = value
+        End Set
+    End Property
+
     Public Property GeneralHideClearArt() As Boolean
         Get
             Return Me._generalhideclearart
@@ -2122,21 +2144,30 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property GeneralHideClearLogo() As Boolean
+        Get
+            Return Me._generalhideclearlogo
+        End Get
+        Set(ByVal value As Boolean)
+            Me._generalhideclearlogo = value
+        End Set
+    End Property
+
+    Public Property GeneralHideDiscArt() As Boolean
+        Get
+            Return Me._generalhidediscart
+        End Get
+        Set(ByVal value As Boolean)
+            Me._generalhidediscart = value
+        End Set
+    End Property
+
     Public Property GeneralHideFanart() As Boolean
         Get
             Return Me._generalhidefanart
         End Get
         Set(ByVal value As Boolean)
             Me._generalhidefanart = value
-        End Set
-    End Property
-
-    Public Property GeneralHidePoster() As Boolean
-        Get
-            Return Me._generalhideposter
-        End Get
-        Set(ByVal value As Boolean)
-            Me._generalhideposter = value
         End Set
     End Property
 
@@ -2155,6 +2186,15 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Me._generalhidelandscape = value
+        End Set
+    End Property
+
+    Public Property GeneralHidePoster() As Boolean
+        Get
+            Return Me._generalhideposter
+        End Get
+        Set(ByVal value As Boolean)
+            Me._generalhideposter = value
         End Set
     End Property
 
@@ -5380,7 +5420,11 @@ Public Class Settings
         Me._generaldaemondrive = String.Empty
         Me._generaldaemonpath = String.Empty
         Me._generalfilterpanelstate = False
+        Me._generalhidebanner = False
+        Me._generalhidecharacterart = False
         Me._generalhideclearart = False
+        Me._generalhideclearlogo = False
+        Me._generalhidediscart = False
         Me._generalhidefanart = False
         Me._generalhidefanartsmall = False
         Me._generalhidelandscape = False
