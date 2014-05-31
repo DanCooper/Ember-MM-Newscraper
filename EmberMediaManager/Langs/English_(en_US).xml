@@ -1227,4 +1227,8 @@
 	<string id="1139">Select None</string>
 	<string id="1140">CharacterArt</string>
 	<string id="1141">Hide CharacterArt Column</string>
+	<string id="1142">Change CharacterArt (Local)</string>
+	<string id="1143">Change CharacterArt (Scrape)</string>
+	<string id="1144">Change CharacterArt (Download)</string>
+	<string id="1145">Remove CharacterArt</string>
 </strings>

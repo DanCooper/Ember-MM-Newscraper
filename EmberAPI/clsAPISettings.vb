@@ -6205,7 +6205,7 @@ Public Class Settings
         Return TVShowBannerBoxee OrElse TVShowBannerFrodo OrElse TVShowBannerYAMJ
     End Function
 
-    Public Function TVShowCharacterAnyEnabled() As Boolean
+    Public Function TVShowCharacterArtAnyEnabled() As Boolean
         Return TVShowCharacterArtXBMC
     End Function
 
@@ -6215,6 +6215,10 @@ Public Class Settings
 
     Public Function TVShowClearLogoAnyEnabled() As Boolean
         Return TVShowClearLogoXBMC
+    End Function
+
+    Public Function TVShowEFanartsAnyEnabled() As Boolean
+        Return TVShowExtrafanartsXBMC
     End Function
 
     Public Function TVShowFanartAnyEnabled() As Boolean

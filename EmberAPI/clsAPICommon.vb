@@ -1703,6 +1703,8 @@ Public Class Structures
     ''' </summary>
     ''' <remarks></remarks>
     Public Structure DBTV
+        Dim ClearShowEFanarts As Boolean
+        Dim efList As List(Of String)
         Dim EpFanartPath As String
         Dim EpID As Long
         Dim EpNeedsSave As Boolean

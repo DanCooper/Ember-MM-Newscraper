@@ -29,6 +29,8 @@ Partial Class dlgEditShow
         Me.pbTopLogo = New System.Windows.Forms.PictureBox()
         Me.tcEditShow = New System.Windows.Forms.TabControl()
         Me.tpShowDetails = New System.Windows.Forms.TabPage()
+        Me.lblStatus = New System.Windows.Forms.Label()
+        Me.txtStatus = New System.Windows.Forms.TextBox()
         Me.btnActorDown = New System.Windows.Forms.Button()
         Me.btnActorUp = New System.Windows.Forms.Button()
         Me.txtPremiered = New System.Windows.Forms.TextBox()
@@ -79,6 +81,27 @@ Partial Class dlgEditShow
         Me.btnSetShowLandscapeScrape = New System.Windows.Forms.Button()
         Me.btnSetShowLandscapeLocal = New System.Windows.Forms.Button()
         Me.pbShowLandscape = New System.Windows.Forms.PictureBox()
+        Me.tpShowCharacterArt = New System.Windows.Forms.TabPage()
+        Me.lblShowCharacterArtSize = New System.Windows.Forms.Label()
+        Me.btnSetShowCharacterArtDL = New System.Windows.Forms.Button()
+        Me.btnRemoveShowCharacterArt = New System.Windows.Forms.Button()
+        Me.btnSetShowCharacterArtScrape = New System.Windows.Forms.Button()
+        Me.btnSetShowCharacterArtLocal = New System.Windows.Forms.Button()
+        Me.pbShowCharacterArt = New System.Windows.Forms.PictureBox()
+        Me.tpShowClearArt = New System.Windows.Forms.TabPage()
+        Me.lblShowClearArtSize = New System.Windows.Forms.Label()
+        Me.btnSetShowClearArtDL = New System.Windows.Forms.Button()
+        Me.btnRemoveShowClearArt = New System.Windows.Forms.Button()
+        Me.btnSetShowClearArtScrape = New System.Windows.Forms.Button()
+        Me.btnSetShowClearArtLocal = New System.Windows.Forms.Button()
+        Me.pbShowClearArt = New System.Windows.Forms.PictureBox()
+        Me.tpShowClearLogo = New System.Windows.Forms.TabPage()
+        Me.lblShowClearLogoSize = New System.Windows.Forms.Label()
+        Me.btnSetShowClearLogoDL = New System.Windows.Forms.Button()
+        Me.btnRemoveShowClearLogo = New System.Windows.Forms.Button()
+        Me.btnSetShowClearLogoScrape = New System.Windows.Forms.Button()
+        Me.btnSetShowClearLogoLocal = New System.Windows.Forms.Button()
+        Me.pbShowClearLogo = New System.Windows.Forms.PictureBox()
         Me.tpShowFanart = New System.Windows.Forms.TabPage()
         Me.btnSetShowFanartDL = New System.Windows.Forms.Button()
         Me.btnRemoveShowFanart = New System.Windows.Forms.Button()
@@ -86,6 +109,14 @@ Partial Class dlgEditShow
         Me.btnSetShowFanartScrape = New System.Windows.Forms.Button()
         Me.btnSetShowFanartLocal = New System.Windows.Forms.Button()
         Me.pbShowFanart = New System.Windows.Forms.PictureBox()
+        Me.tpShowEFanarts = New System.Windows.Forms.TabPage()
+        Me.lblShowEFanartsSize = New System.Windows.Forms.Label()
+        Me.pnlShowEFanartsSetAsFanart = New System.Windows.Forms.Panel()
+        Me.btnShowEFanartsSetAsFanart = New System.Windows.Forms.Button()
+        Me.pnlShowEFanartsBG = New System.Windows.Forms.Panel()
+        Me.btnShowEFanartsRefresh = New System.Windows.Forms.Button()
+        Me.btnShowEFanartsRemove = New System.Windows.Forms.Button()
+        Me.pbShowEFanarts = New System.Windows.Forms.PictureBox()
         Me.tpASPoster = New System.Windows.Forms.TabPage()
         Me.lblASPosterSize = New System.Windows.Forms.Label()
         Me.btnSetASPosterDL = New System.Windows.Forms.Button()
@@ -119,8 +150,6 @@ Partial Class dlgEditShow
         Me.ofdImage = New System.Windows.Forms.OpenFileDialog()
         Me.cbOrdering = New System.Windows.Forms.ComboBox()
         Me.lblOrdering = New System.Windows.Forms.Label()
-        Me.lblStatus = New System.Windows.Forms.Label()
-        Me.txtStatus = New System.Windows.Forms.TextBox()
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tcEditShow.SuspendLayout()
@@ -136,8 +165,17 @@ Partial Class dlgEditShow
         CType(Me.pbShowBanner, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tpShowLandscape.SuspendLayout()
         CType(Me.pbShowLandscape, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.tpShowCharacterArt.SuspendLayout()
+        CType(Me.pbShowCharacterArt, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.tpShowClearArt.SuspendLayout()
+        CType(Me.pbShowClearArt, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.tpShowClearLogo.SuspendLayout()
+        CType(Me.pbShowClearLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tpShowFanart.SuspendLayout()
         CType(Me.pbShowFanart, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.tpShowEFanarts.SuspendLayout()
+        Me.pnlShowEFanartsSetAsFanart.SuspendLayout()
+        CType(Me.pbShowEFanarts, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tpASPoster.SuspendLayout()
         CType(Me.pbASPoster, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tpASBanner.SuspendLayout()
@@ -202,7 +240,11 @@ Partial Class dlgEditShow
         Me.tcEditShow.Controls.Add(Me.tpShowPoster)
         Me.tcEditShow.Controls.Add(Me.tpShowBanner)
         Me.tcEditShow.Controls.Add(Me.tpShowLandscape)
+        Me.tcEditShow.Controls.Add(Me.tpShowCharacterArt)
+        Me.tcEditShow.Controls.Add(Me.tpShowClearArt)
+        Me.tcEditShow.Controls.Add(Me.tpShowClearLogo)
         Me.tcEditShow.Controls.Add(Me.tpShowFanart)
+        Me.tcEditShow.Controls.Add(Me.tpShowEFanarts)
         Me.tcEditShow.Controls.Add(Me.tpASPoster)
         Me.tcEditShow.Controls.Add(Me.tpASBanner)
         Me.tcEditShow.Controls.Add(Me.tpASLandscape)
@@ -251,6 +293,24 @@ Partial Class dlgEditShow
         Me.tpShowDetails.TabIndex = 0
         Me.tpShowDetails.Text = "Details"
         Me.tpShowDetails.UseVisualStyleBackColor = True
+        '
+        'lblStatus
+        '
+        Me.lblStatus.AutoSize = True
+        Me.lblStatus.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblStatus.Location = New System.Drawing.Point(635, 330)
+        Me.lblStatus.Name = "lblStatus"
+        Me.lblStatus.Size = New System.Drawing.Size(42, 13)
+        Me.lblStatus.TabIndex = 68
+        Me.lblStatus.Text = "Status:"
+        '
+        'txtStatus
+        '
+        Me.txtStatus.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtStatus.Location = New System.Drawing.Point(635, 346)
+        Me.txtStatus.Name = "txtStatus"
+        Me.txtStatus.Size = New System.Drawing.Size(193, 22)
+        Me.txtStatus.TabIndex = 69
         '
         'btnActorDown
         '
@@ -777,6 +837,273 @@ Partial Class dlgEditShow
         Me.pbShowLandscape.TabIndex = 6
         Me.pbShowLandscape.TabStop = False
         '
+        'tpShowCharacterArt
+        '
+        Me.tpShowCharacterArt.Controls.Add(Me.lblShowCharacterArtSize)
+        Me.tpShowCharacterArt.Controls.Add(Me.btnSetShowCharacterArtDL)
+        Me.tpShowCharacterArt.Controls.Add(Me.btnRemoveShowCharacterArt)
+        Me.tpShowCharacterArt.Controls.Add(Me.btnSetShowCharacterArtScrape)
+        Me.tpShowCharacterArt.Controls.Add(Me.btnSetShowCharacterArtLocal)
+        Me.tpShowCharacterArt.Controls.Add(Me.pbShowCharacterArt)
+        Me.tpShowCharacterArt.Location = New System.Drawing.Point(4, 22)
+        Me.tpShowCharacterArt.Name = "tpShowCharacterArt"
+        Me.tpShowCharacterArt.Size = New System.Drawing.Size(836, 452)
+        Me.tpShowCharacterArt.TabIndex = 9
+        Me.tpShowCharacterArt.Text = "CharacterArt"
+        Me.tpShowCharacterArt.UseVisualStyleBackColor = True
+        '
+        'lblShowCharacterArtSize
+        '
+        Me.lblShowCharacterArtSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblShowCharacterArtSize.Location = New System.Drawing.Point(8, 8)
+        Me.lblShowCharacterArtSize.Name = "lblShowCharacterArtSize"
+        Me.lblShowCharacterArtSize.Size = New System.Drawing.Size(104, 23)
+        Me.lblShowCharacterArtSize.TabIndex = 23
+        Me.lblShowCharacterArtSize.Text = "Size: (XXXXxXXXX)"
+        Me.lblShowCharacterArtSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.lblShowCharacterArtSize.Visible = False
+        '
+        'btnSetShowCharacterArtDL
+        '
+        Me.btnSetShowCharacterArtDL.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnSetShowCharacterArtDL.Image = CType(resources.GetObject("btnSetShowCharacterArtDL.Image"), System.Drawing.Image)
+        Me.btnSetShowCharacterArtDL.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetShowCharacterArtDL.Location = New System.Drawing.Point(735, 180)
+        Me.btnSetShowCharacterArtDL.Name = "btnSetShowCharacterArtDL"
+        Me.btnSetShowCharacterArtDL.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetShowCharacterArtDL.TabIndex = 21
+        Me.btnSetShowCharacterArtDL.Text = "Change CharacterArt (Download)"
+        Me.btnSetShowCharacterArtDL.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetShowCharacterArtDL.UseVisualStyleBackColor = True
+        '
+        'btnRemoveShowCharacterArt
+        '
+        Me.btnRemoveShowCharacterArt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnRemoveShowCharacterArt.Image = CType(resources.GetObject("btnRemoveShowCharacterArt.Image"), System.Drawing.Image)
+        Me.btnRemoveShowCharacterArt.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnRemoveShowCharacterArt.Location = New System.Drawing.Point(735, 363)
+        Me.btnRemoveShowCharacterArt.Name = "btnRemoveShowCharacterArt"
+        Me.btnRemoveShowCharacterArt.Size = New System.Drawing.Size(96, 83)
+        Me.btnRemoveShowCharacterArt.TabIndex = 22
+        Me.btnRemoveShowCharacterArt.Text = "Remove CharacterArt"
+        Me.btnRemoveShowCharacterArt.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnRemoveShowCharacterArt.UseVisualStyleBackColor = True
+        '
+        'btnSetShowCharacterArtScrape
+        '
+        Me.btnSetShowCharacterArtScrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnSetShowCharacterArtScrape.Image = CType(resources.GetObject("btnSetShowCharacterArtScrape.Image"), System.Drawing.Image)
+        Me.btnSetShowCharacterArtScrape.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetShowCharacterArtScrape.Location = New System.Drawing.Point(735, 93)
+        Me.btnSetShowCharacterArtScrape.Name = "btnSetShowCharacterArtScrape"
+        Me.btnSetShowCharacterArtScrape.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetShowCharacterArtScrape.TabIndex = 20
+        Me.btnSetShowCharacterArtScrape.Text = "Change CharacterArt (Scrape)"
+        Me.btnSetShowCharacterArtScrape.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetShowCharacterArtScrape.UseVisualStyleBackColor = True
+        '
+        'btnSetShowCharacterArtLocal
+        '
+        Me.btnSetShowCharacterArtLocal.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnSetShowCharacterArtLocal.Image = CType(resources.GetObject("btnSetShowCharacterArtLocal.Image"), System.Drawing.Image)
+        Me.btnSetShowCharacterArtLocal.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetShowCharacterArtLocal.Location = New System.Drawing.Point(735, 6)
+        Me.btnSetShowCharacterArtLocal.Name = "btnSetShowCharacterArtLocal"
+        Me.btnSetShowCharacterArtLocal.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetShowCharacterArtLocal.TabIndex = 19
+        Me.btnSetShowCharacterArtLocal.Text = "Change CharacterArt (Local Browse)"
+        Me.btnSetShowCharacterArtLocal.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetShowCharacterArtLocal.UseVisualStyleBackColor = True
+        '
+        'pbShowCharacterArt
+        '
+        Me.pbShowCharacterArt.BackColor = System.Drawing.Color.DimGray
+        Me.pbShowCharacterArt.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pbShowCharacterArt.Location = New System.Drawing.Point(6, 6)
+        Me.pbShowCharacterArt.Name = "pbShowCharacterArt"
+        Me.pbShowCharacterArt.Size = New System.Drawing.Size(724, 440)
+        Me.pbShowCharacterArt.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.pbShowCharacterArt.TabIndex = 18
+        Me.pbShowCharacterArt.TabStop = False
+        '
+        'tpShowClearArt
+        '
+        Me.tpShowClearArt.Controls.Add(Me.lblShowClearArtSize)
+        Me.tpShowClearArt.Controls.Add(Me.btnSetShowClearArtDL)
+        Me.tpShowClearArt.Controls.Add(Me.btnRemoveShowClearArt)
+        Me.tpShowClearArt.Controls.Add(Me.btnSetShowClearArtScrape)
+        Me.tpShowClearArt.Controls.Add(Me.btnSetShowClearArtLocal)
+        Me.tpShowClearArt.Controls.Add(Me.pbShowClearArt)
+        Me.tpShowClearArt.Location = New System.Drawing.Point(4, 22)
+        Me.tpShowClearArt.Name = "tpShowClearArt"
+        Me.tpShowClearArt.Size = New System.Drawing.Size(836, 452)
+        Me.tpShowClearArt.TabIndex = 10
+        Me.tpShowClearArt.Text = "ClearArt"
+        Me.tpShowClearArt.UseVisualStyleBackColor = True
+        '
+        'lblShowClearArtSize
+        '
+        Me.lblShowClearArtSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblShowClearArtSize.Location = New System.Drawing.Point(8, 8)
+        Me.lblShowClearArtSize.Name = "lblShowClearArtSize"
+        Me.lblShowClearArtSize.Size = New System.Drawing.Size(104, 23)
+        Me.lblShowClearArtSize.TabIndex = 17
+        Me.lblShowClearArtSize.Text = "Size: (XXXXxXXXX)"
+        Me.lblShowClearArtSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.lblShowClearArtSize.Visible = False
+        '
+        'btnSetShowClearArtDL
+        '
+        Me.btnSetShowClearArtDL.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnSetShowClearArtDL.Image = CType(resources.GetObject("btnSetShowClearArtDL.Image"), System.Drawing.Image)
+        Me.btnSetShowClearArtDL.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetShowClearArtDL.Location = New System.Drawing.Point(735, 180)
+        Me.btnSetShowClearArtDL.Name = "btnSetShowClearArtDL"
+        Me.btnSetShowClearArtDL.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetShowClearArtDL.TabIndex = 15
+        Me.btnSetShowClearArtDL.Text = "Change ClearArt (Download)"
+        Me.btnSetShowClearArtDL.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetShowClearArtDL.UseVisualStyleBackColor = True
+        '
+        'btnRemoveShowClearArt
+        '
+        Me.btnRemoveShowClearArt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnRemoveShowClearArt.Image = CType(resources.GetObject("btnRemoveShowClearArt.Image"), System.Drawing.Image)
+        Me.btnRemoveShowClearArt.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnRemoveShowClearArt.Location = New System.Drawing.Point(735, 363)
+        Me.btnRemoveShowClearArt.Name = "btnRemoveShowClearArt"
+        Me.btnRemoveShowClearArt.Size = New System.Drawing.Size(96, 83)
+        Me.btnRemoveShowClearArt.TabIndex = 16
+        Me.btnRemoveShowClearArt.Text = "Remove ClearArt"
+        Me.btnRemoveShowClearArt.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnRemoveShowClearArt.UseVisualStyleBackColor = True
+        '
+        'btnSetShowClearArtScrape
+        '
+        Me.btnSetShowClearArtScrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnSetShowClearArtScrape.Image = CType(resources.GetObject("btnSetShowClearArtScrape.Image"), System.Drawing.Image)
+        Me.btnSetShowClearArtScrape.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetShowClearArtScrape.Location = New System.Drawing.Point(735, 93)
+        Me.btnSetShowClearArtScrape.Name = "btnSetShowClearArtScrape"
+        Me.btnSetShowClearArtScrape.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetShowClearArtScrape.TabIndex = 14
+        Me.btnSetShowClearArtScrape.Text = "Change ClearArt (Scrape)"
+        Me.btnSetShowClearArtScrape.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetShowClearArtScrape.UseVisualStyleBackColor = True
+        '
+        'btnSetShowClearArtLocal
+        '
+        Me.btnSetShowClearArtLocal.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnSetShowClearArtLocal.Image = CType(resources.GetObject("btnSetShowClearArtLocal.Image"), System.Drawing.Image)
+        Me.btnSetShowClearArtLocal.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetShowClearArtLocal.Location = New System.Drawing.Point(735, 6)
+        Me.btnSetShowClearArtLocal.Name = "btnSetShowClearArtLocal"
+        Me.btnSetShowClearArtLocal.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetShowClearArtLocal.TabIndex = 13
+        Me.btnSetShowClearArtLocal.Text = "Change ClearArt (Local Browse)"
+        Me.btnSetShowClearArtLocal.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetShowClearArtLocal.UseVisualStyleBackColor = True
+        '
+        'pbShowClearArt
+        '
+        Me.pbShowClearArt.BackColor = System.Drawing.Color.DimGray
+        Me.pbShowClearArt.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pbShowClearArt.Location = New System.Drawing.Point(6, 6)
+        Me.pbShowClearArt.Name = "pbShowClearArt"
+        Me.pbShowClearArt.Size = New System.Drawing.Size(724, 440)
+        Me.pbShowClearArt.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.pbShowClearArt.TabIndex = 12
+        Me.pbShowClearArt.TabStop = False
+        '
+        'tpShowClearLogo
+        '
+        Me.tpShowClearLogo.Controls.Add(Me.lblShowClearLogoSize)
+        Me.tpShowClearLogo.Controls.Add(Me.btnSetShowClearLogoDL)
+        Me.tpShowClearLogo.Controls.Add(Me.btnRemoveShowClearLogo)
+        Me.tpShowClearLogo.Controls.Add(Me.btnSetShowClearLogoScrape)
+        Me.tpShowClearLogo.Controls.Add(Me.btnSetShowClearLogoLocal)
+        Me.tpShowClearLogo.Controls.Add(Me.pbShowClearLogo)
+        Me.tpShowClearLogo.Location = New System.Drawing.Point(4, 22)
+        Me.tpShowClearLogo.Name = "tpShowClearLogo"
+        Me.tpShowClearLogo.Size = New System.Drawing.Size(836, 452)
+        Me.tpShowClearLogo.TabIndex = 11
+        Me.tpShowClearLogo.Text = "ClearLogo"
+        Me.tpShowClearLogo.UseVisualStyleBackColor = True
+        '
+        'lblShowClearLogoSize
+        '
+        Me.lblShowClearLogoSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblShowClearLogoSize.Location = New System.Drawing.Point(8, 8)
+        Me.lblShowClearLogoSize.Name = "lblShowClearLogoSize"
+        Me.lblShowClearLogoSize.Size = New System.Drawing.Size(104, 23)
+        Me.lblShowClearLogoSize.TabIndex = 17
+        Me.lblShowClearLogoSize.Text = "Size: (XXXXxXXXX)"
+        Me.lblShowClearLogoSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.lblShowClearLogoSize.Visible = False
+        '
+        'btnSetShowClearLogoDL
+        '
+        Me.btnSetShowClearLogoDL.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnSetShowClearLogoDL.Image = CType(resources.GetObject("btnSetShowClearLogoDL.Image"), System.Drawing.Image)
+        Me.btnSetShowClearLogoDL.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetShowClearLogoDL.Location = New System.Drawing.Point(735, 180)
+        Me.btnSetShowClearLogoDL.Name = "btnSetShowClearLogoDL"
+        Me.btnSetShowClearLogoDL.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetShowClearLogoDL.TabIndex = 15
+        Me.btnSetShowClearLogoDL.Text = "Change ClearLogo (Download)"
+        Me.btnSetShowClearLogoDL.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetShowClearLogoDL.UseVisualStyleBackColor = True
+        '
+        'btnRemoveShowClearLogo
+        '
+        Me.btnRemoveShowClearLogo.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnRemoveShowClearLogo.Image = CType(resources.GetObject("btnRemoveShowClearLogo.Image"), System.Drawing.Image)
+        Me.btnRemoveShowClearLogo.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnRemoveShowClearLogo.Location = New System.Drawing.Point(735, 363)
+        Me.btnRemoveShowClearLogo.Name = "btnRemoveShowClearLogo"
+        Me.btnRemoveShowClearLogo.Size = New System.Drawing.Size(96, 83)
+        Me.btnRemoveShowClearLogo.TabIndex = 16
+        Me.btnRemoveShowClearLogo.Text = "Remove ClearLogo"
+        Me.btnRemoveShowClearLogo.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnRemoveShowClearLogo.UseVisualStyleBackColor = True
+        '
+        'btnSetShowClearLogoScrape
+        '
+        Me.btnSetShowClearLogoScrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnSetShowClearLogoScrape.Image = CType(resources.GetObject("btnSetShowClearLogoScrape.Image"), System.Drawing.Image)
+        Me.btnSetShowClearLogoScrape.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetShowClearLogoScrape.Location = New System.Drawing.Point(735, 93)
+        Me.btnSetShowClearLogoScrape.Name = "btnSetShowClearLogoScrape"
+        Me.btnSetShowClearLogoScrape.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetShowClearLogoScrape.TabIndex = 14
+        Me.btnSetShowClearLogoScrape.Text = "Change ClearLogo (Scrape)"
+        Me.btnSetShowClearLogoScrape.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetShowClearLogoScrape.UseVisualStyleBackColor = True
+        '
+        'btnSetShowClearLogoLocal
+        '
+        Me.btnSetShowClearLogoLocal.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnSetShowClearLogoLocal.Image = CType(resources.GetObject("btnSetShowClearLogoLocal.Image"), System.Drawing.Image)
+        Me.btnSetShowClearLogoLocal.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetShowClearLogoLocal.Location = New System.Drawing.Point(735, 6)
+        Me.btnSetShowClearLogoLocal.Name = "btnSetShowClearLogoLocal"
+        Me.btnSetShowClearLogoLocal.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetShowClearLogoLocal.TabIndex = 13
+        Me.btnSetShowClearLogoLocal.Text = "Change ClearLogo (Local Browse)"
+        Me.btnSetShowClearLogoLocal.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetShowClearLogoLocal.UseVisualStyleBackColor = True
+        '
+        'pbShowClearLogo
+        '
+        Me.pbShowClearLogo.BackColor = System.Drawing.Color.DimGray
+        Me.pbShowClearLogo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pbShowClearLogo.Location = New System.Drawing.Point(6, 6)
+        Me.pbShowClearLogo.Name = "pbShowClearLogo"
+        Me.pbShowClearLogo.Size = New System.Drawing.Size(724, 440)
+        Me.pbShowClearLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.pbShowClearLogo.TabIndex = 12
+        Me.pbShowClearLogo.TabStop = False
+        '
         'tpShowFanart
         '
         Me.tpShowFanart.Controls.Add(Me.btnSetShowFanartDL)
@@ -865,6 +1192,94 @@ Partial Class dlgEditShow
         Me.pbShowFanart.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.pbShowFanart.TabIndex = 1
         Me.pbShowFanart.TabStop = False
+        '
+        'tpShowEFanarts
+        '
+        Me.tpShowEFanarts.Controls.Add(Me.lblShowEFanartsSize)
+        Me.tpShowEFanarts.Controls.Add(Me.pnlShowEFanartsSetAsFanart)
+        Me.tpShowEFanarts.Controls.Add(Me.pnlShowEFanartsBG)
+        Me.tpShowEFanarts.Controls.Add(Me.btnShowEFanartsRefresh)
+        Me.tpShowEFanarts.Controls.Add(Me.btnShowEFanartsRemove)
+        Me.tpShowEFanarts.Controls.Add(Me.pbShowEFanarts)
+        Me.tpShowEFanarts.Location = New System.Drawing.Point(4, 22)
+        Me.tpShowEFanarts.Name = "tpShowEFanarts"
+        Me.tpShowEFanarts.Size = New System.Drawing.Size(836, 452)
+        Me.tpShowEFanarts.TabIndex = 12
+        Me.tpShowEFanarts.Text = "Extrafanarts"
+        Me.tpShowEFanarts.UseVisualStyleBackColor = True
+        '
+        'lblShowEFanartsSize
+        '
+        Me.lblShowEFanartsSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblShowEFanartsSize.Location = New System.Drawing.Point(178, 10)
+        Me.lblShowEFanartsSize.Name = "lblShowEFanartsSize"
+        Me.lblShowEFanartsSize.Size = New System.Drawing.Size(104, 23)
+        Me.lblShowEFanartsSize.TabIndex = 23
+        Me.lblShowEFanartsSize.Text = "Size: (XXXXxXXXX)"
+        Me.lblShowEFanartsSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.lblShowEFanartsSize.Visible = False
+        '
+        'pnlShowEFanartsSetAsFanart
+        '
+        Me.pnlShowEFanartsSetAsFanart.BackColor = System.Drawing.Color.LightGray
+        Me.pnlShowEFanartsSetAsFanart.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlShowEFanartsSetAsFanart.Controls.Add(Me.btnShowEFanartsSetAsFanart)
+        Me.pnlShowEFanartsSetAsFanart.Location = New System.Drawing.Point(719, 403)
+        Me.pnlShowEFanartsSetAsFanart.Name = "pnlShowEFanartsSetAsFanart"
+        Me.pnlShowEFanartsSetAsFanart.Size = New System.Drawing.Size(109, 39)
+        Me.pnlShowEFanartsSetAsFanart.TabIndex = 21
+        '
+        'btnShowEFanartsSetAsFanart
+        '
+        Me.btnShowEFanartsSetAsFanart.Enabled = False
+        Me.btnShowEFanartsSetAsFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnShowEFanartsSetAsFanart.Image = CType(resources.GetObject("btnShowEFanartsSetAsFanart.Image"), System.Drawing.Image)
+        Me.btnShowEFanartsSetAsFanart.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnShowEFanartsSetAsFanart.Location = New System.Drawing.Point(2, 3)
+        Me.btnShowEFanartsSetAsFanart.Name = "btnShowEFanartsSetAsFanart"
+        Me.btnShowEFanartsSetAsFanart.Size = New System.Drawing.Size(103, 32)
+        Me.btnShowEFanartsSetAsFanart.TabIndex = 0
+        Me.btnShowEFanartsSetAsFanart.Text = "Set As Fanart"
+        Me.btnShowEFanartsSetAsFanart.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnShowEFanartsSetAsFanart.UseVisualStyleBackColor = True
+        '
+        'pnlShowEFanartsBG
+        '
+        Me.pnlShowEFanartsBG.AutoScroll = True
+        Me.pnlShowEFanartsBG.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlShowEFanartsBG.Location = New System.Drawing.Point(6, 8)
+        Me.pnlShowEFanartsBG.Name = "pnlShowEFanartsBG"
+        Me.pnlShowEFanartsBG.Size = New System.Drawing.Size(165, 408)
+        Me.pnlShowEFanartsBG.TabIndex = 22
+        '
+        'btnShowEFanartsRefresh
+        '
+        Me.btnShowEFanartsRefresh.Image = CType(resources.GetObject("btnShowEFanartsRefresh.Image"), System.Drawing.Image)
+        Me.btnShowEFanartsRefresh.Location = New System.Drawing.Point(88, 422)
+        Me.btnShowEFanartsRefresh.Name = "btnShowEFanartsRefresh"
+        Me.btnShowEFanartsRefresh.Size = New System.Drawing.Size(23, 23)
+        Me.btnShowEFanartsRefresh.TabIndex = 19
+        Me.btnShowEFanartsRefresh.UseVisualStyleBackColor = True
+        '
+        'btnShowEFanartsRemove
+        '
+        Me.btnShowEFanartsRemove.Image = CType(resources.GetObject("btnShowEFanartsRemove.Image"), System.Drawing.Image)
+        Me.btnShowEFanartsRemove.Location = New System.Drawing.Point(148, 422)
+        Me.btnShowEFanartsRemove.Name = "btnShowEFanartsRemove"
+        Me.btnShowEFanartsRemove.Size = New System.Drawing.Size(23, 23)
+        Me.btnShowEFanartsRemove.TabIndex = 20
+        Me.btnShowEFanartsRemove.UseVisualStyleBackColor = True
+        '
+        'pbShowEFanarts
+        '
+        Me.pbShowEFanarts.BackColor = System.Drawing.Color.DimGray
+        Me.pbShowEFanarts.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pbShowEFanarts.Location = New System.Drawing.Point(177, 8)
+        Me.pbShowEFanarts.Name = "pbShowEFanarts"
+        Me.pbShowEFanarts.Size = New System.Drawing.Size(653, 437)
+        Me.pbShowEFanarts.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.pbShowEFanarts.TabIndex = 18
+        Me.pbShowEFanarts.TabStop = False
         '
         'tpASPoster
         '
@@ -1259,24 +1674,6 @@ Partial Class dlgEditShow
         Me.lblOrdering.TabIndex = 4
         Me.lblOrdering.Text = "Episode Ordering:"
         '
-        'lblStatus
-        '
-        Me.lblStatus.AutoSize = True
-        Me.lblStatus.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblStatus.Location = New System.Drawing.Point(635, 330)
-        Me.lblStatus.Name = "lblStatus"
-        Me.lblStatus.Size = New System.Drawing.Size(42, 13)
-        Me.lblStatus.TabIndex = 68
-        Me.lblStatus.Text = "Status:"
-        '
-        'txtStatus
-        '
-        Me.txtStatus.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtStatus.Location = New System.Drawing.Point(635, 346)
-        Me.txtStatus.Name = "txtStatus"
-        Me.txtStatus.Size = New System.Drawing.Size(193, 22)
-        Me.txtStatus.TabIndex = 69
-        '
         'dlgEditShow
         '
         Me.AcceptButton = Me.OK_Button
@@ -1316,8 +1713,17 @@ Partial Class dlgEditShow
         CType(Me.pbShowBanner, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tpShowLandscape.ResumeLayout(False)
         CType(Me.pbShowLandscape, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.tpShowCharacterArt.ResumeLayout(False)
+        CType(Me.pbShowCharacterArt, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.tpShowClearArt.ResumeLayout(False)
+        CType(Me.pbShowClearArt, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.tpShowClearLogo.ResumeLayout(False)
+        CType(Me.pbShowClearLogo, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tpShowFanart.ResumeLayout(False)
         CType(Me.pbShowFanart, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.tpShowEFanarts.ResumeLayout(False)
+        Me.pnlShowEFanartsSetAsFanart.ResumeLayout(False)
+        CType(Me.pbShowEFanarts, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tpASPoster.ResumeLayout(False)
         CType(Me.pbASPoster, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tpASBanner.ResumeLayout(False)
@@ -1428,5 +1834,34 @@ Partial Class dlgEditShow
     Friend WithEvents pbASLandscape As System.Windows.Forms.PictureBox
     Friend WithEvents lblStatus As System.Windows.Forms.Label
     Friend WithEvents txtStatus As System.Windows.Forms.TextBox
+    Friend WithEvents tpShowCharacterArt As System.Windows.Forms.TabPage
+    Friend WithEvents tpShowClearArt As System.Windows.Forms.TabPage
+    Friend WithEvents tpShowClearLogo As System.Windows.Forms.TabPage
+    Friend WithEvents tpShowEFanarts As System.Windows.Forms.TabPage
+    Friend WithEvents btnSetShowClearArtDL As System.Windows.Forms.Button
+    Friend WithEvents btnRemoveShowClearArt As System.Windows.Forms.Button
+    Friend WithEvents btnSetShowClearArtScrape As System.Windows.Forms.Button
+    Friend WithEvents btnSetShowClearArtLocal As System.Windows.Forms.Button
+    Friend WithEvents pbShowClearArt As System.Windows.Forms.PictureBox
+    Friend WithEvents btnSetShowClearLogoDL As System.Windows.Forms.Button
+    Friend WithEvents btnRemoveShowClearLogo As System.Windows.Forms.Button
+    Friend WithEvents btnSetShowClearLogoScrape As System.Windows.Forms.Button
+    Friend WithEvents btnSetShowClearLogoLocal As System.Windows.Forms.Button
+    Friend WithEvents pbShowClearLogo As System.Windows.Forms.PictureBox
+    Friend WithEvents lblShowCharacterArtSize As System.Windows.Forms.Label
+    Friend WithEvents btnSetShowCharacterArtDL As System.Windows.Forms.Button
+    Friend WithEvents btnRemoveShowCharacterArt As System.Windows.Forms.Button
+    Friend WithEvents btnSetShowCharacterArtScrape As System.Windows.Forms.Button
+    Friend WithEvents btnSetShowCharacterArtLocal As System.Windows.Forms.Button
+    Friend WithEvents pbShowCharacterArt As System.Windows.Forms.PictureBox
+    Friend WithEvents lblShowClearArtSize As System.Windows.Forms.Label
+    Friend WithEvents lblShowClearLogoSize As System.Windows.Forms.Label
+    Friend WithEvents lblShowEFanartsSize As System.Windows.Forms.Label
+    Friend WithEvents pnlShowEFanartsSetAsFanart As System.Windows.Forms.Panel
+    Friend WithEvents btnShowEFanartsSetAsFanart As System.Windows.Forms.Button
+    Friend WithEvents pnlShowEFanartsBG As System.Windows.Forms.Panel
+    Friend WithEvents btnShowEFanartsRefresh As System.Windows.Forms.Button
+    Friend WithEvents btnShowEFanartsRemove As System.Windows.Forms.Button
+    Friend WithEvents pbShowEFanarts As System.Windows.Forms.PictureBox
 
 End Class

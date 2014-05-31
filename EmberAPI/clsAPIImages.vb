@@ -706,6 +706,60 @@ Public Class Images
         End Try
     End Sub
     ''' <summary>
+    ''' Delete the TV Show's CharacterArt
+    ''' </summary>
+    ''' <param name="mShow"><c>Structures.DBTV</c> representing the TV Show to work on</param>
+    ''' <remarks></remarks>
+    Public Sub DeleteTVShowCharacterArt(ByVal mShow As Structures.DBTV)
+        If String.IsNullOrEmpty(mShow.ShowPath) Then Return
+
+        Try
+            For Each a In FileUtils.GetFilenameList.TVShow(mShow.ShowPath, Enums.TVModType.ShowCharacterArt)
+                If File.Exists(a) Then
+                    Delete(a)
+                End If
+            Next
+        Catch ex As Exception
+            Master.eLog.Error(GetType(Images), "Path: <" & mShow.ShowPath & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+    ''' <summary>
+    ''' Delete the TV Show's ClearArt
+    ''' </summary>
+    ''' <param name="mShow"><c>Structures.DBTV</c> representing the TV Show to work on</param>
+    ''' <remarks></remarks>
+    Public Sub DeleteTVShowClearArt(ByVal mShow As Structures.DBTV)
+        If String.IsNullOrEmpty(mShow.ShowPath) Then Return
+
+        Try
+            For Each a In FileUtils.GetFilenameList.TVShow(mShow.ShowPath, Enums.TVModType.ShowClearArt)
+                If File.Exists(a) Then
+                    Delete(a)
+                End If
+            Next
+        Catch ex As Exception
+            Master.eLog.Error(GetType(Images), "Path: <" & mShow.ShowPath & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+    ''' <summary>
+    ''' Delete the TV Show's ClearLogo
+    ''' </summary>
+    ''' <param name="mShow"><c>Structures.DBTV</c> representing the TV Show to work on</param>
+    ''' <remarks></remarks>
+    Public Sub DeleteTVShowClearLogo(ByVal mShow As Structures.DBTV)
+        If String.IsNullOrEmpty(mShow.ShowPath) Then Return
+
+        Try
+            For Each a In FileUtils.GetFilenameList.TVShow(mShow.ShowPath, Enums.TVModType.ShowClearLogo)
+                If File.Exists(a) Then
+                    Delete(a)
+                End If
+            Next
+        Catch ex As Exception
+            Master.eLog.Error(GetType(Images), "Path: <" & mShow.ShowPath & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+    ''' <summary>
     ''' Delete the TV Show's Fanart
     ''' </summary>
     ''' <param name="mShow"><c>Structures.DBTV</c> representing the TV Show to work on</param>
@@ -2132,6 +2186,175 @@ Public Class Images
             Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
         End Try
         Return strReturn
+    End Function
+    ''' <summary>
+    ''' Save the image as a TV Show's CharacterArt
+    ''' </summary>
+    ''' <param name="mShow"><c>Structures.DBTV</c> representing the TV Show being referred to</param>
+    ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
+    ''' <returns><c>String</c> path to the saved image</returns>
+    ''' <remarks></remarks>
+    Public Function SaveAsTVShowCharacterArt(ByVal mShow As Structures.DBTV, Optional sURL As String = "") As String
+        Dim strReturn As String = String.Empty
+
+        If String.IsNullOrEmpty(mShow.ShowPath) Then Return strReturn
+
+        Dim doResize As Boolean = False
+
+        Try
+            Dim pPath As String = String.Empty
+            Dim ShowPath As String = mShow.ShowPath
+
+            Try
+                Dim params As New List(Of Object)(New Object() {Enums.TVImageType.ShowCharacterArt, mShow, New List(Of String)})
+                Dim doContinue As Boolean = True
+                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
+                For Each s As String In DirectCast(params(2), List(Of String))
+                    If Not File.Exists(s) OrElse (IsEdit OrElse Master.eSettings.TVShowCharacterArtOverwrite) Then
+                        Save(s, 0, sURL, doResize)
+                        If String.IsNullOrEmpty(strReturn) Then strReturn = s
+                    End If
+                Next
+                If Not doContinue Then Return strReturn
+            Catch ex As Exception
+                Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+            End Try
+
+            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.TVModType.ShowCharacterArt)
+                If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVShowCharacterArtOverwrite) Then
+                    Save(a, 0, sURL, doResize)
+                    strReturn = a
+                End If
+            Next
+
+        Catch ex As Exception
+            Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+        End Try
+        Return strReturn
+    End Function
+    ''' <summary>
+    ''' Save the image as a TV Show's ClearArt
+    ''' </summary>
+    ''' <param name="mShow"><c>Structures.DBTV</c> representing the TV Show being referred to</param>
+    ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
+    ''' <returns><c>String</c> path to the saved image</returns>
+    ''' <remarks></remarks>
+    Public Function SaveAsTVShowClearArt(ByVal mShow As Structures.DBTV, Optional sURL As String = "") As String
+        Dim strReturn As String = String.Empty
+
+        If String.IsNullOrEmpty(mShow.ShowPath) Then Return strReturn
+
+        Dim doResize As Boolean = False
+
+        Try
+            Dim pPath As String = String.Empty
+            Dim ShowPath As String = mShow.ShowPath
+
+            Try
+                Dim params As New List(Of Object)(New Object() {Enums.TVImageType.ShowClearArt, mShow, New List(Of String)})
+                Dim doContinue As Boolean = True
+                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
+                For Each s As String In DirectCast(params(2), List(Of String))
+                    If Not File.Exists(s) OrElse (IsEdit OrElse Master.eSettings.TVShowClearArtOverwrite) Then
+                        Save(s, 0, sURL, doResize)
+                        If String.IsNullOrEmpty(strReturn) Then strReturn = s
+                    End If
+                Next
+                If Not doContinue Then Return strReturn
+            Catch ex As Exception
+                Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+            End Try
+
+            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.TVModType.ShowClearArt)
+                If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVShowClearArtOverwrite) Then
+                    Save(a, 0, sURL, doResize)
+                    strReturn = a
+                End If
+            Next
+
+        Catch ex As Exception
+            Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+        End Try
+        Return strReturn
+    End Function
+    ''' <summary>
+    ''' Save the image as a TV Show's ClearLogo
+    ''' </summary>
+    ''' <param name="mShow"><c>Structures.DBTV</c> representing the TV Show being referred to</param>
+    ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
+    ''' <returns><c>String</c> path to the saved image</returns>
+    ''' <remarks></remarks>
+    Public Function SaveAsTVShowClearLogo(ByVal mShow As Structures.DBTV, Optional sURL As String = "") As String
+        Dim strReturn As String = String.Empty
+
+        If String.IsNullOrEmpty(mShow.ShowPath) Then Return strReturn
+
+        Dim doResize As Boolean = False
+
+        Try
+            Dim pPath As String = String.Empty
+            Dim ShowPath As String = mShow.ShowPath
+
+            Try
+                Dim params As New List(Of Object)(New Object() {Enums.TVImageType.ShowClearLogo, mShow, New List(Of String)})
+                Dim doContinue As Boolean = True
+                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
+                For Each s As String In DirectCast(params(2), List(Of String))
+                    If Not File.Exists(s) OrElse (IsEdit OrElse Master.eSettings.TVShowClearLogoOverwrite) Then
+                        Save(s, 0, sURL, doResize)
+                        If String.IsNullOrEmpty(strReturn) Then strReturn = s
+                    End If
+                Next
+                If Not doContinue Then Return strReturn
+            Catch ex As Exception
+                Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+            End Try
+
+            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.TVModType.ShowClearLogo)
+                If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVShowClearLogoOverwrite) Then
+                    Save(a, 0, sURL, doResize)
+                    strReturn = a
+                End If
+            Next
+
+        Catch ex As Exception
+            Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+        End Try
+        Return strReturn
+    End Function
+    ''' <summary>
+    ''' Save the image as a tv show's extrafanart
+    ''' </summary>
+    ''' <param name="mShow"><c>Structures.DBTV</c> representing the TV Show being referred to</param>
+    ''' <param name="sName"><c>String</c> name of the movie being referred to</param>
+    ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
+    ''' <returns><c>String</c> path to the saved image</returns>
+    ''' <remarks></remarks>
+    Public Function SaveAsTVShowExtrafanart(ByVal mShow As Structures.DBTV, ByVal sName As String, Optional sURL As String = "") As String
+        Dim efPath As String = String.Empty
+        Dim iMod As Integer = 0
+        Dim iVal As Integer = 1
+
+        If String.IsNullOrEmpty(mShow.ShowPath) Then Return efPath
+
+        Try
+            Dim ShowPath As String = mShow.ShowPath
+
+            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.TVModType.ShowEFanarts)
+                If Not a = String.Empty Then
+                    If Not Directory.Exists(a) Then
+                        Directory.CreateDirectory(a)
+                    End If
+                    efPath = Path.Combine(a, sName)
+                    Save(efPath)
+                    Return efPath
+                End If
+            Next
+        Catch ex As Exception
+
+        End Try
+
+        Return efPath
     End Function
     ''' <summary>
     ''' Save the image as a TV Show's fanart
