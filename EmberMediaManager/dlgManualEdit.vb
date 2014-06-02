@@ -24,10 +24,13 @@ Imports System.Xml
 Imports System.Xml.Schema
 Imports System.Text
 Imports EmberAPI
+Imports NLog
+Imports System.Diagnostics
 
 Public Class dlgManualEdit
 
 #Region "Fields"
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     Private Changed As Boolean = False
     Private currFile As String
@@ -75,7 +78,7 @@ Public Class dlgManualEdit
             ElementName += ">"
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Return ElementName
@@ -126,10 +129,8 @@ Public Class dlgManualEdit
                         XmlViewer.Text = aS1 & aS3
                     End If
                     XmlViewer.Process(True)
-                Catch appException As ApplicationException
-                    Master.eLog.Error(Me.GetType(), appException.Message, appException.StackTrace, "ApplicationException")
                 Catch ex As Exception
-                    Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                    Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
                 End Try
                 ParseFile(True)
                 Me.Cursor = System.Windows.Forms.Cursors.Default
@@ -283,7 +284,7 @@ Public Class dlgManualEdit
     '        End If
 
     '    Catch ex As Exception
-    '        Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+    '        logger.ErrorException(New StackFrame().GetMethod().Name, ex)
     '    End Try
 
     '    Me.Cursor = System.Windows.Forms.Cursors.Default
@@ -325,10 +326,8 @@ Public Class dlgManualEdit
             Me.Cursor = System.Windows.Forms.Cursors.WaitCursor
             XmlViewer.Process(True)
             Me.Cursor = System.Windows.Forms.Cursors.Default
-        Catch appException As ApplicationException
-            Master.eLog.Error(Me.GetType(), appException.Message, appException.StackTrace, "ApplicationException")
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -390,7 +389,7 @@ Public Class dlgManualEdit
                     ListBox1.Items.Add(ErrStr)
 
                 Catch ex As Exception
-                    Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                    Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
                     Exit Do
                 End Try
 

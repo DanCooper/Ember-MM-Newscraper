@@ -21,10 +21,15 @@
 Imports System.IO
 Imports System.Text.RegularExpressions
 Imports System.Windows.Forms
+Imports NLog
 
 Namespace FileUtils
 
     Public Class Common
+
+#Region "Fields"
+        Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+#End Region 'Fields
 
 #Region "Methods"
 
@@ -126,7 +131,7 @@ Namespace FileUtils
                     End Using
                 End Using
             Catch ex As Exception
-                Master.eLog.Error(GetType(Common), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             End Try
         End Sub
         ''' <summary>
@@ -144,7 +149,7 @@ Namespace FileUtils
                 Return Path.Combine(Path.GetDirectoryName(sPath), Path.GetFileNameWithoutExtension(sPath))
                 'Return Path.Combine(Directory.GetParent(sPath).FullName, Path.GetFileNameWithoutExtension(sPath))
             Catch ex As Exception
-                Master.eLog.Error(GetType(Common), "Source: <" & sPath & ">" & ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "Source: <" & sPath & ">", ex)
                 Return String.Empty
             End Try
         End Function
@@ -172,6 +177,9 @@ Namespace FileUtils
     End Class
 
     Public Class Delete
+#Region "Fields"
+        Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+#End Region 'Fields
 
 #Region "Methods"
 
@@ -218,7 +226,7 @@ Namespace FileUtils
                     Directory.Delete(sPath, True)
                 End If
             Catch ex As Exception
-                Master.eLog.Error(GetType(Delete), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             End Try
         End Sub
 
@@ -436,7 +444,7 @@ Namespace FileUtils
                 ioFi = Nothing
                 dirInfo = Nothing
             Catch ex As Exception
-                Master.eLog.Error(GetType(Delete), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             End Try
             Return ItemsToDelete
         End Function
@@ -446,6 +454,9 @@ Namespace FileUtils
     End Class
 
     Public Class DragAndDrop
+#Region "Fields"
+        Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+#End Region 'Fields
 
 #Region "Methods"
 
@@ -513,6 +524,9 @@ Namespace FileUtils
     End Class
 
     Public Class GetFilenameList
+#Region "Fields"
+        Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+#End Region 'Fields
 
 #Region "Methods"
         ''' <summary>
@@ -1441,6 +1455,9 @@ Namespace FileUtils
     ''' </summary>
     ''' <remarks></remarks>
     Public Module FileSorter
+#Region "Fields"
+        Dim logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+#End Region 'Fields
 
 #Region "Events"
 
@@ -1507,7 +1524,7 @@ Namespace FileUtils
                     di = Nothing
                 End If
             Catch ex As Exception
-                Master.eLog.Error(GetType(FileSorter), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             End Try
         End Sub
 

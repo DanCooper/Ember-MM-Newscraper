@@ -22,11 +22,12 @@ Imports System.Drawing
 Imports System.Drawing.Drawing2D
 Imports System.IO
 Imports EmberAPI
+Imports NLog
 
 Public Class dlgBulkRenamer
 
 #Region "Fields"
-
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
     Friend WithEvents bwDoRename As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwLoadInfo As New System.ComponentModel.BackgroundWorker
 
@@ -153,7 +154,7 @@ Public Class dlgBulkRenamer
                                                         MovieFile.MultiView = String.Empty
                                                     End If
                                                 Catch ex As Exception
-                                                    Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error FileInfo")
+                                                    logger.ErrorException(New StackFrame().GetMethod().Name, ex)
                                                 End Try
                                             Else
                                                 MovieFile.Audio = String.Empty
@@ -213,7 +214,7 @@ Public Class dlgBulkRenamer
                                     End If
                                 End If
                             Catch ex As Exception
-                                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
                             End Try
                             iProg += 1
 
@@ -229,7 +230,7 @@ Public Class dlgBulkRenamer
                 End Using
             End Using
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -255,7 +256,7 @@ Public Class dlgBulkRenamer
             End If
             Me.pnlCancel.Visible = False
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -329,7 +330,7 @@ Public Class dlgBulkRenamer
             End If
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -391,7 +392,7 @@ Public Class dlgBulkRenamer
             Me.bwLoadInfo.RunWorkerAsync()
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -405,7 +406,7 @@ Public Class dlgBulkRenamer
             lblCanceling.Visible = True
             lblFile.Visible = False
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -466,7 +467,7 @@ Public Class dlgBulkRenamer
 
             dgvMoviesList.Refresh()
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -542,7 +543,7 @@ Public Class dlgBulkRenamer
                 End If
             End With
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -562,7 +563,7 @@ Public Class dlgBulkRenamer
                 tThread.Start()
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -587,7 +588,7 @@ Public Class dlgBulkRenamer
             If String.IsNullOrEmpty(txtFilePattern.Text) Then txtFilePattern.Text = "$F"
             tmrSimul.Enabled = True
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -596,7 +597,7 @@ Public Class dlgBulkRenamer
             If String.IsNullOrEmpty(txtFolderPatternNotSingle.Text) Then txtFolderPatternNotSingle.Text = "$D"
             tmrSimul.Enabled = True
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -605,7 +606,7 @@ Public Class dlgBulkRenamer
             If String.IsNullOrEmpty(txtFolderPattern.Text) Then txtFolderPattern.Text = "$D"
             tmrSimul.Enabled = True
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
     Sub LoadHelpTips()

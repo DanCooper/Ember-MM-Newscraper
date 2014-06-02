@@ -3,50 +3,59 @@ Imports System
 Imports System.IO
 Imports System.Text.RegularExpressions
 Imports EmberAPI
+Imports NLog
+
 
 Public Class frmMovieExtractor
+#Region "Fields"
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
     Private PreviousFrameValue As Integer
+#End Region
 
+#Region "Events"
     Event GenericEvent(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object))
+#End Region
 
-	Private Sub btnFrameLoad_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFrameLoad.Click
-		Try
-			Using ffmpeg As New Process()
+#Region "Methods"
 
-				ffmpeg.StartInfo.FileName = Functions.GetFFMpeg
-				ffmpeg.StartInfo.Arguments = String.Format("-ss 0 -i ""{0}"" -an -f rawvideo -vframes 1 -s 1280x720 -vcodec mjpeg -y ""{1}""", Master.currMovie.Filename, Path.Combine(Master.TempPath, "frame.jpg"))
-				ffmpeg.EnableRaisingEvents = False
-				ffmpeg.StartInfo.UseShellExecute = False
-				ffmpeg.StartInfo.CreateNoWindow = True
-				ffmpeg.StartInfo.RedirectStandardOutput = True
-				ffmpeg.StartInfo.RedirectStandardError = True
-				ffmpeg.Start()
-				Using d As StreamReader = ffmpeg.StandardError
+    Private Sub btnFrameLoad_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFrameLoad.Click
+        Try
+            Using ffmpeg As New Process()
 
-					Do
-						Dim s As String = d.ReadLine()
-						If s.Contains("Duration: ") Then
-							Dim sTime As String = Regex.Match(s, "Duration: (?<dur>.*?),").Groups("dur").ToString
-							If Not sTime = "N/A" Then
-								Dim ts As TimeSpan = CDate(CDate(String.Format("{0} {1}", DateTime.Today.ToString("d"), sTime))).Subtract(CDate(DateTime.Today))
-								Dim intSeconds As Integer = ((ts.Hours * 60) + ts.Minutes) * 60 + ts.Seconds
-								tbFrame.Maximum = intSeconds
-							Else
-								tbFrame.Maximum = 0
-							End If
-							tbFrame.Value = 0
-							tbFrame.Enabled = True
-						End If
-					Loop While Not d.EndOfStream
-				End Using
-				ffmpeg.WaitForExit()
-				ffmpeg.Close()
-			End Using
+                ffmpeg.StartInfo.FileName = Functions.GetFFMpeg
+                ffmpeg.StartInfo.Arguments = String.Format("-ss 0 -i ""{0}"" -an -f rawvideo -vframes 1 -s 1280x720 -vcodec mjpeg -y ""{1}""", Master.currMovie.Filename, Path.Combine(Master.TempPath, "frame.jpg"))
+                ffmpeg.EnableRaisingEvents = False
+                ffmpeg.StartInfo.UseShellExecute = False
+                ffmpeg.StartInfo.CreateNoWindow = True
+                ffmpeg.StartInfo.RedirectStandardOutput = True
+                ffmpeg.StartInfo.RedirectStandardError = True
+                ffmpeg.Start()
+                Using d As StreamReader = ffmpeg.StandardError
 
-			If tbFrame.Maximum > 0 AndAlso File.Exists(Path.Combine(Master.TempPath, "frame.jpg")) Then
-				Using fsFImage As New FileStream(Path.Combine(Master.TempPath, "frame.jpg"), FileMode.Open, FileAccess.Read)
-					pbFrame.Image = Image.FromStream(fsFImage)
-				End Using
+                    Do
+                        Dim s As String = d.ReadLine()
+                        If s.Contains("Duration: ") Then
+                            Dim sTime As String = Regex.Match(s, "Duration: (?<dur>.*?),").Groups("dur").ToString
+                            If Not sTime = "N/A" Then
+                                Dim ts As TimeSpan = CDate(CDate(String.Format("{0} {1}", DateTime.Today.ToString("d"), sTime))).Subtract(CDate(DateTime.Today))
+                                Dim intSeconds As Integer = ((ts.Hours * 60) + ts.Minutes) * 60 + ts.Seconds
+                                tbFrame.Maximum = intSeconds
+                            Else
+                                tbFrame.Maximum = 0
+                            End If
+                            tbFrame.Value = 0
+                            tbFrame.Enabled = True
+                        End If
+                    Loop While Not d.EndOfStream
+                End Using
+                ffmpeg.WaitForExit()
+                ffmpeg.Close()
+            End Using
+
+            If tbFrame.Maximum > 0 AndAlso File.Exists(Path.Combine(Master.TempPath, "frame.jpg")) Then
+                Using fsFImage As New FileStream(Path.Combine(Master.TempPath, "frame.jpg"), FileMode.Open, FileAccess.Read)
+                    pbFrame.Image = Image.FromStream(fsFImage)
+                End Using
                 btnFrameLoad.Enabled = False
                 btnFrameSaveAsEFanart.Enabled = True
                 btnFrameSaveAsEThumb.Enabled = True
@@ -60,7 +69,7 @@ Public Class frmMovieExtractor
             PreviousFrameValue = 0
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error", False)
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             tbFrame.Maximum = 0
             tbFrame.Value = 0
             tbFrame.Enabled = False
@@ -84,7 +93,7 @@ Public Class frmMovieExtractor
             lblTime.Text = String.Format("{0}:{1:00}:{2:00}", sec2Time.Hours, sec2Time.Minutes, sec2Time.Seconds)
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -138,7 +147,7 @@ Public Class frmMovieExtractor
             End If
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error", False)
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             PreviousFrameValue = 0
             lblTime.Text = String.Empty
             tbFrame.Maximum = 0
@@ -171,7 +180,7 @@ Public Class frmMovieExtractor
             RaiseEvent GenericEvent(Enums.ModuleEventType.MovieFrameExtrator, New List(Of Object)(New Object() {"EFanartToSave", sPath}))
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
 
         btnFrameSaveAsEFanart.Enabled = False
@@ -196,7 +205,7 @@ Public Class frmMovieExtractor
             RaiseEvent GenericEvent(Enums.ModuleEventType.MovieFrameExtrator, New List(Of Object)(New Object() {"EThumbToSave", sPath}))
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
 
         btnFrameSaveAsEThumb.Enabled = False
@@ -208,7 +217,7 @@ Public Class frmMovieExtractor
                 RaiseEvent GenericEvent(Enums.ModuleEventType.MovieFrameExtrator, New List(Of Object)(New Object() {"FanartToSave"}))
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
 
         btnFrameSaveAsFanart.Enabled = False
@@ -230,7 +239,7 @@ Public Class frmMovieExtractor
             'End If
             MsgBox("This feature is currently unavailable", MsgBoxStyle.OkOnly, "No Beta Feature") 'TODO: re-add autothumbs
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -261,12 +270,14 @@ Public Class frmMovieExtractor
 
     End Sub
 
-	Public Sub New()
+    Public Sub New()
 
-		' This call is required by the designer.
-		InitializeComponent()
-		Me.SetUp()
-		' Add any initialization after the InitializeComponent() call.
+        ' This call is required by the designer.
+        InitializeComponent()
+        Me.SetUp()
+        ' Add any initialization after the InitializeComponent() call.
 
-	End Sub
+    End Sub
+#End Region
+
 End Class

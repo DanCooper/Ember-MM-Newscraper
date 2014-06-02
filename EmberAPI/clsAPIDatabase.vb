@@ -24,6 +24,7 @@ Imports System.IO
 Imports System.Xml.Serialization
 Imports System.Data.SQLite
 Imports System.Xml.Linq
+Imports NLog
 
 ''' <summary>
 ''' Class defining and implementing the interface to the database
@@ -32,6 +33,7 @@ Imports System.Xml.Linq
 Public Class Database
 
 #Region "Fields"
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     ReadOnly _connStringTemplate As String = "Data Source=""{0}"";Version=3;Compress=True"
     Protected _myvideosDBConn As SQLiteConnection
@@ -180,7 +182,7 @@ Public Class Database
             End Using
 
         Catch ex As Exception
-            Master.eLog.Error(GetType(Database), ex.Message, ex.StackTrace, "Error", False)
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
     ''' <summary>
@@ -199,7 +201,7 @@ Public Class Database
             If Not BatchMode Then SQLTrans.Commit()
             SQLTrans = Nothing
         Catch ex As Exception
-            Master.eLog.Error(GetType(Database), ex.Message, ex.StackTrace, "Error", False)
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
         If SQLTrans IsNot Nothing Then SQLTrans.Dispose()
     End Sub
@@ -243,7 +245,7 @@ Public Class Database
                 End Using
             End If
         Catch ex As Exception
-            Master.eLog.Error(GetType(Database), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
     ''' <summary>
@@ -280,9 +282,7 @@ Public Class Database
 
             connection.Close()
         Catch ex As Exception
-            Master.eLog.Error(GetType(Database), ex.ToString, _
-                ex.StackTrace, _
-                "There was a problem closing the media database.")
+            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "There was a problem closing the media database.", ex)
         Finally
             connection.Dispose()
         End Try
@@ -333,9 +333,7 @@ Public Class Database
             _myvideosDBConn = New SQLiteConnection(String.Format(_connStringTemplate, myvideosDBFile))
             _myvideosDBConn.Open()
         Catch ex As Exception
-            Master.eLog.Error(GetType(Database), ex.ToString, _
-             ex.StackTrace, _
-             "Unable to open media database connection.")
+            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "Unable to open media database connection.", ex)
         End Try
 
         Try
@@ -363,9 +361,7 @@ Public Class Database
                         _myvideosDBConn = New SQLiteConnection(String.Format(_connStringTemplate, myvideosDBFile))
                         _myvideosDBConn.Open()
                     Catch ex As Exception
-                        Master.eLog.Error(GetType(Database), ex.ToString, _
-                            ex.StackTrace, _
-                            "Unable to open media database connection.")
+                        logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "Unable to open media database connection.", ex)
                     End Try
 
                     Dim sqlCommand As String = My.Resources.MyVideosDBSQL_v2
@@ -380,10 +376,7 @@ Public Class Database
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.Error(GetType(Database), ex.ToString, _
-             ex.StackTrace, _
-             "Error creating database")
-            _myvideosDBConn.Close()
+            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "Error creating database", ex)
             File.Delete(myvideosDBFile)
         End Try
         Return isNew
@@ -678,7 +671,7 @@ Public Class Database
             End Using
             If Not BatchMode Then SQLtransaction.Commit()
         Catch ex As Exception
-            Master.eLog.Error(GetType(Database), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             Return False
         End Try
         Return True
@@ -727,7 +720,7 @@ Public Class Database
             End Using
             If Not BatchMode Then SQLtransaction.Commit()
         Catch ex As Exception
-            Master.eLog.Error(GetType(Database), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             Return False
         End Try
         Return True
@@ -784,7 +777,7 @@ Public Class Database
                 Master.DB.CleanSeasons()
             End If
         Catch ex As Exception
-            Master.eLog.Error(GetType(Database), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             Return False
         End Try
         Return True
@@ -841,7 +834,7 @@ Public Class Database
             End Using
             If Not BatchMode Then SQLtransaction.Commit()
         Catch ex As Exception
-            Master.eLog.Error(GetType(Database), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             Return False
         End Try
         Return True
@@ -875,7 +868,7 @@ Public Class Database
 
             If Not BatchMode Then SQLtransaction.Commit()
         Catch ex As Exception
-            Master.eLog.Error(GetType(Database), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             Return False
         End Try
         Return True
@@ -910,7 +903,7 @@ Public Class Database
 
             If Not BatchMode Then SQLtransaction.Commit()
         Catch ex As Exception
-            Master.eLog.Error(GetType(Database), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             Return False
         End Try
         Return True
@@ -928,7 +921,7 @@ Public Class Database
             Dim sqlCB As New SQLite.SQLiteCommandBuilder(sqlDA)
             sqlDA.Fill(dTable)
         Catch ex As Exception
-            Master.eLog.Error(GetType(Database), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
     ''' <summary>
@@ -1187,7 +1180,7 @@ Public Class Database
                 End Using
             End If
         Catch ex As Exception
-            Master.eLog.Error(GetType(Database), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             _movieDB.ID = -1
         End Try
         Return _movieDB
@@ -1212,7 +1205,7 @@ Public Class Database
                 End Using
             End Using
         Catch ex As Exception
-            Master.eLog.Error(GetType(Database), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
         Return New Structures.DBMovie With {.Id = -1}
     End Function
@@ -1249,7 +1242,7 @@ Public Class Database
             End Using
 
         Catch ex As Exception
-            Master.eLog.Error(GetType(Database), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
         Return _moviesetDB
     End Function
@@ -1287,7 +1280,7 @@ Public Class Database
             If WithShow Then Master.DB.FillTVShowFromDB(_TVDB)
 
         Catch ex As Exception
-            Master.eLog.Error(GetType(Database), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
         Return _TVDB
     End Function
@@ -1432,7 +1425,7 @@ Public Class Database
             End If
 
         Catch ex As Exception
-            Master.eLog.Error(GetType(Database), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             _TVDB.EpID = -1
         End Try
         Return _TVDB
@@ -1456,7 +1449,7 @@ Public Class Database
                 End Using
             End Using
         Catch ex As Exception
-            Master.eLog.Error(GetType(Database), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
         Return New Structures.DBTV With {.EpID = -1}
     End Function
@@ -1510,7 +1503,7 @@ Public Class Database
             End Using
 
         Catch ex As Exception
-            Master.eLog.Error(GetType(Database), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
         Return _TVDB
     End Function
@@ -1583,7 +1576,7 @@ Public Class Database
             End Using
 
         Catch ex As Exception
-            Master.eLog.Error(GetType(Database), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             _TVDB.ShowID = -1
         End Try
         Return _TVDB
@@ -1846,7 +1839,7 @@ Public Class Database
                         If rdrMovie.Read Then
                             _movieDB.ID = Convert.ToInt64(rdrMovie(0))
                         Else
-                            Master.eLog.Error(GetType(Database), "Something very wrong here: SaveMovieToDB", _movieDB.ToString, "Error")
+                            logger.Error(New StackFrame().GetMethod().Name, "Something very wrong here: SaveMovieToDB", _movieDB.ToString)
                             _movieDB.ID = -1
                             Return _movieDB
                         End If
@@ -2031,7 +2024,7 @@ Public Class Database
                         SQLcommandMovieSets.CommandText = String.Concat("DELETE FROM MoviesSets WHERE MovieID = ", _movieDB.ID, ";")
                         SQLcommandMovieSets.ExecuteNonQuery()
                     End Using
-                        
+
                     Dim IsNewSet As Boolean
                     For Each s As MediaContainers.Set In _movieDB.Movie.Sets
                         If s.SetSpecified Then
@@ -2160,7 +2153,7 @@ Public Class Database
             If Not BatchMode Then SQLtransaction.Commit()
 
         Catch ex As Exception
-            Master.eLog.Error(GetType(Database), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
         Return _movieDB
     End Function
@@ -2244,7 +2237,7 @@ Public Class Database
                         If rdrMovieSet.Read Then
                             _moviesetDB.ID = Convert.ToInt64(rdrMovieSet(0))
                         Else
-                            Master.eLog.Error(GetType(Database), "Something very wrong here: SaveMovieSetToDB", _moviesetDB.ToString, "Error")
+                            logger.Error(New StackFrame().GetMethod().Name, "Something very wrong here: SaveMovieSetToDB", _moviesetDB.ToString, "Error")
                             _moviesetDB.SetName = "SETERROR"
                             Return _moviesetDB
                         End If
@@ -2257,7 +2250,7 @@ Public Class Database
             If Not BatchMode Then SQLtransaction.Commit()
 
         Catch ex As Exception
-            Master.eLog.Error(GetType(Database), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
         Return _moviesetDB
     End Function
@@ -2405,7 +2398,7 @@ Public Class Database
                         If rdrTVEp.Read Then
                             _TVEpDB.EpID = Convert.ToInt64(rdrTVEp(0))
                         Else
-                            Master.eLog.Error(GetType(Database), "Something very wrong here: SaveTVEpToDB", _TVEpDB.ToString, "Error")
+                            logger.Error(New StackFrame().GetMethod().Name, "Something very wrong here: SaveTVEpToDB", _TVEpDB.ToString, "Error")
                             _TVEpDB.EpID = -1
                             Exit Sub
                         End If
@@ -2551,7 +2544,7 @@ Public Class Database
             If Not BatchMode Then SQLtransaction.Commit()
 
         Catch ex As Exception
-            Master.eLog.Error(GetType(Database), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
     ''' <summary>
@@ -2606,7 +2599,7 @@ Public Class Database
             If Not BatchMode Then SQLtransaction.Commit()
 
         Catch ex As Exception
-            Master.eLog.Error(GetType(Database), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
     ''' <summary>
@@ -2733,7 +2726,7 @@ Public Class Database
                         If rdrTVShow.Read Then
                             _TVShowDB.ShowID = Convert.ToInt64(rdrTVShow(0))
                         Else
-                            Master.eLog.Error(GetType(Database), "Something very wrong here: SaveTVShowToDB", _TVShowDB.ToString, "Error")
+                            logger.Error(New StackFrame().GetMethod().Name, "Something very wrong here: SaveTVShowToDB", _TVShowDB.ToString, "Error")
                             _TVShowDB.ShowID = -1
                             Exit Sub
                         End If
@@ -2771,7 +2764,7 @@ Public Class Database
             If Not BatchMode Then SQLtransaction.Commit()
 
         Catch ex As Exception
-            Master.eLog.Error(GetType(Database), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
     ''' <summary>
@@ -2792,13 +2785,13 @@ Public Class Database
                             tvsource.Path = SQLreader("Path").ToString
                             Master.TVSources.Add(tvsource)
                         Catch ex As Exception
-                            Master.eLog.Error(GetType(Database), ex.Message, ex.StackTrace, "Error")
+                            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
                         End Try
                     End While
                 End Using
             End Using
         Catch ex As Exception
-            Master.eLog.Error(GetType(Database), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
     ''' <summary>
@@ -2822,13 +2815,13 @@ Public Class Database
                             msource.IsSingle = Convert.ToBoolean(SQLreader("Single"))
                             Master.MovieSources.Add(msource)
                         Catch ex As Exception
-                            Master.eLog.Error(GetType(Database), ex.Message, ex.StackTrace, "Error")
+                            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
                         End Try
                     End While
                 End Using
             End Using
         Catch ex As Exception
-            Master.eLog.Error(GetType(Database), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
     ''' <summary>
@@ -2848,13 +2841,13 @@ Public Class Database
                         Try ' Parsing database entry may fail. If it does, log the error and ignore the entry but continue processing
                             Paths.Add(SQLreader("MoviePath").ToString)
                         Catch ex As Exception
-                            Master.eLog.Error(GetType(Database), ex.Message, ex.StackTrace, "Error")
+                            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
                         End Try
                     End While
                 End Using
             End Using
         Catch ex As Exception
-            Master.eLog.Error(GetType(Database), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Return Paths
@@ -2875,7 +2868,7 @@ Public Class Database
     '        _jobsDBConn = New SQLiteConnection(String.Format(_connStringTemplate, jobsDBFile))
     '        _jobsDBConn.Open()
     '    Catch ex As Exception
-    '        Master.eLog.Error(GetType(Database),ex.ToString, _
+    '        logger.ErrorException(GetType(Database),ex.ToString, _
     '                                    ex.StackTrace, _
     '                                    "Unable to open media database connection.")
     '    End Try
@@ -2900,7 +2893,7 @@ Public Class Database
     ''' <remarks></remarks>
     Public Function IsAddonInstalled(ByVal AddonID As Integer) As Single
         If AddonID < 0 Then
-            Master.eLog.Error(GetType(Database), "Invalid AddonID: " & AddonID, Environment.StackTrace, "Error")
+            logger.Error(New StackFrame().GetMethod().Name, "Invalid AddonID: " & AddonID, Environment.StackTrace, "Error")
             Throw New ArgumentOutOfRangeException("AddonID", "Must be a positive integer")
         End If
 
@@ -2916,7 +2909,7 @@ Public Class Database
                 End If
             End Using
         Catch ex As Exception
-            Master.eLog.Error(GetType(Database), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
         Return 0
     End Function
@@ -2928,7 +2921,7 @@ Public Class Database
     ''' <remarks></remarks>
     Public Function UninstallAddon(ByVal AddonID As Integer) As Boolean
         If AddonID < 0 Then
-            Master.eLog.Error(GetType(Database), "Invalid AddonID: " & AddonID, Environment.StackTrace, "Error")
+            logger.Error(New StackFrame().GetMethod().Name, "Invalid AddonID: " & AddonID, Environment.StackTrace, "Error")
             Throw New ArgumentOutOfRangeException("AddonID", "Must be a positive integer")
         End If
 
@@ -2957,7 +2950,7 @@ Public Class Database
                 SQLtransaction.Commit()
             End Using
         Catch ex As Exception
-            Master.eLog.Error(GetType(Database), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
         Return Not needRestart
     End Function
@@ -2969,7 +2962,7 @@ Public Class Database
     Public Sub SaveAddonToDB(ByVal Addon As Containers.Addon)
         'TODO Need to add validation on Addon.ID, especially if it is passed in the parameter
         If Addon Is Nothing Then
-            Master.eLog.Error(GetType(Database), "Attempted to save an empty Addon", Environment.StackTrace, "Error")
+            logger.Error(New StackFrame().GetMethod().Name, "Attempted to save an empty Addon", Environment.StackTrace, "Error")
             Throw New ArgumentNullException("AddonID", "Must be a positive integer")
         End If
         Try
@@ -3002,7 +2995,7 @@ Public Class Database
                 SQLtransaction.Commit()
             End Using
         Catch ex As Exception
-            Master.eLog.Error(GetType(Database), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
     ''' <summary>

@@ -22,10 +22,13 @@ Imports System
 Imports System.IO
 Imports System.Text.RegularExpressions
 Imports EmberAPI
+Imports NLog
+Imports System.Diagnostics
 
 Public Class dlgMovieSource
 
 #Region "Fields"
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     Private currNameText As String = String.Empty
     Private currPathText As String = String.Empty
@@ -70,7 +73,7 @@ Public Class dlgMovieSource
                 End If
             End With
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -106,7 +109,7 @@ Public Class dlgMovieSource
                 End Using
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
 
         If Not String.IsNullOrEmpty(Me.txtSourcePath.Text) AndAlso Directory.Exists(Me.txtSourcePath.Text.Trim) AndAlso isValid Then
@@ -135,7 +138,7 @@ Public Class dlgMovieSource
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -171,7 +174,7 @@ Public Class dlgMovieSource
             End Using
             Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Finally
             Functions.GetListOfSources()

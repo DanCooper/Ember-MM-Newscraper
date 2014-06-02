@@ -24,6 +24,7 @@ Imports System.Xml.Serialization
 Imports System.Drawing
 Imports System.Windows.Forms
 Imports System.Xml.Linq
+Imports NLog
 
 Public Class Containers
 
@@ -855,6 +856,9 @@ Public Class Enums
 End Class 'Enums
 
 Public Class Functions
+#Region "Fields"
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+#End Region
 
 #Region "Methods"
 
@@ -1102,7 +1106,7 @@ Public Class Functions
         '        Return strChangelog
         '    End If
         'Catch ex As Exception
-        '    Master.eLog.Error(GetType(Functions),ex.Message, ex.StackTrace, "Error")
+        '    logger.ErrorException(GetType(Functions),ex.Message, ex.StackTrace, "Error")
         'End Try
         Return "Unavailable"
     End Function
@@ -1134,7 +1138,7 @@ Public Class Functions
             End If
 
         Catch ex As Exception
-            Master.eLog.Error(GetType(Functions), ex.Message & " - Failed trying to identify last thumb from path: " & sPath, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "Failed trying to identify last thumb from path: " & sPath, ex)
         End Try
 
         Return iMod
@@ -1186,7 +1190,7 @@ Public Class Functions
                                 Return sDir.FullName
                             End If
                         Catch ex As Exception
-                            Master.eLog.Error(GetType(Functions), ex.Message & " - Failed to determine path for season " & iSeason & " in path: " & ShowPath, ex.StackTrace, "Error")
+                            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & " Failed to determine path for season " & iSeason & " in path: " & ShowPath, ex)
                         End Try
                     Next
                 Next
@@ -1467,19 +1471,19 @@ Public Class Functions
     ''' This is to prevent malformed URIs from attacking the user's machine.</remarks>
     Public Shared Function Launch(ByRef Destination As String, Optional ByRef AllowLocalFiles As Boolean = False) As Boolean
         If String.IsNullOrEmpty(Destination) Then
-            Master.eLog.Error(GetType(Functions), "Blank destination", New StackTrace().ToString(), Nothing, False)
+            logger.Error(New StackFrame().GetMethod().Name, "Blank destination")
             Return False
         End If
         Try
             Dim uriDestination As New Uri(Destination)
             If uriDestination.IsFile() Then
                 If (Not AllowLocalFiles) Then
-                    Master.eLog.Error(GetType(Functions), String.Format("Destination is a file, which is not permitted for security reasons <{0}>", Destination), New StackTrace().ToString(), Nothing, False)
+                    logger.Error(New StackFrame().GetMethod().Name, "Destination is a file, which is not permitted for security reasons <{0}>", Destination)
                     Return False
                 Else
                     Dim localFileName = uriDestination.GetComponents(UriComponents.Path, UriFormat.SafeUnescaped)
                     If (Not File.Exists(localFileName)) Then
-                        Master.eLog.Error(GetType(Functions), String.Format("Destination is a file, but it does not exist <{0}>", Destination), New StackTrace().ToString(), Nothing, False)
+                        logger.Error(New StackFrame().GetMethod().Name, "Destination is a file, but it does not exist <{0}>", Destination)
                         Return False
                     End If
                 End If
@@ -1496,7 +1500,7 @@ Public Class Functions
                 End Using
             End If
         Catch ex As Exception
-            Master.eLog.Error(GetType(Functions), String.Format("Could not launch <{0}>.{1}{2}", Destination, vbCrLf, ex.Message), ex.StackTrace, Nothing, False)
+            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "Could not launch <" & Destination & ">", ex)
             Return False
         End Try
         'If you got here, everything went fine
@@ -1527,7 +1531,7 @@ Public Class Functions
             'End If
 
         Catch ex As Exception
-            Master.eLog.Error(GetType(Functions), ex.Message & " - Failed to access MediaInfo.DLL from path:" & dllPath, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "Could not launch <" & dllPath & ">", ex)
         End Try
     End Sub
 
@@ -1574,6 +1578,7 @@ Public Class Functions
                 My_Process.Close()
             End Using
         Catch ex As Exception
+            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "Could not launch <" & Process_Name & ">", ex)
         End Try
 
         Return OutputString

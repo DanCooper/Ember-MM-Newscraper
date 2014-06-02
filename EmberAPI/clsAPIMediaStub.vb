@@ -20,10 +20,13 @@
 
 Imports System.IO
 Imports System.Xml.Serialization
-
+Imports NLog
 
 
 Public Class MediaStub
+#Region "Fields"
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+#End Region
 
 #Region "Methods"
     ''' <summary>
@@ -48,7 +51,7 @@ Public Class MediaStub
                 End If
 
             Catch ex As Exception
-                Master.eLog.Error(GetType(DiscStub), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             End Try
         End If
 
@@ -98,7 +101,7 @@ Public Class MediaStub
             End If
 
         Catch ex As Exception
-            Master.eLog.Error(GetType(DiscStub), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 

@@ -24,12 +24,13 @@
 Imports System.IO
 Imports System.Text.RegularExpressions
 Imports EmberAPI
-
+Imports NLog
+Imports System.Diagnostics
 
 Public Class dlgTVImageSelect
 
 #Region "Fields"
-
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
     Friend WithEvents bwDownloadFanart As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwLoadData As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwLoadImages As New System.ComponentModel.BackgroundWorker
@@ -282,7 +283,7 @@ Public Class dlgTVImageSelect
                         Me.bwLoadImages.ReportProgress(iProgress, "progress")
                         iProgress += 1
                     Catch ex As Exception
-                        Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                        logger.ErrorException(New StackFrame().GetMethod().Name, ex)
                     End Try
                 Next
             End If
@@ -313,13 +314,13 @@ Public Class dlgTVImageSelect
                         Me.bwLoadImages.ReportProgress(iProgress, "progress")
                         iProgress += 1
                     Catch ex As Exception
-                        Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                        logger.ErrorException(New StackFrame().GetMethod().Name, ex)
                     End Try
                 Next
             End If
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
 
         DefaultImages = Scraper.TVDBImages 'Scraper.TVDBImages.Clone() 'TODO: fix the clone function
@@ -394,7 +395,7 @@ Public Class dlgTVImageSelect
             AddHandler lblImage(iIndex).MouseWheel, AddressOf MouseWheelEvent
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Me.iCounter += 1
@@ -707,7 +708,7 @@ Public Class dlgTVImageSelect
                             Me.bwLoadData.ReportProgress(iProgress, "progress")
                             iProgress += 1
                         Catch ex As Exception
-                            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
                         End Try
                     Next
                 Else
@@ -729,7 +730,7 @@ Public Class dlgTVImageSelect
                             Me.bwLoadData.ReportProgress(iProgress, "progress")
                             iProgress += 1
                         Catch ex As Exception
-                            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
                         End Try
                     Next
                 End If
@@ -749,7 +750,7 @@ Public Class dlgTVImageSelect
                 Me.pbStatus.Maximum = e.ProgressPercentage
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -781,7 +782,7 @@ Public Class dlgTVImageSelect
                 Me.pbStatus.Maximum = e.ProgressPercentage
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -829,7 +830,7 @@ Public Class dlgTVImageSelect
                 Next
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -865,7 +866,7 @@ Public Class dlgTVImageSelect
 
             Me.CheckCurrentImage()
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -898,7 +899,7 @@ Public Class dlgTVImageSelect
                         Me.bwLoadImages.ReportProgress(iProgress, "progress")
                         iProgress += 1
                     Catch ex As Exception
-                        Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                        logger.ErrorException(New StackFrame().GetMethod().Name, ex)
                     End Try
                 Next
             End If
@@ -928,7 +929,7 @@ Public Class dlgTVImageSelect
                         Me.bwLoadImages.ReportProgress(iProgress, "progress")
                         iProgress += 1
                     Catch ex As Exception
-                        Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                        logger.ErrorException(New StackFrame().GetMethod().Name, ex)
                     End Try
                 Next
             End If
@@ -958,7 +959,7 @@ Public Class dlgTVImageSelect
                         Me.bwLoadImages.ReportProgress(iProgress, "progress")
                         iProgress += 1
                     Catch ex As Exception
-                        Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                        logger.ErrorException(New StackFrame().GetMethod().Name, ex)
                     End Try
                 Next
             End If
@@ -988,7 +989,7 @@ Public Class dlgTVImageSelect
                         Me.bwLoadImages.ReportProgress(iProgress, "progress")
                         iProgress += 1
                     Catch ex As Exception
-                        Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                        logger.ErrorException(New StackFrame().GetMethod().Name, ex)
                     End Try
                 Next
             End If
@@ -1018,7 +1019,7 @@ Public Class dlgTVImageSelect
                         Me.bwLoadImages.ReportProgress(iProgress, "progress")
                         iProgress += 1
                     Catch ex As Exception
-                        Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                        logger.ErrorException(New StackFrame().GetMethod().Name, ex)
                     End Try
                 Next
             End If
@@ -1048,13 +1049,13 @@ Public Class dlgTVImageSelect
                         Me.bwLoadImages.ReportProgress(iProgress, "progress")
                         iProgress += 1
                     Catch ex As Exception
-                        Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                        logger.ErrorException(New StackFrame().GetMethod().Name, ex)
                     End Try
                 Next
             End If
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Return Me.SetDefaults()
@@ -1110,7 +1111,7 @@ Public Class dlgTVImageSelect
                         If Master.eSettings.TVSeasonFanartAnyEnabled Then TnS.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(686, "Season Fanart"), .Tag = String.Concat("f", cSeason.Season.ToString), .ImageIndex = 1, .SelectedImageIndex = 1})
                         Me.tvList.Nodes.Add(TnS)
                     Catch ex As Exception
-                        Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                        logger.ErrorException(New StackFrame().GetMethod().Name, ex)
                     End Try
                 Next
             ElseIf Me._type = Enums.TVImageType.SeasonPoster Then
@@ -1126,7 +1127,7 @@ Public Class dlgTVImageSelect
             Me.tvList.ExpandAll()
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1140,7 +1141,7 @@ Public Class dlgTVImageSelect
                 Return Enums.FanartSize.Small
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Function
 
@@ -1159,7 +1160,7 @@ Public Class dlgTVImageSelect
                 Return Enums.PosterSize.Small
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Function
 
@@ -1534,7 +1535,7 @@ Public Class dlgTVImageSelect
 
             Me.CheckCurrentImage()
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 

@@ -22,19 +22,21 @@ Imports System.Text.RegularExpressions
 Imports System.IO
 Imports EmberAPI
 Imports WatTmdb
+Imports NLog
+Imports System.Diagnostics
 
 Public Class dlgTMDBSearchResults
 
 #Region "Fields"
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Friend WithEvents bwDownloadPic As New System.ComponentModel.BackgroundWorker
+    Friend WithEvents tmrLoad As New System.Windows.Forms.Timer
+    Friend WithEvents tmrWait As New System.Windows.Forms.Timer
 
-	Friend WithEvents bwDownloadPic As New System.ComponentModel.BackgroundWorker
-	Friend WithEvents tmrLoad As New System.Windows.Forms.Timer
-	Friend WithEvents tmrWait As New System.Windows.Forms.Timer
-
-	Private TMDBg As TMDBg.Scraper
-	Private sHTTP As New HTTP
-	Private _currnode As Integer = -1
-	Private _prevnode As Integer = -2
+    Private TMDBg As TMDBg.Scraper
+    Private sHTTP As New HTTP
+    Private _currnode As Integer = -1
+    Private _prevnode As Integer = -2
     Private MySettings As TMDB_Data.sMySettings
     'Private TMDBConf As V3.TmdbConfiguration
     'Private TMDBApi As V3.Tmdb
@@ -148,7 +150,7 @@ Public Class dlgTMDBSearchResults
                 _PosterCache.Add(Res.IMDBId, CType(Res.Result.Clone, Image))
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         Finally
             pnlPicStatus.Visible = False
         End Try
@@ -226,7 +228,7 @@ Public Class dlgTMDBSearchResults
                 Me.pnlTop.BackgroundImage = iBackground
             End Using
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -243,7 +245,7 @@ Public Class dlgTMDBSearchResults
             'End If
             Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Me.Close()
@@ -299,7 +301,7 @@ Public Class dlgTMDBSearchResults
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -328,7 +330,7 @@ Public Class dlgTMDBSearchResults
             Me.pnlLoading.Visible = False
             chkManual.Enabled = True
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -428,7 +430,7 @@ Public Class dlgTMDBSearchResults
             End If
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -460,7 +462,7 @@ Public Class dlgTMDBSearchResults
                 Return DirectCast(bin.Deserialize(mem), MediaContainers.Movie)
             End Using
         Catch ex As Exception
-            Master.eLog.Error(GetType(MediaContainers.Movie), ex.Message, ex.StackTrace, "Error", False)
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Return Nothing
@@ -471,28 +473,28 @@ Public Class dlgTMDBSearchResults
 
 #Region "Nested Types"
 
-	Private Structure Arguments
+    Private Structure Arguments
 
 #Region "Fields"
 
-		Dim pURL As String
-		Dim IMDBId As String
+        Dim pURL As String
+        Dim IMDBId As String
 
-#End Region	'Fields
+#End Region 'Fields
 
-	End Structure
+    End Structure
 
-	Private Structure Results
+    Private Structure Results
 
 #Region "Fields"
 
-		Dim Result As Image
-		Dim IMDBId As String
+        Dim Result As Image
+        Dim IMDBId As String
 
-#End Region	'Fields
+#End Region 'Fields
 
-	End Structure
+    End Structure
 
-#End Region	'Nested Types
+#End Region 'Nested Types
 
 End Class

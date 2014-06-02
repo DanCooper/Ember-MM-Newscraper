@@ -21,6 +21,7 @@
 Imports System.Text.RegularExpressions
 Imports EmberAPI
 Imports System.Runtime.CompilerServices
+Imports NLog
 
 'The InternalsVisibleTo is required for unit testing the friend methods
 <Assembly: InternalsVisibleTo("EmberAPI_Test")> 
@@ -30,6 +31,7 @@ Namespace YouTube
     Public Class Scraper
 
 #Region "Fields"
+        Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
         Private _VideoLinks As VideoLinkItemCollection
 
@@ -70,7 +72,7 @@ Namespace YouTube
                 _VideoLinks = ParseYTFormats(url, False)
 
             Catch ex As Exception
-                Master.eLog.Error(GetType(Scraper), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             End Try
         End Sub
         ''' <summary>
@@ -275,7 +277,7 @@ Namespace YouTube
                 Return DownloadLinks
 
             Catch ex As Exception
-                Master.eLog.Error(GetType(Scraper), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
                 Return New VideoLinkItemCollection
             Finally
                 sHTTP = Nothing

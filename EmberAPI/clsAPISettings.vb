@@ -24,11 +24,14 @@ Imports System.Net
 Imports System.Drawing
 Imports System.Windows.Forms
 Imports System.Xml.Linq
+Imports NLog
 
 <Serializable()> _
 Public Class Settings
 
 #Region "Fields"
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+
     'TODO Dekker500 This class is a MONSTER. It needs to be broken down to a more manageable granularity
 
     Private _cleandotfanartjpg As Boolean
@@ -5897,7 +5900,7 @@ Public Class Settings
                 Master.eSettings = New Settings
             End If
         Catch ex As Exception
-            Master.eLog.Error(GetType(Settings), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             Master.eSettings = New Settings
         End Try
 
@@ -5963,7 +5966,7 @@ Public Class Settings
             xmlSerial.Serialize(xmlWriter, Master.eSettings)
             xmlWriter.Close()
         Catch ex As Exception
-            Master.eLog.Error(GetType(Settings), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 

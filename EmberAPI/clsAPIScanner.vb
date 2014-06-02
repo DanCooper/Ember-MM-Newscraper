@@ -21,10 +21,12 @@
 Imports System.IO
 Imports System.Text.RegularExpressions
 Imports System.Windows.Forms
+Imports NLog
 
 Public Class Scanner
 
 #Region "Fields"
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     Public htTVShows As New Hashtable
     Public MoviePaths As New List(Of String)
@@ -113,7 +115,7 @@ Public Class Scanner
 
                         retSeason.Add(cSeason)
                     Catch ex As Exception
-                        Master.eLog.Error(GetType(Scanner), ex.Message, ex.StackTrace, "Error")
+                        logger.ErrorException(New StackFrame().GetMethod().Name, ex)
                     End Try
                 Next
 
@@ -133,7 +135,7 @@ Public Class Scanner
                     If retSeason.Count > 0 Then Return retSeason
                 End If
             Catch ex As Exception
-                Master.eLog.Error(GetType(Scanner), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
                 Continue For
             End Try
         Next
@@ -193,7 +195,7 @@ Public Class Scanner
             Episode.Nfo = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
 
         Catch ex As Exception
-            Master.eLog.Error(GetType(Scanner), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
 
         fList = Nothing
@@ -442,7 +444,7 @@ Public Class Scanner
             Next
 
         Catch ex As Exception
-            Master.eLog.Error(GetType(Scanner), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
 
         efList = Nothing
@@ -529,7 +531,7 @@ Public Class Scanner
             End If
 
         Catch ex As Exception
-            Master.eLog.Error(GetType(Scanner), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
 
         fList = Nothing
@@ -575,7 +577,7 @@ Public Class Scanner
                     SeasonFirstEpisodePath = dtEpisodes.Rows(0).Item("TVEpPath").ToString
                 End If
             Catch ex As Exception
-                Master.eLog.Error(GetType(Database), ex.Message, ex.StackTrace, "Error", False)
+                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             End Try
 
             If String.IsNullOrEmpty(SeasonFirstEpisodePath) Then
@@ -615,7 +617,7 @@ Public Class Scanner
             End If
 
         Catch ex As Exception
-            Master.eLog.Error(GetType(Scanner), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
 
         fList = Nothing
@@ -741,7 +743,7 @@ Public Class Scanner
             End If
 
         Catch ex As Exception
-            Master.eLog.Error(GetType(Scanner), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
 
         fList = Nothing
@@ -801,7 +803,7 @@ Public Class Scanner
             Next
 
         Catch ex As Exception
-            Master.eLog.Error(GetType(Scanner), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             Return False
         End Try
         Return True 'This is the Else
@@ -943,7 +945,7 @@ Public Class Scanner
                 Me.bwPrelim.ReportProgress(0, New ProgressValue With {.Type = 0, .Message = tmpMovieDB.Movie.Title})
             End If
         Catch ex As Exception
-            Master.eLog.Error(GetType(Scanner), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1060,7 +1062,7 @@ Public Class Scanner
 
             End If
         Catch ex As Exception
-            Master.eLog.Error(GetType(Scanner), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
 
         di = Nothing
@@ -1083,7 +1085,7 @@ Public Class Scanner
             Next
 
         Catch ex As Exception
-            Master.eLog.Error(GetType(Scanner), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
         di = Nothing
     End Sub
@@ -1130,7 +1132,7 @@ Public Class Scanner
                 Next
 
             Catch ex As Exception
-                Master.eLog.Error(GetType(Scanner), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             End Try
 
             dInfo = Nothing
@@ -1150,7 +1152,7 @@ Public Class Scanner
                                                       Not s.Name.ToLower.Contains("sample")).OrderBy(Function(s) s.Name).Count > 0 Then Return True
 
         Catch ex As Exception
-            Master.eLog.Error(GetType(Scanner), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
         Return False
     End Function
@@ -1226,7 +1228,7 @@ Public Class Scanner
                 End If
 
             Catch ex As Exception
-                Master.eLog.Error(GetType(Scanner), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             End Try
             dInfo = Nothing
             inInfo = Nothing
@@ -1259,7 +1261,7 @@ Public Class Scanner
             End If
             Return False
         Catch ex As Exception
-            Master.eLog.Error(GetType(Scanner), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             Return False
         End Try
     End Function
@@ -1300,7 +1302,7 @@ Public Class Scanner
                                                 FileUtils.FileSorter.SortFiles(SQLreader("Path").ToString)
                                             End If
                                         Catch ex As Exception
-                                            Master.eLog.Error(GetType(Scanner), ex.Message, ex.StackTrace, "Error")
+                                            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
                                         End Try
                                         ScanMovieSourceDir(SQLreader("Name").ToString, SQLreader("Path").ToString, Convert.ToBoolean(SQLreader("Recursive")), Convert.ToBoolean(SQLreader("Foldername")), Convert.ToBoolean(SQLreader("Single")), True)
                                     End If
@@ -1390,7 +1392,7 @@ Public Class Scanner
             End If
 
         Catch ex As Exception
-            Master.eLog.Error(GetType(Scanner), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             e.Cancel = True
         End Try
     End Sub
@@ -1572,7 +1574,7 @@ Public Class Scanner
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.Error(GetType(Scanner), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 

@@ -24,10 +24,11 @@ Imports System.IO
 Imports System.Text.RegularExpressions
 Imports System.Xml.Serialization
 Imports EmberAPI
-
+Imports NLog
 Public Class dlgOfflineHolder
 
 #Region "Fields"
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     Friend WithEvents bwCreateDummyFile As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwCreateMediaStub As New System.ComponentModel.BackgroundWorker
@@ -242,7 +243,7 @@ Public Class dlgOfflineHolder
                 End Using
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -291,7 +292,7 @@ Public Class dlgOfflineHolder
                 AddDVDProfilerMovie(tMovie)
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -871,7 +872,7 @@ Public Class dlgOfflineHolder
                 FileUtils.Delete.DeleteDirectory(Path.Combine(Master.TempPath, "OfflineHolder"))
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1061,7 +1062,7 @@ Public Class dlgOfflineHolder
             Files = Nothing
             dir = Nothing
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1104,7 +1105,7 @@ Public Class dlgOfflineHolder
 
             'CreateDummyMoviePreview()
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1127,7 +1128,7 @@ Public Class dlgOfflineHolder
             End If
             Return tMovie
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
         Return Nothing
     End Function
@@ -1188,7 +1189,7 @@ Public Class dlgOfflineHolder
 
             Return pattern.Trim
         Catch ex As Exception
-            Master.eLog.Error(GetType(Structures.DBMovie), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             Return String.Empty
         End Try
     End Function
@@ -1371,7 +1372,7 @@ Public Class dlgOfflineHolder
             Return sMovie
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Return tMovie
@@ -1457,7 +1458,7 @@ Public Class dlgOfflineHolder
             Return sMovie
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Return tMovie
@@ -1537,7 +1538,7 @@ Public Class dlgOfflineHolder
                 txtTop.Text = (RealImage_H - 30).ToString
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 

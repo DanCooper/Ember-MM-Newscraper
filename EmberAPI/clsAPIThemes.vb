@@ -20,10 +20,12 @@
 
 Imports System.IO
 Imports EmberAPI
+Imports NLog
 
 Public Class Theme
 
 #Region "Fields"
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     Private _title As String
     Private _id As String
@@ -200,7 +202,7 @@ Public Class Theme
                 End If
             End With
         Catch ex As Exception
-            Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             Return False
         End Try
     End Function

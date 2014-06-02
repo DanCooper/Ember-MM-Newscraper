@@ -25,11 +25,12 @@ Imports System.Xml.Serialization
 Imports System.Drawing.Drawing2D
 Imports System.Threading
 Imports EmberAPI
+Imports NLog
 
 Public Class dlgNMTMovies
 
 #Region "Fields"
-
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
     Friend WithEvents bwBuildHTML As New System.ComponentModel.BackgroundWorker
 
     Private template_Path As String
@@ -144,7 +145,7 @@ Public Class dlgNMTMovies
             btnSave.Enabled = False
             pbWarning.Image = Nothing 'ilNMT.Images("green")
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -182,7 +183,7 @@ Public Class dlgNMTMovies
                 'If Not conf Is Nothing Then conf.Save(Path.Combine(conf.TemplatePath, "config.xml"))
             End Using
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -199,7 +200,7 @@ Public Class dlgNMTMovies
                 MySelf.DoBuild()
             End If
         Catch ex As Exception
-            Master.eLog.Error(GetType(dlgNMTMovies), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -286,7 +287,7 @@ Public Class dlgNMTMovies
                 Next
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
         Return rets
     End Function
@@ -352,7 +353,7 @@ Public Class dlgNMTMovies
             Me.SaveMovieFiles(Path.GetDirectoryName(htmlPath), outputbase)
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -491,7 +492,7 @@ Public Class dlgNMTMovies
             Me.SaveTVFiles(Path.GetDirectoryName(htmlPath), outputbase)
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1096,7 +1097,7 @@ Public Class dlgNMTMovies
                 bwBuildHTML.ReportProgress(1)
             Next
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1175,7 +1176,7 @@ Public Class dlgNMTMovies
                 bwBuildHTML.ReportProgress(1)
             Next
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1208,7 +1209,7 @@ Public Class dlgNMTMovies
                 bwBuildHTML.ReportProgress(1)
             Next
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1271,7 +1272,7 @@ Public Class dlgNMTMovies
                 End If
 
             Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             End Try
         End If
         Return line
@@ -1398,7 +1399,7 @@ Public Class dlgNMTMovies
                         Try
                             Directory.CreateDirectory(Path.Combine(outputFolder, s.value.Replace("/", Path.DirectorySeparatorChar)))
                         Catch ex As Exception
-                            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
                             Exit While
                         End Try
                     End If
@@ -1510,7 +1511,7 @@ Public Class dlgNMTMovies
             'myStream.Close()
             'End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1574,7 +1575,7 @@ Public Class dlgNMTMovies
             'myStream.Close()
             'End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1736,7 +1737,7 @@ Public Class dlgNMTMovies
                 End If
             End Using
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
     Private oldWarning As String = String.Empty

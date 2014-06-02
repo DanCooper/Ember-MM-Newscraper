@@ -21,11 +21,12 @@
 Imports System.IO
 Imports System.Text.RegularExpressions
 Imports EmberAPI
+Imports NLog
 
 Public Class dlgTrailerSelect
 
 #Region "Fields"
-
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     'Friend WithEvents bwCompileList As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwDownloadTrailer As New System.ComponentModel.BackgroundWorker
@@ -216,7 +217,7 @@ Public Class dlgTrailerSelect
                 txtManual.Text = ofdTrailer.FileName
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 

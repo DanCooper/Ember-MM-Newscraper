@@ -24,14 +24,14 @@ Imports System.Text.RegularExpressions
 Imports System.Xml
 Imports System.Diagnostics
 Imports EmberAPI
+Imports NLog
 
 Namespace MPDB
 
     Public Class Scraper
 
 #Region "Fields"
-
-
+        Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 #End Region 'Fields
 
 #Region "Events"
@@ -75,7 +75,7 @@ Namespace MPDB
                 End If
 
             Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             End Try
 
             Return alPosters
