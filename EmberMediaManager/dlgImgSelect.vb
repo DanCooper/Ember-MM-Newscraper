@@ -23,10 +23,12 @@ Imports System.IO.Compression
 Imports System.Text
 Imports System.Text.RegularExpressions
 Imports EmberAPI
+Imports NLog
 
 Public Class dlgImgSelect
 
 #Region "Fields"
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     Friend WithEvents bwImgDownload As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwImgLoading As New System.ComponentModel.BackgroundWorker
@@ -163,7 +165,7 @@ Public Class dlgImgSelect
             Me.bwImgDownload.RunWorkerAsync() 'Me.TMDB.GetImagesAsync(tMovie.Movie.TMDBID, "backdrop")
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -183,7 +185,7 @@ Public Class dlgImgSelect
         '    Me.lvImages.Items.Add(text, Me.LargeImageList.Images.Count - 1)
         '    Me.lvImages.Items(Me.lvImages.Items.Count - 1).Tag = poster
         'Catch ex As Exception
-        '    Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+        '    logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         'End Try
         Try
             ReDim Preserve Me.pnlImage(iIndex)
@@ -293,7 +295,7 @@ Public Class dlgImgSelect
                 AddHandler lblImage(iIndex).MouseWheel, AddressOf MouseWheelEvent
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Me.iCounter += 1
@@ -343,7 +345,7 @@ Public Class dlgImgSelect
             tImage = Nothing
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -382,7 +384,7 @@ Public Class dlgImgSelect
             Me.Refresh()
             Application.DoEvents()
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -413,7 +415,7 @@ Public Class dlgImgSelect
             Me.bwImgLoading.RunWorkerAsync()
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
 
     End Sub
@@ -467,7 +469,7 @@ Public Class dlgImgSelect
             Me.pbDL1.Value = e.ProgressPercentage
             Application.DoEvents()
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -564,7 +566,7 @@ Public Class dlgImgSelect
             End If
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -703,7 +705,7 @@ Public Class dlgImgSelect
             End If
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
@@ -754,37 +756,37 @@ Public Class dlgImgSelect
             Functions.PNLDoubleBuffer(Me.pnlBG)
 
             If Me.DLType = Enums.MovieImageType.Poster Then
-                Me.text = String.Concat(Master.eLang.GetString(877, "Select Poster"), " - ", If(Not String.IsNullOrEmpty(Me.tMovie.Movie.Title), Me.tMovie.Movie.Title, Me.tMovie.ListTitle))
+                Me.Text = String.Concat(Master.eLang.GetString(877, "Select Poster"), " - ", If(Not String.IsNullOrEmpty(Me.tMovie.Movie.Title), Me.tMovie.Movie.Title, Me.tMovie.ListTitle))
                 Me.pnlDwld.Visible = True
                 Me.cbFilterSize.Items.Clear()
                 Me.cbFilterSize.Items.AddRange(New String() {Master.eLang.GetString(569, "All"), Master.eLang.GetString(322, "X-Large"), Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small"), Master.eLang.GetString(558, "Wide")})
             ElseIf Me.DLType = Enums.MovieImageType.Banner Then
-                Me.text = String.Concat(Master.eLang.GetString(1064, "Select Banner"), " - ", If(Not String.IsNullOrEmpty(Me.tMovie.Movie.Title), Me.tMovie.Movie.Title, Me.tMovie.ListTitle))
+                Me.Text = String.Concat(Master.eLang.GetString(1064, "Select Banner"), " - ", If(Not String.IsNullOrEmpty(Me.tMovie.Movie.Title), Me.tMovie.Movie.Title, Me.tMovie.ListTitle))
                 Me.pnlDwld.Visible = True
                 Me.cbFilterSize.Items.Clear()
                 Me.cbFilterSize.Items.AddRange(New String() {Master.eLang.GetString(569, "All"), Master.eLang.GetString(322, "X-Large"), Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small"), Master.eLang.GetString(558, "Wide")})
             ElseIf Me.DLType = Enums.MovieImageType.Landscape Then
-                Me.text = String.Concat(Master.eLang.GetString(1065, "Select Landscape"), " - ", If(Not String.IsNullOrEmpty(Me.tMovie.Movie.Title), Me.tMovie.Movie.Title, Me.tMovie.ListTitle))
+                Me.Text = String.Concat(Master.eLang.GetString(1065, "Select Landscape"), " - ", If(Not String.IsNullOrEmpty(Me.tMovie.Movie.Title), Me.tMovie.Movie.Title, Me.tMovie.ListTitle))
                 Me.pnlDwld.Visible = True
                 Me.cbFilterSize.Items.Clear()
                 Me.cbFilterSize.Items.AddRange(New String() {Master.eLang.GetString(569, "All"), Master.eLang.GetString(322, "X-Large"), Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small"), Master.eLang.GetString(558, "Wide")})
             ElseIf Me.DLType = Enums.MovieImageType.Fanart Then
-                Me.text = String.Concat(Master.eLang.GetString(878, "Select Fanart"), " - ", If(Not String.IsNullOrEmpty(Me.tMovie.Movie.Title), Me.tMovie.Movie.Title, Me.tMovie.ListTitle))
+                Me.Text = String.Concat(Master.eLang.GetString(878, "Select Fanart"), " - ", If(Not String.IsNullOrEmpty(Me.tMovie.Movie.Title), Me.tMovie.Movie.Title, Me.tMovie.ListTitle))
                 Me.pnlDwld.Visible = True
                 Me.cbFilterSize.Items.Clear()
                 Me.cbFilterSize.Items.AddRange(New String() {Master.eLang.GetString(569, "All"), Master.eLang.GetString(322, "X-Large"), Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small")})
             ElseIf Me.DLType = Enums.MovieImageType.ClearArt Then
-                Me.text = String.Concat(Master.eLang.GetString(1109, "Select ClearArt"), " - ", If(Not String.IsNullOrEmpty(Me.tMovie.Movie.Title), Me.tMovie.Movie.Title, Me.tMovie.ListTitle))
+                Me.Text = String.Concat(Master.eLang.GetString(1109, "Select ClearArt"), " - ", If(Not String.IsNullOrEmpty(Me.tMovie.Movie.Title), Me.tMovie.Movie.Title, Me.tMovie.ListTitle))
                 Me.pnlDwld.Visible = True
                 Me.cbFilterSize.Items.Clear()
                 Me.cbFilterSize.Items.AddRange(New String() {Master.eLang.GetString(569, "All"), Master.eLang.GetString(322, "X-Large"), Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small"), Master.eLang.GetString(558, "Wide")})
             ElseIf Me.DLType = Enums.MovieImageType.ClearLogo Then
-                Me.text = String.Concat(Master.eLang.GetString(1110, "Select ClearLogo"), " - ", If(Not String.IsNullOrEmpty(Me.tMovie.Movie.Title), Me.tMovie.Movie.Title, Me.tMovie.ListTitle))
+                Me.Text = String.Concat(Master.eLang.GetString(1110, "Select ClearLogo"), " - ", If(Not String.IsNullOrEmpty(Me.tMovie.Movie.Title), Me.tMovie.Movie.Title, Me.tMovie.ListTitle))
                 Me.pnlDwld.Visible = True
                 Me.cbFilterSize.Items.Clear()
                 Me.cbFilterSize.Items.AddRange(New String() {Master.eLang.GetString(569, "All"), Master.eLang.GetString(322, "X-Large"), Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small"), Master.eLang.GetString(558, "Wide")})
             ElseIf Me.DLType = Enums.MovieImageType.DiscArt Then
-                Me.text = String.Concat(Master.eLang.GetString(1111, "Select DiscArt"), " - ", If(Not String.IsNullOrEmpty(Me.tMovie.Movie.Title), Me.tMovie.Movie.Title, Me.tMovie.ListTitle))
+                Me.Text = String.Concat(Master.eLang.GetString(1111, "Select DiscArt"), " - ", If(Not String.IsNullOrEmpty(Me.tMovie.Movie.Title), Me.tMovie.Movie.Title, Me.tMovie.ListTitle))
                 Me.pnlDwld.Visible = True
                 Me.cbFilterSize.Items.Clear()
                 Me.cbFilterSize.Items.AddRange(New String() {Master.eLang.GetString(569, "All"), Master.eLang.GetString(322, "X-Large"), Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small"), Master.eLang.GetString(558, "Wide")})
@@ -800,7 +802,7 @@ Public Class dlgImgSelect
             Me.btnPreview.Text = Master.eLang.GetString(180, "Preview")
             Me.lblDL1.Text = Master.eLang.GetString(894, "Performing Preliminary Tasks...")
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -960,7 +962,7 @@ Public Class dlgImgSelect
 
             Invalidate()
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 

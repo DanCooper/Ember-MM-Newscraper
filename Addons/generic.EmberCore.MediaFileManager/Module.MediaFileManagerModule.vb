@@ -111,7 +111,7 @@ Public Class FileManagerExternalModule
             End Using
         Catch ex As Exception
             Return False
-            'Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            'logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
         Return True
     End Function
@@ -248,7 +248,7 @@ Public Class FileManagerExternalModule
             End If
 
         Catch ex As Exception
-            'Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            'logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 

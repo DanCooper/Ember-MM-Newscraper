@@ -27,16 +27,16 @@ Imports EmberAPI
 Imports EmberAPI.MediaContainers
 Imports RestSharp
 Imports WatTmdb
-
+Imports NLog
+Imports System.Diagnostics
 
 Namespace TMDBg
 
     Public Class MovieSearchResults
 
 #Region "Fields"
-
+        Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
         Private _Matches As New List(Of MediaContainers.Movie)
-
 #End Region 'Fields
 
 #Region "Properties"
@@ -57,7 +57,7 @@ Namespace TMDBg
     Public Class Scraper
 
 #Region "Fields"
-
+        Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
         Private _TMDBConf As V3.TmdbConfiguration
         Private _TMDBConfE As V3.TmdbConfiguration
         Private _TMDBApi As V3.Tmdb
@@ -139,7 +139,7 @@ Namespace TMDBg
                 DBMovie.Movie.TMDBID = CStr(IIf(String.IsNullOrEmpty(Movie.id.ToString) AndAlso _MySettings.FallBackEng, MovieE.id.ToString, Movie.id.ToString))
 
             Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             End Try
 
         End Sub
@@ -157,7 +157,7 @@ Namespace TMDBg
                 Return CStr(Movie.belongs_to_collection.id)
 
             Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
                 Return ""
             End Try
 
@@ -563,7 +563,7 @@ Namespace TMDBg
 
                 Return True
             Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
                 Return False
             End Try
         End Function
@@ -628,7 +628,7 @@ Namespace TMDBg
                     Return imdbMovie ' New MediaContainers.Movie
                 End If
             Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
                 Return New MediaContainers.Movie
             End Try
         End Function
@@ -664,7 +664,7 @@ Namespace TMDBg
                       .Parameter = imdbID, .IMDBMovie = IMDBMovie, .Options = Options})
                 End If
             Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             End Try
         End Sub
 
@@ -679,7 +679,7 @@ Namespace TMDBg
                       .Parameter = sMovie, .Options = filterOptions, .Year = CInt(sYear)})
                 End If
             Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             End Try
         End Sub
 
@@ -696,7 +696,7 @@ Namespace TMDBg
                         e.Result = New Results With {.ResultType = SearchType.SearchDetails, .Success = s}
                 End Select
             Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             End Try
         End Sub
 
@@ -712,7 +712,7 @@ Namespace TMDBg
                         RaiseEvent SearchMovieInfoDownloaded(_sPoster, Res.Success)
                 End Select
             Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             End Try
         End Sub
 
@@ -724,7 +724,7 @@ Namespace TMDBg
 
                 If sString.EndsWith("""") Then CleanString = CleanString.Remove(CleanString.Length - 1, 1)
             Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             End Try
             Return CleanString
         End Function
@@ -748,7 +748,7 @@ Namespace TMDBg
 
         '		Return fTitle
         '	Catch ex As Exception
-        '		Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+        '		logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         '		Return fTitle
         '	End Try
         'End Function
@@ -816,7 +816,7 @@ Namespace TMDBg
 
                 Return R
             Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
                 Return Nothing
             End Try
         End Function

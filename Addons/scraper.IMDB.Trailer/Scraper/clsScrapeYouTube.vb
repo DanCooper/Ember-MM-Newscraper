@@ -20,12 +20,15 @@
 
 Imports System.Text.RegularExpressions
 Imports EmberAPI
+Imports NLog
 
 Namespace YouTube
 
     Public Class Scraper
 
 #Region "Fields"
+
+        Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
         Friend WithEvents bwYT As New System.ComponentModel.BackgroundWorker
 
@@ -70,7 +73,7 @@ Namespace YouTube
                 _VideoLinks = ParseYTFormats(url, False)
 
             Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             End Try
         End Sub
 
@@ -82,7 +85,7 @@ Namespace YouTube
                     bwYT.RunWorkerAsync(url)
                 End If
             Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             End Try
         End Sub
 
@@ -92,7 +95,7 @@ Namespace YouTube
             Try
                 e.Result = ParseYTFormats(Url, True)
             Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             End Try
         End Sub
 
@@ -114,7 +117,7 @@ Namespace YouTube
                     End If
                 End If
             Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             End Try
         End Sub
 
@@ -309,7 +312,7 @@ Namespace YouTube
                 Return DownloadLinks
 
             Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
                 Return New VideoLinkItemCollection
             Finally
                 sHTTP = Nothing

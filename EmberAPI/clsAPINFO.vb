@@ -23,10 +23,15 @@ Imports System.Text
 Imports System.Text.RegularExpressions
 Imports System.Xml
 Imports System.Xml.Serialization
+Imports NLog
 
 Public Class NFO
 
-    #Region "Methods"
+#Region "Fields"
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+#End Region
+
+#Region "Methods"
 
     Public Shared Function FIToString(ByVal miFI As MediaInfo.Fileinfo, ByVal isTV As Boolean) As String
         '//
@@ -92,7 +97,7 @@ Public Class NFO
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.Error(GetType(NFO), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
 
         If strOutput.ToString.Trim.Length > 0 Then
@@ -148,7 +153,7 @@ Public Class NFO
             Next
 
         Catch ex As Exception
-            Master.eLog.Error(GetType(NFO), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
         Return fiaOut
     End Function
@@ -207,7 +212,7 @@ Public Class NFO
             Next
 
         Catch ex As Exception
-            Master.eLog.Error(GetType(NFO), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
         Return fivOut
     End Function
@@ -227,7 +232,7 @@ Public Class NFO
                 result = String.Format("{0}x{1} ({2})", iWidth, iHeight, sinADR.ToString("0.00"))
             End If
         Catch ex As Exception
-            Master.eLog.Error(GetType(NFO), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Return result
@@ -381,7 +386,7 @@ Public Class NFO
                 End Select
             End If
         Catch ex As Exception
-            Master.eLog.Error(GetType(NFO), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
 
         If Not String.IsNullOrEmpty(resOut) Then
@@ -721,7 +726,7 @@ Public Class NFO
             End If
 
         Catch ex As Exception
-            Master.eLog.Error(GetType(NFO), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -769,7 +774,7 @@ Public Class NFO
             'End If
 
         Catch ex As Exception
-            Master.eLog.Error(GetType(NFO), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -795,7 +800,7 @@ Public Class NFO
 
             xmlDoc = Nothing
         Catch ex As Exception
-            Master.eLog.Error(GetType(NFO), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -883,7 +888,7 @@ Public Class NFO
             End If
 
         Catch ex As Exception
-            Master.eLog.Error(GetType(NFO), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -944,7 +949,7 @@ Public Class NFO
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.Error(GetType(NFO), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -956,7 +961,7 @@ Public Class NFO
                 RenameToInfo(sPath)
             End If
         Catch ex As Exception
-            Master.eLog.Error(GetType(NFO), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -970,7 +975,7 @@ Public Class NFO
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.Error(GetType(NFO), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -982,7 +987,7 @@ Public Class NFO
                 RenameToInfo(sPath)
             End If
         Catch ex As Exception
-            Master.eLog.Error(GetType(NFO), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1000,7 +1005,7 @@ Public Class NFO
             End If
             My.Computer.FileSystem.RenameFile(sPath, Path.GetFileName(strNewName))
         Catch ex As Exception
-            Master.eLog.Error(GetType(NFO), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1015,32 +1020,32 @@ Public Class NFO
                 _TVEpDB.TVEp.Runtime = MediaInfo.FormatDuration(MediaInfo.DurationToSeconds(cTotal, True), Master.eSettings.TVScraperDurationRuntimeFormat)
             End If
         Catch ex As Exception
-            Master.eLog.Error(GetType(NFO), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
-    #End Region 'Methods
+#End Region 'Methods
 
-    #Region "Nested Types"
+#Region "Nested Types"
 
     Public Class NonConf
 
-        #Region "Fields"
+#Region "Fields"
 
         Private _imdbid As String
         Private _text As String
 
-        #End Region 'Fields
+#End Region 'Fields
 
-        #Region "Constructors"
+#Region "Constructors"
 
         Public Sub New()
             Me.Clear()
         End Sub
 
-        #End Region 'Constructors
+#End Region 'Constructors
 
-        #Region "Properties"
+#Region "Properties"
 
         Public Property IMDBID() As String
             Get
@@ -1060,19 +1065,19 @@ Public Class NFO
             End Set
         End Property
 
-        #End Region 'Properties
+#End Region 'Properties
 
-        #Region "Methods"
+#Region "Methods"
 
         Public Sub Clear()
             Me._imdbid = String.Empty
             Me._text = String.Empty
         End Sub
 
-        #End Region 'Methods
+#End Region 'Methods
 
     End Class
 
-    #End Region 'Nested Types
+#End Region 'Nested Types
 
 End Class

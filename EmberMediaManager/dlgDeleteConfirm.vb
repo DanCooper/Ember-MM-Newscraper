@@ -1,6 +1,4 @@
-﻿Imports EmberAPI
-
-' ################################################################################
+﻿' ################################################################################
 ' #                             EMBER MEDIA MANAGER                              #
 ' ################################################################################
 ' ################################################################################
@@ -20,9 +18,14 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
+Imports EmberAPI
+Imports NLog
+Imports System.Diagnostics
+
 Public Class dlgDeleteConfirm
 
 #Region "Fields"
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     Private PropogatingDown As Boolean = False
     Private PropogatingUp As Boolean = False
@@ -45,7 +48,7 @@ Public Class dlgDeleteConfirm
             NewNode.ImageKey = "FILE"
             NewNode.SelectedImageKey = "FILE"
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             Throw
         End Try
     End Sub
@@ -69,7 +72,7 @@ Public Class dlgDeleteConfirm
                 AddFileNode(NewNode, item)
             Next
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             Throw
         End Try
     End Sub
@@ -135,7 +138,7 @@ Public Class dlgDeleteConfirm
             End With
             Return result
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Function
 
@@ -327,7 +330,7 @@ Public Class dlgDeleteConfirm
 
             End With
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 

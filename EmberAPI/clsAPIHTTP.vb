@@ -23,6 +23,7 @@ Imports System.IO.Compression
 Imports System.Text
 Imports System.Net
 Imports System.Drawing
+Imports NLog
 
 ''' <summary>
 ''' 
@@ -35,6 +36,7 @@ Public Class HTTP
 
 
 #Region "Fields"
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     Private dThread As New Threading.Thread(AddressOf DownloadImage)
     Private wrRequest As HttpWebRequest
@@ -164,7 +166,7 @@ Public Class HTTP
                 Me._responseuri = wrResponse.ResponseUri.ToString
             End Using
         Catch ex As Exception
-            Master.eLog.Error(GetType(HTTP), "<" & URL & ">" & ex.Message, ex.StackTrace, "Error", False)
+            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & URL & ">", ex)
         End Try
 
         Return sResponse
@@ -252,7 +254,7 @@ Public Class HTTP
                 Me._responseuri = wrResponse.ResponseUri.ToString
             End Using
         Catch ex As Exception
-            Master.eLog.Error(GetType(HTTP), "<" & URL & ">" & ex.Message, ex.StackTrace, "Error", False)
+            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & URL & ">", ex)
         End Try
 
         Return sResponse
@@ -351,7 +353,7 @@ Public Class HTTP
 
             End Using
         Catch ex As Exception
-            Master.eLog.Error(GetType(HTTP), "<" & URL & ">" & ex.Message, ex.StackTrace, "Error", False)
+            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & URL & ">", ex)
         End Try
 
         Return outFile
@@ -406,7 +408,7 @@ Public Class HTTP
                 End Using
             End If
         Catch ex As Exception
-            'Master.eLog.Error(GetType(HTTP), "<" & Me._URL & ">" & ex.Message, ex.StackTrace, "Error", False) 'disabled, log only nonsens server errors
+            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & Me._URL & ">", ex)
         End Try
     End Sub
 
@@ -430,7 +432,7 @@ Public Class HTTP
                 Return Functions.ReadStreamToEnd(wrResponse.GetResponseStream)
             End Using
         Catch ex As Exception
-            Master.eLog.Error(GetType(HTTP), "<" & URL & ">" & ex.Message, ex.StackTrace, "Error", False)
+            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & URL & ">", ex)
         End Try
 
         Return Nothing

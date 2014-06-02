@@ -23,11 +23,13 @@ Imports System.Runtime.InteropServices
 Imports System.Text
 Imports System.Text.RegularExpressions
 Imports System.Xml.Serialization
+Imports NLog
 
 <Serializable()> _
 Public Class MediaInfo
 
 #Region "Fields"
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     Private Handle As IntPtr
     Private UseAnsi As Boolean
@@ -143,7 +145,7 @@ Public Class MediaInfo
             End If
 
         Catch ex As Exception
-            Master.eLog.Error(GetType(MediaInfo), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -165,7 +167,7 @@ Public Class MediaInfo
                 If Not _mi Is Nothing Then miTV.TVEp.FileInfo = _mi
             End If
         Catch ex As Exception
-            Master.eLog.Error(GetType(MediaInfo), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -243,7 +245,7 @@ Public Class MediaInfo
 
                     fiInfo = fiOut
                 Catch ex As Exception
-                    Master.eLog.Error(GetType(MediaInfo), ex.Message, ex.StackTrace, "Error", False)
+                    logger.ErrorException(New StackFrame().GetMethod().Name, ex)
                 End Try
 
                 'cocotus 20140118 For more accurate metadata scanning of BLURAY/DVD images use improved mediainfo scanning (ScanMI-function) -> don't hop in this branch!! 
@@ -321,7 +323,7 @@ Public Class MediaInfo
 
                     fiInfo = fiOut
                 Catch ex As Exception
-                    Master.eLog.Error(GetType(MediaInfo), ex.Message, ex.StackTrace, "Error", False)
+                    logger.ErrorException(New StackFrame().GetMethod().Name, ex)
                 End Try
             Else
                 fiInfo = ScanMI(sPath)
@@ -1176,7 +1178,7 @@ Public Class MediaInfo
                 Me.Close()
             End If
         Catch ex As Exception
-            Master.eLog.Error(GetType(MediaInfo), ex.Message, ex.StackTrace, "Error", False)
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
         Return fiOut
     End Function

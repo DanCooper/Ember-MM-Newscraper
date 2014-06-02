@@ -21,10 +21,12 @@
 Imports System.IO
 Imports System.Text.RegularExpressions
 Imports EmberAPI
+Imports NLog
 
 Public Class dlgImgManual
 
 #Region "Fields"
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     'Dim DLType As New Enums.MovieImageType
     Dim tImage As New Images With {.IsEdit = True}
@@ -55,19 +57,19 @@ Public Class dlgImgManual
         Return MyBase.ShowDialog()
     End Function
 
-	Private Sub btnPreview_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPreview.Click
-		Try
-			tImage.FromWeb(Me.txtURL.Text)
+    Private Sub btnPreview_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPreview.Click
+        Try
+            tImage.FromWeb(Me.txtURL.Text)
 
-			If Not IsNothing(tImage.Image) Then
+            If Not IsNothing(tImage.Image) Then
 
-				Using dImgView As New dlgImgView
-					dImgView.ShowDialog(tImage.Image)
-				End Using
+                Using dImgView As New dlgImgView
+                    dImgView.ShowDialog(tImage.Image)
+                End Using
 
-			End If
-		Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            End If
+        Catch ex As Exception
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -104,30 +106,30 @@ Public Class dlgImgManual
                 tImage.FromWeb(Me.txtURL.Text)
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()
     End Sub
 
-	Private Sub SetUp()
-		Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
-		Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
-		Me.btnPreview.Text = Master.eLang.GetString(180, "Preview")
+    Private Sub SetUp()
+        Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
+        Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
+        Me.btnPreview.Text = Master.eLang.GetString(180, "Preview")
         Me.lblURL.Text = Master.eLang.GetString(181, "Enter URL to Image:")
-	End Sub
+    End Sub
 
-	Private Sub txtURL_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtURL.TextChanged
-		If Not String.IsNullOrEmpty(Me.txtURL.Text) AndAlso StringUtils.isValidURL(Me.txtURL.Text) Then
-			Me.btnPreview.Enabled = True
-			Me.OK_Button.Enabled = True
-		Else
-			Me.btnPreview.Enabled = False
-			Me.OK_Button.Enabled = False
-		End If
-	End Sub
+    Private Sub txtURL_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtURL.TextChanged
+        If Not String.IsNullOrEmpty(Me.txtURL.Text) AndAlso StringUtils.isValidURL(Me.txtURL.Text) Then
+            Me.btnPreview.Enabled = True
+            Me.OK_Button.Enabled = True
+        Else
+            Me.btnPreview.Enabled = False
+            Me.OK_Button.Enabled = False
+        End If
+    End Sub
 
-#End Region	'Methods
+#End Region 'Methods
 
 End Class

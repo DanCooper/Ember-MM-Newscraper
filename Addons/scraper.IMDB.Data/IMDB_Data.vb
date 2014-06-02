@@ -21,6 +21,7 @@
 Imports System.IO
 
 Imports EmberAPI
+Imports NLog
 
 ''' <summary>
 ''' Native Scraper
@@ -31,6 +32,7 @@ Public Class IMDB_Data
 
 
 #Region "Fields"
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     Public Shared ConfigOptions As New Structures.ScrapeOptions
     Public Shared ConfigScrapeModifier As New Structures.ScrapeModifier
@@ -91,7 +93,7 @@ Public Class IMDB_Data
 
     Function GetMovieStudio(ByRef DBMovie As Structures.DBMovie, ByRef studio As List(Of String)) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule_Data.GetMovieStudio
         If (DBMovie.Movie Is Nothing OrElse String.IsNullOrEmpty(DBMovie.Movie.IMDBID)) Then
-            Master.eLog.Error(Me.GetType(), "Attempting to get studio for undefined movie", New StackTrace().ToString(), Nothing, False)
+            logger.Error(New StackFrame().GetMethod().Name, "Attempting to get studio for undefined movie")
             Return New Interfaces.ModuleResult With {.Cancelled = True}    'DEKKER500 VERIFY PLEASE
         End If
         Dim IMDB As New IMDB.Scraper
@@ -285,7 +287,7 @@ Public Class IMDB_Data
     End Sub
 
     Function Scraper(ByRef DBMovie As Structures.DBMovie, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule_Data.Scraper
-        Master.eLog.Trace(Me.GetType(), "Started scrape", New StackTrace().ToString(), Nothing, False)
+        logger.Trace(New StackFrame().GetMethod().Name, "Started scrape")
 
         'LoadSettings()
         Dim tTitle As String = String.Empty
@@ -414,7 +416,7 @@ Public Class IMDB_Data
             If Not OldTitle = DBMovie.Movie.Title OrElse String.IsNullOrEmpty(DBMovie.Movie.SortTitle) Then DBMovie.Movie.SortTitle = DBMovie.ListTitle
         End If
 
-        Master.eLog.Trace(Me.GetType(), "Finished scrape", New StackTrace().ToString(), Nothing, False)
+        logger.Trace(New StackFrame().GetMethod().Name, "Finished scrape")
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 

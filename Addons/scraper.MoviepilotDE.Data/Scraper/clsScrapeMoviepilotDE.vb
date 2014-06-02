@@ -22,11 +22,12 @@ Imports System.IO
 Imports System.IO.Compression
 Imports System.Text.RegularExpressions
 Imports EmberAPI
+Imports NLog
 
 Public Class MoviepilotDE
 
 #Region "Fields"
-
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
     Private originaltitle As String
     Private MoviepilotDEMovie As MediaContainers.Movie
     Private _fsk As String
@@ -127,7 +128,7 @@ Public Class MoviepilotDE
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -162,7 +163,7 @@ Public Class MoviepilotDE
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Return MoviePilotURL
@@ -251,7 +252,7 @@ Public Class MoviepilotDE
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
         Return strPlot
     End Function
@@ -281,7 +282,7 @@ Public Class MoviepilotDE
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
         Return FSK
     End Function

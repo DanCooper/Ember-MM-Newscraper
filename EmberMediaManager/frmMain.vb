@@ -27,11 +27,14 @@ Imports System.Text.RegularExpressions
 Imports EmberAPI
 Imports RestSharp
 Imports WatTmdb
+Imports NLog
 
 
 Public Class frmMain
 
 #Region "Fields"
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+
     Private fLoading As New frmSplash
     'Private aaa As New V3.Tmdb("aa")
     Friend WithEvents bwCleanDB As New System.ComponentModel.BackgroundWorker
@@ -47,6 +50,7 @@ Public Class frmMain
     Friend WithEvents bwNonScrape As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwRefreshMovies As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwRefreshMovieSets As New System.ComponentModel.BackgroundWorker
+    Friend WithEvents bwCheckVersion As New System.ComponentModel.BackgroundWorker
 
     Private alActors As New List(Of String)
     Private aniFilterRaise As Boolean = False
@@ -405,7 +409,7 @@ Public Class frmMain
                 Application.DoEvents()
             End With
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -449,7 +453,7 @@ Public Class frmMain
             Me.LoadingDone = True
             Me.EnableFilters(True)
             Me.SetControlsEnabled(True)
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -466,7 +470,7 @@ Public Class frmMain
                 End Using
             End Using
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -483,7 +487,7 @@ Public Class frmMain
             '    End Using
             'End Using
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -499,7 +503,7 @@ Public Class frmMain
                 End Using
             End Using
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -540,7 +544,7 @@ Public Class frmMain
 
             Me.LoadMovieInfo(Convert.ToInt32(Me.dgvMovies.Item(0, Me.dgvMovies.CurrentCell.RowIndex).Value), Me.dgvMovies.Item(1, Me.dgvMovies.CurrentCell.RowIndex).Value.ToString, True, False)
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -755,7 +759,7 @@ Public Class frmMain
             dgvMovies.Refresh()
             btnMarkAll.Text = If(Not MarkAll, Master.eLang.GetString(35, "Mark All"), Master.eLang.GetString(105, "Unmark All"))
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -830,7 +834,7 @@ Public Class frmMain
         '        End If
         '    End If
         'Catch ex As Exception
-        '    Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+        '    logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         'End Try
     End Sub
 
@@ -947,7 +951,7 @@ Public Class frmMain
                 End If
             End With
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1065,7 +1069,7 @@ Public Class frmMain
             End If
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error", False)
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             e.Cancel = True
         End Try
     End Sub
@@ -1080,7 +1084,7 @@ Public Class frmMain
 
             Me.dgvTVEpisodes.ResumeLayout()
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1131,7 +1135,7 @@ Public Class frmMain
             End If
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error", False)
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             e.Cancel = True
         End Try
     End Sub
@@ -1150,7 +1154,7 @@ Public Class frmMain
             End If
             Me.dgvMovies.ResumeLayout()
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1201,7 +1205,7 @@ Public Class frmMain
             End If
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error", False)
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             e.Cancel = True
         End Try
     End Sub
@@ -1220,7 +1224,7 @@ Public Class frmMain
             End If
             Me.dgvMovieSets.ResumeLayout()
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1265,7 +1269,7 @@ Public Class frmMain
             End If
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error", False)
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             e.Cancel = True
         End Try
     End Sub
@@ -1279,7 +1283,7 @@ Public Class frmMain
             End If
             Me.dgvTVSeasons.ResumeLayout()
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1327,7 +1331,7 @@ Public Class frmMain
             End If
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error", False)
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             e.Cancel = True
         End Try
     End Sub
@@ -1341,7 +1345,7 @@ Public Class frmMain
             End If
             Me.dgvTVShows.ResumeLayout()
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1368,7 +1372,7 @@ Public Class frmMain
             End If
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error", False)
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             e.Result = New Results With {.fileinfo = "error", .setEnabled = Args.setEnabled}
             e.Cancel = True
         End Try
@@ -1415,7 +1419,7 @@ Public Class frmMain
                     Me.btnMetaDataRefresh.Focus()
                 End If
             Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             End Try
 
             If Res.setEnabled Then
@@ -1476,7 +1480,7 @@ Public Class frmMain
         Dim tUrlList As New List(Of Theme)
         Dim DBScrapeMovie As New Structures.DBMovie
 
-        Master.eLog.Trace(Me.GetType, "Starting MOVIE scrape", New StackTrace().ToString, Nothing, False)
+        logger.Trace(New StackFrame().GetMethod().Name, "Starting MOVIE scrape")
 
         AddHandler ModulesManager.Instance.MovieScraperEvent, AddressOf MovieScraperEvent
 
@@ -2006,8 +2010,8 @@ Public Class frmMain
                                 End If
                             End If
                         End If
-                        End If
                     End If
+                End If
 
                 'Extrafanarts
                 If Master.GlobalScrapeMod.EFanarts Then
@@ -2079,7 +2083,7 @@ Public Class frmMain
                 'Args.scrapeType = Enums.ScrapeType.None
                 'End If
             Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error", False)
+                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             End Try
         Next
         If Args.scrapeType = Enums.ScrapeType.SingleScrape Then
@@ -2087,6 +2091,7 @@ Public Class frmMain
         End If
         RemoveHandler ModulesManager.Instance.MovieScraperEvent, AddressOf MovieScraperEvent
         e.Result = New Results With {.scrapeType = Args.scrapeType}
+        logger.Trace(New StackFrame().GetMethod().Name, "Ended MOVIE scrape")
     End Sub
 
     Private Sub bwMovieScraper_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwMovieScraper.ProgressChanged
@@ -2144,7 +2149,7 @@ Public Class frmMain
 
                                     Me.bwNonScrape.ReportProgress(iCount, String.Format("[[{0}]]", drvRow.Item(0).ToString))
                                 Catch ex As Exception
-                                    Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error", False)
+                                    logger.ErrorException(New StackFrame().GetMethod().Name, ex)
                                 End Try
                             Next
                         Case Enums.ScrapeType.CopyBackdrops 'TODO: check MovieBackdropsPath and VIDEO_TS parent
@@ -2187,7 +2192,7 @@ Public Class frmMain
                                         End If
                                     End If
                                 Catch ex As Exception
-                                    Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error", False)
+                                    logger.ErrorException(New StackFrame().GetMethod().Name, ex)
                                 End Try
                             Next
                     End Select
@@ -2198,7 +2203,7 @@ doCancel:
                     End If
                 End If
             Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error", False)
+                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             End Try
         End Using
     End Sub
@@ -2211,7 +2216,7 @@ doCancel:
                         Me.SelectMovieRow(Me.dgvMovies.SelectedRows(0).Index)
                     End If
                 Catch ex As Exception
-                    Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error", False)
+                    logger.ErrorException(New StackFrame().GetMethod().Name, ex)
                 End Try
             Else
                 Me.SetStatus(e.UserState.ToString)
@@ -2237,7 +2242,7 @@ doCancel:
                     Me.bwRefreshMovies.ReportProgress(iCount, KVP.Value)
                     Me.RefreshMovie(KVP.Key, True)
                 Catch ex As Exception
-                    Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error", False)
+                    logger.ErrorException(New StackFrame().GetMethod().Name, ex)
                 End Try
                 iCount += 1
             Next
@@ -2278,7 +2283,7 @@ doCancel:
 
             Me.RunFilter()
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -2341,7 +2346,7 @@ doCancel:
         Try
             Me.RunFilter(True)
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -2538,7 +2543,7 @@ doCancel:
                 Me.NonScrape(Enums.ScrapeType.CleanFolders, Nothing)
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -2602,7 +2607,7 @@ doCancel:
 
             If Reload Then Me.FillList(0)
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -2680,7 +2685,7 @@ doCancel:
             End If
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -2707,7 +2712,7 @@ doCancel:
             End If
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
 
     End Sub
@@ -2734,7 +2739,7 @@ doCancel:
             End If
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -2760,7 +2765,7 @@ doCancel:
             Me.SetControlsEnabled(True)
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -2814,7 +2819,7 @@ doCancel:
                 RemoveHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
             End Using
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -2844,7 +2849,7 @@ doCancel:
             End Using
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -2946,7 +2951,7 @@ doCancel:
             Me.dgvMovies.Invalidate()
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -3013,7 +3018,7 @@ doCancel:
             Me.dgvTVEpisodes.Invalidate()
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -3065,7 +3070,7 @@ doCancel:
     '        Me.dgvTVEpisodes.Invalidate()
 
     '    Catch ex As Exception
-    '        Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+    '        logger.ErrorException(New StackFrame().GetMethod().Name, ex)
     '    End Try
     'End Sub
 
@@ -3129,7 +3134,7 @@ doCancel:
     '        Me.dgvTVEpisodes.Invalidate()
 
     '    Catch ex As Exception
-    '        Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+    '        logger.ErrorException(New StackFrame().GetMethod().Name, ex)
     '    End Try
     'End Sub
 
@@ -3196,7 +3201,7 @@ doCancel:
             Me.dgvTVSeasons.Invalidate()
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -3248,7 +3253,7 @@ doCancel:
             Me.dgvTVEpisodes.Invalidate()
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -3312,7 +3317,7 @@ doCancel:
             Me.dgvTVEpisodes.Invalidate()
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -3354,7 +3359,7 @@ doCancel:
             Me.dgvMovies.Invalidate()
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -3421,7 +3426,7 @@ doCancel:
             Me.dgvTVEpisodes.Invalidate()
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -3473,7 +3478,7 @@ doCancel:
             Me.dgvTVEpisodes.Invalidate()
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -3537,7 +3542,7 @@ doCancel:
             Me.dgvTVEpisodes.Invalidate()
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -3588,7 +3593,7 @@ doCancel:
             Me.dgvMovies.Invalidate()
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -3661,7 +3666,7 @@ doCancel:
                 'RemoveHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
             End Using
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -3734,9 +3739,9 @@ doCancel:
             End Using
 
             Me.FillList(0)
-            
+
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -3768,7 +3773,7 @@ doCancel:
 
             If doFill Then FillEpisodes(Convert.ToInt32(Me.dgvTVEpisodes.SelectedRows(0).Cells(0).Value), Convert.ToInt32(Me.dgvTVEpisodes.SelectedRows(0).Cells(12).Value))
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -3843,7 +3848,7 @@ doCancel:
 
             If doFill Then FillList(0)
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -4080,7 +4085,7 @@ doCancel:
                     pbGenre(i).Image = ImageUtils.AddGenreString(pbGenre(i).Image, pbGenre(i).Name)
                 End If
             Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             End Try
         Next
     End Sub
@@ -4121,7 +4126,7 @@ doCancel:
     '            End If
     '        Next
     '    Catch ex As Exception
-    '        Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+    '        logger.ErrorException(New StackFrame().GetMethod().Name, ex)
     '    End Try
     'End Sub
 
@@ -4159,7 +4164,7 @@ doCancel:
             End If
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -4236,7 +4241,7 @@ doCancel:
                         Me.dgvMovies.Invalidate()
 
                     Catch ex As Exception
-                        Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                        logger.ErrorException(New StackFrame().GetMethod().Name, ex)
                     End Try
                 End If
             ElseIf Master.eSettings.MovieClickScrape AndAlso e.RowIndex >= 0 AndAlso e.ColumnIndex <> 8 AndAlso e.ColumnIndex <> 62 AndAlso Not bwMovieScraper.IsBusy Then
@@ -4285,7 +4290,7 @@ doCancel:
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -4325,7 +4330,7 @@ doCancel:
                 RemoveHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
             End Using
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -4348,7 +4353,7 @@ doCancel:
             Me.tmrWaitMovie.Start()
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -4451,7 +4456,7 @@ doCancel:
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -4581,7 +4586,7 @@ doCancel:
             Me.tpMovies.Text = String.Format("{0} ({1})", Master.eLang.GetString(36, "Movies"), Me.dgvMovies.RowCount)
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -4639,7 +4644,7 @@ doCancel:
 
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -4703,7 +4708,7 @@ doCancel:
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -4743,7 +4748,7 @@ doCancel:
                 'RemoveHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovieSet.GenericRunCallBack
             End Using
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -4766,7 +4771,7 @@ doCancel:
             Me.tmrWaitMovieSet.Start()
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -4837,7 +4842,7 @@ doCancel:
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -4965,7 +4970,7 @@ doCancel:
             Me.tpMovieSets.Text = String.Format("{0} ({1})", Master.eLang.GetString(366, "Sets"), Me.dgvMovieSets.RowCount)
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -5023,7 +5028,7 @@ doCancel:
 
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -5082,7 +5087,7 @@ doCancel:
                 RemoveHandler ModulesManager.Instance.GenericEvent, AddressOf dEditEpisode.GenericRunCallBack
             End Using
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -5105,7 +5110,7 @@ doCancel:
             Me.tmrWaitEp.Start()
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -5182,7 +5187,7 @@ doCancel:
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -5222,7 +5227,7 @@ doCancel:
                 End Using
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -5257,7 +5262,7 @@ doCancel:
                 Next
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
 
     End Sub
@@ -5368,7 +5373,7 @@ doCancel:
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -5427,7 +5432,7 @@ doCancel:
             End Using
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -5451,7 +5456,7 @@ doCancel:
             Me.tmrWaitSeason.Start()
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -5525,7 +5530,7 @@ doCancel:
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -5564,7 +5569,7 @@ doCancel:
                 End Using
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -5638,7 +5643,7 @@ doCancel:
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -5703,7 +5708,7 @@ doCancel:
 
             End Using
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -5725,7 +5730,7 @@ doCancel:
             Me.currShowRow = e.RowIndex
             Me.tmrWaitShow.Start()
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -5811,7 +5816,7 @@ doCancel:
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -5853,7 +5858,7 @@ doCancel:
                 End Using
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -5934,7 +5939,7 @@ doCancel:
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -6008,7 +6013,7 @@ doCancel:
 
             Me.dgvMovies.Invalidate()
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -6581,7 +6586,7 @@ doCancel:
             End If
         Catch ex As Exception
             Me.LoadingDone = True
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
 
         If Not isCL Then
@@ -6833,7 +6838,7 @@ doCancel:
             Next
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
         Me.ResumeLayout()
     End Sub
@@ -7105,7 +7110,7 @@ doCancel:
             Next
             'Me.SetStatus(Master.currMovie.Filename)
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
         Me.ResumeLayout()
     End Sub
@@ -7377,7 +7382,7 @@ doCancel:
             Next
             'Me.SetStatus(Master.currMovie.Filename)
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
         Me.ResumeLayout()
     End Sub
@@ -7574,7 +7579,7 @@ doCancel:
             Next
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
         Me.ResumeLayout()
     End Sub
@@ -7823,7 +7828,7 @@ doCancel:
             Next
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
         Me.ResumeLayout()
     End Sub
@@ -7905,7 +7910,7 @@ doCancel:
     End Sub
 
     Private Sub frmMain_FormClosed(sender As Object, e As FormClosedEventArgs) Handles Me.FormClosed
-        Master.eLog.Info(Me.GetType(), "====Ember Media Manager exiting====", Nothing, "Exiting", False)
+        logger.Info(New StackFrame().GetMethod().Name, "====Ember Media Manager exiting====")
     End Sub
     ''' <summary>
     ''' The FormClosing event has been called, so prepare the form to shut down
@@ -7996,7 +8001,7 @@ doCancel:
         Try
             Me.Visible = False
 
-            Master.eLog.Info(Me.GetType(), "====Ember Media Manager starting up====", Nothing, "Startup", False)
+            logger.Info(New StackFrame().GetMethod().Name, "====Ember Media Manager starting up====")
 
             fLoading = New frmSplash
             If Master.isWindows Then 'Dam mono on MacOSX don't have trayicon implemented yet
@@ -8048,11 +8053,14 @@ doCancel:
 
             ' Force initialization of languages for main
             Master.eLang.LoadAllLanguage(Master.eSettings.GeneralLanguage)
+
             Dim aBit As String = Master.eLang.GetString(1008, "x64")
             If Master.is32Bit Then
                 aBit = Master.eLang.GetString(1007, "x86")
             End If
             fLoading.SetVersionMesg(Master.eLang.GetString(865, "Version {0}.{1}.{2}.{3} {4}"), aBit)
+
+            Me.bwCheckVersion.RunWorkerAsync()
 
             fLoading.SetLoadingMesg(Master.eLang.GetString(854, "Basic setup"))
 
@@ -8102,7 +8110,6 @@ doCancel:
             AddHandler fScanner.ScannerUpdated, AddressOf ScannerUpdated
             AddHandler fScanner.ScanningCompleted, AddressOf ScanningCompleted
             AddHandler ModulesManager.Instance.TVScraperEvent, AddressOf TVScraperEvent
-            AddHandler Master.eLog.ErrorOccurred, AddressOf ErrorOccurred
             AddHandler ModulesManager.Instance.GenericEvent, AddressOf Me.GenericRunCallBack
 
             Functions.DGVDoubleBuffer(Me.dgvMovies)
@@ -8127,7 +8134,7 @@ doCancel:
 
             fLoading.Close()
         Catch ex As Exception
-            Master.eLog.Fatal(Me.GetType(), ex.Message, ex.StackTrace, "Fatal")
+            logger.FatalException(New StackFrame().GetMethod().Name, ex)
             Me.Close()
         End Try
     End Sub
@@ -8138,7 +8145,7 @@ doCancel:
     ''' <remarks></remarks>
     Private Sub LoadWithCommandLine(ByVal Args() As String)
         Try
-            Master.eLog.Trace(Me.GetType(), "LoadWithCommandLine()", Nothing, Nothing, False)
+            logger.Trace(New StackFrame().GetMethod().Name, "LoadWithCommandLine()")
 
             Dim MoviePath As String = String.Empty
             Dim isSingle As Boolean = False
@@ -8313,7 +8320,7 @@ doCancel:
                         fLoading.SetLoadingMesg(Master.eLang.GetString(861, "Command Line Scraping..."))
                         MovieScrapeData(False, clScrapeType, Master.DefaultMovieOptions)
                     Catch ex As Exception
-                        Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                        logger.ErrorException(New StackFrame().GetMethod().Name, ex)
                     End Try
                 Else
                     Try
@@ -8394,7 +8401,7 @@ doCancel:
                         End If
                     Catch ex As Exception
                         Me.ScraperDone = True
-                        Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                        logger.ErrorException(New StackFrame().GetMethod().Name, ex)
                     End Try
                 End If
 
@@ -8416,7 +8423,7 @@ doCancel:
     ''' <remarks></remarks>
     Private Sub LoadWithGUI()
         Try
-            Master.eLog.Trace(Me.GetType(), "LoadWithGUI()", Nothing, Nothing, False)
+            logger.Trace(New StackFrame().GetMethod().Name, "LoadWithGUI()")
             'If Master.eSettings.CheckUpdates Then
             '    If Functions.CheckNeedUpdate() Then
             '        Using dNewVer As New dlgNewVersion
@@ -8429,43 +8436,14 @@ doCancel:
             '    End If
             'End If
 
-            Try
-                Dim sHTTP As New EmberAPI.HTTP
-                'Pull Assembly version info from current Ember repo on github
-                Dim HTML As String = sHTTP.DownloadData("https://raw.github.com/DanCooper/Ember-MM-Newscraper/master/EmberMediaManager/My%20Project/AssemblyInfo.vb")
-                sHTTP = Nothing
-                Dim aBit As String = Master.eLang.GetString(1008, "x64")
-                If Master.is32Bit Then
-                    aBit = Master.eLang.GetString(1007, "x86")
-                End If
-                Dim VersionNumber As String = System.String.Format(Master.eLang.GetString(865, "Version {0}.{1}.{2}.{3} {4}"), My.Application.Info.Version.Major, My.Application.Info.Version.Minor, My.Application.Info.Version.Build, My.Application.Info.Version.Revision, aBit)
-                ' Not localized as is the Assembly file version
-                Dim VersionNumberO As String = System.String.Format("{0}.{1}.{2}.{3}", My.Application.Info.Version.Major, My.Application.Info.Version.Minor, My.Application.Info.Version.Build, My.Application.Info.Version.Revision)
-                If Not String.IsNullOrEmpty(HTML) Then
-                    'Example: AssemblyFileVersion("1.3.0.18")>
-                    Dim mc As MatchCollection = System.Text.RegularExpressions.Regex.Matches(HTML, "AssemblyFileVersion([^<]+)>")
-                    'check to see if at least one entry was found
-                    If mc.Count > 0 Then
-                        'just use the first match if more are found and compare with running Ember Version
-                        If mc(0).Value.ToString <> "AssemblyFileVersion(""" & VersionNumberO & """)>" Then
-                            'means that running Ember version is outdated!
-                            mnuVersion.Text = System.String.Format(Master.eLang.GetString(1009, "{0} - (New version available!)"), VersionNumber)
-                            mnuVersion.ForeColor = Color.DarkRed
-                        Else
-                            'Ember already up to date!
-                            mnuVersion.Text = VersionNumber
-                            mnuVersion.ForeColor = Color.DarkGreen
-                        End If
-                    End If
-                    'if no github query possible, than simply display Ember version on form
-                Else
-                    mnuVersion.Text = VersionNumber
-                    mnuVersion.ForeColor = Color.DarkBlue
-                End If
+            Dim aBit As String = Master.eLang.GetString(1008, "x64")
+            If Master.is32Bit Then
+                aBit = Master.eLang.GetString(1007, "x86")
+            End If
+            Dim VersionNumber As String = System.String.Format(Master.eLang.GetString(865, "Version {0}.{1}.{2}.{3} {4}"), My.Application.Info.Version.Major, My.Application.Info.Version.Minor, My.Application.Info.Version.Build, My.Application.Info.Version.Revision, aBit)
+            ' Not localized as is the Assembly file version
+            Dim VersionNumberO As String = System.String.Format("{0}.{1}.{2}.{3}", My.Application.Info.Version.Major, My.Application.Info.Version.Minor, My.Application.Info.Version.Build, My.Application.Info.Version.Revision)
 
-            Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
-            End Try
             If Not CloseApp Then
                 fLoading.SetLoadingMesg(Master.eLang.GetString(862, "Loading translations..."))
                 APIXML.CacheXMLs()
@@ -8556,7 +8534,7 @@ doCancel:
                 If tsbMediaCenters.DropDownItems.Count > 0 Then tsbMediaCenters.Enabled = True
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
 
     End Sub
@@ -8581,7 +8559,7 @@ doCancel:
                 Me.pnlAllSeason.Location = New Point(Me.pbFanart.Width - Me.pnlAllSeason.Width - 9, 112)
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -8621,7 +8599,7 @@ doCancel:
                     End If
                     Me.SetStatus(Master.currMovie.Filename)
                 Catch ex As Exception
-                    Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                    logger.ErrorException(New StackFrame().GetMethod().Name, ex)
                 End Try
             Case Enums.ModuleEventType.RenameMovieManual
                 Try
@@ -8631,10 +8609,10 @@ doCancel:
                     End If
                     Me.SetStatus(Master.currMovie.Filename)
                 Catch ex As Exception
-                    Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                    logger.ErrorException(New StackFrame().GetMethod().Name, ex)
                 End Try
             Case Else
-                Master.eLog.Warn(Me.GetType(), String.Format("Callback for <{0}> with no handler.", mType), New StackFrame(True).ToString(), Nothing, False)
+                logger.Warn(New StackFrame().GetMethod().Name, "Callback for <{0}> with no handler.", mType)
         End Select
     End Sub
 
@@ -8679,7 +8657,7 @@ doCancel:
 
         Catch ex As Exception
             Me.SetControlsEnabled(True)
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -8709,7 +8687,7 @@ doCancel:
             End If
         Catch ex As Exception
             Me.SetControlsEnabled(True)
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -8739,7 +8717,7 @@ doCancel:
             End If
         Catch ex As Exception
             Me.SetControlsEnabled(True)
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -8763,7 +8741,7 @@ doCancel:
 
         Catch ex As Exception
             Me.SetControlsEnabled(True)
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -8785,7 +8763,7 @@ doCancel:
 
         Catch ex As Exception
             Me.SetControlsEnabled(True)
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -8819,7 +8797,7 @@ doCancel:
                 Me.pbActors.Image = My.Resources.actor_silhouette
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -9562,7 +9540,7 @@ doCancel:
                 Me.pnlGenre(i).Top = Me.pnlInfoPanel.Top - 105
             Next
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
     ''' <summary>
@@ -9636,7 +9614,7 @@ doCancel:
 
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Master.currMovie.ClearBanner = False
@@ -9858,7 +9836,7 @@ doCancel:
                 Me.lblCanceling.Text = Master.eLang.GetString(121, "Canceling Backdrop Copy...")
                 Me.tslLoading.Text = Master.eLang.GetString(130, "Copying Fanart to Backdrops Folder:")
             Case Else
-                Master.eLog.Warn(Me.GetType(), "Invalid sType: <" & sType & ">", New StackTrace().ToString(), Nothing, False)
+                logger.Warn(New StackFrame().GetMethod().Name, "Invalid sType: <{0}>", sType)
         End Select
 
         btnCancel.Visible = True
@@ -9921,7 +9899,7 @@ doCancel:
                 End Using
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
     ''' <summary>
@@ -9954,7 +9932,7 @@ doCancel:
                 End Using
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -9966,7 +9944,7 @@ doCancel:
                 End Using
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -9978,7 +9956,7 @@ doCancel:
                 End Using
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -9990,7 +9968,7 @@ doCancel:
                 End Using
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -10002,7 +9980,7 @@ doCancel:
                 End Using
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -10177,7 +10155,7 @@ doCancel:
             End If
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Return False
@@ -10401,7 +10379,7 @@ doCancel:
             End If
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Return False
@@ -10500,7 +10478,7 @@ doCancel:
             End If
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Return False
@@ -10557,7 +10535,7 @@ doCancel:
             End If
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Return False
@@ -10730,7 +10708,7 @@ doCancel:
             End If
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Return False
@@ -10759,7 +10737,7 @@ doCancel:
 
             If doFill Then FillList(0) Else DoTitleCheck()
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -10786,7 +10764,7 @@ doCancel:
 
             If doFill Then FillList(0)
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -10801,7 +10779,7 @@ doCancel:
             Me.FillList(0)
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -10832,7 +10810,7 @@ doCancel:
 
             Me.LoadMovieInfo(Convert.ToInt32(Me.dgvMovies.Item(0, Me.dgvMovies.CurrentCell.RowIndex).Value), Me.dgvMovies.Item(1, Me.dgvMovies.CurrentCell.RowIndex).Value.ToString, True, False)
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -10939,7 +10917,7 @@ doCancel:
             End If
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -10994,7 +10972,7 @@ doCancel:
                 Me.ResumeLayout(True)
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -11015,7 +10993,7 @@ doCancel:
             End If
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -11192,7 +11170,7 @@ doCancel:
             End If
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
     ''' <summary>
@@ -11216,7 +11194,7 @@ doCancel:
             End If
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
     ''' <summary>
@@ -11244,7 +11222,7 @@ doCancel:
             End If
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
     ''' <summary>
@@ -11275,7 +11253,7 @@ doCancel:
             End If
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -11287,7 +11265,7 @@ doCancel:
             Me.pbAudio.Image = aImage(3)
             Me.pbChannels.Image = aImage(4)
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -11380,7 +11358,7 @@ doCancel:
 
             Me.LoadMovieInfo(Convert.ToInt32(Me.dgvMovies.Item(0, Me.dgvMovies.CurrentCell.RowIndex).Value), Me.dgvMovies.Item(1, Me.dgvMovies.CurrentCell.RowIndex).Value.ToString, True, False)
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
     ''' <summary>
@@ -11839,7 +11817,7 @@ doCancel:
             Me.tsbAutoPilot.Enabled = (Me.dgvMovies.RowCount > 0 AndAlso Me.tcMain.SelectedIndex = 0)
             Me.cmnuTrayScrape.Enabled = Me.tsbAutoPilot.Enabled
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -11985,7 +11963,7 @@ doCancel:
             dThread.Start()
         Catch ex As Exception
             Me.mnuMainEditSettings.Enabled = True
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
     ''' <summary>
@@ -12640,7 +12618,7 @@ doCancel:
 
             End With
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
     ''' <summary>
@@ -12662,7 +12640,7 @@ doCancel:
                     Me.lblNoInfo.Text = Master.eLang.GetString(652, "No Information is Available for This Episode")
                     If Not Me.currThemeType = Theming.ThemeType.Episode Then Me.ApplyTheme(Theming.ThemeType.Episode)
                 Case Else
-                    Master.eLog.Warn(Me.GetType(), String.Format("Invalid media type <{0}>", tType), New StackTrace().ToString(), Nothing, False)
+                    logger.Warn(New StackFrame().GetMethod().Name, "Invalid media type <{0}>", tType)
             End Select
         End If
 
@@ -12825,7 +12803,7 @@ doCancel:
             End Select
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
     ''' <summary>
@@ -12866,7 +12844,7 @@ doCancel:
             Me.dgvMovies.Invalidate()
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -13126,7 +13104,7 @@ doCancel:
                         Me.SetShowListItemAfterEdit(Convert.ToInt32(Master.currShow.ShowID), Me.dgvTVShows.SelectedRows(0).Index)
                         ModulesManager.Instance.TVSaveImages()
                     Case Else
-                        Master.eLog.Warn(Me.GetType(), String.Format("Unhandled TVScraperEventType.SaveAuto <{0}>", iProgress), New StackTrace(True).ToString(), Nothing, False)
+                        logger.Warn(New StackFrame().GetMethod().Name, "Unhandled TVScraperEventType.SaveAuto <{0}>", iProgress)
                 End Select
 
             Case Enums.TVScraperEventType.Verifying
@@ -13165,7 +13143,7 @@ doCancel:
                         Me.tslLoading.Visible = False
                         Me.SetControlsEnabled(True)
                     Case Else
-                        Master.eLog.Warn(Me.GetType(), String.Format("Unhandled TVScraperEventType.Verifying <{0}>", iProgress), New StackTrace(True).ToString(), Nothing, False)
+                        logger.Warn(New StackFrame().GetMethod().Name, "Unhandled TVScraperEventType.Verifying <{0}>", iProgress)
                 End Select
 
             Case Enums.TVScraperEventType.Progress
@@ -13177,7 +13155,7 @@ doCancel:
                     Case "progress"
                         Me.tspbLoading.Value = iProgress
                     Case Else
-                        Master.eLog.Warn(Me.GetType(), String.Format("Unhandled TVScraperEventType.Progress <{0}>", iProgress), New StackTrace(True).ToString(), Nothing, False)
+                        logger.Warn(New StackFrame().GetMethod().Name, "Unhandled TVScraperEventType.Progress <{0}>", iProgress)
                 End Select
                 Me.tspbLoading.Visible = True
                 Me.tslLoading.Visible = True
@@ -13190,7 +13168,7 @@ doCancel:
 
                 Me.SetControlsEnabled(True)
             Case Else
-                Master.eLog.Warn(Me.GetType(), String.Format("Unhandled TVScraperEventType <{0}>", eType), New StackTrace(True).ToString(), Nothing, False)
+                logger.Warn(New StackFrame().GetMethod().Name, "Unhandled TVScraperEventType <{0}>", eType)
         End Select
     End Sub
 
@@ -13303,6 +13281,50 @@ doCancel:
         KeyBuffer = String.Empty
     End Sub
 
+    Private Sub bwCheckVersion_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwCheckVersion.DoWork
+        Try
+            Dim sHTTP As New EmberAPI.HTTP
+            'Pull Assembly version info from current Ember repo on github
+            Dim HTML As String
+            HTML = sHTTP.DownloadData("https://raw.github.com/DanCooper/Ember-MM-Newscraper/master/EmberMediaManager/My%20Project/AssemblyInfo.vb")
+            sHTTP = Nothing
+            Dim aBit As String = Master.eLang.GetString(1008, "x64")
+            If Master.is32Bit Then
+                aBit = Master.eLang.GetString(1007, "x86")
+            End If
+            Dim VersionNumber As String = System.String.Format(Master.eLang.GetString(865, "Version {0}.{1}.{2}.{3} {4}"), My.Application.Info.Version.Major, My.Application.Info.Version.Minor, My.Application.Info.Version.Build, My.Application.Info.Version.Revision, aBit)
+            ' Not localized as is the Assembly file version
+            Dim VersionNumberO As String = System.String.Format("{0}.{1}.{2}.{3}", My.Application.Info.Version.Major, My.Application.Info.Version.Minor, My.Application.Info.Version.Build, My.Application.Info.Version.Revision)
+            If Not String.IsNullOrEmpty(HTML) Then
+                'Example: AssemblyFileVersion("1.3.0.18")>
+                Dim mc As MatchCollection = System.Text.RegularExpressions.Regex.Matches(HTML, "AssemblyFileVersion([^<]+)>")
+                'check to see if at least one entry was found
+                If mc.Count > 0 Then
+                    'just use the first match if more are found and compare with running Ember Version
+                    If mc(0).Value.ToString <> "AssemblyFileVersion(""" & VersionNumberO & """)>" Then
+                        'means that running Ember version is outdated!
+                        Me.Invoke(New UpdatemnuVersionDel(AddressOf UpdatemnuVersion), System.String.Format(Master.eLang.GetString(1009, "{0} - (New version available!)"), VersionNumber), Color.DarkRed)
+                    Else
+                        'Ember already up to date!
+                        Me.Invoke(New UpdatemnuVersionDel(AddressOf UpdatemnuVersion), VersionNumber, Color.DarkGreen)
+                    End If
+                End If
+                'if no github query possible, than simply display Ember version on form
+            Else
+                Me.Invoke(New UpdatemnuVersionDel(AddressOf UpdatemnuVersion), VersionNumber, Color.DarkBlue)
+            End If
+
+        Catch ex As Exception
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
+    Public Delegate Sub UpdatemnuVersionDel(sText As String, sForeColor As Color)
+
+    Private Sub UpdatemnuVersion(sText As String, sForeColor As Color)
+        mnuVersion.Text = sText
+        mnuVersion.ForeColor = sForeColor
+    End Sub
 #End Region 'Methods
 
 #Region "Nested Types"

@@ -22,10 +22,12 @@ Imports System.IO
 Imports System.Text
 Imports System.Text.RegularExpressions
 Imports EmberAPI
+Imports NLog
 
 Public Class dlgExportMovies
 
 #Region "Fields"
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     Friend WithEvents bwLoadInfo As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwSaveAll As New System.ComponentModel.BackgroundWorker
@@ -69,7 +71,7 @@ Public Class dlgExportMovies
             Dim srcPath As String = String.Concat(Functions.AppPath, "Langs", Path.DirectorySeparatorChar, "html", Path.DirectorySeparatorChar, template, Path.DirectorySeparatorChar)
             MySelf.SaveAll(String.Empty, srcPath, filename, resizePoster)
         Catch ex As Exception
-            Master.eLog.Error(GetType(dlgExportMovies), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -415,7 +417,7 @@ Public Class dlgExportMovies
                 If doNavigate Then LoadHTML()
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -435,7 +437,7 @@ Public Class dlgExportMovies
             End If
             Return ReturnString
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             Return ReturnString
         End Try
 
@@ -475,7 +477,7 @@ Public Class dlgExportMovies
             End If
             Return ReturnString
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             Return ""
         End Try
     End Function
@@ -514,7 +516,7 @@ Public Class dlgExportMovies
             End If
             Return ReturnString
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             Return ""
         End Try
     End Function
@@ -541,7 +543,7 @@ Public Class dlgExportMovies
             End Using
             Return ReturnString
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             Return ReturnString
         End Try
 
@@ -598,7 +600,7 @@ Public Class dlgExportMovies
             Catch
             End Try
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -641,7 +643,7 @@ Public Class dlgExportMovies
                 End Using
             End Using
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -725,7 +727,7 @@ Public Class dlgExportMovies
                 myStream.Close()
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -870,7 +872,7 @@ Public Class dlgExportMovies
                 End If
             Next
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -930,7 +932,7 @@ Public Class dlgExportMovies
 
             Next
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -993,7 +995,7 @@ Public Class dlgExportMovies
                 End If
 
             Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             End Try
         End If
         Return line

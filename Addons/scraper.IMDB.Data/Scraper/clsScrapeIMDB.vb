@@ -24,13 +24,14 @@ Imports System.IO.Compression
 Imports System.Text
 Imports System.Text.RegularExpressions
 Imports EmberAPI
+Imports NLog
 
 Namespace IMDB
 
     Public Class MovieSearchResults
 
 #Region "Fields"
-
+        Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
         Private _ExactMatches As New List(Of MediaContainers.Movie)
         Private _PartialMatches As New List(Of MediaContainers.Movie)
         Private _PopularTitles As New List(Of MediaContainers.Movie)
@@ -93,7 +94,7 @@ Namespace IMDB
     Public Class Scraper
 
 #Region "Fields"
-
+        Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
         Friend WithEvents bwIMDB As New System.ComponentModel.BackgroundWorker
 
         Private Const LINK_PATTERN As String = "<a[\s]+[^>]*?href[\s]?=[\s\""\']*(?<url>.*?)[\""\']*.*?>(?<name>[^<]+|.*?)?<\/a>"
@@ -326,7 +327,7 @@ Namespace IMDB
                                                 End If
                                             End If
                                         Catch ex As Exception
-                                            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                                            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
                                         End Try
 
                                     End If
@@ -739,7 +740,7 @@ mPlot:          'MOVIE PLOT
 
                 Return True
             Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
                 Return False
             End Try
         End Function
@@ -747,7 +748,7 @@ mPlot:          'MOVIE PLOT
         Public Function GetMovieStudios(ByVal strID As String) As List(Of String)
             Dim alStudio As New List(Of String)
             If (String.IsNullOrEmpty(strID)) Then
-                Master.eLog.Warn(Me.GetType(), String.Format("Attempting to GetMovieStudios with invalid ID <{0}>", strID), New StackTrace().ToString(), Nothing, False)
+                logger.Warn(New StackFrame().GetMethod().Name, "Attempting to GetMovieStudios with invalid ID <{0}>", strID)
                 Return alStudio
             End If
             Dim HTML As String
@@ -755,7 +756,7 @@ mPlot:          'MOVIE PLOT
                 HTML = sHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/title/tt", strID, "/combined"))
             End Using
             If (String.IsNullOrEmpty(HTML)) Then
-                Master.eLog.Warn(Me.GetType(), String.Format("IMDB Query returned no results for ID of <{0}>", strID), New StackTrace().ToString(), Nothing, False)
+                logger.Warn(New StackFrame().GetMethod().Name, "IMDB Query returned no results for ID of <{0}>", strID)
                 Return alStudio
             End If
             Dim D, W As Integer
@@ -853,7 +854,7 @@ mPlot:          'MOVIE PLOT
                     Return New MediaContainers.Movie
                 End If
             Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
                 Return New MediaContainers.Movie
             End Try
         End Function
@@ -888,7 +889,7 @@ mPlot:          'MOVIE PLOT
                                            .Parameter = imdbID, .IMDBMovie = IMDBMovie, .Options = Options})
                 End If
             Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             End Try
         End Sub
 
@@ -900,7 +901,7 @@ mPlot:          'MOVIE PLOT
                     bwIMDB.RunWorkerAsync(New Arguments With {.Search = SearchType.Movies, .Parameter = sMovie, .Options = filterOptions})
                 End If
             Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             End Try
         End Sub
 
@@ -917,7 +918,7 @@ mPlot:          'MOVIE PLOT
                         e.Result = New Results With {.ResultType = SearchType.SearchDetails, .Success = s}
                 End Select
             Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             End Try
         End Sub
 
@@ -933,7 +934,7 @@ mPlot:          'MOVIE PLOT
                         RaiseEvent SearchMovieInfoDownloaded(sPoster, Res.Success)
                 End Select
             Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             End Try
         End Sub
 
@@ -945,7 +946,7 @@ mPlot:          'MOVIE PLOT
 
                 If sString.EndsWith("""") Then CleanString = CleanString.Remove(CleanString.Length - 1, 1)
             Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             End Try
             Return CleanString
         End Function
@@ -985,7 +986,7 @@ mPlot:          'MOVIE PLOT
 
                 Return fTitle
             Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
                 Return fTitle
             End Try
         End Function
@@ -1106,7 +1107,7 @@ mExact:
 mResult:
                 Return R
             Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
                 Return Nothing
             End Try
         End Function

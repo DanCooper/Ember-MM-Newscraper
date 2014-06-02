@@ -142,7 +142,6 @@
     <Compile Include="clsAPICommon.vb" />
     <Compile Include="clsAPIDatabase.vb" />
     <Compile Include="clsAPIDVD.vb" />
-    <Compile Include="clsAPIErrorLog.vb" />
     <Compile Include="clsAPIFileUtils.vb" />
     <Compile Include="clsAPIHashing.vb" />
     <Compile Include="clsAPIHTTP.vb" />

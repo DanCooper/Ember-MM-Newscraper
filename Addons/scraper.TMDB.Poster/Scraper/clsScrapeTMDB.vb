@@ -20,14 +20,15 @@
 
 Imports EmberAPI
 Imports WatTmdb
-
+Imports NLog
+Imports System.Diagnostics
 
 Namespace TMDB
 
 	Public Class Scraper
 
 #Region "Fields"
-
+        Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 		Private _TMDBConf As V3.TmdbConfiguration
 		Private _TMDBConfE As V3.TmdbConfiguration
 		Private _TMDBApi As V3.Tmdb
@@ -68,7 +69,7 @@ Namespace TMDB
         '            bwTMDB.RunWorkerAsync(New Arguments With {.Parameter = imdbID, .Type = Type})
         '        End If
         '    Catch ex As Exception
-        '        Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+        '        logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         '    End Try
         'End Sub
 
@@ -165,7 +166,7 @@ Namespace TMDB
                 'End If
 
             Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             End Try
 
             Return alPosters
@@ -264,7 +265,7 @@ Namespace TMDB
                 'End If
 
             Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             End Try
 
             Return alPosters
@@ -275,7 +276,7 @@ Namespace TMDB
         '          Try
         '              e.Result = GetTMDBImages(Args.Parameter, Args.Type)
         '          Catch ex As Exception
-        '              Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+        '              logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         '              e.Result = Nothing
         '          End Try
         '      End Sub

@@ -23,11 +23,16 @@
 
 Imports System.IO
 Imports EmberAPI
+Imports NLog
 
 Public Class dlgWizard
 
+#Region "Fields"
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
     Private tLang As String
     Private tmppath As String = String.Empty
+
+#End Region
 
 #Region "Methods"
 
@@ -122,7 +127,7 @@ Public Class dlgWizard
                 End If
             End With
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -381,7 +386,7 @@ Public Class dlgWizard
     End Sub
 
     Private Sub chkMovieXBMCThemeEnable_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieXBMCThemeEnable.CheckedChanged
-       
+
         Me.chkMovieXBMCThemeCustom.Enabled = Me.chkMovieXBMCThemeEnable.Checked
         Me.chkMovieXBMCThemeMovie.Enabled = Me.chkMovieXBMCThemeEnable.Checked
         Me.chkMovieXBMCThemeSub.Enabled = Me.chkMovieXBMCThemeEnable.Checked
@@ -947,7 +952,7 @@ Public Class dlgWizard
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -982,7 +987,7 @@ Public Class dlgWizard
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
