@@ -24,10 +24,12 @@ Imports System.Xml
 Imports System.Xml.Linq
 Imports System.Xml.Serialization
 Imports System.Text
+Imports NLog
 
 Public Class Localization
 
 #Region "Fields"
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     Private Shared htArrayStrings As New List(Of Locs)
     Private Shared htHelpStrings As New Hashtable
@@ -157,23 +159,8 @@ Public Class Localization
         Else
             aStr = String.Empty
         End If
-#If DEBUG Then
-        SyncLock _loggingHelp
-            Dim _sPath = Path.Combine(Functions.AppPath, "Log")
-            If Not System.IO.Directory.Exists(_sPath) Then
-                System.IO.Directory.CreateDirectory(_sPath)
-            End If
+        logger.Error(New StackFrame().GetMethod().Name, "helpstring :'{0}'", aStr)
 
-            Dim _LogFile = Path.Combine(_sPath, "language_help.log")
-            Using fs1 As FileStream = New FileStream(_LogFile, FileMode.Append, FileAccess.Write)
-                Using s1 As StreamWriter = New StreamWriter(fs1)
-                    s1.Write(String.Concat(ctrlName, vbTab, aStr, vbNewLine))
-                    s1.Flush()
-                    s1.Close()
-                End Using
-            End Using
-        End SyncLock
-#End If
         Return aStr
     End Function
 
@@ -191,47 +178,23 @@ Public Class Localization
                 tStr = strDefault
             End If
         End If
-#If DEBUG Then
-        SyncLock _loggingString
-            Try
-                Dim _sPath = Path.Combine(Functions.AppPath, "Log")
-                If Not System.IO.Directory.Exists(_sPath) Then
-                    System.IO.Directory.CreateDirectory(_sPath)
-                End If
+        logger.Error(New StackFrame().GetMethod().Name, "language_string: {0} - {1} :'{2}'", Assembly, ID, tStr)
 
-                Dim _LogFile = Path.Combine(_sPath, "language_strings.log")
-                'Dim filePaths As New List(Of String)
-                'filePaths.Add(_LogFile)
-                'Dim Processes As IList(Of Process)
-                'Processes = clsFileLock.GetProcessesUsingFiles(filePaths)
-
-                Using fs1 As FileStream = New FileStream(_LogFile, FileMode.Append, FileAccess.Write)
-                    Using s1 As StreamWriter = New StreamWriter(fs1)
-                        s1.Write(String.Concat(Assembly, vbTab, ID, vbTab, tStr, vbNewLine))
-                        s1.Flush()
-                        s1.Close()
-                    End Using
-                End Using
-            Catch
-
-            End Try
-        End SyncLock
-#End If
         Return tStr
     End Function
 
-	Public Sub LoadAllLanguage(ByVal language As String, Optional ByVal force As Boolean = False)
-		If force Then
-			htHelpStrings = New Hashtable
-			htHelpStrings.Clear()
-			htArrayStrings.Clear()
+    Public Sub LoadAllLanguage(ByVal language As String, Optional ByVal force As Boolean = False)
+        If force Then
+            htHelpStrings = New Hashtable
+            htHelpStrings.Clear()
+            htArrayStrings.Clear()
         End If
         LoadLanguage(language)
         ' no more module specific language files
         'For Each s As String In ModulesManager.VersionList.Select(Function(m) m.AssemblyFileName).Distinct
         '	LoadLanguage(language, s.Replace(".dll", String.Empty))
         'Next
-	End Sub
+    End Sub
 
     Public Sub LoadHelpStrings(ByVal hPath As String)
         Try
@@ -246,7 +209,7 @@ Public Class Localization
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.Error(GetType(Localization), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -314,7 +277,7 @@ Public Class Localization
             Master.eSettings.GenreFilter = Master.eSettings.GenreFilter.Replace(_old_all, _all)
 
         Catch ex As Exception
-            Master.eLog.Error(GetType(Localization), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 

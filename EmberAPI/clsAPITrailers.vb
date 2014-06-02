@@ -25,10 +25,12 @@ Imports System.Text
 Imports System.Text.RegularExpressions
 Imports System.Xml
 Imports EmberAPI
+Imports NLog
 
 Public Class Trailers
 
 #Region "Fields"
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     Private _description As String
     Private _length As String
@@ -168,7 +170,7 @@ Public Class Trailers
                 End If
             Next
         Catch ex As Exception
-            Master.eLog.Error(GetType(Trailers), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
     ''' <summary>
@@ -301,7 +303,7 @@ Public Class Trailers
                 End If
             Next
         Catch ex As Exception
-            Master.eLog.Error(GetType(Trailers), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Function
     ''' <summary>
@@ -364,7 +366,7 @@ Public Class Trailers
                 End If
             End With
         Catch ex As Exception
-            Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             Return False
         End Try
     End Function

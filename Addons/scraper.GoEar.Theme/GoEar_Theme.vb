@@ -20,13 +20,15 @@
 
 Imports System.IO
 Imports EmberAPI
+Imports NLog
+
 
 Public Class GoEar_Theme
     Implements Interfaces.EmberMovieScraperModule_Theme
 
 
 #Region "Fields"
-
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
     Public Shared ConfigOptions As New Structures.ScrapeOptions
     Public Shared ConfigScrapeModifier As New Structures.ScrapeModifier
     Public Shared _AssemblyName As String
@@ -139,7 +141,7 @@ Public Class GoEar_Theme
     End Sub
 
     Function Scraper(ByVal DBMovie As Structures.DBMovie, ByRef ThemeList As List(Of Theme)) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule_Theme.Scraper
-        Master.eLog.Trace(Me.GetType(), "Started scrape", New StackTrace().ToString(), Nothing, False)
+        logger.Trace(New StackFrame().GetMethod().Name, "Started scrape")
 
         Dim tGoEar As New GoEar(DBMovie.Movie.OriginalTitle, DBMovie.ListTitle)
 
@@ -147,7 +149,7 @@ Public Class GoEar_Theme
             ThemeList = tGoEar.ThemeList
         End If
 
-        Master.eLog.Trace(Me.GetType(), "Finished scrape", New StackTrace().ToString(), Nothing, False)
+        logger.Trace(New StackFrame().GetMethod().Name, "Finished scrape")
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 

@@ -1,6 +1,4 @@
-﻿Imports EmberAPI
-
-' ################################################################################
+﻿' ################################################################################
 ' #                             EMBER MEDIA MANAGER                              #
 ' ################################################################################
 ' ################################################################################
@@ -19,10 +17,14 @@
 ' # You should have received a copy of the GNU General Public License            #
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
+Imports EmberAPI
+Imports NLog
+Imports System.Diagnostics
 
 Public Class dlgImgView
 
 #Region "Fields"
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     Private isFull As Boolean = False
     Private PanStartPoint As New Point
@@ -78,7 +80,7 @@ Public Class dlgImgView
             Me.Top = Convert.ToInt32((My.Computer.Screen.WorkingArea.Height - Me.Height) / 2)
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Me.Visible = True
@@ -124,7 +126,7 @@ Public Class dlgImgView
             Me.Left = Convert.ToInt32((screenWidth - Me.Width) / 2)
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Me.Visible = True
@@ -164,7 +166,7 @@ Public Class dlgImgView
 
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -185,7 +187,7 @@ Public Class dlgImgView
             Me.pnlBG.AutoScrollPosition = New Drawing.Point(0, 0)
             Me.pbPicture.Location = New Point(0, 25)
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 

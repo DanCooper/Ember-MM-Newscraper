@@ -24,14 +24,8 @@ Public Class frmNotify
 
     #Region "Fields"
 
-    Public Shared MasterIndex As Integer = 0
-
-    Public Index As Integer = 0
-
     Protected AnimationTimer As New Timer()
     Protected AnimationType As AnimationTypes = AnimationTypes.Show
-
-    Private Shared DisplayedForms As New List(Of frmNotify)
 
     Private _type As String
 
@@ -98,17 +92,13 @@ Public Class frmNotify
 
                 If Me.Height < 80 Then
                     Me.SetBounds(Me.Left, Me.Top - 2, Me.Width, Me.Height + 2)
-
-                    For Each DisplayedForm As frmNotify In frmNotify.DisplayedForms.Where(Function(s) s.Index < Me.Index)
-                        If Not DisplayedForm.InvokeRequired Then
-                            DisplayedForm.Top -= 2
-                        End If
-                    Next
+                    Application.DoEvents()
                 Else
                     Me.AnimationTimer.Stop()
                     Me.Height = 80
                     Me.AnimationTimer.Interval = 3000
                     Me.AnimationType = AnimationTypes.Wait
+                    Application.DoEvents()
                     Me.AnimationTimer.Start()
                 End If
 
@@ -117,14 +107,17 @@ Public Class frmNotify
                 Me.AnimationTimer.Stop()
                 Me.AnimationTimer.Interval = 5
                 Me.AnimationType = AnimationTypes.Close
+                Application.DoEvents()
                 Me.AnimationTimer.Start()
 
             Case AnimationTypes.Close
 
                 If Me.Height > 2 Then
                     Me.SetBounds(Me.Left, Me.Top + 2, Me.Width, Me.Height - 2)
+                    Application.DoEvents()
                 Else
                     Me.AnimationTimer.Stop()
+                    Application.DoEvents()
                     Me.Close()
                 End If
 
@@ -140,7 +133,6 @@ Public Class frmNotify
     End Sub
 
     Private Sub frmNotify_FormClosed(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles MyBase.FormClosed
-        frmNotify.DisplayedForms.Remove(Me)
         RaiseEvent NotifierClosed()
     End Sub
 
@@ -149,25 +141,8 @@ Public Class frmNotify
 
         AddHandler AnimationTimer.Tick, AddressOf OnTimer
 
-        'only allow 6 notifications on screen at a time
-        If frmNotify.DisplayedForms.Count = 6 Then
-            If Not DisplayedForms(0).InvokeRequired Then
-                frmNotify.DisplayedForms(0).AnimationTimer.Stop()
-                frmNotify.DisplayedForms(0).Close()
-            End If
-        End If
 
-        For Each DisplayedForm As frmNotify In frmNotify.DisplayedForms
-            If Not DisplayedForm.InvokeRequired Then
-                DisplayedForm.Top -= 5
-            End If
-        Next
-
-        Threading.Interlocked.Increment(frmNotify.MasterIndex)
-
-        Me.Index = frmNotify.MasterIndex
-
-        frmNotify.DisplayedForms.Add(Me)
+        Application.DoEvents()
 
     End Sub
 
@@ -175,6 +150,7 @@ Public Class frmNotify
         Me.AnimationTimer.Stop()
         Me.AnimationTimer.Interval = 5
         Me.AnimationType = AnimationTypes.Show
+        Application.DoEvents()
         Me.AnimationTimer.Start()
     End Sub
 

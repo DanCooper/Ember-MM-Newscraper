@@ -92,25 +92,6 @@ Public Class dlgErrorViewer
         Me.sBuilder.AppendLine(String.Empty)
         Me.sBuilder.AppendLine(String.Empty)
 
-        Dim logFile As String = EmberAPI.ErrorLogger.GetPrimaryLog()
-        'Dim logFile = Master.logger.GetType()
-        If ((Not String.IsNullOrEmpty(logFile)) AndAlso (File.Exists(logFile))) Then
-            Try
-
-                Using fs As FileStream = New FileStream(logFile, FileMode.Open, FileAccess.Read)
-                    Using sr As New StreamReader(fs)
-                        While Not sr.EndOfStream
-                            Me.sBuilder.AppendLine(sr.ReadLine)
-                        End While
-                    End Using
-                End Using
-            Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), "Failed to read logfile." & vbNewLine & ex.Message, ex.StackTrace, "Error")
-            End Try
-
-        End If
-
-
         Me.txtError.Text = Me.sBuilder.ToString
 
         If Me.txtError.Lines.Count > 50 Then

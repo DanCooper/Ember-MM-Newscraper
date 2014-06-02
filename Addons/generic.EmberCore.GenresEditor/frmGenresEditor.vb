@@ -2,10 +2,15 @@
 Imports System.Xml.Serialization
 Imports System.IO
 Imports EmberAPI
+Imports NLog
 
 Public Class frmGenresEditor
-    Public Event ModuleSettingsChanged()
+#Region "Fields"
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
     Private xmlGenres As xGenres
+#End Region 'Fields
+
+    Public Event ModuleSettingsChanged()
 
     Sub New()
         ' This call is required by the Windows Form Designer.
@@ -52,7 +57,7 @@ Public Class frmGenresEditor
             Next
             dgvLang.ClearSelection()
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -135,7 +140,7 @@ Public Class frmGenresEditor
                 ClearLangSelection()
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
 
     End Sub

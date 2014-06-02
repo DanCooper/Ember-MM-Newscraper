@@ -20,10 +20,14 @@
 
 Imports System.IO
 Imports EmberAPI
+Imports NLog
+Imports System.Diagnostics
 
 Public Class dlgEditShow
 
 #Region "Fields"
+
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     Friend WithEvents bwEFanarts As New System.ComponentModel.BackgroundWorker
 
@@ -78,7 +82,7 @@ Public Class dlgEditShow
                 Me.lvActors.Select()
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -94,7 +98,7 @@ Public Class dlgEditShow
                 lvItem.SubItems.Add(eActor.Thumb)
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -124,7 +128,7 @@ Public Class dlgEditShow
             AddHandler pbEFImage(iIndex).Click, AddressOf pbEFImage_Click
             AddHandler pnlEFImage(iIndex).Click, AddressOf pnlEFImage_Click
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Me.iEFTop += 74
@@ -142,7 +146,7 @@ Public Class dlgEditShow
                 Me.FillInfo()
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -245,7 +249,7 @@ Public Class dlgEditShow
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -266,7 +270,7 @@ Public Class dlgEditShow
                 End If
             End Using
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -299,7 +303,7 @@ Public Class dlgEditShow
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -320,7 +324,7 @@ Public Class dlgEditShow
                 End If
             End Using
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -353,7 +357,7 @@ Public Class dlgEditShow
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -374,7 +378,7 @@ Public Class dlgEditShow
                 End If
             End Using
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -407,7 +411,7 @@ Public Class dlgEditShow
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -428,7 +432,7 @@ Public Class dlgEditShow
                 End If
             End Using
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -461,7 +465,7 @@ Public Class dlgEditShow
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -482,7 +486,7 @@ Public Class dlgEditShow
                 End If
             End Using
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -515,7 +519,7 @@ Public Class dlgEditShow
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -536,7 +540,7 @@ Public Class dlgEditShow
                 End If
             End Using
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -557,7 +561,7 @@ Public Class dlgEditShow
                 End If
             End Using
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -590,7 +594,7 @@ Public Class dlgEditShow
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -611,7 +615,7 @@ Public Class dlgEditShow
                 End If
             End Using
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -644,7 +648,7 @@ Public Class dlgEditShow
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -665,7 +669,7 @@ Public Class dlgEditShow
                 End If
             End Using
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -701,7 +705,7 @@ Public Class dlgEditShow
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -734,7 +738,7 @@ Public Class dlgEditShow
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -755,7 +759,7 @@ Public Class dlgEditShow
                 End If
             End Using
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -776,7 +780,7 @@ Public Class dlgEditShow
                 End If
             End Using
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -810,7 +814,7 @@ Public Class dlgEditShow
                 Me.lblShowPosterSize.Visible = True
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -900,7 +904,7 @@ Public Class dlgEditShow
                 End If
             End With
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -916,7 +920,7 @@ Public Class dlgEditShow
                 Next
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -933,7 +937,7 @@ Public Class dlgEditShow
                 End While
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -954,7 +958,7 @@ Public Class dlgEditShow
                 btnShowEFanartsSetAsFanart.Enabled = False
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1018,7 +1022,7 @@ Public Class dlgEditShow
             Me.lblShowEFanartsSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbShowEFanarts.Image.Width, Me.pbShowEFanarts.Image.Height)
             Me.lblShowEFanartsSize.Visible = True
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1040,7 +1044,7 @@ Public Class dlgEditShow
                 eActor = Nothing
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1304,7 +1308,7 @@ Public Class dlgEditShow
             End If
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
 
         EF_lFI = Nothing
@@ -1342,7 +1346,7 @@ Public Class dlgEditShow
             ' Perform the sort with these new sort options.
             Me.lvActors.Sort()
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1363,7 +1367,7 @@ Public Class dlgEditShow
             If Master.eSettings.TVASAnyEnabled Then Master.DB.SaveTVSeasonToDB(Master.currShow, False)
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
@@ -1593,7 +1597,7 @@ Public Class dlgEditShow
             Single.TryParse(Me.tmpRating, tmpDBL)
             Me.BuildStars(tmpDBL)
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1607,7 +1611,7 @@ Public Class dlgEditShow
                 Me.BuildStars(2)
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1621,7 +1625,7 @@ Public Class dlgEditShow
             Single.TryParse(Me.tmpRating, tmpDBL)
             Me.BuildStars(tmpDBL)
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1635,7 +1639,7 @@ Public Class dlgEditShow
                 Me.BuildStars(4)
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1649,7 +1653,7 @@ Public Class dlgEditShow
             Single.TryParse(Me.tmpRating, tmpDBL)
             Me.BuildStars(tmpDBL)
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1663,7 +1667,7 @@ Public Class dlgEditShow
                 Me.BuildStars(6)
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1677,7 +1681,7 @@ Public Class dlgEditShow
             Single.TryParse(Me.tmpRating, tmpDBL)
             Me.BuildStars(tmpDBL)
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1691,7 +1695,7 @@ Public Class dlgEditShow
                 Me.BuildStars(8)
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1705,7 +1709,7 @@ Public Class dlgEditShow
             Single.TryParse(Me.tmpRating, tmpDBL)
             Me.BuildStars(tmpDBL)
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1719,7 +1723,7 @@ Public Class dlgEditShow
                 Me.BuildStars(10)
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1744,7 +1748,7 @@ Public Class dlgEditShow
             Me.bwEFanarts.WorkerSupportsCancellation = True
             Me.bwEFanarts.RunWorkerAsync()
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1789,7 +1793,7 @@ Public Class dlgEditShow
                 End If
             Next
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1811,7 +1815,7 @@ Public Class dlgEditShow
                 End If
 
             Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             End Try
         Else
             Me.lbMPAA.SelectedIndex = 0
@@ -1960,7 +1964,7 @@ Public Class dlgEditShow
 
             End With
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 

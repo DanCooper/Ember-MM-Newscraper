@@ -21,11 +21,12 @@
 Imports System.Text.RegularExpressions
 Imports System.IO
 Imports EmberAPI
+Imports NLog
 
 Public Class dlgIMDBSearchResults
 
     #Region "Fields"
-
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
     Friend WithEvents bwDownloadPic As New System.ComponentModel.BackgroundWorker
     Friend  WithEvents tmrLoad As New System.Windows.Forms.Timer
     Friend  WithEvents tmrWait As New System.Windows.Forms.Timer
@@ -129,7 +130,7 @@ Public Class dlgIMDBSearchResults
                 _PosterCache.Add(Res.IMDBId, CType(Res.Result.Clone, Image))
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         Finally
             pnlPicStatus.Visible = False
         End Try
@@ -215,7 +216,7 @@ Public Class dlgIMDBSearchResults
                 Me.pnlTop.BackgroundImage = iBackground
             End Using
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -240,7 +241,7 @@ Public Class dlgIMDBSearchResults
             End If
             Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Me.Close()
@@ -296,7 +297,7 @@ Public Class dlgIMDBSearchResults
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -400,7 +401,7 @@ Public Class dlgIMDBSearchResults
             Me.pnlLoading.Visible = False
             chkManual.Enabled = True
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -499,7 +500,7 @@ Public Class dlgIMDBSearchResults
             End If
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -531,7 +532,7 @@ Public Class dlgIMDBSearchResults
                 Return DirectCast(bin.Deserialize(mem), MediaContainers.Movie)
             End Using
         Catch ex As Exception
-            Master.eLog.Error(GetType(MediaContainers.Movie), ex.Message, ex.StackTrace, "Error", False)
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Return Nothing

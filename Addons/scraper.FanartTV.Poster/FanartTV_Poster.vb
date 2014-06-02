@@ -23,14 +23,15 @@ Imports EmberAPI
 Imports RestSharp
 Imports WatTmdb
 Imports EmberScraperModule.FANARTTVs
-
+Imports NLog
+Imports System.Diagnostics
 
 Public Class FanartTV_Poster
     Implements Interfaces.EmberMovieScraperModule_Poster
 
 
 #Region "Fields"
-
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
     Public Shared ConfigOptions As New Structures.ScrapeOptions
     Public Shared ConfigScrapeModifier As New Structures.ScrapeModifier
     Public Shared _AssemblyName As String
@@ -229,7 +230,7 @@ Public Class FanartTV_Poster
     End Sub
 
     Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image), Optional ByVal isMovieSet As Boolean = False) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule_Poster.Scraper
-        Master.eLog.Trace(Me.GetType(), "Started scrape", New Diagnostics.StackTrace().ToString(), Nothing, False)
+        logger.Trace(New StackFrame().GetMethod().Name, "Started scrape")
         'LoadSettings()
         Dim Poster As New Images
 
@@ -239,7 +240,7 @@ Public Class FanartTV_Poster
             ImageList = _fanartTV.GetFANARTTVImages(DBMovie.Movie.ID, Type)
         End If
 
-        Master.eLog.Trace(Me.GetType(), "Finished scrape", New Diagnostics.StackTrace().ToString(), Nothing, False)
+        logger.Trace(New StackFrame().GetMethod().Name, "Finished scrape")
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 

@@ -20,6 +20,7 @@
 
 Imports EmberAPI
 Imports System.IO
+Imports NLog
 
 ''' <summary>
 ''' Apple Trailer scraper
@@ -30,6 +31,7 @@ Public Class Apple_Trailer
 
 
 #Region "Fields"
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     Public Shared ConfigOptions As New Structures.ScrapeOptions
     Public Shared ConfigScrapeModifier As New Structures.ScrapeModifier
@@ -151,7 +153,7 @@ Public Class Apple_Trailer
     End Sub
 
     Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef URLList As List(Of Trailers)) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule_Trailer.Scraper
-        Master.eLog.Trace(Me.GetType(), "Started scrape", New StackTrace().ToString(), Nothing, False)
+        logger.Trace("Started scrape", New StackTrace().ToString())
 
         Dim tTitle As String = String.Empty
 
@@ -167,7 +169,7 @@ Public Class Apple_Trailer
             URLList = tAppleTrailer.TrailerList
         End If
 
-        Master.eLog.Trace(Me.GetType(), "Finished scrape", New StackTrace().ToString(), Nothing, False)
+        logger.Trace("Finished scrape", New StackTrace().ToString())
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 

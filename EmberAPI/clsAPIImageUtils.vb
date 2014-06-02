@@ -20,12 +20,14 @@
 Imports System.Drawing
 Imports System.Windows.Forms
 Imports System.Runtime.CompilerServices
+Imports NLog
 
 <Assembly: InternalsVisibleTo("EmberAPI_Test")> 
 
 Public Class ImageUtils
 
 #Region "Fields"
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
     Public Const DefaultPaddingARGB As Integer = -16777216  'This is FF000000, which is completely opaque black
 #End Region
 
@@ -103,7 +105,7 @@ Public Class ImageUtils
                 End Using
             End Using
         Catch ex As Exception
-            Master.eLog.Error(GetType(ImageUtils), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
     ''' <summary>
@@ -166,7 +168,7 @@ Public Class ImageUtils
 
             End Using
         Catch ex As Exception
-            Master.eLog.Error(GetType(ImageUtils), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
     ''' <summary>
@@ -230,7 +232,7 @@ Public Class ImageUtils
             Catch ex As Exception
                 pbDestination.Left = 0
                 pbDestination.Size = New Size(maxWidth, maxHeight)
-                'Master.eLog.Error(GetType(ImageUtils),ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             End Try
         Else
             pbDestination.Left = 0
@@ -267,7 +269,7 @@ Public Class ImageUtils
             End Using
             bmOverlay = Nothing
         Catch ex As Exception
-            Master.eLog.Error(GetType(ImageUtils), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
     ''' <summary>
@@ -319,7 +321,7 @@ Public Class ImageUtils
             End Using
             bmOverlay = Nothing
         Catch ex As Exception
-            Master.eLog.Error(GetType(ImageUtils), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Return imgUnderlay
@@ -383,7 +385,7 @@ Public Class ImageUtils
     ''' <remarks>If an error is encountered, the source image is returned.</remarks>
     Public Shared Function AddGenreString(ByRef image As System.Drawing.Image, genreString As String) As Bitmap
         If (image Is Nothing) OrElse (image.Size.IsEmpty) Then
-            Master.eLog.Error(GetType(ImageUtils), "Invalid image parameter", New StackTrace().ToString(), "Error")
+            logger.Error("Invalid image parameter", New StackTrace().ToString())
             Return Nothing
         End If
 
@@ -402,7 +404,7 @@ Public Class ImageUtils
                 End Using
             End Using
         Catch ex As Exception
-            Master.eLog.Error(GetType(ImageUtils), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
         Return bmGenre
 

@@ -23,12 +23,14 @@ Imports System.IO
 Imports System.Linq
 Imports System.Xml
 Imports System.Xml.Linq
+Imports NLog
 
 <Serializable> _
 Public Class AdvancedSettings
     Implements IDisposable
 
 #Region "Fields"
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     Private Class SettingGroupItem
         Public Section As String
@@ -46,44 +48,14 @@ Public Class AdvancedSettings
 #Region "Constructors"
 
     Public Shared Sub Start()
-        'Dim lhttp As New HTTP
-
         Try
             Using settings = New AdvancedSettings()
                 settings.SetDefaults()
             End Using
             AdvancedSettings.LoadBase()
         Catch ex As Exception
-            Master.eLog.Error(GetType(AdvancedSettings), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
-
-        'Not working currently
-        'Try
-        '    Dim settingString As String = lhttp.DownloadData(String.Format("http://pcjco.dommel.be/emm-r/{0}/AdvancedSettings.r{1}.lst", If(Functions.IsBetaEnabled(), "updatesbeta", "updates"), My.Application.Info.Version.Revision))
-        '    If Not String.IsNullOrEmpty(settingString) Then
-        '        Dim sPath As String = String.Concat(Functions.AppPath, "Temp")
-        '        If Not Directory.Exists(sPath) Then
-        '            Directory.CreateDirectory(sPath)
-        '        End If
-
-        '        For Each s As String In settingString.Split(New Char() {","c}, StringSplitOptions.RemoveEmptyEntries)
-        '            Dim lst As New List(Of String)
-        '            lst.AddRange(AdvancedSettings.GetSetting("SettingPatchList", String.Empty, "*Internal").Split(New Char() {","c}, StringSplitOptions.RemoveEmptyEntries))
-        '            If lst.Contains(s) Then Continue For
-        '            lst.Add(s)
-        '            AdvancedSettings.SetSetting("SettingPatchList", Strings.Join(lst.ToArray, ","), "*Internal")
-        '            If Not String.IsNullOrEmpty(s) Then
-        '                Dim localFile As String = Path.Combine(Functions.AppPath, String.Format("Temp{0}AdvancedSettings.{1}.xml", Path.DirectorySeparatorChar, s))
-        '                If Not String.IsNullOrEmpty(lhttp.DownloadFile(String.Format("http://pcjco.dommel.be/emm-r/{0}/AdvancedSettings.{1}.xml", If(Functions.IsBetaEnabled(), "updatesbeta", "updates"), s), localFile, False, "other")) Then
-        '                    AdvancedSettings.Load(localFile)
-        '                    AdvancedSettings.Save()
-        '                End If
-        '            End If
-        '        Next
-        '    End If
-        'Catch ex As Exception
-        '    Master.eLog.Error(GetType(AdvancedSettings),ex.Message, ex.StackTrace, "Error")
-        'End Try
     End Sub
 
     Public Shared Function GetAllSettings() As List(Of SettingItem)
@@ -142,7 +114,7 @@ Public Class AdvancedSettings
             Dim v = From e In _AdvancedSettings.Where(Function(f) f.Name = key AndAlso f.Section = Assembly)
             Return If(v(0) Is Nothing, defvalue, Convert.ToBoolean(v(0).Value.ToString))
         Catch ex As Exception
-            Master.eLog.Error(GetType(AdvancedSettings), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             Return defvalue
         End Try
     End Function
@@ -159,7 +131,7 @@ Public Class AdvancedSettings
             Dim v = From e In _AdvancedSettings.Where(Function(f) f.Name = key AndAlso f.Section = Assembly)
             Return If(v(0) Is Nothing, defvalue, v(0).Value.ToString)
         Catch ex As Exception
-            Master.eLog.Error(GetType(AdvancedSettings), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             Return defvalue
         End Try
     End Function
@@ -211,7 +183,7 @@ Public Class AdvancedSettings
             Dim v = _ComplexAdvancedSettings.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly)
             Return If(v Is Nothing, Nothing, v.TableItem)
         Catch ex As Exception
-            Master.eLog.Error(GetType(AdvancedSettings), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             Return Nothing
         End Try
     End Function
@@ -237,7 +209,7 @@ Public Class AdvancedSettings
 
             'If Not _DoNotSave Then Save()
         Catch ex As Exception
-            Master.eLog.Error(GetType(AdvancedSettings), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
         Return True
     End Function
@@ -274,7 +246,7 @@ Public Class AdvancedSettings
                 Next
             End If
         Catch ex As Exception
-            Master.eLog.Error(GetType(AdvancedSettings), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
         _DoNotSave = False
     End Sub
@@ -347,7 +319,7 @@ Public Class AdvancedSettings
             ' If count > 0 Then xdoc.Save(Path.Combine(Functions.AppPath, "AdvancedSettings.xml"))
             If count > 0 Then xdoc.Save(configpath)
         Catch ex As Exception
-            Master.eLog.Error(GetType(AdvancedSettings), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -372,7 +344,7 @@ Public Class AdvancedSettings
 
             'If Not _DoNotSave Then Save()
         Catch ex As Exception
-            Master.eLog.Error(GetType(AdvancedSettings), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
         Return True
     End Function
@@ -398,7 +370,7 @@ Public Class AdvancedSettings
 
             'If Not _DoNotSave Then Save()
         Catch ex As Exception
-            Master.eLog.Error(GetType(AdvancedSettings), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
         Return True
     End Function
