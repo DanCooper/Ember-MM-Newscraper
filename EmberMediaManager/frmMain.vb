@@ -53,6 +53,7 @@ Public Class frmMain
     Friend WithEvents bwCheckVersion As New System.ComponentModel.BackgroundWorker
 
     Private alActors As New List(Of String)
+    Private alMoviesInSet As New List(Of String)
     Private aniFilterRaise As Boolean = False
     Private aniRaise As Boolean = False
     Private aniMovieType As Integer = 0 '0 = down, 1 = mid, 2 = up
@@ -359,6 +360,7 @@ Public Class frmMain
                 .pnlMPAA.Visible = False
 
                 .lblTitle.Text = String.Empty
+                .lblOriginalTitle.Text = String.Empty
                 .lblVotes.Text = String.Empty
                 .lblRuntime.Text = String.Empty
                 .pnlTop250.Visible = False
@@ -405,6 +407,12 @@ Public Class frmMain
                 .txtMetaData.Text = String.Empty
                 .pnlTop.Visible = False
                 '.tslStatus.Text = String.Empty
+
+                .lstMoviesInSet.Items.Clear()
+                If Not IsNothing(.alMoviesInSet) Then
+                    .alMoviesInSet.Clear()
+                    .alMoviesInSet = Nothing
+                End If
 
                 Application.DoEvents()
             End With
@@ -7123,12 +7131,12 @@ doCancel:
 
         Try
             Me.SuspendLayout()
-            If Not String.IsNullOrEmpty(Master.currMovieSet.SetName) AndAlso Not String.IsNullOrEmpty("") Then
-                Me.lblTitle.Text = String.Format("{0} ({1})", Master.currMovieSet.SetName, Master.currMovie.Movie.Year)
-            ElseIf Not String.IsNullOrEmpty(Master.currMovieSet.SetName) AndAlso String.IsNullOrEmpty("") Then
+            If Not String.IsNullOrEmpty(Master.currMovieSet.SetName) AndAlso Master.currMovieSet.Movies.Count > 0 Then
+                Me.lblTitle.Text = String.Format("{0} ({1})", Master.currMovieSet.SetName, Master.currMovieSet.Movies.Count)
+            ElseIf Not String.IsNullOrEmpty(Master.currMovieSet.SetName) Then
                 Me.lblTitle.Text = Master.currMovieSet.SetName
-            ElseIf String.IsNullOrEmpty(Master.currMovieSet.SetName) AndAlso Not String.IsNullOrEmpty("") Then
-                Me.lblTitle.Text = String.Format(Master.eLang.GetString(117, "Unknown Movie ({0})"), "need usefull text")
+            Else
+                Me.lblTitle.Text = String.Empty
             End If
 
             'If Not String.IsNullOrEmpty(Master.currMovie.Movie.OriginalTitle) AndAlso Master.currMovie.Movie.OriginalTitle <> StringUtils.FilterTokens(Master.currMovie.Movie.Title) Then
@@ -7179,6 +7187,21 @@ doCancel:
             '    Next
             '    Me.lstActors.SelectedIndex = 0
             'End If
+
+            Me.alMoviesInSet = New List(Of String)
+
+            If Master.currMovieSet.Movies.Count > 0 Then
+                'Me.pbActors.Image = My.Resources.actor_silhouette
+                For Each Movie As Structures.DBMovie In Master.currMovieSet.Movies
+
+                    If String.IsNullOrEmpty(Movie.Movie.Title) Then
+                        Me.lstMoviesInSet.Items.Add("Unknow Movie")
+                    Else
+                        Me.lstMoviesInSet.Items.Add(Movie.Movie.Title)
+                    End If
+                Next
+                Me.lstMoviesInSet.SelectedIndex = 0
+            End If
 
             'If Not String.IsNullOrEmpty(Master.currMovie.Movie.MPAA) Then
             '    Dim tmpRatingImg As Image = APIXML.GetRatingImage(Master.currMovie.Movie.MPAA)
@@ -11182,7 +11205,7 @@ doCancel:
         Try
             If Not Convert.ToBoolean(Me.dgvMovieSets.Item(4, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvMovieSets.Item(6, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvMovieSets.Item(2, iRow).Value) Then
                 Me.ClearInfo()
-                Me.ShowNoInfo(True, 0)
+                Me.ShowNoInfo(True, 3)
                 Master.currMovieSet = Master.DB.LoadMovieSetFromDB(Convert.ToInt64(Me.dgvMovieSets.Item(0, iRow).Value))
                 Me.fillScreenInfoWithMovieSet()
 
@@ -12639,6 +12662,9 @@ doCancel:
                 Case 2
                     Me.lblNoInfo.Text = Master.eLang.GetString(652, "No Information is Available for This Episode")
                     If Not Me.currThemeType = Theming.ThemeType.Episode Then Me.ApplyTheme(Theming.ThemeType.Episode)
+                Case 3
+                    Me.lblNoInfo.Text = Master.eLang.GetString(1154, "No Information is Available for This MovieSet")
+                    If Not Me.currThemeType = Theming.ThemeType.MovieSet Then Me.ApplyTheme(Theming.ThemeType.MovieSet)
                 Case Else
                     logger.Warn(New StackFrame().GetMethod().Name, "Invalid media type <{0}>", tType)
             End Select
@@ -12679,6 +12705,7 @@ doCancel:
                 If Me.bwLoadEpInfo.IsBusy Then Me.bwLoadEpInfo.CancelAsync()
                 If Me.bwLoadSeasonInfo.IsBusy Then Me.bwLoadSeasonInfo.CancelAsync()
                 If Me.bwLoadShowInfo.IsBusy Then Me.bwLoadShowInfo.CancelAsync()
+                If Me.bwLoadMovieSetInfo.IsBusy Then Me.bwLoadMovieSetInfo.CancelAsync()
                 If Me.bwDownloadPic.IsBusy Then Me.bwDownloadPic.CancelAsync()
                 If Me.dgvMovies.RowCount > 0 Then
                     Me.prevMovieRow = -1
@@ -12708,7 +12735,7 @@ doCancel:
                 If Me.bwLoadShowInfo.IsBusy Then Me.bwLoadShowInfo.CancelAsync()
                 If Me.bwDownloadPic.IsBusy Then Me.bwDownloadPic.CancelAsync()
                 If Me.dgvMovieSets.RowCount > 0 Then
-                    Me.prevMovieRow = -1
+                    Me.prevMovieSetRow = -1
 
                     Me.dgvMovieSets.CurrentCell = Nothing
                     Me.dgvMovieSets.ClearSelection()
@@ -12731,6 +12758,7 @@ doCancel:
                 Me.scTV.Visible = True
                 Me.ApplyTheme(Theming.ThemeType.Show)
                 If Me.bwLoadMovieInfo.IsBusy Then Me.bwLoadMovieInfo.CancelAsync()
+                If Me.bwLoadMovieSetInfo.IsBusy Then Me.bwLoadMovieSetInfo.CancelAsync()
                 If Me.bwDownloadPic.IsBusy Then Me.bwDownloadPic.CancelAsync()
                 If Me.dgvTVShows.RowCount > 0 Then
                     Me.prevShowRow = -1
@@ -12761,7 +12789,7 @@ doCancel:
                     Me.pnlInfoPanel.Height -= 5
                 End If
             Else
-                Select Case If(Me.tcMain.SelectedIndex = 0, Me.aniMovieType, Me.aniShowType)
+                Select Case If(Me.tcMain.SelectedIndex = 0, Me.aniMovieType, If(Me.tcMain.SelectedIndex = 1, Me.aniMovieSetType, Me.aniShowType))
                     Case 0
                         Me.pnlInfoPanel.Height = 25
 
@@ -12777,7 +12805,7 @@ doCancel:
             Me.MoveGenres()
             Me.MoveMPAA()
 
-            Dim aType As Integer = If(Me.tcMain.SelectedIndex = 0, Me.aniMovieType, Me.aniShowType)
+            Dim aType As Integer = If(Me.tcMain.SelectedIndex = 0, Me.aniMovieType, If(Me.tcMain.SelectedIndex = 1, Me.aniMovieSetType, Me.aniShowType))
             Select Case aType
                 Case 0
                     If Me.pnlInfoPanel.Height = 25 Then

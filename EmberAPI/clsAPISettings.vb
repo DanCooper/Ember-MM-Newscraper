@@ -75,6 +75,7 @@ Public Class Settings
     Private _generalmovieinfopanelstate As Integer
     Private _generalmoviesetinfopanelstate As Integer
     Private _generalmovietheme As String
+    Private _generalmoviesettheme As String
     Private _generaloverwritenfo As Boolean
     Private _generalseasonsplitterpanelstate As Integer
     Private _generalshowgenrestext As Boolean
@@ -2072,6 +2073,15 @@ Public Class Settings
         End Get
         Set(ByVal value As String)
             Me._generalmovietheme = value
+        End Set
+    End Property
+
+    Public Property GeneralMovieSetTheme() As String
+        Get
+            Return Me._generalmoviesettheme
+        End Get
+        Set(ByVal value As String)
+            Me._generalmoviesettheme = value
         End Set
     End Property
 
@@ -5438,6 +5448,7 @@ Public Class Settings
         Me._generalmainsplitterpanelstate = 364
         Me._generalmovieinfopanelstate = 0
         Me._generalmovietheme = "Default"
+        Me._generalmoviesettheme = "Default"
         Me._generaloverwritenfo = False
         Me._generalseasonsplitterpanelstate = 200
         Me._generalshowgenrestext = True

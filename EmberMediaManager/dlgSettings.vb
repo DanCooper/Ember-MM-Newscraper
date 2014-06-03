@@ -995,6 +995,10 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
+    Private Sub cbGeneralMovieSetTheme_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbGeneralMovieSetTheme.SelectedIndexChanged
+        Me.SetApplyButton(True)
+    End Sub
+
     Private Sub cbTVGeneralLang_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbTVGeneralLang.SelectedIndexChanged
         Me.SetApplyButton(True)
     End Sub
@@ -2697,6 +2701,7 @@ Public Class dlgSettings
                 Me.cbGeneralDaemonDrive.SelectedItem = .GeneralDaemonDrive
                 Me.cbGeneralLanguage.SelectedItem = .GeneralLanguage
                 Me.cbGeneralMovieTheme.SelectedItem = .GeneralMovieTheme
+                Me.cbGeneralMovieSetTheme.SelectedItem = .GeneralMovieSetTheme
                 Me.cbGeneralTVEpisodeTheme.SelectedItem = .GeneralTVEpisodeTheme
                 Me.cbGeneralTVShowTheme.SelectedItem = .GeneralTVShowTheme
                 Me.cbMovieBannerPrefType.SelectedIndex = .MovieBannerPrefType
@@ -3527,10 +3532,12 @@ Public Class dlgSettings
 
     Private Sub LoadThemes()
         Me.cbGeneralMovieTheme.Items.Clear()
+        Me.cbGeneralMovieSetTheme.Items.Clear()
         Me.cbGeneralTVShowTheme.Items.Clear()
         Me.cbGeneralTVEpisodeTheme.Items.Clear()
         If Directory.Exists(Path.Combine(Functions.AppPath, "Themes")) Then
             Dim mT As New List(Of String)
+            Dim msT As New List(Of String)
             Dim sT As New List(Of String)
             Dim eT As New List(Of String)
             Try
@@ -3538,6 +3545,11 @@ Public Class dlgSettings
             Catch
             End Try
             Me.cbGeneralMovieTheme.Items.AddRange(mT.Cast(Of String)().Select(Function(AL) Path.GetFileNameWithoutExtension(AL).Replace("movie-", String.Empty)).ToArray)
+            Try
+                msT.AddRange(Directory.GetFiles(Path.Combine(Functions.AppPath, "Themes"), "movieset-*.xml"))
+            Catch
+            End Try
+            Me.cbGeneralMovieSetTheme.Items.AddRange(msT.Cast(Of String)().Select(Function(AL) Path.GetFileNameWithoutExtension(AL).Replace("movieset-", String.Empty)).ToArray)
             Try
                 sT.AddRange(Directory.GetFiles(Path.Combine(Functions.AppPath, "Themes"), "tvshow-*.xml"))
             Catch
@@ -4116,6 +4128,7 @@ Public Class dlgSettings
                 .GeneralInfoPanelAnim = chkGeneralInfoPanelAnim.Checked
                 .GeneralLanguage = Me.cbGeneralLanguage.Text
                 .GeneralMovieTheme = Me.cbGeneralMovieTheme.Text
+                .GeneralMovieSetTheme = Me.cbGeneralMovieSetTheme.Text
                 .GeneralOverwriteNfo = Me.chkGeneralOverwriteNfo.Checked
                 .GeneralShowGenresText = Me.chkGeneralShowGenresText.Checked
                 .GeneralShowImgDims = Me.chkGeneralShowImgDims.Checked
@@ -4878,6 +4891,7 @@ Public Class dlgSettings
         Me.lblGeneralntLang.Text = Master.eLang.GetString(430, "Interface Language:")
         Me.lblMovieScraperDefFIExt.Text = Master.eLang.GetString(626, "File Type")
         Me.lblGeneralMovieTheme.Text = String.Concat(Master.eLang.GetString(620, "Movie Theme"), ":")
+        Me.lblGeneralMovieSetTheme.Text = String.Concat(Master.eLang.GetString(1155, "MovieSet Theme"), ":")
         Me.lblTVScraperDefFIExt.Text = Me.lblMovieScraperDefFIExt.Text
         Me.lblGeneralOverwriteNfo.Text = Master.eLang.GetString(434, "(If unchecked, non-conforming nfos will be renamed to <filename>.info)")
         Me.lblTVLanguageOverlay.Text = Me.lblMovieLanguageOverlay.Text

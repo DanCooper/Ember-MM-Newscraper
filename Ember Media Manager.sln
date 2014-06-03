@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30110.0
+VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EmberMediaManager", "EmberMediaManager\EmberMediaManager.vbproj", "{9B57D3AB-AF12-4012-B945-284C2448DC81}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -658,8 +658,5 @@ Global
 		{4BFA47CB-1110-4BB5-9178-3B6EF98BC4EB} = {4FD2B635-11BD-4532-96F6-97ECB41072A1}
 		{974598ED-C19D-41CA-9771-4DE837D708BC} = {4FD2B635-11BD-4532-96F6-97ECB41072A1}
 		{3E5F4B11-1425-44CA-8146-309BEB292E97} = {4FD2B635-11BD-4532-96F6-97ECB41072A1}
-	EndGlobalSection
-	GlobalSection(Performance) = preSolution
-		HasPerformanceSessions = true
 	EndGlobalSection
 EndGlobal

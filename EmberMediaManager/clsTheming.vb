@@ -49,6 +49,7 @@ Public Class Theming
         BuildControlList()
 
         ParseThemes(_movietheme, "movie", Master.eSettings.GeneralMovieTheme)
+        ParseThemes(_moviesettheme, "movieset", Master.eSettings.GeneralMovieSetTheme)
         ParseThemes(_showtheme, "tvshow", Master.eSettings.GeneralTVShowTheme)
         ParseThemes(_eptheme, "tvep", Master.eSettings.GeneralTVEpisodeTheme)
     End Sub
@@ -123,6 +124,8 @@ Public Class Theming
                     xControl = frmMain.pnlTop250.Controls(xCon.Control)
                 Case "lblActorsHeader", "lstActors", "pbActors", "pbActLoad"
                     xControl = frmMain.pnlActors.Controls(xCon.Control)
+                Case "lblMoviesInSetHeader", "lstMoviesInSet"
+                    xControl = frmMain.pnlMoviesInSet.Controls(xCon.Control)
                 Case Else
                     xControl = frmMain.pnlInfoPanel.Controls(xCon.Control)
             End Select
@@ -144,7 +147,7 @@ Public Class Theming
     Public Sub BuildControlList()
         Try
             _availablecontrols.Clear()
-            Const PossibleControls As String = "pnlInfoPanel,lblInfoPanelHeader,btnUp,btnMid,btnDown,lblDirectorHeader,lblDirector,lblReleaseDateHeader,lblReleaseDate,pnlTop250,pbTop250,lblTop250,lblOutlineHeader,txtOutline,lblIMDBHeader,txtIMDBID,lblCertsHeader,txtCerts,lblFilePathHeader,txtFilePath,btnPlay,pnlActors,lblActorsHeader,lstActors,pbActors,pbActLoad,lblPlotHeader,txtPlot,lblMetaDataHeader,btnMetaDataRefresh,txtMetaData,pbMILoading"
+            Const PossibleControls As String = "pnlInfoPanel,lblInfoPanelHeader,btnUp,btnMid,btnDown,lblDirectorHeader,lblDirector,lblReleaseDateHeader,lblReleaseDate,pnlTop250,pbTop250,lblTop250,lblOutlineHeader,txtOutline,lblIMDBHeader,txtIMDBID,lblCertsHeader,txtCerts,lblFilePathHeader,txtFilePath,btnPlay,pnlActors,lblActorsHeader,lstActors,pbActors,pbActLoad,lblPlotHeader,txtPlot,lblMetaDataHeader,btnMetaDataRefresh,txtMetaData,pbMILoading,pnlMoviesInSet,lblMoviesInSetHeader,lstMoviesInSet"
             For Each sCon As String In PossibleControls.Split(Convert.ToChar(","))
                 _availablecontrols.Add(New Controls With {.Control = sCon})
             Next
@@ -324,6 +327,8 @@ Public Class Theming
                             xControl = frmMain.pnlTop250.Controls(aCon(0).Control)
                         Case "lblActorsHeader", "lstActors", "pbActors", "pbActLoad"
                             xControl = frmMain.pnlActors.Controls(aCon(0).Control)
+                        Case "lblMoviesInSetHeader", "lstMoviesInSet"
+                            xControl = frmMain.pnlMoviesInSet.Controls(aCon(0).Control)
                         Case Else
                             xControl = frmMain.pnlInfoPanel.Controls(aCon(0).Control)
                     End Select

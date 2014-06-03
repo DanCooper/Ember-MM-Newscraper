@@ -402,6 +402,22 @@ fontstyle code 5.
       <fontsize>8</fontsize>
       <fontstyle>0</fontstyle>
     </object>
+
+    <!-- Hide all the stuff we won't be using -->
+
+    <object name="pnlMoviesInSet">
+      <visible>false</visible>
+    </object>
+
+    <!-- BEGIN INTERNAL TO PNLMOVIESINSET -->
+    <object name="lblMoviesInSetHeader">
+      <visible>false</visible>
+    </object>
+
+    <object name="lstMoviesInSet">
+      <visible>false</visible>
+    </object>
+    <!-- END INTERNAL TO PNLMOVIESINSET -->
     
   </infopanel>
 </theme>

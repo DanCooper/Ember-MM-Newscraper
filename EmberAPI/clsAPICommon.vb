@@ -1702,6 +1702,7 @@ Public Class Structures
         Dim LandscapePath As String
         Dim NfoPath As String
         Dim PosterPath As String
+        Dim Movies As List(Of Structures.DBMovie)
     End Structure
     ''' <summary>
     ''' Structure representing a TV show in the database

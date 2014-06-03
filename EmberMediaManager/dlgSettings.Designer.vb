@@ -31,6 +31,11 @@ Partial Class dlgSettings
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgSettings))
         Me.gbGeneralMisc = New System.Windows.Forms.GroupBox()
+        Me.chkGeneralCreationDate = New System.Windows.Forms.CheckBox()
+        Me.chkGeneralSourceFromFolder = New System.Windows.Forms.CheckBox()
+        Me.chkGeneralCheckUpdates = New System.Windows.Forms.CheckBox()
+        Me.chkGeneralOverwriteNfo = New System.Windows.Forms.CheckBox()
+        Me.lblGeneralOverwriteNfo = New System.Windows.Forms.Label()
         Me.gbGeneralDaemon = New System.Windows.Forms.GroupBox()
         Me.lblGeneralDaemonDrive = New System.Windows.Forms.Label()
         Me.cbGeneralDaemonDrive = New System.Windows.Forms.ComboBox()
@@ -39,17 +44,14 @@ Partial Class dlgSettings
         Me.lblGeneralDaemonPath = New System.Windows.Forms.Label()
         Me.chkGeneralImagesGlassOverlay = New System.Windows.Forms.CheckBox()
         Me.chkGeneralHideFanartSmall = New System.Windows.Forms.CheckBox()
-        Me.chkGeneralCreationDate = New System.Windows.Forms.CheckBox()
         Me.chkGeneralShowGenresText = New System.Windows.Forms.CheckBox()
-        Me.chkGeneralSourceFromFolder = New System.Windows.Forms.CheckBox()
         Me.chkGeneralHideFanart = New System.Windows.Forms.CheckBox()
         Me.chkGeneralInfoPanelAnim = New System.Windows.Forms.CheckBox()
         Me.chkGeneralHidePoster = New System.Windows.Forms.CheckBox()
         Me.chkGeneralShowImgDims = New System.Windows.Forms.CheckBox()
-        Me.chkGeneralCheckUpdates = New System.Windows.Forms.CheckBox()
-        Me.chkGeneralOverwriteNfo = New System.Windows.Forms.CheckBox()
-        Me.lblGeneralOverwriteNfo = New System.Windows.Forms.Label()
         Me.gbGeneralThemes = New System.Windows.Forms.GroupBox()
+        Me.cbGeneralMovieSetTheme = New System.Windows.Forms.ComboBox()
+        Me.lblGeneralMovieSetTheme = New System.Windows.Forms.Label()
         Me.cbGeneralTVEpisodeTheme = New System.Windows.Forms.ComboBox()
         Me.lblGeneralTVEpisodeTheme = New System.Windows.Forms.Label()
         Me.cbGeneralTVShowTheme = New System.Windows.Forms.ComboBox()
@@ -212,6 +214,13 @@ Partial Class dlgSettings
         Me.ilSettings = New System.Windows.Forms.ImageList(Me.components)
         Me.tvSettingsList = New System.Windows.Forms.TreeView()
         Me.pnlGeneral = New System.Windows.Forms.Panel()
+        Me.gbGeneralMainWindow = New System.Windows.Forms.GroupBox()
+        Me.chkGeneralHideLandscape = New System.Windows.Forms.CheckBox()
+        Me.chkGeneralHideDiscArt = New System.Windows.Forms.CheckBox()
+        Me.chkGeneralHideClearArt = New System.Windows.Forms.CheckBox()
+        Me.chkGeneralHideBanner = New System.Windows.Forms.CheckBox()
+        Me.chkGeneralHideClearLogo = New System.Windows.Forms.CheckBox()
+        Me.chkGeneralHideCharacterArt = New System.Windows.Forms.CheckBox()
         Me.gbGeneralInterface = New System.Windows.Forms.GroupBox()
         Me.pnlMovieGeneral = New System.Windows.Forms.Panel()
         Me.gbMovieGenrealIMDBMirrorOpts = New System.Windows.Forms.GroupBox()
@@ -918,13 +927,6 @@ Partial Class dlgSettings
         Me.chkMovieThemeEnable = New System.Windows.Forms.CheckBox()
         Me.pnlTVThemes = New System.Windows.Forms.Panel()
         Me.Label2 = New System.Windows.Forms.Label()
-        Me.gbGeneralMainWindow = New System.Windows.Forms.GroupBox()
-        Me.chkGeneralHideBanner = New System.Windows.Forms.CheckBox()
-        Me.chkGeneralHideClearArt = New System.Windows.Forms.CheckBox()
-        Me.chkGeneralHideCharacterArt = New System.Windows.Forms.CheckBox()
-        Me.chkGeneralHideClearLogo = New System.Windows.Forms.CheckBox()
-        Me.chkGeneralHideDiscArt = New System.Windows.Forms.CheckBox()
-        Me.chkGeneralHideLandscape = New System.Windows.Forms.CheckBox()
         Me.gbGeneralMisc.SuspendLayout
         Me.gbGeneralDaemon.SuspendLayout
         Me.gbGeneralThemes.SuspendLayout
@@ -955,6 +957,7 @@ Partial Class dlgSettings
         Me.pnlSettingsTop.SuspendLayout
         CType(Me.pbSettingsTopLogo,System.ComponentModel.ISupportInitialize).BeginInit
         Me.pnlGeneral.SuspendLayout
+        Me.gbGeneralMainWindow.SuspendLayout
         Me.gbGeneralInterface.SuspendLayout
         Me.pnlMovieGeneral.SuspendLayout
         Me.gbMovieGenrealIMDBMirrorOpts.SuspendLayout
@@ -1087,7 +1090,6 @@ Partial Class dlgSettings
         Me.pnlMovieThemes.SuspendLayout
         Me.gbMovieThemeOpts.SuspendLayout
         Me.pnlTVThemes.SuspendLayout
-        Me.gbGeneralMainWindow.SuspendLayout
         Me.SuspendLayout
         '
         'gbGeneralMisc
@@ -1104,6 +1106,61 @@ Partial Class dlgSettings
         Me.gbGeneralMisc.TabIndex = 1
         Me.gbGeneralMisc.TabStop = false
         Me.gbGeneralMisc.Text = "Miscellaneous"
+        '
+        'chkGeneralCreationDate
+        '
+        Me.chkGeneralCreationDate.AutoSize = true
+        Me.chkGeneralCreationDate.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkGeneralCreationDate.Location = New System.Drawing.Point(10, 119)
+        Me.chkGeneralCreationDate.Name = "chkGeneralCreationDate"
+        Me.chkGeneralCreationDate.Size = New System.Drawing.Size(196, 17)
+        Me.chkGeneralCreationDate.TabIndex = 10
+        Me.chkGeneralCreationDate.Text = "Use file creation date of videofile"
+        Me.chkGeneralCreationDate.UseVisualStyleBackColor = true
+        '
+        'chkGeneralSourceFromFolder
+        '
+        Me.chkGeneralSourceFromFolder.AutoSize = true
+        Me.chkGeneralSourceFromFolder.CheckAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkGeneralSourceFromFolder.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkGeneralSourceFromFolder.Location = New System.Drawing.Point(10, 101)
+        Me.chkGeneralSourceFromFolder.Name = "chkGeneralSourceFromFolder"
+        Me.chkGeneralSourceFromFolder.Size = New System.Drawing.Size(243, 17)
+        Me.chkGeneralSourceFromFolder.TabIndex = 5
+        Me.chkGeneralSourceFromFolder.Text = "Include Folder Name in Source Type Check"
+        Me.chkGeneralSourceFromFolder.UseVisualStyleBackColor = true
+        '
+        'chkGeneralCheckUpdates
+        '
+        Me.chkGeneralCheckUpdates.AutoSize = true
+        Me.chkGeneralCheckUpdates.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkGeneralCheckUpdates.Location = New System.Drawing.Point(10, 20)
+        Me.chkGeneralCheckUpdates.Name = "chkGeneralCheckUpdates"
+        Me.chkGeneralCheckUpdates.Size = New System.Drawing.Size(121, 17)
+        Me.chkGeneralCheckUpdates.TabIndex = 0
+        Me.chkGeneralCheckUpdates.Text = "Check for Updates"
+        Me.chkGeneralCheckUpdates.UseVisualStyleBackColor = true
+        '
+        'chkGeneralOverwriteNfo
+        '
+        Me.chkGeneralOverwriteNfo.AutoSize = true
+        Me.chkGeneralOverwriteNfo.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkGeneralOverwriteNfo.Location = New System.Drawing.Point(10, 43)
+        Me.chkGeneralOverwriteNfo.Name = "chkGeneralOverwriteNfo"
+        Me.chkGeneralOverwriteNfo.Size = New System.Drawing.Size(191, 17)
+        Me.chkGeneralOverwriteNfo.TabIndex = 2
+        Me.chkGeneralOverwriteNfo.Text = "Overwrite Non-conforming nfos"
+        Me.chkGeneralOverwriteNfo.UseVisualStyleBackColor = true
+        '
+        'lblGeneralOverwriteNfo
+        '
+        Me.lblGeneralOverwriteNfo.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblGeneralOverwriteNfo.Location = New System.Drawing.Point(39, 64)
+        Me.lblGeneralOverwriteNfo.Name = "lblGeneralOverwriteNfo"
+        Me.lblGeneralOverwriteNfo.Size = New System.Drawing.Size(165, 24)
+        Me.lblGeneralOverwriteNfo.TabIndex = 3
+        Me.lblGeneralOverwriteNfo.Text = "(If unchecked, non-conforming nfos will be renamed to <filename>.info)"
+        Me.lblGeneralOverwriteNfo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'gbGeneralDaemon
         '
@@ -1191,17 +1248,6 @@ Partial Class dlgSettings
         Me.chkGeneralHideFanartSmall.Text = "Do Not Display Small Fanart"
         Me.chkGeneralHideFanartSmall.UseVisualStyleBackColor = true
         '
-        'chkGeneralCreationDate
-        '
-        Me.chkGeneralCreationDate.AutoSize = true
-        Me.chkGeneralCreationDate.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkGeneralCreationDate.Location = New System.Drawing.Point(10, 119)
-        Me.chkGeneralCreationDate.Name = "chkGeneralCreationDate"
-        Me.chkGeneralCreationDate.Size = New System.Drawing.Size(196, 17)
-        Me.chkGeneralCreationDate.TabIndex = 10
-        Me.chkGeneralCreationDate.Text = "Use file creation date of videofile"
-        Me.chkGeneralCreationDate.UseVisualStyleBackColor = true
-        '
         'chkGeneralShowGenresText
         '
         Me.chkGeneralShowGenresText.AutoSize = true
@@ -1212,18 +1258,6 @@ Partial Class dlgSettings
         Me.chkGeneralShowGenresText.TabIndex = 9
         Me.chkGeneralShowGenresText.Text = "Allways Display Genres Text"
         Me.chkGeneralShowGenresText.UseVisualStyleBackColor = true
-        '
-        'chkGeneralSourceFromFolder
-        '
-        Me.chkGeneralSourceFromFolder.AutoSize = true
-        Me.chkGeneralSourceFromFolder.CheckAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkGeneralSourceFromFolder.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkGeneralSourceFromFolder.Location = New System.Drawing.Point(10, 101)
-        Me.chkGeneralSourceFromFolder.Name = "chkGeneralSourceFromFolder"
-        Me.chkGeneralSourceFromFolder.Size = New System.Drawing.Size(243, 17)
-        Me.chkGeneralSourceFromFolder.TabIndex = 5
-        Me.chkGeneralSourceFromFolder.Text = "Include Folder Name in Source Type Check"
-        Me.chkGeneralSourceFromFolder.UseVisualStyleBackColor = true
         '
         'chkGeneralHideFanart
         '
@@ -1269,40 +1303,10 @@ Partial Class dlgSettings
         Me.chkGeneralShowImgDims.Text = "Display Image Dimensions"
         Me.chkGeneralShowImgDims.UseVisualStyleBackColor = true
         '
-        'chkGeneralCheckUpdates
-        '
-        Me.chkGeneralCheckUpdates.AutoSize = true
-        Me.chkGeneralCheckUpdates.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkGeneralCheckUpdates.Location = New System.Drawing.Point(10, 20)
-        Me.chkGeneralCheckUpdates.Name = "chkGeneralCheckUpdates"
-        Me.chkGeneralCheckUpdates.Size = New System.Drawing.Size(121, 17)
-        Me.chkGeneralCheckUpdates.TabIndex = 0
-        Me.chkGeneralCheckUpdates.Text = "Check for Updates"
-        Me.chkGeneralCheckUpdates.UseVisualStyleBackColor = true
-        '
-        'chkGeneralOverwriteNfo
-        '
-        Me.chkGeneralOverwriteNfo.AutoSize = true
-        Me.chkGeneralOverwriteNfo.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkGeneralOverwriteNfo.Location = New System.Drawing.Point(10, 43)
-        Me.chkGeneralOverwriteNfo.Name = "chkGeneralOverwriteNfo"
-        Me.chkGeneralOverwriteNfo.Size = New System.Drawing.Size(191, 17)
-        Me.chkGeneralOverwriteNfo.TabIndex = 2
-        Me.chkGeneralOverwriteNfo.Text = "Overwrite Non-conforming nfos"
-        Me.chkGeneralOverwriteNfo.UseVisualStyleBackColor = true
-        '
-        'lblGeneralOverwriteNfo
-        '
-        Me.lblGeneralOverwriteNfo.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblGeneralOverwriteNfo.Location = New System.Drawing.Point(39, 64)
-        Me.lblGeneralOverwriteNfo.Name = "lblGeneralOverwriteNfo"
-        Me.lblGeneralOverwriteNfo.Size = New System.Drawing.Size(165, 24)
-        Me.lblGeneralOverwriteNfo.TabIndex = 3
-        Me.lblGeneralOverwriteNfo.Text = "(If unchecked, non-conforming nfos will be renamed to <filename>.info)"
-        Me.lblGeneralOverwriteNfo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
         'gbGeneralThemes
         '
+        Me.gbGeneralThemes.Controls.Add(Me.cbGeneralMovieSetTheme)
+        Me.gbGeneralThemes.Controls.Add(Me.lblGeneralMovieSetTheme)
         Me.gbGeneralThemes.Controls.Add(Me.cbGeneralTVEpisodeTheme)
         Me.gbGeneralThemes.Controls.Add(Me.lblGeneralTVEpisodeTheme)
         Me.gbGeneralThemes.Controls.Add(Me.cbGeneralTVShowTheme)
@@ -1312,17 +1316,37 @@ Partial Class dlgSettings
         Me.gbGeneralThemes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.gbGeneralThemes.Location = New System.Drawing.Point(8, 61)
         Me.gbGeneralThemes.Name = "gbGeneralThemes"
-        Me.gbGeneralThemes.Size = New System.Drawing.Size(179, 166)
+        Me.gbGeneralThemes.Size = New System.Drawing.Size(179, 207)
         Me.gbGeneralThemes.TabIndex = 2
         Me.gbGeneralThemes.TabStop = false
         Me.gbGeneralThemes.Text = "Themes"
+        '
+        'cbGeneralMovieSetTheme
+        '
+        Me.cbGeneralMovieSetTheme.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbGeneralMovieSetTheme.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.cbGeneralMovieSetTheme.FormattingEnabled = true
+        Me.cbGeneralMovieSetTheme.Location = New System.Drawing.Point(9, 81)
+        Me.cbGeneralMovieSetTheme.Name = "cbGeneralMovieSetTheme"
+        Me.cbGeneralMovieSetTheme.Size = New System.Drawing.Size(162, 21)
+        Me.cbGeneralMovieSetTheme.TabIndex = 7
+        '
+        'lblGeneralMovieSetTheme
+        '
+        Me.lblGeneralMovieSetTheme.AutoSize = true
+        Me.lblGeneralMovieSetTheme.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblGeneralMovieSetTheme.Location = New System.Drawing.Point(7, 66)
+        Me.lblGeneralMovieSetTheme.Name = "lblGeneralMovieSetTheme"
+        Me.lblGeneralMovieSetTheme.Size = New System.Drawing.Size(93, 13)
+        Me.lblGeneralMovieSetTheme.TabIndex = 6
+        Me.lblGeneralMovieSetTheme.Text = "MovieSet Theme:"
         '
         'cbGeneralTVEpisodeTheme
         '
         Me.cbGeneralTVEpisodeTheme.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbGeneralTVEpisodeTheme.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.cbGeneralTVEpisodeTheme.FormattingEnabled = true
-        Me.cbGeneralTVEpisodeTheme.Location = New System.Drawing.Point(9, 129)
+        Me.cbGeneralTVEpisodeTheme.Location = New System.Drawing.Point(9, 167)
         Me.cbGeneralTVEpisodeTheme.Name = "cbGeneralTVEpisodeTheme"
         Me.cbGeneralTVEpisodeTheme.Size = New System.Drawing.Size(162, 21)
         Me.cbGeneralTVEpisodeTheme.TabIndex = 5
@@ -1331,7 +1355,7 @@ Partial Class dlgSettings
         '
         Me.lblGeneralTVEpisodeTheme.AutoSize = true
         Me.lblGeneralTVEpisodeTheme.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblGeneralTVEpisodeTheme.Location = New System.Drawing.Point(7, 114)
+        Me.lblGeneralTVEpisodeTheme.Location = New System.Drawing.Point(7, 152)
         Me.lblGeneralTVEpisodeTheme.Name = "lblGeneralTVEpisodeTheme"
         Me.lblGeneralTVEpisodeTheme.Size = New System.Drawing.Size(87, 13)
         Me.lblGeneralTVEpisodeTheme.TabIndex = 4
@@ -1342,7 +1366,7 @@ Partial Class dlgSettings
         Me.cbGeneralTVShowTheme.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbGeneralTVShowTheme.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.cbGeneralTVShowTheme.FormattingEnabled = true
-        Me.cbGeneralTVShowTheme.Location = New System.Drawing.Point(9, 83)
+        Me.cbGeneralTVShowTheme.Location = New System.Drawing.Point(9, 124)
         Me.cbGeneralTVShowTheme.Name = "cbGeneralTVShowTheme"
         Me.cbGeneralTVShowTheme.Size = New System.Drawing.Size(162, 21)
         Me.cbGeneralTVShowTheme.TabIndex = 3
@@ -1351,7 +1375,7 @@ Partial Class dlgSettings
         '
         Me.lblGeneralTVShowTheme.AutoSize = true
         Me.lblGeneralTVShowTheme.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblGeneralTVShowTheme.Location = New System.Drawing.Point(7, 68)
+        Me.lblGeneralTVShowTheme.Location = New System.Drawing.Point(7, 109)
         Me.lblGeneralTVShowTheme.Name = "lblGeneralTVShowTheme"
         Me.lblGeneralTVShowTheme.Size = New System.Drawing.Size(90, 13)
         Me.lblGeneralTVShowTheme.TabIndex = 2
@@ -3122,6 +3146,95 @@ Partial Class dlgSettings
         Me.pnlGeneral.TabIndex = 10
         Me.pnlGeneral.Visible = false
         '
+        'gbGeneralMainWindow
+        '
+        Me.gbGeneralMainWindow.Controls.Add(Me.chkGeneralHideLandscape)
+        Me.gbGeneralMainWindow.Controls.Add(Me.chkGeneralHideDiscArt)
+        Me.gbGeneralMainWindow.Controls.Add(Me.chkGeneralHideClearArt)
+        Me.gbGeneralMainWindow.Controls.Add(Me.chkGeneralHideFanartSmall)
+        Me.gbGeneralMainWindow.Controls.Add(Me.chkGeneralHideBanner)
+        Me.gbGeneralMainWindow.Controls.Add(Me.chkGeneralHidePoster)
+        Me.gbGeneralMainWindow.Controls.Add(Me.chkGeneralHideClearLogo)
+        Me.gbGeneralMainWindow.Controls.Add(Me.chkGeneralHideFanart)
+        Me.gbGeneralMainWindow.Controls.Add(Me.chkGeneralHideCharacterArt)
+        Me.gbGeneralMainWindow.Controls.Add(Me.chkGeneralInfoPanelAnim)
+        Me.gbGeneralMainWindow.Controls.Add(Me.chkGeneralShowGenresText)
+        Me.gbGeneralMainWindow.Controls.Add(Me.chkGeneralImagesGlassOverlay)
+        Me.gbGeneralMainWindow.Controls.Add(Me.chkGeneralShowImgDims)
+        Me.gbGeneralMainWindow.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.gbGeneralMainWindow.Location = New System.Drawing.Point(210, 151)
+        Me.gbGeneralMainWindow.Name = "gbGeneralMainWindow"
+        Me.gbGeneralMainWindow.Size = New System.Drawing.Size(537, 234)
+        Me.gbGeneralMainWindow.TabIndex = 14
+        Me.gbGeneralMainWindow.TabStop = false
+        Me.gbGeneralMainWindow.Text = "Main Window"
+        '
+        'chkGeneralHideLandscape
+        '
+        Me.chkGeneralHideLandscape.AutoSize = true
+        Me.chkGeneralHideLandscape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkGeneralHideLandscape.Location = New System.Drawing.Point(299, 159)
+        Me.chkGeneralHideLandscape.Name = "chkGeneralHideLandscape"
+        Me.chkGeneralHideLandscape.Size = New System.Drawing.Size(160, 17)
+        Me.chkGeneralHideLandscape.TabIndex = 18
+        Me.chkGeneralHideLandscape.Text = "Do Not Display Landscape"
+        Me.chkGeneralHideLandscape.UseVisualStyleBackColor = true
+        '
+        'chkGeneralHideDiscArt
+        '
+        Me.chkGeneralHideDiscArt.AutoSize = true
+        Me.chkGeneralHideDiscArt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkGeneralHideDiscArt.Location = New System.Drawing.Point(6, 205)
+        Me.chkGeneralHideDiscArt.Name = "chkGeneralHideDiscArt"
+        Me.chkGeneralHideDiscArt.Size = New System.Drawing.Size(142, 17)
+        Me.chkGeneralHideDiscArt.TabIndex = 17
+        Me.chkGeneralHideDiscArt.Text = "Do Not Display DiscArt"
+        Me.chkGeneralHideDiscArt.UseVisualStyleBackColor = true
+        '
+        'chkGeneralHideClearArt
+        '
+        Me.chkGeneralHideClearArt.AutoSize = true
+        Me.chkGeneralHideClearArt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkGeneralHideClearArt.Location = New System.Drawing.Point(6, 159)
+        Me.chkGeneralHideClearArt.Name = "chkGeneralHideClearArt"
+        Me.chkGeneralHideClearArt.Size = New System.Drawing.Size(147, 17)
+        Me.chkGeneralHideClearArt.TabIndex = 14
+        Me.chkGeneralHideClearArt.Text = "Do Not Display ClearArt"
+        Me.chkGeneralHideClearArt.UseVisualStyleBackColor = true
+        '
+        'chkGeneralHideBanner
+        '
+        Me.chkGeneralHideBanner.AutoSize = true
+        Me.chkGeneralHideBanner.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkGeneralHideBanner.Location = New System.Drawing.Point(6, 113)
+        Me.chkGeneralHideBanner.Name = "chkGeneralHideBanner"
+        Me.chkGeneralHideBanner.Size = New System.Drawing.Size(143, 17)
+        Me.chkGeneralHideBanner.TabIndex = 13
+        Me.chkGeneralHideBanner.Text = "Do Not Display Banner"
+        Me.chkGeneralHideBanner.UseVisualStyleBackColor = true
+        '
+        'chkGeneralHideClearLogo
+        '
+        Me.chkGeneralHideClearLogo.AutoSize = true
+        Me.chkGeneralHideClearLogo.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkGeneralHideClearLogo.Location = New System.Drawing.Point(6, 182)
+        Me.chkGeneralHideClearLogo.Name = "chkGeneralHideClearLogo"
+        Me.chkGeneralHideClearLogo.Size = New System.Drawing.Size(158, 17)
+        Me.chkGeneralHideClearLogo.TabIndex = 16
+        Me.chkGeneralHideClearLogo.Text = "Do Not Display ClearLogo"
+        Me.chkGeneralHideClearLogo.UseVisualStyleBackColor = true
+        '
+        'chkGeneralHideCharacterArt
+        '
+        Me.chkGeneralHideCharacterArt.AutoSize = true
+        Me.chkGeneralHideCharacterArt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkGeneralHideCharacterArt.Location = New System.Drawing.Point(6, 136)
+        Me.chkGeneralHideCharacterArt.Name = "chkGeneralHideCharacterArt"
+        Me.chkGeneralHideCharacterArt.Size = New System.Drawing.Size(170, 17)
+        Me.chkGeneralHideCharacterArt.TabIndex = 15
+        Me.chkGeneralHideCharacterArt.Text = "Do Not Display CharacterArt"
+        Me.chkGeneralHideCharacterArt.UseVisualStyleBackColor = true
+        '
         'gbGeneralInterface
         '
         Me.gbGeneralInterface.Controls.Add(Me.gbGeneralThemes)
@@ -3130,7 +3243,7 @@ Partial Class dlgSettings
         Me.gbGeneralInterface.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.gbGeneralInterface.Location = New System.Drawing.Point(7, 3)
         Me.gbGeneralInterface.Name = "gbGeneralInterface"
-        Me.gbGeneralInterface.Size = New System.Drawing.Size(196, 242)
+        Me.gbGeneralInterface.Size = New System.Drawing.Size(196, 278)
         Me.gbGeneralInterface.TabIndex = 0
         Me.gbGeneralInterface.TabStop = false
         Me.gbGeneralInterface.Text = "Interface"
@@ -10859,95 +10972,6 @@ Partial Class dlgSettings
         Me.Label2.TabIndex = 0
         Me.Label2.Text = "TV Themes Dummy Label"
         '
-        'gbGeneralMainWindow
-        '
-        Me.gbGeneralMainWindow.Controls.Add(Me.chkGeneralHideLandscape)
-        Me.gbGeneralMainWindow.Controls.Add(Me.chkGeneralHideDiscArt)
-        Me.gbGeneralMainWindow.Controls.Add(Me.chkGeneralHideClearArt)
-        Me.gbGeneralMainWindow.Controls.Add(Me.chkGeneralHideFanartSmall)
-        Me.gbGeneralMainWindow.Controls.Add(Me.chkGeneralHideBanner)
-        Me.gbGeneralMainWindow.Controls.Add(Me.chkGeneralHidePoster)
-        Me.gbGeneralMainWindow.Controls.Add(Me.chkGeneralHideClearLogo)
-        Me.gbGeneralMainWindow.Controls.Add(Me.chkGeneralHideFanart)
-        Me.gbGeneralMainWindow.Controls.Add(Me.chkGeneralHideCharacterArt)
-        Me.gbGeneralMainWindow.Controls.Add(Me.chkGeneralInfoPanelAnim)
-        Me.gbGeneralMainWindow.Controls.Add(Me.chkGeneralShowGenresText)
-        Me.gbGeneralMainWindow.Controls.Add(Me.chkGeneralImagesGlassOverlay)
-        Me.gbGeneralMainWindow.Controls.Add(Me.chkGeneralShowImgDims)
-        Me.gbGeneralMainWindow.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.gbGeneralMainWindow.Location = New System.Drawing.Point(210, 151)
-        Me.gbGeneralMainWindow.Name = "gbGeneralMainWindow"
-        Me.gbGeneralMainWindow.Size = New System.Drawing.Size(537, 234)
-        Me.gbGeneralMainWindow.TabIndex = 14
-        Me.gbGeneralMainWindow.TabStop = false
-        Me.gbGeneralMainWindow.Text = "Main Window"
-        '
-        'chkGeneralHideBanner
-        '
-        Me.chkGeneralHideBanner.AutoSize = true
-        Me.chkGeneralHideBanner.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkGeneralHideBanner.Location = New System.Drawing.Point(6, 113)
-        Me.chkGeneralHideBanner.Name = "chkGeneralHideBanner"
-        Me.chkGeneralHideBanner.Size = New System.Drawing.Size(143, 17)
-        Me.chkGeneralHideBanner.TabIndex = 13
-        Me.chkGeneralHideBanner.Text = "Do Not Display Banner"
-        Me.chkGeneralHideBanner.UseVisualStyleBackColor = true
-        '
-        'chkGeneralHideClearArt
-        '
-        Me.chkGeneralHideClearArt.AutoSize = true
-        Me.chkGeneralHideClearArt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkGeneralHideClearArt.Location = New System.Drawing.Point(6, 159)
-        Me.chkGeneralHideClearArt.Name = "chkGeneralHideClearArt"
-        Me.chkGeneralHideClearArt.Size = New System.Drawing.Size(147, 17)
-        Me.chkGeneralHideClearArt.TabIndex = 14
-        Me.chkGeneralHideClearArt.Text = "Do Not Display ClearArt"
-        Me.chkGeneralHideClearArt.UseVisualStyleBackColor = true
-        '
-        'chkGeneralHideCharacterArt
-        '
-        Me.chkGeneralHideCharacterArt.AutoSize = true
-        Me.chkGeneralHideCharacterArt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkGeneralHideCharacterArt.Location = New System.Drawing.Point(6, 136)
-        Me.chkGeneralHideCharacterArt.Name = "chkGeneralHideCharacterArt"
-        Me.chkGeneralHideCharacterArt.Size = New System.Drawing.Size(170, 17)
-        Me.chkGeneralHideCharacterArt.TabIndex = 15
-        Me.chkGeneralHideCharacterArt.Text = "Do Not Display CharacterArt"
-        Me.chkGeneralHideCharacterArt.UseVisualStyleBackColor = true
-        '
-        'chkGeneralHideClearLogo
-        '
-        Me.chkGeneralHideClearLogo.AutoSize = true
-        Me.chkGeneralHideClearLogo.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkGeneralHideClearLogo.Location = New System.Drawing.Point(6, 182)
-        Me.chkGeneralHideClearLogo.Name = "chkGeneralHideClearLogo"
-        Me.chkGeneralHideClearLogo.Size = New System.Drawing.Size(158, 17)
-        Me.chkGeneralHideClearLogo.TabIndex = 16
-        Me.chkGeneralHideClearLogo.Text = "Do Not Display ClearLogo"
-        Me.chkGeneralHideClearLogo.UseVisualStyleBackColor = true
-        '
-        'chkGeneralHideDiscArt
-        '
-        Me.chkGeneralHideDiscArt.AutoSize = true
-        Me.chkGeneralHideDiscArt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkGeneralHideDiscArt.Location = New System.Drawing.Point(6, 205)
-        Me.chkGeneralHideDiscArt.Name = "chkGeneralHideDiscArt"
-        Me.chkGeneralHideDiscArt.Size = New System.Drawing.Size(142, 17)
-        Me.chkGeneralHideDiscArt.TabIndex = 17
-        Me.chkGeneralHideDiscArt.Text = "Do Not Display DiscArt"
-        Me.chkGeneralHideDiscArt.UseVisualStyleBackColor = true
-        '
-        'chkGeneralHideLandscape
-        '
-        Me.chkGeneralHideLandscape.AutoSize = true
-        Me.chkGeneralHideLandscape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkGeneralHideLandscape.Location = New System.Drawing.Point(299, 159)
-        Me.chkGeneralHideLandscape.Name = "chkGeneralHideLandscape"
-        Me.chkGeneralHideLandscape.Size = New System.Drawing.Size(160, 17)
-        Me.chkGeneralHideLandscape.TabIndex = 18
-        Me.chkGeneralHideLandscape.Text = "Do Not Display Landscape"
-        Me.chkGeneralHideLandscape.UseVisualStyleBackColor = true
-        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -11037,6 +11061,8 @@ Partial Class dlgSettings
         Me.pnlSettingsTop.PerformLayout
         CType(Me.pbSettingsTopLogo,System.ComponentModel.ISupportInitialize).EndInit
         Me.pnlGeneral.ResumeLayout(false)
+        Me.gbGeneralMainWindow.ResumeLayout(false)
+        Me.gbGeneralMainWindow.PerformLayout
         Me.gbGeneralInterface.ResumeLayout(false)
         Me.gbGeneralInterface.PerformLayout
         Me.pnlMovieGeneral.ResumeLayout(false)
@@ -11244,8 +11270,6 @@ Partial Class dlgSettings
         Me.gbMovieThemeOpts.PerformLayout
         Me.pnlTVThemes.ResumeLayout(false)
         Me.pnlTVThemes.PerformLayout
-        Me.gbGeneralMainWindow.ResumeLayout(false)
-        Me.gbGeneralMainWindow.PerformLayout
         Me.ResumeLayout(false)
         Me.PerformLayout
 
@@ -12145,4 +12169,6 @@ End Sub
     Friend WithEvents chkGeneralHideBanner As System.Windows.Forms.CheckBox
     Friend WithEvents chkGeneralHideClearLogo As System.Windows.Forms.CheckBox
     Friend WithEvents chkGeneralHideCharacterArt As System.Windows.Forms.CheckBox
+    Friend WithEvents cbGeneralMovieSetTheme As System.Windows.Forms.ComboBox
+    Friend WithEvents lblGeneralMovieSetTheme As System.Windows.Forms.Label
 End Class

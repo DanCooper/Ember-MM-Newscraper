@@ -1248,7 +1248,21 @@ Public Class Database
                         If Not DBNull.Value.Equals(SQLreader("DiscArtPath")) Then _moviesetDB.DiscArtPath = SQLreader("DiscArtPath").ToString
                         If Not DBNull.Value.Equals(SQLreader("ClearLogoPath")) Then _moviesetDB.ClearLogoPath = SQLreader("ClearLogoPath").ToString
                         If Not DBNull.Value.Equals(SQLreader("ClearArtPath")) Then _moviesetDB.ClearArtPath = SQLreader("ClearArtPath").ToString
+                        _moviesetDB.Movies = New List(Of Structures.DBMovie)
                     End If
+                End Using
+            End Using
+
+            Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                SQLcommand.CommandText = String.Concat("SELECT MovieID, SetID , SetOrder FROM MoviesSets ", _
+                            "WHERE SetID = ", _moviesetDB.ID, " ORDER BY SetOrder;")
+                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                    Dim movie As Structures.DBMovie
+                    While SQLreader.Read
+                        movie = New Structures.DBMovie
+                        movie = LoadMovieFromDB(Convert.ToInt64(SQLreader("MovieID")))
+                        _moviesetDB.Movies.Add(movie)
+                    End While
                 End Using
             End Using
 
