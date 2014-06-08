@@ -1471,19 +1471,19 @@ Public Class Functions
     ''' This is to prevent malformed URIs from attacking the user's machine.</remarks>
     Public Shared Function Launch(ByRef Destination As String, Optional ByRef AllowLocalFiles As Boolean = False) As Boolean
         If String.IsNullOrEmpty(Destination) Then
-            logger.Error(New StackFrame().GetMethod().Name, "Blank destination")
+            logger.Error( "Blank destination")
             Return False
         End If
         Try
             Dim uriDestination As New Uri(Destination)
             If uriDestination.IsFile() Then
                 If (Not AllowLocalFiles) Then
-                    logger.Error(New StackFrame().GetMethod().Name, "Destination is a file, which is not permitted for security reasons <{0}>", Destination)
+                    logger.Error( "Destination is a file, which is not permitted for security reasons <{0}>", Destination)
                     Return False
                 Else
                     Dim localFileName = uriDestination.GetComponents(UriComponents.Path, UriFormat.SafeUnescaped)
                     If (Not File.Exists(localFileName)) Then
-                        logger.Error(New StackFrame().GetMethod().Name, "Destination is a file, but it does not exist <{0}>", Destination)
+                        logger.Error( "Destination is a file, but it does not exist <{0}>", Destination)
                         Return False
                     End If
                 End If

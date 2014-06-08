@@ -748,7 +748,7 @@ mPlot:          'MOVIE PLOT
         Public Function GetMovieStudios(ByVal strID As String) As List(Of String)
             Dim alStudio As New List(Of String)
             If (String.IsNullOrEmpty(strID)) Then
-                logger.Warn(New StackFrame().GetMethod().Name, "Attempting to GetMovieStudios with invalid ID <{0}>", strID)
+                logger.Warn("Attempting to GetMovieStudios with invalid ID <{0}>", strID)
                 Return alStudio
             End If
             Dim HTML As String
@@ -756,7 +756,7 @@ mPlot:          'MOVIE PLOT
                 HTML = sHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/title/tt", strID, "/combined"))
             End Using
             If (String.IsNullOrEmpty(HTML)) Then
-                logger.Warn(New StackFrame().GetMethod().Name, "IMDB Query returned no results for ID of <{0}>", strID)
+                logger.Warn("IMDB Query returned no results for ID of <{0}>", strID)
                 Return alStudio
             End If
             Dim D, W As Integer

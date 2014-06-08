@@ -1480,7 +1480,7 @@ Public Class frmMain
         Dim tUrlList As New List(Of Theme)
         Dim DBScrapeMovie As New Structures.DBMovie
 
-        logger.Trace(New StackFrame().GetMethod().Name, "Starting MOVIE scrape")
+        logger.Trace( "Starting MOVIE scrape")
 
         AddHandler ModulesManager.Instance.MovieScraperEvent, AddressOf MovieScraperEvent
 
@@ -2091,7 +2091,7 @@ Public Class frmMain
         End If
         RemoveHandler ModulesManager.Instance.MovieScraperEvent, AddressOf MovieScraperEvent
         e.Result = New Results With {.scrapeType = Args.scrapeType}
-        logger.Trace(New StackFrame().GetMethod().Name, "Ended MOVIE scrape")
+        logger.Trace( "Ended MOVIE scrape")
     End Sub
 
     Private Sub bwMovieScraper_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwMovieScraper.ProgressChanged
@@ -7901,7 +7901,7 @@ doCancel:
     End Sub
 
     Private Sub frmMain_FormClosed(sender As Object, e As FormClosedEventArgs) Handles Me.FormClosed
-        logger.Info(New StackFrame().GetMethod().Name, "====Ember Media Manager exiting====")
+        logger.Info( "====Ember Media Manager exiting====")
     End Sub
     ''' <summary>
     ''' The FormClosing event has been called, so prepare the form to shut down
@@ -7992,7 +7992,7 @@ doCancel:
         Try
             Me.Visible = False
 
-            logger.Info(New StackFrame().GetMethod().Name, "====Ember Media Manager starting up====")
+            logger.Info( "====Ember Media Manager starting up====")
 
             fLoading = New frmSplash
             If Master.isWindows Then 'Dam mono on MacOSX don't have trayicon implemented yet
@@ -8125,7 +8125,7 @@ doCancel:
 
             fLoading.Close()
         Catch ex As Exception
-            logger.FatalException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             Me.Close()
         End Try
     End Sub
@@ -8136,7 +8136,7 @@ doCancel:
     ''' <remarks></remarks>
     Private Sub LoadWithCommandLine(ByVal Args() As String)
         Try
-            logger.Trace(New StackFrame().GetMethod().Name, "LoadWithCommandLine()")
+            logger.Trace( "LoadWithCommandLine()")
 
             Dim MoviePath As String = String.Empty
             Dim isSingle As Boolean = False
@@ -8414,7 +8414,7 @@ doCancel:
     ''' <remarks></remarks>
     Private Sub LoadWithGUI()
         Try
-            logger.Trace(New StackFrame().GetMethod().Name, "LoadWithGUI()")
+            logger.Trace( "LoadWithGUI()")
             'If Master.eSettings.CheckUpdates Then
             '    If Functions.CheckNeedUpdate() Then
             '        Using dNewVer As New dlgNewVersion
@@ -8603,7 +8603,7 @@ doCancel:
                     logger.ErrorException(New StackFrame().GetMethod().Name, ex)
                 End Try
             Case Else
-                logger.Warn(New StackFrame().GetMethod().Name, "Callback for <{0}> with no handler.", mType)
+                logger.Warn( "Callback for <{0}> with no handler.", mType)
         End Select
     End Sub
 
@@ -9827,7 +9827,7 @@ doCancel:
                 Me.lblCanceling.Text = Master.eLang.GetString(121, "Canceling Backdrop Copy...")
                 Me.tslLoading.Text = Master.eLang.GetString(130, "Copying Fanart to Backdrops Folder:")
             Case Else
-                logger.Warn(New StackFrame().GetMethod().Name, "Invalid sType: <{0}>", sType)
+                logger.Warn( "Invalid sType: <{0}>", sType)
         End Select
 
         btnCancel.Visible = True
@@ -12628,7 +12628,7 @@ doCancel:
                     Me.lblNoInfo.Text = Master.eLang.GetString(652, "No Information is Available for This Episode")
                     If Not Me.currThemeType = Theming.ThemeType.Episode Then Me.ApplyTheme(Theming.ThemeType.Episode)
                 Case Else
-                    logger.Warn(New StackFrame().GetMethod().Name, "Invalid media type <{0}>", tType)
+                    logger.Warn( "Invalid media type <{0}>", tType)
             End Select
         End If
 
@@ -13092,7 +13092,7 @@ doCancel:
                         Me.SetShowListItemAfterEdit(Convert.ToInt32(Master.currShow.ShowID), Me.dgvTVShows.SelectedRows(0).Index)
                         ModulesManager.Instance.TVSaveImages()
                     Case Else
-                        logger.Warn(New StackFrame().GetMethod().Name, "Unhandled TVScraperEventType.SaveAuto <{0}>", iProgress)
+                        logger.Warn( "Unhandled TVScraperEventType.SaveAuto <{0}>", iProgress)
                 End Select
 
             Case Enums.TVScraperEventType.Verifying
@@ -13131,7 +13131,7 @@ doCancel:
                         Me.tslLoading.Visible = False
                         Me.SetControlsEnabled(True)
                     Case Else
-                        logger.Warn(New StackFrame().GetMethod().Name, "Unhandled TVScraperEventType.Verifying <{0}>", iProgress)
+                        logger.Warn( "Unhandled TVScraperEventType.Verifying <{0}>", iProgress)
                 End Select
 
             Case Enums.TVScraperEventType.Progress
@@ -13143,7 +13143,7 @@ doCancel:
                     Case "progress"
                         Me.tspbLoading.Value = iProgress
                     Case Else
-                        logger.Warn(New StackFrame().GetMethod().Name, "Unhandled TVScraperEventType.Progress <{0}>", iProgress)
+                        logger.Warn( "Unhandled TVScraperEventType.Progress <{0}>", iProgress)
                 End Select
                 Me.tspbLoading.Visible = True
                 Me.tslLoading.Visible = True
@@ -13156,7 +13156,7 @@ doCancel:
 
                 Me.SetControlsEnabled(True)
             Case Else
-                logger.Warn(New StackFrame().GetMethod().Name, "Unhandled TVScraperEventType <{0}>", eType)
+                logger.Warn( "Unhandled TVScraperEventType <{0}>", eType)
         End Select
     End Sub
 

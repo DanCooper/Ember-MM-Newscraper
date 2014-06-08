@@ -78,7 +78,7 @@ Public Class dlgManualEdit
             ElementName += ">"
 
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
 
         Return ElementName
@@ -130,7 +130,7 @@ Public Class dlgManualEdit
                     End If
                     XmlViewer.Process(True)
                 Catch ex As Exception
-                    Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                    Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
                 End Try
                 ParseFile(True)
                 Me.Cursor = System.Windows.Forms.Cursors.Default
@@ -284,7 +284,7 @@ Public Class dlgManualEdit
     '        End If
 
     '    Catch ex As Exception
-    '        logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+    '        logger.ErrorException(New StackFrame().GetMethod().Name,ex)
     '    End Try
 
     '    Me.Cursor = System.Windows.Forms.Cursors.Default
@@ -327,7 +327,7 @@ Public Class dlgManualEdit
             XmlViewer.Process(True)
             Me.Cursor = System.Windows.Forms.Cursors.Default
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -389,7 +389,7 @@ Public Class dlgManualEdit
                     ListBox1.Items.Add(ErrStr)
 
                 Catch ex As Exception
-                    Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                    Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
                     Exit Do
                 End Try
 

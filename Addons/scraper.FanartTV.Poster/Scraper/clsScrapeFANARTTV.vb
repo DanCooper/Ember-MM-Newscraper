@@ -71,7 +71,7 @@ Namespace FANARTTVs
             Dim Result As FanartTV.V1.FanartTVMovie = _FanartTV.GetMovieInfo(New FanartTV.V1.FanartTVRequest("1", "JSON", "all", 1, 1))
             If IsNothing(Result) Then
                 If Not IsNothing(_FanartTV.Error) Then
-                    logger.Error(New StackFrame().GetMethod().Name, _FanartTV.Error)
+                    logger.Error( _FanartTV.Error)
                     _APIInvalid = True
                 End If
             End If
@@ -94,7 +94,7 @@ Namespace FANARTTVs
         '			bwFANARTTV.RunWorkerAsync(New Arguments With {.Parameter = sURL})
         '		End If
         '	Catch ex As Exception
-        '		logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+        '		logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         '	End Try
         'End Sub
 
@@ -294,7 +294,7 @@ Namespace FANARTTVs
                     Next
                 End If
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
 
             'Image sorting
@@ -314,7 +314,7 @@ Namespace FANARTTVs
         '	Try
         '		e.Result = GetFANARTTVImages(Args.Parameter)
         '	Catch ex As Exception
-        '		logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+        '		logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         '		e.Result = Nothing
         '	End Try
         'End Sub

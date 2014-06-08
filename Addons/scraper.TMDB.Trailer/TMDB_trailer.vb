@@ -113,10 +113,10 @@ Public Class TMDB_Trailer
         'Must be after Load settings to retrieve the correct API key
         _TMDBApi = New WatTmdb.V3.Tmdb(_MySettings.TMDBAPIKey, _MySettings.TMDBLanguage)
         If IsNothing(_TMDBApi) Then
-            logger.Error(New StackFrame().GetMethod().Name, Master.eLang.GetString(938, "TheMovieDB API is missing or not valid"), _TMDBApi.Error.status_message)
+            logger.Error( Master.eLang.GetString(938, "TheMovieDB API is missing or not valid"), _TMDBApi.Error.status_message)
         Else
             If Not IsNothing(_TMDBApi.Error) AndAlso _TMDBApi.Error.status_message.Length > 0 Then
-                logger.Error(New StackFrame().GetMethod().Name, _TMDBApi.Error.status_message, _TMDBApi.Error.status_code.ToString())
+                logger.Error( _TMDBApi.Error.status_message, _TMDBApi.Error.status_code.ToString())
             End If
         End If
         _TMDBConf = _TMDBApi.GetConfiguration()

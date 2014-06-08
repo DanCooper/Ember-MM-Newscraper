@@ -75,7 +75,7 @@ Namespace MPDB
                 End If
 
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
 
             Return alPosters

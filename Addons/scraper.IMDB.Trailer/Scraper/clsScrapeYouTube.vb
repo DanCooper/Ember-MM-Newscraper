@@ -73,7 +73,7 @@ Namespace YouTube
                 _VideoLinks = ParseYTFormats(url, False)
 
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
         End Sub
 
@@ -85,7 +85,7 @@ Namespace YouTube
                     bwYT.RunWorkerAsync(url)
                 End If
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
         End Sub
 
@@ -95,7 +95,7 @@ Namespace YouTube
             Try
                 e.Result = ParseYTFormats(Url, True)
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
         End Sub
 
@@ -117,7 +117,7 @@ Namespace YouTube
                     End If
                 End If
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
         End Sub
 
@@ -312,7 +312,7 @@ Namespace YouTube
                 Return DownloadLinks
 
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
                 Return New VideoLinkItemCollection
             Finally
                 sHTTP = Nothing

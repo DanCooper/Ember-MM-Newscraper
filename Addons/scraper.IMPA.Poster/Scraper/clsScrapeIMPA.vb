@@ -115,7 +115,7 @@ Namespace IMPA
                     Return String.Empty
                 End If
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
                 Return String.Empty
             End Try
         End Function

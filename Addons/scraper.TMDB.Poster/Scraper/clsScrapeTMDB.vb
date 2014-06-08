@@ -69,7 +69,7 @@ Namespace TMDB
         '            bwTMDB.RunWorkerAsync(New Arguments With {.Parameter = imdbID, .Type = Type})
         '        End If
         '    Catch ex As Exception
-        '        logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+        '        logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         '    End Try
         'End Sub
 
@@ -166,7 +166,7 @@ Namespace TMDB
                 'End If
 
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
 
             Return alPosters
@@ -265,7 +265,7 @@ Namespace TMDB
                 'End If
 
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
 
             Return alPosters
@@ -276,7 +276,7 @@ Namespace TMDB
         '          Try
         '              e.Result = GetTMDBImages(Args.Parameter, Args.Type)
         '          Catch ex As Exception
-        '              logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+        '              logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         '              e.Result = Nothing
         '          End Try
         '      End Sub

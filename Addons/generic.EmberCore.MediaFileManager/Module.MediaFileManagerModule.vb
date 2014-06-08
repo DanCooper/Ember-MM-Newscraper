@@ -111,7 +111,7 @@ Public Class FileManagerExternalModule
             End Using
         Catch ex As Exception
             Return False
-            'logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            'logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
         Return True
     End Function
@@ -248,7 +248,7 @@ Public Class FileManagerExternalModule
             End If
 
         Catch ex As Exception
-            'logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            'logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
