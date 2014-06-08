@@ -147,7 +147,7 @@ Public Class StringUtils
                 If InternalGenreList.TryGetValue(candidate.Key, toAdd) Then
                     rGenres.Add(toAdd)
                 Else
-                    logger.Error(New StackFrame().GetMethod().Name, "Unhandled genre encountered: {0}", candidate.Value)
+                    logger.Error( "Unhandled genre encountered: {0}", candidate.Value)
                 End If
             Next
 
@@ -447,7 +447,7 @@ Public Class StringUtils
 
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
         Return TVEpName.Trim
     End Function

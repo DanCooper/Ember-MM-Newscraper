@@ -152,7 +152,7 @@ Public Class Theming
                 _availablecontrols.Add(New Controls With {.Control = sCon})
             Next
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -245,7 +245,7 @@ Public Class Theming
                 If Not String.IsNullOrEmpty(xTop.<forecolor>.Value) Then tTheme.TopPanelForeColor = Color.FromArgb(Convert.ToInt32(xTop.<forecolor>.Value))
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
 
         'images
@@ -262,7 +262,7 @@ Public Class Theming
                 If Not String.IsNullOrEmpty(xImages.<genrebackcolor>.Value) Then tTheme.GenreBackColor = Color.FromArgb(Convert.ToInt32(xImages.<genrebackcolor>.Value))
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
 
         Try
@@ -305,7 +305,7 @@ Public Class Theming
 
             Next
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -347,7 +347,7 @@ Public Class Theming
             Next
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 

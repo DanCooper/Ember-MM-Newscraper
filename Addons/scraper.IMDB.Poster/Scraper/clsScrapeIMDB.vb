@@ -76,7 +76,7 @@ Namespace IMDBg
                             If mSYSX.Success Then
                                 alPoster.Add(New MediaContainers.Image With {.Description = Master.eSize.poster_names(5).description, .URL = mcIMDB(0).Value, .Width = mSYSX.Groups(2).Value, .Height = mSYSX.Groups(1).Value, .ParentID = aParentID})
                             Else
-                                logger.Error(New StackFrame().GetMethod().Name, "Unknown IMDB Poster URL")
+                                logger.Error( "Unknown IMDB Poster URL")
                                 Debug.Assert(False)
                             End If
                         Else
@@ -98,7 +98,7 @@ Namespace IMDBg
                     End If
                 End If
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
 
             Return alPoster

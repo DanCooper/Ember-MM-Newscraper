@@ -1865,7 +1865,7 @@ Public Class Database
                         If rdrMovie.Read Then
                             _movieDB.ID = Convert.ToInt64(rdrMovie(0))
                         Else
-                            logger.Error(New StackFrame().GetMethod().Name, "Something very wrong here: SaveMovieToDB", _movieDB.ToString)
+                            logger.Error("Something very wrong here: SaveMovieToDB", _movieDB.ToString)
                             _movieDB.ID = -1
                             Return _movieDB
                         End If
@@ -2263,7 +2263,7 @@ Public Class Database
                         If rdrMovieSet.Read Then
                             _moviesetDB.ID = Convert.ToInt64(rdrMovieSet(0))
                         Else
-                            logger.Error(New StackFrame().GetMethod().Name, "Something very wrong here: SaveMovieSetToDB", _moviesetDB.ToString, "Error")
+                            logger.Error("Something very wrong here: SaveMovieSetToDB", _moviesetDB.ToString, "Error")
                             _moviesetDB.SetName = "SETERROR"
                             Return _moviesetDB
                         End If
@@ -2424,7 +2424,7 @@ Public Class Database
                         If rdrTVEp.Read Then
                             _TVEpDB.EpID = Convert.ToInt64(rdrTVEp(0))
                         Else
-                            logger.Error(New StackFrame().GetMethod().Name, "Something very wrong here: SaveTVEpToDB", _TVEpDB.ToString, "Error")
+                            logger.Error("Something very wrong here: SaveTVEpToDB", _TVEpDB.ToString, "Error")
                             _TVEpDB.EpID = -1
                             Exit Sub
                         End If
@@ -2756,7 +2756,7 @@ Public Class Database
                         If rdrTVShow.Read Then
                             _TVShowDB.ShowID = Convert.ToInt64(rdrTVShow(0))
                         Else
-                            logger.Error(New StackFrame().GetMethod().Name, "Something very wrong here: SaveTVShowToDB", _TVShowDB.ToString, "Error")
+                            logger.Error("Something very wrong here: SaveTVShowToDB", _TVShowDB.ToString, "Error")
                             _TVShowDB.ShowID = -1
                             Exit Sub
                         End If
@@ -2923,7 +2923,7 @@ Public Class Database
     ''' <remarks></remarks>
     Public Function IsAddonInstalled(ByVal AddonID As Integer) As Single
         If AddonID < 0 Then
-            logger.Error(New StackFrame().GetMethod().Name, "Invalid AddonID: " & AddonID, Environment.StackTrace, "Error")
+            logger.Error("Invalid AddonID: " & AddonID, Environment.StackTrace, "Error")
             Throw New ArgumentOutOfRangeException("AddonID", "Must be a positive integer")
         End If
 
@@ -2951,7 +2951,7 @@ Public Class Database
     ''' <remarks></remarks>
     Public Function UninstallAddon(ByVal AddonID As Integer) As Boolean
         If AddonID < 0 Then
-            logger.Error(New StackFrame().GetMethod().Name, "Invalid AddonID: " & AddonID, Environment.StackTrace, "Error")
+            logger.Error("Invalid AddonID: " & AddonID, Environment.StackTrace, "Error")
             Throw New ArgumentOutOfRangeException("AddonID", "Must be a positive integer")
         End If
 
@@ -2992,7 +2992,7 @@ Public Class Database
     Public Sub SaveAddonToDB(ByVal Addon As Containers.Addon)
         'TODO Need to add validation on Addon.ID, especially if it is passed in the parameter
         If Addon Is Nothing Then
-            logger.Error(New StackFrame().GetMethod().Name, "Attempted to save an empty Addon", Environment.StackTrace, "Error")
+            logger.Error("Attempted to save an empty Addon", Environment.StackTrace, "Error")
             Throw New ArgumentNullException("AddonID", "Must be a positive integer")
         End If
         Try

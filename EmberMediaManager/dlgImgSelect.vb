@@ -165,7 +165,7 @@ Public Class dlgImgSelect
             Me.bwImgDownload.RunWorkerAsync() 'Me.TMDB.GetImagesAsync(tMovie.Movie.TMDBID, "backdrop")
 
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -295,7 +295,7 @@ Public Class dlgImgSelect
                 AddHandler lblImage(iIndex).MouseWheel, AddressOf MouseWheelEvent
             End If
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Me.iCounter += 1
@@ -345,7 +345,7 @@ Public Class dlgImgSelect
             tImage = Nothing
 
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -384,7 +384,7 @@ Public Class dlgImgSelect
             Me.Refresh()
             Application.DoEvents()
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -415,7 +415,7 @@ Public Class dlgImgSelect
             Me.bwImgLoading.RunWorkerAsync()
 
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
 
     End Sub
@@ -469,7 +469,7 @@ Public Class dlgImgSelect
             Me.pbDL1.Value = e.ProgressPercentage
             Application.DoEvents()
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -566,7 +566,7 @@ Public Class dlgImgSelect
             End If
 
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -705,7 +705,7 @@ Public Class dlgImgSelect
             End If
 
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
@@ -802,7 +802,7 @@ Public Class dlgImgSelect
             Me.btnPreview.Text = Master.eLang.GetString(180, "Preview")
             Me.lblDL1.Text = Master.eLang.GetString(894, "Performing Preliminary Tasks...")
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -962,7 +962,7 @@ Public Class dlgImgSelect
 
             Invalidate()
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 

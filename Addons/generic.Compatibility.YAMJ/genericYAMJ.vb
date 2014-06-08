@@ -250,7 +250,7 @@ Public Class genericYAMJ
 				End Select
 				_refparam = doContinue
 			Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
 			End Try
 		End If
 	End Function

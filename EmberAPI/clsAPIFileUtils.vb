@@ -131,7 +131,7 @@ Namespace FileUtils
                     End Using
                 End Using
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
         End Sub
         ''' <summary>
@@ -226,7 +226,7 @@ Namespace FileUtils
                     Directory.Delete(sPath, True)
                 End If
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
         End Sub
 
@@ -444,7 +444,7 @@ Namespace FileUtils
                 ioFi = Nothing
                 dirInfo = Nothing
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
             Return ItemsToDelete
         End Function
@@ -1580,7 +1580,7 @@ Namespace FileUtils
                     di = Nothing
                 End If
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
         End Sub
 

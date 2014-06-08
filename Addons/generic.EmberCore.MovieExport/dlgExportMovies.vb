@@ -71,7 +71,7 @@ Public Class dlgExportMovies
             Dim srcPath As String = String.Concat(Functions.AppPath, "Langs", Path.DirectorySeparatorChar, "html", Path.DirectorySeparatorChar, template, Path.DirectorySeparatorChar)
             MySelf.SaveAll(String.Empty, srcPath, filename, resizePoster)
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -417,7 +417,7 @@ Public Class dlgExportMovies
                 If doNavigate Then LoadHTML()
             End If
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -437,7 +437,7 @@ Public Class dlgExportMovies
             End If
             Return ReturnString
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             Return ReturnString
         End Try
 
@@ -477,7 +477,7 @@ Public Class dlgExportMovies
             End If
             Return ReturnString
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             Return ""
         End Try
     End Function
@@ -516,7 +516,7 @@ Public Class dlgExportMovies
             End If
             Return ReturnString
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             Return ""
         End Try
     End Function
@@ -543,7 +543,7 @@ Public Class dlgExportMovies
             End Using
             Return ReturnString
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             Return ReturnString
         End Try
 
@@ -600,7 +600,7 @@ Public Class dlgExportMovies
             Catch
             End Try
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -643,7 +643,7 @@ Public Class dlgExportMovies
                 End Using
             End Using
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -727,7 +727,7 @@ Public Class dlgExportMovies
                 myStream.Close()
             End If
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -872,7 +872,7 @@ Public Class dlgExportMovies
                 End If
             Next
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -932,7 +932,7 @@ Public Class dlgExportMovies
 
             Next
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -995,7 +995,7 @@ Public Class dlgExportMovies
                 End If
 
             Catch ex As Exception
-                Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
         End If
         Return line

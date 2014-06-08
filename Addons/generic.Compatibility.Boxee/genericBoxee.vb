@@ -152,7 +152,7 @@ Public Class genericBoxee
 
                 _refparam = doContinue
             Catch ex As Exception
-                Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
         End If
     End Function

@@ -67,7 +67,7 @@ Public Class dlgEditMovieSet
                 Me.lbMoviesInSet.Focus()
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -175,7 +175,7 @@ Public Class dlgEditMovieSet
             Me.LoadCurrSet()
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -189,7 +189,7 @@ Public Class dlgEditMovieSet
             Master.DB.SaveMovieToDB(lMov.DBMovie, False, False, True)
             If Not isEdit Then Me.currSet.Movies.Remove(lMov)
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -263,7 +263,7 @@ Public Class dlgEditMovieSet
                 End If
             End Using
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -305,7 +305,7 @@ Public Class dlgEditMovieSet
             End If
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -326,7 +326,7 @@ Public Class dlgEditMovieSet
                 Me.lblMovieBannerSize.Visible = True
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -347,7 +347,7 @@ Public Class dlgEditMovieSet
                 End If
             End Using
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -389,7 +389,7 @@ Public Class dlgEditMovieSet
             End If
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -410,7 +410,7 @@ Public Class dlgEditMovieSet
                 Me.lblMovieClearArtSize.Visible = True
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -431,7 +431,7 @@ Public Class dlgEditMovieSet
                 End If
             End Using
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -473,7 +473,7 @@ Public Class dlgEditMovieSet
             End If
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -494,7 +494,7 @@ Public Class dlgEditMovieSet
                 Me.lblMovieClearLogoSize.Visible = True
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -515,7 +515,7 @@ Public Class dlgEditMovieSet
                 End If
             End Using
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -557,7 +557,7 @@ Public Class dlgEditMovieSet
             End If
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -578,7 +578,7 @@ Public Class dlgEditMovieSet
                 Me.lblMovieDiscArtSize.Visible = True
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -599,7 +599,7 @@ Public Class dlgEditMovieSet
                 End If
             End Using
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -639,7 +639,7 @@ Public Class dlgEditMovieSet
 
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -660,7 +660,7 @@ Public Class dlgEditMovieSet
                 Me.lblMovieFanartSize.Visible = True
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -681,7 +681,7 @@ Public Class dlgEditMovieSet
                 End If
             End Using
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -723,7 +723,7 @@ Public Class dlgEditMovieSet
             End If
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -744,7 +744,7 @@ Public Class dlgEditMovieSet
                 Me.lblMovieLandscapeSize.Visible = True
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -765,7 +765,7 @@ Public Class dlgEditMovieSet
                 End If
             End Using
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -807,7 +807,7 @@ Public Class dlgEditMovieSet
             End If
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -828,7 +828,7 @@ Public Class dlgEditMovieSet
                 Me.lblMoviePosterSize.Visible = True
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -861,7 +861,7 @@ Public Class dlgEditMovieSet
             currSet.SetName = currMovieSet.SetName
             currSet.SetID = currMovieSet.ID
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -940,7 +940,7 @@ Public Class dlgEditMovieSet
             End Using
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -982,7 +982,7 @@ Public Class dlgEditMovieSet
 
             Me.lbMoviesInDB.ResumeLayout()
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -1002,7 +1002,7 @@ Public Class dlgEditMovieSet
             Me.btnMovieDown.Enabled = False
             Me.btnMovieRemove.Enabled = False
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -1035,7 +1035,7 @@ Public Class dlgEditMovieSet
                 FileUtils.Delete.DeleteDirectory(Path.Combine(Master.TempPath, "extrafanarts"))
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -1047,7 +1047,7 @@ Public Class dlgEditMovieSet
     '            End While
     '        End If
     '    Catch ex As Exception
-    '        logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+    '        logger.ErrorException(New StackFrame().GetMethod().Name,ex)
     '    End Try
     'End Sub
 
@@ -1095,7 +1095,7 @@ Public Class dlgEditMovieSet
             Me.FillInfo()
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -1265,7 +1265,7 @@ Public Class dlgEditMovieSet
             End With
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -1282,7 +1282,7 @@ Public Class dlgEditMovieSet
             Me.CleanUp()
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
 
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
@@ -1440,7 +1440,7 @@ Public Class dlgEditMovieSet
 
             Me.SetControlsEnabled(True)
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -1554,7 +1554,7 @@ Public Class dlgEditMovieSet
                 End If
             End With
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 

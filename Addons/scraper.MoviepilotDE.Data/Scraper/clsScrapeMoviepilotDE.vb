@@ -128,7 +128,7 @@ Public Class MoviepilotDE
                 End If
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -163,7 +163,7 @@ Public Class MoviepilotDE
                 End If
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
 
         Return MoviePilotURL
@@ -252,7 +252,7 @@ Public Class MoviepilotDE
                 End If
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
         Return strPlot
     End Function
@@ -282,7 +282,7 @@ Public Class MoviepilotDE
                 End If
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
         Return FSK
     End Function
