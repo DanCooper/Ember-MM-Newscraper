@@ -188,7 +188,7 @@ Public Class Themes
                         File.Delete(a & fExt)
                     End If
                     Directory.CreateDirectory(Directory.GetParent(a & fExt).FullName)
-                    SaveAs(a & fExt)
+                    SaveAsTheme(a & fExt)
                     tURL = a & fExt
                 End If
             Next
@@ -198,12 +198,12 @@ Public Class Themes
         Return tURL
     End Function
 
-    Public Sub SaveAs(filename As String)
+    Public Sub SaveAsTheme(filename As String)
         Dim retSave() As Byte
         retSave = Me._ms.ToArray
 
         Using FileStream As Stream = File.OpenWrite(filename)
-            FileStream.WriteAsync(retSave, 0, retSave.Length) 'check if it works
+            FileStream.Write(retSave, 0, retSave.Length) 'check if it works
         End Using
     End Sub
 
