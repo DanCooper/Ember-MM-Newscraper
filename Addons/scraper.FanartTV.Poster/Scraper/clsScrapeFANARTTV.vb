@@ -68,7 +68,7 @@ Namespace FANARTTVs
         Public Sub New(ByRef tMySettings As FanartTV_Poster.sMySettings)
             _MySettings = tMySettings
             _FanartTV = New FanartTV.V1.FanartTV(_MySettings.FANARTTVApiKey)
-            Dim Result As FanartTV.V1.FanartTVMovie = _FanartTV.GetMovieInfo(New FanartTV.V1.FanartTVRequest("1", "JSON", "all", 1, 1))
+            Dim Result As FanartTV.V1.FanartTVMovie = _FanartTV.GetMovieInfo(New FanartTV.V1.FanartTVMovieRequest("1", "JSON", "all", 1, 1))
             If IsNothing(Result) Then
                 If Not IsNothing(_FanartTV.Error) Then
                     logger.Error( _FanartTV.Error)
@@ -111,7 +111,7 @@ Namespace FANARTTVs
                 Return Nothing
             End If
             Try
-                Dim Result As FanartTV.V1.FanartTVMovie = _FanartTV.GetMovieInfo(New FanartTV.V1.FanartTVRequest(imdbID, "JSON", "all", 1, 2))
+                Dim Result As FanartTV.V1.FanartTVMovie = _FanartTV.GetMovieInfo(New FanartTV.V1.FanartTVMovieRequest(imdbID, "JSON", "all", 1, 2))
                 If bwFANARTTV.CancellationPending Then Return Nothing
 
                 'Poster

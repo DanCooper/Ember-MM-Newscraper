@@ -1951,7 +1951,8 @@ Public Class frmMain
                             If aUrlList.Count > 0 Then
                                 If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) AndAlso Trailers.PreferredTrailer(tURL, aUrlList, DBScrapeMovie.Filename, (Args.scrapeType = Enums.ScrapeType.SingleScrape)) Then
                                     If Not String.IsNullOrEmpty(tURL) Then
-                                        tURL = Trailers.DownloadTrailer(DBScrapeMovie.Filename, DBScrapeMovie.isSingle, tURL)
+                                        tURL = Trailer.DownloadTrailer(DBScrapeMovie.Filename, DBScrapeMovie.isSingle, tURL)
+
                                         If Not String.IsNullOrEmpty(tURL) Then
                                             If StringUtils.isValidURL(tURL) Then
                                                 If Master.eSettings.MovieXBMCTrailerFormat Then
