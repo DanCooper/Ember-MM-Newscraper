@@ -180,7 +180,7 @@ Public Class Scraper
             '        ms.Close()
             '    End Using
             'Catch ex As Exception
-            '    logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            '    logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             'End Try
             Return newTVI
         End Function
@@ -245,7 +245,7 @@ Public Class Scraper
                     End Using
                 End Using
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
         End Sub
 
@@ -264,7 +264,7 @@ Public Class Scraper
                     MsgBox(Master.eLang.GetString(943, "There are no known episodes for this show. Scrape the show, season, or episode and try again."), MsgBoxStyle.OkOnly, Master.eLang.GetString(944, "No Known Episodes"))
                 End If
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
 
             Return Nothing
@@ -313,7 +313,7 @@ Public Class Scraper
                     End Using
                 End If
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
         End Sub
         Public Sub DownloadSeriesAsync(ByVal sInfo As Structures.ScrapeInfo)
@@ -325,7 +325,7 @@ Public Class Scraper
                     bwTVDB.RunWorkerAsync(New Arguments With {.Type = 1, .Parameter = sInfo})
                 End If
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
         End Sub
 
@@ -354,7 +354,7 @@ Public Class Scraper
                                 Next
                             End If
                         Catch ex As Exception
-                            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
                         End Try
 
                         If Not String.IsNullOrEmpty(sXML) Then
@@ -437,7 +437,7 @@ Public Class Scraper
                     End Using
                 End If
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
 
             Return tEpisodes
@@ -451,7 +451,7 @@ Public Class Scraper
                     bwTVDB.RunWorkerAsync(New Arguments With {.Type = 0, .Parameter = sInfo})
                 End If
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
         End Sub
 
@@ -465,7 +465,7 @@ Public Class Scraper
                     Return tEp
                 End If
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
 
             Return New MediaContainers.EpisodeDetails
@@ -595,7 +595,7 @@ Public Class Scraper
                     End While
                 End Using
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
         End Sub
 
@@ -677,7 +677,7 @@ Public Class Scraper
                     End If
                 End If
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
         End Sub
 
@@ -769,7 +769,7 @@ Public Class Scraper
                     End If
                 End If
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
         End Sub
 
@@ -795,7 +795,7 @@ Public Class Scraper
                         e.Result = New Results With {.Type = 2, .Result = Args.Parameter}
                 End Select
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
         End Sub
 
@@ -822,7 +822,7 @@ Public Class Scraper
                         RaiseEvent ScraperEvent(Enums.TVScraperEventType.ScraperDone, 0, Nothing)
                 End Select
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
         End Sub
 
@@ -937,7 +937,7 @@ Public Class Scraper
 
                             iProgress += 1
                         Catch ex As Exception
-                            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
                         End Try
                     Next
 
@@ -966,7 +966,7 @@ Public Class Scraper
                     SQLTrans.Commit()
 
                 Catch ex As Exception
-                    logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                    logger.ErrorException(New StackFrame().GetMethod().Name,ex)
                 End Try
 
             End Using
@@ -1071,7 +1071,7 @@ Public Class Scraper
                 End If
 
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
 
             Return tvdbResults
@@ -1104,7 +1104,7 @@ Public Class Scraper
                         End If
                     End If
                 Catch ex As Exception
-                    logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                    logger.ErrorException(New StackFrame().GetMethod().Name,ex)
                 End Try
 
                 'now let's get the show info and all the episodes
@@ -1222,7 +1222,7 @@ Public Class Scraper
                         End If
                     End If
                 Catch ex As Exception
-                    logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                    logger.ErrorException(New StackFrame().GetMethod().Name,ex)
                 End Try
             Else
                 sID = sInfo.TVDBID
@@ -1279,7 +1279,7 @@ Public Class Scraper
                     End If
                 End If
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
         End Sub
 

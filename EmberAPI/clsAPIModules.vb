@@ -155,7 +155,7 @@ Public Class ModulesManager
     ''' Load all Generic Modules and field in externalProcessorModules List
     ''' </summary>
     Public Sub loadModules(Optional ByVal modulefile As String = "*.dll")
-        logger.Trace(New StackFrame().GetMethod().Name, "loadModules started")
+        logger.Trace("loadModules started")
         If Directory.Exists(moduleLocation) Then
             'Assembly to load the file
             Dim assembly As System.Reflection.Assembly
@@ -212,7 +212,7 @@ Public Class ModulesManager
             Next
 
         End If
-        logger.Trace(New StackFrame().GetMethod().Name, "loadModules finished")
+        logger.Trace("loadModules finished")
 
     End Sub
 
@@ -220,7 +220,7 @@ Public Class ModulesManager
     ''' Load all Scraper Modules and field in externalScrapersModules List
     ''' </summary>
     Public Sub loadScrapersModules(Optional ByVal modulefile As String = "*.dll")
-        logger.Trace(New StackFrame().GetMethod().Name, "loadScrapersModules started")
+        logger.Trace("loadScrapersModules started")
         Dim DataScraperAnyEnabled As Boolean = False
         Dim DataScraperFound As Boolean = False
         Dim PosterScraperAnyEnabled As Boolean = False
@@ -388,11 +388,11 @@ Public Class ModulesManager
                 SetTrailerScraperEnable("scraper.TMDB.Trailer.EmberScraperModule.TMDB_Trailer", True)
             End If
         End If
-        logger.Trace(New StackFrame().GetMethod().Name, "loadScrapersModules finished")
+        logger.Trace("loadScrapersModules finished")
     End Sub
 
     Public Sub loadTVScrapersModules()
-        logger.Trace(New StackFrame().GetMethod().Name, "loadTVScrapersModules started")
+        logger.Trace("loadTVScrapersModules started")
         Dim ScraperAnyEnabled As Boolean = False
         Dim PostScraperAnyEnabled As Boolean = False
         Dim TVScraperFound As Boolean = False
@@ -497,7 +497,7 @@ Public Class ModulesManager
                 SetTVThemeScraperEnable("scraper.TelevisionTunes.Theme.EmberScraperModule.TelevisionTunes_Theme", True)
             End If
         End If
-        logger.Trace(New StackFrame().GetMethod().Name, "loadTVScrapersModules finished")
+        logger.Trace("loadTVScrapersModules finished")
     End Sub
 
     'Public Function MoviePostScrapeOnly(ByRef DBMovie As Structures.DBMovie, ByVal ScrapeType As Enums.ScraperCapabilities) As Interfaces.ModuleResult
@@ -543,10 +543,10 @@ Public Class ModulesManager
         End While
 
         If (modules.Count() <= 0) Then
-            logger.Warn(New StackFrame().GetMethod().Name, "No movie scrapers are defined")
+            logger.Warn("No movie scrapers are defined")
         Else
             For Each _externalScraperModule As _externalScraperModuleClass_Data In modules
-                logger.Trace(New StackFrame().GetMethod().Name, "Scraping movie data using <{0}>", _externalScraperModule.ProcessorModule.ModuleName)
+                logger.Trace("Scraping movie data using <{0}>", _externalScraperModule.ProcessorModule.ModuleName)
                 AddHandler _externalScraperModule.ProcessorModule.MovieScraperEvent, AddressOf Handler_MovieScraperEvent
                 Try
                     'Debug.Print("MovieScrapeOnly" & vbTab & DBMovie.ID & vbTab & ScrapeType)
@@ -579,10 +579,10 @@ Public Class ModulesManager
         End While
 
         If (modules.Count() <= 0) Then
-            logger.Warn(New StackFrame().GetMethod().Name, "No movie image scrapers are defined")
+            logger.Warn("No movie image scrapers are defined")
         Else
             For Each _externalScraperModule As _externalScraperModuleClass_Poster In modules
-                logger.Trace(New StackFrame().GetMethod().Name, "Scraping movie images using <{0}>", _externalScraperModule.ProcessorModule.ModuleName)
+                logger.Trace("Scraping movie images using <{0}>", _externalScraperModule.ProcessorModule.ModuleName)
                 If _externalScraperModule.ProcessorModule.QueryScraperCapabilities(Type) Then
                     AddHandler _externalScraperModule.ProcessorModule.MovieScraperEvent, AddressOf Handler_MovieScraperEvent
                     Try
@@ -665,10 +665,10 @@ Public Class ModulesManager
         End While
 
         If (modules.Count() <= 0) Then
-            logger.Warn(New StackFrame().GetMethod().Name, "No movie theme scrapers are defined")
+            logger.Warn("No movie theme scrapers are defined")
         Else
             For Each _externalScraperModule As _externalScraperModuleClass_Theme In modules
-                logger.Trace(New StackFrame().GetMethod().Name, "Scraping movie themes using <{0}>", _externalScraperModule.ProcessorModule.ModuleName)
+                logger.Trace("Scraping movie themes using <{0}>", _externalScraperModule.ProcessorModule.ModuleName)
                 AddHandler _externalScraperModule.ProcessorModule.MovieScraperEvent, AddressOf Handler_MovieScraperEvent
                 Try
                     'Debug.Print("MovieScrapeTrailer" & vbTab & _externalScraperModule.ProcessorModule.ModuleName)
@@ -707,10 +707,10 @@ Public Class ModulesManager
         End While
 
         If (modules.Count() <= 0) Then
-            logger.Warn(New StackFrame().GetMethod().Name, "No movie trailer scrapers are defined")
+            logger.Warn("No movie trailer scrapers are defined")
         Else
             For Each _externalScraperModule As _externalScraperModuleClass_Trailer In modules
-                logger.Trace(New StackFrame().GetMethod().Name, "Scraping movie trailers using <{0}>", _externalScraperModule.ProcessorModule.ModuleName)
+                logger.Trace("Scraping movie trailers using <{0}>", _externalScraperModule.ProcessorModule.ModuleName)
                 AddHandler _externalScraperModule.ProcessorModule.MovieScraperEvent, AddressOf Handler_MovieScraperEvent
                 Try
                     'Debug.Print("MovieScrapeTrailer" & vbTab & _externalScraperModule.ProcessorModule.ModuleName)
@@ -750,11 +750,11 @@ Public Class ModulesManager
         Try
             Dim modules As IEnumerable(Of _externalGenericModuleClass) = externalProcessorModules.Where(Function(e) e.ProcessorModule.ModuleType.Contains(mType) AndAlso e.ProcessorModule.Enabled)
             If (modules.Count() <= 0) Then
-                logger.Warn(New StackFrame().GetMethod().Name, "No generic modules defined <{0}>", mType.ToString)
+                logger.Warn("No generic modules defined <{0}>", mType.ToString)
             Else
                 For Each _externalGenericModule As _externalGenericModuleClass In modules
                     Try
-                        logger.Trace(New StackFrame().GetMethod().Name, "Could not run generic module <{0}>", _externalGenericModule.ProcessorModule.ModuleName)
+                        logger.Trace("Could not run generic module <{0}>", _externalGenericModule.ProcessorModule.ModuleName)
                         ret = _externalGenericModule.ProcessorModule.RunGeneric(mType, _params, _refparam)
                     Catch ex As Exception
                         logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "Error scraping movies images using <" & _externalGenericModule.ProcessorModule.ModuleName & ">", ex)
@@ -845,13 +845,13 @@ Public Class ModulesManager
     ''' <remarks></remarks>
     Public Sub SetModuleEnable(ByVal ModuleAssembly As String, ByVal value As Boolean)
         If (String.IsNullOrEmpty(ModuleAssembly)) Then
-            logger.Error(New StackFrame().GetMethod().Name, "Invalid ModuleAssembly")
+            logger.Error("Invalid ModuleAssembly")
             Return
         End If
 
         Dim modules As IEnumerable(Of _externalGenericModuleClass) = externalProcessorModules.Where(Function(p) p.AssemblyName = ModuleAssembly)
         If (modules.Count < 0) Then
-            logger.Warn(New StackFrame().GetMethod().Name, "No modules of type <{0}> were found", ModuleAssembly)
+            logger.Warn("No modules of type <{0}> were found", ModuleAssembly)
         Else
             For Each _externalProcessorModule As _externalGenericModuleClass In modules
                 Try
@@ -872,13 +872,13 @@ Public Class ModulesManager
 
     Public Sub SetThemeScraperEnable(ByVal ModuleAssembly As String, ByVal value As Boolean)
         If (String.IsNullOrEmpty(ModuleAssembly)) Then
-            logger.Error(New StackFrame().GetMethod().Name, "Invalid ModuleAssembly")
+            logger.Error("Invalid ModuleAssembly")
             Return
         End If
 
         Dim modules As IEnumerable(Of _externalScraperModuleClass_Theme) = externalThemeScrapersModules.Where(Function(p) p.AssemblyName = ModuleAssembly)
         If (modules.Count < 0) Then
-            logger.Warn(New StackFrame().GetMethod().Name, "No modules of type <{0}> were found", ModuleAssembly)
+            logger.Warn("No modules of type <{0}> were found", ModuleAssembly)
         Else
             For Each _externalScraperModule As _externalScraperModuleClass_Theme In modules
                 Try
@@ -898,13 +898,13 @@ Public Class ModulesManager
 
     Public Sub SetTrailerScraperEnable(ByVal ModuleAssembly As String, ByVal value As Boolean)
         If (String.IsNullOrEmpty(ModuleAssembly)) Then
-            logger.Error(New StackFrame().GetMethod().Name, "Invalid ModuleAssembly")
+            logger.Error("Invalid ModuleAssembly")
             Return
         End If
 
         Dim modules As IEnumerable(Of _externalScraperModuleClass_Trailer) = externalTrailerScrapersModules.Where(Function(p) p.AssemblyName = ModuleAssembly)
         If (modules.Count < 0) Then
-            logger.Warn(New StackFrame().GetMethod().Name, "No modules of type <{0}> were found", ModuleAssembly)
+            logger.Warn("No modules of type <{0}> were found", ModuleAssembly)
         Else
             For Each _externalScraperModule As _externalScraperModuleClass_Trailer In modules
                 Try
@@ -918,13 +918,13 @@ Public Class ModulesManager
 
     Public Sub SetPosterScraperEnable(ByVal ModuleAssembly As String, ByVal value As Boolean)
         If (String.IsNullOrEmpty(ModuleAssembly)) Then
-            logger.Error(New StackFrame().GetMethod().Name, "Invalid ModuleAssembly")
+            logger.Error("Invalid ModuleAssembly")
             Return
         End If
 
         Dim modules As IEnumerable(Of _externalScraperModuleClass_Poster) = externalPosterScrapersModules.Where(Function(p) p.AssemblyName = ModuleAssembly)
         If (modules.Count < 0) Then
-            logger.Warn(New StackFrame().GetMethod().Name, "No modules of type <{0}> were found", ModuleAssembly)
+            logger.Warn("No modules of type <{0}> were found", ModuleAssembly)
         Else
             For Each _externalScraperModule As _externalScraperModuleClass_Poster In modules
                 Try
@@ -938,13 +938,13 @@ Public Class ModulesManager
 
     Public Sub SetDataScraperEnable(ByVal ModuleAssembly As String, ByVal value As Boolean)
         If (String.IsNullOrEmpty(ModuleAssembly)) Then
-            logger.Error(New StackFrame().GetMethod().Name, "Invalid ModuleAssembly")
+            logger.Error("Invalid ModuleAssembly")
             Return
         End If
 
         Dim modules As IEnumerable(Of _externalScraperModuleClass_Data) = externalDataScrapersModules.Where(Function(p) p.AssemblyName = ModuleAssembly)
         If (modules.Count < 0) Then
-            logger.Warn(New StackFrame().GetMethod().Name, "No modules of type <{0}> were found", ModuleAssembly)
+            logger.Warn("No modules of type <{0}> were found", ModuleAssembly)
         Else
             For Each _externalScraperModule As _externalScraperModuleClass_Data In modules
                 Try

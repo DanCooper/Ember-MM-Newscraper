@@ -63,7 +63,7 @@ Public Class NumUtils
 
         'If we got here, something went wrong
         Dim trace = New StackTrace()
-        logger.Error(New StackFrame().GetMethod().Name, "Failed to convert <{0}>", sNumber)
+        logger.Error( "Failed to convert <{0}>", sNumber)
         Return 0.0F
 
     End Function

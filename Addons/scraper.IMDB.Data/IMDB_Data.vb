@@ -93,7 +93,7 @@ Public Class IMDB_Data
 
     Function GetMovieStudio(ByRef DBMovie As Structures.DBMovie, ByRef studio As List(Of String)) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule_Data.GetMovieStudio
         If (DBMovie.Movie Is Nothing OrElse String.IsNullOrEmpty(DBMovie.Movie.IMDBID)) Then
-            logger.Error(New StackFrame().GetMethod().Name, "Attempting to get studio for undefined movie")
+            logger.Error("Attempting to get studio for undefined movie")
             Return New Interfaces.ModuleResult With {.Cancelled = True}    'DEKKER500 VERIFY PLEASE
         End If
         Dim IMDB As New IMDB.Scraper
@@ -287,7 +287,7 @@ Public Class IMDB_Data
     End Sub
 
     Function Scraper(ByRef DBMovie As Structures.DBMovie, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule_Data.Scraper
-        logger.Trace(New StackFrame().GetMethod().Name, "Started scrape")
+        logger.Trace("Started scrape")
 
         'LoadSettings()
         Dim tTitle As String = String.Empty
@@ -416,7 +416,7 @@ Public Class IMDB_Data
             If Not OldTitle = DBMovie.Movie.Title OrElse String.IsNullOrEmpty(DBMovie.Movie.SortTitle) Then DBMovie.Movie.SortTitle = DBMovie.ListTitle
         End If
 
-        logger.Trace(New StackFrame().GetMethod().Name, "Finished scrape")
+        logger.Trace("Finished scrape")
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 

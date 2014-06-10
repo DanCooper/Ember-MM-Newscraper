@@ -128,7 +128,7 @@ Public Class frmSettingsHolder
                     End While
                 End Using
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
         End Using
         If Not conf Is Nothing Then
@@ -157,7 +157,7 @@ Public Class frmSettingsHolder
                     End While
                 End Using
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
         End Using
         Return readme
@@ -193,7 +193,7 @@ Public Class frmSettingsHolder
                     End While
                 End Using
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
                 Return False
             End Try
         End Using

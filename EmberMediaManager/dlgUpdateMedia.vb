@@ -483,7 +483,7 @@ Public Class dlgUpdateMedia
             Me.CheckNewAndMark()
 
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 

@@ -57,7 +57,7 @@ Public Class frmGenresEditor
             Next
             dgvLang.ClearSelection()
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -140,7 +140,7 @@ Public Class frmGenresEditor
                 ClearLangSelection()
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
 
     End Sub

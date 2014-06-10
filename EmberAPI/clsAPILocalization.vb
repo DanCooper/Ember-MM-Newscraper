@@ -30,6 +30,8 @@ Public Class Localization
 
 #Region "Fields"
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared help_logger As Logger = NLog.LogManager.GetLogger("HelpString")
+    Shared lang_logger As Logger = NLog.LogManager.GetLogger("LanguageString")
 
     Private Shared htArrayStrings As New List(Of Locs)
     Private Shared htHelpStrings As New Hashtable
@@ -159,7 +161,7 @@ Public Class Localization
         Else
             aStr = String.Empty
         End If
-        logger.Error(New StackFrame().GetMethod().Name, "helpstring :'{0}'", aStr)
+        help_logger.Trace("helpstring : '{0}'", aStr)
 
         Return aStr
     End Function
@@ -178,7 +180,7 @@ Public Class Localization
                 tStr = strDefault
             End If
         End If
-        logger.Error(New StackFrame().GetMethod().Name, "language_string: {0} - {1} :'{2}'", Assembly, ID, tStr)
+        lang_logger.Trace("language_string: {0} - {1} : '{2}'", Assembly, ID, tStr)
 
         Return tStr
     End Function

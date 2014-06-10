@@ -228,9 +228,8 @@ Public Class FanartTV_Poster
             _setup.Dispose()
         End If
     End Sub
-
     Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule_Poster.Scraper
-        logger.Trace(New StackFrame().GetMethod().Name, "Started scrape")
+        logger.Trace("Started scrape")
 
         LoadSettings()
 
@@ -241,13 +240,13 @@ Public Class FanartTV_Poster
     End Function
 
     Function Scraper(ByRef DBMovieset As Structures.DBMovieSet, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule_Poster.Scraper
-        logger.Trace(New StackFrame().GetMethod().Name, "Started scrape")
+        logger.Trace("Started scrape")
 
         LoadSettings()
 
         ImageList = _fanartTV.GetFANARTTVImages(DBMovieset.TMDBColID, Type)
 
-        logger.Trace(New StackFrame().GetMethod().Name, "Finished scrape")
+        logger.Trace( "Finished scrape")
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 

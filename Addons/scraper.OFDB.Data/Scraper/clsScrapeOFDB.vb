@@ -100,7 +100,7 @@ Public Class OFDB
 
             If sString.EndsWith("""") Then CleanString = CleanString.Remove(CleanString.Length - 1, 1)
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
         Return CleanString
     End Function
@@ -142,7 +142,7 @@ Public Class OFDB
             End If
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
 
         Return FullPlot
@@ -255,7 +255,7 @@ Public Class OFDB
                 End If
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -275,7 +275,7 @@ Public Class OFDB
                     ofdbURL = String.Concat("http://www.ofdb.de/", Regex.Match(mcOFDBURL(0).Value.ToString, """(film/([^<]+))""").Groups(1).Value.ToString)
                 End If
             Else
-                logger.Warn(New StackFrame().GetMethod().Name, "OFDB Query returned no results for ID of <{0}>", imdbID)
+                logger.Warn( "OFDB Query returned no results for ID of <{0}>", imdbID)
             End If
         Catch ex As Exception
             logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "Error scraping ODFB (too many connections?):" & imdbID, ex)

@@ -526,7 +526,7 @@ Public Class dlgSettings
             Me.SetApplyButton(False)
             If Me.sResult.NeedsUpdate OrElse Me.sResult.NeedsRefresh Then Me.didApply = True
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -563,7 +563,7 @@ Public Class dlgSettings
                 Me.lstMovieFilters.Focus()
             End If
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -651,7 +651,7 @@ Public Class dlgSettings
                 Me.lstTVEpisodeFilter.Focus()
             End If
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -667,7 +667,7 @@ Public Class dlgSettings
                 Me.lstTVEpisodeFilter.Focus()
             End If
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -754,7 +754,7 @@ Public Class dlgSettings
                 Me.lvTVShowRegex.Focus()
             End If
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -781,7 +781,7 @@ Public Class dlgSettings
                 Me.lvTVShowRegex.Focus()
             End If
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -923,7 +923,7 @@ Public Class dlgSettings
                 Me.lstTVShowFilter.Focus()
             End If
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -939,7 +939,7 @@ Public Class dlgSettings
                 Me.lstTVShowFilter.Focus()
             End If
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -956,7 +956,7 @@ Public Class dlgSettings
                 Me.lstMovieFilters.Focus()
             End If
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -3339,7 +3339,7 @@ Public Class dlgSettings
             End With
 
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -3378,7 +3378,7 @@ Public Class dlgSettings
             Me.NoUpdate = False
             RaiseEvent LoadEnd()
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -3447,7 +3447,7 @@ Public Class dlgSettings
                     s.ProcessorModule.ScraperOrderChanged()
                 Next
             Catch ex As Exception
-                Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
         End If
         Me.ResumeLayout()
@@ -3999,7 +3999,7 @@ Public Class dlgSettings
                 End If
             End If
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -4092,7 +4092,7 @@ Public Class dlgSettings
                 End If
             End If
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -4783,28 +4783,28 @@ Public Class dlgSettings
                 Try
                     s.ProcessorModule.SaveSetupScraper(Not isApply)
                 Catch ex As Exception
-                    Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                    Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
                 End Try
             Next
             For Each s As ModulesManager._externalScraperModuleClass_Poster In ModulesManager.Instance.externalPosterScrapersModules
                 Try
                     s.ProcessorModule.SaveSetupScraper(Not isApply)
                 Catch ex As Exception
-                    Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                    Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
                 End Try
             Next
             For Each s As ModulesManager._externalScraperModuleClass_Theme In ModulesManager.Instance.externalThemeScrapersModules
                 Try
                     s.ProcessorModule.SaveSetupScraper(Not isApply)
                 Catch ex As Exception
-                    Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                    Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
                 End Try
             Next
             For Each s As ModulesManager._externalScraperModuleClass_Trailer In ModulesManager.Instance.externalTrailerScrapersModules
                 Try
                     s.ProcessorModule.SaveSetupScraper(Not isApply)
                 Catch ex As Exception
-                    Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                    Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
                 End Try
             Next
             For Each s As ModulesManager._externalTVScraperModuleClass In ModulesManager.Instance.externalTVScrapersModules
@@ -4812,27 +4812,27 @@ Public Class dlgSettings
                     If s.ProcessorModule.IsScraper Then s.ProcessorModule.SaveSetupScraper(Not isApply)
                     If s.ProcessorModule.IsPostScraper Then s.ProcessorModule.SaveSetupPostScraper(Not isApply)
                 Catch ex As Exception
-                    Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                    Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
                 End Try
             Next
             For Each s As ModulesManager._externalTVScraperModuleClass_Theme In ModulesManager.Instance.externalTVThemeScrapersModules
                 Try
                     s.ProcessorModule.SaveSetupScraper(Not isApply)
                 Catch ex As Exception
-                    Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                    Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
                 End Try
             Next
             For Each s As ModulesManager._externalGenericModuleClass In ModulesManager.Instance.externalProcessorModules
                 Try
                     s.ProcessorModule.SaveSetup(Not isApply)
                 Catch ex As Exception
-                    Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                    Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
                 End Try
             Next
             ModulesManager.Instance.SaveSettings()
             Functions.CreateDefaultOptions()
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -6015,7 +6015,7 @@ Public Class dlgSettings
                 End If
             End With
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -6030,7 +6030,7 @@ Public Class dlgSettings
                 End If
             End With
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -6045,7 +6045,7 @@ Public Class dlgSettings
                 End If
             End With
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -6069,7 +6069,7 @@ Public Class dlgSettings
                 End If
             End With
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 

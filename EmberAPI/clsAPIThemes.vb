@@ -202,7 +202,7 @@ Public Class Theme
                 End If
             End With
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             Return False
         End Try
     End Function
