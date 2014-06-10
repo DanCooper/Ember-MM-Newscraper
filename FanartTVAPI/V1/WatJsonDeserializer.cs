@@ -17,11 +17,21 @@ namespace FanartTV.V1
 			if (response.Content == "null")
 				return default(T);
 
-            // handle custom answer
+            // handle custom answer with title instead of fields!
 			string astr = @"{""title"":" + response.Content.Substring(1, response.Content.Length - 1);
 			int pos = astr.IndexOf(@""":{""tmdb_id""");
+            if (pos>0)
+            { 
 			astr = astr.Substring(0, pos+1) + @",""movieinfo" + astr.Substring(pos, astr.Length - pos);
 			response.Content = astr;
+            }
+            else
+			{
+                astr = @"{""title"":" + response.Content.Substring(1, response.Content.Length - 1);
+                pos = astr.IndexOf(@""":{""thetvdb_id""");
+                astr = astr.Substring(0, pos + 1) + @",""showinfo" + astr.Substring(pos, astr.Length - pos);
+			response.Content = astr;
+            }
 
             var deserializer = new JsonDeserializer();
             var data = deserializer.Deserialize<T>(response);

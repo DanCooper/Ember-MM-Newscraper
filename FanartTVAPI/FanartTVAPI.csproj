@@ -75,7 +75,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="V1\FanartTVRequest.cs" />
+    <Compile Include="V1\FanartTVSeriesRequest.cs" />
+    <Compile Include="V1\FanartTVSeries.cs" />
+    <Compile Include="V1\FanartTVMovieRequest.cs" />
     <Compile Include="V1\FanartTVAsyncResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="FanartTV\FanartTV.Async.cs" />

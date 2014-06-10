@@ -29,7 +29,7 @@ namespace FanartTV.Utilities
 
 		#region Movie Info
 
-		internal RestRequest GetMovieInfo(FanartTV.V1.FanartTVRequest Request, object userState = null)
+		internal RestRequest GetMovieInfo(FanartTV.V1.FanartTVMovieRequest Request, object userState = null)
 		{
 			return GetBuilder(REQUEST_MOVIE)
 				.SetUserState(userState)
@@ -40,6 +40,18 @@ namespace FanartTV.Utilities
 				.AddUrlSegment(RequestBuilder.PARAMETER_TYPE, Request.type)
 				.GetRequest();
 		}
+
+        internal RestRequest GetSeriesInfo(FanartTV.V1.FanartTVSeriesRequest Request, object userState = null)
+        {
+            return GetBuilder(REQUEST_SERIES)
+                .SetUserState(userState)
+                .AddUrlSegment(RequestBuilder.PARAMETER_ID, Request.SeriesID )
+                .AddUrlSegment(RequestBuilder.PARAMETER_FORMAT, Request.format)
+                .AddUrlSegment(RequestBuilder.PARAMETER_LIMIT, Request.limit)
+                .AddUrlSegment(RequestBuilder.PARAMETER_SORT, Request.sort)
+                .AddUrlSegment(RequestBuilder.PARAMETER_TYPE, Request.type)
+                .GetRequest();
+        }
 
 		#endregion
 	}

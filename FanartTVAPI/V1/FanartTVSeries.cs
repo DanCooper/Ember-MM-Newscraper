@@ -1,13 +1,11 @@
-﻿
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 namespace FanartTV.V1
 {
-    public class MovieLogo
+    public class Clearart
     {
         public string id { get; set; }
         public string url { get; set; }
@@ -15,7 +13,7 @@ namespace FanartTV.V1
         public string likes { get; set; }
     }
 
-    public class MovieArt
+    public class Characterart
     {
         public string id { get; set; }
         public string url { get; set; }
@@ -23,7 +21,7 @@ namespace FanartTV.V1
         public string likes { get; set; }
     }
 
-    public class MoviePoster
+    public class Clearlogo
     {
         public string id { get; set; }
         public string url { get; set; }
@@ -31,7 +29,7 @@ namespace FanartTV.V1
         public string likes { get; set; }
     }
 
-    public class MovieBanner
+    public class Hdtvlogo
     {
         public string id { get; set; }
         public string url { get; set; }
@@ -39,7 +37,7 @@ namespace FanartTV.V1
         public string likes { get; set; }
     }
 
-    public class MovieBackground
+    public class Hdclearart
     {
         public string id { get; set; }
         public string url { get; set; }
@@ -47,17 +45,7 @@ namespace FanartTV.V1
         public string likes { get; set; }
     }
 
-    public class MovieDisc
-    {
-        public string id { get; set; }
-        public string url { get; set; }
-        public string lang { get; set; }
-        public string likes { get; set; }
-        public string disc { get; set; }
-        public string disc_type { get; set; }
-    }
-
-    public class MovieThumb
+    public class Tvthumb
     {
         public string id { get; set; }
         public string url { get; set; }
@@ -65,7 +53,16 @@ namespace FanartTV.V1
         public string likes { get; set; }
     }
 
-    public class HDMovieLogo
+    public class Showbackground
+    {
+        public string id { get; set; }
+        public string url { get; set; }
+        public string lang { get; set; }
+        public string likes { get; set; }
+        public string season { get; set; }
+    }
+
+    public class Tvposter
     {
         public string id { get; set; }
         public string url { get; set; }
@@ -73,7 +70,25 @@ namespace FanartTV.V1
         public string likes { get; set; }
     }
 
-    public class HDMovieClearArt
+    public class Seasonposter
+    {
+        public string id { get; set; }
+        public string url { get; set; }
+        public string lang { get; set; }
+        public string likes { get; set; }
+        public string season { get; set; }
+    }
+
+    public class Seasonthumb
+    {
+        public string id { get; set; }
+        public string url { get; set; }
+        public string lang { get; set; }
+        public string likes { get; set; }
+        public string season { get; set; }
+    }
+
+    public class Tvbanner
     {
         public string id { get; set; }
         public string url { get; set; }
@@ -81,24 +96,26 @@ namespace FanartTV.V1
         public string likes { get; set; }
     }
 
-    public class FanartTVMovie_detail
+    public class FanartTVSeries_detail
     {
-        public string tmdb_id { get; set; }
-        public string imdb_id { get; set; }
-        public List<MovieLogo> movielogo { get; set; }
-        public List<MovieArt> movieart { get; set; }
-        public List<MoviePoster> movieposter { get; set; }
-        public List<MovieBanner> moviebanner { get; set; }
-        public List<MovieBackground> moviebackground { get; set; }
-        public List<MovieDisc> moviedisc { get; set; }
-        public List<MovieThumb> moviethumb { get; set; }
-        public List<HDMovieLogo> hdmovielogo { get; set; }
-        public List<HDMovieClearArt> hdmovieclearart { get; set; }
+        public string thetvdb_id { get; set; }
+        public List<Clearart> clearart { get; set; }
+        public List<Characterart> characterart { get; set; }
+        public List<Clearlogo> clearlogo { get; set; }
+        public List<Hdtvlogo> hdtvlogo { get; set; }
+        public List<Hdclearart> hdclearart { get; set; }
+        public List<Tvthumb> tvthumb { get; set; }
+        public List<Showbackground> showbackground { get; set; }
+        public List<Tvposter> tvposter { get; set; }
+        public List<Seasonposter> seasonposter { get; set; }
+        public List<Seasonthumb> seasonthumb { get; set; }
+        public List<Tvbanner> tvbanner { get; set; }
     }
 
-    public class FanartTVMovie
-    {
-        public string title { get; set; }
-        public FanartTVMovie_detail movieinfo { get; set; }
-    }
+
+	public class FanartTVSeries
+	{
+		public string title { get; set; }
+		public  FanartTVSeries_detail showinfo { get; set; }
+	}
 }
