@@ -28,6 +28,7 @@ Imports EmberAPI
 Imports NLog
 
 Public Class Trailers
+    Implements IDisposable
 
 #Region "Fields"
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
@@ -37,6 +38,10 @@ Public Class Trailers
     Private _resolution As Enums.TrailerQuality
     Private _url As String
     Private _weburl As String
+
+    Private _ms As MemoryStream
+    Private Ret As Byte()
+
 
 #End Region 'Fields
 
@@ -131,6 +136,11 @@ Public Class Trailers
 #Region "Methods"
 
     Private Sub Clear()
+        If Not IsNothing(_ms) Then
+            Me.Dispose(True)
+            Me.disposedValue = False    'Since this is not a real Dispose call...
+        End If
+
         _description = String.Empty
         _length = String.Empty
         _resolution = Enums.TrailerQuality.OTHERS
@@ -314,20 +324,29 @@ Public Class Trailers
     ''' <param name="sURL">URL from which to get the trailer</param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Shared Function DownloadTrailer(ByVal sPath As String, ByVal isSingle As Boolean, ByVal sURL As String) As String
+    Public Function DownloadTrailer(ByVal sPath As String, ByVal isSingle As Boolean, ByVal sURL As String) As String
         Dim WebPage As New HTTP
         Dim tURL As String = String.Empty
-        Dim lhttp As New HTTP
         Dim tTrailer As String = String.Empty
         AddHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
 
-        tTrailer = lhttp.DownloadFile(sURL, Path.Combine(Master.TempPath, "trailer"), False, "trailer")
+        tTrailer = WebPage.DownloadFile(sURL, "", False, "trailer")
+        If Not IsNothing(Me._ms) Then
+            Me._ms.Dispose()
+        End If
+        Me._ms = New MemoryStream()
+
+        Dim retSave() As Byte
+        retSave = WebPage.ms.ToArray
+        Me._ms.Write(retSave, 0, retSave.Length)
+
         Dim fExt As String = Path.GetExtension(tTrailer)
         For Each a In FileUtils.GetFilenameList.Movie(sPath, isSingle, Enums.MovieModType.Trailer)
             If File.Exists(a & fExt) Then
                 File.Delete(a & fExt)
             End If
-            File.Copy(tTrailer, a & fExt)
+            Me.SaveAs(a & fExt)
+            'File.Copy(tTrailer, a & fExt)
             tURL = a & fExt
         Next
 
@@ -344,6 +363,15 @@ Public Class Trailers
         RemoveHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
         Return tURL
     End Function
+
+    Public Sub SaveAs(filename As String)
+        Dim retSave() As Byte
+        retSave = Me._ms.ToArray
+
+        Using FileStream As Stream = File.OpenWrite(filename)
+            FileStream.WriteAsync(retSave, 0, retSave.Length) 'check if it works
+        End Using
+    End Sub
     ''' <summary>
     ''' Determines whether a trailer is allowed to be downloaded. This is determined
     ''' by a combination of the Master.eSettings.LockTrailer settings,
@@ -372,5 +400,42 @@ Public Class Trailers
     End Function
 
 #End Region 'Methods
+
+#Region "IDisposable Support"
+    Private disposedValue As Boolean ' To detect redundant calls
+
+    ' IDisposable
+    Protected Overridable Sub Dispose(disposing As Boolean)
+        If Not Me.disposedValue Then
+            If disposing Then
+                ' dispose managed state (managed objects).
+                If _ms IsNot Nothing Then
+                    _ms.Flush()
+                    _ms.Close()
+                    _ms.Dispose()
+                End If
+            End If
+
+            ' free unmanaged resources (unmanaged objects) and override Finalize() below.
+            ' set large fields to null.
+            _ms = Nothing
+        End If
+        Me.disposedValue = True
+    End Sub
+
+    ' TODO: override Finalize() only if Dispose(ByVal disposing As Boolean) above has code to free unmanaged resources.
+    'Protected Overrides Sub Finalize()
+    '    ' Do not change this code.  Put cleanup code in Dispose(ByVal disposing As Boolean) above.
+    '    Dispose(False)
+    '    MyBase.Finalize()
+    'End Sub
+
+    ' This code added by Visual Basic to correctly implement the disposable pattern.
+    Public Sub Dispose() Implements IDisposable.Dispose
+        ' Do not change this code.  Put cleanup code in Dispose(disposing As Boolean) above.
+        Dispose(True)
+        GC.SuppressFinalize(Me)
+    End Sub
+#End Region
 
 End Class

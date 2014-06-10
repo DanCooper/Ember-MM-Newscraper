@@ -5,9 +5,9 @@ using System.Text;
 
 namespace FanartTV.V1
 {
-	public partial class FanartTVRequest
+	public partial class FanartTVSeriesRequest
 	{
-		public string MovieID { get; set; }
+		public string SeriesID { get; set; }
 		public string format { get; set; }
 		public string type { get; set; }
 		public int sort { get; set; }
@@ -22,9 +22,9 @@ namespace FanartTV.V1
 		//    limit = _limit;
 		//}
 
-		public FanartTVRequest(string _MovieID, string _format, string _type, int _sort, int _limit)
+		public FanartTVSeriesRequest(string _SeriesID, string _format, string _type, int _sort, int _limit)
 		{
-			MovieID = _MovieID;
+			SeriesID = _SeriesID;
 			format = _format;
 			type = _type;
 			sort = _sort;

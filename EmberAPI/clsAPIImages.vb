@@ -45,7 +45,7 @@ Public Class Images
 #Region "Constructors"
 
     Public Sub New()
-        Clear()
+        Me.Clear()
     End Sub
 
 #End Region 'Constructors
