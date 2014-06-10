@@ -325,32 +325,52 @@ Public Class HTTP
 
                 If Not String.IsNullOrEmpty(outFile) AndAlso Not wrResponse.ContentLength = 0 Then
 
-                    If File.Exists(outFile) Then File.Delete(outFile)
-
                     Using Ms As Stream = wrResponse.GetResponseStream
-                        Using mStream As New FileStream(outFile, FileMode.Create, FileAccess.Write)
-                            Dim StreamBuffer(4096) As Byte
-                            Dim BlockSize As Integer
-                            Dim iProgress As Integer
-                            Dim iCurrent As Integer
-                            Do
-                                BlockSize = Ms.Read(StreamBuffer, 0, 4096)
-                                iCurrent += BlockSize
-                                If BlockSize > 0 Then
-                                    mStream.Write(StreamBuffer, 0, BlockSize)
-                                    If ReportUpdate Then
-                                        iProgress = Convert.ToInt32((iCurrent / wrResponse.ContentLength) * 100)
-                                        RaiseEvent ProgressUpdated(iProgress)
+                        If Len(LocalFile) > 0 Then
+
+                            If File.Exists(outFile) Then File.Delete(outFile)
+
+                            'save to real file
+                            Using mStream As New FileStream(outFile, FileMode.Create, FileAccess.Write)
+                                Dim StreamBuffer(4096) As Byte
+                                Dim BlockSize As Integer
+                                Dim iProgress As Integer
+                                Dim iCurrent As Integer
+                                Do
+                                    BlockSize = Ms.Read(StreamBuffer, 0, 4096)
+                                    iCurrent += BlockSize
+                                    If BlockSize > 0 Then
+                                        mStream.Write(StreamBuffer, 0, BlockSize)
+                                        If ReportUpdate Then
+                                            iProgress = Convert.ToInt32((iCurrent / wrResponse.ContentLength) * 100)
+                                            RaiseEvent ProgressUpdated(iProgress)
+                                        End If
                                     End If
-                                End If
-                            Loop While BlockSize > 0 AndAlso Not Me._cancelRequested
-                            StreamBuffer = Nothing
-                            mStream.Close()
-                        End Using
+                                Loop While BlockSize > 0 AndAlso Not Me._cancelRequested
+                                StreamBuffer = Nothing
+                                mStream.Close()
+                            End Using
+                        Else
+                            ' no real file specified, let's work with memory streams
+                            outFile = "dummy" & outFile 'used to return the correct extension. localfile is empty so outfile is just .ext
+
+                            Dim count = Convert.ToInt32(wrResponse.ContentLength)
+                            Dim buffer = New Byte(count) {}
+                            Dim bytesRead As Integer
+                            Do
+                                bytesRead += Ms.Read(buffer, bytesRead, count - bytesRead)
+                            Loop Until bytesRead = count
+                            Ms.Close()
+                            Me._ms.Close()
+                            Me._ms = New MemoryStream()
+
+                            Me._ms.Write(buffer, 0, bytesRead)
+                            Me._ms.Flush()
+
+                        End If
                         Ms.Close()
                     End Using
                 End If
-
             End Using
         Catch ex As Exception
             logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & URL & ">", ex)
