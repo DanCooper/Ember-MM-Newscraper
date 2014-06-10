@@ -239,10 +239,12 @@ Namespace TMDBg
                         If _MySettings.FallBackEng Then
                             If Not IsNothing(MovieE.belongs_to_collection) Then
                                 DBMovie.AddSet(Nothing, MovieE.belongs_to_collection.name, Nothing)
+                                DBMovie.TMDBColID = MovieE.belongs_to_collection.id.ToString
                             End If
                         End If
                     Else
                         DBMovie.AddSet(Nothing, Movie.belongs_to_collection.name, Nothing)
+                        DBMovie.TMDBColID = Movie.belongs_to_collection.id.ToString
                     End If
                 End If
 

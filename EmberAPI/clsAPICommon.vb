@@ -1699,6 +1699,7 @@ Public Class Structures
         Dim FanartPath As String
         Dim ID As Long
         Dim SetName As String
+        Dim TMDBColID As String
         Dim LandscapePath As String
         Dim NfoPath As String
         Dim PosterPath As String

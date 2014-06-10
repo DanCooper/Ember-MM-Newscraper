@@ -405,6 +405,8 @@ Public Class Database
             Dim doAddColumnMovieAndTVLogoDiscAndClearArt As Boolean = False
             Dim doAddColumnMovieSetsImages As Boolean = False
             Dim doAddColumnTVShowEFanarts As Boolean = False
+            Dim doAddColumnVStreamMultiviewLayout As Boolean = False
+            Dim doAddColumnTMDBColID As Boolean = False
             Dim strlistSQLCommands As New List(Of String)
 
             SQLpathcommand.CommandText = "pragma table_info(TVEps);"
@@ -439,6 +441,7 @@ Public Class Database
                 doAddColumnMovieBannerAndLandscape = True
                 doAddColumnMovieAndTVTheme = True
                 doAddColumnMovieAndTVLogoDiscAndClearArt = True
+                doAddColumnTMDBColID = True
                 Using SQLreader As SQLite.SQLiteDataReader = SQLpathcommand.ExecuteReader
                     While SQLreader.Read
                         'Debug.Print(SQLreader("name").ToString.ToLower())
@@ -457,6 +460,10 @@ Public Class Database
                         If SQLreader("name").ToString.ToLower = "clearlogopath" Then
                             'Column does exist in current database of Ember --> asume: if one columns missing, all new columns must be added
                             doAddColumnMovieAndTVLogoDiscAndClearArt = False
+                        End If
+                        If SQLreader("name").ToString.ToLower = "tmdbcolid" Then
+                            'Column does exist in current database of Ember --> asume: if one columns missing, all new columns must be added
+                            doAddColumnTMDBColID = False
                         End If
                     End While
                 End Using
@@ -497,6 +504,22 @@ Public Class Database
                         If SQLreader("name").ToString.ToLower = "HasNfo" Then
                             'Column does exist in current database of Ember --> asume: if one columns missing, all new columns must be added
                             doAddColumnMovieSetsImages = False
+                        End If
+                    End While
+                End Using
+            Catch ex As Exception
+                'TODO
+            End Try
+
+            SQLpathcommand.CommandText = "pragma table_info(MoviesVStreams);"
+            Try
+                doAddColumnVStreamMultiviewLayout = True
+                Using SQLreader As SQLite.SQLiteDataReader = SQLpathcommand.ExecuteReader
+                    While SQLreader.Read
+                        'Debug.Print(SQLreader("name").ToString.ToLower())
+                        If SQLreader("name").ToString.ToLower = "MultiViewLayout" Then
+                            'Column does exist in current database of Ember --> asume: if one columns missing, all new columns must be added
+                            doAddColumnVStreamMultiviewLayout = False
                         End If
                     End While
                 End Using
@@ -589,6 +612,15 @@ Public Class Database
             If doAddColumnTVShowEFanarts = True Then
                 strlistSQLCommands.Add("alter table TVShows add HasEFanarts BOOL NOT NULL DEFAULT False;")
                 strlistSQLCommands.Add("alter table TVShows add EFanartsPath TEXT;")
+            End If
+            If doAddColumnVStreamMultiviewLayout = True Then
+                strlistSQLCommands.Add("alter table MoviesVStreams add Video_MultiViewLayout TEXT;")
+                strlistSQLCommands.Add("alter table TVVStreams add Video_MultiViewLayout TEXT;")
+            End If
+            If doAddColumnTMDBColID = True Then
+                strlistSQLCommands.Add("alter table Movies add TMDB TEXT;")
+                strlistSQLCommands.Add("alter table Movies add TMDBColID TEXT;")
+                strlistSQLCommands.Add("alter table Sets add TMDBColID TEXT;")
             End If
 
             Using transaction As SQLite.SQLiteTransaction = _myvideosDBConn.BeginTransaction()
@@ -1019,7 +1051,7 @@ Public Class Database
                                                        "Director, Credits, Playcount, HasWatched, Trailer, PosterPath, FanartPath, EThumbsPath, NfoPath, ", _
                                                        "TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, FileSource, NeedsSave, SortTitle, ", _
                                                        "DateAdd, HasEFanarts, EFanartsPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasTheme, ", _
-                                                       "ThemePath, HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath FROM movies WHERE id = ", MovieID, ";")
+                                                       "ThemePath, HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, TMDB, TMDBColID FROM movies WHERE id = ", MovieID, ";")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     If SQLreader.HasRows Then
                         SQLreader.Read()
@@ -1074,6 +1106,8 @@ Public Class Database
                             'If Not DBNull.Value.Equals(SQLreader("Watched")) Then .Watched = SQLreader("Watched").ToString
                             If Not DBNull.Value.Equals(SQLreader("FanartURL")) AndAlso Not Master.eSettings.MovieNoSaveImagesToNfo Then .Fanart.URL = SQLreader("FanartURL").ToString
                             If Not DBNull.Value.Equals(SQLreader("FileSource")) Then .VideoSource = SQLreader("FileSource").ToString
+                            If Not DBNull.Value.Equals(SQLreader("TMDB")) Then .TMDBID = SQLreader("TMDB").ToString
+                            If Not DBNull.Value.Equals(SQLreader("TMDBColID")) Then .TMDBColID = SQLreader("TMDBColID").ToString
                         End With
                     End If
                 End Using
@@ -1097,7 +1131,7 @@ Public Class Database
             Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
                 SQLcommand.CommandText = String.Concat("SELECT MovieID, StreamID, Video_Width, Video_Height, Video_Codec, Video_Duration, Video_ScanType, ", _
                                                        "Video_AspectDisplayRatio, Video_Language, Video_LongLanguage, Video_Bitrate, Video_MultiView, ", _
-                                                       "Video_EncodedSettings FROM MoviesVStreams WHERE MovieID = ", MovieID, ";")
+                                                       "Video_EncodedSettings, Video_MultiViewLayout FROM MoviesVStreams WHERE MovieID = ", MovieID, ";")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     Dim video As MediaInfo.Video
                     While SQLreader.Read
@@ -1113,8 +1147,9 @@ Public Class Database
 
                         'cocotus, 2013/02 Added support for new MediaInfo-fields
                         If Not DBNull.Value.Equals(SQLreader("Video_Bitrate")) Then video.Bitrate = SQLreader("Video_Bitrate").ToString
-                        If Not DBNull.Value.Equals(SQLreader("Video_MultiView")) Then video.MultiView = SQLreader("Video_MultiView").ToString
+                        If Not DBNull.Value.Equals(SQLreader("Video_MultiView")) Then video.MultiViewCount = SQLreader("Video_MultiView").ToString
                         If Not DBNull.Value.Equals(SQLreader("Video_EncodedSettings")) Then video.EncodedSettings = SQLreader("Video_EncodedSettings").ToString
+                        If Not DBNull.Value.Equals(SQLreader("Video_MultiViewLayout")) Then video.MultiViewLayout = SQLreader("Video_MultiViewLayout").ToString
                         'cocotus end
                         _movieDB.Movie.FileInfo.StreamDetails.Video.Add(video)
                     End While
@@ -1235,7 +1270,7 @@ Public Class Database
                 SQLcommand.CommandText = String.Concat("SELECT ID, SetName, HasNfo, NfoPath, HasPoster, PosterPath, HasFanart, ", _
                                                        "FanartPath, HasBanner, BannerPath, HasLandscape, LandscapePath, ", _
                                                        "HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ", _
-                                                       "ClearArtPath FROM sets WHERE id = ", MovieSetID, ";")
+                                                       "ClearArtPath, TMDBColID FROM sets WHERE id = ", MovieSetID, ";")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     If SQLreader.HasRows Then
                         SQLreader.Read()
@@ -1248,6 +1283,7 @@ Public Class Database
                         If Not DBNull.Value.Equals(SQLreader("DiscArtPath")) Then _moviesetDB.DiscArtPath = SQLreader("DiscArtPath").ToString
                         If Not DBNull.Value.Equals(SQLreader("ClearLogoPath")) Then _moviesetDB.ClearLogoPath = SQLreader("ClearLogoPath").ToString
                         If Not DBNull.Value.Equals(SQLreader("ClearArtPath")) Then _moviesetDB.ClearArtPath = SQLreader("ClearArtPath").ToString
+                        If Not DBNull.Value.Equals(SQLreader("TMDBColID")) Then _moviesetDB.TMDBColID = SQLreader("TMDBColID").ToString
                         _moviesetDB.Movies = New List(Of Structures.DBMovie)
                     End If
                 End Using
@@ -1387,7 +1423,7 @@ Public Class Database
             End Using
 
             Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                SQLcommand.CommandText = String.Concat("SELECT TVEpID, StreamID, Video_Width, Video_Height, Video_Codec, Video_Duration, Video_ScanType, Video_AspectDisplayRatio, Video_Language, Video_LongLanguage, Video_Bitrate, Video_MultiView, Video_EncodedSettings FROM TVVStreams WHERE TVEpID = ", EpID, ";")
+                SQLcommand.CommandText = String.Concat("SELECT TVEpID, StreamID, Video_Width, Video_Height, Video_Codec, Video_Duration, Video_ScanType, Video_AspectDisplayRatio, Video_Language, Video_LongLanguage, Video_Bitrate, Video_MultiView, Video_EncodedSettings, Video_MultiViewLayout FROM TVVStreams WHERE TVEpID = ", EpID, ";")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     Dim video As MediaInfo.Video
                     While SQLreader.Read
@@ -1403,8 +1439,9 @@ Public Class Database
 
                         'cocotus, 2013/02 Added support for new MediaInfo-fields
                         If Not DBNull.Value.Equals(SQLreader("Video_Bitrate")) Then video.Bitrate = SQLreader("Video_Bitrate").ToString
-                        If Not DBNull.Value.Equals(SQLreader("Video_MultiView")) Then video.MultiView = SQLreader("Video_MultiView").ToString
+                        If Not DBNull.Value.Equals(SQLreader("Video_MultiView")) Then video.MultiViewCount = SQLreader("Video_MultiView").ToString
                         If Not DBNull.Value.Equals(SQLreader("Video_EncodedSettings")) Then video.EncodedSettings = SQLreader("Video_EncodedSettings").ToString
+                        If Not DBNull.Value.Equals(SQLreader("Video_MultiViewLayout")) Then video.MultiViewLayout = SQLreader("Video_MultiViewLayout").ToString
                         'cocotus end
 
                         _TVDB.TVEp.FileInfo.StreamDetails.Video.Add(video)
@@ -1682,8 +1719,8 @@ Public Class Database
                      "Studio, Runtime, ReleaseDate, Director, Credits, Playcount, HasWatched, Trailer, ", _
                      "PosterPath, FanartPath, NfoPath, TrailerPath, SubPath, EThumbsPath, FanartURL, UseFolder, OutOfTolerance, FileSource, NeedsSave, ", _
                      "DateAdd, HasEFanarts, EFanartsPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasTheme, ThemePath, HasDiscArt, DiscArtPath, ", _
-                     "HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath", _
-                     ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movies;")
+                     "HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, TMDB, TMDBColID", _
+                     ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movies;")
                 Else
                     SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO movies (", _
                      "ID, MoviePath, type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasEThumbs, new, mark, source, imdb, lock, ", _
@@ -1691,8 +1728,8 @@ Public Class Database
                      "Studio, Runtime, ReleaseDate, Director, Credits, Playcount, HasWatched, Trailer, ", _
                      "PosterPath, FanartPath, NfoPath, TrailerPath, SubPath, EThumbsPath, FanartURL, UseFolder, OutOfTolerance, FileSource, NeedsSave, ", _
                      "DateAdd, HasEFanarts, EFanartsPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasTheme, ThemePath, HasDiscArt, DiscArtPath, ", _
-                     "HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath", _
-                     ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movies;")
+                     "HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, TMDB, TMDBColID", _
+                     ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movies;")
                     Dim parMovieID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMovieID", DbType.Int32, 0, "ID")
                     parMovieID.Value = _movieDB.ID
                 End If
@@ -1762,6 +1799,8 @@ Public Class Database
                 Dim parClearLogoPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parClearLogoPath", DbType.String, 0, "ClearLogoPath")
                 Dim parHasClearArt As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasClearArt", DbType.Boolean, 0, "HasClearArt")
                 Dim parClearArtPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parClearArtPath", DbType.String, 0, "ClearArtPath")
+                Dim parTMDB As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTMDB", DbType.String, 0, "TMDB")
+                Dim parTMDBColID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTMDBColID", DbType.String, 0, "TMDBColID")
 
                 ' First let's save it to NFO, even because we will need the NFO path
                 'If ToNfo AndAlso Not String.IsNullOrEmpty(_movieDB.Movie.IMDBID) Then NFO.SaveMovieToNFO(_movieDB)
@@ -1848,6 +1887,8 @@ Public Class Database
                 parCredits.Value = _movieDB.Movie.OldCredits
                 parPlaycount.Value = _movieDB.Movie.PlayCount
                 parTrailer.Value = _movieDB.Movie.Trailer
+                parTMDB.Value = _movieDB.Movie.TMDBID
+                parTMDBColID.Value = _movieDB.Movie.TMDBColID
 
                 parUseFolder.Value = _movieDB.UseFolder
                 parOutOfTolerance.Value = _movieDB.OutOfTolerance
@@ -1906,8 +1947,8 @@ Public Class Database
                         'Expanded SQL Statement to INSERT/replace new fields
                         SQLcommandMoviesVStreams.CommandText = String.Concat("INSERT OR REPLACE INTO MoviesVStreams (", _
                            "MovieID, StreamID, Video_Width,Video_Height,Video_Codec,Video_Duration,", _
-                           "Video_ScanType, Video_AspectDisplayRatio, Video_Language, Video_LongLanguage, Video_Bitrate, Video_MultiView, Video_EncodedSettings", _
-                           ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?);")
+                           "Video_ScanType, Video_AspectDisplayRatio, Video_Language, Video_LongLanguage, Video_Bitrate, Video_MultiView, Video_EncodedSettings, Video_MultiViewLayout", _
+                           ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?);")
                         'cocotus end
                         Dim parVideo_MovieID As SQLite.SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_MovieID", DbType.UInt64, 0, "MovieID")
                         Dim parVideo_StreamID As SQLite.SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_StreamID", DbType.UInt64, 0, "StreamID")
@@ -1922,8 +1963,9 @@ Public Class Database
 
                         'cocotus, 2013/02 Added support for new MediaInfo-fields
                         Dim parVideo_Bitrate As SQLite.SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_Bitrate", DbType.String, 0, "Video_Bitrate")
-                        Dim parVideo_MultiView As SQLite.SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_MultiView", DbType.String, 0, "Video_MultiView")
+                        Dim parVideo_MultiViewCount As SQLite.SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_MultiView", DbType.String, 0, "Video_MultiView")
                         Dim parVideo_EncodedSettings As SQLite.SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_EncodedSettings", DbType.String, 0, "Video_EncodedSettings")
+                        Dim parVideo_MultiViewLayout As SQLite.SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_MultiViewLayout", DbType.String, 0, "Video_MultiViewLayout")
                         'cocotus end
 
                         For i As Integer = 0 To _movieDB.Movie.FileInfo.StreamDetails.Video.Count - 1
@@ -1940,7 +1982,8 @@ Public Class Database
 
                             'cocotus, 2013/02 Added support for new MediaInfo-fields
                             parVideo_Bitrate.Value = _movieDB.Movie.FileInfo.StreamDetails.Video(i).Bitrate
-                            parVideo_MultiView.Value = _movieDB.Movie.FileInfo.StreamDetails.Video(i).MultiView
+                            parVideo_MultiViewCount.Value = _movieDB.Movie.FileInfo.StreamDetails.Video(i).MultiViewCount
+                            parVideo_MultiViewLayout.Value = _movieDB.Movie.FileInfo.StreamDetails.Video(i).MultiViewLayout
                             parVideo_EncodedSettings.Value = _movieDB.Movie.FileInfo.StreamDetails.Video(i).EncodedSettings
                             'cocotus end
 
@@ -2075,7 +2118,7 @@ Public Class Database
                                     SQLcommandSets.CommandText = String.Concat("SELECT ID, SetName, HasNfo, NfoPath, HasPoster, PosterPath, HasFanart, ", _
                                                                            "FanartPath, HasBanner, BannerPath, HasLandscape, LandscapePath, ", _
                                                                            "HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ", _
-                                                                           "ClearArtPath FROM Sets WHERE SetName LIKE """, s.Set, """;")
+                                                                           "ClearArtPath, TMDBColID FROM Sets WHERE SetName LIKE """, s.Set, """;")
                                     Using SQLreader As SQLite.SQLiteDataReader = SQLcommandSets.ExecuteReader()
                                         If SQLreader.HasRows Then
                                             SQLreader.Read()
@@ -2109,8 +2152,8 @@ Public Class Database
                                                                                          "SetName, HasNfo, NfoPath, HasPoster, PosterPath, HasFanart, ", _
                                                                                          "FanartPath, HasBanner, BannerPath, HasLandscape, LandscapePath, ", _
                                                                                          "HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ", _
-                                                                                         "ClearArtPath", _
-                                                                                         ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM Sets;")
+                                                                                         "ClearArtPath, TMDBColID", _
+                                                                                         ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM Sets;")
                                         Dim parSets_SetName As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_SetName", DbType.String, 0, "SetName")
                                         Dim parSets_HasNfo As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_HasInfo", DbType.Boolean, 0, "HasNfo")
                                         Dim parSets_NfoPath As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_NfoPath", DbType.String, 0, "NfoPath")
@@ -2128,8 +2171,10 @@ Public Class Database
                                         Dim parSets_ClearLogoPath As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_ClearLogoPath", DbType.String, 0, "ClearLogoPath")
                                         Dim parSets_HasClearArt As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_HasClearArt", DbType.Boolean, 0, "HasClearArt")
                                         Dim parSets_ClearArtPath As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_ClearArtPath", DbType.String, 0, "ClearArtPath")
+                                        Dim parSets_TMDBColID As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_TMDBColID", DbType.String, 0, "TMDBColID")
 
                                         parSets_SetName.Value = s.Set
+                                        parSets_TMDBColID.Value = _movieDB.Movie.TMDBColID
                                         parSets_BannerPath.Value = String.Empty
                                         parSets_ClearArtPath.Value = String.Empty
                                         parSets_ClearLogoPath.Value = String.Empty
@@ -2203,15 +2248,15 @@ Public Class Database
                      "SetName, HasNfo, NfoPath, HasPoster, PosterPath, HasFanart, ", _
                      "FanartPath, HasBanner, BannerPath, HasLandscape, LandscapePath, ", _
                      "HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ", _
-                     "ClearArtPath ", _
-                     ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM sets;")
+                     "ClearArtPath, TMDBColID", _
+                     ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM sets;")
                 Else
                     SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO sets (", _
                      "ID, SetName, HasNfo, NfoPath, HasPoster, PosterPath, HasFanart, ", _
                      "FanartPath, HasBanner, BannerPath, HasLandscape, LandscapePath, ", _
                      "HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ", _
-                     "ClearArtPath ", _
-                     ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM sets;")
+                     "ClearArtPath, TMDBColID", _
+                     ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM sets;")
                     Dim parMovieSetID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMovieSetID", DbType.Int32, 0, "ID")
                     parMovieSetID.Value = _moviesetDB.ID
                 End If
@@ -2232,6 +2277,7 @@ Public Class Database
                 Dim parClearLogoPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parClearLogoPath", DbType.String, 0, "ClearLogoPath")
                 Dim parHasClearArt As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasClearArt", DbType.Boolean, 0, "HasClearArt")
                 Dim parClearArtPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parClearArtPath", DbType.String, 0, "ClearArtPath")
+                Dim parTMDBColID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTMDBColID", DbType.String, 0, "TMDBColID")
 
                 ' First let's save it to NFO, even because we will need the NFO path
                 'If ToNfo AndAlso Not String.IsNullOrEmpty(_movieDB.Movie.IMDBID) Then NFO.SaveMovieToNFO(_movieDB)
@@ -2257,6 +2303,7 @@ Public Class Database
                 parHasPoster.Value = Not String.IsNullOrEmpty(_moviesetDB.PosterPath)
 
                 parSetName.Value = _moviesetDB.SetName
+                parTMDBColID.Value = _moviesetDB.TMDBColID
 
                 If IsNew Then
                     Using rdrMovieSet As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
@@ -2465,7 +2512,7 @@ Public Class Database
                         'Expanded SQL Statement to INSERT/replace new fields
                         SQLcommandTVVStreams.CommandText = String.Concat("INSERT OR REPLACE INTO TVVStreams (", _
                            "TVEpID, StreamID, Video_Width,Video_Height,Video_Codec,Video_Duration,", _
-                           "Video_ScanType, Video_AspectDisplayRatio, Video_Language, Video_LongLanguage, Video_Bitrate, Video_MultiView, Video_EncodedSettings", _
+                           "Video_ScanType, Video_AspectDisplayRatio, Video_Language, Video_LongLanguage, Video_Bitrate, Video_MultiView, Video_EncodedSettings, Video_MultiViewLayout", _
                            ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?);")
                         'cocotus end
 
@@ -2482,8 +2529,9 @@ Public Class Database
 
                         'cocotus, 2013/02 Added support for new MediaInfo-fields
                         Dim parVideo_Bitrate As SQLite.SQLiteParameter = SQLcommandTVVStreams.Parameters.Add("parVideo_Bitrate", DbType.String, 0, "Video_Bitrate")
-                        Dim parVideo_MultiView As SQLite.SQLiteParameter = SQLcommandTVVStreams.Parameters.Add("parVideo_MultiView", DbType.String, 0, "Video_MultiView")
+                        Dim parVideo_MultiViewCount As SQLite.SQLiteParameter = SQLcommandTVVStreams.Parameters.Add("parVideo_MultiView", DbType.String, 0, "Video_MultiView")
                         Dim parVideo_EncodedSettings As SQLite.SQLiteParameter = SQLcommandTVVStreams.Parameters.Add("parVideo_EncodedSettings", DbType.String, 0, "Video_EncodedSettings")
+                        Dim parVideo_MultiViewLayout As SQLite.SQLiteParameter = SQLcommandTVVStreams.Parameters.Add("parVideo_MultiViewLayout", DbType.String, 0, "Video_MultiViewLayout")
                         'cocotus end
 
                         For i As Integer = 0 To _TVEpDB.TVEp.FileInfo.StreamDetails.Video.Count - 1
@@ -2500,7 +2548,8 @@ Public Class Database
 
                             'cocotus, 2013/02 Added support for new MediaInfo-fields
                             parVideo_Bitrate.Value = _TVEpDB.TVEp.FileInfo.StreamDetails.Video(i).Bitrate
-                            parVideo_MultiView.Value = _TVEpDB.TVEp.FileInfo.StreamDetails.Video(i).MultiView
+                            parVideo_MultiViewCount.Value = _TVEpDB.TVEp.FileInfo.StreamDetails.Video(i).MultiViewCount
+                            parVideo_MultiViewLayout.Value = _TVEpDB.TVEp.FileInfo.StreamDetails.Video(i).MultiViewLayout
                             parVideo_EncodedSettings.Value = _TVEpDB.TVEp.FileInfo.StreamDetails.Video(i).EncodedSettings
                             'cocotus end
 

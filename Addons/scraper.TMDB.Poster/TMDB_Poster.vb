@@ -183,20 +183,24 @@ Public Class TMDB_Poster
 
     End Sub
 
-    Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image), Optional ByVal isMovieSet As Boolean = False) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule_Poster.Scraper
+    Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule_Poster.Scraper
 
         LoadSettings()
 
-        Dim collectionID As String = String.Empty
-        If isMovieSet Then
-            collectionID = _TMDBg.GetMovieCollectionID(DBMovie.Movie.ID)
-            ImageList = TMDB.GetTMDBCollectionImages(collectionID, Type)
-        Else
-            If String.IsNullOrEmpty(DBMovie.Movie.TMDBID) Then
-                _TMDBg.GetMovieID(DBMovie)
-            End If
-            ImageList = TMDB.GetTMDBImages(DBMovie.Movie.TMDBID, Type)
+        If String.IsNullOrEmpty(DBMovie.Movie.TMDBID) Then
+            _TMDBg.GetMovieID(DBMovie)
         End If
+
+        ImageList = TMDB.GetTMDBImages(DBMovie.Movie.TMDBID, Type)
+
+        Return New Interfaces.ModuleResult With {.breakChain = False}
+    End Function
+
+    Function Scraper(ByRef DBMovieSet As Structures.DBMovieSet, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule_Poster.Scraper
+
+        LoadSettings()
+
+        ImageList = TMDB.GetTMDBCollectionImages(DBMovieSet.TMDBColID, Type)
 
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function

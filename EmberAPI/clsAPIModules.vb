@@ -569,7 +569,7 @@ Public Class ModulesManager
     ''' <param name="ImageList">List of images that the scraper should add to</param>
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks>Note that if no movie scrapers are enabled, a silent warning is generated.</remarks>
-    Public Function MovieScrapeImages(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image), Optional ByVal isMovieSet As Boolean = False) As Boolean
+    Public Function MovieScrapeImages(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Boolean
         Dim modules As IEnumerable(Of _externalScraperModuleClass_Poster) = externalPosterScrapersModules.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ScraperOrder)
         Dim ret As Interfaces.ModuleResult
         Dim aList As List(Of MediaContainers.Image)
@@ -588,7 +588,50 @@ Public Class ModulesManager
                     Try
                         'Debug.Print("MovieScrapeImages" & vbTab & _externalScraperModule.ProcessorModule.ModuleName)
                         aList = New List(Of MediaContainers.Image)
-                        ret = _externalScraperModule.ProcessorModule.Scraper(DBMovie, Type, aList, isMovieSet)
+                        ret = _externalScraperModule.ProcessorModule.Scraper(DBMovie, Type, aList)
+                        If Not IsNothing(aList) AndAlso aList.Count > 0 Then
+                            For Each aIm In aList
+                                ImageList.Add(aIm)
+                            Next
+                        End If
+                    Catch ex As Exception
+                        logger.ErrorException(New StackFrame().GetMethod().Name & "Error scraping movie images using <" & _externalScraperModule.ProcessorModule.ModuleName & ">", ex)
+                    End Try
+                    RemoveHandler _externalScraperModule.ProcessorModule.MovieScraperEvent, AddressOf Handler_MovieScraperEvent
+                    If ret.breakChain Then Exit For
+                End If
+            Next
+        End If
+        Return ret.Cancelled
+    End Function
+    ''' <summary>
+    ''' Request that enabled movieset image scrapers perform their functions on the supplied movie
+    ''' </summary>
+    ''' <param name="DBMovieSet">Movieset to be scraped. Scraper will directly manipulate this structure</param>
+    ''' <param name="Type">What kind of image is being scraped (poster, fanart, etc)</param>
+    ''' <param name="ImageList">List of images that the scraper should add to</param>
+    ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
+    ''' <remarks>Note that if no movie scrapers are enabled, a silent warning is generated.</remarks>
+    Public Function MovieSetScrapeImages(ByRef DBMovieSet As Structures.DBMovieSet, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Boolean
+        Dim modules As IEnumerable(Of _externalScraperModuleClass_Poster) = externalPosterScrapersModules.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ScraperOrder)
+        Dim ret As Interfaces.ModuleResult
+        Dim aList As List(Of MediaContainers.Image)
+
+        While Not (bwloadModules_done And bwloadScrapersModules_done And bwloadTVScrapersModules_done)
+            Application.DoEvents()
+        End While
+
+        If (modules.Count() <= 0) Then
+            logger.Warn(New StackFrame().GetMethod().Name, "No movie image scrapers are defined")
+        Else
+            For Each _externalScraperModule As _externalScraperModuleClass_Poster In modules
+                logger.Trace(New StackFrame().GetMethod().Name, "Scraping movie images using <{0}>", _externalScraperModule.ProcessorModule.ModuleName)
+                If _externalScraperModule.ProcessorModule.QueryScraperCapabilities(Type) Then
+                    AddHandler _externalScraperModule.ProcessorModule.MovieScraperEvent, AddressOf Handler_MovieScraperEvent
+                    Try
+                        'Debug.Print("MovieScrapeImages" & vbTab & _externalScraperModule.ProcessorModule.ModuleName)
+                        aList = New List(Of MediaContainers.Image)
+                        ret = _externalScraperModule.ProcessorModule.Scraper(DBMovieSet, Type, aList)
                         If Not IsNothing(aList) AndAlso aList.Count > 0 Then
                             For Each aIm In aList
                                 ImageList.Add(aIm)

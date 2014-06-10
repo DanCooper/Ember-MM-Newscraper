@@ -456,6 +456,7 @@ Namespace MediaContainers
         Private _fileInfo As New MediaInfo.Fileinfo
         Private _lev As Integer
         Private _videosource As String
+        Private _tmdbcolid As String
 #End Region 'Fields
 
 #Region "Constructors"
@@ -1129,6 +1130,23 @@ Namespace MediaContainers
         Public ReadOnly Property VideoSourceSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._videosource)
+            End Get
+        End Property
+
+        <XmlElement("tmdbcolid")> _
+        Public Property TMDBColID() As String
+            Get
+                Return Me._tmdbcolid
+            End Get
+            Set(ByVal value As String)
+                Me._tmdbcolid = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property TMDBColIDSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._tmdbcolid)
             End Get
         End Property
 

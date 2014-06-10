@@ -16,7 +16,8 @@ CREATE TABLE Sets(
 	HasClearLogo BOOL NOT NULL DEFAULT False,
 	ClearLogoPath TEXT,
 	HasClearArt BOOL NOT NULL DEFAULT False,
-	ClearArtPath TEXT
+	ClearArtPath TEXT,
+	TMDBColID TEXT
 	);
 
 CREATE TABLE Movies (
@@ -82,7 +83,9 @@ CREATE TABLE Movies (
 	HasClearLogo BOOL NOT NULL DEFAULT False,
 	ClearLogoPath TEXT,
 	HasClearArt BOOL NOT NULL DEFAULT False,
-	ClearArtPath TEXT
+	ClearArtPath TEXT,
+	TMDB TEXT,
+	TMDBColID TEXT
 	);
 
 CREATE TABLE MoviesSets(
@@ -106,6 +109,7 @@ CREATE TABLE MoviesVStreams(
     Video_Bitrate TEXT,
 	Video_MultiView TEXT,
 	Video_EncodedSettings TEXT,
+	Video_MultiViewLayout TEXT,
 	PRIMARY KEY (MovieID,StreamID)
 	);
 
@@ -286,6 +290,7 @@ CREATE TABLE TVVStreams(
     Video_Bitrate TEXT,
 	Video_MultiView TEXT,
 	Video_EncodedSettings TEXT,
+	Video_MultiViewLayout TEXT,
 	PRIMARY KEY (TVEpID,StreamID)
 	);
 

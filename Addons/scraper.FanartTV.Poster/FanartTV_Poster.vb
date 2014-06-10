@@ -229,16 +229,23 @@ Public Class FanartTV_Poster
         End If
     End Sub
 
-    Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image), Optional ByVal isMovieSet As Boolean = False) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule_Poster.Scraper
+    Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule_Poster.Scraper
         logger.Trace(New StackFrame().GetMethod().Name, "Started scrape")
-        'LoadSettings()
-        Dim Poster As New Images
 
         LoadSettings()
 
-        If Not isMovieSet Then
-            ImageList = _fanartTV.GetFANARTTVImages(DBMovie.Movie.ID, Type)
-        End If
+        ImageList = _fanartTV.GetFANARTTVImages(DBMovie.Movie.ID, Type)
+
+        logger.Trace(New StackFrame().GetMethod().Name, "Finished scrape")
+        Return New Interfaces.ModuleResult With {.breakChain = False}
+    End Function
+
+    Function Scraper(ByRef DBMovieset As Structures.DBMovieSet, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule_Poster.Scraper
+        logger.Trace(New StackFrame().GetMethod().Name, "Started scrape")
+
+        LoadSettings()
+
+        ImageList = _fanartTV.GetFANARTTVImages(DBMovieset.TMDBColID, Type)
 
         logger.Trace(New StackFrame().GetMethod().Name, "Finished scrape")
         Return New Interfaces.ModuleResult With {.breakChain = False}
