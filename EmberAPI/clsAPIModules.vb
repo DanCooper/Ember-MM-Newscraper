@@ -655,10 +655,10 @@ Public Class ModulesManager
     ''' not the full content of the trailer</param>
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks></remarks>
-    Public Function MovieScrapeTheme(ByRef DBMovie As Structures.DBMovie, ByRef URLList As List(Of Theme)) As Boolean
+    Public Function MovieScrapeTheme(ByRef DBMovie As Structures.DBMovie, ByRef URLList As List(Of Themes)) As Boolean
         Dim modules As IEnumerable(Of _externalScraperModuleClass_Theme) = externalThemeScrapersModules.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ScraperOrder)
         Dim ret As Interfaces.ModuleResult
-        Dim aList As List(Of Theme)
+        Dim aList As List(Of Themes)
 
         While Not (bwloadModules_done And bwloadScrapersModules_done And bwloadTVScrapersModules_done)
             Application.DoEvents()
@@ -672,7 +672,7 @@ Public Class ModulesManager
                 AddHandler _externalScraperModule.ProcessorModule.MovieScraperEvent, AddressOf Handler_MovieScraperEvent
                 Try
                     'Debug.Print("MovieScrapeTrailer" & vbTab & _externalScraperModule.ProcessorModule.ModuleName)
-                    aList = New List(Of Theme)
+                    aList = New List(Of Themes)
                     ret = _externalScraperModule.ProcessorModule.Scraper(DBMovie, aList)
                     If Not IsNothing(aList) AndAlso aList.Count > 0 Then
                         For Each aIm In aList

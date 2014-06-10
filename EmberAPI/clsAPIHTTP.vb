@@ -374,6 +374,7 @@ Public Class HTTP
             End Using
         Catch ex As Exception
             logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & URL & ">", ex)
+            outFile = ""
         End Try
 
         Return outFile

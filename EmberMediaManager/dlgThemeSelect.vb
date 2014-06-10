@@ -30,10 +30,10 @@ Public Class dlgThemeSelect
 
     Private tMovie As New Structures.DBMovie
     Private tShow As New Structures.DBTV
-    Private _UrlList As List(Of Theme)
+    Private _UrlList As List(Of Themes)
     Private tURL As String = String.Empty
     Private sPath As String
-    Private tTheme As New Theme
+    Private tTheme As New Themes
 
 #End Region 'Fields
 
@@ -47,7 +47,7 @@ Public Class dlgThemeSelect
         Me.Activate()
     End Sub
 
-    Private Sub CreateTable(ByVal tURLList As List(Of Theme))
+    Private Sub CreateTable(ByVal tURLList As List(Of Themes))
         'set ListView
         Me.lvThemes.MultiSelect = False
         Me.lvThemes.FullRowSelect = True
@@ -90,7 +90,7 @@ Public Class dlgThemeSelect
         End If
     End Sub
 
-    Public Overloads Function ShowDialog(ByRef DBMovie As Structures.DBMovie, ByRef tURLList As List(Of Theme)) As Theme
+    Public Overloads Function ShowDialog(ByRef DBMovie As Structures.DBMovie, ByRef tURLList As List(Of Themes)) As Themes
         CreateTable(tURLList)
 
         If MyBase.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
@@ -100,7 +100,7 @@ Public Class dlgThemeSelect
         End If
     End Function
 
-    Public Overloads Function ShowDialog(ByRef DBTV As Structures.DBTV, ByRef tURLList As List(Of Theme)) As Theme
+    Public Overloads Function ShowDialog(ByRef DBTV As Structures.DBTV, ByRef tURLList As List(Of Themes)) As Themes
         CreateTable(tURLList)
 
         If MyBase.ShowDialog() = System.Windows.Forms.DialogResult.OK Then

@@ -47,7 +47,7 @@ Public Class dlgEditMovie
     Private MoviePoster As New Images With {.IsEdit = True}
     Private pResults As New Containers.ImgResult
     Private PreviousFrameValue As Integer
-    Private MovieTheme As New Theme
+    Private MovieTheme As New Themes
     Private tmpRating As String = String.Empty
 
     'Extrathumbs
@@ -235,7 +235,7 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub btnDLTheme_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDLTheme.Click
-        Dim aUrlList As New List(Of Theme)
+        Dim aUrlList As New List(Of Themes)
         Dim tURL As String = String.Empty
         If Not ModulesManager.Instance.MovieScrapeTheme(Master.currMovie, aUrlList) Then
             Using dThemeSelect As New dlgThemeSelect()
@@ -2660,7 +2660,9 @@ Public Class dlgEditMovie
                 End If
 
                 If Not String.IsNullOrEmpty(.MovieTheme.URL) Then
-                    Master.currMovie.ThemePath = Theme.DownloadTheme(Master.currMovie.Filename, Master.currMovie.isSingle, .MovieTheme)
+                    Using Theme As New Themes
+                        Master.currMovie.ThemePath = Theme.DownloadTheme(Master.currMovie.Filename, Master.currMovie.isSingle, .MovieTheme)
+                    End Using
                 End If
 
                 If Not String.IsNullOrEmpty(Master.currMovie.TrailerPath) AndAlso Master.currMovie.TrailerPath.Contains(Master.TempPath) Then
@@ -2672,15 +2674,8 @@ Public Class dlgEditMovie
                     Next
                     Master.currMovie.TrailerPath = TargetTrailer
                 ElseIf Not String.IsNullOrEmpty(Master.currMovie.TrailerPath) AndAlso Master.currMovie.TrailerPath.StartsWith(":") Then
-                    Dim lhttp As New HTTP
-                    Master.currMovie.TrailerPath = lhttp.DownloadFile(Master.currMovie.TrailerPath.Replace(":http", "http"), Path.Combine(Master.TempPath, "trailer"), False, "trailer")
-                    Dim TargetTrailer As String = String.Empty
-                    Dim fExt As String = Path.GetExtension(Master.currMovie.TrailerPath)
-                    For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.isSingle, Enums.MovieModType.Trailer)
-                        File.Copy(Master.currMovie.TrailerPath, a & fExt)
-                        TargetTrailer = a & fExt
-                    Next
-                    Master.currMovie.TrailerPath = TargetTrailer
+                    Dim trailer As New Trailers
+                    Master.currMovie.TrailerPath = trailer.DownloadTrailer(Master.currMovie.Filename, Master.currMovie.isSingle, Master.currMovie.TrailerPath.Replace(":http", "http"))
                 End If
 
                 If Path.GetExtension(Master.currMovie.Filename) = ".disc" Then

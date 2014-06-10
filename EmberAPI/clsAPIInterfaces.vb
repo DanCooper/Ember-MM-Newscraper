@@ -273,7 +273,7 @@ Public Class Interfaces
 
         Function InjectSetupScraper() As Containers.SettingsPanel
 
-        Function Scraper(ByVal DBMovie As Structures.DBMovie, ByRef URLList As List(Of Theme)) As ModuleResult
+        Function Scraper(ByVal DBMovie As Structures.DBMovie, ByRef URLList As List(Of Themes)) As ModuleResult
 
         Sub SaveSetupScraper(ByVal DoDispose As Boolean)
 
@@ -527,7 +527,7 @@ Public Class Interfaces
 
         Function InjectSetupScraper() As Containers.SettingsPanel
 
-        Function Scraper(ByVal DBTV As Structures.DBTV, ByRef URLList As List(Of Theme)) As ModuleResult
+        Function Scraper(ByVal DBTV As Structures.DBTV, ByRef URLList As List(Of Themes)) As ModuleResult
 
         Sub SaveSetupScraper(ByVal DoDispose As Boolean)
 

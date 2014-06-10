@@ -331,37 +331,41 @@ Public Class Trailers
         AddHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
 
         tTrailer = WebPage.DownloadFile(sURL, "", False, "trailer")
-        If Not IsNothing(Me._ms) Then
-            Me._ms.Dispose()
-        End If
-        Me._ms = New MemoryStream()
+        If Not String.IsNullOrEmpty(tTrailer) Then
 
-        Dim retSave() As Byte
-        retSave = WebPage.ms.ToArray
-        Me._ms.Write(retSave, 0, retSave.Length)
-
-        Dim fExt As String = Path.GetExtension(tTrailer)
-        For Each a In FileUtils.GetFilenameList.Movie(sPath, isSingle, Enums.MovieModType.Trailer)
-            If File.Exists(a & fExt) Then
-                File.Delete(a & fExt)
+            If Not IsNothing(Me._ms) Then
+                Me._ms.Dispose()
             End If
-            Me.SaveAs(a & fExt)
-            'File.Copy(tTrailer, a & fExt)
-            tURL = a & fExt
-        Next
+            Me._ms = New MemoryStream()
 
-        '' filename is managed in DownloadFile()
-        'tURL = WebPage.DownloadFile(sURL, sPath, False, "trailer") 'ReportUpdate needs to be fixed
+            Dim retSave() As Byte
+            retSave = WebPage.ms.ToArray
+            Me._ms.Write(retSave, 0, retSave.Length)
 
-        'If Not String.IsNullOrEmpty(tURL) Then
-        '    'delete any other trailer if enabled in settings and download successful
-        '    If Master.eSettings.DeleteAllTrailers Then
-        '        DeleteTrailers(sPath, tURL)
-        '    End If
-        'End If
+            Dim fExt As String = Path.GetExtension(tTrailer)
+            For Each a In FileUtils.GetFilenameList.Movie(sPath, isSingle, Enums.MovieModType.Trailer)
+                If File.Exists(a & fExt) Then
+                    File.Delete(a & fExt)
+                End If
+                Me.SaveAs(a & fExt)
+                'File.Copy(tTrailer, a & fExt)
+                tURL = a & fExt
+            Next
+
+            '' filename is managed in DownloadFile()
+            'tURL = WebPage.DownloadFile(sURL, sPath, False, "trailer") 'ReportUpdate needs to be fixed
+
+            'If Not String.IsNullOrEmpty(tURL) Then
+            '    'delete any other trailer if enabled in settings and download successful
+            '    If Master.eSettings.DeleteAllTrailers Then
+            '        DeleteTrailers(sPath, tURL)
+            '    End If
+            'End If
+        End If
 
         RemoveHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
         Return tURL
+
     End Function
 
     Public Sub SaveAs(filename As String)
