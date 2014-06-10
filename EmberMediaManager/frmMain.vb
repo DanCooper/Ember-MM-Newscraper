@@ -1478,14 +1478,14 @@ Public Class frmMain
         Dim Fanart As New MediaContainers.Image
         Dim Landscape As New MediaContainers.Image
         Dim Poster As New MediaContainers.Image
-        Dim Theme As New Theme
+        Dim Theme As New Themes
         Dim Trailer As New Trailers
         Dim tURL As String = String.Empty
         Dim aList As New List(Of MediaContainers.Image)
         Dim aUrlList As New List(Of Trailers)
         Dim efList As New List(Of String)
         Dim etList As New List(Of String)
-        Dim tUrlList As New List(Of Theme)
+        Dim tUrlList As New List(Of Themes)
         Dim DBScrapeMovie As New Structures.DBMovie
 
         logger.Trace( "Starting MOVIE scrape")

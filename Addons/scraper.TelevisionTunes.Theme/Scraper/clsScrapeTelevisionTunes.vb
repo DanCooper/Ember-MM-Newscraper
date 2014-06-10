@@ -31,7 +31,7 @@ Public Class TelevisionTunes
 #Region "Fields"
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
     Private originaltitle As String
-    Private _themelist As New List(Of Theme)
+    Private _themelist As New List(Of Themes)
 
 #End Region 'Fields
 
@@ -47,11 +47,11 @@ Public Class TelevisionTunes
 
 #Region "Properties"
 
-    Public Property ThemeList() As List(Of Theme)
+    Public Property ThemeList() As List(Of Themes)
         Get
             Return _themelist
         End Get
-        Set(ByVal value As List(Of Theme))
+        Set(ByVal value As List(Of Themes))
             _themelist = value
         End Set
     End Property
@@ -61,7 +61,7 @@ Public Class TelevisionTunes
 #Region "Methods"
 
     Private Sub Clear()
-        _themelist = New List(Of Theme)
+        _themelist = New List(Of Themes)
     End Sub
 
     Private Sub GetMovieThemes()
@@ -108,7 +108,7 @@ Public Class TelevisionTunes
                         tURL = String.Concat(DownloadURL, tID)
 
                         If Not String.IsNullOrEmpty(tID) Then
-                            _themelist.Add(New Theme With {.Title = tTitle, .ID = tID, .URL = tURL, .Description = tDescription, .Length = tLength, .Bitrate = tBitrate})
+                            _themelist.Add(New Themes With {.Title = tTitle, .ID = tID, .URL = tURL, .Description = tDescription, .Length = tLength, .Bitrate = tBitrate})
                         End If
                     Next
                 End If
@@ -116,7 +116,7 @@ Public Class TelevisionTunes
 
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
 
     End Sub

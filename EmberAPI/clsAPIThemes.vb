@@ -22,8 +22,8 @@ Imports System.IO
 Imports EmberAPI
 Imports NLog
 
-Public Class Theme
-
+Public Class Themes
+    Implements IDisposable
 #Region "Fields"
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
@@ -34,6 +34,9 @@ Public Class Theme
     Private _description As String
     Private _length As String
     Private _bitrate As String
+
+    Private _ms As MemoryStream
+    Private Ret As Byte()
 
 #End Region 'Fields
 
@@ -121,6 +124,11 @@ Public Class Theme
 #Region "Methods"
 
     Private Sub Clear()
+        If Not IsNothing(_ms) Then
+            Me.Dispose(True)
+            Me.disposedValue = False    'Since this is not a real Dispose call...
+        End If
+
         _title = String.Empty
         _id = String.Empty
         _url = String.Empty
@@ -153,17 +161,26 @@ Public Class Theme
     ''' <param name="sTheme">theme container</param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Shared Function DownloadTheme(ByVal sPath As String, ByVal isSingle As Boolean, ByVal sTheme As Theme) As String
+    Public Function DownloadTheme(ByVal sPath As String, ByVal isSingle As Boolean, ByVal sTheme As Themes) As String
         Dim WebPage As New HTTP
         Dim tURL As String = String.Empty
         Dim sURL As String = sTheme.URL
         Dim sWebURL As String = sTheme.WebURL
-        Dim lhttp As New HTTP
         Dim tTheme As String = String.Empty
-        'AddHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
+        AddHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
 
-        tTheme = lhttp.DownloadFile(sURL, Path.Combine(Master.TempPath, "theme"), False, "theme", sWebURL)
+        tTheme = WebPage.DownloadFile(sURL, "", False, "theme", sWebURL)
         If Not String.IsNullOrEmpty(tTheme) Then
+            If Not IsNothing(Me._ms) Then
+                Me._ms.Dispose()
+            End If
+            Me._ms = New MemoryStream()
+
+            Dim retSave() As Byte
+            retSave = WebPage.ms.ToArray
+            Me._ms.Write(retSave, 0, retSave.Length)
+
+
             Dim fExt As String = Path.GetExtension(tTheme)
             For Each a In FileUtils.GetFilenameList.Movie(sPath, isSingle, Enums.MovieModType.Theme)
                 If Not File.Exists(a & fExt) OrElse Master.eSettings.MovieThemeOverwrite Then
@@ -171,7 +188,7 @@ Public Class Theme
                         File.Delete(a & fExt)
                     End If
                     Directory.CreateDirectory(Directory.GetParent(a & fExt).FullName)
-                    File.Copy(tTheme, a & fExt)
+                    SaveAs(a & fExt)
                     tURL = a & fExt
                 End If
             Next
@@ -180,6 +197,16 @@ Public Class Theme
         RemoveHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
         Return tURL
     End Function
+
+    Public Sub SaveAs(filename As String)
+        Dim retSave() As Byte
+        retSave = Me._ms.ToArray
+
+        Using FileStream As Stream = File.OpenWrite(filename)
+            FileStream.WriteAsync(retSave, 0, retSave.Length) 'check if it works
+        End Using
+    End Sub
+
     ''' <summary>
     ''' Determines whether a theme is allowed to be downloaded. This is determined
     ''' by a combination of the Master.eSettings.LockTheme settings,
@@ -202,7 +229,7 @@ Public Class Theme
                 End If
             End With
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             Return False
         End Try
     End Function
@@ -228,5 +255,42 @@ Public Class Theme
     End Structure
 
 #End Region 'Nested Types
+
+#Region "IDisposable Support"
+    Private disposedValue As Boolean ' To detect redundant calls
+
+    ' IDisposable
+    Protected Overridable Sub Dispose(disposing As Boolean)
+        If Not Me.disposedValue Then
+            If disposing Then
+                ' dispose managed state (managed objects).
+                If _ms IsNot Nothing Then
+                    _ms.Flush()
+                    _ms.Close()
+                    _ms.Dispose()
+                End If
+            End If
+
+            ' free unmanaged resources (unmanaged objects) and override Finalize() below.
+            ' set large fields to null.
+            _ms = Nothing
+        End If
+        Me.disposedValue = True
+    End Sub
+
+    ' TODO: override Finalize() only if Dispose(ByVal disposing As Boolean) above has code to free unmanaged resources.
+    'Protected Overrides Sub Finalize()
+    '    ' Do not change this code.  Put cleanup code in Dispose(ByVal disposing As Boolean) above.
+    '    Dispose(False)
+    '    MyBase.Finalize()
+    'End Sub
+
+    ' This code added by Visual Basic to correctly implement the disposable pattern.
+    Public Sub Dispose() Implements IDisposable.Dispose
+        ' Do not change this code.  Put cleanup code in Dispose(disposing As Boolean) above.
+        Dispose(True)
+        GC.SuppressFinalize(Me)
+    End Sub
+#End Region
 
 End Class

@@ -139,8 +139,8 @@ Public Class TelevisionTunes_Theme
         End If
     End Sub
 
-    Function Scraper(ByVal DBTV As Structures.DBTV, ByRef ThemeList As List(Of Theme)) As Interfaces.ModuleResult Implements Interfaces.EmberTVScraperModule_Theme.Scraper
-        logger.Trace( "Started scrape")
+    Function Scraper(ByVal DBTV As Structures.DBTV, ByRef ThemeList As List(Of Themes)) As Interfaces.ModuleResult Implements Interfaces.EmberTVScraperModule_Theme.Scraper
+        logger.Trace("Started scrape")
 
         Dim tTelevisionTunes As New TelevisionTunes(DBTV.TVShow.Title)
 
@@ -148,7 +148,7 @@ Public Class TelevisionTunes_Theme
             ThemeList = tTelevisionTunes.ThemeList
         End If
 
-        logger.Trace( "Finished scrape")
+        logger.Trace("Finished scrape")
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
