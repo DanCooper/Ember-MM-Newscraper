@@ -26,8 +26,8 @@ Partial Class dlgFIStreamEditor
         Me.OK_Button = New System.Windows.Forms.Button()
         Me.Cancel_Button = New System.Windows.Forms.Button()
         Me.gbVideoStreams = New System.Windows.Forms.GroupBox()
-        Me.lblVideoMultiView = New System.Windows.Forms.Label()
-        Me.txtVideoMultiview = New System.Windows.Forms.TextBox()
+        Me.lblVideoMultiViewCount = New System.Windows.Forms.Label()
+        Me.txtVideoMultiViewCount = New System.Windows.Forms.TextBox()
         Me.lblVideoBitrate = New System.Windows.Forms.Label()
         Me.txtVideoBitrate = New System.Windows.Forms.TextBox()
         Me.lblVideoLanguage = New System.Windows.Forms.Label()
@@ -61,6 +61,8 @@ Partial Class dlgFIStreamEditor
         Me.pnlStreamEditor = New System.Windows.Forms.Panel()
         Me.txtEncodingSettings = New System.Windows.Forms.TextBox()
         Me.lblEncoding = New System.Windows.Forms.Label()
+        Me.lblVideoMultiViewLayout = New System.Windows.Forms.Label()
+        Me.txtVideoMultiViewLayout = New System.Windows.Forms.TextBox()
         Me.tlpButtons.SuspendLayout()
         Me.gbVideoStreams.SuspendLayout()
         Me.gbAudioStreams.SuspendLayout()
@@ -76,7 +78,7 @@ Partial Class dlgFIStreamEditor
         Me.tlpButtons.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.tlpButtons.Controls.Add(Me.OK_Button, 0, 0)
         Me.tlpButtons.Controls.Add(Me.Cancel_Button, 1, 0)
-        Me.tlpButtons.Location = New System.Drawing.Point(88, 372)
+        Me.tlpButtons.Location = New System.Drawing.Point(178, 408)
         Me.tlpButtons.Name = "tlpButtons"
         Me.tlpButtons.RowCount = 1
         Me.tlpButtons.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
@@ -106,8 +108,10 @@ Partial Class dlgFIStreamEditor
         '
         'gbVideoStreams
         '
-        Me.gbVideoStreams.Controls.Add(Me.lblVideoMultiView)
-        Me.gbVideoStreams.Controls.Add(Me.txtVideoMultiview)
+        Me.gbVideoStreams.Controls.Add(Me.lblVideoMultiViewLayout)
+        Me.gbVideoStreams.Controls.Add(Me.txtVideoMultiViewLayout)
+        Me.gbVideoStreams.Controls.Add(Me.lblVideoMultiViewCount)
+        Me.gbVideoStreams.Controls.Add(Me.txtVideoMultiViewCount)
         Me.gbVideoStreams.Controls.Add(Me.lblVideoBitrate)
         Me.gbVideoStreams.Controls.Add(Me.txtVideoBitrate)
         Me.gbVideoStreams.Controls.Add(Me.lblVideoLanguage)
@@ -125,36 +129,36 @@ Partial Class dlgFIStreamEditor
         Me.gbVideoStreams.Controls.Add(Me.txtVideoHeight)
         Me.gbVideoStreams.Controls.Add(Me.txtVideoWidth)
         Me.gbVideoStreams.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbVideoStreams.Location = New System.Drawing.Point(21, 7)
+        Me.gbVideoStreams.Location = New System.Drawing.Point(3, 7)
         Me.gbVideoStreams.Name = "gbVideoStreams"
-        Me.gbVideoStreams.Size = New System.Drawing.Size(191, 248)
+        Me.gbVideoStreams.Size = New System.Drawing.Size(314, 286)
         Me.gbVideoStreams.TabIndex = 0
         Me.gbVideoStreams.TabStop = False
         Me.gbVideoStreams.Text = "Video Streams"
         Me.gbVideoStreams.Visible = False
         '
-        'lblVideoMultiView
+        'lblVideoMultiViewCount
         '
-        Me.lblVideoMultiView.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblVideoMultiView.Location = New System.Drawing.Point(8, 220)
-        Me.lblVideoMultiView.Name = "lblVideoMultiView"
-        Me.lblVideoMultiView.Size = New System.Drawing.Size(63, 22)
-        Me.lblVideoMultiView.TabIndex = 16
-        Me.lblVideoMultiView.Text = "MultiView"
-        Me.lblVideoMultiView.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.lblVideoMultiViewCount.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblVideoMultiViewCount.Location = New System.Drawing.Point(48, 222)
+        Me.lblVideoMultiViewCount.Name = "lblVideoMultiViewCount"
+        Me.lblVideoMultiViewCount.Size = New System.Drawing.Size(97, 22)
+        Me.lblVideoMultiViewCount.TabIndex = 16
+        Me.lblVideoMultiViewCount.Text = "MultiView Count"
+        Me.lblVideoMultiViewCount.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
-        'txtVideoMultiview
+        'txtVideoMultiViewCount
         '
-        Me.txtVideoMultiview.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtVideoMultiview.Location = New System.Drawing.Point(76, 220)
-        Me.txtVideoMultiview.Name = "txtVideoMultiview"
-        Me.txtVideoMultiview.Size = New System.Drawing.Size(48, 22)
-        Me.txtVideoMultiview.TabIndex = 17
+        Me.txtVideoMultiViewCount.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.txtVideoMultiViewCount.Location = New System.Drawing.Point(150, 222)
+        Me.txtVideoMultiViewCount.Name = "txtVideoMultiViewCount"
+        Me.txtVideoMultiViewCount.Size = New System.Drawing.Size(48, 22)
+        Me.txtVideoMultiViewCount.TabIndex = 17
         '
         'lblVideoBitrate
         '
         Me.lblVideoBitrate.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblVideoBitrate.Location = New System.Drawing.Point(16, 196)
+        Me.lblVideoBitrate.Location = New System.Drawing.Point(90, 198)
         Me.lblVideoBitrate.Name = "lblVideoBitrate"
         Me.lblVideoBitrate.Size = New System.Drawing.Size(56, 13)
         Me.lblVideoBitrate.TabIndex = 14
@@ -164,7 +168,7 @@ Partial Class dlgFIStreamEditor
         'txtVideoBitrate
         '
         Me.txtVideoBitrate.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtVideoBitrate.Location = New System.Drawing.Point(76, 192)
+        Me.txtVideoBitrate.Location = New System.Drawing.Point(150, 194)
         Me.txtVideoBitrate.Name = "txtVideoBitrate"
         Me.txtVideoBitrate.Size = New System.Drawing.Size(68, 22)
         Me.txtVideoBitrate.TabIndex = 15
@@ -172,7 +176,7 @@ Partial Class dlgFIStreamEditor
         'lblVideoLanguage
         '
         Me.lblVideoLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblVideoLanguage.Location = New System.Drawing.Point(4, 167)
+        Me.lblVideoLanguage.Location = New System.Drawing.Point(78, 169)
         Me.lblVideoLanguage.Name = "lblVideoLanguage"
         Me.lblVideoLanguage.Size = New System.Drawing.Size(68, 19)
         Me.lblVideoLanguage.TabIndex = 12
@@ -186,7 +190,7 @@ Partial Class dlgFIStreamEditor
         Me.cbVideoLanguage.DropDownWidth = 120
         Me.cbVideoLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.cbVideoLanguage.FormattingEnabled = True
-        Me.cbVideoLanguage.Location = New System.Drawing.Point(76, 165)
+        Me.cbVideoLanguage.Location = New System.Drawing.Point(150, 167)
         Me.cbVideoLanguage.Name = "cbVideoLanguage"
         Me.cbVideoLanguage.Size = New System.Drawing.Size(93, 21)
         Me.cbVideoLanguage.TabIndex = 13
@@ -194,7 +198,7 @@ Partial Class dlgFIStreamEditor
         'lblVideoAspect
         '
         Me.lblVideoAspect.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblVideoAspect.Location = New System.Drawing.Point(5, 116)
+        Me.lblVideoAspect.Location = New System.Drawing.Point(79, 118)
         Me.lblVideoAspect.Name = "lblVideoAspect"
         Me.lblVideoAspect.Size = New System.Drawing.Size(68, 19)
         Me.lblVideoAspect.TabIndex = 8
@@ -204,7 +208,7 @@ Partial Class dlgFIStreamEditor
         'txtVideoAspect
         '
         Me.txtVideoAspect.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtVideoAspect.Location = New System.Drawing.Point(76, 115)
+        Me.txtVideoAspect.Location = New System.Drawing.Point(150, 117)
         Me.txtVideoAspect.Name = "txtVideoAspect"
         Me.txtVideoAspect.Size = New System.Drawing.Size(48, 22)
         Me.txtVideoAspect.TabIndex = 9
@@ -213,7 +217,7 @@ Partial Class dlgFIStreamEditor
         '
         Me.rbVideoInterlaced.AutoSize = True
         Me.rbVideoInterlaced.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.rbVideoInterlaced.Location = New System.Drawing.Point(111, 45)
+        Me.rbVideoInterlaced.Location = New System.Drawing.Point(185, 47)
         Me.rbVideoInterlaced.Name = "rbVideoInterlaced"
         Me.rbVideoInterlaced.Size = New System.Drawing.Size(76, 17)
         Me.rbVideoInterlaced.TabIndex = 3
@@ -226,7 +230,7 @@ Partial Class dlgFIStreamEditor
         Me.rbVideoProgressive.AutoSize = True
         Me.rbVideoProgressive.Checked = True
         Me.rbVideoProgressive.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.rbVideoProgressive.Location = New System.Drawing.Point(25, 45)
+        Me.rbVideoProgressive.Location = New System.Drawing.Point(99, 47)
         Me.rbVideoProgressive.Name = "rbVideoProgressive"
         Me.rbVideoProgressive.Size = New System.Drawing.Size(85, 17)
         Me.rbVideoProgressive.TabIndex = 2
@@ -237,7 +241,7 @@ Partial Class dlgFIStreamEditor
         'lblVideoCodec
         '
         Me.lblVideoCodec.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblVideoCodec.Location = New System.Drawing.Point(22, 21)
+        Me.lblVideoCodec.Location = New System.Drawing.Point(93, 23)
         Me.lblVideoCodec.Name = "lblVideoCodec"
         Me.lblVideoCodec.Size = New System.Drawing.Size(51, 15)
         Me.lblVideoCodec.TabIndex = 0
@@ -249,7 +253,7 @@ Partial Class dlgFIStreamEditor
         Me.cbVideoCodec.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbVideoCodec.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.cbVideoCodec.FormattingEnabled = True
-        Me.cbVideoCodec.Location = New System.Drawing.Point(76, 19)
+        Me.cbVideoCodec.Location = New System.Drawing.Point(150, 21)
         Me.cbVideoCodec.Name = "cbVideoCodec"
         Me.cbVideoCodec.Size = New System.Drawing.Size(93, 21)
         Me.cbVideoCodec.TabIndex = 1
@@ -257,7 +261,7 @@ Partial Class dlgFIStreamEditor
         'lblVideoDuration
         '
         Me.lblVideoDuration.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblVideoDuration.Location = New System.Drawing.Point(17, 143)
+        Me.lblVideoDuration.Location = New System.Drawing.Point(91, 145)
         Me.lblVideoDuration.Name = "lblVideoDuration"
         Me.lblVideoDuration.Size = New System.Drawing.Size(56, 13)
         Me.lblVideoDuration.TabIndex = 10
@@ -267,7 +271,7 @@ Partial Class dlgFIStreamEditor
         'txtVideoDuration
         '
         Me.txtVideoDuration.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtVideoDuration.Location = New System.Drawing.Point(76, 139)
+        Me.txtVideoDuration.Location = New System.Drawing.Point(150, 141)
         Me.txtVideoDuration.Name = "txtVideoDuration"
         Me.txtVideoDuration.Size = New System.Drawing.Size(68, 22)
         Me.txtVideoDuration.TabIndex = 11
@@ -275,7 +279,7 @@ Partial Class dlgFIStreamEditor
         'lblVideoHeight
         '
         Me.lblVideoHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblVideoHeight.Location = New System.Drawing.Point(17, 93)
+        Me.lblVideoHeight.Location = New System.Drawing.Point(91, 95)
         Me.lblVideoHeight.Name = "lblVideoHeight"
         Me.lblVideoHeight.Size = New System.Drawing.Size(56, 16)
         Me.lblVideoHeight.TabIndex = 6
@@ -285,7 +289,7 @@ Partial Class dlgFIStreamEditor
         'lblVideoWidth
         '
         Me.lblVideoWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblVideoWidth.Location = New System.Drawing.Point(20, 69)
+        Me.lblVideoWidth.Location = New System.Drawing.Point(94, 71)
         Me.lblVideoWidth.Name = "lblVideoWidth"
         Me.lblVideoWidth.Size = New System.Drawing.Size(53, 19)
         Me.lblVideoWidth.TabIndex = 4
@@ -295,7 +299,7 @@ Partial Class dlgFIStreamEditor
         'txtVideoHeight
         '
         Me.txtVideoHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtVideoHeight.Location = New System.Drawing.Point(76, 91)
+        Me.txtVideoHeight.Location = New System.Drawing.Point(150, 93)
         Me.txtVideoHeight.Name = "txtVideoHeight"
         Me.txtVideoHeight.Size = New System.Drawing.Size(48, 22)
         Me.txtVideoHeight.TabIndex = 7
@@ -303,7 +307,7 @@ Partial Class dlgFIStreamEditor
         'txtVideoWidth
         '
         Me.txtVideoWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtVideoWidth.Location = New System.Drawing.Point(76, 68)
+        Me.txtVideoWidth.Location = New System.Drawing.Point(150, 70)
         Me.txtVideoWidth.Name = "txtVideoWidth"
         Me.txtVideoWidth.Size = New System.Drawing.Size(48, 22)
         Me.txtVideoWidth.TabIndex = 5
@@ -475,29 +479,47 @@ Partial Class dlgFIStreamEditor
         Me.pnlStreamEditor.Controls.Add(Me.gbAudioStreams)
         Me.pnlStreamEditor.Location = New System.Drawing.Point(3, 3)
         Me.pnlStreamEditor.Name = "pnlStreamEditor"
-        Me.pnlStreamEditor.Size = New System.Drawing.Size(236, 264)
+        Me.pnlStreamEditor.Size = New System.Drawing.Size(321, 296)
         Me.pnlStreamEditor.TabIndex = 1
         '
         'txtEncodingSettings
         '
-        Me.txtEncodingSettings.Location = New System.Drawing.Point(3, 289)
+        Me.txtEncodingSettings.Location = New System.Drawing.Point(3, 321)
         Me.txtEncodingSettings.Multiline = True
         Me.txtEncodingSettings.Name = "txtEncodingSettings"
         Me.txtEncodingSettings.ReadOnly = True
         Me.txtEncodingSettings.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.txtEncodingSettings.Size = New System.Drawing.Size(236, 77)
+        Me.txtEncodingSettings.Size = New System.Drawing.Size(321, 77)
         Me.txtEncodingSettings.TabIndex = 2
         '
         'lblEncoding
         '
         Me.lblEncoding.AutoSize = True
         Me.lblEncoding.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblEncoding.Location = New System.Drawing.Point(0, 270)
+        Me.lblEncoding.Location = New System.Drawing.Point(0, 302)
         Me.lblEncoding.Name = "lblEncoding"
         Me.lblEncoding.Size = New System.Drawing.Size(101, 13)
         Me.lblEncoding.TabIndex = 11
         Me.lblEncoding.Text = "Encoding Settings"
         Me.lblEncoding.TextAlign = System.Drawing.ContentAlignment.BottomLeft
+        '
+        'lblVideoMultiViewLayout
+        '
+        Me.lblVideoMultiViewLayout.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblVideoMultiViewLayout.Location = New System.Drawing.Point(6, 250)
+        Me.lblVideoMultiViewLayout.Name = "lblVideoMultiViewLayout"
+        Me.lblVideoMultiViewLayout.Size = New System.Drawing.Size(139, 22)
+        Me.lblVideoMultiViewLayout.TabIndex = 18
+        Me.lblVideoMultiViewLayout.Text = "MultiView Layout"
+        Me.lblVideoMultiViewLayout.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'txtVideoMultiViewLayout
+        '
+        Me.txtVideoMultiViewLayout.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.txtVideoMultiViewLayout.Location = New System.Drawing.Point(150, 250)
+        Me.txtVideoMultiViewLayout.Name = "txtVideoMultiViewLayout"
+        Me.txtVideoMultiViewLayout.Size = New System.Drawing.Size(158, 22)
+        Me.txtVideoMultiViewLayout.TabIndex = 19
         '
         'dlgFIStreamEditor
         '
@@ -505,7 +527,7 @@ Partial Class dlgFIStreamEditor
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(242, 404)
+        Me.ClientSize = New System.Drawing.Size(332, 440)
         Me.Controls.Add(Me.lblEncoding)
         Me.Controls.Add(Me.txtEncodingSettings)
         Me.Controls.Add(Me.pnlStreamEditor)
@@ -561,13 +583,15 @@ Partial Class dlgFIStreamEditor
     Friend WithEvents rbSubtitleExternal As System.Windows.Forms.RadioButton
     Friend WithEvents rbSubtitleEmbedded As System.Windows.Forms.RadioButton
     Friend WithEvents pnlStreamEditor As System.Windows.Forms.Panel
-    Friend WithEvents lblVideoMultiView As System.Windows.Forms.Label
-    Friend WithEvents txtVideoMultiview As System.Windows.Forms.TextBox
+    Friend WithEvents lblVideoMultiViewCount As System.Windows.Forms.Label
+    Friend WithEvents txtVideoMultiViewCount As System.Windows.Forms.TextBox
     Friend WithEvents lblVideoBitrate As System.Windows.Forms.Label
     Friend WithEvents txtVideoBitrate As System.Windows.Forms.TextBox
     Friend WithEvents txtAudioBitrate As System.Windows.Forms.TextBox
     Friend WithEvents lblAudioBitrate As System.Windows.Forms.Label
     Friend WithEvents txtEncodingSettings As System.Windows.Forms.TextBox
     Friend WithEvents lblEncoding As System.Windows.Forms.Label
+    Friend WithEvents lblVideoMultiViewLayout As System.Windows.Forms.Label
+    Friend WithEvents txtVideoMultiViewLayout As System.Windows.Forms.TextBox
 
 End Class

@@ -8283,7 +8283,7 @@ doCancel:
                         Functions.SetScraperMod(Enums.MovieModType.Landscape, True)
                     Case "-nfo"
                         Functions.SetScraperMod(Enums.MovieModType.NFO, True)
-                    Case "-posters"
+                    Case "-poster"
                         Functions.SetScraperMod(Enums.MovieModType.Poster, True)
                     Case "-theme"
                         Functions.SetScraperMod(Enums.MovieModType.Theme, True)

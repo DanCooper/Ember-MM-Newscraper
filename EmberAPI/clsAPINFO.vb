@@ -68,7 +68,8 @@ Public Class NFO
                         If Not String.IsNullOrEmpty(miVideo.Scantype) Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(605, "Scan Type"), miVideo.Scantype, vbNewLine)
                         If Not String.IsNullOrEmpty(miVideo.Codec) Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(604, "Codec"), miVideo.Codec, vbNewLine)
                         If Not String.IsNullOrEmpty(miVideo.Bitrate) Then strOutput.AppendFormat("- {0}: {1}{2}", "Bitrate", miVideo.Bitrate, vbNewLine)
-                        If Not String.IsNullOrEmpty(miVideo.MultiView) Then strOutput.AppendFormat("- {0}: {1}{2}", "MultiView", miVideo.MultiView, vbNewLine)
+                        If Not String.IsNullOrEmpty(miVideo.MultiViewCount) Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(1156, "MultiView Count"), miVideo.MultiViewCount, vbNewLine)
+                        If Not String.IsNullOrEmpty(miVideo.MultiViewLayout) Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(1157, "MultiView Layout"), miVideo.MultiViewLayout, vbNewLine)
                         If Not String.IsNullOrEmpty(miVideo.Duration) Then strOutput.AppendFormat("- {0}: {1}", Master.eLang.GetString(609, "Duration"), miVideo.Duration)
                         If Not String.IsNullOrEmpty(miVideo.LongLanguage) Then strOutput.AppendFormat("{0}- {1}: {2}", vbNewLine, Master.eLang.GetString(610, "Language"), miVideo.LongLanguage)
                         iVS += 1
@@ -178,7 +179,8 @@ Public Class NFO
             fivOut.Language = String.Empty
             'cocotus, 2013/02 Added support for new MediaInfo-fields
             fivOut.Bitrate = String.Empty
-            fivOut.MultiView = String.Empty
+            fivOut.MultiViewCount = String.Empty
+            fivOut.MultiViewLayout = String.Empty
             fivOut.EncodedSettings = String.Empty
             'cocotus end
 
@@ -197,8 +199,11 @@ Public Class NFO
 
                         'cocotus, 2013/02 Added support for new MediaInfo-fields
 
-                        'Multiview (3D) handling, simply map field
-                        fivOut.MultiView = miVideo.MultiView
+                        'MultiViewCount (3D) handling, simply map field
+                        fivOut.MultiViewCount = miVideo.MultiViewCount
+
+                        'MultiViewLayout (3D) handling, simply map field
+                        fivOut.MultiViewLayout = miVideo.MultiViewLayout
 
                         'EncodedSettings handling, simply map field
                         fivOut.EncodedSettings = miVideo.EncodedSettings

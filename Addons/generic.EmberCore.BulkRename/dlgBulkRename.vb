@@ -158,13 +158,13 @@ Public Class dlgBulkRenamer
                                                     End If
 
                                                     If _curMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
-                                                        If Not String.IsNullOrEmpty(_curMovie.Movie.FileInfo.StreamDetails.Video.Item(0).MultiView) AndAlso CDbl(_curMovie.Movie.FileInfo.StreamDetails.Video.Item(0).MultiView) > 1 Then
-                                                            MovieFile.MultiView = "3D"
+                                                        If Not String.IsNullOrEmpty(_curMovie.Movie.FileInfo.StreamDetails.Video.Item(0).MultiViewCount) AndAlso CDbl(_curMovie.Movie.FileInfo.StreamDetails.Video.Item(0).MultiViewCount) > 1 Then
+                                                            MovieFile.MultiViewCount = "3D"
                                                         Else
-                                                            MovieFile.MultiView = String.Empty
+                                                            MovieFile.MultiViewCount = String.Empty
                                                         End If
                                                     Else
-                                                        MovieFile.MultiView = String.Empty
+                                                        MovieFile.MultiViewCount = String.Empty
                                                     End If
 
                                                     If _curMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
@@ -184,7 +184,7 @@ Public Class dlgBulkRenamer
                                                 MovieFile.AudioChannels = String.Empty
                                                 MovieFile.AudioCodec = String.Empty
                                                 MovieFile.Resolution = String.Empty
-                                                MovieFile.MultiView = String.Empty
+                                                MovieFile.MultiViewCount = String.Empty
                                             End If
 
                                             For Each i As String In FFRenamer.MovieFolders

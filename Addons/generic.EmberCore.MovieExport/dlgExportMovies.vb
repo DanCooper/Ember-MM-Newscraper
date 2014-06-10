@@ -279,7 +279,8 @@ Public Class dlgExportMovies
                         'We want to use new mediainfo fields in template to -> make them avalaible here!
                         Dim _vidBitrate As String = String.Empty
                         Dim _vidEncodedSettings As String = String.Empty
-                        Dim _vidMultiView As String = String.Empty
+                        Dim _vidMultiViewCount As String = String.Empty
+                        Dim _vidMultiViewLayout As String = String.Empty
                         Dim _audBitrate As String = String.Empty
                         'cocotus end
 
@@ -296,8 +297,11 @@ Public Class dlgExportMovies
                                 If Not String.IsNullOrEmpty(tVid.EncodedSettings) Then
                                     _vidEncodedSettings = tVid.EncodedSettings
                                 End If
-                                If Not String.IsNullOrEmpty(tVid.MultiView) Then
-                                    _vidMultiView = tVid.MultiView
+                                If Not String.IsNullOrEmpty(tVid.MultiViewCount) Then
+                                    _vidMultiViewCount = tVid.MultiViewCount
+                                End If
+                                If Not String.IsNullOrEmpty(tVid.MultiViewLayout) Then
+                                    _vidMultiViewLayout = tVid.MultiViewLayout
                                 End If
                                 'cocotus end
 
@@ -384,7 +388,7 @@ Public Class dlgExportMovies
                         row = row.Replace("<$MOVIESETS>", StringUtils.HtmlEncode(AllMovieSetList)) 'A long string of all moviesets, seperated with ;!
                         row = row.Replace("<$SET>", StringUtils.HtmlEncode(GetMovieSets(_curMovie))) 'All sets which movie belongs to, seperated with ;!
                         row = row.Replace("<$VIDEOBITRATE>", _vidBitrate)
-                        row = row.Replace("<$VIDEOMULTIVIEW>", _vidMultiView)
+                        row = row.Replace("<$VIDEOMULTIVIEW>", _vidMultiViewCount)
                         row = row.Replace("<$VIDEOENCODINGSETTINGS>", _vidEncodedSettings)
                         row = row.Replace("<$AUDIOBITRATE>", _audBitrate)
                         'Unlocking more fields to use in templates!
