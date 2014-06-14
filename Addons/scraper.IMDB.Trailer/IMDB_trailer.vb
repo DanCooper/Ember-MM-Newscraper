@@ -21,7 +21,7 @@
 Imports System.IO
 Imports System.Text
 Imports System.Text.RegularExpressions
-
+Imports NLog
 Imports EmberAPI
 
 ''' <summary>
@@ -33,6 +33,7 @@ Public Class IMDB_trailer
 
 
 #Region "Fields"
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     Public Shared ConfigOptions As New Structures.ScrapeOptions
     Public Shared ConfigScrapeModifier As New Structures.ScrapeModifier
@@ -149,7 +150,7 @@ Public Class IMDB_trailer
     End Sub
 
     Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef URLList As List(Of Trailers)) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule_Trailer.Scraper
-        Master.eLog.Trace(Me.GetType(), "Started scrape", New StackTrace().ToString(), Nothing, False)
+        logger.Error( "Scraper started")
 
         Dim TrailerNumber As Integer = 0
         Dim Links As MatchCollection
@@ -301,7 +302,7 @@ Public Class IMDB_trailer
                 End If
             End If
         End If
-        Master.eLog.Trace(Me.GetType(), "Finished scrape", New StackTrace().ToString(), Nothing, False)
+        logger.Error( "Scraper ended")
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 

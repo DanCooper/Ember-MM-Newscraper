@@ -1,6 +1,4 @@
-﻿Imports EmberAPI
-
-' ################################################################################
+﻿' ################################################################################
 ' #                             EMBER MEDIA MANAGER                              #
 ' ################################################################################
 ' ################################################################################
@@ -20,9 +18,13 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
+Imports EmberAPI
+Imports NLog
+
 Public Class dlgTVDBSearchResults
 
 #Region "Fields"
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     Friend WithEvents bwDownloadPic As New System.ComponentModel.BackgroundWorker
 
@@ -96,9 +98,9 @@ Public Class dlgTVDBSearchResults
                         Me._manualresult = New Scraper.TVSearchResults
                         Me._manualresult.ID = Convert.ToInt32(tSer.Element("id").Value)
                         Me._manualresult.Name = If(Not IsNothing(tSer.Element("SeriesName")), tSer.Element("SeriesName").Value, String.Empty)
-                        If Not IsNothing(tSer.Element("Language")) AndAlso Master.eSettings.TVScraperLanguages.Count > 0 Then
+                        If Not IsNothing(tSer.Element("Language")) AndAlso Master.eSettings.TVGeneralLanguages.Count > 0 Then
                             sLang = tSer.Element("Language").Value
-                            Me._manualresult.Language = Master.eSettings.TVScraperLanguages.FirstOrDefault(Function(s) s.ShortLang = sLang)
+                            Me._manualresult.Language = Master.eSettings.TVGeneralLanguages.FirstOrDefault(Function(s) s.ShortLang = sLang)
                         ElseIf Not IsNothing(tSer.Element("Language")) Then
                             sLang = tSer.Element("Language").Value
                             Me._manualresult.Language = New Containers.TVLanguage With {.LongLang = String.Format("Unknown ({0})", sLang), .ShortLang = sLang}
@@ -160,7 +162,7 @@ Public Class dlgTVDBSearchResults
         Try
             Me.pbBanner.Image = Res.Result
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -213,7 +215,7 @@ Public Class dlgTVDBSearchResults
 
             Me.SetUp()
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -237,7 +239,7 @@ Public Class dlgTVDBSearchResults
             ' Perform the sort with these new sort options.
             Me.lvSearchResults.Sort()
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 

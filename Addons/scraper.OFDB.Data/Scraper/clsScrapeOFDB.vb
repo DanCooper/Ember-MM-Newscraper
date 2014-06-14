@@ -22,10 +22,12 @@ Imports System.IO
 Imports System.IO.Compression
 Imports System.Text.RegularExpressions
 Imports EmberAPI
+Imports NLog
 
 Public Class OFDB
 
-    #Region "Fields"
+#Region "Fields"
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     Private imdbID As String
     Private OFDBMovie As MediaContainers.Movie
@@ -34,9 +36,9 @@ Public Class OFDB
     Private _plot As String
     Private _title As String
 
-    #End Region 'Fields
+#End Region 'Fields
 
-    #Region "Constructors"
+#Region "Constructors"
 
     Public Sub New(ByVal sID As String, ByRef mMovie As MediaContainers.Movie)
         Clear()
@@ -46,9 +48,9 @@ Public Class OFDB
         GetOFDBDetails()
     End Sub
 
-    #End Region 'Constructors
+#End Region 'Constructors
 
-    #Region "Properties"
+#Region "Properties"
 
     Public Property Genre() As String
         Get
@@ -86,9 +88,9 @@ Public Class OFDB
         End Set
     End Property
 
-    #End Region 'Properties
+#End Region 'Properties
 
-    #Region "Methods"
+#Region "Methods"
 
     Private Function CleanTitle(ByVal sString As String) As String
         Dim CleanString As String = sString
@@ -98,7 +100,7 @@ Public Class OFDB
 
             If sString.EndsWith("""") Then CleanString = CleanString.Remove(CleanString.Length - 1, 1)
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
         Return CleanString
     End Function
@@ -124,8 +126,8 @@ Public Class OFDB
 
                 D = HTML.IndexOf("Eine Inhaltsangabe von")
                 If D > 0 Then
-                    Dim L As Integer = Html.Length
-                    tmpHTML = Html.Substring(D + 22, L - (D + 22)).Trim
+                    Dim L As Integer = HTML.Length
+                    tmpHTML = HTML.Substring(D + 22, L - (D + 22)).Trim
                     W = tmpHTML.IndexOf("</b></b><br><br>")
                     Wq = tmpHTML.IndexOf("<b>Quelle:</b>")
                     If Wq > 0 Then
@@ -140,7 +142,7 @@ Public Class OFDB
             End If
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
 
         Return FullPlot
@@ -155,7 +157,7 @@ Public Class OFDB
                 Dim HTML As String = sHTTP.DownloadData(sURL)
                 sHTTP = Nothing
 
-                If Not String.IsNullOrEmpty(Html) Then
+                If Not String.IsNullOrEmpty(HTML) Then
                     'title
                     If String.IsNullOrEmpty(OFDBMovie.Title) OrElse Not Master.eSettings.MovieLockTitle Then
                         Dim OFDBTitle As String = CleanTitle(Web.HttpUtility.HtmlDecode(Regex.Match(HTML, "<td width=""99\%""><h1 itemprop=""name""><font face=""Arial,Helvetica,sans-serif"" size=""3""><b>([^<]+)</b></font></h1></td>").Groups(1).Value.ToString))
@@ -253,7 +255,7 @@ Public Class OFDB
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -273,15 +275,15 @@ Public Class OFDB
                     ofdbURL = String.Concat("http://www.ofdb.de/", Regex.Match(mcOFDBURL(0).Value.ToString, """(film/([^<]+))""").Groups(1).Value.ToString)
                 End If
             Else
-                Master.eLog.Warn(Me.GetType(), String.Format("OFDB Query returned no results for ID of <{0}>", imdbID), New StackTrace().ToString(), Nothing, False)
+                logger.Warn( "OFDB Query returned no results for ID of <{0}>", imdbID)
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error scraping ODFB (too many connections?):" & imdbID)
+            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "Error scraping ODFB (too many connections?):" & imdbID, ex)
         End Try
 
         Return ofdbURL
     End Function
 
-    #End Region 'Methods
+#End Region 'Methods
 
 End Class

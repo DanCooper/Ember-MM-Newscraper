@@ -235,6 +235,8 @@ Public Class Interfaces
 
         Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult
 
+        Function Scraper(ByRef DBMovieSet As Structures.DBMovieSet, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult
+
 #End Region 'Methods
 
     End Interface
@@ -271,7 +273,7 @@ Public Class Interfaces
 
         Function InjectSetupScraper() As Containers.SettingsPanel
 
-        Function Scraper(ByVal DBMovie As Structures.DBMovie, ByRef URLList As List(Of Theme)) As ModuleResult
+        Function Scraper(ByVal DBMovie As Structures.DBMovie, ByRef URLList As List(Of Themes)) As ModuleResult
 
         Sub SaveSetupScraper(ByVal DoDispose As Boolean)
 
@@ -525,7 +527,7 @@ Public Class Interfaces
 
         Function InjectSetupScraper() As Containers.SettingsPanel
 
-        Function Scraper(ByVal DBTV As Structures.DBTV, ByRef URLList As List(Of Theme)) As ModuleResult
+        Function Scraper(ByVal DBTV As Structures.DBTV, ByRef URLList As List(Of Themes)) As ModuleResult
 
         Sub SaveSetupScraper(ByVal DoDispose As Boolean)
 

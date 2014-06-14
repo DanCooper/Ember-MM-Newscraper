@@ -22,10 +22,12 @@ Imports System.IO
 Imports System.Text
 Imports System.Text.RegularExpressions
 Imports EmberAPI
+Imports NLog
 
 Public Class dlgExportMovies
 
 #Region "Fields"
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     Friend WithEvents bwLoadInfo As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwSaveAll As New System.ComponentModel.BackgroundWorker
@@ -69,7 +71,7 @@ Public Class dlgExportMovies
             Dim srcPath As String = String.Concat(Functions.AppPath, "Langs", Path.DirectorySeparatorChar, "html", Path.DirectorySeparatorChar, template, Path.DirectorySeparatorChar)
             MySelf.SaveAll(String.Empty, srcPath, filename, resizePoster)
         Catch ex As Exception
-            Master.eLog.Error(GetType(dlgExportMovies), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -277,7 +279,8 @@ Public Class dlgExportMovies
                         'We want to use new mediainfo fields in template to -> make them avalaible here!
                         Dim _vidBitrate As String = String.Empty
                         Dim _vidEncodedSettings As String = String.Empty
-                        Dim _vidMultiView As String = String.Empty
+                        Dim _vidMultiViewCount As String = String.Empty
+                        Dim _vidMultiViewLayout As String = String.Empty
                         Dim _audBitrate As String = String.Empty
                         'cocotus end
 
@@ -294,8 +297,11 @@ Public Class dlgExportMovies
                                 If Not String.IsNullOrEmpty(tVid.EncodedSettings) Then
                                     _vidEncodedSettings = tVid.EncodedSettings
                                 End If
-                                If Not String.IsNullOrEmpty(tVid.MultiView) Then
-                                    _vidMultiView = tVid.MultiView
+                                If Not String.IsNullOrEmpty(tVid.MultiViewCount) Then
+                                    _vidMultiViewCount = tVid.MultiViewCount
+                                End If
+                                If Not String.IsNullOrEmpty(tVid.MultiViewLayout) Then
+                                    _vidMultiViewLayout = tVid.MultiViewLayout
                                 End If
                                 'cocotus end
 
@@ -382,7 +388,7 @@ Public Class dlgExportMovies
                         row = row.Replace("<$MOVIESETS>", StringUtils.HtmlEncode(AllMovieSetList)) 'A long string of all moviesets, seperated with ;!
                         row = row.Replace("<$SET>", StringUtils.HtmlEncode(GetMovieSets(_curMovie))) 'All sets which movie belongs to, seperated with ;!
                         row = row.Replace("<$VIDEOBITRATE>", _vidBitrate)
-                        row = row.Replace("<$VIDEOMULTIVIEW>", _vidMultiView)
+                        row = row.Replace("<$VIDEOMULTIVIEW>", _vidMultiViewCount)
                         row = row.Replace("<$VIDEOENCODINGSETTINGS>", _vidEncodedSettings)
                         row = row.Replace("<$AUDIOBITRATE>", _audBitrate)
                         'Unlocking more fields to use in templates!
@@ -415,7 +421,7 @@ Public Class dlgExportMovies
                 If doNavigate Then LoadHTML()
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -435,7 +441,7 @@ Public Class dlgExportMovies
             End If
             Return ReturnString
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             Return ReturnString
         End Try
 
@@ -452,7 +458,7 @@ Public Class dlgExportMovies
         Dim ReturnString As String = ""
         Try
 
-            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
+            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                 SQLcommand.CommandText = String.Concat("SELECT SetName FROM MoviesSets;")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     If SQLreader.HasRows Then
@@ -475,7 +481,7 @@ Public Class dlgExportMovies
             End If
             Return ReturnString
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             Return ""
         End Try
     End Function
@@ -489,7 +495,7 @@ Public Class dlgExportMovies
         Dim ReturnString As String = ""
         Try
 
-            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
+            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                 SQLcommand.CommandText = String.Concat("SELECT * FROM TVShows ORDER BY Title COLLATE NOCASE;")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     If SQLreader.HasRows Then
@@ -514,14 +520,14 @@ Public Class dlgExportMovies
             End If
             Return ReturnString
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             Return ""
         End Try
     End Function
     Private Function GetSeasonInfo(ByVal Id As String) As String
         Dim ReturnString As String = ""
         Try
-            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
+            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                 Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
                 SQLcommand.CommandText = "SELECT * FROM TVSeason WHERE TVShowID = (?);"
                 parID.Value = Id
@@ -541,7 +547,7 @@ Public Class dlgExportMovies
             End Using
             Return ReturnString
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             Return ReturnString
         End Try
 
@@ -598,7 +604,7 @@ Public Class dlgExportMovies
             Catch
             End Try
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -611,7 +617,7 @@ Public Class dlgExportMovies
             ' Clean up Movies List if any
             _movies.Clear()
             ' Load nfo movies using path from DB
-            Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
+            Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                 Dim _tmpMovie As New Structures.DBMovie
                 Dim _ID As Integer
                 Dim iProg As Integer = 0
@@ -641,7 +647,7 @@ Public Class dlgExportMovies
                 End Using
             End Using
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -725,7 +731,7 @@ Public Class dlgExportMovies
                 myStream.Close()
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -870,7 +876,7 @@ Public Class dlgExportMovies
                 End If
             Next
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -930,7 +936,7 @@ Public Class dlgExportMovies
 
             Next
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -993,7 +999,7 @@ Public Class dlgExportMovies
                 End If
 
             Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
         End If
         Return line

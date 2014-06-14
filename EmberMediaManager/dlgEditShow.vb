@@ -20,10 +20,16 @@
 
 Imports System.IO
 Imports EmberAPI
+Imports NLog
+Imports System.Diagnostics
 
 Public Class dlgEditShow
 
 #Region "Fields"
+
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+
+    Friend WithEvents bwEFanarts As New System.ComponentModel.BackgroundWorker
 
     Private ASBanner As New Images With {.IsEdit = True}
     Private ASFanart As New Images With {.IsEdit = True}
@@ -31,10 +37,26 @@ Public Class dlgEditShow
     Private ASPoster As New Images With {.IsEdit = True}
     Private lvwActorSorter As ListViewColumnSorter
     Private ShowBanner As New Images With {.IsEdit = True}
+    Private ShowCharacterArt As New Images With {.IsEdit = True}
+    Private ShowClearArt As New Images With {.IsEdit = True}
+    Private ShowClearLogo As New Images With {.IsEdit = True}
     Private ShowFanart As New Images With {.IsEdit = True}
     Private ShowLandscape As New Images With {.IsEdit = True}
     Private ShowPoster As New Images With {.IsEdit = True}
     Private tmpRating As String
+
+    'Extrafanarts
+    Private efDeleteList As New List(Of String)
+    Private EFanartsIndex As Integer = -1
+    Private EFanartsList As New List(Of ExtraImages)
+    Private EFanartsExtractor As New List(Of String)
+    Private EFanartsWarning As Boolean = True
+    Private hasClearedEF As Boolean = False
+    Private iEFCounter As Integer = 0
+    Private iEFLeft As Integer = 1
+    Private iEFTop As Integer = 1
+    Private pbEFImage() As PictureBox
+    Private pnlEFImage() As Panel
 
 #End Region 'Fields
 
@@ -60,7 +82,7 @@ Public Class dlgEditShow
                 Me.lvActors.Select()
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -76,8 +98,41 @@ Public Class dlgEditShow
                 lvItem.SubItems.Add(eActor.Thumb)
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
+    End Sub
+
+    Private Sub AddEFImage(ByVal sDescription As String, ByVal iIndex As Integer, Extrafanart As ExtraImages)
+        Try
+            ReDim Preserve Me.pnlEFImage(iIndex)
+            ReDim Preserve Me.pbEFImage(iIndex)
+            Me.pnlEFImage(iIndex) = New Panel()
+            Me.pbEFImage(iIndex) = New PictureBox()
+            Me.pbEFImage(iIndex).Name = iIndex.ToString
+            Me.pnlEFImage(iIndex).Name = iIndex.ToString
+            Me.pnlEFImage(iIndex).Size = New Size(128, 72)
+            Me.pbEFImage(iIndex).Size = New Size(128, 72)
+            Me.pnlEFImage(iIndex).BackColor = Color.White
+            Me.pnlEFImage(iIndex).BorderStyle = BorderStyle.FixedSingle
+            Me.pbEFImage(iIndex).SizeMode = PictureBoxSizeMode.Zoom
+            Me.pnlEFImage(iIndex).Tag = Extrafanart.Image
+            Me.pbEFImage(iIndex).Tag = Extrafanart.Image
+            Me.pbEFImage(iIndex).Image = CType(Extrafanart.Image.Image.Clone(), Image)
+            Me.pnlEFImage(iIndex).Left = iEFLeft
+            Me.pbEFImage(iIndex).Left = 0
+            Me.pnlEFImage(iIndex).Top = iEFTop
+            Me.pbEFImage(iIndex).Top = 0
+            Me.pnlShowEFanartsBG.Controls.Add(Me.pnlEFImage(iIndex))
+            Me.pnlEFImage(iIndex).Controls.Add(Me.pbEFImage(iIndex))
+            Me.pnlEFImage(iIndex).BringToFront()
+            AddHandler pbEFImage(iIndex).Click, AddressOf pbEFImage_Click
+            AddHandler pnlEFImage(iIndex).Click, AddressOf pnlEFImage_Click
+        Catch ex As Exception
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+        End Try
+
+        Me.iEFTop += 74
+
     End Sub
 
     Private Sub btnEditActor_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEditActor.Click
@@ -91,7 +146,7 @@ Public Class dlgEditShow
                 Me.FillInfo()
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -123,6 +178,24 @@ Public Class dlgEditShow
         Me.pbShowBanner.Image = Nothing
         Me.pbShowBanner.Tag = Nothing
         Me.ShowBanner.Dispose()
+    End Sub
+
+    Private Sub btnRemoveShowCharacterArt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveShowCharacterArt.Click
+        Me.pbShowCharacterArt.Image = Nothing
+        Me.pbShowCharacterArt.Tag = Nothing
+        Me.ShowCharacterArt.Dispose()
+    End Sub
+
+    Private Sub btnRemoveShowClearArt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveShowClearArt.Click
+        Me.pbShowClearArt.Image = Nothing
+        Me.pbShowClearArt.Tag = Nothing
+        Me.ShowClearArt.Dispose()
+    End Sub
+
+    Private Sub btnRemoveShowClearLogo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveShowClearLogo.Click
+        Me.pbShowClearLogo.Image = Nothing
+        Me.pbShowClearLogo.Tag = Nothing
+        Me.ShowClearLogo.Dispose()
     End Sub
 
     Private Sub btnRemoveShowFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveShowFanart.Click
@@ -176,7 +249,7 @@ Public Class dlgEditShow
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -197,7 +270,7 @@ Public Class dlgEditShow
                 End If
             End Using
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -230,7 +303,7 @@ Public Class dlgEditShow
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -251,7 +324,7 @@ Public Class dlgEditShow
                 End If
             End Using
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -284,7 +357,7 @@ Public Class dlgEditShow
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -305,7 +378,7 @@ Public Class dlgEditShow
                 End If
             End Using
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -338,7 +411,7 @@ Public Class dlgEditShow
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -359,7 +432,7 @@ Public Class dlgEditShow
                 End If
             End Using
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -392,7 +465,7 @@ Public Class dlgEditShow
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -413,7 +486,61 @@ Public Class dlgEditShow
                 End If
             End Using
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+        End Try
+    End Sub
+
+    Private Sub btnSetShowCharacterArtScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowCharacterArtScrape.Click
+        Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.ShowCharacterArt, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(ShowCharacterArt, Images))
+
+        If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
+            ShowCharacterArt = tImage
+            Me.pbShowCharacterArt.Image = tImage.Image
+            Me.pbShowCharacterArt.Tag = tImage
+        End If
+    End Sub
+
+    Private Sub btnSetShowCharacterArtLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowCharacterArtLocal.Click
+        Try
+            With ofdImage
+                .InitialDirectory = Master.currShow.ShowPath
+                .Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
+                .FilterIndex = 0
+            End With
+
+            If ofdImage.ShowDialog() = DialogResult.OK Then
+                ShowCharacterArt.FromFile(ofdImage.FileName)
+                If Not IsNothing(ShowCharacterArt.Image) Then
+                    Me.pbShowCharacterArt.Image = ShowCharacterArt.Image
+                    Me.pbShowCharacterArt.Tag = ShowCharacterArt
+
+                    Me.lblShowCharacterArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbShowCharacterArt.Image.Width, Me.pbShowCharacterArt.Image.Height)
+                    Me.lblShowCharacterArtSize.Visible = True
+                End If
+            End If
+        Catch ex As Exception
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
+    Private Sub btnSetShowCharacterArtDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowCharacterArtDL.Click
+        Try
+            Using dImgManual As New dlgImgManual
+                Dim tImage As Images
+                If dImgManual.ShowDialog() = DialogResult.OK Then
+                    tImage = dImgManual.Results
+                    If Not IsNothing(tImage.Image) Then
+                        ShowCharacterArt = tImage
+                        Me.pbShowCharacterArt.Image = ShowCharacterArt.Image
+                        Me.pbShowCharacterArt.Tag = ShowCharacterArt
+
+                        Me.lblShowCharacterArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbShowCharacterArt.Image.Width, Me.pbShowCharacterArt.Image.Height)
+                        Me.lblShowCharacterArtSize.Visible = True
+                    End If
+                End If
+            End Using
+        Catch ex As Exception
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -434,7 +561,115 @@ Public Class dlgEditShow
                 End If
             End Using
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+        End Try
+    End Sub
+
+    Private Sub btnSetShowClearArtScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowClearArtScrape.Click
+        Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.ShowClearArt, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(ShowClearArt, Images))
+
+        If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
+            ShowClearArt = tImage
+            Me.pbShowClearArt.Image = tImage.Image
+            Me.pbShowClearArt.Tag = tImage
+        End If
+    End Sub
+
+    Private Sub btnSetShowClearArtLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowClearArtLocal.Click
+        Try
+            With ofdImage
+                .InitialDirectory = Master.currShow.ShowPath
+                .Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
+                .FilterIndex = 0
+            End With
+
+            If ofdImage.ShowDialog() = DialogResult.OK Then
+                ShowClearArt.FromFile(ofdImage.FileName)
+                If Not IsNothing(ShowClearArt.Image) Then
+                    Me.pbShowClearArt.Image = ShowClearArt.Image
+                    Me.pbShowClearArt.Tag = ShowClearArt
+
+                    Me.lblShowClearArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbShowClearArt.Image.Width, Me.pbShowClearArt.Image.Height)
+                    Me.lblShowClearArtSize.Visible = True
+                End If
+            End If
+        Catch ex As Exception
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
+    Private Sub btnSetShowClearArtDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowClearArtDL.Click
+        Try
+            Using dImgManual As New dlgImgManual
+                Dim tImage As Images
+                If dImgManual.ShowDialog() = DialogResult.OK Then
+                    tImage = dImgManual.Results
+                    If Not IsNothing(tImage.Image) Then
+                        ShowClearArt = tImage
+                        Me.pbShowClearArt.Image = ShowClearArt.Image
+                        Me.pbShowClearArt.Tag = ShowClearArt
+
+                        Me.lblShowClearArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbShowClearArt.Image.Width, Me.pbShowClearArt.Image.Height)
+                        Me.lblShowClearArtSize.Visible = True
+                    End If
+                End If
+            End Using
+        Catch ex As Exception
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
+    Private Sub btnSetShowClearLogoScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowClearLogoScrape.Click
+        Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.ShowClearLogo, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, CType(ShowClearLogo, Images))
+
+        If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
+            ShowClearLogo = tImage
+            Me.pbShowClearLogo.Image = tImage.Image
+            Me.pbShowClearLogo.Tag = tImage
+        End If
+    End Sub
+
+    Private Sub btnSetShowClearLogoLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowClearLogoLocal.Click
+        Try
+            With ofdImage
+                .InitialDirectory = Master.currShow.ShowPath
+                .Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
+                .FilterIndex = 0
+            End With
+
+            If ofdImage.ShowDialog() = DialogResult.OK Then
+                ShowClearLogo.FromFile(ofdImage.FileName)
+                If Not IsNothing(ShowClearLogo.Image) Then
+                    Me.pbShowClearLogo.Image = ShowClearLogo.Image
+                    Me.pbShowClearLogo.Tag = ShowClearLogo
+
+                    Me.lblShowClearLogoSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbShowClearLogo.Image.Width, Me.pbShowClearLogo.Image.Height)
+                    Me.lblShowClearLogoSize.Visible = True
+                End If
+            End If
+        Catch ex As Exception
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
+    Private Sub btnSetShowClearLogoDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetShowClearLogoDL.Click
+        Try
+            Using dImgManual As New dlgImgManual
+                Dim tImage As Images
+                If dImgManual.ShowDialog() = DialogResult.OK Then
+                    tImage = dImgManual.Results
+                    If Not IsNothing(tImage.Image) Then
+                        ShowClearLogo = tImage
+                        Me.pbShowClearLogo.Image = ShowClearLogo.Image
+                        Me.pbShowClearLogo.Tag = ShowClearLogo
+
+                        Me.lblShowClearLogoSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbShowClearLogo.Image.Width, Me.pbShowClearLogo.Image.Height)
+                        Me.lblShowClearLogoSize.Visible = True
+                    End If
+                End If
+            End Using
+        Catch ex As Exception
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -470,7 +705,7 @@ Public Class dlgEditShow
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -503,7 +738,7 @@ Public Class dlgEditShow
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -524,7 +759,7 @@ Public Class dlgEditShow
                 End If
             End Using
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -545,7 +780,7 @@ Public Class dlgEditShow
                 End If
             End Using
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -579,8 +814,34 @@ Public Class dlgEditShow
                 Me.lblShowPosterSize.Visible = True
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
+    End Sub
+
+    Private Sub btnShowEFanartsRefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnShowEFanartsRefresh.Click
+        Me.RefreshEFanarts()
+    End Sub
+
+    Private Sub btnShowEFanartsRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnShowEFanartsRemove.Click
+        Me.DeleteEFanarts()
+        Me.RefreshEFanarts()
+        Me.lblShowEFanartsSize.Text = ""
+        Me.lblShowEFanartsSize.Visible = False
+    End Sub
+
+    Private Sub btnShowEFanartsSetAsFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnShowEFanartsSetAsFanart.Click
+        If Not String.IsNullOrEmpty(Me.EFanartsList.Item(Me.EFanartsIndex).Path) AndAlso Me.EFanartsList.Item(Me.EFanartsIndex).Path.Substring(0, 1) = ":" Then
+            ShowFanart.FromWeb(Me.EFanartsList.Item(Me.EFanartsIndex).Path.Substring(1, Me.EFanartsList.Item(Me.EFanartsIndex).Path.Length - 1))
+        Else
+            ShowFanart.FromFile(Me.EFanartsList.Item(Me.EFanartsIndex).Path)
+        End If
+        If Not IsNothing(ShowFanart.Image) Then
+            Me.pbShowFanart.Image = ShowFanart.Image
+            Me.pbShowFanart.Tag = ShowFanart
+
+            Me.lblShowFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbShowFanart.Image.Width, Me.pbShowFanart.Image.Height)
+            Me.lblShowFanartSize.Visible = True
+        End If
     End Sub
 
     Private Sub BuildStars(ByVal sinRating As Single)
@@ -643,7 +904,23 @@ Public Class dlgEditShow
                 End If
             End With
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+        End Try
+    End Sub
+
+    Private Sub bwEFanarts_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwEFanarts.DoWork
+        If Not Master.currShow.ClearShowEFanarts OrElse hasClearedEF Then LoadEFanarts()
+    End Sub
+
+    Private Sub bwEFanarts_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwEFanarts.RunWorkerCompleted
+        Try
+            If EFanartsList.Count > 0 Then
+                For Each tEFanart As ExtraImages In EFanartsList
+                    AddEFImage(tEFanart.Name, tEFanart.Index, tEFanart)
+                Next
+            End If
+        Catch ex As Exception
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -660,25 +937,61 @@ Public Class dlgEditShow
                 End While
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
+    Private Sub DeleteEFanarts()
+        Try
+            Dim iIndex As Integer = EFanartsIndex
+
+            If iIndex >= 0 Then
+                Dim tPath As String = Me.EFanartsList.Item(iIndex).Path
+                If Me.EFanartsList.Item(iIndex).Path.Substring(0, 1) = ":" Then
+                    Master.currShow.efList.RemoveAll(Function(Str) Str = tPath)
+                    EFanartsList.Remove(EFanartsList.Item(iIndex))
+                Else
+                    efDeleteList.Add(Me.EFanartsList.Item(iIndex).Path)
+                    EFanartsList.Remove(EFanartsList.Item(iIndex))
+                End If
+                pbShowEFanarts.Image = Nothing
+                btnShowEFanartsSetAsFanart.Enabled = False
+            End If
+        Catch ex As Exception
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
+    Private Sub dlgEditShow_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
+        If Me.bwEFanarts.IsBusy Then Me.bwEFanarts.CancelAsync()
+        While Me.bwEFanarts.IsBusy
+            Application.DoEvents()
+            Threading.Thread.Sleep(50)
+        End While
+    End Sub
+
     Private Sub dlgEditShow_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        If Not Master.eSettings.TVASBannerEnabled Then Me.tcEditShow.TabPages.Remove(tpASBanner)
-        If Not Master.eSettings.TVASFanartEnabled Then Me.tcEditShow.TabPages.Remove(tpASFanart)
-        If Not Master.eSettings.TVASLandscapeEnabled Then Me.tcEditShow.TabPages.Remove(tpASLandscape)
-        If Not Master.eSettings.TVASPosterEnabled Then Me.tcEditShow.TabPages.Remove(tpASPoster)
-        If Not Master.eSettings.TVShowBannerEnabled Then Me.tcEditShow.TabPages.Remove(tpShowBanner)
-        If Not Master.eSettings.TVShowFanartEnabled Then Me.tcEditShow.TabPages.Remove(tpShowFanart)
-        If Not Master.eSettings.TVShowLandscapeEnabled Then Me.tcEditShow.TabPages.Remove(tpShowLandscape)
-        If Not Master.eSettings.TVShowPosterEnabled Then Me.tcEditShow.TabPages.Remove(tpShowPoster)
+        If Not Master.eSettings.TVASBannerAnyEnabled Then Me.tcEditShow.TabPages.Remove(tpASBanner)
+        If Not Master.eSettings.TVASFanartAnyEnabled Then Me.tcEditShow.TabPages.Remove(tpASFanart)
+        If Not Master.eSettings.TVASLandscapeAnyEnabled Then Me.tcEditShow.TabPages.Remove(tpASLandscape)
+        If Not Master.eSettings.TVASPosterAnyEnabled Then Me.tcEditShow.TabPages.Remove(tpASPoster)
+        If Not Master.eSettings.TVShowBannerAnyEnabled Then Me.tcEditShow.TabPages.Remove(tpShowBanner)
+        If Not Master.eSettings.TVShowCharacterArtAnyEnabled Then Me.tcEditShow.TabPages.Remove(tpShowCharacterArt)
+        If Not Master.eSettings.TVShowClearArtAnyEnabled Then Me.tcEditShow.TabPages.Remove(tpShowClearArt)
+        If Not Master.eSettings.TVShowClearLogoAnyEnabled Then Me.tcEditShow.TabPages.Remove(tpShowClearLogo)
+        If Not Master.eSettings.TVShowEFanartsAnyEnabled Then Me.tcEditShow.TabPages.Remove(tpShowEFanarts)
+        If Not Master.eSettings.TVShowFanartAnyEnabled Then Me.tcEditShow.TabPages.Remove(tpShowFanart)
+        If Not Master.eSettings.TVShowLandscapeAnyEnabled Then Me.tcEditShow.TabPages.Remove(tpShowLandscape)
+        If Not Master.eSettings.TVShowPosterAnyEnabled Then Me.tcEditShow.TabPages.Remove(tpShowPoster)
 
         Me.pbASBanner.AllowDrop = True
         Me.pbASFanart.AllowDrop = True
         Me.pbASLandscape.AllowDrop = True
         Me.pbASPoster.AllowDrop = True
         Me.pbShowBanner.AllowDrop = True
+        Me.pbShowCharacterArt.AllowDrop = True
+        Me.pbShowClearArt.AllowDrop = True
+        Me.pbShowClearLogo.AllowDrop = True
         Me.pbShowFanart.AllowDrop = True
         Me.pbShowLandscape.AllowDrop = True
         Me.pbShowPoster.AllowDrop = True
@@ -700,6 +1013,19 @@ Public Class dlgEditShow
         Me.FillInfo()
     End Sub
 
+    Private Sub DoSelectEF(ByVal iIndex As Integer, tPoster As Images)
+        Try
+            Me.pbShowEFanarts.Image = tPoster.Image
+            Me.pbShowEFanarts.Tag = tPoster
+            Me.btnShowEFanartsSetAsFanart.Enabled = True
+            Me.EFanartsIndex = iIndex
+            Me.lblShowEFanartsSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbShowEFanarts.Image.Width, Me.pbShowEFanarts.Image.Height)
+            Me.lblShowEFanartsSize.Visible = True
+        Catch ex As Exception
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
     Private Sub EditActor()
         Try
             If Me.lvActors.SelectedItems.Count > 0 Then
@@ -718,7 +1044,7 @@ Public Class dlgEditShow
                 eActor = Nothing
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -770,7 +1096,7 @@ Public Class dlgEditShow
 
             Me.SelectMPAA()
 
-            If Master.eSettings.TVASBannerEnabled Then
+            If Master.eSettings.TVASBannerAnyEnabled Then
                 .ASBanner.FromFile(Master.currShow.SeasonBannerPath)
                 If Not IsNothing(.ASBanner.Image) Then
                     .pbASBanner.Image = .ASBanner.Image
@@ -781,7 +1107,7 @@ Public Class dlgEditShow
                 End If
             End If
 
-            If Master.eSettings.TVASFanartEnabled Then
+            If Master.eSettings.TVASFanartAnyEnabled Then
                 .ASFanart.FromFile(Master.currShow.SeasonFanartPath)
                 If Not IsNothing(.ASFanart.Image) Then
                     .pbASFanart.Image = .ASFanart.Image
@@ -792,7 +1118,7 @@ Public Class dlgEditShow
                 End If
             End If
 
-            If Master.eSettings.TVASLandscapeEnabled Then
+            If Master.eSettings.TVASLandscapeAnyEnabled Then
                 .ASLandscape.FromFile(Master.currShow.SeasonLandscapePath)
                 If Not IsNothing(.ASLandscape.Image) Then
                     .pbASLandscape.Image = .ASLandscape.Image
@@ -803,7 +1129,7 @@ Public Class dlgEditShow
                 End If
             End If
 
-            If Master.eSettings.TVASPosterEnabled Then
+            If Master.eSettings.TVASPosterAnyEnabled Then
                 .ASPoster.FromFile(Master.currShow.SeasonPosterPath)
                 If Not IsNothing(.ASPoster.Image) Then
                     .pbASPoster.Image = .ASPoster.Image
@@ -814,7 +1140,7 @@ Public Class dlgEditShow
                 End If
             End If
 
-            If Master.eSettings.TVShowBannerEnabled Then
+            If Master.eSettings.TVShowBannerAnyEnabled Then
                 ShowBanner.FromFile(Master.currShow.ShowBannerPath)
                 If Not IsNothing(ShowBanner.Image) Then
                     .pbShowBanner.Image = ShowBanner.Image
@@ -825,7 +1151,40 @@ Public Class dlgEditShow
                 End If
             End If
 
-            If Master.eSettings.TVShowFanartEnabled Then
+            If Master.eSettings.TVShowCharacterArtAnyEnabled Then
+                ShowCharacterArt.FromFile(Master.currShow.ShowCharacterArtPath)
+                If Not IsNothing(ShowCharacterArt.Image) Then
+                    .pbShowCharacterArt.Image = ShowCharacterArt.Image
+                    .pbShowCharacterArt.Tag = ShowCharacterArt
+
+                    .lblShowCharacterArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbShowCharacterArt.Image.Width, .pbShowCharacterArt.Image.Height)
+                    .lblShowCharacterArtSize.Visible = True
+                End If
+            End If
+
+            If Master.eSettings.TVShowClearArtAnyEnabled Then
+                ShowClearArt.FromFile(Master.currShow.ShowClearArtPath)
+                If Not IsNothing(ShowClearArt.Image) Then
+                    .pbShowClearArt.Image = ShowClearArt.Image
+                    .pbShowClearArt.Tag = ShowClearArt
+
+                    .lblShowClearArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbShowClearArt.Image.Width, .pbShowClearArt.Image.Height)
+                    .lblShowClearArtSize.Visible = True
+                End If
+            End If
+
+            If Master.eSettings.TVShowClearLogoAnyEnabled Then
+                ShowClearLogo.FromFile(Master.currShow.ShowClearLogoPath)
+                If Not IsNothing(ShowClearLogo.Image) Then
+                    .pbShowClearLogo.Image = ShowClearLogo.Image
+                    .pbShowClearLogo.Tag = ShowClearLogo
+
+                    .lblShowClearLogoSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbShowClearLogo.Image.Width, .pbShowClearLogo.Image.Height)
+                    .lblShowClearLogoSize.Visible = True
+                End If
+            End If
+
+            If Master.eSettings.TVShowFanartAnyEnabled Then
                 ShowFanart.FromFile(Master.currShow.ShowFanartPath)
                 If Not IsNothing(ShowFanart.Image) Then
                     .pbShowFanart.Image = ShowFanart.Image
@@ -836,7 +1195,7 @@ Public Class dlgEditShow
                 End If
             End If
 
-            If Master.eSettings.TVShowLandscapeEnabled Then
+            If Master.eSettings.TVShowLandscapeAnyEnabled Then
                 ShowLandscape.FromFile(Master.currShow.ShowLandscapePath)
                 If Not IsNothing(ShowLandscape.Image) Then
                     .pbShowLandscape.Image = ShowLandscape.Image
@@ -847,7 +1206,7 @@ Public Class dlgEditShow
                 End If
             End If
 
-            If Master.eSettings.TVShowPosterEnabled Then
+            If Master.eSettings.TVShowPosterAnyEnabled Then
                 ShowPoster.FromFile(Master.currShow.ShowPosterPath)
                 If Not IsNothing(ShowPoster.Image) Then
                     .pbShowPoster.Image = ShowPoster.Image
@@ -857,6 +1216,9 @@ Public Class dlgEditShow
                     .lblShowPosterSize.Visible = True
                 End If
             End If
+
+            .bwEFanarts.WorkerSupportsCancellation = True
+            .bwEFanarts.RunWorkerAsync()
 
             'TODO: add ScraperCapabilities for tv shows (need splitted data and poster scraper for tv shows)
 
@@ -893,6 +1255,65 @@ Public Class dlgEditShow
         End If
     End Sub
 
+    Private Sub LoadEFanarts()
+        Dim EF_tPath As String = String.Empty
+        Dim EF_lFI As New List(Of String)
+        Dim EF_i As Integer = 0
+        Dim EF_max As Integer = 30 'limited the number of images to avoid a memory error
+
+        For Each a In FileUtils.GetFilenameList.TVShow(Master.currShow.ShowPath, Enums.TVModType.ShowEFanarts)
+            If Directory.Exists(a) Then
+                EF_lFI.AddRange(Directory.GetFiles(a))
+            End If
+        Next
+
+        Try
+            If EF_lFI.Count > 0 Then
+
+                ' load local Extrafanarts
+                If EF_lFI.Count > 0 Then
+                    For Each fanart As String In EF_lFI
+                        Dim EFImage As New Images
+                        If Me.bwEFanarts.CancellationPending Then Return
+                        If Not Me.efDeleteList.Contains(fanart) Then
+                            EFImage.FromFile(fanart)
+                            EFanartsList.Add(New ExtraImages With {.Image = EFImage, .Name = Path.GetFileName(fanart), .Index = EF_i, .Path = fanart})
+                            EF_i += 1
+                            If EF_i >= EF_max Then Exit For
+                        End If
+                    Next
+                End If
+            End If
+
+            ' load scraped Extrafanarts
+            If Not Master.currShow.efList Is Nothing Then
+                If Not EF_i >= EF_max Then
+                    For Each fanart As String In Master.currShow.efList
+                        Dim EFImage As New Images
+                        If Not String.IsNullOrEmpty(fanart) Then
+                            EFImage.FromWeb(fanart.Substring(1, fanart.Length - 1))
+                        End If
+                        If Not IsNothing(EFImage.Image) Then
+                            EFanartsList.Add(New ExtraImages With {.Image = EFImage, .Name = Path.GetFileName(fanart), .Index = EF_i, .Path = fanart})
+                            EF_i += 1
+                            If EF_i >= EF_max Then Exit For
+                        End If
+                    Next
+                End If
+            End If
+
+            If EF_i >= EF_max AndAlso EFanartsWarning Then
+                MsgBox(String.Format(Master.eLang.GetString(1119, "To prevent a memory overflow will not display more than {0} Extrafanarts."), EF_max), MsgBoxStyle.OkOnly, Master.eLang.GetString(356, "Warning"))
+                EFanartsWarning = False 'show warning only one time
+            End If
+
+        Catch ex As Exception
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+        End Try
+
+        EF_lFI = Nothing
+    End Sub
+
     Private Sub LoadGenres()
         Me.clbGenre.Items.Add(Master.eLang.None)
 
@@ -925,12 +1346,16 @@ Public Class dlgEditShow
             ' Perform the sort with these new sort options.
             Me.lvActors.Sort()
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
     Private Sub lvActors_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles lvActors.DoubleClick
         EditActor()
+    End Sub
+
+    Private Sub lvEFanart_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs)
+        If e.KeyCode = Keys.Delete Then Me.DeleteEFanarts()
     End Sub
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
@@ -942,7 +1367,7 @@ Public Class dlgEditShow
             If Master.eSettings.TVASAnyEnabled Then Master.DB.SaveTVSeasonToDB(Master.currShow, False)
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
 
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
@@ -1025,6 +1450,10 @@ Public Class dlgEditShow
         End If
     End Sub
 
+    Private Sub pbEFImage_Click(ByVal sender As Object, ByVal e As System.EventArgs)
+        Me.DoSelectEF(Convert.ToInt32(DirectCast(sender, PictureBox).Name), DirectCast(DirectCast(sender, PictureBox).Tag, Images))
+    End Sub
+
     Private Sub pbShowBanner_DragDrop(sender As Object, e As DragEventArgs) Handles pbShowBanner.DragDrop
         Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
         If Not IsNothing(tImage.Image) Then
@@ -1037,6 +1466,63 @@ Public Class dlgEditShow
     End Sub
 
     Private Sub pbShowBanner_DragEnter(sender As Object, e As DragEventArgs) Handles pbShowBanner.DragEnter
+        If FileUtils.DragAndDrop.CheckDroppedImage(e) Then
+            e.Effect = DragDropEffects.Copy
+        Else
+            e.Effect = DragDropEffects.None
+        End If
+    End Sub
+
+    Private Sub pbShowCharacterArt_DragDrop(sender As Object, e As DragEventArgs) Handles pbShowCharacterArt.DragDrop
+        Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
+        If Not IsNothing(tImage.Image) Then
+            ShowCharacterArt = tImage
+            Me.pbShowCharacterArt.Image = ShowCharacterArt.Image
+            Me.pbShowCharacterArt.Tag = ShowCharacterArt
+            Me.lblShowCharacterArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbShowCharacterArt.Image.Width, Me.pbShowCharacterArt.Image.Height)
+            Me.lblShowCharacterArtSize.Visible = True
+        End If
+    End Sub
+
+    Private Sub pbShowCharacterArt_DragEnter(sender As Object, e As DragEventArgs) Handles pbShowCharacterArt.DragEnter
+        If FileUtils.DragAndDrop.CheckDroppedImage(e) Then
+            e.Effect = DragDropEffects.Copy
+        Else
+            e.Effect = DragDropEffects.None
+        End If
+    End Sub
+
+    Private Sub pbShowClearArt_DragDrop(sender As Object, e As DragEventArgs) Handles pbShowClearArt.DragDrop
+        Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
+        If Not IsNothing(tImage.Image) Then
+            ShowClearArt = tImage
+            Me.pbShowClearArt.Image = ShowClearArt.Image
+            Me.pbShowClearArt.Tag = ShowClearArt
+            Me.lblShowClearArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbShowClearArt.Image.Width, Me.pbShowClearArt.Image.Height)
+            Me.lblShowClearArtSize.Visible = True
+        End If
+    End Sub
+
+    Private Sub pbShowClearArt_DragEnter(sender As Object, e As DragEventArgs) Handles pbShowClearArt.DragEnter
+        If FileUtils.DragAndDrop.CheckDroppedImage(e) Then
+            e.Effect = DragDropEffects.Copy
+        Else
+            e.Effect = DragDropEffects.None
+        End If
+    End Sub
+
+    Private Sub pbShowClearLogo_DragDrop(sender As Object, e As DragEventArgs) Handles pbShowClearLogo.DragDrop
+        Dim tImage As Images = FileUtils.DragAndDrop.GetDoppedImage(e)
+        If Not IsNothing(tImage.Image) Then
+            ShowClearLogo = tImage
+            Me.pbShowClearLogo.Image = ShowClearLogo.Image
+            Me.pbShowClearLogo.Tag = ShowClearLogo
+            Me.lblShowClearLogoSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbShowClearLogo.Image.Width, Me.pbShowClearLogo.Image.Height)
+            Me.lblShowClearLogoSize.Visible = True
+        End If
+    End Sub
+
+    Private Sub pbShowClearLogo_DragEnter(sender As Object, e As DragEventArgs) Handles pbShowClearLogo.DragEnter
         If FileUtils.DragAndDrop.CheckDroppedImage(e) Then
             e.Effect = DragDropEffects.Copy
         Else
@@ -1111,7 +1597,7 @@ Public Class dlgEditShow
             Single.TryParse(Me.tmpRating, tmpDBL)
             Me.BuildStars(tmpDBL)
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -1125,7 +1611,7 @@ Public Class dlgEditShow
                 Me.BuildStars(2)
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -1139,7 +1625,7 @@ Public Class dlgEditShow
             Single.TryParse(Me.tmpRating, tmpDBL)
             Me.BuildStars(tmpDBL)
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -1153,7 +1639,7 @@ Public Class dlgEditShow
                 Me.BuildStars(4)
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -1167,7 +1653,7 @@ Public Class dlgEditShow
             Single.TryParse(Me.tmpRating, tmpDBL)
             Me.BuildStars(tmpDBL)
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -1181,7 +1667,7 @@ Public Class dlgEditShow
                 Me.BuildStars(6)
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -1195,7 +1681,7 @@ Public Class dlgEditShow
             Single.TryParse(Me.tmpRating, tmpDBL)
             Me.BuildStars(tmpDBL)
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -1209,7 +1695,7 @@ Public Class dlgEditShow
                 Me.BuildStars(8)
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -1223,7 +1709,7 @@ Public Class dlgEditShow
             Single.TryParse(Me.tmpRating, tmpDBL)
             Me.BuildStars(tmpDBL)
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -1237,7 +1723,77 @@ Public Class dlgEditShow
                 Me.BuildStars(10)
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+        End Try
+    End Sub
+
+    Private Sub pnlEFImage_Click(ByVal sender As Object, ByVal e As System.EventArgs)
+        Me.DoSelectEF(Convert.ToInt32(DirectCast(sender, Panel).Name), DirectCast(DirectCast(sender, Panel).Tag, Images))
+    End Sub
+
+    Private Sub RefreshEFanarts()
+        Try
+            If Me.bwEFanarts.IsBusy Then Me.bwEFanarts.CancelAsync()
+            While Me.bwEFanarts.IsBusy
+                Application.DoEvents()
+                Threading.Thread.Sleep(50)
+            End While
+
+            Me.iEFTop = 1 ' set first image top position back to 1
+            Me.EFanartsList.Clear()
+            While Me.pnlShowEFanartsBG.Controls.Count > 0
+                Me.pnlShowEFanartsBG.Controls(0).Dispose()
+            End While
+
+            Me.bwEFanarts.WorkerSupportsCancellation = True
+            Me.bwEFanarts.RunWorkerAsync()
+        Catch ex As Exception
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
+    Private Sub SaveEFanartsList()
+        Try
+            For Each a In FileUtils.GetFilenameList.TVShow(Master.currShow.ShowPath, Enums.TVModType.ShowEFanarts)
+                If Not String.IsNullOrEmpty(a) Then
+                    If Master.currShow.ClearShowEFanarts AndAlso Not hasClearedEF Then
+                        FileUtils.Delete.DeleteDirectory(a)
+                        hasClearedEF = True
+                    Else
+                        'first delete the ones from the delete list
+                        For Each del As String In efDeleteList
+                            File.Delete(Path.Combine(a, del))
+                        Next
+
+                        'now name the rest something arbitrary so we don't get any conflicts
+                        For Each lItem As ExtraImages In EFanartsList
+                            If Not lItem.Path.Substring(0, 1) = ":" Then
+                                FileSystem.Rename(lItem.Path, Path.Combine(Directory.GetParent(lItem.Path).FullName, String.Concat("temp", lItem.Name)))
+                            End If
+                        Next
+
+                        'now rename them properly
+                        For Each lItem As ExtraImages In EFanartsList
+                            Dim efPath As String = lItem.Image.SaveAsTVShowExtrafanart(Master.currShow, lItem.Name)
+                            If lItem.Index = 0 Then
+                                Master.currShow.ShowEFanartsPath = efPath
+                            End If
+                        Next
+
+                        'now remove the temp images
+                        Dim tList As New List(Of String)
+
+                        If Directory.Exists(a) Then
+                            tList.AddRange(Directory.GetFiles(a, "temp*.jpg"))
+                            For Each tFile As String In tList
+                                File.Delete(Path.Combine(a, tFile))
+                            Next
+                        End If
+                    End If
+                End If
+            Next
+        Catch ex As Exception
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1259,7 +1815,7 @@ Public Class dlgEditShow
                 End If
 
             Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
         Else
             Me.lbMPAA.SelectedIndex = 0
@@ -1355,6 +1911,30 @@ Public Class dlgEditShow
                     Master.currShow.ShowBannerPath = String.Empty
                 End If
 
+                'Show CharacterArt 
+                If Not IsNothing(.ShowCharacterArt.Image) Then
+                    Master.currShow.ShowCharacterArtPath = .ShowCharacterArt.SaveAsTVShowCharacterArt(Master.currShow, "")
+                Else
+                    .ShowCharacterArt.DeleteTVShowCharacterArt(Master.currShow)
+                    Master.currShow.ShowCharacterArtPath = String.Empty
+                End If
+
+                'Show ClearArt 
+                If Not IsNothing(.ShowClearArt.Image) Then
+                    Master.currShow.ShowClearArtPath = .ShowClearArt.SaveAsTVShowClearArt(Master.currShow, "")
+                Else
+                    .ShowClearArt.DeleteTVShowClearArt(Master.currShow)
+                    Master.currShow.ShowClearArtPath = String.Empty
+                End If
+
+                'Show ClearLogo 
+                If Not IsNothing(.ShowClearLogo.Image) Then
+                    Master.currShow.ShowClearLogoPath = .ShowClearLogo.SaveAsTVShowClearLogo(Master.currShow, "")
+                Else
+                    .ShowClearLogo.DeleteTVShowClearLogo(Master.currShow)
+                    Master.currShow.ShowClearLogoPath = String.Empty
+                End If
+
                 'Show Fanart
                 If Not IsNothing(.ShowFanart.Image) Then
                     Master.currShow.ShowFanartPath = .ShowFanart.SaveAsTVShowFanart(Master.currShow, "")
@@ -1379,9 +1959,12 @@ Public Class dlgEditShow
                     Master.currShow.ShowPosterPath = String.Empty
                 End If
 
+                'Show Extrafanarts
+                .SaveEFanartsList()
+
             End With
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -1393,6 +1976,9 @@ Public Class dlgEditShow
         Me.Text = sTitle
         Me.btnManual.Text = Master.eLang.GetString(230, "Manual Edit")
         Me.btnRemoveASBanner.Text = Master.eLang.GetString(1024, "Remove Banner")
+        Me.btnRemoveShowCharacterArt.Text = Master.eLang.GetString(1145, "Remove CharacterArt")
+        Me.btnRemoveShowClearArt.Text = Master.eLang.GetString(1087, "Remove ClearArt")
+        Me.btnRemoveShowClearLogo.Text = Master.eLang.GetString(1091, "Remove ClearLogo")
         Me.btnRemoveASFanart.Text = Master.eLang.GetString(250, "Remove Fanart")
         Me.btnRemoveASLandscape.Text = Master.eLang.GetString(1034, "Remove Landscape")
         Me.btnRemoveASPoster.Text = Master.eLang.GetString(247, "Remove Poster")
@@ -1403,6 +1989,15 @@ Public Class dlgEditShow
         Me.btnSetASBannerDL.Text = Master.eLang.GetString(1023, "Change Banner (Download)")
         Me.btnSetASBannerLocal.Text = Master.eLang.GetString(1021, "Change Banner (Local)")
         Me.btnSetASBannerScrape.Text = Master.eLang.GetString(1022, "Change Banner (Scrape)")
+        Me.btnSetShowCharacterArtDL.Text = Master.eLang.GetString(1144, "Change CharacterArt (Download)")
+        Me.btnSetShowCharacterArtLocal.Text = Master.eLang.GetString(1142, "Change CharacterArt (Local)")
+        Me.btnSetShowCharacterArtScrape.Text = Master.eLang.GetString(1143, "Change CharacterArt (Scrape)")
+        Me.btnSetShowClearArtDL.Text = Master.eLang.GetString(1086, "Change ClearArt (Download)")
+        Me.btnSetShowClearArtLocal.Text = Master.eLang.GetString(1084, "Change ClearArt (Local)")
+        Me.btnSetShowClearArtScrape.Text = Master.eLang.GetString(1085, "Change ClearArt (Scrape)")
+        Me.btnSetShowClearLogoDL.Text = Master.eLang.GetString(1090, "Change ClearLogo (Download)")
+        Me.btnSetShowClearLogoLocal.Text = Master.eLang.GetString(1088, "Change ClearLogo (Local)")
+        Me.btnSetShowClearLogoScrape.Text = Master.eLang.GetString(1089, "Change ClearLogo (Scrape)")
         Me.btnSetASFanartDL.Text = Master.eLang.GetString(266, "Change Fanart (Download)")
         Me.btnSetASFanartLocal.Text = Master.eLang.GetString(252, "Change Fanart (Local)")
         Me.btnSetASFanartScrape.Text = Master.eLang.GetString(251, "Change Fanart (Scrape)")
@@ -1424,6 +2019,7 @@ Public Class dlgEditShow
         Me.btnSetShowPosterDL.Text = Me.btnSetASPosterDL.Text
         Me.btnSetShowPosterLocal.Text = Me.btnSetASPosterLocal.Text
         Me.btnSetShowPosterScrape.Text = Me.btnSetASPosterScrape.Text
+        Me.btnShowEFanartsSetAsFanart.Text = Master.eLang.GetString(255, "Set As Fanart")
         Me.colName.Text = Master.eLang.GetString(232, "Name")
         Me.colRole.Text = Master.eLang.GetString(233, "Role")
         Me.colThumb.Text = Master.eLang.GetString(234, "Thumb")
@@ -1444,7 +2040,11 @@ Public Class dlgEditShow
         Me.tpASLandscape.Text = Master.eLang.GetString(1016, "All Seasons Landscape")
         Me.tpASPoster.Text = Master.eLang.GetString(735, "All Season Poster")
         Me.tpShowBanner.Text = Master.eLang.GetString(838, "Banner")
+        Me.tpShowCharacterArt.Text = Master.eLang.GetString(1140, "CharacterArt")
+        Me.tpShowClearArt.Text = Master.eLang.GetString(1096, "ClearArt")
+        Me.tpShowClearLogo.Text = Master.eLang.GetString(1097, "ClearLogo")
         Me.tpShowDetails.Text = Master.eLang.GetString(26, "Details")
+        Me.tpShowEFanarts.Text = Master.eLang.GetString(992, "Extrafanarts")
         Me.tpShowFanart.Text = Master.eLang.GetString(149, "Fanart")
         Me.tpShowLandscape.Text = Master.eLang.GetString(1035, "Landscape")
         Me.tpShowPoster.Text = Master.eLang.GetString(148, "Poster")
@@ -1454,5 +2054,81 @@ Public Class dlgEditShow
     End Sub
 
 #End Region 'Methods
+
+#Region "Nested Types"
+
+    Friend Class ExtraImages
+
+#Region "Fields"
+
+        Private _image As New Images
+        Private _index As Integer
+        Private _name As String
+        Private _path As String
+
+#End Region 'Fields
+
+#Region "Constructors"
+
+        Friend Sub New()
+            Clear()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Properties"
+
+        Friend Property Image() As Images
+            Get
+                Return _image
+            End Get
+            Set(ByVal value As Images)
+                _image = value
+            End Set
+        End Property
+
+        Friend Property Index() As Integer
+            Get
+                Return _index
+            End Get
+            Set(ByVal value As Integer)
+                _index = value
+            End Set
+        End Property
+
+        Friend Property Name() As String
+            Get
+                Return _name
+            End Get
+            Set(ByVal value As String)
+                _name = value
+            End Set
+        End Property
+
+        Friend Property Path() As String
+            Get
+                Return _path
+            End Get
+            Set(ByVal value As String)
+                _path = value
+            End Set
+        End Property
+
+#End Region 'Properties
+
+#Region "Methods"
+
+        Private Sub Clear()
+            _image = Nothing
+            _name = String.Empty
+            _index = Nothing
+            _path = String.Empty
+        End Sub
+
+#End Region 'Methods
+
+    End Class
+
+#End Region 'Nested Types
 
 End Class

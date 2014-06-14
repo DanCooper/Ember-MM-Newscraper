@@ -439,11 +439,10 @@ Partial Class dlgOfflineHolder
         '
         'lblTaglineBGColor
         '
-        Me.lblTaglineBGColor.AutoSize = True
         Me.lblTaglineBGColor.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.lblTaglineBGColor.Location = New System.Drawing.Point(204, 103)
+        Me.lblTaglineBGColor.Location = New System.Drawing.Point(277, 103)
         Me.lblTaglineBGColor.Name = "lblTaglineBGColor"
-        Me.lblTaglineBGColor.Size = New System.Drawing.Size(144, 13)
+        Me.lblTaglineBGColor.Size = New System.Drawing.Size(83, 41)
         Me.lblTaglineBGColor.TabIndex = 12
         Me.lblTaglineBGColor.Text = "Tagline background Color:"
         '

@@ -145,7 +145,21 @@ fontstyle code 5.
       <visible>false</visible>
     </object>
 
-	<object name="pbMILoading">
+    <object name="pnlMoviesInSet">
+      <visible>false</visible>
+    </object>
+
+    <!-- BEGIN INTERNAL TO PNLMOVIESINSET -->
+    <object name="lblMoviesInSetHeader">
+      <visible>false</visible>
+    </object>
+
+    <object name="lstMoviesInSet">
+      <visible>false</visible>
+    </object>
+    <!-- END INTERNAL TO PNLMOVIESINSET -->
+
+	  <object name="pbMILoading">
       <visible>false</visible>
     </object>
 	

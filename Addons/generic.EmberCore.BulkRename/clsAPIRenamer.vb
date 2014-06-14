@@ -21,10 +21,12 @@
 Imports System.IO
 Imports System.Text.RegularExpressions
 Imports EmberAPI
+Imports NLog
 
 Public Class FileFolderRenamer
 
 #Region "Fields"
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     Public MovieFolders As New List(Of String)
 
@@ -38,7 +40,7 @@ Public Class FileFolderRenamer
         Dim mePath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Flags")
 
         _movies.Clear()
-        Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
+        Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
             SQLNewcommand.CommandText = String.Concat("SELECT Path FROM Sources;")
             Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                 While SQLReader.Read
@@ -93,22 +95,24 @@ Public Class FileFolderRenamer
                     strNoFlags = strCond
                     strBase = strCond
                     strCond = ApplyPattern(strCond, "1", f.SortTitle.Substring(0, 1))
-                    strCond = ApplyPattern(strCond, "A", f.Audio)
+                    strCond = ApplyPattern(strCond, "A", f.AudioChannels)
                     strCond = ApplyPattern(strCond, "B", String.Empty) 'This is not need here, Only to HaveBase
                     strCond = ApplyPattern(strCond, "C", f.Director)
                     strCond = ApplyPattern(strCond, "D", f.Parent) '.Replace("\", String.Empty))
                     strCond = ApplyPattern(strCond, "E", f.SortTitle)
                     strCond = ApplyPattern(strCond, "F", f.FileName.Replace("\", String.Empty))
                     '                                G   Genres
+                    strCond = ApplyPattern(strCond, "H", f.VideoCodec)
                     strCond = ApplyPattern(strCond, "I", If(Not String.IsNullOrEmpty(f.IMDBID), String.Concat("tt", f.IMDBID), String.Empty))
+                    strCond = ApplyPattern(strCond, "J", f.AudioCodec)
                     strCond = ApplyPattern(strCond, "L", f.ListTitle)
                     strCond = ApplyPattern(strCond, "M", f.MPAARate)
                     strCond = ApplyPattern(strCond, "O", f.OriginalTitle)
-                    strCond = ApplyPattern(strCond, "P", String.Format("{0:0.0}", CDbl(f.Rating)))
+                    strCond = ApplyPattern(strCond, "P", If(Not String.IsNullOrEmpty(f.Rating), String.Format("{0:0.0}", CDbl(f.Rating)), String.Empty))
                     strCond = ApplyPattern(strCond, "R", f.Resolution)
                     strCond = ApplyPattern(strCond, "S", strSource)
                     strCond = ApplyPattern(strCond, "T", f.Title)
-                    strCond = ApplyPattern(strCond, "V", f.MultiView)
+                    strCond = ApplyPattern(strCond, "V", f.MultiViewCount)
                     strCond = ApplyPattern(strCond, "Y", f.Year)
                     joinIndex = strCond.IndexOf("$G")
                     If Not joinIndex = -1 Then
@@ -136,7 +140,7 @@ Public Class FileFolderRenamer
                             strCond = ApplyPattern(strCond, "U", f.Country.Replace(" / ", " "))
                         End If
                     End If
-                    strNoFlags = Regex.Replace(strNoFlags, "\$((?:[1ABCDEFILMORSTY]|G[. -]|U[. -]?))", String.Empty) '"(?i)\$([DFTYRAS])"  "\$((?i:[DFTYRAS]))"
+                    strNoFlags = Regex.Replace(strNoFlags, "\$((?:[1ABCDEFHIJLMORSTVY]|G[. -]|U[. -]?))", String.Empty) '"(?i)\$([DFTYRAS])"  "\$((?i:[DFTYRAS]))"
                     If strCond.Trim = strNoFlags.Trim Then
                         strCond = String.Empty
                     Else
@@ -151,22 +155,24 @@ Public Class FileFolderRenamer
                 nextEB = pattern.IndexOf("}")
             End While
             pattern = ApplyPattern(pattern, "1", f.SortTitle.Substring(0, 1))
-            pattern = ApplyPattern(pattern, "A", f.Audio)
+            pattern = ApplyPattern(pattern, "A", f.AudioChannels)
             pattern = ApplyPattern(pattern, "B", String.Empty) 'This is not need here, Only to HaveBase
             pattern = ApplyPattern(pattern, "C", f.Director)
             pattern = ApplyPattern(pattern, "D", f.Parent) '.Replace("\", String.Empty))
             pattern = ApplyPattern(pattern, "E", f.SortTitle)
             pattern = ApplyPattern(pattern, "F", f.FileName.Replace("\", String.Empty))
             '                                G   Genres
+            pattern = ApplyPattern(pattern, "H", f.VideoCodec)
             pattern = ApplyPattern(pattern, "I", If(Not String.IsNullOrEmpty(f.IMDBID), String.Concat("tt", f.IMDBID), String.Empty))
+            pattern = ApplyPattern(pattern, "J", f.AudioCodec)
             pattern = ApplyPattern(pattern, "L", f.ListTitle)
             pattern = ApplyPattern(pattern, "M", f.MPAARate)
             pattern = ApplyPattern(pattern, "O", f.OriginalTitle)
-            pattern = ApplyPattern(pattern, "P", String.Format("{0:0.0}", CDbl(f.Rating)))
+            pattern = ApplyPattern(pattern, "P", If(Not String.IsNullOrEmpty(f.Rating), String.Format("{0:0.0}", CDbl(f.Rating)), String.Empty))
             pattern = ApplyPattern(pattern, "R", f.Resolution)
             pattern = ApplyPattern(pattern, "S", strSource)
             pattern = ApplyPattern(pattern, "T", f.Title)
-            pattern = ApplyPattern(pattern, "V", f.MultiView)
+            pattern = ApplyPattern(pattern, "V", f.MultiViewCount)
             pattern = ApplyPattern(pattern, "Y", f.Year)
             nextC = pattern.IndexOf("$G")
             If Not nextC = -1 Then
@@ -235,7 +241,7 @@ Public Class FileFolderRenamer
 
             Return pattern.Trim
         Catch ex As Exception
-            Master.eLog.Error(GetType(FileFolderRenamer), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             Return String.Empty
         End Try
     End Function
@@ -255,27 +261,43 @@ Public Class FileFolderRenamer
 
                 If _tmpMovie.Movie.FileInfo.StreamDetails.Audio.Count > 0 Then
                     Dim tAud As MediaInfo.Audio = NFO.GetBestAudio(_tmpMovie.Movie.FileInfo, False)
-                    MovieFile.Audio = String.Format("{0}-{1}ch", If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(138, "Unknown"), tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(138, "Unknown"), tAud.Channels))
+
+                    If tAud.ChannelsSpecified Then
+                        MovieFile.AudioChannels = String.Format("{0}ch", tAud.Channels)
+                    Else
+                        MovieFile.AudioChannels = String.Empty
+                    End If
+
+                    If tAud.CodecSpecified Then
+                        MovieFile.AudioCodec = tAud.Codec
+                    Else
+                        MovieFile.AudioCodec = String.Empty
+                    End If
+                    'MovieFile.AudioChannels = String.Format("{0}-{1}ch", If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(138, "Unknown"), tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(138, "Unknown"), tAud.Channels))
                 Else
-                    MovieFile.Audio = String.Empty
+                    MovieFile.AudioChannels = String.Empty
+                    MovieFile.AudioCodec = String.Empty
                 End If
 
                 If _tmpMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
-                    If Not String.IsNullOrEmpty(_tmpMovie.Movie.FileInfo.StreamDetails.Video.Item(0).MultiView) AndAlso CDbl(_tmpMovie.Movie.FileInfo.StreamDetails.Video.Item(0).MultiView) > 1 Then
-                        MovieFile.MultiView = "3D"
+                    If Not String.IsNullOrEmpty(_tmpMovie.Movie.FileInfo.StreamDetails.Video.Item(0).MultiViewCount) AndAlso CDbl(_tmpMovie.Movie.FileInfo.StreamDetails.Video.Item(0).MultiViewCount) > 1 Then
+                        MovieFile.MultiViewCount = "3D"
                     Else
-                        MovieFile.MultiView = String.Empty
+                        MovieFile.MultiViewCount = String.Empty
                     End If
                 Else
-                    MovieFile.MultiView = String.Empty
+                    MovieFile.MultiViewCount = String.Empty
                 End If
             Catch ex As Exception
-                Master.eLog.Error(GetType(FileFolderRenamer), ex.Message, ex.StackTrace, "Error FileInfo")
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
         Else
-            MovieFile.Audio = String.Empty
+            MovieFile.AudioChannels = String.Empty
+            MovieFile.AudioCodec = String.Empty
             MovieFile.Resolution = String.Empty
-            MovieFile.MultiView = String.Empty
+            MovieFile.MultiViewCount = String.Empty
+            MovieFile.MultiViewLayout = String.Empty
+            MovieFile.VideoCodec = String.Empty
         End If
 
         MovieFile.Country = _tmpMovie.Movie.Country
@@ -291,7 +313,7 @@ Public Class FileFolderRenamer
         MovieFile.Title = _tmpMovie.Movie.Title
         MovieFile.Year = _tmpMovie.Movie.Year
         Dim mFolders As New List(Of String)
-        Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
+        Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
             SQLNewcommand.CommandText = String.Concat("SELECT Path FROM Sources;")
             Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                 While SQLReader.Read
@@ -414,7 +436,7 @@ Public Class FileFolderRenamer
                     Return String.Empty
                 End If
             Catch ex As Exception
-                Master.eLog.Error(GetType(FileFolderRenamer), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
         Else
             Return String.Empty
@@ -477,7 +499,7 @@ Public Class FileFolderRenamer
                                 End If
                                 DoUpdate = True
                             Catch ex As Exception
-                                Master.eLog.Error(Me.GetType(), ex.Message, "Dir: " & srcDir & " " & destDir, "Error")
+                                logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "Dir: " & srcDir & " " & destDir, ex)
                                 'Need to make some type of failure log
                                 Continue For
                             End Try
@@ -524,7 +546,7 @@ Public Class FileFolderRenamer
 
                                                 DoUpdate = True
                                             Catch ex As Exception
-                                                Master.eLog.Error(Me.GetType(), ex.Message, "File " & srcFile & " " & dstFile, "Error")
+                                                logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "File " & srcFile & " " & dstFile, ex)
                                                 'Need to make some type of failure log
                                             End Try
                                         End If
@@ -563,7 +585,7 @@ Public Class FileFolderRenamer
                 End If
             Next
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -646,7 +668,7 @@ Public Class FileFolderRenamer
                 f.IsRenamed = Not f.NewPath = f.Path OrElse Not f.NewFileName = f.FileName
             Next
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -727,7 +749,7 @@ Public Class FileFolderRenamer
                         If ShowError Then
                             MsgBox(String.Format(Master.eLang.GetString(144, "An error occured while attempting to rename the directory:{0}{0}{1}{0}{0}Please ensure that you are not accessing this directory or any of its files from another program (including browsing via Windows Explorer)."), vbNewLine, ex.Message), MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, Master.eLang.GetString(165, "Unable to Rename Directory"))
                         Else
-                            Master.eLog.Error(GetType(FileFolderRenamer), ex.Message, "Dir: " & srcDir & " " & destDir, "Error")
+                            logger.Error( "Dir: <{0}> - <{1}> ", srcDir, destDir)
                         End If
                     End Try
 
@@ -769,7 +791,7 @@ Public Class FileFolderRenamer
                                         If ShowError Then
                                             MsgBox(String.Format(Master.eLang.GetString(166, "An error occured while attempting to rename a file:{0}{0}{1}{0}{0}Please ensure that you are not accessing this file from another program."), vbNewLine, ex.Message), MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, Master.eLang.GetString(171, "Unable to Rename File"))
                                         Else
-                                            Master.eLog.Error(GetType(FileFolderRenamer), ex.Message, "File " & srcFile & " " & dstFile, "Error")
+                                            logger.Error( "File <{0}> - <{1}>", srcFile, dstFile)
                                         End If
                                     End Try
                                 End If
@@ -805,7 +827,7 @@ Public Class FileFolderRenamer
 
             End If
         Catch ex As Exception
-            Master.eLog.Error(GetType(FileFolderRenamer), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -834,7 +856,8 @@ Public Class FileFolderRenamer
 
 #Region "Fields"
 
-        Private _audio As String
+        Private _audiochannels As String
+        Private _audiocodec As String
         Private _basePath As String
         Private _dirExist As Boolean
         Private _fileExist As Boolean
@@ -847,7 +870,8 @@ Public Class FileFolderRenamer
         Private _isvideo_ts As Boolean
         Private _listtitle As String
         Private _mpaarate As String
-        Private _multiview As String
+        Private _multiviewcount As String
+        Private _multiviewlayout As String
         Private _newFileName As String
         Private _newPath As String
         Private _oldpath As String
@@ -864,17 +888,27 @@ Public Class FileFolderRenamer
         Private _genre As String
         Private _director As String
         Private _filesource As String
+        Private _videocodec As String
 
 #End Region 'Fields
 
 #Region "Properties"
 
-        Public Property Audio() As String
+        Public Property AudioChannels() As String
             Get
-                Return Me._audio
+                Return Me._audiochannels
             End Get
             Set(ByVal value As String)
-                Me._audio = value
+                Me._audiochannels = value
+            End Set
+        End Property
+
+        Public Property AudioCodec() As String
+            Get
+                Return Me._audiocodec
+            End Get
+            Set(ByVal value As String)
+                Me._audiocodec = value
             End Set
         End Property
 
@@ -986,12 +1020,21 @@ Public Class FileFolderRenamer
             End Set
         End Property
 
-        Public Property MultiView() As String
+        Public Property MultiViewCount() As String
             Get
-                Return Me._multiview
+                Return Me._multiviewcount
             End Get
             Set(ByVal value As String)
-                Me._multiview = value
+                Me._multiviewcount = value
+            End Set
+        End Property
+
+        Public Property MultiViewLayout() As String
+            Get
+                Return Me._multiviewlayout
+            End Get
+            Set(ByVal value As String)
+                Me._multiviewlayout = value
             End Set
         End Property
 
@@ -1094,6 +1137,15 @@ Public Class FileFolderRenamer
             End Set
         End Property
 
+        Public Property VideoCodec() As String
+            Get
+                Return Me._videocodec
+            End Get
+            Set(ByVal value As String)
+                Me._videocodec = value
+            End Set
+        End Property
+
         Public Property Year() As String
             Get
                 Return Me._year
@@ -1162,16 +1214,19 @@ Public Class FileFolderRenamer
             _isSingle = True
             _isRenamed = False
             _mpaarate = String.Empty
-            _multiview = String.Empty
+            _multiviewcount = String.Empty
+            _multiviewlayout = String.Empty
             _rating = String.Empty
             _resolution = String.Empty
-            _audio = String.Empty
+            _audiochannels = String.Empty
+            _audiocodec = String.Empty
             _originalTitle = String.Empty
             _isvideo_ts = False
             _isbdmv = False
             _genre = String.Empty
             _director = String.Empty
             _country = String.Empty
+            _videocodec = String.Empty
         End Sub
 
 #End Region 'Methods

@@ -24,14 +24,15 @@ Imports System.IO.Compression
 Imports System.Text
 Imports System.Text.RegularExpressions
 Imports EmberAPI
+Imports NLog
 
 Public Class GoEar
 
 #Region "Fields"
-
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
     Private originaltitle As String
     Private listtitle As String
-    Private _themelist As New List(Of Theme)
+    Private _themelist As New List(Of Themes)
 
 #End Region 'Fields
 
@@ -48,11 +49,11 @@ Public Class GoEar
 
 #Region "Properties"
 
-    Public Property ThemeList() As List(Of Theme)
+    Public Property ThemeList() As List(Of Themes)
         Get
             Return _themelist
         End Get
-        Set(ByVal value As List(Of Theme))
+        Set(ByVal value As List(Of Themes))
             _themelist = value
         End Set
     End Property
@@ -62,7 +63,7 @@ Public Class GoEar
 #Region "Methods"
 
     Private Sub Clear()
-        _themelist = New List(Of Theme)
+        _themelist = New List(Of Themes)
     End Sub
 
     Private Sub GetMovieThemes()
@@ -115,7 +116,7 @@ Public Class GoEar
                         tURL = String.Concat(DownloadURL, tID)
 
                         If Not String.IsNullOrEmpty(tID) Then
-                            _themelist.Add(New Theme With {.Title = tTitle, .ID = tID, .URL = tURL, .Description = tDescription, .Length = tLength, .Bitrate = tBitrate, .WebURL = tWebURL})
+                            _themelist.Add(New Themes With {.Title = tTitle, .ID = tID, .URL = tURL, .Description = tDescription, .Length = tLength, .Bitrate = tBitrate, .WebURL = tWebURL})
                         End If
                     Next
                 End If
@@ -123,7 +124,7 @@ Public Class GoEar
 
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
 
     End Sub

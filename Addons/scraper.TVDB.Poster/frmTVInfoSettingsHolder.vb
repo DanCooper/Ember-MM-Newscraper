@@ -131,6 +131,10 @@ Public Class frmTVInfoSettingsHolder
     End Sub
 
     Private Sub chkScraperShowEGU_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperShowEGU.CheckedChanged
+        If String.IsNullOrEmpty(txtTVDBApiKey.Text) AndAlso chkScraperShowEGU.Checked Then
+            MsgBox(Master.eLang.GetString(1133, "You need your own API key for that"), MsgBoxStyle.OkOnly, Master.eLang.GetString(1134, "Error"))
+            chkScraperShowEGU.Checked = False
+        End If
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
@@ -201,7 +205,7 @@ Public Class frmTVInfoSettingsHolder
         Me.gbScraperFieldsShow.Text = Master.eLang.GetString(743, "Show")
         Me.gbScraperFieldsEpisode.Text = Master.eLang.GetString(727, "Episode")
         Me.lblTVDBMirror.Text = Master.eLang.GetString(801, "TVDB Mirror")
-        Me.cbTVScraperLanguage.Items.AddRange((From lLang In Master.eSettings.TVScraperLanguages Select lLang.LongLang).ToArray)
+        Me.cbTVScraperLanguage.Items.AddRange((From lLang In Master.eSettings.TVGeneralLanguages Select lLang.LongLang).ToArray)
         Me.chkScraperEpActors.Text = Master.eLang.GetString(725, "Actors")
         Me.chkScraperEpAired.Text = Master.eLang.GetString(728, "Aired")
         Me.chkScraperEpCredits.Text = Master.eLang.GetString(729, "Credits")

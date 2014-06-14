@@ -38,13 +38,15 @@ Imports System.Text
 Imports System.Text.RegularExpressions
 Imports EmberAPI
 Imports FanartTVAPI
+Imports NLog
+Imports System.Diagnostics
 
 Namespace FANARTTVs
 
-	Public Class Scraper
+    Public Class Scraper
 
 #Region "Fields"
-
+        Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
         Private _MySettings As FanartTV_Poster.sMySettings
         Private _FanartTV As FanartTV.V1.FanartTV
         Private _APIInvalid As Boolean = False
@@ -66,10 +68,10 @@ Namespace FANARTTVs
         Public Sub New(ByRef tMySettings As FanartTV_Poster.sMySettings)
             _MySettings = tMySettings
             _FanartTV = New FanartTV.V1.FanartTV(_MySettings.FANARTTVApiKey)
-            Dim Result As FanartTV.V1.FanartTVMovie = _FanartTV.GetMovieInfo(New FanartTV.V1.FanartTVRequest("1", "JSON", "all", 1, 1))
+            Dim Result As FanartTV.V1.FanartTVMovie = _FanartTV.GetMovieInfo(New FanartTV.V1.FanartTVMovieRequest("1", "JSON", "all", 1, 1))
             If IsNothing(Result) Then
                 If Not IsNothing(_FanartTV.Error) Then
-                    'Master.eLog.Error(Me.GetType(), _FanartTV.Error, "", "Error")
+                    logger.Error( _FanartTV.Error)
                     _APIInvalid = True
                 End If
             End If
@@ -92,7 +94,7 @@ Namespace FANARTTVs
         '			bwFANARTTV.RunWorkerAsync(New Arguments With {.Parameter = sURL})
         '		End If
         '	Catch ex As Exception
-        '		Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+        '		logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         '	End Try
         'End Sub
 
@@ -109,7 +111,7 @@ Namespace FANARTTVs
                 Return Nothing
             End If
             Try
-                Dim Result As FanartTV.V1.FanartTVMovie = _FanartTV.GetMovieInfo(New FanartTV.V1.FanartTVRequest(imdbID, "JSON", "all", 1, 2))
+                Dim Result As FanartTV.V1.FanartTVMovie = _FanartTV.GetMovieInfo(New FanartTV.V1.FanartTVMovieRequest(imdbID, "JSON", "all", 1, 2))
                 If bwFANARTTV.CancellationPending Then Return Nothing
 
                 'Poster
@@ -292,7 +294,7 @@ Namespace FANARTTVs
                     Next
                 End If
             Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
 
             'Image sorting
@@ -312,7 +314,7 @@ Namespace FANARTTVs
         '	Try
         '		e.Result = GetFANARTTVImages(Args.Parameter)
         '	Catch ex As Exception
-        '		Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+        '		logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         '		e.Result = Nothing
         '	End Try
         'End Sub
@@ -334,31 +336,31 @@ Namespace FANARTTVs
 
 #Region "Nested Types"
 
-		Private Structure Arguments
+        Private Structure Arguments
 
 #Region "Fields"
 
-			Dim Parameter As String
-			Dim sType As String
+            Dim Parameter As String
+            Dim sType As String
 
-#End Region	'Fields
+#End Region 'Fields
 
-		End Structure
+        End Structure
 
-		Private Structure Results
+        Private Structure Results
 
 #Region "Fields"
 
-			Dim Result As Object
-			Dim ResultList As List(Of MediaContainers.Image)
+            Dim Result As Object
+            Dim ResultList As List(Of MediaContainers.Image)
 
-#End Region	'Fields
+#End Region 'Fields
 
-		End Structure
+        End Structure
 
-#End Region	'Nested Types
+#End Region 'Nested Types
 
-	End Class
+    End Class
 
 End Namespace
 

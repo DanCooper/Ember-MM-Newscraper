@@ -21,6 +21,7 @@
 Imports System.Text.RegularExpressions
 Imports EmberAPI
 Imports WatTmdb
+Imports NLog
 
 
 Namespace TMDBtrailer
@@ -28,6 +29,7 @@ Namespace TMDBtrailer
     Public Class Scraper
 
 #Region "Fields"
+        Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
         Private _TMDBConf As V3.TmdbConfiguration
         Private _TMDBConfE As V3.TmdbConfiguration
@@ -69,7 +71,7 @@ Namespace TMDBtrailer
         '            bwTMDB.RunWorkerAsync(New Arguments With {.Parameter = imdbID, .Type = Type})
         '        End If
         '    Catch ex As Exception
-        '        Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+        '        logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         '    End Try
         'End Sub
 
@@ -91,12 +93,12 @@ Namespace TMDBtrailer
                     For Each YTb As V3.Youtube In trailers.youtube
                         tLink = String.Format("http://www.youtube.com/watch?v={0}", YTb.source)
                         tName = GetYouTubeTitle(tLink)
-                        alTrailers.Add(New Trailers With {.URL = tLink, .Description = tName})
+                        alTrailers.Add(New Trailers With {.URL = tLink, .WebURL = tLink, .Description = tName})
                     Next
                 End If
 
             Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
 
             Return alTrailers
@@ -119,7 +121,7 @@ Namespace TMDBtrailer
         '          Try
         '              e.Result = GetTMDBImages(Args.Parameter, Args.Type)
         '          Catch ex As Exception
-        '              Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+        '              logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         '              e.Result = Nothing
         '          End Try
         '      End Sub

@@ -1,6 +1,4 @@
-﻿Imports EmberAPI
-
-' ################################################################################
+﻿' ################################################################################
 ' #                             EMBER MEDIA MANAGER                              #
 ' ################################################################################
 ' ################################################################################
@@ -19,10 +17,14 @@
 ' # You should have received a copy of the GNU General Public License            #
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
+Imports EmberAPI
+Imports NLog
+Imports System.Diagnostics
 
 Public Class dlgSetsManager
 
 #Region "Fields"
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     Friend WithEvents bwLoadMovies As New System.ComponentModel.BackgroundWorker
 
@@ -65,7 +67,7 @@ Public Class dlgSetsManager
 
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -85,7 +87,7 @@ Public Class dlgSetsManager
                 Me.lbMoviesInSet.Focus()
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -103,7 +105,7 @@ Public Class dlgSetsManager
                 End If
             End Using
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -127,7 +129,7 @@ Public Class dlgSetsManager
                 Me.lbMoviesInSet.Focus()
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -142,7 +144,7 @@ Public Class dlgSetsManager
                 If Not String.IsNullOrEmpty(sSet) Then alSets.Add(sSet)
             Next
 
-            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
+            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                 Dim tmpMovie As New Structures.DBMovie
                 Dim iProg As Integer = 0
                 SQLcommand.CommandText = String.Concat("SELECT COUNT(id) AS mcount FROM movies;")
@@ -181,7 +183,7 @@ Public Class dlgSetsManager
                 End Using
             End Using
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -337,7 +339,7 @@ Public Class dlgSetsManager
                 End Using
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -356,7 +358,7 @@ Public Class dlgSetsManager
 
             Me.lbMovies.ResumeLayout()
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -471,7 +473,7 @@ Public Class dlgSetsManager
             Me.FillMovies()
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -491,7 +493,7 @@ Public Class dlgSetsManager
             Me.btnDown.Enabled = False
             Me.btnRemove.Enabled = False
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -525,7 +527,7 @@ Public Class dlgSetsManager
             Master.DB.SaveMovieToDB(lMov.DBMovie, False, False, True)
             If Not isEdit Then Me.currSet.Movies.Remove(lMov)
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -544,7 +546,7 @@ Public Class dlgSetsManager
             Me.btnEditSet.Enabled = False
             Me.btnRemoveSet.Enabled = False
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -552,12 +554,12 @@ Public Class dlgSetsManager
         Try
             Me.SetControlsEnabled(False)
 
-            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MediaDBConn.BeginTransaction()
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 For Each tMovie As Movies In mSet.Movies
                     If Not Master.eSettings.MovieYAMJCompatibleSets Then
-                        tMovie.DBMovie.Movie.AddSet(mSet.Set, 0)
+                        'tMovie.DBMovie.Movie.AddSet(mSet.Set, 0)
                     Else
-                        tMovie.DBMovie.Movie.AddSet(mSet.Set, tMovie.Order)
+                        'tMovie.DBMovie.Movie.AddSet(mSet.Set, tMovie.Order)
                     End If
                     Master.DB.SaveMovieToDB(tMovie.DBMovie, False, True, True)
                 Next
@@ -567,7 +569,7 @@ Public Class dlgSetsManager
 
             Me.SetControlsEnabled(True)
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -778,7 +780,6 @@ Public Class dlgSetsManager
             If currSet.Movies.Count > 0 Then
                 Dim collectionMovie As New Structures.DBMovie
                 collectionMovie = currSet.Movies.Item(0).DBMovie
-                collectionMovie.OriginalTitle = "GETSETIMAGES"
                 If Not ModulesManager.Instance.MovieScrapeImages(collectionMovie, Enums.ScraperCapabilities.Poster, aList) Then
                     If aList.Count > 0 Then
                         dlgImgS = New dlgImgSelect()
@@ -801,7 +802,7 @@ Public Class dlgSetsManager
             End If
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
     Private Sub btnSetFanartScrape_Click(sender As Object, e As EventArgs) Handles btnSetFanartScrape.Click
@@ -815,7 +816,6 @@ Public Class dlgSetsManager
             If currSet.Movies.Count > 0 Then
                 Dim collectionMovie As New Structures.DBMovie
                 collectionMovie = currSet.Movies.Item(0).DBMovie
-                collectionMovie.OriginalTitle = "GETSETIMAGES"
                 If Not ModulesManager.Instance.MovieScrapeImages(collectionMovie, Enums.ScraperCapabilities.Fanart, aList) Then
                     If aList.Count > 0 Then
                         dlgImgS = New dlgImgSelect()
@@ -838,7 +838,7 @@ Public Class dlgSetsManager
             End If
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -908,7 +908,7 @@ Public Class dlgSetsManager
                 Me.lblPosterSize.Visible = True
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
     Private Sub btnSetFanart_Click(sender As Object, e As EventArgs) Handles btnSetFanart.Click
@@ -928,7 +928,7 @@ Public Class dlgSetsManager
                 Me.lblFanartSize.Visible = True
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 

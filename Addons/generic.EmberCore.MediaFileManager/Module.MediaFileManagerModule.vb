@@ -111,7 +111,7 @@ Public Class FileManagerExternalModule
             End Using
         Catch ex As Exception
             Return False
-            'Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            'logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
         Return True
     End Function
@@ -232,7 +232,7 @@ Public Class FileManagerExternalModule
                                 If MsgBox(String.Format(Master.eLang.GetString(314, "Move from {0} To {1}"), ItemsToWork(0).ToString, Path.Combine(tMItem.Tag.ToString, Path.GetFileName(ItemsToWork(0).ToString))), MsgBoxStyle.YesNo, "Move") = MsgBoxResult.Yes Then
                                     'TODO:  need to test it better
                                     DirectoryMove(ItemsToWork(0).ToString, Path.Combine(tMItem.Tag.ToString, Path.GetFileName(ItemsToWork(0).ToString)), Master.eLang.GetString(316, "Moving Movie"))
-                                    Master.DB.DeleteFromDB(MovieId)
+                                    Master.DB.DeleteMovieFromDB(MovieId)
                                     ModulesManager.Instance.RuntimeObjects.InvokeLoadMedia(New Structures.Scans With {.Movies = True}, String.Empty)
                                 End If
 
@@ -248,7 +248,7 @@ Public Class FileManagerExternalModule
             End If
 
         Catch ex As Exception
-            'Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            'logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 

@@ -23,13 +23,15 @@ Imports EmberAPI
 Imports RestSharp
 Imports WatTmdb
 Imports EmberScraperModule.TMDBg
+Imports NLog
+Imports System.Diagnostics
 
 Public Class TMDB_Data
     Implements Interfaces.EmberMovieScraperModule_Data
 
 
 #Region "Fields"
-
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
     Public Shared ConfigOptions As New Structures.ScrapeOptions
     Public Shared ConfigScrapeModifier As New Structures.ScrapeModifier
     Public Shared _AssemblyName As String
@@ -117,10 +119,10 @@ Public Class TMDB_Data
         'Must be after Load settings to retrieve the correct API key
         _TMDBApi = New WatTmdb.V3.Tmdb(_MySettings.TMDBAPIKey, _MySettings.TMDBLanguage)
         If IsNothing(_TMDBApi) Then
-            Master.eLog.Error(Me.GetType(), Master.eLang.GetString(938, "TheMovieDB API is missing or not valid"), _TMDBApi.Error.status_message, "Info")
+            logger.Error(Master.eLang.GetString(938, "TheMovieDB API is missing or not valid"), _TMDBApi.Error.status_message)
         Else
             If Not IsNothing(_TMDBApi.Error) AndAlso _TMDBApi.Error.status_message.Length > 0 Then
-                Master.eLog.Error(Me.GetType(), _TMDBApi.Error.status_message, _TMDBApi.Error.status_code.ToString(), "Error")
+                logger.Error(_TMDBApi.Error.status_message, _TMDBApi.Error.status_code.ToString())
             End If
         End If
         _TMDBConf = _TMDBApi.GetConfiguration()
@@ -139,6 +141,7 @@ Public Class TMDB_Data
         _setup.cbEnabled.Checked = _ScraperEnabled
         _setup.cbTMDBPrefLanguage.Text = _MySettings.TMDBLanguage
         _setup.chkCast.Checked = ConfigOptions.bFullCast
+        _setup.chkCollection.Checked = ConfigOptions.bCollection
         _setup.chkCountry.Checked = ConfigOptions.bCountry
         _setup.chkCrew.Checked = ConfigOptions.bFullCrew
         _setup.chkFallBackEng.Checked = _MySettings.FallBackEng
@@ -177,6 +180,7 @@ Public Class TMDB_Data
         ConfigOptions.bCast = AdvancedSettings.GetBooleanSetting("DoCast", True)
         ConfigOptions.bCert = AdvancedSettings.GetBooleanSetting("DoCert", True)
         ConfigOptions.bCleanPlotOutline = AdvancedSettings.GetBooleanSetting("CleanPlotOutline", True)
+        ConfigOptions.bCollection = AdvancedSettings.GetBooleanSetting("DoCollection", True)
         ConfigOptions.bCountry = AdvancedSettings.GetBooleanSetting("DoCountry", True)
         ConfigOptions.bDirector = AdvancedSettings.GetBooleanSetting("DoDirector", True)
         ConfigOptions.bFullCast = AdvancedSettings.GetBooleanSetting("DoFullCast", True)
@@ -217,6 +221,7 @@ Public Class TMDB_Data
             settings.SetBooleanSetting("CleanPlotOutline", ConfigOptions.bCleanPlotOutline)
             settings.SetBooleanSetting("DoCast", ConfigOptions.bCast)
             settings.SetBooleanSetting("DoCert", ConfigOptions.bCert)
+            settings.SetBooleanSetting("DoCollection", ConfigOptions.bCollection)
             settings.SetBooleanSetting("DoCountry", ConfigOptions.bCountry)
             settings.SetBooleanSetting("DoDirector", ConfigOptions.bDirector)
             settings.SetBooleanSetting("DoFanart", ConfigScrapeModifier.Fanart)
@@ -254,6 +259,7 @@ Public Class TMDB_Data
         ConfigOptions.bCast = _setup.chkCast.Checked
         ConfigOptions.bCert = ConfigOptions.bMPAA
         ConfigOptions.bCleanPlotOutline = _setup.chkTMDBCleanPlotOutline.Checked
+        ConfigOptions.bCollection = _setup.chkCollection.Checked
         ConfigOptions.bCountry = _setup.chkCountry.Checked
         ConfigOptions.bDirector = _setup.chkCrew.Checked
         ConfigOptions.bFullCast = _setup.chkCast.Checked
@@ -298,11 +304,11 @@ Public Class TMDB_Data
         Dim filterOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(Options, ConfigOptions)
 
         If IsNothing(_TMDBApi) Then
-            Master.eLog.Error(Me.GetType(), Master.eLang.GetString(938, "TheMovieDB API is missing or not valid"), _TMDBApi.Error.status_message, "Error")
+            logger.Error(Master.eLang.GetString(938, "TheMovieDB API is missing or not valid"), _TMDBApi.Error.status_message)
             Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
         Else
             If Not IsNothing(_TMDBApi.Error) AndAlso _TMDBApi.Error.status_message.Length > 0 Then
-                Master.eLog.Error(Me.GetType(), _TMDBApi.Error.status_message, _TMDBApi.Error.status_code.ToString(), "Error")
+                logger.Error(_TMDBApi.Error.status_message, _TMDBApi.Error.status_code.ToString())
                 Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
             End If
         End If
@@ -356,6 +362,12 @@ Public Class TMDB_Data
                     Return New Interfaces.ModuleResult With {.breakChain = False}
             End Select
             If ScrapeType = Enums.ScrapeType.SingleScrape Then
+
+                'This is a workaround to remove the "TreeView" error on search results window. The problem is that the last search results are still existing in _TMDBg. 
+                'I don't know another way to remove it. It works, It works so far without errors.
+                'TODO: maybe find another solution.
+                Me._TMDBg = New TMDBg.Scraper(_TMDBConf, _TMDBConfE, _TMDBApi, _TMDBApiE, _TMDBApiA)
+
                 Using dSearch As New dlgTMDBSearchResults(_MySettings, Me._TMDBg)
                     Dim tmpTitle As String = DBMovie.Movie.Title
                     Dim tmpYear As Integer = CInt(IIf(Not String.IsNullOrEmpty(DBMovie.Movie.Year), DBMovie.Movie.Year, 0))

@@ -20,16 +20,19 @@
 
 Imports System.IO
 Imports EmberAPI
+Imports NLog
 
 Public Class genericYAMJ
     Implements Interfaces.EmberExternalModule
 
 #Region "Fields"
-	Private fYAMJ As frmYAMJ
-	Private _enabled As Boolean = False
-	Private _name As String = "YAMJ compatibility"
-	Private _AssemblyName As String = String.Empty
-#End Region	'Fields
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+
+    Private fYAMJ As frmYAMJ
+    Private _enabled As Boolean = False
+    Private _name As String = "YAMJ compatibility"
+    Private _AssemblyName As String = String.Empty
+#End Region 'Fields
 
 #Region "Events"
 
@@ -247,7 +250,7 @@ Public Class genericYAMJ
 				End Select
 				_refparam = doContinue
 			Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
 			End Try
 		End If
 	End Function

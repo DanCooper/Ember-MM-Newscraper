@@ -23,10 +23,15 @@ Imports System.Text
 Imports System.Text.RegularExpressions
 Imports System.Xml
 Imports System.Xml.Serialization
+Imports NLog
 
 Public Class NFO
 
-    #Region "Methods"
+#Region "Fields"
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+#End Region
+
+#Region "Methods"
 
     Public Shared Function FIToString(ByVal miFI As MediaInfo.Fileinfo, ByVal isTV As Boolean) As String
         '//
@@ -63,7 +68,8 @@ Public Class NFO
                         If Not String.IsNullOrEmpty(miVideo.Scantype) Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(605, "Scan Type"), miVideo.Scantype, vbNewLine)
                         If Not String.IsNullOrEmpty(miVideo.Codec) Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(604, "Codec"), miVideo.Codec, vbNewLine)
                         If Not String.IsNullOrEmpty(miVideo.Bitrate) Then strOutput.AppendFormat("- {0}: {1}{2}", "Bitrate", miVideo.Bitrate, vbNewLine)
-                        If Not String.IsNullOrEmpty(miVideo.MultiView) Then strOutput.AppendFormat("- {0}: {1}{2}", "MultiView", miVideo.MultiView, vbNewLine)
+                        If Not String.IsNullOrEmpty(miVideo.MultiViewCount) Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(1156, "MultiView Count"), miVideo.MultiViewCount, vbNewLine)
+                        If Not String.IsNullOrEmpty(miVideo.MultiViewLayout) Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(1157, "MultiView Layout"), miVideo.MultiViewLayout, vbNewLine)
                         If Not String.IsNullOrEmpty(miVideo.Duration) Then strOutput.AppendFormat("- {0}: {1}", Master.eLang.GetString(609, "Duration"), miVideo.Duration)
                         If Not String.IsNullOrEmpty(miVideo.LongLanguage) Then strOutput.AppendFormat("{0}- {1}: {2}", vbNewLine, Master.eLang.GetString(610, "Language"), miVideo.LongLanguage)
                         iVS += 1
@@ -92,7 +98,7 @@ Public Class NFO
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.Error(GetType(NFO), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
 
         If strOutput.ToString.Trim.Length > 0 Then
@@ -148,7 +154,7 @@ Public Class NFO
             Next
 
         Catch ex As Exception
-            Master.eLog.Error(GetType(NFO), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
         Return fiaOut
     End Function
@@ -173,7 +179,8 @@ Public Class NFO
             fivOut.Language = String.Empty
             'cocotus, 2013/02 Added support for new MediaInfo-fields
             fivOut.Bitrate = String.Empty
-            fivOut.MultiView = String.Empty
+            fivOut.MultiViewCount = String.Empty
+            fivOut.MultiViewLayout = String.Empty
             fivOut.EncodedSettings = String.Empty
             'cocotus end
 
@@ -192,8 +199,11 @@ Public Class NFO
 
                         'cocotus, 2013/02 Added support for new MediaInfo-fields
 
-                        'Multiview (3D) handling, simply map field
-                        fivOut.MultiView = miVideo.MultiView
+                        'MultiViewCount (3D) handling, simply map field
+                        fivOut.MultiViewCount = miVideo.MultiViewCount
+
+                        'MultiViewLayout (3D) handling, simply map field
+                        fivOut.MultiViewLayout = miVideo.MultiViewLayout
 
                         'EncodedSettings handling, simply map field
                         fivOut.EncodedSettings = miVideo.EncodedSettings
@@ -207,7 +217,7 @@ Public Class NFO
             Next
 
         Catch ex As Exception
-            Master.eLog.Error(GetType(NFO), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
         Return fivOut
     End Function
@@ -227,7 +237,7 @@ Public Class NFO
                 result = String.Format("{0}x{1} ({2})", iWidth, iHeight, sinADR.ToString("0.00"))
             End If
         Catch ex As Exception
-            Master.eLog.Error(GetType(NFO), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Return result
@@ -309,7 +319,7 @@ Public Class NFO
         ' Get the proper path to NFO
         '\\
 
-        For Each a In FileUtils.GetFilenameList.Movie(sPath, isSingle, Enums.ModType.NFO)
+        For Each a In FileUtils.GetFilenameList.Movie(sPath, isSingle, Enums.MovieModType.NFO)
             If File.Exists(a) Then
                 Return a
             End If
@@ -381,7 +391,7 @@ Public Class NFO
                 End Select
             End If
         Catch ex As Exception
-            Master.eLog.Error(GetType(NFO), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
 
         If Not String.IsNullOrEmpty(resOut) Then
@@ -661,6 +671,14 @@ Public Class NFO
             Catch ex As Exception
             End Try
 
+            'Boxee support
+            If Master.eSettings.TVUseBoxee Then
+                If xmlShow.BoxeeIDSpecified() Then
+                    xmlShow.ID = xmlShow.BoxeeTvDb
+                    xmlShow.BlankBoxeeId()
+                End If
+            End If
+
             If Not IsNothing(xmlSer) Then
                 xmlSer = Nothing
             End If
@@ -688,7 +706,7 @@ Public Class NFO
                 Dim fAtt As New FileAttributes
                 Dim fAttWritable As Boolean = True
 
-                For Each a In FileUtils.GetFilenameList.Movie(movieToSave.Filename, movieToSave.isSingle, Enums.ModType.NFO)
+                For Each a In FileUtils.GetFilenameList.Movie(movieToSave.Filename, movieToSave.isSingle, Enums.MovieModType.NFO)
                     If Not Master.eSettings.GeneralOverwriteNfo Then
                         RenameNonConfNfo(a, False)
                     End If
@@ -713,7 +731,55 @@ Public Class NFO
             End If
 
         Catch ex As Exception
-            Master.eLog.Error(GetType(NFO), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
+    Public Shared Sub SaveMovieSetToNFO(ByRef moviesetToSave As Structures.DBMovieSet)
+        '//
+        ' Serialize MediaContainers.MovieSet to an NFO
+        '\\
+        Try
+            'Try
+            '    Dim params As New List(Of Object)(New Object() {moviesetToSave})
+            '    Dim doContinue As Boolean = True
+            '    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieNFOSave, params, doContinue, False)
+            '    If Not doContinue Then Return
+            'Catch ex As Exception
+            'End Try
+
+            'If Not String.IsNullOrEmpty(moviesetToSave.SetName) Then
+            '    Dim xmlSer As New XmlSerializer(GetType(MediaContainers.Movie))
+            '    Dim doesExist As Boolean = False
+            '    Dim fAtt As New FileAttributes
+            '    Dim fAttWritable As Boolean = True
+
+            '    For Each a In FileUtils.GetFilenameList.Movie(moviesetToSave.SetName, moviesetToSave.isSingle, Enums.ModType.NFO)
+            '        If Not Master.eSettings.GeneralOverwriteNfo Then
+            '            RenameNonConfNfo(a, False)
+            '        End If
+
+            '        doesExist = File.Exists(a)
+            '        If Not doesExist OrElse (Not CBool(File.GetAttributes(a) And FileAttributes.ReadOnly)) Then
+            '            If doesExist Then
+            '                fAtt = File.GetAttributes(a)
+            '                Try
+            '                    File.SetAttributes(a, FileAttributes.Normal)
+            '                Catch ex As Exception
+            '                    fAttWritable = False
+            '                End Try
+            '            End If
+            '            Using xmlSW As New StreamWriter(a)
+            '                movieToSave.NfoPath = a
+            '                xmlSer.Serialize(xmlSW, movieToSave.Movie)
+            '            End Using
+            '            If doesExist And fAttWritable Then File.SetAttributes(a, fAtt)
+            '        End If
+            '    Next
+            'End If
+
+        Catch ex As Exception
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -739,7 +805,7 @@ Public Class NFO
 
             xmlDoc = Nothing
         Catch ex As Exception
-            Master.eLog.Error(GetType(NFO), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -784,7 +850,7 @@ Public Class NFO
                         End Try
                     End If
 
-                    Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
+                    Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                         SQLCommand.CommandText = "SELECT ID FROM TVEps WHERE ID <> (?) AND TVEpPathID IN (SELECT ID FROM TVEpPaths WHERE TVEpPath = (?)) ORDER BY Episode"
                         Dim parID As SQLite.SQLiteParameter = SQLCommand.Parameters.Add("parID", DbType.Int64, 0, "ID")
                         Dim parTVEpPath As SQLite.SQLiteParameter = SQLCommand.Parameters.Add("parTVEpPath", DbType.String, 0, "TVEpPath")
@@ -827,7 +893,7 @@ Public Class NFO
             End If
 
         Catch ex As Exception
-            Master.eLog.Error(GetType(NFO), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -859,6 +925,14 @@ Public Class NFO
                     RenameShowNonConfNfo(tPath)
                 End If
 
+                'Boxee support
+                If Master.eSettings.TVUseBoxee Then
+                    If tvShowToSave.TVShow.IDSpecified() Then
+                        tvShowToSave.TVShow.BoxeeTvDb = tvShowToSave.TVShow.ID
+                        tvShowToSave.TVShow.BlankId()
+                    End If
+                End If
+
                 doesExist = File.Exists(tPath)
                 If Not doesExist OrElse (Not CBool(File.GetAttributes(tPath) And FileAttributes.ReadOnly)) Then
 
@@ -880,7 +954,7 @@ Public Class NFO
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.Error(GetType(NFO), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -892,7 +966,7 @@ Public Class NFO
                 RenameToInfo(sPath)
             End If
         Catch ex As Exception
-            Master.eLog.Error(GetType(NFO), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -906,7 +980,7 @@ Public Class NFO
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.Error(GetType(NFO), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -918,7 +992,7 @@ Public Class NFO
                 RenameToInfo(sPath)
             End If
         Catch ex As Exception
-            Master.eLog.Error(GetType(NFO), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -936,7 +1010,7 @@ Public Class NFO
             End If
             My.Computer.FileSystem.RenameFile(sPath, Path.GetFileName(strNewName))
         Catch ex As Exception
-            Master.eLog.Error(GetType(NFO), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -951,32 +1025,32 @@ Public Class NFO
                 _TVEpDB.TVEp.Runtime = MediaInfo.FormatDuration(MediaInfo.DurationToSeconds(cTotal, True), Master.eSettings.TVScraperDurationRuntimeFormat)
             End If
         Catch ex As Exception
-            Master.eLog.Error(GetType(NFO), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
-    #End Region 'Methods
+#End Region 'Methods
 
-    #Region "Nested Types"
+#Region "Nested Types"
 
     Public Class NonConf
 
-        #Region "Fields"
+#Region "Fields"
 
         Private _imdbid As String
         Private _text As String
 
-        #End Region 'Fields
+#End Region 'Fields
 
-        #Region "Constructors"
+#Region "Constructors"
 
         Public Sub New()
             Me.Clear()
         End Sub
 
-        #End Region 'Constructors
+#End Region 'Constructors
 
-        #Region "Properties"
+#Region "Properties"
 
         Public Property IMDBID() As String
             Get
@@ -996,19 +1070,19 @@ Public Class NFO
             End Set
         End Property
 
-        #End Region 'Properties
+#End Region 'Properties
 
-        #Region "Methods"
+#Region "Methods"
 
         Public Sub Clear()
             Me._imdbid = String.Empty
             Me._text = String.Empty
         End Sub
 
-        #End Region 'Methods
+#End Region 'Methods
 
     End Class
 
-    #End Region 'Nested Types
+#End Region 'Nested Types
 
 End Class

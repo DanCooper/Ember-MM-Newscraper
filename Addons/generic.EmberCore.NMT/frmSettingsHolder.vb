@@ -22,11 +22,16 @@ Imports System.IO
 Imports ICSharpCode.SharpZipLib.Zip
 Imports System.Xml.Serialization
 Imports EmberAPI
+Imports NLog
 
 Public Class frmSettingsHolder
+#Region "Fields"
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
     Private confs As New List(Of NMTExporterModule.Config)
     Private conf As NMTExporterModule.Config
     Private sBasePath As String = Path.Combine(Path.Combine(Functions.AppPath, "Modules"), Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetExecutingAssembly.Location))
+#End Region
+
 #Region "Events"
 
     Public Event ModuleEnabledChanged(ByVal State As Boolean)
@@ -123,7 +128,7 @@ Public Class frmSettingsHolder
                     End While
                 End Using
             Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
         End Using
         If Not conf Is Nothing Then
@@ -152,7 +157,7 @@ Public Class frmSettingsHolder
                     End While
                 End Using
             Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
         End Using
         Return readme
@@ -188,7 +193,7 @@ Public Class frmSettingsHolder
                     End While
                 End Using
             Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
                 Return False
             End Try
         End Using

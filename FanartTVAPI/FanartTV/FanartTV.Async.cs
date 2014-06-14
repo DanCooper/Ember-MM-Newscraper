@@ -103,10 +103,16 @@ namespace FanartTV.V1
 		/// <param name="sort">1 – Sorted by most popular image then newest(default) / 2 – Sorted by newest uploaded image / 3 – Sorted by oldest uploaded image</param>
 		/// <param name="limit">Value is either 1 (1 image) or 2 (all images – default), for example, when automatically downloading images you might only want to return the first result so the user doesn’t have to provide input, whereas with a manual download you might want the user to see all the options.</param>
 		/// <returns></returns>
-		public void GetMovieInfo(FanartTVRequest Request, Action<FanartTVAsyncResult<FanartTVMovie>> callback)
+		public void GetMovieInfo(FanartTVMovieRequest Request, Action<FanartTVAsyncResult<FanartTVMovie>> callback)
         {
             //ProcessAsyncRequest<FanartTVMovie>(BuildGetMovieInfoRequest(MovieID, language, UserState), callback);
 			ProcessAsyncRequest<FanartTVMovie>(Generator.GetMovieInfo(Request), callback);
+        }
+
+        public void GetSeriesInfo(FanartTVSeriesRequest Request, Action<FanartTVAsyncResult<FanartTVSeries>> callback)
+        {
+            //ProcessAsyncRequest<FanartTVMovie>(BuildGetMovieInfoRequest(MovieID, language, UserState), callback);
+            ProcessAsyncRequest<FanartTVSeries>(Generator.GetSeriesInfo(Request), callback);
         }
         #endregion
     }

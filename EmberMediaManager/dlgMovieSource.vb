@@ -22,10 +22,13 @@ Imports System
 Imports System.IO
 Imports System.Text.RegularExpressions
 Imports EmberAPI
+Imports NLog
+Imports System.Diagnostics
 
 Public Class dlgMovieSource
 
 #Region "Fields"
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     Private currNameText As String = String.Empty
     Private currPathText As String = String.Empty
@@ -70,7 +73,7 @@ Public Class dlgMovieSource
                 End If
             End With
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -86,7 +89,7 @@ Public Class dlgMovieSource
             If String.IsNullOrEmpty(Me.txtSourceName.Text) Then
                 pbValid.Image = My.Resources.invalid
             Else
-                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
+                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                     SQLcommand.CommandText = String.Concat("SELECT ID FROM Sources WHERE Name LIKE """, Me.txtSourceName.Text.Trim, """ AND ID != ", Me._id, ";")
                     'Debug.Print(SQLcommand.CommandText)
                     Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
@@ -106,7 +109,7 @@ Public Class dlgMovieSource
                 End Using
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
 
         If Not String.IsNullOrEmpty(Me.txtSourcePath.Text) AndAlso Directory.Exists(Me.txtSourcePath.Text.Trim) AndAlso isValid Then
@@ -135,7 +138,7 @@ Public Class dlgMovieSource
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -145,8 +148,8 @@ Public Class dlgMovieSource
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
         Try
-            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MediaDBConn.BeginTransaction()
-                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                     If Me._id >= 0 Then
                         SQLcommand.CommandText = String.Concat("UPDATE sources SET name = (?), path = (?), recursive = (?), foldername = (?), single = (?) WHERE ID =", Me._id, ";")
                     Else
@@ -171,7 +174,7 @@ Public Class dlgMovieSource
             End Using
             Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Finally
             Functions.GetListOfSources()

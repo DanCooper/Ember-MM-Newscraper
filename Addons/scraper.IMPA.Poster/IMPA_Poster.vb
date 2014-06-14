@@ -146,6 +146,10 @@ Public Class IMPA_Poster
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
+    Function Scraper(ByRef DBMovieSet As Structures.DBMovieSet, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule_Poster.Scraper
+        Return New Interfaces.ModuleResult With {.breakChain = False}
+    End Function
+
     Sub SaveSettings()
         Using settings = New AdvancedSettings()
             settings.SetBooleanSetting("DoPoster", ConfigScrapeModifier.Poster)

@@ -4,37 +4,37 @@ Partial Class dlgUpdateMedia
 
     #Region "Fields"
 
-    Friend  WithEvents chkAllMod As System.Windows.Forms.CheckBox
-    Friend  WithEvents chkCast As System.Windows.Forms.CheckBox
-    Friend  WithEvents chkCert As System.Windows.Forms.CheckBox
-    Friend  WithEvents chkCrew As System.Windows.Forms.CheckBox
-    Friend  WithEvents chkDirector As System.Windows.Forms.CheckBox
-    Friend WithEvents chkEThumbsMod As System.Windows.Forms.CheckBox
-    Friend WithEvents chkFanartMod As System.Windows.Forms.CheckBox
-    Friend WithEvents chkGenre As System.Windows.Forms.CheckBox
-    Friend WithEvents chkMetaMod As System.Windows.Forms.CheckBox
-    Friend WithEvents chkMPAA As System.Windows.Forms.CheckBox
-    Friend WithEvents chkMusicBy As System.Windows.Forms.CheckBox
-    Friend WithEvents chkNFOMod As System.Windows.Forms.CheckBox
-    Friend WithEvents chkOutline As System.Windows.Forms.CheckBox
-    Friend WithEvents chkPlot As System.Windows.Forms.CheckBox
-    Friend WithEvents chkPosterMod As System.Windows.Forms.CheckBox
-    Friend WithEvents chkProducers As System.Windows.Forms.CheckBox
-    Friend WithEvents chkRating As System.Windows.Forms.CheckBox
-    Friend WithEvents chkRelease As System.Windows.Forms.CheckBox
-    Friend WithEvents chkRuntime As System.Windows.Forms.CheckBox
-    Friend WithEvents chkStudio As System.Windows.Forms.CheckBox
-    Friend WithEvents chkTagline As System.Windows.Forms.CheckBox
-    Friend WithEvents chkTitle As System.Windows.Forms.CheckBox
-    Friend WithEvents chkTop250 As System.Windows.Forms.CheckBox
-    Friend WithEvents chkCountry As System.Windows.Forms.CheckBox
-    Friend WithEvents chkTrailer As System.Windows.Forms.CheckBox
-    Friend WithEvents chkTrailerMod As System.Windows.Forms.CheckBox
-    Friend WithEvents chkVotes As System.Windows.Forms.CheckBox
-    Friend WithEvents chkWriters As System.Windows.Forms.CheckBox
-    Friend WithEvents chkYear As System.Windows.Forms.CheckBox
+    Friend WithEvents chkModAll As System.Windows.Forms.CheckBox
+    Friend WithEvents chkOptsCast As System.Windows.Forms.CheckBox
+    Friend WithEvents chkOptsCert As System.Windows.Forms.CheckBox
+    Friend WithEvents chkOptsCrew As System.Windows.Forms.CheckBox
+    Friend WithEvents chkOptsDirector As System.Windows.Forms.CheckBox
+    Friend WithEvents chkModEThumbs As System.Windows.Forms.CheckBox
+    Friend WithEvents chkModFanart As System.Windows.Forms.CheckBox
+    Friend WithEvents chkOptsGenre As System.Windows.Forms.CheckBox
+    Friend WithEvents chkModMeta As System.Windows.Forms.CheckBox
+    Friend WithEvents chkOptsMPAA As System.Windows.Forms.CheckBox
+    Friend WithEvents chkOptsMusicBy As System.Windows.Forms.CheckBox
+    Friend WithEvents chkModNFO As System.Windows.Forms.CheckBox
+    Friend WithEvents chkOptsOutline As System.Windows.Forms.CheckBox
+    Friend WithEvents chkOptsPlot As System.Windows.Forms.CheckBox
+    Friend WithEvents chkModPoster As System.Windows.Forms.CheckBox
+    Friend WithEvents chkOptsProducers As System.Windows.Forms.CheckBox
+    Friend WithEvents chkOptsRating As System.Windows.Forms.CheckBox
+    Friend WithEvents chkOptsRelease As System.Windows.Forms.CheckBox
+    Friend WithEvents chkOptsRuntime As System.Windows.Forms.CheckBox
+    Friend WithEvents chkOptsStudio As System.Windows.Forms.CheckBox
+    Friend WithEvents chkOptsTagline As System.Windows.Forms.CheckBox
+    Friend WithEvents chkOptsTitle As System.Windows.Forms.CheckBox
+    Friend WithEvents chkOptsTop250 As System.Windows.Forms.CheckBox
+    Friend WithEvents chkOptsCountry As System.Windows.Forms.CheckBox
+    Friend WithEvents chkOptsTrailer As System.Windows.Forms.CheckBox
+    Friend WithEvents chkModTrailer As System.Windows.Forms.CheckBox
+    Friend WithEvents chkOptsVotes As System.Windows.Forms.CheckBox
+    Friend WithEvents chkOptsWriters As System.Windows.Forms.CheckBox
+    Friend WithEvents chkOptsYear As System.Windows.Forms.CheckBox
     Friend WithEvents gbOptions As System.Windows.Forms.GroupBox
-    Friend WithEvents gbUpdateItems As System.Windows.Forms.GroupBox
+    Friend WithEvents gbModifiers As System.Windows.Forms.GroupBox
     Friend WithEvents gbUpdateModifier As System.Windows.Forms.GroupBox
     Friend WithEvents gbUpdateType As System.Windows.Forms.GroupBox
     Friend WithEvents lblTopDescription As System.Windows.Forms.Label
@@ -86,48 +86,58 @@ Partial Class dlgUpdateMedia
         Me.rbUpdateModifier_New = New System.Windows.Forms.RadioButton()
         Me.rbUpdateModifier_Missing = New System.Windows.Forms.RadioButton()
         Me.gbUpdateType = New System.Windows.Forms.GroupBox()
+        Me.rbUpdate_Skip = New System.Windows.Forms.RadioButton()
         Me.rbUpdate_Ask = New System.Windows.Forms.RadioButton()
         Me.rbUpdate_Auto = New System.Windows.Forms.RadioButton()
-        Me.gbUpdateItems = New System.Windows.Forms.GroupBox()
-        Me.chkEFanartsMod = New System.Windows.Forms.CheckBox()
-        Me.chkTrailerMod = New System.Windows.Forms.CheckBox()
-        Me.chkEThumbsMod = New System.Windows.Forms.CheckBox()
-        Me.chkMetaMod = New System.Windows.Forms.CheckBox()
-        Me.chkFanartMod = New System.Windows.Forms.CheckBox()
-        Me.chkPosterMod = New System.Windows.Forms.CheckBox()
-        Me.chkNFOMod = New System.Windows.Forms.CheckBox()
-        Me.chkAllMod = New System.Windows.Forms.CheckBox()
+        Me.gbModifiers = New System.Windows.Forms.GroupBox()
+        Me.btnModNone = New System.Windows.Forms.Button()
+        Me.chkModLandscape = New System.Windows.Forms.CheckBox()
+        Me.chkModBanner = New System.Windows.Forms.CheckBox()
+        Me.chkModClearArt = New System.Windows.Forms.CheckBox()
+        Me.chkModClearLogo = New System.Windows.Forms.CheckBox()
+        Me.chkModDiscArt = New System.Windows.Forms.CheckBox()
+        Me.chkModTheme = New System.Windows.Forms.CheckBox()
+        Me.chkModActorThumbs = New System.Windows.Forms.CheckBox()
+        Me.chkModEFanarts = New System.Windows.Forms.CheckBox()
+        Me.chkModTrailer = New System.Windows.Forms.CheckBox()
+        Me.chkModEThumbs = New System.Windows.Forms.CheckBox()
+        Me.chkModMeta = New System.Windows.Forms.CheckBox()
+        Me.chkModFanart = New System.Windows.Forms.CheckBox()
+        Me.chkModPoster = New System.Windows.Forms.CheckBox()
+        Me.chkModNFO = New System.Windows.Forms.CheckBox()
+        Me.chkModAll = New System.Windows.Forms.CheckBox()
         Me.Update_Button = New System.Windows.Forms.Button()
         Me.gbOptions = New System.Windows.Forms.GroupBox()
-        Me.chkCert = New System.Windows.Forms.CheckBox()
-        Me.chkCountry = New System.Windows.Forms.CheckBox()
-        Me.chkTop250 = New System.Windows.Forms.CheckBox()
-        Me.chkCrew = New System.Windows.Forms.CheckBox()
-        Me.chkMusicBy = New System.Windows.Forms.CheckBox()
-        Me.chkProducers = New System.Windows.Forms.CheckBox()
-        Me.chkWriters = New System.Windows.Forms.CheckBox()
-        Me.chkStudio = New System.Windows.Forms.CheckBox()
-        Me.chkRuntime = New System.Windows.Forms.CheckBox()
-        Me.chkPlot = New System.Windows.Forms.CheckBox()
-        Me.chkOutline = New System.Windows.Forms.CheckBox()
-        Me.chkGenre = New System.Windows.Forms.CheckBox()
-        Me.chkDirector = New System.Windows.Forms.CheckBox()
-        Me.chkTagline = New System.Windows.Forms.CheckBox()
-        Me.chkCast = New System.Windows.Forms.CheckBox()
-        Me.chkVotes = New System.Windows.Forms.CheckBox()
-        Me.chkTrailer = New System.Windows.Forms.CheckBox()
-        Me.chkRating = New System.Windows.Forms.CheckBox()
-        Me.chkRelease = New System.Windows.Forms.CheckBox()
-        Me.chkMPAA = New System.Windows.Forms.CheckBox()
-        Me.chkYear = New System.Windows.Forms.CheckBox()
-        Me.chkTitle = New System.Windows.Forms.CheckBox()
+        Me.btnOptsNone = New System.Windows.Forms.Button()
+        Me.chkOptsAll = New System.Windows.Forms.CheckBox()
+        Me.chkOptsCert = New System.Windows.Forms.CheckBox()
+        Me.chkOptsCountry = New System.Windows.Forms.CheckBox()
+        Me.chkOptsTop250 = New System.Windows.Forms.CheckBox()
+        Me.chkOptsCrew = New System.Windows.Forms.CheckBox()
+        Me.chkOptsMusicBy = New System.Windows.Forms.CheckBox()
+        Me.chkOptsProducers = New System.Windows.Forms.CheckBox()
+        Me.chkOptsWriters = New System.Windows.Forms.CheckBox()
+        Me.chkOptsStudio = New System.Windows.Forms.CheckBox()
+        Me.chkOptsRuntime = New System.Windows.Forms.CheckBox()
+        Me.chkOptsPlot = New System.Windows.Forms.CheckBox()
+        Me.chkOptsOutline = New System.Windows.Forms.CheckBox()
+        Me.chkOptsGenre = New System.Windows.Forms.CheckBox()
+        Me.chkOptsDirector = New System.Windows.Forms.CheckBox()
+        Me.chkOptsTagline = New System.Windows.Forms.CheckBox()
+        Me.chkOptsCast = New System.Windows.Forms.CheckBox()
+        Me.chkOptsVotes = New System.Windows.Forms.CheckBox()
+        Me.chkOptsTrailer = New System.Windows.Forms.CheckBox()
+        Me.chkOptsRating = New System.Windows.Forms.CheckBox()
+        Me.chkOptsRelease = New System.Windows.Forms.CheckBox()
+        Me.chkOptsMPAA = New System.Windows.Forms.CheckBox()
+        Me.chkOptsYear = New System.Windows.Forms.CheckBox()
+        Me.chkOptsTitle = New System.Windows.Forms.CheckBox()
         Me.pnlUpdateMedia = New System.Windows.Forms.Panel()
-        Me.chkActorMod = New System.Windows.Forms.CheckBox()
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.gbUpdateModifier.SuspendLayout()
         Me.gbUpdateType.SuspendLayout()
-        Me.gbUpdateItems.SuspendLayout()
+        Me.gbModifiers.SuspendLayout()
         Me.gbOptions.SuspendLayout()
         Me.pnlUpdateMedia.SuspendLayout()
         Me.SuspendLayout()
@@ -136,7 +146,7 @@ Partial Class dlgUpdateMedia
         '
         Me.OK_Button.Anchor = System.Windows.Forms.AnchorStyles.Bottom
         Me.OK_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.OK_Button.Location = New System.Drawing.Point(489, 359)
+        Me.OK_Button.Location = New System.Drawing.Point(489, 459)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(80, 23)
         Me.OK_Button.TabIndex = 1
@@ -254,15 +264,27 @@ Partial Class dlgUpdateMedia
         '
         'gbUpdateType
         '
+        Me.gbUpdateType.Controls.Add(Me.rbUpdate_Skip)
         Me.gbUpdateType.Controls.Add(Me.rbUpdate_Ask)
         Me.gbUpdateType.Controls.Add(Me.rbUpdate_Auto)
         Me.gbUpdateType.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbUpdateType.Location = New System.Drawing.Point(6, 79)
         Me.gbUpdateType.Name = "gbUpdateType"
-        Me.gbUpdateType.Size = New System.Drawing.Size(275, 75)
+        Me.gbUpdateType.Size = New System.Drawing.Size(275, 90)
         Me.gbUpdateType.TabIndex = 1
         Me.gbUpdateType.TabStop = False
         Me.gbUpdateType.Text = "Update Mode"
+        '
+        'rbUpdate_Skip
+        '
+        Me.rbUpdate_Skip.AutoSize = True
+        Me.rbUpdate_Skip.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.rbUpdate_Skip.Location = New System.Drawing.Point(6, 64)
+        Me.rbUpdate_Skip.Name = "rbUpdate_Skip"
+        Me.rbUpdate_Skip.Size = New System.Drawing.Size(206, 17)
+        Me.rbUpdate_Skip.TabIndex = 2
+        Me.rbUpdate_Skip.Text = "Skip (Skip If More Than One Match)"
+        Me.rbUpdate_Skip.UseVisualStyleBackColor = True
         '
         'rbUpdate_Ask
         '
@@ -288,141 +310,255 @@ Partial Class dlgUpdateMedia
         Me.rbUpdate_Auto.Text = "Automatic (Force Best Match)"
         Me.rbUpdate_Auto.UseVisualStyleBackColor = True
         '
-        'gbUpdateItems
+        'gbModifiers
         '
-        Me.gbUpdateItems.Controls.Add(Me.chkActorMod)
-        Me.gbUpdateItems.Controls.Add(Me.chkEFanartsMod)
-        Me.gbUpdateItems.Controls.Add(Me.chkTrailerMod)
-        Me.gbUpdateItems.Controls.Add(Me.chkEThumbsMod)
-        Me.gbUpdateItems.Controls.Add(Me.chkMetaMod)
-        Me.gbUpdateItems.Controls.Add(Me.chkFanartMod)
-        Me.gbUpdateItems.Controls.Add(Me.chkPosterMod)
-        Me.gbUpdateItems.Controls.Add(Me.chkNFOMod)
-        Me.gbUpdateItems.Controls.Add(Me.chkAllMod)
-        Me.gbUpdateItems.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbUpdateItems.Location = New System.Drawing.Point(6, 160)
-        Me.gbUpdateItems.Name = "gbUpdateItems"
-        Me.gbUpdateItems.Size = New System.Drawing.Size(275, 113)
-        Me.gbUpdateItems.TabIndex = 2
-        Me.gbUpdateItems.TabStop = False
-        Me.gbUpdateItems.Text = "Modifiers"
+        Me.gbModifiers.Controls.Add(Me.btnModNone)
+        Me.gbModifiers.Controls.Add(Me.chkModLandscape)
+        Me.gbModifiers.Controls.Add(Me.chkModBanner)
+        Me.gbModifiers.Controls.Add(Me.chkModClearArt)
+        Me.gbModifiers.Controls.Add(Me.chkModClearLogo)
+        Me.gbModifiers.Controls.Add(Me.chkModDiscArt)
+        Me.gbModifiers.Controls.Add(Me.chkModTheme)
+        Me.gbModifiers.Controls.Add(Me.chkModActorThumbs)
+        Me.gbModifiers.Controls.Add(Me.chkModEFanarts)
+        Me.gbModifiers.Controls.Add(Me.chkModTrailer)
+        Me.gbModifiers.Controls.Add(Me.chkModEThumbs)
+        Me.gbModifiers.Controls.Add(Me.chkModMeta)
+        Me.gbModifiers.Controls.Add(Me.chkModFanart)
+        Me.gbModifiers.Controls.Add(Me.chkModPoster)
+        Me.gbModifiers.Controls.Add(Me.chkModNFO)
+        Me.gbModifiers.Controls.Add(Me.chkModAll)
+        Me.gbModifiers.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbModifiers.Location = New System.Drawing.Point(6, 175)
+        Me.gbModifiers.Name = "gbModifiers"
+        Me.gbModifiers.Size = New System.Drawing.Size(275, 207)
+        Me.gbModifiers.TabIndex = 2
+        Me.gbModifiers.TabStop = False
+        Me.gbModifiers.Text = "Modifiers"
         '
-        'chkEFanartsMod
+        'btnModNone
         '
-        Me.chkEFanartsMod.AutoSize = True
-        Me.chkEFanartsMod.Checked = True
-        Me.chkEFanartsMod.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkEFanartsMod.Enabled = False
-        Me.chkEFanartsMod.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkEFanartsMod.Location = New System.Drawing.Point(135, 54)
-        Me.chkEFanartsMod.Name = "chkEFanartsMod"
-        Me.chkEFanartsMod.Size = New System.Drawing.Size(87, 17)
-        Me.chkEFanartsMod.TabIndex = 6
-        Me.chkEFanartsMod.Text = "Extrafanarts"
-        Me.chkEFanartsMod.UseVisualStyleBackColor = True
+        Me.btnModNone.Location = New System.Drawing.Point(153, 17)
+        Me.btnModNone.Name = "btnModNone"
+        Me.btnModNone.Size = New System.Drawing.Size(116, 23)
+        Me.btnModNone.TabIndex = 14
+        Me.btnModNone.Text = "Select None"
+        Me.btnModNone.UseVisualStyleBackColor = True
         '
-        'chkTrailerMod
+        'chkModLandscape
         '
-        Me.chkTrailerMod.AutoSize = True
-        Me.chkTrailerMod.Checked = True
-        Me.chkTrailerMod.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkTrailerMod.Enabled = False
-        Me.chkTrailerMod.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkTrailerMod.Location = New System.Drawing.Point(135, 72)
-        Me.chkTrailerMod.Name = "chkTrailerMod"
-        Me.chkTrailerMod.Size = New System.Drawing.Size(57, 17)
-        Me.chkTrailerMod.TabIndex = 5
-        Me.chkTrailerMod.Text = "Trailer"
-        Me.chkTrailerMod.UseVisualStyleBackColor = True
+        Me.chkModLandscape.AutoSize = True
+        Me.chkModLandscape.Checked = True
+        Me.chkModLandscape.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkModLandscape.Enabled = False
+        Me.chkModLandscape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkModLandscape.Location = New System.Drawing.Point(153, 67)
+        Me.chkModLandscape.Name = "chkModLandscape"
+        Me.chkModLandscape.Size = New System.Drawing.Size(80, 17)
+        Me.chkModLandscape.TabIndex = 13
+        Me.chkModLandscape.Text = "Landscape"
+        Me.chkModLandscape.UseVisualStyleBackColor = True
         '
-        'chkEThumbsMod
+        'chkModBanner
         '
-        Me.chkEThumbsMod.AutoSize = True
-        Me.chkEThumbsMod.Checked = True
-        Me.chkEThumbsMod.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkEThumbsMod.Enabled = False
-        Me.chkEThumbsMod.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkEThumbsMod.Location = New System.Drawing.Point(135, 36)
-        Me.chkEThumbsMod.Name = "chkEThumbsMod"
-        Me.chkEThumbsMod.Size = New System.Drawing.Size(90, 17)
-        Me.chkEThumbsMod.TabIndex = 4
-        Me.chkEThumbsMod.Text = "Extrathumbs"
-        Me.chkEThumbsMod.UseVisualStyleBackColor = True
+        Me.chkModBanner.AutoSize = True
+        Me.chkModBanner.Checked = True
+        Me.chkModBanner.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkModBanner.Enabled = False
+        Me.chkModBanner.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkModBanner.Location = New System.Drawing.Point(6, 67)
+        Me.chkModBanner.Name = "chkModBanner"
+        Me.chkModBanner.Size = New System.Drawing.Size(63, 17)
+        Me.chkModBanner.TabIndex = 12
+        Me.chkModBanner.Text = "Banner"
+        Me.chkModBanner.UseVisualStyleBackColor = True
         '
-        'chkMetaMod
+        'chkModClearArt
         '
-        Me.chkMetaMod.AutoSize = True
-        Me.chkMetaMod.Checked = True
-        Me.chkMetaMod.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkMetaMod.Enabled = False
-        Me.chkMetaMod.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkMetaMod.Location = New System.Drawing.Point(135, 18)
-        Me.chkMetaMod.Name = "chkMetaMod"
-        Me.chkMetaMod.Size = New System.Drawing.Size(79, 17)
-        Me.chkMetaMod.TabIndex = 3
-        Me.chkMetaMod.Text = "Meta Data"
-        Me.chkMetaMod.UseVisualStyleBackColor = True
+        Me.chkModClearArt.AutoSize = True
+        Me.chkModClearArt.Checked = True
+        Me.chkModClearArt.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkModClearArt.Enabled = False
+        Me.chkModClearArt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkModClearArt.Location = New System.Drawing.Point(6, 90)
+        Me.chkModClearArt.Name = "chkModClearArt"
+        Me.chkModClearArt.Size = New System.Drawing.Size(67, 17)
+        Me.chkModClearArt.TabIndex = 11
+        Me.chkModClearArt.Text = "ClearArt"
+        Me.chkModClearArt.UseVisualStyleBackColor = True
         '
-        'chkFanartMod
+        'chkModClearLogo
         '
-        Me.chkFanartMod.AutoSize = True
-        Me.chkFanartMod.Checked = True
-        Me.chkFanartMod.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkFanartMod.Enabled = False
-        Me.chkFanartMod.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkFanartMod.Location = New System.Drawing.Point(14, 72)
-        Me.chkFanartMod.Name = "chkFanartMod"
-        Me.chkFanartMod.Size = New System.Drawing.Size(59, 17)
-        Me.chkFanartMod.TabIndex = 2
-        Me.chkFanartMod.Text = "Fanart"
-        Me.chkFanartMod.UseVisualStyleBackColor = True
+        Me.chkModClearLogo.AutoSize = True
+        Me.chkModClearLogo.Checked = True
+        Me.chkModClearLogo.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkModClearLogo.Enabled = False
+        Me.chkModClearLogo.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkModClearLogo.Location = New System.Drawing.Point(6, 113)
+        Me.chkModClearLogo.Name = "chkModClearLogo"
+        Me.chkModClearLogo.Size = New System.Drawing.Size(78, 17)
+        Me.chkModClearLogo.TabIndex = 10
+        Me.chkModClearLogo.Text = "ClearLogo"
+        Me.chkModClearLogo.UseVisualStyleBackColor = True
         '
-        'chkPosterMod
+        'chkModDiscArt
         '
-        Me.chkPosterMod.AutoSize = True
-        Me.chkPosterMod.Checked = True
-        Me.chkPosterMod.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkPosterMod.Enabled = False
-        Me.chkPosterMod.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkPosterMod.Location = New System.Drawing.Point(14, 54)
-        Me.chkPosterMod.Name = "chkPosterMod"
-        Me.chkPosterMod.Size = New System.Drawing.Size(58, 17)
-        Me.chkPosterMod.TabIndex = 2
-        Me.chkPosterMod.Text = "Poster"
-        Me.chkPosterMod.UseVisualStyleBackColor = True
+        Me.chkModDiscArt.AutoSize = True
+        Me.chkModDiscArt.Checked = True
+        Me.chkModDiscArt.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkModDiscArt.Enabled = False
+        Me.chkModDiscArt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkModDiscArt.Location = New System.Drawing.Point(6, 136)
+        Me.chkModDiscArt.Name = "chkModDiscArt"
+        Me.chkModDiscArt.Size = New System.Drawing.Size(62, 17)
+        Me.chkModDiscArt.TabIndex = 9
+        Me.chkModDiscArt.Text = "DiscArt"
+        Me.chkModDiscArt.UseVisualStyleBackColor = True
         '
-        'chkNFOMod
+        'chkModTheme
         '
-        Me.chkNFOMod.AutoSize = True
-        Me.chkNFOMod.Checked = True
-        Me.chkNFOMod.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkNFOMod.Enabled = False
-        Me.chkNFOMod.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkNFOMod.Location = New System.Drawing.Point(14, 36)
-        Me.chkNFOMod.Name = "chkNFOMod"
-        Me.chkNFOMod.Size = New System.Drawing.Size(49, 17)
-        Me.chkNFOMod.TabIndex = 1
-        Me.chkNFOMod.Text = "NFO"
-        Me.chkNFOMod.UseVisualStyleBackColor = True
+        Me.chkModTheme.AutoSize = True
+        Me.chkModTheme.Checked = True
+        Me.chkModTheme.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkModTheme.Enabled = False
+        Me.chkModTheme.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkModTheme.Location = New System.Drawing.Point(153, 159)
+        Me.chkModTheme.Name = "chkModTheme"
+        Me.chkModTheme.Size = New System.Drawing.Size(59, 17)
+        Me.chkModTheme.TabIndex = 8
+        Me.chkModTheme.Text = "Theme"
+        Me.chkModTheme.UseVisualStyleBackColor = True
         '
-        'chkAllMod
+        'chkModActorThumbs
         '
-        Me.chkAllMod.AutoSize = True
-        Me.chkAllMod.Checked = True
-        Me.chkAllMod.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkAllMod.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkAllMod.Location = New System.Drawing.Point(14, 18)
-        Me.chkAllMod.Name = "chkAllMod"
-        Me.chkAllMod.Size = New System.Drawing.Size(69, 17)
-        Me.chkAllMod.TabIndex = 0
-        Me.chkAllMod.Text = "All Items"
-        Me.chkAllMod.UseVisualStyleBackColor = True
+        Me.chkModActorThumbs.AutoSize = True
+        Me.chkModActorThumbs.Checked = True
+        Me.chkModActorThumbs.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkModActorThumbs.Enabled = False
+        Me.chkModActorThumbs.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkModActorThumbs.Location = New System.Drawing.Point(6, 44)
+        Me.chkModActorThumbs.Name = "chkModActorThumbs"
+        Me.chkModActorThumbs.Size = New System.Drawing.Size(96, 17)
+        Me.chkModActorThumbs.TabIndex = 7
+        Me.chkModActorThumbs.Text = "Actor Thumbs"
+        Me.chkModActorThumbs.UseVisualStyleBackColor = True
+        '
+        'chkModEFanarts
+        '
+        Me.chkModEFanarts.AutoSize = True
+        Me.chkModEFanarts.Checked = True
+        Me.chkModEFanarts.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkModEFanarts.Enabled = False
+        Me.chkModEFanarts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkModEFanarts.Location = New System.Drawing.Point(6, 159)
+        Me.chkModEFanarts.Name = "chkModEFanarts"
+        Me.chkModEFanarts.Size = New System.Drawing.Size(87, 17)
+        Me.chkModEFanarts.TabIndex = 6
+        Me.chkModEFanarts.Text = "Extrafanarts"
+        Me.chkModEFanarts.UseVisualStyleBackColor = True
+        '
+        'chkModTrailer
+        '
+        Me.chkModTrailer.AutoSize = True
+        Me.chkModTrailer.Checked = True
+        Me.chkModTrailer.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkModTrailer.Enabled = False
+        Me.chkModTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkModTrailer.Location = New System.Drawing.Point(153, 182)
+        Me.chkModTrailer.Name = "chkModTrailer"
+        Me.chkModTrailer.Size = New System.Drawing.Size(57, 17)
+        Me.chkModTrailer.TabIndex = 5
+        Me.chkModTrailer.Text = "Trailer"
+        Me.chkModTrailer.UseVisualStyleBackColor = True
+        '
+        'chkModEThumbs
+        '
+        Me.chkModEThumbs.AutoSize = True
+        Me.chkModEThumbs.Checked = True
+        Me.chkModEThumbs.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkModEThumbs.Enabled = False
+        Me.chkModEThumbs.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkModEThumbs.Location = New System.Drawing.Point(6, 182)
+        Me.chkModEThumbs.Name = "chkModEThumbs"
+        Me.chkModEThumbs.Size = New System.Drawing.Size(90, 17)
+        Me.chkModEThumbs.TabIndex = 4
+        Me.chkModEThumbs.Text = "Extrathumbs"
+        Me.chkModEThumbs.UseVisualStyleBackColor = True
+        '
+        'chkModMeta
+        '
+        Me.chkModMeta.AutoSize = True
+        Me.chkModMeta.Checked = True
+        Me.chkModMeta.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkModMeta.Enabled = False
+        Me.chkModMeta.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkModMeta.Location = New System.Drawing.Point(153, 90)
+        Me.chkModMeta.Name = "chkModMeta"
+        Me.chkModMeta.Size = New System.Drawing.Size(79, 17)
+        Me.chkModMeta.TabIndex = 3
+        Me.chkModMeta.Text = "Meta Data"
+        Me.chkModMeta.UseVisualStyleBackColor = True
+        '
+        'chkModFanart
+        '
+        Me.chkModFanart.AutoSize = True
+        Me.chkModFanart.Checked = True
+        Me.chkModFanart.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkModFanart.Enabled = False
+        Me.chkModFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkModFanart.Location = New System.Drawing.Point(153, 44)
+        Me.chkModFanart.Name = "chkModFanart"
+        Me.chkModFanart.Size = New System.Drawing.Size(59, 17)
+        Me.chkModFanart.TabIndex = 2
+        Me.chkModFanart.Text = "Fanart"
+        Me.chkModFanart.UseVisualStyleBackColor = True
+        '
+        'chkModPoster
+        '
+        Me.chkModPoster.AutoSize = True
+        Me.chkModPoster.Checked = True
+        Me.chkModPoster.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkModPoster.Enabled = False
+        Me.chkModPoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkModPoster.Location = New System.Drawing.Point(153, 136)
+        Me.chkModPoster.Name = "chkModPoster"
+        Me.chkModPoster.Size = New System.Drawing.Size(58, 17)
+        Me.chkModPoster.TabIndex = 2
+        Me.chkModPoster.Text = "Poster"
+        Me.chkModPoster.UseVisualStyleBackColor = True
+        '
+        'chkModNFO
+        '
+        Me.chkModNFO.AutoSize = True
+        Me.chkModNFO.Checked = True
+        Me.chkModNFO.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkModNFO.Enabled = False
+        Me.chkModNFO.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkModNFO.Location = New System.Drawing.Point(153, 113)
+        Me.chkModNFO.Name = "chkModNFO"
+        Me.chkModNFO.Size = New System.Drawing.Size(49, 17)
+        Me.chkModNFO.TabIndex = 1
+        Me.chkModNFO.Text = "NFO"
+        Me.chkModNFO.UseVisualStyleBackColor = True
+        '
+        'chkModAll
+        '
+        Me.chkModAll.AutoSize = True
+        Me.chkModAll.Checked = True
+        Me.chkModAll.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkModAll.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkModAll.Location = New System.Drawing.Point(6, 21)
+        Me.chkModAll.Name = "chkModAll"
+        Me.chkModAll.Size = New System.Drawing.Size(69, 17)
+        Me.chkModAll.TabIndex = 0
+        Me.chkModAll.Text = "All Items"
+        Me.chkModAll.UseVisualStyleBackColor = True
         '
         'Update_Button
         '
         Me.Update_Button.Anchor = System.Windows.Forms.AnchorStyles.Bottom
         Me.Update_Button.Enabled = False
-        Me.Update_Button.Location = New System.Drawing.Point(401, 359)
+        Me.Update_Button.Location = New System.Drawing.Point(401, 459)
         Me.Update_Button.Name = "Update_Button"
         Me.Update_Button.Size = New System.Drawing.Size(80, 23)
         Me.Update_Button.TabIndex = 0
@@ -430,347 +566,380 @@ Partial Class dlgUpdateMedia
         '
         'gbOptions
         '
-        Me.gbOptions.Controls.Add(Me.chkCert)
-        Me.gbOptions.Controls.Add(Me.chkCountry)
-        Me.gbOptions.Controls.Add(Me.chkTop250)
-        Me.gbOptions.Controls.Add(Me.chkCrew)
-        Me.gbOptions.Controls.Add(Me.chkMusicBy)
-        Me.gbOptions.Controls.Add(Me.chkProducers)
-        Me.gbOptions.Controls.Add(Me.chkWriters)
-        Me.gbOptions.Controls.Add(Me.chkStudio)
-        Me.gbOptions.Controls.Add(Me.chkRuntime)
-        Me.gbOptions.Controls.Add(Me.chkPlot)
-        Me.gbOptions.Controls.Add(Me.chkOutline)
-        Me.gbOptions.Controls.Add(Me.chkGenre)
-        Me.gbOptions.Controls.Add(Me.chkDirector)
-        Me.gbOptions.Controls.Add(Me.chkTagline)
-        Me.gbOptions.Controls.Add(Me.chkCast)
-        Me.gbOptions.Controls.Add(Me.chkVotes)
-        Me.gbOptions.Controls.Add(Me.chkTrailer)
-        Me.gbOptions.Controls.Add(Me.chkRating)
-        Me.gbOptions.Controls.Add(Me.chkRelease)
-        Me.gbOptions.Controls.Add(Me.chkMPAA)
-        Me.gbOptions.Controls.Add(Me.chkYear)
-        Me.gbOptions.Controls.Add(Me.chkTitle)
+        Me.gbOptions.Controls.Add(Me.btnOptsNone)
+        Me.gbOptions.Controls.Add(Me.chkOptsAll)
+        Me.gbOptions.Controls.Add(Me.chkOptsCert)
+        Me.gbOptions.Controls.Add(Me.chkOptsCountry)
+        Me.gbOptions.Controls.Add(Me.chkOptsTop250)
+        Me.gbOptions.Controls.Add(Me.chkOptsCrew)
+        Me.gbOptions.Controls.Add(Me.chkOptsMusicBy)
+        Me.gbOptions.Controls.Add(Me.chkOptsProducers)
+        Me.gbOptions.Controls.Add(Me.chkOptsWriters)
+        Me.gbOptions.Controls.Add(Me.chkOptsStudio)
+        Me.gbOptions.Controls.Add(Me.chkOptsRuntime)
+        Me.gbOptions.Controls.Add(Me.chkOptsPlot)
+        Me.gbOptions.Controls.Add(Me.chkOptsOutline)
+        Me.gbOptions.Controls.Add(Me.chkOptsGenre)
+        Me.gbOptions.Controls.Add(Me.chkOptsDirector)
+        Me.gbOptions.Controls.Add(Me.chkOptsTagline)
+        Me.gbOptions.Controls.Add(Me.chkOptsCast)
+        Me.gbOptions.Controls.Add(Me.chkOptsVotes)
+        Me.gbOptions.Controls.Add(Me.chkOptsTrailer)
+        Me.gbOptions.Controls.Add(Me.chkOptsRating)
+        Me.gbOptions.Controls.Add(Me.chkOptsRelease)
+        Me.gbOptions.Controls.Add(Me.chkOptsMPAA)
+        Me.gbOptions.Controls.Add(Me.chkOptsYear)
+        Me.gbOptions.Controls.Add(Me.chkOptsTitle)
         Me.gbOptions.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbOptions.Location = New System.Drawing.Point(287, 2)
         Me.gbOptions.Name = "gbOptions"
-        Me.gbOptions.Size = New System.Drawing.Size(274, 271)
+        Me.gbOptions.Size = New System.Drawing.Size(274, 277)
         Me.gbOptions.TabIndex = 3
         Me.gbOptions.TabStop = False
         Me.gbOptions.Text = "Options"
         '
-        'chkCert
+        'btnOptsNone
         '
-        Me.chkCert.AutoSize = True
-        Me.chkCert.Checked = True
-        Me.chkCert.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkCert.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkCert.Location = New System.Drawing.Point(6, 80)
-        Me.chkCert.Name = "chkCert"
-        Me.chkCert.Size = New System.Drawing.Size(89, 17)
-        Me.chkCert.TabIndex = 3
-        Me.chkCert.Text = "Certification"
-        Me.chkCert.UseVisualStyleBackColor = True
+        Me.btnOptsNone.Location = New System.Drawing.Point(147, 17)
+        Me.btnOptsNone.Name = "btnOptsNone"
+        Me.btnOptsNone.Size = New System.Drawing.Size(121, 23)
+        Me.btnOptsNone.TabIndex = 15
+        Me.btnOptsNone.Text = "Select None"
+        Me.btnOptsNone.UseVisualStyleBackColor = True
         '
-        'chkCountry
+        'chkOptsAll
         '
-        Me.chkCountry.AutoSize = True
-        Me.chkCountry.Checked = True
-        Me.chkCountry.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkCountry.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkCountry.Location = New System.Drawing.Point(147, 220)
-        Me.chkCountry.Name = "chkCountry"
-        Me.chkCountry.Size = New System.Drawing.Size(67, 17)
-        Me.chkCountry.TabIndex = 21
-        Me.chkCountry.Text = "Country"
-        Me.chkCountry.UseVisualStyleBackColor = True
+        Me.chkOptsAll.AutoSize = True
+        Me.chkOptsAll.Checked = True
+        Me.chkOptsAll.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkOptsAll.Enabled = False
+        Me.chkOptsAll.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        Me.chkOptsAll.Location = New System.Drawing.Point(6, 21)
+        Me.chkOptsAll.Name = "chkOptsAll"
+        Me.chkOptsAll.Size = New System.Drawing.Size(69, 17)
+        Me.chkOptsAll.TabIndex = 22
+        Me.chkOptsAll.Text = "All Items"
+        Me.chkOptsAll.UseVisualStyleBackColor = True
         '
-        'chkTop250
+        'chkOptsCert
         '
-        Me.chkTop250.AutoSize = True
-        Me.chkTop250.Checked = True
-        Me.chkTop250.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkTop250.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkTop250.Location = New System.Drawing.Point(147, 200)
-        Me.chkTop250.Name = "chkTop250"
-        Me.chkTop250.Size = New System.Drawing.Size(66, 17)
-        Me.chkTop250.TabIndex = 20
-        Me.chkTop250.Text = "Top 250"
-        Me.chkTop250.UseVisualStyleBackColor = True
+        Me.chkOptsCert.AutoSize = True
+        Me.chkOptsCert.Checked = True
+        Me.chkOptsCert.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkOptsCert.Enabled = False
+        Me.chkOptsCert.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkOptsCert.Location = New System.Drawing.Point(6, 104)
+        Me.chkOptsCert.Name = "chkOptsCert"
+        Me.chkOptsCert.Size = New System.Drawing.Size(89, 17)
+        Me.chkOptsCert.TabIndex = 3
+        Me.chkOptsCert.Text = "Certification"
+        Me.chkOptsCert.UseVisualStyleBackColor = True
         '
-        'chkCrew
+        'chkOptsCountry
         '
-        Me.chkCrew.AutoSize = True
-        Me.chkCrew.Checked = True
-        Me.chkCrew.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkCrew.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkCrew.Location = New System.Drawing.Point(147, 180)
-        Me.chkCrew.Name = "chkCrew"
-        Me.chkCrew.Size = New System.Drawing.Size(85, 17)
-        Me.chkCrew.TabIndex = 19
-        Me.chkCrew.Text = "Other Crew"
-        Me.chkCrew.UseVisualStyleBackColor = True
+        Me.chkOptsCountry.AutoSize = True
+        Me.chkOptsCountry.Checked = True
+        Me.chkOptsCountry.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkOptsCountry.Enabled = False
+        Me.chkOptsCountry.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkOptsCountry.Location = New System.Drawing.Point(147, 245)
+        Me.chkOptsCountry.Name = "chkOptsCountry"
+        Me.chkOptsCountry.Size = New System.Drawing.Size(67, 17)
+        Me.chkOptsCountry.TabIndex = 21
+        Me.chkOptsCountry.Text = "Country"
+        Me.chkOptsCountry.UseVisualStyleBackColor = True
         '
-        'chkMusicBy
+        'chkOptsTop250
         '
-        Me.chkMusicBy.AutoSize = True
-        Me.chkMusicBy.Checked = True
-        Me.chkMusicBy.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkMusicBy.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkMusicBy.Location = New System.Drawing.Point(147, 160)
-        Me.chkMusicBy.Name = "chkMusicBy"
-        Me.chkMusicBy.Size = New System.Drawing.Size(71, 17)
-        Me.chkMusicBy.TabIndex = 18
-        Me.chkMusicBy.Text = "Music By"
-        Me.chkMusicBy.UseVisualStyleBackColor = True
+        Me.chkOptsTop250.AutoSize = True
+        Me.chkOptsTop250.Checked = True
+        Me.chkOptsTop250.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkOptsTop250.Enabled = False
+        Me.chkOptsTop250.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkOptsTop250.Location = New System.Drawing.Point(147, 225)
+        Me.chkOptsTop250.Name = "chkOptsTop250"
+        Me.chkOptsTop250.Size = New System.Drawing.Size(66, 17)
+        Me.chkOptsTop250.TabIndex = 20
+        Me.chkOptsTop250.Text = "Top 250"
+        Me.chkOptsTop250.UseVisualStyleBackColor = True
         '
-        'chkProducers
+        'chkOptsCrew
         '
-        Me.chkProducers.AutoSize = True
-        Me.chkProducers.Checked = True
-        Me.chkProducers.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkProducers.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkProducers.Location = New System.Drawing.Point(147, 140)
-        Me.chkProducers.Name = "chkProducers"
-        Me.chkProducers.Size = New System.Drawing.Size(77, 17)
-        Me.chkProducers.TabIndex = 17
-        Me.chkProducers.Text = "Producers"
-        Me.chkProducers.UseVisualStyleBackColor = True
+        Me.chkOptsCrew.AutoSize = True
+        Me.chkOptsCrew.Checked = True
+        Me.chkOptsCrew.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkOptsCrew.Enabled = False
+        Me.chkOptsCrew.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkOptsCrew.Location = New System.Drawing.Point(147, 205)
+        Me.chkOptsCrew.Name = "chkOptsCrew"
+        Me.chkOptsCrew.Size = New System.Drawing.Size(85, 17)
+        Me.chkOptsCrew.TabIndex = 19
+        Me.chkOptsCrew.Text = "Other Crew"
+        Me.chkOptsCrew.UseVisualStyleBackColor = True
         '
-        'chkWriters
+        'chkOptsMusicBy
         '
-        Me.chkWriters.AutoSize = True
-        Me.chkWriters.Checked = True
-        Me.chkWriters.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkWriters.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkWriters.Location = New System.Drawing.Point(147, 120)
-        Me.chkWriters.Name = "chkWriters"
-        Me.chkWriters.Size = New System.Drawing.Size(63, 17)
-        Me.chkWriters.TabIndex = 16
-        Me.chkWriters.Text = "Writers"
-        Me.chkWriters.UseVisualStyleBackColor = True
+        Me.chkOptsMusicBy.AutoSize = True
+        Me.chkOptsMusicBy.Checked = True
+        Me.chkOptsMusicBy.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkOptsMusicBy.Enabled = False
+        Me.chkOptsMusicBy.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkOptsMusicBy.Location = New System.Drawing.Point(147, 185)
+        Me.chkOptsMusicBy.Name = "chkOptsMusicBy"
+        Me.chkOptsMusicBy.Size = New System.Drawing.Size(71, 17)
+        Me.chkOptsMusicBy.TabIndex = 18
+        Me.chkOptsMusicBy.Text = "Music By"
+        Me.chkOptsMusicBy.UseVisualStyleBackColor = True
         '
-        'chkStudio
+        'chkOptsProducers
         '
-        Me.chkStudio.AutoSize = True
-        Me.chkStudio.Checked = True
-        Me.chkStudio.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkStudio.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkStudio.Location = New System.Drawing.Point(6, 180)
-        Me.chkStudio.Name = "chkStudio"
-        Me.chkStudio.Size = New System.Drawing.Size(60, 17)
-        Me.chkStudio.TabIndex = 8
-        Me.chkStudio.Text = "Studio"
-        Me.chkStudio.UseVisualStyleBackColor = True
+        Me.chkOptsProducers.AutoSize = True
+        Me.chkOptsProducers.Checked = True
+        Me.chkOptsProducers.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkOptsProducers.Enabled = False
+        Me.chkOptsProducers.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkOptsProducers.Location = New System.Drawing.Point(147, 165)
+        Me.chkOptsProducers.Name = "chkOptsProducers"
+        Me.chkOptsProducers.Size = New System.Drawing.Size(77, 17)
+        Me.chkOptsProducers.TabIndex = 17
+        Me.chkOptsProducers.Text = "Producers"
+        Me.chkOptsProducers.UseVisualStyleBackColor = True
         '
-        'chkRuntime
+        'chkOptsWriters
         '
-        Me.chkRuntime.AutoSize = True
-        Me.chkRuntime.Checked = True
-        Me.chkRuntime.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkRuntime.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkRuntime.Location = New System.Drawing.Point(6, 120)
-        Me.chkRuntime.Name = "chkRuntime"
-        Me.chkRuntime.Size = New System.Drawing.Size(69, 17)
-        Me.chkRuntime.TabIndex = 5
-        Me.chkRuntime.Text = "Runtime"
-        Me.chkRuntime.UseVisualStyleBackColor = True
+        Me.chkOptsWriters.AutoSize = True
+        Me.chkOptsWriters.Checked = True
+        Me.chkOptsWriters.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkOptsWriters.Enabled = False
+        Me.chkOptsWriters.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkOptsWriters.Location = New System.Drawing.Point(147, 145)
+        Me.chkOptsWriters.Name = "chkOptsWriters"
+        Me.chkOptsWriters.Size = New System.Drawing.Size(63, 17)
+        Me.chkOptsWriters.TabIndex = 16
+        Me.chkOptsWriters.Text = "Writers"
+        Me.chkOptsWriters.UseVisualStyleBackColor = True
         '
-        'chkPlot
+        'chkOptsStudio
         '
-        Me.chkPlot.AutoSize = True
-        Me.chkPlot.Checked = True
-        Me.chkPlot.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkPlot.Location = New System.Drawing.Point(147, 60)
-        Me.chkPlot.Name = "chkPlot"
-        Me.chkPlot.Size = New System.Drawing.Size(46, 17)
-        Me.chkPlot.TabIndex = 13
-        Me.chkPlot.Text = "Plot"
-        Me.chkPlot.UseVisualStyleBackColor = True
+        Me.chkOptsStudio.AutoSize = True
+        Me.chkOptsStudio.Checked = True
+        Me.chkOptsStudio.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkOptsStudio.Enabled = False
+        Me.chkOptsStudio.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkOptsStudio.Location = New System.Drawing.Point(6, 204)
+        Me.chkOptsStudio.Name = "chkOptsStudio"
+        Me.chkOptsStudio.Size = New System.Drawing.Size(60, 17)
+        Me.chkOptsStudio.TabIndex = 8
+        Me.chkOptsStudio.Text = "Studio"
+        Me.chkOptsStudio.UseVisualStyleBackColor = True
         '
-        'chkOutline
+        'chkOptsRuntime
         '
-        Me.chkOutline.AutoSize = True
-        Me.chkOutline.Checked = True
-        Me.chkOutline.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkOutline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkOutline.Location = New System.Drawing.Point(147, 40)
-        Me.chkOutline.Name = "chkOutline"
-        Me.chkOutline.Size = New System.Drawing.Size(65, 17)
-        Me.chkOutline.TabIndex = 12
-        Me.chkOutline.Text = "Outline"
-        Me.chkOutline.UseVisualStyleBackColor = True
+        Me.chkOptsRuntime.AutoSize = True
+        Me.chkOptsRuntime.Checked = True
+        Me.chkOptsRuntime.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkOptsRuntime.Enabled = False
+        Me.chkOptsRuntime.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkOptsRuntime.Location = New System.Drawing.Point(6, 144)
+        Me.chkOptsRuntime.Name = "chkOptsRuntime"
+        Me.chkOptsRuntime.Size = New System.Drawing.Size(69, 17)
+        Me.chkOptsRuntime.TabIndex = 5
+        Me.chkOptsRuntime.Text = "Runtime"
+        Me.chkOptsRuntime.UseVisualStyleBackColor = True
         '
-        'chkGenre
+        'chkOptsPlot
         '
-        Me.chkGenre.AutoSize = True
-        Me.chkGenre.Checked = True
-        Me.chkGenre.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkGenre.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkGenre.Location = New System.Drawing.Point(6, 200)
-        Me.chkGenre.Name = "chkGenre"
-        Me.chkGenre.Size = New System.Drawing.Size(57, 17)
-        Me.chkGenre.TabIndex = 9
-        Me.chkGenre.Text = "Genre"
-        Me.chkGenre.UseVisualStyleBackColor = True
+        Me.chkOptsPlot.AutoSize = True
+        Me.chkOptsPlot.Checked = True
+        Me.chkOptsPlot.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkOptsPlot.Enabled = False
+        Me.chkOptsPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkOptsPlot.Location = New System.Drawing.Point(147, 85)
+        Me.chkOptsPlot.Name = "chkOptsPlot"
+        Me.chkOptsPlot.Size = New System.Drawing.Size(46, 17)
+        Me.chkOptsPlot.TabIndex = 13
+        Me.chkOptsPlot.Text = "Plot"
+        Me.chkOptsPlot.UseVisualStyleBackColor = True
         '
-        'chkDirector
+        'chkOptsOutline
         '
-        Me.chkDirector.AutoSize = True
-        Me.chkDirector.Checked = True
-        Me.chkDirector.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkDirector.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkDirector.Location = New System.Drawing.Point(147, 100)
-        Me.chkDirector.Name = "chkDirector"
-        Me.chkDirector.Size = New System.Drawing.Size(67, 17)
-        Me.chkDirector.TabIndex = 15
-        Me.chkDirector.Text = "Director"
-        Me.chkDirector.UseVisualStyleBackColor = True
+        Me.chkOptsOutline.AutoSize = True
+        Me.chkOptsOutline.Checked = True
+        Me.chkOptsOutline.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkOptsOutline.Enabled = False
+        Me.chkOptsOutline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkOptsOutline.Location = New System.Drawing.Point(147, 65)
+        Me.chkOptsOutline.Name = "chkOptsOutline"
+        Me.chkOptsOutline.Size = New System.Drawing.Size(65, 17)
+        Me.chkOptsOutline.TabIndex = 12
+        Me.chkOptsOutline.Text = "Outline"
+        Me.chkOptsOutline.UseVisualStyleBackColor = True
         '
-        'chkTagline
+        'chkOptsGenre
         '
-        Me.chkTagline.AutoSize = True
-        Me.chkTagline.Checked = True
-        Me.chkTagline.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkTagline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkTagline.Location = New System.Drawing.Point(147, 19)
-        Me.chkTagline.Name = "chkTagline"
-        Me.chkTagline.Size = New System.Drawing.Size(63, 17)
-        Me.chkTagline.TabIndex = 11
-        Me.chkTagline.Text = "Tagline"
-        Me.chkTagline.UseVisualStyleBackColor = True
+        Me.chkOptsGenre.AutoSize = True
+        Me.chkOptsGenre.Checked = True
+        Me.chkOptsGenre.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkOptsGenre.Enabled = False
+        Me.chkOptsGenre.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkOptsGenre.Location = New System.Drawing.Point(6, 224)
+        Me.chkOptsGenre.Name = "chkOptsGenre"
+        Me.chkOptsGenre.Size = New System.Drawing.Size(57, 17)
+        Me.chkOptsGenre.TabIndex = 9
+        Me.chkOptsGenre.Text = "Genre"
+        Me.chkOptsGenre.UseVisualStyleBackColor = True
         '
-        'chkCast
+        'chkOptsDirector
         '
-        Me.chkCast.AutoSize = True
-        Me.chkCast.Checked = True
-        Me.chkCast.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkCast.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkCast.Location = New System.Drawing.Point(147, 80)
-        Me.chkCast.Name = "chkCast"
-        Me.chkCast.Size = New System.Drawing.Size(48, 17)
-        Me.chkCast.TabIndex = 14
-        Me.chkCast.Text = "Cast"
-        Me.chkCast.UseVisualStyleBackColor = True
+        Me.chkOptsDirector.AutoSize = True
+        Me.chkOptsDirector.Checked = True
+        Me.chkOptsDirector.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkOptsDirector.Enabled = False
+        Me.chkOptsDirector.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkOptsDirector.Location = New System.Drawing.Point(147, 125)
+        Me.chkOptsDirector.Name = "chkOptsDirector"
+        Me.chkOptsDirector.Size = New System.Drawing.Size(67, 17)
+        Me.chkOptsDirector.TabIndex = 15
+        Me.chkOptsDirector.Text = "Director"
+        Me.chkOptsDirector.UseVisualStyleBackColor = True
         '
-        'chkVotes
+        'chkOptsTagline
         '
-        Me.chkVotes.AutoSize = True
-        Me.chkVotes.Checked = True
-        Me.chkVotes.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkVotes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkVotes.Location = New System.Drawing.Point(6, 160)
-        Me.chkVotes.Name = "chkVotes"
-        Me.chkVotes.Size = New System.Drawing.Size(55, 17)
-        Me.chkVotes.TabIndex = 7
-        Me.chkVotes.Text = "Votes"
-        Me.chkVotes.UseVisualStyleBackColor = True
+        Me.chkOptsTagline.AutoSize = True
+        Me.chkOptsTagline.Checked = True
+        Me.chkOptsTagline.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkOptsTagline.Enabled = False
+        Me.chkOptsTagline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkOptsTagline.Location = New System.Drawing.Point(147, 44)
+        Me.chkOptsTagline.Name = "chkOptsTagline"
+        Me.chkOptsTagline.Size = New System.Drawing.Size(63, 17)
+        Me.chkOptsTagline.TabIndex = 11
+        Me.chkOptsTagline.Text = "Tagline"
+        Me.chkOptsTagline.UseVisualStyleBackColor = True
         '
-        'chkTrailer
+        'chkOptsCast
         '
-        Me.chkTrailer.AutoSize = True
-        Me.chkTrailer.Checked = True
-        Me.chkTrailer.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkTrailer.Location = New System.Drawing.Point(6, 220)
-        Me.chkTrailer.Name = "chkTrailer"
-        Me.chkTrailer.Size = New System.Drawing.Size(57, 17)
-        Me.chkTrailer.TabIndex = 10
-        Me.chkTrailer.Text = "Trailer"
-        Me.chkTrailer.UseVisualStyleBackColor = True
+        Me.chkOptsCast.AutoSize = True
+        Me.chkOptsCast.Checked = True
+        Me.chkOptsCast.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkOptsCast.Enabled = False
+        Me.chkOptsCast.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkOptsCast.Location = New System.Drawing.Point(147, 105)
+        Me.chkOptsCast.Name = "chkOptsCast"
+        Me.chkOptsCast.Size = New System.Drawing.Size(48, 17)
+        Me.chkOptsCast.TabIndex = 14
+        Me.chkOptsCast.Text = "Cast"
+        Me.chkOptsCast.UseVisualStyleBackColor = True
         '
-        'chkRating
+        'chkOptsVotes
         '
-        Me.chkRating.AutoSize = True
-        Me.chkRating.Checked = True
-        Me.chkRating.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkRating.Location = New System.Drawing.Point(6, 140)
-        Me.chkRating.Name = "chkRating"
-        Me.chkRating.Size = New System.Drawing.Size(60, 17)
-        Me.chkRating.TabIndex = 6
-        Me.chkRating.Text = "Rating"
-        Me.chkRating.UseVisualStyleBackColor = True
+        Me.chkOptsVotes.AutoSize = True
+        Me.chkOptsVotes.Checked = True
+        Me.chkOptsVotes.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkOptsVotes.Enabled = False
+        Me.chkOptsVotes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkOptsVotes.Location = New System.Drawing.Point(6, 184)
+        Me.chkOptsVotes.Name = "chkOptsVotes"
+        Me.chkOptsVotes.Size = New System.Drawing.Size(55, 17)
+        Me.chkOptsVotes.TabIndex = 7
+        Me.chkOptsVotes.Text = "Votes"
+        Me.chkOptsVotes.UseVisualStyleBackColor = True
         '
-        'chkRelease
+        'chkOptsTrailer
         '
-        Me.chkRelease.AutoSize = True
-        Me.chkRelease.Checked = True
-        Me.chkRelease.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkRelease.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkRelease.Location = New System.Drawing.Point(6, 100)
-        Me.chkRelease.Name = "chkRelease"
-        Me.chkRelease.Size = New System.Drawing.Size(92, 17)
-        Me.chkRelease.TabIndex = 4
-        Me.chkRelease.Text = "Release Date"
-        Me.chkRelease.UseVisualStyleBackColor = True
+        Me.chkOptsTrailer.AutoSize = True
+        Me.chkOptsTrailer.Checked = True
+        Me.chkOptsTrailer.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkOptsTrailer.Enabled = False
+        Me.chkOptsTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkOptsTrailer.Location = New System.Drawing.Point(6, 244)
+        Me.chkOptsTrailer.Name = "chkOptsTrailer"
+        Me.chkOptsTrailer.Size = New System.Drawing.Size(57, 17)
+        Me.chkOptsTrailer.TabIndex = 10
+        Me.chkOptsTrailer.Text = "Trailer"
+        Me.chkOptsTrailer.UseVisualStyleBackColor = True
         '
-        'chkMPAA
+        'chkOptsRating
         '
-        Me.chkMPAA.AutoSize = True
-        Me.chkMPAA.Checked = True
-        Me.chkMPAA.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkMPAA.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkMPAA.Location = New System.Drawing.Point(6, 60)
-        Me.chkMPAA.Name = "chkMPAA"
-        Me.chkMPAA.Size = New System.Drawing.Size(56, 17)
-        Me.chkMPAA.TabIndex = 2
-        Me.chkMPAA.Text = "MPAA"
-        Me.chkMPAA.UseVisualStyleBackColor = True
+        Me.chkOptsRating.AutoSize = True
+        Me.chkOptsRating.Checked = True
+        Me.chkOptsRating.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkOptsRating.Enabled = False
+        Me.chkOptsRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkOptsRating.Location = New System.Drawing.Point(6, 164)
+        Me.chkOptsRating.Name = "chkOptsRating"
+        Me.chkOptsRating.Size = New System.Drawing.Size(60, 17)
+        Me.chkOptsRating.TabIndex = 6
+        Me.chkOptsRating.Text = "Rating"
+        Me.chkOptsRating.UseVisualStyleBackColor = True
         '
-        'chkYear
+        'chkOptsRelease
         '
-        Me.chkYear.AutoSize = True
-        Me.chkYear.Checked = True
-        Me.chkYear.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkYear.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkYear.Location = New System.Drawing.Point(6, 40)
-        Me.chkYear.Name = "chkYear"
-        Me.chkYear.Size = New System.Drawing.Size(47, 17)
-        Me.chkYear.TabIndex = 1
-        Me.chkYear.Text = "Year"
-        Me.chkYear.UseVisualStyleBackColor = True
+        Me.chkOptsRelease.AutoSize = True
+        Me.chkOptsRelease.Checked = True
+        Me.chkOptsRelease.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkOptsRelease.Enabled = False
+        Me.chkOptsRelease.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkOptsRelease.Location = New System.Drawing.Point(6, 124)
+        Me.chkOptsRelease.Name = "chkOptsRelease"
+        Me.chkOptsRelease.Size = New System.Drawing.Size(92, 17)
+        Me.chkOptsRelease.TabIndex = 4
+        Me.chkOptsRelease.Text = "Release Date"
+        Me.chkOptsRelease.UseVisualStyleBackColor = True
         '
-        'chkTitle
+        'chkOptsMPAA
         '
-        Me.chkTitle.AutoSize = True
-        Me.chkTitle.Checked = True
-        Me.chkTitle.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkTitle.Location = New System.Drawing.Point(6, 19)
-        Me.chkTitle.Name = "chkTitle"
-        Me.chkTitle.Size = New System.Drawing.Size(47, 17)
-        Me.chkTitle.TabIndex = 0
-        Me.chkTitle.Text = "Title"
-        Me.chkTitle.UseVisualStyleBackColor = True
+        Me.chkOptsMPAA.AutoSize = True
+        Me.chkOptsMPAA.Checked = True
+        Me.chkOptsMPAA.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkOptsMPAA.Enabled = False
+        Me.chkOptsMPAA.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkOptsMPAA.Location = New System.Drawing.Point(6, 84)
+        Me.chkOptsMPAA.Name = "chkOptsMPAA"
+        Me.chkOptsMPAA.Size = New System.Drawing.Size(56, 17)
+        Me.chkOptsMPAA.TabIndex = 2
+        Me.chkOptsMPAA.Text = "MPAA"
+        Me.chkOptsMPAA.UseVisualStyleBackColor = True
+        '
+        'chkOptsYear
+        '
+        Me.chkOptsYear.AutoSize = True
+        Me.chkOptsYear.Checked = True
+        Me.chkOptsYear.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkOptsYear.Enabled = False
+        Me.chkOptsYear.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkOptsYear.Location = New System.Drawing.Point(6, 64)
+        Me.chkOptsYear.Name = "chkOptsYear"
+        Me.chkOptsYear.Size = New System.Drawing.Size(47, 17)
+        Me.chkOptsYear.TabIndex = 1
+        Me.chkOptsYear.Text = "Year"
+        Me.chkOptsYear.UseVisualStyleBackColor = True
+        '
+        'chkOptsTitle
+        '
+        Me.chkOptsTitle.AutoSize = True
+        Me.chkOptsTitle.Checked = True
+        Me.chkOptsTitle.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkOptsTitle.Enabled = False
+        Me.chkOptsTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkOptsTitle.Location = New System.Drawing.Point(6, 44)
+        Me.chkOptsTitle.Name = "chkOptsTitle"
+        Me.chkOptsTitle.Size = New System.Drawing.Size(47, 17)
+        Me.chkOptsTitle.TabIndex = 0
+        Me.chkOptsTitle.Text = "Title"
+        Me.chkOptsTitle.UseVisualStyleBackColor = True
         '
         'pnlUpdateMedia
         '
         Me.pnlUpdateMedia.BackColor = System.Drawing.Color.White
         Me.pnlUpdateMedia.Controls.Add(Me.gbOptions)
-        Me.pnlUpdateMedia.Controls.Add(Me.gbUpdateItems)
+        Me.pnlUpdateMedia.Controls.Add(Me.gbModifiers)
         Me.pnlUpdateMedia.Controls.Add(Me.gbUpdateType)
         Me.pnlUpdateMedia.Controls.Add(Me.gbUpdateModifier)
         Me.pnlUpdateMedia.Location = New System.Drawing.Point(4, 68)
         Me.pnlUpdateMedia.Name = "pnlUpdateMedia"
-        Me.pnlUpdateMedia.Size = New System.Drawing.Size(568, 282)
+        Me.pnlUpdateMedia.Size = New System.Drawing.Size(568, 385)
         Me.pnlUpdateMedia.TabIndex = 3
-        '
-        'chkActorMod
-        '
-        Me.chkActorMod.AutoSize = True
-        Me.chkActorMod.Checked = True
-        Me.chkActorMod.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkActorMod.Enabled = False
-        Me.chkActorMod.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkActorMod.Location = New System.Drawing.Point(14, 90)
-        Me.chkActorMod.Name = "chkActorMod"
-        Me.chkActorMod.Size = New System.Drawing.Size(96, 17)
-        Me.chkActorMod.TabIndex = 7
-        Me.chkActorMod.Text = "Actor Thumbs"
-        Me.chkActorMod.UseVisualStyleBackColor = True
         '
         'dlgUpdateMedia
         '
@@ -778,7 +947,7 @@ Partial Class dlgUpdateMedia
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.OK_Button
-        Me.ClientSize = New System.Drawing.Size(576, 384)
+        Me.ClientSize = New System.Drawing.Size(576, 484)
         Me.Controls.Add(Me.pnlUpdateMedia)
         Me.Controls.Add(Me.Update_Button)
         Me.Controls.Add(Me.pnlTop)
@@ -797,8 +966,8 @@ Partial Class dlgUpdateMedia
         Me.gbUpdateModifier.PerformLayout()
         Me.gbUpdateType.ResumeLayout(False)
         Me.gbUpdateType.PerformLayout()
-        Me.gbUpdateItems.ResumeLayout(False)
-        Me.gbUpdateItems.PerformLayout()
+        Me.gbModifiers.ResumeLayout(False)
+        Me.gbModifiers.PerformLayout()
         Me.gbOptions.ResumeLayout(False)
         Me.gbOptions.PerformLayout()
         Me.pnlUpdateMedia.ResumeLayout(False)
@@ -806,8 +975,18 @@ Partial Class dlgUpdateMedia
 
     End Sub
     Friend WithEvents pnlUpdateMedia As System.Windows.Forms.Panel
-    Friend WithEvents chkEFanartsMod As System.Windows.Forms.CheckBox
-    Friend WithEvents chkActorMod As System.Windows.Forms.CheckBox
+    Friend WithEvents chkModEFanarts As System.Windows.Forms.CheckBox
+    Friend WithEvents chkModActorThumbs As System.Windows.Forms.CheckBox
+    Friend WithEvents chkModBanner As System.Windows.Forms.CheckBox
+    Friend WithEvents chkModClearArt As System.Windows.Forms.CheckBox
+    Friend WithEvents chkModClearLogo As System.Windows.Forms.CheckBox
+    Friend WithEvents chkModDiscArt As System.Windows.Forms.CheckBox
+    Friend WithEvents chkModTheme As System.Windows.Forms.CheckBox
+    Friend WithEvents rbUpdate_Skip As System.Windows.Forms.RadioButton
+    Friend WithEvents chkModLandscape As System.Windows.Forms.CheckBox
+    Friend WithEvents chkOptsAll As System.Windows.Forms.CheckBox
+    Friend WithEvents btnModNone As System.Windows.Forms.Button
+    Friend WithEvents btnOptsNone As System.Windows.Forms.Button
 
 #End Region 'Methods
 

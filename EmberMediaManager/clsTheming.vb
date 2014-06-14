@@ -21,15 +21,18 @@
 Imports System.IO
 Imports System.Text.RegularExpressions
 Imports EmberAPI
+Imports NLog
 
 Public Class Theming
 
 #Region "Fields"
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     Private rProcs(3) As Regex
     Private _availablecontrols As New List(Of Controls)
     Private _eptheme As New Theme
     Private _movietheme As New Theme
+    Private _moviesettheme As New Theme
     Private _showtheme As New Theme
 
 #End Region 'Fields
@@ -46,6 +49,7 @@ Public Class Theming
         BuildControlList()
 
         ParseThemes(_movietheme, "movie", Master.eSettings.GeneralMovieTheme)
+        ParseThemes(_moviesettheme, "movieset", Master.eSettings.GeneralMovieSetTheme)
         ParseThemes(_showtheme, "tvshow", Master.eSettings.GeneralTVShowTheme)
         ParseThemes(_eptheme, "tvep", Master.eSettings.GeneralTVEpisodeTheme)
     End Sub
@@ -55,9 +59,10 @@ Public Class Theming
 #Region "Enumerations"
 
     Public Enum ThemeType As Integer
-        Movies = 0
+        Movie = 0
         Show = 1
         Episode = 2
+        MovieSet = 3
     End Enum
 
 #End Region 'Enumerations
@@ -68,8 +73,10 @@ Public Class Theming
         Dim xTheme As New Theme
         Dim xControl As New Control
         Select Case tType
-            Case ThemeType.Movies
+            Case ThemeType.Movie
                 xTheme = _movietheme
+            Case ThemeType.MovieSet
+                xTheme = _moviesettheme
             Case ThemeType.Show
                 xTheme = _showtheme
             Case ThemeType.Episode
@@ -117,6 +124,8 @@ Public Class Theming
                     xControl = frmMain.pnlTop250.Controls(xCon.Control)
                 Case "lblActorsHeader", "lstActors", "pbActors", "pbActLoad"
                     xControl = frmMain.pnlActors.Controls(xCon.Control)
+                Case "lblMoviesInSetHeader", "lstMoviesInSet"
+                    xControl = frmMain.pnlMoviesInSet.Controls(xCon.Control)
                 Case Else
                     xControl = frmMain.pnlInfoPanel.Controls(xCon.Control)
             End Select
@@ -138,12 +147,12 @@ Public Class Theming
     Public Sub BuildControlList()
         Try
             _availablecontrols.Clear()
-            Const PossibleControls As String = "pnlInfoPanel,lblInfoPanelHeader,btnUp,btnMid,btnDown,lblDirectorHeader,lblDirector,lblReleaseDateHeader,lblReleaseDate,pnlTop250,pbTop250,lblTop250,lblOutlineHeader,txtOutline,lblIMDBHeader,txtIMDBID,lblCertsHeader,txtCerts,lblFilePathHeader,txtFilePath,btnPlay,pnlActors,lblActorsHeader,lstActors,pbActors,pbActLoad,lblPlotHeader,txtPlot,lblMetaDataHeader,btnMetaDataRefresh,txtMetaData,pbMILoading"
+            Const PossibleControls As String = "pnlInfoPanel,lblInfoPanelHeader,btnUp,btnMid,btnDown,lblDirectorHeader,lblDirector,lblReleaseDateHeader,lblReleaseDate,pnlTop250,pbTop250,lblTop250,lblOutlineHeader,txtOutline,lblIMDBHeader,txtIMDBID,lblCertsHeader,txtCerts,lblFilePathHeader,txtFilePath,btnPlay,pnlActors,lblActorsHeader,lstActors,pbActors,pbActLoad,lblPlotHeader,txtPlot,lblMetaDataHeader,btnMetaDataRefresh,txtMetaData,pbMILoading,pnlMoviesInSet,lblMoviesInSetHeader,lstMoviesInSet"
             For Each sCon As String In PossibleControls.Split(Convert.ToChar(","))
                 _availablecontrols.Add(New Controls With {.Control = sCon})
             Next
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -198,7 +207,7 @@ Public Class Theming
 
             Return Convert.ToInt32(sFormula)
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), String.Format("{0} ({1})", ex.Message, sFormula), ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & sFormula, ex)
         End Try
 
         Return 0
@@ -219,6 +228,8 @@ Public Class Theming
             Select Case tType
                 Case "movie"
                     ThemeXML = XDocument.Parse(My.Resources.movie_Default)
+                Case "movieset"
+                    ThemeXML = XDocument.Parse(My.Resources.movieset_Default)
                 Case "tvshow"
                     ThemeXML = XDocument.Parse(My.Resources.tvshow_Default)
                 Case "tvep"
@@ -234,7 +245,7 @@ Public Class Theming
                 If Not String.IsNullOrEmpty(xTop.<forecolor>.Value) Then tTheme.TopPanelForeColor = Color.FromArgb(Convert.ToInt32(xTop.<forecolor>.Value))
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
 
         'images
@@ -251,7 +262,7 @@ Public Class Theming
                 If Not String.IsNullOrEmpty(xImages.<genrebackcolor>.Value) Then tTheme.GenreBackColor = Color.FromArgb(Convert.ToInt32(xImages.<genrebackcolor>.Value))
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
 
         Try
@@ -294,7 +305,7 @@ Public Class Theming
 
             Next
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -316,6 +327,8 @@ Public Class Theming
                             xControl = frmMain.pnlTop250.Controls(aCon(0).Control)
                         Case "lblActorsHeader", "lstActors", "pbActors", "pbActLoad"
                             xControl = frmMain.pnlActors.Controls(aCon(0).Control)
+                        Case "lblMoviesInSetHeader", "lstMoviesInSet"
+                            xControl = frmMain.pnlMoviesInSet.Controls(aCon(0).Control)
                         Case Else
                             xControl = frmMain.pnlInfoPanel.Controls(aCon(0).Control)
                     End Select
@@ -334,7 +347,7 @@ Public Class Theming
             Next
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 

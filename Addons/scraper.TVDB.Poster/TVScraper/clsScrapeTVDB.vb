@@ -24,11 +24,13 @@ Imports System.Text
 
 Imports ICSharpCode.SharpZipLib.Zip
 Imports EmberAPI
+Imports NLog
 
 Public Class Scraper
 
 
 #Region "Fields"
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     ''' <summary>
     ''' Please use the APIKey property, and NOT this variable.
@@ -42,7 +44,7 @@ Public Class Scraper
     Public Shared Property APIKey As String
         Get
             If (_APIKey.Contains("http://")) Then
-                Master.eLog.Warn(GetType(Scraper), "The API key for TheTVDB.com has not been set. Expect some errors.", New StackTrace().ToString(), "Warning")
+                logger.Warn("The API key for TheTVDB.com has not been set. Expect some errors.", New StackTrace().ToString())
             End If
 
             Return _APIKey
@@ -178,7 +180,7 @@ Public Class Scraper
             '        ms.Close()
             '    End Using
             'Catch ex As Exception
-            '    Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            '    logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             'End Try
             Return newTVI
         End Function
@@ -215,7 +217,7 @@ Public Class Scraper
                 tmpTVDBShow.Show = Master.DB.LoadTVFullShowFromDB(_ID)
                 tmpTVDBShow.AllSeason = Master.DB.LoadTVAllSeasonFromDB(_ID)
 
-                Using SQLCount As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
+                Using SQLCount As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                     If OnlySeason = 999 Then
                         SQLCount.CommandText = String.Concat("SELECT COUNT(ID) AS eCount FROM TVEps WHERE TVShowID = ", _ID, " AND Missing = 0;")
                     Else
@@ -225,7 +227,7 @@ Public Class Scraper
                         If SQLRCount.HasRows Then
                             SQLRCount.Read()
                             If Convert.ToInt32(SQLRCount("eCount")) > 0 Then
-                                Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
+                                Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                                     If OnlySeason = 999 Then
                                         SQLCommand.CommandText = String.Concat("SELECT ID, Lock FROM TVEps WHERE TVShowID = ", _ID, " AND Missing = 0;")
                                     Else
@@ -243,7 +245,7 @@ Public Class Scraper
                     End Using
                 End Using
             Catch ex As Exception
-                Master.eLog.Error(GetType(ScraperObject), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
         End Sub
 
@@ -262,7 +264,7 @@ Public Class Scraper
                     MsgBox(Master.eLang.GetString(943, "There are no known episodes for this show. Scrape the show, season, or episode and try again."), MsgBoxStyle.OkOnly, Master.eLang.GetString(944, "No Known Episodes"))
                 End If
             Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
 
             Return Nothing
@@ -311,7 +313,7 @@ Public Class Scraper
                     End Using
                 End If
             Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
         End Sub
         Public Sub DownloadSeriesAsync(ByVal sInfo As Structures.ScrapeInfo)
@@ -323,7 +325,7 @@ Public Class Scraper
                     bwTVDB.RunWorkerAsync(New Arguments With {.Type = 1, .Parameter = sInfo})
                 End If
             Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
         End Sub
 
@@ -352,7 +354,7 @@ Public Class Scraper
                                 Next
                             End If
                         Catch ex As Exception
-                            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
                         End Try
 
                         If Not String.IsNullOrEmpty(sXML) Then
@@ -403,8 +405,8 @@ Public Class Scraper
                                             .Episode = If(IsNothing(Episode.Element("EpisodeNumber")) OrElse String.IsNullOrEmpty(Episode.Element("EpisodeNumber").Value), 0, Convert.ToInt32(Episode.Element("EpisodeNumber").Value))
                                         End If
                                         If Not IsNothing(Episode.Element("airsafter_season")) AndAlso Not String.IsNullOrEmpty(Episode.Element("airsafter_season").Value) Then
-                                            .DisplaySeason = Convert.ToInt32(Episode.Element("airsafter_season").Value) + 1
-                                            .DisplayEpisode = 0
+                                            .DisplaySeason = Convert.ToInt32(Episode.Element("airsafter_season").Value)
+                                            .DisplayEpisode = 4096
                                             .displaySEset = True
                                         End If
                                         If Not IsNothing(Episode.Element("airsbefore_season")) AndAlso Not String.IsNullOrEmpty(Episode.Element("airsbefore_season").Value) Then
@@ -412,7 +414,7 @@ Public Class Scraper
                                             .displaySEset = True
                                         End If
                                         If Not IsNothing(Episode.Element("airsbefore_episode")) AndAlso Not String.IsNullOrEmpty(Episode.Element("airsbefore_episode").Value) Then
-                                            .DisplayEpisode = Convert.ToInt32(CLng(Episode.Element("airsbefore_episode").Value)) - 1
+                                            .DisplayEpisode = Convert.ToInt32(CLng(Episode.Element("airsbefore_episode").Value))
                                             .displaySEset = True
                                         End If
 
@@ -435,7 +437,7 @@ Public Class Scraper
                     End Using
                 End If
             Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
 
             Return tEpisodes
@@ -449,7 +451,7 @@ Public Class Scraper
                     bwTVDB.RunWorkerAsync(New Arguments With {.Type = 0, .Parameter = sInfo})
                 End If
             Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
         End Sub
 
@@ -463,7 +465,7 @@ Public Class Scraper
                     Return tEp
                 End If
             Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
 
             Return New MediaContainers.EpisodeDetails
@@ -593,7 +595,7 @@ Public Class Scraper
                     End While
                 End Using
             Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
         End Sub
 
@@ -675,7 +677,7 @@ Public Class Scraper
                     End If
                 End If
             Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
         End Sub
 
@@ -767,7 +769,7 @@ Public Class Scraper
                     End If
                 End If
             Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
         End Sub
 
@@ -793,7 +795,7 @@ Public Class Scraper
                         e.Result = New Results With {.Type = 2, .Result = Args.Parameter}
                 End Select
             Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
         End Sub
 
@@ -820,7 +822,7 @@ Public Class Scraper
                         RaiseEvent ScraperEvent(Enums.TVScraperEventType.ScraperDone, 0, Nothing)
                 End Select
             Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
         End Sub
 
@@ -854,10 +856,10 @@ Public Class Scraper
 
             Me.bwTVDB.ReportProgress(tmpTVDBShow.Episodes.Count, "max")
 
-            Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.MediaDBConn.BeginTransaction()
+            Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 If Master.eSettings.TVDisplayMissingEpisodes Then
                     'clear old missing episode from db
-                    Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
+                    Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                         SQLCommand.CommandText = String.Concat("DELETE FROM TVEps WHERE Missing = 1 AND TVShowID = ", Master.currShow.ShowID, ";")
                         SQLCommand.ExecuteNonQuery()
                     End Using
@@ -888,7 +890,7 @@ Public Class Scraper
 
                                 If Me.bwTVDB.CancellationPending Then Return
 
-                                If Master.eSettings.TVEpisodeFanartEnabled AndAlso Not IsNothing(Episode.TVEp.Fanart.Image) Then Episode.EpFanartPath = Episode.TVEp.Fanart.SaveAsTVEpisodeFanart(Episode, )
+                                If Master.eSettings.TVEpisodeFanartAnyEnabled AndAlso Not IsNothing(Episode.TVEp.Fanart.Image) Then Episode.EpFanartPath = Episode.TVEp.Fanart.SaveAsTVEpisodeFanart(Episode, )
 
                                 If Me.bwTVDB.CancellationPending Then Return
 
@@ -899,7 +901,7 @@ Public Class Scraper
 
                                     If Me.bwTVDB.CancellationPending Then Return
 
-                                    If Master.eSettings.TVSeasonFanartEnabled Then
+                                    If Master.eSettings.TVSeasonFanartAnyEnabled Then
                                         If Not String.IsNullOrEmpty(cSea(0).Fanart.LocalFile) AndAlso File.Exists(cSea(0).Fanart.LocalFile) Then
                                             cSea(0).Fanart.Image.FromFile(cSea(0).Fanart.LocalFile)
                                             Episode.SeasonFanartPath = cSea(0).Fanart.Image.SaveAsTVSeasonFanart(Episode)
@@ -935,7 +937,7 @@ Public Class Scraper
 
                             iProgress += 1
                         Catch ex As Exception
-                            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
                         End Try
                     Next
 
@@ -964,7 +966,7 @@ Public Class Scraper
                     SQLTrans.Commit()
 
                 Catch ex As Exception
-                    Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                    logger.ErrorException(New StackFrame().GetMethod().Name,ex)
                 End Try
 
             End Using
@@ -1020,9 +1022,9 @@ Public Class Scraper
                                     cResult = New TVSearchResults
                                     cResult.ID = Convert.ToInt32(tSer.Element("id").Value)
                                     cResult.Name = If(Not IsNothing(tSer.Element("SeriesName")), tSer.Element("SeriesName").Value, String.Empty)
-                                    If Not IsNothing(tSer.Element("Language")) AndAlso Master.eSettings.TVScraperLanguages.Count > 0 Then
+                                    If Not IsNothing(tSer.Element("Language")) AndAlso Master.eSettings.TVGeneralLanguages.Count > 0 Then
                                         sLang = tSer.Element("Language").Value
-                                        cResult.Language = Master.eSettings.TVScraperLanguages.FirstOrDefault(Function(s) s.ShortLang = sLang)
+                                        cResult.Language = Master.eSettings.TVGeneralLanguages.FirstOrDefault(Function(s) s.ShortLang = sLang)
                                     ElseIf Not IsNothing(tSer.Element("Language")) Then
                                         sLang = tSer.Element("Language").Value
                                         cResult.Language = New Containers.TVLanguage With {.LongLang = String.Format("Unknown ({0})", sLang), .ShortLang = sLang}
@@ -1048,9 +1050,9 @@ Public Class Scraper
                         cResult = New TVSearchResults
                         cResult.ID = Convert.ToInt32(xS.Element("seriesid").Value)
                         cResult.Name = If(Not IsNothing(xS.Element("SeriesName")), xS.Element("SeriesName").Value, String.Empty)
-                        If Not IsNothing(xS.Element("language")) AndAlso Master.eSettings.TVScraperLanguages.Count > 0 Then
+                        If Not IsNothing(xS.Element("language")) AndAlso Master.eSettings.TVGeneralLanguages.Count > 0 Then
                             sLang = xS.Element("language").Value
-                            cResult.Language = Master.eSettings.TVScraperLanguages.FirstOrDefault(Function(s) s.ShortLang = sLang)
+                            cResult.Language = Master.eSettings.TVGeneralLanguages.FirstOrDefault(Function(s) s.ShortLang = sLang)
                         ElseIf Not IsNothing(xS.Element("language")) Then
                             sLang = xS.Element("language").Value
                             cResult.Language = New Containers.TVLanguage With {.LongLang = String.Format("Unknown ({0})", sLang), .ShortLang = sLang}
@@ -1069,7 +1071,7 @@ Public Class Scraper
                 End If
 
             Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
 
             Return tvdbResults
@@ -1102,7 +1104,7 @@ Public Class Scraper
                         End If
                     End If
                 Catch ex As Exception
-                    Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                    logger.ErrorException(New StackFrame().GetMethod().Name,ex)
                 End Try
 
                 'now let's get the show info and all the episodes
@@ -1220,7 +1222,7 @@ Public Class Scraper
                         End If
                     End If
                 Catch ex As Exception
-                    Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                    logger.ErrorException(New StackFrame().GetMethod().Name,ex)
                 End Try
             Else
                 sID = sInfo.TVDBID
@@ -1277,7 +1279,7 @@ Public Class Scraper
                     End If
                 End If
             Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
         End Sub
 

@@ -93,6 +93,16 @@ Namespace My.Resources
         '''<summary>
         '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         '''</summary>
+        Friend ReadOnly Property doRating() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("doRating", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        '''</summary>
         Friend ReadOnly Property EmberSplashScreen() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("EmberSplashScreen", resourceCulture)
@@ -354,6 +364,16 @@ Namespace My.Resources
         '''<summary>
         '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         '''</summary>
+        Friend ReadOnly Property menuAdd() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("menuAdd", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        '''</summary>
         Friend ReadOnly Property Miscellaneous() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("Miscellaneous", resourceCulture)
@@ -501,6 +521,41 @@ Namespace My.Resources
         Friend ReadOnly Property MovieListTableStart() As String
             Get
                 Return ResourceManager.GetString("MovieListTableStart", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+        '''&lt;!--
+        '''### Anchor Help ###
+        '''0 = none
+        '''1 = Top
+        '''2 = Bottom
+        '''4 = Left
+        '''8 = Right
+        '''
+        '''Can be combined by adding values. For example, the standard TopLeft anchor would
+        '''be anchor code 5.
+        '''
+        '''### FontStyle Help ###
+        '''0 = Regular
+        '''1 = Bold
+        '''2 = Italic
+        '''4 = Underline
+        '''8 = Strikeout
+        '''
+        '''Can be combined by adding values. For example, bold and underlined would be
+        '''fontstyle code 5.
+        '''--&gt;
+        '''
+        '''&lt;theme&gt;
+        '''  &lt;toppanel&gt;
+        '''    &lt;backcolor&gt;-2302756&lt;/backcolor&gt;
+        '''    &lt;forecolor&gt;-16777216&lt;/forecolo [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
+        '''</summary>
+        Friend ReadOnly Property movieset_Default() As String
+            Get
+                Return ResourceManager.GetString("movieset_Default", resourceCulture)
             End Get
         End Property
         

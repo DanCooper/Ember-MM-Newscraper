@@ -22,6 +22,8 @@ Imports System.Drawing.Imaging
 Imports System.IO
 Imports System.Drawing
 Imports System.Windows.Forms
+Imports NLog
+
 
 <Serializable()> _
 Public Class Images
@@ -29,6 +31,7 @@ Public Class Images
     '2013/11/28 Dekker500 - This class needs some serious love. Clear candidate for polymorphism. Images should be root, with posters, fanart, etc as children. None of this if/else stuff to confuse the issue. I will re-visit later
 
 #Region "Fields"
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
 	Private _ms As MemoryStream
     Private Ret As Byte()
@@ -42,7 +45,7 @@ Public Class Images
 #Region "Constructors"
 
     Public Sub New()
-        Clear()
+        Me.Clear()
     End Sub
 
 #End Region 'Constructors
@@ -97,7 +100,7 @@ Public Class Images
             _image = New Bitmap(_ms)
 
         Catch ex As Exception
-            Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
     '   ''' <summary>
@@ -123,7 +126,7 @@ Public Class Images
     '			Return Enums.FanartSize.Small
     '		End If
     '	Catch ex As Exception
-    '		Master.eLog.Error(GetType(Images),ex.Message, ex.StackTrace, "Error")
+    '		logger.ErrorException(GetType(Images),ex.Message, ex.StackTrace, "Error")
     '		Return Enums.FanartSize.Small
     '	End Try
     'End Function
@@ -154,7 +157,7 @@ Public Class Images
     '            Return Enums.PosterSize.Small
     '        End If
     '    Catch ex As Exception
-    '        Master.eLog.Error(GetType(Images),ex.Message, ex.StackTrace, "Error")
+    '        logger.ErrorException(GetType(Images),ex.Message, ex.StackTrace, "Error")
     '        Return Enums.PosterSize.Small
     '    End Try        
     'End Function
@@ -187,7 +190,7 @@ Public Class Images
             Try
                 File.Delete(sPath)
             Catch ex As Exception
-                Master.eLog.Error(GetType(Images), "Param: <" & sPath & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "Param: <" & sPath & ">", ex)
             End Try
         End If
     End Sub
@@ -199,12 +202,14 @@ Public Class Images
     Public Sub DeleteTVASBanner(ByVal mShow As Structures.DBTV)
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return
 
-        Try 'TODO
-            'Delete(Path.Combine(mShow.ShowPath, "season-all.tbn"))
-            'Delete(Path.Combine(mShow.ShowPath, "season-all.jpg"))
-            'Delete(Path.Combine(mShow.ShowPath, "season-all-poster.jpg"))
+        Try
+            For Each a In FileUtils.GetFilenameList.TVShow(mShow.ShowPath, Enums.TVModType.AllSeasonsBanner)
+                If File.Exists(a) Then
+                    Delete(a)
+                End If
+            Next
         Catch ex As Exception
-            Master.eLog.Error(GetType(Images), "Path: <" & mShow.ShowPath & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -215,12 +220,14 @@ Public Class Images
     Public Sub DeleteTVASFanart(ByVal mShow As Structures.DBTV)
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return
 
-        Try 'TODO
-            'Delete(Path.Combine(mShow.ShowPath, "season-all.tbn"))
-            'Delete(Path.Combine(mShow.ShowPath, "season-all.jpg"))
-            'Delete(Path.Combine(mShow.ShowPath, "season-all-poster.jpg"))
+        Try
+            For Each a In FileUtils.GetFilenameList.TVShow(mShow.ShowPath, Enums.TVModType.AllSeasonsFanart)
+                If File.Exists(a) Then
+                    Delete(a)
+                End If
+            Next
         Catch ex As Exception
-            Master.eLog.Error(GetType(Images), "Path: <" & mShow.ShowPath & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -231,12 +238,14 @@ Public Class Images
     Public Sub DeleteTVASLandscape(ByVal mShow As Structures.DBTV)
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return
 
-        Try 'TODO
-            'Delete(Path.Combine(mShow.ShowPath, "season-all.tbn"))
-            'Delete(Path.Combine(mShow.ShowPath, "season-all.jpg"))
-            'Delete(Path.Combine(mShow.ShowPath, "season-all-poster.jpg"))
+        Try
+            For Each a In FileUtils.GetFilenameList.TVShow(mShow.ShowPath, Enums.TVModType.AllSeasonsLandscape)
+                If File.Exists(a) Then
+                    Delete(a)
+                End If
+            Next
         Catch ex As Exception
-            Master.eLog.Error(GetType(Images), "Path: <" & mShow.ShowPath & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -248,11 +257,13 @@ Public Class Images
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return
 
         Try
-            Delete(Path.Combine(mShow.ShowPath, "season-all.tbn"))
-            Delete(Path.Combine(mShow.ShowPath, "season-all.jpg"))
-            Delete(Path.Combine(mShow.ShowPath, "season-all-poster.jpg"))
+            For Each a In FileUtils.GetFilenameList.TVShow(mShow.ShowPath, Enums.TVModType.AllSeasonsPoster)
+                If File.Exists(a) Then
+                    Delete(a)
+                End If
+            Next
         Catch ex As Exception
-            Master.eLog.Error(GetType(Images), "Path: <" & mShow.ShowPath & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -263,14 +274,14 @@ Public Class Images
     Public Sub DeleteTVEpisodeFanart(ByVal mShow As Structures.DBTV)
         If String.IsNullOrEmpty(mShow.Filename) Then Return
 
-        Dim tPath As String = FileUtils.Common.RemoveExtFromPath(mShow.Filename)
-        If String.IsNullOrEmpty(tPath) Then Return
-
         Try
-            Delete(String.Concat(tPath, "-fanart.jpg"))
-            Delete(String.Concat(tPath, ".fanart.jpg"))
+            For Each a In FileUtils.GetFilenameList.TVEpisode(mShow.Filename, Enums.TVModType.EpisodeFanart)
+                If File.Exists(a) Then
+                    Delete(a)
+                End If
+            Next
         Catch ex As Exception
-            Master.eLog.Error(GetType(Images), "Path: <" & mShow.ShowPath & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -281,15 +292,14 @@ Public Class Images
     Public Sub DeleteTVEpisodePosters(ByVal mShow As Structures.DBTV)
         If String.IsNullOrEmpty(mShow.Filename) Then Return
 
-        Dim tPath As String = FileUtils.Common.RemoveExtFromPath(mShow.Filename)
-        If String.IsNullOrEmpty(tPath) Then Return
-
         Try
-            Delete(String.Concat(tPath, ".tbn"))
-            Delete(String.Concat(tPath, ".jpg"))
-            Delete(String.Concat(tPath, "-thumb.jpg"))
+            For Each a In FileUtils.GetFilenameList.TVEpisode(mShow.Filename, Enums.TVModType.EpisodePoster)
+                If File.Exists(a) Then
+                    Delete(a)
+                End If
+            Next
         Catch ex As Exception
-            Master.eLog.Error(GetType(Images), "Path: <" & mShow.ShowPath & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -299,44 +309,16 @@ Public Class Images
     ''' <remarks></remarks>
     Public Sub DeleteMovieBanner(ByVal mMovie As Structures.DBMovie)
         If String.IsNullOrEmpty(mMovie.Filename) Then Return
-        'TODO
-        'Try
-        '    Dim tPath As String = Directory.GetParent(mMovie.Filename).FullName
-        '    Dim params As New List(Of Object)(New Object() {mMovie})
-        '    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieFanartDelete, params, Nothing, False)
 
-        '    If FileUtils.Common.isVideoTS(mMovie.Filename) Then
-        '        Delete(String.Concat(Directory.GetParent(tPath).FullName, Path.DirectorySeparatorChar, "fanart.jpg"))
-        '        Delete(String.Concat(Directory.GetParent(tPath).FullName, Path.DirectorySeparatorChar, ".fanart.jpg"))
-        '        Delete(String.Concat(Path.Combine(Directory.GetParent(tPath).FullName, Directory.GetParent(tPath).Name), "-fanart.jpg"))
-        '        Delete(String.Concat(Path.Combine(Directory.GetParent(tPath).FullName, Directory.GetParent(tPath).Name), ".fanart.jpg"))
-        '    ElseIf FileUtils.Common.isBDRip(mMovie.Filename) Then
-        '        Delete(String.Concat(Directory.GetParent(Directory.GetParent(tPath).FullName).FullName, Path.DirectorySeparatorChar, "fanart.jpg"))
-        '        Delete(String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(tPath).FullName).FullName, Directory.GetParent(Directory.GetParent(tPath).FullName).Name), "-fanart.jpg"))
-        '        Delete(String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(tPath).FullName).FullName, Directory.GetParent(Directory.GetParent(tPath).FullName).Name), ".fanart.jpg"))
-        '    Else
-        '        If mMovie.isSingle Then
-        '            Delete(Path.Combine(tPath, "fanart.jpg"))
-        '        End If
-
-        '        If FileUtils.Common.isVideoTS(mMovie.Filename) Then
-        '            Delete(Path.Combine(tPath, "video_ts-fanart.jpg"))
-        '            Delete(Path.Combine(tPath, "video_ts.fanart.jpg"))
-        '        ElseIf FileUtils.Common.isBDRip(mMovie.Filename) Then
-        '            Delete(Path.Combine(tPath, "index-fanart.jpg"))
-        '            Delete(Path.Combine(tPath, "index.fanart.jpg"))
-        '        Else
-        '            Dim fPath As String = Path.Combine(tPath, Path.GetFileNameWithoutExtension(mMovie.Filename))
-        '            Dim fPathStack As String = Path.Combine(tPath, StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(mMovie.Filename)))
-        '            Delete(String.Concat(fPath, "-fanart.jpg"))
-        '            Delete(String.Concat(fPath, ".fanart.jpg"))
-        '            Delete(String.Concat(fPathStack, "-fanart.jpg"))
-        '        End If
-
-        '    End If
-        'Catch ex As Exception
-        '    Master.eLog.Error(GetType(Images), "Movie: <" & mMovie.Filename & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
-        'End Try
+        Try
+            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.isSingle, Enums.MovieModType.Banner)
+                If File.Exists(a) Then
+                    Delete(a)
+                End If
+            Next
+        Catch ex As Exception
+            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & mMovie.Filename & ">", ex)
+        End Try
     End Sub
     ''' <summary>
     ''' Delete the movie's ClearArt
@@ -345,44 +327,16 @@ Public Class Images
     ''' <remarks></remarks>
     Public Sub DeleteMovieClearArt(ByVal mMovie As Structures.DBMovie)
         If String.IsNullOrEmpty(mMovie.Filename) Then Return
-        'TODO
-        'Try
-        '    Dim tPath As String = Directory.GetParent(mMovie.Filename).FullName
-        '    Dim params As New List(Of Object)(New Object() {mMovie})
-        '    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieFanartDelete, params, Nothing, False)
 
-        '    If FileUtils.Common.isVideoTS(mMovie.Filename) Then
-        '        Delete(String.Concat(Directory.GetParent(tPath).FullName, Path.DirectorySeparatorChar, "fanart.jpg"))
-        '        Delete(String.Concat(Directory.GetParent(tPath).FullName, Path.DirectorySeparatorChar, ".fanart.jpg"))
-        '        Delete(String.Concat(Path.Combine(Directory.GetParent(tPath).FullName, Directory.GetParent(tPath).Name), "-fanart.jpg"))
-        '        Delete(String.Concat(Path.Combine(Directory.GetParent(tPath).FullName, Directory.GetParent(tPath).Name), ".fanart.jpg"))
-        '    ElseIf FileUtils.Common.isBDRip(mMovie.Filename) Then
-        '        Delete(String.Concat(Directory.GetParent(Directory.GetParent(tPath).FullName).FullName, Path.DirectorySeparatorChar, "fanart.jpg"))
-        '        Delete(String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(tPath).FullName).FullName, Directory.GetParent(Directory.GetParent(tPath).FullName).Name), "-fanart.jpg"))
-        '        Delete(String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(tPath).FullName).FullName, Directory.GetParent(Directory.GetParent(tPath).FullName).Name), ".fanart.jpg"))
-        '    Else
-        '        If mMovie.isSingle Then
-        '            Delete(Path.Combine(tPath, "fanart.jpg"))
-        '        End If
-
-        '        If FileUtils.Common.isVideoTS(mMovie.Filename) Then
-        '            Delete(Path.Combine(tPath, "video_ts-fanart.jpg"))
-        '            Delete(Path.Combine(tPath, "video_ts.fanart.jpg"))
-        '        ElseIf FileUtils.Common.isBDRip(mMovie.Filename) Then
-        '            Delete(Path.Combine(tPath, "index-fanart.jpg"))
-        '            Delete(Path.Combine(tPath, "index.fanart.jpg"))
-        '        Else
-        '            Dim fPath As String = Path.Combine(tPath, Path.GetFileNameWithoutExtension(mMovie.Filename))
-        '            Dim fPathStack As String = Path.Combine(tPath, StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(mMovie.Filename)))
-        '            Delete(String.Concat(fPath, "-fanart.jpg"))
-        '            Delete(String.Concat(fPath, ".fanart.jpg"))
-        '            Delete(String.Concat(fPathStack, "-fanart.jpg"))
-        '        End If
-
-        '    End If
-        'Catch ex As Exception
-        '    Master.eLog.Error(GetType(Images), "Movie: <" & mMovie.Filename & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
-        'End Try
+        Try
+            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.isSingle, Enums.MovieModType.ClearArt)
+                If File.Exists(a) Then
+                    Delete(a)
+                End If
+            Next
+        Catch ex As Exception
+            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & mMovie.Filename & ">", ex)
+        End Try
     End Sub
     ''' <summary>
     ''' Delete the movie's ClearLogo
@@ -391,44 +345,16 @@ Public Class Images
     ''' <remarks></remarks>
     Public Sub DeleteMovieClearLogo(ByVal mMovie As Structures.DBMovie)
         If String.IsNullOrEmpty(mMovie.Filename) Then Return
-        'TODO
-        'Try
-        '    Dim tPath As String = Directory.GetParent(mMovie.Filename).FullName
-        '    Dim params As New List(Of Object)(New Object() {mMovie})
-        '    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieFanartDelete, params, Nothing, False)
 
-        '    If FileUtils.Common.isVideoTS(mMovie.Filename) Then
-        '        Delete(String.Concat(Directory.GetParent(tPath).FullName, Path.DirectorySeparatorChar, "fanart.jpg"))
-        '        Delete(String.Concat(Directory.GetParent(tPath).FullName, Path.DirectorySeparatorChar, ".fanart.jpg"))
-        '        Delete(String.Concat(Path.Combine(Directory.GetParent(tPath).FullName, Directory.GetParent(tPath).Name), "-fanart.jpg"))
-        '        Delete(String.Concat(Path.Combine(Directory.GetParent(tPath).FullName, Directory.GetParent(tPath).Name), ".fanart.jpg"))
-        '    ElseIf FileUtils.Common.isBDRip(mMovie.Filename) Then
-        '        Delete(String.Concat(Directory.GetParent(Directory.GetParent(tPath).FullName).FullName, Path.DirectorySeparatorChar, "fanart.jpg"))
-        '        Delete(String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(tPath).FullName).FullName, Directory.GetParent(Directory.GetParent(tPath).FullName).Name), "-fanart.jpg"))
-        '        Delete(String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(tPath).FullName).FullName, Directory.GetParent(Directory.GetParent(tPath).FullName).Name), ".fanart.jpg"))
-        '    Else
-        '        If mMovie.isSingle Then
-        '            Delete(Path.Combine(tPath, "fanart.jpg"))
-        '        End If
-
-        '        If FileUtils.Common.isVideoTS(mMovie.Filename) Then
-        '            Delete(Path.Combine(tPath, "video_ts-fanart.jpg"))
-        '            Delete(Path.Combine(tPath, "video_ts.fanart.jpg"))
-        '        ElseIf FileUtils.Common.isBDRip(mMovie.Filename) Then
-        '            Delete(Path.Combine(tPath, "index-fanart.jpg"))
-        '            Delete(Path.Combine(tPath, "index.fanart.jpg"))
-        '        Else
-        '            Dim fPath As String = Path.Combine(tPath, Path.GetFileNameWithoutExtension(mMovie.Filename))
-        '            Dim fPathStack As String = Path.Combine(tPath, StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(mMovie.Filename)))
-        '            Delete(String.Concat(fPath, "-fanart.jpg"))
-        '            Delete(String.Concat(fPath, ".fanart.jpg"))
-        '            Delete(String.Concat(fPathStack, "-fanart.jpg"))
-        '        End If
-
-        '    End If
-        'Catch ex As Exception
-        '    Master.eLog.Error(GetType(Images), "Movie: <" & mMovie.Filename & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
-        'End Try
+        Try
+            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.isSingle, Enums.MovieModType.ClearLogo)
+                If File.Exists(a) Then
+                    Delete(a)
+                End If
+            Next
+        Catch ex As Exception
+            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & mMovie.Filename & ">", ex)
+        End Try
     End Sub
     ''' <summary>
     ''' Delete the movie's DiscArt
@@ -437,44 +363,16 @@ Public Class Images
     ''' <remarks></remarks>
     Public Sub DeleteMovieDiscArt(ByVal mMovie As Structures.DBMovie)
         If String.IsNullOrEmpty(mMovie.Filename) Then Return
-        'TODO
-        'Try
-        '    Dim tPath As String = Directory.GetParent(mMovie.Filename).FullName
-        '    Dim params As New List(Of Object)(New Object() {mMovie})
-        '    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieFanartDelete, params, Nothing, False)
 
-        '    If FileUtils.Common.isVideoTS(mMovie.Filename) Then
-        '        Delete(String.Concat(Directory.GetParent(tPath).FullName, Path.DirectorySeparatorChar, "fanart.jpg"))
-        '        Delete(String.Concat(Directory.GetParent(tPath).FullName, Path.DirectorySeparatorChar, ".fanart.jpg"))
-        '        Delete(String.Concat(Path.Combine(Directory.GetParent(tPath).FullName, Directory.GetParent(tPath).Name), "-fanart.jpg"))
-        '        Delete(String.Concat(Path.Combine(Directory.GetParent(tPath).FullName, Directory.GetParent(tPath).Name), ".fanart.jpg"))
-        '    ElseIf FileUtils.Common.isBDRip(mMovie.Filename) Then
-        '        Delete(String.Concat(Directory.GetParent(Directory.GetParent(tPath).FullName).FullName, Path.DirectorySeparatorChar, "fanart.jpg"))
-        '        Delete(String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(tPath).FullName).FullName, Directory.GetParent(Directory.GetParent(tPath).FullName).Name), "-fanart.jpg"))
-        '        Delete(String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(tPath).FullName).FullName, Directory.GetParent(Directory.GetParent(tPath).FullName).Name), ".fanart.jpg"))
-        '    Else
-        '        If mMovie.isSingle Then
-        '            Delete(Path.Combine(tPath, "fanart.jpg"))
-        '        End If
-
-        '        If FileUtils.Common.isVideoTS(mMovie.Filename) Then
-        '            Delete(Path.Combine(tPath, "video_ts-fanart.jpg"))
-        '            Delete(Path.Combine(tPath, "video_ts.fanart.jpg"))
-        '        ElseIf FileUtils.Common.isBDRip(mMovie.Filename) Then
-        '            Delete(Path.Combine(tPath, "index-fanart.jpg"))
-        '            Delete(Path.Combine(tPath, "index.fanart.jpg"))
-        '        Else
-        '            Dim fPath As String = Path.Combine(tPath, Path.GetFileNameWithoutExtension(mMovie.Filename))
-        '            Dim fPathStack As String = Path.Combine(tPath, StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(mMovie.Filename)))
-        '            Delete(String.Concat(fPath, "-fanart.jpg"))
-        '            Delete(String.Concat(fPath, ".fanart.jpg"))
-        '            Delete(String.Concat(fPathStack, "-fanart.jpg"))
-        '        End If
-
-        '    End If
-        'Catch ex As Exception
-        '    Master.eLog.Error(GetType(Images), "Movie: <" & mMovie.Filename & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
-        'End Try
+        Try
+            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.isSingle, Enums.MovieModType.DiscArt)
+                If File.Exists(a) Then
+                    Delete(a)
+                End If
+            Next
+        Catch ex As Exception
+            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & mMovie.Filename & ">", ex)
+        End Try
     End Sub
     ''' <summary>
     ''' Delete the movie's fanart
@@ -485,41 +383,13 @@ Public Class Images
         If String.IsNullOrEmpty(mMovie.Filename) Then Return
 
         Try
-            Dim tPath As String = Directory.GetParent(mMovie.Filename).FullName
-            Dim params As New List(Of Object)(New Object() {mMovie})
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieFanartDelete, params, Nothing, False)
-
-            If FileUtils.Common.isVideoTS(mMovie.Filename) Then
-                Delete(String.Concat(Directory.GetParent(tPath).FullName, Path.DirectorySeparatorChar, "fanart.jpg"))
-                Delete(String.Concat(Directory.GetParent(tPath).FullName, Path.DirectorySeparatorChar, ".fanart.jpg"))
-                Delete(String.Concat(Path.Combine(Directory.GetParent(tPath).FullName, Directory.GetParent(tPath).Name), "-fanart.jpg"))
-                Delete(String.Concat(Path.Combine(Directory.GetParent(tPath).FullName, Directory.GetParent(tPath).Name), ".fanart.jpg"))
-            ElseIf FileUtils.Common.isBDRip(mMovie.Filename) Then
-                Delete(String.Concat(Directory.GetParent(Directory.GetParent(tPath).FullName).FullName, Path.DirectorySeparatorChar, "fanart.jpg"))
-                Delete(String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(tPath).FullName).FullName, Directory.GetParent(Directory.GetParent(tPath).FullName).Name), "-fanart.jpg"))
-                Delete(String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(tPath).FullName).FullName, Directory.GetParent(Directory.GetParent(tPath).FullName).Name), ".fanart.jpg"))
-            Else
-                If mMovie.isSingle Then
-                    Delete(Path.Combine(tPath, "fanart.jpg"))
+            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.isSingle, Enums.MovieModType.Fanart)
+                If File.Exists(a) Then
+                    Delete(a)
                 End If
-
-                If FileUtils.Common.isVideoTS(mMovie.Filename) Then
-                    Delete(Path.Combine(tPath, "video_ts-fanart.jpg"))
-                    Delete(Path.Combine(tPath, "video_ts.fanart.jpg"))
-                ElseIf FileUtils.Common.isBDRip(mMovie.Filename) Then
-                    Delete(Path.Combine(tPath, "index-fanart.jpg"))
-                    Delete(Path.Combine(tPath, "index.fanart.jpg"))
-                Else
-                    Dim fPath As String = Path.Combine(tPath, Path.GetFileNameWithoutExtension(mMovie.Filename))
-                    Dim fPathStack As String = Path.Combine(tPath, StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(mMovie.Filename)))
-                    Delete(String.Concat(fPath, "-fanart.jpg"))
-                    Delete(String.Concat(fPath, ".fanart.jpg"))
-                    Delete(String.Concat(fPathStack, "-fanart.jpg"))
-                End If
-
-            End If
+            Next
         Catch ex As Exception
-            Master.eLog.Error(GetType(Images), "Movie: <" & mMovie.Filename & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & mMovie.Filename & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -529,104 +399,159 @@ Public Class Images
     ''' <remarks></remarks>
     Public Sub DeleteMovieLandscape(ByVal mMovie As Structures.DBMovie)
         If String.IsNullOrEmpty(mMovie.Filename) Then Return
-        'TODO
-        'Try
-        '    Dim tPath As String = Directory.GetParent(mMovie.Filename).FullName
-        '    Dim params As New List(Of Object)(New Object() {mMovie})
-        '    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieFanartDelete, params, Nothing, False)
 
-        '    If FileUtils.Common.isVideoTS(mMovie.Filename) Then
-        '        Delete(String.Concat(Directory.GetParent(tPath).FullName, Path.DirectorySeparatorChar, "fanart.jpg"))
-        '        Delete(String.Concat(Directory.GetParent(tPath).FullName, Path.DirectorySeparatorChar, ".fanart.jpg"))
-        '        Delete(String.Concat(Path.Combine(Directory.GetParent(tPath).FullName, Directory.GetParent(tPath).Name), "-fanart.jpg"))
-        '        Delete(String.Concat(Path.Combine(Directory.GetParent(tPath).FullName, Directory.GetParent(tPath).Name), ".fanart.jpg"))
-        '    ElseIf FileUtils.Common.isBDRip(mMovie.Filename) Then
-        '        Delete(String.Concat(Directory.GetParent(Directory.GetParent(tPath).FullName).FullName, Path.DirectorySeparatorChar, "fanart.jpg"))
-        '        Delete(String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(tPath).FullName).FullName, Directory.GetParent(Directory.GetParent(tPath).FullName).Name), "-fanart.jpg"))
-        '        Delete(String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(tPath).FullName).FullName, Directory.GetParent(Directory.GetParent(tPath).FullName).Name), ".fanart.jpg"))
-        '    Else
-        '        If mMovie.isSingle Then
-        '            Delete(Path.Combine(tPath, "fanart.jpg"))
-        '        End If
-
-        '        If FileUtils.Common.isVideoTS(mMovie.Filename) Then
-        '            Delete(Path.Combine(tPath, "video_ts-fanart.jpg"))
-        '            Delete(Path.Combine(tPath, "video_ts.fanart.jpg"))
-        '        ElseIf FileUtils.Common.isBDRip(mMovie.Filename) Then
-        '            Delete(Path.Combine(tPath, "index-fanart.jpg"))
-        '            Delete(Path.Combine(tPath, "index.fanart.jpg"))
-        '        Else
-        '            Dim fPath As String = Path.Combine(tPath, Path.GetFileNameWithoutExtension(mMovie.Filename))
-        '            Dim fPathStack As String = Path.Combine(tPath, StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(mMovie.Filename)))
-        '            Delete(String.Concat(fPath, "-fanart.jpg"))
-        '            Delete(String.Concat(fPath, ".fanart.jpg"))
-        '            Delete(String.Concat(fPathStack, "-fanart.jpg"))
-        '        End If
-
-        '    End If
-        'Catch ex As Exception
-        '    Master.eLog.Error(GetType(Images), "Movie: <" & mMovie.Filename & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
-        'End Try
+        Try
+            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.isSingle, Enums.MovieModType.Landscape)
+                If File.Exists(a) Then
+                    Delete(a)
+                End If
+            Next
+        Catch ex As Exception
+            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & mMovie.Filename & ">", ex)
+        End Try
     End Sub
     ''' <summary>
     ''' Delete the movie's posters
     ''' </summary>
     ''' <param name="mMovie">Structures.DBMovie representing the movie to be worked on</param>
     ''' <remarks></remarks>
-    Public Sub DeleteMoviePosters(ByVal mMovie As Structures.DBMovie)
+    Public Sub DeleteMoviePoster(ByVal mMovie As Structures.DBMovie)
         If String.IsNullOrEmpty(mMovie.Filename) Then Return
 
         Try
-            Dim tPath As String = Directory.GetParent(mMovie.Filename).FullName
-            Dim params As New List(Of Object)(New Object() {mMovie})
-
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMoviePosterDelete, params, Nothing, False)
-
-            If FileUtils.Common.isVideoTS(mMovie.Filename) Then
-                Delete(String.Concat(Directory.GetParent(tPath).FullName, Path.DirectorySeparatorChar, "movie.jpg"))
-                Delete(String.Concat(Directory.GetParent(tPath).FullName, Path.DirectorySeparatorChar, "movie.tbn"))
-                Delete(String.Concat(Directory.GetParent(tPath).FullName, Path.DirectorySeparatorChar, "folder.jpg"))
-                Delete(String.Concat(Directory.GetParent(tPath).FullName, Path.DirectorySeparatorChar, "poster.jpg"))
-                Delete(String.Concat(Directory.GetParent(tPath).FullName, Path.DirectorySeparatorChar, "poster.tbn"))
-                Delete(String.Concat(Path.Combine(Directory.GetParent(tPath).FullName, Directory.GetParent(tPath).Name), ".jpg"))
-                Delete(String.Concat(Path.Combine(Directory.GetParent(tPath).FullName, Directory.GetParent(tPath).Name), ".tbn"))
-            ElseIf FileUtils.Common.isBDRip(mMovie.Filename) Then
-                Delete(String.Concat(Directory.GetParent(tPath).FullName, Path.DirectorySeparatorChar, "poster.jpg"))
-                Delete(String.Concat(Directory.GetParent(Directory.GetParent(tPath).FullName).FullName, Path.DirectorySeparatorChar, "movie.jpg"))
-                Delete(String.Concat(Directory.GetParent(Directory.GetParent(tPath).FullName).FullName, Path.DirectorySeparatorChar, "movie.tbn"))
-                Delete(String.Concat(Directory.GetParent(Directory.GetParent(tPath).FullName).FullName, Path.DirectorySeparatorChar, "folder.jpg"))
-                Delete(String.Concat(Directory.GetParent(Directory.GetParent(tPath).FullName).FullName, Path.DirectorySeparatorChar, "poster.jpg"))
-                Delete(String.Concat(Directory.GetParent(Directory.GetParent(tPath).FullName).FullName, Path.DirectorySeparatorChar, "poster.tbn"))
-                Delete(String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(tPath).FullName).FullName, Directory.GetParent(Directory.GetParent(tPath).FullName).Name), ".jpg"))
-                Delete(String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(tPath).FullName).FullName, Directory.GetParent(Directory.GetParent(tPath).FullName).Name), ".tbn"))
-            Else
-
-                If mMovie.isSingle Then
-                    Delete(Path.Combine(tPath, "movie.tbn"))
-                    Delete(Path.Combine(tPath, "movie.jpg"))
-                    Delete(Path.Combine(tPath, "poster.tbn"))
-                    Delete(Path.Combine(tPath, "poster.jpg"))
-                    Delete(Path.Combine(tPath, "folder.jpg"))
+            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.isSingle, Enums.MovieModType.Poster)
+                If File.Exists(a) Then
+                    Delete(a)
                 End If
-
-                If FileUtils.Common.isVideoTS(mMovie.Filename) Then
-                    Delete(Path.Combine(tPath, "video_ts.tbn"))
-                    Delete(Path.Combine(tPath, "video_ts.jpg"))
-                ElseIf FileUtils.Common.isBDRip(mMovie.Filename) Then
-                    Delete(Path.Combine(tPath, "index.tbn"))
-                    Delete(Path.Combine(tPath, "index.jpg"))
-                Else
-                    Dim pPath As String = Path.Combine(tPath, Path.GetFileNameWithoutExtension(mMovie.Filename))
-                    Dim pPathStack As String = Path.Combine(tPath, StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(mMovie.Filename)))
-                    Delete(String.Concat(pPath, ".tbn"))
-                    Delete(String.Concat(pPath, ".jpg"))
-                    Delete(String.Concat(pPath, "-poster.jpg"))
-                    Delete(String.Concat(pPathStack, "-poster.jpg"))
-                End If
-
-            End If
+            Next
         Catch ex As Exception
-            Master.eLog.Error(GetType(Images), "Movie: <" & mMovie.Filename & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & mMovie.Filename & ">", ex)
+        End Try
+    End Sub
+    ''' <summary>
+    ''' Delete the movieset's banner
+    ''' </summary>
+    ''' <param name="mMovieSet"><c>DBMovieSet</c> structure representing the movie on which we should operate</param>
+    ''' <remarks></remarks>
+    Public Sub DeleteMovieSetBanner(ByVal mMovieSet As Structures.DBMovieSet)
+        If String.IsNullOrEmpty(mMovieSet.SetName) Then Return
+
+        Try
+            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.SetName, Enums.MovieModType.Banner)
+                If File.Exists(a) Then
+                    Delete(a)
+                End If
+            Next
+        Catch ex As Exception
+            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & mMovieSet.SetName & ">", ex)
+        End Try
+    End Sub
+    ''' <summary>
+    ''' Delete the movieset's ClearArt
+    ''' </summary>
+    ''' <param name="mMovieSet"><c>DBMovieSet</c> structure representing the movie on which we should operate</param>
+    ''' <remarks></remarks>
+    Public Sub DeleteMovieSetClearArt(ByVal mMovieSet As Structures.DBMovieSet)
+        If String.IsNullOrEmpty(mMovieSet.SetName) Then Return
+
+        Try
+            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.SetName, Enums.MovieModType.ClearArt)
+                If File.Exists(a) Then
+                    Delete(a)
+                End If
+            Next
+        Catch ex As Exception
+            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & mMovieSet.SetName & ">", ex)
+        End Try
+    End Sub
+    ''' <summary>
+    ''' Delete the movieset's ClearLogo
+    ''' </summary>
+    ''' <param name="mMovieSet"><c>DBMovieSet</c> structure representing the movie on which we should operate</param>
+    ''' <remarks></remarks>
+    Public Sub DeleteMovieSetClearLogo(ByVal mMovieSet As Structures.DBMovieSet)
+        If String.IsNullOrEmpty(mMovieSet.SetName) Then Return
+
+        Try
+            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.SetName, Enums.MovieModType.ClearLogo)
+                If File.Exists(a) Then
+                    Delete(a)
+                End If
+            Next
+        Catch ex As Exception
+            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & mMovieSet.SetName & ">", ex)
+        End Try
+    End Sub
+    ''' <summary>
+    ''' Delete the movieset's DiscArt
+    ''' </summary>
+    ''' <param name="mMovieSet"><c>DBMovieSet</c> structure representing the movie on which we should operate</param>
+    ''' <remarks></remarks>
+    Public Sub DeleteMovieSetDiscArt(ByVal mMovieSet As Structures.DBMovieSet)
+        If String.IsNullOrEmpty(mMovieSet.SetName) Then Return
+
+        Try
+            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.SetName, Enums.MovieModType.DiscArt)
+                If File.Exists(a) Then
+                    Delete(a)
+                End If
+            Next
+        Catch ex As Exception
+            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & mMovieSet.SetName & ">", ex)
+        End Try
+    End Sub
+    ''' <summary>
+    ''' Delete the movieset's fanart
+    ''' </summary>
+    ''' <param name="mMovieSet"><c>DBMovieSet</c> structure representing the movie on which we should operate</param>
+    ''' <remarks></remarks>
+    Public Sub DeleteMovieSetFanart(ByVal mMovieSet As Structures.DBMovieSet)
+        If String.IsNullOrEmpty(mMovieSet.SetName) Then Return
+
+        Try
+            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.SetName, Enums.MovieModType.Fanart)
+                If File.Exists(a) Then
+                    Delete(a)
+                End If
+            Next
+        Catch ex As Exception
+            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & mMovieSet.SetName & ">", ex)
+        End Try
+    End Sub
+    ''' <summary>
+    ''' Delete the movieset's landscape
+    ''' </summary>
+    ''' <param name="mMovieSet"><c>DBMovieSet</c> structure representing the movie on which we should operate</param>
+    ''' <remarks></remarks>
+    Public Sub DeleteMovieSetLandscape(ByVal mMovieSet As Structures.DBMovieSet)
+        If String.IsNullOrEmpty(mMovieSet.SetName) Then Return
+
+        Try
+            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.SetName, Enums.MovieModType.Landscape)
+                If File.Exists(a) Then
+                    Delete(a)
+                End If
+            Next
+        Catch ex As Exception
+            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & mMovieSet.SetName & ">", ex)
+        End Try
+    End Sub
+    ''' <summary>
+    ''' Delete the movieset's poster
+    ''' </summary>
+    ''' <param name="mMovieSet"><c>DBMovieSet</c> structure representing the movie on which we should operate</param>
+    ''' <remarks></remarks>
+    Public Sub DeleteMovieSetPoster(ByVal mMovieSet As Structures.DBMovieSet)
+        If String.IsNullOrEmpty(mMovieSet.SetName) Then Return
+
+        Try
+            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.SetName, Enums.MovieModType.Poster)
+                If File.Exists(a) Then
+                    Delete(a)
+                End If
+            Next
+        Catch ex As Exception
+            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & mMovieSet.SetName & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -637,36 +562,31 @@ Public Class Images
     Public Sub DeleteTVSeasonBanner(ByVal mShow As Structures.DBTV)
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return
 
-        'TODO
+        Try
+            Dim Season As Integer = mShow.TVEp.Season
+            Dim SeasonPath As String = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, mShow.TVEp.Season)
+            Dim ShowPath As String = mShow.ShowPath
+            Dim SeasonFirstEpisodePath As String = String.Empty
 
-        'Try
-        '    Dim tPath As String = String.Empty
-        '    tPath = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, mShow.TVEp.Season)
-        '    If Not String.IsNullOrEmpty(tPath) Then
-        '        Delete(Path.Combine(tPath, "Poster.tbn"))
-        '        Delete(Path.Combine(tPath, "Poster.jpg"))
-        '        Delete(Path.Combine(tPath, String.Concat(FileUtils.Common.GetDirectory(tPath), ".tbn")))
-        '        Delete(Path.Combine(tPath, String.Concat(FileUtils.Common.GetDirectory(tPath), ".jpg")))
-        '        Delete(Path.Combine(tPath, "Folder.jpg"))
-        '    End If
-        'Catch ex As Exception
-        '    Master.eLog.Error(GetType(Images), "Show: <" & mShow.ShowPath & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
-        'End Try
+            'get first episode of season (YAMJ need that for epsiodes without separate season folders)
+            Try
+                Dim dtEpisodes As New DataTable
+                Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM TVEps INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE TVShowID = ", mShow.ShowID, " AND Season = ", mShow.TVEp.Season, " ORDER BY Episode;"))
+                If dtEpisodes.Rows.Count > 0 Then
+                    SeasonFirstEpisodePath = dtEpisodes.Rows(0).Item("TVEpPath").ToString
+                End If
+            Catch ex As Exception
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            End Try
 
-        'Try
-        '    If mShow.TVEp.Season = 0 Then
-        '        Delete(Path.Combine(mShow.ShowPath, "season-specials.tbn"))
-        '        Delete(Path.Combine(mShow.ShowPath, "season-specials.jpg"))
-        '        Delete(Path.Combine(mShow.ShowPath, "season-specials-poster.jpg"))
-        '    Else
-        '        Delete(Path.Combine(mShow.ShowPath, String.Format("season{0}.tbn", mShow.TVEp.Season)))
-        '        Delete(Path.Combine(mShow.ShowPath, String.Format("season{0}.tbn", mShow.TVEp.Season.ToString.PadLeft(2, Convert.ToChar("0")))))
-        '        Delete(Path.Combine(mShow.ShowPath, String.Format("season{0}-poster.jpg", mShow.TVEp.Season.ToString.PadLeft(2, Convert.ToChar("0")))))
-        '    End If
-        'Catch ex As Exception
-        '    Master.eLog.Error(GetType(Images), "Show: <" & mShow.ShowPath & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
-        'End Try
-
+            For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.TVModType.SeasonBanner)
+                If File.Exists(a) Then
+                    Delete(a)
+                End If
+            Next
+        Catch ex As Exception
+            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
+        End Try
     End Sub
     ''' <summary>
     ''' Delete the TV Show's season fanart
@@ -677,19 +597,30 @@ Public Class Images
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return
 
         Try
-            Dim tPath As String = String.Empty
+            Dim Season As Integer = mShow.TVEp.Season
+            Dim SeasonPath As String = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, mShow.TVEp.Season)
+            Dim ShowPath As String = mShow.ShowPath
+            Dim SeasonFirstEpisodePath As String = String.Empty
 
-            tPath = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, mShow.TVEp.Season)
-            If Not String.IsNullOrEmpty(tPath) Then
-                Delete(Path.Combine(tPath, String.Concat(FileUtils.Common.GetDirectory(tPath), ".fanart.jpg")))
-                Delete(Path.Combine(tPath, String.Concat(FileUtils.Common.GetDirectory(tPath), "-fanart.jpg")))
-                Delete(Path.Combine(tPath, "Fanart.jpg"))
-            End If
-            Delete(Path.Combine(mShow.ShowPath, String.Format("season{0}-fanart.jpg", mShow.TVEp.Season.ToString.PadLeft(2, "0"c))))    'Convert.ToChar("0")
+            'get first episode of season (YAMJ need that for epsiodes without separate season folders)
+            Try
+                Dim dtEpisodes As New DataTable
+                Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM TVEps INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE TVShowID = ", mShow.ShowID, " AND Season = ", mShow.TVEp.Season, " ORDER BY Episode;"))
+                If dtEpisodes.Rows.Count > 0 Then
+                    SeasonFirstEpisodePath = dtEpisodes.Rows(0).Item("TVEpPath").ToString
+                End If
+            Catch ex As Exception
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            End Try
+
+            For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.TVModType.SeasonFanart)
+                If File.Exists(a) Then
+                    Delete(a)
+                End If
+            Next
         Catch ex As Exception
-            Master.eLog.Error(GetType(Images), "Show: <" & mShow.ShowPath & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
         End Try
-
     End Sub
     ''' <summary>
     ''' Delete the TV Show's season landscape
@@ -699,36 +630,31 @@ Public Class Images
     Public Sub DeleteTVSeasonLandscape(ByVal mShow As Structures.DBTV)
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return
 
-        'TODO
+        Try
+            Dim Season As Integer = mShow.TVEp.Season
+            Dim SeasonPath As String = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, mShow.TVEp.Season)
+            Dim ShowPath As String = mShow.ShowPath
+            Dim SeasonFirstEpisodePath As String = String.Empty
 
-        'Try
-        '    Dim tPath As String = String.Empty
-        '    tPath = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, mShow.TVEp.Season)
-        '    If Not String.IsNullOrEmpty(tPath) Then
-        '        Delete(Path.Combine(tPath, "Poster.tbn"))
-        '        Delete(Path.Combine(tPath, "Poster.jpg"))
-        '        Delete(Path.Combine(tPath, String.Concat(FileUtils.Common.GetDirectory(tPath), ".tbn")))
-        '        Delete(Path.Combine(tPath, String.Concat(FileUtils.Common.GetDirectory(tPath), ".jpg")))
-        '        Delete(Path.Combine(tPath, "Folder.jpg"))
-        '    End If
-        'Catch ex As Exception
-        '    Master.eLog.Error(GetType(Images), "Show: <" & mShow.ShowPath & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
-        'End Try
+            'get first episode of season (YAMJ need that for epsiodes without separate season folders)
+            Try
+                Dim dtEpisodes As New DataTable
+                Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM TVEps INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE TVShowID = ", mShow.ShowID, " AND Season = ", mShow.TVEp.Season, " ORDER BY Episode;"))
+                If dtEpisodes.Rows.Count > 0 Then
+                    SeasonFirstEpisodePath = dtEpisodes.Rows(0).Item("TVEpPath").ToString
+                End If
+            Catch ex As Exception
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            End Try
 
-        'Try
-        '    If mShow.TVEp.Season = 0 Then
-        '        Delete(Path.Combine(mShow.ShowPath, "season-specials.tbn"))
-        '        Delete(Path.Combine(mShow.ShowPath, "season-specials.jpg"))
-        '        Delete(Path.Combine(mShow.ShowPath, "season-specials-poster.jpg"))
-        '    Else
-        '        Delete(Path.Combine(mShow.ShowPath, String.Format("season{0}.tbn", mShow.TVEp.Season)))
-        '        Delete(Path.Combine(mShow.ShowPath, String.Format("season{0}.tbn", mShow.TVEp.Season.ToString.PadLeft(2, Convert.ToChar("0")))))
-        '        Delete(Path.Combine(mShow.ShowPath, String.Format("season{0}-poster.jpg", mShow.TVEp.Season.ToString.PadLeft(2, Convert.ToChar("0")))))
-        '    End If
-        'Catch ex As Exception
-        '    Master.eLog.Error(GetType(Images), "Show: <" & mShow.ShowPath & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
-        'End Try
-
+            For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.TVModType.SeasonLandscape)
+                If File.Exists(a) Then
+                    Delete(a)
+                End If
+            Next
+        Catch ex As Exception
+            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
+        End Try
     End Sub
     ''' <summary>
     ''' Delete the TV Show's season posters
@@ -739,33 +665,30 @@ Public Class Images
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return
 
         Try
-            Dim tPath As String = String.Empty
-            tPath = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, mShow.TVEp.Season)
-            If Not String.IsNullOrEmpty(tPath) Then
-                Delete(Path.Combine(tPath, "Poster.tbn"))
-                Delete(Path.Combine(tPath, "Poster.jpg"))
-                Delete(Path.Combine(tPath, String.Concat(FileUtils.Common.GetDirectory(tPath), ".tbn")))
-                Delete(Path.Combine(tPath, String.Concat(FileUtils.Common.GetDirectory(tPath), ".jpg")))
-                Delete(Path.Combine(tPath, "Folder.jpg"))
-            End If
-        Catch ex As Exception
-            Master.eLog.Error(GetType(Images), "Show: <" & mShow.ShowPath & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
-        End Try
+            Dim Season As Integer = mShow.TVEp.Season
+            Dim SeasonPath As String = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, mShow.TVEp.Season)
+            Dim ShowPath As String = mShow.ShowPath
+            Dim SeasonFirstEpisodePath As String = String.Empty
 
-        Try
-            If mShow.TVEp.Season = 0 Then
-                Delete(Path.Combine(mShow.ShowPath, "season-specials.tbn"))
-                Delete(Path.Combine(mShow.ShowPath, "season-specials.jpg"))
-                Delete(Path.Combine(mShow.ShowPath, "season-specials-poster.jpg"))
-            Else
-                Delete(Path.Combine(mShow.ShowPath, String.Format("season{0}.tbn", mShow.TVEp.Season)))
-                Delete(Path.Combine(mShow.ShowPath, String.Format("season{0}.tbn", mShow.TVEp.Season.ToString.PadLeft(2, Convert.ToChar("0")))))
-                Delete(Path.Combine(mShow.ShowPath, String.Format("season{0}-poster.jpg", mShow.TVEp.Season.ToString.PadLeft(2, Convert.ToChar("0")))))
-            End If
-        Catch ex As Exception
-            Master.eLog.Error(GetType(Images), "Show: <" & mShow.ShowPath & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
-        End Try
+            'get first episode of season (YAMJ need that for epsiodes without separate season folders)
+            Try
+                Dim dtEpisodes As New DataTable
+                Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM TVEps INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE TVShowID = ", mShow.ShowID, " AND Season = ", mShow.TVEp.Season, " ORDER BY Episode;"))
+                If dtEpisodes.Rows.Count > 0 Then
+                    SeasonFirstEpisodePath = dtEpisodes.Rows(0).Item("TVEpPath").ToString
+                End If
+            Catch ex As Exception
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            End Try
 
+            For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.TVModType.SeasonPoster)
+                If File.Exists(a) Then
+                    Delete(a)
+                End If
+            Next
+        Catch ex As Exception
+            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
+        End Try
     End Sub
     ''' <summary>
     ''' Delete the TV Show's banner
@@ -775,12 +698,68 @@ Public Class Images
     Public Sub DeleteTVShowBanner(ByVal mShow As Structures.DBTV)
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return
 
-        Try 'TODO
-            'Delete(Path.Combine(mShow.ShowPath, "folder.jpg"))
-            'Delete(Path.Combine(mShow.ShowPath, "poster.tbn"))
-            'Delete(Path.Combine(mShow.ShowPath, "poster.jpg"))
+        Try
+            For Each a In FileUtils.GetFilenameList.TVShow(mShow.ShowPath, Enums.TVModType.ShowBanner)
+                If File.Exists(a) Then
+                    Delete(a)
+                End If
+            Next
         Catch ex As Exception
-            Master.eLog.Error(GetType(Images), "Show: <" & mShow.ShowPath & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
+        End Try
+    End Sub
+    ''' <summary>
+    ''' Delete the TV Show's CharacterArt
+    ''' </summary>
+    ''' <param name="mShow"><c>Structures.DBTV</c> representing the TV Show to work on</param>
+    ''' <remarks></remarks>
+    Public Sub DeleteTVShowCharacterArt(ByVal mShow As Structures.DBTV)
+        If String.IsNullOrEmpty(mShow.ShowPath) Then Return
+
+        Try
+            For Each a In FileUtils.GetFilenameList.TVShow(mShow.ShowPath, Enums.TVModType.ShowCharacterArt)
+                If File.Exists(a) Then
+                    Delete(a)
+                End If
+            Next
+        Catch ex As Exception
+            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
+        End Try
+    End Sub
+    ''' <summary>
+    ''' Delete the TV Show's ClearArt
+    ''' </summary>
+    ''' <param name="mShow"><c>Structures.DBTV</c> representing the TV Show to work on</param>
+    ''' <remarks></remarks>
+    Public Sub DeleteTVShowClearArt(ByVal mShow As Structures.DBTV)
+        If String.IsNullOrEmpty(mShow.ShowPath) Then Return
+
+        Try
+            For Each a In FileUtils.GetFilenameList.TVShow(mShow.ShowPath, Enums.TVModType.ShowClearArt)
+                If File.Exists(a) Then
+                    Delete(a)
+                End If
+            Next
+        Catch ex As Exception
+            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
+        End Try
+    End Sub
+    ''' <summary>
+    ''' Delete the TV Show's ClearLogo
+    ''' </summary>
+    ''' <param name="mShow"><c>Structures.DBTV</c> representing the TV Show to work on</param>
+    ''' <remarks></remarks>
+    Public Sub DeleteTVShowClearLogo(ByVal mShow As Structures.DBTV)
+        If String.IsNullOrEmpty(mShow.ShowPath) Then Return
+
+        Try
+            For Each a In FileUtils.GetFilenameList.TVShow(mShow.ShowPath, Enums.TVModType.ShowClearLogo)
+                If File.Exists(a) Then
+                    Delete(a)
+                End If
+            Next
+        Catch ex As Exception
+            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -792,11 +771,13 @@ Public Class Images
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return
 
         Try
-            Delete(Path.Combine(mShow.ShowPath, "fanart.jpg"))
-            Delete(Path.Combine(mShow.ShowPath, String.Concat(FileUtils.Common.GetDirectory(mShow.ShowPath), "-fanart.jpg")))
-            Delete(Path.Combine(mShow.ShowPath, String.Concat(FileUtils.Common.GetDirectory(mShow.ShowPath), ".fanart.jpg")))
+            For Each a In FileUtils.GetFilenameList.TVShow(mShow.ShowPath, Enums.TVModType.ShowFanart)
+                If File.Exists(a) Then
+                    Delete(a)
+                End If
+            Next
         Catch ex As Exception
-            Master.eLog.Error(GetType(Images), "Show: <" & mShow.ShowPath & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -807,12 +788,14 @@ Public Class Images
     Public Sub DeleteTVShowLandscape(ByVal mShow As Structures.DBTV)
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return
 
-        Try 'TODO
-            'Delete(Path.Combine(mShow.ShowPath, "folder.jpg"))
-            'Delete(Path.Combine(mShow.ShowPath, "poster.tbn"))
-            'Delete(Path.Combine(mShow.ShowPath, "poster.jpg"))
+        Try
+            For Each a In FileUtils.GetFilenameList.TVShow(mShow.ShowPath, Enums.TVModType.ShowLandscape)
+                If File.Exists(a) Then
+                    Delete(a)
+                End If
+            Next
         Catch ex As Exception
-            Master.eLog.Error(GetType(Images), "Show: <" & mShow.ShowPath & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -824,11 +807,13 @@ Public Class Images
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return
 
         Try
-            Delete(Path.Combine(mShow.ShowPath, "folder.jpg"))
-            Delete(Path.Combine(mShow.ShowPath, "poster.tbn"))
-            Delete(Path.Combine(mShow.ShowPath, "poster.jpg"))
+            For Each a In FileUtils.GetFilenameList.TVShow(mShow.ShowPath, Enums.TVModType.ShowPoster)
+                If File.Exists(a) Then
+                    Delete(a)
+                End If
+            Next
         Catch ex As Exception
-            Master.eLog.Error(GetType(Images), "Show: <" & mShow.ShowPath & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -860,7 +845,7 @@ Public Class Images
                     _image = New Bitmap(Me._ms)
                 End Using
             Catch ex As Exception
-                Master.eLog.Error(GetType(Images), "Path: <" & sPath & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error: " & sPath)
+                logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & sPath & ">", ex)
             End Try
         End If
     End Sub
@@ -900,7 +885,7 @@ Public Class Images
             End If
 
         Catch ex As Exception
-            Master.eLog.Error(GetType(Images), "URL: <" & sURL & ">" & vbNewLine & ex.Message, ex.StackTrace, "Error: " & sURL)
+            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & sURL & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -915,48 +900,96 @@ Public Class Images
         '2013/11/26 Dekker500 - Need to figure out exactly what this method is doing so it can be documented
 
         Try
-            Select Case fType
-                Case Enums.MovieImageType.Fanart
-                    If (isChange OrElse (String.IsNullOrEmpty(mMovie.FanartPath) OrElse Master.eSettings.MovieFanartOverwrite)) AndAlso _
-                    (Master.eSettings.MovieFanartBoxee OrElse Master.eSettings.MovieFanartFrodo OrElse Master.eSettings.MovieFanartEden OrElse Master.eSettings.MovieFanartYAMJ OrElse _
-                     Master.eSettings.MovieFanartNMJ OrElse (Master.eSettings.MovieUseExpert AndAlso (Not String.IsNullOrEmpty(Master.eSettings.MovieFanartExpertBDMV) OrElse _
-                     Not String.IsNullOrEmpty(Master.eSettings.MovieFanartExpertMulti) OrElse Not String.IsNullOrEmpty(Master.eSettings.MovieFanartExpertSingle) OrElse _
-                     Not String.IsNullOrEmpty(Master.eSettings.MovieFanartExpertVTS)))) Then
-                        ' Removed as there is not ONLY the TMDB scraper. Also the GetSetting is bound the calling procedure, is always true 
-                        ' AndAlso AdvancedSettings.GetBooleanSetting("UseTMDB", True) Then
-                        Return True
-                    Else
-                        Return False
-                    End If
-                Case Enums.MovieImageType.EFanarts 'TODO: move Overwrite to SaveAsExtraFanart, add all new expert settings
-                    If (isChange OrElse (String.IsNullOrEmpty(mMovie.EFanartsPath) OrElse Master.eSettings.MovieEFanartsOverwrite) AndAlso _
-                        (Master.eSettings.MovieExtrafanartsEden OrElse Master.eSettings.MovieExtrafanartsFrodo)) Then
-                        Return True
-                    Else
-                        Return False
-                    End If
-                Case Enums.MovieImageType.EThumbs 'TODO: move Overwrite to SaveAsExtraThumb, add all new expert settings
-                    If (isChange OrElse (String.IsNullOrEmpty(mMovie.EThumbsPath) OrElse Master.eSettings.MovieEThumbsOverwrite) AndAlso _
-                        (Master.eSettings.MovieExtrathumbsEden OrElse Master.eSettings.MovieExtrathumbsFrodo)) Then
-                        Return True
-                    Else
-                        Return False
-                    End If
-                Case Enums.MovieImageType.Poster
-                    If (isChange OrElse (String.IsNullOrEmpty(mMovie.PosterPath) OrElse Master.eSettings.MoviePosterOverwrite)) AndAlso _
-                    (Master.eSettings.MoviePosterBoxee OrElse Master.eSettings.MoviePosterFrodo OrElse Master.eSettings.MoviePosterEden OrElse Master.eSettings.MoviePosterYAMJ OrElse _
-                     Master.eSettings.MoviePosterNMJ OrElse (Master.eSettings.MovieUseExpert AndAlso (Not String.IsNullOrEmpty(Master.eSettings.MoviePosterExpertBDMV) OrElse _
-                     Not String.IsNullOrEmpty(Master.eSettings.MoviePosterExpertMulti) OrElse Not String.IsNullOrEmpty(Master.eSettings.MoviePosterExpertSingle) OrElse _
-                     Not String.IsNullOrEmpty(Master.eSettings.MoviePosterExpertVTS)))) Then
-                        ' Removed as there is not ONLY the Native scraper scraper. Also the GetSetting is bound the calling procedure, is always true 
-                        ' AndAlso (AdvancedSettings.GetBooleanSetting("UseIMPA", False) OrElse AdvancedSettings.GetBooleanSetting("UseMPDB", False) OrElse AdvancedSettings.GetBooleanSetting("UseTMDB", True)) Then
-                        Return True
-                    Else
-                        Return False
-                    End If
-            End Select
+            With Master.eSettings
+                Select Case fType
+                    Case Enums.MovieImageType.Banner
+                        If (isChange OrElse (String.IsNullOrEmpty(mMovie.BannerPath) OrElse .MovieBannerOverwrite) AndAlso _
+                            (.MovieBannerEden OrElse .MovieBannerFrodo OrElse .MovieBannerNMJ OrElse .MovieBannerYAMJ OrElse _
+                             (.MovieUseExpert AndAlso (Not String.IsNullOrEmpty(.MovieBannerExpertBDMV) OrElse _
+                         Not String.IsNullOrEmpty(.MovieBannerExpertMulti) OrElse Not String.IsNullOrEmpty(.MovieBannerExpertSingle) OrElse _
+                         Not String.IsNullOrEmpty(.MovieBannerExpertVTS))))) Then
+                            Return True
+                        Else
+                            Return False
+                        End If
+                    Case Enums.MovieImageType.ClearArt
+                        If (isChange OrElse (String.IsNullOrEmpty(mMovie.ClearArtPath) OrElse .MovieClearArtOverwrite) AndAlso _
+                            (.MovieClearArtEden OrElse .MovieClearArtFrodo OrElse _
+                             (.MovieUseExpert AndAlso (Not String.IsNullOrEmpty(.MovieClearArtExpertBDMV) OrElse _
+                         Not String.IsNullOrEmpty(.MovieClearArtExpertMulti) OrElse Not String.IsNullOrEmpty(.MovieClearArtExpertSingle) OrElse _
+                         Not String.IsNullOrEmpty(.MovieClearArtExpertVTS))))) Then
+                            Return True
+                        Else
+                            Return False
+                        End If
+                    Case Enums.MovieImageType.ClearLogo
+                        If (isChange OrElse (String.IsNullOrEmpty(mMovie.ClearLogoPath) OrElse .MovieClearLogoOverwrite) AndAlso _
+                            (.MovieClearLogoEden OrElse .MovieClearLogoFrodo OrElse _
+                             (.MovieUseExpert AndAlso (Not String.IsNullOrEmpty(.MovieClearLogoExpertBDMV) OrElse _
+                         Not String.IsNullOrEmpty(.MovieClearLogoExpertMulti) OrElse Not String.IsNullOrEmpty(.MovieClearLogoExpertSingle) OrElse _
+                         Not String.IsNullOrEmpty(.MovieClearLogoExpertVTS))))) Then
+                            Return True
+                        Else
+                            Return False
+                        End If
+                    Case Enums.MovieImageType.DiscArt
+                        If (isChange OrElse (String.IsNullOrEmpty(mMovie.DiscArtPath) OrElse .MovieDiscArtOverwrite) AndAlso _
+                            (.MovieDiscArtEden OrElse .MovieDiscArtFrodo OrElse _
+                             (.MovieUseExpert AndAlso (Not String.IsNullOrEmpty(.MovieDiscArtExpertBDMV) OrElse _
+                         Not String.IsNullOrEmpty(.MovieDiscArtExpertMulti) OrElse Not String.IsNullOrEmpty(.MovieDiscArtExpertSingle) OrElse _
+                         Not String.IsNullOrEmpty(.MovieDiscArtExpertVTS))))) Then
+                            Return True
+                        Else
+                            Return False
+                        End If
+                    Case Enums.MovieImageType.EFanarts
+                        If (isChange OrElse (String.IsNullOrEmpty(mMovie.EFanartsPath) OrElse .MovieEFanartsOverwrite) AndAlso _
+                            (.MovieExtrafanartsEden OrElse .MovieExtrafanartsFrodo)) Then
+                            Return True
+                        Else
+                            Return False
+                        End If
+                    Case Enums.MovieImageType.EThumbs
+                        If (isChange OrElse (String.IsNullOrEmpty(mMovie.EThumbsPath) OrElse .MovieEThumbsOverwrite) AndAlso _
+                            (.MovieExtrathumbsEden OrElse .MovieExtrathumbsFrodo)) Then
+                            Return True
+                        Else
+                            Return False
+                        End If
+                    Case Enums.MovieImageType.Fanart
+                        If (isChange OrElse (String.IsNullOrEmpty(mMovie.FanartPath) OrElse .MovieFanartOverwrite)) AndAlso _
+                        (.MovieFanartBoxee OrElse .MovieFanartFrodo OrElse .MovieFanartEden OrElse .MovieFanartYAMJ OrElse _
+                         .MovieFanartNMJ OrElse (.MovieUseExpert AndAlso (Not String.IsNullOrEmpty(.MovieFanartExpertBDMV) OrElse _
+                         Not String.IsNullOrEmpty(.MovieFanartExpertMulti) OrElse Not String.IsNullOrEmpty(.MovieFanartExpertSingle) OrElse _
+                         Not String.IsNullOrEmpty(.MovieFanartExpertVTS)))) Then
+                            Return True
+                        Else
+                            Return False
+                        End If
+                    Case Enums.MovieImageType.Landscape
+                        If (isChange OrElse (String.IsNullOrEmpty(mMovie.LandscapePath) OrElse .MovieLandscapeOverwrite) AndAlso _
+                            (.MovieLandscapeEden OrElse .MovieLandscapeFrodo OrElse _
+                             (.MovieUseExpert AndAlso (Not String.IsNullOrEmpty(.MovieLandscapeExpertBDMV) OrElse _
+                         Not String.IsNullOrEmpty(.MovieLandscapeExpertMulti) OrElse Not String.IsNullOrEmpty(.MovieLandscapeExpertSingle) OrElse _
+                         Not String.IsNullOrEmpty(.MovieLandscapeExpertVTS))))) Then
+                            Return True
+                        Else
+                            Return False
+                        End If
+                    Case Enums.MovieImageType.Poster
+                        If (isChange OrElse (String.IsNullOrEmpty(mMovie.PosterPath) OrElse .MoviePosterOverwrite)) AndAlso _
+                        (.MoviePosterBoxee OrElse .MoviePosterFrodo OrElse .MoviePosterEden OrElse .MoviePosterNMJ OrElse _
+                         .MoviePosterYAMJ OrElse (.MovieUseExpert AndAlso (Not String.IsNullOrEmpty(.MoviePosterExpertBDMV) OrElse _
+                         Not String.IsNullOrEmpty(.MoviePosterExpertMulti) OrElse Not String.IsNullOrEmpty(.MoviePosterExpertSingle) OrElse _
+                         Not String.IsNullOrEmpty(.MoviePosterExpertVTS)))) Then
+                            Return True
+                        Else
+                            Return False
+                        End If
+                End Select
+            End With
         Catch ex As Exception
-            Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             Return False
         End Try
     End Function
@@ -1065,7 +1098,7 @@ Public Class Images
                 If doesExist And fAttWritable Then File.SetAttributes(sPath, fAtt)
             End If
         Catch ex As Exception
-            Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
     ''' <summary>
@@ -1098,10 +1131,10 @@ Public Class Images
                     End If
                 Next
             Catch ex As Exception
-                Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
 
-            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.TVImageType.AllSeasonsBanner)
+            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.TVModType.AllSeasonsBanner)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVASBannerOverwrite) Then
                     Save(a, Master.eSettings.TVASBannerQual, sURL, doResize)
                     strReturn = a
@@ -1109,7 +1142,7 @@ Public Class Images
             Next
 
         Catch ex As Exception
-            Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
 
         Return strReturn
@@ -1144,10 +1177,10 @@ Public Class Images
                     End If
                 Next
             Catch ex As Exception
-                Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
 
-            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.TVImageType.AllSeasonsFanart)
+            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.TVModType.AllSeasonsFanart)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVASFanartOverwrite) Then
                     Save(a, Master.eSettings.TVASFanartQual, sURL, doResize)
                     strReturn = a
@@ -1155,7 +1188,7 @@ Public Class Images
             Next
 
         Catch ex As Exception
-            Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
 
         Return strReturn
@@ -1186,10 +1219,10 @@ Public Class Images
                     End If
                 Next
             Catch ex As Exception
-                Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
 
-            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.TVImageType.AllSeasonsLandscape)
+            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.TVModType.AllSeasonsLandscape)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVASLandscapeOverwrite) Then
                     Save(a, 0, sURL, doResize)
                     strReturn = a
@@ -1197,7 +1230,7 @@ Public Class Images
             Next
 
         Catch ex As Exception
-            Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
 
         Return strReturn
@@ -1232,10 +1265,10 @@ Public Class Images
                     End If
                 Next
             Catch ex As Exception
-                Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
 
-            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.TVImageType.AllSeasonsPoster)
+            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.TVModType.AllSeasonsPoster)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVASPosterOverwrite) Then
                     Save(a, Master.eSettings.TVASPosterQual, sURL, doResize)
                     strReturn = a
@@ -1243,7 +1276,7 @@ Public Class Images
             Next
 
         Catch ex As Exception
-            Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
 
         Return strReturn
@@ -1280,10 +1313,10 @@ Public Class Images
                     Return strReturn
                 End If
             Catch ex As Exception
-                Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
 
-            For Each a In FileUtils.GetFilenameList.TVEpisode(EpisodePath, Enums.TVImageType.EpisodeFanart)
+            For Each a In FileUtils.GetFilenameList.TVEpisode(EpisodePath, Enums.TVModType.EpisodeFanart)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVEpisodeFanartOverwrite) Then
                     Save(a, Master.eSettings.TVEpisodeFanartQual, sURL, doResize)
                     strReturn = a
@@ -1291,7 +1324,7 @@ Public Class Images
             Next
 
         Catch ex As Exception
-            Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
         Return strReturn
     End Function
@@ -1327,10 +1360,10 @@ Public Class Images
                     Return strReturn
                 End If
             Catch ex As Exception
-                Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
 
-            For Each a In FileUtils.GetFilenameList.TVEpisode(EpisodePath, Enums.TVImageType.EpisodePoster)
+            For Each a In FileUtils.GetFilenameList.TVEpisode(EpisodePath, Enums.TVModType.EpisodePoster)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVEpisodePosterOverwrite) Then
                     Save(a, Master.eSettings.TVEpisodePosterQual, sURL, doResize)
                     strReturn = a
@@ -1338,7 +1371,7 @@ Public Class Images
             Next
 
         Catch ex As Exception
-            Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
         Return strReturn
     End Function
@@ -1368,7 +1401,7 @@ Public Class Images
             End If
 
         Catch ex As Exception
-            Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             Return strReturn
         End Try
 
@@ -1399,7 +1432,7 @@ Public Class Images
             End If
 
         Catch ex As Exception
-            Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             Return strReturn
         End Try
 
@@ -1423,7 +1456,7 @@ Public Class Images
             Catch ex As Exception
             End Try
 
-            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.isSingle, Enums.ModType.Banner)
+            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.isSingle, Enums.MovieModType.Banner)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieBannerOverwrite) Then
                     Save(a, 0, sURL, doResize)
                     strReturn = a
@@ -1431,7 +1464,7 @@ Public Class Images
             Next
 
         Catch ex As Exception
-            Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
         Return strReturn
     End Function
@@ -1453,7 +1486,7 @@ Public Class Images
             Catch ex As Exception
             End Try
 
-            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.isSingle, Enums.ModType.ClearArt)
+            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.isSingle, Enums.MovieModType.ClearArt)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieClearArtOverwrite) Then
                     Save(a, 0, sURL, doResize)
                     strReturn = a
@@ -1461,7 +1494,7 @@ Public Class Images
             Next
 
         Catch ex As Exception
-            Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
         Return strReturn
     End Function
@@ -1483,7 +1516,7 @@ Public Class Images
             Catch ex As Exception
             End Try
 
-            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.isSingle, Enums.ModType.ClearLogo)
+            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.isSingle, Enums.MovieModType.ClearLogo)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieClearLogoOverwrite) Then
                     Save(a, 0, sURL, doResize)
                     strReturn = a
@@ -1491,7 +1524,7 @@ Public Class Images
             Next
 
         Catch ex As Exception
-            Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
         Return strReturn
     End Function
@@ -1513,7 +1546,7 @@ Public Class Images
             Catch ex As Exception
             End Try
 
-            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.isSingle, Enums.ModType.DiscArt)
+            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.isSingle, Enums.MovieModType.DiscArt)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieDiscArtOverwrite) Then
                     Save(a, 0, sURL, doResize)
                     strReturn = a
@@ -1521,7 +1554,7 @@ Public Class Images
             Next
 
         Catch ex As Exception
-            Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
         Return strReturn
     End Function
@@ -1549,7 +1582,7 @@ Public Class Images
                 ImageUtils.ResizeImage(_image, Master.eSettings.MovieFanartWidth, Master.eSettings.MovieFanartHeight)
             End If
 
-            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.isSingle, Enums.ModType.Fanart)
+            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.isSingle, Enums.MovieModType.Fanart)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieFanartOverwrite) Then
                     Save(a, Master.eSettings.MovieFanartQual, sURL, doResize)
                     strReturn = a
@@ -1561,7 +1594,7 @@ Public Class Images
             End If
 
         Catch ex As Exception
-            Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
 
         Return strReturn
@@ -1584,7 +1617,7 @@ Public Class Images
             Catch ex As Exception
             End Try
 
-            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.isSingle, Enums.ModType.Landscape)
+            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.isSingle, Enums.MovieModType.Landscape)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieLandscapeOverwrite) Then
                     Save(a, 0, sURL, doResize)
                     strReturn = a
@@ -1592,7 +1625,7 @@ Public Class Images
             Next
 
         Catch ex As Exception
-            Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
         Return strReturn
     End Function
@@ -1621,7 +1654,7 @@ Public Class Images
                 UpdateMSfromImg(_image)
             End If
 
-            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.isSingle, Enums.ModType.Poster)
+            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.isSingle, Enums.MovieModType.Poster)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MoviePosterOverwrite) Then
                     Save(a, Master.eSettings.MoviePosterQual, sURL, doResize)
                     strReturn = a
@@ -1629,7 +1662,217 @@ Public Class Images
             Next
 
         Catch ex As Exception
-            Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+        End Try
+        Return strReturn
+    End Function
+    ''' <summary>
+    ''' Save the image as a movieset banner
+    ''' </summary>
+    ''' <param name="mMovieSet"><c>Structures.DBMovieSet</c> representing the movieset being referred to</param>
+    ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
+    ''' <returns><c>String</c> path to the saved image</returns>
+    ''' <remarks></remarks>
+    Public Function SaveAsMovieSetBanner(ByVal mMovieSet As Structures.DBMovieSet, Optional sURL As String = "") As String
+        Dim strReturn As String = String.Empty
+        Dim doResize As Boolean = False
+
+        Try
+            'Try
+            '    Dim params As New List(Of Object)(New Object() {mMovie})
+            '    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieBannerSave, params, _image, False)
+            'Catch ex As Exception
+            'End Try
+
+            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.SetName, Enums.MovieModType.Banner)
+                If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieSetBannerOverwrite) Then
+                    Save(a, 0, sURL, doResize)
+                    strReturn = a
+                End If
+            Next
+
+        Catch ex As Exception
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+        End Try
+        Return strReturn
+    End Function
+    ''' <summary>
+    ''' Save the image as a movieset ClearArt
+    ''' </summary>
+    ''' <param name="mMovieSet"><c>Structures.DBMovieSet</c> representing the movieset being referred to</param>
+    ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
+    ''' <returns><c>String</c> path to the saved image</returns>
+    ''' <remarks></remarks>
+    Public Function SaveAsMovieSetClearArt(ByVal mMovieSet As Structures.DBMovieSet, Optional sURL As String = "") As String
+        Dim strReturn As String = String.Empty
+        Dim doResize As Boolean = False
+
+        Try
+            'Try
+            '    Dim params As New List(Of Object)(New Object() {mMovie})
+            '    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieBannerSave, params, _image, False)
+            'Catch ex As Exception
+            'End Try
+
+            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.SetName, Enums.MovieModType.ClearArt)
+                If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieSetClearArtOverwrite) Then
+                    Save(a, 0, sURL, doResize)
+                    strReturn = a
+                End If
+            Next
+
+        Catch ex As Exception
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+        End Try
+        Return strReturn
+    End Function
+    ''' <summary>
+    ''' Save the image as a movieset ClearLogo
+    ''' </summary>
+    ''' <param name="mMovieSet"><c>Structures.DBMovieSet</c> representing the movieset being referred to</param>
+    ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
+    ''' <returns><c>String</c> path to the saved image</returns>
+    ''' <remarks></remarks>
+    Public Function SaveAsMovieSetClearLogo(ByVal mMovieSet As Structures.DBMovieSet, Optional sURL As String = "") As String
+        Dim strReturn As String = String.Empty
+        Dim doResize As Boolean = False
+
+        Try
+            'Try
+            '    Dim params As New List(Of Object)(New Object() {mMovie})
+            '    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieBannerSave, params, _image, False)
+            'Catch ex As Exception
+            'End Try
+
+            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.SetName, Enums.MovieModType.ClearLogo)
+                If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieSetClearLogoOverwrite) Then
+                    Save(a, 0, sURL, doResize)
+                    strReturn = a
+                End If
+            Next
+
+        Catch ex As Exception
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+        End Try
+        Return strReturn
+    End Function
+    ''' <summary>
+    ''' Save the image as a movieset DiscArt
+    ''' </summary>
+    ''' <param name="mMovieSet"><c>Structures.DBMovieSet</c> representing the movieset being referred to</param>
+    ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
+    ''' <returns><c>String</c> path to the saved image</returns>
+    ''' <remarks></remarks>
+    Public Function SaveAsMovieSetDiscArt(ByVal mMovieSet As Structures.DBMovieSet, Optional sURL As String = "") As String
+        Dim strReturn As String = String.Empty
+        Dim doResize As Boolean = False
+
+        Try
+            'Try
+            '    Dim params As New List(Of Object)(New Object() {mMovie})
+            '    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieBannerSave, params, _image, False)
+            'Catch ex As Exception
+            'End Try
+
+            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.SetName, Enums.MovieModType.DiscArt)
+                If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieSetDiscArtOverwrite) Then
+                    Save(a, 0, sURL, doResize)
+                    strReturn = a
+                End If
+            Next
+
+        Catch ex As Exception
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+        End Try
+        Return strReturn
+    End Function
+    ''' <summary>
+    ''' Save the image as a movieset Fanart
+    ''' </summary>
+    ''' <param name="mMovieSet"><c>Structures.DBMovieSet</c> representing the movieset being referred to</param>
+    ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
+    ''' <returns><c>String</c> path to the saved image</returns>
+    ''' <remarks></remarks>
+    Public Function SaveAsMovieSetFanart(ByVal mMovieSet As Structures.DBMovieSet, Optional sURL As String = "") As String
+        Dim strReturn As String = String.Empty
+        Dim doResize As Boolean = False
+
+        Try
+            'Try
+            '    Dim params As New List(Of Object)(New Object() {mMovie})
+            '    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieBannerSave, params, _image, False)
+            'Catch ex As Exception
+            'End Try
+
+            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.SetName, Enums.MovieModType.Fanart)
+                If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieSetFanartOverwrite) Then
+                    Save(a, 0, sURL, doResize)
+                    strReturn = a
+                End If
+            Next
+
+        Catch ex As Exception
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+        End Try
+        Return strReturn
+    End Function
+    ''' <summary>
+    ''' Save the image as a movieset Landscape
+    ''' </summary>
+    ''' <param name="mMovieSet"><c>Structures.DBMovieSet</c> representing the movieset being referred to</param>
+    ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
+    ''' <returns><c>String</c> path to the saved image</returns>
+    ''' <remarks></remarks>
+    Public Function SaveAsMovieSetLandscape(ByVal mMovieSet As Structures.DBMovieSet, Optional sURL As String = "") As String
+        Dim strReturn As String = String.Empty
+        Dim doResize As Boolean = False
+
+        Try
+            'Try
+            '    Dim params As New List(Of Object)(New Object() {mMovie})
+            '    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieBannerSave, params, _image, False)
+            'Catch ex As Exception
+            'End Try
+
+            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.SetName, Enums.MovieModType.Landscape)
+                If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieSetLandscapeOverwrite) Then
+                    Save(a, 0, sURL, doResize)
+                    strReturn = a
+                End If
+            Next
+
+        Catch ex As Exception
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+        End Try
+        Return strReturn
+    End Function
+    ''' <summary>
+    ''' Save the image as a movieset Poster
+    ''' </summary>
+    ''' <param name="mMovieSet"><c>Structures.DBMovieSet</c> representing the movieset being referred to</param>
+    ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
+    ''' <returns><c>String</c> path to the saved image</returns>
+    ''' <remarks></remarks>
+    Public Function SaveAsMovieSetPoster(ByVal mMovieSet As Structures.DBMovieSet, Optional sURL As String = "") As String
+        Dim strReturn As String = String.Empty
+        Dim doResize As Boolean = False
+
+        Try
+            'Try
+            '    Dim params As New List(Of Object)(New Object() {mMovie})
+            '    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieBannerSave, params, _image, False)
+            'Catch ex As Exception
+            'End Try
+
+            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.SetName, Enums.MovieModType.Poster)
+                If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieSetPosterOverwrite) Then
+                    Save(a, 0, sURL, doResize)
+                    strReturn = a
+                End If
+            Next
+
+        Catch ex As Exception
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
         Return strReturn
     End Function
@@ -1645,7 +1888,7 @@ Public Class Images
         'TODO 2013/11/26 Dekker500 - This should be re-factored to remove the fPath argument. All callers pass the same string derived from the provided DBMovie, so why do it twice?
         Dim tPath As String = String.Empty
 
-        For Each a In FileUtils.GetFilenameList.Movie(aMovie.Filename, aMovie.isSingle, Enums.ModType.ActorThumbs)
+        For Each a In FileUtils.GetFilenameList.Movie(aMovie.Filename, aMovie.isSingle, Enums.MovieModType.ActorThumbs)
             tPath = a.Replace("<placeholder>", actor.Name.Replace(" ", "_"))
             If Not File.Exists(tPath) OrElse (IsEdit OrElse Master.eSettings.MovieActorThumbsOverwrite) Then
                 Save(tPath, Master.eSettings.MovieActorThumbsQual)
@@ -1680,7 +1923,7 @@ Public Class Images
                     SeasonFirstEpisodePath = dtEpisodes.Rows(0).Item("TVEpPath").ToString
                 End If
             Catch ex As Exception
-                Master.eLog.Error(GetType(Database), ex.Message, ex.StackTrace, "Error", False)
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
 
             If doResize Then
@@ -1701,10 +1944,10 @@ Public Class Images
                     Return strReturn
                 End If
             Catch ex As Exception
-                Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
 
-            For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.TVImageType.SeasonBanner)
+            For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.TVModType.SeasonBanner)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVSeasonBannerOverwrite) Then
                     Save(a, Master.eSettings.TVSeasonBannerQual, sURL, doResize)
                     strReturn = a
@@ -1712,7 +1955,7 @@ Public Class Images
             Next
 
         Catch ex As Exception
-            Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
         Return strReturn
     End Function
@@ -1742,7 +1985,7 @@ Public Class Images
                     SeasonFirstEpisodePath = dtEpisodes.Rows(0).Item("TVEpPath").ToString
                 End If
             Catch ex As Exception
-                Master.eLog.Error(GetType(Database), ex.Message, ex.StackTrace, "Error", False)
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
 
             If doResize Then
@@ -1763,10 +2006,10 @@ Public Class Images
                     Return strReturn
                 End If
             Catch ex As Exception
-                Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
 
-            For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.TVImageType.SeasonFanart)
+            For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.TVModType.SeasonFanart)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVSeasonFanartOverwrite) Then
                     Save(a, Master.eSettings.TVSeasonFanartQual, sURL, doResize)
                     strReturn = a
@@ -1774,7 +2017,7 @@ Public Class Images
             Next
 
         Catch ex As Exception
-            Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
         Return strReturn
     End Function
@@ -1804,7 +2047,7 @@ Public Class Images
                     SeasonFirstEpisodePath = dtEpisodes.Rows(0).Item("TVEpPath").ToString
                 End If
             Catch ex As Exception
-                Master.eLog.Error(GetType(Database), ex.Message, ex.StackTrace, "Error", False)
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
 
             Try
@@ -1821,10 +2064,10 @@ Public Class Images
                     Return strReturn
                 End If
             Catch ex As Exception
-                Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
 
-            For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.TVImageType.SeasonLandscape)
+            For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.TVModType.SeasonLandscape)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVSeasonLandscapeOverwrite) Then
                     Save(a, 0, sURL, doResize)
                     strReturn = a
@@ -1832,7 +2075,7 @@ Public Class Images
             Next
 
         Catch ex As Exception
-            Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
         Return strReturn
     End Function
@@ -1862,7 +2105,7 @@ Public Class Images
                     SeasonFirstEpisodePath = dtEpisodes.Rows(0).Item("TVEpPath").ToString
                 End If
             Catch ex As Exception
-                Master.eLog.Error(GetType(Database), ex.Message, ex.StackTrace, "Error", False)
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
 
             If doResize Then
@@ -1883,10 +2126,10 @@ Public Class Images
                     Return strReturn
                 End If
             Catch ex As Exception
-                Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
 
-            For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.TVImageType.SeasonPoster)
+            For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.TVModType.SeasonPoster)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVSeasonPosterOverwrite) Then
                     Save(a, Master.eSettings.TVSeasonPosterQual, sURL, doResize)
                     strReturn = a
@@ -1894,7 +2137,7 @@ Public Class Images
             Next
 
         Catch ex As Exception
-            Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
         Return strReturn
     End Function
@@ -1932,10 +2175,10 @@ Public Class Images
                 Next
                 If Not doContinue Then Return strReturn
             Catch ex As Exception
-                Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
 
-            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.TVImageType.ShowBanner)
+            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.TVModType.ShowBanner)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVShowBannerOverwrite) Then
                     Save(a, Master.eSettings.TVShowBannerQual, sURL, doResize)
                     strReturn = a
@@ -1943,9 +2186,178 @@ Public Class Images
             Next
 
         Catch ex As Exception
-            Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
         Return strReturn
+    End Function
+    ''' <summary>
+    ''' Save the image as a TV Show's CharacterArt
+    ''' </summary>
+    ''' <param name="mShow"><c>Structures.DBTV</c> representing the TV Show being referred to</param>
+    ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
+    ''' <returns><c>String</c> path to the saved image</returns>
+    ''' <remarks></remarks>
+    Public Function SaveAsTVShowCharacterArt(ByVal mShow As Structures.DBTV, Optional sURL As String = "") As String
+        Dim strReturn As String = String.Empty
+
+        If String.IsNullOrEmpty(mShow.ShowPath) Then Return strReturn
+
+        Dim doResize As Boolean = False
+
+        Try
+            Dim pPath As String = String.Empty
+            Dim ShowPath As String = mShow.ShowPath
+
+            Try
+                Dim params As New List(Of Object)(New Object() {Enums.TVImageType.ShowCharacterArt, mShow, New List(Of String)})
+                Dim doContinue As Boolean = True
+                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
+                For Each s As String In DirectCast(params(2), List(Of String))
+                    If Not File.Exists(s) OrElse (IsEdit OrElse Master.eSettings.TVShowCharacterArtOverwrite) Then
+                        Save(s, 0, sURL, doResize)
+                        If String.IsNullOrEmpty(strReturn) Then strReturn = s
+                    End If
+                Next
+                If Not doContinue Then Return strReturn
+            Catch ex As Exception
+                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            End Try
+
+            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.TVModType.ShowCharacterArt)
+                If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVShowCharacterArtOverwrite) Then
+                    Save(a, 0, sURL, doResize)
+                    strReturn = a
+                End If
+            Next
+
+        Catch ex As Exception
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+        End Try
+        Return strReturn
+    End Function
+    ''' <summary>
+    ''' Save the image as a TV Show's ClearArt
+    ''' </summary>
+    ''' <param name="mShow"><c>Structures.DBTV</c> representing the TV Show being referred to</param>
+    ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
+    ''' <returns><c>String</c> path to the saved image</returns>
+    ''' <remarks></remarks>
+    Public Function SaveAsTVShowClearArt(ByVal mShow As Structures.DBTV, Optional sURL As String = "") As String
+        Dim strReturn As String = String.Empty
+
+        If String.IsNullOrEmpty(mShow.ShowPath) Then Return strReturn
+
+        Dim doResize As Boolean = False
+
+        Try
+            Dim pPath As String = String.Empty
+            Dim ShowPath As String = mShow.ShowPath
+
+            Try
+                Dim params As New List(Of Object)(New Object() {Enums.TVImageType.ShowClearArt, mShow, New List(Of String)})
+                Dim doContinue As Boolean = True
+                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
+                For Each s As String In DirectCast(params(2), List(Of String))
+                    If Not File.Exists(s) OrElse (IsEdit OrElse Master.eSettings.TVShowClearArtOverwrite) Then
+                        Save(s, 0, sURL, doResize)
+                        If String.IsNullOrEmpty(strReturn) Then strReturn = s
+                    End If
+                Next
+                If Not doContinue Then Return strReturn
+            Catch ex As Exception
+                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            End Try
+
+            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.TVModType.ShowClearArt)
+                If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVShowClearArtOverwrite) Then
+                    Save(a, 0, sURL, doResize)
+                    strReturn = a
+                End If
+            Next
+
+        Catch ex As Exception
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+        End Try
+        Return strReturn
+    End Function
+    ''' <summary>
+    ''' Save the image as a TV Show's ClearLogo
+    ''' </summary>
+    ''' <param name="mShow"><c>Structures.DBTV</c> representing the TV Show being referred to</param>
+    ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
+    ''' <returns><c>String</c> path to the saved image</returns>
+    ''' <remarks></remarks>
+    Public Function SaveAsTVShowClearLogo(ByVal mShow As Structures.DBTV, Optional sURL As String = "") As String
+        Dim strReturn As String = String.Empty
+
+        If String.IsNullOrEmpty(mShow.ShowPath) Then Return strReturn
+
+        Dim doResize As Boolean = False
+
+        Try
+            Dim pPath As String = String.Empty
+            Dim ShowPath As String = mShow.ShowPath
+
+            Try
+                Dim params As New List(Of Object)(New Object() {Enums.TVImageType.ShowClearLogo, mShow, New List(Of String)})
+                Dim doContinue As Boolean = True
+                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
+                For Each s As String In DirectCast(params(2), List(Of String))
+                    If Not File.Exists(s) OrElse (IsEdit OrElse Master.eSettings.TVShowClearLogoOverwrite) Then
+                        Save(s, 0, sURL, doResize)
+                        If String.IsNullOrEmpty(strReturn) Then strReturn = s
+                    End If
+                Next
+                If Not doContinue Then Return strReturn
+            Catch ex As Exception
+                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            End Try
+
+            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.TVModType.ShowClearLogo)
+                If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVShowClearLogoOverwrite) Then
+                    Save(a, 0, sURL, doResize)
+                    strReturn = a
+                End If
+            Next
+
+        Catch ex As Exception
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+        End Try
+        Return strReturn
+    End Function
+    ''' <summary>
+    ''' Save the image as a tv show's extrafanart
+    ''' </summary>
+    ''' <param name="mShow"><c>Structures.DBTV</c> representing the TV Show being referred to</param>
+    ''' <param name="sName"><c>String</c> name of the movie being referred to</param>
+    ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
+    ''' <returns><c>String</c> path to the saved image</returns>
+    ''' <remarks></remarks>
+    Public Function SaveAsTVShowExtrafanart(ByVal mShow As Structures.DBTV, ByVal sName As String, Optional sURL As String = "") As String
+        Dim efPath As String = String.Empty
+        Dim iMod As Integer = 0
+        Dim iVal As Integer = 1
+
+        If String.IsNullOrEmpty(mShow.ShowPath) Then Return efPath
+
+        Try
+            Dim ShowPath As String = mShow.ShowPath
+
+            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.TVModType.ShowEFanarts)
+                If Not a = String.Empty Then
+                    If Not Directory.Exists(a) Then
+                        Directory.CreateDirectory(a)
+                    End If
+                    efPath = Path.Combine(a, sName)
+                    Save(efPath)
+                    Return efPath
+                End If
+            Next
+        Catch ex As Exception
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+        End Try
+
+        Return efPath
     End Function
     ''' <summary>
     ''' Save the image as a TV Show's fanart
@@ -1983,10 +2395,10 @@ Public Class Images
                     Return strReturn
                 End If
             Catch ex As Exception
-                Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
 
-            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.TVImageType.ShowFanart)
+            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.TVModType.ShowFanart)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVShowFanartOverwrite) Then
                     Save(a, Master.eSettings.TVShowFanartQual, sURL, doResize)
                     strReturn = a
@@ -1994,7 +2406,7 @@ Public Class Images
             Next
 
         Catch ex As Exception
-            Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
         Return strReturn
     End Function
@@ -2028,10 +2440,10 @@ Public Class Images
                 Next
                 If Not doContinue Then Return strReturn
             Catch ex As Exception
-                Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
 
-            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.TVImageType.ShowLandscape)
+            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.TVModType.ShowLandscape)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVShowLandscapeOverwrite) Then
                     Save(a, 0, sURL, doResize)
                     strReturn = a
@@ -2039,7 +2451,7 @@ Public Class Images
             Next
 
         Catch ex As Exception
-            Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
         Return strReturn
     End Function
@@ -2077,10 +2489,10 @@ Public Class Images
                 Next
                 If Not doContinue Then Return strReturn
             Catch ex As Exception
-                Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
 
-            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.TVImageType.ShowPoster)
+            For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.TVModType.ShowPoster)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVShowPosterOverwrite) Then
                     Save(a, Master.eSettings.TVShowPosterQual, sURL, doResize)
                     strReturn = a
@@ -2088,7 +2500,7 @@ Public Class Images
             Next
 
         Catch ex As Exception
-            Master.eLog.Error(GetType(Images), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
         Return strReturn
     End Function
@@ -2106,7 +2518,7 @@ Public Class Images
 
         If String.IsNullOrEmpty(mMovie.Filename) Then Return etPath
 
-        For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.isSingle, Enums.ModType.EThumbs)
+        For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.isSingle, Enums.MovieModType.EThumbs)
             If Not a = String.Empty Then
                 If Not Directory.Exists(a) Then
                     Directory.CreateDirectory(a)
@@ -2136,7 +2548,7 @@ Public Class Images
 
         If String.IsNullOrEmpty(mMovie.Filename) Then Return efPath
 
-        For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.isSingle, Enums.ModType.EFanarts)
+        For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.isSingle, Enums.MovieModType.EFanarts)
             If Not a = String.Empty Then
                 If Not Directory.Exists(a) Then
                     Directory.CreateDirectory(a)

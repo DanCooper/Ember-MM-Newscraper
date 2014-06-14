@@ -38,16 +38,15 @@ Partial Class dlgImgSelect
         Me.lblDL2 = New System.Windows.Forms.Label()
         Me.pnlDLStatus = New System.Windows.Forms.Panel()
         Me.pnlDwld = New System.Windows.Forms.Panel()
-        Me.lblDL1Status = New System.Windows.Forms.Label()
-        Me.lblDL1 = New System.Windows.Forms.Label()
         Me.pbDL1 = New System.Windows.Forms.ProgressBar()
+        Me.lblDL1 = New System.Windows.Forms.Label()
+        Me.lblDL1Status = New System.Windows.Forms.Label()
         Me.pnlBG = New System.Windows.Forms.Panel()
         Me.tlpButtons.SuspendLayout()
         Me.pnlBottomMain.SuspendLayout()
         Me.pnlSize.SuspendLayout()
         Me.pnlDLStatus.SuspendLayout()
         Me.pnlDwld.SuspendLayout()
-        Me.pnlBG.SuspendLayout()
         Me.SuspendLayout()
         '
         'tlpButtons
@@ -233,13 +232,13 @@ Partial Class dlgImgSelect
         Me.pnlDwld.Size = New System.Drawing.Size(321, 75)
         Me.pnlDwld.TabIndex = 10
         '
-        'lblDL1Status
+        'pbDL1
         '
-        Me.lblDL1Status.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblDL1Status.Location = New System.Drawing.Point(5, 34)
-        Me.lblDL1Status.Name = "lblDL1Status"
-        Me.lblDL1Status.Size = New System.Drawing.Size(310, 13)
-        Me.lblDL1Status.TabIndex = 8
+        Me.pbDL1.Location = New System.Drawing.Point(6, 52)
+        Me.pbDL1.Name = "pbDL1"
+        Me.pbDL1.Size = New System.Drawing.Size(309, 19)
+        Me.pbDL1.Style = System.Windows.Forms.ProgressBarStyle.Continuous
+        Me.pbDL1.TabIndex = 6
         '
         'lblDL1
         '
@@ -250,18 +249,17 @@ Partial Class dlgImgSelect
         Me.lblDL1.TabIndex = 7
         Me.lblDL1.Text = "Performing Preliminary Tasks..."
         '
-        'pbDL1
+        'lblDL1Status
         '
-        Me.pbDL1.Location = New System.Drawing.Point(6, 52)
-        Me.pbDL1.Name = "pbDL1"
-        Me.pbDL1.Size = New System.Drawing.Size(309, 19)
-        Me.pbDL1.Style = System.Windows.Forms.ProgressBarStyle.Continuous
-        Me.pbDL1.TabIndex = 6
+        Me.lblDL1Status.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblDL1Status.Location = New System.Drawing.Point(5, 34)
+        Me.lblDL1Status.Name = "lblDL1Status"
+        Me.lblDL1Status.Size = New System.Drawing.Size(310, 13)
+        Me.lblDL1Status.TabIndex = 8
         '
         'pnlBG
         '
         Me.pnlBG.AutoScroll = True
-        Me.pnlBG.Controls.Add(Me.pnlDLStatus)
         Me.pnlBG.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlBG.Location = New System.Drawing.Point(0, 0)
         Me.pnlBG.Name = "pnlBG"
@@ -278,6 +276,7 @@ Partial Class dlgImgSelect
         Me.CancelButton = Me.Cancel_Button
         Me.ClientSize = New System.Drawing.Size(836, 670)
         Me.ControlBox = False
+        Me.Controls.Add(Me.pnlDLStatus)
         Me.Controls.Add(Me.pnlBG)
         Me.Controls.Add(Me.pnlBottomMain)
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -295,7 +294,6 @@ Partial Class dlgImgSelect
         Me.pnlSize.PerformLayout()
         Me.pnlDLStatus.ResumeLayout(False)
         Me.pnlDwld.ResumeLayout(False)
-        Me.pnlBG.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -310,13 +308,13 @@ Partial Class dlgImgSelect
     Friend WithEvents rbXLarge As System.Windows.Forms.RadioButton
     Friend WithEvents btnPreview As System.Windows.Forms.Button
     Friend WithEvents lblDL2 As System.Windows.Forms.Label
+    Friend WithEvents cbFilterSize As System.Windows.Forms.ComboBox
+    Friend WithEvents lblSize As System.Windows.Forms.Label
     Friend WithEvents pnlDLStatus As System.Windows.Forms.Panel
     Friend WithEvents pnlDwld As System.Windows.Forms.Panel
     Friend WithEvents lblDL1Status As System.Windows.Forms.Label
     Friend WithEvents lblDL1 As System.Windows.Forms.Label
     Friend WithEvents pbDL1 As System.Windows.Forms.ProgressBar
     Friend WithEvents pnlBG As System.Windows.Forms.Panel
-    Friend WithEvents cbFilterSize As System.Windows.Forms.ComboBox
-    Friend WithEvents lblSize As System.Windows.Forms.Label
 
 End Class

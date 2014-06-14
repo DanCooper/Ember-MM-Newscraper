@@ -22,11 +22,12 @@ Imports System.Drawing
 Imports System.Drawing.Drawing2D
 Imports System.IO
 Imports EmberAPI
+Imports NLog
 
 Public Class dlgBulkRenamer
 
 #Region "Fields"
-
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
     Friend WithEvents bwDoRename As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwLoadInfo As New System.ComponentModel.BackgroundWorker
 
@@ -82,7 +83,7 @@ Public Class dlgBulkRenamer
             Dim _curMovie As New Structures.DBMovie
 
             ' Load nfo movies using path from DB
-            Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
+            Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                 Dim _tmpPath As String = String.Empty
                 Dim iProg As Integer = 0
                 SQLNewcommand.CommandText = String.Concat("SELECT COUNT(id) AS mcount FROM movies;")
@@ -138,27 +139,52 @@ Public Class dlgBulkRenamer
 
                                                     If _curMovie.Movie.FileInfo.StreamDetails.Audio.Count > 0 Then
                                                         Dim tAud As MediaInfo.Audio = NFO.GetBestAudio(_curMovie.Movie.FileInfo, False)
-                                                        MovieFile.Audio = String.Format("{0}-{1}ch", If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(138, "Unknown"), tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(138, "Unknown"), tAud.Channels))
+
+                                                        If tAud.ChannelsSpecified Then
+                                                            MovieFile.AudioChannels = String.Format("{0}ch", tAud.Channels)
+                                                        Else
+                                                            MovieFile.AudioChannels = String.Empty
+                                                        End If
+
+                                                        If tAud.CodecSpecified Then
+                                                            MovieFile.AudioCodec = tAud.Codec
+                                                        Else
+                                                            MovieFile.AudioCodec = String.Empty
+                                                        End If
+                                                        'MovieFile.AudioChannels = String.Format("{0}-{1}ch", If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(138, "Unknown"), tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(138, "Unknown"), tAud.Channels))
                                                     Else
-                                                        MovieFile.Audio = String.Empty
+                                                        MovieFile.AudioChannels = String.Empty
+                                                        MovieFile.AudioCodec = String.Empty
                                                     End If
 
                                                     If _curMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
-                                                        If Not String.IsNullOrEmpty(_curMovie.Movie.FileInfo.StreamDetails.Video.Item(0).MultiView) AndAlso CDbl(_curMovie.Movie.FileInfo.StreamDetails.Video.Item(0).MultiView) > 1 Then
-                                                            MovieFile.MultiView = "3D"
+                                                        If Not String.IsNullOrEmpty(_curMovie.Movie.FileInfo.StreamDetails.Video.Item(0).MultiViewCount) AndAlso CDbl(_curMovie.Movie.FileInfo.StreamDetails.Video.Item(0).MultiViewCount) > 1 Then
+                                                            MovieFile.MultiViewCount = "3D"
                                                         Else
-                                                            MovieFile.MultiView = String.Empty
+                                                            MovieFile.MultiViewCount = String.Empty
                                                         End If
                                                     Else
-                                                        MovieFile.MultiView = String.Empty
+                                                        MovieFile.MultiViewCount = String.Empty
                                                     End If
+
+                                                    If _curMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
+                                                        If _curMovie.Movie.FileInfo.StreamDetails.Video.Item(0).CodecSpecified Then
+                                                            MovieFile.VideoCodec = _curMovie.Movie.FileInfo.StreamDetails.Video.Item(0).Codec
+                                                        Else
+                                                            MovieFile.VideoCodec = String.Empty
+                                                        End If
+                                                    Else
+                                                        MovieFile.VideoCodec = String.Empty
+                                                    End If
+
                                                 Catch ex As Exception
-                                                    Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error FileInfo")
+                                                    logger.ErrorException(New StackFrame().GetMethod().Name,ex)
                                                 End Try
                                             Else
-                                                MovieFile.Audio = String.Empty
+                                                MovieFile.AudioChannels = String.Empty
+                                                MovieFile.AudioCodec = String.Empty
                                                 MovieFile.Resolution = String.Empty
-                                                MovieFile.MultiView = String.Empty
+                                                MovieFile.MultiViewCount = String.Empty
                                             End If
 
                                             For Each i As String In FFRenamer.MovieFolders
@@ -213,7 +239,7 @@ Public Class dlgBulkRenamer
                                     End If
                                 End If
                             Catch ex As Exception
-                                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
                             End Try
                             iProg += 1
 
@@ -229,7 +255,7 @@ Public Class dlgBulkRenamer
                 End Using
             End Using
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -255,7 +281,7 @@ Public Class dlgBulkRenamer
             End If
             Me.pnlCancel.Visible = False
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -329,7 +355,7 @@ Public Class dlgBulkRenamer
             End If
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -391,7 +417,7 @@ Public Class dlgBulkRenamer
             Me.bwLoadInfo.RunWorkerAsync()
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -405,7 +431,7 @@ Public Class dlgBulkRenamer
             lblCanceling.Visible = True
             lblFile.Visible = False
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -466,7 +492,7 @@ Public Class dlgBulkRenamer
 
             dgvMoviesList.Refresh()
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -489,7 +515,7 @@ Public Class dlgBulkRenamer
         Me.chkRenamedOnly.Text = Master.eLang.GetString(261, "Display Only Movies That Will Be Renamed")
 
         Dim frmToolTip As New ToolTip()
-        Dim s As String = String.Format(Master.eLang.GetString(262, "$1 = First Letter of the Title{0}$A = Audio{0}$B = Base Path{0}$C = Director{0}$D = Directory{0}$E = Sort Title{0}$F = File Name{0}$G = Genre (Follow with a space, dot or hyphen to change separator){0}$I = IMDB ID{0}$L = List Title{0}$M = MPAA{0}$O = OriginalTitle{0}$P = Rating{0}$R = Resolution{0}$S = Source{0}$T = Title{0}$V = 3D (If Multiview > 1){0}$Y = Year{0}$X. (Replace Space with .){0}{{}} = Optional{0}$?aaa?bbb? = Replace aaa with bbb{0}$- = Remove previous char if next pattern does not have a value{0}$+ = Remove next char if previous pattern does not have a value{0}$^ = Remove previous and next char if next pattern does not have a value"), vbNewLine)
+        Dim s As String = String.Format(Master.eLang.GetString(262, "$1 = First Letter of the Title{0}$A = Audio Channels{0}$B = Base Path{0}$C = Director{0}$D = Directory{0}$E = Sort Title{0}$F = File Name{0}$G = Genre (Follow with a space, dot or hyphen to change separator){0}$H = Video Codec{0}$I = IMDB ID{0}$J = Audio Codec{0}$L = List Title{0}$M = MPAA{0}$O = OriginalTitle{0}$P = Rating{0}$R = Resolution{0}$S = Source{0}$T = Title{0}$V = 3D (If Multiview > 1){0}$Y = Year{0}$X. (Replace Space with .){0}{{}} = Optional{0}$?aaa?bbb? = Replace aaa with bbb{0}$- = Remove previous char if next pattern does not have a value{0}$+ = Remove next char if previous pattern does not have a value{0}$^ = Remove previous and next char if next pattern does not have a value"), vbNewLine)
         frmToolTip.SetToolTip(Me.txtFolderPattern, s)
         frmToolTip.SetToolTip(Me.txtFilePattern, s)
         frmToolTip.SetToolTip(Me.txtFolderPatternNotSingle, s)
@@ -542,7 +568,7 @@ Public Class dlgBulkRenamer
                 End If
             End With
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -562,7 +588,7 @@ Public Class dlgBulkRenamer
                 tThread.Start()
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -587,7 +613,7 @@ Public Class dlgBulkRenamer
             If String.IsNullOrEmpty(txtFilePattern.Text) Then txtFilePattern.Text = "$F"
             tmrSimul.Enabled = True
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -596,7 +622,7 @@ Public Class dlgBulkRenamer
             If String.IsNullOrEmpty(txtFolderPatternNotSingle.Text) Then txtFolderPatternNotSingle.Text = "$D"
             tmrSimul.Enabled = True
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -605,14 +631,14 @@ Public Class dlgBulkRenamer
             If String.IsNullOrEmpty(txtFolderPattern.Text) Then txtFolderPattern.Text = "$D"
             tmrSimul.Enabled = True
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
     Sub LoadHelpTips()
         If dHelpTips Is Nothing OrElse dHelpTips.IsDisposed Then
             dHelpTips = New dlgHelpTips
         End If
-        Dim s As String = String.Format(Master.eLang.GetString(262, "$1 = First Letter of the Title{0}$A = Audio{0}$B = Base Path{0}$C = Director{0}$D = Directory{0}$E = Sort Title{0}$F = File Name{0}$G = Genre (Follow with a space, dot or hyphen to change separator){0}$I = IMDB ID{0}$L = List Title{0}$M = MPAA{0}$O = OriginalTitle{0}$P = Rating{0}$R = Resolution{0}$S = Source{0}$T = Title{0}$V = 3D (If Multiview > 1){0}$Y = Year{0}$X. (Replace Space with .){0}{{}} = Optional{0}$?aaa?bbb? = Replace aaa with bbb{0}$- = Remove previous char if next pattern does not have a value{0}$+ = Remove next char if previous pattern does not have a value{0}$^ = Remove previous and next char if next pattern does not have a value"), vbNewLine)
+        Dim s As String = String.Format(Master.eLang.GetString(262, "$1 = First Letter of the Title{0}$A = Audio Channels{0}$B = Base Path{0}$C = Director{0}$D = Directory{0}$E = Sort Title{0}$F = File Name{0}$G = Genre (Follow with a space, dot or hyphen to change separator){0}$H = Video Codec{0}$I = IMDB ID{0}$J = Audio Codec{0}$L = List Title{0}$M = MPAA{0}$O = OriginalTitle{0}$P = Rating{0}$R = Resolution{0}$S = Source{0}$T = Title{0}$V = 3D (If Multiview > 1){0}$Y = Year{0}$X. (Replace Space with .){0}{{}} = Optional{0}$?aaa?bbb? = Replace aaa with bbb{0}$- = Remove previous char if next pattern does not have a value{0}$+ = Remove next char if previous pattern does not have a value{0}$^ = Remove previous and next char if next pattern does not have a value"), vbNewLine)
         dHelpTips.lblTips.Text = s
         dHelpTips.Width = dHelpTips.lblTips.Width + 5
         dHelpTips.Height = dHelpTips.lblTips.Height + 35

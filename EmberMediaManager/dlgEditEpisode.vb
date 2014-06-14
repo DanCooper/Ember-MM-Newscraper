@@ -21,10 +21,12 @@
 Imports System.IO
 Imports System.Text.RegularExpressions
 Imports EmberAPI
+Imports NLog
 
 Public Class dlgEditEpisode
 
 #Region "Fields"
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     Private EpisodeFanart As New Images With {.IsEdit = True}
     Private lvwActorSorter As ListViewColumnSorter
@@ -56,7 +58,7 @@ Public Class dlgEditEpisode
                 Me.lvActors.Select()
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -72,7 +74,7 @@ Public Class dlgEditEpisode
                 lvItem.SubItems.Add(eActor.Thumb)
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -88,7 +90,7 @@ Public Class dlgEditEpisode
                 Me.FillInfo()
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -191,7 +193,7 @@ Public Class dlgEditEpisode
                 End If
             End With
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -215,7 +217,7 @@ Public Class dlgEditEpisode
             End If
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -227,13 +229,13 @@ Public Class dlgEditEpisode
                 End While
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
     Private Sub dlgEditEpisode_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        If Not Master.eSettings.TVEpisodeFanartEnabled Then tcEditEpisode.TabPages.Remove(tpEpisodeFanart)
-        If Not Master.eSettings.TVEpisodePosterEnabled Then
+        If Not Master.eSettings.TVEpisodeFanartAnyEnabled Then tcEditEpisode.TabPages.Remove(tpEpisodeFanart)
+        If Not Master.eSettings.TVEpisodePosterAnyEnabled Then
             tcEditEpisode.TabPages.Remove(tpEpisodePoster)
             tcEditEpisode.TabPages.Remove(tpFrameExtraction)
         End If
@@ -291,7 +293,7 @@ Public Class dlgEditEpisode
                 eActor = Nothing
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -322,7 +324,14 @@ Public Class dlgEditEpisode
             .pbStar5.Tag = tRating
             If tRating > 0 Then .BuildStars(tRating)
 
-            If Master.eSettings.TVEpisodeFanartEnabled Then
+            If Master.currShow.TVEp.Playcount = "" Or Master.currShow.TVEp.Playcount = "0" Then
+                Me.chkWatched.Checked = False
+            Else
+                'Playcount <> Empty and not 0 -> Tag filled -> Checked!
+                Me.chkWatched.Checked = True
+            End If
+
+            If Master.eSettings.TVEpisodeFanartAnyEnabled Then
                 EpisodeFanart.FromFile(Master.currShow.EpFanartPath)
                 If Not IsNothing(EpisodeFanart.Image) Then
                     .pbEpisodeFanart.Image = EpisodeFanart.Image
@@ -333,7 +342,7 @@ Public Class dlgEditEpisode
                 End If
             End If
 
-            If Master.eSettings.TVEpisodePosterEnabled Then
+            If Master.eSettings.TVEpisodePosterAnyEnabled Then
                 EpisodePoster.FromFile(Master.currShow.EpPosterPath)
                 If Not IsNothing(EpisodePoster.Image) Then
                     .pbEpisodePoster.Image = EpisodePoster.Image
@@ -366,7 +375,7 @@ Public Class dlgEditEpisode
             ' Perform the sort with these new sort options.
             Me.lvActors.Sort()
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -383,7 +392,7 @@ Public Class dlgEditEpisode
             Me.CleanUp()
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
 
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
@@ -438,7 +447,7 @@ Public Class dlgEditEpisode
             Single.TryParse(Me.tmpRating, tmpDBL)
             Me.BuildStars(tmpDBL)
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -452,7 +461,7 @@ Public Class dlgEditEpisode
                 Me.BuildStars(2)
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -466,7 +475,7 @@ Public Class dlgEditEpisode
             Single.TryParse(Me.tmpRating, tmpDBL)
             Me.BuildStars(tmpDBL)
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -480,7 +489,7 @@ Public Class dlgEditEpisode
                 Me.BuildStars(4)
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -494,7 +503,7 @@ Public Class dlgEditEpisode
             Single.TryParse(Me.tmpRating, tmpDBL)
             Me.BuildStars(tmpDBL)
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -508,7 +517,7 @@ Public Class dlgEditEpisode
                 Me.BuildStars(6)
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -522,7 +531,7 @@ Public Class dlgEditEpisode
             Single.TryParse(Me.tmpRating, tmpDBL)
             Me.BuildStars(tmpDBL)
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -536,7 +545,7 @@ Public Class dlgEditEpisode
                 Me.BuildStars(8)
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -550,7 +559,7 @@ Public Class dlgEditEpisode
             Single.TryParse(Me.tmpRating, tmpDBL)
             Me.BuildStars(tmpDBL)
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -564,7 +573,7 @@ Public Class dlgEditEpisode
                 Me.BuildStars(10)
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -594,6 +603,35 @@ Public Class dlgEditEpisode
                     Next
                 End If
 
+                If chkWatched.Checked Then
+                    'Only set to 1 if field was empty before (otherwise it would overwrite Playcount everytime which is not desirable)
+                    If String.IsNullOrEmpty(Master.currShow.TVEp.Playcount) Or Master.currShow.TVEp.Playcount = "0" Then
+                        Master.currShow.TVEp.Playcount = "1"
+                    End If
+
+                    'If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
+                    '    For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.isSingle, Enums.MovieModType.WatchedFile)
+                    '        If Not File.Exists(a) Then
+                    '            Dim fs As FileStream = File.Create(a)
+                    '            fs.Close()
+                    '        End If
+                    '    Next
+                    'End If
+                Else
+                    'Unchecked Watched State -> Set Playcount back to 0, but only if it was filled before (check could save time)
+                    If IsNumeric(Master.currShow.TVEp.Playcount) AndAlso CInt(Master.currShow.TVEp.Playcount) > 0 Then
+                        Master.currShow.TVEp.Playcount = ""
+                    End If
+
+                    'If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
+                    '    For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.isSingle, Enums.MovieModType.WatchedFile)
+                    '        If File.Exists(a) Then
+                    '            File.Delete(a)
+                    '        End If
+                    '    Next
+                    'End If
+                End If
+
                 'Episode Fanart
                 If Not IsNothing(.EpisodeFanart.Image) Then
                     Master.currShow.EpFanartPath = .EpisodeFanart.SaveAsTVEpisodeFanart(Master.currShow)
@@ -611,7 +649,7 @@ Public Class dlgEditEpisode
                 End If
             End With
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -622,34 +660,34 @@ Public Class dlgEditEpisode
         Me.Text = sTitle
         Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
         Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
-        Me.lblTopDetails.Text = Master.eLang.GetString(656, "Edit the details for the selected episode.")
-        Me.lblTopTitle.Text = Master.eLang.GetString(657, "Edit Episode")
-        Me.tpEpsiodeDetails.Text = Master.eLang.GetString(26, "Details")
         Me.btnManual.Text = Master.eLang.GetString(230, "Manual Edit")
-        Me.lblActors.Text = Master.eLang.GetString(231, "Actors:")
+        Me.btnRemoveEpisodeFanart.Text = Master.eLang.GetString(250, "Remove Fanart")
+        Me.btnRemoveEpisodePoster.Text = Master.eLang.GetString(247, "Remove Poster")
+        Me.btnSetEpisodeFanart.Text = Master.eLang.GetString(252, "Change Fanart (Local)")
+        Me.btnSetEpisodeFanartDL.Text = Master.eLang.GetString(266, "Change Fanart (Download)")
+        Me.btnSetEpisodeFanartScrape.Text = Master.eLang.GetString(251, "Change Fanart (Scrape)")
+        Me.btnSetEpisodePoster.Text = Master.eLang.GetString(249, "Change Poster (Local)")
+        Me.btnSetEpisodePosterDL.Text = Master.eLang.GetString(265, "Change Poster (Download)")
+        Me.btnSetEpisodePosterScrape.Text = Master.eLang.GetString(248, "Change Poster (Scrape)")
+        Me.chkWatched.Text = Master.eLang.GetString(981, "Watched")
         Me.colName.Text = Master.eLang.GetString(232, "Name")
         Me.colRole.Text = Master.eLang.GetString(233, "Role")
         Me.colThumb.Text = Master.eLang.GetString(234, "Thumb")
+        Me.lblActors.Text = Master.eLang.GetString(231, "Actors:")
+        Me.lblAired.Text = Master.eLang.GetString(658, "Aired:")
+        Me.lblCredits.Text = Master.eLang.GetString(228, "Credits:")
+        Me.lblDirector.Text = Master.eLang.GetString(239, "Director:")
+        Me.lblEpisode.Text = Master.eLang.GetString(660, "Episode:")
         Me.lblPlot.Text = Master.eLang.GetString(241, "Plot:")
         Me.lblRating.Text = Master.eLang.GetString(245, "Rating:")
-        Me.lblAired.Text = Master.eLang.GetString(658, "Aired:")
         Me.lblSeason.Text = Master.eLang.GetString(659, "Season:")
-        Me.lblEpisode.Text = Master.eLang.GetString(660, "Episode:")
         Me.lblTitle.Text = Master.eLang.GetString(246, "Title:")
-        Me.tpEpisodePoster.Text = Master.eLang.GetString(148, "Poster")
-        Me.btnRemoveEpisodePoster.Text = Master.eLang.GetString(247, "Remove Poster")
-        Me.btnSetEpisodePosterScrape.Text = Master.eLang.GetString(248, "Change Poster (Scrape)")
-        Me.btnSetEpisodePoster.Text = Master.eLang.GetString(249, "Change Poster (Local)")
+        Me.lblTopDetails.Text = Master.eLang.GetString(656, "Edit the details for the selected episode.")
+        Me.lblTopTitle.Text = Master.eLang.GetString(657, "Edit Episode")
         Me.tpEpisodeFanart.Text = Master.eLang.GetString(149, "Fanart")
-        Me.btnRemoveEpisodeFanart.Text = Master.eLang.GetString(250, "Remove Fanart")
-        Me.btnSetEpisodeFanartScrape.Text = Master.eLang.GetString(251, "Change Fanart (Scrape)")
-        Me.btnSetEpisodeFanart.Text = Master.eLang.GetString(252, "Change Fanart (Local)")
-        Me.btnSetEpisodePosterDL.Text = Master.eLang.GetString(265, "Change Poster (Download)")
-        Me.btnSetEpisodeFanartDL.Text = Master.eLang.GetString(266, "Change Fanart (Download)")
-        Me.lblDirector.Text = Master.eLang.GetString(239, "Director:")
-        Me.lblCredits.Text = Master.eLang.GetString(228, "Credits:")
+        Me.tpEpisodePoster.Text = Master.eLang.GetString(148, "Poster")
+        Me.tpEpsiodeDetails.Text = Master.eLang.GetString(26, "Details")
         Me.tpFrameExtraction.Text = Master.eLang.GetString(256, "Frame Extraction")
-
         Me.tpEpisodeMetaData.Text = Master.eLang.GetString(59, "Meta Data")
     End Sub
 
@@ -696,7 +734,7 @@ Public Class dlgEditEpisode
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -717,7 +755,7 @@ Public Class dlgEditEpisode
                 End If
             End Using
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -740,7 +778,7 @@ Public Class dlgEditEpisode
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -761,7 +799,7 @@ Public Class dlgEditEpisode
                 End If
             End Using
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 

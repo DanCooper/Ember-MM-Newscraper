@@ -23,12 +23,16 @@
 
 Imports System.IO
 Imports EmberAPI
+Imports NLog
 
 Public Class dlgWizard
 
-    Private tLangList As New List(Of Containers.TVLanguage)
+#Region "Fields"
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
     Private tLang As String
     Private tmppath As String = String.Empty
+
+#End Region
 
 #Region "Methods"
 
@@ -56,12 +60,12 @@ Public Class dlgWizard
     End Sub
 
     Private Sub btnTVLanguageFetch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVLanguageFetch.Click
-        Me.tLangList.Clear()
-        Me.tLangList.AddRange(ModulesManager.Instance.TVGetLangs("thetvdb.com"))
-        Me.cbTVLanguage.Items.AddRange((From lLang In tLangList Select lLang.LongLang).ToArray)
+        Master.eSettings.TVGeneralLanguages.Clear()
+        Master.eSettings.TVGeneralLanguages.AddRange(ModulesManager.Instance.TVGetLangs("thetvdb.com"))
+        Me.cbTVLanguage.Items.AddRange((From lLang In Master.eSettings.TVGeneralLanguages Select lLang.LongLang).ToArray)
 
         If Me.cbTVLanguage.Items.Count > 0 Then
-            Me.cbTVLanguage.Text = Me.tLangList.FirstOrDefault(Function(l) l.ShortLang = Master.eSettings.GeneralTVDBLanguage).LongLang
+            Me.cbTVLanguage.Text = Master.eSettings.TVGeneralLanguages.FirstOrDefault(Function(l) l.ShortLang = Master.eSettings.TVGeneralLanguage).LongLang
         End If
     End Sub
 
@@ -123,8 +127,52 @@ Public Class dlgWizard
                 End If
             End With
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
+    End Sub
+
+    Private Sub chkMovieUseBoxee_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieUseBoxee.CheckedChanged
+
+        'Me.chkActorThumbsBoxee.Enabled = Me.chkMovieUseBoxee.Checked
+        'Me.chkMovieBannerBoxee.Enabled = Me.chkMovieUseBoxee.Checked
+        'Me.chkClearArtBoxee.Enabled = Me.chkMovieUseBoxee.Checked
+        'Me.chkClearLogoBoxee.Enabled = Me.chkMovieUseBoxee.Checked
+        'Me.chkExtrafanartBoxee.Enabled = Me.chkMovieUseBoxee.Checked
+        'Me.chkExtrathumbsBoxee.Enabled = Me.chkMovieUseBoxee.Checked
+        'Me.chkDiscArtBoxee.Enabled = Me.chkMovieUseBoxee.Checked
+        Me.chkMovieFanartBoxee.Enabled = Me.chkMovieUseBoxee.Checked
+        'Me.chkLandscapeBoxee.Enabled = Me.chkMovieUseBoxee.Checked
+        Me.chkMovieNFOBoxee.Enabled = Me.chkMovieUseBoxee.Checked
+        Me.chkMoviePosterBoxee.Enabled = Me.chkMovieUseBoxee.Checked
+        'Me.chkMovieTrailerBoxee.Enabled = Me.chkMovieUseBoxee.Checked
+
+        If Not Me.chkMovieUseBoxee.Checked Then
+            ' Me.chkActorThumbsBoxee.Checked = False
+            'Me.chkMovieBannerBoxee.Checked = False
+            'Me.chkClearArtBoxee.Checked = False
+            'Me.chkClearLogoBoxee.Checked = False
+            'Me.chkDiscArtBoxee.Checked = False
+            'Me.chkExtrafanartBoxee.Checked = False
+            'Me.chkExtrathumbsBoxee.Checked = False
+            Me.chkMovieFanartBoxee.Checked = False
+            'Me.chkLandscapeBoxee.Checked = False
+            Me.chkMovieNFOBoxee.Checked = False
+            Me.chkMoviePosterBoxee.Checked = False
+            'Me.chkMovieTrailerBoxee.Checked = False
+        Else
+            'Me.chkActorThumbsBoxee.Checked = True
+            'Me.chkMovieBannerBoxee.Checked = True
+            'Me.chkClearArtBoxee.Checked = True
+            'Me.chkClearLogoBoxee.Checked = True
+            'Me.chkDiscArtBoxee.Checked = True
+            'Me.chkExtrafanartBoxee.Checked = True
+            'Me.chkExtrathumbsBoxee.Checked = True
+            Me.chkMovieFanartBoxee.Checked = True
+            'Me.chkLandscapeBoxee.Checked = True
+            Me.chkMovieNFOBoxee.Checked = True
+            Me.chkMoviePosterBoxee.Checked = True
+            'Me.chkMovieTrailerBoxee.Checked = True
+        End If
     End Sub
 
     Private Sub chkMovieUseFrodo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieUseFrodo.CheckedChanged
@@ -141,6 +189,7 @@ Public Class dlgWizard
         Me.chkMovieNFOFrodo.Enabled = Me.chkMovieUseFrodo.Checked
         Me.chkMoviePosterFrodo.Enabled = Me.chkMovieUseFrodo.Checked
         Me.chkMovieTrailerFrodo.Enabled = Me.chkMovieUseFrodo.Checked
+        Me.chkMovieXBMCThemeEnable.Enabled = Me.chkMovieUseFrodo.Checked OrElse Me.chkMovieUseEden.Checked
         Me.chkMovieXBMCProtectVTSBDMV.Enabled = Me.chkMovieUseFrodo.Checked AndAlso Not Me.chkMovieUseEden.Checked
 
         If Not Me.chkMovieUseFrodo.Checked Then
@@ -171,6 +220,10 @@ Public Class dlgWizard
             Me.chkMoviePosterFrodo.Checked = True
             Me.chkMovieTrailerFrodo.Checked = True
         End If
+
+        If Not Me.chkMovieUseFrodo.Checked AndAlso Not Me.chkMovieUseEden.Checked Then
+            Me.chkMovieXBMCThemeEnable.Checked = False
+        End If
     End Sub
 
     Private Sub chkMovieUseEden_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieUseEden.CheckedChanged
@@ -187,6 +240,7 @@ Public Class dlgWizard
         Me.chkMovieNFOEden.Enabled = Me.chkMovieUseEden.Checked
         Me.chkMoviePosterEden.Enabled = Me.chkMovieUseEden.Checked
         Me.chkMovieTrailerEden.Enabled = Me.chkMovieUseEden.Checked
+        Me.chkMovieXBMCThemeEnable.Enabled = Me.chkMovieUseEden.Checked OrElse Me.chkMovieUseFrodo.Checked
         Me.chkMovieXBMCProtectVTSBDMV.Enabled = Not Me.chkMovieUseEden.Checked AndAlso Me.chkMovieUseFrodo.Checked
 
         If Not Me.chkMovieUseEden.Checked Then
@@ -216,6 +270,10 @@ Public Class dlgWizard
             Me.chkMoviePosterEden.Checked = True
             Me.chkMovieTrailerEden.Checked = True
             Me.chkMovieXBMCProtectVTSBDMV.Checked = False
+        End If
+
+        If Not Me.chkMovieUseEden.Checked AndAlso Not Me.chkMovieUseFrodo.Checked Then
+            Me.chkMovieXBMCThemeEnable.Checked = False
         End If
     End Sub
 
@@ -309,6 +367,71 @@ Public Class dlgWizard
         End If
     End Sub
 
+    Private Sub chkMovieXBMCThemeCustomPath_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieXBMCThemeCustom.CheckedChanged
+
+        Me.txtMovieXBMCThemeCustomPath.Enabled = Me.chkMovieXBMCThemeCustom.Checked
+        Me.btnMovieXBMCThemeCustomPathBrowse.Enabled = Me.chkMovieXBMCThemeCustom.Checked
+
+        If Me.chkMovieXBMCThemeCustom.Checked Then
+            Me.chkMovieXBMCThemeMovie.Enabled = False
+            Me.chkMovieXBMCThemeMovie.Checked = False
+            Me.chkMovieXBMCThemeSub.Enabled = False
+            Me.chkMovieXBMCThemeSub.Checked = False
+        End If
+
+        If Not Me.chkMovieXBMCThemeCustom.Checked AndAlso Me.chkMovieXBMCThemeEnable.Checked Then
+            Me.chkMovieXBMCThemeMovie.Enabled = True
+            Me.chkMovieXBMCThemeSub.Enabled = True
+        End If
+    End Sub
+
+    Private Sub chkMovieXBMCThemeEnable_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieXBMCThemeEnable.CheckedChanged
+
+        Me.chkMovieXBMCThemeCustom.Enabled = Me.chkMovieXBMCThemeEnable.Checked
+        Me.chkMovieXBMCThemeMovie.Enabled = Me.chkMovieXBMCThemeEnable.Checked
+        Me.chkMovieXBMCThemeSub.Enabled = Me.chkMovieXBMCThemeEnable.Checked
+
+        If Not Me.chkMovieXBMCThemeEnable.Checked Then
+            Me.chkMovieXBMCThemeCustom.Checked = False
+            Me.chkMovieXBMCThemeMovie.Checked = False
+            Me.chkMovieXBMCThemeSub.Checked = False
+        Else
+            Me.chkMovieXBMCThemeMovie.Checked = True
+        End If
+    End Sub
+
+    Private Sub chkMovieXBMCThemeMovie_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieXBMCThemeMovie.CheckedChanged
+
+        If Me.chkMovieXBMCThemeMovie.Checked Then
+            Me.chkMovieXBMCThemeCustom.Enabled = False
+            Me.chkMovieXBMCThemeCustom.Checked = False
+            Me.chkMovieXBMCThemeSub.Enabled = False
+            Me.chkMovieXBMCThemeSub.Checked = False
+        End If
+
+        If Not Me.chkMovieXBMCThemeMovie.Checked AndAlso Me.chkMovieXBMCThemeEnable.Checked Then
+            Me.chkMovieXBMCThemeCustom.Enabled = True
+            Me.chkMovieXBMCThemeSub.Enabled = True
+        End If
+    End Sub
+
+    Private Sub chkMovieXBMCThemeSubPath_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieXBMCThemeSub.CheckedChanged
+
+        Me.txtMovieXBMCThemeSubDir.Enabled = Me.chkMovieXBMCThemeSub.Checked
+
+        If Me.chkMovieXBMCThemeSub.Checked Then
+            Me.chkMovieXBMCThemeCustom.Enabled = False
+            Me.chkMovieXBMCThemeCustom.Checked = False
+            Me.chkMovieXBMCThemeMovie.Enabled = False
+            Me.chkMovieXBMCThemeMovie.Checked = False
+        End If
+
+        If Not Me.chkMovieXBMCThemeSub.Checked AndAlso Me.chkMovieXBMCThemeEnable.Checked Then
+            Me.chkMovieXBMCThemeCustom.Enabled = True
+            Me.chkMovieXBMCThemeMovie.Enabled = True
+        End If
+    End Sub
+
     Private Sub chkMovieYAMJWatchedFile_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieYAMJWatchedFile.CheckedChanged
         Me.txtMovieYAMJWatchedFolder.Enabled = Me.chkMovieYAMJWatchedFile.Checked
         Me.btnMovieYAMJWatchedFilesBrowse.Enabled = Me.chkMovieYAMJWatchedFile.Checked
@@ -399,6 +522,29 @@ Public Class dlgWizard
         End With
     End Sub
 
+    Private Sub chkTVUseBoxee_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVUseBoxee.CheckedChanged
+
+        Me.chkTVEpisodePosterBoxee.Enabled = Me.chkTVUseBoxee.Checked
+        Me.chkTVSeasonPosterBoxee.Enabled = Me.chkTVUseBoxee.Checked
+        Me.chkTVShowBannerBoxee.Enabled = Me.chkTVUseBoxee.Checked
+        Me.chkTVShowFanartBoxee.Enabled = Me.chkTVUseBoxee.Checked
+        Me.chkTVShowPosterBoxee.Enabled = Me.chkTVUseBoxee.Checked
+
+        If Not Me.chkTVUseBoxee.Checked Then
+            Me.chkTVEpisodePosterBoxee.Checked = False
+            Me.chkTVSeasonPosterBoxee.Checked = False
+            Me.chkTVShowBannerBoxee.Checked = False
+            Me.chkTVShowFanartBoxee.Checked = False
+            Me.chkTVShowPosterBoxee.Checked = False
+        Else
+            Me.chkTVEpisodePosterBoxee.Checked = True
+            Me.chkTVSeasonPosterBoxee.Checked = True
+            Me.chkTVShowBannerBoxee.Checked = True
+            Me.chkTVShowFanartBoxee.Checked = True
+            Me.chkTVShowPosterBoxee.Checked = True
+        End If
+    End Sub
+
     Private Sub chkTVUseFrodo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVUseFrodo.CheckedChanged
 
         Me.chkTVEpisodeActorThumbsFrodo.Enabled = Me.chkTVUseFrodo.Checked
@@ -479,11 +625,9 @@ Public Class dlgWizard
         Me.RefreshSources()
         Me.RefreshTVSources()
 
-        Me.tLangList.Clear()
-        Me.tLangList.AddRange(Master.eSettings.GeneralTVDBLanguages)
-        Me.cbTVLanguage.Items.AddRange((From lLang In Master.eSettings.GeneralTVDBLanguages Select lLang.LongLang).ToArray)
+        Me.cbTVLanguage.Items.AddRange((From lLang In Master.eSettings.TVGeneralLanguages Select lLang.LongLang).ToArray)
         If Me.cbTVLanguage.Items.Count > 0 Then
-            Me.cbTVLanguage.Text = Me.tLangList.FirstOrDefault(Function(l) l.ShortLang = Master.eSettings.GeneralTVDBLanguage).LongLang
+            Me.cbTVLanguage.Text = Master.eSettings.TVGeneralLanguages.FirstOrDefault(Function(l) l.ShortLang = Master.eSettings.TVGeneralLanguage).LongLang
         End If
 
         With Master.eSettings
@@ -526,6 +670,14 @@ Public Class dlgWizard
             Me.chkMovieXBMCTrailerFormat.Checked = .MovieXBMCTrailerFormat
             Me.chkMovieXBMCProtectVTSBDMV.Checked = .MovieXBMCProtectVTSBDMV
 
+            '*************** XBMC theme settings ***************
+            Me.chkMovieXBMCThemeEnable.Checked = .MovieXBMCThemeEnable
+            Me.chkMovieXBMCThemeCustom.Checked = .MovieXBMCThemeCustom
+            Me.chkMovieXBMCThemeMovie.Checked = .MovieXBMCThemeMovie
+            Me.chkMovieXBMCThemeSub.Checked = .MovieXBMCThemeSub
+            Me.txtMovieXBMCThemeCustomPath.Text = .MovieXBMCThemeCustomPath
+            Me.txtMovieXBMCThemeSubDir.Text = .MovieXBMCThemeSubDir
+
             '****************** YAMJ settings *****************
             Me.chkMovieUseYAMJ.Checked = .MovieUseYAMJ
             'Me.chkActorThumbsYAMJ.Checked = .MovieActorThumbsYAMJ
@@ -559,6 +711,21 @@ Public Class dlgWizard
             '************** NMJ optional settings *************
             Me.chkMovieYAMJWatchedFile.Checked = .MovieYAMJWatchedFile
             Me.txtMovieYAMJWatchedFolder.Text = .MovieYAMJWatchedFolder
+
+            '***************** Boxee settings ******************
+            Me.chkMovieUseBoxee.Checked = .MovieUseBoxee
+            'Me.chkActorThumbsBoxee.Checked = .MovieActorThumbsBoxee
+            'Me.chkMovieBannerBoxee.Checked = .MovieBannerBoxee
+            'Me.chkClearArtBoxee.Checked = .MovieClearArtBoxee
+            'Me.chkClearLogoBoxee.Checked = .MovieClearLogoBoxee
+            'Me.chkDiscArtBoxee.Checked = .MovieDiscArtBoxee
+            'Me.chkExtrafanartBoxee.Checked = .MovieExtrafanartBoxee
+            'Me.chkExtrathumbsBoxee.Checked = .MovieExtrathumbsBoxee
+            Me.chkMovieFanartBoxee.Checked = .MovieFanartBoxee
+            'Me.chkLandscapeBoxee.Checked = .MovieLandscapeBoxee
+            Me.chkMovieNFOBoxee.Checked = .MovieNFOBoxee
+            Me.chkMoviePosterBoxee.Checked = .MoviePosterBoxee
+            'Me.chkMovieTrailerBoxee.Checked = .MovieTrailerBoxee
 
             '***************** Expert settings ****************
             Me.chkMovieUseExpert.Checked = .MovieUseExpert
@@ -662,6 +829,14 @@ Public Class dlgWizard
 
             '************** NMT optional settings **************
 
+            '***************** Boxee settings ******************
+            Me.chkTVUseBoxee.Checked = .TVUseBoxee
+            Me.chkTVEpisodePosterBoxee.Checked = .TVEpisodePosterBoxee
+            Me.chkTVSeasonPosterBoxee.Checked = .TVSeasonPosterBoxee
+            Me.chkTVShowBannerBoxee.Checked = .TVShowBannerBoxee
+            Me.chkTVShowFanartBoxee.Checked = .TVShowFanartBoxee
+            Me.chkTVShowPosterBoxee.Checked = .TVShowPosterBoxee
+
             '***************** Expert settings *****************
 
         End With
@@ -736,7 +911,7 @@ Public Class dlgWizard
         Dim lvItem As ListViewItem
         Master.DB.LoadTVSourcesFromDB()
         lvTVSources.Items.Clear()
-        Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
+        Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
             SQLcommand.CommandText = "SELECT ID, Name, path, LastScan FROM TVSources;"
             Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                 While SQLreader.Read
@@ -756,8 +931,8 @@ Public Class dlgWizard
                 If MsgBox(Master.eLang.GetString(418, "Are you sure you want to remove the selected sources? This will remove the movies from these sources from the Ember database."), MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are You Sure?")) = MsgBoxResult.Yes Then
                     Me.lvMovies.BeginUpdate()
 
-                    Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MediaDBConn.BeginTransaction()
-                        Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
+                    Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+                        Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                             Dim parSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSource", DbType.String, 0, "source")
                             While Me.lvMovies.SelectedItems.Count > 0
                                 parSource.Value = lvMovies.SelectedItems(0).SubItems(1).Text
@@ -777,7 +952,7 @@ Public Class dlgWizard
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -787,8 +962,8 @@ Public Class dlgWizard
                 If MsgBox(Master.eLang.GetString(418, "Are you sure you want to remove the selected sources? This will remove the TV Shows from these sources from the Ember database."), MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are You Sure?")) = MsgBoxResult.Yes Then
                     Me.lvTVSources.BeginUpdate()
 
-                    Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MediaDBConn.BeginTransaction()
-                        Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
+                    Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+                        Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                             Dim parSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSource", DbType.String, 0, "source")
                             While Me.lvTVSources.SelectedItems.Count > 0
                                 parSource.Value = lvTVSources.SelectedItems(0).SubItems(1).Text
@@ -812,7 +987,7 @@ Public Class dlgWizard
                 End If
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -822,17 +997,16 @@ Public Class dlgWizard
 
             .GeneralLanguage = tLang
 
-            If tLangList.Count > 0 Then
-                Dim tLang As String = tLangList.FirstOrDefault(Function(l) l.LongLang = Me.cbTVLanguage.Text).ShortLang
+            If Master.eSettings.TVGeneralLanguages.Count > 0 Then
+                Dim tLang As String = Master.eSettings.TVGeneralLanguages.FirstOrDefault(Function(l) l.LongLang = Me.cbTVLanguage.Text).ShortLang
                 If Not String.IsNullOrEmpty(tLang) Then
-                    Master.eSettings.GeneralTVDBLanguage = tLang
+                    Master.eSettings.TVGeneralLanguage = tLang
                 Else
-                    Master.eSettings.GeneralTVDBLanguage = "en"
+                    Master.eSettings.TVGeneralLanguage = "en"
                 End If
             Else
-                Master.eSettings.GeneralTVDBLanguage = "en"
+                Master.eSettings.TVGeneralLanguage = "en"
             End If
-            Master.eSettings.GeneralTVDBLanguages = Me.tLangList
 
             '***************************************************
             '******************* Movie Part ********************
@@ -872,6 +1046,14 @@ Public Class dlgWizard
             .MovieXBMCTrailerFormat = Me.chkMovieXBMCTrailerFormat.Checked
             .MovieXBMCProtectVTSBDMV = Me.chkMovieXBMCProtectVTSBDMV.Checked
 
+            '*************** XBMC theme settings ***************
+            .MovieXBMCThemeCustom = Me.chkMovieXBMCThemeCustom.Checked
+            .MovieXBMCThemeCustomPath = Me.txtMovieXBMCThemeCustomPath.Text
+            .MovieXBMCThemeEnable = Me.chkMovieXBMCThemeEnable.Checked
+            .MovieXBMCThemeMovie = Me.chkMovieXBMCThemeMovie.Checked
+            .MovieXBMCThemeSub = Me.chkMovieXBMCThemeSub.Checked
+            .MovieXBMCThemeSubDir = Me.txtMovieXBMCThemeSubDir.Text
+
             '****************** YAMJ settings *****************
             .MovieUseYAMJ = Me.chkMovieUseYAMJ.Checked
             '.MovieActorThumbsYAMJ = Me.chkActorThumbsYAMJ.Checked
@@ -905,6 +1087,21 @@ Public Class dlgWizard
             '************** NMJ optional settings *************
             .MovieYAMJWatchedFile = Me.chkMovieYAMJWatchedFile.Checked
             .MovieYAMJWatchedFolder = Me.txtMovieYAMJWatchedFolder.Text
+
+            '***************** Boxee settings *****************
+            .MovieUseBoxee = Me.chkMovieUseBoxee.Checked
+            '.MovieActorThumbsBoxee = Me.chkActorThumbsBoxee.Checked
+            '.MovieBannerBoxee = Me.chkMovieBannerBoxee.Checked
+            '.MovieClearArtBoxee = Me.chkClearArtBoxee.Checked
+            '.MovieClearLogoBoxee = Me.chkClearLogoBoxee.Checked
+            '.MovieDiscArtBoxee = Me.chkDiscArtBoxee.Checked
+            '.MovieExtrafanartBoxee = Me.chkExtrafanartBoxee.Checked
+            '.MovieExtrathumbsBoxee = Me.chkExtrathumbsBoxee.Checked
+            .MovieFanartBoxee = Me.chkMovieFanartBoxee.Checked
+            '.MovieLandscapeBoxee = Me.chkLandscapeBoxee.Checked
+            .MovieNFOBoxee = Me.chkMovieNFOBoxee.Checked
+            .MoviePosterBoxee = Me.chkMoviePosterBoxee.Checked
+            '.MovieTrailerBoxee = Me.chkMovieTrailerBoxee.Checked
 
             '***************** Expert settings ****************
             .MovieUseExpert = Me.chkMovieUseExpert.Checked
@@ -1006,6 +1203,14 @@ Public Class dlgWizard
             '****************** NMJ settings *******************
 
             '************** NMT optional settings **************
+
+            '***************** Boxee settings ******************
+            .TVUseBoxee = Me.chkTVUseBoxee.Checked
+            .TVEpisodePosterBoxee = Me.chkTVEpisodePosterBoxee.Checked
+            .TVSeasonPosterBoxee = Me.chkTVSeasonPosterBoxee.Checked
+            .TVShowBannerBoxee = Me.chkTVShowBannerBoxee.Checked
+            .TVShowFanartBoxee = Me.chkTVShowFanartBoxee.Checked
+            .TVShowPosterBoxee = Me.chkTVShowPosterBoxee.Checked
 
             '***************** Expert settings *****************
 

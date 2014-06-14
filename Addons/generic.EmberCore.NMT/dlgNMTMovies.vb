@@ -25,11 +25,12 @@ Imports System.Xml.Serialization
 Imports System.Drawing.Drawing2D
 Imports System.Threading
 Imports EmberAPI
+Imports NLog
 
 Public Class dlgNMTMovies
 
 #Region "Fields"
-
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
     Friend WithEvents bwBuildHTML As New System.ComponentModel.BackgroundWorker
 
     Private template_Path As String
@@ -85,7 +86,7 @@ Public Class dlgNMTMovies
             'End If
             'If dtShows Is Nothing Then
             dtShows = New DataTable
-            Master.DB.FillDataTable(dtShows, "SELECT ID, Title, HasPoster, HasFanart, HasNfo, New, Mark, TVShowPath, Source, TVDB, Lock, EpisodeGuide, Plot, Genre, Premiered, Studio, MPAA, Rating, PosterPath, FanartPath, NfoPath, NeedsSave, Language, Ordering, HasBanner, BannerPath, HasLandscape, LandscapePath, Status, HasTheme, ThemePath, HasCharacterArt, CharacterArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath FROM TVShows ORDER BY Title COLLATE NOCASE;")
+            Master.DB.FillDataTable(dtShows, "SELECT ID, Title, HasPoster, HasFanart, HasNfo, New, Mark, TVShowPath, Source, TVDB, Lock, EpisodeGuide, Plot, Genre, Premiered, Studio, MPAA, Rating, PosterPath, FanartPath, NfoPath, NeedsSave, Language, Ordering, HasBanner, BannerPath, HasLandscape, LandscapePath, Status, HasTheme, ThemePath, HasCharacterArt, CharacterArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, HasEFanarts, EFanartsPath FROM TVShows ORDER BY Title COLLATE NOCASE;")
             'End If
             'If dtSeasons Is Nothing Then
             dtSeasons = New DataTable
@@ -144,7 +145,7 @@ Public Class dlgNMTMovies
             btnSave.Enabled = False
             pbWarning.Image = Nothing 'ilNMT.Images("green")
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -182,7 +183,7 @@ Public Class dlgNMTMovies
                 'If Not conf Is Nothing Then conf.Save(Path.Combine(conf.TemplatePath, "config.xml"))
             End Using
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -199,7 +200,7 @@ Public Class dlgNMTMovies
                 MySelf.DoBuild()
             End If
         Catch ex As Exception
-            Master.eLog.Error(GetType(dlgNMTMovies), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -286,7 +287,7 @@ Public Class dlgNMTMovies
                 Next
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
         Return rets
     End Function
@@ -352,7 +353,7 @@ Public Class dlgNMTMovies
             Me.SaveMovieFiles(Path.GetDirectoryName(htmlPath), outputbase)
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -491,7 +492,7 @@ Public Class dlgNMTMovies
             Me.SaveTVFiles(Path.GetDirectoryName(htmlPath), outputbase)
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -814,8 +815,8 @@ Public Class dlgNMTMovies
 
     Private Function GetMovieFileInfo(ByVal MovieID As String) As MediaInfo.Fileinfo
         Dim fi As New MediaInfo.Fileinfo
-        Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
-            SQLcommand.CommandText = String.Concat("SELECT MovieID, StreamID, Video_Width, Video_Height, Video_Codec, Video_Duration, Video_ScanType, Video_AspectDisplayRatio, Video_Language, Video_LongLanguage, Video_Bitrate, Video_MultiView, Video_EncodedSettings FROM MoviesVStreams WHERE MovieID = ", MovieID, ";")
+        Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+            SQLcommand.CommandText = String.Concat("SELECT MovieID, StreamID, Video_Width, Video_Height, Video_Codec, Video_Duration, Video_ScanType, Video_AspectDisplayRatio, Video_Language, Video_LongLanguage, Video_Bitrate, Video_MultiView, Video_EncodedSettings, Video_MultiViewLayout FROM MoviesVStreams WHERE MovieID = ", MovieID, ";")
             Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                 Dim video As MediaInfo.Video
                 While SQLreader.Read
@@ -833,7 +834,7 @@ Public Class dlgNMTMovies
             End Using
         End Using
 
-        Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
+        Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
             SQLcommand.CommandText = String.Concat("SELECT MovieID, StreamID, Audio_Language, Audio_LongLanguage, Audio_Codec, Audio_Channel, Audio_Bitrate FROM MoviesAStreams WHERE MovieID = ", MovieID, ";")
             Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                 Dim audio As MediaInfo.Audio
@@ -847,7 +848,7 @@ Public Class dlgNMTMovies
                 End While
             End Using
         End Using
-        Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
+        Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
             SQLcommand.CommandText = String.Concat("SELECT MovieID, StreamID, Subs_Language, Subs_LongLanguage, Subs_Type, Subs_Path FROM MoviesSubs WHERE MovieID = ", MovieID, ";")
             Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                 Dim subtitle As MediaInfo.Subtitle
@@ -1096,7 +1097,7 @@ Public Class dlgNMTMovies
                 bwBuildHTML.ReportProgress(1)
             Next
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -1175,7 +1176,7 @@ Public Class dlgNMTMovies
                 bwBuildHTML.ReportProgress(1)
             Next
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -1208,7 +1209,7 @@ Public Class dlgNMTMovies
                 bwBuildHTML.ReportProgress(1)
             Next
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -1271,7 +1272,7 @@ Public Class dlgNMTMovies
                 End If
 
             Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
         End If
         Return line
@@ -1398,7 +1399,7 @@ Public Class dlgNMTMovies
                         Try
                             Directory.CreateDirectory(Path.Combine(outputFolder, s.value.Replace("/", Path.DirectorySeparatorChar)))
                         Catch ex As Exception
-                            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
                             Exit While
                         End Try
                     End If
@@ -1510,7 +1511,7 @@ Public Class dlgNMTMovies
             'myStream.Close()
             'End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -1574,7 +1575,7 @@ Public Class dlgNMTMovies
             'myStream.Close()
             'End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -1736,7 +1737,7 @@ Public Class dlgNMTMovies
                 End If
             End Using
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
     Private oldWarning As String = String.Empty

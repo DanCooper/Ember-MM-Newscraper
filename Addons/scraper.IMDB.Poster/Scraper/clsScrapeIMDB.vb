@@ -24,13 +24,14 @@ Imports System.IO.Compression
 Imports System.Text
 Imports System.Text.RegularExpressions
 Imports EmberAPI
+Imports NLog
 
 Namespace IMDBg
 
     Public Class Scraper
 
 #Region "Fields"
-
+        Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 #End Region 'Fields
 
 #Region "Events"
@@ -75,7 +76,7 @@ Namespace IMDBg
                             If mSYSX.Success Then
                                 alPoster.Add(New MediaContainers.Image With {.Description = Master.eSize.poster_names(5).description, .URL = mcIMDB(0).Value, .Width = mSYSX.Groups(2).Value, .Height = mSYSX.Groups(1).Value, .ParentID = aParentID})
                             Else
-                                Master.eLog.Error(Me.GetType(), "Unknown IMDB Poster URL", "", "Scraping Error")
+                                logger.Error( "Unknown IMDB Poster URL")
                                 Debug.Assert(False)
                             End If
                         Else
@@ -97,7 +98,7 @@ Namespace IMDBg
                     End If
                 End If
             Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
 
             Return alPoster

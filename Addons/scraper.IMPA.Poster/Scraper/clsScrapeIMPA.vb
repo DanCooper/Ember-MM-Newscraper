@@ -23,14 +23,16 @@ Imports System.IO.Compression
 Imports System.Net
 Imports System.Text
 Imports System.Text.RegularExpressions
+Imports NLog
 Imports EmberAPI
+Imports System.Diagnostics
 
 Namespace IMPA
 
     Public Class Scraper
 
 #Region "Fields"
-
+        Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 #End Region 'Fields
 
 #Region "Events"
@@ -84,7 +86,7 @@ Namespace IMPA
                     Next
                 End If
             Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException("GetIMPAPosters", ex)
             End Try
 
             Return alPoster
@@ -113,7 +115,7 @@ Namespace IMPA
                     Return String.Empty
                 End If
             Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
                 Return String.Empty
             End Try
         End Function

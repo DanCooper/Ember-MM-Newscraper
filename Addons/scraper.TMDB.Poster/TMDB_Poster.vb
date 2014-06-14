@@ -22,13 +22,15 @@ Imports System.IO
 Imports EmberAPI
 Imports WatTmdb
 Imports EmberScraperModule.TMDBg
+Imports NLog
+Imports System.Diagnostics
 
 Public Class TMDB_Poster
     Implements Interfaces.EmberMovieScraperModule_Poster
 
 
 #Region "Fields"
-
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
     Public Shared ConfigOptions As New Structures.ScrapeOptions
     Public Shared ConfigScrapeModifier As New Structures.ScrapeModifier
     Public Shared _AssemblyName As String
@@ -125,10 +127,10 @@ Public Class TMDB_Poster
         'Must be after Load settings to retrieve the correct API key
         _TMDBApi = New WatTmdb.V3.Tmdb(_MySettings.TMDBAPIKey, _MySettings.TMDBLanguage)
         If IsNothing(_TMDBApi) Then
-            Master.eLog.Error(Me.GetType(), Master.eLang.GetString(938, "TheMovieDB API is missing or not valid"), _TMDBApi.Error.status_message, "Info")
+            logger.Error( Master.eLang.GetString(938, "TheMovieDB API is missing or not valid"), _TMDBApi.Error.status_message)
         Else
             If Not IsNothing(_TMDBApi.Error) AndAlso _TMDBApi.Error.status_message.Length > 0 Then
-                Master.eLog.Error(Me.GetType(), _TMDBApi.Error.status_message, _TMDBApi.Error.status_code.ToString(), "Error")
+                logger.Error( _TMDBApi.Error.status_message, _TMDBApi.Error.status_code.ToString())
             End If
         End If
         _TMDBConf = _TMDBApi.GetConfiguration()
@@ -185,24 +187,20 @@ Public Class TMDB_Poster
 
         LoadSettings()
 
-        'Cocotus 12/21/2013, Support of MOviesetPoster - TODO better way to handle this?!
-        Dim collectionID As String = ""
-        If DBMovie.OriginalTitle = "GETSETIMAGES" Then
-            collectionID = _TMDBg.GetMovieCollectionID(DBMovie.Movie.ID)
-            ImageList = TMDB.GetTMDBCollectionImages(collectionID, Type)
-        Else
-            If String.IsNullOrEmpty(DBMovie.Movie.TMDBID) Then
-                _TMDBg.GetMovieID(DBMovie)
-            End If
-            ImageList = TMDB.GetTMDBImages(DBMovie.Movie.TMDBID, Type)
+        If String.IsNullOrEmpty(DBMovie.Movie.TMDBID) Then
+            _TMDBg.GetMovieID(DBMovie)
         End If
 
-        'old way
-        'If String.IsNullOrEmpty(DBMovie.Movie.TMDBID) Then
-        '    _TMDBg.GetMovieID(DBMovie)
-        'End If
+        ImageList = TMDB.GetTMDBImages(DBMovie.Movie.TMDBID, Type)
 
-        'ImageList = TMDB.GetTMDBImages(DBMovie.Movie.TMDBID, Type)
+        Return New Interfaces.ModuleResult With {.breakChain = False}
+    End Function
+
+    Function Scraper(ByRef DBMovieSet As Structures.DBMovieSet, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule_Poster.Scraper
+
+        LoadSettings()
+
+        ImageList = TMDB.GetTMDBCollectionImages(DBMovieSet.TMDBColID, Type)
 
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function

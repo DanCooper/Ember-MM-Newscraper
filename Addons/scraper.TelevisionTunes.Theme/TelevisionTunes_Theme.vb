@@ -20,13 +20,14 @@
 
 Imports System.IO
 Imports EmberAPI
+Imports NLog
 
 Public Class TelevisionTunes_Theme
     Implements Interfaces.EmberTVScraperModule_Theme
 
 
 #Region "Fields"
-
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
     Public Shared ConfigOptions As New Structures.ScrapeOptions
     Public Shared ConfigScrapeModifier As New Structures.ScrapeModifier
     Public Shared _AssemblyName As String
@@ -138,8 +139,8 @@ Public Class TelevisionTunes_Theme
         End If
     End Sub
 
-    Function Scraper(ByVal DBTV As Structures.DBTV, ByRef ThemeList As List(Of Theme)) As Interfaces.ModuleResult Implements Interfaces.EmberTVScraperModule_Theme.Scraper
-        Master.eLog.Trace(Me.GetType(), "Started scrape", New StackTrace().ToString(), Nothing, False)
+    Function Scraper(ByVal DBTV As Structures.DBTV, ByRef ThemeList As List(Of Themes)) As Interfaces.ModuleResult Implements Interfaces.EmberTVScraperModule_Theme.Scraper
+        logger.Trace("Started scrape")
 
         Dim tTelevisionTunes As New TelevisionTunes(DBTV.TVShow.Title)
 
@@ -147,7 +148,7 @@ Public Class TelevisionTunes_Theme
             ThemeList = tTelevisionTunes.ThemeList
         End If
 
-        Master.eLog.Trace(Me.GetType(), "Finished scrape", New StackTrace().ToString(), Nothing, False)
+        logger.Trace("Finished scrape")
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 

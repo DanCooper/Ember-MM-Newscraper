@@ -22,12 +22,13 @@ Imports System.IO
 Imports System.Text.RegularExpressions
 Imports System.Xml.Serialization
 Imports EmberAPI
+Imports NLog
 
 Public Class dlgDVDProfilerSelect
 
 
 #Region "Fields"
-
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
     Private _results As New List(Of DVDProfiler.cDVD)
     Dim xmlMov As New DVDProfiler.Collection
 
@@ -59,7 +60,7 @@ Public Class dlgDVDProfilerSelect
                 End Using
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
 
         Dim ID As Integer = 1
@@ -91,7 +92,7 @@ Public Class dlgDVDProfilerSelect
                 AddCollection(ofdCollectionXML.FileName)
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 

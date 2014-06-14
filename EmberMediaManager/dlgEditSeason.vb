@@ -20,11 +20,12 @@
 
 Imports System.IO
 Imports EmberAPI
-
+Imports NLog
+Imports System.Diagnostics
 Public Class dlgEditSeason
 
 #Region "Fields"
-
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
     Private SeasonBanner As New Images With {.IsEdit = True}
     Private SeasonFanart As New Images With {.IsEdit = True}
     Private SeasonLandscape As New Images With {.IsEdit = True}
@@ -75,7 +76,7 @@ Public Class dlgEditSeason
                 End If
             End Using
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -109,7 +110,7 @@ Public Class dlgEditSeason
                 Me.lblSeasonBannerSize.Visible = True
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -130,7 +131,7 @@ Public Class dlgEditSeason
                 End If
             End Using
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -164,7 +165,7 @@ Public Class dlgEditSeason
                 Me.lblSeasonFanartSize.Visible = True
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -185,7 +186,7 @@ Public Class dlgEditSeason
                 End If
             End Using
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -219,7 +220,7 @@ Public Class dlgEditSeason
                 Me.lblSeasonLandscapeSize.Visible = True
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -240,7 +241,7 @@ Public Class dlgEditSeason
                 End If
             End Using
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -274,7 +275,7 @@ Public Class dlgEditSeason
                 Me.lblSeasonPosterSize.Visible = True
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -284,10 +285,10 @@ Public Class dlgEditSeason
     End Sub
 
     Private Sub dlgEditSeason_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        If Not Master.eSettings.TVSeasonBannerEnabled Then tcEditSeason.TabPages.Remove(tpSeasonBanner)
-        If Not Master.eSettings.TVSeasonFanartEnabled Then tcEditSeason.TabPages.Remove(tpSeasonFanart)
-        If Not Master.eSettings.TVSeasonLandscapeEnabled Then tcEditSeason.TabPages.Remove(tpSeasonLandscape)
-        If Not Master.eSettings.TVSeasonPosterEnabled Then tcEditSeason.TabPages.Remove(tpSeasonPoster)
+        If Not Master.eSettings.TVSeasonBannerAnyEnabled Then tcEditSeason.TabPages.Remove(tpSeasonBanner)
+        If Not Master.eSettings.TVSeasonFanartAnyEnabled Then tcEditSeason.TabPages.Remove(tpSeasonFanart)
+        If Not Master.eSettings.TVSeasonLandscapeAnyEnabled Then tcEditSeason.TabPages.Remove(tpSeasonLandscape)
+        If Not Master.eSettings.TVSeasonPosterAnyEnabled Then tcEditSeason.TabPages.Remove(tpSeasonPoster)
 
         Me.pbSeasonBanner.AllowDrop = True
         Me.pbSeasonFanart.AllowDrop = True
@@ -307,7 +308,7 @@ Public Class dlgEditSeason
 
     Private Sub FillInfo()
         With Me
-            If Master.eSettings.TVSeasonBannerEnabled Then
+            If Master.eSettings.TVSeasonBannerAnyEnabled Then
                 SeasonBanner.FromFile(Master.currShow.SeasonBannerPath)
                 If Not IsNothing(SeasonBanner.Image) Then
                     .pbSeasonBanner.Image = SeasonBanner.Image
@@ -318,7 +319,7 @@ Public Class dlgEditSeason
                 End If
             End If
 
-            If Master.eSettings.TVSeasonFanartEnabled Then
+            If Master.eSettings.TVSeasonFanartAnyEnabled Then
                 SeasonFanart.FromFile(Master.currShow.SeasonFanartPath)
                 If Not IsNothing(SeasonFanart.Image) Then
                     .pbSeasonFanart.Image = SeasonFanart.Image
@@ -329,7 +330,7 @@ Public Class dlgEditSeason
                 End If
             End If
 
-            If Master.eSettings.TVSeasonLandscapeEnabled Then
+            If Master.eSettings.TVSeasonLandscapeAnyEnabled Then
                 SeasonLandscape.FromFile(Master.currShow.SeasonLandscapePath)
                 If Not IsNothing(SeasonLandscape.Image) Then
                     .pbSeasonLandscape.Image = SeasonLandscape.Image
@@ -340,7 +341,7 @@ Public Class dlgEditSeason
                 End If
             End If
 
-            If Master.eSettings.TVSeasonPosterEnabled Then
+            If Master.eSettings.TVSeasonPosterAnyEnabled Then
                 SeasonPoster.FromFile(Master.currShow.SeasonPosterPath)
                 If Not IsNothing(SeasonPoster.Image) Then
                     .pbSeasonPoster.Image = SeasonPoster.Image
@@ -360,7 +361,7 @@ Public Class dlgEditSeason
             Master.DB.SaveTVSeasonToDB(Master.currShow, False)
 
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
 
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
@@ -485,7 +486,7 @@ Public Class dlgEditSeason
 
             End With
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 

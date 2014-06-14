@@ -23,6 +23,7 @@ Imports System.IO.Compression
 Imports System.Text
 Imports System.Net
 Imports System.Drawing
+Imports NLog
 
 ''' <summary>
 ''' 
@@ -35,6 +36,7 @@ Public Class HTTP
 
 
 #Region "Fields"
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     Private dThread As New Threading.Thread(AddressOf DownloadImage)
     Private wrRequest As HttpWebRequest
@@ -164,7 +166,7 @@ Public Class HTTP
                 Me._responseuri = wrResponse.ResponseUri.ToString
             End Using
         Catch ex As Exception
-            Master.eLog.Error(GetType(HTTP), "<" & URL & ">" & ex.Message, ex.StackTrace, "Error", False)
+            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & URL & ">", ex)
         End Try
 
         Return sResponse
@@ -252,7 +254,7 @@ Public Class HTTP
                 Me._responseuri = wrResponse.ResponseUri.ToString
             End Using
         Catch ex As Exception
-            Master.eLog.Error(GetType(HTTP), "<" & URL & ">" & ex.Message, ex.StackTrace, "Error", False)
+            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & URL & ">", ex)
         End Try
 
         Return sResponse
@@ -290,20 +292,28 @@ Public Class HTTP
             Me.wrRequest = DirectCast(WebRequest.Create(URL), HttpWebRequest)
             Me.wrRequest.Timeout = _defaultRequestTimeout
 
+            'needed for apple trailer website
+            If URL.Contains("apple") Then
+                Me.wrRequest.UserAgent = "QuickTime/7.2 (qtver=7.2;os=Windows NT 5.1Service Pack 3)"
+            End If
+
             PrepareProxy()
 
             Using wrResponse As HttpWebResponse = DirectCast(Me.wrRequest.GetResponse(), HttpWebResponse)
 
                 Try
                     urlExt = Path.GetExtension(URL)
-                    'urlExtWeb = Path.GetExtension(wrResponse.ResponseUri.AbsoluteUri)
                     urlExtWeb = String.Concat(".", wrResponse.ContentType.Replace("video/", String.Empty).Trim)
                     urlExtWeb = urlExtWeb.Replace("audio/", String.Empty).Trim
                 Catch
                 End Try
 
                 If Type = "trailer" Then
-                    outFile = LocalFile & urlExtWeb
+                    If urlExt = ".mov" Then
+                        outFile = LocalFile & urlExt
+                    Else
+                        outFile = LocalFile & urlExtWeb
+                    End If
                 ElseIf Type = "theme" Then
                     If urlExtWeb = ".mpeg" Then
                         outFile = LocalFile & ".mp3"
@@ -315,35 +325,56 @@ Public Class HTTP
 
                 If Not String.IsNullOrEmpty(outFile) AndAlso Not wrResponse.ContentLength = 0 Then
 
-                    If File.Exists(outFile) Then File.Delete(outFile)
-
                     Using Ms As Stream = wrResponse.GetResponseStream
-                        Using mStream As New FileStream(outFile, FileMode.Create, FileAccess.Write)
-                            Dim StreamBuffer(4096) As Byte
-                            Dim BlockSize As Integer
-                            Dim iProgress As Integer
-                            Dim iCurrent As Integer
-                            Do
-                                BlockSize = Ms.Read(StreamBuffer, 0, 4096)
-                                iCurrent += BlockSize
-                                If BlockSize > 0 Then
-                                    mStream.Write(StreamBuffer, 0, BlockSize)
-                                    If ReportUpdate Then
-                                        iProgress = Convert.ToInt32((iCurrent / wrResponse.ContentLength) * 100)
-                                        RaiseEvent ProgressUpdated(iProgress)
+                        If Len(LocalFile) > 0 Then
+
+                            If File.Exists(outFile) Then File.Delete(outFile)
+
+                            'save to real file
+                            Using mStream As New FileStream(outFile, FileMode.Create, FileAccess.Write)
+                                Dim StreamBuffer(4096) As Byte
+                                Dim BlockSize As Integer
+                                Dim iProgress As Integer
+                                Dim iCurrent As Integer
+                                Do
+                                    BlockSize = Ms.Read(StreamBuffer, 0, 4096)
+                                    iCurrent += BlockSize
+                                    If BlockSize > 0 Then
+                                        mStream.Write(StreamBuffer, 0, BlockSize)
+                                        If ReportUpdate Then
+                                            iProgress = Convert.ToInt32((iCurrent / wrResponse.ContentLength) * 100)
+                                            RaiseEvent ProgressUpdated(iProgress)
+                                        End If
                                     End If
-                                End If
-                            Loop While BlockSize > 0 AndAlso Not Me._cancelRequested
-                            StreamBuffer = Nothing
-                            mStream.Close()
-                        End Using
+                                Loop While BlockSize > 0 AndAlso Not Me._cancelRequested
+                                StreamBuffer = Nothing
+                                mStream.Close()
+                            End Using
+                        Else
+                            ' no real file specified, let's work with memory streams
+                            outFile = "dummy" & outFile 'used to return the correct extension. localfile is empty so outfile is just .ext
+
+                            Dim count = Convert.ToInt32(wrResponse.ContentLength)
+                            Dim buffer = New Byte(count) {}
+                            Dim bytesRead As Integer
+                            Do
+                                bytesRead += Ms.Read(buffer, bytesRead, count - bytesRead)
+                            Loop Until bytesRead = count
+                            Ms.Close()
+                            Me._ms.Close()
+                            Me._ms = New MemoryStream()
+
+                            Me._ms.Write(buffer, 0, bytesRead)
+                            Me._ms.Flush()
+
+                        End If
                         Ms.Close()
                     End Using
                 End If
-
             End Using
         Catch ex As Exception
-            Master.eLog.Error(GetType(HTTP), "<" & URL & ">" & ex.Message, ex.StackTrace, "Error", False)
+            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & URL & ">", ex)
+            outFile = ""
         End Try
 
         Return outFile
@@ -398,7 +429,7 @@ Public Class HTTP
                 End Using
             End If
         Catch ex As Exception
-            'Master.eLog.Error(GetType(HTTP), "<" & Me._URL & ">" & ex.Message, ex.StackTrace, "Error", False) 'disabled, log only nonsens server errors
+            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & Me._URL & ">", ex)
         End Try
     End Sub
 
@@ -422,7 +453,7 @@ Public Class HTTP
                 Return Functions.ReadStreamToEnd(wrResponse.GetResponseStream)
             End Using
         Catch ex As Exception
-            Master.eLog.Error(GetType(HTTP), "<" & URL & ">" & ex.Message, ex.StackTrace, "Error", False)
+            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & URL & ">", ex)
         End Try
 
         Return Nothing

@@ -19,8 +19,8 @@
 ' ################################################################################
 
 Imports System.IO
-
 Imports EmberAPI
+Imports NLog
 
 ''' <summary>
 ''' Native Scraper
@@ -31,6 +31,7 @@ Public Class IMDB_Poster
 
 
 #Region "Fields"
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     Public Shared ConfigOptions As New Structures.ScrapeOptions
     Public Shared ConfigScrapeModifier As New Structures.ScrapeModifier
@@ -141,12 +142,16 @@ Public Class IMDB_Poster
     End Sub
 
     Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule_Poster.Scraper
-        Master.eLog.Trace(Me.GetType(), "Started scrape", New StackTrace().ToString(), Nothing, False)
+        logger.Trace("Started scrape", New StackTrace().ToString())
         LoadSettings()
 
         ImageList = IMDB.GetIMDBPosters(DBMovie.Movie.IMDBID)
 
-        Master.eLog.Trace(Me.GetType(), "Finished scrape", New StackTrace().ToString(), Nothing, False)
+        logger.Trace("Finished scrape", New StackTrace().ToString())
+        Return New Interfaces.ModuleResult With {.breakChain = False}
+    End Function
+
+    Function Scraper(ByRef DBMovieset As Structures.DBMovieSet, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule_Poster.Scraper
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 

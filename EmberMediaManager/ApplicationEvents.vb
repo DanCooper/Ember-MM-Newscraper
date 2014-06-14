@@ -19,10 +19,15 @@
 ' ################################################################################
 
 Imports EmberAPI
+Imports NLog
 
 Namespace My
 
     Partial Friend Class MyApplication
+
+#Region "Fields"
+        Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+#End Region
 
 #Region "Methods"
 
@@ -30,10 +35,10 @@ Namespace My
         ''' Process/load information before beginning the main application.
         ''' </summary>
         Private Sub MyApplication_Startup(ByVal sender As Object, ByVal e As Microsoft.VisualBasic.ApplicationServices.StartupEventArgs) Handles Me.Startup
-            Try                
+            Try
                 Functions.TestMediaInfoDLL()
             Catch ex As Exception
-                Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
         End Sub
 

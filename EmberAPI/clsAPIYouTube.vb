@@ -21,6 +21,7 @@
 Imports System.Text.RegularExpressions
 Imports EmberAPI
 Imports System.Runtime.CompilerServices
+Imports NLog
 
 'The InternalsVisibleTo is required for unit testing the friend methods
 <Assembly: InternalsVisibleTo("EmberAPI_Test")> 
@@ -30,6 +31,7 @@ Namespace YouTube
     Public Class Scraper
 
 #Region "Fields"
+        Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
         Private _VideoLinks As VideoLinkItemCollection
 
@@ -70,7 +72,7 @@ Namespace YouTube
                 _VideoLinks = ParseYTFormats(url, False)
 
             Catch ex As Exception
-                Master.eLog.Error(GetType(Scraper), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             End Try
         End Sub
         ''' <summary>
@@ -275,7 +277,7 @@ Namespace YouTube
                 Return DownloadLinks
 
             Catch ex As Exception
-                Master.eLog.Error(GetType(Scraper), ex.Message, ex.StackTrace, "Error")
+                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
                 Return New VideoLinkItemCollection
             Finally
                 sHTTP = Nothing
@@ -304,8 +306,10 @@ Namespace YouTube
 
             For ctr As Integer = 0 To Result.Count - 1
                 tName = Web.HttpUtility.HtmlDecode(Result.Item(ctr).Groups(1).Value)
-                tLink = String.Concat("http://www.youtube.com/", Result.Item(ctr).Groups(2).Value)
-                tList.Add(New Trailers With {.URL = tLink, .Description = tName})
+                tLink = String.Concat("http://www.youtube.com", Result.Item(ctr).Groups(2).Value)
+                If Not tName = "__title__" Then
+                    tList.Add(New Trailers With {.URL = tLink, .WebURL = tLink, .Description = tName})
+                End If
             Next
 
             Return tList

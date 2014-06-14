@@ -21,10 +21,12 @@
 Imports System.IO
 Imports System.Text.RegularExpressions
 Imports EmberAPI
+Imports NLog
 
 Public Class dlgTVSource
 
 #Region "Fields"
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     Private currNameText As String = String.Empty
     Private currPathText As String = String.Empty
@@ -65,7 +67,7 @@ Public Class dlgTVSource
                 End If
             End With
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -81,7 +83,7 @@ Public Class dlgTVSource
             If String.IsNullOrEmpty(Me.txtSourceName.Text) Then
                 pbValid.Image = My.Resources.invalid
             Else
-                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
+                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                     SQLcommand.CommandText = String.Concat("SELECT ID FROM TVSources WHERE Name LIKE """, Me.txtSourceName.Text.Trim, """ AND ID != ", Me._id, ";")
                     Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                         If SQLreader.HasRows Then
@@ -100,7 +102,7 @@ Public Class dlgTVSource
                 End Using
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
 
         If Not String.IsNullOrEmpty(Me.txtSourcePath.Text) AndAlso Directory.Exists(Me.txtSourcePath.Text.Trim) AndAlso isValid Then
@@ -112,7 +114,7 @@ Public Class dlgTVSource
         Me.SetUp()
         Try
             If Me._id >= 0 Then
-                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
+                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                     SQLcommand.CommandText = String.Concat("SELECT ID, Name, path, LastScan FROM TVSources WHERE ID = ", Me._id, ";")
                     Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                         If SQLreader.HasRows() Then
@@ -125,7 +127,7 @@ Public Class dlgTVSource
                 End Using
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -135,8 +137,8 @@ Public Class dlgTVSource
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
         Try
-            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MediaDBConn.BeginTransaction()
-                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MediaDBConn.CreateCommand()
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                     If Me._id >= 0 Then
                         SQLcommand.CommandText = String.Concat("UPDATE TVSources SET name = (?), path = (?) WHERE ID =", Me._id, ";")
                     Else
@@ -153,7 +155,7 @@ Public Class dlgTVSource
                 SQLtransaction.Commit()
             End Using
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
             Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         End Try
 

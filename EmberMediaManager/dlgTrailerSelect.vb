@@ -21,11 +21,12 @@
 Imports System.IO
 Imports System.Text.RegularExpressions
 Imports EmberAPI
+Imports NLog
 
 Public Class dlgTrailerSelect
 
 #Region "Fields"
-
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     'Friend WithEvents bwCompileList As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwDownloadTrailer As New System.ComponentModel.BackgroundWorker
@@ -61,7 +62,10 @@ Public Class dlgTrailerSelect
         Me.lvTrailers.HideSelection = False
         Me.lvTrailers.Columns.Add("#", -1, HorizontalAlignment.Right)
         Me.lvTrailers.Columns.Add("URL", 0, HorizontalAlignment.Left)
+        Me.lvTrailers.Columns.Add("WebURL", 0, HorizontalAlignment.Left)
         Me.lvTrailers.Columns.Add(Master.eLang.GetString(979, "Description"), -2, HorizontalAlignment.Left)
+        Me.lvTrailers.Columns.Add(Master.eLang.GetString(1137, "Lenght"), -2, HorizontalAlignment.Left)
+        Me.lvTrailers.Columns.Add(Master.eLang.GetString(1138, "Quality"), -2, HorizontalAlignment.Left)
 
         Me.txtYouTubeSearch.Text = DBMovie.Movie.Title & " Trailer"
 
@@ -69,12 +73,15 @@ Public Class dlgTrailerSelect
         Me.sPath = DBMovie.Filename
         Me._UrlList = tURLList
         Dim ID As Integer = 1
-        Dim str(3) As String
+        Dim str(6) As String
         For Each aUrl In _UrlList
             Dim itm As ListViewItem
             str(0) = ID.ToString
             str(1) = aUrl.URL.ToString
-            str(2) = aUrl.Description.ToString
+            str(2) = aUrl.WebURL.ToString
+            str(3) = aUrl.Description.ToString
+            str(4) = aUrl.Lenght.ToString
+            str(5) = aUrl.Resolution.ToString
             itm = New ListViewItem(str)
             lvTrailers.Items.Add(itm)
             ID = ID + 1
@@ -210,7 +217,7 @@ Public Class dlgTrailerSelect
                 txtManual.Text = ofdTrailer.FileName
             End If
         Catch ex As Exception
-            Master.eLog.Error(Me.GetType(), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -267,11 +274,11 @@ Public Class dlgTrailerSelect
             End If
         Else
             If Master.isWindows Then
-                Process.Start(Me.lvTrailers.SelectedItems(0).SubItems(1).Text.ToString)
+                Process.Start(Me.lvTrailers.SelectedItems(0).SubItems(2).Text.ToString)
             Else
                 Using Explorer As New Process
                     Explorer.StartInfo.FileName = "xdg-open"
-                    Explorer.StartInfo.Arguments = Me.lvTrailers.SelectedItems(0).SubItems(1).Text.ToString
+                    Explorer.StartInfo.Arguments = Me.lvTrailers.SelectedItems(0).SubItems(2).Text.ToString
                     Explorer.Start()
                 End Using
             End If
@@ -284,12 +291,13 @@ Public Class dlgTrailerSelect
 
         nList = YouTube.Scraper.SearchOnYouTube(txtYouTubeSearch.Text)
 
-        Dim str(3) As String
+        Dim str(6) As String
         For Each aUrl In nList
             Dim itm As ListViewItem
             str(0) = ID.ToString
             str(1) = aUrl.URL.ToString
-            str(2) = aUrl.Description.ToString
+            str(2) = aUrl.WebURL.ToString
+            str(3) = aUrl.Description.ToString
             itm = New ListViewItem(str)
             lvTrailers.Items.Add(itm)
             ID = ID + 1
@@ -355,9 +363,10 @@ Public Class dlgTrailerSelect
     Private Sub bwDownloadTrailer_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDownloadTrailer.DoWork
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         Try
+            Using Trailer As New Trailers()
+                Me.tURL = Trailer.DownloadTrailer(Me.sPath, Me.tMovie.isSingle, Args.Parameter) ', Me.tMovie.Filename)
+            End Using
 
-            Me.tURL = Trailers.DownloadTrailer(Me.sPath, Me.tMovie.isSingle, Args.Parameter) ', Me.tMovie.Filename)
-            
         Catch
         End Try
 

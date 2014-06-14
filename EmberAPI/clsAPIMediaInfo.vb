@@ -23,11 +23,13 @@ Imports System.Runtime.InteropServices
 Imports System.Text
 Imports System.Text.RegularExpressions
 Imports System.Xml.Serialization
+Imports NLog
 
 <Serializable()> _
 Public Class MediaInfo
 
 #Region "Fields"
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     Private Handle As IntPtr
     Private UseAnsi As Boolean
@@ -143,7 +145,7 @@ Public Class MediaInfo
             End If
 
         Catch ex As Exception
-            Master.eLog.Error(GetType(MediaInfo), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -165,7 +167,7 @@ Public Class MediaInfo
                 If Not _mi Is Nothing Then miTV.TVEp.FileInfo = _mi
             End If
         Catch ex As Exception
-            Master.eLog.Error(GetType(MediaInfo), ex.Message, ex.StackTrace, "Error")
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -243,7 +245,7 @@ Public Class MediaInfo
 
                     fiInfo = fiOut
                 Catch ex As Exception
-                    Master.eLog.Error(GetType(MediaInfo), ex.Message, ex.StackTrace, "Error", False)
+                    logger.ErrorException(New StackFrame().GetMethod().Name,ex)
                 End Try
 
                 'cocotus 20140118 For more accurate metadata scanning of BLURAY/DVD images use improved mediainfo scanning (ScanMI-function) -> don't hop in this branch!! 
@@ -321,7 +323,7 @@ Public Class MediaInfo
 
                     fiInfo = fiOut
                 Catch ex As Exception
-                    Master.eLog.Error(GetType(MediaInfo), ex.Message, ex.StackTrace, "Error", False)
+                    logger.ErrorException(New StackFrame().GetMethod().Name,ex)
                 End Try
             Else
                 fiInfo = ScanMI(sPath)
@@ -871,11 +873,16 @@ Public Class MediaInfo
                             miVideo.Bitrate = FormatBitrate(ds.Tables("Nominal_bit_rate").Rows(1).Item(0).ToString)
                         End If
 
-                        'Multiview (Support for 3D Movie, If > 1 -> 3D Movie)
+                        'MultiViewCount (Support for 3D Movie, If > 1 -> 3D Movie)
                         If ds.Tables("track").Columns.Contains("MultiView_Count") Then
-                            miVideo.MultiView = ds.Tables("MultiView_Count").Rows(0).ToString
+                            miVideo.MultiViewCount = ds.Tables("MultiView_Count").Rows(0).ToString
                         ElseIf VideoStreams > 1 Then
-                            miVideo.MultiView = VideoStreams.ToString
+                            miVideo.MultiViewCount = VideoStreams.ToString
+                        End If
+
+                        'MultiViewLayout (http://matroska.org/technical/specs/index.html#StereoMode)
+                        If ds.Tables("track").Columns.Contains("MultiView_Layout") Then
+                            miVideo.MultiViewLayout = ds.Tables("MultiView_Layout").Rows(0).ToString
                         End If
 
                         'Encoder-settings
@@ -965,8 +972,10 @@ Public Class MediaInfo
                         'cocotus, 2013/02 Added support for new MediaInfo-fields
                         'Video-Bitrate
                         miVideo.Bitrate = FormatBitrate(Me.Get_(StreamKind.Visual, v, "BitRate/String"))
-                        'Multiview (Support for 3D Movie, If > 1 -> 3D Movie)
-                        miVideo.MultiView = Me.Get_(StreamKind.Visual, v, "MultiView_Count")
+                        'MultiViewCount (Support for 3D Movie, If > 1 -> 3D Movie)
+                        miVideo.MultiViewCount = Me.Get_(StreamKind.Visual, v, "MultiView_Count")
+                        'MultiViewLayout (http://matroska.org/technical/specs/index.html#StereoMode)
+                        miVideo.MultiViewLayout = Me.Get_(StreamKind.Visual, v, "MultiView_Layout")
                         'Encoder-settings
                         miVideo.EncodedSettings = Me.Get_(StreamKind.Visual, v, "Encoded_Library_Settings")
                         'cocotus end
@@ -1176,7 +1185,7 @@ Public Class MediaInfo
                 Me.Close()
             End If
         Catch ex As Exception
-            Master.eLog.Error(GetType(MediaInfo), ex.Message, ex.StackTrace, "Error", False)
+            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
         End Try
         Return fiOut
     End Function
@@ -1594,9 +1603,13 @@ Public Class MediaInfo
 
         'cocotus, 2013/02 Added support for new MediaInfo-fields
         Private _bitrate As String = String.Empty
-        Private _multiview As String = String.Empty
+        Private _multiview_count As String = String.Empty
+        Private _multiview_layout As String = String.Empty
         Private _encoded_Settings As String = String.Empty
         'cocotus end
+
+        'XBMC multiview layout type (http://wiki.xbmc.org/index.php?title=3D)
+        Private _stereomode As String = String.Empty
 
 #End Region 'Fields
 
@@ -1751,16 +1764,26 @@ Public Class MediaInfo
             End Set
         End Property
 
-        <XmlElement("multiView_Count")> _
-        Public Property MultiView() As String
+        <XmlElement("multiview_count")> _
+        Public Property MultiViewCount() As String
             Get
-                Return Me._multiview.Trim()
+                Return Me._multiview_count.Trim()
             End Get
             Set(ByVal Value As String)
-                Me._multiview = Value
+                Me._multiview_count = Value
             End Set
         End Property
-        <XmlElement("encodedSettings")> _
+
+        <XmlElement("multiview_layout")> _
+        Public Property MultiViewLayout() As String
+            Get
+                Return Me._multiview_layout.Trim()
+            End Get
+            Set(ByVal Value As String)
+                Me._multiview_layout = Value
+            End Set
+        End Property
+        <XmlElement("encodedsettings")> _
         Public Property EncodedSettings() As String
             Get
                 Return Me._encoded_Settings.Trim()
@@ -1770,6 +1793,23 @@ Public Class MediaInfo
             End Set
         End Property
         'cocotus end
+
+        <XmlElement("stereomode")> _
+        Public Property StereoMode() As String
+            Get
+                Return Me._stereomode.Trim()
+            End Get
+            Set(ByVal Value As String)
+                Me._stereomode = Value
+            End Set
+        End Property
+
+        <XmlIgnore> _
+        Public ReadOnly Property StereoModeSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(StereoMode)
+            End Get
+        End Property
 
 #End Region 'Properties
 
