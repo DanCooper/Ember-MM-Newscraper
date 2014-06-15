@@ -25,6 +25,7 @@ Imports System.Xml.Linq
 Imports System.Xml.Serialization
 Imports System.Text
 Imports NLog
+Imports System.Runtime.Serialization
 
 Public Class Localization
 
@@ -210,6 +211,7 @@ Public Class Localization
                     Next
                 End If
             End If
+
         Catch ex As Exception
             logger.ErrorException(New StackFrame().GetMethod().Name, ex)
         End Try
@@ -315,4 +317,22 @@ Public Class Localization
 
 #End Region 'Nested Types
 
+End Class
+
+<DataContract> _
+Public Class [langHash]
+    ' need a parameterless constructor for serialization
+    Public Sub New()
+        MyDictionary = New Dictionary(Of String, String)()
+    End Sub
+    <DataMember> _
+    Public Property MyDictionary() As Dictionary(Of String, String)
+        Get
+            Return m_MyDictionary
+        End Get
+        Set(value As Dictionary(Of String, String))
+            m_MyDictionary = value
+        End Set
+    End Property
+    Private m_MyDictionary As Dictionary(Of String, String)
 End Class
