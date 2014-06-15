@@ -112,7 +112,7 @@ Public Class FileFolderRenamer
                     strCond = ApplyPattern(strCond, "R", f.Resolution)
                     strCond = ApplyPattern(strCond, "S", strSource)
                     strCond = ApplyPattern(strCond, "T", f.Title)
-                    strCond = ApplyPattern(strCond, "V", f.MultiView)
+                    strCond = ApplyPattern(strCond, "V", f.MultiViewCount)
                     strCond = ApplyPattern(strCond, "Y", f.Year)
                     joinIndex = strCond.IndexOf("$G")
                     If Not joinIndex = -1 Then
@@ -172,7 +172,7 @@ Public Class FileFolderRenamer
             pattern = ApplyPattern(pattern, "R", f.Resolution)
             pattern = ApplyPattern(pattern, "S", strSource)
             pattern = ApplyPattern(pattern, "T", f.Title)
-            pattern = ApplyPattern(pattern, "V", f.MultiView)
+            pattern = ApplyPattern(pattern, "V", f.MultiViewCount)
             pattern = ApplyPattern(pattern, "Y", f.Year)
             nextC = pattern.IndexOf("$G")
             If Not nextC = -1 Then
@@ -280,13 +280,13 @@ Public Class FileFolderRenamer
                 End If
 
                 If _tmpMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
-                    If Not String.IsNullOrEmpty(_tmpMovie.Movie.FileInfo.StreamDetails.Video.Item(0).MultiView) AndAlso CDbl(_tmpMovie.Movie.FileInfo.StreamDetails.Video.Item(0).MultiView) > 1 Then
-                        MovieFile.MultiView = "3D"
+                    If Not String.IsNullOrEmpty(_tmpMovie.Movie.FileInfo.StreamDetails.Video.Item(0).MultiViewCount) AndAlso CDbl(_tmpMovie.Movie.FileInfo.StreamDetails.Video.Item(0).MultiViewCount) > 1 Then
+                        MovieFile.MultiViewCount = "3D"
                     Else
-                        MovieFile.MultiView = String.Empty
+                        MovieFile.MultiViewCount = String.Empty
                     End If
                 Else
-                    MovieFile.MultiView = String.Empty
+                    MovieFile.MultiViewCount = String.Empty
                 End If
             Catch ex As Exception
                 logger.ErrorException(New StackFrame().GetMethod().Name,ex)
@@ -295,7 +295,8 @@ Public Class FileFolderRenamer
             MovieFile.AudioChannels = String.Empty
             MovieFile.AudioCodec = String.Empty
             MovieFile.Resolution = String.Empty
-            MovieFile.MultiView = String.Empty
+            MovieFile.MultiViewCount = String.Empty
+            MovieFile.MultiViewLayout = String.Empty
             MovieFile.VideoCodec = String.Empty
         End If
 
@@ -869,7 +870,8 @@ Public Class FileFolderRenamer
         Private _isvideo_ts As Boolean
         Private _listtitle As String
         Private _mpaarate As String
-        Private _multiview As String
+        Private _multiviewcount As String
+        Private _multiviewlayout As String
         Private _newFileName As String
         Private _newPath As String
         Private _oldpath As String
@@ -1018,12 +1020,21 @@ Public Class FileFolderRenamer
             End Set
         End Property
 
-        Public Property MultiView() As String
+        Public Property MultiViewCount() As String
             Get
-                Return Me._multiview
+                Return Me._multiviewcount
             End Get
             Set(ByVal value As String)
-                Me._multiview = value
+                Me._multiviewcount = value
+            End Set
+        End Property
+
+        Public Property MultiViewLayout() As String
+            Get
+                Return Me._multiviewlayout
+            End Get
+            Set(ByVal value As String)
+                Me._multiviewlayout = value
             End Set
         End Property
 
@@ -1203,7 +1214,8 @@ Public Class FileFolderRenamer
             _isSingle = True
             _isRenamed = False
             _mpaarate = String.Empty
-            _multiview = String.Empty
+            _multiviewcount = String.Empty
+            _multiviewlayout = String.Empty
             _rating = String.Empty
             _resolution = String.Empty
             _audiochannels = String.Empty

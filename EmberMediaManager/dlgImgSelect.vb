@@ -59,6 +59,7 @@ Public Class dlgImgSelect
     Private selIndex As Integer = -1
 
     Private tMovie As New Structures.DBMovie
+    Private tMovieSet As New Structures.DBMovieSet
     Private tmpImage As New MediaContainers.Image
     Private tmpImageEF As New MediaContainers.Image
     Private tmpImageET As New MediaContainers.Image
@@ -119,6 +120,39 @@ Public Class dlgImgSelect
         '\\
 
         Me.tMovie = DBMovie
+        Me._ImageList = ImageList
+        Me._efList = efList
+        Me._etList = etList
+        Me.DLType = Type
+        Me.isEdit = _isEdit
+        'Me.isShown = True
+        Select Case DLType
+            Case Enums.MovieImageType.Banner
+                aDes = Master.eSize.poster_names(0).description
+            Case Enums.MovieImageType.ClearArt
+                aDes = Master.eSize.poster_names(0).description
+            Case Enums.MovieImageType.ClearLogo
+                aDes = Master.eSize.poster_names(0).description
+            Case Enums.MovieImageType.DiscArt
+                aDes = Master.eSize.poster_names(0).description
+            Case Enums.MovieImageType.Fanart
+                aDes = Master.eSize.backdrop_names(0).description
+            Case Enums.MovieImageType.Landscape
+                aDes = Master.eSize.poster_names(0).description
+            Case Enums.MovieImageType.Poster
+                aDes = Master.eSize.poster_names(0).description
+        End Select
+
+        Me.SetUp()
+        Return MyBase.ShowDialog()
+    End Function
+
+    Public Overloads Function ShowDialog(ByRef DBMovieSet As Structures.DBMovieSet, ByVal Type As Enums.MovieImageType, ByRef ImageList As List(Of MediaContainers.Image), ByRef efList As List(Of String), ByRef etList As List(Of String), Optional ByVal _isEdit As Boolean = False) As DialogResult
+        '//
+        ' Overload to pass data
+        '\\
+
+        Me.tMovieSet = DBMovieSet
         Me._ImageList = ImageList
         Me._efList = efList
         Me._etList = etList
@@ -755,38 +789,48 @@ Public Class dlgImgSelect
 
             Functions.PNLDoubleBuffer(Me.pnlBG)
 
+            Dim Title As String
+
+            If Not IsNothing(Me.tMovie) Then
+                Title = If(Not String.IsNullOrEmpty(Me.tMovie.Movie.Title), Me.tMovie.Movie.Title, Me.tMovie.ListTitle)
+            ElseIf Not IsNothing(Me.tMovieSet) Then
+                Title = Me.tMovieSet.SetName
+            Else
+                Title = String.Empty
+            End If
+
             If Me.DLType = Enums.MovieImageType.Poster Then
-                Me.Text = String.Concat(Master.eLang.GetString(877, "Select Poster"), " - ", If(Not String.IsNullOrEmpty(Me.tMovie.Movie.Title), Me.tMovie.Movie.Title, Me.tMovie.ListTitle))
+                Me.Text = String.Concat(Master.eLang.GetString(877, "Select Poster"), " - ", Title)
                 Me.pnlDwld.Visible = True
                 Me.cbFilterSize.Items.Clear()
                 Me.cbFilterSize.Items.AddRange(New String() {Master.eLang.GetString(569, "All"), Master.eLang.GetString(322, "X-Large"), Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small"), Master.eLang.GetString(558, "Wide")})
             ElseIf Me.DLType = Enums.MovieImageType.Banner Then
-                Me.Text = String.Concat(Master.eLang.GetString(1064, "Select Banner"), " - ", If(Not String.IsNullOrEmpty(Me.tMovie.Movie.Title), Me.tMovie.Movie.Title, Me.tMovie.ListTitle))
+                Me.Text = String.Concat(Master.eLang.GetString(1064, "Select Banner"), " - ", Title)
                 Me.pnlDwld.Visible = True
                 Me.cbFilterSize.Items.Clear()
                 Me.cbFilterSize.Items.AddRange(New String() {Master.eLang.GetString(569, "All"), Master.eLang.GetString(322, "X-Large"), Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small"), Master.eLang.GetString(558, "Wide")})
             ElseIf Me.DLType = Enums.MovieImageType.Landscape Then
-                Me.Text = String.Concat(Master.eLang.GetString(1065, "Select Landscape"), " - ", If(Not String.IsNullOrEmpty(Me.tMovie.Movie.Title), Me.tMovie.Movie.Title, Me.tMovie.ListTitle))
+                Me.Text = String.Concat(Master.eLang.GetString(1065, "Select Landscape"), " - ", Title)
                 Me.pnlDwld.Visible = True
                 Me.cbFilterSize.Items.Clear()
                 Me.cbFilterSize.Items.AddRange(New String() {Master.eLang.GetString(569, "All"), Master.eLang.GetString(322, "X-Large"), Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small"), Master.eLang.GetString(558, "Wide")})
             ElseIf Me.DLType = Enums.MovieImageType.Fanart Then
-                Me.Text = String.Concat(Master.eLang.GetString(878, "Select Fanart"), " - ", If(Not String.IsNullOrEmpty(Me.tMovie.Movie.Title), Me.tMovie.Movie.Title, Me.tMovie.ListTitle))
+                Me.Text = String.Concat(Master.eLang.GetString(878, "Select Fanart"), " - ", Title)
                 Me.pnlDwld.Visible = True
                 Me.cbFilterSize.Items.Clear()
                 Me.cbFilterSize.Items.AddRange(New String() {Master.eLang.GetString(569, "All"), Master.eLang.GetString(322, "X-Large"), Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small")})
             ElseIf Me.DLType = Enums.MovieImageType.ClearArt Then
-                Me.Text = String.Concat(Master.eLang.GetString(1109, "Select ClearArt"), " - ", If(Not String.IsNullOrEmpty(Me.tMovie.Movie.Title), Me.tMovie.Movie.Title, Me.tMovie.ListTitle))
+                Me.Text = String.Concat(Master.eLang.GetString(1109, "Select ClearArt"), " - ", Title)
                 Me.pnlDwld.Visible = True
                 Me.cbFilterSize.Items.Clear()
                 Me.cbFilterSize.Items.AddRange(New String() {Master.eLang.GetString(569, "All"), Master.eLang.GetString(322, "X-Large"), Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small"), Master.eLang.GetString(558, "Wide")})
             ElseIf Me.DLType = Enums.MovieImageType.ClearLogo Then
-                Me.Text = String.Concat(Master.eLang.GetString(1110, "Select ClearLogo"), " - ", If(Not String.IsNullOrEmpty(Me.tMovie.Movie.Title), Me.tMovie.Movie.Title, Me.tMovie.ListTitle))
+                Me.Text = String.Concat(Master.eLang.GetString(1110, "Select ClearLogo"), " - ", Title)
                 Me.pnlDwld.Visible = True
                 Me.cbFilterSize.Items.Clear()
                 Me.cbFilterSize.Items.AddRange(New String() {Master.eLang.GetString(569, "All"), Master.eLang.GetString(322, "X-Large"), Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small"), Master.eLang.GetString(558, "Wide")})
             ElseIf Me.DLType = Enums.MovieImageType.DiscArt Then
-                Me.Text = String.Concat(Master.eLang.GetString(1111, "Select DiscArt"), " - ", If(Not String.IsNullOrEmpty(Me.tMovie.Movie.Title), Me.tMovie.Movie.Title, Me.tMovie.ListTitle))
+                Me.Text = String.Concat(Master.eLang.GetString(1111, "Select DiscArt"), " - ", Title)
                 Me.pnlDwld.Visible = True
                 Me.cbFilterSize.Items.Clear()
                 Me.cbFilterSize.Items.AddRange(New String() {Master.eLang.GetString(569, "All"), Master.eLang.GetString(322, "X-Large"), Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small"), Master.eLang.GetString(558, "Wide")})

@@ -64,7 +64,8 @@ Public Class dlgFIStreamEditor
 
                     'cocotus, 2013/02 Added support for new MediaInfo-fields
                     'Display new fields in Streameditor
-                    txtVideoMultiview.Text = movie.StreamDetails.Video(idx).MultiView
+                    txtVideoMultiViewCount.Text = movie.StreamDetails.Video(idx).MultiViewCount
+                    txtVideoMultiViewLayout.Text = movie.StreamDetails.Video(idx).MultiViewLayout
                     txtVideoBitrate.Text = movie.StreamDetails.Video(idx).Bitrate
                     txtEncodingSettings.Text = movie.StreamDetails.Video(idx).EncodedSettings
                     'cocotus end
@@ -121,7 +122,8 @@ Public Class dlgFIStreamEditor
                     'cocotus, 2013/02 Added support for new MediaInfo-fields
                     'Save edits of new fields
                     stream_v.Bitrate = txtVideoBitrate.Text
-                    stream_v.MultiView = txtVideoMultiview.Text
+                    stream_v.MultiViewCount = txtVideoMultiViewCount.Text
+                    stream_v.MultiViewLayout = txtVideoMultiViewLayout.Text
                     'cocotus end
 
                     If Not cbVideoLanguage.SelectedItem Is Nothing Then stream_v.LongLanguage = cbVideoLanguage.SelectedItem.ToString
@@ -189,6 +191,8 @@ Public Class dlgFIStreamEditor
         Me.lblVideoCodec.Text = Master.eLang.GetString(604, "Codec")
         Me.lblVideoDuration.Text = Master.eLang.GetString(609, "Duration")
         Me.lblVideoHeight.Text = Master.eLang.GetString(607, "Height")
+        Me.lblVideoMultiViewCount.Text = Master.eLang.GetString(1156, "MultiView Count")
+        Me.lblVideoMultiViewLayout.Text = Master.eLang.GetString(1157, "MultiView Layout")
         Me.lblVideoWidth.Text = Master.eLang.GetString(606, "Width")
         Me.gbAudioStreams.Text = Master.eLang.GetString(596, "Audio Streams")
         Me.lblAudioChannels.Text = Master.eLang.GetString(611, "Channels")

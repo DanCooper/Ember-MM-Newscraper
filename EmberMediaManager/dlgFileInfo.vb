@@ -233,9 +233,10 @@ Public Class dlgFileInfo
                 i.SubItems.Add(Master.eLang.GetString(610, "Language"))
 
                 'cocotus, 2013/02 Added support for new MediaInfo-fields
-                i.SubItems.Add("Bitrate")
-                i.SubItems.Add("MultiView")
-                i.SubItems.Add("EncodingSettings")
+                i.SubItems.Add(Master.eLang.GetString(1158, "Bitrate"))
+                i.SubItems.Add(Master.eLang.GetString(1156, "MultiView Count"))
+                i.SubItems.Add(Master.eLang.GetString(1157, "MultiView Layout"))
+                i.SubItems.Add(Master.eLang.GetString(1159, "Encoding Settings"))
                 'cocotus end
 
                 g.Items.Add(i)
@@ -258,7 +259,8 @@ Public Class dlgFileInfo
 
                         'cocotus, 2013/02 Added support for new MediaInfo-fields
                         i.SubItems.Add(v.Bitrate)
-                        i.SubItems.Add(v.MultiView)
+                        i.SubItems.Add(v.MultiViewCount)
+                        i.SubItems.Add(v.MultiViewLayout)
                         i.SubItems.Add(v.EncodedSettings)
                         'cocotus end
 

@@ -104,6 +104,8 @@ Partial Class dlgEditMovieSet
         Me.lblTitle = New System.Windows.Forms.Label()
         Me.lbMoviesInDB = New System.Windows.Forms.ListBox()
         Me.tcEditMovie = New System.Windows.Forms.TabControl()
+        Me.txtCollectionID = New System.Windows.Forms.TextBox()
+        Me.lblCollectionID = New System.Windows.Forms.Label()
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tpFanart.SuspendLayout()
@@ -837,6 +839,8 @@ Partial Class dlgEditMovieSet
         '
         'tpDetails
         '
+        Me.tpDetails.Controls.Add(Me.txtCollectionID)
+        Me.tpDetails.Controls.Add(Me.lblCollectionID)
         Me.tpDetails.Controls.Add(Me.btnLoadMoviesFromDB)
         Me.tpDetails.Controls.Add(Me.btnMovieAdd)
         Me.tpDetails.Controls.Add(Me.lblMoviesInDB)
@@ -1094,6 +1098,25 @@ Partial Class dlgEditMovieSet
         Me.tcEditMovie.Size = New System.Drawing.Size(844, 517)
         Me.tcEditMovie.TabIndex = 3
         '
+        'txtCollectionID
+        '
+        Me.txtCollectionID.BackColor = System.Drawing.SystemColors.Window
+        Me.txtCollectionID.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.txtCollectionID.Location = New System.Drawing.Point(345, 22)
+        Me.txtCollectionID.Name = "txtCollectionID"
+        Me.txtCollectionID.Size = New System.Drawing.Size(79, 22)
+        Me.txtCollectionID.TabIndex = 43
+        '
+        'lblCollectionID
+        '
+        Me.lblCollectionID.AutoSize = True
+        Me.lblCollectionID.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblCollectionID.Location = New System.Drawing.Point(343, 7)
+        Me.lblCollectionID.Name = "lblCollectionID"
+        Me.lblCollectionID.Size = New System.Drawing.Size(76, 13)
+        Me.lblCollectionID.TabIndex = 42
+        Me.lblCollectionID.Text = "Collection ID:"
+        '
         'dlgEditMovieSet
         '
         Me.AcceptButton = Me.OK_Button
@@ -1220,5 +1243,7 @@ Partial Class dlgEditMovieSet
     Friend WithEvents lbMoviesInDB As System.Windows.Forms.ListBox
     Friend WithEvents btnMovieAdd As System.Windows.Forms.Button
     Friend WithEvents btnLoadMoviesFromDB As System.Windows.Forms.Button
+    Friend WithEvents txtCollectionID As System.Windows.Forms.TextBox
+    Friend WithEvents lblCollectionID As System.Windows.Forms.Label
 
 End Class

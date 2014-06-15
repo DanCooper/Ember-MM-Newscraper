@@ -233,7 +233,9 @@ Public Class Interfaces
 
         Sub SaveSetupScraper(ByVal DoDispose As Boolean)
 
-        Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image), Optional ByVal isMovieSet As Boolean = False) As Interfaces.ModuleResult
+        Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult
+
+        Function Scraper(ByRef DBMovieSet As Structures.DBMovieSet, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult
 
 #End Region 'Methods
 

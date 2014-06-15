@@ -40,6 +40,7 @@ Partial Class dlgFileInfo
         Me.ColumnHeader8 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader9 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader10 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader11 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.btnRemoveSet = New System.Windows.Forms.Button()
         Me.btnEditSet = New System.Windows.Forms.Button()
         Me.btnNewSet = New System.Windows.Forms.Button()
@@ -62,7 +63,7 @@ Partial Class dlgFileInfo
         Me.lvStreams.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.lvStreams.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2, Me.ColumnHeader3, Me.ColumnHeader4, Me.ColumnHeader5, Me.ColumnHeader6, Me.ColumnHeader7, Me.ColumnHeader8, Me.ColumnHeader9, Me.ColumnHeader10})
+        Me.lvStreams.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2, Me.ColumnHeader3, Me.ColumnHeader4, Me.ColumnHeader5, Me.ColumnHeader6, Me.ColumnHeader7, Me.ColumnHeader8, Me.ColumnHeader9, Me.ColumnHeader10, Me.ColumnHeader11})
         Me.lvStreams.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lvStreams.FullRowSelect = True
         ListViewGroup1.Header = "Video Streams"
@@ -128,7 +129,11 @@ Partial Class dlgFileInfo
         '
         'ColumnHeader10
         '
-        Me.ColumnHeader10.Width = 80
+        Me.ColumnHeader10.Width = 90
+        '
+        'ColumnHeader11
+        '
+        Me.ColumnHeader11.Width = 90
         '
         'btnRemoveSet
         '
@@ -233,5 +238,6 @@ Partial Class dlgFileInfo
     Friend WithEvents ColumnHeader8 As System.Windows.Forms.ColumnHeader
     Friend WithEvents ColumnHeader9 As System.Windows.Forms.ColumnHeader
     Friend WithEvents ColumnHeader10 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents ColumnHeader11 As System.Windows.Forms.ColumnHeader
 
 End Class

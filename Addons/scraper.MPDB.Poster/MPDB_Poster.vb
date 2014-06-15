@@ -143,14 +143,16 @@ Public Class MPDB_Poster
         ConfigScrapeModifier.Poster = AdvancedSettings.GetBooleanSetting("DoPoster", True)
     End Sub
 
-    Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image), Optional ByVal isMovieSet As Boolean = False) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule_Poster.Scraper
+    Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule_Poster.Scraper
 
         LoadSettings()
 
-        If Not isMovieSet Then
-            ImageList = MPDB.GetMPDBPosters(DBMovie.Movie.IMDBID)
-        End If
+        ImageList = MPDB.GetMPDBPosters(DBMovie.Movie.IMDBID)
 
+        Return New Interfaces.ModuleResult With {.breakChain = False}
+    End Function
+
+    Function Scraper(ByRef DBMovieSet As Structures.DBMovieSet, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule_Poster.Scraper
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
