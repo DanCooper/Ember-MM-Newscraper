@@ -412,7 +412,6 @@ Public Class dlgImgSelect
         '\\
         Try
             Dim sStatus As String = e.UserState.ToString
-            'Debug.Print("{0} {1}", e.ProgressPercentage, sStatus)
             Me.lblDL1Status.Text = String.Format(Master.eLang.GetString(886, "Downloading {0}"), If(sStatus.Length > 40, StringUtils.TruncateURL(sStatus, 40), sStatus))
             Me.pbDL1.Value = e.ProgressPercentage
             Me.Refresh()
@@ -890,7 +889,6 @@ Public Class dlgImgSelect
             For Each TMDBPoster As MediaContainers.Image In _ImageList.Where(Function(f) f.ParentID = ParentID)
                 If Not (TMDBPoster.Width = "n/a") AndAlso Not (TMDBPoster.Height = "n/a") Then
                     If Me.DLType = Enums.MovieImageType.Poster Then
-                        'Debug.Print("{0}  {1} {2}", TMDBPoster.Description, TMDBPoster.URL, TMDBPoster.ParentID)
                         Select Case TMDBPoster.Description
                             Case Master.eSize.poster_names(5).description
                                 ' xlarge

@@ -416,7 +416,6 @@ Public Class Database
                 doAddColumnDisplaySE = True
                 Using SQLreader As SQLite.SQLiteDataReader = SQLpathcommand.ExecuteReader
                     While SQLreader.Read
-                        'Debug.Print(SQLreader("name").ToString.ToLower())
                         If SQLreader("name").ToString.ToLower = "playcount" Then
                             'Column does exist in current database of Ember --> asume: if one columns missing, all new mediainfo columns must be added
                             doAddColumns = False
@@ -432,7 +431,7 @@ Public Class Database
                     End While
                 End Using
             Catch ex As Exception
-                'TODO
+                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             End Try
 
             SQLpathcommand.CommandText = "pragma table_info(Movies);"
@@ -444,7 +443,6 @@ Public Class Database
                 doAddColumnTMDBColID = True
                 Using SQLreader As SQLite.SQLiteDataReader = SQLpathcommand.ExecuteReader
                     While SQLreader.Read
-                        'Debug.Print(SQLreader("name").ToString.ToLower())
                         If SQLreader("name").ToString.ToLower = "efanartspath" Then
                             'Column does exist in current database of Ember --> asume: if one columns missing, all new columns must be added
                             doAddColumnMovies = False
@@ -468,7 +466,7 @@ Public Class Database
                     End While
                 End Using
             Catch ex As Exception
-                'TODO
+                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             End Try
 
             SQLpathcommand.CommandText = "pragma table_info(TVShows);"
@@ -478,7 +476,6 @@ Public Class Database
                 doAddColumnTVShowEFanarts = True
                 Using SQLreader As SQLite.SQLiteDataReader = SQLpathcommand.ExecuteReader
                     While SQLreader.Read
-                        'Debug.Print(SQLreader("name").ToString.ToLower())
                         If SQLreader("name").ToString.ToLower = "hasbanner" Then
                             'Column does exist in current database of Ember --> asume: if one columns missing, all new columns must be added
                             doAddColumnTVBannerAndLandscape = False
@@ -492,7 +489,7 @@ Public Class Database
                     End While
                 End Using
             Catch ex As Exception
-                'TODO
+                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             End Try
 
             SQLpathcommand.CommandText = "pragma table_info(Sets);"
@@ -500,7 +497,6 @@ Public Class Database
                 doAddColumnMovieSetsImages = True
                 Using SQLreader As SQLite.SQLiteDataReader = SQLpathcommand.ExecuteReader
                     While SQLreader.Read
-                        'Debug.Print(SQLreader("name").ToString.ToLower())
                         If SQLreader("name").ToString.ToLower = "HasNfo" Then
                             'Column does exist in current database of Ember --> asume: if one columns missing, all new columns must be added
                             doAddColumnMovieSetsImages = False
@@ -508,7 +504,7 @@ Public Class Database
                     End While
                 End Using
             Catch ex As Exception
-                'TODO
+                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             End Try
 
             SQLpathcommand.CommandText = "pragma table_info(MoviesVStreams);"
@@ -516,7 +512,6 @@ Public Class Database
                 doAddColumnVStreamMultiviewLayout = True
                 Using SQLreader As SQLite.SQLiteDataReader = SQLpathcommand.ExecuteReader
                     While SQLreader.Read
-                        'Debug.Print(SQLreader("name").ToString.ToLower())
                         If SQLreader("name").ToString.ToLower = "MultiViewLayout" Then
                             'Column does exist in current database of Ember --> asume: if one columns missing, all new columns must be added
                             doAddColumnVStreamMultiviewLayout = False
@@ -524,7 +519,7 @@ Public Class Database
                     End While
                 End Using
             Catch ex As Exception
-                'TODO
+                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
             End Try
 
             'Now add new columns to current database if needed
@@ -629,6 +624,7 @@ Public Class Database
                         SQLpathcommand.CommandText = sqlstatement
                         SQLpathcommand.ExecuteNonQuery()
                     Catch ex As Exception
+                        logger.ErrorException(New StackFrame().GetMethod().Name, ex)
                         'TODO ugly to rely on exception but will do the job
                         'Happens when column does exist (duplicate columns)
                     End Try

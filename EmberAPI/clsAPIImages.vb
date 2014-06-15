@@ -822,7 +822,6 @@ Public Class Images
     ''' <param name="sPath">Path to the image file</param>
     ''' <remarks></remarks>
     Public Sub FromFile(ByVal sPath As String)
-        'Debug.Print("FromFile/t{0}", sPath)
         If Not IsNothing(Me._ms) Then
             Me._ms.Dispose()
         End If
@@ -859,7 +858,6 @@ Public Class Images
 
         Try
             sHTTP.StartDownloadImage(sURL)
-            'Debug.Print("FromWeb/t{0}", sURL)
             While sHTTP.IsDownloading
                 Application.DoEvents()
                 Threading.Thread.Sleep(50)
@@ -995,24 +993,12 @@ Public Class Images
     End Function
 
     Public Sub ResizeExtraFanart(ByVal fromPath As String, ByVal toPath As String)
-        'Debug.Print("---------- ResizeExtraThumb ----------")
         Me.FromFile(fromPath)
-        'If Not Master.eSettings.ETNative Then
-        '	Dim iWidth As Integer = Master.eSettings.ETWidth
-        '	Dim iHeight As Integer = Master.eSettings.ETHeight
-        '	ImageUtils.ResizeImage(_image, iWidth, iHeight, Master.eSettings.ETPadding, Color.Black.ToArgb)
-        'End If
         Me.Save(toPath)
     End Sub
 
     Public Sub ResizeExtraThumb(ByVal fromPath As String, ByVal toPath As String)
-        'Debug.Print("---------- ResizeExtraThumb ----------")
         Me.FromFile(fromPath)
-        'If Not Master.eSettings.ETNative Then
-        '	Dim iWidth As Integer = Master.eSettings.ETWidth
-        '	Dim iHeight As Integer = Master.eSettings.ETHeight
-        '	ImageUtils.ResizeImage(_image, iWidth, iHeight, Master.eSettings.ETPadding, Color.Black.ToArgb)
-        'End If
         Me.Save(toPath)
     End Sub
     ''' <summary>

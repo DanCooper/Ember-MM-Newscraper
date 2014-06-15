@@ -58,11 +58,10 @@ Namespace MPDB
                         ' there are a lot of duplicates in the page.
                         Dim x = From MI As MediaContainers.Image In alPosters Where (MI.ParentID = ParentID)
                         If x.Count > 0 Then
-                            'Debug.Print("Duplicate {0} ", PosterURL)
+                            logger.Trace("Duplicate {0} ", PosterURL)
                         Else
                             PosterURL = mPoster.Value.Remove(mPoster.Value.LastIndexOf("/") + 1, 1)
                             PosterURL = PosterURL.Insert(mPoster.Value.LastIndexOf("/") + 1, "l")
-                            'Debug.Print(PosterURL)
                             ' url are like> http://www.movieposterdb.com/posters/10_08/2009/499549/l_499549_43475538.jpg
                             'the parent id is the part AFTER the l_
                             ' all poster have the same size
