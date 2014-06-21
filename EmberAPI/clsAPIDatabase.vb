@@ -182,7 +182,7 @@ Public Class Database
             End Using
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
     ''' <summary>
@@ -201,7 +201,7 @@ Public Class Database
             If Not BatchMode Then SQLTrans.Commit()
             SQLTrans = Nothing
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         If SQLTrans IsNot Nothing Then SQLTrans.Dispose()
     End Sub
@@ -245,7 +245,7 @@ Public Class Database
                 End Using
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
     ''' <summary>
@@ -282,7 +282,7 @@ Public Class Database
 
             connection.Close()
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "There was a problem closing the media database.", ex)
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "There was a problem closing the media database.", ex)
         Finally
             connection.Dispose()
         End Try
@@ -333,7 +333,7 @@ Public Class Database
             _myvideosDBConn = New SQLiteConnection(String.Format(_connStringTemplate, myvideosDBFile))
             _myvideosDBConn.Open()
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "Unable to open media database connection.", ex)
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "Unable to open media database connection.", ex)
         End Try
 
         Try
@@ -361,7 +361,7 @@ Public Class Database
                         _myvideosDBConn = New SQLiteConnection(String.Format(_connStringTemplate, myvideosDBFile))
                         _myvideosDBConn.Open()
                     Catch ex As Exception
-                        logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "Unable to open media database connection.", ex)
+                        logger.Error(New StackFrame().GetMethod().Name & vbTab & "Unable to open media database connection.", ex)
                     End Try
 
                     Dim sqlCommand As String = My.Resources.MyVideosDBSQL_v2
@@ -376,7 +376,7 @@ Public Class Database
                 End If
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "Error creating database", ex)
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "Error creating database", ex)
             File.Delete(myvideosDBFile)
         End Try
         Return isNew
@@ -431,7 +431,7 @@ Public Class Database
                     End While
                 End Using
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
 
             SQLpathcommand.CommandText = "pragma table_info(Movies);"
@@ -466,7 +466,7 @@ Public Class Database
                     End While
                 End Using
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
 
             SQLpathcommand.CommandText = "pragma table_info(TVShows);"
@@ -489,7 +489,7 @@ Public Class Database
                     End While
                 End Using
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
 
             SQLpathcommand.CommandText = "pragma table_info(Sets);"
@@ -504,7 +504,7 @@ Public Class Database
                     End While
                 End Using
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
 
             SQLpathcommand.CommandText = "pragma table_info(MoviesVStreams);"
@@ -519,7 +519,7 @@ Public Class Database
                     End While
                 End Using
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
 
             'Now add new columns to current database if needed
@@ -624,7 +624,7 @@ Public Class Database
                         SQLpathcommand.CommandText = sqlstatement
                         SQLpathcommand.ExecuteNonQuery()
                     Catch ex As Exception
-                        logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                        logger.Error(New StackFrame().GetMethod().Name, ex)
                         'TODO ugly to rely on exception but will do the job
                         'Happens when column does exist (duplicate columns)
                     End Try
@@ -708,7 +708,7 @@ Public Class Database
             End Using
             If Not BatchMode Then SQLtransaction.Commit()
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
             Return False
         End Try
         Return True
@@ -757,7 +757,7 @@ Public Class Database
             End Using
             If Not BatchMode Then SQLtransaction.Commit()
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
             Return False
         End Try
         Return True
@@ -814,7 +814,7 @@ Public Class Database
                 Master.DB.CleanSeasons()
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
             Return False
         End Try
         Return True
@@ -871,7 +871,7 @@ Public Class Database
             End Using
             If Not BatchMode Then SQLtransaction.Commit()
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
             Return False
         End Try
         Return True
@@ -905,7 +905,7 @@ Public Class Database
 
             If Not BatchMode Then SQLtransaction.Commit()
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
             Return False
         End Try
         Return True
@@ -940,7 +940,7 @@ Public Class Database
 
             If Not BatchMode Then SQLtransaction.Commit()
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
             Return False
         End Try
         Return True
@@ -958,7 +958,7 @@ Public Class Database
             Dim sqlCB As New SQLite.SQLiteCommandBuilder(sqlDA)
             sqlDA.Fill(dTable)
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
     ''' <summary>
@@ -1222,7 +1222,7 @@ Public Class Database
                 End Using
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
             _movieDB.ID = -1
         End Try
         Return _movieDB
@@ -1247,7 +1247,7 @@ Public Class Database
                 End Using
             End Using
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return New Structures.DBMovie With {.Id = -1}
     End Function
@@ -1299,7 +1299,7 @@ Public Class Database
             End Using
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return _moviesetDB
     End Function
@@ -1337,7 +1337,7 @@ Public Class Database
             If WithShow Then Master.DB.FillTVShowFromDB(_TVDB)
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return _TVDB
     End Function
@@ -1483,7 +1483,7 @@ Public Class Database
             End If
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
             _TVDB.EpID = -1
         End Try
         Return _TVDB
@@ -1507,7 +1507,7 @@ Public Class Database
                 End Using
             End Using
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return New Structures.DBTV With {.EpID = -1}
     End Function
@@ -1561,7 +1561,7 @@ Public Class Database
             End Using
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return _TVDB
     End Function
@@ -1635,7 +1635,7 @@ Public Class Database
             End Using
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
             _TVDB.ShowID = -1
         End Try
         Return _TVDB
@@ -2220,7 +2220,7 @@ Public Class Database
             If Not BatchMode Then SQLtransaction.Commit()
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return _movieDB
     End Function
@@ -2319,7 +2319,7 @@ Public Class Database
             If Not BatchMode Then SQLtransaction.Commit()
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return _moviesetDB
     End Function
@@ -2615,7 +2615,7 @@ Public Class Database
             If Not BatchMode Then SQLtransaction.Commit()
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
     ''' <summary>
@@ -2670,7 +2670,7 @@ Public Class Database
             If Not BatchMode Then SQLtransaction.Commit()
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
     ''' <summary>
@@ -2839,7 +2839,7 @@ Public Class Database
             If Not BatchMode Then SQLtransaction.Commit()
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
     ''' <summary>
@@ -2860,13 +2860,13 @@ Public Class Database
                             tvsource.Path = SQLreader("Path").ToString
                             Master.TVSources.Add(tvsource)
                         Catch ex As Exception
-                            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                            logger.Error(New StackFrame().GetMethod().Name, ex)
                         End Try
                     End While
                 End Using
             End Using
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
     ''' <summary>
@@ -2890,13 +2890,13 @@ Public Class Database
                             msource.IsSingle = Convert.ToBoolean(SQLreader("Single"))
                             Master.MovieSources.Add(msource)
                         Catch ex As Exception
-                            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                            logger.Error(New StackFrame().GetMethod().Name, ex)
                         End Try
                     End While
                 End Using
             End Using
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
     ''' <summary>
@@ -2916,13 +2916,13 @@ Public Class Database
                         Try ' Parsing database entry may fail. If it does, log the error and ignore the entry but continue processing
                             Paths.Add(SQLreader("MoviePath").ToString)
                         Catch ex As Exception
-                            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                            logger.Error(New StackFrame().GetMethod().Name, ex)
                         End Try
                     End While
                 End Using
             End Using
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Return Paths
@@ -2943,7 +2943,7 @@ Public Class Database
     '        _jobsDBConn = New SQLiteConnection(String.Format(_connStringTemplate, jobsDBFile))
     '        _jobsDBConn.Open()
     '    Catch ex As Exception
-    '        logger.ErrorException(GetType(Database),ex.ToString, _
+    '        logger.Error(GetType(Database),ex.ToString, _
     '                                    ex.StackTrace, _
     '                                    "Unable to open media database connection.")
     '    End Try
@@ -2984,7 +2984,7 @@ Public Class Database
                 End If
             End Using
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return 0
     End Function
@@ -3025,7 +3025,7 @@ Public Class Database
                 SQLtransaction.Commit()
             End Using
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return Not needRestart
     End Function
@@ -3070,7 +3070,7 @@ Public Class Database
                 SQLtransaction.Commit()
             End Using
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
     ''' <summary>

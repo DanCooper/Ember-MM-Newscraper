@@ -150,7 +150,7 @@ Public Class dlgTMDBSearchResults
                 _PosterCache.Add(Res.IMDBId, CType(Res.Result.Clone, Image))
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         Finally
             pnlPicStatus.Visible = False
         End Try
@@ -228,7 +228,7 @@ Public Class dlgTMDBSearchResults
                 Me.pnlTop.BackgroundImage = iBackground
             End Using
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -245,7 +245,7 @@ Public Class dlgTMDBSearchResults
             'End If
             Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Me.Close()
@@ -301,7 +301,7 @@ Public Class dlgTMDBSearchResults
                 End If
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -330,7 +330,7 @@ Public Class dlgTMDBSearchResults
             Me.pnlLoading.Visible = False
             chkManual.Enabled = True
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -430,7 +430,7 @@ Public Class dlgTMDBSearchResults
             End If
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -462,7 +462,7 @@ Public Class dlgTMDBSearchResults
                 Return DirectCast(bin.Deserialize(mem), MediaContainers.Movie)
             End Using
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Return Nothing

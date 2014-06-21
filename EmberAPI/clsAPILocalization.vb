@@ -213,7 +213,7 @@ Public Class Localization
             End If
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -281,7 +281,7 @@ Public Class Localization
             Master.eSettings.GenreFilter = Master.eSettings.GenreFilter.Replace(_old_all, _all)
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 

@@ -180,7 +180,7 @@ Public Class Trailers
                 End If
             Next
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
     ''' <summary>
@@ -313,7 +313,7 @@ Public Class Trailers
                 End If
             Next
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
     End Function
     ''' <summary>
@@ -398,7 +398,7 @@ Public Class Trailers
                 End If
             End With
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
             Return False
         End Try
     End Function

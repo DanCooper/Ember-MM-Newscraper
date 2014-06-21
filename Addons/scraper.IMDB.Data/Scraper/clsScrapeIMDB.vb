@@ -327,7 +327,7 @@ Namespace IMDB
                                                 End If
                                             End If
                                         Catch ex As Exception
-                                            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                                            logger.Error(New StackFrame().GetMethod().Name, ex)
                                         End Try
 
                                     End If
@@ -740,7 +740,7 @@ mPlot:          'MOVIE PLOT
 
                 Return True
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
                 Return False
             End Try
         End Function
@@ -854,7 +854,7 @@ mPlot:          'MOVIE PLOT
                     Return New MediaContainers.Movie
                 End If
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
                 Return New MediaContainers.Movie
             End Try
         End Function
@@ -889,7 +889,7 @@ mPlot:          'MOVIE PLOT
                                            .Parameter = imdbID, .IMDBMovie = IMDBMovie, .Options = Options})
                 End If
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         End Sub
 
@@ -901,7 +901,7 @@ mPlot:          'MOVIE PLOT
                     bwIMDB.RunWorkerAsync(New Arguments With {.Search = SearchType.Movies, .Parameter = sMovie, .Options = filterOptions})
                 End If
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         End Sub
 
@@ -918,7 +918,7 @@ mPlot:          'MOVIE PLOT
                         e.Result = New Results With {.ResultType = SearchType.SearchDetails, .Success = s}
                 End Select
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         End Sub
 
@@ -934,7 +934,7 @@ mPlot:          'MOVIE PLOT
                         RaiseEvent SearchMovieInfoDownloaded(sPoster, Res.Success)
                 End Select
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         End Sub
 
@@ -946,7 +946,7 @@ mPlot:          'MOVIE PLOT
 
                 If sString.EndsWith("""") Then CleanString = CleanString.Remove(CleanString.Length - 1, 1)
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
             Return CleanString
         End Function
@@ -986,7 +986,7 @@ mPlot:          'MOVIE PLOT
 
                 Return fTitle
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
                 Return fTitle
             End Try
         End Function
@@ -1107,7 +1107,7 @@ mExact:
 mResult:
                 Return R
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
                 Return Nothing
             End Try
         End Function

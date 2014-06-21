@@ -58,7 +58,7 @@ Public Class dlgEditEpisode
                 Me.lvActors.Select()
             End If
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -74,7 +74,7 @@ Public Class dlgEditEpisode
                 lvItem.SubItems.Add(eActor.Thumb)
             End If
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -90,7 +90,7 @@ Public Class dlgEditEpisode
                 Me.FillInfo()
             End If
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -193,7 +193,7 @@ Public Class dlgEditEpisode
                 End If
             End With
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -217,7 +217,7 @@ Public Class dlgEditEpisode
             End If
 
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -229,7 +229,7 @@ Public Class dlgEditEpisode
                 End While
             End If
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -293,7 +293,7 @@ Public Class dlgEditEpisode
                 eActor = Nothing
             End If
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -375,7 +375,7 @@ Public Class dlgEditEpisode
             ' Perform the sort with these new sort options.
             Me.lvActors.Sort()
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -392,7 +392,7 @@ Public Class dlgEditEpisode
             Me.CleanUp()
 
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
 
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
@@ -447,7 +447,7 @@ Public Class dlgEditEpisode
             Single.TryParse(Me.tmpRating, tmpDBL)
             Me.BuildStars(tmpDBL)
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -461,7 +461,7 @@ Public Class dlgEditEpisode
                 Me.BuildStars(2)
             End If
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -475,7 +475,7 @@ Public Class dlgEditEpisode
             Single.TryParse(Me.tmpRating, tmpDBL)
             Me.BuildStars(tmpDBL)
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -489,7 +489,7 @@ Public Class dlgEditEpisode
                 Me.BuildStars(4)
             End If
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -503,7 +503,7 @@ Public Class dlgEditEpisode
             Single.TryParse(Me.tmpRating, tmpDBL)
             Me.BuildStars(tmpDBL)
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -517,7 +517,7 @@ Public Class dlgEditEpisode
                 Me.BuildStars(6)
             End If
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -531,7 +531,7 @@ Public Class dlgEditEpisode
             Single.TryParse(Me.tmpRating, tmpDBL)
             Me.BuildStars(tmpDBL)
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -545,7 +545,7 @@ Public Class dlgEditEpisode
                 Me.BuildStars(8)
             End If
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -559,7 +559,7 @@ Public Class dlgEditEpisode
             Single.TryParse(Me.tmpRating, tmpDBL)
             Me.BuildStars(tmpDBL)
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -573,7 +573,7 @@ Public Class dlgEditEpisode
                 Me.BuildStars(10)
             End If
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -649,7 +649,7 @@ Public Class dlgEditEpisode
                 End If
             End With
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -734,7 +734,7 @@ Public Class dlgEditEpisode
                 End If
             End If
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -755,7 +755,7 @@ Public Class dlgEditEpisode
                 End If
             End Using
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -778,7 +778,7 @@ Public Class dlgEditEpisode
                 End If
             End If
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -799,7 +799,7 @@ Public Class dlgEditEpisode
                 End If
             End Using
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 

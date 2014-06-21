@@ -547,7 +547,7 @@ Public Class ModulesManager
                 Try
                     ret = _externalScraperModule.ProcessorModule.Scraper(DBMovie, ScrapeType, Options)
                 Catch ex As Exception
-                    logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "Error scraping movie data using <" & _externalScraperModule.ProcessorModule.ModuleName & ">", ex)
+                    logger.Error(New StackFrame().GetMethod().Name & vbTab & "Error scraping movie data using <" & _externalScraperModule.ProcessorModule.ModuleName & ">", ex)
                 End Try
                 RemoveHandler _externalScraperModule.ProcessorModule.MovieScraperEvent, AddressOf Handler_MovieScraperEvent
                 If ret.breakChain Then Exit For
@@ -589,7 +589,7 @@ Public Class ModulesManager
                             Next
                         End If
                     Catch ex As Exception
-                        logger.ErrorException(New StackFrame().GetMethod().Name & "Error scraping movie images using <" & _externalScraperModule.ProcessorModule.ModuleName & ">", ex)
+                        logger.Error(New StackFrame().GetMethod().Name & "Error scraping movie images using <" & _externalScraperModule.ProcessorModule.ModuleName & ">", ex)
                     End Try
                     RemoveHandler _externalScraperModule.ProcessorModule.MovieScraperEvent, AddressOf Handler_MovieScraperEvent
                     If ret.breakChain Then Exit For
@@ -631,7 +631,7 @@ Public Class ModulesManager
                             Next
                         End If
                     Catch ex As Exception
-                        logger.ErrorException(New StackFrame().GetMethod().Name & "Error scraping movie images using <" & _externalScraperModule.ProcessorModule.ModuleName & ">", ex)
+                        logger.Error(New StackFrame().GetMethod().Name & "Error scraping movie images using <" & _externalScraperModule.ProcessorModule.ModuleName & ">", ex)
                     End Try
                     RemoveHandler _externalScraperModule.ProcessorModule.MovieScraperEvent, AddressOf Handler_MovieScraperEvent
                     If ret.breakChain Then Exit For
@@ -672,7 +672,7 @@ Public Class ModulesManager
                         Next
                     End If
                 Catch ex As Exception
-                    logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "Error scraping movie themes using <" & _externalScraperModule.ProcessorModule.ModuleName & ">", ex)
+                    logger.Error(New StackFrame().GetMethod().Name & vbTab & "Error scraping movie themes using <" & _externalScraperModule.ProcessorModule.ModuleName & ">", ex)
                 End Try
                 RemoveHandler _externalScraperModule.ProcessorModule.MovieScraperEvent, AddressOf Handler_MovieScraperEvent
                 If ret.breakChain Then Exit For
@@ -713,7 +713,7 @@ Public Class ModulesManager
                         Next
                     End If
                 Catch ex As Exception
-                    logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "Error scraping movie trailers using <" & _externalScraperModule.ProcessorModule.ModuleName & ">", ex)
+                    logger.Error(New StackFrame().GetMethod().Name & vbTab & "Error scraping movie trailers using <" & _externalScraperModule.ProcessorModule.ModuleName & ">", ex)
                 End Try
                 RemoveHandler _externalScraperModule.ProcessorModule.MovieScraperEvent, AddressOf Handler_MovieScraperEvent
                 If ret.breakChain Then Exit For
@@ -748,13 +748,13 @@ Public Class ModulesManager
                         logger.Trace("Could not run generic module <{0}>", _externalGenericModule.ProcessorModule.ModuleName)
                         ret = _externalGenericModule.ProcessorModule.RunGeneric(mType, _params, _refparam)
                     Catch ex As Exception
-                        logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "Error scraping movies images using <" & _externalGenericModule.ProcessorModule.ModuleName & ">", ex)
+                        logger.Error(New StackFrame().GetMethod().Name & vbTab & "Error scraping movies images using <" & _externalGenericModule.ProcessorModule.ModuleName & ">", ex)
                     End Try
                     If ret.breakChain OrElse RunOnlyOne Then Exit For
                 Next
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Return ret.Cancelled
@@ -848,7 +848,7 @@ Public Class ModulesManager
                 Try
                     _externalProcessorModule.ProcessorModule.Enabled = value
                 Catch ex As Exception
-                    logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "Could not set module <" & ModuleAssembly & "> to enabled status <" & value & ">", ex)
+                    logger.Error(New StackFrame().GetMethod().Name & vbTab & "Could not set module <" & ModuleAssembly & "> to enabled status <" & value & ">", ex)
                 End Try
             Next
         End If
@@ -875,7 +875,7 @@ Public Class ModulesManager
                 Try
                     _externalScraperModule.ProcessorModule.ScraperEnabled = value
                 Catch ex As Exception
-                    logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "Could not set module <" & ModuleAssembly & "> to enabled status <" & value & ">", ex)
+                    logger.Error(New StackFrame().GetMethod().Name & vbTab & "Could not set module <" & ModuleAssembly & "> to enabled status <" & value & ">", ex)
                 End Try
             Next
         End If
@@ -901,7 +901,7 @@ Public Class ModulesManager
                 Try
                     _externalScraperModule.ProcessorModule.ScraperEnabled = value
                 Catch ex As Exception
-                    logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "Could not set module <" & ModuleAssembly & "> to enabled status <" & value & ">", ex)
+                    logger.Error(New StackFrame().GetMethod().Name & vbTab & "Could not set module <" & ModuleAssembly & "> to enabled status <" & value & ">", ex)
                 End Try
             Next
         End If
@@ -921,7 +921,7 @@ Public Class ModulesManager
                 Try
                     _externalScraperModule.ProcessorModule.ScraperEnabled = value
                 Catch ex As Exception
-                    logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "Could not set module <" & ModuleAssembly & "> to enabled status <" & value & ">", ex)
+                    logger.Error(New StackFrame().GetMethod().Name & vbTab & "Could not set module <" & ModuleAssembly & "> to enabled status <" & value & ">", ex)
                 End Try
             Next
         End If
@@ -941,7 +941,7 @@ Public Class ModulesManager
                 Try
                     _externalScraperModule.ProcessorModule.ScraperEnabled = value
                 Catch ex As Exception
-                    logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "Could not set module <" & ModuleAssembly & "> to enabled status <" & value & ">", ex)
+                    logger.Error(New StackFrame().GetMethod().Name & vbTab & "Could not set module <" & ModuleAssembly & "> to enabled status <" & value & ">", ex)
                 End Try
             Next
         End If

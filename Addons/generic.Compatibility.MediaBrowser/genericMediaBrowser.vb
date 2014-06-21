@@ -154,7 +154,7 @@ Public Class genericMediaBrowser
                 End Select
 
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+                logger.Error(New StackFrame().GetMethod().Name,ex)
             End Try
         End If
     End Function

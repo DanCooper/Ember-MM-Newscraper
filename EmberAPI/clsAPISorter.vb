@@ -129,7 +129,7 @@ Public Class ListViewColumnSorter
                 Return 0
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
             Return 0
         End Try
     End Function

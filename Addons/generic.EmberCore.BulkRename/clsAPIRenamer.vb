@@ -241,7 +241,7 @@ Public Class FileFolderRenamer
 
             Return pattern.Trim
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
             Return String.Empty
         End Try
     End Function
@@ -289,7 +289,7 @@ Public Class FileFolderRenamer
                     MovieFile.MultiViewCount = String.Empty
                 End If
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+                logger.Error(New StackFrame().GetMethod().Name,ex)
             End Try
         Else
             MovieFile.AudioChannels = String.Empty
@@ -436,7 +436,7 @@ Public Class FileFolderRenamer
                     Return String.Empty
                 End If
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+                logger.Error(New StackFrame().GetMethod().Name,ex)
             End Try
         Else
             Return String.Empty
@@ -499,7 +499,7 @@ Public Class FileFolderRenamer
                                 End If
                                 DoUpdate = True
                             Catch ex As Exception
-                                logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "Dir: " & srcDir & " " & destDir, ex)
+                                logger.Error(New StackFrame().GetMethod().Name & vbTab & "Dir: " & srcDir & " " & destDir, ex)
                                 'Need to make some type of failure log
                                 Continue For
                             End Try
@@ -546,7 +546,7 @@ Public Class FileFolderRenamer
 
                                                 DoUpdate = True
                                             Catch ex As Exception
-                                                logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "File " & srcFile & " " & dstFile, ex)
+                                                logger.Error(New StackFrame().GetMethod().Name & vbTab & "File " & srcFile & " " & dstFile, ex)
                                                 'Need to make some type of failure log
                                             End Try
                                         End If
@@ -585,7 +585,7 @@ Public Class FileFolderRenamer
                 End If
             Next
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -668,7 +668,7 @@ Public Class FileFolderRenamer
                 f.IsRenamed = Not f.NewPath = f.Path OrElse Not f.NewFileName = f.FileName
             Next
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -827,7 +827,7 @@ Public Class FileFolderRenamer
 
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 

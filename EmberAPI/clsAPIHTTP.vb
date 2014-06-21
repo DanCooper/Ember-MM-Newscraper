@@ -166,7 +166,7 @@ Public Class HTTP
                 Me._responseuri = wrResponse.ResponseUri.ToString
             End Using
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & URL & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & URL & ">", ex)
         End Try
 
         Return sResponse
@@ -254,7 +254,7 @@ Public Class HTTP
                 Me._responseuri = wrResponse.ResponseUri.ToString
             End Using
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & URL & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & URL & ">", ex)
         End Try
 
         Return sResponse
@@ -373,7 +373,7 @@ Public Class HTTP
                 End If
             End Using
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & URL & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & URL & ">", ex)
             outFile = ""
         End Try
 
@@ -429,7 +429,7 @@ Public Class HTTP
                 End Using
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & Me._URL & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & Me._URL & ">", ex)
         End Try
     End Sub
 
@@ -453,7 +453,7 @@ Public Class HTTP
                 Return Functions.ReadStreamToEnd(wrResponse.GetResponseStream)
             End Using
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & URL & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & URL & ">", ex)
         End Try
 
         Return Nothing

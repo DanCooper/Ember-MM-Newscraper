@@ -100,7 +100,7 @@ Public Class Images
             _image = New Bitmap(_ms)
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
     '   ''' <summary>
@@ -126,7 +126,7 @@ Public Class Images
     '			Return Enums.FanartSize.Small
     '		End If
     '	Catch ex As Exception
-    '		logger.ErrorException(GetType(Images),ex.Message, ex.StackTrace, "Error")
+    '		logger.Error(GetType(Images),ex.Message, ex.StackTrace, "Error")
     '		Return Enums.FanartSize.Small
     '	End Try
     'End Function
@@ -157,7 +157,7 @@ Public Class Images
     '            Return Enums.PosterSize.Small
     '        End If
     '    Catch ex As Exception
-    '        logger.ErrorException(GetType(Images),ex.Message, ex.StackTrace, "Error")
+    '        logger.Error(GetType(Images),ex.Message, ex.StackTrace, "Error")
     '        Return Enums.PosterSize.Small
     '    End Try        
     'End Function
@@ -190,7 +190,7 @@ Public Class Images
             Try
                 File.Delete(sPath)
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "Param: <" & sPath & ">", ex)
+                logger.Error(New StackFrame().GetMethod().Name & vbTab & "Param: <" & sPath & ">", ex)
             End Try
         End If
     End Sub
@@ -209,7 +209,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -227,7 +227,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -245,7 +245,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -263,7 +263,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -281,7 +281,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -299,7 +299,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -317,7 +317,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & mMovie.Filename & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mMovie.Filename & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -335,7 +335,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & mMovie.Filename & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mMovie.Filename & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -353,7 +353,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & mMovie.Filename & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mMovie.Filename & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -371,7 +371,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & mMovie.Filename & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mMovie.Filename & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -389,7 +389,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & mMovie.Filename & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mMovie.Filename & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -407,7 +407,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & mMovie.Filename & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mMovie.Filename & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -425,7 +425,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & mMovie.Filename & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mMovie.Filename & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -443,7 +443,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & mMovieSet.SetName & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mMovieSet.SetName & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -461,7 +461,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & mMovieSet.SetName & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mMovieSet.SetName & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -479,7 +479,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & mMovieSet.SetName & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mMovieSet.SetName & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -497,7 +497,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & mMovieSet.SetName & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mMovieSet.SetName & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -515,7 +515,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & mMovieSet.SetName & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mMovieSet.SetName & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -533,7 +533,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & mMovieSet.SetName & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mMovieSet.SetName & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -551,7 +551,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & mMovieSet.SetName & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mMovieSet.SetName & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -576,7 +576,7 @@ Public Class Images
                     SeasonFirstEpisodePath = dtEpisodes.Rows(0).Item("TVEpPath").ToString
                 End If
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+                logger.Error(New StackFrame().GetMethod().Name,ex)
             End Try
 
             For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.TVModType.SeasonBanner)
@@ -585,7 +585,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -610,7 +610,7 @@ Public Class Images
                     SeasonFirstEpisodePath = dtEpisodes.Rows(0).Item("TVEpPath").ToString
                 End If
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+                logger.Error(New StackFrame().GetMethod().Name,ex)
             End Try
 
             For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.TVModType.SeasonFanart)
@@ -619,7 +619,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -644,7 +644,7 @@ Public Class Images
                     SeasonFirstEpisodePath = dtEpisodes.Rows(0).Item("TVEpPath").ToString
                 End If
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+                logger.Error(New StackFrame().GetMethod().Name,ex)
             End Try
 
             For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.TVModType.SeasonLandscape)
@@ -653,7 +653,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -678,7 +678,7 @@ Public Class Images
                     SeasonFirstEpisodePath = dtEpisodes.Rows(0).Item("TVEpPath").ToString
                 End If
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+                logger.Error(New StackFrame().GetMethod().Name,ex)
             End Try
 
             For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.TVModType.SeasonPoster)
@@ -687,7 +687,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -705,7 +705,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -723,7 +723,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -741,7 +741,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -759,7 +759,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -777,7 +777,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -795,7 +795,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -813,7 +813,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mShow.ShowPath & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -844,7 +844,7 @@ Public Class Images
                     _image = New Bitmap(Me._ms)
                 End Using
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & sPath & ">", ex)
+                logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & sPath & ">", ex)
             End Try
         End If
     End Sub
@@ -883,7 +883,7 @@ Public Class Images
             End If
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "<" & sURL & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & sURL & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -987,7 +987,7 @@ Public Class Images
                 End Select
             End With
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
             Return False
         End Try
     End Function
@@ -1084,7 +1084,7 @@ Public Class Images
                 If doesExist And fAttWritable Then File.SetAttributes(sPath, fAtt)
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
     ''' <summary>
@@ -1117,7 +1117,7 @@ Public Class Images
                     End If
                 Next
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+                logger.Error(New StackFrame().GetMethod().Name,ex)
             End Try
 
             For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.TVModType.AllSeasonsBanner)
@@ -1128,7 +1128,7 @@ Public Class Images
             Next
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
 
         Return strReturn
@@ -1163,7 +1163,7 @@ Public Class Images
                     End If
                 Next
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+                logger.Error(New StackFrame().GetMethod().Name,ex)
             End Try
 
             For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.TVModType.AllSeasonsFanart)
@@ -1174,7 +1174,7 @@ Public Class Images
             Next
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
 
         Return strReturn
@@ -1205,7 +1205,7 @@ Public Class Images
                     End If
                 Next
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+                logger.Error(New StackFrame().GetMethod().Name,ex)
             End Try
 
             For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.TVModType.AllSeasonsLandscape)
@@ -1216,7 +1216,7 @@ Public Class Images
             Next
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
 
         Return strReturn
@@ -1251,7 +1251,7 @@ Public Class Images
                     End If
                 Next
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+                logger.Error(New StackFrame().GetMethod().Name,ex)
             End Try
 
             For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.TVModType.AllSeasonsPoster)
@@ -1262,7 +1262,7 @@ Public Class Images
             Next
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
 
         Return strReturn
@@ -1299,7 +1299,7 @@ Public Class Images
                     Return strReturn
                 End If
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+                logger.Error(New StackFrame().GetMethod().Name,ex)
             End Try
 
             For Each a In FileUtils.GetFilenameList.TVEpisode(EpisodePath, Enums.TVModType.EpisodeFanart)
@@ -1310,7 +1310,7 @@ Public Class Images
             Next
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
         Return strReturn
     End Function
@@ -1346,7 +1346,7 @@ Public Class Images
                     Return strReturn
                 End If
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+                logger.Error(New StackFrame().GetMethod().Name,ex)
             End Try
 
             For Each a In FileUtils.GetFilenameList.TVEpisode(EpisodePath, Enums.TVModType.EpisodePoster)
@@ -1357,7 +1357,7 @@ Public Class Images
             Next
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
         Return strReturn
     End Function
@@ -1387,7 +1387,7 @@ Public Class Images
             End If
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
             Return strReturn
         End Try
 
@@ -1418,7 +1418,7 @@ Public Class Images
             End If
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
             Return strReturn
         End Try
 
@@ -1450,7 +1450,7 @@ Public Class Images
             Next
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
         Return strReturn
     End Function
@@ -1480,7 +1480,7 @@ Public Class Images
             Next
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
         Return strReturn
     End Function
@@ -1510,7 +1510,7 @@ Public Class Images
             Next
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
         Return strReturn
     End Function
@@ -1540,7 +1540,7 @@ Public Class Images
             Next
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
         Return strReturn
     End Function
@@ -1580,7 +1580,7 @@ Public Class Images
             End If
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
 
         Return strReturn
@@ -1611,7 +1611,7 @@ Public Class Images
             Next
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
         Return strReturn
     End Function
@@ -1648,7 +1648,7 @@ Public Class Images
             Next
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
         Return strReturn
     End Function
@@ -1678,7 +1678,7 @@ Public Class Images
             Next
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
         Return strReturn
     End Function
@@ -1708,7 +1708,7 @@ Public Class Images
             Next
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
         Return strReturn
     End Function
@@ -1738,7 +1738,7 @@ Public Class Images
             Next
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
         Return strReturn
     End Function
@@ -1768,7 +1768,7 @@ Public Class Images
             Next
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
         Return strReturn
     End Function
@@ -1798,7 +1798,7 @@ Public Class Images
             Next
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
         Return strReturn
     End Function
@@ -1828,7 +1828,7 @@ Public Class Images
             Next
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
         Return strReturn
     End Function
@@ -1858,7 +1858,7 @@ Public Class Images
             Next
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
         Return strReturn
     End Function
@@ -1909,7 +1909,7 @@ Public Class Images
                     SeasonFirstEpisodePath = dtEpisodes.Rows(0).Item("TVEpPath").ToString
                 End If
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+                logger.Error(New StackFrame().GetMethod().Name,ex)
             End Try
 
             If doResize Then
@@ -1930,7 +1930,7 @@ Public Class Images
                     Return strReturn
                 End If
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+                logger.Error(New StackFrame().GetMethod().Name,ex)
             End Try
 
             For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.TVModType.SeasonBanner)
@@ -1941,7 +1941,7 @@ Public Class Images
             Next
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
         Return strReturn
     End Function
@@ -1971,7 +1971,7 @@ Public Class Images
                     SeasonFirstEpisodePath = dtEpisodes.Rows(0).Item("TVEpPath").ToString
                 End If
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+                logger.Error(New StackFrame().GetMethod().Name,ex)
             End Try
 
             If doResize Then
@@ -1992,7 +1992,7 @@ Public Class Images
                     Return strReturn
                 End If
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+                logger.Error(New StackFrame().GetMethod().Name,ex)
             End Try
 
             For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.TVModType.SeasonFanart)
@@ -2003,7 +2003,7 @@ Public Class Images
             Next
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
         Return strReturn
     End Function
@@ -2033,7 +2033,7 @@ Public Class Images
                     SeasonFirstEpisodePath = dtEpisodes.Rows(0).Item("TVEpPath").ToString
                 End If
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+                logger.Error(New StackFrame().GetMethod().Name,ex)
             End Try
 
             Try
@@ -2050,7 +2050,7 @@ Public Class Images
                     Return strReturn
                 End If
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+                logger.Error(New StackFrame().GetMethod().Name,ex)
             End Try
 
             For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.TVModType.SeasonLandscape)
@@ -2061,7 +2061,7 @@ Public Class Images
             Next
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
         Return strReturn
     End Function
@@ -2091,7 +2091,7 @@ Public Class Images
                     SeasonFirstEpisodePath = dtEpisodes.Rows(0).Item("TVEpPath").ToString
                 End If
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+                logger.Error(New StackFrame().GetMethod().Name,ex)
             End Try
 
             If doResize Then
@@ -2112,7 +2112,7 @@ Public Class Images
                     Return strReturn
                 End If
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+                logger.Error(New StackFrame().GetMethod().Name,ex)
             End Try
 
             For Each a In FileUtils.GetFilenameList.TVSeason(ShowPath, SeasonPath, Season, SeasonFirstEpisodePath, Enums.TVModType.SeasonPoster)
@@ -2123,7 +2123,7 @@ Public Class Images
             Next
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
         Return strReturn
     End Function
@@ -2161,7 +2161,7 @@ Public Class Images
                 Next
                 If Not doContinue Then Return strReturn
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+                logger.Error(New StackFrame().GetMethod().Name,ex)
             End Try
 
             For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.TVModType.ShowBanner)
@@ -2172,7 +2172,7 @@ Public Class Images
             Next
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
         Return strReturn
     End Function
@@ -2206,7 +2206,7 @@ Public Class Images
                 Next
                 If Not doContinue Then Return strReturn
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
 
             For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.TVModType.ShowCharacterArt)
@@ -2217,7 +2217,7 @@ Public Class Images
             Next
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return strReturn
     End Function
@@ -2251,7 +2251,7 @@ Public Class Images
                 Next
                 If Not doContinue Then Return strReturn
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
 
             For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.TVModType.ShowClearArt)
@@ -2262,7 +2262,7 @@ Public Class Images
             Next
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return strReturn
     End Function
@@ -2296,7 +2296,7 @@ Public Class Images
                 Next
                 If Not doContinue Then Return strReturn
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
 
             For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.TVModType.ShowClearLogo)
@@ -2307,7 +2307,7 @@ Public Class Images
             Next
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return strReturn
     End Function
@@ -2340,7 +2340,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Return efPath
@@ -2381,7 +2381,7 @@ Public Class Images
                     Return strReturn
                 End If
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+                logger.Error(New StackFrame().GetMethod().Name,ex)
             End Try
 
             For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.TVModType.ShowFanart)
@@ -2392,7 +2392,7 @@ Public Class Images
             Next
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
         Return strReturn
     End Function
@@ -2426,7 +2426,7 @@ Public Class Images
                 Next
                 If Not doContinue Then Return strReturn
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+                logger.Error(New StackFrame().GetMethod().Name,ex)
             End Try
 
             For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.TVModType.ShowLandscape)
@@ -2437,7 +2437,7 @@ Public Class Images
             Next
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
         Return strReturn
     End Function
@@ -2475,7 +2475,7 @@ Public Class Images
                 Next
                 If Not doContinue Then Return strReturn
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+                logger.Error(New StackFrame().GetMethod().Name,ex)
             End Try
 
             For Each a In FileUtils.GetFilenameList.TVShow(ShowPath, Enums.TVModType.ShowPoster)
@@ -2486,7 +2486,7 @@ Public Class Images
             Next
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
         Return strReturn
     End Function
