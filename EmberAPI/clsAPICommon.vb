@@ -1107,7 +1107,7 @@ Public Class Functions
         '        Return strChangelog
         '    End If
         'Catch ex As Exception
-        '    logger.ErrorException(GetType(Functions),ex.Message, ex.StackTrace, "Error")
+        '    logger.Error(GetType(Functions),ex.Message, ex.StackTrace, "Error")
         'End Try
         Return "Unavailable"
     End Function
@@ -1139,7 +1139,7 @@ Public Class Functions
             End If
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "Failed trying to identify last thumb from path: " & sPath, ex)
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "Failed trying to identify last thumb from path: " & sPath, ex)
         End Try
 
         Return iMod
@@ -1191,7 +1191,7 @@ Public Class Functions
                                 Return sDir.FullName
                             End If
                         Catch ex As Exception
-                            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & " Failed to determine path for season " & iSeason & " in path: " & ShowPath, ex)
+                            logger.Error(New StackFrame().GetMethod().Name & vbTab & " Failed to determine path for season " & iSeason & " in path: " & ShowPath, ex)
                         End Try
                     Next
                 Next
@@ -1501,7 +1501,7 @@ Public Class Functions
                 End Using
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "Could not launch <" & Destination & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "Could not launch <" & Destination & ">", ex)
             Return False
         End Try
         'If you got here, everything went fine
@@ -1532,7 +1532,7 @@ Public Class Functions
             'End If
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "Could not launch <" & dllPath & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "Could not launch <" & dllPath & ">", ex)
         End Try
     End Sub
 
@@ -1579,7 +1579,7 @@ Public Class Functions
                 My_Process.Close()
             End Using
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "Could not launch <" & Process_Name & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "Could not launch <" & Process_Name & ">", ex)
         End Try
 
         Return OutputString

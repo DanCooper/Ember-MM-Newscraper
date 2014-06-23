@@ -94,7 +94,7 @@ Namespace FANARTTVs
         '			bwFANARTTV.RunWorkerAsync(New Arguments With {.Parameter = sURL})
         '		End If
         '	Catch ex As Exception
-        '		logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+        '		logger.Error(New StackFrame().GetMethod().Name,ex)
         '	End Try
         'End Sub
 
@@ -294,7 +294,7 @@ Namespace FANARTTVs
                     Next
                 End If
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+                logger.Error(New StackFrame().GetMethod().Name,ex)
             End Try
 
             'Image sorting
@@ -314,7 +314,7 @@ Namespace FANARTTVs
         '	Try
         '		e.Result = GetFANARTTVImages(Args.Parameter)
         '	Catch ex As Exception
-        '		logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+        '		logger.Error(New StackFrame().GetMethod().Name,ex)
         '		e.Result = Nothing
         '	End Try
         'End Sub

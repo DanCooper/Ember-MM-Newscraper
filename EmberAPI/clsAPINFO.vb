@@ -98,7 +98,7 @@ Public Class NFO
                 End If
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
         If strOutput.ToString.Trim.Length > 0 Then
@@ -154,7 +154,7 @@ Public Class NFO
             Next
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return fiaOut
     End Function
@@ -217,7 +217,7 @@ Public Class NFO
             Next
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return fivOut
     End Function
@@ -237,7 +237,7 @@ Public Class NFO
                 result = String.Format("{0}x{1} ({2})", iWidth, iHeight, sinADR.ToString("0.00"))
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Return result
@@ -391,7 +391,7 @@ Public Class NFO
                 End Select
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
         If Not String.IsNullOrEmpty(resOut) Then
@@ -731,7 +731,7 @@ Public Class NFO
             End If
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -779,7 +779,7 @@ Public Class NFO
             'End If
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -805,7 +805,7 @@ Public Class NFO
 
             xmlDoc = Nothing
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -893,7 +893,7 @@ Public Class NFO
             End If
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -954,7 +954,7 @@ Public Class NFO
                 End If
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -966,7 +966,7 @@ Public Class NFO
                 RenameToInfo(sPath)
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -980,7 +980,7 @@ Public Class NFO
                 End If
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -992,7 +992,7 @@ Public Class NFO
                 RenameToInfo(sPath)
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1010,7 +1010,7 @@ Public Class NFO
             End If
             My.Computer.FileSystem.RenameFile(sPath, Path.GetFileName(strNewName))
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1025,7 +1025,7 @@ Public Class NFO
                 _TVEpDB.TVEp.Runtime = MediaInfo.FormatDuration(MediaInfo.DurationToSeconds(cTotal, True), Master.eSettings.TVScraperDurationRuntimeFormat)
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 

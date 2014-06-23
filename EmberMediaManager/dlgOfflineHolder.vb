@@ -246,7 +246,7 @@ Public Class dlgOfflineHolder
                 End Using
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -295,7 +295,7 @@ Public Class dlgOfflineHolder
                 AddDVDProfilerMovie(tMovie)
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -635,7 +635,7 @@ Public Class dlgOfflineHolder
                 Me.bwMovieScraper.ReportProgress(index + 1, Master.eLang.GetString(1153, "Scraped"))
 
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         Next
     End Sub
@@ -1041,7 +1041,7 @@ Public Class dlgOfflineHolder
                 FileUtils.Delete.DeleteDirectory(Path.Combine(Master.TempPath, "OfflineHolder"))
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -1231,7 +1231,7 @@ Public Class dlgOfflineHolder
             Files = Nothing
             dir = Nothing
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -1274,7 +1274,7 @@ Public Class dlgOfflineHolder
 
             'CreateDummyMoviePreview()
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -1297,7 +1297,7 @@ Public Class dlgOfflineHolder
             End If
             Return tMovie
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
         Return Nothing
     End Function
@@ -1358,7 +1358,7 @@ Public Class dlgOfflineHolder
 
             Return pattern.Trim
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
             Return String.Empty
         End Try
     End Function
@@ -1606,7 +1606,7 @@ Public Class dlgOfflineHolder
             Return sMovie
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
 
         Return tMovie
@@ -1797,7 +1797,7 @@ Public Class dlgOfflineHolder
             Return sMovie
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
 
         Return tMovie
@@ -1877,7 +1877,7 @@ Public Class dlgOfflineHolder
                 txtTop.Text = (RealImage_H - 30).ToString
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 

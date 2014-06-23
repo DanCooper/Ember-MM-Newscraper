@@ -199,7 +199,7 @@ Public Class dlgImgSelect
             Me.bwImgDownload.RunWorkerAsync() 'Me.TMDB.GetImagesAsync(tMovie.Movie.TMDBID, "backdrop")
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -219,7 +219,7 @@ Public Class dlgImgSelect
         '    Me.lvImages.Items.Add(text, Me.LargeImageList.Images.Count - 1)
         '    Me.lvImages.Items(Me.lvImages.Items.Count - 1).Tag = poster
         'Catch ex As Exception
-        '    logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+        '    logger.Error(New StackFrame().GetMethod().Name, ex)
         'End Try
         Try
             ReDim Preserve Me.pnlImage(iIndex)
@@ -329,7 +329,7 @@ Public Class dlgImgSelect
                 AddHandler lblImage(iIndex).MouseWheel, AddressOf MouseWheelEvent
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Me.iCounter += 1
@@ -379,7 +379,7 @@ Public Class dlgImgSelect
             tImage = Nothing
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -412,13 +412,12 @@ Public Class dlgImgSelect
         '\\
         Try
             Dim sStatus As String = e.UserState.ToString
-            'Debug.Print("{0} {1}", e.ProgressPercentage, sStatus)
             Me.lblDL1Status.Text = String.Format(Master.eLang.GetString(886, "Downloading {0}"), If(sStatus.Length > 40, StringUtils.TruncateURL(sStatus, 40), sStatus))
             Me.pbDL1.Value = e.ProgressPercentage
             Me.Refresh()
             Application.DoEvents()
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -449,7 +448,7 @@ Public Class dlgImgSelect
             Me.bwImgLoading.RunWorkerAsync()
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
     End Sub
@@ -503,7 +502,7 @@ Public Class dlgImgSelect
             Me.pbDL1.Value = e.ProgressPercentage
             Application.DoEvents()
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -600,7 +599,7 @@ Public Class dlgImgSelect
             End If
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -739,7 +738,7 @@ Public Class dlgImgSelect
             End If
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
@@ -846,7 +845,7 @@ Public Class dlgImgSelect
             Me.btnPreview.Text = Master.eLang.GetString(180, "Preview")
             Me.lblDL1.Text = Master.eLang.GetString(894, "Performing Preliminary Tasks...")
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -890,7 +889,6 @@ Public Class dlgImgSelect
             For Each TMDBPoster As MediaContainers.Image In _ImageList.Where(Function(f) f.ParentID = ParentID)
                 If Not (TMDBPoster.Width = "n/a") AndAlso Not (TMDBPoster.Height = "n/a") Then
                     If Me.DLType = Enums.MovieImageType.Poster Then
-                        'Debug.Print("{0}  {1} {2}", TMDBPoster.Description, TMDBPoster.URL, TMDBPoster.ParentID)
                         Select Case TMDBPoster.Description
                             Case Master.eSize.poster_names(5).description
                                 ' xlarge
@@ -1006,7 +1004,7 @@ Public Class dlgImgSelect
 
             Invalidate()
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 

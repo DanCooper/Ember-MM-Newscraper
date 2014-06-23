@@ -69,7 +69,7 @@ Public Class dlgImgManual
 
             End If
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -106,7 +106,7 @@ Public Class dlgImgManual
                 tImage.FromWeb(Me.txtURL.Text)
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
 
         Me.DialogResult = System.Windows.Forms.DialogResult.OK

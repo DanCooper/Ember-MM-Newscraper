@@ -67,7 +67,7 @@ Public Class dlgTVSource
                 End If
             End With
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -102,7 +102,7 @@ Public Class dlgTVSource
                 End Using
             End If
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
 
         If Not String.IsNullOrEmpty(Me.txtSourcePath.Text) AndAlso Directory.Exists(Me.txtSourcePath.Text.Trim) AndAlso isValid Then
@@ -127,7 +127,7 @@ Public Class dlgTVSource
                 End Using
             End If
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -155,7 +155,7 @@ Public Class dlgTVSource
                 SQLtransaction.Commit()
             End Using
         Catch ex As Exception
-            Logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name,ex)
             Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         End Try
 

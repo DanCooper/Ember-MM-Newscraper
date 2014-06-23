@@ -76,7 +76,7 @@ Public Class dlgEditSeason
                 End If
             End Using
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -110,7 +110,7 @@ Public Class dlgEditSeason
                 Me.lblSeasonBannerSize.Visible = True
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -131,7 +131,7 @@ Public Class dlgEditSeason
                 End If
             End Using
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -165,7 +165,7 @@ Public Class dlgEditSeason
                 Me.lblSeasonFanartSize.Visible = True
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -186,7 +186,7 @@ Public Class dlgEditSeason
                 End If
             End Using
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -220,7 +220,7 @@ Public Class dlgEditSeason
                 Me.lblSeasonLandscapeSize.Visible = True
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -241,7 +241,7 @@ Public Class dlgEditSeason
                 End If
             End Using
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -275,7 +275,7 @@ Public Class dlgEditSeason
                 Me.lblSeasonPosterSize.Visible = True
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 
@@ -361,7 +361,7 @@ Public Class dlgEditSeason
             Master.DB.SaveTVSeasonToDB(Master.currShow, False)
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
 
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
@@ -486,7 +486,7 @@ Public Class dlgEditSeason
 
             End With
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
 

@@ -116,7 +116,7 @@ Public Class TelevisionTunes
 
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
     End Sub
