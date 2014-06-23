@@ -101,6 +101,10 @@ Public Class IMDB_Data
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
+    Function GetCollectionID(ByVal sIMDBID As String, ByRef sCollectionID As String) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule_Data.GetCollectionID
+        Return Nothing
+    End Function
+
     Private Sub Handle_ModuleSettingsChanged()
         RaiseEvent ModuleSettingsChanged()
     End Sub

@@ -298,6 +298,14 @@ Public Class TMDB_Data
         Return Nothing
     End Function
 
+    Function GetCollectionID(ByVal sIMDBID As String, ByRef sCollectionID As String) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule_Data.GetCollectionID
+        sCollectionID = _TMDBg.GetMovieCollectionID(sIMDBID)
+        If String.IsNullOrEmpty(sCollectionID) Then
+            Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
+        End If
+        Return New Interfaces.ModuleResult With {.breakChain = False}
+    End Function
+
     Function Scraper(ByRef DBMovie As Structures.DBMovie, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule_Data.Scraper
         Dim tTitle As String = String.Empty
         Dim OldTitle As String = DBMovie.Movie.Title

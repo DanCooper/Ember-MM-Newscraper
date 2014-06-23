@@ -114,6 +114,23 @@ Public Class ModulesManager
         Return epDetails
     End Function
 
+    Public Function GetMovieCollectionID(ByVal sIMDBID As String) As String
+        Dim CollectionID As String = String.Empty
+
+        While Not (bwloadModules_done And bwloadScrapersModules_done And bwloadTVScrapersModules_done)
+            Application.DoEvents()
+        End While
+
+        If Not String.IsNullOrEmpty(sIMDBID) Then
+            Dim ret As Interfaces.ModuleResult
+            For Each _externalScraperModuleClass_Data As _externalScraperModuleClass_Data In externalDataScrapersModules.Where(Function(e) e.ProcessorModule.ModuleName = "TMDB_Data")
+                ret = _externalScraperModuleClass_Data.ProcessorModule.GetCollectionID(sIMDBID, CollectionID)
+                If ret.breakChain Then Exit For
+            Next
+        End If
+        Return CollectionID
+    End Function
+
     Public Sub GetVersions()
         Dim dlgVersions As New dlgVersions
         Dim li As ListViewItem

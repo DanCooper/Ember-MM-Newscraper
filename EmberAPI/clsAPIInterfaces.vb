@@ -179,6 +179,8 @@ Public Class Interfaces
 
         Function GetMovieStudio(ByRef DBMovie As Structures.DBMovie, ByRef sStudio As List(Of String)) As ModuleResult
 
+        Function GetCollectionID(ByVal sIMDBID As String, ByRef sCollectionID As String) As ModuleResult
+
         Sub Init(ByVal sAssemblyName As String)
 
         Function InjectSetupScraper() As Containers.SettingsPanel
