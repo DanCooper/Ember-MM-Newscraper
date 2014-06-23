@@ -180,7 +180,7 @@ Public Class Trailers
                 End If
             Next
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
     End Sub
     ''' <summary>
@@ -313,7 +313,7 @@ Public Class Trailers
                 End If
             Next
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
     End Function
     ''' <summary>
@@ -347,7 +347,7 @@ Public Class Trailers
                 If File.Exists(a & fExt) Then
                     File.Delete(a & fExt)
                 End If
-                Me.SaveAsTrailer(a & fExt)
+                Me.SaveAs(a & fExt)
                 'File.Copy(tTrailer, a & fExt)
                 tURL = a & fExt
             Next
@@ -368,12 +368,12 @@ Public Class Trailers
 
     End Function
 
-    Public Sub SaveAsTrailer(filename As String)
+    Public Sub SaveAs(filename As String)
         Dim retSave() As Byte
         retSave = Me._ms.ToArray
 
         Using FileStream As Stream = File.OpenWrite(filename)
-            FileStream.Write(retSave, 0, retSave.Length) 'check if it works
+            FileStream.WriteAsync(retSave, 0, retSave.Length) 'check if it works
         End Using
     End Sub
     ''' <summary>
@@ -398,7 +398,7 @@ Public Class Trailers
                 End If
             End With
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
             Return False
         End Try
     End Function

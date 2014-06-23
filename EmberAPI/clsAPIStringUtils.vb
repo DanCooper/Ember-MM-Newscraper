@@ -336,7 +336,7 @@ Public Class StringUtils
             Next
             Return name.Trim
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "Name: " & name & " generated an error message", ex)
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "Name: " & name & " generated an error message", ex)
         End Try
         Return String.Empty
     End Function
@@ -409,7 +409,7 @@ Public Class StringUtils
                         Exit For
                     End If
                 Catch ex As Exception
-                    logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "Title: " & sTitle & " generated an error message", ex)
+                    logger.Error(New StackFrame().GetMethod().Name & vbTab & "Title: " & sTitle & " generated an error message", ex)
                 End Try
             Next
         End If
@@ -447,7 +447,7 @@ Public Class StringUtils
 
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
         Return TVEpName.Trim
     End Function
@@ -556,7 +556,7 @@ Public Class StringUtils
             Next
             Return result.ToString()
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "Input <" & stext & "> generated an error message", ex)
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "Input <" & stext & "> generated an error message", ex)
         End Try
 
         'If we get here, something went wrong.
@@ -585,7 +585,7 @@ Public Class StringUtils
             End If
             Return bReturn
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "Input <" & sName & "><" & VTS & "> generated an error message", ex)
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "Input <" & sName & "><" & VTS & "> generated an error message", ex)
         End Try
 
         'If we get here, something went wrong.
@@ -619,7 +619,7 @@ Public Class StringUtils
         'Try
         '    Return Regex.IsMatch(sToCheck, expression, RegexOptions.IgnoreCase)
         'Catch ex As Exception
-        '    logger.ErrorException(GetType(StringUtils),"Input <" & sToCheck & "> generated the following message: " & vbCrLf & ex.Message, ex.StackTrace, "Error")
+        '    logger.Error(GetType(StringUtils),"Input <" & sToCheck & "> generated the following message: " & vbCrLf & ex.Message, ex.StackTrace, "Error")
         'End Try
 
         ''If we get here, something went wrong.
@@ -665,7 +665,7 @@ Public Class StringUtils
             Next
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "Source of <" & sString & "> generated an error", ex)
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "Source of <" & sString & "> generated an error", ex)
             'Return the source string and move along
             sReturn = sString.Trim
         End Try
@@ -694,7 +694,7 @@ Public Class StringUtils
             'TODO Dekker500 - This used to be "sReturn.ToLower", but didn't make sense why it did... Investigate up the chain! (What does the case have to do with punctuation anyway???)
             sReturn = Regex.Replace(sReturn, "\s\s(\s+)?", " ")
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "Source of <" & sString & "> generated an error", ex)
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "Source of <" & sString & "> generated an error", ex)
             'Return the source string and move along
             sReturn = sString
         End Try
@@ -722,7 +722,7 @@ Public Class StringUtils
                 Return New Size(Convert.ToInt32(SplitSize(0)), Convert.ToInt32(SplitSize(1)))
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "Source of <" & sString & "> generated an error", ex)
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "Source of <" & sString & "> generated an error", ex)
         End Try
         'If you get here, something went wrong
         Return New Size(0, 0)
@@ -769,7 +769,7 @@ Public Class StringUtils
                 End If
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "Source of <" & sString & "> generated an error", ex)
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "Source of <" & sString & "> generated an error", ex)
         End Try
 
         'If you get here, something went wrong

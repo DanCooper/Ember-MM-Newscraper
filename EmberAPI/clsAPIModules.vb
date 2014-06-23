@@ -175,7 +175,6 @@ Public Class ModulesManager
                                 'Add the activated module to the arraylist
                                 Dim _externalProcessorModule As New _externalGenericModuleClass
                                 Dim filename As String = file
-                                'Debug.Print("Module loaded :" & filename)
                                 If String.IsNullOrEmpty(AssemblyList.FirstOrDefault(Function(x) x.AssemblyName = Path.GetFileNameWithoutExtension(filename)).AssemblyName) Then
                                     AssemblyList.Add(New AssemblyListItem With {.AssemblyName = Path.GetFileNameWithoutExtension(filename), .Assembly = assembly})
                                 End If
@@ -237,14 +236,12 @@ Public Class ModulesManager
             For Each file As String In System.IO.Directory.GetFiles(moduleLocation, modulefile)
                 Try
                     assembly = System.Reflection.Assembly.LoadFile(file)
-                    'Debug.Print("check :" & file)
                     'Loop through each of the assemeblies type
                     For Each fileType As Type In assembly.GetTypes
 
                         'Activate the located module
                         Dim t1 As Type = fileType.GetInterface("EmberMovieScraperModule_Data")
                         If Not t1 Is Nothing Then
-                            'Debug.Print("Loading - data :" & file)
                             Dim ProcessorModule As Interfaces.EmberMovieScraperModule_Data
                             ProcessorModule = CType(Activator.CreateInstance(fileType), Interfaces.EmberMovieScraperModule_Data)
                             'Add the activated module to the arraylist
@@ -271,7 +268,6 @@ Public Class ModulesManager
                         Else
                             Dim t2 As Type = fileType.GetInterface("EmberMovieScraperModule_Poster")
                             If Not t2 Is Nothing Then
-                                'Debug.Print("Loading - poster :" & file)
                                 Dim ProcessorModule As Interfaces.EmberMovieScraperModule_Poster
                                 ProcessorModule = CType(Activator.CreateInstance(fileType), Interfaces.EmberMovieScraperModule_Poster)
                                 'Add the activated module to the arraylist
@@ -549,10 +545,9 @@ Public Class ModulesManager
                 logger.Trace("Scraping movie data using <{0}>", _externalScraperModule.ProcessorModule.ModuleName)
                 AddHandler _externalScraperModule.ProcessorModule.MovieScraperEvent, AddressOf Handler_MovieScraperEvent
                 Try
-                    'Debug.Print("MovieScrapeOnly" & vbTab & DBMovie.ID & vbTab & ScrapeType)
                     ret = _externalScraperModule.ProcessorModule.Scraper(DBMovie, ScrapeType, Options)
                 Catch ex As Exception
-                    logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "Error scraping movie data using <" & _externalScraperModule.ProcessorModule.ModuleName & ">", ex)
+                    logger.Error(New StackFrame().GetMethod().Name & vbTab & "Error scraping movie data using <" & _externalScraperModule.ProcessorModule.ModuleName & ">", ex)
                 End Try
                 RemoveHandler _externalScraperModule.ProcessorModule.MovieScraperEvent, AddressOf Handler_MovieScraperEvent
                 If ret.breakChain Then Exit For
@@ -586,7 +581,6 @@ Public Class ModulesManager
                 If _externalScraperModule.ProcessorModule.QueryScraperCapabilities(Type) Then
                     AddHandler _externalScraperModule.ProcessorModule.MovieScraperEvent, AddressOf Handler_MovieScraperEvent
                     Try
-                        'Debug.Print("MovieScrapeImages" & vbTab & _externalScraperModule.ProcessorModule.ModuleName)
                         aList = New List(Of MediaContainers.Image)
                         ret = _externalScraperModule.ProcessorModule.Scraper(DBMovie, Type, aList)
                         If Not IsNothing(aList) AndAlso aList.Count > 0 Then
@@ -595,7 +589,7 @@ Public Class ModulesManager
                             Next
                         End If
                     Catch ex As Exception
-                        logger.ErrorException(New StackFrame().GetMethod().Name & "Error scraping movie images using <" & _externalScraperModule.ProcessorModule.ModuleName & ">", ex)
+                        logger.Error(New StackFrame().GetMethod().Name & "Error scraping movie images using <" & _externalScraperModule.ProcessorModule.ModuleName & ">", ex)
                     End Try
                     RemoveHandler _externalScraperModule.ProcessorModule.MovieScraperEvent, AddressOf Handler_MovieScraperEvent
                     If ret.breakChain Then Exit For
@@ -629,7 +623,6 @@ Public Class ModulesManager
                 If _externalScraperModule.ProcessorModule.QueryScraperCapabilities(Type) Then
                     AddHandler _externalScraperModule.ProcessorModule.MovieScraperEvent, AddressOf Handler_MovieScraperEvent
                     Try
-                        'Debug.Print("MovieScrapeImages" & vbTab & _externalScraperModule.ProcessorModule.ModuleName)
                         aList = New List(Of MediaContainers.Image)
                         ret = _externalScraperModule.ProcessorModule.Scraper(DBMovieSet, Type, aList)
                         If Not IsNothing(aList) AndAlso aList.Count > 0 Then
@@ -638,7 +631,7 @@ Public Class ModulesManager
                             Next
                         End If
                     Catch ex As Exception
-                        logger.ErrorException(New StackFrame().GetMethod().Name & "Error scraping movie images using <" & _externalScraperModule.ProcessorModule.ModuleName & ">", ex)
+                        logger.Error(New StackFrame().GetMethod().Name & "Error scraping movie images using <" & _externalScraperModule.ProcessorModule.ModuleName & ">", ex)
                     End Try
                     RemoveHandler _externalScraperModule.ProcessorModule.MovieScraperEvent, AddressOf Handler_MovieScraperEvent
                     If ret.breakChain Then Exit For
@@ -671,7 +664,6 @@ Public Class ModulesManager
                 logger.Trace("Scraping movie themes using <{0}>", _externalScraperModule.ProcessorModule.ModuleName)
                 AddHandler _externalScraperModule.ProcessorModule.MovieScraperEvent, AddressOf Handler_MovieScraperEvent
                 Try
-                    'Debug.Print("MovieScrapeTrailer" & vbTab & _externalScraperModule.ProcessorModule.ModuleName)
                     aList = New List(Of Themes)
                     ret = _externalScraperModule.ProcessorModule.Scraper(DBMovie, aList)
                     If Not IsNothing(aList) AndAlso aList.Count > 0 Then
@@ -680,7 +672,7 @@ Public Class ModulesManager
                         Next
                     End If
                 Catch ex As Exception
-                    logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "Error scraping movie themes using <" & _externalScraperModule.ProcessorModule.ModuleName & ">", ex)
+                    logger.Error(New StackFrame().GetMethod().Name & vbTab & "Error scraping movie themes using <" & _externalScraperModule.ProcessorModule.ModuleName & ">", ex)
                 End Try
                 RemoveHandler _externalScraperModule.ProcessorModule.MovieScraperEvent, AddressOf Handler_MovieScraperEvent
                 If ret.breakChain Then Exit For
@@ -713,7 +705,6 @@ Public Class ModulesManager
                 logger.Trace("Scraping movie trailers using <{0}>", _externalScraperModule.ProcessorModule.ModuleName)
                 AddHandler _externalScraperModule.ProcessorModule.MovieScraperEvent, AddressOf Handler_MovieScraperEvent
                 Try
-                    'Debug.Print("MovieScrapeTrailer" & vbTab & _externalScraperModule.ProcessorModule.ModuleName)
                     aList = New List(Of Trailers)
                     ret = _externalScraperModule.ProcessorModule.Scraper(DBMovie, Type, aList)
                     If Not IsNothing(aList) AndAlso aList.Count > 0 Then
@@ -722,7 +713,7 @@ Public Class ModulesManager
                         Next
                     End If
                 Catch ex As Exception
-                    logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "Error scraping movie trailers using <" & _externalScraperModule.ProcessorModule.ModuleName & ">", ex)
+                    logger.Error(New StackFrame().GetMethod().Name & vbTab & "Error scraping movie trailers using <" & _externalScraperModule.ProcessorModule.ModuleName & ">", ex)
                 End Try
                 RemoveHandler _externalScraperModule.ProcessorModule.MovieScraperEvent, AddressOf Handler_MovieScraperEvent
                 If ret.breakChain Then Exit For
@@ -757,13 +748,13 @@ Public Class ModulesManager
                         logger.Trace("Could not run generic module <{0}>", _externalGenericModule.ProcessorModule.ModuleName)
                         ret = _externalGenericModule.ProcessorModule.RunGeneric(mType, _params, _refparam)
                     Catch ex As Exception
-                        logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "Error scraping movies images using <" & _externalGenericModule.ProcessorModule.ModuleName & ">", ex)
+                        logger.Error(New StackFrame().GetMethod().Name & vbTab & "Error scraping movies images using <" & _externalGenericModule.ProcessorModule.ModuleName & ">", ex)
                     End Try
                     If ret.breakChain OrElse RunOnlyOne Then Exit For
                 Next
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Return ret.Cancelled
@@ -857,7 +848,7 @@ Public Class ModulesManager
                 Try
                     _externalProcessorModule.ProcessorModule.Enabled = value
                 Catch ex As Exception
-                    logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "Could not set module <" & ModuleAssembly & "> to enabled status <" & value & ">", ex)
+                    logger.Error(New StackFrame().GetMethod().Name & vbTab & "Could not set module <" & ModuleAssembly & "> to enabled status <" & value & ">", ex)
                 End Try
             Next
         End If
@@ -884,7 +875,7 @@ Public Class ModulesManager
                 Try
                     _externalScraperModule.ProcessorModule.ScraperEnabled = value
                 Catch ex As Exception
-                    logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "Could not set module <" & ModuleAssembly & "> to enabled status <" & value & ">", ex)
+                    logger.Error(New StackFrame().GetMethod().Name & vbTab & "Could not set module <" & ModuleAssembly & "> to enabled status <" & value & ">", ex)
                 End Try
             Next
         End If
@@ -910,7 +901,7 @@ Public Class ModulesManager
                 Try
                     _externalScraperModule.ProcessorModule.ScraperEnabled = value
                 Catch ex As Exception
-                    logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "Could not set module <" & ModuleAssembly & "> to enabled status <" & value & ">", ex)
+                    logger.Error(New StackFrame().GetMethod().Name & vbTab & "Could not set module <" & ModuleAssembly & "> to enabled status <" & value & ">", ex)
                 End Try
             Next
         End If
@@ -930,7 +921,7 @@ Public Class ModulesManager
                 Try
                     _externalScraperModule.ProcessorModule.ScraperEnabled = value
                 Catch ex As Exception
-                    logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "Could not set module <" & ModuleAssembly & "> to enabled status <" & value & ">", ex)
+                    logger.Error(New StackFrame().GetMethod().Name & vbTab & "Could not set module <" & ModuleAssembly & "> to enabled status <" & value & ">", ex)
                 End Try
             Next
         End If
@@ -950,7 +941,7 @@ Public Class ModulesManager
                 Try
                     _externalScraperModule.ProcessorModule.ScraperEnabled = value
                 Catch ex As Exception
-                    logger.ErrorException(New StackFrame().GetMethod().Name & vbTab & "Could not set module <" & ModuleAssembly & "> to enabled status <" & value & ">", ex)
+                    logger.Error(New StackFrame().GetMethod().Name & vbTab & "Could not set module <" & ModuleAssembly & "> to enabled status <" & value & ">", ex)
                 End Try
             Next
         End If

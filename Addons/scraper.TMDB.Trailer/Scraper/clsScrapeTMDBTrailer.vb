@@ -71,7 +71,7 @@ Namespace TMDBtrailer
         '            bwTMDB.RunWorkerAsync(New Arguments With {.Parameter = imdbID, .Type = Type})
         '        End If
         '    Catch ex As Exception
-        '        logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+        '        logger.Error(New StackFrame().GetMethod().Name,ex)
         '    End Try
         'End Sub
 
@@ -98,7 +98,7 @@ Namespace TMDBtrailer
                 End If
 
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+                logger.Error(New StackFrame().GetMethod().Name,ex)
             End Try
 
             Return alTrailers
@@ -121,7 +121,7 @@ Namespace TMDBtrailer
         '          Try
         '              e.Result = GetTMDBImages(Args.Parameter, Args.Type)
         '          Catch ex As Exception
-        '              logger.ErrorException(New StackFrame().GetMethod().Name,ex)
+        '              logger.Error(New StackFrame().GetMethod().Name,ex)
         '              e.Result = Nothing
         '          End Try
         '      End Sub
