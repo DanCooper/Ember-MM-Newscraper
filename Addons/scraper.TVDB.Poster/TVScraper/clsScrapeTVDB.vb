@@ -463,6 +463,12 @@ Public Class Scraper
 
                 If Not IsNothing(tEp) Then
                     Return tEp
+                Else
+                    DownloadSeries(sInfo)
+                    tEp = Me.GetListOfKnownEpisodes(sInfo).FirstOrDefault(Function(e) e.Season = sInfo.iSeason AndAlso e.Episode = sInfo.iEpisode)
+                    If Not IsNothing(tEp) Then
+                        Return tEp
+                    End If
                 End If
             Catch ex As Exception
                 logger.ErrorException(New StackFrame().GetMethod().Name,ex)
