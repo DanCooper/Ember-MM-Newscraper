@@ -35,7 +35,7 @@ Public Class OFDB
     Private _outline As String
     Private _plot As String
     Private _title As String
-
+    Private _fsk As String
 #End Region 'Fields
 
 #Region "Constructors"
@@ -88,6 +88,16 @@ Public Class OFDB
         End Set
     End Property
 
+
+    Public Property FSK() As String
+        Get
+            Return _fsk
+        End Get
+        Set(ByVal value As String)
+            _fsk = value
+        End Set
+    End Property
+
 #End Region 'Properties
 
 #Region "Methods"
@@ -110,6 +120,7 @@ Public Class OFDB
         _outline = String.Empty
         _plot = String.Empty
         _genre = String.Empty
+        _fsk = String.Empty
     End Sub
 
     Private Function GetFullPlot(ByVal sURL As String) As String
@@ -252,6 +263,15 @@ Public Class OFDB
                         End If
                     End If
 
+                    'fsk
+                    If String.IsNullOrEmpty(OFDBMovie.Certification) OrElse Not Master.eSettings.MovieLockMPAA Then
+                        _fsk = GetFSK(HTML)
+                    End If
+
+
+
+
+
                 End If
             End If
         Catch ex As Exception
@@ -282,6 +302,47 @@ Public Class OFDB
         End Try
 
         Return ofdbURL
+    End Function
+
+    ''' <summary>
+    ''' Scrapes FSK rating for one given movie from ODFB
+    ''' </summary>
+    ''' <param name="HTML"><c>String</c> which contains downloaded HTMLcode of moviesite</param>  
+    ''' <returns><c>String</c> that contains FSK number (or empty string if nothing was found)</returns>
+    ''' <remarks>This one is used for scraping the FSK rating from ODFB
+    ''' 
+    ''' 2014/06/23 Cocotus - First implementation
+    ''' </remarks>
+    Private Function GetFSK(ByVal HTML As String) As String
+        Dim FSK As String = ""
+        Try
+            If Not String.IsNullOrEmpty(HTML) Then
+                Dim tempD As Integer
+
+                tempD = If(HTML.IndexOf(" FSK ") > 0, HTML.IndexOf(" FSK "), 0)
+                If tempD > 0 Then
+                    Dim fskstring As String = ""
+                    fskstring = HTML.Substring(tempD + 5, HTML.Length - (tempD + 5))
+                    Dim fskpos As Integer = 0
+                    fskpos = fskstring.IndexOf(Chr(34))
+                    If fskpos > 0 Then
+                        FSK = Web.HttpUtility.HtmlDecode((HTML.Substring(tempD + 5, fskpos))).Replace(",", "")
+                    End If
+                    If FSK.Contains("18") Then
+                        FSK = "18"
+                    ElseIf FSK.Contains("o.A") Then
+                        FSK = "0"
+                    End If
+                    If IsNumeric(FSK) = False Then
+                        FSK = ""
+                    End If
+
+                End If
+            End If
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+        Return FSK
     End Function
 
 #End Region 'Methods

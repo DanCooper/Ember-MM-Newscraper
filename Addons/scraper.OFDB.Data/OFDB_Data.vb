@@ -123,7 +123,7 @@ Public Class OFDB_Data
         _setup.chkOFDBPlot.Checked = ConfigOptions.bPlot
         _setup.chkOFDBGenre.Checked = ConfigOptions.bGenre
         _setup.chkOFDBCleanPlotOutline.Checked = ConfigOptions.bCleanPlotOutline
-
+        _setup.chkOFDBRating.Checked = ConfigOptions.bCert
         _setup.orderChanged()
         SPanel.Name = String.Concat(Me._Name, "Scraper")
         SPanel.Text = Master.eLang.GetString(895, "OFDB")
@@ -145,6 +145,7 @@ Public Class OFDB_Data
         ConfigOptions.bPlot = AdvancedSettings.GetBooleanSetting("DoPlot", True)
         ConfigOptions.bGenre = AdvancedSettings.GetBooleanSetting("DoGenres", True)
         ConfigOptions.bCleanPlotOutline = AdvancedSettings.GetBooleanSetting("CleanPlotOutline", False)
+        ConfigOptions.bCert = AdvancedSettings.GetBooleanSetting("DoCert", False)
     End Sub
 
     Sub SaveSettings()
@@ -153,6 +154,7 @@ Public Class OFDB_Data
             settings.SetBooleanSetting("DoOutline", ConfigOptions.bOutline)
             settings.SetBooleanSetting("DoPlot", ConfigOptions.bPlot)
             settings.SetBooleanSetting("DoGenres", ConfigOptions.bGenre)
+            settings.SetBooleanSetting("DoCert", ConfigOptions.bCert)
             settings.SetBooleanSetting("CleanPlotOutline", ConfigOptions.bCleanPlotOutline)
         End Using
     End Sub
@@ -162,6 +164,7 @@ Public Class OFDB_Data
     End Sub
 
     Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.EmberMovieScraperModule_Data.SaveSetupScraper
+        ConfigOptions.bCert = _setup.chkOFDBRating.Checked
         ConfigOptions.bTitle = _setup.chkOFDBTitle.Checked
         ConfigOptions.bOutline = _setup.chkOFDBOutline.Checked
         ConfigOptions.bPlot = _setup.chkOFDBPlot.Checked
@@ -226,6 +229,53 @@ Public Class OFDB_Data
                 DBMovie.Movie.Genre = tOFDB.Genre
             End If
         End If
+
+        'Use OFDB FSK?
+        If filterOptions.bCert AndAlso (String.IsNullOrEmpty(DBMovie.Movie.Certification) OrElse Not Master.eSettings.MovieLockMPAA) Then
+
+
+            If Not String.IsNullOrEmpty(tOFDB.FSK) Then
+                Select Case CInt(tOFDB.FSK)
+                    Case 0
+                        DBMovie.Movie.Certification = "Germany:0"
+                        If Master.eSettings.MovieScraperOnlyValueForMPAA = False Then
+                            DBMovie.Movie.MPAA = "Germany:0"
+                        Else
+                            DBMovie.Movie.MPAA = "0"
+                        End If
+                    Case 6
+                        DBMovie.Movie.Certification = "Germany:6"
+                        If Master.eSettings.MovieScraperOnlyValueForMPAA = False Then
+                            DBMovie.Movie.MPAA = "Germany:6"
+                        Else
+                            DBMovie.Movie.MPAA = "6"
+                        End If
+                    Case 16
+                        DBMovie.Movie.Certification = "Germany:16"
+                        If Master.eSettings.MovieScraperOnlyValueForMPAA = False Then
+                            DBMovie.Movie.MPAA = "Germany:16"
+                        Else
+                            DBMovie.Movie.MPAA = "16"
+                        End If
+                    Case 12
+                        DBMovie.Movie.Certification = "Germany:12"
+                        If Master.eSettings.MovieScraperOnlyValueForMPAA = False Then
+                            DBMovie.Movie.MPAA = "Germany:12"
+                        Else
+                            DBMovie.Movie.MPAA = "12"
+                        End If
+                    Case 18
+                        DBMovie.Movie.Certification = "Germany:18"
+                        If Master.eSettings.MovieScraperOnlyValueForMPAA = False Then
+                            DBMovie.Movie.MPAA = "Germany:18"
+                        Else
+                            DBMovie.Movie.MPAA = "18"
+                        End If
+                End Select
+            End If
+
+        End If
+
 
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
