@@ -417,7 +417,7 @@ Public Class frmMain
                 Application.DoEvents()
             End With
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -461,7 +461,7 @@ Public Class frmMain
             Me.LoadingDone = True
             Me.EnableFilters(True)
             Me.SetControlsEnabled(True)
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -478,7 +478,7 @@ Public Class frmMain
                 End Using
             End Using
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -495,7 +495,7 @@ Public Class frmMain
             '    End Using
             'End Using
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -511,7 +511,7 @@ Public Class frmMain
                 End Using
             End Using
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -552,7 +552,7 @@ Public Class frmMain
 
             Me.LoadMovieInfo(Convert.ToInt32(Me.dgvMovies.Item(0, Me.dgvMovies.CurrentCell.RowIndex).Value), Me.dgvMovies.Item(1, Me.dgvMovies.CurrentCell.RowIndex).Value.ToString, True, False)
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -767,7 +767,7 @@ Public Class frmMain
             dgvMovies.Refresh()
             btnMarkAll.Text = If(Not MarkAll, Master.eLang.GetString(35, "Mark All"), Master.eLang.GetString(105, "Unmark All"))
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -842,7 +842,7 @@ Public Class frmMain
         '        End If
         '    End If
         'Catch ex As Exception
-        '    logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+        '    logger.Error(New StackFrame().GetMethod().Name, ex)
         'End Try
     End Sub
 
@@ -959,7 +959,7 @@ Public Class frmMain
                 End If
             End With
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1077,7 +1077,7 @@ Public Class frmMain
             End If
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
             e.Cancel = True
         End Try
     End Sub
@@ -1092,7 +1092,7 @@ Public Class frmMain
 
             Me.dgvTVEpisodes.ResumeLayout()
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1143,7 +1143,7 @@ Public Class frmMain
             End If
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
             e.Cancel = True
         End Try
     End Sub
@@ -1162,7 +1162,7 @@ Public Class frmMain
             End If
             Me.dgvMovies.ResumeLayout()
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1213,7 +1213,7 @@ Public Class frmMain
             End If
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
             e.Cancel = True
         End Try
     End Sub
@@ -1232,7 +1232,7 @@ Public Class frmMain
             End If
             Me.dgvMovieSets.ResumeLayout()
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1277,7 +1277,7 @@ Public Class frmMain
             End If
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
             e.Cancel = True
         End Try
     End Sub
@@ -1291,7 +1291,7 @@ Public Class frmMain
             End If
             Me.dgvTVSeasons.ResumeLayout()
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1339,7 +1339,7 @@ Public Class frmMain
             End If
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
             e.Cancel = True
         End Try
     End Sub
@@ -1353,7 +1353,7 @@ Public Class frmMain
             End If
             Me.dgvTVShows.ResumeLayout()
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1380,7 +1380,7 @@ Public Class frmMain
             End If
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
             e.Result = New Results With {.fileinfo = "error", .setEnabled = Args.setEnabled}
             e.Cancel = True
         End Try
@@ -1427,7 +1427,7 @@ Public Class frmMain
                     Me.btnMetaDataRefresh.Focus()
                 End If
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
 
             If Res.setEnabled Then
@@ -2092,7 +2092,7 @@ Public Class frmMain
                 'Args.scrapeType = Enums.ScrapeType.None
                 'End If
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         Next
         If Args.scrapeType = Enums.ScrapeType.SingleScrape Then
@@ -2158,7 +2158,7 @@ Public Class frmMain
 
                                     Me.bwNonScrape.ReportProgress(iCount, String.Format("[[{0}]]", drvRow.Item(0).ToString))
                                 Catch ex As Exception
-                                    logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                                    logger.Error(New StackFrame().GetMethod().Name, ex)
                                 End Try
                             Next
                         Case Enums.ScrapeType.CopyBackdrops 'TODO: check MovieBackdropsPath and VIDEO_TS parent
@@ -2201,7 +2201,7 @@ Public Class frmMain
                                         End If
                                     End If
                                 Catch ex As Exception
-                                    logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                                    logger.Error(New StackFrame().GetMethod().Name, ex)
                                 End Try
                             Next
                     End Select
@@ -2212,7 +2212,7 @@ doCancel:
                     End If
                 End If
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         End Using
     End Sub
@@ -2225,7 +2225,7 @@ doCancel:
                         Me.SelectMovieRow(Me.dgvMovies.SelectedRows(0).Index)
                     End If
                 Catch ex As Exception
-                    logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                    logger.Error(New StackFrame().GetMethod().Name, ex)
                 End Try
             Else
                 Me.SetStatus(e.UserState.ToString)
@@ -2251,7 +2251,7 @@ doCancel:
                     Me.bwRefreshMovies.ReportProgress(iCount, KVP.Value)
                     Me.RefreshMovie(KVP.Key, True)
                 Catch ex As Exception
-                    logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                    logger.Error(New StackFrame().GetMethod().Name, ex)
                 End Try
                 iCount += 1
             Next
@@ -2292,7 +2292,7 @@ doCancel:
 
             Me.RunFilter()
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -2355,7 +2355,7 @@ doCancel:
         Try
             Me.RunFilter(True)
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -2552,7 +2552,7 @@ doCancel:
                 Me.NonScrape(Enums.ScrapeType.CleanFolders, Nothing)
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -2616,7 +2616,7 @@ doCancel:
 
             If Reload Then Me.FillList(0)
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -2694,7 +2694,7 @@ doCancel:
             End If
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -2721,7 +2721,7 @@ doCancel:
             End If
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
     End Sub
@@ -2748,7 +2748,7 @@ doCancel:
             End If
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -2774,7 +2774,7 @@ doCancel:
             Me.SetControlsEnabled(True)
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -2828,7 +2828,7 @@ doCancel:
                 RemoveHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
             End Using
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -2858,7 +2858,7 @@ doCancel:
             End Using
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -2960,7 +2960,7 @@ doCancel:
             Me.dgvMovies.Invalidate()
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -3027,7 +3027,7 @@ doCancel:
             Me.dgvTVEpisodes.Invalidate()
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -3079,7 +3079,7 @@ doCancel:
     '        Me.dgvTVEpisodes.Invalidate()
 
     '    Catch ex As Exception
-    '        logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+    '        logger.Error(New StackFrame().GetMethod().Name, ex)
     '    End Try
     'End Sub
 
@@ -3143,7 +3143,7 @@ doCancel:
     '        Me.dgvTVEpisodes.Invalidate()
 
     '    Catch ex As Exception
-    '        logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+    '        logger.Error(New StackFrame().GetMethod().Name, ex)
     '    End Try
     'End Sub
 
@@ -3210,7 +3210,7 @@ doCancel:
             Me.dgvTVSeasons.Invalidate()
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -3262,7 +3262,7 @@ doCancel:
             Me.dgvTVEpisodes.Invalidate()
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -3326,7 +3326,7 @@ doCancel:
             Me.dgvTVEpisodes.Invalidate()
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -3368,7 +3368,7 @@ doCancel:
             Me.dgvMovies.Invalidate()
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -3435,7 +3435,7 @@ doCancel:
             Me.dgvTVEpisodes.Invalidate()
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -3487,7 +3487,7 @@ doCancel:
             Me.dgvTVEpisodes.Invalidate()
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -3551,7 +3551,7 @@ doCancel:
             Me.dgvTVEpisodes.Invalidate()
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -3602,7 +3602,7 @@ doCancel:
             Me.dgvMovies.Invalidate()
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -3675,7 +3675,7 @@ doCancel:
                 'RemoveHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
             End Using
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -3750,7 +3750,7 @@ doCancel:
             Me.FillList(0)
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -3782,7 +3782,7 @@ doCancel:
 
             If doFill Then FillEpisodes(Convert.ToInt32(Me.dgvTVEpisodes.SelectedRows(0).Cells(0).Value), Convert.ToInt32(Me.dgvTVEpisodes.SelectedRows(0).Cells(12).Value))
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -3857,7 +3857,7 @@ doCancel:
 
             If doFill Then FillList(0)
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -4094,7 +4094,7 @@ doCancel:
                     pbGenre(i).Image = ImageUtils.AddGenreString(pbGenre(i).Image, pbGenre(i).Name)
                 End If
             Catch ex As Exception
-                logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         Next
     End Sub
@@ -4135,7 +4135,7 @@ doCancel:
     '            End If
     '        Next
     '    Catch ex As Exception
-    '        logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+    '        logger.Error(New StackFrame().GetMethod().Name, ex)
     '    End Try
     'End Sub
 
@@ -4173,7 +4173,7 @@ doCancel:
             End If
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -4250,7 +4250,7 @@ doCancel:
                         Me.dgvMovies.Invalidate()
 
                     Catch ex As Exception
-                        logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                        logger.Error(New StackFrame().GetMethod().Name, ex)
                     End Try
                 End If
             ElseIf Master.eSettings.MovieClickScrape AndAlso e.RowIndex >= 0 AndAlso e.ColumnIndex <> 8 AndAlso e.ColumnIndex <> 62 AndAlso Not bwMovieScraper.IsBusy Then
@@ -4299,7 +4299,7 @@ doCancel:
                 End If
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -4339,7 +4339,7 @@ doCancel:
                 RemoveHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
             End Using
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -4362,7 +4362,7 @@ doCancel:
             Me.tmrWaitMovie.Start()
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -4465,7 +4465,7 @@ doCancel:
                 End If
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -4595,7 +4595,7 @@ doCancel:
             Me.tpMovies.Text = String.Format("{0} ({1})", Master.eLang.GetString(36, "Movies"), Me.dgvMovies.RowCount)
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -4653,7 +4653,7 @@ doCancel:
 
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -4717,7 +4717,7 @@ doCancel:
                 End If
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -4757,7 +4757,7 @@ doCancel:
                 'RemoveHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovieSet.GenericRunCallBack
             End Using
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -4780,7 +4780,7 @@ doCancel:
             Me.tmrWaitMovieSet.Start()
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -4851,7 +4851,7 @@ doCancel:
                 End If
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -4979,7 +4979,7 @@ doCancel:
             Me.tpMovieSets.Text = String.Format("{0} ({1})", Master.eLang.GetString(366, "Sets"), Me.dgvMovieSets.RowCount)
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -5037,7 +5037,7 @@ doCancel:
 
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -5096,7 +5096,7 @@ doCancel:
                 RemoveHandler ModulesManager.Instance.GenericEvent, AddressOf dEditEpisode.GenericRunCallBack
             End Using
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -5119,7 +5119,7 @@ doCancel:
             Me.tmrWaitEp.Start()
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -5196,7 +5196,7 @@ doCancel:
                 End If
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -5236,7 +5236,7 @@ doCancel:
                 End Using
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -5271,7 +5271,7 @@ doCancel:
                 Next
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
     End Sub
@@ -5382,7 +5382,7 @@ doCancel:
                 End If
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -5441,7 +5441,7 @@ doCancel:
             End Using
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -5465,7 +5465,7 @@ doCancel:
             Me.tmrWaitSeason.Start()
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -5539,7 +5539,7 @@ doCancel:
                 End If
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -5578,7 +5578,7 @@ doCancel:
                 End Using
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -5652,7 +5652,7 @@ doCancel:
                 End If
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -5717,7 +5717,7 @@ doCancel:
 
             End Using
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -5739,7 +5739,7 @@ doCancel:
             Me.currShowRow = e.RowIndex
             Me.tmrWaitShow.Start()
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -5825,7 +5825,7 @@ doCancel:
                 End If
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -5867,7 +5867,7 @@ doCancel:
                 End Using
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -5948,7 +5948,7 @@ doCancel:
                 End If
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -6022,7 +6022,7 @@ doCancel:
 
             Me.dgvMovies.Invalidate()
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -6595,7 +6595,7 @@ doCancel:
             End If
         Catch ex As Exception
             Me.LoadingDone = True
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
         If Not isCL Then
@@ -6847,7 +6847,7 @@ doCancel:
             Next
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Me.ResumeLayout()
     End Sub
@@ -7119,7 +7119,7 @@ doCancel:
             Next
             'Me.SetStatus(Master.currMovie.Filename)
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Me.ResumeLayout()
     End Sub
@@ -7406,7 +7406,7 @@ doCancel:
             Next
             'Me.SetStatus(Master.currMovie.Filename)
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Me.ResumeLayout()
     End Sub
@@ -7603,7 +7603,7 @@ doCancel:
             Next
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Me.ResumeLayout()
     End Sub
@@ -7852,7 +7852,7 @@ doCancel:
             Next
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Me.ResumeLayout()
     End Sub
@@ -8065,8 +8065,6 @@ doCancel:
                 InstallNewFiles("InstallTasks.xml")
             End If
 
-            fLoading.SetLoadingMesg(Master.eLang.GetString(484, "Loading settings..."))
-
             'cocotus Check if new "Settings" folder exists - if not then create it!
             If Not Directory.Exists(String.Concat(Functions.AppPath, "Settings")) Then
                 Directory.CreateDirectory(String.Concat(Functions.AppPath, "Settings"))
@@ -8077,6 +8075,8 @@ doCancel:
 
             ' Force initialization of languages for main
             Master.eLang.LoadAllLanguage(Master.eSettings.GeneralLanguage)
+
+            fLoading.SetLoadingMesg(Master.eLang.GetString(484, "Loading settings..."))
 
             Dim aBit As String = Master.eLang.GetString(1008, "x64")
             If Master.is32Bit Then
@@ -8158,7 +8158,7 @@ doCancel:
 
             fLoading.Close()
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
             Me.Close()
         End Try
     End Sub
@@ -8344,7 +8344,7 @@ doCancel:
                         fLoading.SetLoadingMesg(Master.eLang.GetString(861, "Command Line Scraping..."))
                         MovieScrapeData(False, clScrapeType, Master.DefaultMovieOptions)
                     Catch ex As Exception
-                        logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                        logger.Error(New StackFrame().GetMethod().Name, ex)
                     End Try
                 Else
                     Try
@@ -8425,7 +8425,7 @@ doCancel:
                         End If
                     Catch ex As Exception
                         Me.ScraperDone = True
-                        logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                        logger.Error(New StackFrame().GetMethod().Name, ex)
                     End Try
                 End If
 
@@ -8558,7 +8558,7 @@ doCancel:
                 If tsbMediaCenters.DropDownItems.Count > 0 Then tsbMediaCenters.Enabled = True
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
     End Sub
@@ -8583,7 +8583,7 @@ doCancel:
                 Me.pnlAllSeason.Location = New Point(Me.pbFanart.Width - Me.pnlAllSeason.Width - 9, 112)
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -8623,7 +8623,7 @@ doCancel:
                     End If
                     Me.SetStatus(Master.currMovie.Filename)
                 Catch ex As Exception
-                    logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                    logger.Error(New StackFrame().GetMethod().Name, ex)
                 End Try
             Case Enums.ModuleEventType.RenameMovieManual
                 Try
@@ -8633,7 +8633,7 @@ doCancel:
                     End If
                     Me.SetStatus(Master.currMovie.Filename)
                 Catch ex As Exception
-                    logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+                    logger.Error(New StackFrame().GetMethod().Name, ex)
                 End Try
             Case Else
                 logger.Warn( "Callback for <{0}> with no handler.", mType)
@@ -8681,7 +8681,7 @@ doCancel:
 
         Catch ex As Exception
             Me.SetControlsEnabled(True)
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -8711,7 +8711,7 @@ doCancel:
             End If
         Catch ex As Exception
             Me.SetControlsEnabled(True)
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -8741,7 +8741,7 @@ doCancel:
             End If
         Catch ex As Exception
             Me.SetControlsEnabled(True)
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -8765,7 +8765,7 @@ doCancel:
 
         Catch ex As Exception
             Me.SetControlsEnabled(True)
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -8787,7 +8787,7 @@ doCancel:
 
         Catch ex As Exception
             Me.SetControlsEnabled(True)
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -8821,7 +8821,7 @@ doCancel:
                 Me.pbActors.Image = My.Resources.actor_silhouette
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -9564,7 +9564,7 @@ doCancel:
                 Me.pnlGenre(i).Top = Me.pnlInfoPanel.Top - 105
             Next
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
     ''' <summary>
@@ -9638,7 +9638,7 @@ doCancel:
 
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Master.currMovie.ClearBanner = False
@@ -9923,7 +9923,7 @@ doCancel:
                 End Using
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
     ''' <summary>
@@ -9956,7 +9956,7 @@ doCancel:
                 End Using
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -9968,7 +9968,7 @@ doCancel:
                 End Using
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -9980,7 +9980,7 @@ doCancel:
                 End Using
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -9992,7 +9992,7 @@ doCancel:
                 End Using
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -10004,7 +10004,7 @@ doCancel:
                 End Using
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -10179,7 +10179,7 @@ doCancel:
             End If
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Return False
@@ -10403,7 +10403,7 @@ doCancel:
             End If
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Return False
@@ -10502,7 +10502,7 @@ doCancel:
             End If
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Return False
@@ -10559,7 +10559,7 @@ doCancel:
             End If
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Return False
@@ -10732,7 +10732,7 @@ doCancel:
             End If
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Return False
@@ -10761,7 +10761,7 @@ doCancel:
 
             If doFill Then FillList(0) Else DoTitleCheck()
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -10788,7 +10788,7 @@ doCancel:
 
             If doFill Then FillList(0)
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -10803,7 +10803,7 @@ doCancel:
             Me.FillList(0)
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -10834,7 +10834,7 @@ doCancel:
 
             Me.LoadMovieInfo(Convert.ToInt32(Me.dgvMovies.Item(0, Me.dgvMovies.CurrentCell.RowIndex).Value), Me.dgvMovies.Item(1, Me.dgvMovies.CurrentCell.RowIndex).Value.ToString, True, False)
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -10941,7 +10941,7 @@ doCancel:
             End If
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -10996,7 +10996,7 @@ doCancel:
                 Me.ResumeLayout(True)
             End If
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -11017,7 +11017,7 @@ doCancel:
             End If
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -11194,7 +11194,7 @@ doCancel:
             End If
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
     ''' <summary>
@@ -11218,7 +11218,7 @@ doCancel:
             End If
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
     ''' <summary>
@@ -11246,7 +11246,7 @@ doCancel:
             End If
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
     ''' <summary>
@@ -11277,7 +11277,7 @@ doCancel:
             End If
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -11289,7 +11289,7 @@ doCancel:
             Me.pbAudio.Image = aImage(3)
             Me.pbChannels.Image = aImage(4)
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -11382,7 +11382,7 @@ doCancel:
 
             Me.LoadMovieInfo(Convert.ToInt32(Me.dgvMovies.Item(0, Me.dgvMovies.CurrentCell.RowIndex).Value), Me.dgvMovies.Item(1, Me.dgvMovies.CurrentCell.RowIndex).Value.ToString, True, False)
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
     ''' <summary>
@@ -11840,7 +11840,7 @@ doCancel:
             Me.tsbAutoPilot.Enabled = (Me.dgvMovies.RowCount > 0 AndAlso Me.tcMain.SelectedIndex = 0)
             Me.cmnuTrayScrape.Enabled = Me.tsbAutoPilot.Enabled
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -11986,7 +11986,7 @@ doCancel:
             dThread.Start()
         Catch ex As Exception
             Me.mnuMainEditSettings.Enabled = True
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
     ''' <summary>
@@ -12641,7 +12641,7 @@ doCancel:
 
             End With
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
     ''' <summary>
@@ -12831,7 +12831,7 @@ doCancel:
             End Select
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
     ''' <summary>
@@ -12872,7 +12872,7 @@ doCancel:
             Me.dgvMovies.Invalidate()
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -13343,7 +13343,7 @@ doCancel:
             End If
 
         Catch ex As Exception
-            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
