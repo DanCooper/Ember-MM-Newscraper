@@ -5445,7 +5445,7 @@ Public Class Settings
         Me._generalimagesglassoverlay = False
         Me._generalinfopanelanim = False
         Me._generallanguage = "English_(en_US)"
-        Me._generalmainsplitterpanelstate = 364
+        Me._generalmainsplitterpanelstate = 564
         Me._generalmovieinfopanelstate = 0
         Me._generalmovietheme = "Default"
         Me._generalmoviesettheme = "Default"

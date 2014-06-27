@@ -497,7 +497,11 @@ Public Class Database
                 doAddColumnMovieSetsImages = True
                 Using SQLreader As SQLite.SQLiteDataReader = SQLpathcommand.ExecuteReader
                     While SQLreader.Read
+<<<<<<< HEAD
                         If SQLreader("name").ToString.ToLower = "HasNfo" Then
+=======
+                        If SQLreader("name").ToString.ToLower = "hasnfo" Then
+>>>>>>> upstream/master
                             'Column does exist in current database of Ember --> asume: if one columns missing, all new columns must be added
                             doAddColumnMovieSetsImages = False
                         End If
@@ -512,7 +516,11 @@ Public Class Database
                 doAddColumnVStreamMultiviewLayout = True
                 Using SQLreader As SQLite.SQLiteDataReader = SQLpathcommand.ExecuteReader
                     While SQLreader.Read
+<<<<<<< HEAD
                         If SQLreader("name").ToString.ToLower = "MultiViewLayout" Then
+=======
+                        If SQLreader("name").ToString.ToLower = "video_multiviewlayout" Then
+>>>>>>> upstream/master
                             'Column does exist in current database of Ember --> asume: if one columns missing, all new columns must be added
                             doAddColumnVStreamMultiviewLayout = False
                         End If
@@ -2507,9 +2515,9 @@ Public Class Database
                         'cocotus, 2013/02 Added support for new MediaInfo-fields
                         'Expanded SQL Statement to INSERT/replace new fields
                         SQLcommandTVVStreams.CommandText = String.Concat("INSERT OR REPLACE INTO TVVStreams (", _
-                           "TVEpID, StreamID, Video_Width,Video_Height,Video_Codec,Video_Duration,", _
+                           "TVEpID, StreamID, Video_Width, Video_Height, Video_Codec, Video_Duration,", _
                            "Video_ScanType, Video_AspectDisplayRatio, Video_Language, Video_LongLanguage, Video_Bitrate, Video_MultiView, Video_EncodedSettings, Video_MultiViewLayout", _
-                           ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?);")
+                           ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?);")
                         'cocotus end
 
                         Dim parVideo_EpID As SQLite.SQLiteParameter = SQLcommandTVVStreams.Parameters.Add("parVideo_EpID", DbType.UInt64, 0, "TVEpID")
