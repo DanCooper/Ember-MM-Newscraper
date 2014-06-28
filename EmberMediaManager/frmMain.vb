@@ -12578,6 +12578,8 @@ doCancel:
                 .mnuMainHelpUpdate.Text = Master.eLang.GetString(850, "&Check For Updates...")
                 .mnuMainHelpVersions.Text = Master.eLang.GetString(793, "&Versions...")
                 .mnuMainHelpWiki.Text = Master.eLang.GetString(869, "EmberMM.com &Wiki...")
+                .mnuMainToolsExportMovies.Text = Master.eLang.GetString(36, "Movies")
+                .mnuMainToolsExportTvShows.Text = Master.eLang.GetString(653, "TV Shows")
                 .mnuMainTools.Text = Master.eLang.GetString(8, "&Tools")
                 .mnuMainToolsBackdrops.Text = Master.eLang.GetString(11, "Copy Existing Fanart To &Backdrops Folder")
                 .mnuMainToolsCleanDB.Text = Master.eLang.GetString(709, "Clean &Database")
@@ -12666,7 +12668,7 @@ doCancel:
                     Me.lblNoInfo.Text = Master.eLang.GetString(1154, "No Information is Available for This MovieSet")
                     If Not Me.currThemeType = Theming.ThemeType.MovieSet Then Me.ApplyTheme(Theming.ThemeType.MovieSet)
                 Case Else
-                    logger.Warn( "Invalid media type <{0}>", tType)
+                    logger.Warn("Invalid media type <{0}>", tType)
             End Select
         End If
 
@@ -13132,7 +13134,7 @@ doCancel:
                         Me.SetShowListItemAfterEdit(Convert.ToInt32(Master.currShow.ShowID), Me.dgvTVShows.SelectedRows(0).Index)
                         ModulesManager.Instance.TVSaveImages()
                     Case Else
-                        logger.Warn( "Unhandled TVScraperEventType.SaveAuto <{0}>", iProgress)
+                        logger.Warn("Unhandled TVScraperEventType.SaveAuto <{0}>", iProgress)
                 End Select
 
             Case Enums.TVScraperEventType.Verifying
@@ -13171,7 +13173,7 @@ doCancel:
                         Me.tslLoading.Visible = False
                         Me.SetControlsEnabled(True)
                     Case Else
-                        logger.Warn( "Unhandled TVScraperEventType.Verifying <{0}>", iProgress)
+                        logger.Warn("Unhandled TVScraperEventType.Verifying <{0}>", iProgress)
                 End Select
 
             Case Enums.TVScraperEventType.Progress
@@ -13183,7 +13185,7 @@ doCancel:
                     Case "progress"
                         Me.tspbLoading.Value = iProgress
                     Case Else
-                        logger.Warn( "Unhandled TVScraperEventType.Progress <{0}>", iProgress)
+                        logger.Warn("Unhandled TVScraperEventType.Progress <{0}>", iProgress)
                 End Select
                 Me.tspbLoading.Visible = True
                 Me.tslLoading.Visible = True
@@ -13196,7 +13198,7 @@ doCancel:
 
                 Me.SetControlsEnabled(True)
             Case Else
-                logger.Warn( "Unhandled TVScraperEventType <{0}>", eType)
+                logger.Warn("Unhandled TVScraperEventType <{0}>", eType)
         End Select
     End Sub
 
@@ -13398,5 +13400,55 @@ doCancel:
     End Structure
 
 #End Region 'Nested Types
+
+    Private Sub mnuMainToolsExportMovies_Click(sender As Object, e As EventArgs) Handles mnuMainToolsExportMovies.Click
+        Try
+            Dim table As New DataTable
+            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                SQLcommand.CommandText = "Select * from Movies;"
+                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                    'Load the SqlDataReader object to the DataTable object as follows. 
+                    table.Load(SQLreader)
+                End Using
+            End Using
+
+            Dim saveFileDialog1 As New SaveFileDialog()
+            saveFileDialog1.FileName = "export_movies" + ".xml"
+            saveFileDialog1.Filter = "xml files (*.xml)|*.xml"
+            saveFileDialog1.FilterIndex = 2
+            saveFileDialog1.RestoreDirectory = True
+
+            If saveFileDialog1.ShowDialog() = DialogResult.OK Then
+                table.WriteXml(saveFileDialog1.FileName)
+            End If
+        Catch ex As Exception
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
+    Private Sub mnuMainToolsExportTvShows_Click(sender As Object, e As EventArgs) Handles mnuMainToolsExportTvShows.Click
+        Try
+            Dim table As New DataTable
+            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                SQLcommand.CommandText = "Select * from TVShows;"
+                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                    'Load the SqlDataReader object to the DataTable object as follows. 
+                    table.Load(SQLreader)
+                End Using
+            End Using
+
+            Dim saveFileDialog1 As New SaveFileDialog()
+            saveFileDialog1.FileName = "export_tvshows" + ".xml"
+            saveFileDialog1.Filter = "xml files (*.xml)|*.xml"
+            saveFileDialog1.FilterIndex = 2
+            saveFileDialog1.RestoreDirectory = True
+
+            If saveFileDialog1.ShowDialog() = DialogResult.OK Then
+                table.WriteXml(saveFileDialog1.FileName)
+            End If
+        Catch ex As Exception
+            logger.ErrorException(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
 
 End Class
