@@ -436,9 +436,20 @@ Namespace TMDBg
                     End If
 
                     If Not IsNothing(tGen) AndAlso tGen.Count > 0 Then
-                        For Each aGen As WatTmdb.V3.MovieGenre In tGen
-                            DBMovie.Genres.Add(aGen.name)
-                        Next
+                        'cocotus 201406028 Use Max Genre settings like IMDB scraper does, http://bugs.embermediamanager.org/thebuggenie/embermediamanager/issues/122
+                        If Master.eSettings.MovieScraperGenreLimit > 0 Then
+                            Dim counter As Integer = 0
+                            For Each aGen As WatTmdb.V3.MovieGenre In tGen
+                                counter = counter + 1
+                                If counter <= Master.eSettings.MovieScraperGenreLimit Then
+                                    DBMovie.Genres.Add(aGen.name)
+                                End If
+                            Next
+                        Else
+                            For Each aGen As WatTmdb.V3.MovieGenre In tGen
+                                DBMovie.Genres.Add(aGen.name)
+                            Next
+                        End If
                     End If
                 End If
 
