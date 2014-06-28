@@ -497,11 +497,7 @@ Public Class Database
                 doAddColumnMovieSetsImages = True
                 Using SQLreader As SQLite.SQLiteDataReader = SQLpathcommand.ExecuteReader
                     While SQLreader.Read
-<<<<<<< HEAD
-                        If SQLreader("name").ToString.ToLower = "HasNfo" Then
-=======
                         If SQLreader("name").ToString.ToLower = "hasnfo" Then
->>>>>>> upstream/master
                             'Column does exist in current database of Ember --> asume: if one columns missing, all new columns must be added
                             doAddColumnMovieSetsImages = False
                         End If
@@ -516,11 +512,7 @@ Public Class Database
                 doAddColumnVStreamMultiviewLayout = True
                 Using SQLreader As SQLite.SQLiteDataReader = SQLpathcommand.ExecuteReader
                     While SQLreader.Read
-<<<<<<< HEAD
-                        If SQLreader("name").ToString.ToLower = "MultiViewLayout" Then
-=======
                         If SQLreader("name").ToString.ToLower = "video_multiviewlayout" Then
->>>>>>> upstream/master
                             'Column does exist in current database of Ember --> asume: if one columns missing, all new columns must be added
                             doAddColumnVStreamMultiviewLayout = False
                         End If

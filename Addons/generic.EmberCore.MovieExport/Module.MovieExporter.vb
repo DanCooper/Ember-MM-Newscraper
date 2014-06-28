@@ -23,12 +23,18 @@ Imports EmberAPI
 Public Class MovieExporterModule
     Implements Interfaces.EmberExternalModule
 
+#Region "Delegates"
+    Public Delegate Sub Delegate_AddToolsStripItem(control As System.Windows.Forms.ToolStripMenuItem, value As System.Windows.Forms.ToolStripItem)
+    Public Delegate Sub Delegate_RemoveToolsStripItem(control As System.Windows.Forms.ToolStripMenuItem, value As System.Windows.Forms.ToolStripItem)
+
+#End Region 'Fields
+
 #Region "Fields"
 
     Private WithEvents MyMenu As New System.Windows.Forms.ToolStripMenuItem
     Private WithEvents MyTrayMenu As New System.Windows.Forms.ToolStripMenuItem
-	Private _AssemblyName As String = String.Empty
-	Private _enabled As Boolean = False
+    Private _AssemblyName As String = String.Empty
+    Private _enabled As Boolean = False
     Private _Name As String = "Movie List Exporter"
     Private _setup As frmSettingsHolder
     Private MySettings As New _MySettings
@@ -97,9 +103,17 @@ Public Class MovieExporterModule
     Sub Disable()
         Dim tsi As New ToolStripMenuItem
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("mnuMainTools"), ToolStripMenuItem)
-        tsi.DropDownItems.Remove(MyMenu)
+        RemoveToolsStripItem(tsi, MyMenu)
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("cmnuTrayTools"), ToolStripMenuItem)
-        tsi.DropDownItems.Remove(MyTrayMenu)
+        RemoveToolsStripItem(tsi, MyTrayMenu)
+    End Sub
+
+    Public Sub RemoveToolsStripItem(control As System.Windows.Forms.ToolStripMenuItem, value As System.Windows.Forms.ToolStripItem)
+        If (control.Owner.InvokeRequired) Then
+            control.Owner.Invoke(New Delegate_RemoveToolsStripItem(AddressOf RemoveToolsStripItem), New Object() {control, value})
+            Exit Sub
+        End If
+        control.DropDownItems.Remove(value)
     End Sub
 
     Sub Enable()
@@ -107,11 +121,19 @@ Public Class MovieExporterModule
         MyMenu.Image = New Bitmap(My.Resources.icon)
         MyMenu.Text = Master.eLang.GetString(336, "Export Movie List")
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("mnuMainTools"), ToolStripMenuItem)
-        tsi.DropDownItems.Add(MyMenu)
+        AddToolsStripItem(tsi, MyMenu)
         MyTrayMenu.Image = New Bitmap(My.Resources.icon)
         MyTrayMenu.Text = Master.eLang.GetString(336, "Export Movie List")
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayTools"), ToolStripMenuItem)
-        tsi.DropDownItems.Add(MyTrayMenu)
+        AddToolsStripItem(tsi, MyTrayMenu)
+    End Sub
+
+    Public Sub AddToolsStripItem(control As System.Windows.Forms.ToolStripMenuItem, value As System.Windows.Forms.ToolStripItem)
+        If (control.Owner.InvokeRequired) Then
+            control.Owner.Invoke(New Delegate_AddToolsStripItem(AddressOf RemoveToolsStripItem), New Object() {control, value})
+            Exit Sub
+        End If
+        control.DropDownItems.Add(value)
     End Sub
 
     Private Sub Handle_ModuleEnabledChanged(ByVal State As Boolean)
@@ -122,11 +144,11 @@ Public Class MovieExporterModule
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-	Sub Init(ByVal sAssemblyName As String, ByVal sExecutable As String) Implements Interfaces.EmberExternalModule.Init
-		_AssemblyName = sAssemblyName
+    Sub Init(ByVal sAssemblyName As String, ByVal sExecutable As String) Implements Interfaces.EmberExternalModule.Init
+        _AssemblyName = sAssemblyName
         'Master.eLang.LoadLanguage(Master.eSettings.Language, sExecutable)
         LoadSettings()
-	End Sub
+    End Sub
 
     Function InjectSetup() As Containers.SettingsPanel Implements Interfaces.EmberExternalModule.InjectSetup
         Me._setup = New frmSettingsHolder
@@ -165,12 +187,6 @@ Public Class MovieExporterModule
 
         RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", True}))
     End Sub
-
-    'Sub SaveSetup(ByVal DoDispose As Boolean) Implements Interfaces.EmberExternalModule.SaveSetup
-    '    Me.Enabled = Me._setup.cbEnabled.Checked
-    'End Sub
-
-
 
     Sub LoadSettings()
         MySettings.ExportPath = AdvancedSettings.GetSetting("ExportPath", "")
