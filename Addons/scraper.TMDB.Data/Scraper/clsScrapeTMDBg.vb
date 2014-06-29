@@ -348,10 +348,17 @@ Namespace TMDBg
 
                     If Not IsNothing(Trailers) AndAlso Not IsNothing(Trailers.youtube) Then
                         If Trailers.youtube.Count > 0 Then
-                            DBMovie.Trailer = "http://www.youtube.com/watch?hd=1&v=" & Trailers.youtube(0).source
+                            Dim TrailerLink As String = "http://www.youtube.com/watch?hd=1&v=" & Trailers.youtube(0).source
+                            If Not String.IsNullOrEmpty(TrailerLink) Then
+                                If Master.eSettings.MovieXBMCTrailerFormat Then
+                                    DBMovie.Trailer = Replace(TrailerLink, "http://www.youtube.com/watch?v=", "plugin://plugin.video.youtube/?action=play_video&videoid=")
+                                    DBMovie.Trailer = Replace(DBMovie.Trailer, "http://www.youtube.com/watch?hd=1&v=", "plugin://plugin.video.youtube/?action=play_video&videoid=")
+                                Else
+                                    DBMovie.Trailer = TrailerLink
+                                End If
+                            End If
                         End If
                     End If
-
                 End If
 
                 If bwTMDBg.CancellationPending Then Return Nothing
