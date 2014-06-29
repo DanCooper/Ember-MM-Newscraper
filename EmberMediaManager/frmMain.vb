@@ -4152,6 +4152,25 @@ doCancel:
         End Using
     End Sub
 
+    Private Sub RestartUpdaterToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuRestartScrape.Click, cmnuTrayRestart.Click
+        Me.SetControlsEnabled(False)
+
+        Functions.SetScraperMod(Enums.MovieModType.All, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.FullAuto, Master.DefaultMovieOptions)
+
+
+        'Using dUpdate As New dlgUpdateMedia
+        '    Dim CustomUpdater As Structures.CustomUpdaterStruct = Nothing
+        '    CustomUpdater = dUpdate.ShowDialog()
+        '    If Not CustomUpdater.Canceled Then
+        '        Me.MovieScrapeData(False, CustomUpdater.ScrapeType, CustomUpdater.Options)
+        '    Else
+        '        Me.SetControlsEnabled(True)
+        '    End If
+        'End Using
+    End Sub
+
+
     Private Sub cmnuMovieRemoveFromDisc_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieRemoveFromDisc.Click
         Try
             Dim MoviesToDelete As New Dictionary(Of Long, Long)
@@ -12064,6 +12083,10 @@ doCancel:
                 ' Scrape Media Menu: Custom Scraper
                 .mnuCustom.Text = Master.eLang.GetString(81, "Custom Scraper...")
                 .cmnuTrayCustom.Text = .mnuCustom.Text
+
+                ' Scrape Media Menu: Restart last scraper
+                .mnuRestartScrape.Text = Master.eLang.GetString(1160, "Restart last scrape...")
+                .cmnuTrayRestart.Text = .mnuRestartScrape.Text
 
                 ' Scrape Media Menu: FullAuto
                 .mnuAllAuto.Text = Master.eLang.GetString(69, "Automatic (Force Best Match)")

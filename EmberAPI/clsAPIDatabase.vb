@@ -407,6 +407,7 @@ Public Class Database
             Dim doAddColumnTVShowEFanarts As Boolean = False
             Dim doAddColumnVStreamMultiviewLayout As Boolean = False
             Dim doAddColumnTMDBColID As Boolean = False
+            Dim doAddMovieLastScrape As Boolean = False
             Dim strlistSQLCommands As New List(Of String)
 
             SQLpathcommand.CommandText = "pragma table_info(TVEps);"
@@ -417,7 +418,7 @@ Public Class Database
                 Using SQLreader As SQLite.SQLiteDataReader = SQLpathcommand.ExecuteReader
                     While SQLreader.Read
                         If SQLreader("name").ToString.ToLower = "playcount" Then
-                            'Column does exist in current database of Ember --> asume: if one columns missing, all new mediainfo columns must be added
+                            'Column does exist in current database of Ember --> assume: if one columns missing, all new mediainfo columns must be added
                             doAddColumns = False
                         End If
                         If SQLreader("name").ToString.ToLower = "haswatched" Then
@@ -425,7 +426,7 @@ Public Class Database
                             doAddColumnWatched = False
                         End If
                         If SQLreader("name").ToString.ToLower = "displayseason" Then
-                            'Column does exist in current database of Ember --> asume: if one columns missing, all new columns must be added
+                            'Column does exist in current database of Ember --> assume: if one columns missing, all new columns must be added
                             doAddColumnDisplaySE = False
                         End If
                     End While
@@ -436,6 +437,7 @@ Public Class Database
 
             SQLpathcommand.CommandText = "pragma table_info(Movies);"
             Try
+                doAddMovieLastScrape = True
                 doAddColumnMovies = True
                 doAddColumnMovieBannerAndLandscape = True
                 doAddColumnMovieAndTVTheme = True
@@ -444,24 +446,28 @@ Public Class Database
                 Using SQLreader As SQLite.SQLiteDataReader = SQLpathcommand.ExecuteReader
                     While SQLreader.Read
                         If SQLreader("name").ToString.ToLower = "efanartspath" Then
-                            'Column does exist in current database of Ember --> asume: if one columns missing, all new columns must be added
+                            'Column does exist in current database of Ember --> assume: if one columns missing, all new columns must be added
                             doAddColumnMovies = False
                         End If
                         If SQLreader("name").ToString.ToLower = "bannerpath" Then
-                            'Column does exist in current database of Ember --> asume: if one columns missing, all new columns must be added
+                            'Column does exist in current database of Ember --> assume: if one columns missing, all new columns must be added
                             doAddColumnMovieBannerAndLandscape = False
                         End If
                         If SQLreader("name").ToString.ToLower = "themepath" Then
-                            'Column does exist in current database of Ember --> asume: if one columns missing, all new columns must be added
+                            'Column does exist in current database of Ember --> assume: if one columns missing, all new columns must be added
                             doAddColumnMovieAndTVTheme = False
                         End If
                         If SQLreader("name").ToString.ToLower = "clearlogopath" Then
-                            'Column does exist in current database of Ember --> asume: if one columns missing, all new columns must be added
+                            'Column does exist in current database of Ember --> assume: if one columns missing, all new columns must be added
                             doAddColumnMovieAndTVLogoDiscAndClearArt = False
                         End If
                         If SQLreader("name").ToString.ToLower = "tmdbcolid" Then
-                            'Column does exist in current database of Ember --> asume: if one columns missing, all new columns must be added
+                            'Column does exist in current database of Ember --> assume: if one columns missing, all new columns must be added
                             doAddColumnTMDBColID = False
+                        End If
+                        If SQLreader("name").ToString.ToLower = "lastscrape" Then
+                            'Column does exist in current database of Ember --> assume: if one columns missing, all new columns must be added
+                            doAddMovieLastScrape = False
                         End If
                     End While
                 End Using
@@ -477,7 +483,7 @@ Public Class Database
                 Using SQLreader As SQLite.SQLiteDataReader = SQLpathcommand.ExecuteReader
                     While SQLreader.Read
                         If SQLreader("name").ToString.ToLower = "hasbanner" Then
-                            'Column does exist in current database of Ember --> asume: if one columns missing, all new columns must be added
+                            'Column does exist in current database of Ember --> assume: if one columns missing, all new columns must be added
                             doAddColumnTVBannerAndLandscape = False
                         End If
                         If SQLreader("name").ToString.ToLower = "status" Then
@@ -498,7 +504,7 @@ Public Class Database
                 Using SQLreader As SQLite.SQLiteDataReader = SQLpathcommand.ExecuteReader
                     While SQLreader.Read
                         If SQLreader("name").ToString.ToLower = "hasnfo" Then
-                            'Column does exist in current database of Ember --> asume: if one columns missing, all new columns must be added
+                            'Column does exist in current database of Ember --> assume: if one columns missing, all new columns must be added
                             doAddColumnMovieSetsImages = False
                         End If
                     End While
@@ -513,7 +519,7 @@ Public Class Database
                 Using SQLreader As SQLite.SQLiteDataReader = SQLpathcommand.ExecuteReader
                     While SQLreader.Read
                         If SQLreader("name").ToString.ToLower = "video_multiviewlayout" Then
-                            'Column does exist in current database of Ember --> asume: if one columns missing, all new columns must be added
+                            'Column does exist in current database of Ember --> assume: if one columns missing, all new columns must be added
                             doAddColumnVStreamMultiviewLayout = False
                         End If
                     End While
@@ -617,6 +623,9 @@ Public Class Database
                 strlistSQLCommands.Add("alter table Movies add TMDBColID TEXT;")
                 strlistSQLCommands.Add("alter table Sets add TMDBColID TEXT;")
             End If
+            If doAddMovieLastScrape = True Then
+                strlistSQLCommands.Add("alter table Movies add LastScrape TEXT;")
+            End If
 
             Using transaction As SQLite.SQLiteTransaction = _myvideosDBConn.BeginTransaction()
                 For Each sqlstatement In strlistSQLCommands
@@ -624,7 +633,7 @@ Public Class Database
                         SQLpathcommand.CommandText = sqlstatement
                         SQLpathcommand.ExecuteNonQuery()
                     Catch ex As Exception
-                        logger.Error(New StackFrame().GetMethod().Name, ex)
+                        logger.Error("{0} - {1} - {2}", New StackFrame().GetMethod().Name, sqlstatement, ex.Message)
                         'TODO ugly to rely on exception but will do the job
                         'Happens when column does exist (duplicate columns)
                     End Try
