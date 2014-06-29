@@ -304,7 +304,84 @@ Public Class Trailers
                         End Select
                     End If
                 Else
-                    tLink = String.Empty
+                    If aUrl.Resolution = Master.eSettings.MovieTrailerPrefQual Then
+                        tLink = aUrl.URL
+                    Else
+                        Select Case Master.eSettings.MovieTrailerMinQual
+                            Case Enums.TrailerQuality.All
+                                    tLink = aUrl.URL
+                            Case Enums.TrailerQuality.HD1080p
+                                If aUrl.Resolution = Enums.TrailerQuality.HD1080p Then
+                                    tLink = aUrl.URL
+                                End If
+                            Case Enums.TrailerQuality.HD720p
+                                If aUrl.Resolution = Enums.TrailerQuality.HD1080p Then
+                                    tLink = aUrl.URL
+                                ElseIf aUrl.Resolution = Enums.TrailerQuality.HD720p Then
+                                    tLink = aUrl.URL
+                                End If
+                            Case Enums.TrailerQuality.HQ480p
+                                If aUrl.Resolution = Enums.TrailerQuality.HD1080p Then
+                                    tLink = aUrl.URL
+                                ElseIf aUrl.Resolution = Enums.TrailerQuality.HD720p Then
+                                    tLink = aUrl.URL
+                                ElseIf aUrl.Resolution = Enums.TrailerQuality.HQ480p Then
+                                    tLink = aUrl.URL
+                                End If
+                            Case Enums.TrailerQuality.SQ360p
+                                If aUrl.Resolution = Enums.TrailerQuality.HD1080p Then
+                                    tLink = aUrl.URL
+                                ElseIf aUrl.Resolution = Enums.TrailerQuality.HD720p Then
+                                    tLink = aUrl.URL
+                                ElseIf aUrl.Resolution = Enums.TrailerQuality.HQ480p Then
+                                    tLink = aUrl.URL
+                                ElseIf aUrl.Resolution = Enums.TrailerQuality.SQ360p Then
+                                    tLink = aUrl.URL
+                                End If
+                            Case Enums.TrailerQuality.SQ240p
+                                If aUrl.Resolution = Enums.TrailerQuality.HD1080p Then
+                                    tLink = aUrl.URL
+                                ElseIf aUrl.Resolution = Enums.TrailerQuality.HD720p Then
+                                    tLink = aUrl.URL
+                                ElseIf aUrl.Resolution = Enums.TrailerQuality.HQ480p Then
+                                    tLink = aUrl.URL
+                                ElseIf aUrl.Resolution = Enums.TrailerQuality.SQ360p Then
+                                    tLink = aUrl.URL
+                                ElseIf aUrl.Resolution = Enums.TrailerQuality.SQ240p Then
+                                    tLink = aUrl.URL
+                                End If
+                            Case Enums.TrailerQuality.SQ144p
+                                If aUrl.Resolution = Enums.TrailerQuality.HD1080p Then
+                                    tLink = aUrl.URL
+                                ElseIf aUrl.Resolution = Enums.TrailerQuality.HD720p Then
+                                    tLink = aUrl.URL
+                                ElseIf aUrl.Resolution = Enums.TrailerQuality.HQ480p Then
+                                    tLink = aUrl.URL
+                                ElseIf aUrl.Resolution = Enums.TrailerQuality.SQ360p Then
+                                    tLink = aUrl.URL
+                                ElseIf aUrl.Resolution = Enums.TrailerQuality.SQ240p Then
+                                    tLink = aUrl.URL
+                                ElseIf aUrl.Resolution = Enums.TrailerQuality.SQ144p Then
+                                    tLink = aUrl.URL
+                                End If
+                            Case Enums.TrailerQuality.OTHERS
+                                If aUrl.Resolution = Enums.TrailerQuality.HD1080p Then
+                                    tLink = aUrl.URL
+                                ElseIf aUrl.Resolution = Enums.TrailerQuality.HD720p Then
+                                    tLink = aUrl.URL
+                                ElseIf aUrl.Resolution = Enums.TrailerQuality.HQ480p Then
+                                    tLink = aUrl.URL
+                                ElseIf aUrl.Resolution = Enums.TrailerQuality.SQ360p Then
+                                    tLink = aUrl.URL
+                                ElseIf aUrl.Resolution = Enums.TrailerQuality.SQ240p Then
+                                    tLink = aUrl.URL
+                                ElseIf aUrl.Resolution = Enums.TrailerQuality.SQ144p Then
+                                    tLink = aUrl.URL
+                                ElseIf aUrl.Resolution = Enums.TrailerQuality.OTHERS Then
+                                    tLink = aUrl.URL
+                                End If
+                        End Select
+                    End If
                 End If
 
                 If Not String.IsNullOrEmpty(tLink) Then
