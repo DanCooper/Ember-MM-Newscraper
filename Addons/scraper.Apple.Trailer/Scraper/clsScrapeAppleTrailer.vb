@@ -128,7 +128,14 @@ Public Class AppleTrailer
                                 tDownloadURL = tDownloadURL.Replace("720p", "h720p")
                                 tDownloadURL = tDownloadURL.Replace("480p", "h480p")
                                 trailer.URL = tDownloadURL
-                                trailer.Resolution = Enums.TrailerQuality.HD720p
+                                Select Case prevQual
+                                    Case "1080p"
+                                        trailer.Resolution = Enums.TrailerQuality.HD1080p
+                                    Case "720p"
+                                        trailer.Resolution = Enums.TrailerQuality.HD720p
+                                    Case "480p"
+                                        trailer.Resolution = Enums.TrailerQuality.HQ480p
+                                End Select
                             End If
                         Next
                     End If
