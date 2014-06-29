@@ -23,6 +23,11 @@ Imports EmberAPI
 Public Class BulkRenamerModule
     Implements Interfaces.EmberExternalModule
 
+#Region "Delegates"
+    Public Delegate Sub Delegate_SetToolsStripItem(value As System.Windows.Forms.ToolStripItem)
+    Public Delegate Sub Delegate_RemoveToolsStripItem(value As System.Windows.Forms.ToolStripItem)
+#End Region 'Fields
+
 #Region "Fields"
 
     Private WithEvents MyMenu As New System.Windows.Forms.ToolStripMenuItem
@@ -141,9 +146,16 @@ Public Class BulkRenamerModule
         tsi.DropDownItems.Remove(MyMenu)
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayTools"), ToolStripMenuItem)
         tsi.DropDownItems.Remove(MyTrayMenu)
-        ModulesManager.Instance.RuntimeObjects.MenuMediaList.Items.Remove(MyMenuSep)
-        ModulesManager.Instance.RuntimeObjects.MenuMediaList.Items.Remove(ctxMyMenu)
+        RemoveToolsStripItem(MyMenuSep)
+        RemoveToolsStripItem(ctxMyMenu)
         '_enabled = False
+    End Sub
+    Public Sub RemoveToolsStripItem(value As System.Windows.Forms.ToolStripItem)
+        If (ModulesManager.Instance.RuntimeObjects.MenuMediaList.InvokeRequired) Then
+            ModulesManager.Instance.RuntimeObjects.MenuMediaList.Invoke(New Delegate_RemoveToolsStripItem(AddressOf RemoveToolsStripItem), New Object() {value})
+            Exit Sub
+        End If
+        ModulesManager.Instance.RuntimeObjects.MenuMediaList.Items.Remove(value)
     End Sub
 
     Sub Enable()
@@ -165,12 +177,19 @@ Public Class BulkRenamerModule
         ctxMyMenu.DropDownItems.Add(ctxMySubMenu1)
         ctxMyMenu.DropDownItems.Add(ctxMySubMenu2)
 
-        ModulesManager.Instance.RuntimeObjects.MenuMediaList.Items.Add(MyMenuSep)
-        ModulesManager.Instance.RuntimeObjects.MenuMediaList.Items.Add(ctxMyMenu)
+        SetToolsStripItem(MyMenuSep)
+        SetToolsStripItem(ctxMyMenu)
 
         '_enabled = True
     End Sub
 
+    Public Sub SetToolsStripItem(value As System.Windows.Forms.ToolStripItem)
+        If (ModulesManager.Instance.RuntimeObjects.MenuMediaList.InvokeRequired) Then
+            ModulesManager.Instance.RuntimeObjects.MenuMediaList.Invoke(New Delegate_SetToolsStripItem(AddressOf SetToolsStripItem), New Object() {value})
+            Exit Sub
+        End If
+        ModulesManager.Instance.RuntimeObjects.MenuMediaList.Items.Add(value)
+    End Sub
     Private Sub Handle_ModuleSettingsChanged()
         RaiseEvent ModuleSettingsChanged()
     End Sub

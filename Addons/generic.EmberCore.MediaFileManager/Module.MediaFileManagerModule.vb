@@ -29,12 +29,18 @@ Imports EmberAPI
 Public Class FileManagerExternalModule
     Implements Interfaces.EmberExternalModule
 
+#Region "Delegates"
+    Public Delegate Sub Delegate_SetToolsStripItem(value As System.Windows.Forms.ToolStripItem)
+    Public Delegate Sub Delegate_RemoveToolsStripItem(value As System.Windows.Forms.ToolStripItem)
+    Public Delegate Sub Delegate_SetToolsStripItemVisibility(control As System.Windows.Forms.ToolStripItem, value As Boolean)
+#End Region 'Fields
+
 #Region "Fields"
 
     Friend WithEvents bwCopyDirectory As New System.ComponentModel.BackgroundWorker
 
-	Private _AssemblyName As String = String.Empty
-	Private eSettings As New Settings
+    Private _AssemblyName As String = String.Empty
+    Private eSettings As New Settings
     Private FolderSubMenus As New List(Of System.Windows.Forms.ToolStripMenuItem)
     Private MyMenu As New System.Windows.Forms.ToolStripMenuItem
     Private MyMenuSep As New System.Windows.Forms.ToolStripSeparator
@@ -183,8 +189,16 @@ Public Class FileManagerExternalModule
     End Sub
 
     Sub Disable()
-        ModulesManager.Instance.RuntimeObjects.MenuMediaList.Items.Remove(MyMenuSep)
-        ModulesManager.Instance.RuntimeObjects.MenuMediaList.Items.Remove(MyMenu)
+        RemoveToolsStripItem(MyMenuSep)
+        RemoveToolsStripItem(MyMenu)
+    End Sub
+
+    Public Sub RemoveToolsStripItem(value As System.Windows.Forms.ToolStripItem)
+        If (ModulesManager.Instance.RuntimeObjects.MenuMediaList.InvokeRequired) Then
+            ModulesManager.Instance.RuntimeObjects.MenuMediaList.Invoke(New Delegate_RemoveToolsStripItem(AddressOf RemoveToolsStripItem), New Object() {value})
+            Exit Sub
+        End If
+        ModulesManager.Instance.RuntimeObjects.MenuMediaList.Items.Remove(value)
     End Sub
 
     Sub Enable()
@@ -197,13 +211,28 @@ Public Class FileManagerExternalModule
         MyMenu.DropDownItems.Add(MySubMenu1)
         MyMenu.DropDownItems.Add(MySubMenu2)
 
-        ModulesManager.Instance.RuntimeObjects.MenuMediaList.Items.Add(MyMenuSep)
-        ModulesManager.Instance.RuntimeObjects.MenuMediaList.Items.Add(MyMenu)
+        SetToolsStripItem(MyMenuSep)
+        SetToolsStripItem(MyMenu)
         'PopulateFolders()
         PopulateFolders(MySubMenu1)
         PopulateFolders(MySubMenu2)
-        MyMenuSep.Visible = (eSettings.ModuleSettings.Count > 0)
-        MyMenu.Visible = (eSettings.ModuleSettings.Count > 0)
+        SetToolsStripItemVisibility(MyMenuSep, (eSettings.ModuleSettings.Count > 0))
+        SetToolsStripItemVisibility(MyMenu, (eSettings.ModuleSettings.Count > 0))
+    End Sub
+    Public Sub SetToolsStripItemVisibility(control As System.Windows.Forms.ToolStripItem, value As Boolean)
+        If (control.Owner.InvokeRequired) Then
+            control.Owner.Invoke(New Delegate_SetToolsStripItemVisibility(AddressOf SetToolsStripItemVisibility), New Object() {control, value})
+            Exit Sub
+        End If
+        control.Visible = value
+    End Sub
+
+    Public Sub SetToolsStripItem(value As System.Windows.Forms.ToolStripItem)
+        If (ModulesManager.Instance.RuntimeObjects.MenuMediaList.InvokeRequired) Then
+            ModulesManager.Instance.RuntimeObjects.MenuMediaList.Invoke(New Delegate_SetToolsStripItem(AddressOf SetToolsStripItem), New Object() {value})
+            Exit Sub
+        End If
+        ModulesManager.Instance.RuntimeObjects.MenuMediaList.Items.Add(value)
     End Sub
 
     Private Sub FolderSubMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
@@ -313,9 +342,8 @@ Public Class FileManagerExternalModule
         For Each i In FolderSubMenus
             mnu.DropDownItems.Add(i)
         Next
-
-        MyMenuSep.Visible = (eSettings.ModuleSettings.Count > 0)
-        MyMenu.Visible = (eSettings.ModuleSettings.Count > 0)
+        SetToolsStripItemVisibility(MyMenuSep, (eSettings.ModuleSettings.Count > 0))
+        SetToolsStripItemVisibility(MyMenu, (eSettings.ModuleSettings.Count > 0))
     End Sub
 
     Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.EmberExternalModule.SaveSetup
