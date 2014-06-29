@@ -250,8 +250,13 @@ Public Class OFDB
                             W = HTML.IndexOf("</table>", D)
                             If W > 0 Then
                                 Dim rGenres As MatchCollection = Regex.Matches(HTML.Substring(D, W - D), "<a.*?href=[""'](?<url>.*?)[""'].*?><span itemprop=""genre"">(?<name>.*?)</span></a>")
+
+                                'cocotus 201406028 Use Max Genre settings like IMDB scraper does, http://bugs.embermediamanager.org/thebuggenie/embermediamanager/issues/122
+                                'Dim Gen = From M In rGenres _
+                                '      Select N = Web.HttpUtility.HtmlDecode(DirectCast(M, Match).Groups("name").ToString)
                                 Dim Gen = From M In rGenres _
-                                      Select N = Web.HttpUtility.HtmlDecode(DirectCast(M, Match).Groups("name").ToString)
+                                      Select N = Web.HttpUtility.HtmlDecode(DirectCast(M, Match).Groups("name").ToString) Take If(Master.eSettings.MovieScraperGenreLimit > 0, Master.eSettings.MovieScraperGenreLimit, 999999)
+
                                 If Gen.Count > 0 Then
                                     Dim tGenre As String = Strings.Join(Gen.ToArray, "/").Trim
                                     tGenre = StringUtils.GenreFilter(tGenre)
