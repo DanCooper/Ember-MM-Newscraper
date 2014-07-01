@@ -64,7 +64,7 @@ Public Class AppleTrailer
     Private Sub GetMovieTrailers()
         Dim BaseURL As String = "http://www.google.ch/search?q=apple+trailer+"
         Dim DownloadURL As String = "http://trailers.apple.com/trailers/"
-        Dim prevQual As String = AdvancedSettings.GetSetting("TrailerPrefQual", "1080p")
+        Dim prevQual As String = clsAdvancedSettings.GetSetting("TrailerPrefQual", "1080p")
         Dim URL720p As String = "/includes/extralarge.html"
         Dim URL480p As String = "/includes/large.html"
         Dim SearchTitle As String

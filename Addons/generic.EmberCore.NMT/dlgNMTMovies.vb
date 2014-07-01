@@ -99,7 +99,7 @@ Public Class dlgNMTMovies
             dtEpisodesPaths = New DataTable
             Master.DB.FillDataTable(dtEpisodesPaths, "SELECT ID, TVEpPath FROM TVEpPaths;")
 
-            txtOutputFolder.Text = AdvancedSettings.GetSetting("BasePath", "")
+            txtOutputFolder.Text = clsAdvancedSettings.GetSetting("BasePath", "")
             Dim fxml As String
             Dim di As DirectoryInfo = New DirectoryInfo(Path.Combine(sBasePath, "Templates"))
             For Each i As DirectoryInfo In di.GetDirectories
@@ -116,7 +116,7 @@ Public Class dlgNMTMovies
                 End If
             Next
             If cbTemplate.Items.Count > 0 Then
-                Dim idx As Integer = cbTemplate.FindStringExact(AdvancedSettings.GetSetting("Template", "***"))
+                Dim idx As Integer = cbTemplate.FindStringExact(clsAdvancedSettings.GetSetting("Template", "***"))
                 If idx >= 0 Then
                     cbTemplate.SelectedIndex = idx
                 Else
@@ -145,7 +145,7 @@ Public Class dlgNMTMovies
             btnSave.Enabled = False
             pbWarning.Image = Nothing 'ilNMT.Images("green")
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -155,7 +155,7 @@ Public Class dlgNMTMovies
                 MsgBox(Master.eLang.GetString(337, "Please Choose/Install a Template First"), MsgBoxStyle.OkCancel, "Error")
                 Return
             End If
-            Using settings = New AdvancedSettings()
+            Using settings = New clsAdvancedSettings()
                 settings.SetSetting("Template", cbTemplate.Text)
                 settings.SetSetting("BasePath", txtOutputFolder.Text.ToString)
                 settings.SetBooleanSetting(String.Concat("HighPriority.", conf.Name), chHighPriority.Checked)
@@ -183,7 +183,7 @@ Public Class dlgNMTMovies
                 'If Not conf Is Nothing Then conf.Save(Path.Combine(conf.TemplatePath, "config.xml"))
             End Using
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -200,7 +200,7 @@ Public Class dlgNMTMovies
                 MySelf.DoBuild()
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -287,7 +287,7 @@ Public Class dlgNMTMovies
                 Next
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return rets
     End Function
@@ -353,7 +353,7 @@ Public Class dlgNMTMovies
             Me.SaveMovieFiles(Path.GetDirectoryName(htmlPath), outputbase)
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -492,7 +492,7 @@ Public Class dlgNMTMovies
             Me.SaveTVFiles(Path.GetDirectoryName(htmlPath), outputbase)
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -886,7 +886,7 @@ Public Class dlgNMTMovies
                 pbTemplateLogo.Image = Nothing
             End If
             pbHelp.Visible = File.Exists(Path.Combine(conf.TemplatePath, "help.txt"))
-            chHighPriority.Checked = AdvancedSettings.GetBooleanSetting(String.Concat("HighPriority.", conf.Name), False)
+            chHighPriority.Checked = clsAdvancedSettings.GetBooleanSetting(String.Concat("HighPriority.", conf.Name), False)
             DontSaveExtra = False
             'btnSave.Enabled = False
         End If
@@ -905,11 +905,11 @@ Public Class dlgNMTMovies
         For Each s As DataGridViewRow In dgvSources.Rows
             ' Dim i As Integer = dgvSources.Rows.Add(New Object() {False, s.Name, My.Resources.film, String.Empty, "movie"})
             If s.Cells(4).Value.ToString = "movie" Then
-                s.Cells(3).Value = AdvancedSettings.GetSetting(String.Concat("Path.Movie.", conf.Name, ".", s.Cells(1).Value.ToString), "")
-                s.Cells(0).Value = AdvancedSettings.GetBooleanSetting(String.Concat("Path.Movie.Status.", conf.Name, ".", s.Cells(1).Value.ToString), False)
+                s.Cells(3).Value = clsAdvancedSettings.GetSetting(String.Concat("Path.Movie.", conf.Name, ".", s.Cells(1).Value.ToString), "")
+                s.Cells(0).Value = clsAdvancedSettings.GetBooleanSetting(String.Concat("Path.Movie.Status.", conf.Name, ".", s.Cells(1).Value.ToString), False)
             Else
-                s.Cells(3).Value = AdvancedSettings.GetSetting(String.Concat("Path.TV.", conf.Name, ".", s.Cells(1).Value.ToString), "")
-                s.Cells(0).Value = AdvancedSettings.GetBooleanSetting(String.Concat("Path.TV.Status.", conf.Name, ".", s.Cells(1).Value.ToString), False)
+                s.Cells(3).Value = clsAdvancedSettings.GetSetting(String.Concat("Path.TV.", conf.Name, ".", s.Cells(1).Value.ToString), "")
+                s.Cells(0).Value = clsAdvancedSettings.GetBooleanSetting(String.Concat("Path.TV.Status.", conf.Name, ".", s.Cells(1).Value.ToString), False)
             End If
         Next
 
@@ -922,7 +922,7 @@ Public Class dlgNMTMovies
                 dgvSettings.Rows(i).Cells(1) = cCell
                 Dim dcb As DataGridViewComboBoxCell = DirectCast(dgvSettings.Rows(i).Cells(1), DataGridViewComboBoxCell)
                 dcb.DataSource = New String() {"true", "false"}
-                dcb.Value = AdvancedSettings.GetSetting(String.Concat("Param.", conf.Name, ".", c.name), c.value)
+                dcb.Value = clsAdvancedSettings.GetSetting(String.Concat("Param.", conf.Name, ".", c.name), c.value)
             Else
                 Dim cCell As New DataGridViewTextBoxCell()
                 dgvSettings.Rows(i).Cells(1) = cCell
@@ -930,7 +930,7 @@ Public Class dlgNMTMovies
                 If c.access = "internal" Then
                     dcb.Value = c.value
                 Else
-                    dcb.Value = AdvancedSettings.GetSetting(String.Concat("Param.", conf.Name, ".", c.name), c.value)
+                    dcb.Value = clsAdvancedSettings.GetSetting(String.Concat("Param.", conf.Name, ".", c.name), c.value)
                 End If
 
                 If c.access = "hidden" Then
@@ -959,7 +959,7 @@ Public Class dlgNMTMovies
                 Dim dcb As DataGridViewComboBoxCell = DirectCast(dgvProperties.Rows(i).Cells(1), DataGridViewComboBoxCell)
                 dcb.DataSource = lst.ToArray
                 'If lst.Count > 0 Then dcb.Value = lst(0)
-                Dim saved As String = AdvancedSettings.GetSetting(String.Concat("Property.", conf.Name, ".", c.name), lst(0))
+                Dim saved As String = clsAdvancedSettings.GetSetting(String.Concat("Property.", conf.Name, ".", c.name), lst(0))
                 Dim defvalue As String = c.values.FirstOrDefault(Function(y) y.label = saved).value
                 defvalue = If(IsNothing(defvalue), String.Empty, defvalue)
                 c.value = defvalue

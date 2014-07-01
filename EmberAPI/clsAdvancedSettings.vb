@@ -24,61 +24,53 @@ Imports System.Linq
 Imports System.Xml
 Imports System.Xml.Linq
 Imports NLog
+Imports System.Xml.Serialization
 
 <Serializable> _
-Public Class AdvancedSettings
+Public Class clsAdvancedSettings
     Implements IDisposable
 
 #Region "Fields"
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Private Shared _AdvancedSettings As clsXMLAdvancedSettings
 
-    Private Class SettingGroupItem
-        Public Section As String
-        Public GroupName As String
-        Public Items As New List(Of SettingItem)
-    End Class
-    Private Shared _AdvancedSettings As New List(Of SettingItem)
-    Private Shared _ComplexAdvancedSettings As New List(Of ComplexSettingItem)
     Private Shared _DoNotSave As Boolean = False
 
     Private _disposed As Boolean = False
 
 #End Region 'Fields
 
+#Region "Properties"
+    Public Shared Property AdvancedSettings As clsXMLAdvancedSettings
+        Get
+            Return _AdvancedSettings
+        End Get
+        Set(value As clsXMLAdvancedSettings)
+            _AdvancedSettings = value
+        End Set
+    End Property
+#End Region 'Properties
+
 #Region "Constructors"
 
     Public Shared Sub Start()
         Try
-            Using settings = New AdvancedSettings()
+            Using settings = New clsAdvancedSettings()
                 settings.SetDefaults()
             End Using
-            AdvancedSettings.LoadBase()
+            clsAdvancedSettings.LoadBase()
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
-    Public Shared Function GetAllSettings() As List(Of SettingItem)
-        Return _AdvancedSettings
+    Public Shared Function GetAllSettings() As List(Of AdvancedSettingsSetting)
+        Return _AdvancedSettings.Setting
     End Function
 
     Private Shared Sub LoadBase()
-
-
         'Cocotus, Load from central "Settings" folder if it exists!
-        Dim configpath As String = String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar, "AdvancedSettings.xml")
-
-        'AdvancedSettings.xml is still at old place (root) -> move to new place if there's no AdvancedSettings.xml !
-        If File.Exists(String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar, "AdvancedSettings.xml")) = False AndAlso File.Exists(Path.Combine(Functions.AppPath, "AdvancedSettings.xml")) AndAlso Directory.Exists(String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar)) Then
-            File.Move(Path.Combine(Functions.AppPath, "AdvancedSettings.xml"), String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar, "AdvancedSettings.xml"))
-            'New Settings folder doesn't exist -> do it the old way...
-        ElseIf Directory.Exists(String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar)) = False Then
-            configpath = Path.Combine(Functions.AppPath, "AdvancedSettings.xml")
-        End If
-
-        'old
-        ' Load(Path.Combine(Functions.AppPath, "AdvancedSettings.xml"))
-
+        Dim configpath As String = FileUtils.Common.ReturnSettingsFile("Settings", "AdvancedSettings.xml")
         Load(configpath)
     End Sub
 
@@ -111,7 +103,7 @@ Public Class AdvancedSettings
                     Assembly = "*EmberAPP"
                 End If
             End If
-            Dim v = From e In _AdvancedSettings.Where(Function(f) f.Name = key AndAlso f.Section = Assembly)
+            Dim v = From e In _AdvancedSettings.Setting.Where(Function(f) f.Name = key AndAlso f.Section = Assembly)
             Return If(v(0) Is Nothing, defvalue, Convert.ToBoolean(v(0).Value.ToString))
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -128,7 +120,7 @@ Public Class AdvancedSettings
                     Assembly = "*EmberAPP"
                 End If
             End If
-            Dim v = From e In _AdvancedSettings.Where(Function(f) f.Name = key AndAlso f.Section = Assembly)
+            Dim v = From e In _AdvancedSettings.Setting.Where(Function(f) f.Name = key AndAlso f.Section = Assembly)
             Return If(v(0) Is Nothing, defvalue, v(0).Value.ToString)
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -138,7 +130,7 @@ Public Class AdvancedSettings
 
     Public Sub CleanSetting(ByVal key As String, Optional ByVal cAssembly As String = "")
         If _disposed Then
-            Throw New ObjectDisposedException("AdvancedSettings.CleanSetting on disposed object")
+            logger.Fatal(New StackFrame().GetMethod().Name, "AdvancedSettings.CleanSetting on disposed object")
         End If
         Dim Assembly As String = cAssembly
         If Assembly = "" Then
@@ -147,16 +139,16 @@ Public Class AdvancedSettings
                 Assembly = "*EmberAPP"
             End If
         End If
-        Dim v = From e In _AdvancedSettings.Where(Function(f) f.Name = key AndAlso f.Section = Assembly)
+        Dim v = From e In _AdvancedSettings.Setting.Where(Function(f) f.Name = key AndAlso f.Section = Assembly)
         If Not v(0) Is Nothing Then
-            _AdvancedSettings.Remove(v(0))
+            _AdvancedSettings.Setting.Remove(v(0))
             'If Not _DoNotSave Then Save()
         End If
     End Sub
 
     Public Sub ClearComplexSetting(ByVal key As String, Optional ByVal cAssembly As String = "")
         If _disposed Then
-            Throw New ObjectDisposedException("AdvancedSettings.CleanComplexSetting on disposed object")
+            logger.Fatal(New StackFrame().GetMethod().Name, "AdvancedSettings.CleanComplexSetting on disposed object")
         End If
         Try
             Dim Assembly As String = cAssembly
@@ -166,12 +158,12 @@ Public Class AdvancedSettings
                     Assembly = "*EmberAPP"
                 End If
             End If
-            Dim v = _ComplexAdvancedSettings.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly)
-            If Not v Is Nothing Then v.TableItem.Clear()
+            Dim v = _AdvancedSettings.ComplexSettings.FirstOrDefault(Function(f) f.Table.Name = key AndAlso f.Table.Section = Assembly)
+            If Not v Is Nothing Then v.Table.Item.Clear()
         Catch ex As Exception
         End Try
     End Sub
-    Public Shared Function GetComplexSetting(ByVal key As String, Optional ByVal cAssembly As String = "") As Hashtable
+    Public Shared Function GetComplexSetting(ByVal key As String, Optional ByVal cAssembly As String = "") As List(Of AdvancedSettingsComplexSettingsTableItem)
         Try
             Dim Assembly As String = cAssembly
             If Assembly = "" Then
@@ -180,17 +172,17 @@ Public Class AdvancedSettings
                     Assembly = "*EmberAPP"
                 End If
             End If
-            Dim v = _ComplexAdvancedSettings.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly)
-            Return If(v Is Nothing, Nothing, v.TableItem)
+            Dim v = _AdvancedSettings.ComplexSettings.FirstOrDefault(Function(f) f.Table.Name = key AndAlso f.Table.Section = Assembly)
+            Return If(v Is Nothing, Nothing, v.Table.Item)
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
             Return Nothing
         End Try
     End Function
 
-    Public Function SetComplexSetting(ByVal key As String, ByVal value As Hashtable, Optional ByVal cAssembly As String = "") As Boolean
+    Public Function SetComplexSetting(ByVal key As String, ByVal value As List(Of AdvancedSettingsComplexSettingsTableItem), Optional ByVal cAssembly As String = "") As Boolean
         If _disposed Then
-            Throw New ObjectDisposedException("AdvancedSettings.SetComplexSetting on disposed object")
+            logger.Fatal(New StackFrame().GetMethod().Name, "AdvancedSettings.SetComplexSetting on disposed object")
         End If
         Try
             Dim Assembly As String = cAssembly
@@ -200,11 +192,11 @@ Public Class AdvancedSettings
                     Assembly = "*EmberAPP"
                 End If
             End If
-            Dim v = _ComplexAdvancedSettings.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly)
+            Dim v = _AdvancedSettings.ComplexSettings.FirstOrDefault(Function(f) f.Table.Name = key AndAlso f.Table.Section = Assembly)
             If v Is Nothing Then
-                _ComplexAdvancedSettings.Add(New ComplexSettingItem With {.Section = Assembly, .Name = key, .TableItem = value})
+                _AdvancedSettings.ComplexSettings.Add(New AdvancedSettingsComplexSettings With {.Table = New AdvancedSettingsComplexSettingsTable With {.Section = Assembly, .Name = key, .Item = value}})
             Else
-                _ComplexAdvancedSettings.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly).TableItem = value
+                _AdvancedSettings.ComplexSettings.FirstOrDefault(Function(f) f.Table.Name = key AndAlso f.Table.Section = Assembly).Table.Item = value
             End If
 
             'If Not _DoNotSave Then Save()
@@ -218,32 +210,10 @@ Public Class AdvancedSettings
         _DoNotSave = True
         Try
             If File.Exists(fname) Then
-                Dim xdoc As New XDocument
-                xdoc = XDocument.Load(fname)
-                For Each i As XElement In xdoc...<Setting>
-                    Dim ii As XElement = i
-                    Dim v = _AdvancedSettings.FirstOrDefault(Function(f) f.Name = ii.@Name AndAlso f.Section = ii.@Section)
-                    If v Is Nothing Then
-                        _AdvancedSettings.Add(New SettingItem With {.Section = ii.@Section, .Name = ii.@Name, .Value = ii.Value, .DefaultValue = ""})
-                    Else
-                        _AdvancedSettings.FirstOrDefault(Function(f) f.Name = ii.@Name AndAlso f.Section = ii.@Section).Value = Convert.ToString(i.Value)
-                    End If
-                Next
-                For Each i As XElement In xdoc...<ComplexSettings>...<Table>
-                    Dim l As XElement = i
-                    Dim dict As New Hashtable
-                    For Each t As XElement In l...<Item>
-                        dict.Add(t.@Name, t.Value)
-                    Next
-                    Dim cs As ComplexSettingItem = _ComplexAdvancedSettings.FirstOrDefault(Function(y) y.Section = l.@Section AndAlso y.Name = l.@Name)
-                    If cs Is Nothing Then
-                        _ComplexAdvancedSettings.Add(New ComplexSettingItem With {.Section = l.@Section, .Name = l.@Name})
-                        cs = _ComplexAdvancedSettings.FirstOrDefault(Function(y) y.Section = l.@Section AndAlso y.Name = l.@Name)
-                    Else
-                        cs.TableItem.Clear()
-                    End If
-                    cs.TableItem = dict
-                Next
+                Dim objStreamReader As New StreamReader(fname)
+                Dim xAdvancedSettings As New XmlSerializer(_AdvancedSettings.GetType)
+                _AdvancedSettings = CType(xAdvancedSettings.Deserialize(objStreamReader), clsXMLAdvancedSettings)
+                objStreamReader.Close()
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -253,7 +223,7 @@ Public Class AdvancedSettings
 
     Private Sub Save()
         If _disposed Then
-            Throw New ObjectDisposedException("AdvancedSettings.Save on disposed object")
+            logger.Fatal(New StackFrame().GetMethod().Name, "AdvancedSettings.Save on disposed object")
         End If
         Try
             If _DoNotSave Then
@@ -269,55 +239,13 @@ Public Class AdvancedSettings
                 File.Delete(Path.Combine(Functions.AppPath, "AdvancedSettings.xml"))
             End If
 
-            Dim xdoc As New XmlDocument()
-            xdoc.LoadXml("<?xml version=""1.0"" encoding=""utf-8""?><AdvancedSettings xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema""></AdvancedSettings>")
+            Dim writer As New FileStream(configpath, FileMode.Create)
+            Dim xAdvancedSettings As New XmlSerializer(_AdvancedSettings.GetType)
+            ' Serialize the object, and close the TextWriter
+            xAdvancedSettings.Serialize(writer, _AdvancedSettings)
+            writer.Close()
 
-            Dim count As Integer = 0
-            For Each i As SettingItem In _AdvancedSettings.Where(Function(x) (x.DefaultValue = "" OrElse Not x.DefaultValue = x.Value) AndAlso Not x.Value = "")
-                Dim elem As XmlElement = xdoc.CreateElement("Setting")
-                Dim attr As XmlNode = xdoc.CreateNode(XmlNodeType.Attribute, "Section", "Section", "")
-                attr.Value = i.Section
-                elem.Attributes.SetNamedItem(attr)
-                Dim attr2 As XmlNode = xdoc.CreateNode(XmlNodeType.Attribute, "Name", "Name", "")
-                attr2.Value = i.Name
-                elem.Attributes.SetNamedItem(attr2)
-                elem.InnerText = i.Value
-                xdoc.DocumentElement.AppendChild(elem)
-                count += 1
-            Next
-            Dim elemp As XmlElement = xdoc.CreateElement("ComplexSettings")
-            For Each i As ComplexSettingItem In _ComplexAdvancedSettings
 
-                If Not i.TableItem Is Nothing Then
-                    Dim elem As XmlElement = xdoc.CreateElement("Table")
-                    Dim attr As XmlNode = xdoc.CreateNode(XmlNodeType.Attribute, "Section", "Section", "")
-                    attr.Value = i.Section
-                    elem.Attributes.SetNamedItem(attr)
-                    Dim attr2 As XmlNode = xdoc.CreateNode(XmlNodeType.Attribute, "Name", "Name", "")
-                    attr2.Value = i.Name
-                    elem.Attributes.SetNamedItem(attr2)
-                    For Each ti In i.TableItem.Keys
-                        Dim elemi As XmlElement = xdoc.CreateElement("Item")
-                        Dim attr3 As XmlNode = xdoc.CreateNode(XmlNodeType.Attribute, "Name", "Name", "")
-                        attr3.Value = ti.ToString
-                        elemi.InnerText = i.TableItem.Item(ti.ToString).ToString
-                        elemi.Attributes.SetNamedItem(attr3)
-                        elem.AppendChild(elemi)
-                    Next
-                    elemp.AppendChild(elem)
-                    count += 1
-                End If
-            Next
-            xdoc.DocumentElement.AppendChild(elemp)
-            'Dim filePaths As New List(Of String)
-            'filePaths.Add(Path.Combine(Functions.AppPath, "AdvancedSettings.xml"))
-            'Dim Processes As IList(Of Process)
-            'Processes = clsFileLock.GetProcessesUsingFiles(filePaths)
-
-            'Cocotus All XML-config files in new Setting-folder!
-            'old
-            ' If count > 0 Then xdoc.Save(Path.Combine(Functions.AppPath, "AdvancedSettings.xml"))
-            If count > 0 Then xdoc.Save(configpath)
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
@@ -335,11 +263,11 @@ Public Class AdvancedSettings
                     Assembly = "*EmberAPP"
                 End If
             End If
-            Dim v = _AdvancedSettings.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly)
+            Dim v = _AdvancedSettings.Setting.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly)
             If v Is Nothing Then
-                _AdvancedSettings.Add(New SettingItem With {.Section = Assembly, .Name = key, .Value = Convert.ToString(value), .DefaultValue = If(isDefault, Convert.ToString(value), "")})
+                _AdvancedSettings.Setting.Add(New AdvancedSettingsSetting With {.Section = Assembly, .Name = key, .Value = Convert.ToString(value), .DefaultValue = If(isDefault, Convert.ToString(value), "")})
             Else
-                _AdvancedSettings.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly).Value = Convert.ToString(value)
+                _AdvancedSettings.Setting.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly).Value = Convert.ToString(value)
             End If
 
             'If Not _DoNotSave Then Save()
@@ -361,11 +289,11 @@ Public Class AdvancedSettings
                     Assembly = "*EmberAPP"
                 End If
             End If
-            Dim v = _AdvancedSettings.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly)
+            Dim v = _AdvancedSettings.Setting.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly)
             If v Is Nothing Then
-                _AdvancedSettings.Add(New SettingItem With {.Section = Assembly, .Name = key, .Value = value, .DefaultValue = If(isDefault, value, "")})
+                _AdvancedSettings.Setting.Add(New AdvancedSettingsSetting With {.Section = Assembly, .Name = key, .Value = value, .DefaultValue = If(isDefault, value, "")})
             Else
-                _AdvancedSettings.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly).Value = value
+                _AdvancedSettings.Setting.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly).Value = value
             End If
 
             'If Not _DoNotSave Then Save()
@@ -380,78 +308,27 @@ Public Class AdvancedSettings
             Throw New ObjectDisposedException("AdvancedSettings.SetDefaults on disposed object")
         End If
         _DoNotSave = True
-        If Not loadSingle OrElse section = "AudioFormatConvert" Then
-            SetSetting("AudioFormatConvert:ac-3", "ac3", "*EmberAPP", True)
-            SetSetting("AudioFormatConvert:a_ac3", "ac3", "*EmberAPP", True)
-            SetSetting("AudioFormatConvert:a_aac", "aac", "*EmberAPP", True)
-            SetSetting("AudioFormatConvert:wma2", "wmav2", "*EmberAPP", True)
-            SetSetting("AudioFormatConvert:a_dts", "dca", "*EmberAPP", True)
-            SetSetting("AudioFormatConvert:dts", "dca", "*EmberAPP", True)
-            SetSetting("AudioFormatConvert:a_truehd", "truehd", "*EmberAPP", True)
-        End If
+        If Not loadSingle OrElse Len(section) <> 0 Then
+            Dim objStreamReader As New StreamReader("DefaultAdvancedSettings - " & section & ".xml")
+            Dim aAdvancedSettings As New clsXMLAdvancedSettings()
+            Dim xAdvancedSettings As New XmlSerializer(aAdvancedSettings.GetType)
 
-        If Not loadSingle OrElse section = "VideoFormatConvert" Then
-            SetSetting("VideoFormatConvert:divx 5", "dx50", "*EmberAPP", True)
-            SetSetting("VideoFormatConvert:mpeg-4 video", "mpeg4", "*EmberAPP", True)
-            SetSetting("VideoFormatConvert:divx 3", "div3", "*EmberAPP", True)
-            SetSetting("VideoFormatConvert:lmp4", "h264", "*EmberAPP", True)
-            SetSetting("VideoFormatConvert:svq3", "h264", "*EmberAPP", True)
-            SetSetting("VideoFormatConvert:v_mpeg4/iso/avc", "h264", "*EmberAPP", True)
-            SetSetting("VideoFormatConvert:x264", "h264", "*EmberAPP", True)
-            SetSetting("VideoFormatConvert:avc", "h264", "*EmberAPP", True)
-            SetSetting("VideoFormatConvert:swf", "flv", "*EmberAPP", True)
-            SetSetting("VideoFormatConvert:3iv0", "3ivx", "*EmberAPP", True)
-            SetSetting("VideoFormatConvert:3iv1", "3ivx", "*EmberAPP", True)
-            SetSetting("VideoFormatConvert:3iv2", "3ivx", "*EmberAPP", True)
-            SetSetting("VideoFormatConvert:3ivd", "3ivx", "*EmberAPP", True)
+            aAdvancedSettings = CType(xAdvancedSettings.Deserialize(objStreamReader), clsXMLAdvancedSettings)
+            objStreamReader.Close()
+            _AdvancedSettings.Setting.AddRange(aAdvancedSettings.Setting)
         End If
 
         If Not loadSingle Then
-            SetSetting("CheckStackMarkers", "[\s_\-\.]+\(?(cd|dvd|p(?:ar)?t|dis[ck])+[_\-\.]?[0-9]+\)?", "*EmberAPP", True)
-            SetSetting("DeleteStackMarkers", "[\s_\-\.]+\(?(cd|dvd|p(?:ar)?t|dis[ck])+[_\-\.]?[0-9]+\)?", "*EmberAPP", True)
-            SetBooleanSetting("DisableMultiPartMedia", False)
+            Dim objStreamReader As New StreamReader("DefaultAdvancedSettings.xml")
+            Dim aAdvancedSettings As New clsXMLAdvancedSettings()
+            Dim xAdvancedSettings As New XmlSerializer(aAdvancedSettings.GetType)
 
-            SetSetting("SubtitleExtension", ".*\.(sst|srt|sub|ssa|aqt|smi|sami|jss|mpl|rt|idx|ass)$", "*EmberAPP", True)
-            SetSetting("ToProperCase", "\b(hd|cd|dvd|bc|b\.c\.|ad|a\.d\.|sw|nw|se|sw|ii|iii|iv|vi|vii|viii|ix|x)\b", "*EmberAPP", True)
-
-            SetSetting("NotValidDirIs", "extrathumbs|video_ts|bdmv|audio_ts|recycler|subs|subtitles|.trashes", "*EmberAPP", True)
-            SetSetting("NotValidDirContains", "-trailer|[trailer|temporary files|(noscan)|$recycle.bin|lost+found|system volume information|sample", "*EmberAPP", True)
-
-            SetSetting("ForceTitle", "Argentina|Australia|Belgium|Brazil|Canada: English title|Canada: French title|Denmark|Finland|France|Germany|Hong Kong|Iceland|Ireland|Italy|Netherlands|New Zealand|Peru|Portugal|Singapore|South Korea|Spain|Sweden|Switzerland|UK|USA", "*EmberAPP", True)
-
-            SetBooleanSetting("StudioTagAlwaysOn", False, "*EmberAPP", True)
-        End If
-
-        If Not loadSingle OrElse section = "MovieSources" Then
-            Dim keypair As New Hashtable
-            keypair.Add("(b[dr][-\s]?rip|blu[-\s]?ray)", "bluray")
-            keypair.Add("hd[-\s]?dvd", "hddvd")
-            keypair.Add("hd[-\s]?tv", "hdtv")
-            keypair.Add("(sd[-\s]?)?dvd", "dvd")
-            keypair.Add("sd[-\s]?tv", "sdtv")
-            SetComplexSetting("MovieSources", keypair)
+            aAdvancedSettings = CType(xAdvancedSettings.Deserialize(objStreamReader), clsXMLAdvancedSettings)
+            objStreamReader.Close()
+            _AdvancedSettings.Setting.AddRange(aAdvancedSettings.Setting)
         End If
     End Sub
 
 #End Region 'Methods
-
-#Region "Nested Types"
-
-    ' ******************************************************************************
-    Public Class SettingItem
-#Region "Fields"
-        Public DefaultValue As String
-        Public Name As String
-        Public Section As String
-        Public Value As String
-#End Region 'Fields
-    End Class
-    Private Class ComplexSettingItem
-        Public Name As String
-        Public Section As String
-        Public TableItem As New Hashtable
-    End Class
-
-#End Region 'Nested Types
 
 End Class

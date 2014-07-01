@@ -402,7 +402,7 @@ Namespace IMDB
                     'Find all cast of the movie
                     'Match the table only 1 time
                     Dim ActorsTable As String = Regex.Match(HTML, ACTORTABLE_PATTERN).ToString
-                    Dim ThumbsSize = AdvancedSettings.GetSetting("ActorThumbsSize", "SY275_SX400")
+                    Dim ThumbsSize = clsAdvancedSettings.GetSetting("ActorThumbsSize", "SY275_SX400")
 
                     Dim rCast As MatchCollection = Regex.Matches(ActorsTable, TR_PATTERN)
 
@@ -1014,16 +1014,16 @@ mPlot:          'MOVIE PLOT
                     HTMLe = sHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/find?q=", Web.HttpUtility.UrlEncode(sMovie), "&s=tt&ttype=ft&exact=true&ref_=fn_tt_ex"))
                     rUri = sHTTP.ResponseUri
 
-                    If AdvancedSettings.GetBooleanSetting("SearchTvTitles", False) Then
+                    If clsAdvancedSettings.GetBooleanSetting("SearchTvTitles", False) Then
                         HTMLt = sHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/search/title?title=", Web.HttpUtility.UrlEncode(sMovie), "&title_type=tv_movie"))
                     End If
-                    If AdvancedSettings.GetBooleanSetting("SearchVideoTitles", False) Then
+                    If clsAdvancedSettings.GetBooleanSetting("SearchVideoTitles", False) Then
                         HTMLv = sHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/search/title?title=", Web.HttpUtility.UrlEncode(sMovie), "&title_type=video"))
                     End If
-                    If AdvancedSettings.GetBooleanSetting("SearchPartialTitles", True) Then
+                    If clsAdvancedSettings.GetBooleanSetting("SearchPartialTitles", True) Then
                         HTMLm = sHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/find?q=", Web.HttpUtility.UrlEncode(sMovie), "&s=tt&ttype=ft&ref_=fn_ft"))
                     End If
-                    If AdvancedSettings.GetBooleanSetting("SearchPopularTitles", True) Then
+                    If clsAdvancedSettings.GetBooleanSetting("SearchPopularTitles", True) Then
                         HTMLp = sHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/find?q=", Web.HttpUtility.UrlEncode(sMovie), "&s=tt&ttype=ft&ref_=fn_tt_pop"))
                     End If
                 End Using

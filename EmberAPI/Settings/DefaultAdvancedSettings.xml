@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<AdvancedSettings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Setting Section="*EmberAPP" Name="CheckStackMarkers">[\s_\-\.]+\(?(cd|dvd|p(?:ar)?t|dis[ck])+[_\-\.]?[0-9]+\)?</Setting>
+  <Setting Section="*EmberAPP" Name="DeleteStackMarkers">[\s_\-\.]+\(?(cd|dvd|p(?:ar)?t|dis[ck])+[_\-\.]?[0-9]+\)?</Setting>
+  <Setting Section="*EmberAPP" Name="DisableMultiPartMedia">False</Setting>
+  <Setting Section="*EmberAPP" Name="SubtitleExtension">.*\.(sst|srt|sub|ssa|aqt|smi|sami|jss|mpl|rt|idx|ass)$</Setting>
+  <Setting Section="*EmberAPP" Name="ToProperCase">\b(hd|cd|dvd|bc|b\.c\.|ad|a\.d\.|sw|nw|se|sw|ii|iii|iv|vi|vii|viii|ix|x)\b</Setting>
+  <Setting Section="*EmberAPP" Name="NotValidDirIs">extrathumbs|video_ts|bdmv|audio_ts|recycler|subs|subtitles|.trashes</Setting>
+  <Setting Section="*EmberAPP" Name="NotValidDirContains">-trailer|[trailer|temporary files|(noscan)|$recycle.bin|lost+found|system volume information|sample</Setting>
+  <Setting Section="*EmberAPP" Name="ForceTitle">Argentina|Australia|Belgium|Brazil|Canada: English title|Canada: French title|Denmark|Finland|France|Germany|Hong Kong|Iceland|Ireland|Italy|Netherlands|New Zealand|Peru|Portugal|Singapore|South Korea|Spain|Sweden|Switzerland|UK|USA</Setting>
+  <Setting Section="*EmberAPP" Name="StudioTagAlwaysOn">False</Setting>
+</AdvancedSettings>

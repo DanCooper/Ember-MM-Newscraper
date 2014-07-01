@@ -13,11 +13,11 @@ Public Class frmMediaSources
             LoadSources()
 
             dgvByFile.Rows.Clear()
-            For Each sett As AdvancedSettings.SettingItem In AdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("MediaSourcesByExtension:"))
+            For Each sett As AdvancedSettingsSetting In clsAdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("MediaSourcesByExtension:"))
                 Dim i As Integer = dgvByFile.Rows.Add(New Object() {sett.Name.Substring(24), sett.Value})
             Next
             SetByFileStatus(False)
-            chkMapByFile.Checked = AdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP")
+            chkMapByFile.Checked = clsAdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP")
         Catch ex As Exception
         End Try
         SetUp()
@@ -25,9 +25,9 @@ Public Class frmMediaSources
 
     Private Sub LoadSources()
         dgvSources.Rows.Clear()
-        Dim sources As Hashtable = AdvancedSettings.GetComplexSetting("MovieSources", "*EmberAPP")
-        For Each sett As Object In sources.Keys
-            Dim i As Integer = dgvSources.Rows.Add(New Object() {sett.ToString, sources.Item(sett.ToString)})
+        Dim sources As List(Of AdvancedSettingsComplexSettingsTableItem) = clsAdvancedSettings.GetComplexSetting("MovieSources", "*EmberAPP")
+        For Each sett In sources
+            Dim i As Integer = dgvSources.Rows.Add(New Object() {sett.Name, sett.Value})
         Next
         dgvSources.ClearSelection()
     End Sub
@@ -84,24 +84,24 @@ Public Class frmMediaSources
 
     Public Sub SaveChanges()
         Dim deleteitem As New List(Of String)
-        For Each sett As AdvancedSettings.SettingItem In AdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("MediaSourcesByExtension:"))
+        For Each sett As AdvancedSettingsSetting In clsAdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("MediaSourcesByExtension:"))
             deleteitem.Add(sett.Name)
         Next
-        Using settings = New AdvancedSettings()
+        Using settings = New clsAdvancedSettings()
             For Each s As String In deleteitem
                 settings.CleanSetting(s, "*EmberAPP")
             Next
 
-            Dim sources As New Hashtable
+            Dim sources As New List(Of AdvancedSettingsComplexSettingsTableItem)
             For Each r As DataGridViewRow In dgvSources.Rows
-                If Not String.IsNullOrEmpty(r.Cells(0).Value.ToString) AndAlso Not sources.ContainsKey(r.Cells(0).Value.ToString) Then
-                    sources.Add(r.Cells(0).Value.ToString, r.Cells(1).Value.ToString)
+                If Not String.IsNullOrEmpty(r.Cells(0).Value.ToString) AndAlso Not (sources.FindIndex(Function(f) f.Name = r.Cells(0).Value.ToString) = -1) Then
+                    sources.Add(New AdvancedSettingsComplexSettingsTableItem With {.Name = r.Cells(0).Value.ToString, .Value = r.Cells(1).Value.ToString})
                 End If
             Next
             settings.SetComplexSetting("MovieSources", sources, "*EmberAPP")
             settings.SetBooleanSetting("MediaSourcesByExtension", chkMapByFile.Checked, "*EmberAPP")
             For Each r As DataGridViewRow In dgvByFile.Rows
-                If Not String.IsNullOrEmpty(r.Cells(0).Value.ToString) AndAlso Not sources.ContainsKey(r.Cells(0).Value.ToString) Then
+                If Not String.IsNullOrEmpty(r.Cells(0).Value.ToString) AndAlso Not (sources.FindIndex(Function(f) f.Name = r.Cells(0).Value.ToString) = -1) Then
                     settings.SetSetting(String.Concat("MediaSourcesByExtension:", r.Cells(0).Value.ToString), r.Cells(1).Value.ToString, "*EmberAPP")
                 End If
             Next
@@ -109,7 +109,7 @@ Public Class frmMediaSources
     End Sub
 
     Private Sub btnSetDefaults_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetDefaults.Click
-        Using settings = New AdvancedSettings()
+        Using settings = New clsAdvancedSettings()
             settings.SetDefaults(True, "MovieSources")
         End Using
         LoadSources()

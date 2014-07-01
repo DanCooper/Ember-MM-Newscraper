@@ -403,7 +403,7 @@ Public Class MediaInfo
             If sFormat.ToLower.Contains("truehd") Then
                 sFormat = "truehd" 'Dolby TrueHD
             End If
-            Return AdvancedSettings.GetSetting(String.Concat("AudioFormatConvert:", sFormat.ToLower), sFormat.ToLower)
+            Return clsAdvancedSettings.GetSetting(String.Concat("AudioFormatConvert:", sFormat.ToLower), sFormat.ToLower)
             'Return sFormat
             'cocotus, 2013/02 Fix2 for DTS Scan
         ElseIf Not String.IsNullOrEmpty(sProfile) Then
@@ -414,7 +414,7 @@ Public Class MediaInfo
             ElseIf sProfile.ToLower.Contains("truehd") Then
                 sFormat = "truehd" 'Dolby TrueHD
             End If
-            Return AdvancedSettings.GetSetting(String.Concat("AudioFormatConvert:", sFormat.ToLower), sFormat.ToLower)
+            Return clsAdvancedSettings.GetSetting(String.Concat("AudioFormatConvert:", sFormat.ToLower), sFormat.ToLower)
             'cocotus end
         Else
             Return String.Empty
@@ -431,7 +431,7 @@ Public Class MediaInfo
                     tFormat = "mpeg"
                 End If
             End If
-            Return AdvancedSettings.GetSetting(String.Concat("VideoFormatConvert:", tFormat.ToLower), tFormat.ToLower)
+            Return clsAdvancedSettings.GetSetting(String.Concat("VideoFormatConvert:", tFormat.ToLower), tFormat.ToLower)
         Else
             Return String.Empty
         End If

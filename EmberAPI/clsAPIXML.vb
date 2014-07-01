@@ -36,8 +36,8 @@ Public Class APIXML
     Public Shared lFlags As New List(Of Flag)
     Public Shared alGenres As New List(Of String)
     Public Shared dStudios As New Dictionary(Of String, String)
-    Public Shared GenreXML As New XDocument
-    Public Shared RatingXML As New XDocument
+    Public Shared GenreXML As New clsXMLGenres
+    Public Shared RatingXML As New clsXMLRatings
     Public Shared SourceList As New List(Of String)(New String() {"bluray", "hddvd", "hdtv", "dvd", "sdtv"})
 
 #End Region 'Fields
@@ -45,6 +45,7 @@ Public Class APIXML
 #Region "Methods"
 
     Public Shared Sub CacheXMLs()
+        Dim objStreamReader As StreamReader
         'TODO Dekker500 - This method is required before any of the other shared methods will work. Therefore, need to re-factor to have this method auto-run (unity?) and not depend on runtime ordering for shared methods to work.
         Try
             Dim fPath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Flags")
@@ -67,25 +68,26 @@ Public Class APIXML
                 End Try
             End If
 
-
-            'Cocotus, Load from central "Settings" folder if it exists!
-            Dim gPath As String = String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar, "Genres.xml")
-
-            'Genres.xml is still at old place (root) -> move to new place if no Genres.xml exists there !
-            If File.Exists(String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar, "Genres.xml")) = False AndAlso File.Exists(String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Genres", Path.DirectorySeparatorChar, "Genres.xml")) AndAlso Directory.Exists(String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar)) Then
-                File.Move(String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Genres", Path.DirectorySeparatorChar, "Genres.xml"), String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar, "Genres.xml"))
-                'New Settings folder doesn't exist -> do it the old way...
-            ElseIf Directory.Exists(String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar)) = False Then
-                gPath = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Genres", Path.DirectorySeparatorChar, "Genres.xml")
-            End If
-            'Dim gPath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Genres", Path.DirectorySeparatorChar, "Genres.xml")
-
+            Dim gPath As String = FileUtils.Common.ReturnSettingsFile("Settings", "Genres.xml")
             If File.Exists(gPath) Then
-                GenreXML = XDocument.Load(gPath)
-                'cocotus if file does not exists - create new one!
+                objStreamReader = New StreamReader(gPath)
+                Dim xGenres As New XmlSerializer(GenreXML.GetType)
+
+                GenreXML = CType(xGenres.Deserialize(objStreamReader), clsXMLGenres)
+                objStreamReader.Close()
             Else
-                GenreXML = XDocument.Parse(My.Resources.Genres)
-                GenreXML.Save(gPath)
+                Dim gPathD As String = FileUtils.Common.ReturnSettingsFile("Settings", "DefaultGenres.xml")
+                objStreamReader = New StreamReader(gPath)
+                Dim xGenres As New XmlSerializer(GenreXML.GetType)
+
+                GenreXML = CType(xGenres.Deserialize(objStreamReader), clsXMLGenres)
+                objStreamReader.Close()
+
+                Try
+                    File.Move(gPathD, gPath)
+                Catch ex As Exception
+                    logger.Error(New StackFrame().GetMethod().Name, ex)
+                End Try
             End If
 
             If Directory.Exists(Directory.GetParent(String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Genres", Path.DirectorySeparatorChar)).FullName) Then
@@ -116,30 +118,30 @@ Public Class APIXML
                 End Try
             End If
 
-
-            'Cocotus, Load from central "Settings" folder if it exists!
-            Dim rPath As String = String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar, "Ratings.xml")
-
-            'Ratings.xml is still at old place (root) -> move to new place if no Ratings.xml exists there !
-            If File.Exists(String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar, "Ratings.xml")) = False AndAlso File.Exists(String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Ratings", Path.DirectorySeparatorChar, "Ratings.xml")) AndAlso Directory.Exists(String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar)) Then
-                File.Move(String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Ratings", Path.DirectorySeparatorChar, "Ratings.xml"), String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar, "Ratings.xml"))
-                'New Settings folder doesn't exist -> do it the old way...
-            ElseIf Directory.Exists(String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar)) = False Then
-                rPath = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Ratings", Path.DirectorySeparatorChar, "Ratings.xml")
-            End If
-
-            '  Dim rPath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Ratings", Path.DirectorySeparatorChar, "Ratings.xml")
-
+            Dim rPath As String = FileUtils.Common.ReturnSettingsFile("Settings", "Ratings.xml")
             If File.Exists(rPath) Then
-                RatingXML = XDocument.Load(rPath)
-                'cocotus if file does not exists - create new one!
+                objStreamReader = New StreamReader(rPath)
+                Dim xRatings As New XmlSerializer(RatingXML.GetType)
+
+                RatingXML = CType(xRatings.Deserialize(objStreamReader), clsXMLRatings)
+                objStreamReader.Close()
             Else
-                RatingXML = XDocument.Parse(My.Resources.Ratings)
-                RatingXML.Save(rPath)
+                Dim rPathD As String = FileUtils.Common.ReturnSettingsFile("Settings", "DefaultRatings.xml")
+                objStreamReader = New StreamReader(rPath)
+                Dim xRatings As New XmlSerializer(RatingXML.GetType)
+
+                RatingXML = CType(xRatings.Deserialize(objStreamReader), clsXMLRatings)
+                objStreamReader.Close()
+
+                Try
+                    File.Move(rPathD, rPath)
+                Catch ex As Exception
+                    logger.Error(New StackFrame().GetMethod().Name, ex)
+                End Try
             End If
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -227,7 +229,7 @@ Public Class APIXML
                 End If
 
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name,ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         Else
             iReturn(0) = My.Resources.defaultscreen
@@ -256,19 +258,19 @@ Public Class APIXML
                 Return "dvd"
             Else
                 sourceCheck = If(Master.eSettings.GeneralSourceFromFolder, String.Concat(Directory.GetParent(sPath).Name.ToLower, Path.DirectorySeparatorChar, Path.GetFileName(sPath).ToLower), Path.GetFileName(sPath).ToLower)
-                Dim mySources As New Hashtable
-                mySources = AdvancedSettings.GetComplexSetting("MovieSources")
+                Dim mySources As New List(Of AdvancedSettingsComplexSettingsTableItem)
+                mySources = clsAdvancedSettings.GetComplexSetting("MovieSources")
                 If Not mySources Is Nothing Then
-                    For Each k In mySources.Keys
-                        If Regex.IsMatch(sourceCheck, k.ToString) Then
-                            Return mySources.Item(k).ToString
+                    For Each k In mySources
+                        If Regex.IsMatch(sourceCheck, k.Name) Then
+                            Return k.Value
                         End If
                     Next
                 End If
             End If
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Return String.Empty
@@ -281,136 +283,121 @@ Public Class APIXML
 
         Dim imgGenre As Image = Nothing
         Dim imgGenreStr As String = String.Empty
+        Dim mePath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Genres")
+        imgGenreStr = Path.Combine(mePath, GenreXML.default.icon)
 
-        If GenreXML.Nodes.Count > 0 Then
-
-            Dim mePath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Genres")
-
-            Try
-
-                Dim xDefault = From xDef In GenreXML...<default> Select xDef.<icon>.Value
-                If xDefault.Count > 0 Then
-                    imgGenreStr = Path.Combine(mePath, xDefault(0).ToString)
-                End If
-
-                Dim xGenre = From xGen In GenreXML...<name> Where strGenre.ToLower = xGen.@searchstring.ToLower Select xGen.<icon>.Value
-                If xGenre.Count > 0 Then
-                    imgGenreStr = Path.Combine(mePath, xGenre(0).ToString)
-                End If
-
-                If Not String.IsNullOrEmpty(imgGenreStr) AndAlso alGenres.Contains(imgGenreStr.ToLower) Then
-                    Using fsImage As New FileStream(imgGenreStr, FileMode.Open, FileAccess.Read)
-                        imgGenre = Image.FromStream(fsImage)
-                    End Using
-                Else
-                    imgGenre = My.Resources.defaultgenre
-                End If
-
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name,ex)
-            End Try
-        Else
-            imgGenre = My.Resources.defaultgenre
+        Dim v = From e In GenreXML.name.Where(Function(f) f.searchstring = strGenre)
+        If Not String.IsNullOrEmpty(v(0).icon) Then
+            imgGenreStr = Path.Combine(mePath, v(0).icon)
         End If
+        Try
+
+            If Not String.IsNullOrEmpty(imgGenreStr) AndAlso alGenres.Contains(imgGenreStr.ToLower) Then
+                Using fsImage As New FileStream(imgGenreStr, FileMode.Open, FileAccess.Read)
+                    imgGenre = Image.FromStream(fsImage)
+                End Using
+            Else
+                imgGenre = My.Resources.defaultgenre
+            End If
+
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
 
         Return imgGenre
     End Function
 
-    Public Shared Function GetGenreList(Optional ByVal LangsOnly As Boolean = False) As Object()
+    Public Shared Function GetGenreList(Optional ByVal LangsOnly As Boolean = False) As String()
         Dim retGenre As New List(Of String)
         Try
             If LangsOnly Then
-                Dim xGenre = From xGen In GenreXML...<supported>.Descendants Select xGen.Value
-                If xGenre.Count > 0 Then
-                    retGenre.AddRange(xGenre.ToArray)
-                End If
+                retGenre.AddRange(GenreXML.supported.ToArray)
             Else
                 Dim splitLang() As String
-                Dim xGenre = From xGen In GenreXML...<name> Select xGen.@searchstring, xGen.@language
-                If xGenre.Count > 0 Then
-                    For i As Integer = 0 To xGenre.Count - 1
-                        If Not IsNothing(xGenre(i).language) Then
-                            splitLang = xGenre(i).language.Split(Convert.ToChar("|"))
-                            For Each strGen As String In splitLang
-                                If Not retGenre.Contains(xGenre(i).searchstring) AndAlso (Master.eSettings.GenreFilter.Contains(String.Format("{0}", Master.eLang.GetString(569, Master.eLang.All))) OrElse Master.eSettings.GenreFilter.Split(Convert.ToChar(",")).Contains(strGen)) Then
-                                    retGenre.Add(xGenre(i).searchstring)
-                                End If
-                            Next
-                        End If
-                    Next
-                End If
+                For Each gen In GenreXML.name
+                    If Not IsNothing(gen.language) Then
+                        splitLang = gen.language.Split(Convert.ToChar("|"))
+                        For Each strGen As String In splitLang
+                            If Not retGenre.Contains(gen.searchstring) AndAlso (Master.eSettings.GenreFilter.Contains(String.Format("{0}", Master.eLang.GetString(569, Master.eLang.All))) OrElse Master.eSettings.GenreFilter.Split(Convert.ToChar(",")).Contains(strGen)) Then
+                                retGenre.Add(gen.searchstring)
+                            End If
+                        Next
+                    End If
+                Next
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return retGenre.ToArray
     End Function
 
-    Public Shared Function GetGenreListString(Optional ByVal LangsOnly As Boolean = False) As String()
-        Dim retGenre As New List(Of String)
-        Try
-            If LangsOnly Then
-                Dim xGenre = From xGen In GenreXML...<supported>.Descendants Select xGen.Value
-                If xGenre.Count > 0 Then
-                    retGenre.AddRange(xGenre.ToArray)
-                End If
-            Else
-                Dim splitLang() As String
-                Dim xGenre = From xGen In GenreXML...<name> Select xGen.@searchstring, xGen.@language
-                If xGenre.Count > 0 Then
-                    For i As Integer = 0 To xGenre.Count - 1
-                        If Not IsNothing(xGenre(i).language) Then
-                            splitLang = xGenre(i).language.Split(Convert.ToChar("|"))
-                            For Each strGen As String In splitLang
-                                If Not retGenre.Contains(xGenre(i).searchstring) AndAlso (Master.eSettings.GenreFilter.Contains(String.Format("{0}", Master.eLang.GetString(569, Master.eLang.All))) OrElse Master.eSettings.GenreFilter.Split(Convert.ToChar(",")).Contains(strGen)) Then
-                                    retGenre.Add(xGenre(i).searchstring)
-                                End If
-                            Next
-                        End If
-                    Next
-                End If
-            End If
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
-        End Try
-        Return retGenre.ToArray
-    End Function
+    'Public Shared Function GetGenreListString(Optional ByVal LangsOnly As Boolean = False) As String()
+    '    Dim retGenre As New List(Of String)
+    '    Try
+    '        If LangsOnly Then
+    '            Dim xGenre = From xGen In GenreXML...<supported>.Descendants Select xGen.Value
+    '            If xGenre.Count > 0 Then
+    '                retGenre.AddRange(xGenre.ToArray)
+    '            End If
+    '        Else
+    '            Dim splitLang() As String
+    '            Dim xGenre = From xGen In GenreXML...<name> Select xGen.@searchstring, xGen.@language
+    '            If xGenre.Count > 0 Then
+    '                For i As Integer = 0 To xGenre.Count - 1
+    '                    If Not IsNothing(xGenre(i).language) Then
+    '                        splitLang = xGenre(i).language.Split(Convert.ToChar("|"))
+    '                        For Each strGen As String In splitLang
+    '                            If Not retGenre.Contains(xGenre(i).searchstring) AndAlso (Master.eSettings.GenreFilter.Contains(String.Format("{0}", Master.eLang.GetString(569, Master.eLang.All))) OrElse Master.eSettings.GenreFilter.Split(Convert.ToChar(",")).Contains(strGen)) Then
+    '                                retGenre.Add(xGenre(i).searchstring)
+    '                            End If
+    '                        Next
+    '                    End If
+    '                Next
+    '            End If
+    '        End If
+    '    Catch ex As Exception
+    '        logger.Error(New StackFrame().GetMethod().Name, ex)
+    '    End Try
+    '    Return retGenre.ToArray
+    'End Function
 
     Public Shared Function GetRatingImage(ByVal strRating As String) As Image
         '//
         ' Parse the floating Rating box
         '\\
-
+        Dim mePath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Ratings")
         Dim imgRating As Image = Nothing
         Dim imgRatingStr As String = String.Empty
+        Dim v = From e In RatingXML.movies.Where(Function(f) f.searchstring = strRating)
+        imgRatingStr = Path.Combine(mePath, v(0).icon)
 
-        If RatingXML.Nodes.Count > 0 Then
-            Dim mePath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Ratings")
+        'If RatingXML.Nodes.Count > 0 Then
+        '    Dim mePath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Ratings")
 
-            Try
+        Try
 
-                If Master.eSettings.MovieScraperCertForMPAA AndAlso Not Master.eSettings.MovieScraperCertLang = "USA" AndAlso Not IsNothing(RatingXML.Element("ratings").Element(Master.eSettings.MovieScraperCertLang.ToLower)) AndAlso RatingXML.Element("ratings").Element(Master.eSettings.MovieScraperCertLang.ToLower)...<movie>.Descendants.Count > 0 Then
-                    Dim xRating = From xRat In RatingXML.Element("ratings").Element(Master.eSettings.MovieScraperCertLang.ToLower)...<movie>...<name> Where strRating.ToLower = xRat.@searchstring.ToLower OrElse strRating.ToLower = xRat.@searchstring.ToLower.Split(Convert.ToChar(":"))(1) Select xRat.<icon>.Value
-                    If xRating.Count > 0 Then
-                        imgRatingStr = Path.Combine(mePath, xRating(xRating.Count - 1).ToString)
-                    End If
-                Else
-                    Dim xRating = From xRat In RatingXML...<usa>...<movie>...<name> Where strRating.ToLower.StartsWith(xRat.@searchstring.ToLower) Select xRat.<icon>.Value
-                    If xRating.Count > 0 Then
-                        imgRatingStr = Path.Combine(mePath, xRating(xRating.Count - 1).ToString)
-                    End If
-                End If
+            '        If Master.eSettings.MovieScraperCertForMPAA AndAlso Not Master.eSettings.MovieScraperCertLang = "USA" AndAlso Not IsNothing(RatingXML.Element("ratings").Element(Master.eSettings.MovieScraperCertLang.ToLower)) AndAlso RatingXML.Element("ratings").Element(Master.eSettings.MovieScraperCertLang.ToLower)...<movie>.Descendants.Count > 0 Then
+            '            Dim xRating = From xRat In RatingXML.Element("ratings").Element(Master.eSettings.MovieScraperCertLang.ToLower)...<movie>...<name> Where strRating.ToLower = xRat.@searchstring.ToLower OrElse strRating.ToLower = xRat.@searchstring.ToLower.Split(Convert.ToChar(":"))(1) Select xRat.<icon>.Value
+            '            If xRating.Count > 0 Then
+            '                imgRatingStr = Path.Combine(mePath, xRating(xRating.Count - 1).ToString)
+            '            End If
+            '        Else
+            '            Dim xRating = From xRat In RatingXML...<usa>...<movie>...<name> Where strRating.ToLower.StartsWith(xRat.@searchstring.ToLower) Select xRat.<icon>.Value
+            '            If xRating.Count > 0 Then
+            '                imgRatingStr = Path.Combine(mePath, xRating(xRating.Count - 1).ToString)
+            '            End If
+            '        End If
 
-                If Not String.IsNullOrEmpty(imgRatingStr) AndAlso File.Exists(imgRatingStr) Then
-                    Using fsImage As New FileStream(imgRatingStr, FileMode.Open, FileAccess.Read)
-                        imgRating = Image.FromStream(fsImage)
-                    End Using
-                End If
+            If Not String.IsNullOrEmpty(imgRatingStr) AndAlso File.Exists(imgRatingStr) Then
+                Using fsImage As New FileStream(imgRatingStr, FileMode.Open, FileAccess.Read)
+                    imgRating = Image.FromStream(fsImage)
+                End Using
+            End If
 
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name,ex)
-            End Try
-        End If
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+        'End If
 
         Return imgRating
     End Function
@@ -418,20 +405,12 @@ Public Class APIXML
     Public Shared Function GetRatingList() As Object()
         Dim retRatings As New List(Of String)
         Try
-            If Master.eSettings.MovieScraperCertForMPAA AndAlso Not Master.eSettings.MovieScraperCertLang = "USA" AndAlso Not IsNothing(RatingXML.Element("ratings").Element(Master.eSettings.MovieScraperCertLang.ToLower)) AndAlso RatingXML.Element("ratings").Element(Master.eSettings.MovieScraperCertLang.ToLower).Descendants("movie").Count > 0 Then
-                Dim xRating = From xRat In RatingXML.Element("ratings").Element(Master.eSettings.MovieScraperCertLang.ToLower)...<movie>...<name> Select xRat.@searchstring
-                If xRating.Count > 0 Then
-                    retRatings.AddRange(xRating.ToArray)
-                End If
-            Else
-                Dim xRating = From xRat In RatingXML...<usa>...<movie>...<name> Select xRat.@searchstring
-                If xRating.Count > 0 Then
-                    retRatings.AddRange(xRating.ToArray)
-                End If
-            End If
+            For Each r In RatingXML.movies.FindAll(Function(f) f.country = Master.eSettings.MovieScraperCertLang.ToLower)
+                retRatings.Add(r.searchstring)
+            Next
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return retRatings.ToArray
     End Function
@@ -439,12 +418,13 @@ Public Class APIXML
     Public Shared Function GetRatingRegions() As Object()
         Dim retRatings As New List(Of String)
         Try
-            Dim xRating = From xRat In RatingXML...<ratings>.Elements.Descendants("tv") Select (xRat.Parent.Name.ToString)
-            If xRating.Count > 0 Then
-                retRatings.AddRange(xRating.ToArray)
-            End If
+            For Each r In RatingXML.movies
+                If retRatings.FindIndex(Function(f) f = r.country) = -1 Then
+                    retRatings.Add(r.searchstring)
+                End If
+            Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return retRatings.ToArray
     End Function
@@ -467,33 +447,20 @@ Public Class APIXML
         Dim imgRating As Image = Nothing
         Dim imgRatingStr As String = String.Empty
 
-        If RatingXML.Nodes.Count > 0 Then
-            Dim mePath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Ratings")
+        Dim mePath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Ratings")
+        Dim v = From e In RatingXML.tv.Where(Function(f) f.searchstring = strRating)
+        imgRatingStr = Path.Combine(mePath, v(0).icon)
 
-            Try
+        Try
+            If Not String.IsNullOrEmpty(imgRatingStr) AndAlso File.Exists(imgRatingStr) Then
+                Using fsImage As New FileStream(imgRatingStr, FileMode.Open, FileAccess.Read)
+                    imgRating = Image.FromStream(fsImage)
+                End Using
+            End If
 
-                If Master.eSettings.TVScraperRatingRegion = "usa" AndAlso RatingXML.Element("ratings").Element(Master.eSettings.TVScraperRatingRegion.ToLower)...<tv>.Descendants.Count > 0 Then
-                    Dim xRating = From xRat In RatingXML.Element("ratings").Element(Master.eSettings.TVScraperRatingRegion.ToLower)...<tv>...<name> Where strRating.ToLower = xRat.@searchstring.ToLower Select xRat.<icon>.Value
-                    If xRating.Count > 0 Then
-                        imgRatingStr = Path.Combine(mePath, xRating(xRating.Count - 1).ToString)
-                    End If
-                Else
-                    Dim xRating = From xRat In RatingXML...<usa>...<tv>...<name> Where strRating.ToLower.StartsWith(xRat.@searchstring.ToLower) Select xRat.<icon>.Value
-                    If xRating.Count > 0 Then
-                        imgRatingStr = Path.Combine(mePath, xRating(xRating.Count - 1).ToString)
-                    End If
-                End If
-
-                If Not String.IsNullOrEmpty(imgRatingStr) AndAlso File.Exists(imgRatingStr) Then
-                    Using fsImage As New FileStream(imgRatingStr, FileMode.Open, FileAccess.Read)
-                        imgRating = Image.FromStream(fsImage)
-                    End Using
-                End If
-
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name,ex)
-            End Try
-        End If
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
 
         Return imgRating
     End Function
@@ -501,20 +468,12 @@ Public Class APIXML
     Public Shared Function GetTVRatingList() As Object()
         Dim retRatings As New List(Of String)
         Try
-            If Not Master.eSettings.TVScraperRatingRegion = "USA" AndAlso RatingXML.Element("ratings").Element(Master.eSettings.TVScraperRatingRegion.ToLower).Descendants("tv").Count > 0 Then
-                Dim xRating = From xRat In RatingXML.Element("ratings").Element(Master.eSettings.TVScraperRatingRegion.ToLower)...<tv>...<name> Select xRat.@searchstring
-                If xRating.Count > 0 Then
-                    retRatings.AddRange(xRating.ToArray)
-                End If
-            Else
-                Dim xRating = From xRat In RatingXML...<usa>...<tv>...<name> Select xRat.@searchstring
-                If xRating.Count > 0 Then
-                    retRatings.AddRange(xRating.ToArray)
-                End If
-            End If
+            For Each r In RatingXML.tv.FindAll(Function(f) f.country = Master.eSettings.MovieScraperCertLang.ToLower)
+                retRatings.Add(r.searchstring)
+            Next
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return retRatings.ToArray
     End Function

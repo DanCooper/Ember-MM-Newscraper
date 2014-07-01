@@ -67,7 +67,7 @@ Public Class Scraper
     Public Sub New(ByVal _Api As String)
         AddHandler sObject.ScraperEvent, AddressOf InnerEvent
         APIKey = _Api
-        _TVDBMirror = AdvancedSettings.GetSetting("TVDBMirror", "thetvdb.com")
+        _TVDBMirror = clsAdvancedSettings.GetSetting("TVDBMirror", "thetvdb.com")
     End Sub
 
 #End Region 'Constructors
@@ -245,7 +245,7 @@ Public Class Scraper
                     End Using
                 End Using
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name,ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         End Sub
 
@@ -264,7 +264,7 @@ Public Class Scraper
                     MsgBox(Master.eLang.GetString(943, "There are no known episodes for this show. Scrape the show, season, or episode and try again."), MsgBoxStyle.OkOnly, Master.eLang.GetString(944, "No Known Episodes"))
                 End If
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name,ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
 
             Return Nothing
@@ -313,7 +313,7 @@ Public Class Scraper
                     End Using
                 End If
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name,ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         End Sub
         Public Sub DownloadSeriesAsync(ByVal sInfo As Structures.ScrapeInfo)
@@ -325,7 +325,7 @@ Public Class Scraper
                     bwTVDB.RunWorkerAsync(New Arguments With {.Type = 1, .Parameter = sInfo})
                 End If
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name,ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         End Sub
 
@@ -354,7 +354,7 @@ Public Class Scraper
                                 Next
                             End If
                         Catch ex As Exception
-                            logger.Error(New StackFrame().GetMethod().Name,ex)
+                            logger.Error(New StackFrame().GetMethod().Name, ex)
                         End Try
 
                         If Not String.IsNullOrEmpty(sXML) Then
@@ -437,7 +437,7 @@ Public Class Scraper
                     End Using
                 End If
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name,ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
 
             Return tEpisodes
@@ -451,7 +451,7 @@ Public Class Scraper
                     bwTVDB.RunWorkerAsync(New Arguments With {.Type = 0, .Parameter = sInfo})
                 End If
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name,ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         End Sub
 
@@ -471,7 +471,7 @@ Public Class Scraper
                     End If
                 End If
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name,ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
 
             Return New MediaContainers.EpisodeDetails
@@ -601,7 +601,7 @@ Public Class Scraper
                     End While
                 End Using
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name,ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         End Sub
 
@@ -683,7 +683,7 @@ Public Class Scraper
                     End If
                 End If
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name,ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         End Sub
 
@@ -775,7 +775,7 @@ Public Class Scraper
                     End If
                 End If
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name,ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         End Sub
 
@@ -801,7 +801,7 @@ Public Class Scraper
                         e.Result = New Results With {.Type = 2, .Result = Args.Parameter}
                 End Select
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name,ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         End Sub
 
@@ -828,7 +828,7 @@ Public Class Scraper
                         RaiseEvent ScraperEvent(Enums.TVScraperEventType.ScraperDone, 0, Nothing)
                 End Select
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name,ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         End Sub
 
@@ -943,7 +943,7 @@ Public Class Scraper
 
                             iProgress += 1
                         Catch ex As Exception
-                            logger.Error(New StackFrame().GetMethod().Name,ex)
+                            logger.Error(New StackFrame().GetMethod().Name, ex)
                         End Try
                     Next
 
@@ -972,7 +972,7 @@ Public Class Scraper
                     SQLTrans.Commit()
 
                 Catch ex As Exception
-                    logger.Error(New StackFrame().GetMethod().Name,ex)
+                    logger.Error(New StackFrame().GetMethod().Name, ex)
                 End Try
 
             End Using
@@ -999,7 +999,7 @@ Public Class Scraper
             Dim tmpID As String = String.Empty
 
             Try
-                Dim apiXML As String = sHTTP.DownloadData(String.Format("http://{0}/api/GetSeries.php?seriesname={1}&language={2}", _TVDBMirror, sInfo.ShowTitle, AdvancedSettings.GetSetting("TVDBLanguage", "en")))
+                Dim apiXML As String = sHTTP.DownloadData(String.Format("http://{0}/api/GetSeries.php?seriesname={1}&language={2}", _TVDBMirror, sInfo.ShowTitle, clsAdvancedSettings.GetSetting("TVDBLanguage", "en")))
 
                 If Not String.IsNullOrEmpty(apiXML) Then
                     Try
@@ -1013,9 +1013,9 @@ Public Class Scraper
                     'check each unique showid to see if we have an entry for the preferred languages. If not, try to force download it
                     For Each tID As String In xSer.GroupBy(Function(s) s.Element("seriesid").Value.ToString).Select(Function(group) group.Key)
                         tmpID = tID
-                        If xSer.Where(Function(s) s.Element("seriesid").Value.ToString = tmpID AndAlso s.Element("language").Value.ToString = AdvancedSettings.GetSetting("TVDBLanguage", "en")).Count = 0 Then
+                        If xSer.Where(Function(s) s.Element("seriesid").Value.ToString = tmpID AndAlso s.Element("language").Value.ToString = clsAdvancedSettings.GetSetting("TVDBLanguage", "en")).Count = 0 Then
                             'no preferred language in this series, force it
-                            Dim forceXML As String = sHTTP.DownloadData(String.Format("http://{0}/api/{1}/series/{2}/{3}.xml", _TVDBMirror, APIKey, tmpID, AdvancedSettings.GetSetting("TVDBLanguage", "en")))
+                            Dim forceXML As String = sHTTP.DownloadData(String.Format("http://{0}/api/{1}/series/{2}/{3}.xml", _TVDBMirror, APIKey, tmpID, clsAdvancedSettings.GetSetting("TVDBLanguage", "en")))
                             If Not String.IsNullOrEmpty(forceXML) Then
                                 Try
                                     tmpXML = XDocument.Parse(forceXML)
@@ -1077,7 +1077,7 @@ Public Class Scraper
                 End If
 
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name,ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
 
             Return tvdbResults
@@ -1110,7 +1110,7 @@ Public Class Scraper
                         End If
                     End If
                 Catch ex As Exception
-                    logger.Error(New StackFrame().GetMethod().Name,ex)
+                    logger.Error(New StackFrame().GetMethod().Name, ex)
                 End Try
 
                 'now let's get the show info and all the episodes
@@ -1125,7 +1125,7 @@ Public Class Scraper
                                     sID = xS(0).Element("id").Value
                                     .ID = sID
                                     If sInfo.Options.bShowTitle AndAlso (String.IsNullOrEmpty(.Title) OrElse Not Master.eSettings.TVLockShowTitle) Then .Title = If(IsNothing(xS(0).Element("SeriesName")), .Title, xS(0).Element("SeriesName").Value)
-                                    If sInfo.Options.bShowEpisodeGuide Then .EpisodeGuideURL = If(Not String.IsNullOrEmpty(AdvancedSettings.GetSetting("TVDBAPIKey", "")), String.Format("http://{0}/api/{1}/series/{2}/all/{3}.zip", _TVDBMirror, AdvancedSettings.GetSetting("TVDBAPIKey", ""), sID, AdvancedSettings.GetSetting("TVDBLanguage", "en")), String.Empty)
+                                    If sInfo.Options.bShowEpisodeGuide Then .EpisodeGuideURL = If(Not String.IsNullOrEmpty(clsAdvancedSettings.GetSetting("TVDBAPIKey", "")), String.Format("http://{0}/api/{1}/series/{2}/all/{3}.zip", _TVDBMirror, clsAdvancedSettings.GetSetting("TVDBAPIKey", ""), sID, clsAdvancedSettings.GetSetting("TVDBLanguage", "en")), String.Empty)
                                     If sInfo.Options.bShowGenre AndAlso (String.IsNullOrEmpty(.Genre) OrElse Not Master.eSettings.TVLockShowGenre) Then .Genre = If(IsNothing(xS(0).Element("Genre")), .Genre, Strings.Join(xS(0).Element("Genre").Value.Trim(Convert.ToChar("|")).Split(Convert.ToChar("|")), " / "))
                                     If sInfo.Options.bShowMPAA Then .MPAA = If(IsNothing(xS(0).Element("ContentRating")), .MPAA, xS(0).Element("ContentRating").Value)
                                     If sInfo.Options.bShowPlot AndAlso (String.IsNullOrEmpty(.Plot) OrElse Not Master.eSettings.TVLockShowPlot) Then .Plot = If(IsNothing(xS(0).Element("Overview")), .Plot, xS(0).Element("Overview").Value.ToString.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf))
@@ -1228,7 +1228,7 @@ Public Class Scraper
                         End If
                     End If
                 Catch ex As Exception
-                    logger.Error(New StackFrame().GetMethod().Name,ex)
+                    logger.Error(New StackFrame().GetMethod().Name, ex)
                 End Try
             Else
                 sID = sInfo.TVDBID
@@ -1240,8 +1240,8 @@ Public Class Scraper
                         Dim xdImage As XDocument = XDocument.Parse(bXML)
                         For Each tImage As XElement In xdImage.Descendants("Banner")
                             If (Not IsNothing(tImage.Element("BannerPath")) AndAlso Not String.IsNullOrEmpty(tImage.Element("BannerPath").Value)) AndAlso _
-                               (Not CBool(AdvancedSettings.GetSetting("OnlyGetTVImagesForSelectedLanguage", "True")) OrElse ((Not IsNothing(tImage.Element("Language")) AndAlso tImage.Element("Language").Value = AdvancedSettings.GetSetting("TVDBLanguage", "en")) OrElse _
-                               ((IsNothing(tImage.Element("Language")) OrElse tImage.Element("Language").Value = "en") AndAlso CBool(AdvancedSettings.GetSetting("AlwaysGetEnglishTVImages", "True"))))) Then
+                               (Not CBool(clsAdvancedSettings.GetSetting("OnlyGetTVImagesForSelectedLanguage", "True")) OrElse ((Not IsNothing(tImage.Element("Language")) AndAlso tImage.Element("Language").Value = clsAdvancedSettings.GetSetting("TVDBLanguage", "en")) OrElse _
+                               ((IsNothing(tImage.Element("Language")) OrElse tImage.Element("Language").Value = "en") AndAlso CBool(clsAdvancedSettings.GetSetting("AlwaysGetEnglishTVImages", "True"))))) Then
                                 Select Case tImage.Element("BannerType").Value
                                     Case "fanart"
                                         tmpTVDBShow.Fanarts.Add(New TVDBFanart With { _
@@ -1285,7 +1285,7 @@ Public Class Scraper
                     End If
                 End If
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name,ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         End Sub
 

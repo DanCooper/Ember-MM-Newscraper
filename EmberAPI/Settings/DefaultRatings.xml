@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ratings>
+  <movies>
+    <name searchstring="Australia:G">
+      <icon>au/australia_g.png</icon>
+      <country>australia</country>
+    </name>
+    <name searchstring="Australia:PG">
+      <icon>au/australia_pg.png</icon>
+      <country>australia</country>
+    </name>
+    <name searchstring="Australia:PG-13">
+      <icon>au/australia_pg13.png</icon>
+      <country>australia</country>
+    </name>
+    <name searchstring="Australia:R">
+      <icon>au/australia_r.png</icon>
+      <country>australia</country>
+    </name>
+    <name searchstring="Australia:M">
+      <icon>au/australia_m.png</icon>
+      <country>australia</country>
+    </name>
+    <name searchstring="Australia:MA">
+      <icon>au/australia_ma.png</icon>
+      <country>australia</country>
+    </name>
+    <name searchstring="Rated G">
+      <icon>usa/mpaag.png</icon>
+      <country>usa</country>
+    </name>
+    <name searchstring="Rated PG">
+      <icon>usa/mpaapg.png</icon>
+      <country>usa</country>
+    </name>
+    <name searchstring="Rated PG-13">
+      <icon>usa/mpaapg13.png</icon>
+      <country>usa</country>
+    </name>
+    <name searchstring="Rated R">
+      <icon>usa/mpaar.png</icon>
+      <country>usa</country>
+    </name>
+    <name searchstring="Rated NC-17">
+      <icon>usa/mpaanc17.png</icon>
+      <country>usa</country>
+    </name>
+    <name searchstring="UK:12">
+      <icon>uk/uk_12.png</icon>
+      <country>uk</country>
+    </name>
+    <name searchstring="UK:12A">
+      <icon>uk/uk_12A.png</icon>
+      <country>uk</country>
+    </name>
+    <name searchstring="UK:15">
+      <icon>uk/uk_15.png</icon>
+      <country>uk</country>
+    </name>
+    <name searchstring="UK:18">
+      <icon>uk/uk_18.png</icon>
+      <country>uk</country>
+    </name>
+    <name searchstring="UK:PG">
+      <country>uk</country>
+      <icon>uk/uk_pg.png</icon>
+    </name>
+    <name searchstring="UK:U">
+      <icon>uk/uk_u.png</icon>
+      <country>uk</country>
+    </name>
+    <name searchstring="UK:UC">
+      <icon>uk/uk_uc.png</icon>
+      <country>uk</country>
+    </name>
+    <name searchstring="Germany:o.Al.">
+      <icon>de/de_0.png</icon>
+      <country>germany</country>
+    </name>
+    <name searchstring="Germany:0">
+      <icon>de/de_0.png</icon>
+      <country>germany</country>
+    </name>
+    <name searchstring="Germany:6">
+      <icon>de/de_6.png</icon>
+      <country>germany</country>
+    </name>
+    <name searchstring="Germany:12">
+      <icon>de/de_12.png</icon>
+      <country>germany</country>
+    </name>
+    <name searchstring="Germany:16">
+      <icon>de/de_16.png</icon>
+      <country>germany</country>
+    </name>
+    <name searchstring="Germany:18">
+      <icon>de/de_18.png</icon>
+      <country>germany</country>
+    </name>
+  </movies>
+  <tv>
+    <name searchstring="TV-Y">
+      <icon>usa/tvy.png</icon>
+      <country>usa</country>
+    </name>
+    <name searchstring="TV-Y7">
+      <icon>usa/tvy7.png</icon>
+      <country>usa</country>
+    </name>
+    <name searchstring="TV-Y7-FV">
+      <icon>usa/tvy7fv.png</icon>
+      <country>usa</country>
+    </name>
+    <name searchstring="TV-G">
+      <icon>usa/tvg.png</icon>
+      <country>usa</country>
+    </name>
+    <name searchstring="TV-PG">
+      <icon>usa/tvpg.png</icon>
+      <country>usa</country>
+    </name>
+    <name searchstring="TV-14">
+      <icon>usa/tv14.png</icon>
+      <country>usa</country>
+    </name>
+    <name searchstring="TV-MA">
+      <icon>usa/tvma.png</icon>
+      <country>usa</country>
+    </name>
+  </tv>
+</ratings>
+

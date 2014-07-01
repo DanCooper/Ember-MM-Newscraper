@@ -35,9 +35,9 @@ Public Class Localization
     Shared lang_logger As Logger = NLog.LogManager.GetLogger("LanguageString")
 
     Private Shared htArrayStrings As New List(Of Locs)
-    Private Shared htHelpStrings As New Hashtable
-    Private Shared htStrings As New Hashtable
-    Private Shared _ISOLanguages As New List(Of _ISOLanguage)
+    Private Shared htHelpStrings As New clsXMLLanguageHelp
+    Private Shared htStrings As New clsXMLLanguage
+    Private Shared _ISOLanguages As New clsXMLLanguages
 
     Private _all As String
     Private _disabled As String
@@ -62,13 +62,14 @@ Public Class Localization
         Me.Clear()
         Dim lPath As String = Path.Combine(Functions.AppPath, "Langs" & Path.DirectorySeparatorChar & "Languages.xml")
         If File.Exists(lPath) Then
-            Dim LanguageXML As XDocument = XDocument.Load(lPath)
-            For Each e In From xGen In LanguageXML...<Language> Select xGen
-                Dim c3 As String = If(e.<Alpha3>.Value Is Nothing, String.Empty, e.<Alpha3>.Value.ToString)
-                Dim c2 As String = If(e.<Alpha2>.Value Is Nothing, String.Empty, e.<Alpha2>.Value.ToString)
-                _ISOLanguages.Add(New _ISOLanguage With {.Alpha2Code = c2, .Alpha3Code = c3, .Language = e.<Name>.Value.ToString})
-            Next
+            Dim objStreamReader As New StreamReader(lPath)
+
+            Dim xLangsString As New XmlSerializer(_ISOLanguages.GetType)
+
+            _ISOLanguages = CType(xLangsString.Deserialize(objStreamReader), clsXMLLanguages)
+            objStreamReader.Close()
         Else
+            logger.Error("Cannot find Language.xml." & vbNewLine & "Expected path: {0}", lPath)
             MsgBox(String.Concat("Cannot find Language.xml.", vbNewLine, vbNewLine, "Expected path:", vbNewLine, lPath), MsgBoxStyle.Critical, "File Not Found")
         End If
     End Sub
@@ -110,45 +111,46 @@ Public Class Localization
     ' ************************************************************************************************
     ' This are functions for country/Language codes under ISO639 Alpha-2 and Alpha-3(ie: Used by DVD/GoogleAPI)
     Shared Function ISOGetLangByCode2(ByVal code As String) As String
-        Return (From x As _ISOLanguage In _ISOLanguages Where (x.Alpha2Code = code))(0).Language
+        Return (From x As LanguagesLanguage In _ISOLanguages.Language Where (x.Alpha2 = code))(0).Name
     End Function
 
     Shared Function ISOGetLangByCode3(ByVal code As String) As String
-        Return (From x As _ISOLanguage In _ISOLanguages Where (x.Alpha3Code = code))(0).Language
+        Return (From x As LanguagesLanguage In _ISOLanguages.Language Where (x.Alpha3 = code))(0).Name
     End Function
 
     Public Shared Function ISOLangGetCode2ByLang(ByVal lang As String) As String
-        Return (From x As _ISOLanguage In _ISOLanguages Where (x.Language = lang))(0).Alpha2Code
+        Return (From x As LanguagesLanguage In _ISOLanguages.Language Where (x.Name = lang))(0).Alpha2
     End Function
 
     Public Shared Function ISOLangGetCode3ByLang(ByVal lang As String) As String
-        Return (From x As _ISOLanguage In _ISOLanguages Where (x.Language = lang))(0).Alpha3Code
+        Return (From x As LanguagesLanguage In _ISOLanguages.Language Where (x.Name = lang))(0).Alpha3
     End Function
 
     Public Shared Function ISOLangGetLanguagesList() As ArrayList
         Dim r As New ArrayList
-        For Each x As _ISOLanguage In _ISOLanguages
-            r.Add(x.Language)
+        For Each x As LanguagesLanguage In _ISOLanguages.Language
+            r.Add(x.Name)
         Next
         Return r
     End Function
 
     Public Shared Function ISOLangGetLanguagesListAlpha2() As ArrayList
         Dim r As New ArrayList
-        For Each x As _ISOLanguage In _ISOLanguages.Where(Function(y) Not String.IsNullOrEmpty(y.Alpha2Code))
-            r.Add(x.Language)
+        For Each x As LanguagesLanguage In _ISOLanguages.Language.Where(Function(y) Not String.IsNullOrEmpty(y.Alpha2))
+            r.Add(x.Name)
         Next
         Return r
     End Function
     Public Shared Function ISOLangGetLanguagesListAlpha3() As ArrayList
         Dim r As New ArrayList
-        For Each x As _ISOLanguage In _ISOLanguages.Where(Function(y) Not String.IsNullOrEmpty(y.Alpha3Code))
-            r.Add(x.Language)
+        For Each x As LanguagesLanguage In _ISOLanguages.Language.Where(Function(y) Not String.IsNullOrEmpty(y.Alpha3))
+            r.Add(x.Name)
         Next
         Return r
     End Function
 
     Public Sub Clear()
+        _ISOLanguages.Language.Clear()
         _all = "All"
         _none = "[none]"
         _disabled = "[Disabled]"
@@ -157,11 +159,16 @@ Public Class Localization
     Public Function GetHelpString(ByVal ctrlName As String) As String
         Dim aStr As String
 
-        If htHelpStrings.ContainsKey(ctrlName) Then
-            aStr = htHelpStrings.Item(ctrlName).ToString
-        Else
+        aStr = (From x As HelpString In htHelpStrings.string Where (x.control = ctrlName))(0).Value
+        If String.IsNullOrEmpty(aStr) Then
             aStr = String.Empty
         End If
+
+        'If htHelpStrings.ContainsKey(ctrlName) Then
+        '    aStr = htHelpStrings.Item(ctrlName).ToString
+        'Else
+        '    aStr = String.Empty
+        'End If
         help_logger.Trace("helpstring : '{0}'", aStr)
 
         Return aStr
@@ -175,9 +182,9 @@ Public Class Localization
         If IsNothing(htStrings) Then
             tStr = strDefault
         Else
-            If htStrings.ContainsKey(ID) Then
-                tStr = htStrings.Item(ID).ToString
-            Else
+            tStr = (From x As LanguageString In htStrings.string Where (x.id = ID))(0).Value
+
+            If String.IsNullOrEmpty(tStr) Then
                 tStr = strDefault
             End If
         End If
@@ -188,9 +195,9 @@ Public Class Localization
 
     Public Sub LoadAllLanguage(ByVal language As String, Optional ByVal force As Boolean = False)
         If force Then
-            htHelpStrings = New Hashtable
-            htHelpStrings.Clear()
+            htHelpStrings.string.Clear()
             htArrayStrings.Clear()
+            htStrings.string.Clear()
         End If
         LoadLanguage(language)
         ' no more module specific language files
@@ -202,14 +209,11 @@ Public Class Localization
     Public Sub LoadHelpStrings(ByVal hPath As String)
         Try
             If File.Exists(hPath) Then
-                Dim tReader As New StreamReader(hPath, Encoding.UTF8, False)
-                Dim LangXML As XDocument = XDocument.Load(tReader)
-                Dim xLanguage = From xLang In LangXML...<strings>...<string> Select xLang.@control, xLang.Value
-                If xLanguage.Count > 0 Then
-                    For i As Integer = 0 To xLanguage.Count - 1
-                        htHelpStrings.Add(xLanguage(i).control, xLanguage(i).Value)
-                    Next
-                End If
+                Dim objStreamReader As New StreamReader(hPath)
+                Dim xHelpString As New XmlSerializer(htHelpStrings.GetType)
+
+                htHelpStrings = CType(xHelpString.Deserialize(objStreamReader), clsXMLLanguageHelp)
+                objStreamReader.Close()
             End If
 
         Catch ex As Exception
@@ -249,32 +253,32 @@ Public Class Localization
                 If Not force AndAlso Not htArrayStrings.FirstOrDefault(Function(h) h.AssenblyName = Assembly).AssenblyName Is Nothing Then Return
 
                 LoadHelpStrings(lhPath)
-                htStrings = New Hashtable
-                htStrings.Clear()
+
+                htStrings.string.Clear()
+
                 If File.Exists(lPath) Then
-                    Dim tReader As New StreamReader(lPath, Encoding.UTF8)
-                    Dim LangXML As XDocument = XDocument.Load(tReader)
-                    Dim xLanguage = From xLang In LangXML...<strings>...<string> Select xLang.@id, xLang.Value
-                    If xLanguage.Count > 0 Then
-                        For i As Integer = 0 To xLanguage.Count - 1
-                            htStrings.Add(Convert.ToInt32(xLanguage(i).id), xLanguage(i).Value)
-                        Next
-                        htArrayStrings.Remove(htArrayStrings.FirstOrDefault(Function(h) h.AssenblyName = Assembly))
-                        htArrayStrings.Add(New Locs With {.AssenblyName = Assembly, .htStrings = htStrings, .FileName = lPath})
-                        _all = String.Format("[{0}]", GetString(569, Master.eLang.All))
-                        _none = GetString(570, Master.eLang.None)
-                        _disabled = GetString(571, Master.eLang.Disabled)
-                    Else
-                        Dim tLocs As Locs = htArrayStrings.FirstOrDefault(Function(h) h.AssenblyName = Assembly)
-                        If Not IsNothing(tLocs) Then
-                            tLocs.htStrings = htStrings
-                        Else
-                            htArrayStrings.Add(New Locs With {.AssenblyName = Assembly, .htStrings = htStrings, .FileName = lPath})
-                        End If
-                    End If
+                    Dim objStreamReader As New StreamReader(lPath)
+                    Dim xLangString As New XmlSerializer(htStrings.GetType)
+
+                    htStrings = CType(xLangString.Deserialize(objStreamReader), clsXMLLanguage)
+                    objStreamReader.Close()
+
+                    htArrayStrings.Remove(htArrayStrings.FirstOrDefault(Function(h) h.AssenblyName = Assembly))
+                    htArrayStrings.Add(New Locs With {.AssenblyName = Assembly, .htStrings = htStrings, .FileName = lPath})
+                    _all = String.Format("[{0}]", GetString(569, Master.eLang.All))
+                    _none = GetString(570, Master.eLang.None)
+                    _disabled = GetString(571, Master.eLang.Disabled)
                 Else
-                    MsgBox(String.Concat(String.Format("Cannot find {0}.xml.", Language), vbNewLine, vbNewLine, "Expected path:", vbNewLine, lPath), MsgBoxStyle.Critical, "File Not Found")
+                    Dim tLocs As Locs = htArrayStrings.FirstOrDefault(Function(h) h.AssenblyName = Assembly)
+                    If Not IsNothing(tLocs) Then
+                        tLocs.htStrings = htStrings
+                    Else
+                        htArrayStrings.Add(New Locs With {.AssenblyName = Assembly, .htStrings = htStrings, .FileName = lPath})
+                    End If
                 End If
+            Else
+                logger.Error("Cannot find {0}.xml." & vbNewLine & "Expected path: {1}", Language, lPath)
+                MsgBox(String.Concat(String.Format("Cannot find {0}.xml.", Language), vbNewLine, vbNewLine, "Expected path:", vbNewLine, lPath), MsgBoxStyle.Critical, "File Not Found")
             End If
 
             ' Need to change Globaly Langs_all
@@ -297,7 +301,7 @@ Public Class Localization
 
         Dim AssenblyName As String
         Dim FileName As String
-        Dim htStrings As Hashtable
+        Dim htStrings As clsXMLLanguage
 
 #End Region 'Fields
 

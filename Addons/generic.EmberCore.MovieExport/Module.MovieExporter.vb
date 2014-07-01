@@ -189,14 +189,14 @@ Public Class MovieExporterModule
     End Sub
 
     Sub LoadSettings()
-        MySettings.ExportPath = AdvancedSettings.GetSetting("ExportPath", "")
-        MySettings.ExportTVShows = AdvancedSettings.GetBooleanSetting("ExportTVShows", False)
-        MySettings.ExportPosterHeight = CInt(AdvancedSettings.GetSetting("ExportPosterHeight", "300"))
-        MySettings.ExportFanartWidth = CInt(AdvancedSettings.GetSetting("ExportFanartWidth", "800"))
-        MySettings.ExportFilter1 = AdvancedSettings.GetSetting("ExportFilter1", "-")
-        MySettings.ExportFilter2 = AdvancedSettings.GetSetting("ExportFilter2", "-")
-        MySettings.ExportFilter3 = AdvancedSettings.GetSetting("ExportFilter3", "-")
-        MySettings.ExportImageQuality = CInt(AdvancedSettings.GetSetting("ExportImageQuality", "70"))
+        MySettings.ExportPath = clsAdvancedSettings.GetSetting("ExportPath", "")
+        MySettings.ExportTVShows = clsAdvancedSettings.GetBooleanSetting("ExportTVShows", False)
+        MySettings.ExportPosterHeight = CInt(clsAdvancedSettings.GetSetting("ExportPosterHeight", "300"))
+        MySettings.ExportFanartWidth = CInt(clsAdvancedSettings.GetSetting("ExportFanartWidth", "800"))
+        MySettings.ExportFilter1 = clsAdvancedSettings.GetSetting("ExportFilter1", "-")
+        MySettings.ExportFilter2 = clsAdvancedSettings.GetSetting("ExportFilter2", "-")
+        MySettings.ExportFilter3 = clsAdvancedSettings.GetSetting("ExportFilter3", "-")
+        MySettings.ExportImageQuality = CInt(clsAdvancedSettings.GetSetting("ExportImageQuality", "70"))
     End Sub
 
     Sub SaveSetup(ByVal DoDispose As Boolean) Implements Interfaces.EmberExternalModule.SaveSetup
@@ -213,7 +213,7 @@ Public Class MovieExporterModule
     End Sub
 
     Sub SaveSettings()
-        Using settings = New AdvancedSettings()
+        Using settings = New clsAdvancedSettings()
             settings.SetSetting("ExportPath", MySettings.ExportPath)
             settings.SetBooleanSetting("ExportTVShows", MySettings.ExportTVShows)
             settings.SetSetting("ExportPosterHeight", CStr(MySettings.ExportPosterHeight))

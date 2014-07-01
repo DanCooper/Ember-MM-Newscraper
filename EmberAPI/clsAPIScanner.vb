@@ -433,8 +433,8 @@ Public Class Scanner
 
                 'subs
                 If String.IsNullOrEmpty(Movie.Subs) Then
-                    If Regex.IsMatch(fFile.ToLower, String.Concat("^", Regex.Escape(filePath), AdvancedSettings.GetSetting("SubtitleExtension", ".*\.(sst|srt|sub|ssa|aqt|smi|sami|jss|mpl|rt|idx|ass)$")), RegexOptions.IgnoreCase) OrElse _
-                                Regex.IsMatch(fFile.ToLower, String.Concat("^", Regex.Escape(filePathStack), AdvancedSettings.GetSetting("SubtitleExtension", ".*\.(sst|srt|sub|ssa|aqt|smi|sami|jss|mpl|rt|idx|ass)$")), RegexOptions.IgnoreCase) Then
+                    If Regex.IsMatch(fFile.ToLower, String.Concat("^", Regex.Escape(filePath), clsAdvancedSettings.GetSetting("SubtitleExtension", ".*\.(sst|srt|sub|ssa|aqt|smi|sami|jss|mpl|rt|idx|ass)$")), RegexOptions.IgnoreCase) OrElse _
+                                Regex.IsMatch(fFile.ToLower, String.Concat("^", Regex.Escape(filePathStack), clsAdvancedSettings.GetSetting("SubtitleExtension", ".*\.(sst|srt|sub|ssa|aqt|smi|sami|jss|mpl|rt|idx|ass)$")), RegexOptions.IgnoreCase) Then
                         Movie.Subs = fFile
                         Continue For
                     End If
@@ -809,10 +809,10 @@ Public Class Scanner
             If(dInfo.FullName.IndexOf("\") >= 0, dInfo.FullName.Remove(0, dInfo.FullName.IndexOf("\")).Contains(":"), False) Then
                 Return False
             End If
-            For Each s As String In AdvancedSettings.GetSetting("NotValidDirIs", "extrathumbs|video_ts|bdmv|audio_ts|recycler|subs|subtitles|.trashes").Split(New String() {"|"}, StringSplitOptions.RemoveEmptyEntries)
+            For Each s As String In clsAdvancedSettings.GetSetting("NotValidDirIs", "extrathumbs|video_ts|bdmv|audio_ts|recycler|subs|subtitles|.trashes").Split(New String() {"|"}, StringSplitOptions.RemoveEmptyEntries)
                 If dInfo.Name.ToLower = s Then Return False
             Next
-            For Each s As String In AdvancedSettings.GetSetting("NotValidDirContains", "-trailer|[trailer|temporary files|(noscan)|$recycle.bin|lost+found|system volume information|sample").Split(New String() {"|"}, StringSplitOptions.RemoveEmptyEntries)
+            For Each s As String In clsAdvancedSettings.GetSetting("NotValidDirContains", "-trailer|[trailer|temporary files|(noscan)|$recycle.bin|lost+found|system volume information|sample").Split(New String() {"|"}, StringSplitOptions.RemoveEmptyEntries)
                 If dInfo.Name.ToLower.Contains(s) Then Return False
             Next
 
@@ -941,8 +941,8 @@ Public Class Scanner
                 Dim fSource As String = APIXML.GetFileSource(mContainer.Filename)
                 If Not String.IsNullOrEmpty(fSource) Then
                     tmpMovieDB.FileSource = fSource
-                ElseIf String.IsNullOrEmpty(tmpMovieDB.FileSource) AndAlso AdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
-                    tmpMovieDB.FileSource = AdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(tmpMovieDB.Filename)), String.Empty, "*EmberAPP")
+                ElseIf String.IsNullOrEmpty(tmpMovieDB.FileSource) AndAlso clsAdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
+                    tmpMovieDB.FileSource = clsAdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(tmpMovieDB.Filename)), String.Empty, "*EmberAPP")
                 End If
                 If String.IsNullOrEmpty(tmpMovieDB.FileSource) AndAlso Not String.IsNullOrEmpty(tmpMovieDB.Movie.VideoSource) Then
                     tmpMovieDB.FileSource = tmpMovieDB.Movie.VideoSource
@@ -1470,7 +1470,7 @@ Public Class Scanner
                     tmpTVDB.Source = TVContainer.Source
                     tmpTVDB.Ordering = Master.eSettings.TVScraperOptionsOrdering
                     'get the install wizard selected language for initial scan
-                    Dim ShowLang As String = AdvancedSettings.GetSetting("TVDBLanguage", String.Empty, "scraper.TVDB")
+                    Dim ShowLang As String = clsAdvancedSettings.GetSetting("TVDBLanguage", String.Empty, "scraper.TVDB")
                     If Not String.IsNullOrEmpty(ShowLang) Then
                         tmpTVDB.ShowLanguage = ShowLang
                     ElseIf Not String.IsNullOrEmpty(Master.eSettings.TVGeneralLanguage) Then

@@ -129,11 +129,11 @@ Public Class IMDB_trailer
     End Function
 
     Sub LoadSettings()
-        ConfigScrapeModifier.Trailer = AdvancedSettings.GetBooleanSetting("DoTrailer", True)
+        ConfigScrapeModifier.Trailer = clsAdvancedSettings.GetBooleanSetting("DoTrailer", True)
     End Sub
 
     Sub SaveSettings()
-        Using settings = New AdvancedSettings()
+        Using settings = New clsAdvancedSettings()
             settings.SetBooleanSetting("DoTrailer", ConfigScrapeModifier.Trailer)
         End Using
     End Sub

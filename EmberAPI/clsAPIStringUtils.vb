@@ -57,7 +57,7 @@ Public Class StringUtils
                 If Not String.IsNullOrEmpty(Master.eSettings.GenreFilter) Then
                     'Dim fGenres() As String = APIXML.GetGenreListString     'List of Ember's configured Genres
                     'convert EMBER Genres to comparable strings, by removing underscores, dashes, and spaces
-                    _internalGenreList = GenerateNeutralList(APIXML.GetGenreListString)
+                    _internalGenreList = GenerateNeutralList(APIXML.GetGenreList)
                 End If
             End If
             Return _internalGenreList
@@ -186,9 +186,9 @@ Public Class StringUtils
     ''' </remarks>
     Public Shared Function CleanStackingMarkers(ByVal sPath As String, Optional ByVal Asterisk As Boolean = False) As String
         'Don't do anything if DisableMultiPartMedia is True
-        If AdvancedSettings.GetBooleanSetting("DisableMultiPartMedia", False) Then Return sPath
+        If clsAdvancedSettings.GetBooleanSetting("DisableMultiPartMedia", False) Then Return sPath
         If String.IsNullOrEmpty(sPath) Then Return String.Empty
-        Dim pattern As String = AdvancedSettings.GetSetting("DeleteStackMarkers", "[\s_\-\.]+\(?(cd|dvd|p(?:ar)?t|dis[ck])+[_\-\.]?[0-9]+\)?")
+        Dim pattern As String = clsAdvancedSettings.GetSetting("DeleteStackMarkers", "[\s_\-\.]+\(?(cd|dvd|p(?:ar)?t|dis[ck])+[_\-\.]?[0-9]+\)?")
         Dim replacement = If(Asterisk, "*", " ")
         Dim sReturn As String = Regex.Replace(sPath, pattern, replacement, RegexOptions.IgnoreCase)
         If Not sReturn.Trim = sPath.Trim Then
@@ -447,7 +447,7 @@ Public Class StringUtils
 
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return TVEpName.Trim
     End Function
@@ -576,8 +576,8 @@ Public Class StringUtils
     ''' </remarks>
     Public Shared Function IsStacked(ByVal sName As String, Optional ByVal VTS As Boolean = False) As Boolean
         If String.IsNullOrEmpty(sName) Then Return False
-        If AdvancedSettings.GetBooleanSetting("DisableMultiPartMedia", False) Then Return False
-        Dim sCheckStackMarkers As String = AdvancedSettings.GetSetting("CheckStackMarkers", "[\s_\-\.]+\(?(cd|dvd|p(?:ar)?t|dis[ck])+[_\-\.]?[0-9]+\)?")
+        If clsAdvancedSettings.GetBooleanSetting("DisableMultiPartMedia", False) Then Return False
+        Dim sCheckStackMarkers As String = clsAdvancedSettings.GetSetting("CheckStackMarkers", "[\s_\-\.]+\(?(cd|dvd|p(?:ar)?t|dis[ck])+[_\-\.]?[0-9]+\)?")
         Try
             Dim bReturn As Boolean = Regex.IsMatch(sName, sCheckStackMarkers, RegexOptions.IgnoreCase)
             If VTS And Not bReturn Then
@@ -657,7 +657,7 @@ Public Class StringUtils
 
         Try
             sReturn = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(sString)
-            Dim toUpper As String = AdvancedSettings.GetSetting("ToProperCase", "\b(hd|cd|dvd|bc|b\.c\.|ad|a\.d\.|sw|nw|se|sw|ii|iii|iv|vi|vii|viii|ix|x)\b")
+            Dim toUpper As String = clsAdvancedSettings.GetSetting("ToProperCase", "\b(hd|cd|dvd|bc|b\.c\.|ad|a\.d\.|sw|nw|se|sw|ii|iii|iv|vi|vii|viii|ix|x)\b")
 
             Dim mcUp As MatchCollection = Regex.Matches(sReturn, toUpper, RegexOptions.IgnoreCase)
             For Each M As Match In mcUp

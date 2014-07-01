@@ -168,7 +168,7 @@ Public Class dlgExportMovies
 
                 'cocotus, 2013/02 Export HTML expanded: configurable resizable images
                 '++++++POSTER++++++++
-                strPosterSize = AdvancedSettings.GetSetting("ExportPosterHeight", "300")
+                strPosterSize = clsAdvancedSettings.GetSetting("ExportPosterHeight", "300")
 
                 'now consider the user selection
                 If strPosterSize <> "" Then
@@ -200,7 +200,7 @@ Public Class dlgExportMovies
                 Me.bexportFanart = True
                 'cocotus, 2013/02 Export HTML expanded: configurable resizable images
                 '++++++Fanart++++++++
-                strFanartSize = AdvancedSettings.GetSetting("ExportFanartWidth", "800")
+                strFanartSize = clsAdvancedSettings.GetSetting("ExportFanartWidth", "800")
 
                 'now consider the user selection
                 If strFanartSize <> "" Then
@@ -421,7 +421,7 @@ Public Class dlgExportMovies
                 If doNavigate Then LoadHTML()
             End If
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -441,7 +441,7 @@ Public Class dlgExportMovies
             End If
             Return ReturnString
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
             Return ReturnString
         End Try
 
@@ -481,7 +481,7 @@ Public Class dlgExportMovies
             End If
             Return ReturnString
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
             Return ""
         End Try
     End Function
@@ -520,7 +520,7 @@ Public Class dlgExportMovies
             End If
             Return ReturnString
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
             Return ""
         End Try
     End Function
@@ -547,7 +547,7 @@ Public Class dlgExportMovies
             End Using
             Return ReturnString
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
             Return ReturnString
         End Try
 
@@ -588,7 +588,7 @@ Public Class dlgExportMovies
                             Dim imgresized As Image = ImageUtils.ResizeImage(img, PosterSize)
                             img.Dispose()
                             '2. Step: Now use jpeg compression to make file even smaller...
-                            ImageUtils.JPEGCompression(imgresized, posterfile, CInt(AdvancedSettings.GetSetting("ExportImageQuality", "70")))
+                            ImageUtils.JPEGCompression(imgresized, posterfile, CInt(clsAdvancedSettings.GetSetting("ExportImageQuality", "70")))
                             imgresized.Dispose()
 
                         Catch ex As Exception
@@ -604,7 +604,7 @@ Public Class dlgExportMovies
             Catch
             End Try
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -647,7 +647,7 @@ Public Class dlgExportMovies
                 End Using
             End Using
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -708,7 +708,7 @@ Public Class dlgExportMovies
                 If Me.bexportFanart Then
                     Me.ExportFanart(destPathShort)
                 End If
-                If AdvancedSettings.GetBooleanSetting("ExportTVShows", False) = True Then
+                If clsAdvancedSettings.GetBooleanSetting("ExportTVShows", False) = True Then
                     Try
                         AllTVShowList = GetAllTVShows()
                     Catch ex As Exception
@@ -731,7 +731,7 @@ Public Class dlgExportMovies
                 myStream.Close()
             End If
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -855,7 +855,7 @@ Public Class dlgExportMovies
                                 Dim imgresized As Image = ImageUtils.ResizeImage(img, FanartSize)
                                 img.Dispose()
                                 '2. Step: Now use jpeg compression to make file even smaller...
-                                ImageUtils.JPEGCompression(imgresized, fanartfile, CInt(AdvancedSettings.GetSetting("ExportImageQuality", "70")))
+                                ImageUtils.JPEGCompression(imgresized, fanartfile, CInt(clsAdvancedSettings.GetSetting("ExportImageQuality", "70")))
                                 imgresized.Dispose()
 
                             Catch ex As Exception
@@ -876,7 +876,7 @@ Public Class dlgExportMovies
                 End If
             Next
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -915,7 +915,7 @@ Public Class dlgExportMovies
                                 Dim imgresized As Image = ImageUtils.ResizeImage(img, PosterSize)
                                 img.Dispose()
                                 '2. Step: Now use jpeg compression to make file even smaller...
-                                ImageUtils.JPEGCompression(imgresized, posterfile, CInt(AdvancedSettings.GetSetting("ExportImageQuality", "70")))
+                                ImageUtils.JPEGCompression(imgresized, posterfile, CInt(clsAdvancedSettings.GetSetting("ExportImageQuality", "70")))
                                 imgresized.Dispose()
 
                             Catch ex As Exception
@@ -936,7 +936,7 @@ Public Class dlgExportMovies
 
             Next
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -999,7 +999,7 @@ Public Class dlgExportMovies
                 End If
 
             Catch ex As Exception
-                Logger.Error(New StackFrame().GetMethod().Name,ex)
+                Logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         End If
         Return line
@@ -1103,13 +1103,13 @@ Public Class dlgExportMovies
         '    End If
         'End If
         'new simply copy from temp to user defined directory
-        If IO.Directory.Exists(AdvancedSettings.GetSetting("ExportPath", "")) Then
-            CopyDirectory(TempPath, AdvancedSettings.GetSetting("ExportPath", ""), True)
+        If IO.Directory.Exists(clsAdvancedSettings.GetSetting("ExportPath", "")) Then
+            CopyDirectory(TempPath, clsAdvancedSettings.GetSetting("ExportPath", ""), True)
             Save_Button.Enabled = False
-            MessageBox.Show((Master.eLang.GetString(1003, "Template saved to:") & AdvancedSettings.GetSetting("ExportPath", "")), Master.eLang.GetString(361, "Finished!"), MessageBoxButtons.OK)
+            MessageBox.Show((Master.eLang.GetString(1003, "Template saved to:") & clsAdvancedSettings.GetSetting("ExportPath", "")), Master.eLang.GetString(361, "Finished!"), MessageBoxButtons.OK)
         Else
             Save_Button.Enabled = False
-            MessageBox.Show((Master.eLang.GetString(221, "Export Path is not valid:") & AdvancedSettings.GetSetting("ExportPath", "")), Master.eLang.GetString(816, "An Error Has Occurred"), MessageBoxButtons.OK)
+            MessageBox.Show((Master.eLang.GetString(221, "Export Path is not valid:") & clsAdvancedSettings.GetSetting("ExportPath", "")), Master.eLang.GetString(816, "An Error Has Occurred"), MessageBoxButtons.OK)
         End If
     End Sub
 
@@ -1155,11 +1155,11 @@ Public Class dlgExportMovies
 
     Private Sub btn_BuildHTML_Click(sender As Object, e As EventArgs) Handles btn_BuildHTML.Click
         If cbo_SelectedFilter.Text = "Filter 1" Then
-            strFilter = AdvancedSettings.GetSetting("ExportFilter1", "")
+            strFilter = clsAdvancedSettings.GetSetting("ExportFilter1", "")
         ElseIf cbo_SelectedFilter.Text = "Filter 2" Then
-            strFilter = AdvancedSettings.GetSetting("ExportFilter2", "")
+            strFilter = clsAdvancedSettings.GetSetting("ExportFilter2", "")
         ElseIf cbo_SelectedFilter.Text = "Filter 3" Then
-            strFilter = AdvancedSettings.GetSetting("ExportFilter3", "")
+            strFilter = clsAdvancedSettings.GetSetting("ExportFilter3", "")
         Else
             strFilter = ""
         End If

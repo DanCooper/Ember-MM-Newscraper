@@ -95,8 +95,8 @@ Public Class genericMediaBrowser
         Me.fMediaBrowser = New frmMediaBrowser
         Me.fMediaBrowser.chkEnabled.Checked = Me._enabled
         'Me.fMediaBrowser.chkVideoTSParent.Checked = Master.eSettings.VideoTSParent
-        Me.fMediaBrowser.chkMyMovies.Checked = AdvancedSettings.GetBooleanSetting("MediaBrowserMyMovie", False)
-        Me.fMediaBrowser.chkBackdrop.Checked = AdvancedSettings.GetBooleanSetting("MediaBrowserBackdrop", False)
+        Me.fMediaBrowser.chkMyMovies.Checked = clsAdvancedSettings.GetBooleanSetting("MediaBrowserMyMovie", False)
+        Me.fMediaBrowser.chkBackdrop.Checked = clsAdvancedSettings.GetBooleanSetting("MediaBrowserBackdrop", False)
         SPanel.Name = _name
         SPanel.Text = Master.eLang.GetString(599, "MediaBrowser Compatibility")
         SPanel.Prefix = "MediaBrowser_"
@@ -122,7 +122,7 @@ Public Class genericMediaBrowser
     Public Sub SaveSetup(ByVal DoDispose As Boolean) Implements EmberAPI.Interfaces.EmberExternalModule.SaveSetup
         Me.Enabled = Me.fMediaBrowser.chkEnabled.Checked
         'Master.eSettings.VideoTSParent = Me.fMediaBrowser.chkVideoTSParent.Checked
-        Using settings = New AdvancedSettings()
+        Using settings = New clsAdvancedSettings()
             settings.SetBooleanSetting("MediaBrowserMyMovie", Me.fMediaBrowser.chkMyMovies.Checked)
             settings.SetBooleanSetting("MediaBrowserBackdrop", Me.fMediaBrowser.chkBackdrop.Checked)
         End Using
@@ -136,14 +136,14 @@ Public Class genericMediaBrowser
             Try
                 Select Case mType
                     Case Enums.ModuleEventType.OnMovieNFOSave
-                        If AdvancedSettings.GetBooleanSetting("MediaBrowserMyMovie", False) Then
+                        If clsAdvancedSettings.GetBooleanSetting("MediaBrowserMyMovie", False) Then
                             mMovie = DirectCast(_params(0), Structures.DBMovie)
                             doContinue = DirectCast(_refparam, Boolean)
                             XMLmymovies.SaveMovieDB(mMovie)
                             _refparam = doContinue
                         End If
                     Case Enums.ModuleEventType.OnMovieFanartSave
-                        If AdvancedSettings.GetBooleanSetting("MediaBrowserBackdrop", False) Then
+                        If clsAdvancedSettings.GetBooleanSetting("MediaBrowserBackdrop", False) Then
                             mMovie = DirectCast(_params(0), Structures.DBMovie)
                             _image = DirectCast(_refparam, Images)
                             Dim fPath As String = Path.Combine(Path.GetDirectoryName(mMovie.Filename), "backdrop.jpg")
@@ -154,7 +154,7 @@ Public Class genericMediaBrowser
                 End Select
 
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name,ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         End If
     End Function

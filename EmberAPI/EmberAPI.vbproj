@@ -190,6 +190,13 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="XML Serialization\clsXMLAdvancedSettings.vb" />
+    <Compile Include="XML Serialization\clsXMLGenres.vb" />
+    <Compile Include="XML Serialization\clsXMLLanguage.vb" />
+    <Compile Include="XML Serialization\clsXMLLanguageHelp.vb" />
+    <Compile Include="XML Serialization\clsXMLLanguages.vb" />
+    <Compile Include="XML Serialization\clsXMLRatings.vb" />
+    <Compile Include="XML Serialization\clsXMLSettings.vb" />
+    <Compile Include="XML Serialization\clsXMLTVDBLanguages.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="dlgCompatibility.resx">
@@ -201,9 +208,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -247,6 +254,30 @@
   <ItemGroup>
     <Content Include="NLog Notes.txt" />
     <Content Include="NLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Settings\DefaultSettings.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Settings\DefaultAdvancedSettings - MovieSources.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Settings\DefaultAdvancedSettings - VideoFormatConvert.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Settings\DefaultAdvancedSettings - AudioFormatConvert.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Settings\DefaultAdvancedSettings.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Settings\DefaultGenres.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Settings\DefaultRatings.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Settings\TVDBLanguages.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="NLog.xsd">

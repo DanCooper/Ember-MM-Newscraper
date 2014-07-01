@@ -227,12 +227,12 @@ Public Class BulkRenamerModule
     End Function
 
     Sub LoadSettings()
-        MySettings.FoldersPattern = AdvancedSettings.GetSetting("FoldersPattern", "$T {($Y)}")
-        MySettings.FilesPattern = AdvancedSettings.GetSetting("FilesPattern", "$T{.$S}")
-        MySettings.AutoRenameMulti = AdvancedSettings.GetBooleanSetting("AutoRenameMulti", False)
-        MySettings.AutoRenameSingle = AdvancedSettings.GetBooleanSetting("AutoRenameSingle", False)
-        MySettings.BulkRenamer = AdvancedSettings.GetBooleanSetting("BulkRenamer", True)
-        MySettings.GenericModule = AdvancedSettings.GetBooleanSetting("GenericModule", True)
+        MySettings.FoldersPattern = clsAdvancedSettings.GetSetting("FoldersPattern", "$T {($Y)}")
+        MySettings.FilesPattern = clsAdvancedSettings.GetSetting("FilesPattern", "$T{.$S}")
+        MySettings.AutoRenameMulti = clsAdvancedSettings.GetBooleanSetting("AutoRenameMulti", False)
+        MySettings.AutoRenameSingle = clsAdvancedSettings.GetBooleanSetting("AutoRenameSingle", False)
+        MySettings.BulkRenamer = clsAdvancedSettings.GetBooleanSetting("BulkRenamer", True)
+        MySettings.GenericModule = clsAdvancedSettings.GetBooleanSetting("GenericModule", True)
     End Sub
 
     Private Sub MyMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyMenu.Click, MyTrayMenu.Click
@@ -272,7 +272,7 @@ Public Class BulkRenamerModule
     End Sub
 
     Sub SaveSettings()
-        Using settings = New AdvancedSettings()
+        Using settings = New clsAdvancedSettings()
             settings.SetSetting("FoldersPattern", MySettings.FoldersPattern)
             settings.SetSetting("FilesPattern", MySettings.FilesPattern)
             settings.SetBooleanSetting("AutoRenameMulti", MySettings.AutoRenameMulti)

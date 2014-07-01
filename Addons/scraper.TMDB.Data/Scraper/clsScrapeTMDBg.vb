@@ -102,10 +102,10 @@ Namespace TMDBg
 #Region "Methods"
 
         Public Sub New(ByRef tTMDBConf As V3.TmdbConfiguration, ByRef tTMDBConfE As V3.TmdbConfiguration, ByRef tTMDBApi As V3.Tmdb, ByRef tTMDBApiE As V3.Tmdb, ByRef tTMDBApiA As V3.Tmdb)
-            _MySettings.TMDBAPIKey = AdvancedSettings.GetSetting("TMDBAPIKey", "Get your API Key from http://www.themoviedb.org")
-            _MySettings.FallBackEng = AdvancedSettings.GetBooleanSetting("FallBackEn", False)
-            _MySettings.TMDBLanguage = AdvancedSettings.GetSetting("TMDBLanguage", "en")
-            _MySettings.GetAdultItems = AdvancedSettings.GetBooleanSetting("GetAdultItems", False)
+            _MySettings.TMDBAPIKey = clsAdvancedSettings.GetSetting("TMDBAPIKey", "Get your API Key from http://www.themoviedb.org")
+            _MySettings.FallBackEng = clsAdvancedSettings.GetBooleanSetting("FallBackEn", False)
+            _MySettings.TMDBLanguage = clsAdvancedSettings.GetSetting("TMDBLanguage", "en")
+            _MySettings.GetAdultItems = clsAdvancedSettings.GetBooleanSetting("GetAdultItems", False)
 
             _TMDBApi = tTMDBApi
             _TMDBConf = tTMDBConf

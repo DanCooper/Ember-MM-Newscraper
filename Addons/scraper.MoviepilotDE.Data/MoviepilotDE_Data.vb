@@ -124,14 +124,14 @@ Public Class MoviepilotDE_Data
 
     Sub LoadSettings()
         ' Only the ones we can get
-        ConfigOptions.bOutline = AdvancedSettings.GetBooleanSetting("DoOutline", False)
-        ConfigOptions.bPlot = AdvancedSettings.GetBooleanSetting("DoPlot", False)
-        ConfigOptions.bCert = AdvancedSettings.GetBooleanSetting("DoCert", False)
-        ConfigOptions.bCleanPlotOutline = AdvancedSettings.GetBooleanSetting("CleanPlotOutline", True)
+        ConfigOptions.bOutline = clsAdvancedSettings.GetBooleanSetting("DoOutline", False)
+        ConfigOptions.bPlot = clsAdvancedSettings.GetBooleanSetting("DoPlot", False)
+        ConfigOptions.bCert = clsAdvancedSettings.GetBooleanSetting("DoCert", False)
+        ConfigOptions.bCleanPlotOutline = clsAdvancedSettings.GetBooleanSetting("CleanPlotOutline", True)
     End Sub
 
     Sub SaveSettings()
-        Using settings = New AdvancedSettings()
+        Using settings = New clsAdvancedSettings()
             settings.SetBooleanSetting("DoOutline", ConfigOptions.bOutline)
             settings.SetBooleanSetting("DoPlot", ConfigOptions.bPlot)
             settings.SetBooleanSetting("DoCert", ConfigOptions.bCert)

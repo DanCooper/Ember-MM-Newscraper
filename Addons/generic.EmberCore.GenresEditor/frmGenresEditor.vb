@@ -30,15 +30,20 @@ Public Class frmGenresEditor
     End Sub
 
     Public Sub SaveChanges()
-
+        Dim aPath As String
         'Cocotus All XML Config files in new Setting-folder!
         If Directory.Exists(String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar)) Then
-            xmlGenres.Save(String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar, "Genres.xml"))
-            APIXML.GenreXML = XDocument.Load(String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar, "Genres.xml"))
+            aPath = String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar, "Genres.xml")
         Else
-            xmlGenres.Save(Path.Combine(Functions.AppPath, String.Format("Images{0}Genres{0}Genres.xml", Path.DirectorySeparatorChar)))
-            APIXML.GenreXML = XDocument.Load(Path.Combine(Functions.AppPath, String.Format("Images{0}Genres{0}Genres.xml", Path.DirectorySeparatorChar)))
+            aPath = (Path.Combine(Functions.AppPath, String.Format("Images{0}Genres{0}Genres.xml", Path.DirectorySeparatorChar)))
         End If
+        xmlGenres.Save(aPath)
+        Dim objStreamReader As New StreamReader(aPath)
+        Dim xGenres As New XmlSerializer(APIXML.GenreXML.GetType)
+
+        APIXML.GenreXML = CType(xGenres.Deserialize(objStreamReader), clsXMLGenres)
+        objStreamReader.Close()
+
         'old
         '  xmlGenres.Save(Path.Combine(Functions.AppPath, String.Format("Images{0}Genres{0}Genres.xml", Path.DirectorySeparatorChar)))
         ' APIXML.GenreXML = XDocument.Load(Path.Combine(Functions.AppPath, String.Format("Images{0}Genres{0}Genres.xml", Path.DirectorySeparatorChar)))

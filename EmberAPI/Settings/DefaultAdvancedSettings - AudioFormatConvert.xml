@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<AdvancedSettings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Setting Section="*EmberAPP" Name="AudioFormatConvert:ac-3">ac3</Setting>
+  <Setting Section="*EmberAPP" Name="AudioFormatConvert:a_ac3">ac3</Setting>
+  <Setting Section="*EmberAPP" Name="AudioFormatConvert:a_aac">aac</Setting>
+  <Setting Section="*EmberAPP" Name="AudioFormatConvert:wma2">wmav2</Setting>
+  <Setting Section="*EmberAPP" Name="AudioFormatConvert:a_dts">dca</Setting>
+  <Setting Section="*EmberAPP" Name="AudioFormatConvert:dts">dca</Setting>
+  <Setting Section="*EmberAPP" Name="AudioFormatConvert:a_truehd">truehd</Setting>
+
+</AdvancedSettings>

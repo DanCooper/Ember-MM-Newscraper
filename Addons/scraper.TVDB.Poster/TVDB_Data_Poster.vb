@@ -147,10 +147,10 @@ Public Class TVDB_Data_Poster
 
     Public Sub Init(ByVal sAssemblyName As String) Implements Interfaces.EmberTVScraperModule.Init
         _AssemblyName = sAssemblyName
-        strPrivateAPIKey = AdvancedSettings.GetSetting("TVDBAPIKey", "")
+        strPrivateAPIKey = clsAdvancedSettings.GetSetting("TVDBAPIKey", "")
         _APIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "353783CE455412FD", strPrivateAPIKey)
-        _Lang = AdvancedSettings.GetSetting("TVDBLanguage", If(Not String.IsNullOrEmpty(Master.eSettings.TVGeneralLanguage), Master.eSettings.TVGeneralLanguage, "en"))
-        _TVDBMirror = AdvancedSettings.GetSetting("TVDBMirror", "thetvdb.com")
+        _Lang = clsAdvancedSettings.GetSetting("TVDBLanguage", If(Not String.IsNullOrEmpty(Master.eSettings.TVGeneralLanguage), Master.eSettings.TVGeneralLanguage, "en"))
+        _TVDBMirror = clsAdvancedSettings.GetSetting("TVDBMirror", "thetvdb.com")
         TVScraper = New Scraper(_APIKey)
 
         LoadSettings()
@@ -164,8 +164,8 @@ Public Class TVDB_Data_Poster
         _setupPost.txtTVDBApiKey.Text = strPrivateAPIKey
         _setupPost.cbEnabled.Checked = _PostScraperEnabled
 
-        _setupPost.chkOnlyTVImagesLanguage.Checked = CBool(AdvancedSettings.GetSetting("OnlyGetTVImagesForSelectedLanguage", "True"))
-        _setupPost.chkGetEnglishImages.Checked = CBool(AdvancedSettings.GetSetting("AlwaysGetEnglishTVImages", "True"))
+        _setupPost.chkOnlyTVImagesLanguage.Checked = CBool(clsAdvancedSettings.GetSetting("OnlyGetTVImagesForSelectedLanguage", "True"))
+        _setupPost.chkGetEnglishImages.Checked = CBool(clsAdvancedSettings.GetSetting("AlwaysGetEnglishTVImages", "True"))
         If _setupPost.cbTVScraperLanguage.Items.Count > 0 Then
             _setupPost.cbTVScraperLanguage.Text = Master.eSettings.TVGeneralLanguages.FirstOrDefault(Function(l) l.ShortLang = _Lang).LongLang
         End If
@@ -263,25 +263,25 @@ Public Class TVDB_Data_Poster
     End Sub
 
     Sub LoadSettings()
-        ConfigOptions.bEpActors = AdvancedSettings.GetBooleanSetting("ScraperEpActors", True)
-        ConfigOptions.bEpAired = AdvancedSettings.GetBooleanSetting("ScraperEpAired", True)
-        ConfigOptions.bEpCredits = AdvancedSettings.GetBooleanSetting("ScraperEpCredits", True)
-        ConfigOptions.bEpDirector = AdvancedSettings.GetBooleanSetting("ScraperEpDirector", True)
-        ConfigOptions.bEpEpisode = AdvancedSettings.GetBooleanSetting("ScraperEpEpisode", True)
-        ConfigOptions.bEpPlot = AdvancedSettings.GetBooleanSetting("ScraperEpPlot", True)
-        ConfigOptions.bEpRating = AdvancedSettings.GetBooleanSetting("ScraperEpRating", True)
-        ConfigOptions.bEpSeason = AdvancedSettings.GetBooleanSetting("ScraperEpSeason", True)
-        ConfigOptions.bEpTitle = AdvancedSettings.GetBooleanSetting("ScraperEpTitle", True)
-        ConfigOptions.bShowActors = AdvancedSettings.GetBooleanSetting("ScraperShowActors", True)
-        ConfigOptions.bShowEpisodeGuide = AdvancedSettings.GetBooleanSetting("ScraperShowEGU", False)
-        ConfigOptions.bShowGenre = AdvancedSettings.GetBooleanSetting("ScraperShowGenre", True)
-        ConfigOptions.bShowMPAA = AdvancedSettings.GetBooleanSetting("ScraperShowMPAA", True)
-        ConfigOptions.bShowPlot = AdvancedSettings.GetBooleanSetting("ScraperShowPlot", True)
-        ConfigOptions.bShowPremiered = AdvancedSettings.GetBooleanSetting("ScraperShowPremiered", True)
-        ConfigOptions.bShowRating = AdvancedSettings.GetBooleanSetting("ScraperShowRating", True)
-        ConfigOptions.bShowStatus = AdvancedSettings.GetBooleanSetting("ScraperShowStatus", True)
-        ConfigOptions.bShowStudio = AdvancedSettings.GetBooleanSetting("ScraperShowStudio", True)
-        ConfigOptions.bShowTitle = AdvancedSettings.GetBooleanSetting("ScraperShowTitle", True)
+        ConfigOptions.bEpActors = clsAdvancedSettings.GetBooleanSetting("ScraperEpActors", True)
+        ConfigOptions.bEpAired = clsAdvancedSettings.GetBooleanSetting("ScraperEpAired", True)
+        ConfigOptions.bEpCredits = clsAdvancedSettings.GetBooleanSetting("ScraperEpCredits", True)
+        ConfigOptions.bEpDirector = clsAdvancedSettings.GetBooleanSetting("ScraperEpDirector", True)
+        ConfigOptions.bEpEpisode = clsAdvancedSettings.GetBooleanSetting("ScraperEpEpisode", True)
+        ConfigOptions.bEpPlot = clsAdvancedSettings.GetBooleanSetting("ScraperEpPlot", True)
+        ConfigOptions.bEpRating = clsAdvancedSettings.GetBooleanSetting("ScraperEpRating", True)
+        ConfigOptions.bEpSeason = clsAdvancedSettings.GetBooleanSetting("ScraperEpSeason", True)
+        ConfigOptions.bEpTitle = clsAdvancedSettings.GetBooleanSetting("ScraperEpTitle", True)
+        ConfigOptions.bShowActors = clsAdvancedSettings.GetBooleanSetting("ScraperShowActors", True)
+        ConfigOptions.bShowEpisodeGuide = clsAdvancedSettings.GetBooleanSetting("ScraperShowEGU", False)
+        ConfigOptions.bShowGenre = clsAdvancedSettings.GetBooleanSetting("ScraperShowGenre", True)
+        ConfigOptions.bShowMPAA = clsAdvancedSettings.GetBooleanSetting("ScraperShowMPAA", True)
+        ConfigOptions.bShowPlot = clsAdvancedSettings.GetBooleanSetting("ScraperShowPlot", True)
+        ConfigOptions.bShowPremiered = clsAdvancedSettings.GetBooleanSetting("ScraperShowPremiered", True)
+        ConfigOptions.bShowRating = clsAdvancedSettings.GetBooleanSetting("ScraperShowRating", True)
+        ConfigOptions.bShowStatus = clsAdvancedSettings.GetBooleanSetting("ScraperShowStatus", True)
+        ConfigOptions.bShowStudio = clsAdvancedSettings.GetBooleanSetting("ScraperShowStudio", True)
+        ConfigOptions.bShowTitle = clsAdvancedSettings.GetBooleanSetting("ScraperShowTitle", True)
     End Sub
     Public Function PostScraper(ByRef DBTV As Structures.DBTV, ByVal ScrapeType As Enums.ScrapeType) As Interfaces.ModuleResult Implements Interfaces.EmberTVScraperModule.PostScraper
     End Function
@@ -292,7 +292,7 @@ Public Class TVDB_Data_Poster
     End Function
 
     Public Sub SaveSetupPostScraper(ByVal DoDispose As Boolean) Implements Interfaces.EmberTVScraperModule.SaveSetupPostScraper
-        Using settings = New AdvancedSettings()
+        Using settings = New clsAdvancedSettings()
             settings.SetSetting("TVDBAPIKey", strPrivateAPIKey)
             settings.SetSetting("OnlyGetTVImagesForSelectedLanguage", CStr(_setupPost.chkOnlyTVImagesLanguage.Checked))
             settings.SetSetting("AlwaysGetEnglishTVImages", CStr(_setupPost.chkGetEnglishImages.Checked))
@@ -320,7 +320,7 @@ Public Class TVDB_Data_Poster
     End Sub
 
     Public Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.EmberTVScraperModule.SaveSetupScraper
-        Using settings = New AdvancedSettings()
+        Using settings = New clsAdvancedSettings()
             settings.SetSetting("TVDBAPIKey", strPrivateAPIKey)
             If Not String.IsNullOrEmpty(_Lang) Then
                 settings.SetSetting("TVDBLanguage", _Lang)
