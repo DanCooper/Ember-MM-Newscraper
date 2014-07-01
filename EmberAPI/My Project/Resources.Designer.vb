@@ -101,86 +101,12 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to CREATE TABLE IF NOT EXISTS Jobs
-        '''(
-        '''	ID INTEGER PRIMARY KEY AUTOINCREMENT,
-        '''	MediaType INTEGER NOT NULL,
-        '''	MediaID INTEGER NOT NULL,
-        '''	LastDateAdd TEXT
-        ''');
-        '''
-        '''CREATE TABLE IF NOT EXISTS JobsEntry
-        '''(
-        '''	ID INTEGER PRIMARY KEY AUTOINCREMENT,
-        '''	ItemType INTEGER NOT NULL,
-        '''	Message INTEGER NOT NULL,
-        '''	Details INTEGER NOT NULL,
-        '''	DateAdd TEXT
-        ''');.
-        '''</summary>
-        Friend ReadOnly Property JobsDatabaseSQL_v1() As String
-            Get
-                Return ResourceManager.GetString("JobsDatabaseSQL_v1", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to CREATE TABLE Sets(
-        '''	SetName TEXT NOT NULL PRIMARY KEY,
-        '''	HasNfo BOOL NOT NULL DEFAULT False,
-        '''	NfoPath TEXT,
-        '''	HasPoster BOOL NOT NULL DEFAULT False,
-        '''	PosterPath TEXT,
-        '''	HasFanart BOOL NOT NULL DEFAULT False,
-        '''	FanartPath TEXT,
-        '''	HasBanner BOOL NOT NULL DEFAULT False,
-        '''	BannerPath TEXT,
-        '''	HasLandscape BOOL NOT NULL DEFAULT False,
-        '''	LandscapePath TEXT,
-        '''	HasDiscArt BOOL NOT NULL DEFAULT False,
-        '''	DiscArtPath TEXT,
-        '''	HasClearLogo BOOL NOT NULL DEFAULT False,
-        '''	ClearLogoPath TEXT,
-        '''	HasClearArt BOOL NOT NULL  [rest of string was truncated]&quot;;.
-        '''</summary>
-        Friend ReadOnly Property MediaDatabaseSQL_v1() As String
-            Get
-                Return ResourceManager.GetString("MediaDatabaseSQL_v1", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
         Friend ReadOnly Property missing() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("missing", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to CREATE TABLE Sets(
-        '''	ID INTEGER PRIMARY KEY AUTOINCREMENT,
-        '''	SetName TEXT NOT NULL,
-        '''	HasNfo BOOL NOT NULL DEFAULT False,
-        '''	NfoPath TEXT,
-        '''	HasPoster BOOL NOT NULL DEFAULT False,
-        '''	PosterPath TEXT,
-        '''	HasFanart BOOL NOT NULL DEFAULT False,
-        '''	FanartPath TEXT,
-        '''	HasBanner BOOL NOT NULL DEFAULT False,
-        '''	BannerPath TEXT,
-        '''	HasLandscape BOOL NOT NULL DEFAULT False,
-        '''	LandscapePath TEXT,
-        '''	HasDiscArt BOOL NOT NULL DEFAULT False,
-        '''	DiscArtPath TEXT,
-        '''	HasClearLogo BOOL NOT NULL DEFAULT False,
-        '''	ClearLogoPath TEXT,        ''' [rest of string was truncated]&quot;;.
-        '''</summary>
-        Friend ReadOnly Property MyVideosDBSQL_v2() As String
-            Get
-                Return ResourceManager.GetString("MyVideosDBSQL_v2", resourceCulture)
             End Get
         End Property
         

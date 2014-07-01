@@ -44,10 +44,10 @@ Public Class ImageUtils
         Using nImage As New Bitmap(GrayScale(oImage).Image)
             'now overlay "missing" image
             Using grOverlay As Graphics = Graphics.FromImage(nImage)
-                Dim oWidth As Integer = If(nImage.Width >= My.Resources.missing.Width, My.Resources.missing.Width, nImage.Width)
-                Dim oheight As Integer = If(nImage.Height >= My.Resources.missing.Height, My.Resources.missing.Height, nImage.Height)
+                Dim oWidth As Integer = If(nImage.Width >= Global.EmberAPI.My.Resources.missing.Width, Global.EmberAPI.My.Resources.missing.Width, nImage.Width)
+                Dim oheight As Integer = If(nImage.Height >= Global.EmberAPI.My.Resources.missing.Height, Global.EmberAPI.My.Resources.missing.Height, nImage.Height)
                 grOverlay.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-                grOverlay.DrawImage(My.Resources.missing, 0, 0, oWidth, oheight)
+                grOverlay.DrawImage(Global.EmberAPI.My.Resources.missing, 0, 0, oWidth, oheight)
             End Using
             oImage.UpdateMSfromImg(nImage)
         End Using

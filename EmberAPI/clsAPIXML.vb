@@ -127,7 +127,7 @@ Public Class APIXML
                 objStreamReader.Close()
             Else
                 Dim rPathD As String = FileUtils.Common.ReturnSettingsFile("Settings", "DefaultRatings.xml")
-                objStreamReader = New StreamReader(rPath)
+                objStreamReader = New StreamReader(rPathD)
                 Dim xRatings As New XmlSerializer(RatingXML.GetType)
 
                 RatingXML = CType(xRatings.Deserialize(objStreamReader), clsXMLRatings)
@@ -161,7 +161,7 @@ Public Class APIXML
                     If Not IsNothing(vresFlag) Then
                         iReturn(0) = vresFlag.Image
                     Else
-                        iReturn(0) = My.Resources.defaultscreen
+                        iReturn(0) = Global.EmberAPI.My.Resources.defaultscreen
                     End If
                 End If
 
@@ -174,7 +174,7 @@ Public Class APIXML
                     If Not IsNothing(vsourceFlag) Then
                         iReturn(1) = vsourceFlag.Image
                     Else
-                        iReturn(1) = My.Resources.defaultscreen
+                        iReturn(1) = Global.EmberAPI.My.Resources.defaultscreen
                     End If
                 End If
 
@@ -186,7 +186,7 @@ Public Class APIXML
                     If Not IsNothing(vcodecFlag) Then
                         iReturn(2) = vcodecFlag.Image
                     Else
-                        iReturn(2) = My.Resources.defaultscreen
+                        iReturn(2) = Global.EmberAPI.My.Resources.defaultscreen
                     End If
                 End If
 
@@ -194,7 +194,7 @@ Public Class APIXML
                 If Not IsNothing(acodecFlag) Then
                     If tAudio.HasPreferred Then
                         Dim acodecFlagTemp As Image = acodecFlag.Image
-                        iReturn(3) = ImageUtils.SetOverlay(acodecFlagTemp, 64, 44, My.Resources.haslanguage, 4)
+                        iReturn(3) = ImageUtils.SetOverlay(acodecFlagTemp, 64, 44, Global.EmberAPI.My.Resources.haslanguage, 4)
                     Else
                         iReturn(3) = acodecFlag.Image
                     End If

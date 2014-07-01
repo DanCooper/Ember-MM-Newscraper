@@ -330,7 +330,8 @@ Public Class Database
 
         Try
             If isNew Then
-                Dim sqlCommand As String = My.Resources.MyVideosDBSQL_v2
+                Dim sqlCommand As String = File.ReadAllText(FileUtils.Common.ReturnSettingsFile("DB", "MyVideosDBSQL_v2.txt"))
+
                 Using transaction As SQLite.SQLiteTransaction = _myvideosDBConn.BeginTransaction()
                     Using command As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
                         command.CommandText = sqlCommand
@@ -356,7 +357,7 @@ Public Class Database
                         logger.Error(New StackFrame().GetMethod().Name & vbTab & "Unable to open media database connection.", ex)
                     End Try
 
-                    Dim sqlCommand As String = My.Resources.MyVideosDBSQL_v2
+                    Dim sqlCommand As String = File.ReadAllText(FileUtils.Common.ReturnSettingsFile("DB", "MyVideosDBSQL_v2.txt"))
                     Using transaction As SQLite.SQLiteTransaction = _myvideosDBConn.BeginTransaction()
                         Using command As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
                             command.CommandText = sqlCommand
@@ -384,7 +385,7 @@ Public Class Database
     ''' m.savazzi, code optimized, removed select * as is too time consuming and not correct, added the pragma to return table structure / added try catch
     ''' </remarks>
     Private Sub AddMissingColumnsToDatabase()
-        'TODO Check to see if column exists and then create if not
+        'TODO Check to see if column exists and then create if not - Useseless - should be used the PatchInstaller
         Using SQLpathcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
             Dim doAddColumns As Boolean = False
             Dim doAddColumnWatched As Boolean = False
