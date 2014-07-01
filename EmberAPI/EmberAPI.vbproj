@@ -283,7 +283,7 @@
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Resources\MyVideosDBSQL_v2.txt" />
+    <EmbeddedResource Include="Resources\MyVideosDBSQL_v2.txt" />
     <Content Include="x64\SQLite.Interop.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -291,17 +291,10 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="packages.config" />
-    <None Include="Resources\JobsDatabaseSQL_v1.txt" />
+    <EmbeddedResource Include="Resources\JobsDatabaseSQL_v1.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\MediaDatabaseSQL_v1.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\languages.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Genres.xml" />
-    <None Include="Resources\Ratings.xml" />
+    <EmbeddedResource Include="Resources\MediaDatabaseSQL_v1.txt" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
