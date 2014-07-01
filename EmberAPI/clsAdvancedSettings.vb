@@ -32,7 +32,7 @@ Public Class clsAdvancedSettings
 
 #Region "Fields"
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
-    Private Shared _AdvancedSettings As clsXMLAdvancedSettings
+    Private Shared _AdvancedSettings As New clsXMLAdvancedSettings
 
     Private Shared _DoNotSave As Boolean = False
 
@@ -313,7 +313,7 @@ Public Class clsAdvancedSettings
         If loadSingle AndAlso section.Length <> 0 Then
             aPath = FileUtils.Common.ReturnSettingsFile("Settings", "DefaultAdvancedSettings - " & section & ".xml")
             Dim objStreamReader As New StreamReader(aPath)
-            Dim aAdvancedSettings As New clsXMLAdvancedSettings()
+            Dim aAdvancedSettings As New clsXMLAdvancedSettings
             Dim xAdvancedSettings As New XmlSerializer(aAdvancedSettings.GetType)
 
             aAdvancedSettings = CType(xAdvancedSettings.Deserialize(objStreamReader), clsXMLAdvancedSettings)
@@ -324,12 +324,10 @@ Public Class clsAdvancedSettings
         If Not loadSingle Then
             aPath = FileUtils.Common.ReturnSettingsFile("Settings", "DefaultAdvancedSettings.xml")
             Dim objStreamReader As New StreamReader(aPath)
-            Dim aAdvancedSettings As New clsXMLAdvancedSettings()
-            Dim xAdvancedSettings As New XmlSerializer(aAdvancedSettings.GetType)
+            Dim xAdvancedSettings As New XmlSerializer(_AdvancedSettings.GetType)
 
-            aAdvancedSettings = CType(xAdvancedSettings.Deserialize(objStreamReader), clsXMLAdvancedSettings)
+            _AdvancedSettings = CType(xAdvancedSettings.Deserialize(objStreamReader), clsXMLAdvancedSettings)
             objStreamReader.Close()
-            _AdvancedSettings.Setting.AddRange(aAdvancedSettings.Setting)
         End If
     End Sub
 

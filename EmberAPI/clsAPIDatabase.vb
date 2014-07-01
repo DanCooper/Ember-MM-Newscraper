@@ -316,16 +316,8 @@ Public Class Database
             'Throw New InvalidOperationException("A database connection is already open, can't open another.")
         End If
 
-        'Cocotus Media.emm in new Setting-folder!
-        Dim configpath As String = String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar, MyVideosDB)
-        'still Media.emm is on old place (root) -> move to new place if no media.emm already exists there!
-        If File.Exists(String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar, MyVideosDB)) = False AndAlso File.Exists(Path.Combine(Functions.AppPath, MyVideosDB)) AndAlso Directory.Exists(String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar)) Then
-            File.Move(Path.Combine(Functions.AppPath, MyVideosDB), String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar, MyVideosDB))
-        ElseIf Directory.Exists(String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar)) = False Then
-            configpath = Path.Combine(Functions.AppPath, MyVideosDB)
-        End If
-        'old
-        ' Dim mediaDBFile As String = Path.Combine(Functions.AppPath, "Media.emm")
+        Dim configpath As String = FileUtils.Common.ReturnSettingsFile("Settings", MyVideosDB)
+
         Dim myvideosDBFile As String = configpath
         Dim isNew As Boolean = (Not File.Exists(myvideosDBFile))
 

@@ -26,6 +26,7 @@ Public Class BulkRenamerModule
 #Region "Delegates"
     Public Delegate Sub Delegate_SetToolsStripItem(value As System.Windows.Forms.ToolStripItem)
     Public Delegate Sub Delegate_RemoveToolsStripItem(value As System.Windows.Forms.ToolStripItem)
+    Public Delegate Sub Delegate_DropDownItemsAdd(value As System.Windows.Forms.ToolStripMenuItem, tsi As System.Windows.Forms.ToolStripMenuItem)
 #End Region 'Fields
 
 #Region "Fields"
@@ -164,7 +165,7 @@ Public Class BulkRenamerModule
         MyMenu.Text = Master.eLang.GetString(291, "Bulk &Renamer")
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("mnuMainTools"), ToolStripMenuItem)
         MyMenu.Tag = New Structures.ModulesMenus With {.IfNoMovies = True, .IfNoTVShow = True}
-        tsi.DropDownItems.Add(MyMenu)
+        DropDownItemsAdd(MyMenu, tsi)
         MyTrayMenu.Image = New Bitmap(My.Resources.icon)
         MyTrayMenu.Text = Master.eLang.GetString(291, "Bulk &Renamer")
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayTools"), ToolStripMenuItem)
@@ -182,6 +183,15 @@ Public Class BulkRenamerModule
 
         '_enabled = True
     End Sub
+
+    Public Sub DropDownItemsAdd(value As System.Windows.Forms.ToolStripMenuItem, tsi As System.Windows.Forms.ToolStripMenuItem)
+        If (ModulesManager.Instance.RuntimeObjects.MenuMediaList.InvokeRequired) Then
+            ModulesManager.Instance.RuntimeObjects.MenuMediaList.Invoke(New Delegate_DropDownItemsAdd(AddressOf DropDownItemsAdd), New Object() {value, tsi})
+            Exit Sub
+        End If
+        tsi.DropDownItems.Add(MyMenu)
+    End Sub
+
 
     Public Sub SetToolsStripItem(value As System.Windows.Forms.ToolStripItem)
         If (ModulesManager.Instance.RuntimeObjects.MenuMediaList.InvokeRequired) Then
