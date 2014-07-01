@@ -438,7 +438,7 @@ Public Class APIXML
             End Using
         End If
 
-        If IsNothing(imgStudio) Then imgStudio = My.Resources.defaultscreen
+        If IsNothing(imgStudio) Then imgStudio = Global.EmberAPI.My.Resources.defaultscreen
 
         Return imgStudio
     End Function
