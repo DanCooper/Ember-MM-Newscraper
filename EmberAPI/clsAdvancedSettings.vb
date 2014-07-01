@@ -304,12 +304,15 @@ Public Class clsAdvancedSettings
     End Function
 
     Public Sub SetDefaults(Optional ByVal loadSingle As Boolean = False, Optional ByVal section As String = "")
+        Dim aPath As String
         If _disposed Then
+            logger.Error(New StackFrame().GetMethod().Name, "AdvancedSettings.SetDefaults on disposed object")
             Throw New ObjectDisposedException("AdvancedSettings.SetDefaults on disposed object")
         End If
         _DoNotSave = True
-        If Not loadSingle OrElse Len(section) <> 0 Then
-            Dim objStreamReader As New StreamReader("DefaultAdvancedSettings - " & section & ".xml")
+        If loadSingle AndAlso section.Length <> 0 Then
+            aPath = FileUtils.Common.ReturnSettingsFile("Settings", "DefaultAdvancedSettings - " & section & ".xml")
+            Dim objStreamReader As New StreamReader(aPath)
             Dim aAdvancedSettings As New clsXMLAdvancedSettings()
             Dim xAdvancedSettings As New XmlSerializer(aAdvancedSettings.GetType)
 
@@ -319,7 +322,8 @@ Public Class clsAdvancedSettings
         End If
 
         If Not loadSingle Then
-            Dim objStreamReader As New StreamReader("DefaultAdvancedSettings.xml")
+            aPath = FileUtils.Common.ReturnSettingsFile("Settings", "DefaultAdvancedSettings.xml")
+            Dim objStreamReader As New StreamReader(aPath)
             Dim aAdvancedSettings As New clsXMLAdvancedSettings()
             Dim xAdvancedSettings As New XmlSerializer(aAdvancedSettings.GetType)
 

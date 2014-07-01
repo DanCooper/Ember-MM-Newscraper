@@ -60,7 +60,7 @@ Public Class Localization
     ''' </remarks>
     Public Sub New()
         Me.Clear()
-        Dim lPath As String = Path.Combine(Functions.AppPath, "Langs" & Path.DirectorySeparatorChar & "Languages.xml")
+        Dim lPath As String = FileUtils.Common.ReturnSettingsFile("Langs", "Languages.xml")
         If File.Exists(lPath) Then
             Dim objStreamReader As New StreamReader(lPath)
 

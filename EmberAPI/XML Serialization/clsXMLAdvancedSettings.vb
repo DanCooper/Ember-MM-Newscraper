@@ -3,9 +3,9 @@
  System.Xml.Serialization.XmlRootAttribute([Namespace]:="", IsNullable:=False, ElementName:="AdvancedSettings")> _
 Partial Public Class clsXMLAdvancedSettings
 
-    Private _settingField As List(Of AdvancedSettingsSetting)
+    Private _settingField As New List(Of AdvancedSettingsSetting)
 
-    Private _complexSettingsField As List(Of AdvancedSettingsComplexSettings)
+    Private _complexSettingsField As New List(Of AdvancedSettingsComplexSettings)
 
     '''<remarks/>
     <System.Xml.Serialization.XmlElementAttribute("Setting")> _

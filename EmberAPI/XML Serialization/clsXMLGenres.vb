@@ -4,9 +4,9 @@
  System.Xml.Serialization.XmlRootAttribute([Namespace]:="", IsNullable:=False, ElementName:="genres")> _
 Partial Public Class clsXMLGenres
 
-    Private _languages As List(Of String)
+    Private _languages As New List(Of String)
 
-    Private _nameField As List(Of genresName)
+    Private _nameField As New List(Of genresName)
 
     Private _defaultField As genresDefault
 

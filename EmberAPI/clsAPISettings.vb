@@ -4841,15 +4841,7 @@ Public Class Settings
         End Try
 
         Try
-            Dim configpath As String = String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar, "TVDBLanguages.xml")
-
-            'AdvancedSettings.xml is still at old place (root) -> move to new place if there's no AdvancedSettings.xml !
-            If File.Exists(String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar, "TVDBLanguages.xml")) = False AndAlso File.Exists(Path.Combine(Functions.AppPath, "AdvancedSettings.xml")) AndAlso Directory.Exists(String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar)) Then
-                File.Move(Path.Combine(Functions.AppPath, "TVDBLanguages.xml"), String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar, "AdvancedSettings.xml"))
-                'New Settings folder doesn't exist -> do it the old way...
-            ElseIf Directory.Exists(String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar)) = False Then
-                configpath = Path.Combine(Functions.AppPath, "TVDBLanguages.xml")
-            End If
+            Dim configpath As String = FileUtils.Common.ReturnSettingsFile("Settings", "TVDBLanguages.xml")
 
             Dim objStreamReader As New StreamReader(configpath)
             Dim xTVDBLang As New XmlSerializer(xmlTVDB.GetType)

@@ -77,7 +77,7 @@ Public Class APIXML
                 objStreamReader.Close()
             Else
                 Dim gPathD As String = FileUtils.Common.ReturnSettingsFile("Settings", "DefaultGenres.xml")
-                objStreamReader = New StreamReader(gPath)
+                objStreamReader = New StreamReader(gPathD)
                 Dim xGenres As New XmlSerializer(GenreXML.GetType)
 
                 GenreXML = CType(xGenres.Deserialize(objStreamReader), clsXMLGenres)

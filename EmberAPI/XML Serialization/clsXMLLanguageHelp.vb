@@ -4,7 +4,7 @@
  System.Xml.Serialization.XmlRootAttribute([Namespace]:="", IsNullable:=False, ElementName:="strings")> _
 Partial Public Class clsXMLLanguageHelp
 
-    Private _stringField As List(Of HelpString)
+    Private _stringField As New List(Of HelpString)
 
     '''<remarks/>
     <System.Xml.Serialization.XmlElementAttribute("string")> _

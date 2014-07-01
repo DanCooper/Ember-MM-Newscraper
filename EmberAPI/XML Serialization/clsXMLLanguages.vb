@@ -4,7 +4,7 @@
  System.Xml.Serialization.XmlRootAttribute([Namespace]:="", IsNullable:=False, ElementName:="Languages")> _
 Partial Public Class clsXMLLanguages
 
-    Private languageField As List(Of LanguagesLanguage)
+    Private languageField As New List(Of LanguagesLanguage)
 
     '''<remarks/>
     <System.Xml.Serialization.XmlElementAttribute("Language")> _

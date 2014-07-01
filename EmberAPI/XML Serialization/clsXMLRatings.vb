@@ -4,9 +4,9 @@
  System.Xml.Serialization.XmlRootAttribute([Namespace]:="", IsNullable:=False, ElementName:="ratings")> _
 Partial Public Class clsXMLRatings
 
-    Private moviesField As List(Of ratingsNameMovie)
+    Private moviesField As New List(Of ratingsNameMovie)
 
-    Private tvField As List(Of ratingsNameTV)
+    Private tvField As New List(Of ratingsNameTV)
 
     '''<remarks/>
     <System.Xml.Serialization.XmlArrayItemAttribute("name", IsNullable:=False)> _

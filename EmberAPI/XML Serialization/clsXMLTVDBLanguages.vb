@@ -4,7 +4,7 @@
  System.Xml.Serialization.XmlRootAttribute([Namespace]:="", IsNullable:=False, ElementName:="Languages")> _
 Partial Public Class clsXMLTVDBLanguages
 
-    Private languageField As List(Of TVDBLanguagesLanguage)
+    Private languageField As New List(Of TVDBLanguagesLanguage)
 
     '''<remarks/>
     <System.Xml.Serialization.XmlElementAttribute("Language")> _
