@@ -157,7 +157,7 @@ Public Class Localization
         Dim x1 As System.Collections.Generic.IEnumerable(Of HelpString)
 
         x1 = From x As HelpString In htHelpStrings.string Where (x.control = ctrlName)
-        If IsNothing(x1) Then
+        If x1.Count = 0 Then
             logger.Trace(New StackFrame().GetMethod().Name, "Missing language_help_string: {0}", ctrlName)
             aStr = String.Empty
         Else
@@ -179,7 +179,7 @@ Public Class Localization
             tStr = strDefault
         Else
             x1 = From x As LanguageString In htStrings.string Where (x.id = ID)
-            If IsNothing(x1) Then
+            If x1.Count = 0 Then
                 logger.Error(New StackFrame().GetMethod().Name, "Missing language_string: {0} - {1} : '{2}'", Assembly, ID, strDefault)
                 tStr = strDefault
             Else

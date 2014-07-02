@@ -19,6 +19,7 @@ Partial Public Class clsXMLAdvancedSettings
     End Property
 
     '''<remarks/>
+    <System.Xml.Serialization.XmlElementAttribute("ComplexSettings")> _
     Public Property ComplexSettings As List(Of AdvancedSettingsComplexSettings)
         Get
             Return Me._complexSettingsField
@@ -75,7 +76,7 @@ Partial Public Class AdvancedSettingsSetting
     End Property
 
     '''<remarks/>
-    <System.Xml.Serialization.XmlTextAttribute()> _
+    <System.Xml.Serialization.XmlAttributeAttribute()> _
     Public Property DefaultValue() As String
         Get
             Return Me._defaultValueField

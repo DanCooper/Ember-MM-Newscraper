@@ -26,7 +26,6 @@ Imports System.Xml.Linq
 Imports NLog
 Imports System.Xml.Serialization
 
-<Serializable> _
 Public Class clsAdvancedSettings
     Implements IDisposable
 
@@ -291,6 +290,7 @@ Public Class clsAdvancedSettings
             End If
             Dim v = _AdvancedSettings.Setting.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly)
             If v Is Nothing Then
+                '_AdvancedSettings.Setting.Add(New AdvancedSettingsSetting With {.Section = Assembly, .Name = key, .Value = value, .DefaultValue = If(isDefault, value, "")})
                 _AdvancedSettings.Setting.Add(New AdvancedSettingsSetting With {.Section = Assembly, .Name = key, .Value = value, .DefaultValue = If(isDefault, value, "")})
             Else
                 _AdvancedSettings.Setting.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly).Value = value
@@ -327,6 +327,7 @@ Public Class clsAdvancedSettings
             Dim xAdvancedSettings As New XmlSerializer(_AdvancedSettings.GetType)
 
             _AdvancedSettings = CType(xAdvancedSettings.Deserialize(objStreamReader), clsXMLAdvancedSettings)
+
             objStreamReader.Close()
         End If
     End Sub
