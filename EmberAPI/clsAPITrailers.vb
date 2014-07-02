@@ -303,13 +303,21 @@ Public Class Trailers
                                 End If
                         End Select
                     End If
+                ElseIf Regex.IsMatch(aUrl.URL, "http:\/\/.*imdb.*") Then
+                    Dim IMDb As New IMDb.Scraper
+                    IMDb.GetVideoLinks(aUrl.URL)
+                    If IMDb.VideoLinks.ContainsKey(Master.eSettings.MovieTrailerPrefQual) Then
+                        tLink = IMDb.VideoLinks(Master.eSettings.MovieTrailerPrefQual).URL
+                    Else
+
+                    End If
                 Else
                     If aUrl.Resolution = Master.eSettings.MovieTrailerPrefQual Then
                         tLink = aUrl.URL
                     Else
                         Select Case Master.eSettings.MovieTrailerMinQual
                             Case Enums.TrailerQuality.All
-                                    tLink = aUrl.URL
+                                tLink = aUrl.URL
                             Case Enums.TrailerQuality.HD1080p
                                 If aUrl.Resolution = Enums.TrailerQuality.HD1080p Then
                                     tLink = aUrl.URL
@@ -382,12 +390,12 @@ Public Class Trailers
                                 End If
                         End Select
                     End If
-                End If
+                    End If
 
-                If Not String.IsNullOrEmpty(tLink) Then
-                    tUrl = tLink
-                    Return True
-                End If
+                    If Not String.IsNullOrEmpty(tLink) Then
+                        tUrl = tLink
+                        Return True
+                    End If
             Next
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name,ex)
@@ -428,16 +436,6 @@ Public Class Trailers
                 'File.Copy(tTrailer, a & fExt)
                 tURL = a & fExt
             Next
-
-            '' filename is managed in DownloadFile()
-            'tURL = WebPage.DownloadFile(sURL, sPath, False, "trailer") 'ReportUpdate needs to be fixed
-
-            'If Not String.IsNullOrEmpty(tURL) Then
-            '    'delete any other trailer if enabled in settings and download successful
-            '    If Master.eSettings.DeleteAllTrailers Then
-            '        DeleteTrailers(sPath, tURL)
-            '    End If
-            'End If
         End If
 
         RemoveHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated

@@ -135,6 +135,7 @@
     <Import Include="System.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="clsAPIIMDb.vb" />
     <Compile Include="clsAPIThemes.vb" />
     <Compile Include="clsAdvancedSettings.vb" />
     <Compile Include="clsAPICommon.vb" />

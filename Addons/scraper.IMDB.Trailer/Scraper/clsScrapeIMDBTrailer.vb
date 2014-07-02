@@ -63,15 +63,13 @@ Public Class IMDBTrailer
 
     Private Sub GetMovieTrailers()
 
-        Dim BaseURL As String = Master.eSettings.MovieIMDBURL
+        Dim BaseURL As String = "http://www.imdb.com"
         Dim SearchURL As String
 
-        Dim TrailerNumber As Integer = 0
+        Dim TrailerPageNumber As Integer = 0
         Dim Trailers As MatchCollection
-        Dim Qualities As MatchCollection
-        Dim trailerPage As String
-        Dim trailerUrl As String
-        Dim trailerTitle As String
+        Dim TrailerPage As String
+        Dim TrailerTitle As String
         Dim Link As Match
         Dim currPage As Integer = 0
         Dim _ImdbTrailerPage As String = String.Empty
@@ -83,9 +81,8 @@ Public Class IMDBTrailer
                 Dim tPattern As String = "imdb/(vi[0-9]+)/"                         'Specific trailer website
                 Dim nPattern As String = "<title>.*?\((?<TITLE>.*?)\).*?</title>"   'Trailer title inside brakets
                 Dim mPattern As String = "<title>(?<TITLE>.*?)</title>"             'Trailer title without brakets
-                Dim qPattern As String = "imdb/single\?format=([0-9]+)p"            'Trailer qualities
 
-                SearchURL = String.Concat("http://", BaseURL, "/title/tt", IMDBID, "/videogallery/content_type-Trailer") 'IMDb trailer website of a specific movie, filtered by trailers only
+                SearchURL = String.Concat(BaseURL, "/title/tt", IMDBID, "/videogallery/content_type-Trailer") 'IMDb trailer website of a specific movie, filtered by trailers only
 
                 'download trailer website
                 _ImdbTrailerPage = sHTTP.DownloadData(SearchURL)
@@ -100,10 +97,10 @@ Public Class IMDBTrailer
                     Link = Regex.Match(_ImdbTrailerPage, pPattern)
 
                     If Link.Success Then
-                        TrailerNumber = Convert.ToInt32(Link.Value.Substring(3))
+                        TrailerPageNumber = Convert.ToInt32(Link.Value.Substring(3))
 
-                        If TrailerNumber > 0 Then
-                            currPage = Convert.ToInt32(Math.Ceiling(TrailerNumber / 10))
+                        If TrailerPageNumber > 0 Then
+                            currPage = Convert.ToInt32(Math.Ceiling(TrailerPageNumber / 10))
 
                             For i As Integer = 1 To currPage
                                 If Not i = 1 Then
@@ -118,42 +115,17 @@ Public Class IMDBTrailer
 
                                 For Each trailer As String In linksCollection
                                     'go to specific trailer website
+                                    Dim Website As String = String.Concat(BaseURL, "/video/", trailer)
                                     sHTTP = New HTTP
-                                    trailerPage = sHTTP.DownloadData(String.Concat("http://", BaseURL, "/video/", trailer))
+                                    TrailerPage = sHTTP.DownloadData(Website)
                                     sHTTP = Nothing
                                     trailerTitle = Regex.Match(trailerPage, nPattern).Groups(1).Value.ToString.Trim
                                     If String.IsNullOrEmpty(trailerTitle) Then
                                         trailerTitle = Regex.Match(trailerPage, mPattern).Groups(1).Value.ToString.Trim
                                         trailerTitle = trailerTitle.Replace("- IMDb", String.Empty).Trim
                                     End If
-                                    'get all qualities of a specific trailer
-                                    Qualities = Regex.Matches(trailerPage, String.Concat("http://www.imdb.com/video/", trailer, qPattern))
-                                    Dim trailerCollection As String() = From m As Object In Qualities Select CType(m, Match).Value Distinct.ToArray()
 
-                                    'get all download URLs of a specific trailer
-                                    For Each qual As String In trailerCollection
-                                        sHTTP = New HTTP
-                                        Dim QualityPage As String = sHTTP.DownloadData(qual)
-                                        sHTTP = Nothing
-                                        Dim QualLink As Match = Regex.Match(QualityPage, "videoPlayerObject.*?viconst")
-                                        Dim dowloadURL As MatchCollection = Regex.Matches(QualLink.Value, "ffname"":""(?<QUAL>.*?)"",""height.*?url"":""(?<LINK>.*?)""")
-                                        Dim Resolution As String = dowloadURL.Item(0).Groups(1).Value
-                                        trailerUrl = dowloadURL.Item(0).Groups(2).Value
-                                        Dim Res As Enums.TrailerQuality
-
-                                        Select Case Resolution
-                                            Case "SD"
-                                                Res = Enums.TrailerQuality.SQ240p
-                                            Case "480p"
-                                                Res = Enums.TrailerQuality.HQ480p
-                                            Case "720p"
-                                                Res = Enums.TrailerQuality.HD720p
-                                            Case Else
-                                                Res = Enums.TrailerQuality.OTHERS
-                                        End Select
-
-                                        _trailerlist.Add(New Trailers With {.URL = trailerUrl, .Description = trailerTitle, .WebURL = String.Concat("http://", BaseURL, "/video/", trailer), .Resolution = Res})
-                                    Next
+                                    _trailerlist.Add(New Trailers With {.URL = Website, .Description = TrailerTitle, .WebURL = Website})
                                 Next
                             Next
                         End If

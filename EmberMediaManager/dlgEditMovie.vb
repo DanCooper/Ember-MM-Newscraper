@@ -47,6 +47,7 @@ Public Class dlgEditMovie
     Private MoviePoster As New Images With {.IsEdit = True}
     Private pResults As New Containers.ImgResult
     Private PreviousFrameValue As Integer
+    Private MovieTrailer As New Trailers
     Private MovieTheme As New Themes
     Private tmpRating As String = String.Empty
 
