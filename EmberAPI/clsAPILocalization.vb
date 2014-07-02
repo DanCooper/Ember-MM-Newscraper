@@ -154,13 +154,15 @@ Public Class Localization
 
     Public Function GetHelpString(ByVal ctrlName As String) As String
         Dim aStr As String
+        Dim x1 As List(Of HelpString)
 
-        Try
-            aStr = (From x As HelpString In htHelpStrings.string Where (x.control = ctrlName))(0).Value
-        Catch ex As Exception
+        x1 = CType(From x As HelpString In htHelpStrings.string Where (x.control = ctrlName), Global.System.Collections.Generic.List(Of Global.EmberAPI.HelpString))
+        If IsNothing(x1) Then
             logger.Error(New StackFrame().GetMethod().Name, "Missing language_help_string: {0}", ctrlName)
             aStr = String.Empty
-        End Try
+        Else
+            aStr = x1(0).Value
+        End If
 
         help_logger.Trace("helpstring : '{0}'", aStr)
 
@@ -169,22 +171,22 @@ Public Class Localization
 
     Public Function GetString(ByVal ID As Integer, ByVal strDefault As String) As String
         Dim tStr As String
+        Dim x1 As List(Of HelpString)
 
         Dim Assembly = "*EmberAPP"
         htStrings = htArrayStrings.FirstOrDefault(Function(x) x.AssenblyName = Assembly).htStrings
         If IsNothing(htStrings) Then
             tStr = strDefault
         Else
-            Try
-                tStr = (From x As LanguageString In htStrings.string Where (x.id = ID))(0).Value
-            Catch ex As Exception
+            x1 = CType((From x As LanguageString In htStrings.string Where (x.id = ID)), Global.System.Collections.Generic.List(Of Global.EmberAPI.HelpString))
+            If IsNothing(x1) Then
                 logger.Error(New StackFrame().GetMethod().Name, "Missing language_string: {0} - {1} : '{2}'", Assembly, ID, strDefault)
                 tStr = strDefault
-            End Try
-
-            If String.IsNullOrEmpty(tStr) Then
+            Else
+                tStr = x1(0).Value
             End If
         End If
+
         lang_logger.Trace("language_string: {0} - {1} : '{2}'", Assembly, ID, tStr)
 
         Return tStr
