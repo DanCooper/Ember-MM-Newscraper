@@ -128,17 +128,13 @@ Public Class Localization
 
     Public Shared Function ISOLangGetLanguagesList() As ArrayList
         Dim r As New ArrayList
-        For Each x As LanguagesLanguage In _ISOLanguages.Language
-            r.Add(x.Name)
-        Next
+        r.Add(_ISOLanguages.Language.FindAll(Function(f) Not String.IsNullOrEmpty(f.Name)).ToArray)
         Return r
     End Function
 
     Public Shared Function ISOLangGetLanguagesListAlpha2() As ArrayList
         Dim r As New ArrayList
-        For Each x As LanguagesLanguage In _ISOLanguages.Language.Where(Function(y) Not String.IsNullOrEmpty(y.Alpha2))
-            r.Add(x.Name)
-        Next
+        r.Add(_ISOLanguages.Language.FindAll(Function(f) Not String.IsNullOrEmpty(f.Alpha2)).ToArray)
         Return r
     End Function
     Public Shared Function ISOLangGetLanguagesListAlpha3() As ArrayList
@@ -159,16 +155,13 @@ Public Class Localization
     Public Function GetHelpString(ByVal ctrlName As String) As String
         Dim aStr As String
 
-        aStr = (From x As HelpString In htHelpStrings.string Where (x.control = ctrlName))(0).Value
-        If String.IsNullOrEmpty(aStr) Then
+        Try
+            aStr = (From x As HelpString In htHelpStrings.string Where (x.control = ctrlName))(0).Value
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, "Missing language_help_string: {0}", ctrlName)
             aStr = String.Empty
-        End If
+        End Try
 
-        'If htHelpStrings.ContainsKey(ctrlName) Then
-        '    aStr = htHelpStrings.Item(ctrlName).ToString
-        'Else
-        '    aStr = String.Empty
-        'End If
         help_logger.Trace("helpstring : '{0}'", aStr)
 
         Return aStr
@@ -182,10 +175,14 @@ Public Class Localization
         If IsNothing(htStrings) Then
             tStr = strDefault
         Else
-            tStr = (From x As LanguageString In htStrings.string Where (x.id = ID))(0).Value
+            Try
+                tStr = (From x As LanguageString In htStrings.string Where (x.id = ID))(0).Value
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, "Missing language_string: {0} - {1} : '{2}'", Assembly, ID, strDefault)
+                tStr = strDefault
+            End Try
 
             If String.IsNullOrEmpty(tStr) Then
-                tStr = strDefault
             End If
         End If
         lang_logger.Trace("language_string: {0} - {1} : '{2}'", Assembly, ID, tStr)

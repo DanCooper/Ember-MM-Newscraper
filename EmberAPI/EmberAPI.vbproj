@@ -228,28 +228,44 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\defaultgenre.jpg" />
+    <Content Include="Images\Defaults\DefaultGenre.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\defaultscreen.png" />
+    <Content Include="Images\Defaults\DefaultScreen.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\defaultsound.png" />
+    <Content Include="Images\Defaults\DefaultSound.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\haslanguage.png" />
+    <Content Include="Images\Defaults\HasLanguage.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\missing.png" />
+    <Content Include="Images\Defaults\Missing.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\overlay.png" />
+    <Content Include="Images\Defaults\Overlay.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\overlay2.png" />
+    <Content Include="Images\Defaults\Overlay2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\puzzle.png" />
+    <Content Include="Images\Defaults\Puzzle.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="NLog Notes.txt" />
@@ -298,7 +314,9 @@
     </Content>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Resources\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

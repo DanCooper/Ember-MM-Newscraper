@@ -161,7 +161,8 @@ Public Class APIXML
                     If Not IsNothing(vresFlag) Then
                         iReturn(0) = vresFlag.Image
                     Else
-                        iReturn(0) = Global.EmberAPI.My.Resources.defaultscreen
+                        iReturn(0) = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultScreen.png"))
+
                     End If
                 End If
 
@@ -174,7 +175,7 @@ Public Class APIXML
                     If Not IsNothing(vsourceFlag) Then
                         iReturn(1) = vsourceFlag.Image
                     Else
-                        iReturn(1) = Global.EmberAPI.My.Resources.defaultscreen
+                        iReturn(1) = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultScreen.png"))
                     End If
                 End If
 
@@ -186,7 +187,7 @@ Public Class APIXML
                     If Not IsNothing(vcodecFlag) Then
                         iReturn(2) = vcodecFlag.Image
                     Else
-                        iReturn(2) = Global.EmberAPI.My.Resources.defaultscreen
+                        iReturn(2) = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultScreen.png"))
                     End If
                 End If
 
@@ -194,7 +195,7 @@ Public Class APIXML
                 If Not IsNothing(acodecFlag) Then
                     If tAudio.HasPreferred Then
                         Dim acodecFlagTemp As Image = acodecFlag.Image
-                        iReturn(3) = ImageUtils.SetOverlay(acodecFlagTemp, 64, 44, Global.EmberAPI.My.Resources.haslanguage, 4)
+                        iReturn(3) = ImageUtils.SetOverlay(acodecFlagTemp, 64, 44, Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "HasLanguage.png")), 4)
                     Else
                         iReturn(3) = acodecFlag.Image
                     End If
@@ -203,15 +204,15 @@ Public Class APIXML
                     If Not IsNothing(acodecFlag) Then
                         If tAudio.HasPreferred Then
                             Dim acodecFlagTemp As Image = acodecFlag.Image
-                            iReturn(3) = ImageUtils.SetOverlay(acodecFlagTemp, 64, 44, My.Resources.haslanguage, 4)
+                            iReturn(3) = ImageUtils.SetOverlay(acodecFlagTemp, 64, 44, Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "HasLanguage.png")), 4)
                         Else
                             iReturn(3) = acodecFlag.Image
                         End If
                     Else
                         If tAudio.HasPreferred Then
-                            iReturn(3) = ImageUtils.SetOverlay(My.Resources.defaultsound, 64, 44, My.Resources.haslanguage, 4)
+                            iReturn(3) = ImageUtils.SetOverlay(Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultSound.png")), 64, 44, Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "HasLanguage.png")), 4)
                         Else
-                            iReturn(3) = My.Resources.defaultsound
+                            iReturn(3) = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultSound.png"))
                         End If
                     End If
                 End If
@@ -224,7 +225,7 @@ Public Class APIXML
                     If Not IsNothing(achanFlag) Then
                         iReturn(4) = achanFlag.Image
                     Else
-                        iReturn(4) = My.Resources.defaultsound
+                        iReturn(4) = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultSound.png"))
                     End If
                 End If
 
@@ -232,15 +233,15 @@ Public Class APIXML
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         Else
-            iReturn(0) = My.Resources.defaultscreen
-            iReturn(1) = My.Resources.defaultscreen
-            iReturn(2) = My.Resources.defaultscreen
+            iReturn(0) = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultScreen.png"))
+            iReturn(1) = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultScreen.png"))
+            iReturn(2) = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultScreen.png"))
             If tAudio.HasPreferred Then
-                iReturn(3) = ImageUtils.SetOverlay(My.Resources.defaultsound, 64, 44, My.Resources.haslanguage, 4)
+                iReturn(3) = ImageUtils.SetOverlay(Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultSound.png")), 64, 44, Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "HasLanguage.png")), 4)
             Else
-                iReturn(3) = My.Resources.defaultsound
+                iReturn(3) = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultSound.png"))
             End If
-            iReturn(4) = My.Resources.defaultsound
+            iReturn(4) = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultSound.png"))
         End If
 
         Return iReturn
@@ -293,11 +294,9 @@ Public Class APIXML
         Try
 
             If Not String.IsNullOrEmpty(imgGenreStr) AndAlso alGenres.Contains(imgGenreStr.ToLower) Then
-                Using fsImage As New FileStream(imgGenreStr, FileMode.Open, FileAccess.Read)
-                    imgGenre = Image.FromStream(fsImage)
-                End Using
+                imgGenre = Image.FromFile(imgGenreStr)
             Else
-                imgGenre = My.Resources.defaultgenre
+                imgGenre = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultGenre.jpg"))
             End If
 
         Catch ex As Exception
@@ -438,7 +437,7 @@ Public Class APIXML
             End Using
         End If
 
-        If IsNothing(imgStudio) Then imgStudio = Global.EmberAPI.My.Resources.defaultscreen
+        If IsNothing(imgStudio) Then imgStudio = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultScreen.png"))
 
         Return imgStudio
     End Function

@@ -44,10 +44,10 @@ Public Class ImageUtils
         Using nImage As New Bitmap(GrayScale(oImage).Image)
             'now overlay "missing" image
             Using grOverlay As Graphics = Graphics.FromImage(nImage)
-                Dim oWidth As Integer = If(nImage.Width >= Global.EmberAPI.My.Resources.missing.Width, Global.EmberAPI.My.Resources.missing.Width, nImage.Width)
-                Dim oheight As Integer = If(nImage.Height >= Global.EmberAPI.My.Resources.missing.Height, Global.EmberAPI.My.Resources.missing.Height, nImage.Height)
+                Dim oWidth As Integer = If(nImage.Width >= Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "Missing.png")).Width, Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "Missing.png")).Width, nImage.Width)
+                Dim oheight As Integer = If(nImage.Height >= Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "Missing.png")).Height, Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "Missing.png")).Height, nImage.Height)
                 grOverlay.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-                grOverlay.DrawImage(Global.EmberAPI.My.Resources.missing, 0, 0, oWidth, oheight)
+                grOverlay.DrawImage(Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "Missing.png")), 0, 0, oWidth, oheight)
             End Using
             oImage.UpdateMSfromImg(nImage)
         End Using
@@ -256,14 +256,14 @@ Public Class ImageUtils
 
                 grOverlay.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
 
-                grOverlay.DrawImage(My.Resources.overlay, 0, 0, pbUnderlay.Image.Width, bmHeight)
+                grOverlay.DrawImage(Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "Overlay.png")), 0, 0, pbUnderlay.Image.Width, bmHeight)
                 pbUnderlay.Image = bmOverlay
 
                 bmOverlay = New Bitmap(pbUnderlay.Image)
             End Using
             Using grOverlay = Graphics.FromImage(bmOverlay)
 
-                grOverlay.DrawImage(My.Resources.overlay2, 0, 0, pbUnderlay.Image.Width, pbUnderlay.Image.Height)
+                grOverlay.DrawImage(Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "Overlay2.png")), 0, 0, pbUnderlay.Image.Width, pbUnderlay.Image.Height)
                 pbUnderlay.Image = bmOverlay
 
             End Using

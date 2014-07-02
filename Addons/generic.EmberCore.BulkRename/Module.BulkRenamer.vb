@@ -185,8 +185,8 @@ Public Class BulkRenamerModule
     End Sub
 
     Public Sub DropDownItemsAdd(value As System.Windows.Forms.ToolStripMenuItem, tsi As System.Windows.Forms.ToolStripMenuItem)
-        If (ModulesManager.Instance.RuntimeObjects.MenuMediaList.InvokeRequired) Then
-            ModulesManager.Instance.RuntimeObjects.MenuMediaList.Invoke(New Delegate_DropDownItemsAdd(AddressOf DropDownItemsAdd), New Object() {value, tsi})
+        If (tsi.Owner.InvokeRequired) Then
+            tsi.Owner.Invoke(New Delegate_DropDownItemsAdd(AddressOf DropDownItemsAdd), New Object() {value, tsi})
             Exit Sub
         End If
         tsi.DropDownItems.Add(MyMenu)
