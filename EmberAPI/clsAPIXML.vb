@@ -288,7 +288,7 @@ Public Class APIXML
         imgGenreStr = Path.Combine(mePath, GenreXML.default.icon)
 
         Dim v = From e In GenreXML.name.Where(Function(f) f.searchstring = strGenre)
-        If Not String.IsNullOrEmpty(v(0).icon) Then
+        If v.Count > 0 Then
             imgGenreStr = Path.Combine(mePath, v(0).icon)
         End If
         Try
@@ -368,8 +368,9 @@ Public Class APIXML
         Dim imgRating As Image = Nothing
         Dim imgRatingStr As String = String.Empty
         Dim v = From e In RatingXML.movies.Where(Function(f) f.searchstring = strRating)
-        imgRatingStr = Path.Combine(mePath, v(0).icon)
-
+        If v.Count > 0 Then
+            imgRatingStr = Path.Combine(mePath, v(0).icon)
+        End If
         'If RatingXML.Nodes.Count > 0 Then
         '    Dim mePath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Ratings")
 
