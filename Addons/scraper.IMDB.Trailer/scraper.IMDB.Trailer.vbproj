@@ -127,7 +127,7 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Scraper\clsScrapeYouTube.vb" />
+    <Compile Include="Scraper\clsScrapeIMDBTrailer.vb" />
     <Compile Include="frmIMDBTrailerSettingsHolder.Designer.vb">
       <DependentUpon>frmIMDBTrailerSettingsHolder.vb</DependentUpon>
     </Compile>

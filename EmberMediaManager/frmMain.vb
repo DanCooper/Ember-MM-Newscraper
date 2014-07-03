@@ -1954,17 +1954,8 @@ Public Class frmMain
                                         tURL = Trailer.DownloadTrailer(DBScrapeMovie.Filename, DBScrapeMovie.isSingle, tURL)
 
                                         If Not String.IsNullOrEmpty(tURL) Then
-                                            If StringUtils.isValidURL(tURL) Then
-                                                If Master.eSettings.MovieXBMCTrailerFormat Then
-                                                    DBScrapeMovie.Movie.Trailer = Replace(tURL, "http://www.youtube.com/watch?v=", "plugin://plugin.video.youtube/?action=play_video&videoid=")
-                                                    DBScrapeMovie.Movie.Trailer = Replace(DBScrapeMovie.Movie.Trailer, "http://www.youtube.com/watch?hd=1&v=", "plugin://plugin.video.youtube/?action=play_video&videoid=")
-                                                Else
-                                                    DBScrapeMovie.Movie.Trailer = tURL
-                                                End If
-                                            Else
-                                                DBScrapeMovie.TrailerPath = tURL
-                                                MovieScraperEvent(Enums.MovieScraperEventType.TrailerItem, True)
-                                            End If
+                                            DBScrapeMovie.TrailerPath = tURL
+                                            MovieScraperEvent(Enums.MovieScraperEventType.TrailerItem, True)
                                         End If
                                     End If
                                     'ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk  OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
