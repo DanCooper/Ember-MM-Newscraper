@@ -814,7 +814,7 @@ Namespace EmberTests
         <TestMethod()>
         Public Sub ImageUtils_SetOverlay_NothingImage()
             'Arrange
-            Dim overlay As Image = EmberAPI.My.Resources.haslanguage
+            Dim overlay As Image = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "HasLanguage.png"))
             'Act
             Dim result As Image = ImageUtils.SetOverlay(Nothing, 500, 500, overlay, 1)
 
@@ -827,7 +827,7 @@ Namespace EmberTests
             'Arrange
             Dim userResponse As Windows.Forms.DialogResult = Nothing
             Using img As Image = My.Resources.TestPattern, _
-                overlay As Image = EmberAPI.My.Resources.haslanguage
+                overlay As Image = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "HasLanguage.png"))
 
                 'Act
                 Using result As Image = ImageUtils.SetOverlay(img, img.Width \ 2, img.Height \ 2, overlay, 1)
@@ -848,7 +848,7 @@ Namespace EmberTests
             'Arrange
             Dim userResponse As Windows.Forms.DialogResult = Nothing
             Using img As Image = My.Resources.TestPattern, _
-                overlay As Image = EmberAPI.My.Resources.haslanguage
+                overlay As Image = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "HasLanguage.png"))
 
                 'Act
                 Using result As Image = ImageUtils.SetOverlay(img, img.Width \ 2, img.Height \ 2, overlay, 2)
@@ -868,7 +868,7 @@ Namespace EmberTests
             'Arrange
             Dim userResponse As Windows.Forms.DialogResult = Nothing
             Using img As Image = My.Resources.TestPattern, _
-                overlay As Image = EmberAPI.My.Resources.haslanguage
+                overlay As Image = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "HasLanguage.png"))
 
                 'Act
                 Using result As Image = ImageUtils.SetOverlay(img, img.Width \ 2, img.Height \ 2, overlay, 3)
@@ -889,7 +889,7 @@ Namespace EmberTests
             'Arrange
             Dim userResponse As Windows.Forms.DialogResult = Nothing
             Using img As Image = My.Resources.TestPattern, _
-                overlay As Image = EmberAPI.My.Resources.haslanguage
+                overlay As Image = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "HasLanguage.png"))
                 'Act
                 Using result As Image = ImageUtils.SetOverlay(img, img.Width \ 2, img.Height \ 2, overlay, 4)
                     'result.Save("TestPatternWithLanguage_Bottom_Right.png", System.Drawing.Imaging.ImageFormat.Png)
