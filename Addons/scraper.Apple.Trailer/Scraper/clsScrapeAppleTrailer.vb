@@ -65,8 +65,8 @@ Public Class AppleTrailer
         Dim BaseURL As String = "http://www.google.ch/search?q=apple+trailer+"
         Dim DownloadURL As String = "http://trailers.apple.com/trailers/"
         Dim prevQual As String = clsAdvancedSettings.GetSetting("TrailerPrefQual", "1080p")
-        Dim URL720p As String = "/includes/extralarge.html"
-        Dim URL480p As String = "/includes/large.html"
+        Dim urlHD As String = "/includes/extralarge.html"
+        Dim urlHQ As String = "/includes/large.html"
         Dim SearchTitle As String
         Dim SearchURL As String
 
@@ -97,7 +97,7 @@ Public Class AppleTrailer
 
                 If rResult.Count > 0 Then
                     Dim TrailerBaseURL As String = rResult.Item(0).Groups(1).Value
-                    Dim TrailerSiteURL = String.Concat(TrailerBaseURL, URL720p)
+                    Dim TrailerSiteURL = String.Concat(TrailerBaseURL, urlHD)
 
                     If Not String.IsNullOrEmpty(TrailerBaseURL) Then
                         sHTTP = New HTTP
@@ -128,7 +128,14 @@ Public Class AppleTrailer
                                 tDownloadURL = tDownloadURL.Replace("720p", "h720p")
                                 tDownloadURL = tDownloadURL.Replace("480p", "h480p")
                                 trailer.URL = tDownloadURL
-                                trailer.Resolution = Enums.TrailerQuality.HD720p
+                                Select Case prevQual
+                                    Case "1080p"
+                                        trailer.Quality = Enums.TrailerQuality.HD1080p
+                                    Case "720p"
+                                        trailer.Quality = Enums.TrailerQuality.HD720p
+                                    Case "480p"
+                                        trailer.Quality = Enums.TrailerQuality.HQ480p
+                                End Select
                             End If
                         Next
                     End If
