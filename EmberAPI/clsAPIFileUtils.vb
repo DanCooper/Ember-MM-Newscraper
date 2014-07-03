@@ -172,6 +172,22 @@ Namespace FileUtils
             filename = filename.Replace("  ", " ")
             Return filename
         End Function
+
+        Public Shared Function ReturnSettingsFile(Dir As String, Name As String) As String
+            'Cocotus, Load from central Dir folder if it exists!
+            Dim configpath As String = String.Concat(Functions.AppPath, Dir, Path.DirectorySeparatorChar, Name)
+
+            'AdvancedSettings.xml is still at old place (root) -> move to new place if there's no AdvancedSettings.xml !
+            If File.Exists(String.Concat(Functions.AppPath, Dir, Path.DirectorySeparatorChar, Name)) = False AndAlso File.Exists(Path.Combine(Functions.AppPath, Name)) AndAlso Directory.Exists(String.Concat(Functions.AppPath, Dir, Path.DirectorySeparatorChar)) Then
+                File.Move(Path.Combine(Functions.AppPath, Name), String.Concat(Functions.AppPath, Dir, Path.DirectorySeparatorChar, Name))
+                'New Settings folder doesn't exist -> do it the old way...
+            ElseIf Directory.Exists(String.Concat(Functions.AppPath, Dir, Path.DirectorySeparatorChar)) = False Then
+                configpath = Path.Combine(Functions.AppPath, Name)
+            End If
+
+            Return configpath
+        End Function
+
 #End Region 'Methods
 
     End Class

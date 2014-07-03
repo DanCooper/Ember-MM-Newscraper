@@ -157,11 +157,11 @@ Public Class TMDB_Trailer
 
     Sub LoadSettings()
 
-        strPrivateAPIKey = AdvancedSettings.GetSetting("TMDBAPIKey", "")
+        strPrivateAPIKey = clsAdvancedSettings.GetSetting("TMDBAPIKey", "")
         _MySettings.TMDBAPIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "44810eefccd9cb1fa1d57e7b0d67b08d", strPrivateAPIKey)
-        _MySettings.FallBackEng = AdvancedSettings.GetBooleanSetting("FallBackEn", False)
-        _MySettings.TMDBLanguage = AdvancedSettings.GetSetting("TMDBLanguage", "en")
-        ConfigScrapeModifier.Trailer = AdvancedSettings.GetBooleanSetting("DoTrailer", True)
+        _MySettings.FallBackEng = clsAdvancedSettings.GetBooleanSetting("FallBackEn", False)
+        _MySettings.TMDBLanguage = clsAdvancedSettings.GetSetting("TMDBLanguage", "en")
+        ConfigScrapeModifier.Trailer = clsAdvancedSettings.GetBooleanSetting("DoTrailer", True)
 
     End Sub
 
@@ -178,7 +178,7 @@ Public Class TMDB_Trailer
     End Function
 
     Sub SaveSettings()
-        Using settings = New AdvancedSettings()
+        Using settings = New clsAdvancedSettings()
             settings.SetSetting("TMDBAPIKey", _setup.txtTMDBApiKey.Text)
             settings.SetBooleanSetting("FallBackEn", _MySettings.FallBackEng)
             settings.SetSetting("TMDBLanguage", _MySettings.TMDBLanguage)

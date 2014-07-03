@@ -87,7 +87,7 @@ Public Class genericBoxee
         Dim SPanel As New Containers.SettingsPanel
         Me.fBoxee = New frmBoxee
         Me.fBoxee.chkEnabled.Checked = Me._enabled
-        Me.fBoxee.chkBoxeeId.Checked = AdvancedSettings.GetBooleanSetting("BoxeeTVShowId", False)
+        Me.fBoxee.chkBoxeeId.Checked = clsAdvancedSettings.GetBooleanSetting("BoxeeTVShowId", False)
         'chkYAMJnfoFields
         SPanel.Name = _name
         SPanel.Text = Master.eLang.GetString(593, "Boxee Compatibility")
@@ -113,7 +113,7 @@ Public Class genericBoxee
 
     Public Sub SaveSetup(ByVal DoDispose As Boolean) Implements EmberAPI.Interfaces.EmberExternalModule.SaveSetup
         Me.Enabled = Me.fBoxee.chkEnabled.Checked()
-        Using settings = New AdvancedSettings()
+        Using settings = New clsAdvancedSettings()
             settings.SetBooleanSetting("BoxeeTVShowId", Me.fBoxee.chkBoxeeId.Checked)
         End Using
     End Sub
@@ -127,7 +127,7 @@ Public Class genericBoxee
                     Case Enums.ModuleEventType.OnTVShowNFOSave
                         mTvShow = DirectCast(_params(0), Structures.DBTV)
                         doContinue = DirectCast(_refparam, Boolean)
-                        If AdvancedSettings.GetBooleanSetting("BoxeeTVShowId", False) Then
+                        If clsAdvancedSettings.GetBooleanSetting("BoxeeTVShowId", False) Then
                             Dim mTVDetails As MediaContainers.TVShow
                             mTVDetails = mTvShow.TVShow
                             If mTVDetails.IDSpecified() Then
@@ -140,7 +140,7 @@ Public Class genericBoxee
                         Dim mTVDetails As New MediaContainers.TVShow
                         mTVDetails = DirectCast(_params(0), MediaContainers.TVShow)
                         doContinue = DirectCast(_refparam, Boolean)
-                        If AdvancedSettings.GetBooleanSetting("BoxeeTVShowId", False) Then
+                        If clsAdvancedSettings.GetBooleanSetting("BoxeeTVShowId", False) Then
                             If mTVDetails.BoxeeIDSpecified() Then
                                 mTVDetails.ID = mTVDetails.BoxeeTvDb
                                 mTVDetails.BlankBoxeeId()
@@ -152,7 +152,7 @@ Public Class genericBoxee
 
                 _refparam = doContinue
             Catch ex As Exception
-                Logger.Error(New StackFrame().GetMethod().Name,ex)
+                Logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         End If
     End Function
@@ -169,13 +169,13 @@ Public Class genericBoxee
     Sub SyncSettings(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
         If mType = Enums.ModuleEventType.SyncModuleSettings AndAlso Not IsNothing(Me.fBoxee) Then
             RemoveHandler fBoxee.GenericEvent, AddressOf DeploySyncSettings
-            Me.fBoxee.chkBoxeeId.Checked = AdvancedSettings.GetBooleanSetting("BoxeeTVShowId", False)
+            Me.fBoxee.chkBoxeeId.Checked = clsAdvancedSettings.GetBooleanSetting("BoxeeTVShowId", False)
             AddHandler fBoxee.GenericEvent, AddressOf DeploySyncSettings
         End If
     End Sub
     Sub DeploySyncSettings(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
         If Not IsNothing(Me.fBoxee) Then
-            Using settings = New AdvancedSettings()
+            Using settings = New clsAdvancedSettings()
                 settings.SetBooleanSetting("BoxeeTVShowId", Me.fBoxee.chkBoxeeId.Checked)
             End Using
             RaiseEvent GenericEvent(mType, _params)

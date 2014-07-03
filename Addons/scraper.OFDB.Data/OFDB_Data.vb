@@ -140,16 +140,16 @@ Public Class OFDB_Data
 
     Sub LoadSettings()
         ' Only the ones we can get
-        ConfigOptions.bTitle = AdvancedSettings.GetBooleanSetting("DoTitle", True)
-        ConfigOptions.bOutline = AdvancedSettings.GetBooleanSetting("DoOutline", True)
-        ConfigOptions.bPlot = AdvancedSettings.GetBooleanSetting("DoPlot", True)
-        ConfigOptions.bGenre = AdvancedSettings.GetBooleanSetting("DoGenres", True)
-        ConfigOptions.bCleanPlotOutline = AdvancedSettings.GetBooleanSetting("CleanPlotOutline", False)
-        ConfigOptions.bCert = AdvancedSettings.GetBooleanSetting("DoCert", False)
+        ConfigOptions.bTitle = clsAdvancedSettings.GetBooleanSetting("DoTitle", True)
+        ConfigOptions.bOutline = clsAdvancedSettings.GetBooleanSetting("DoOutline", True)
+        ConfigOptions.bPlot = clsAdvancedSettings.GetBooleanSetting("DoPlot", True)
+        ConfigOptions.bGenre = clsAdvancedSettings.GetBooleanSetting("DoGenres", True)
+        ConfigOptions.bCleanPlotOutline = clsAdvancedSettings.GetBooleanSetting("CleanPlotOutline", False)
+        ConfigOptions.bCert = clsAdvancedSettings.GetBooleanSetting("DoCert", False)
     End Sub
 
     Sub SaveSettings()
-        Using settings = New AdvancedSettings()
+        Using settings = New clsAdvancedSettings()
             settings.SetBooleanSetting("DoTitle", ConfigOptions.bTitle)
             settings.SetBooleanSetting("DoOutline", ConfigOptions.bOutline)
             settings.SetBooleanSetting("DoPlot", ConfigOptions.bPlot)

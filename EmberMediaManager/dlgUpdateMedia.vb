@@ -237,7 +237,6 @@ Public Class dlgUpdateMedia
                 Functions.SetScraperMod(Enums.MovieModType.All, True)
             Else
                 Functions.SetScraperMod(Enums.MovieModType.ActorThumbs, chkModActorThumbs.Checked, False)
-                Functions.SetScraperMod(Enums.MovieModType.Banner, chkModBanner.Checked, False)
                 Functions.SetScraperMod(Enums.MovieModType.ClearArt, chkModClearArt.Checked, False)
                 Functions.SetScraperMod(Enums.MovieModType.ClearLogo, chkModClearLogo.Checked, False)
                 Functions.SetScraperMod(Enums.MovieModType.DiscArt, chkModDiscArt.Checked, False)

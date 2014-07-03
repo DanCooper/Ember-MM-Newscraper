@@ -4916,7 +4916,7 @@ Public Class dlgSettings
         Me.btnOK.Text = Master.eLang.GetString(179, "OK")
         Me.btnRemTVSource.Text = Master.eLang.GetString(30, "Remove")
         Me.btnTVShowRegexRemove.Text = Master.eLang.GetString(30, "Remove")
-        Me.cbMovieScraperForceTitle.Items.AddRange(Strings.Split(AdvancedSettings.GetSetting("ForceTitle", ""), "|"))
+        Me.cbMovieScraperForceTitle.Items.AddRange(Strings.Split(clsAdvancedSettings.GetSetting("ForceTitle", ""), "|"))
         Me.chkMovieClickScrapeAsk.Text = Master.eLang.GetString(852, "Ask On Click Scrape")
         Me.chkMovieBackdropsAuto.Text = Master.eLang.GetString(521, "Automatically Save Fanart To Backdrops Folder")
         Me.chkMovieScraperCast.Text = Master.eLang.GetString(63, "Cast")

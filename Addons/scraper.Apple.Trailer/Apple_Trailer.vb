@@ -129,12 +129,12 @@ Public Class Apple_Trailer
     End Function
 
     Sub LoadSettings()
-        _MySettings.TrailerPrefQual = AdvancedSettings.GetSetting("TrailerPrefQual", "1080p")
-        ConfigScrapeModifier.Trailer = AdvancedSettings.GetBooleanSetting("DoTrailer", True)
+        _MySettings.TrailerPrefQual = clsAdvancedSettings.GetSetting("TrailerPrefQual", "1080p")
+        ConfigScrapeModifier.Trailer = clsAdvancedSettings.GetBooleanSetting("DoTrailer", True)
     End Sub
 
     Sub SaveSettings()
-        Using settings = New AdvancedSettings()
+        Using settings = New clsAdvancedSettings()
             settings.SetBooleanSetting("DoTrailer", ConfigScrapeModifier.Trailer)
             settings.SetSetting("TrailerPrefQual", _setup.cbTrailerPrefQual.Text)
         End Using

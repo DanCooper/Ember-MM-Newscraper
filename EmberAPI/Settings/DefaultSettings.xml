@@ -1,0 +1,562 @@
+﻿<?xml version="1.0"?>
+<Settings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <movieactorthumbsnmj>false</movieactorthumbsnmj>
+  <movieactorthumbsyamj>false</movieactorthumbsyamj>
+  <movieclearartnmj>false</movieclearartnmj>
+  <movieclearartyamj>false</movieclearartyamj>
+  <movieclearlogonmj>false</movieclearlogonmj>
+  <movieclearlogoyamj>false</movieclearlogoyamj>
+  <moviediscartnmj>false</moviediscartnmj>
+  <moviediscartyamj>false</moviediscartyamj>
+  <movieextrafanartsnmj>false</movieextrafanartsnmj>
+  <movieextrafanartsyamj>false</movieextrafanartsyamj>
+  <movieextrathumbsnmj>false</movieextrathumbsnmj>
+  <movieextrathumbsyamj>false</movieextrathumbsyamj>
+  <movielandscapenmj>false</movielandscapenmj>
+  <movielandscapeyamj>false</movielandscapeyamj>
+  <proxycredentials>
+    <UserName />
+    <Password />
+    <SecurePassword />
+    <Domain />
+  </proxycredentials>
+  <MovieScraperCastLimit>0</MovieScraperCastLimit>
+  <MovieActorThumbsOverwrite>true</MovieActorThumbsOverwrite>
+  <TVASPosterHeight>0</TVASPosterHeight>
+  <MovieActorThumbsQual>0</MovieActorThumbsQual>
+  <TVASPosterQual>0</TVASPosterQual>
+  <TVASBannerQual>0</TVASBannerQual>
+  <TVASFanartQual>0</TVASFanartQual>
+  <TVSeasonBannerQual>0</TVSeasonBannerQual>
+  <TVShowBannerQual>0</TVShowBannerQual>
+  <TVASPosterWidth>0</TVASPosterWidth>
+  <GeneralShowGenresText>true</GeneralShowGenresText>
+  <TVGeneralLanguage>en</TVGeneralLanguage>
+  <TVGeneralLanguages />
+  <MovieClickScrape>false</MovieClickScrape>
+  <MovieClickScrapeAsk>false</MovieClickScrapeAsk>
+  <MovieBackdropsAuto>false</MovieBackdropsAuto>
+  <MovieIMDBURL>akas.imdb.com</MovieIMDBURL>
+  <MovieBackdropsPath />
+  <MovieMoviesetsPath />
+  <MovieScraperCastWithImgOnly>false</MovieScraperCastWithImgOnly>
+  <MovieScraperCertLang>usa</MovieScraperCertLang> 
+  <GeneralCheckUpdates>true</GeneralCheckUpdates>
+  <MovieCleanDB>true</MovieCleanDB>
+  <CleanDotFanartJPG>false</CleanDotFanartJPG>
+  <CleanExtrathumbs>false</CleanExtrathumbs>
+  <CleanFanartJPG>false</CleanFanartJPG>
+  <CleanFolderJPG>false</CleanFolderJPG>
+  <CleanMovieFanartJPG>false</CleanMovieFanartJPG>
+  <CleanMovieJPG>false</CleanMovieJPG>
+  <CleanMovieNameJPG>false</CleanMovieNameJPG>
+  <CleanMovieNFO>false</CleanMovieNFO>
+  <CleanMovieNFOB>false</CleanMovieNFOB>
+  <CleanMovieTBN>false</CleanMovieTBN>
+  <CleanMovieTBNB>false</CleanMovieTBNB>
+  <CleanPosterJPG>false</CleanPosterJPG>
+  <CleanPosterTBN>false</CleanPosterTBN>
+  <FileSystemCleanerWhitelistExts />
+  <FileSystemCleanerWhitelist>false</FileSystemCleanerWhitelist>
+  <MovieTrailerDeleteExisting>true</MovieTrailerDeleteExisting>
+  <TVGeneralDisplayASPoster>true</TVGeneralDisplayASPoster>
+  <TVDisplayMissingEpisodes>true</TVDisplayMissingEpisodes>
+  <MovieDisplayYear>false</MovieDisplayYear>
+  <TVScraperOptionsOrdering>Standard</TVScraperOptionsOrdering>
+  <EmberModules />
+  <MovieScraperMetaDataIFOScan>true</MovieScraperMetaDataIFOScan>
+  <TVEpisodeFanartHeight>0</TVEpisodeFanartHeight>
+  <TVEpisodeFanartQual>0</TVEpisodeFanartQual>
+  <TVEpisodeFanartWidth>0</TVEpisodeFanartWidth>
+  <TVEpisodeFilterCustom />
+  <TVEpisodeFanartCol>false</TVEpisodeFanartCol>
+  <TVEpisodeNfoCol>false</TVEpisodeNfoCol>
+  <TVEpisodePosterCol>false</TVEpisodePosterCol>
+  <TVLockEpisodePlot>false</TVLockEpisodePlot>
+  <TVLockEpisodeRating>false</TVLockEpisodeRating>
+  <TVLockEpisodeTitle>false</TVLockEpisodeTitle>
+  <TVEpisodePosterHeight>0</TVEpisodePosterHeight>
+  <TVEpisodePosterQual>0</TVEpisodePosterQual>
+  <TVEpisodePosterWidth>0</TVEpisodePosterWidth>
+  <TVEpisodeProperCase>true</TVEpisodeProperCase>
+  <TVEpisodeWatchedCol>false</TVEpisodeWatchedCol>
+  <FileSystemExpertCleaner>false</FileSystemExpertCleaner>
+  <MovieEFanartsHeight>0</MovieEFanartsHeight>
+  <MovieEThumbsHeight>0</MovieEThumbsHeight>
+  <MovieEThumbsLimit>4</MovieEThumbsLimit>
+  <MovieEFanartsLimit>4</MovieEFanartsLimit>
+  <MovieFanartHeight>0</MovieFanartHeight>
+  <MovieEFanartsPrefOnly>false</MovieEFanartsPrefOnly>
+  <MovieEThumbsPrefOnly>false</MovieEThumbsPrefOnly>
+  <MovieFanartPrefOnly>false</MovieFanartPrefOnly>
+  <MovieFanartQual>0</MovieFanartQual>
+  <MovieEFanartsWidth>0</MovieEFanartsWidth>
+  <MovieEThumbsWidth>0</MovieEThumbsWidth>
+  <MovieFanartWidth>0</MovieFanartWidth>
+  <MovieScraperTop250>true</MovieScraperTop250>
+  <MovieScraperCollection>true</MovieScraperCollection>
+  <MovieScraperCountry>true</MovieScraperCountry>
+  <MovieScraperCast>true</MovieScraperCast>
+  <MovieScraperCertification>true</MovieScraperCertification>
+  <MovieScraperCrew>true</MovieScraperCrew>
+  <MovieScraperDirector>true</MovieScraperDirector>
+  <MovieScraperGenre>true</MovieScraperGenre>
+  <MovieScraperMPAA>true</MovieScraperMPAA>
+  <MovieScraperMusicBy>true</MovieScraperMusicBy>
+  <MovieScraperOutline>true</MovieScraperOutline>
+  <MovieScraperPlot>true</MovieScraperPlot>
+  <MovieScraperProducers>true</MovieScraperProducers>
+  <MovieScraperRating>true</MovieScraperRating>
+  <MovieScraperRelease>true</MovieScraperRelease>
+  <MovieScraperRuntime>true</MovieScraperRuntime>
+  <MovieScraperStudio>true</MovieScraperStudio>
+  <MovieScraperTagline>true</MovieScraperTagline>
+  <MovieScraperTitle>true</MovieScraperTitle>
+  <MovieScraperTrailer>true</MovieScraperTrailer>
+  <MovieScraperVotes>true</MovieScraperVotes>
+  <MovieScraperWriters>true</MovieScraperWriters>
+  <MovieScraperYear>true</MovieScraperYear>
+  <MovieFilterCustom />
+  <GeneralFilterPanelState>false</GeneralFilterPanelState>
+  <MovieGeneralFlagLang />
+  <MovieScraperForceTitle />
+  <MovieScraperFullCast>true</MovieScraperFullCast>
+  <MovieScraperFullCrew>false</MovieScraperFullCrew>
+  <GenreFilter>English</GenreFilter>
+  <MovieScraperGenreLimit>0</MovieScraperGenreLimit>
+  <MovieGeneralIgnoreLastScan>true</MovieGeneralIgnoreLastScan>
+  <GeneralInfoPanelAnim>false</GeneralInfoPanelAnim>
+  <GeneralMovieInfoPanelState>0</GeneralMovieInfoPanelState>
+  <GeneralMovieSetInfoPanelState>0</GeneralMovieSetInfoPanelState>
+  <GeneralLanguage>English_(en_US)</GeneralLanguage>
+  <MovieLevTolerance>0</MovieLevTolerance>
+  <MovieLockGenre>false</MovieLockGenre>
+  <MovieLockOutline>false</MovieLockOutline>
+  <MovieLockPlot>false</MovieLockPlot>
+  <MovieLockRating>false</MovieLockRating>
+  <MovieLockLanguageV>false</MovieLockLanguageV>
+  <MovieLockLanguageA>false</MovieLockLanguageA>
+  <MovieLockMPAA>false</MovieLockMPAA>
+  <MovieScraperUseMPAAFSK>false</MovieScraperUseMPAAFSK>
+  <MovieLockStudio>false</MovieLockStudio>
+  <MovieLockTagline>false</MovieLockTagline>
+  <MovieLockTitle>false</MovieLockTitle>
+  <MovieLockTrailer>false</MovieLockTrailer>
+  <MovieGeneralMarkNew>false</MovieGeneralMarkNew>
+  <TVGeneralMarkNewEpisodes>false</TVGeneralMarkNewEpisodes>
+  <TVGeneralMarkNewShows>false</TVGeneralMarkNewShows>
+  <MovieMetadataPerFileType />
+  <MovieMissingBanner>true</MovieMissingBanner>
+  <MovieMissingClearArt>true</MovieMissingClearArt>
+  <MovieMissingClearLogo>true</MovieMissingClearLogo>
+  <MovieMissingDiscArt>true</MovieMissingDiscArt>
+  <MovieMissingEThumbs>true</MovieMissingEThumbs>
+  <MovieMissingEFanarts>true</MovieMissingEFanarts>
+  <MovieMissingFanart>true</MovieMissingFanart>
+  <MovieMissingLandscape>true</MovieMissingLandscape>
+  <MovieMissingNFO>true</MovieMissingNFO>
+  <MovieMissingPoster>true</MovieMissingPoster>
+  <MovieMissingSubs>false</MovieMissingSubs>
+  <MovieMissingTheme>true</MovieMissingTheme>
+  <MovieMissingTrailer>true</MovieMissingTrailer>
+  <MovieBannerCol>false</MovieBannerCol>
+  <MovieClearArtCol>false</MovieClearArtCol>
+  <MovieClearLogoCol>false</MovieClearLogoCol>
+  <MovieDiscArtCol>false</MovieDiscArtCol>
+  <MovieEFanartsCol>false</MovieEFanartsCol>
+  <MovieEThumbsCol>false</MovieEThumbsCol>
+  <MovieFanartCol>false</MovieFanartCol>
+  <MovieLandscapeCol>false</MovieLandscapeCol>
+  <MovieNFOCol>false</MovieNFOCol>
+  <MoviePosterCol>false</MoviePosterCol>
+  <MovieSubCol>false</MovieSubCol>
+  <MovieSetBannerCol>false</MovieSetBannerCol>
+  <MovieSetClearArtCol>false</MovieSetClearArtCol>
+  <MovieSetClearLogoCol>false</MovieSetClearLogoCol>
+  <MovieSetDiscArtCol>false</MovieSetDiscArtCol>
+  <MovieSetFanartCol>false</MovieSetFanartCol>
+  <MovieSetLandscapeCol>false</MovieSetLandscapeCol>
+  <MovieSetNfoCol>false</MovieSetNfoCol>
+  <MovieSetPosterCol>false</MovieSetPosterCol>
+  <GeneralMovieTheme>Default</GeneralMovieTheme>
+  <GeneralMovieSetTheme>Default</GeneralMovieSetTheme>
+  <GeneralDaemonPath />
+  <GeneralDaemonDrive />
+  <MovieThemeCol>false</MovieThemeCol>
+  <MovieTrailerCol>false</MovieTrailerCol>
+  <MovieWatchedCol>false</MovieWatchedCol>
+  <GeneralHideBanner>false</GeneralHideBanner>
+  <GeneralHideCharacterArt>false</GeneralHideCharacterArt>
+  <GeneralHideClearArt>false</GeneralHideClearArt>
+  <GeneralHideClearLogo>false</GeneralHideClearLogo>
+  <GeneralHideDiscArt>false</GeneralHideDiscArt>
+  <GeneralHideFanart>false</GeneralHideFanart>
+  <GeneralHideFanartSmall>false</GeneralHideFanartSmall>
+  <GeneralHideLandscape>false</GeneralHideLandscape>
+  <GeneralHidePoster>false</GeneralHidePoster>
+  <TVEpisodeFilterCustomIsEmpty>false</TVEpisodeFilterCustomIsEmpty>
+  <TVEpisodeNoFilter>true</TVEpisodeNoFilter>
+  <MovieFilterCustomIsEmpty>false</MovieFilterCustomIsEmpty>
+  <MovieNoSaveImagesToNfo>false</MovieNoSaveImagesToNfo>
+  <TVShowFilterCustomIsEmpty>false</TVShowFilterCustomIsEmpty>
+  <FileSystemNoStackExts />
+  <MovieSortTokensIsEmpty>false</MovieSortTokensIsEmpty>
+  <OMMDummyFormat>0</OMMDummyFormat>
+  <OMMDummyTagline />
+  <OMMDummyTop>0</OMMDummyTop>
+  <OMMDummyUseBackground>true</OMMDummyUseBackground>
+  <OMMDummyUseFanart>true</OMMDummyUseFanart>
+  <OMMDummyUseOverlay>true</OMMDummyUseOverlay>
+  <OMMMediaStubTagline />
+  <MovieScraperOnlyValueForMPAA>false</MovieScraperOnlyValueForMPAA>
+  <MovieScraperOutlineForPlot>false</MovieScraperOutlineForPlot>
+  <MovieScraperOutlinePlotEnglishOverwrite>false</MovieScraperOutlinePlotEnglishOverwrite>
+  <TVASBannerOverwrite>true</TVASBannerOverwrite>
+  <TVASFanartOverwrite>true</TVASFanartOverwrite>
+  <TVASLandscapeOverwrite>true</TVASLandscapeOverwrite>
+  <TVASPosterOverwrite>true</TVASPosterOverwrite>
+  <TVEpisodeFanartOverwrite>true</TVEpisodeFanartOverwrite>
+  <TVEpisodePosterOverwrite>true</TVEpisodePosterOverwrite>
+  <MovieEFanartsOverwrite>true</MovieEFanartsOverwrite>
+  <MovieEThumbsOverwrite>true</MovieEThumbsOverwrite>
+  <MovieFanartOverwrite>true</MovieFanartOverwrite>
+  <GeneralOverwriteNfo>false</GeneralOverwriteNfo>
+  <MoviePosterOverwrite>true</MoviePosterOverwrite>
+  <TVSeasonBannerOverwrite>true</TVSeasonBannerOverwrite>
+  <TVShowCharacterArtOverwrite>true</TVShowCharacterArtOverwrite>
+  <TVShowClearArtOverwrite>true</TVShowClearArtOverwrite>
+  <TVShowClearLogoOverwrite>true</TVShowClearLogoOverwrite>
+  <TVSeasonLandscapeCol>false</TVSeasonLandscapeCol>
+  <TVSeasonLandscapeOverwrite>true</TVSeasonLandscapeOverwrite>
+  <TVShowLandscapeOverwrite>true</TVShowLandscapeOverwrite>
+  <TVSeasonFanartOverwrite>true</TVSeasonFanartOverwrite>
+  <TVSeasonPosterOverwrite>true</TVSeasonPosterOverwrite>
+  <TVShowBannerOverwrite>true</TVShowBannerOverwrite>
+  <TVShowFanartOverwrite>true</TVShowFanartOverwrite>
+  <TVShowPosterOverwrite>true</TVShowPosterOverwrite>
+  <MovieBannerOverwrite>true</MovieBannerOverwrite>
+  <MovieDiscArtOverwrite>true</MovieDiscArtOverwrite>
+  <MovieLandscapeOverwrite>true</MovieLandscapeOverwrite>
+  <MovieClearArtOverwrite>true</MovieClearArtOverwrite>
+  <MovieClearLogoOverwrite>true</MovieClearLogoOverwrite>
+  <MovieSetBannerOverwrite>true</MovieSetBannerOverwrite>
+  <MovieSetClearArtOverwrite>true</MovieSetClearArtOverwrite>
+  <MovieSetClearLogoOverwrite>true</MovieSetClearLogoOverwrite>
+  <MovieSetDiscArtOverwrite>true</MovieSetDiscArtOverwrite>
+  <MovieSetFanartOverwrite>true</MovieSetFanartOverwrite>
+  <MovieSetLandscapeOverwrite>true</MovieSetLandscapeOverwrite>
+  <MovieSetPosterOverwrite>true</MovieSetPosterOverwrite>
+  <MovieBannerPrefOnly>false</MovieBannerPrefOnly>
+  <MovieBannerResize>false</MovieBannerResize>
+  <MovieTrailerOverwrite>true</MovieTrailerOverwrite>
+  <MovieThemeOverwrite>true</MovieThemeOverwrite>
+  <MovieScraperPlotForOutline>true</MovieScraperPlotForOutline>
+  <MovieScraperOutlineLimit>350</MovieScraperOutlineLimit>
+  <GeneralImagesGlassOverlay>false</GeneralImagesGlassOverlay>
+  <MoviePosterHeight>0</MoviePosterHeight>
+  <MoviePosterPrefOnly>false</MoviePosterPrefOnly>
+  <MovieBannerQual>0</MovieBannerQual>
+  <MovieEThumbsQual>0</MovieEThumbsQual>
+  <MovieEFanartsQual>0</MovieEFanartsQual>
+  <MoviePosterQual>0</MoviePosterQual>
+  <MoviePosterWidth>0</MoviePosterWidth>
+  <TVASPosterPrefSize>HD1000</TVASPosterPrefSize>
+  <TVEpisodeFanartPrefSize>HD1080</TVEpisodeFanartPrefSize>
+  <MovieFanartPrefSize>Xlrg</MovieFanartPrefSize>
+  <MovieEFanartsPrefSize>Xlrg</MovieEFanartsPrefSize>
+  <MovieEThumbsPrefSize>Xlrg</MovieEThumbsPrefSize>
+  <MoviePosterPrefSize>Xlrg</MoviePosterPrefSize>
+  <TVSeasonFanartPrefSize>HD1080</TVSeasonFanartPrefSize>
+  <TVASFanartPrefSize>HD1080</TVASFanartPrefSize>
+  <TVSeasonPosterPrefSize>HD1000</TVSeasonPosterPrefSize>
+  <TVShowBannerPrefType>Graphical</TVShowBannerPrefType>
+  <MovieBannerPrefType>Graphical</MovieBannerPrefType>
+  <TVASBannerPrefType>Graphical</TVASBannerPrefType>
+  <TVSeasonBannerPrefType>Graphical</TVSeasonBannerPrefType>
+  <TVShowFanartPrefSize>HD1080</TVShowFanartPrefSize>
+  <TVShowPosterPrefSize>HD1000</TVShowPosterPrefSize>
+  <MovieTrailerMinQual>All</MovieTrailerMinQual>
+  <MovieTrailerPrefQual>HD720p</MovieTrailerPrefQual>
+  <MovieProperCase>true</MovieProperCase>
+  <ProxyCreds>
+    <UserName />
+    <Password />
+    <SecurePassword />
+    <Domain />
+  </ProxyCreds>
+  <ProxyPort>-1</ProxyPort>
+  <ProxyURI />
+  <TVASBannerResize>false</TVASBannerResize>
+  <TVASPosterResize>false</TVASPosterResize>
+  <TVASFanartResize>false</TVASFanartResize>
+  <TVEpisodeFanartResize>false</TVEpisodeFanartResize>
+  <TVEpisodePosterResize>false</TVEpisodePosterResize>
+  <MovieEFanartsResize>false</MovieEFanartsResize>
+  <MovieEThumbsResize>false</MovieEThumbsResize>
+  <MovieFanartResize>false</MovieFanartResize>
+  <MoviePosterResize>false</MoviePosterResize>
+  <TVSeasonBannerResize>false</TVSeasonBannerResize>
+  <TVSeasonFanartResize>false</TVSeasonFanartResize>
+  <TVSeasonPosterResize>false</TVSeasonPosterResize>
+  <TVShowBannerResize>false</TVShowBannerResize>
+  <TVShowFanartResize>false</TVShowFanartResize>
+  <TVShowPosterResize>false</TVShowPosterResize>
+  <MovieScraperDurationRuntimeFormat>&lt;m&gt;</MovieScraperDurationRuntimeFormat>
+  <TVScraperDurationRuntimeFormat>&lt;m&gt;</TVScraperDurationRuntimeFormat>
+  <MovieScraperMetaDataScan>true</MovieScraperMetaDataScan>
+  <MovieScanOrderModify>false</MovieScanOrderModify>
+  <TVScraperMetaDataScan>true</TVScraperMetaDataScan>
+  <TVScraperEpisodeActors>true</TVScraperEpisodeActors>
+  <TVScraperEpisodeAired>true</TVScraperEpisodeAired>
+  <TVScraperEpisodeCredits>true</TVScraperEpisodeCredits>
+  <TVScraperEpisodeDirector>true</TVScraperEpisodeDirector>
+  <TVScraperEpisodeEpisode>true</TVScraperEpisodeEpisode>
+  <TVScraperEpisodePlot>true</TVScraperEpisodePlot>
+  <TVScraperEpisodeRating>true</TVScraperEpisodeRating>
+  <TVScraperEpisodeSeason>true</TVScraperEpisodeSeason>
+  <TVScraperEpisodeTitle>true</TVScraperEpisodeTitle>
+  <TVScraperShowActors>true</TVScraperShowActors>
+  <TVScraperShowEpiGuideURL>true</TVScraperShowEpiGuideURL>
+  <TVScraperShowGenre>true</TVScraperShowGenre>
+  <TVScraperShowMPAA>true</TVScraperShowMPAA>
+  <TVScraperShowPlot>true</TVScraperShowPlot>
+  <TVScraperShowPremiered>true</TVScraperShowPremiered>
+  <TVScraperShowRating>true</TVScraperShowRating>
+  <TVScraperShowStatus>true</TVScraperShowStatus>
+  <TVScraperShowStudio>true</TVScraperShowStudio>
+  <TVScraperShowTitle>true</TVScraperShowTitle>
+  <TVSeasonFanartCol>false</TVSeasonFanartCol>
+  <TVSeasonFanartHeight>0</TVSeasonFanartHeight>
+  <TVSeasonFanartQual>0</TVSeasonFanartQual>
+  <TVSeasonFanartWidth>0</TVSeasonFanartWidth>
+  <TVSeasonBannerCol>false</TVSeasonBannerCol>
+  <TVASBannerWidth>0</TVASBannerWidth>
+  <TVSeasonBannerWidth>0</TVSeasonBannerWidth>
+  <TVASFanartWidth>0</TVASFanartWidth>
+  <TVShowBannerWidth>0</TVShowBannerWidth>
+  <MovieBannerWidth>0</MovieBannerWidth>
+  <TVASBannerHeight>0</TVASBannerHeight>
+  <TVSeasonBannerHeight>0</TVSeasonBannerHeight>
+  <TVASFanartHeight>0</TVASFanartHeight>
+  <TVShowBannerHeight>0</TVShowBannerHeight>
+  <MovieBannerHeight>0</MovieBannerHeight>
+  <TVSeasonPosterCol>false</TVSeasonPosterCol>
+  <TVSeasonPosterHeight>0</TVSeasonPosterHeight>
+  <TVSeasonPosterQual>0</TVSeasonPosterQual>
+  <TVSeasonPosterWidth>0</TVSeasonPosterWidth>
+  <MovieSets />
+  <GeneralShowImgDims>true</GeneralShowImgDims>
+  <TVShowFanartCol>false</TVShowFanartCol>
+  <TVShowFanartHeight>0</TVShowFanartHeight>
+  <TVShowFanartQual>0</TVShowFanartQual>
+  <TVShowFanartWidth>0</TVShowFanartWidth>
+  <TVShowFilterCustom />
+  <GeneralTVShowInfoPanelState>0</GeneralTVShowInfoPanelState>
+  <TVLockShowGenre>false</TVLockShowGenre>
+  <TVLockShowPlot>false</TVLockShowPlot>
+  <TVLockShowRating>false</TVLockShowRating>
+  <TVLockShowStatus>false</TVLockShowStatus>
+  <TVLockShowStudio>false</TVLockShowStudio>
+  <TVLockShowTitle>false</TVLockShowTitle>
+  <TVShowBannerCol>false</TVShowBannerCol>
+  <TVShowCharacterArtCol>false</TVShowCharacterArtCol>
+  <TVShowClearArtCol>false</TVShowClearArtCol>
+  <TVShowClearLogoCol>false</TVShowClearLogoCol>
+  <TVShowEFanartsCol>false</TVShowEFanartsCol>
+  <TVShowLandscapeCol>false</TVShowLandscapeCol>
+  <TVShowThemeCol>false</TVShowThemeCol>
+  <TVShowNfoCol>false</TVShowNfoCol>
+  <TVShowPosterCol>false</TVShowPosterCol>
+  <TVShowPosterHeight>0</TVShowPosterHeight>
+  <TVShowPosterQual>0</TVShowPosterQual>
+  <TVShowPosterWidth>0</TVShowPosterWidth>
+  <TVShowProperCase>true</TVShowProperCase>
+  <TVScraperRatingRegion>usa</TVScraperRatingRegion>
+  <MovieSkipLessThan>0</MovieSkipLessThan>
+  <MovieSkipStackedSizeCheck>false</MovieSkipStackedSizeCheck>
+  <TVSkipLessThan>0</TVSkipLessThan>
+  <MovieSortBeforeScan>false</MovieSortBeforeScan>
+  <SortPath />
+  <MovieSortTokens />
+  <GeneralSourceFromFolder>true</GeneralSourceFromFolder>
+  <GeneralMainSplitterPanelState>564</GeneralMainSplitterPanelState>
+  <GeneralShowSplitterPanelState>200</GeneralShowSplitterPanelState>
+  <GeneralSeasonSplitterPanelState>200</GeneralSeasonSplitterPanelState>
+  <TVCleanDB>true</TVCleanDB>
+  <GeneralTVEpisodeTheme>Default</GeneralTVEpisodeTheme>
+  <TVGeneralFlagLang />
+  <TVGeneralIgnoreLastScan>true</TVGeneralIgnoreLastScan>
+  <TVMetadataPerFileType />
+  <TVScanOrderModify>false</TVScanOrderModify>
+  <TVShowRegexes />
+  <GeneralTVShowTheme>Default</GeneralTVShowTheme>
+  <TVScraperUpdateTime>Always</TVScraperUpdateTime>
+  <MovieTrailerEnable>true</MovieTrailerEnable>
+  <MovieThemeEnable>true</MovieThemeEnable>
+  <MovieScraperCertForMPAA>false</MovieScraperCertForMPAA>
+  <MovieScraperUseMDDuration>true</MovieScraperUseMDDuration>
+  <TVScraperUseMDDuration>true</TVScraperUseMDDuration>
+  <FileSystemValidExts />
+  <FileSystemValidThemeExts />
+  <Version />
+  <GeneralWindowLoc>
+    <X>208</X>
+    <Y>46</Y>
+  </GeneralWindowLoc>
+  <GeneralWindowSize>
+    <Width>1024</Width>
+    <Height>768</Height>
+  </GeneralWindowSize>
+  <GeneralWindowState>Maximized</GeneralWindowState>
+  <Username />
+  <Password />
+  <TraktUsername />
+  <TraktPassword />
+  <UseTrakt>false</UseTrakt>
+  <GeneralCreationDate>false</GeneralCreationDate>
+  <MovieUseFrodo>false</MovieUseFrodo>
+  <MovieActorThumbsFrodo>false</MovieActorThumbsFrodo>
+  <MovieBannerFrodo>false</MovieBannerFrodo>
+  <MovieClearArtFrodo>false</MovieClearArtFrodo>
+  <MovieClearLogoFrodo>false</MovieClearLogoFrodo>
+  <MovieDiscArtFrodo>false</MovieDiscArtFrodo>
+  <MovieExtrafanartsFrodo>false</MovieExtrafanartsFrodo>
+  <MovieExtrathumbsFrodo>false</MovieExtrathumbsFrodo>
+  <MovieFanartFrodo>false</MovieFanartFrodo>
+  <MovieLandscapeFrodo>false</MovieLandscapeFrodo>
+  <MovieNFOFrodo>false</MovieNFOFrodo>
+  <MoviePosterFrodo>false</MoviePosterFrodo>
+  <MovieTrailerFrodo>false</MovieTrailerFrodo>
+  <MovieUseEden>false</MovieUseEden>
+  <MovieActorThumbsEden>false</MovieActorThumbsEden>
+  <MovieBannerEden>false</MovieBannerEden>
+  <MovieClearArtEden>false</MovieClearArtEden>
+  <MovieClearLogoEden>false</MovieClearLogoEden>
+  <MovieDiscArtEden>false</MovieDiscArtEden>
+  <MovieExtrafanartsEden>false</MovieExtrafanartsEden>
+  <MovieExtrathumbsEden>false</MovieExtrathumbsEden>
+  <MovieFanartEden>false</MovieFanartEden>
+  <MovieLandscapeEden>false</MovieLandscapeEden>
+  <MovieNFOEden>false</MovieNFOEden>
+  <MoviePosterEden>false</MoviePosterEden>
+  <MovieTrailerEden>false</MovieTrailerEden>
+  <MovieXBMCThemeEnable>false</MovieXBMCThemeEnable>
+  <MovieXBMCThemeCustom>false</MovieXBMCThemeCustom>
+  <MovieXBMCThemeMovie>false</MovieXBMCThemeMovie>
+  <MovieXBMCThemeSub>false</MovieXBMCThemeSub>
+  <MovieXBMCThemeCustomPath />
+  <MovieXBMCThemeSubDir>Themes</MovieXBMCThemeSubDir>
+  <MovieXBMCTrailerFormat>false</MovieXBMCTrailerFormat>
+  <MovieXBMCProtectVTSBDMV>false</MovieXBMCProtectVTSBDMV>
+  <MovieUseYAMJ>false</MovieUseYAMJ>
+  <MovieBannerYAMJ>false</MovieBannerYAMJ>
+  <MovieFanartYAMJ>false</MovieFanartYAMJ>
+  <MovieNFOYAMJ>false</MovieNFOYAMJ>
+  <MoviePosterYAMJ>false</MoviePosterYAMJ>
+  <MovieTrailerYAMJ>false</MovieTrailerYAMJ>
+  <MovieYAMJCompatibleSets>false</MovieYAMJCompatibleSets>
+  <MovieYAMJWatchedFile>false</MovieYAMJWatchedFile>
+  <MovieYAMJWatchedFolder />
+  <MovieUseNMJ>false</MovieUseNMJ>
+  <MovieBannerNMJ>false</MovieBannerNMJ>
+  <MovieFanartNMJ>false</MovieFanartNMJ>
+  <MovieNFONMJ>false</MovieNFONMJ>
+  <MoviePosterNMJ>false</MoviePosterNMJ>
+  <MovieTrailerNMJ>false</MovieTrailerNMJ>
+  <MovieUseBoxee>false</MovieUseBoxee>
+  <MovieFanartBoxee>false</MovieFanartBoxee>
+  <MovieNFOBoxee>false</MovieNFOBoxee>
+  <MoviePosterBoxee>false</MoviePosterBoxee>
+  <MovieUseExpert>false</MovieUseExpert>
+  <MovieActorThumbsExpertSingle>false</MovieActorThumbsExpertSingle>
+  <MovieActorThumbsExtExpertSingle />
+  <MovieBannerExpertSingle />
+  <MovieClearArtExpertSingle />
+  <MovieClearLogoExpertSingle />
+  <MovieDiscArtExpertSingle />
+  <MovieExtrafanartsExpertSingle>false</MovieExtrafanartsExpertSingle>
+  <MovieExtrathumbsExpertSingle>false</MovieExtrathumbsExpertSingle>
+  <MovieFanartExpertSingle />
+  <MovieLandscapeExpertSingle />
+  <MovieNFOExpertSingle />
+  <MoviePosterExpertSingle />
+  <MovieStackExpertSingle>false</MovieStackExpertSingle>
+  <MovieTrailerExpertSingle />
+  <MovieUnstackExpertSingle>false</MovieUnstackExpertSingle>
+  <MovieActorThumbsExpertMulti>false</MovieActorThumbsExpertMulti>
+  <MovieActorThumbsExtExpertMulti />
+  <MovieBannerExpertMulti />
+  <MovieClearArtExpertMulti />
+  <MovieClearLogoExpertMulti />
+  <MovieDiscArtExpertMulti />
+  <MovieFanartExpertMulti />
+  <MovieLandscapeExpertMulti />
+  <MovieNFOExpertMulti />
+  <MoviePosterExpertMulti />
+  <MovieStackExpertMulti>false</MovieStackExpertMulti>
+  <MovieTrailerExpertMulti />
+  <MovieUnstackExpertMulti>false</MovieUnstackExpertMulti>
+  <MovieActorThumbsExpertVTS>false</MovieActorThumbsExpertVTS>
+  <MovieActorThumbsExtExpertVTS />
+  <MovieBannerExpertVTS />
+  <MovieClearArtExpertVTS />
+  <MovieClearLogoExpertVTS />
+  <MovieDiscArtExpertVTS />
+  <MovieExtrafanartsExpertVTS>false</MovieExtrafanartsExpertVTS>
+  <MovieExtrathumbsExpertVTS>false</MovieExtrathumbsExpertVTS>
+  <MovieFanartExpertVTS />
+  <MovieLandscapeExpertVTS />
+  <MovieNFOExpertVTS />
+  <MoviePosterExpertVTS />
+  <MovieRecognizeVTSExpertVTS>false</MovieRecognizeVTSExpertVTS>
+  <MovieTrailerExpertVTS />
+  <MovieUseBaseDirectoryExpertVTS>false</MovieUseBaseDirectoryExpertVTS>
+  <MovieActorThumbsExpertBDMV>false</MovieActorThumbsExpertBDMV>
+  <MovieActorThumbsExtExpertBDMV />
+  <MovieBannerExpertBDMV />
+  <MovieClearArtExpertBDMV />
+  <MovieClearLogoExpertBDMV />
+  <MovieDiscArtExpertBDMV />
+  <MovieExtrafanartsExpertBDMV>false</MovieExtrafanartsExpertBDMV>
+  <MovieExtrathumbsExpertBDMV>false</MovieExtrathumbsExpertBDMV>
+  <MovieFanartExpertBDMV />
+  <MovieLandscapeExpertBDMV />
+  <MovieNFOExpertBDMV />
+  <MoviePosterExpertBDMV />
+  <MovieTrailerExpertBDMV />
+  <MovieUseBaseDirectoryExpertBDMV>false</MovieUseBaseDirectoryExpertBDMV>
+  <TVUseBoxee>false</TVUseBoxee>
+  <TVUseEden>false</TVUseEden>
+  <TVUseFrodo>false</TVUseFrodo>
+  <TVUseYAMJ>false</TVUseYAMJ>
+  <TVShowBannerBoxee>false</TVShowBannerBoxee>
+  <TVShowBannerFrodo>false</TVShowBannerFrodo>
+  <TVShowBannerYAMJ>false</TVShowBannerYAMJ>
+  <TVShowExtrafanartsXBMC>false</TVShowExtrafanartsXBMC>
+  <TVShowFanartBoxee>false</TVShowFanartBoxee>
+  <TVShowFanartFrodo>false</TVShowFanartFrodo>
+  <TVShowFanartYAMJ>false</TVShowFanartYAMJ>
+  <TVShowPosterBoxee>false</TVShowPosterBoxee>
+  <TVShowPosterFrodo>false</TVShowPosterFrodo>
+  <TVShowPosterYAMJ>false</TVShowPosterYAMJ>
+  <TVShowActorThumbsFrodo>false</TVShowActorThumbsFrodo>
+  <TVSeasonPosterBoxee>false</TVSeasonPosterBoxee>
+  <TVSeasonPosterFrodo>false</TVSeasonPosterFrodo>
+  <TVSeasonPosterYAMJ>false</TVSeasonPosterYAMJ>
+  <TVSeasonFanartFrodo>false</TVSeasonFanartFrodo>
+  <TVSeasonFanartYAMJ>false</TVSeasonFanartYAMJ>
+  <TVSeasonBannerFrodo>false</TVSeasonBannerFrodo>
+  <TVSeasonBannerYAMJ>false</TVSeasonBannerYAMJ>
+  <TVEpisodePosterBoxee>false</TVEpisodePosterBoxee>
+  <TVEpisodePosterFrodo>false</TVEpisodePosterFrodo>
+  <TVEpisodePosterYAMJ>false</TVEpisodePosterYAMJ>
+  <TVEpisodeActorThumbsFrodo>false</TVEpisodeActorThumbsFrodo>
+  <TVShowClearLogoXBMC>false</TVShowClearLogoXBMC>
+  <TVShowClearArtXBMC>false</TVShowClearArtXBMC>
+  <TVShowCharacterArtXBMC>false</TVShowCharacterArtXBMC>
+  <TVShowTVThemeXBMC>false</TVShowTVThemeXBMC>
+  <TVShowTVThemeFolderXBMC />
+  <TVShowLandscapeXBMC>false</TVShowLandscapeXBMC>
+  <TVSeasonLandscapeXBMC>false</TVSeasonLandscapeXBMC>
+  <MovieScraperTitleFallback>true</MovieScraperTitleFallback>
+</Settings>

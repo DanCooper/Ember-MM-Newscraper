@@ -93,42 +93,42 @@ Public Class genericYAMJ
 		Me.fYAMJ.chkEnabled.Checked = Me._enabled
         'Me.fYAMJ.chkVideoTSParent.Checked = Master.eSettings.VideoTSParent
         Me.fYAMJ.chkYAMJCompatibleSets.Checked = Master.eSettings.MovieYAMJCompatibleSets
-		Me.fYAMJ.chkYAMJCompatibleTVImages.Checked = AdvancedSettings.GetBooleanSetting("YAMJTVImageNaming", False)
-		Me.fYAMJ.chkYAMJnfoFields.Checked = AdvancedSettings.GetBooleanSetting("YAMJnfoFields", False)
-		Me.fYAMJ.chkShowPoster.Checked = AdvancedSettings.GetBooleanSetting("YAMJShowPoster", False)
-		Me.fYAMJ.chkShowFanart.Checked = AdvancedSettings.GetBooleanSetting("YAMJShowFanart", False)
-		Me.fYAMJ.chkSeasonPoster.Checked = AdvancedSettings.GetBooleanSetting("YAMJSeasonPoster", False)
-		Me.fYAMJ.chkSeasonFanart.Checked = AdvancedSettings.GetBooleanSetting("YAMJSeasonFanart", False)
-		Me.fYAMJ.chkEpisodePoster.Checked = AdvancedSettings.GetBooleanSetting("YAMJEpisodePoster", False)
-		Me.fYAMJ.chkAllSeasonPoster.Checked = AdvancedSettings.GetBooleanSetting("YAMJAllSeasonPoster", False)
-		'chkYAMJnfoFields
-		SPanel.Name = _name
+        Me.fYAMJ.chkYAMJCompatibleTVImages.Checked = clsAdvancedSettings.GetBooleanSetting("YAMJTVImageNaming", False)
+        Me.fYAMJ.chkYAMJnfoFields.Checked = clsAdvancedSettings.GetBooleanSetting("YAMJnfoFields", False)
+        Me.fYAMJ.chkShowPoster.Checked = clsAdvancedSettings.GetBooleanSetting("YAMJShowPoster", False)
+        Me.fYAMJ.chkShowFanart.Checked = clsAdvancedSettings.GetBooleanSetting("YAMJShowFanart", False)
+        Me.fYAMJ.chkSeasonPoster.Checked = clsAdvancedSettings.GetBooleanSetting("YAMJSeasonPoster", False)
+        Me.fYAMJ.chkSeasonFanart.Checked = clsAdvancedSettings.GetBooleanSetting("YAMJSeasonFanart", False)
+        Me.fYAMJ.chkEpisodePoster.Checked = clsAdvancedSettings.GetBooleanSetting("YAMJEpisodePoster", False)
+        Me.fYAMJ.chkAllSeasonPoster.Checked = clsAdvancedSettings.GetBooleanSetting("YAMJAllSeasonPoster", False)
+        'chkYAMJnfoFields
+        SPanel.Name = _name
         SPanel.Text = Master.eLang.GetString(612, "YAMJ Compatibility")
-		SPanel.Prefix = "YAMJ_"
+        SPanel.Prefix = "YAMJ_"
         SPanel.Type = Master.eLang.GetString(802, "Modules")
-		SPanel.ImageIndex = If(Me._enabled, 9, 10)
-		SPanel.Order = 100
-		SPanel.Panel = Me.fYAMJ.pnlSettings
-		AddHandler Me.fYAMJ.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
-		AddHandler fYAMJ.ModuleEnabledChanged, AddressOf Handle_SetupChanged
-		AddHandler fYAMJ.GenericEvent, AddressOf DeploySyncSettings
-		Return SPanel
-		'Return Nothing
-	End Function
+        SPanel.ImageIndex = If(Me._enabled, 9, 10)
+        SPanel.Order = 100
+        SPanel.Panel = Me.fYAMJ.pnlSettings
+        AddHandler Me.fYAMJ.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+        AddHandler fYAMJ.ModuleEnabledChanged, AddressOf Handle_SetupChanged
+        AddHandler fYAMJ.GenericEvent, AddressOf DeploySyncSettings
+        Return SPanel
+        'Return Nothing
+    End Function
 
-	Private Sub Handle_ModuleSettingsChanged()
-		RaiseEvent ModuleSettingsChanged()
-	End Sub
+    Private Sub Handle_ModuleSettingsChanged()
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
 
-	Private Sub Handle_SetupChanged(ByVal state As Boolean, ByVal difforder As Integer)
-		RaiseEvent ModuleSetupChanged(Me._name, state, difforder)
-	End Sub
+    Private Sub Handle_SetupChanged(ByVal state As Boolean, ByVal difforder As Integer)
+        RaiseEvent ModuleSetupChanged(Me._name, state, difforder)
+    End Sub
 
-	Public Sub SaveSetup(ByVal DoDispose As Boolean) Implements EmberAPI.Interfaces.EmberExternalModule.SaveSetup
-		Me.Enabled = Me.fYAMJ.chkEnabled.Checked
-		'Master.eSettings.VideoTSParent = Me.fYAMJ.chkVideoTSParent.Checked
+    Public Sub SaveSetup(ByVal DoDispose As Boolean) Implements EmberAPI.Interfaces.EmberExternalModule.SaveSetup
+        Me.Enabled = Me.fYAMJ.chkEnabled.Checked
+        'Master.eSettings.VideoTSParent = Me.fYAMJ.chkVideoTSParent.Checked
         Master.eSettings.MovieYAMJCompatibleSets = Me.fYAMJ.chkYAMJCompatibleSets.Checked
-        Using settings = New AdvancedSettings()
+        Using settings = New clsAdvancedSettings()
             settings.SetBooleanSetting("YAMJTVImageNaming", Me.fYAMJ.chkYAMJCompatibleTVImages.Checked)
             settings.SetBooleanSetting("YAMJnfoFields", Me.fYAMJ.chkYAMJnfoFields.Checked)
             settings.SetBooleanSetting("YAMJShowPoster", Me.fYAMJ.chkShowPoster.Checked)
@@ -140,120 +140,120 @@ Public Class genericYAMJ
         End Using
     End Sub
 
-	Public Function RunGeneric(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object), ByRef _refparam As Object) As EmberAPI.Interfaces.ModuleResult Implements EmberAPI.Interfaces.EmberExternalModule.RunGeneric
-		Dim iType As Enums.TVImageType
-		Dim mShow As Structures.DBTV
-		Dim imageList As List(Of String)
-		Dim doContinue As Boolean
-		Dim mMovie As Structures.DBMovie
-		If Enabled Then
-			Try
-				Select Case mType
-					Case Enums.ModuleEventType.TVImageNaming
-						If AdvancedSettings.GetBooleanSetting("YAMJTVImageNaming", False) Then
-							iType = DirectCast(_params(0), Enums.TVImageType)
-							mShow = DirectCast(_params(1), Structures.DBTV)
-							imageList = DirectCast(_params(2), List(Of String))
-							doContinue = DirectCast(_refparam, Boolean)
-							Dim tPath As String = String.Empty
-							Select Case iType
-								Case Enums.TVImageType.AllSeasonsPoster
-									If AdvancedSettings.GetBooleanSetting("YAMJAllSeasonPoster", False) Then
-										Dim seasonPath As String = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, 0)
-										If String.IsNullOrEmpty(seasonPath) Then
-											Dim dtSeasons As New DataTable
+    Public Function RunGeneric(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object), ByRef _refparam As Object) As EmberAPI.Interfaces.ModuleResult Implements EmberAPI.Interfaces.EmberExternalModule.RunGeneric
+        Dim iType As Enums.TVImageType
+        Dim mShow As Structures.DBTV
+        Dim imageList As List(Of String)
+        Dim doContinue As Boolean
+        Dim mMovie As Structures.DBMovie
+        If Enabled Then
+            Try
+                Select Case mType
+                    Case Enums.ModuleEventType.TVImageNaming
+                        If clsAdvancedSettings.GetBooleanSetting("YAMJTVImageNaming", False) Then
+                            iType = DirectCast(_params(0), Enums.TVImageType)
+                            mShow = DirectCast(_params(1), Structures.DBTV)
+                            imageList = DirectCast(_params(2), List(Of String))
+                            doContinue = DirectCast(_refparam, Boolean)
+                            Dim tPath As String = String.Empty
+                            Select Case iType
+                                Case Enums.TVImageType.AllSeasonsPoster
+                                    If clsAdvancedSettings.GetBooleanSetting("YAMJAllSeasonPoster", False) Then
+                                        Dim seasonPath As String = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, 0)
+                                        If String.IsNullOrEmpty(seasonPath) Then
+                                            Dim dtSeasons As New DataTable
                                             Master.DB.FillDataTable(dtSeasons, String.Concat("SELECT TVShowID, SeasonText, Season, HasPoster, HasFanart, PosterPath, FanartPath, Lock , Mark , New FROM TVSeason WHERE TVShowID = ", mShow.ShowID, " AND Season <> 999 ORDER BY Season;"))
-											If dtSeasons.Rows.Count > 0 Then
-												seasonPath = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, Convert.ToInt32(dtSeasons.Rows(0).Item("Season").ToString))
-											End If
-										End If
-										tPath = Path.Combine(mShow.ShowPath, seasonPath)
-										'tPath = Path.Combine(tPath, String.Concat("Set_", FileUtils.Common.GetDirectory(mShow.ShowPath), "_1.banner.jpg"))
-										tPath = Path.Combine(tPath, "Season 1.banner.jpg")
-										imageList.Add(tPath)
-										'doContinue = False
-									End If
-								Case Enums.TVImageType.EpisodePoster
-									If AdvancedSettings.GetBooleanSetting("YAMJEpisodePoster", False) Then
-										tPath = String.Concat(FileUtils.Common.RemoveExtFromPath(mShow.Filename), ".videoimage.jpg")
-										imageList.Add(tPath)
-										doContinue = False
-									End If
-								Case Enums.TVImageType.EpisodeFanart
-									doContinue = False
-								Case Enums.TVImageType.SeasonPoster
-									If AdvancedSettings.GetBooleanSetting("YAMJSeasonPoster", False) Then
-										Dim epPath As String = String.Empty
-										Dim dtEpisodes As New DataTable
+                                            If dtSeasons.Rows.Count > 0 Then
+                                                seasonPath = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, Convert.ToInt32(dtSeasons.Rows(0).Item("Season").ToString))
+                                            End If
+                                        End If
+                                        tPath = Path.Combine(mShow.ShowPath, seasonPath)
+                                        'tPath = Path.Combine(tPath, String.Concat("Set_", FileUtils.Common.GetDirectory(mShow.ShowPath), "_1.banner.jpg"))
+                                        tPath = Path.Combine(tPath, "Season 1.banner.jpg")
+                                        imageList.Add(tPath)
+                                        'doContinue = False
+                                    End If
+                                Case Enums.TVImageType.EpisodePoster
+                                    If clsAdvancedSettings.GetBooleanSetting("YAMJEpisodePoster", False) Then
+                                        tPath = String.Concat(FileUtils.Common.RemoveExtFromPath(mShow.Filename), ".videoimage.jpg")
+                                        imageList.Add(tPath)
+                                        doContinue = False
+                                    End If
+                                Case Enums.TVImageType.EpisodeFanart
+                                    doContinue = False
+                                Case Enums.TVImageType.SeasonPoster
+                                    If clsAdvancedSettings.GetBooleanSetting("YAMJSeasonPoster", False) Then
+                                        Dim epPath As String = String.Empty
+                                        Dim dtEpisodes As New DataTable
                                         Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT ID, TVShowID, Episode, Title, HasPoster, HasFanart, HasNfo, New, Mark, TVEpPathID, Source, Lock, Season, Rating, Plot, Aired, Director, Credits, PosterPath, FanartPath, NfoPath, NeedsSave, Missing, Playcount, HasWatched, DisplaySeason, DisplayEpisode FROM TVEps INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE TVShowID = ", mShow.ShowID, " AND Season = ", mShow.TVEp.Season, " ORDER BY Episode;"))
-										If dtEpisodes.Rows.Count > 0 Then
-											epPath = dtEpisodes.Rows(0).Item("TVEpPath").ToString
-											imageList.Add(Path.Combine(Path.GetDirectoryName(epPath), String.Concat(Path.GetFileNameWithoutExtension(epPath), ".jpg")))
-											'doContinue = False
-										End If
-									End If
-								Case Enums.TVImageType.SeasonFanart
-									If AdvancedSettings.GetBooleanSetting("YAMJSeasonFanart", False) Then
-										Dim epPath As String = String.Empty
-										Dim dtEpisodes As New DataTable
+                                        If dtEpisodes.Rows.Count > 0 Then
+                                            epPath = dtEpisodes.Rows(0).Item("TVEpPath").ToString
+                                            imageList.Add(Path.Combine(Path.GetDirectoryName(epPath), String.Concat(Path.GetFileNameWithoutExtension(epPath), ".jpg")))
+                                            'doContinue = False
+                                        End If
+                                    End If
+                                Case Enums.TVImageType.SeasonFanart
+                                    If clsAdvancedSettings.GetBooleanSetting("YAMJSeasonFanart", False) Then
+                                        Dim epPath As String = String.Empty
+                                        Dim dtEpisodes As New DataTable
                                         Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT ID, TVShowID, Episode, Title, HasPoster, HasFanart, HasNfo, New, Mark, TVEpPathID, Source, Lock, Season, Rating, Plot, Aired, Director, Credits, PosterPath, FanartPath, NfoPath, NeedsSave, Missing, Playcount, HasWatched, DisplaySeason, DisplayEpisode FROM TVEps INNER JOIN TVEpPaths ON (TVEpPaths.ID = TVEpPathid) WHERE TVShowID = ", mShow.ShowID, " AND Season = ", mShow.TVEp.Season, " ORDER BY Episode;"))
-										If dtEpisodes.Rows.Count > 0 Then
-											epPath = dtEpisodes.Rows(0).Item("TVEpPath").ToString
-											imageList.Add(Path.Combine(Path.GetDirectoryName(epPath), String.Concat(Path.GetFileNameWithoutExtension(epPath), ".fanart.jpg")))
-											'doContinue = False
-										End If
-									End If
-								Case Enums.TVImageType.ShowPoster
-									If AdvancedSettings.GetBooleanSetting("YAMJShowPoster", False) Then
-										Dim seasonPath As String = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, 0)
-										If String.IsNullOrEmpty(seasonPath) Then
-											Dim dtSeasons As New DataTable
+                                        If dtEpisodes.Rows.Count > 0 Then
+                                            epPath = dtEpisodes.Rows(0).Item("TVEpPath").ToString
+                                            imageList.Add(Path.Combine(Path.GetDirectoryName(epPath), String.Concat(Path.GetFileNameWithoutExtension(epPath), ".fanart.jpg")))
+                                            'doContinue = False
+                                        End If
+                                    End If
+                                Case Enums.TVImageType.ShowPoster
+                                    If clsAdvancedSettings.GetBooleanSetting("YAMJShowPoster", False) Then
+                                        Dim seasonPath As String = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, 0)
+                                        If String.IsNullOrEmpty(seasonPath) Then
+                                            Dim dtSeasons As New DataTable
                                             Master.DB.FillDataTable(dtSeasons, String.Concat("SELECT TVShowID, SeasonText, Season, HasPoster, HasFanart, PosterPath, FanartPath, Lock , Mark , New FROM TVSeason WHERE TVShowID = ", mShow.ShowID, " AND Season <> 999 ORDER BY Season;"))
-											If dtSeasons.Rows.Count > 0 Then
-												seasonPath = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, Convert.ToInt32(dtSeasons.Rows(0).Item("Season").ToString))
-											End If
-										End If
-										tPath = Path.Combine(mShow.ShowPath, seasonPath)
-										tPath = Path.Combine(tPath, String.Concat("Set_", FileUtils.Common.GetDirectory(mShow.ShowPath), "_1.jpg"))
-										imageList.Add(tPath)
-										'doContinue = False
-									End If
-								Case Enums.TVImageType.ShowFanart
-									If AdvancedSettings.GetBooleanSetting("YAMJShowFanart", False) Then
-										Dim seasonPath As String = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, 0)
-										If String.IsNullOrEmpty(seasonPath) Then
-											Dim dtSeasons As New DataTable
+                                            If dtSeasons.Rows.Count > 0 Then
+                                                seasonPath = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, Convert.ToInt32(dtSeasons.Rows(0).Item("Season").ToString))
+                                            End If
+                                        End If
+                                        tPath = Path.Combine(mShow.ShowPath, seasonPath)
+                                        tPath = Path.Combine(tPath, String.Concat("Set_", FileUtils.Common.GetDirectory(mShow.ShowPath), "_1.jpg"))
+                                        imageList.Add(tPath)
+                                        'doContinue = False
+                                    End If
+                                Case Enums.TVImageType.ShowFanart
+                                    If clsAdvancedSettings.GetBooleanSetting("YAMJShowFanart", False) Then
+                                        Dim seasonPath As String = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, 0)
+                                        If String.IsNullOrEmpty(seasonPath) Then
+                                            Dim dtSeasons As New DataTable
                                             Master.DB.FillDataTable(dtSeasons, String.Concat("SELECT TVShowID, SeasonText, Season, HasPoster, HasFanart, PosterPath, FanartPath, Lock , Mark , New FROM TVSeason WHERE TVShowID = ", mShow.ShowID, " AND Season <> 999 ORDER BY Season;"))
-											If dtSeasons.Rows.Count > 0 Then
-												seasonPath = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, Convert.ToInt32(dtSeasons.Rows(0).Item("Season").ToString))
-											End If
-										End If
-										tPath = Path.Combine(mShow.ShowPath, seasonPath)
-										tPath = Path.Combine(tPath, String.Concat("Set_", FileUtils.Common.GetDirectory(mShow.ShowPath), "_1.fanart.jpg"))
-										imageList.Add(tPath)
-										'doContinue = False
-									End If
-							End Select
-						End If
-					Case Enums.ModuleEventType.OnMovieNFOSave
-						mMovie = DirectCast(_params(0), Structures.DBMovie)
-						doContinue = DirectCast(_refparam, Boolean)
-						If AdvancedSettings.GetBooleanSetting("YAMJnfoFields", False) Then
-							If Not String.IsNullOrEmpty(mMovie.FileSource) Then
-								mMovie.Movie.VideoSource = mMovie.FileSource
-							End If
-							mMovie.Movie.IDMovieDB = "imdb"
-						Else
-							mMovie.Movie.IDMovieDB = String.Empty
-							mMovie.Movie.VideoSource = String.Empty
-						End If
-				End Select
-				_refparam = doContinue
-			Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name,ex)
-			End Try
-		End If
-	End Function
+                                            If dtSeasons.Rows.Count > 0 Then
+                                                seasonPath = Functions.GetSeasonDirectoryFromShowPath(mShow.ShowPath, Convert.ToInt32(dtSeasons.Rows(0).Item("Season").ToString))
+                                            End If
+                                        End If
+                                        tPath = Path.Combine(mShow.ShowPath, seasonPath)
+                                        tPath = Path.Combine(tPath, String.Concat("Set_", FileUtils.Common.GetDirectory(mShow.ShowPath), "_1.fanart.jpg"))
+                                        imageList.Add(tPath)
+                                        'doContinue = False
+                                    End If
+                            End Select
+                        End If
+                    Case Enums.ModuleEventType.OnMovieNFOSave
+                        mMovie = DirectCast(_params(0), Structures.DBMovie)
+                        doContinue = DirectCast(_refparam, Boolean)
+                        If clsAdvancedSettings.GetBooleanSetting("YAMJnfoFields", False) Then
+                            If Not String.IsNullOrEmpty(mMovie.FileSource) Then
+                                mMovie.Movie.VideoSource = mMovie.FileSource
+                            End If
+                            mMovie.Movie.IDMovieDB = "imdb"
+                        Else
+                            mMovie.Movie.IDMovieDB = String.Empty
+                            mMovie.Movie.VideoSource = String.Empty
+                        End If
+                End Select
+                _refparam = doContinue
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+            End Try
+        End If
+    End Function
 
 	Protected Overrides Sub Finalize()
 		RemoveHandler ModulesManager.Instance.GenericEvent, AddressOf SyncSettings

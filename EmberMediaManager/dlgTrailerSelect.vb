@@ -170,18 +170,19 @@ Public Class dlgTrailerSelect
             Me.bwDownloadTrailer.WorkerSupportsCancellation = True
             Me.bwDownloadTrailer.RunWorkerAsync(New Arguments With {.parameter = Me.txtYouTube.Text, .bType = CloseDialog})
         Else
-            If Regex.IsMatch(Me.lvTrailers.SelectedItems(0).SubItems(1).Text.ToString, "https?:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") OrElse _
-                Regex.IsMatch(Me.lvTrailers.SelectedItems(0).SubItems(1).Text.ToString, "http:\/\/.*imdb.*") Then
+            If Regex.IsMatch(Me.lvTrailers.SelectedItems(0).SubItems(1).Text.ToString, "https?:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") Then
                 Using dFormats As New dlgTrailerFormat
                     Dim sFormat As String = dFormats.ShowDialog(Me.lvTrailers.SelectedItems(0).SubItems(1).Text.ToString)
 
                     If Not String.IsNullOrEmpty(sFormat) Then
+                        Me.tURL = ":" & sFormat
+
                         Me.DialogResult = System.Windows.Forms.DialogResult.OK
                         Me.Close()
-                        Me.bwDownloadTrailer = New System.ComponentModel.BackgroundWorker
-                        Me.bwDownloadTrailer.WorkerReportsProgress = True
-                        Me.bwDownloadTrailer.WorkerSupportsCancellation = True
-                        Me.bwDownloadTrailer.RunWorkerAsync(New Arguments With {.Parameter = sFormat, .bType = CloseDialog})
+                        'Me.bwDownloadTrailer = New System.ComponentModel.BackgroundWorker
+                        'Me.bwDownloadTrailer.WorkerReportsProgress = True
+                        'Me.bwDownloadTrailer.WorkerSupportsCancellation = True
+                        'Me.bwDownloadTrailer.RunWorkerAsync(New Arguments With {.Parameter = sFormat, .bType = CloseDialog})
                     Else
                         didCancel = True
                     End If

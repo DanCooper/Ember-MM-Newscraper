@@ -47,7 +47,6 @@ Public Class dlgEditMovie
     Private MoviePoster As New Images With {.IsEdit = True}
     Private pResults As New Containers.ImgResult
     Private PreviousFrameValue As Integer
-    Private MovieTrailer As New Trailers
     Private MovieTheme As New Themes
     Private tmpRating As String = String.Empty
 
@@ -2371,7 +2370,7 @@ Public Class dlgEditMovie
     Private Sub SelectMPAA()
         If Not String.IsNullOrEmpty(Master.currMovie.Movie.MPAA) Then
             Try
-                If Master.eSettings.MovieScraperCertForMPAA AndAlso Not Master.eSettings.MovieScraperCertLang = "USA" AndAlso Not IsNothing(APIXML.RatingXML.Element("ratings").Element(Master.eSettings.MovieScraperCertLang.ToLower)) AndAlso APIXML.RatingXML.Element("ratings").Element(Master.eSettings.MovieScraperCertLang.ToLower).Descendants("movie").Count > 0 Then
+                If Master.eSettings.MovieScraperCertForMPAA AndAlso Not Master.eSettings.MovieScraperCertLang = "USA" AndAlso APIXML.RatingXML.movies.FindAll(Function(f) f.country = Master.eSettings.MovieScraperCertLang.ToLower).Count > 0 Then
                     If Master.eSettings.MovieScraperOnlyValueForMPAA Then
                         Dim sItem As String = String.Empty
                         For i As Integer = 0 To Me.lbMPAA.Items.Count - 1

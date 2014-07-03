@@ -48,6 +48,7 @@ Namespace My
         Private Sub MyApplication_StartupNextInstance(ByVal sender As Object, ByVal e As Microsoft.VisualBasic.ApplicationServices.StartupNextInstanceEventArgs) Handles Me.StartupNextInstance
             Dim Args() As String = Environment.GetCommandLineArgs
             If Args.Count = 1 Then
+                logger.Error("Ember Media Manager is already running.")
                 MsgBox("Ember Media Manager is already running.", MsgBoxStyle.OkOnly, "Ember Media Manager")
                 End
             End If
@@ -57,6 +58,7 @@ Namespace My
         ''' Basic wrapper for unhandled exceptions
         ''' </summary>
         Private Sub MyApplication_UnhandledException(ByVal sender As Object, ByVal e As Microsoft.VisualBasic.ApplicationServices.UnhandledExceptionEventArgs) Handles Me.UnhandledException
+            logger.Error(e.Exception.Source, e.Exception)
             MsgBox(e.Exception.Message, MsgBoxStyle.OkOnly, "Ember Media Manager")
             My.Application.Log.WriteException(e.Exception, TraceEventType.Critical, "Unhandled Exception.")
         End Sub

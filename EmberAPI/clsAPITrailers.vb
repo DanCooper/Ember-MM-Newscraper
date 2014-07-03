@@ -303,99 +303,14 @@ Public Class Trailers
                                 End If
                         End Select
                     End If
-                ElseIf Regex.IsMatch(aUrl.URL, "http:\/\/.*imdb.*") Then
-                    Dim IMDb As New IMDb.Scraper
-                    IMDb.GetVideoLinks(aUrl.URL)
-                    If IMDb.VideoLinks.ContainsKey(Master.eSettings.MovieTrailerPrefQual) Then
-                        tLink = IMDb.VideoLinks(Master.eSettings.MovieTrailerPrefQual).URL
-                    Else
-
-                    End If
                 Else
-                    If aUrl.Resolution = Master.eSettings.MovieTrailerPrefQual Then
-                        tLink = aUrl.URL
-                    Else
-                        Select Case Master.eSettings.MovieTrailerMinQual
-                            Case Enums.TrailerQuality.All
-                                tLink = aUrl.URL
-                            Case Enums.TrailerQuality.HD1080p
-                                If aUrl.Resolution = Enums.TrailerQuality.HD1080p Then
-                                    tLink = aUrl.URL
-                                End If
-                            Case Enums.TrailerQuality.HD720p
-                                If aUrl.Resolution = Enums.TrailerQuality.HD1080p Then
-                                    tLink = aUrl.URL
-                                ElseIf aUrl.Resolution = Enums.TrailerQuality.HD720p Then
-                                    tLink = aUrl.URL
-                                End If
-                            Case Enums.TrailerQuality.HQ480p
-                                If aUrl.Resolution = Enums.TrailerQuality.HD1080p Then
-                                    tLink = aUrl.URL
-                                ElseIf aUrl.Resolution = Enums.TrailerQuality.HD720p Then
-                                    tLink = aUrl.URL
-                                ElseIf aUrl.Resolution = Enums.TrailerQuality.HQ480p Then
-                                    tLink = aUrl.URL
-                                End If
-                            Case Enums.TrailerQuality.SQ360p
-                                If aUrl.Resolution = Enums.TrailerQuality.HD1080p Then
-                                    tLink = aUrl.URL
-                                ElseIf aUrl.Resolution = Enums.TrailerQuality.HD720p Then
-                                    tLink = aUrl.URL
-                                ElseIf aUrl.Resolution = Enums.TrailerQuality.HQ480p Then
-                                    tLink = aUrl.URL
-                                ElseIf aUrl.Resolution = Enums.TrailerQuality.SQ360p Then
-                                    tLink = aUrl.URL
-                                End If
-                            Case Enums.TrailerQuality.SQ240p
-                                If aUrl.Resolution = Enums.TrailerQuality.HD1080p Then
-                                    tLink = aUrl.URL
-                                ElseIf aUrl.Resolution = Enums.TrailerQuality.HD720p Then
-                                    tLink = aUrl.URL
-                                ElseIf aUrl.Resolution = Enums.TrailerQuality.HQ480p Then
-                                    tLink = aUrl.URL
-                                ElseIf aUrl.Resolution = Enums.TrailerQuality.SQ360p Then
-                                    tLink = aUrl.URL
-                                ElseIf aUrl.Resolution = Enums.TrailerQuality.SQ240p Then
-                                    tLink = aUrl.URL
-                                End If
-                            Case Enums.TrailerQuality.SQ144p
-                                If aUrl.Resolution = Enums.TrailerQuality.HD1080p Then
-                                    tLink = aUrl.URL
-                                ElseIf aUrl.Resolution = Enums.TrailerQuality.HD720p Then
-                                    tLink = aUrl.URL
-                                ElseIf aUrl.Resolution = Enums.TrailerQuality.HQ480p Then
-                                    tLink = aUrl.URL
-                                ElseIf aUrl.Resolution = Enums.TrailerQuality.SQ360p Then
-                                    tLink = aUrl.URL
-                                ElseIf aUrl.Resolution = Enums.TrailerQuality.SQ240p Then
-                                    tLink = aUrl.URL
-                                ElseIf aUrl.Resolution = Enums.TrailerQuality.SQ144p Then
-                                    tLink = aUrl.URL
-                                End If
-                            Case Enums.TrailerQuality.OTHERS
-                                If aUrl.Resolution = Enums.TrailerQuality.HD1080p Then
-                                    tLink = aUrl.URL
-                                ElseIf aUrl.Resolution = Enums.TrailerQuality.HD720p Then
-                                    tLink = aUrl.URL
-                                ElseIf aUrl.Resolution = Enums.TrailerQuality.HQ480p Then
-                                    tLink = aUrl.URL
-                                ElseIf aUrl.Resolution = Enums.TrailerQuality.SQ360p Then
-                                    tLink = aUrl.URL
-                                ElseIf aUrl.Resolution = Enums.TrailerQuality.SQ240p Then
-                                    tLink = aUrl.URL
-                                ElseIf aUrl.Resolution = Enums.TrailerQuality.SQ144p Then
-                                    tLink = aUrl.URL
-                                ElseIf aUrl.Resolution = Enums.TrailerQuality.OTHERS Then
-                                    tLink = aUrl.URL
-                                End If
-                        End Select
-                    End If
-                    End If
+                    tLink = String.Empty
+                End If
 
-                    If Not String.IsNullOrEmpty(tLink) Then
-                        tUrl = tLink
-                        Return True
-                    End If
+                If Not String.IsNullOrEmpty(tLink) Then
+                    tUrl = tLink
+                    Return True
+                End If
             Next
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name,ex)
@@ -432,10 +347,20 @@ Public Class Trailers
                 If File.Exists(a & fExt) Then
                     File.Delete(a & fExt)
                 End If
-                Me.SaveAsTrailer(a & fExt)
+                Me.SaveAs(a & fExt)
                 'File.Copy(tTrailer, a & fExt)
                 tURL = a & fExt
             Next
+
+            '' filename is managed in DownloadFile()
+            'tURL = WebPage.DownloadFile(sURL, sPath, False, "trailer") 'ReportUpdate needs to be fixed
+
+            'If Not String.IsNullOrEmpty(tURL) Then
+            '    'delete any other trailer if enabled in settings and download successful
+            '    If Master.eSettings.DeleteAllTrailers Then
+            '        DeleteTrailers(sPath, tURL)
+            '    End If
+            'End If
         End If
 
         RemoveHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
@@ -443,12 +368,12 @@ Public Class Trailers
 
     End Function
 
-    Public Sub SaveAsTrailer(filename As String)
+    Public Sub SaveAs(filename As String)
         Dim retSave() As Byte
         retSave = Me._ms.ToArray
 
         Using FileStream As Stream = File.OpenWrite(filename)
-            FileStream.Write(retSave, 0, retSave.Length) 'check if it works
+            FileStream.WriteAsync(retSave, 0, retSave.Length) 'check if it works
         End Using
     End Sub
     ''' <summary>

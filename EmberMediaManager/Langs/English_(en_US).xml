@@ -1073,6 +1073,7 @@
 	<string id="982">Hide Watched Column</string>
 	<string id="983">Hide Extrafanart Column</string>
 	<string id="984">Worldwide title as fallback</string>
+  <string id="985">Clean Plot/Outline</string>
 	<string id="986">Movieset Artwork Folder</string>
 	<string id="988">DAEMON Tools settings (only used for scanning image files (.iso))</string>
 	<string id="989">Driveletter</string>
@@ -1245,4 +1246,5 @@
 	<string id="1157">MultiView Layout</string>
 	<string id="1158">Bitrate</string>
 	<string id="1159">Encoding Settings</string>
+	<string id="1160">Restart last scrape...</string>
 </strings>

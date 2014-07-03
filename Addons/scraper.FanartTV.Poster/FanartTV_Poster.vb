@@ -172,26 +172,26 @@ Public Class FanartTV_Poster
     End Function
 
     Sub LoadSettings()
-        strPrivateAPIKey = AdvancedSettings.GetSetting("FANARTTVApiKey", "")
+        strPrivateAPIKey = clsAdvancedSettings.GetSetting("FANARTTVApiKey", "")
         _MySettings.FANARTTVApiKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "ea68f9d0847c1b7643813c70cbfc0196", strPrivateAPIKey)
-        _MySettings.FANARTTVLanguage = AdvancedSettings.GetSetting("FANARTTVLanguage", "en")
-        _MySettings.ClearArtOnlyHD = AdvancedSettings.GetBooleanSetting("ClearArtOnlyHD", False)
-        _MySettings.ClearLogoOnlyHD = AdvancedSettings.GetBooleanSetting("ClearLogoOnlyHD", False)
+        _MySettings.FANARTTVLanguage = clsAdvancedSettings.GetSetting("FANARTTVLanguage", "en")
+        _MySettings.ClearArtOnlyHD = clsAdvancedSettings.GetBooleanSetting("ClearArtOnlyHD", False)
+        _MySettings.ClearLogoOnlyHD = clsAdvancedSettings.GetBooleanSetting("ClearLogoOnlyHD", False)
 
-        ConfigScrapeModifier.Poster = AdvancedSettings.GetBooleanSetting("DoPoster", True)
-        ConfigScrapeModifier.Fanart = AdvancedSettings.GetBooleanSetting("DoFanart", True)
-        ConfigScrapeModifier.Banner = AdvancedSettings.GetBooleanSetting("DoBanner", True)
-        ConfigScrapeModifier.CharacterArt = AdvancedSettings.GetBooleanSetting("DoCharacterArt", True)
-        ConfigScrapeModifier.ClearArt = AdvancedSettings.GetBooleanSetting("DoClearArt", True)
-        ConfigScrapeModifier.ClearLogo = AdvancedSettings.GetBooleanSetting("DoClearLogo", True)
-        ConfigScrapeModifier.DiscArt = AdvancedSettings.GetBooleanSetting("DoDiscArt", True)
-        ConfigScrapeModifier.Landscape = AdvancedSettings.GetBooleanSetting("DoLandscape", True)
+        ConfigScrapeModifier.Poster = clsAdvancedSettings.GetBooleanSetting("DoPoster", True)
+        ConfigScrapeModifier.Fanart = clsAdvancedSettings.GetBooleanSetting("DoFanart", True)
+        ConfigScrapeModifier.Banner = clsAdvancedSettings.GetBooleanSetting("DoBanner", True)
+        ConfigScrapeModifier.CharacterArt = clsAdvancedSettings.GetBooleanSetting("DoCharacterArt", True)
+        ConfigScrapeModifier.ClearArt = clsAdvancedSettings.GetBooleanSetting("DoClearArt", True)
+        ConfigScrapeModifier.ClearLogo = clsAdvancedSettings.GetBooleanSetting("DoClearLogo", True)
+        ConfigScrapeModifier.DiscArt = clsAdvancedSettings.GetBooleanSetting("DoDiscArt", True)
+        ConfigScrapeModifier.Landscape = clsAdvancedSettings.GetBooleanSetting("DoLandscape", True)
         ConfigScrapeModifier.EThumbs = ConfigScrapeModifier.Fanart
         ConfigScrapeModifier.EFanarts = ConfigScrapeModifier.Fanart
     End Sub
 
     Sub SaveSettings()
-        Using settings = New AdvancedSettings()
+        Using settings = New clsAdvancedSettings()
             settings.SetBooleanSetting("ClearArtOnlyHD", _MySettings.ClearArtOnlyHD)
             settings.SetBooleanSetting("ClearLogoOnlyHD", _MySettings.ClearLogoOnlyHD)
             settings.SetBooleanSetting("DoPoster", ConfigScrapeModifier.Poster)

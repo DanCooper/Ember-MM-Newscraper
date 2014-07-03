@@ -102,10 +102,10 @@ Namespace TMDBg
 #Region "Methods"
 
         Public Sub New(ByRef tTMDBConf As V3.TmdbConfiguration, ByRef tTMDBConfE As V3.TmdbConfiguration, ByRef tTMDBApi As V3.Tmdb, ByRef tTMDBApiE As V3.Tmdb, ByRef tTMDBApiA As V3.Tmdb)
-            _MySettings.TMDBAPIKey = AdvancedSettings.GetSetting("TMDBAPIKey", "Get your API Key from http://www.themoviedb.org")
-            _MySettings.FallBackEng = AdvancedSettings.GetBooleanSetting("FallBackEn", False)
-            _MySettings.TMDBLanguage = AdvancedSettings.GetSetting("TMDBLanguage", "en")
-            _MySettings.GetAdultItems = AdvancedSettings.GetBooleanSetting("GetAdultItems", False)
+            _MySettings.TMDBAPIKey = clsAdvancedSettings.GetSetting("TMDBAPIKey", "Get your API Key from http://www.themoviedb.org")
+            _MySettings.FallBackEng = clsAdvancedSettings.GetBooleanSetting("FallBackEn", False)
+            _MySettings.TMDBLanguage = clsAdvancedSettings.GetSetting("TMDBLanguage", "en")
+            _MySettings.GetAdultItems = clsAdvancedSettings.GetBooleanSetting("GetAdultItems", False)
 
             _TMDBApi = tTMDBApi
             _TMDBConf = tTMDBConf
@@ -348,17 +348,10 @@ Namespace TMDBg
 
                     If Not IsNothing(Trailers) AndAlso Not IsNothing(Trailers.youtube) Then
                         If Trailers.youtube.Count > 0 Then
-                            Dim TrailerLink As String = "http://www.youtube.com/watch?hd=1&v=" & Trailers.youtube(0).source
-                            If Not String.IsNullOrEmpty(TrailerLink) Then
-                                If Master.eSettings.MovieXBMCTrailerFormat Then
-                                    DBMovie.Trailer = Replace(TrailerLink, "http://www.youtube.com/watch?v=", "plugin://plugin.video.youtube/?action=play_video&videoid=")
-                                    DBMovie.Trailer = Replace(DBMovie.Trailer, "http://www.youtube.com/watch?hd=1&v=", "plugin://plugin.video.youtube/?action=play_video&videoid=")
-                                Else
-                                    DBMovie.Trailer = TrailerLink
-                                End If
-                            End If
+                            DBMovie.Trailer = "http://www.youtube.com/watch?hd=1&v=" & Trailers.youtube(0).source
                         End If
                     End If
+
                 End If
 
                 If bwTMDBg.CancellationPending Then Return Nothing

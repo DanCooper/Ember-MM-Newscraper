@@ -26,6 +26,7 @@ Public Class BulkRenamerModule
 #Region "Delegates"
     Public Delegate Sub Delegate_SetToolsStripItem(value As System.Windows.Forms.ToolStripItem)
     Public Delegate Sub Delegate_RemoveToolsStripItem(value As System.Windows.Forms.ToolStripItem)
+    Public Delegate Sub Delegate_DropDownItemsAdd(value As System.Windows.Forms.ToolStripMenuItem, tsi As System.Windows.Forms.ToolStripMenuItem)
 #End Region 'Fields
 
 #Region "Fields"
@@ -164,7 +165,7 @@ Public Class BulkRenamerModule
         MyMenu.Text = Master.eLang.GetString(291, "Bulk &Renamer")
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("mnuMainTools"), ToolStripMenuItem)
         MyMenu.Tag = New Structures.ModulesMenus With {.IfNoMovies = True, .IfNoTVShow = True}
-        tsi.DropDownItems.Add(MyMenu)
+        DropDownItemsAdd(MyMenu, tsi)
         MyTrayMenu.Image = New Bitmap(My.Resources.icon)
         MyTrayMenu.Text = Master.eLang.GetString(291, "Bulk &Renamer")
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayTools"), ToolStripMenuItem)
@@ -182,6 +183,15 @@ Public Class BulkRenamerModule
 
         '_enabled = True
     End Sub
+
+    Public Sub DropDownItemsAdd(value As System.Windows.Forms.ToolStripMenuItem, tsi As System.Windows.Forms.ToolStripMenuItem)
+        If (tsi.Owner.InvokeRequired) Then
+            tsi.Owner.Invoke(New Delegate_DropDownItemsAdd(AddressOf DropDownItemsAdd), New Object() {value, tsi})
+            Exit Sub
+        End If
+        tsi.DropDownItems.Add(MyMenu)
+    End Sub
+
 
     Public Sub SetToolsStripItem(value As System.Windows.Forms.ToolStripItem)
         If (ModulesManager.Instance.RuntimeObjects.MenuMediaList.InvokeRequired) Then
@@ -227,12 +237,12 @@ Public Class BulkRenamerModule
     End Function
 
     Sub LoadSettings()
-        MySettings.FoldersPattern = AdvancedSettings.GetSetting("FoldersPattern", "$T {($Y)}")
-        MySettings.FilesPattern = AdvancedSettings.GetSetting("FilesPattern", "$T{.$S}")
-        MySettings.AutoRenameMulti = AdvancedSettings.GetBooleanSetting("AutoRenameMulti", False)
-        MySettings.AutoRenameSingle = AdvancedSettings.GetBooleanSetting("AutoRenameSingle", False)
-        MySettings.BulkRenamer = AdvancedSettings.GetBooleanSetting("BulkRenamer", True)
-        MySettings.GenericModule = AdvancedSettings.GetBooleanSetting("GenericModule", True)
+        MySettings.FoldersPattern = clsAdvancedSettings.GetSetting("FoldersPattern", "$T {($Y)}")
+        MySettings.FilesPattern = clsAdvancedSettings.GetSetting("FilesPattern", "$T{.$S}")
+        MySettings.AutoRenameMulti = clsAdvancedSettings.GetBooleanSetting("AutoRenameMulti", False)
+        MySettings.AutoRenameSingle = clsAdvancedSettings.GetBooleanSetting("AutoRenameSingle", False)
+        MySettings.BulkRenamer = clsAdvancedSettings.GetBooleanSetting("BulkRenamer", True)
+        MySettings.GenericModule = clsAdvancedSettings.GetBooleanSetting("GenericModule", True)
     End Sub
 
     Private Sub MyMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyMenu.Click, MyTrayMenu.Click
@@ -272,7 +282,7 @@ Public Class BulkRenamerModule
     End Sub
 
     Sub SaveSettings()
-        Using settings = New AdvancedSettings()
+        Using settings = New clsAdvancedSettings()
             settings.SetSetting("FoldersPattern", MySettings.FoldersPattern)
             settings.SetSetting("FilesPattern", MySettings.FilesPattern)
             settings.SetBooleanSetting("AutoRenameMulti", MySettings.AutoRenameMulti)

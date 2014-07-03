@@ -124,8 +124,8 @@ Public Class FileManagerExternalModule
 
     Public Sub Load()
         eSettings.ModuleSettings.Clear()
-        Dim Names As String() = AdvancedSettings.GetSetting("Names", String.Empty).Split(Convert.ToChar("|"))
-        Dim Paths As String() = AdvancedSettings.GetSetting("Paths", String.Empty).Split(Convert.ToChar("|"))
+        Dim Names As String() = clsAdvancedSettings.GetSetting("Names", String.Empty).Split(Convert.ToChar("|"))
+        Dim Paths As String() = clsAdvancedSettings.GetSetting("Paths", String.Empty).Split(Convert.ToChar("|"))
         For n = 0 To Names.Count - 1
             If Not String.IsNullOrEmpty(Names(n)) AndAlso Not String.IsNullOrEmpty(Paths(n)) Then eSettings.ModuleSettings.Add(New SettingItem With {.Name = Names(n), .FolderPath = Paths(n)})
         Next
@@ -142,7 +142,7 @@ Public Class FileManagerExternalModule
             Names += String.Concat(If(String.IsNullOrEmpty(Names), String.Empty, "|"), i.Name)
             Paths += String.Concat(If(String.IsNullOrEmpty(Paths), String.Empty, "|"), i.FolderPath)
         Next
-        Using settings = New AdvancedSettings()
+        Using settings = New clsAdvancedSettings()
             settings.SetSetting("Names", Names)
             settings.SetSetting("Paths", Paths)
         End Using

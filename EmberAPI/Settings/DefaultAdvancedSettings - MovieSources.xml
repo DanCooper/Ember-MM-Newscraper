@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<AdvancedSettings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ComplexSettings>
+    <Table Section="*EmberAPP" Name="MovieSources">
+      <Item Name="(b[dr][-\s]?rip|blu[-\s]?ray)">bluray</Item>
+      <Item Name="(sd[-\s]?)?dvd">dvd</Item>
+      <Item Name="hd[-\s]?tv">hdtv</Item>
+      <Item Name="sd[-\s]?tv">sdtv</Item>
+      <Item Name="hd[-\s]?dvd">hddvd</Item>
+    </Table>
+  </ComplexSettings>
+</AdvancedSettings>

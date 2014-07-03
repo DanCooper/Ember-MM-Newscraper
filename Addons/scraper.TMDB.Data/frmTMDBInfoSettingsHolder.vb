@@ -215,7 +215,7 @@ Public Class frmTMDBInfoSettingsHolder
     Public Sub New()
         _api = String.Empty
         _language = String.Empty
-        _getadultitems = AdvancedSettings.GetBooleanSetting("GetAdultItems", False)
+        _getadultitems = clsAdvancedSettings.GetBooleanSetting("GetAdultItems", False)
         InitializeComponent()
         Me.SetUp()
     End Sub

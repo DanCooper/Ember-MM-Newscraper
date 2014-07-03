@@ -1952,9 +1952,19 @@ Public Class frmMain
                                 If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) AndAlso Trailers.PreferredTrailer(tURL, aUrlList, DBScrapeMovie.Filename, (Args.scrapeType = Enums.ScrapeType.SingleScrape)) Then
                                     If Not String.IsNullOrEmpty(tURL) Then
                                         tURL = Trailer.DownloadTrailer(DBScrapeMovie.Filename, DBScrapeMovie.isSingle, tURL)
+
                                         If Not String.IsNullOrEmpty(tURL) Then
-                                            DBScrapeMovie.TrailerPath = tURL
-                                            MovieScraperEvent(Enums.MovieScraperEventType.TrailerItem, True)
+                                            If StringUtils.isValidURL(tURL) Then
+                                                If Master.eSettings.MovieXBMCTrailerFormat Then
+                                                    DBScrapeMovie.Movie.Trailer = Replace(tURL, "http://www.youtube.com/watch?v=", "plugin://plugin.video.youtube/?action=play_video&videoid=")
+                                                    DBScrapeMovie.Movie.Trailer = Replace(DBScrapeMovie.Movie.Trailer, "http://www.youtube.com/watch?hd=1&v=", "plugin://plugin.video.youtube/?action=play_video&videoid=")
+                                                Else
+                                                    DBScrapeMovie.Movie.Trailer = tURL
+                                                End If
+                                            Else
+                                                DBScrapeMovie.TrailerPath = tURL
+                                                MovieScraperEvent(Enums.MovieScraperEventType.TrailerItem, True)
+                                            End If
                                         End If
                                     End If
                                     'ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk  OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
@@ -2654,7 +2664,7 @@ doCancel:
     Private Sub cmnuChangeShow_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuShowChange.Click
         Me.SetControlsEnabled(False, True)
         Dim Lang As String = Me.dgvTVShows.Item(22, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString
-        ModulesManager.Instance.TVScrapeOnly(Convert.ToInt32(Me.dgvTVShows.Item(0, Me.dgvTVShows.SelectedRows(0).Index).Value), Me.dgvTVShows.Item(1, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString, String.Empty, If(String.IsNullOrEmpty(Lang), AdvancedSettings.GetSetting("TVDBLang", "en"), Lang), DirectCast(Convert.ToInt32(Me.dgvTVShows.Item(23, Me.dgvTVShows.SelectedRows(0).Index).Value), Enums.Ordering), Master.DefaultTVOptions, Enums.ScrapeType.FullAsk, False)
+        ModulesManager.Instance.TVScrapeOnly(Convert.ToInt32(Me.dgvTVShows.Item(0, Me.dgvTVShows.SelectedRows(0).Index).Value), Me.dgvTVShows.Item(1, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString, String.Empty, If(String.IsNullOrEmpty(Lang), clsAdvancedSettings.GetSetting("TVDBLang", "en"), Lang), DirectCast(Convert.ToInt32(Me.dgvTVShows.Item(23, Me.dgvTVShows.SelectedRows(0).Index).Value), Enums.Ordering), Master.DefaultTVOptions, Enums.ScrapeType.FullAsk, False)
         Me.SetControlsEnabled(True)
     End Sub
 
@@ -3934,7 +3944,7 @@ doCancel:
             'End If
             ScrapeType = Enums.ScrapeType.FullAuto
             Dim Lang As String = Me.dgvTVShows.Item(22, s.Index).Value.ToString
-            ModulesManager.Instance.TVScrapeOnly(Convert.ToInt32(Me.dgvTVShows.Item(0, s.Index).Value), Me.dgvTVShows.Item(1, s.Index).Value.ToString, Me.dgvTVShows.Item(9, s.Index).Value.ToString, If(String.IsNullOrEmpty(Lang), AdvancedSettings.GetSetting("TVDBLanguage", "en"), Lang), DirectCast(Convert.ToInt32(Me.dgvTVShows.Item(23, s.Index).Value), Enums.Ordering), Master.DefaultTVOptions, ScrapeType, True)
+            ModulesManager.Instance.TVScrapeOnly(Convert.ToInt32(Me.dgvTVShows.Item(0, s.Index).Value), Me.dgvTVShows.Item(1, s.Index).Value.ToString, Me.dgvTVShows.Item(9, s.Index).Value.ToString, If(String.IsNullOrEmpty(Lang), clsAdvancedSettings.GetSetting("TVDBLanguage", "en"), Lang), DirectCast(Convert.ToInt32(Me.dgvTVShows.Item(23, s.Index).Value), Enums.Ordering), Master.DefaultTVOptions, ScrapeType, True)
         Next
         Me.SetControlsEnabled(True)
     End Sub
@@ -3951,7 +3961,7 @@ doCancel:
             'End If
             ScrapeType = Enums.ScrapeType.FullAsk
             Dim Lang As String = Me.dgvTVShows.Item(22, s.Index).Value.ToString
-            ModulesManager.Instance.TVScrapeOnly(Convert.ToInt32(Me.dgvTVShows.Item(0, s.Index).Value), Me.dgvTVShows.Item(1, s.Index).Value.ToString, Me.dgvTVShows.Item(9, s.Index).Value.ToString, If(String.IsNullOrEmpty(Lang), AdvancedSettings.GetSetting("TVDBLanguage", "en"), Lang), DirectCast(Convert.ToInt32(Me.dgvTVShows.Item(23, s.Index).Value), Enums.Ordering), Master.DefaultTVOptions, ScrapeType, True)
+            ModulesManager.Instance.TVScrapeOnly(Convert.ToInt32(Me.dgvTVShows.Item(0, s.Index).Value), Me.dgvTVShows.Item(1, s.Index).Value.ToString, Me.dgvTVShows.Item(9, s.Index).Value.ToString, If(String.IsNullOrEmpty(Lang), clsAdvancedSettings.GetSetting("TVDBLanguage", "en"), Lang), DirectCast(Convert.ToInt32(Me.dgvTVShows.Item(23, s.Index).Value), Enums.Ordering), Master.DefaultTVOptions, ScrapeType, True)
         Next
         Me.SetControlsEnabled(True)
     End Sub
@@ -4141,6 +4151,25 @@ doCancel:
             End If
         End Using
     End Sub
+
+    Private Sub RestartUpdaterToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuRestartScrape.Click, cmnuTrayRestart.Click
+        Me.SetControlsEnabled(False)
+
+        Functions.SetScraperMod(Enums.MovieModType.All, True)
+        Me.MovieScrapeData(False, Enums.ScrapeType.FullAuto, Master.DefaultMovieOptions)
+
+
+        'Using dUpdate As New dlgUpdateMedia
+        '    Dim CustomUpdater As Structures.CustomUpdaterStruct = Nothing
+        '    CustomUpdater = dUpdate.ShowDialog()
+        '    If Not CustomUpdater.Canceled Then
+        '        Me.MovieScrapeData(False, CustomUpdater.ScrapeType, CustomUpdater.Options)
+        '    Else
+        '        Me.SetControlsEnabled(True)
+        '    End If
+        'End Using
+    End Sub
+
 
     Private Sub cmnuMovieRemoveFromDisc_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieRemoveFromDisc.Click
         Try
@@ -6672,7 +6701,7 @@ doCancel:
                 Me.pbStudio.Image = APIXML.GetStudioImage("####")
                 Me.pbStudio.Tag = String.Empty
             End If
-            If AdvancedSettings.GetBooleanSetting("StudioTagAlwaysOn", False) Then
+            If clsAdvancedSettings.GetBooleanSetting("StudioTagAlwaysOn", False) Then
                 lblStudio.Text = pbStudio.Tag.ToString
             End If
             If Master.eSettings.TVScraperMetaDataScan AndAlso Not String.IsNullOrEmpty(Master.currShow.Filename) Then
@@ -6931,7 +6960,7 @@ doCancel:
                 Me.pbStudio.Image = APIXML.GetStudioImage("####")
                 Me.pbStudio.Tag = String.Empty
             End If
-            If AdvancedSettings.GetBooleanSetting("StudioTagAlwaysOn", False) Then
+            If clsAdvancedSettings.GetBooleanSetting("StudioTagAlwaysOn", False) Then
                 lblStudio.Text = pbStudio.Tag.ToString
             End If
             If Master.eSettings.MovieScraperMetaDataScan Then
@@ -8086,7 +8115,7 @@ doCancel:
             '.Assembly = Assembly.LoadFile(Path.Combine(Functions.AppPath, "EmberAPI.dll"), Assembly.GetExecutingAssembly().Evidence)})    
             AddHandler currentDomain.AssemblyResolve, AddressOf MyResolveEventHandler
 
-            AdvancedSettings.Start()
+            clsAdvancedSettings.Start()
 
             'Create Modules Folders
             Dim sPath = String.Concat(Functions.AppPath, "Modules")
@@ -10253,8 +10282,8 @@ doCancel:
                 Dim fromFile As String = APIXML.GetFileSource(tmpMovieDb.Filename)
                 If Not String.IsNullOrEmpty(fromFile) Then
                     tmpMovieDb.FileSource = fromFile
-                ElseIf String.IsNullOrEmpty(tmpMovieDb.FileSource) AndAlso AdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
-                    tmpMovieDb.FileSource = AdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(tmpMovieDb.Filename)), String.Empty, "*EmberAPP")
+                ElseIf String.IsNullOrEmpty(tmpMovieDb.FileSource) AndAlso clsAdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
+                    tmpMovieDb.FileSource = clsAdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(tmpMovieDb.Filename)), String.Empty, "*EmberAPP")
                 End If
 
                 If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
@@ -12055,6 +12084,10 @@ doCancel:
                 .mnuCustom.Text = Master.eLang.GetString(81, "Custom Scraper...")
                 .cmnuTrayCustom.Text = .mnuCustom.Text
 
+                ' Scrape Media Menu: Restart last scraper
+                .mnuRestartScrape.Text = Master.eLang.GetString(1160, "Restart last scrape...")
+                .cmnuTrayRestart.Text = .mnuRestartScrape.Text
+
                 ' Scrape Media Menu: FullAuto
                 .mnuAllAuto.Text = Master.eLang.GetString(69, "Automatic (Force Best Match)")
                 .mnuMissAuto.Text = .mnuAllAuto.Text
@@ -13288,12 +13321,12 @@ doCancel:
 
     Private Sub pbStudio_MouseEnter(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStudio.MouseEnter
 
-        If Not AdvancedSettings.GetBooleanSetting("StudioTagAlwaysOn", False) AndAlso Not String.IsNullOrEmpty(pbStudio.Tag.ToString) Then
+        If Not clsAdvancedSettings.GetBooleanSetting("StudioTagAlwaysOn", False) AndAlso Not String.IsNullOrEmpty(pbStudio.Tag.ToString) Then
             lblStudio.Text = pbStudio.Tag.ToString
         End If
     End Sub
     Private Sub pbStudio_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStudio.MouseLeave
-        If Not AdvancedSettings.GetBooleanSetting("StudioTagAlwaysOn", False) Then lblStudio.Text = String.Empty
+        If Not clsAdvancedSettings.GetBooleanSetting("StudioTagAlwaysOn", False) Then lblStudio.Text = String.Empty
     End Sub
 
     Private Sub tmrKeyBuffer_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrKeyBuffer.Tick

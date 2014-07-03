@@ -151,14 +151,14 @@ Public Class NotificationsModule
     End Sub
 
     Private Sub LoadSettings()
-        eSettings.OnError = AdvancedSettings.GetBooleanSetting("NotifyOnError", True)
-        eSettings.OnNewMovie = AdvancedSettings.GetBooleanSetting("NotifyOnNewMovie", False)
-        eSettings.OnMovieScraped = AdvancedSettings.GetBooleanSetting("NotifyOnMovieScraped", True)
-        eSettings.OnNewEp = AdvancedSettings.GetBooleanSetting("NotifyOnNewEp", False)
+        eSettings.OnError = clsAdvancedSettings.GetBooleanSetting("NotifyOnError", True)
+        eSettings.OnNewMovie = clsAdvancedSettings.GetBooleanSetting("NotifyOnNewMovie", False)
+        eSettings.OnMovieScraped = clsAdvancedSettings.GetBooleanSetting("NotifyOnMovieScraped", True)
+        eSettings.OnNewEp = clsAdvancedSettings.GetBooleanSetting("NotifyOnNewEp", False)
     End Sub
 
     Private Sub SaveSettings()
-        Using settings = New AdvancedSettings()
+        Using settings = New clsAdvancedSettings()
             settings.SetBooleanSetting("NotifyOnError", eSettings.OnError)
             settings.SetBooleanSetting("NotifyOnNewMovie", eSettings.OnNewMovie)
             settings.SetBooleanSetting("NotifyOnMovieScraped", eSettings.OnMovieScraped)
