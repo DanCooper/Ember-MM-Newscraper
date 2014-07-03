@@ -166,6 +166,7 @@ Public Class TMDB_Trailer
     End Sub
 
     Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef URLList As List(Of Trailers)) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule_Trailer.Scraper
+        logger.Trace("Started scrape", New StackTrace().ToString())
 
         LoadSettings()
         If String.IsNullOrEmpty(DBMovie.Movie.TMDBID) Then
@@ -173,7 +174,7 @@ Public Class TMDB_Trailer
         End If
 
         URLList = TMDBt.GetTMDBTrailers(DBMovie.Movie.TMDBID)
-
+        logger.Trace("Finished scrape", New StackTrace().ToString())
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 

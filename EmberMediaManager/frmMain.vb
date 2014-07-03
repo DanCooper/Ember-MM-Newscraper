@@ -1478,8 +1478,8 @@ Public Class frmMain
         Dim Fanart As New MediaContainers.Image
         Dim Landscape As New MediaContainers.Image
         Dim Poster As New MediaContainers.Image
-        Dim Theme As New Themes
-        Dim Trailer As New Trailers
+        Dim Theme As New MediaContainers.Theme
+        Dim Trailer As New MediaContainers.Trailer
         Dim tURL As String = String.Empty
         Dim aList As New List(Of MediaContainers.Image)
         Dim aUrlList As New List(Of Trailers)
@@ -1551,7 +1551,7 @@ Public Class frmMain
                     tURL = String.Empty
                     If Poster.WebImage.IsAllowedToDownload(DBScrapeMovie, Enums.MovieImageType.Poster) Then
                         If Not ModulesManager.Instance.MovieScrapeImages(DBScrapeMovie, Enums.ScraperCapabilities.Poster, aList) Then
-                            If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) AndAlso Images.GetPreferredPoster(aList, Poster) Then
+                            If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) AndAlso Images.GetPreferredMoviePoster(aList, Poster) Then
                                 If Not String.IsNullOrEmpty(Poster.URL) AndAlso IsNothing(Poster.WebImage.Image) Then
                                     Poster.WebImage.FromWeb(Poster.URL)
                                 End If
@@ -1607,7 +1607,7 @@ Public Class frmMain
                     tURL = String.Empty
                     If Fanart.WebImage.IsAllowedToDownload(DBScrapeMovie, Enums.MovieImageType.Fanart) Then
                         If Not ModulesManager.Instance.MovieScrapeImages(DBScrapeMovie, Enums.ScraperCapabilities.Fanart, aList) Then
-                            If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) AndAlso Images.GetPreferredFanart(aList, Fanart) Then
+                            If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) AndAlso Images.GetPreferredMovieFanart(aList, Fanart) Then
                                 If Not String.IsNullOrEmpty(Fanart.URL) AndAlso IsNothing(Fanart.WebImage.Image) Then
                                     Fanart.WebImage.FromWeb(Fanart.URL)
                                 End If
@@ -1911,15 +1911,16 @@ Public Class frmMain
 
                 'Theme
                 If Master.GlobalScrapeMod.Theme Then
+                    Theme.clear()
                     tUrlList.Clear()
                     tURL = String.Empty
-                    If Theme.IsAllowedToDownload(DBScrapeMovie) Then
+                    If Theme.WebTheme.IsAllowedToDownload(DBScrapeMovie) Then
                         If Not ModulesManager.Instance.MovieScrapeTheme(DBScrapeMovie, tUrlList) Then
                             If tUrlList.Count > 0 Then
                                 If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
-                                    Theme = tUrlList.Item(0)
-                                    If Not String.IsNullOrEmpty(Theme.URL) Then
-                                        tURL = Theme.DownloadTheme(DBScrapeMovie.Filename, DBScrapeMovie.isSingle, Theme)
+                                    Theme.WebTheme.FromWeb(tUrlList.Item(0).URL, tUrlList.Item(0).WebURL)
+                                    If Not IsNothing(Theme.WebTheme) Then 'TODO: fix check
+                                        tURL = Theme.WebTheme.SaveAsMovieTheme(DBScrapeMovie)
                                         If Not String.IsNullOrEmpty(tURL) Then
                                             DBScrapeMovie.ThemePath = tURL
                                             MovieScraperEvent(Enums.MovieScraperEventType.ThemeItem, True)
@@ -1944,20 +1945,24 @@ Public Class frmMain
 
                 'Trailer
                 If Master.GlobalScrapeMod.Trailer Then
+                    Trailer.Clear()
                     aUrlList.Clear()
                     tURL = String.Empty
-                    If Trailer.IsAllowedToDownload(DBScrapeMovie) Then
+                    If Trailer.WebTrailer.IsAllowedToDownload(DBScrapeMovie) Then
                         If Not ModulesManager.Instance.MovieScrapeTrailer(DBScrapeMovie, Enums.ScraperCapabilities.Trailer, aUrlList) Then
                             If aUrlList.Count > 0 Then
-                                If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) AndAlso Trailers.PreferredTrailer(tURL, aUrlList, DBScrapeMovie.Filename, (Args.scrapeType = Enums.ScrapeType.SingleScrape)) Then
-                                    If Not String.IsNullOrEmpty(tURL) Then
-                                        tURL = Trailer.DownloadTrailer(DBScrapeMovie.Filename, DBScrapeMovie.isSingle, tURL)
-
+                                If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) AndAlso Trailers.GetPreferredTrailer(aUrlList, Trailer) Then
+                                    If Not String.IsNullOrEmpty(Trailer.URL) AndAlso IsNothing(Trailer.WebTrailer) Then
+                                        Trailer.WebTrailer.FromWeb(Trailer.URL)
+                                    End If
+                                    If Not IsNothing(Trailer.WebTrailer) Then 'TODO: fix check
+                                        tURL = Trailer.WebTrailer.SaveAsMovieTrailer(DBScrapeMovie)
                                         If Not String.IsNullOrEmpty(tURL) Then
                                             DBScrapeMovie.TrailerPath = tURL
                                             MovieScraperEvent(Enums.MovieScraperEventType.TrailerItem, True)
                                         End If
                                     End If
+
                                     'ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk  OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
                                     '    If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk  OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
                                     '        MsgBox(Master.eLang.GetString(930, "Trailer of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(929, "No Preferred Size:"))
@@ -1990,7 +1995,7 @@ Public Class frmMain
                         etList.Clear()
                         If Fanart.WebImage.IsAllowedToDownload(DBScrapeMovie, Enums.MovieImageType.EThumbs) Then
                             If Not ModulesManager.Instance.MovieScrapeImages(DBScrapeMovie, Enums.ScraperCapabilities.Fanart, aList) Then
-                                etList = Images.GetPreferredEThumbs(aList)
+                                etList = Images.GetPreferredMovieEThumbs(aList)
                                 If etList.Count > 0 Then
                                     Dim eti As Integer = 0
                                     Dim etMax As Integer = Master.eSettings.MovieEThumbsLimit
@@ -2020,7 +2025,7 @@ Public Class frmMain
                         efList.Clear()
                         If Fanart.WebImage.IsAllowedToDownload(DBScrapeMovie, Enums.MovieImageType.EFanarts) Then
                             If Not ModulesManager.Instance.MovieScrapeImages(DBScrapeMovie, Enums.ScraperCapabilities.Fanart, aList) Then
-                                efList = Images.GetPreferredEFanarts(aList)
+                                efList = Images.GetPreferredMovieEFanarts(aList)
                                 If efList.Count > 0 Then
                                     Dim efi As Integer = 0
                                     Dim efMax As Integer = Master.eSettings.MovieEFanartsLimit

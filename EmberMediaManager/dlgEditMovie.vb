@@ -2594,6 +2594,14 @@ Public Class dlgEditMovie
                     .MoviePoster.DeleteMoviePoster(Master.currMovie)
                 End If
 
+                If Master.currMovie.ClearTheme Then
+                    .MovieTheme.DeleteMovieTheme(Master.currMovie)
+                End If
+
+                If Master.currMovie.ClearTrailer Then
+                    .MovieTrailer.DeleteMovieTrailer(Master.currMovie)
+                End If
+
                 If Not IsNothing(.MovieBanner.Image) Then
                     Dim fPath As String = .MovieBanner.SaveAsMovieBanner(Master.currMovie)
                     Master.currMovie.BannerPath = fPath
@@ -2660,23 +2668,20 @@ Public Class dlgEditMovie
                     Next
                 End If
 
-                If Not String.IsNullOrEmpty(.MovieTheme.URL) Then
-                    Using Theme As New Themes
-                        Master.currMovie.ThemePath = Theme.DownloadTheme(Master.currMovie.Filename, Master.currMovie.isSingle, .MovieTheme)
-                    End Using
+                If Not IsNothing(.MovieTheme) Then
+                    Dim tPath As String = .MovieTheme.SaveAsMovieTheme(Master.currMovie)
+                    Master.currMovie.ThemePath = tPath
+                Else
+                    .MovieTheme.DeleteMovieTheme(Master.currMovie)
+                    Master.currMovie.ThemePath = String.Empty
                 End If
 
-                If Not String.IsNullOrEmpty(Master.currMovie.TrailerPath) AndAlso Master.currMovie.TrailerPath.Contains(Master.TempPath) Then
-                    Dim TargetTrailer As String = String.Empty
-                    Dim fExt As String = Path.GetExtension(Master.currMovie.TrailerPath)
-                    For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.isSingle, Enums.MovieModType.Trailer)
-                        File.Copy(Master.currMovie.TrailerPath, a & fExt)
-                        TargetTrailer = a & fExt
-                    Next
-                    Master.currMovie.TrailerPath = TargetTrailer
-                ElseIf Not String.IsNullOrEmpty(Master.currMovie.TrailerPath) AndAlso Master.currMovie.TrailerPath.StartsWith(":") Then
-                    Dim trailer As New Trailers
-                    Master.currMovie.TrailerPath = trailer.DownloadTrailer(Master.currMovie.Filename, Master.currMovie.isSingle, Master.currMovie.TrailerPath.Replace(":http", "http"))
+                If Not IsNothing(.MovieTrailer) Then
+                    Dim tPath As String = .MovieTrailer.SaveAsMovieTrailer(Master.currMovie)
+                    Master.currMovie.TrailerPath = tPath
+                Else
+                    .MovieTrailer.DeleteMovieTrailer(Master.currMovie)
+                    Master.currMovie.TrailerPath = String.Empty
                 End If
 
                 If Path.GetExtension(Master.currMovie.Filename) = ".disc" Then
