@@ -541,7 +541,7 @@ Public Class dlgOfflineHolder
                     aList.Clear()
                     If Poster.WebImage.IsAllowedToDownload(ScrapedMovie, Enums.MovieImageType.Poster) Then
                         If Not ModulesManager.Instance.MovieScrapeImages(ScrapedMovie, Enums.ScraperCapabilities.Poster, aList) Then
-                            If aList.Count > 0 AndAlso Images.GetPreferredPoster(aList, Poster) Then
+                            If aList.Count > 0 AndAlso Images.GetPreferredMoviePoster(aList, Poster) Then
                                 If Not String.IsNullOrEmpty(Poster.URL) Then
                                     ScrapedMovie.PosterPath = ":" & Poster.URL
                                 End If
@@ -557,7 +557,7 @@ Public Class dlgOfflineHolder
                     etList.Clear()
                     If Fanart.WebImage.IsAllowedToDownload(ScrapedMovie, Enums.MovieImageType.Fanart) Then
                         If Not ModulesManager.Instance.MovieScrapeImages(ScrapedMovie, Enums.ScraperCapabilities.Fanart, aList) Then
-                            If aList.Count > 0 AndAlso Images.GetPreferredFanart(aList, Fanart) Then
+                            If aList.Count > 0 AndAlso Images.GetPreferredMovieFanart(aList, Fanart) Then
                                 If Not String.IsNullOrEmpty(Fanart.URL) Then
                                     ScrapedMovie.FanartPath = ":" & Fanart.URL
                                 End If
@@ -1041,7 +1041,7 @@ Public Class dlgOfflineHolder
                 FileUtils.Delete.DeleteDirectory(Path.Combine(Master.TempPath, "OfflineHolder"))
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1231,7 +1231,7 @@ Public Class dlgOfflineHolder
             Files = Nothing
             dir = Nothing
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1274,7 +1274,7 @@ Public Class dlgOfflineHolder
 
             'CreateDummyMoviePreview()
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1297,7 +1297,7 @@ Public Class dlgOfflineHolder
             End If
             Return tMovie
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return Nothing
     End Function
@@ -1358,7 +1358,7 @@ Public Class dlgOfflineHolder
 
             Return pattern.Trim
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
             Return String.Empty
         End Try
     End Function
@@ -1513,7 +1513,7 @@ Public Class dlgOfflineHolder
                 aList.Clear()
                 If Poster.WebImage.IsAllowedToDownload(sMovie, Enums.MovieImageType.Poster) Then
                     If Not ModulesManager.Instance.MovieScrapeImages(sMovie, Enums.ScraperCapabilities.Poster, aList) Then
-                        If aList.Count > 0 AndAlso Images.GetPreferredPoster(aList, Poster) Then
+                        If aList.Count > 0 AndAlso Images.GetPreferredMoviePoster(aList, Poster) Then
                             If Not String.IsNullOrEmpty(Poster.URL) Then
                                 sMovie.PosterPath = ":" & Poster.URL
                             End If
@@ -1529,7 +1529,7 @@ Public Class dlgOfflineHolder
                 etList.Clear()
                 If Fanart.WebImage.IsAllowedToDownload(sMovie, Enums.MovieImageType.Fanart) Then
                     If Not ModulesManager.Instance.MovieScrapeImages(sMovie, Enums.ScraperCapabilities.Fanart, aList) Then
-                        If aList.Count > 0 AndAlso Images.GetPreferredFanart(aList, Fanart) Then
+                        If aList.Count > 0 AndAlso Images.GetPreferredMovieFanart(aList, Fanart) Then
                             If Not String.IsNullOrEmpty(Fanart.URL) Then
                                 sMovie.FanartPath = ":" & Fanart.URL
                             End If
@@ -1606,7 +1606,7 @@ Public Class dlgOfflineHolder
             Return sMovie
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Return tMovie

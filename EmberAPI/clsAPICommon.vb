@@ -660,9 +660,11 @@ Public Class Enums
         OnTVShowNFORead = 22
         OnMovieLandscapeSave = 23
         OnMovieBannerSave = 24
-        OnMovieClearArtSave = 24
-        OnMovieClearLogoSave = 24
-        OnMovieDiscArtSave = 24
+        OnMovieClearArtSave = 25
+        OnMovieClearLogoSave = 26
+        OnMovieDiscArtSave = 27
+        OnMovieThemeSave = 28
+        OnMovieTrailerSave = 29
     End Enum
 
     Public Enum MovieScraperEventType As Integer

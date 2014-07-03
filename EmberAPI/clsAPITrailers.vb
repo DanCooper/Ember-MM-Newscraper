@@ -33,7 +33,9 @@ Public Class Trailers
 #Region "Fields"
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
+    Private _ext As String
     Private _description As String
+    Private _isNew As Boolean
     Private _length As String
     Private _quality As Enums.TrailerQuality
     Private _url As String
@@ -55,6 +57,20 @@ Public Class Trailers
 
 #Region "Properties"
     ''' <summary>
+    ''' trailer extention
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public Property Extention() As String
+        Get
+            Return _ext
+        End Get
+        Set(ByVal value As String)
+            _ext = value
+        End Set
+    End Property
+    ''' <summary>
     ''' description or title of the trailer
     ''' </summary>
     ''' <value></value>
@@ -66,6 +82,15 @@ Public Class Trailers
         End Get
         Set(ByVal value As String)
             _description = value
+        End Set
+    End Property
+
+    Public Property isNew() As Boolean
+        Get
+            Return _isNew
+        End Get
+        Set(ByVal value As Boolean)
+            _isNew = value
         End Set
     End Property
     ''' <summary>
@@ -141,7 +166,9 @@ Public Class Trailers
             Me.disposedValue = False    'Since this is not a real Dispose call...
         End If
 
+        _ext = String.Empty
         _description = String.Empty
+        _isNew = False
         _length = String.Empty
         _quality = Enums.TrailerQuality.OTHERS
         _url = String.Empty
@@ -151,36 +178,37 @@ Public Class Trailers
     Public Sub Cancel()
         'Me.WebPage.Cancel()
     End Sub
-
     ''' <summary>
-    ''' Remove existing trailers from the given path.
+    ''' Delete the given arbitrary file
     ''' </summary>
-    ''' <param name="sPath">Path to look for trailers</param>
-    ''' <param name="NewTrailer"></param>
-    ''' <remarks>
-    ''' 2013/11/08 Dekker500 - Enclosed file accessors in Try block
-    ''' </remarks>
-    Public Shared Sub DeleteTrailers(ByVal sPath As String, ByVal NewTrailer As String)
-        Dim parPath As String = Directory.GetParent(sPath).FullName
-        Dim tmpName As String = Path.Combine(parPath, StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath)))
-        Dim tmpNameNoStack As String = Path.Combine(parPath, Path.GetFileNameWithoutExtension(sPath))
+    ''' <param name="sPath"></param>
+    ''' <remarks>This version of Delete is wrapped in a try-catch block which 
+    ''' will log errors before safely returning.</remarks>
+    Public Sub Delete(ByVal sPath As String)
+        If Not String.IsNullOrEmpty(sPath) Then
+            Try
+                File.Delete(sPath)
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name & vbTab & "Param: <" & sPath & ">", ex)
+            End Try
+        End If
+    End Sub
+    ''' <summary>
+    ''' Delete the movie trailers
+    ''' </summary>
+    ''' <param name="mMovie"><c>DBMovie</c> structure representing the movie on which we should operate</param>
+    ''' <remarks></remarks>
+    Public Sub DeleteMovieTrailer(ByVal mMovie As Structures.DBMovie)
+        If String.IsNullOrEmpty(mMovie.Filename) Then Return
 
         Try
-            For Each t As String In Master.eSettings.FileSystemValidExts
-                If File.Exists(String.Concat(tmpName, "-trailer", t)) AndAlso Not String.Concat(tmpName, "-trailer", t).ToLower = NewTrailer.ToLower Then
-                    File.Delete(String.Concat(tmpName, "-trailer", t))
-                ElseIf File.Exists(String.Concat(tmpName, "[trailer]", t)) AndAlso Not String.Concat(tmpName, "[trailer]", t).ToLower = NewTrailer.ToLower Then
-                    File.Delete(String.Concat(tmpName, "[trailer]", t))
-                ElseIf File.Exists(String.Concat(tmpNameNoStack, "-trailer", t)) AndAlso Not String.Concat(tmpNameNoStack, "-trailer", t).ToLower = NewTrailer.ToLower Then
-                    File.Delete(String.Concat(tmpNameNoStack, "-trailer", t))
-                ElseIf File.Exists(String.Concat(tmpNameNoStack, "[trailer]", t)) AndAlso Not String.Concat(tmpNameNoStack, "[trailer]", t).ToLower = NewTrailer.ToLower Then
-                    File.Delete(String.Concat(tmpNameNoStack, "[trailer]", t))
-                ElseIf FileUtils.Common.isBDRip(sPath) AndAlso File.Exists(String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Path.DirectorySeparatorChar, "index-trailer", t)) AndAlso Not String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Path.DirectorySeparatorChar, "index-trailer", t).ToLower = NewTrailer.ToLower Then
-                    File.Delete(String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Path.DirectorySeparatorChar, "index-trailer", t))
+            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.isSingle, Enums.MovieModType.Trailer)
+                If File.Exists(a) Then
+                    Delete(a)
                 End If
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mMovie.Filename & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -196,15 +224,13 @@ Public Class Trailers
     ''' configured preferred trailer format. Return that URL in the <paramref name="tUrl"/>
     ''' parameter, and returns <c>True</c>.
     ''' </summary>
-    ''' <param name="tUrl"></param>
     ''' <param name="UrlList"><c>List</c> of <c>Trailer</c>s</param>
-    ''' <param name="sPath"></param>
-    ''' <param name="isSingle">Flag to indicate whether a scrape of a single item was requested (Enums.ScrapeType.SingleScrape), or whether this is part of a multi-item scrape</param>
     ''' <returns><c>True</c> if an appropriate trailer was found. The URL for the trailer is returned in
     ''' <paramref name="tUrl"/>. <c>False</c> otherwise</returns>
     ''' <remarks></remarks>
-    Public Shared Function PreferredTrailer(ByRef tUrl As String, ByRef UrlList As List(Of Trailers), ByVal sPath As String, ByVal isSingle As Boolean) As Boolean
-        PreferredTrailer = False
+    Public Shared Function GetPreferredTrailer(ByRef UrlList As List(Of Trailers), ByRef trlResult As MediaContainers.Trailer) As Boolean
+        If UrlList.Count = 0 Then Return False
+
         Try
             For Each aUrl As Trailers In UrlList
                 Dim tLink As String = String.Empty
@@ -309,6 +335,94 @@ Public Class Trailers
                     If IMDb.VideoLinks.ContainsKey(Master.eSettings.MovieTrailerPrefQual) Then
                         tLink = IMDb.VideoLinks(Master.eSettings.MovieTrailerPrefQual).URL
                     Else
+                        Select Case Master.eSettings.MovieTrailerMinQual
+                            Case Enums.TrailerQuality.All
+                                If IMDb.VideoLinks.ContainsKey(Enums.TrailerQuality.HD1080p) Then
+                                    tLink = IMDb.VideoLinks(Enums.TrailerQuality.HD1080p).URL
+                                ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerQuality.HD720p) Then
+                                    tLink = IMDb.VideoLinks(Enums.TrailerQuality.HD720p).URL
+                                ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerQuality.HQ480p) Then
+                                    tLink = IMDb.VideoLinks(Enums.TrailerQuality.HQ480p).URL
+                                ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerQuality.SQ360p) Then
+                                    tLink = IMDb.VideoLinks(Enums.TrailerQuality.SQ360p).URL
+                                ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerQuality.SQ240p) Then
+                                    tLink = IMDb.VideoLinks(Enums.TrailerQuality.SQ240p).URL
+                                ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerQuality.SQ144p) Then
+                                    tLink = IMDb.VideoLinks(Enums.TrailerQuality.SQ144p).URL
+                                ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerQuality.OTHERS) Then
+                                    tLink = IMDb.VideoLinks(Enums.TrailerQuality.OTHERS).URL
+                                End If
+                            Case Enums.TrailerQuality.HD1080p
+                                If IMDb.VideoLinks.ContainsKey(Enums.TrailerQuality.HD1080p) Then
+                                    tLink = IMDb.VideoLinks(Enums.TrailerQuality.HD1080p).URL
+                                End If
+                            Case Enums.TrailerQuality.HD720p
+                                If IMDb.VideoLinks.ContainsKey(Enums.TrailerQuality.HD1080p) Then
+                                    tLink = IMDb.VideoLinks(Enums.TrailerQuality.HD1080p).URL
+                                ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerQuality.HD720p) Then
+                                    tLink = IMDb.VideoLinks(Enums.TrailerQuality.HD720p).URL
+                                End If
+                            Case Enums.TrailerQuality.HQ480p
+                                If IMDb.VideoLinks.ContainsKey(Enums.TrailerQuality.HD1080p) Then
+                                    tLink = IMDb.VideoLinks(Enums.TrailerQuality.HD1080p).URL
+                                ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerQuality.HD720p) Then
+                                    tLink = IMDb.VideoLinks(Enums.TrailerQuality.HD720p).URL
+                                ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerQuality.HQ480p) Then
+                                    tLink = IMDb.VideoLinks(Enums.TrailerQuality.HQ480p).URL
+                                End If
+                            Case Enums.TrailerQuality.SQ360p
+                                If IMDb.VideoLinks.ContainsKey(Enums.TrailerQuality.HD1080p) Then
+                                    tLink = IMDb.VideoLinks(Enums.TrailerQuality.HD1080p).URL
+                                ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerQuality.HD720p) Then
+                                    tLink = IMDb.VideoLinks(Enums.TrailerQuality.HD720p).URL
+                                ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerQuality.HQ480p) Then
+                                    tLink = IMDb.VideoLinks(Enums.TrailerQuality.HQ480p).URL
+                                ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerQuality.SQ360p) Then
+                                    tLink = IMDb.VideoLinks(Enums.TrailerQuality.SQ360p).URL
+                                End If
+                            Case Enums.TrailerQuality.SQ240p
+                                If IMDb.VideoLinks.ContainsKey(Enums.TrailerQuality.HD1080p) Then
+                                    tLink = IMDb.VideoLinks(Enums.TrailerQuality.HD1080p).URL
+                                ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerQuality.HD720p) Then
+                                    tLink = IMDb.VideoLinks(Enums.TrailerQuality.HD720p).URL
+                                ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerQuality.HQ480p) Then
+                                    tLink = IMDb.VideoLinks(Enums.TrailerQuality.HQ480p).URL
+                                ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerQuality.SQ360p) Then
+                                    tLink = IMDb.VideoLinks(Enums.TrailerQuality.SQ360p).URL
+                                ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerQuality.SQ240p) Then
+                                    tLink = IMDb.VideoLinks(Enums.TrailerQuality.SQ240p).URL
+                                End If
+                            Case Enums.TrailerQuality.SQ144p
+                                If IMDb.VideoLinks.ContainsKey(Enums.TrailerQuality.HD1080p) Then
+                                    tLink = IMDb.VideoLinks(Enums.TrailerQuality.HD1080p).URL
+                                ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerQuality.HD720p) Then
+                                    tLink = IMDb.VideoLinks(Enums.TrailerQuality.HD720p).URL
+                                ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerQuality.HQ480p) Then
+                                    tLink = IMDb.VideoLinks(Enums.TrailerQuality.HQ480p).URL
+                                ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerQuality.SQ360p) Then
+                                    tLink = IMDb.VideoLinks(Enums.TrailerQuality.SQ360p).URL
+                                ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerQuality.SQ240p) Then
+                                    tLink = IMDb.VideoLinks(Enums.TrailerQuality.SQ240p).URL
+                                ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerQuality.SQ144p) Then
+                                    tLink = IMDb.VideoLinks(Enums.TrailerQuality.SQ144p).URL
+                                End If
+                            Case Enums.TrailerQuality.OTHERS
+                                If IMDb.VideoLinks.ContainsKey(Enums.TrailerQuality.HD1080p) Then
+                                    tLink = IMDb.VideoLinks(Enums.TrailerQuality.HD1080p).URL
+                                ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerQuality.HD720p) Then
+                                    tLink = IMDb.VideoLinks(Enums.TrailerQuality.HD720p).URL
+                                ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerQuality.HQ480p) Then
+                                    tLink = IMDb.VideoLinks(Enums.TrailerQuality.HQ480p).URL
+                                ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerQuality.SQ360p) Then
+                                    tLink = IMDb.VideoLinks(Enums.TrailerQuality.SQ360p).URL
+                                ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerQuality.SQ240p) Then
+                                    tLink = IMDb.VideoLinks(Enums.TrailerQuality.SQ240p).URL
+                                ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerQuality.SQ144p) Then
+                                    tLink = IMDb.VideoLinks(Enums.TrailerQuality.SQ144p).URL
+                                ElseIf IMDb.VideoLinks.ContainsKey(Enums.TrailerQuality.OTHERS) Then
+                                    tLink = IMDb.VideoLinks(Enums.TrailerQuality.OTHERS).URL
+                                End If
+                        End Select
 
                     End If
                 Else
@@ -393,62 +507,86 @@ Public Class Trailers
                 End If
 
                 If Not String.IsNullOrEmpty(tLink) Then
-                    tUrl = tLink
+                    trlResult.WebTrailer.FromWeb(tLink)
                     Return True
                 End If
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Function
     ''' <summary>
-    ''' Downloads the trailer found at the supplied <paramref name="sURL"/> and places
-    ''' it in the supplied <paramref name="sPath"/>. 
+    ''' Loads this trailer from the supplied URL
     ''' </summary>
-    ''' <param name="sPath">Path into which the trailer should be saved</param>
-    ''' <param name="sURL">URL from which to get the trailer</param>
-    ''' <returns></returns>
+    ''' <param name="sURL">URL to the trailer file</param>
     ''' <remarks></remarks>
-    Public Function DownloadTrailer(ByVal sPath As String, ByVal isSingle As Boolean, ByVal sURL As String) As String
+    Public Sub FromWeb(ByVal sURL As String)
         Dim WebPage As New HTTP
         Dim tURL As String = String.Empty
         Dim tTrailer As String = String.Empty
         AddHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
 
-        tTrailer = WebPage.DownloadFile(sURL, "", False, "trailer")
-        If Not String.IsNullOrEmpty(tTrailer) Then
+        Try
+            tTrailer = WebPage.DownloadFile(sURL, "", False, "trailer")
+            If Not String.IsNullOrEmpty(tTrailer) Then
 
-            If Not IsNothing(Me._ms) Then
-                Me._ms.Dispose()
-            End If
-            Me._ms = New MemoryStream()
-
-            Dim retSave() As Byte
-            retSave = WebPage.ms.ToArray
-            Me._ms.Write(retSave, 0, retSave.Length)
-
-            Dim fExt As String = Path.GetExtension(tTrailer)
-            For Each a In FileUtils.GetFilenameList.Movie(sPath, isSingle, Enums.MovieModType.Trailer)
-                If File.Exists(a & fExt) Then
-                    File.Delete(a & fExt)
+                If Not IsNothing(Me._ms) Then
+                    Me._ms.Dispose()
                 End If
-                Me.SaveAsTrailer(a & fExt)
-                tURL = a & fExt
-            Next
-        End If
+                Me._ms = New MemoryStream()
+
+                Dim retSave() As Byte
+                retSave = WebPage.ms.ToArray
+                Me._ms.Write(retSave, 0, retSave.Length)
+
+                Me._ext = Path.GetExtension(tTrailer)
+            End If
+
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & sURL & ">", ex)
+        End Try
 
         RemoveHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
-        Return tURL
+    End Sub
 
+    Public Function SaveAsMovieTrailer(ByVal mMovie As Structures.DBMovie) As String
+        Dim strReturn As String = String.Empty
+
+        Try
+            Try
+                Dim params As New List(Of Object)(New Object() {mMovie})
+                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieTrailerSave, params, False)
+            Catch ex As Exception
+            End Try
+
+            Dim fExt As String = Path.GetExtension(Me._ext)
+            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.isSingle, Enums.MovieModType.Trailer)
+                If Not File.Exists(a) OrElse (isNew OrElse Master.eSettings.MovieTrailerOverwrite) Then
+                    Save(a & fExt)
+                    strReturn = (a & fExt)
+                End If
+            Next
+
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+        Return strReturn
     End Function
 
-    Public Sub SaveAsTrailer(filename As String)
+    Public Sub Save(ByVal sPath As String)
         Dim retSave() As Byte
-        retSave = Me._ms.ToArray
+        Try
+            retSave = Me._ms.ToArray
 
-        Using FileStream As Stream = File.OpenWrite(filename)
-            FileStream.Write(retSave, 0, retSave.Length) 'check if it works
-        End Using
+            'make sure directory exists
+            Directory.CreateDirectory(Directory.GetParent(sPath).FullName)
+            Using FileStream As Stream = File.OpenWrite(sPath)
+                FileStream.Write(retSave, 0, retSave.Length)
+            End Using
+
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
     End Sub
     ''' <summary>
     ''' Determines whether a trailer is allowed to be downloaded. This is determined
@@ -472,7 +610,7 @@ Public Class Trailers
                 End If
             End With
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
             Return False
         End Try
     End Function

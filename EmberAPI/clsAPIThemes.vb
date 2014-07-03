@@ -27,8 +27,10 @@ Public Class Themes
 #Region "Fields"
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
+    Private _ext As String
     Private _title As String
     Private _id As String
+    Private _isNew As Boolean
     Private _url As String
     Private _weburl As String
     Private _description As String
@@ -49,6 +51,20 @@ Public Class Themes
 #End Region 'Constructors
 
 #Region "Properties"
+    ''' <summary>
+    ''' theme extention
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public Property Extention() As String
+        Get
+            Return _ext
+        End Get
+        Set(ByVal value As String)
+            _ext = value
+        End Set
+    End Property
 
     Public Property Title() As String
         Get
@@ -65,6 +81,15 @@ Public Class Themes
         End Get
         Set(ByVal value As String)
             _id = value
+        End Set
+    End Property
+
+    Public Property isNew() As Boolean
+        Get
+            Return _isNew
+        End Get
+        Set(ByVal value As Boolean)
+            _isNew = value
         End Set
     End Property
 
@@ -129,8 +154,10 @@ Public Class Themes
             Me.disposedValue = False    'Since this is not a real Dispose call...
         End If
 
+        _ext = String.Empty
         _title = String.Empty
         _id = String.Empty
+        _isNew = False
         _url = String.Empty
         _weburl = String.Empty
         _description = String.Empty
@@ -141,70 +168,119 @@ Public Class Themes
     Public Sub Cancel()
         'Me.WebPage.Cancel()
     End Sub
-
     ''' <summary>
-    ''' Remove existing trailers from the given path.
+    ''' Delete the given arbitrary file
     ''' </summary>
-    ''' <param name="sPath">Path to look for trailers</param>
-    ''' <param name="NewTheme"></param>
-    ''' <remarks>
-    ''' 2013/11/08 Dekker500 - Enclosed file accessors in Try block
-    ''' </remarks>
-    Public Shared Sub DeleteThemes(ByVal sPath As String, ByVal NewTheme As String)
-
+    ''' <param name="sPath"></param>
+    ''' <remarks>This version of Delete is wrapped in a try-catch block which 
+    ''' will log errors before safely returning.</remarks>
+    Public Sub Delete(ByVal sPath As String)
+        If Not String.IsNullOrEmpty(sPath) Then
+            Try
+                File.Delete(sPath)
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name & vbTab & "Param: <" & sPath & ">", ex)
+            End Try
+        End If
     End Sub
     ''' <summary>
-    ''' Downloads the theme found at the supplied <paramref name="sURL"/> and places
-    ''' it in the supplied <paramref name="sPath"/>. 
+    ''' Delete the movie themes
     ''' </summary>
-    ''' <param name="sPath">Path into which the theme should be saved</param>
-    ''' <param name="sTheme">theme container</param>
-    ''' <returns></returns>
+    ''' <param name="mMovie"><c>DBMovie</c> structure representing the movie on which we should operate</param>
     ''' <remarks></remarks>
-    Public Function DownloadTheme(ByVal sPath As String, ByVal isSingle As Boolean, ByVal sTheme As Themes) As String
+    Public Sub DeleteMovieTheme(ByVal mMovie As Structures.DBMovie)
+        If String.IsNullOrEmpty(mMovie.Filename) Then Return
+
+        Try
+            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.isSingle, Enums.MovieModType.Theme)
+                If File.Exists(a) Then
+                    Delete(a)
+                End If
+            Next
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mMovie.Filename & ">", ex)
+        End Try
+    End Sub
+    ''' <summary>
+    ''' Raises the ProgressUpdated event, passing the iPercent value to indicate percent completed.
+    ''' </summary>
+    ''' <param name="iPercent">Integer representing percentage completed</param>
+    ''' <remarks></remarks>
+    Public Shared Sub DownloadProgressUpdated(ByVal iPercent As Integer)
+        RaiseEvent ProgressUpdated(iPercent)
+    End Sub
+    ''' <summary>
+    ''' Loads this theme from the supplied URL
+    ''' </summary>
+    ''' <param name="sURL">URL to the theme file</param>
+    ''' <remarks></remarks>
+    Public Sub FromWeb(ByVal sURL As String, Optional ByVal webURL As String = "")
         Dim WebPage As New HTTP
         Dim tURL As String = String.Empty
-        Dim sURL As String = sTheme.URL
-        Dim sWebURL As String = sTheme.WebURL
         Dim tTheme As String = String.Empty
         AddHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
 
-        tTheme = WebPage.DownloadFile(sURL, "", False, "theme", sWebURL)
-        If Not String.IsNullOrEmpty(tTheme) Then
-            If Not IsNothing(Me._ms) Then
-                Me._ms.Dispose()
+        Try
+            tTheme = WebPage.DownloadFile(sURL, "", False, "theme", webURL)
+            If Not String.IsNullOrEmpty(tTheme) Then
+
+                If Not IsNothing(Me._ms) Then
+                    Me._ms.Dispose()
+                End If
+                Me._ms = New MemoryStream()
+
+                Dim retSave() As Byte
+                retSave = WebPage.ms.ToArray
+                Me._ms.Write(retSave, 0, retSave.Length)
+
+                Me._ext = Path.GetExtension(tTheme)
             End If
-            Me._ms = New MemoryStream()
 
-            Dim retSave() As Byte
-            retSave = WebPage.ms.ToArray
-            Me._ms.Write(retSave, 0, retSave.Length)
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & sURL & ">", ex)
+        End Try
 
+        RemoveHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
+    End Sub
 
-            Dim fExt As String = Path.GetExtension(tTheme)
-            For Each a In FileUtils.GetFilenameList.Movie(sPath, isSingle, Enums.MovieModType.Theme)
-                If Not File.Exists(a & fExt) OrElse Master.eSettings.MovieThemeOverwrite Then
-                    If File.Exists(a & fExt) Then
-                        File.Delete(a & fExt)
-                    End If
-                    Directory.CreateDirectory(Directory.GetParent(a & fExt).FullName)
-                    SaveAsTheme(a & fExt)
-                    tURL = a & fExt
+    Public Function SaveAsMovieTheme(ByVal mMovie As Structures.DBMovie) As String
+        Dim strReturn As String = String.Empty
+
+        Try
+            Try
+                Dim params As New List(Of Object)(New Object() {mMovie})
+                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnMovieTrailerSave, params, False)
+            Catch ex As Exception
+            End Try
+
+            Dim fExt As String = Path.GetExtension(Me._ext)
+            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.isSingle, Enums.MovieModType.Theme)
+                If Not File.Exists(a) OrElse (isNew OrElse Master.eSettings.MovieThemeOverwrite) Then
+                    Save(a & fExt)
+                    strReturn = (a & fExt)
                 End If
             Next
-            File.Delete(tTheme)
-        End If
-        RemoveHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
-        Return tURL
+
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+        Return strReturn
     End Function
 
-    Public Sub SaveAsTheme(filename As String)
+    Public Sub Save(ByVal sPath As String)
         Dim retSave() As Byte
-        retSave = Me._ms.ToArray
+        Try
+            retSave = Me._ms.ToArray
 
-        Using FileStream As Stream = File.OpenWrite(filename)
-            FileStream.Write(retSave, 0, retSave.Length) 'check if it works
-        End Using
+            'make sure directory exists
+            Directory.CreateDirectory(Directory.GetParent(sPath).FullName)
+            Using FileStream As Stream = File.OpenWrite(sPath)
+                FileStream.Write(retSave, 0, retSave.Length)
+            End Using
+
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
     End Sub
 
     ''' <summary>
@@ -233,28 +309,8 @@ Public Class Themes
             Return False
         End Try
     End Function
-    ''' <summary>
-    ''' Raises the ProgressUpdated event, passing the iPercent value to indicate percent completed.
-    ''' </summary>
-    ''' <param name="iPercent">Integer representing percentage completed</param>
-    ''' <remarks></remarks>
-    Public Shared Sub DownloadProgressUpdated(ByVal iPercent As Integer)
-        RaiseEvent ProgressUpdated(iPercent)
-    End Sub
 
 #End Region 'Methods
-
-#Region "Nested Types"
-
-    Structure sMySettings
-
-#Region "Fields"
-
-#End Region 'Fields
-
-    End Structure
-
-#End Region 'Nested Types
 
 #Region "IDisposable Support"
     Private disposedValue As Boolean ' To detect redundant calls

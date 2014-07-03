@@ -2571,7 +2571,7 @@ Public Class Images
     ''' <param name="imgResult">Single <c>MediaContainers.Image</c>, if preferred image was found</param>
     ''' <returns><c>True</c> if a preferred image was found, <c>False</c> otherwise</returns>
     ''' <remarks></remarks>
-    Public Shared Function GetPreferredPoster(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
+    Public Shared Function GetPreferredMoviePoster(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
         If ImageList.Count = 0 Then Return False
 
         Dim aDesc = From aD As Structures.v3Size In Master.eSize.poster_names Where (aD.index = Master.eSettings.MoviePosterPrefSize)
@@ -2591,7 +2591,7 @@ Public Class Images
     ''' <param name="imgResult">Single <c>MediaContainers.Image</c>, if preferred image was found</param>
     ''' <returns><c>True</c> if a preferred image was found, <c>False</c> otherwise</returns>
     ''' <remarks></remarks>
-    Public Shared Function GetPreferredFanart(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
+    Public Shared Function GetPreferredMovieFanart(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
         If ImageList.Count = 0 Then Return False
 
         Dim aDesc = From aD As Structures.v3Size In Master.eSize.backdrop_names Where (aD.index = Master.eSettings.MovieFanartPrefSize)
@@ -2610,7 +2610,7 @@ Public Class Images
     ''' <param name="ImageList">Source <c>List</c> of <c>MediaContainers.Image</c> holding available extrathumbs</param>
     ''' <returns><c>List</c> of image URLs that fit the preferred thumb size</returns>
     ''' <remarks></remarks>
-    Public Shared Function GetPreferredEThumbs(ByRef ImageList As List(Of MediaContainers.Image)) As List(Of String)
+    Public Shared Function GetPreferredMovieEThumbs(ByRef ImageList As List(Of MediaContainers.Image)) As List(Of String)
         Dim imgList As New List(Of String)
         If ImageList.Count = 0 Then Return imgList
 
@@ -2631,7 +2631,7 @@ Public Class Images
     ''' <param name="ImageList">Source <c>List</c> of <c>MediaContainers.Image</c> holding available extraFanart</param>
     ''' <returns><c>List</c> of image URLs that fit the preferred thumb size</returns>
     ''' <remarks></remarks>
-    Public Shared Function GetPreferredEFanarts(ByRef ImageList As List(Of MediaContainers.Image)) As List(Of String)
+    Public Shared Function GetPreferredMovieEFanarts(ByRef ImageList As List(Of MediaContainers.Image)) As List(Of String)
         Dim imgList As New List(Of String)
         If ImageList.Count = 0 Then Return imgList
 

@@ -113,7 +113,17 @@ Public Class dlgImgSelect
         ' This call is required by the designer.
         InitializeComponent()
     End Sub
-
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="DBMovie">Movie</param>
+    ''' <param name="Type">Image type</param>
+    ''' <param name="ImageList">Image list</param>
+    ''' <param name="efList">Extrafanarts list</param>
+    ''' <param name="etList">Extrathumbs list</param>
+    ''' <param name="_isEdit"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public Overloads Function ShowDialog(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.MovieImageType, ByRef ImageList As List(Of MediaContainers.Image), ByRef efList As List(Of String), ByRef etList As List(Of String), Optional ByVal _isEdit As Boolean = False) As DialogResult
         '//
         ' Overload to pass data

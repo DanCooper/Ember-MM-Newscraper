@@ -2026,5 +2026,67 @@ Namespace MediaContainers
 
     End Class
 
+    Public Class [Theme]
+
+#Region "Constructors"
+
+        Public Sub New()
+            Me.Clear()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Properties"
+        Public Property Quality As String
+        Public Property URL As String ' path to image (local or url)
+        Public Property WebTheme As Themes
+        Public Property ShortLang As String
+        Public Property LongLang As String
+
+#End Region 'Properties
+
+#Region "Methods"
+
+        Public Sub Clear()
+            Me._URL = String.Empty
+            Me._Quality = String.Empty
+            Me._WebTheme = New Themes
+        End Sub
+
+#End Region 'Methods
+
+    End Class
+
+    Public Class [Trailer]
+
+#Region "Constructors"
+
+        Public Sub New()
+            Me.Clear()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Properties"
+        Public Property Quality As String
+        Public Property URL As String ' path to image (local or url)
+        Public Property WebTrailer As Trailers
+        Public Property ShortLang As String
+        Public Property LongLang As String
+
+#End Region 'Properties
+
+#Region "Methods"
+
+        Public Sub Clear()
+            Me._URL = String.Empty
+            Me._Quality = String.Empty
+            Me._WebTrailer = New Trailers
+        End Sub
+
+#End Region 'Methods
+
+    End Class
+
 End Namespace
 

@@ -363,7 +363,7 @@ Public Class dlgTrailerSelect
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         Try
             Using Trailer As New Trailers()
-                Me.tURL = Trailer.DownloadTrailer(Me.sPath, Me.tMovie.isSingle, Args.Parameter) ', Me.tMovie.Filename)
+                'Me.tURL = Trailer.FromWeb(Me.sPath, Me.tMovie.isSingle, Args.Parameter) ', Me.tMovie.Filename)
             End Using
 
         Catch
