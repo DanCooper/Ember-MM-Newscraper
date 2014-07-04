@@ -68,8 +68,13 @@ Public Class Localization
 
             _ISOLanguages = CType(xLangsString.Deserialize(objStreamReader), clsXMLLanguages)
             objStreamReader.Close()
+
+            If _ISOLanguages.Language.Count = 0 Then
+                logger.Fatal("Cannot load Language.xml." & vbNewLine & "Path: {0}", lPath)
+                MsgBox(String.Concat("Cannot load Language.xml.", vbNewLine, vbNewLine, "Path:", vbNewLine, lPath), MsgBoxStyle.Critical, "File Not Found")
+            End If
         Else
-            logger.Error("Cannot find Language.xml." & vbNewLine & "Expected path: {0}", lPath)
+            logger.Fatal("Cannot find Language.xml." & vbNewLine & "Expected path: {0}", lPath)
             MsgBox(String.Concat("Cannot find Language.xml.", vbNewLine, vbNewLine, "Expected path:", vbNewLine, lPath), MsgBoxStyle.Critical, "File Not Found")
         End If
     End Sub

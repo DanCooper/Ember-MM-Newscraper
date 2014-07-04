@@ -1744,6 +1744,7 @@ Public Class Structures
     ''' Structure representing posible scrape fields for movies
     ''' </summary>
     ''' <remarks></remarks>
+    <Serializable()> _
     Public Structure ScrapeOptions
         Dim bCast As Boolean
         Dim bCert As Boolean
