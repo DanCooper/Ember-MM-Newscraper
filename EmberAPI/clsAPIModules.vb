@@ -1003,9 +1003,9 @@ Public Class ModulesManager
         Next
     End Sub
 
-    Public Function TVGetLangs(ByVal sMirror As String) As List(Of Containers.TVLanguage)
+    Public Function TVGetLangs(ByVal sMirror As String) As clsXMLTVDBLanguages
         Dim ret As Interfaces.ModuleResult
-        Dim Langs As New List(Of Containers.TVLanguage)
+        Dim Langs As New clsXMLTVDBLanguages
         While Not (bwloadModules_done And bwloadScrapersModules_done And bwloadTVScrapersModules_done)
             Application.DoEvents()
         End While

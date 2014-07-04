@@ -271,56 +271,6 @@ Public Class Containers
 
     End Class 'SettingsPanel
 
-    Public Class TVLanguage
-
-#Region "Fields"
-
-        Private _longlang As String
-        Private _shortlang As String
-
-#End Region 'Fields
-
-#Region "Constructors"
-
-        Public Sub New()
-            Me.Clear()
-        End Sub
-
-#End Region 'Constructors
-
-#Region "Properties"
-
-        Public Property LongLang() As String
-            Get
-                Return Me._longlang
-            End Get
-            Set(ByVal value As String)
-                Me._longlang = value
-            End Set
-        End Property
-
-        Public Property ShortLang() As String
-            Get
-                Return Me._shortlang
-            End Get
-            Set(ByVal value As String)
-                Me._shortlang = value
-            End Set
-        End Property
-
-#End Region 'Properties
-
-#Region "Methods"
-
-        Public Sub Clear()
-            Me._longlang = String.Empty
-            Me._shortlang = String.Empty
-        End Sub
-
-#End Region 'Methods
-
-    End Class 'TVLanguage
-
     Public Class Addon
 #Region "Fields"
         Private _id As Integer

@@ -164,12 +164,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property TVGeneralLanguages() As List(Of Containers.TVLanguage)
+    Public Property TVGeneralLanguages() As clsXMLTVDBLanguages
         Get
-            Return Settings._XMLSettings.tvgenerallanguages
+            Return Settings._XMLSettings.TVGeneralLanguages
         End Get
-        Set(ByVal value As List(Of Containers.TVLanguage))
-            Settings._XMLSettings.tvgenerallanguages = value
+        Set(ByVal value As clsXMLTVDBLanguages)
+            Settings._XMLSettings.TVGeneralLanguages = value
         End Set
     End Property
 
@@ -4814,8 +4814,6 @@ Public Class Settings
     ''' </summary>
     ''' <remarks></remarks>
     Public Sub Clear()
-        Dim xmlTVDB As New clsXMLTVDBLanguages
-
         'Make it simple: load a default values XML file
         Try
             Dim configpath As String = String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar, "DefaultSettings.xml")
@@ -4838,20 +4836,6 @@ Public Class Settings
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
 
-        End Try
-
-        Try
-            Dim configpath As String = FileUtils.Common.ReturnSettingsFile("Settings", "TVDBLanguages.xml")
-
-            Dim objStreamReader As New StreamReader(configpath)
-            Dim xTVDBLang As New XmlSerializer(xmlTVDB.GetType)
-
-            xmlTVDB = CType(xTVDBLang.Deserialize(objStreamReader), clsXMLTVDBLanguages)
-            objStreamReader.Close()
-            ' error - someone removed the variable that holds the default TVDB languages. In case TVDB is not online to check them
-            '_tvscraperlanguages.Sort(AddressOf CompareLanguagesLong)
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -5194,7 +5178,7 @@ Public Class Settings
     End Function
 
     Private Shared Function CompareLanguagesLong( _
-        ByVal x As Containers.TVLanguage, ByVal y As Containers.TVLanguage) As Integer
+        ByVal x As TVDBLanguagesLanguage, ByVal y As TVDBLanguagesLanguage) As Integer
 
         If x Is Nothing Then
             If y Is Nothing Then
@@ -5229,7 +5213,7 @@ Public Class Settings
                 '    ' If the strings are of equal length,
                 '    ' sort them with ordinary string comparison.
                 '    '
-                Return x.LongLang.CompareTo(y.LongLang)
+                Return x.name.CompareTo(y.name)
                 'End If
             End If
         End If
@@ -5237,7 +5221,7 @@ Public Class Settings
     End Function
 
     Private Shared Function CompareLanguagesShort( _
-        ByVal x As Containers.TVLanguage, ByVal y As Containers.TVLanguage) As Integer
+        ByVal x As TVDBLanguagesLanguage, ByVal y As TVDBLanguagesLanguage) As Integer
 
         If x Is Nothing Then
             If y Is Nothing Then
@@ -5272,7 +5256,7 @@ Public Class Settings
                 '    ' If the strings are of equal length,
                 '    ' sort them with ordinary string comparison.
                 '    '
-                Return x.ShortLang.CompareTo(y.ShortLang)
+                Return x.abbreviation.CompareTo(y.abbreviation)
                 'End If
             End If
         End If
