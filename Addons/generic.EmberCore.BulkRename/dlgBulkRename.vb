@@ -120,7 +120,7 @@ Public Class dlgBulkRenamer
                                             MovieFile.Genre = _curMovie.Movie.Genre
                                             MovieFile.IMDBID = If(Not String.IsNullOrEmpty(_curMovie.Movie.IMDBID), String.Concat("tt", _curMovie.Movie.IMDBID), String.Empty)
                                             MovieFile.IsLocked = _curMovie.IsLock
-                                            MovieFile.IsSingle = _curMovie.isSingle
+                                            MovieFile.IsSingle = _curMovie.IsSingle
                                             MovieFile.ListTitle = _curMovie.ListTitle
                                             MovieFile.MPAARate = FileFolderRenamer.SelectMPAA(_curMovie.Movie)
                                             MovieFile.OriginalTitle = _curMovie.Movie.OriginalTitle

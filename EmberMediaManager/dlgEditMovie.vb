@@ -23,6 +23,7 @@ Imports System.IO
 Imports System.Text.RegularExpressions
 Imports EmberAPI
 Imports NLog
+Imports System.Net
 
 Public Class dlgEditMovie
 
@@ -254,7 +255,7 @@ Public Class dlgEditMovie
         Dim tURL As String = String.Empty
         If Not ModulesManager.Instance.MovieScrapeTrailer(Master.currMovie, Enums.ScraperCapabilities.Trailer, aUrlList) Then
             Using dTrailerSelect As New dlgTrailerSelect()
-                tURL = dTrailerSelect.ShowDialog(Master.currMovie, aUrlList)
+                'tURL = dTrailerSelect.ShowDialog(Master.currMovie, aUrlList)
             End Using
         End If
 
@@ -264,7 +265,6 @@ Public Class dlgEditMovie
                 Me.txtTrailer.Text = tURL
             Else
                 Master.currMovie.TrailerPath = tURL
-                Me.lblLocalTrailer.Visible = True
             End If
         End If
     End Sub
@@ -289,7 +289,7 @@ Public Class dlgEditMovie
     Private Sub btnManual_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnManual.Click
         Try
             If dlgManualEdit.ShowDialog(Master.currMovie.NfoPath) = Windows.Forms.DialogResult.OK Then
-                Master.currMovie.Movie = NFO.LoadMovieFromNFO(Master.currMovie.NfoPath, Master.currMovie.isSingle)
+                Master.currMovie.Movie = NFO.LoadMovieFromNFO(Master.currMovie.NfoPath, Master.currMovie.IsSingle)
                 Me.FillInfo(False)
             End If
         Catch ex As Exception
@@ -1008,6 +1008,42 @@ Public Class dlgEditMovie
         End Try
     End Sub
 
+    Private Sub btnSetMovieTrailerScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieTrailerScrape.Click
+        Dim tResults As New MediaContainers.Trailer
+        Dim dlgTrlS As dlgTrailerSelect
+        Dim tList As New List(Of Trailers)
+
+        Try
+            Dim sPath As String = Path.Combine(Master.TempPath, "Banner.jpg")
+
+            If Not ModulesManager.Instance.MovieScrapeTrailer(Master.currMovie, Enums.ScraperCapabilities.Trailer, tList) Then
+                If tList.Count > 0 Then
+                    dlgTrlS = New dlgTrailerSelect()
+                    If dlgTrlS.ShowDialog(Master.currMovie, tList, True) = Windows.Forms.DialogResult.OK Then
+                        tResults = dlgTrlS.Results
+                        'If Not String.IsNullOrEmpty(tResults.URL) Then
+                        '    Cursor = Cursors.WaitCursor
+                        '    tResults.WebTrailer.FromWeb(tResults.URL)
+                        'If Not IsNothing(pResults.WebImage.Image) Then
+                        '    pbMovieBanner.Image = CType(pResults.WebImage.Image.Clone(), Image)
+                        '    Me.lblMovieBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieBanner.Image.Width, Me.pbMovieBanner.Image.Height)
+                        '    Me.lblMovieBannerSize.Visible = True
+                        'End If
+                        '    Cursor = Cursors.Default
+                        'End If
+                        MovieTrailer = tResults.WebTrailer
+                        Me.axVLCPlayer.playlist.items.clear()
+                        Me.axVLCPlayer.playlist.add(MovieTrailer.URL)
+                    End If
+                Else
+                    MsgBox(Master.eLang.GetString(1161, "No trailers could be found. Please check to see if any trailer scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(225, "No Trailers Found"))
+                End If
+            End If
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
     Private Sub btnStudio_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnStudio.Click
         Using dStudio As New dlgStudioSelect
             Dim tStudio As String = dStudio.ShowDialog(Master.currMovie)
@@ -1115,11 +1151,11 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub bwEThumbs_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwEThumbs.DoWork
-        If Not Master.currMovie.ClearEThumbs OrElse hasClearedET Then LoadEThumbs()
+        If Not Master.currMovie.RemoveEThumbs OrElse hasClearedET Then LoadEThumbs()
     End Sub
 
     Private Sub bwEFanarts_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwEFanarts.DoWork
-        If Not Master.currMovie.ClearEFanarts OrElse hasClearedEF Then LoadEFanarts()
+        If Not Master.currMovie.RemoveEFanarts OrElse hasClearedEF Then LoadEFanarts()
     End Sub
 
     Private Sub bwEThumbs_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwEThumbs.RunWorkerCompleted
@@ -1266,6 +1302,12 @@ Public Class dlgEditMovie
 
         Me.MoviePoster.Dispose()
         Me.MoviePoster = Nothing
+
+        Me.MovieTheme.Dispose()
+        Me.MovieTheme = Nothing
+
+        Me.MovieTrailer.Dispose()
+        Me.MovieTrailer = Nothing
     End Sub
 
     Private Sub dlgEditMovie_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
@@ -1462,7 +1504,6 @@ Public Class dlgEditMovie
 
                 .btnDLTheme.Enabled = Master.eSettings.MovieThemeEnable AndAlso Master.eSettings.MovieThemeAnyEnabled AndAlso ModulesManager.Instance.QueryTrailerScraperCapabilities(Enums.ScraperCapabilities.Theme)
 
-                Me.lblLocalTrailer.Visible = Not String.IsNullOrEmpty(Master.currMovie.TrailerPath)
                 If Not String.IsNullOrEmpty(Master.currMovie.Movie.Trailer) Then
                     .txtTrailer.Text = Master.currMovie.Movie.Trailer
                 Else
@@ -1517,7 +1558,7 @@ Public Class dlgEditMovie
 
                 If DoAll Then
 
-                    If Not Master.currMovie.isSingle Then
+                    If Not Master.currMovie.IsSingle Then
                         tcEditMovie.TabPages.Remove(tpClearArt)
                         tcEditMovie.TabPages.Remove(tpClearLogo)
                         tcEditMovie.TabPages.Remove(tpDiscArt)
@@ -1630,6 +1671,26 @@ Public Class dlgEditMovie
 
                         .lblMoviePosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbMoviePoster.Image.Width, .pbMoviePoster.Image.Height)
                         .lblMoviePosterSize.Visible = True
+                    End If
+
+                    If Not String.IsNullOrEmpty(Master.currMovie.ThemePath) AndAlso Master.currMovie.ThemePath.Substring(0, 1) = ":" Then
+                        MovieTheme.FromWeb(Master.currMovie.ThemePath.Substring(1, Master.currMovie.ThemePath.Length - 1))
+                    Else
+                        MovieTheme.FromFile(Master.currMovie.ThemePath)
+                    End If
+
+                    If Not String.IsNullOrEmpty(Master.currMovie.TrailerPath) AndAlso Master.currMovie.TrailerPath.Substring(0, 1) = ":" Then
+                        MovieTrailer.FromWeb(Master.currMovie.TrailerPath.Substring(1, Master.currMovie.TrailerPath.Length - 1))
+                        If Not String.IsNullOrEmpty(MovieTrailer.URL) Then
+                            .axVLCPlayer.playlist.items.clear()
+                            .axVLCPlayer.playlist.add(MovieTrailer.URL)
+                        End If
+                    Else
+                        MovieTrailer.FromFile(Master.currMovie.TrailerPath)
+                        If Not String.IsNullOrEmpty(MovieTrailer.URL) Then
+                            .axVLCPlayer.playlist.items.clear()
+                            .axVLCPlayer.playlist.add(String.Concat("file:///", MovieTrailer.URL))
+                        End If
                     End If
 
                     If Not ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Banner) Then
@@ -2271,7 +2332,7 @@ Public Class dlgEditMovie
             End If
 
             If Not String.IsNullOrEmpty(tPath) Then
-                If Master.currMovie.ClearEThumbs AndAlso Not hasClearedET Then
+                If Master.currMovie.RemoveEThumbs AndAlso Not hasClearedET Then
                     FileUtils.Delete.DeleteDirectory(tPath)
                     hasClearedET = True
                 Else
@@ -2328,7 +2389,7 @@ Public Class dlgEditMovie
             End If
 
             If Not String.IsNullOrEmpty(tPath) Then
-                If Master.currMovie.ClearEFanarts AndAlso Not hasClearedEF Then
+                If Master.currMovie.RemoveEFanarts AndAlso Not hasClearedEF Then
                     FileUtils.Delete.DeleteDirectory(tPath)
                     hasClearedEF = True
                 Else
@@ -2517,7 +2578,7 @@ Public Class dlgEditMovie
                     End If
 
                     If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
-                        For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.isSingle, Enums.MovieModType.WatchedFile)
+                        For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.IsSingle, Enums.MovieModType.WatchedFile)
                             If Not File.Exists(a) Then
                                 Dim fs As FileStream = File.Create(a)
                                 fs.Close()
@@ -2531,7 +2592,7 @@ Public Class dlgEditMovie
                     End If
 
                     If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
-                        For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.isSingle, Enums.MovieModType.WatchedFile)
+                        For Each a In FileUtils.GetFilenameList.Movie(Master.currMovie.Filename, Master.currMovie.IsSingle, Enums.MovieModType.WatchedFile)
                             If File.Exists(a) Then
                                 File.Delete(a)
                             End If
@@ -2566,40 +2627,54 @@ Public Class dlgEditMovie
                     Next
                 End If
 
-                If Master.currMovie.ClearBanner Then
+                If Master.currMovie.RemoveActorThumbs Then
+                    'TODO
+                End If
+
+                If Master.currMovie.RemoveBanner Then
                     .MovieBanner.DeleteMovieBanner(Master.currMovie)
                 End If
 
-                If Master.currMovie.ClearClearArt Then
+                If Master.currMovie.RemoveClearArt Then
                     .MovieClearArt.DeleteMovieClearArt(Master.currMovie)
                 End If
 
-                If Master.currMovie.ClearClearLogo Then
+                If Master.currMovie.RemoveClearLogo Then
                     .MovieClearLogo.DeleteMovieClearLogo(Master.currMovie)
                 End If
 
-                If Master.currMovie.ClearDiscArt Then
+                If Master.currMovie.RemoveDiscArt Then
                     .MovieDiscArt.DeleteMovieDiscArt(Master.currMovie)
                 End If
 
-                If Master.currMovie.ClearFanart Then
+                If Master.currMovie.RemoveFanart Then
                     .MovieFanart.DeleteMovieFanart(Master.currMovie)
                 End If
 
-                If Master.currMovie.ClearLandscape Then
+                If Master.currMovie.RemoveLandscape Then
                     .MovieLandscape.DeleteMovieLandscape(Master.currMovie)
                 End If
 
-                If Master.currMovie.ClearPoster Then
+                If Master.currMovie.RemovePoster Then
                     .MoviePoster.DeleteMoviePoster(Master.currMovie)
                 End If
 
-                If Master.currMovie.ClearTheme Then
+                If Master.currMovie.RemoveTheme Then
                     .MovieTheme.DeleteMovieTheme(Master.currMovie)
                 End If
 
-                If Master.currMovie.ClearTrailer Then
+                If Master.currMovie.RemoveTrailer Then
                     .MovieTrailer.DeleteMovieTrailer(Master.currMovie)
+                End If
+
+                If Master.GlobalScrapeMod.ActorThumbs AndAlso (Master.eSettings.MovieActorThumbsFrodo OrElse Master.eSettings.MovieActorThumbsEden) Then
+                    For Each act As MediaContainers.Person In Master.currMovie.Movie.Actors
+                        Dim img As New Images
+                        img.FromWeb(act.Thumb)
+                        If Not IsNothing(img.Image) Then
+                            img.SaveAsMovieActorThumb(act, Directory.GetParent(Master.currMovie.Filename).FullName, Master.currMovie)
+                        End If
+                    Next
                 End If
 
                 If Not IsNothing(.MovieBanner.Image) Then
@@ -2656,16 +2731,6 @@ Public Class dlgEditMovie
                 Else
                     .MoviePoster.DeleteMoviePoster(Master.currMovie)
                     Master.currMovie.PosterPath = String.Empty
-                End If
-
-                If Master.GlobalScrapeMod.ActorThumbs AndAlso (Master.eSettings.MovieActorThumbsFrodo OrElse Master.eSettings.MovieActorThumbsEden) Then
-                    For Each act As MediaContainers.Person In Master.currMovie.Movie.Actors
-                        Dim img As New Images
-                        img.FromWeb(act.Thumb)
-                        If Not IsNothing(img.Image) Then
-                            img.SaveAsMovieActorThumb(act, Directory.GetParent(Master.currMovie.Filename).FullName, Master.currMovie)
-                        End If
-                    Next
                 End If
 
                 If Not IsNothing(.MovieTheme) Then
@@ -2768,7 +2833,6 @@ Public Class dlgEditMovie
         Me.lblDirector.Text = Master.eLang.GetString(239, "Director:")
         Me.lblFileSource.Text = Master.eLang.GetString(824, "Video Source:")
         Me.lblGenre.Text = Master.eLang.GetString(51, "Genre(s):")
-        Me.lblLocalTrailer.Text = Master.eLang.GetString(225, "Local Trailer Found")
         Me.lblMPAA.Text = Master.eLang.GetString(235, "MPAA Rating:")
         Me.lblMPAADesc.Text = Master.eLang.GetString(229, "MPAA Rating Description:")
         Me.lblOriginalTitle.Text = String.Concat(Master.eLang.GetString(302, "Original Title"), ":")
@@ -2934,4 +2998,5 @@ Public Class dlgEditMovie
     End Class
 
 #End Region 'Nested Types
+
 End Class

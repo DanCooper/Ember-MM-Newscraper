@@ -1638,49 +1638,50 @@ Public Class Structures
         Dim BannerPath As String
         Dim ClearArtPath As String
         Dim ClearLogoPath As String
-        Dim ClearBanner As Boolean
-        Dim ClearClearArt As Boolean
-        Dim ClearClearLogo As Boolean
-        Dim ClearDiscArt As Boolean
-        Dim ClearEThumbs As Boolean
-        Dim ClearEFanarts As Boolean
-        Dim ClearFanart As Boolean
-        Dim ClearLandscape As Boolean
-        Dim ClearPoster As Boolean
-        Dim ClearTheme As Boolean
-        Dim ClearTrailer As Boolean
+        Dim DVDProfilerCaseType As String
+        Dim DVDProfilerLocation As String
+        Dim DVDProfilerMediaType As String
+        Dim DVDProfilerSlot As String
+        Dim DVDProfilerTitle As String
         Dim DateAdd As Long
         Dim DiscArtPath As String
-        Dim EThumbsPath As String
         Dim EFanartsPath As String
+        Dim efList As List(Of String)
+        Dim etList As List(Of String)
+        Dim EThumbsPath As String
         Dim FanartPath As String
-        Dim Filename As String
         Dim FileSource As String
+        Dim Filename As String
         Dim ID As Long
         Dim IsLock As Boolean
         Dim IsMark As Boolean
-        Dim isSingle As Boolean
-        Dim OriginalTitle As String
+        Dim IsSingle As Boolean
         Dim LandscapePath As String
         Dim ListTitle As String
         Dim Movie As MediaContainers.Movie
         Dim NeedsSave As Boolean
         Dim NfoPath As String
+        Dim OfflineHolderFoldername As String
+        Dim OriginalTitle As String
         Dim OutOfTolerance As Boolean
         Dim PosterPath As String
+        Dim RemoveActorThumbs As Boolean
+        Dim RemoveBanner As Boolean
+        Dim RemoveClearArt As Boolean
+        Dim RemoveClearLogo As Boolean
+        Dim RemoveDiscArt As Boolean
+        Dim RemoveEFanarts As Boolean
+        Dim RemoveEThumbs As Boolean
+        Dim RemoveFanart As Boolean
+        Dim RemoveLandscape As Boolean
+        Dim RemovePoster As Boolean
+        Dim RemoveTheme As Boolean
+        Dim RemoveTrailer As Boolean
         Dim Source As String
         Dim SubPath As String
         Dim ThemePath As String
         Dim TrailerPath As String
         Dim UseFolder As Boolean
-        Dim efList As List(Of String)
-        Dim etList As List(Of String)
-        Dim DVDProfilerCaseType As String
-        Dim DVDProfilerLocation As String
-        Dim DVDProfilerSlot As String
-        Dim DVDProfilerTitle As String
-        Dim DVDProfilerMediaType As String
-        Dim OfflineHolderFoldername As String
     End Structure
     ''' <summary>
     ''' Structure representing a movieset in the database

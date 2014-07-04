@@ -323,7 +323,7 @@ Namespace FileUtils
                         End If
                     End If
 
-                    If Not isCleaner AndAlso mMovie.isSingle AndAlso Not Master.SourcesList.Contains(MovieDir.Parent.ToString) Then
+                    If Not isCleaner AndAlso mMovie.IsSingle AndAlso Not Master.SourcesList.Contains(MovieDir.Parent.ToString) Then
                         If Common.isVideoTS(MovieDir.FullName) Then
                             ItemsToDelete.Add(MovieDir.Parent)
                         ElseIf Common.isBDRip(MovieDir.FullName) Then
@@ -428,7 +428,7 @@ Namespace FileUtils
 
                             ioFi.Clear()
                             Try
-                                If mMovie.isSingle Then ioFi.AddRange(dirInfo.GetFiles(String.Concat(sOrName, "*.*")))
+                                If mMovie.IsSingle Then ioFi.AddRange(dirInfo.GetFiles(String.Concat(sOrName, "*.*")))
                             Catch
                             End Try
 

@@ -223,7 +223,7 @@
 	<string id="222">Folder Not Found</string>
 	<string id="223">Select Studio</string>
 	<string id="224">Edit the details for the selected movie.</string>
-	<string id="225">Local Trailer Found</string>
+	<string id="225">No Trailers Found</string>
 	<string id="226">Studio:</string>
 	<string id="227">Trailer URL:</string>
 	<string id="228">Credits:</string>
@@ -1247,4 +1247,7 @@
 	<string id="1158">Bitrate</string>
 	<string id="1159">Encoding Settings</string>
 	<string id="1160">Restart last scrape...</string>
+	<string id="1161">No trailers could be found. Please check to see if any trailer scrapers are enabled.</string>
+	<string id="1162">No themes could be found. Please check to see if any theme scrapers are enabled.</string>
+	<string id="1163">No Themes Found</string>
 </strings>

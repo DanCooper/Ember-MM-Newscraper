@@ -63,7 +63,7 @@ Public Class dlgRenameManual
                 If Not stackMark = String.Empty AndAlso Master.currMovie.Movie.Title.ToLower.EndsWith(stackMark) Then
                     FileName = Path.GetFileNameWithoutExtension(Master.currMovie.Filename)
                 End If
-                If Master.currMovie.isSingle Then
+                If Master.currMovie.IsSingle Then
                     txtFolder.Text = Directory.GetParent(Master.currMovie.Filename).Name
                 Else
                     txtFolder.Text = "$D"

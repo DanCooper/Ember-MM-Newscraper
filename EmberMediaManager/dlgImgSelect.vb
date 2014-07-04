@@ -135,7 +135,6 @@ Public Class dlgImgSelect
         Me._etList = etList
         Me.DLType = Type
         Me.isEdit = _isEdit
-        'Me.isShown = True
         Select Case DLType
             Case Enums.MovieImageType.Banner
                 aDes = Master.eSize.poster_names(0).description
@@ -168,7 +167,6 @@ Public Class dlgImgSelect
         Me._etList = etList
         Me.DLType = Type
         Me.isEdit = _isEdit
-        'Me.isShown = True
         Select Case DLType
             Case Enums.MovieImageType.Banner
                 aDes = Master.eSize.poster_names(0).description
@@ -206,7 +204,7 @@ Public Class dlgImgSelect
             Me.bwImgDownload.WorkerSupportsCancellation = True
             Me.bwImgDownload.WorkerReportsProgress = True
             isWorkerDone = False
-            Me.bwImgDownload.RunWorkerAsync() 'Me.TMDB.GetImagesAsync(tMovie.Movie.TMDBID, "backdrop")
+            Me.bwImgDownload.RunWorkerAsync()
 
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -697,7 +695,6 @@ Public Class dlgImgSelect
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
         Try
-            'If IsNothing(Me.tmpImage.WebImage.Image) Then
             If Not IsNothing(Me.tmpImage.WebImage.Image) Then
                 Me.pnlBG.Visible = False
 

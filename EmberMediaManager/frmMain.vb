@@ -2800,17 +2800,18 @@ doCancel:
                         Functions.SetScraperMod(Enums.MovieModType.All, True, True)
                         Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultMovieOptions)
                     Case Windows.Forms.DialogResult.Abort
-                        Master.currMovie.ClearBanner = False
-                        Master.currMovie.ClearClearArt = False
-                        Master.currMovie.ClearClearLogo = False
-                        Master.currMovie.ClearDiscArt = False
-                        Master.currMovie.ClearEThumbs = False
-                        Master.currMovie.ClearEFanarts = False
-                        Master.currMovie.ClearFanart = False
-                        Master.currMovie.ClearLandscape = False
-                        Master.currMovie.ClearPoster = False
-                        Master.currMovie.ClearTheme = False
-                        Master.currMovie.ClearTrailer = False
+                        Master.currMovie.RemoveActorThumbs = False
+                        Master.currMovie.RemoveBanner = False
+                        Master.currMovie.RemoveClearArt = False
+                        Master.currMovie.RemoveClearLogo = False
+                        Master.currMovie.RemoveDiscArt = False
+                        Master.currMovie.RemoveEThumbs = False
+                        Master.currMovie.RemoveEFanarts = False
+                        Master.currMovie.RemoveFanart = False
+                        Master.currMovie.RemoveLandscape = False
+                        Master.currMovie.RemovePoster = False
+                        Master.currMovie.RemoveTheme = False
+                        Master.currMovie.RemoveTrailer = False
                         Functions.SetScraperMod(Enums.MovieModType.DoSearch, True)
                         Functions.SetScraperMod(Enums.MovieModType.All, True, False)
                         Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultMovieOptions)
@@ -7949,7 +7950,7 @@ doCancel:
     End Sub
 
     Private Sub frmMain_FormClosed(sender As Object, e As FormClosedEventArgs) Handles Me.FormClosed
-        logger.Info( "====Ember Media Manager exiting====")
+        logger.Info("====Ember Media Manager exiting====")
     End Sub
     ''' <summary>
     ''' The FormClosing event has been called, so prepare the form to shut down
@@ -8040,7 +8041,7 @@ doCancel:
         Try
             Me.Visible = False
 
-            logger.Info( "====Ember Media Manager starting up====")
+            logger.Info("====Ember Media Manager starting up====")
 
             fLoading = New frmSplash
             If Master.isWindows Then 'Dam mono on MacOSX don't have trayicon implemented yet
@@ -8184,7 +8185,7 @@ doCancel:
     ''' <remarks></remarks>
     Private Sub LoadWithCommandLine(ByVal Args() As String)
         Try
-            logger.Trace( "LoadWithCommandLine()")
+            logger.Trace("LoadWithCommandLine()")
 
             Dim MoviePath As String = String.Empty
             Dim isSingle As Boolean = False
@@ -8428,7 +8429,7 @@ doCancel:
                                     Master.currMovie.ThemePath = sFile.Theme
                                     Master.currMovie.TrailerPath = sFile.Trailer
                                     Master.currMovie.UseFolder = sFile.UseFolder
-                                    Master.currMovie.isSingle = sFile.isSingle
+                                    Master.currMovie.IsSingle = sFile.isSingle
                                 End If
                                 Master.tmpMovie = Master.currMovie.Movie
                             End If
@@ -8462,7 +8463,7 @@ doCancel:
     ''' <remarks></remarks>
     Private Sub LoadWithGUI()
         Try
-            logger.Trace( "LoadWithGUI()")
+            logger.Trace("LoadWithGUI()")
             'If Master.eSettings.CheckUpdates Then
             '    If Functions.CheckNeedUpdate() Then
             '        Using dNewVer As New dlgNewVersion
@@ -8651,7 +8652,7 @@ doCancel:
                     logger.Error(New StackFrame().GetMethod().Name, ex)
                 End Try
             Case Else
-                logger.Warn( "Callback for <{0}> with no handler.", mType)
+                logger.Warn("Callback for <{0}> with no handler.", mType)
         End Select
     End Sub
 
@@ -9617,31 +9618,33 @@ doCancel:
                             End If
                             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieSync, Nothing, Master.currMovie)
                         Case Windows.Forms.DialogResult.Retry
-                            Master.currMovie.ClearBanner = False
-                            Master.currMovie.ClearClearArt = False
-                            Master.currMovie.ClearClearLogo = False
-                            Master.currMovie.ClearDiscArt = False
-                            Master.currMovie.ClearEThumbs = False
-                            Master.currMovie.ClearEFanarts = False
-                            Master.currMovie.ClearFanart = False
-                            Master.currMovie.ClearLandscape = False
-                            Master.currMovie.ClearPoster = False
-                            Master.currMovie.ClearTheme = False
-                            Master.currMovie.ClearTrailer = False
+                            Master.currMovie.RemoveActorThumbs = False
+                            Master.currMovie.RemoveBanner = False
+                            Master.currMovie.RemoveClearArt = False
+                            Master.currMovie.RemoveClearLogo = False
+                            Master.currMovie.RemoveDiscArt = False
+                            Master.currMovie.RemoveEThumbs = False
+                            Master.currMovie.RemoveEFanarts = False
+                            Master.currMovie.RemoveFanart = False
+                            Master.currMovie.RemoveLandscape = False
+                            Master.currMovie.RemovePoster = False
+                            Master.currMovie.RemoveTheme = False
+                            Master.currMovie.RemoveTrailer = False
                             Functions.SetScraperMod(Enums.MovieModType.All, True, True)
                             Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultMovieOptions) ', ID)
                         Case Windows.Forms.DialogResult.Abort
-                            Master.currMovie.ClearBanner = False
-                            Master.currMovie.ClearClearArt = False
-                            Master.currMovie.ClearClearLogo = False
-                            Master.currMovie.ClearDiscArt = False
-                            Master.currMovie.ClearEThumbs = False
-                            Master.currMovie.ClearEFanarts = False
-                            Master.currMovie.ClearFanart = False
-                            Master.currMovie.ClearLandscape = False
-                            Master.currMovie.ClearPoster = False
-                            Master.currMovie.ClearTheme = False
-                            Master.currMovie.ClearTrailer = False
+                            Master.currMovie.RemoveActorThumbs = False
+                            Master.currMovie.RemoveBanner = False
+                            Master.currMovie.RemoveClearArt = False
+                            Master.currMovie.RemoveClearLogo = False
+                            Master.currMovie.RemoveDiscArt = False
+                            Master.currMovie.RemoveEThumbs = False
+                            Master.currMovie.RemoveEFanarts = False
+                            Master.currMovie.RemoveFanart = False
+                            Master.currMovie.RemoveLandscape = False
+                            Master.currMovie.RemovePoster = False
+                            Master.currMovie.RemoveTheme = False
+                            Master.currMovie.RemoveTrailer = False
                             Functions.SetScraperMod(Enums.MovieModType.DoSearch, True)
                             Functions.SetScraperMod(Enums.MovieModType.All, True, False)
                             Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultMovieOptions) ', ID, True)
@@ -9656,17 +9659,18 @@ doCancel:
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
-        Master.currMovie.ClearBanner = False
-        Master.currMovie.ClearClearArt = False
-        Master.currMovie.ClearClearLogo = False
-        Master.currMovie.ClearDiscArt = False
-        Master.currMovie.ClearEThumbs = False
-        Master.currMovie.ClearEFanarts = False
-        Master.currMovie.ClearFanart = False
-        Master.currMovie.ClearLandscape = False
-        Master.currMovie.ClearPoster = False
-        Master.currMovie.ClearTheme = False
-        Master.currMovie.ClearTrailer = False
+        Master.currMovie.RemoveActorThumbs = False
+        Master.currMovie.RemoveBanner = False
+        Master.currMovie.RemoveClearArt = False
+        Master.currMovie.RemoveClearLogo = False
+        Master.currMovie.RemoveDiscArt = False
+        Master.currMovie.RemoveEThumbs = False
+        Master.currMovie.RemoveEFanarts = False
+        Master.currMovie.RemoveFanart = False
+        Master.currMovie.RemoveLandscape = False
+        Master.currMovie.RemovePoster = False
+        Master.currMovie.RemoveTheme = False
+        Master.currMovie.RemoveTrailer = False
 
         Me.pnlCancel.Visible = False
         Me.tslLoading.Visible = False
@@ -9875,7 +9879,7 @@ doCancel:
                 Me.lblCanceling.Text = Master.eLang.GetString(121, "Canceling Backdrop Copy...")
                 Me.tslLoading.Text = Master.eLang.GetString(130, "Copying Fanart to Backdrops Folder:")
             Case Else
-                logger.Warn( "Invalid sType: <{0}>", sType)
+                logger.Warn("Invalid sType: <{0}>", sType)
         End Select
 
         btnCancel.Visible = True
@@ -10233,11 +10237,11 @@ doCancel:
 
                 If FromNfo Then
                     If String.IsNullOrEmpty(tmpMovieDb.NfoPath) Then
-                        Dim sNFO As String = NFO.GetNfoPath(tmpMovieDb.Filename, tmpMovieDb.isSingle)
+                        Dim sNFO As String = NFO.GetNfoPath(tmpMovieDb.Filename, tmpMovieDb.IsSingle)
                         tmpMovieDb.NfoPath = sNFO
-                        tmpMovie = NFO.LoadMovieFromNFO(sNFO, tmpMovieDb.isSingle)
+                        tmpMovie = NFO.LoadMovieFromNFO(sNFO, tmpMovieDb.IsSingle)
                     Else
-                        tmpMovie = NFO.LoadMovieFromNFO(tmpMovieDb.NfoPath, tmpMovieDb.isSingle)
+                        tmpMovie = NFO.LoadMovieFromNFO(tmpMovieDb.NfoPath, tmpMovieDb.IsSingle)
                     End If
                     'subsType and subsPath not in NFO , try to load it from DB
                     For x = 0 To tmpMovie.FileInfo.StreamDetails.Subtitle.Count - 1
@@ -10257,7 +10261,7 @@ doCancel:
                         tmpMovieDb.ListTitle = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(Directory.GetParent(tmpMovieDb.Filename).FullName).FullName).Name)
                         tmpMovieDb.Movie.Title = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(Directory.GetParent(tmpMovieDb.Filename).FullName).FullName).Name, False)
                     Else
-                        If tmpMovieDb.UseFolder AndAlso tmpMovieDb.isSingle Then
+                        If tmpMovieDb.UseFolder AndAlso tmpMovieDb.IsSingle Then
                             tmpMovieDb.ListTitle = StringUtils.FilterName(Directory.GetParent(tmpMovieDb.Filename).Name)
                             tmpMovieDb.Movie.Title = StringUtils.FilterName(Directory.GetParent(tmpMovieDb.Filename).Name, False)
                         Else
@@ -10283,7 +10287,7 @@ doCancel:
                 End If
 
                 If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
-                    For Each a In FileUtils.GetFilenameList.Movie(tmpMovieDb.Filename, tmpMovieDb.isSingle, Enums.MovieModType.WatchedFile)
+                    For Each a In FileUtils.GetFilenameList.Movie(tmpMovieDb.Filename, tmpMovieDb.IsSingle, Enums.MovieModType.WatchedFile)
                         If delWatched Then
                             If File.Exists(a) Then
                                 File.Delete(a)
@@ -10305,7 +10309,7 @@ doCancel:
                     Next
                 End If
 
-                Dim mContainer As New Scanner.MovieContainer With {.Filename = tmpMovieDb.Filename, .isSingle = tmpMovieDb.isSingle}
+                Dim mContainer As New Scanner.MovieContainer With {.Filename = tmpMovieDb.Filename, .isSingle = tmpMovieDb.IsSingle}
                 fScanner.GetMovieFolderContents(mContainer)
                 tmpMovieDb.BannerPath = mContainer.Banner
                 tmpMovieDb.ClearArtPath = mContainer.ClearArt

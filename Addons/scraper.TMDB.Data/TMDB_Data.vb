@@ -337,17 +337,18 @@ Public Class TMDB_Data
         If ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.GlobalScrapeMod.DoSearch _
          AndAlso ModulesManager.Instance.externalDataScrapersModules.OrderBy(Function(y) y.ScraperOrder).FirstOrDefault(Function(e) e.ProcessorModule.ScraperEnabled).AssemblyName = _AssemblyName Then
             DBMovie.Movie.IMDBID = String.Empty
-            DBMovie.ClearBanner = True
-            DBMovie.ClearClearArt = True
-            DBMovie.ClearClearLogo = True
-            DBMovie.ClearDiscArt = True
-            DBMovie.ClearEFanarts = True
-            DBMovie.ClearEThumbs = True
-            DBMovie.ClearFanart = True
-            DBMovie.ClearLandscape = True
-            DBMovie.ClearPoster = True
-            DBMovie.ClearTheme = True
-            DBMovie.ClearTrailer = True
+            DBMovie.RemoveActorThumbs = True
+            DBMovie.RemoveBanner = True
+            DBMovie.RemoveClearArt = True
+            DBMovie.RemoveClearLogo = True
+            DBMovie.RemoveDiscArt = True
+            DBMovie.RemoveEFanarts = True
+            DBMovie.RemoveEThumbs = True
+            DBMovie.RemoveFanart = True
+            DBMovie.RemoveLandscape = True
+            DBMovie.RemovePoster = True
+            DBMovie.RemoveTheme = True
+            DBMovie.RemoveTrailer = True
             DBMovie.BannerPath = String.Empty
             DBMovie.ClearArtPath = String.Empty
             DBMovie.ClearLogoPath = String.Empty
@@ -385,7 +386,7 @@ Public Class TMDB_Data
                         ElseIf FileUtils.Common.isBDRip(DBMovie.Filename) Then
                             tmpTitle = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).FullName).Name, False)
                         Else
-                            tmpTitle = StringUtils.FilterName(If(DBMovie.isSingle, Directory.GetParent(DBMovie.Filename).Name, Path.GetFileNameWithoutExtension(DBMovie.Filename)))
+                            tmpTitle = StringUtils.FilterName(If(DBMovie.IsSingle, Directory.GetParent(DBMovie.Filename).Name, Path.GetFileNameWithoutExtension(DBMovie.Filename)))
                         End If
                     End If
                     If dSearch.ShowDialog(tmpTitle, DBMovie.Filename, filterOptions, tmpYear) = Windows.Forms.DialogResult.OK Then
@@ -393,17 +394,18 @@ Public Class TMDB_Data
                             ' if we changed the ID tipe we need to clear everything and rescrape
                             ' TODO: check TMDB if IMDB NullOrEmpty
                             If Not String.IsNullOrEmpty(DBMovie.Movie.IMDBID) AndAlso Not (DBMovie.Movie.IMDBID = Master.tmpMovie.IMDBID) Then
-                                Master.currMovie.ClearBanner = True
-                                Master.currMovie.ClearClearArt = True
-                                Master.currMovie.ClearClearLogo = True
-                                Master.currMovie.ClearDiscArt = True
-                                Master.currMovie.ClearEThumbs = True
-                                Master.currMovie.ClearEFanarts = True
-                                Master.currMovie.ClearFanart = True
-                                Master.currMovie.ClearLandscape = True
-                                Master.currMovie.ClearPoster = True
-                                Master.currMovie.ClearTheme = True
-                                Master.currMovie.ClearTrailer = True
+                                Master.currMovie.RemoveActorThumbs = True
+                                Master.currMovie.RemoveBanner = True
+                                Master.currMovie.RemoveClearArt = True
+                                Master.currMovie.RemoveClearLogo = True
+                                Master.currMovie.RemoveDiscArt = True
+                                Master.currMovie.RemoveEThumbs = True
+                                Master.currMovie.RemoveEFanarts = True
+                                Master.currMovie.RemoveFanart = True
+                                Master.currMovie.RemoveLandscape = True
+                                Master.currMovie.RemovePoster = True
+                                Master.currMovie.RemoveTheme = True
+                                Master.currMovie.RemoveTrailer = True
                                 Master.currMovie.BannerPath = String.Empty
                                 Master.currMovie.ClearArtPath = String.Empty
                                 Master.currMovie.ClearLogoPath = String.Empty
@@ -445,7 +447,7 @@ Public Class TMDB_Data
             ElseIf FileUtils.Common.isBDRip(DBMovie.Filename) Then
                 DBMovie.ListTitle = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).FullName).Name)
             Else
-                If DBMovie.UseFolder AndAlso DBMovie.isSingle Then
+                If DBMovie.UseFolder AndAlso DBMovie.IsSingle Then
                     DBMovie.ListTitle = StringUtils.FilterName(Directory.GetParent(DBMovie.Filename).Name)
                 Else
                     DBMovie.ListTitle = StringUtils.FilterName(Path.GetFileNameWithoutExtension(DBMovie.Filename))

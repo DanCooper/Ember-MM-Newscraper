@@ -416,6 +416,7 @@ Public Class Scanner
                         Movie.Theme = tList.FirstOrDefault(Function(s) s.ToLower = (String.Concat(a.ToLower, t)))
                         If Not String.IsNullOrEmpty(Movie.Theme) Then Exit For
                     Next
+                    If Not String.IsNullOrEmpty(Movie.Theme) Then Exit For
                 Next
             End If
 
@@ -426,11 +427,11 @@ Public Class Scanner
                         Movie.Trailer = fList.FirstOrDefault(Function(s) s.ToLower = (String.Concat(a.ToLower, t)))
                         If Not String.IsNullOrEmpty(Movie.Trailer) Then Exit For
                     Next
+                    If Not String.IsNullOrEmpty(Movie.Trailer) Then Exit For
                 Next
             End If
 
             For Each fFile As String In fList
-
                 'subs
                 If String.IsNullOrEmpty(Movie.Subs) Then
                     If Regex.IsMatch(fFile.ToLower, String.Concat("^", Regex.Escape(filePath), clsAdvancedSettings.GetSetting("SubtitleExtension", ".*\.(sst|srt|sub|ssa|aqt|smi|sami|jss|mpl|rt|idx|ass)$")), RegexOptions.IgnoreCase) OrElse _
@@ -439,7 +440,6 @@ Public Class Scanner
                         Continue For
                     End If
                 End If
-
                 If Not String.IsNullOrEmpty(Movie.Subs) Then Exit For
             Next
 
@@ -937,7 +937,7 @@ Public Class Scanner
                 tmpMovieDB.ThemePath = mContainer.Theme
                 tmpMovieDB.TrailerPath = mContainer.Trailer
                 tmpMovieDB.UseFolder = mContainer.UseFolder
-                tmpMovieDB.isSingle = mContainer.isSingle
+                tmpMovieDB.IsSingle = mContainer.isSingle
                 Dim fSource As String = APIXML.GetFileSource(mContainer.Filename)
                 If Not String.IsNullOrEmpty(fSource) Then
                     tmpMovieDB.FileSource = fSource

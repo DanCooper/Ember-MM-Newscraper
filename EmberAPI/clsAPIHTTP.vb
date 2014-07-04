@@ -357,8 +357,15 @@ Public Class HTTP
                             Dim count = Convert.ToInt32(wrResponse.ContentLength)
                             Dim buffer = New Byte(count) {}
                             Dim bytesRead As Integer
+                            Dim iProgress As Integer
+                            Dim iCurrent As Integer
                             Do
                                 bytesRead += Ms.Read(buffer, bytesRead, count - bytesRead)
+                                iCurrent = bytesRead
+                                If ReportUpdate Then
+                                    IProgress = Convert.ToInt32((iCurrent / wrResponse.ContentLength) * 100)
+                                    RaiseEvent ProgressUpdated(IProgress)
+                                End If
                             Loop Until bytesRead = count
                             Ms.Close()
                             Me._ms.Close()
