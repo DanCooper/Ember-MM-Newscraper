@@ -90,7 +90,7 @@ Public Class DVDProfiler
         Dim tMovie As New Structures.DBMovie
         tMovie.Movie = New MediaContainers.Movie
 
-        tMovie.isSingle = True
+        tMovie.IsSingle = True
 
         tMovie.DVDProfilerTitle = cMovie.Title
         tMovie.Movie.Title = cMovie.Title

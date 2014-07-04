@@ -1056,7 +1056,7 @@ Public Class Database
                         If Not DBNull.Value.Equals(SQLreader("DateAdd")) Then _movieDB.DateAdd = Convert.ToInt64(SQLreader("DateAdd"))
                         If Not DBNull.Value.Equals(SQLreader("ListTitle")) Then _movieDB.ListTitle = SQLreader("ListTitle").ToString
                         If Not DBNull.Value.Equals(SQLreader("MoviePath")) Then _movieDB.Filename = SQLreader("MoviePath").ToString
-                        _movieDB.isSingle = Convert.ToBoolean(SQLreader("type"))
+                        _movieDB.IsSingle = Convert.ToBoolean(SQLreader("type"))
                         If Not DBNull.Value.Equals(SQLreader("FanartPath")) Then _movieDB.FanartPath = SQLreader("FanartPath").ToString
                         If Not DBNull.Value.Equals(SQLreader("PosterPath")) Then _movieDB.PosterPath = SQLreader("PosterPath").ToString
                         If Not DBNull.Value.Equals(SQLreader("TrailerPath")) Then _movieDB.TrailerPath = SQLreader("TrailerPath").ToString
@@ -1821,7 +1821,7 @@ Public Class Database
                 'cocotus end
 
                 parMoviePath.Value = _movieDB.Filename
-                parType.Value = _movieDB.isSingle
+                parType.Value = _movieDB.IsSingle
                 parListTitle.Value = _movieDB.ListTitle
 
                 parBannerPath.Value = _movieDB.BannerPath

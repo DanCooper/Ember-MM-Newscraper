@@ -192,10 +192,12 @@ Public Class Themes
         If String.IsNullOrEmpty(mMovie.Filename) Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.isSingle, Enums.MovieModType.Theme)
-                If File.Exists(a) Then
-                    Delete(a)
-                End If
+            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.IsSingle, Enums.MovieModType.Theme)
+                For Each t As String In Master.eSettings.FileSystemValidThemeExts
+                    If File.Exists(a) Then
+                        Delete(a)
+                    End If
+                Next
             Next
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mMovie.Filename & ">", ex)
@@ -210,6 +212,36 @@ Public Class Themes
         RaiseEvent ProgressUpdated(iPercent)
     End Sub
     ''' <summary>
+    ''' Loads this theme from the contents of the supplied file
+    ''' </summary>
+    ''' <param name="sPath">Path to the theme file</param>
+    ''' <remarks></remarks>
+    Public Sub FromFile(ByVal sPath As String)
+        If Not IsNothing(Me._ms) Then
+            Me._ms.Dispose()
+        End If
+        If Not String.IsNullOrEmpty(sPath) AndAlso File.Exists(sPath) Then
+            Try
+                Me._ms = New MemoryStream()
+                Using fsImage As New FileStream(sPath, FileMode.Open, FileAccess.Read)
+                    Dim StreamBuffer(Convert.ToInt32(fsImage.Length - 1)) As Byte
+
+                    fsImage.Read(StreamBuffer, 0, StreamBuffer.Length)
+                    Me._ms.Write(StreamBuffer, 0, StreamBuffer.Length)
+
+                    StreamBuffer = Nothing
+                    '_ms.SetLength(fsImage.Length)
+                    'fsImage.Read(_ms.GetBuffer(), 0, Convert.ToInt32(fsImage.Length))
+                    Me._ms.Flush()
+
+                    Me._ext = Path.GetExtension(sPath)
+                End Using
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & sPath & ">", ex)
+            End Try
+        End If
+    End Sub
+    ''' <summary>
     ''' Loads this theme from the supplied URL
     ''' </summary>
     ''' <param name="sURL">URL to the theme file</param>
@@ -221,7 +253,7 @@ Public Class Themes
         AddHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
 
         Try
-            tTheme = WebPage.DownloadFile(sURL, "", False, "theme", webURL)
+            tTheme = WebPage.DownloadFile(sURL, "", True, "theme", webURL)
             If Not String.IsNullOrEmpty(tTheme) Then
 
                 If Not IsNothing(Me._ms) Then
@@ -254,7 +286,7 @@ Public Class Themes
             End Try
 
             Dim fExt As String = Path.GetExtension(Me._ext)
-            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.isSingle, Enums.MovieModType.Theme)
+            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.IsSingle, Enums.MovieModType.Theme)
                 If Not File.Exists(a) OrElse (isNew OrElse Master.eSettings.MovieThemeOverwrite) Then
                     Save(a & fExt)
                     strReturn = (a & fExt)
@@ -296,8 +328,8 @@ Public Class Themes
         Try
             With Master.eSettings
                 If (String.IsNullOrEmpty(mMovie.ThemePath) OrElse .MovieThemeOverwrite) AndAlso .MovieXBMCThemeEnable AndAlso _
-                    (mMovie.isSingle AndAlso .MovieXBMCThemeMovie) OrElse _
-                    (mMovie.isSingle AndAlso .MovieXBMCThemeSub AndAlso Not String.IsNullOrEmpty(.MovieXBMCThemeSubDir)) OrElse _
+                    (mMovie.IsSingle AndAlso .MovieXBMCThemeMovie) OrElse _
+                    (mMovie.IsSingle AndAlso .MovieXBMCThemeSub AndAlso Not String.IsNullOrEmpty(.MovieXBMCThemeSubDir)) OrElse _
                     (.MovieXBMCThemeCustom AndAlso Not String.IsNullOrEmpty(.MovieXBMCThemeCustomPath)) Then
                     Return True
                 Else

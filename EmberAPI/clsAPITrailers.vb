@@ -202,10 +202,12 @@ Public Class Trailers
         If String.IsNullOrEmpty(mMovie.Filename) Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.isSingle, Enums.MovieModType.Trailer)
-                If File.Exists(a) Then
-                    Delete(a)
-                End If
+            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.IsSingle, Enums.MovieModType.Trailer)
+                For Each t As String In Master.eSettings.FileSystemValidExts
+                    If File.Exists(a & t) Then
+                        Delete(a & t)
+                    End If
+                Next
             Next
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mMovie.Filename & ">", ex)
@@ -218,6 +220,71 @@ Public Class Trailers
     ''' <remarks></remarks>
     Public Shared Sub DownloadProgressUpdated(ByVal iPercent As Integer)
         RaiseEvent ProgressUpdated(iPercent)
+    End Sub
+    ''' <summary>
+    ''' Loads this trailer from the contents of the supplied file
+    ''' </summary>
+    ''' <param name="sPath">Path to the trailer file</param>
+    ''' <remarks></remarks>
+    Public Sub FromFile(ByVal sPath As String)
+        If Not IsNothing(Me._ms) Then
+            Me._ms.Dispose()
+        End If
+        If Not String.IsNullOrEmpty(sPath) AndAlso File.Exists(sPath) Then
+            Try
+                Me._ms = New MemoryStream()
+                Using fsImage As New FileStream(sPath, FileMode.Open, FileAccess.Read)
+                    Dim StreamBuffer(Convert.ToInt32(fsImage.Length - 1)) As Byte
+
+                    fsImage.Read(StreamBuffer, 0, StreamBuffer.Length)
+                    Me._ms.Write(StreamBuffer, 0, StreamBuffer.Length)
+
+                    StreamBuffer = Nothing
+                    '_ms.SetLength(fsImage.Length)
+                    'fsImage.Read(_ms.GetBuffer(), 0, Convert.ToInt32(fsImage.Length))
+                    Me._ms.Flush()
+
+                    Me._ext = Path.GetExtension(sPath)
+                    Me._url = sPath
+                End Using
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & sPath & ">", ex)
+            End Try
+        End If
+    End Sub
+    ''' <summary>
+    ''' Loads this trailer from the supplied URL
+    ''' </summary>
+    ''' <param name="sURL">URL to the trailer file</param>
+    ''' <remarks></remarks>
+    Public Sub FromWeb(ByVal sURL As String)
+        Dim WebPage As New HTTP
+        Dim tURL As String = String.Empty
+        Dim tTrailer As String = String.Empty
+        AddHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
+
+        Try
+            tTrailer = WebPage.DownloadFile(sURL, "", True, "trailer")
+            If Not String.IsNullOrEmpty(tTrailer) Then
+
+                If Not IsNothing(Me._ms) Then
+                    Me._ms.Dispose()
+                End If
+                Me._ms = New MemoryStream()
+
+                Dim retSave() As Byte
+                retSave = WebPage.ms.ToArray
+                Me._ms.Write(retSave, 0, retSave.Length)
+
+                Me._ext = Path.GetExtension(tTrailer)
+                Me._url = sURL
+            End If
+
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & sURL & ">", ex)
+        End Try
+
+        RemoveHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
     End Sub
     ''' <summary>
     ''' Given a list of Trailers, determine which one best matches the user's
@@ -515,39 +582,6 @@ Public Class Trailers
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Function
-    ''' <summary>
-    ''' Loads this trailer from the supplied URL
-    ''' </summary>
-    ''' <param name="sURL">URL to the trailer file</param>
-    ''' <remarks></remarks>
-    Public Sub FromWeb(ByVal sURL As String)
-        Dim WebPage As New HTTP
-        Dim tURL As String = String.Empty
-        Dim tTrailer As String = String.Empty
-        AddHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
-
-        Try
-            tTrailer = WebPage.DownloadFile(sURL, "", False, "trailer")
-            If Not String.IsNullOrEmpty(tTrailer) Then
-
-                If Not IsNothing(Me._ms) Then
-                    Me._ms.Dispose()
-                End If
-                Me._ms = New MemoryStream()
-
-                Dim retSave() As Byte
-                retSave = WebPage.ms.ToArray
-                Me._ms.Write(retSave, 0, retSave.Length)
-
-                Me._ext = Path.GetExtension(tTrailer)
-            End If
-
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & sURL & ">", ex)
-        End Try
-
-        RemoveHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
-    End Sub
 
     Public Function SaveAsMovieTrailer(ByVal mMovie As Structures.DBMovie) As String
         Dim strReturn As String = String.Empty
@@ -560,7 +594,7 @@ Public Class Trailers
             End Try
 
             Dim fExt As String = Path.GetExtension(Me._ext)
-            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.isSingle, Enums.MovieModType.Trailer)
+            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.IsSingle, Enums.MovieModType.Trailer)
                 If Not File.Exists(a) OrElse (isNew OrElse Master.eSettings.MovieTrailerOverwrite) Then
                     Save(a & fExt)
                     strReturn = (a & fExt)

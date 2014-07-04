@@ -706,7 +706,7 @@ Public Class NFO
                 Dim fAtt As New FileAttributes
                 Dim fAttWritable As Boolean = True
 
-                For Each a In FileUtils.GetFilenameList.Movie(movieToSave.Filename, movieToSave.isSingle, Enums.MovieModType.NFO)
+                For Each a In FileUtils.GetFilenameList.Movie(movieToSave.Filename, movieToSave.IsSingle, Enums.MovieModType.NFO)
                     If Not Master.eSettings.GeneralOverwriteNfo Then
                         RenameNonConfNfo(a, False)
                     End If

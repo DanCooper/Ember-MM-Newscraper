@@ -305,7 +305,7 @@ Public Class FileFolderRenamer
         MovieFile.FileSource = _tmpMovie.FileSource
         MovieFile.Genre = _tmpMovie.Movie.Genre
         MovieFile.IMDBID = _tmpMovie.Movie.IMDBID
-        MovieFile.IsSingle = _tmpMovie.isSingle
+        MovieFile.IsSingle = _tmpMovie.IsSingle
         MovieFile.ListTitle = _tmpMovie.ListTitle
         MovieFile.OriginalTitle = _tmpMovie.Movie.OriginalTitle
         MovieFile.Rating = _tmpMovie.Movie.Rating
@@ -382,9 +382,9 @@ Public Class FileFolderRenamer
         End If
 
         If HaveBase(folderPattern) Then
-            MovieFile.NewPath = ProccessPattern(MovieFile, If(_tmpMovie.isSingle, folderPattern, "$D")).Trim
+            MovieFile.NewPath = ProccessPattern(MovieFile, If(_tmpMovie.IsSingle, folderPattern, "$D")).Trim
         Else
-            MovieFile.NewPath = Path.Combine(MovieFile.OldPath, ProccessPattern(MovieFile, If(_tmpMovie.isSingle, folderPattern, "$D")).Trim)
+            MovieFile.NewPath = Path.Combine(MovieFile.OldPath, ProccessPattern(MovieFile, If(_tmpMovie.IsSingle, folderPattern, "$D")).Trim)
         End If
         MovieFile.NewPath = If(MovieFile.NewPath.StartsWith(Path.DirectorySeparatorChar), MovieFile.NewPath.Substring(1), MovieFile.NewPath)
 
@@ -436,7 +436,7 @@ Public Class FileFolderRenamer
                     Return String.Empty
                 End If
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name,ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         Else
             Return String.Empty
@@ -585,7 +585,7 @@ Public Class FileFolderRenamer
                 End If
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -668,7 +668,7 @@ Public Class FileFolderRenamer
                 f.IsRenamed = Not f.NewPath = f.Path OrElse Not f.NewFileName = f.FileName
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -734,7 +734,7 @@ Public Class FileFolderRenamer
                 'Rename Directory
                 If Not srcDir = destDir Then
                     Try
-                        If Not _movie.isSingle Then
+                        If Not _movie.IsSingle Then
                             Directory.CreateDirectory(destDir)
                         Else
                             If srcDir.ToLower = destDir.ToLower Then
@@ -749,14 +749,14 @@ Public Class FileFolderRenamer
                         If ShowError Then
                             MsgBox(String.Format(Master.eLang.GetString(144, "An error occured while attempting to rename the directory:{0}{0}{1}{0}{0}Please ensure that you are not accessing this directory or any of its files from another program (including browsing via Windows Explorer)."), vbNewLine, ex.Message), MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, Master.eLang.GetString(165, "Unable to Rename Directory"))
                         Else
-                            logger.Error( "Dir: <{0}> - <{1}> ", srcDir, destDir)
+                            logger.Error("Dir: <{0}> - <{1}> ", srcDir, destDir)
                         End If
                     End Try
 
                 End If
                 'Rename Files
                 If Not _frename.IsVideo_TS AndAlso Not _frename.IsBDMV Then
-                    If (Not _frename.NewFileName = _frename.FileName) OrElse (_frename.Path = String.Empty AndAlso Not _frename.NewPath = String.Empty) OrElse Not _movie.isSingle Then
+                    If (Not _frename.NewFileName = _frename.FileName) OrElse (_frename.Path = String.Empty AndAlso Not _frename.NewPath = String.Empty) OrElse Not _movie.IsSingle Then
                         Dim di As DirectoryInfo
 
                         If _frename.IsSingle Then
@@ -791,7 +791,7 @@ Public Class FileFolderRenamer
                                         If ShowError Then
                                             MsgBox(String.Format(Master.eLang.GetString(166, "An error occured while attempting to rename a file:{0}{0}{1}{0}{0}Please ensure that you are not accessing this file from another program."), vbNewLine, ex.Message), MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, Master.eLang.GetString(171, "Unable to Rename File"))
                                         Else
-                                            logger.Error( "File <{0}> - <{1}>", srcFile, dstFile)
+                                            logger.Error("File <{0}> - <{1}>", srcFile, dstFile)
                                         End If
                                     End Try
                                 End If
@@ -827,7 +827,7 @@ Public Class FileFolderRenamer
 
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
