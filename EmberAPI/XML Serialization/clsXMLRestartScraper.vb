@@ -8,7 +8,7 @@ Partial Public Class clsXMLRestartScraper
 
     Private _OptionsField As New Structures.ScrapeOptions
 
-    Private _ScrapeListField As New List(Of Object)
+    Private _ScrapeListField As New System.Collections.Generic.List(Of String())
 
     '''<remarks/>
     Public Property Selected As Boolean
@@ -38,11 +38,11 @@ Partial Public Class clsXMLRestartScraper
         End Set
     End Property
 
-    Public Property ScrapeList As List(Of Object)
+    Public Property ScrapeList As System.Collections.Generic.List(Of String())
         Get
             Return Me._ScrapeListField
         End Get
-        Set(value As List(Of Object))
+        Set(value As System.Collections.Generic.List(Of String()))
             Me._ScrapeListField = value
         End Set
     End Property

@@ -188,8 +188,6 @@ Namespace FileUtils
             Return configpath
         End Function
 
-#End Region 'Methods
-
         Public Shared Sub InstallNewFiles(ByVal fname As String)
             Dim _cmds As Containers.InstallCommands = Containers.InstallCommands.Load(fname)
             For Each _cmd As Containers.InstallCommand In _cmds.Command
@@ -212,6 +210,8 @@ Namespace FileUtils
                 End Try
             Next
         End Sub
+
+#End Region 'Methods
 
     End Class
 

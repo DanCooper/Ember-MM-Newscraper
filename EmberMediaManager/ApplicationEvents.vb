@@ -37,65 +37,68 @@ Namespace My
         ''' Process/load information before beginning the main application.
         ''' </summary>
         Private Sub MyApplication_Startup(ByVal sender As Object, ByVal e As Microsoft.VisualBasic.ApplicationServices.StartupEventArgs) Handles Me.Startup
-            Try
-                logger.Info("====Ember Media Manager starting up====")
-                Master.fLoading = New EmberAPI.frmSplash
-                Master.is32Bit = (IntPtr.Size = 4)
-                Master.appArgs = e
+            'Try
+            logger.Info("====Ember Media Manager starting up====")
+            Master.fLoading = New EmberAPI.frmSplash
+            Master.is32Bit = (IntPtr.Size = 4)
+            Master.appArgs = e
 
-                ' #############################################
-                ' ###  Inserted by: redglory on 14.07.2013  ###
-                ' #############################################
-                ' #  Check If Ember Media Manager is called   #
-                ' #  from a service process or from a Web     # 
-                ' #  application                              #
-                ' #                                           #
-                ' #  UserInteractive property (True/False)    #
-                ' #############################################
-                Master.isUserInteractive = Environment.UserInteractive
-                If Master.isUserInteractive Then
-                    '# Show UI
-                    Master.fLoading.Show()
-                End If
-                Application.DoEvents()
+            ' #############################################
+            ' ###  Inserted by: redglory on 14.07.2013  ###
+            ' #############################################
+            ' #  Check If Ember Media Manager is called   #
+            ' #  from a service process or from a Web     # 
+            ' #  application                              #
+            ' #                                           #
+            ' #  UserInteractive property (True/False)    #
+            ' #############################################
+            Master.isUserInteractive = Environment.UserInteractive
+            If Master.isUserInteractive Then
+                '# Show UI
+                Master.fLoading.Show()
+            End If
+            Application.DoEvents()
 
-                Functions.TestMediaInfoDLL()
-                Dim Args() As String = Environment.GetCommandLineArgs
+            Functions.TestMediaInfoDLL()
 
-                If Args.Count > 1 Then
-                    Master.isCL = True
-                    Master.fLoading.SetProgressBarSize(10)
-                End If
-                ' Run InstallTask to see if any pending file needs to install
-                ' Do this before loading modules/themes/etc
-                If File.Exists(Path.Combine(Functions.AppPath, "InstallTasks.xml")) Then
-                    FileUtils.Common.InstallNewFiles("InstallTasks.xml")
-                End If
+            If e.CommandLine.Count > 1 Then
+                Master.isCL = True
+                Master.fLoading.SetProgressBarSize(10)
+            End If
+            ' Run InstallTask to see if any pending file needs to install
+            ' Do this before loading modules/themes/etc
+            If File.Exists(Path.Combine(Functions.AppPath, "InstallTasks.xml")) Then
+                FileUtils.Common.InstallNewFiles("InstallTasks.xml")
+            End If
 
-                'cocotus Check if new "Settings" folder exists - if not then create it!
-                If Not Directory.Exists(String.Concat(Functions.AppPath, "Settings")) Then
-                    Directory.CreateDirectory(String.Concat(Functions.AppPath, "Settings"))
-                End If
-                'cocotus end
+            'cocotus Check if new "Settings" folder exists - if not then create it!
+            If Not Directory.Exists(String.Concat(Functions.AppPath, "Settings")) Then
+                Directory.CreateDirectory(String.Concat(Functions.AppPath, "Settings"))
+            End If
+            'cocotus end
 
-                Master.eSettings.Load()
+            Master.eSettings.Load()
 
-                ' Force initialization of languages for main
-                Master.eLang.LoadAllLanguage(Master.eSettings.GeneralLanguage)
+            ' Force initialization of languages for main
+            Master.eLang.LoadAllLanguage(Master.eSettings.GeneralLanguage)
 
-                Master.fLoading.SetLoadingMesg(Master.eLang.GetString(484, "Loading settings..."))
+            Master.fLoading.SetLoadingMesg(Master.eLang.GetString(484, "Loading settings..."))
 
-                Dim aBit As String = Master.eLang.GetString(1008, "x64")
-                If Master.is32Bit Then
-                    aBit = Master.eLang.GetString(1007, "x86")
-                End If
-                Master.fLoading.SetVersionMesg(Master.eLang.GetString(865, "Version {0}.{1}.{2}.{3} {4}"), aBit)
+            Dim aBit As String = Master.eLang.GetString(1008, "x64")
+            If Master.is32Bit Then
+                aBit = Master.eLang.GetString(1007, "x86")
+            End If
+            Master.fLoading.SetVersionMesg(Master.eLang.GetString(865, "Version {0}.{1}.{2}.{3} {4}"), aBit)
 
-                frmEmber = New frmMain
+            Master.fLoading.SetLoadingMesg(Master.eLang.GetString(862, "Loading translations..."))
+            APIXML.CacheXMLs()
 
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-            End Try
+            Master.fLoading.SetLoadingMesg(Master.eLang.GetString(1164, "Loading Main Form. Please wait..."))
+            frmEmber = New frmMain
+
+            'Catch ex As Exception
+            '    logger.Error(New StackFrame().GetMethod().Name, ex)
+            'End Try
         End Sub
 
         ''' <summary>

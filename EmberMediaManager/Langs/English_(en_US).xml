@@ -1250,4 +1250,6 @@
 	<string id="1161">No trailers could be found. Please check to see if any trailer scrapers are enabled.</string>
 	<string id="1162">No themes could be found. Please check to see if any theme scrapers are enabled.</string>
 	<string id="1163">No Themes Found</string>
+  <string id="1164">Loading Main Form. Please wait...</string>
+  <string id="1165">Initializing Main Form. Please wait...</string>
 </strings>

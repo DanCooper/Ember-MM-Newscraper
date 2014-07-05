@@ -71,7 +71,7 @@ Public Class frmMain
     Private dtMovieSets As New DataTable
     Private dtSeasons As New DataTable
     Private dtShows As New DataTable
-    Private dScrapeRow As DataRow = Nothing
+    Private dScrapeRow As String()
 
     Private fScanner As New Scanner
     Private GenreImage As Image
@@ -87,7 +87,7 @@ Public Class frmMain
     Private pnlGenre() As Panel = Nothing
     Private prevText As String = String.Empty
     Private ReportDownloadPercent As Boolean = False
-    Private ScrapeList As New List(Of DataRow)
+    Private ScrapeList As New List(Of String())
     Private ScraperDone As Boolean = False
     Private sHTTP As New EmberAPI.HTTP
     Private tmpLang As String = String.Empty
@@ -1461,7 +1461,7 @@ Public Class frmMain
         Dim etList As New List(Of String)
         Dim tUrlList As New List(Of Themes)
         Dim DBScrapeMovie As New Structures.DBMovie
-        Dim dRow As DataRow
+        Dim dRow As String()
         Dim configpath As String
 
         logger.Trace("Starting MOVIE scrape")
@@ -1473,12 +1473,12 @@ Public Class frmMain
 
             Try
                 If bwMovieScraper.CancellationPending Then Exit While
-                OldTitle = dRow.Item(3).ToString
+                OldTitle = dRow(3)
                 bwMovieScraper.ReportProgress(1, OldTitle)
 
                 dScrapeRow = dRow
 
-                DBScrapeMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(dRow.Item(0)))
+                DBScrapeMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(dRow(0)))
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEditMovie, Nothing, DBScrapeMovie)
 
                 If Master.GlobalScrapeMod.NFO Then
@@ -2047,7 +2047,7 @@ Public Class frmMain
                     Master.DB.SaveMovieToDB(DBScrapeMovie, False, False, Not String.IsNullOrEmpty(DBScrapeMovie.Movie.IMDBID))
                     ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieSync, Nothing, DBScrapeMovie)
                     bwMovieScraper.ReportProgress(-1, If(Not OldTitle = NewTitle, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldTitle, NewTitle), NewTitle))
-                    bwMovieScraper.ReportProgress(-2, dScrapeRow.Item(0).ToString)
+                    bwMovieScraper.ReportProgress(-2, dScrapeRow(0))
                 End If
                 ScrapeList.RemoveAt(0)
                 _ScraperStatus.ScrapeList.Clear()
@@ -8402,18 +8402,10 @@ doCancel:
             '    End If
             'End If
 
-            Dim aBit As String = Master.eLang.GetString(1008, "x64")
-            If Master.is32Bit Then
-                aBit = Master.eLang.GetString(1007, "x86")
-            End If
-            Dim VersionNumber As String = System.String.Format(Master.eLang.GetString(865, "Version {0}.{1}.{2}.{3} {4}"), My.Application.Info.Version.Major, My.Application.Info.Version.Minor, My.Application.Info.Version.Build, My.Application.Info.Version.Revision, aBit)
             ' Not localized as is the Assembly file version
-            Dim VersionNumberO As String = System.String.Format("{0}.{1}.{2}.{3}", My.Application.Info.Version.Major, My.Application.Info.Version.Minor, My.Application.Info.Version.Build, My.Application.Info.Version.Revision)
+            'Dim VersionNumberO As String = System.String.Format("{0}.{1}.{2}.{3}", My.Application.Info.Version.Major, My.Application.Info.Version.Minor, My.Application.Info.Version.Build, My.Application.Info.Version.Revision)
 
             If Not CloseApp Then
-                Master.fLoading.SetLoadingMesg(Master.eLang.GetString(862, "Loading translations..."))
-                APIXML.CacheXMLs()
-
                 Me.SetUp(True)
                 Me.cbSearch.SelectedIndex = 0
 
@@ -8463,6 +8455,7 @@ doCancel:
                 End Try
                 Me.pnlFilter.Visible = True
 
+                Master.fLoading.SetLoadingMesg(Master.eLang.GetString(1165, "Initializing Main Form. Please wait..."))
                 Me.ClearInfo()
 
                 Application.DoEvents()
@@ -8490,8 +8483,8 @@ doCancel:
 
                 Master.DB.LoadMovieSourcesFromDB()
                 Master.DB.LoadTVSourcesFromDB()
-                Master.fLoading.SetLoadingMesg(Master.eLang.GetString(864, "Setting menus..."))
 
+                Master.fLoading.SetLoadingMesg(Master.eLang.GetString(864, "Setting menus..."))
                 Me.SetMenus(True)
                 Functions.GetListOfSources()
                 Me.cmnuTrayExit.Enabled = True
@@ -9623,7 +9616,7 @@ doCancel:
             If selected Then
                 'create snapshoot list of selected movies
                 For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
-                    ScrapeList.Add(DirectCast(sRow.DataBoundItem, DataRowView).Row)
+                    ScrapeList.Add(CType(sRow.DataBoundItem, String()))
                 Next
             Else
                 Dim BannerAllowed As Boolean = Master.eSettings.MovieBannerAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Banner)
@@ -9666,7 +9659,7 @@ doCancel:
                             End If
                     End Select
 
-                    ScrapeList.Add(drvRow)
+                    ScrapeList.Add(CType(drvRow.ItemArray, String()))
                 Next
             End If
         Else
@@ -9682,7 +9675,7 @@ doCancel:
                 sType = _ScraperStatus.sType
                 Options = _ScraperStatus.Options
                 ScrapeList.Clear()
-                ScrapeList.AddRange(CType(_ScraperStatus.ScrapeList.ToArray, Global.System.Collections.Generic.IEnumerable(Of Global.System.Data.DataRow)))
+                ScrapeList.AddRange(CType(_ScraperStatus.ScrapeList.ToArray, Global.System.Collections.Generic.IEnumerable(Of String())))
             End If
 
         End If
@@ -9769,33 +9762,33 @@ doCancel:
         Else
             Select Case eType
                 Case Enums.MovieScraperEventType.BannerItem
-                    dScrapeRow.Item(51) = DirectCast(Parameter, Boolean)
+                    dScrapeRow(51) = DirectCast(Parameter, String)
                 Case Enums.MovieScraperEventType.ClearArtItem
-                    dScrapeRow.Item(61) = DirectCast(Parameter, Boolean)
+                    dScrapeRow(61) = DirectCast(Parameter, String)
                 Case Enums.MovieScraperEventType.ClearLogoItem
-                    dScrapeRow.Item(59) = DirectCast(Parameter, Boolean)
+                    dScrapeRow(59) = DirectCast(Parameter, String)
                 Case Enums.MovieScraperEventType.DiscArtItem
-                    dScrapeRow.Item(57) = DirectCast(Parameter, Boolean)
+                    dScrapeRow(57) = DirectCast(Parameter, String)
                 Case Enums.MovieScraperEventType.EFanartsItem
-                    dScrapeRow.Item(49) = DirectCast(Parameter, Boolean)
+                    dScrapeRow(49) = DirectCast(Parameter, String)
                 Case Enums.MovieScraperEventType.EThumbsItem
-                    dScrapeRow.Item(9) = DirectCast(Parameter, Boolean)
+                    dScrapeRow(9) = DirectCast(Parameter, String)
                 Case Enums.MovieScraperEventType.FanartItem
-                    dScrapeRow.Item(5) = DirectCast(Parameter, Boolean)
+                    dScrapeRow(5) = DirectCast(Parameter, String)
                 Case Enums.MovieScraperEventType.LandscapeItem
-                    dScrapeRow.Item(53) = DirectCast(Parameter, Boolean)
+                    dScrapeRow(53) = DirectCast(Parameter, String)
                 Case Enums.MovieScraperEventType.ListTitle
-                    dScrapeRow.Item(3) = DirectCast(Parameter, String)
+                    dScrapeRow(3) = DirectCast(Parameter, String)
                 Case Enums.MovieScraperEventType.NFOItem
-                    dScrapeRow.Item(6) = DirectCast(Parameter, Boolean)
+                    dScrapeRow(6) = DirectCast(Parameter, String)
                 Case Enums.MovieScraperEventType.PosterItem
-                    dScrapeRow.Item(4) = DirectCast(Parameter, Boolean)
+                    dScrapeRow(4) = DirectCast(Parameter, String)
                 Case Enums.MovieScraperEventType.SortTitle
-                    dScrapeRow.Item(47) = DirectCast(Parameter, String)
+                    dScrapeRow(47) = DirectCast(Parameter, String)
                 Case Enums.MovieScraperEventType.ThemeItem
-                    dScrapeRow.Item(55) = DirectCast(Parameter, Boolean)
+                    dScrapeRow(55) = DirectCast(Parameter, String)
                 Case Enums.MovieScraperEventType.TrailerItem
-                    dScrapeRow.Item(7) = DirectCast(Parameter, Boolean)
+                    dScrapeRow(7) = DirectCast(Parameter, String)
             End Select
             Me.dgvMovies.Invalidate()
         End If

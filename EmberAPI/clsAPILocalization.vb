@@ -199,6 +199,10 @@ Public Class Localization
 
     Public Sub LoadAllLanguage(ByVal language As String, Optional ByVal force As Boolean = False)
         If force Then
+            _all = "All"
+            _none = "[none]"
+            _disabled = "[Disabled]"
+
             htHelpStrings.string.Clear()
             htArrayStrings.Clear()
             htStrings.string.Clear()
@@ -230,7 +234,7 @@ Public Class Localization
         Dim Assembly As String
         Dim lPath As String = String.Empty
         Dim lhPath As String = String.Empty
-        Me.Clear()
+
         Try
             If Not String.IsNullOrEmpty(Language) Then
                 If rAssembly = "" Then
