@@ -36,7 +36,6 @@ Public Class frmMain
 #Region "Fields"
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
-    Private fLoading As New frmSplash
     'Private aaa As New V3.Tmdb("aa")
     Friend WithEvents bwCleanDB As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwDownloadPic As New System.ComponentModel.BackgroundWorker
@@ -77,7 +76,6 @@ Public Class frmMain
     Private fScanner As New Scanner
     Private GenreImage As Image
     Private InfoCleared As Boolean = False
-    Private isCL As Boolean = False
     Private LoadingDone As Boolean = False
     Private MainAllSeason As New Images
     Private MainClearArt As New Images
@@ -143,7 +141,6 @@ Public Class frmMain
 
     Private KeyBuffer As String = String.Empty
     ' Environment variables
-    Private isUserInteractive As Boolean = True
 #End Region 'Fields
 
 #Region "Delegates"
@@ -260,33 +257,6 @@ Public Class frmMain
 #End Region 'Properties
 
 #Region "Methods"
-
-    Public Sub InstallNewFiles(ByVal fname As String)
-        Dim _cmds As Containers.InstallCommands = Containers.InstallCommands.Load(fname)
-        For Each _cmd As Containers.InstallCommand In _cmds.Command
-            Try
-                Select Case _cmd.CommandType
-                    Case "FILE.Move"
-                        Dim s() As String = _cmd.CommandExecute.Split("|"c)
-                        If s.Count >= 2 Then
-                            If File.Exists(s(1)) Then File.Delete(s(1))
-                            If Not Directory.Exists(Path.GetDirectoryName(s(1))) Then
-                                Directory.CreateDirectory(Path.GetDirectoryName(s(1)))
-                            End If
-                            File.Move(s(0), s(1))
-                        End If
-                    Case "FILE.Delete"
-                        If File.Exists(_cmd.CommandExecute) Then File.Delete(_cmd.CommandExecute)
-                End Select
-            Catch ex As Exception
-                Dim log As New StreamWriter(Path.Combine(Functions.AppPath, "install.log"), True)
-                log.WriteLine(String.Format("--- Error: {0}", ex.Message))
-                log.WriteLine(ex.StackTrace)
-                log.Close()
-            End Try
-        Next
-    End Sub
-
     Public Sub ClearInfo(Optional ByVal WithAllSeasons As Boolean = True)
 
         Try
@@ -1449,7 +1419,7 @@ Public Class frmMain
 
     Private Sub bwMovieScraper_Completed(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwMovieScraper.RunWorkerCompleted
         Dim Res As Results = DirectCast(e.Result, Results)
-        If isCL Then
+        If Master.isCL Then
             Me.ScraperDone = True
         End If
 
@@ -1494,7 +1464,7 @@ Public Class frmMain
         Dim dRow As DataRow
         Dim configpath As String
 
-        logger.Trace( "Starting MOVIE scrape")
+        logger.Trace("Starting MOVIE scrape")
 
         AddHandler ModulesManager.Instance.MovieScraperEvent, AddressOf MovieScraperEvent
 
@@ -2110,7 +2080,7 @@ Public Class frmMain
         End If
         RemoveHandler ModulesManager.Instance.MovieScraperEvent, AddressOf MovieScraperEvent
         e.Result = New Results With {.scrapeType = Args.scrapeType}
-        logger.Trace( "Ended MOVIE scrape")
+        logger.Trace("Ended MOVIE scrape")
     End Sub
 
     Private Sub bwMovieScraper_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwMovieScraper.ProgressChanged
@@ -2129,6 +2099,10 @@ Public Class frmMain
     End Sub
 
     Private Sub bwNonScrape_Completed(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwNonScrape.RunWorkerCompleted
+        Dim configpath As String = FileUtils.Common.ReturnSettingsFile("Settings", "ScraperStatus.xml")
+        If File.Exists(configpath) Then
+            File.Delete(configpath)
+        End If
         Me.tslLoading.Visible = False
         Me.tspbLoading.Visible = False
         Me.btnCancel.Visible = False
@@ -2228,7 +2202,7 @@ doCancel:
     End Sub
 
     Private Sub bwNonScrape_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwNonScrape.ProgressChanged
-        If Not isCL Then
+        If Not Master.isCL Then
             If Regex.IsMatch(e.UserState.ToString, "\[\[[0-9]+\]\]") AndAlso Me.dgvMovies.SelectedRows.Count > 0 Then
                 Try
                     If Me.dgvMovies.SelectedRows(0).Cells(0).Value.ToString = e.UserState.ToString.Replace("[[", String.Empty).Replace("]]", String.Empty).Trim Then
@@ -6075,9 +6049,9 @@ doCancel:
     End Sub
 
     Private Sub ExitToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainFileExit.Click, cmnuTrayExit.Click
-        If isCL Then
+        If Master.isCL Then
             'fLoading.SetLoadingMesg("Canceling ...")
-            fLoading.SetLoadingMesg(Master.eLang.GetString(370, "Canceling Load..."))
+            Master.fLoading.SetLoadingMesg(Master.eLang.GetString(370, "Canceling Load..."))
             If Me.bwMovieScraper.IsBusy Then Me.bwMovieScraper.CancelAsync()
             If Me.bwRefreshMovies.IsBusy Then Me.bwRefreshMovies.CancelAsync()
             While Me.bwMovieScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwMovieScraper.IsBusy
@@ -6230,7 +6204,7 @@ doCancel:
 
             Master.DB.FillDataTable(Me.dtShows, "SELECT ID, Title, HasPoster, HasFanart, HasNfo, New, Mark, TVShowPath, Source, TVDB, Lock, EpisodeGuide, Plot, Genre, Premiered, Studio, MPAA, Rating, PosterPath, FanartPath, NfoPath, NeedsSave, Language, Ordering, HasBanner, BannerPath, HasLandscape, LandscapePath, Status, HasTheme, ThemePath, HasCharacterArt, CharacterArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, HasEFanarts, EFanartsPath FROM TVShows ORDER BY Title COLLATE NOCASE;")
 
-            If isCL Then
+            If Master.isCL Then
                 Me.LoadingDone = True
             Else
                 If Me.dtMovies.Rows.Count > 0 Then
@@ -6614,7 +6588,7 @@ doCancel:
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
-        If Not isCL Then
+        If Not Master.isCL Then
             Me.mnuUpdate.Enabled = True
             Me.cmnuTrayExit.Enabled = True
             Me.cmnuTraySettings.Enabled = True
@@ -7969,7 +7943,7 @@ doCancel:
 
             Master.eSettings.Version = String.Format("r{0}", My.Application.Info.Version.Revision)
 
-            If Me.fScanner.IsBusy OrElse isCL Then
+            If Me.fScanner.IsBusy OrElse Master.isCL Then
                 doSave = False
             End If
 
@@ -8004,11 +7978,11 @@ doCancel:
 
             If doSave Then Master.DB.ClearNew()
 
-            If Not isCL Then
+            If Not Master.isCL Then
                 Master.DB.Close()
             End If
 
-            If Not isCL Then
+            If Not Master.isCL Then
                 Master.eSettings.GeneralWindowLoc = Me.Location
                 Master.eSettings.GeneralWindowSize = Me.Size
                 Master.eSettings.GeneralWindowState = Me.WindowState
@@ -8041,9 +8015,8 @@ doCancel:
         Try
             Me.Visible = False
 
-            logger.Info("====Ember Media Manager starting up====")
+            logger.Info(New StackFrame().GetMethod().Name, "Embert startup")
 
-            fLoading = New frmSplash
             If Master.isWindows Then 'Dam mono on MacOSX don't have trayicon implemented yet
                 Me.TrayIcon = New System.Windows.Forms.NotifyIcon(Me.components)
                 Me.TrayIcon.Icon = Me.Icon
@@ -8051,58 +8024,10 @@ doCancel:
                 Me.TrayIcon.Text = "Ember Media Manager"
                 Me.TrayIcon.Visible = True
             End If
-            Master.is32Bit = (IntPtr.Size = 4)
-
-            Dim Args() As String = Environment.GetCommandLineArgs
-
-            If Args.Count > 1 Then
-                isCL = True
-                fLoading.SetProgressBarSize(10)
-            End If
-
-            ' #############################################
-            ' ###  Inserted by: redglory on 14.07.2013  ###
-            ' #############################################
-            ' #  Check If Ember Media Manager is called   #
-            ' #  from a service process or from a Web     # 
-            ' #  application                              #
-            ' #                                           #
-            ' #  UserInteractive property (True/False)    #
-            ' #############################################
-            Me.isUserInteractive = Environment.UserInteractive
-            If Me.isUserInteractive Then
-                '# Show UI
-                fLoading.Show(Me)
-            End If
-            Application.DoEvents()
-            ' Run InstallTask to see if any pending file needs to install
-            ' Do this before loading modules/themes/etc
-            If File.Exists(Path.Combine(Functions.AppPath, "InstallTasks.xml")) Then
-                InstallNewFiles("InstallTasks.xml")
-            End If
-
-            'cocotus Check if new "Settings" folder exists - if not then create it!
-            If Not Directory.Exists(String.Concat(Functions.AppPath, "Settings")) Then
-                Directory.CreateDirectory(String.Concat(Functions.AppPath, "Settings"))
-            End If
-            'cocotus end
-
-            Master.eSettings.Load()
-
-            ' Force initialization of languages for main
-            Master.eLang.LoadAllLanguage(Master.eSettings.GeneralLanguage)
-
-            fLoading.SetLoadingMesg(Master.eLang.GetString(484, "Loading settings..."))
-
-            Dim aBit As String = Master.eLang.GetString(1008, "x64")
-            If Master.is32Bit Then
-                aBit = Master.eLang.GetString(1007, "x86")
-            End If
-            fLoading.SetVersionMesg(Master.eLang.GetString(865, "Version {0}.{1}.{2}.{3} {4}"), aBit)
 
             Me.bwCheckVersion.RunWorkerAsync()
 
-            fLoading.SetLoadingMesg(Master.eLang.GetString(854, "Basic setup"))
+            Master.fLoading.SetLoadingMesg(Master.eLang.GetString(854, "Basic setup"))
 
             Dim currentDomain As AppDomain = AppDomain.CurrentDomain
             ModulesManager.AssemblyList.Add(New ModulesManager.AssemblyListItem With {.AssemblyName = "EmberAPI", _
@@ -8120,12 +8045,12 @@ doCancel:
                 Directory.CreateDirectory(sPath)
             End If
 
-            fLoading.SetLoadingMesg(Master.eLang.GetString(855, "Creating default options..."))
+            Master.fLoading.SetLoadingMesg(Master.eLang.GetString(855, "Creating default options..."))
             Functions.CreateDefaultOptions()
             '//
             ' Add our handlers, load settings, set form colors, and try to load movies at startup
             '\\
-            fLoading.SetLoadingMesg(Master.eLang.GetString(856, "Loading modules..."))
+            Master.fLoading.SetLoadingMesg(Master.eLang.GetString(856, "Loading modules..."))
             'Setup/Load Modules Manager and set runtime objects (ember application) so they can be exposed to modules
             'ExternalModulesManager = New ModulesManager
             ModulesManager.Instance.RuntimeObjects.MenuMediaList = Me.cmnuMovie
@@ -8138,8 +8063,8 @@ doCancel:
             ModulesManager.Instance.RuntimeObjects.DelegateOpenImageViewer(AddressOf OpenImageViewer)
             ModulesManager.Instance.LoadAllModules()
 
-            If Not isCL Then
-                fLoading.SetLoadingMesg(Master.eLang.GetString(857, "Creating GUI..."))
+            If Not Master.isCL Then
+                Master.fLoading.SetLoadingMesg(Master.eLang.GetString(857, "Creating GUI..."))
             End If
             'setup some dummies so we don't get exceptions when resizing form/info panel
             ReDim Preserve Me.pnlGenre(0)
@@ -8166,13 +8091,13 @@ doCancel:
 
             If Not Directory.Exists(Master.TempPath) Then Directory.CreateDirectory(Master.TempPath)
 
-            If isCL Then ' Command Line
-                LoadWithCommandLine(Args)
+            If Master.isCL Then ' Command Line
+                LoadWithCommandLine(Master.appArgs)
             Else 'Regular Run (GUI)
                 LoadWithGUI()
             End If
 
-            fLoading.Close()
+            Master.fLoading.Close()
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
             Me.Close()
@@ -8183,7 +8108,8 @@ doCancel:
     ''' </summary>
     ''' <param name="Args">Command line arguments. Must NOT be empty!</param>
     ''' <remarks></remarks>
-    Private Sub LoadWithCommandLine(ByVal Args() As String)
+    Private Sub LoadWithCommandLine(ByVal appArgs As Microsoft.VisualBasic.ApplicationServices.StartupEventArgs)
+        Dim Args() As String = appArgs.CommandLine.ToArray
         Try
             logger.Trace("LoadWithCommandLine()")
 
@@ -8323,17 +8249,17 @@ doCancel:
                         'End If
                 End Select
             Next
-            If nowindow Then fLoading.Hide()
+            If nowindow Then Master.fLoading.Hide()
             APIXML.CacheXMLs()
-            fLoading.SetLoadingMesg(Master.eLang.GetString(858, "Loading database..."))
+            Master.fLoading.SetLoadingMesg(Master.eLang.GetString(858, "Loading database..."))
             If Master.DB.ConnectMyVideosDB() Then
                 Me.LoadMedia(New Structures.Scans With {.Movies = True, .TV = True})
             End If
             Master.DB.LoadMovieSourcesFromDB()
             Master.DB.LoadTVSourcesFromDB()
             If RunModule Then
-                fLoading.SetProgressBarStyle(ProgressBarStyle.Marquee)
-                fLoading.SetLoadingMesg(Master.eLang.GetString(859, "Running Module..."))
+                Master.fLoading.SetProgressBarStyle(ProgressBarStyle.Marquee)
+                Master.fLoading.SetLoadingMesg(Master.eLang.GetString(859, "Running Module..."))
                 Dim gModule As ModulesManager._externalGenericModuleClass = ModulesManager.Instance.externalProcessorModules.FirstOrDefault(Function(y) y.ProcessorModule.ModuleName = ModuleName)
                 If Not IsNothing(gModule) Then
                     gModule.ProcessorModule.RunGeneric(Enums.ModuleEventType.CommandLine, Nothing, Nothing)
@@ -8349,15 +8275,15 @@ doCancel:
                 Me.cmnuTray.Enabled = True
                 If Functions.HasModifier AndAlso Not clScrapeType = Enums.ScrapeType.SingleScrape Then
                     Try
-                        fLoading.SetProgressBarStyle(ProgressBarStyle.Marquee)
-                        fLoading.SetLoadingMesg(Master.eLang.GetString(860, "Loading Media..."))
+                        Master.fLoading.SetProgressBarStyle(ProgressBarStyle.Marquee)
+                        Master.fLoading.SetLoadingMesg(Master.eLang.GetString(860, "Loading Media..."))
                         LoadMedia(New Structures.Scans With {.Movies = True})
                         While Not Me.LoadingDone
                             Application.DoEvents()
                             Threading.Thread.Sleep(50)
                         End While
-                        fLoading.SetProgressBarStyle(ProgressBarStyle.Marquee)
-                        fLoading.SetLoadingMesg(Master.eLang.GetString(861, "Command Line Scraping..."))
+                        Master.fLoading.SetProgressBarStyle(ProgressBarStyle.Marquee)
+                        Master.fLoading.SetLoadingMesg(Master.eLang.GetString(861, "Command Line Scraping..."))
                         MovieScrapeData(False, clScrapeType, Master.DefaultMovieOptions)
                     Catch ex As Exception
                         logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -8433,8 +8359,8 @@ doCancel:
                                 End If
                                 Master.tmpMovie = Master.currMovie.Movie
                             End If
-                            fLoading.SetProgressBarStyle(ProgressBarStyle.Marquee)
-                            fLoading.SetLoadingMesg(Master.eLang.GetString(861, "Command Line Scraping..."))
+                            Master.fLoading.SetProgressBarStyle(ProgressBarStyle.Marquee)
+                            Master.fLoading.SetLoadingMesg(Master.eLang.GetString(861, "Command Line Scraping..."))
                             MovieScrapeData(False, Enums.ScrapeType.SingleScrape, Master.DefaultMovieOptions)
                         Else
                             Me.ScraperDone = True
@@ -8451,7 +8377,7 @@ doCancel:
                 End While
             End If
 
-            frmSplash.Close()
+            Master.fLoading.Close()
             Me.Close()
         Catch ex As Exception
         End Try
@@ -8485,13 +8411,13 @@ doCancel:
             Dim VersionNumberO As String = System.String.Format("{0}.{1}.{2}.{3}", My.Application.Info.Version.Major, My.Application.Info.Version.Minor, My.Application.Info.Version.Build, My.Application.Info.Version.Revision)
 
             If Not CloseApp Then
-                fLoading.SetLoadingMesg(Master.eLang.GetString(862, "Loading translations..."))
+                Master.fLoading.SetLoadingMesg(Master.eLang.GetString(862, "Loading translations..."))
                 APIXML.CacheXMLs()
 
                 Me.SetUp(True)
                 Me.cbSearch.SelectedIndex = 0
 
-                fLoading.SetLoadingMesg(Master.eLang.GetString(863, "Positioning controls..."))
+                Master.fLoading.SetLoadingMesg(Master.eLang.GetString(863, "Positioning controls..."))
                 Me.Location = Master.eSettings.GeneralWindowLoc
                 Me.Size = Master.eSettings.GeneralWindowSize
                 Me.WindowState = Master.eSettings.GeneralWindowState
@@ -8540,7 +8466,7 @@ doCancel:
                 Me.ClearInfo()
 
                 Application.DoEvents()
-                fLoading.SetLoadingMesg(Master.eLang.GetString(858, "Loading database..."))
+                Master.fLoading.SetLoadingMesg(Master.eLang.GetString(858, "Loading database..."))
                 If Master.eSettings.Version = String.Format("r{0}", My.Application.Info.Version.Revision) Then
                     If Master.DB.ConnectMyVideosDB() Then
                         Me.LoadMedia(New Structures.Scans With {.Movies = True, .MovieSets = True, .TV = True})
@@ -8564,7 +8490,7 @@ doCancel:
 
                 Master.DB.LoadMovieSourcesFromDB()
                 Master.DB.LoadTVSourcesFromDB()
-                fLoading.SetLoadingMesg(Master.eLang.GetString(864, "Setting menus..."))
+                Master.fLoading.SetLoadingMesg(Master.eLang.GetString(864, "Setting menus..."))
 
                 Me.SetMenus(True)
                 Functions.GetListOfSources()
@@ -9745,16 +9671,20 @@ doCancel:
             End If
         Else
             Dim aPath As String = FileUtils.Common.ReturnSettingsFile("Settings", "ScraperStatus.xml")
-            Dim objStreamReader As New StreamReader(aPath)
+            If File.Exists(aPath) Then
 
-            _ScraperStatus = CType(_xScraperStatus.Deserialize(objStreamReader), clsXMLRestartScraper)
+                Dim objStreamReader As New StreamReader(aPath)
 
-            objStreamReader.Close()
-            selected = _ScraperStatus.Selected
-            sType = _ScraperStatus.sType
-            Options = _ScraperStatus.Options
-            ScrapeList.Clear()
-            ScrapeList.AddRange(CType(_ScraperStatus.ScrapeList.ToArray, Global.System.Collections.Generic.IEnumerable(Of Global.System.Data.DataRow)))
+                _ScraperStatus = CType(_xScraperStatus.Deserialize(objStreamReader), clsXMLRestartScraper)
+
+                objStreamReader.Close()
+                selected = _ScraperStatus.Selected
+                sType = _ScraperStatus.sType
+                Options = _ScraperStatus.Options
+                ScrapeList.Clear()
+                ScrapeList.AddRange(CType(_ScraperStatus.ScrapeList.ToArray, Global.System.Collections.Generic.IEnumerable(Of Global.System.Data.DataRow)))
+            End If
+
         End If
 
         Me.SetControlsEnabled(False)
@@ -10992,7 +10922,7 @@ doCancel:
     End Sub
 
     Private Sub ScanningCompleted()
-        If Not isCL Then
+        If Not Master.isCL Then
             Me.SetStatus(String.Empty)
             Me.FillList(0)
             Me.tspbLoading.Visible = False

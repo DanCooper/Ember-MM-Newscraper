@@ -24,6 +24,11 @@ Imports NLog
 Public Class Master
 
 #Region "Fields"
+    Public Shared fLoading As New frmSplash
+
+    Public Shared isUserInteractive As Boolean = True
+    Public Shared isCL As Boolean
+    Public Shared appArgs As Microsoft.VisualBasic.ApplicationServices.StartupEventArgs
 
     Public Shared CanScanDiscImage As Boolean
     Public Shared DB As New Database

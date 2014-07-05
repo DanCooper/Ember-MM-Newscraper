@@ -1,4 +1,6 @@
-﻿' ################################################################################
+﻿Imports System.Windows.Forms
+
+' ################################################################################
 ' #                             EMBER MEDIA MANAGER                              #
 ' ################################################################################
 ' ################################################################################
@@ -58,14 +60,14 @@ Public Class frmSplash
         Application.DoEvents()
     End Sub
 
-	Public Sub SetProgressBarStyle(style As ProgressBarStyle)
-		If (Me.InvokeRequired) Then
-			Me.Invoke(New DelegateTo_SetProgressBarStyle(AddressOf SetProgressBarStyle))
-			Exit Sub
-		End If
+    Public Sub SetProgressBarStyle(style As ProgressBarStyle)
+        If (Me.InvokeRequired) Then
+            Me.Invoke(New DelegateTo_SetProgressBarStyle(AddressOf SetProgressBarStyle))
+            Exit Sub
+        End If
 
-		LoadingBar.Style = style
-	End Sub
+        LoadingBar.Style = style
+    End Sub
 
     Public Sub SetProgressBarSize(size As Integer)
         If (Me.InvokeRequired) Then
