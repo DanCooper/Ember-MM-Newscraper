@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Commands xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<?xml version="1.0"?>
+<CommandFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <transaction name="doAddColumns">
     <command type="DB">
       <description>1</description>
@@ -314,4 +314,4 @@
     <execute>ne1</execute>
   </noTransaction>
 -->
-</Commands>
+</CommandFile>
