@@ -68,8 +68,13 @@ Public Class Localization
 
             _ISOLanguages = CType(xLangsString.Deserialize(objStreamReader), clsXMLLanguages)
             objStreamReader.Close()
+
+            If _ISOLanguages.Language.Count = 0 Then
+                logger.Fatal("Cannot load Language.xml." & vbNewLine & "Path: {0}", lPath)
+                MsgBox(String.Concat("Cannot load Language.xml.", vbNewLine, vbNewLine, "Path:", vbNewLine, lPath), MsgBoxStyle.Critical, "File Not Found")
+            End If
         Else
-            logger.Error("Cannot find Language.xml." & vbNewLine & "Expected path: {0}", lPath)
+            logger.Fatal("Cannot find Language.xml." & vbNewLine & "Expected path: {0}", lPath)
             MsgBox(String.Concat("Cannot find Language.xml.", vbNewLine, vbNewLine, "Expected path:", vbNewLine, lPath), MsgBoxStyle.Critical, "File Not Found")
         End If
     End Sub
@@ -194,6 +199,10 @@ Public Class Localization
 
     Public Sub LoadAllLanguage(ByVal language As String, Optional ByVal force As Boolean = False)
         If force Then
+            _all = "All"
+            _none = "[none]"
+            _disabled = "[Disabled]"
+
             htHelpStrings.string.Clear()
             htArrayStrings.Clear()
             htStrings.string.Clear()
@@ -225,7 +234,7 @@ Public Class Localization
         Dim Assembly As String
         Dim lPath As String = String.Empty
         Dim lhPath As String = String.Empty
-        Me.Clear()
+
         Try
             If Not String.IsNullOrEmpty(Language) Then
                 If rAssembly = "" Then

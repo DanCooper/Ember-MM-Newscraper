@@ -98,12 +98,12 @@ Public Class dlgTVDBSearchResults
                         Me._manualresult = New Scraper.TVSearchResults
                         Me._manualresult.ID = Convert.ToInt32(tSer.Element("id").Value)
                         Me._manualresult.Name = If(Not IsNothing(tSer.Element("SeriesName")), tSer.Element("SeriesName").Value, String.Empty)
-                        If Not IsNothing(tSer.Element("Language")) AndAlso Master.eSettings.TVGeneralLanguages.Count > 0 Then
+                        If Not IsNothing(tSer.Element("Language")) AndAlso Master.eSettings.TVGeneralLanguages.Language.Count > 0 Then
                             sLang = tSer.Element("Language").Value
-                            Me._manualresult.Language = Master.eSettings.TVGeneralLanguages.FirstOrDefault(Function(s) s.ShortLang = sLang)
+                            Me._manualresult.Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(s) s.abbreviation = sLang)
                         ElseIf Not IsNothing(tSer.Element("Language")) Then
                             sLang = tSer.Element("Language").Value
-                            Me._manualresult.Language = New Containers.TVLanguage With {.LongLang = String.Format("Unknown ({0})", sLang), .ShortLang = sLang}
+                            Me._manualresult.Language = New TVDBLanguagesLanguage With {.name = String.Format("Unknown ({0})", sLang), .abbreviation = sLang, .id = 0}
                         End If
                         Me._manualresult.Aired = If(Not IsNothing(tSer.Element("FirstAired")), tSer.Element("FirstAired").Value, String.Empty)
                         Me._manualresult.Overview = If(Not IsNothing(tSer.Element("Overview")), tSer.Element("Overview").Value, String.Empty)
@@ -274,7 +274,7 @@ Public Class dlgTVDBSearchResults
         If Me.lvSearchResults.SelectedItems.Count > 0 Then
             Dim sResults As Scraper.TVSearchResults = DirectCast(Me.lvSearchResults.SelectedItems(0).Tag, Scraper.TVSearchResults)
             Me.sInfo.TVDBID = sResults.ID.ToString
-            Me.sInfo.SelectedLang = sResults.Language.ShortLang
+            Me.sInfo.SelectedLang = sResults.Language.abbreviation
 
             If Not _skipdownload Then
                 Me.Label3.Text = Master.eLang.GetString(950, "Downloading show info...")
@@ -286,7 +286,7 @@ Public Class dlgTVDBSearchResults
             End If
         ElseIf Me.chkManual.Checked AndAlso Not IsNothing(Me._manualresult) Then
             Me.sInfo.TVDBID = Me._manualresult.ID.ToString
-            Me.sInfo.SelectedLang = Me._manualresult.Language.ShortLang
+            Me.sInfo.SelectedLang = Me._manualresult.Language.abbreviation
 
             If Not _skipdownload Then
                 Me.Label3.Text = Master.eLang.GetString(950, "Downloading show info...")
@@ -323,10 +323,10 @@ Public Class dlgTVDBSearchResults
                 If Not IsNothing(sResults) AndAlso sResults.Count > 0 Then
                     For Each sRes As Scraper.TVSearchResults In sResults.OrderBy(Function(r) r.Lev)
                         lItem = New ListViewItem(sRes.Name)
-                        lItem.SubItems.Add(sRes.Language.LongLang)
+                        lItem.SubItems.Add(sRes.Language.name)
                         lItem.SubItems.Add(sRes.Lev.ToString)
                         lItem.SubItems.Add(sRes.ID.ToString)
-                        lItem.SubItems.Add(sRes.Language.ShortLang)
+                        lItem.SubItems.Add(sRes.Language.abbreviation)
                         lItem.Tag = sRes
                         Me.lvSearchResults.Items.Add(lItem)
                     Next
@@ -357,7 +357,7 @@ Public Class dlgTVDBSearchResults
 
                             If Me.lvSearchResults.SelectedItems.Count = 0 Then
                                 'get the id for the best english match and see if we have one for the preferred language with same id
-                                Dim tID As Integer = sResults.OrderBy(Function(s) s.Lev).FirstOrDefault(Function(s) s.Language.ShortLang = "en").ID
+                                Dim tID As Integer = sResults.OrderBy(Function(s) s.Lev).FirstOrDefault(Function(s) s.Language.abbreviation = "en").ID
                                 If tID > 0 Then
                                     For Each fItem As ListViewItem In Me.lvSearchResults.Items
                                         If Convert.ToInt32(fItem.SubItems(3).Text) = tID AndAlso fItem.SubItems(4).Text = clsAdvancedSettings.GetSetting("TVDBLang", "en") Then

@@ -164,12 +164,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property TVGeneralLanguages() As List(Of Containers.TVLanguage)
+    Public Property TVGeneralLanguages() As clsXMLTVDBLanguages
         Get
-            Return Settings._XMLSettings.tvgenerallanguages
+            Return Settings._XMLSettings.TVGeneralLanguages
         End Get
-        Set(ByVal value As List(Of Containers.TVLanguage))
-            Settings._XMLSettings.tvgenerallanguages = value
+        Set(ByVal value As clsXMLTVDBLanguages)
+            Settings._XMLSettings.TVGeneralLanguages = value
         End Set
     End Property
 
@@ -4814,19 +4814,9 @@ Public Class Settings
     ''' </summary>
     ''' <remarks></remarks>
     Public Sub Clear()
-        Dim xmlTVDB As New clsXMLTVDBLanguages
-
         'Make it simple: load a default values XML file
         Try
-            Dim configpath As String = String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar, "DefaultSettings.xml")
-
-            'AdvancedSettings.xml is still at old place (root) -> move to new place if there's no AdvancedSettings.xml !
-            If File.Exists(String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar, "DefaultSettings.xml")) = False AndAlso File.Exists(Path.Combine(Functions.AppPath, "DefaultSettings.xml")) AndAlso Directory.Exists(String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar)) Then
-                File.Move(Path.Combine(Functions.AppPath, "DefaultSettings.xml"), String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar, "DefaultSettings.xml"))
-                'New Settings folder doesn't exist -> do it the old way...
-            ElseIf Directory.Exists(String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar)) = False Then
-                configpath = Path.Combine(Functions.AppPath, "DefaultSettings.xml")
-            End If
+            Dim configpath As String = FileUtils.Common.ReturnSettingsFile("Settings", "DefaultSettings.xml")
 
             Dim objStreamReader As New StreamReader(configpath)
             Dim xXMLSettings As New XmlSerializer(_XMLSettings.GetType)
@@ -4839,37 +4829,12 @@ Public Class Settings
             logger.Error(New StackFrame().GetMethod().Name, ex)
 
         End Try
-
-        Try
-            Dim configpath As String = FileUtils.Common.ReturnSettingsFile("Settings", "TVDBLanguages.xml")
-
-            Dim objStreamReader As New StreamReader(configpath)
-            Dim xTVDBLang As New XmlSerializer(xmlTVDB.GetType)
-
-            xmlTVDB = CType(xTVDBLang.Deserialize(objStreamReader), clsXMLTVDBLanguages)
-            objStreamReader.Close()
-            ' error - someone removed the variable that holds the default TVDB languages. In case TVDB is not online to check them
-            '_tvscraperlanguages.Sort(AddressOf CompareLanguagesLong)
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
     End Sub
 
     Public Sub Load()
         Try
             'Cocotus, Load from central "Settings" folder if it exists!
-            Dim configpath As String = String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar, "Settings.xml")
-
-            'Settings.xml is still at old place (root) -> move to new place if there's no Settings.xml !
-            If File.Exists(String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar, "Settings.xml")) = False AndAlso File.Exists(Path.Combine(Functions.AppPath, "Settings.xml")) AndAlso Directory.Exists(String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar)) Then
-                File.Move(Path.Combine(Functions.AppPath, "Settings.xml"), String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar, "Settings.xml"))
-                'New Settings folder doesn't exist -> do it the old way...
-            ElseIf Directory.Exists(String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar)) = False Then
-                configpath = Path.Combine(Functions.AppPath, "Settings.xml")
-            End If
-
-            'old
-            '  If File.Exists(Path.Combine(Functions.AppPath, "Settings.xml")) Then
+            Dim configpath As String = FileUtils.Common.ReturnSettingsFile("Settings", "Settings.xml")
 
             If File.Exists(configpath) Then
                 'old
@@ -5194,7 +5159,7 @@ Public Class Settings
     End Function
 
     Private Shared Function CompareLanguagesLong( _
-        ByVal x As Containers.TVLanguage, ByVal y As Containers.TVLanguage) As Integer
+        ByVal x As TVDBLanguagesLanguage, ByVal y As TVDBLanguagesLanguage) As Integer
 
         If x Is Nothing Then
             If y Is Nothing Then
@@ -5229,7 +5194,7 @@ Public Class Settings
                 '    ' If the strings are of equal length,
                 '    ' sort them with ordinary string comparison.
                 '    '
-                Return x.LongLang.CompareTo(y.LongLang)
+                Return x.name.CompareTo(y.name)
                 'End If
             End If
         End If
@@ -5237,7 +5202,7 @@ Public Class Settings
     End Function
 
     Private Shared Function CompareLanguagesShort( _
-        ByVal x As Containers.TVLanguage, ByVal y As Containers.TVLanguage) As Integer
+        ByVal x As TVDBLanguagesLanguage, ByVal y As TVDBLanguagesLanguage) As Integer
 
         If x Is Nothing Then
             If y Is Nothing Then
@@ -5272,7 +5237,7 @@ Public Class Settings
                 '    ' If the strings are of equal length,
                 '    ' sort them with ordinary string comparison.
                 '    '
-                Return x.ShortLang.CompareTo(y.ShortLang)
+                Return x.abbreviation.CompareTo(y.abbreviation)
                 'End If
             End If
         End If

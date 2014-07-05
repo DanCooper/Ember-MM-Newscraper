@@ -25,6 +25,7 @@ Imports System.Text
 Imports ICSharpCode.SharpZipLib.Zip
 Imports EmberAPI
 Imports NLog
+Imports System.Xml.Serialization
 
 Public Class Scraper
 
@@ -88,32 +89,18 @@ Public Class Scraper
         Return sObject.ChangeEpisode(New Structures.ScrapeInfo With {.ShowID = ShowID, .TVDBID = TVDBID, .SelectedLang = Lang, .iSeason = -999})
     End Function
 
-    Public Function GetLangs(ByVal sMirror As String) As List(Of Containers.TVLanguage)
-        Dim tvdbLangs As New List(Of Containers.TVLanguage)
-        Dim cLang As Containers.TVLanguage
-        Dim xmlTVDB As XDocument
+    Public Function GetLangs(ByVal sMirror As String) As clsXMLTVDBLanguages
         Dim sHTTP As New HTTP
+        Dim aTVDBLang As New clsXMLTVDBLanguages
 
         Dim apiXML As String = sHTTP.DownloadData(String.Format("http://{0}/api/{1}/languages.xml", sMirror, APIKey))
         sHTTP = Nothing
+        Using reader As StringReader = New StringReader(apiXML)
+            Dim xTVDBLang As New XmlSerializer(aTVDBLang.GetType)
+            aTVDBLang = CType(xTVDBLang.Deserialize(reader), clsXMLTVDBLanguages)
+        End Using
 
-        If Not String.IsNullOrEmpty(apiXML) Then
-            Try
-                xmlTVDB = XDocument.Parse(apiXML)
-            Catch
-                Return tvdbLangs
-            End Try
-
-            Dim xLangs = From xLanguages In xmlTVDB.Descendants("Language")
-
-            For Each xL As XElement In xLangs
-                cLang = New Containers.TVLanguage
-                cLang.LongLang = xL.Element("name").Value
-                cLang.ShortLang = xL.Element("abbreviation").Value
-                tvdbLangs.Add(cLang)
-            Next
-        End If
-        Return tvdbLangs
+        Return aTVDBLang
     End Function
 
     Public Function GetSingleEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Season As Integer, ByVal Episode As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions) As MediaContainers.EpisodeDetails
@@ -1028,12 +1015,12 @@ Public Class Scraper
                                     cResult = New TVSearchResults
                                     cResult.ID = Convert.ToInt32(tSer.Element("id").Value)
                                     cResult.Name = If(Not IsNothing(tSer.Element("SeriesName")), tSer.Element("SeriesName").Value, String.Empty)
-                                    If Not IsNothing(tSer.Element("Language")) AndAlso Master.eSettings.TVGeneralLanguages.Count > 0 Then
+                                    If Not IsNothing(tSer.Element("Language")) AndAlso Master.eSettings.TVGeneralLanguages.Language.Count > 0 Then
                                         sLang = tSer.Element("Language").Value
-                                        cResult.Language = Master.eSettings.TVGeneralLanguages.FirstOrDefault(Function(s) s.ShortLang = sLang)
+                                        cResult.Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(s) s.abbreviation = sLang)
                                     ElseIf Not IsNothing(tSer.Element("Language")) Then
                                         sLang = tSer.Element("Language").Value
-                                        cResult.Language = New Containers.TVLanguage With {.LongLang = String.Format("Unknown ({0})", sLang), .ShortLang = sLang}
+                                        cResult.Language = New TVDBLanguagesLanguage With {.name = String.Format("Unknown ({0})", sLang), .abbreviation = sLang, .id = 0}
                                     Else
                                         'no language info available... don't bother adding it
                                         Continue For
@@ -1056,12 +1043,12 @@ Public Class Scraper
                         cResult = New TVSearchResults
                         cResult.ID = Convert.ToInt32(xS.Element("seriesid").Value)
                         cResult.Name = If(Not IsNothing(xS.Element("SeriesName")), xS.Element("SeriesName").Value, String.Empty)
-                        If Not IsNothing(xS.Element("language")) AndAlso Master.eSettings.TVGeneralLanguages.Count > 0 Then
+                        If Not IsNothing(xS.Element("language")) AndAlso Master.eSettings.TVGeneralLanguages.Language.Count > 0 Then
                             sLang = xS.Element("language").Value
-                            cResult.Language = Master.eSettings.TVGeneralLanguages.FirstOrDefault(Function(s) s.ShortLang = sLang)
+                            cResult.Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(s) s.abbreviation = sLang)
                         ElseIf Not IsNothing(xS.Element("language")) Then
                             sLang = xS.Element("language").Value
-                            cResult.Language = New Containers.TVLanguage With {.LongLang = String.Format("Unknown ({0})", sLang), .ShortLang = sLang}
+                            cResult.Language = New TVDBLanguagesLanguage With {.name = String.Format("Unknown ({0})", sLang), .abbreviation = sLang, .id = 0}
                         Else
                             'no language info available... don't bother adding it
                             Continue For
@@ -2004,7 +1991,7 @@ Public Class Scraper
         Private _aired As String
         Private _banner As String
         Private _id As Integer
-        Private _language As Containers.TVLanguage
+        Private _language As TVDBLanguagesLanguage
         Private _lev As Integer
         Private _name As String
         Private _overview As String
@@ -2048,11 +2035,11 @@ Public Class Scraper
             End Set
         End Property
 
-        Public Property Language() As Containers.TVLanguage
+        Public Property Language() As TVDBLanguagesLanguage
             Get
                 Return Me._language
             End Get
-            Set(ByVal value As Containers.TVLanguage)
+            Set(ByVal value As TVDBLanguagesLanguage)
                 Me._language = value
             End Set
         End Property
@@ -2092,7 +2079,7 @@ Public Class Scraper
             Me._id = 0
             Me._name = String.Empty
             Me._aired = String.Empty
-            Me._language = New Containers.TVLanguage
+            Me._language = New TVDBLanguagesLanguage
             Me._overview = String.Empty
             Me._banner = String.Empty
             Me._lev = 0

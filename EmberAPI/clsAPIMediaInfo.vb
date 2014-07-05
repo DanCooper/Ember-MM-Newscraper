@@ -713,10 +713,15 @@ Public Class MediaInfo
                             Dim mediainfoRaRPath As String = String.Concat(Functions.AppPath, "Bin", Path.DirectorySeparatorChar, "mediainfo-rar\mediainfo-rar.exe")
                             Dim commandline As String = "--Output=XML -f " & """" & sPath & """"
                             returnstring = Functions.Run_Process(mediainfoRaRPath, commandline, True, True)
-                            If Not returnstring = String.Empty Then
-                                Dim xmlReader As Xml.XmlReader = Xml.XmlReader.Create(New StringReader(returnstring))
-                                ds.ReadXml(xmlReader)
-                            End If
+                            Try
+                                If Not returnstring = String.Empty Then
+                                    Dim xmlReader As Xml.XmlReader = Xml.XmlReader.Create(New StringReader(returnstring))
+                                    ds.ReadXml(xmlReader)
+                                End If
+                            Catch ex As Exception
+                                logger.Error(New StackFrame().GetMethod().Name, ex, "Output file: {0}", returnstring)
+                                ds = Nothing
+                            End Try
 
                             'For testing purpose save and read scanned movies to log folder...
                             '  ds.WriteXml(String.Concat(Functions.AppPath, "Log", Path.DirectorySeparatorChar, Path.GetFileNameWithoutExtension(sPath).ToLower & "_MediaInfoRarScan" & ".xml"), XmlWriteMode.IgnoreSchema)

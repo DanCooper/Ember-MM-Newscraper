@@ -884,12 +884,11 @@ Public Class dlgSettings
     End Sub
 
     Private Sub btnTVGeneralLangFetch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVGeneralLangFetch.Click
-        Master.eSettings.TVGeneralLanguages.Clear()
-        Master.eSettings.TVGeneralLanguages.AddRange(ModulesManager.Instance.TVGetLangs("thetvdb.com"))
-        Me.cbTVGeneralLang.Items.AddRange((From lLang In Master.eSettings.TVGeneralLanguages Select lLang.LongLang).ToArray)
+        Master.eSettings.TVGeneralLanguages = ModulesManager.Instance.TVGetLangs("thetvdb.com")
+        Me.cbTVGeneralLang.Items.AddRange((From lLang In Master.eSettings.TVGeneralLanguages.Language Select lLang.name).ToArray)
 
         If Me.cbTVGeneralLang.Items.Count > 0 Then
-            Me.cbTVGeneralLang.Text = Master.eSettings.TVGeneralLanguages.FirstOrDefault(Function(l) l.ShortLang = Master.eSettings.TVGeneralLanguage).LongLang
+            Me.cbTVGeneralLang.Text = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.TVGeneralLanguage).name
         End If
     End Sub
 
@@ -923,7 +922,7 @@ Public Class dlgSettings
                 Me.lstTVShowFilter.Focus()
             End If
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -939,7 +938,7 @@ Public Class dlgSettings
                 Me.lstTVShowFilter.Focus()
             End If
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -956,7 +955,7 @@ Public Class dlgSettings
                 Me.lstMovieFilters.Focus()
             End If
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1563,47 +1562,47 @@ Public Class dlgSettings
 
     Private Sub chkGeneralHideBanner_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGeneralHideBanner.CheckedChanged
         Me.SetApplyButton(True)
-        CheckHideSettings
+        CheckHideSettings()
     End Sub
 
     Private Sub chkGeneralHideCharacterArt_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGeneralHideCharacterArt.CheckedChanged
         Me.SetApplyButton(True)
-        CheckHideSettings
+        CheckHideSettings()
     End Sub
 
     Private Sub chkGeneralHideClearArt_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGeneralHideClearArt.CheckedChanged
         Me.SetApplyButton(True)
-        CheckHideSettings
+        CheckHideSettings()
     End Sub
 
     Private Sub chkGeneralHideClearLogo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGeneralHideClearLogo.CheckedChanged
         Me.SetApplyButton(True)
-        CheckHideSettings
+        CheckHideSettings()
     End Sub
 
     Private Sub chkGeneralHideDiscArt_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGeneralHideDiscArt.CheckedChanged
         Me.SetApplyButton(True)
-        CheckHideSettings
+        CheckHideSettings()
     End Sub
 
     Private Sub chkGeneralHideFanart_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGeneralHideFanart.CheckedChanged
         Me.SetApplyButton(True)
-        CheckHideSettings
+        CheckHideSettings()
     End Sub
 
     Private Sub chkGeneralHideLandscape_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGeneralHideLandscape.CheckedChanged
         Me.SetApplyButton(True)
-        CheckHideSettings
+        CheckHideSettings()
     End Sub
 
     Private Sub chkGeneralHidePoster_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGeneralHidePoster.CheckedChanged
         Me.SetApplyButton(True)
-        CheckHideSettings
+        CheckHideSettings()
     End Sub
 
     Private Sub chkGeneralHideFanartSmall_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGeneralHideFanartSmall.CheckedChanged
         Me.SetApplyButton(True)
-        CheckHideSettings
+        CheckHideSettings()
     End Sub
 
     Private Sub chkTVEpisodeNoFilter_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVEpisodeNoFilter.CheckedChanged
@@ -3087,9 +3086,9 @@ Public Class dlgSettings
                 Me.TVShowRegex.AddRange(.TVShowRegexes)
                 Me.LoadTVShowRegex()
 
-                Me.cbTVGeneralLang.Items.AddRange((From lLang In .TVGeneralLanguages Select lLang.LongLang).ToArray)
+                Me.cbTVGeneralLang.Items.AddRange((From lLang In .TVGeneralLanguages.Language Select lLang.name).ToArray)
                 If Me.cbTVGeneralLang.Items.Count > 0 Then
-                    Me.cbTVGeneralLang.Text = .TVGeneralLanguages.FirstOrDefault(Function(l) l.ShortLang = .TVGeneralLanguage).LongLang
+                    Me.cbTVGeneralLang.Text = .TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = .TVGeneralLanguage).name
                 End If
 
                 If Not String.IsNullOrEmpty(.ProxyURI) AndAlso .ProxyPort >= 0 Then
@@ -3339,7 +3338,7 @@ Public Class dlgSettings
             End With
 
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -3378,7 +3377,7 @@ Public Class dlgSettings
             Me.NoUpdate = False
             RaiseEvent LoadEnd()
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -3447,7 +3446,7 @@ Public Class dlgSettings
                     s.ProcessorModule.ScraperOrderChanged()
                 Next
             Catch ex As Exception
-                Logger.Error(New StackFrame().GetMethod().Name,ex)
+                Logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         End If
         Me.ResumeLayout()
@@ -3999,7 +3998,7 @@ Public Class dlgSettings
                 End If
             End If
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -4092,7 +4091,7 @@ Public Class dlgSettings
                 End If
             End If
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -4363,7 +4362,7 @@ Public Class dlgSettings
                 'cocotus, 2014/05/21 Fixed: If cbTVGeneralLang.Text is empty it will crash here -> no AdvancedSettings.xml will be built/saved!!(happens when user has not yet set TVLanguage via Fetch language button!)
                 'old:    .TVGeneralLanguage = Master.eSettings.TVGeneralLanguages.FirstOrDefault(Function(l) l.LongLang = cbTVGeneralLang.Text).ShortLang
                 If cbTVGeneralLang.Text <> String.Empty Then
-                    .TVGeneralLanguage = Master.eSettings.TVGeneralLanguages.FirstOrDefault(Function(l) l.LongLang = cbTVGeneralLang.Text).ShortLang
+                    .TVGeneralLanguage = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = cbTVGeneralLang.Text).abbreviation
                 End If
                 .TVGeneralMarkNewEpisodes = Me.chkTVGeneralMarkNewEpisodes.Checked
                 .TVGeneralMarkNewShows = Me.chkTVGeneralMarkNewShows.Checked
@@ -4783,28 +4782,28 @@ Public Class dlgSettings
                 Try
                     s.ProcessorModule.SaveSetupScraper(Not isApply)
                 Catch ex As Exception
-                    Logger.Error(New StackFrame().GetMethod().Name,ex)
+                    Logger.Error(New StackFrame().GetMethod().Name, ex)
                 End Try
             Next
             For Each s As ModulesManager._externalScraperModuleClass_Poster In ModulesManager.Instance.externalPosterScrapersModules
                 Try
                     s.ProcessorModule.SaveSetupScraper(Not isApply)
                 Catch ex As Exception
-                    Logger.Error(New StackFrame().GetMethod().Name,ex)
+                    Logger.Error(New StackFrame().GetMethod().Name, ex)
                 End Try
             Next
             For Each s As ModulesManager._externalScraperModuleClass_Theme In ModulesManager.Instance.externalThemeScrapersModules
                 Try
                     s.ProcessorModule.SaveSetupScraper(Not isApply)
                 Catch ex As Exception
-                    Logger.Error(New StackFrame().GetMethod().Name,ex)
+                    Logger.Error(New StackFrame().GetMethod().Name, ex)
                 End Try
             Next
             For Each s As ModulesManager._externalScraperModuleClass_Trailer In ModulesManager.Instance.externalTrailerScrapersModules
                 Try
                     s.ProcessorModule.SaveSetupScraper(Not isApply)
                 Catch ex As Exception
-                    Logger.Error(New StackFrame().GetMethod().Name,ex)
+                    Logger.Error(New StackFrame().GetMethod().Name, ex)
                 End Try
             Next
             For Each s As ModulesManager._externalTVScraperModuleClass In ModulesManager.Instance.externalTVScrapersModules
@@ -4812,27 +4811,27 @@ Public Class dlgSettings
                     If s.ProcessorModule.IsScraper Then s.ProcessorModule.SaveSetupScraper(Not isApply)
                     If s.ProcessorModule.IsPostScraper Then s.ProcessorModule.SaveSetupPostScraper(Not isApply)
                 Catch ex As Exception
-                    Logger.Error(New StackFrame().GetMethod().Name,ex)
+                    Logger.Error(New StackFrame().GetMethod().Name, ex)
                 End Try
             Next
             For Each s As ModulesManager._externalTVScraperModuleClass_Theme In ModulesManager.Instance.externalTVThemeScrapersModules
                 Try
                     s.ProcessorModule.SaveSetupScraper(Not isApply)
                 Catch ex As Exception
-                    Logger.Error(New StackFrame().GetMethod().Name,ex)
+                    Logger.Error(New StackFrame().GetMethod().Name, ex)
                 End Try
             Next
             For Each s As ModulesManager._externalGenericModuleClass In ModulesManager.Instance.externalProcessorModules
                 Try
                     s.ProcessorModule.SaveSetup(Not isApply)
                 Catch ex As Exception
-                    Logger.Error(New StackFrame().GetMethod().Name,ex)
+                    Logger.Error(New StackFrame().GetMethod().Name, ex)
                 End Try
             Next
             ModulesManager.Instance.SaveSettings()
             Functions.CreateDefaultOptions()
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -5238,6 +5237,13 @@ Public Class dlgSettings
         Me.LoadTVPosterSizes()
         Me.LoadTVSeasonBannerTypes()
         Me.LoadTVShowBannerTypes()
+
+        Me.cbTVGeneralLang.Items.AddRange((From lLang In Master.eSettings.TVGeneralLanguages.Language Select lLang.name).ToArray)
+        If Me.cbTVGeneralLang.Items.Count > 0 Then
+            Me.cbTVGeneralLang.Text = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.TVGeneralLanguage).name
+        End If
+
+
     End Sub
 
     Private Sub tbTVASBannerQual_ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tbTVASBannerQual.ValueChanged
