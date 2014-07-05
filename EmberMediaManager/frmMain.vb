@@ -12671,6 +12671,18 @@ doCancel:
 
     Private Sub SourceSubClick(ByVal sender As Object, ByVal e As System.EventArgs)
         Dim SourceName As String = DirectCast(sender, ToolStripItem).Tag.ToString
+
+        'Remove any previous scrape as there is no warranty that the new dataset will match with the old one
+        Dim aPath As String = FileUtils.Common.ReturnSettingsFile("Settings", "ScraperStatus.dat")
+        If File.Exists(aPath) Then
+            Try
+                File.Delete(aPath)
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+                Throw
+            End Try
+        End If
+
         Me.LoadMedia(New Structures.Scans With {.Movies = True}, SourceName)
     End Sub
 
@@ -13189,6 +13201,19 @@ doCancel:
 
     Private Sub TVSourceSubClick(ByVal sender As Object, ByVal e As System.EventArgs)
         Dim SourceName As String = DirectCast(sender, ToolStripItem).Tag.ToString
+
+        'Remove any previous scrape as there is no warranty that the new dataset will match with the old one
+        Dim aPath As String = FileUtils.Common.ReturnSettingsFile("Settings", "ScraperStatus.dat")
+        If File.Exists(aPath) Then
+            Try
+                File.Delete(aPath)
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+                Throw
+            End Try
+        End If
+
+
         Me.LoadMedia(New Structures.Scans With {.TV = True}, SourceName)
     End Sub
 
