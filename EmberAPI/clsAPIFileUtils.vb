@@ -190,11 +190,11 @@ Namespace FileUtils
 
         Public Shared Sub InstallNewFiles(ByVal fname As String)
             Dim _cmds As Containers.InstallCommands = Containers.InstallCommands.Load(fname)
-            For Each _cmd As Containers.InstallCommand In _cmds.Command
+            For Each _cmd As Containers.CommandsNoTransactionCommand In _cmds.noTransaction
                 Try
-                    Select Case _cmd.CommandType
+                    Select Case _cmd.type
                         Case "FILE.Move"
-                            Dim s() As String = _cmd.CommandExecute.Split("|"c)
+                            Dim s() As String = _cmd.execute.Split("|"c)
                             If s.Count >= 2 Then
                                 If File.Exists(s(1)) Then File.Delete(s(1))
                                 If Not Directory.Exists(Path.GetDirectoryName(s(1))) Then
@@ -203,12 +203,18 @@ Namespace FileUtils
                                 File.Move(s(0), s(1))
                             End If
                         Case "FILE.Delete"
-                            If File.Exists(_cmd.CommandExecute) Then File.Delete(_cmd.CommandExecute)
+                            If File.Exists(_cmd.execute) Then File.Delete(_cmd.execute)
                     End Select
                 Catch ex As Exception
                     logger.Error(New StackFrame().GetMethod().Name, ex)
                 End Try
             Next
+            Dim destPath As String = Path.Combine(Functions.AppPath, "InstalledTasks_" & Format(Now, "YYYYMMDD") & Format(Now, "HHMMSS") & ".xml")
+            Try
+                File.Move(fname, destPath)
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+            End Try
         End Sub
 
 #End Region 'Methods

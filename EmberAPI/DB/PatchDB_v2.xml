@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Commands xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <transaction name="doAddColumns">
+    <command type="DB">
+      <description>1</description>
+      <execute>alter table MoviesAStreams add Audio_Bitrate TEXT;</execute>
+    </command>
+    <command type="DB">
+      <description>2</description>
+      <execute>alter table MoviesVStreams add Video_EncodedSettings TEXT;</execute>
+    </command>
+    <command type="DB">
+      <description>3</description>
+      <execute>alter table MoviesVStreams add Video_Bitrate TEXT;</execute>
+    </command>
+    <command type="DB">
+      <description>4</description>
+      <execute>alter table MoviesVStreams add Video_MultiView TEXT;</execute>
+    </command>
+    <command type="DB">
+      <description>5</description>
+      <execute>alter table TVAStreams add Audio_Bitrate TEXT;</execute>
+    </command>
+    <command type="DB">
+      <description>6</description>
+      <execute>alter table TVVStreams add Video_EncodedSettings TEXT;</execute>
+    </command>
+    <command type="DB">
+      <description>7</description>
+      <execute>alter table TVVStreams add Video_Bitrate TEXT;</execute>
+    </command>
+    <command type="DB">
+      <description>8</description>
+      <execute>alter table TVVStreams add Video_MultiView TEXT;</execute>
+    </command>
+    <command type="DB">
+      <description>9</description>
+      <execute>alter table TVEps add Playcount TEXT;</execute>
+    </command>
+  </transaction>
+  <transaction name="doAddColumnWatched">
+    <command type="DB">
+      <description>1</description>
+      <execute>alter table TVEps add HasWatched BOOL NOT NULL DEFAULT False;</execute>
+    </command>
+  </transaction>
+  <transaction name="doAddColumnDisplaySE">
+    <command type="DB">
+      <description>1</description>
+      <execute>alter table TVEps add DisplaySeason integer;</execute>
+    </command>
+    <command type="DB">
+      <description>2</description>
+      <execute>alter table TVEps add DisplayEpisode integer;</execute>
+    </command>
+  </transaction>
+  <transaction name="doAddColumnMovies">
+    <command type="DB">
+      <description>1</description>
+      <execute>alter table Movies add EFanartsPath TEXT;</execute>
+    </command>
+    <command type="DB">
+      <description>2</description>
+      <execute>alter table Movies add EThumbsPath TEXT;</execute>
+    </command>
+    <command type="DB">
+      <description>3</description>
+      <execute>alter table Movies add HasEThumbs BOOL NOT NULL DEFAULT False;</execute>
+    </command>
+    <command type="DB">
+      <description>4</description>
+      <execute>alter table Movies add HasEFanarts BOOL NOT NULL DEFAULT False;</execute>
+    </command>
+  </transaction>
+  <transaction name="doAddColumnTVBannerAndLandscape">
+    <command type="DB">
+      <description>1</description>
+      <execute>alter table TVShows add HasBanner BOOL NOT NULL DEFAULT False;</execute>
+    </command>
+    <command type="DB">
+      <description>2</description>
+      <execute>alter table TVShows add BannerPath TEXT;</execute>
+    </command>
+    <command type="DB">
+      <description>3</description>
+      <execute>alter table TVShows add HasLandscape BOOL NOT NULL DEFAULT False;</execute>
+    </command>
+    <command type="DB">
+      <description>4</description>
+      <execute>alter table TVShows add LandscapePath TEXT;</execute>
+    </command>
+    <command type="DB">
+      <description>5</description>
+      <execute>alter table TVSeason add HasBanner BOOL NOT NULL DEFAULT False;</execute>
+    </command>
+    <command type="DB">
+      <description>6</description>
+      <execute>alter table TVSeason add BannerPath TEXT;</execute>
+    </command>
+    <command type="DB">
+      <description>7</description>
+      <execute>alter table TVSeason add HasLandscape BOOL NOT NULL DEFAULT False;</execute>
+    </command>
+    <command type="DB">
+      <description>8</description>
+      <execute>alter table TVSeason add LandscapePath TEXT;</execute>
+    </command>
+  </transaction>
+  <transaction name="doAddColumnTVShowStatus">
+    <command type="DB">
+      <description>1</description>
+      <execute>alter table TVShows add Status TEXT;</execute>
+    </command>
+  </transaction>
+
+  <transaction name="doAddColumnTVShowStatus">
+    <command type="DB">
+      <description>1</description>
+      <execute>alter table Movies add HasBanner BOOL NOT NULL DEFAULT False;</execute>
+    </command>
+    <command type="DB">
+      <description>2</description>
+      <execute>alter table Movies add BannerPath TEXT;</execute>
+    </command>
+    <command type="DB">
+      <description>3</description>
+      <execute>alter table Movies add HasLandscape BOOL NOT NULL DEFAULT False;</execute>
+    </command>
+    <command type="DB">
+      <description>4</description>
+      <execute>alter table Movies add LandscapePath TEXT;</execute>
+    </command>
+  </transaction>
+
+  <transaction name="doAddColumnMovieAndTVTheme">
+    <command type="DB">
+      <description>1</description>
+      <execute>alter table Movies add HasTheme BOOL NOT NULL DEFAULT False;</execute>
+    </command>
+    <command type="DB">
+      <description>2</description>
+      <execute>alter table Movies add ThemePath TEXT;</execute>
+    </command>
+    <command type="DB">
+      <description>3</description>
+      <execute>alter table TVShows add HasTheme BOOL NOT NULL DEFAULT False;</execute>
+    </command>
+    <command type="DB">
+      <description>4</description>
+      <execute>alter table TVShows add ThemePath TEXT;</execute>
+    </command>
+  </transaction>
+  <transaction name="doAddColumnMovieAndTVLogoDiscAndClearArt">
+    <command type="DB">
+      <description>1</description>
+      <execute>alter table Movies add HasDiscArt BOOL NOT NULL DEFAULT False;</execute>
+    </command>
+    <command type="DB">
+      <description>2</description>
+      <execute>alter table Movies add DiscArtPath TEXT;</execute>
+    </command>
+    <command type="DB">
+      <description>3</description>
+      <execute>alter table Movies add HasClearLogo BOOL NOT NULL DEFAULT False;</execute>
+    </command>
+    <command type="DB">
+      <description>4</description>
+      <execute>alter table Movies add ClearLogoPath TEXT;</execute>
+    </command>
+    <command type="DB">
+      <description>5</description>
+      <execute>alter table Movies add HasClearArt BOOL NOT NULL DEFAULT False;</execute>
+    </command>
+    <command type="DB">
+      <description>6</description>
+      <execute>alter table Movies add ClearArtPath TEXT;</execute>
+    </command>
+    <command type="DB">
+      <description>7</description>
+      <execute>alter table TVShows add HasCharacterArt BOOL NOT NULL DEFAULT False;</execute>
+    </command>
+    <command type="DB">
+      <description>8</description>
+      <execute>alter table TVShows add CharacterArtPath TEXT;</execute>
+    </command>
+    <command type="DB">
+      <description>9</description>
+      <execute>alter table TVShows add HasClearLogo BOOL NOT NULL DEFAULT False;</execute>
+    </command>
+    <command type="DB">
+      <description>10</description>
+      <execute>alter table TVShows add ClearLogoPath TEXT;</execute>
+    </command>
+    <command type="DB">
+      <description>11</description>
+      <execute>alter table TVShows add HasClearArt BOOL NOT NULL DEFAULT False;</execute>
+    </command>
+    <command type="DB">
+      <description>12</description>
+      <execute>alter table TVShows add ClearArtPath TEXT;</execute>
+    </command>
+  </transaction>
+    <transaction name="doAddColumnMovieSetsImages">
+    <command type="DB">
+      <description>1</description>
+      <execute>alter table Sets add HasNfo BOOL NOT NULL DEFAULT False;</execute>
+    </command>
+    <command type="DB">
+      <description>2</description>
+      <execute>alter table Sets add NfoPath TEXT;</execute>
+    </command>
+    <command type="DB">
+      <description>3</description>
+      <execute>alter table Sets add HasPoster BOOL NOT NULL DEFAULT False;</execute>
+    </command>
+    <command type="DB">
+      <description>4</description>
+      <execute>alter table Sets add PosterPath TEXT;</execute>
+    </command>
+    <command type="DB">
+      <description>5</description>
+      <execute>alter table Sets add HasFanart BOOL NOT NULL DEFAULT False;</execute>
+    </command>
+    <command type="DB">
+      <description>6</description>
+      <execute>alter table Sets add FanartPath TEXT;</execute>
+    </command>
+    <command type="DB">
+      <description>7</description>
+      <execute>alter table Sets add HasBanner BOOL NOT NULL DEFAULT False;</execute>
+    </command>
+    <command type="DB">
+      <description>8</description>
+      <execute>alter table Sets add BannerPath TEXT;</execute>
+    </command>
+    <command type="DB">
+      <description>9</description>
+      <execute>alter table Sets add HasLandscape BOOL NOT NULL DEFAULT False;</execute>
+    </command>
+    <command type="DB">
+      <description>10</description>
+      <execute>alter table Sets add LandscapePath TEXT;</execute>
+    </command>
+    <command type="DB">
+      <description>11</description>
+      <execute>alter table Sets add HasDiscArt BOOL NOT NULL DEFAULT False;</execute>
+    </command>
+    <command type="DB">
+      <description>12</description>
+      <execute>alter table Sets add DiscArtPath TEXT;</execute>
+    </command>
+    <command type="DB">
+      <description>13</description>
+      <execute>alter table Sets add HasClearLogo BOOL NOT NULL DEFAULT False;</execute>
+    </command>
+    <command type="DB">
+      <description>14</description>
+      <execute>alter table Sets add ClearLogoPath TEXT;</execute>
+    </command>
+    <command type="DB">
+      <description>15</description>
+      <execute>alter table Sets add HasClearArt BOOL NOT NULL DEFAULT False;</execute>
+    </command>
+    <command type="DB">
+      <description>16</description>
+      <execute>alter table Sets add ClearArtPath TEXT;</execute>
+    </command>
+  </transaction>
+    <transaction name="doAddColumnTVShowEFanarts">
+    <command type="DB">
+      <description>1</description>
+      <execute>alter table TVShows add HasEFanarts BOOL NOT NULL DEFAULT False;</execute>
+    </command>
+    <command type="DB">
+      <description>2</description>
+      <execute>alter table TVShows add EFanartsPath TEXT;</execute>
+    </command>
+  </transaction>
+    <transaction name="doAddColumnVStreamMultiviewLayout">
+    <command type="DB">
+      <description>1</description>
+      <execute>alter table MoviesVStreams add Video_MultiViewLayout TEXT;</execute>
+    </command>
+    <command type="DB">
+      <description>1</description>
+      <execute>alter table TVVStreams add Video_MultiViewLayout TEXT;</execute>
+    </command>
+  </transaction>
+    <transaction name="doAddColumnTMDBColID">
+    <command type="DB">
+      <description>1</description>
+      <execute>alter table Movies add TMDB TEXT;</execute>
+    </command>
+    <command type="DB">
+      <description>2</description>
+      <execute>alter table Movies add TMDBColID TEXT;</execute>
+    </command>
+    <command type="DB">
+      <description>3</description>
+      <execute>alter table Sets add TMDBColID TEXT;</execute>
+    </command>
+  </transaction>
+    <transaction name="doAddMovieLastScrape">
+    <command type="DB">
+      <description>1</description>
+      <execute>alter table Movies add LastScrape TEXT;</execute>
+    </command>
+  </transaction>
+  <noTransaction type="">
+  </noTransaction>
+<!-- 
+  <noTransaction type="DB">
+    <description>nd1</description>
+    <execute>ne1</execute>
+  </noTransaction>
+-->
+</Commands>

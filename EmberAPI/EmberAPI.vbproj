@@ -239,6 +239,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="DB\PatchDB_v2.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Images\Defaults\DefaultGenre.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
