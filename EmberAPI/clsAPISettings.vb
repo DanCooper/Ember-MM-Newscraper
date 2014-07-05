@@ -4816,15 +4816,7 @@ Public Class Settings
     Public Sub Clear()
         'Make it simple: load a default values XML file
         Try
-            Dim configpath As String = String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar, "DefaultSettings.xml")
-
-            'AdvancedSettings.xml is still at old place (root) -> move to new place if there's no AdvancedSettings.xml !
-            If File.Exists(String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar, "DefaultSettings.xml")) = False AndAlso File.Exists(Path.Combine(Functions.AppPath, "DefaultSettings.xml")) AndAlso Directory.Exists(String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar)) Then
-                File.Move(Path.Combine(Functions.AppPath, "DefaultSettings.xml"), String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar, "DefaultSettings.xml"))
-                'New Settings folder doesn't exist -> do it the old way...
-            ElseIf Directory.Exists(String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar)) = False Then
-                configpath = Path.Combine(Functions.AppPath, "DefaultSettings.xml")
-            End If
+            Dim configpath As String = FileUtils.Common.ReturnSettingsFile("Settings", "DefaultSettings.xml")
 
             Dim objStreamReader As New StreamReader(configpath)
             Dim xXMLSettings As New XmlSerializer(_XMLSettings.GetType)

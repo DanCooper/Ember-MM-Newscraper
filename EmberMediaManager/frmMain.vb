@@ -29,6 +29,7 @@ Imports RestSharp
 Imports WatTmdb
 Imports NLog
 Imports System.Xml.Serialization
+Imports System.Runtime.Serialization.Formatters.Binary
 
 
 Public Class frmMain
@@ -71,7 +72,7 @@ Public Class frmMain
     Private dtMovieSets As New DataTable
     Private dtSeasons As New DataTable
     Private dtShows As New DataTable
-    Private dScrapeRow As String()
+    Private dScrapeRow As Object()
 
     Private fScanner As New Scanner
     Private GenreImage As Image
@@ -87,7 +88,7 @@ Public Class frmMain
     Private pnlGenre() As Panel = Nothing
     Private prevText As String = String.Empty
     Private ReportDownloadPercent As Boolean = False
-    Private ScrapeList As New List(Of String())
+    Private ScrapeList As New List(Of Object()) 'Need an array of objects to binary serialize 
     Private ScraperDone As Boolean = False
     Private sHTTP As New EmberAPI.HTTP
     Private tmpLang As String = String.Empty
@@ -137,8 +138,7 @@ Public Class frmMain
     Private oldStatus As String = String.Empty
 
     Private _ScraperStatus As New EmberAPI.clsXMLRestartScraper
-    Private _xScraperStatus As New XmlSerializer(_ScraperStatus.GetType)
-
+    
     Private KeyBuffer As String = String.Empty
     ' Environment variables
 #End Region 'Fields
@@ -1461,19 +1461,24 @@ Public Class frmMain
         Dim etList As New List(Of String)
         Dim tUrlList As New List(Of Themes)
         Dim DBScrapeMovie As New Structures.DBMovie
-        Dim dRow As String()
+        Dim dRow As Object()
         Dim configpath As String
+        Dim formatter As New BinaryFormatter()
 
         logger.Trace("Starting MOVIE scrape")
 
         AddHandler ModulesManager.Instance.MovieScraperEvent, AddressOf MovieScraperEvent
+
+        _ScraperStatus.ScrapeList.Clear()
+        _ScraperStatus.ScrapeList.AddRange(ScrapeList.ToArray)
+        configpath = FileUtils.Common.ReturnSettingsFile("Settings", "ScraperStatus.dat")
 
         While ScrapeList.Count > 0
             dRow = ScrapeList(0)
 
             Try
                 If bwMovieScraper.CancellationPending Then Exit While
-                OldTitle = dRow(3)
+                OldTitle = dRow(3).ToString
                 bwMovieScraper.ReportProgress(1, OldTitle)
 
                 dScrapeRow = dRow
@@ -2050,15 +2055,22 @@ Public Class frmMain
                     bwMovieScraper.ReportProgress(-2, dScrapeRow(0))
                 End If
                 ScrapeList.RemoveAt(0)
-                _ScraperStatus.ScrapeList.Clear()
-                _ScraperStatus.ScrapeList.AddRange(ScrapeList.ToArray)
-
-                configpath = FileUtils.Common.ReturnSettingsFile("Settings", "ScraperStatus.xml")
-
-                Using writer As New FileStream(configpath, FileMode.Create)
-                    _xScraperStatus.Serialize(writer, _ScraperStatus)
-                    writer.Close()
+                _ScraperStatus.ScrapeList.RemoveAt(0)
+                Using stream As FileStream = File.Create(configpath)
+                    Try
+                        formatter.Serialize(stream, _ScraperStatus)
+                    Catch ex As Exception
+                        logger.Error(New StackFrame().GetMethod().Name, ex)
+                        Throw
+                    Finally
+                        stream.Close()
+                    End Try
                 End Using
+
+                'Using writer As New FileStream(configpath, FileMode.Create)
+                '    _xScraperStatus.Serialize(writer, _ScraperStatus)
+                '    writer.Close()
+                'End Using
 
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -9612,11 +9624,16 @@ doCancel:
 
     Private Sub MovieScrapeData(ByVal selected As Boolean, ByVal sType As Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions, Optional ByVal Restart As Boolean = False)
         If Not Restart Then
+            _ScraperStatus.Selected = selected
+            _ScraperStatus.sType = sType
+            _ScraperStatus.Options = Options
+
             ScrapeList.Clear()
+
             If selected Then
                 'create snapshoot list of selected movies
                 For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
-                    ScrapeList.Add(CType(sRow.DataBoundItem, String()))
+                    ScrapeList.Add(CType(sRow.DataBoundItem, Object()))
                 Next
             Else
                 Dim BannerAllowed As Boolean = Master.eSettings.MovieBannerAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Banner)
@@ -9659,23 +9676,31 @@ doCancel:
                             End If
                     End Select
 
-                    ScrapeList.Add(CType(drvRow.ItemArray, String()))
+                    ScrapeList.Add(CType(drvRow.ItemArray, Object()))
                 Next
             End If
         Else
-            Dim aPath As String = FileUtils.Common.ReturnSettingsFile("Settings", "ScraperStatus.xml")
+            Dim aPath As String = FileUtils.Common.ReturnSettingsFile("Settings", "ScraperStatus.dat")
+            Dim formatter As New BinaryFormatter()
             If File.Exists(aPath) Then
 
-                Dim objStreamReader As New StreamReader(aPath)
+                _ScraperStatus = New EmberAPI.clsXMLRestartScraper
 
-                _ScraperStatus = CType(_xScraperStatus.Deserialize(objStreamReader), clsXMLRestartScraper)
+                Dim fs As New FileStream(aPath, FileMode.Open)
+                Try
+                    _ScraperStatus = DirectCast(formatter.Deserialize(fs), EmberAPI.clsXMLRestartScraper)
+                Catch ex As Exception
+                    logger.Error(New StackFrame().GetMethod().Name, ex)
+                    Throw
+                Finally
+                    fs.Close()
+                End Try
 
-                objStreamReader.Close()
                 selected = _ScraperStatus.Selected
                 sType = _ScraperStatus.sType
                 Options = _ScraperStatus.Options
                 ScrapeList.Clear()
-                ScrapeList.AddRange(CType(_ScraperStatus.ScrapeList.ToArray, Global.System.Collections.Generic.IEnumerable(Of String())))
+                ScrapeList.AddRange(_ScraperStatus.ScrapeList.ToArray)
             End If
 
         End If
@@ -9762,33 +9787,33 @@ doCancel:
         Else
             Select Case eType
                 Case Enums.MovieScraperEventType.BannerItem
-                    dScrapeRow(51) = DirectCast(Parameter, String)
+                    dScrapeRow(51) = DirectCast(Parameter, Object)
                 Case Enums.MovieScraperEventType.ClearArtItem
-                    dScrapeRow(61) = DirectCast(Parameter, String)
+                    dScrapeRow(61) = DirectCast(Parameter, Object)
                 Case Enums.MovieScraperEventType.ClearLogoItem
-                    dScrapeRow(59) = DirectCast(Parameter, String)
+                    dScrapeRow(59) = DirectCast(Parameter, Object)
                 Case Enums.MovieScraperEventType.DiscArtItem
-                    dScrapeRow(57) = DirectCast(Parameter, String)
+                    dScrapeRow(57) = DirectCast(Parameter, Object)
                 Case Enums.MovieScraperEventType.EFanartsItem
-                    dScrapeRow(49) = DirectCast(Parameter, String)
+                    dScrapeRow(49) = DirectCast(Parameter, Object)
                 Case Enums.MovieScraperEventType.EThumbsItem
-                    dScrapeRow(9) = DirectCast(Parameter, String)
+                    dScrapeRow(9) = DirectCast(Parameter, Object)
                 Case Enums.MovieScraperEventType.FanartItem
-                    dScrapeRow(5) = DirectCast(Parameter, String)
+                    dScrapeRow(5) = DirectCast(Parameter, Object)
                 Case Enums.MovieScraperEventType.LandscapeItem
-                    dScrapeRow(53) = DirectCast(Parameter, String)
+                    dScrapeRow(53) = DirectCast(Parameter, Object)
                 Case Enums.MovieScraperEventType.ListTitle
-                    dScrapeRow(3) = DirectCast(Parameter, String)
+                    dScrapeRow(3) = DirectCast(Parameter, Object)
                 Case Enums.MovieScraperEventType.NFOItem
-                    dScrapeRow(6) = DirectCast(Parameter, String)
+                    dScrapeRow(6) = DirectCast(Parameter, Object)
                 Case Enums.MovieScraperEventType.PosterItem
-                    dScrapeRow(4) = DirectCast(Parameter, String)
+                    dScrapeRow(4) = DirectCast(Parameter, Object)
                 Case Enums.MovieScraperEventType.SortTitle
-                    dScrapeRow(47) = DirectCast(Parameter, String)
+                    dScrapeRow(47) = DirectCast(Parameter, Object)
                 Case Enums.MovieScraperEventType.ThemeItem
-                    dScrapeRow(55) = DirectCast(Parameter, String)
+                    dScrapeRow(55) = DirectCast(Parameter, Object)
                 Case Enums.MovieScraperEventType.TrailerItem
-                    dScrapeRow(7) = DirectCast(Parameter, String)
+                    dScrapeRow(7) = DirectCast(Parameter, Object)
             End Select
             Me.dgvMovies.Invalidate()
         End If

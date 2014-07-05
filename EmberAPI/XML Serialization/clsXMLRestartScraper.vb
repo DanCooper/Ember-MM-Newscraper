@@ -1,6 +1,7 @@
 ﻿'''<remarks/>
 <System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True), _
  System.Xml.Serialization.XmlRootAttribute([Namespace]:="", IsNullable:=False)> _
+ <Serializable> _
 Partial Public Class clsXMLRestartScraper
     Private _selectedField As Boolean
 
@@ -8,7 +9,7 @@ Partial Public Class clsXMLRestartScraper
 
     Private _OptionsField As New Structures.ScrapeOptions
 
-    Private _ScrapeListField As New System.Collections.Generic.List(Of String())
+    Private _ScrapeListField As New System.Collections.Generic.List(Of Object())  'Need an array of objects to binary serialize 
 
     '''<remarks/>
     Public Property Selected As Boolean
@@ -38,11 +39,11 @@ Partial Public Class clsXMLRestartScraper
         End Set
     End Property
 
-    Public Property ScrapeList As System.Collections.Generic.List(Of String())
+    Public Property ScrapeList As System.Collections.Generic.List(Of Object())
         Get
             Return Me._ScrapeListField
         End Get
-        Set(value As System.Collections.Generic.List(Of String()))
+        Set(value As System.Collections.Generic.List(Of Object()))
             Me._ScrapeListField = value
         End Set
     End Property
