@@ -122,7 +122,7 @@ Public Class TVDB_Data_Poster
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
-    Public Function GetLangs(ByVal sMirror As String, ByRef Langs As List(Of Containers.TVLanguage)) As Interfaces.ModuleResult Implements Interfaces.EmberTVScraperModule.GetLangs
+    Public Function GetLangs(ByVal sMirror As String, ByRef Langs As clsXMLTVDBLanguages) As Interfaces.ModuleResult Implements Interfaces.EmberTVScraperModule.GetLangs
         Langs = TVScraper.GetLangs(sMirror)
         Return New Interfaces.ModuleResult With {.breakChain = True}
     End Function
@@ -167,7 +167,7 @@ Public Class TVDB_Data_Poster
         _setupPost.chkOnlyTVImagesLanguage.Checked = CBool(clsAdvancedSettings.GetSetting("OnlyGetTVImagesForSelectedLanguage", "True"))
         _setupPost.chkGetEnglishImages.Checked = CBool(clsAdvancedSettings.GetSetting("AlwaysGetEnglishTVImages", "True"))
         If _setupPost.cbTVScraperLanguage.Items.Count > 0 Then
-            _setupPost.cbTVScraperLanguage.Text = Master.eSettings.TVGeneralLanguages.FirstOrDefault(Function(l) l.ShortLang = _Lang).LongLang
+            _setupPost.cbTVScraperLanguage.Text = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = _Lang).name
         End If
         _setupPost.txtTVDBMirror.Text = _TVDBMirror
 
@@ -194,7 +194,7 @@ Public Class TVDB_Data_Poster
         _setup.cbEnabled.Checked = _ScraperEnabled
 
         If _setup.cbTVScraperLanguage.Items.Count > 0 Then
-            _setup.cbTVScraperLanguage.Text = Master.eSettings.TVGeneralLanguages.FirstOrDefault(Function(l) l.ShortLang = _Lang).LongLang
+            _setup.cbTVScraperLanguage.Text = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = _Lang).name
         End If
 
         _setup.txtTVDBMirror.Text = _TVDBMirror
@@ -235,7 +235,7 @@ Public Class TVDB_Data_Poster
     Private Sub Handle_ModuleSettingsChanged()
         strPrivateAPIKey = _setup.txtTVDBApiKey.Text
         _TVDBMirror = _setup.txtTVDBMirror.Text
-        _Lang = Master.eSettings.TVGeneralLanguages.FirstOrDefault(Function(l) l.LongLang = _setup.cbTVScraperLanguage.Text).ShortLang
+        _Lang = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = _setup.cbTVScraperLanguage.Text).abbreviation
         _setupPost.txtTVDBApiKey.Text = _setup.txtTVDBApiKey.Text
         _setupPost.txtTVDBMirror = _setup.txtTVDBMirror
         _setupPost.cbTVScraperLanguage.Text = _setup.cbTVScraperLanguage.Text
@@ -244,7 +244,7 @@ Public Class TVDB_Data_Poster
 
     Private Sub Handle_PostModuleSettingsChanged()
         strPrivateAPIKey = _setupPost.txtTVDBApiKey.Text
-        _Lang = Master.eSettings.TVGeneralLanguages.FirstOrDefault(Function(l) l.LongLang = _setupPost.cbTVScraperLanguage.Text).ShortLang
+        _Lang = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = _setupPost.cbTVScraperLanguage.Text).abbreviation
         _TVDBMirror = _setupPost.txtTVDBMirror.Text
         _setup.txtTVDBApiKey.Text = _setupPost.txtTVDBApiKey.Text
         _setup.txtTVDBMirror = _setupPost.txtTVDBMirror

@@ -261,9 +261,6 @@ Partial Class dlgWizard
         Me.chkTVShowFanartFrodo = New System.Windows.Forms.CheckBox()
         Me.chkTVShowPosterFrodo = New System.Windows.Forms.CheckBox()
         Me.tpTVFileNamingNMT = New System.Windows.Forms.TabPage()
-        Me.tpTVFileNamingExpert = New System.Windows.Forms.TabPage()
-        Me.Label11 = New System.Windows.Forms.Label()
-        Me.fbdBrowse = New System.Windows.Forms.FolderBrowserDialog()
         Me.tpTVFileNamingBoxee = New System.Windows.Forms.TabPage()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.chkTVSeasonPosterBoxee = New System.Windows.Forms.CheckBox()
@@ -272,6 +269,9 @@ Partial Class dlgWizard
         Me.chkTVShowFanartBoxee = New System.Windows.Forms.CheckBox()
         Me.chkTVShowPosterBoxee = New System.Windows.Forms.CheckBox()
         Me.chkTVUseBoxee = New System.Windows.Forms.CheckBox()
+        Me.tpTVFileNamingExpert = New System.Windows.Forms.TabPage()
+        Me.Label11 = New System.Windows.Forms.Label()
+        Me.fbdBrowse = New System.Windows.Forms.FolderBrowserDialog()
         Me.pnlWelcome.SuspendLayout()
         Me.pnlMovieSettings.SuspendLayout()
         Me.gbMovieFileNaming.SuspendLayout()
@@ -2828,25 +2828,6 @@ Partial Class dlgWizard
         Me.tpTVFileNamingNMT.Text = "NMT"
         Me.tpTVFileNamingNMT.UseVisualStyleBackColor = True
         '
-        'tpTVFileNamingExpert
-        '
-        Me.tpTVFileNamingExpert.Location = New System.Drawing.Point(4, 22)
-        Me.tpTVFileNamingExpert.Name = "tpTVFileNamingExpert"
-        Me.tpTVFileNamingExpert.Size = New System.Drawing.Size(505, 336)
-        Me.tpTVFileNamingExpert.TabIndex = 2
-        Me.tpTVFileNamingExpert.Text = "Expert"
-        Me.tpTVFileNamingExpert.UseVisualStyleBackColor = True
-        '
-        'Label11
-        '
-        Me.Label11.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label11.Location = New System.Drawing.Point(3, 4)
-        Me.Label11.Name = "Label11"
-        Me.Label11.Size = New System.Drawing.Size(522, 58)
-        Me.Label11.TabIndex = 0
-        Me.Label11.Text = resources.GetString("Label11.Text")
-        Me.Label11.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
         'tpTVFileNamingBoxee
         '
         Me.tpTVFileNamingBoxee.Controls.Add(Me.GroupBox1)
@@ -2937,6 +2918,25 @@ Partial Class dlgWizard
         Me.chkTVUseBoxee.TabIndex = 16
         Me.chkTVUseBoxee.Text = "Use"
         Me.chkTVUseBoxee.UseVisualStyleBackColor = True
+        '
+        'tpTVFileNamingExpert
+        '
+        Me.tpTVFileNamingExpert.Location = New System.Drawing.Point(4, 22)
+        Me.tpTVFileNamingExpert.Name = "tpTVFileNamingExpert"
+        Me.tpTVFileNamingExpert.Size = New System.Drawing.Size(505, 336)
+        Me.tpTVFileNamingExpert.TabIndex = 2
+        Me.tpTVFileNamingExpert.Text = "Expert"
+        Me.tpTVFileNamingExpert.UseVisualStyleBackColor = True
+        '
+        'Label11
+        '
+        Me.Label11.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.Label11.Location = New System.Drawing.Point(3, 4)
+        Me.Label11.Name = "Label11"
+        Me.Label11.Size = New System.Drawing.Size(522, 58)
+        Me.Label11.TabIndex = 0
+        Me.Label11.Text = resources.GetString("Label11.Text")
+        Me.Label11.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'dlgWizard
         '

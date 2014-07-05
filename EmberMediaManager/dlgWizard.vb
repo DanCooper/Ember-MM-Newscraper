@@ -24,6 +24,7 @@
 Imports System.IO
 Imports EmberAPI
 Imports NLog
+Imports System.Xml.Serialization
 
 Public Class dlgWizard
 
@@ -60,12 +61,11 @@ Public Class dlgWizard
     End Sub
 
     Private Sub btnTVLanguageFetch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVLanguageFetch.Click
-        Master.eSettings.TVGeneralLanguages.Clear()
-        Master.eSettings.TVGeneralLanguages.AddRange(ModulesManager.Instance.TVGetLangs("thetvdb.com"))
-        Me.cbTVLanguage.Items.AddRange((From lLang In Master.eSettings.TVGeneralLanguages Select lLang.LongLang).ToArray)
+        Master.eSettings.TVGeneralLanguages = ModulesManager.Instance.TVGetLangs("thetvdb.com")
+        Me.cbTVLanguage.Items.AddRange((From lLang In Master.eSettings.TVGeneralLanguages.Language Select lLang.name).ToArray)
 
         If Me.cbTVLanguage.Items.Count > 0 Then
-            Me.cbTVLanguage.Text = Master.eSettings.TVGeneralLanguages.FirstOrDefault(Function(l) l.ShortLang = Master.eSettings.TVGeneralLanguage).LongLang
+            Me.cbTVLanguage.Text = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.TVGeneralLanguage).name
         End If
     End Sub
 
@@ -127,7 +127,7 @@ Public Class dlgWizard
                 End If
             End With
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -625,9 +625,9 @@ Public Class dlgWizard
         Me.RefreshSources()
         Me.RefreshTVSources()
 
-        Me.cbTVLanguage.Items.AddRange((From lLang In Master.eSettings.TVGeneralLanguages Select lLang.LongLang).ToArray)
+        Me.cbTVLanguage.Items.AddRange((From lLang In Master.eSettings.TVGeneralLanguages.Language Select lLang.name).ToArray)
         If Me.cbTVLanguage.Items.Count > 0 Then
-            Me.cbTVLanguage.Text = Master.eSettings.TVGeneralLanguages.FirstOrDefault(Function(l) l.ShortLang = Master.eSettings.TVGeneralLanguage).LongLang
+            Me.cbTVLanguage.Text = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.TVGeneralLanguage).name
         End If
 
         With Master.eSettings
@@ -952,7 +952,7 @@ Public Class dlgWizard
                 End If
             End If
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -987,7 +987,7 @@ Public Class dlgWizard
                 End If
             End If
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -997,8 +997,8 @@ Public Class dlgWizard
 
             .GeneralLanguage = tLang
 
-            If Master.eSettings.TVGeneralLanguages.Count > 0 Then
-                Dim tLang As String = Master.eSettings.TVGeneralLanguages.FirstOrDefault(Function(l) l.LongLang = Me.cbTVLanguage.Text).ShortLang
+            If Master.eSettings.TVGeneralLanguages.Language.Count > 0 Then
+                Dim tLang As String = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = Me.cbTVLanguage.Text).abbreviation
                 If Not String.IsNullOrEmpty(tLang) Then
                     Master.eSettings.TVGeneralLanguage = tLang
                 Else
@@ -1257,6 +1257,11 @@ Public Class dlgWizard
         Me.pnlTVShowSource.Location = New Point(166, 7)
         Me.pnlTVShowSettings.Location = New Point(166, 7)
         Me.pnlDone.Location = New Point(166, 7)
+        Me.cbTVLanguage.Items.AddRange((From lLang In Master.eSettings.TVGeneralLanguages.Language Select lLang.name).ToArray)
+        If Me.cbTVLanguage.Items.Count > 0 Then
+            Me.cbTVLanguage.Text = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.TVGeneralLanguage).name
+        End If
+
     End Sub
 
 #End Region 'Methods

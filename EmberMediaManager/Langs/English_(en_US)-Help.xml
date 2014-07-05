@@ -258,30 +258,22 @@
   <string control="Core_chkEpisodeJPG">Save episode poster files as "&lt;episode&gt;.jpg".</string>
   <string control="Core_chkEpisodeTBN">Save episode poster files as "&lt;episode&gt;.tbn".</string>
   <string control="Core_chkSeasonXXDashFanartJPG"></string>
-  <string control="Core_chkSeasonDotFanart">
-    Save season fanart files as "&lt;season&gt;.fanart.jpg". (Will only save inside the season directory, if it exists)</string>
-  <string control="Core_chkSeasonDashFanart">
-    Save season fanart files as "&lt;season&gt;-fanart.jpg". (Will only save inside the season directory, if it exists)</string>
+  <string control="Core_chkSeasonDotFanart">Save season fanart files as "&lt;season&gt;.fanart.jpg". (Will only save inside the season directory, if it exists)</string>
+  <string control="Core_chkSeasonDashFanart">Save season fanart files as "&lt;season&gt;-fanart.jpg". (Will only save inside the season directory, if it exists)</string>
   <string control="Core_chkSeasonFanartJPG">Save season fanart files as "fanart.jpg". (Will only save inside the season directory, if it exists)</string>
   <string control="Core_chkSeasonXXDashPosterJPG"></string>
   <string control="Core_chkSeasonFolderJPG">Save season fanart files as "folder.jpg". (Will only save inside the season directory, if it exists)</string>
-  <string control="Core_chkSeasonNameJPG">
-    Save season poster files as "&lt;season&gt;.jpg". (Will only save inside the season directory, if it exists)</string>
-  <string control="Core_chkSeasonNameTBN">
-    Save season poster files as "&lt;season&gt;.tbn". (Will only save inside the season directory, if it exists)</string>
+  <string control="Core_chkSeasonNameJPG">Save season poster files as "&lt;season&gt;.jpg". (Will only save inside the season directory, if it exists)</string>
+  <string control="Core_chkSeasonNameTBN">Save season poster files as "&lt;season&gt;.tbn". (Will only save inside the season directory, if it exists)</string>
   <string control="Core_chkSeasonPosterJPG">Save season poster files as "poster.jpg". (Will only save inside the season directory, if it exists)</string>
   <string control="Core_chkSeasonPosterTBN">Save season poster files as "poster.tbn". (Will only save inside the season directory, if it exists)</string>
   <string control="Core_chkSeasonXTBN">Save season poster files as "seasonX.tbn". (Example: season2.tbn)</string>
   <string control="Core_chkSeasonXXTBN">Save season poster files as "seasonXX.tbn". (Example: season02.tbn)</string>
-  <string control="Core_chkShowDotFanart">
-    Save show fanart files as "&lt;show&gt;.fanart.jpg".</string>
-  <string control="Core_chkShowDashFanart">
-    Save show fanart files as "&lt;show&gt;-fanart.jpg".</string>
+  <string control="Core_chkShowDotFanart">Save show fanart files as "&lt;show&gt;.fanart.jpg".</string>
+  <string control="Core_chkShowDashFanart">Save show fanart files as "&lt;show&gt;-fanart.jpg".</string>
   <string control="Core_chkShowFanartJPG">Save show fanart files as "fanart.jpg".</string>
-  <string control="Core_chkShowJPG">
-    Save show poster files as "&lt;show&gt;.jpg".</string>
-  <string control="Core_chkShowTBN">
-    Save show poster files as "&lt;show&gt;.tbn".</string>
+  <string control="Core_chkShowJPG">Save show poster files as "&lt;show&gt;.jpg".</string>
+  <string control="Core_chkShowTBN">Save show poster files as "&lt;show&gt;.tbn".</string>
   <string control="Core_chkShowPosterJPG">Save show poster files as "poster.jpg".</string>
   <string control="Core_chkShowPosterTBN">Save show poster files as "poster.tbn".</string>
   <string control="Core_chkShowFolderJPG">Save show poster files as "folder.jpg".</string>
@@ -615,5 +607,3 @@
   <string control="Core_txtMoviePosterExpertBDMV">You can use &lt;filename&gt;, e.g. &lt;filename&gt;-poster.jpg. You can also enter multiple file names separated by a comma.</string>
   <string control="Core_txtMovieTrailerExpertBDMV">You can use &lt;filename&gt;, e.g. &lt;filename&gt;-trailer (without a file name extension). You can also enter multiple file names separated by a comma.</string>
 </strings>
-
-
