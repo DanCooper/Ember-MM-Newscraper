@@ -343,7 +343,10 @@ Public Class Database
                 'cocotus, 2013/02 Added support for new MediaInfo-fields
             Else
                 'Check if new columns exists and create them if not
-                AddMissingColumnsToDatabase()
+                Dim patchpath As String = FileUtils.Common.ReturnSettingsFile("DB", "PatchDB_v2.xml")
+                If File.Exists(patchpath) Then
+                    PatchDatabase(patchpath)
+                End If
                 'cocotus end
 
                 If Not CheckDatabaseCompatibility() Then
@@ -374,268 +377,6 @@ Public Class Database
         End Try
         Return isNew
     End Function
-
-    ''' <summary>
-    ''' Parse the columns defined in the database to determine if any are missing.
-    ''' If a column is detected as missing, add the relevant related columns
-    ''' </summary>
-    ''' <remarks>
-    ''' cocotus, 2013/02 Added support for new MediaInfo-fields
-    ''' Checks if Ember database contains new mediainfo columns and create them if necessary
-    ''' m.savazzi, code optimized, removed select * as is too time consuming and not correct, added the pragma to return table structure / added try catch
-    ''' </remarks>
-    Private Sub AddMissingColumnsToDatabase()
-        'TODO Check to see if column exists and then create if not - Useseless - should be used the PatchInstaller
-        Using SQLpathcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-            Dim doAddColumns As Boolean = False
-            Dim doAddColumnWatched As Boolean = False
-            Dim doAddColumnDisplaySE As Boolean = False
-            Dim doAddColumnMovies As Boolean = False
-            Dim doAddColumnTVBannerAndLandscape As Boolean = False
-            Dim doAddColumnTVShowStatus As Boolean = False
-            Dim doAddColumnMovieBannerAndLandscape As Boolean = False
-            Dim doAddColumnMovieAndTVTheme As Boolean = False
-            Dim doAddColumnMovieAndTVLogoDiscAndClearArt As Boolean = False
-            Dim doAddColumnMovieSetsImages As Boolean = False
-            Dim doAddColumnTVShowEFanarts As Boolean = False
-            Dim doAddColumnVStreamMultiviewLayout As Boolean = False
-            Dim doAddColumnTMDBColID As Boolean = False
-            Dim doAddMovieLastScrape As Boolean = False
-            Dim strlistSQLCommands As New List(Of String)
-
-            SQLpathcommand.CommandText = "pragma table_info(TVEps);"
-            Try
-                doAddColumns = True
-                doAddColumnWatched = True
-                doAddColumnDisplaySE = True
-                Using SQLreader As SQLite.SQLiteDataReader = SQLpathcommand.ExecuteReader
-                    While SQLreader.Read
-                        If SQLreader("name").ToString.ToLower = "playcount" Then
-                            'Column does exist in current database of Ember --> assume: if one columns missing, all new mediainfo columns must be added
-                            doAddColumns = False
-                        End If
-                        If SQLreader("name").ToString.ToLower = "haswatched" Then
-                            'Column does exist in current database of Ember
-                            doAddColumnWatched = False
-                        End If
-                        If SQLreader("name").ToString.ToLower = "displayseason" Then
-                            'Column does exist in current database of Ember --> assume: if one columns missing, all new columns must be added
-                            doAddColumnDisplaySE = False
-                        End If
-                    End While
-                End Using
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-            End Try
-
-            SQLpathcommand.CommandText = "pragma table_info(Movies);"
-            Try
-                doAddMovieLastScrape = True
-                doAddColumnMovies = True
-                doAddColumnMovieBannerAndLandscape = True
-                doAddColumnMovieAndTVTheme = True
-                doAddColumnMovieAndTVLogoDiscAndClearArt = True
-                doAddColumnTMDBColID = True
-                Using SQLreader As SQLite.SQLiteDataReader = SQLpathcommand.ExecuteReader
-                    While SQLreader.Read
-                        If SQLreader("name").ToString.ToLower = "efanartspath" Then
-                            'Column does exist in current database of Ember --> assume: if one columns missing, all new columns must be added
-                            doAddColumnMovies = False
-                        End If
-                        If SQLreader("name").ToString.ToLower = "bannerpath" Then
-                            'Column does exist in current database of Ember --> assume: if one columns missing, all new columns must be added
-                            doAddColumnMovieBannerAndLandscape = False
-                        End If
-                        If SQLreader("name").ToString.ToLower = "themepath" Then
-                            'Column does exist in current database of Ember --> assume: if one columns missing, all new columns must be added
-                            doAddColumnMovieAndTVTheme = False
-                        End If
-                        If SQLreader("name").ToString.ToLower = "clearlogopath" Then
-                            'Column does exist in current database of Ember --> assume: if one columns missing, all new columns must be added
-                            doAddColumnMovieAndTVLogoDiscAndClearArt = False
-                        End If
-                        If SQLreader("name").ToString.ToLower = "tmdbcolid" Then
-                            'Column does exist in current database of Ember --> assume: if one columns missing, all new columns must be added
-                            doAddColumnTMDBColID = False
-                        End If
-                        If SQLreader("name").ToString.ToLower = "lastscrape" Then
-                            'Column does exist in current database of Ember --> assume: if one columns missing, all new columns must be added
-                            doAddMovieLastScrape = False
-                        End If
-                    End While
-                End Using
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-            End Try
-
-            SQLpathcommand.CommandText = "pragma table_info(TVShows);"
-            Try
-                doAddColumnTVBannerAndLandscape = True
-                doAddColumnTVShowStatus = True
-                doAddColumnTVShowEFanarts = True
-                Using SQLreader As SQLite.SQLiteDataReader = SQLpathcommand.ExecuteReader
-                    While SQLreader.Read
-                        If SQLreader("name").ToString.ToLower = "hasbanner" Then
-                            'Column does exist in current database of Ember --> assume: if one columns missing, all new columns must be added
-                            doAddColumnTVBannerAndLandscape = False
-                        End If
-                        If SQLreader("name").ToString.ToLower = "status" Then
-                            doAddColumnTVShowStatus = False
-                        End If
-                        If SQLreader("name").ToString.ToLower = "hasefanarts" Then
-                            doAddColumnTVShowEFanarts = False
-                        End If
-                    End While
-                End Using
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-            End Try
-
-            SQLpathcommand.CommandText = "pragma table_info(Sets);"
-            Try
-                doAddColumnMovieSetsImages = True
-                Using SQLreader As SQLite.SQLiteDataReader = SQLpathcommand.ExecuteReader
-                    While SQLreader.Read
-                        If SQLreader("name").ToString.ToLower = "hasnfo" Then
-                            'Column does exist in current database of Ember --> assume: if one columns missing, all new columns must be added
-                            doAddColumnMovieSetsImages = False
-                        End If
-                    End While
-                End Using
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-            End Try
-
-            SQLpathcommand.CommandText = "pragma table_info(MoviesVStreams);"
-            Try
-                doAddColumnVStreamMultiviewLayout = True
-                Using SQLreader As SQLite.SQLiteDataReader = SQLpathcommand.ExecuteReader
-                    While SQLreader.Read
-                        If SQLreader("name").ToString.ToLower = "video_multiviewlayout" Then
-                            'Column does exist in current database of Ember --> assume: if one columns missing, all new columns must be added
-                            doAddColumnVStreamMultiviewLayout = False
-                        End If
-                    End While
-                End Using
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-            End Try
-
-            'Now add new columns to current database if needed
-            If doAddColumns = True Then
-                strlistSQLCommands.Add("alter table MoviesAStreams add Audio_Bitrate TEXT;")
-                strlistSQLCommands.Add("alter table MoviesVStreams add Video_EncodedSettings TEXT;")
-                strlistSQLCommands.Add("alter table MoviesVStreams add Video_Bitrate TEXT;")
-                strlistSQLCommands.Add("alter table MoviesVStreams add Video_MultiView TEXT;")
-                strlistSQLCommands.Add("alter table TVAStreams add Audio_Bitrate TEXT;")
-                strlistSQLCommands.Add("alter table TVVStreams add Video_EncodedSettings TEXT;")
-                strlistSQLCommands.Add("alter table TVVStreams add Video_Bitrate TEXT;")
-                strlistSQLCommands.Add("alter table TVVStreams add Video_MultiView TEXT;")
-                strlistSQLCommands.Add("alter table TVEps add Playcount TEXT;")
-            End If
-            If doAddColumnWatched = True Then
-                strlistSQLCommands.Add("alter table TVEps add HasWatched BOOL NOT NULL DEFAULT False;")
-            End If
-            If doAddColumnDisplaySE = True Then
-                strlistSQLCommands.Add("alter table TVEps add DisplaySeason integer;")
-                strlistSQLCommands.Add("alter table TVEps add DisplayEpisode integer;")
-            End If
-            If doAddColumnMovies = True Then
-                strlistSQLCommands.Add("alter table Movies add EFanartsPath TEXT;")
-                strlistSQLCommands.Add("alter table Movies add EThumbsPath TEXT;")
-                strlistSQLCommands.Add("alter table Movies add HasEThumbs BOOL NOT NULL DEFAULT False;")
-                strlistSQLCommands.Add("alter table Movies add HasEFanarts BOOL NOT NULL DEFAULT False;")
-            End If
-            If doAddColumnTVBannerAndLandscape = True Then
-                strlistSQLCommands.Add("alter table TVShows add HasBanner BOOL NOT NULL DEFAULT False;")
-                strlistSQLCommands.Add("alter table TVShows add BannerPath TEXT;")
-                strlistSQLCommands.Add("alter table TVShows add HasLandscape BOOL NOT NULL DEFAULT False;")
-                strlistSQLCommands.Add("alter table TVShows add LandscapePath TEXT;")
-                strlistSQLCommands.Add("alter table TVSeason add HasBanner BOOL NOT NULL DEFAULT False;")
-                strlistSQLCommands.Add("alter table TVSeason add BannerPath TEXT;")
-                strlistSQLCommands.Add("alter table TVSeason add HasLandscape BOOL NOT NULL DEFAULT False;")
-                strlistSQLCommands.Add("alter table TVSeason add LandscapePath TEXT;")
-            End If
-            If doAddColumnTVShowStatus = True Then
-                strlistSQLCommands.Add("alter table TVShows add Status TEXT;")
-            End If
-            If doAddColumnMovieBannerAndLandscape = True Then
-                strlistSQLCommands.Add("alter table Movies add HasBanner BOOL NOT NULL DEFAULT False;")
-                strlistSQLCommands.Add("alter table Movies add BannerPath TEXT;")
-                strlistSQLCommands.Add("alter table Movies add HasLandscape BOOL NOT NULL DEFAULT False;")
-                strlistSQLCommands.Add("alter table Movies add LandscapePath TEXT;")
-            End If
-            If doAddColumnMovieAndTVTheme = True Then
-                strlistSQLCommands.Add("alter table Movies add HasTheme BOOL NOT NULL DEFAULT False;")
-                strlistSQLCommands.Add("alter table Movies add ThemePath TEXT;")
-                strlistSQLCommands.Add("alter table TVShows add HasTheme BOOL NOT NULL DEFAULT False;")
-                strlistSQLCommands.Add("alter table TVShows add ThemePath TEXT;")
-            End If
-            If doAddColumnMovieAndTVLogoDiscAndClearArt = True Then
-                strlistSQLCommands.Add("alter table Movies add HasDiscArt BOOL NOT NULL DEFAULT False;")
-                strlistSQLCommands.Add("alter table Movies add DiscArtPath TEXT;")
-                strlistSQLCommands.Add("alter table Movies add HasClearLogo BOOL NOT NULL DEFAULT False;")
-                strlistSQLCommands.Add("alter table Movies add ClearLogoPath TEXT;")
-                strlistSQLCommands.Add("alter table Movies add HasClearArt BOOL NOT NULL DEFAULT False;")
-                strlistSQLCommands.Add("alter table Movies add ClearArtPath TEXT;")
-                strlistSQLCommands.Add("alter table TVShows add HasCharacterArt BOOL NOT NULL DEFAULT False;")
-                strlistSQLCommands.Add("alter table TVShows add CharacterArtPath TEXT;")
-                strlistSQLCommands.Add("alter table TVShows add HasClearLogo BOOL NOT NULL DEFAULT False;")
-                strlistSQLCommands.Add("alter table TVShows add ClearLogoPath TEXT;")
-                strlistSQLCommands.Add("alter table TVShows add HasClearArt BOOL NOT NULL DEFAULT False;")
-                strlistSQLCommands.Add("alter table TVShows add ClearArtPath TEXT;")
-            End If
-            If doAddColumnMovieSetsImages = True Then
-                strlistSQLCommands.Add("alter table Sets add HasNfo BOOL NOT NULL DEFAULT False;")
-                strlistSQLCommands.Add("alter table Sets add NfoPath TEXT;")
-                strlistSQLCommands.Add("alter table Sets add HasPoster BOOL NOT NULL DEFAULT False;")
-                strlistSQLCommands.Add("alter table Sets add PosterPath TEXT;")
-                strlistSQLCommands.Add("alter table Sets add HasFanart BOOL NOT NULL DEFAULT False;")
-                strlistSQLCommands.Add("alter table Sets add FanartPath TEXT;")
-                strlistSQLCommands.Add("alter table Sets add HasBanner BOOL NOT NULL DEFAULT False;")
-                strlistSQLCommands.Add("alter table Sets add BannerPath TEXT;")
-                strlistSQLCommands.Add("alter table Sets add HasLandscape BOOL NOT NULL DEFAULT False;")
-                strlistSQLCommands.Add("alter table Sets add LandscapePath TEXT;")
-                strlistSQLCommands.Add("alter table Sets add HasDiscArt BOOL NOT NULL DEFAULT False;")
-                strlistSQLCommands.Add("alter table Sets add DiscArtPath TEXT;")
-                strlistSQLCommands.Add("alter table Sets add HasClearLogo BOOL NOT NULL DEFAULT False;")
-                strlistSQLCommands.Add("alter table Sets add ClearLogoPath TEXT;")
-                strlistSQLCommands.Add("alter table Sets add HasClearArt BOOL NOT NULL DEFAULT False;")
-                strlistSQLCommands.Add("alter table Sets add ClearArtPath TEXT;")
-            End If
-            If doAddColumnTVShowEFanarts = True Then
-                strlistSQLCommands.Add("alter table TVShows add HasEFanarts BOOL NOT NULL DEFAULT False;")
-                strlistSQLCommands.Add("alter table TVShows add EFanartsPath TEXT;")
-            End If
-            If doAddColumnVStreamMultiviewLayout = True Then
-                strlistSQLCommands.Add("alter table MoviesVStreams add Video_MultiViewLayout TEXT;")
-                strlistSQLCommands.Add("alter table TVVStreams add Video_MultiViewLayout TEXT;")
-            End If
-            If doAddColumnTMDBColID = True Then
-                strlistSQLCommands.Add("alter table Movies add TMDB TEXT;")
-                strlistSQLCommands.Add("alter table Movies add TMDBColID TEXT;")
-                strlistSQLCommands.Add("alter table Sets add TMDBColID TEXT;")
-            End If
-            If doAddMovieLastScrape = True Then
-                strlistSQLCommands.Add("alter table Movies add LastScrape TEXT;")
-            End If
-
-            Using transaction As SQLite.SQLiteTransaction = _myvideosDBConn.BeginTransaction()
-                For Each sqlstatement In strlistSQLCommands
-                    Try
-                        SQLpathcommand.CommandText = sqlstatement
-                        SQLpathcommand.ExecuteNonQuery()
-                    Catch ex As Exception
-                        logger.Error("{0} - {1} - {2}", New StackFrame().GetMethod().Name, sqlstatement, ex.Message)
-                        'TODO ugly to rely on exception but will do the job
-                        'Happens when column does exist (duplicate columns)
-                    End Try
-                Next
-                transaction.Commit()
-            End Using
-        End Using
-    End Sub
-
 
     ''' <summary>
     ''' Determines whether database structure is "current" by testing for a particular column. 
@@ -1651,28 +1392,49 @@ Public Class Database
     Public Sub PatchDatabase(ByVal fname As String)
         Dim xmlSer As XmlSerializer
         Dim _cmds As New Containers.InstallCommands
+        Dim TransOk As Boolean
         xmlSer = New XmlSerializer(GetType(Containers.InstallCommands))
         Using xmlSW As New StreamReader(Path.Combine(Functions.AppPath, fname))
             _cmds = DirectCast(xmlSer.Deserialize(xmlSW), Containers.InstallCommands)
+        End Using
+        For Each Trans In _cmds.transaction
+            TransOk = True
             Using SQLtransaction As SQLite.SQLiteTransaction = _myvideosDBConn.BeginTransaction()
-                For Each _cmd As Containers.InstallCommand In _cmds.Command
-                    If _cmd.CommandType = "DB" Then
+                For Each _cmd As Containers.CommandsTransactionCommand In Trans.command
+                    If _cmd.type = "DB" Then
                         Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                            SQLcommand.CommandText = _cmd.CommandExecute
+                            SQLcommand.CommandText = _cmd.execute
                             Try
                                 SQLcommand.ExecuteNonQuery()
                             Catch ex As Exception
-                                Dim log As New StreamWriter(Path.Combine(Functions.AppPath, "install.log"), True)
-                                log.WriteLine(String.Format("--- Error: {0}", ex.Message))
-                                log.WriteLine(ex.StackTrace)
-                                log.Close()
+                                logger.Error(New StackFrame().GetMethod().Name, ex, Trans.name, _cmd.execute)
+                                TransOk = False
+                                Exit For
                             End Try
                         End Using
                     End If
                 Next
-                SQLtransaction.Commit()
+                If TransOk Then
+                    logger.Trace(New StackFrame().GetMethod().Name, "Transaction {0} Commit", Trans.name)
+                    SQLtransaction.Commit()
+                Else
+                    logger.Trace(New StackFrame().GetMethod().Name, "Transaction {1} RollBack", Trans.name)
+                    SQLtransaction.Rollback()
+                End If
             End Using
-        End Using
+        Next
+        For Each _cmd As Containers.CommandsNoTransactionCommand In _cmds.noTransaction
+            If _cmd.type = "DB" Then
+                Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                    SQLcommand.CommandText = _cmd.execute
+                    Try
+                        SQLcommand.ExecuteNonQuery()
+                    Catch ex As Exception
+                        logger.Error(New StackFrame().GetMethod().Name, ex, SQLcommand, _cmd.description, _cmd.execute)
+                    End Try
+                End Using
+            End If
+        Next
     End Sub
 
     '  Public Function CheckEssentials() As Boolean
@@ -2970,8 +2732,8 @@ Public Class Database
     ''' <remarks></remarks>
     Public Function IsAddonInstalled(ByVal AddonID As Integer) As Single
         If AddonID < 0 Then
-            logger.Error("Invalid AddonID: " & AddonID, Environment.StackTrace, "Error")
-            Throw New ArgumentOutOfRangeException("AddonID", "Must be a positive integer")
+            logger.Error(New StackFrame().GetMethod().Name, Environment.StackTrace, "Invalid AddonID: {0}" & AddonID)
+            'Throw New ArgumentOutOfRangeException("AddonID", "Must be a positive integer")
         End If
 
         Try
@@ -2998,8 +2760,8 @@ Public Class Database
     ''' <remarks></remarks>
     Public Function UninstallAddon(ByVal AddonID As Integer) As Boolean
         If AddonID < 0 Then
-            logger.Error("Invalid AddonID: " & AddonID, Environment.StackTrace, "Error")
-            Throw New ArgumentOutOfRangeException("AddonID", "Must be a positive integer")
+            logger.Error(New StackFrame().GetMethod().Name, Environment.StackTrace, "Invalid AddonID: {0}" & AddonID)
+            'Throw New ArgumentOutOfRangeException("AddonID", "Must be a positive integer")
         End If
 
         Dim needRestart As Boolean = False
@@ -3013,7 +2775,7 @@ Public Class Database
                             Try
                                 File.Delete(SQLReader("FilePath").ToString)
                             Catch
-                                _cmds.Command.Add(New Containers.InstallCommand With {.CommandType = "FILE.Delete", .CommandExecute = SQLReader("FilePath").ToString})
+                                _cmds.noTransaction.Add(New Containers.CommandsNoTransactionCommand With {.type = "FILE.Delete", .execute = SQLReader("FilePath").ToString})
                                 needRestart = True
                             End Try
                         End While
@@ -3031,6 +2793,7 @@ Public Class Database
         End Try
         Return Not needRestart
     End Function
+
     ''' <summary>
     ''' Saves/installs the supplied Addon to the database
     ''' </summary>
@@ -3039,8 +2802,7 @@ Public Class Database
     Public Sub SaveAddonToDB(ByVal Addon As Containers.Addon)
         'TODO Need to add validation on Addon.ID, especially if it is passed in the parameter
         If Addon Is Nothing Then
-            logger.Error("Attempted to save an empty Addon", Environment.StackTrace, "Error")
-            Throw New ArgumentNullException("AddonID", "Must be a positive integer")
+            logger.Error(New StackFrame().GetMethod().Name, Environment.StackTrace, "Invalid AddonID: empty")
         End If
         Try
             Using SQLtransaction As SQLite.SQLiteTransaction = _myvideosDBConn.BeginTransaction()
@@ -3230,9 +2992,6 @@ Public Class Database
 
         End Try
     End Sub
-
-
-
 
 #End Region 'Methods
 

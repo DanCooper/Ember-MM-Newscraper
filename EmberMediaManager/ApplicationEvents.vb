@@ -67,8 +67,9 @@ Namespace My
             End If
             ' Run InstallTask to see if any pending file needs to install
             ' Do this before loading modules/themes/etc
-            If File.Exists(Path.Combine(Functions.AppPath, "InstallTasks.xml")) Then
-                FileUtils.Common.InstallNewFiles("InstallTasks.xml")
+            Dim configpath As String = Path.Combine(Functions.AppPath, "InstallTasks.xml")
+            If File.Exists(configpath) Then
+                FileUtils.Common.InstallNewFiles(configpath)
             End If
 
             'cocotus Check if new "Settings" folder exists - if not then create it!

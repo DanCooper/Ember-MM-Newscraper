@@ -31,16 +31,43 @@ Public Class Containers
 #Region "Nested Types"
 
 
-    <XmlRoot("CommandFile")> _
+    <System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True), _
+     System.Xml.Serialization.XmlRootAttribute([Namespace]:="", IsNullable:=False, ElementName:="CommandFile")> _
     Public Class InstallCommands
+        '''<remarks/>
 
 #Region "Fields"
 
-        <XmlArray("Commands")> _
-        <XmlArrayItem("Command")> _
-        Public Command As New List(Of InstallCommand)
+        Private transactionField As New List(Of CommandsTransaction)
+
+        Private noTransactionField As New List(Of CommandsNoTransactionCommand)
 
 #End Region 'Fields
+
+#Region "Properties"
+
+        '''<remarks/>
+        <System.Xml.Serialization.XmlElementAttribute("transaction")> _
+        Public Property transaction() As List(Of CommandsTransaction)
+            Get
+                Return Me.transactionField
+            End Get
+            Set(value As List(Of CommandsTransaction))
+                Me.transactionField = value
+            End Set
+        End Property
+
+        '''<remarks/>
+        <System.Xml.Serialization.XmlElementAttribute("noTransaction")> _
+        Public Property noTransaction() As List(Of CommandsNoTransactionCommand)
+            Get
+                Return Me.noTransactionField
+            End Get
+            Set(value As List(Of CommandsNoTransactionCommand))
+                Me.noTransactionField = value
+            End Set
+        End Property
+#End Region
 
 #Region "Methods"
 
@@ -55,28 +82,130 @@ Public Class Containers
             If Not File.Exists(fpath) Then Return New Containers.InstallCommands
             Dim xmlSer As XmlSerializer
             xmlSer = New XmlSerializer(GetType(Containers.InstallCommands))
-            Using xmlSW As New StreamReader(Path.Combine(Functions.AppPath, fpath))
+            Using xmlSW As New StreamReader(fpath)
                 Return DirectCast(xmlSer.Deserialize(xmlSW), Containers.InstallCommands)
             End Using
         End Function
 #End Region 'Methods
 
-    End Class 'InstallCommands
+    End Class
 
-    Public Class InstallCommand
+    '''<remarks/>
+    <System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
+    Partial Public Class CommandsTransaction
 
-#Region "Fields"
+        Private commandField As New List(Of CommandsTransactionCommand)
 
-        <XmlElement("Description")> _
-        Public CommandDescription As String
-        <XmlElement("Execute")> _
-        Public CommandExecute As String
-        <XmlAttribute("Type")> _
-        Public CommandType As String
+        Private nameField As String
 
-#End Region 'Fields
+        '''<remarks/>
+        <System.Xml.Serialization.XmlElementAttribute("command")> _
+        Public Property command() As List(Of CommandsTransactionCommand)
+            Get
+                Return Me.commandField
+            End Get
+            Set(value As List(Of CommandsTransactionCommand))
+                Me.commandField = value
+            End Set
+        End Property
 
-    End Class 'InstallCommand
+        '''<remarks/>
+        <System.Xml.Serialization.XmlAttributeAttribute()> _
+        Public Property name() As String
+            Get
+                Return Me.nameField
+            End Get
+            Set(value As String)
+                Me.nameField = value
+            End Set
+        End Property
+    End Class 'CommandsTransaction
+
+    '''<remarks/>
+    <System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
+    Partial Public Class CommandsTransactionCommand
+
+        Private descriptionField As String
+
+        Private executeField As String
+
+        Private typeField As String
+
+        '''<remarks/>
+        Public Property description() As String
+            Get
+                Return Me.descriptionField
+            End Get
+            Set(value As String)
+                Me.descriptionField = value
+            End Set
+        End Property
+
+        '''<remarks/>
+        Public Property execute() As String
+            Get
+                Return Me.executeField
+            End Get
+            Set(value As String)
+                Me.executeField = value
+            End Set
+        End Property
+
+        '''<remarks/>
+        <System.Xml.Serialization.XmlAttributeAttribute()> _
+        Public Property type() As String
+            Get
+                Return Me.typeField
+            End Get
+            Set(value As String)
+                Me.typeField = value
+            End Set
+        End Property
+
+    End Class 'CommandsTransactionCommand
+
+    '''<remarks/>
+    <System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
+    Partial Public Class CommandsNoTransactionCommand
+
+        Private descriptionField As String
+
+        Private executeField As String
+
+        Private typeField As String
+
+        '''<remarks/>
+        Public Property description() As String
+            Get
+                Return Me.descriptionField
+            End Get
+            Set(value As String)
+                Me.descriptionField = value
+            End Set
+        End Property
+
+        '''<remarks/>
+        Public Property execute() As String
+            Get
+                Return Me.executeField
+            End Get
+            Set(value As String)
+                Me.executeField = value
+            End Set
+        End Property
+
+        '''<remarks/>
+        <System.Xml.Serialization.XmlAttributeAttribute()> _
+        Public Property type() As String
+            Get
+                Return Me.typeField
+            End Get
+            Set(value As String)
+                Me.typeField = value
+            End Set
+        End Property
+
+    End Class 'CommandsNoTransactionCommand
 
     Public Class ImgResult
 
@@ -488,16 +617,16 @@ Public Class Enums
 
 #Region "Enumerations"
 
-	Public Enum DefaultType As Integer
-		All = 0
-		MovieFilters = 1
-		ShowFilters = 2
-		EpFilters = 3
-		ValidExts = 4
+    Public Enum DefaultType As Integer
+        All = 0
+        MovieFilters = 1
+        ShowFilters = 2
+        EpFilters = 3
+        ValidExts = 4
         ShowRegex = 5
         TrailerCodec = 6
         ValidThemeExts = 7
-	End Enum
+    End Enum
 
     Public Enum DelType As Integer
         Movies = 0
@@ -1424,19 +1553,19 @@ Public Class Functions
     ''' This is to prevent malformed URIs from attacking the user's machine.</remarks>
     Public Shared Function Launch(ByRef Destination As String, Optional ByRef AllowLocalFiles As Boolean = False) As Boolean
         If String.IsNullOrEmpty(Destination) Then
-            logger.Error( "Blank destination")
+            logger.Error("Blank destination")
             Return False
         End If
         Try
             Dim uriDestination As New Uri(Destination)
             If uriDestination.IsFile() Then
                 If (Not AllowLocalFiles) Then
-                    logger.Error( "Destination is a file, which is not permitted for security reasons <{0}>", Destination)
+                    logger.Error("Destination is a file, which is not permitted for security reasons <{0}>", Destination)
                     Return False
                 Else
                     Dim localFileName = uriDestination.GetComponents(UriComponents.Path, UriFormat.SafeUnescaped)
                     If (Not File.Exists(localFileName)) Then
-                        logger.Error( "Destination is a file, but it does not exist <{0}>", Destination)
+                        logger.Error("Destination is a file, but it does not exist <{0}>", Destination)
                         Return False
                     End If
                 End If
