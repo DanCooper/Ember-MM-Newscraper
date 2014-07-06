@@ -25,22 +25,23 @@
   <Setting Section="scraper.IMDB.Data" Name="DoCountry">True</Setting>
   <Setting Section="scraper.IMDB.Data" Name="DoTop250">True</Setting>
   <Setting Section="scraper.IMDB.Data" Name="DoCert">True</Setting>
-  <Setting Section="scraper.IMDB.Data" Name="CleanPlotOutline">True</Setting>
+  <Setting Section="scraper.IMDB.Data" Name="CleanPlotOutline">False</Setting>
   <Setting Section="scraper.IMDB.Data" Name="FullCast">True</Setting>
   <Setting Section="scraper.IMDB.Data" Name="FullCrew">True</Setting>
   <Setting Section="scraper.IMDB.Data" Name="SearchPartialTitles">True</Setting>
   <Setting Section="scraper.IMDB.Data" Name="SearchPopularTitles">True</Setting>
-  <Setting Section="scraper.IMDB.Data" Name="SearchTvTitles">True</Setting>
+  <Setting Section="scraper.IMDB.Data" Name="SearchTvTitles">False</Setting>
+  <Setting Section="scraper.IMDB.Data" Name="SearchVideoTitles">False</Setting>
   <Setting Section="scraper.MoviepilotDE.Data" Name="DoOutline">True</Setting>
   <Setting Section="scraper.MoviepilotDE.Data" Name="DoPlot">True</Setting>
-  <Setting Section="scraper.MoviepilotDE.Data" Name="DoCert">False</Setting>
-  <Setting Section="scraper.MoviepilotDE.Data" Name="CleanPlotOutline">True</Setting>
+  <Setting Section="scraper.MoviepilotDE.Data" Name="DoCert">True</Setting>
+  <Setting Section="scraper.MoviepilotDE.Data" Name="CleanPlotOutline">False</Setting>
   <Setting Section="scraper.OFDB.Data" Name="DoTitle">True</Setting>
   <Setting Section="scraper.OFDB.Data" Name="DoOutline">True</Setting>
   <Setting Section="scraper.OFDB.Data" Name="DoPlot">True</Setting>
   <Setting Section="scraper.OFDB.Data" Name="DoGenres">True</Setting>
   <Setting Section="scraper.OFDB.Data" Name="CleanPlotOutline">False</Setting>
-  <Setting Section="scraper.TMDB.Data" Name="CleanPlotOutline">True</Setting>
+  <Setting Section="scraper.TMDB.Data" Name="CleanPlotOutline">False</Setting>
   <Setting Section="scraper.TMDB.Data" Name="DoCast">True</Setting>
   <Setting Section="scraper.TMDB.Data" Name="DoCert">True</Setting>
   <Setting Section="scraper.TMDB.Data" Name="DoCountry">True</Setting>
@@ -71,7 +72,7 @@
   <Setting Section="scraper.TMDB.Data" Name="FullCast">True</Setting>
   <Setting Section="scraper.TMDB.Data" Name="FullCrew">True</Setting>
   <Setting Section="scraper.TMDB.Data" Name="GetAdultItems">False</Setting>
-  <Setting Section="scraper.TMDB.Data" Name="TMDBLanguage">it</Setting>
+  <Setting Section="scraper.TMDB.Data" Name="TMDBLanguage">en</Setting>
   <Setting Section="scraper.FanartTV.Poster" Name="DoPoster">True</Setting>
   <Setting Section="scraper.FanartTV.Poster" Name="DoFanart">True</Setting>
   <Setting Section="scraper.FanartTV.Poster" Name="DoBanner">True</Setting>
@@ -80,19 +81,19 @@
   <Setting Section="scraper.FanartTV.Poster" Name="DoClearLogo">True</Setting>
   <Setting Section="scraper.FanartTV.Poster" Name="DoDiscArt">True</Setting>
   <Setting Section="scraper.FanartTV.Poster" Name="DoLandscape">True</Setting>
-  <Setting Section="scraper.FanartTV.Poster" Name="FANARTTVLanguage">it</Setting>
+  <Setting Section="scraper.FanartTV.Poster" Name="FANARTTVLanguage">en</Setting>
   <Setting Section="scraper.IMDB.Poster" Name="DoPoster">True</Setting>
   <Setting Section="scraper.IMPA.Poster" Name="DoPoster">True</Setting>
   <Setting Section="scraper.MPDB.Poster" Name="DoPoster">True</Setting>
   <Setting Section="scraper.TMDB.Poster" Name="DoPoster">True</Setting>
   <Setting Section="scraper.TMDB.Poster" Name="DoFanart">True</Setting>
   <Setting Section="scraper.TMDB.Poster" Name="FallBackEn">True</Setting>
-  <Setting Section="scraper.TMDB.Poster" Name="TMDBLanguage">it</Setting>
+  <Setting Section="scraper.TMDB.Poster" Name="TMDBLanguage">en</Setting>
   <Setting Section="scraper.IMDB.Trailer" Name="DoTrailer">True</Setting>
   <Setting Section="scraper.TMDB.Trailer" Name="FallBackEn">True</Setting>
-  <Setting Section="scraper.TMDB.Trailer" Name="TMDBLanguage">it</Setting>
+  <Setting Section="scraper.TMDB.Trailer" Name="TMDBLanguage">en</Setting>
   <Setting Section="scraper.TMDB.Trailer" Name="DoTrailer">True</Setting>
-  <Setting Section="scraper.TVDB" Name="TVDBLanguage">it</Setting>
+  <Setting Section="scraper.TVDB" Name="TVDBLanguage">en</Setting>
   <Setting Section="scraper.TVDB" Name="TVDBMirror">thetvdb.com</Setting>
   <Setting Section="scraper.TVDB" Name="ScraperShowTitle">True</Setting>
   <Setting Section="scraper.TVDB" Name="ScraperShowEGU">False</Setting>
@@ -144,9 +145,9 @@
   <Setting Section="generic.EmberCore.Notifications" Name="NotifyOnNewMovie">False</Setting>
   <Setting Section="generic.EmberCore.Notifications" Name="NotifyOnMovieScraped">True</Setting>
   <Setting Section="generic.EmberCore.Notifications" Name="NotifyOnNewEp">False</Setting>
-  <Setting Section="scraper.FanartTV.Poster" Name="FANARTTVApiKey">f4c1b148dddb2f1e2cfa6723c1c2bfe8</Setting>
-  <Setting Section="scraper.TMDB.Poster" Name="TMDBAPIKey">d90e2bb94f3a058a0b965c1b4cf233b0</Setting>
-  <Setting Section="scraper.TVDB" Name="TVDBAPIKey">7B090234F418D074</Setting>
+  <Setting Section="scraper.FanartTV.Poster" Name="FANARTTVApiKey"></Setting>
+  <Setting Section="scraper.TMDB.Poster" Name="TMDBAPIKey"></Setting>
+  <Setting Section="scraper.TVDB" Name="TVDBAPIKey"></Setting>
   <Setting Section="scraper.IMDB.Data" Name="SearchVideoTitles">False</Setting>
   <Setting Section="scraper.TMDB.Data" Name="DoCollection">True</Setting>
   <Setting Section="scraper.FanartTV.Poster" Name="ClearArtOnlyHD">False</Setting>

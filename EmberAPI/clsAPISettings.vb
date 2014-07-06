@@ -4889,6 +4889,9 @@ Public Class Settings
             Master.eSettings.TVSeasonPosterFrodo = True
             Master.eSettings.TVShowActorThumbsFrodo = True
             Master.eSettings.TVShowBannerFrodo = True
+            Master.eSettings.TVShowCharacterArtXBMC = True
+            Master.eSettings.TVShowClearArtXBMC = True
+            Master.eSettings.TVShowClearLogoXBMC = True
             Master.eSettings.TVShowFanartFrodo = True
             Master.eSettings.TVShowLandscapeXBMC = True
             Master.eSettings.TVShowPosterFrodo = True
