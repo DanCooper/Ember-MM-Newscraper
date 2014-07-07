@@ -330,7 +330,7 @@ Public Class Database
 
         Try
             If isNew Then
-                Dim sqlCommand As String = File.ReadAllText(FileUtils.Common.ReturnSettingsFile("DB", "MyVideosDBSQL_v2.txt"))
+                Dim sqlCommand As String = File.ReadAllText(FileUtils.Common.ReturnSettingsFile("DB", String.Format("MyVideosDBSQL_v{0}.txt", MyVideosDBVersion)))
 
                 Using transaction As SQLite.SQLiteTransaction = _myvideosDBConn.BeginTransaction()
                     Using command As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
@@ -771,6 +771,26 @@ Public Class Database
         Return tList
     End Function
 
+    Public Function GetTVSourceLanguage(ByVal sName As String) As String
+        Dim sLang As String = String.Empty
+
+        Try
+            Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                SQLcommand.CommandText = String.Concat("SELECT Language FROM TVSources WHERE Name = """, sName, """;")
+                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                    If SQLreader.HasRows Then
+                        SQLreader.Read()
+                        sLang = SQLreader("Language").ToString
+                    End If
+                End Using
+            End Using
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+
+        Return sLang
+    End Function
+
     ''' <summary>
     ''' Load all the information for a movie.
     ''' </summary>
@@ -842,7 +862,6 @@ Public Class Database
                             If Not DBNull.Value.Equals(SQLreader("Director")) Then .Director = SQLreader("Director").ToString
                             If Not DBNull.Value.Equals(SQLreader("Credits")) Then .OldCredits = SQLreader("Credits").ToString
                             If Not DBNull.Value.Equals(SQLreader("PlayCount")) Then .PlayCount = SQLreader("PlayCount").ToString
-                            'If Not DBNull.Value.Equals(SQLreader("Watched")) Then .Watched = SQLreader("Watched").ToString
                             If Not DBNull.Value.Equals(SQLreader("FanartURL")) AndAlso Not Master.eSettings.MovieNoSaveImagesToNfo Then .Fanart.URL = SQLreader("FanartURL").ToString
                             If Not DBNull.Value.Equals(SQLreader("FileSource")) Then .VideoSource = SQLreader("FileSource").ToString
                             If Not DBNull.Value.Equals(SQLreader("TMDB")) Then .TMDBID = SQLreader("TMDB").ToString
@@ -2550,7 +2569,7 @@ Public Class Database
                 parLock.Value = _TVShowDB.IsLockShow
                 parSource.Value = _TVShowDB.Source
                 parNeedsSave.Value = _TVShowDB.ShowNeedsSave
-                parLanguage.Value = If(String.IsNullOrEmpty(_TVShowDB.ShowLanguage), "en", _TVShowDB.ShowLanguage)
+                parLanguage.Value = If(String.IsNullOrEmpty(_TVShowDB.ShowLanguage), Master.DB.GetTVSourceLanguage(_TVShowDB.Source), _TVShowDB.ShowLanguage)
                 parOrdering.Value = _TVShowDB.Ordering
 
 
@@ -2614,7 +2633,7 @@ Public Class Database
         Master.TVSources.Clear()
         Try
             Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                SQLcommand.CommandText = "SELECT ID, Name, path, LastScan FROM TVSources;"
+                SQLcommand.CommandText = "SELECT ID, Name, path, LastScan, Language, Ordering FROM TVSources;"
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     While SQLreader.Read
                         Try ' Parsing database entry may fail. If it does, log the error and ignore the entry but continue processing
@@ -2622,6 +2641,8 @@ Public Class Database
                             tvsource.id = SQLreader("ID").ToString
                             tvsource.Name = SQLreader("Name").ToString
                             tvsource.Path = SQLreader("Path").ToString
+                            tvsource.Language = SQLreader("Language").ToString
+                            tvsource.Ordering = DirectCast(Convert.ToInt32(SQLreader("Ordering")), Enums.Ordering)
                             Master.TVSources.Add(tvsource)
                         Catch ex As Exception
                             logger.Error(New StackFrame().GetMethod().Name, ex)

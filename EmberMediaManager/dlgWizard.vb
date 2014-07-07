@@ -60,12 +60,13 @@ Public Class dlgWizard
         End Select
     End Sub
 
-    Private Sub btnTVLanguageFetch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVLanguageFetch.Click
+    Private Sub btnTVGeneralLangFetch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVGeneralLangFetch.Click
         Master.eSettings.TVGeneralLanguages = ModulesManager.Instance.TVGetLangs("thetvdb.com")
-        Me.cbTVLanguage.Items.AddRange((From lLang In Master.eSettings.TVGeneralLanguages.Language Select lLang.name).ToArray)
+        Me.cbTVGeneralLang.Items.Clear()
+        Me.cbTVGeneralLang.Items.AddRange((From lLang In Master.eSettings.TVGeneralLanguages.Language Select lLang.name).ToArray)
 
-        If Me.cbTVLanguage.Items.Count > 0 Then
-            Me.cbTVLanguage.Text = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.TVGeneralLanguage).name
+        If Me.cbTVGeneralLang.Items.Count > 0 Then
+            Me.cbTVGeneralLang.Text = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.TVGeneralLanguage).name
         End If
     End Sub
 
@@ -625,12 +626,14 @@ Public Class dlgWizard
         Me.RefreshSources()
         Me.RefreshTVSources()
 
-        Me.cbTVLanguage.Items.AddRange((From lLang In Master.eSettings.TVGeneralLanguages.Language Select lLang.name).ToArray)
-        If Me.cbTVLanguage.Items.Count > 0 Then
-            Me.cbTVLanguage.Text = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.TVGeneralLanguage).name
-        End If
-
         With Master.eSettings
+
+            Me.cbTVGeneralLang.Items.Clear()
+            Me.cbTVGeneralLang.Items.AddRange((From lLang In .TVGeneralLanguages.Language Select lLang.name).ToArray)
+            If Me.cbTVGeneralLang.Items.Count > 0 Then
+                Me.cbTVGeneralLang.Text = .TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = .TVGeneralLanguage).name
+            End If
+
 
             '***************************************************
             '******************* Movie Part ********************
@@ -912,12 +915,14 @@ Public Class dlgWizard
         Master.DB.LoadTVSourcesFromDB()
         lvTVSources.Items.Clear()
         Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-            SQLcommand.CommandText = "SELECT ID, Name, path, LastScan FROM TVSources;"
+            SQLcommand.CommandText = "SELECT ID, Name, Path, LastScan, Language, Ordering FROM TVSources;"
             Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                 While SQLreader.Read
                     lvItem = New ListViewItem(SQLreader("ID").ToString)
                     lvItem.SubItems.Add(SQLreader("Name").ToString)
                     lvItem.SubItems.Add(SQLreader("Path").ToString)
+                    lvItem.SubItems.Add(Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = SQLreader("Language").ToString).name)
+                    lvItem.SubItems.Add(DirectCast(Convert.ToInt32(SQLreader("Ordering")), Enums.Ordering).ToString)
                     tmppath = SQLreader("Path").ToString
                     lvTVSources.Items.Add(lvItem)
                 End While
@@ -998,15 +1003,20 @@ Public Class dlgWizard
             .GeneralLanguage = tLang
 
             If Master.eSettings.TVGeneralLanguages.Language.Count > 0 Then
-                Dim tLang As String = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = Me.cbTVLanguage.Text).abbreviation
+                Dim tLang As String = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = Me.cbTVGeneralLang.Text).abbreviation
                 If Not String.IsNullOrEmpty(tLang) Then
-                    Master.eSettings.TVGeneralLanguage = tLang
+                    .TVGeneralLanguage = tLang
                 Else
-                    Master.eSettings.TVGeneralLanguage = "en"
+                    .TVGeneralLanguage = "en"
                 End If
             Else
-                Master.eSettings.TVGeneralLanguage = "en"
+                .TVGeneralLanguage = "en"
             End If
+
+            'Workaround for tvdb scraper language (TODO: proper solution)
+            Using settings = New clsAdvancedSettings()
+                settings.SetSetting("TVDBLanguage", .TVGeneralLanguage, "scraper.TVDB")
+            End Using
 
             '***************************************************
             '******************* Movie Part ********************
@@ -1219,32 +1229,36 @@ Public Class dlgWizard
     End Sub
 
     Private Sub SetUp()
-        Me.Text = Master.eLang.GetString(402, "Ember Startup Wizard")
-        Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
         Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
-        Me.btnBack.Text = Master.eLang.GetString(403, "< Back")
-        Me.btnNext.Text = Master.eLang.GetString(404, "Next >")
         Me.Label1.Text = Master.eLang.GetString(405, "Welcome to Ember Media Manager")
-        Me.btnMovieRem.Text = Master.eLang.GetString(30, "Remove")
-        Me.btnTVRemoveSource.Text = Me.btnMovieRem.Text
-        Me.btnMovieAddFolder.Text = Master.eLang.GetString(407, "Add Source")
-        Me.btnTVAddSource.Text = Me.btnMovieAddFolder.Text
+        Me.Label10.Text = Master.eLang.GetString(113, "Now select the default language you would like Ember to look for when scraping TV Show items.")
+        Me.Label11.Text = Master.eLang.GetString(804, "And finally, let's tell Ember Media Manager what TV Show files to look for.  Simply select any combination of files type you wish Ember Media Manager to load from and save to.  You can select more than one from each section if you wish.")
+        Me.Label2.Text = String.Format(Master.eLang.GetString(415, "This is either your first time running Ember Media Manager or you have upgraded to a newer version.  There are a few things Ember Media Manager needs to know to work properly.  This wizard will walk you through configuring Ember Media Manager to work for your set up.{0}{0}Only a handful of settings will be covered in this wizard. You can change these or any other setting at any time by selecting ""Settings..."" from the ""Edit"" menu."), vbNewLine)
+        Me.Label3.Text = Master.eLang.GetString(414, "First, let's tell Ember Media Manager where to locate all your movies. You can add as many sources as you wish.")
+        Me.Label32.Text = Master.eLang.GetString(430, "Interface Language")
+        Me.Label4.Text = Master.eLang.GetString(416, "Now that Ember Media Manager knows WHERE to look for the files, we need to tell it WHAT files to look for.  Simply select any combination of files type you wish Ember Media Manager to load from and save to.  You can select more than one from each section if you wish.")
         Me.Label6.Text = Master.eLang.GetString(408, "That wasn't so hard was it?  As mentioned earlier, you can change these or any other options in the Settings dialog.")
         Me.Label7.Text = String.Format(Master.eLang.GetString(409, "That's it!{0}Ember Media Manager is Ready!"), vbNewLine)
+        Me.Label8.Text = String.Format(Master.eLang.GetString(417, "Some options you may be interested in:{0}{0}Custom Filters - If your movie files have things like ""DVDRip"", ""BluRay"", ""x264"", etc in their folder or file name and you wish to filter the names when loading into the media list, you can utilize the Custom Filter option.  The custom filter is RegEx compatible for maximum usability.{0}{0}Images - This section allows you to select which websites to ""scrape"" images from as well as select a preferred size for the images Ember Media Manager selects.{0}{0}Locks - This section allows you to ""lock"" certain information so it does not get updated even if you re-scrape the movie. This is useful if you manually edit the title, outline, or plot of a movie and wish to keep your changes."), vbNewLine)
+        Me.Label9.Text = Master.eLang.GetString(803, "Next, let's tell Ember Media Manager where to locate all your TV Shows. You can add as many sources as you wish.")
+        Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
+        Me.Text = Master.eLang.GetString(402, "Ember Startup Wizard")
+        Me.btnBack.Text = Master.eLang.GetString(403, "< Back")
+        Me.btnMovieAddFolder.Text = Master.eLang.GetString(407, "Add Source")
+        Me.btnMovieRem.Text = Master.eLang.GetString(30, "Remove")
+        Me.btnNext.Text = Master.eLang.GetString(404, "Next >")
+        Me.btnTVAddSource.Text = Me.btnMovieAddFolder.Text
+        Me.btnTVGeneralLangFetch.Text = Master.eLang.GetString(742, "Fetch Available Languages")
+        Me.btnTVRemoveSource.Text = Me.btnMovieRem.Text
+        Me.colFolder.Text = Master.eLang.GetString(412, "Use Folder Name")
         Me.colName.Text = Master.eLang.GetString(232, "Name")
         Me.colPath.Text = Master.eLang.GetString(410, "Path")
         Me.colRecur.Text = Master.eLang.GetString(411, "Recursive")
-        Me.colFolder.Text = Master.eLang.GetString(412, "Use Folder Name")
         Me.colSingle.Text = Master.eLang.GetString(413, "Single Video")
-        Me.Label2.Text = String.Format(Master.eLang.GetString(415, "This is either your first time running Ember Media Manager or you have upgraded to a newer version.  There are a few things Ember Media Manager needs to know to work properly.  This wizard will walk you through configuring Ember Media Manager to work for your set up.{0}{0}Only a handful of settings will be covered in this wizard. You can change these or any other setting at any time by selecting ""Settings..."" from the ""Edit"" menu."), vbNewLine)
-        Me.Label4.Text = Master.eLang.GetString(416, "Now that Ember Media Manager knows WHERE to look for the files, we need to tell it WHAT files to look for.  Simply select any combination of files type you wish Ember Media Manager to load from and save to.  You can select more than one from each section if you wish.")
-        Me.Label3.Text = Master.eLang.GetString(414, "First, let's tell Ember Media Manager where to locate all your movies. You can add as many sources as you wish.")
-        Me.Label8.Text = String.Format(Master.eLang.GetString(417, "Some options you may be interested in:{0}{0}Custom Filters - If your movie files have things like ""DVDRip"", ""BluRay"", ""x264"", etc in their folder or file name and you wish to filter the names when loading into the media list, you can utilize the Custom Filter option.  The custom filter is RegEx compatible for maximum usability.{0}{0}Images - This section allows you to select which websites to ""scrape"" images from as well as select a preferred size for the images Ember Media Manager selects.{0}{0}Locks - This section allows you to ""lock"" certain information so it does not get updated even if you re-scrape the movie. This is useful if you manually edit the title, outline, or plot of a movie and wish to keep your changes."), vbNewLine)
-        Me.Label32.Text = Master.eLang.GetString(430, "Interface Language")
-        Me.Label9.Text = Master.eLang.GetString(803, "Next, let's tell Ember Media Manager where to locate all your TV Shows. You can add as many sources as you wish.")
-        Me.Label11.Text = Master.eLang.GetString(804, "And finally, let's tell Ember Media Manager what TV Show files to look for.  Simply select any combination of files type you wish Ember Media Manager to load from and save to.  You can select more than one from each section if you wish.")
-        Me.Label10.Text = Master.eLang.GetString(113, "Now select the default language you would like Ember to look for when scraping TV Show items.")
-        Me.btnTVLanguageFetch.Text = Master.eLang.GetString(742, "Fetch Available Languages")
+        Me.lvTVSources.Columns(1).Text = Master.eLang.GetString(232, "Name")
+        Me.lvTVSources.Columns(2).Text = Master.eLang.GetString(410, "Path")
+        Me.lvTVSources.Columns(3).Text = Master.eLang.GetString(610, "Language")
+        Me.lvTVSources.Columns(4).Text = Master.eLang.GetString(1167, "Ordering")
         Me.pnlWelcome.Location = New Point(166, 7)
         Me.pnlWelcome.Visible = True
         Me.pnlMovieSource.Visible = False
@@ -1257,11 +1271,6 @@ Public Class dlgWizard
         Me.pnlTVShowSource.Location = New Point(166, 7)
         Me.pnlTVShowSettings.Location = New Point(166, 7)
         Me.pnlDone.Location = New Point(166, 7)
-        Me.cbTVLanguage.Items.AddRange((From lLang In Master.eSettings.TVGeneralLanguages.Language Select lLang.name).ToArray)
-        If Me.cbTVLanguage.Items.Count > 0 Then
-            Me.cbTVLanguage.Text = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.TVGeneralLanguage).name
-        End If
-
     End Sub
 
 #End Region 'Methods

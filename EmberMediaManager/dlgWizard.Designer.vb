@@ -227,12 +227,13 @@ Partial Class dlgWizard
         Me.Label7 = New System.Windows.Forms.Label()
         Me.pnlTVShowSource = New System.Windows.Forms.Panel()
         Me.Label10 = New System.Windows.Forms.Label()
-        Me.btnTVLanguageFetch = New System.Windows.Forms.Button()
-        Me.cbTVLanguage = New System.Windows.Forms.ComboBox()
+        Me.btnTVGeneralLangFetch = New System.Windows.Forms.Button()
+        Me.cbTVGeneralLang = New System.Windows.Forms.ComboBox()
         Me.lvTVSources = New System.Windows.Forms.ListView()
         Me.ColumnHeader1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader2 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader3 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader4 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.btnTVRemoveSource = New System.Windows.Forms.Button()
         Me.btnTVAddSource = New System.Windows.Forms.Button()
         Me.Label9 = New System.Windows.Forms.Label()
@@ -272,6 +273,7 @@ Partial Class dlgWizard
         Me.tpTVFileNamingExpert = New System.Windows.Forms.TabPage()
         Me.Label11 = New System.Windows.Forms.Label()
         Me.fbdBrowse = New System.Windows.Forms.FolderBrowserDialog()
+        Me.ColumnHeader5 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.pnlWelcome.SuspendLayout()
         Me.pnlMovieSettings.SuspendLayout()
         Me.gbMovieFileNaming.SuspendLayout()
@@ -2433,8 +2435,8 @@ Partial Class dlgWizard
         Me.pnlTVShowSource.BackColor = System.Drawing.Color.White
         Me.pnlTVShowSource.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pnlTVShowSource.Controls.Add(Me.Label10)
-        Me.pnlTVShowSource.Controls.Add(Me.btnTVLanguageFetch)
-        Me.pnlTVShowSource.Controls.Add(Me.cbTVLanguage)
+        Me.pnlTVShowSource.Controls.Add(Me.btnTVGeneralLangFetch)
+        Me.pnlTVShowSource.Controls.Add(Me.cbTVGeneralLang)
         Me.pnlTVShowSource.Controls.Add(Me.lvTVSources)
         Me.pnlTVShowSource.Controls.Add(Me.btnTVRemoveSource)
         Me.pnlTVShowSource.Controls.Add(Me.btnTVAddSource)
@@ -2456,28 +2458,28 @@ Partial Class dlgWizard
     " Show items."
         Me.Label10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
-        'btnTVLanguageFetch
+        'btnTVGeneralLangFetch
         '
-        Me.btnTVLanguageFetch.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnTVLanguageFetch.Location = New System.Drawing.Point(184, 351)
-        Me.btnTVLanguageFetch.Name = "btnTVLanguageFetch"
-        Me.btnTVLanguageFetch.Size = New System.Drawing.Size(166, 23)
-        Me.btnTVLanguageFetch.TabIndex = 8
-        Me.btnTVLanguageFetch.Text = "Fetch Available Languages"
-        Me.btnTVLanguageFetch.UseVisualStyleBackColor = True
+        Me.btnTVGeneralLangFetch.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnTVGeneralLangFetch.Location = New System.Drawing.Point(184, 351)
+        Me.btnTVGeneralLangFetch.Name = "btnTVGeneralLangFetch"
+        Me.btnTVGeneralLangFetch.Size = New System.Drawing.Size(166, 23)
+        Me.btnTVGeneralLangFetch.TabIndex = 8
+        Me.btnTVGeneralLangFetch.Text = "Fetch Available Languages"
+        Me.btnTVGeneralLangFetch.UseVisualStyleBackColor = True
         '
-        'cbTVLanguage
+        'cbTVGeneralLang
         '
-        Me.cbTVLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbTVLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.cbTVLanguage.Location = New System.Drawing.Point(184, 326)
-        Me.cbTVLanguage.Name = "cbTVLanguage"
-        Me.cbTVLanguage.Size = New System.Drawing.Size(166, 21)
-        Me.cbTVLanguage.TabIndex = 9
+        Me.cbTVGeneralLang.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbTVGeneralLang.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbTVGeneralLang.Location = New System.Drawing.Point(184, 326)
+        Me.cbTVGeneralLang.Name = "cbTVGeneralLang"
+        Me.cbTVGeneralLang.Size = New System.Drawing.Size(166, 21)
+        Me.cbTVGeneralLang.TabIndex = 9
         '
         'lvTVSources
         '
-        Me.lvTVSources.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2, Me.ColumnHeader3})
+        Me.lvTVSources.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2, Me.ColumnHeader3, Me.ColumnHeader4, Me.ColumnHeader5})
         Me.lvTVSources.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lvTVSources.FullRowSelect = True
         Me.lvTVSources.HideSelection = False
@@ -2502,6 +2504,10 @@ Partial Class dlgWizard
         '
         Me.ColumnHeader3.Text = "Path"
         Me.ColumnHeader3.Width = 261
+        '
+        'ColumnHeader4
+        '
+        Me.ColumnHeader4.Text = "Language"
         '
         'btnTVRemoveSource
         '
@@ -2938,6 +2944,10 @@ Partial Class dlgWizard
         Me.Label11.Text = resources.GetString("Label11.Text")
         Me.Label11.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
+        'ColumnHeader5
+        '
+        Me.ColumnHeader5.Text = "Ordering"
+        '
         'dlgWizard
         '
         Me.AcceptButton = Me.OK_Button
@@ -3261,8 +3271,8 @@ Partial Class dlgWizard
     Friend WithEvents tpTVFileNamingExpert As System.Windows.Forms.TabPage
     Friend WithEvents fbdBrowse As System.Windows.Forms.FolderBrowserDialog
     Friend WithEvents Label10 As System.Windows.Forms.Label
-    Friend WithEvents btnTVLanguageFetch As System.Windows.Forms.Button
-    Friend WithEvents cbTVLanguage As System.Windows.Forms.ComboBox
+    Friend WithEvents btnTVGeneralLangFetch As System.Windows.Forms.Button
+    Friend WithEvents cbTVGeneralLang As System.Windows.Forms.ComboBox
     Friend WithEvents tpMovieFileNamingBoxee As System.Windows.Forms.TabPage
     Friend WithEvents gbMovieBoxee As System.Windows.Forms.GroupBox
     Friend WithEvents chkMovieUseBoxee As System.Windows.Forms.CheckBox
@@ -3285,4 +3295,6 @@ Partial Class dlgWizard
     Friend WithEvents chkTVShowFanartBoxee As System.Windows.Forms.CheckBox
     Friend WithEvents chkTVShowPosterBoxee As System.Windows.Forms.CheckBox
     Friend WithEvents chkTVUseBoxee As System.Windows.Forms.CheckBox
+    Friend WithEvents ColumnHeader4 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents ColumnHeader5 As System.Windows.Forms.ColumnHeader
 End Class

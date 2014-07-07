@@ -115,12 +115,16 @@ Public Class dlgTVSource
         Try
             If Me._id >= 0 Then
                 Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                    SQLcommand.CommandText = String.Concat("SELECT ID, Name, path, LastScan FROM TVSources WHERE ID = ", Me._id, ";")
+                    SQLcommand.CommandText = String.Concat("SELECT ID, Name, Path, LastScan, Language, Ordering FROM TVSources WHERE ID = ", Me._id, ";")
                     Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                         If SQLreader.HasRows() Then
                             SQLreader.Read()
                             Me.txtSourceName.Text = SQLreader("Name").ToString
                             Me.txtSourcePath.Text = SQLreader("Path").ToString
+                            If Me.cbSourceLanguage.Items.Count > 0 Then
+                                Me.cbSourceLanguage.Text = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = SQLreader("Language").ToString).name
+                            End If
+                            Me.cbSourceOrdering.SelectedIndex = DirectCast(Convert.ToInt32(SQLreader("Ordering")), Enums.Ordering)
                             Me.autoName = False
                         End If
                     End Using
@@ -140,15 +144,27 @@ Public Class dlgTVSource
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                     If Me._id >= 0 Then
-                        SQLcommand.CommandText = String.Concat("UPDATE TVSources SET name = (?), path = (?) WHERE ID =", Me._id, ";")
+                        SQLcommand.CommandText = String.Concat("UPDATE TVSources SET Name = (?), Path = (?), Language = (?), Ordering = (?) WHERE ID =", Me._id, ";")
                     Else
-                        SQLcommand.CommandText = "INSERT OR REPLACE INTO TVSources (name, path) VALUES (?,?);"
+                        SQLcommand.CommandText = "INSERT OR REPLACE INTO TVSources (Name, Path, Language, Ordering) VALUES (?,?,?,?);"
                     End If
-                    Dim parName As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parName", DbType.String, 0, "name")
-                    Dim parPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPath", DbType.String, 0, "path")
+                    Dim parName As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parName", DbType.String, 0, "Name")
+                    Dim parPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPath", DbType.String, 0, "Path")
+                    Dim parLanguage As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLanguage", DbType.String, 0, "Language")
+                    Dim parOrdering As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parOrdering", DbType.Int16, 0, "Ordering")
 
                     parName.Value = txtSourceName.Text.Trim
                     parPath.Value = Regex.Replace(txtSourcePath.Text.Trim, "^(\\)+\\\\", "\\")
+                    If cbSourceLanguage.Text <> String.Empty Then
+                        parLanguage.Value = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = cbSourceLanguage.Text).abbreviation
+                    Else
+                        parLanguage.Value = "en"
+                    End If
+                    If cbSourceOrdering.Text <> String.Empty Then
+                        parOrdering.Value = DirectCast(Me.cbSourceOrdering.SelectedIndex, Enums.Ordering)
+                    Else
+                        parOrdering.Value = Enums.Ordering.Standard
+                    End If
 
                     SQLcommand.ExecuteNonQuery()
                 End Using
@@ -167,9 +183,17 @@ Public Class dlgTVSource
         Me.Text = Master.eLang.GetString(705, "TV Source")
         Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
         Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
+        Me.lblSourceLanguage.Text = Master.eLang.GetString(1166, "Default Language:")
         Me.lblSourceName.Text = Master.eLang.GetString(199, "Source Name:")
+        Me.lblSourceOrdering.Text = Master.eLang.GetString(797, "Default Episode Ordering:")
         Me.lblSourcePath.Text = Master.eLang.GetString(200, "Source Path:")
         Me.fbdBrowse.Description = Master.eLang.GetString(706, "Select the parent folder for your TV Series folders/files.")
+
+        Me.cbSourceLanguage.Items.Clear()
+        Me.cbSourceLanguage.Items.AddRange((From lLang In Master.eSettings.TVGeneralLanguages.Language Select lLang.name).ToArray)
+
+        Me.cbSourceOrdering.Items.Clear()
+        Me.cbSourceOrdering.Items.AddRange(New String() {Master.eLang.GetString(438, "Standard"), Master.eLang.GetString(1067, "DVD"), Master.eLang.GetString(839, "Absolute")})
     End Sub
 
     Private Sub tmrName_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrName.Tick

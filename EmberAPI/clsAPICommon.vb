@@ -1708,6 +1708,8 @@ Public Class Structures
         Dim id As String
         Dim Name As String
         Dim Path As String
+        Dim Language As String
+        Dim Ordering As Enums.Ordering
     End Structure
     ''' <summary>
     ''' Structure representing a movie in the database
@@ -1843,7 +1845,8 @@ Public Class Structures
         Dim ImageType As Enums.TVImageType
         Dim iSeason As Integer
         Dim Options As Structures.TVScrapeOptions
-        Dim SelectedLang As String
+        Dim ShowLang As String
+        Dim SourceLang As String
         Dim ShowID As Integer
         Dim ShowTitle As String
         Dim TVDBID As String

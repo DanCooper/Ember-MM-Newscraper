@@ -37,6 +37,10 @@ Partial Class dlgTVSource
         Me.tmrPathWait = New System.Windows.Forms.Timer(Me.components)
         Me.tmrPath = New System.Windows.Forms.Timer(Me.components)
         Me.pnlTVSource = New System.Windows.Forms.Panel()
+        Me.cbSourceLanguage = New System.Windows.Forms.ComboBox()
+        Me.lblSourceOrdering = New System.Windows.Forms.Label()
+        Me.cbSourceOrdering = New System.Windows.Forms.ComboBox()
+        Me.lblSourceLanguage = New System.Windows.Forms.Label()
         CType(Me.pbValid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlTVSource.SuspendLayout()
         Me.SuspendLayout()
@@ -45,7 +49,7 @@ Partial Class dlgTVSource
         '
         Me.OK_Button.Enabled = False
         Me.OK_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.OK_Button.Location = New System.Drawing.Point(283, 109)
+        Me.OK_Button.Location = New System.Drawing.Point(283, 176)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(67, 23)
         Me.OK_Button.TabIndex = 0
@@ -55,7 +59,7 @@ Partial Class dlgTVSource
         '
         Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Cancel_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Cancel_Button.Location = New System.Drawing.Point(356, 109)
+        Me.Cancel_Button.Location = New System.Drawing.Point(356, 176)
         Me.Cancel_Button.Name = "Cancel_Button"
         Me.Cancel_Button.Size = New System.Drawing.Size(67, 23)
         Me.Cancel_Button.TabIndex = 1
@@ -139,6 +143,10 @@ Partial Class dlgTVSource
         'pnlTVSource
         '
         Me.pnlTVSource.BackColor = System.Drawing.Color.White
+        Me.pnlTVSource.Controls.Add(Me.lblSourceLanguage)
+        Me.pnlTVSource.Controls.Add(Me.lblSourceOrdering)
+        Me.pnlTVSource.Controls.Add(Me.cbSourceOrdering)
+        Me.pnlTVSource.Controls.Add(Me.cbSourceLanguage)
         Me.pnlTVSource.Controls.Add(Me.pbValid)
         Me.pnlTVSource.Controls.Add(Me.btnBrowse)
         Me.pnlTVSource.Controls.Add(Me.lblSourcePath)
@@ -147,8 +155,48 @@ Partial Class dlgTVSource
         Me.pnlTVSource.Controls.Add(Me.txtSourceName)
         Me.pnlTVSource.Location = New System.Drawing.Point(4, 4)
         Me.pnlTVSource.Name = "pnlTVSource"
-        Me.pnlTVSource.Size = New System.Drawing.Size(427, 101)
+        Me.pnlTVSource.Size = New System.Drawing.Size(427, 160)
         Me.pnlTVSource.TabIndex = 2
+        '
+        'cbSourceLanguage
+        '
+        Me.cbSourceLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbSourceLanguage.Location = New System.Drawing.Point(215, 98)
+        Me.cbSourceLanguage.Name = "cbSourceLanguage"
+        Me.cbSourceLanguage.Size = New System.Drawing.Size(172, 21)
+        Me.cbSourceLanguage.TabIndex = 9
+        '
+        'lblSourceOrdering
+        '
+        Me.lblSourceOrdering.AutoSize = True
+        Me.lblSourceOrdering.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold)
+        Me.lblSourceOrdering.Location = New System.Drawing.Point(9, 127)
+        Me.lblSourceOrdering.Name = "lblSourceOrdering"
+        Me.lblSourceOrdering.Size = New System.Drawing.Size(141, 13)
+        Me.lblSourceOrdering.TabIndex = 10
+        Me.lblSourceOrdering.Text = "Default Episode Ordering:"
+        Me.lblSourceOrdering.TextAlign = System.Drawing.ContentAlignment.TopCenter
+        '
+        'cbSourceOrdering
+        '
+        Me.cbSourceOrdering.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbSourceOrdering.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbSourceOrdering.FormattingEnabled = True
+        Me.cbSourceOrdering.Location = New System.Drawing.Point(215, 124)
+        Me.cbSourceOrdering.Name = "cbSourceOrdering"
+        Me.cbSourceOrdering.Size = New System.Drawing.Size(172, 21)
+        Me.cbSourceOrdering.TabIndex = 11
+        '
+        'lblSourceLanguage
+        '
+        Me.lblSourceLanguage.AutoSize = True
+        Me.lblSourceLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold)
+        Me.lblSourceLanguage.Location = New System.Drawing.Point(9, 101)
+        Me.lblSourceLanguage.Name = "lblSourceLanguage"
+        Me.lblSourceLanguage.Size = New System.Drawing.Size(103, 13)
+        Me.lblSourceLanguage.TabIndex = 12
+        Me.lblSourceLanguage.Text = "Default Language:"
+        Me.lblSourceLanguage.TextAlign = System.Drawing.ContentAlignment.TopCenter
         '
         'dlgTVSource
         '
@@ -156,7 +204,7 @@ Partial Class dlgTVSource
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(435, 136)
+        Me.ClientSize = New System.Drawing.Size(435, 211)
         Me.Controls.Add(Me.pnlTVSource)
         Me.Controls.Add(Me.OK_Button)
         Me.Controls.Add(Me.Cancel_Button)
@@ -189,5 +237,9 @@ Partial Class dlgTVSource
     Friend WithEvents tmrPathWait As System.Windows.Forms.Timer
     Friend WithEvents tmrPath As System.Windows.Forms.Timer
     Friend WithEvents pnlTVSource As System.Windows.Forms.Panel
+    Friend WithEvents cbSourceLanguage As System.Windows.Forms.ComboBox
+    Friend WithEvents lblSourceOrdering As System.Windows.Forms.Label
+    Friend WithEvents cbSourceOrdering As System.Windows.Forms.ComboBox
+    Friend WithEvents lblSourceLanguage As System.Windows.Forms.Label
 
 End Class

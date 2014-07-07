@@ -590,6 +590,7 @@ Partial Class dlgSettings
         Me.ColumnHeader1 = CType(New System.Windows.Forms.ColumnHeader(),System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader2 = CType(New System.Windows.Forms.ColumnHeader(),System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader3 = CType(New System.Windows.Forms.ColumnHeader(),System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader4 = CType(New System.Windows.Forms.ColumnHeader(),System.Windows.Forms.ColumnHeader)
         Me.gbTVSourcesMiscOpts = New System.Windows.Forms.GroupBox()
         Me.TVSkipLessThanMB = New System.Windows.Forms.Label()
         Me.txtTVSkipLessThan = New System.Windows.Forms.TextBox()
@@ -927,6 +928,7 @@ Partial Class dlgSettings
         Me.chkMovieThemeEnable = New System.Windows.Forms.CheckBox()
         Me.pnlTVThemes = New System.Windows.Forms.Panel()
         Me.Label2 = New System.Windows.Forms.Label()
+        Me.ColumnHeader5 = CType(New System.Windows.Forms.ColumnHeader(),System.Windows.Forms.ColumnHeader)
         Me.gbGeneralMisc.SuspendLayout
         Me.gbGeneralDaemon.SuspendLayout
         Me.gbGeneralThemes.SuspendLayout
@@ -7192,7 +7194,7 @@ Partial Class dlgSettings
         '
         'lvTVSources
         '
-        Me.lvTVSources.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2, Me.ColumnHeader3})
+        Me.lvTVSources.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2, Me.ColumnHeader3, Me.ColumnHeader4, Me.ColumnHeader5})
         Me.lvTVSources.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.lvTVSources.FullRowSelect = true
         Me.lvTVSources.HideSelection = false
@@ -7217,6 +7219,11 @@ Partial Class dlgSettings
         '
         Me.ColumnHeader3.Text = "Path"
         Me.ColumnHeader3.Width = 368
+        '
+        'ColumnHeader4
+        '
+        Me.ColumnHeader4.Text = "Language"
+        Me.ColumnHeader4.Width = 80
         '
         'gbTVSourcesMiscOpts
         '
@@ -10972,6 +10979,10 @@ Partial Class dlgSettings
         Me.Label2.TabIndex = 0
         Me.Label2.Text = "TV Themes Dummy Label"
         '
+        'ColumnHeader5
+        '
+        Me.ColumnHeader5.Text = "Ordering"
+        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -12171,4 +12182,6 @@ End Sub
     Friend WithEvents chkGeneralHideCharacterArt As System.Windows.Forms.CheckBox
     Friend WithEvents cbGeneralMovieSetTheme As System.Windows.Forms.ComboBox
     Friend WithEvents lblGeneralMovieSetTheme As System.Windows.Forms.Label
+    Friend WithEvents ColumnHeader4 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents ColumnHeader5 As System.Windows.Forms.ColumnHeader
 End Class

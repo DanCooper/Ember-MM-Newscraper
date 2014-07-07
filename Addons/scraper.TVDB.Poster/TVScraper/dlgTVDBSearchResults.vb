@@ -274,7 +274,7 @@ Public Class dlgTVDBSearchResults
         If Me.lvSearchResults.SelectedItems.Count > 0 Then
             Dim sResults As Scraper.TVSearchResults = DirectCast(Me.lvSearchResults.SelectedItems(0).Tag, Scraper.TVSearchResults)
             Me.sInfo.TVDBID = sResults.ID.ToString
-            Me.sInfo.SelectedLang = sResults.Language.abbreviation
+            Me.sInfo.ShowLang = sResults.Language.abbreviation
 
             If Not _skipdownload Then
                 Me.Label3.Text = Master.eLang.GetString(950, "Downloading show info...")
@@ -286,7 +286,7 @@ Public Class dlgTVDBSearchResults
             End If
         ElseIf Me.chkManual.Checked AndAlso Not IsNothing(Me._manualresult) Then
             Me.sInfo.TVDBID = Me._manualresult.ID.ToString
-            Me.sInfo.SelectedLang = Me._manualresult.Language.abbreviation
+            Me.sInfo.ShowLang = Me._manualresult.Language.abbreviation
 
             If Not _skipdownload Then
                 Me.Label3.Text = Master.eLang.GetString(950, "Downloading show info...")

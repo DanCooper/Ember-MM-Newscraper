@@ -306,6 +306,18 @@
       <execute>alter table Movies add LastScrape TEXT;</execute>
     </command>
   </transaction>
+  <transaction name="doAddColumnTVSourceLanguage">
+    <command type="DB">
+      <description>1</description>
+      <execute>alter table TVSources add Language TEXT NOT NULL Default en;</execute>
+    </command>
+  </transaction>
+  <transaction name="doAddColumnTVSourceOrdering">
+    <command type="DB">
+      <description>1</description>
+      <execute>alter table TVSources add Ordering INTEGER NOT NULL DEFAULT 0;</execute>
+    </command>
+  </transaction>
   <noTransaction type="">
   </noTransaction>
 <!-- 

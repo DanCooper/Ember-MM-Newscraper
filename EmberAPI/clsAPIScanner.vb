@@ -1176,7 +1176,7 @@ Public Class Scanner
     ''' </summary>
     ''' <param name="sSource">Name of source.</param>
     ''' <param name="sPath">Path of source.</param>
-    Public Sub ScanTVSourceDir(ByVal sSource As String, ByVal sPath As String, Optional ByVal isInner As Boolean = False)
+    Public Sub ScanTVSourceDir(ByVal sSource As String, ByVal sPath As String, ByVal sLang As String, ByVal sOrdering As Enums.Ordering, Optional ByVal isInner As Boolean = False)
         If Directory.Exists(sPath) Then
 
             Dim currShowContainer As TVShowContainer
@@ -1189,6 +1189,8 @@ Public Class Scanner
                 If (dInfo.GetDirectories.Count = 0 AndAlso dInfo.GetFiles.Count > 0) OrElse dInfo.GetDirectories.Where(Function(s) Not Functions.IsSeasonDirectory(s.FullName)).Count = 0 Then
                     'only files in the folder or all folders match the season regex... assume it's a single show folder
                     currShowContainer = New TVShowContainer
+                    currShowContainer.Language = sLang
+                    currShowContainer.Ordering = sOrdering
                     currShowContainer.ShowPath = dInfo.FullName
                     currShowContainer.Source = sSource
                     Me.ScanForTVFiles(currShowContainer, dInfo.FullName)
@@ -1214,6 +1216,8 @@ Public Class Scanner
                     For Each inDir As DirectoryInfo In dInfo.GetDirectories.Where(Function(d) isValidDir(d, True)).OrderBy(Function(d) d.Name)
 
                         currShowContainer = New TVShowContainer
+                        currShowContainer.Language = sLang
+                        currShowContainer.Ordering = sOrdering
                         currShowContainer.ShowPath = inDir.FullName
                         currShowContainer.Source = sSource
                         Me.ScanForTVFiles(currShowContainer, inDir.FullName)
@@ -1366,9 +1370,9 @@ Public Class Scanner
                 Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                     Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                         If Not String.IsNullOrEmpty(Args.SourceName) Then
-                            SQLcommand.CommandText = String.Format("SELECT ID, Name, path, LastScan FROM TVSources WHERE Name = ""{0}"";", Args.SourceName)
+                            SQLcommand.CommandText = String.Format("SELECT ID, Name, Path, LastScan, Language, Ordering FROM TVSources WHERE Name = ""{0}"";", Args.SourceName)
                         Else
-                            SQLcommand.CommandText = "SELECT ID, Name, path, LastScan FROM TVSources;"
+                            SQLcommand.CommandText = "SELECT ID, Name, Path, LastScan, Language, Ordering FROM TVSources;"
                         End If
 
                         Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
@@ -1386,7 +1390,7 @@ Public Class Scanner
                                     parLastScan.Value = Now
                                     parID.Value = SQLreader("ID")
                                     SQLUpdatecommand.ExecuteNonQuery()
-                                    ScanTVSourceDir(SQLreader("Name").ToString, SQLreader("Path").ToString)
+                                    ScanTVSourceDir(SQLreader("Name").ToString, SQLreader("Path").ToString, SQLreader("Language").ToString, DirectCast(Convert.ToInt32(SQLreader("Ordering")), Enums.Ordering))
                                     If Me.bwPrelim.CancellationPending Then
                                         e.Cancel = True
                                         Return
@@ -1468,16 +1472,17 @@ Public Class Scanner
                     tmpTVDB.IsLockShow = False
                     tmpTVDB.IsMarkShow = False
                     tmpTVDB.Source = TVContainer.Source
-                    tmpTVDB.Ordering = Master.eSettings.TVScraperOptionsOrdering
+                    tmpTVDB.Ordering = TVContainer.Ordering
+                    tmpTVDB.ShowLanguage = TVContainer.Language
                     'get the install wizard selected language for initial scan
-                    Dim ShowLang As String = clsAdvancedSettings.GetSetting("TVDBLanguage", String.Empty, "scraper.TVDB")
-                    If Not String.IsNullOrEmpty(ShowLang) Then
-                        tmpTVDB.ShowLanguage = ShowLang
-                    ElseIf Not String.IsNullOrEmpty(Master.eSettings.TVGeneralLanguage) Then
-                        tmpTVDB.ShowLanguage = Master.eSettings.TVGeneralLanguage
-                    Else
-                        tmpTVDB.ShowLanguage = "en"
-                    End If
+                    'Dim ShowLang As String = clsAdvancedSettings.GetSetting("TVDBLanguage", String.Empty, "scraper.TVDB")
+                    'If Not String.IsNullOrEmpty(ShowLang) Then
+                    '    tmpTVDB.ShowLanguage = ShowLang
+                    'ElseIf Not String.IsNullOrEmpty(Master.eSettings.TVGeneralLanguage) Then
+                    '    tmpTVDB.ShowLanguage = Master.eSettings.TVGeneralLanguage
+                    'Else
+                    '    tmpTVDB.ShowLanguage = "en"
+                    'End If
 
                     Master.DB.SaveTVShowToDB(tmpTVDB, True, True)
 
@@ -2102,6 +2107,8 @@ Public Class Scanner
         Private _allseasonslandscape As String
         Private _allseasonsposter As String
         Private _episodes As New List(Of EpisodeContainer)
+        Private _language As String
+        Private _ordering As Enums.Ordering
         Private _showbanner As String
         Private _showcharacterart As String
         Private _showclearart As String
@@ -2169,6 +2176,24 @@ Public Class Scanner
             End Get
             Set(ByVal value As List(Of EpisodeContainer))
                 Me._episodes = value
+            End Set
+        End Property
+
+        Public Property Language() As String
+            Get
+                Return Me._language
+            End Get
+            Set(ByVal value As String)
+                Me._language = value
+            End Set
+        End Property
+
+        Public Property Ordering() As Enums.Ordering
+            Get
+                Return Me._ordering
+            End Get
+            Set(ByVal value As Enums.Ordering)
+                Me._ordering = value
             End Set
         End Property
 
@@ -2290,6 +2315,8 @@ Public Class Scanner
             Me._allseasonslandscape = String.Empty
             Me._allseasonsposter = String.Empty
             Me._episodes.Clear()
+            Me._language = String.Empty
+            Me._ordering = Enums.Ordering.Standard
             Me._showbanner = String.Empty
             Me._showcharacterart = String.Empty
             Me._showclearart = String.Empty

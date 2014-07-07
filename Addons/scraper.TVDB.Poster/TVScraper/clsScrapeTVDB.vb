@@ -86,7 +86,7 @@ Public Class Scraper
     End Sub
 
     Public Function ChangeEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Lang As String) As MediaContainers.EpisodeDetails
-        Return sObject.ChangeEpisode(New Structures.ScrapeInfo With {.ShowID = ShowID, .TVDBID = TVDBID, .SelectedLang = Lang, .iSeason = -999})
+        Return sObject.ChangeEpisode(New Structures.ScrapeInfo With {.ShowID = ShowID, .TVDBID = TVDBID, .ShowLang = Lang, .iSeason = -999})
     End Function
 
     Public Function GetLangs(ByVal sMirror As String) As clsXMLTVDBLanguages
@@ -104,11 +104,11 @@ Public Class Scraper
     End Function
 
     Public Function GetSingleEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Season As Integer, ByVal Episode As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions) As MediaContainers.EpisodeDetails
-        Return sObject.GetSingleEpisode(New Structures.ScrapeInfo With {.ShowID = ShowID, .TVDBID = TVDBID, .iSeason = Season, .iEpisode = Episode, .SelectedLang = Lang, .Ordering = Ordering, .Options = Options})
+        Return sObject.GetSingleEpisode(New Structures.ScrapeInfo With {.ShowID = ShowID, .TVDBID = TVDBID, .iSeason = Season, .iEpisode = Episode, .showLang = Lang, .Ordering = Ordering, .Options = Options})
     End Function
 
     Public Sub GetSingleImage(ByVal Title As String, ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Type As Enums.TVImageType, ByVal Season As Integer, ByVal Episode As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal CurrentImage As Images, ByRef RetImage As Images)
-        sObject.GetSingleImage(New Structures.ScrapeInfo With {.ShowTitle = Title, .ShowID = ShowID, .TVDBID = TVDBID, .ImageType = Type, .iSeason = Season, .iEpisode = Episode, .SelectedLang = Lang, .Ordering = Ordering, .CurrentImage = CurrentImage}, RetImage)
+        sObject.GetSingleImage(New Structures.ScrapeInfo With {.ShowTitle = Title, .ShowID = ShowID, .TVDBID = TVDBID, .ImageType = Type, .iSeason = Season, .iEpisode = Episode, .showLang = Lang, .Ordering = Ordering, .CurrentImage = CurrentImage}, RetImage)
     End Sub
 
     Public Sub InnerEvent(ByVal eType As Enums.TVScraperEventType, ByVal iProgress As Integer, ByVal Parameter As Object)
@@ -124,15 +124,15 @@ Public Class Scraper
     End Sub
 
     Public Sub ScrapeEpisode(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal iEpisode As Integer, ByVal iSeason As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions)
-        sObject.ScrapeEpisode(New Structures.ScrapeInfo With {.ShowID = ShowID, .ShowTitle = ShowTitle, .TVDBID = TVDBID, .iEpisode = iEpisode, .iSeason = iSeason, .SelectedLang = Lang, .Ordering = Ordering, .Options = Options})
+        sObject.ScrapeEpisode(New Structures.ScrapeInfo With {.ShowID = ShowID, .ShowTitle = ShowTitle, .TVDBID = TVDBID, .iEpisode = iEpisode, .iSeason = iSeason, .ShowLang = Lang, .Ordering = Ordering, .Options = Options})
     End Sub
 
     Public Sub ScrapeSeason(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal iSeason As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions)
-        sObject.ScrapeSeason(New Structures.ScrapeInfo With {.ShowID = ShowID, .ShowTitle = ShowTitle, .TVDBID = TVDBID, .iSeason = iSeason, .SelectedLang = Lang, .Ordering = Ordering, .Options = Options})
+        sObject.ScrapeSeason(New Structures.ScrapeInfo With {.ShowID = ShowID, .ShowTitle = ShowTitle, .TVDBID = TVDBID, .iSeason = iSeason, .ShowLang = Lang, .Ordering = Ordering, .Options = Options})
     End Sub
 
-    Public Sub SingleScrape(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions, ByVal ScrapeType As Enums.ScrapeType, ByVal WithCurrent As Boolean)
-        sObject.SingleScrape(New Structures.ScrapeInfo With {.ShowID = ShowID, .ShowTitle = ShowTitle, .TVDBID = TVDBID, .SelectedLang = Lang, .Ordering = Ordering, .Options = Options, .ScrapeType = ScrapeType, .WithCurrent = WithCurrent, .iSeason = -999})
+    Public Sub SingleScrape(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal ShowLang As String, ByVal SourceLang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions, ByVal ScrapeType As Enums.ScrapeType, ByVal WithCurrent As Boolean)
+        sObject.SingleScrape(New Structures.ScrapeInfo With {.ShowID = ShowID, .ShowTitle = ShowTitle, .TVDBID = TVDBID, .ShowLang = ShowLang, .SourceLang = SourceLang, .Ordering = Ordering, .Options = Options, .ScrapeType = ScrapeType, .WithCurrent = WithCurrent, .iSeason = -999})
     End Sub
 
 #End Region 'Methods
@@ -259,7 +259,7 @@ Public Class Scraper
 
         Public Sub DownloadSeries(ByVal sInfo As Structures.ScrapeInfo, Optional ByVal ImagesOnly As Boolean = False)
             Try
-                Dim fPath As String = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sInfo.TVDBID, Path.DirectorySeparatorChar, sInfo.SelectedLang, ".zip"))
+                Dim fPath As String = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sInfo.TVDBID, Path.DirectorySeparatorChar, sInfo.ShowLang, ".zip"))
                 Dim fExists As Boolean = File.Exists(fPath)
                 Dim doDownload As Boolean = False
 
@@ -278,7 +278,7 @@ Public Class Scraper
 
                 If doDownload OrElse Not fExists Then
                     Using sHTTP As New HTTP
-                        Dim xZip As Byte() = sHTTP.DownloadZip(String.Format("http://{0}/api/{1}/series/{2}/all/{3}.zip", _TVDBMirror, APIKey, sInfo.TVDBID, sInfo.SelectedLang))
+                        Dim xZip As Byte() = sHTTP.DownloadZip(String.Format("http://{0}/api/{1}/series/{2}/all/{3}.zip", _TVDBMirror, APIKey, sInfo.TVDBID, sInfo.ShowLang))
 
                         If Not IsNothing(xZip) AndAlso xZip.Length > 0 Then
                             'save it to the temp dir
@@ -320,7 +320,7 @@ Public Class Scraper
             Dim Actors As New List(Of MediaContainers.Person)
             Dim tEpisodes As New List(Of MediaContainers.EpisodeDetails)
             Dim tEpisode As New MediaContainers.EpisodeDetails
-            Dim fPath As String = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sInfo.TVDBID, Path.DirectorySeparatorChar, sInfo.SelectedLang, ".zip"))
+            Dim fPath As String = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sInfo.TVDBID, Path.DirectorySeparatorChar, sInfo.ShowLang, ".zip"))
             Dim tSeas As Integer = -1
             Dim tOrdering As Enums.Ordering = Enums.Ordering.Standard
 
@@ -576,7 +576,7 @@ Public Class Scraper
                         Dim zBuffer As Byte() = Functions.ReadStreamToEnd(zStream)
 
                         Select Case True
-                            Case zEntry.Name.Equals(String.Concat(sInfo.SelectedLang, ".xml"))
+                            Case zEntry.Name.Equals(String.Concat(sInfo.ShowLang, ".xml"))
                                 sXML = System.Text.Encoding.UTF8.GetString(zBuffer)
                             Case zEntry.Name.Equals("banners.xml")
                                 bXML = System.Text.Encoding.UTF8.GetString(zBuffer)
@@ -986,7 +986,7 @@ Public Class Scraper
             Dim tmpID As String = String.Empty
 
             Try
-                Dim apiXML As String = sHTTP.DownloadData(String.Format("http://{0}/api/GetSeries.php?seriesname={1}&language={2}", _TVDBMirror, sInfo.ShowTitle, clsAdvancedSettings.GetSetting("TVDBLanguage", "en")))
+                Dim apiXML As String = sHTTP.DownloadData(String.Format("http://{0}/api/GetSeries.php?seriesname={1}&language={2}", _TVDBMirror, sInfo.ShowTitle, sInfo.ShowLang))
 
                 If Not String.IsNullOrEmpty(apiXML) Then
                     Try
@@ -1000,9 +1000,9 @@ Public Class Scraper
                     'check each unique showid to see if we have an entry for the preferred languages. If not, try to force download it
                     For Each tID As String In xSer.GroupBy(Function(s) s.Element("seriesid").Value.ToString).Select(Function(group) group.Key)
                         tmpID = tID
-                        If xSer.Where(Function(s) s.Element("seriesid").Value.ToString = tmpID AndAlso s.Element("language").Value.ToString = clsAdvancedSettings.GetSetting("TVDBLanguage", "en")).Count = 0 Then
+                        If xSer.Where(Function(s) s.Element("seriesid").Value.ToString = tmpID AndAlso s.Element("language").Value.ToString = sInfo.ShowLang).Count = 0 Then
                             'no preferred language in this series, force it
-                            Dim forceXML As String = sHTTP.DownloadData(String.Format("http://{0}/api/{1}/series/{2}/{3}.xml", _TVDBMirror, APIKey, tmpID, clsAdvancedSettings.GetSetting("TVDBLanguage", "en")))
+                            Dim forceXML As String = sHTTP.DownloadData(String.Format("http://{0}/api/{1}/series/{2}/{3}.xml", _TVDBMirror, APIKey, tmpID, sInfo.ShowLang))
                             If Not String.IsNullOrEmpty(forceXML) Then
                                 Try
                                     tmpXML = XDocument.Parse(forceXML)
@@ -1106,7 +1106,7 @@ Public Class Scraper
                         Dim xdShow As XDocument = XDocument.Parse(sXML)
                         Dim xS = From xShow In xdShow.Descendants("Series")
                         If xS.Count > 0 Then
-                            tShow.ShowLanguage = sInfo.SelectedLang
+                            tShow.ShowLanguage = sInfo.ShowLang
                             If Not IsNothing(tShow.TVShow) Then
                                 With tShow.TVShow
                                     sID = xS(0).Element("id").Value
@@ -1129,7 +1129,7 @@ Public Class Scraper
 
                             For Each Episode As Structures.DBTV In tmpTVDBShow.Episodes
 
-                                Episode.ShowLanguage = sInfo.SelectedLang
+                                Episode.ShowLanguage = sInfo.ShowLang
 
                                 iEp = Episode.TVEp.Episode
                                 iSeas = Episode.TVEp.Season
