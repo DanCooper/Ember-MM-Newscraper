@@ -61,7 +61,7 @@ Namespace My
 
             Functions.TestMediaInfoDLL()
 
-            If e.CommandLine.Count > 1 Then
+            If e.CommandLine.Count > 0 Then
                 Master.isCL = True
                 Master.fLoading.SetProgressBarSize(10)
             End If

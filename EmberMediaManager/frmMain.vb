@@ -1993,7 +1993,7 @@ Public Class frmMain
                                                 eti = eti + 1
                                             End If
                                         End If
-                                        If etMax > 0 AndAlso eti >= etMax Then Exit While
+                                        If etMax > 0 AndAlso eti >= etMax Then Exit For
                                     Next
                                 End If
                             End If
@@ -2023,7 +2023,7 @@ Public Class frmMain
                                                 efi = efi + 1
                                             End If
                                         End If
-                                        If efMax > 0 AndAlso efi >= efMax Then Exit While
+                                        If efMax > 0 AndAlso efi >= efMax Then Exit For
                                     Next
                                 End If
                             End If
@@ -8120,7 +8120,7 @@ doCancel:
     ''' <summary>
     ''' Performs startup routines specific to being initiated by the command line
     ''' </summary>
-    ''' <param name="Args">Command line arguments. Must NOT be empty!</param>
+    ''' <param name="appArgs">Command line arguments. Must NOT be empty!</param>
     ''' <remarks></remarks>
     Private Sub LoadWithCommandLine(ByVal appArgs As Microsoft.VisualBasic.ApplicationServices.StartupEventArgs)
         Dim Args() As String = appArgs.CommandLine.ToArray
@@ -8138,7 +8138,8 @@ doCancel:
             Dim nowindow As Boolean = False
             Dim RunModule As Boolean = False
             Dim ModuleName As String = String.Empty
-            For i As Integer = 1 To Args.Count - 1
+            Dim UpdateTVShows As Boolean = False
+            For i As Integer = 0 To Args.Count - 1
 
                 Select Case Args(i).ToLower
                     Case "-fullask"
@@ -8257,6 +8258,8 @@ doCancel:
                         Else
                             Exit For
                         End If
+                    Case "-tvupdate"
+                        UpdateTVShows = True
                     Case Else
                         'If File.Exists(Args(2).Replace("""", String.Empty)) Then
                         'MoviePath = Args(2).Replace("""", String.Empty)
@@ -8389,6 +8392,23 @@ doCancel:
                     Application.DoEvents()
                     Threading.Thread.Sleep(50)
                 End While
+            End If
+
+            If UpdateTVShows Then
+                Try
+                    Master.fLoading.SetProgressBarStyle(ProgressBarStyle.Marquee)
+                    Master.fLoading.SetLoadingMesg(Master.eLang.GetString(860, "Loading Media..."))
+                    LoadMedia(New Structures.Scans With {.TV = True})
+                    While Not Me.LoadingDone
+                        Application.DoEvents()
+                        Threading.Thread.Sleep(50)
+                    End While
+                    Master.fLoading.SetProgressBarStyle(ProgressBarStyle.Marquee)
+                    Master.fLoading.SetLoadingMesg(Master.eLang.GetString(861, "Command Line Scraping..."))
+                    MovieScrapeData(False, clScrapeType, Master.DefaultMovieOptions)
+                Catch ex As Exception
+                    logger.Error(New StackFrame().GetMethod().Name, ex)
+                End Try
             End If
 
             Master.fLoading.Close()
@@ -9642,6 +9662,8 @@ doCancel:
                 Dim ClearArtAllowed As Boolean = Master.eSettings.MovieClearArtAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.ClearArt)
                 Dim ClearLogoAllowed As Boolean = Master.eSettings.MovieClearLogoAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.ClearLogo)
                 Dim DiscArtAllowed As Boolean = Master.eSettings.MovieDiscArtAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.DiscArt)
+                Dim EFanartsAllowed As Boolean = Master.eSettings.MovieEFanartsAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart)
+                Dim EThumbsAllowed As Boolean = Master.eSettings.MovieEFanartsAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart)
                 Dim FanartAllowed As Boolean = Master.eSettings.MovieFanartAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart)
                 Dim LandscapeAllowed As Boolean = Master.eSettings.MovieLandscapeAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Landscape)
                 Dim PosterAllowed As Boolean = Master.eSettings.MoviePosterAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Poster)
@@ -9666,8 +9688,8 @@ doCancel:
                                     (Master.GlobalScrapeMod.ClearArt AndAlso Master.eSettings.MovieMissingClearArt AndAlso ClearArtAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(61))) OrElse _
                                     (Master.GlobalScrapeMod.ClearLogo AndAlso Master.eSettings.MovieMissingClearLogo AndAlso ClearLogoAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(59))) OrElse _
                                     (Master.GlobalScrapeMod.DiscArt AndAlso Master.eSettings.MovieMissingDiscArt AndAlso DiscArtAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(57))) OrElse _
-                                    (Master.GlobalScrapeMod.EFanarts AndAlso Master.eSettings.MovieMissingEFanarts AndAlso FanartAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(49))) OrElse _
-                                    (Master.GlobalScrapeMod.EThumbs AndAlso Master.eSettings.MovieMissingEThumbs AndAlso FanartAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(9))) OrElse _
+                                    (Master.GlobalScrapeMod.EFanarts AndAlso Master.eSettings.MovieMissingEFanarts AndAlso EFanartsAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(49))) OrElse _
+                                    (Master.GlobalScrapeMod.EThumbs AndAlso Master.eSettings.MovieMissingEThumbs AndAlso EThumbsAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(9))) OrElse _
                                     (Master.GlobalScrapeMod.Fanart AndAlso Master.eSettings.MovieMissingFanart AndAlso FanartAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(5))) OrElse _
                                     (Master.GlobalScrapeMod.Landscape AndAlso Master.eSettings.MovieMissingLandscape AndAlso LandscapeAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(53))) OrElse _
                                     (Master.GlobalScrapeMod.NFO AndAlso Master.eSettings.MovieMissingNFO AndAlso Not Convert.ToBoolean(drvRow.Item(6))) OrElse _
