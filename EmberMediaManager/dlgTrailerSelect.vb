@@ -99,7 +99,7 @@ Public Class dlgTrailerSelect
         Next
         Me.pnlStatus.Visible = False
         Me.lvTrailers.Enabled = True
-        Me.txtYouTube.Enabled = True
+        Me.txtManualTrailerLink.Enabled = True
         Me.txtManual.Enabled = True
         Me.btnBrowse.Enabled = True
         Me.SetEnabled(False)
@@ -123,7 +123,7 @@ Public Class dlgTrailerSelect
         Me.btnPlayTrailer.Enabled = False
         Me.btnPlayBrowser.Enabled = False
         Me.lvTrailers.Enabled = False
-        Me.txtYouTube.Enabled = False
+        Me.txtManualTrailerLink.Enabled = False
         Me.txtManual.Enabled = False
         Me.btnBrowse.Enabled = False
         Me.lblStatus.Text = Master.eLang.GetString(906, "Downloading selected trailer...")
@@ -149,10 +149,10 @@ Public Class dlgTrailerSelect
                 MsgBox(Master.eLang.GetString(192, "File is not valid."), MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly, Master.eLang.GetString(194, "Not Valid"))
                 didCancel = True
             End If
-        ElseIf Regex.IsMatch(Me.txtYouTube.Text, "https?:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") OrElse _
-            Regex.IsMatch(Me.txtYouTube.Text, "http:\/\/.*imdb.*\/video\/imdb\/.*") Then
+        ElseIf Regex.IsMatch(Me.txtManualTrailerLink.Text, "https?:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") OrElse _
+            Regex.IsMatch(Me.txtManualTrailerLink.Text, "http:\/\/.*imdb.*\/video\/imdb\/.*") Then
             Using dFormats As New dlgTrailerFormat
-                Dim sFormat As String = dFormats.ShowDialog(Me.txtYouTube.Text)
+                Dim sFormat As String = dFormats.ShowDialog(Me.txtManualTrailerLink.Text)
 
                 If Not String.IsNullOrEmpty(sFormat) Then
                     Me.bwDownloadTrailer = New System.ComponentModel.BackgroundWorker
@@ -163,11 +163,11 @@ Public Class dlgTrailerSelect
                     didCancel = True
                 End If
             End Using
-        ElseIf StringUtils.isValidURL(Me.txtYouTube.Text) Then
+        ElseIf StringUtils.isValidURL(Me.txtManualTrailerLink.Text) Then
             Me.bwDownloadTrailer = New System.ComponentModel.BackgroundWorker
             Me.bwDownloadTrailer.WorkerReportsProgress = True
             Me.bwDownloadTrailer.WorkerSupportsCancellation = True
-            Me.bwDownloadTrailer.RunWorkerAsync(New Arguments With {.parameter = Me.txtYouTube.Text, .bType = CloseDialog})
+            Me.bwDownloadTrailer.RunWorkerAsync(New Arguments With {.parameter = Me.txtManualTrailerLink.Text, .bType = CloseDialog})
         Else
             If Regex.IsMatch(Me.lvTrailers.SelectedItems(0).SubItems(1).Text.ToString, "https?:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") OrElse _
                 Regex.IsMatch(Me.lvTrailers.SelectedItems(0).SubItems(1).Text.ToString, "http:\/\/.*imdb.*") Then
@@ -194,7 +194,7 @@ Public Class dlgTrailerSelect
         If didCancel Then
             Me.pnlStatus.Visible = False
             Me.lvTrailers.Enabled = True
-            Me.txtYouTube.Enabled = True
+            Me.txtManualTrailerLink.Enabled = True
             Me.txtManual.Enabled = True
             Me.btnBrowse.Enabled = True
             Me.SetEnabled(False)
@@ -218,19 +218,19 @@ Public Class dlgTrailerSelect
     End Sub
 
     Private Sub btnClearLink_Click(sender As Object, e As EventArgs) Handles btnClearLink.Click
-        Me.txtYouTube.Text = String.Empty
+        Me.txtManualTrailerLink.Text = String.Empty
     End Sub
 
     Private Sub btnPlayTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPlayTrailer.Click
         Try
-            If Not String.IsNullOrEmpty(Me.txtYouTube.Text) Then
-                If Regex.IsMatch(Me.txtYouTube.Text, "http:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") Then
-                    Me.asfTrailer.Movie = String.Concat(Replace(Me.txtYouTube.Text, "/watch?v=", "/v/"), "?rel=0&autoplay=1&iv_load_policy=3")
+            If Not String.IsNullOrEmpty(Me.txtManualTrailerLink.Text) Then
+                If Regex.IsMatch(Me.txtManualTrailerLink.Text, "http:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") Then
+                    'Me.asfTrailer.Movie = String.Concat(Replace(Me.txtYouTube.Text, "/watch?v=", "/v/"), "?rel=0&autoplay=1&iv_load_policy=3")
                 Else
                     Me.BeginDownload(False)
                 End If
             ElseIf Regex.IsMatch(Me.lvTrailers.SelectedItems(0).SubItems(1).Text.ToString, "http:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") Then
-                Me.asfTrailer.Movie = String.Concat(Replace(Me.lvTrailers.SelectedItems(0).SubItems(1).Text.ToString, "/watch?v=", "/v/"), "?rel=0&autoplay=1&iv_load_policy=3")
+                'Me.asfTrailer.Movie = String.Concat(Replace(Me.lvTrailers.SelectedItems(0).SubItems(1).Text.ToString, "/watch?v=", "/v/"), "?rel=0&autoplay=1&iv_load_policy=3")
             Else
                 Me.BeginDownload(False)
             End If
@@ -238,7 +238,7 @@ Public Class dlgTrailerSelect
             MsgBox(Master.eLang.GetString(908, "The trailer could not be played. This could be due to an invalid URI or you do not have the proper player to play the trailer type."), MsgBoxStyle.Critical, Master.eLang.GetString(59, "Error Playing Trailer"))
             Me.pnlStatus.Visible = False
             Me.lvTrailers.Enabled = True
-            Me.txtYouTube.Enabled = True
+            Me.txtManualTrailerLink.Enabled = True
             Me.txtManual.Enabled = True
             Me.btnBrowse.Enabled = True
             Me.SetEnabled(False)
@@ -246,13 +246,13 @@ Public Class dlgTrailerSelect
     End Sub
 
     Private Sub btnPlayBrowser_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPlayBrowser.Click
-        If Not String.IsNullOrEmpty(Me.txtYouTube.Text) Then
+        If Not String.IsNullOrEmpty(Me.txtManualTrailerLink.Text) Then
             If Master.isWindows Then
-                Process.Start(Me.txtYouTube.Text)
+                Process.Start(Me.txtManualTrailerLink.Text)
             Else
                 Using Explorer As New Process
                     Explorer.StartInfo.FileName = "xdg-open"
-                    Explorer.StartInfo.Arguments = Me.txtYouTube.Text
+                    Explorer.StartInfo.Arguments = Me.txtManualTrailerLink.Text
                     Explorer.Start()
                 End Using
             End If
@@ -297,7 +297,7 @@ Public Class dlgTrailerSelect
                 Me.btnPlayTrailer.Enabled = False
                 Me.btnPlayBrowser.Enabled = False
                 Me.lvTrailers.Enabled = False
-                Me.txtYouTube.Enabled = False
+                Me.txtManualTrailerLink.Enabled = False
                 Me.txtManual.Enabled = False
                 Me.btnBrowse.Enabled = False
                 Me.lblStatus.Text = Master.eLang.GetString(912, "Moving specified file to trailer...")
@@ -320,7 +320,7 @@ Public Class dlgTrailerSelect
                 MsgBox(Master.eLang.GetString(192, "File is not valid."), MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly, Master.eLang.GetString(194, "Not Valid"))
                 Me.pnlStatus.Visible = False
                 Me.lvTrailers.Enabled = True
-                Me.txtYouTube.Enabled = True
+                Me.txtManualTrailerLink.Enabled = True
                 Me.txtManual.Enabled = True
                 Me.btnBrowse.Enabled = True
                 Me.SetEnabled(False)
@@ -328,8 +328,8 @@ Public Class dlgTrailerSelect
         Else
             Dim didCancel As Boolean = False
 
-            If StringUtils.isValidURL(Me.txtYouTube.Text) Then
-                tURL = Me.txtYouTube.Text
+            If StringUtils.isValidURL(Me.txtManualTrailerLink.Text) Then
+                tURL = Me.txtManualTrailerLink.Text
             ElseIf Me.lvTrailers.SelectedItems.Count > 0 Then
                 tURL = lvTrailers.SelectedItems(0).SubItems(1).Text.ToString
             Else
@@ -375,7 +375,7 @@ Public Class dlgTrailerSelect
             Else
                 Me.pnlStatus.Visible = False
                 Me.lvTrailers.Enabled = True
-                Me.txtYouTube.Enabled = True
+                Me.txtManualTrailerLink.Enabled = True
                 Me.txtManual.Enabled = True
                 Me.btnBrowse.Enabled = True
                 Me.SetEnabled(False)
@@ -406,9 +406,30 @@ Public Class dlgTrailerSelect
     End Sub
 
     Private Sub lvTrailers_DoubleClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lvTrailers.DoubleClick
-        If Regex.IsMatch(Me.lvTrailers.SelectedItems(0).SubItems(1).Text.ToString, "http:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") Then
-            Me.asfTrailer.Movie = String.Concat(Replace(Me.lvTrailers.SelectedItems(0).SubItems(1).Text.ToString, "/watch?v=", "/v/"), "?rel=0&autoplay=1&iv_load_policy=3")
+        If Not String.IsNullOrEmpty(Me.lvTrailers.SelectedItems(0).SubItems(1).Text.ToString) Then
+            Dim vLink As String = Me.lvTrailers.SelectedItems(0).SubItems(1).Text.ToString
+            'Regex.IsMatch(Me.txtYouTube.Text, "https?:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") OrElse _
+
+            If Regex.IsMatch(vLink, "http:\/\/.*imdb.*\/video\/imdb\/.*") Then
+                Using dFormats As New dlgTrailerFormat
+                    Dim sFormat As String = dFormats.ShowDialog(vLink)
+                    Me.AxVLCPlayer.playlist.stop()
+                    Me.AxVLCPlayer.playlist.items.clear()
+                    Me.AxVLCPlayer.playlist.add(sFormat)
+                    Me.AxVLCPlayer.playlist.play()
+                End Using
+            ElseIf Regex.IsMatch(vLink, "http:\/\/movietrailers\.apple\.com.*?") Then
+                MsgBox(String.Format(Master.eLang.GetString(1168, "Please use the {0}{1}{0} button for this trailer"), """", Master.eLang.GetString(931, "Open In Browser")), MsgBoxStyle.Information, Master.eLang.GetString(271, "Error Playing Trailer"))
+            Else
+                Me.AxVLCPlayer.playlist.stop()
+                Me.AxVLCPlayer.playlist.items.clear()
+                Me.AxVLCPlayer.playlist.add(vLink)
+                Me.AxVLCPlayer.playlist.play()
+            End If
         End If
+        'If Regex.IsMatch(Me.lvTrailers.SelectedItems(0).SubItems(1).Text.ToString, "http:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") Then
+        '    Me.asfTrailer.Movie = String.Concat(Replace(Me.lvTrailers.SelectedItems(0).SubItems(1).Text.ToString, "/watch?v=", "/v/"), "?rel=0&autoplay=1&iv_load_policy=3")
+        'End If
     End Sub
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
@@ -416,7 +437,7 @@ Public Class dlgTrailerSelect
     End Sub
 
     Private Sub SetEnabled(ByVal DeletePre As Boolean)
-        If StringUtils.isValidURL(Me.txtYouTube.Text) OrElse Me.lvTrailers.SelectedItems.Count > 0 OrElse Me.txtManual.Text.Length > 0 Then
+        If StringUtils.isValidURL(Me.txtManualTrailerLink.Text) OrElse Me.lvTrailers.SelectedItems.Count > 0 OrElse Me.txtManual.Text.Length > 0 Then
             Me.OK_Button.Enabled = True
             Me.btnSetNfo.Enabled = True
             Me.btnPlayTrailer.Enabled = True
@@ -456,7 +477,7 @@ Public Class dlgTrailerSelect
         Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
         Me.gbSelectTrailer.Text = Master.eLang.GetString(915, "Select Trailer to Download")
         Me.gbManualTrailer.Text = Master.eLang.GetString(916, "Manual Trailer Entry")
-        Me.lblYouTube.Text = Master.eLang.GetString(917, "Direct Link or YouTube URL:")
+        Me.lblYouTube.Text = Master.eLang.GetString(917, "Direct Link, YouTube, IMDB or Apple Trailer URL:")
         Me.lblStatus.Text = Master.eLang.GetString(918, "Compiling trailer list...")
         Me.btnPlayTrailer.Text = Master.eLang.GetString(919, "Preview Trailer")
         Me.btnPlayBrowser.Text = Master.eLang.GetString(931, "Open In Browser")
@@ -470,7 +491,7 @@ Public Class dlgTrailerSelect
         Me.SetEnabled(True)
     End Sub
 
-    Private Sub txtYouTube_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtYouTube.TextChanged
+    Private Sub txtYouTube_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtManualTrailerLink.TextChanged
         Me.SetEnabled(True)
     End Sub
 
