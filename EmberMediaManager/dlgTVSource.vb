@@ -76,6 +76,18 @@ Public Class dlgTVSource
         Me.Close()
     End Sub
 
+    Private Sub cbSourceLanguage_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbSourceLanguage.SelectedIndexChanged
+        Me.OK_Button.Enabled = False
+        Me.tmrWait.Enabled = False
+        Me.tmrWait.Enabled = True
+    End Sub
+
+    Private Sub cbSourceOrdering_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbSourceOrdering.SelectedIndexChanged
+        Me.OK_Button.Enabled = False
+        Me.tmrWait.Enabled = False
+        Me.tmrWait.Enabled = True
+    End Sub
+
     Private Sub CheckConditions()
         Dim isValid As Boolean = False
 
@@ -105,9 +117,11 @@ Public Class dlgTVSource
             Logger.Error(New StackFrame().GetMethod().Name,ex)
         End Try
 
-        If Not String.IsNullOrEmpty(Me.txtSourcePath.Text) AndAlso Directory.Exists(Me.txtSourcePath.Text.Trim) AndAlso isValid Then
+        If Not String.IsNullOrEmpty(Me.txtSourcePath.Text) AndAlso Directory.Exists(Me.txtSourcePath.Text.Trim) AndAlso _
+            Me.cbSourceLanguage.Text <> String.Empty AndAlso Me.cbSourceOrdering.Text <> String.Empty AndAlso isValid Then
             Me.OK_Button.Enabled = True
         End If
+
     End Sub
 
     Private Sub dlgMovieSource_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load

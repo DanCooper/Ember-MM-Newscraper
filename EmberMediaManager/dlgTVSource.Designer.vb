@@ -37,10 +37,10 @@ Partial Class dlgTVSource
         Me.tmrPathWait = New System.Windows.Forms.Timer(Me.components)
         Me.tmrPath = New System.Windows.Forms.Timer(Me.components)
         Me.pnlTVSource = New System.Windows.Forms.Panel()
-        Me.cbSourceLanguage = New System.Windows.Forms.ComboBox()
+        Me.lblSourceLanguage = New System.Windows.Forms.Label()
         Me.lblSourceOrdering = New System.Windows.Forms.Label()
         Me.cbSourceOrdering = New System.Windows.Forms.ComboBox()
-        Me.lblSourceLanguage = New System.Windows.Forms.Label()
+        Me.cbSourceLanguage = New System.Windows.Forms.ComboBox()
         CType(Me.pbValid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlTVSource.SuspendLayout()
         Me.SuspendLayout()
@@ -158,13 +158,16 @@ Partial Class dlgTVSource
         Me.pnlTVSource.Size = New System.Drawing.Size(427, 160)
         Me.pnlTVSource.TabIndex = 2
         '
-        'cbSourceLanguage
+        'lblSourceLanguage
         '
-        Me.cbSourceLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbSourceLanguage.Location = New System.Drawing.Point(215, 98)
-        Me.cbSourceLanguage.Name = "cbSourceLanguage"
-        Me.cbSourceLanguage.Size = New System.Drawing.Size(172, 21)
-        Me.cbSourceLanguage.TabIndex = 9
+        Me.lblSourceLanguage.AutoSize = True
+        Me.lblSourceLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold)
+        Me.lblSourceLanguage.Location = New System.Drawing.Point(9, 101)
+        Me.lblSourceLanguage.Name = "lblSourceLanguage"
+        Me.lblSourceLanguage.Size = New System.Drawing.Size(103, 13)
+        Me.lblSourceLanguage.TabIndex = 12
+        Me.lblSourceLanguage.Text = "Default Language:"
+        Me.lblSourceLanguage.TextAlign = System.Drawing.ContentAlignment.TopCenter
         '
         'lblSourceOrdering
         '
@@ -187,16 +190,13 @@ Partial Class dlgTVSource
         Me.cbSourceOrdering.Size = New System.Drawing.Size(172, 21)
         Me.cbSourceOrdering.TabIndex = 11
         '
-        'lblSourceLanguage
+        'cbSourceLanguage
         '
-        Me.lblSourceLanguage.AutoSize = True
-        Me.lblSourceLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold)
-        Me.lblSourceLanguage.Location = New System.Drawing.Point(9, 101)
-        Me.lblSourceLanguage.Name = "lblSourceLanguage"
-        Me.lblSourceLanguage.Size = New System.Drawing.Size(103, 13)
-        Me.lblSourceLanguage.TabIndex = 12
-        Me.lblSourceLanguage.Text = "Default Language:"
-        Me.lblSourceLanguage.TextAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.cbSourceLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbSourceLanguage.Location = New System.Drawing.Point(215, 98)
+        Me.cbSourceLanguage.Name = "cbSourceLanguage"
+        Me.cbSourceLanguage.Size = New System.Drawing.Size(172, 21)
+        Me.cbSourceLanguage.TabIndex = 9
         '
         'dlgTVSource
         '
