@@ -2763,6 +2763,9 @@ Public Class dlgEditMovie
                 End If
 
                 If Not IsNothing(.MovieTrailer) Then
+                    If Master.eSettings.MovieTrailerDeleteExisting Then
+                        .MovieTrailer.DeleteMovieTrailer(Master.currMovie)
+                    End If
                     Dim tPath As String = .MovieTrailer.SaveAsMovieTrailer(Master.currMovie)
                     Master.currMovie.TrailerPath = tPath
                 Else

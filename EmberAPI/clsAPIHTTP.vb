@@ -311,6 +311,8 @@ Public Class HTTP
                 If Type = "trailer" Then
                     If urlExt = ".mov" Then
                         outFile = LocalFile & urlExt
+                    ElseIf urlExtWeb = ".x-flv" Then
+                        outFile = LocalFile & ".flv"
                     Else
                         outFile = LocalFile & urlExtWeb
                     End If
