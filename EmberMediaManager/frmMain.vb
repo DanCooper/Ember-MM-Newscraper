@@ -9655,7 +9655,7 @@ doCancel:
             If selected Then
                 'create snapshoot list of selected movies
                 For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
-                    ScrapeList.Add(CType(sRow.DataBoundItem, Object()))
+                    ScrapeList.Add(CType(CType(sRow.DataBoundItem, System.Data.DataRowView).Row.ItemArray, Object()))
                 Next
             Else
                 Dim BannerAllowed As Boolean = Master.eSettings.MovieBannerAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Banner)

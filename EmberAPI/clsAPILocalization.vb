@@ -116,19 +116,39 @@ Public Class Localization
     ' ************************************************************************************************
     ' This are functions for country/Language codes under ISO639 Alpha-2 and Alpha-3(ie: Used by DVD/GoogleAPI)
     Shared Function ISOGetLangByCode2(ByVal code As String) As String
-        Return (From x As LanguagesLanguage In _ISOLanguages.Language Where (x.Alpha2 = code))(0).Name
+        Try
+            Return (From x As LanguagesLanguage In _ISOLanguages.Language Where (x.Alpha2 = code))(0).Name
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+            Return Master.eLang.GetString(1168, "Blank")
+        End Try
     End Function
 
     Shared Function ISOGetLangByCode3(ByVal code As String) As String
-        Return (From x As LanguagesLanguage In _ISOLanguages.Language Where (x.Alpha3 = code))(0).Name
+        Try
+            Return (From x As LanguagesLanguage In _ISOLanguages.Language Where (x.Alpha3 = code))(0).Name
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+            Return Master.eLang.GetString(1168, "Blank")
+        End Try
     End Function
 
     Public Shared Function ISOLangGetCode2ByLang(ByVal lang As String) As String
-        Return (From x As LanguagesLanguage In _ISOLanguages.Language Where (x.Name = lang))(0).Alpha2
+        Try
+            Return (From x As LanguagesLanguage In _ISOLanguages.Language Where (x.Name = lang))(0).Alpha2
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+            Return ""
+        End Try
     End Function
 
     Public Shared Function ISOLangGetCode3ByLang(ByVal lang As String) As String
-        Return (From x As LanguagesLanguage In _ISOLanguages.Language Where (x.Name = lang))(0).Alpha3
+        Try
+            Return (From x As LanguagesLanguage In _ISOLanguages.Language Where (x.Name = lang))(0).Alpha3
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+            Return ""
+        End Try
     End Function
 
     Public Shared Function ISOLangGetLanguagesList() As ArrayList
