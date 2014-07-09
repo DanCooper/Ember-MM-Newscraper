@@ -230,6 +230,7 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub btnChangeMovie_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnChangeMovie.Click
+        Me.TrailerStop()
         Me.CleanUp()
         ' ***
         Me.DialogResult = System.Windows.Forms.DialogResult.Abort
@@ -417,6 +418,7 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub btnRescrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRescrape.Click
+        Me.TrailerStop()
         Me.CleanUp()
         ' ***
         Me.DialogResult = System.Windows.Forms.DialogResult.Retry
@@ -1014,30 +1016,12 @@ Public Class dlgEditMovie
         Dim tList As New List(Of Trailers)
 
         Try
-            Dim sPath As String = Path.Combine(Master.TempPath, "Banner.jpg")
-
-            If Not ModulesManager.Instance.MovieScrapeTrailer(Master.currMovie, Enums.ScraperCapabilities.Trailer, tList) Then
-                If tList.Count > 0 Then
-                    dlgTrlS = New dlgTrailerSelect()
-                    If dlgTrlS.ShowDialog(Master.currMovie, tList, True) = Windows.Forms.DialogResult.OK Then
-                        tResults = dlgTrlS.Results
-                        'If Not String.IsNullOrEmpty(tResults.URL) Then
-                        '    Cursor = Cursors.WaitCursor
-                        '    tResults.WebTrailer.FromWeb(tResults.URL)
-                        'If Not IsNothing(pResults.WebImage.Image) Then
-                        '    pbMovieBanner.Image = CType(pResults.WebImage.Image.Clone(), Image)
-                        '    Me.lblMovieBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMovieBanner.Image.Width, Me.pbMovieBanner.Image.Height)
-                        '    Me.lblMovieBannerSize.Visible = True
-                        'End If
-                        '    Cursor = Cursors.Default
-                        'End If
-                        MovieTrailer = tResults.WebTrailer
-                        Me.axVLCPlayer.playlist.items.clear()
-                        Me.axVLCPlayer.playlist.add(MovieTrailer.URL)
-                    End If
-                Else
-                    MsgBox(Master.eLang.GetString(1161, "No trailers could be found. Please check to see if any trailer scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(225, "No Trailers Found"))
-                End If
+            Me.TrailerStop()
+            dlgTrlS = New dlgTrailerSelect()
+            If dlgTrlS.ShowDialog(Master.currMovie, tList, True) = Windows.Forms.DialogResult.OK Then
+                tResults = dlgTrlS.Results
+                MovieTrailer = tResults.WebTrailer
+                TrailerAddToPlayer(MovieTrailer)
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -1059,6 +1043,47 @@ Public Class dlgEditMovie
 
     Private Sub btnMovieEFanartsRefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieEFanartsRefresh.Click
         Me.RefreshEFanarts()
+    End Sub
+
+    Private Sub TrailerStart()
+        If Me.axVLCTrailer.playlist.isPlaying Then
+            Me.axVLCTrailer.playlist.togglePause()
+            Me.btnTrailerPlay.Text = "Play"
+        Else
+            Me.axVLCTrailer.playlist.play()
+            Me.btnTrailerPlay.Text = "Pause"
+        End If
+    End Sub
+
+    Private Sub TrailerStop()
+        Me.axVLCTrailer.playlist.stop()
+        Me.btnTrailerPlay.Text = "Play"
+    End Sub
+
+    Private Sub TrailerAddToPlayer(ByVal Trailer As Trailers)
+        Dim Link As String = String.Empty
+        Me.axVLCTrailer.playlist.stop()
+        Me.axVLCTrailer.playlist.items.clear()
+
+        If Not String.IsNullOrEmpty(Trailer.URL) Then
+            If Regex.IsMatch(Trailer.URL, "http:\/\/.*?") Then
+                Me.axVLCTrailer.playlist.add(Trailer.URL)
+            Else
+                Me.axVLCTrailer.playlist.add(String.Concat("file:///", Trailer.URL))
+            End If
+        End If
+    End Sub
+
+    Private Sub btnTrailerPlay_Click(sender As Object, e As EventArgs) Handles btnTrailerPlay.Click
+        Me.TrailerStart()
+    End Sub
+
+    Private Sub btnTrailerStop_Click(sender As Object, e As EventArgs) Handles btnTrailerStop.Click
+        Me.TrailerStop()
+    End Sub
+
+    Private Sub btnTrailerMute_Click(sender As Object, e As EventArgs) Handles btnTrailerMute.Click
+        Me.axVLCTrailer.audio.toggleMute()
     End Sub
 
     ' temporarily disabled
@@ -1183,6 +1208,7 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
+        Me.TrailerStop()
         Me.CleanUp()
         Master.currMovie = Master.DB.LoadMovieFromDB(Master.currMovie.ID)
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
@@ -1681,16 +1707,10 @@ Public Class dlgEditMovie
 
                     If Not String.IsNullOrEmpty(Master.currMovie.TrailerPath) AndAlso Master.currMovie.TrailerPath.Substring(0, 1) = ":" Then
                         MovieTrailer.FromWeb(Master.currMovie.TrailerPath.Substring(1, Master.currMovie.TrailerPath.Length - 1))
-                        If Not String.IsNullOrEmpty(MovieTrailer.URL) Then
-                            .axVLCPlayer.playlist.items.clear()
-                            .axVLCPlayer.playlist.add(MovieTrailer.URL)
-                        End If
+                        TrailerAddToPlayer(MovieTrailer)
                     Else
                         MovieTrailer.FromFile(Master.currMovie.TrailerPath)
-                        If Not String.IsNullOrEmpty(MovieTrailer.URL) Then
-                            .axVLCPlayer.playlist.items.clear()
-                            .axVLCPlayer.playlist.add(String.Concat("file:///", MovieTrailer.URL))
-                        End If
+                        TrailerAddToPlayer(MovieTrailer)
                     End If
 
                     If Not ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Banner) Then
@@ -1980,6 +2000,7 @@ Public Class dlgEditMovie
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
         Try
+            Me.TrailerStop()
             Me.SetInfo()
 
             Master.DB.SaveMovieToDB(Master.currMovie, False, False, True)
@@ -2863,6 +2884,10 @@ Public Class dlgEditMovie
         Me.tpLandscape.Text = Master.eLang.GetString(1059, "Landscape")
         Me.tpMetaData.Text = Master.eLang.GetString(866, "Metadata")
         Me.tpPoster.Text = Master.eLang.GetString(148, "Poster")
+    End Sub
+
+    Private Sub tcEditMovie_SelectedIndexChanged(sender As Object, e As EventArgs) Handles tcEditMovie.SelectedIndexChanged
+        Me.TrailerStop()
     End Sub
 
     Private Sub txtThumbCount_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs)

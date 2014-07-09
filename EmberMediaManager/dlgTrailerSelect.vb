@@ -28,8 +28,9 @@ Public Class dlgTrailerSelect
 #Region "Fields"
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
-    'Friend WithEvents bwCompileList As New System.ComponentModel.BackgroundWorker
+    Friend WithEvents bwCompileList As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwDownloadTrailer As New System.ComponentModel.BackgroundWorker
+    Friend WithEvents bwParseTrailer As New System.ComponentModel.BackgroundWorker
 
     Private tMovie As New Structures.DBMovie
     Private _UrlList As List(Of Trailers)
@@ -37,6 +38,7 @@ Public Class dlgTrailerSelect
     Private tArray As New List(Of String)
     Private tURL As String = String.Empty
     Private sPath As String
+    Private nList As New List(Of Trailers)
 
 #End Region 'Fields
 
@@ -344,6 +346,84 @@ Public Class dlgTrailerSelect
 
     End Sub
 
+    Private Sub btnTrailerScrape_Click(sender As Object, e As EventArgs) Handles btnTrailerScrape.Click
+        Dim didCancel As Boolean = False
+
+        Me.OK_Button.Enabled = False
+        Me.btnSetNfo.Enabled = False
+        Me.btnPlayTrailer.Enabled = False
+        Me.btnPlayBrowser.Enabled = False
+        Me.btnTrailerScrape.Enabled = False
+        Me.lvTrailers.Enabled = False
+        Me.txtManualTrailerLink.Enabled = False
+        Me.txtManual.Enabled = False
+        Me.btnBrowse.Enabled = False
+        Me.lblStatus.Text = Master.eLang.GetString(918, "Compiling trailer list...")
+        Me.pbStatus.Style = ProgressBarStyle.Marquee
+        Me.pnlStatus.Visible = True
+        Application.DoEvents()
+
+        Me.nList.Clear()
+
+        Me.bwCompileList = New System.ComponentModel.BackgroundWorker
+        Me.bwCompileList.WorkerReportsProgress = False
+        Me.bwCompileList.WorkerSupportsCancellation = True
+        Me.bwCompileList.RunWorkerAsync(New Arguments With {.bType = False})
+        
+    End Sub
+
+    Private Sub bwCompileList_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwCompileList.DoWork
+        Dim Args As Arguments = DirectCast(e.Argument, Arguments)
+        Try
+            If Not ModulesManager.Instance.MovieScrapeTrailer(Master.currMovie, Enums.ScraperCapabilities.Trailer, nList) Then
+                Args.bType = True
+            Else
+                Args.bType = False
+            End If
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+
+        e.Result = Args.bType
+
+        If Me.bwCompileList.CancellationPending Then
+            e.Cancel = True
+        End If
+    End Sub
+
+    Private Sub bwCompileList_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwCompileList.RunWorkerCompleted
+        If Not e.Cancelled Then
+            If Convert.ToBoolean(e.Result) Then
+                If Me.nList.Count > 0 Then
+                    Dim ID As Integer = Me.lvTrailers.Items.Count + 1
+
+                    Dim str(6) As String
+                    For Each aUrl In Me.nList
+                        Dim itm As ListViewItem
+                        str(0) = ID.ToString
+                        str(1) = aUrl.URL.ToString
+                        str(2) = aUrl.WebURL.ToString
+                        str(3) = aUrl.Description.ToString
+                        itm = New ListViewItem(str)
+                        lvTrailers.Items.Add(itm)
+                        ID = ID + 1
+                    Next
+                Else
+                    MsgBox(Master.eLang.GetString(1161, "No trailers could be found. Please check to see if any trailer scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(225, "No Trailers Found"))
+                End If
+            Else
+                MsgBox(Master.eLang.GetString(1161, "No trailers could be found. Please check to see if any trailer scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(225, "No Trailers Found"))
+            End If
+        End If
+        Me.pnlStatus.Visible = False
+        Me.lvTrailers.Enabled = True
+        Me.txtManualTrailerLink.Enabled = True
+        Me.txtManual.Enabled = True
+        Me.btnBrowse.Enabled = True
+        Me.btnTrailerScrape.Enabled = True
+        Me.SetEnabled(False)
+    End Sub
+
     Private Sub bwDownloadTrailer_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDownloadTrailer.DoWork
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         Try
@@ -408,8 +488,6 @@ Public Class dlgTrailerSelect
     Private Sub lvTrailers_DoubleClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lvTrailers.DoubleClick
         If Not String.IsNullOrEmpty(Me.lvTrailers.SelectedItems(0).SubItems(1).Text.ToString) Then
             Dim vLink As String = Me.lvTrailers.SelectedItems(0).SubItems(1).Text.ToString
-            'Regex.IsMatch(Me.txtYouTube.Text, "https?:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") OrElse _
-
             If Regex.IsMatch(vLink, "http:\/\/.*imdb.*\/video\/imdb\/.*") Then
                 Using dFormats As New dlgTrailerFormat
                     Dim sFormat As String = dFormats.ShowDialog(vLink)
@@ -419,7 +497,7 @@ Public Class dlgTrailerSelect
                     Me.AxVLCPlayer.playlist.play()
                 End Using
             ElseIf Regex.IsMatch(vLink, "http:\/\/movietrailers\.apple\.com.*?") Then
-                MsgBox(String.Format(Master.eLang.GetString(1168, "Please use the {0}{1}{0} button for this trailer"), """", Master.eLang.GetString(931, "Open In Browser")), MsgBoxStyle.Information, Master.eLang.GetString(271, "Error Playing Trailer"))
+                MsgBox(String.Format(Master.eLang.GetString(1169, "Please use the {0}{1}{0} button for this trailer"), """", Master.eLang.GetString(931, "Open In Browser")), MsgBoxStyle.Information, Master.eLang.GetString(271, "Error Playing Trailer"))
             Else
                 Me.AxVLCPlayer.playlist.stop()
                 Me.AxVLCPlayer.playlist.items.clear()
@@ -427,9 +505,6 @@ Public Class dlgTrailerSelect
                 Me.AxVLCPlayer.playlist.play()
             End If
         End If
-        'If Regex.IsMatch(Me.lvTrailers.SelectedItems(0).SubItems(1).Text.ToString, "http:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") Then
-        '    Me.asfTrailer.Movie = String.Concat(Replace(Me.lvTrailers.SelectedItems(0).SubItems(1).Text.ToString, "/watch?v=", "/v/"), "?rel=0&autoplay=1&iv_load_policy=3")
-        'End If
     End Sub
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
@@ -515,4 +590,5 @@ Public Class dlgTrailerSelect
     End Structure
 
 #End Region 'Nested Types
+
 End Class
