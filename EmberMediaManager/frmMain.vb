@@ -13409,7 +13409,6 @@ doCancel:
         Dim setEnabled As Boolean
         Dim TVShow As Structures.DBTV
         Dim SetName As String
-        Dim MouseButton As MouseButtons
 
 #End Region 'Fields
 

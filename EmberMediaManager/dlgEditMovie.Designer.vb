@@ -173,7 +173,10 @@ Partial Class dlgEditMovie
         Me.tpFrameExtraction = New System.Windows.Forms.TabPage()
         Me.pnlFrameExtrator = New System.Windows.Forms.Panel()
         Me.tpTrailer = New System.Windows.Forms.TabPage()
-        Me.axVLCPlayer = New AxAXVLC.AxVLCPlugin2()
+        Me.btnTrailerMute = New System.Windows.Forms.Button()
+        Me.btnTrailerStop = New System.Windows.Forms.Button()
+        Me.btnTrailerPlay = New System.Windows.Forms.Button()
+        Me.axVLCTrailer = New AxAXVLC.AxVLCPlugin2()
         Me.btnSetMovieTrailerDL = New System.Windows.Forms.Button()
         Me.btnRemoveMovieTrailer = New System.Windows.Forms.Button()
         Me.btnSetMovieTrailerScrape = New System.Windows.Forms.Button()
@@ -229,7 +232,7 @@ Partial Class dlgEditMovie
         CType(Me.pbMovieEThumbs, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tpFrameExtraction.SuspendLayout()
         Me.tpTrailer.SuspendLayout()
-        CType(Me.axVLCPlayer, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.axVLCTrailer, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tpTheme.SuspendLayout()
         Me.tpMetaData.SuspendLayout()
         Me.tpMediaStub.SuspendLayout()
@@ -1930,7 +1933,10 @@ Partial Class dlgEditMovie
         '
         'tpTrailer
         '
-        Me.tpTrailer.Controls.Add(Me.axVLCPlayer)
+        Me.tpTrailer.Controls.Add(Me.btnTrailerMute)
+        Me.tpTrailer.Controls.Add(Me.btnTrailerStop)
+        Me.tpTrailer.Controls.Add(Me.btnTrailerPlay)
+        Me.tpTrailer.Controls.Add(Me.axVLCTrailer)
         Me.tpTrailer.Controls.Add(Me.btnSetMovieTrailerDL)
         Me.tpTrailer.Controls.Add(Me.btnRemoveMovieTrailer)
         Me.tpTrailer.Controls.Add(Me.btnSetMovieTrailerScrape)
@@ -1942,14 +1948,41 @@ Partial Class dlgEditMovie
         Me.tpTrailer.Text = "Trailer"
         Me.tpTrailer.UseVisualStyleBackColor = True
         '
-        'axVLCPlayer
+        'btnTrailerMute
         '
-        Me.axVLCPlayer.Enabled = True
-        Me.axVLCPlayer.Location = New System.Drawing.Point(6, 6)
-        Me.axVLCPlayer.Name = "axVLCPlayer"
-        Me.axVLCPlayer.OcxState = CType(resources.GetObject("axVLCPlayer.OcxState"), System.Windows.Forms.AxHost.State)
-        Me.axVLCPlayer.Size = New System.Drawing.Size(800, 449)
-        Me.axVLCPlayer.TabIndex = 9
+        Me.btnTrailerMute.Location = New System.Drawing.Point(302, 462)
+        Me.btnTrailerMute.Name = "btnTrailerMute"
+        Me.btnTrailerMute.Size = New System.Drawing.Size(75, 23)
+        Me.btnTrailerMute.TabIndex = 12
+        Me.btnTrailerMute.Text = "Mute"
+        Me.btnTrailerMute.UseVisualStyleBackColor = True
+        '
+        'btnTrailerStop
+        '
+        Me.btnTrailerStop.Location = New System.Drawing.Point(96, 462)
+        Me.btnTrailerStop.Name = "btnTrailerStop"
+        Me.btnTrailerStop.Size = New System.Drawing.Size(75, 23)
+        Me.btnTrailerStop.TabIndex = 11
+        Me.btnTrailerStop.Text = "Stop"
+        Me.btnTrailerStop.UseVisualStyleBackColor = True
+        '
+        'btnTrailerPlay
+        '
+        Me.btnTrailerPlay.Location = New System.Drawing.Point(15, 462)
+        Me.btnTrailerPlay.Name = "btnTrailerPlay"
+        Me.btnTrailerPlay.Size = New System.Drawing.Size(75, 23)
+        Me.btnTrailerPlay.TabIndex = 10
+        Me.btnTrailerPlay.Text = "Play"
+        Me.btnTrailerPlay.UseVisualStyleBackColor = True
+        '
+        'axVLCTrailer
+        '
+        Me.axVLCTrailer.Enabled = True
+        Me.axVLCTrailer.Location = New System.Drawing.Point(6, 6)
+        Me.axVLCTrailer.Name = "axVLCTrailer"
+        Me.axVLCTrailer.OcxState = CType(resources.GetObject("axVLCTrailer.OcxState"), System.Windows.Forms.AxHost.State)
+        Me.axVLCTrailer.Size = New System.Drawing.Size(800, 449)
+        Me.axVLCTrailer.TabIndex = 9
         '
         'btnSetMovieTrailerDL
         '
@@ -2243,7 +2276,7 @@ Partial Class dlgEditMovie
         CType(Me.pbMovieEThumbs, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tpFrameExtraction.ResumeLayout(False)
         Me.tpTrailer.ResumeLayout(False)
-        CType(Me.axVLCPlayer, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.axVLCTrailer, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tpTheme.ResumeLayout(False)
         Me.tpMetaData.ResumeLayout(False)
         Me.tpMediaStub.ResumeLayout(False)
@@ -2423,6 +2456,9 @@ Partial Class dlgEditMovie
     Friend WithEvents btnRemoveMovieTheme As System.Windows.Forms.Button
     Friend WithEvents btnSetMovieThemeScrape As System.Windows.Forms.Button
     Friend WithEvents btnSetMovieThemeLocal As System.Windows.Forms.Button
-    Friend WithEvents axVLCPlayer As AxAXVLC.AxVLCPlugin2
+    Friend WithEvents axVLCTrailer As AxAXVLC.AxVLCPlugin2
+    Friend WithEvents btnTrailerStop As System.Windows.Forms.Button
+    Friend WithEvents btnTrailerPlay As System.Windows.Forms.Button
+    Friend WithEvents btnTrailerMute As System.Windows.Forms.Button
 
 End Class
