@@ -591,6 +591,7 @@ Partial Class dlgSettings
         Me.ColumnHeader2 = CType(New System.Windows.Forms.ColumnHeader(),System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader3 = CType(New System.Windows.Forms.ColumnHeader(),System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader4 = CType(New System.Windows.Forms.ColumnHeader(),System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader5 = CType(New System.Windows.Forms.ColumnHeader(),System.Windows.Forms.ColumnHeader)
         Me.gbTVSourcesMiscOpts = New System.Windows.Forms.GroupBox()
         Me.TVSkipLessThanMB = New System.Windows.Forms.Label()
         Me.txtTVSkipLessThan = New System.Windows.Forms.TextBox()
@@ -928,7 +929,8 @@ Partial Class dlgSettings
         Me.chkMovieThemeEnable = New System.Windows.Forms.CheckBox()
         Me.pnlTVThemes = New System.Windows.Forms.Panel()
         Me.Label2 = New System.Windows.Forms.Label()
-        Me.ColumnHeader5 = CType(New System.Windows.Forms.ColumnHeader(),System.Windows.Forms.ColumnHeader)
+        Me.txtMovieTrailerDefaultSearch = New System.Windows.Forms.TextBox()
+        Me.lblMovieTrailerDefaultSearch = New System.Windows.Forms.Label()
         Me.gbGeneralMisc.SuspendLayout
         Me.gbGeneralDaemon.SuspendLayout
         Me.gbGeneralThemes.SuspendLayout
@@ -7225,6 +7227,10 @@ Partial Class dlgSettings
         Me.ColumnHeader4.Text = "Language"
         Me.ColumnHeader4.Width = 80
         '
+        'ColumnHeader5
+        '
+        Me.ColumnHeader5.Text = "Ordering"
+        '
         'gbTVSourcesMiscOpts
         '
         Me.gbTVSourcesMiscOpts.Controls.Add(Me.TVSkipLessThanMB)
@@ -10822,6 +10828,8 @@ Partial Class dlgSettings
         '
         'gbMovieTrailerOpts
         '
+        Me.gbMovieTrailerOpts.Controls.Add(Me.lblMovieTrailerDefaultSearch)
+        Me.gbMovieTrailerOpts.Controls.Add(Me.txtMovieTrailerDefaultSearch)
         Me.gbMovieTrailerOpts.Controls.Add(Me.cbMovieTrailerMinQual)
         Me.gbMovieTrailerOpts.Controls.Add(Me.lblMovieTrailerMinQual)
         Me.gbMovieTrailerOpts.Controls.Add(Me.cbMovieTrailerPrefQual)
@@ -10831,7 +10839,7 @@ Partial Class dlgSettings
         Me.gbMovieTrailerOpts.Controls.Add(Me.chkMovieTrailerEnable)
         Me.gbMovieTrailerOpts.Location = New System.Drawing.Point(12, 11)
         Me.gbMovieTrailerOpts.Name = "gbMovieTrailerOpts"
-        Me.gbMovieTrailerOpts.Size = New System.Drawing.Size(183, 230)
+        Me.gbMovieTrailerOpts.Size = New System.Drawing.Size(213, 252)
         Me.gbMovieTrailerOpts.TabIndex = 1
         Me.gbMovieTrailerOpts.TabStop = false
         Me.gbMovieTrailerOpts.Text = "Trailers"
@@ -10979,9 +10987,23 @@ Partial Class dlgSettings
         Me.Label2.TabIndex = 0
         Me.Label2.Text = "TV Themes Dummy Label"
         '
-        'ColumnHeader5
+        'txtMovieTrailerDefaultSearch
         '
-        Me.ColumnHeader5.Text = "Ordering"
+        Me.txtMovieTrailerDefaultSearch.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        Me.txtMovieTrailerDefaultSearch.Location = New System.Drawing.Point(25, 212)
+        Me.txtMovieTrailerDefaultSearch.Name = "txtMovieTrailerDefaultSearch"
+        Me.txtMovieTrailerDefaultSearch.Size = New System.Drawing.Size(182, 22)
+        Me.txtMovieTrailerDefaultSearch.TabIndex = 10
+        '
+        'lblMovieTrailerDefaultSearch
+        '
+        Me.lblMovieTrailerDefaultSearch.AutoSize = true
+        Me.lblMovieTrailerDefaultSearch.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblMovieTrailerDefaultSearch.Location = New System.Drawing.Point(24, 196)
+        Me.lblMovieTrailerDefaultSearch.Name = "lblMovieTrailerDefaultSearch"
+        Me.lblMovieTrailerDefaultSearch.Size = New System.Drawing.Size(139, 13)
+        Me.lblMovieTrailerDefaultSearch.TabIndex = 11
+        Me.lblMovieTrailerDefaultSearch.Text = "Default Search Parameter:"
         '
         'dlgSettings
         '
@@ -12184,4 +12206,6 @@ End Sub
     Friend WithEvents lblGeneralMovieSetTheme As System.Windows.Forms.Label
     Friend WithEvents ColumnHeader4 As System.Windows.Forms.ColumnHeader
     Friend WithEvents ColumnHeader5 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents lblMovieTrailerDefaultSearch As System.Windows.Forms.Label
+    Friend WithEvents txtMovieTrailerDefaultSearch As System.Windows.Forms.TextBox
 End Class
