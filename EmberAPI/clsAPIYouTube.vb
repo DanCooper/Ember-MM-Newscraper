@@ -300,14 +300,14 @@ Namespace YouTube
                 Html = String.Empty
             End If
 
-            Dim Pattern As String = "<div class=""yt-lockup-content"">.*?title=""(?<NAME>.*?)"".*?href=""(?<LINK>.*?)"""
+            Dim Pattern As String = "<div class=""yt-lockup-content"">.*?<a href=""(?<LINK>.*?)"".*?dir=""ltr"">(?<NAME>.*?)</a>"
 
             Dim Result As MatchCollection = Regex.Matches(Html, Pattern, RegexOptions.Singleline)
 
             For ctr As Integer = 0 To Result.Count - 1
-                tName = Web.HttpUtility.HtmlDecode(Result.Item(ctr).Groups(1).Value)
-                tLink = String.Concat("http://www.youtube.com", Result.Item(ctr).Groups(2).Value)
-                If Not tName = "__title__" Then
+                tLink = String.Concat("http://www.youtube.com", Result.Item(ctr).Groups(1).Value)
+                tName = Web.HttpUtility.HtmlDecode(Result.Item(ctr).Groups(2).Value)
+                If Not tName = "__title__" AndAlso Not tName = "__channel_name__" Then
                     tList.Add(New Trailers With {.URL = tLink, .WebURL = tLink, .Description = tName})
                 End If
             Next
