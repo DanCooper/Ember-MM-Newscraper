@@ -73,7 +73,7 @@ Public Class dlgTrailerSelect
         Me.lvTrailers.FullRowSelect = True
         Me.lvTrailers.HideSelection = False
 
-        Me.txtYouTubeSearch.Text = DBMovie.Movie.Title & " Trailer"
+        Me.txtYouTubeSearch.Text = String.Concat(DBMovie.Movie.Title, " ", Master.eSettings.MovieTrailerDefaultSearch)
 
         Me.tMovie = DBMovie
         Me.sPath = DBMovie.Filename

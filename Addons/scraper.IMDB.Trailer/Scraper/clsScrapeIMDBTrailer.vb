@@ -124,8 +124,12 @@ Public Class IMDBTrailer
                                         trailerTitle = Regex.Match(trailerPage, mPattern).Groups(1).Value.ToString.Trim
                                         trailerTitle = trailerTitle.Replace("- IMDb", String.Empty).Trim
                                     End If
-
-                                    _trailerlist.Add(New Trailers With {.URL = Website, .Description = TrailerTitle, .WebURL = Website, .Source = "IMDB"})
+                                    'try to get playtime
+                                    Dim Details As String = String.Concat(Website, "imdb/single?format=480p")
+                                    sHTTP = New HTTP
+                                    Dim DetailsPage As String = sHTTP.DownloadData(Details)
+                                    Dim trailerLenght As String = Regex.Match(DetailsPage, "duration title-hover"">\((?<LENGHT>.*?)\)</span>").Groups(1).Value.ToString
+                                    _trailerlist.Add(New Trailers With {.URL = Website, .Description = TrailerTitle, .WebURL = Website, .Lenght = trailerLenght, .Source = "IMDB"})
                                 Next
                             Next
                         End If
