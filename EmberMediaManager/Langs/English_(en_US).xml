@@ -1259,4 +1259,5 @@
   <string id="1169">Please use the {0}{1}{0} button for this trailer</string>
   <string id="1170">Trailer could not be parsed</string>
   <string id="1171">Scrape Trailers</string>
+  <string id="1172">Default Search Parameter:</string>
 </strings>

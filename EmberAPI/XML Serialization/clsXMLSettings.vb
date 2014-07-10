@@ -227,6 +227,7 @@ Partial Public Class clsXMLSettings
     Private _moviethemeenable As Boolean
     Private _moviethemeoverwrite As Boolean
     Private _movietrailercol As Boolean
+    Private _movietrailerdefaultsearch As String
     Private _movietrailerdeleteexisting As Boolean
     Private _movietrailerenable As Boolean
     Private _movietraileroverwrite As Boolean
@@ -2208,6 +2209,15 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._movietrailercol = value
+        End Set
+    End Property
+
+    Public Property MovieTrailerDefaultSearch() As String
+        Get
+            Return Me._movietrailerdefaultsearch
+        End Get
+        Set(ByVal value As String)
+            Me._movietrailerdefaultsearch = value
         End Set
     End Property
 

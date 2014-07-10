@@ -1530,6 +1530,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property MovieTrailerDefaultSearch() As String
+        Get
+            Return Settings._XMLSettings.MovieTrailerDefaultSearch
+        End Get
+        Set(ByVal value As String)
+            Settings._XMLSettings.MovieTrailerDefaultSearch = value
+        End Set
+    End Property
+
     Public Property MovieWatchedCol() As Boolean
         Get
             Return Settings._XMLSettings.moviewatchedcol

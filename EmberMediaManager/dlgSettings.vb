@@ -3045,6 +3045,7 @@ Public Class dlgSettings
                 Me.txtMovieScraperGenreLimit.Text = .MovieScraperGenreLimit.ToString
                 Me.txtMovieScraperOutlineLimit.Text = .MovieScraperOutlineLimit.ToString
                 Me.txtMovieSkipLessThan.Text = .MovieSkipLessThan.ToString
+                Me.txtMovieTrailerDefaultSearch.Text = .MovieTrailerDefaultSearch.ToString
                 Me.txtTVScraperDurationRuntimeFormat.Text = .TVScraperDurationRuntimeFormat
                 Me.txtTVSkipLessThan.Text = .TVSkipLessThan.ToString
 
@@ -4313,6 +4314,7 @@ Public Class dlgSettings
                 .MovieThemeEnable = Me.chkMovieThemeEnable.Checked
                 .MovieThemeOverwrite = Me.chkMovieThemeOverwrite.Checked
                 .MovieTrailerCol = Me.chkMovieTrailerCol.Checked
+                .MovieTrailerDefaultSearch = Me.txtMovieTrailerDefaultSearch.Text
                 .MovieTrailerDeleteExisting = Me.chkMovieTrailerDeleteExisting.Checked
                 .MovieTrailerEnable = Me.chkMovieTrailerEnable.Checked
                 .MovieTrailerOverwrite = Me.chkMovieTrailerOverwrite.Checked
@@ -5162,6 +5164,7 @@ Public Class dlgSettings
         Me.lblMovieScraperOutlineLimit.Text = Me.lblMovieScraperCastLimit.Text
         Me.lblTVScraperOptionsOrdering.Text = Master.eLang.GetString(797, "Default Episode Ordering:")
         Me.lblMoviePosterSize.Text = Master.eLang.GetString(482, "Preferred Size:")
+        Me.lblMovieTrailerDefaultSearch.Text = Master.eLang.GetString(1172, "Default Search Parameter:")
         Me.lblMovieTrailerPrefQual.Text = Master.eLang.GetString(1027, "Minimum Quality:")
         Me.lblMovieTrailerPrefQual.Text = Master.eLang.GetString(800, "Preferred Quality:")
         Me.lblProxyDomain.Text = Master.eLang.GetString(678, "Domain:")
