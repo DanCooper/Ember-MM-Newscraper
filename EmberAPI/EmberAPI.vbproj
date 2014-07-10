@@ -136,6 +136,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="clsAdvancedSettings.vb" />
+    <Compile Include="clsAPIApple.vb" />
     <Compile Include="clsAPIIMDB.vb" />
     <Compile Include="clsAPIThemes.vb" />
     <Compile Include="clsAPICommon.vb" />

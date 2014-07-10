@@ -26,7 +26,7 @@ Imports NLog
 'The InternalsVisibleTo is required for unit testing the friend methods
 <Assembly: InternalsVisibleTo("EmberAPI_Test")> 
 
-Namespace IMDb
+Namespace Apple
 
     Public Class Scraper
 
@@ -35,6 +35,8 @@ Namespace IMDb
 
         Private _VideoLinks As VideoLinkItemCollection
 
+        Private _TrailerLinks As List(Of Trailers)
+
 #End Region 'Fields
 
 #Region "Events"
@@ -42,6 +44,7 @@ Namespace IMDb
         Public Event Exception(ByVal ex As Exception)
 
         Public Event VideoLinksRetrieved(ByVal bSuccess As Boolean)
+        Public Event TrailerLinksRetrieved(ByVal bSuccess As Boolean)
 
 #End Region 'Events
 
@@ -53,6 +56,15 @@ Namespace IMDb
                     _VideoLinks = New VideoLinkItemCollection
                 End If
                 Return _VideoLinks
+            End Get
+        End Property
+
+        Public ReadOnly Property TrailerLinks() As List(Of Trailers)
+            Get
+                If _TrailerLinks Is Nothing Then
+                    _TrailerLinks = New List(Of Trailers)
+                End If
+                Return _TrailerLinks
             End Get
         End Property
 
@@ -75,6 +87,16 @@ Namespace IMDb
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         End Sub
+
+        Public Sub GetTrailerLinks(ByVal url As String)
+            Try
+                _TrailerLinks = GetTrailerLinks(url, False)
+
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+            End Try
+        End Sub
+
         ''' <summary>
         ''' Extract and return the title of the video from the supplied HTML.
         ''' </summary>
@@ -179,11 +201,145 @@ Namespace IMDb
             End Try
         End Function
 
+        Private Function GetTrailerLinks(ByVal url As String, ByVal doProgress As Boolean) As List(Of Trailers)
+            Dim TrailerLinks As New List(Of Trailers)
+
+            Dim BaseURL As String = "http://www.google.ch/search?q=apple+trailer+"
+            Dim DownloadURL As String = "http://trailers.apple.com/trailers/"
+            Dim prevQual As String = clsAdvancedSettings.GetSetting("TrailerPrefQual", "1080p", "scraper.Apple.Trailer")
+            Dim urlHD As String = "/includes/extralarge.html"
+            Dim urlHQ As String = "/includes/large.html"
+
+            Try
+                If Not String.IsNullOrEmpty(url) Then
+                    Dim tDownloadURL As String = String.Empty
+                    Dim tDescription As New List(Of String)
+
+                    Dim sHTTP As New HTTP
+
+                    Dim tPattern As String = "<a href=""(?<URL>.*?)"">(?<TITLE>.*?)</a>"
+                    Dim lPattern As String = "<li><a href=""includes/(?<URL>.*?)#"
+                    Dim uPattern As String = "<a class=""movieLink"" href=""(?<URL>.*?)\?"
+                    Dim zPattern As String = "<li.*?<a href=""(?<LINK>.*?)#.*?<h3 title="".*?>(?<TITLE>.*?)</h3>.*?duration"">(?<DURATION>.*?)</span>*.?</li>"
+
+                    Dim TrailerBaseURL As String = If(url.EndsWith("/"), url.Remove(url.Length - 1, 1), url).Trim
+                    Dim TrailerSiteURL = String.Concat(TrailerBaseURL, urlHD)
+
+                    If Not String.IsNullOrEmpty(TrailerBaseURL) Then
+
+                        sHTTP = New HTTP
+                        Dim sHtml As String = sHTTP.DownloadData(TrailerSiteURL)
+                        sHTTP = Nothing
+
+                        Dim zResult As MatchCollection = Regex.Matches(sHtml, zPattern, RegexOptions.Singleline)
+
+                        For ctr As Integer = 0 To zResult.Count - 1
+                            TrailerLinks.Add(New Trailers With {.URL = zResult.Item(ctr).Groups(1).Value, .Description = zResult.Item(ctr).Groups(2).Value, .Lenght = zResult.Item(ctr).Groups(3).Value})
+                        Next
+
+                        For Each trailer In TrailerLinks
+                            Dim DLURL As String = String.Empty
+                            Dim TrailerSiteLink As String = String.Concat(TrailerBaseURL, "/", trailer.URL)
+
+                            sHTTP = New HTTP
+                            Dim zHtml As String = sHTTP.DownloadData(TrailerSiteLink)
+                            sHTTP = Nothing
+
+                            If String.IsNullOrEmpty(zHtml) Then
+                                sHTTP = New HTTP
+                                zHtml = sHTTP.DownloadData(TrailerSiteLink.Replace("extralarge.html", "large.html"))
+                                sHTTP = Nothing
+                            End If
+
+                            Dim yResult As MatchCollection = Regex.Matches(zHtml, uPattern, RegexOptions.Singleline)
+
+                            If yResult.Count > 0 Then
+                                tDownloadURL = Web.HttpUtility.HtmlDecode(yResult.Item(0).Groups(1).Value)
+                                tDownloadURL = tDownloadURL.Replace("720p", prevQual)
+                                trailer.WebURL = tDownloadURL
+                                tDownloadURL = tDownloadURL.Replace("1080p", "h1080p")
+                                tDownloadURL = tDownloadURL.Replace("720p", "h720p")
+                                tDownloadURL = tDownloadURL.Replace("480p", "h480p")
+                                trailer.URL = tDownloadURL
+                                Select Case prevQual
+                                    Case "1080p"
+                                        trailer.Quality = Enums.TrailerQuality.HD1080p
+                                    Case "720p"
+                                        trailer.Quality = Enums.TrailerQuality.HD720p
+                                    Case "480p"
+                                        trailer.Quality = Enums.TrailerQuality.HQ480p
+                                End Select
+                            End If
+                        Next
+                    End If
+                End If
+
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+            End Try
+
+            Return TrailerLinks
+
+        End Function
+
 #End Region 'Methods
 
     End Class
 
     Public Class VideoLinkItem
+
+#Region "Fields"
+
+        Private _Description As String
+        Private _FormatCodec As Enums.TrailerCodec
+        Private _FormatQuality As Enums.TrailerQuality
+        Private _URL As String
+
+#End Region 'Fields
+
+#Region "Properties"
+
+        Public Property Description() As String
+            Get
+                Return _Description
+            End Get
+            Set(ByVal value As String)
+                _Description = value
+            End Set
+        End Property
+
+        Public Property URL() As String
+            Get
+                Return _URL
+            End Get
+            Set(ByVal value As String)
+                _URL = value
+            End Set
+        End Property
+
+        Friend Property FormatCodec() As Enums.TrailerCodec
+            Get
+                Return _FormatCodec
+            End Get
+            Set(ByVal value As Enums.TrailerCodec)
+                _FormatCodec = value
+            End Set
+        End Property
+
+        Friend Property FormatQuality() As Enums.TrailerQuality
+            Get
+                Return _FormatQuality
+            End Get
+            Set(ByVal value As Enums.TrailerQuality)
+                _FormatQuality = value
+            End Set
+        End Property
+
+#End Region 'Properties
+
+    End Class
+
+    Public Class TrailerLinkItem
 
 #Region "Fields"
 
@@ -252,6 +408,32 @@ Namespace IMDb
         ''' 2013/11/07 Dekker500 - Added parameter validation
         ''' </remarks>
         Public Shadows Sub Add(ByVal Link As VideoLinkItem)
+            If Link IsNot Nothing AndAlso Not MyBase.ContainsKey(Link.FormatQuality) Then
+                MyBase.Add(Link.FormatQuality, Link)
+            End If
+
+        End Sub
+
+#End Region 'Methods
+
+    End Class
+
+    Public Class TrailerLinkItemCollection
+        Inherits Generic.SortedList(Of Enums.TrailerQuality, TrailerLinkItem)
+
+#Region "Methods"
+        ''' <summary>
+        ''' Adds the provided <c>VideoLinkItem</c> to the collection. 
+        ''' </summary>
+        ''' <param name="Link">The <c>VideoLinkItem</c> to be added. Nothing values or existing values will be ignored</param>
+        ''' <remarks>NOTE that the collection is arranged to allow only one
+        ''' of VideoLink of each <c>Enums.TrailerQuality</c>. This means that attempting
+        ''' to add a second <c>VideoLinkItem</c> with with an identical <c>Enums.TrailerQuality</c>
+        ''' will silently fail, while leaving the original untouched.
+        ''' 
+        ''' 2013/11/07 Dekker500 - Added parameter validation
+        ''' </remarks>
+        Public Shadows Sub Add(ByVal Link As TrailerLinkItem)
             If Link IsNot Nothing AndAlso Not MyBase.ContainsKey(Link.FormatQuality) Then
                 MyBase.Add(Link.FormatQuality, Link)
             End If

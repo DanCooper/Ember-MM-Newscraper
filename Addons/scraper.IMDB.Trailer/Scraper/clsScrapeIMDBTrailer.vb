@@ -125,7 +125,7 @@ Public Class IMDBTrailer
                                         trailerTitle = trailerTitle.Replace("- IMDb", String.Empty).Trim
                                     End If
 
-                                    _trailerlist.Add(New Trailers With {.URL = Website, .Description = TrailerTitle, .WebURL = Website})
+                                    _trailerlist.Add(New Trailers With {.URL = Website, .Description = TrailerTitle, .WebURL = Website, .Source = "IMDB"})
                                 Next
                             Next
                         End If

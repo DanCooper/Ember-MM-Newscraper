@@ -310,7 +310,7 @@ Namespace YouTube
                 tLink = String.Concat("http://www.youtube.com", Result.Item(ctr).Groups(2).Value)
                 tName = Web.HttpUtility.HtmlDecode(Result.Item(ctr).Groups(3).Value)
                 If Not tName = "__title__" AndAlso Not tName = "__channel_name__" Then
-                    tList.Add(New Trailers With {.URL = tLink, .WebURL = tLink, .Description = tName, .Lenght = tLength})
+                    tList.Add(New Trailers With {.URL = tLink, .WebURL = tLink, .Description = tName, .Lenght = tLength, .Source = "YouTube"})
                 End If
             Next
 
