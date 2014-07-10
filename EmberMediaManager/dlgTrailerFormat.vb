@@ -64,44 +64,17 @@ Public Class dlgTrailerFormat
     Private Sub bwParseTrailer_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwParseTrailer.DoWork
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         Try
-            'If Regex.IsMatch(Me._url, "https?:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") Then
-            '    _isIMDb = False
-            '    _isYouTube = True
-            '    YouTube.GetVideoLinks(Me._url)
-            '    If YouTube.VideoLinks.Count > 0 Then
-            '        Me.pnlStatus.Visible = False
-
-            '        lbFormats.DataSource = YouTube.VideoLinks.Values.ToList
-            '        lbFormats.DisplayMember = "Description"
-            '        lbFormats.ValueMember = "URL"
-
-            '        If YouTube.VideoLinks.ContainsKey(Master.eSettings.MovieTrailerPrefQual) Then
-            '            Me.lbFormats.SelectedIndex = YouTube.VideoLinks.IndexOfKey(Master.eSettings.MovieTrailerPrefQual)
-            '        ElseIf Me.lbFormats.Items.Count = 1 Then
-            '            Me.lbFormats.SelectedIndex = 0
-            '        End If
-            '        Me.lbFormats.Enabled = True
-            '    End If
-
-            'ElseIf Regex.IsMatch(Me._url, "http:\/\/.*imdb.*") Then
-            '    _isIMDb = True
-            '    _isYouTube = False
-            '    IMDb.GetVideoLinks(Me._url)
-            '    If IMDb.VideoLinks.Count > 0 Then
-            '        Me.pnlStatus.Visible = False
-
-            '        lbFormats.DataSource = IMDb.VideoLinks.Values.ToList
-            '        lbFormats.DisplayMember = "Description"
-            '        lbFormats.ValueMember = "URL"
-
-            '        If IMDb.VideoLinks.ContainsKey(Master.eSettings.MovieTrailerPrefQual) Then
-            '            Me.lbFormats.SelectedIndex = IMDb.VideoLinks.IndexOfKey(Master.eSettings.MovieTrailerPrefQual)
-            '        ElseIf Me.lbFormats.Items.Count = 1 Then
-            '            Me.lbFormats.SelectedIndex = 0
-            '        End If
-            '        Me.lbFormats.Enabled = True
-            '    End If
-            'End If
+            If Regex.IsMatch(Me._url, "https?:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") Then
+                _isIMDb = False
+                _isYouTube = True
+                YouTube.GetVideoLinks(Me._url)
+                Args.bType = True
+            ElseIf Regex.IsMatch(Me._url, "http:\/\/.*imdb.*") Then
+                _isIMDb = True
+                _isYouTube = False
+                IMDb.GetVideoLinks(Me._url)
+                Args.bType = True
+            End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
@@ -114,36 +87,48 @@ Public Class dlgTrailerFormat
     End Sub
 
     Private Sub bwParseTrailer_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwParseTrailer.RunWorkerCompleted
-        'If Not e.Cancelled Then
-        '    If Convert.ToBoolean(e.Result) Then
-        '        If Me.nList.Count > 0 Then
-        '            Dim ID As Integer = Me.lvTrailers.Items.Count + 1
+        If Not e.Cancelled Then
+            If Convert.ToBoolean(e.Result) Then
+                If Me._isYouTube Then
+                    If YouTube.VideoLinks.Count > 0 Then
+                        Me.pnlStatus.Visible = False
 
-        '            Dim str(6) As String
-        '            For Each aUrl In Me.nList
-        '                Dim itm As ListViewItem
-        '                str(0) = ID.ToString
-        '                str(1) = aUrl.URL.ToString
-        '                str(2) = aUrl.WebURL.ToString
-        '                str(3) = aUrl.Description.ToString
-        '                itm = New ListViewItem(str)
-        '                lvTrailers.Items.Add(itm)
-        '                ID = ID + 1
-        '            Next
-        '        Else
-        '            MsgBox(Master.eLang.GetString(1161, "No trailers could be found. Please check to see if any trailer scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(225, "No Trailers Found"))
-        '        End If
-        '    Else
-        '        MsgBox(Master.eLang.GetString(1161, "No trailers could be found. Please check to see if any trailer scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(225, "No Trailers Found"))
-        '    End If
-        'End If
-        'Me.pnlStatus.Visible = False
-        'Me.lvTrailers.Enabled = True
-        'Me.txtManualTrailerLink.Enabled = True
-        'Me.txtManual.Enabled = True
-        'Me.btnBrowse.Enabled = True
-        'Me.btnTrailerScrape.Enabled = True
-        'Me.SetEnabled(False)
+                        lbFormats.DataSource = YouTube.VideoLinks.Values.ToList
+                        lbFormats.DisplayMember = "Description"
+                        lbFormats.ValueMember = "URL"
+
+                        If YouTube.VideoLinks.ContainsKey(Master.eSettings.MovieTrailerPrefQual) Then
+                            Me.lbFormats.SelectedIndex = YouTube.VideoLinks.IndexOfKey(Master.eSettings.MovieTrailerPrefQual)
+                        ElseIf Me.lbFormats.Items.Count = 1 Then
+                            Me.lbFormats.SelectedIndex = 0
+                        End If
+                        Me.lbFormats.Enabled = True
+                    Else
+                        MsgBox(Master.eLang.GetString(1170, "Trailer could not be parsed"), MsgBoxStyle.Information, Master.eLang.GetString(1134, "Error"))
+                    End If
+                ElseIf Me._isIMDb Then
+                    If IMDb.VideoLinks.Count > 0 Then
+                        Me.pnlStatus.Visible = False
+
+                        lbFormats.DataSource = IMDb.VideoLinks.Values.ToList
+                        lbFormats.DisplayMember = "Description"
+                        lbFormats.ValueMember = "URL"
+
+                        If IMDb.VideoLinks.ContainsKey(Master.eSettings.MovieTrailerPrefQual) Then
+                            Me.lbFormats.SelectedIndex = IMDb.VideoLinks.IndexOfKey(Master.eSettings.MovieTrailerPrefQual)
+                        ElseIf Me.lbFormats.Items.Count = 1 Then
+                            Me.lbFormats.SelectedIndex = 0
+                        End If
+                        Me.lbFormats.Enabled = True
+                    Else
+                        MsgBox(Master.eLang.GetString(1170, "Trailer could not be parsed"), MsgBoxStyle.Information, Master.eLang.GetString(1134, "Error"))
+                    End If
+                End If
+            Else
+                MsgBox(Master.eLang.GetString(1170, "Trailer could not be parsed"), MsgBoxStyle.Information, Master.eLang.GetString(1134, "Error"))
+            End If
+        End If
+        Me.pnlStatus.Visible = False
     End Sub
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
