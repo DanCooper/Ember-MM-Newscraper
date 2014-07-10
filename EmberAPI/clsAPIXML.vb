@@ -31,7 +31,7 @@ Imports NLog
 Public Class APIXML
 
 #Region "Fields"
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared logger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger()
 
     Public Shared lFlags As New List(Of Flag)
     Public Shared alGenres As New List(Of String)

@@ -25,7 +25,7 @@ Public Class ListViewColumnSorter
     Implements System.Collections.IComparer
 
 #Region "Fields"
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared logger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger()
 
     Private ByText As Boolean
     Private ColumnToSort As Integer

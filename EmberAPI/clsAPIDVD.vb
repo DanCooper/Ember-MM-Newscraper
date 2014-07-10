@@ -28,7 +28,7 @@ Public Class DVD
 
     Private Const ifo_CellInfoSize As Short = 24
     Private Const ifo_SECTOR_SIZE As Short = 2048
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared logger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger()
 
     'Variables
     Dim mAudioModes As New Hashtable

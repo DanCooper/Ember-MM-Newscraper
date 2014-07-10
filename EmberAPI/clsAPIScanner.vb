@@ -26,7 +26,7 @@ Imports NLog
 Public Class Scanner
 
 #Region "Fields"
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared logger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger()
 
     Public htTVShows As New Hashtable
     Public MoviePaths As New List(Of String)

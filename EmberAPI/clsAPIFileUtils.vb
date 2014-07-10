@@ -28,7 +28,7 @@ Namespace FileUtils
     Public Class Common
 
 #Region "Fields"
-        Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+        Shared logger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger()
 #End Region 'Fields
 
 #Region "Methods"
@@ -223,7 +223,7 @@ Namespace FileUtils
 
     Public Class Delete
 #Region "Fields"
-        Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+        Shared logger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger()
 #End Region 'Fields
 
 #Region "Methods"
@@ -500,7 +500,7 @@ Namespace FileUtils
 
     Public Class DragAndDrop
 #Region "Fields"
-        Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+        Shared logger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger()
 #End Region 'Fields
 
 #Region "Methods"
@@ -570,7 +570,7 @@ Namespace FileUtils
 
     Public Class GetFilenameList
 #Region "Fields"
-        Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+        Shared logger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger()
 #End Region 'Fields
 
 #Region "Methods"
@@ -1557,7 +1557,7 @@ Namespace FileUtils
     ''' <remarks></remarks>
     Public Module FileSorter
 #Region "Fields"
-        Dim logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+        Dim logger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger()
 #End Region 'Fields
 
 #Region "Events"

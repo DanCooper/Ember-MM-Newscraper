@@ -25,7 +25,7 @@ Imports NLog
 Public Class Themes
     Implements IDisposable
 #Region "Fields"
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared logger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger()
 
     Private _ext As String
     Private _title As String

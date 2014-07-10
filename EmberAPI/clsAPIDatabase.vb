@@ -33,7 +33,7 @@ Imports NLog
 Public Class Database
 
 #Region "Fields"
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared logger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger()
 
     ReadOnly _connStringTemplate As String = "Data Source=""{0}"";Version=3;Compress=True"
     Protected _myvideosDBConn As SQLiteConnection
