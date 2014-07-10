@@ -38,6 +38,7 @@ Public Class Trailers
     Private _isNew As Boolean
     Private _length As String
     Private _quality As Enums.TrailerQuality
+    Private _source As String
     Private _url As String
     Private _weburl As String
 
@@ -122,6 +123,20 @@ Public Class Trailers
         End Set
     End Property
     ''' <summary>
+    ''' trailer source (YouTube, IMDB, Apple, TMDB...)
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public Property Source() As String
+        Get
+            Return _source
+        End Get
+        Set(ByVal value As String)
+            _source = value
+        End Set
+    End Property
+    ''' <summary>
     ''' download URL of the trailer
     ''' </summary>
     ''' <value></value>
@@ -171,6 +186,7 @@ Public Class Trailers
         _isNew = False
         _length = String.Empty
         _quality = Enums.TrailerQuality.OTHERS
+        _source = String.Empty
         _url = String.Empty
         _weburl = String.Empty
     End Sub
@@ -240,8 +256,6 @@ Public Class Trailers
                     Me._ms.Write(StreamBuffer, 0, StreamBuffer.Length)
 
                     StreamBuffer = Nothing
-                    '_ms.SetLength(fsImage.Length)
-                    'fsImage.Read(_ms.GetBuffer(), 0, Convert.ToInt32(fsImage.Length))
                     Me._ms.Flush()
 
                     Me._ext = Path.GetExtension(sPath)
@@ -301,7 +315,7 @@ Public Class Trailers
         Try
             For Each aUrl As Trailers In UrlList
                 Dim tLink As String = String.Empty
-                If Regex.IsMatch(aUrl.URL, "http:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") Then
+                If Regex.IsMatch(aUrl.URL, "https?:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") Then
                     Dim YT As New YouTube.Scraper
                     YT.GetVideoLinks(aUrl.URL)
                     If YT.VideoLinks.ContainsKey(Master.eSettings.MovieTrailerPrefQual) Then
@@ -396,7 +410,7 @@ Public Class Trailers
                                 End If
                         End Select
                     End If
-                ElseIf Regex.IsMatch(aUrl.URL, "http:\/\/.*imdb.*") Then
+                ElseIf Regex.IsMatch(aUrl.URL, "https?:\/\/.*imdb.*") Then
                     Dim IMDb As New IMDb.Scraper
                     IMDb.GetVideoLinks(aUrl.URL)
                     If IMDb.VideoLinks.ContainsKey(Master.eSettings.MovieTrailerPrefQual) Then

@@ -69,7 +69,7 @@ Public Class dlgTrailerFormat
                 _isYouTube = True
                 YouTube.GetVideoLinks(Me._url)
                 Args.bType = True
-            ElseIf Regex.IsMatch(Me._url, "http:\/\/.*imdb.*") Then
+            ElseIf Regex.IsMatch(Me._url, "https?:\/\/.*imdb.*") Then
                 _isIMDb = True
                 _isYouTube = False
                 IMDb.GetVideoLinks(Me._url)
