@@ -31,7 +31,7 @@ Namespace Apple
     Public Class Scraper
 
 #Region "Fields"
-        Shared logger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger()
+        Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
         Private _VideoLinks As VideoLinkItemCollection
 

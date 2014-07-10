@@ -27,7 +27,7 @@ Imports NLog
 Public Class ImageUtils
 
 #Region "Fields"
-    Shared logger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
     Public Const DefaultPaddingARGB As Integer = -16777216  'This is FF000000, which is completely opaque black
 #End Region
 

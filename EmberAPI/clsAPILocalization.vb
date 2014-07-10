@@ -30,9 +30,9 @@ Imports System.Runtime.Serialization
 Public Class Localization
 
 #Region "Fields"
-    Shared logger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger()
-    Shared help_logger As NLog.Logger = NLog.LogManager.GetLogger("HelpString")
-    Shared lang_logger As NLog.Logger = NLog.LogManager.GetLogger("LanguageString")
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared help_logger As Logger = NLog.LogManager.GetLogger("HelpString")
+    Shared lang_logger As Logger = NLog.LogManager.GetLogger("LanguageString")
 
     Private Shared htArrayStrings As New List(Of Locs)
     Private Shared htHelpStrings As New clsXMLLanguageHelp

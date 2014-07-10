@@ -36,7 +36,7 @@ Public Class HTTP
 
 
 #Region "Fields"
-    Shared logger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     Private dThread As New Threading.Thread(AddressOf DownloadImage)
     Private wrRequest As HttpWebRequest

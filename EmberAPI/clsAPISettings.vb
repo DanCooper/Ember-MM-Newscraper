@@ -28,7 +28,7 @@ Imports NLog
 Public Class Settings
 
 #Region "Fields"
-    Shared logger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     Private Shared _XMLSettings As New clsXMLSettings
 

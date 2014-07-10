@@ -31,7 +31,7 @@ Public Class Images
     '2013/11/28 Dekker500 - This class needs some serious love. Clear candidate for polymorphism. Images should be root, with posters, fanart, etc as children. None of this if/else stuff to confuse the issue. I will re-visit later
 
 #Region "Fields"
-    Shared logger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
 	Private _ms As MemoryStream
     Private Ret As Byte()

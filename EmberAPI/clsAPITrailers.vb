@@ -31,7 +31,7 @@ Public Class Trailers
     Implements IDisposable
 
 #Region "Fields"
-    Shared logger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     Private _ext As String
     Private _description As String

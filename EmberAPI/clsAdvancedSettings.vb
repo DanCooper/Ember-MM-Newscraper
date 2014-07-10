@@ -30,7 +30,7 @@ Public Class clsAdvancedSettings
     Implements IDisposable
 
 #Region "Fields"
-    Shared logger As NLog.Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
     Private Shared _AdvancedSettings As New clsXMLAdvancedSettings
 
     Private Shared _DoNotSave As Boolean = False
