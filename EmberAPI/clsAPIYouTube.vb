@@ -292,6 +292,7 @@ Namespace YouTube
         Public Shared Function SearchOnYouTube(ByVal mName As String) As List(Of Trailers)
             Dim tHTTP As New HTTP
             Dim tList As New List(Of Trailers)
+            Dim tLength As String = String.Empty
             Dim tLink As String = String.Empty
             Dim tName As String = String.Empty
 
@@ -300,15 +301,16 @@ Namespace YouTube
                 Html = String.Empty
             End If
 
-            Dim Pattern As String = "<div class=""yt-lockup-content"">.*?<a href=""(?<LINK>.*?)"".*?dir=""ltr"">(?<NAME>.*?)</a>"
+            Dim Pattern As String = "<li><div class=""yt-lockup yt-lockup-tile yt-lockup-video yt-uix-tile clearfix"".*?<span class=""video-time"">(?<TIME>.*?)</span>.*?<a href=""(?<LINK>.*?)"".*?dir=""ltr"">(?<NAME>.*?)</a>"
 
             Dim Result As MatchCollection = Regex.Matches(Html, Pattern, RegexOptions.Singleline)
 
             For ctr As Integer = 0 To Result.Count - 1
-                tLink = String.Concat("http://www.youtube.com", Result.Item(ctr).Groups(1).Value)
-                tName = Web.HttpUtility.HtmlDecode(Result.Item(ctr).Groups(2).Value)
+                tLength = Result.Item(ctr).Groups(1).Value
+                tLink = String.Concat("http://www.youtube.com", Result.Item(ctr).Groups(2).Value)
+                tName = Web.HttpUtility.HtmlDecode(Result.Item(ctr).Groups(3).Value)
                 If Not tName = "__title__" AndAlso Not tName = "__channel_name__" Then
-                    tList.Add(New Trailers With {.URL = tLink, .WebURL = tLink, .Description = tName})
+                    tList.Add(New Trailers With {.URL = tLink, .WebURL = tLink, .Description = tName, .Lenght = tLength})
                 End If
             Next
 
