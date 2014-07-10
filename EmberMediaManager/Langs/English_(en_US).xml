@@ -1257,4 +1257,5 @@
   <string id="1167">Ordering</string>
   <string id="1168">Blank</string>
   <string id="1169">Please use the {0}{1}{0} button for this trailer</string>
+  <string id="1170">Trailer could not be parsed</string>
 </strings>
