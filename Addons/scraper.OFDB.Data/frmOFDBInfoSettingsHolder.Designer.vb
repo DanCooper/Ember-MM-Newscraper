@@ -25,11 +25,12 @@ Partial Class frmOFDBInfoSettingsHolder
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmOFDBInfoSettingsHolder))
         Me.lblVersion = New System.Windows.Forms.Label()
         Me.gbOptions = New System.Windows.Forms.GroupBox()
-        Me.chkOFDBCleanPlotOutline = New System.Windows.Forms.CheckBox()
-        Me.chkOFDBGenre = New System.Windows.Forms.CheckBox()
-        Me.chkOFDBPlot = New System.Windows.Forms.CheckBox()
-        Me.chkOFDBOutline = New System.Windows.Forms.CheckBox()
-        Me.chkOFDBTitle = New System.Windows.Forms.CheckBox()
+        Me.chkRating = New System.Windows.Forms.CheckBox()
+        Me.chkCleanPlotOutline = New System.Windows.Forms.CheckBox()
+        Me.chkGenre = New System.Windows.Forms.CheckBox()
+        Me.chkPlot = New System.Windows.Forms.CheckBox()
+        Me.chkOutline = New System.Windows.Forms.CheckBox()
+        Me.chkTitle = New System.Windows.Forms.CheckBox()
         Me.cbEnabled = New System.Windows.Forms.CheckBox()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.Label2 = New System.Windows.Forms.Label()
@@ -38,7 +39,6 @@ Partial Class frmOFDBInfoSettingsHolder
         Me.pnlSettings = New System.Windows.Forms.Panel()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
-        Me.chkOFDBRating = New System.Windows.Forms.CheckBox()
         Me.gbOptions.SuspendLayout()
         Me.Panel1.SuspendLayout()
         Me.pnlSettings.SuspendLayout()
@@ -55,12 +55,12 @@ Partial Class frmOFDBInfoSettingsHolder
         '
         'gbOptions
         '
-        Me.gbOptions.Controls.Add(Me.chkOFDBRating)
-        Me.gbOptions.Controls.Add(Me.chkOFDBCleanPlotOutline)
-        Me.gbOptions.Controls.Add(Me.chkOFDBGenre)
-        Me.gbOptions.Controls.Add(Me.chkOFDBPlot)
-        Me.gbOptions.Controls.Add(Me.chkOFDBOutline)
-        Me.gbOptions.Controls.Add(Me.chkOFDBTitle)
+        Me.gbOptions.Controls.Add(Me.chkRating)
+        Me.gbOptions.Controls.Add(Me.chkCleanPlotOutline)
+        Me.gbOptions.Controls.Add(Me.chkGenre)
+        Me.gbOptions.Controls.Add(Me.chkPlot)
+        Me.gbOptions.Controls.Add(Me.chkOutline)
+        Me.gbOptions.Controls.Add(Me.chkTitle)
         Me.gbOptions.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbOptions.Location = New System.Drawing.Point(11, 31)
         Me.gbOptions.Name = "gbOptions"
@@ -69,55 +69,65 @@ Partial Class frmOFDBInfoSettingsHolder
         Me.gbOptions.TabStop = False
         Me.gbOptions.Text = "OFDB (German)"
         '
-        'chkOFDBCleanPlotOutline
+        'chkRating
         '
-        Me.chkOFDBCleanPlotOutline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkOFDBCleanPlotOutline.Location = New System.Drawing.Point(6, 88)
-        Me.chkOFDBCleanPlotOutline.Name = "chkOFDBCleanPlotOutline"
-        Me.chkOFDBCleanPlotOutline.Size = New System.Drawing.Size(194, 17)
-        Me.chkOFDBCleanPlotOutline.TabIndex = 4
-        Me.chkOFDBCleanPlotOutline.Text = "Clean Plot/Outline"
-        Me.chkOFDBCleanPlotOutline.UseVisualStyleBackColor = True
+        Me.chkRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkRating.Location = New System.Drawing.Point(6, 105)
+        Me.chkRating.Name = "chkRating"
+        Me.chkRating.Size = New System.Drawing.Size(194, 17)
+        Me.chkRating.TabIndex = 5
+        Me.chkRating.Text = "Rating"
+        Me.chkRating.UseVisualStyleBackColor = True
         '
-        'chkOFDBGenre
+        'chkCleanPlotOutline
         '
-        Me.chkOFDBGenre.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkOFDBGenre.Location = New System.Drawing.Point(6, 70)
-        Me.chkOFDBGenre.Name = "chkOFDBGenre"
-        Me.chkOFDBGenre.Size = New System.Drawing.Size(194, 17)
-        Me.chkOFDBGenre.TabIndex = 3
-        Me.chkOFDBGenre.Text = "Use OFDB Genre"
-        Me.chkOFDBGenre.UseVisualStyleBackColor = True
+        Me.chkCleanPlotOutline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkCleanPlotOutline.Location = New System.Drawing.Point(6, 88)
+        Me.chkCleanPlotOutline.Name = "chkCleanPlotOutline"
+        Me.chkCleanPlotOutline.Size = New System.Drawing.Size(194, 17)
+        Me.chkCleanPlotOutline.TabIndex = 4
+        Me.chkCleanPlotOutline.Text = "Clean Plot/Outline"
+        Me.chkCleanPlotOutline.UseVisualStyleBackColor = True
         '
-        'chkOFDBPlot
+        'chkGenre
         '
-        Me.chkOFDBPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkOFDBPlot.Location = New System.Drawing.Point(6, 53)
-        Me.chkOFDBPlot.Name = "chkOFDBPlot"
-        Me.chkOFDBPlot.Size = New System.Drawing.Size(194, 17)
-        Me.chkOFDBPlot.TabIndex = 2
-        Me.chkOFDBPlot.Text = "Use OFDB Plot"
-        Me.chkOFDBPlot.UseVisualStyleBackColor = True
+        Me.chkGenre.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkGenre.Location = New System.Drawing.Point(6, 70)
+        Me.chkGenre.Name = "chkGenre"
+        Me.chkGenre.Size = New System.Drawing.Size(194, 17)
+        Me.chkGenre.TabIndex = 3
+        Me.chkGenre.Text = "Genre"
+        Me.chkGenre.UseVisualStyleBackColor = True
         '
-        'chkOFDBOutline
+        'chkPlot
         '
-        Me.chkOFDBOutline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkOFDBOutline.Location = New System.Drawing.Point(6, 36)
-        Me.chkOFDBOutline.Name = "chkOFDBOutline"
-        Me.chkOFDBOutline.Size = New System.Drawing.Size(194, 17)
-        Me.chkOFDBOutline.TabIndex = 1
-        Me.chkOFDBOutline.Text = "Use OFDB Outline"
-        Me.chkOFDBOutline.UseVisualStyleBackColor = True
+        Me.chkPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkPlot.Location = New System.Drawing.Point(6, 53)
+        Me.chkPlot.Name = "chkPlot"
+        Me.chkPlot.Size = New System.Drawing.Size(194, 17)
+        Me.chkPlot.TabIndex = 2
+        Me.chkPlot.Text = "Plot"
+        Me.chkPlot.UseVisualStyleBackColor = True
         '
-        'chkOFDBTitle
+        'chkOutline
         '
-        Me.chkOFDBTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkOFDBTitle.Location = New System.Drawing.Point(6, 19)
-        Me.chkOFDBTitle.Name = "chkOFDBTitle"
-        Me.chkOFDBTitle.Size = New System.Drawing.Size(194, 17)
-        Me.chkOFDBTitle.TabIndex = 0
-        Me.chkOFDBTitle.Text = "Use OFDB Title"
-        Me.chkOFDBTitle.UseVisualStyleBackColor = True
+        Me.chkOutline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkOutline.Location = New System.Drawing.Point(6, 36)
+        Me.chkOutline.Name = "chkOutline"
+        Me.chkOutline.Size = New System.Drawing.Size(194, 17)
+        Me.chkOutline.TabIndex = 1
+        Me.chkOutline.Text = "Outline"
+        Me.chkOutline.UseVisualStyleBackColor = True
+        '
+        'chkTitle
+        '
+        Me.chkTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkTitle.Location = New System.Drawing.Point(6, 19)
+        Me.chkTitle.Name = "chkTitle"
+        Me.chkTitle.Size = New System.Drawing.Size(194, 17)
+        Me.chkTitle.TabIndex = 0
+        Me.chkTitle.Text = "Title"
+        Me.chkTitle.UseVisualStyleBackColor = True
         '
         'cbEnabled
         '
@@ -209,16 +219,6 @@ Partial Class frmOFDBInfoSettingsHolder
         Me.PictureBox1.TabIndex = 96
         Me.PictureBox1.TabStop = False
         '
-        'chkOFDBRating
-        '
-        Me.chkOFDBRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkOFDBRating.Location = New System.Drawing.Point(6, 105)
-        Me.chkOFDBRating.Name = "chkOFDBRating"
-        Me.chkOFDBRating.Size = New System.Drawing.Size(194, 17)
-        Me.chkOFDBRating.TabIndex = 5
-        Me.chkOFDBRating.Text = "Rating"
-        Me.chkOFDBRating.UseVisualStyleBackColor = True
-        '
         'frmOFDBInfoSettingsHolder
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -245,10 +245,10 @@ Partial Class frmOFDBInfoSettingsHolder
     End Sub
     Friend WithEvents lblVersion As System.Windows.Forms.Label
     Friend WithEvents gbOptions As System.Windows.Forms.GroupBox
-    Friend WithEvents chkOFDBGenre As System.Windows.Forms.CheckBox
-    Friend WithEvents chkOFDBPlot As System.Windows.Forms.CheckBox
-    Friend WithEvents chkOFDBOutline As System.Windows.Forms.CheckBox
-    Friend WithEvents chkOFDBTitle As System.Windows.Forms.CheckBox
+    Friend WithEvents chkGenre As System.Windows.Forms.CheckBox
+    Friend WithEvents chkPlot As System.Windows.Forms.CheckBox
+    Friend WithEvents chkOutline As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTitle As System.Windows.Forms.CheckBox
     Friend WithEvents cbEnabled As System.Windows.Forms.CheckBox
     Friend WithEvents Panel1 As System.Windows.Forms.Panel
     Friend WithEvents pnlSettings As System.Windows.Forms.Panel
@@ -257,7 +257,7 @@ Partial Class frmOFDBInfoSettingsHolder
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
-    Friend WithEvents chkOFDBCleanPlotOutline As System.Windows.Forms.CheckBox
-    Friend WithEvents chkOFDBRating As System.Windows.Forms.CheckBox
+    Friend WithEvents chkCleanPlotOutline As System.Windows.Forms.CheckBox
+    Friend WithEvents chkRating As System.Windows.Forms.CheckBox
 
 End Class

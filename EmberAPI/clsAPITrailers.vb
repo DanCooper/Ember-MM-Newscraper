@@ -36,7 +36,7 @@ Public Class Trailers
     Private _ext As String
     Private _description As String
     Private _isNew As Boolean
-    Private _length As String
+    Private _duration As String
     Private _quality As Enums.TrailerQuality
     Private _source As String
     Private _url As String
@@ -100,12 +100,12 @@ Public Class Trailers
     ''' <value></value>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Property Lenght() As String
+    Public Property Duration() As String
         Get
-            Return _length
+            Return _duration
         End Get
         Set(ByVal value As String)
-            _length = value
+            _duration = value
         End Set
     End Property
     ''' <summary>
@@ -184,7 +184,7 @@ Public Class Trailers
         _ext = String.Empty
         _description = String.Empty
         _isNew = False
-        _length = String.Empty
+        _duration = String.Empty
         _quality = Enums.TrailerQuality.OTHERS
         _source = String.Empty
         _url = String.Empty

@@ -187,7 +187,7 @@ Public Class frmTMDBInfoSettingsHolder
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkTMDBCleanPlotOutline_CheckedChanged(sender As Object, e As EventArgs) Handles chkTMDBCleanPlotOutline.CheckedChanged
+    Private Sub chkTMDBCleanPlotOutline_CheckedChanged(sender As Object, e As EventArgs) Handles chkCleanPlotOutline.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
@@ -236,6 +236,7 @@ Public Class frmTMDBInfoSettingsHolder
         Me.Label1.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), vbCrLf)
         Me.cbEnabled.Text = Master.eLang.GetString(774, "Enabled")
         Me.chkCast.Text = Master.eLang.GetString(63, "Cast")
+        Me.chkCleanPlotOutline.Text = Master.eLang.GetString(985, "Clean Plot/Outline")
         Me.chkCollection.Text = Master.eLang.GetString(1135, "Collection")
         Me.chkCountry.Text = Master.eLang.GetString(301, "Country")
         Me.chkCrew.Text = Master.eLang.GetString(909, "Crew")

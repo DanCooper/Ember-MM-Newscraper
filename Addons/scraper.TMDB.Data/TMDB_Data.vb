@@ -153,7 +153,7 @@ Public Class TMDB_Data
         _setup.chkRelease.Checked = ConfigOptions.bRelease
         _setup.chkRuntime.Checked = ConfigOptions.bRuntime
         _setup.chkStudio.Checked = ConfigOptions.bStudio
-        _setup.chkTMDBCleanPlotOutline.Checked = ConfigOptions.bCleanPlotOutline
+        _setup.chkCleanPlotOutline.Checked = ConfigOptions.bCleanPlotOutline
         _setup.chkTagline.Checked = ConfigOptions.bTagline
         _setup.chkTitle.Checked = ConfigOptions.bTitle
         _setup.chkTrailer.Checked = ConfigOptions.bTrailer
@@ -258,7 +258,7 @@ Public Class TMDB_Data
     Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.EmberMovieScraperModule_Data.SaveSetupScraper
         ConfigOptions.bCast = _setup.chkCast.Checked
         ConfigOptions.bCert = ConfigOptions.bMPAA
-        ConfigOptions.bCleanPlotOutline = _setup.chkTMDBCleanPlotOutline.Checked
+        ConfigOptions.bCleanPlotOutline = _setup.chkCleanPlotOutline.Checked
         ConfigOptions.bCollection = _setup.chkCollection.Checked
         ConfigOptions.bCountry = _setup.chkCountry.Checked
         ConfigOptions.bDirector = _setup.chkCrew.Checked
