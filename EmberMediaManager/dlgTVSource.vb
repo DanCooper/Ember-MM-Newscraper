@@ -143,6 +143,11 @@ Public Class dlgTVSource
                         End If
                     End Using
                 End Using
+            Else
+                If Me.cbSourceLanguage.Items.Count > 0 Then
+                    Me.cbSourceLanguage.Text = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.TVGeneralLanguage).name
+                End If
+                Me.cbSourceOrdering.SelectedIndex = Enums.Ordering.Standard
             End If
         Catch ex As Exception
             Logger.Error(New StackFrame().GetMethod().Name,ex)

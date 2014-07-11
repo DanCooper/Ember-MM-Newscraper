@@ -131,6 +131,11 @@ Public Class dlgWizard
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
+    Private Sub cbTVGeneralLang_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbTVGeneralLang.SelectedIndexChanged
+        If Not String.IsNullOrEmpty(Me.cbTVGeneralLang.Text) Then
+            Master.eSettings.TVGeneralLanguage = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = Me.cbTVGeneralLang.Text).abbreviation
+        End If
+    End Sub
 
     Private Sub chkMovieUseBoxee_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieUseBoxee.CheckedChanged
 
@@ -1003,9 +1008,9 @@ Public Class dlgWizard
             .GeneralLanguage = tLang
 
             If Master.eSettings.TVGeneralLanguages.Language.Count > 0 Then
-                Dim tLang As String = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = Me.cbTVGeneralLang.Text).abbreviation
-                If Not String.IsNullOrEmpty(tLang) Then
-                    .TVGeneralLanguage = tLang
+                Dim tvLang As String = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = Me.cbTVGeneralLang.Text).abbreviation
+                If Not String.IsNullOrEmpty(tvLang) Then
+                    .TVGeneralLanguage = tvLang
                 Else
                     .TVGeneralLanguage = "en"
                 End If

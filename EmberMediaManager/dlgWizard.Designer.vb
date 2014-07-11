@@ -234,6 +234,7 @@ Partial Class dlgWizard
         Me.ColumnHeader2 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader3 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader4 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader5 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.btnTVRemoveSource = New System.Windows.Forms.Button()
         Me.btnTVAddSource = New System.Windows.Forms.Button()
         Me.Label9 = New System.Windows.Forms.Label()
@@ -273,7 +274,6 @@ Partial Class dlgWizard
         Me.tpTVFileNamingExpert = New System.Windows.Forms.TabPage()
         Me.Label11 = New System.Windows.Forms.Label()
         Me.fbdBrowse = New System.Windows.Forms.FolderBrowserDialog()
-        Me.ColumnHeader5 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.pnlWelcome.SuspendLayout()
         Me.pnlMovieSettings.SuspendLayout()
         Me.gbMovieFileNaming.SuspendLayout()
@@ -2509,6 +2509,10 @@ Partial Class dlgWizard
         '
         Me.ColumnHeader4.Text = "Language"
         '
+        'ColumnHeader5
+        '
+        Me.ColumnHeader5.Text = "Ordering"
+        '
         'btnTVRemoveSource
         '
         Me.btnTVRemoveSource.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
@@ -2943,10 +2947,6 @@ Partial Class dlgWizard
         Me.Label11.TabIndex = 0
         Me.Label11.Text = resources.GetString("Label11.Text")
         Me.Label11.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'ColumnHeader5
-        '
-        Me.ColumnHeader5.Text = "Ordering"
         '
         'dlgWizard
         '
