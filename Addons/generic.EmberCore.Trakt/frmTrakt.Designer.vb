@@ -44,7 +44,7 @@ Partial Class frmTrakt
         'txtTraktUsername
         '
         Me.txtTraktUsername.Enabled = False
-        Me.txtTraktUsername.Location = New System.Drawing.Point(78, 51)
+        Me.txtTraktUsername.Location = New System.Drawing.Point(103, 47)
         Me.txtTraktUsername.Name = "txtTraktUsername"
         Me.txtTraktUsername.Size = New System.Drawing.Size(167, 20)
         Me.txtTraktUsername.TabIndex = 0
@@ -52,7 +52,7 @@ Partial Class frmTrakt
         'lblTraktUsername
         '
         Me.lblTraktUsername.AutoSize = True
-        Me.lblTraktUsername.Location = New System.Drawing.Point(19, 51)
+        Me.lblTraktUsername.Location = New System.Drawing.Point(19, 50)
         Me.lblTraktUsername.Name = "lblTraktUsername"
         Me.lblTraktUsername.Size = New System.Drawing.Size(55, 13)
         Me.lblTraktUsername.TabIndex = 1
@@ -119,7 +119,7 @@ Partial Class frmTrakt
         'lblTraktPassword
         '
         Me.lblTraktPassword.AutoSize = True
-        Me.lblTraktPassword.Location = New System.Drawing.Point(19, 77)
+        Me.lblTraktPassword.Location = New System.Drawing.Point(19, 76)
         Me.lblTraktPassword.Name = "lblTraktPassword"
         Me.lblTraktPassword.Size = New System.Drawing.Size(53, 13)
         Me.lblTraktPassword.TabIndex = 37
@@ -128,7 +128,7 @@ Partial Class frmTrakt
         'txtTraktPassword
         '
         Me.txtTraktPassword.Enabled = False
-        Me.txtTraktPassword.Location = New System.Drawing.Point(78, 77)
+        Me.txtTraktPassword.Location = New System.Drawing.Point(103, 73)
         Me.txtTraktPassword.Name = "txtTraktPassword"
         Me.txtTraktPassword.Size = New System.Drawing.Size(167, 20)
         Me.txtTraktPassword.TabIndex = 36

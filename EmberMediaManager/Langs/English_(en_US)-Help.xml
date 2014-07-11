@@ -46,7 +46,7 @@
   <string control="TMDBMovieInfo_btnUp">Move this scraper module up in order. (Scraper modules will be processed in order from top to bottom)</string>
   <string control="TMDBMovieInfo_chkFallBackEng">If no record is available for selected language try English</string>
   <string control="TMDBMovieInfo_cbTMDBPrefLanguage">Selected language for TMDB searches</string>
-  <string control="TMDBMovieInfo_txtTMDBApiKey">API Key from the TMDB site. Sharing the API key is forbidden.</string>
+  <string control="TMDBMovieInfo_txtTMDBApiKey">Private API. Press ENTER at the end to confirm the API</string>
   <string control="TMDBMovieInfo_chkCrew">Enable scraping movie other crew. (Scrape Full Crew must be enabled)</string>
   <string control="TMDBMovieInfo_chkCountry"></string>
   <string control="TMDBMovieInfo_chkStudio">Enable scraping movie studio.</string>
@@ -62,7 +62,7 @@
   <string control="TMDBMovieInfo_chkMPAA">Enable scraping movie MPAA.</string>
   <string control="TMDBMovieInfo_chkYear">Enable scraping movie year.</string>
   <string control="TMDBMovieInfo_chkTitle">Enable scraping movie title.</string>
-  <string control="FanartTVMovieMedia_txtFANARTTVApiKey"></string>
+  <string control="FanartTVMovieMedia_txtFANARTTVApiKey">Private API. Press ENTER at the end to confirm the API</string>
   <string control="FanartTVMovieMedia_btnDown">Move this scraper module down in order. (Scraper modules will be processed in order from top to bottom)</string>
   <string control="FanartTVMovieMedia_btnUp">Move this scraper module up in order. (Scraper modules will be processed in order from top to bottom)</string>
   <string control="FanartTVMovieMedia_cbEnabled">Enable or disable this module.</string>
@@ -77,7 +77,7 @@
   <string control="MPDBMovieMedia_cbEnabled">Enable or disable this module.</string>
   <string control="TMDBMovieMedia_chkFallBackEng">If no record is available for selected language try English</string>
   <string control="TMDBMovieMedia_cbTMDBPrefLanguage">Selected language for TMDB searches</string>
-  <string control="TMDBMovieMedia_txtTMDBApiKey">API Key from the TMDB site. Sharing the API key is forbidden.</string>
+  <string control="TMDBMovieMedia_txtTMDBApiKey">Private API. Press ENTER at the end to confirm the API</string>
   <string control="TMDBMovieMedia_chkScrapePoster">Enable scraping posters from this module. (Refer to global poster settings for more options)</string>
   <string control="TMDBMovieMedia_chkScrapeFanart">Enable scraping fanart from this module. (Refer to global fanart settings for more options)</string>
   <string control="TMDBMovieMedia_btnDown">Move this scraper module down in order. (Scraper modules will be processed in order from top to bottom)</string>
@@ -89,15 +89,15 @@
   <string control="IMDBTrailer_cbEnabled">Enable or disable this module.</string>
   <string control="TMDBTrailer_chkFallBackEng"></string>
   <string control="TMDBTrailer_cbTMDBPrefLanguage"></string>
-  <string control="TMDBTrailer_txtTMDBApiKey"></string>
+  <string control="TMDBTrailer_txtTMDBApiKey">Private API. Press ENTER at the end to confirm the API</string>
   <string control="TMDBTrailer_btnDown">Move this scraper module down in order. (Scraper modules will be processed in order from top to bottom)</string>
   <string control="TMDBTrailer_btnUp">Move this scraper module up in order. (Scraper modules will be processed in order from top to bottom)</string>
   <string control="TMDBTrailer_cbEnabled">Enable or disable this module.</string>
-  <string control="TVDBMedia_txtTVDBApiKey"></string>
+  <string control="TVDBMedia_txtTVDBApiKey">Private API. Press ENTER at the end to confirm the API</string>
   <string control="TVDBMedia_btnDown">Move this scraper module down in order. (Scraper modules will be processed in order from top to bottom)</string>
   <string control="TVDBMedia_cbEnabled">Enable or disable this module.</string>
   <string control="TVDBMedia_btnUp">Move this scraper module up in order. (Scraper modules will be processed in order from top to bottom)</string>
-  <string control="TVDBData_txtTVDBApiKey"></string>
+  <string control="TVDBData_txtTVDBApiKey">Private API. Press ENTER at the end to confirm the API</string>
   <string control="TVDBData_btnDown">Move this scraper module down in order. (Scraper modules will be processed in order from top to bottom)</string>
   <string control="TVDBData_cbEnabled"></string>
   <string control="TVDBData_btnUp">Move this scraper module up in order. (Scraper modules will be processed in order from top to bottom)</string>

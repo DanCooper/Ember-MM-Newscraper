@@ -18,8 +18,8 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 ' #
-' # Dialog size: 1024; 768
-' # Panel size: 750; 500
+' # Dialog size: 1024, 768
+' # Panel size: 750, 500
 ' # Enlarge it to see all the panels.
 
 Imports System
@@ -3652,6 +3652,11 @@ Public Class dlgSettings
         Me.cbTVShowPosterPrefSize.DataSource = items.ToList
         Me.cbTVShowPosterPrefSize.DisplayMember = "Key"
         Me.cbTVShowPosterPrefSize.ValueMember = "Value"
+        Dim items2 As New Dictionary(Of String, Enums.TVEpisodePosterSize)
+        items2.Add("400x225", Enums.TVEpisodePosterSize.SD225)
+        Me.cbTVEpisodePosterPrefSize.DataSource = items2.ToList
+        Me.cbTVEpisodePosterPrefSize.DisplayMember = "Key"
+        Me.cbTVEpisodePosterPrefSize.ValueMember = "Value"
     End Sub
 
     Private Sub LoadTVSeasonBannerTypes()
@@ -4433,6 +4438,7 @@ Public Class dlgSettings
                 .TVSeasonPosterHeight = If(Not String.IsNullOrEmpty(Me.txtTVSeasonPosterHeight.Text), Convert.ToInt32(Me.txtTVSeasonPosterHeight.Text), 0)
                 .TVSeasonPosterOverwrite = Me.chkTVSeasonPosterOverwrite.Checked
                 .TVSeasonPosterPrefSize = DirectCast(Me.cbTVSeasonPosterPrefSize.SelectedIndex, Enums.TVPosterSize)
+                .TVEpisodePosterPrefSize = DirectCast(Me.cbTVEpisodePosterPrefSize.SelectedIndex, Enums.TVEpisodePosterSize)
                 .TVSeasonPosterQual = Me.tbTVSeasonPosterQual.Value
                 .TVSeasonPosterResize = Me.chkTVSeasonPosterResize.Checked
                 .TVSeasonPosterWidth = If(Not String.IsNullOrEmpty(Me.txtTVSeasonPosterWidth.Text), Convert.ToInt32(Me.txtTVSeasonPosterWidth.Text), 0)

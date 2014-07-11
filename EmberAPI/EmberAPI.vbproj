@@ -302,25 +302,25 @@
     <None Include="DB\MyVideosDBSQL_v2.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <Content Include="Settings\DefaultSettings.xml">
+    <Content Include="Defaults\DefaultSettings.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Settings\DefaultAdvancedSettings - MovieSources.xml">
+    <Content Include="Defaults\DefaultAdvancedSettings - MovieSources.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Settings\DefaultAdvancedSettings - VideoFormatConvert.xml">
+    <Content Include="Defaults\DefaultAdvancedSettings - VideoFormatConvert.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Settings\DefaultAdvancedSettings - AudioFormatConvert.xml">
+    <Content Include="Defaults\DefaultAdvancedSettings - AudioFormatConvert.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Settings\DefaultAdvancedSettings.xml">
+    <Content Include="Defaults\DefaultAdvancedSettings.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Settings\DefaultGenres.xml">
+    <Content Include="Defaults\DefaultGenres.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Settings\DefaultRatings.xml">
+    <Content Include="Defaults\DefaultRatings.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="NLog.xsd">
@@ -330,6 +330,18 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
+    <Folder Include="Settings\" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="AXVLC">
+      <Guid>{DF2BBE39-40A8-433B-A279-073F48DA94B6}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

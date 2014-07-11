@@ -89,6 +89,11 @@ Public Class frmFanartTVMediaSettingsHolder
             orderChanged()
         End If
     End Sub
+    Private Sub btnUnlockAPI_Click(sender As Object, e As EventArgs) Handles btnUnlockAPI.Click
+        Me.lblEMMAPI.Visible = False
+        Me.txtFANARTTVApiKey.Enabled = True
+        Me.txtFANARTTVApiKey.Visible = True
+    End Sub
 
     Private Sub cbEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbEnabled.CheckedChanged
         RaiseEvent SetupScraperChanged(cbEnabled.Checked, 0)
@@ -158,6 +163,8 @@ Public Class frmFanartTVMediaSettingsHolder
     End Sub
 
     Sub SetUp()
+        Me.btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API")
+        Me.lblEMMAPI.Text = Master.eLang.GetString(1189, "Ember Media Manager API")
         Me.chkScrapePoster.Text = Master.eLang.GetString(939, "Get Poster")
         Me.chkScrapeFanart.Text = Master.eLang.GetString(940, "Get Fanart")
         Me.chkScrapeBanner.Text = Master.eLang.GetString(1051, "Get Banner")
@@ -178,9 +185,6 @@ Public Class frmFanartTVMediaSettingsHolder
 
     Private Sub txtFANARTTVApiKey_TextEnter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFANARTTVApiKey.Enter
         _api = txtFANARTTVApiKey.Text
-    End Sub
-
-    Private Sub txtFANARTTVApiKey_TextChanged(sender As System.Object, e As System.EventArgs) Handles txtFANARTTVApiKey.TextChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 

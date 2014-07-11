@@ -2294,6 +2294,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVEpisodePosterPrefSize() As Enums.TVEpisodePosterSize
+        Get
+            Return Settings._XMLSettings.TVEpisodePosterPrefSize
+        End Get
+        Set(ByVal value As Enums.TVEpisodePosterSize)
+            Settings._XMLSettings.TVEpisodePosterPrefSize = value
+        End Set
+    End Property
+
     Public Property TVSeasonPosterPrefSize() As Enums.TVPosterSize
         Get
             Return Settings._XMLSettings.tvseasonposterprefsize
@@ -4825,7 +4834,7 @@ Public Class Settings
     Public Sub Clear()
         'Make it simple: load a default values XML file
         Try
-            Dim configpath As String = FileUtils.Common.ReturnSettingsFile("Settings", "DefaultSettings.xml")
+            Dim configpath As String = FileUtils.Common.ReturnSettingsFile("Defaults", "DefaultSettings.xml")
 
             Dim objStreamReader As New StreamReader(configpath)
             Dim xXMLSettings As New XmlSerializer(_XMLSettings.GetType)

@@ -311,7 +311,7 @@ Public Class clsAdvancedSettings
         End If
         _DoNotSave = True
         If loadSingle AndAlso section.Length <> 0 Then
-            aPath = FileUtils.Common.ReturnSettingsFile("Settings", "DefaultAdvancedSettings - " & section & ".xml")
+            aPath = FileUtils.Common.ReturnSettingsFile("Defaults", "DefaultAdvancedSettings - " & section & ".xml")
             Dim objStreamReader As New StreamReader(aPath)
             Dim aAdvancedSettings As New clsXMLAdvancedSettings
             Dim xAdvancedSettings As New XmlSerializer(aAdvancedSettings.GetType)
@@ -322,7 +322,7 @@ Public Class clsAdvancedSettings
         End If
 
         If Not loadSingle Then
-            aPath = FileUtils.Common.ReturnSettingsFile("Settings", "DefaultAdvancedSettings.xml")
+            aPath = FileUtils.Common.ReturnSettingsFile("Defaults", "DefaultAdvancedSettings.xml")
             Dim objStreamReader As New StreamReader(aPath)
             Dim xAdvancedSettings As New XmlSerializer(_AdvancedSettings.GetType)
 

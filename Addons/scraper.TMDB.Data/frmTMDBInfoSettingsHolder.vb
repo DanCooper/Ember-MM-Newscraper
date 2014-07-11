@@ -108,6 +108,12 @@ Public Class frmTMDBInfoSettingsHolder
         End If
     End Sub
 
+    Private Sub btnUnlockAPI_Click(sender As Object, e As EventArgs) Handles btnUnlockAPI.Click
+        Me.lblEMMAPI.Visible = False
+        Me.txtTMDBApiKey.Enabled = True
+        Me.txtTMDBApiKey.Visible = True
+    End Sub
+
     Private Sub cbEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbEnabled.CheckedChanged
         RaiseEvent SetupScraperChanged(cbEnabled.Checked, 0)
     End Sub
@@ -200,9 +206,6 @@ Public Class frmTMDBInfoSettingsHolder
 
     Private Sub txtTMDBApiKey_TextEnter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTMDBApiKey.Enter
         _api = txtTMDBApiKey.Text
-    End Sub
-
-    Private Sub txtTMDBApiKey_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTMDBApiKey.TextChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
@@ -232,7 +235,8 @@ Public Class frmTMDBInfoSettingsHolder
     End Sub
 
     Private Sub SetUp()
-        'Me.chkCertification.Text = Master.eLang.GetString(722, "Certification")
+        Me.btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API")
+        Me.lblEMMAPI.Text = Master.eLang.GetString(1189, "Ember Media Manager API")
         Me.Label1.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), vbCrLf)
         Me.cbEnabled.Text = Master.eLang.GetString(774, "Enabled")
         Me.chkCast.Text = Master.eLang.GetString(63, "Cast")
@@ -265,4 +269,5 @@ Public Class frmTMDBInfoSettingsHolder
 #End Region 'Methods
 
 
+ 
 End Class

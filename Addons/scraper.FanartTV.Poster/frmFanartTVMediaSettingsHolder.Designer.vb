@@ -25,6 +25,7 @@ Partial Class frmFanartTVMediaSettingsHolder
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmFanartTVMediaSettingsHolder))
         Me.pnlSettings = New System.Windows.Forms.Panel()
         Me.gbImages = New System.Windows.Forms.GroupBox()
+        Me.chkScrapeClearArtOnlyHD = New System.Windows.Forms.CheckBox()
         Me.chkScrapeClearLogoOnlyHD = New System.Windows.Forms.CheckBox()
         Me.chkScrapeLandscape = New System.Windows.Forms.CheckBox()
         Me.chkScrapeDiscArt = New System.Windows.Forms.CheckBox()
@@ -47,7 +48,8 @@ Partial Class frmFanartTVMediaSettingsHolder
         Me.btnDown = New System.Windows.Forms.Button()
         Me.btnUp = New System.Windows.Forms.Button()
         Me.cbEnabled = New System.Windows.Forms.CheckBox()
-        Me.chkScrapeClearArtOnlyHD = New System.Windows.Forms.CheckBox()
+        Me.btnUnlockAPI = New System.Windows.Forms.Button()
+        Me.lblEMMAPI = New System.Windows.Forms.Label()
         Me.pnlSettings.SuspendLayout()
         Me.gbImages.SuspendLayout()
         Me.gbAPIKey.SuspendLayout()
@@ -87,6 +89,18 @@ Partial Class frmFanartTVMediaSettingsHolder
         Me.gbImages.TabIndex = 96
         Me.gbImages.TabStop = False
         Me.gbImages.Text = "Images"
+        '
+        'chkScrapeClearArtOnlyHD
+        '
+        Me.chkScrapeClearArtOnlyHD.AutoSize = True
+        Me.chkScrapeClearArtOnlyHD.Enabled = False
+        Me.chkScrapeClearArtOnlyHD.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        Me.chkScrapeClearArtOnlyHD.Location = New System.Drawing.Point(308, 44)
+        Me.chkScrapeClearArtOnlyHD.Name = "chkScrapeClearArtOnlyHD"
+        Me.chkScrapeClearArtOnlyHD.Size = New System.Drawing.Size(69, 17)
+        Me.chkScrapeClearArtOnlyHD.TabIndex = 9
+        Me.chkScrapeClearArtOnlyHD.Text = "Only HD"
+        Me.chkScrapeClearArtOnlyHD.UseVisualStyleBackColor = True
         '
         'chkScrapeClearLogoOnlyHD
         '
@@ -206,6 +220,8 @@ Partial Class frmFanartTVMediaSettingsHolder
         '
         'gbAPIKey
         '
+        Me.gbAPIKey.Controls.Add(Me.lblEMMAPI)
+        Me.gbAPIKey.Controls.Add(Me.btnUnlockAPI)
         Me.gbAPIKey.Controls.Add(Me.cbFANARTTVLanguage)
         Me.gbAPIKey.Controls.Add(Me.lblFANARTTVPrefLanguage)
         Me.gbAPIKey.Controls.Add(Me.pbFANARTTV)
@@ -214,7 +230,7 @@ Partial Class frmFanartTVMediaSettingsHolder
         Me.gbAPIKey.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbAPIKey.Location = New System.Drawing.Point(11, 31)
         Me.gbAPIKey.Name = "gbAPIKey"
-        Me.gbAPIKey.Size = New System.Drawing.Size(513, 102)
+        Me.gbAPIKey.Size = New System.Drawing.Size(591, 102)
         Me.gbAPIKey.TabIndex = 95
         Me.gbAPIKey.TabStop = False
         Me.gbAPIKey.Text = "Fanart.tv"
@@ -243,7 +259,7 @@ Partial Class frmFanartTVMediaSettingsHolder
         'pbFANARTTV
         '
         Me.pbFANARTTV.Image = CType(resources.GetObject("pbFANARTTV.Image"), System.Drawing.Image)
-        Me.pbFANARTTV.Location = New System.Drawing.Point(394, 32)
+        Me.pbFANARTTV.Location = New System.Drawing.Point(569, 37)
         Me.pbFANARTTV.Name = "pbFANARTTV"
         Me.pbFANARTTV.Size = New System.Drawing.Size(16, 16)
         Me.pbFANARTTV.TabIndex = 6
@@ -261,11 +277,13 @@ Partial Class frmFanartTVMediaSettingsHolder
         '
         'txtFANARTTVApiKey
         '
+        Me.txtFANARTTVApiKey.Enabled = False
         Me.txtFANARTTVApiKey.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtFANARTTVApiKey.Location = New System.Drawing.Point(8, 32)
+        Me.txtFANARTTVApiKey.Location = New System.Drawing.Point(194, 37)
         Me.txtFANARTTVApiKey.Name = "txtFANARTTVApiKey"
         Me.txtFANARTTVApiKey.Size = New System.Drawing.Size(369, 22)
         Me.txtFANARTTVApiKey.TabIndex = 1
+        Me.txtFANARTTVApiKey.Visible = False
         '
         'Label1
         '
@@ -345,17 +363,24 @@ Partial Class frmFanartTVMediaSettingsHolder
         Me.cbEnabled.Text = "Enabled"
         Me.cbEnabled.UseVisualStyleBackColor = True
         '
-        'chkScrapeClearArtOnlyHD
+        'btnUnlockAPI
         '
-        Me.chkScrapeClearArtOnlyHD.AutoSize = True
-        Me.chkScrapeClearArtOnlyHD.Enabled = False
-        Me.chkScrapeClearArtOnlyHD.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.chkScrapeClearArtOnlyHD.Location = New System.Drawing.Point(308, 44)
-        Me.chkScrapeClearArtOnlyHD.Name = "chkScrapeClearArtOnlyHD"
-        Me.chkScrapeClearArtOnlyHD.Size = New System.Drawing.Size(69, 17)
-        Me.chkScrapeClearArtOnlyHD.TabIndex = 9
-        Me.chkScrapeClearArtOnlyHD.Text = "Only HD"
-        Me.chkScrapeClearArtOnlyHD.UseVisualStyleBackColor = True
+        Me.btnUnlockAPI.Location = New System.Drawing.Point(9, 36)
+        Me.btnUnlockAPI.Name = "btnUnlockAPI"
+        Me.btnUnlockAPI.Size = New System.Drawing.Size(179, 23)
+        Me.btnUnlockAPI.TabIndex = 9
+        Me.btnUnlockAPI.Text = "Use my own API"
+        Me.btnUnlockAPI.UseVisualStyleBackColor = True
+        '
+        'lblEMMAPI
+        '
+        Me.lblEMMAPI.AutoSize = True
+        Me.lblEMMAPI.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        Me.lblEMMAPI.Location = New System.Drawing.Point(194, 41)
+        Me.lblEMMAPI.Name = "lblEMMAPI"
+        Me.lblEMMAPI.Size = New System.Drawing.Size(142, 13)
+        Me.lblEMMAPI.TabIndex = 10
+        Me.lblEMMAPI.Text = "Ember Media Manager API"
         '
         'frmFanartTVMediaSettingsHolder
         '
@@ -409,5 +434,7 @@ Partial Class frmFanartTVMediaSettingsHolder
     Friend WithEvents chkScrapeBanner As System.Windows.Forms.CheckBox
     Friend WithEvents chkScrapeClearLogoOnlyHD As System.Windows.Forms.CheckBox
     Friend WithEvents chkScrapeClearArtOnlyHD As System.Windows.Forms.CheckBox
+    Friend WithEvents btnUnlockAPI As System.Windows.Forms.Button
+    Friend WithEvents lblEMMAPI As System.Windows.Forms.Label
 
 End Class

@@ -819,6 +819,10 @@ Public Class Enums
         HD1000 = 0      'TVDB has only 680x1000
     End Enum
 
+    Public Enum TVEpisodePosterSize As Integer
+        SD225 = 0      'TVDB has only 400 x 300 (400x225 for 16:9 images)
+    End Enum
+
     Public Enum TVSeasonPosterType As Integer
         None = 0
         Poster = 1

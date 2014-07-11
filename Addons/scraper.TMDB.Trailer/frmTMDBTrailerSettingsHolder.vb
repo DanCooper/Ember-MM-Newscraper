@@ -62,7 +62,6 @@ Public Class frmTMDBTrailerSettingsHolder
 #End Region 'Events
 
 #Region "Methods"
-
     Private Sub btnDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDown.Click
         Dim order As Integer = ModulesManager.Instance.externalTrailerScrapersModules.FirstOrDefault(Function(p) p.AssemblyName = TMDB_Trailer._AssemblyName).ScraperOrder
         If order < ModulesManager.Instance.externalTrailerScrapersModules.Count - 1 Then
@@ -111,13 +110,12 @@ Public Class frmTMDBTrailerSettingsHolder
         Me.gbSettings.Text = Master.eLang.GetString(937, "TMDB")
         Me.chkFallBackEng.Text = Master.eLang.GetString(922, "Fall back on english")
         Me.Label2.Text = Master.eLang.GetString(741, "Preferred Language:")
+        Me.btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API")
+        Me.lblEMMAPI.Text = Master.eLang.GetString(1189, "Ember Media Manager API")
     End Sub
 
     Private Sub txtTMDBApiKey_TextEnter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTMDBApiKey.Enter
         _api = txtTMDBApiKey.Text
-    End Sub
-
-    Private Sub txtTMDBApiKey_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTMDBApiKey.TextChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
@@ -138,7 +136,15 @@ Public Class frmTMDBTrailerSettingsHolder
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
+    Private Sub btnUnlockAPI_Click(sender As Object, e As EventArgs) Handles btnUnlockAPI.Click
+        Me.lblEMMAPI.Visible = False
+        Me.txtTMDBApiKey.Enabled = True
+        Me.txtTMDBApiKey.Visible = True
+    End Sub
 
 #End Region 'Methods
 
+    Private Sub lblEMMAPI_Click(sender As Object, e As EventArgs) Handles lblEMMAPI.Click
+
+    End Sub
 End Class
