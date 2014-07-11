@@ -118,12 +118,12 @@ Public Class OFDB_Data
         _setup = New frmOFDBInfoSettingsHolder
         LoadSettings()
         _setup.cbEnabled.Checked = _ScraperEnabled
-        _setup.chkOFDBTitle.Checked = ConfigOptions.bTitle
-        _setup.chkOFDBOutline.Checked = ConfigOptions.bOutline
-        _setup.chkOFDBPlot.Checked = ConfigOptions.bPlot
-        _setup.chkOFDBGenre.Checked = ConfigOptions.bGenre
-        _setup.chkOFDBCleanPlotOutline.Checked = ConfigOptions.bCleanPlotOutline
-        _setup.chkOFDBRating.Checked = ConfigOptions.bCert
+        _setup.chkTitle.Checked = ConfigOptions.bTitle
+        _setup.chkOutline.Checked = ConfigOptions.bOutline
+        _setup.chkPlot.Checked = ConfigOptions.bPlot
+        _setup.chkGenre.Checked = ConfigOptions.bGenre
+        _setup.chkCleanPlotOutline.Checked = ConfigOptions.bCleanPlotOutline
+        _setup.chkRating.Checked = ConfigOptions.bCert
         _setup.orderChanged()
         SPanel.Name = String.Concat(Me._Name, "Scraper")
         SPanel.Text = Master.eLang.GetString(895, "OFDB")
@@ -164,12 +164,12 @@ Public Class OFDB_Data
     End Sub
 
     Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.EmberMovieScraperModule_Data.SaveSetupScraper
-        ConfigOptions.bCert = _setup.chkOFDBRating.Checked
-        ConfigOptions.bTitle = _setup.chkOFDBTitle.Checked
-        ConfigOptions.bOutline = _setup.chkOFDBOutline.Checked
-        ConfigOptions.bPlot = _setup.chkOFDBPlot.Checked
-        ConfigOptions.bGenre = _setup.chkOFDBGenre.Checked
-        ConfigOptions.bCleanPlotOutline = _setup.chkOFDBCleanPlotOutline.Checked
+        ConfigOptions.bCert = _setup.chkRating.Checked
+        ConfigOptions.bTitle = _setup.chkTitle.Checked
+        ConfigOptions.bOutline = _setup.chkOutline.Checked
+        ConfigOptions.bPlot = _setup.chkPlot.Checked
+        ConfigOptions.bGenre = _setup.chkGenre.Checked
+        ConfigOptions.bCleanPlotOutline = _setup.chkCleanPlotOutline.Checked
         SaveSettings()
         'ModulesManager.Instance.SaveSettings()
         If DoDispose Then

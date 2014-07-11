@@ -41,7 +41,8 @@ Partial Class frmTMDBInfoSettingsHolder
         Me.Label1 = New System.Windows.Forms.Label()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.gbTMDBScraperOpts = New System.Windows.Forms.GroupBox()
-        Me.chkTMDBCleanPlotOutline = New System.Windows.Forms.CheckBox()
+        Me.chkCollection = New System.Windows.Forms.CheckBox()
+        Me.chkCleanPlotOutline = New System.Windows.Forms.CheckBox()
         Me.chkCrew = New System.Windows.Forms.CheckBox()
         Me.chkCountry = New System.Windows.Forms.CheckBox()
         Me.chkStudio = New System.Windows.Forms.CheckBox()
@@ -57,7 +58,6 @@ Partial Class frmTMDBInfoSettingsHolder
         Me.chkMPAA = New System.Windows.Forms.CheckBox()
         Me.chkYear = New System.Windows.Forms.CheckBox()
         Me.chkTitle = New System.Windows.Forms.CheckBox()
-        Me.chkCollection = New System.Windows.Forms.CheckBox()
         Me.gbTMDBGlobalOpts.SuspendLayout()
         CType(Me.pbTMDBApiKeyInfo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel1.SuspendLayout()
@@ -255,7 +255,7 @@ Partial Class frmTMDBInfoSettingsHolder
         'gbTMDBScraperOpts
         '
         Me.gbTMDBScraperOpts.Controls.Add(Me.chkCollection)
-        Me.gbTMDBScraperOpts.Controls.Add(Me.chkTMDBCleanPlotOutline)
+        Me.gbTMDBScraperOpts.Controls.Add(Me.chkCleanPlotOutline)
         Me.gbTMDBScraperOpts.Controls.Add(Me.chkCrew)
         Me.gbTMDBScraperOpts.Controls.Add(Me.chkCountry)
         Me.gbTMDBScraperOpts.Controls.Add(Me.chkStudio)
@@ -279,15 +279,26 @@ Partial Class frmTMDBInfoSettingsHolder
         Me.gbTMDBScraperOpts.TabStop = False
         Me.gbTMDBScraperOpts.Text = "Scraper Fields"
         '
-        'chkTMDBCleanPlotOutline
+        'chkCollection
         '
-        Me.chkTMDBCleanPlotOutline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTMDBCleanPlotOutline.Location = New System.Drawing.Point(315, 36)
-        Me.chkTMDBCleanPlotOutline.Name = "chkTMDBCleanPlotOutline"
-        Me.chkTMDBCleanPlotOutline.Size = New System.Drawing.Size(194, 17)
-        Me.chkTMDBCleanPlotOutline.TabIndex = 75
-        Me.chkTMDBCleanPlotOutline.Text = "Clean Plot/Outline"
-        Me.chkTMDBCleanPlotOutline.UseVisualStyleBackColor = True
+        Me.chkCollection.AutoSize = True
+        Me.chkCollection.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkCollection.Location = New System.Drawing.Point(315, 53)
+        Me.chkCollection.Name = "chkCollection"
+        Me.chkCollection.Size = New System.Drawing.Size(78, 17)
+        Me.chkCollection.TabIndex = 76
+        Me.chkCollection.Text = "Collection"
+        Me.chkCollection.UseVisualStyleBackColor = True
+        '
+        'chkCleanPlotOutline
+        '
+        Me.chkCleanPlotOutline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkCleanPlotOutline.Location = New System.Drawing.Point(315, 36)
+        Me.chkCleanPlotOutline.Name = "chkCleanPlotOutline"
+        Me.chkCleanPlotOutline.Size = New System.Drawing.Size(194, 17)
+        Me.chkCleanPlotOutline.TabIndex = 75
+        Me.chkCleanPlotOutline.Text = "Clean Plot/Outline"
+        Me.chkCleanPlotOutline.UseVisualStyleBackColor = True
         '
         'chkCrew
         '
@@ -454,17 +465,6 @@ Partial Class frmTMDBInfoSettingsHolder
         Me.chkTitle.Text = "Title"
         Me.chkTitle.UseVisualStyleBackColor = True
         '
-        'chkCollection
-        '
-        Me.chkCollection.AutoSize = True
-        Me.chkCollection.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkCollection.Location = New System.Drawing.Point(315, 53)
-        Me.chkCollection.Name = "chkCollection"
-        Me.chkCollection.Size = New System.Drawing.Size(78, 17)
-        Me.chkCollection.TabIndex = 76
-        Me.chkCollection.Text = "Collection"
-        Me.chkCollection.UseVisualStyleBackColor = True
-        '
         'frmTMDBInfoSettingsHolder
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -525,7 +525,7 @@ Partial Class frmTMDBInfoSettingsHolder
     Friend WithEvents lblTMDBPrefLanguage As System.Windows.Forms.Label
     Friend WithEvents chkCrew As System.Windows.Forms.CheckBox
     Friend WithEvents pbTMDBApiKeyInfo As System.Windows.Forms.PictureBox
-    Friend WithEvents chkTMDBCleanPlotOutline As System.Windows.Forms.CheckBox
+    Friend WithEvents chkCleanPlotOutline As System.Windows.Forms.CheckBox
     Friend WithEvents chkGetAdultItems As System.Windows.Forms.CheckBox
     Friend WithEvents chkCollection As System.Windows.Forms.CheckBox
 

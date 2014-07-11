@@ -12587,6 +12587,7 @@ doCancel:
                 .mnuMainHelpUpdate.Text = Master.eLang.GetString(850, "&Check For Updates...")
                 .mnuMainHelpVersions.Text = Master.eLang.GetString(793, "&Versions...")
                 .mnuMainHelpWiki.Text = Master.eLang.GetString(869, "EmberMM.com &Wiki...")
+                .mnuMainToolsExport.Text = Master.eLang.GetString(1174, "Export")
                 .mnuMainToolsExportMovies.Text = Master.eLang.GetString(36, "Movies")
                 .mnuMainToolsExportTvShows.Text = Master.eLang.GetString(653, "TV Shows")
                 .mnuMainTools.Text = Master.eLang.GetString(8, "&Tools")

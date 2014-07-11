@@ -57,23 +57,23 @@ Public Class frmOFDBInfoSettingsHolder
         RaiseEvent SetupScraperChanged(cbEnabled.Checked, 0)
     End Sub
 
-    Private Sub chkOFDBGenre_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOFDBGenre.CheckedChanged
+    Private Sub chkOFDBGenre_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGenre.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkOFDBOutline_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOFDBOutline.CheckedChanged
+    Private Sub chkOFDBOutline_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOutline.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkOFDBPlot_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOFDBPlot.CheckedChanged
+    Private Sub chkOFDBPlot_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkPlot.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkOFDBTitle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOFDBTitle.CheckedChanged
+    Private Sub chkOFDBTitle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTitle.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkOFDBCleanPlotOutline_CheckedChanged(sender As Object, e As EventArgs) Handles chkOFDBCleanPlotOutline.CheckedChanged
+    Private Sub chkOFDBCleanPlotOutline_CheckedChanged(sender As Object, e As EventArgs) Handles chkCleanPlotOutline.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
@@ -94,12 +94,12 @@ Public Class frmOFDBInfoSettingsHolder
     End Sub
 
     Private Sub SetUp()
-        Me.chkOFDBGenre.Text = Master.eLang.GetString(20, "Genre")
-        Me.chkOFDBPlot.Text = Master.eLang.GetString(65, "Plot")
-        Me.chkOFDBOutline.Text = Master.eLang.GetString(64, "Outline")
-        Me.chkOFDBTitle.Text = Master.eLang.GetString(21, "Title")
-        Me.chkOFDBCleanPlotOutline.Text = Master.eLang.GetString(985, "Clean Plot/Outline")
-
+        Me.chkGenre.Text = Master.eLang.GetString(20, "Genre")
+        Me.chkPlot.Text = Master.eLang.GetString(65, "Plot")
+        Me.chkOutline.Text = Master.eLang.GetString(64, "Outline")
+        Me.chkTitle.Text = Master.eLang.GetString(21, "Title")
+        Me.chkCleanPlotOutline.Text = Master.eLang.GetString(985, "Clean Plot/Outline")
+        Me.chkRating.Text = Master.eLang.GetString(400, "Rating")
         Me.gbOptions.Text = Master.eLang.GetString(791, "Scraper Fields - Scraper specific")
         Me.Label2.Text = Master.eLang.GetString(168, "Scrape Order")
         Me.cbEnabled.Text = Master.eLang.GetString(774, "Enabled")
