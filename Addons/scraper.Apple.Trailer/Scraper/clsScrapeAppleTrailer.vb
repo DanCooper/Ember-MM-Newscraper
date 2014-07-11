@@ -107,7 +107,7 @@ Public Class AppleTrailer
                         Dim zResult As MatchCollection = Regex.Matches(sHtml, zPattern, RegexOptions.Singleline)
 
                         For ctr As Integer = 0 To zResult.Count - 1
-                            _trailerlist.Add(New Trailers With {.URL = zResult.Item(ctr).Groups(1).Value, .Description = zResult.Item(ctr).Groups(2).Value, .Lenght = zResult.Item(ctr).Groups(3).Value})
+                            _trailerlist.Add(New Trailers With {.URL = zResult.Item(ctr).Groups(1).Value, .Description = zResult.Item(ctr).Groups(2).Value, .Duration = zResult.Item(ctr).Groups(3).Value})
                         Next
 
                         For Each trailer In _trailerlist

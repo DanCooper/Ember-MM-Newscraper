@@ -106,7 +106,7 @@ Public Class dlgTrailerSelect
             str(1) = aUrl.URL.ToString
             str(2) = aUrl.WebURL.ToString
             str(3) = aUrl.Description.ToString
-            str(4) = aUrl.Lenght.ToString
+            str(4) = aUrl.Duration.ToString
             str(5) = aUrl.Quality.ToString
             str(6) = aUrl.Source.ToString
             itm = New ListViewItem(str)
@@ -515,6 +515,10 @@ Public Class dlgTrailerSelect
     Private Sub SetUp()
         Me.Text = Master.eLang.GetString(914, "Select Trailer")
         Me.OK_Button.Text = Master.eLang.GetString(373, "Download")
+        Me.colDescription.Text = Master.eLang.GetString(979, "Description")
+        Me.colDuration.Text = Master.eLang.GetString(609, "Duration")
+        Me.colQuality.Text = Master.eLang.GetString(1138, "Quality")
+        Me.colSource.Text = Master.eLang.GetString(1173, "Source")
         Me.btnPlayBrowser.Text = Master.eLang.GetString(931, "Open In Browser")
         Me.btnPlayTrailer.Text = Master.eLang.GetString(919, "Preview Trailer")
         Me.btnSetNfo.Text = Master.eLang.GetString(913, "Set To Nfo")

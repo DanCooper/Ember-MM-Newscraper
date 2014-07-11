@@ -71,7 +71,7 @@ Public Class dlgThemeSelect
             str(1) = aUrl.URL.ToString
             str(2) = aUrl.Title.ToString
             str(3) = aUrl.Description.ToString
-            str(4) = aUrl.Length.ToString
+            str(4) = aUrl.Duration.ToString
             str(5) = aUrl.Bitrate.ToString
             str(6) = aUrl.WebURL.ToString
             itm = New ListViewItem(str)

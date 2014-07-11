@@ -34,7 +34,7 @@ Public Class Themes
     Private _url As String
     Private _weburl As String
     Private _description As String
-    Private _length As String
+    Private _duration As String
     Private _bitrate As String
 
     Private _ms As MemoryStream
@@ -111,12 +111,12 @@ Public Class Themes
         End Set
     End Property
 
-    Public Property Length() As String
+    Public Property Duration() As String
         Get
-            Return _length
+            Return _duration
         End Get
         Set(ByVal value As String)
-            _length = value
+            _duration = value
         End Set
     End Property
 
@@ -161,7 +161,7 @@ Public Class Themes
         _url = String.Empty
         _weburl = String.Empty
         _description = String.Empty
-        _length = String.Empty
+        _duration = String.Empty
         _bitrate = String.Empty
     End Sub
 

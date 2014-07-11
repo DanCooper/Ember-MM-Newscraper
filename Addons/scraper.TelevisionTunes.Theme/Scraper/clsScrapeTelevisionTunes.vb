@@ -108,7 +108,7 @@ Public Class TelevisionTunes
                         tURL = String.Concat(DownloadURL, tID)
 
                         If Not String.IsNullOrEmpty(tID) Then
-                            _themelist.Add(New Themes With {.Title = tTitle, .ID = tID, .URL = tURL, .Description = tDescription, .Length = tLength, .Bitrate = tBitrate})
+                            _themelist.Add(New Themes With {.Title = tTitle, .ID = tID, .URL = tURL, .Description = tDescription, .Duration = tLength, .Bitrate = tBitrate})
                         End If
                     Next
                 End If

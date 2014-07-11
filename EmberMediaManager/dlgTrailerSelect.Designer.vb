@@ -30,15 +30,25 @@ Partial Class dlgTrailerSelect
         Me.pnlStatus = New System.Windows.Forms.Panel()
         Me.lblStatus = New System.Windows.Forms.Label()
         Me.pbStatus = New System.Windows.Forms.ProgressBar()
+        Me.lvTrailers = New System.Windows.Forms.ListView()
+        Me.colNumber = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colURL = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colWebURL = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colDescription = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colDuration = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colQuality = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colSource = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.gbYouTubeSearch = New System.Windows.Forms.GroupBox()
+        Me.btnYouTubeSearch = New System.Windows.Forms.Button()
+        Me.txtYouTubeSearch = New System.Windows.Forms.TextBox()
         Me.gbManualTrailer = New System.Windows.Forms.GroupBox()
         Me.btnClearLink = New System.Windows.Forms.Button()
         Me.btnBrowse = New System.Windows.Forms.Button()
         Me.txtManual = New System.Windows.Forms.TextBox()
         Me.lblManual = New System.Windows.Forms.Label()
+        Me.btnPlayTrailer = New System.Windows.Forms.Button()
         Me.txtManualTrailerLink = New System.Windows.Forms.TextBox()
         Me.lblManualTrailerLink = New System.Windows.Forms.Label()
-        Me.lvTrailers = New System.Windows.Forms.ListView()
-        Me.btnPlayTrailer = New System.Windows.Forms.Button()
         Me.btnSetNfo = New System.Windows.Forms.Button()
         Me.ofdTrailer = New System.Windows.Forms.OpenFileDialog()
         Me.pnlTrailerSelect = New System.Windows.Forms.Panel()
@@ -47,24 +57,14 @@ Partial Class dlgTrailerSelect
         Me.btnTrailerStop = New System.Windows.Forms.Button()
         Me.btnTrailerPlay = New System.Windows.Forms.Button()
         Me.axVLCTrailer = New AxAXVLC.AxVLCPlugin2()
-        Me.gbYouTubeSearch = New System.Windows.Forms.GroupBox()
-        Me.btnYouTubeSearch = New System.Windows.Forms.Button()
-        Me.txtYouTubeSearch = New System.Windows.Forms.TextBox()
         Me.btnPlayBrowser = New System.Windows.Forms.Button()
-        Me.colURL = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.colWebURL = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.colDescription = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.colLenght = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.colQuality = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.colSource = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.colNumber = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.gbSelectTrailer.SuspendLayout()
         Me.pnlStatus.SuspendLayout()
+        Me.gbYouTubeSearch.SuspendLayout()
         Me.gbManualTrailer.SuspendLayout()
         Me.pnlTrailerSelect.SuspendLayout()
         Me.gbPreview.SuspendLayout()
         CType(Me.axVLCTrailer, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.gbYouTubeSearch.SuspendLayout()
         Me.SuspendLayout()
         '
         'OK_Button
@@ -140,6 +140,79 @@ Partial Class dlgTrailerSelect
         Me.pbStatus.Style = System.Windows.Forms.ProgressBarStyle.Marquee
         Me.pbStatus.TabIndex = 1
         '
+        'lvTrailers
+        '
+        Me.lvTrailers.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colNumber, Me.colURL, Me.colWebURL, Me.colDescription, Me.colDuration, Me.colQuality, Me.colSource})
+        Me.lvTrailers.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lvTrailers.Location = New System.Drawing.Point(6, 19)
+        Me.lvTrailers.Name = "lvTrailers"
+        Me.lvTrailers.Size = New System.Drawing.Size(445, 298)
+        Me.lvTrailers.TabIndex = 4
+        Me.lvTrailers.UseCompatibleStateImageBehavior = False
+        Me.lvTrailers.View = System.Windows.Forms.View.Details
+        '
+        'colNumber
+        '
+        Me.colNumber.Text = "#"
+        Me.colNumber.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.colNumber.Width = 20
+        '
+        'colURL
+        '
+        Me.colURL.Text = "URL"
+        Me.colURL.Width = 0
+        '
+        'colWebURL
+        '
+        Me.colWebURL.Text = "WebURL"
+        Me.colWebURL.Width = 0
+        '
+        'colDescription
+        '
+        Me.colDescription.Text = "Description"
+        Me.colDescription.Width = 230
+        '
+        'colDuration
+        '
+        Me.colDuration.Text = "Duration"
+        '
+        'colQuality
+        '
+        Me.colQuality.Text = "Quality"
+        '
+        'colSource
+        '
+        Me.colSource.Text = "Source"
+        '
+        'gbYouTubeSearch
+        '
+        Me.gbYouTubeSearch.Controls.Add(Me.btnYouTubeSearch)
+        Me.gbYouTubeSearch.Controls.Add(Me.txtYouTubeSearch)
+        Me.gbYouTubeSearch.Location = New System.Drawing.Point(6, 364)
+        Me.gbYouTubeSearch.Name = "gbYouTubeSearch"
+        Me.gbYouTubeSearch.Size = New System.Drawing.Size(445, 70)
+        Me.gbYouTubeSearch.TabIndex = 9
+        Me.gbYouTubeSearch.TabStop = False
+        Me.gbYouTubeSearch.Text = "Search On YouTube"
+        '
+        'btnYouTubeSearch
+        '
+        Me.btnYouTubeSearch.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnYouTubeSearch.Location = New System.Drawing.Point(364, 27)
+        Me.btnYouTubeSearch.Name = "btnYouTubeSearch"
+        Me.btnYouTubeSearch.Size = New System.Drawing.Size(75, 23)
+        Me.btnYouTubeSearch.TabIndex = 1
+        Me.btnYouTubeSearch.Text = "Search"
+        Me.btnYouTubeSearch.UseVisualStyleBackColor = True
+        '
+        'txtYouTubeSearch
+        '
+        Me.txtYouTubeSearch.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtYouTubeSearch.Location = New System.Drawing.Point(6, 27)
+        Me.txtYouTubeSearch.Name = "txtYouTubeSearch"
+        Me.txtYouTubeSearch.Size = New System.Drawing.Size(352, 22)
+        Me.txtYouTubeSearch.TabIndex = 0
+        '
         'gbManualTrailer
         '
         Me.gbManualTrailer.Controls.Add(Me.btnClearLink)
@@ -193,6 +266,19 @@ Partial Class dlgTrailerSelect
         Me.lblManual.TabIndex = 2
         Me.lblManual.Text = "Local Trailer:"
         '
+        'btnPlayTrailer
+        '
+        Me.btnPlayTrailer.Enabled = False
+        Me.btnPlayTrailer.Image = CType(resources.GetObject("btnPlayTrailer.Image"), System.Drawing.Image)
+        Me.btnPlayTrailer.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnPlayTrailer.Location = New System.Drawing.Point(121, 110)
+        Me.btnPlayTrailer.Name = "btnPlayTrailer"
+        Me.btnPlayTrailer.Size = New System.Drawing.Size(120, 23)
+        Me.btnPlayTrailer.TabIndex = 3
+        Me.btnPlayTrailer.Text = "Preview Trailer"
+        Me.btnPlayTrailer.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnPlayTrailer.UseVisualStyleBackColor = True
+        '
         'txtManualTrailerLink
         '
         Me.txtManualTrailerLink.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
@@ -211,30 +297,6 @@ Partial Class dlgTrailerSelect
         Me.lblManualTrailerLink.Size = New System.Drawing.Size(257, 13)
         Me.lblManualTrailerLink.TabIndex = 0
         Me.lblManualTrailerLink.Text = "Direct Link, YouTube, IMDB or Apple Trailer URL:"
-        '
-        'lvTrailers
-        '
-        Me.lvTrailers.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colNumber, Me.colURL, Me.colWebURL, Me.colDescription, Me.colLenght, Me.colQuality, Me.colSource})
-        Me.lvTrailers.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lvTrailers.Location = New System.Drawing.Point(6, 19)
-        Me.lvTrailers.Name = "lvTrailers"
-        Me.lvTrailers.Size = New System.Drawing.Size(445, 298)
-        Me.lvTrailers.TabIndex = 4
-        Me.lvTrailers.UseCompatibleStateImageBehavior = False
-        Me.lvTrailers.View = System.Windows.Forms.View.Details
-        '
-        'btnPlayTrailer
-        '
-        Me.btnPlayTrailer.Enabled = False
-        Me.btnPlayTrailer.Image = CType(resources.GetObject("btnPlayTrailer.Image"), System.Drawing.Image)
-        Me.btnPlayTrailer.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnPlayTrailer.Location = New System.Drawing.Point(121, 110)
-        Me.btnPlayTrailer.Name = "btnPlayTrailer"
-        Me.btnPlayTrailer.Size = New System.Drawing.Size(120, 23)
-        Me.btnPlayTrailer.TabIndex = 3
-        Me.btnPlayTrailer.Text = "Preview Trailer"
-        Me.btnPlayTrailer.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnPlayTrailer.UseVisualStyleBackColor = True
         '
         'btnSetNfo
         '
@@ -306,35 +368,6 @@ Partial Class dlgTrailerSelect
         Me.axVLCTrailer.Size = New System.Drawing.Size(384, 216)
         Me.axVLCTrailer.TabIndex = 10
         '
-        'gbYouTubeSearch
-        '
-        Me.gbYouTubeSearch.Controls.Add(Me.btnYouTubeSearch)
-        Me.gbYouTubeSearch.Controls.Add(Me.txtYouTubeSearch)
-        Me.gbYouTubeSearch.Location = New System.Drawing.Point(6, 364)
-        Me.gbYouTubeSearch.Name = "gbYouTubeSearch"
-        Me.gbYouTubeSearch.Size = New System.Drawing.Size(445, 70)
-        Me.gbYouTubeSearch.TabIndex = 9
-        Me.gbYouTubeSearch.TabStop = False
-        Me.gbYouTubeSearch.Text = "Search On YouTube"
-        '
-        'btnYouTubeSearch
-        '
-        Me.btnYouTubeSearch.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnYouTubeSearch.Location = New System.Drawing.Point(364, 27)
-        Me.btnYouTubeSearch.Name = "btnYouTubeSearch"
-        Me.btnYouTubeSearch.Size = New System.Drawing.Size(75, 23)
-        Me.btnYouTubeSearch.TabIndex = 1
-        Me.btnYouTubeSearch.Text = "Search"
-        Me.btnYouTubeSearch.UseVisualStyleBackColor = True
-        '
-        'txtYouTubeSearch
-        '
-        Me.txtYouTubeSearch.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtYouTubeSearch.Location = New System.Drawing.Point(6, 27)
-        Me.txtYouTubeSearch.Name = "txtYouTubeSearch"
-        Me.txtYouTubeSearch.Size = New System.Drawing.Size(352, 22)
-        Me.txtYouTubeSearch.TabIndex = 0
-        '
         'btnPlayBrowser
         '
         Me.btnPlayBrowser.Enabled = False
@@ -344,40 +377,6 @@ Partial Class dlgTrailerSelect
         Me.btnPlayBrowser.TabIndex = 4
         Me.btnPlayBrowser.Text = "Open In Browser"
         Me.btnPlayBrowser.UseVisualStyleBackColor = True
-        '
-        'colURL
-        '
-        Me.colURL.Text = "URL"
-        Me.colURL.Width = 0
-        '
-        'colWebURL
-        '
-        Me.colWebURL.Text = "WebURL"
-        Me.colWebURL.Width = 0
-        '
-        'colDescription
-        '
-        Me.colDescription.Text = "Description"
-        Me.colDescription.Width = 230
-        '
-        'colLenght
-        '
-        Me.colLenght.Text = "Lenght"
-        Me.colLenght.Width = 50
-        '
-        'colQuality
-        '
-        Me.colQuality.Text = "Quality"
-        '
-        'colSource
-        '
-        Me.colSource.Text = "Source"
-        '
-        'colNumber
-        '
-        Me.colNumber.Text = "#"
-        Me.colNumber.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        Me.colNumber.Width = 20
         '
         'dlgTrailerSelect
         '
@@ -403,13 +402,13 @@ Partial Class dlgTrailerSelect
         Me.gbSelectTrailer.ResumeLayout(False)
         Me.pnlStatus.ResumeLayout(False)
         Me.pnlStatus.PerformLayout()
+        Me.gbYouTubeSearch.ResumeLayout(False)
+        Me.gbYouTubeSearch.PerformLayout()
         Me.gbManualTrailer.ResumeLayout(False)
         Me.gbManualTrailer.PerformLayout()
         Me.pnlTrailerSelect.ResumeLayout(False)
         Me.gbPreview.ResumeLayout(False)
         CType(Me.axVLCTrailer, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.gbYouTubeSearch.ResumeLayout(False)
-        Me.gbYouTubeSearch.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -444,7 +443,7 @@ Partial Class dlgTrailerSelect
     Friend WithEvents colURL As System.Windows.Forms.ColumnHeader
     Friend WithEvents colWebURL As System.Windows.Forms.ColumnHeader
     Friend WithEvents colDescription As System.Windows.Forms.ColumnHeader
-    Friend WithEvents colLenght As System.Windows.Forms.ColumnHeader
+    Friend WithEvents colDuration As System.Windows.Forms.ColumnHeader
     Friend WithEvents colQuality As System.Windows.Forms.ColumnHeader
     Friend WithEvents colSource As System.Windows.Forms.ColumnHeader
     Friend WithEvents colNumber As System.Windows.Forms.ColumnHeader
