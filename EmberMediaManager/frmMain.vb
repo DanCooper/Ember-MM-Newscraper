@@ -3569,9 +3569,9 @@ doCancel:
 
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                    Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "mark")
-                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
-                    SQLcommand.CommandText = "UPDATE movies SET mark = (?) WHERE id = (?);"
+                    Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "Mark")
+                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "ID")
+                    SQLcommand.CommandText = "UPDATE Movies SET Mark = (?) WHERE ID = (?);"
                     For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
                         parMark.Value = If(Me.dgvMovies.SelectedRows.Count > 1, setMark, Not Convert.ToBoolean(sRow.Cells(11).Value))
                         parID.Value = sRow.Cells(0).Value
@@ -3596,6 +3596,210 @@ doCancel:
                 Me.dgvMovies.CurrentCell = Nothing
                 If Me.dgvMovies.RowCount <= 0 Then Me.ClearInfo()
             End If
+
+            Me.dgvMovies.Invalidate()
+
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
+    Private Sub cmnuMovieMarkAsCustom1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieMarkAsCustom1.Click
+        Try
+            Dim setMark As Boolean = False
+            If Me.dgvMovies.SelectedRows.Count > 1 Then
+                For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
+                    'if any one item is set as unmarked, set menu to mark
+                    'else they are all marked, so set menu to unmark
+                    If Not Convert.ToBoolean(sRow.Cells(66).Value) Then
+                        setMark = True
+                        Exit For
+                    End If
+                Next
+            End If
+
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                    Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMarkCustom1", DbType.Boolean, 0, "MarkCustom1")
+                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "ID")
+                    SQLcommand.CommandText = "UPDATE Movies SET MarkCustom1 = (?) WHERE ID = (?);"
+                    For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
+                        parMark.Value = If(Me.dgvMovies.SelectedRows.Count > 1, setMark, Not Convert.ToBoolean(sRow.Cells(66).Value))
+                        parID.Value = sRow.Cells(0).Value
+                        SQLcommand.ExecuteNonQuery()
+                        sRow.Cells(66).Value = parMark.Value
+                    Next
+                End Using
+                SQLtransaction.Commit()
+            End Using
+
+            'setMark = False
+            'For Each sRow As DataGridViewRow In Me.dgvMovies.Rows
+            '    If Convert.ToBoolean(sRow.Cells(66).Value) Then
+            '        setMark = True
+            '        Exit For
+            '    End If
+            'Next
+            'Me.btnMarkAll.Text = If(setMark, Master.eLang.GetString(105, "Unmark All"), Master.eLang.GetString(35, "Mark All"))
+
+            'If Me.chkFilterMark.Checked Then
+            '    Me.dgvMovies.ClearSelection()
+            '    Me.dgvMovies.CurrentCell = Nothing
+            '    If Me.dgvMovies.RowCount <= 0 Then Me.ClearInfo()
+            'End If
+
+            Me.dgvMovies.Invalidate()
+
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
+    Private Sub cmnuMovieMarkAsCustom2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieMarkAsCustom2.Click
+        Try
+            Dim setMark As Boolean = False
+            If Me.dgvMovies.SelectedRows.Count > 1 Then
+                For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
+                    'if any one item is set as unmarked, set menu to mark
+                    'else they are all marked, so set menu to unmark
+                    If Not Convert.ToBoolean(sRow.Cells(67).Value) Then
+                        setMark = True
+                        Exit For
+                    End If
+                Next
+            End If
+
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                    Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMarkCustom2", DbType.Boolean, 0, "MarkCustom2")
+                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "ID")
+                    SQLcommand.CommandText = "UPDATE Movies SET MarkCustom2 = (?) WHERE ID = (?);"
+                    For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
+                        parMark.Value = If(Me.dgvMovies.SelectedRows.Count > 1, setMark, Not Convert.ToBoolean(sRow.Cells(67).Value))
+                        parID.Value = sRow.Cells(0).Value
+                        SQLcommand.ExecuteNonQuery()
+                        sRow.Cells(67).Value = parMark.Value
+                    Next
+                End Using
+                SQLtransaction.Commit()
+            End Using
+
+            'setMark = False
+            'For Each sRow As DataGridViewRow In Me.dgvMovies.Rows
+            '    If Convert.ToBoolean(sRow.Cells(66).Value) Then
+            '        setMark = True
+            '        Exit For
+            '    End If
+            'Next
+            'Me.btnMarkAll.Text = If(setMark, Master.eLang.GetString(105, "Unmark All"), Master.eLang.GetString(35, "Mark All"))
+
+            'If Me.chkFilterMark.Checked Then
+            '    Me.dgvMovies.ClearSelection()
+            '    Me.dgvMovies.CurrentCell = Nothing
+            '    If Me.dgvMovies.RowCount <= 0 Then Me.ClearInfo()
+            'End If
+
+            Me.dgvMovies.Invalidate()
+
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
+    Private Sub cmnuMovieMarkAsCustom3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieMarkAsCustom3.Click
+        Try
+            Dim setMark As Boolean = False
+            If Me.dgvMovies.SelectedRows.Count > 1 Then
+                For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
+                    'if any one item is set as unmarked, set menu to mark
+                    'else they are all marked, so set menu to unmark
+                    If Not Convert.ToBoolean(sRow.Cells(68).Value) Then
+                        setMark = True
+                        Exit For
+                    End If
+                Next
+            End If
+
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                    Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMarkCustom3", DbType.Boolean, 0, "MarkCustom3")
+                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "ID")
+                    SQLcommand.CommandText = "UPDATE Movies SET MarkCustom3 = (?) WHERE ID = (?);"
+                    For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
+                        parMark.Value = If(Me.dgvMovies.SelectedRows.Count > 1, setMark, Not Convert.ToBoolean(sRow.Cells(68).Value))
+                        parID.Value = sRow.Cells(0).Value
+                        SQLcommand.ExecuteNonQuery()
+                        sRow.Cells(68).Value = parMark.Value
+                    Next
+                End Using
+                SQLtransaction.Commit()
+            End Using
+
+            'setMark = False
+            'For Each sRow As DataGridViewRow In Me.dgvMovies.Rows
+            '    If Convert.ToBoolean(sRow.Cells(66).Value) Then
+            '        setMark = True
+            '        Exit For
+            '    End If
+            'Next
+            'Me.btnMarkAll.Text = If(setMark, Master.eLang.GetString(105, "Unmark All"), Master.eLang.GetString(35, "Mark All"))
+
+            'If Me.chkFilterMark.Checked Then
+            '    Me.dgvMovies.ClearSelection()
+            '    Me.dgvMovies.CurrentCell = Nothing
+            '    If Me.dgvMovies.RowCount <= 0 Then Me.ClearInfo()
+            'End If
+
+            Me.dgvMovies.Invalidate()
+
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
+    Private Sub cmnuMovieMarkAsCustom4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieMarkAsCustom4.Click
+        Try
+            Dim setMark As Boolean = False
+            If Me.dgvMovies.SelectedRows.Count > 1 Then
+                For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
+                    'if any one item is set as unmarked, set menu to mark
+                    'else they are all marked, so set menu to unmark
+                    If Not Convert.ToBoolean(sRow.Cells(69).Value) Then
+                        setMark = True
+                        Exit For
+                    End If
+                Next
+            End If
+
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                    Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMarkCustom4", DbType.Boolean, 0, "MarkCustom4")
+                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "ID")
+                    SQLcommand.CommandText = "UPDATE Movies SET MarkCustom4 = (?) WHERE ID = (?);"
+                    For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
+                        parMark.Value = If(Me.dgvMovies.SelectedRows.Count > 1, setMark, Not Convert.ToBoolean(sRow.Cells(69).Value))
+                        parID.Value = sRow.Cells(0).Value
+                        SQLcommand.ExecuteNonQuery()
+                        sRow.Cells(69).Value = parMark.Value
+                    Next
+                End Using
+                SQLtransaction.Commit()
+            End Using
+
+            'setMark = False
+            'For Each sRow As DataGridViewRow In Me.dgvMovies.Rows
+            '    If Convert.ToBoolean(sRow.Cells(66).Value) Then
+            '        setMark = True
+            '        Exit For
+            '    End If
+            'Next
+            'Me.btnMarkAll.Text = If(setMark, Master.eLang.GetString(105, "Unmark All"), Master.eLang.GetString(35, "Mark All"))
+
+            'If Me.chkFilterMark.Checked Then
+            '    Me.dgvMovies.ClearSelection()
+            '    Me.dgvMovies.CurrentCell = Nothing
+            '    If Me.dgvMovies.RowCount <= 0 Then Me.ClearInfo()
+            'End If
 
             Me.dgvMovies.Invalidate()
 
@@ -4565,6 +4769,22 @@ doCancel:
                     e.CellStyle.ForeColor = Color.Green
                     e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
                     e.CellStyle.SelectionForeColor = Color.Green
+                ElseIf Convert.ToBoolean(Me.dgvMovies.Item(66, e.RowIndex).Value) Then              'is marked custom 1
+                    e.CellStyle.ForeColor = Color.Coral
+                    e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
+                    e.CellStyle.SelectionForeColor = Color.Coral
+                ElseIf Convert.ToBoolean(Me.dgvMovies.Item(67, e.RowIndex).Value) Then              'is marked custom 2
+                    e.CellStyle.ForeColor = Color.DarkOrange
+                    e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
+                    e.CellStyle.SelectionForeColor = Color.DarkOrange
+                ElseIf Convert.ToBoolean(Me.dgvMovies.Item(68, e.RowIndex).Value) Then              'is marked custom 3
+                    e.CellStyle.ForeColor = Color.Gold
+                    e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
+                    e.CellStyle.SelectionForeColor = Color.Gold
+                ElseIf Convert.ToBoolean(Me.dgvMovies.Item(69, e.RowIndex).Value) Then              'is marked custom 4
+                    e.CellStyle.ForeColor = Color.Lime
+                    e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
+                    e.CellStyle.SelectionForeColor = Color.Lime
                 Else
                     e.CellStyle.ForeColor = Color.Black
                     e.CellStyle.Font = New Font("Segoe UI", 8.25, FontStyle.Regular)
@@ -4576,7 +4796,7 @@ doCancel:
                 If Convert.ToBoolean(Me.dgvMovies.Item(14, e.RowIndex).Value) Then                  'is locked
                     e.CellStyle.BackColor = Color.LightSteelBlue
                     e.CellStyle.SelectionBackColor = Color.DarkTurquoise
-                ElseIf Convert.ToBoolean(Me.dgvMovies.Item(44, e.RowIndex).Value) Then              'use folder
+                ElseIf Convert.ToBoolean(Me.dgvMovies.Item(44, e.RowIndex).Value) Then              'out of tolerance
                     e.CellStyle.BackColor = Color.MistyRose
                     e.CellStyle.SelectionBackColor = Color.DarkMagenta
                 Else
@@ -6196,7 +6416,8 @@ doCancel:
                                                                   "FanartPath, EThumbsPath, NfoPath, TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, ", _
                                                                   "FileSource, NeedsSave, SortTitle, DateAdd, HasEFanarts, EFanartsPath, HasBanner, BannerPath, ", _
                                                                   "HasLandscape, LandscapePath, HasTheme, ThemePath, HasDiscArt, DiscArtPath, ", _
-                                                                  "HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath FROM movies WHERE ID IN ", _
+                                                                  "HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, TMDB, TMDBColID, LastScrape, ", _
+                                                                  "MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4 FROM movies WHERE ID IN ", _
                                                                   "(SELECT MovieID FROM MoviesActors WHERE ActorName LIKE '%", Me.filSearch, "%') ORDER BY ListTitle COLLATE NOCASE;"))
             ElseIf Not String.IsNullOrEmpty(Me.filSearch) AndAlso Me.cbSearch.Text = Master.eLang.GetString(233, "Role") Then
                 Master.DB.FillDataTable(Me.dtMovies, String.Concat("SELECT ID, MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, ", _
@@ -6205,13 +6426,14 @@ doCancel:
                                                                   "Director, Credits, Playcount, HasWatched, Trailer, PosterPath, FanartPath, EThumbsPath, NfoPath, ", _
                                                                   "TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, FileSource, NeedsSave, SortTitle, DateAdd, ", _
                                                                   "HasEFanarts, EFanartsPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasTheme, ThemePath, HasDiscArt, DiscArtPath, ", _
-                                                                  "HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath FROM movies ", _
+                                                                  "HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, TMDB, TMDBColID, LastScrape, ", _
+                                                                  "MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4 FROM movies ", _
                                                                   "WHERE ID IN (SELECT MovieID FROM MoviesActors WHERE Role LIKE '%", Me.filSearch, "%') ORDER BY ListTitle COLLATE NOCASE;"))
             Else
                 If Me.chkFilterDupe.Checked Then
-                    Master.DB.FillDataTable(Me.dtMovies, "SELECT ID, MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasEThumbs, New, Mark, Source, Imdb, Lock, Title, OriginalTitle, Year, Rating, Votes, MPAA, Top250, Country, Outline, Plot, Tagline, Certification, Genre, Studio, Runtime, ReleaseDate, Director, Credits, Playcount, HasWatched, Trailer, PosterPath, FanartPath, EThumbsPath, NfoPath, TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, FileSource, NeedsSave, SortTitle, DateAdd, HasEFanarts, EFanartsPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasTheme, ThemePath, HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath FROM movies WHERE imdb IN (SELECT imdb FROM movies WHERE imdb IS NOT NULL AND LENGTH(imdb) > 0 GROUP BY imdb HAVING ( COUNT(imdb) > 1 )) ORDER BY ListTitle COLLATE NOCASE;")
+                    Master.DB.FillDataTable(Me.dtMovies, "SELECT ID, MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasEThumbs, New, Mark, Source, Imdb, Lock, Title, OriginalTitle, Year, Rating, Votes, MPAA, Top250, Country, Outline, Plot, Tagline, Certification, Genre, Studio, Runtime, ReleaseDate, Director, Credits, Playcount, HasWatched, Trailer, PosterPath, FanartPath, EThumbsPath, NfoPath, TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, FileSource, NeedsSave, SortTitle, DateAdd, HasEFanarts, EFanartsPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasTheme, ThemePath, HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, TMDB, TMDBColID, LastScrape, MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4 FROM movies WHERE imdb IN (SELECT imdb FROM movies WHERE imdb IS NOT NULL AND LENGTH(imdb) > 0 GROUP BY imdb HAVING ( COUNT(imdb) > 1 )) ORDER BY ListTitle COLLATE NOCASE;")
                 Else
-                    Master.DB.FillDataTable(Me.dtMovies, "SELECT ID, MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasEThumbs, New, Mark, Source, Imdb, Lock, Title, OriginalTitle, Year, Rating, Votes, MPAA, Top250, Country, Outline, Plot, Tagline, Certification, Genre, Studio, Runtime, ReleaseDate, Director, Credits, Playcount, HasWatched, Trailer, PosterPath, FanartPath, EThumbsPath, NfoPath, TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, FileSource, NeedsSave, SortTitle, DateAdd, HasEFanarts, EFanartsPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasTheme, ThemePath, HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath FROM movies ORDER BY ListTitle COLLATE NOCASE;")
+                    Master.DB.FillDataTable(Me.dtMovies, "SELECT ID, MoviePath, Type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasEThumbs, New, Mark, Source, Imdb, Lock, Title, OriginalTitle, Year, Rating, Votes, MPAA, Top250, Country, Outline, Plot, Tagline, Certification, Genre, Studio, Runtime, ReleaseDate, Director, Credits, Playcount, HasWatched, Trailer, PosterPath, FanartPath, EThumbsPath, NfoPath, TrailerPath, SubPath, FanartURL, UseFolder, OutOfTolerance, FileSource, NeedsSave, SortTitle, DateAdd, HasEFanarts, EFanartsPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasTheme, ThemePath, HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, TMDB, TMDBColID, LastScrape, MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4 FROM movies ORDER BY ListTitle COLLATE NOCASE;")
                 End If
             End If
 
