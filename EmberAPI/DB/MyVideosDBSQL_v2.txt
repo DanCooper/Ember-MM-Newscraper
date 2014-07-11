@@ -86,6 +86,7 @@ CREATE TABLE Movies (
 	ClearArtPath TEXT,
 	TMDB TEXT,
 	TMDBColID TEXT,
+	LastScrape TEXT,
 	MarkCustom1 BOOL NOT NULL DEFAULT False,
 	MarkCustom2 BOOL NOT NULL DEFAULT False,
 	MarkCustom3 BOOL NOT NULL DEFAULT False,
