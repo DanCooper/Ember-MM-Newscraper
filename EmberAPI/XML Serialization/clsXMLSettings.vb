@@ -351,6 +351,7 @@ Partial Public Class clsXMLSettings
     Private _tvseasonposterheight As Integer
     Private _tvseasonposteroverwrite As Boolean
     Private _tvseasonposterprefsize As Enums.TVPosterSize
+    Private _tvepisodeposterprefsize As Enums.TVEpisodePosterSize
     Private _tvseasonposterqual As Integer
     Private _tvseasonposterresize As Boolean
     Private _tvseasonposterwidth As Integer
@@ -603,6 +604,7 @@ Partial Public Class clsXMLSettings
 #End Region
 
 #Region "Properties"
+
     Public Property movieactorthumbsnmj() As Boolean
         Get
             Return Me._movieactorthumbsnmj
@@ -2973,6 +2975,16 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Enums.TVFanartSize)
             Me._tvasfanartprefsize = value
+        End Set
+    End Property
+
+    Public Property TVEpisodePosterPrefSize() As Enums.TVEpisodePosterSize
+
+        Get
+            Return Me._tvepisodeposterprefsize
+        End Get
+        Set(ByVal value As Enums.TVEpisodePosterSize)
+            Me._tvepisodeposterprefsize = value
         End Set
     End Property
 

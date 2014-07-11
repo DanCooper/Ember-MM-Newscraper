@@ -386,6 +386,7 @@
   <TVSeasonFanartPrefSize>HD1080</TVSeasonFanartPrefSize>
   <TVASFanartPrefSize>HD1080</TVASFanartPrefSize>
   <TVSeasonPosterPrefSize>HD1000</TVSeasonPosterPrefSize>
+  <TVEpisodePosterPrefSize>HD1000</TVEpisodePosterPrefSize>
   <TVShowBannerPrefType>Graphical</TVShowBannerPrefType>
   <MovieBannerPrefType>Graphical</MovieBannerPrefType>
   <TVASBannerPrefType>Graphical</TVASBannerPrefType>
