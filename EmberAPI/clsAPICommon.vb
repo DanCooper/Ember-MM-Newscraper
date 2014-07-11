@@ -1740,6 +1740,10 @@ Public Class Structures
         Dim ID As Long
         Dim IsLock As Boolean
         Dim IsMark As Boolean
+        Dim IsMarkCustom1 As Boolean
+        Dim IsMarkCustom2 As Boolean
+        Dim IsMarkCustom3 As Boolean
+        Dim IsMarkCustom4 As Boolean
         Dim IsSingle As Boolean
         Dim LandscapePath As String
         Dim ListTitle As String

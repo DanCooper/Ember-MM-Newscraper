@@ -85,6 +85,11 @@ Partial Class frmMain
         Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator()
         Me.cmnuMovieReload = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieMark = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuMovieMarkAs = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuMovieMarkAsCustom1 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuMovieMarkAsCustom2 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuMovieMarkAsCustom3 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuMovieMarkAsCustom4 = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieLock = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieWatched = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripMenuItem1 = New System.Windows.Forms.ToolStripSeparator()
@@ -1100,13 +1105,13 @@ Partial Class frmMain
         'mnuMainToolsExportMovies
         '
         Me.mnuMainToolsExportMovies.Name = "mnuMainToolsExportMovies"
-        Me.mnuMainToolsExportMovies.Size = New System.Drawing.Size(152, 22)
+        Me.mnuMainToolsExportMovies.Size = New System.Drawing.Size(123, 22)
         Me.mnuMainToolsExportMovies.Text = "Movies"
         '
         'mnuMainToolsExportTvShows
         '
         Me.mnuMainToolsExportTvShows.Name = "mnuMainToolsExportTvShows"
-        Me.mnuMainToolsExportTvShows.Size = New System.Drawing.Size(152, 22)
+        Me.mnuMainToolsExportTvShows.Size = New System.Drawing.Size(123, 22)
         Me.mnuMainToolsExportTvShows.Text = "TV Shows"
         '
         'mnuMainDonate
@@ -1313,9 +1318,9 @@ Partial Class frmMain
         '
         'cmnuMovie
         '
-        Me.cmnuMovie.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuMovieTitle, Me.ToolStripSeparator3, Me.cmnuMovieReload, Me.cmnuMovieMark, Me.cmnuMovieLock, Me.cmnuMovieWatched, Me.ToolStripMenuItem1, Me.cmnuMovieEdit, Me.cmnuMovieEditMetaData, Me.cmnuMovieGenres, Me.cmnuSep, Me.cmnuMovieRescrape, Me.cmnuMovieReSel, Me.cmnuMovieUpSel, Me.cmnuMovieChange, Me.cmnuSep2, Me.cmnuMovieOpenFolder, Me.ToolStripSeparator1, Me.cmnuMovieRemove})
+        Me.cmnuMovie.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuMovieTitle, Me.ToolStripSeparator3, Me.cmnuMovieReload, Me.cmnuMovieMark, Me.cmnuMovieMarkAs, Me.cmnuMovieLock, Me.cmnuMovieWatched, Me.ToolStripMenuItem1, Me.cmnuMovieEdit, Me.cmnuMovieEditMetaData, Me.cmnuMovieGenres, Me.cmnuSep, Me.cmnuMovieRescrape, Me.cmnuMovieReSel, Me.cmnuMovieUpSel, Me.cmnuMovieChange, Me.cmnuSep2, Me.cmnuMovieOpenFolder, Me.ToolStripSeparator1, Me.cmnuMovieRemove})
         Me.cmnuMovie.Name = "mnuMediaList"
-        Me.cmnuMovie.Size = New System.Drawing.Size(247, 342)
+        Me.cmnuMovie.Size = New System.Drawing.Size(247, 364)
         '
         'cmnuMovieTitle
         '
@@ -1345,6 +1350,42 @@ Partial Class frmMain
         Me.cmnuMovieMark.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.M), System.Windows.Forms.Keys)
         Me.cmnuMovieMark.Size = New System.Drawing.Size(246, 22)
         Me.cmnuMovieMark.Text = "Mark"
+        '
+        'cmnuMovieMarkAs
+        '
+        Me.cmnuMovieMarkAs.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuMovieMarkAsCustom1, Me.cmnuMovieMarkAsCustom2, Me.cmnuMovieMarkAsCustom3, Me.cmnuMovieMarkAsCustom4})
+        Me.cmnuMovieMarkAs.Image = Global.Ember_Media_Manager.My.Resources.Resources.valid2
+        Me.cmnuMovieMarkAs.Name = "cmnuMovieMarkAs"
+        Me.cmnuMovieMarkAs.Size = New System.Drawing.Size(246, 22)
+        Me.cmnuMovieMarkAs.Text = "Mark as"
+        '
+        'cmnuMovieMarkAsCustom1
+        '
+        Me.cmnuMovieMarkAsCustom1.Name = "cmnuMovieMarkAsCustom1"
+        Me.cmnuMovieMarkAsCustom1.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.D1), System.Windows.Forms.Keys)
+        Me.cmnuMovieMarkAsCustom1.Size = New System.Drawing.Size(167, 22)
+        Me.cmnuMovieMarkAsCustom1.Text = "Custom 1"
+        '
+        'cmnuMovieMarkAsCustom2
+        '
+        Me.cmnuMovieMarkAsCustom2.Name = "cmnuMovieMarkAsCustom2"
+        Me.cmnuMovieMarkAsCustom2.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.D2), System.Windows.Forms.Keys)
+        Me.cmnuMovieMarkAsCustom2.Size = New System.Drawing.Size(167, 22)
+        Me.cmnuMovieMarkAsCustom2.Text = "Custom 2"
+        '
+        'cmnuMovieMarkAsCustom3
+        '
+        Me.cmnuMovieMarkAsCustom3.Name = "cmnuMovieMarkAsCustom3"
+        Me.cmnuMovieMarkAsCustom3.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.D3), System.Windows.Forms.Keys)
+        Me.cmnuMovieMarkAsCustom3.Size = New System.Drawing.Size(167, 22)
+        Me.cmnuMovieMarkAsCustom3.Text = "Custom 3"
+        '
+        'cmnuMovieMarkAsCustom4
+        '
+        Me.cmnuMovieMarkAsCustom4.Name = "cmnuMovieMarkAsCustom4"
+        Me.cmnuMovieMarkAsCustom4.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.D4), System.Windows.Forms.Keys)
+        Me.cmnuMovieMarkAsCustom4.Size = New System.Drawing.Size(167, 22)
+        Me.cmnuMovieMarkAsCustom4.Text = "Custom 4"
         '
         'cmnuMovieLock
         '
@@ -7363,4 +7404,9 @@ Partial Class frmMain
     Friend WithEvents mnuMainToolsExportTvShows As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnuRestartScrape As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuTrayRestart As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuMovieMarkAs As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuMovieMarkAsCustom1 As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuMovieMarkAsCustom2 As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuMovieMarkAsCustom3 As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuMovieMarkAsCustom4 As System.Windows.Forms.ToolStripMenuItem
 End Class

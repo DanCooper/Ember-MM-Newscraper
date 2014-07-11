@@ -318,6 +318,24 @@
       <execute>alter table TVSources add Ordering INTEGER NOT NULL DEFAULT 0;</execute>
     </command>
   </transaction>
+  <transaction name="doAddColumnMarkCustom">
+    <command type="DB">
+      <description>1</description>
+      <execute>alter table Movies add MarkCustom1 BOOL NOT NULL DEFAULT False;</execute>
+    </command>
+    <command type="DB">
+      <description>2</description>
+      <execute>alter table Movies add MarkCustom2 BOOL NOT NULL DEFAULT False;</execute>
+    </command>
+    <command type="DB">
+      <description>3</description>
+      <execute>alter table Movies add MarkCustom3 BOOL NOT NULL DEFAULT False;</execute>
+    </command>
+    <command type="DB">
+      <description>4</description>
+      <execute>alter table Movies add MarkCustom4 BOOL NOT NULL DEFAULT False;</execute>
+    </command>
+  </transaction>
   <noTransaction type="">
   </noTransaction>
 <!-- 

@@ -782,6 +782,16 @@ Namespace My.Resources
         '''<summary>
         '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         '''</summary>
+        Friend ReadOnly Property valid2() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("valid2", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        '''</summary>
         Friend ReadOnly Property Wizard() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("Wizard", resourceCulture)
