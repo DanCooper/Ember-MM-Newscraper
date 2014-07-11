@@ -25,6 +25,8 @@ Public Class frmTVMediaSettingsHolder
 
 #Region "Fields"
 
+    Private _api As String
+
 #End Region 'Fields
 
 #Region "Events"
@@ -33,11 +35,14 @@ Public Class frmTVMediaSettingsHolder
 
     Public Event SetupPostScraperChanged(ByVal state As Boolean, ByVal difforder As Integer)
 
+    Public Event SetupNeedsRestart()
+
 #End Region 'Events
 
 #Region "Methods"
 
     Public Sub New()
+        _api = String.Empty
         InitializeComponent()
         Me.SetUp()
         orderChanged()
@@ -113,12 +118,27 @@ Public Class frmTVMediaSettingsHolder
         Me.chkGetEnglishImages.Text = Master.eLang.GetString(737, "Also Get English Images")
         Me.gbLanguage.Text = Master.eLang.GetString(610, "Language")
         Me.lblTVDBMirror.Text = Master.eLang.GetString(801, "TVDB Mirror")
+        Me.btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API")
+        Me.lblEMMAPI.Text = Master.eLang.GetString(1189, "Ember Media Manager API")
 
         Me.cbTVScraperLanguage.Items.AddRange((From lLang In Master.eSettings.TVGeneralLanguages.Language Select lLang.name).ToArray)
     End Sub
 
-    Private Sub txtTVDBApiKey_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVDBApiKey.TextChanged
+    Private Sub btnUnlockAPI_Click(sender As Object, e As EventArgs) Handles btnUnlockAPI.Click
+        Me.lblEMMAPI.Visible = False
+        Me.txtTVDBApiKey.Enabled = True
+        Me.txtTVDBApiKey.Visible = True
+    End Sub
+
+    Private Sub txtTVDBApiKey_TextEnter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVDBApiKey.Enter
+        _api = txtTVDBApiKey.Text
         RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub txtTVDBApiKey_TestValidated(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVDBApiKey.Validated
+        If Not (_api = txtTVDBApiKey.Text) Then
+            RaiseEvent SetupNeedsRestart()
+        End If
     End Sub
 
     Private Sub txtTVDBMirror_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVDBMirror.TextChanged

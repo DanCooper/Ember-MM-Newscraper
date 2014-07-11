@@ -25,6 +25,8 @@ Partial Class frmTMDBTrailerSettingsHolder
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmTMDBTrailerSettingsHolder))
         Me.pnlSettings = New System.Windows.Forms.Panel()
         Me.gbSettings = New System.Windows.Forms.GroupBox()
+        Me.lblEMMAPI = New System.Windows.Forms.Label()
+        Me.btnUnlockAPI = New System.Windows.Forms.Button()
         Me.pbTMDB = New System.Windows.Forms.PictureBox()
         Me.chkFallBackEng = New System.Windows.Forms.CheckBox()
         Me.cbTMDBPrefLanguage = New System.Windows.Forms.ComboBox()
@@ -58,6 +60,8 @@ Partial Class frmTMDBTrailerSettingsHolder
         '
         'gbSettings
         '
+        Me.gbSettings.Controls.Add(Me.lblEMMAPI)
+        Me.gbSettings.Controls.Add(Me.btnUnlockAPI)
         Me.gbSettings.Controls.Add(Me.pbTMDB)
         Me.gbSettings.Controls.Add(Me.chkFallBackEng)
         Me.gbSettings.Controls.Add(Me.cbTMDBPrefLanguage)
@@ -67,15 +71,34 @@ Partial Class frmTMDBTrailerSettingsHolder
         Me.gbSettings.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbSettings.Location = New System.Drawing.Point(11, 31)
         Me.gbSettings.Name = "gbSettings"
-        Me.gbSettings.Size = New System.Drawing.Size(513, 102)
+        Me.gbSettings.Size = New System.Drawing.Size(595, 102)
         Me.gbSettings.TabIndex = 96
         Me.gbSettings.TabStop = False
         Me.gbSettings.Text = "TMDB"
         '
+        'lblEMMAPI
+        '
+        Me.lblEMMAPI.AutoSize = True
+        Me.lblEMMAPI.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        Me.lblEMMAPI.Location = New System.Drawing.Point(194, 39)
+        Me.lblEMMAPI.Name = "lblEMMAPI"
+        Me.lblEMMAPI.Size = New System.Drawing.Size(142, 13)
+        Me.lblEMMAPI.TabIndex = 16
+        Me.lblEMMAPI.Text = "Ember Media Manager API"
+        '
+        'btnUnlockAPI
+        '
+        Me.btnUnlockAPI.Location = New System.Drawing.Point(9, 34)
+        Me.btnUnlockAPI.Name = "btnUnlockAPI"
+        Me.btnUnlockAPI.Size = New System.Drawing.Size(179, 23)
+        Me.btnUnlockAPI.TabIndex = 15
+        Me.btnUnlockAPI.Text = "Use my own API"
+        Me.btnUnlockAPI.UseVisualStyleBackColor = True
+        '
         'pbTMDB
         '
         Me.pbTMDB.Image = CType(resources.GetObject("pbTMDB.Image"), System.Drawing.Image)
-        Me.pbTMDB.Location = New System.Drawing.Point(491, 32)
+        Me.pbTMDB.Location = New System.Drawing.Point(573, 36)
         Me.pbTMDB.Name = "pbTMDB"
         Me.pbTMDB.Size = New System.Drawing.Size(16, 16)
         Me.pbTMDB.TabIndex = 5
@@ -125,11 +148,13 @@ Partial Class frmTMDBTrailerSettingsHolder
         '
         'txtTMDBApiKey
         '
+        Me.txtTMDBApiKey.Enabled = False
         Me.txtTMDBApiKey.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTMDBApiKey.Location = New System.Drawing.Point(8, 32)
+        Me.txtTMDBApiKey.Location = New System.Drawing.Point(194, 35)
         Me.txtTMDBApiKey.Name = "txtTMDBApiKey"
-        Me.txtTMDBApiKey.Size = New System.Drawing.Size(477, 22)
+        Me.txtTMDBApiKey.Size = New System.Drawing.Size(373, 22)
         Me.txtTMDBApiKey.TabIndex = 1
+        Me.txtTMDBApiKey.Visible = False
         '
         'Label1
         '
@@ -249,5 +274,7 @@ Partial Class frmTMDBTrailerSettingsHolder
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents Label18 As System.Windows.Forms.Label
     Friend WithEvents txtTMDBApiKey As System.Windows.Forms.TextBox
+    Friend WithEvents lblEMMAPI As System.Windows.Forms.Label
+    Friend WithEvents btnUnlockAPI As System.Windows.Forms.Button
 
 End Class

@@ -44,6 +44,8 @@ Partial Class frmTVMediaSettingsHolder
         Me.txtTVDBApiKey = New System.Windows.Forms.TextBox()
         Me.lblModuleInfo = New System.Windows.Forms.Label()
         Me.pbModuleLogo = New System.Windows.Forms.PictureBox()
+        Me.lblEMMAPI = New System.Windows.Forms.Label()
+        Me.btnUnlockAPI = New System.Windows.Forms.Button()
         Me.Panel1.SuspendLayout()
         Me.pnlSettings.SuspendLayout()
         Me.gbScraperFields.SuspendLayout()
@@ -164,6 +166,8 @@ Partial Class frmTVMediaSettingsHolder
         '
         'gbTVDB
         '
+        Me.gbTVDB.Controls.Add(Me.lblEMMAPI)
+        Me.gbTVDB.Controls.Add(Me.btnUnlockAPI)
         Me.gbTVDB.Controls.Add(Me.gbLanguage)
         Me.gbTVDB.Controls.Add(Me.lblTVDBMirror)
         Me.gbTVDB.Controls.Add(Me.txtTVDBMirror)
@@ -249,9 +253,9 @@ Partial Class frmTVMediaSettingsHolder
         'txtTVDBApiKey
         '
         Me.txtTVDBApiKey.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTVDBApiKey.Location = New System.Drawing.Point(8, 32)
+        Me.txtTVDBApiKey.Location = New System.Drawing.Point(145, 32)
         Me.txtTVDBApiKey.Name = "txtTVDBApiKey"
-        Me.txtTVDBApiKey.Size = New System.Drawing.Size(371, 22)
+        Me.txtTVDBApiKey.Size = New System.Drawing.Size(234, 22)
         Me.txtTVDBApiKey.TabIndex = 1
         '
         'lblModuleInfo
@@ -278,6 +282,25 @@ Partial Class frmTVMediaSettingsHolder
         Me.pbModuleLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.pbModuleLogo.TabIndex = 96
         Me.pbModuleLogo.TabStop = False
+        '
+        'lblEMMAPI
+        '
+        Me.lblEMMAPI.AutoSize = True
+        Me.lblEMMAPI.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        Me.lblEMMAPI.Location = New System.Drawing.Point(142, 35)
+        Me.lblEMMAPI.Name = "lblEMMAPI"
+        Me.lblEMMAPI.Size = New System.Drawing.Size(142, 13)
+        Me.lblEMMAPI.TabIndex = 78
+        Me.lblEMMAPI.Text = "Ember Media Manager API"
+        '
+        'btnUnlockAPI
+        '
+        Me.btnUnlockAPI.Location = New System.Drawing.Point(9, 32)
+        Me.btnUnlockAPI.Name = "btnUnlockAPI"
+        Me.btnUnlockAPI.Size = New System.Drawing.Size(127, 23)
+        Me.btnUnlockAPI.TabIndex = 77
+        Me.btnUnlockAPI.Text = "Use my own API"
+        Me.btnUnlockAPI.UseVisualStyleBackColor = True
         '
         'frmTVMediaSettingsHolder
         '
@@ -330,5 +353,7 @@ Partial Class frmTVMediaSettingsHolder
     Friend WithEvents chkGetEnglishImages As System.Windows.Forms.CheckBox
     Friend WithEvents chkOnlyTVImagesLanguage As System.Windows.Forms.CheckBox
     Friend WithEvents gbScraperFields As System.Windows.Forms.GroupBox
+    Friend WithEvents lblEMMAPI As System.Windows.Forms.Label
+    Friend WithEvents btnUnlockAPI As System.Windows.Forms.Button
 
 End Class

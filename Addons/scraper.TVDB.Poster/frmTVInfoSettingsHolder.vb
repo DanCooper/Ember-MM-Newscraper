@@ -52,9 +52,7 @@ Public Class frmTVInfoSettingsHolder
 
 #End Region 'Properties
 
-
 #Region "Methods"
-
     Public Sub New()
         _api = String.Empty
         InitializeComponent()
@@ -225,13 +223,12 @@ Public Class frmTVInfoSettingsHolder
         Me.chkScraperShowStatus.Text = Master.eLang.GetString(215, "Status")
         Me.chkScraperShowStudio.Text = Master.eLang.GetString(395, "Studio")
         Me.chkScraperShowTitle.Text = Master.eLang.GetString(21, "Title")
+        Me.btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API")
+        Me.lblEMMAPI.Text = Master.eLang.GetString(1189, "Ember Media Manager API")
     End Sub
 
     Private Sub txtTVDBApiKey_TextEnter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVDBApiKey.Enter
         _api = txtTVDBApiKey.Text
-    End Sub
-
-    Private Sub txtTVDBApiKey_TextChanged(sender As System.Object, e As System.EventArgs) Handles txtTVDBApiKey.TextChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
@@ -243,6 +240,12 @@ Public Class frmTVInfoSettingsHolder
 
     Private Sub txtTVDBMirror_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVDBMirror.TextChanged
         RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub btnUnlockAPI_Click(sender As Object, e As EventArgs) Handles btnUnlockAPI.Click
+        Me.lblEMMAPI.Visible = False
+        Me.txtTVDBApiKey.Enabled = True
+        Me.txtTVDBApiKey.Visible = True
     End Sub
 
 #End Region 'Methods

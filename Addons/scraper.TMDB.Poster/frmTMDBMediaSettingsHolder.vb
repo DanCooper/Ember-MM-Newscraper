@@ -124,13 +124,18 @@ Public Class frmTMDBMediaSettingsHolder
         Me.GroupBox3.Text = Master.eLang.GetString(497, "Images")
         Me.chkFallBackEng.Text = Master.eLang.GetString(922, "Fall back on english")
         Me.Label2.Text = Master.eLang.GetString(741, "Preferred Language:")
+        Me.btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API")
+        Me.lblEMMAPI.Text = Master.eLang.GetString(1189, "Ember Media Manager API")
+    End Sub
+
+    Private Sub btnUnlockAPI_Click(sender As Object, e As EventArgs) Handles btnUnlockAPI.Click
+        Me.lblEMMAPI.Visible = False
+        Me.txtTMDBApiKey.Enabled = True
+        Me.txtTMDBApiKey.Visible = True
     End Sub
 
     Private Sub txtTMDBApiKey_TextEnter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTMDBApiKey.Enter
         _api = txtTMDBApiKey.Text
-    End Sub
-
-    Private Sub txtTMDBApiKey_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTMDBApiKey.TextChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
