@@ -449,7 +449,9 @@ Public Class APIXML
 
         Dim mePath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Ratings")
         Dim v = From e In RatingXML.tv.Where(Function(f) f.searchstring = strRating)
-        imgRatingStr = Path.Combine(mePath, v(0).icon)
+        If v.Count > 0 Then
+            imgRatingStr = Path.Combine(mePath, v(0).icon)
+        End If
 
         Try
             If Not String.IsNullOrEmpty(imgRatingStr) AndAlso File.Exists(imgRatingStr) Then
