@@ -32,7 +32,6 @@ Partial Class dlgEditMovie
         Me.pbTopLogo = New System.Windows.Forms.PictureBox()
         Me.tcEditMovie = New System.Windows.Forms.TabControl()
         Me.tpDetails = New System.Windows.Forms.TabPage()
-        Me.lblTheme = New System.Windows.Forms.Label()
         Me.btnPlayTheme = New System.Windows.Forms.Button()
         Me.btnDLTheme = New System.Windows.Forms.Button()
         Me.txtOriginalTitle = New System.Windows.Forms.TextBox()
@@ -193,7 +192,7 @@ Partial Class dlgEditMovie
         Me.lblMediaStubTitle = New System.Windows.Forms.Label()
         Me.txtMediaStubMessage = New System.Windows.Forms.TextBox()
         Me.txtMediaStubTitle = New System.Windows.Forms.TextBox()
-        Me.ofdImage = New System.Windows.Forms.OpenFileDialog()
+        Me.ofdLocalFiles = New System.Windows.Forms.OpenFileDialog()
         Me.chkMark = New System.Windows.Forms.CheckBox()
         Me.btnRescrape = New System.Windows.Forms.Button()
         Me.btnChangeMovie = New System.Windows.Forms.Button()
@@ -331,7 +330,6 @@ Partial Class dlgEditMovie
         '
         'tpDetails
         '
-        Me.tpDetails.Controls.Add(Me.lblTheme)
         Me.tpDetails.Controls.Add(Me.btnPlayTheme)
         Me.tpDetails.Controls.Add(Me.btnDLTheme)
         Me.tpDetails.Controls.Add(Me.txtOriginalTitle)
@@ -400,16 +398,6 @@ Partial Class dlgEditMovie
         Me.tpDetails.TabIndex = 0
         Me.tpDetails.Text = "Details"
         Me.tpDetails.UseVisualStyleBackColor = True
-        '
-        'lblTheme
-        '
-        Me.lblTheme.AutoSize = True
-        Me.lblTheme.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblTheme.Location = New System.Drawing.Point(528, 467)
-        Me.lblTheme.Name = "lblTheme"
-        Me.lblTheme.Size = New System.Drawing.Size(45, 13)
-        Me.lblTheme.TabIndex = 70
-        Me.lblTheme.Text = "Theme:"
         '
         'btnPlayTheme
         '
@@ -1981,7 +1969,7 @@ Partial Class dlgEditMovie
         Me.axVLCTrailer.Location = New System.Drawing.Point(6, 6)
         Me.axVLCTrailer.Name = "axVLCTrailer"
         Me.axVLCTrailer.OcxState = CType(resources.GetObject("axVLCTrailer.OcxState"), System.Windows.Forms.AxHost.State)
-        Me.axVLCTrailer.Size = New System.Drawing.Size(800, 449)
+        Me.axVLCTrailer.Size = New System.Drawing.Size(800, 450)
         Me.axVLCTrailer.TabIndex = 9
         '
         'btnSetMovieTrailerDL
@@ -2335,7 +2323,7 @@ Partial Class dlgEditMovie
     Friend WithEvents pbMoviePoster As System.Windows.Forms.PictureBox
     Friend WithEvents btnSetMovieFanartLocal As System.Windows.Forms.Button
     Friend WithEvents pbMovieFanart As System.Windows.Forms.PictureBox
-    Friend WithEvents ofdImage As System.Windows.Forms.OpenFileDialog
+    Friend WithEvents ofdLocalFiles As System.Windows.Forms.OpenFileDialog
     Friend WithEvents lblRuntime As System.Windows.Forms.Label
     Friend WithEvents txtRuntime As System.Windows.Forms.TextBox
     Friend WithEvents txtReleaseDate As System.Windows.Forms.TextBox
@@ -2445,7 +2433,6 @@ Partial Class dlgEditMovie
     Friend WithEvents btnSetMovieDiscArtScrape As System.Windows.Forms.Button
     Friend WithEvents btnSetMovieDiscArtLocal As System.Windows.Forms.Button
     Friend WithEvents pbMovieDiscArt As System.Windows.Forms.PictureBox
-    Friend WithEvents lblTheme As System.Windows.Forms.Label
     Friend WithEvents tpTrailer As System.Windows.Forms.TabPage
     Friend WithEvents tpTheme As System.Windows.Forms.TabPage
     Friend WithEvents btnSetMovieTrailerDL As System.Windows.Forms.Button

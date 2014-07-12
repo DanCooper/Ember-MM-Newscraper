@@ -399,6 +399,16 @@ Public Class dlgEditMovie
         Me.MoviePoster.Dispose()
     End Sub
 
+    Private Sub btnRemoveMovieTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveMovieTrailer.Click
+        Me.TrailerStop()
+        Me.axVLCTrailer.playlist.items.clear()
+        Me.MovieTrailer.Dispose()
+        Me.MovieTrailer.toRemove = True
+        Me.btnTrailerMute.Enabled = False
+        Me.btnTrailerPlay.Enabled = False
+        Me.btnTrailerStop.Enabled = False
+    End Sub
+
     Private Sub btnMovieEThumbsRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieEThumbsRemove.Click
         Me.DeleteEThumbs()
         Me.RefreshEThumbs()
@@ -485,14 +495,14 @@ Public Class dlgEditMovie
 
     Private Sub btnSetMovieBannerLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieBannerLocal.Click
         Try
-            With ofdImage
+            With ofdLocalFiles
                 .InitialDirectory = Directory.GetParent(Master.currMovie.Filename).FullName
                 .Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
                 .FilterIndex = 0
             End With
 
-            If ofdImage.ShowDialog() = DialogResult.OK Then
-                MovieBanner.FromFile(ofdImage.FileName)
+            If ofdLocalFiles.ShowDialog() = DialogResult.OK Then
+                MovieBanner.FromFile(ofdLocalFiles.FileName)
                 Me.pbMovieBanner.Image = MovieBanner.Image
                 Me.pbMovieBanner.Tag = MovieBanner
 
@@ -564,14 +574,14 @@ Public Class dlgEditMovie
 
     Private Sub btnSetMovieClearArtLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieClearArtLocal.Click
         Try
-            With ofdImage
+            With ofdLocalFiles
                 .InitialDirectory = Directory.GetParent(Master.currMovie.Filename).FullName
                 .Filter = Master.eLang.GetString(497, "Images") + "|*.png"
                 .FilterIndex = 0
             End With
 
-            If ofdImage.ShowDialog() = DialogResult.OK Then
-                MovieClearArt.FromFile(ofdImage.FileName)
+            If ofdLocalFiles.ShowDialog() = DialogResult.OK Then
+                MovieClearArt.FromFile(ofdLocalFiles.FileName)
                 Me.pbMovieClearArt.Image = MovieClearArt.Image
                 Me.pbMovieClearArt.Tag = MovieClearArt
 
@@ -643,14 +653,14 @@ Public Class dlgEditMovie
 
     Private Sub btnSetMovieClearLogoLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieClearLogoLocal.Click
         Try
-            With ofdImage
+            With ofdLocalFiles
                 .InitialDirectory = Directory.GetParent(Master.currMovie.Filename).FullName
                 .Filter = Master.eLang.GetString(497, "Images") + "|*.png"
                 .FilterIndex = 0
             End With
 
-            If ofdImage.ShowDialog() = DialogResult.OK Then
-                MovieClearLogo.FromFile(ofdImage.FileName)
+            If ofdLocalFiles.ShowDialog() = DialogResult.OK Then
+                MovieClearLogo.FromFile(ofdLocalFiles.FileName)
                 Me.pbMovieClearLogo.Image = MovieClearLogo.Image
                 Me.pbMovieClearLogo.Tag = MovieClearLogo
 
@@ -722,14 +732,14 @@ Public Class dlgEditMovie
 
     Private Sub btnSetMovieDiscArtLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieDiscArtLocal.Click
         Try
-            With ofdImage
+            With ofdLocalFiles
                 .InitialDirectory = Directory.GetParent(Master.currMovie.Filename).FullName
                 .Filter = Master.eLang.GetString(497, "Images") + "|*.png"
                 .FilterIndex = 0
             End With
 
-            If ofdImage.ShowDialog() = DialogResult.OK Then
-                MovieDiscArt.FromFile(ofdImage.FileName)
+            If ofdLocalFiles.ShowDialog() = DialogResult.OK Then
+                MovieDiscArt.FromFile(ofdLocalFiles.FileName)
                 Me.pbMovieDiscArt.Image = MovieDiscArt.Image
                 Me.pbMovieDiscArt.Tag = MovieDiscArt
 
@@ -833,14 +843,14 @@ Public Class dlgEditMovie
 
     Private Sub btnSetMovieFanartLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieFanartLocal.Click
         Try
-            With ofdImage
+            With ofdLocalFiles
                 .InitialDirectory = Directory.GetParent(Master.currMovie.Filename).FullName
                 .Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
                 .FilterIndex = 4
             End With
 
-            If ofdImage.ShowDialog() = DialogResult.OK Then
-                MovieFanart.FromFile(ofdImage.FileName)
+            If ofdLocalFiles.ShowDialog() = DialogResult.OK Then
+                MovieFanart.FromFile(ofdLocalFiles.FileName)
                 Me.pbMovieFanart.Image = MovieFanart.Image
                 Me.pbMovieFanart.Tag = MovieFanart
 
@@ -912,14 +922,14 @@ Public Class dlgEditMovie
 
     Private Sub btnSetMovieLandscapeLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieLandscapeLocal.Click
         Try
-            With ofdImage
+            With ofdLocalFiles
                 .InitialDirectory = Directory.GetParent(Master.currMovie.Filename).FullName
                 .Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
                 .FilterIndex = 0
             End With
 
-            If ofdImage.ShowDialog() = DialogResult.OK Then
-                MovieLandscape.FromFile(ofdImage.FileName)
+            If ofdLocalFiles.ShowDialog() = DialogResult.OK Then
+                MovieLandscape.FromFile(ofdLocalFiles.FileName)
                 Me.pbMovieLandscape.Image = MovieLandscape.Image
                 Me.pbMovieLandscape.Tag = MovieLandscape
 
@@ -991,19 +1001,37 @@ Public Class dlgEditMovie
 
     Private Sub btnSetMoviePosterLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMoviePosterLocal.Click
         Try
-            With ofdImage
+            With ofdLocalFiles
                 .InitialDirectory = Directory.GetParent(Master.currMovie.Filename).FullName
                 .Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
                 .FilterIndex = 0
             End With
 
-            If ofdImage.ShowDialog() = DialogResult.OK Then
-                MoviePoster.FromFile(ofdImage.FileName)
+            If ofdLocalFiles.ShowDialog() = DialogResult.OK Then
+                MoviePoster.FromFile(ofdLocalFiles.FileName)
                 Me.pbMoviePoster.Image = MoviePoster.Image
                 Me.pbMoviePoster.Tag = MoviePoster
 
                 Me.lblMoviePosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbMoviePoster.Image.Width, Me.pbMoviePoster.Image.Height)
                 Me.lblMoviePosterSize.Visible = True
+            End If
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
+    Private Sub btnSetMovietrailerDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieTrailerDL.Click
+        Dim tResults As New MediaContainers.Trailer
+        Dim dlgTrlS As dlgTrailerSelect
+        Dim tList As New List(Of Trailers)
+
+        Try
+            Me.TrailerStop()
+            dlgTrlS = New dlgTrailerSelect()
+            If dlgTrlS.ShowDialog(Master.currMovie, tList, True) = Windows.Forms.DialogResult.OK Then
+                tResults = dlgTrlS.Results
+                MovieTrailer = tResults.WebTrailer
+                TrailerAddToPlayer(MovieTrailer)
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -1021,6 +1049,24 @@ Public Class dlgEditMovie
             If dlgTrlS.ShowDialog(Master.currMovie, tList, True) = Windows.Forms.DialogResult.OK Then
                 tResults = dlgTrlS.Results
                 MovieTrailer = tResults.WebTrailer
+                TrailerAddToPlayer(MovieTrailer)
+            End If
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
+    Private Sub btnSetMovieTrailerLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetMovieTrailerLocal.Click
+        Try
+            Me.TrailerStop()
+            With ofdLocalFiles
+                .InitialDirectory = Directory.GetParent(Master.currMovie.Filename).FullName
+                .Filter = Master.eLang.GetString(1195, "Trailers") + "|*.mp4;*.avi"
+                .FilterIndex = 0
+            End With
+
+            If ofdLocalFiles.ShowDialog() = DialogResult.OK Then
+                MovieTrailer.FromFile(ofdLocalFiles.FileName)
                 TrailerAddToPlayer(MovieTrailer)
             End If
         Catch ex As Exception
@@ -1071,6 +1117,9 @@ Public Class dlgEditMovie
             Else
                 Me.axVLCTrailer.playlist.add(String.Concat("file:///", Trailer.URL))
             End If
+            Me.btnTrailerMute.Enabled = True
+            Me.btnTrailerPlay.Enabled = True
+            Me.btnTrailerStop.Enabled = True
         End If
     End Sub
 
@@ -1601,100 +1650,93 @@ Public Class dlgEditMovie
                             If Not pExt = ".disc" Then
                                 tcEditMovie.TabPages.Remove(tpMediaStub)
                             End If
-                            .bwEThumbs.WorkerSupportsCancellation = True
-                            .bwEThumbs.RunWorkerAsync()
-                            .bwEFanarts.WorkerSupportsCancellation = True
-                            .bwEFanarts.RunWorkerAsync()
                         End If
+                        .bwEThumbs.WorkerSupportsCancellation = True
+                        .bwEThumbs.RunWorkerAsync()
+                        .bwEFanarts.WorkerSupportsCancellation = True
+                        .bwEFanarts.RunWorkerAsync()
                     End If
 
                     If Not String.IsNullOrEmpty(Master.currMovie.BannerPath) AndAlso Master.currMovie.BannerPath.Substring(0, 1) = ":" Then
                         MovieBanner.FromWeb(Master.currMovie.BannerPath.Substring(1, Master.currMovie.BannerPath.Length - 1))
-                    Else
+                    ElseIf Not String.IsNullOrEmpty(Master.currMovie.BannerPath) Then
                         MovieBanner.FromFile(Master.currMovie.BannerPath)
                     End If
                     If Not IsNothing(MovieBanner.Image) Then
                         .pbMovieBanner.Image = MovieBanner.Image
                         .pbMovieBanner.Tag = MovieBanner
-
                         .lblMovieBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbMovieBanner.Image.Width, .pbMovieBanner.Image.Height)
                         .lblMovieBannerSize.Visible = True
                     End If
 
                     If Not String.IsNullOrEmpty(Master.currMovie.ClearArtPath) AndAlso Master.currMovie.ClearArtPath.Substring(0, 1) = ":" Then
                         MovieClearArt.FromWeb(Master.currMovie.ClearArtPath.Substring(1, Master.currMovie.ClearArtPath.Length - 1))
-                    Else
+                    ElseIf Not String.IsNullOrEmpty(Master.currMovie.ClearArtPath) Then
                         MovieClearArt.FromFile(Master.currMovie.ClearArtPath)
                     End If
                     If Not IsNothing(MovieClearArt.Image) Then
                         .pbMovieClearArt.Image = MovieClearArt.Image
                         .pbMovieClearArt.Tag = MovieClearArt
-
                         .lblMovieClearArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbMovieClearArt.Image.Width, .pbMovieClearArt.Image.Height)
                         .lblMovieClearArtSize.Visible = True
                     End If
 
                     If Not String.IsNullOrEmpty(Master.currMovie.ClearLogoPath) AndAlso Master.currMovie.ClearLogoPath.Substring(0, 1) = ":" Then
                         MovieClearLogo.FromWeb(Master.currMovie.ClearLogoPath.Substring(1, Master.currMovie.ClearLogoPath.Length - 1))
-                    Else
+                    ElseIf Not String.IsNullOrEmpty(Master.currMovie.ClearLogoPath) Then
                         MovieClearLogo.FromFile(Master.currMovie.ClearLogoPath)
                     End If
                     If Not IsNothing(MovieClearLogo.Image) Then
                         .pbMovieClearLogo.Image = MovieClearLogo.Image
                         .pbMovieClearLogo.Tag = MovieClearLogo
-
                         .lblMovieClearLogoSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbMovieClearLogo.Image.Width, .pbMovieClearLogo.Image.Height)
                         .lblMovieClearLogoSize.Visible = True
                     End If
 
                     If Not String.IsNullOrEmpty(Master.currMovie.DiscArtPath) AndAlso Master.currMovie.DiscArtPath.Substring(0, 1) = ":" Then
                         MovieDiscArt.FromWeb(Master.currMovie.DiscArtPath.Substring(1, Master.currMovie.DiscArtPath.Length - 1))
-                    Else
+                    ElseIf Not String.IsNullOrEmpty(Master.currMovie.DiscArtPath) Then
                         MovieDiscArt.FromFile(Master.currMovie.DiscArtPath)
                     End If
                     If Not IsNothing(MovieDiscArt.Image) Then
                         .pbMovieDiscArt.Image = MovieDiscArt.Image
                         .pbMovieDiscArt.Tag = MovieDiscArt
-
                         .lblMovieDiscArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbMovieDiscArt.Image.Width, .pbMovieDiscArt.Image.Height)
                         .lblMovieDiscArtSize.Visible = True
                     End If
 
                     If Not String.IsNullOrEmpty(Master.currMovie.FanartPath) AndAlso Master.currMovie.FanartPath.Substring(0, 1) = ":" Then
                         MovieFanart.FromWeb(Master.currMovie.FanartPath.Substring(1, Master.currMovie.FanartPath.Length - 1))
-                    Else
+                    ElseIf Not String.IsNullOrEmpty(Master.currMovie.FanartPath) Then
                         MovieFanart.FromFile(Master.currMovie.FanartPath)
                     End If
                     If Not IsNothing(MovieFanart.Image) Then
                         .pbMovieFanart.Image = MovieFanart.Image
                         .pbMovieFanart.Tag = MovieFanart
-
                         .lblMovieFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbMovieFanart.Image.Width, .pbMovieFanart.Image.Height)
                         .lblMovieFanartSize.Visible = True
                     End If
 
                     If Not String.IsNullOrEmpty(Master.currMovie.LandscapePath) AndAlso Master.currMovie.LandscapePath.Substring(0, 1) = ":" Then
                         MovieLandscape.FromWeb(Master.currMovie.LandscapePath.Substring(1, Master.currMovie.LandscapePath.Length - 1))
-                    Else
+                    ElseIf Not String.IsNullOrEmpty(Master.currMovie.LandscapePath) Then
                         MovieLandscape.FromFile(Master.currMovie.LandscapePath)
                     End If
                     If Not IsNothing(MovieLandscape.Image) Then
                         .pbMovieLandscape.Image = MovieLandscape.Image
                         .pbMovieLandscape.Tag = MovieLandscape
-
                         .lblMovieLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbMovieLandscape.Image.Width, .pbMovieLandscape.Image.Height)
                         .lblMovieLandscapeSize.Visible = True
                     End If
 
                     If Not String.IsNullOrEmpty(Master.currMovie.PosterPath) AndAlso Master.currMovie.PosterPath.Substring(0, 1) = ":" Then
                         MoviePoster.FromWeb(Master.currMovie.PosterPath.Substring(1, Master.currMovie.PosterPath.Length - 1))
-                    Else
+                    ElseIf Not String.IsNullOrEmpty(Master.currMovie.PosterPath) Then
                         MoviePoster.FromFile(Master.currMovie.PosterPath)
                     End If
                     If Not IsNothing(MoviePoster.Image) Then
                         .pbMoviePoster.Image = MoviePoster.Image
                         .pbMoviePoster.Tag = MoviePoster
-
                         .lblMoviePosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbMoviePoster.Image.Width, .pbMoviePoster.Image.Height)
                         .lblMoviePosterSize.Visible = True
                     End If
@@ -1708,9 +1750,13 @@ Public Class dlgEditMovie
                     If Not String.IsNullOrEmpty(Master.currMovie.TrailerPath) AndAlso Master.currMovie.TrailerPath.Substring(0, 1) = ":" Then
                         MovieTrailer.FromWeb(Master.currMovie.TrailerPath.Substring(1, Master.currMovie.TrailerPath.Length - 1))
                         TrailerAddToPlayer(MovieTrailer)
-                    Else
+                    ElseIf Not String.IsNullOrEmpty(Master.currMovie.TrailerPath) Then
                         MovieTrailer.FromFile(Master.currMovie.TrailerPath)
                         TrailerAddToPlayer(MovieTrailer)
+                    Else
+                        Me.btnTrailerMute.Enabled = False
+                        Me.btnTrailerPlay.Enabled = False
+                        Me.btnTrailerStop.Enabled = False
                     End If
 
                     If Not ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Banner) Then
@@ -2762,7 +2808,7 @@ Public Class dlgEditMovie
                     Master.currMovie.ThemePath = String.Empty
                 End If
 
-                If Not IsNothing(.MovieTrailer) Then
+                If Not IsNothing(.MovieTrailer) AndAlso Not MovieTrailer.toRemove Then
                     If Master.eSettings.MovieTrailerDeleteExisting Then
                         .MovieTrailer.DeleteMovieTrailer(Master.currMovie)
                     End If
@@ -2821,6 +2867,7 @@ Public Class dlgEditMovie
         Me.btnRemoveMovieFanart.Text = Master.eLang.GetString(250, "Remove Fanart")
         Me.btnRemoveMovieLandscape.Text = Master.eLang.GetString(1034, "Remove Landscape")
         Me.btnRemoveMoviePoster.Text = Master.eLang.GetString(247, "Remove Poster")
+        Me.btnRemoveMovieTrailer.Text = Master.eLang.GetString(1196, "Remove Trailer")
         Me.btnRescrape.Text = Master.eLang.GetString(716, "Re-Scrape")
         Me.btnSetMovieBannerDL.Text = Master.eLang.GetString(1023, "Change Banner (Download)")
         Me.btnSetMovieBannerLocal.Text = Master.eLang.GetString(1021, "Change Banner (Local)")

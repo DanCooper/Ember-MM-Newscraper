@@ -170,7 +170,7 @@ Partial Class dlgTrailerSelect
         'colDescription
         '
         Me.colDescription.Text = "Description"
-        Me.colDescription.Width = 230
+        Me.colDescription.Width = 220
         '
         'colDuration
         '

@@ -35,10 +35,11 @@ Public Class Trailers
 
     Private _ext As String
     Private _description As String
-    Private _isNew As Boolean
+    Private _isEdit As Boolean
     Private _duration As String
     Private _quality As Enums.TrailerQuality
     Private _source As String
+    Private _toRemove As Boolean
     Private _url As String
     Private _weburl As String
 
@@ -86,12 +87,12 @@ Public Class Trailers
         End Set
     End Property
 
-    Public Property isNew() As Boolean
+    Public Property isEdit() As Boolean
         Get
-            Return _isNew
+            Return _isEdit
         End Get
         Set(ByVal value As Boolean)
-            _isNew = value
+            _isEdit = value
         End Set
     End Property
     ''' <summary>
@@ -134,6 +135,20 @@ Public Class Trailers
         End Get
         Set(ByVal value As String)
             _source = value
+        End Set
+    End Property
+    ''' <summary>
+    ''' trigger to remove trailer
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public Property toRemove() As Boolean
+        Get
+            Return _toRemove
+        End Get
+        Set(ByVal value As Boolean)
+            _toRemove = value
         End Set
     End Property
     ''' <summary>
@@ -183,10 +198,11 @@ Public Class Trailers
 
         _ext = String.Empty
         _description = String.Empty
-        _isNew = False
+        _isEdit = False
         _duration = String.Empty
         _quality = Enums.TrailerQuality.OTHERS
         _source = String.Empty
+        _toRemove = False
         _url = String.Empty
         _weburl = String.Empty
     End Sub
@@ -609,7 +625,7 @@ Public Class Trailers
 
             Dim fExt As String = Path.GetExtension(Me._ext)
             For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.IsSingle, Enums.MovieModType.Trailer)
-                If Not File.Exists(a) OrElse (isNew OrElse Master.eSettings.MovieTrailerOverwrite) Then
+                If Not File.Exists(a) OrElse (isEdit OrElse Master.eSettings.MovieTrailerOverwrite) Then
                     Save(a & fExt)
                     strReturn = (a & fExt)
                 End If

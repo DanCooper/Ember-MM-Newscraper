@@ -1995,26 +1995,29 @@ Public Class frmMain
                                             MovieScraperEvent(Enums.MovieScraperEventType.TrailerItem, True)
                                         End If
                                     End If
-
-                                    'ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk  OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
-                                    '    If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk  OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
+                                    'ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
+                                    '    If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
                                     '        MsgBox(Master.eLang.GetString(930, "Trailer of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(929, "No Preferred Size:"))
                                     '    End If
-                                    '    Using dTrailerSelect As New dlgTrailerSelect()
-                                    '        tURL = dTrailerSelect.ShowDialog(DBScrapeMovie, aUrlList)
-                                    '        If Not String.IsNullOrEmpty(tURL) Then
-                                    '            If StringUtils.isValidURL(tURL) Then
-                                    '                If Master.eSettings.MovieXBMCTrailerFormat Then
-                                    '                    DBScrapeMovie.Movie.Trailer = Replace(tURL, "http://www.youtube.com/watch?v=", "plugin://plugin.video.youtube/?action=play_video&videoid=")
-                                    '                Else
-                                    '                    DBScrapeMovie.Movie.Trailer = tURL
-                                    '                End If
-                                    '            Else
-                                    '                DBScrapeMovie.TrailerPath = tURL
-                                    '                MovieScraperEvent(Enums.MovieScraperEventType.TrailerItem, True)
+                                    'Using dlgTrailerSelect As New dlgTrailerSelect()
+                                    '    If dlgTrailerSelect.ShowDialog(DBScrapeMovie, aUrlList) = Windows.Forms.DialogResult.OK Then
+                                    '        Trailer = dlgTrailerSelect.Results
+                                    '        If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
+                                    '            If Not String.IsNullOrEmpty(Trailer.URL) AndAlso IsNothing(Trailer.WebTrailer) Then
+                                    '                Trailer.WebTrailer.FromWeb(Trailer.URL)
                                     '            End If
+                                    '            If Not IsNothing(Trailer.WebTrailer) Then
+                                    '                tURL = Trailer.WebTrailer.SaveAsMovieTrailer(DBScrapeMovie)
+                                    '                If Not String.IsNullOrEmpty(tURL) Then
+                                    '                    DBScrapeMovie.TrailerPath = tURL
+                                    '                    MovieScraperEvent(Enums.MovieScraperEventType.TrailerItem, True)
+                                    '                End If
+                                    '            End If
+                                    '        Else
+                                    '            DBScrapeMovie.TrailerPath = ":" & Trailer.URL
                                     '        End If
-                                    '    End Using
+                                    '    End If
+                                    'End Using
                                 End If
                             End If
                         End If
