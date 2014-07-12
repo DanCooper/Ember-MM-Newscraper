@@ -530,6 +530,56 @@ Public Class frmMain
         End Try
     End Sub
 
+    Private Sub mnuMainToolsExportMovies_Click(sender As Object, e As EventArgs) Handles mnuMainToolsExportMovies.Click
+        Try
+            Dim table As New DataTable
+            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                SQLcommand.CommandText = "Select * from Movies;"
+                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                    'Load the SqlDataReader object to the DataTable object as follows. 
+                    table.Load(SQLreader)
+                End Using
+            End Using
+
+            Dim saveFileDialog1 As New SaveFileDialog()
+            saveFileDialog1.FileName = "export_movies" + ".xml"
+            saveFileDialog1.Filter = "xml files (*.xml)|*.xml"
+            saveFileDialog1.FilterIndex = 2
+            saveFileDialog1.RestoreDirectory = True
+
+            If saveFileDialog1.ShowDialog() = DialogResult.OK Then
+                table.WriteXml(saveFileDialog1.FileName)
+            End If
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
+    Private Sub mnuMainToolsExportTvShows_Click(sender As Object, e As EventArgs) Handles mnuMainToolsExportTvShows.Click
+        Try
+            Dim table As New DataTable
+            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                SQLcommand.CommandText = "Select * from TVShows;"
+                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                    'Load the SqlDataReader object to the DataTable object as follows. 
+                    table.Load(SQLreader)
+                End Using
+            End Using
+
+            Dim saveFileDialog1 As New SaveFileDialog()
+            saveFileDialog1.FileName = "export_tvshows" + ".xml"
+            saveFileDialog1.Filter = "xml files (*.xml)|*.xml"
+            saveFileDialog1.FilterIndex = 2
+            saveFileDialog1.RestoreDirectory = True
+
+            If saveFileDialog1.ShowDialog() = DialogResult.OK Then
+                table.WriteXml(saveFileDialog1.FileName)
+            End If
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
     Private Sub ApplyTheme(ByVal tType As Theming.ThemeType)
         Me.pnlInfoPanel.SuspendLayout()
 
@@ -6830,14 +6880,8 @@ doCancel:
                             If Master.isWindows Then .dgvTVShows.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
                             ResizeTVLists(1)
 
-                            If .dgvMovieSets.RowCount > 0 AndAlso Me.tcMain.SelectedIndex = 1 Then
-                                .dgvMovieSets.Sort(.dgvMovieSets.Columns(1), ComponentModel.ListSortDirection.Ascending)
-                                .SetControlsEnabled(True)
-                            End If
-
-                            If .dgvTVShows.RowCount > 0 Then
+                            If .dgvTVShows.RowCount > 0 AndAlso Me.tcMain.SelectedIndex = 2 Then
                                 .dgvTVShows.Sort(.dgvTVShows.Columns(1), ComponentModel.ListSortDirection.Ascending)
-
                                 .SetControlsEnabled(True)
                             End If
                         End With
@@ -13697,55 +13741,5 @@ doCancel:
     End Structure
 
 #End Region 'Nested Types
-
-    Private Sub mnuMainToolsExportMovies_Click(sender As Object, e As EventArgs) Handles mnuMainToolsExportMovies.Click
-        Try
-            Dim table As New DataTable
-            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                SQLcommand.CommandText = "Select * from Movies;"
-                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                    'Load the SqlDataReader object to the DataTable object as follows. 
-                    table.Load(SQLreader)
-                End Using
-            End Using
-
-            Dim saveFileDialog1 As New SaveFileDialog()
-            saveFileDialog1.FileName = "export_movies" + ".xml"
-            saveFileDialog1.Filter = "xml files (*.xml)|*.xml"
-            saveFileDialog1.FilterIndex = 2
-            saveFileDialog1.RestoreDirectory = True
-
-            If saveFileDialog1.ShowDialog() = DialogResult.OK Then
-                table.WriteXml(saveFileDialog1.FileName)
-            End If
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
-    End Sub
-
-    Private Sub mnuMainToolsExportTvShows_Click(sender As Object, e As EventArgs) Handles mnuMainToolsExportTvShows.Click
-        Try
-            Dim table As New DataTable
-            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                SQLcommand.CommandText = "Select * from TVShows;"
-                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                    'Load the SqlDataReader object to the DataTable object as follows. 
-                    table.Load(SQLreader)
-                End Using
-            End Using
-
-            Dim saveFileDialog1 As New SaveFileDialog()
-            saveFileDialog1.FileName = "export_tvshows" + ".xml"
-            saveFileDialog1.Filter = "xml files (*.xml)|*.xml"
-            saveFileDialog1.FilterIndex = 2
-            saveFileDialog1.RestoreDirectory = True
-
-            If saveFileDialog1.ShowDialog() = DialogResult.OK Then
-                table.WriteXml(saveFileDialog1.FileName)
-            End If
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
-    End Sub
 
 End Class
