@@ -37,7 +37,8 @@ Public Class dlgMovieSource
     Private _id As Integer = -1
     Private autoName As Boolean = True
     Private tmppath As String
-
+    Private prevPath As String = String.Empty
+    Private prevSource As String = String.Empty
 #End Region 'Fields
 
 #Region "Methods"
@@ -54,7 +55,6 @@ Public Class dlgMovieSource
 
     Public Overloads Function ShowDialog(ByVal path As String) As Windows.Forms.DialogResult
         Me.tmppath = path
-
         Return MyBase.ShowDialog()
     End Function
 
@@ -66,6 +66,8 @@ Public Class dlgMovieSource
                 Else
                     .SelectedPath = Me.tmppath
                 End If
+                prevPath = txtSourcePath.Text
+                prevSource = txtSourceName.Text
                 If .ShowDialog = Windows.Forms.DialogResult.OK Then
                     If Not String.IsNullOrEmpty(.SelectedPath) Then
                         Me.txtSourcePath.Text = .SelectedPath
@@ -146,7 +148,29 @@ Public Class dlgMovieSource
     End Sub
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
+
         Try
+            '2014/07/12 Fix for duplicate entries in database when editing path of existing sources http://bugs.embermediamanager.org/thebuggenie/embermediamanager/issues/89
+            'Delete all movies from "old" source before updating, else "old" path will still stay in database!
+            'only delete entries when path was changed!
+            If prevPath <> "" AndAlso prevPath <> currPathText Then
+                Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+                    Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                        Dim parSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSource", DbType.String, 0, "source")
+                        parSource.Value = prevSource
+                        SQLcommand.CommandText = "SELECT Id FROM movies WHERE source = (?);"
+                        Using SQLReader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                            While SQLReader.Read
+                                Master.DB.DeleteMovieFromDB(Convert.ToInt64(SQLReader("ID")), True)
+                            End While
+                        End Using
+                        SQLcommand.ExecuteNonQuery()
+                    End Using
+                    SQLtransaction.Commit()
+                End Using
+            End If
+
+
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                     If Me._id >= 0 Then
@@ -173,7 +197,7 @@ Public Class dlgMovieSource
             End Using
             Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
             Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Finally
             Functions.GetListOfSources()
