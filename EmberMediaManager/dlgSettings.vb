@@ -567,6 +567,50 @@ Public Class dlgSettings
         End Try
     End Sub
 
+    Private Sub btnMovieGeneralCustomMarker1_Click(sender As Object, e As EventArgs) Handles btnMovieGeneralCustomMarker1.Click
+        With Me.cdColor
+            If .ShowDialog = Windows.Forms.DialogResult.OK Then
+                If Not .Color = Nothing Then
+                    Me.btnMovieGeneralCustomMarker1.BackColor = .Color
+                    Me.SetApplyButton(True)
+                End If
+            End If
+        End With
+    End Sub
+
+    Private Sub btnMovieGeneralCustomMarker2_Click(sender As Object, e As EventArgs) Handles btnMovieGeneralCustomMarker2.Click
+        With Me.cdColor
+            If .ShowDialog = Windows.Forms.DialogResult.OK Then
+                If Not .Color = Nothing Then
+                    Me.btnMovieGeneralCustomMarker2.BackColor = .Color
+                    Me.SetApplyButton(True)
+                End If
+            End If
+        End With
+    End Sub
+
+    Private Sub btnMovieGeneralCustomMarker3_Click(sender As Object, e As EventArgs) Handles btnMovieGeneralCustomMarker3.Click
+        With Me.cdColor
+            If .ShowDialog = Windows.Forms.DialogResult.OK Then
+                If Not .Color = Nothing Then
+                    Me.btnMovieGeneralCustomMarker3.BackColor = .Color
+                    Me.SetApplyButton(True)
+                End If
+            End If
+        End With
+    End Sub
+
+    Private Sub btnMovieGeneralCustomMarker4_Click(sender As Object, e As EventArgs) Handles btnMovieGeneralCustomMarker4.Click
+        With Me.cdColor
+            If .ShowDialog = Windows.Forms.DialogResult.OK Then
+                If Not .Color = Nothing Then
+                    Me.btnMovieGeneralCustomMarker4.BackColor = .Color
+                    Me.SetApplyButton(True)
+                End If
+            End If
+        End With
+    End Sub
+
     Private Sub btnMovieScraperDefFIExtEdit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieScraperDefFIExtEdit.Click
         Using dEditMeta As New dlgFileInfo
             Dim fi As New MediaInfo.Fileinfo
@@ -2698,6 +2742,10 @@ Public Class dlgSettings
     Private Sub FillSettings()
         Try
             With Master.eSettings
+                Me.btnMovieGeneralCustomMarker1.BackColor = System.Drawing.Color.FromArgb(.MovieGeneralCustomMarker1Color)
+                Me.btnMovieGeneralCustomMarker2.BackColor = System.Drawing.Color.FromArgb(.MovieGeneralCustomMarker2Color)
+                Me.btnMovieGeneralCustomMarker3.BackColor = System.Drawing.Color.FromArgb(.MovieGeneralCustomMarker3Color)
+                Me.btnMovieGeneralCustomMarker4.BackColor = System.Drawing.Color.FromArgb(.MovieGeneralCustomMarker4Color)
                 Me.cbGeneralDaemonDrive.SelectedItem = .GeneralDaemonDrive
                 Me.cbGeneralLanguage.SelectedItem = .GeneralLanguage
                 Me.cbGeneralMovieTheme.SelectedItem = .GeneralMovieTheme
@@ -3034,19 +3082,23 @@ Public Class dlgSettings
                 Me.tbTVShowFanartQual.Value = .TVShowFanartQual
                 Me.tbTVShowPosterQual.Value = .TVShowPosterQual
                 Me.tcFileSystemCleaner.SelectedTab = If(.FileSystemExpertCleaner, Me.tpFileSystemCleanerExpert, Me.tpFileSystemCleanerStandard)
-                Me.txtGeneralDaemonPath.Text = .GeneralDaemonPath
-                Me.txtMovieBackdropsPath.Text = .MovieBackdropsPath
+                Me.txtGeneralDaemonPath.Text = .GeneralDaemonPath.ToString
+                Me.txtMovieBackdropsPath.Text = .MovieBackdropsPath.ToString
                 Me.txtMovieEFanartsLimit.Text = .MovieEFanartsLimit.ToString
                 Me.txtMovieEThumbsLimit.Text = .MovieEThumbsLimit.ToString
-                Me.txtMovieIMDBURL.Text = .MovieIMDBURL
-                Me.txtMovieMoviesetsPath.Text = .MovieMoviesetsPath
+                Me.txtMovieGeneralCustomMarker1.Text = .MovieGeneralCustomMarker1Name.ToString
+                Me.txtMovieGeneralCustomMarker2.Text = .MovieGeneralCustomMarker2Name.ToString
+                Me.txtMovieGeneralCustomMarker3.Text = .MovieGeneralCustomMarker3Name.ToString
+                Me.txtMovieGeneralCustomMarker4.Text = .MovieGeneralCustomMarker4Name.ToString
+                Me.txtMovieIMDBURL.Text = .MovieIMDBURL.ToString
+                Me.txtMovieMoviesetsPath.Text = .MovieMoviesetsPath.ToString
                 Me.txtMovieScraperCastLimit.Text = .MovieScraperCastLimit.ToString
                 Me.txtMovieScraperDurationRuntimeFormat.Text = .MovieScraperDurationRuntimeFormat
                 Me.txtMovieScraperGenreLimit.Text = .MovieScraperGenreLimit.ToString
                 Me.txtMovieScraperOutlineLimit.Text = .MovieScraperOutlineLimit.ToString
                 Me.txtMovieSkipLessThan.Text = .MovieSkipLessThan.ToString
                 Me.txtMovieTrailerDefaultSearch.Text = .MovieTrailerDefaultSearch.ToString
-                Me.txtTVScraperDurationRuntimeFormat.Text = .TVScraperDurationRuntimeFormat
+                Me.txtTVScraperDurationRuntimeFormat.Text = .TVScraperDurationRuntimeFormat.ToString
                 Me.txtTVSkipLessThan.Text = .TVSkipLessThan.ToString
 
 
@@ -4199,6 +4251,14 @@ Public Class dlgSettings
                 .MovieFilterCustom.Clear()
                 .MovieFilterCustom.AddRange(Me.lstMovieFilters.Items.OfType(Of String).ToList)
                 If .MovieFilterCustom.Count <= 0 Then .MovieFilterCustomIsEmpty = True
+                .MovieGeneralCustomMarker1Color = Me.btnMovieGeneralCustomMarker1.BackColor.ToArgb
+                .MovieGeneralCustomMarker2Color = Me.btnMovieGeneralCustomMarker2.BackColor.ToArgb
+                .MovieGeneralCustomMarker3Color = Me.btnMovieGeneralCustomMarker3.BackColor.ToArgb
+                .MovieGeneralCustomMarker4Color = Me.btnMovieGeneralCustomMarker4.BackColor.ToArgb
+                .MovieGeneralCustomMarker1Name = Me.txtMovieGeneralCustomMarker1.Text
+                .MovieGeneralCustomMarker2Name = Me.txtMovieGeneralCustomMarker2.Text
+                .MovieGeneralCustomMarker3Name = Me.txtMovieGeneralCustomMarker3.Text
+                .MovieGeneralCustomMarker4Name = Me.txtMovieGeneralCustomMarker4.Text
                 .MovieGeneralFlagLang = If(Me.cbMovieLanguageOverlay.Text = Master.eLang.Disabled, String.Empty, Me.cbMovieLanguageOverlay.Text)
                 .MovieGeneralIgnoreLastScan = Me.chkMovieGeneralIgnoreLastScan.Checked
                 .MovieGeneralMarkNew = Me.chkMovieGeneralMarkNew.Checked
@@ -5055,6 +5115,7 @@ Public Class dlgSettings
         Me.gbGeneralMainWindow.Text = Master.eLang.GetString(1152, "Main Window")
         Me.gbGeneralMisc.Text = Master.eLang.GetString(429, "Miscellaneous")
         Me.gbGeneralThemes.Text = Master.eLang.GetString(629, "Themes")
+        Me.gbMovieGeneralCustomMarker.Text = Master.eLang.GetString(1190, "Custom Marker")
         Me.gbMovieBackdropsFolder.Text = Master.eLang.GetString(520, "Backdrops Folder")
         Me.gbMovieFanartOpts.Text = Master.eLang.GetString(149, "Fanart")
         Me.gbMovieFileNaming.Text = Master.eLang.GetString(471, "File Naming")
@@ -5111,6 +5172,10 @@ Public Class dlgSettings
         Me.lblGeneralTVEpisodeTheme.Text = String.Concat(Master.eLang.GetString(667, "Episode Theme"), ":")
         Me.lblGeneralTVShowTheme.Text = String.Concat(Master.eLang.GetString(666, "TV Show Theme"), ":")
         Me.lblGeneralntLang.Text = Master.eLang.GetString(430, "Interface Language:")
+        Me.lblMovieGeneralCustomMarker1.Text = String.Concat(Master.eLang.GetString(1191, "Custom"), " #1")
+        Me.lblMovieGeneralCustomMarker2.Text = String.Concat(Master.eLang.GetString(1191, "Custom"), " #2")
+        Me.lblMovieGeneralCustomMarker3.Text = String.Concat(Master.eLang.GetString(1191, "Custom"), " #3")
+        Me.lblMovieGeneralCustomMarker4.Text = String.Concat(Master.eLang.GetString(1191, "Custom"), " #4")
         Me.lblMovieIMDBMirror.Text = Master.eLang.GetString(884, "IMDB Mirror:")
         Me.lblMovieLanguageOverlay.Text = Master.eLang.GetString(436, "Display Overlay if Video Contains an Audio Stream With the Following Language:")
         Me.lblMovieLevTolerance.Text = Master.eLang.GetString(461, "Mismatch Tolerance:")
@@ -6651,6 +6716,22 @@ Public Class dlgSettings
     End Sub
 
     Private Sub chkTVShowPosterYAMJ_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowPosterYAMJ.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub txtMovieGeneralCustomMarker1_TextChanged(sender As Object, e As EventArgs) Handles txtMovieGeneralCustomMarker1.TextChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub txtMovieGeneralCustomMarker2_TextChanged(sender As Object, e As EventArgs) Handles txtMovieGeneralCustomMarker2.TextChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub txtMovieGeneralCustomMarker3_TextChanged(sender As Object, e As EventArgs) Handles txtMovieGeneralCustomMarker3.TextChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub txtMovieGeneralCustomMarker4_TextChanged(sender As Object, e As EventArgs) Handles txtMovieGeneralCustomMarker4.TextChanged
         Me.SetApplyButton(True)
     End Sub
 

@@ -4770,21 +4770,21 @@ doCancel:
                     e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
                     e.CellStyle.SelectionForeColor = Color.Green
                 ElseIf Convert.ToBoolean(Me.dgvMovies.Item(66, e.RowIndex).Value) Then              'is marked custom 1
-                    e.CellStyle.ForeColor = Color.Coral
+                    e.CellStyle.ForeColor = System.Drawing.Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker1Color)
                     e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
-                    e.CellStyle.SelectionForeColor = Color.Coral
+                    e.CellStyle.SelectionForeColor = System.Drawing.Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker1Color)
                 ElseIf Convert.ToBoolean(Me.dgvMovies.Item(67, e.RowIndex).Value) Then              'is marked custom 2
-                    e.CellStyle.ForeColor = Color.DarkOrange
+                    e.CellStyle.ForeColor = System.Drawing.Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker2Color)
                     e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
-                    e.CellStyle.SelectionForeColor = Color.DarkOrange
+                    e.CellStyle.SelectionForeColor = System.Drawing.Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker2Color)
                 ElseIf Convert.ToBoolean(Me.dgvMovies.Item(68, e.RowIndex).Value) Then              'is marked custom 3
-                    e.CellStyle.ForeColor = Color.Gold
+                    e.CellStyle.ForeColor = System.Drawing.Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker3Color)
                     e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
-                    e.CellStyle.SelectionForeColor = Color.Gold
+                    e.CellStyle.SelectionForeColor = System.Drawing.Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker3Color)
                 ElseIf Convert.ToBoolean(Me.dgvMovies.Item(69, e.RowIndex).Value) Then              'is marked custom 4
-                    e.CellStyle.ForeColor = Color.Lime
+                    e.CellStyle.ForeColor = System.Drawing.Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker4Color)
                     e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
-                    e.CellStyle.SelectionForeColor = Color.Lime
+                    e.CellStyle.SelectionForeColor = System.Drawing.Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker4Color)
                 Else
                     e.CellStyle.ForeColor = Color.Black
                     e.CellStyle.Font = New Font("Segoe UI", 8.25, FontStyle.Regular)
@@ -12739,6 +12739,11 @@ doCancel:
                 .cmnuMovieGenresTitle.Text = Master.eLang.GetString(27, ">> Select Genre <<")
                 .cmnuMovieLock.Text = Master.eLang.GetString(24, "Lock")
                 .cmnuMovieMark.Text = Master.eLang.GetString(23, "Mark")
+                .cmnuMovieMarkAs.Text = Master.eLang.GetString(1192, "Mark as")
+                .cmnuMovieMarkAsCustom1.Text = If(Not String.IsNullOrEmpty(Master.eSettings.MovieGeneralCustomMarker1Name), Master.eSettings.MovieGeneralCustomMarker1Name, String.Concat(Master.eLang.GetString(1191, "Custom"), " #1"))
+                .cmnuMovieMarkAsCustom2.Text = If(Not String.IsNullOrEmpty(Master.eSettings.MovieGeneralCustomMarker2Name), Master.eSettings.MovieGeneralCustomMarker2Name, String.Concat(Master.eLang.GetString(1191, "Custom"), " #2"))
+                .cmnuMovieMarkAsCustom3.Text = If(Not String.IsNullOrEmpty(Master.eSettings.MovieGeneralCustomMarker3Name), Master.eSettings.MovieGeneralCustomMarker3Name, String.Concat(Master.eLang.GetString(1191, "Custom"), " #3"))
+                .cmnuMovieMarkAsCustom4.Text = If(Not String.IsNullOrEmpty(Master.eSettings.MovieGeneralCustomMarker4Name), Master.eSettings.MovieGeneralCustomMarker4Name, String.Concat(Master.eLang.GetString(1191, "Custom"), " #4"))
                 .cmnuMovieOpenFolder.Text = Master.eLang.GetString(33, "Open Containing Folder")
                 .cmnuMovieReload.Text = Master.eLang.GetString(22, "Reload")
                 .cmnuMovieRemove.Text = Master.eLang.GetString(30, "Remove")

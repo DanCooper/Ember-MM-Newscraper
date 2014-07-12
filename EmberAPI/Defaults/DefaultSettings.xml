@@ -210,6 +210,10 @@
   <MovieEFanartsWidth>0</MovieEFanartsWidth>
   <MovieEThumbsWidth>0</MovieEThumbsWidth>
   <MovieFanartWidth>0</MovieFanartWidth>
+  <MovieGeneralCustomMarker1Color>-32704</MovieGeneralCustomMarker1Color>
+  <MovieGeneralCustomMarker2Color>-16776961</MovieGeneralCustomMarker2Color>
+  <MovieGeneralCustomMarker3Color>-12582784</MovieGeneralCustomMarker3Color>
+  <MovieGeneralCustomMarker4Color>-16711681</MovieGeneralCustomMarker4Color>
   <MovieScraperTop250>true</MovieScraperTop250>
   <MovieScraperCollection>true</MovieScraperCollection>
   <MovieScraperCountry>true</MovieScraperCountry>
