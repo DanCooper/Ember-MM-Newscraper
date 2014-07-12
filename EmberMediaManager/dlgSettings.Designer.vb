@@ -947,6 +947,8 @@ Partial Class dlgSettings
         Me.pnlTVThemes = New System.Windows.Forms.Panel()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.cdColor = New System.Windows.Forms.ColorDialog()
+        Me.gbScrapers = New System.Windows.Forms.GroupBox()
+        Me.chkResumeScraper = New System.Windows.Forms.CheckBox()
         Me.gbGeneralMisc.SuspendLayout
         Me.gbGeneralDaemon.SuspendLayout
         Me.gbGeneralThemes.SuspendLayout
@@ -1111,6 +1113,7 @@ Partial Class dlgSettings
         Me.pnlMovieThemes.SuspendLayout
         Me.gbMovieThemeOpts.SuspendLayout
         Me.pnlTVThemes.SuspendLayout
+        Me.gbScrapers.SuspendLayout
         Me.SuspendLayout
         '
         'gbGeneralMisc
@@ -3157,6 +3160,7 @@ Partial Class dlgSettings
         'pnlGeneral
         '
         Me.pnlGeneral.BackColor = System.Drawing.Color.White
+        Me.pnlGeneral.Controls.Add(Me.gbScrapers)
         Me.pnlGeneral.Controls.Add(Me.gbGeneralDaemon)
         Me.pnlGeneral.Controls.Add(Me.gbGeneralMainWindow)
         Me.pnlGeneral.Controls.Add(Me.gbGeneralInterface)
@@ -11183,6 +11187,28 @@ Partial Class dlgSettings
         Me.Label2.TabIndex = 0
         Me.Label2.Text = "TV Themes Dummy Label"
         '
+        'gbScrapers
+        '
+        Me.gbScrapers.Controls.Add(Me.chkResumeScraper)
+        Me.gbScrapers.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.gbScrapers.Location = New System.Drawing.Point(7, 287)
+        Me.gbScrapers.Name = "gbScrapers"
+        Me.gbScrapers.Size = New System.Drawing.Size(196, 49)
+        Me.gbScrapers.TabIndex = 15
+        Me.gbScrapers.TabStop = false
+        Me.gbScrapers.Text = "Scrapers"
+        '
+        'chkResumeScraper
+        '
+        Me.chkResumeScraper.AutoSize = true
+        Me.chkResumeScraper.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkResumeScraper.Location = New System.Drawing.Point(6, 21)
+        Me.chkResumeScraper.Name = "chkResumeScraper"
+        Me.chkResumeScraper.Size = New System.Drawing.Size(145, 17)
+        Me.chkResumeScraper.TabIndex = 1
+        Me.chkResumeScraper.Text = "Enable Scraper Resume"
+        Me.chkResumeScraper.UseVisualStyleBackColor = true
+        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -11483,6 +11509,8 @@ Partial Class dlgSettings
         Me.gbMovieThemeOpts.PerformLayout
         Me.pnlTVThemes.ResumeLayout(false)
         Me.pnlTVThemes.PerformLayout
+        Me.gbScrapers.ResumeLayout(false)
+        Me.gbScrapers.PerformLayout
         Me.ResumeLayout(false)
         Me.PerformLayout
 
@@ -12404,4 +12432,6 @@ End Sub
     Friend WithEvents txtMovieGeneralCustomMarker1 As System.Windows.Forms.TextBox
     Friend WithEvents lblMovieGeneralCustomMarker1 As System.Windows.Forms.Label
     Friend WithEvents cdColor As System.Windows.Forms.ColorDialog
+    Friend WithEvents gbScrapers As System.Windows.Forms.GroupBox
+    Friend WithEvents chkResumeScraper As System.Windows.Forms.CheckBox
 End Class

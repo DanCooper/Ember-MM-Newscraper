@@ -2742,6 +2742,7 @@ Public Class dlgSettings
     Private Sub FillSettings()
         Try
             With Master.eSettings
+                Me.chkResumeScraper.Checked = .RestartScraper
                 Me.btnMovieGeneralCustomMarker1.BackColor = System.Drawing.Color.FromArgb(.MovieGeneralCustomMarker1Color)
                 Me.btnMovieGeneralCustomMarker2.BackColor = System.Drawing.Color.FromArgb(.MovieGeneralCustomMarker2Color)
                 Me.btnMovieGeneralCustomMarker3.BackColor = System.Drawing.Color.FromArgb(.MovieGeneralCustomMarker3Color)
@@ -4172,6 +4173,7 @@ Public Class dlgSettings
                 .FileSystemValidExts.AddRange(lstFileSystemValidExts.Items.OfType(Of String).ToList)
                 .FileSystemValidThemeExts.Clear()
                 .FileSystemValidThemeExts.AddRange(lstFileSystemValidThemeExts.Items.OfType(Of String).ToList)
+                .RestartScraper = Me.chkResumeScraper.Checked
                 .GeneralCheckUpdates = chkGeneralCheckUpdates.Checked
                 .GeneralCreationDate = Me.chkGeneralCreationDate.Checked
                 .GeneralDaemonDrive = Me.cbGeneralDaemonDrive.Text
@@ -4924,7 +4926,8 @@ Public Class dlgSettings
     End Sub
 
     Private Sub SetUp()
-
+        Me.gbScrapers.Text = Master.eLang.GetString(1193, "Scrapers")
+        Me.chkResumeScraper.Text = Master.eLang.GetString(1194, "Enable Scraper Resume")
         Me.Text = Master.eLang.GetString(420, "Settings")
         Me.btnApply.Text = Master.eLang.GetString(276, "Apply")
         Me.btnCancel.Text = Master.eLang.GetString(167, "Cancel")
