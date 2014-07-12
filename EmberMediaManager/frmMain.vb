@@ -2055,17 +2055,20 @@ Public Class frmMain
                     bwMovieScraper.ReportProgress(-2, dScrapeRow(0))
                 End If
                 ScrapeList.RemoveAt(0)
-                _ScraperStatus.ScrapeList.RemoveAt(0)
-                Using stream As FileStream = File.Create(configpath)
-                    Try
-                        formatter.Serialize(stream, _ScraperStatus)
-                    Catch ex As Exception
-                        logger.Error(New StackFrame().GetMethod().Name, ex)
-                        Throw
-                    Finally
-                        stream.Close()
-                    End Try
-                End Using
+                If Master.eSettings.RestartScraper Then
+                    _ScraperStatus.ScrapeList.RemoveAt(0)
+                    Using stream As FileStream = File.Create(configpath)
+                        Try
+                            formatter.Serialize(stream, _ScraperStatus)
+                        Catch ex As Exception
+                            logger.Error(New StackFrame().GetMethod().Name, ex)
+                            Throw
+                        Finally
+                            stream.Close()
+                        End Try
+                    End Using
+                End If
+
 
                 'Using writer As New FileStream(configpath, FileMode.Create)
                 '    _xScraperStatus.Serialize(writer, _ScraperStatus)
@@ -9926,29 +9929,30 @@ doCancel:
                 Next
             End If
         Else
-            Dim aPath As String = FileUtils.Common.ReturnSettingsFile("Settings", "ScraperStatus.dat")
-            Dim formatter As New BinaryFormatter()
-            If File.Exists(aPath) Then
+            If Master.eSettings.RestartScraper Then
+                Dim aPath As String = FileUtils.Common.ReturnSettingsFile("Settings", "ScraperStatus.dat")
+                Dim formatter As New BinaryFormatter()
+                If File.Exists(aPath) Then
 
-                _ScraperStatus = New EmberAPI.clsXMLRestartScraper
+                    _ScraperStatus = New EmberAPI.clsXMLRestartScraper
 
-                Dim fs As New FileStream(aPath, FileMode.Open)
-                Try
-                    _ScraperStatus = DirectCast(formatter.Deserialize(fs), EmberAPI.clsXMLRestartScraper)
-                Catch ex As Exception
-                    logger.Error(New StackFrame().GetMethod().Name, ex)
-                    Throw
-                Finally
-                    fs.Close()
-                End Try
+                    Dim fs As New FileStream(aPath, FileMode.Open)
+                    Try
+                        _ScraperStatus = DirectCast(formatter.Deserialize(fs), EmberAPI.clsXMLRestartScraper)
+                    Catch ex As Exception
+                        logger.Error(New StackFrame().GetMethod().Name, ex)
+                        Throw
+                    Finally
+                        fs.Close()
+                    End Try
 
-                selected = _ScraperStatus.Selected
-                sType = _ScraperStatus.sType
-                Options = _ScraperStatus.Options
-                ScrapeList.Clear()
-                ScrapeList.AddRange(_ScraperStatus.ScrapeList.ToArray)
+                    selected = _ScraperStatus.Selected
+                    sType = _ScraperStatus.sType
+                    Options = _ScraperStatus.Options
+                    ScrapeList.Clear()
+                    ScrapeList.AddRange(_ScraperStatus.ScrapeList.ToArray)
+                End If
             End If
-
         End If
 
         Me.SetControlsEnabled(False)
@@ -12295,6 +12299,8 @@ doCancel:
                 ' Scrape Media Menu: Restart last scraper
                 .mnuRestartScrape.Text = Master.eLang.GetString(1160, "Restart last scrape...")
                 .cmnuTrayRestart.Text = .mnuRestartScrape.Text
+                .mnuRestartScrape.Visible = Master.eSettings.RestartScraper
+                .cmnuTrayRestart.Visible = Master.eSettings.RestartScraper
 
                 ' Scrape Media Menu: FullAuto
                 .mnuAllAuto.Text = Master.eLang.GetString(69, "Automatic (Force Best Match)")

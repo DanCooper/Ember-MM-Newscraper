@@ -65,6 +65,16 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property RestartScraper() As Boolean
+        Get
+            Return Settings._XMLSettings.restartscraper
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.restartscraper = value
+        End Set
+    End Property
+
+
     Public Property MovieActorThumbsOverwrite() As Boolean
         Get
             Return Settings._XMLSettings.movieactorthumbsoverwrite

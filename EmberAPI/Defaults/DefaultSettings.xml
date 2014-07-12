@@ -681,4 +681,5 @@
   <TVShowLandscapeXBMC>false</TVShowLandscapeXBMC>
   <TVSeasonLandscapeXBMC>false</TVSeasonLandscapeXBMC>
   <MovieScraperTitleFallback>true</MovieScraperTitleFallback>
+  <RestartScraper>False</RestartScraper>
 </Settings>
