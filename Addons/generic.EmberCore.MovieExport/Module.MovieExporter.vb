@@ -130,7 +130,7 @@ Public Class MovieExporterModule
 
     Public Sub AddToolsStripItem(control As System.Windows.Forms.ToolStripMenuItem, value As System.Windows.Forms.ToolStripItem)
         If (control.Owner.InvokeRequired) Then
-            control.Owner.Invoke(New Delegate_AddToolsStripItem(AddressOf RemoveToolsStripItem), New Object() {control, value})
+            control.Owner.Invoke(New Delegate_AddToolsStripItem(AddressOf AddToolsStripItem), New Object() {control, value})
             Exit Sub
         End If
         control.DropDownItems.Add(value)
