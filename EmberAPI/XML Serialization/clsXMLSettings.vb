@@ -114,6 +114,14 @@ Partial Public Class clsXMLSettings
     Private _moviefanartwidth As Integer
     Private _moviefiltercustom As List(Of String)
     Private _moviefiltercustomisempty As Boolean
+    Private _moviegeneralcustommarker1color As Integer
+    Private _moviegeneralcustommarker2color As Integer
+    Private _moviegeneralcustommarker3color As Integer
+    Private _moviegeneralcustommarker4color As Integer
+    Private _moviegeneralcustommarker1name As String
+    Private _moviegeneralcustommarker2name As String
+    Private _moviegeneralcustommarker3name As String
+    Private _moviegeneralcustommarker4name As String
     Private _moviegeneralflaglang As String
     Private _moviegeneralignorelastscan As Boolean
     Private _moviegeneralmarknew As Boolean
@@ -1833,6 +1841,78 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._movielocktrailer = value
+        End Set
+    End Property
+
+    Public Property MovieGeneralCustomMarker1Color() As Integer
+        Get
+            Return Me._moviegeneralcustommarker1color
+        End Get
+        Set(ByVal value As Integer)
+            Me._moviegeneralcustommarker1color = value
+        End Set
+    End Property
+
+    Public Property MovieGeneralCustomMarker2Color() As Integer
+        Get
+            Return Me._moviegeneralcustommarker2color
+        End Get
+        Set(ByVal value As Integer)
+            Me._moviegeneralcustommarker2color = value
+        End Set
+    End Property
+
+    Public Property MovieGeneralCustomMarker3Color() As Integer
+        Get
+            Return Me._moviegeneralcustommarker3color
+        End Get
+        Set(ByVal value As Integer)
+            Me._moviegeneralcustommarker3color = value
+        End Set
+    End Property
+
+    Public Property MovieGeneralCustomMarker4Color() As Integer
+        Get
+            Return Me._moviegeneralcustommarker4color
+        End Get
+        Set(ByVal value As Integer)
+            Me._moviegeneralcustommarker4color = value
+        End Set
+    End Property
+
+    Public Property MovieGeneralCustomMarker1Name() As String
+        Get
+            Return Me._moviegeneralcustommarker1name
+        End Get
+        Set(ByVal value As String)
+            Me._moviegeneralcustommarker1name = value
+        End Set
+    End Property
+
+    Public Property MovieGeneralCustomMarker2Name() As String
+        Get
+            Return Me._moviegeneralcustommarker2name
+        End Get
+        Set(ByVal value As String)
+            Me._moviegeneralcustommarker2name = value
+        End Set
+    End Property
+
+    Public Property MovieGeneralCustomMarker3Name() As String
+        Get
+            Return Me._moviegeneralcustommarker3name
+        End Get
+        Set(ByVal value As String)
+            Me._moviegeneralcustommarker3name = value
+        End Set
+    End Property
+
+    Public Property MovieGeneralCustomMarker4Name() As String
+        Get
+            Return Me._moviegeneralcustommarker4name
+        End Get
+        Set(ByVal value As String)
+            Me._moviegeneralcustommarker4name = value
         End Set
     End Property
 

@@ -1152,6 +1152,78 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property MovieGeneralCustomMarker1Color() As Integer
+        Get
+            Return Settings._XMLSettings.MovieGeneralCustomMarker1Color
+        End Get
+        Set(ByVal value As Integer)
+            Settings._XMLSettings.MovieGeneralCustomMarker1Color = value
+        End Set
+    End Property
+
+    Public Property MovieGeneralCustomMarker2Color() As Integer
+        Get
+            Return Settings._XMLSettings.MovieGeneralCustomMarker2Color
+        End Get
+        Set(ByVal value As Integer)
+            Settings._XMLSettings.MovieGeneralCustomMarker2Color = value
+        End Set
+    End Property
+
+    Public Property MovieGeneralCustomMarker3Color() As Integer
+        Get
+            Return Settings._XMLSettings.MovieGeneralCustomMarker3Color
+        End Get
+        Set(ByVal value As Integer)
+            Settings._XMLSettings.MovieGeneralCustomMarker3Color = value
+        End Set
+    End Property
+
+    Public Property MovieGeneralCustomMarker4Color() As Integer
+        Get
+            Return Settings._XMLSettings.MovieGeneralCustomMarker4Color
+        End Get
+        Set(ByVal value As Integer)
+            Settings._XMLSettings.MovieGeneralCustomMarker4Color = value
+        End Set
+    End Property
+
+    Public Property MovieGeneralCustomMarker1Name() As String
+        Get
+            Return Settings._XMLSettings.MovieGeneralCustomMarker1Name
+        End Get
+        Set(ByVal value As String)
+            Settings._XMLSettings.MovieGeneralCustomMarker1Name = value
+        End Set
+    End Property
+
+    Public Property MovieGeneralCustomMarker2Name() As String
+        Get
+            Return Settings._XMLSettings.MovieGeneralCustomMarker2Name
+        End Get
+        Set(ByVal value As String)
+            Settings._XMLSettings.MovieGeneralCustomMarker2Name = value
+        End Set
+    End Property
+
+    Public Property MovieGeneralCustomMarker3Name() As String
+        Get
+            Return Settings._XMLSettings.MovieGeneralCustomMarker3Name
+        End Get
+        Set(ByVal value As String)
+            Settings._XMLSettings.MovieGeneralCustomMarker3Name = value
+        End Set
+    End Property
+
+    Public Property MovieGeneralCustomMarker4Name() As String
+        Get
+            Return Settings._XMLSettings.MovieGeneralCustomMarker4Name
+        End Get
+        Set(ByVal value As String)
+            Settings._XMLSettings.MovieGeneralCustomMarker4Name = value
+        End Set
+    End Property
+
     Public Property MovieGeneralMarkNew() As Boolean
         Get
             Return Settings._XMLSettings.moviegeneralmarknew
