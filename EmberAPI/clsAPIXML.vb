@@ -126,7 +126,7 @@ Public Class APIXML
                 RatingXML = CType(xRatings.Deserialize(objStreamReader), clsXMLRatings)
                 objStreamReader.Close()
             Else
-                Dim rPathD As String = FileUtils.Common.ReturnSettingsFile("Settings", "DefaultRatings.xml")
+                Dim rPathD As String = FileUtils.Common.ReturnSettingsFile("Defaults", "DefaultRatings.xml")
                 objStreamReader = New StreamReader(rPathD)
                 Dim xRatings As New XmlSerializer(RatingXML.GetType)
 
