@@ -214,6 +214,10 @@
   <MovieGeneralCustomMarker2Color>-16776961</MovieGeneralCustomMarker2Color>
   <MovieGeneralCustomMarker3Color>-12582784</MovieGeneralCustomMarker3Color>
   <MovieGeneralCustomMarker4Color>-16711681</MovieGeneralCustomMarker4Color>
+  <MovieGeneralCustomMarker1Name></MovieGeneralCustomMarker1Name>
+  <MovieGeneralCustomMarker2Name></MovieGeneralCustomMarker2Name>
+  <MovieGeneralCustomMarker3Name></MovieGeneralCustomMarker3Name>
+  <MovieGeneralCustomMarker4Name></MovieGeneralCustomMarker4Name>
   <MovieScraperTop250>true</MovieScraperTop250>
   <MovieScraperCollection>true</MovieScraperCollection>
   <MovieScraperCountry>true</MovieScraperCountry>
