@@ -11474,10 +11474,115 @@ doCancel:
         MovieScrapeData(True, Enums.ScrapeType.FullSkip, Master.DefaultMovieOptions)
     End Sub
 
+    Private Sub cmnuMovieUpSelCert_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelCert.Click
+        Dim cScrapeOptions As New Structures.ScrapeOptions
+        cScrapeOptions.bCert = True
+        Functions.SetScraperMod(Enums.MovieModType.NFO, True)
+        MovieScrapeData(True, Enums.ScrapeType.SingleField, cScrapeOptions)
+    End Sub
+
+    Private Sub cmnuMovieUpSelCountry_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelCountry.Click
+        Dim cScrapeOptions As New Structures.ScrapeOptions
+        cScrapeOptions.bCountry = True
+        Functions.SetScraperMod(Enums.MovieModType.NFO, True)
+        MovieScrapeData(True, Enums.ScrapeType.SingleField, cScrapeOptions)
+    End Sub
+
+    Private Sub cmnuMovieUpSelDirector_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelDirector.Click
+        Dim cScrapeOptions As New Structures.ScrapeOptions
+        cScrapeOptions.bDirector = True
+        Functions.SetScraperMod(Enums.MovieModType.NFO, True)
+        MovieScrapeData(True, Enums.ScrapeType.SingleField, cScrapeOptions)
+    End Sub
+
+    Private Sub cmnuMovieUpSelMPAA_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelMPAA.Click
+        Dim cScrapeOptions As New Structures.ScrapeOptions
+        cScrapeOptions.bMPAA = True
+        Functions.SetScraperMod(Enums.MovieModType.NFO, True)
+        MovieScrapeData(True, Enums.ScrapeType.SingleField, cScrapeOptions)
+    End Sub
+
+    Private Sub cmnuMovieUpSelOutline_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelOutline.Click
+        Dim cScrapeOptions As New Structures.ScrapeOptions
+        cScrapeOptions.bOutline = True
+        Functions.SetScraperMod(Enums.MovieModType.NFO, True)
+        MovieScrapeData(True, Enums.ScrapeType.SingleField, cScrapeOptions)
+    End Sub
+
+    Private Sub cmnuMovieUpSelPlot_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelPlot.Click
+        Dim cScrapeOptions As New Structures.ScrapeOptions
+        cScrapeOptions.bPlot = True
+        Functions.SetScraperMod(Enums.MovieModType.NFO, True)
+        MovieScrapeData(True, Enums.ScrapeType.SingleField, cScrapeOptions)
+    End Sub
+
+    Private Sub cmnuMovieUpSelProducers_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelProducers.Click
+        Dim cScrapeOptions As New Structures.ScrapeOptions
+        cScrapeOptions.bProducers = True
+        Functions.SetScraperMod(Enums.MovieModType.NFO, True)
+        MovieScrapeData(True, Enums.ScrapeType.SingleField, cScrapeOptions)
+    End Sub
+
     Private Sub cmnuMovieUpSelRating_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelRating.Click
         Dim cScrapeOptions As New Structures.ScrapeOptions
         cScrapeOptions.bRating = True
         cScrapeOptions.bVotes = True
+        Functions.SetScraperMod(Enums.MovieModType.NFO, True)
+        MovieScrapeData(True, Enums.ScrapeType.SingleField, cScrapeOptions)
+    End Sub
+
+    Private Sub cmnuMovieUpSelRelease_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelRelease.Click
+        Dim cScrapeOptions As New Structures.ScrapeOptions
+        cScrapeOptions.bRelease = True
+        Functions.SetScraperMod(Enums.MovieModType.NFO, True)
+        MovieScrapeData(True, Enums.ScrapeType.SingleField, cScrapeOptions)
+    End Sub
+
+    Private Sub cmnuMovieUpSelStudio_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelStudio.Click
+        Dim cScrapeOptions As New Structures.ScrapeOptions
+        cScrapeOptions.bStudio = True
+        Functions.SetScraperMod(Enums.MovieModType.NFO, True)
+        MovieScrapeData(True, Enums.ScrapeType.SingleField, cScrapeOptions)
+    End Sub
+
+    Private Sub cmnuMovieUpSelTagline_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelTagline.Click
+        Dim cScrapeOptions As New Structures.ScrapeOptions
+        cScrapeOptions.bTagline = True
+        Functions.SetScraperMod(Enums.MovieModType.NFO, True)
+        MovieScrapeData(True, Enums.ScrapeType.SingleField, cScrapeOptions)
+    End Sub
+
+    Private Sub cmnuMovieUpSelTitle_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelTitle.Click
+        Dim cScrapeOptions As New Structures.ScrapeOptions
+        cScrapeOptions.bTitle = True
+        Functions.SetScraperMod(Enums.MovieModType.NFO, True)
+        MovieScrapeData(True, Enums.ScrapeType.SingleField, cScrapeOptions)
+    End Sub
+
+    Private Sub cmnuMovieUpSelTop250_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelTop250.Click
+        Dim cScrapeOptions As New Structures.ScrapeOptions
+        cScrapeOptions.bTop250 = True
+        Functions.SetScraperMod(Enums.MovieModType.NFO, True)
+        MovieScrapeData(True, Enums.ScrapeType.SingleField, cScrapeOptions)
+    End Sub
+
+    Private Sub cmnuMovieUpSelTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelTrailer.Click
+        Dim cScrapeOptions As New Structures.ScrapeOptions
+        cScrapeOptions.bTrailer = True
+        Functions.SetScraperMod(Enums.MovieModType.NFO, True)
+        MovieScrapeData(True, Enums.ScrapeType.SingleField, cScrapeOptions)
+    End Sub
+
+    Private Sub cmnuMovieUpSelWriters_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelWriter.Click
+        Dim cScrapeOptions As New Structures.ScrapeOptions
+        cScrapeOptions.bWriters = True
+        Functions.SetScraperMod(Enums.MovieModType.NFO, True)
+        MovieScrapeData(True, Enums.ScrapeType.SingleField, cScrapeOptions)
+    End Sub
+
+    Private Sub cmnuMovieUpSelYear_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelYear.Click
+        Dim cScrapeOptions As New Structures.ScrapeOptions
+        cScrapeOptions.bYear = True
         Functions.SetScraperMod(Enums.MovieModType.NFO, True)
         MovieScrapeData(True, Enums.ScrapeType.SingleField, cScrapeOptions)
     End Sub
@@ -12834,9 +12939,24 @@ doCancel:
                 .cmnuMovieRemoveFromDisc.Text = Master.eLang.GetString(34, "Delete Movie")
                 .cmnuMovieRescrape.Text = Master.eLang.GetString(163, "(Re)Scrape Movie")
                 .cmnuMovieReSel.Text = Master.eLang.GetString(31, "(Re)Scrape Selected Movies")
+                .cmnuMovieUpSelCert.Text = Master.eLang.GetString(722, "Certification")
+                .cmnuMovieUpSelCountry.Text = Master.eLang.GetString(301, "Country")
+                .cmnuMovieUpSelDirector.Text = Master.eLang.GetString(62, "Director")
+                .cmnuMovieUpSelMPAA.Text = Master.eLang.GetString(401, "MPAA")
+                .cmnuMovieUpSelOutline.Text = Master.eLang.GetString(64, "Plot Outline")
+                .cmnuMovieUpSelPlot.Text = Master.eLang.GetString(65, "Plot")
+                .cmnuMovieUpSelProducers.Text = Master.eLang.GetString(393, "Producers")
                 .cmnuMovieUpSelRating.Text = String.Concat(Master.eLang.GetString(400, "Rating"), " / ", Master.eLang.GetString(399, "Votes"))
+                .cmnuMovieUpSelRelease.Text = Master.eLang.GetString(57, "Release Date")
+                .cmnuMovieUpSelStudio.Text = Master.eLang.GetString(395, "Studio")
+                .cmnuMovieUpSelTagline.Text = Master.eLang.GetString(397, "Tagline")
+                .cmnuMovieUpSelTitle.Text = Master.eLang.GetString(21, "Title")
+                .cmnuMovieUpSelTop250.Text = Master.eLang.GetString(591, "Top 250")
+                .cmnuMovieUpSelTrailer.Text = Master.eLang.GetString(151, "Trailer")
+                .cmnuMovieUpSelWriter.Text = Master.eLang.GetString(777, "Writer")
+                .cmnuMovieUpSelYear.Text = Master.eLang.GetString(278, "Year")
                 .cmnuMovieTitle.Text = Master.eLang.GetString(21, "Title")
-                .cmnuMovieUpSel.Text = Master.eLang.GetString(1126, "Update Single Field")
+                .cmnuMovieUpSel.Text = Master.eLang.GetString(1126, "Update Single Data Field")
                 .cmnuRemoveSeasonFromDB.Text = Master.eLang.GetString(646, "Remove from Database")
                 .cmnuSeasonChangeImages.Text = Master.eLang.GetString(770, "Change Images")
                 .cmnuSeasonLock.Text = Master.eLang.GetString(24, "Lock")
