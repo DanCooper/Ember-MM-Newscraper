@@ -762,7 +762,7 @@ Public Class ModulesManager
             Else
                 For Each _externalGenericModule As _externalGenericModuleClass In modules
                     Try
-                        logger.Trace("Could not run generic module <{0}>", _externalGenericModule.ProcessorModule.ModuleName)
+                        logger.Trace("Run generic module <{0}>", _externalGenericModule.ProcessorModule.ModuleName)
                         ret = _externalGenericModule.ProcessorModule.RunGeneric(mType, _params, _refparam)
                     Catch ex As Exception
                         logger.Error(New StackFrame().GetMethod().Name & vbTab & "Error scraping movies images using <" & _externalGenericModule.ProcessorModule.ModuleName & ">", ex)
