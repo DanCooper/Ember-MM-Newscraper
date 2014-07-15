@@ -10223,12 +10223,60 @@ doCancel:
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     ''' <remarks></remarks>
-    Private Sub pbFanart_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbFanart.DoubleClick
+    Private Sub pbFanart_DoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbFanart.MouseDoubleClick
         Try
-            If Not IsNothing(Me.pbFanartCache.Image) Then
-                Using dImgView As New dlgImgView
-                    dImgView.ShowDialog(Me.pbFanartCache.Image)
-                End Using
+            If e.Button = Windows.Forms.MouseButtons.Left Then
+                If Not IsNothing(Me.pbFanartCache.Image) Then
+                    Using dImgView As New dlgImgView
+                        dImgView.ShowDialog(Me.pbFanartCache.Image)
+                    End Using
+                End If
+            ElseIf e.Button = Windows.Forms.MouseButtons.Right Then
+                Select tcMain.SelectedIndex
+                    Case 0 'Movies list
+                        If Me.dgvMovies.SelectedRows.Count > 1 Then Return
+
+                        Dim indX As Integer = Me.dgvMovies.SelectedRows(0).Index
+                        Dim ID As Integer = Convert.ToInt32(Me.dgvMovies.Item(0, indX).Value)
+
+                        Me.SetControlsEnabled(False)
+                        Dim dlgImgS As dlgImgSelect
+                        Dim aList As New List(Of MediaContainers.Image)
+                        Dim pResults As New MediaContainers.Image
+                        Dim efList As New List(Of String)
+                        Dim etList As New List(Of String)
+                        Dim newImage As New Images With {.IsEdit = True}
+
+                        If Not ModulesManager.Instance.MovieScrapeImages(Master.currMovie, Enums.ScraperCapabilities.Fanart, aList) Then
+                            If aList.Count > 0 Then
+                                dlgImgS = New dlgImgSelect()
+                                If dlgImgS.ShowDialog(Master.currMovie, Enums.MovieImageType.Fanart, aList, efList, etList, True) = DialogResult.OK Then
+                                    pResults = dlgImgS.Results
+                                    If Not String.IsNullOrEmpty(pResults.URL) Then
+                                        Cursor = Cursors.WaitCursor
+                                        pResults.WebImage.FromWeb(pResults.URL)
+                                        newImage = pResults.WebImage
+                                        newImage.SaveAsMovieFanart(Master.currMovie)
+                                        Cursor = Cursors.Default
+                                        Me.SetMovieListItemAfterEdit(ID, indX)
+                                        Me.RefreshMovie(ID, False, False, False, False)
+                                    End If
+                                End If
+                            Else
+                                MsgBox(Master.eLang.GetString(969, "No fanart could be found. Please check to see if any fanart scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(970, "No Fanart Found"))
+                            End If
+                        End If
+                        Me.SetControlsEnabled(True)
+                    Case 1 'MovieSets list
+                    Case 2 'TV Shows list
+                        If Me.dgvTVShows.Focus Then
+                            If Me.dgvTVShows.SelectedRows.Count > 1 Then Return
+                        ElseIf Me.dgvTVSeasons.Focused Then
+                            If Me.dgvTVSeasons.SelectedRows.Count > 1 Then Return
+                        ElseIf Me.dgvTVEpisodes.Focused Then
+                            If Me.dgvTVEpisodes.SelectedRows.Count > 1 Then Return
+                        End If
+                End Select
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
