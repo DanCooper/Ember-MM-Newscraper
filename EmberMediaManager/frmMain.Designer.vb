@@ -24,11 +24,11 @@ Partial Class frmMain
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
+        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.BottomToolStripPanel = New System.Windows.Forms.ToolStripPanel()
         Me.TopToolStripPanel = New System.Windows.Forms.ToolStripPanel()
         Me.RightToolStripPanel = New System.Windows.Forms.ToolStripPanel()
@@ -238,7 +238,7 @@ Partial Class frmMain
         Me.tcMain = New System.Windows.Forms.TabControl()
         Me.tpMovies = New System.Windows.Forms.TabPage()
         Me.tpMovieSets = New System.Windows.Forms.TabPage()
-        Me.tpShows = New System.Windows.Forms.TabPage()
+        Me.tpTVShows = New System.Windows.Forms.TabPage()
         Me.pnlFilter = New System.Windows.Forms.Panel()
         Me.gbSort = New System.Windows.Forms.GroupBox()
         Me.btnIMDBRating = New System.Windows.Forms.Button()
@@ -1310,8 +1310,8 @@ Partial Class frmMain
         Me.dgvMovies.AllowUserToAddRows = False
         Me.dgvMovies.AllowUserToDeleteRows = False
         Me.dgvMovies.AllowUserToResizeRows = False
-        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
-        Me.dgvMovies.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.dgvMovies.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle6
         Me.dgvMovies.BackgroundColor = System.Drawing.Color.White
         Me.dgvMovies.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvMovies.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -1894,8 +1894,8 @@ Partial Class frmMain
         Me.dgvMovieSets.AllowUserToAddRows = False
         Me.dgvMovieSets.AllowUserToDeleteRows = False
         Me.dgvMovieSets.AllowUserToResizeRows = False
-        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
-        Me.dgvMovieSets.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.dgvMovieSets.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
         Me.dgvMovieSets.BackgroundColor = System.Drawing.Color.White
         Me.dgvMovieSets.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvMovieSets.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -1994,8 +1994,8 @@ Partial Class frmMain
         Me.dgvTVShows.AllowUserToAddRows = False
         Me.dgvTVShows.AllowUserToDeleteRows = False
         Me.dgvTVShows.AllowUserToResizeRows = False
-        DataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
-        Me.dgvTVShows.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.dgvTVShows.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
         Me.dgvTVShows.BackgroundColor = System.Drawing.Color.White
         Me.dgvTVShows.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvTVShows.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -2174,8 +2174,8 @@ Partial Class frmMain
         Me.dgvTVSeasons.AllowUserToAddRows = False
         Me.dgvTVSeasons.AllowUserToDeleteRows = False
         Me.dgvTVSeasons.AllowUserToResizeRows = False
-        DataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
-        Me.dgvTVSeasons.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle4
+        DataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.dgvTVSeasons.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle3
         Me.dgvTVSeasons.BackgroundColor = System.Drawing.Color.White
         Me.dgvTVSeasons.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvTVSeasons.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -2319,8 +2319,8 @@ Partial Class frmMain
         Me.dgvTVEpisodes.AllowUserToAddRows = False
         Me.dgvTVEpisodes.AllowUserToDeleteRows = False
         Me.dgvTVEpisodes.AllowUserToResizeRows = False
-        DataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
-        Me.dgvTVEpisodes.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle5
+        DataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.dgvTVEpisodes.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle4
         Me.dgvTVEpisodes.BackgroundColor = System.Drawing.Color.White
         Me.dgvTVEpisodes.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvTVEpisodes.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -2543,7 +2543,7 @@ Partial Class frmMain
         '
         Me.tcMain.Controls.Add(Me.tpMovies)
         Me.tcMain.Controls.Add(Me.tpMovieSets)
-        Me.tcMain.Controls.Add(Me.tpShows)
+        Me.tcMain.Controls.Add(Me.tpTVShows)
         Me.tcMain.Dock = System.Windows.Forms.DockStyle.Top
         Me.tcMain.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.tcMain.ItemSize = New System.Drawing.Size(50, 19)
@@ -2561,6 +2561,7 @@ Partial Class frmMain
         Me.tpMovies.Padding = New System.Windows.Forms.Padding(3)
         Me.tpMovies.Size = New System.Drawing.Size(356, 0)
         Me.tpMovies.TabIndex = 0
+        Me.tpMovies.Tag = ""
         Me.tpMovies.Text = "Movies"
         Me.tpMovies.UseVisualStyleBackColor = True
         '
@@ -2570,18 +2571,20 @@ Partial Class frmMain
         Me.tpMovieSets.Name = "tpMovieSets"
         Me.tpMovieSets.Size = New System.Drawing.Size(356, 0)
         Me.tpMovieSets.TabIndex = 2
+        Me.tpMovieSets.Tag = ""
         Me.tpMovieSets.Text = "Sets"
         Me.tpMovieSets.UseVisualStyleBackColor = True
         '
-        'tpShows
+        'tpTVShows
         '
-        Me.tpShows.Location = New System.Drawing.Point(4, 23)
-        Me.tpShows.Name = "tpShows"
-        Me.tpShows.Padding = New System.Windows.Forms.Padding(3)
-        Me.tpShows.Size = New System.Drawing.Size(356, 0)
-        Me.tpShows.TabIndex = 1
-        Me.tpShows.Text = "TV Shows"
-        Me.tpShows.UseVisualStyleBackColor = True
+        Me.tpTVShows.Location = New System.Drawing.Point(4, 23)
+        Me.tpTVShows.Name = "tpTVShows"
+        Me.tpTVShows.Padding = New System.Windows.Forms.Padding(3)
+        Me.tpTVShows.Size = New System.Drawing.Size(356, 0)
+        Me.tpTVShows.TabIndex = 1
+        Me.tpTVShows.Tag = ""
+        Me.tpTVShows.Text = "TV Shows"
+        Me.tpTVShows.UseVisualStyleBackColor = True
         '
         'pnlFilter
         '
@@ -7034,7 +7037,7 @@ Partial Class frmMain
     Friend WithEvents btnSortTitle As System.Windows.Forms.Button
     Friend WithEvents ToolTips As System.Windows.Forms.ToolTip
     Friend WithEvents btnIMDBRating As System.Windows.Forms.Button
-    Friend WithEvents tpShows As System.Windows.Forms.TabPage
+    Friend WithEvents tpTVShows As System.Windows.Forms.TabPage
     Friend WithEvents scTV As System.Windows.Forms.SplitContainer
     Friend WithEvents scTVSeasonsEpisodes As System.Windows.Forms.SplitContainer
     Friend WithEvents pnlListTop As System.Windows.Forms.Panel

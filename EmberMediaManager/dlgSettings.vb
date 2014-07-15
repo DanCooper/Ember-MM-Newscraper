@@ -1709,6 +1709,10 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
+    Private Sub chkGeneralDoubleClickScrape_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGeneralDoubleClickScrape.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
     Private Sub chkMovieActorThumbsOverwrite_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieActorThumbsOverwrite.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
@@ -2742,7 +2746,7 @@ Public Class dlgSettings
     Private Sub FillSettings()
         Try
             With Master.eSettings
-                Me.chkResumeScraper.Checked = .RestartScraper
+                Me.chkGeneralResumeScraper.Checked = .RestartScraper
                 Me.btnMovieGeneralCustomMarker1.BackColor = System.Drawing.Color.FromArgb(.MovieGeneralCustomMarker1Color)
                 Me.btnMovieGeneralCustomMarker2.BackColor = System.Drawing.Color.FromArgb(.MovieGeneralCustomMarker2Color)
                 Me.btnMovieGeneralCustomMarker3.BackColor = System.Drawing.Color.FromArgb(.MovieGeneralCustomMarker3Color)
@@ -2791,6 +2795,7 @@ Public Class dlgSettings
                 Me.chkFileSystemCleanerWhitelist.Checked = .FileSystemCleanerWhitelist
                 Me.chkGeneralCheckUpdates.Checked = .GeneralCheckUpdates
                 Me.chkGeneralCreationDate.Checked = .GeneralCreationDate
+                Me.chkGeneralDoubleClickScrape.Checked = .GeneralDoubleClickScrape
                 Me.chkGeneralHideBanner.Checked = .GeneralHideBanner
                 Me.chkGeneralHideCharacterArt.Checked = .GeneralHideCharacterArt
                 Me.chkGeneralHideClearArt.Checked = .GeneralHideClearArt
@@ -4173,9 +4178,10 @@ Public Class dlgSettings
                 .FileSystemValidExts.AddRange(lstFileSystemValidExts.Items.OfType(Of String).ToList)
                 .FileSystemValidThemeExts.Clear()
                 .FileSystemValidThemeExts.AddRange(lstFileSystemValidThemeExts.Items.OfType(Of String).ToList)
-                .RestartScraper = Me.chkResumeScraper.Checked
+                .RestartScraper = Me.chkGeneralResumeScraper.Checked
                 .GeneralCheckUpdates = chkGeneralCheckUpdates.Checked
                 .GeneralCreationDate = Me.chkGeneralCreationDate.Checked
+                .GeneralDoubleClickScrape = Me.chkGeneralDoubleClickScrape.Checked
                 .GeneralDaemonDrive = Me.cbGeneralDaemonDrive.Text
                 .GeneralDaemonPath = Me.txtGeneralDaemonPath.Text
                 .GeneralHideBanner = Me.chkGeneralHideBanner.Checked
@@ -4927,7 +4933,7 @@ Public Class dlgSettings
 
     Private Sub SetUp()
         Me.gbScrapers.Text = Master.eLang.GetString(1193, "Scrapers")
-        Me.chkResumeScraper.Text = Master.eLang.GetString(1194, "Enable Scraper Resume")
+        Me.chkGeneralResumeScraper.Text = Master.eLang.GetString(1194, "Enable Scraper Resume")
         Me.Text = Master.eLang.GetString(420, "Settings")
         Me.btnApply.Text = Master.eLang.GetString(276, "Apply")
         Me.btnCancel.Text = Master.eLang.GetString(167, "Cancel")
@@ -4946,6 +4952,7 @@ Public Class dlgSettings
         Me.chkFileSystemCleanerWhitelist.Text = Master.eLang.GetString(440, "Whitelist Video Extensions")
         Me.chkGeneralCheckUpdates.Text = Master.eLang.GetString(432, "Check for Updates")
         Me.chkGeneralCreationDate.Text = Master.eLang.GetString(874, "Use FileCreated information of videofile")
+        Me.chkGeneralDoubleClickScrape.Text = Master.eLang.GetString(1198, "Enable Image Scrape On Double Right Click")
         Me.chkGeneralHideBanner.Text = Master.eLang.GetString(1146, "Do Not Display Banner")
         Me.chkGeneralHideCharacterArt.Text = Master.eLang.GetString(1147, "Do Not Display CharacterArt")
         Me.chkGeneralHideClearArt.Text = Master.eLang.GetString(1148, "Do Not Display ClearArt")

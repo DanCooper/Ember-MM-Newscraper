@@ -1594,6 +1594,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property GeneralDoubleClickScrape() As Boolean
+        Get
+            Return Settings._XMLSettings.GeneralDoubleClickScrape
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.GeneralDoubleClickScrape = value
+        End Set
+    End Property
+
     Public Property MovieThemeCol() As Boolean
         Get
             Return Settings._XMLSettings.moviethemecol

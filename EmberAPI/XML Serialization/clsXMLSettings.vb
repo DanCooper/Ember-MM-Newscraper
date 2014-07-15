@@ -33,6 +33,7 @@ Partial Public Class clsXMLSettings
     Private _generalcreationdate As Boolean
     Private _generaldaemondrive As String
     Private _generaldaemonpath As String
+    Private _generaldoubleclickscrape As Boolean
     Private _generalfilterpanelstate As Boolean
     Private _generalhidebanner As Boolean
     Private _generalhidecharacterart As Boolean
@@ -2284,6 +2285,15 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As String)
             Me._generaldaemondrive = value
+        End Set
+    End Property
+
+    Public Property GeneralDoubleClickScrape() As Boolean
+        Get
+            Return Me._generaldoubleclickscrape
+        End Get
+        Set(ByVal value As Boolean)
+            Me._generaldoubleclickscrape = value
         End Set
     End Property
 

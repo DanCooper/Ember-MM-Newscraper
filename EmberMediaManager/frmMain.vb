@@ -410,7 +410,7 @@ Public Class frmMain
             Me.SetControlsEnabled(False)
             Me.tpMovies.Text = Master.eLang.GetString(36, "Movies")
             Me.tpMovieSets.Text = Master.eLang.GetString(366, "Sets")
-            Me.tpShows.Text = Master.eLang.GetString(653, "TV")
+            Me.tpTVShows.Text = Master.eLang.GetString(653, "TV")
             Me.txtSearch.Text = String.Empty
 
             Me.fScanner.CancelAndWait()
@@ -10218,71 +10218,6 @@ doCancel:
         End Using
     End Sub
     ''' <summary>
-    ''' Show the Fanart in the Image Viewer
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    ''' <remarks></remarks>
-    Private Sub pbFanart_DoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbFanart.MouseDoubleClick
-        Try
-            If e.Button = Windows.Forms.MouseButtons.Left Then
-                If Not IsNothing(Me.pbFanartCache.Image) Then
-                    Using dImgView As New dlgImgView
-                        dImgView.ShowDialog(Me.pbFanartCache.Image)
-                    End Using
-                End If
-            ElseIf e.Button = Windows.Forms.MouseButtons.Right Then
-                Select tcMain.SelectedIndex
-                    Case 0 'Movies list
-                        If Me.dgvMovies.SelectedRows.Count > 1 Then Return
-
-                        Dim indX As Integer = Me.dgvMovies.SelectedRows(0).Index
-                        Dim ID As Integer = Convert.ToInt32(Me.dgvMovies.Item(0, indX).Value)
-
-                        Me.SetControlsEnabled(False)
-                        Dim dlgImgS As dlgImgSelect
-                        Dim aList As New List(Of MediaContainers.Image)
-                        Dim pResults As New MediaContainers.Image
-                        Dim efList As New List(Of String)
-                        Dim etList As New List(Of String)
-                        Dim newImage As New Images With {.IsEdit = True}
-
-                        If Not ModulesManager.Instance.MovieScrapeImages(Master.currMovie, Enums.ScraperCapabilities.Fanart, aList) Then
-                            If aList.Count > 0 Then
-                                dlgImgS = New dlgImgSelect()
-                                If dlgImgS.ShowDialog(Master.currMovie, Enums.MovieImageType.Fanart, aList, efList, etList, True) = DialogResult.OK Then
-                                    pResults = dlgImgS.Results
-                                    If Not String.IsNullOrEmpty(pResults.URL) Then
-                                        Cursor = Cursors.WaitCursor
-                                        pResults.WebImage.FromWeb(pResults.URL)
-                                        newImage = pResults.WebImage
-                                        newImage.SaveAsMovieFanart(Master.currMovie)
-                                        Cursor = Cursors.Default
-                                        Me.SetMovieListItemAfterEdit(ID, indX)
-                                        Me.RefreshMovie(ID, False, False, False, False)
-                                    End If
-                                End If
-                            Else
-                                MsgBox(Master.eLang.GetString(969, "No fanart could be found. Please check to see if any fanart scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(970, "No Fanart Found"))
-                            End If
-                        End If
-                        Me.SetControlsEnabled(True)
-                    Case 1 'MovieSets list
-                    Case 2 'TV Shows list
-                        If Me.dgvTVShows.Focus Then
-                            If Me.dgvTVShows.SelectedRows.Count > 1 Then Return
-                        ElseIf Me.dgvTVSeasons.Focused Then
-                            If Me.dgvTVSeasons.SelectedRows.Count > 1 Then Return
-                        ElseIf Me.dgvTVEpisodes.Focused Then
-                            If Me.dgvTVEpisodes.SelectedRows.Count > 1 Then Return
-                        End If
-                End Select
-            End If
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
-    End Sub
-    ''' <summary>
     ''' Draw genre text over the image when mouse hovers
     ''' </summary>
     ''' <param name="sender"></param>
@@ -10304,51 +10239,512 @@ doCancel:
         DirectCast(sender, PictureBox).Image = GenreImage
     End Sub
 
-    Private Sub pbClearArt_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbClearArt.DoubleClick
+    Private Sub pbClearArt_DoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbClearArt.MouseDoubleClick
         Try
-            If Not IsNothing(Me.pbClearArt.Image) Then
-                Using dImgView As New dlgImgView
-                    dImgView.ShowDialog(Me.pbClearArtCache.Image)
-                End Using
+            If e.Button = Windows.Forms.MouseButtons.Left OrElse Not Master.eSettings.GeneralDoubleClickScrape Then
+                If Not IsNothing(Me.pbClearArtCache.Image) Then
+                    Using dImgView As New dlgImgView
+                        dImgView.ShowDialog(Me.pbClearArtCache.Image)
+                    End Using
+                End If
+            ElseIf e.Button = Windows.Forms.MouseButtons.Right AndAlso Master.eSettings.GeneralDoubleClickScrape Then
+                Select Case tcMain.SelectedIndex
+                    Case 0 'Movies list
+                        If Me.dgvMovies.SelectedRows.Count > 1 Then Return
+                        Me.SetControlsEnabled(False)
+
+                        Dim indX As Integer = Me.dgvMovies.SelectedRows(0).Index
+                        Dim ID As Integer = Convert.ToInt32(Me.dgvMovies.Item(0, indX).Value)
+
+                        Dim dlgImgS As dlgImgSelect
+                        Dim aList As New List(Of MediaContainers.Image)
+                        Dim pResults As New MediaContainers.Image
+                        Dim efList As New List(Of String)
+                        Dim etList As New List(Of String)
+                        Dim newImage As New Images
+
+                        If Not ModulesManager.Instance.MovieScrapeImages(Master.currMovie, Enums.ScraperCapabilities.ClearArt, aList) Then
+                            If aList.Count > 0 Then
+                                dlgImgS = New dlgImgSelect()
+                                If dlgImgS.ShowDialog(Master.currMovie, Enums.MovieImageType.ClearArt, aList, efList, etList, True) = DialogResult.OK Then
+                                    pResults = dlgImgS.Results
+                                    If Not String.IsNullOrEmpty(pResults.URL) Then
+                                        Cursor = Cursors.WaitCursor
+                                        pResults.WebImage.FromWeb(pResults.URL)
+                                        newImage = pResults.WebImage
+                                        newImage.IsEdit = True
+                                        newImage.SaveAsMovieClearArt(Master.currMovie)
+                                        Cursor = Cursors.Default
+                                        Me.SetMovieListItemAfterEdit(ID, indX)
+                                        Me.RefreshMovie(ID, False, False, False, False)
+                                    End If
+                                End If
+                            Else
+                                MsgBox(Master.eLang.GetString(1099, "No ClearArt images could be found. Please check to see if any ClearArt scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(1102, "No ClearArts Found"))
+                            End If
+                        End If
+                        Me.SetControlsEnabled(True)
+                    Case 1 'MovieSets list
+                    Case 2 'TV list
+                        'TV Show list
+                        If Me.dgvTVShows.Focused Then
+                            If Me.dgvTVShows.SelectedRows.Count > 1 Then Return
+                            Me.SetControlsEnabled(False)
+
+                            Dim newImage As New Images
+                            Dim oldImage As New Images
+                            Dim indX As Integer = Me.dgvTVShows.SelectedRows(0).Index
+                            Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVShows.Item(0, indX).Value)
+
+                            Master.currShow = Master.DB.LoadTVFullShowFromDB(ShowID)
+
+                            If Not String.IsNullOrEmpty(Master.currShow.ShowClearArtPath) Then
+                                oldImage.FromFile(Master.currShow.ShowClearArtPath)
+                            End If
+
+                            Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.ShowClearArt, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
+
+                            If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
+                                newImage = tImage
+                                newImage.IsEdit = True
+                                newImage.SaveAsTVShowClearArt(Master.currShow)
+                                Me.SetShowListItemAfterEdit(ShowID, indX)
+                                If Me.RefreshShow(ShowID, False, True, False, False) Then
+                                    Me.FillList(False, False, True)
+                                End If
+                            End If
+                            Me.SetControlsEnabled(True)
+
+                            'TV Season list
+                        ElseIf Me.dgvTVSeasons.Focused Then
+                            If Me.dgvTVSeasons.SelectedRows.Count > 1 Then Return
+                            Me.SetControlsEnabled(False)
+                            'not supportet
+                            Me.SetControlsEnabled(True)
+
+                            'TV Episode list
+                        ElseIf Me.dgvTVEpisodes.Focused Then
+                            If Me.dgvTVEpisodes.SelectedRows.Count > 1 Then Return
+                            Me.SetControlsEnabled(False)
+                            'not supportet
+                            Me.SetControlsEnabled(True)
+                        End If
+                End Select
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
+            Me.SetControlsEnabled(True)
+        End Try
+    End Sub
+    ''' <summary>
+    ''' Show the Fanart in the Image Viewer
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
+    Private Sub pbFanart_DoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbFanart.MouseDoubleClick, pbFanartSmall.MouseDoubleClick
+        Try
+            If e.Button = Windows.Forms.MouseButtons.Left OrElse Not Master.eSettings.GeneralDoubleClickScrape Then
+                If Not IsNothing(Me.pbFanartCache.Image) Then
+                    Using dImgView As New dlgImgView
+                        dImgView.ShowDialog(Me.pbFanartCache.Image)
+                    End Using
+                ElseIf Not IsNothing(Me.pbFanartSmallCache.Image) Then
+                    Using dImgView As New dlgImgView
+                        dImgView.ShowDialog(Me.pbFanartSmallCache.Image)
+                    End Using
+                End If
+            ElseIf e.Button = Windows.Forms.MouseButtons.Right AndAlso Master.eSettings.GeneralDoubleClickScrape Then
+                Select Case tcMain.SelectedIndex
+                    Case 0 'Movies list
+                        If Me.dgvMovies.SelectedRows.Count > 1 Then Return
+                        Me.SetControlsEnabled(False)
+
+                        Dim indX As Integer = Me.dgvMovies.SelectedRows(0).Index
+                        Dim ID As Integer = Convert.ToInt32(Me.dgvMovies.Item(0, indX).Value)
+
+                        Dim dlgImgS As dlgImgSelect
+                        Dim aList As New List(Of MediaContainers.Image)
+                        Dim pResults As New MediaContainers.Image
+                        Dim efList As New List(Of String)
+                        Dim etList As New List(Of String)
+                        Dim newImage As New Images
+
+                        If Not ModulesManager.Instance.MovieScrapeImages(Master.currMovie, Enums.ScraperCapabilities.Fanart, aList) Then
+                            If aList.Count > 0 Then
+                                dlgImgS = New dlgImgSelect()
+                                If dlgImgS.ShowDialog(Master.currMovie, Enums.MovieImageType.Fanart, aList, efList, etList, True) = DialogResult.OK Then
+                                    pResults = dlgImgS.Results
+                                    If Not String.IsNullOrEmpty(pResults.URL) Then
+                                        Cursor = Cursors.WaitCursor
+                                        pResults.WebImage.FromWeb(pResults.URL)
+                                        newImage = pResults.WebImage
+                                        newImage.IsEdit = True
+                                        newImage.SaveAsMovieFanart(Master.currMovie)
+                                        Cursor = Cursors.Default
+                                        Me.SetMovieListItemAfterEdit(ID, indX)
+                                        Me.RefreshMovie(ID, False, False, False, False)
+                                    End If
+                                End If
+                            Else
+                                MsgBox(Master.eLang.GetString(969, "No fanart could be found. Please check to see if any fanart scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(970, "No Fanart Found"))
+                            End If
+                        End If
+                        Me.SetControlsEnabled(True)
+                    Case 1 'MovieSets list
+                    Case 2 'TV list
+                        'TV Show list
+                        If Me.dgvTVShows.Focused Then
+                            If Me.dgvTVShows.SelectedRows.Count > 1 Then Return
+                            Me.SetControlsEnabled(False)
+
+                            Dim newImage As New Images
+                            Dim oldImage As New Images
+                            Dim indX As Integer = Me.dgvTVShows.SelectedRows(0).Index
+                            Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVShows.Item(0, indX).Value)
+
+                            Master.currShow = Master.DB.LoadTVFullShowFromDB(ShowID)
+
+                            If Not String.IsNullOrEmpty(Master.currShow.ShowFanartPath) Then
+                                oldImage.FromFile(Master.currShow.ShowFanartPath)
+                            End If
+
+                            Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.ShowFanart, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
+
+                            If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
+                                newImage = tImage
+                                newImage.IsEdit = True
+                                newImage.SaveAsTVShowFanart(Master.currShow)
+                                Me.SetShowListItemAfterEdit(ShowID, indX)
+                                If Me.RefreshShow(ShowID, False, True, False, False) Then
+                                    Me.FillList(False, False, True)
+                                End If
+                            End If
+                            Me.SetControlsEnabled(True)
+
+                            'TV Season list
+                        ElseIf Me.dgvTVSeasons.Focused Then
+                            If Me.dgvTVSeasons.SelectedRows.Count > 1 Then Return
+                            Me.SetControlsEnabled(False)
+
+                            Dim newImage As New Images
+                            Dim oldImage As New Images
+                            Dim indX As Integer = Me.dgvTVSeasons.SelectedRows(0).Index
+                            Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item(0, indX).Value)
+                            Dim Season As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item(2, indX).Value)
+
+                            Master.currShow = Master.DB.LoadTVSeasonFromDB(ShowID, Season, True)
+
+                            If Not String.IsNullOrEmpty(Master.currShow.SeasonFanartPath) Then
+                                oldImage.FromFile(Master.currShow.SeasonFanartPath)
+                            End If
+
+                            Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.SeasonFanart, Master.currShow.TVEp.Season, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
+
+                            If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
+                                newImage = tImage
+                                newImage.IsEdit = True
+                                newImage.SaveAsTVSeasonFanart(Master.currShow)
+                                If Me.RefreshSeason(ShowID, Season, False) Then
+                                    Me.FillSeasons(ShowID)
+                                End If
+                            End If
+                            Me.SetControlsEnabled(True)
+
+                            'TV Episode list
+                        ElseIf Me.dgvTVEpisodes.Focused Then
+                            If Me.dgvTVEpisodes.SelectedRows.Count > 1 Then Return
+                            Me.SetControlsEnabled(False)
+
+                            Dim newImage As New Images
+                            Dim oldImage As New Images
+                            Dim indX As Integer = Me.dgvTVEpisodes.SelectedRows(0).Index
+                            Dim EpisodeID As Integer = Convert.ToInt32(Me.dgvTVEpisodes.Item(0, indX).Value)
+
+                            Master.currShow = Master.DB.LoadTVEpFromDB(EpisodeID, True)
+
+                            If Not String.IsNullOrEmpty(Master.currShow.EpFanartPath) Then
+                                oldImage.FromFile(Master.currShow.EpFanartPath)
+                            End If
+
+                            Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.EpisodeFanart, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
+
+                            If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
+                                newImage = tImage
+                                newImage.IsEdit = True
+                                newImage.SaveAsTVEpisodeFanart(Master.currShow)
+                                If Me.RefreshEpisode(EpisodeID) Then
+                                    Me.FillEpisodes(Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVEp.Season)
+                                End If
+                            End If
+                            Me.SetControlsEnabled(True)
+                        End If
+                End Select
+            End If
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+            Me.SetControlsEnabled(True)
         End Try
     End Sub
 
-    Private Sub pbPoster_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbPoster.DoubleClick
+    Private Sub pbPoster_DoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbPoster.MouseDoubleClick
         Try
-            If Not IsNothing(Me.pbPoster.Image) Then
-                Using dImgView As New dlgImgView
-                    dImgView.ShowDialog(Me.pbPosterCache.Image)
-                End Using
+            If e.Button = Windows.Forms.MouseButtons.Left OrElse Not Master.eSettings.GeneralDoubleClickScrape Then
+                If Not IsNothing(Me.pbPosterCache.Image) Then
+                    Using dImgView As New dlgImgView
+                        dImgView.ShowDialog(Me.pbPosterCache.Image)
+                    End Using
+                End If
+            ElseIf e.Button = Windows.Forms.MouseButtons.Right AndAlso Master.eSettings.GeneralDoubleClickScrape Then
+                Select Case tcMain.SelectedIndex
+                    Case 0 'Movies list
+                        If Me.dgvMovies.SelectedRows.Count > 1 Then Return
+                        Me.SetControlsEnabled(False)
+
+                        Dim indX As Integer = Me.dgvMovies.SelectedRows(0).Index
+                        Dim ID As Integer = Convert.ToInt32(Me.dgvMovies.Item(0, indX).Value)
+
+                        Dim dlgImgS As dlgImgSelect
+                        Dim aList As New List(Of MediaContainers.Image)
+                        Dim pResults As New MediaContainers.Image
+                        Dim efList As New List(Of String)
+                        Dim etList As New List(Of String)
+                        Dim newImage As New Images
+
+                        If Not ModulesManager.Instance.MovieScrapeImages(Master.currMovie, Enums.ScraperCapabilities.Poster, aList) Then
+                            If aList.Count > 0 Then
+                                dlgImgS = New dlgImgSelect()
+                                If dlgImgS.ShowDialog(Master.currMovie, Enums.MovieImageType.Poster, aList, efList, etList, True) = DialogResult.OK Then
+                                    pResults = dlgImgS.Results
+                                    If Not String.IsNullOrEmpty(pResults.URL) Then
+                                        Cursor = Cursors.WaitCursor
+                                        pResults.WebImage.FromWeb(pResults.URL)
+                                        newImage = pResults.WebImage
+                                        newImage.IsEdit = True
+                                        newImage.SaveAsMoviePoster(Master.currMovie)
+                                        Cursor = Cursors.Default
+                                        Me.SetMovieListItemAfterEdit(ID, indX)
+                                        Me.RefreshMovie(ID, False, False, False, False)
+                                    End If
+                                End If
+                            Else
+                                MsgBox(Master.eLang.GetString(971, "No poster could be found. Please check to see if any poster scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(972, "No Poster Found"))
+                            End If
+                        End If
+                        Me.SetControlsEnabled(True)
+                    Case 1 'MovieSets list
+                    Case 2 'TV list
+                        'TV Show list
+                        If Me.dgvTVShows.Focused Then
+                            If Me.dgvTVShows.SelectedRows.Count > 1 Then Return
+                            Me.SetControlsEnabled(False)
+
+                            Dim newImage As New Images
+                            Dim oldImage As New Images
+                            Dim indX As Integer = Me.dgvTVShows.SelectedRows(0).Index
+                            Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVShows.Item(0, indX).Value)
+
+                            Master.currShow = Master.DB.LoadTVFullShowFromDB(ShowID)
+
+                            If Not String.IsNullOrEmpty(Master.currShow.ShowPosterPath) Then
+                                oldImage.FromFile(Master.currShow.ShowPosterPath)
+                            End If
+
+                            Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.ShowPoster, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
+
+                            If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
+                                newImage = tImage
+                                newImage.IsEdit = True
+                                newImage.SaveAsTVShowPoster(Master.currShow)
+                                Me.SetShowListItemAfterEdit(ShowID, indX)
+                                If Me.RefreshShow(ShowID, False, True, False, False) Then
+                                    Me.FillList(False, False, True)
+                                End If
+                            End If
+                            Me.SetControlsEnabled(True)
+
+                            'TV Season list
+                        ElseIf Me.dgvTVSeasons.Focused Then
+                            If Me.dgvTVSeasons.SelectedRows.Count > 1 Then Return
+                            Me.SetControlsEnabled(False)
+
+                            Dim newImage As New Images
+                            Dim oldImage As New Images
+                            Dim indX As Integer = Me.dgvTVSeasons.SelectedRows(0).Index
+                            Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item(0, indX).Value)
+                            Dim Season As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item(2, indX).Value)
+
+                            Master.currShow = Master.DB.LoadTVSeasonFromDB(ShowID, Season, True)
+
+                            If Not String.IsNullOrEmpty(Master.currShow.SeasonPosterPath) Then
+                                oldImage.FromFile(Master.currShow.SeasonPosterPath)
+                            End If
+
+                            Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.SeasonPoster, Master.currShow.TVEp.Season, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
+
+                            If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
+                                newImage = tImage
+                                newImage.IsEdit = True
+                                newImage.SaveAsTVSeasonPoster(Master.currShow)
+                                If Me.RefreshSeason(ShowID, Season, False) Then
+                                    Me.FillSeasons(ShowID)
+                                End If
+                            End If
+                            Me.SetControlsEnabled(True)
+
+                            'TV Episode list
+                        ElseIf Me.dgvTVEpisodes.Focused Then
+                            If Me.dgvTVEpisodes.SelectedRows.Count > 1 Then Return
+                            Me.SetControlsEnabled(False)
+
+                            Dim newImage As New Images
+                            Dim oldImage As New Images
+                            Dim indX As Integer = Me.dgvTVEpisodes.SelectedRows(0).Index
+                            Dim EpisodeID As Integer = Convert.ToInt32(Me.dgvTVEpisodes.Item(0, indX).Value)
+
+                            Master.currShow = Master.DB.LoadTVEpFromDB(EpisodeID, True)
+
+                            If Not String.IsNullOrEmpty(Master.currShow.EpPosterPath) Then
+                                oldImage.FromFile(Master.currShow.EpPosterPath)
+                            End If
+
+                            Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.EpisodePoster, Master.currShow.TVEp.Season, Master.currShow.TVEp.Episode, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
+
+                            If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
+                                newImage = tImage
+                                newImage.IsEdit = True
+                                newImage.SaveAsTVEpisodePoster(Master.currShow)
+                                If Me.RefreshEpisode(EpisodeID) Then
+                                    Me.FillEpisodes(Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVEp.Season)
+                                End If
+                            End If
+                            Me.SetControlsEnabled(True)
+                        End If
+                End Select
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
+            Me.SetControlsEnabled(True)
         End Try
     End Sub
 
-    Private Sub pbFanartSmall_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbFanartSmall.DoubleClick
+    Private Sub pbLandscape_DoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbLandscape.MouseDoubleClick
         Try
-            If Not IsNothing(Me.pbFanartSmall.Image) Then
-                Using dImgView As New dlgImgView
-                    dImgView.ShowDialog(Me.pbFanartSmallCache.Image)
-                End Using
-            End If
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
-    End Sub
+            If e.Button = Windows.Forms.MouseButtons.Left OrElse Not Master.eSettings.GeneralDoubleClickScrape Then
+                If Not IsNothing(Me.pbLandscapeCache.Image) Then
+                    Using dImgView As New dlgImgView
+                        dImgView.ShowDialog(Me.pbLandscapeCache.Image)
+                    End Using
+                End If
+            ElseIf e.Button = Windows.Forms.MouseButtons.Right AndAlso Master.eSettings.GeneralDoubleClickScrape Then
+                Select Case tcMain.SelectedIndex
+                    Case 0 'Movies list
+                        If Me.dgvMovies.SelectedRows.Count > 1 Then Return
+                        Me.SetControlsEnabled(False)
 
-    Private Sub pbLandscape_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbLandscape.DoubleClick
-        Try
-            If Not IsNothing(Me.pbLandscape.Image) Then
-                Using dImgView As New dlgImgView
-                    dImgView.ShowDialog(Me.pbLandscapeCache.Image)
-                End Using
+                        Dim indX As Integer = Me.dgvMovies.SelectedRows(0).Index
+                        Dim ID As Integer = Convert.ToInt32(Me.dgvMovies.Item(0, indX).Value)
+
+                        Dim dlgImgS As dlgImgSelect
+                        Dim aList As New List(Of MediaContainers.Image)
+                        Dim pResults As New MediaContainers.Image
+                        Dim efList As New List(Of String)
+                        Dim etList As New List(Of String)
+                        Dim newImage As New Images
+
+                        If Not ModulesManager.Instance.MovieScrapeImages(Master.currMovie, Enums.ScraperCapabilities.Landscape, aList) Then
+                            If aList.Count > 0 Then
+                                dlgImgS = New dlgImgSelect()
+                                If dlgImgS.ShowDialog(Master.currMovie, Enums.MovieImageType.Landscape, aList, efList, etList, True) = DialogResult.OK Then
+                                    pResults = dlgImgS.Results
+                                    If Not String.IsNullOrEmpty(pResults.URL) Then
+                                        Cursor = Cursors.WaitCursor
+                                        pResults.WebImage.FromWeb(pResults.URL)
+                                        newImage = pResults.WebImage
+                                        newImage.IsEdit = True
+                                        newImage.SaveAsMovieLandscape(Master.currMovie)
+                                        Cursor = Cursors.Default
+                                        Me.SetMovieListItemAfterEdit(ID, indX)
+                                        Me.RefreshMovie(ID, False, False, False, False)
+                                    End If
+                                End If
+                            Else
+                                MsgBox(Master.eLang.GetString(1058, "No Landscape images could be found. Please check to see if any Landscape scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(1197, "No Landscape Found"))
+                            End If
+                        End If
+                        Me.SetControlsEnabled(True)
+                    Case 1 'MovieSets list
+                    Case 2 'TV list
+                        'TV Show list
+                        If Me.dgvTVShows.Focused Then
+                            If Me.dgvTVShows.SelectedRows.Count > 1 Then Return
+                            Me.SetControlsEnabled(False)
+
+                            Dim newImage As New Images
+                            Dim oldImage As New Images
+                            Dim indX As Integer = Me.dgvTVShows.SelectedRows(0).Index
+                            Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVShows.Item(0, indX).Value)
+
+                            Master.currShow = Master.DB.LoadTVFullShowFromDB(ShowID)
+
+                            If Not String.IsNullOrEmpty(Master.currShow.ShowLandscapePath) Then
+                                oldImage.FromFile(Master.currShow.ShowLandscapePath)
+                            End If
+
+                            Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.ShowLandscape, 0, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
+
+                            If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
+                                newImage = tImage
+                                newImage.IsEdit = True
+                                newImage.SaveAsTVShowLandscape(Master.currShow)
+                                Me.SetShowListItemAfterEdit(ShowID, indX)
+                                If Me.RefreshShow(ShowID, False, True, False, False) Then
+                                    Me.FillList(False, False, True)
+                                End If
+                            End If
+                            Me.SetControlsEnabled(True)
+
+                            'TV Season list
+                        ElseIf Me.dgvTVSeasons.Focused Then
+                            If Me.dgvTVSeasons.SelectedRows.Count > 1 Then Return
+                            Me.SetControlsEnabled(False)
+
+                            Dim newImage As New Images
+                            Dim oldImage As New Images
+                            Dim indX As Integer = Me.dgvTVSeasons.SelectedRows(0).Index
+                            Dim ShowID As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item(0, indX).Value)
+                            Dim Season As Integer = Convert.ToInt32(Me.dgvTVSeasons.Item(2, indX).Value)
+
+                            Master.currShow = Master.DB.LoadTVSeasonFromDB(ShowID, Season, True)
+
+                            If Not String.IsNullOrEmpty(Master.currShow.SeasonLandscapePath) Then
+                                oldImage.FromFile(Master.currShow.SeasonLandscapePath)
+                            End If
+
+                            Dim tImage As Images = ModulesManager.Instance.TVSingleImageOnly(Master.currShow.TVShow.Title, Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVShow.ID, Enums.TVImageType.SeasonLandscape, Master.currShow.TVEp.Season, 0, Master.currShow.ShowLanguage, Master.currShow.Ordering, oldImage)
+
+                            If Not IsNothing(tImage) AndAlso Not IsNothing(tImage.Image) Then
+                                newImage = tImage
+                                newImage.IsEdit = True
+                                newImage.SaveAsTVSeasonLandscape(Master.currShow)
+                                If Me.RefreshSeason(ShowID, Season, False) Then
+                                    Me.FillSeasons(ShowID)
+                                End If
+                            End If
+                            Me.SetControlsEnabled(True)
+
+                            'TV Episode list
+                        ElseIf Me.dgvTVEpisodes.Focused Then
+                            If Me.dgvTVEpisodes.SelectedRows.Count > 1 Then Return
+                            Me.SetControlsEnabled(False)
+                            'not supportet
+                            Me.SetControlsEnabled(True)
+                        End If
+                End Select
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
+            Me.SetControlsEnabled(True)
         End Try
     End Sub
 
@@ -12485,9 +12881,9 @@ doCancel:
         End Using
 
         If ShowCount > 0 Then
-            Me.tpShows.Text = String.Format("{0} ({1}/{2})", Master.eLang.GetString(653, "TV"), ShowCount, EpCount)
+            Me.tpTVShows.Text = String.Format("{0} ({1}/{2})", Master.eLang.GetString(653, "TV"), ShowCount, EpCount)
         Else
-            Me.tpShows.Text = Master.eLang.GetString(653, "TV")
+            Me.tpTVShows.Text = Master.eLang.GetString(653, "TV")
         End If
     End Sub
     ''' <summary>
@@ -13086,7 +13482,7 @@ doCancel:
                 .rbFilterOr.Text = Master.eLang.GetString(46, "Or")
                 .tpMovies.Text = Master.eLang.GetString(36, "Movies")
                 .tpMovieSets.Text = Master.eLang.GetString(366, "Sets")
-                .tpShows.Text = Master.eLang.GetString(653, "TV")
+                .tpTVShows.Text = Master.eLang.GetString(653, "TV")
                 .tsbAutoPilot.Text = Master.eLang.GetString(67, "Scrape Media")
                 .tsbMediaCenters.Text = Master.eLang.GetString(83, "Media Centers")
                 .tslLoading.Text = Master.eLang.GetString(7, "Loading Media:")

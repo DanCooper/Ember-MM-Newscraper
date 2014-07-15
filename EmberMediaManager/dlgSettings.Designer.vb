@@ -214,6 +214,8 @@ Partial Class dlgSettings
         Me.ilSettings = New System.Windows.Forms.ImageList(Me.components)
         Me.tvSettingsList = New System.Windows.Forms.TreeView()
         Me.pnlGeneral = New System.Windows.Forms.Panel()
+        Me.gbScrapers = New System.Windows.Forms.GroupBox()
+        Me.chkGeneralResumeScraper = New System.Windows.Forms.CheckBox()
         Me.gbGeneralMainWindow = New System.Windows.Forms.GroupBox()
         Me.chkGeneralHideLandscape = New System.Windows.Forms.CheckBox()
         Me.chkGeneralHideDiscArt = New System.Windows.Forms.CheckBox()
@@ -947,8 +949,7 @@ Partial Class dlgSettings
         Me.pnlTVThemes = New System.Windows.Forms.Panel()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.cdColor = New System.Windows.Forms.ColorDialog()
-        Me.gbScrapers = New System.Windows.Forms.GroupBox()
-        Me.chkResumeScraper = New System.Windows.Forms.CheckBox()
+        Me.chkGeneralDoubleClickScrape = New System.Windows.Forms.CheckBox()
         Me.gbGeneralMisc.SuspendLayout
         Me.gbGeneralDaemon.SuspendLayout
         Me.gbGeneralThemes.SuspendLayout
@@ -979,6 +980,7 @@ Partial Class dlgSettings
         Me.pnlSettingsTop.SuspendLayout
         CType(Me.pbSettingsTopLogo,System.ComponentModel.ISupportInitialize).BeginInit
         Me.pnlGeneral.SuspendLayout
+        Me.gbScrapers.SuspendLayout
         Me.gbGeneralMainWindow.SuspendLayout
         Me.gbGeneralInterface.SuspendLayout
         Me.pnlMovieGeneral.SuspendLayout
@@ -1113,7 +1115,6 @@ Partial Class dlgSettings
         Me.pnlMovieThemes.SuspendLayout
         Me.gbMovieThemeOpts.SuspendLayout
         Me.pnlTVThemes.SuspendLayout
-        Me.gbScrapers.SuspendLayout
         Me.SuspendLayout
         '
         'gbGeneralMisc
@@ -1265,7 +1266,7 @@ Partial Class dlgSettings
         '
         Me.chkGeneralHideFanartSmall.AutoSize = true
         Me.chkGeneralHideFanartSmall.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkGeneralHideFanartSmall.Location = New System.Drawing.Point(299, 136)
+        Me.chkGeneralHideFanartSmall.Location = New System.Drawing.Point(256, 136)
         Me.chkGeneralHideFanartSmall.Name = "chkGeneralHideFanartSmall"
         Me.chkGeneralHideFanartSmall.Size = New System.Drawing.Size(169, 17)
         Me.chkGeneralHideFanartSmall.TabIndex = 11
@@ -1287,7 +1288,7 @@ Partial Class dlgSettings
         '
         Me.chkGeneralHideFanart.AutoSize = true
         Me.chkGeneralHideFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkGeneralHideFanart.Location = New System.Drawing.Point(299, 113)
+        Me.chkGeneralHideFanart.Location = New System.Drawing.Point(256, 113)
         Me.chkGeneralHideFanart.Name = "chkGeneralHideFanart"
         Me.chkGeneralHideFanart.Size = New System.Drawing.Size(139, 17)
         Me.chkGeneralHideFanart.TabIndex = 7
@@ -1309,7 +1310,7 @@ Partial Class dlgSettings
         '
         Me.chkGeneralHidePoster.AutoSize = true
         Me.chkGeneralHidePoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkGeneralHidePoster.Location = New System.Drawing.Point(299, 182)
+        Me.chkGeneralHidePoster.Location = New System.Drawing.Point(256, 182)
         Me.chkGeneralHidePoster.Name = "chkGeneralHidePoster"
         Me.chkGeneralHidePoster.Size = New System.Drawing.Size(138, 17)
         Me.chkGeneralHidePoster.TabIndex = 6
@@ -3171,8 +3172,31 @@ Partial Class dlgSettings
         Me.pnlGeneral.TabIndex = 10
         Me.pnlGeneral.Visible = false
         '
+        'gbScrapers
+        '
+        Me.gbScrapers.Controls.Add(Me.chkGeneralResumeScraper)
+        Me.gbScrapers.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.gbScrapers.Location = New System.Drawing.Point(7, 287)
+        Me.gbScrapers.Name = "gbScrapers"
+        Me.gbScrapers.Size = New System.Drawing.Size(196, 49)
+        Me.gbScrapers.TabIndex = 15
+        Me.gbScrapers.TabStop = false
+        Me.gbScrapers.Text = "Scrapers"
+        '
+        'chkGeneralResumeScraper
+        '
+        Me.chkGeneralResumeScraper.AutoSize = true
+        Me.chkGeneralResumeScraper.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkGeneralResumeScraper.Location = New System.Drawing.Point(6, 21)
+        Me.chkGeneralResumeScraper.Name = "chkGeneralResumeScraper"
+        Me.chkGeneralResumeScraper.Size = New System.Drawing.Size(145, 17)
+        Me.chkGeneralResumeScraper.TabIndex = 1
+        Me.chkGeneralResumeScraper.Text = "Enable Scraper Resume"
+        Me.chkGeneralResumeScraper.UseVisualStyleBackColor = true
+        '
         'gbGeneralMainWindow
         '
+        Me.gbGeneralMainWindow.Controls.Add(Me.chkGeneralDoubleClickScrape)
         Me.gbGeneralMainWindow.Controls.Add(Me.chkGeneralHideLandscape)
         Me.gbGeneralMainWindow.Controls.Add(Me.chkGeneralHideDiscArt)
         Me.gbGeneralMainWindow.Controls.Add(Me.chkGeneralHideClearArt)
@@ -3198,7 +3222,7 @@ Partial Class dlgSettings
         '
         Me.chkGeneralHideLandscape.AutoSize = true
         Me.chkGeneralHideLandscape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkGeneralHideLandscape.Location = New System.Drawing.Point(299, 159)
+        Me.chkGeneralHideLandscape.Location = New System.Drawing.Point(256, 159)
         Me.chkGeneralHideLandscape.Name = "chkGeneralHideLandscape"
         Me.chkGeneralHideLandscape.Size = New System.Drawing.Size(160, 17)
         Me.chkGeneralHideLandscape.TabIndex = 18
@@ -11187,27 +11211,16 @@ Partial Class dlgSettings
         Me.Label2.TabIndex = 0
         Me.Label2.Text = "TV Themes Dummy Label"
         '
-        'gbScrapers
+        'chkGeneralDoubleClickScrape
         '
-        Me.gbScrapers.Controls.Add(Me.chkResumeScraper)
-        Me.gbScrapers.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.gbScrapers.Location = New System.Drawing.Point(7, 287)
-        Me.gbScrapers.Name = "gbScrapers"
-        Me.gbScrapers.Size = New System.Drawing.Size(196, 49)
-        Me.gbScrapers.TabIndex = 15
-        Me.gbScrapers.TabStop = false
-        Me.gbScrapers.Text = "Scrapers"
-        '
-        'chkResumeScraper
-        '
-        Me.chkResumeScraper.AutoSize = true
-        Me.chkResumeScraper.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkResumeScraper.Location = New System.Drawing.Point(6, 21)
-        Me.chkResumeScraper.Name = "chkResumeScraper"
-        Me.chkResumeScraper.Size = New System.Drawing.Size(145, 17)
-        Me.chkResumeScraper.TabIndex = 1
-        Me.chkResumeScraper.Text = "Enable Scraper Resume"
-        Me.chkResumeScraper.UseVisualStyleBackColor = true
+        Me.chkGeneralDoubleClickScrape.AutoSize = true
+        Me.chkGeneralDoubleClickScrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkGeneralDoubleClickScrape.Location = New System.Drawing.Point(256, 21)
+        Me.chkGeneralDoubleClickScrape.Name = "chkGeneralDoubleClickScrape"
+        Me.chkGeneralDoubleClickScrape.Size = New System.Drawing.Size(250, 17)
+        Me.chkGeneralDoubleClickScrape.TabIndex = 19
+        Me.chkGeneralDoubleClickScrape.Text = "Enable Image Scrape On Double Right Click"
+        Me.chkGeneralDoubleClickScrape.UseVisualStyleBackColor = true
         '
         'dlgSettings
         '
@@ -11298,6 +11311,8 @@ Partial Class dlgSettings
         Me.pnlSettingsTop.PerformLayout
         CType(Me.pbSettingsTopLogo,System.ComponentModel.ISupportInitialize).EndInit
         Me.pnlGeneral.ResumeLayout(false)
+        Me.gbScrapers.ResumeLayout(false)
+        Me.gbScrapers.PerformLayout
         Me.gbGeneralMainWindow.ResumeLayout(false)
         Me.gbGeneralMainWindow.PerformLayout
         Me.gbGeneralInterface.ResumeLayout(false)
@@ -11509,8 +11524,6 @@ Partial Class dlgSettings
         Me.gbMovieThemeOpts.PerformLayout
         Me.pnlTVThemes.ResumeLayout(false)
         Me.pnlTVThemes.PerformLayout
-        Me.gbScrapers.ResumeLayout(false)
-        Me.gbScrapers.PerformLayout
         Me.ResumeLayout(false)
         Me.PerformLayout
 
@@ -12433,5 +12446,6 @@ End Sub
     Friend WithEvents lblMovieGeneralCustomMarker1 As System.Windows.Forms.Label
     Friend WithEvents cdColor As System.Windows.Forms.ColorDialog
     Friend WithEvents gbScrapers As System.Windows.Forms.GroupBox
-    Friend WithEvents chkResumeScraper As System.Windows.Forms.CheckBox
+    Friend WithEvents chkGeneralResumeScraper As System.Windows.Forms.CheckBox
+    Friend WithEvents chkGeneralDoubleClickScrape As System.Windows.Forms.CheckBox
 End Class

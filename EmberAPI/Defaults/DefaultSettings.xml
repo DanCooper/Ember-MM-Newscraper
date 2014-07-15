@@ -158,6 +158,7 @@
   <MovieScraperCastWithImgOnly>false</MovieScraperCastWithImgOnly>
   <MovieScraperCertLang>usa</MovieScraperCertLang> 
   <GeneralCheckUpdates>true</GeneralCheckUpdates>
+  <GeneralDoubleClickScrape>false</GeneralDoubleClickScrape>
   <MovieCleanDB>true</MovieCleanDB>
   <CleanDotFanartJPG>false</CleanDotFanartJPG>
   <CleanExtrathumbs>false</CleanExtrathumbs>
