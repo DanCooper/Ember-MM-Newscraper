@@ -153,13 +153,17 @@ Public Class Localization
 
     Public Shared Function ISOLangGetLanguagesList() As ArrayList
         Dim r As New ArrayList
-        r.Add(_ISOLanguages.Language.FindAll(Function(f) Not String.IsNullOrEmpty(f.Name)).ToArray)
+        For Each x As LanguagesLanguage In _ISOLanguages.Language.Where(Function(y) Not String.IsNullOrEmpty(y.Name))
+            r.Add(x.Name)
+        Next
         Return r
     End Function
 
     Public Shared Function ISOLangGetLanguagesListAlpha2() As ArrayList
         Dim r As New ArrayList
-        r.Add(_ISOLanguages.Language.FindAll(Function(f) Not String.IsNullOrEmpty(f.Alpha2)).ToArray)
+        For Each x As LanguagesLanguage In _ISOLanguages.Language.Where(Function(y) Not String.IsNullOrEmpty(y.Alpha2))
+            r.Add(x.Name)
+        Next
         Return r
     End Function
     Public Shared Function ISOLangGetLanguagesListAlpha3() As ArrayList
