@@ -38,7 +38,7 @@ Public Class APIXML
     Public Shared dStudios As New Dictionary(Of String, String)
     Public Shared GenreXML As New clsXMLGenres
     Public Shared RatingXML As New clsXMLRatings
-    Public Shared SourceList As New List(Of String)(New String() {"bluray", "hddvd", "hdtv", "dvd", "sdtv"})
+    Public Shared SourceList As New List(Of String)(New String() {"bluray", "hddvd", "hdtv", "dvd", "sdtv", "vhs"})
 
 #End Region 'Fields
 
@@ -415,12 +415,12 @@ Public Class APIXML
         Return retRatings.ToArray
     End Function
 
-    Public Shared Function GetRatingRegions() As Object()
+    Public Shared Function GetTVRatingRegions() As Object()
         Dim retRatings As New List(Of String)
         Try
-            For Each r In RatingXML.movies
+            For Each r In RatingXML.tv
                 If retRatings.FindIndex(Function(f) f = r.country) = -1 Then
-                    retRatings.Add(r.searchstring)
+                    retRatings.Add(r.country)
                 End If
             Next
         Catch ex As Exception

@@ -3427,7 +3427,7 @@ Public Class dlgSettings
             Me.LoadIntLangs()
             Me.LoadLangs()
             Me.LoadThemes()
-            Me.LoadRatingRegions()
+            Me.LoadTVRatingRegions()
             Me.FillSettings()
             Me.lvMovieSources.ListViewItemSorter = New ListViewItemComparer(1)
             Me.lvTVSources.ListViewItemSorter = New ListViewItemComparer(1)
@@ -3566,8 +3566,8 @@ Public Class dlgSettings
         Next
     End Sub
 
-    Private Sub LoadRatingRegions()
-        Me.cbTVScraperRatingRegion.Items.AddRange(APIXML.GetRatingRegions)
+    Private Sub LoadTVRatingRegions()
+        Me.cbTVScraperRatingRegion.Items.AddRange(APIXML.GetTVRatingRegions)
     End Sub
 
     Private Sub LoadTVShowRegex()
