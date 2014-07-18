@@ -1519,9 +1519,11 @@ Public Class frmMain
 
         AddHandler ModulesManager.Instance.MovieScraperEvent, AddressOf MovieScraperEvent
 
-        _ScraperStatus.ScrapeList.Clear()
-        _ScraperStatus.ScrapeList.AddRange(ScrapeList.ToArray)
-        configpath = FileUtils.Common.ReturnSettingsFile("Settings", "ScraperStatus.dat")
+        If Master.eSettings.RestartScraper Then
+            _ScraperStatus.ScrapeList.Clear()
+            _ScraperStatus.ScrapeList.AddRange(ScrapeList.ToArray)
+            configpath = FileUtils.Common.ReturnSettingsFile("Settings", "ScraperStatus.dat")
+        End If
 
         While ScrapeList.Count > 0
             dRow = ScrapeList(0)
@@ -9952,9 +9954,12 @@ doCancel:
 
     Private Sub MovieScrapeData(ByVal selected As Boolean, ByVal sType As Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions, Optional ByVal Restart As Boolean = False)
         If Not Restart Then
-            _ScraperStatus.Selected = selected
-            _ScraperStatus.sType = sType
-            _ScraperStatus.Options = Options
+            If Master.eSettings.RestartScraper Then
+                _ScraperStatus.Selected = selected
+                _ScraperStatus.sType = sType
+                _ScraperStatus.Options = Options
+                _ScraperStatus.GlobalScrape = Master.GlobalScrapeMod
+            End If
 
             ScrapeList.Clear()
 
@@ -10030,6 +10035,7 @@ doCancel:
                     selected = _ScraperStatus.Selected
                     sType = _ScraperStatus.sType
                     Options = _ScraperStatus.Options
+                    Master.GlobalScrapeMod = _ScraperStatus.GlobalScrape
                     ScrapeList.Clear()
                     ScrapeList.AddRange(_ScraperStatus.ScrapeList.ToArray)
                 End If
