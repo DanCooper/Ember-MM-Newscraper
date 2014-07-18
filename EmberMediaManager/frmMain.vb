@@ -8411,6 +8411,7 @@ doCancel:
                 LoadWithGUI()
             End If
             While Not ModulesManager.Instance.ModulesLoaded()
+                Master.fLoading.SetLoadingMesg(Master.eLang.GetString(856, "Loading modules..."))
                 Application.DoEvents()
                 Threading.Thread.Sleep(50)
             End While
