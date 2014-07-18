@@ -8410,7 +8410,10 @@ doCancel:
             Else 'Regular Run (GUI)
                 LoadWithGUI()
             End If
-
+            While Not ModulesManager.Instance.ModulesLoaded()
+                Application.DoEvents()
+                Threading.Thread.Sleep(50)
+            End While
             Master.fLoading.Close()
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)

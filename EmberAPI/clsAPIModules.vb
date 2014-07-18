@@ -93,6 +93,12 @@ Public Class ModulesManager
 
     End Property
 
+    Public ReadOnly Property ModulesLoaded() As Boolean
+        Get
+            Return bwloadModules_done AndAlso bwloadScrapersModules_done AndAlso bwloadTVScrapersModules_done
+        End Get
+
+    End Property
 #End Region 'Properties
 
 #Region "Methods"
