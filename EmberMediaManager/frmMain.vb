@@ -1512,7 +1512,7 @@ Public Class frmMain
         Dim tUrlList As New List(Of Themes)
         Dim DBScrapeMovie As New Structures.DBMovie
         Dim dRow As Object()
-        Dim configpath As String
+        Dim configpath As String = ""
         Dim formatter As New BinaryFormatter()
 
         logger.Trace("Starting MOVIE scrape")
