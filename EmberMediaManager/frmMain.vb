@@ -10118,33 +10118,33 @@ doCancel:
         Else
             Select Case eType
                 Case Enums.MovieScraperEventType.BannerItem
-                    dScrapeRow(51) = DirectCast(Parameter, Object)
+                    dScrapeRow(51) = DirectCast(Parameter, String)
                 Case Enums.MovieScraperEventType.ClearArtItem
-                    dScrapeRow(61) = DirectCast(Parameter, Object)
+                    dScrapeRow(61) = DirectCast(Parameter, String)
                 Case Enums.MovieScraperEventType.ClearLogoItem
-                    dScrapeRow(59) = DirectCast(Parameter, Object)
+                    dScrapeRow(59) = DirectCast(Parameter, String)
                 Case Enums.MovieScraperEventType.DiscArtItem
-                    dScrapeRow(57) = DirectCast(Parameter, Object)
+                    dScrapeRow(57) = DirectCast(Parameter, String)
                 Case Enums.MovieScraperEventType.EFanartsItem
-                    dScrapeRow(49) = DirectCast(Parameter, Object)
+                    dScrapeRow(49) = DirectCast(Parameter, String)
                 Case Enums.MovieScraperEventType.EThumbsItem
-                    dScrapeRow(9) = DirectCast(Parameter, Object)
+                    dScrapeRow(9) = DirectCast(Parameter, String)
                 Case Enums.MovieScraperEventType.FanartItem
-                    dScrapeRow(5) = DirectCast(Parameter, Object)
+                    dScrapeRow(5) = DirectCast(Parameter, String)
                 Case Enums.MovieScraperEventType.LandscapeItem
-                    dScrapeRow(53) = DirectCast(Parameter, Object)
+                    dScrapeRow(53) = DirectCast(Parameter, String)
                 Case Enums.MovieScraperEventType.ListTitle
-                    dScrapeRow(3) = DirectCast(Parameter, Object)
+                    dScrapeRow(3) = DirectCast(Parameter, String)
                 Case Enums.MovieScraperEventType.NFOItem
-                    dScrapeRow(6) = DirectCast(Parameter, Object)
+                    dScrapeRow(6) = DirectCast(Parameter, String)
                 Case Enums.MovieScraperEventType.PosterItem
-                    dScrapeRow(4) = DirectCast(Parameter, Object)
+                    dScrapeRow(4) = DirectCast(Parameter, String)
                 Case Enums.MovieScraperEventType.SortTitle
-                    dScrapeRow(47) = DirectCast(Parameter, Object)
+                    dScrapeRow(47) = DirectCast(Parameter, String)
                 Case Enums.MovieScraperEventType.ThemeItem
-                    dScrapeRow(55) = DirectCast(Parameter, Object)
+                    dScrapeRow(55) = DirectCast(Parameter, String)
                 Case Enums.MovieScraperEventType.TrailerItem
-                    dScrapeRow(7) = DirectCast(Parameter, Object)
+                    dScrapeRow(7) = DirectCast(Parameter, String)
             End Select
             Me.dgvMovies.Invalidate()
         End If
