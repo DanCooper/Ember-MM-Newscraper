@@ -2,8 +2,15 @@
 Imports EmberAPI
 
 Public Class frmMediaSources
+
+#Region "Events"
+
     Public Event ModuleSettingsChanged()
 
+#End Region 'Events
+
+
+#Region "Methods"
 
     Sub New()
         ' This call is required by the Windows Form Designer.
@@ -26,9 +33,11 @@ Public Class frmMediaSources
     Private Sub LoadSources()
         dgvSources.Rows.Clear()
         Dim sources As List(Of AdvancedSettingsComplexSettingsTableItem) = clsAdvancedSettings.GetComplexSetting("MovieSources", "*EmberAPP")
-        For Each sett In sources
-            Dim i As Integer = dgvSources.Rows.Add(New Object() {sett.Name, sett.Value})
-        Next
+        If Not IsNothing(sources) Then
+            For Each sett In sources
+                Dim i As Integer = dgvSources.Rows.Add(New Object() {sett.Name, sett.Value})
+            Next
+        End If
         dgvSources.ClearSelection()
     End Sub
 
@@ -79,7 +88,6 @@ Public Class frmMediaSources
         Me.chkMapByFile.Text = Master.eLang.GetString(765, "Map Media Source by File Extension")
         Me.dgvByFile.Columns(0).HeaderText = Master.eLang.GetString(775, "File Extension")
         Me.dgvByFile.Columns(1).HeaderText = Master.eLang.GetString(764, "Source Name")
-
     End Sub
 
     Public Sub SaveChanges()
@@ -94,14 +102,16 @@ Public Class frmMediaSources
 
             Dim sources As New List(Of AdvancedSettingsComplexSettingsTableItem)
             For Each r As DataGridViewRow In dgvSources.Rows
-                If Not String.IsNullOrEmpty(r.Cells(0).Value.ToString) AndAlso Not (sources.FindIndex(Function(f) f.Name = r.Cells(0).Value.ToString) = -1) Then
+                If Not String.IsNullOrEmpty(r.Cells(0).Value.ToString) AndAlso (sources.FindIndex(Function(f) f.Name = r.Cells(0).Value.ToString) = -1) Then
                     sources.Add(New AdvancedSettingsComplexSettingsTableItem With {.Name = r.Cells(0).Value.ToString, .Value = r.Cells(1).Value.ToString})
                 End If
             Next
-            settings.SetComplexSetting("MovieSources", sources, "*EmberAPP")
+            If Not IsNothing(sources) Then
+                settings.SetComplexSetting("MovieSources", sources, "*EmberAPP")
+            End If
             settings.SetBooleanSetting("MediaSourcesByExtension", chkMapByFile.Checked, "*EmberAPP")
             For Each r As DataGridViewRow In dgvByFile.Rows
-                If Not String.IsNullOrEmpty(r.Cells(0).Value.ToString) AndAlso Not (sources.FindIndex(Function(f) f.Name = r.Cells(0).Value.ToString) = -1) Then
+                If Not String.IsNullOrEmpty(r.Cells(0).Value.ToString) AndAlso (sources.FindIndex(Function(f) f.Name = r.Cells(0).Value.ToString) = -1) Then
                     settings.SetSetting(String.Concat("MediaSourcesByExtension:", r.Cells(0).Value.ToString), r.Cells(1).Value.ToString, "*EmberAPP")
                 End If
             Next
@@ -113,6 +123,7 @@ Public Class frmMediaSources
             settings.SetDefaults(True, "MovieSources")
         End Using
         LoadSources()
+        RaiseEvent ModuleSettingsChanged()
     End Sub
 
     Private Sub chkMapByFile_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMapByFile.CheckedChanged
@@ -135,7 +146,7 @@ Public Class frmMediaSources
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub btnremoveByFile_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveByFile.Click
+    Private Sub btnRemoveByFile_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveByFile.Click
         If dgvByFile.SelectedCells.Count > 0 AndAlso Not Convert.ToBoolean(dgvByFile.Rows(dgvByFile.SelectedCells(0).RowIndex).Tag) Then
             dgvByFile.Rows.RemoveAt(dgvByFile.SelectedCells(0).RowIndex)
             RaiseEvent ModuleSettingsChanged()
@@ -154,4 +165,7 @@ Public Class frmMediaSources
             btnRemoveByFile.Enabled = False
         End If
     End Sub
+
+#End Region 'Methods
+
 End Class

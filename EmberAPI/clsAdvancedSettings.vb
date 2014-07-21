@@ -290,7 +290,6 @@ Public Class clsAdvancedSettings
             End If
             Dim v = _AdvancedSettings.Setting.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly)
             If v Is Nothing Then
-                '_AdvancedSettings.Setting.Add(New AdvancedSettingsSetting With {.Section = Assembly, .Name = key, .Value = value, .DefaultValue = If(isDefault, value, "")})
                 _AdvancedSettings.Setting.Add(New AdvancedSettingsSetting With {.Section = Assembly, .Name = key, .Value = value, .DefaultValue = If(isDefault, value, "")})
             Else
                 _AdvancedSettings.Setting.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly).Value = value
@@ -319,6 +318,10 @@ Public Class clsAdvancedSettings
             aAdvancedSettings = CType(xAdvancedSettings.Deserialize(objStreamReader), clsXMLAdvancedSettings)
             objStreamReader.Close()
             _AdvancedSettings.Setting.AddRange(aAdvancedSettings.Setting)
+            While Not IsNothing(_AdvancedSettings.ComplexSettings.FirstOrDefault(Function(f) f.Table.Name = section))
+                _AdvancedSettings.ComplexSettings.Remove(_AdvancedSettings.ComplexSettings.FirstOrDefault(Function(f) f.Table.Name = section))
+            End While
+            _AdvancedSettings.ComplexSettings.AddRange(aAdvancedSettings.ComplexSettings)
         End If
 
         If Not loadSingle Then
