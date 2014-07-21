@@ -29,6 +29,7 @@ Public Class dlgEditMovieSet
 
 #Region "Fields"
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+
     Friend WithEvents bwLoadMoviesInSet As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwLoadMoviesFromDB As New System.ComponentModel.BackgroundWorker
 
@@ -45,10 +46,12 @@ Public Class dlgEditMovieSet
     Private pResults As New Containers.ImgResult
 
     Private currMovieSet As Structures.DBMovieSet = Master.currMovieSet
-    Private currSet As New Sets 'list of all movies in this movieset
-    Private lMovies As New List(Of Movies) 'list of all movies loaded from DB
-    Private sListTitle As String = String.Empty
+    Private sMovieID As String = String.Empty
     Private needsMovieUpdate As Boolean = False
+
+    Private MoviesInDB As New List(Of MovieInSet) 'list of all movies loaded from DB
+    Private MoviesToRemove As New List(Of MovieInSet)
+    Private MoviesInSet As New List(Of MovieInSet)
 
 
 #End Region 'Fields
@@ -58,11 +61,11 @@ Public Class dlgEditMovieSet
     Private Sub btnGetTMDBColID_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGetTMDBColID.Click
         Dim newColID As String = String.Empty
 
-        If currSet.Movies.Count > 0 Then
-            If Not String.IsNullOrEmpty(currSet.Movies.Item(0).DBMovie.Movie.TMDBColID) Then
-                newColID = currSet.Movies.Item(0).DBMovie.Movie.TMDBColID
+        If MoviesInSet.Count > 0 Then
+            If Not String.IsNullOrEmpty(MoviesInSet.Item(0).DBMovie.Movie.TMDBColID) Then
+                newColID = MoviesInSet.Item(0).DBMovie.Movie.TMDBColID
             Else
-                newColID = ModulesManager.Instance.GetMovieCollectionID(currSet.Movies.Item(0).DBMovie.Movie.ID)
+                newColID = ModulesManager.Instance.GetMovieCollectionID(MoviesInSet.Item(0).DBMovie.Movie.ID)
             End If
 
             If Not String.IsNullOrEmpty(newColID) Then
@@ -74,29 +77,33 @@ Public Class dlgEditMovieSet
 
     Private Sub btnMovieUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieUp.Click
         Try
-            If Me.lbMoviesInSet.Items.Count > 0 AndAlso Not IsNothing(Me.lbMoviesInSet.SelectedItem) AndAlso Me.lbMoviesInSet.SelectedIndex > 0 Then
-                'needsSave = True
-                Dim iIndex As Integer = Me.lbMoviesInSet.SelectedIndex
-                Me.currSet.Movies(iIndex).Order = Me.lbMoviesInSet.SelectedIndex - 1
-                Me.currSet.Movies(iIndex - 1).Order += 1
-                'Me.LoadCurrSet()
-                Me.lbMoviesInSet.SelectedIndex = iIndex - 1
-                Me.lbMoviesInSet.Focus()
-            End If
+            'If Me.lvMoviesInSet.Items.Count > 0 AndAlso Not IsNothing(Me.lvMoviesInSet.SelectedItem) AndAlso Me.lvMoviesInSet.SelectedIndex > 0 Then
+            '    Me.needsMovieUpdate = True
+            '    Dim iIndex As Integer = Me.lvMoviesInSet.SelectedItems(0)
+            '    'Me.currSet.Movies(iIndex).Order = Me.lbMoviesInSet.SelectedIndex - 1
+            '    'Me.currSet.Movies(iIndex - 1).Order += 1
+            '    'Me.LoadCurrSet()
+            '    Me.lvMoviesInSet.SelectedIndex = iIndex - 1
+            '    Me.lvMoviesInSet.Focus()
+            'End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
-    Private Sub lbMoviesInSet_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lbMoviesInSet.KeyDown
-        If e.KeyCode = Keys.Delete Then Me.DeleteFromSet()
+    Private Sub lbMoviesInSet_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs)
+        If e.KeyCode = Keys.Delete Then Me.RemoveFromSet()
     End Sub
 
     Private Sub btnMovieRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieRemove.Click
-        Me.DeleteFromSet()
+        Me.RemoveFromSet()
     End Sub
 
-    Private Sub btnLoadMoviesFromDB_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnLoadMoviesFromDB.Click, btnMovieRemove.Click
+    Private Sub btnMovieReAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieReAdd.Click
+        Me.ReAddToSet()
+    End Sub
+
+    Private Sub btnLoadMoviesFromDB_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnLoadMoviesFromDB.Click
         Try
             Me.SetControlsEnabled(False)
 
@@ -116,47 +123,82 @@ Public Class dlgEditMovieSet
         End Try
     End Sub
 
-    Private Sub DeleteFromSet()
-        Dim lMov As New Movies
+    Private Sub ReAddToSet()
+        Try
+            Dim lMov As New MovieInSet
 
-        If Me.lbMoviesInSet.SelectedItems.Count > 0 Then
-            Me.SetControlsEnabled(False)
-            While Me.lbMoviesInSet.SelectedItems.Count > 0
-                Me.sListTitle = Me.lbMoviesInSet.SelectedItems(0).ToString
-                lMov = Me.currSet.Movies.Find(AddressOf FindMovie)
-                If Not IsNothing(lMov) Then
-                    Me.RemoveFromSet(lMov, False)
-                Else
-                    Me.lbMoviesInSet.Items.Remove(Me.lbMoviesInSet.SelectedItems(0))
-                End If
+            If Me.lvMoviesToRemove.SelectedItems.Count > 0 Then
+                Me.SetControlsEnabled(False)
+                While Me.lvMoviesToRemove.SelectedItems.Count > 0
+                    Me.sMovieID = Me.lvMoviesToRemove.SelectedItems(0).SubItems(0).Text.ToString
+                    lMov = Me.MoviesToRemove.Find(AddressOf FindMovie)
+                    If Not IsNothing(lMov) Then
+                        Me.MoviesInSet.Add(lMov)
+                        Me.MoviesToRemove.Remove(lMov)
+                    Else
+                        Me.lvMoviesToRemove.Items.Remove(Me.lvMoviesToRemove.SelectedItems(0))
+                    End If
+                End While
 
-            End While
+                Me.FillMoviesInSet()
+                Me.FillMoviesToRemove()
+                Me.SetControlsEnabled(True)
+                Me.btnMovieUp.Enabled = False
+                Me.btnMovieDown.Enabled = False
+                Me.btnMovieRemove.Enabled = False
+            End If
 
-            Me.LoadCurrSet()
-            Me.FillMovies()
-            Me.SetControlsEnabled(True)
-            Me.btnMovieUp.Enabled = False
-            Me.btnMovieDown.Enabled = False
-            Me.btnMovieRemove.Enabled = False
-        End If
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
     End Sub
 
-    Private Sub lbMoviesInDB_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lbMoviesInDB.SelectedIndexChanged
-        If Me.lbMoviesInDB.SelectedItems.Count > 0 Then
+    Private Sub RemoveFromSet()
+        Try
+            Dim lMov As New MovieInSet
+
+            If Me.lvMoviesInSet.SelectedItems.Count > 0 Then
+                Me.SetControlsEnabled(False)
+                While Me.lvMoviesInSet.SelectedItems.Count > 0
+                    Me.sMovieID = Me.lvMoviesInSet.SelectedItems(0).SubItems(0).Text.ToString
+                    lMov = Me.MoviesInSet.Find(AddressOf FindMovie)
+                    If Not IsNothing(lMov) Then
+                        Me.MoviesToRemove.Add(lMov)
+                        Me.MoviesInSet.Remove(lMov)
+                    Else
+                        Me.lvMoviesInSet.Items.Remove(Me.lvMoviesInSet.SelectedItems(0))
+                    End If
+                End While
+
+                Me.FillMoviesInSet()
+                Me.FillMoviesToRemove()
+                Me.SetControlsEnabled(True)
+                Me.btnMovieUp.Enabled = False
+                Me.btnMovieDown.Enabled = False
+                Me.btnMovieRemove.Enabled = False
+            End If
+
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
+    Private Sub lvMoviesInDB_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lvMoviesInDB.SelectedIndexChanged
+        If Me.lvMoviesInDB.SelectedItems.Count > 0 Then
             Me.btnMovieAdd.Enabled = True
         Else
             Me.btnMovieAdd.Enabled = False
         End If
     End Sub
 
-    Private Sub lbMoviesInDB_DoubleClick(sender As Object, e As EventArgs) Handles lbMoviesInDB.DoubleClick
-        If Me.lbMoviesInDB.SelectedItems.Count = 1 Then
+    Private Sub lvMoviesInDB_DoubleClick(sender As Object, e As EventArgs) Handles lvMoviesInDB.DoubleClick
+        If Me.lvMoviesInDB.SelectedItems.Count = 1 Then
             AddMovieToSet()
         End If
     End Sub
 
-    Private Sub lbMoviesInSet_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lbMoviesInSet.SelectedIndexChanged
-        If Me.lbMoviesInSet.SelectedItems.Count > 0 Then
+    Private Sub lvMoviesInSet_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lvMoviesInSet.SelectedIndexChanged
+        If Me.lvMoviesInSet.SelectedItems.Count > 0 Then
             Me.btnMovieDown.Enabled = True
             Me.btnMovieRemove.Enabled = True
             Me.btnMovieUp.Enabled = True
@@ -167,48 +209,49 @@ Public Class dlgEditMovieSet
         End If
     End Sub
 
+    Private Sub lvMoviesToRemove_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lvMoviesToRemove.SelectedIndexChanged
+        If Me.lvMoviesToRemove.SelectedItems.Count > 0 Then
+            Me.btnMovieReAdd.Enabled = True
+        Else
+            Me.btnMovieReAdd.Enabled = False
+        End If
+    End Sub
+
     Private Sub btnMovieAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieAdd.Click
         AddMovieToSet()
     End Sub
 
     Private Sub AddMovieToSet()
         Try
-            Dim lMov As New Movies
+            Dim lMov As New MovieInSet
 
-
-            While lbMoviesInDB.SelectedItems.Count > 0
-                If Not Me.lbMoviesInSet.Items.Contains(lbMoviesInDB.SelectedItems(0)) Then
-                    Me.sListTitle = lbMoviesInDB.SelectedItems(0).ToString
-                    lMov = lMovies.Find(AddressOf FindMovie)
+            If Me.lvMoviesInDB.SelectedItems.Count > 0 Then
+                Me.SetControlsEnabled(False)
+                While Me.lvMoviesInDB.SelectedItems.Count > 0
+                    Me.sMovieID = Me.lvMoviesInDB.SelectedItems(0).SubItems(0).Text.ToString
+                    lMov = Me.MoviesInDB.Find(AddressOf FindMovie)
                     If Not IsNothing(lMov) Then
-                        Me.currSet.AddMovie(lMov, Me.currSet.Movies.Count + 1)
-                        needsMovieUpdate = True
-                        Me.lbMoviesInDB.Items.Remove(lbMoviesInDB.SelectedItems(0))
+                        Me.MoviesInSet.Add(lMov)
+                        Me.MoviesInDB.Remove(lMov)
+                    Else
+                        Me.lvMoviesInDB.Items.Remove(Me.lvMoviesInDB.SelectedItems(0))
                     End If
-                End If
-            End While
+                End While
 
-            lbMoviesInDB.SelectedIndex = -1
-            Me.LoadCurrSet()
+                Me.FillMoviesInSet()
+                Me.FillMoviesToRemove()
+                Me.SetControlsEnabled(True)
+                Me.btnMovieAdd.Enabled = False
+            End If
 
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
-    Private Function FindMovie(ByVal lMov As Movies) As Boolean
-        If lMov.ListTitle = sListTitle Then Return True Else  : Return False
+    Private Function FindMovie(ByVal lMov As MovieInSet) As Boolean
+        If lMov.ID = CType(sMovieID, Long) Then Return True Else  : Return False
     End Function
-
-    Private Sub RemoveFromSet(ByVal lMov As Movies, ByVal isEdit As Boolean)
-        Try
-            lMov.DBMovie.Movie.RemoveSet(Me.currSet.SetID)
-            Master.DB.SaveMovieToDB(lMov.DBMovie, False, False, True)
-            If Not isEdit Then Me.currSet.Movies.Remove(lMov)
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
-    End Sub
 
     Private Sub btnRemoveMovieBanner_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveMovieBanner.Click
         Me.pbMovieBanner.Image = Nothing
@@ -252,13 +295,7 @@ Public Class dlgEditMovieSet
         Me.MoviePoster.Dispose()
     End Sub
 
-    'Private Sub btnRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemove.Click
-    '    Me.DeleteActors()
-    'End Sub
-
     Private Sub btnRescrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRescrape.Click
-        Me.CleanUp()
-        ' ***
         Me.DialogResult = System.Windows.Forms.DialogResult.Retry
         Me.Close()
     End Sub
@@ -292,7 +329,7 @@ Public Class dlgEditMovieSet
         Dim etList As New List(Of String)
 
         Try
-            If Me.lbMoviesInSet.Items.Count > 0 Then
+            If Me.lvMoviesInSet.Items.Count > 0 Then
                 Dim sPath As String = Path.Combine(Master.TempPath, "Banner.jpg")
 
                 'Public Function MovieScrapeImages(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Boolean
@@ -377,7 +414,7 @@ Public Class dlgEditMovieSet
         Dim etList As New List(Of String)
 
         Try
-            If Me.lbMoviesInSet.Items.Count > 0 Then
+            If Me.lvMoviesInSet.Items.Count > 0 Then
                 Dim sPath As String = Path.Combine(Master.TempPath, "ClearArt.png")
 
                 'Public Function MovieScrapeImages(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Boolean
@@ -461,7 +498,7 @@ Public Class dlgEditMovieSet
         Dim etList As New List(Of String)
 
         Try
-            If Me.lbMoviesInSet.Items.Count > 0 Then
+            If Me.lvMoviesInSet.Items.Count > 0 Then
                 Dim sPath As String = Path.Combine(Master.TempPath, "ClearLogo.png")
 
                 'Public Function MovieScrapeImages(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Boolean
@@ -545,7 +582,7 @@ Public Class dlgEditMovieSet
         Dim etList As New List(Of String)
 
         Try
-            If Me.lbMoviesInSet.Items.Count > 0 Then
+            If Me.lvMoviesInSet.Items.Count > 0 Then
                 Dim sPath As String = Path.Combine(Master.TempPath, "DiscArt.png")
 
                 'Public Function MovieScrapeImages(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Boolean
@@ -629,7 +666,7 @@ Public Class dlgEditMovieSet
         Dim etList As New List(Of String)
 
         Try
-            If Me.lbMoviesInSet.Items.Count > 0 Then
+            If Me.lvMoviesInSet.Items.Count > 0 Then
                 'Public Function MovieScrapeImages(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Boolean
                 If Not ModulesManager.Instance.MovieSetScrapeImages(currMovieSet, Enums.ScraperCapabilities.Fanart, aList) Then
                     If aList.Count > 0 Then
@@ -711,7 +748,7 @@ Public Class dlgEditMovieSet
         Dim etList As New List(Of String)
 
         Try
-            If Me.lbMoviesInSet.Items.Count > 0 Then
+            If Me.lvMoviesInSet.Items.Count > 0 Then
                 Dim sPath As String = Path.Combine(Master.TempPath, "Landscape.jpg")
 
                 'Public Function MovieScrapeImages(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Boolean
@@ -795,7 +832,7 @@ Public Class dlgEditMovieSet
         Dim etList As New List(Of String)
 
         Try
-            If Me.lbMoviesInSet.Items.Count > 0 Then
+            If Me.lvMoviesInSet.Items.Count > 0 Then
                 Dim sPath As String = Path.Combine(Master.TempPath, "poster.jpg")
 
                 'Public Function MovieScrapeImages(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Boolean
@@ -856,6 +893,9 @@ Public Class dlgEditMovieSet
         '\\
 
         Try
+
+            MoviesInSet.Clear()
+
             Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                 Dim tmpMovie As New Structures.DBMovie
                 Dim iProg As Integer = 0
@@ -867,7 +907,7 @@ Public Class dlgEditMovieSet
                             tmpMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(SQLreader("MovieID")))
                             If Not String.IsNullOrEmpty(tmpMovie.Movie.Title) Then
                                 Dim tmpSetOrder As Integer = If(Not String.IsNullOrEmpty(SQLreader("SetOrder").ToString), CInt(SQLreader("SetOrder").ToString), Nothing)
-                                currSet.AddMovie(New Movies With {.DBMovie = tmpMovie, .ListTitle = String.Concat(StringUtils.FilterTokens(tmpMovie.Movie.Title), If(Not String.IsNullOrEmpty(tmpMovie.Movie.Year), String.Format(" ({0})", tmpMovie.Movie.Year), String.Empty)), .Order = tmpSetOrder}, tmpSetOrder)
+                                MoviesInSet.Add(New MovieInSet With {.DBMovie = tmpMovie, .ID = tmpMovie.ID, .ListTitle = String.Concat(StringUtils.FilterTokens(tmpMovie.Movie.Title), If(Not String.IsNullOrEmpty(tmpMovie.Movie.Year), String.Format(" ({0})", tmpMovie.Movie.Year), String.Empty)), .Order = tmpSetOrder})
                             End If
                             Me.bwLoadMoviesInSet.ReportProgress(iProg, tmpMovie.Movie.Title)
                             iProg += 1
@@ -876,8 +916,8 @@ Public Class dlgEditMovieSet
                 End Using
             End Using
 
-            currSet.SetName = currMovieSet.SetName
-            currSet.SetID = currMovieSet.ID
+            'currSet.SetName = currMovieSet.SetName
+            'currSet.SetID = currMovieSet.ID
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
@@ -897,13 +937,13 @@ Public Class dlgEditMovieSet
         ' Thread finished: fill movie list
         '\\
 
-        If Me.currSet.Movies.Count > 0 Then
-            Me.LoadCurrSet()
+        If Me.MoviesInSet.Count > 0 Then
+            Me.FillMoviesInSet()
         End If
 
         Me.pnlCancel.Visible = False
 
-        Me.lbMoviesInSet.Enabled = True
+        Me.lvMoviesInSet.Enabled = True
         Me.btnMovieUp.Enabled = True
         Me.btnMovieDown.Enabled = True
         Me.btnMovieRemove.Enabled = True
@@ -916,7 +956,7 @@ Public Class dlgEditMovieSet
         '\\
 
         Try
-            lMovies.Clear()
+            MoviesInDB.Clear()
 
             Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                 Dim tmpMovie As New Structures.DBMovie
@@ -939,7 +979,7 @@ Public Class dlgEditMovieSet
                                 '    lMoviesinSets.Add(String.Concat(StringUtils.FilterTokens(tmpMovie.Movie.Title), If(Not String.IsNullOrEmpty(tmpMovie.Movie.Year), String.Format(" ({0})", tmpMovie.Movie.Year), String.Empty)))
                                 'End If
 
-                                lMovies.Add(New Movies With {.DBMovie = tmpMovie, .ListTitle = String.Concat(StringUtils.FilterTokens(tmpMovie.Movie.Title), If(Not String.IsNullOrEmpty(tmpMovie.Movie.Year), String.Format(" ({0})", tmpMovie.Movie.Year), String.Empty))})
+                                MoviesInDB.Add(New MovieInSet With {.DBMovie = tmpMovie, .ListTitle = String.Concat(StringUtils.FilterTokens(tmpMovie.Movie.Title), If(Not String.IsNullOrEmpty(tmpMovie.Movie.Year), String.Format(" ({0})", tmpMovie.Movie.Year), String.Empty)), .ID = tmpMovie.ID})
 
                                 'If tmpMovie.Movie.Sets.Count > 0 Then
                                 '    For Each mSet As MediaContainers.Set In tmpMovie.Movie.Sets
@@ -976,7 +1016,7 @@ Public Class dlgEditMovieSet
         ' Thread finished: fill movie list
         '\\
 
-        Me.FillMovies()
+        Me.FillMoviesInDB()
 
         Me.pnlCancel.Visible = False
 
@@ -984,38 +1024,71 @@ Public Class dlgEditMovieSet
         Me.btnMovieAdd.Enabled = False
     End Sub
 
-    Private Sub FillMovies()
+    Private Sub FillMoviesInDB()
         Try
-            Me.lbMoviesInDB.SuspendLayout()
+            Me.lvMoviesInDB.SuspendLayout()
 
-            Me.lbMoviesInDB.Items.Clear()
+            Me.lvMoviesInDB.Items.Clear()
 
-            For Each lMov As Movies In lMovies
-                'cocotus from now on only show movie on right side if not already part in movieset! (XMBC doesnT support movie belonging to multiple sets!)
+            Dim lvItem As ListViewItem
+            For Each lMovie As MovieInSet In MoviesInDB
                 'If Not Me.lbMoviesInSet.Items.Contains(lMov.ListTitle) Then Me.lbMoviesInDB.Items.Add(lMov.ListTitle)
                 'If lMoviesinSets.Contains(lMov.ListTitle) = False Then
-                If Not Me.lbMoviesInSet.Items.Contains(lMov.ListTitle) Then Me.lbMoviesInDB.Items.Add(lMov.ListTitle)
+                'If Not Me.lvMoviesInSet.Items.Contains(lMov.ID) Then Me.lbMoviesInDB.Items.Add(lMov.ID)
                 'End If
+                If Not Me.MoviesInSet.Contains(lMovie) Then
+                    lvItem = Me.lvMoviesInDB.Items.Add(lMovie.ID.ToString)
+                    lvItem.SubItems.Add(lMovie.Order.ToString)
+                    lvItem.SubItems.Add(lMovie.ListTitle)
+                End If
             Next
 
-            Me.lbMoviesInDB.ResumeLayout()
+            Me.lvMoviesInDB.ResumeLayout()
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
-    Private Sub LoadCurrSet()
+    Private Sub FillMoviesInSet()
         Try
-            Me.lbMoviesInSet.SuspendLayout()
+            Me.lvMoviesInSet.SuspendLayout()
 
-            Me.lbMoviesInSet.Items.Clear()
-            Me.currSet.Movies.Sort()
-            For Each tMovie As Movies In Me.currSet.Movies
-                Me.lbMoviesInSet.Items.Add(tMovie.ListTitle)
-                tMovie.Order = Me.lbMoviesInSet.Items.Count
+            Me.lvMoviesInSet.Items.Clear()
+            Me.MoviesInSet.Sort()
+
+            Dim lvItem As ListViewItem
+            Me.lvMoviesInSet.Items.Clear()
+            For Each tMovie As MovieInSet In Me.MoviesInSet
+                lvItem = Me.lvMoviesInSet.Items.Add(tMovie.ID.ToString)
+                lvItem.SubItems.Add(tMovie.Order.ToString)
+                lvItem.SubItems.Add(tMovie.ListTitle)
             Next
 
-            Me.lbMoviesInSet.ResumeLayout()
+            Me.lvMoviesInSet.ResumeLayout()
+            Me.btnMovieUp.Enabled = False
+            Me.btnMovieDown.Enabled = False
+            Me.btnMovieRemove.Enabled = False
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
+    Private Sub FillMoviesToRemove()
+        Try
+            Me.lvMoviesToRemove.SuspendLayout()
+
+            Me.lvMoviesToRemove.Items.Clear()
+            Me.MoviesToRemove.Sort()
+
+            Dim lvItem As ListViewItem
+            Me.lvMoviesToRemove.Items.Clear()
+            For Each tMovie As MovieInSet In Me.MoviesToRemove
+                lvItem = Me.lvMoviesToRemove.Items.Add(tMovie.ID.ToString)
+                lvItem.SubItems.Add(tMovie.Order.ToString)
+                lvItem.SubItems.Add(tMovie.ListTitle)
+            Next
+
+            Me.lvMoviesToRemove.ResumeLayout()
             Me.btnMovieUp.Enabled = False
             Me.btnMovieDown.Enabled = False
             Me.btnMovieRemove.Enabled = False
@@ -1025,49 +1098,10 @@ Public Class dlgEditMovieSet
     End Sub
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
-        Me.CleanUp()
         Master.currMovieSet = Master.DB.LoadMovieSetFromDB(Master.currMovieSet.ID)
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Close()
     End Sub
-
-    Private Sub CleanUp()
-        Try
-            If File.Exists(Path.Combine(Master.TempPath, "poster.jpg")) Then
-                File.Delete(Path.Combine(Master.TempPath, "poster.jpg"))
-            End If
-
-            If File.Exists(Path.Combine(Master.TempPath, "fanart.jpg")) Then
-                File.Delete(Path.Combine(Master.TempPath, "fanart.jpg"))
-            End If
-
-            If File.Exists(Path.Combine(Master.TempPath, "frame.jpg")) Then
-                File.Delete(Path.Combine(Master.TempPath, "frame.jpg"))
-            End If
-
-            If Directory.Exists(Path.Combine(Master.TempPath, "extrathumbs")) Then
-                FileUtils.Delete.DeleteDirectory(Path.Combine(Master.TempPath, "extrathumbs"))
-            End If
-
-            If Directory.Exists(Path.Combine(Master.TempPath, "extrafanarts")) Then
-                FileUtils.Delete.DeleteDirectory(Path.Combine(Master.TempPath, "extrafanarts"))
-            End If
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
-    End Sub
-
-    'Private Sub DeleteActors()
-    '    Try
-    '        If Me.lvActors.Items.Count > 0 Then
-    '            While Me.lvActors.SelectedItems.Count > 0
-    '                Me.lvActors.Items.Remove(Me.lvActors.SelectedItems(0))
-    '            End While
-    '        End If
-    '    Catch ex As Exception
-    '        logger.Error(New StackFrame().GetMethod().Name,ex)
-    '    End Try
-    'End Sub
 
     Private Sub dlgEditMovie_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
         Me.MovieBanner.Dispose()
@@ -1144,14 +1178,6 @@ Public Class dlgEditMovieSet
                 If Not String.IsNullOrEmpty(Master.currMovieSet.TMDBColID) Then
                     .txtCollectionID.Text = Master.currMovieSet.TMDBColID
                 End If
-
-                'Dim lvItem As ListViewItem
-                '.lvActors.Items.Clear()
-                'For Each imdbAct As MediaContainers.Person In Master.currMovie.Movie.Actors
-                '    lvItem = .lvActors.Items.Add(imdbAct.Name)
-                '    lvItem.SubItems.Add(imdbAct.Role)
-                '    lvItem.SubItems.Add(imdbAct.Thumb)
-                'Next
 
                 If DoAll Then
 
@@ -1298,10 +1324,9 @@ Public Class dlgEditMovieSet
             Master.DB.SaveMovieSetToDB(Master.currMovieSet, False, False, True)
 
             If needsMovieUpdate Then
-                SaveSetToMovies(currSet)
+                SaveSetToMovies()
+                RemoveSetFromMovies()
             End If
-
-            Me.CleanUp()
 
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -1444,17 +1469,35 @@ Public Class dlgEditMovieSet
         End If
     End Sub
 
-    Private Sub SaveSetToMovies(ByVal mSet As Sets)
+    Private Sub SaveSetToMovies()
         Try
             Me.SetControlsEnabled(False)
 
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-                For Each tMovie As Movies In mSet.Movies
+                For Each tMovie As MovieInSet In MoviesInSet
                     'If Not Master.eSettings.MovieYAMJCompatibleSets Then
                     '    tMovie.DBMovie.Movie.AddSet(mSet.Set, 0)
                     'Else
                     tMovie.DBMovie.Movie.AddSet(Master.currMovieSet.ID, Master.currMovieSet.SetName, tMovie.Order)
                     'End If
+                    Master.DB.SaveMovieToDB(tMovie.DBMovie, False, True, True)
+                Next
+                SQLtransaction.Commit()
+            End Using
+
+            Me.SetControlsEnabled(True)
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
+    Private Sub RemoveSetFromMovies()
+        Try
+            Me.SetControlsEnabled(False)
+
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+                For Each tMovie As MovieInSet In MoviesToRemove
+                    tMovie.DBMovie.Movie.RemoveSet(Master.currMovieSet.ID)
                     Master.DB.SaveMovieToDB(tMovie.DBMovie, False, True, True)
                 Next
                 SQLtransaction.Commit()
@@ -1474,8 +1517,9 @@ Public Class dlgEditMovieSet
         Me.btnMovieDown.Enabled = isEnabled
         Me.btnMovieRemove.Enabled = isEnabled
         Me.btnMovieUp.Enabled = isEnabled
-        Me.lbMoviesInDB.Enabled = isEnabled
-        Me.lbMoviesInSet.Enabled = isEnabled
+        Me.lvMoviesInDB.Enabled = isEnabled
+        Me.lvMoviesInSet.Enabled = isEnabled
+        Me.lvMoviesToRemove.Enabled = isEnabled
 
         Application.DoEvents()
     End Sub
@@ -1483,7 +1527,6 @@ Public Class dlgEditMovieSet
     Private Sub SetInfo()
         Try
             With Me
-
                 Me.OK_Button.Enabled = False
                 Me.Cancel_Button.Enabled = False
                 Me.btnLoadMoviesFromDB.Enabled = False
@@ -1583,15 +1626,6 @@ Public Class dlgEditMovieSet
 
     Private Sub SetUp()
         Dim mTitle As String = Master.currMovieSet.SetName
-        'Dim mPathPieces() As String = Master.currMovie.Filename.Split(Path.DirectorySeparatorChar)
-        'Dim mShortPath As String = Master.currMovie.Filename
-        'If Not String.IsNullOrEmpty(mShortPath) AndAlso FileUtils.Common.isVideoTS(mShortPath) Then
-        '    mShortPath = String.Concat(Path.DirectorySeparatorChar, mPathPieces(mPathPieces.Count - 3), Path.DirectorySeparatorChar, mPathPieces(mPathPieces.Count - 2), Path.DirectorySeparatorChar, mPathPieces(mPathPieces.Count - 1))
-        'ElseIf Not String.IsNullOrEmpty(mShortPath) AndAlso FileUtils.Common.isBDRip(mShortPath) Then
-        '    mShortPath = String.Concat(Path.DirectorySeparatorChar, mPathPieces(mPathPieces.Count - 4), Path.DirectorySeparatorChar, mPathPieces(mPathPieces.Count - 3), Path.DirectorySeparatorChar, mPathPieces(mPathPieces.Count - 2), Path.DirectorySeparatorChar, mPathPieces(mPathPieces.Count - 1))
-        'Else
-        '    mShortPath = String.Concat(Path.DirectorySeparatorChar, mPathPieces(mPathPieces.Count - 2), Path.DirectorySeparatorChar, mPathPieces(mPathPieces.Count - 1))
-        'End If
         Dim sTitle As String = String.Concat(Master.eLang.GetString(1131, "Edit Movieset"), If(String.IsNullOrEmpty(mTitle), String.Empty, String.Concat(" - ", mTitle)))
         Me.Text = sTitle
         Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
@@ -1646,12 +1680,13 @@ Public Class dlgEditMovieSet
 
 #Region "Nested Types"
 
-    Friend Class Movies
-        Implements IComparable(Of Movies)
+    Friend Class MovieInSet
+        Implements IComparable(Of MovieInSet)
 
 #Region "Fields"
 
         Private _dbmovie As Structures.DBMovie
+        Private _id As Long
         Private _listtitle As String
         Private _order As Integer
 
@@ -1673,6 +1708,15 @@ Public Class dlgEditMovieSet
             End Get
             Set(ByVal value As Structures.DBMovie)
                 Me._dbmovie = value
+            End Set
+        End Property
+
+        Public Property ID() As Long
+            Get
+                Return Me._id
+            End Get
+            Set(ByVal value As Long)
+                Me._id = value
             End Set
         End Property
 
@@ -1700,92 +1744,14 @@ Public Class dlgEditMovieSet
 
         Public Sub Clear()
             Me._dbmovie = New Structures.DBMovie
+            Me._id = -1
             Me._order = 0
             Me._listtitle = String.Empty
         End Sub
 
-        Public Function CompareTo(ByVal other As Movies) As Integer Implements IComparable(Of Movies).CompareTo
+        Public Function CompareTo(ByVal other As MovieInSet) As Integer Implements IComparable(Of MovieInSet).CompareTo
             Return (Me.Order).CompareTo(other.Order)
         End Function
-
-#End Region 'Methods
-
-    End Class
-
-    Friend Class Sets
-
-#Region "Fields"
-
-        Private _movies As New List(Of Movies)
-        Private _order As Integer
-        Private _setname As String
-        Private _setid As Long
-        Private _tmdbcolid As String
-
-#End Region 'Fields
-
-#Region "Constructors"
-
-        Public Sub New()
-            Me.Clear()
-        End Sub
-
-#End Region 'Constructors
-
-#Region "Properties"
-
-        Public Property Movies() As List(Of Movies)
-            Get
-                Return _movies
-            End Get
-            Set(ByVal value As List(Of Movies))
-                _movies = value
-            End Set
-        End Property
-
-        Public Property SetName() As String
-            Get
-                Return _setname
-            End Get
-            Set(ByVal value As String)
-                _setname = value
-            End Set
-        End Property
-
-        Public Property SetID As Long
-            Get
-                Return _setid
-            End Get
-            Set(value As Long)
-                _setid = value
-            End Set
-        End Property
-
-        Public Property TMDBCollID() As String
-            Get
-                Return _tmdbcolid
-            End Get
-            Set(ByVal value As String)
-                _tmdbcolid = value
-            End Set
-        End Property
-
-#End Region 'Properties
-
-#Region "Methods"
-
-        Public Sub AddMovie(ByVal sMovie As Movies, ByVal Order As Integer)
-            sMovie.Order = Order
-            _movies.Add(sMovie)
-        End Sub
-
-        Public Sub Clear()
-            Me._setname = String.Empty
-            Me._setid = -1
-            Me._tmdbcolid = String.Empty
-            Me._order = 0
-            Me._movies.Clear()
-        End Sub
 
 #End Region 'Methods
 

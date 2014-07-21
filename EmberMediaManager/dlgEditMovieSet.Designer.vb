@@ -83,30 +83,42 @@ Partial Class dlgEditMovieSet
         Me.btnSetMoviePosterLocal = New System.Windows.Forms.Button()
         Me.pbMoviePoster = New System.Windows.Forms.PictureBox()
         Me.tpDetails = New System.Windows.Forms.TabPage()
+        Me.lvMoviesToRemove = New System.Windows.Forms.ListView()
+        Me.ColumnHeader1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader2 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader3 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.btnMovieReAdd = New System.Windows.Forms.Button()
+        Me.lblMoviesToRemove = New System.Windows.Forms.Label()
+        Me.btnGetTMDBColID = New System.Windows.Forms.Button()
         Me.txtCollectionID = New System.Windows.Forms.TextBox()
         Me.lblCollectionID = New System.Windows.Forms.Label()
         Me.btnLoadMoviesFromDB = New System.Windows.Forms.Button()
         Me.btnMovieAdd = New System.Windows.Forms.Button()
         Me.lblMoviesInDB = New System.Windows.Forms.Label()
-        Me.lbMoviesInSet = New System.Windows.Forms.ListBox()
+        Me.pnlCancel = New System.Windows.Forms.Panel()
+        Me.prbCompile = New System.Windows.Forms.ProgressBar()
+        Me.lblCompiling = New System.Windows.Forms.Label()
+        Me.lblFile = New System.Windows.Forms.Label()
+        Me.lblCanceling = New System.Windows.Forms.Label()
+        Me.btnCancel = New System.Windows.Forms.Button()
         Me.btnMovieDown = New System.Windows.Forms.Button()
         Me.btnMovieUp = New System.Windows.Forms.Button()
         Me.btnMovieRemove = New System.Windows.Forms.Button()
         Me.lblMoviesInMovieset = New System.Windows.Forms.Label()
         Me.txtTitle = New System.Windows.Forms.TextBox()
         Me.lblTitle = New System.Windows.Forms.Label()
-        Me.lbMoviesInDB = New System.Windows.Forms.ListBox()
+        Me.lvMoviesInSet = New System.Windows.Forms.ListView()
+        Me.colID = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colOrdering = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colMovie = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.lvMoviesInDB = New System.Windows.Forms.ListView()
+        Me.ColumnHeader4 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader5 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader6 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.tcEditMovie = New System.Windows.Forms.TabControl()
-        Me.btnGetTMDBColID = New System.Windows.Forms.Button()
         Me.pnlSaving = New System.Windows.Forms.Panel()
-        Me.prbSaving = New System.Windows.Forms.ProgressBar()
         Me.lblSaving = New System.Windows.Forms.Label()
-        Me.btnCancel = New System.Windows.Forms.Button()
-        Me.lblCanceling = New System.Windows.Forms.Label()
-        Me.lblFile = New System.Windows.Forms.Label()
-        Me.lblCompiling = New System.Windows.Forms.Label()
-        Me.prbCompile = New System.Windows.Forms.ProgressBar()
-        Me.pnlCancel = New System.Windows.Forms.Panel()
+        Me.prbSaving = New System.Windows.Forms.ProgressBar()
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tpFanart.SuspendLayout()
@@ -124,9 +136,9 @@ Partial Class dlgEditMovieSet
         Me.tpPoster.SuspendLayout()
         CType(Me.pbMoviePoster, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tpDetails.SuspendLayout()
+        Me.pnlCancel.SuspendLayout()
         Me.tcEditMovie.SuspendLayout()
         Me.pnlSaving.SuspendLayout()
-        Me.pnlCancel.SuspendLayout()
         Me.SuspendLayout()
         '
         'OK_Button
@@ -840,6 +852,9 @@ Partial Class dlgEditMovieSet
         '
         'tpDetails
         '
+        Me.tpDetails.Controls.Add(Me.lvMoviesToRemove)
+        Me.tpDetails.Controls.Add(Me.btnMovieReAdd)
+        Me.tpDetails.Controls.Add(Me.lblMoviesToRemove)
         Me.tpDetails.Controls.Add(Me.btnGetTMDBColID)
         Me.tpDetails.Controls.Add(Me.txtCollectionID)
         Me.tpDetails.Controls.Add(Me.lblCollectionID)
@@ -847,14 +862,14 @@ Partial Class dlgEditMovieSet
         Me.tpDetails.Controls.Add(Me.btnMovieAdd)
         Me.tpDetails.Controls.Add(Me.lblMoviesInDB)
         Me.tpDetails.Controls.Add(Me.pnlCancel)
-        Me.tpDetails.Controls.Add(Me.lbMoviesInSet)
         Me.tpDetails.Controls.Add(Me.btnMovieDown)
         Me.tpDetails.Controls.Add(Me.btnMovieUp)
         Me.tpDetails.Controls.Add(Me.btnMovieRemove)
         Me.tpDetails.Controls.Add(Me.lblMoviesInMovieset)
         Me.tpDetails.Controls.Add(Me.txtTitle)
         Me.tpDetails.Controls.Add(Me.lblTitle)
-        Me.tpDetails.Controls.Add(Me.lbMoviesInDB)
+        Me.tpDetails.Controls.Add(Me.lvMoviesInSet)
+        Me.tpDetails.Controls.Add(Me.lvMoviesInDB)
         Me.tpDetails.Location = New System.Drawing.Point(4, 22)
         Me.tpDetails.Name = "tpDetails"
         Me.tpDetails.Padding = New System.Windows.Forms.Padding(3)
@@ -862,6 +877,64 @@ Partial Class dlgEditMovieSet
         Me.tpDetails.TabIndex = 0
         Me.tpDetails.Text = "Details"
         Me.tpDetails.UseVisualStyleBackColor = True
+        '
+        'lvMoviesToRemove
+        '
+        Me.lvMoviesToRemove.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2, Me.ColumnHeader3})
+        Me.lvMoviesToRemove.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lvMoviesToRemove.FullRowSelect = True
+        Me.lvMoviesToRemove.Location = New System.Drawing.Point(4, 331)
+        Me.lvMoviesToRemove.Name = "lvMoviesToRemove"
+        Me.lvMoviesToRemove.Size = New System.Drawing.Size(252, 114)
+        Me.lvMoviesToRemove.TabIndex = 49
+        Me.lvMoviesToRemove.UseCompatibleStateImageBehavior = False
+        Me.lvMoviesToRemove.View = System.Windows.Forms.View.Details
+        '
+        'ColumnHeader1
+        '
+        Me.ColumnHeader1.Text = "ID"
+        Me.ColumnHeader1.Width = 25
+        '
+        'ColumnHeader2
+        '
+        Me.ColumnHeader2.Text = "Ordering"
+        Me.ColumnHeader2.Width = 25
+        '
+        'ColumnHeader3
+        '
+        Me.ColumnHeader3.Text = "Movie"
+        Me.ColumnHeader3.Width = 198
+        '
+        'btnMovieReAdd
+        '
+        Me.btnMovieReAdd.Enabled = False
+        Me.btnMovieReAdd.Image = CType(resources.GetObject("btnMovieReAdd.Image"), System.Drawing.Image)
+        Me.btnMovieReAdd.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnMovieReAdd.Location = New System.Drawing.Point(226, 450)
+        Me.btnMovieReAdd.Name = "btnMovieReAdd"
+        Me.btnMovieReAdd.Size = New System.Drawing.Size(23, 23)
+        Me.btnMovieReAdd.TabIndex = 47
+        Me.btnMovieReAdd.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnMovieReAdd.UseVisualStyleBackColor = True
+        '
+        'lblMoviesToRemove
+        '
+        Me.lblMoviesToRemove.AutoSize = True
+        Me.lblMoviesToRemove.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblMoviesToRemove.Location = New System.Drawing.Point(4, 315)
+        Me.lblMoviesToRemove.Name = "lblMoviesToRemove"
+        Me.lblMoviesToRemove.Size = New System.Drawing.Size(183, 13)
+        Me.lblMoviesToRemove.TabIndex = 46
+        Me.lblMoviesToRemove.Text = "Movies to remove from Movieset:"
+        '
+        'btnGetTMDBColID
+        '
+        Me.btnGetTMDBColID.Location = New System.Drawing.Point(430, 21)
+        Me.btnGetTMDBColID.Name = "btnGetTMDBColID"
+        Me.btnGetTMDBColID.Size = New System.Drawing.Size(149, 24)
+        Me.btnGetTMDBColID.TabIndex = 44
+        Me.btnGetTMDBColID.Text = "Get TMDB Collection ID"
+        Me.btnGetTMDBColID.UseVisualStyleBackColor = True
         '
         'txtCollectionID
         '
@@ -898,7 +971,7 @@ Partial Class dlgEditMovieSet
         Me.btnMovieAdd.Enabled = False
         Me.btnMovieAdd.Image = CType(resources.GetObject("btnMovieAdd.Image"), System.Drawing.Image)
         Me.btnMovieAdd.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnMovieAdd.Location = New System.Drawing.Point(366, 450)
+        Me.btnMovieAdd.Location = New System.Drawing.Point(292, 135)
         Me.btnMovieAdd.Name = "btnMovieAdd"
         Me.btnMovieAdd.Size = New System.Drawing.Size(23, 23)
         Me.btnMovieAdd.TabIndex = 40
@@ -917,23 +990,79 @@ Partial Class dlgEditMovieSet
         Me.lblMoviesInDB.Text = "Movies in Database:"
         Me.lblMoviesInDB.Visible = False
         '
-        'lbMoviesInSet
+        'pnlCancel
         '
-        Me.lbMoviesInSet.Enabled = False
-        Me.lbMoviesInSet.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lbMoviesInSet.FormattingEnabled = True
-        Me.lbMoviesInSet.HorizontalScrollbar = True
-        Me.lbMoviesInSet.Location = New System.Drawing.Point(6, 63)
-        Me.lbMoviesInSet.Name = "lbMoviesInSet"
-        Me.lbMoviesInSet.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
-        Me.lbMoviesInSet.Size = New System.Drawing.Size(252, 381)
-        Me.lbMoviesInSet.TabIndex = 36
+        Me.pnlCancel.BackColor = System.Drawing.Color.White
+        Me.pnlCancel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlCancel.Controls.Add(Me.prbCompile)
+        Me.pnlCancel.Controls.Add(Me.lblCompiling)
+        Me.pnlCancel.Controls.Add(Me.lblFile)
+        Me.pnlCancel.Controls.Add(Me.lblCanceling)
+        Me.pnlCancel.Controls.Add(Me.btnCancel)
+        Me.pnlCancel.Location = New System.Drawing.Point(217, 207)
+        Me.pnlCancel.Name = "pnlCancel"
+        Me.pnlCancel.Size = New System.Drawing.Size(403, 76)
+        Me.pnlCancel.TabIndex = 37
+        Me.pnlCancel.Visible = False
+        '
+        'prbCompile
+        '
+        Me.prbCompile.Location = New System.Drawing.Point(8, 36)
+        Me.prbCompile.Name = "prbCompile"
+        Me.prbCompile.Size = New System.Drawing.Size(388, 18)
+        Me.prbCompile.Style = System.Windows.Forms.ProgressBarStyle.Continuous
+        Me.prbCompile.TabIndex = 3
+        '
+        'lblCompiling
+        '
+        Me.lblCompiling.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblCompiling.Location = New System.Drawing.Point(3, 11)
+        Me.lblCompiling.Name = "lblCompiling"
+        Me.lblCompiling.Size = New System.Drawing.Size(203, 20)
+        Me.lblCompiling.TabIndex = 0
+        Me.lblCompiling.Text = "Loading Movies and Sets..."
+        Me.lblCompiling.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.lblCompiling.Visible = False
+        '
+        'lblFile
+        '
+        Me.lblFile.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblFile.Location = New System.Drawing.Point(3, 57)
+        Me.lblFile.Name = "lblFile"
+        Me.lblFile.Size = New System.Drawing.Size(395, 13)
+        Me.lblFile.TabIndex = 4
+        Me.lblFile.Text = "File ..."
+        '
+        'lblCanceling
+        '
+        Me.lblCanceling.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblCanceling.Location = New System.Drawing.Point(110, 12)
+        Me.lblCanceling.Name = "lblCanceling"
+        Me.lblCanceling.Size = New System.Drawing.Size(186, 20)
+        Me.lblCanceling.TabIndex = 1
+        Me.lblCanceling.Text = "Canceling Load..."
+        Me.lblCanceling.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.lblCanceling.Visible = False
+        '
+        'btnCancel
+        '
+        Me.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.btnCancel.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnCancel.Image = CType(resources.GetObject("btnCancel.Image"), System.Drawing.Image)
+        Me.btnCancel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnCancel.Location = New System.Drawing.Point(298, 3)
+        Me.btnCancel.Name = "btnCancel"
+        Me.btnCancel.Size = New System.Drawing.Size(100, 30)
+        Me.btnCancel.TabIndex = 2
+        Me.btnCancel.Text = "Cancel"
+        Me.btnCancel.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnCancel.UseVisualStyleBackColor = True
         '
         'btnMovieDown
         '
         Me.btnMovieDown.Enabled = False
         Me.btnMovieDown.Image = CType(resources.GetObject("btnMovieDown.Image"), System.Drawing.Image)
-        Me.btnMovieDown.Location = New System.Drawing.Point(137, 450)
+        Me.btnMovieDown.Location = New System.Drawing.Point(148, 268)
         Me.btnMovieDown.Name = "btnMovieDown"
         Me.btnMovieDown.Size = New System.Drawing.Size(23, 23)
         Me.btnMovieDown.TabIndex = 34
@@ -943,7 +1072,7 @@ Partial Class dlgEditMovieSet
         '
         Me.btnMovieUp.Enabled = False
         Me.btnMovieUp.Image = CType(resources.GetObject("btnMovieUp.Image"), System.Drawing.Image)
-        Me.btnMovieUp.Location = New System.Drawing.Point(104, 450)
+        Me.btnMovieUp.Location = New System.Drawing.Point(115, 268)
         Me.btnMovieUp.Name = "btnMovieUp"
         Me.btnMovieUp.Size = New System.Drawing.Size(23, 23)
         Me.btnMovieUp.TabIndex = 33
@@ -953,7 +1082,7 @@ Partial Class dlgEditMovieSet
         '
         Me.btnMovieRemove.Enabled = False
         Me.btnMovieRemove.Image = CType(resources.GetObject("btnMovieRemove.Image"), System.Drawing.Image)
-        Me.btnMovieRemove.Location = New System.Drawing.Point(215, 450)
+        Me.btnMovieRemove.Location = New System.Drawing.Point(226, 268)
         Me.btnMovieRemove.Name = "btnMovieRemove"
         Me.btnMovieRemove.Size = New System.Drawing.Size(23, 23)
         Me.btnMovieRemove.TabIndex = 35
@@ -962,14 +1091,12 @@ Partial Class dlgEditMovieSet
         'lblMoviesInMovieset
         '
         Me.lblMoviesInMovieset.AutoSize = True
-        Me.lblMoviesInMovieset.Enabled = False
         Me.lblMoviesInMovieset.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblMoviesInMovieset.Location = New System.Drawing.Point(6, 47)
         Me.lblMoviesInMovieset.Name = "lblMoviesInMovieset"
         Me.lblMoviesInMovieset.Size = New System.Drawing.Size(112, 13)
         Me.lblMoviesInMovieset.TabIndex = 29
         Me.lblMoviesInMovieset.Text = "Movies in Movieset:"
-        Me.lblMoviesInMovieset.Visible = False
         '
         'txtTitle
         '
@@ -990,17 +1117,59 @@ Partial Class dlgEditMovieSet
         Me.lblTitle.TabIndex = 0
         Me.lblTitle.Text = "Title:"
         '
-        'lbMoviesInDB
+        'lvMoviesInSet
         '
-        Me.lbMoviesInDB.Enabled = False
-        Me.lbMoviesInDB.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lbMoviesInDB.FormattingEnabled = True
-        Me.lbMoviesInDB.HorizontalScrollbar = True
-        Me.lbMoviesInDB.Location = New System.Drawing.Point(346, 63)
-        Me.lbMoviesInDB.Name = "lbMoviesInDB"
-        Me.lbMoviesInDB.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
-        Me.lbMoviesInDB.Size = New System.Drawing.Size(472, 381)
-        Me.lbMoviesInDB.TabIndex = 38
+        Me.lvMoviesInSet.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colID, Me.colOrdering, Me.colMovie})
+        Me.lvMoviesInSet.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lvMoviesInSet.FullRowSelect = True
+        Me.lvMoviesInSet.Location = New System.Drawing.Point(6, 63)
+        Me.lvMoviesInSet.Name = "lvMoviesInSet"
+        Me.lvMoviesInSet.Size = New System.Drawing.Size(252, 199)
+        Me.lvMoviesInSet.TabIndex = 48
+        Me.lvMoviesInSet.UseCompatibleStateImageBehavior = False
+        Me.lvMoviesInSet.View = System.Windows.Forms.View.Details
+        '
+        'colID
+        '
+        Me.colID.Text = "ID"
+        Me.colID.Width = 25
+        '
+        'colOrdering
+        '
+        Me.colOrdering.Text = "Ordering"
+        Me.colOrdering.Width = 25
+        '
+        'colMovie
+        '
+        Me.colMovie.Text = "Movie"
+        Me.colMovie.Width = 198
+        '
+        'lvMoviesInDB
+        '
+        Me.lvMoviesInDB.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader4, Me.ColumnHeader5, Me.ColumnHeader6})
+        Me.lvMoviesInDB.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lvMoviesInDB.FullRowSelect = True
+        Me.lvMoviesInDB.Location = New System.Drawing.Point(346, 63)
+        Me.lvMoviesInDB.Name = "lvMoviesInDB"
+        Me.lvMoviesInDB.Size = New System.Drawing.Size(484, 382)
+        Me.lvMoviesInDB.TabIndex = 49
+        Me.lvMoviesInDB.UseCompatibleStateImageBehavior = False
+        Me.lvMoviesInDB.View = System.Windows.Forms.View.Details
+        '
+        'ColumnHeader4
+        '
+        Me.ColumnHeader4.Text = "ID"
+        Me.ColumnHeader4.Width = 25
+        '
+        'ColumnHeader5
+        '
+        Me.ColumnHeader5.Text = "Ordering"
+        Me.ColumnHeader5.Width = 25
+        '
+        'ColumnHeader6
+        '
+        Me.ColumnHeader6.Text = "Movie"
+        Me.ColumnHeader6.Width = 430
         '
         'tcEditMovie
         '
@@ -1019,15 +1188,6 @@ Partial Class dlgEditMovieSet
         Me.tcEditMovie.Size = New System.Drawing.Size(844, 517)
         Me.tcEditMovie.TabIndex = 3
         '
-        'btnGetTMDBColID
-        '
-        Me.btnGetTMDBColID.Location = New System.Drawing.Point(430, 21)
-        Me.btnGetTMDBColID.Name = "btnGetTMDBColID"
-        Me.btnGetTMDBColID.Size = New System.Drawing.Size(149, 24)
-        Me.btnGetTMDBColID.TabIndex = 44
-        Me.btnGetTMDBColID.Text = "Get TMDB Collection ID"
-        Me.btnGetTMDBColID.UseVisualStyleBackColor = True
-        '
         'pnlSaving
         '
         Me.pnlSaving.BackColor = System.Drawing.Color.White
@@ -1040,15 +1200,6 @@ Partial Class dlgEditMovieSet
         Me.pnlSaving.TabIndex = 5
         Me.pnlSaving.Visible = False
         '
-        'prbSaving
-        '
-        Me.prbSaving.Location = New System.Drawing.Point(4, 26)
-        Me.prbSaving.MarqueeAnimationSpeed = 25
-        Me.prbSaving.Name = "prbSaving"
-        Me.prbSaving.Size = New System.Drawing.Size(242, 16)
-        Me.prbSaving.Style = System.Windows.Forms.ProgressBarStyle.Marquee
-        Me.prbSaving.TabIndex = 1
-        '
         'lblSaving
         '
         Me.lblSaving.AutoSize = True
@@ -1059,73 +1210,14 @@ Partial Class dlgEditMovieSet
         Me.lblSaving.TabIndex = 0
         Me.lblSaving.Text = "Saving..."
         '
-        'btnCancel
+        'prbSaving
         '
-        Me.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.btnCancel.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnCancel.Image = CType(resources.GetObject("btnCancel.Image"), System.Drawing.Image)
-        Me.btnCancel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnCancel.Location = New System.Drawing.Point(298, 3)
-        Me.btnCancel.Name = "btnCancel"
-        Me.btnCancel.Size = New System.Drawing.Size(100, 30)
-        Me.btnCancel.TabIndex = 2
-        Me.btnCancel.Text = "Cancel"
-        Me.btnCancel.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnCancel.UseVisualStyleBackColor = True
-        '
-        'lblCanceling
-        '
-        Me.lblCanceling.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblCanceling.Location = New System.Drawing.Point(110, 12)
-        Me.lblCanceling.Name = "lblCanceling"
-        Me.lblCanceling.Size = New System.Drawing.Size(186, 20)
-        Me.lblCanceling.TabIndex = 1
-        Me.lblCanceling.Text = "Canceling Load..."
-        Me.lblCanceling.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        Me.lblCanceling.Visible = False
-        '
-        'lblFile
-        '
-        Me.lblFile.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblFile.Location = New System.Drawing.Point(3, 57)
-        Me.lblFile.Name = "lblFile"
-        Me.lblFile.Size = New System.Drawing.Size(395, 13)
-        Me.lblFile.TabIndex = 4
-        Me.lblFile.Text = "File ..."
-        '
-        'lblCompiling
-        '
-        Me.lblCompiling.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblCompiling.Location = New System.Drawing.Point(3, 11)
-        Me.lblCompiling.Name = "lblCompiling"
-        Me.lblCompiling.Size = New System.Drawing.Size(203, 20)
-        Me.lblCompiling.TabIndex = 0
-        Me.lblCompiling.Text = "Loading Movies and Sets..."
-        Me.lblCompiling.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        Me.lblCompiling.Visible = False
-        '
-        'prbCompile
-        '
-        Me.prbCompile.Location = New System.Drawing.Point(8, 36)
-        Me.prbCompile.Name = "prbCompile"
-        Me.prbCompile.Size = New System.Drawing.Size(388, 18)
-        Me.prbCompile.Style = System.Windows.Forms.ProgressBarStyle.Continuous
-        Me.prbCompile.TabIndex = 3
-        '
-        'pnlCancel
-        '
-        Me.pnlCancel.BackColor = System.Drawing.Color.White
-        Me.pnlCancel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlCancel.Controls.Add(Me.prbCompile)
-        Me.pnlCancel.Controls.Add(Me.lblCompiling)
-        Me.pnlCancel.Controls.Add(Me.lblFile)
-        Me.pnlCancel.Controls.Add(Me.lblCanceling)
-        Me.pnlCancel.Controls.Add(Me.btnCancel)
-        Me.pnlCancel.Location = New System.Drawing.Point(217, 207)
-        Me.pnlCancel.Name = "pnlCancel"
-        Me.pnlCancel.Size = New System.Drawing.Size(403, 76)
-        Me.pnlCancel.TabIndex = 37
-        Me.pnlCancel.Visible = False
+        Me.prbSaving.Location = New System.Drawing.Point(4, 26)
+        Me.prbSaving.MarqueeAnimationSpeed = 25
+        Me.prbSaving.Name = "prbSaving"
+        Me.prbSaving.Size = New System.Drawing.Size(242, 16)
+        Me.prbSaving.Style = System.Windows.Forms.ProgressBarStyle.Marquee
+        Me.prbSaving.TabIndex = 1
         '
         'dlgEditMovieSet
         '
@@ -1167,10 +1259,10 @@ Partial Class dlgEditMovieSet
         CType(Me.pbMoviePoster, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tpDetails.ResumeLayout(False)
         Me.tpDetails.PerformLayout()
+        Me.pnlCancel.ResumeLayout(False)
         Me.tcEditMovie.ResumeLayout(False)
         Me.pnlSaving.ResumeLayout(False)
         Me.pnlSaving.PerformLayout()
-        Me.pnlCancel.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -1240,9 +1332,7 @@ Partial Class dlgEditMovieSet
     Friend WithEvents txtTitle As System.Windows.Forms.TextBox
     Friend WithEvents lblTitle As System.Windows.Forms.Label
     Friend WithEvents tcEditMovie As System.Windows.Forms.TabControl
-    Friend WithEvents lbMoviesInSet As System.Windows.Forms.ListBox
     Friend WithEvents lblMoviesInDB As System.Windows.Forms.Label
-    Friend WithEvents lbMoviesInDB As System.Windows.Forms.ListBox
     Friend WithEvents btnMovieAdd As System.Windows.Forms.Button
     Friend WithEvents btnLoadMoviesFromDB As System.Windows.Forms.Button
     Friend WithEvents txtCollectionID As System.Windows.Forms.TextBox
@@ -1257,5 +1347,19 @@ Partial Class dlgEditMovieSet
     Friend WithEvents pnlSaving As System.Windows.Forms.Panel
     Friend WithEvents lblSaving As System.Windows.Forms.Label
     Friend WithEvents prbSaving As System.Windows.Forms.ProgressBar
+    Friend WithEvents lblMoviesToRemove As System.Windows.Forms.Label
+    Friend WithEvents btnMovieReAdd As System.Windows.Forms.Button
+    Friend WithEvents lvMoviesInSet As System.Windows.Forms.ListView
+    Friend WithEvents colID As System.Windows.Forms.ColumnHeader
+    Friend WithEvents colMovie As System.Windows.Forms.ColumnHeader
+    Friend WithEvents colOrdering As System.Windows.Forms.ColumnHeader
+    Friend WithEvents lvMoviesToRemove As System.Windows.Forms.ListView
+    Friend WithEvents ColumnHeader1 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents ColumnHeader2 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents ColumnHeader3 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents lvMoviesInDB As System.Windows.Forms.ListView
+    Friend WithEvents ColumnHeader4 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents ColumnHeader5 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents ColumnHeader6 As System.Windows.Forms.ColumnHeader
 
 End Class
