@@ -163,8 +163,8 @@ Public Class frmFanartTVMediaSettingsHolder
     End Sub
 
     Sub SetUp()
-        Me.btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API")
-        Me.lblEMMAPI.Text = Master.eLang.GetString(1189, "Ember Media Manager API")
+        Me.btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API key")
+        Me.lblEMMAPI.Text = Master.eLang.GetString(1189, "Ember Media Manager API key")
         Me.chkScrapePoster.Text = Master.eLang.GetString(939, "Get Poster")
         Me.chkScrapeFanart.Text = Master.eLang.GetString(940, "Get Fanart")
         Me.chkScrapeBanner.Text = Master.eLang.GetString(1051, "Get Banner")

@@ -235,8 +235,8 @@ Public Class frmTMDBInfoSettingsHolder
     End Sub
 
     Private Sub SetUp()
-        Me.btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API")
-        Me.lblEMMAPI.Text = Master.eLang.GetString(1189, "Ember Media Manager API")
+        Me.btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API key")
+        Me.lblEMMAPI.Text = Master.eLang.GetString(1189, "Ember Media Manager API key")
         Me.Label1.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), vbCrLf)
         Me.cbEnabled.Text = Master.eLang.GetString(774, "Enabled")
         Me.chkCast.Text = Master.eLang.GetString(63, "Cast")

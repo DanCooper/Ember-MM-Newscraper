@@ -190,7 +190,7 @@ Partial Class frmTVMediaSettingsHolder
         Me.lblEMMAPI.Name = "lblEMMAPI"
         Me.lblEMMAPI.Size = New System.Drawing.Size(142, 13)
         Me.lblEMMAPI.TabIndex = 78
-        Me.lblEMMAPI.Text = "Ember Media Manager API"
+        Me.lblEMMAPI.Text = "Ember Media Manager API key"
         '
         'btnUnlockAPI
         '
@@ -198,7 +198,7 @@ Partial Class frmTVMediaSettingsHolder
         Me.btnUnlockAPI.Name = "btnUnlockAPI"
         Me.btnUnlockAPI.Size = New System.Drawing.Size(127, 23)
         Me.btnUnlockAPI.TabIndex = 77
-        Me.btnUnlockAPI.Text = "Use my own API"
+        Me.btnUnlockAPI.Text = "Use my own API key"
         Me.btnUnlockAPI.UseVisualStyleBackColor = True
         '
         'gbLanguage

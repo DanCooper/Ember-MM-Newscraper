@@ -223,8 +223,8 @@ Public Class frmTVInfoSettingsHolder
         Me.chkScraperShowStatus.Text = Master.eLang.GetString(215, "Status")
         Me.chkScraperShowStudio.Text = Master.eLang.GetString(395, "Studio")
         Me.chkScraperShowTitle.Text = Master.eLang.GetString(21, "Title")
-        Me.btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API")
-        Me.lblEMMAPI.Text = Master.eLang.GetString(1189, "Ember Media Manager API")
+        Me.btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API key")
+        Me.lblEMMAPI.Text = Master.eLang.GetString(1189, "Ember Media Manager API key")
     End Sub
 
     Private Sub txtTVDBApiKey_TextEnter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVDBApiKey.Enter

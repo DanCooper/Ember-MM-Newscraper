@@ -118,8 +118,8 @@ Public Class frmTVMediaSettingsHolder
         Me.chkGetEnglishImages.Text = Master.eLang.GetString(737, "Also Get English Images")
         Me.gbLanguage.Text = Master.eLang.GetString(610, "Language")
         Me.lblTVDBMirror.Text = Master.eLang.GetString(801, "TVDB Mirror")
-        Me.btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API")
-        Me.lblEMMAPI.Text = Master.eLang.GetString(1189, "Ember Media Manager API")
+        Me.btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API key")
+        Me.lblEMMAPI.Text = Master.eLang.GetString(1189, "Ember Media Manager API key")
 
         Me.cbTVScraperLanguage.Items.AddRange((From lLang In Master.eSettings.TVGeneralLanguages.Language Select lLang.name).ToArray)
     End Sub

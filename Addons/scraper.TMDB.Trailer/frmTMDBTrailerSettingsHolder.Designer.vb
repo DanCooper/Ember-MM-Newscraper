@@ -84,7 +84,7 @@ Partial Class frmTMDBTrailerSettingsHolder
         Me.lblEMMAPI.Name = "lblEMMAPI"
         Me.lblEMMAPI.Size = New System.Drawing.Size(142, 13)
         Me.lblEMMAPI.TabIndex = 16
-        Me.lblEMMAPI.Text = "Ember Media Manager API"
+        Me.lblEMMAPI.Text = "Ember Media Manager API key"
         '
         'btnUnlockAPI
         '
@@ -92,7 +92,7 @@ Partial Class frmTMDBTrailerSettingsHolder
         Me.btnUnlockAPI.Name = "btnUnlockAPI"
         Me.btnUnlockAPI.Size = New System.Drawing.Size(179, 23)
         Me.btnUnlockAPI.TabIndex = 15
-        Me.btnUnlockAPI.Text = "Use my own API"
+        Me.btnUnlockAPI.Text = "Use my own API key"
         Me.btnUnlockAPI.UseVisualStyleBackColor = True
         '
         'pbTMDB
