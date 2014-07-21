@@ -1512,16 +1512,18 @@ Public Class frmMain
         Dim tUrlList As New List(Of Themes)
         Dim DBScrapeMovie As New Structures.DBMovie
         Dim dRow As Object()
-        Dim configpath As String
+        Dim configpath As String = ""
         Dim formatter As New BinaryFormatter()
 
         logger.Trace("Starting MOVIE scrape")
 
         AddHandler ModulesManager.Instance.MovieScraperEvent, AddressOf MovieScraperEvent
 
-        _ScraperStatus.ScrapeList.Clear()
-        _ScraperStatus.ScrapeList.AddRange(ScrapeList.ToArray)
-        configpath = FileUtils.Common.ReturnSettingsFile("Settings", "ScraperStatus.dat")
+        If Master.eSettings.RestartScraper Then
+            _ScraperStatus.ScrapeList.Clear()
+            _ScraperStatus.ScrapeList.AddRange(ScrapeList.ToArray)
+            configpath = FileUtils.Common.ReturnSettingsFile("Settings", "ScraperStatus.dat")
+        End If
 
         While ScrapeList.Count > 0
             dRow = ScrapeList(0)
@@ -8410,7 +8412,11 @@ doCancel:
             Else 'Regular Run (GUI)
                 LoadWithGUI()
             End If
-
+            While Not ModulesManager.Instance.ModulesLoaded()
+                Master.fLoading.SetLoadingMesg(Master.eLang.GetString(856, "Loading modules..."))
+                Application.DoEvents()
+                Threading.Thread.Sleep(50)
+            End While
             Master.fLoading.Close()
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -9948,9 +9954,12 @@ doCancel:
 
     Private Sub MovieScrapeData(ByVal selected As Boolean, ByVal sType As Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions, Optional ByVal Restart As Boolean = False)
         If Not Restart Then
-            _ScraperStatus.Selected = selected
-            _ScraperStatus.sType = sType
-            _ScraperStatus.Options = Options
+            If Master.eSettings.RestartScraper Then
+                _ScraperStatus.Selected = selected
+                _ScraperStatus.sType = sType
+                _ScraperStatus.Options = Options
+                _ScraperStatus.GlobalScrape = Master.GlobalScrapeMod
+            End If
 
             ScrapeList.Clear()
 
@@ -10026,6 +10035,7 @@ doCancel:
                     selected = _ScraperStatus.Selected
                     sType = _ScraperStatus.sType
                     Options = _ScraperStatus.Options
+                    Master.GlobalScrapeMod = _ScraperStatus.GlobalScrape
                     ScrapeList.Clear()
                     ScrapeList.AddRange(_ScraperStatus.ScrapeList.ToArray)
                 End If
@@ -10114,33 +10124,33 @@ doCancel:
         Else
             Select Case eType
                 Case Enums.MovieScraperEventType.BannerItem
-                    dScrapeRow(51) = DirectCast(Parameter, Object)
+                    dScrapeRow(51) = DirectCast(Parameter, String)
                 Case Enums.MovieScraperEventType.ClearArtItem
-                    dScrapeRow(61) = DirectCast(Parameter, Object)
+                    dScrapeRow(61) = DirectCast(Parameter, String)
                 Case Enums.MovieScraperEventType.ClearLogoItem
-                    dScrapeRow(59) = DirectCast(Parameter, Object)
+                    dScrapeRow(59) = DirectCast(Parameter, String)
                 Case Enums.MovieScraperEventType.DiscArtItem
-                    dScrapeRow(57) = DirectCast(Parameter, Object)
+                    dScrapeRow(57) = DirectCast(Parameter, String)
                 Case Enums.MovieScraperEventType.EFanartsItem
-                    dScrapeRow(49) = DirectCast(Parameter, Object)
+                    dScrapeRow(49) = DirectCast(Parameter, String)
                 Case Enums.MovieScraperEventType.EThumbsItem
-                    dScrapeRow(9) = DirectCast(Parameter, Object)
+                    dScrapeRow(9) = DirectCast(Parameter, String)
                 Case Enums.MovieScraperEventType.FanartItem
-                    dScrapeRow(5) = DirectCast(Parameter, Object)
+                    dScrapeRow(5) = DirectCast(Parameter, String)
                 Case Enums.MovieScraperEventType.LandscapeItem
-                    dScrapeRow(53) = DirectCast(Parameter, Object)
+                    dScrapeRow(53) = DirectCast(Parameter, String)
                 Case Enums.MovieScraperEventType.ListTitle
-                    dScrapeRow(3) = DirectCast(Parameter, Object)
+                    dScrapeRow(3) = DirectCast(Parameter, String)
                 Case Enums.MovieScraperEventType.NFOItem
-                    dScrapeRow(6) = DirectCast(Parameter, Object)
+                    dScrapeRow(6) = DirectCast(Parameter, String)
                 Case Enums.MovieScraperEventType.PosterItem
-                    dScrapeRow(4) = DirectCast(Parameter, Object)
+                    dScrapeRow(4) = DirectCast(Parameter, String)
                 Case Enums.MovieScraperEventType.SortTitle
-                    dScrapeRow(47) = DirectCast(Parameter, Object)
+                    dScrapeRow(47) = DirectCast(Parameter, String)
                 Case Enums.MovieScraperEventType.ThemeItem
-                    dScrapeRow(55) = DirectCast(Parameter, Object)
+                    dScrapeRow(55) = DirectCast(Parameter, String)
                 Case Enums.MovieScraperEventType.TrailerItem
-                    dScrapeRow(7) = DirectCast(Parameter, Object)
+                    dScrapeRow(7) = DirectCast(Parameter, String)
             End Select
             Me.dgvMovies.Invalidate()
         End If

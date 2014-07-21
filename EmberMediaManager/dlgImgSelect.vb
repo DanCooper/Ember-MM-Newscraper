@@ -34,6 +34,7 @@ Public Class dlgImgSelect
     Friend WithEvents bwImgLoading As New System.ComponentModel.BackgroundWorker
 
     Public Delegate Sub LoadImage(ByVal sDescription As String, ByVal iIndex As Integer, ByVal isChecked As Boolean, poster As MediaContainers.Image, ByVal text As String)
+    Public Delegate Sub Delegate_MeActivate()
 
     'Private CachePath As String = String.Empty
     Private chkImageET() As CheckBox
@@ -525,9 +526,16 @@ Public Class dlgImgSelect
         Application.DoEvents()
         Me.ResumeLayout(True)
         Me.pnlBG.AutoScroll = True
-        Me.Activate()
+        MeActivate()
     End Sub
 
+    Private Sub MeActivate()
+        If (Me.InvokeRequired) Then
+            Me.Invoke(New Delegate_MeActivate(AddressOf MeActivate))
+            Exit Sub
+        End If
+        Me.Activate()
+    End Sub
     Private Sub cbFilterSize_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cbFilterSize.SelectedIndexChanged
         If Me.cbFilterSize.SelectedIndex = 0 Then
             FillListView(aDes)

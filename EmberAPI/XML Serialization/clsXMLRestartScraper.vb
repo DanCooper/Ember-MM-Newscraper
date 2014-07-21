@@ -9,6 +9,8 @@ Partial Public Class clsXMLRestartScraper
 
     Private _OptionsField As New Structures.ScrapeOptions
 
+    Private _GlobalScrapeStatus As New Structures.ScrapeModifier
+
     Private _ScrapeListField As New System.Collections.Generic.List(Of Object())  'Need an array of objects to binary serialize 
 
     '''<remarks/>
@@ -36,6 +38,15 @@ Partial Public Class clsXMLRestartScraper
         End Get
         Set(value As Structures.ScrapeOptions)
             Me._OptionsField = value
+        End Set
+    End Property
+
+    Public Property GlobalScrape As Structures.ScrapeModifier
+        Get
+            Return Me._GlobalScrapeStatus
+        End Get
+        Set(value As Structures.ScrapeModifier)
+            Me._GlobalScrapeStatus = value
         End Set
     End Property
 
