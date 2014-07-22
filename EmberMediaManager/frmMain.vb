@@ -13645,6 +13645,7 @@ doCancel:
                 .cmnuShowChange.Text = Master.eLang.GetString(767, "Change Show")
                 .cmnuShowEdit.Text = Master.eLang.GetString(663, "Edit Show")
                 .cmnuShowEdit.Text = Master.eLang.GetString(663, "Edit Show")
+                .cmnuShowLanguage.Text = Master.eLang.GetString(1200, "Change Language")
                 .cmnuShowLock.Text = Master.eLang.GetString(24, "Lock")
                 .cmnuShowMark.Text = Master.eLang.GetString(23, "Mark")
                 .cmnuShowReload.Text = Master.eLang.GetString(22, "Reload")
@@ -13723,6 +13724,7 @@ doCancel:
                 .cmnuEpisodeOpenFolder.Text = .cmnuMovieOpenFolder.Text
                 .cmnuMovieSetReload.Text = cmnuMovieReload.Text
                 .cmnuSeasonOpenFolder.Text = .cmnuMovieOpenFolder.Text
+                .cmnuShowLanguageSet.Text = cmnuMovieGenresSet.Text
                 .cmnuShowOpenFolder.Text = .cmnuMovieOpenFolder.Text
                 .cmnuTrayMediaCenters.Text = .tsbMediaCenters.Text
                 .cmnuTrayToolsBackdrops.Text = .mnuMainToolsBackdrops.Text
