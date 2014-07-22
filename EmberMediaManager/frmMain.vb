@@ -4229,11 +4229,17 @@ doCancel:
         Me.SetControlsEnabled(True)
     End Sub
 
-
     Private Sub cmnuMovieRescrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieRescrape.Click
         If Me.dgvMovies.SelectedRows.Count = 1 Then
             Functions.SetScraperMod(Enums.MovieModType.All, True, True)
             Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultMovieOptions)
+        End If
+    End Sub
+
+    Private Sub cmnuMovieSetRescrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieSetRescrape.Click
+        If Me.dgvMovieSets.SelectedRows.Count = 1 Then
+            Functions.SetScraperMod(Enums.MovieModType.All, True, True)
+            Me.MovieSetScrapeData(True, Enums.ScrapeType.SingleScrape)
         End If
     End Sub
     ''' <summary>
@@ -6205,6 +6211,9 @@ doCancel:
                         Me.cmnuShowMark.Text = If(setMark, Master.eLang.GetString(23, "Mark"), Master.eLang.GetString(107, "Unmark"))
                         Me.cmnuShowLock.Text = If(setLock, Master.eLang.GetString(24, "Lock"), Master.eLang.GetString(108, "Unlock"))
 
+                        Me.cmnuShowLanguageLanguages.Items.Insert(0, Master.eLang.GetString(1199, "Select Language..."))
+                        Me.cmnuShowLanguageLanguages.SelectedItem = Master.eLang.GetString(1199, "Select Language...")
+                        Me.cmnuShowLanguageSet.Enabled = False
                     Else
                         Me.ToolStripSeparator8.Visible = True
                         Me.cmnuShowEdit.Visible = True
@@ -6229,6 +6238,12 @@ doCancel:
                         Else
                             Me.cmnuShow.Enabled = True
                         End If
+
+                        Dim Lang As String = CStr(Me.dgvTVShows.Item(22, dgvHTI.RowIndex).Value)
+                        Me.cmnuShowLanguageLanguages.Text = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = Lang).name
+                        'Me.cmnuShowLanguageLanguages.Items.Insert(0, Master.eLang.GetString(1199, "Select Language..."))
+                        'Me.cmnuShowLanguageLanguages.SelectedItem = Master.eLang.GetString(1199, "Select Language...")
+                        Me.cmnuShowLanguageSet.Enabled = False
                     End If
                 Else
                     Me.cmnuShow.Enabled = False
@@ -8930,6 +8945,14 @@ doCancel:
         cmnuMovieGenresSet.Enabled = True
     End Sub
 
+    Private Sub cmnuShowLanguageLanguages_DropDown(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuShowLanguageLanguages.DropDown
+        Me.cmnuShowLanguageLanguages.Items.Remove(Master.eLang.GetString(1199, "Select Language..."))
+    End Sub
+
+    Private Sub cmnuShowLanguageLanguages_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuShowLanguageLanguages.SelectedIndexChanged
+        Me.cmnuShowLanguageSet.Enabled = True
+    End Sub
+
     Private Sub lblGFilClose_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lblGFilClose.Click
         Me.txtFilterGenre.Focus()
         Me.pnlFilterGenre.Tag = String.Empty
@@ -10118,39 +10141,205 @@ doCancel:
         bwMovieScraper.RunWorkerAsync(New Arguments With {.scrapeType = sType, .Options = Options})
     End Sub
 
+    Private Sub MovieSetScrapeData(ByVal selected As Boolean, ByVal sType As Enums.ScrapeType)
+        'If Not Restart Then
+        '    If Master.eSettings.RestartScraper Then
+        '        _ScraperStatus.Selected = selected
+        '        _ScraperStatus.sType = sType
+        '        _ScraperStatus.Options = Options
+        '        _ScraperStatus.GlobalScrape = Master.GlobalScrapeMod
+        '    End If
+
+        '    ScrapeList.Clear()
+
+        '    If selected Then
+        '        'create snapshoot list of selected movies
+        '        For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
+        '            ScrapeList.Add(CType(CType(sRow.DataBoundItem, System.Data.DataRowView).Row.ItemArray, Object()))
+        '        Next
+        '    Else
+        '        Dim BannerAllowed As Boolean = Master.eSettings.MovieBannerAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Banner)
+        '        Dim ClearArtAllowed As Boolean = Master.eSettings.MovieClearArtAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.ClearArt)
+        '        Dim ClearLogoAllowed As Boolean = Master.eSettings.MovieClearLogoAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.ClearLogo)
+        '        Dim DiscArtAllowed As Boolean = Master.eSettings.MovieDiscArtAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.DiscArt)
+        '        Dim EFanartsAllowed As Boolean = Master.eSettings.MovieEFanartsAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart)
+        '        Dim EThumbsAllowed As Boolean = Master.eSettings.MovieEFanartsAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart)
+        '        Dim FanartAllowed As Boolean = Master.eSettings.MovieFanartAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart)
+        '        Dim LandscapeAllowed As Boolean = Master.eSettings.MovieLandscapeAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Landscape)
+        '        Dim PosterAllowed As Boolean = Master.eSettings.MoviePosterAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Poster)
+        '        Dim ThemeAllowed As Boolean = Master.eSettings.MovieThemeEnable AndAlso Master.eSettings.MovieThemeAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Theme)
+        '        Dim TrailerAllowed As Boolean = Master.eSettings.MovieTrailerEnable AndAlso Master.eSettings.MovieTrailerAnyEnabled AndAlso ModulesManager.Instance.QueryTrailerScraperCapabilities(Enums.ScraperCapabilities.Trailer)
+
+        '        'create list of movies acording to scrapetype
+        '        For Each drvRow As DataRow In Me.dtMovies.Rows
+
+        '            If Convert.ToBoolean(drvRow.Item(14)) Then Continue For
+
+        '            Select Case sType
+        '                Case Enums.ScrapeType.NewAsk, Enums.ScrapeType.NewAuto, Enums.ScrapeType.NewSkip
+        '                    If Not Convert.ToBoolean(drvRow.Item(10)) Then Continue For
+        '                Case Enums.ScrapeType.MarkAsk, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.MarkSkip
+        '                    If Not Convert.ToBoolean(drvRow.Item(11)) Then Continue For
+        '                Case Enums.ScrapeType.FilterAsk, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FilterSkip
+        '                    Dim index As Integer = Me.bsMovies.Find("id", drvRow.Item(0))
+        '                    If Not index >= 0 Then Continue For
+        '                Case Enums.ScrapeType.UpdateAsk, Enums.ScrapeType.UpdateAuto, Enums.ScrapeType.UpdateSkip
+        '                    If Not ((Master.GlobalScrapeMod.Banner AndAlso Master.eSettings.MovieMissingBanner AndAlso BannerAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(51))) OrElse _
+        '                            (Master.GlobalScrapeMod.ClearArt AndAlso Master.eSettings.MovieMissingClearArt AndAlso ClearArtAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(61))) OrElse _
+        '                            (Master.GlobalScrapeMod.ClearLogo AndAlso Master.eSettings.MovieMissingClearLogo AndAlso ClearLogoAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(59))) OrElse _
+        '                            (Master.GlobalScrapeMod.DiscArt AndAlso Master.eSettings.MovieMissingDiscArt AndAlso DiscArtAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(57))) OrElse _
+        '                            (Master.GlobalScrapeMod.EFanarts AndAlso Master.eSettings.MovieMissingEFanarts AndAlso EFanartsAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(49))) OrElse _
+        '                            (Master.GlobalScrapeMod.EThumbs AndAlso Master.eSettings.MovieMissingEThumbs AndAlso EThumbsAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(9))) OrElse _
+        '                            (Master.GlobalScrapeMod.Fanart AndAlso Master.eSettings.MovieMissingFanart AndAlso FanartAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(5))) OrElse _
+        '                            (Master.GlobalScrapeMod.Landscape AndAlso Master.eSettings.MovieMissingLandscape AndAlso LandscapeAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(53))) OrElse _
+        '                            (Master.GlobalScrapeMod.NFO AndAlso Master.eSettings.MovieMissingNFO AndAlso Not Convert.ToBoolean(drvRow.Item(6))) OrElse _
+        '                            (Master.GlobalScrapeMod.Poster AndAlso Master.eSettings.MovieMissingPoster AndAlso PosterAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(4))) OrElse _
+        '                            (Master.GlobalScrapeMod.Theme AndAlso Master.eSettings.MovieMissingTheme AndAlso ThemeAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(55))) OrElse _
+        '                            (Master.GlobalScrapeMod.Trailer AndAlso Master.eSettings.MovieMissingTrailer AndAlso TrailerAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(7)))) Then
+        '                        Continue For
+        '                    End If
+        '            End Select
+
+        '            ScrapeList.Add(CType(drvRow.ItemArray, Object()))
+        '        Next
+        '    End If
+        'Else
+        '    If Master.eSettings.RestartScraper Then
+        '        Dim aPath As String = FileUtils.Common.ReturnSettingsFile("Settings", "ScraperStatus.dat")
+        '        Dim formatter As New BinaryFormatter()
+        '        If File.Exists(aPath) Then
+
+        '            _ScraperStatus = New EmberAPI.clsXMLRestartScraper
+
+        '            Dim fs As New FileStream(aPath, FileMode.Open)
+        '            Try
+        '                _ScraperStatus = DirectCast(formatter.Deserialize(fs), EmberAPI.clsXMLRestartScraper)
+        '            Catch ex As Exception
+        '                logger.Error(New StackFrame().GetMethod().Name, ex)
+        '                Throw
+        '            Finally
+        '                fs.Close()
+        '            End Try
+
+        '            selected = _ScraperStatus.Selected
+        '            sType = _ScraperStatus.sType
+        '            Options = _ScraperStatus.Options
+        '            Master.GlobalScrapeMod = _ScraperStatus.GlobalScrape
+        '            ScrapeList.Clear()
+        '            ScrapeList.AddRange(_ScraperStatus.ScrapeList.ToArray)
+        '        End If
+        '    End If
+        'End If
+
+        'Me.SetControlsEnabled(False)
+
+        'Me.tspbLoading.Value = 0
+        'If ScrapeList.Count > 1 Then
+        '    Me.tspbLoading.Style = ProgressBarStyle.Continuous
+        '    Me.tspbLoading.Maximum = ScrapeList.Count
+        'Else
+        '    Me.tspbLoading.Maximum = 100
+        '    Me.tspbLoading.Style = ProgressBarStyle.Marquee
+        'End If
+
+        'If Not selected Then
+        '    Select Case sType
+        '        Case Enums.ScrapeType.FullAsk
+        '            Me.tslLoading.Text = Master.eLang.GetString(127, "Scraping Media (All Movies - Ask):")
+        '        Case Enums.ScrapeType.FullAuto
+        '            Me.tslLoading.Text = Master.eLang.GetString(128, "Scraping Media (All Movies - Auto):")
+        '        Case Enums.ScrapeType.FullSkip
+        '            Me.tslLoading.Text = Master.eLang.GetString(853, "Scraping Media (All Movies - Skip):")
+        '        Case Enums.ScrapeType.UpdateAuto
+        '            Me.tslLoading.Text = Master.eLang.GetString(132, "Scraping Media (Movies Missing Items - Auto):")
+        '        Case Enums.ScrapeType.UpdateAsk
+        '            Me.tslLoading.Text = Master.eLang.GetString(133, "Scraping Media (Movies Missing Items - Ask):")
+        '        Case Enums.ScrapeType.UpdateSkip
+        '            Me.tslLoading.Text = Master.eLang.GetString(1042, "Scraping Media (Movies Missing Items - Skip):")
+        '        Case Enums.ScrapeType.NewAsk
+        '            Me.tslLoading.Text = Master.eLang.GetString(134, "Scraping Media (New Movies - Ask):")
+        '        Case Enums.ScrapeType.NewAuto
+        '            Me.tslLoading.Text = Master.eLang.GetString(135, "Scraping Media (New Movies - Auto):")
+        '        Case Enums.ScrapeType.NewSkip
+        '            Me.tslLoading.Text = Master.eLang.GetString(1043, "Scraping Media (New Movies - Skip):")
+        '        Case Enums.ScrapeType.MarkAsk
+        '            Me.tslLoading.Text = Master.eLang.GetString(136, "Scraping Media (Marked Movies - Ask):")
+        '        Case Enums.ScrapeType.MarkAuto
+        '            Me.tslLoading.Text = Master.eLang.GetString(137, "Scraping Media (Marked Movies - Auto):")
+        '        Case Enums.ScrapeType.MarkSkip
+        '            Me.tslLoading.Text = Master.eLang.GetString(1044, "Scraping Media (Marked Movies - Skip):")
+        '        Case Enums.ScrapeType.FilterAsk
+        '            Me.tslLoading.Text = Master.eLang.GetString(622, "Scraping Media (Current Filter - Ask):")
+        '        Case Enums.ScrapeType.FilterAuto
+        '            Me.tslLoading.Text = Master.eLang.GetString(623, "Scraping Media (Current Filter - Auto):")
+        '        Case Enums.ScrapeType.FilterAuto
+        '            Me.tslLoading.Text = Master.eLang.GetString(1045, "Scraping Media (Current Filter - Skip):")
+        '        Case Enums.ScrapeType.SingleScrape
+        '            Me.tslLoading.Text = Master.eLang.GetString(139, "Scraping:")
+        '    End Select
+        'Else
+        '    Select Case sType
+        '        Case Enums.ScrapeType.FullAsk
+        '            Me.tslLoading.Text = Master.eLang.GetString(1128, "Scraping Media (Selected Movies - Ask):")
+        '        Case Enums.ScrapeType.FullAuto
+        '            Me.tslLoading.Text = Master.eLang.GetString(1129, "Scraping Media (Selected Movies - Auto):")
+        '        Case Enums.ScrapeType.FullSkip
+        '            Me.tslLoading.Text = Master.eLang.GetString(1130, "Scraping Media (Selected Movies - Skip):")
+        '        Case Enums.ScrapeType.SingleField
+        '            Me.tslLoading.Text = Master.eLang.GetString(1127, "Scraping Media (Selected Movies - Single Field):")
+        '    End Select
+        'End If
+
+        'If Not sType = Enums.ScrapeType.SingleScrape Then
+        '    Me.btnCancel.Text = Master.eLang.GetString(54, "Cancel Scraper")
+        '    Me.lblCanceling.Text = Master.eLang.GetString(53, "Canceling Scraper...")
+        '    Me.btnCancel.Visible = True
+        '    Me.lblCanceling.Visible = False
+        '    Me.prbCanceling.Visible = False
+        '    Me.pnlCancel.Visible = True
+        'End If
+
+        'Me.tslLoading.Visible = True
+        'Me.tspbLoading.Visible = True
+        'Application.DoEvents()
+        'bwMovieScraper.WorkerSupportsCancellation = True
+        'bwMovieScraper.WorkerReportsProgress = True
+        'bwMovieScraper.RunWorkerAsync(New Arguments With {.scrapeType = sType, .Options = Options})
+    End Sub
+
     Private Sub MovieScraperEvent(ByVal eType As Enums.MovieScraperEventType, ByVal Parameter As Object)
         If (Me.InvokeRequired) Then
             Me.Invoke(New DelegateEvent(AddressOf MovieScraperEvent), New Object() {eType, Parameter})
         Else
             Select Case eType
                 Case Enums.MovieScraperEventType.BannerItem
-                    dScrapeRow(51) = DirectCast(Parameter, String)
+                    dScrapeRow(51) = DirectCast(Parameter, Boolean)
                 Case Enums.MovieScraperEventType.ClearArtItem
-                    dScrapeRow(61) = DirectCast(Parameter, String)
+                    dScrapeRow(61) = DirectCast(Parameter, Boolean)
                 Case Enums.MovieScraperEventType.ClearLogoItem
-                    dScrapeRow(59) = DirectCast(Parameter, String)
+                    dScrapeRow(59) = DirectCast(Parameter, Boolean)
                 Case Enums.MovieScraperEventType.DiscArtItem
-                    dScrapeRow(57) = DirectCast(Parameter, String)
+                    dScrapeRow(57) = DirectCast(Parameter, Boolean)
                 Case Enums.MovieScraperEventType.EFanartsItem
-                    dScrapeRow(49) = DirectCast(Parameter, String)
+                    dScrapeRow(49) = DirectCast(Parameter, Boolean)
                 Case Enums.MovieScraperEventType.EThumbsItem
-                    dScrapeRow(9) = DirectCast(Parameter, String)
+                    dScrapeRow(9) = DirectCast(Parameter, Boolean)
                 Case Enums.MovieScraperEventType.FanartItem
-                    dScrapeRow(5) = DirectCast(Parameter, String)
+                    dScrapeRow(5) = DirectCast(Parameter, Boolean)
                 Case Enums.MovieScraperEventType.LandscapeItem
-                    dScrapeRow(53) = DirectCast(Parameter, String)
+                    dScrapeRow(53) = DirectCast(Parameter, Boolean)
                 Case Enums.MovieScraperEventType.ListTitle
                     dScrapeRow(3) = DirectCast(Parameter, String)
                 Case Enums.MovieScraperEventType.NFOItem
-                    dScrapeRow(6) = DirectCast(Parameter, String)
+                    dScrapeRow(6) = DirectCast(Parameter, Boolean)
                 Case Enums.MovieScraperEventType.PosterItem
-                    dScrapeRow(4) = DirectCast(Parameter, String)
+                    dScrapeRow(4) = DirectCast(Parameter, Boolean)
                 Case Enums.MovieScraperEventType.SortTitle
                     dScrapeRow(47) = DirectCast(Parameter, String)
                 Case Enums.MovieScraperEventType.ThemeItem
-                    dScrapeRow(55) = DirectCast(Parameter, String)
+                    dScrapeRow(55) = DirectCast(Parameter, Boolean)
                 Case Enums.MovieScraperEventType.TrailerItem
-                    dScrapeRow(7) = DirectCast(Parameter, String)
+                    dScrapeRow(7) = DirectCast(Parameter, Boolean)
             End Select
             Me.dgvMovies.Invalidate()
         End If
@@ -11421,6 +11610,7 @@ doCancel:
                         Me.Invoke(myDelegate, New Object() {dRow(0), 3, hasFanart})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 4, If(String.IsNullOrEmpty(tmpShowDb.ShowNfoPath), False, True)})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 5, False})
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 22, tmpShowDb.ShowLanguage})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 24, hasBanner})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 26, hasLandscape})
                         Me.Invoke(myDelegate, New Object() {dRow(0), 29, hasTheme})
@@ -11434,6 +11624,7 @@ doCancel:
                         DirectCast(dRow(0), DataRow).Item(3) = hasFanart
                         DirectCast(dRow(0), DataRow).Item(4) = If(String.IsNullOrEmpty(tmpShowDb.ShowNfoPath), False, True)
                         DirectCast(dRow(0), DataRow).Item(5) = False
+                        DirectCast(dRow(0), DataRow).Item(22) = tmpShowDb.ShowLanguage
                         DirectCast(dRow(0), DataRow).Item(24) = hasBanner
                         DirectCast(dRow(0), DataRow).Item(26) = hasLandscape
                         DirectCast(dRow(0), DataRow).Item(29) = hasTheme
@@ -12252,6 +12443,35 @@ doCancel:
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
+
+    Private Sub cmnuShowLanguageSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowLanguageSet.Click
+        Try
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                    Dim parLanguage As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLanguage", DbType.String, 0, "Language")
+                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
+                    SQLcommand.CommandText = "UPDATE TVShows SET Language = (?) WHERE id = (?);"
+                    For Each sRow As DataGridViewRow In Me.dgvTVShows.SelectedRows
+                        parLanguage.Value = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = Me.cmnuShowLanguageLanguages.Text).abbreviation
+                        parID.Value = sRow.Cells(0).Value
+                        SQLcommand.ExecuteNonQuery()
+                    Next
+                End Using
+                SQLtransaction.Commit()
+            End Using
+
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+                For Each sRow As DataGridViewRow In Me.dgvTVShows.SelectedRows
+                    Me.RefreshShow(Convert.ToInt64(sRow.Cells(0).Value), True, False, True, False)
+                Next
+                SQLtransaction.Commit()
+            End Using
+
+            Me.LoadShowInfo(Convert.ToInt32(Me.dgvTVShows.Item(0, Me.dgvTVShows.CurrentCell.RowIndex).Value))
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
     ''' <summary>
     ''' Enable or disable the various menu and context-menu actions based on the currently-defined settings
     ''' </summary>
@@ -12666,6 +12886,9 @@ doCancel:
                 Dim lGenre() As Object = APIXML.GetGenreList
                 cmnuMovieGenresGenre.Items.AddRange(lGenre)
                 clbFilterGenres.Items.AddRange(lGenre)
+
+                cmnuShowLanguageLanguages.Items.Clear()
+                cmnuShowLanguageLanguages.Items.AddRange((From lLang In Master.eSettings.TVGeneralLanguages.Language Select lLang.name).ToArray)
 
                 'not technically a menu, but it's a good place to put it
                 If ReloadFilters Then
