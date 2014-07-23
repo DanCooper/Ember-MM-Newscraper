@@ -80,11 +80,19 @@ Public Class dlgSettings
         AddHandler TSB.Click, AddressOf ToolStripButton_Click
         TSBs.Add(TSB)
         TSB = New ToolStripButton With { _
+              .Text = Master.eLang.GetString(1203, "MovieSets"), _
+              .Image = My.Resources.MovieSet, _
+              .TextImageRelation = TextImageRelation.ImageAboveText, _
+              .DisplayStyle = ToolStripItemDisplayStyle.ImageAndText, _
+              .Tag = 300}
+        AddHandler TSB.Click, AddressOf ToolStripButton_Click
+        TSBs.Add(TSB)
+        TSB = New ToolStripButton With { _
               .Text = Master.eLang.GetString(653, "TV Shows"), _
               .Image = My.Resources.TVShows, _
               .TextImageRelation = TextImageRelation.ImageAboveText, _
               .DisplayStyle = ToolStripItemDisplayStyle.ImageAndText, _
-              .Tag = 300}
+              .Tag = 400}
         AddHandler TSB.Click, AddressOf ToolStripButton_Click
         TSBs.Add(TSB)
         TSB = New ToolStripButton With { _
@@ -92,7 +100,7 @@ Public Class dlgSettings
               .Image = My.Resources.modules, _
               .TextImageRelation = TextImageRelation.ImageAboveText, _
               .DisplayStyle = ToolStripItemDisplayStyle.ImageAndText, _
-              .Tag = 400}
+              .Tag = 500}
         AddHandler TSB.Click, AddressOf ToolStripButton_Click
         TSBs.Add(TSB)
 
@@ -101,7 +109,7 @@ Public Class dlgSettings
             .Image = My.Resources.Miscellaneous, _
             .TextImageRelation = TextImageRelation.ImageAboveText, _
             .DisplayStyle = ToolStripItemDisplayStyle.ImageAndText, _
-            .Tag = 400}
+            .Tag = 600}
         AddHandler TSB.Click, AddressOf ToolStripButton_Click
         TSBs.Add(TSB)
 
@@ -199,6 +207,34 @@ Public Class dlgSettings
              .Type = Master.eLang.GetString(36, "Movies"), _
              .Panel = Me.pnlMovieThemes, _
              .Order = 600})
+        Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
+             .Name = "pnlMovieSets", _
+             .Text = Master.eLang.GetString(38, "General"), _
+             .ImageIndex = 2, _
+             .Type = Master.eLang.GetString(1203, "MovieSets"), _
+             .Panel = Me.pnlMovieSetGeneral, _
+             .Order = 100})
+        Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
+             .Name = "pnlMovieSetSources", _
+             .Text = Master.eLang.GetString(555, "Files and Sources"), _
+             .ImageIndex = 5, _
+             .Type = Master.eLang.GetString(1203, "MovieSets"), _
+             .Panel = Me.pnlMovieSetSources, _
+             .Order = 200})
+        Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
+             .Name = "pnlMovieSetData", _
+             .Text = Master.eLang.GetString(556, "Scrapers - Data"), _
+             .ImageIndex = 3, _
+             .Type = Master.eLang.GetString(1203, "MovieSets"), _
+             .Panel = Me.pnlMovieSetScraper, _
+             .Order = 300})
+        Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
+             .Name = "pnlMovieSetMedia", _
+             .Text = Master.eLang.GetString(557, "Scrapers - Images"), _
+             .ImageIndex = 6, _
+             .Type = Master.eLang.GetString(1203, "MovieSets"), _
+             .Panel = Me.pnlMovieSetImages, _
+             .Order = 400})
         Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
              .Name = "pnlShows", _
              .Text = Master.eLang.GetString(38, "General"), _
