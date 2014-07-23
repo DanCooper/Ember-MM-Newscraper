@@ -32,8 +32,6 @@ Partial Class dlgEditMovie
         Me.pbTopLogo = New System.Windows.Forms.PictureBox()
         Me.tcEditMovie = New System.Windows.Forms.TabControl()
         Me.tpDetails = New System.Windows.Forms.TabPage()
-        Me.btnPlayTheme = New System.Windows.Forms.Button()
-        Me.btnDLTheme = New System.Windows.Forms.Button()
         Me.txtOriginalTitle = New System.Windows.Forms.TextBox()
         Me.lblOriginalTitle = New System.Windows.Forms.Label()
         Me.txtCountry = New System.Windows.Forms.TextBox()
@@ -330,8 +328,6 @@ Partial Class dlgEditMovie
         '
         'tpDetails
         '
-        Me.tpDetails.Controls.Add(Me.btnPlayTheme)
-        Me.tpDetails.Controls.Add(Me.btnDLTheme)
         Me.tpDetails.Controls.Add(Me.txtOriginalTitle)
         Me.tpDetails.Controls.Add(Me.lblOriginalTitle)
         Me.tpDetails.Controls.Add(Me.txtCountry)
@@ -398,25 +394,6 @@ Partial Class dlgEditMovie
         Me.tpDetails.TabIndex = 0
         Me.tpDetails.Text = "Details"
         Me.tpDetails.UseVisualStyleBackColor = True
-        '
-        'btnPlayTheme
-        '
-        Me.btnPlayTheme.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnPlayTheme.Image = Global.Ember_Media_Manager.My.Resources.Resources.Play_Icon
-        Me.btnPlayTheme.Location = New System.Drawing.Point(655, 462)
-        Me.btnPlayTheme.Name = "btnPlayTheme"
-        Me.btnPlayTheme.Size = New System.Drawing.Size(23, 23)
-        Me.btnPlayTheme.TabIndex = 69
-        Me.btnPlayTheme.UseVisualStyleBackColor = True
-        '
-        'btnDLTheme
-        '
-        Me.btnDLTheme.Image = CType(resources.GetObject("btnDLTheme.Image"), System.Drawing.Image)
-        Me.btnDLTheme.Location = New System.Drawing.Point(602, 462)
-        Me.btnDLTheme.Name = "btnDLTheme"
-        Me.btnDLTheme.Size = New System.Drawing.Size(23, 23)
-        Me.btnDLTheme.TabIndex = 68
-        Me.btnDLTheme.UseVisualStyleBackColor = True
         '
         'txtOriginalTitle
         '
@@ -516,7 +493,7 @@ Partial Class dlgEditMovie
         '
         Me.btnPlayTrailer.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnPlayTrailer.Image = Global.Ember_Media_Manager.My.Resources.Resources.Play_Icon
-        Me.btnPlayTrailer.Location = New System.Drawing.Point(655, 423)
+        Me.btnPlayTrailer.Location = New System.Drawing.Point(583, 425)
         Me.btnPlayTrailer.Name = "btnPlayTrailer"
         Me.btnPlayTrailer.Size = New System.Drawing.Size(23, 23)
         Me.btnPlayTrailer.TabIndex = 52
@@ -525,7 +502,7 @@ Partial Class dlgEditMovie
         'btnDLTrailer
         '
         Me.btnDLTrailer.Image = CType(resources.GetObject("btnDLTrailer.Image"), System.Drawing.Image)
-        Me.btnDLTrailer.Location = New System.Drawing.Point(602, 423)
+        Me.btnDLTrailer.Location = New System.Drawing.Point(612, 425)
         Me.btnDLTrailer.Name = "btnDLTrailer"
         Me.btnDLTrailer.Size = New System.Drawing.Size(23, 23)
         Me.btnDLTrailer.TabIndex = 53
@@ -1969,7 +1946,7 @@ Partial Class dlgEditMovie
         Me.axVLCTrailer.Location = New System.Drawing.Point(6, 6)
         Me.axVLCTrailer.Name = "axVLCTrailer"
         Me.axVLCTrailer.OcxState = CType(resources.GetObject("axVLCTrailer.OcxState"), System.Windows.Forms.AxHost.State)
-        Me.axVLCTrailer.Size = New System.Drawing.Size(800, 450)
+        Me.axVLCTrailer.Size = New System.Drawing.Size(800, 449)
         Me.axVLCTrailer.TabIndex = 9
         '
         'btnSetMovieTrailerDL
@@ -2410,8 +2387,6 @@ Partial Class dlgEditMovie
     Friend WithEvents btnSetMovieLandscapeScrape As System.Windows.Forms.Button
     Friend WithEvents btnSetMovieLandscapeLocal As System.Windows.Forms.Button
     Friend WithEvents pbMovieLandscape As System.Windows.Forms.PictureBox
-    Friend WithEvents btnDLTheme As System.Windows.Forms.Button
-    Friend WithEvents btnPlayTheme As System.Windows.Forms.Button
     Friend WithEvents tpClearArt As System.Windows.Forms.TabPage
     Friend WithEvents btnSetMovieClearArtDL As System.Windows.Forms.Button
     Friend WithEvents btnRemoveMovieClearArt As System.Windows.Forms.Button

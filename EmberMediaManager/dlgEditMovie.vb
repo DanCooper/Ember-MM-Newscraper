@@ -237,7 +237,7 @@ Public Class dlgEditMovie
         Me.Close()
     End Sub
 
-    Private Sub btnDLTheme_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDLTheme.Click
+    Private Sub btnDLTheme_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Dim aUrlList As New List(Of Themes)
         Dim tURL As String = String.Empty
         If Not ModulesManager.Instance.MovieScrapeTheme(Master.currMovie, aUrlList) Then
@@ -247,27 +247,29 @@ Public Class dlgEditMovie
         End If
 
         If Not String.IsNullOrEmpty(MovieTheme.URL) Then
-            Me.btnPlayTheme.Enabled = True
+            'Me.btnPlayTheme.Enabled = True
         End If
     End Sub
 
     Private Sub btnDLTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDLTrailer.Click
-        Dim aUrlList As New List(Of Trailers)
+        Dim tResults As New MediaContainers.Trailer
+        Dim dlgTrlS As dlgTrailerSelect
+        Dim tList As New List(Of Trailers)
         Dim tURL As String = String.Empty
-        If Not ModulesManager.Instance.MovieScrapeTrailer(Master.currMovie, Enums.ScraperCapabilities.Trailer, aUrlList) Then
-            Using dTrailerSelect As New dlgTrailerSelect()
-                'tURL = dTrailerSelect.ShowDialog(Master.currMovie, aUrlList)
-            End Using
-        End If
 
-        If Not String.IsNullOrEmpty(tURL) Then
-            Me.btnPlayTrailer.Enabled = True
-            If StringUtils.isValidURL(tURL) Then
-                Me.txtTrailer.Text = tURL
-            Else
-                Master.currMovie.TrailerPath = tURL
+        Try
+            dlgTrlS = New dlgTrailerSelect()
+            If dlgTrlS.ShowDialog(Master.currMovie, tList, True, True) = Windows.Forms.DialogResult.OK Then
+                tURL = dlgTrlS.Results.URL
             End If
-        End If
+
+            If Not String.IsNullOrEmpty(tURL) Then
+                Me.btnPlayTrailer.Enabled = True
+                Me.txtTrailer.Text = tURL
+            End If
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
     End Sub
 
     ' temporarily disabled
@@ -304,9 +306,7 @@ Public Class dlgEditMovie
 
             Dim tPath As String = String.Empty
 
-            If Not String.IsNullOrEmpty(Master.currMovie.TrailerPath) Then
-                tPath = String.Concat("""", Master.currMovie.TrailerPath, """")
-            ElseIf Not String.IsNullOrEmpty(Me.txtTrailer.Text) Then
+            If Not String.IsNullOrEmpty(Me.txtTrailer.Text) Then
                 tPath = String.Concat("""", Me.txtTrailer.Text, """")
             End If
 
@@ -330,7 +330,7 @@ Public Class dlgEditMovie
         End Try
     End Sub
 
-    Private Sub btnPlayTheme_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPlayTheme.Click
+    Private Sub btnPlayTheme_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
         'TODO 2013/12/18 Dekker500 - This should be re-factored to use Functions.Launch. Why is the URL different for non-windows??? Need to test first before editing
         Try
 
@@ -464,9 +464,6 @@ Public Class dlgEditMovie
         Dim etList As New List(Of String)
 
         Try
-            Dim sPath As String = Path.Combine(Master.TempPath, "Banner.jpg")
-
-            'Public Function MovieScrapeImages(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Boolean
             If Not ModulesManager.Instance.MovieScrapeImages(Master.currMovie, Enums.ScraperCapabilities.Banner, aList) Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
@@ -543,9 +540,6 @@ Public Class dlgEditMovie
         Dim etList As New List(Of String)
 
         Try
-            Dim sPath As String = Path.Combine(Master.TempPath, "ClearArt.png")
-
-            'Public Function MovieScrapeImages(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Boolean
             If Not ModulesManager.Instance.MovieScrapeImages(Master.currMovie, Enums.ScraperCapabilities.ClearArt, aList) Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
@@ -622,9 +616,6 @@ Public Class dlgEditMovie
         Dim etList As New List(Of String)
 
         Try
-            Dim sPath As String = Path.Combine(Master.TempPath, "ClearLogo.png")
-
-            'Public Function MovieScrapeImages(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Boolean
             If Not ModulesManager.Instance.MovieScrapeImages(Master.currMovie, Enums.ScraperCapabilities.ClearLogo, aList) Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
@@ -701,9 +692,6 @@ Public Class dlgEditMovie
         Dim etList As New List(Of String)
 
         Try
-            Dim sPath As String = Path.Combine(Master.TempPath, "DiscArt.png")
-
-            'Public Function MovieScrapeImages(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Boolean
             If Not ModulesManager.Instance.MovieScrapeImages(Master.currMovie, Enums.ScraperCapabilities.DiscArt, aList) Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
@@ -810,7 +798,6 @@ Public Class dlgEditMovie
         Dim etList As New List(Of String)
 
         Try
-            'Public Function MovieScrapeImages(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Boolean
             If Not ModulesManager.Instance.MovieScrapeImages(Master.currMovie, Enums.ScraperCapabilities.Fanart, aList) Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
@@ -891,9 +878,6 @@ Public Class dlgEditMovie
         Dim etList As New List(Of String)
 
         Try
-            Dim sPath As String = Path.Combine(Master.TempPath, "Landscape.jpg")
-
-            'Public Function MovieScrapeImages(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Boolean
             If Not ModulesManager.Instance.MovieScrapeImages(Master.currMovie, Enums.ScraperCapabilities.Landscape, aList) Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
@@ -970,9 +954,6 @@ Public Class dlgEditMovie
         Dim etList As New List(Of String)
 
         Try
-            Dim sPath As String = Path.Combine(Master.TempPath, "poster.jpg")
-
-            'Public Function MovieScrapeImages(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Boolean
             If Not ModulesManager.Instance.MovieScrapeImages(Master.currMovie, Enums.ScraperCapabilities.Poster, aList) Then
                 If aList.Count > 0 Then
                     dlgImgS = New dlgImgSelect()
@@ -1028,7 +1009,7 @@ Public Class dlgEditMovie
         Try
             Me.TrailerStop()
             dlgTrlS = New dlgTrailerSelect()
-            If dlgTrlS.ShowDialog(Master.currMovie, tList, True) = Windows.Forms.DialogResult.OK Then
+            If dlgTrlS.ShowDialog(Master.currMovie, tList, False, True) = Windows.Forms.DialogResult.OK Then
                 tResults = dlgTrlS.Results
                 MovieTrailer = tResults.WebTrailer
                 TrailerAddToPlayer(MovieTrailer)
@@ -1046,7 +1027,7 @@ Public Class dlgEditMovie
         Try
             Me.TrailerStop()
             dlgTrlS = New dlgTrailerSelect()
-            If dlgTrlS.ShowDialog(Master.currMovie, tList, True) = Windows.Forms.DialogResult.OK Then
+            If dlgTrlS.ShowDialog(Master.currMovie, tList, False, True) = Windows.Forms.DialogResult.OK Then
                 tResults = dlgTrlS.Results
                 MovieTrailer = tResults.WebTrailer
                 TrailerAddToPlayer(MovieTrailer)
@@ -1574,20 +1555,19 @@ Public Class dlgEditMovie
                 End If
 
                 If String.IsNullOrEmpty(Master.currMovie.ThemePath) Then
-                    .btnPlayTheme.Enabled = False
+                    '.btnPlayTheme.Enabled = False
                 End If
 
-                .btnDLTheme.Enabled = Master.eSettings.MovieThemeEnable AndAlso Master.eSettings.MovieThemeAnyEnabled AndAlso ModulesManager.Instance.QueryTrailerScraperCapabilities(Enums.ScraperCapabilities.Theme)
+                '.btnDLTheme.Enabled = Master.eSettings.MovieThemeEnable AndAlso Master.eSettings.MovieThemeAnyEnabled AndAlso ModulesManager.Instance.QueryTrailerScraperCapabilities(Enums.ScraperCapabilities.Theme)
 
                 If Not String.IsNullOrEmpty(Master.currMovie.Movie.Trailer) Then
                     .txtTrailer.Text = Master.currMovie.Movie.Trailer
+                    .btnPlayTrailer.Enabled = True
                 Else
-                    If String.IsNullOrEmpty(Master.currMovie.TrailerPath) Then
-                        .btnPlayTrailer.Enabled = False
-                    End If
+                    .btnPlayTrailer.Enabled = False
                 End If
 
-                .btnDLTrailer.Enabled = Master.eSettings.MovieTrailerEnable AndAlso Master.eSettings.MovieTrailerAnyEnabled AndAlso ModulesManager.Instance.QueryTrailerScraperCapabilities(Enums.ScraperCapabilities.Trailer)
+                .btnDLTrailer.Enabled = Master.DefaultMovieOptions.bTrailer
 
                 If Not String.IsNullOrEmpty(Master.currMovie.Movie.Studio) Then
                     .txtStudio.Text = Master.currMovie.Movie.Studio
