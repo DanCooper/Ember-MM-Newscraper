@@ -31,7 +31,7 @@ Public Class TMDB_Poster
 
 #Region "Fields"
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
-    Public Shared ConfigOptions As New Structures.ScrapeOptions
+    Public Shared ConfigOptions As New Structures.MovieScrapeOptions
     Public Shared ConfigScrapeModifier As New Structures.ScrapeModifier
     Public Shared _AssemblyName As String
 

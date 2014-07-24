@@ -1548,7 +1548,7 @@ Public Class frmMain
                                                                              Master.GlobalScrapeMod.ClearLogo Or Master.GlobalScrapeMod.DiscArt Or Master.GlobalScrapeMod.EFanarts Or _
                                                                              Master.GlobalScrapeMod.EThumbs Or Master.GlobalScrapeMod.Fanart Or Master.GlobalScrapeMod.Landscape Or _
                                                                              Master.GlobalScrapeMod.Poster Or Master.GlobalScrapeMod.Trailer) Then
-                        Dim tOpt As New Structures.ScrapeOptions 'all false value not to override any field
+                        Dim tOpt As New Structures.MovieScrapeOptions 'all false value not to override any field
                         If ModulesManager.Instance.MovieScrapeOnly(DBScrapeMovie, Args.scrapeType, tOpt) Then
                             Exit While
                         End If
@@ -4239,7 +4239,7 @@ doCancel:
     Private Sub cmnuMovieSetRescrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieSetRescrape.Click
         If Me.dgvMovieSets.SelectedRows.Count = 1 Then
             Functions.SetScraperMod(Enums.MovieModType.All, True, True)
-            Me.MovieSetScrapeData(True, Enums.ScrapeType.SingleScrape)
+            Me.MovieSetScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultMovieSetOptions)
         End If
     End Sub
     ''' <summary>
@@ -6769,9 +6769,8 @@ doCancel:
                             .dgvMovieSets.Columns(16).SortMode = DataGridViewColumnSortMode.Automatic
                             .dgvMovieSets.Columns(16).Visible = Not Master.eSettings.MovieSetClearArtCol
                             .dgvMovieSets.Columns(16).ToolTipText = Master.eLang.GetString(1096, "ClearArt")
-                            .dgvMovieSets.Columns(17).Visible = False
 
-                            For i As Integer = 18 To .dgvMovieSets.Columns.Count - 1
+                            For i As Integer = 17 To .dgvMovieSets.Columns.Count - 1
                                 .dgvMovieSets.Columns(i).Visible = False
                             Next
 
@@ -6890,8 +6889,8 @@ doCancel:
                             .dgvTVShows.Columns(37).SortMode = DataGridViewColumnSortMode.Automatic
                             .dgvTVShows.Columns(37).Visible = Not Master.eSettings.TVShowEFanartsCol
                             .dgvTVShows.Columns(37).ToolTipText = Master.eLang.GetString(992, "Extrafanarts")
-                            .dgvTVShows.Columns(38).Visible = False
-                            For i As Integer = 39 To .dgvTVShows.Columns.Count - 1
+
+                            For i As Integer = 38 To .dgvTVShows.Columns.Count - 1
                                 .dgvTVShows.Columns(i).Visible = False
                             Next
 
@@ -9975,7 +9974,7 @@ doCancel:
         End If
     End Sub
 
-    Private Sub MovieScrapeData(ByVal selected As Boolean, ByVal sType As Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions, Optional ByVal Restart As Boolean = False)
+    Private Sub MovieScrapeData(ByVal selected As Boolean, ByVal sType As Enums.ScrapeType, ByVal Options As Structures.MovieScrapeOptions, Optional ByVal Restart As Boolean = False)
         If Not Restart Then
             If Master.eSettings.RestartScraper Then
                 _ScraperStatus.Selected = selected
@@ -10141,7 +10140,7 @@ doCancel:
         bwMovieScraper.RunWorkerAsync(New Arguments With {.scrapeType = sType, .Options = Options})
     End Sub
 
-    Private Sub MovieSetScrapeData(ByVal selected As Boolean, ByVal sType As Enums.ScrapeType)
+    Private Sub MovieSetScrapeData(ByVal selected As Boolean, ByVal sType As Enums.ScrapeType, ByVal Options As Structures.MovieSetScrapeOptions)
         'If Not Restart Then
         '    If Master.eSettings.RestartScraper Then
         '        _ScraperStatus.Selected = selected
@@ -10354,7 +10353,7 @@ doCancel:
         Return asm
     End Function
 
-    Private Sub NonScrape(ByVal sType As Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions)
+    Private Sub NonScrape(ByVal sType As Enums.ScrapeType, ByVal Options As Structures.MovieScrapeOptions)
         Me.Cursor = Cursors.WaitCursor
 
         Select Case sType
@@ -12120,56 +12119,56 @@ doCancel:
     End Sub
 
     Private Sub cmnuMovieUpSelCert_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelCert.Click
-        Dim cScrapeOptions As New Structures.ScrapeOptions
+        Dim cScrapeOptions As New Structures.MovieScrapeOptions
         cScrapeOptions.bCert = True
         Functions.SetScraperMod(Enums.MovieModType.NFO, True)
         MovieScrapeData(True, Enums.ScrapeType.SingleField, cScrapeOptions)
     End Sub
 
     Private Sub cmnuMovieUpSelCountry_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelCountry.Click
-        Dim cScrapeOptions As New Structures.ScrapeOptions
+        Dim cScrapeOptions As New Structures.MovieScrapeOptions
         cScrapeOptions.bCountry = True
         Functions.SetScraperMod(Enums.MovieModType.NFO, True)
         MovieScrapeData(True, Enums.ScrapeType.SingleField, cScrapeOptions)
     End Sub
 
     Private Sub cmnuMovieUpSelDirector_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelDirector.Click
-        Dim cScrapeOptions As New Structures.ScrapeOptions
+        Dim cScrapeOptions As New Structures.MovieScrapeOptions
         cScrapeOptions.bDirector = True
         Functions.SetScraperMod(Enums.MovieModType.NFO, True)
         MovieScrapeData(True, Enums.ScrapeType.SingleField, cScrapeOptions)
     End Sub
 
     Private Sub cmnuMovieUpSelMPAA_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelMPAA.Click
-        Dim cScrapeOptions As New Structures.ScrapeOptions
+        Dim cScrapeOptions As New Structures.MovieScrapeOptions
         cScrapeOptions.bMPAA = True
         Functions.SetScraperMod(Enums.MovieModType.NFO, True)
         MovieScrapeData(True, Enums.ScrapeType.SingleField, cScrapeOptions)
     End Sub
 
     Private Sub cmnuMovieUpSelOutline_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelOutline.Click
-        Dim cScrapeOptions As New Structures.ScrapeOptions
+        Dim cScrapeOptions As New Structures.MovieScrapeOptions
         cScrapeOptions.bOutline = True
         Functions.SetScraperMod(Enums.MovieModType.NFO, True)
         MovieScrapeData(True, Enums.ScrapeType.SingleField, cScrapeOptions)
     End Sub
 
     Private Sub cmnuMovieUpSelPlot_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelPlot.Click
-        Dim cScrapeOptions As New Structures.ScrapeOptions
+        Dim cScrapeOptions As New Structures.MovieScrapeOptions
         cScrapeOptions.bPlot = True
         Functions.SetScraperMod(Enums.MovieModType.NFO, True)
         MovieScrapeData(True, Enums.ScrapeType.SingleField, cScrapeOptions)
     End Sub
 
     Private Sub cmnuMovieUpSelProducers_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelProducers.Click
-        Dim cScrapeOptions As New Structures.ScrapeOptions
+        Dim cScrapeOptions As New Structures.MovieScrapeOptions
         cScrapeOptions.bProducers = True
         Functions.SetScraperMod(Enums.MovieModType.NFO, True)
         MovieScrapeData(True, Enums.ScrapeType.SingleField, cScrapeOptions)
     End Sub
 
     Private Sub cmnuMovieUpSelRating_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelRating.Click
-        Dim cScrapeOptions As New Structures.ScrapeOptions
+        Dim cScrapeOptions As New Structures.MovieScrapeOptions
         cScrapeOptions.bRating = True
         cScrapeOptions.bVotes = True
         Functions.SetScraperMod(Enums.MovieModType.NFO, True)
@@ -12177,56 +12176,56 @@ doCancel:
     End Sub
 
     Private Sub cmnuMovieUpSelRelease_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelRelease.Click
-        Dim cScrapeOptions As New Structures.ScrapeOptions
+        Dim cScrapeOptions As New Structures.MovieScrapeOptions
         cScrapeOptions.bRelease = True
         Functions.SetScraperMod(Enums.MovieModType.NFO, True)
         MovieScrapeData(True, Enums.ScrapeType.SingleField, cScrapeOptions)
     End Sub
 
     Private Sub cmnuMovieUpSelStudio_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelStudio.Click
-        Dim cScrapeOptions As New Structures.ScrapeOptions
+        Dim cScrapeOptions As New Structures.MovieScrapeOptions
         cScrapeOptions.bStudio = True
         Functions.SetScraperMod(Enums.MovieModType.NFO, True)
         MovieScrapeData(True, Enums.ScrapeType.SingleField, cScrapeOptions)
     End Sub
 
     Private Sub cmnuMovieUpSelTagline_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelTagline.Click
-        Dim cScrapeOptions As New Structures.ScrapeOptions
+        Dim cScrapeOptions As New Structures.MovieScrapeOptions
         cScrapeOptions.bTagline = True
         Functions.SetScraperMod(Enums.MovieModType.NFO, True)
         MovieScrapeData(True, Enums.ScrapeType.SingleField, cScrapeOptions)
     End Sub
 
     Private Sub cmnuMovieUpSelTitle_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelTitle.Click
-        Dim cScrapeOptions As New Structures.ScrapeOptions
+        Dim cScrapeOptions As New Structures.MovieScrapeOptions
         cScrapeOptions.bTitle = True
         Functions.SetScraperMod(Enums.MovieModType.NFO, True)
         MovieScrapeData(True, Enums.ScrapeType.SingleField, cScrapeOptions)
     End Sub
 
     Private Sub cmnuMovieUpSelTop250_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelTop250.Click
-        Dim cScrapeOptions As New Structures.ScrapeOptions
+        Dim cScrapeOptions As New Structures.MovieScrapeOptions
         cScrapeOptions.bTop250 = True
         Functions.SetScraperMod(Enums.MovieModType.NFO, True)
         MovieScrapeData(True, Enums.ScrapeType.SingleField, cScrapeOptions)
     End Sub
 
     Private Sub cmnuMovieUpSelTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelTrailer.Click
-        Dim cScrapeOptions As New Structures.ScrapeOptions
+        Dim cScrapeOptions As New Structures.MovieScrapeOptions
         cScrapeOptions.bTrailer = True
         Functions.SetScraperMod(Enums.MovieModType.NFO, True)
         MovieScrapeData(True, Enums.ScrapeType.SingleField, cScrapeOptions)
     End Sub
 
     Private Sub cmnuMovieUpSelWriters_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelWriter.Click
-        Dim cScrapeOptions As New Structures.ScrapeOptions
+        Dim cScrapeOptions As New Structures.MovieScrapeOptions
         cScrapeOptions.bWriters = True
         Functions.SetScraperMod(Enums.MovieModType.NFO, True)
         MovieScrapeData(True, Enums.ScrapeType.SingleField, cScrapeOptions)
     End Sub
 
     Private Sub cmnuMovieUpSelYear_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelYear.Click
-        Dim cScrapeOptions As New Structures.ScrapeOptions
+        Dim cScrapeOptions As New Structures.MovieScrapeOptions
         cScrapeOptions.bYear = True
         Functions.SetScraperMod(Enums.MovieModType.NFO, True)
         MovieScrapeData(True, Enums.ScrapeType.SingleField, cScrapeOptions)
@@ -14511,7 +14510,7 @@ doCancel:
         Dim IsTV As Boolean
         Dim Movie As Structures.DBMovie
         Dim MovieSet As Structures.DBMovieSet
-        Dim Options As Structures.ScrapeOptions
+        Dim Options As Structures.MovieScrapeOptions
         Dim Path As String
         Dim pURL As String
         Dim scrapeType As Enums.ScrapeType
@@ -14531,7 +14530,7 @@ doCancel:
         Dim fileInfo As String
         Dim IsTV As Boolean
         Dim Movie As Structures.DBMovie
-        Dim Options As Structures.ScrapeOptions
+        Dim Options As Structures.MovieScrapeOptions
         Dim Path As String
         Dim Result As Image
         Dim scrapeType As Enums.ScrapeType

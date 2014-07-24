@@ -7,7 +7,7 @@ Partial Public Class clsXMLRestartScraper
 
     Private _sTypeField As Enums.ScrapeType
 
-    Private _OptionsField As New Structures.ScrapeOptions
+    Private _OptionsField As New Structures.MovieScrapeOptions
 
     Private _GlobalScrapeStatus As New Structures.ScrapeModifier
 
@@ -32,11 +32,11 @@ Partial Public Class clsXMLRestartScraper
         End Set
     End Property
 
-    Public Property Options As Structures.ScrapeOptions
+    Public Property Options As Structures.MovieScrapeOptions
         Get
             Return Me._OptionsField
         End Get
-        Set(value As Structures.ScrapeOptions)
+        Set(value As Structures.MovieScrapeOptions)
             Me._OptionsField = value
         End Set
     End Property
