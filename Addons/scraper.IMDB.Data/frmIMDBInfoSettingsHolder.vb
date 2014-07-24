@@ -34,20 +34,20 @@ Public Class frmIMDBInfoSettingsHolder
 #Region "Methods"
 
     Private Sub btnDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDown.Click
-        Dim order As Integer = ModulesManager.Instance.externalDataScrapersModules.FirstOrDefault(Function(p) p.AssemblyName = IMDB_Data._AssemblyName).ScraperOrder
-        If order < ModulesManager.Instance.externalDataScrapersModules.Count - 1 Then
-            ModulesManager.Instance.externalDataScrapersModules.FirstOrDefault(Function(p) p.ScraperOrder = order + 1).ScraperOrder = order
-            ModulesManager.Instance.externalDataScrapersModules.FirstOrDefault(Function(p) p.AssemblyName = IMDB_Data._AssemblyName).ScraperOrder = order + 1
+        Dim order As Integer = ModulesManager.Instance.externalMovieDataScrapersModules.FirstOrDefault(Function(p) p.AssemblyName = IMDB_Data._AssemblyName).ScraperOrder
+        If order < ModulesManager.Instance.externalMovieDataScrapersModules.Count - 1 Then
+            ModulesManager.Instance.externalMovieDataScrapersModules.FirstOrDefault(Function(p) p.ScraperOrder = order + 1).ScraperOrder = order
+            ModulesManager.Instance.externalMovieDataScrapersModules.FirstOrDefault(Function(p) p.AssemblyName = IMDB_Data._AssemblyName).ScraperOrder = order + 1
             RaiseEvent SetupScraperChanged(cbEnabled.Checked, 1)
             orderChanged()
         End If
     End Sub
 
     Private Sub btnUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUp.Click
-        Dim order As Integer = ModulesManager.Instance.externalDataScrapersModules.FirstOrDefault(Function(p) p.AssemblyName = IMDB_Data._AssemblyName).ScraperOrder
+        Dim order As Integer = ModulesManager.Instance.externalMovieDataScrapersModules.FirstOrDefault(Function(p) p.AssemblyName = IMDB_Data._AssemblyName).ScraperOrder
         If order > 0 Then
-            ModulesManager.Instance.externalDataScrapersModules.FirstOrDefault(Function(p) p.ScraperOrder = order - 1).ScraperOrder = order
-            ModulesManager.Instance.externalDataScrapersModules.FirstOrDefault(Function(p) p.AssemblyName = IMDB_Data._AssemblyName).ScraperOrder = order - 1
+            ModulesManager.Instance.externalMovieDataScrapersModules.FirstOrDefault(Function(p) p.ScraperOrder = order - 1).ScraperOrder = order
+            ModulesManager.Instance.externalMovieDataScrapersModules.FirstOrDefault(Function(p) p.AssemblyName = IMDB_Data._AssemblyName).ScraperOrder = order - 1
             RaiseEvent SetupScraperChanged(cbEnabled.Checked, -1)
             orderChanged()
         End If
@@ -189,9 +189,9 @@ Public Class frmIMDBInfoSettingsHolder
     End Sub
 
     Sub orderChanged()
-        Dim order As Integer = ModulesManager.Instance.externalDataScrapersModules.FirstOrDefault(Function(p) p.AssemblyName = IMDB_Data._AssemblyName).ScraperOrder
-        If ModulesManager.Instance.externalDataScrapersModules.Count > 0 Then
-            btnDown.Enabled = (order < ModulesManager.Instance.externalDataScrapersModules.Count - 1)
+        Dim order As Integer = ModulesManager.Instance.externalMovieDataScrapersModules.FirstOrDefault(Function(p) p.AssemblyName = IMDB_Data._AssemblyName).ScraperOrder
+        If ModulesManager.Instance.externalMovieDataScrapersModules.Count > 0 Then
+            btnDown.Enabled = (order < ModulesManager.Instance.externalMovieDataScrapersModules.Count - 1)
             btnUp.Enabled = (order > 0)
         Else
             btnDown.Enabled = False

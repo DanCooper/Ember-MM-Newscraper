@@ -297,7 +297,7 @@ Public Class dlgSettings
     Sub AddScraperPanels()
         Dim ModuleCounter As Integer = 1
         Dim tPanel As New Containers.SettingsPanel
-        For Each s As ModulesManager._externalScraperModuleClass_Data In ModulesManager.Instance.externalDataScrapersModules.OrderBy(Function(x) x.ScraperOrder)
+        For Each s As ModulesManager._externalMovieScraperModuleClass_Data In ModulesManager.Instance.externalMovieDataScrapersModules.OrderBy(Function(x) x.ScraperOrder)
             tPanel = s.ProcessorModule.InjectSetupScraper
             tPanel.Order += ModuleCounter
             Me.SettingsPanels.Add(tPanel)
@@ -308,7 +308,7 @@ Public Class dlgSettings
             Me.AddHelpHandlers(tPanel.Panel, tPanel.Prefix)
         Next
         ModuleCounter = 1
-        For Each s As ModulesManager._externalScraperModuleClass_Poster In ModulesManager.Instance.externalPosterScrapersModules.OrderBy(Function(x) x.ScraperOrder)
+        For Each s As ModulesManager._externalMovieScraperModuleClass_Poster In ModulesManager.Instance.externalMoviePosterScrapersModules.OrderBy(Function(x) x.ScraperOrder)
             tPanel = s.ProcessorModule.InjectSetupScraper
             tPanel.Order += ModuleCounter
             Me.SettingsPanels.Add(tPanel)
@@ -319,7 +319,7 @@ Public Class dlgSettings
             Me.AddHelpHandlers(tPanel.Panel, tPanel.Prefix)
         Next
         ModuleCounter = 1
-        For Each s As ModulesManager._externalScraperModuleClass_Theme In ModulesManager.Instance.externalThemeScrapersModules.OrderBy(Function(x) x.ScraperOrder)
+        For Each s As ModulesManager._externalMovieScraperModuleClass_Theme In ModulesManager.Instance.externalMovieThemeScrapersModules.OrderBy(Function(x) x.ScraperOrder)
             tPanel = s.ProcessorModule.InjectSetupScraper
             tPanel.Order += ModuleCounter
             Me.SettingsPanels.Add(tPanel)
@@ -330,7 +330,7 @@ Public Class dlgSettings
             Me.AddHelpHandlers(tPanel.Panel, tPanel.Prefix)
         Next
         ModuleCounter = 1
-        For Each s As ModulesManager._externalScraperModuleClass_Trailer In ModulesManager.Instance.externalTrailerScrapersModules.OrderBy(Function(x) x.ScraperOrder)
+        For Each s As ModulesManager._externalMovieScraperModuleClass_Trailer In ModulesManager.Instance.externalMovieTrailerScrapersModules.OrderBy(Function(x) x.ScraperOrder)
             tPanel = s.ProcessorModule.InjectSetupScraper
             tPanel.Order += ModuleCounter
             Me.SettingsPanels.Add(tPanel)
@@ -391,22 +391,22 @@ Public Class dlgSettings
     End Sub
 
     Sub RemoveScraperPanels()
-        For Each s As ModulesManager._externalScraperModuleClass_Data In ModulesManager.Instance.externalDataScrapersModules.OrderBy(Function(x) x.ScraperOrder)
+        For Each s As ModulesManager._externalMovieScraperModuleClass_Data In ModulesManager.Instance.externalMovieDataScrapersModules.OrderBy(Function(x) x.ScraperOrder)
             RemoveHandler s.ProcessorModule.ScraperSetupChanged, AddressOf Handle_ModuleSetupChanged
             RemoveHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
             RemoveHandler s.ProcessorModule.SetupNeedsRestart, AddressOf Handle_SetupNeedsRestart
         Next
-        For Each s As ModulesManager._externalScraperModuleClass_Poster In ModulesManager.Instance.externalPosterScrapersModules.OrderBy(Function(x) x.ScraperOrder)
+        For Each s As ModulesManager._externalMovieScraperModuleClass_Poster In ModulesManager.Instance.externalMoviePosterScrapersModules.OrderBy(Function(x) x.ScraperOrder)
             RemoveHandler s.ProcessorModule.ScraperSetupChanged, AddressOf Handle_ModuleSetupChanged
             RemoveHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
             RemoveHandler s.ProcessorModule.SetupNeedsRestart, AddressOf Handle_SetupNeedsRestart
         Next
-        For Each s As ModulesManager._externalScraperModuleClass_Theme In ModulesManager.Instance.externalThemeScrapersModules.OrderBy(Function(x) x.ScraperOrder)
+        For Each s As ModulesManager._externalMovieScraperModuleClass_Theme In ModulesManager.Instance.externalMovieThemeScrapersModules.OrderBy(Function(x) x.ScraperOrder)
             RemoveHandler s.ProcessorModule.ScraperSetupChanged, AddressOf Handle_ModuleSetupChanged
             RemoveHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
             RemoveHandler s.ProcessorModule.SetupNeedsRestart, AddressOf Handle_SetupNeedsRestart
         Next
-        For Each s As ModulesManager._externalScraperModuleClass_Trailer In ModulesManager.Instance.externalTrailerScrapersModules.OrderBy(Function(x) x.ScraperOrder)
+        For Each s As ModulesManager._externalMovieScraperModuleClass_Trailer In ModulesManager.Instance.externalMovieTrailerScrapersModules.OrderBy(Function(x) x.ScraperOrder)
             RemoveHandler s.ProcessorModule.ScraperSetupChanged, AddressOf Handle_ModuleSetupChanged
             RemoveHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
             RemoveHandler s.ProcessorModule.SetupNeedsRestart, AddressOf Handle_SetupNeedsRestart
@@ -562,7 +562,7 @@ Public Class dlgSettings
             Me.SetApplyButton(False)
             If Me.sResult.NeedsUpdate OrElse Me.sResult.NeedsRefresh Then Me.didApply = True
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -599,7 +599,7 @@ Public Class dlgSettings
                 Me.lstMovieFilters.Focus()
             End If
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -731,7 +731,7 @@ Public Class dlgSettings
                 Me.lstTVEpisodeFilter.Focus()
             End If
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -747,7 +747,7 @@ Public Class dlgSettings
                 Me.lstTVEpisodeFilter.Focus()
             End If
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -834,7 +834,7 @@ Public Class dlgSettings
                 Me.lvTVShowRegex.Focus()
             End If
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -861,7 +861,7 @@ Public Class dlgSettings
                 Me.lvTVShowRegex.Focus()
             End If
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -3674,16 +3674,16 @@ Public Class dlgSettings
                     Me.pbSettingsCurrent.Image = Me.ilSettings.Images(If(State, 9, 10))
                 End If
 
-                For Each s As ModulesManager._externalScraperModuleClass_Data In (ModulesManager.Instance.externalDataScrapersModules.Where(Function(y) y.AssemblyName <> Name))
+                For Each s As ModulesManager._externalMovieScraperModuleClass_Data In (ModulesManager.Instance.externalMovieDataScrapersModules.Where(Function(y) y.AssemblyName <> Name))
                     s.ProcessorModule.ScraperOrderChanged()
                 Next
-                For Each s As ModulesManager._externalScraperModuleClass_Poster In (ModulesManager.Instance.externalPosterScrapersModules.Where(Function(y) y.AssemblyName <> Name))
+                For Each s As ModulesManager._externalMovieScraperModuleClass_Poster In (ModulesManager.Instance.externalMoviePosterScrapersModules.Where(Function(y) y.AssemblyName <> Name))
                     s.ProcessorModule.ScraperOrderChanged()
                 Next
-                For Each s As ModulesManager._externalScraperModuleClass_Theme In (ModulesManager.Instance.externalThemeScrapersModules.Where(Function(y) y.AssemblyName <> Name))
+                For Each s As ModulesManager._externalMovieScraperModuleClass_Theme In (ModulesManager.Instance.externalMovieThemeScrapersModules.Where(Function(y) y.AssemblyName <> Name))
                     s.ProcessorModule.ScraperOrderChanged()
                 Next
-                For Each s As ModulesManager._externalScraperModuleClass_Trailer In (ModulesManager.Instance.externalTrailerScrapersModules.Where(Function(y) y.AssemblyName <> Name))
+                For Each s As ModulesManager._externalMovieScraperModuleClass_Trailer In (ModulesManager.Instance.externalMovieTrailerScrapersModules.Where(Function(y) y.AssemblyName <> Name))
                     s.ProcessorModule.ScraperOrderChanged()
                 Next
                 For Each s As ModulesManager._externalTVScraperModuleClass In ModulesManager.Instance.externalTVScrapersModules.Where(Function(y) y.ProcessorModule.IsPostScraper).OrderBy(Function(x) x.ScraperOrder)
@@ -5120,28 +5120,28 @@ Public Class dlgSettings
 
             End With
 
-            For Each s As ModulesManager._externalScraperModuleClass_Data In ModulesManager.Instance.externalDataScrapersModules
+            For Each s As ModulesManager._externalMovieScraperModuleClass_Data In ModulesManager.Instance.externalMovieDataScrapersModules
                 Try
                     s.ProcessorModule.SaveSetupScraper(Not isApply)
                 Catch ex As Exception
                     Logger.Error(New StackFrame().GetMethod().Name, ex)
                 End Try
             Next
-            For Each s As ModulesManager._externalScraperModuleClass_Poster In ModulesManager.Instance.externalPosterScrapersModules
+            For Each s As ModulesManager._externalMovieScraperModuleClass_Poster In ModulesManager.Instance.externalMoviePosterScrapersModules
                 Try
                     s.ProcessorModule.SaveSetupScraper(Not isApply)
                 Catch ex As Exception
                     Logger.Error(New StackFrame().GetMethod().Name, ex)
                 End Try
             Next
-            For Each s As ModulesManager._externalScraperModuleClass_Theme In ModulesManager.Instance.externalThemeScrapersModules
+            For Each s As ModulesManager._externalMovieScraperModuleClass_Theme In ModulesManager.Instance.externalMovieThemeScrapersModules
                 Try
                     s.ProcessorModule.SaveSetupScraper(Not isApply)
                 Catch ex As Exception
                     Logger.Error(New StackFrame().GetMethod().Name, ex)
                 End Try
             Next
-            For Each s As ModulesManager._externalScraperModuleClass_Trailer In ModulesManager.Instance.externalTrailerScrapersModules
+            For Each s As ModulesManager._externalMovieScraperModuleClass_Trailer In ModulesManager.Instance.externalMovieTrailerScrapersModules
                 Try
                     s.ProcessorModule.SaveSetupScraper(Not isApply)
                 Catch ex As Exception
@@ -5151,7 +5151,7 @@ Public Class dlgSettings
             For Each s As ModulesManager._externalTVScraperModuleClass In ModulesManager.Instance.externalTVScrapersModules
                 Try
                     If s.ProcessorModule.IsScraper Then s.ProcessorModule.SaveSetupScraper(Not isApply)
-                    If s.ProcessorModule.IsPostScraper Then s.ProcessorModule.SaveSetupPostScraper(Not isApply)
+                    If s.ProcessorModule.IsPostScraper Then s.ProcessorModule.SaveSetupPosterScraper(Not isApply)
                 Catch ex As Exception
                     Logger.Error(New StackFrame().GetMethod().Name, ex)
                 End Try

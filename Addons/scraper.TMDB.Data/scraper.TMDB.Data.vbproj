@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{A9188CF1-BD07-4D24-BC4A-906A43012F37}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>EmberScraperModule</RootNamespace>
+    <RootNamespace>EmberMovieScraperModule</RootNamespace>
     <AssemblyName>scraper.TMDB.Data</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>

@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{5F7F16F4-1BE8-47FF-B48B-2527D4971645}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>EmberScraperModule</RootNamespace>
+    <RootNamespace>EmberMovieScraperModule</RootNamespace>
     <AssemblyName>scraper.MoviepilotDE.Data</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>

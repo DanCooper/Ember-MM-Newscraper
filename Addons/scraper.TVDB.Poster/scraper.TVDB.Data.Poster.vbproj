@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{3FAF50AA-AD5F-455A-8711-6D791C457F0F}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>EmberScraperModule</RootNamespace>
+    <RootNamespace>EmberTVScraperModule</RootNamespace>
     <AssemblyName>scraper.TVDB</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>

@@ -22,7 +22,7 @@ Imports System.Text
 Imports Microsoft.VisualStudio.TestTools.UnitTesting
 Imports EmberAPI
 Imports EmberAPI.Interfaces
-Imports EmberScraperModule
+Imports EmberMovieScraperModule
 Imports UnitTests
 Imports EmberAPI.Enums
 Imports EmberAPI.Structures

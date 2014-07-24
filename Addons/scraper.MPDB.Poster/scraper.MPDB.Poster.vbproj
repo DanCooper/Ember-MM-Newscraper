@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{72A8EF23-3379-4C72-B212-A14A3C286D9C}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>EmberScraperModule</RootNamespace>
+    <RootNamespace>EmberMovieScraperModule</RootNamespace>
     <AssemblyName>scraper.MPDB.Poster</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>

@@ -64,9 +64,9 @@ Namespace My
     Friend Module MySettingsProperty
         
         <Global.System.ComponentModel.Design.HelpKeywordAttribute("My.Settings")> _
-        Friend ReadOnly Property Settings() As Global.EmberScraperModule.My.MySettings
+        Friend ReadOnly Property Settings() As Global.EmberMovieScraperModule.My.MySettings
             Get
-                Return Global.EmberScraperModule.My.MySettings.Default
+                Return Global.EmberMovieScraperModule.My.MySettings.Default
             End Get
         End Property
     End Module

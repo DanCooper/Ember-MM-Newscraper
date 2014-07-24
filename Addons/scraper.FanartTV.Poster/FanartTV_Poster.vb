@@ -22,7 +22,7 @@ Imports System.IO
 Imports EmberAPI
 Imports RestSharp
 Imports WatTmdb
-Imports EmberScraperModule.FANARTTVs
+Imports EmberMovieScraperModule.FANARTTVs
 Imports NLog
 Imports System.Diagnostics
 

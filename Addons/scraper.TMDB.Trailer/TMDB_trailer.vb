@@ -21,7 +21,7 @@
 Imports System.IO
 Imports EmberAPI
 Imports WatTmdb
-Imports EmberScraperModule.TMDBg
+Imports EmberMovieScraperModule.TMDBg
 Imports NLog
 
 Public Class TMDB_Trailer

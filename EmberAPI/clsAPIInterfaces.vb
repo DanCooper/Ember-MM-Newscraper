@@ -351,7 +351,7 @@ Public Class Interfaces
 
         ReadOnly Property ModuleVersion() As String
 
-        Property PostScraperEnabled() As Boolean
+        Property PosterScraperEnabled() As Boolean
 
         Property ScraperEnabled() As Boolean
 
@@ -375,11 +375,11 @@ Public Class Interfaces
 
         Function InjectSetupScraper() As Containers.SettingsPanel
 
-        Function PostScraper(ByRef DBTV As Structures.DBTV, ByVal ScrapeType As Enums.ScrapeType) As ModuleResult
+        Function PosterScraper(ByRef DBTV As Structures.DBTV, ByVal ScrapeType As Enums.ScrapeType) As ModuleResult
 
         Function SaveImages() As ModuleResult
 
-        Sub SaveSetupPostScraper(ByVal DoDispose As Boolean)
+        Sub SaveSetupPosterScraper(ByVal DoDispose As Boolean)
 
         Sub SaveSetupScraper(ByVal DoDispose As Boolean)
 

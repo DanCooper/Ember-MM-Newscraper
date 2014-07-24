@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{A5277330-A443-46AB-A058-016A3B6AF8AC}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>EmberScraperModule</RootNamespace>
+    <RootNamespace>EmberMovieScraperModule</RootNamespace>
     <AssemblyName>scraper.FanartTV.Poster</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>

@@ -310,7 +310,7 @@ Public Class IMDB_Data
         ' why a scraper should initialize the DBMovie structure?
         ' Answer (DanCooper): If you want to CHANGE the movie. For this, all existing (incorrect) information must be deleted.
         If ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.GlobalScrapeMod.DoSearch _
-            AndAlso ModulesManager.Instance.externalDataScrapersModules.OrderBy(Function(y) y.ScraperOrder).FirstOrDefault(Function(e) e.ProcessorModule.ScraperEnabled).AssemblyName = _AssemblyName Then
+            AndAlso ModulesManager.Instance.externalMovieDataScrapersModules.OrderBy(Function(y) y.ScraperOrder).FirstOrDefault(Function(e) e.ProcessorModule.ScraperEnabled).AssemblyName = _AssemblyName Then
             DBMovie.Movie.IMDBID = String.Empty
             DBMovie.RemoveActorThumbs = True
             DBMovie.RemoveBanner = True

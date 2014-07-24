@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{974598ED-C19D-41CA-9771-4DE837D708BC}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>EmberScraperModule</RootNamespace>
+    <RootNamespace>EmberTVScraperModule</RootNamespace>
     <AssemblyName>scraper.TelevisionTunes.Theme</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>
