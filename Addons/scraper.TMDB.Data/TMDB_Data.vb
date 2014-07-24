@@ -184,7 +184,7 @@ Public Class TMDB_Data
         _setup.txtTMDBApiKey.Text = strPrivateAPIKey
         _setup.orderChanged()
 
-        SPanel.Name = String.Concat(Me._Name, "Scraper")
+        SPanel.Name = String.Concat(Me._Name, "MovieScraper")
         SPanel.Text = Master.eLang.GetString(937, "TMDB")
         SPanel.Prefix = "TMDBMovieInfo_"
         SPanel.Order = 110
@@ -198,37 +198,12 @@ Public Class TMDB_Data
         Return SPanel
     End Function
 
-    Function InjectMovieSetSetupScraper() As Containers.SettingsPanel Implements Interfaces.EmberMovieSetScraperModule_Data.InjectSetupScraper
+    Function InjectetupScraper() As Containers.SettingsPanel Implements Interfaces.EmberMovieSetScraperModule_Data.InjectSetupScraper
         Dim SPanel As New Containers.SettingsPanel
         _setupSet = New frmTMDBSetInfoSettingsHolder
         LoadSettingsSet()
-        '_setup.API = _setup.txtTMDBApiKey.Text
-        '_setup.Lang = _setup.cbTMDBPrefLanguage.Text
-        '_setup.cbEnabled.Checked = _MovieScraperEnabled
-        '_setup.cbTMDBPrefLanguage.Text = _MySettings.TMDBLanguage
-        '_setup.chkCast.Checked = ConfigOptions.bFullCast
-        '_setup.chkCollection.Checked = ConfigOptions.bCollection
-        '_setup.chkCountry.Checked = ConfigOptions.bCountry
-        '_setup.chkCrew.Checked = ConfigOptions.bFullCrew
-        '_setup.chkFallBackEng.Checked = _MySettings.FallBackEng
-        '_setup.chkGenre.Checked = ConfigOptions.bGenre
-        '_setup.chkGetAdultItems.Checked = _MySettings.GetAdultItems
-        '_setup.chkMPAA.Checked = ConfigOptions.bMPAA
-        '_setup.chkPlot.Checked = ConfigOptions.bPlot
-        '_setup.chkRating.Checked = ConfigOptions.bRating
-        '_setup.chkRelease.Checked = ConfigOptions.bRelease
-        '_setup.chkRuntime.Checked = ConfigOptions.bRuntime
-        '_setup.chkStudio.Checked = ConfigOptions.bStudio
-        '_setup.chkCleanPlotOutline.Checked = ConfigOptions.bCleanPlotOutline
-        '_setup.chkTagline.Checked = ConfigOptions.bTagline
-        '_setup.chkTitle.Checked = ConfigOptions.bTitle
-        '_setup.chkTrailer.Checked = ConfigOptions.bTrailer
-        '_setup.chkVotes.Checked = ConfigOptions.bVotes
-        '_setup.chkYear.Checked = ConfigOptions.bYear
-        '_setup.txtTMDBApiKey.Text = strPrivateAPIKey
-        '_setup.orderChanged()
 
-        SPanel.Name = String.Concat(Me._Name, "Scraper")
+        SPanel.Name = String.Concat(Me._Name, "MovieSetScraper")
         SPanel.Text = Master.eLang.GetString(937, "TMDB")
         SPanel.Prefix = "TMDBMovieSetInfo_"
         SPanel.Order = 110
