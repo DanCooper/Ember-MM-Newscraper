@@ -59,6 +59,7 @@ Public Class dlgImgSelect
     Private _results As New MediaContainers.Image
     Private selIndex As Integer = -1
 
+    Private tIsMovie As Boolean
     Private tMovie As New Structures.DBMovie
     Private tMovieSet As New Structures.DBMovieSet
     Private tmpImage As New MediaContainers.Image
@@ -131,6 +132,7 @@ Public Class dlgImgSelect
         '\\
 
         Me.tMovie = DBMovie
+        Me.tIsMovie = True
         Me._ImageList = ImageList
         Me._efList = efList
         Me._etList = etList
@@ -163,6 +165,7 @@ Public Class dlgImgSelect
         '\\
 
         Me.tMovieSet = DBMovieSet
+        Me.tIsMovie = False
         Me._ImageList = ImageList
         Me._efList = efList
         Me._etList = etList
@@ -805,12 +808,10 @@ Public Class dlgImgSelect
 
             Dim Title As String
 
-            If Not IsNothing(Me.tMovie) Then
+            If tIsMovie Then
                 Title = If(Not String.IsNullOrEmpty(Me.tMovie.Movie.Title), Me.tMovie.Movie.Title, Me.tMovie.ListTitle)
-            ElseIf Not IsNothing(Me.tMovieSet) Then
-                Title = Me.tMovieSet.SetName
             Else
-                Title = String.Empty
+                Title = Me.tMovieSet.SetName
             End If
 
             If Me.DLType = Enums.MovieImageType.Poster Then
