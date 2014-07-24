@@ -38,6 +38,7 @@ Public Class ModulesManager
     Public externalMoviePosterScrapersModules As New List(Of _externalMovieScraperModuleClass_Poster)
     Public externalMovieThemeScrapersModules As New List(Of _externalMovieScraperModuleClass_Theme)
     Public externalMovieTrailerScrapersModules As New List(Of _externalMovieScraperModuleClass_Trailer)
+    Public externalMovieSetDataScrapersModules As New List(Of _externalMovieSetScraperModuleClass_Data)
     'Public externalTVDataScrapersModules As New List(Of _externalTVScraperModuleClass_Data)
     'Public externalTVPosterScrapersModules As New List(Of _externalTVScraperModuleClass_Poster)
     Public externalTVScrapersModules As New List(Of _externalTVScraperModuleClass)
@@ -51,10 +52,12 @@ Public Class ModulesManager
 
     Friend WithEvents bwloadModules As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwloadMovieScrapersModules As New System.ComponentModel.BackgroundWorker
+    Friend WithEvents bwloadMovieSetScrapersModules As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwloadTVScrapersModules As New System.ComponentModel.BackgroundWorker
 
     Dim bwloadModules_done As Boolean
     Dim bwloadMovieScrapersModules_done As Boolean
+    Dim bwloadMovieSetScrapersModules_done As Boolean
     Dim bwloadTVScrapersModules_done As Boolean
 
 #End Region 'Fields
@@ -95,7 +98,7 @@ Public Class ModulesManager
 
     Public ReadOnly Property ModulesLoaded() As Boolean
         Get
-            Return bwloadModules_done AndAlso bwloadMovieScrapersModules_done AndAlso bwloadTVScrapersModules_done
+            Return bwloadModules_done AndAlso bwloadMovieScrapersModules_done AndAlso bwloadMovieSetScrapersModules_done AndAlso bwloadTVScrapersModules_done
         End Get
 
     End Property
@@ -106,7 +109,7 @@ Public Class ModulesManager
     Public Function GetSingleEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Season As Integer, ByVal Episode As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions) As MediaContainers.EpisodeDetails
         Dim epDetails As New MediaContainers.EpisodeDetails
 
-        While Not (bwloadModules_done And bwloadMovieScrapersModules_done And bwloadTVScrapersModules_done)
+        While Not (bwloadModules_done And bwloadMovieScrapersModules_done And bwloadMovieSetScrapersModules_done And bwloadTVScrapersModules_done)
             Application.DoEvents()
         End While
 
@@ -123,13 +126,13 @@ Public Class ModulesManager
     Public Function GetMovieCollectionID(ByVal sIMDBID As String) As String
         Dim CollectionID As String = String.Empty
 
-        While Not (bwloadModules_done And bwloadMovieScrapersModules_done And bwloadTVScrapersModules_done)
+        While Not (bwloadModules_done And bwloadMovieScrapersModules_done And bwloadMovieSetScrapersModules_done And bwloadTVScrapersModules_done)
             Application.DoEvents()
         End While
 
         If Not String.IsNullOrEmpty(sIMDBID) Then
             Dim ret As Interfaces.ModuleResult
-            For Each _externalScraperModuleClass_Data As _externalMovieScraperModuleClass_Data In externalMovieDataScrapersModules.Where(Function(e) e.ProcessorModule.ModuleName = "TMDB_Data")
+            For Each _externalScraperModuleClass_Data As _externalMovieSetScraperModuleClass_Data In externalMovieSetDataScrapersModules.Where(Function(e) e.ProcessorModule.ModuleName = "TMDB_Data")
                 ret = _externalScraperModuleClass_Data.ProcessorModule.GetCollectionID(sIMDBID, CollectionID)
                 If ret.breakChain Then Exit For
             Next
@@ -140,7 +143,7 @@ Public Class ModulesManager
     Public Sub GetVersions()
         Dim dlgVersions As New dlgVersions
         Dim li As ListViewItem
-        While Not (bwloadModules_done And bwloadMovieScrapersModules_done And bwloadTVScrapersModules_done)
+        While Not (bwloadModules_done And bwloadMovieScrapersModules_done And bwloadMovieSetScrapersModules_done And bwloadTVScrapersModules_done)
             Application.DoEvents()
         End While
         For Each v As VersionItem In VersionList
@@ -165,9 +168,11 @@ Public Class ModulesManager
         'BuildVersionList()
         bwloadModules_done = False
         bwloadMovieScrapersModules_done = False
+        bwloadMovieSetScrapersModules_done = False
         bwloadTVScrapersModules_done = False
         bwloadModules.RunWorkerAsync()
         bwloadMovieScrapersModules.RunWorkerAsync()
+        bwloadMovieSetScrapersModules.RunWorkerAsync()
         bwloadTVScrapersModules.RunWorkerAsync()
 
 
@@ -410,6 +415,104 @@ Public Class ModulesManager
         logger.Trace("loadMovieScrapersModules finished")
     End Sub
 
+    ''' <summary>
+    ''' Load all Scraper Modules and field in externalScrapersModules List
+    ''' </summary>
+    Public Sub loadMovieSetScrapersModules(Optional ByVal modulefile As String = "*.dll")
+        logger.Trace("loadMovieSetScrapersModules started")
+        Dim DataScraperAnyEnabled As Boolean = False
+        Dim DataScraperFound As Boolean = False
+        Dim PosterScraperAnyEnabled As Boolean = False
+        Dim PosterScraperFound As Boolean = False
+
+        If Directory.Exists(moduleLocation) Then
+            'Assembly to load the file
+            Dim assembly As System.Reflection.Assembly
+            'For each .dll file in the module directory
+            For Each file As String In System.IO.Directory.GetFiles(moduleLocation, modulefile)
+                Try
+                    assembly = System.Reflection.Assembly.LoadFile(file)
+                    'Loop through each of the assemeblies type
+                    For Each fileType As Type In assembly.GetTypes
+
+                        'Activate the located module
+                        Dim t1 As Type = fileType.GetInterface("EmberMovieScraperModule_Data")
+                        If Not t1 Is Nothing Then
+                            Dim ProcessorModule As Interfaces.EmberMovieSetScraperModule_Data
+                            ProcessorModule = CType(Activator.CreateInstance(fileType), Interfaces.EmberMovieSetScraperModule_Data)
+                            'Add the activated module to the arraylist
+                            Dim _externalScraperModule As New _externalMovieSetScraperModuleClass_Data
+                            Dim filename As String = file
+                            If String.IsNullOrEmpty(AssemblyList.FirstOrDefault(Function(x) x.AssemblyName = Path.GetFileNameWithoutExtension(filename)).AssemblyName) Then
+                                AssemblyList.Add(New AssemblyListItem With {.AssemblyName = Path.GetFileNameWithoutExtension(filename), .Assembly = assembly})
+                            End If
+                            _externalScraperModule.ProcessorModule = ProcessorModule
+                            _externalScraperModule.AssemblyName = String.Concat(Path.GetFileNameWithoutExtension(file), ".", fileType.FullName)
+                            _externalScraperModule.AssemblyFileName = Path.GetFileName(file)
+
+                            externalMovieSetDataScrapersModules.Add(_externalScraperModule)
+                            _externalScraperModule.ProcessorModule.Init(_externalScraperModule.AssemblyName)
+                            For Each i As _XMLEmberModuleClass In Master.eSettings.EmberModules.Where(Function(x) x.AssemblyName = _externalScraperModule.AssemblyName)
+                                _externalScraperModule.ProcessorModule.ScraperEnabled = i.ScraperEnabled
+                                DataScraperAnyEnabled = DataScraperAnyEnabled OrElse i.ScraperEnabled
+                                _externalScraperModule.ScraperOrder = i.ScraperOrder
+                                DataScraperFound = True
+                            Next
+                            If Not DataScraperFound Then
+                                _externalScraperModule.ScraperOrder = 999
+                            End If
+                            'Else
+                            '    Dim t2 As Type = fileType.GetInterface("EmberMovieSetScraperModule_Poster")
+                            '    If Not t2 Is Nothing Then
+                            '        Dim ProcessorModule As Interfaces.EmberMovieScraperModule_Poster
+                            '        ProcessorModule = CType(Activator.CreateInstance(fileType), Interfaces.EmberMovieScraperModule_Poster)
+                            '        'Add the activated module to the arraylist
+                            '        Dim _externalScraperModule As New _externalMovieScraperModuleClass_Poster
+                            '        Dim filename As String = file
+                            '        If String.IsNullOrEmpty(AssemblyList.FirstOrDefault(Function(x) x.AssemblyName = Path.GetFileNameWithoutExtension(filename)).AssemblyName) Then
+                            '            AssemblyList.Add(New AssemblyListItem With {.AssemblyName = Path.GetFileNameWithoutExtension(filename), .Assembly = assembly})
+                            '        End If
+                            '        _externalScraperModule.ProcessorModule = ProcessorModule
+                            '        _externalScraperModule.AssemblyName = String.Concat(Path.GetFileNameWithoutExtension(file), ".", fileType.FullName)
+                            '        _externalScraperModule.AssemblyFileName = Path.GetFileName(file)
+
+                            '        externalMoviePosterScrapersModules.Add(_externalScraperModule)
+                            '        _externalScraperModule.ProcessorModule.Init(_externalScraperModule.AssemblyName)
+                            '        For Each i As _XMLEmberModuleClass In Master.eSettings.EmberModules.Where(Function(x) x.AssemblyName = _externalScraperModule.AssemblyName)
+                            '            _externalScraperModule.ProcessorModule.ScraperEnabled = i.ScraperEnabled
+                            '            PosterScraperAnyEnabled = PosterScraperAnyEnabled OrElse i.ScraperEnabled
+                            '            _externalScraperModule.ScraperOrder = i.ScraperOrder
+                            '            PosterScraperFound = True
+                            '        Next
+                            '        If Not PosterScraperFound Then
+                            '            _externalScraperModule.ScraperOrder = 999
+                            '        End If
+                            'End If
+                        End If
+                    Next
+                Catch ex As Exception
+                End Try
+            Next
+            Dim c As Integer = 0
+            For Each ext As _externalMovieSetScraperModuleClass_Data In externalMovieSetDataScrapersModules.OrderBy(Function(x) x.ScraperOrder)    ' .Where(Function(x) x.ProcessorModule.ScraperEnabled)
+                ext.ScraperOrder = c
+                c += 1
+            Next
+            'c = 0
+            'For Each ext As _externalMovieScraperModuleClass_Poster In externalMoviePosterScrapersModules.OrderBy(Function(x) x.ScraperOrder)    '.Where(Function(x) x.ProcessorModule.PostScraperEnabled)
+            '    ext.ScraperOrder = c
+            '    c += 1
+            'Next
+            If Not DataScraperAnyEnabled AndAlso Not DataScraperFound Then
+                SetMovieDataScraperEnable("scraper.TMDB.Data.EmberMovieScraperModule.TMDB_Data", True)
+            End If
+            'If Not PosterScraperAnyEnabled AndAlso Not PosterScraperFound Then
+            '    SetMoviePosterScraperEnable("scraper.TMDB.Poster.EmberMovieScraperModule.TMDB_Poster", True)
+            'End If
+        End If
+        logger.Trace("loadMovieScrapersModules finished")
+    End Sub
+
     Public Sub loadTVScrapersModules()
         logger.Trace("loadTVScrapersModules started")
         Dim ScraperAnyEnabled As Boolean = False
@@ -557,7 +660,7 @@ Public Class ModulesManager
         Dim modules As IEnumerable(Of _externalMovieScraperModuleClass_Data) = externalMovieDataScrapersModules.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ScraperOrder)
         Dim ret As Interfaces.ModuleResult
 
-        While Not (bwloadModules_done And bwloadMovieScrapersModules_done And bwloadTVScrapersModules_done)
+        While Not (bwloadModules_done And bwloadMovieScrapersModules_done And bwloadMovieSetScrapersModules_done And bwloadTVScrapersModules_done)
             Application.DoEvents()
         End While
 
@@ -592,7 +695,7 @@ Public Class ModulesManager
         Dim ret As Interfaces.ModuleResult
         Dim aList As List(Of MediaContainers.Image)
 
-        While Not (bwloadModules_done And bwloadMovieScrapersModules_done And bwloadTVScrapersModules_done)
+        While Not (bwloadModules_done And bwloadMovieScrapersModules_done And bwloadMovieSetScrapersModules_done And bwloadTVScrapersModules_done)
             Application.DoEvents()
         End While
 
@@ -634,7 +737,7 @@ Public Class ModulesManager
         Dim ret As Interfaces.ModuleResult
         Dim aList As List(Of MediaContainers.Image)
 
-        While Not (bwloadModules_done And bwloadMovieScrapersModules_done And bwloadTVScrapersModules_done)
+        While Not (bwloadModules_done And bwloadMovieScrapersModules_done And bwloadMovieSetScrapersModules_done And bwloadTVScrapersModules_done)
             Application.DoEvents()
         End While
 
@@ -676,7 +779,7 @@ Public Class ModulesManager
         Dim ret As Interfaces.ModuleResult
         Dim aList As List(Of Themes)
 
-        While Not (bwloadModules_done And bwloadMovieScrapersModules_done And bwloadTVScrapersModules_done)
+        While Not (bwloadModules_done And bwloadMovieScrapersModules_done And bwloadMovieSetScrapersModules_done And bwloadTVScrapersModules_done)
             Application.DoEvents()
         End While
 
@@ -717,7 +820,7 @@ Public Class ModulesManager
         Dim ret As Interfaces.ModuleResult
         Dim aList As List(Of Trailers)
 
-        While Not (bwloadModules_done And bwloadMovieScrapersModules_done And bwloadTVScrapersModules_done)
+        While Not (bwloadModules_done And bwloadMovieScrapersModules_done And bwloadMovieSetScrapersModules_done And bwloadTVScrapersModules_done)
             Application.DoEvents()
         End While
 
@@ -757,7 +860,7 @@ Public Class ModulesManager
     Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), Optional ByVal _refparam As Object = Nothing, Optional ByVal RunOnlyOne As Boolean = False) As Boolean
         Dim ret As Interfaces.ModuleResult
 
-        While Not (bwloadModules_done And bwloadMovieScrapersModules_done And bwloadTVScrapersModules_done)
+        While Not (bwloadModules_done And bwloadMovieScrapersModules_done And bwloadMovieSetScrapersModules_done And bwloadTVScrapersModules_done)
             Application.DoEvents()
         End While
 
@@ -786,7 +889,7 @@ Public Class ModulesManager
     Public Sub SaveSettings()
         Dim tmpForXML As New List(Of _XMLEmberModuleClass)
 
-        While Not (bwloadModules_done And bwloadMovieScrapersModules_done And bwloadTVScrapersModules_done)
+        While Not (bwloadModules_done And bwloadMovieScrapersModules_done And bwloadMovieSetScrapersModules_done And bwloadTVScrapersModules_done)
             Application.DoEvents()
         End While
 
@@ -998,7 +1101,7 @@ Public Class ModulesManager
     End Sub
 
     Public Sub TVCancelAsync()
-        While Not (bwloadModules_done And bwloadMovieScrapersModules_done And bwloadTVScrapersModules_done)
+        While Not (bwloadModules_done And bwloadMovieScrapersModules_done And bwloadMovieSetScrapersModules_done And bwloadTVScrapersModules_done)
             Application.DoEvents()
         End While
         For Each _externaltvScraperModule As _externalTVScraperModuleClass In externalTVScrapersModules.Where(Function(e) e.ProcessorModule.IsScraper AndAlso e.ProcessorModule.ScraperEnabled)
@@ -1012,7 +1115,7 @@ Public Class ModulesManager
     Public Function TVGetLangs(ByVal sMirror As String) As clsXMLTVDBLanguages
         Dim ret As Interfaces.ModuleResult
         Dim Langs As New clsXMLTVDBLanguages
-        While Not (bwloadModules_done And bwloadMovieScrapersModules_done And bwloadTVScrapersModules_done)
+        While Not (bwloadModules_done And bwloadMovieScrapersModules_done And bwloadMovieSetScrapersModules_done And bwloadTVScrapersModules_done)
             Application.DoEvents()
         End While
         For Each _externaltvScraperModule As _externalTVScraperModuleClass In externalTVScrapersModules.Where(Function(e) e.ProcessorModule.IsPostScraper AndAlso e.ProcessorModule.PosterScraperEnabled).OrderBy(Function(e) e.PostScraperOrder)
@@ -1027,7 +1130,7 @@ Public Class ModulesManager
 
     Public Function TVScrapeEpisode(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal iEpisode As Integer, ByVal iSeason As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions) As Boolean
         Dim ret As Interfaces.ModuleResult
-        While Not (bwloadModules_done And bwloadMovieScrapersModules_done And bwloadTVScrapersModules_done)
+        While Not (bwloadModules_done And bwloadMovieScrapersModules_done And bwloadMovieSetScrapersModules_done And bwloadTVScrapersModules_done)
             Application.DoEvents()
         End While
         For Each _externaltvScraperModule As _externalTVScraperModuleClass In externalTVScrapersModules.Where(Function(e) e.ProcessorModule.IsScraper AndAlso e.ProcessorModule.ScraperEnabled)
@@ -1042,7 +1145,7 @@ Public Class ModulesManager
 
     Public Function TVScrapeOnly(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal ShowLang As String, ByVal SourceLang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions, ByVal ScrapeType As Enums.ScrapeType, ByVal WithCurrent As Boolean) As Boolean
         Dim ret As Interfaces.ModuleResult
-        While Not (bwloadModules_done And bwloadMovieScrapersModules_done And bwloadTVScrapersModules_done)
+        While Not (bwloadModules_done And bwloadMovieScrapersModules_done And bwloadMovieSetScrapersModules_done And bwloadTVScrapersModules_done)
             Application.DoEvents()
         End While
         For Each _externaltvScraperModule As _externalTVScraperModuleClass In externalTVScrapersModules.Where(Function(e) e.ProcessorModule.IsScraper AndAlso e.ProcessorModule.ScraperEnabled)
@@ -1057,7 +1160,7 @@ Public Class ModulesManager
 
     Public Function TVScrapeSeason(ByVal ShowID As Integer, ByVal ShowTitle As String, ByVal TVDBID As String, ByVal iSeason As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal Options As Structures.TVScrapeOptions) As Boolean
         Dim ret As Interfaces.ModuleResult
-        While Not (bwloadModules_done And bwloadMovieScrapersModules_done And bwloadTVScrapersModules_done)
+        While Not (bwloadModules_done And bwloadMovieScrapersModules_done And bwloadMovieSetScrapersModules_done And bwloadTVScrapersModules_done)
             Application.DoEvents()
         End While
         For Each _externaltvScraperModule As _externalTVScraperModuleClass In externalTVScrapersModules.Where(Function(e) e.ProcessorModule.IsScraper AndAlso e.ProcessorModule.ScraperEnabled)
@@ -1073,7 +1176,7 @@ Public Class ModulesManager
     Public Function TVSingleImageOnly(ByVal Title As String, ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Type As Enums.TVImageType, ByVal Season As Integer, ByVal Episode As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal CurrentImage As Images) As Images
         Dim Image As New Images
         Dim ret As Interfaces.ModuleResult
-        While Not (bwloadModules_done And bwloadMovieScrapersModules_done And bwloadTVScrapersModules_done)
+        While Not (bwloadModules_done And bwloadMovieScrapersModules_done And bwloadMovieSetScrapersModules_done And bwloadTVScrapersModules_done)
             Application.DoEvents()
         End While
         For Each _externaltvScraperModule As _externalTVScraperModuleClass In externalTVScrapersModules.Where(Function(e) e.ProcessorModule.IsScraper AndAlso e.ProcessorModule.ScraperEnabled)
@@ -1130,7 +1233,7 @@ Public Class ModulesManager
     Function ChangeEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Lang As String) As MediaContainers.EpisodeDetails
         Dim ret As Interfaces.ModuleResult
         Dim epDetails As New MediaContainers.EpisodeDetails
-        While Not (bwloadModules_done And bwloadMovieScrapersModules_done And bwloadTVScrapersModules_done)
+        While Not (bwloadModules_done And bwloadMovieScrapersModules_done And bwloadMovieSetScrapersModules_done And bwloadTVScrapersModules_done)
             Application.DoEvents()
         End While
         For Each _externaltvScraperModule As _externalTVScraperModuleClass In externalTVScrapersModules.Where(Function(e) e.ProcessorModule.IsPostScraper AndAlso e.ProcessorModule.PosterScraperEnabled).OrderBy(Function(e) e.PostScraperOrder)
@@ -1150,7 +1253,7 @@ Public Class ModulesManager
     Function QueryPostScraperCapabilities(ByVal cap As Enums.ScraperCapabilities) As Boolean
         Dim ret As Boolean = False
         Dim sStudio As New List(Of String)
-        While Not (bwloadModules_done And bwloadMovieScrapersModules_done And bwloadTVScrapersModules_done)
+        While Not (bwloadModules_done And bwloadMovieScrapersModules_done And bwloadMovieSetScrapersModules_done And bwloadTVScrapersModules_done)
             Application.DoEvents()
         End While
         For Each _externalScraperModule As _externalMovieScraperModuleClass_Poster In externalMoviePosterScrapersModules.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ScraperOrder)
@@ -1166,7 +1269,7 @@ Public Class ModulesManager
     Function QueryTrailerScraperCapabilities(ByVal cap As Enums.ScraperCapabilities) As Boolean
         Dim ret As Boolean = False
         Dim sStudio As New List(Of String)
-        While Not (bwloadModules_done And bwloadMovieScrapersModules_done And bwloadTVScrapersModules_done)
+        While Not (bwloadModules_done And bwloadMovieScrapersModules_done And bwloadMovieSetScrapersModules_done And bwloadTVScrapersModules_done)
             Application.DoEvents()
         End While
         For Each _externalScraperModule As _externalMovieScraperModuleClass_Trailer In externalMovieTrailerScrapersModules.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ScraperOrder)
@@ -1182,7 +1285,7 @@ Public Class ModulesManager
     Function GetMovieStudio(ByRef DBMovie As Structures.DBMovie) As List(Of String)
         Dim ret As Interfaces.ModuleResult
         Dim sStudio As New List(Of String)
-        While Not (bwloadModules_done And bwloadMovieScrapersModules_done And bwloadTVScrapersModules_done)
+        While Not (bwloadModules_done And bwloadMovieScrapersModules_done And bwloadMovieSetScrapersModules_done And bwloadTVScrapersModules_done)
             Application.DoEvents()
         End While
         For Each _externalScraperModule As _externalMovieScraperModuleClass_Data In externalMovieDataScrapersModules.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ScraperOrder)
@@ -1210,7 +1313,7 @@ Public Class ModulesManager
 
     Sub TVSaveImages()
         Dim ret As Interfaces.ModuleResult
-        While Not (bwloadModules_done And bwloadMovieScrapersModules_done And bwloadTVScrapersModules_done)
+        While Not (bwloadModules_done And bwloadMovieScrapersModules_done And bwloadMovieSetScrapersModules_done And bwloadTVScrapersModules_done)
             Application.DoEvents()
         End While
         For Each _externaltvScraperModule As _externalTVScraperModuleClass In externalTVScrapersModules.Where(Function(e) e.ProcessorModule.IsPostScraper AndAlso e.ProcessorModule.PosterScraperEnabled).OrderBy(Function(e) e.PostScraperOrder)
@@ -1228,7 +1331,7 @@ Public Class ModulesManager
 
     Private Sub bwloadModules_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwloadModules.RunWorkerCompleted
         bwloadModules_done = True
-        If bwloadModules_done And bwloadMovieScrapersModules_done And bwloadTVScrapersModules_done Then
+        If bwloadModules_done And bwloadMovieScrapersModules_done And bwloadMovieSetScrapersModules_done And bwloadTVScrapersModules_done Then
             BuildVersionList()
         End If
     End Sub
@@ -1239,7 +1342,18 @@ Public Class ModulesManager
 
     Private Sub bwloadMovieScrapersModules_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwloadMovieScrapersModules.RunWorkerCompleted
         bwloadMovieScrapersModules_done = True
-        If bwloadModules_done And bwloadMovieScrapersModules_done And bwloadTVScrapersModules_done Then
+        If bwloadModules_done And bwloadMovieScrapersModules_done And bwloadMovieSetScrapersModules_done And bwloadTVScrapersModules_done Then
+            BuildVersionList()
+        End If
+    End Sub
+
+    Private Sub bwloadMovieSetScrapersModules_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwloadMovieSetScrapersModules.DoWork
+        loadMovieSetScrapersModules()
+    End Sub
+
+    Private Sub bwloadMovieSetScrapersModules_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwloadMovieSetScrapersModules.RunWorkerCompleted
+        bwloadMovieSetScrapersModules_done = True
+        If bwloadModules_done And bwloadMovieScrapersModules_done And bwloadMovieSetScrapersModules_done And bwloadTVScrapersModules_done Then
             BuildVersionList()
         End If
     End Sub
@@ -1250,7 +1364,7 @@ Public Class ModulesManager
 
     Private Sub bwloadTVScrapersModules_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwloadTVScrapersModules.RunWorkerCompleted
         bwloadTVScrapersModules_done = True
-        If bwloadModules_done And bwloadMovieScrapersModules_done And bwloadTVScrapersModules_done Then
+        If bwloadModules_done And bwloadMovieScrapersModules_done And bwloadMovieSetScrapersModules_done And bwloadTVScrapersModules_done Then
             BuildVersionList()
         End If
     End Sub
@@ -1459,6 +1573,19 @@ Public Class ModulesManager
         Public AssemblyFileName As String
         Public AssemblyName As String
         Public ProcessorModule As Interfaces.EmberMovieScraperModule_Trailer     'Object
+        Public ScraperOrder As Integer
+
+#End Region 'Fields
+
+    End Class
+
+    Class _externalMovieSetScraperModuleClass_Data
+
+#Region "Fields"
+
+        Public AssemblyFileName As String
+        Public AssemblyName As String
+        Public ProcessorModule As Interfaces.EmberMovieSetScraperModule_Data 'Object
         Public ScraperOrder As Integer
 
 #End Region 'Fields

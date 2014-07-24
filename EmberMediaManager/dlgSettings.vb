@@ -341,6 +341,17 @@ Public Class dlgSettings
             Me.AddHelpHandlers(tPanel.Panel, tPanel.Prefix)
         Next
         ModuleCounter = 1
+        For Each s As ModulesManager._externalMovieSetScraperModuleClass_Data In ModulesManager.Instance.externalMovieSetDataScrapersModules.OrderBy(Function(x) x.ScraperOrder)
+            tPanel = s.ProcessorModule.InjectSetupScraper
+            tPanel.Order += ModuleCounter
+            Me.SettingsPanels.Add(tPanel)
+            ModuleCounter += 1
+            AddHandler s.ProcessorModule.MovieSetSetupChanged, AddressOf Handle_ModuleSetupChanged
+            AddHandler s.ProcessorModule.MovieSetModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+            AddHandler s.ProcessorModule.MovieSetSetupNeedsRestart, AddressOf Handle_SetupNeedsRestart
+            Me.AddHelpHandlers(tPanel.Panel, tPanel.Prefix)
+        Next
+        ModuleCounter = 1
         For Each s As ModulesManager._externalTVScraperModuleClass In ModulesManager.Instance.externalTVScrapersModules.Where(Function(y) y.ProcessorModule.IsScraper).OrderBy(Function(x) x.ScraperOrder)
             tPanel = s.ProcessorModule.InjectSetupScraper
             tPanel.Order += ModuleCounter
@@ -410,6 +421,11 @@ Public Class dlgSettings
             RemoveHandler s.ProcessorModule.ScraperSetupChanged, AddressOf Handle_ModuleSetupChanged
             RemoveHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
             RemoveHandler s.ProcessorModule.SetupNeedsRestart, AddressOf Handle_SetupNeedsRestart
+        Next
+        For Each s As ModulesManager._externalMovieSetScraperModuleClass_Data In ModulesManager.Instance.externalMovieSetDataScrapersModules.OrderBy(Function(x) x.ScraperOrder)
+            RemoveHandler s.ProcessorModule.MovieSetSetupChanged, AddressOf Handle_ModuleSetupChanged
+            RemoveHandler s.ProcessorModule.MovieSetModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+            RemoveHandler s.ProcessorModule.MovieSetSetupNeedsRestart, AddressOf Handle_SetupNeedsRestart
         Next
         For Each s As ModulesManager._externalTVScraperModuleClass In ModulesManager.Instance.externalTVScrapersModules.Where(Function(y) y.ProcessorModule.IsPostScraper).OrderBy(Function(x) x.PostScraperOrder)
             RemoveHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
@@ -3686,6 +3702,9 @@ Public Class dlgSettings
                 For Each s As ModulesManager._externalMovieScraperModuleClass_Trailer In (ModulesManager.Instance.externalMovieTrailerScrapersModules.Where(Function(y) y.AssemblyName <> Name))
                     s.ProcessorModule.ScraperOrderChanged()
                 Next
+                For Each s As ModulesManager._externalMovieSetScraperModuleClass_Data In (ModulesManager.Instance.externalMovieSetDataScrapersModules.Where(Function(y) y.AssemblyName <> Name))
+                    s.ProcessorModule.ScraperOrderChanged()
+                Next
                 For Each s As ModulesManager._externalTVScraperModuleClass In ModulesManager.Instance.externalTVScrapersModules.Where(Function(y) y.ProcessorModule.IsPostScraper).OrderBy(Function(x) x.ScraperOrder)
                     RemoveHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
                 Next
@@ -5146,6 +5165,13 @@ Public Class dlgSettings
                     s.ProcessorModule.SaveSetupScraper(Not isApply)
                 Catch ex As Exception
                     Logger.Error(New StackFrame().GetMethod().Name, ex)
+                End Try
+            Next
+            For Each s As ModulesManager._externalMovieSetScraperModuleClass_Data In ModulesManager.Instance.externalMovieSetDataScrapersModules
+                Try
+                    s.ProcessorModule.SaveSetupScraper(Not isApply)
+                Catch ex As Exception
+                    logger.Error(New StackFrame().GetMethod().Name, ex)
                 End Try
             Next
             For Each s As ModulesManager._externalTVScraperModuleClass In ModulesManager.Instance.externalTVScrapersModules

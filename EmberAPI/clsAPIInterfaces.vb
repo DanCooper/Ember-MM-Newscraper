@@ -179,8 +179,6 @@ Public Class Interfaces
 
         Function GetMovieStudio(ByRef DBMovie As Structures.DBMovie, ByRef sStudio As List(Of String)) As ModuleResult
 
-        Function GetCollectionID(ByVal sIMDBID As String, ByRef sCollectionID As String) As ModuleResult
-
         Sub Init(ByVal sAssemblyName As String)
 
         Function InjectSetupScraper() As Containers.SettingsPanel
@@ -322,6 +320,51 @@ Public Class Interfaces
 #End Region 'Methods
 
     End Interface
+
+    Public Interface EmberMovieSetScraperModule_Data
+
+#Region "Events"
+
+        Event MovieSetModuleSettingsChanged()
+
+        Event MovieSetScraperEvent(ByVal eType As Enums.MovieSetScraperEventType, ByVal Parameter As Object)
+
+        Event MovieSetSetupChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer)
+
+        Event MovieSetSetupNeedsRestart()
+
+#End Region 'Events
+
+#Region "Properties"
+
+        ReadOnly Property ModuleName() As String
+
+        ReadOnly Property ModuleVersion() As String
+
+        Property ScraperEnabled() As Boolean
+
+#End Region 'Properties
+
+#Region "Methods"
+
+        Sub ScraperOrderChanged()
+
+        Function GetCollectionID(ByVal sIMDBID As String, ByRef sCollectionID As String) As ModuleResult
+
+        Sub Init(ByVal sAssemblyName As String)
+
+        Function InjectSetupScraper() As Containers.SettingsPanel
+
+        Sub SaveSetupScraper(ByVal DoDispose As Boolean)
+
+        'MovieSet is byref because some scrapper may run to update only some fields (defined in Scraper Setup)
+        'Options is byref to allow field blocking in scraper chain
+        Function Scraper(ByRef DBMovieSet As Structures.DBMovieSet, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.MovieSetScrapeOptions) As ModuleResult
+
+#End Region 'Methods
+
+    End Interface
+
 
     Public Interface EmberTVScraperModule
 
@@ -558,7 +601,7 @@ Public Class Interfaces
 
     End Interface
 
-#End Region	'Nested Interfaces
+#End Region 'Nested Interfaces
 
 #Region "Nested Types"
     ''' <summary>
@@ -566,7 +609,7 @@ Public Class Interfaces
     ''' status of the operation that was requested
     ''' </summary>
     ''' <remarks></remarks>
-	Public Structure ModuleResult
+    Public Structure ModuleResult
 
 #Region "Fields"
         ''' <summary>
@@ -583,10 +626,10 @@ Public Class Interfaces
         <Obsolete("BoolProperty has been marked Obsolete in v1.4, and will be removed shortly", True)> _
         Public BoolProperty As Boolean
 
-#End Region	'Fields
+#End Region 'Fields
 
-	End Structure
+    End Structure
 
-#End Region	'Nested Types
+#End Region 'Nested Types
 
 End Class

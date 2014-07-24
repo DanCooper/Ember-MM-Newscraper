@@ -28,11 +28,13 @@ Imports System.Diagnostics
 
 Public Class TMDB_Data
     Implements Interfaces.EmberMovieScraperModule_Data
+    Implements Interfaces.EmberMovieSetScraperModule_Data
 
 
 #Region "Fields"
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
     Public Shared ConfigOptions As New Structures.MovieScrapeOptions
+    Public Shared ConfigSetOptions As New Structures.MovieSetScrapeOptions
     Public Shared ConfigScrapeModifier As New Structures.ScrapeModifier
     Public Shared _AssemblyName As String
 
@@ -47,8 +49,10 @@ Public Class TMDB_Data
     Private _MySettings As New sMySettings
     Private _TMDBg As TMDBg.Scraper
     Private _Name As String = "TMDB_Data"
-    Private _ScraperEnabled As Boolean = False
+    Private _MovieScraperEnabled As Boolean = False
+    Private _MovieSetScraperEnabled As Boolean = False
     Private _setup As frmTMDBInfoSettingsHolder
+    Private _setupSet As frmTMDBSetInfoSettingsHolder
     Private _TMDBConf As V3.TmdbConfiguration
     Private _TMDBConfE As V3.TmdbConfiguration
     Private _TMDBApi As V3.Tmdb 'preferred language
@@ -67,28 +71,46 @@ Public Class TMDB_Data
 
     Public Event SetupNeedsRestart() Implements Interfaces.EmberMovieScraperModule_Data.SetupNeedsRestart
 
+
+    Public Event MoviesetModuleSettingsChanged() Implements Interfaces.EmberMovieSetScraperModule_Data.MovieSetModuleSettingsChanged
+
+    Public Event MovieSetScraperEvent(ByVal eType As Enums.MovieSetScraperEventType, ByVal Parameter As Object) Implements Interfaces.EmberMovieSetScraperModule_Data.MovieSetScraperEvent
+
+    Public Event MovieSetSetupScraperChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements Interfaces.EmberMovieSetScraperModule_Data.MovieSetSetupChanged
+
+    Public Event MovieSetSetupNeedsRestart() Implements Interfaces.EmberMovieSetScraperModule_Data.MovieSetSetupNeedsRestart
+
 #End Region 'Events
 
 #Region "Properties"
 
-    ReadOnly Property ModuleName() As String Implements Interfaces.EmberMovieScraperModule_Data.ModuleName
+    ReadOnly Property ModuleName() As String Implements Interfaces.EmberMovieScraperModule_Data.ModuleName, Interfaces.EmberMovieSetScraperModule_Data.ModuleName
         Get
             Return _Name
         End Get
     End Property
 
-    ReadOnly Property ModuleVersion() As String Implements Interfaces.EmberMovieScraperModule_Data.ModuleVersion
+    ReadOnly Property ModuleVersion() As String Implements Interfaces.EmberMovieScraperModule_Data.ModuleVersion, Interfaces.EmberMovieSetScraperModule_Data.ModuleVersion
         Get
             Return System.Diagnostics.FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly.Location).FileVersion.ToString
         End Get
     End Property
 
-    Property ScraperEnabled() As Boolean Implements Interfaces.EmberMovieScraperModule_Data.ScraperEnabled
+    Property MovieScraperEnabled() As Boolean Implements Interfaces.EmberMovieScraperModule_Data.ScraperEnabled
         Get
-            Return _ScraperEnabled
+            Return _MovieScraperEnabled
         End Get
         Set(ByVal value As Boolean)
-            _ScraperEnabled = value
+            _MovieScraperEnabled = value
+        End Set
+    End Property
+
+    Property MovieSetScraperEnabled() As Boolean Implements Interfaces.EmberMovieSetScraperModule_Data.ScraperEnabled
+        Get
+            Return _MovieScraperEnabled
+        End Get
+        Set(ByVal value As Boolean)
+            _MovieScraperEnabled = value
         End Set
     End Property
 
@@ -109,11 +131,11 @@ Public Class TMDB_Data
     End Sub
 
     Private Sub Handle_SetupScraperChanged(ByVal state As Boolean, ByVal difforder As Integer)
-        ScraperEnabled = state
+        MovieScraperEnabled = state
         RaiseEvent SetupScraperChanged(String.Concat(Me._Name, "Scraper"), state, difforder)
     End Sub
 
-    Sub Init(ByVal sAssemblyName As String) Implements Interfaces.EmberMovieScraperModule_Data.Init
+    Sub Init(ByVal sAssemblyName As String) Implements Interfaces.EmberMovieScraperModule_Data.Init, Interfaces.EmberMovieSetScraperModule_Data.Init
         _AssemblyName = sAssemblyName
         LoadSettings()
         'Must be after Load settings to retrieve the correct API key
@@ -138,7 +160,7 @@ Public Class TMDB_Data
         LoadSettings()
         _setup.API = _setup.txtTMDBApiKey.Text
         _setup.Lang = _setup.cbTMDBPrefLanguage.Text
-        _setup.cbEnabled.Checked = _ScraperEnabled
+        _setup.cbEnabled.Checked = _MovieScraperEnabled
         _setup.cbTMDBPrefLanguage.Text = _MySettings.TMDBLanguage
         _setup.chkCast.Checked = ConfigOptions.bFullCast
         _setup.chkCollection.Checked = ConfigOptions.bCollection
@@ -168,11 +190,55 @@ Public Class TMDB_Data
         SPanel.Order = 110
         SPanel.Parent = "pnlMovieData"
         SPanel.Type = Master.eLang.GetString(36, "Movies")
-        SPanel.ImageIndex = If(_ScraperEnabled, 9, 10)
+        SPanel.ImageIndex = If(_MovieScraperEnabled, 9, 10)
         SPanel.Panel = _setup.pnlSettings
         AddHandler _setup.SetupScraperChanged, AddressOf Handle_SetupScraperChanged
         AddHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
         AddHandler _setup.SetupNeedsRestart, AddressOf Handle_SetupNeedsRestart
+        Return SPanel
+    End Function
+
+    Function InjectMovieSetSetupScraper() As Containers.SettingsPanel Implements Interfaces.EmberMovieSetScraperModule_Data.InjectSetupScraper
+        Dim SPanel As New Containers.SettingsPanel
+        _setupSet = New frmTMDBSetInfoSettingsHolder
+        LoadSettingsSet()
+        '_setup.API = _setup.txtTMDBApiKey.Text
+        '_setup.Lang = _setup.cbTMDBPrefLanguage.Text
+        '_setup.cbEnabled.Checked = _MovieScraperEnabled
+        '_setup.cbTMDBPrefLanguage.Text = _MySettings.TMDBLanguage
+        '_setup.chkCast.Checked = ConfigOptions.bFullCast
+        '_setup.chkCollection.Checked = ConfigOptions.bCollection
+        '_setup.chkCountry.Checked = ConfigOptions.bCountry
+        '_setup.chkCrew.Checked = ConfigOptions.bFullCrew
+        '_setup.chkFallBackEng.Checked = _MySettings.FallBackEng
+        '_setup.chkGenre.Checked = ConfigOptions.bGenre
+        '_setup.chkGetAdultItems.Checked = _MySettings.GetAdultItems
+        '_setup.chkMPAA.Checked = ConfigOptions.bMPAA
+        '_setup.chkPlot.Checked = ConfigOptions.bPlot
+        '_setup.chkRating.Checked = ConfigOptions.bRating
+        '_setup.chkRelease.Checked = ConfigOptions.bRelease
+        '_setup.chkRuntime.Checked = ConfigOptions.bRuntime
+        '_setup.chkStudio.Checked = ConfigOptions.bStudio
+        '_setup.chkCleanPlotOutline.Checked = ConfigOptions.bCleanPlotOutline
+        '_setup.chkTagline.Checked = ConfigOptions.bTagline
+        '_setup.chkTitle.Checked = ConfigOptions.bTitle
+        '_setup.chkTrailer.Checked = ConfigOptions.bTrailer
+        '_setup.chkVotes.Checked = ConfigOptions.bVotes
+        '_setup.chkYear.Checked = ConfigOptions.bYear
+        '_setup.txtTMDBApiKey.Text = strPrivateAPIKey
+        '_setup.orderChanged()
+
+        SPanel.Name = String.Concat(Me._Name, "Scraper")
+        SPanel.Text = Master.eLang.GetString(937, "TMDB")
+        SPanel.Prefix = "TMDBMovieSetInfo_"
+        SPanel.Order = 110
+        SPanel.Parent = "pnlMovieSetData"
+        SPanel.Type = Master.eLang.GetString(1203, "MovieSets")
+        SPanel.ImageIndex = If(_MovieScraperEnabled, 9, 10)
+        SPanel.Panel = _setupSet.pnlSettings
+        AddHandler _setupSet.SetupScraperChanged, AddressOf Handle_SetupScraperChanged
+        AddHandler _setupSet.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+        AddHandler _setupSet.SetupNeedsRestart, AddressOf Handle_SetupNeedsRestart
         Return SPanel
     End Function
 
@@ -205,6 +271,20 @@ Public Class TMDB_Data
         ConfigOptions.bVotes = clsAdvancedSettings.GetBooleanSetting("DoVotes", True)
         ConfigOptions.bWriters = clsAdvancedSettings.GetBooleanSetting("DoWriters", True)
         ConfigOptions.bYear = clsAdvancedSettings.GetBooleanSetting("DoYear", True)
+
+        strPrivateAPIKey = clsAdvancedSettings.GetSetting("TMDBAPIKey", "")
+        _MySettings.FallBackEng = clsAdvancedSettings.GetBooleanSetting("FallBackEn", False)
+        _MySettings.GetAdultItems = clsAdvancedSettings.GetBooleanSetting("GetAdultItems", False)
+        _MySettings.TMDBAPIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "44810eefccd9cb1fa1d57e7b0d67b08d", strPrivateAPIKey)
+        _MySettings.TMDBLanguage = clsAdvancedSettings.GetSetting("TMDBLanguage", "en")
+        ConfigScrapeModifier.DoSearch = True
+        ConfigScrapeModifier.Meta = True
+        ConfigScrapeModifier.NFO = True
+    End Sub
+
+    Sub LoadSettingsSet()
+        ConfigSetOptions.bPlot = clsAdvancedSettings.GetBooleanSetting("DoPlot", True)
+        ConfigSetOptions.bTitle = clsAdvancedSettings.GetBooleanSetting("DoTitle", True)
 
         strPrivateAPIKey = clsAdvancedSettings.GetSetting("TMDBAPIKey", "")
         _MySettings.FallBackEng = clsAdvancedSettings.GetBooleanSetting("FallBackEn", False)
@@ -255,7 +335,7 @@ Public Class TMDB_Data
         End Using
     End Sub
 
-    Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.EmberMovieScraperModule_Data.SaveSetupScraper
+    Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.EmberMovieScraperModule_Data.SaveSetupScraper, Interfaces.EmberMovieSetScraperModule_Data.SaveSetupScraper
         ConfigOptions.bCast = _setup.chkCast.Checked
         ConfigOptions.bCert = ConfigOptions.bMPAA
         ConfigOptions.bCleanPlotOutline = _setup.chkCleanPlotOutline.Checked
@@ -298,7 +378,7 @@ Public Class TMDB_Data
         Return Nothing
     End Function
 
-    Function GetCollectionID(ByVal sIMDBID As String, ByRef sCollectionID As String) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule_Data.GetCollectionID
+    Function GetCollectionID(ByVal sIMDBID As String, ByRef sCollectionID As String) As Interfaces.ModuleResult Implements Interfaces.EmberMovieSetScraperModule_Data.GetCollectionID
         sCollectionID = _TMDBg.GetMovieCollectionID(sIMDBID)
         If String.IsNullOrEmpty(sCollectionID) Then
             Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
@@ -459,7 +539,13 @@ Public Class TMDB_Data
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
-    Public Sub ScraperOrderChanged() Implements EmberAPI.Interfaces.EmberMovieScraperModule_Data.ScraperOrderChanged
+    Function Scraper(ByRef DBMovieSet As Structures.DBMovieSet, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.MovieSetScrapeOptions) As Interfaces.ModuleResult Implements Interfaces.EmberMovieSetScraperModule_Data.Scraper
+        MsgBox("Run movieset scraper", MsgBoxStyle.OkOnly)
+
+        Return New Interfaces.ModuleResult With {.breakChain = False}
+    End Function
+
+    Public Sub ScraperOrderChanged() Implements EmberAPI.Interfaces.EmberMovieScraperModule_Data.ScraperOrderChanged, EmberAPI.Interfaces.EmberMovieSetScraperModule_Data.ScraperOrderChanged
         _setup.orderChanged()
     End Sub
 

@@ -762,6 +762,18 @@ Public Class Enums
         DiscArtItem = 12
         EFanartsItem = 13
     End Enum
+
+    Public Enum MovieSetScraperEventType As Integer
+        NFOItem = 0
+        PosterItem = 1
+        FanartItem = 2
+        ListTitle = 6
+        BannerItem = 7
+        LandscapeItem = 8
+        ClearArtItem = 10
+        ClearLogoItem = 11
+        DiscArtItem = 12
+    End Enum
     ''' <summary>
     ''' Enum representing valid TV series ordering.
     ''' </summary>
