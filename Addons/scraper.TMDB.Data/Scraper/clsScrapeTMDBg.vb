@@ -64,6 +64,7 @@ Namespace TMDBg
         Private _TMDBApiE As V3.Tmdb
         Private _TMDBApiA As V3.Tmdb
         Private _MySettings As TMDB_Data.sMySettings
+        Private strPrivateAPIKey As String = String.Empty
 
         Friend WithEvents bwTMDBg As New System.ComponentModel.BackgroundWorker
 
@@ -102,8 +103,9 @@ Namespace TMDBg
 #Region "Methods"
 
         Public Sub New(ByRef tTMDBConf As V3.TmdbConfiguration, ByRef tTMDBConfE As V3.TmdbConfiguration, ByRef tTMDBApi As V3.Tmdb, ByRef tTMDBApiE As V3.Tmdb, ByRef tTMDBApiA As V3.Tmdb)
-            _MySettings.TMDBAPIKey = clsAdvancedSettings.GetSetting("TMDBAPIKey", "Get your API Key from http://www.themoviedb.org")
+            strPrivateAPIKey = clsAdvancedSettings.GetSetting("TMDBAPIKey", "")
             _MySettings.FallBackEng = clsAdvancedSettings.GetBooleanSetting("FallBackEn", False)
+            _MySettings.TMDBAPIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "44810eefccd9cb1fa1d57e7b0d67b08d", strPrivateAPIKey)
             _MySettings.TMDBLanguage = clsAdvancedSettings.GetSetting("TMDBLanguage", "en")
             _MySettings.GetAdultItems = clsAdvancedSettings.GetBooleanSetting("GetAdultItems", False)
 
