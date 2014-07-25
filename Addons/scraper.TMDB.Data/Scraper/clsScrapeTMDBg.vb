@@ -54,6 +54,28 @@ Namespace TMDBg
 
     End Class
 
+    Public Class MovieSetSearchResults
+
+#Region "Fields"
+        Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+        Private _Matches As New List(Of MediaContainers.MovieSet)
+#End Region 'Fields
+
+#Region "Properties"
+
+        Public Property Matches() As List(Of MediaContainers.MovieSet)
+            Get
+                Return _Matches
+            End Get
+            Set(ByVal value As List(Of MediaContainers.MovieSet))
+                _Matches = value
+            End Set
+        End Property
+
+#End Region 'Properties
+
+    End Class
+
     Public Class Scraper
 
 #Region "Fields"
@@ -63,7 +85,8 @@ Namespace TMDBg
         Private _TMDBApi As V3.Tmdb
         Private _TMDBApiE As V3.Tmdb
         Private _TMDBApiA As V3.Tmdb
-        Private _MySettings As TMDB_Data.sMySettings
+        Private _MySettings As TMDB_Data.sMySettings_Movie
+        Private _MySettings_MovieSet As TMDB_Data.sMySettings_MovieSet
         Private strPrivateAPIKey As String = String.Empty
 
         Friend WithEvents bwTMDBg As New System.ComponentModel.BackgroundWorker
@@ -86,6 +109,7 @@ Namespace TMDBg
             Movies = 0
             Details = 1
             SearchDetails = 2
+            MovieSets = 3
         End Enum
 
 #End Region 'Enumerations
@@ -97,6 +121,8 @@ Namespace TMDBg
         Public Event SearchMovieInfoDownloaded(ByVal sPoster As String, ByVal bSuccess As Boolean)
 
         Public Event SearchResultsDownloaded(ByVal mResults As TMDBg.MovieSearchResults)
+
+        Public Event SearchResultsDownloaded_MovieSet(ByVal mResults As TMDBg.MovieSetSearchResults)
 
 #End Region 'Events
 
@@ -583,6 +609,91 @@ Namespace TMDBg
             End Try
         End Function
 
+        Public Function GetMovieSetInfo(ByVal strID As String, ByRef DBMovieSet As MediaContainers.MovieSet, ByVal GetPoster As Boolean, ByVal Options As Structures.MovieSetScrapeOptions, ByVal IsSearch As Boolean) As Boolean
+            Try
+                Dim MovieSet As WatTmdb.V3.TmdbCollection
+                Dim MovieSetE As WatTmdb.V3.TmdbCollection
+                Dim scrapedresult As String = ""
+
+                If bwTMDBg.CancellationPending Then Return Nothing
+
+                MovieSet = _TMDBApi.GetCollectionInfo(CInt(strID), _MySettings.TMDBLanguage)
+                MovieSetE = _TMDBApiE.GetCollectionInfo(CInt(strID))
+
+                If IsNothing(MovieSet) AndAlso Not _MySettings.FallBackEng Then
+                    Return False
+                End If
+
+                DBMovieSet.ID = CStr(IIf(String.IsNullOrEmpty(MovieSet.id.ToString) AndAlso _MySettings.FallBackEng, MovieSetE.id.ToString, MovieSet.id.ToString))
+
+                If bwTMDBg.CancellationPending Or IsNothing(MovieSet) Then Return Nothing
+
+                'title
+                If Options.bTitle Then
+                    If String.IsNullOrEmpty(DBMovieSet.Title) OrElse Not Master.eSettings.MovieSetLockTitle Then
+                        If String.IsNullOrEmpty(MovieSet.name) Then
+                            If _MySettings.FallBackEng Then
+                                If Not String.IsNullOrEmpty(MovieSetE.name) Then
+                                    DBMovieSet.Title = MovieSetE.name
+                                End If
+                            End If
+                        Else
+                            DBMovieSet.Title = MovieSet.name
+                        End If
+                    End If
+                End If
+
+                If bwTMDBg.CancellationPending Then Return Nothing
+
+                'images
+                If GetPoster Then
+                    ' I will add original always. to be updated if size, TMDBConf.images.poster_sizes(0) & 
+                    Dim Images As WatTmdb.V3.TmdbCollectionImages
+                    Images = _TMDBApi.GetCollectionImages(MovieSet.id, _MySettings.TMDBLanguage)
+                    If Not IsNothing(Images) AndAlso Not IsNothing(Images.posters) Then
+                        If (Images.posters.Count = 0) AndAlso _MySettings.FallBackEng Then
+                            Images = _TMDBApiE.GetCollectionImages(MovieSet.id)
+                        End If
+                    Else
+                        If _MySettings.FallBackEng Then
+                            Images = _TMDBApiE.GetCollectionImages(MovieSet.id)
+                        End If
+                    End If
+                    If Not IsNothing(Images) AndAlso Not IsNothing(Images.posters) Then
+                        If Images.posters.Count > 0 Then
+                            _sPoster = _TMDBConf.images.base_url & "w92" & Images.posters(0).file_path
+                        Else
+                            _sPoster = ""
+                        End If
+                    End If
+                End If
+
+                If bwTMDBg.CancellationPending Then Return Nothing
+
+                'plot
+                If Options.bPlot Then
+                    If String.IsNullOrEmpty(DBMovieSet.Plot) OrElse Not Master.eSettings.MovieSetLockPlot Then
+                        If String.IsNullOrEmpty(MovieSet.overview) Then
+                            If _MySettings.FallBackEng Then
+                                If String.IsNullOrEmpty(MovieSetE.overview) = False Then
+                                    DBMovieSet.Plot = MovieSetE.overview
+                                End If
+                            End If
+                        Else
+                            DBMovieSet.Plot = MovieSet.overview
+                        End If
+                    End If
+                End If
+
+                If bwTMDBg.CancellationPending Then Return Nothing
+
+                Return True
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+                Return False
+            End Try
+        End Function
+
         Public Function GetMovieStudios(ByVal strID As String) As List(Of String)
             Dim alStudio As New List(Of String)
             Dim Movie As WatTmdb.V3.TmdbMovie
@@ -614,6 +725,56 @@ Namespace TMDBg
                             Using dTMDB As New dlgTMDBSearchResults(_MySettings, Me)
 
                                 If dTMDB.ShowDialog(r, sMovieName, dbMovie.Filename) = Windows.Forms.DialogResult.OK Then
+                                    If String.IsNullOrEmpty(Master.tmpMovie.TMDBID) Then
+                                        b = False
+                                    Else
+                                        b = GetMovieInfo(Master.tmpMovie.TMDBID, imdbMovie, Master.eSettings.MovieScraperFullCrew, Master.eSettings.MovieScraperFullCast, False, Options, True)
+                                    End If
+                                Else
+                                    b = False
+                                End If
+                            End Using
+                        End If
+                    Case Enums.ScrapeType.FilterSkip, Enums.ScrapeType.FullSkip, Enums.ScrapeType.MarkSkip, Enums.ScrapeType.NewSkip, Enums.ScrapeType.UpdateSkip
+                        If r.Matches.Count = 1 Then
+                            b = GetMovieInfo(r.Matches.Item(0).TMDBID, imdbMovie, Master.eSettings.MovieScraperFullCrew, Master.eSettings.MovieScraperFullCast, False, Options, True)
+                        End If
+                    Case Enums.ScrapeType.FullAuto, Enums.ScrapeType.UpdateAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.SingleScrape, Enums.ScrapeType.FilterAuto
+                        Dim exactHaveYear As Integer = FindYear(dbMovie.Filename, r.Matches)
+                        If r.Matches.Count = 1 Then
+                            b = GetMovieInfo(r.Matches.Item(0).TMDBID, imdbMovie, Master.eSettings.MovieScraperFullCrew, Master.eSettings.MovieScraperFullCast, False, Options, True)
+                        ElseIf r.Matches.Count > 1 Then
+                            b = GetMovieInfo(r.Matches.Item(If(exactHaveYear >= 0, exactHaveYear, 0)).TMDBID, imdbMovie, Master.eSettings.MovieScraperFullCrew, Master.eSettings.MovieScraperFullCast, False, Options, True)
+                        End If
+                End Select
+
+                If b Then
+                    Return imdbMovie
+                Else
+                    Return imdbMovie ' New MediaContainers.Movie
+                End If
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+                Return New MediaContainers.Movie
+            End Try
+        End Function
+
+        Public Function GetSearchMovieSetInfo(ByVal sMovieSetName As String, ByRef DBMovieSet As Structures.DBMovieSet, ByVal iType As Enums.ScrapeType, ByVal Options As Structures.MovieSetScrapeOptions) As MediaContainers.MovieSet
+            Dim r As MovieSetSearchResults = SearchMovieSet(sMovieSetName, Nothing)
+            Dim b As Boolean = False
+            Dim tmdbMovieSet As MediaContainers.MovieSet = DBMovieSet.MovieSet
+
+            Try
+                Select Case iType
+                    Case Enums.ScrapeType.FullAsk, Enums.ScrapeType.UpdateAsk, Enums.ScrapeType.NewAsk, Enums.ScrapeType.MarkAsk, Enums.ScrapeType.FilterAsk
+
+                        If r.Matches.Count = 1 Then
+                            b = GetMovieSetInfo(r.Matches.Item(0).ID, tmdbMovieSet, False, Options, True)
+                        Else
+                            Master.tmpMovie.Clear()
+                            Using dTMDB As New dlgTMDBSearchResults(_MySettings_MovieSet, Me)
+
+                                If dTMDB.ShowDialog(r, sMovieSetName) = Windows.Forms.DialogResult.OK Then
                                     If String.IsNullOrEmpty(Master.tmpMovie.TMDBID) Then
                                         b = False
                                     Else
@@ -683,7 +844,6 @@ Namespace TMDBg
             End Try
         End Sub
 
-
         Public Sub SearchMovieAsync(ByVal sMovie As String, ByVal filterOptions As Structures.MovieScrapeOptions, Optional ByVal sYear As Integer = 0)
             '' The rule is that if there is a tt is an IMDB otherwise is a TMDB
             Try
@@ -692,6 +852,20 @@ Namespace TMDBg
                     bwTMDBg.WorkerSupportsCancellation = True
                     bwTMDBg.RunWorkerAsync(New Arguments With {.Search = SearchType.Movies, _
                       .Parameter = sMovie, .Options = filterOptions, .Year = CInt(sYear)})
+                End If
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+            End Try
+        End Sub
+
+        Public Sub SearchMovieSetAsync(ByVal sMovieSet As String, ByVal filterOptions As Structures.MovieSetScrapeOptions)
+            '' The rule is that if there is a tt is an IMDB otherwise is a TMDB
+            Try
+                If Not bwTMDBg.IsBusy Then
+                    bwTMDBg.WorkerReportsProgress = False
+                    bwTMDBg.WorkerSupportsCancellation = True
+                    bwTMDBg.RunWorkerAsync(New Arguments With {.Search = SearchType.MovieSets, _
+                      .Parameter = sMovieSet, .Options_MovieSet = filterOptions})
                 End If
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -709,13 +883,16 @@ Namespace TMDBg
                     Case SearchType.SearchDetails
                         Dim s As Boolean = GetMovieInfo(Args.Parameter, Args.IMDBMovie, False, False, True, Args.Options, True)
                         e.Result = New Results With {.ResultType = SearchType.SearchDetails, .Success = s}
+                    Case SearchType.MovieSets
+                        Dim r As MovieSetSearchResults = SearchMovieSet(Args.Parameter)
+                        e.Result = New Results With {.ResultType = SearchType.MovieSets, .Result = r}
                 End Select
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         End Sub
 
-        Private Sub BW_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwTMDBg.RunWorkerCompleted
+        Private Sub bwTMDBg_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwTMDBg.RunWorkerCompleted
             Dim Res As Results = DirectCast(e.Result, Results)
 
             Try
@@ -725,6 +902,8 @@ Namespace TMDBg
                     Case SearchType.SearchDetails
                         Dim movieInfo As MovieSearchResults = DirectCast(Res.Result, MovieSearchResults)
                         RaiseEvent SearchMovieInfoDownloaded(_sPoster, Res.Success)
+                    Case SearchType.MovieSets
+                        RaiseEvent SearchResultsDownloaded_MovieSet(DirectCast(Res.Result, MovieSetSearchResults))
                 End Select
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -836,6 +1015,69 @@ Namespace TMDBg
             End Try
         End Function
 
+        Private Function SearchMovieSet(ByVal sMovieSet As String, Optional ByVal sYear As Integer = 0) As MovieSetSearchResults
+            Try
+                Dim R As New MovieSetSearchResults
+                Dim Page As Integer = 1
+                Dim MovieSets As WatTmdb.V3.TmdbCollectionSearch
+                Dim TotP As Integer
+                Dim aE As Boolean
+                'If sYear Is Nothing Then
+                'Movies = _TMDBApi.SearchMovie(sMovie, Page, _MySettings.TMDBLanguage)
+                'Else
+                MovieSets = _TMDBApi.SearchCollection(sMovieSet, Page, _MySettings.TMDBLanguage)
+                'End If
+                If MovieSets.total_results = 0 And _MySettings.FallBackEng Then
+                    'If sYear Is Nothing Then
+                    ' Movies = _TMDBApiE.SearchMovie(sMovie, Page)
+                    'Else
+                    MovieSets = _TMDBApiE.SearchCollection(sMovieSet, Page)
+                    'End If
+                    aE = True
+                End If
+                If MovieSets.total_results > 0 Then
+                    Dim t1 As String
+                    Dim t2 As String
+                    Dim t3 As String
+                    TotP = MovieSets.total_pages
+                    While Page <= TotP And Page <= 3
+                        For Each aMovieSet In MovieSets.results
+                            Dim aMI As WatTmdb.V3.TmdbCollection
+                            aMI = _TMDBApi.GetCollectionInfo(aMovieSet.id)
+                            If IsNothing(aMI) Then
+                                aMI = _TMDBApiE.GetCollectionInfo(aMovieSet.id)
+                            End If
+                            t1 = aMI.id.ToString
+                            t3 = CStr(IIf(String.IsNullOrEmpty(aMovieSet.name), "", aMovieSet.name))
+                            Dim lNewMovieSet As MediaContainers.MovieSet = New MediaContainers.MovieSet(t1, t2, t3)
+                            lNewMovieSet.ID = aMI.id.ToString
+                            R.Matches.Add(lNewMovieSet)
+                        Next
+                        Page = Page + 1
+                        If aE Then
+                            'If sYear Is Nothing Then
+                            'Movies = _TMDBApiE.SearchMovie(sMovie, Page)
+                            'Else
+                            MovieSets = _TMDBApiE.SearchCollection(sMovieSet, Page)
+                            'End If
+                        Else
+                            'If sYear Is Nothing Then
+                            'Movies = _TMDBApi.SearchMovie(sMovie, Page, _MySettings.TMDBLanguage)
+                            'Else
+                            MovieSets = _TMDBApi.SearchCollection(sMovieSet, Page, _MySettings.TMDBLanguage)
+                            'End If
+                        End If
+
+                    End While
+                End If
+
+                Return R
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+                Return Nothing
+            End Try
+        End Function
+
 #End Region 'Methods
 
 #Region "Nested Types"
@@ -848,6 +1090,7 @@ Namespace TMDBg
             Dim FullCrew As Boolean
             Dim IMDBMovie As MediaContainers.Movie
             Dim Options As Structures.MovieScrapeOptions
+            Dim Options_MovieSet As Structures.MovieSetScrapeOptions
             Dim Parameter As String
             Dim Search As SearchType
             Dim Year As Integer
@@ -855,6 +1098,7 @@ Namespace TMDBg
             'Dim TMDBApi As V3.Tmdb
             'Dim FallBackEng As Boolean
             'Dim TMDBLang As String
+
 #End Region 'Fields
 
         End Structure

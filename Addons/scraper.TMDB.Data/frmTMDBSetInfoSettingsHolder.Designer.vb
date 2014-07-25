@@ -269,7 +269,7 @@ Partial Class frmTMDBSetInfoSettingsHolder
         Me.gbTMDBScraperOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbTMDBScraperOpts.Location = New System.Drawing.Point(11, 139)
         Me.gbTMDBScraperOpts.Name = "gbTMDBScraperOpts"
-        Me.gbTMDBScraperOpts.Size = New System.Drawing.Size(513, 150)
+        Me.gbTMDBScraperOpts.Size = New System.Drawing.Size(117, 150)
         Me.gbTMDBScraperOpts.TabIndex = 3
         Me.gbTMDBScraperOpts.TabStop = False
         Me.gbTMDBScraperOpts.Text = "Scraper Fields"
@@ -278,7 +278,7 @@ Partial Class frmTMDBSetInfoSettingsHolder
         '
         Me.chkPlot.AutoSize = True
         Me.chkPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkPlot.Location = New System.Drawing.Point(173, 53)
+        Me.chkPlot.Location = New System.Drawing.Point(6, 42)
         Me.chkPlot.Name = "chkPlot"
         Me.chkPlot.Size = New System.Drawing.Size(46, 17)
         Me.chkPlot.TabIndex = 10

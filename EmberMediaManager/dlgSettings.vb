@@ -346,9 +346,9 @@ Public Class dlgSettings
             tPanel.Order += ModuleCounter
             Me.SettingsPanels.Add(tPanel)
             ModuleCounter += 1
-            AddHandler s.ProcessorModule.MovieSetSetupChanged, AddressOf Handle_ModuleSetupChanged
-            AddHandler s.ProcessorModule.MovieSetModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
-            AddHandler s.ProcessorModule.MovieSetSetupNeedsRestart, AddressOf Handle_SetupNeedsRestart
+            AddHandler s.ProcessorModule.ScraperSetupChanged, AddressOf Handle_ModuleSetupChanged
+            AddHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+            AddHandler s.ProcessorModule.SetupNeedsRestart, AddressOf Handle_SetupNeedsRestart
             Me.AddHelpHandlers(tPanel.Panel, tPanel.Prefix)
         Next
         ModuleCounter = 1
@@ -423,9 +423,9 @@ Public Class dlgSettings
             RemoveHandler s.ProcessorModule.SetupNeedsRestart, AddressOf Handle_SetupNeedsRestart
         Next
         For Each s As ModulesManager._externalMovieSetScraperModuleClass_Data In ModulesManager.Instance.externalMovieSetDataScrapersModules.OrderBy(Function(x) x.ScraperOrder)
-            RemoveHandler s.ProcessorModule.MovieSetSetupChanged, AddressOf Handle_ModuleSetupChanged
-            RemoveHandler s.ProcessorModule.MovieSetModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
-            RemoveHandler s.ProcessorModule.MovieSetSetupNeedsRestart, AddressOf Handle_SetupNeedsRestart
+            RemoveHandler s.ProcessorModule.ScraperSetupChanged, AddressOf Handle_ModuleSetupChanged
+            RemoveHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+            RemoveHandler s.ProcessorModule.SetupNeedsRestart, AddressOf Handle_SetupNeedsRestart
         Next
         For Each s As ModulesManager._externalTVScraperModuleClass In ModulesManager.Instance.externalTVScrapersModules.Where(Function(y) y.ProcessorModule.IsPostScraper).OrderBy(Function(x) x.PostScraperOrder)
             RemoveHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged

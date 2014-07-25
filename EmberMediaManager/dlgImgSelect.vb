@@ -811,7 +811,7 @@ Public Class dlgImgSelect
             If tIsMovie Then
                 Title = If(Not String.IsNullOrEmpty(Me.tMovie.Movie.Title), Me.tMovie.Movie.Title, Me.tMovie.ListTitle)
             Else
-                Title = Me.tMovieSet.SetName
+                Title = Me.tMovieSet.ListTitle
             End If
 
             If Me.DLType = Enums.MovieImageType.Poster Then

@@ -767,7 +767,7 @@ Public Class Enums
         NFOItem = 0
         PosterItem = 1
         FanartItem = 2
-        ListTitle = 6
+        SetName = 6
         BannerItem = 7
         LandscapeItem = 8
         ClearArtItem = 10
@@ -1805,21 +1805,21 @@ Public Class Structures
         Dim BannerPath As String
         Dim ClearArtPath As String
         Dim ClearLogoPath As String
-        Dim ClearBanner As Boolean
-        Dim ClearClearArt As Boolean
-        Dim ClearClearLogo As Boolean
-        Dim ClearDiscArt As Boolean
-        Dim ClearFanart As Boolean
-        Dim ClearLandscape As Boolean
-        Dim ClearPoster As Boolean
         Dim DiscArtPath As String
         Dim FanartPath As String
         Dim ID As Long
-        Dim SetName As String
-        Dim TMDBColID As String
+        Dim RemoveBanner As Boolean
+        Dim RemoveClearArt As Boolean
+        Dim RemoveClearLogo As Boolean
+        Dim RemoveDiscArt As Boolean
+        Dim RemoveFanart As Boolean
+        Dim RemoveLandscape As Boolean
+        Dim RemovePoster As Boolean
+        Dim ListTitle As String
         Dim LandscapePath As String
         Dim NfoPath As String
         Dim PosterPath As String
+        Dim MovieSet As MediaContainers.MovieSet
         Dim Movies As List(Of Structures.DBMovie)
     End Structure
     ''' <summary>

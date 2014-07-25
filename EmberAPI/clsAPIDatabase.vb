@@ -1037,7 +1037,7 @@ Public Class Database
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     If SQLreader.HasRows Then
                         SQLreader.Read()
-                        If Not DBNull.Value.Equals(SQLreader("SetName")) Then _moviesetDB.SetName = SQLreader("SetName").ToString
+                        If Not DBNull.Value.Equals(SQLreader("SetName")) Then _moviesetDB.ListTitle = SQLreader("SetName").ToString
                         If Not DBNull.Value.Equals(SQLreader("NfoPath")) Then _moviesetDB.NfoPath = SQLreader("NfoPath").ToString
                         If Not DBNull.Value.Equals(SQLreader("PosterPath")) Then _moviesetDB.PosterPath = SQLreader("PosterPath").ToString
                         If Not DBNull.Value.Equals(SQLreader("FanartPath")) Then _moviesetDB.FanartPath = SQLreader("FanartPath").ToString
@@ -2090,7 +2090,7 @@ Public Class Database
                 parHasNfo.Value = Not String.IsNullOrEmpty(_moviesetDB.NfoPath)
                 parHasPoster.Value = Not String.IsNullOrEmpty(_moviesetDB.PosterPath)
 
-                parSetName.Value = _moviesetDB.SetName
+                parSetName.Value = _moviesetDB.ListTitle
                 parTMDBColID.Value = _moviesetDB.TMDBColID
 
                 If IsNew Then
@@ -2099,7 +2099,7 @@ Public Class Database
                             _moviesetDB.ID = Convert.ToInt64(rdrMovieSet(0))
                         Else
                             logger.Error("Something very wrong here: SaveMovieSetToDB", _moviesetDB.ToString, "Error")
-                            _moviesetDB.SetName = "SETERROR"
+                            _moviesetDB.ListTitle = "SETERROR"
                             Return _moviesetDB
                         End If
                     End Using

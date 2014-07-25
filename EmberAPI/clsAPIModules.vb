@@ -69,6 +69,8 @@ Public Class ModulesManager
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     Event MovieScraperEvent(ByVal eType As Enums.MovieScraperEventType, ByVal Parameter As Object)
 
+    Event MovieSetScraperEvent(ByVal eType As Enums.MovieSetScraperEventType, ByVal Parameter As Object)
+
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     Event TVScraperEvent(ByVal eType As Enums.TVScraperEventType, ByVal iProgress As Integer, ByVal Parameter As Object)
 
@@ -155,6 +157,10 @@ Public Class ModulesManager
 
     Public Sub Handler_MovieScraperEvent(ByVal eType As Enums.MovieScraperEventType, ByVal Parameter As Object)
         RaiseEvent MovieScraperEvent(eType, Parameter)
+    End Sub
+
+    Public Sub Handler_MovieSetScraperEvent(ByVal eType As Enums.MovieSetScraperEventType, ByVal Parameter As Object)
+        RaiseEvent MovieSetScraperEvent(eType, Parameter)
     End Sub
 
     Public Sub Handler_TVScraperEvent(ByVal eType As Enums.TVScraperEventType, ByVal iProgress As Integer, ByVal Parameter As Object)
@@ -669,13 +675,13 @@ Public Class ModulesManager
         Else
             For Each _externalScraperModule As _externalMovieScraperModuleClass_Data In modules
                 logger.Trace("Scraping movie data using <{0}>", _externalScraperModule.ProcessorModule.ModuleName)
-                AddHandler _externalScraperModule.ProcessorModule.MovieScraperEvent, AddressOf Handler_MovieScraperEvent
+                AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_MovieScraperEvent
                 Try
                     ret = _externalScraperModule.ProcessorModule.Scraper(DBMovie, ScrapeType, Options)
                 Catch ex As Exception
                     logger.Error(New StackFrame().GetMethod().Name & vbTab & "Error scraping movie data using <" & _externalScraperModule.ProcessorModule.ModuleName & ">", ex)
                 End Try
-                RemoveHandler _externalScraperModule.ProcessorModule.MovieScraperEvent, AddressOf Handler_MovieScraperEvent
+                RemoveHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_MovieScraperEvent
                 If ret.breakChain Then Exit For
             Next
         End If
@@ -722,6 +728,41 @@ Public Class ModulesManager
                 End If
             Next
         End If
+        Return ret.Cancelled
+    End Function
+
+    ''' <summary>
+    ''' Request that enabled movie scrapers perform their functions on the supplied movie
+    ''' </summary>
+    ''' <param name="DBMovieSet">MovieSet to be scraped. Scraper will directly manipulate this structure</param>
+    ''' <param name="ScrapeType">What kind of scrape is being requested, such as whether user-validation is desired</param>
+    ''' <param name="Options">What kind of data is being requested from the scrape</param>
+    ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
+    ''' <remarks>Note that if no movie set scrapers are enabled, a silent warning is generated.</remarks>
+    Public Function MovieSetScrapeOnly(ByRef DBMovieSet As Structures.DBMovieSet, ByVal ScrapeType As Enums.ScrapeType, ByVal Options As Structures.MovieSetScrapeOptions) As Boolean
+        Dim modules As IEnumerable(Of _externalMovieSetScraperModuleClass_Data) = externalMovieSetDataScrapersModules.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ScraperOrder)
+        Dim ret As Interfaces.ModuleResult
+
+        While Not (bwloadModules_done And bwloadMovieScrapersModules_done And bwloadMovieSetScrapersModules_done And bwloadTVScrapersModules_done)
+            Application.DoEvents()
+        End While
+
+        If (modules.Count() <= 0) Then
+            logger.Warn("No movie scrapers are defined")
+        Else
+            For Each _externalScraperModule As _externalMovieSetScraperModuleClass_Data In modules
+                logger.Trace("Scraping movie set data using <{0}>", _externalScraperModule.ProcessorModule.ModuleName)
+                AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_MovieSetScraperEvent
+                Try
+                    ret = _externalScraperModule.ProcessorModule.Scraper(DBMovieSet, ScrapeType, Options)
+                Catch ex As Exception
+                    logger.Error(New StackFrame().GetMethod().Name & vbTab & "Error scraping movie set data using <" & _externalScraperModule.ProcessorModule.ModuleName & ">", ex)
+                End Try
+                RemoveHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_MovieSetScraperEvent
+                If ret.breakChain Then Exit For
+            Next
+        End If
+
         Return ret.Cancelled
     End Function
     ''' <summary>

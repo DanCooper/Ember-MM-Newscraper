@@ -155,7 +155,7 @@ Public Class Interfaces
 
         Event ModuleSettingsChanged()
 
-        Event MovieScraperEvent(ByVal eType As Enums.MovieScraperEventType, ByVal Parameter As Object)
+        Event ScraperEvent(ByVal eType As Enums.MovieScraperEventType, ByVal Parameter As Object)
 
         Event ScraperSetupChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer)
 
@@ -325,13 +325,13 @@ Public Class Interfaces
 
 #Region "Events"
 
-        Event MovieSetModuleSettingsChanged()
+        Event ModuleSettingsChanged()
 
-        Event MovieSetScraperEvent(ByVal eType As Enums.MovieSetScraperEventType, ByVal Parameter As Object)
+        Event ScraperEvent(ByVal eType As Enums.MovieSetScraperEventType, ByVal Parameter As Object)
 
-        Event MovieSetSetupChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer)
+        Event ScraperSetupChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer)
 
-        Event MovieSetSetupNeedsRestart()
+        Event SetupNeedsRestart()
 
 #End Region 'Events
 
