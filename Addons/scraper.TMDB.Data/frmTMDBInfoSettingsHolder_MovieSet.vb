@@ -22,17 +22,17 @@ Imports System.IO
 Imports EmberAPI
 Imports System.Diagnostics
 
-Public Class frmTMDBInfoSettingsHolder
+Public Class frmTMDBInfoSettingsHolder_MovieSet
 
 #Region "Events"
 
-	Public Event ModuleSettingsChanged()
+    Public Event ModuleSettingsChanged()
 
     Public Event SetupScraperChanged(ByVal state As Boolean, ByVal difforder As Integer)
 
-	Public Event SetupNeedsRestart()
+    Public Event SetupNeedsRestart()
 
-#End Region	'Events
+#End Region 'Events
 
 #Region "Fields"
 
@@ -89,20 +89,20 @@ Public Class frmTMDBInfoSettingsHolder
     End Sub
 
     Private Sub btnDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDown.Click
-        Dim order As Integer = ModulesManager.Instance.externalMovieDataScrapersModules.FirstOrDefault(Function(p) p.AssemblyName = TMDB_Data._AssemblyName).ScraperOrder
-        If order < ModulesManager.Instance.externalMovieDataScrapersModules.Count - 1 Then
-            ModulesManager.Instance.externalMovieDataScrapersModules.FirstOrDefault(Function(p) p.ScraperOrder = order + 1).ScraperOrder = order
-            ModulesManager.Instance.externalMovieDataScrapersModules.FirstOrDefault(Function(p) p.AssemblyName = TMDB_Data._AssemblyName).ScraperOrder = order + 1
+        Dim order As Integer = ModulesManager.Instance.externalMovieSetDataScrapersModules.FirstOrDefault(Function(p) p.AssemblyName = TMDB_Data._AssemblyName).ScraperOrder
+        If order < ModulesManager.Instance.externalMovieSetDataScrapersModules.Count - 1 Then
+            ModulesManager.Instance.externalMovieSetDataScrapersModules.FirstOrDefault(Function(p) p.ScraperOrder = order + 1).ScraperOrder = order
+            ModulesManager.Instance.externalMovieSetDataScrapersModules.FirstOrDefault(Function(p) p.AssemblyName = TMDB_Data._AssemblyName).ScraperOrder = order + 1
             RaiseEvent SetupScraperChanged(cbEnabled.Checked, 1)
             orderChanged()
         End If
     End Sub
 
     Private Sub btnUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUp.Click
-        Dim order As Integer = ModulesManager.Instance.externalMovieDataScrapersModules.FirstOrDefault(Function(p) p.AssemblyName = TMDB_Data._AssemblyName).ScraperOrder
+        Dim order As Integer = ModulesManager.Instance.externalMovieSetDataScrapersModules.FirstOrDefault(Function(p) p.AssemblyName = TMDB_Data._AssemblyName).ScraperOrder
         If order > 0 Then
-            ModulesManager.Instance.externalMovieDataScrapersModules.FirstOrDefault(Function(p) p.ScraperOrder = order - 1).ScraperOrder = order
-            ModulesManager.Instance.externalMovieDataScrapersModules.FirstOrDefault(Function(p) p.AssemblyName = TMDB_Data._AssemblyName).ScraperOrder = order - 1
+            ModulesManager.Instance.externalMovieSetDataScrapersModules.FirstOrDefault(Function(p) p.ScraperOrder = order - 1).ScraperOrder = order
+            ModulesManager.Instance.externalMovieSetDataScrapersModules.FirstOrDefault(Function(p) p.AssemblyName = TMDB_Data._AssemblyName).ScraperOrder = order - 1
             RaiseEvent SetupScraperChanged(cbEnabled.Checked, -1)
             orderChanged()
         End If
@@ -118,22 +118,6 @@ Public Class frmTMDBInfoSettingsHolder
         RaiseEvent SetupScraperChanged(cbEnabled.Checked, 0)
     End Sub
 
-    Private Sub chkCrew_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles chkCrew.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkCast_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkCast.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkCollection_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkCollection.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkGenre_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGenre.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
     Private Sub chkGetAdult_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGetAdultItems.CheckedChanged
         If Not (_getadultitems = chkGetAdultItems.Checked) Then
             RaiseEvent SetupNeedsRestart()
@@ -141,31 +125,7 @@ Public Class frmTMDBInfoSettingsHolder
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkMPAA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMPAA.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
     Private Sub chkPlot_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkPlot.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkRating_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkRating.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkRelease_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkRelease.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkRuntime_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkRuntime.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkStudio_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkStudio.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkTagline_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTagline.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
@@ -173,27 +133,7 @@ Public Class frmTMDBInfoSettingsHolder
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkCountry_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkCountry.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkTrailer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTrailer.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkVotes_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkVotes.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkYear_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkYear.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
     Private Sub chkFallBackEng_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles chkFallBackEng.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkTMDBCleanPlotOutline_CheckedChanged(sender As Object, e As EventArgs) Handles chkCleanPlotOutline.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
@@ -224,9 +164,9 @@ Public Class frmTMDBInfoSettingsHolder
     End Sub
 
     Sub orderChanged()
-        Dim order As Integer = ModulesManager.Instance.externalMovieDataScrapersModules.FirstOrDefault(Function(p) p.AssemblyName = TMDB_Data._AssemblyName).ScraperOrder
-        If ModulesManager.Instance.externalMovieDataScrapersModules.Count > 0 Then
-            btnDown.Enabled = (order < ModulesManager.Instance.externalMovieDataScrapersModules.Count - 1)
+        Dim order As Integer = ModulesManager.Instance.externalMovieSetDataScrapersModules.FirstOrDefault(Function(p) p.AssemblyName = TMDB_Data._AssemblyName).ScraperOrder
+        If ModulesManager.Instance.externalMovieSetDataScrapersModules.Count > 0 Then
+            btnDown.Enabled = (order < ModulesManager.Instance.externalMovieSetDataScrapersModules.Count - 1)
             btnUp.Enabled = (order > 0)
         Else
             btnDown.Enabled = False
@@ -239,25 +179,10 @@ Public Class frmTMDBInfoSettingsHolder
         Me.lblEMMAPI.Text = Master.eLang.GetString(1189, "Ember Media Manager API key")
         Me.Label1.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), vbCrLf)
         Me.cbEnabled.Text = Master.eLang.GetString(774, "Enabled")
-        Me.chkCast.Text = Master.eLang.GetString(63, "Cast")
-        Me.chkCleanPlotOutline.Text = Master.eLang.GetString(985, "Clean Plot/Outline")
-        Me.chkCollection.Text = Master.eLang.GetString(1135, "Collection")
-        Me.chkCountry.Text = Master.eLang.GetString(301, "Country")
-        Me.chkCrew.Text = Master.eLang.GetString(909, "Crew")
         Me.chkFallBackEng.Text = Master.eLang.GetString(922, "Fall back on english")
-        Me.chkGenre.Text = Master.eLang.GetString(20, "Genre")
         Me.chkGetAdultItems.Text = Master.eLang.GetString(1046, "Include Adult Items")
-        Me.chkMPAA.Text = Master.eLang.GetString(881, "MPAA & Certification")
         Me.chkPlot.Text = Master.eLang.GetString(65, "Plot")
-        Me.chkRating.Text = Master.eLang.GetString(400, "Rating")
-        Me.chkRelease.Text = Master.eLang.GetString(57, "Release Date")
-        Me.chkRuntime.Text = Master.eLang.GetString(396, "Runtime")
-        Me.chkStudio.Text = Master.eLang.GetString(395, "Studio")
-        Me.chkTagline.Text = Master.eLang.GetString(397, "Tagline")
         Me.chkTitle.Text = Master.eLang.GetString(21, "Title")
-        Me.chkTrailer.Text = Master.eLang.GetString(151, "Trailer")
-        Me.chkVotes.Text = Master.eLang.GetString(399, "Votes")
-        Me.chkYear.Text = Master.eLang.GetString(278, "Year")
         Me.gbTMDBGlobalOpts.Text = Master.eLang.GetString(937, "TMDB")
         Me.gbTMDBScraperOpts.Text = Master.eLang.GetString(577, "Scraper Fields - Scraper specific")
         Me.lblScraperOrder.Text = Master.eLang.GetString(168, "Scrape Order")
@@ -268,6 +193,4 @@ Public Class frmTMDBInfoSettingsHolder
 
 #End Region 'Methods
 
-
- 
 End Class

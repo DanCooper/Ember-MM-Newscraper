@@ -59,6 +59,7 @@ Public Class dlgImgSelect
     Private _results As New MediaContainers.Image
     Private selIndex As Integer = -1
 
+    Private tIsMovie As Boolean
     Private tMovie As New Structures.DBMovie
     Private tMovieSet As New Structures.DBMovieSet
     Private tmpImage As New MediaContainers.Image
@@ -131,6 +132,7 @@ Public Class dlgImgSelect
         '\\
 
         Me.tMovie = DBMovie
+        Me.tIsMovie = True
         Me._ImageList = ImageList
         Me._efList = efList
         Me._etList = etList
@@ -163,6 +165,7 @@ Public Class dlgImgSelect
         '\\
 
         Me.tMovieSet = DBMovieSet
+        Me.tIsMovie = False
         Me._ImageList = ImageList
         Me._efList = efList
         Me._etList = etList
@@ -519,13 +522,6 @@ Public Class dlgImgSelect
         '//
         ' Thread finished: process the pics
         '\\
-        Me.pnlBG.Visible = True
-        Me.pnlDLStatus.Visible = False
-        Me.lblSize.Visible = True
-        Me.cbFilterSize.Visible = True
-        Application.DoEvents()
-        Me.ResumeLayout(True)
-        Me.pnlBG.AutoScroll = True
         MeActivate()
     End Sub
 
@@ -534,6 +530,13 @@ Public Class dlgImgSelect
             Me.Invoke(New Delegate_MeActivate(AddressOf MeActivate))
             Exit Sub
         End If
+        Me.pnlBG.Visible = True
+        Me.pnlDLStatus.Visible = False
+        Me.lblSize.Visible = True
+        Me.cbFilterSize.Visible = True
+        Application.DoEvents()
+        Me.ResumeLayout(True)
+        Me.pnlBG.AutoScroll = True
         Me.Activate()
     End Sub
     Private Sub cbFilterSize_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cbFilterSize.SelectedIndexChanged
@@ -805,12 +808,10 @@ Public Class dlgImgSelect
 
             Dim Title As String
 
-            If Not IsNothing(Me.tMovie) Then
+            If tIsMovie Then
                 Title = If(Not String.IsNullOrEmpty(Me.tMovie.Movie.Title), Me.tMovie.Movie.Title, Me.tMovie.ListTitle)
-            ElseIf Not IsNothing(Me.tMovieSet) Then
-                Title = Me.tMovieSet.SetName
             Else
-                Title = String.Empty
+                Title = Me.tMovieSet.ListTitle
             End If
 
             If Me.DLType = Enums.MovieImageType.Poster Then

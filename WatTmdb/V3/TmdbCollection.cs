@@ -25,6 +25,7 @@ namespace WatTmdb.V3
         public string name { get; set; }
         public string poster_path { get; set; }
         public string backdrop_path { get; set; }
+        public string overview { get; set; }
         public List<CollectionPart> parts { get; set; }
 
         public override string ToString()

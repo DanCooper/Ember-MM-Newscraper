@@ -22,7 +22,7 @@ Imports System.IO
 Imports EmberAPI
 Imports RestSharp
 Imports WatTmdb
-Imports EmberScraperModule.FANARTTVs
+Imports EmberMovieScraperModule.FANARTTVs
 Imports NLog
 Imports System.Diagnostics
 
@@ -32,7 +32,7 @@ Public Class FanartTV_Poster
 
 #Region "Fields"
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
-    Public Shared ConfigOptions As New Structures.ScrapeOptions
+    Public Shared ConfigOptions As New Structures.MovieScrapeOptions
     Public Shared ConfigScrapeModifier As New Structures.ScrapeModifier
     Public Shared _AssemblyName As String
 
@@ -244,7 +244,7 @@ Public Class FanartTV_Poster
 
         LoadSettings()
 
-        ImageList = _fanartTV.GetFANARTTVImages(DBMovieset.TMDBColID, Type)
+        ImageList = _fanartTV.GetFANARTTVImages(DBMovieset.MovieSet.ID, Type)
 
         logger.Trace( "Finished scrape")
         Return New Interfaces.ModuleResult With {.breakChain = False}

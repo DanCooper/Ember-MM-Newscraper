@@ -70,7 +70,7 @@ Public Class dlgEditMovieSet
 
             If Not String.IsNullOrEmpty(newColID) Then
                 Me.txtCollectionID.Text = newColID
-                currMovieSet.TMDBColID = newColID
+                currMovieSet.MovieSet.ID = newColID
             End If
         End If
     End Sub
@@ -1171,12 +1171,12 @@ Public Class dlgEditMovieSet
     Private Sub FillInfo(Optional ByVal DoAll As Boolean = True)
         Try
             With Me
-                If Not String.IsNullOrEmpty(Master.currMovieSet.SetName) Then
-                    .txtTitle.Text = Master.currMovieSet.SetName
+                If Not String.IsNullOrEmpty(Master.currMovieSet.ListTitle) Then
+                    .txtTitle.Text = Master.currMovieSet.ListTitle
                 End If
 
-                If Not String.IsNullOrEmpty(Master.currMovieSet.TMDBColID) Then
-                    .txtCollectionID.Text = Master.currMovieSet.TMDBColID
+                If Not String.IsNullOrEmpty(Master.currMovieSet.MovieSet.ID) Then
+                    .txtCollectionID.Text = Master.currMovieSet.MovieSet.ID
                 End If
 
                 If DoAll Then
@@ -1478,7 +1478,7 @@ Public Class dlgEditMovieSet
                     'If Not Master.eSettings.MovieYAMJCompatibleSets Then
                     '    tMovie.DBMovie.Movie.AddSet(mSet.Set, 0)
                     'Else
-                    tMovie.DBMovie.Movie.AddSet(Master.currMovieSet.ID, Master.currMovieSet.SetName, tMovie.Order)
+                    tMovie.DBMovie.Movie.AddSet(Master.currMovieSet.ID, Master.currMovieSet.ListTitle, tMovie.Order)
                     'End If
                     Master.DB.SaveMovieToDB(tMovie.DBMovie, False, True, True)
                 Next
@@ -1532,34 +1532,34 @@ Public Class dlgEditMovieSet
                 Me.btnLoadMoviesFromDB.Enabled = False
                 Me.btnRescrape.Enabled = False
 
-                Master.currMovieSet.SetName = .txtTitle.Text.Trim
-                Master.currMovieSet.TMDBColID = .txtCollectionID.Text.Trim
+                Master.currMovieSet.ListTitle = .txtTitle.Text.Trim
+                Master.currMovieSet.MovieSet.ID = .txtCollectionID.Text.Trim
 
-                If Master.currMovieSet.ClearBanner Then
+                If Master.currMovieSet.RemoveBanner Then
                     .MovieBanner.DeleteMovieSetBanner(Master.currMovieSet)
                 End If
 
-                If Master.currMovieSet.ClearClearArt Then
+                If Master.currMovieSet.RemoveClearArt Then
                     .MovieClearArt.DeleteMovieSetClearArt(Master.currMovieSet)
                 End If
 
-                If Master.currMovieSet.ClearClearLogo Then
+                If Master.currMovieSet.RemoveClearLogo Then
                     .MovieClearLogo.DeleteMovieSetClearLogo(Master.currMovieSet)
                 End If
 
-                If Master.currMovieSet.ClearDiscArt Then
+                If Master.currMovieSet.RemoveDiscArt Then
                     .MovieDiscArt.DeleteMovieSetDiscArt(Master.currMovieSet)
                 End If
 
-                If Master.currMovieSet.ClearFanart Then
+                If Master.currMovieSet.RemoveFanart Then
                     .MovieFanart.DeleteMovieSetFanart(Master.currMovieSet)
                 End If
 
-                If Master.currMovieSet.ClearLandscape Then
+                If Master.currMovieSet.RemoveLandscape Then
                     .MovieLandscape.DeleteMovieSetLandscape(Master.currMovieSet)
                 End If
 
-                If Master.currMovieSet.ClearPoster Then
+                If Master.currMovieSet.RemovePoster Then
                     .MoviePoster.DeleteMovieSetPoster(Master.currMovieSet)
                 End If
 
@@ -1625,7 +1625,7 @@ Public Class dlgEditMovieSet
     End Sub
 
     Private Sub SetUp()
-        Dim mTitle As String = Master.currMovieSet.SetName
+        Dim mTitle As String = Master.currMovieSet.ListTitle
         Dim sTitle As String = String.Concat(Master.eLang.GetString(1131, "Edit Movieset"), If(String.IsNullOrEmpty(mTitle), String.Empty, String.Concat(" - ", mTitle)))
         Me.Text = sTitle
         Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")

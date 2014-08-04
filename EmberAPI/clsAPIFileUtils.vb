@@ -1314,42 +1314,42 @@ Namespace FileUtils
             Select Case mType
                 Case Enums.MovieModType.NFO
                     With Master.eSettings
-                        FilenameList.Add(Path.Combine(fPath, String.Concat(fSetName, ".nfo")))
+                        If .MovieSetUseMSAA AndAlso .MovieSetNFOMSAA Then FilenameList.Add(Path.Combine(fPath, String.Concat(fSetName, ".nfo")))
                     End With
 
                 Case Enums.MovieModType.Poster
                     With Master.eSettings
-                        FilenameList.Add(Path.Combine(fPath, String.Concat(fSetName, "-poster.jpg")))
+                        If .MovieSetUseMSAA AndAlso .MovieSetPosterMSAA Then FilenameList.Add(Path.Combine(fPath, String.Concat(fSetName, "-poster.jpg")))
                     End With
 
                 Case Enums.MovieModType.Fanart
                     With Master.eSettings
-                        FilenameList.Add(Path.Combine(fPath, String.Concat(fSetName, "-fanart.jpg")))
+                        If .MovieSetUseMSAA AndAlso .MovieSetFanartMSAA Then FilenameList.Add(Path.Combine(fPath, String.Concat(fSetName, "-fanart.jpg")))
                     End With
 
                 Case Enums.MovieModType.Banner
                     With Master.eSettings
-                        FilenameList.Add(Path.Combine(fPath, String.Concat(fSetName, "-banner.jpg")))
+                        If .MovieSetUseMSAA AndAlso .MovieSetBannerMSAA Then FilenameList.Add(Path.Combine(fPath, String.Concat(fSetName, "-banner.jpg")))
                     End With
 
                 Case Enums.MovieModType.ClearLogo
                     With Master.eSettings
-                        FilenameList.Add(Path.Combine(fPath, String.Concat(fSetName, "-logo.png")))
+                        If .MovieSetUseMSAA AndAlso .MovieSetClearLogoMSAA Then FilenameList.Add(Path.Combine(fPath, String.Concat(fSetName, "-logo.png")))
                     End With
 
                 Case Enums.MovieModType.ClearArt
                     With Master.eSettings
-                        FilenameList.Add(Path.Combine(fPath, String.Concat(fSetName, "-clearart.png")))
+                        If .MovieSetUseMSAA AndAlso .MovieSetClearArtMSAA Then FilenameList.Add(Path.Combine(fPath, String.Concat(fSetName, "-clearart.png")))
                     End With
 
                 Case Enums.MovieModType.DiscArt
                     With Master.eSettings
-                        FilenameList.Add(Path.Combine(fPath, String.Concat(fSetName, "-discart.png")))
+                        If .MovieSetUseMSAA AndAlso .MovieSetDiscArtMSAA Then FilenameList.Add(Path.Combine(fPath, String.Concat(fSetName, "-discart.png")))
                     End With
 
                 Case Enums.MovieModType.Landscape
                     With Master.eSettings
-                        FilenameList.Add(Path.Combine(fPath, String.Concat(fSetName, "-landscape.jpg")))
+                        If .MovieSetUseMSAA AndAlso .MovieSetLandscapeMSAA Then FilenameList.Add(Path.Combine(fPath, String.Concat(fSetName, "-landscape.jpg")))
                     End With
             End Select
 

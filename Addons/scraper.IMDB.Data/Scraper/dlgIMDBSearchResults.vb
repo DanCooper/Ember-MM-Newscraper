@@ -42,13 +42,13 @@ Public Class dlgIMDBSearchResults
 
     Private _InfoCache As New Dictionary(Of String, MediaContainers.Movie)
     Private _PosterCache As New Dictionary(Of String, System.Drawing.Image)
-    Private _filterOptions As Structures.ScrapeOptions
+    Private _filterOptions As Structures.MovieScrapeOptions
 
 #End Region 'Fields
 
 #Region "Methods"
 
-    Public Overloads Function ShowDialog(ByVal sMovieTitle As String, ByVal sMovieFilename As String, ByVal filterOptions As Structures.ScrapeOptions) As Windows.Forms.DialogResult
+    Public Overloads Function ShowDialog(ByVal sMovieTitle As String, ByVal sMovieFilename As String, ByVal filterOptions As Structures.MovieScrapeOptions) As Windows.Forms.DialogResult
         Me.tmrWait.Enabled = False
         Me.tmrWait.Interval = 250
         Me.tmrLoad.Enabled = False
@@ -95,7 +95,7 @@ Public Class dlgIMDBSearchResults
     End Sub
 
     Private Sub btnVerify_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnVerify.Click
-        Dim pOpt As New Structures.ScrapeOptions
+        Dim pOpt As New Structures.MovieScrapeOptions
         pOpt = SetPreviewOptions()
         If Regex.IsMatch(Me.txtIMDBID.Text.Replace("tt", String.Empty), "\d\d\d\d\d\d\d") Then
             IMDB.GetSearchMovieInfoAsync(Me.txtIMDBID.Text.Replace("tt", String.Empty), Master.tmpMovie, pOpt)
@@ -130,7 +130,7 @@ Public Class dlgIMDBSearchResults
                 _PosterCache.Add(Res.IMDBId, CType(Res.Result.Clone, Image))
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         Finally
             pnlPicStatus.Visible = False
         End Try
@@ -216,7 +216,7 @@ Public Class dlgIMDBSearchResults
                 Me.pnlTop.BackgroundImage = iBackground
             End Using
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -241,7 +241,7 @@ Public Class dlgIMDBSearchResults
             End If
             Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Me.Close()
@@ -297,7 +297,7 @@ Public Class dlgIMDBSearchResults
                 End If
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -401,12 +401,12 @@ Public Class dlgIMDBSearchResults
             Me.pnlLoading.Visible = False
             chkManual.Enabled = True
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
-    Private Function SetPreviewOptions() As Structures.ScrapeOptions
-        Dim aOpt As New Structures.ScrapeOptions
+    Private Function SetPreviewOptions() As Structures.MovieScrapeOptions
+        Dim aOpt As New Structures.MovieScrapeOptions
         aOpt.bCast = False
         aOpt.bCert = False
         aOpt.bCollection = False
@@ -454,7 +454,7 @@ Public Class dlgIMDBSearchResults
     End Sub
 
     Private Sub tmrLoad_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrLoad.Tick
-        Dim pOpt As New Structures.ScrapeOptions
+        Dim pOpt As New Structures.MovieScrapeOptions
         pOpt = SetPreviewOptions()
 
         Me.tmrWait.Stop()
@@ -500,7 +500,7 @@ Public Class dlgIMDBSearchResults
             End If
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -532,7 +532,7 @@ Public Class dlgIMDBSearchResults
                 Return DirectCast(bin.Deserialize(mem), MediaContainers.Movie)
             End Using
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Return Nothing

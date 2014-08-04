@@ -434,16 +434,16 @@ Public Class Images
     ''' <param name="mMovieSet"><c>DBMovieSet</c> structure representing the movie on which we should operate</param>
     ''' <remarks></remarks>
     Public Sub DeleteMovieSetBanner(ByVal mMovieSet As Structures.DBMovieSet)
-        If String.IsNullOrEmpty(mMovieSet.SetName) Then Return
+        If String.IsNullOrEmpty(mMovieSet.ListTitle) Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.SetName, Enums.MovieModType.Banner)
+            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.ListTitle, Enums.MovieModType.Banner)
                 If File.Exists(a) Then
                     Delete(a)
                 End If
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mMovieSet.SetName & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mMovieSet.ListTitle & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -452,16 +452,16 @@ Public Class Images
     ''' <param name="mMovieSet"><c>DBMovieSet</c> structure representing the movie on which we should operate</param>
     ''' <remarks></remarks>
     Public Sub DeleteMovieSetClearArt(ByVal mMovieSet As Structures.DBMovieSet)
-        If String.IsNullOrEmpty(mMovieSet.SetName) Then Return
+        If String.IsNullOrEmpty(mMovieSet.ListTitle) Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.SetName, Enums.MovieModType.ClearArt)
+            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.ListTitle, Enums.MovieModType.ClearArt)
                 If File.Exists(a) Then
                     Delete(a)
                 End If
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mMovieSet.SetName & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mMovieSet.ListTitle & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -470,16 +470,16 @@ Public Class Images
     ''' <param name="mMovieSet"><c>DBMovieSet</c> structure representing the movie on which we should operate</param>
     ''' <remarks></remarks>
     Public Sub DeleteMovieSetClearLogo(ByVal mMovieSet As Structures.DBMovieSet)
-        If String.IsNullOrEmpty(mMovieSet.SetName) Then Return
+        If String.IsNullOrEmpty(mMovieSet.ListTitle) Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.SetName, Enums.MovieModType.ClearLogo)
+            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.ListTitle, Enums.MovieModType.ClearLogo)
                 If File.Exists(a) Then
                     Delete(a)
                 End If
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mMovieSet.SetName & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mMovieSet.ListTitle & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -488,16 +488,16 @@ Public Class Images
     ''' <param name="mMovieSet"><c>DBMovieSet</c> structure representing the movie on which we should operate</param>
     ''' <remarks></remarks>
     Public Sub DeleteMovieSetDiscArt(ByVal mMovieSet As Structures.DBMovieSet)
-        If String.IsNullOrEmpty(mMovieSet.SetName) Then Return
+        If String.IsNullOrEmpty(mMovieSet.ListTitle) Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.SetName, Enums.MovieModType.DiscArt)
+            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.ListTitle, Enums.MovieModType.DiscArt)
                 If File.Exists(a) Then
                     Delete(a)
                 End If
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mMovieSet.SetName & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mMovieSet.ListTitle & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -506,16 +506,16 @@ Public Class Images
     ''' <param name="mMovieSet"><c>DBMovieSet</c> structure representing the movie on which we should operate</param>
     ''' <remarks></remarks>
     Public Sub DeleteMovieSetFanart(ByVal mMovieSet As Structures.DBMovieSet)
-        If String.IsNullOrEmpty(mMovieSet.SetName) Then Return
+        If String.IsNullOrEmpty(mMovieSet.ListTitle) Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.SetName, Enums.MovieModType.Fanart)
+            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.ListTitle, Enums.MovieModType.Fanart)
                 If File.Exists(a) Then
                     Delete(a)
                 End If
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mMovieSet.SetName & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mMovieSet.ListTitle & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -524,16 +524,16 @@ Public Class Images
     ''' <param name="mMovieSet"><c>DBMovieSet</c> structure representing the movie on which we should operate</param>
     ''' <remarks></remarks>
     Public Sub DeleteMovieSetLandscape(ByVal mMovieSet As Structures.DBMovieSet)
-        If String.IsNullOrEmpty(mMovieSet.SetName) Then Return
+        If String.IsNullOrEmpty(mMovieSet.ListTitle) Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.SetName, Enums.MovieModType.Landscape)
+            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.ListTitle, Enums.MovieModType.Landscape)
                 If File.Exists(a) Then
                     Delete(a)
                 End If
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mMovieSet.SetName & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mMovieSet.ListTitle & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -542,16 +542,16 @@ Public Class Images
     ''' <param name="mMovieSet"><c>DBMovieSet</c> structure representing the movie on which we should operate</param>
     ''' <remarks></remarks>
     Public Sub DeleteMovieSetPoster(ByVal mMovieSet As Structures.DBMovieSet)
-        If String.IsNullOrEmpty(mMovieSet.SetName) Then Return
+        If String.IsNullOrEmpty(mMovieSet.ListTitle) Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.SetName, Enums.MovieModType.Poster)
+            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.ListTitle, Enums.MovieModType.Poster)
                 If File.Exists(a) Then
                     Delete(a)
                 End If
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mMovieSet.SetName & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & vbTab & "<" & mMovieSet.ListTitle & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -980,6 +980,69 @@ Public Class Images
                          .MoviePosterYAMJ OrElse (.MovieUseExpert AndAlso (Not String.IsNullOrEmpty(.MoviePosterExpertBDMV) OrElse _
                          Not String.IsNullOrEmpty(.MoviePosterExpertMulti) OrElse Not String.IsNullOrEmpty(.MoviePosterExpertSingle) OrElse _
                          Not String.IsNullOrEmpty(.MoviePosterExpertVTS)))) Then
+                            Return True
+                        Else
+                            Return False
+                        End If
+                End Select
+            End With
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+            Return False
+        End Try
+    End Function
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="mMovieSet"></param>
+    ''' <param name="fType"></param>
+    ''' <param name="isChange"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public Function IsAllowedToDownload(ByVal mMovieSet As Structures.DBMovieSet, ByVal fType As Enums.MovieImageType, Optional ByVal isChange As Boolean = False) As Boolean
+        '2013/11/26 Dekker500 - Need to figure out exactly what this method is doing so it can be documented
+
+        Try
+            With Master.eSettings
+                Select Case fType
+                    Case Enums.MovieImageType.Banner
+                        If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.BannerPath) OrElse .MovieSetBannerOverwrite) AndAlso .MovieSetBannerAnyEnabled) Then
+                            Return True
+                        Else
+                            Return False
+                        End If
+                    Case Enums.MovieImageType.ClearArt
+                        If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.ClearArtPath) OrElse .MovieSetClearArtOverwrite) AndAlso .MovieSetClearArtAnyEnabled) Then
+                            Return True
+                        Else
+                            Return False
+                        End If
+                    Case Enums.MovieImageType.ClearLogo
+                        If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.ClearLogoPath) OrElse .MovieSetClearLogoOverwrite) AndAlso .MovieSetClearLogoAnyEnabled) Then
+                            Return True
+                        Else
+                            Return False
+                        End If
+                    Case Enums.MovieImageType.DiscArt
+                        If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.DiscArtPath) OrElse .MovieSetDiscArtOverwrite) AndAlso .MovieSetDiscArtAnyEnabled) Then
+                            Return True
+                        Else
+                            Return False
+                        End If
+                    Case Enums.MovieImageType.Fanart
+                        If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.FanartPath) OrElse .MovieSetFanartOverwrite) AndAlso .MovieSetFanartAnyEnabled) Then
+                            Return True
+                        Else
+                            Return False
+                        End If
+                    Case Enums.MovieImageType.Landscape
+                        If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.LandscapePath) OrElse .MovieSetLandscapeOverwrite) AndAlso .MovieSetLandscapeAnyEnabled) Then
+                            Return True
+                        Else
+                            Return False
+                        End If
+                    Case Enums.MovieImageType.Poster
+                        If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.PosterPath) OrElse .MovieSetPosterOverwrite) AndAlso .MovieSetPosterAnyEnabled) Then
                             Return True
                         Else
                             Return False
@@ -1670,7 +1733,7 @@ Public Class Images
             'Catch ex As Exception
             'End Try
 
-            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.SetName, Enums.MovieModType.Banner)
+            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.ListTitle, Enums.MovieModType.Banner)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieSetBannerOverwrite) Then
                     Save(a, 0, sURL, doResize)
                     strReturn = a
@@ -1700,7 +1763,7 @@ Public Class Images
             'Catch ex As Exception
             'End Try
 
-            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.SetName, Enums.MovieModType.ClearArt)
+            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.ListTitle, Enums.MovieModType.ClearArt)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieSetClearArtOverwrite) Then
                     Save(a, 0, sURL, doResize)
                     strReturn = a
@@ -1730,7 +1793,7 @@ Public Class Images
             'Catch ex As Exception
             'End Try
 
-            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.SetName, Enums.MovieModType.ClearLogo)
+            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.ListTitle, Enums.MovieModType.ClearLogo)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieSetClearLogoOverwrite) Then
                     Save(a, 0, sURL, doResize)
                     strReturn = a
@@ -1760,7 +1823,7 @@ Public Class Images
             'Catch ex As Exception
             'End Try
 
-            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.SetName, Enums.MovieModType.DiscArt)
+            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.ListTitle, Enums.MovieModType.DiscArt)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieSetDiscArtOverwrite) Then
                     Save(a, 0, sURL, doResize)
                     strReturn = a
@@ -1790,7 +1853,7 @@ Public Class Images
             'Catch ex As Exception
             'End Try
 
-            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.SetName, Enums.MovieModType.Fanart)
+            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.ListTitle, Enums.MovieModType.Fanart)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieSetFanartOverwrite) Then
                     Save(a, 0, sURL, doResize)
                     strReturn = a
@@ -1820,7 +1883,7 @@ Public Class Images
             'Catch ex As Exception
             'End Try
 
-            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.SetName, Enums.MovieModType.Landscape)
+            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.ListTitle, Enums.MovieModType.Landscape)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieSetLandscapeOverwrite) Then
                     Save(a, 0, sURL, doResize)
                     strReturn = a
@@ -1850,7 +1913,7 @@ Public Class Images
             'Catch ex As Exception
             'End Try
 
-            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.SetName, Enums.MovieModType.Poster)
+            For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet.ListTitle, Enums.MovieModType.Poster)
                 If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieSetPosterOverwrite) Then
                     Save(a, 0, sURL, doResize)
                     strReturn = a
@@ -2585,6 +2648,26 @@ Public Class Images
         Return False
     End Function
     ''' <summary>
+    ''' Select the single most preferred Poster image
+    ''' </summary>
+    ''' <param name="ImageList">Source <c>List</c> of <c>MediaContainers.Image</c> holding available posters</param>
+    ''' <param name="imgResult">Single <c>MediaContainers.Image</c>, if preferred image was found</param>
+    ''' <returns><c>True</c> if a preferred image was found, <c>False</c> otherwise</returns>
+    ''' <remarks></remarks>
+    Public Shared Function GetPreferredMovieSetPoster(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
+        If ImageList.Count = 0 Then Return False
+
+        Dim aDesc = From aD As Structures.v3Size In Master.eSize.poster_names Where (aD.index = Master.eSettings.MovieSetPosterPrefSize)
+        If aDesc.Count = 0 Then Return False
+
+        Dim x = From MI As MediaContainers.Image In ImageList Where (MI.Description = aDesc(0).description)
+        If x.Count > 0 Then
+            imgResult = x(0)
+            Return True
+        End If
+        Return False
+    End Function
+    ''' <summary>
     ''' Select the single most preferred Fanart image
     ''' </summary>
     ''' <param name="ImageList">Source <c>List</c> of <c>MediaContainers.Image</c> holding available fanart</param>
@@ -2595,6 +2678,26 @@ Public Class Images
         If ImageList.Count = 0 Then Return False
 
         Dim aDesc = From aD As Structures.v3Size In Master.eSize.backdrop_names Where (aD.index = Master.eSettings.MovieFanartPrefSize)
+        If aDesc.Count = 0 Then Return False
+
+        Dim x = From MI As MediaContainers.Image In ImageList Where (MI.Description = aDesc(0).description)
+        If x.Count > 0 Then
+            imgResult = x(0)
+            Return True
+        End If
+        Return False
+    End Function
+    ''' <summary>
+    ''' Select the single most preferred Fanart image
+    ''' </summary>
+    ''' <param name="ImageList">Source <c>List</c> of <c>MediaContainers.Image</c> holding available fanart</param>
+    ''' <param name="imgResult">Single <c>MediaContainers.Image</c>, if preferred image was found</param>
+    ''' <returns><c>True</c> if a preferred image was found, <c>False</c> otherwise</returns>
+    ''' <remarks></remarks>
+    Public Shared Function GetPreferredMovieSetFanart(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
+        If ImageList.Count = 0 Then Return False
+
+        Dim aDesc = From aD As Structures.v3Size In Master.eSize.backdrop_names Where (aD.index = Master.eSettings.MovieSetFanartPrefSize)
         If aDesc.Count = 0 Then Return False
 
         Dim x = From MI As MediaContainers.Image In ImageList Where (MI.Description = aDesc(0).description)

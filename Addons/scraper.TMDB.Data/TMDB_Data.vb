@@ -22,33 +22,38 @@ Imports System.IO
 Imports EmberAPI
 Imports RestSharp
 Imports WatTmdb
-Imports EmberScraperModule.TMDBg
+Imports EmberMovieScraperModule.TMDBg
 Imports NLog
 Imports System.Diagnostics
 
 Public Class TMDB_Data
     Implements Interfaces.EmberMovieScraperModule_Data
+    Implements Interfaces.EmberMovieSetScraperModule_Data
 
 
 #Region "Fields"
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
-    Public Shared ConfigOptions As New Structures.ScrapeOptions
-    Public Shared ConfigScrapeModifier As New Structures.ScrapeModifier
+    Public Shared ConfigOptions_Movie As New Structures.MovieScrapeOptions
+    Public Shared ConfigOptions_MovieSet As New Structures.MovieSetScrapeOptions
+    Public Shared ConfigScrapeModifier_Movie As New Structures.ScrapeModifier
+    Public Shared ConfigScrapeModifier_MovieSet As New Structures.ScrapeModifier
     Public Shared _AssemblyName As String
 
     Private TMDBId As String
-    'Private IMDBid As String
 
     ''' <summary>
     ''' Scraping Here
     ''' </summary>
     ''' <remarks></remarks>
     Private strPrivateAPIKey As String = String.Empty
-    Private _MySettings As New sMySettings
+    Private _MySettings_Movie As New sMySettings_Movie
+    Private _MySettings_MovieSet As New sMySettings_MovieSet
     Private _TMDBg As TMDBg.Scraper
     Private _Name As String = "TMDB_Data"
-    Private _ScraperEnabled As Boolean = False
-    Private _setup As frmTMDBInfoSettingsHolder
+    Private _ScraperEnabled_Movie As Boolean = False
+    Private _ScraperEnabled_MovieSet As Boolean = False
+    Private _setup_Movie As frmTMDBInfoSettingsHolder
+    Private _setup_MovieSet As frmTMDBInfoSettingsHolder_MovieSet
     Private _TMDBConf As V3.TmdbConfiguration
     Private _TMDBConfE As V3.TmdbConfiguration
     Private _TMDBApi As V3.Tmdb 'preferred language
@@ -59,36 +64,54 @@ Public Class TMDB_Data
 
 #Region "Events"
 
-    Public Event ModuleSettingsChanged() Implements Interfaces.EmberMovieScraperModule_Data.ModuleSettingsChanged
+    Public Event ModuleSettingsChanged_Movie() Implements Interfaces.EmberMovieScraperModule_Data.ModuleSettingsChanged
 
-    Public Event MovieScraperEvent(ByVal eType As Enums.MovieScraperEventType, ByVal Parameter As Object) Implements Interfaces.EmberMovieScraperModule_Data.MovieScraperEvent
+    Public Event ScraperEvent_Movie(ByVal eType As Enums.MovieScraperEventType, ByVal Parameter As Object) Implements Interfaces.EmberMovieScraperModule_Data.ScraperEvent
 
-    Public Event SetupScraperChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements Interfaces.EmberMovieScraperModule_Data.ScraperSetupChanged
+    Public Event ScraperSetupChanged_Movie(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements Interfaces.EmberMovieScraperModule_Data.ScraperSetupChanged
 
-    Public Event SetupNeedsRestart() Implements Interfaces.EmberMovieScraperModule_Data.SetupNeedsRestart
+    Public Event SetupNeedsRestart_Movie() Implements Interfaces.EmberMovieScraperModule_Data.SetupNeedsRestart
+
+
+    Public Event ModuleSettingsChanged_MovieSet() Implements Interfaces.EmberMovieSetScraperModule_Data.ModuleSettingsChanged
+
+    Public Event ScraperEvent_MovieSet(ByVal eType As Enums.MovieSetScraperEventType, ByVal Parameter As Object) Implements Interfaces.EmberMovieSetScraperModule_Data.ScraperEvent
+
+    Public Event ScraperSetupChanged_MovieSet(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements Interfaces.EmberMovieSetScraperModule_Data.ScraperSetupChanged
+
+    Public Event SetupNeedsRestart_MovieSet() Implements Interfaces.EmberMovieSetScraperModule_Data.SetupNeedsRestart
 
 #End Region 'Events
 
 #Region "Properties"
 
-    ReadOnly Property ModuleName() As String Implements Interfaces.EmberMovieScraperModule_Data.ModuleName
+    ReadOnly Property ModuleName() As String Implements Interfaces.EmberMovieScraperModule_Data.ModuleName, Interfaces.EmberMovieSetScraperModule_Data.ModuleName
         Get
             Return _Name
         End Get
     End Property
 
-    ReadOnly Property ModuleVersion() As String Implements Interfaces.EmberMovieScraperModule_Data.ModuleVersion
+    ReadOnly Property ModuleVersion() As String Implements Interfaces.EmberMovieScraperModule_Data.ModuleVersion, Interfaces.EmberMovieSetScraperModule_Data.ModuleVersion
         Get
             Return System.Diagnostics.FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly.Location).FileVersion.ToString
         End Get
     End Property
 
-    Property ScraperEnabled() As Boolean Implements Interfaces.EmberMovieScraperModule_Data.ScraperEnabled
+    Property ScraperEnabled_Movie() As Boolean Implements Interfaces.EmberMovieScraperModule_Data.ScraperEnabled
         Get
-            Return _ScraperEnabled
+            Return _ScraperEnabled_Movie
         End Get
         Set(ByVal value As Boolean)
-            _ScraperEnabled = value
+            _ScraperEnabled_Movie = value
+        End Set
+    End Property
+
+    Property ScraperEnabled_MovieSet() As Boolean Implements Interfaces.EmberMovieSetScraperModule_Data.ScraperEnabled
+        Get
+            Return _ScraperEnabled_Movie
+        End Get
+        Set(ByVal value As Boolean)
+            _ScraperEnabled_Movie = value
         End Set
     End Property
 
@@ -96,28 +119,37 @@ Public Class TMDB_Data
 
 #Region "Methods"
 
-    Private Sub Handle_ModuleSettingsChanged()
-        RaiseEvent ModuleSettingsChanged()
+    Private Sub Handle_ModuleSettingsChanged_Movie()
+        RaiseEvent ModuleSettingsChanged_Movie()
     End Sub
 
-    Private Sub Handle_PostModuleSettingsChanged()
-        RaiseEvent ModuleSettingsChanged()
+    Private Sub Handle_ModuleSettingsChanged_MovieSet()
+        RaiseEvent ModuleSettingsChanged_MovieSet()
     End Sub
 
-    Private Sub Handle_SetupNeedsRestart()
-        RaiseEvent SetupNeedsRestart()
+    Private Sub Handle_SetupNeedsRestart_Movie()
+        RaiseEvent SetupNeedsRestart_Movie()
     End Sub
 
-    Private Sub Handle_SetupScraperChanged(ByVal state As Boolean, ByVal difforder As Integer)
-        ScraperEnabled = state
-        RaiseEvent SetupScraperChanged(String.Concat(Me._Name, "Scraper"), state, difforder)
+    Private Sub Handle_SetupNeedsRestart_MovieSet()
+        RaiseEvent SetupNeedsRestart_MovieSet()
     End Sub
 
-    Sub Init(ByVal sAssemblyName As String) Implements Interfaces.EmberMovieScraperModule_Data.Init
+    Private Sub Handle_SetupScraperChanged_Movie(ByVal state As Boolean, ByVal difforder As Integer)
+        ScraperEnabled_Movie = state
+        RaiseEvent ScraperSetupChanged_Movie(String.Concat(Me._Name, "Scraper"), state, difforder)
+    End Sub
+
+    Private Sub Handle_SetupScraperChanged_MovieSet(ByVal state As Boolean, ByVal difforder As Integer)
+        ScraperEnabled_MovieSet = state
+        RaiseEvent ScraperSetupChanged_MovieSet(String.Concat(Me._Name, "Scraper"), state, difforder)
+    End Sub
+
+    Sub Init_Movie(ByVal sAssemblyName As String) Implements Interfaces.EmberMovieScraperModule_Data.Init
         _AssemblyName = sAssemblyName
-        LoadSettings()
+        LoadSettings_Movie()
         'Must be after Load settings to retrieve the correct API key
-        _TMDBApi = New WatTmdb.V3.Tmdb(_MySettings.TMDBAPIKey, _MySettings.TMDBLanguage)
+        _TMDBApi = New WatTmdb.V3.Tmdb(_MySettings_Movie.TMDBAPIKey, _MySettings_Movie.TMDBLanguage)
         If IsNothing(_TMDBApi) Then
             logger.Error(Master.eLang.GetString(938, "TheMovieDB API is missing or not valid"), _TMDBApi.Error.status_message)
         Else
@@ -126,171 +158,256 @@ Public Class TMDB_Data
             End If
         End If
         _TMDBConf = _TMDBApi.GetConfiguration()
-        _TMDBApiE = New WatTmdb.V3.Tmdb(_MySettings.TMDBAPIKey)
+        _TMDBApiE = New WatTmdb.V3.Tmdb(_MySettings_Movie.TMDBAPIKey)
         _TMDBConfE = _TMDBApiE.GetConfiguration()
-        _TMDBApiA = New WatTmdb.V3.Tmdb(_MySettings.TMDBAPIKey, "")
+        _TMDBApiA = New WatTmdb.V3.Tmdb(_MySettings_Movie.TMDBAPIKey, "")
         _TMDBg = New TMDBg.Scraper(_TMDBConf, _TMDBConfE, _TMDBApi, _TMDBApiE, _TMDBApiA)
     End Sub
 
-    Function InjectSetupScraper() As Containers.SettingsPanel Implements Interfaces.EmberMovieScraperModule_Data.InjectSetupScraper
-        Dim SPanel As New Containers.SettingsPanel
-        _setup = New frmTMDBInfoSettingsHolder
-        LoadSettings()
-        _setup.API = _setup.txtTMDBApiKey.Text
-        _setup.Lang = _setup.cbTMDBPrefLanguage.Text
-        _setup.cbEnabled.Checked = _ScraperEnabled
-        _setup.cbTMDBPrefLanguage.Text = _MySettings.TMDBLanguage
-        _setup.chkCast.Checked = ConfigOptions.bFullCast
-        _setup.chkCollection.Checked = ConfigOptions.bCollection
-        _setup.chkCountry.Checked = ConfigOptions.bCountry
-        _setup.chkCrew.Checked = ConfigOptions.bFullCrew
-        _setup.chkFallBackEng.Checked = _MySettings.FallBackEng
-        _setup.chkGenre.Checked = ConfigOptions.bGenre
-        _setup.chkGetAdultItems.Checked = _MySettings.GetAdultItems
-        _setup.chkMPAA.Checked = ConfigOptions.bMPAA
-        _setup.chkPlot.Checked = ConfigOptions.bPlot
-        _setup.chkRating.Checked = ConfigOptions.bRating
-        _setup.chkRelease.Checked = ConfigOptions.bRelease
-        _setup.chkRuntime.Checked = ConfigOptions.bRuntime
-        _setup.chkStudio.Checked = ConfigOptions.bStudio
-        _setup.chkCleanPlotOutline.Checked = ConfigOptions.bCleanPlotOutline
-        _setup.chkTagline.Checked = ConfigOptions.bTagline
-        _setup.chkTitle.Checked = ConfigOptions.bTitle
-        _setup.chkTrailer.Checked = ConfigOptions.bTrailer
-        _setup.chkVotes.Checked = ConfigOptions.bVotes
-        _setup.chkYear.Checked = ConfigOptions.bYear
-        _setup.txtTMDBApiKey.Text = strPrivateAPIKey
-        _setup.orderChanged()
+    Sub Init_MovieSet(ByVal sAssemblyName As String) Implements Interfaces.EmberMovieSetScraperModule_Data.Init
+        _AssemblyName = sAssemblyName
+        LoadSettings_MovieSet()
+        'Must be after Load settings to retrieve the correct API key
+        _TMDBApi = New WatTmdb.V3.Tmdb(_MySettings_MovieSet.TMDBAPIKey, _MySettings_MovieSet.TMDBLanguage)
+        If IsNothing(_TMDBApi) Then
+            logger.Error(Master.eLang.GetString(938, "TheMovieDB API is missing or not valid"), _TMDBApi.Error.status_message)
+        Else
+            If Not IsNothing(_TMDBApi.Error) AndAlso _TMDBApi.Error.status_message.Length > 0 Then
+                logger.Error(_TMDBApi.Error.status_message, _TMDBApi.Error.status_code.ToString())
+            End If
+        End If
+        _TMDBConf = _TMDBApi.GetConfiguration()
+        _TMDBApiE = New WatTmdb.V3.Tmdb(_MySettings_MovieSet.TMDBAPIKey)
+        _TMDBConfE = _TMDBApiE.GetConfiguration()
+        _TMDBApiA = New WatTmdb.V3.Tmdb(_MySettings_MovieSet.TMDBAPIKey, "")
+        _TMDBg = New TMDBg.Scraper(_TMDBConf, _TMDBConfE, _TMDBApi, _TMDBApiE, _TMDBApiA)
+    End Sub
 
-        SPanel.Name = String.Concat(Me._Name, "Scraper")
+    Function InjectSetupScraper_Movie() As Containers.SettingsPanel Implements Interfaces.EmberMovieScraperModule_Data.InjectSetupScraper
+        Dim SPanel As New Containers.SettingsPanel
+        _setup_Movie = New frmTMDBInfoSettingsHolder
+        LoadSettings_Movie()
+        _setup_Movie.API = _setup_Movie.txtTMDBApiKey.Text
+        _setup_Movie.Lang = _setup_Movie.cbTMDBPrefLanguage.Text
+        _setup_Movie.cbEnabled.Checked = _ScraperEnabled_Movie
+        _setup_Movie.cbTMDBPrefLanguage.Text = _MySettings_Movie.TMDBLanguage
+        _setup_Movie.chkCast.Checked = ConfigOptions_Movie.bFullCast
+        _setup_Movie.chkCollection.Checked = ConfigOptions_Movie.bCollection
+        _setup_Movie.chkCountry.Checked = ConfigOptions_Movie.bCountry
+        _setup_Movie.chkCrew.Checked = ConfigOptions_Movie.bFullCrew
+        _setup_Movie.chkFallBackEng.Checked = _MySettings_Movie.FallBackEng
+        _setup_Movie.chkGenre.Checked = ConfigOptions_Movie.bGenre
+        _setup_Movie.chkGetAdultItems.Checked = _MySettings_Movie.GetAdultItems
+        _setup_Movie.chkMPAA.Checked = ConfigOptions_Movie.bMPAA
+        _setup_Movie.chkPlot.Checked = ConfigOptions_Movie.bPlot
+        _setup_Movie.chkRating.Checked = ConfigOptions_Movie.bRating
+        _setup_Movie.chkRelease.Checked = ConfigOptions_Movie.bRelease
+        _setup_Movie.chkRuntime.Checked = ConfigOptions_Movie.bRuntime
+        _setup_Movie.chkStudio.Checked = ConfigOptions_Movie.bStudio
+        _setup_Movie.chkCleanPlotOutline.Checked = ConfigOptions_Movie.bCleanPlotOutline
+        _setup_Movie.chkTagline.Checked = ConfigOptions_Movie.bTagline
+        _setup_Movie.chkTitle.Checked = ConfigOptions_Movie.bTitle
+        _setup_Movie.chkTrailer.Checked = ConfigOptions_Movie.bTrailer
+        _setup_Movie.chkVotes.Checked = ConfigOptions_Movie.bVotes
+        _setup_Movie.chkYear.Checked = ConfigOptions_Movie.bYear
+        _setup_Movie.txtTMDBApiKey.Text = strPrivateAPIKey
+        _setup_Movie.orderChanged()
+
+        SPanel.Name = String.Concat(Me._Name, "MovieScraper")
         SPanel.Text = Master.eLang.GetString(937, "TMDB")
         SPanel.Prefix = "TMDBMovieInfo_"
         SPanel.Order = 110
         SPanel.Parent = "pnlMovieData"
         SPanel.Type = Master.eLang.GetString(36, "Movies")
-        SPanel.ImageIndex = If(_ScraperEnabled, 9, 10)
-        SPanel.Panel = _setup.pnlSettings
-        AddHandler _setup.SetupScraperChanged, AddressOf Handle_SetupScraperChanged
-        AddHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
-        AddHandler _setup.SetupNeedsRestart, AddressOf Handle_SetupNeedsRestart
+        SPanel.ImageIndex = If(_ScraperEnabled_Movie, 9, 10)
+        SPanel.Panel = _setup_Movie.pnlSettings
+        AddHandler _setup_Movie.SetupScraperChanged, AddressOf Handle_SetupScraperChanged_Movie
+        AddHandler _setup_Movie.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged_Movie
+        AddHandler _setup_Movie.SetupNeedsRestart, AddressOf Handle_SetupNeedsRestart_Movie
         Return SPanel
     End Function
 
-    Sub LoadSettings()
-        ConfigOptions.bCast = clsAdvancedSettings.GetBooleanSetting("DoCast", True)
-        ConfigOptions.bCert = clsAdvancedSettings.GetBooleanSetting("DoCert", True)
-        ConfigOptions.bCleanPlotOutline = clsAdvancedSettings.GetBooleanSetting("CleanPlotOutline", True)
-        ConfigOptions.bCollection = clsAdvancedSettings.GetBooleanSetting("DoCollection", True)
-        ConfigOptions.bCountry = clsAdvancedSettings.GetBooleanSetting("DoCountry", True)
-        ConfigOptions.bDirector = clsAdvancedSettings.GetBooleanSetting("DoDirector", True)
-        ConfigOptions.bFullCast = clsAdvancedSettings.GetBooleanSetting("DoFullCast", True)
-        ConfigOptions.bFullCast = clsAdvancedSettings.GetBooleanSetting("FullCast", True)
-        ConfigOptions.bFullCrew = clsAdvancedSettings.GetBooleanSetting("DoFullCrews", True)
-        ConfigOptions.bFullCrew = clsAdvancedSettings.GetBooleanSetting("FullCrew", True)
-        ConfigOptions.bGenre = clsAdvancedSettings.GetBooleanSetting("DoGenres", True)
-        ConfigOptions.bMPAA = clsAdvancedSettings.GetBooleanSetting("DoMPAA", True)
-        ConfigOptions.bMusicBy = clsAdvancedSettings.GetBooleanSetting("DoMusic", True)
-        ConfigOptions.bOtherCrew = clsAdvancedSettings.GetBooleanSetting("DoOtherCrews", True)
-        ConfigOptions.bOutline = clsAdvancedSettings.GetBooleanSetting("DoOutline", True)
-        ConfigOptions.bPlot = clsAdvancedSettings.GetBooleanSetting("DoPlot", True)
-        ConfigOptions.bProducers = clsAdvancedSettings.GetBooleanSetting("DoProducers", True)
-        ConfigOptions.bRating = clsAdvancedSettings.GetBooleanSetting("DoRating", True)
-        ConfigOptions.bRelease = clsAdvancedSettings.GetBooleanSetting("DoRelease", True)
-        ConfigOptions.bRuntime = clsAdvancedSettings.GetBooleanSetting("DoRuntime", True)
-        ConfigOptions.bStudio = clsAdvancedSettings.GetBooleanSetting("DoStudio", True)
-        ConfigOptions.bTagline = clsAdvancedSettings.GetBooleanSetting("DoTagline", True)
-        ConfigOptions.bTitle = clsAdvancedSettings.GetBooleanSetting("DoTitle", True)
-        ConfigOptions.bTop250 = clsAdvancedSettings.GetBooleanSetting("DoTop250", True)
-        ConfigOptions.bTrailer = clsAdvancedSettings.GetBooleanSetting("DoTrailer", True)
-        ConfigOptions.bVotes = clsAdvancedSettings.GetBooleanSetting("DoVotes", True)
-        ConfigOptions.bWriters = clsAdvancedSettings.GetBooleanSetting("DoWriters", True)
-        ConfigOptions.bYear = clsAdvancedSettings.GetBooleanSetting("DoYear", True)
+    Function InjectSetupScraper_MovieSet() As Containers.SettingsPanel Implements Interfaces.EmberMovieSetScraperModule_Data.InjectSetupScraper
+        Dim SPanel As New Containers.SettingsPanel
+        _setup_MovieSet = New frmTMDBInfoSettingsHolder_MovieSet
+        LoadSettings_MovieSet()
+        _setup_MovieSet.API = _setup_MovieSet.txtTMDBApiKey.Text
+        _setup_MovieSet.Lang = _setup_MovieSet.cbTMDBPrefLanguage.Text
+        _setup_MovieSet.cbEnabled.Checked = _ScraperEnabled_MovieSet
+        _setup_MovieSet.cbTMDBPrefLanguage.Text = _MySettings_MovieSet.TMDBLanguage
+        _setup_MovieSet.chkFallBackEng.Checked = _MySettings_MovieSet.FallBackEng
+        _setup_MovieSet.chkPlot.Checked = ConfigOptions_MovieSet.bPlot
+        _setup_MovieSet.chkTitle.Checked = ConfigOptions_MovieSet.bTitle
+        _setup_MovieSet.txtTMDBApiKey.Text = strPrivateAPIKey
+        _setup_MovieSet.orderChanged()
+
+        SPanel.Name = String.Concat(Me._Name, "MovieSetScraper")
+        SPanel.Text = Master.eLang.GetString(937, "TMDB")
+        SPanel.Prefix = "TMDBMovieSetInfo_"
+        SPanel.Order = 110
+        SPanel.Parent = "pnlMovieSetData"
+        SPanel.Type = Master.eLang.GetString(1203, "MovieSets")
+        SPanel.ImageIndex = If(_ScraperEnabled_Movie, 9, 10)
+        SPanel.Panel = _setup_MovieSet.pnlSettings
+        AddHandler _setup_MovieSet.SetupScraperChanged, AddressOf Handle_SetupScraperChanged_MovieSet
+        AddHandler _setup_MovieSet.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged_MovieSet
+        AddHandler _setup_MovieSet.SetupNeedsRestart, AddressOf Handle_SetupNeedsRestart_MovieSet
+        Return SPanel
+    End Function
+
+    Sub LoadSettings_Movie()
+        ConfigOptions_Movie.bCast = clsAdvancedSettings.GetBooleanSetting("DoCast", True)
+        ConfigOptions_Movie.bCert = clsAdvancedSettings.GetBooleanSetting("DoCert", True)
+        ConfigOptions_Movie.bCleanPlotOutline = clsAdvancedSettings.GetBooleanSetting("CleanPlotOutline", True)
+        ConfigOptions_Movie.bCollection = clsAdvancedSettings.GetBooleanSetting("DoCollection", True)
+        ConfigOptions_Movie.bCountry = clsAdvancedSettings.GetBooleanSetting("DoCountry", True)
+        ConfigOptions_Movie.bDirector = clsAdvancedSettings.GetBooleanSetting("DoDirector", True)
+        ConfigOptions_Movie.bFullCast = clsAdvancedSettings.GetBooleanSetting("DoFullCast", True)
+        ConfigOptions_Movie.bFullCast = clsAdvancedSettings.GetBooleanSetting("FullCast", True)
+        ConfigOptions_Movie.bFullCrew = clsAdvancedSettings.GetBooleanSetting("DoFullCrews", True)
+        ConfigOptions_Movie.bFullCrew = clsAdvancedSettings.GetBooleanSetting("FullCrew", True)
+        ConfigOptions_Movie.bGenre = clsAdvancedSettings.GetBooleanSetting("DoGenres", True)
+        ConfigOptions_Movie.bMPAA = clsAdvancedSettings.GetBooleanSetting("DoMPAA", True)
+        ConfigOptions_Movie.bMusicBy = clsAdvancedSettings.GetBooleanSetting("DoMusic", True)
+        ConfigOptions_Movie.bOtherCrew = clsAdvancedSettings.GetBooleanSetting("DoOtherCrews", True)
+        ConfigOptions_Movie.bOutline = clsAdvancedSettings.GetBooleanSetting("DoOutline", True)
+        ConfigOptions_Movie.bPlot = clsAdvancedSettings.GetBooleanSetting("DoPlot", True)
+        ConfigOptions_Movie.bProducers = clsAdvancedSettings.GetBooleanSetting("DoProducers", True)
+        ConfigOptions_Movie.bRating = clsAdvancedSettings.GetBooleanSetting("DoRating", True)
+        ConfigOptions_Movie.bRelease = clsAdvancedSettings.GetBooleanSetting("DoRelease", True)
+        ConfigOptions_Movie.bRuntime = clsAdvancedSettings.GetBooleanSetting("DoRuntime", True)
+        ConfigOptions_Movie.bStudio = clsAdvancedSettings.GetBooleanSetting("DoStudio", True)
+        ConfigOptions_Movie.bTagline = clsAdvancedSettings.GetBooleanSetting("DoTagline", True)
+        ConfigOptions_Movie.bTitle = clsAdvancedSettings.GetBooleanSetting("DoTitle", True)
+        ConfigOptions_Movie.bTop250 = clsAdvancedSettings.GetBooleanSetting("DoTop250", True)
+        ConfigOptions_Movie.bTrailer = clsAdvancedSettings.GetBooleanSetting("DoTrailer", True)
+        ConfigOptions_Movie.bVotes = clsAdvancedSettings.GetBooleanSetting("DoVotes", True)
+        ConfigOptions_Movie.bWriters = clsAdvancedSettings.GetBooleanSetting("DoWriters", True)
+        ConfigOptions_Movie.bYear = clsAdvancedSettings.GetBooleanSetting("DoYear", True)
 
         strPrivateAPIKey = clsAdvancedSettings.GetSetting("TMDBAPIKey", "")
-        _MySettings.FallBackEng = clsAdvancedSettings.GetBooleanSetting("FallBackEn", False)
-        _MySettings.GetAdultItems = clsAdvancedSettings.GetBooleanSetting("GetAdultItems", False)
-        _MySettings.TMDBAPIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "44810eefccd9cb1fa1d57e7b0d67b08d", strPrivateAPIKey)
-        _MySettings.TMDBLanguage = clsAdvancedSettings.GetSetting("TMDBLanguage", "en")
-        ConfigScrapeModifier.DoSearch = True
-        ConfigScrapeModifier.Meta = True
-        ConfigScrapeModifier.NFO = True
+        _MySettings_Movie.FallBackEng = clsAdvancedSettings.GetBooleanSetting("FallBackEn", False)
+        _MySettings_Movie.GetAdultItems = clsAdvancedSettings.GetBooleanSetting("GetAdultItems", False)
+        _MySettings_Movie.TMDBAPIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "44810eefccd9cb1fa1d57e7b0d67b08d", strPrivateAPIKey)
+        _MySettings_Movie.TMDBLanguage = clsAdvancedSettings.GetSetting("TMDBLanguage", "en")
+        ConfigScrapeModifier_Movie.DoSearch = True
+        ConfigScrapeModifier_Movie.Meta = True
+        ConfigScrapeModifier_Movie.NFO = True
     End Sub
 
-    Sub SaveSettings()
+    Sub LoadSettings_MovieSet()
+        ConfigOptions_MovieSet.bPlot = clsAdvancedSettings.GetBooleanSetting("DoPlot_MovieSet", True)
+        ConfigOptions_MovieSet.bTitle = clsAdvancedSettings.GetBooleanSetting("DoTitle_MovieSet", True)
+
+        strPrivateAPIKey = clsAdvancedSettings.GetSetting("TMDBAPIKey_MovieSet", "")
+        _MySettings_MovieSet.FallBackEng = clsAdvancedSettings.GetBooleanSetting("FallBackEn_MovieSet", False)
+        _MySettings_MovieSet.GetAdultItems = clsAdvancedSettings.GetBooleanSetting("GetAdultItems_MovieSet", False)
+        _MySettings_MovieSet.TMDBAPIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "44810eefccd9cb1fa1d57e7b0d67b08d", strPrivateAPIKey)
+        _MySettings_MovieSet.TMDBLanguage = clsAdvancedSettings.GetSetting("TMDBLanguage_MovieSet", "en")
+        ConfigScrapeModifier_Movie.DoSearch = True
+        ConfigScrapeModifier_Movie.Meta = False
+        ConfigScrapeModifier_Movie.NFO = True
+    End Sub
+
+    Sub SaveSettings_Movie()
         Using settings = New clsAdvancedSettings()
-            settings.SetBooleanSetting("CleanPlotOutline", ConfigOptions.bCleanPlotOutline)
-            settings.SetBooleanSetting("DoCast", ConfigOptions.bCast)
-            settings.SetBooleanSetting("DoCert", ConfigOptions.bCert)
-            settings.SetBooleanSetting("DoCollection", ConfigOptions.bCollection)
-            settings.SetBooleanSetting("DoCountry", ConfigOptions.bCountry)
-            settings.SetBooleanSetting("DoDirector", ConfigOptions.bDirector)
-            settings.SetBooleanSetting("DoFanart", ConfigScrapeModifier.Fanart)
-            settings.SetBooleanSetting("DoFullCast", ConfigOptions.bFullCast)
-            settings.SetBooleanSetting("DoFullCrews", ConfigOptions.bFullCrew)
-            settings.SetBooleanSetting("DoGenres", ConfigOptions.bGenre)
-            settings.SetBooleanSetting("DoMPAA", ConfigOptions.bMPAA)
-            settings.SetBooleanSetting("DoMusic", ConfigOptions.bMusicBy)
-            settings.SetBooleanSetting("DoOtherCrews", ConfigOptions.bOtherCrew)
-            settings.SetBooleanSetting("DoOutline", ConfigOptions.bOutline)
-            settings.SetBooleanSetting("DoPlot", ConfigOptions.bPlot)
-            settings.SetBooleanSetting("DoPoster", ConfigScrapeModifier.Poster)
-            settings.SetBooleanSetting("DoProducers", ConfigOptions.bProducers)
-            settings.SetBooleanSetting("DoRating", ConfigOptions.bRating)
-            settings.SetBooleanSetting("DoRelease", ConfigOptions.bRelease)
-            settings.SetBooleanSetting("DoRuntime", ConfigOptions.bRuntime)
-            settings.SetBooleanSetting("DoStudio", ConfigOptions.bStudio)
-            settings.SetBooleanSetting("DoTagline", ConfigOptions.bTagline)
-            settings.SetBooleanSetting("DoTitle", ConfigOptions.bTitle)
-            settings.SetBooleanSetting("DoTop250", ConfigOptions.bTop250)
-            settings.SetBooleanSetting("DoTrailer", ConfigOptions.bTrailer)
-            settings.SetBooleanSetting("DoVotes", ConfigOptions.bVotes)
-            settings.SetBooleanSetting("DoWriters", ConfigOptions.bWriters)
-            settings.SetBooleanSetting("DoYear", ConfigOptions.bYear)
-            settings.SetBooleanSetting("FallBackEn", _MySettings.FallBackEng)
-            settings.SetBooleanSetting("FullCast", ConfigOptions.bFullCast)
-            settings.SetBooleanSetting("FullCrew", ConfigOptions.bFullCrew)
-            settings.SetBooleanSetting("GetAdultItems", _MySettings.GetAdultItems)
-            settings.SetSetting("TMDBAPIKey", _setup.txtTMDBApiKey.Text)
-            settings.SetSetting("TMDBLanguage", _MySettings.TMDBLanguage)
+            settings.SetBooleanSetting("CleanPlotOutline", ConfigOptions_Movie.bCleanPlotOutline)
+            settings.SetBooleanSetting("DoCast", ConfigOptions_Movie.bCast)
+            settings.SetBooleanSetting("DoCert", ConfigOptions_Movie.bCert)
+            settings.SetBooleanSetting("DoCollection", ConfigOptions_Movie.bCollection)
+            settings.SetBooleanSetting("DoCountry", ConfigOptions_Movie.bCountry)
+            settings.SetBooleanSetting("DoDirector", ConfigOptions_Movie.bDirector)
+            settings.SetBooleanSetting("DoFanart", ConfigScrapeModifier_Movie.Fanart)
+            settings.SetBooleanSetting("DoFullCast", ConfigOptions_Movie.bFullCast)
+            settings.SetBooleanSetting("DoFullCrews", ConfigOptions_Movie.bFullCrew)
+            settings.SetBooleanSetting("DoGenres", ConfigOptions_Movie.bGenre)
+            settings.SetBooleanSetting("DoMPAA", ConfigOptions_Movie.bMPAA)
+            settings.SetBooleanSetting("DoMusic", ConfigOptions_Movie.bMusicBy)
+            settings.SetBooleanSetting("DoOtherCrews", ConfigOptions_Movie.bOtherCrew)
+            settings.SetBooleanSetting("DoOutline", ConfigOptions_Movie.bOutline)
+            settings.SetBooleanSetting("DoPlot", ConfigOptions_Movie.bPlot)
+            settings.SetBooleanSetting("DoPoster", ConfigScrapeModifier_Movie.Poster)
+            settings.SetBooleanSetting("DoProducers", ConfigOptions_Movie.bProducers)
+            settings.SetBooleanSetting("DoRating", ConfigOptions_Movie.bRating)
+            settings.SetBooleanSetting("DoRelease", ConfigOptions_Movie.bRelease)
+            settings.SetBooleanSetting("DoRuntime", ConfigOptions_Movie.bRuntime)
+            settings.SetBooleanSetting("DoStudio", ConfigOptions_Movie.bStudio)
+            settings.SetBooleanSetting("DoTagline", ConfigOptions_Movie.bTagline)
+            settings.SetBooleanSetting("DoTitle", ConfigOptions_Movie.bTitle)
+            settings.SetBooleanSetting("DoTop250", ConfigOptions_Movie.bTop250)
+            settings.SetBooleanSetting("DoTrailer", ConfigOptions_Movie.bTrailer)
+            settings.SetBooleanSetting("DoVotes", ConfigOptions_Movie.bVotes)
+            settings.SetBooleanSetting("DoWriters", ConfigOptions_Movie.bWriters)
+            settings.SetBooleanSetting("DoYear", ConfigOptions_Movie.bYear)
+            settings.SetBooleanSetting("FallBackEn", _MySettings_Movie.FallBackEng)
+            settings.SetBooleanSetting("FullCast", ConfigOptions_Movie.bFullCast)
+            settings.SetBooleanSetting("FullCrew", ConfigOptions_Movie.bFullCrew)
+            settings.SetBooleanSetting("GetAdultItems", _MySettings_Movie.GetAdultItems)
+            settings.SetSetting("TMDBAPIKey", _setup_Movie.txtTMDBApiKey.Text)
+            settings.SetSetting("TMDBLanguage", _MySettings_Movie.TMDBLanguage)
         End Using
     End Sub
 
-    Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.EmberMovieScraperModule_Data.SaveSetupScraper
-        ConfigOptions.bCast = _setup.chkCast.Checked
-        ConfigOptions.bCert = ConfigOptions.bMPAA
-        ConfigOptions.bCleanPlotOutline = _setup.chkCleanPlotOutline.Checked
-        ConfigOptions.bCollection = _setup.chkCollection.Checked
-        ConfigOptions.bCountry = _setup.chkCountry.Checked
-        ConfigOptions.bDirector = _setup.chkCrew.Checked
-        ConfigOptions.bFullCast = _setup.chkCast.Checked
-        ConfigOptions.bFullCrew = _setup.chkCrew.Checked
-        ConfigOptions.bGenre = _setup.chkGenre.Checked
-        ConfigOptions.bMPAA = _setup.chkMPAA.Checked
-        ConfigOptions.bMusicBy = _setup.chkCrew.Checked
-        ConfigOptions.bOtherCrew = _setup.chkCrew.Checked
-        ConfigOptions.bOutline = _setup.chkPlot.Checked
-        ConfigOptions.bPlot = _setup.chkPlot.Checked
-        ConfigOptions.bProducers = _setup.chkCrew.Checked
-        ConfigOptions.bRating = _setup.chkRating.Checked
-        ConfigOptions.bRelease = _setup.chkRelease.Checked
-        ConfigOptions.bRuntime = _setup.chkRuntime.Checked
-        ConfigOptions.bStudio = _setup.chkStudio.Checked
-        ConfigOptions.bTagline = _setup.chkTagline.Checked
-        ConfigOptions.bTitle = _setup.chkTitle.Checked
-        ConfigOptions.bTop250 = False
-        ConfigOptions.bTrailer = _setup.chkTrailer.Checked
-        ConfigOptions.bVotes = _setup.chkVotes.Checked
-        ConfigOptions.bWriters = _setup.chkCrew.Checked
-        ConfigOptions.bYear = _setup.chkYear.Checked
-        _MySettings.FallBackEng = _setup.chkFallBackEng.Checked
-        _MySettings.GetAdultItems = _setup.chkGetAdultItems.Checked
-        _MySettings.TMDBLanguage = _setup.cbTMDBPrefLanguage.Text
-        SaveSettings()
+    Sub SaveSettings_MovieSet()
+        Using settings = New clsAdvancedSettings()
+            settings.SetBooleanSetting("DoPlot_MovieSet", ConfigOptions_MovieSet.bPlot)
+            settings.SetBooleanSetting("DoTitle_MovieSet", ConfigOptions_MovieSet.bTitle)
+            settings.SetSetting("TMDBAPIKey_MovieSet", _setup_MovieSet.txtTMDBApiKey.Text)
+            settings.SetSetting("TMDBLanguage_MovieSet", _MySettings_MovieSet.TMDBLanguage)
+        End Using
+    End Sub
+
+    Sub SaveSetupScraper_Movie(ByVal DoDispose As Boolean) Implements Interfaces.EmberMovieScraperModule_Data.SaveSetupScraper
+        ConfigOptions_Movie.bCast = _setup_Movie.chkCast.Checked
+        ConfigOptions_Movie.bCert = ConfigOptions_Movie.bMPAA
+        ConfigOptions_Movie.bCleanPlotOutline = _setup_Movie.chkCleanPlotOutline.Checked
+        ConfigOptions_Movie.bCollection = _setup_Movie.chkCollection.Checked
+        ConfigOptions_Movie.bCountry = _setup_Movie.chkCountry.Checked
+        ConfigOptions_Movie.bDirector = _setup_Movie.chkCrew.Checked
+        ConfigOptions_Movie.bFullCast = _setup_Movie.chkCast.Checked
+        ConfigOptions_Movie.bFullCrew = _setup_Movie.chkCrew.Checked
+        ConfigOptions_Movie.bGenre = _setup_Movie.chkGenre.Checked
+        ConfigOptions_Movie.bMPAA = _setup_Movie.chkMPAA.Checked
+        ConfigOptions_Movie.bMusicBy = _setup_Movie.chkCrew.Checked
+        ConfigOptions_Movie.bOtherCrew = _setup_Movie.chkCrew.Checked
+        ConfigOptions_Movie.bOutline = _setup_Movie.chkPlot.Checked
+        ConfigOptions_Movie.bPlot = _setup_Movie.chkPlot.Checked
+        ConfigOptions_Movie.bProducers = _setup_Movie.chkCrew.Checked
+        ConfigOptions_Movie.bRating = _setup_Movie.chkRating.Checked
+        ConfigOptions_Movie.bRelease = _setup_Movie.chkRelease.Checked
+        ConfigOptions_Movie.bRuntime = _setup_Movie.chkRuntime.Checked
+        ConfigOptions_Movie.bStudio = _setup_Movie.chkStudio.Checked
+        ConfigOptions_Movie.bTagline = _setup_Movie.chkTagline.Checked
+        ConfigOptions_Movie.bTitle = _setup_Movie.chkTitle.Checked
+        ConfigOptions_Movie.bTop250 = False
+        ConfigOptions_Movie.bTrailer = _setup_Movie.chkTrailer.Checked
+        ConfigOptions_Movie.bVotes = _setup_Movie.chkVotes.Checked
+        ConfigOptions_Movie.bWriters = _setup_Movie.chkCrew.Checked
+        ConfigOptions_Movie.bYear = _setup_Movie.chkYear.Checked
+        _MySettings_Movie.FallBackEng = _setup_Movie.chkFallBackEng.Checked
+        _MySettings_Movie.GetAdultItems = _setup_Movie.chkGetAdultItems.Checked
+        _MySettings_Movie.TMDBLanguage = _setup_Movie.cbTMDBPrefLanguage.Text
+        SaveSettings_Movie()
         'ModulesManager.Instance.SaveSettings()
         If DoDispose Then
-            RemoveHandler _setup.SetupScraperChanged, AddressOf Handle_SetupScraperChanged
-            RemoveHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
-            _setup.Dispose()
+            RemoveHandler _setup_MovieSet.SetupScraperChanged, AddressOf Handle_SetupScraperChanged_Movie
+            RemoveHandler _setup_MovieSet.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged_Movie
+            _setup_Movie.Dispose()
+        End If
+    End Sub
+
+    Sub SaveSetupScraper_MovieSet(ByVal DoDispose As Boolean) Implements Interfaces.EmberMovieSetScraperModule_Data.SaveSetupScraper
+        ConfigOptions_MovieSet.bPlot = _setup_MovieSet.chkPlot.Checked
+        ConfigOptions_MovieSet.bTitle = _setup_MovieSet.chkTitle.Checked
+        _MySettings_MovieSet.FallBackEng = _setup_MovieSet.chkFallBackEng.Checked
+        _MySettings_MovieSet.GetAdultItems = _setup_MovieSet.chkGetAdultItems.Checked
+        _MySettings_MovieSet.TMDBLanguage = _setup_MovieSet.cbTMDBPrefLanguage.Text
+        SaveSettings_MovieSet()
+        'ModulesManager.Instance.SaveSettings()
+        If DoDispose Then
+            RemoveHandler _setup_MovieSet.SetupScraperChanged, AddressOf Handle_SetupScraperChanged_Movieset
+            RemoveHandler _setup_MovieSet.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged_MovieSet
+            _setup_MovieSet.Dispose()
         End If
     End Sub
 
@@ -298,7 +415,7 @@ Public Class TMDB_Data
         Return Nothing
     End Function
 
-    Function GetCollectionID(ByVal sIMDBID As String, ByRef sCollectionID As String) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule_Data.GetCollectionID
+    Function GetCollectionID(ByVal sIMDBID As String, ByRef sCollectionID As String) As Interfaces.ModuleResult Implements Interfaces.EmberMovieSetScraperModule_Data.GetCollectionID
         sCollectionID = _TMDBg.GetMovieCollectionID(sIMDBID)
         If String.IsNullOrEmpty(sCollectionID) Then
             Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
@@ -306,10 +423,10 @@ Public Class TMDB_Data
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
-    Function Scraper(ByRef DBMovie As Structures.DBMovie, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule_Data.Scraper
+    Function Scraper(ByRef DBMovie As Structures.DBMovie, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.MovieScrapeOptions) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule_Data.Scraper
         Dim tTitle As String = String.Empty
         Dim OldTitle As String = DBMovie.Movie.Title
-        Dim filterOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(Options, ConfigOptions)
+        Dim filterOptions As Structures.MovieScrapeOptions = Functions.MovieScrapeOptionsAndAlso(Options, ConfigOptions_Movie)
 
         If IsNothing(_TMDBApi) Then
             logger.Error(Master.eLang.GetString(938, "TheMovieDB API is missing or not valid"), _TMDBApi.Error.status_message)
@@ -335,7 +452,7 @@ Public Class TMDB_Data
         ' why a scraper should initialize the DBMovie structure?
         ' Answer (DanCooper): If you want to CHANGE the movie. For this, all existing (incorrect) information must be deleted.
         If ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.GlobalScrapeMod.DoSearch _
-         AndAlso ModulesManager.Instance.externalDataScrapersModules.OrderBy(Function(y) y.ScraperOrder).FirstOrDefault(Function(e) e.ProcessorModule.ScraperEnabled).AssemblyName = _AssemblyName Then
+         AndAlso ModulesManager.Instance.externalMovieDataScrapersModules.OrderBy(Function(y) y.ScraperOrder).FirstOrDefault(Function(e) e.ProcessorModule.ScraperEnabled).AssemblyName = _AssemblyName Then
             DBMovie.Movie.IMDBID = String.Empty
             DBMovie.RemoveActorThumbs = True
             DBMovie.RemoveBanner = True
@@ -377,7 +494,7 @@ Public Class TMDB_Data
                 'TODO: maybe find another solution.
                 Me._TMDBg = New TMDBg.Scraper(_TMDBConf, _TMDBConfE, _TMDBApi, _TMDBApiE, _TMDBApiA)
 
-                Using dSearch As New dlgTMDBSearchResults(_MySettings, Me._TMDBg)
+                Using dSearch As New dlgTMDBSearchResults(_MySettings_Movie, Me._TMDBg)
                     Dim tmpTitle As String = DBMovie.Movie.Title
                     Dim tmpYear As Integer = CInt(IIf(Not String.IsNullOrEmpty(DBMovie.Movie.Year), DBMovie.Movie.Year, 0))
                     If String.IsNullOrEmpty(tmpTitle) Then
@@ -459,15 +576,156 @@ Public Class TMDB_Data
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
-    Public Sub ScraperOrderChanged() Implements EmberAPI.Interfaces.EmberMovieScraperModule_Data.ScraperOrderChanged
-        _setup.orderChanged()
+    Function Scraper(ByRef DBMovieSet As Structures.DBMovieSet, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.MovieSetScrapeOptions) As Interfaces.ModuleResult Implements Interfaces.EmberMovieSetScraperModule_Data.Scraper
+        Dim tTitle As String = String.Empty
+        Dim OldTitle As String = DBMovieSet.ListTitle
+        Dim filterOptions As Structures.MovieSetScrapeOptions = Functions.MovieSetScrapeOptionsAndAlso(Options, ConfigOptions_MovieSet)
+
+        If IsNothing(_TMDBApi) Then
+            logger.Error(Master.eLang.GetString(938, "TheMovieDB API is missing or not valid"), _TMDBApi.Error.status_message)
+            Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
+        Else
+            If Not IsNothing(_TMDBApi.Error) AndAlso _TMDBApi.Error.status_message.Length > 0 Then
+                logger.Error(_TMDBApi.Error.status_message, _TMDBApi.Error.status_code.ToString())
+                Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
+            End If
+        End If
+
+        If Master.GlobalScrapeMod.NFO AndAlso Not Master.GlobalScrapeMod.DoSearch Then
+            If Not String.IsNullOrEmpty(DBMovieSet.MovieSet.ID) Then
+                _TMDBg.GetMovieSetInfo(DBMovieSet.MovieSet.ID, DBMovieSet.MovieSet, False, filterOptions, False)
+            ElseIf Not ScrapeType = Enums.ScrapeType.SingleScrape Then
+                If Not String.IsNullOrEmpty(DBMovieSet.MovieSet.Title) Then
+                    DBMovieSet.MovieSet = _TMDBg.GetSearchMovieSetInfo(DBMovieSet.MovieSet.Title, DBMovieSet, ScrapeType, filterOptions)
+                End If
+                If String.IsNullOrEmpty(DBMovieSet.MovieSet.ID) Then Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
+            End If
+        End If
+
+        ' why a scraper should initialize the DBMovie structure?
+        ' Answer (DanCooper): If you want to CHANGE the movie. For this, all existing (incorrect) information must be deleted.
+        If ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.GlobalScrapeMod.DoSearch _
+         AndAlso ModulesManager.Instance.externalMovieSetDataScrapersModules.OrderBy(Function(y) y.ScraperOrder).FirstOrDefault(Function(e) e.ProcessorModule.ScraperEnabled).AssemblyName = _AssemblyName Then
+            DBMovieSet.MovieSet.ID = String.Empty
+            DBMovieSet.RemoveBanner = True
+            DBMovieSet.RemoveClearArt = True
+            DBMovieSet.RemoveClearLogo = True
+            DBMovieSet.RemoveDiscArt = True
+            DBMovieSet.RemoveFanart = True
+            DBMovieSet.RemoveLandscape = True
+            DBMovieSet.RemovePoster = True
+            DBMovieSet.BannerPath = String.Empty
+            DBMovieSet.ClearArtPath = String.Empty
+            DBMovieSet.ClearLogoPath = String.Empty
+            DBMovieSet.DiscArtPath = String.Empty
+            DBMovieSet.FanartPath = String.Empty
+            DBMovieSet.LandscapePath = String.Empty
+            DBMovieSet.NfoPath = String.Empty
+            DBMovieSet.PosterPath = String.Empty
+            DBMovieSet.MovieSet.Clear()
+        End If
+
+        If String.IsNullOrEmpty(DBMovieSet.MovieSet.ID) Then
+            Select Case ScrapeType
+                Case Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FullAuto, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.UpdateAuto
+                    Return New Interfaces.ModuleResult With {.breakChain = False}
+            End Select
+            If ScrapeType = Enums.ScrapeType.SingleScrape Then
+
+                'This is a workaround to remove the "TreeView" error on search results window. The problem is that the last search results are still existing in _TMDBg. 
+                'I don't know another way to remove it. It works, It works so far without errors.
+                'TODO: maybe find another solution.
+                Me._TMDBg = New TMDBg.Scraper(_TMDBConf, _TMDBConfE, _TMDBApi, _TMDBApiE, _TMDBApiA)
+
+                Using dSearch As New dlgTMDBSearchResults_MovieSet(_MySettings_MovieSet, Me._TMDBg)
+                    Dim tmpTitle As String = DBMovieSet.MovieSet.Title
+                    If String.IsNullOrEmpty(tmpTitle) Then
+                        tmpTitle = DBMovieSet.ListTitle
+                    End If
+                    If dSearch.ShowDialog(tmpTitle, filterOptions) = Windows.Forms.DialogResult.OK Then
+                        If Not String.IsNullOrEmpty(Master.tmpMovieSet.ID) Then
+                            ' if we changed the ID tipe we need to clear everything and rescrape
+                            ' TODO: check TMDB if IMDB NullOrEmpty
+                            If Not String.IsNullOrEmpty(DBMovieSet.MovieSet.ID) AndAlso Not (DBMovieSet.MovieSet.ID = Master.tmpMovieSet.ID) Then
+                                Master.currMovieSet.RemoveBanner = True
+                                Master.currMovieSet.RemoveClearArt = True
+                                Master.currMovieSet.RemoveClearLogo = True
+                                Master.currMovieSet.RemoveDiscArt = True
+                                Master.currMovieSet.RemoveFanart = True
+                                Master.currMovieSet.RemoveLandscape = True
+                                Master.currMovieSet.RemovePoster = True
+                                Master.currMovieSet.BannerPath = String.Empty
+                                Master.currMovieSet.ClearArtPath = String.Empty
+                                Master.currMovieSet.ClearLogoPath = String.Empty
+                                Master.currMovieSet.DiscArtPath = String.Empty
+                                Master.currMovieSet.FanartPath = String.Empty
+                                Master.currMovieSet.NfoPath = String.Empty
+                                Master.currMovieSet.LandscapePath = String.Empty
+                                Master.currMovieSet.PosterPath = String.Empty
+                            End If
+                            DBMovieSet.MovieSet.ID = Master.tmpMovieSet.ID
+                        End If
+                        If Not String.IsNullOrEmpty(DBMovieSet.MovieSet.ID) AndAlso Master.GlobalScrapeMod.NFO Then
+                            _TMDBg.GetMovieSetInfo(DBMovieSet.MovieSet.ID, DBMovieSet.MovieSet, False, filterOptions, False)
+                        End If
+                    Else
+                        Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
+                    End If
+                End Using
+            End If
+        End If
+
+        If Not String.IsNullOrEmpty(DBMovieSet.MovieSet.Title) Then
+            DBMovieSet.ListTitle = DBMovieSet.MovieSet.Title
+            '    tTitle = StringUtils.FilterTokens(DBMovieSet.MovieSet.Title)
+            '    If Not OldTitle = DBMovieSet.MovieSet.Title OrElse String.IsNullOrEmpty(DBMovieSet.MovieSet.SortTitle) Then DBMovie.Movie.SortTitle = tTitle
+            '    If Master.eSettings.MovieDisplayYear AndAlso Not String.IsNullOrEmpty(DBMovie.Movie.Year) Then
+            '        DBMovie.ListTitle = String.Format("{0} ({1})", tTitle, DBMovie.Movie.Year)
+            '    Else
+            '        DBMovieSet.ListTitle = tTitle
+            '    End If
+            'Else
+            '    If FileUtils.Common.isVideoTS(DBMovie.Filename) Then
+            '        DBMovie.ListTitle = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).Name)
+            '    ElseIf FileUtils.Common.isBDRip(DBMovie.Filename) Then
+            '        DBMovie.ListTitle = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).FullName).Name)
+            '    Else
+            '        If DBMovie.UseFolder AndAlso DBMovie.IsSingle Then
+            '            DBMovie.ListTitle = StringUtils.FilterName(Directory.GetParent(DBMovie.Filename).Name)
+            '        Else
+            '            DBMovie.ListTitle = StringUtils.FilterName(Path.GetFileNameWithoutExtension(DBMovie.Filename))
+            '        End If
+            '    End If
+            '    If Not OldTitle = DBMovie.Movie.Title OrElse String.IsNullOrEmpty(DBMovie.Movie.SortTitle) Then DBMovie.Movie.SortTitle = DBMovie.ListTitle
+        End If
+
+        Return New Interfaces.ModuleResult With {.breakChain = False}
+    End Function
+
+    Public Sub ScraperOrderChanged_Movie() Implements EmberAPI.Interfaces.EmberMovieScraperModule_Data.ScraperOrderChanged
+        _setup_Movie.orderChanged()
+    End Sub
+
+    Public Sub ScraperOrderChanged_MovieSet() Implements EmberAPI.Interfaces.EmberMovieSetScraperModule_Data.ScraperOrderChanged
+        _setup_MovieSet.orderChanged()
     End Sub
 
 #End Region 'Methods
 
 #Region "Nested Types"
 
-    Structure sMySettings
+    Structure sMySettings_Movie
+
+#Region "Fields"
+        Dim FallBackEng As Boolean
+        Dim GetAdultItems As Boolean
+        Dim TMDBAPIKey As String
+        Dim TMDBLanguage As String
+#End Region 'Fields
+
+    End Structure
+
+    Structure sMySettings_MovieSet
 
 #Region "Fields"
         Dim FallBackEng As Boolean

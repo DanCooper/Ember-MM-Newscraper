@@ -35,7 +35,8 @@ Public Class Master
     Public Shared currMovie As New Structures.DBMovie
     Public Shared currMovieSet As New Structures.DBMovieSet
     Public Shared currShow As New Structures.DBTV
-    Public Shared DefaultMovieOptions As New Structures.ScrapeOptions
+    Public Shared DefaultMovieOptions As New Structures.MovieScrapeOptions
+    Public Shared DefaultMovieSetOptions As New Structures.MovieSetScrapeOptions
     Public Shared DefaultTVOptions As New Structures.TVScrapeOptions
     'Public Shared eAdvancedSettings As New AdvancedSettings
     Public Shared eLang As New Localization
@@ -49,6 +50,7 @@ Public Class Master
     Public Shared SourcesList As New List(Of String)
     Public Shared TempPath As String = Path.Combine(Functions.AppPath, "Temp")
     Public Shared tmpMovie As New MediaContainers.Movie
+    Public Shared tmpMovieSet As New MediaContainers.MovieSet
     Public Shared MovieSources As New List(Of Structures.MovieSource)
     Public Shared TVSources As New List(Of Structures.TVSource)
 

@@ -762,6 +762,18 @@ Public Class Enums
         DiscArtItem = 12
         EFanartsItem = 13
     End Enum
+
+    Public Enum MovieSetScraperEventType As Integer
+        NFOItem = 0
+        PosterItem = 1
+        FanartItem = 2
+        SetName = 6
+        BannerItem = 7
+        LandscapeItem = 8
+        ClearArtItem = 10
+        ClearLogoItem = 11
+        DiscArtItem = 12
+    End Enum
     ''' <summary>
     ''' Enum representing valid TV series ordering.
     ''' </summary>
@@ -1058,8 +1070,8 @@ Public Class Functions
         Return Math.Floor(diff.TotalSeconds)
     End Function
     ' TODO DOC Need appropriate header and tests
-    Public Shared Function LocksToOptions() As Structures.ScrapeOptions
-        Dim options As New Structures.ScrapeOptions
+    Public Shared Function LocksToOptions() As Structures.MovieScrapeOptions
+        Dim options As New Structures.MovieScrapeOptions
         With options
             .bCast = True
             .bCert = True
@@ -1131,6 +1143,11 @@ Public Class Functions
             .bVotes = Master.eSettings.MovieScraperVotes
             .bWriters = Master.eSettings.MovieScraperWriters
             .bYear = Master.eSettings.MovieScraperYear
+        End With
+
+        With Master.DefaultMovieSetOptions
+            .bPlot = Master.eSettings.MovieSetScraperPlot
+            .bTitle = Master.eSettings.MovieSetScraperTitle
         End With
 
         With Master.DefaultTVOptions
@@ -1387,14 +1404,14 @@ Public Class Functions
         Return filterModifier
     End Function
     ''' <summary>
-    ''' Determine the Structures.ScrapeOptions options that are in common between the two parameters
+    ''' Determine the Structures.MovieScrapeOptions options that are in common between the two parameters
     ''' </summary>
-    ''' <param name="Options">Base Structures.ScrapeOptions</param>
-    ''' <param name="Options2">Secondary Structures.ScrapeOptions</param>
-    ''' <returns>Structures.ScrapeOptions representing the AndAlso union of the two parameters</returns>
+    ''' <param name="Options">Base Structures.MovieScrapeOptions</param>
+    ''' <param name="Options2">Secondary Structures.MovieScrapeOptions</param>
+    ''' <returns>Structures.MovieScrapeOptions representing the AndAlso union of the two parameters</returns>
     ''' <remarks></remarks>
-    Public Shared Function ScrapeOptionsAndAlso(ByVal Options As Structures.ScrapeOptions, ByVal Options2 As Structures.ScrapeOptions) As Structures.ScrapeOptions
-        Dim filterOptions As New Structures.ScrapeOptions
+    Public Shared Function MovieScrapeOptionsAndAlso(ByVal Options As Structures.MovieScrapeOptions, ByVal Options2 As Structures.MovieScrapeOptions) As Structures.MovieScrapeOptions
+        Dim filterOptions As New Structures.MovieScrapeOptions
         filterOptions.bCast = Options.bCast AndAlso Options2.bCast
         filterOptions.bCert = Options.bCert AndAlso Options2.bCert
         filterOptions.bCleanPlotOutline = Options.bCleanPlotOutline AndAlso Options2.bCleanPlotOutline
@@ -1424,6 +1441,19 @@ Public Class Functions
         filterOptions.bWriters = Options.bWriters AndAlso Options2.bWriters
         filterOptions.bYear = Options.bYear AndAlso Options2.bYear
         filterOptions.buseMPAAForFSK = Options.buseMPAAForFSK AndAlso Options2.buseMPAAForFSK
+        Return filterOptions
+    End Function
+    ''' <summary>
+    ''' Determine the Structures.MovieSetScrapeOptions options that are in common between the two parameters
+    ''' </summary>
+    ''' <param name="Options">Base Structures.MovieSetScrapeOptions</param>
+    ''' <param name="Options2">Secondary Structures.MovieSetScrapeOptions</param>
+    ''' <returns>Structures.MovieSetScrapeOptions representing the AndAlso union of the two parameters</returns>
+    ''' <remarks></remarks>
+    Public Shared Function MovieSetScrapeOptionsAndAlso(ByVal Options As Structures.MovieSetScrapeOptions, ByVal Options2 As Structures.MovieSetScrapeOptions) As Structures.MovieSetScrapeOptions
+        Dim filterOptions As New Structures.MovieSetScrapeOptions
+        filterOptions.bPlot = Options.bPlot AndAlso Options2.bPlot
+        filterOptions.bTitle = Options.bTitle AndAlso Options2.bTitle
         Return filterOptions
     End Function
     ''' <summary>
@@ -1689,7 +1719,7 @@ Public Class Structures
 
     Public Structure CustomUpdaterStruct
         Dim Canceled As Boolean
-        Dim Options As ScrapeOptions
+        Dim Options As MovieScrapeOptions
         Dim ScrapeType As Enums.ScrapeType
     End Structure
     ''' <summary>
@@ -1780,21 +1810,21 @@ Public Class Structures
         Dim BannerPath As String
         Dim ClearArtPath As String
         Dim ClearLogoPath As String
-        Dim ClearBanner As Boolean
-        Dim ClearClearArt As Boolean
-        Dim ClearClearLogo As Boolean
-        Dim ClearDiscArt As Boolean
-        Dim ClearFanart As Boolean
-        Dim ClearLandscape As Boolean
-        Dim ClearPoster As Boolean
         Dim DiscArtPath As String
         Dim FanartPath As String
         Dim ID As Long
-        Dim SetName As String
-        Dim TMDBColID As String
+        Dim RemoveBanner As Boolean
+        Dim RemoveClearArt As Boolean
+        Dim RemoveClearLogo As Boolean
+        Dim RemoveDiscArt As Boolean
+        Dim RemoveFanart As Boolean
+        Dim RemoveLandscape As Boolean
+        Dim RemovePoster As Boolean
+        Dim ListTitle As String
         Dim LandscapePath As String
         Dim NfoPath As String
         Dim PosterPath As String
+        Dim MovieSet As MediaContainers.MovieSet
         Dim Movies As List(Of Structures.DBMovie)
     End Structure
     ''' <summary>
@@ -1885,7 +1915,7 @@ Public Class Structures
     ''' </summary>
     ''' <remarks></remarks>
     <Serializable()> _
-    Public Structure ScrapeOptions
+    Public Structure MovieScrapeOptions
         Dim bCast As Boolean
         Dim bCert As Boolean
         Dim bCollection As Boolean
@@ -1916,6 +1946,15 @@ Public Class Structures
         Dim bVotes As Boolean
         Dim bWriters As Boolean
         Dim bYear As Boolean
+    End Structure
+    ''' <summary>
+    ''' Structure representing posible scrape fields for moviesets
+    ''' </summary>
+    ''' <remarks></remarks>
+    <Serializable()> _
+    Public Structure MovieSetScrapeOptions
+        Dim bPlot As Boolean
+        Dim bTitle As Boolean
     End Structure
 
     Public Structure SettingsResult

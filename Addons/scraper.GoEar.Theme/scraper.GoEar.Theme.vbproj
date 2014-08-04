@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{4BFA47CB-1110-4BB5-9178-3B6EF98BC4EB}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>EmberScraperModule</RootNamespace>
+    <RootNamespace>EmberMovieScraperModule</RootNamespace>
     <AssemblyName>scraper.GoEar.Theme</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>

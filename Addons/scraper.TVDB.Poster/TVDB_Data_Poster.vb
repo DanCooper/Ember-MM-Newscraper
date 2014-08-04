@@ -91,7 +91,7 @@ Public Class TVDB_Data_Poster
         End Get
     End Property
 
-    Public Property PostScraperEnabled() As Boolean Implements Interfaces.EmberTVScraperModule.PostScraperEnabled
+    Public Property PostScraperEnabled() As Boolean Implements Interfaces.EmberTVScraperModule.PosterScraperEnabled
         Get
             Return _PostScraperEnabled
         End Get
@@ -283,7 +283,7 @@ Public Class TVDB_Data_Poster
         ConfigOptions.bShowStudio = clsAdvancedSettings.GetBooleanSetting("ScraperShowStudio", True)
         ConfigOptions.bShowTitle = clsAdvancedSettings.GetBooleanSetting("ScraperShowTitle", True)
     End Sub
-    Public Function PostScraper(ByRef DBTV As Structures.DBTV, ByVal ScrapeType As Enums.ScrapeType) As Interfaces.ModuleResult Implements Interfaces.EmberTVScraperModule.PostScraper
+    Public Function PostScraper(ByRef DBTV As Structures.DBTV, ByVal ScrapeType As Enums.ScrapeType) As Interfaces.ModuleResult Implements Interfaces.EmberTVScraperModule.PosterScraper
     End Function
 
     Public Function SaveImages() As Interfaces.ModuleResult Implements Interfaces.EmberTVScraperModule.SaveImages
@@ -291,7 +291,7 @@ Public Class TVDB_Data_Poster
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
-    Public Sub SaveSetupPostScraper(ByVal DoDispose As Boolean) Implements Interfaces.EmberTVScraperModule.SaveSetupPostScraper
+    Public Sub SaveSetupPostScraper(ByVal DoDispose As Boolean) Implements Interfaces.EmberTVScraperModule.SaveSetupPosterScraper
         Using settings = New clsAdvancedSettings()
             settings.SetSetting("TVDBAPIKey", strPrivateAPIKey)
             settings.SetSetting("OnlyGetTVImagesForSelectedLanguage", CStr(_setupPost.chkOnlyTVImagesLanguage.Checked))

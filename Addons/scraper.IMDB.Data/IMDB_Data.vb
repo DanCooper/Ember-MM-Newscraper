@@ -34,7 +34,7 @@ Public Class IMDB_Data
 #Region "Fields"
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
-    Public Shared ConfigOptions As New Structures.ScrapeOptions
+    Public Shared ConfigOptions As New Structures.MovieScrapeOptions
     Public Shared ConfigScrapeModifier As New Structures.ScrapeModifier
     Public Shared _AssemblyName As String
 
@@ -56,7 +56,7 @@ Public Class IMDB_Data
     Public Event ModuleSettingsChanged() Implements Interfaces.EmberMovieScraperModule_Data.ModuleSettingsChanged
 
     'Public Event ScraperUpdateMediaList(ByVal col As Integer, ByVal v As Boolean) Implements Interfaces.EmberMovieScraperModule_Data.MovieScraperEvent
-    Public Event MovieScraperEvent(ByVal eType As Enums.MovieScraperEventType, ByVal Parameter As Object) Implements Interfaces.EmberMovieScraperModule_Data.MovieScraperEvent
+    Public Event MovieScraperEvent(ByVal eType As Enums.MovieScraperEventType, ByVal Parameter As Object) Implements Interfaces.EmberMovieScraperModule_Data.ScraperEvent
 
     Public Event SetupScraperChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements Interfaces.EmberMovieScraperModule_Data.ScraperSetupChanged
 
@@ -99,10 +99,6 @@ Public Class IMDB_Data
         Dim IMDB As New IMDB.Scraper
         studio = IMDB.GetMovieStudios(DBMovie.Movie.IMDBID)
         Return New Interfaces.ModuleResult With {.breakChain = False}
-    End Function
-
-    Function GetCollectionID(ByVal sIMDBID As String, ByRef sCollectionID As String) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule_Data.GetCollectionID
-        Return Nothing
     End Function
 
     Private Sub Handle_ModuleSettingsChanged()
@@ -290,13 +286,13 @@ Public Class IMDB_Data
         End If
     End Sub
 
-    Function Scraper(ByRef DBMovie As Structures.DBMovie, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule_Data.Scraper
+    Function Scraper(ByRef DBMovie As Structures.DBMovie, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.MovieScrapeOptions) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule_Data.Scraper
         logger.Trace("Started scrape")
 
         'LoadSettings()
         Dim tTitle As String = String.Empty
         Dim OldTitle As String = DBMovie.Movie.Title
-        Dim filterOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(Options, ConfigOptions)
+        Dim filterOptions As Structures.MovieScrapeOptions = Functions.MovieScrapeOptionsAndAlso(Options, ConfigOptions)
 
         If Master.GlobalScrapeMod.NFO AndAlso Not Master.GlobalScrapeMod.DoSearch Then
             If Not String.IsNullOrEmpty(DBMovie.Movie.IMDBID) Then
@@ -310,7 +306,7 @@ Public Class IMDB_Data
         ' why a scraper should initialize the DBMovie structure?
         ' Answer (DanCooper): If you want to CHANGE the movie. For this, all existing (incorrect) information must be deleted.
         If ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.GlobalScrapeMod.DoSearch _
-            AndAlso ModulesManager.Instance.externalDataScrapersModules.OrderBy(Function(y) y.ScraperOrder).FirstOrDefault(Function(e) e.ProcessorModule.ScraperEnabled).AssemblyName = _AssemblyName Then
+            AndAlso ModulesManager.Instance.externalMovieDataScrapersModules.OrderBy(Function(y) y.ScraperOrder).FirstOrDefault(Function(e) e.ProcessorModule.ScraperEnabled).AssemblyName = _AssemblyName Then
             DBMovie.Movie.IMDBID = String.Empty
             DBMovie.RemoveActorThumbs = True
             DBMovie.RemoveBanner = True

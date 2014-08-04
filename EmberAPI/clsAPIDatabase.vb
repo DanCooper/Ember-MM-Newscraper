@@ -1037,7 +1037,7 @@ Public Class Database
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     If SQLreader.HasRows Then
                         SQLreader.Read()
-                        If Not DBNull.Value.Equals(SQLreader("SetName")) Then _moviesetDB.SetName = SQLreader("SetName").ToString
+                        If Not DBNull.Value.Equals(SQLreader("SetName")) Then _moviesetDB.ListTitle = SQLreader("SetName").ToString
                         If Not DBNull.Value.Equals(SQLreader("NfoPath")) Then _moviesetDB.NfoPath = SQLreader("NfoPath").ToString
                         If Not DBNull.Value.Equals(SQLreader("PosterPath")) Then _moviesetDB.PosterPath = SQLreader("PosterPath").ToString
                         If Not DBNull.Value.Equals(SQLreader("FanartPath")) Then _moviesetDB.FanartPath = SQLreader("FanartPath").ToString
@@ -1046,7 +1046,11 @@ Public Class Database
                         If Not DBNull.Value.Equals(SQLreader("DiscArtPath")) Then _moviesetDB.DiscArtPath = SQLreader("DiscArtPath").ToString
                         If Not DBNull.Value.Equals(SQLreader("ClearLogoPath")) Then _moviesetDB.ClearLogoPath = SQLreader("ClearLogoPath").ToString
                         If Not DBNull.Value.Equals(SQLreader("ClearArtPath")) Then _moviesetDB.ClearArtPath = SQLreader("ClearArtPath").ToString
-                        If Not DBNull.Value.Equals(SQLreader("TMDBColID")) Then _moviesetDB.TMDBColID = SQLreader("TMDBColID").ToString
+                        _moviesetDB.MovieSet = New MediaContainers.MovieSet
+                        With _moviesetDB.MovieSet
+                            If Not DBNull.Value.Equals(SQLreader("TMDBColID")) Then .ID = SQLreader("TMDBColID").ToString
+                            If Not DBNull.Value.Equals(SQLreader("SetName")) Then .Title = SQLreader("SetName").ToString
+                        End With
                         _moviesetDB.Movies = New List(Of Structures.DBMovie)
                     End If
                 End Using
@@ -2090,8 +2094,8 @@ Public Class Database
                 parHasNfo.Value = Not String.IsNullOrEmpty(_moviesetDB.NfoPath)
                 parHasPoster.Value = Not String.IsNullOrEmpty(_moviesetDB.PosterPath)
 
-                parSetName.Value = _moviesetDB.SetName
-                parTMDBColID.Value = _moviesetDB.TMDBColID
+                parSetName.Value = _moviesetDB.ListTitle
+                parTMDBColID.Value = _moviesetDB.MovieSet.ID
 
                 If IsNew Then
                     Using rdrMovieSet As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
@@ -2099,7 +2103,7 @@ Public Class Database
                             _moviesetDB.ID = Convert.ToInt64(rdrMovieSet(0))
                         Else
                             logger.Error("Something very wrong here: SaveMovieSetToDB", _moviesetDB.ToString, "Error")
-                            _moviesetDB.SetName = "SETERROR"
+                            _moviesetDB.ListTitle = "SETERROR"
                             Return _moviesetDB
                         End If
                     End Using

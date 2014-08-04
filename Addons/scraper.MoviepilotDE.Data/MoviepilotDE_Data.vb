@@ -28,7 +28,7 @@ Public Class MoviepilotDE_Data
 
 #Region "Fields"
 
-    Public Shared ConfigOptions As New Structures.ScrapeOptions
+    Public Shared ConfigOptions As New Structures.MovieScrapeOptions
     Public Shared ConfigScrapeModifier As New Structures.ScrapeModifier
     Public Shared _AssemblyName As String
 
@@ -48,7 +48,7 @@ Public Class MoviepilotDE_Data
 
     Public Event ModuleSettingsChanged() Implements Interfaces.EmberMovieScraperModule_Data.ModuleSettingsChanged
 
-    Public Event MovieScraperEvent(ByVal eType As Enums.MovieScraperEventType, ByVal Parameter As Object) Implements Interfaces.EmberMovieScraperModule_Data.MovieScraperEvent
+    Public Event MovieScraperEvent(ByVal eType As Enums.MovieScraperEventType, ByVal Parameter As Object) Implements Interfaces.EmberMovieScraperModule_Data.ScraperEvent
 
     Public Event SetupScraperChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements Interfaces.EmberMovieScraperModule_Data.ScraperSetupChanged
 
@@ -163,10 +163,10 @@ Public Class MoviepilotDE_Data
     ''' <remarks>Main method to retrieve Moviepilot information - from here all other class methods gets called
     ''' 
     ''' 2013/12/21 Cocotus - First implementation
-    Function Scraper(ByRef DBMovie As Structures.DBMovie, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule_Data.Scraper
+    Function Scraper(ByRef DBMovie As Structures.DBMovie, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.MovieScrapeOptions) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule_Data.Scraper
         ' as we do not have a OFDB search / show dialog we use IMDB
         If String.IsNullOrEmpty(DBMovie.Movie.ID) Then
-            Dim tOpt As New Structures.ScrapeOptions 'all false value not to override any field
+            Dim tOpt As New Structures.MovieScrapeOptions 'all false value not to override any field
             Dim IMDB As New IMDB_Data
             Dim aRet As Interfaces.ModuleResult = IMDB.Scraper(DBMovie, ScrapeType, tOpt)
             If String.IsNullOrEmpty(DBMovie.Movie.OriginalTitle) Then
@@ -178,7 +178,7 @@ Public Class MoviepilotDE_Data
         Dim tMoviepilotDE As New MoviepilotDE(DBMovie.Movie.OriginalTitle, DBMovie.Movie)
 
         'Now check what information we want to take over...
-        Dim filterOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(Options, ConfigOptions)
+        Dim filterOptions As Structures.MovieScrapeOptions = Functions.MovieScrapeOptionsAndAlso(Options, ConfigOptions)
 
         'Use Moviepilot FSK?
         If filterOptions.bCert AndAlso (String.IsNullOrEmpty(DBMovie.Movie.Certification) OrElse Not Master.eSettings.MovieLockMPAA) Then
@@ -270,10 +270,6 @@ Public Class MoviepilotDE_Data
         'IMDB.IMDBURL = MySettings.IMDBURL
         'studio = IMDB.GetMovieStudios(DBMovie.Movie.IMDBID)
         'Return New Interfaces.ModuleResult With {.breakChain = False}
-    End Function
-
-    Function GetCollectionID(ByVal sIMDBID As String, ByRef sCollectionID As String) As Interfaces.ModuleResult Implements Interfaces.EmberMovieScraperModule_Data.GetCollectionID
-        Return Nothing
     End Function
 
 #End Region 'Methods

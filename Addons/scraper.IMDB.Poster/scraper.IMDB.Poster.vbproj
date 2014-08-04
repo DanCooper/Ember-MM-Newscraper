@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{33F99994-12CA-4FAB-B62D-741F7AE35F4B}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>EmberScraperModule</RootNamespace>
+    <RootNamespace>EmberMovieScraperModule</RootNamespace>
     <AssemblyName>scraper.IMDB.Poster</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>

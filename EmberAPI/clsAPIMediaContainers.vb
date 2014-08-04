@@ -1395,6 +1395,99 @@ Namespace MediaContainers
 #End Region 'Methods
     End Class
 
+    <XmlRoot("movieset")> _
+    Public Class MovieSet
+
+#Region "Fields"
+
+        Private _id As String
+        Private _plot As String
+        Private _title As String
+
+#End Region 'Fields
+
+#Region "Constructors"
+
+        Public Sub New(ByVal sID As String, ByVal sTitle As String, ByVal sPlot As String)
+            Me.Clear()
+            Me._id = sID
+            Me._title = sTitle
+            Me._plot = sPlot
+        End Sub
+
+        Public Sub New()
+            Me.Clear()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Properties"
+
+        <XmlElement("title")> _
+        Public Property Title() As String
+            Get
+                Return Me._title
+            End Get
+            Set(ByVal value As String)
+                Me._title = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property TitleSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._title)
+            End Get
+        End Property
+
+        <XmlElement("id")> _
+        Public Property ID() As String
+            Get
+                Return Me._id
+            End Get
+            Set(ByVal value As String)
+                Me._id = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property IDSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._id)
+            End Get
+        End Property
+
+        <XmlElement("plot")> _
+        Public Property Plot() As String
+            Get
+                Return Me._plot
+            End Get
+            Set(ByVal value As String)
+                Me._plot = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property PlotSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._plot)
+            End Get
+        End Property
+
+#End Region 'Properties
+
+#Region "Methods"
+
+        Public Sub Clear()
+            _title = String.Empty
+            _id = String.Empty
+            _plot = String.Empty
+        End Sub
+
+#End Region 'Methods
+
+    End Class
+
     <Serializable()> _
     Public Class Person
 

@@ -21,7 +21,7 @@
 Imports System.IO
 Imports EmberAPI
 Imports WatTmdb
-Imports EmberScraperModule.TMDBg
+Imports EmberMovieScraperModule.TMDBg
 Imports NLog
 Imports System.Diagnostics
 
@@ -31,7 +31,7 @@ Public Class TMDB_Poster
 
 #Region "Fields"
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
-    Public Shared ConfigOptions As New Structures.ScrapeOptions
+    Public Shared ConfigOptions As New Structures.MovieScrapeOptions
     Public Shared ConfigScrapeModifier As New Structures.ScrapeModifier
     Public Shared _AssemblyName As String
 
@@ -200,7 +200,7 @@ Public Class TMDB_Poster
 
         LoadSettings()
 
-        ImageList = TMDB.GetTMDBCollectionImages(DBMovieSet.TMDBColID, Type)
+        ImageList = TMDB.GetTMDBCollectionImages(DBMovieSet.MovieSet.ID, Type)
 
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function

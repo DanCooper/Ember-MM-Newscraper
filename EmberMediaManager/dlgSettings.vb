@@ -80,11 +80,19 @@ Public Class dlgSettings
         AddHandler TSB.Click, AddressOf ToolStripButton_Click
         TSBs.Add(TSB)
         TSB = New ToolStripButton With { _
+              .Text = Master.eLang.GetString(1203, "MovieSets"), _
+              .Image = My.Resources.MovieSet, _
+              .TextImageRelation = TextImageRelation.ImageAboveText, _
+              .DisplayStyle = ToolStripItemDisplayStyle.ImageAndText, _
+              .Tag = 300}
+        AddHandler TSB.Click, AddressOf ToolStripButton_Click
+        TSBs.Add(TSB)
+        TSB = New ToolStripButton With { _
               .Text = Master.eLang.GetString(653, "TV Shows"), _
               .Image = My.Resources.TVShows, _
               .TextImageRelation = TextImageRelation.ImageAboveText, _
               .DisplayStyle = ToolStripItemDisplayStyle.ImageAndText, _
-              .Tag = 300}
+              .Tag = 400}
         AddHandler TSB.Click, AddressOf ToolStripButton_Click
         TSBs.Add(TSB)
         TSB = New ToolStripButton With { _
@@ -92,7 +100,7 @@ Public Class dlgSettings
               .Image = My.Resources.modules, _
               .TextImageRelation = TextImageRelation.ImageAboveText, _
               .DisplayStyle = ToolStripItemDisplayStyle.ImageAndText, _
-              .Tag = 400}
+              .Tag = 500}
         AddHandler TSB.Click, AddressOf ToolStripButton_Click
         TSBs.Add(TSB)
 
@@ -101,7 +109,7 @@ Public Class dlgSettings
             .Image = My.Resources.Miscellaneous, _
             .TextImageRelation = TextImageRelation.ImageAboveText, _
             .DisplayStyle = ToolStripItemDisplayStyle.ImageAndText, _
-            .Tag = 400}
+            .Tag = 600}
         AddHandler TSB.Click, AddressOf ToolStripButton_Click
         TSBs.Add(TSB)
 
@@ -200,6 +208,34 @@ Public Class dlgSettings
              .Panel = Me.pnlMovieThemes, _
              .Order = 600})
         Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
+             .Name = "pnlMovieSets", _
+             .Text = Master.eLang.GetString(38, "General"), _
+             .ImageIndex = 2, _
+             .Type = Master.eLang.GetString(1203, "MovieSets"), _
+             .Panel = Me.pnlMovieSetGeneral, _
+             .Order = 100})
+        Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
+             .Name = "pnlMovieSetSources", _
+             .Text = Master.eLang.GetString(555, "Files and Sources"), _
+             .ImageIndex = 5, _
+             .Type = Master.eLang.GetString(1203, "MovieSets"), _
+             .Panel = Me.pnlMovieSetSources, _
+             .Order = 200})
+        Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
+             .Name = "pnlMovieSetData", _
+             .Text = Master.eLang.GetString(556, "Scrapers - Data"), _
+             .ImageIndex = 3, _
+             .Type = Master.eLang.GetString(1203, "MovieSets"), _
+             .Panel = Me.pnlMovieSetScraper, _
+             .Order = 300})
+        Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
+             .Name = "pnlMovieSetMedia", _
+             .Text = Master.eLang.GetString(557, "Scrapers - Images"), _
+             .ImageIndex = 6, _
+             .Type = Master.eLang.GetString(1203, "MovieSets"), _
+             .Panel = Me.pnlMovieSetImages, _
+             .Order = 400})
+        Me.SettingsPanels.Add(New Containers.SettingsPanel With { _
              .Name = "pnlShows", _
              .Text = Master.eLang.GetString(38, "General"), _
              .ImageIndex = 7, _
@@ -261,7 +297,7 @@ Public Class dlgSettings
     Sub AddScraperPanels()
         Dim ModuleCounter As Integer = 1
         Dim tPanel As New Containers.SettingsPanel
-        For Each s As ModulesManager._externalScraperModuleClass_Data In ModulesManager.Instance.externalDataScrapersModules.OrderBy(Function(x) x.ScraperOrder)
+        For Each s As ModulesManager._externalMovieScraperModuleClass_Data In ModulesManager.Instance.externalMovieDataScrapersModules.OrderBy(Function(x) x.ScraperOrder)
             tPanel = s.ProcessorModule.InjectSetupScraper
             tPanel.Order += ModuleCounter
             Me.SettingsPanels.Add(tPanel)
@@ -272,7 +308,7 @@ Public Class dlgSettings
             Me.AddHelpHandlers(tPanel.Panel, tPanel.Prefix)
         Next
         ModuleCounter = 1
-        For Each s As ModulesManager._externalScraperModuleClass_Poster In ModulesManager.Instance.externalPosterScrapersModules.OrderBy(Function(x) x.ScraperOrder)
+        For Each s As ModulesManager._externalMovieScraperModuleClass_Poster In ModulesManager.Instance.externalMoviePosterScrapersModules.OrderBy(Function(x) x.ScraperOrder)
             tPanel = s.ProcessorModule.InjectSetupScraper
             tPanel.Order += ModuleCounter
             Me.SettingsPanels.Add(tPanel)
@@ -283,7 +319,7 @@ Public Class dlgSettings
             Me.AddHelpHandlers(tPanel.Panel, tPanel.Prefix)
         Next
         ModuleCounter = 1
-        For Each s As ModulesManager._externalScraperModuleClass_Theme In ModulesManager.Instance.externalThemeScrapersModules.OrderBy(Function(x) x.ScraperOrder)
+        For Each s As ModulesManager._externalMovieScraperModuleClass_Theme In ModulesManager.Instance.externalMovieThemeScrapersModules.OrderBy(Function(x) x.ScraperOrder)
             tPanel = s.ProcessorModule.InjectSetupScraper
             tPanel.Order += ModuleCounter
             Me.SettingsPanels.Add(tPanel)
@@ -294,7 +330,18 @@ Public Class dlgSettings
             Me.AddHelpHandlers(tPanel.Panel, tPanel.Prefix)
         Next
         ModuleCounter = 1
-        For Each s As ModulesManager._externalScraperModuleClass_Trailer In ModulesManager.Instance.externalTrailerScrapersModules.OrderBy(Function(x) x.ScraperOrder)
+        For Each s As ModulesManager._externalMovieScraperModuleClass_Trailer In ModulesManager.Instance.externalMovieTrailerScrapersModules.OrderBy(Function(x) x.ScraperOrder)
+            tPanel = s.ProcessorModule.InjectSetupScraper
+            tPanel.Order += ModuleCounter
+            Me.SettingsPanels.Add(tPanel)
+            ModuleCounter += 1
+            AddHandler s.ProcessorModule.ScraperSetupChanged, AddressOf Handle_ModuleSetupChanged
+            AddHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+            AddHandler s.ProcessorModule.SetupNeedsRestart, AddressOf Handle_SetupNeedsRestart
+            Me.AddHelpHandlers(tPanel.Panel, tPanel.Prefix)
+        Next
+        ModuleCounter = 1
+        For Each s As ModulesManager._externalMovieSetScraperModuleClass_Data In ModulesManager.Instance.externalMovieSetDataScrapersModules.OrderBy(Function(x) x.ScraperOrder)
             tPanel = s.ProcessorModule.InjectSetupScraper
             tPanel.Order += ModuleCounter
             Me.SettingsPanels.Add(tPanel)
@@ -355,22 +402,27 @@ Public Class dlgSettings
     End Sub
 
     Sub RemoveScraperPanels()
-        For Each s As ModulesManager._externalScraperModuleClass_Data In ModulesManager.Instance.externalDataScrapersModules.OrderBy(Function(x) x.ScraperOrder)
+        For Each s As ModulesManager._externalMovieScraperModuleClass_Data In ModulesManager.Instance.externalMovieDataScrapersModules.OrderBy(Function(x) x.ScraperOrder)
             RemoveHandler s.ProcessorModule.ScraperSetupChanged, AddressOf Handle_ModuleSetupChanged
             RemoveHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
             RemoveHandler s.ProcessorModule.SetupNeedsRestart, AddressOf Handle_SetupNeedsRestart
         Next
-        For Each s As ModulesManager._externalScraperModuleClass_Poster In ModulesManager.Instance.externalPosterScrapersModules.OrderBy(Function(x) x.ScraperOrder)
+        For Each s As ModulesManager._externalMovieScraperModuleClass_Poster In ModulesManager.Instance.externalMoviePosterScrapersModules.OrderBy(Function(x) x.ScraperOrder)
             RemoveHandler s.ProcessorModule.ScraperSetupChanged, AddressOf Handle_ModuleSetupChanged
             RemoveHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
             RemoveHandler s.ProcessorModule.SetupNeedsRestart, AddressOf Handle_SetupNeedsRestart
         Next
-        For Each s As ModulesManager._externalScraperModuleClass_Theme In ModulesManager.Instance.externalThemeScrapersModules.OrderBy(Function(x) x.ScraperOrder)
+        For Each s As ModulesManager._externalMovieScraperModuleClass_Theme In ModulesManager.Instance.externalMovieThemeScrapersModules.OrderBy(Function(x) x.ScraperOrder)
             RemoveHandler s.ProcessorModule.ScraperSetupChanged, AddressOf Handle_ModuleSetupChanged
             RemoveHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
             RemoveHandler s.ProcessorModule.SetupNeedsRestart, AddressOf Handle_SetupNeedsRestart
         Next
-        For Each s As ModulesManager._externalScraperModuleClass_Trailer In ModulesManager.Instance.externalTrailerScrapersModules.OrderBy(Function(x) x.ScraperOrder)
+        For Each s As ModulesManager._externalMovieScraperModuleClass_Trailer In ModulesManager.Instance.externalMovieTrailerScrapersModules.OrderBy(Function(x) x.ScraperOrder)
+            RemoveHandler s.ProcessorModule.ScraperSetupChanged, AddressOf Handle_ModuleSetupChanged
+            RemoveHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+            RemoveHandler s.ProcessorModule.SetupNeedsRestart, AddressOf Handle_SetupNeedsRestart
+        Next
+        For Each s As ModulesManager._externalMovieSetScraperModuleClass_Data In ModulesManager.Instance.externalMovieSetDataScrapersModules.OrderBy(Function(x) x.ScraperOrder)
             RemoveHandler s.ProcessorModule.ScraperSetupChanged, AddressOf Handle_ModuleSetupChanged
             RemoveHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
             RemoveHandler s.ProcessorModule.SetupNeedsRestart, AddressOf Handle_SetupNeedsRestart
@@ -526,7 +578,7 @@ Public Class dlgSettings
             Me.SetApplyButton(False)
             If Me.sResult.NeedsUpdate OrElse Me.sResult.NeedsRefresh Then Me.didApply = True
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -563,7 +615,7 @@ Public Class dlgSettings
                 Me.lstMovieFilters.Focus()
             End If
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -695,7 +747,7 @@ Public Class dlgSettings
                 Me.lstTVEpisodeFilter.Focus()
             End If
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -711,7 +763,7 @@ Public Class dlgSettings
                 Me.lstTVEpisodeFilter.Focus()
             End If
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -798,7 +850,7 @@ Public Class dlgSettings
                 Me.lvTVShowRegex.Focus()
             End If
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -825,7 +877,7 @@ Public Class dlgSettings
                 Me.lvTVShowRegex.Focus()
             End If
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1075,6 +1127,18 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
+    Private Sub cbMovieSetBannerPrefType_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbMovieSetBannerPrefType.SelectedIndexChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub cbMovieSetFanartPrefSize_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbMovieSetFanartPrefSize.SelectedIndexChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub cbMovieSetPosterPrefSize_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbMovieSetPosterPrefSize.SelectedIndexChanged
+        Me.SetApplyButton(True)
+    End Sub
+
     Private Sub cbTVScraperRatingRegion_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbTVScraperRatingRegion.SelectedIndexChanged
         Me.SetApplyButton(True)
     End Sub
@@ -1137,10 +1201,12 @@ Public Class dlgSettings
             Me.chkGeneralShowImgDims.Enabled = True
         End If
     End Sub
+
     Private Sub chkMovieClickScrape_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieClickScrape.CheckedChanged
         chkMovieClickScrapeAsk.Enabled = chkMovieClickScrape.Checked
         Me.SetApplyButton(True)
     End Sub
+
     Private Sub chkMovieClickScrapeAsk_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieClickScrapeAsk.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
@@ -1539,7 +1605,7 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkMoviechkMovieClearLogoCol_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieClearLogoCol.CheckedChanged
+    Private Sub chkMovieClearLogoCol_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieClearLogoCol.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -1979,6 +2045,42 @@ Public Class dlgSettings
         If Not chkMoviePosterResize.Checked Then
             txtMoviePosterWidth.Text = String.Empty
             txtMoviePosterHeight.Text = String.Empty
+        End If
+    End Sub
+
+    Private Sub chkMovieSetBannerResize_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetBannerResize.CheckedChanged
+        Me.SetApplyButton(True)
+
+        txtMovieSetBannerWidth.Enabled = chkMovieSetBannerResize.Checked
+        txtMovieSetBannerHeight.Enabled = chkMovieSetBannerResize.Checked
+
+        If Not chkMovieSetBannerResize.Checked Then
+            txtMovieSetBannerWidth.Text = String.Empty
+            txtMovieSetBannerHeight.Text = String.Empty
+        End If
+    End Sub
+
+    Private Sub chkMovieSetFanartResize_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetFanartResize.CheckedChanged
+        Me.SetApplyButton(True)
+
+        txtMovieSetFanartWidth.Enabled = chkMovieSetFanartResize.Checked
+        txtMovieSetFanartHeight.Enabled = chkMovieSetFanartResize.Checked
+
+        If Not chkMovieSetFanartResize.Checked Then
+            txtMovieSetFanartWidth.Text = String.Empty
+            txtMovieSetFanartHeight.Text = String.Empty
+        End If
+    End Sub
+
+    Private Sub chkMovieSetPosterResize_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetPosterResize.CheckedChanged
+        Me.SetApplyButton(True)
+
+        txtMovieSetPosterWidth.Enabled = chkMovieSetPosterResize.Checked
+        txtMovieSetPosterHeight.Enabled = chkMovieSetPosterResize.Checked
+
+        If Not chkMovieSetPosterResize.Checked Then
+            txtMovieSetPosterWidth.Text = String.Empty
+            txtMovieSetPosterHeight.Text = String.Empty
         End If
     End Sub
 
@@ -2536,6 +2638,39 @@ Public Class dlgSettings
         End If
     End Sub
 
+    Private Sub chkMovieSetUseMSAA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetUseMSAA.CheckedChanged
+        Me.SetApplyButton(True)
+
+        Me.chkMovieSetBannerMSAA.Enabled = Me.chkMovieSetUseMSAA.Checked
+        Me.chkMovieSetClearArtMSAA.Enabled = Me.chkMovieSetUseMSAA.Checked
+        Me.chkMovieSetClearLogoMSAA.Enabled = Me.chkMovieSetUseMSAA.Checked
+        Me.chkMovieSetDiscArtMSAA.Enabled = Me.chkMovieSetUseMSAA.Checked
+        Me.chkMovieSetFanartMSAA.Enabled = Me.chkMovieSetUseMSAA.Checked
+        Me.chkMovieSetLandscapeMSAA.Enabled = Me.chkMovieSetUseMSAA.Checked
+        Me.chkMovieSetNFOMSAA.Enabled = Me.chkMovieSetUseMSAA.Checked
+        Me.chkMovieSetPosterMSAA.Enabled = Me.chkMovieSetUseMSAA.Checked
+
+        If Not Me.chkMovieSetUseMSAA.Checked Then
+            Me.chkMovieSetBannerMSAA.Checked = False
+            Me.chkMovieSetClearArtMSAA.Checked = False
+            Me.chkMovieSetClearLogoMSAA.Checked = False
+            Me.chkMovieSetDiscArtMSAA.Checked = False
+            Me.chkMovieSetFanartMSAA.Checked = False
+            Me.chkMovieSetLandscapeMSAA.Checked = False
+            Me.chkMovieSetNFOMSAA.Checked = False
+            Me.chkMovieSetPosterMSAA.Checked = False
+        Else
+            Me.chkMovieSetBannerMSAA.Checked = True
+            Me.chkMovieSetClearArtMSAA.Checked = True
+            Me.chkMovieSetClearLogoMSAA.Checked = True
+            Me.chkMovieSetDiscArtMSAA.Checked = True
+            Me.chkMovieSetFanartMSAA.Checked = True
+            Me.chkMovieSetLandscapeMSAA.Checked = True
+            Me.chkMovieSetNFOMSAA.Checked = True
+            Me.chkMovieSetPosterMSAA.Checked = True
+        End If
+    End Sub
+
     Private Sub chkMovieScraperUseMDDuration_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperUseMDDuration.CheckedChanged
         Me.txtMovieScraperDurationRuntimeFormat.Enabled = Me.chkMovieScraperUseMDDuration.Checked
         Me.SetApplyButton(True)
@@ -2763,6 +2898,9 @@ Public Class dlgSettings
                 Me.cbMovieFanartPrefSize.SelectedIndex = .MovieFanartPrefSize
                 Me.cbMovieLanguageOverlay.SelectedItem = If(String.IsNullOrEmpty(.MovieGeneralFlagLang), Master.eLang.Disabled, .MovieGeneralFlagLang)
                 Me.cbMoviePosterPrefSize.SelectedIndex = .MoviePosterPrefSize
+                Me.cbMovieSetBannerPrefType.SelectedIndex = .MovieSetBannerPrefType
+                Me.cbMovieSetFanartPrefSize.SelectedIndex = .MovieSetFanartPrefSize
+                Me.cbMovieSetPosterPrefSize.SelectedIndex = .MovieSetPosterPrefSize
                 Me.cbMovieTrailerMinQual.SelectedIndex = .MovieTrailerMinQual
                 Me.cbMovieTrailerPrefQual.SelectedIndex = .MovieTrailerPrefQual
                 Me.cbTVASBannerPrefType.SelectedIndex = .TVASBannerPrefType
@@ -2894,6 +3032,53 @@ Public Class dlgSettings
                     Me.txtMoviePosterWidth.Text = .MoviePosterWidth.ToString
                 End If
                 Me.chkMovieProperCase.Checked = .MovieProperCase
+                Me.chkMovieSetBannerCol.Checked = .MovieSetBannerCol
+                Me.chkMovieSetBannerOverwrite.Checked = .MovieSetBannerOverwrite
+                Me.chkMovieSetBannerPrefOnly.Checked = .MovieSetBannerPrefOnly
+                Me.chkMovieSetBannerResize.Checked = .MovieSetBannerResize
+                If .MovieSetBannerResize Then
+                    Me.txtMovieSetBannerHeight.Text = .MovieSetBannerHeight.ToString
+                    Me.txtMovieSetBannerWidth.Text = .MovieSetBannerWidth.ToString
+                End If
+                Me.chkMovieSetClearArtCol.Checked = .MovieSetClearArtCol
+                Me.chkMovieSetClearArtOverwrite.Checked = .MovieSetClearArtOverwrite
+                Me.chkMovieSetClearLogoCol.Checked = .MovieSetClearLogoCol
+                Me.chkMovieSetClearLogoOverwrite.Checked = .MovieSetClearLogoOverwrite
+                Me.chkMovieSetClickScrape.Checked = .MovieSetClickScrape
+                Me.chkMovieSetClickScrapeAsk.Checked = .MovieSetClickScrapeAsk
+                Me.chkMovieSetDiscArtCol.Checked = .MovieSetDiscArtCol
+                Me.chkMovieSetDiscArtOverwrite.Checked = .MovieSetDiscArtOverwrite
+                Me.chkMovieSetFanartCol.Checked = .MovieSetFanartCol
+                Me.chkMovieSetFanartOverwrite.Checked = .MovieSetFanartOverwrite
+                Me.chkMovieSetFanartPrefOnly.Checked = .MovieSetFanartPrefOnly
+                Me.chkMovieSetFanartResize.Checked = .MovieSetFanartResize
+                If .MovieSetFanartResize Then
+                    Me.txtMovieSetFanartHeight.Text = .MovieSetFanartHeight.ToString
+                    Me.txtMovieSetFanartWidth.Text = .MovieSetFanartWidth.ToString
+                End If
+                Me.chkMovieSetLandscapeCol.Checked = .MovieSetLandscapeCol
+                Me.chkMovieSetLandscapeOverwrite.Checked = .MovieSetLandscapeOverwrite
+                Me.chkMovieSetLockPlot.Checked = .MovieSetLockPlot
+                Me.chkMovieSetLockTitle.Checked = .MovieSetLockTitle
+                Me.chkMovieSetMissingBanner.Checked = .MovieSetMissingBanner
+                Me.chkMovieSetMissingClearArt.Checked = .MovieSetMissingClearArt
+                Me.chkMovieSetMissingClearLogo.Checked = .MovieSetMissingClearLogo
+                Me.chkMovieSetMissingDiscArt.Checked = .MovieSetMissingDiscArt
+                Me.chkMovieSetMissingFanart.Checked = .MovieSetMissingFanart
+                Me.chkMovieSetMissingLandscape.Checked = .MovieSetMissingLandscape
+                Me.chkMovieSetMissingNFO.Checked = .MovieSetMissingNFO
+                Me.chkMovieSetMissingPoster.Checked = .MovieSetMissingPoster
+                Me.chkMovieSetNFOCol.Checked = .MovieSetNfoCol
+                Me.chkMovieSetPosterCol.Checked = .MovieSetPosterCol
+                Me.chkMovieSetPosterOverwrite.Checked = .MovieSetPosterOverwrite
+                Me.chkMovieSetPosterPrefOnly.Checked = .MovieSetPosterPrefOnly
+                Me.chkMovieSetPosterResize.Checked = .MovieSetPosterResize
+                If .MovieSetPosterResize Then
+                    Me.txtMovieSetPosterHeight.Text = .MovieSetPosterHeight.ToString
+                    Me.txtMovieSetPosterWidth.Text = .MovieSetPosterWidth.ToString
+                End If
+                Me.chkMovieSetScraperPlot.Checked = .MovieSetScraperPlot
+                Me.chkMovieSetScraperTitle.Checked = .MovieSetScraperTitle
                 Me.chkMovieScanOrderModify.Checked = .MovieScanOrderModify
                 Me.chkMovieScraperCast.Checked = .MovieScraperCast
                 Me.chkMovieScraperCastWithImg.Checked = .MovieScraperCastWithImgOnly
@@ -3076,6 +3261,9 @@ Public Class dlgSettings
                 Me.tbMovieEThumbsQual.Value = .MovieEThumbsQual
                 Me.tbMovieFanartQual.Value = .MovieFanartQual
                 Me.tbMoviePosterQual.Value = .MoviePosterQual
+                Me.tbMovieSetBannerQual.Value = .MovieSetBannerQual
+                Me.tbMovieSetFanartQual.Value = .MovieSetFanartQual
+                Me.tbMovieSetPosterQual.Value = .MovieSetPosterQual
                 Me.tbTVASBannerQual.Value = .TVASBannerQual
                 Me.tbTVASFanartQual.Value = .TVASFanartQual
                 Me.tbTVASPosterQual.Value = .TVASPosterQual
@@ -3097,7 +3285,7 @@ Public Class dlgSettings
                 Me.txtMovieGeneralCustomMarker3.Text = .MovieGeneralCustomMarker3Name.ToString
                 Me.txtMovieGeneralCustomMarker4.Text = .MovieGeneralCustomMarker4Name.ToString
                 Me.txtMovieIMDBURL.Text = .MovieIMDBURL.ToString
-                Me.txtMovieMoviesetsPath.Text = .MovieMoviesetsPath.ToString
+                Me.txtMovieSetMSAAPath.Text = .MovieMoviesetsPath.ToString
                 Me.txtMovieScraperCastLimit.Text = .MovieScraperCastLimit.ToString
                 Me.txtMovieScraperDurationRuntimeFormat.Text = .MovieScraperDurationRuntimeFormat
                 Me.txtMovieScraperGenreLimit.Text = .MovieScraperGenreLimit.ToString
@@ -3168,6 +3356,7 @@ Public Class dlgSettings
                 Me.btnMovieBackdropsBrowse.Enabled = .MovieBackdropsAuto
                 Me.txtMovieBackdropsPath.Enabled = .MovieBackdropsAuto
                 Me.chkMovieClickScrapeAsk.Enabled = Me.chkMovieClickScrape.Checked
+                Me.chkMovieSetClickScrapeAsk.Enabled = Me.chkMovieSetClickScrape.Checked
                 Me.txtMovieScraperDurationRuntimeFormat.Enabled = .MovieScraperUseMDDuration
                 Me.txtTVScraperDurationRuntimeFormat.Enabled = .TVScraperUseMDDuration
 
@@ -3345,6 +3534,22 @@ Public Class dlgSettings
 
 
                 '***************************************************
+                '****************** MovieSet Part ******************
+                '***************************************************
+
+                '**************** XBMC MSAA settings ***************
+                Me.chkMovieSetUseMSAA.Checked = .MovieSetUseMSAA
+                Me.chkMovieSetBannerMSAA.Checked = .MovieSetBannerMSAA
+                Me.chkMovieSetClearArtMSAA.Checked = .MovieSetClearArtMSAA
+                Me.chkMovieSetClearLogoMSAA.Checked = .MovieSetClearLogoMSAA
+                Me.chkMovieSetDiscArtMSAA.Checked = .MovieSetDiscArtMSAA
+                Me.chkMovieSetFanartMSAA.Checked = .MovieSetFanartMSAA
+                Me.chkMovieSetLandscapeMSAA.Checked = .MovieSetLandscapeMSAA
+                Me.chkMovieSetNFOMSAA.Checked = .MovieSetNFOMSAA
+                Me.chkMovieSetPosterMSAA.Checked = .MovieSetPosterMSAA
+
+
+                '***************************************************
                 '****************** TV Show Part *******************
                 '***************************************************
 
@@ -3485,16 +3690,19 @@ Public Class dlgSettings
                     Me.pbSettingsCurrent.Image = Me.ilSettings.Images(If(State, 9, 10))
                 End If
 
-                For Each s As ModulesManager._externalScraperModuleClass_Data In (ModulesManager.Instance.externalDataScrapersModules.Where(Function(y) y.AssemblyName <> Name))
+                For Each s As ModulesManager._externalMovieScraperModuleClass_Data In (ModulesManager.Instance.externalMovieDataScrapersModules.Where(Function(y) y.AssemblyName <> Name))
                     s.ProcessorModule.ScraperOrderChanged()
                 Next
-                For Each s As ModulesManager._externalScraperModuleClass_Poster In (ModulesManager.Instance.externalPosterScrapersModules.Where(Function(y) y.AssemblyName <> Name))
+                For Each s As ModulesManager._externalMovieScraperModuleClass_Poster In (ModulesManager.Instance.externalMoviePosterScrapersModules.Where(Function(y) y.AssemblyName <> Name))
                     s.ProcessorModule.ScraperOrderChanged()
                 Next
-                For Each s As ModulesManager._externalScraperModuleClass_Theme In (ModulesManager.Instance.externalThemeScrapersModules.Where(Function(y) y.AssemblyName <> Name))
+                For Each s As ModulesManager._externalMovieScraperModuleClass_Theme In (ModulesManager.Instance.externalMovieThemeScrapersModules.Where(Function(y) y.AssemblyName <> Name))
                     s.ProcessorModule.ScraperOrderChanged()
                 Next
-                For Each s As ModulesManager._externalScraperModuleClass_Trailer In (ModulesManager.Instance.externalTrailerScrapersModules.Where(Function(y) y.AssemblyName <> Name))
+                For Each s As ModulesManager._externalMovieScraperModuleClass_Trailer In (ModulesManager.Instance.externalMovieTrailerScrapersModules.Where(Function(y) y.AssemblyName <> Name))
+                    s.ProcessorModule.ScraperOrderChanged()
+                Next
+                For Each s As ModulesManager._externalMovieSetScraperModuleClass_Data In (ModulesManager.Instance.externalMovieSetDataScrapersModules.Where(Function(y) y.AssemblyName <> Name))
                     s.ProcessorModule.ScraperOrderChanged()
                 Next
                 For Each s As ModulesManager._externalTVScraperModuleClass In ModulesManager.Instance.externalTVScrapersModules.Where(Function(y) y.ProcessorModule.IsPostScraper).OrderBy(Function(x) x.ScraperOrder)
@@ -3639,6 +3847,9 @@ Public Class dlgSettings
         Me.cbMovieFanartPrefSize.DataSource = items.ToList
         Me.cbMovieFanartPrefSize.DisplayMember = "Key"
         Me.cbMovieFanartPrefSize.ValueMember = "Value"
+        Me.cbMovieSetFanartPrefSize.DataSource = items.ToList
+        Me.cbMovieSetFanartPrefSize.DisplayMember = "Key"
+        Me.cbMovieSetFanartPrefSize.ValueMember = "Value"
     End Sub
 
     Private Sub LoadGenericPosterSizes()
@@ -3650,6 +3861,9 @@ Public Class dlgSettings
         Me.cbMoviePosterPrefSize.DataSource = items.ToList
         Me.cbMoviePosterPrefSize.DisplayMember = "Key"
         Me.cbMoviePosterPrefSize.ValueMember = "Value"
+        Me.cbMovieSetPosterPrefSize.DataSource = items.ToList
+        Me.cbMovieSetPosterPrefSize.DisplayMember = "Key"
+        Me.cbMovieSetPosterPrefSize.ValueMember = "Value"
     End Sub
 
     Private Sub LoadMovieBannerTypes()
@@ -3661,6 +3875,9 @@ Public Class dlgSettings
         Me.cbMovieBannerPrefType.DataSource = items.ToList
         Me.cbMovieBannerPrefType.DisplayMember = "Key"
         Me.cbMovieBannerPrefType.ValueMember = "Value"
+        Me.cbMovieSetBannerPrefType.DataSource = items.ToList
+        Me.cbMovieSetBannerPrefType.DisplayMember = "Key"
+        Me.cbMovieSetBannerPrefType.ValueMember = "Value"
     End Sub
 
     Private Sub LoadMovieTrailerQualities()
@@ -4305,7 +4522,7 @@ Public Class dlgSettings
                 .MovieMissingSubs = Me.chkMovieMissingSubs.Checked
                 .MovieMissingTheme = Me.chkMovieMissingTheme.Checked
                 .MovieMissingTrailer = Me.chkMovieMissingTrailer.Checked
-                .MovieMoviesetsPath = Me.txtMovieMoviesetsPath.Text
+                .MovieMoviesetsPath = Me.txtMovieSetMSAAPath.Text
                 .MovieNoSaveImagesToNfo = Me.chkMovieNoSaveImagesToNfo.Checked
                 .MoviePosterCol = Me.chkMoviePosterCol.Checked
                 .MoviePosterHeight = If(Not String.IsNullOrEmpty(Me.txtMoviePosterHeight.Text), Convert.ToInt32(Me.txtMoviePosterHeight.Text), 0)
@@ -4316,6 +4533,53 @@ Public Class dlgSettings
                 .MoviePosterResize = Me.chkMoviePosterResize.Checked
                 .MoviePosterWidth = If(Not String.IsNullOrEmpty(Me.txtMoviePosterWidth.Text), Convert.ToInt32(Me.txtMoviePosterWidth.Text), 0)
                 .MovieProperCase = Me.chkMovieProperCase.Checked
+                .MovieSetBannerCol = Me.chkMovieSetBannerCol.Checked
+                .MovieSetBannerHeight = If(Not String.IsNullOrEmpty(Me.txtMovieSetBannerHeight.Text), Convert.ToInt32(Me.txtMovieSetBannerHeight.Text), 0)
+                .MovieSetBannerOverwrite = Me.chkMovieSetBannerOverwrite.Checked
+                .MovieSetBannerPrefOnly = Me.chkMovieSetBannerPrefOnly.Checked
+                .MovieSetBannerPrefType = DirectCast(Me.cbMovieSetBannerPrefType.SelectedIndex, Enums.MovieBannerType)
+                .MovieSetBannerQual = Me.tbMovieSetBannerQual.Value
+                .MovieSetBannerResize = Me.chkMovieSetBannerResize.Checked
+                .MovieSetBannerWidth = If(Not String.IsNullOrEmpty(Me.txtMovieSetBannerWidth.Text), Convert.ToInt32(Me.txtMovieSetBannerWidth.Text), 0)
+                .MovieSetClearArtCol = Me.chkMovieSetClearArtCol.Checked
+                .MovieSetClearArtOverwrite = Me.chkMovieSetClearArtOverwrite.Checked
+                .MovieSetClearLogoCol = Me.chkMovieSetClearLogoCol.Checked
+                .MovieSetClearLogoOverwrite = Me.chkMovieSetClearLogoOverwrite.Checked
+                .MovieSetClickScrape = Me.chkMovieSetClickScrape.Checked
+                .MovieSetClickScrapeAsk = Me.chkMovieSetClickScrapeAsk.Checked
+                .MovieSetDiscArtCol = Me.chkMovieSetDiscArtCol.Checked
+                .MovieSetDiscArtOverwrite = Me.chkMovieSetDiscArtOverwrite.Checked
+                .MovieSetFanartCol = Me.chkMovieSetFanartCol.Checked
+                .MovieSetFanartHeight = If(Not String.IsNullOrEmpty(Me.txtMovieSetFanartHeight.Text), Convert.ToInt32(Me.txtMovieSetFanartHeight.Text), 0)
+                .MovieSetFanartOverwrite = Me.chkMovieSetFanartOverwrite.Checked
+                .MovieSetFanartPrefOnly = Me.chkMovieSetFanartPrefOnly.Checked
+                .MovieSetFanartPrefSize = DirectCast(Me.cbMovieSetFanartPrefSize.SelectedIndex, Enums.FanartSize)
+                .MovieSetFanartQual = Me.tbMovieSetFanartQual.Value
+                .MovieSetFanartResize = Me.chkMovieSetFanartResize.Checked
+                .MovieSetFanartWidth = If(Not String.IsNullOrEmpty(Me.txtMovieSetFanartWidth.Text), Convert.ToInt32(Me.txtMovieSetFanartWidth.Text), 0)
+                .MovieSetLandscapeCol = Me.chkMovieSetLandscapeCol.Checked
+                .MovieSetLandscapeOverwrite = Me.chkMovieSetLandscapeOverwrite.Checked
+                .MovieSetLockPlot = Me.chkMovieSetLockPlot.Checked
+                .MovieSetLockTitle = Me.chkMovieSetLockTitle.Checked
+                .MovieSetMissingBanner = Me.chkMovieSetMissingBanner.Checked
+                .MovieSetMissingClearArt = Me.chkMovieSetMissingClearArt.Checked
+                .MovieSetMissingClearLogo = Me.chkMovieSetMissingClearLogo.Checked
+                .MovieSetMissingDiscArt = Me.chkMovieSetMissingDiscArt.Checked
+                .MovieSetMissingFanart = Me.chkMovieSetMissingFanart.Checked
+                .MovieSetMissingLandscape = Me.chkMovieSetMissingLandscape.Checked
+                .MovieSetMissingNFO = Me.chkMovieSetMissingNFO.Checked
+                .MovieSetMissingPoster = Me.chkMovieSetMissingPoster.Checked
+                .MovieSetNfoCol = Me.chkMovieSetNFOCol.Checked
+                .MovieSetPosterCol = Me.chkMovieSetPosterCol.Checked
+                .MovieSetPosterHeight = If(Not String.IsNullOrEmpty(Me.txtMovieSetPosterHeight.Text), Convert.ToInt32(Me.txtMovieSetPosterHeight.Text), 0)
+                .MovieSetPosterOverwrite = Me.chkMovieSetPosterOverwrite.Checked
+                .MovieSetPosterPrefOnly = Me.chkMovieSetPosterPrefOnly.Checked
+                .MovieSetPosterPrefSize = DirectCast(Me.cbMovieSetPosterPrefSize.SelectedIndex, Enums.PosterSize)
+                .MovieSetPosterQual = Me.tbMovieSetPosterQual.Value
+                .MovieSetPosterResize = Me.chkMovieSetPosterResize.Checked
+                .MovieSetPosterWidth = If(Not String.IsNullOrEmpty(Me.txtMovieSetPosterWidth.Text), Convert.ToInt32(Me.txtMovieSetPosterWidth.Text), 0)
+                .MovieSetScraperPlot = Me.chkMovieSetScraperPlot.Checked
+                .MovieSetScraperTitle = Me.chkMovieSetScraperTitle.Checked
                 .MovieScanOrderModify = Me.chkMovieScanOrderModify.Checked
                 .MovieScraperCast = Me.chkMovieScraperCast.Checked
                 If Not String.IsNullOrEmpty(Me.txtMovieScraperCastLimit.Text) Then
@@ -4783,6 +5047,23 @@ Public Class dlgSettings
                 .MovieTrailerExpertBDMV = Me.txtMovieTrailerExpertBDMV.Text
                 .MovieUseBaseDirectoryExpertBDMV = Me.chkMovieUseBaseDirectoryExpertBDMV.Checked
 
+
+                '***************************************************
+                '****************** MovieSet Part ******************
+                '***************************************************
+
+                '**************** XBMC MSAA settings ***************
+                .MovieSetUseMSAA = Me.chkMovieSetUseMSAA.Checked
+                .MovieSetBannerMSAA = Me.chkMovieSetBannerMSAA.Checked
+                .MovieSetClearArtMSAA = Me.chkMovieSetClearArtMSAA.Checked
+                .MovieSetClearLogoMSAA = Me.chkMovieSetClearLogoMSAA.Checked
+                .MovieSetDiscArtMSAA = Me.chkMovieSetDiscArtMSAA.Checked
+                .MovieSetFanartMSAA = Me.chkMovieSetFanartMSAA.Checked
+                .MovieSetLandscapeMSAA = Me.chkMovieSetLandscapeMSAA.Checked
+                .MovieSetNFOMSAA = Me.chkMovieSetNFOMSAA.Checked
+                .MovieSetPosterMSAA = Me.chkMovieSetPosterMSAA.Checked
+
+
                 '***************************************************
                 '****************** TV Show Part *******************
                 '***************************************************
@@ -4858,38 +5139,45 @@ Public Class dlgSettings
 
             End With
 
-            For Each s As ModulesManager._externalScraperModuleClass_Data In ModulesManager.Instance.externalDataScrapersModules
+            For Each s As ModulesManager._externalMovieScraperModuleClass_Data In ModulesManager.Instance.externalMovieDataScrapersModules
                 Try
                     s.ProcessorModule.SaveSetupScraper(Not isApply)
                 Catch ex As Exception
                     Logger.Error(New StackFrame().GetMethod().Name, ex)
                 End Try
             Next
-            For Each s As ModulesManager._externalScraperModuleClass_Poster In ModulesManager.Instance.externalPosterScrapersModules
+            For Each s As ModulesManager._externalMovieScraperModuleClass_Poster In ModulesManager.Instance.externalMoviePosterScrapersModules
                 Try
                     s.ProcessorModule.SaveSetupScraper(Not isApply)
                 Catch ex As Exception
                     Logger.Error(New StackFrame().GetMethod().Name, ex)
                 End Try
             Next
-            For Each s As ModulesManager._externalScraperModuleClass_Theme In ModulesManager.Instance.externalThemeScrapersModules
+            For Each s As ModulesManager._externalMovieScraperModuleClass_Theme In ModulesManager.Instance.externalMovieThemeScrapersModules
                 Try
                     s.ProcessorModule.SaveSetupScraper(Not isApply)
                 Catch ex As Exception
                     Logger.Error(New StackFrame().GetMethod().Name, ex)
                 End Try
             Next
-            For Each s As ModulesManager._externalScraperModuleClass_Trailer In ModulesManager.Instance.externalTrailerScrapersModules
+            For Each s As ModulesManager._externalMovieScraperModuleClass_Trailer In ModulesManager.Instance.externalMovieTrailerScrapersModules
                 Try
                     s.ProcessorModule.SaveSetupScraper(Not isApply)
                 Catch ex As Exception
                     Logger.Error(New StackFrame().GetMethod().Name, ex)
+                End Try
+            Next
+            For Each s As ModulesManager._externalMovieSetScraperModuleClass_Data In ModulesManager.Instance.externalMovieSetDataScrapersModules
+                Try
+                    s.ProcessorModule.SaveSetupScraper(Not isApply)
+                Catch ex As Exception
+                    logger.Error(New StackFrame().GetMethod().Name, ex)
                 End Try
             Next
             For Each s As ModulesManager._externalTVScraperModuleClass In ModulesManager.Instance.externalTVScrapersModules
                 Try
                     If s.ProcessorModule.IsScraper Then s.ProcessorModule.SaveSetupScraper(Not isApply)
-                    If s.ProcessorModule.IsPostScraper Then s.ProcessorModule.SaveSetupPostScraper(Not isApply)
+                    If s.ProcessorModule.IsPostScraper Then s.ProcessorModule.SaveSetupPosterScraper(Not isApply)
                 Catch ex As Exception
                     Logger.Error(New StackFrame().GetMethod().Name, ex)
                 End Try
@@ -5149,7 +5437,7 @@ Public Class dlgSettings
         Me.gbMovieScraperFieldsOpts.Text = Master.eLang.GetString(577, "Scraper Fields")
         Me.gbMovieScraperGlobalLocksOpts.Text = Master.eLang.GetString(488, "Global Locks")
         Me.gbMovieScraperMetaDataOpts.Text = Master.eLang.GetString(59, "Meta Data")
-        Me.gbMovieSetsFolder.Text = Master.eLang.GetString(986, "Movieset Artwork Folder")
+        Me.gbMovieSetMSAAPath.Text = Master.eLang.GetString(986, "Movieset Artwork Folder")
         Me.gbMovieSortTokensOpts.Text = Master.eLang.GetString(463, "Sort Tokens to Ignore")
         Me.gbMovieTrailerOpts.Text = Master.eLang.GetString(1195, "Trailers")
         Me.gbMovieXBMCOptionalSettings.Text = Master.eLang.GetString(1175, "Optional Settings")
@@ -5655,6 +5943,72 @@ Public Class dlgSettings
         End With
     End Sub
 
+    Private Sub tbMovieSetBannerQual_ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tbMovieSetBannerQual.ValueChanged
+        Me.SetApplyButton(True)
+        Me.lblMovieSetBannerQual.Text = tbMovieSetBannerQual.Value.ToString
+        'change text color to indicate recommendations
+        With Me.lblMovieSetBannerQual
+            Select Case True
+                Case tbMovieSetBannerQual.Value = 0
+                    .ForeColor = Color.Black
+                Case tbMovieSetBannerQual.Value > 95 OrElse tbMovieSetBannerQual.Value < 20
+                    .ForeColor = Color.Red
+                Case tbMovieSetBannerQual.Value > 85
+                    .ForeColor = Color.FromArgb(255, 155 + tbMovieSetBannerQual.Value, 300 - tbMovieSetBannerQual.Value, 0)
+                Case tbMovieSetBannerQual.Value >= 80 AndAlso tbMovieSetBannerQual.Value <= 85
+                    .ForeColor = Color.Blue
+                Case tbMovieSetBannerQual.Value <= 50
+                    .ForeColor = Color.FromArgb(255, 255, Convert.ToInt32(8.5 * (tbMovieSetBannerQual.Value - 20)), 0)
+                Case tbMovieSetBannerQual.Value < 80
+                    .ForeColor = Color.FromArgb(255, Convert.ToInt32(255 - (8.5 * (tbMovieSetBannerQual.Value - 50))), 255, 0)
+            End Select
+        End With
+    End Sub
+
+    Private Sub tbMovieSetFanartQual_ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tbMovieSetFanartQual.ValueChanged
+        Me.SetApplyButton(True)
+        Me.lblMovieSetFanartQual.Text = tbMovieSetFanartQual.Value.ToString
+        'change text color to indicate recommendations
+        With Me.lblMovieSetFanartQual
+            Select Case True
+                Case tbMovieSetFanartQual.Value = 0
+                    .ForeColor = Color.Black
+                Case tbMovieSetFanartQual.Value > 95 OrElse tbMovieSetFanartQual.Value < 20
+                    .ForeColor = Color.Red
+                Case tbMovieSetFanartQual.Value > 85
+                    .ForeColor = Color.FromArgb(255, 155 + tbMovieSetFanartQual.Value, 300 - tbMovieSetFanartQual.Value, 0)
+                Case tbMovieSetFanartQual.Value >= 80 AndAlso tbMovieSetFanartQual.Value <= 85
+                    .ForeColor = Color.Blue
+                Case tbMovieSetFanartQual.Value <= 50
+                    .ForeColor = Color.FromArgb(255, 255, Convert.ToInt32(8.5 * (tbMovieSetFanartQual.Value - 20)), 0)
+                Case tbMovieSetFanartQual.Value < 80
+                    .ForeColor = Color.FromArgb(255, Convert.ToInt32(255 - (8.5 * (tbMovieSetFanartQual.Value - 50))), 255, 0)
+            End Select
+        End With
+    End Sub
+
+    Private Sub tbMovieSetPosterQual_ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tbMovieSetPosterQual.ValueChanged
+        Me.SetApplyButton(True)
+        Me.lblMovieSetPosterQual.Text = tbMovieSetPosterQual.Value.ToString
+        'change text color to indicate recommendations
+        With Me.lblMovieSetPosterQual
+            Select Case True
+                Case tbMovieSetPosterQual.Value = 0
+                    .ForeColor = Color.Black
+                Case tbMovieSetPosterQual.Value > 95 OrElse tbMovieSetPosterQual.Value < 20
+                    .ForeColor = Color.Red
+                Case tbMovieSetPosterQual.Value > 85
+                    .ForeColor = Color.FromArgb(255, 155 + tbMovieSetPosterQual.Value, 300 - tbMovieSetPosterQual.Value, 0)
+                Case tbMovieSetPosterQual.Value >= 80 AndAlso tbMovieSetPosterQual.Value <= 85
+                    .ForeColor = Color.Blue
+                Case tbMovieSetPosterQual.Value <= 50
+                    .ForeColor = Color.FromArgb(255, 255, Convert.ToInt32(8.5 * (tbMovieSetPosterQual.Value - 20)), 0)
+                Case tbMovieSetPosterQual.Value < 80
+                    .ForeColor = Color.FromArgb(255, Convert.ToInt32(255 - (8.5 * (tbMovieSetPosterQual.Value - 50))), 255, 0)
+            End Select
+        End With
+    End Sub
+
     Private Sub tbTVSeasonBannerQual_ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tbTVSeasonBannerQual.ValueChanged
         Me.SetApplyButton(True)
         Me.lblTVSeasonBannerQual.Text = tbTVSeasonBannerQual.Value.ToString
@@ -5937,6 +6291,22 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
+    Private Sub txtMovieSetBannerHeight_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtMovieSetBannerHeight.KeyPress
+        e.Handled = StringUtils.NumericOnly(e.KeyChar)
+    End Sub
+
+    Private Sub txtMovieSetBannerHeight_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieSetBannerHeight.TextChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub txtMovieSetBannerWidth_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtMovieSetBannerWidth.KeyPress
+        e.Handled = StringUtils.NumericOnly(e.KeyChar)
+    End Sub
+
+    Private Sub txtMovieSetBannerWidth_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieSetBannerWidth.TextChanged
+        Me.SetApplyButton(True)
+    End Sub
+
     Private Sub txtMovieEFanartsHeight_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtMovieEFanartsHeight.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
@@ -6001,6 +6371,22 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
+    Private Sub txtMovieSetFanartHeight_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtMovieSetFanartHeight.KeyPress
+        e.Handled = StringUtils.NumericOnly(e.KeyChar)
+    End Sub
+
+    Private Sub txtMovieSetFanartHeight_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieSetFanartHeight.TextChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub txtMovieSetFanartWidth_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtMovieSetFanartWidth.KeyPress
+        e.Handled = StringUtils.NumericOnly(e.KeyChar)
+    End Sub
+
+    Private Sub txtMovieSetFanartWidth_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieSetFanartWidth.TextChanged
+        Me.SetApplyButton(True)
+    End Sub
+
     Private Sub txtMovieScraperGenreLimit_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtMovieScraperGenreLimit.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
@@ -6030,6 +6416,22 @@ Public Class dlgSettings
     End Sub
 
     Private Sub txtMoviePosterWidth_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMoviePosterWidth.TextChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub txtMovieSetPosterHeight_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtMovieSetPosterHeight.KeyPress
+        e.Handled = StringUtils.NumericOnly(e.KeyChar)
+    End Sub
+
+    Private Sub txtMovieSetPosterHeight_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieSetPosterHeight.TextChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub txtMovieSetPosterWidth_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtMovieSetPosterWidth.KeyPress
+        e.Handled = StringUtils.NumericOnly(e.KeyChar)
+    End Sub
+
+    Private Sub txtMovieSetPosterWidth_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieSetPosterWidth.TextChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -6195,22 +6597,22 @@ Public Class dlgSettings
         End Function
     End Class
 
-    Private Sub txtMovieMoviesetsPath_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieMoviesetsPath.TextChanged
+    Private Sub txtMovieMoviesetsPath_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieSetMSAAPath.TextChanged
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub btnMovieMoviesetsBrowse_Click(sender As Object, e As EventArgs) Handles btnMovieMoviesetsBrowse.Click
+    Private Sub btnMovieMoviesetsBrowse_Click(sender As Object, e As EventArgs) Handles btnMovieSetMSAAPathBrowse.Click
         Try
             With Me.fbdBrowse
                 fbdBrowse.Description = Master.eLang.GetString(1030, "Select the folder where you wish to store your movie sets images...")
                 If .ShowDialog = Windows.Forms.DialogResult.OK Then
                     If Not String.IsNullOrEmpty(.SelectedPath.ToString) AndAlso Directory.Exists(.SelectedPath) Then
-                        Me.txtMovieMoviesetsPath.Text = .SelectedPath.ToString
+                        Me.txtMovieSetMSAAPath.Text = .SelectedPath.ToString
                     End If
                 End If
             End With
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -6816,6 +7218,167 @@ Public Class dlgSettings
     End Sub
 
     Private Sub txtMovieGeneralCustomMarker4_TextChanged(sender As Object, e As EventArgs) Handles txtMovieGeneralCustomMarker4.TextChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMovieSetBannerMSAA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetBannerMSAA.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMovieSetClearArtMSAA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetClearArtMSAA.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMovieSetClearLogoMSAA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetClearLogoMSAA.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMovieSetDiscArtMSAA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetDiscArtMSAA.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMovieSetFanartMSAA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetFanartMSAA.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMovieSetLandscapeMSAA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetLandscapeMSAA.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMovieSetNFOMSAA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetNFOMSAA.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMovieSetPosterMSAA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetPosterMSAA.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMovieSetLockPlot_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetLockPlot.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMovieSetLockTitle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetLockTitle.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMovieSetMissingBanner_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetMissingBanner.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMovieSetMissingClearArt_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetMissingClearArt.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMovieSetMissingClearLogo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetMissingClearLogo.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMovieSetMissingDiscArt_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetMissingDiscArt.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMovieSetMissingFanart_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetMissingFanart.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMovieSetMissingLandscape_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetMissingLandscape.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMovieSetMissingNFO_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetMissingNFO.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMovieSetMissingPoster_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetMissingPoster.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMovieSetBannerCol_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetBannerCol.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMovieSetClearArtCol_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetClearArtCol.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMovieSetClearLogoCol_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetClearLogoCol.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMovieSetDiscArtCol_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetDiscArtCol.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMovieSetFanartCol_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetFanartCol.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMovieSetLandscapeCol_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetLandscapeCol.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMovieSetNFOCol_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetNFOCol.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMovieSetPosterCol_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetPosterCol.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMovieSetBannerOverwrite_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetBannerOverwrite.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMovieSetBannerPrefOnly_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetBannerPrefOnly.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMovieSetClearArtOverwrite_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetClearArtOverwrite.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMovieSetClearLogoOverwrite_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetClearLogoOverwrite.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMovieSetClickScrape_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetClickScrape.CheckedChanged
+        chkMovieSetClickScrapeAsk.Enabled = chkMovieSetClickScrape.Checked
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMovieSetClickScrapeAsk_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetClickScrapeAsk.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMovieSetDiscArtOverwrite_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetDiscArtOverwrite.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMovieSetFanartOverwrite_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetFanartOverwrite.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMovieSetFanartPrefOnly_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetFanartPrefOnly.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMovieSetLandscapeOverwrite_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetLandscapeOverwrite.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMovieSetPosterOverwrite_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetPosterOverwrite.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMovieSetPosterPrefOnly_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetPosterPrefOnly.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMovieSetScraperPlot_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetScraperPlot.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkMovieSetScraperTitle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetScraperTitle.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
