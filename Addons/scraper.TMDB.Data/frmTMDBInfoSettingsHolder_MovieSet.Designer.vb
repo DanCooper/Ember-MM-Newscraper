@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class frmTMDBSetInfoSettingsHolder
+Partial Class frmTMDBInfoSettingsHolder_MovieSet
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
@@ -22,7 +22,7 @@ Partial Class frmTMDBSetInfoSettingsHolder
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmTMDBSetInfoSettingsHolder))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmTMDBInfoSettingsHolder_MovieSet))
         Me.lblVersion = New System.Windows.Forms.Label()
         Me.gbTMDBGlobalOpts = New System.Windows.Forms.GroupBox()
         Me.lblEMMAPI = New System.Windows.Forms.Label()

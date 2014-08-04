@@ -200,7 +200,7 @@ Public Class TMDB_Poster
 
         LoadSettings()
 
-        ImageList = TMDB.GetTMDBCollectionImages(DBMovieSet.TMDBColID, Type)
+        ImageList = TMDB.GetTMDBCollectionImages(DBMovieSet.MovieSet.ID, Type)
 
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function

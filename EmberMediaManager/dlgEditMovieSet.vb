@@ -70,7 +70,7 @@ Public Class dlgEditMovieSet
 
             If Not String.IsNullOrEmpty(newColID) Then
                 Me.txtCollectionID.Text = newColID
-                currMovieSet.TMDBColID = newColID
+                currMovieSet.MovieSet.ID = newColID
             End If
         End If
     End Sub
@@ -1175,8 +1175,8 @@ Public Class dlgEditMovieSet
                     .txtTitle.Text = Master.currMovieSet.ListTitle
                 End If
 
-                If Not String.IsNullOrEmpty(Master.currMovieSet.TMDBColID) Then
-                    .txtCollectionID.Text = Master.currMovieSet.TMDBColID
+                If Not String.IsNullOrEmpty(Master.currMovieSet.MovieSet.ID) Then
+                    .txtCollectionID.Text = Master.currMovieSet.MovieSet.ID
                 End If
 
                 If DoAll Then
@@ -1533,7 +1533,7 @@ Public Class dlgEditMovieSet
                 Me.btnRescrape.Enabled = False
 
                 Master.currMovieSet.ListTitle = .txtTitle.Text.Trim
-                Master.currMovieSet.TMDBColID = .txtCollectionID.Text.Trim
+                Master.currMovieSet.MovieSet.ID = .txtCollectionID.Text.Trim
 
                 If Master.currMovieSet.RemoveBanner Then
                     .MovieBanner.DeleteMovieSetBanner(Master.currMovieSet)

@@ -1145,6 +1145,11 @@ Public Class Functions
             .bYear = Master.eSettings.MovieScraperYear
         End With
 
+        With Master.DefaultMovieSetOptions
+            .bPlot = Master.eSettings.MovieSetScraperPlot
+            .bTitle = Master.eSettings.MovieSetScraperTitle
+        End With
+
         With Master.DefaultTVOptions
             .bEpActors = Master.eSettings.TVScraperEpisodeActors
             .bEpAired = Master.eSettings.TVScraperEpisodeAired

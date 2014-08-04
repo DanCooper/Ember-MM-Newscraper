@@ -2245,7 +2245,7 @@ Public Class frmMain
                     End If
                 Else
                     ' if we do not have the movie set ID we need to retrive it even if is just a Poster/Fanart/Trailer/Actors update
-                    If String.IsNullOrEmpty(DBScrapeMovieSet.TMDBColID) AndAlso (Master.GlobalScrapeMod.Banner Or Master.GlobalScrapeMod.ClearArt Or _
+                    If String.IsNullOrEmpty(DBScrapeMovieSet.MovieSet.ID) AndAlso (Master.GlobalScrapeMod.Banner Or Master.GlobalScrapeMod.ClearArt Or _
                                                                              Master.GlobalScrapeMod.ClearLogo Or Master.GlobalScrapeMod.DiscArt Or _
                                                                              Master.GlobalScrapeMod.Fanart Or Master.GlobalScrapeMod.Landscape Or _
                                                                              Master.GlobalScrapeMod.Poster) Then
@@ -4480,6 +4480,7 @@ doCancel:
 
     Private Sub cmnuMovieSetNew_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieSetNew.Click
         Master.currMovieSet = New Structures.DBMovieSet
+        Master.currMovieSet.MovieSet = New MediaContainers.MovieSet
 
         Try
             Me.SetControlsEnabled(False)
@@ -7991,7 +7992,7 @@ doCancel:
 
         Try
             Me.SuspendLayout()
-            If Not String.IsNullOrEmpty(Master.currMovieSet.ListTitle) AndAlso Master.currMovieSet.Movies.Count > 0 Then
+            If Not String.IsNullOrEmpty(Master.currMovieSet.ListTitle) AndAlso Not IsNothing(Master.currMovieSet.Movies) AndAlso Master.currMovieSet.Movies.Count > 0 Then
                 Me.lblTitle.Text = String.Format("{0} ({1})", Master.currMovieSet.ListTitle, Master.currMovieSet.Movies.Count)
             ElseIf Not String.IsNullOrEmpty(Master.currMovieSet.ListTitle) Then
                 Me.lblTitle.Text = Master.currMovieSet.ListTitle
@@ -8050,7 +8051,7 @@ doCancel:
 
             Me.alMoviesInSet = New List(Of String)
 
-            If Master.currMovieSet.Movies.Count > 0 Then
+            If Not IsNothing(Master.currMovieSet.Movies) AndAlso Master.currMovieSet.Movies.Count > 0 Then
                 'Me.pbActors.Image = My.Resources.actor_silhouette
                 For Each Movie As Structures.DBMovie In Master.currMovieSet.Movies
 
@@ -10763,11 +10764,12 @@ doCancel:
     End Sub
 
     Private Sub MovieSetScrapeData(ByVal selected As Boolean, ByVal sType As Enums.ScrapeType, ByVal Options As Structures.MovieSetScrapeOptions)
+        Dim Restart As Boolean = False
         If Not Restart Then
             If Master.eSettings.RestartScraper Then
                 _ScraperStatus.Selected = selected
                 _ScraperStatus.sType = sType
-                _ScraperStatus.Options = Options
+                _ScraperStatus.Options_MovieSet = Options
                 _ScraperStatus.GlobalScrape = Master.GlobalScrapeMod
             End If
 
@@ -10837,7 +10839,7 @@ doCancel:
 
                     selected = _ScraperStatus.Selected
                     sType = _ScraperStatus.sType
-                    Options = _ScraperStatus.Options
+                    Options = _ScraperStatus.Options_MovieSet
                     Master.GlobalScrapeMod = _ScraperStatus.GlobalScrape
                     ScrapeList.Clear()
                     ScrapeList.AddRange(_ScraperStatus.ScrapeList.ToArray)
@@ -15174,7 +15176,9 @@ doCancel:
         Dim fileInfo As String
         Dim IsTV As Boolean
         Dim Movie As Structures.DBMovie
+        Dim MovieSet As Structures.DBMovieSet
         Dim Options As Structures.MovieScrapeOptions
+        Dim Options_MovieSet As Structures.MovieSetScrapeOptions
         Dim Path As String
         Dim Result As Image
         Dim scrapeType As Enums.ScrapeType

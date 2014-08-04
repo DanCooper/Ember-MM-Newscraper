@@ -244,7 +244,7 @@ Public Class FanartTV_Poster
 
         LoadSettings()
 
-        ImageList = _fanartTV.GetFANARTTVImages(DBMovieset.TMDBColID, Type)
+        ImageList = _fanartTV.GetFANARTTVImages(DBMovieset.MovieSet.ID, Type)
 
         logger.Trace( "Finished scrape")
         Return New Interfaces.ModuleResult With {.breakChain = False}

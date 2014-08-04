@@ -9,6 +9,8 @@ Partial Public Class clsXMLRestartScraper
 
     Private _OptionsField As New Structures.MovieScrapeOptions
 
+    Private _OptionsField_MovieSet As New Structures.MovieSetScrapeOptions
+
     Private _GlobalScrapeStatus As New Structures.ScrapeModifier
 
     Private _ScrapeListField As New System.Collections.Generic.List(Of Object())  'Need an array of objects to binary serialize 
@@ -38,6 +40,15 @@ Partial Public Class clsXMLRestartScraper
         End Get
         Set(value As Structures.MovieScrapeOptions)
             Me._OptionsField = value
+        End Set
+    End Property
+
+    Public Property Options_MovieSet As Structures.MovieSetScrapeOptions
+        Get
+            Return Me._OptionsField_MovieSet
+        End Get
+        Set(value As Structures.MovieSetScrapeOptions)
+            Me._OptionsField_MovieSet = value
         End Set
     End Property
 

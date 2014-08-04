@@ -53,7 +53,7 @@ Public Class TMDB_Data
     Private _ScraperEnabled_Movie As Boolean = False
     Private _ScraperEnabled_MovieSet As Boolean = False
     Private _setup_Movie As frmTMDBInfoSettingsHolder
-    Private _setup_MovieSet As frmTMDBSetInfoSettingsHolder
+    Private _setup_MovieSet As frmTMDBInfoSettingsHolder_MovieSet
     Private _TMDBConf As V3.TmdbConfiguration
     Private _TMDBConfE As V3.TmdbConfiguration
     Private _TMDBApi As V3.Tmdb 'preferred language
@@ -229,7 +229,7 @@ Public Class TMDB_Data
 
     Function InjectSetupScraper_MovieSet() As Containers.SettingsPanel Implements Interfaces.EmberMovieSetScraperModule_Data.InjectSetupScraper
         Dim SPanel As New Containers.SettingsPanel
-        _setup_MovieSet = New frmTMDBSetInfoSettingsHolder
+        _setup_MovieSet = New frmTMDBInfoSettingsHolder_MovieSet
         LoadSettings_MovieSet()
         _setup_MovieSet.API = _setup_MovieSet.txtTMDBApiKey.Text
         _setup_MovieSet.Lang = _setup_MovieSet.cbTMDBPrefLanguage.Text
@@ -637,13 +637,13 @@ Public Class TMDB_Data
                 'TODO: maybe find another solution.
                 Me._TMDBg = New TMDBg.Scraper(_TMDBConf, _TMDBConfE, _TMDBApi, _TMDBApiE, _TMDBApiA)
 
-                Using dSearch As New dlgTMDBSearchResults(_MySettings_MovieSet, Me._TMDBg)
+                Using dSearch As New dlgTMDBSearchResults_MovieSet(_MySettings_MovieSet, Me._TMDBg)
                     Dim tmpTitle As String = DBMovieSet.MovieSet.Title
                     If String.IsNullOrEmpty(tmpTitle) Then
                         tmpTitle = DBMovieSet.ListTitle
                     End If
-                    If dSearch.ShowDialog(tmpTitle, String.Empty, filterOptions, String.Empty) = Windows.Forms.DialogResult.OK Then
-                        If Not String.IsNullOrEmpty(Master.tmpMovie.TMDBID) Then
+                    If dSearch.ShowDialog(tmpTitle, filterOptions) = Windows.Forms.DialogResult.OK Then
+                        If Not String.IsNullOrEmpty(Master.tmpMovieSet.ID) Then
                             ' if we changed the ID tipe we need to clear everything and rescrape
                             ' TODO: check TMDB if IMDB NullOrEmpty
                             If Not String.IsNullOrEmpty(DBMovieSet.MovieSet.ID) AndAlso Not (DBMovieSet.MovieSet.ID = Master.tmpMovieSet.ID) Then
@@ -663,7 +663,6 @@ Public Class TMDB_Data
                                 Master.currMovieSet.LandscapePath = String.Empty
                                 Master.currMovieSet.PosterPath = String.Empty
                             End If
-                            DBMovieSet.MovieSet.ID = Master.tmpMovieSet.ID
                             DBMovieSet.MovieSet.ID = Master.tmpMovieSet.ID
                         End If
                         If Not String.IsNullOrEmpty(DBMovieSet.MovieSet.ID) AndAlso Master.GlobalScrapeMod.NFO Then
@@ -700,7 +699,7 @@ Public Class TMDB_Data
             '    If Not OldTitle = DBMovie.Movie.Title OrElse String.IsNullOrEmpty(DBMovie.Movie.SortTitle) Then DBMovie.Movie.SortTitle = DBMovie.ListTitle
         End If
 
-            Return New Interfaces.ModuleResult With {.breakChain = False}
+        Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
     Public Sub ScraperOrderChanged_Movie() Implements EmberAPI.Interfaces.EmberMovieScraperModule_Data.ScraperOrderChanged

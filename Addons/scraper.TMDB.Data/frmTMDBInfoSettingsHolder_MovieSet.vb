@@ -22,7 +22,7 @@ Imports System.IO
 Imports EmberAPI
 Imports System.Diagnostics
 
-Public Class frmTMDBSetInfoSettingsHolder
+Public Class frmTMDBInfoSettingsHolder_MovieSet
 
 #Region "Events"
 
