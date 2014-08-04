@@ -775,7 +775,7 @@ Namespace TMDBg
                             b = GetMovieSetInfo(r.Matches.Item(0).ID, tmdbMovieSet, False, Options, True)
                         Else
                             Master.tmpMovie.Clear()
-                            Using dTMDB As New dlgTMDBSearchResults(_MySettings_MovieSet, Me)
+                            Using dTMDB As New dlgTMDBSearchResults_MovieSet(_MySettings_MovieSet, Me)
 
                                 If dTMDB.ShowDialog(r, sMovieSetName) = Windows.Forms.DialogResult.OK Then
                                     If String.IsNullOrEmpty(Master.tmpMovie.TMDBID) Then

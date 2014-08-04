@@ -4447,8 +4447,8 @@ doCancel:
                         End If
                         'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieSync, Nothing, Master.currMovie)
                     Case Windows.Forms.DialogResult.Retry
-                        'Functions.SetScraperMod(Enums.ModType.All, True, True)
-                        'Me.MoviesetScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultMovieOptions)
+                        Functions.SetScraperMod(Enums.MovieModType.All, True, True)
+                        Me.MovieSetScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultMovieSetOptions)
                     Case Windows.Forms.DialogResult.Abort
                         'Master.currMovie.ClearBanner = False
                         'Master.currMovie.ClearClearArt = False
@@ -4483,6 +4483,9 @@ doCancel:
         Master.currMovieSet.MovieSet = New MediaContainers.MovieSet
 
         Try
+            Dim indX As Integer = Me.dgvMovieSets.SelectedRows(0).Index
+            Dim ID As Integer = Convert.ToInt32(Me.dgvMovieSets.Item(0, indX).Value)
+
             Me.SetControlsEnabled(False)
 
             Using dEditMovieSet As New dlgEditMovieSet
@@ -4498,8 +4501,8 @@ doCancel:
                         'End If
                         'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieSync, Nothing, Master.currMovie)
                     Case Windows.Forms.DialogResult.Retry
-                        'Functions.SetScraperMod(Enums.ModType.All, True, True)
-                        'Me.MoviesetScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultMovieOptions)
+                        Functions.SetScraperMod(Enums.MovieModType.All, True, True)
+                        Me.MovieSetScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultMovieSetOptions)
                     Case Windows.Forms.DialogResult.Abort
                         'Master.currMovie.ClearBanner = False
                         'Master.currMovie.ClearClearArt = False
@@ -4516,11 +4519,11 @@ doCancel:
                         'Functions.SetScraperMod(Enums.ModType.All, True, False)
                         'Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultMovieOptions)
                     Case Else
-                        'If Me.InfoCleared Then
-                        '    Me.LoadMovieSetInfo(ID, Me.dgvMovieSets.Item(1, indX).Value.ToString, True, False)
-                        'Else
-                        Me.SetControlsEnabled(True)
-                        'End If
+                        If Me.InfoCleared Then
+                            Me.LoadMovieSetInfo(ID, Me.dgvMovieSets.Item(1, indX).Value.ToString, True, False)
+                        Else
+                            Me.SetControlsEnabled(True)
+                        End If
                 End Select
                 'RemoveHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
             End Using
@@ -5579,11 +5582,11 @@ doCancel:
                         'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieSync, Nothing, Master.currMovie)
                     Case Windows.Forms.DialogResult.Retry
                         Functions.SetScraperMod(Enums.MovieModType.All, True, True)
-                        Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultMovieOptions)
+                        Me.MovieSetScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultMovieSetOptions)
                     Case Windows.Forms.DialogResult.Abort
-                        Functions.SetScraperMod(Enums.MovieModType.DoSearch, True)
-                        Functions.SetScraperMod(Enums.MovieModType.All, True, False)
-                        Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultMovieOptions)
+                        'Functions.SetScraperMod(Enums.MovieModType.DoSearch, True)
+                        'Functions.SetScraperMod(Enums.MovieModType.All, True, False)
+                        'Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultMovieOptions)
                     Case Else
                         If Me.InfoCleared Then Me.LoadMovieSetInfo(ID, Me.dgvMovieSets.Item(1, indX).Value.ToString, True, False)
                 End Select
@@ -5857,11 +5860,11 @@ doCancel:
                             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieSync, Nothing, Master.currMovieSet)
                         Case Windows.Forms.DialogResult.Retry
                             Functions.SetScraperMod(Enums.MovieModType.All, True, True)
-                            Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultMovieOptions)
+                            Me.MovieSetScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultMovieSetOptions)
                         Case Windows.Forms.DialogResult.Abort
-                            Functions.SetScraperMod(Enums.MovieModType.DoSearch, True)
-                            Functions.SetScraperMod(Enums.MovieModType.All, True, False)
-                            Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultMovieOptions)
+                            'Functions.SetScraperMod(Enums.MovieModType.DoSearch, True)
+                            'Functions.SetScraperMod(Enums.MovieModType.All, True, False)
+                            'Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultMovieOptions)
                         Case Else
                             If Me.InfoCleared Then Me.LoadMovieSetInfo(ID, Me.dgvMovies.Item(1, indX).Value.ToString, True, False)
                     End Select
@@ -10715,16 +10718,16 @@ doCancel:
                             Functions.SetScraperMod(Enums.MovieModType.All, True, True)
                             Me.MovieSetScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultMovieSetOptions) ', ID)
                         Case Windows.Forms.DialogResult.Abort
-                            Master.currMovieSet.RemoveBanner = True
-                            Master.currMovieSet.RemoveClearArt = True
-                            Master.currMovieSet.RemoveClearLogo = True
-                            Master.currMovieSet.RemoveDiscArt = True
-                            Master.currMovieSet.RemoveFanart = True
-                            Master.currMovieSet.RemoveLandscape = True
-                            Master.currMovieSet.RemovePoster = True
-                            Functions.SetScraperMod(Enums.MovieModType.DoSearch, True)
-                            Functions.SetScraperMod(Enums.MovieModType.All, True, False)
-                            Me.MovieSetScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultMovieSetOptions) ', ID, True)
+                            'Master.currMovieSet.RemoveBanner = True
+                            'Master.currMovieSet.RemoveClearArt = True
+                            'Master.currMovieSet.RemoveClearLogo = True
+                            'Master.currMovieSet.RemoveDiscArt = True
+                            'Master.currMovieSet.RemoveFanart = True
+                            'Master.currMovieSet.RemoveLandscape = True
+                            'Master.currMovieSet.RemovePoster = True
+                            'Functions.SetScraperMod(Enums.MovieModType.DoSearch, True)
+                            'Functions.SetScraperMod(Enums.MovieModType.All, True, False)
+                            'Me.MovieSetScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultMovieSetOptions) ', ID, True)
                         Case Else
                             If Me.InfoCleared Then Me.LoadMovieSetInfo(ID, Me.dgvMovieSets.Item(1, indX).Value.ToString, True, False)
                     End Select

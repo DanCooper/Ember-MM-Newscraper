@@ -38,14 +38,12 @@ Public Class dlgTMDBSearchResults
     Private _currnode As Integer = -1
     Private _prevnode As Integer = -2
     Private MySettings As TMDB_Data.sMySettings_Movie
-    Private MySettings_MovieSet As TMDB_Data.sMySettings_MovieSet
     'Private TMDBConf As V3.TmdbConfiguration
     'Private TMDBApi As V3.Tmdb
 
     Private _InfoCache As New Dictionary(Of String, MediaContainers.Movie)
     Private _PosterCache As New Dictionary(Of String, System.Drawing.Image)
     Private _filterOptions As Structures.MovieScrapeOptions
-    Private _filterOptions_MovieSet As Structures.MovieSetScrapeOptions
 
 #End Region 'Fields
 
@@ -60,17 +58,6 @@ Public Class dlgTMDBSearchResults
         MySettings = _MySettings
         TMDBg = _TMDBg
     End Sub
-
-    Public Sub New(_MySettings As TMDB_Data.sMySettings_MovieSet, _TMDBg As TMDBg.Scraper)
-
-        ' This call is required by the designer.
-        InitializeComponent()
-        'TMDBApi = New WatTmdb.V3.Tmdb(_MySettings.TMDBAPIKey, _MySettings.TMDBLanguage)
-        'TMDBConf = TMDBApi.GetConfiguration()
-        MySettings_MovieSet = _MySettings
-        TMDBg = _TMDBg
-    End Sub
-
 
     Public Overloads Function ShowDialog(ByVal sMovieTitle As String, ByVal sMovieFilename As String, ByVal filterOptions As Structures.MovieScrapeOptions, Optional ByVal sMovieYear As Integer = 0) As Windows.Forms.DialogResult
         Me.tmrWait.Enabled = False
@@ -90,23 +77,6 @@ Public Class dlgTMDBSearchResults
         Return MyBase.ShowDialog()
     End Function
 
-    Public Overloads Function ShowDialog(ByVal sMovieSetTitle As String, ByVal filterOptions As Structures.MovieSetScrapeOptions) As Windows.Forms.DialogResult
-        Me.tmrWait.Enabled = False
-        Me.tmrWait.Interval = 250
-        Me.tmrLoad.Enabled = False
-        Me.tmrLoad.Interval = 100
-
-        _filterOptions_MovieSet = filterOptions
-
-        Me.Text = String.Concat(Master.eLang.GetString(794, "Search Results"), " - ", sMovieSetTitle)
-        Me.txtSearch.Text = sMovieSetTitle
-        Me.txtFileName.Text = String.Empty
-        chkManual.Enabled = False
-        TMDBg.SearchMovieSetAsync(sMovieSetTitle, _filterOptions_MovieSet)
-
-        Return MyBase.ShowDialog()
-    End Function
-
     Public Overloads Function ShowDialog(ByVal Res As TMDBg.MovieSearchResults, ByVal sMovieTitle As String, ByVal sMovieFilename As String) As Windows.Forms.DialogResult
         Me.tmrWait.Enabled = False
         Me.tmrWait.Interval = 250
@@ -117,20 +87,6 @@ Public Class dlgTMDBSearchResults
         Me.txtSearch.Text = sMovieTitle
         Me.txtFileName.Text = sMovieFilename
         SearchResultsDownloaded(Res)
-
-        Return MyBase.ShowDialog()
-    End Function
-
-    Public Overloads Function ShowDialog(ByVal Res As TMDBg.MovieSetSearchResults, ByVal sMovieSetTitle As String) As Windows.Forms.DialogResult
-        Me.tmrWait.Enabled = False
-        Me.tmrWait.Interval = 250
-        Me.tmrLoad.Enabled = False
-        Me.tmrLoad.Interval = 100
-
-        Me.Text = String.Concat(Master.eLang.GetString(794, "Search Results"), " - ", sMovieSetTitle)
-        Me.txtSearch.Text = sMovieSetTitle
-        Me.txtFileName.Text = String.Empty
-        SearchResultsDownloaded_MovieSet(Res)
 
         Return MyBase.ShowDialog()
     End Function
@@ -361,35 +317,6 @@ Public Class dlgTMDBSearchResults
             If Not IsNothing(M) AndAlso M.Matches.Count > 0 Then
                 For Each Movie As MediaContainers.Movie In M.Matches
                     Me.tvResults.Nodes.Add(New TreeNode() With {.Text = String.Concat(Movie.Title, If(Not String.IsNullOrEmpty(Movie.Year), String.Format(" ({0})", Movie.Year), String.Empty)), .Tag = Movie.TMDBID})
-                Next
-                Me.tvResults.SelectedNode = Me.tvResults.Nodes(0)
-
-                Me._prevnode = -2
-
-                Me.tvResults.Focus()
-            Else
-                Me.tvResults.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(833, "No Matches Found")})
-            End If
-            Me.pnlLoading.Visible = False
-            chkManual.Enabled = True
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
-    End Sub
-
-    Private Sub SearchResultsDownloaded_MovieSet(ByVal M As TMDBg.MovieSetSearchResults)
-        '//
-        ' Process the results that TMDB gave us
-        '\\
-        'Dim TnP As New TreeNode
-        'Dim selNode As New TreeNode
-
-        Try
-            Me.tvResults.Nodes.Clear()
-            Me.ClearInfo()
-            If Not IsNothing(M) AndAlso M.Matches.Count > 0 Then
-                For Each MovieSet As MediaContainers.MovieSet In M.Matches
-                    Me.tvResults.Nodes.Add(New TreeNode() With {.Text = String.Concat(MovieSet.Title, If(Not String.IsNullOrEmpty(Movie.Year), String.Format(" ({0})", Movie.Year), String.Empty)), .Tag = Movie.TMDBID})
                 Next
                 Me.tvResults.SelectedNode = Me.tvResults.Nodes(0)
 
