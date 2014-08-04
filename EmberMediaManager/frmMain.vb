@@ -4481,11 +4481,9 @@ doCancel:
     Private Sub cmnuMovieSetNew_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieSetNew.Click
         Master.currMovieSet = New Structures.DBMovieSet
         Master.currMovieSet.MovieSet = New MediaContainers.MovieSet
+        Master.currMovieSet.ID = -1
 
         Try
-            Dim indX As Integer = Me.dgvMovieSets.SelectedRows(0).Index
-            Dim ID As Integer = Convert.ToInt32(Me.dgvMovieSets.Item(0, indX).Value)
-
             Me.SetControlsEnabled(False)
 
             Using dEditMovieSet As New dlgEditMovieSet
@@ -4519,11 +4517,7 @@ doCancel:
                         'Functions.SetScraperMod(Enums.ModType.All, True, False)
                         'Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultMovieOptions)
                     Case Else
-                        If Me.InfoCleared Then
-                            Me.LoadMovieSetInfo(ID, Me.dgvMovieSets.Item(1, indX).Value.ToString, True, False)
-                        Else
-                            Me.SetControlsEnabled(True)
-                        End If
+                        Me.SetControlsEnabled(True)
                 End Select
                 'RemoveHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
             End Using

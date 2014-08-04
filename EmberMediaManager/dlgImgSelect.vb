@@ -522,13 +522,6 @@ Public Class dlgImgSelect
         '//
         ' Thread finished: process the pics
         '\\
-        Me.pnlBG.Visible = True
-        Me.pnlDLStatus.Visible = False
-        Me.lblSize.Visible = True
-        Me.cbFilterSize.Visible = True
-        Application.DoEvents()
-        Me.ResumeLayout(True)
-        Me.pnlBG.AutoScroll = True
         MeActivate()
     End Sub
 
@@ -537,6 +530,13 @@ Public Class dlgImgSelect
             Me.Invoke(New Delegate_MeActivate(AddressOf MeActivate))
             Exit Sub
         End If
+        Me.pnlBG.Visible = True
+        Me.pnlDLStatus.Visible = False
+        Me.lblSize.Visible = True
+        Me.cbFilterSize.Visible = True
+        Application.DoEvents()
+        Me.ResumeLayout(True)
+        Me.pnlBG.AutoScroll = True
         Me.Activate()
     End Sub
     Private Sub cbFilterSize_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cbFilterSize.SelectedIndexChanged
