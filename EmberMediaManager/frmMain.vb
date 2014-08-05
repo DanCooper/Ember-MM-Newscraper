@@ -73,7 +73,7 @@ Public Class frmMain
     Private dtMovieSets As New DataTable
     Private dtSeasons As New DataTable
     Private dtShows As New DataTable
-    Private dScrapeRow As Object()
+    Private dScrapeRow As DataRow = Nothing
 
     Private fScanner As New Scanner
     Private GenreImage As Image
@@ -89,7 +89,7 @@ Public Class frmMain
     Private pnlGenre() As Panel = Nothing
     Private prevText As String = String.Empty
     Private ReportDownloadPercent As Boolean = False
-    Private ScrapeList As New List(Of Object()) 'Need an array of objects to binary serialize 
+    Private ScrapeList As New List(Of DataRow)
     Private ScraperDone As Boolean = False
     Private sHTTP As New EmberAPI.HTTP
     Private tmpLang As String = String.Empty
@@ -1515,7 +1515,6 @@ Public Class frmMain
         Dim etList As New List(Of String)
         Dim tUrlList As New List(Of Themes)
         Dim DBScrapeMovie As New Structures.DBMovie
-        Dim dRow As Object()
         Dim configpath As String = ""
         Dim formatter As New BinaryFormatter()
 
@@ -1523,23 +1522,15 @@ Public Class frmMain
 
         AddHandler ModulesManager.Instance.MovieScraperEvent, AddressOf MovieScraperEvent
 
-        If Master.eSettings.RestartScraper Then
-            _ScraperStatus.ScrapeList.Clear()
-            _ScraperStatus.ScrapeList.AddRange(ScrapeList.ToArray)
-            configpath = FileUtils.Common.ReturnSettingsFile("Settings", "ScraperStatus.dat")
-        End If
-
-        While ScrapeList.Count > 0
-            dRow = ScrapeList(0)
-
+         For Each dRow As DataRow In ScrapeList
             Try
-                If bwMovieScraper.CancellationPending Then Exit While
-                OldTitle = dRow(3).ToString
+                If bwMovieScraper.CancellationPending Then Exit For
+                OldTitle = dRow.Item(3).ToString
                 bwMovieScraper.ReportProgress(1, OldTitle)
 
                 dScrapeRow = dRow
 
-                DBScrapeMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(dRow(0)))
+                DBScrapeMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(dRow.Item(0)))
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEditMovie, Nothing, DBScrapeMovie)
 
                 If Master.GlobalScrapeMod.NFO Then
@@ -1554,17 +1545,17 @@ Public Class frmMain
                                                                              Master.GlobalScrapeMod.Poster Or Master.GlobalScrapeMod.Trailer) Then
                         Dim tOpt As New Structures.MovieScrapeOptions 'all false value not to override any field
                         If ModulesManager.Instance.MovieScrapeOnly(DBScrapeMovie, Args.scrapeType, tOpt) Then
-                            Exit While
+                            Exit For
                         End If
                     End If
                 End If
 
-                If bwMovieScraper.CancellationPending Then Exit While
+                If bwMovieScraper.CancellationPending Then Exit For
 
                 If Master.eSettings.MovieScraperMetaDataScan AndAlso Master.GlobalScrapeMod.Meta Then
                     MediaInfo.UpdateMediaInfo(DBScrapeMovie)
                 End If
-                If bwMovieScraper.CancellationPending Then Exit While
+                If bwMovieScraper.CancellationPending Then Exit For
 
                 If Not Args.scrapeType = Enums.ScrapeType.SingleScrape Then
                     MovieScraperEvent(Enums.MovieScraperEventType.NFOItem, True)
@@ -1637,6 +1628,8 @@ Public Class frmMain
                     End If
                 End If
 
+                If bwMovieScraper.CancellationPending Then Exit For
+
                 'Fanart
                 If Master.GlobalScrapeMod.Fanart Then
                     Fanart.Clear()
@@ -1697,6 +1690,8 @@ Public Class frmMain
                     End If
                 End If
 
+                If bwMovieScraper.CancellationPending Then Exit For
+
                 'Banner
                 If Master.GlobalScrapeMod.Banner Then
                     Banner.Clear()
@@ -1752,6 +1747,8 @@ Public Class frmMain
                     End If
                 End If
 
+                If bwMovieScraper.CancellationPending Then Exit For
+
                 'Landscape
                 If Master.GlobalScrapeMod.Landscape Then
                     Landscape.Clear()
@@ -1800,6 +1797,8 @@ Public Class frmMain
                         End If
                     End If
                 End If
+
+                If bwMovieScraper.CancellationPending Then Exit For
 
                 'ClearArt
                 If Master.GlobalScrapeMod.ClearArt Then
@@ -1850,6 +1849,8 @@ Public Class frmMain
                     End If
                 End If
 
+                If bwMovieScraper.CancellationPending Then Exit For
+
                 'ClearLogo
                 If Master.GlobalScrapeMod.ClearLogo Then
                     ClearLogo.Clear()
@@ -1898,6 +1899,8 @@ Public Class frmMain
                         End If
                     End If
                 End If
+
+                If bwMovieScraper.CancellationPending Then Exit For
 
                 'DiscArt
                 If Master.GlobalScrapeMod.DiscArt Then
@@ -1948,6 +1951,8 @@ Public Class frmMain
                     End If
                 End If
 
+                If bwMovieScraper.CancellationPending Then Exit For
+
                 'Theme
                 If Master.GlobalScrapeMod.Theme Then
                     Theme.Clear()
@@ -1981,6 +1986,8 @@ Public Class frmMain
                         End If
                     End If
                 End If
+
+                If bwMovieScraper.CancellationPending Then Exit For
 
                 'Trailer
                 If Master.GlobalScrapeMod.Trailer Then
@@ -2030,6 +2037,8 @@ Public Class frmMain
                     End If
                 End If
 
+                If bwMovieScraper.CancellationPending Then Exit For
+
                 'Extrathumbs
                 If Master.GlobalScrapeMod.EThumbs Then
                     If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
@@ -2059,6 +2068,8 @@ Public Class frmMain
                         End If
                     End If
                 End If
+
+                If bwMovieScraper.CancellationPending Then Exit For
 
                 'Extrafanarts
                 If Master.GlobalScrapeMod.EFanarts Then
@@ -2090,6 +2101,8 @@ Public Class frmMain
                     End If
                 End If
 
+                If bwMovieScraper.CancellationPending Then Exit For
+
                 'ActorThumbs
                 If Master.GlobalScrapeMod.ActorThumbs AndAlso (Master.eSettings.MovieActorThumbsFrodo OrElse Master.eSettings.MovieActorThumbsEden) Then
                     If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
@@ -2105,50 +2118,19 @@ Public Class frmMain
 
                 '-----
 
-                If bwMovieScraper.CancellationPending Then Exit While
+                If bwMovieScraper.CancellationPending Then Exit For
 
                 If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
                     Master.DB.SaveMovieToDB(DBScrapeMovie, False, False, Not String.IsNullOrEmpty(DBScrapeMovie.Movie.IMDBID))
                     ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieSync, Nothing, DBScrapeMovie)
                     bwMovieScraper.ReportProgress(-1, If(Not OldTitle = NewTitle, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldTitle, NewTitle), NewTitle))
-                    bwMovieScraper.ReportProgress(-2, dScrapeRow(0))
+                    bwMovieScraper.ReportProgress(-2, dScrapeRow.Item(0).ToString)
                 End If
-                ScrapeList.RemoveAt(0)
-                If Master.eSettings.RestartScraper Then
-                    _ScraperStatus.ScrapeList.RemoveAt(0)
-                    Using stream As FileStream = File.Create(configpath)
-                        Try
-                            formatter.Serialize(stream, _ScraperStatus)
-                        Catch ex As Exception
-                            logger.Error(New StackFrame().GetMethod().Name, ex)
-                            Throw
-                        Finally
-                            stream.Close()
-                        End Try
-                    End Using
-                End If
-
-
-                'Using writer As New FileStream(configpath, FileMode.Create)
-                '    _xScraperStatus.Serialize(writer, _ScraperStatus)
-                '    writer.Close()
-                'End Using
 
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
-        End While
-
-        'For Each dRow As DataRow In ScrapeList
-
-        '    'Else
-        '    '    Master.tmpMovie = DBScrapeMovie.Movie
-        '    'End If
-        '    'Else
-        '    'Master.tmpMovie = DBScrapeMovie.Movie
-        '    'Args.scrapeType = Enums.ScrapeType.None
-        '    'End If
-        'Next
+        Next
         If Args.scrapeType = Enums.ScrapeType.SingleScrape Then
             Master.currMovie = DBScrapeMovie
         End If
@@ -2212,7 +2194,6 @@ Public Class frmMain
         Dim efList As New List(Of String)
         Dim etList As New List(Of String)
         Dim DBScrapeMovieSet As New Structures.DBMovieSet
-        Dim dRow As Object()
         Dim configpath As String = ""
         Dim formatter As New BinaryFormatter()
 
@@ -2220,23 +2201,15 @@ Public Class frmMain
 
         AddHandler ModulesManager.Instance.MovieSetScraperEvent, AddressOf MovieSetScraperEvent
 
-        'If Master.eSettings.RestartScraper Then
-        '    _ScraperStatus.ScrapeList.Clear()
-        '    _ScraperStatus.ScrapeList.AddRange(ScrapeList.ToArray)
-        '    configpath = FileUtils.Common.ReturnSettingsFile("Settings", "ScraperStatus.dat")
-        'End If
-
-        While ScrapeList.Count > 0
-            dRow = ScrapeList(0)
-
+        For Each dRow As DataRow In ScrapeList
             Try
-                If bwMovieSetScraper.CancellationPending Then Exit While
-                OldTitle = dRow(1).ToString
+                If bwMovieSetScraper.CancellationPending Then Exit For
+                OldTitle = dRow.Item(1).ToString
                 bwMovieSetScraper.ReportProgress(1, OldTitle)
 
                 dScrapeRow = dRow
 
-                DBScrapeMovieSet = Master.DB.LoadMovieSetFromDB(Convert.ToInt64(dRow(0)))
+                DBScrapeMovieSet = Master.DB.LoadMovieSetFromDB(Convert.ToInt64(dRow.Item(0)))
                 'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEditMovieSet, Nothing, DBScrapeMovieSet)
 
                 If Master.GlobalScrapeMod.NFO Then
@@ -2251,12 +2224,12 @@ Public Class frmMain
                                                                              Master.GlobalScrapeMod.Poster) Then
                         Dim tOpt As New Structures.MovieSetScrapeOptions 'all false value not to override any field
                         If ModulesManager.Instance.MovieSetScrapeOnly(DBScrapeMovieSet, Args.scrapeType, tOpt) Then
-                            Exit While
+                            Exit For
                         End If
                     End If
                 End If
 
-                If bwMovieSetScraper.CancellationPending Then Exit While
+                If bwMovieSetScraper.CancellationPending Then Exit For
 
                 If Not Args.scrapeType = Enums.ScrapeType.SingleScrape Then
                     MovieSetScraperEvent(Enums.MovieSetScraperEventType.NFOItem, True)
@@ -2328,6 +2301,8 @@ Public Class frmMain
                     End If
                 End If
 
+                If bwMovieSetScraper.CancellationPending Then Exit For
+
                 'Fanart
                 If Master.GlobalScrapeMod.Fanart Then
                     Fanart.Clear()
@@ -2386,6 +2361,8 @@ Public Class frmMain
                     End If
                 End If
 
+                If bwMovieSetScraper.CancellationPending Then Exit For
+
                 'Banner
                 If Master.GlobalScrapeMod.Banner Then
                     Banner.Clear()
@@ -2441,6 +2418,8 @@ Public Class frmMain
                     End If
                 End If
 
+                If bwMovieSetScraper.CancellationPending Then Exit For
+
                 'Landscape
                 If Master.GlobalScrapeMod.Landscape Then
                     Landscape.Clear()
@@ -2489,6 +2468,8 @@ Public Class frmMain
                         End If
                     End If
                 End If
+
+                If bwMovieSetScraper.CancellationPending Then Exit For
 
                 'ClearArt
                 If Master.GlobalScrapeMod.ClearArt Then
@@ -2539,6 +2520,8 @@ Public Class frmMain
                     End If
                 End If
 
+                If bwMovieSetScraper.CancellationPending Then Exit For
+
                 'ClearLogo
                 If Master.GlobalScrapeMod.ClearLogo Then
                     ClearLogo.Clear()
@@ -2587,6 +2570,8 @@ Public Class frmMain
                         End If
                     End If
                 End If
+
+                If bwMovieSetScraper.CancellationPending Then Exit For
 
                 'DiscArt
                 If Master.GlobalScrapeMod.DiscArt Then
@@ -2639,50 +2624,19 @@ Public Class frmMain
 
                 '-----
 
-                If bwMovieScraper.CancellationPending Then Exit While
+                If bwMovieScraper.CancellationPending Then Exit For
 
                 If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
                     Master.DB.SaveMovieSetToDB(DBScrapeMovieSet, False, False, True)
                     'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieSync, Nothing, DBScrapeMovieSet)
                     bwMovieSetScraper.ReportProgress(-1, If(Not OldTitle = NewTitle, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldTitle, NewTitle), NewTitle))
-                    bwMovieSetScraper.ReportProgress(-2, dScrapeRow(0))
+                    bwMovieSetScraper.ReportProgress(-2, dScrapeRow.Item(0).ToString)
                 End If
-                ScrapeList.RemoveAt(0)
-                If Master.eSettings.RestartScraper Then
-                    _ScraperStatus.ScrapeList.RemoveAt(0)
-                    Using stream As FileStream = File.Create(configpath)
-                        Try
-                            formatter.Serialize(stream, _ScraperStatus)
-                        Catch ex As Exception
-                            logger.Error(New StackFrame().GetMethod().Name, ex)
-                            Throw
-                        Finally
-                            stream.Close()
-                        End Try
-                    End Using
-                End If
-
-
-                'Using writer As New FileStream(configpath, FileMode.Create)
-                '    _xScraperStatus.Serialize(writer, _ScraperStatus)
-                '    writer.Close()
-                'End Using
 
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
-        End While
-
-        'For Each dRow As DataRow In ScrapeList
-
-        '    'Else
-        '    '    Master.tmpMovie = DBScrapeMovie.Movie
-        '    'End If
-        '    'Else
-        '    'Master.tmpMovie = DBScrapeMovie.Movie
-        '    'Args.scrapeType = Enums.ScrapeType.None
-        '    'End If
-        'Next
+        Next
         If Args.scrapeType = Enums.ScrapeType.SingleScrape Then
             Master.currMovieSet = DBScrapeMovieSet
         End If
@@ -10511,93 +10465,58 @@ doCancel:
     End Sub
 
     Private Sub MovieScrapeData(ByVal selected As Boolean, ByVal sType As Enums.ScrapeType, ByVal Options As Structures.MovieScrapeOptions, Optional ByVal Restart As Boolean = False)
-        If Not Restart Then
-            If Master.eSettings.RestartScraper Then
-                _ScraperStatus.Selected = selected
-                _ScraperStatus.sType = sType
-                _ScraperStatus.Options = Options
-                _ScraperStatus.GlobalScrape = Master.GlobalScrapeMod
-            End If
+        ScrapeList.Clear()
 
-            ScrapeList.Clear()
-
-            If selected Then
-                'create snapshoot list of selected movies
-                For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
-                    ScrapeList.Add(CType(CType(sRow.DataBoundItem, System.Data.DataRowView).Row.ItemArray, Object()))
-                Next
-            Else
-                Dim BannerAllowed As Boolean = Master.eSettings.MovieBannerAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Banner)
-                Dim ClearArtAllowed As Boolean = Master.eSettings.MovieClearArtAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.ClearArt)
-                Dim ClearLogoAllowed As Boolean = Master.eSettings.MovieClearLogoAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.ClearLogo)
-                Dim DiscArtAllowed As Boolean = Master.eSettings.MovieDiscArtAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.DiscArt)
-                Dim EFanartsAllowed As Boolean = Master.eSettings.MovieEFanartsAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart)
-                Dim EThumbsAllowed As Boolean = Master.eSettings.MovieEFanartsAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart)
-                Dim FanartAllowed As Boolean = Master.eSettings.MovieFanartAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart)
-                Dim LandscapeAllowed As Boolean = Master.eSettings.MovieLandscapeAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Landscape)
-                Dim PosterAllowed As Boolean = Master.eSettings.MoviePosterAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Poster)
-                Dim ThemeAllowed As Boolean = Master.eSettings.MovieThemeEnable AndAlso Master.eSettings.MovieThemeAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Theme)
-                Dim TrailerAllowed As Boolean = Master.eSettings.MovieTrailerEnable AndAlso Master.eSettings.MovieTrailerAnyEnabled AndAlso ModulesManager.Instance.QueryTrailerScraperCapabilities(Enums.ScraperCapabilities.Trailer)
-
-                'create list of movies acording to scrapetype
-                For Each drvRow As DataRow In Me.dtMovies.Rows
-
-                    If Convert.ToBoolean(drvRow.Item(14)) Then Continue For
-
-                    Select Case sType
-                        Case Enums.ScrapeType.NewAsk, Enums.ScrapeType.NewAuto, Enums.ScrapeType.NewSkip
-                            If Not Convert.ToBoolean(drvRow.Item(10)) Then Continue For
-                        Case Enums.ScrapeType.MarkAsk, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.MarkSkip
-                            If Not Convert.ToBoolean(drvRow.Item(11)) Then Continue For
-                        Case Enums.ScrapeType.FilterAsk, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FilterSkip
-                            Dim index As Integer = Me.bsMovies.Find("id", drvRow.Item(0))
-                            If Not index >= 0 Then Continue For
-                        Case Enums.ScrapeType.UpdateAsk, Enums.ScrapeType.UpdateAuto, Enums.ScrapeType.UpdateSkip
-                            If Not ((Master.GlobalScrapeMod.Banner AndAlso Master.eSettings.MovieMissingBanner AndAlso BannerAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(51))) OrElse _
-                                    (Master.GlobalScrapeMod.ClearArt AndAlso Master.eSettings.MovieMissingClearArt AndAlso ClearArtAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(61))) OrElse _
-                                    (Master.GlobalScrapeMod.ClearLogo AndAlso Master.eSettings.MovieMissingClearLogo AndAlso ClearLogoAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(59))) OrElse _
-                                    (Master.GlobalScrapeMod.DiscArt AndAlso Master.eSettings.MovieMissingDiscArt AndAlso DiscArtAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(57))) OrElse _
-                                    (Master.GlobalScrapeMod.EFanarts AndAlso Master.eSettings.MovieMissingEFanarts AndAlso EFanartsAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(49))) OrElse _
-                                    (Master.GlobalScrapeMod.EThumbs AndAlso Master.eSettings.MovieMissingEThumbs AndAlso EThumbsAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(9))) OrElse _
-                                    (Master.GlobalScrapeMod.Fanart AndAlso Master.eSettings.MovieMissingFanart AndAlso FanartAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(5))) OrElse _
-                                    (Master.GlobalScrapeMod.Landscape AndAlso Master.eSettings.MovieMissingLandscape AndAlso LandscapeAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(53))) OrElse _
-                                    (Master.GlobalScrapeMod.NFO AndAlso Master.eSettings.MovieMissingNFO AndAlso Not Convert.ToBoolean(drvRow.Item(6))) OrElse _
-                                    (Master.GlobalScrapeMod.Poster AndAlso Master.eSettings.MovieMissingPoster AndAlso PosterAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(4))) OrElse _
-                                    (Master.GlobalScrapeMod.Theme AndAlso Master.eSettings.MovieMissingTheme AndAlso ThemeAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(55))) OrElse _
-                                    (Master.GlobalScrapeMod.Trailer AndAlso Master.eSettings.MovieMissingTrailer AndAlso TrailerAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(7)))) Then
-                                Continue For
-                            End If
-                    End Select
-
-                    ScrapeList.Add(CType(drvRow.ItemArray, Object()))
-                Next
-            End If
+        If selected Then
+            'create snapshoot list of selected movies
+            For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
+                ScrapeList.Add(DirectCast(sRow.DataBoundItem, DataRowView).Row)
+            Next
         Else
-            If Master.eSettings.RestartScraper Then
-                Dim aPath As String = FileUtils.Common.ReturnSettingsFile("Settings", "ScraperStatus.dat")
-                Dim formatter As New BinaryFormatter()
-                If File.Exists(aPath) Then
+            Dim BannerAllowed As Boolean = Master.eSettings.MovieBannerAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Banner)
+            Dim ClearArtAllowed As Boolean = Master.eSettings.MovieClearArtAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.ClearArt)
+            Dim ClearLogoAllowed As Boolean = Master.eSettings.MovieClearLogoAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.ClearLogo)
+            Dim DiscArtAllowed As Boolean = Master.eSettings.MovieDiscArtAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.DiscArt)
+            Dim EFanartsAllowed As Boolean = Master.eSettings.MovieEFanartsAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart)
+            Dim EThumbsAllowed As Boolean = Master.eSettings.MovieEFanartsAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart)
+            Dim FanartAllowed As Boolean = Master.eSettings.MovieFanartAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart)
+            Dim LandscapeAllowed As Boolean = Master.eSettings.MovieLandscapeAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Landscape)
+            Dim PosterAllowed As Boolean = Master.eSettings.MoviePosterAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Poster)
+            Dim ThemeAllowed As Boolean = Master.eSettings.MovieThemeEnable AndAlso Master.eSettings.MovieThemeAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Theme)
+            Dim TrailerAllowed As Boolean = Master.eSettings.MovieTrailerEnable AndAlso Master.eSettings.MovieTrailerAnyEnabled AndAlso ModulesManager.Instance.QueryTrailerScraperCapabilities(Enums.ScraperCapabilities.Trailer)
 
-                    _ScraperStatus = New EmberAPI.clsXMLRestartScraper
+            'create list of movies acording to scrapetype
+            For Each drvRow As DataRow In Me.dtMovies.Rows
 
-                    Dim fs As New FileStream(aPath, FileMode.Open)
-                    Try
-                        _ScraperStatus = DirectCast(formatter.Deserialize(fs), EmberAPI.clsXMLRestartScraper)
-                    Catch ex As Exception
-                        logger.Error(New StackFrame().GetMethod().Name, ex)
-                        Throw
-                    Finally
-                        fs.Close()
-                    End Try
+                If Convert.ToBoolean(drvRow.Item(14)) Then Continue For
 
-                    selected = _ScraperStatus.Selected
-                    sType = _ScraperStatus.sType
-                    Options = _ScraperStatus.Options
-                    Master.GlobalScrapeMod = _ScraperStatus.GlobalScrape
-                    ScrapeList.Clear()
-                    ScrapeList.AddRange(_ScraperStatus.ScrapeList.ToArray)
-                End If
-            End If
+                Select Case sType
+                    Case Enums.ScrapeType.NewAsk, Enums.ScrapeType.NewAuto, Enums.ScrapeType.NewSkip
+                        If Not Convert.ToBoolean(drvRow.Item(10)) Then Continue For
+                    Case Enums.ScrapeType.MarkAsk, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.MarkSkip
+                        If Not Convert.ToBoolean(drvRow.Item(11)) Then Continue For
+                    Case Enums.ScrapeType.FilterAsk, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FilterSkip
+                        Dim index As Integer = Me.bsMovies.Find("id", drvRow.Item(0))
+                        If Not index >= 0 Then Continue For
+                    Case Enums.ScrapeType.UpdateAsk, Enums.ScrapeType.UpdateAuto, Enums.ScrapeType.UpdateSkip
+                        If Not ((Master.GlobalScrapeMod.Banner AndAlso Master.eSettings.MovieMissingBanner AndAlso BannerAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(51))) OrElse _
+                                (Master.GlobalScrapeMod.ClearArt AndAlso Master.eSettings.MovieMissingClearArt AndAlso ClearArtAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(61))) OrElse _
+                                (Master.GlobalScrapeMod.ClearLogo AndAlso Master.eSettings.MovieMissingClearLogo AndAlso ClearLogoAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(59))) OrElse _
+                                (Master.GlobalScrapeMod.DiscArt AndAlso Master.eSettings.MovieMissingDiscArt AndAlso DiscArtAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(57))) OrElse _
+                                (Master.GlobalScrapeMod.EFanarts AndAlso Master.eSettings.MovieMissingEFanarts AndAlso EFanartsAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(49))) OrElse _
+                                (Master.GlobalScrapeMod.EThumbs AndAlso Master.eSettings.MovieMissingEThumbs AndAlso EThumbsAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(9))) OrElse _
+                                (Master.GlobalScrapeMod.Fanart AndAlso Master.eSettings.MovieMissingFanart AndAlso FanartAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(5))) OrElse _
+                                (Master.GlobalScrapeMod.Landscape AndAlso Master.eSettings.MovieMissingLandscape AndAlso LandscapeAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(53))) OrElse _
+                                (Master.GlobalScrapeMod.NFO AndAlso Master.eSettings.MovieMissingNFO AndAlso Not Convert.ToBoolean(drvRow.Item(6))) OrElse _
+                                (Master.GlobalScrapeMod.Poster AndAlso Master.eSettings.MovieMissingPoster AndAlso PosterAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(4))) OrElse _
+                                (Master.GlobalScrapeMod.Theme AndAlso Master.eSettings.MovieMissingTheme AndAlso ThemeAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(55))) OrElse _
+                                (Master.GlobalScrapeMod.Trailer AndAlso Master.eSettings.MovieMissingTrailer AndAlso TrailerAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(7)))) Then
+                            Continue For
+                        End If
+                End Select
+
+                ScrapeList.Add(drvRow)
+            Next
         End If
 
         Me.SetControlsEnabled(False)
@@ -10761,87 +10680,51 @@ doCancel:
     End Sub
 
     Private Sub MovieSetScrapeData(ByVal selected As Boolean, ByVal sType As Enums.ScrapeType, ByVal Options As Structures.MovieSetScrapeOptions)
-        Dim Restart As Boolean = False
-        If Not Restart Then
-            If Master.eSettings.RestartScraper Then
-                _ScraperStatus.Selected = selected
-                _ScraperStatus.sType = sType
-                _ScraperStatus.Options_MovieSet = Options
-                _ScraperStatus.GlobalScrape = Master.GlobalScrapeMod
-            End If
+        ScrapeList.Clear()
 
-            ScrapeList.Clear()
-
-            If selected Then
-                'create snapshoot list of selected movies
-                For Each sRow As DataGridViewRow In Me.dgvMovieSets.SelectedRows
-                    ScrapeList.Add(CType(CType(sRow.DataBoundItem, System.Data.DataRowView).Row.ItemArray, Object()))
-                Next
-            Else
-                Dim BannerAllowed As Boolean = Master.eSettings.MovieSetBannerAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Banner)
-                Dim ClearArtAllowed As Boolean = Master.eSettings.MovieSetClearArtAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.ClearArt)
-                Dim ClearLogoAllowed As Boolean = Master.eSettings.MovieSetClearLogoAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.ClearLogo)
-                Dim DiscArtAllowed As Boolean = Master.eSettings.MovieSetDiscArtAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.DiscArt)
-                Dim FanartAllowed As Boolean = Master.eSettings.MovieSetFanartAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart)
-                Dim LandscapeAllowed As Boolean = Master.eSettings.MovieSetLandscapeAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Landscape)
-                Dim PosterAllowed As Boolean = Master.eSettings.MovieSetPosterAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Poster)
-
-                'create list of movies acording to scrapetype
-                For Each drvRow As DataRow In Me.dtMovieSets.Rows
-
-                    'If Convert.ToBoolean(drvRow.Item(14)) Then Continue For 'no Lock for MovieSets
-
-                    Select Case sType
-                        Case Enums.ScrapeType.NewAsk, Enums.ScrapeType.NewAuto, Enums.ScrapeType.NewSkip
-                            Continue For 'If Not Convert.ToBoolean(drvRow.Item(10)) Then Continue For
-                        Case Enums.ScrapeType.MarkAsk, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.MarkSkip
-                            Continue For 'If Not Convert.ToBoolean(drvRow.Item(11)) Then Continue For
-                        Case Enums.ScrapeType.FilterAsk, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FilterSkip
-                            'Dim index As Integer = Me.bsMovies.Find("id", drvRow.Item(0))
-                            'If Not index >= 0 Then Continue For
-                            Continue For
-                        Case Enums.ScrapeType.UpdateAsk, Enums.ScrapeType.UpdateAuto, Enums.ScrapeType.UpdateSkip
-                            If Not ((Master.GlobalScrapeMod.Banner AndAlso Master.eSettings.MovieSetMissingBanner AndAlso BannerAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(8))) OrElse _
-                                    (Master.GlobalScrapeMod.ClearArt AndAlso Master.eSettings.MovieSetMissingClearArt AndAlso ClearArtAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(16))) OrElse _
-                                    (Master.GlobalScrapeMod.ClearLogo AndAlso Master.eSettings.MovieSetMissingClearLogo AndAlso ClearLogoAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(14))) OrElse _
-                                    (Master.GlobalScrapeMod.DiscArt AndAlso Master.eSettings.MovieSetMissingDiscArt AndAlso DiscArtAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(12))) OrElse _
-                                    (Master.GlobalScrapeMod.Fanart AndAlso Master.eSettings.MovieSetMissingFanart AndAlso FanartAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(6))) OrElse _
-                                    (Master.GlobalScrapeMod.Landscape AndAlso Master.eSettings.MovieSetMissingLandscape AndAlso LandscapeAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(10))) OrElse _
-                                    (Master.GlobalScrapeMod.NFO AndAlso Master.eSettings.MovieSetMissingNFO AndAlso Not Convert.ToBoolean(drvRow.Item(2))) OrElse _
-                                    (Master.GlobalScrapeMod.Poster AndAlso Master.eSettings.MovieSetMissingPoster AndAlso PosterAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(4)))) Then
-                                Continue For
-                            End If
-                    End Select
-
-                    ScrapeList.Add(CType(drvRow.ItemArray, Object()))
-                Next
-            End If
+        If selected Then
+            'create snapshoot list of selected movies
+            For Each sRow As DataGridViewRow In Me.dgvMovieSets.SelectedRows
+                ScrapeList.Add(DirectCast(sRow.DataBoundItem, DataRowView).Row)
+            Next
         Else
-            If Master.eSettings.RestartScraper Then
-                Dim aPath As String = FileUtils.Common.ReturnSettingsFile("Settings", "ScraperStatus.dat")
-                Dim formatter As New BinaryFormatter()
-                If File.Exists(aPath) Then
+            Dim BannerAllowed As Boolean = Master.eSettings.MovieSetBannerAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Banner)
+            Dim ClearArtAllowed As Boolean = Master.eSettings.MovieSetClearArtAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.ClearArt)
+            Dim ClearLogoAllowed As Boolean = Master.eSettings.MovieSetClearLogoAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.ClearLogo)
+            Dim DiscArtAllowed As Boolean = Master.eSettings.MovieSetDiscArtAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.DiscArt)
+            Dim FanartAllowed As Boolean = Master.eSettings.MovieSetFanartAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart)
+            Dim LandscapeAllowed As Boolean = Master.eSettings.MovieSetLandscapeAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Landscape)
+            Dim PosterAllowed As Boolean = Master.eSettings.MovieSetPosterAnyEnabled AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Poster)
 
-                    _ScraperStatus = New EmberAPI.clsXMLRestartScraper
+            'create list of moviesets acording to scrapetype
+            For Each drvRow As DataRow In Me.dtMovieSets.Rows
 
-                    Dim fs As New FileStream(aPath, FileMode.Open)
-                    Try
-                        _ScraperStatus = DirectCast(formatter.Deserialize(fs), EmberAPI.clsXMLRestartScraper)
-                    Catch ex As Exception
-                        logger.Error(New StackFrame().GetMethod().Name, ex)
-                        Throw
-                    Finally
-                        fs.Close()
-                    End Try
+                'If Convert.ToBoolean(drvRow.Item(14)) Then Continue For 'no Lock for MovieSets
 
-                    selected = _ScraperStatus.Selected
-                    sType = _ScraperStatus.sType
-                    Options = _ScraperStatus.Options_MovieSet
-                    Master.GlobalScrapeMod = _ScraperStatus.GlobalScrape
-                    ScrapeList.Clear()
-                    ScrapeList.AddRange(_ScraperStatus.ScrapeList.ToArray)
-                End If
-            End If
+                Select Case sType
+                    Case Enums.ScrapeType.NewAsk, Enums.ScrapeType.NewAuto, Enums.ScrapeType.NewSkip
+                        Continue For 'If Not Convert.ToBoolean(drvRow.Item(10)) Then Continue For
+                    Case Enums.ScrapeType.MarkAsk, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.MarkSkip
+                        Continue For 'If Not Convert.ToBoolean(drvRow.Item(11)) Then Continue For
+                    Case Enums.ScrapeType.FilterAsk, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FilterSkip
+                        'Dim index As Integer = Me.bsMovies.Find("id", drvRow.Item(0))
+                        'If Not index >= 0 Then Continue For
+                        Continue For
+                    Case Enums.ScrapeType.UpdateAsk, Enums.ScrapeType.UpdateAuto, Enums.ScrapeType.UpdateSkip
+                        If Not ((Master.GlobalScrapeMod.Banner AndAlso Master.eSettings.MovieSetMissingBanner AndAlso BannerAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(8))) OrElse _
+                                (Master.GlobalScrapeMod.ClearArt AndAlso Master.eSettings.MovieSetMissingClearArt AndAlso ClearArtAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(16))) OrElse _
+                                (Master.GlobalScrapeMod.ClearLogo AndAlso Master.eSettings.MovieSetMissingClearLogo AndAlso ClearLogoAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(14))) OrElse _
+                                (Master.GlobalScrapeMod.DiscArt AndAlso Master.eSettings.MovieSetMissingDiscArt AndAlso DiscArtAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(12))) OrElse _
+                                (Master.GlobalScrapeMod.Fanart AndAlso Master.eSettings.MovieSetMissingFanart AndAlso FanartAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(6))) OrElse _
+                                (Master.GlobalScrapeMod.Landscape AndAlso Master.eSettings.MovieSetMissingLandscape AndAlso LandscapeAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(10))) OrElse _
+                                (Master.GlobalScrapeMod.NFO AndAlso Master.eSettings.MovieSetMissingNFO AndAlso Not Convert.ToBoolean(drvRow.Item(2))) OrElse _
+                                (Master.GlobalScrapeMod.Poster AndAlso Master.eSettings.MovieSetMissingPoster AndAlso PosterAllowed AndAlso Not Convert.ToBoolean(drvRow.Item(4)))) Then
+                            Continue For
+                        End If
+                End Select
+
+                ScrapeList.Add(drvRow)
+            Next
         End If
 
         Me.SetControlsEnabled(False)
