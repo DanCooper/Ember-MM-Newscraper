@@ -1215,14 +1215,19 @@ Namespace MediaContainers
 
 #Region "Methods"
 
-        Public Sub AddSet(ByVal SetID As Long, ByVal SetName As String, ByVal Order As Integer)
+        Public Sub AddSet(ByVal SetID As Long, ByVal SetName As String, ByVal Order As Integer, ByVal SetTMDBColID As String)
             Dim tSet = From bSet As [Set] In Sets Where bSet.ID = SetID
+            Dim iSet = From bset As [Set] In Sets Where bset.TMDBColID = SetTMDBColID
 
             If tSet.Count > 0 Then
                 Sets.Remove(tSet(0))
             End If
 
-            Sets.Add(New [Set] With {.ID = SetID, .Set = SetName, .Order = If(Order > 0, Order.ToString, String.Empty)})
+            If iSet.Count > 0 Then
+                Sets.Remove(iSet(0))
+            End If
+
+            Sets.Add(New [Set] With {.ID = SetID, .Set = SetName, .Order = If(Order > 0, Order.ToString, String.Empty), .TMDBColID = SetTMDBColID})
         End Sub
 
         Public Sub AddGenre(ByVal value As String)
@@ -2048,6 +2053,7 @@ Namespace MediaContainers
         Private _id As Long
         Private _order As String
         Private _set As String
+        Private _tmdbcolid As String
 
 #End Region 'Fields
 
@@ -2088,6 +2094,23 @@ Namespace MediaContainers
             End Get
         End Property
 
+        <XmlAttribute("tmdbcolid")> _
+        Public Property TMDBColID() As String
+            Get
+                Return _tmdbcolid
+            End Get
+            Set(ByVal value As String)
+                _tmdbcolid = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property TMDBColIDSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._tmdbcolid)
+            End Get
+        End Property
+
         <XmlIgnore()> _
         Public ReadOnly Property SetSpecified() As Boolean
             Get
@@ -2113,6 +2136,7 @@ Namespace MediaContainers
             _id = -1
             _set = String.Empty
             _order = String.Empty
+            _tmdbcolid = String.Empty
         End Sub
 
 #End Region 'Methods

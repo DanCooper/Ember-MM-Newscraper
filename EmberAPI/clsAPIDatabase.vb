@@ -1906,22 +1906,43 @@ Public Class Database
                                     SQLcommandMoviesSets.ExecuteNonQuery()
                                 End Using
                             Else
-                                'first check if a Set with same name is already existing
+                                'first check if a Set with same TMDBColID is already existing
                                 Using SQLcommandSets As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
                                     SQLcommandSets.CommandText = String.Concat("SELECT ID, SetName, HasNfo, NfoPath, HasPoster, PosterPath, HasFanart, ", _
                                                                            "FanartPath, HasBanner, BannerPath, HasLandscape, LandscapePath, ", _
                                                                            "HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ", _
-                                                                           "ClearArtPath, TMDBColID FROM Sets WHERE SetName LIKE """, s.Set, """;")
+                                                                           "ClearArtPath, TMDBColID FROM Sets WHERE TMDBColID LIKE """, s.TMDBColID, """;")
                                     Using SQLreader As SQLite.SQLiteDataReader = SQLcommandSets.ExecuteReader()
                                         If SQLreader.HasRows Then
                                             SQLreader.Read()
                                             If Not DBNull.Value.Equals(SQLreader("ID")) Then s.ID = CInt(SQLreader("ID"))
+                                            If Not DBNull.Value.Equals(SQLreader("SetName")) Then s.Set = CStr(SQLreader("SetName"))
                                             IsNewSet = False
+                                            NFO.SaveMovieToNFO(_movieDB) 'to save the "new" SetName
                                         Else
                                             IsNewSet = True
                                         End If
                                     End Using
                                 End Using
+
+                                If IsNewSet Then
+                                    'secondly check if a Set with same name is already existing
+                                    Using SQLcommandSets As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                                        SQLcommandSets.CommandText = String.Concat("SELECT ID, SetName, HasNfo, NfoPath, HasPoster, PosterPath, HasFanart, ", _
+                                                                               "FanartPath, HasBanner, BannerPath, HasLandscape, LandscapePath, ", _
+                                                                               "HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ", _
+                                                                               "ClearArtPath, TMDBColID FROM Sets WHERE SetName LIKE """, s.Set, """;")
+                                        Using SQLreader As SQLite.SQLiteDataReader = SQLcommandSets.ExecuteReader()
+                                            If SQLreader.HasRows Then
+                                                SQLreader.Read()
+                                                If Not DBNull.Value.Equals(SQLreader("ID")) Then s.ID = CInt(SQLreader("ID"))
+                                                IsNewSet = False
+                                            Else
+                                                IsNewSet = True
+                                            End If
+                                        End Using
+                                    End Using
+                                End If
 
                                 If Not IsNewSet Then
                                     'create new MovieSet with existing SetID
@@ -1967,7 +1988,7 @@ Public Class Database
                                         Dim parSets_TMDBColID As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_TMDBColID", DbType.String, 0, "TMDBColID")
 
                                         parSets_SetName.Value = s.Set
-                                        parSets_TMDBColID.Value = _movieDB.Movie.TMDBColID
+                                        parSets_TMDBColID.Value = s.TMDBColID
                                         parSets_BannerPath.Value = String.Empty
                                         parSets_ClearArtPath.Value = String.Empty
                                         parSets_ClearLogoPath.Value = String.Empty
@@ -2033,6 +2054,8 @@ Public Class Database
         'TODO Must add parameter checking. Needs thought to ensure calling routines are not broken if exception thrown. 
         'TODO Break this method into smaller chunks. Too important to be this complex
         Try
+            If _moviesetDB.ID = -1 Then IsNew = True
+
             Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
             If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
             Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
