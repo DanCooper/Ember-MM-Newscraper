@@ -17,7 +17,8 @@ CREATE TABLE Sets(
 	ClearLogoPath TEXT,
 	HasClearArt BOOL NOT NULL DEFAULT False,
 	ClearArtPath TEXT,
-	TMDBColID TEXT
+	TMDBColID TEXT,
+	Plot TEXT
 	);
 
 CREATE TABLE Movies (

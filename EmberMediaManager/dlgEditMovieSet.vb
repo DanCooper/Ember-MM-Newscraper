@@ -58,7 +58,7 @@ Public Class dlgEditMovieSet
 
 #Region "Methods"
 
-    Private Sub btnGetTMDBColID_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGetTMDBColID.Click
+    Private Sub btnGetTMDBColID_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Dim newColID As String = String.Empty
 
         If MoviesInSet.Count > 0 Then
@@ -125,6 +125,9 @@ Public Class dlgEditMovieSet
 
     Private Sub ReAddToSet()
         Try
+
+            needsMovieUpdate = True
+
             Dim lMov As New MovieInSet
 
             If Me.lvMoviesToRemove.SelectedItems.Count > 0 Then
@@ -155,6 +158,8 @@ Public Class dlgEditMovieSet
 
     Private Sub RemoveFromSet()
         Try
+            needsMovieUpdate = True
+
             Dim lMov As New MovieInSet
 
             If Me.lvMoviesInSet.SelectedItems.Count > 0 Then
@@ -223,6 +228,8 @@ Public Class dlgEditMovieSet
 
     Private Sub AddMovieToSet()
         Try
+            needsMovieUpdate = True
+
             Dim lMov As New MovieInSet
 
             If Me.lvMoviesInDB.SelectedItems.Count > 0 Then
@@ -1175,6 +1182,10 @@ Public Class dlgEditMovieSet
                     .txtTitle.Text = Master.currMovieSet.ListTitle
                 End If
 
+                If Not String.IsNullOrEmpty(Master.currMovieSet.MovieSet.Plot) Then
+                    .txtPlot.Text = Master.currMovieSet.MovieSet.Plot
+                End If
+
                 If Not String.IsNullOrEmpty(Master.currMovieSet.MovieSet.ID) Then
                     .txtCollectionID.Text = Master.currMovieSet.MovieSet.ID
                 End If
@@ -1534,6 +1545,7 @@ Public Class dlgEditMovieSet
 
                 Master.currMovieSet.ListTitle = .txtTitle.Text.Trim
                 Master.currMovieSet.MovieSet.ID = .txtCollectionID.Text.Trim
+                Master.currMovieSet.MovieSet.Plot = .txtPlot.Text.Trim
 
                 If Master.currMovieSet.RemoveBanner Then
                     .MovieBanner.DeleteMovieSetBanner(Master.currMovieSet)
@@ -1659,15 +1671,18 @@ Public Class dlgEditMovieSet
         Me.btnSetMoviePosterDL.Text = Master.eLang.GetString(265, "Change Poster (Download)")
         Me.btnSetMoviePosterLocal.Text = Master.eLang.GetString(249, "Change Poster (Local)")
         Me.btnSetMoviePosterScrape.Text = Master.eLang.GetString(248, "Change Poster (Scrape)")
+        Me.lblCollectionID.Text = Master.eLang.GetString(1206, "Collection ID:")
+        Me.lblPlot.Text = Master.eLang.GetString(241, "Plot:")
         Me.lblTopDetails.Text = Master.eLang.GetString(1132, "Edit the details for the selected movieset.")
         Me.lblTopTitle.Text = Master.eLang.GetString(1131, "Edit Movieset")
         Me.tpBanner.Text = Master.eLang.GetString(838, "Banner")
         Me.tpClearArt.Text = Master.eLang.GetString(1096, "ClearArt")
         Me.tpClearLogo.Text = Master.eLang.GetString(1097, "ClearLogo")
-        Me.tpDetails.Text = Master.eLang.GetString(1098, "DiscArt")
         Me.tpDetails.Text = Master.eLang.GetString(26, "Details")
+        Me.tpDiscArt.Text = Master.eLang.GetString(1098, "DiscArt")
         Me.tpFanart.Text = Master.eLang.GetString(149, "Fanart")
         Me.tpLandscape.Text = Master.eLang.GetString(1059, "Landscape")
+        Me.tpMovies.Text = Master.eLang.GetString(36, "Movies")
         Me.tpPoster.Text = Master.eLang.GetString(148, "Poster")
     End Sub
 

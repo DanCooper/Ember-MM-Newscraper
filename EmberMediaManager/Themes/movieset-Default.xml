@@ -78,11 +78,37 @@ fontstyle code 5.
       <anchor>9</anchor>
     </object>
 
+    <object name="lblPlotHeader">
+      <width>pnlInfoPanel.Width - 10</width>
+      <height>17</height>
+      <left>3</left>
+      <top>27</top>
+      <backcolor>-9868951</backcolor>
+      <forecolor>-1</forecolor>
+      <anchor>13</anchor>
+      <font>Microsoft Sans Serif</font>
+      <fontsize>8</fontsize>
+      <fontstyle>1</fontstyle>
+    </object>
+
+    <object name="txtPlot">
+      <width>lblPlotHeader.Width</width>
+      <height>78</height>
+      <left>3</left>
+      <top>48</top>
+      <backcolor>-2302756</backcolor>
+      <forecolor>-16777216</forecolor>
+      <anchor>13</anchor>
+      <font>Microsoft Sans Serif</font>
+      <fontsize>8</fontsize>
+      <fontstyle>0</fontstyle>
+    </object>
+
     <object name="pnlMoviesInSet">
       <width>pnlInfoPanel.Width</width>
       <height>244</height>
       <left>3</left>
-      <top>29</top>
+      <top>133</top>
       <backcolor>-2302756</backcolor>
       <anchor>13</anchor>
     </object>
@@ -209,15 +235,6 @@ fontstyle code 5.
       <visible>false</visible>
     </object>
     <!-- END INTERNAL TO PNLACTORS -->
-
-    <object name="lblPlotHeader">
-      <visible>false</visible>
-    </object>
-
-    <object name="txtPlot">
-      <visible>false</visible>
-    </object>
-
 
   </infopanel>
 </theme>

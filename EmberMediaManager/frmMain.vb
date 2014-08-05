@@ -7951,6 +7951,8 @@ doCancel:
                 Me.lblTitle.Text = String.Empty
             End If
 
+            Me.txtPlot.Text = Master.currMovieSet.MovieSet.Plot
+
             'If Not String.IsNullOrEmpty(Master.currMovie.Movie.OriginalTitle) AndAlso Master.currMovie.Movie.OriginalTitle <> StringUtils.FilterTokens(Master.currMovie.Movie.Title) Then
             '    Me.lblOriginalTitle.Text = String.Format(String.Concat(Master.eLang.GetString(302, "Original Title"), ": {0}"), Master.currMovie.Movie.OriginalTitle)
             'Else
@@ -7973,7 +7975,6 @@ doCancel:
             'End If
 
             'Me.txtOutline.Text = Master.currMovie.Movie.Outline
-            'Me.txtPlot.Text = Master.currMovie.Movie.Plot
             'Me.lblTagline.Text = Master.currMovie.Movie.Tagline
 
             'Me.alActors = New List(Of String)
