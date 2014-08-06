@@ -303,7 +303,7 @@ Namespace YouTube
                 Html = String.Empty
             End If
 
-            Dim Pattern As String = "<li><div class=""yt-lockup yt-lockup-tile yt-lockup-video yt-uix-tile clearfix"".*?<span class=""video-time"">(?<TIME>.*?)</span>.*?<a href=""(?<LINK>.*?)"".*?dir=""ltr"">(?<NAME>.*?)</a>"
+            Dim Pattern As String = "<li><div class=""yt-lockup yt-lockup-tile yt-lockup-video.*?<span class=""video-time"">(?<TIME>.*?)</span>.*?<a href=""(?<LINK>.*?)"".*?dir=""ltr"">(?<NAME>.*?)</a>"
 
             Dim Result As MatchCollection = Regex.Matches(Html, Pattern, RegexOptions.Singleline)
 
