@@ -1075,8 +1075,8 @@ Namespace TMDBg
                                 aMI = _TMDBApiE.GetCollectionInfo(aMovieSet.id)
                             End If
                             t1 = aMI.id.ToString
-                            t2 = CStr(IIf(String.IsNullOrEmpty(aMovieSet.name), "", aMovieSet.name))
-                            t3 = aMI.overview.ToString
+                            t2 = CStr(IIf(String.IsNullOrEmpty(aMI.name), "", aMI.name))
+                            t3 = CStr(IIf(String.IsNullOrEmpty(aMI.overview), "", aMI.overview))
                             Dim lNewMovieSet As MediaContainers.MovieSet = New MediaContainers.MovieSet(t1, t2, t3)
                             lNewMovieSet.ID = aMI.id.ToString
                             R.Matches.Add(lNewMovieSet)
