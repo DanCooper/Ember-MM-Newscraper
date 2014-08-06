@@ -422,16 +422,18 @@ Public Class HTTP
                             Dim count = Convert.ToInt32(wrResponse.ContentLength)
                             Dim buffer = New Byte(count) {}
                             Dim bytesRead As Integer
-                            Do
-                                bytesRead += SourceStream.Read(buffer, bytesRead, count - bytesRead)
-                            Loop Until bytesRead = count
-                            SourceStream.Close()
-                            Me._ms.Close()
-                            Me._ms = New MemoryStream()
+                            If Not count = -1 Then
+                                Do
+                                    bytesRead += SourceStream.Read(buffer, bytesRead, count - bytesRead)
+                                Loop Until bytesRead = count
+                                SourceStream.Close()
+                                Me._ms.Close()
+                                Me._ms = New MemoryStream()
 
-                            Me._ms.Write(buffer, 0, bytesRead)
-                            Me._ms.Flush()
-                            Me._image = New Bitmap(Me._ms)
+                                Me._ms.Write(buffer, 0, bytesRead)
+                                Me._ms.Flush()
+                                Me._image = New Bitmap(Me._ms)
+                            End If
                         End Using
                         'Me._image = Image.FromStream(wrResponse.GetResponseStream)
                     End If
