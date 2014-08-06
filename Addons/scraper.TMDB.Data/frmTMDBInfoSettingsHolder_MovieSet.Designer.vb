@@ -269,10 +269,10 @@ Partial Class frmTMDBInfoSettingsHolder_MovieSet
         Me.gbTMDBScraperOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbTMDBScraperOpts.Location = New System.Drawing.Point(11, 139)
         Me.gbTMDBScraperOpts.Name = "gbTMDBScraperOpts"
-        Me.gbTMDBScraperOpts.Size = New System.Drawing.Size(117, 150)
+        Me.gbTMDBScraperOpts.Size = New System.Drawing.Size(210, 69)
         Me.gbTMDBScraperOpts.TabIndex = 3
         Me.gbTMDBScraperOpts.TabStop = False
-        Me.gbTMDBScraperOpts.Text = "Scraper Fields"
+        Me.gbTMDBScraperOpts.Text = "Scraper Fields - Scraper specific"
         '
         'chkPlot
         '
@@ -296,7 +296,7 @@ Partial Class frmTMDBInfoSettingsHolder_MovieSet
         Me.chkTitle.Text = "Title"
         Me.chkTitle.UseVisualStyleBackColor = True
         '
-        'frmTMDBSetInfoSettingsHolder
+        'frmTMDBInfoSettingsHolder_MovieSet
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
@@ -308,7 +308,7 @@ Partial Class frmTMDBInfoSettingsHolder_MovieSet
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "frmTMDBSetInfoSettingsHolder"
+        Me.Name = "frmTMDBInfoSettingsHolder_MovieSet"
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Scraper Setup"

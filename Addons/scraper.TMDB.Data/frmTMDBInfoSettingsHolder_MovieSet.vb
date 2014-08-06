@@ -184,7 +184,7 @@ Public Class frmTMDBInfoSettingsHolder_MovieSet
         Me.chkPlot.Text = Master.eLang.GetString(65, "Plot")
         Me.chkTitle.Text = Master.eLang.GetString(21, "Title")
         Me.gbTMDBGlobalOpts.Text = Master.eLang.GetString(937, "TMDB")
-        Me.gbTMDBScraperOpts.Text = Master.eLang.GetString(577, "Scraper Fields - Scraper specific")
+        Me.gbTMDBScraperOpts.Text = Master.eLang.GetString(791, "Scraper Fields - Scraper specific")
         Me.lblScraperOrder.Text = Master.eLang.GetString(168, "Scrape Order")
         Me.lblTMDBApiKey.Text = Master.eLang.GetString(870, "TMDB API Key")
         Me.lblTMDBPrefLanguage.Text = Master.eLang.GetString(741, "Preferred Language:")

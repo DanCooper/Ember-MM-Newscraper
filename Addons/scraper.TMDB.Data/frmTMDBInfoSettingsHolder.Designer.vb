@@ -25,6 +25,8 @@ Partial Class frmTMDBInfoSettingsHolder
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmTMDBInfoSettingsHolder))
         Me.lblVersion = New System.Windows.Forms.Label()
         Me.gbTMDBGlobalOpts = New System.Windows.Forms.GroupBox()
+        Me.lblEMMAPI = New System.Windows.Forms.Label()
+        Me.btnUnlockAPI = New System.Windows.Forms.Button()
         Me.chkGetAdultItems = New System.Windows.Forms.CheckBox()
         Me.pbTMDBApiKeyInfo = New System.Windows.Forms.PictureBox()
         Me.chkFallBackEng = New System.Windows.Forms.CheckBox()
@@ -58,8 +60,6 @@ Partial Class frmTMDBInfoSettingsHolder
         Me.chkMPAA = New System.Windows.Forms.CheckBox()
         Me.chkYear = New System.Windows.Forms.CheckBox()
         Me.chkTitle = New System.Windows.Forms.CheckBox()
-        Me.lblEMMAPI = New System.Windows.Forms.Label()
-        Me.btnUnlockAPI = New System.Windows.Forms.Button()
         Me.gbTMDBGlobalOpts.SuspendLayout()
         CType(Me.pbTMDBApiKeyInfo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel1.SuspendLayout()
@@ -94,6 +94,25 @@ Partial Class frmTMDBInfoSettingsHolder
         Me.gbTMDBGlobalOpts.TabIndex = 1
         Me.gbTMDBGlobalOpts.TabStop = False
         Me.gbTMDBGlobalOpts.Text = "TMDB"
+        '
+        'lblEMMAPI
+        '
+        Me.lblEMMAPI.AutoSize = True
+        Me.lblEMMAPI.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        Me.lblEMMAPI.Location = New System.Drawing.Point(194, 39)
+        Me.lblEMMAPI.Name = "lblEMMAPI"
+        Me.lblEMMAPI.Size = New System.Drawing.Size(162, 13)
+        Me.lblEMMAPI.TabIndex = 12
+        Me.lblEMMAPI.Text = "Ember Media Manager API key"
+        '
+        'btnUnlockAPI
+        '
+        Me.btnUnlockAPI.Location = New System.Drawing.Point(9, 34)
+        Me.btnUnlockAPI.Name = "btnUnlockAPI"
+        Me.btnUnlockAPI.Size = New System.Drawing.Size(179, 23)
+        Me.btnUnlockAPI.TabIndex = 11
+        Me.btnUnlockAPI.Text = "Use my own API key"
+        Me.btnUnlockAPI.UseVisualStyleBackColor = True
         '
         'chkGetAdultItems
         '
@@ -283,7 +302,7 @@ Partial Class frmTMDBInfoSettingsHolder
         Me.gbTMDBScraperOpts.Size = New System.Drawing.Size(513, 150)
         Me.gbTMDBScraperOpts.TabIndex = 3
         Me.gbTMDBScraperOpts.TabStop = False
-        Me.gbTMDBScraperOpts.Text = "Scraper Fields"
+        Me.gbTMDBScraperOpts.Text = "Scraper Fields - Scraper specific"
         '
         'chkCollection
         '
@@ -470,25 +489,6 @@ Partial Class frmTMDBInfoSettingsHolder
         Me.chkTitle.TabIndex = 0
         Me.chkTitle.Text = "Title"
         Me.chkTitle.UseVisualStyleBackColor = True
-        '
-        'lblEMMAPI
-        '
-        Me.lblEMMAPI.AutoSize = True
-        Me.lblEMMAPI.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.lblEMMAPI.Location = New System.Drawing.Point(194, 39)
-        Me.lblEMMAPI.Name = "lblEMMAPI"
-        Me.lblEMMAPI.Size = New System.Drawing.Size(142, 13)
-        Me.lblEMMAPI.TabIndex = 12
-        Me.lblEMMAPI.Text = "Ember Media Manager API key"
-        '
-        'btnUnlockAPI
-        '
-        Me.btnUnlockAPI.Location = New System.Drawing.Point(9, 34)
-        Me.btnUnlockAPI.Name = "btnUnlockAPI"
-        Me.btnUnlockAPI.Size = New System.Drawing.Size(179, 23)
-        Me.btnUnlockAPI.TabIndex = 11
-        Me.btnUnlockAPI.Text = "Use my own API key"
-        Me.btnUnlockAPI.UseVisualStyleBackColor = True
         '
         'frmTMDBInfoSettingsHolder
         '
