@@ -151,6 +151,7 @@ Public Class TMDB_Poster
         _setup.txtTMDBApiKey.Text = strPrivateAPIKey
         _setup.cbTMDBLanguage.Text = _MySettings.TMDBLanguage
         _setup.chkFallBackEng.Checked = _MySettings.FallBackEng
+        _setup.chkTMDBLanguagePrefOnly.Checked = _MySettings.TMDBLanguagePrefOnly
         _setup.Lang = _setup.cbTMDBLanguage.Text
         _setup.API = _setup.txtTMDBApiKey.Text
 
@@ -175,8 +176,9 @@ Public Class TMDB_Poster
 
         strPrivateAPIKey = clsAdvancedSettings.GetSetting("TMDBAPIKey", "")
         _MySettings.TMDBAPIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "44810eefccd9cb1fa1d57e7b0d67b08d", strPrivateAPIKey)
-        _MySettings.FallBackEng = clsAdvancedSettings.GetBooleanSetting("FallBackEn", True)
+        _MySettings.FallBackEng = clsAdvancedSettings.GetBooleanSetting("FallBackEn", False)
         _MySettings.TMDBLanguage = clsAdvancedSettings.GetSetting("TMDBLanguage", "en")
+        _MySettings.TMDBLanguagePrefOnly = clsAdvancedSettings.GetBooleanSetting("TMDBLanguagePrefOnly", True)
 
         ConfigScrapeModifier.Poster = clsAdvancedSettings.GetBooleanSetting("DoPoster", True)
         ConfigScrapeModifier.Fanart = clsAdvancedSettings.GetBooleanSetting("DoFanart", True)
@@ -212,6 +214,7 @@ Public Class TMDB_Poster
 
             settings.SetSetting("TMDBAPIKey", _setup.txtTMDBApiKey.Text)
             settings.SetBooleanSetting("FallBackEn", _MySettings.FallBackEng)
+            settings.SetBooleanSetting("TMDBLanguagePrefOnly", _MySettings.TMDBLanguagePrefOnly)
             settings.SetSetting("TMDBLanguage", _MySettings.TMDBLanguage)
         End Using
     End Sub
@@ -219,6 +222,7 @@ Public Class TMDB_Poster
     Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.EmberMovieScraperModule_Poster.SaveSetupScraper
         _MySettings.TMDBLanguage = _setup.cbTMDBLanguage.Text
         _MySettings.FallBackEng = _setup.chkFallBackEng.Checked
+        _MySettings.TMDBLanguagePrefOnly = _setup.chkTMDBLanguagePrefOnly.Checked
         ConfigScrapeModifier.Poster = _setup.chkScrapePoster.Checked
         ConfigScrapeModifier.Fanart = _setup.chkScrapeFanart.Checked
         SaveSettings()
@@ -244,6 +248,7 @@ Public Class TMDB_Poster
 #Region "Fields"
         Dim TMDBAPIKey As String
         Dim TMDBLanguage As String
+        Dim TMDBLanguagePrefOnly As Boolean
         Dim FallBackEng As Boolean
 #End Region 'Fields
 

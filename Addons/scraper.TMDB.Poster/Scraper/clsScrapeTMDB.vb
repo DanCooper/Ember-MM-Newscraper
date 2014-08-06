@@ -126,13 +126,17 @@ Namespace TMDB
                                 If tmpPoster.ShortLang = _MySettings.TMDBLanguage Then
                                     alPostersP.Add(tmpPoster)
                                 ElseIf tmpPoster.ShortLang = "en" Then
-                                    alPostersE.Add(tmpPoster)
+                                    If _MySettings.FallBackEng Then
+                                        alPostersE.Add(tmpPoster)
+                                    End If
                                 ElseIf tmpPoster.ShortLang = "xx" Then
                                     alPostersN.Add(tmpPoster)
                                 ElseIf String.IsNullOrEmpty(tmpPoster.ShortLang) Then
                                     alPostersN.Add(tmpPoster)
                                 Else
-                                    alPostersO.Add(tmpPoster)
+                                    If Not _MySettings.TMDBLanguagePrefOnly Then
+                                        alPostersO.Add(tmpPoster)
+                                    End If
                                 End If
                             Next
                         Next

@@ -25,6 +25,8 @@ Partial Class frmTMDBMediaSettingsHolder
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmTMDBMediaSettingsHolder))
         Me.pnlSettings = New System.Windows.Forms.Panel()
         Me.GroupBox30 = New System.Windows.Forms.GroupBox()
+        Me.lblEMMAPI = New System.Windows.Forms.Label()
+        Me.btnUnlockAPI = New System.Windows.Forms.Button()
         Me.pbTMDB = New System.Windows.Forms.PictureBox()
         Me.chkFallBackEng = New System.Windows.Forms.CheckBox()
         Me.cbTMDBLanguage = New System.Windows.Forms.ComboBox()
@@ -41,8 +43,7 @@ Partial Class frmTMDBMediaSettingsHolder
         Me.btnDown = New System.Windows.Forms.Button()
         Me.btnUp = New System.Windows.Forms.Button()
         Me.cbEnabled = New System.Windows.Forms.CheckBox()
-        Me.lblEMMAPI = New System.Windows.Forms.Label()
-        Me.btnUnlockAPI = New System.Windows.Forms.Button()
+        Me.chkTMDBLanguagePrefOnly = New System.Windows.Forms.CheckBox()
         Me.pnlSettings.SuspendLayout()
         Me.GroupBox30.SuspendLayout()
         CType(Me.pbTMDB, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -65,6 +66,7 @@ Partial Class frmTMDBMediaSettingsHolder
         '
         'GroupBox30
         '
+        Me.GroupBox30.Controls.Add(Me.chkTMDBLanguagePrefOnly)
         Me.GroupBox30.Controls.Add(Me.lblEMMAPI)
         Me.GroupBox30.Controls.Add(Me.btnUnlockAPI)
         Me.GroupBox30.Controls.Add(Me.pbTMDB)
@@ -76,10 +78,29 @@ Partial Class frmTMDBMediaSettingsHolder
         Me.GroupBox30.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.GroupBox30.Location = New System.Drawing.Point(11, 31)
         Me.GroupBox30.Name = "GroupBox30"
-        Me.GroupBox30.Size = New System.Drawing.Size(592, 102)
+        Me.GroupBox30.Size = New System.Drawing.Size(592, 117)
         Me.GroupBox30.TabIndex = 95
         Me.GroupBox30.TabStop = False
         Me.GroupBox30.Text = "TMDB"
+        '
+        'lblEMMAPI
+        '
+        Me.lblEMMAPI.AutoSize = True
+        Me.lblEMMAPI.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        Me.lblEMMAPI.Location = New System.Drawing.Point(194, 39)
+        Me.lblEMMAPI.Name = "lblEMMAPI"
+        Me.lblEMMAPI.Size = New System.Drawing.Size(162, 13)
+        Me.lblEMMAPI.TabIndex = 14
+        Me.lblEMMAPI.Text = "Ember Media Manager API key"
+        '
+        'btnUnlockAPI
+        '
+        Me.btnUnlockAPI.Location = New System.Drawing.Point(9, 34)
+        Me.btnUnlockAPI.Name = "btnUnlockAPI"
+        Me.btnUnlockAPI.Size = New System.Drawing.Size(179, 23)
+        Me.btnUnlockAPI.TabIndex = 13
+        Me.btnUnlockAPI.Text = "Use my own API key"
+        Me.btnUnlockAPI.UseVisualStyleBackColor = True
         '
         'pbTMDB
         '
@@ -94,11 +115,11 @@ Partial Class frmTMDBMediaSettingsHolder
         '
         Me.chkFallBackEng.AutoSize = True
         Me.chkFallBackEng.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkFallBackEng.Location = New System.Drawing.Point(190, 67)
+        Me.chkFallBackEng.Location = New System.Drawing.Point(212, 90)
         Me.chkFallBackEng.Name = "chkFallBackEng"
-        Me.chkFallBackEng.Size = New System.Drawing.Size(129, 17)
+        Me.chkFallBackEng.Size = New System.Drawing.Size(149, 17)
         Me.chkFallBackEng.TabIndex = 4
-        Me.chkFallBackEng.Text = "Fall back on english"
+        Me.chkFallBackEng.Text = "Also Get English Images"
         Me.chkFallBackEng.UseVisualStyleBackColor = True
         '
         'cbTMDBLanguage
@@ -171,7 +192,7 @@ Partial Class frmTMDBMediaSettingsHolder
         Me.GroupBox3.Controls.Add(Me.chkScrapePoster)
         Me.GroupBox3.Controls.Add(Me.chkScrapeFanart)
         Me.GroupBox3.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.GroupBox3.Location = New System.Drawing.Point(11, 139)
+        Me.GroupBox3.Location = New System.Drawing.Point(11, 154)
         Me.GroupBox3.Name = "GroupBox3"
         Me.GroupBox3.Size = New System.Drawing.Size(130, 64)
         Me.GroupBox3.TabIndex = 1
@@ -256,24 +277,16 @@ Partial Class frmTMDBMediaSettingsHolder
         Me.cbEnabled.Text = "Enabled"
         Me.cbEnabled.UseVisualStyleBackColor = True
         '
-        'lblEMMAPI
+        'chkTMDBLanguagePrefOnly
         '
-        Me.lblEMMAPI.AutoSize = True
-        Me.lblEMMAPI.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.lblEMMAPI.Location = New System.Drawing.Point(194, 39)
-        Me.lblEMMAPI.Name = "lblEMMAPI"
-        Me.lblEMMAPI.Size = New System.Drawing.Size(142, 13)
-        Me.lblEMMAPI.TabIndex = 14
-        Me.lblEMMAPI.Text = "Ember Media Manager API key"
-        '
-        'btnUnlockAPI
-        '
-        Me.btnUnlockAPI.Location = New System.Drawing.Point(9, 34)
-        Me.btnUnlockAPI.Name = "btnUnlockAPI"
-        Me.btnUnlockAPI.Size = New System.Drawing.Size(179, 23)
-        Me.btnUnlockAPI.TabIndex = 13
-        Me.btnUnlockAPI.Text = "Use my own API key"
-        Me.btnUnlockAPI.UseVisualStyleBackColor = True
+        Me.chkTMDBLanguagePrefOnly.AutoSize = True
+        Me.chkTMDBLanguagePrefOnly.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkTMDBLanguagePrefOnly.Location = New System.Drawing.Point(194, 67)
+        Me.chkTMDBLanguagePrefOnly.Name = "chkTMDBLanguagePrefOnly"
+        Me.chkTMDBLanguagePrefOnly.Size = New System.Drawing.Size(248, 17)
+        Me.chkTMDBLanguagePrefOnly.TabIndex = 15
+        Me.chkTMDBLanguagePrefOnly.Text = "Only Get Images for the Selected Language"
+        Me.chkTMDBLanguagePrefOnly.UseVisualStyleBackColor = True
         '
         'frmTMDBMediaSettingsHolder
         '
@@ -321,5 +334,6 @@ Partial Class frmTMDBMediaSettingsHolder
     Friend WithEvents txtTMDBApiKey As System.Windows.Forms.TextBox
     Friend WithEvents lblEMMAPI As System.Windows.Forms.Label
     Friend WithEvents btnUnlockAPI As System.Windows.Forms.Button
+    Friend WithEvents chkTMDBLanguagePrefOnly As System.Windows.Forms.CheckBox
 
 End Class

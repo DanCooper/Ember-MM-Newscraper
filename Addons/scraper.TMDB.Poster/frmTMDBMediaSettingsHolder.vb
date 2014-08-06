@@ -122,7 +122,8 @@ Public Class frmTMDBMediaSettingsHolder
         Me.Label18.Text = Master.eLang.GetString(870, "TMDB API Key")
         Me.GroupBox30.Text = Master.eLang.GetString(937, "TMDB")
         Me.GroupBox3.Text = Master.eLang.GetString(497, "Images")
-        Me.chkFallBackEng.Text = Master.eLang.GetString(922, "Fall back on english")
+        Me.chkFallBackEng.Text = Master.eLang.GetString(737, "Also Get English Images")
+        Me.chkTMDBLanguagePrefOnly.Text = Master.eLang.GetString(736, "Only Get Images for the Selected Language")
         Me.Label2.Text = Master.eLang.GetString(741, "Preferred Language:")
         Me.btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API key")
         Me.lblEMMAPI.Text = Master.eLang.GetString(1189, "Ember Media Manager API key")
@@ -153,6 +154,12 @@ Public Class frmTMDBMediaSettingsHolder
     End Sub
 
     Private Sub chkFallBackEng_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles chkFallBackEng.CheckedChanged
+        RaiseEvent SetupNeedsRestart()
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkTMDBLanguagePrefOnly_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles chkTMDBLanguagePrefOnly.CheckedChanged
+        RaiseEvent SetupNeedsRestart()
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
