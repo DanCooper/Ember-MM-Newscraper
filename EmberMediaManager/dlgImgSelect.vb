@@ -479,7 +479,7 @@ Public Class dlgImgSelect
         Me.SuspendLayout()
         Me.pnlBG.AutoScroll = False
 
-        For Each aImg In _ImageList.Where(Function(f) f.Description = aDes)
+        For Each aImg In _ImageList.Where(Function(f) f.Description = aDes AndAlso Not IsNothing(f.WebImage.Image))
             Try
                 aParentID = aImg.ParentID
                 Dim x = From MI As MediaContainers.Image In _ImageList Where (MI.ParentID = aParentID)
