@@ -73,6 +73,7 @@ Public Class dlgUpdateMedia
 
         chkOptsCast.Checked = False
         chkOptsCert.Checked = False
+        chkOptsCollection.Checked = False
         chkOptsCountry.Checked = False
         chkOptsCrew.Checked = False
         chkOptsDirector.Checked = False
@@ -149,6 +150,8 @@ Public Class dlgUpdateMedia
                 chkOptsCast.Enabled = False
                 chkOptsCert.Checked = True
                 chkOptsCert.Enabled = False
+                chkOptsCollection.Checked = True
+                chkOptsCollection.Enabled = False
                 chkOptsCountry.Checked = True
                 chkOptsCountry.Enabled = False
                 chkOptsCrew.Checked = True
@@ -193,6 +196,7 @@ Public Class dlgUpdateMedia
             Else
                 chkOptsCast.Enabled = True
                 chkOptsCert.Enabled = True
+                chkOptsCollection.Enabled = True
                 chkOptsCountry.Enabled = True
                 chkOptsCrew.Enabled = True
                 chkOptsDirector.Enabled = True
@@ -220,7 +224,8 @@ Public Class dlgUpdateMedia
                 chkOptsMPAA.Checked OrElse chkOptsCert.Checked OrElse chkOptsMusicBy.Checked OrElse chkOptsOutline.Checked OrElse chkOptsPlot.Checked OrElse _
                 chkOptsProducers.Checked OrElse chkOptsRating.Checked OrElse chkOptsRelease.Checked OrElse chkOptsRuntime.Checked OrElse _
                 chkOptsStudio.Checked OrElse chkOptsTagline.Checked OrElse chkOptsTitle.Checked OrElse chkOptsTrailer.Checked OrElse _
-                chkOptsVotes.Checked OrElse chkOptsVotes.Checked OrElse chkOptsWriters.Checked OrElse chkOptsYear.Checked OrElse chkOptsTop250.Checked OrElse chkOptsCountry.Checked Then
+                chkOptsVotes.Checked OrElse chkOptsVotes.Checked OrElse chkOptsWriters.Checked OrElse chkOptsYear.Checked OrElse chkOptsTop250.Checked OrElse _
+                chkOptsCountry.Checked OrElse chkOptsCollection.Checked Then
                     Update_Button.Enabled = True
                 Else
                     Update_Button.Enabled = False
@@ -426,6 +431,11 @@ Public Class dlgUpdateMedia
         CheckEnable()
     End Sub
 
+    Private Sub chkOptsCollection_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOptsCollection.CheckedChanged
+        CustomUpdater.Options.bCollection = chkOptsCollection.Checked
+        CheckEnable()
+    End Sub
+
     Private Sub chkOptsTrailer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOptsTrailer.CheckedChanged
         CustomUpdater.Options.bTrailer = chkOptsTrailer.Checked
         CheckEnable()
@@ -607,6 +617,7 @@ Public Class dlgUpdateMedia
         Me.chkOptsAll.Text = Me.chkModAll.Text
         Me.chkOptsCast.Text = Master.eLang.GetString(63, "Cast")
         Me.chkOptsCert.Text = Master.eLang.GetString(722, "Certification")
+        Me.chkOptsCollection.Text = Master.eLang.GetString(1135, "Collection")
         Me.chkOptsCountry.Text = Master.eLang.GetString(301, "Country")
         Me.chkOptsCrew.Text = Master.eLang.GetString(391, "Other Crew")
         Me.chkOptsDirector.Text = Master.eLang.GetString(62, "Director")

@@ -133,6 +133,7 @@ Partial Class dlgUpdateMedia
         Me.chkOptsYear = New System.Windows.Forms.CheckBox()
         Me.chkOptsTitle = New System.Windows.Forms.CheckBox()
         Me.pnlUpdateMedia = New System.Windows.Forms.Panel()
+        Me.chkOptsCollection = New System.Windows.Forms.CheckBox()
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.gbUpdateModifier.SuspendLayout()
@@ -566,6 +567,7 @@ Partial Class dlgUpdateMedia
         '
         'gbOptions
         '
+        Me.gbOptions.Controls.Add(Me.chkOptsCollection)
         Me.gbOptions.Controls.Add(Me.btnOptsNone)
         Me.gbOptions.Controls.Add(Me.chkOptsAll)
         Me.gbOptions.Controls.Add(Me.chkOptsCert)
@@ -593,7 +595,7 @@ Partial Class dlgUpdateMedia
         Me.gbOptions.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbOptions.Location = New System.Drawing.Point(287, 2)
         Me.gbOptions.Name = "gbOptions"
-        Me.gbOptions.Size = New System.Drawing.Size(274, 277)
+        Me.gbOptions.Size = New System.Drawing.Size(274, 303)
         Me.gbOptions.TabIndex = 3
         Me.gbOptions.TabStop = False
         Me.gbOptions.Text = "Options"
@@ -941,6 +943,20 @@ Partial Class dlgUpdateMedia
         Me.pnlUpdateMedia.Size = New System.Drawing.Size(568, 385)
         Me.pnlUpdateMedia.TabIndex = 3
         '
+        'chkOptsCollection
+        '
+        Me.chkOptsCollection.AutoSize = True
+        Me.chkOptsCollection.Checked = True
+        Me.chkOptsCollection.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkOptsCollection.Enabled = False
+        Me.chkOptsCollection.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkOptsCollection.Location = New System.Drawing.Point(6, 267)
+        Me.chkOptsCollection.Name = "chkOptsCollection"
+        Me.chkOptsCollection.Size = New System.Drawing.Size(78, 17)
+        Me.chkOptsCollection.TabIndex = 23
+        Me.chkOptsCollection.Text = "Collection"
+        Me.chkOptsCollection.UseVisualStyleBackColor = True
+        '
         'dlgUpdateMedia
         '
         Me.AcceptButton = Me.Update_Button
@@ -987,6 +1003,7 @@ Partial Class dlgUpdateMedia
     Friend WithEvents chkOptsAll As System.Windows.Forms.CheckBox
     Friend WithEvents btnModNone As System.Windows.Forms.Button
     Friend WithEvents btnOptsNone As System.Windows.Forms.Button
+    Friend WithEvents chkOptsCollection As System.Windows.Forms.CheckBox
 
 #End Region 'Methods
 
