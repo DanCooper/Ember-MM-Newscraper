@@ -1170,19 +1170,12 @@ Public Class dlgTVImageSelect
     End Sub
 
     Private Sub MouseWheelEvent(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs)
-        If e.Delta < 0 Then
-            If (pnlImages.VerticalScroll.Value + 50) <= pnlImages.VerticalScroll.Maximum Then
-                pnlImages.VerticalScroll.Value += 50
-            Else
-                pnlImages.VerticalScroll.Value = pnlImages.VerticalScroll.Maximum
-            End If
-        Else
-            If (pnlImages.VerticalScroll.Value - 50) >= pnlImages.VerticalScroll.Minimum Then
-                pnlImages.VerticalScroll.Value -= 50
-            Else
-                pnlImages.VerticalScroll.Value = pnlImages.VerticalScroll.Minimum
-            End If
-        End If
+        Dim vScrollPosition As Integer = pnlImages.VerticalScroll.Value
+        vScrollPosition -= Math.Sign(e.Delta) * 50
+        vScrollPosition = Math.Max(0, vScrollPosition)
+        vScrollPosition = Math.Min(vScrollPosition, pnlImages.VerticalScroll.Maximum)
+        pnlImages.AutoScrollPosition = New Point(pnlImages.AutoScrollPosition.X, vScrollPosition)
+        pnlImages.Invalidate()
     End Sub
 
     Private Sub pbDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbDelete.Click

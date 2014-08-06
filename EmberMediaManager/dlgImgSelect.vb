@@ -689,19 +689,12 @@ Public Class dlgImgSelect
     End Function
 
     Private Sub MouseWheelEvent(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs)
-        If e.Delta < 0 Then
-            If (pnlBG.VerticalScroll.Value + 50) <= pnlBG.VerticalScroll.Maximum Then
-                pnlBG.VerticalScroll.Value += 50
-            Else
-                pnlBG.VerticalScroll.Value = pnlBG.VerticalScroll.Maximum
-            End If
-        Else
-            If (pnlBG.VerticalScroll.Value - 50) >= pnlBG.VerticalScroll.Minimum Then
-                pnlBG.VerticalScroll.Value -= 50
-            Else
-                pnlBG.VerticalScroll.Value = pnlBG.VerticalScroll.Minimum
-            End If
-        End If
+        Dim vScrollPosition As Integer = pnlBG.VerticalScroll.Value
+        vScrollPosition -= Math.Sign(e.Delta) * 50
+        vScrollPosition = Math.Max(0, vScrollPosition)
+        vScrollPosition = Math.Min(vScrollPosition, pnlBG.VerticalScroll.Maximum)
+        pnlBG.AutoScrollPosition = New Point(pnlBG.AutoScrollPosition.X, vScrollPosition)
+        pnlBG.Invalidate()
     End Sub
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
