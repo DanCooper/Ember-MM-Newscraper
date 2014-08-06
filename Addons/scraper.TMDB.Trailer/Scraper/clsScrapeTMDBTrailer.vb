@@ -112,6 +112,7 @@ Namespace TMDBtrailer
             sHTTP = Nothing
 
             oTitle = Regex.Match(HTML, "<meta property=""og:title"" content=""(.*?)"">", RegexOptions.Singleline Or RegexOptions.IgnoreCase Or RegexOptions.Multiline).Groups(1).Value.ToString.Trim
+            oTitle = HttpUtility.HtmlDecode(oTitle)
 
             Return oTitle
         End Function

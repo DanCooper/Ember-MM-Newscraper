@@ -22,6 +22,7 @@ Imports System.Text.RegularExpressions
 Imports EmberAPI
 Imports System.Runtime.CompilerServices
 Imports NLog
+Imports System.Web
 
 'The InternalsVisibleTo is required for unit testing the friend methods
 <Assembly: InternalsVisibleTo("EmberAPI_Test")> 
@@ -72,7 +73,7 @@ Namespace YouTube
                 _VideoLinks = ParseYTFormats(url, False)
 
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name,ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         End Sub
         ''' <summary>
@@ -89,6 +90,7 @@ Namespace YouTube
             'meta name="title" content=
             If Regex.IsMatch(HTML, KeyPattern) Then
                 result = Regex.Match(HTML, KeyPattern).Groups(1).Value
+                result = HttpUtility.HtmlDecode(result)
             End If
 
             Return result
@@ -277,7 +279,7 @@ Namespace YouTube
                 Return DownloadLinks
 
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name,ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
                 Return New VideoLinkItemCollection
             Finally
                 sHTTP = Nothing
