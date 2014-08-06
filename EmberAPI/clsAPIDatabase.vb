@@ -1907,23 +1907,25 @@ Public Class Database
                                 End Using
                             Else
                                 'first check if a Set with same TMDBColID is already existing
-                                Using SQLcommandSets As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                                    SQLcommandSets.CommandText = String.Concat("SELECT ID, SetName, HasNfo, NfoPath, HasPoster, PosterPath, HasFanart, ", _
-                                                                           "FanartPath, HasBanner, BannerPath, HasLandscape, LandscapePath, ", _
-                                                                           "HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ", _
-                                                                           "ClearArtPath, TMDBColID FROM Sets WHERE TMDBColID LIKE """, s.TMDBColID, """;")
-                                    Using SQLreader As SQLite.SQLiteDataReader = SQLcommandSets.ExecuteReader()
-                                        If SQLreader.HasRows Then
-                                            SQLreader.Read()
-                                            If Not DBNull.Value.Equals(SQLreader("ID")) Then s.ID = CInt(SQLreader("ID"))
-                                            If Not DBNull.Value.Equals(SQLreader("SetName")) Then s.Set = CStr(SQLreader("SetName"))
-                                            IsNewSet = False
-                                            NFO.SaveMovieToNFO(_movieDB) 'to save the "new" SetName
-                                        Else
-                                            IsNewSet = True
-                                        End If
+                                If Not String.IsNullOrEmpty(s.TMDBColID) Then
+                                    Using SQLcommandSets As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                                        SQLcommandSets.CommandText = String.Concat("SELECT ID, SetName, HasNfo, NfoPath, HasPoster, PosterPath, HasFanart, ", _
+                                                                               "FanartPath, HasBanner, BannerPath, HasLandscape, LandscapePath, ", _
+                                                                               "HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ", _
+                                                                               "ClearArtPath, TMDBColID FROM Sets WHERE TMDBColID LIKE """, s.TMDBColID, """;")
+                                        Using SQLreader As SQLite.SQLiteDataReader = SQLcommandSets.ExecuteReader()
+                                            If SQLreader.HasRows Then
+                                                SQLreader.Read()
+                                                If Not DBNull.Value.Equals(SQLreader("ID")) Then s.ID = CInt(SQLreader("ID"))
+                                                If Not DBNull.Value.Equals(SQLreader("SetName")) Then s.Set = CStr(SQLreader("SetName"))
+                                                IsNewSet = False
+                                                NFO.SaveMovieToNFO(_movieDB) 'to save the "new" SetName
+                                            Else
+                                                IsNewSet = True
+                                            End If
+                                        End Using
                                     End Using
-                                End Using
+                                End If
 
                                 If IsNewSet Then
                                     'secondly check if a Set with same name is already existing
