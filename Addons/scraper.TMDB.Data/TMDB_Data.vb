@@ -161,7 +161,7 @@ Public Class TMDB_Data
         _TMDBApiE = New WatTmdb.V3.Tmdb(_MySettings_Movie.TMDBAPIKey)
         _TMDBConfE = _TMDBApiE.GetConfiguration()
         _TMDBApiA = New WatTmdb.V3.Tmdb(_MySettings_Movie.TMDBAPIKey, "")
-        _TMDBg = New TMDBg.Scraper(_TMDBConf, _TMDBConfE, _TMDBApi, _TMDBApiE, _TMDBApiA)
+        _TMDBg = New TMDBg.Scraper(_TMDBConf, _TMDBConfE, _TMDBApi, _TMDBApiE, _TMDBApiA, True)
     End Sub
 
     Sub Init_MovieSet(ByVal sAssemblyName As String) Implements Interfaces.EmberMovieSetScraperModule_Data.Init
@@ -180,7 +180,7 @@ Public Class TMDB_Data
         _TMDBApiE = New WatTmdb.V3.Tmdb(_MySettings_MovieSet.TMDBAPIKey)
         _TMDBConfE = _TMDBApiE.GetConfiguration()
         _TMDBApiA = New WatTmdb.V3.Tmdb(_MySettings_MovieSet.TMDBAPIKey, "")
-        _TMDBg = New TMDBg.Scraper(_TMDBConf, _TMDBConfE, _TMDBApi, _TMDBApiE, _TMDBApiA)
+        _TMDBg = New TMDBg.Scraper(_TMDBConf, _TMDBConfE, _TMDBApi, _TMDBApiE, _TMDBApiA, False)
     End Sub
 
     Function InjectSetupScraper_Movie() As Containers.SettingsPanel Implements Interfaces.EmberMovieScraperModule_Data.InjectSetupScraper
@@ -492,7 +492,7 @@ Public Class TMDB_Data
                 'This is a workaround to remove the "TreeView" error on search results window. The problem is that the last search results are still existing in _TMDBg. 
                 'I don't know another way to remove it. It works, It works so far without errors.
                 'TODO: maybe find another solution.
-                Me._TMDBg = New TMDBg.Scraper(_TMDBConf, _TMDBConfE, _TMDBApi, _TMDBApiE, _TMDBApiA)
+                Me._TMDBg = New TMDBg.Scraper(_TMDBConf, _TMDBConfE, _TMDBApi, _TMDBApiE, _TMDBApiA, True)
 
                 Using dSearch As New dlgTMDBSearchResults(_MySettings_Movie, Me._TMDBg)
                     Dim tmpTitle As String = DBMovie.Movie.Title
@@ -635,7 +635,7 @@ Public Class TMDB_Data
                 'This is a workaround to remove the "TreeView" error on search results window. The problem is that the last search results are still existing in _TMDBg. 
                 'I don't know another way to remove it. It works, It works so far without errors.
                 'TODO: maybe find another solution.
-                Me._TMDBg = New TMDBg.Scraper(_TMDBConf, _TMDBConfE, _TMDBApi, _TMDBApiE, _TMDBApiA)
+                Me._TMDBg = New TMDBg.Scraper(_TMDBConf, _TMDBConfE, _TMDBApi, _TMDBApiE, _TMDBApiA, False)
 
                 Using dSearch As New dlgTMDBSearchResults_MovieSet(_MySettings_MovieSet, Me._TMDBg)
                     Dim tmpTitle As String = DBMovieSet.MovieSet.Title

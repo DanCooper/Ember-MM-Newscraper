@@ -123,7 +123,7 @@ Public Class TMDB_Trailer
         _TMDBApiE = New WatTmdb.V3.Tmdb(_MySettings.TMDBAPIKey)
         _TMDBConfE = _TMDBApiE.GetConfiguration()
         _TMDBApiA = New WatTmdb.V3.Tmdb(_MySettings.TMDBAPIKey, "")
-        _TMDBg = New TMDBg.Scraper(_TMDBConf, _TMDBConfE, _TMDBApi, _TMDBApiE, _TMDBApiA)
+        _TMDBg = New TMDBg.Scraper(_TMDBConf, _TMDBConfE, _TMDBApi, _TMDBApiE, _TMDBApiA, True)
         TMDBt = New TMDBtrailer.Scraper(_TMDBConf, _TMDBConfE, _TMDBApi, _TMDBApiE, _TMDBApiA, _MySettings)
     End Sub
 

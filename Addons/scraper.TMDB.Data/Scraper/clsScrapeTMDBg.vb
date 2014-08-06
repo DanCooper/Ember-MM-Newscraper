@@ -131,12 +131,20 @@ Namespace TMDBg
 
 #Region "Methods"
 
-        Public Sub New(ByRef tTMDBConf As V3.TmdbConfiguration, ByRef tTMDBConfE As V3.TmdbConfiguration, ByRef tTMDBApi As V3.Tmdb, ByRef tTMDBApiE As V3.Tmdb, ByRef tTMDBApiA As V3.Tmdb)
-            strPrivateAPIKey = clsAdvancedSettings.GetSetting("TMDBAPIKey", "")
-            _MySettings.FallBackEng = clsAdvancedSettings.GetBooleanSetting("FallBackEn", False)
-            _MySettings.TMDBAPIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "44810eefccd9cb1fa1d57e7b0d67b08d", strPrivateAPIKey)
-            _MySettings.TMDBLanguage = clsAdvancedSettings.GetSetting("TMDBLanguage", "en")
-            _MySettings.GetAdultItems = clsAdvancedSettings.GetBooleanSetting("GetAdultItems", False)
+        Public Sub New(ByRef tTMDBConf As V3.TmdbConfiguration, ByRef tTMDBConfE As V3.TmdbConfiguration, ByRef tTMDBApi As V3.Tmdb, ByRef tTMDBApiE As V3.Tmdb, ByRef tTMDBApiA As V3.Tmdb, ByVal IsMovie As Boolean)
+            If IsMovie Then
+                strPrivateAPIKey = clsAdvancedSettings.GetSetting("TMDBAPIKey", "")
+                _MySettings.FallBackEng = clsAdvancedSettings.GetBooleanSetting("FallBackEn", False)
+                _MySettings.TMDBAPIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "44810eefccd9cb1fa1d57e7b0d67b08d", strPrivateAPIKey)
+                _MySettings.TMDBLanguage = clsAdvancedSettings.GetSetting("TMDBLanguage", "en")
+                _MySettings.GetAdultItems = clsAdvancedSettings.GetBooleanSetting("GetAdultItems", False)
+            Else
+                strPrivateAPIKey = clsAdvancedSettings.GetSetting("TMDBAPIKey_MovieSet", "")
+                _MySettings_MovieSet.FallBackEng = clsAdvancedSettings.GetBooleanSetting("FallBackEn_MovieSet", False)
+                _MySettings_MovieSet.TMDBAPIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "44810eefccd9cb1fa1d57e7b0d67b08d", strPrivateAPIKey)
+                _MySettings_MovieSet.TMDBLanguage = clsAdvancedSettings.GetSetting("TMDBLanguage_MovieSet", "en")
+                _MySettings_MovieSet.GetAdultItems = clsAdvancedSettings.GetBooleanSetting("GetAdultItems_MovieSet", False)
+            End If
 
             _TMDBApi = tTMDBApi
             _TMDBConf = tTMDBConf
