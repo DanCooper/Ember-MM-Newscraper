@@ -528,7 +528,7 @@ Public Class dlgOfflineHolder
                 Me.CleanUp()
                 fPath = String.Empty
                 'Functions.SetScraperMod(Enums.ModType.DoSearch, True)
-                Functions.SetScraperMod(Enums.MovieModType.All, True, True)
+                Functions.SetScraperMod(Enums.ModType_Movie.All, True, True)
 
                 If Not ModulesManager.Instance.MovieScrapeOnly(ScrapedMovie, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions) Then
                     If rbTypeMovieTitle.Checked Then
@@ -1152,7 +1152,7 @@ Public Class dlgOfflineHolder
                     Master.currMovie.RemovePoster = False
                     Master.currMovie.RemoveTheme = False
                     Master.currMovie.RemoveTrailer = False
-                    Functions.SetScraperMod(Enums.MovieModType.All, True, True)
+                    Functions.SetScraperMod(Enums.ModType_Movie.All, True, True)
                     'Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions) ', ID)
                 Case Windows.Forms.DialogResult.Abort
                     Master.currMovie.RemoveActorThumbs = False
@@ -1167,8 +1167,8 @@ Public Class dlgOfflineHolder
                     Master.currMovie.RemovePoster = False
                     Master.currMovie.RemoveTheme = False
                     Master.currMovie.RemoveTrailer = False
-                    Functions.SetScraperMod(Enums.MovieModType.DoSearch, True)
-                    Functions.SetScraperMod(Enums.MovieModType.All, True, False)
+                    Functions.SetScraperMod(Enums.ModType_Movie.DoSearch, True)
+                    Functions.SetScraperMod(Enums.ModType_Movie.All, True, False)
                     'Me.MovieScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultOptions) ', ID, True)
                 Case Else
                     'If Me.InfoCleared Then Me.LoadInfo(ID, Me.dgvMovies.Item(1, indX).Value.ToString, True, False)
@@ -1502,7 +1502,7 @@ Public Class dlgOfflineHolder
             Me.CleanUp()
             fPath = String.Empty
             'Functions.SetScraperMod(Enums.ModType.DoSearch, True)
-            Functions.SetScraperMod(Enums.MovieModType.All, True, True)
+            Functions.SetScraperMod(Enums.ModType_Movie.All, True, True)
 
             If Not ModulesManager.Instance.MovieScrapeOnly(sMovie, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions) Then
                 If rbTypeMovieTitle.Checked Then
@@ -1635,7 +1635,7 @@ Public Class dlgOfflineHolder
             Me.CleanUp()
             fPath = String.Empty
             'Functions.SetScraperMod(Enums.ModType.DoSearch, True)
-            Functions.SetScraperMod(Enums.MovieModType.All, True, True)
+            Functions.SetScraperMod(Enums.ModType_Movie.All, True, True)
 
             If Not ModulesManager.Instance.MovieScrapeOnly(sMovie, Enums.ScrapeType.SingleScrape, Master.DefaultMovieOptions) Then
                 If rbTypeMovieTitle.Checked Then
@@ -1799,7 +1799,7 @@ Public Class dlgOfflineHolder
             Return sMovie
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Return tMovie

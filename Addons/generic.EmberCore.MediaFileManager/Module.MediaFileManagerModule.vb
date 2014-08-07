@@ -27,7 +27,7 @@ Imports System.Xml.Serialization
 Imports EmberAPI
 
 Public Class FileManagerExternalModule
-    Implements Interfaces.EmberExternalModule
+    Implements Interfaces.GenericModule
 
 #Region "Delegates"
     Public Delegate Sub Delegate_SetToolsStripItem(value As System.Windows.Forms.ToolStripItem)
@@ -55,23 +55,23 @@ Public Class FileManagerExternalModule
 
 #Region "Events"
 
-    Public Event GenericEvent(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object)) Implements Interfaces.EmberExternalModule.GenericEvent
+    Public Event GenericEvent(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object)) Implements Interfaces.GenericModule.GenericEvent
 
-    Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer) Implements Interfaces.EmberExternalModule.ModuleSetupChanged
+    Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer) Implements Interfaces.GenericModule.ModuleSetupChanged
 
-    Public Event ModuleSettingsChanged() Implements Interfaces.EmberExternalModule.ModuleSettingsChanged
+    Public Event ModuleSettingsChanged() Implements Interfaces.GenericModule.ModuleSettingsChanged
 
 #End Region 'Events
 
 #Region "Properties"
 
-    Public ReadOnly Property ModuleType() As List(Of Enums.ModuleEventType) Implements Interfaces.EmberExternalModule.ModuleType
+    Public ReadOnly Property ModuleType() As List(Of Enums.ModuleEventType) Implements Interfaces.GenericModule.ModuleType
         Get
             Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {Enums.ModuleEventType.Generic})
         End Get
     End Property
 
-    Property Enabled() As Boolean Implements Interfaces.EmberExternalModule.Enabled
+    Property Enabled() As Boolean Implements Interfaces.GenericModule.Enabled
         Get
             Return _enabled
         End Get
@@ -86,13 +86,13 @@ Public Class FileManagerExternalModule
         End Set
     End Property
 
-    ReadOnly Property ModuleName() As String Implements Interfaces.EmberExternalModule.ModuleName
+    ReadOnly Property ModuleName() As String Implements Interfaces.GenericModule.ModuleName
         Get
             Return _Name
         End Get
     End Property
 
-    ReadOnly Property ModuleVersion() As String Implements Interfaces.EmberExternalModule.ModuleVersion
+    ReadOnly Property ModuleVersion() As String Implements Interfaces.GenericModule.ModuleVersion
         Get
             Return FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly.Location).FileVersion.ToString
         End Get
@@ -131,7 +131,7 @@ Public Class FileManagerExternalModule
         Next
     End Sub
 
-    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _refparam As Object) As Interfaces.ModuleResult Implements Interfaces.EmberExternalModule.RunGeneric
+    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _refparam As Object) As Interfaces.ModuleResult Implements Interfaces.GenericModule.RunGeneric
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
@@ -289,14 +289,14 @@ Public Class FileManagerExternalModule
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-	Sub Init(ByVal sAssemblyName As String, ByVal sExecutable As String) Implements Interfaces.EmberExternalModule.Init
-		MyPath = Path.Combine(Functions.AppPath, "Modules")
-		_AssemblyName = sAssemblyName
+    Sub Init(ByVal sAssemblyName As String, ByVal sExecutable As String) Implements Interfaces.GenericModule.Init
+        MyPath = Path.Combine(Functions.AppPath, "Modules")
+        _AssemblyName = sAssemblyName
         'Master.eLang.LoadLanguage(Master.eSettings.Language, sExecutable)
-		Load()
-	End Sub
+        Load()
+    End Sub
 
-    Function InjectSetup() As Containers.SettingsPanel Implements Interfaces.EmberExternalModule.InjectSetup
+    Function InjectSetup() As Containers.SettingsPanel Implements Interfaces.GenericModule.InjectSetup
         Dim SPanel As New Containers.SettingsPanel
         _setup = New frmSettingsHolder
         Load()
@@ -346,7 +346,7 @@ Public Class FileManagerExternalModule
         SetToolsStripItemVisibility(MyMenu, (eSettings.ModuleSettings.Count > 0))
     End Sub
 
-    Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.EmberExternalModule.SaveSetup
+    Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.GenericModule.SaveSetup
         Me.Enabled = Me._setup.cbEnabled.Checked
         eSettings.ModuleSettings.Clear()
         For Each i As ListViewItem In _setup.ListView1.Items

@@ -25,7 +25,7 @@ Public Class Interfaces
 #Region "Nested Interfaces"
 
     ' Interfaces for external Modules
-    Public Interface EmberExternalModule
+    Public Interface GenericModule
 
 #Region "Events"
 
@@ -51,7 +51,7 @@ Public Class Interfaces
 
 #Region "Methods"
 
-		Sub Init(ByVal sAssemblyName As String, ByVal sExecutable As String)
+        Sub Init(ByVal sAssemblyName As String, ByVal sExecutable As String)
 
         Function InjectSetup() As Containers.SettingsPanel
 
@@ -149,13 +149,13 @@ Public Class Interfaces
     ' #																				 #
     ' ################################################################################
 
-    Public Interface EmberMovieScraperModule_Data
+    Public Interface ScraperModule_Data_Movie
 
 #Region "Events"
 
         Event ModuleSettingsChanged()
 
-        Event ScraperEvent(ByVal eType As Enums.MovieScraperEventType, ByVal Parameter As Object)
+        Event ScraperEvent(ByVal eType As Enums.ScraperEventType_Movie, ByVal Parameter As Object)
 
         Event ScraperSetupChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer)
 
@@ -193,13 +193,13 @@ Public Class Interfaces
 
     End Interface
 
-    Public Interface EmberMovieScraperModule_Poster
+    Public Interface ScraperModule_Image_Movie
 
 #Region "Events"
 
         Event ModuleSettingsChanged()
 
-        Event MovieScraperEvent(ByVal eType As Enums.MovieScraperEventType, ByVal Parameter As Object)
+        Event MovieScraperEvent(ByVal eType As Enums.ScraperEventType_Movie, ByVal Parameter As Object)
 
         Event ScraperSetupChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer)
 
@@ -241,13 +241,13 @@ Public Class Interfaces
 
     End Interface
 
-    Public Interface EmberMovieScraperModule_Theme
+    Public Interface ScraperModule_Theme_Movie
 
 #Region "Events"
 
         Event ModuleSettingsChanged()
 
-        Event MovieScraperEvent(ByVal eType As Enums.MovieScraperEventType, ByVal Parameter As Object)
+        Event MovieScraperEvent(ByVal eType As Enums.ScraperEventType_Movie, ByVal Parameter As Object)
 
         Event ScraperSetupChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer)
 
@@ -281,13 +281,13 @@ Public Class Interfaces
 
     End Interface
 
-    Public Interface EmberMovieScraperModule_Trailer
+    Public Interface ScraperModule_Trailer_Movie
 
 #Region "Events"
 
         Event ModuleSettingsChanged()
 
-        Event MovieScraperEvent(ByVal eType As Enums.MovieScraperEventType, ByVal Parameter As Object)
+        Event MovieScraperEvent(ByVal eType As Enums.ScraperEventType_Movie, ByVal Parameter As Object)
 
         Event ScraperSetupChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer)
 
@@ -321,13 +321,13 @@ Public Class Interfaces
 
     End Interface
 
-    Public Interface EmberMovieSetScraperModule_Data
+    Public Interface ScraperModule_Data_MovieSet
 
 #Region "Events"
 
         Event ModuleSettingsChanged()
 
-        Event ScraperEvent(ByVal eType As Enums.MovieSetScraperEventType, ByVal Parameter As Object)
+        Event ScraperEvent(ByVal eType As Enums.ScraperEventType_MovieSet, ByVal Parameter As Object)
 
         Event ScraperSetupChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer)
 
@@ -366,7 +366,7 @@ Public Class Interfaces
     End Interface
 
 
-    Public Interface EmberTVScraperModule
+    Public Interface ScraperModule_TV
 
 #Region "Events"
 
@@ -376,7 +376,7 @@ Public Class Interfaces
 
         Event SetupScraperChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer)
 
-        Event TVScraperEvent(ByVal eType As Enums.TVScraperEventType, ByVal iProgress As Integer, ByVal Parameter As Object)
+        Event TVScraperEvent(ByVal eType As Enums.ScraperEventType_TV, ByVal iProgress As Integer, ByVal Parameter As Object)
 
         Event SetupNeedsRestart()
 
@@ -540,7 +540,7 @@ Public Class Interfaces
 
     '	End Interface
 
-    Public Interface EmberTVScraperModule_Theme
+    Public Interface ScraperModule_Theme_TV
 
 #Region "Events"
 
@@ -550,7 +550,7 @@ Public Class Interfaces
 
         Event SetupNeedsRestart()
 
-        Event TVScraperEvent(ByVal eType As Enums.TVScraperEventType, ByVal Parameter As Object)
+        Event TVScraperEvent(ByVal eType As Enums.ScraperEventType_TV, ByVal Parameter As Object)
 
 #End Region 'Events
 

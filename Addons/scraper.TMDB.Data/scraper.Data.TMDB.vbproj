@@ -5,10 +5,10 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{72A8EF23-3379-4C72-B212-A14A3C286D9C}</ProjectGuid>
+    <ProjectGuid>{A9188CF1-BD07-4D24-BC4A-906A43012F37}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>EmberMovieScraperModule</RootNamespace>
-    <AssemblyName>scraper.MPDB.Poster</AssemblyName>
+    <RootNamespace>ScraperModule</RootNamespace>
+    <AssemblyName>scraper.Data.TMDB</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
@@ -62,8 +62,6 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRuleSetDirectories>;D:\Applications\Development\Microsoft Visual Studio 2010\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
     <CodeAnalysisRuleDirectories>;D:\Applications\Development\Microsoft Visual Studio 2010\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
-    <DocumentationFile>
-    </DocumentationFile>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
@@ -80,8 +78,6 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRuleSetDirectories>;D:\Applications\Development\Microsoft Visual Studio 2010\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
     <CodeAnalysisRuleDirectories>;D:\Applications\Development\Microsoft Visual Studio 2010\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
-    <DocumentationFile>
-    </DocumentationFile>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
@@ -106,9 +102,6 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ICSharpCode.SharpZipLib">
-      <HintPath>..\..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
-    </Reference>
     <Reference Include="NLog, Version=3.1.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\NLog.3.1.0.0\lib\net45\NLog.dll</HintPath>
@@ -141,11 +134,24 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Scraper\clsScrapeMPDB.vb" />
-    <Compile Include="frmMPDBMediaSettingsHolder.Designer.vb">
-      <DependentUpon>frmMPDBMediaSettingsHolder.vb</DependentUpon>
+    <Compile Include="frmTMDBInfoSettingsHolder_MovieSet.Designer.vb">
+      <DependentUpon>frmTMDBInfoSettingsHolder_MovieSet.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmMPDBMediaSettingsHolder.vb">
+    <Compile Include="frmTMDBInfoSettingsHolder_MovieSet.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Scraper\dlgTMDBSearchResults_MovieSet.Designer.vb">
+      <DependentUpon>dlgTMDBSearchResults_MovieSet.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Scraper\dlgTMDBSearchResults_MovieSet.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TMDB_Data.vb" />
+    <Compile Include="Scraper\clsScrapeTMDBg.vb" />
+    <Compile Include="Scraper\dlgTMDBSearchResults.Designer.vb">
+      <DependentUpon>dlgTMDBSearchResults.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Scraper\dlgTMDBSearchResults.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
@@ -163,11 +169,28 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="MPDB_Poster.vb" />
+    <Compile Include="frmTMDBInfoSettingsHolder.Designer.vb">
+      <DependentUpon>frmTMDBInfoSettingsHolder.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmTMDBInfoSettingsHolder.vb">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="frmMPDBMediaSettingsHolder.resx">
-      <DependentUpon>frmMPDBMediaSettingsHolder.vb</DependentUpon>
+    <EmbeddedResource Include="frmTMDBInfoSettingsHolder_MovieSet.resx">
+      <DependentUpon>frmTMDBInfoSettingsHolder_MovieSet.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Scraper\dlgTMDBSearchResults_MovieSet.resx">
+      <DependentUpon>dlgTMDBSearchResults_MovieSet.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Scraper\dlgTMDBSearchResults.resx">
+      <DependentUpon>dlgTMDBSearchResults.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmTMDBInfoSettingsHolder.resx">
+      <DependentUpon>frmTMDBInfoSettingsHolder.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">

@@ -5,10 +5,10 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{A5277330-A443-46AB-A058-016A3B6AF8AC}</ProjectGuid>
+    <ProjectGuid>{4BFA47CB-1110-4BB5-9178-3B6EF98BC4EB}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>EmberMovieScraperModule</RootNamespace>
-    <AssemblyName>scraper.FanartTV.Poster</AssemblyName>
+    <RootNamespace>ScraperModule</RootNamespace>
+    <AssemblyName>scraper.Theme.GoEar</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
@@ -37,14 +37,6 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
-    <SccProjectName>
-    </SccProjectName>
-    <SccLocalPath>
-    </SccLocalPath>
-    <SccAuxPath>
-    </SccAuxPath>
-    <SccProvider>
-    </SccProvider>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
@@ -106,16 +98,9 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ICSharpCode.SharpZipLib">
-      <HintPath>..\..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
-    </Reference>
     <Reference Include="NLog, Version=3.1.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\NLog.3.1.0.0\lib\net45\NLog.dll</HintPath>
-    </Reference>
-    <Reference Include="RestSharp, Version=104.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\RestSharp.104.4.0\lib\net4\RestSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
@@ -134,6 +119,7 @@
     <Import Include="System" />
     <Import Include="System.Collections" />
     <Import Include="System.Collections.Generic" />
+    <Import Include="System.Diagnostics" />
     <Import Include="System.Drawing" />
     <Import Include="System.Linq" />
     <Import Include="System.Web" />
@@ -141,13 +127,7 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Scraper\clsScrapeFANARTTV.vb" />
-    <Compile Include="frmFanartTVMediaSettingsHolder.Designer.vb">
-      <DependentUpon>frmFanartTVMediaSettingsHolder.vb</DependentUpon>
-    </Compile>
-    <Compile Include="frmFanartTVMediaSettingsHolder.vb">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Scraper\clsScrapeGoEar.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -163,11 +143,17 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="FanartTV_Poster.vb" />
+    <Compile Include="frmGoEarInfoSettingsHolder.Designer.vb">
+      <DependentUpon>frmGoEarInfoSettingsHolder.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmGoEarInfoSettingsHolder.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GoEar_Theme.vb" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="frmFanartTVMediaSettingsHolder.resx">
-      <DependentUpon>frmFanartTVMediaSettingsHolder.vb</DependentUpon>
+    <EmbeddedResource Include="frmGoEarInfoSettingsHolder.resx">
+      <DependentUpon>frmGoEarInfoSettingsHolder.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
@@ -213,16 +199,7 @@
       <Name>EmberAPI</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\FanartTVAPI\FanartTVAPI.csproj">
-      <Project>{70F651C6-6BB4-4E4D-AD6C-25C36CA1E9E6}</Project>
-      <Name>FanartTVAPI</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\WatTmdb\WatTmdb.csproj">
-      <Project>{EFC11645-FAB4-4C30-A498-29F5ECDF77E8}</Project>
-      <Name>WatTmdb</Name>
-    </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

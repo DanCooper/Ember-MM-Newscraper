@@ -58,27 +58,27 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FanartTVAPI", "FanartTVAPI\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RottenTomatoesAPI", "RottenTomatoesAPI\RottenTomatoesAPI.csproj", "{8DAFAF56-AD78-4B47-866F-E8179511AF5B}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.FanartTV.Poster", "Addons\scraper.FanartTV.Poster\scraper.FanartTV.Poster.vbproj", "{A5277330-A443-46AB-A058-016A3B6AF8AC}"
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Image.FanartTV", "Addons\scraper.FanartTV.Poster\scraper.Image.FanartTV.vbproj", "{A5277330-A443-46AB-A058-016A3B6AF8AC}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.IMDB.Data", "Addons\scraper.IMDB.Data\scraper.IMDB.Data.vbproj", "{D3C1A3C4-A060-40DF-ACE4-143F7F102A24}"
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Data.IMDB", "Addons\scraper.IMDB.Data\scraper.Data.IMDB.vbproj", "{D3C1A3C4-A060-40DF-ACE4-143F7F102A24}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.IMPA.Poster", "Addons\scraper.IMPA.Poster\scraper.IMPA.Poster.vbproj", "{D9878E03-87D7-429E-AA0C-A7116A31FA7F}"
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Image.IMPA", "Addons\scraper.IMPA.Poster\scraper.Image.IMPA.vbproj", "{D9878E03-87D7-429E-AA0C-A7116A31FA7F}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.MPDB.Poster", "Addons\scraper.MPDB.Poster\scraper.MPDB.Poster.vbproj", "{72A8EF23-3379-4C72-B212-A14A3C286D9C}"
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Image.MPDB", "Addons\scraper.MPDB.Poster\scraper.Image.MPDB.vbproj", "{72A8EF23-3379-4C72-B212-A14A3C286D9C}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.OFDB.Data", "Addons\scraper.OFDB.Data\scraper.OFDB.Data.vbproj", "{39C49E1A-75BA-4AD1-9286-58E83D22BC1E}"
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Data.OFDB", "Addons\scraper.OFDB.Data\scraper.Data.OFDB.vbproj", "{39C49E1A-75BA-4AD1-9286-58E83D22BC1E}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.TMDB.Data", "Addons\scraper.TMDB.Data\scraper.TMDB.Data.vbproj", "{A9188CF1-BD07-4D24-BC4A-906A43012F37}"
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Data.TMDB", "Addons\scraper.TMDB.Data\scraper.Data.TMDB.vbproj", "{A9188CF1-BD07-4D24-BC4A-906A43012F37}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.TMDB.Poster", "Addons\scraper.TMDB.Poster\scraper.TMDB.Poster.vbproj", "{2B684C20-7E1A-4DA0-8C26-96DA1407B2C3}"
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Image.TMDB", "Addons\scraper.TMDB.Poster\scraper.Image.TMDB.vbproj", "{2B684C20-7E1A-4DA0-8C26-96DA1407B2C3}"
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.TVDB.Data.Poster", "Addons\scraper.TVDB.Poster\scraper.TVDB.Data.Poster.vbproj", "{3FAF50AA-AD5F-455A-8711-6D791C457F0F}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.IMDB.Poster", "Addons\scraper.IMDB.Poster\scraper.IMDB.Poster.vbproj", "{33F99994-12CA-4FAB-B62D-741F7AE35F4B}"
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Image.IMDB", "Addons\scraper.IMDB.Poster\scraper.Image.IMDB.vbproj", "{33F99994-12CA-4FAB-B62D-741F7AE35F4B}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.IMDB.Trailer", "Addons\scraper.IMDB.Trailer\scraper.IMDB.Trailer.vbproj", "{194445BE-3721-4270-984D-FA978D5F34A0}"
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Trailer.IMDB", "Addons\scraper.IMDB.Trailer\scraper.Trailer.IMDB.vbproj", "{194445BE-3721-4270-984D-FA978D5F34A0}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.TMDB.Trailer", "Addons\scraper.TMDB.Trailer\scraper.TMDB.Trailer.vbproj", "{0BEBA16B-9A83-4BD5-A476-B366451F0907}"
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Trailer.TMDB", "Addons\scraper.TMDB.Trailer\scraper.Trailer.TMDB.vbproj", "{0BEBA16B-9A83-4BD5-A476-B366451F0907}"
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "generic.EmberCore.Trakt", "Addons\generic.EmberCore.Trakt\generic.EmberCore.Trakt.vbproj", "{6F30E40B-6D85-4EE7-9474-5F82E96E1817}"
 EndProject
@@ -98,13 +98,13 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Scraper_Test", "Scraper_Tes
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "UnitTests", "UnitTests\UnitTests.vbproj", "{8160971E-1B33-4D0F-9355-2F8D3E833288}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.MoviepilotDE.Data", "Addons\scraper.MoviepilotDE.Data\scraper.MoviepilotDE.Data.vbproj", "{5F7F16F4-1BE8-47FF-B48B-2527D4971645}"
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Data.MoviepilotDE", "Addons\scraper.MoviepilotDE.Data\scraper.Data.MoviepilotDE.vbproj", "{5F7F16F4-1BE8-47FF-B48B-2527D4971645}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.GoEar.Theme", "Addons\scraper.goear.Theme\scraper.GoEar.Theme.vbproj", "{4BFA47CB-1110-4BB5-9178-3B6EF98BC4EB}"
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Theme.GoEar", "Addons\scraper.goear.Theme\scraper.Theme.GoEar.vbproj", "{4BFA47CB-1110-4BB5-9178-3B6EF98BC4EB}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.TelevisionTunes.Theme", "Addons\scraper.TelevisionTunes.Theme\scraper.TelevisionTunes.Theme.vbproj", "{974598ED-C19D-41CA-9771-4DE837D708BC}"
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Theme.TelevisionTunes", "Addons\scraper.TelevisionTunes.Theme\scraper.Theme.TelevisionTunes.vbproj", "{974598ED-C19D-41CA-9771-4DE837D708BC}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Apple.Trailer", "Addons\scraper.Apple.Trailer\scraper.Apple.Trailer.vbproj", "{3E5F4B11-1425-44CA-8146-309BEB292E97}"
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Trailer.Apple", "Addons\scraper.Apple.Trailer\scraper.Trailer.Apple.vbproj", "{3E5F4B11-1425-44CA-8146-309BEB292E97}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

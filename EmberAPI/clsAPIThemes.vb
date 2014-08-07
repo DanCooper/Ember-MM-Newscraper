@@ -192,7 +192,7 @@ Public Class Themes
         If String.IsNullOrEmpty(mMovie.Filename) Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.IsSingle, Enums.MovieModType.Theme)
+            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.IsSingle, Enums.ModType_Movie.Theme)
                 For Each t As String In Master.eSettings.FileSystemValidThemeExts
                     If File.Exists(a) Then
                         Delete(a)
@@ -286,7 +286,7 @@ Public Class Themes
             End Try
 
             Dim fExt As String = Path.GetExtension(Me._ext)
-            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.IsSingle, Enums.MovieModType.Theme)
+            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.IsSingle, Enums.ModType_Movie.Theme)
                 If Not File.Exists(a) OrElse (isNew OrElse Master.eSettings.MovieThemeOverwrite) Then
                     Save(a & fExt)
                     strReturn = (a & fExt)

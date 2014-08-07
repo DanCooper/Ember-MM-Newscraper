@@ -47,7 +47,7 @@ Namespace FANARTTVs
 
 #Region "Fields"
         Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
-        Private _MySettings As FanartTV_Poster.sMySettings
+        Private _MySettings As FanartTV_Image.sMySettings
         Private _FanartTV As FanartTV.V1.FanartTV
         Private _APIInvalid As Boolean = False
 
@@ -65,13 +65,13 @@ Namespace FANARTTVs
 
 #Region "Methods"
 
-        Public Sub New(ByRef tMySettings As FanartTV_Poster.sMySettings)
+        Public Sub New(ByRef tMySettings As FanartTV_Image.sMySettings)
             _MySettings = tMySettings
             _FanartTV = New FanartTV.V1.FanartTV(_MySettings.FANARTTVApiKey)
             Dim Result As FanartTV.V1.FanartTVMovie = _FanartTV.GetMovieInfo(New FanartTV.V1.FanartTVMovieRequest("1", "JSON", "all", 1, 1))
             If IsNothing(Result) Then
                 If Not IsNothing(_FanartTV.Error) Then
-                    logger.Error( _FanartTV.Error)
+                    logger.Error(_FanartTV.Error)
                     _APIInvalid = True
                 End If
             End If
@@ -294,7 +294,7 @@ Namespace FANARTTVs
                     Next
                 End If
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name,ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
 
             'Image sorting

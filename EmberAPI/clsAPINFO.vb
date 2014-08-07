@@ -319,7 +319,7 @@ Public Class NFO
         ' Get the proper path to NFO
         '\\
 
-        For Each a In FileUtils.GetFilenameList.Movie(sPath, isSingle, Enums.MovieModType.NFO)
+        For Each a In FileUtils.GetFilenameList.Movie(sPath, isSingle, Enums.ModType_Movie.NFO)
             If File.Exists(a) Then
                 Return a
             End If
@@ -706,7 +706,7 @@ Public Class NFO
                 Dim fAtt As New FileAttributes
                 Dim fAttWritable As Boolean = True
 
-                For Each a In FileUtils.GetFilenameList.Movie(movieToSave.Filename, movieToSave.IsSingle, Enums.MovieModType.NFO)
+                For Each a In FileUtils.GetFilenameList.Movie(movieToSave.Filename, movieToSave.IsSingle, Enums.ModType_Movie.NFO)
                     If Not Master.eSettings.GeneralOverwriteNfo Then
                         RenameNonConfNfo(a, False)
                     End If

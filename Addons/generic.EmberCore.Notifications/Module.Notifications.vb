@@ -21,7 +21,7 @@
 ' ################################################################################
 
 Public Class NotificationsModule
-    Implements Interfaces.EmberExternalModule
+    Implements Interfaces.GenericModule
 
 #Region "Fields"
 
@@ -30,23 +30,23 @@ Public Class NotificationsModule
     Private _enabled As Boolean = False
     Private _name As String = "Notifications"
     Private _setup As frmSettingsHolder
-	Private _AssemblyName As String = String.Empty
+    Private _AssemblyName As String = String.Empty
 
 #End Region 'Fields
 
 #Region "Events"
 
-    Public Event GenericEvent(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object)) Implements Interfaces.EmberExternalModule.GenericEvent
+    Public Event GenericEvent(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object)) Implements Interfaces.GenericModule.GenericEvent
 
-    Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer) Implements Interfaces.EmberExternalModule.ModuleSetupChanged
+    Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer) Implements Interfaces.GenericModule.ModuleSetupChanged
 
-    Public Event ModuleSettingsChanged() Implements Interfaces.EmberExternalModule.ModuleSettingsChanged
+    Public Event ModuleSettingsChanged() Implements Interfaces.GenericModule.ModuleSettingsChanged
 
 #End Region 'Events
 
 #Region "Properties"
 
-    Public Property Enabled() As Boolean Implements Interfaces.EmberExternalModule.Enabled
+    Public Property Enabled() As Boolean Implements Interfaces.GenericModule.Enabled
         Get
             Return Me._enabled
         End Get
@@ -55,19 +55,19 @@ Public Class NotificationsModule
         End Set
     End Property
 
-    Public ReadOnly Property ModuleName() As String Implements Interfaces.EmberExternalModule.ModuleName
+    Public ReadOnly Property ModuleName() As String Implements Interfaces.GenericModule.ModuleName
         Get
             Return Me._name
         End Get
     End Property
 
-    Public ReadOnly Property ModuleType() As List(Of Enums.ModuleEventType) Implements Interfaces.EmberExternalModule.ModuleType
+    Public ReadOnly Property ModuleType() As List(Of Enums.ModuleEventType) Implements Interfaces.GenericModule.ModuleType
         Get
             Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {Enums.ModuleEventType.Notification}) 'Enums.ModuleType.Notification
         End Get
     End Property
 
-    ReadOnly Property ModuleVersion() As String Implements Interfaces.EmberExternalModule.ModuleVersion
+    ReadOnly Property ModuleVersion() As String Implements Interfaces.GenericModule.ModuleVersion
         Get
             Return FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly.Location).FileVersion.ToString
         End Get
@@ -77,13 +77,13 @@ Public Class NotificationsModule
 
 #Region "Methods"
 
-	Public Sub Init(ByVal sAssemblyName As String, ByVal sExecutable As String) Implements Interfaces.EmberExternalModule.Init
-		_AssemblyName = sAssemblyName
+    Public Sub Init(ByVal sAssemblyName As String, ByVal sExecutable As String) Implements Interfaces.GenericModule.Init
+        _AssemblyName = sAssemblyName
         'Master.eLang.LoadLanguage(Master.eSettings.Language, sExecutable)
-		LoadSettings()
-	End Sub
+        LoadSettings()
+    End Sub
 
-    Public Function InjectSetup() As Containers.SettingsPanel Implements Interfaces.EmberExternalModule.InjectSetup
+    Public Function InjectSetup() As Containers.SettingsPanel Implements Interfaces.GenericModule.InjectSetup
         Dim SPanel As New Containers.SettingsPanel
         Me._setup = New frmSettingsHolder
         Me._setup.chkEnabled.Checked = Me._enabled
@@ -103,7 +103,7 @@ Public Class NotificationsModule
         Return SPanel
     End Function
 
-    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _refparam As Object) As Interfaces.ModuleResult Implements Interfaces.EmberExternalModule.RunGeneric
+    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _refparam As Object) As Interfaces.ModuleResult Implements Interfaces.GenericModule.RunGeneric
         Try
             If mType = Enums.ModuleEventType.Notification Then
                 Dim ShowIt As Boolean = False
@@ -166,7 +166,7 @@ Public Class NotificationsModule
         End Using
     End Sub
 
-    Sub SaveSetup(ByVal DoDispose As Boolean) Implements Interfaces.EmberExternalModule.SaveSetup
+    Sub SaveSetup(ByVal DoDispose As Boolean) Implements Interfaces.GenericModule.SaveSetup
         Me._enabled = _setup.chkEnabled.Checked
         eSettings.OnError = _setup.chkOnError.Checked
         eSettings.OnNewMovie = _setup.chkOnNewMovie.Checked

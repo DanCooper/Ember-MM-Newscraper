@@ -641,11 +641,19 @@ Public Class Enums
         Mid = 2
         Small = 3
     End Enum
+
+    Public Enum Content_Type As Integer
+        Generic = 0
+        Movie = 1
+        MovieSet = 2
+        TV = 3
+        Music = 4
+    End Enum
     ''' <summary>
     ''' Enum representing possible scrape data types
     ''' </summary>
     ''' <remarks></remarks>
-    Public Enum MovieModType As Integer
+    Public Enum ModType_Movie As Integer
         NFO = 0
         Poster = 1
         Fanart = 2
@@ -669,7 +677,7 @@ Public Class Enums
     ''' Enum representing possible scrape data types
     ''' </summary>
     ''' <remarks></remarks>
-    Public Enum TVModType As Integer
+    Public Enum ModType_TV As Integer
         All = 0
         DoSearch = 1
         AllSeasonsBanner = 2
@@ -746,7 +754,7 @@ Public Class Enums
         OnMovieTrailerSave = 29
     End Enum
 
-    Public Enum MovieScraperEventType As Integer
+    Public Enum ScraperEventType_Movie As Integer
         NFOItem = 0
         PosterItem = 1
         FanartItem = 2
@@ -763,7 +771,7 @@ Public Class Enums
         EFanartsItem = 13
     End Enum
 
-    Public Enum MovieSetScraperEventType As Integer
+    Public Enum ScraperEventType_MovieSet As Integer
         NFOItem = 0
         PosterItem = 1
         FanartItem = 2
@@ -926,7 +934,7 @@ Public Class Enums
         ShowPoster = 17
     End Enum
 
-    Public Enum TVScraperEventType As Integer
+    Public Enum ScraperEventType_TV As Integer
         Progress = 0
         SearchResultsDownloaded = 1
         StartingDownload = 2
@@ -1495,7 +1503,7 @@ Public Class Functions
     ''' <param name="DoClear">If <c>True</c>, pre-initialize all Mod values to False before setting the options. 
     ''' If <c>False</c>, leave the existing options untouched wile setting the options</param>
     ''' <remarks></remarks>
-    Public Shared Sub SetScraperMod(ByVal MType As Enums.MovieModType, ByVal MValue As Boolean, Optional ByVal DoClear As Boolean = True)
+    Public Shared Sub SetScraperMod(ByVal MType As Enums.ModType_Movie, ByVal MValue As Boolean, Optional ByVal DoClear As Boolean = True)
         With Master.GlobalScrapeMod
             If DoClear Then
                 .ActorThumbs = False
@@ -1517,7 +1525,7 @@ Public Class Functions
             End If
 
             Select Case MType
-                Case Enums.MovieModType.All
+                Case Enums.ModType_Movie.All
                     '.DoSearch should not be set here as it is only needed for a re-search of a movie (first scraping or movie change).
                     .ActorThumbs = MValue
                     .Banner = MValue
@@ -1534,37 +1542,37 @@ Public Class Functions
                     .Poster = MValue
                     .Trailer = MValue
                     .Theme = MValue
-                Case Enums.MovieModType.ActorThumbs
+                Case Enums.ModType_Movie.ActorThumbs
                     .ActorThumbs = MValue
-                Case Enums.MovieModType.Banner
+                Case Enums.ModType_Movie.Banner
                     .Banner = MValue
-                Case Enums.MovieModType.CharacterArt
+                Case Enums.ModType_Movie.CharacterArt
                     .CharacterArt = MValue
-                Case Enums.MovieModType.ClearArt
+                Case Enums.ModType_Movie.ClearArt
                     .ClearArt = MValue
-                Case Enums.MovieModType.ClearLogo
+                Case Enums.ModType_Movie.ClearLogo
                     .ClearLogo = MValue
-                Case Enums.MovieModType.DiscArt
+                Case Enums.ModType_Movie.DiscArt
                     .DiscArt = MValue
-                Case Enums.MovieModType.DoSearch
+                Case Enums.ModType_Movie.DoSearch
                     .DoSearch = MValue
-                Case Enums.MovieModType.EFanarts
+                Case Enums.ModType_Movie.EFanarts
                     .EFanarts = MValue
-                Case Enums.MovieModType.EThumbs
+                Case Enums.ModType_Movie.EThumbs
                     .EThumbs = MValue
-                Case Enums.MovieModType.Fanart
+                Case Enums.ModType_Movie.Fanart
                     .Fanart = MValue
-                Case Enums.MovieModType.Landscape
+                Case Enums.ModType_Movie.Landscape
                     .Landscape = MValue
-                Case Enums.MovieModType.Meta
+                Case Enums.ModType_Movie.Meta
                     .Meta = MValue
-                Case Enums.MovieModType.NFO
+                Case Enums.ModType_Movie.NFO
                     .NFO = MValue
-                Case Enums.MovieModType.Poster
+                Case Enums.ModType_Movie.Poster
                     .Poster = MValue
-                Case Enums.MovieModType.Trailer
+                Case Enums.ModType_Movie.Trailer
                     .Trailer = MValue
-                Case Enums.MovieModType.Theme
+                Case Enums.ModType_Movie.Theme
                     .Theme = MValue
             End Select
 

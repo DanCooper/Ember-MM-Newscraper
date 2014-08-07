@@ -5,10 +5,10 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{4BFA47CB-1110-4BB5-9178-3B6EF98BC4EB}</ProjectGuid>
+    <ProjectGuid>{974598ED-C19D-41CA-9771-4DE837D708BC}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>EmberMovieScraperModule</RootNamespace>
-    <AssemblyName>scraper.GoEar.Theme</AssemblyName>
+    <RootNamespace>ScraperModule</RootNamespace>
+    <AssemblyName>scraper.Theme.TelevisionTunes</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
@@ -127,7 +127,7 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Scraper\clsScrapeGoEar.vb" />
+    <Compile Include="Scraper\clsScrapeTelevisionTunes.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -143,17 +143,17 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="frmGoEarInfoSettingsHolder.Designer.vb">
-      <DependentUpon>frmGoEarInfoSettingsHolder.vb</DependentUpon>
+    <Compile Include="frmTelevisionTunesInfoSettingsHolder.Designer.vb">
+      <DependentUpon>frmTelevisionTunesInfoSettingsHolder.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmGoEarInfoSettingsHolder.vb">
+    <Compile Include="frmTelevisionTunesInfoSettingsHolder.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GoEar_Theme.vb" />
+    <Compile Include="TelevisionTunes_Theme.vb" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="frmGoEarInfoSettingsHolder.resx">
-      <DependentUpon>frmGoEarInfoSettingsHolder.vb</DependentUpon>
+    <EmbeddedResource Include="frmTelevisionTunesInfoSettingsHolder.resx">
+      <DependentUpon>frmTelevisionTunesInfoSettingsHolder.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">

@@ -22,7 +22,7 @@ Imports System.Text
 Imports Microsoft.VisualStudio.TestTools.UnitTesting
 Imports EmberAPI
 Imports EmberAPI.Interfaces
-Imports EmberMovieScraperModule
+Imports ScraperModule
 Imports UnitTests
 Imports EmberAPI.Enums
 Imports EmberAPI.Structures
@@ -102,7 +102,7 @@ Namespace EmberTests
         ''' </summary>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function GetProvider() As EmberMovieScraperModule_Data
+        Private Function GetProvider() As ScraperModule_Data_Movie
             Dim provider = Activator.CreateInstance(providerType)
             provider.Init(providerName)
             Return provider
@@ -201,7 +201,7 @@ Namespace EmberTests
             Dim movie As Structures.DBMovie = Nothing
             Dim studio As List(Of String) = New List(Of String)
 
-            Dim provider As EmberMovieScraperModule_Data = GetProvider()
+            Dim provider As ScraperModule_Data_Movie = GetProvider()
 
             'Act
             Dim result As Interfaces.ModuleResult = provider.GetMovieStudio(movie, studio)
@@ -220,7 +220,7 @@ Namespace EmberTests
             'Note that no movie.Movie is not defined
             Dim studio As List(Of String) = New List(Of String)
 
-            Dim provider As EmberMovieScraperModule_Data = GetProvider()
+            Dim provider As ScraperModule_Data_Movie = GetProvider()
 
             'Act
             Dim result As Interfaces.ModuleResult = provider.GetMovieStudio(movie, studio)
@@ -241,7 +241,7 @@ Namespace EmberTests
             '            movie.Movie.IMDBID = 91949    'This is ShortCircuit from http://www.imdb.com/title/tt0091949/
             Dim studio As List(Of String) = New List(Of String)
 
-            Dim provider As EmberMovieScraperModule_Data = GetProvider()
+            Dim provider As ScraperModule_Data_Movie = GetProvider()
 
             'Act
             Dim result As Interfaces.ModuleResult = provider.GetMovieStudio(movie, studio)
@@ -265,7 +265,7 @@ Namespace EmberTests
             movie.Movie.IMDBID = 91949    'This is ShortCircuit from http://www.imdb.com/title/tt0091949/
             Dim studio As List(Of String) = Nothing
 
-            Dim provider As EmberMovieScraperModule_Data = GetProvider()
+            Dim provider As ScraperModule_Data_Movie = GetProvider()
 
             'Act
             Dim result As Interfaces.ModuleResult = provider.GetMovieStudio(movie, studio)
@@ -303,7 +303,7 @@ Namespace EmberTests
                 .Add("Test 8")
             End With
 
-            Dim provider As EmberMovieScraperModule_Data = GetProvider()
+            Dim provider As ScraperModule_Data_Movie = GetProvider()
 
             'Act
             Dim result As Interfaces.ModuleResult = provider.GetMovieStudio(movie, studio)
@@ -331,7 +331,7 @@ Namespace EmberTests
             movie.Movie.IMDBID = 9194884    'This movie does not exist at IMDB
             Dim studio As List(Of String) = New List(Of String)
 
-            Dim provider As EmberMovieScraperModule_Data = GetProvider()
+            Dim provider As ScraperModule_Data_Movie = GetProvider()
 
             'Act
             Dim result As Interfaces.ModuleResult = provider.GetMovieStudio(movie, studio)
@@ -358,10 +358,10 @@ Namespace EmberTests
             options.bTrailer = False
 
             'These simulate the "allowed" scrape items
-            Functions.SetScraperMod(MovieModType.All, True)
-            Functions.SetScraperMod(MovieModType.Trailer, False, False)
+            Functions.SetScraperMod(ModType_Movie.All, True)
+            Functions.SetScraperMod(ModType_Movie.Trailer, False, False)
 
-            Dim provider As EmberMovieScraperModule_Data = GetProvider()
+            Dim provider As ScraperModule_Data_Movie = GetProvider()
 
             'Act
             Dim result As Interfaces.ModuleResult = provider.Scraper(movie, scrapeType, options)

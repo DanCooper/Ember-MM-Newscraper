@@ -234,7 +234,7 @@ Public Class Trailers
         If String.IsNullOrEmpty(mMovie.Filename) Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.IsSingle, Enums.MovieModType.Trailer)
+            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.IsSingle, Enums.ModType_Movie.Trailer)
                 For Each t As String In Master.eSettings.FileSystemValidExts
                     If File.Exists(a & t) Then
                         Delete(a & t)
@@ -624,7 +624,7 @@ Public Class Trailers
             End Try
 
             Dim fExt As String = Path.GetExtension(Me._ext)
-            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.IsSingle, Enums.MovieModType.Trailer)
+            For Each a In FileUtils.GetFilenameList.Movie(mMovie.Filename, mMovie.IsSingle, Enums.ModType_Movie.Trailer)
                 If Not File.Exists(a) OrElse (isEdit OrElse Master.eSettings.MovieTrailerOverwrite) Then
                     Save(a & fExt)
                     strReturn = (a & fExt)

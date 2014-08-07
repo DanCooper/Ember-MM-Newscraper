@@ -23,7 +23,7 @@ Imports EmberAPI
 Imports NLog
 
 Public Class TelevisionTunes_Theme
-    Implements Interfaces.EmberTVScraperModule_Theme
+    Implements Interfaces.ScraperModule_Theme_TV
 
 
 #Region "Fields"
@@ -45,31 +45,31 @@ Public Class TelevisionTunes_Theme
 
 #Region "Events"
 
-    Public Event ModuleSettingsChanged() Implements Interfaces.EmberTVScraperModule_Theme.ModuleSettingsChanged
+    Public Event ModuleSettingsChanged() Implements Interfaces.ScraperModule_Theme_TV.ModuleSettingsChanged
 
-    Public Event TVScraperEvent(ByVal eType As Enums.TVScraperEventType, ByVal Parameter As Object) Implements Interfaces.EmberTVScraperModule_Theme.TVScraperEvent
+    Public Event TVScraperEvent(ByVal eType As Enums.ScraperEventType_TV, ByVal Parameter As Object) Implements Interfaces.ScraperModule_Theme_TV.TVScraperEvent
 
-    Public Event SetupScraperChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements Interfaces.EmberTVScraperModule_Theme.ScraperSetupChanged
+    Public Event SetupScraperChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements Interfaces.ScraperModule_Theme_TV.ScraperSetupChanged
 
-    Public Event SetupNeedsRestart() Implements Interfaces.EmberTVScraperModule_Theme.SetupNeedsRestart
+    Public Event SetupNeedsRestart() Implements Interfaces.ScraperModule_Theme_TV.SetupNeedsRestart
 
 #End Region 'Events
 
 #Region "Properties"
 
-    ReadOnly Property ModuleName() As String Implements Interfaces.EmberTVScraperModule_Theme.ModuleName
+    ReadOnly Property ModuleName() As String Implements Interfaces.ScraperModule_Theme_TV.ModuleName
         Get
             Return _Name
         End Get
     End Property
 
-    ReadOnly Property ModuleVersion() As String Implements Interfaces.EmberTVScraperModule_Theme.ModuleVersion
+    ReadOnly Property ModuleVersion() As String Implements Interfaces.ScraperModule_Theme_TV.ModuleVersion
         Get
             Return FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly.Location).FileVersion.ToString
         End Get
     End Property
 
-    Property ScraperEnabled() As Boolean Implements Interfaces.EmberTVScraperModule_Theme.ScraperEnabled
+    Property ScraperEnabled() As Boolean Implements Interfaces.ScraperModule_Theme_TV.ScraperEnabled
         Get
             Return _ScraperEnabled
         End Get
@@ -95,12 +95,12 @@ Public Class TelevisionTunes_Theme
         RaiseEvent SetupScraperChanged(String.Concat(Me._Name, "Scraper"), state, difforder)
     End Sub
 
-    Sub Init(ByVal sAssemblyName As String) Implements Interfaces.EmberTVScraperModule_Theme.Init
+    Sub Init(ByVal sAssemblyName As String) Implements Interfaces.ScraperModule_Theme_TV.Init
         _AssemblyName = sAssemblyName
         LoadSettings()
     End Sub
 
-    Function InjectSetupScraper() As Containers.SettingsPanel Implements Interfaces.EmberTVScraperModule_Theme.InjectSetupScraper
+    Function InjectSetupScraper() As Containers.SettingsPanel Implements Interfaces.ScraperModule_Theme_TV.InjectSetupScraper
         Dim SPanel As New Containers.SettingsPanel
         _setup = New frmTelevisionTunesInfoSettingsHolder
         LoadSettings()
@@ -130,7 +130,7 @@ Public Class TelevisionTunes_Theme
         End Using
     End Sub
 
-    Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.EmberTVScraperModule_Theme.SaveSetupScraper
+    Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.ScraperModule_Theme_TV.SaveSetupScraper
         SaveSettings()
         If DoDispose Then
             RemoveHandler _setup.SetupScraperChanged, AddressOf Handle_SetupScraperChanged
@@ -139,7 +139,7 @@ Public Class TelevisionTunes_Theme
         End If
     End Sub
 
-    Function Scraper(ByVal DBTV As Structures.DBTV, ByRef ThemeList As List(Of Themes)) As Interfaces.ModuleResult Implements Interfaces.EmberTVScraperModule_Theme.Scraper
+    Function Scraper(ByVal DBTV As Structures.DBTV, ByRef ThemeList As List(Of Themes)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Theme_TV.Scraper
         logger.Trace("Started scrape")
 
         Dim tTelevisionTunes As New TelevisionTunes(DBTV.TVShow.Title)
@@ -152,7 +152,7 @@ Public Class TelevisionTunes_Theme
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
-    Public Sub ScraperOrderChanged() Implements EmberAPI.Interfaces.EmberTVScraperModule_Theme.ScraperOrderChanged
+    Public Sub ScraperOrderChanged() Implements EmberAPI.Interfaces.ScraperModule_Theme_TV.ScraperOrderChanged
         _setup.orderChanged()
     End Sub
 

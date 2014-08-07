@@ -5,10 +5,10 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{194445BE-3721-4270-984D-FA978D5F34A0}</ProjectGuid>
+    <ProjectGuid>{D3C1A3C4-A060-40DF-ACE4-143F7F102A24}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>EmberMovieScraperModule</RootNamespace>
-    <AssemblyName>scraper.IMDB.Trailer</AssemblyName>
+    <RootNamespace>ScraperModule</RootNamespace>
+    <AssemblyName>scraper.Data.IMDB</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
@@ -127,13 +127,11 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Scraper\clsScrapeIMDBTrailer.vb" />
-    <Compile Include="frmIMDBTrailerSettingsHolder.Designer.vb">
-      <DependentUpon>frmIMDBTrailerSettingsHolder.vb</DependentUpon>
+    <Compile Include="Scraper\clsScrapeIMDB.vb" />
+    <Compile Include="Scraper\dlgIMDBSearchResults.Designer.vb">
+      <DependentUpon>dlgIMDBSearchResults.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmIMDBTrailerSettingsHolder.vb">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Scraper\dlgIMDBSearchResults.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -149,11 +147,19 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="IMDB_trailer.vb" />
+    <Compile Include="frmIMDBInfoSettingsHolder.Designer.vb">
+      <DependentUpon>frmIMDBInfoSettingsHolder.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmIMDBInfoSettingsHolder.vb" />
+    <Compile Include="IMDB_Data.vb" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="frmIMDBTrailerSettingsHolder.resx">
-      <DependentUpon>frmIMDBTrailerSettingsHolder.vb</DependentUpon>
+    <EmbeddedResource Include="Scraper\dlgIMDBSearchResults.resx">
+      <DependentUpon>dlgIMDBSearchResults.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmIMDBInfoSettingsHolder.resx">
+      <DependentUpon>frmIMDBInfoSettingsHolder.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">

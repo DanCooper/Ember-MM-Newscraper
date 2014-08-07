@@ -312,9 +312,9 @@ Public Class dlgTVDBSearchResults
         Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
     End Sub
 
-    Private Sub TVScraperEvent(ByVal eType As Enums.TVScraperEventType, ByVal iProgress As Integer, ByVal Parameter As Object)
+    Private Sub TVScraperEvent(ByVal eType As Enums.ScraperEventType_TV, ByVal iProgress As Integer, ByVal Parameter As Object)
         Select Case eType
-            Case Enums.TVScraperEventType.SearchResultsDownloaded
+            Case Enums.ScraperEventType_TV.SearchResultsDownloaded
                 Dim lItem As ListViewItem
                 Dim sResults As List(Of Scraper.TVSearchResults) = DirectCast(Parameter, List(Of Scraper.TVSearchResults))
 
@@ -380,7 +380,7 @@ Public Class dlgTVDBSearchResults
                 Me.chkManual.Enabled = True
                 If Not Me.chkManual.Checked Then Me.lvSearchResults.Enabled = True
 
-            Case Enums.TVScraperEventType.ShowDownloaded
+            Case Enums.ScraperEventType_TV.ShowDownloaded
                 Me.DialogResult = System.Windows.Forms.DialogResult.OK
                 Me.Close()
         End Select
