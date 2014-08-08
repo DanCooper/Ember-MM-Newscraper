@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class frmFanartTVMediaSettingsHolder
+Partial Class frmFanartTVMediaSettingsHolder_MovieSet
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
@@ -22,7 +22,7 @@ Partial Class frmFanartTVMediaSettingsHolder
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmFanartTVMediaSettingsHolder))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmFanartTVMediaSettingsHolder_MovieSet))
         Me.pnlSettings = New System.Windows.Forms.Panel()
         Me.gbImages = New System.Windows.Forms.GroupBox()
         Me.chkScrapeClearArtOnlyHD = New System.Windows.Forms.CheckBox()

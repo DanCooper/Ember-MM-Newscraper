@@ -46,13 +46,13 @@ Public Class TMDB_Data
     ''' </summary>
     ''' <remarks></remarks>
     Private strPrivateAPIKey As String = String.Empty
-    Private _MySettings_Movie As New sMySettings_Movie
-    Private _MySettings_MovieSet As New sMySettings_MovieSet
+    Private _MySettings_Movie As New sMySettings
+    Private _MySettings_MovieSet As New sMySettings
     Private _TMDBg As TMDBg.Scraper
-    Private _Name As String = "TMDB"
+    Private _Name As String = "TMDB_Data"
     Private _ScraperEnabled_Movie As Boolean = False
     Private _ScraperEnabled_MovieSet As Boolean = False
-    Private _setup_Movie As frmTMDBInfoSettingsHolder
+    Private _setup_Movie As frmTMDBInfoSettingsHolder_Movie
     Private _setup_MovieSet As frmTMDBInfoSettingsHolder_MovieSet
     Private _TMDBConf As V3.TmdbConfiguration
     Private _TMDBConfE As V3.TmdbConfiguration
@@ -185,7 +185,7 @@ Public Class TMDB_Data
 
     Function InjectSetupScraper_Movie() As Containers.SettingsPanel Implements Interfaces.ScraperModule_Data_Movie.InjectSetupScraper
         Dim SPanel As New Containers.SettingsPanel
-        _setup_Movie = New frmTMDBInfoSettingsHolder
+        _setup_Movie = New frmTMDBInfoSettingsHolder_Movie
         LoadSettings_Movie()
         _setup_Movie.API = _setup_Movie.txtTMDBApiKey.Text
         _setup_Movie.Lang = _setup_Movie.cbTMDBPrefLanguage.Text
@@ -211,6 +211,7 @@ Public Class TMDB_Data
         _setup_Movie.chkVotes.Checked = ConfigOptions_Movie.bVotes
         _setup_Movie.chkYear.Checked = ConfigOptions_Movie.bYear
         _setup_Movie.txtTMDBApiKey.Text = strPrivateAPIKey
+
         _setup_Movie.orderChanged()
 
         SPanel.Name = String.Concat(Me._Name, "_Movie")
@@ -221,6 +222,7 @@ Public Class TMDB_Data
         SPanel.Type = Master.eLang.GetString(36, "Movies")
         SPanel.ImageIndex = If(_ScraperEnabled_Movie, 9, 10)
         SPanel.Panel = _setup_Movie.pnlSettings
+
         AddHandler _setup_Movie.SetupScraperChanged, AddressOf Handle_SetupScraperChanged_Movie
         AddHandler _setup_Movie.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged_Movie
         AddHandler _setup_Movie.SetupNeedsRestart, AddressOf Handle_SetupNeedsRestart_Movie
@@ -239,6 +241,7 @@ Public Class TMDB_Data
         _setup_MovieSet.chkPlot.Checked = ConfigOptions_MovieSet.bPlot
         _setup_MovieSet.chkTitle.Checked = ConfigOptions_MovieSet.bTitle
         _setup_MovieSet.txtTMDBApiKey.Text = strPrivateAPIKey
+
         _setup_MovieSet.orderChanged()
 
         SPanel.Name = String.Concat(Me._Name, "_MovieSet")
@@ -249,6 +252,7 @@ Public Class TMDB_Data
         SPanel.Type = Master.eLang.GetString(1203, "MovieSets")
         SPanel.ImageIndex = If(_ScraperEnabled_MovieSet, 9, 10)
         SPanel.Panel = _setup_MovieSet.pnlSettings
+
         AddHandler _setup_MovieSet.SetupScraperChanged, AddressOf Handle_SetupScraperChanged_MovieSet
         AddHandler _setup_MovieSet.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged_MovieSet
         AddHandler _setup_MovieSet.SetupNeedsRestart, AddressOf Handle_SetupNeedsRestart_MovieSet
@@ -256,54 +260,54 @@ Public Class TMDB_Data
     End Function
 
     Sub LoadSettings_Movie()
-        ConfigOptions_Movie.bCast = clsAdvancedSettings.GetBooleanSetting("DoCast", True)
-        ConfigOptions_Movie.bCert = clsAdvancedSettings.GetBooleanSetting("DoCert", True)
-        ConfigOptions_Movie.bCleanPlotOutline = clsAdvancedSettings.GetBooleanSetting("CleanPlotOutline", True)
-        ConfigOptions_Movie.bCollection = clsAdvancedSettings.GetBooleanSetting("DoCollection", True)
-        ConfigOptions_Movie.bCountry = clsAdvancedSettings.GetBooleanSetting("DoCountry", True)
-        ConfigOptions_Movie.bDirector = clsAdvancedSettings.GetBooleanSetting("DoDirector", True)
-        ConfigOptions_Movie.bFullCast = clsAdvancedSettings.GetBooleanSetting("DoFullCast", True)
-        ConfigOptions_Movie.bFullCast = clsAdvancedSettings.GetBooleanSetting("FullCast", True)
-        ConfigOptions_Movie.bFullCrew = clsAdvancedSettings.GetBooleanSetting("DoFullCrews", True)
-        ConfigOptions_Movie.bFullCrew = clsAdvancedSettings.GetBooleanSetting("FullCrew", True)
-        ConfigOptions_Movie.bGenre = clsAdvancedSettings.GetBooleanSetting("DoGenres", True)
-        ConfigOptions_Movie.bMPAA = clsAdvancedSettings.GetBooleanSetting("DoMPAA", True)
-        ConfigOptions_Movie.bMusicBy = clsAdvancedSettings.GetBooleanSetting("DoMusic", True)
-        ConfigOptions_Movie.bOtherCrew = clsAdvancedSettings.GetBooleanSetting("DoOtherCrews", True)
-        ConfigOptions_Movie.bOutline = clsAdvancedSettings.GetBooleanSetting("DoOutline", True)
-        ConfigOptions_Movie.bPlot = clsAdvancedSettings.GetBooleanSetting("DoPlot", True)
-        ConfigOptions_Movie.bProducers = clsAdvancedSettings.GetBooleanSetting("DoProducers", True)
-        ConfigOptions_Movie.bRating = clsAdvancedSettings.GetBooleanSetting("DoRating", True)
-        ConfigOptions_Movie.bRelease = clsAdvancedSettings.GetBooleanSetting("DoRelease", True)
-        ConfigOptions_Movie.bRuntime = clsAdvancedSettings.GetBooleanSetting("DoRuntime", True)
-        ConfigOptions_Movie.bStudio = clsAdvancedSettings.GetBooleanSetting("DoStudio", True)
-        ConfigOptions_Movie.bTagline = clsAdvancedSettings.GetBooleanSetting("DoTagline", True)
-        ConfigOptions_Movie.bTitle = clsAdvancedSettings.GetBooleanSetting("DoTitle", True)
-        ConfigOptions_Movie.bTop250 = clsAdvancedSettings.GetBooleanSetting("DoTop250", True)
-        ConfigOptions_Movie.bTrailer = clsAdvancedSettings.GetBooleanSetting("DoTrailer", True)
-        ConfigOptions_Movie.bVotes = clsAdvancedSettings.GetBooleanSetting("DoVotes", True)
-        ConfigOptions_Movie.bWriters = clsAdvancedSettings.GetBooleanSetting("DoWriters", True)
-        ConfigOptions_Movie.bYear = clsAdvancedSettings.GetBooleanSetting("DoYear", True)
+        ConfigOptions_Movie.bCast = clsAdvancedSettings.GetBooleanSetting("DoCast", True, , Enums.Content_Type.Movie)
+        ConfigOptions_Movie.bCert = clsAdvancedSettings.GetBooleanSetting("DoCert", True, , Enums.Content_Type.Movie)
+        ConfigOptions_Movie.bCleanPlotOutline = clsAdvancedSettings.GetBooleanSetting("CleanPlotOutline", True, , Enums.Content_Type.Movie)
+        ConfigOptions_Movie.bCollection = clsAdvancedSettings.GetBooleanSetting("DoCollection", True, , Enums.Content_Type.Movie)
+        ConfigOptions_Movie.bCountry = clsAdvancedSettings.GetBooleanSetting("DoCountry", True, , Enums.Content_Type.Movie)
+        ConfigOptions_Movie.bDirector = clsAdvancedSettings.GetBooleanSetting("DoDirector", True, , Enums.Content_Type.Movie)
+        ConfigOptions_Movie.bFullCast = clsAdvancedSettings.GetBooleanSetting("DoFullCast", True, , Enums.Content_Type.Movie)
+        ConfigOptions_Movie.bFullCast = clsAdvancedSettings.GetBooleanSetting("FullCast", True, , Enums.Content_Type.Movie)
+        ConfigOptions_Movie.bFullCrew = clsAdvancedSettings.GetBooleanSetting("DoFullCrews", True, , Enums.Content_Type.Movie)
+        ConfigOptions_Movie.bFullCrew = clsAdvancedSettings.GetBooleanSetting("FullCrew", True, , Enums.Content_Type.Movie)
+        ConfigOptions_Movie.bGenre = clsAdvancedSettings.GetBooleanSetting("DoGenres", True, , Enums.Content_Type.Movie)
+        ConfigOptions_Movie.bMPAA = clsAdvancedSettings.GetBooleanSetting("DoMPAA", True, , Enums.Content_Type.Movie)
+        ConfigOptions_Movie.bMusicBy = clsAdvancedSettings.GetBooleanSetting("DoMusic", True, , Enums.Content_Type.Movie)
+        ConfigOptions_Movie.bOtherCrew = clsAdvancedSettings.GetBooleanSetting("DoOtherCrews", True, , Enums.Content_Type.Movie)
+        ConfigOptions_Movie.bOutline = clsAdvancedSettings.GetBooleanSetting("DoOutline", True, , Enums.Content_Type.Movie)
+        ConfigOptions_Movie.bPlot = clsAdvancedSettings.GetBooleanSetting("DoPlot", True, , Enums.Content_Type.Movie)
+        ConfigOptions_Movie.bProducers = clsAdvancedSettings.GetBooleanSetting("DoProducers", True, , Enums.Content_Type.Movie)
+        ConfigOptions_Movie.bRating = clsAdvancedSettings.GetBooleanSetting("DoRating", True, , Enums.Content_Type.Movie)
+        ConfigOptions_Movie.bRelease = clsAdvancedSettings.GetBooleanSetting("DoRelease", True, , Enums.Content_Type.Movie)
+        ConfigOptions_Movie.bRuntime = clsAdvancedSettings.GetBooleanSetting("DoRuntime", True, , Enums.Content_Type.Movie)
+        ConfigOptions_Movie.bStudio = clsAdvancedSettings.GetBooleanSetting("DoStudio", True, , Enums.Content_Type.Movie)
+        ConfigOptions_Movie.bTagline = clsAdvancedSettings.GetBooleanSetting("DoTagline", True, , Enums.Content_Type.Movie)
+        ConfigOptions_Movie.bTitle = clsAdvancedSettings.GetBooleanSetting("DoTitle", True, , Enums.Content_Type.Movie)
+        ConfigOptions_Movie.bTop250 = clsAdvancedSettings.GetBooleanSetting("DoTop250", True, , Enums.Content_Type.Movie)
+        ConfigOptions_Movie.bTrailer = clsAdvancedSettings.GetBooleanSetting("DoTrailer", True, , Enums.Content_Type.Movie)
+        ConfigOptions_Movie.bVotes = clsAdvancedSettings.GetBooleanSetting("DoVotes", True, , Enums.Content_Type.Movie)
+        ConfigOptions_Movie.bWriters = clsAdvancedSettings.GetBooleanSetting("DoWriters", True, , Enums.Content_Type.Movie)
+        ConfigOptions_Movie.bYear = clsAdvancedSettings.GetBooleanSetting("DoYear", True, , Enums.Content_Type.Movie)
 
-        strPrivateAPIKey = clsAdvancedSettings.GetSetting("TMDBAPIKey", "")
-        _MySettings_Movie.FallBackEng = clsAdvancedSettings.GetBooleanSetting("FallBackEn", False)
-        _MySettings_Movie.GetAdultItems = clsAdvancedSettings.GetBooleanSetting("GetAdultItems", False)
+        strPrivateAPIKey = clsAdvancedSettings.GetSetting("TMDBAPIKey", "", , Enums.Content_Type.Movie)
+        _MySettings_Movie.FallBackEng = clsAdvancedSettings.GetBooleanSetting("FallBackEn", False, , Enums.Content_Type.Movie)
+        _MySettings_Movie.GetAdultItems = clsAdvancedSettings.GetBooleanSetting("GetAdultItems", False, , Enums.Content_Type.Movie)
         _MySettings_Movie.TMDBAPIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "44810eefccd9cb1fa1d57e7b0d67b08d", strPrivateAPIKey)
-        _MySettings_Movie.TMDBLanguage = clsAdvancedSettings.GetSetting("TMDBLanguage", "en")
+        _MySettings_Movie.TMDBLanguage = clsAdvancedSettings.GetSetting("TMDBLanguage", "en", , Enums.Content_Type.Movie)
         ConfigScrapeModifier_Movie.DoSearch = True
         ConfigScrapeModifier_Movie.Meta = True
         ConfigScrapeModifier_Movie.NFO = True
     End Sub
 
     Sub LoadSettings_MovieSet()
-        ConfigOptions_MovieSet.bPlot = clsAdvancedSettings.GetBooleanSetting("DoPlot_MovieSet", True)
-        ConfigOptions_MovieSet.bTitle = clsAdvancedSettings.GetBooleanSetting("DoTitle_MovieSet", True)
+        ConfigOptions_MovieSet.bPlot = clsAdvancedSettings.GetBooleanSetting("DoPlot", True, , Enums.Content_Type.MovieSet)
+        ConfigOptions_MovieSet.bTitle = clsAdvancedSettings.GetBooleanSetting("DoTitle", True, , Enums.Content_Type.MovieSet)
 
-        strPrivateAPIKey = clsAdvancedSettings.GetSetting("TMDBAPIKey_MovieSet", "")
-        _MySettings_MovieSet.FallBackEng = clsAdvancedSettings.GetBooleanSetting("FallBackEn_MovieSet", False)
-        _MySettings_MovieSet.GetAdultItems = clsAdvancedSettings.GetBooleanSetting("GetAdultItems_MovieSet", False)
+        strPrivateAPIKey = clsAdvancedSettings.GetSetting("TMDBAPIKey", "", , Enums.Content_Type.MovieSet)
+        _MySettings_MovieSet.FallBackEng = clsAdvancedSettings.GetBooleanSetting("FallBackEn", False, , Enums.Content_Type.MovieSet)
+        _MySettings_MovieSet.GetAdultItems = clsAdvancedSettings.GetBooleanSetting("GetAdultItems", False, , Enums.Content_Type.MovieSet)
         _MySettings_MovieSet.TMDBAPIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "44810eefccd9cb1fa1d57e7b0d67b08d", strPrivateAPIKey)
-        _MySettings_MovieSet.TMDBLanguage = clsAdvancedSettings.GetSetting("TMDBLanguage_MovieSet", "en")
+        _MySettings_MovieSet.TMDBLanguage = clsAdvancedSettings.GetSetting("TMDBLanguage", "en", , Enums.Content_Type.MovieSet)
         ConfigScrapeModifier_Movie.DoSearch = True
         ConfigScrapeModifier_Movie.Meta = False
         ConfigScrapeModifier_Movie.NFO = True
@@ -311,49 +315,49 @@ Public Class TMDB_Data
 
     Sub SaveSettings_Movie()
         Using settings = New clsAdvancedSettings()
-            settings.SetBooleanSetting("CleanPlotOutline", ConfigOptions_Movie.bCleanPlotOutline)
-            settings.SetBooleanSetting("DoCast", ConfigOptions_Movie.bCast)
-            settings.SetBooleanSetting("DoCert", ConfigOptions_Movie.bCert)
-            settings.SetBooleanSetting("DoCollection", ConfigOptions_Movie.bCollection)
-            settings.SetBooleanSetting("DoCountry", ConfigOptions_Movie.bCountry)
-            settings.SetBooleanSetting("DoDirector", ConfigOptions_Movie.bDirector)
-            settings.SetBooleanSetting("DoFanart", ConfigScrapeModifier_Movie.Fanart)
-            settings.SetBooleanSetting("DoFullCast", ConfigOptions_Movie.bFullCast)
-            settings.SetBooleanSetting("DoFullCrews", ConfigOptions_Movie.bFullCrew)
-            settings.SetBooleanSetting("DoGenres", ConfigOptions_Movie.bGenre)
-            settings.SetBooleanSetting("DoMPAA", ConfigOptions_Movie.bMPAA)
-            settings.SetBooleanSetting("DoMusic", ConfigOptions_Movie.bMusicBy)
-            settings.SetBooleanSetting("DoOtherCrews", ConfigOptions_Movie.bOtherCrew)
-            settings.SetBooleanSetting("DoOutline", ConfigOptions_Movie.bOutline)
-            settings.SetBooleanSetting("DoPlot", ConfigOptions_Movie.bPlot)
-            settings.SetBooleanSetting("DoPoster", ConfigScrapeModifier_Movie.Poster)
-            settings.SetBooleanSetting("DoProducers", ConfigOptions_Movie.bProducers)
-            settings.SetBooleanSetting("DoRating", ConfigOptions_Movie.bRating)
-            settings.SetBooleanSetting("DoRelease", ConfigOptions_Movie.bRelease)
-            settings.SetBooleanSetting("DoRuntime", ConfigOptions_Movie.bRuntime)
-            settings.SetBooleanSetting("DoStudio", ConfigOptions_Movie.bStudio)
-            settings.SetBooleanSetting("DoTagline", ConfigOptions_Movie.bTagline)
-            settings.SetBooleanSetting("DoTitle", ConfigOptions_Movie.bTitle)
-            settings.SetBooleanSetting("DoTop250", ConfigOptions_Movie.bTop250)
-            settings.SetBooleanSetting("DoTrailer", ConfigOptions_Movie.bTrailer)
-            settings.SetBooleanSetting("DoVotes", ConfigOptions_Movie.bVotes)
-            settings.SetBooleanSetting("DoWriters", ConfigOptions_Movie.bWriters)
-            settings.SetBooleanSetting("DoYear", ConfigOptions_Movie.bYear)
-            settings.SetBooleanSetting("FallBackEn", _MySettings_Movie.FallBackEng)
-            settings.SetBooleanSetting("FullCast", ConfigOptions_Movie.bFullCast)
-            settings.SetBooleanSetting("FullCrew", ConfigOptions_Movie.bFullCrew)
-            settings.SetBooleanSetting("GetAdultItems", _MySettings_Movie.GetAdultItems)
-            settings.SetSetting("TMDBAPIKey", _setup_Movie.txtTMDBApiKey.Text)
-            settings.SetSetting("TMDBLanguage", _MySettings_Movie.TMDBLanguage)
+            settings.SetBooleanSetting("CleanPlotOutline", ConfigOptions_Movie.bCleanPlotOutline, , , Enums.Content_Type.Movie)
+            settings.SetBooleanSetting("DoCast", ConfigOptions_Movie.bCast, , , Enums.Content_Type.Movie)
+            settings.SetBooleanSetting("DoCert", ConfigOptions_Movie.bCert, , , Enums.Content_Type.Movie)
+            settings.SetBooleanSetting("DoCollection", ConfigOptions_Movie.bCollection, , , Enums.Content_Type.Movie)
+            settings.SetBooleanSetting("DoCountry", ConfigOptions_Movie.bCountry, , , Enums.Content_Type.Movie)
+            settings.SetBooleanSetting("DoDirector", ConfigOptions_Movie.bDirector, , , Enums.Content_Type.Movie)
+            settings.SetBooleanSetting("DoFanart", ConfigScrapeModifier_Movie.Fanart, , , Enums.Content_Type.Movie)
+            settings.SetBooleanSetting("DoFullCast", ConfigOptions_Movie.bFullCast, , , Enums.Content_Type.Movie)
+            settings.SetBooleanSetting("DoFullCrews", ConfigOptions_Movie.bFullCrew, , , Enums.Content_Type.Movie)
+            settings.SetBooleanSetting("DoGenres", ConfigOptions_Movie.bGenre, , , Enums.Content_Type.Movie)
+            settings.SetBooleanSetting("DoMPAA", ConfigOptions_Movie.bMPAA, , , Enums.Content_Type.Movie)
+            settings.SetBooleanSetting("DoMusic", ConfigOptions_Movie.bMusicBy, , , Enums.Content_Type.Movie)
+            settings.SetBooleanSetting("DoOtherCrews", ConfigOptions_Movie.bOtherCrew, , , Enums.Content_Type.Movie)
+            settings.SetBooleanSetting("DoOutline", ConfigOptions_Movie.bOutline, , , Enums.Content_Type.Movie)
+            settings.SetBooleanSetting("DoPlot", ConfigOptions_Movie.bPlot, , , Enums.Content_Type.Movie)
+            settings.SetBooleanSetting("DoPoster", ConfigScrapeModifier_Movie.Poster, , , Enums.Content_Type.Movie)
+            settings.SetBooleanSetting("DoProducers", ConfigOptions_Movie.bProducers, , , Enums.Content_Type.Movie)
+            settings.SetBooleanSetting("DoRating", ConfigOptions_Movie.bRating, , , Enums.Content_Type.Movie)
+            settings.SetBooleanSetting("DoRelease", ConfigOptions_Movie.bRelease, , , Enums.Content_Type.Movie)
+            settings.SetBooleanSetting("DoRuntime", ConfigOptions_Movie.bRuntime, , , Enums.Content_Type.Movie)
+            settings.SetBooleanSetting("DoStudio", ConfigOptions_Movie.bStudio, , , Enums.Content_Type.Movie)
+            settings.SetBooleanSetting("DoTagline", ConfigOptions_Movie.bTagline, , , Enums.Content_Type.Movie)
+            settings.SetBooleanSetting("DoTitle", ConfigOptions_Movie.bTitle, , , Enums.Content_Type.Movie)
+            settings.SetBooleanSetting("DoTop250", ConfigOptions_Movie.bTop250, , , Enums.Content_Type.Movie)
+            settings.SetBooleanSetting("DoTrailer", ConfigOptions_Movie.bTrailer, , , Enums.Content_Type.Movie)
+            settings.SetBooleanSetting("DoVotes", ConfigOptions_Movie.bVotes, , , Enums.Content_Type.Movie)
+            settings.SetBooleanSetting("DoWriters", ConfigOptions_Movie.bWriters, , , Enums.Content_Type.Movie)
+            settings.SetBooleanSetting("DoYear", ConfigOptions_Movie.bYear, , , Enums.Content_Type.Movie)
+            settings.SetBooleanSetting("FallBackEn", _MySettings_Movie.FallBackEng, , , Enums.Content_Type.Movie)
+            settings.SetBooleanSetting("FullCast", ConfigOptions_Movie.bFullCast, , , Enums.Content_Type.Movie)
+            settings.SetBooleanSetting("FullCrew", ConfigOptions_Movie.bFullCrew, , , Enums.Content_Type.Movie)
+            settings.SetBooleanSetting("GetAdultItems", _MySettings_Movie.GetAdultItems, , , Enums.Content_Type.Movie)
+            settings.SetSetting("TMDBAPIKey", _setup_Movie.txtTMDBApiKey.Text, , , Enums.Content_Type.Movie)
+            settings.SetSetting("TMDBLanguage", _MySettings_Movie.TMDBLanguage, , , Enums.Content_Type.Movie)
         End Using
     End Sub
 
     Sub SaveSettings_MovieSet()
         Using settings = New clsAdvancedSettings()
-            settings.SetBooleanSetting("DoPlot_MovieSet", ConfigOptions_MovieSet.bPlot)
-            settings.SetBooleanSetting("DoTitle_MovieSet", ConfigOptions_MovieSet.bTitle)
-            settings.SetSetting("TMDBAPIKey_MovieSet", _setup_MovieSet.txtTMDBApiKey.Text)
-            settings.SetSetting("TMDBLanguage_MovieSet", _MySettings_MovieSet.TMDBLanguage)
+            settings.SetBooleanSetting("DoPlot", ConfigOptions_MovieSet.bPlot, , , Enums.Content_Type.MovieSet)
+            settings.SetBooleanSetting("DoTitle", ConfigOptions_MovieSet.bTitle, , , Enums.Content_Type.MovieSet)
+            settings.SetSetting("TMDBAPIKey", _setup_MovieSet.txtTMDBApiKey.Text, , , Enums.Content_Type.MovieSet)
+            settings.SetSetting("TMDBLanguage", _MySettings_MovieSet.TMDBLanguage, , , Enums.Content_Type.MovieSet)
         End Using
     End Sub
 
@@ -714,18 +718,7 @@ Public Class TMDB_Data
 
 #Region "Nested Types"
 
-    Structure sMySettings_Movie
-
-#Region "Fields"
-        Dim FallBackEng As Boolean
-        Dim GetAdultItems As Boolean
-        Dim TMDBAPIKey As String
-        Dim TMDBLanguage As String
-#End Region 'Fields
-
-    End Structure
-
-    Structure sMySettings_MovieSet
+    Structure sMySettings
 
 #Region "Fields"
         Dim FallBackEng As Boolean

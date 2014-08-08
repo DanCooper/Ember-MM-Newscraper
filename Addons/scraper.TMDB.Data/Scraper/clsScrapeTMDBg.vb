@@ -85,8 +85,8 @@ Namespace TMDBg
         Private _TMDBApi As V3.Tmdb
         Private _TMDBApiE As V3.Tmdb
         Private _TMDBApiA As V3.Tmdb
-        Private _MySettings As TMDB_Data.sMySettings_Movie
-        Private _MySettings_MovieSet As TMDB_Data.sMySettings_MovieSet
+        Private _MySettings As TMDB_Data.sMySettings
+        Private _MySettings_MovieSet As TMDB_Data.sMySettings
         Private strPrivateAPIKey As String = String.Empty
 
         Friend WithEvents bwTMDBg As New System.ComponentModel.BackgroundWorker

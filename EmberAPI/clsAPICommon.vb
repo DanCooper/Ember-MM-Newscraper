@@ -643,11 +643,12 @@ Public Class Enums
     End Enum
 
     Public Enum Content_Type As Integer
-        Generic = 0
-        Movie = 1
-        MovieSet = 2
-        TV = 3
-        Music = 4
+        None = 0
+        Generic = 1
+        Movie = 2
+        MovieSet = 3
+        TV = 4
+        Music = 5
     End Enum
     ''' <summary>
     ''' Enum representing possible scrape data types

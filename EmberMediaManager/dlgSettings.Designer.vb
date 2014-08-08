@@ -976,6 +976,7 @@ Partial Class dlgSettings
         Me.gbMovieSetFileNaming = New System.Windows.Forms.GroupBox()
         Me.tcMovieSetFileNaming = New System.Windows.Forms.TabControl()
         Me.tpMovieSetFileNamingXBMC = New System.Windows.Forms.TabPage()
+        Me.pbMSAAInfo = New System.Windows.Forms.PictureBox()
         Me.gbMovieSetMSAA = New System.Windows.Forms.GroupBox()
         Me.chkMovieSetDiscArtMSAA = New System.Windows.Forms.CheckBox()
         Me.chkMovieSetUseMSAA = New System.Windows.Forms.CheckBox()
@@ -1214,6 +1215,7 @@ Partial Class dlgSettings
         Me.gbMovieSetFileNaming.SuspendLayout
         Me.tcMovieSetFileNaming.SuspendLayout
         Me.tpMovieSetFileNamingXBMC.SuspendLayout
+        CType(Me.pbMSAAInfo,System.ComponentModel.ISupportInitialize).BeginInit
         Me.gbMovieSetMSAA.SuspendLayout
         Me.pnlMovieSetScraper.SuspendLayout
         Me.gbMovieSetScraperGlobalLocksOpts.SuspendLayout
@@ -6284,17 +6286,17 @@ Partial Class dlgSettings
         Me.gbMovieSetMSAAPath.Controls.Add(Me.btnMovieSetMSAAPathBrowse)
         Me.gbMovieSetMSAAPath.Controls.Add(Me.txtMovieSetMSAAPath)
         Me.gbMovieSetMSAAPath.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.gbMovieSetMSAAPath.Location = New System.Drawing.Point(204, 160)
+        Me.gbMovieSetMSAAPath.Location = New System.Drawing.Point(190, 6)
         Me.gbMovieSetMSAAPath.Name = "gbMovieSetMSAAPath"
-        Me.gbMovieSetMSAAPath.Size = New System.Drawing.Size(212, 58)
+        Me.gbMovieSetMSAAPath.Size = New System.Drawing.Size(307, 58)
         Me.gbMovieSetMSAAPath.TabIndex = 7
         Me.gbMovieSetMSAAPath.TabStop = false
-        Me.gbMovieSetMSAAPath.Text = "MovieSets Folder"
+        Me.gbMovieSetMSAAPath.Text = "MovieSet Artwork Folder"
         '
         'btnMovieSetMSAAPathBrowse
         '
         Me.btnMovieSetMSAAPathBrowse.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.btnMovieSetMSAAPathBrowse.Location = New System.Drawing.Point(181, 21)
+        Me.btnMovieSetMSAAPathBrowse.Location = New System.Drawing.Point(276, 21)
         Me.btnMovieSetMSAAPathBrowse.Name = "btnMovieSetMSAAPathBrowse"
         Me.btnMovieSetMSAAPathBrowse.Size = New System.Drawing.Size(25, 22)
         Me.btnMovieSetMSAAPathBrowse.TabIndex = 1
@@ -6306,7 +6308,7 @@ Partial Class dlgSettings
         Me.txtMovieSetMSAAPath.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.txtMovieSetMSAAPath.Location = New System.Drawing.Point(6, 21)
         Me.txtMovieSetMSAAPath.Name = "txtMovieSetMSAAPath"
-        Me.txtMovieSetMSAAPath.Size = New System.Drawing.Size(169, 22)
+        Me.txtMovieSetMSAAPath.Size = New System.Drawing.Size(264, 22)
         Me.txtMovieSetMSAAPath.TabIndex = 0
         '
         'pnlTVGeneral
@@ -11617,6 +11619,7 @@ Partial Class dlgSettings
         '
         'tpMovieSetFileNamingXBMC
         '
+        Me.tpMovieSetFileNamingXBMC.Controls.Add(Me.pbMSAAInfo)
         Me.tpMovieSetFileNamingXBMC.Controls.Add(Me.gbMovieSetMSAAPath)
         Me.tpMovieSetFileNamingXBMC.Controls.Add(Me.gbMovieSetMSAA)
         Me.tpMovieSetFileNamingXBMC.Location = New System.Drawing.Point(4, 22)
@@ -11626,6 +11629,15 @@ Partial Class dlgSettings
         Me.tpMovieSetFileNamingXBMC.TabIndex = 1
         Me.tpMovieSetFileNamingXBMC.Text = "XBMC"
         Me.tpMovieSetFileNamingXBMC.UseVisualStyleBackColor = true
+        '
+        'pbMSAAInfo
+        '
+        Me.pbMSAAInfo.Image = Global.Ember_Media_Manager.My.Resources.Resources.msaa
+        Me.pbMSAAInfo.Location = New System.Drawing.Point(217, 74)
+        Me.pbMSAAInfo.Name = "pbMSAAInfo"
+        Me.pbMSAAInfo.Size = New System.Drawing.Size(250, 250)
+        Me.pbMSAAInfo.TabIndex = 8
+        Me.pbMSAAInfo.TabStop = false
         '
         'gbMovieSetMSAA
         '
@@ -11836,73 +11848,73 @@ Partial Class dlgSettings
         Me.pnlMovieSetImages.Name = "pnlMovieSetImages"
         Me.pnlMovieSetImages.Size = New System.Drawing.Size(750, 500)
         Me.pnlMovieSetImages.TabIndex = 27
-        Me.pnlMovieSetImages.Visible = False
+        Me.pnlMovieSetImages.Visible = false
         '
         'gbMovieSetClearArtOpts
         '
         Me.gbMovieSetClearArtOpts.Controls.Add(Me.chkMovieSetClearArtOverwrite)
-        Me.gbMovieSetClearArtOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbMovieSetClearArtOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.gbMovieSetClearArtOpts.Location = New System.Drawing.Point(3, 436)
         Me.gbMovieSetClearArtOpts.Name = "gbMovieSetClearArtOpts"
         Me.gbMovieSetClearArtOpts.Size = New System.Drawing.Size(218, 44)
         Me.gbMovieSetClearArtOpts.TabIndex = 15
-        Me.gbMovieSetClearArtOpts.TabStop = False
+        Me.gbMovieSetClearArtOpts.TabStop = false
         Me.gbMovieSetClearArtOpts.Text = "ClearArt"
         '
         'chkMovieSetClearArtOverwrite
         '
-        Me.chkMovieSetClearArtOverwrite.AutoSize = True
-        Me.chkMovieSetClearArtOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkMovieSetClearArtOverwrite.AutoSize = true
+        Me.chkMovieSetClearArtOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.chkMovieSetClearArtOverwrite.Location = New System.Drawing.Point(6, 21)
         Me.chkMovieSetClearArtOverwrite.Name = "chkMovieSetClearArtOverwrite"
         Me.chkMovieSetClearArtOverwrite.Size = New System.Drawing.Size(119, 17)
         Me.chkMovieSetClearArtOverwrite.TabIndex = 4
         Me.chkMovieSetClearArtOverwrite.Text = "Overwrite Existing"
-        Me.chkMovieSetClearArtOverwrite.UseVisualStyleBackColor = True
+        Me.chkMovieSetClearArtOverwrite.UseVisualStyleBackColor = true
         '
         'gbMovieSetClearLogoOpts
         '
         Me.gbMovieSetClearLogoOpts.Controls.Add(Me.chkMovieSetClearLogoOverwrite)
-        Me.gbMovieSetClearLogoOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbMovieSetClearLogoOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.gbMovieSetClearLogoOpts.Location = New System.Drawing.Point(227, 436)
         Me.gbMovieSetClearLogoOpts.Name = "gbMovieSetClearLogoOpts"
         Me.gbMovieSetClearLogoOpts.Size = New System.Drawing.Size(218, 44)
         Me.gbMovieSetClearLogoOpts.TabIndex = 15
-        Me.gbMovieSetClearLogoOpts.TabStop = False
+        Me.gbMovieSetClearLogoOpts.TabStop = false
         Me.gbMovieSetClearLogoOpts.Text = "ClearLogo"
         '
         'chkMovieSetClearLogoOverwrite
         '
-        Me.chkMovieSetClearLogoOverwrite.AutoSize = True
-        Me.chkMovieSetClearLogoOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkMovieSetClearLogoOverwrite.AutoSize = true
+        Me.chkMovieSetClearLogoOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.chkMovieSetClearLogoOverwrite.Location = New System.Drawing.Point(6, 21)
         Me.chkMovieSetClearLogoOverwrite.Name = "chkMovieSetClearLogoOverwrite"
         Me.chkMovieSetClearLogoOverwrite.Size = New System.Drawing.Size(119, 17)
         Me.chkMovieSetClearLogoOverwrite.TabIndex = 4
         Me.chkMovieSetClearLogoOverwrite.Text = "Overwrite Existing"
-        Me.chkMovieSetClearLogoOverwrite.UseVisualStyleBackColor = True
+        Me.chkMovieSetClearLogoOverwrite.UseVisualStyleBackColor = true
         '
         'gbMovieSetDiscArtOpts
         '
         Me.gbMovieSetDiscArtOpts.Controls.Add(Me.chkMovieSetDiscArtOverwrite)
-        Me.gbMovieSetDiscArtOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbMovieSetDiscArtOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.gbMovieSetDiscArtOpts.Location = New System.Drawing.Point(451, 436)
         Me.gbMovieSetDiscArtOpts.Name = "gbMovieSetDiscArtOpts"
         Me.gbMovieSetDiscArtOpts.Size = New System.Drawing.Size(218, 44)
         Me.gbMovieSetDiscArtOpts.TabIndex = 15
-        Me.gbMovieSetDiscArtOpts.TabStop = False
+        Me.gbMovieSetDiscArtOpts.TabStop = false
         Me.gbMovieSetDiscArtOpts.Text = "DiscArt"
         '
         'chkMovieSetDiscArtOverwrite
         '
-        Me.chkMovieSetDiscArtOverwrite.AutoSize = True
-        Me.chkMovieSetDiscArtOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkMovieSetDiscArtOverwrite.AutoSize = true
+        Me.chkMovieSetDiscArtOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.chkMovieSetDiscArtOverwrite.Location = New System.Drawing.Point(6, 21)
         Me.chkMovieSetDiscArtOverwrite.Name = "chkMovieSetDiscArtOverwrite"
         Me.chkMovieSetDiscArtOverwrite.Size = New System.Drawing.Size(119, 17)
         Me.chkMovieSetDiscArtOverwrite.TabIndex = 4
         Me.chkMovieSetDiscArtOverwrite.Text = "Overwrite Existing"
-        Me.chkMovieSetDiscArtOverwrite.UseVisualStyleBackColor = True
+        Me.chkMovieSetDiscArtOverwrite.UseVisualStyleBackColor = true
         '
         'gbMovieSetBannerOpts
         '
@@ -11918,29 +11930,29 @@ Partial Class dlgSettings
         Me.gbMovieSetBannerOpts.Controls.Add(Me.lblMovieSetBannerType)
         Me.gbMovieSetBannerOpts.Controls.Add(Me.cbMovieSetBannerPrefType)
         Me.gbMovieSetBannerOpts.Controls.Add(Me.chkMovieSetBannerOverwrite)
-        Me.gbMovieSetBannerOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbMovieSetBannerOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.gbMovieSetBannerOpts.Location = New System.Drawing.Point(227, 84)
         Me.gbMovieSetBannerOpts.Name = "gbMovieSetBannerOpts"
         Me.gbMovieSetBannerOpts.Size = New System.Drawing.Size(218, 170)
         Me.gbMovieSetBannerOpts.TabIndex = 12
-        Me.gbMovieSetBannerOpts.TabStop = False
+        Me.gbMovieSetBannerOpts.TabStop = false
         Me.gbMovieSetBannerOpts.Text = "Banner"
         '
         'chkMovieSetBannerPrefOnly
         '
-        Me.chkMovieSetBannerPrefOnly.AutoSize = True
-        Me.chkMovieSetBannerPrefOnly.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkMovieSetBannerPrefOnly.AutoSize = true
+        Me.chkMovieSetBannerPrefOnly.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.chkMovieSetBannerPrefOnly.Location = New System.Drawing.Point(163, 38)
         Me.chkMovieSetBannerPrefOnly.Name = "chkMovieSetBannerPrefOnly"
         Me.chkMovieSetBannerPrefOnly.Size = New System.Drawing.Size(50, 17)
         Me.chkMovieSetBannerPrefOnly.TabIndex = 2
         Me.chkMovieSetBannerPrefOnly.Text = "Only"
-        Me.chkMovieSetBannerPrefOnly.UseVisualStyleBackColor = True
+        Me.chkMovieSetBannerPrefOnly.UseVisualStyleBackColor = true
         '
         'txtMovieSetBannerWidth
         '
-        Me.txtMovieSetBannerWidth.Enabled = False
-        Me.txtMovieSetBannerWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtMovieSetBannerWidth.Enabled = false
+        Me.txtMovieSetBannerWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.txtMovieSetBannerWidth.Location = New System.Drawing.Point(68, 100)
         Me.txtMovieSetBannerWidth.Name = "txtMovieSetBannerWidth"
         Me.txtMovieSetBannerWidth.Size = New System.Drawing.Size(40, 22)
@@ -11948,8 +11960,8 @@ Partial Class dlgSettings
         '
         'txtMovieSetBannerHeight
         '
-        Me.txtMovieSetBannerHeight.Enabled = False
-        Me.txtMovieSetBannerHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtMovieSetBannerHeight.Enabled = false
+        Me.txtMovieSetBannerHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.txtMovieSetBannerHeight.Location = New System.Drawing.Point(175, 100)
         Me.txtMovieSetBannerHeight.Name = "txtMovieSetBannerHeight"
         Me.txtMovieSetBannerHeight.Size = New System.Drawing.Size(40, 22)
@@ -11957,8 +11969,8 @@ Partial Class dlgSettings
         '
         'lblMovieSetBannerQual
         '
-        Me.lblMovieSetBannerQual.AutoSize = True
-        Me.lblMovieSetBannerQual.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblMovieSetBannerQual.AutoSize = true
+        Me.lblMovieSetBannerQual.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.lblMovieSetBannerQual.Location = New System.Drawing.Point(183, 147)
         Me.lblMovieSetBannerQual.Name = "lblMovieSetBannerQual"
         Me.lblMovieSetBannerQual.Size = New System.Drawing.Size(29, 17)
@@ -11967,7 +11979,7 @@ Partial Class dlgSettings
         '
         'tbMovieSetBannerQual
         '
-        Me.tbMovieSetBannerQual.AutoSize = False
+        Me.tbMovieSetBannerQual.AutoSize = false
         Me.tbMovieSetBannerQual.LargeChange = 10
         Me.tbMovieSetBannerQual.Location = New System.Drawing.Point(7, 139)
         Me.tbMovieSetBannerQual.Maximum = 100
@@ -11979,8 +11991,8 @@ Partial Class dlgSettings
         '
         'lblMovieSetBannerQ
         '
-        Me.lblMovieSetBannerQ.AutoSize = True
-        Me.lblMovieSetBannerQ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblMovieSetBannerQ.AutoSize = true
+        Me.lblMovieSetBannerQ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.lblMovieSetBannerQ.Location = New System.Drawing.Point(3, 127)
         Me.lblMovieSetBannerQ.Name = "lblMovieSetBannerQ"
         Me.lblMovieSetBannerQ.Size = New System.Drawing.Size(46, 13)
@@ -11989,8 +12001,8 @@ Partial Class dlgSettings
         '
         'lblMovieSetBannerWidth
         '
-        Me.lblMovieSetBannerWidth.AutoSize = True
-        Me.lblMovieSetBannerWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblMovieSetBannerWidth.AutoSize = true
+        Me.lblMovieSetBannerWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.lblMovieSetBannerWidth.Location = New System.Drawing.Point(3, 104)
         Me.lblMovieSetBannerWidth.Name = "lblMovieSetBannerWidth"
         Me.lblMovieSetBannerWidth.Size = New System.Drawing.Size(66, 13)
@@ -11999,8 +12011,8 @@ Partial Class dlgSettings
         '
         'lblMovieSetBannerHeight
         '
-        Me.lblMovieSetBannerHeight.AutoSize = True
-        Me.lblMovieSetBannerHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblMovieSetBannerHeight.AutoSize = true
+        Me.lblMovieSetBannerHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.lblMovieSetBannerHeight.Location = New System.Drawing.Point(106, 104)
         Me.lblMovieSetBannerHeight.Name = "lblMovieSetBannerHeight"
         Me.lblMovieSetBannerHeight.Size = New System.Drawing.Size(69, 13)
@@ -12009,19 +12021,19 @@ Partial Class dlgSettings
         '
         'chkMovieSetBannerResize
         '
-        Me.chkMovieSetBannerResize.AutoSize = True
-        Me.chkMovieSetBannerResize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkMovieSetBannerResize.AutoSize = true
+        Me.chkMovieSetBannerResize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.chkMovieSetBannerResize.Location = New System.Drawing.Point(6, 82)
         Me.chkMovieSetBannerResize.Name = "chkMovieSetBannerResize"
         Me.chkMovieSetBannerResize.Size = New System.Drawing.Size(133, 17)
         Me.chkMovieSetBannerResize.TabIndex = 4
         Me.chkMovieSetBannerResize.Text = "Automatically Resize:"
-        Me.chkMovieSetBannerResize.UseVisualStyleBackColor = True
+        Me.chkMovieSetBannerResize.UseVisualStyleBackColor = true
         '
         'lblMovieSetBannerType
         '
-        Me.lblMovieSetBannerType.AutoSize = True
-        Me.lblMovieSetBannerType.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblMovieSetBannerType.AutoSize = true
+        Me.lblMovieSetBannerType.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.lblMovieSetBannerType.Location = New System.Drawing.Point(4, 18)
         Me.lblMovieSetBannerType.Name = "lblMovieSetBannerType"
         Me.lblMovieSetBannerType.Size = New System.Drawing.Size(83, 13)
@@ -12031,8 +12043,8 @@ Partial Class dlgSettings
         'cbMovieSetBannerPrefType
         '
         Me.cbMovieSetBannerPrefType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbMovieSetBannerPrefType.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.cbMovieSetBannerPrefType.FormattingEnabled = True
+        Me.cbMovieSetBannerPrefType.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.cbMovieSetBannerPrefType.FormattingEnabled = true
         Me.cbMovieSetBannerPrefType.Location = New System.Drawing.Point(6, 34)
         Me.cbMovieSetBannerPrefType.Name = "cbMovieSetBannerPrefType"
         Me.cbMovieSetBannerPrefType.Size = New System.Drawing.Size(148, 21)
@@ -12040,36 +12052,36 @@ Partial Class dlgSettings
         '
         'chkMovieSetBannerOverwrite
         '
-        Me.chkMovieSetBannerOverwrite.AutoSize = True
-        Me.chkMovieSetBannerOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkMovieSetBannerOverwrite.AutoSize = true
+        Me.chkMovieSetBannerOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.chkMovieSetBannerOverwrite.Location = New System.Drawing.Point(6, 62)
         Me.chkMovieSetBannerOverwrite.Name = "chkMovieSetBannerOverwrite"
         Me.chkMovieSetBannerOverwrite.Size = New System.Drawing.Size(119, 17)
         Me.chkMovieSetBannerOverwrite.TabIndex = 3
         Me.chkMovieSetBannerOverwrite.Text = "Overwrite Existing"
-        Me.chkMovieSetBannerOverwrite.UseVisualStyleBackColor = True
+        Me.chkMovieSetBannerOverwrite.UseVisualStyleBackColor = true
         '
         'gbMovieSetLandscapeOpts
         '
         Me.gbMovieSetLandscapeOpts.Controls.Add(Me.chkMovieSetLandscapeOverwrite)
-        Me.gbMovieSetLandscapeOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbMovieSetLandscapeOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.gbMovieSetLandscapeOpts.Location = New System.Drawing.Point(451, 310)
         Me.gbMovieSetLandscapeOpts.Name = "gbMovieSetLandscapeOpts"
         Me.gbMovieSetLandscapeOpts.Size = New System.Drawing.Size(218, 44)
         Me.gbMovieSetLandscapeOpts.TabIndex = 14
-        Me.gbMovieSetLandscapeOpts.TabStop = False
+        Me.gbMovieSetLandscapeOpts.TabStop = false
         Me.gbMovieSetLandscapeOpts.Text = "Landscape"
         '
         'chkMovieSetLandscapeOverwrite
         '
-        Me.chkMovieSetLandscapeOverwrite.AutoSize = True
-        Me.chkMovieSetLandscapeOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkMovieSetLandscapeOverwrite.AutoSize = true
+        Me.chkMovieSetLandscapeOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.chkMovieSetLandscapeOverwrite.Location = New System.Drawing.Point(6, 21)
         Me.chkMovieSetLandscapeOverwrite.Name = "chkMovieSetLandscapeOverwrite"
         Me.chkMovieSetLandscapeOverwrite.Size = New System.Drawing.Size(119, 17)
         Me.chkMovieSetLandscapeOverwrite.TabIndex = 4
         Me.chkMovieSetLandscapeOverwrite.Text = "Overwrite Existing"
-        Me.chkMovieSetLandscapeOverwrite.UseVisualStyleBackColor = True
+        Me.chkMovieSetLandscapeOverwrite.UseVisualStyleBackColor = true
         '
         'gbMovieSetFanartOpts
         '
@@ -12085,18 +12097,18 @@ Partial Class dlgSettings
         Me.gbMovieSetFanartOpts.Controls.Add(Me.cbMovieSetFanartPrefSize)
         Me.gbMovieSetFanartOpts.Controls.Add(Me.lblMovieSetFanartSize)
         Me.gbMovieSetFanartOpts.Controls.Add(Me.chkMovieSetFanartOverwrite)
-        Me.gbMovieSetFanartOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbMovieSetFanartOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.gbMovieSetFanartOpts.Location = New System.Drawing.Point(451, 84)
         Me.gbMovieSetFanartOpts.Name = "gbMovieSetFanartOpts"
         Me.gbMovieSetFanartOpts.Size = New System.Drawing.Size(218, 170)
         Me.gbMovieSetFanartOpts.TabIndex = 3
-        Me.gbMovieSetFanartOpts.TabStop = False
+        Me.gbMovieSetFanartOpts.TabStop = false
         Me.gbMovieSetFanartOpts.Text = "Fanart"
         '
         'txtMovieSetFanartWidth
         '
-        Me.txtMovieSetFanartWidth.Enabled = False
-        Me.txtMovieSetFanartWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtMovieSetFanartWidth.Enabled = false
+        Me.txtMovieSetFanartWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.txtMovieSetFanartWidth.Location = New System.Drawing.Point(69, 100)
         Me.txtMovieSetFanartWidth.Name = "txtMovieSetFanartWidth"
         Me.txtMovieSetFanartWidth.Size = New System.Drawing.Size(40, 22)
@@ -12104,8 +12116,8 @@ Partial Class dlgSettings
         '
         'txtMovieSetFanartHeight
         '
-        Me.txtMovieSetFanartHeight.Enabled = False
-        Me.txtMovieSetFanartHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtMovieSetFanartHeight.Enabled = false
+        Me.txtMovieSetFanartHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.txtMovieSetFanartHeight.Location = New System.Drawing.Point(175, 100)
         Me.txtMovieSetFanartHeight.Name = "txtMovieSetFanartHeight"
         Me.txtMovieSetFanartHeight.Size = New System.Drawing.Size(40, 22)
@@ -12113,19 +12125,19 @@ Partial Class dlgSettings
         '
         'chkMovieSetFanartPrefOnly
         '
-        Me.chkMovieSetFanartPrefOnly.AutoSize = True
-        Me.chkMovieSetFanartPrefOnly.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkMovieSetFanartPrefOnly.AutoSize = true
+        Me.chkMovieSetFanartPrefOnly.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.chkMovieSetFanartPrefOnly.Location = New System.Drawing.Point(163, 38)
         Me.chkMovieSetFanartPrefOnly.Name = "chkMovieSetFanartPrefOnly"
         Me.chkMovieSetFanartPrefOnly.Size = New System.Drawing.Size(50, 17)
         Me.chkMovieSetFanartPrefOnly.TabIndex = 2
         Me.chkMovieSetFanartPrefOnly.Text = "Only"
-        Me.chkMovieSetFanartPrefOnly.UseVisualStyleBackColor = True
+        Me.chkMovieSetFanartPrefOnly.UseVisualStyleBackColor = true
         '
         'lblMovieSetFanartQual
         '
-        Me.lblMovieSetFanartQual.AutoSize = True
-        Me.lblMovieSetFanartQual.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblMovieSetFanartQual.AutoSize = true
+        Me.lblMovieSetFanartQual.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.lblMovieSetFanartQual.Location = New System.Drawing.Point(183, 147)
         Me.lblMovieSetFanartQual.Name = "lblMovieSetFanartQual"
         Me.lblMovieSetFanartQual.Size = New System.Drawing.Size(29, 17)
@@ -12134,7 +12146,7 @@ Partial Class dlgSettings
         '
         'tbMovieSetFanartQual
         '
-        Me.tbMovieSetFanartQual.AutoSize = False
+        Me.tbMovieSetFanartQual.AutoSize = false
         Me.tbMovieSetFanartQual.LargeChange = 10
         Me.tbMovieSetFanartQual.Location = New System.Drawing.Point(6, 139)
         Me.tbMovieSetFanartQual.Maximum = 100
@@ -12146,8 +12158,8 @@ Partial Class dlgSettings
         '
         'lblMovieSetFanartQ
         '
-        Me.lblMovieSetFanartQ.AutoSize = True
-        Me.lblMovieSetFanartQ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblMovieSetFanartQ.AutoSize = true
+        Me.lblMovieSetFanartQ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.lblMovieSetFanartQ.Location = New System.Drawing.Point(3, 127)
         Me.lblMovieSetFanartQ.Name = "lblMovieSetFanartQ"
         Me.lblMovieSetFanartQ.Size = New System.Drawing.Size(46, 13)
@@ -12156,8 +12168,8 @@ Partial Class dlgSettings
         '
         'lblMovieSetFanartWidth
         '
-        Me.lblMovieSetFanartWidth.AutoSize = True
-        Me.lblMovieSetFanartWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblMovieSetFanartWidth.AutoSize = true
+        Me.lblMovieSetFanartWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.lblMovieSetFanartWidth.Location = New System.Drawing.Point(3, 104)
         Me.lblMovieSetFanartWidth.Name = "lblMovieSetFanartWidth"
         Me.lblMovieSetFanartWidth.Size = New System.Drawing.Size(66, 13)
@@ -12166,8 +12178,8 @@ Partial Class dlgSettings
         '
         'lblMovieSetFanartHeight
         '
-        Me.lblMovieSetFanartHeight.AutoSize = True
-        Me.lblMovieSetFanartHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblMovieSetFanartHeight.AutoSize = true
+        Me.lblMovieSetFanartHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.lblMovieSetFanartHeight.Location = New System.Drawing.Point(107, 104)
         Me.lblMovieSetFanartHeight.Name = "lblMovieSetFanartHeight"
         Me.lblMovieSetFanartHeight.Size = New System.Drawing.Size(69, 13)
@@ -12176,20 +12188,20 @@ Partial Class dlgSettings
         '
         'chkMovieSetFanartResize
         '
-        Me.chkMovieSetFanartResize.AutoSize = True
-        Me.chkMovieSetFanartResize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkMovieSetFanartResize.AutoSize = true
+        Me.chkMovieSetFanartResize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.chkMovieSetFanartResize.Location = New System.Drawing.Point(6, 82)
         Me.chkMovieSetFanartResize.Name = "chkMovieSetFanartResize"
         Me.chkMovieSetFanartResize.Size = New System.Drawing.Size(133, 17)
         Me.chkMovieSetFanartResize.TabIndex = 4
         Me.chkMovieSetFanartResize.Text = "Automatically Resize:"
-        Me.chkMovieSetFanartResize.UseVisualStyleBackColor = True
+        Me.chkMovieSetFanartResize.UseVisualStyleBackColor = true
         '
         'cbMovieSetFanartPrefSize
         '
         Me.cbMovieSetFanartPrefSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbMovieSetFanartPrefSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.cbMovieSetFanartPrefSize.FormattingEnabled = True
+        Me.cbMovieSetFanartPrefSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.cbMovieSetFanartPrefSize.FormattingEnabled = true
         Me.cbMovieSetFanartPrefSize.Location = New System.Drawing.Point(6, 34)
         Me.cbMovieSetFanartPrefSize.Name = "cbMovieSetFanartPrefSize"
         Me.cbMovieSetFanartPrefSize.Size = New System.Drawing.Size(148, 21)
@@ -12197,8 +12209,8 @@ Partial Class dlgSettings
         '
         'lblMovieSetFanartSize
         '
-        Me.lblMovieSetFanartSize.AutoSize = True
-        Me.lblMovieSetFanartSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblMovieSetFanartSize.AutoSize = true
+        Me.lblMovieSetFanartSize.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.lblMovieSetFanartSize.Location = New System.Drawing.Point(4, 18)
         Me.lblMovieSetFanartSize.Name = "lblMovieSetFanartSize"
         Me.lblMovieSetFanartSize.Size = New System.Drawing.Size(80, 13)
@@ -12207,14 +12219,14 @@ Partial Class dlgSettings
         '
         'chkMovieSetFanartOverwrite
         '
-        Me.chkMovieSetFanartOverwrite.AutoSize = True
-        Me.chkMovieSetFanartOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkMovieSetFanartOverwrite.AutoSize = true
+        Me.chkMovieSetFanartOverwrite.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.chkMovieSetFanartOverwrite.Location = New System.Drawing.Point(6, 62)
         Me.chkMovieSetFanartOverwrite.Name = "chkMovieSetFanartOverwrite"
         Me.chkMovieSetFanartOverwrite.Size = New System.Drawing.Size(119, 17)
         Me.chkMovieSetFanartOverwrite.TabIndex = 3
         Me.chkMovieSetFanartOverwrite.Text = "Overwrite Existing"
-        Me.chkMovieSetFanartOverwrite.UseVisualStyleBackColor = True
+        Me.chkMovieSetFanartOverwrite.UseVisualStyleBackColor = true
         '
         'gbMovieSetPosterOpts
         '
@@ -12230,29 +12242,29 @@ Partial Class dlgSettings
         Me.gbMovieSetPosterOpts.Controls.Add(Me.lblMovieSetPosterSize)
         Me.gbMovieSetPosterOpts.Controls.Add(Me.cbMovieSetPosterPrefSize)
         Me.gbMovieSetPosterOpts.Controls.Add(Me.chkMovieSetPosterOverwrite)
-        Me.gbMovieSetPosterOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbMovieSetPosterOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.gbMovieSetPosterOpts.Location = New System.Drawing.Point(3, 84)
         Me.gbMovieSetPosterOpts.Name = "gbMovieSetPosterOpts"
         Me.gbMovieSetPosterOpts.Size = New System.Drawing.Size(218, 170)
         Me.gbMovieSetPosterOpts.TabIndex = 2
-        Me.gbMovieSetPosterOpts.TabStop = False
+        Me.gbMovieSetPosterOpts.TabStop = false
         Me.gbMovieSetPosterOpts.Text = "Poster"
         '
         'chkMovieSetPosterPrefOnly
         '
-        Me.chkMovieSetPosterPrefOnly.AutoSize = True
-        Me.chkMovieSetPosterPrefOnly.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkMovieSetPosterPrefOnly.AutoSize = true
+        Me.chkMovieSetPosterPrefOnly.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.chkMovieSetPosterPrefOnly.Location = New System.Drawing.Point(163, 38)
         Me.chkMovieSetPosterPrefOnly.Name = "chkMovieSetPosterPrefOnly"
         Me.chkMovieSetPosterPrefOnly.Size = New System.Drawing.Size(50, 17)
         Me.chkMovieSetPosterPrefOnly.TabIndex = 2
         Me.chkMovieSetPosterPrefOnly.Text = "Only"
-        Me.chkMovieSetPosterPrefOnly.UseVisualStyleBackColor = True
+        Me.chkMovieSetPosterPrefOnly.UseVisualStyleBackColor = true
         '
         'txtMovieSetPosterWidth
         '
-        Me.txtMovieSetPosterWidth.Enabled = False
-        Me.txtMovieSetPosterWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtMovieSetPosterWidth.Enabled = false
+        Me.txtMovieSetPosterWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.txtMovieSetPosterWidth.Location = New System.Drawing.Point(68, 100)
         Me.txtMovieSetPosterWidth.Name = "txtMovieSetPosterWidth"
         Me.txtMovieSetPosterWidth.Size = New System.Drawing.Size(40, 22)
@@ -12260,8 +12272,8 @@ Partial Class dlgSettings
         '
         'txtMovieSetPosterHeight
         '
-        Me.txtMovieSetPosterHeight.Enabled = False
-        Me.txtMovieSetPosterHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtMovieSetPosterHeight.Enabled = false
+        Me.txtMovieSetPosterHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.txtMovieSetPosterHeight.Location = New System.Drawing.Point(175, 100)
         Me.txtMovieSetPosterHeight.Name = "txtMovieSetPosterHeight"
         Me.txtMovieSetPosterHeight.Size = New System.Drawing.Size(40, 22)
@@ -12677,6 +12689,7 @@ Partial Class dlgSettings
         Me.gbMovieSetFileNaming.ResumeLayout(false)
         Me.tcMovieSetFileNaming.ResumeLayout(false)
         Me.tpMovieSetFileNamingXBMC.ResumeLayout(false)
+        CType(Me.pbMSAAInfo,System.ComponentModel.ISupportInitialize).EndInit
         Me.gbMovieSetMSAA.ResumeLayout(false)
         Me.gbMovieSetMSAA.PerformLayout
         Me.pnlMovieSetScraper.ResumeLayout(false)
@@ -13716,4 +13729,5 @@ End Sub
     Friend WithEvents chkMovieSetPosterMSAA As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieSetNFOMSAA As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieSetDiscArtMSAA As System.Windows.Forms.CheckBox
+    Friend WithEvents pbMSAAInfo As System.Windows.Forms.PictureBox
 End Class

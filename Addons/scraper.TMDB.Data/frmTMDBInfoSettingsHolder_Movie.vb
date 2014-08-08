@@ -22,17 +22,17 @@ Imports System.IO
 Imports EmberAPI
 Imports System.Diagnostics
 
-Public Class frmTMDBInfoSettingsHolder
+Public Class frmTMDBInfoSettingsHolder_Movie
 
 #Region "Events"
 
-	Public Event ModuleSettingsChanged()
+    Public Event ModuleSettingsChanged()
 
     Public Event SetupScraperChanged(ByVal state As Boolean, ByVal difforder As Integer)
 
-	Public Event SetupNeedsRestart()
+    Public Event SetupNeedsRestart()
 
-#End Region	'Events
+#End Region 'Events
 
 #Region "Fields"
 
@@ -267,5 +267,5 @@ Public Class frmTMDBInfoSettingsHolder
 
 
 #End Region 'Methods
- 
+
 End Class

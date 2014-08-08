@@ -37,7 +37,7 @@ Public Class dlgTMDBSearchResults
     Private sHTTP As New HTTP
     Private _currnode As Integer = -1
     Private _prevnode As Integer = -2
-    Private MySettings As TMDB_Data.sMySettings_Movie
+    Private MySettings As TMDB_Data.sMySettings
     'Private TMDBConf As V3.TmdbConfiguration
     'Private TMDBApi As V3.Tmdb
 
@@ -49,7 +49,7 @@ Public Class dlgTMDBSearchResults
 
 #Region "Methods"
 
-    Public Sub New(_MySettings As TMDB_Data.sMySettings_Movie, _TMDBg As TMDBg.Scraper)
+    Public Sub New(_MySettings As TMDB_Data.sMySettings, _TMDBg As TMDBg.Scraper)
 
         ' This call is required by the designer.
         InitializeComponent()

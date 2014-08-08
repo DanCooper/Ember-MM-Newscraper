@@ -28,12 +28,15 @@ Imports System.Diagnostics
 
 Public Class FanartTV_Image
     Implements Interfaces.ScraperModule_Image_Movie
+    Implements Interfaces.ScraperModule_Image_MovieSet
 
 
 #Region "Fields"
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
-    Public Shared ConfigOptions As New Structures.MovieScrapeOptions
-    Public Shared ConfigScrapeModifier As New Structures.ScrapeModifier
+    Public Shared ConfigOptions_Movie As New Structures.MovieScrapeOptions
+    Public Shared ConfigOptions_MovieSet As New Structures.MovieSetScrapeOptions
+    Public Shared ConfigScrapeModifier_Movie As New Structures.ScrapeModifier
+    Public Shared ConfigScrapeModifier_MovieSet As New Structures.ScrapeModifier
     Public Shared _AssemblyName As String
 
     ''' <summary>
@@ -41,197 +44,354 @@ Public Class FanartTV_Image
     ''' </summary>
     ''' <remarks></remarks>
     Private strPrivateAPIKey As String = String.Empty
-    Private _MySettings As New sMySettings
+    Private _MySettings_Movie As New sMySettings
+    Private _MySettings_MovieSet As New sMySettings
     Private _Name As String = "FanartTV_Poster"
-    Private _ScraperEnabled As Boolean = False
-    Private _setup As frmFanartTVMediaSettingsHolder
+    Private _ScraperEnabled_Movie As Boolean = False
+    Private _ScraperEnabled_MovieSet As Boolean = False
+    Private _setup_Movie As frmFanartTVMediaSettingsHolder_Movie
+    Private _setup_MovieSet As frmFanartTVMediaSettingsHolder_MovieSet
     Private _fanartTV As FANARTTVs.Scraper
 
 #End Region 'Fields
 
 #Region "Events"
 
-    Public Event ModuleSettingsChanged() Implements Interfaces.ScraperModule_Image_Movie.ModuleSettingsChanged
+    Public Event ModuleSettingsChanged_Movie() Implements Interfaces.ScraperModule_Image_Movie.ModuleSettingsChanged
 
-    Public Event MovieScraperEvent(ByVal eType As Enums.ScraperEventType_Movie, ByVal Parameter As Object) Implements Interfaces.ScraperModule_Image_Movie.MovieScraperEvent
+    Public Event MovieScraperEvent_Movie(ByVal eType As Enums.ScraperEventType_Movie, ByVal Parameter As Object) Implements Interfaces.ScraperModule_Image_Movie.ScraperEvent
 
-    Public Event SetupScraperChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements Interfaces.ScraperModule_Image_Movie.ScraperSetupChanged
+    Public Event SetupScraperChanged_Movie(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements Interfaces.ScraperModule_Image_Movie.ScraperSetupChanged
 
-    Public Event SetupNeedsRestart() Implements Interfaces.ScraperModule_Image_Movie.SetupNeedsRestart
+    Public Event SetupNeedsRestart_Movie() Implements Interfaces.ScraperModule_Image_Movie.SetupNeedsRestart
 
-    Public Event PostersDownloaded(ByVal Posters As List(Of MediaContainers.Image)) Implements Interfaces.ScraperModule_Image_Movie.PostersDownloaded
+    Public Event ImagesDownloaded_Movie(ByVal Posters As List(Of MediaContainers.Image)) Implements Interfaces.ScraperModule_Image_Movie.ImagesDownloaded
 
-    Public Event ProgressUpdated(ByVal iPercent As Integer) Implements Interfaces.ScraperModule_Image_Movie.ProgressUpdated
+    Public Event ProgressUpdated_Movie(ByVal iPercent As Integer) Implements Interfaces.ScraperModule_Image_Movie.ProgressUpdated
+
+
+    Public Event ModuleSettingsChanged_MovieSet() Implements Interfaces.ScraperModule_Image_MovieSet.ModuleSettingsChanged
+
+    Public Event MovieScraperEvent_MovieSet(ByVal eType As Enums.ScraperEventType_MovieSet, ByVal Parameter As Object) Implements Interfaces.ScraperModule_Image_MovieSet.ScraperEvent
+
+    Public Event SetupScraperChanged_MovieSet(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements Interfaces.ScraperModule_Image_MovieSet.ScraperSetupChanged
+
+    Public Event SetupNeedsRestart_MovieSet() Implements Interfaces.ScraperModule_Image_MovieSet.SetupNeedsRestart
+
+    Public Event ImagesDownloaded_MovieSet(ByVal Posters As List(Of MediaContainers.Image)) Implements Interfaces.ScraperModule_Image_MovieSet.ImagesDownloaded
+
+    Public Event ProgressUpdated_MovieSet(ByVal iPercent As Integer) Implements Interfaces.ScraperModule_Image_MovieSet.ProgressUpdated
 
 #End Region 'Events
 
 #Region "Properties"
 
-    ReadOnly Property ModuleName() As String Implements Interfaces.ScraperModule_Image_Movie.ModuleName
+    ReadOnly Property ModuleName() As String Implements Interfaces.ScraperModule_Image_Movie.ModuleName, Interfaces.ScraperModule_Image_MovieSet.ModuleName
         Get
             Return _Name
         End Get
     End Property
 
-    ReadOnly Property ModuleVersion() As String Implements Interfaces.ScraperModule_Image_Movie.ModuleVersion
+    ReadOnly Property ModuleVersion() As String Implements Interfaces.ScraperModule_Image_Movie.ModuleVersion, Interfaces.ScraperModule_Image_MovieSet.ModuleVersion
         Get
             Return System.Diagnostics.FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly.Location).FileVersion.ToString
         End Get
     End Property
 
-    Property ScraperEnabled() As Boolean Implements Interfaces.ScraperModule_Image_Movie.ScraperEnabled
+    Property ScraperEnabled_Movie() As Boolean Implements Interfaces.ScraperModule_Image_Movie.ScraperEnabled
         Get
-            Return _ScraperEnabled
+            Return _ScraperEnabled_Movie
         End Get
         Set(ByVal value As Boolean)
-            _ScraperEnabled = value
+            _ScraperEnabled_Movie = value
+        End Set
+    End Property
+
+    Property ScraperEnabled_MovieSet() As Boolean Implements Interfaces.ScraperModule_Image_MovieSet.ScraperEnabled
+        Get
+            Return _ScraperEnabled_MovieSet
+        End Get
+        Set(ByVal value As Boolean)
+            _ScraperEnabled_MovieSet = value
         End Set
     End Property
 
 #End Region 'Properties
 
 #Region "Methods"
-    Function QueryPostScraperCapabilities(ByVal cap As Enums.ScraperCapabilities) As Boolean Implements Interfaces.ScraperModule_Image_Movie.QueryScraperCapabilities
+
+    Function QueryScraperCapabilities_Movie(ByVal cap As Enums.ScraperCapabilities) As Boolean Implements Interfaces.ScraperModule_Image_Movie.QueryScraperCapabilities
         Select Case cap
             Case Enums.ScraperCapabilities.Banner
-                Return ConfigScrapeModifier.Banner
+                Return ConfigScrapeModifier_Movie.Banner
             Case Enums.ScraperCapabilities.CharacterArt
-                Return ConfigScrapeModifier.CharacterArt
+                Return ConfigScrapeModifier_Movie.CharacterArt
             Case Enums.ScraperCapabilities.ClearArt
-                Return ConfigScrapeModifier.ClearArt
+                Return ConfigScrapeModifier_Movie.ClearArt
             Case Enums.ScraperCapabilities.ClearLogo
-                Return ConfigScrapeModifier.ClearLogo
+                Return ConfigScrapeModifier_Movie.ClearLogo
             Case Enums.ScraperCapabilities.DiscArt
-                Return ConfigScrapeModifier.DiscArt
+                Return ConfigScrapeModifier_Movie.DiscArt
             Case Enums.ScraperCapabilities.Fanart
-                Return ConfigScrapeModifier.Fanart
+                Return ConfigScrapeModifier_Movie.Fanart
             Case Enums.ScraperCapabilities.Landscape
-                Return ConfigScrapeModifier.Landscape
+                Return ConfigScrapeModifier_Movie.Landscape
             Case Enums.ScraperCapabilities.Poster
-                Return ConfigScrapeModifier.Poster
+                Return ConfigScrapeModifier_Movie.Poster
+        End Select
+        Return False
+    End Function
+    Function QueryScraperCapabilities_MovieSet(ByVal cap As Enums.ScraperCapabilities) As Boolean Implements Interfaces.ScraperModule_Image_MovieSet.QueryScraperCapabilities
+        Select Case cap
+            Case Enums.ScraperCapabilities.Banner
+                Return ConfigScrapeModifier_MovieSet.Banner
+            Case Enums.ScraperCapabilities.CharacterArt
+                Return ConfigScrapeModifier_MovieSet.CharacterArt
+            Case Enums.ScraperCapabilities.ClearArt
+                Return ConfigScrapeModifier_MovieSet.ClearArt
+            Case Enums.ScraperCapabilities.ClearLogo
+                Return ConfigScrapeModifier_MovieSet.ClearLogo
+            Case Enums.ScraperCapabilities.DiscArt
+                Return ConfigScrapeModifier_MovieSet.DiscArt
+            Case Enums.ScraperCapabilities.Fanart
+                Return ConfigScrapeModifier_MovieSet.Fanart
+            Case Enums.ScraperCapabilities.Landscape
+                Return ConfigScrapeModifier_MovieSet.Landscape
+            Case Enums.ScraperCapabilities.Poster
+                Return ConfigScrapeModifier_MovieSet.Poster
         End Select
         Return False
     End Function
 
-    Private Sub Handle_ModuleSettingsChanged()
-        RaiseEvent ModuleSettingsChanged()
+    Private Sub Handle_ModuleSettingsChanged_Movie()
+        RaiseEvent ModuleSettingsChanged_Movie()
     End Sub
 
-    Private Sub Handle_PostModuleSettingsChanged()
-        RaiseEvent ModuleSettingsChanged()
+    Private Sub Handle_ModuleSettingsChanged_MovieSet()
+        RaiseEvent ModuleSettingsChanged_MovieSet()
     End Sub
 
-    Private Sub Handle_SetupNeedsRestart()
-        RaiseEvent SetupNeedsRestart()
+    Private Sub Handle_SetupNeedsRestart_Movie()
+        RaiseEvent SetupNeedsRestart_Movie()
     End Sub
 
-    Private Sub Handle_SetupScraperChanged(ByVal state As Boolean, ByVal difforder As Integer)
-        ScraperEnabled = state
-        RaiseEvent SetupScraperChanged(String.Concat(Me._Name, "Scraper"), state, difforder)
+    Private Sub Handle_SetupNeedsRestart_MovieSet()
+        RaiseEvent SetupNeedsRestart_MovieSet()
     End Sub
 
-    Sub Init(ByVal sAssemblyName As String) Implements Interfaces.ScraperModule_Image_Movie.Init
+    Private Sub Handle_SetupScraperChanged_Movie(ByVal state As Boolean, ByVal difforder As Integer)
+        ScraperEnabled_Movie = state
+        RaiseEvent SetupScraperChanged_Movie(String.Concat(Me._Name, "Scraper"), state, difforder)
+    End Sub
+
+    Private Sub Handle_SetupScraperChanged_MovieSet(ByVal state As Boolean, ByVal difforder As Integer)
+        ScraperEnabled_MovieSet = state
+        RaiseEvent SetupScraperChanged_MovieSet(String.Concat(Me._Name, "Scraper"), state, difforder)
+    End Sub
+
+    Sub Init_Movie(ByVal sAssemblyName As String) Implements Interfaces.ScraperModule_Image_Movie.Init
         _AssemblyName = sAssemblyName
-        LoadSettings()
+        LoadSettings_Movie()
         'Must be after Load settings to retrieve the correct API key
-        _fanartTV = New FANARTTVs.Scraper(_MySettings)
+        _fanartTV = New FANARTTVs.Scraper(_MySettings_Movie)
     End Sub
 
-    Function InjectSetupScraper() As Containers.SettingsPanel Implements Interfaces.ScraperModule_Image_Movie.InjectSetupScraper
-        Dim Spanel As New Containers.SettingsPanel
-        _setup = New frmFanartTVMediaSettingsHolder
-        LoadSettings()
-        _setup.cbEnabled.Checked = _ScraperEnabled
-        _setup.chkScrapePoster.Checked = ConfigScrapeModifier.Poster
-        _setup.chkScrapeFanart.Checked = ConfigScrapeModifier.Fanart
-        _setup.chkScrapeBanner.Checked = ConfigScrapeModifier.Banner
-        _setup.chkScrapeCharacterArt.Checked = ConfigScrapeModifier.CharacterArt
-        _setup.chkScrapeClearArt.Checked = ConfigScrapeModifier.ClearArt
-        _setup.chkScrapeClearArtOnlyHD.Checked = _MySettings.ClearArtOnlyHD
-        _setup.chkScrapeClearLogo.Checked = ConfigScrapeModifier.ClearLogo
-        _setup.chkScrapeClearLogoOnlyHD.Checked = _MySettings.ClearLogoOnlyHD
-        _setup.chkScrapeDiscArt.Checked = ConfigScrapeModifier.DiscArt
-        _setup.chkScrapeLandscape.Checked = ConfigScrapeModifier.Landscape
-        _setup.txtFANARTTVApiKey.Text = strPrivateAPIKey
-        _setup.cbFANARTTVLanguage.Text = _MySettings.FANARTTVLanguage
+    Sub Init_MovieSet(ByVal sAssemblyName As String) Implements Interfaces.ScraperModule_Image_MovieSet.Init
+        _AssemblyName = sAssemblyName
+        LoadSettings_MovieSet()
+        'Must be after Load settings to retrieve the correct API key
+        _fanartTV = New FANARTTVs.Scraper(_MySettings_MovieSet)
+    End Sub
 
-        _setup.orderChanged()
-        Spanel.Name = String.Concat(Me._Name, "Scraper")
+    Function InjectSetupScraper_Movie() As Containers.SettingsPanel Implements Interfaces.ScraperModule_Image_Movie.InjectSetupScraper
+        Dim Spanel As New Containers.SettingsPanel
+        _setup_Movie = New frmFanartTVMediaSettingsHolder_Movie
+        LoadSettings_Movie()
+        _setup_Movie.cbEnabled.Checked = _ScraperEnabled_Movie
+        _setup_Movie.chkScrapePoster.Checked = ConfigScrapeModifier_Movie.Poster
+        _setup_Movie.chkScrapeFanart.Checked = ConfigScrapeModifier_Movie.Fanart
+        _setup_Movie.chkScrapeBanner.Checked = ConfigScrapeModifier_Movie.Banner
+        _setup_Movie.chkScrapeCharacterArt.Checked = ConfigScrapeModifier_Movie.CharacterArt
+        _setup_Movie.chkScrapeClearArt.Checked = ConfigScrapeModifier_Movie.ClearArt
+        _setup_Movie.chkScrapeClearArtOnlyHD.Checked = _MySettings_Movie.ClearArtOnlyHD
+        _setup_Movie.chkScrapeClearLogo.Checked = ConfigScrapeModifier_Movie.ClearLogo
+        _setup_Movie.chkScrapeClearLogoOnlyHD.Checked = _MySettings_Movie.ClearLogoOnlyHD
+        _setup_Movie.chkScrapeDiscArt.Checked = ConfigScrapeModifier_Movie.DiscArt
+        _setup_Movie.chkScrapeLandscape.Checked = ConfigScrapeModifier_Movie.Landscape
+        _setup_Movie.txtFANARTTVApiKey.Text = strPrivateAPIKey
+        _setup_Movie.cbFANARTTVLanguage.Text = _MySettings_Movie.FANARTTVLanguage
+
+        _setup_Movie.orderChanged()
+        Spanel.Name = String.Concat(Me._Name, "_Movie")
         Spanel.Text = Master.eLang.GetString(788, "FanartTV")
         Spanel.Prefix = "FanartTVMovieMedia_"
         Spanel.Order = 110
         Spanel.Parent = "pnlMovieMedia"
         Spanel.Type = Master.eLang.GetString(36, "Movies")
-        Spanel.ImageIndex = If(Me._ScraperEnabled, 9, 10)
-        Spanel.Panel = Me._setup.pnlSettings
+        Spanel.ImageIndex = If(Me._ScraperEnabled_Movie, 9, 10)
+        Spanel.Panel = Me._setup_Movie.pnlSettings
 
-        AddHandler _setup.SetupScraperChanged, AddressOf Handle_SetupScraperChanged
-        AddHandler _setup.ModuleSettingsChanged, AddressOf Handle_PostModuleSettingsChanged
-        AddHandler _setup.SetupNeedsRestart, AddressOf Handle_SetupNeedsRestart
+        AddHandler _setup_Movie.SetupScraperChanged, AddressOf Handle_SetupScraperChanged_Movie
+        AddHandler _setup_Movie.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged_Movie
+        AddHandler _setup_Movie.SetupNeedsRestart, AddressOf Handle_SetupNeedsRestart_Movie
         Return Spanel
     End Function
 
-    Sub LoadSettings()
-        strPrivateAPIKey = clsAdvancedSettings.GetSetting("FANARTTVApiKey", "")
-        _MySettings.FANARTTVApiKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "ea68f9d0847c1b7643813c70cbfc0196", strPrivateAPIKey)
-        _MySettings.FANARTTVLanguage = clsAdvancedSettings.GetSetting("FANARTTVLanguage", "en")
-        _MySettings.ClearArtOnlyHD = clsAdvancedSettings.GetBooleanSetting("ClearArtOnlyHD", False)
-        _MySettings.ClearLogoOnlyHD = clsAdvancedSettings.GetBooleanSetting("ClearLogoOnlyHD", False)
+    Function InjectSetupScraper_MovieSet() As Containers.SettingsPanel Implements Interfaces.ScraperModule_Image_MovieSet.InjectSetupScraper
+        Dim Spanel As New Containers.SettingsPanel
+        _setup_MovieSet = New frmFanartTVMediaSettingsHolder_MovieSet
+        LoadSettings_MovieSet()
+        _setup_MovieSet.cbEnabled.Checked = _ScraperEnabled_MovieSet
+        _setup_MovieSet.chkScrapePoster.Checked = ConfigScrapeModifier_MovieSet.Poster
+        _setup_MovieSet.chkScrapeFanart.Checked = ConfigScrapeModifier_MovieSet.Fanart
+        _setup_MovieSet.chkScrapeBanner.Checked = ConfigScrapeModifier_MovieSet.Banner
+        _setup_MovieSet.chkScrapeCharacterArt.Checked = ConfigScrapeModifier_MovieSet.CharacterArt
+        _setup_MovieSet.chkScrapeClearArt.Checked = ConfigScrapeModifier_MovieSet.ClearArt
+        _setup_MovieSet.chkScrapeClearArtOnlyHD.Checked = _MySettings_MovieSet.ClearArtOnlyHD
+        _setup_MovieSet.chkScrapeClearLogo.Checked = ConfigScrapeModifier_MovieSet.ClearLogo
+        _setup_MovieSet.chkScrapeClearLogoOnlyHD.Checked = _MySettings_MovieSet.ClearLogoOnlyHD
+        _setup_MovieSet.chkScrapeDiscArt.Checked = ConfigScrapeModifier_MovieSet.DiscArt
+        _setup_MovieSet.chkScrapeLandscape.Checked = ConfigScrapeModifier_MovieSet.Landscape
+        _setup_MovieSet.txtFANARTTVApiKey.Text = strPrivateAPIKey
+        _setup_MovieSet.cbFANARTTVLanguage.Text = _MySettings_MovieSet.FANARTTVLanguage
 
-        ConfigScrapeModifier.Poster = clsAdvancedSettings.GetBooleanSetting("DoPoster", True)
-        ConfigScrapeModifier.Fanart = clsAdvancedSettings.GetBooleanSetting("DoFanart", True)
-        ConfigScrapeModifier.Banner = clsAdvancedSettings.GetBooleanSetting("DoBanner", True)
-        ConfigScrapeModifier.CharacterArt = clsAdvancedSettings.GetBooleanSetting("DoCharacterArt", True)
-        ConfigScrapeModifier.ClearArt = clsAdvancedSettings.GetBooleanSetting("DoClearArt", True)
-        ConfigScrapeModifier.ClearLogo = clsAdvancedSettings.GetBooleanSetting("DoClearLogo", True)
-        ConfigScrapeModifier.DiscArt = clsAdvancedSettings.GetBooleanSetting("DoDiscArt", True)
-        ConfigScrapeModifier.Landscape = clsAdvancedSettings.GetBooleanSetting("DoLandscape", True)
-        ConfigScrapeModifier.EThumbs = ConfigScrapeModifier.Fanart
-        ConfigScrapeModifier.EFanarts = ConfigScrapeModifier.Fanart
+        _setup_MovieSet.orderChanged()
+
+        Spanel.Name = String.Concat(Me._Name, "_MovieSet")
+        Spanel.Text = Master.eLang.GetString(788, "FanartTV")
+        Spanel.Prefix = "FanartTVMovieSetMedia_"
+        Spanel.Order = 110
+        Spanel.Parent = "pnlMovieSetMedia"
+        Spanel.Type = Master.eLang.GetString(1203, "MovieSets")
+        Spanel.ImageIndex = If(Me._ScraperEnabled_MovieSet, 9, 10)
+        Spanel.Panel = Me._setup_MovieSet.pnlSettings
+
+        AddHandler _setup_MovieSet.SetupScraperChanged, AddressOf Handle_SetupScraperChanged_MovieSet
+        AddHandler _setup_MovieSet.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged_MovieSet
+        AddHandler _setup_MovieSet.SetupNeedsRestart, AddressOf Handle_SetupNeedsRestart_MovieSet
+        Return Spanel
+    End Function
+
+    Sub LoadSettings_Movie()
+        strPrivateAPIKey = clsAdvancedSettings.GetSetting("FANARTTVApiKey", "", , Enums.Content_Type.Movie)
+        _MySettings_Movie.FANARTTVApiKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "ea68f9d0847c1b7643813c70cbfc0196", strPrivateAPIKey)
+        _MySettings_Movie.FANARTTVLanguage = clsAdvancedSettings.GetSetting("FANARTTVLanguage", "en", , Enums.Content_Type.Movie)
+        _MySettings_Movie.ClearArtOnlyHD = clsAdvancedSettings.GetBooleanSetting("ClearArtOnlyHD", False, , Enums.Content_Type.Movie)
+        _MySettings_Movie.ClearLogoOnlyHD = clsAdvancedSettings.GetBooleanSetting("ClearLogoOnlyHD", False, , Enums.Content_Type.Movie)
+
+        ConfigScrapeModifier_Movie.Poster = clsAdvancedSettings.GetBooleanSetting("DoPoster", True, , Enums.Content_Type.Movie)
+        ConfigScrapeModifier_Movie.Fanart = clsAdvancedSettings.GetBooleanSetting("DoFanart", True, , Enums.Content_Type.Movie)
+        ConfigScrapeModifier_Movie.Banner = clsAdvancedSettings.GetBooleanSetting("DoBanner", True, , Enums.Content_Type.Movie)
+        ConfigScrapeModifier_Movie.CharacterArt = clsAdvancedSettings.GetBooleanSetting("DoCharacterArt", True, , Enums.Content_Type.Movie)
+        ConfigScrapeModifier_Movie.ClearArt = clsAdvancedSettings.GetBooleanSetting("DoClearArt", True, , Enums.Content_Type.Movie)
+        ConfigScrapeModifier_Movie.ClearLogo = clsAdvancedSettings.GetBooleanSetting("DoClearLogo", True, , Enums.Content_Type.Movie)
+        ConfigScrapeModifier_Movie.DiscArt = clsAdvancedSettings.GetBooleanSetting("DoDiscArt", True, , Enums.Content_Type.Movie)
+        ConfigScrapeModifier_Movie.Landscape = clsAdvancedSettings.GetBooleanSetting("DoLandscape", True, , Enums.Content_Type.Movie)
+        ConfigScrapeModifier_Movie.EThumbs = ConfigScrapeModifier_Movie.Fanart
+        ConfigScrapeModifier_Movie.EFanarts = ConfigScrapeModifier_Movie.Fanart
     End Sub
 
-    Sub SaveSettings()
+    Sub LoadSettings_MovieSet()
+        strPrivateAPIKey = clsAdvancedSettings.GetSetting("FANARTTVApiKey", "", , Enums.Content_Type.MovieSet)
+        _MySettings_MovieSet.FANARTTVApiKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "ea68f9d0847c1b7643813c70cbfc0196", strPrivateAPIKey)
+        _MySettings_MovieSet.FANARTTVLanguage = clsAdvancedSettings.GetSetting("FANARTTVLanguage", "en", , Enums.Content_Type.MovieSet)
+        _MySettings_MovieSet.ClearArtOnlyHD = clsAdvancedSettings.GetBooleanSetting("ClearArtOnlyHD", False, , Enums.Content_Type.MovieSet)
+        _MySettings_MovieSet.ClearLogoOnlyHD = clsAdvancedSettings.GetBooleanSetting("ClearLogoOnlyHD", False, , Enums.Content_Type.MovieSet)
+
+        ConfigScrapeModifier_MovieSet.Poster = clsAdvancedSettings.GetBooleanSetting("DoPoster", True, , Enums.Content_Type.MovieSet)
+        ConfigScrapeModifier_MovieSet.Fanart = clsAdvancedSettings.GetBooleanSetting("DoFanart", True, , Enums.Content_Type.MovieSet)
+        ConfigScrapeModifier_MovieSet.Banner = clsAdvancedSettings.GetBooleanSetting("DoBanner", True, , Enums.Content_Type.MovieSet)
+        ConfigScrapeModifier_MovieSet.CharacterArt = clsAdvancedSettings.GetBooleanSetting("DoCharacterArt", True, , Enums.Content_Type.MovieSet)
+        ConfigScrapeModifier_MovieSet.ClearArt = clsAdvancedSettings.GetBooleanSetting("DoClearArt", True, , Enums.Content_Type.MovieSet)
+        ConfigScrapeModifier_MovieSet.ClearLogo = clsAdvancedSettings.GetBooleanSetting("DoClearLogo", True, , Enums.Content_Type.MovieSet)
+        ConfigScrapeModifier_MovieSet.DiscArt = clsAdvancedSettings.GetBooleanSetting("DoDiscArt", True, , Enums.Content_Type.MovieSet)
+        ConfigScrapeModifier_MovieSet.Landscape = clsAdvancedSettings.GetBooleanSetting("DoLandscape", True, , Enums.Content_Type.MovieSet)
+        ConfigScrapeModifier_MovieSet.EThumbs = ConfigScrapeModifier_MovieSet.Fanart
+        ConfigScrapeModifier_MovieSet.EFanarts = ConfigScrapeModifier_MovieSet.Fanart
+    End Sub
+
+    Sub SaveSettings_Movie()
         Using settings = New clsAdvancedSettings()
-            settings.SetBooleanSetting("ClearArtOnlyHD", _MySettings.ClearArtOnlyHD)
-            settings.SetBooleanSetting("ClearLogoOnlyHD", _MySettings.ClearLogoOnlyHD)
-            settings.SetBooleanSetting("DoPoster", ConfigScrapeModifier.Poster)
-            settings.SetBooleanSetting("DoFanart", ConfigScrapeModifier.Fanart)
-            settings.SetBooleanSetting("DoBanner", ConfigScrapeModifier.Banner)
-            settings.SetBooleanSetting("DoCharacterArt", ConfigScrapeModifier.CharacterArt)
-            settings.SetBooleanSetting("DoClearArt", ConfigScrapeModifier.ClearArt)
-            settings.SetBooleanSetting("DoClearLogo", ConfigScrapeModifier.ClearLogo)
-            settings.SetBooleanSetting("DoDiscArt", ConfigScrapeModifier.DiscArt)
-            settings.SetBooleanSetting("DoLandscape", ConfigScrapeModifier.Landscape)
-            settings.SetSetting("FANARTTVApiKey", _setup.txtFANARTTVApiKey.Text)
-            settings.SetSetting("FANARTTVLanguage", _MySettings.FANARTTVLanguage)
+            settings.SetBooleanSetting("ClearArtOnlyHD", _MySettings_Movie.ClearArtOnlyHD, , , Enums.Content_Type.Movie)
+            settings.SetBooleanSetting("ClearLogoOnlyHD", _MySettings_Movie.ClearLogoOnlyHD, , , Enums.Content_Type.Movie)
+            settings.SetBooleanSetting("DoPoster", ConfigScrapeModifier_Movie.Poster, , , Enums.Content_Type.Movie)
+            settings.SetBooleanSetting("DoFanart", ConfigScrapeModifier_Movie.Fanart, , , Enums.Content_Type.Movie)
+            settings.SetBooleanSetting("DoBanner", ConfigScrapeModifier_Movie.Banner, , , Enums.Content_Type.Movie)
+            settings.SetBooleanSetting("DoCharacterArt", ConfigScrapeModifier_Movie.CharacterArt, , , Enums.Content_Type.Movie)
+            settings.SetBooleanSetting("DoClearArt", ConfigScrapeModifier_Movie.ClearArt, , , Enums.Content_Type.Movie)
+            settings.SetBooleanSetting("DoClearLogo", ConfigScrapeModifier_Movie.ClearLogo, , , Enums.Content_Type.Movie)
+            settings.SetBooleanSetting("DoDiscArt", ConfigScrapeModifier_Movie.DiscArt, , , Enums.Content_Type.Movie)
+            settings.SetBooleanSetting("DoLandscape", ConfigScrapeModifier_Movie.Landscape, , , Enums.Content_Type.Movie)
+            settings.SetSetting("FANARTTVApiKey", _setup_Movie.txtFANARTTVApiKey.Text, , , Enums.Content_Type.Movie)
+            settings.SetSetting("FANARTTVLanguage", _MySettings_Movie.FANARTTVLanguage, , , Enums.Content_Type.Movie)
         End Using
     End Sub
 
-    Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.ScraperModule_Image_Movie.SaveSetupScraper
-        _MySettings.FANARTTVLanguage = _setup.cbFANARTTVLanguage.Text
-        _MySettings.ClearArtOnlyHD = _setup.chkScrapeClearArtOnlyHD.Checked
-        _MySettings.ClearLogoOnlyHD = _setup.chkScrapeClearLogoOnlyHD.Checked
-        ConfigScrapeModifier.Poster = _setup.chkScrapePoster.Checked
-        ConfigScrapeModifier.Fanart = _setup.chkScrapeFanart.Checked
-        ConfigScrapeModifier.Banner = _setup.chkScrapeBanner.Checked
-        ConfigScrapeModifier.CharacterArt = _setup.chkScrapeCharacterArt.Checked
-        ConfigScrapeModifier.ClearArt = _setup.chkScrapeClearArt.Checked
-        ConfigScrapeModifier.ClearLogo = _setup.chkScrapeClearLogo.Checked
-        ConfigScrapeModifier.DiscArt = _setup.chkScrapeDiscArt.Checked
-        ConfigScrapeModifier.Landscape = _setup.chkScrapeLandscape.Checked
-        SaveSettings()
+    Sub SaveSettings_MovieSet()
+        Using settings = New clsAdvancedSettings()
+            settings.SetBooleanSetting("ClearArtOnlyHD", _MySettings_MovieSet.ClearArtOnlyHD, , , Enums.Content_Type.MovieSet)
+            settings.SetBooleanSetting("ClearLogoOnlyHD", _MySettings_MovieSet.ClearLogoOnlyHD, , , Enums.Content_Type.MovieSet)
+            settings.SetBooleanSetting("DoPoster", ConfigScrapeModifier_MovieSet.Poster, , , Enums.Content_Type.MovieSet)
+            settings.SetBooleanSetting("DoFanart", ConfigScrapeModifier_MovieSet.Fanart, , , Enums.Content_Type.MovieSet)
+            settings.SetBooleanSetting("DoBanner", ConfigScrapeModifier_MovieSet.Banner, , , Enums.Content_Type.MovieSet)
+            settings.SetBooleanSetting("DoCharacterArt", ConfigScrapeModifier_MovieSet.CharacterArt, , , Enums.Content_Type.MovieSet)
+            settings.SetBooleanSetting("DoClearArt", ConfigScrapeModifier_MovieSet.ClearArt, , , Enums.Content_Type.MovieSet)
+            settings.SetBooleanSetting("DoClearLogo", ConfigScrapeModifier_MovieSet.ClearLogo, , , Enums.Content_Type.MovieSet)
+            settings.SetBooleanSetting("DoDiscArt", ConfigScrapeModifier_MovieSet.DiscArt, , , Enums.Content_Type.MovieSet)
+            settings.SetBooleanSetting("DoLandscape", ConfigScrapeModifier_MovieSet.Landscape, , , Enums.Content_Type.MovieSet)
+            settings.SetSetting("FANARTTVApiKey", _setup_MovieSet.txtFANARTTVApiKey.Text, , , Enums.Content_Type.MovieSet)
+            settings.SetSetting("FANARTTVLanguage", _MySettings_MovieSet.FANARTTVLanguage, , , Enums.Content_Type.MovieSet)
+        End Using
+    End Sub
+
+    Sub SaveSetupScraper_Movie(ByVal DoDispose As Boolean) Implements Interfaces.ScraperModule_Image_Movie.SaveSetupScraper
+        _MySettings_Movie.FANARTTVLanguage = _setup_Movie.cbFANARTTVLanguage.Text
+        _MySettings_Movie.ClearArtOnlyHD = _setup_Movie.chkScrapeClearArtOnlyHD.Checked
+        _MySettings_Movie.ClearLogoOnlyHD = _setup_Movie.chkScrapeClearLogoOnlyHD.Checked
+        ConfigScrapeModifier_Movie.Poster = _setup_Movie.chkScrapePoster.Checked
+        ConfigScrapeModifier_Movie.Fanart = _setup_Movie.chkScrapeFanart.Checked
+        ConfigScrapeModifier_Movie.Banner = _setup_Movie.chkScrapeBanner.Checked
+        ConfigScrapeModifier_Movie.CharacterArt = _setup_Movie.chkScrapeCharacterArt.Checked
+        ConfigScrapeModifier_Movie.ClearArt = _setup_Movie.chkScrapeClearArt.Checked
+        ConfigScrapeModifier_Movie.ClearLogo = _setup_Movie.chkScrapeClearLogo.Checked
+        ConfigScrapeModifier_Movie.DiscArt = _setup_Movie.chkScrapeDiscArt.Checked
+        ConfigScrapeModifier_Movie.Landscape = _setup_Movie.chkScrapeLandscape.Checked
+        SaveSettings_Movie()
         'ModulesManager.Instance.SaveSettings()
         If DoDispose Then
-            RemoveHandler _setup.SetupScraperChanged, AddressOf Handle_SetupScraperChanged
-            RemoveHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
-            RemoveHandler _setup.SetupNeedsRestart, AddressOf Handle_SetupNeedsRestart
-            _setup.Dispose()
+            RemoveHandler _setup_Movie.SetupScraperChanged, AddressOf Handle_SetupScraperChanged_Movie
+            RemoveHandler _setup_Movie.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged_Movie
+            RemoveHandler _setup_Movie.SetupNeedsRestart, AddressOf Handle_SetupNeedsRestart_Movie
+            _setup_Movie.Dispose()
         End If
     End Sub
+
+    Sub SaveSetupScraper_MovieSet(ByVal DoDispose As Boolean) Implements Interfaces.ScraperModule_Image_MovieSet.SaveSetupScraper
+        _MySettings_MovieSet.FANARTTVLanguage = _setup_MovieSet.cbFANARTTVLanguage.Text
+        _MySettings_MovieSet.ClearArtOnlyHD = _setup_MovieSet.chkScrapeClearArtOnlyHD.Checked
+        _MySettings_MovieSet.ClearLogoOnlyHD = _setup_MovieSet.chkScrapeClearLogoOnlyHD.Checked
+        ConfigScrapeModifier_MovieSet.Poster = _setup_MovieSet.chkScrapePoster.Checked
+        ConfigScrapeModifier_MovieSet.Fanart = _setup_MovieSet.chkScrapeFanart.Checked
+        ConfigScrapeModifier_MovieSet.Banner = _setup_MovieSet.chkScrapeBanner.Checked
+        ConfigScrapeModifier_MovieSet.CharacterArt = _setup_MovieSet.chkScrapeCharacterArt.Checked
+        ConfigScrapeModifier_MovieSet.ClearArt = _setup_MovieSet.chkScrapeClearArt.Checked
+        ConfigScrapeModifier_MovieSet.ClearLogo = _setup_MovieSet.chkScrapeClearLogo.Checked
+        ConfigScrapeModifier_MovieSet.DiscArt = _setup_MovieSet.chkScrapeDiscArt.Checked
+        ConfigScrapeModifier_MovieSet.Landscape = _setup_MovieSet.chkScrapeLandscape.Checked
+        SaveSettings_MovieSet()
+        'ModulesManager.Instance.SaveSettings()
+        If DoDispose Then
+            RemoveHandler _setup_MovieSet.SetupScraperChanged, AddressOf Handle_SetupScraperChanged_MovieSet
+            RemoveHandler _setup_MovieSet.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged_MovieSet
+            RemoveHandler _setup_MovieSet.SetupNeedsRestart, AddressOf Handle_SetupNeedsRestart_MovieSet
+            _setup_MovieSet.Dispose()
+        End If
+    End Sub
+
     Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_Movie.Scraper
         logger.Trace("Started scrape")
 
-        LoadSettings()
+        LoadSettings_Movie()
 
         ImageList = _fanartTV.GetFANARTTVImages(DBMovie.Movie.ID, Type)
 
@@ -239,10 +399,10 @@ Public Class FanartTV_Image
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
-    Function Scraper(ByRef DBMovieset As Structures.DBMovieSet, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_Movie.Scraper
+    Function Scraper(ByRef DBMovieset As Structures.DBMovieSet, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_MovieSet.Scraper
         logger.Trace("Started scrape")
 
-        LoadSettings()
+        LoadSettings_MovieSet()
 
         ImageList = _fanartTV.GetFANARTTVImages(DBMovieset.MovieSet.ID, Type)
 
@@ -250,8 +410,12 @@ Public Class FanartTV_Image
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
-    Public Sub ScraperOrderChanged() Implements EmberAPI.Interfaces.ScraperModule_Image_Movie.ScraperOrderChanged
-        _setup.orderChanged()
+    Public Sub ScraperOrderChanged_Movie() Implements EmberAPI.Interfaces.ScraperModule_Image_Movie.ScraperOrderChanged
+        _setup_Movie.orderChanged()
+    End Sub
+
+    Public Sub ScraperOrderChanged_MovieSet() Implements EmberAPI.Interfaces.ScraperModule_Image_MovieSet.ScraperOrderChanged
+        _setup_MovieSet.orderChanged()
     End Sub
 
 #End Region 'Methods

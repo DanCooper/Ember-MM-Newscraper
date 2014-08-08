@@ -76,7 +76,7 @@ Public Class frmTMDBInfoSettingsHolder_MovieSet
 
 
 #Region "Methods"
-    Private Sub PictureBox2_Click(sender As System.Object, e As System.EventArgs) Handles pbTMDBApiKeyInfo.Click
+    Private Sub pbTMDBApiKeyInfo_Click(sender As System.Object, e As System.EventArgs) Handles pbTMDBApiKeyInfo.Click
         If Master.isWindows Then
             Process.Start("http://docs.themoviedb.apiary.io/")
         Else
@@ -189,7 +189,6 @@ Public Class frmTMDBInfoSettingsHolder_MovieSet
         Me.lblTMDBApiKey.Text = Master.eLang.GetString(870, "TMDB API Key")
         Me.lblTMDBPrefLanguage.Text = Master.eLang.GetString(741, "Preferred Language:")
     End Sub
-
 
 #End Region 'Methods
 

@@ -606,8 +606,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\valid2.png" />
-    <None Include="Resources\film1.png" />
     <None Include="Resources\set.png" />
+    <Content Include="Resources\msaa.png" />
     <Content Include="x64\SQLite.Interop.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

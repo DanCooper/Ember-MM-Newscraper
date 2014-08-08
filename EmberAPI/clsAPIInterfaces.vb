@@ -193,134 +193,6 @@ Public Class Interfaces
 
     End Interface
 
-    Public Interface ScraperModule_Image_Movie
-
-#Region "Events"
-
-        Event ModuleSettingsChanged()
-
-        Event MovieScraperEvent(ByVal eType As Enums.ScraperEventType_Movie, ByVal Parameter As Object)
-
-        Event ScraperSetupChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer)
-
-        Event SetupNeedsRestart()
-
-        Event PostersDownloaded(ByVal Posters As List(Of MediaContainers.Image))
-
-        Event ProgressUpdated(ByVal iPercent As Integer)
-
-#End Region 'Events
-
-#Region "Properties"
-
-        ReadOnly Property ModuleName() As String
-
-        ReadOnly Property ModuleVersion() As String
-
-        Property ScraperEnabled() As Boolean
-
-#End Region 'Properties
-
-#Region "Methods"
-
-        Sub ScraperOrderChanged()
-
-        Sub Init(ByVal sAssemblyName As String)
-
-        Function InjectSetupScraper() As Containers.SettingsPanel
-
-        Function QueryScraperCapabilities(ByVal cap As Enums.ScraperCapabilities) As Boolean
-
-        Sub SaveSetupScraper(ByVal DoDispose As Boolean)
-
-        Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult
-
-        Function Scraper(ByRef DBMovieSet As Structures.DBMovieSet, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult
-
-#End Region 'Methods
-
-    End Interface
-
-    Public Interface ScraperModule_Theme_Movie
-
-#Region "Events"
-
-        Event ModuleSettingsChanged()
-
-        Event MovieScraperEvent(ByVal eType As Enums.ScraperEventType_Movie, ByVal Parameter As Object)
-
-        Event ScraperSetupChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer)
-
-        Event SetupNeedsRestart()
-
-#End Region 'Events
-
-#Region "Properties"
-
-        ReadOnly Property ModuleName() As String
-
-        ReadOnly Property ModuleVersion() As String
-
-        Property ScraperEnabled() As Boolean
-
-#End Region 'Properties
-
-#Region "Methods"
-
-        Sub ScraperOrderChanged()
-
-        Sub Init(ByVal sAssemblyName As String)
-
-        Function InjectSetupScraper() As Containers.SettingsPanel
-
-        Function Scraper(ByVal DBMovie As Structures.DBMovie, ByRef URLList As List(Of Themes)) As ModuleResult
-
-        Sub SaveSetupScraper(ByVal DoDispose As Boolean)
-
-#End Region 'Methods
-
-    End Interface
-
-    Public Interface ScraperModule_Trailer_Movie
-
-#Region "Events"
-
-        Event ModuleSettingsChanged()
-
-        Event MovieScraperEvent(ByVal eType As Enums.ScraperEventType_Movie, ByVal Parameter As Object)
-
-        Event ScraperSetupChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer)
-
-        Event SetupNeedsRestart()
-
-#End Region 'Events
-
-#Region "Properties"
-
-        ReadOnly Property ModuleName() As String
-
-        ReadOnly Property ModuleVersion() As String
-
-        Property ScraperEnabled() As Boolean
-
-#End Region 'Properties
-
-#Region "Methods"
-
-        Sub ScraperOrderChanged()
-
-        Sub Init(ByVal sAssemblyName As String)
-
-        Function InjectSetupScraper() As Containers.SettingsPanel
-
-        Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef URLList As List(Of Trailers)) As Interfaces.ModuleResult
-
-        Sub SaveSetupScraper(ByVal DoDispose As Boolean)
-
-#End Region 'Methods
-
-    End Interface
-
     Public Interface ScraperModule_Data_MovieSet
 
 #Region "Events"
@@ -360,6 +232,178 @@ Public Class Interfaces
         'MovieSet is byref because some scrapper may run to update only some fields (defined in Scraper Setup)
         'Options is byref to allow field blocking in scraper chain
         Function Scraper(ByRef DBMovieSet As Structures.DBMovieSet, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.MovieSetScrapeOptions) As ModuleResult
+
+#End Region 'Methods
+
+    End Interface
+
+    Public Interface ScraperModule_Image_Movie
+
+#Region "Events"
+
+        Event ModuleSettingsChanged()
+
+        Event ScraperEvent(ByVal eType As Enums.ScraperEventType_Movie, ByVal Parameter As Object)
+
+        Event ScraperSetupChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer)
+
+        Event SetupNeedsRestart()
+
+        Event ImagesDownloaded(ByVal Images As List(Of MediaContainers.Image))
+
+        Event ProgressUpdated(ByVal iPercent As Integer)
+
+#End Region 'Events
+
+#Region "Properties"
+
+        ReadOnly Property ModuleName() As String
+
+        ReadOnly Property ModuleVersion() As String
+
+        Property ScraperEnabled() As Boolean
+
+#End Region 'Properties
+
+#Region "Methods"
+
+        Sub ScraperOrderChanged()
+
+        Sub Init(ByVal sAssemblyName As String)
+
+        Function InjectSetupScraper() As Containers.SettingsPanel
+
+        Function QueryScraperCapabilities(ByVal cap As Enums.ScraperCapabilities) As Boolean
+
+        Sub SaveSetupScraper(ByVal DoDispose As Boolean)
+
+        Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult
+
+#End Region 'Methods
+
+    End Interface
+
+    Public Interface ScraperModule_Image_MovieSet
+
+#Region "Events"
+
+        Event ModuleSettingsChanged()
+
+        Event ScraperEvent(ByVal eType As Enums.ScraperEventType_MovieSet, ByVal Parameter As Object)
+
+        Event ScraperSetupChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer)
+
+        Event SetupNeedsRestart()
+
+        Event ImagesDownloaded(ByVal Posters As List(Of MediaContainers.Image))
+
+        Event ProgressUpdated(ByVal iPercent As Integer)
+
+#End Region 'Events
+
+#Region "Properties"
+
+        ReadOnly Property ModuleName() As String
+
+        ReadOnly Property ModuleVersion() As String
+
+        Property ScraperEnabled() As Boolean
+
+#End Region 'Properties
+
+#Region "Methods"
+
+        Sub ScraperOrderChanged()
+
+        Sub Init(ByVal sAssemblyName As String)
+
+        Function InjectSetupScraper() As Containers.SettingsPanel
+
+        Function QueryScraperCapabilities(ByVal cap As Enums.ScraperCapabilities) As Boolean
+
+        Sub SaveSetupScraper(ByVal DoDispose As Boolean)
+
+        Function Scraper(ByRef DBMovieSet As Structures.DBMovieSet, ByVal Type As Enums.ScraperCapabilities, ByRef ImageList As List(Of MediaContainers.Image)) As Interfaces.ModuleResult
+
+#End Region 'Methods
+
+    End Interface
+
+    Public Interface ScraperModule_Theme_Movie
+
+#Region "Events"
+
+        Event ModuleSettingsChanged()
+
+        Event ScraperEvent(ByVal eType As Enums.ScraperEventType_Movie, ByVal Parameter As Object)
+
+        Event ScraperSetupChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer)
+
+        Event SetupNeedsRestart()
+
+#End Region 'Events
+
+#Region "Properties"
+
+        ReadOnly Property ModuleName() As String
+
+        ReadOnly Property ModuleVersion() As String
+
+        Property ScraperEnabled() As Boolean
+
+#End Region 'Properties
+
+#Region "Methods"
+
+        Sub ScraperOrderChanged()
+
+        Sub Init(ByVal sAssemblyName As String)
+
+        Function InjectSetupScraper() As Containers.SettingsPanel
+
+        Function Scraper(ByVal DBMovie As Structures.DBMovie, ByRef URLList As List(Of Themes)) As ModuleResult
+
+        Sub SaveSetupScraper(ByVal DoDispose As Boolean)
+
+#End Region 'Methods
+
+    End Interface
+
+    Public Interface ScraperModule_Trailer_Movie
+
+#Region "Events"
+
+        Event ModuleSettingsChanged()
+
+        Event ScraperEvent(ByVal eType As Enums.ScraperEventType_Movie, ByVal Parameter As Object)
+
+        Event ScraperSetupChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer)
+
+        Event SetupNeedsRestart()
+
+#End Region 'Events
+
+#Region "Properties"
+
+        ReadOnly Property ModuleName() As String
+
+        ReadOnly Property ModuleVersion() As String
+
+        Property ScraperEnabled() As Boolean
+
+#End Region 'Properties
+
+#Region "Methods"
+
+        Sub ScraperOrderChanged()
+
+        Sub Init(ByVal sAssemblyName As String)
+
+        Function InjectSetupScraper() As Containers.SettingsPanel
+
+        Function Scraper(ByRef DBMovie As Structures.DBMovie, ByVal Type As Enums.ScraperCapabilities, ByRef URLList As List(Of Trailers)) As Interfaces.ModuleResult
+
+        Sub SaveSetupScraper(ByVal DoDispose As Boolean)
 
 #End Region 'Methods
 

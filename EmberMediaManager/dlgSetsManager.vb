@@ -419,7 +419,7 @@ Public Class dlgSetsManager
                         lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbFanart.Image.Width, pbFanart.Image.Height)
                         lblFanartSize.Visible = True
                     End If
-                    If Not ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Fanart) Then
+                    If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities.Fanart) Then
                         btnSetFanartScrape.Enabled = False
                     End If
                 Else
@@ -436,7 +436,7 @@ Public Class dlgSetsManager
                         lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbPoster.Image.Width, pbPoster.Image.Height)
                         lblPosterSize.Visible = True
                     End If
-                    If Not ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Poster) Then
+                    If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities.Poster) Then
                         btnSetPosterScrape.Enabled = False
                     End If
                 ElseIf IO.File.Exists(collectionartwork_path & currSet.Set & "-poster.png") Then
@@ -447,7 +447,7 @@ Public Class dlgSetsManager
                         lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbPoster.Image.Width, pbPoster.Image.Height)
                         lblPosterSize.Visible = True
                     End If
-                    If Not ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Poster) Then
+                    If Not ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities.Poster) Then
                         btnSetPosterScrape.Enabled = False
                     End If
                 Else
@@ -780,7 +780,7 @@ Public Class dlgSetsManager
             If currSet.Movies.Count > 0 Then
                 Dim collectionMovie As New Structures.DBMovie
                 collectionMovie = currSet.Movies.Item(0).DBMovie
-                If Not ModulesManager.Instance.MovieScrapeImages(collectionMovie, Enums.ScraperCapabilities.Poster, aList) Then
+                If Not ModulesManager.Instance.ScrapeImage_Movie(collectionMovie, Enums.ScraperCapabilities.Poster, aList) Then
                     If aList.Count > 0 Then
                         dlgImgS = New dlgImgSelect()
                         If dlgImgS.ShowDialog(collectionMovie, Enums.MovieImageType.Poster, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
@@ -802,7 +802,7 @@ Public Class dlgSetsManager
             End If
 
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
     Private Sub btnSetFanartScrape_Click(sender As Object, e As EventArgs) Handles btnSetFanartScrape.Click
@@ -816,7 +816,7 @@ Public Class dlgSetsManager
             If currSet.Movies.Count > 0 Then
                 Dim collectionMovie As New Structures.DBMovie
                 collectionMovie = currSet.Movies.Item(0).DBMovie
-                If Not ModulesManager.Instance.MovieScrapeImages(collectionMovie, Enums.ScraperCapabilities.Fanart, aList) Then
+                If Not ModulesManager.Instance.ScrapeImage_Movie(collectionMovie, Enums.ScraperCapabilities.Fanart, aList) Then
                     If aList.Count > 0 Then
                         dlgImgS = New dlgImgSelect()
                         If dlgImgS.ShowDialog(collectionMovie, Enums.MovieImageType.Fanart, aList, efList, etList, True) = Windows.Forms.DialogResult.OK Then
@@ -838,7 +838,7 @@ Public Class dlgSetsManager
             End If
 
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name,ex)
+            Logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 

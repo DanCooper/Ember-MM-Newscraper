@@ -7,8 +7,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{386116B7-7870-4F91-9DEC-C79062882E3E}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>generic.Embercore.MediaSources</RootNamespace>
-    <AssemblyName>generic.Embercore.MediaSources</AssemblyName>
+    <RootNamespace>generic.EmberCore.MediaSources</RootNamespace>
+    <AssemblyName>generic.EmberCore.MediaSources</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>

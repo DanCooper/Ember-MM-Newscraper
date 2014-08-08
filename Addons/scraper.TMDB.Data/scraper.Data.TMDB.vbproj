@@ -169,10 +169,10 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="frmTMDBInfoSettingsHolder.Designer.vb">
-      <DependentUpon>frmTMDBInfoSettingsHolder.vb</DependentUpon>
+    <Compile Include="frmTMDBInfoSettingsHolder_Movie.Designer.vb">
+      <DependentUpon>frmTMDBInfoSettingsHolder_Movie.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmTMDBInfoSettingsHolder.vb">
+    <Compile Include="frmTMDBInfoSettingsHolder_Movie.vb">
       <SubType>Form</SubType>
     </Compile>
   </ItemGroup>
@@ -189,8 +189,8 @@
       <DependentUpon>dlgTMDBSearchResults.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmTMDBInfoSettingsHolder.resx">
-      <DependentUpon>frmTMDBInfoSettingsHolder.vb</DependentUpon>
+    <EmbeddedResource Include="frmTMDBInfoSettingsHolder_Movie.resx">
+      <DependentUpon>frmTMDBInfoSettingsHolder_Movie.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
