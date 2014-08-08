@@ -733,7 +733,7 @@ Namespace TMDBg
                             b = GetMovieInfo(r.Matches.Item(0).TMDBID, imdbMovie, Master.eSettings.MovieScraperFullCrew, Master.eSettings.MovieScraperFullCast, False, Options, True)
                         Else
                             Master.tmpMovie.Clear()
-                            Using dTMDB As New dlgTMDBSearchResults(_MySettings, Me)
+                            Using dTMDB As New dlgTMDBSearchResults_Movie(_MySettings, Me)
 
                                 If dTMDB.ShowDialog(r, sMovieName, dbMovie.Filename) = Windows.Forms.DialogResult.OK Then
                                     If String.IsNullOrEmpty(Master.tmpMovie.TMDBID) Then

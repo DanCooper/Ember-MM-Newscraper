@@ -498,7 +498,7 @@ Public Class TMDB_Data
                 'TODO: maybe find another solution.
                 Me._TMDBg = New TMDBg.Scraper(_TMDBConf, _TMDBConfE, _TMDBApi, _TMDBApiE, _TMDBApiA, True)
 
-                Using dSearch As New dlgTMDBSearchResults(_MySettings_Movie, Me._TMDBg)
+                Using dSearch As New dlgTMDBSearchResults_Movie(_MySettings_Movie, Me._TMDBg)
                     Dim tmpTitle As String = DBMovie.Movie.Title
                     Dim tmpYear As Integer = CInt(IIf(Not String.IsNullOrEmpty(DBMovie.Movie.Year), DBMovie.Movie.Year, 0))
                     If String.IsNullOrEmpty(tmpTitle) Then

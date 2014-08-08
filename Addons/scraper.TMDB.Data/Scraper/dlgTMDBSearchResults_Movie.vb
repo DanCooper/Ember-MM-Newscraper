@@ -25,7 +25,7 @@ Imports WatTmdb
 Imports NLog
 Imports System.Diagnostics
 
-Public Class dlgTMDBSearchResults
+Public Class dlgTMDBSearchResults_Movie
 
 #Region "Fields"
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
