@@ -111,7 +111,6 @@ Public Class dlgTMDBSearchResults_MovieSet
         pOpt = SetPreviewOptions()
         '' The rule is that if there is a tt is an IMDB otherwise is a TMDB
         TMDBg.GetSearchMovieSetInfoAsync(Me.txtTMDBID.Text, Master.tmpMovieSet, pOpt)
-
     End Sub
 
     Private Sub bwDownloadPic_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDownloadPic.DoWork

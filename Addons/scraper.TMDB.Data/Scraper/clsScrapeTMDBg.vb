@@ -659,15 +659,15 @@ Namespace TMDBg
                 'images
                 If GetPoster Then
                     ' I will add original always. to be updated if size, TMDBConf.images.poster_sizes(0) & 
-                    Dim Images As WatTmdb.V3.TmdbCollectionImages
-                    Images = _TMDBApi.GetCollectionImages(MovieSet.id, _MySettings.TMDBLanguage)
+                    Dim Images As WatTmdb.V3.TmdbMovieImages
+                    Images = _TMDBApi.GetMovieImages(MovieSet.id, _MySettings.TMDBLanguage)
                     If Not IsNothing(Images) AndAlso Not IsNothing(Images.posters) Then
                         If (Images.posters.Count = 0) AndAlso _MySettings.FallBackEng Then
-                            Images = _TMDBApiE.GetCollectionImages(MovieSet.id)
+                            Images = _TMDBApiE.GetMovieImages(MovieSet.id)
                         End If
                     Else
                         If _MySettings.FallBackEng Then
-                            Images = _TMDBApiE.GetCollectionImages(MovieSet.id)
+                            Images = _TMDBApiE.GetMovieImages(MovieSet.id)
                         End If
                     End If
                     If Not IsNothing(Images) AndAlso Not IsNothing(Images.posters) Then
@@ -845,7 +845,7 @@ Namespace TMDBg
                     bwTMDBg.WorkerReportsProgress = False
                     bwTMDBg.WorkerSupportsCancellation = True
                     bwTMDBg.RunWorkerAsync(New Arguments With {.Search = SearchType.SearchDetails, _
-                      .Parameter = imdbID, .IMDBMovie = IMDBMovie, .Options = Options})
+                      .Parameter = imdbID, .Movie = IMDBMovie, .Options_Movie = Options})
                 End If
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -859,7 +859,7 @@ Namespace TMDBg
                     bwTMDBg.WorkerReportsProgress = False
                     bwTMDBg.WorkerSupportsCancellation = True
                     bwTMDBg.RunWorkerAsync(New Arguments With {.Search = SearchType.SearchDetails_MovieSet, _
-                      .Parameter = tmdbColID, .tmdbMovieSet = IMDBMovieSet, .Options_movieset = Options})
+                      .Parameter = tmdbColID, .MovieSet = IMDBMovieSet, .Options_movieset = Options})
                 End If
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -873,7 +873,7 @@ Namespace TMDBg
                     bwTMDBg.WorkerReportsProgress = False
                     bwTMDBg.WorkerSupportsCancellation = True
                     bwTMDBg.RunWorkerAsync(New Arguments With {.Search = SearchType.Movies, _
-                      .Parameter = sMovie, .Options = filterOptions, .Year = CInt(sYear)})
+                      .Parameter = sMovie, .Options_Movie = filterOptions, .Year = CInt(sYear)})
                 End If
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -904,7 +904,7 @@ Namespace TMDBg
                         e.Result = New Results With {.ResultType = SearchType.Movies, .Result = r}
 
                     Case SearchType.SearchDetails
-                        Dim s As Boolean = GetMovieInfo(Args.Parameter, Args.IMDBMovie, False, False, True, Args.Options, True)
+                        Dim s As Boolean = GetMovieInfo(Args.Parameter, Args.Movie, False, False, True, Args.Options_Movie, True)
                         e.Result = New Results With {.ResultType = SearchType.SearchDetails, .Success = s}
 
                     Case SearchType.MovieSets
@@ -912,7 +912,7 @@ Namespace TMDBg
                         e.Result = New Results With {.ResultType = SearchType.MovieSets, .Result = r}
 
                     Case SearchType.SearchDetails_MovieSet
-                        Dim s As Boolean = GetMovieSetInfo(Args.Parameter, Args.tmdbMovieSet, True, Args.Options_MovieSet, True)
+                        Dim s As Boolean = GetMovieSetInfo(Args.Parameter, Args.MovieSet, True, Args.Options_MovieSet, True)
                         e.Result = New Results With {.ResultType = SearchType.SearchDetails_MovieSet, .Success = s}
 
                 End Select
@@ -1103,7 +1103,6 @@ Namespace TMDBg
                             MovieSets = _TMDBApi.SearchCollection(sMovieSet, Page, _MySettings.TMDBLanguage)
                             'End If
                         End If
-
                     End While
                 End If
 
@@ -1124,9 +1123,9 @@ Namespace TMDBg
 
             Dim FullCast As Boolean
             Dim FullCrew As Boolean
-            Dim IMDBMovie As MediaContainers.Movie
-            Dim tmdbMovieSet As MediaContainers.MovieSet
-            Dim Options As Structures.MovieScrapeOptions
+            Dim Movie As MediaContainers.Movie
+            Dim MovieSet As MediaContainers.MovieSet
+            Dim Options_Movie As Structures.MovieScrapeOptions
             Dim Options_MovieSet As Structures.MovieSetScrapeOptions
             Dim Parameter As String
             Dim Search As SearchType
