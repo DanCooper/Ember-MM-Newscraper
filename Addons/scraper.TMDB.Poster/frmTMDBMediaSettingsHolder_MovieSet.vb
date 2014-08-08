@@ -120,45 +120,45 @@ Public Class frmTMDBMediaSettingsHolder_MovieSet
         Me.chkScrapeFanart.Text = Master.eLang.GetString(940, "Get Fanart")
         Me.Label1.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), vbCrLf)
         Me.Label18.Text = Master.eLang.GetString(870, "TMDB API Key")
-        Me.GroupBox30.Text = Master.eLang.GetString(937, "TMDB")
-        Me.GroupBox3.Text = Master.eLang.GetString(497, "Images")
-        Me.chkFallBackEng.Text = Master.eLang.GetString(737, "Also Get English Images")
-        Me.chkTMDBLanguagePrefOnly.Text = Master.eLang.GetString(736, "Only Get Images for the Selected Language")
-        Me.Label2.Text = Master.eLang.GetString(741, "Preferred Language:")
+        Me.gbScraper.Text = Master.eLang.GetString(937, "TMDB")
+        Me.gbImages.Text = Master.eLang.GetString(497, "Images")
+        Me.chkGetEnglishImages.Text = Master.eLang.GetString(737, "Also Get English Images")
+        Me.chkPrefLanguageOnly.Text = Master.eLang.GetString(736, "Only Get Images for the Selected Language")
+        Me.lblPrefLanguage.Text = Master.eLang.GetString(741, "Preferred Language:")
         Me.btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API key")
         Me.lblEMMAPI.Text = Master.eLang.GetString(1189, "Ember Media Manager API key")
     End Sub
 
     Private Sub btnUnlockAPI_Click(sender As Object, e As EventArgs) Handles btnUnlockAPI.Click
         Me.lblEMMAPI.Visible = False
-        Me.txtTMDBApiKey.Enabled = True
-        Me.txtTMDBApiKey.Visible = True
+        Me.txtApiKey.Enabled = True
+        Me.txtApiKey.Visible = True
     End Sub
 
-    Private Sub txtTMDBApiKey_TextEnter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTMDBApiKey.Enter
-        _api = txtTMDBApiKey.Text
+    Private Sub txtTMDBApiKey_TextEnter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtApiKey.Enter
+        _api = txtApiKey.Text
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub txtTMDBApiKey_TextValidated(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTMDBApiKey.Validated
-        If Not (_api = txtTMDBApiKey.Text) Then
+    Private Sub txtTMDBApiKey_TextValidated(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtApiKey.Validated
+        If Not (_api = txtApiKey.Text) Then
             RaiseEvent SetupNeedsRestart()
         End If
     End Sub
 
-    Private Sub cbTMDBLanguage_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cbTMDBLanguage.SelectedIndexChanged
-        If Not (_language = cbTMDBLanguage.Text) Then
+    Private Sub cbTMDBLanguage_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cbPrefLanguage.SelectedIndexChanged
+        If Not (_language = cbPrefLanguage.Text) Then
             RaiseEvent SetupNeedsRestart()
         End If
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkFallBackEng_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles chkFallBackEng.CheckedChanged
+    Private Sub chkFallBackEng_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles chkGetEnglishImages.CheckedChanged
         RaiseEvent SetupNeedsRestart()
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkTMDBLanguagePrefOnly_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles chkTMDBLanguagePrefOnly.CheckedChanged
+    Private Sub chkTMDBLanguagePrefOnly_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles chkPrefLanguageOnly.CheckedChanged
         RaiseEvent SetupNeedsRestart()
         RaiseEvent ModuleSettingsChanged()
     End Sub

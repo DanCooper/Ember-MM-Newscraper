@@ -176,9 +176,9 @@ Public Class frmFanartTVMediaSettingsHolder_Movie
         Me.chkScrapeDiscArt.Text = Master.eLang.GetString(1055, "Get DiscArt")
         Me.chkScrapeLandscape.Text = Master.eLang.GetString(1056, "Get Landscape")
         Me.lblAPIKey.Text = Master.eLang.GetString(789, "Fanart.tv API Key:")
-        Me.lblFANARTTVPrefLanguage.Text = Master.eLang.GetString(741, "Preferred Language:")
+        Me.lblPrefLanguage.Text = Master.eLang.GetString(741, "Preferred Language:")
         Me.Label3.Text = Master.eLang.GetString(168, "Scrape Order")
-        Me.gbAPIKey.Text = Master.eLang.GetString(788, "Fanart.tv")
+        Me.gbScraper.Text = Master.eLang.GetString(788, "Fanart.tv")
         Me.cbEnabled.Text = Master.eLang.GetString(774, "Enabled")
         Me.Label1.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), vbCrLf)
     End Sub
@@ -188,8 +188,8 @@ Public Class frmFanartTVMediaSettingsHolder_Movie
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub cbFANARTTVLanguage_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cbFANARTTVLanguage.SelectedIndexChanged
-        If Not (_language = cbFANARTTVLanguage.Text) Then
+    Private Sub cbFANARTTVLanguage_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cbPrefLanguage.SelectedIndexChanged
+        If Not (_language = cbPrefLanguage.Text) Then
             RaiseEvent SetupNeedsRestart()
         End If
         RaiseEvent ModuleSettingsChanged()

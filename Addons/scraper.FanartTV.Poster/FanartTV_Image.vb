@@ -219,7 +219,7 @@ Public Class FanartTV_Image
         _setup_Movie.chkScrapeDiscArt.Checked = ConfigScrapeModifier_Movie.DiscArt
         _setup_Movie.chkScrapeLandscape.Checked = ConfigScrapeModifier_Movie.Landscape
         _setup_Movie.txtFANARTTVApiKey.Text = strPrivateAPIKey
-        _setup_Movie.cbFANARTTVLanguage.Text = _MySettings_Movie.FANARTTVLanguage
+        _setup_Movie.cbPrefLanguage.Text = _MySettings_Movie.FANARTTVLanguage
 
         _setup_Movie.orderChanged()
         Spanel.Name = String.Concat(Me._Name, "_Movie")
@@ -253,7 +253,7 @@ Public Class FanartTV_Image
         _setup_MovieSet.chkScrapeDiscArt.Checked = ConfigScrapeModifier_MovieSet.DiscArt
         _setup_MovieSet.chkScrapeLandscape.Checked = ConfigScrapeModifier_MovieSet.Landscape
         _setup_MovieSet.txtFANARTTVApiKey.Text = strPrivateAPIKey
-        _setup_MovieSet.cbFANARTTVLanguage.Text = _MySettings_MovieSet.FANARTTVLanguage
+        _setup_MovieSet.cbPrefLanguage.Text = _MySettings_MovieSet.FANARTTVLanguage
 
         _setup_MovieSet.orderChanged()
 
@@ -345,7 +345,7 @@ Public Class FanartTV_Image
     End Sub
 
     Sub SaveSetupScraper_Movie(ByVal DoDispose As Boolean) Implements Interfaces.ScraperModule_Image_Movie.SaveSetupScraper
-        _MySettings_Movie.FANARTTVLanguage = _setup_Movie.cbFANARTTVLanguage.Text
+        _MySettings_Movie.FANARTTVLanguage = _setup_Movie.cbPrefLanguage.Text
         _MySettings_Movie.ClearArtOnlyHD = _setup_Movie.chkScrapeClearArtOnlyHD.Checked
         _MySettings_Movie.ClearLogoOnlyHD = _setup_Movie.chkScrapeClearLogoOnlyHD.Checked
         ConfigScrapeModifier_Movie.Poster = _setup_Movie.chkScrapePoster.Checked
@@ -367,7 +367,7 @@ Public Class FanartTV_Image
     End Sub
 
     Sub SaveSetupScraper_MovieSet(ByVal DoDispose As Boolean) Implements Interfaces.ScraperModule_Image_MovieSet.SaveSetupScraper
-        _MySettings_MovieSet.FANARTTVLanguage = _setup_MovieSet.cbFANARTTVLanguage.Text
+        _MySettings_MovieSet.FANARTTVLanguage = _setup_MovieSet.cbPrefLanguage.Text
         _MySettings_MovieSet.ClearArtOnlyHD = _setup_MovieSet.chkScrapeClearArtOnlyHD.Checked
         _MySettings_MovieSet.ClearLogoOnlyHD = _setup_MovieSet.chkScrapeClearLogoOnlyHD.Checked
         ConfigScrapeModifier_MovieSet.Poster = _setup_MovieSet.chkScrapePoster.Checked
