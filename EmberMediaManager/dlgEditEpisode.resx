@@ -243,7 +243,7 @@
   <data name="btnSetEpisodePosterDL.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6
-        JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAAAr3AAAK9wEQ6JLnAAAQNklE
+        JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAAAr2AAAK9gHCr3ADAAAQNklE
         QVRoQ9WXB1QV19qGN1WRqoAYmihIVRQVMLbEmNiiMabca0zslSZSFJQmXaqiHqQqAkdAOkgREaSDAhYE
         5GqMmlhiiw0FLO//zYkmxjO5MXfd/67lWetZc+Zde2a/X5k9exiAdxpe8V2CV3yX4BXfJXjFdwle8fHT
         F7/R++wFu979lEU232b72++x0OO3mUPFDeZWc5vZV9xlDpW3mH/TQ7a18bp87KnQSdsaQxz8ahZGu5R/
@@ -357,7 +357,7 @@
   <data name="btnSetEpisodePosterScrape.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6
-        JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAAAr3AAAK9wEQ6JLnAAAPx0lE
+        JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAAAr2AAAK9gHCr3ADAAAPx0lE
         QVRoQ9WXB1QV19bHDyBYUCyoGEQF6WLDAvZoTOzGZ8mLvYJIR0BFAREQkSoWlKpIb1IuUgQEqaKCHZCH
         MXYTW2zY9f/tcxWf3MEXdb3vreVd67dmZt9z9vnvMmdmGIBvmmaN3xLNGr8lmjV+SzRr/JZo1vj01dsP
         vHj9lt1qeMX8K++y/dUPmPfxu8yy4A+2ruQusyi4zywL7zD3Y4/Zpopb8sGnvUdurfCydCuZu9suf1aK
@@ -490,7 +490,7 @@
   <data name="btnSetEpisodeFanartDL.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6
-        JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAAAr3AAAK9wEQ6JLnAAAQNklE
+        JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAAAr2AAAK9gHCr3ADAAAQNklE
         QVRoQ9WXB1QV19qGN1WRqoAYmihIVRQVMLbEmNiiMabca0zslSZSFJQmXaqiHqQqAkdAOkgREaSDAhYE
         5GqMmlhiiw0FLO//zYkmxjO5MXfd/67lWetZc+Zde2a/X5k9exiAdxpe8V2CV3yX4BXfJXjFdwle8fHT
         F7/R++wFu979lEU232b72++x0OO3mUPFDeZWc5vZV9xlDpW3mH/TQ7a18bp87KnQSdsaQxz8ahZGu5R/
@@ -604,7 +604,7 @@
   <data name="btnSetEpisodeFanartScrape.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6
-        JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAAAr3AAAK9wEQ6JLnAAAPx0lE
+        JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAAAr2AAAK9gHCr3ADAAAPx0lE
         QVRoQ9WXB1QV19bHDyBYUCyoGEQF6WLDAvZoTOzGZ8mLvYJIR0BFAREQkSoWlKpIb1IuUgQEqaKCHZCH
         MXYTW2zY9f/tcxWf3MEXdb3vreVd67dmZt9z9vnvMmdmGIBvmmaN3xLNGr8lmjV+SzRr/JZo1vj01dsP
         vHj9lt1qeMX8K++y/dUPmPfxu8yy4A+2ruQusyi4zywL7zD3Y4/Zpopb8sGnvUdurfCydCuZu9suf1aK

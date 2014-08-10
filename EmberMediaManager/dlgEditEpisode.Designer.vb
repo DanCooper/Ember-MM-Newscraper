@@ -82,6 +82,11 @@ Partial Class dlgEditEpisode
         Me.OK_Button = New System.Windows.Forms.Button()
         Me.ofdImage = New System.Windows.Forms.OpenFileDialog()
         Me.chkWatched = New System.Windows.Forms.CheckBox()
+        Me.pbStar10 = New System.Windows.Forms.PictureBox()
+        Me.pbStar9 = New System.Windows.Forms.PictureBox()
+        Me.pbStar8 = New System.Windows.Forms.PictureBox()
+        Me.pbStar7 = New System.Windows.Forms.PictureBox()
+        Me.pbStar6 = New System.Windows.Forms.PictureBox()
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tcEditEpisode.SuspendLayout()
@@ -97,6 +102,11 @@ Partial Class dlgEditEpisode
         CType(Me.pbEpisodeFanart, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tpFrameExtraction.SuspendLayout()
         Me.tpEpisodeMetaData.SuspendLayout()
+        CType(Me.pbStar10, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbStar9, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbStar8, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbStar7, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbStar6, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'pnlTop
@@ -165,6 +175,11 @@ Partial Class dlgEditEpisode
         '
         'tpEpsiodeDetails
         '
+        Me.tpEpsiodeDetails.Controls.Add(Me.pbStar10)
+        Me.tpEpsiodeDetails.Controls.Add(Me.pbStar9)
+        Me.tpEpsiodeDetails.Controls.Add(Me.pbStar8)
+        Me.tpEpsiodeDetails.Controls.Add(Me.pbStar7)
+        Me.tpEpsiodeDetails.Controls.Add(Me.pbStar6)
         Me.tpEpsiodeDetails.Controls.Add(Me.btnActorDown)
         Me.tpEpsiodeDetails.Controls.Add(Me.btnActorUp)
         Me.tpEpsiodeDetails.Controls.Add(Me.txtAired)
@@ -224,7 +239,7 @@ Partial Class dlgEditEpisode
         Me.txtAired.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtAired.Location = New System.Drawing.Point(111, 67)
         Me.txtAired.Name = "txtAired"
-        Me.txtAired.Size = New System.Drawing.Size(88, 22)
+        Me.txtAired.Size = New System.Drawing.Size(137, 22)
         Me.txtAired.TabIndex = 9
         '
         'txtEpisode
@@ -267,7 +282,7 @@ Partial Class dlgEditEpisode
         '
         Me.lblCredits.AutoSize = True
         Me.lblCredits.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblCredits.Location = New System.Drawing.Point(217, 139)
+        Me.lblCredits.Location = New System.Drawing.Point(267, 139)
         Me.lblCredits.Name = "lblCredits"
         Me.lblCredits.Size = New System.Drawing.Size(46, 13)
         Me.lblCredits.TabIndex = 13
@@ -276,9 +291,9 @@ Partial Class dlgEditEpisode
         'txtCredits
         '
         Me.txtCredits.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtCredits.Location = New System.Drawing.Point(217, 155)
+        Me.txtCredits.Location = New System.Drawing.Point(270, 155)
         Me.txtCredits.Name = "txtCredits"
-        Me.txtCredits.Size = New System.Drawing.Size(408, 22)
+        Me.txtCredits.Size = New System.Drawing.Size(355, 22)
         Me.txtCredits.TabIndex = 14
         '
         'btnEditActor
@@ -370,14 +385,14 @@ Partial Class dlgEditEpisode
         Me.txtDirector.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtDirector.Location = New System.Drawing.Point(7, 155)
         Me.txtDirector.Name = "txtDirector"
-        Me.txtDirector.Size = New System.Drawing.Size(192, 22)
+        Me.txtDirector.Size = New System.Drawing.Size(241, 22)
         Me.txtDirector.TabIndex = 12
         '
         'lblPlot
         '
         Me.lblPlot.AutoSize = True
         Me.lblPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblPlot.Location = New System.Drawing.Point(217, 7)
+        Me.lblPlot.Location = New System.Drawing.Point(267, 7)
         Me.lblPlot.Name = "lblPlot"
         Me.lblPlot.Size = New System.Drawing.Size(31, 13)
         Me.lblPlot.TabIndex = 2
@@ -387,10 +402,10 @@ Partial Class dlgEditEpisode
         '
         Me.txtPlot.AcceptsReturn = True
         Me.txtPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtPlot.Location = New System.Drawing.Point(217, 26)
+        Me.txtPlot.Location = New System.Drawing.Point(270, 26)
         Me.txtPlot.Multiline = True
         Me.txtPlot.Name = "txtPlot"
-        Me.txtPlot.Size = New System.Drawing.Size(611, 108)
+        Me.txtPlot.Size = New System.Drawing.Size(558, 108)
         Me.txtPlot.TabIndex = 3
         '
         'pbStar5
@@ -468,7 +483,7 @@ Partial Class dlgEditEpisode
         Me.txtTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtTitle.Location = New System.Drawing.Point(7, 26)
         Me.txtTitle.Name = "txtTitle"
-        Me.txtTitle.Size = New System.Drawing.Size(192, 22)
+        Me.txtTitle.Size = New System.Drawing.Size(241, 22)
         Me.txtTitle.TabIndex = 1
         '
         'tpEpisodePoster
@@ -715,6 +730,46 @@ Partial Class dlgEditEpisode
         Me.chkWatched.Text = "Watched"
         Me.chkWatched.UseVisualStyleBackColor = True
         '
+        'pbStar10
+        '
+        Me.pbStar10.Location = New System.Drawing.Point(224, 110)
+        Me.pbStar10.Name = "pbStar10"
+        Me.pbStar10.Size = New System.Drawing.Size(24, 24)
+        Me.pbStar10.TabIndex = 82
+        Me.pbStar10.TabStop = False
+        '
+        'pbStar9
+        '
+        Me.pbStar9.Location = New System.Drawing.Point(200, 110)
+        Me.pbStar9.Name = "pbStar9"
+        Me.pbStar9.Size = New System.Drawing.Size(24, 24)
+        Me.pbStar9.TabIndex = 81
+        Me.pbStar9.TabStop = False
+        '
+        'pbStar8
+        '
+        Me.pbStar8.Location = New System.Drawing.Point(176, 110)
+        Me.pbStar8.Name = "pbStar8"
+        Me.pbStar8.Size = New System.Drawing.Size(24, 24)
+        Me.pbStar8.TabIndex = 80
+        Me.pbStar8.TabStop = False
+        '
+        'pbStar7
+        '
+        Me.pbStar7.Location = New System.Drawing.Point(152, 110)
+        Me.pbStar7.Name = "pbStar7"
+        Me.pbStar7.Size = New System.Drawing.Size(24, 24)
+        Me.pbStar7.TabIndex = 79
+        Me.pbStar7.TabStop = False
+        '
+        'pbStar6
+        '
+        Me.pbStar6.Location = New System.Drawing.Point(128, 110)
+        Me.pbStar6.Name = "pbStar6"
+        Me.pbStar6.Size = New System.Drawing.Size(24, 24)
+        Me.pbStar6.TabIndex = 78
+        Me.pbStar6.TabStop = False
+        '
         'dlgEditEpisode
         '
         Me.AcceptButton = Me.OK_Button
@@ -753,6 +808,11 @@ Partial Class dlgEditEpisode
         CType(Me.pbEpisodeFanart, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tpFrameExtraction.ResumeLayout(False)
         Me.tpEpisodeMetaData.ResumeLayout(False)
+        CType(Me.pbStar10, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbStar9, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbStar8, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbStar7, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbStar6, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -816,5 +876,10 @@ Partial Class dlgEditEpisode
     Friend WithEvents pnlFrameExtrator As System.Windows.Forms.Panel
     Friend WithEvents ofdImage As System.Windows.Forms.OpenFileDialog
     Friend WithEvents chkWatched As System.Windows.Forms.CheckBox
+    Friend WithEvents pbStar10 As System.Windows.Forms.PictureBox
+    Friend WithEvents pbStar9 As System.Windows.Forms.PictureBox
+    Friend WithEvents pbStar8 As System.Windows.Forms.PictureBox
+    Friend WithEvents pbStar7 As System.Windows.Forms.PictureBox
+    Friend WithEvents pbStar6 As System.Windows.Forms.PictureBox
 
 End Class
