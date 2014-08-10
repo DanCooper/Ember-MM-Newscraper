@@ -74,7 +74,6 @@ Public Class BulkRenamerModule
             Else
                 Disable()
             End If
-
         End Set
     End Property
 
@@ -99,7 +98,7 @@ Public Class BulkRenamerModule
             Case Enums.ModuleEventType.MovieScraperRDYtoSave
                 Dim tDBMovie As EmberAPI.Structures.DBMovie = DirectCast(_refparam, EmberAPI.Structures.DBMovie)
                 If Not String.IsNullOrEmpty(tDBMovie.Movie.Title) AndAlso MySettings.AutoRenameMulti AndAlso Master.GlobalScrapeMod.NFO AndAlso (Not String.IsNullOrEmpty(MySettings.FoldersPattern) AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern)) Then
-                    FileFolderRenamer.RenameSingle(tDBMovie, MySettings.FoldersPattern, MySettings.FilesPattern, False, Not String.IsNullOrEmpty(tDBMovie.Movie.IMDBID), False)
+                    FileFolderRenamer.RenameSingle(tDBMovie, MySettings.FoldersPattern, MySettings.FilesPattern, False, False, False)
                 End If
             Case Enums.ModuleEventType.RenameMovie
                 If MySettings.AutoRenameSingle AndAlso Not String.IsNullOrEmpty(MySettings.FoldersPattern) AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern) Then
@@ -271,7 +270,7 @@ Public Class BulkRenamerModule
     End Sub
 
     Sub SaveEmberExternalModule(ByVal DoDispose As Boolean) Implements Interfaces.GenericModule.SaveSetup
-        Me.Enabled = _setup.chkEnabled.Checked
+        Me._enabled = _setup.chkEnabled.Checked
         MySettings.FoldersPattern = _setup.txtFolderPattern.Text
         MySettings.FilesPattern = _setup.txtFilePattern.Text
         MySettings.AutoRenameMulti = _setup.chkRenameMulti.Checked

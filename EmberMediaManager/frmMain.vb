@@ -2321,6 +2321,7 @@ Public Class frmMain
                 If bwMovieScraper.CancellationPending Then Exit For
 
                 If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
+                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieScraperRDYtoSave, Nothing, DBScrapeMovie)
                     Master.DB.SaveMovieToDB(DBScrapeMovie, False, False, Not String.IsNullOrEmpty(DBScrapeMovie.Movie.IMDBID))
                     ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieSync, Nothing, DBScrapeMovie)
                     bwMovieScraper.ReportProgress(-1, If(Not OldTitle = NewTitle, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldTitle, NewTitle), NewTitle))
