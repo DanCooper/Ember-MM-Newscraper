@@ -1079,8 +1079,8 @@ Public Class Functions
         Return Math.Floor(diff.TotalSeconds)
     End Function
     ' TODO DOC Need appropriate header and tests
-    Public Shared Function LocksToOptions() As Structures.MovieScrapeOptions
-        Dim options As New Structures.MovieScrapeOptions
+    Public Shared Function LocksToOptions() As Structures.ScrapeOptions_Movie
+        Dim options As New Structures.ScrapeOptions_Movie
         With options
             .bCast = True
             .bCert = True
@@ -1419,8 +1419,8 @@ Public Class Functions
     ''' <param name="Options2">Secondary Structures.MovieScrapeOptions</param>
     ''' <returns>Structures.MovieScrapeOptions representing the AndAlso union of the two parameters</returns>
     ''' <remarks></remarks>
-    Public Shared Function MovieScrapeOptionsAndAlso(ByVal Options As Structures.MovieScrapeOptions, ByVal Options2 As Structures.MovieScrapeOptions) As Structures.MovieScrapeOptions
-        Dim filterOptions As New Structures.MovieScrapeOptions
+    Public Shared Function MovieScrapeOptionsAndAlso(ByVal Options As Structures.ScrapeOptions_Movie, ByVal Options2 As Structures.ScrapeOptions_Movie) As Structures.ScrapeOptions_Movie
+        Dim filterOptions As New Structures.ScrapeOptions_Movie
         filterOptions.bCast = Options.bCast AndAlso Options2.bCast
         filterOptions.bCert = Options.bCert AndAlso Options2.bCert
         filterOptions.bCleanPlotOutline = Options.bCleanPlotOutline AndAlso Options2.bCleanPlotOutline
@@ -1459,8 +1459,8 @@ Public Class Functions
     ''' <param name="Options2">Secondary Structures.MovieSetScrapeOptions</param>
     ''' <returns>Structures.MovieSetScrapeOptions representing the AndAlso union of the two parameters</returns>
     ''' <remarks></remarks>
-    Public Shared Function MovieSetScrapeOptionsAndAlso(ByVal Options As Structures.MovieSetScrapeOptions, ByVal Options2 As Structures.MovieSetScrapeOptions) As Structures.MovieSetScrapeOptions
-        Dim filterOptions As New Structures.MovieSetScrapeOptions
+    Public Shared Function MovieSetScrapeOptionsAndAlso(ByVal Options As Structures.ScrapeOptions_MovieSet, ByVal Options2 As Structures.ScrapeOptions_MovieSet) As Structures.ScrapeOptions_MovieSet
+        Dim filterOptions As New Structures.ScrapeOptions_MovieSet
         filterOptions.bPlot = Options.bPlot AndAlso Options2.bPlot
         filterOptions.bTitle = Options.bTitle AndAlso Options2.bTitle
         Return filterOptions
@@ -1728,7 +1728,7 @@ Public Class Structures
 
     Public Structure CustomUpdaterStruct
         Dim Canceled As Boolean
-        Dim Options As MovieScrapeOptions
+        Dim Options As ScrapeOptions_Movie
         Dim ScrapeType As Enums.ScrapeType
     End Structure
     ''' <summary>
@@ -1924,7 +1924,7 @@ Public Class Structures
     ''' </summary>
     ''' <remarks></remarks>
     <Serializable()> _
-    Public Structure MovieScrapeOptions
+    Public Structure ScrapeOptions_Movie
         Dim bCast As Boolean
         Dim bCert As Boolean
         Dim bCollection As Boolean
@@ -1961,7 +1961,7 @@ Public Class Structures
     ''' </summary>
     ''' <remarks></remarks>
     <Serializable()> _
-    Public Structure MovieSetScrapeOptions
+    Public Structure ScrapeOptions_MovieSet
         Dim bPlot As Boolean
         Dim bTitle As Boolean
     End Structure

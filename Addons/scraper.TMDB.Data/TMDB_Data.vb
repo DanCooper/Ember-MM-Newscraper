@@ -33,8 +33,8 @@ Public Class TMDB_Data
 
 #Region "Fields"
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
-    Public Shared ConfigOptions_Movie As New Structures.MovieScrapeOptions
-    Public Shared ConfigOptions_MovieSet As New Structures.MovieSetScrapeOptions
+    Public Shared ConfigOptions_Movie As New Structures.ScrapeOptions_Movie
+    Public Shared ConfigOptions_MovieSet As New Structures.ScrapeOptions_MovieSet
     Public Shared ConfigScrapeModifier_Movie As New Structures.ScrapeModifier
     Public Shared ConfigScrapeModifier_MovieSet As New Structures.ScrapeModifier
     Public Shared _AssemblyName As String
@@ -427,10 +427,10 @@ Public Class TMDB_Data
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
-    Function Scraper(ByRef DBMovie As Structures.DBMovie, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.MovieScrapeOptions) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.Scraper
+    Function Scraper(ByRef DBMovie As Structures.DBMovie, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions_Movie) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.Scraper
         Dim tTitle As String = String.Empty
         Dim OldTitle As String = DBMovie.Movie.Title
-        Dim filterOptions As Structures.MovieScrapeOptions = Functions.MovieScrapeOptionsAndAlso(Options, ConfigOptions_Movie)
+        Dim filterOptions As Structures.ScrapeOptions_Movie = Functions.MovieScrapeOptionsAndAlso(Options, ConfigOptions_Movie)
 
         If IsNothing(_TMDBApi) Then
             logger.Error(Master.eLang.GetString(938, "TheMovieDB API is missing or not valid"), _TMDBApi.Error.status_message)
@@ -580,10 +580,10 @@ Public Class TMDB_Data
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
-    Function Scraper(ByRef DBMovieSet As Structures.DBMovieSet, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.MovieSetScrapeOptions) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_MovieSet.Scraper
+    Function Scraper(ByRef DBMovieSet As Structures.DBMovieSet, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions_MovieSet) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_MovieSet.Scraper
         Dim tTitle As String = String.Empty
         Dim OldTitle As String = DBMovieSet.ListTitle
-        Dim filterOptions As Structures.MovieSetScrapeOptions = Functions.MovieSetScrapeOptionsAndAlso(Options, ConfigOptions_MovieSet)
+        Dim filterOptions As Structures.ScrapeOptions_MovieSet = Functions.MovieSetScrapeOptionsAndAlso(Options, ConfigOptions_MovieSet)
 
         If IsNothing(_TMDBApi) Then
             logger.Error(Master.eLang.GetString(938, "TheMovieDB API is missing or not valid"), _TMDBApi.Error.status_message)

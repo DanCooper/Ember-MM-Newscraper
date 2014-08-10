@@ -32,8 +32,8 @@ Public Class TMDB_Image
 
 #Region "Fields"
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
-    Public Shared ConfigOptions_Movie As New Structures.MovieScrapeOptions
-    Public Shared ConfigOptions_MovieSet As New Structures.MovieSetScrapeOptions
+    Public Shared ConfigOptions_Movie As New Structures.ScrapeOptions_Movie
+    Public Shared ConfigOptions_MovieSet As New Structures.ScrapeOptions_MovieSet
     Public Shared ConfigScrapeModifier_Movie As New Structures.ScrapeModifier
     Public Shared ConfigScrapeModifier_MovieSet As New Structures.ScrapeModifier
     Public Shared _AssemblyName As String
@@ -47,8 +47,8 @@ Public Class TMDB_Image
     ''' </summary>
     ''' <remarks></remarks>
     Private strPrivateAPIKey As String = String.Empty
-    Private _MySettings_Movie As New sMySettings_Movie
-    Private _MySettings_MovieSet As New sMySettings_MovieSet
+    Private _MySettings_Movie As New sMySettings
+    Private _MySettings_MovieSet As New sMySettings
     Private _Name As String = "TMDB_Image"
     Private _ScraperEnabled_Movie As Boolean = False
     Private _ScraperEnabled_MovieSet As Boolean = False
@@ -177,7 +177,7 @@ Public Class TMDB_Image
         _AssemblyName = sAssemblyName
         LoadSettings_Movie()
         'Must be after Load settings to retrieve the correct API key
-        _TMDBApi = New WatTmdb.V3.Tmdb(_MySettings_Movie.TMDBAPIKey, _MySettings_Movie.TMDBLanguage)
+        _TMDBApi = New WatTmdb.V3.Tmdb(_MySettings_Movie.APIKey, _MySettings_Movie.PrefLanguage)
         If IsNothing(_TMDBApi) Then
             logger.Error(Master.eLang.GetString(938, "TheMovieDB API is missing or not valid"), _TMDBApi.Error.status_message)
         Else
@@ -186,9 +186,9 @@ Public Class TMDB_Image
             End If
         End If
         _TMDBConf = _TMDBApi.GetConfiguration()
-        _TMDBApiE = New WatTmdb.V3.Tmdb(_MySettings_Movie.TMDBAPIKey)
+        _TMDBApiE = New WatTmdb.V3.Tmdb(_MySettings_Movie.APIKey)
         _TMDBConfE = _TMDBApiE.GetConfiguration()
-        _TMDBApiA = New WatTmdb.V3.Tmdb(_MySettings_Movie.TMDBAPIKey, "")
+        _TMDBApiA = New WatTmdb.V3.Tmdb(_MySettings_Movie.APIKey, "")
         _TMDBg = New TMDBg.Scraper(_TMDBConf, _TMDBConfE, _TMDBApi, _TMDBApiE, _TMDBApiA, True)
         TMDB = New TMDB.Scraper(_TMDBConf, _TMDBConfE, _TMDBApi, _TMDBApiE, _TMDBApiA, _MySettings_Movie)
     End Sub
@@ -197,7 +197,7 @@ Public Class TMDB_Image
         _AssemblyName = sAssemblyName
         LoadSettings_MovieSet()
         'Must be after Load settings to retrieve the correct API key
-        _TMDBApi = New WatTmdb.V3.Tmdb(_MySettings_MovieSet.TMDBAPIKey, _MySettings_MovieSet.TMDBLanguage)
+        _TMDBApi = New WatTmdb.V3.Tmdb(_MySettings_MovieSet.APIKey, _MySettings_MovieSet.PrefLanguage)
         If IsNothing(_TMDBApi) Then
             logger.Error(Master.eLang.GetString(938, "TheMovieDB API is missing or not valid"), _TMDBApi.Error.status_message)
         Else
@@ -206,9 +206,9 @@ Public Class TMDB_Image
             End If
         End If
         _TMDBConf = _TMDBApi.GetConfiguration()
-        _TMDBApiE = New WatTmdb.V3.Tmdb(_MySettings_MovieSet.TMDBAPIKey)
+        _TMDBApiE = New WatTmdb.V3.Tmdb(_MySettings_MovieSet.APIKey)
         _TMDBConfE = _TMDBApiE.GetConfiguration()
-        _TMDBApiA = New WatTmdb.V3.Tmdb(_MySettings_MovieSet.TMDBAPIKey, "")
+        _TMDBApiA = New WatTmdb.V3.Tmdb(_MySettings_MovieSet.APIKey, "")
         _TMDBg = New TMDBg.Scraper(_TMDBConf, _TMDBConfE, _TMDBApi, _TMDBApiE, _TMDBApiA, True)
         TMDB = New TMDB.Scraper(_TMDBConf, _TMDBConfE, _TMDBApi, _TMDBApiE, _TMDBApiA, _MySettings_Movie) 'todo: _MySettings_MovieSet
     End Sub
@@ -220,12 +220,12 @@ Public Class TMDB_Image
         _setup_Movie.cbEnabled.Checked = _ScraperEnabled_Movie
         _setup_Movie.chkScrapePoster.Checked = ConfigScrapeModifier_Movie.Poster
         _setup_Movie.chkScrapeFanart.Checked = ConfigScrapeModifier_Movie.Fanart
-        _setup_Movie.txtTMDBApiKey.Text = strPrivateAPIKey
-        _setup_Movie.cbTMDBLanguage.Text = _MySettings_Movie.TMDBLanguage
-        _setup_Movie.chkFallBackEng.Checked = _MySettings_Movie.FallBackEng
-        _setup_Movie.chkTMDBLanguagePrefOnly.Checked = _MySettings_Movie.TMDBLanguagePrefOnly
-        _setup_Movie.Lang = _setup_Movie.cbTMDBLanguage.Text
-        _setup_Movie.API = _setup_Movie.txtTMDBApiKey.Text
+        _setup_Movie.txtApiKey.Text = strPrivateAPIKey
+        _setup_Movie.cbPrefLanguage.Text = _MySettings_Movie.PrefLanguage
+        _setup_Movie.chkGetEnglishImages.Checked = _MySettings_Movie.GetEnglishImages
+        _setup_Movie.chkPrefLanguageOnly.Checked = _MySettings_Movie.PrefLanguageOnly
+        _setup_Movie.Lang = _setup_Movie.cbPrefLanguage.Text
+        _setup_Movie.API = _setup_Movie.txtApiKey.Text
 
         _setup_Movie.orderChanged()
 
@@ -252,9 +252,9 @@ Public Class TMDB_Image
         _setup_MovieSet.chkScrapePoster.Checked = ConfigScrapeModifier_MovieSet.Poster
         _setup_MovieSet.chkScrapeFanart.Checked = ConfigScrapeModifier_MovieSet.Fanart
         _setup_MovieSet.txtApiKey.Text = strPrivateAPIKey
-        _setup_MovieSet.cbPrefLanguage.Text = _MySettings_MovieSet.TMDBLanguage
-        _setup_MovieSet.chkGetEnglishImages.Checked = _MySettings_MovieSet.FallBackEng
-        _setup_MovieSet.chkPrefLanguageOnly.Checked = _MySettings_MovieSet.TMDBLanguagePrefOnly
+        _setup_MovieSet.cbPrefLanguage.Text = _MySettings_MovieSet.PrefLanguage
+        _setup_MovieSet.chkGetEnglishImages.Checked = _MySettings_MovieSet.GetEnglishImages
+        _setup_MovieSet.chkPrefLanguageOnly.Checked = _MySettings_MovieSet.PrefLanguageOnly
         _setup_MovieSet.Lang = _setup_MovieSet.cbPrefLanguage.Text
         _setup_MovieSet.API = _setup_MovieSet.txtApiKey.Text
 
@@ -277,11 +277,12 @@ Public Class TMDB_Image
 
     Sub LoadSettings_Movie()
 
-        strPrivateAPIKey = clsAdvancedSettings.GetSetting("TMDBAPIKey", "", , Enums.Content_Type.Movie)
-        _MySettings_Movie.TMDBAPIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "44810eefccd9cb1fa1d57e7b0d67b08d", strPrivateAPIKey)
-        _MySettings_Movie.FallBackEng = clsAdvancedSettings.GetBooleanSetting("FallBackEn", False, , Enums.Content_Type.Movie)
-        _MySettings_Movie.TMDBLanguage = clsAdvancedSettings.GetSetting("TMDBLanguage", "en", , Enums.Content_Type.Movie)
-        _MySettings_Movie.TMDBLanguagePrefOnly = clsAdvancedSettings.GetBooleanSetting("TMDBLanguagePrefOnly", True, , Enums.Content_Type.Movie)
+        strPrivateAPIKey = clsAdvancedSettings.GetSetting("APIKey", "", , Enums.Content_Type.Movie)
+        _MySettings_Movie.APIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "44810eefccd9cb1fa1d57e7b0d67b08d", strPrivateAPIKey)
+        _MySettings_Movie.GetBlankImages = clsAdvancedSettings.GetBooleanSetting("GetBlankImages", False, , Enums.Content_Type.Movie)
+        _MySettings_Movie.GetEnglishImages = clsAdvancedSettings.GetBooleanSetting("GetEnglishImages", False, , Enums.Content_Type.Movie)
+        _MySettings_Movie.PrefLanguage = clsAdvancedSettings.GetSetting("PrefLanguage", "en", , Enums.Content_Type.Movie)
+        _MySettings_Movie.PrefLanguageOnly = clsAdvancedSettings.GetBooleanSetting("PrefLanguageOnly", False, , Enums.Content_Type.Movie)
 
         ConfigScrapeModifier_Movie.Poster = clsAdvancedSettings.GetBooleanSetting("DoPoster", True, , Enums.Content_Type.Movie)
         ConfigScrapeModifier_Movie.Fanart = clsAdvancedSettings.GetBooleanSetting("DoFanart", True, , Enums.Content_Type.Movie)
@@ -290,11 +291,12 @@ Public Class TMDB_Image
 
     Sub LoadSettings_MovieSet()
 
-        strPrivateAPIKey = clsAdvancedSettings.GetSetting("TMDBAPIKey", "", , Enums.Content_Type.MovieSet)
-        _MySettings_MovieSet.TMDBAPIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "44810eefccd9cb1fa1d57e7b0d67b08d", strPrivateAPIKey)
-        _MySettings_MovieSet.FallBackEng = clsAdvancedSettings.GetBooleanSetting("FallBackEn", False, , Enums.Content_Type.MovieSet)
-        _MySettings_MovieSet.TMDBLanguage = clsAdvancedSettings.GetSetting("TMDBLanguage", "en", , Enums.Content_Type.MovieSet)
-        _MySettings_MovieSet.TMDBLanguagePrefOnly = clsAdvancedSettings.GetBooleanSetting("TMDBLanguagePrefOnly", True, , Enums.Content_Type.MovieSet)
+        strPrivateAPIKey = clsAdvancedSettings.GetSetting("APIKey", "", , Enums.Content_Type.MovieSet)
+        _MySettings_MovieSet.APIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "44810eefccd9cb1fa1d57e7b0d67b08d", strPrivateAPIKey)
+        _MySettings_MovieSet.GetBlankImages = clsAdvancedSettings.GetBooleanSetting("GetBlankImages", False, , Enums.Content_Type.MovieSet)
+        _MySettings_MovieSet.GetEnglishImages = clsAdvancedSettings.GetBooleanSetting("GetEnglishImages", False, , Enums.Content_Type.MovieSet)
+        _MySettings_MovieSet.PrefLanguage = clsAdvancedSettings.GetSetting("PrefLanguage", "en", , Enums.Content_Type.MovieSet)
+        _MySettings_MovieSet.PrefLanguageOnly = clsAdvancedSettings.GetBooleanSetting("PrefLanguageOnly", False, , Enums.Content_Type.MovieSet)
 
         ConfigScrapeModifier_MovieSet.Poster = clsAdvancedSettings.GetBooleanSetting("DoPoster", True, , Enums.Content_Type.MovieSet)
         ConfigScrapeModifier_MovieSet.Fanart = clsAdvancedSettings.GetBooleanSetting("DoFanart", True, , Enums.Content_Type.MovieSet)
@@ -310,10 +312,10 @@ Public Class TMDB_Image
         End If
 
         Dim Settings As TMDB.Scraper.sMySettings_ForScraper
-        Settings.FallBackEng = _MySettings_Movie.FallBackEng
-        Settings.TMDBAPIKey = _MySettings_Movie.TMDBAPIKey
-        Settings.TMDBLanguage = _MySettings_Movie.TMDBLanguage
-        Settings.TMDBLanguagePrefOnly = _MySettings_Movie.TMDBLanguagePrefOnly
+        Settings.FallBackEng = _MySettings_Movie.GetEnglishImages
+        Settings.TMDBAPIKey = _MySettings_Movie.APIKey
+        Settings.TMDBLanguage = _MySettings_Movie.PrefLanguage
+        Settings.TMDBLanguagePrefOnly = _MySettings_Movie.PrefLanguageOnly
 
         ImageList = TMDB.GetTMDBImages(DBMovie.Movie.TMDBID, Type, Settings)
 
@@ -325,10 +327,10 @@ Public Class TMDB_Image
         LoadSettings_MovieSet()
 
         Dim Settings As TMDB.Scraper.sMySettings_ForScraper
-        Settings.FallBackEng = _MySettings_MovieSet.FallBackEng
-        Settings.TMDBAPIKey = _MySettings_MovieSet.TMDBAPIKey
-        Settings.TMDBLanguage = _MySettings_MovieSet.TMDBLanguage
-        Settings.TMDBLanguagePrefOnly = _MySettings_MovieSet.TMDBLanguagePrefOnly
+        Settings.FallBackEng = _MySettings_MovieSet.GetEnglishImages
+        Settings.TMDBAPIKey = _MySettings_MovieSet.APIKey
+        Settings.TMDBLanguage = _MySettings_MovieSet.PrefLanguage
+        Settings.TMDBLanguagePrefOnly = _MySettings_MovieSet.PrefLanguageOnly
 
         ImageList = TMDB.GetTMDBImages(DBMovieSet.MovieSet.ID, Type, Settings)
 
@@ -340,10 +342,11 @@ Public Class TMDB_Image
             settings.SetBooleanSetting("DoPoster", ConfigScrapeModifier_Movie.Poster, , , Enums.Content_Type.Movie)
             settings.SetBooleanSetting("DoFanart", ConfigScrapeModifier_Movie.Fanart, , , Enums.Content_Type.Movie)
 
-            settings.SetSetting("TMDBAPIKey", _setup_Movie.txtTMDBApiKey.Text, , , Enums.Content_Type.Movie)
-            settings.SetBooleanSetting("FallBackEn", _MySettings_Movie.FallBackEng, , , Enums.Content_Type.Movie)
-            settings.SetBooleanSetting("TMDBLanguagePrefOnly", _MySettings_Movie.TMDBLanguagePrefOnly, , , Enums.Content_Type.Movie)
-            settings.SetSetting("TMDBLanguage", _MySettings_Movie.TMDBLanguage, , , Enums.Content_Type.Movie)
+            settings.SetSetting("APIKey", _setup_Movie.txtApiKey.Text, , , Enums.Content_Type.Movie)
+            settings.SetBooleanSetting("GetBlankImages", _MySettings_Movie.GetBlankImages, , , Enums.Content_Type.Movie)
+            settings.SetBooleanSetting("GetEnglishImages", _MySettings_Movie.GetEnglishImages, , , Enums.Content_Type.Movie)
+            settings.SetBooleanSetting("PrefLanguageOnly", _MySettings_Movie.PrefLanguageOnly, , , Enums.Content_Type.Movie)
+            settings.SetSetting("PrefLanguage", _MySettings_Movie.PrefLanguage, , , Enums.Content_Type.Movie)
         End Using
     End Sub
 
@@ -352,17 +355,18 @@ Public Class TMDB_Image
             settings.SetBooleanSetting("DoPoster", ConfigScrapeModifier_MovieSet.Poster, , , Enums.Content_Type.MovieSet)
             settings.SetBooleanSetting("DoFanart", ConfigScrapeModifier_MovieSet.Fanart, , , Enums.Content_Type.MovieSet)
 
-            settings.SetSetting("TMDBAPIKey", _setup_MovieSet.txtApiKey.Text, , , Enums.Content_Type.MovieSet)
-            settings.SetBooleanSetting("FallBackEn", _MySettings_MovieSet.FallBackEng, , , Enums.Content_Type.MovieSet)
-            settings.SetBooleanSetting("TMDBLanguagePrefOnly", _MySettings_MovieSet.TMDBLanguagePrefOnly, , , Enums.Content_Type.MovieSet)
-            settings.SetSetting("TMDBLanguage", _MySettings_MovieSet.TMDBLanguage, , , Enums.Content_Type.Movie)
+            settings.SetSetting("APIKey", _setup_MovieSet.txtApiKey.Text, , , Enums.Content_Type.MovieSet)
+            settings.SetBooleanSetting("GetBlankImages", _MySettings_MovieSet.GetBlankImages, , , Enums.Content_Type.MovieSet)
+            settings.SetBooleanSetting("GetEnglishImages", _MySettings_MovieSet.GetEnglishImages, , , Enums.Content_Type.MovieSet)
+            settings.SetBooleanSetting("PrefLanguageOnly", _MySettings_MovieSet.PrefLanguageOnly, , , Enums.Content_Type.MovieSet)
+            settings.SetSetting("PrefLanguage", _MySettings_MovieSet.PrefLanguage, , , Enums.Content_Type.Movie)
         End Using
     End Sub
 
     Sub SaveSetupScraper_Movie(ByVal DoDispose As Boolean) Implements Interfaces.ScraperModule_Image_Movie.SaveSetupScraper
-        _MySettings_Movie.TMDBLanguage = _setup_Movie.cbTMDBLanguage.Text
-        _MySettings_Movie.FallBackEng = _setup_Movie.chkFallBackEng.Checked
-        _MySettings_Movie.TMDBLanguagePrefOnly = _setup_Movie.chkTMDBLanguagePrefOnly.Checked
+        _MySettings_Movie.PrefLanguage = _setup_Movie.cbPrefLanguage.Text
+        _MySettings_Movie.GetEnglishImages = _setup_Movie.chkGetEnglishImages.Checked
+        _MySettings_Movie.PrefLanguageOnly = _setup_Movie.chkPrefLanguageOnly.Checked
         ConfigScrapeModifier_Movie.Poster = _setup_Movie.chkScrapePoster.Checked
         ConfigScrapeModifier_Movie.Fanart = _setup_Movie.chkScrapeFanart.Checked
         SaveSettings_Movie()
@@ -376,9 +380,9 @@ Public Class TMDB_Image
     End Sub
 
     Sub SaveSetupScraper_MovieSet(ByVal DoDispose As Boolean) Implements Interfaces.ScraperModule_Image_MovieSet.SaveSetupScraper
-        _MySettings_MovieSet.TMDBLanguage = _setup_MovieSet.cbPrefLanguage.Text
-        _MySettings_MovieSet.FallBackEng = _setup_MovieSet.chkGetEnglishImages.Checked
-        _MySettings_MovieSet.TMDBLanguagePrefOnly = _setup_MovieSet.chkPrefLanguageOnly.Checked
+        _MySettings_MovieSet.PrefLanguage = _setup_MovieSet.cbPrefLanguage.Text
+        _MySettings_MovieSet.GetEnglishImages = _setup_MovieSet.chkGetEnglishImages.Checked
+        _MySettings_MovieSet.PrefLanguageOnly = _setup_MovieSet.chkPrefLanguageOnly.Checked
         ConfigScrapeModifier_MovieSet.Poster = _setup_MovieSet.chkScrapePoster.Checked
         ConfigScrapeModifier_MovieSet.Fanart = _setup_MovieSet.chkScrapeFanart.Checked
         SaveSettings_MovieSet()
@@ -403,24 +407,14 @@ Public Class TMDB_Image
 
 #Region "Nested Types"
 
-    Structure sMySettings_Movie
+    Structure sMySettings
 
 #Region "Fields"
-        Dim TMDBAPIKey As String
-        Dim TMDBLanguage As String
-        Dim TMDBLanguagePrefOnly As Boolean
-        Dim FallBackEng As Boolean
-#End Region 'Fields
-
-    End Structure
-
-    Structure sMySettings_MovieSet
-
-#Region "Fields"
-        Dim TMDBAPIKey As String
-        Dim TMDBLanguage As String
-        Dim TMDBLanguagePrefOnly As Boolean
-        Dim FallBackEng As Boolean
+        Dim APIKey As String
+        Dim PrefLanguage As String
+        Dim PrefLanguageOnly As Boolean
+        Dim GetEnglishImages As Boolean
+        Dim GetBlankImages As Boolean
 #End Region 'Fields
 
     End Structure

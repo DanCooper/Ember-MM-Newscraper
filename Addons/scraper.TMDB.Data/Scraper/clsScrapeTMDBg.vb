@@ -202,7 +202,7 @@ Namespace TMDBg
 
         End Function
 
-        Public Function GetMovieInfo(ByVal strID As String, ByRef DBMovie As MediaContainers.Movie, ByVal FullCrew As Boolean, ByVal FullCast As Boolean, ByVal GetPoster As Boolean, ByVal Options As Structures.MovieScrapeOptions, ByVal IsSearch As Boolean) As Boolean
+        Public Function GetMovieInfo(ByVal strID As String, ByRef DBMovie As MediaContainers.Movie, ByVal FullCrew As Boolean, ByVal FullCast As Boolean, ByVal GetPoster As Boolean, ByVal Options As Structures.ScrapeOptions_Movie, ByVal IsSearch As Boolean) As Boolean
             Try
                 Dim Movie As WatTmdb.V3.TmdbMovie
                 Dim MovieE As WatTmdb.V3.TmdbMovie
@@ -620,7 +620,7 @@ Namespace TMDBg
             End Try
         End Function
 
-        Public Function GetMovieSetInfo(ByVal strID As String, ByRef DBMovieSet As MediaContainers.MovieSet, ByVal GetPoster As Boolean, ByVal Options As Structures.MovieSetScrapeOptions, ByVal IsSearch As Boolean) As Boolean
+        Public Function GetMovieSetInfo(ByVal strID As String, ByRef DBMovieSet As MediaContainers.MovieSet, ByVal GetPoster As Boolean, ByVal Options As Structures.ScrapeOptions_MovieSet, ByVal IsSearch As Boolean) As Boolean
             Try
                 Dim MovieSet As WatTmdb.V3.TmdbCollection
                 Dim MovieSetE As WatTmdb.V3.TmdbCollection
@@ -720,7 +720,7 @@ Namespace TMDBg
 
         End Function
 
-        Public Function GetSearchMovieInfo(ByVal sMovieName As String, ByRef dbMovie As Structures.DBMovie, ByVal iType As Enums.ScrapeType, ByVal Options As Structures.MovieScrapeOptions) As MediaContainers.Movie
+        Public Function GetSearchMovieInfo(ByVal sMovieName As String, ByRef dbMovie As Structures.DBMovie, ByVal iType As Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions_Movie) As MediaContainers.Movie
             Dim r As MovieSearchResults = SearchMovie(sMovieName, CInt(IIf(Not String.IsNullOrEmpty(dbMovie.Movie.Year), dbMovie.Movie.Year, Nothing)))
             Dim b As Boolean = False
             Dim imdbMovie As MediaContainers.Movie = dbMovie.Movie
@@ -770,7 +770,7 @@ Namespace TMDBg
             End Try
         End Function
 
-        Public Function GetSearchMovieSetInfo(ByVal sMovieSetName As String, ByRef DBMovieSet As Structures.DBMovieSet, ByVal iType As Enums.ScrapeType, ByVal Options As Structures.MovieSetScrapeOptions) As MediaContainers.MovieSet
+        Public Function GetSearchMovieSetInfo(ByVal sMovieSetName As String, ByRef DBMovieSet As Structures.DBMovieSet, ByVal iType As Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions_MovieSet) As MediaContainers.MovieSet
             Dim r As MovieSetSearchResults = SearchMovieSet(sMovieSetName, Nothing)
             Dim b As Boolean = False
             Dim tmdbMovieSet As MediaContainers.MovieSet = DBMovieSet.MovieSet
@@ -838,7 +838,7 @@ Namespace TMDBg
             Return ret
         End Function
 
-        Public Sub GetSearchMovieInfoAsync(ByVal imdbID As String, ByVal IMDBMovie As MediaContainers.Movie, ByVal Options As Structures.MovieScrapeOptions)
+        Public Sub GetSearchMovieInfoAsync(ByVal imdbID As String, ByVal IMDBMovie As MediaContainers.Movie, ByVal Options As Structures.ScrapeOptions_Movie)
             '' The rule is that if there is a tt is an IMDB otherwise is a TMDB
             Try
                 If Not bwTMDBg.IsBusy Then
@@ -852,7 +852,7 @@ Namespace TMDBg
             End Try
         End Sub
 
-        Public Sub GetSearchMovieSetInfoAsync(ByVal tmdbColID As String, ByVal IMDBMovieSet As MediaContainers.MovieSet, ByVal Options As Structures.MovieSetScrapeOptions)
+        Public Sub GetSearchMovieSetInfoAsync(ByVal tmdbColID As String, ByVal IMDBMovieSet As MediaContainers.MovieSet, ByVal Options As Structures.ScrapeOptions_MovieSet)
             '' The rule is that if there is a tt is an IMDB otherwise is a TMDB
             Try
                 If Not bwTMDBg.IsBusy Then
@@ -866,7 +866,7 @@ Namespace TMDBg
             End Try
         End Sub
 
-        Public Sub SearchMovieAsync(ByVal sMovie As String, ByVal filterOptions As Structures.MovieScrapeOptions, Optional ByVal sYear As Integer = 0)
+        Public Sub SearchMovieAsync(ByVal sMovie As String, ByVal filterOptions As Structures.ScrapeOptions_Movie, Optional ByVal sYear As Integer = 0)
             '' The rule is that if there is a tt is an IMDB otherwise is a TMDB
             Try
                 If Not bwTMDBg.IsBusy Then
@@ -880,7 +880,7 @@ Namespace TMDBg
             End Try
         End Sub
 
-        Public Sub SearchMovieSetAsync(ByVal sMovieSet As String, ByVal filterOptions As Structures.MovieSetScrapeOptions)
+        Public Sub SearchMovieSetAsync(ByVal sMovieSet As String, ByVal filterOptions As Structures.ScrapeOptions_MovieSet)
             '' The rule is that if there is a tt is an IMDB otherwise is a TMDB
             Try
                 If Not bwTMDBg.IsBusy Then
@@ -1125,8 +1125,8 @@ Namespace TMDBg
             Dim FullCrew As Boolean
             Dim Movie As MediaContainers.Movie
             Dim MovieSet As MediaContainers.MovieSet
-            Dim Options_Movie As Structures.MovieScrapeOptions
-            Dim Options_MovieSet As Structures.MovieSetScrapeOptions
+            Dim Options_Movie As Structures.ScrapeOptions_Movie
+            Dim Options_MovieSet As Structures.ScrapeOptions_MovieSet
             Dim Parameter As String
             Dim Search As SearchType
             Dim Year As Integer

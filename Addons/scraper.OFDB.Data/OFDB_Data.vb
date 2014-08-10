@@ -28,7 +28,7 @@ Public Class OFDB_Data
 
 #Region "Fields"
 
-    Public Shared ConfigOptions As New Structures.MovieScrapeOptions
+    Public Shared ConfigOptions As New Structures.ScrapeOptions_Movie
     Public Shared ConfigScrapeModifier As New Structures.ScrapeModifier
     Public Shared _AssemblyName As String
 
@@ -175,10 +175,10 @@ Public Class OFDB_Data
         End If
     End Sub
 
-    Function Scraper(ByRef DBMovie As Structures.DBMovie, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.MovieScrapeOptions) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.Scraper
+    Function Scraper(ByRef DBMovie As Structures.DBMovie, ByRef ScrapeType As Enums.ScrapeType, ByRef Options As Structures.ScrapeOptions_Movie) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.Scraper
         ' as we do not have a OFDB search / show dialog we use IMDB
         If String.IsNullOrEmpty(DBMovie.Movie.ID) Then
-            Dim tOpt As New Structures.MovieScrapeOptions 'all false value not to override any field
+            Dim tOpt As New Structures.ScrapeOptions_Movie 'all false value not to override any field
             Dim IMDB As New IMDB_Data
             Dim aRet As Interfaces.ModuleResult = IMDB.Scraper(DBMovie, ScrapeType, tOpt)
             If String.IsNullOrEmpty(DBMovie.Movie.ID) Then
@@ -189,7 +189,7 @@ Public Class OFDB_Data
         ' we have the ID
         Dim tOFDB As New OFDB(DBMovie.Movie.ID, DBMovie.Movie)
 
-        Dim filterOptions As Structures.MovieScrapeOptions = Functions.MovieScrapeOptionsAndAlso(Options, ConfigOptions)
+        Dim filterOptions As Structures.ScrapeOptions_Movie = Functions.MovieScrapeOptionsAndAlso(Options, ConfigOptions)
 
         If filterOptions.bTitle AndAlso (String.IsNullOrEmpty(DBMovie.Movie.Title) OrElse Not Master.eSettings.MovieLockTitle) Then
             If Not String.IsNullOrEmpty(tOFDB.Title) Then

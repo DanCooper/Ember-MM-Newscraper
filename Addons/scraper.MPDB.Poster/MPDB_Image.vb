@@ -33,7 +33,7 @@ Public Class MPDB_Image
 
 #Region "Fields"
 
-    Public Shared ConfigOptions As New Structures.MovieScrapeOptions
+    Public Shared ConfigOptions As New Structures.ScrapeOptions_Movie
     Public Shared ConfigScrapeModifier As New Structures.ScrapeModifier
     Public Shared _AssemblyName As String
 

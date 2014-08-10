@@ -33,8 +33,8 @@ Public Class FanartTV_Image
 
 #Region "Fields"
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
-    Public Shared ConfigOptions_Movie As New Structures.MovieScrapeOptions
-    Public Shared ConfigOptions_MovieSet As New Structures.MovieSetScrapeOptions
+    Public Shared ConfigOptions_Movie As New Structures.ScrapeOptions_Movie
+    Public Shared ConfigOptions_MovieSet As New Structures.ScrapeOptions_MovieSet
     Public Shared ConfigScrapeModifier_Movie As New Structures.ScrapeModifier
     Public Shared ConfigScrapeModifier_MovieSet As New Structures.ScrapeModifier
     Public Shared _AssemblyName As String
@@ -181,12 +181,12 @@ Public Class FanartTV_Image
 
     Private Sub Handle_SetupScraperChanged_Movie(ByVal state As Boolean, ByVal difforder As Integer)
         ScraperEnabled_Movie = state
-        RaiseEvent SetupScraperChanged_Movie(String.Concat(Me._Name, "Scraper"), state, difforder)
+        RaiseEvent SetupScraperChanged_Movie(String.Concat(Me._Name, "_Movie"), state, difforder)
     End Sub
 
     Private Sub Handle_SetupScraperChanged_MovieSet(ByVal state As Boolean, ByVal difforder As Integer)
         ScraperEnabled_MovieSet = state
-        RaiseEvent SetupScraperChanged_MovieSet(String.Concat(Me._Name, "Scraper"), state, difforder)
+        RaiseEvent SetupScraperChanged_MovieSet(String.Concat(Me._Name, "_MovieSet"), state, difforder)
     End Sub
 
     Sub Init_Movie(ByVal sAssemblyName As String) Implements Interfaces.ScraperModule_Image_Movie.Init

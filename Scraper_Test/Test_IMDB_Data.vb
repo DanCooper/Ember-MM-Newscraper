@@ -53,7 +53,7 @@ Namespace EmberTests
         '******************************************************************************************
 
 
-        Private scrapeOptions_All As MovieScrapeOptions = New MovieScrapeOptions With
+        Private scrapeOptions_All As ScrapeOptions_Movie = New ScrapeOptions_Movie With
                                        {
                                             .bCast = True,
                                             .bCert = True,
@@ -354,7 +354,7 @@ Namespace EmberTests
             movie.Movie = New MediaContainers.Movie()
             movie.Movie.IMDBID = 91949    'This is ShortCircuit from http://www.imdb.com/title/tt0091949/
             Dim scrapeType As ScrapeType = Enums.ScrapeType.SingleScrape
-            Dim options As MovieScrapeOptions = scrapeOptions_All
+            Dim options As ScrapeOptions_Movie = scrapeOptions_All
             options.bTrailer = False
 
             'These simulate the "allowed" scrape items

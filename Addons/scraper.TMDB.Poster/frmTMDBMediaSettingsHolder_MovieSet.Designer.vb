@@ -25,6 +25,7 @@ Partial Class frmTMDBMediaSettingsHolder_MovieSet
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmTMDBMediaSettingsHolder_MovieSet))
         Me.pnlSettings = New System.Windows.Forms.Panel()
         Me.gbScraper = New System.Windows.Forms.GroupBox()
+        Me.chkGetBlankImages = New System.Windows.Forms.CheckBox()
         Me.chkPrefLanguageOnly = New System.Windows.Forms.CheckBox()
         Me.lblEMMAPI = New System.Windows.Forms.Label()
         Me.btnUnlockAPI = New System.Windows.Forms.Button()
@@ -32,7 +33,7 @@ Partial Class frmTMDBMediaSettingsHolder_MovieSet
         Me.chkGetEnglishImages = New System.Windows.Forms.CheckBox()
         Me.cbPrefLanguage = New System.Windows.Forms.ComboBox()
         Me.lblPrefLanguage = New System.Windows.Forms.Label()
-        Me.Label18 = New System.Windows.Forms.Label()
+        Me.lblAPIKey = New System.Windows.Forms.Label()
         Me.txtApiKey = New System.Windows.Forms.TextBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
@@ -44,7 +45,6 @@ Partial Class frmTMDBMediaSettingsHolder_MovieSet
         Me.btnDown = New System.Windows.Forms.Button()
         Me.btnUp = New System.Windows.Forms.Button()
         Me.cbEnabled = New System.Windows.Forms.CheckBox()
-        Me.chkGetBlankImages = New System.Windows.Forms.CheckBox()
         Me.pnlSettings.SuspendLayout()
         Me.gbScraper.SuspendLayout()
         CType(Me.pbTMDB, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -75,7 +75,7 @@ Partial Class frmTMDBMediaSettingsHolder_MovieSet
         Me.gbScraper.Controls.Add(Me.chkGetEnglishImages)
         Me.gbScraper.Controls.Add(Me.cbPrefLanguage)
         Me.gbScraper.Controls.Add(Me.lblPrefLanguage)
-        Me.gbScraper.Controls.Add(Me.Label18)
+        Me.gbScraper.Controls.Add(Me.lblAPIKey)
         Me.gbScraper.Controls.Add(Me.txtApiKey)
         Me.gbScraper.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbScraper.Location = New System.Drawing.Point(10, 31)
@@ -84,6 +84,17 @@ Partial Class frmTMDBMediaSettingsHolder_MovieSet
         Me.gbScraper.TabIndex = 95
         Me.gbScraper.TabStop = False
         Me.gbScraper.Text = "TMDB"
+        '
+        'chkGetBlankImages
+        '
+        Me.chkGetBlankImages.AutoSize = True
+        Me.chkGetBlankImages.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkGetBlankImages.Location = New System.Drawing.Point(212, 113)
+        Me.chkGetBlankImages.Name = "chkGetBlankImages"
+        Me.chkGetBlankImages.Size = New System.Drawing.Size(140, 17)
+        Me.chkGetBlankImages.TabIndex = 16
+        Me.chkGetBlankImages.Text = "Also Get Blank Images"
+        Me.chkGetBlankImages.UseVisualStyleBackColor = True
         '
         'chkPrefLanguageOnly
         '
@@ -156,15 +167,15 @@ Partial Class frmTMDBMediaSettingsHolder_MovieSet
         Me.lblPrefLanguage.TabIndex = 2
         Me.lblPrefLanguage.Text = "Preferred Language:"
         '
-        'Label18
+        'lblAPIKey
         '
-        Me.Label18.AutoSize = True
-        Me.Label18.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label18.Location = New System.Drawing.Point(6, 18)
-        Me.Label18.Name = "Label18"
-        Me.Label18.Size = New System.Drawing.Size(79, 13)
-        Me.Label18.TabIndex = 0
-        Me.Label18.Text = "TMDB API Key:"
+        Me.lblAPIKey.AutoSize = True
+        Me.lblAPIKey.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblAPIKey.Location = New System.Drawing.Point(6, 18)
+        Me.lblAPIKey.Name = "lblAPIKey"
+        Me.lblAPIKey.Size = New System.Drawing.Size(79, 13)
+        Me.lblAPIKey.TabIndex = 0
+        Me.lblAPIKey.Text = "TMDB API Key:"
         '
         'txtApiKey
         '
@@ -290,17 +301,6 @@ Partial Class frmTMDBMediaSettingsHolder_MovieSet
         Me.cbEnabled.Text = "Enabled"
         Me.cbEnabled.UseVisualStyleBackColor = True
         '
-        'chkGetBlankImages
-        '
-        Me.chkGetBlankImages.AutoSize = True
-        Me.chkGetBlankImages.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkGetBlankImages.Location = New System.Drawing.Point(212, 113)
-        Me.chkGetBlankImages.Name = "chkGetBlankImages"
-        Me.chkGetBlankImages.Size = New System.Drawing.Size(140, 17)
-        Me.chkGetBlankImages.TabIndex = 16
-        Me.chkGetBlankImages.Text = "Also Get Blank Images"
-        Me.chkGetBlankImages.UseVisualStyleBackColor = True
-        '
         'frmTMDBMediaSettingsHolder_MovieSet
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -343,7 +343,7 @@ Partial Class frmTMDBMediaSettingsHolder_MovieSet
     Friend WithEvents chkGetEnglishImages As System.Windows.Forms.CheckBox
     Friend WithEvents cbPrefLanguage As System.Windows.Forms.ComboBox
     Friend WithEvents lblPrefLanguage As System.Windows.Forms.Label
-    Friend WithEvents Label18 As System.Windows.Forms.Label
+    Friend WithEvents lblAPIKey As System.Windows.Forms.Label
     Friend WithEvents txtApiKey As System.Windows.Forms.TextBox
     Friend WithEvents lblEMMAPI As System.Windows.Forms.Label
     Friend WithEvents btnUnlockAPI As System.Windows.Forms.Button

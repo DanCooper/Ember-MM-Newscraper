@@ -34,7 +34,7 @@ Namespace TMDB
 		Private _TMDBApi As V3.Tmdb
         Private _TMDBApiE As V3.Tmdb
         Private _TMDBApiA As V3.Tmdb
-        Private _MySettings As TMDB_Image.sMySettings_Movie
+        Private _MySettings As TMDB_Image.sMySettings
 
         'Friend WithEvents bwTMDB As New System.ComponentModel.BackgroundWorker
 
@@ -42,7 +42,7 @@ Namespace TMDB
 
 #Region "Methods"
 
-        Public Sub New(ByRef tTMDBConf As V3.TmdbConfiguration, ByRef tTMDBConfE As V3.TmdbConfiguration, ByRef tTMDBApi As V3.Tmdb, ByRef tTMDBApiE As V3.Tmdb, ByRef tTMDBApiA As V3.Tmdb, ByRef tMySettings As TMDB_Image.sMySettings_Movie)
+        Public Sub New(ByRef tTMDBConf As V3.TmdbConfiguration, ByRef tTMDBConfE As V3.TmdbConfiguration, ByRef tTMDBApi As V3.Tmdb, ByRef tTMDBApiE As V3.Tmdb, ByRef tTMDBApiA As V3.Tmdb, ByRef tMySettings As TMDB_Image.sMySettings)
             _TMDBConf = tTMDBConf
             _TMDBConfE = tTMDBConfE
             _TMDBApi = tTMDBApi

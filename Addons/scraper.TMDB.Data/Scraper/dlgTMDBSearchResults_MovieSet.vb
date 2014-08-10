@@ -43,7 +43,7 @@ Public Class dlgTMDBSearchResults_MovieSet
 
     Private _InfoCache As New Dictionary(Of String, MediaContainers.MovieSet)
     Private _PosterCache As New Dictionary(Of String, System.Drawing.Image)
-    Private _filterOptions As Structures.MovieSetScrapeOptions
+    Private _filterOptions As Structures.ScrapeOptions_MovieSet
 
 #End Region 'Fields
 
@@ -59,7 +59,7 @@ Public Class dlgTMDBSearchResults_MovieSet
         TMDBg = _TMDBg
     End Sub
 
-    Public Overloads Function ShowDialog(ByVal sMovieSetTitle As String, ByVal filterOptions As Structures.MovieSetScrapeOptions) As Windows.Forms.DialogResult
+    Public Overloads Function ShowDialog(ByVal sMovieSetTitle As String, ByVal filterOptions As Structures.ScrapeOptions_MovieSet) As Windows.Forms.DialogResult
         Me.tmrWait.Enabled = False
         Me.tmrWait.Interval = 250
         Me.tmrLoad.Enabled = False
@@ -107,7 +107,7 @@ Public Class dlgTMDBSearchResults_MovieSet
     End Sub
 
     Private Sub btnVerify_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnVerify.Click
-        Dim pOpt As New Structures.MovieSetScrapeOptions
+        Dim pOpt As New Structures.ScrapeOptions_MovieSet
         pOpt = SetPreviewOptions()
         '' The rule is that if there is a tt is an IMDB otherwise is a TMDB
         TMDBg.GetSearchMovieSetInfoAsync(Me.txtTMDBID.Text, Master.tmpMovieSet, pOpt)
@@ -307,8 +307,8 @@ Public Class dlgTMDBSearchResults_MovieSet
         End Try
     End Sub
 
-    Private Function SetPreviewOptions() As Structures.MovieSetScrapeOptions
-        Dim aOpt As New Structures.MovieSetScrapeOptions
+    Private Function SetPreviewOptions() As Structures.ScrapeOptions_MovieSet
+        Dim aOpt As New Structures.ScrapeOptions_MovieSet
         aOpt.bPlot = True
         aOpt.bTitle = True
 
@@ -328,7 +328,7 @@ Public Class dlgTMDBSearchResults_MovieSet
     End Sub
 
     Private Sub tmrLoad_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrLoad.Tick
-        Dim pOpt As New Structures.MovieSetScrapeOptions
+        Dim pOpt As New Structures.ScrapeOptions_MovieSet
         pOpt = SetPreviewOptions()
 
         Me.tmrWait.Stop()
