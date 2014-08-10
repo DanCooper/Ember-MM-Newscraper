@@ -196,6 +196,11 @@ Partial Class dlgEditMovie
         Me.btnChangeMovie = New System.Windows.Forms.Button()
         Me.tmrDelay = New System.Windows.Forms.Timer(Me.components)
         Me.chkWatched = New System.Windows.Forms.CheckBox()
+        Me.pbStar6 = New System.Windows.Forms.PictureBox()
+        Me.pbStar7 = New System.Windows.Forms.PictureBox()
+        Me.pbStar8 = New System.Windows.Forms.PictureBox()
+        Me.pbStar9 = New System.Windows.Forms.PictureBox()
+        Me.pbStar10 = New System.Windows.Forms.PictureBox()
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tcEditMovie.SuspendLayout()
@@ -233,6 +238,11 @@ Partial Class dlgEditMovie
         Me.tpTheme.SuspendLayout()
         Me.tpMetaData.SuspendLayout()
         Me.tpMediaStub.SuspendLayout()
+        CType(Me.pbStar6, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbStar7, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbStar8, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbStar9, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbStar10, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'OK_Button
@@ -328,6 +338,11 @@ Partial Class dlgEditMovie
         '
         'tpDetails
         '
+        Me.tpDetails.Controls.Add(Me.pbStar10)
+        Me.tpDetails.Controls.Add(Me.pbStar9)
+        Me.tpDetails.Controls.Add(Me.pbStar8)
+        Me.tpDetails.Controls.Add(Me.pbStar7)
+        Me.tpDetails.Controls.Add(Me.pbStar6)
         Me.tpDetails.Controls.Add(Me.txtOriginalTitle)
         Me.tpDetails.Controls.Add(Me.lblOriginalTitle)
         Me.tpDetails.Controls.Add(Me.txtCountry)
@@ -401,7 +416,7 @@ Partial Class dlgEditMovie
         Me.txtOriginalTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.txtOriginalTitle.Location = New System.Drawing.Point(7, 63)
         Me.txtOriginalTitle.Name = "txtOriginalTitle"
-        Me.txtOriginalTitle.Size = New System.Drawing.Size(192, 22)
+        Me.txtOriginalTitle.Size = New System.Drawing.Size(252, 22)
         Me.txtOriginalTitle.TabIndex = 3
         '
         'lblOriginalTitle
@@ -418,16 +433,16 @@ Partial Class dlgEditMovie
         '
         Me.txtCountry.BackColor = System.Drawing.SystemColors.Window
         Me.txtCountry.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtCountry.Location = New System.Drawing.Point(8, 224)
+        Me.txtCountry.Location = New System.Drawing.Point(8, 265)
         Me.txtCountry.Name = "txtCountry"
-        Me.txtCountry.Size = New System.Drawing.Size(89, 22)
+        Me.txtCountry.Size = New System.Drawing.Size(251, 22)
         Me.txtCountry.TabIndex = 12
         '
         'lblCountry
         '
         Me.lblCountry.AutoSize = True
         Me.lblCountry.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblCountry.Location = New System.Drawing.Point(5, 209)
+        Me.lblCountry.Location = New System.Drawing.Point(5, 250)
         Me.lblCountry.Name = "lblCountry"
         Me.lblCountry.Size = New System.Drawing.Size(52, 13)
         Me.lblCountry.TabIndex = 11
@@ -437,16 +452,16 @@ Partial Class dlgEditMovie
         '
         Me.txtFileSource.BackColor = System.Drawing.SystemColors.Window
         Me.txtFileSource.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtFileSource.Location = New System.Drawing.Point(636, 385)
+        Me.txtFileSource.Location = New System.Drawing.Point(692, 386)
         Me.txtFileSource.Name = "txtFileSource"
-        Me.txtFileSource.Size = New System.Drawing.Size(167, 22)
+        Me.txtFileSource.Size = New System.Drawing.Size(212, 22)
         Me.txtFileSource.TabIndex = 48
         '
         'lblFileSource
         '
         Me.lblFileSource.AutoSize = True
         Me.lblFileSource.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblFileSource.Location = New System.Drawing.Point(633, 370)
+        Me.lblFileSource.Location = New System.Drawing.Point(689, 371)
         Me.lblFileSource.Name = "lblFileSource"
         Me.lblFileSource.Size = New System.Drawing.Size(78, 13)
         Me.lblFileSource.TabIndex = 47
@@ -455,7 +470,7 @@ Partial Class dlgEditMovie
         'btnActorDown
         '
         Me.btnActorDown.Image = CType(resources.GetObject("btnActorDown.Image"), System.Drawing.Image)
-        Me.btnActorDown.Location = New System.Drawing.Point(430, 304)
+        Me.btnActorDown.Location = New System.Drawing.Point(486, 305)
         Me.btnActorDown.Name = "btnActorDown"
         Me.btnActorDown.Size = New System.Drawing.Size(23, 23)
         Me.btnActorDown.TabIndex = 34
@@ -464,7 +479,7 @@ Partial Class dlgEditMovie
         'btnActorUp
         '
         Me.btnActorUp.Image = CType(resources.GetObject("btnActorUp.Image"), System.Drawing.Image)
-        Me.btnActorUp.Location = New System.Drawing.Point(406, 304)
+        Me.btnActorUp.Location = New System.Drawing.Point(462, 305)
         Me.btnActorUp.Name = "btnActorUp"
         Me.btnActorUp.Size = New System.Drawing.Size(23, 23)
         Me.btnActorUp.TabIndex = 33
@@ -486,14 +501,14 @@ Partial Class dlgEditMovie
         Me.txtSortTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.txtSortTitle.Location = New System.Drawing.Point(7, 102)
         Me.txtSortTitle.Name = "txtSortTitle"
-        Me.txtSortTitle.Size = New System.Drawing.Size(192, 22)
+        Me.txtSortTitle.Size = New System.Drawing.Size(252, 22)
         Me.txtSortTitle.TabIndex = 5
         '
         'btnPlayTrailer
         '
         Me.btnPlayTrailer.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnPlayTrailer.Image = Global.Ember_Media_Manager.My.Resources.Resources.Play_Icon
-        Me.btnPlayTrailer.Location = New System.Drawing.Point(583, 425)
+        Me.btnPlayTrailer.Location = New System.Drawing.Point(639, 426)
         Me.btnPlayTrailer.Name = "btnPlayTrailer"
         Me.btnPlayTrailer.Size = New System.Drawing.Size(23, 23)
         Me.btnPlayTrailer.TabIndex = 52
@@ -502,7 +517,7 @@ Partial Class dlgEditMovie
         'btnDLTrailer
         '
         Me.btnDLTrailer.Image = CType(resources.GetObject("btnDLTrailer.Image"), System.Drawing.Image)
-        Me.btnDLTrailer.Location = New System.Drawing.Point(612, 425)
+        Me.btnDLTrailer.Location = New System.Drawing.Point(668, 426)
         Me.btnDLTrailer.Name = "btnDLTrailer"
         Me.btnDLTrailer.Size = New System.Drawing.Size(23, 23)
         Me.btnDLTrailer.TabIndex = 53
@@ -516,16 +531,16 @@ Partial Class dlgEditMovie
         Me.clbGenre.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.clbGenre.FormattingEnabled = True
         Me.clbGenre.IntegralHeight = False
-        Me.clbGenre.Location = New System.Drawing.Point(8, 345)
+        Me.clbGenre.Location = New System.Drawing.Point(8, 386)
         Me.clbGenre.Name = "clbGenre"
-        Me.clbGenre.Size = New System.Drawing.Size(192, 102)
+        Me.clbGenre.Size = New System.Drawing.Size(251, 102)
         Me.clbGenre.Sorted = True
         Me.clbGenre.TabIndex = 24
         '
         'btnStudio
         '
         Me.btnStudio.Image = CType(resources.GetObject("btnStudio.Image"), System.Drawing.Image)
-        Me.btnStudio.Location = New System.Drawing.Point(805, 343)
+        Me.btnStudio.Location = New System.Drawing.Point(881, 343)
         Me.btnStudio.Name = "btnStudio"
         Me.btnStudio.Size = New System.Drawing.Size(23, 23)
         Me.btnStudio.TabIndex = 44
@@ -535,7 +550,7 @@ Partial Class dlgEditMovie
         '
         Me.lblStudio.AutoSize = True
         Me.lblStudio.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblStudio.Location = New System.Drawing.Point(633, 330)
+        Me.lblStudio.Location = New System.Drawing.Point(689, 331)
         Me.lblStudio.Name = "lblStudio"
         Me.lblStudio.Size = New System.Drawing.Size(44, 13)
         Me.lblStudio.TabIndex = 42
@@ -545,18 +560,18 @@ Partial Class dlgEditMovie
         '
         Me.txtStudio.BackColor = System.Drawing.SystemColors.Window
         Me.txtStudio.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtStudio.Location = New System.Drawing.Point(635, 345)
+        Me.txtStudio.Location = New System.Drawing.Point(691, 346)
         Me.txtStudio.Name = "txtStudio"
-        Me.txtStudio.Size = New System.Drawing.Size(167, 22)
+        Me.txtStudio.Size = New System.Drawing.Size(184, 22)
         Me.txtStudio.TabIndex = 43
         '
         'lblTrailerURL
         '
         Me.lblTrailerURL.AutoSize = True
         Me.lblTrailerURL.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblTrailerURL.Location = New System.Drawing.Point(215, 410)
+        Me.lblTrailerURL.Location = New System.Drawing.Point(271, 411)
         Me.lblTrailerURL.Name = "lblTrailerURL"
-        Me.lblTrailerURL.Size = New System.Drawing.Size(65, 13)
+        Me.lblTrailerURL.Size = New System.Drawing.Size(66, 13)
         Me.lblTrailerURL.TabIndex = 49
         Me.lblTrailerURL.Text = "Trailer URL:"
         '
@@ -564,7 +579,7 @@ Partial Class dlgEditMovie
         '
         Me.txtTrailer.BackColor = System.Drawing.SystemColors.Window
         Me.txtTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtTrailer.Location = New System.Drawing.Point(217, 425)
+        Me.txtTrailer.Location = New System.Drawing.Point(273, 426)
         Me.txtTrailer.Name = "txtTrailer"
         Me.txtTrailer.Size = New System.Drawing.Size(360, 22)
         Me.txtTrailer.TabIndex = 50
@@ -573,16 +588,16 @@ Partial Class dlgEditMovie
         '
         Me.txtReleaseDate.BackColor = System.Drawing.SystemColors.Window
         Me.txtReleaseDate.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtReleaseDate.Location = New System.Drawing.Point(103, 224)
+        Me.txtReleaseDate.Location = New System.Drawing.Point(74, 182)
         Me.txtReleaseDate.Name = "txtReleaseDate"
-        Me.txtReleaseDate.Size = New System.Drawing.Size(96, 22)
+        Me.txtReleaseDate.Size = New System.Drawing.Size(185, 22)
         Me.txtReleaseDate.TabIndex = 14
         '
         'lblReleaseDate
         '
         Me.lblReleaseDate.AutoSize = True
         Me.lblReleaseDate.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblReleaseDate.Location = New System.Drawing.Point(100, 209)
+        Me.lblReleaseDate.Location = New System.Drawing.Point(71, 167)
         Me.lblReleaseDate.Name = "lblReleaseDate"
         Me.lblReleaseDate.Size = New System.Drawing.Size(76, 13)
         Me.lblReleaseDate.TabIndex = 13
@@ -592,7 +607,7 @@ Partial Class dlgEditMovie
         '
         Me.lblCredits.AutoSize = True
         Me.lblCredits.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblCredits.Location = New System.Drawing.Point(215, 330)
+        Me.lblCredits.Location = New System.Drawing.Point(271, 331)
         Me.lblCredits.Name = "lblCredits"
         Me.lblCredits.Size = New System.Drawing.Size(46, 13)
         Me.lblCredits.TabIndex = 40
@@ -602,7 +617,7 @@ Partial Class dlgEditMovie
         '
         Me.txtCredits.BackColor = System.Drawing.SystemColors.Window
         Me.txtCredits.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtCredits.Location = New System.Drawing.Point(217, 345)
+        Me.txtCredits.Location = New System.Drawing.Point(273, 346)
         Me.txtCredits.Name = "txtCredits"
         Me.txtCredits.Size = New System.Drawing.Size(408, 22)
         Me.txtCredits.TabIndex = 41
@@ -611,7 +626,7 @@ Partial Class dlgEditMovie
         '
         Me.lblCerts.AutoSize = True
         Me.lblCerts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblCerts.Location = New System.Drawing.Point(215, 370)
+        Me.lblCerts.Location = New System.Drawing.Point(271, 371)
         Me.lblCerts.Name = "lblCerts"
         Me.lblCerts.Size = New System.Drawing.Size(86, 13)
         Me.lblCerts.TabIndex = 45
@@ -621,7 +636,7 @@ Partial Class dlgEditMovie
         '
         Me.txtCerts.BackColor = System.Drawing.SystemColors.Window
         Me.txtCerts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtCerts.Location = New System.Drawing.Point(217, 385)
+        Me.txtCerts.Location = New System.Drawing.Point(273, 386)
         Me.txtCerts.Name = "txtCerts"
         Me.txtCerts.Size = New System.Drawing.Size(408, 22)
         Me.txtCerts.TabIndex = 46
@@ -630,7 +645,7 @@ Partial Class dlgEditMovie
         '
         Me.lblRuntime.AutoSize = True
         Me.lblRuntime.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblRuntime.Location = New System.Drawing.Point(5, 249)
+        Me.lblRuntime.Location = New System.Drawing.Point(5, 290)
         Me.lblRuntime.Name = "lblRuntime"
         Me.lblRuntime.Size = New System.Drawing.Size(54, 13)
         Me.lblRuntime.TabIndex = 15
@@ -640,7 +655,7 @@ Partial Class dlgEditMovie
         '
         Me.txtRuntime.BackColor = System.Drawing.SystemColors.Window
         Me.txtRuntime.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtRuntime.Location = New System.Drawing.Point(7, 264)
+        Me.txtRuntime.Location = New System.Drawing.Point(7, 305)
         Me.txtRuntime.Name = "txtRuntime"
         Me.txtRuntime.Size = New System.Drawing.Size(66, 22)
         Me.txtRuntime.TabIndex = 16
@@ -649,9 +664,9 @@ Partial Class dlgEditMovie
         '
         Me.lblMPAADesc.AutoSize = True
         Me.lblMPAADesc.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblMPAADesc.Location = New System.Drawing.Point(633, 245)
+        Me.lblMPAADesc.Location = New System.Drawing.Point(689, 246)
         Me.lblMPAADesc.Name = "lblMPAADesc"
-        Me.lblMPAADesc.Size = New System.Drawing.Size(142, 13)
+        Me.lblMPAADesc.Size = New System.Drawing.Size(143, 13)
         Me.lblMPAADesc.TabIndex = 38
         Me.lblMPAADesc.Text = "MPAA Rating Description:"
         '
@@ -659,16 +674,16 @@ Partial Class dlgEditMovie
         '
         Me.txtMPAADesc.BackColor = System.Drawing.SystemColors.Window
         Me.txtMPAADesc.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtMPAADesc.Location = New System.Drawing.Point(635, 260)
+        Me.txtMPAADesc.Location = New System.Drawing.Point(691, 261)
         Me.txtMPAADesc.Multiline = True
         Me.txtMPAADesc.Name = "txtMPAADesc"
-        Me.txtMPAADesc.Size = New System.Drawing.Size(193, 64)
+        Me.txtMPAADesc.Size = New System.Drawing.Size(213, 64)
         Me.txtMPAADesc.TabIndex = 39
         '
         'btnEditActor
         '
         Me.btnEditActor.Image = CType(resources.GetObject("btnEditActor.Image"), System.Drawing.Image)
-        Me.btnEditActor.Location = New System.Drawing.Point(246, 303)
+        Me.btnEditActor.Location = New System.Drawing.Point(302, 304)
         Me.btnEditActor.Name = "btnEditActor"
         Me.btnEditActor.Size = New System.Drawing.Size(23, 23)
         Me.btnEditActor.TabIndex = 32
@@ -677,7 +692,7 @@ Partial Class dlgEditMovie
         'btnAddActor
         '
         Me.btnAddActor.Image = CType(resources.GetObject("btnAddActor.Image"), System.Drawing.Image)
-        Me.btnAddActor.Location = New System.Drawing.Point(217, 303)
+        Me.btnAddActor.Location = New System.Drawing.Point(273, 304)
         Me.btnAddActor.Name = "btnAddActor"
         Me.btnAddActor.Size = New System.Drawing.Size(23, 23)
         Me.btnAddActor.TabIndex = 31
@@ -686,7 +701,7 @@ Partial Class dlgEditMovie
         'btnManual
         '
         Me.btnManual.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnManual.Location = New System.Drawing.Point(738, 446)
+        Me.btnManual.Location = New System.Drawing.Point(794, 447)
         Me.btnManual.Name = "btnManual"
         Me.btnManual.Size = New System.Drawing.Size(92, 23)
         Me.btnManual.TabIndex = 54
@@ -696,7 +711,7 @@ Partial Class dlgEditMovie
         'btnRemove
         '
         Me.btnRemove.Image = CType(resources.GetObject("btnRemove.Image"), System.Drawing.Image)
-        Me.btnRemove.Location = New System.Drawing.Point(602, 303)
+        Me.btnRemove.Location = New System.Drawing.Point(658, 304)
         Me.btnRemove.Name = "btnRemove"
         Me.btnRemove.Size = New System.Drawing.Size(23, 23)
         Me.btnRemove.TabIndex = 35
@@ -706,7 +721,7 @@ Partial Class dlgEditMovie
         '
         Me.lblActors.AutoSize = True
         Me.lblActors.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblActors.Location = New System.Drawing.Point(215, 141)
+        Me.lblActors.Location = New System.Drawing.Point(271, 142)
         Me.lblActors.Name = "lblActors"
         Me.lblActors.Size = New System.Drawing.Size(43, 13)
         Me.lblActors.TabIndex = 29
@@ -719,7 +734,7 @@ Partial Class dlgEditMovie
         Me.lvActors.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colName, Me.colRole, Me.colThumb})
         Me.lvActors.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lvActors.FullRowSelect = True
-        Me.lvActors.Location = New System.Drawing.Point(217, 155)
+        Me.lvActors.Location = New System.Drawing.Point(273, 156)
         Me.lvActors.Name = "lvActors"
         Me.lvActors.Size = New System.Drawing.Size(408, 147)
         Me.lvActors.TabIndex = 30
@@ -747,16 +762,16 @@ Partial Class dlgEditMovie
         Me.lbMPAA.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.lbMPAA.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lbMPAA.FormattingEnabled = True
-        Me.lbMPAA.Location = New System.Drawing.Point(635, 155)
+        Me.lbMPAA.Location = New System.Drawing.Point(691, 156)
         Me.lbMPAA.Name = "lbMPAA"
-        Me.lbMPAA.Size = New System.Drawing.Size(193, 80)
+        Me.lbMPAA.Size = New System.Drawing.Size(213, 80)
         Me.lbMPAA.TabIndex = 37
         '
         'lblGenre
         '
         Me.lblGenre.AutoSize = True
         Me.lblGenre.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblGenre.Location = New System.Drawing.Point(5, 330)
+        Me.lblGenre.Location = New System.Drawing.Point(5, 371)
         Me.lblGenre.Name = "lblGenre"
         Me.lblGenre.Size = New System.Drawing.Size(41, 13)
         Me.lblGenre.TabIndex = 23
@@ -766,9 +781,9 @@ Partial Class dlgEditMovie
         '
         Me.lblMPAA.AutoSize = True
         Me.lblMPAA.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblMPAA.Location = New System.Drawing.Point(633, 141)
+        Me.lblMPAA.Location = New System.Drawing.Point(689, 142)
         Me.lblMPAA.Name = "lblMPAA"
-        Me.lblMPAA.Size = New System.Drawing.Size(80, 13)
+        Me.lblMPAA.Size = New System.Drawing.Size(81, 13)
         Me.lblMPAA.TabIndex = 36
         Me.lblMPAA.Text = "MPAA Rating:"
         '
@@ -776,7 +791,7 @@ Partial Class dlgEditMovie
         '
         Me.lblDirector.AutoSize = True
         Me.lblDirector.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblDirector.Location = New System.Drawing.Point(5, 289)
+        Me.lblDirector.Location = New System.Drawing.Point(5, 330)
         Me.lblDirector.Name = "lblDirector"
         Me.lblDirector.Size = New System.Drawing.Size(51, 13)
         Me.lblDirector.TabIndex = 21
@@ -786,16 +801,16 @@ Partial Class dlgEditMovie
         '
         Me.txtDirector.BackColor = System.Drawing.SystemColors.Window
         Me.txtDirector.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtDirector.Location = New System.Drawing.Point(7, 304)
+        Me.txtDirector.Location = New System.Drawing.Point(7, 345)
         Me.txtDirector.Name = "txtDirector"
-        Me.txtDirector.Size = New System.Drawing.Size(192, 22)
+        Me.txtDirector.Size = New System.Drawing.Size(252, 22)
         Me.txtDirector.TabIndex = 22
         '
         'txtTop250
         '
         Me.txtTop250.BackColor = System.Drawing.SystemColors.Window
         Me.txtTop250.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtTop250.Location = New System.Drawing.Point(156, 264)
+        Me.txtTop250.Location = New System.Drawing.Point(156, 305)
         Me.txtTop250.Name = "txtTop250"
         Me.txtTop250.Size = New System.Drawing.Size(43, 22)
         Me.txtTop250.TabIndex = 20
@@ -804,9 +819,9 @@ Partial Class dlgEditMovie
         '
         Me.lblTop250.AutoSize = True
         Me.lblTop250.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblTop250.Location = New System.Drawing.Point(153, 249)
+        Me.lblTop250.Location = New System.Drawing.Point(153, 290)
         Me.lblTop250.Name = "lblTop250"
-        Me.lblTop250.Size = New System.Drawing.Size(50, 13)
+        Me.lblTop250.Size = New System.Drawing.Size(51, 13)
         Me.lblTop250.TabIndex = 19
         Me.lblTop250.Text = "Top 250:"
         '
@@ -814,7 +829,7 @@ Partial Class dlgEditMovie
         '
         Me.lblPlot.AutoSize = True
         Me.lblPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblPlot.Location = New System.Drawing.Point(441, 7)
+        Me.lblPlot.Location = New System.Drawing.Point(497, 7)
         Me.lblPlot.Name = "lblPlot"
         Me.lblPlot.Size = New System.Drawing.Size(31, 13)
         Me.lblPlot.TabIndex = 27
@@ -825,18 +840,18 @@ Partial Class dlgEditMovie
         Me.txtPlot.AcceptsReturn = True
         Me.txtPlot.BackColor = System.Drawing.SystemColors.Window
         Me.txtPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtPlot.Location = New System.Drawing.Point(443, 22)
+        Me.txtPlot.Location = New System.Drawing.Point(499, 22)
         Me.txtPlot.Multiline = True
         Me.txtPlot.Name = "txtPlot"
         Me.txtPlot.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.txtPlot.Size = New System.Drawing.Size(461, 112)
+        Me.txtPlot.Size = New System.Drawing.Size(405, 112)
         Me.txtPlot.TabIndex = 28
         '
         'lblOutline
         '
         Me.lblOutline.AutoSize = True
         Me.lblOutline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblOutline.Location = New System.Drawing.Point(215, 7)
+        Me.lblOutline.Location = New System.Drawing.Point(271, 7)
         Me.lblOutline.Name = "lblOutline"
         Me.lblOutline.Size = New System.Drawing.Size(48, 13)
         Me.lblOutline.TabIndex = 25
@@ -847,7 +862,7 @@ Partial Class dlgEditMovie
         Me.txtOutline.AcceptsReturn = True
         Me.txtOutline.BackColor = System.Drawing.SystemColors.Window
         Me.txtOutline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtOutline.Location = New System.Drawing.Point(217, 22)
+        Me.txtOutline.Location = New System.Drawing.Point(273, 22)
         Me.txtOutline.Multiline = True
         Me.txtOutline.Name = "txtOutline"
         Me.txtOutline.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
@@ -860,7 +875,7 @@ Partial Class dlgEditMovie
         Me.lblTagline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblTagline.Location = New System.Drawing.Point(5, 127)
         Me.lblTagline.Name = "lblTagline"
-        Me.lblTagline.Size = New System.Drawing.Size(47, 13)
+        Me.lblTagline.Size = New System.Drawing.Size(48, 13)
         Me.lblTagline.TabIndex = 6
         Me.lblTagline.Text = "Tagline:"
         '
@@ -870,12 +885,12 @@ Partial Class dlgEditMovie
         Me.txtTagline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.txtTagline.Location = New System.Drawing.Point(7, 142)
         Me.txtTagline.Name = "txtTagline"
-        Me.txtTagline.Size = New System.Drawing.Size(192, 22)
+        Me.txtTagline.Size = New System.Drawing.Size(252, 22)
         Me.txtTagline.TabIndex = 7
         '
         'pbStar5
         '
-        Me.pbStar5.Location = New System.Drawing.Point(175, 180)
+        Me.pbStar5.Location = New System.Drawing.Point(103, 220)
         Me.pbStar5.Name = "pbStar5"
         Me.pbStar5.Size = New System.Drawing.Size(24, 24)
         Me.pbStar5.TabIndex = 67
@@ -883,7 +898,7 @@ Partial Class dlgEditMovie
         '
         'pbStar4
         '
-        Me.pbStar4.Location = New System.Drawing.Point(151, 180)
+        Me.pbStar4.Location = New System.Drawing.Point(79, 220)
         Me.pbStar4.Name = "pbStar4"
         Me.pbStar4.Size = New System.Drawing.Size(24, 24)
         Me.pbStar4.TabIndex = 66
@@ -891,7 +906,7 @@ Partial Class dlgEditMovie
         '
         'pbStar3
         '
-        Me.pbStar3.Location = New System.Drawing.Point(127, 180)
+        Me.pbStar3.Location = New System.Drawing.Point(55, 220)
         Me.pbStar3.Name = "pbStar3"
         Me.pbStar3.Size = New System.Drawing.Size(24, 24)
         Me.pbStar3.TabIndex = 65
@@ -899,7 +914,7 @@ Partial Class dlgEditMovie
         '
         'pbStar2
         '
-        Me.pbStar2.Location = New System.Drawing.Point(103, 180)
+        Me.pbStar2.Location = New System.Drawing.Point(31, 220)
         Me.pbStar2.Name = "pbStar2"
         Me.pbStar2.Size = New System.Drawing.Size(24, 24)
         Me.pbStar2.TabIndex = 64
@@ -907,7 +922,7 @@ Partial Class dlgEditMovie
         '
         'pbStar1
         '
-        Me.pbStar1.Location = New System.Drawing.Point(79, 180)
+        Me.pbStar1.Location = New System.Drawing.Point(7, 220)
         Me.pbStar1.Name = "pbStar1"
         Me.pbStar1.Size = New System.Drawing.Size(24, 24)
         Me.pbStar1.TabIndex = 63
@@ -917,7 +932,7 @@ Partial Class dlgEditMovie
         '
         Me.txtVotes.BackColor = System.Drawing.SystemColors.Window
         Me.txtVotes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtVotes.Location = New System.Drawing.Point(81, 264)
+        Me.txtVotes.Location = New System.Drawing.Point(81, 305)
         Me.txtVotes.Name = "txtVotes"
         Me.txtVotes.Size = New System.Drawing.Size(66, 22)
         Me.txtVotes.TabIndex = 18
@@ -926,9 +941,9 @@ Partial Class dlgEditMovie
         '
         Me.lblVotes.AutoSize = True
         Me.lblVotes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblVotes.Location = New System.Drawing.Point(78, 249)
+        Me.lblVotes.Location = New System.Drawing.Point(78, 290)
         Me.lblVotes.Name = "lblVotes"
-        Me.lblVotes.Size = New System.Drawing.Size(38, 13)
+        Me.lblVotes.Size = New System.Drawing.Size(39, 13)
         Me.lblVotes.TabIndex = 17
         Me.lblVotes.Text = "Votes:"
         '
@@ -936,7 +951,7 @@ Partial Class dlgEditMovie
         '
         Me.lblRating.AutoSize = True
         Me.lblRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblRating.Location = New System.Drawing.Point(77, 167)
+        Me.lblRating.Location = New System.Drawing.Point(5, 207)
         Me.lblRating.Name = "lblRating"
         Me.lblRating.Size = New System.Drawing.Size(44, 13)
         Me.lblRating.TabIndex = 10
@@ -959,7 +974,7 @@ Partial Class dlgEditMovie
         Me.lblYear.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblYear.Location = New System.Drawing.Point(5, 167)
         Me.lblYear.Name = "lblYear"
-        Me.lblYear.Size = New System.Drawing.Size(32, 13)
+        Me.lblYear.Size = New System.Drawing.Size(33, 13)
         Me.lblYear.TabIndex = 8
         Me.lblYear.Text = "Year:"
         '
@@ -979,7 +994,7 @@ Partial Class dlgEditMovie
         Me.txtTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.txtTitle.Location = New System.Drawing.Point(7, 22)
         Me.txtTitle.Name = "txtTitle"
-        Me.txtTitle.Size = New System.Drawing.Size(192, 22)
+        Me.txtTitle.Size = New System.Drawing.Size(252, 22)
         Me.txtTitle.TabIndex = 1
         '
         'tpPoster
@@ -1946,7 +1961,7 @@ Partial Class dlgEditMovie
         Me.axVLCTrailer.Location = New System.Drawing.Point(6, 6)
         Me.axVLCTrailer.Name = "axVLCTrailer"
         Me.axVLCTrailer.OcxState = CType(resources.GetObject("axVLCTrailer.OcxState"), System.Windows.Forms.AxHost.State)
-        Me.axVLCTrailer.Size = New System.Drawing.Size(800, 449)
+        Me.axVLCTrailer.Size = New System.Drawing.Size(800, 450)
         Me.axVLCTrailer.TabIndex = 9
         '
         'btnSetMovieTrailerDL
@@ -2183,6 +2198,46 @@ Partial Class dlgEditMovie
         Me.chkWatched.Text = "Watched"
         Me.chkWatched.UseVisualStyleBackColor = True
         '
+        'pbStar6
+        '
+        Me.pbStar6.Location = New System.Drawing.Point(127, 220)
+        Me.pbStar6.Name = "pbStar6"
+        Me.pbStar6.Size = New System.Drawing.Size(24, 24)
+        Me.pbStar6.TabIndex = 68
+        Me.pbStar6.TabStop = False
+        '
+        'pbStar7
+        '
+        Me.pbStar7.Location = New System.Drawing.Point(151, 220)
+        Me.pbStar7.Name = "pbStar7"
+        Me.pbStar7.Size = New System.Drawing.Size(24, 24)
+        Me.pbStar7.TabIndex = 69
+        Me.pbStar7.TabStop = False
+        '
+        'pbStar8
+        '
+        Me.pbStar8.Location = New System.Drawing.Point(175, 220)
+        Me.pbStar8.Name = "pbStar8"
+        Me.pbStar8.Size = New System.Drawing.Size(24, 24)
+        Me.pbStar8.TabIndex = 70
+        Me.pbStar8.TabStop = False
+        '
+        'pbStar9
+        '
+        Me.pbStar9.Location = New System.Drawing.Point(199, 220)
+        Me.pbStar9.Name = "pbStar9"
+        Me.pbStar9.Size = New System.Drawing.Size(24, 24)
+        Me.pbStar9.TabIndex = 71
+        Me.pbStar9.TabStop = False
+        '
+        'pbStar10
+        '
+        Me.pbStar10.Location = New System.Drawing.Point(223, 220)
+        Me.pbStar10.Name = "pbStar10"
+        Me.pbStar10.Size = New System.Drawing.Size(24, 24)
+        Me.pbStar10.TabIndex = 72
+        Me.pbStar10.TabStop = False
+        '
         'dlgEditMovie
         '
         Me.AcceptButton = Me.OK_Button
@@ -2246,6 +2301,11 @@ Partial Class dlgEditMovie
         Me.tpMetaData.ResumeLayout(False)
         Me.tpMediaStub.ResumeLayout(False)
         Me.tpMediaStub.PerformLayout()
+        CType(Me.pbStar6, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbStar7, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbStar8, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbStar9, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbStar10, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -2422,5 +2482,10 @@ Partial Class dlgEditMovie
     Friend WithEvents btnTrailerStop As System.Windows.Forms.Button
     Friend WithEvents btnTrailerPlay As System.Windows.Forms.Button
     Friend WithEvents btnTrailerMute As System.Windows.Forms.Button
+    Friend WithEvents pbStar10 As System.Windows.Forms.PictureBox
+    Friend WithEvents pbStar9 As System.Windows.Forms.PictureBox
+    Friend WithEvents pbStar8 As System.Windows.Forms.PictureBox
+    Friend WithEvents pbStar7 As System.Windows.Forms.PictureBox
+    Friend WithEvents pbStar6 As System.Windows.Forms.PictureBox
 
 End Class

@@ -339,7 +339,7 @@ Public Class frmMain
 
                 .lblTitle.Text = String.Empty
                 .lblOriginalTitle.Text = String.Empty
-                .lblVotes.Text = String.Empty
+                .lblRating.Text = String.Empty
                 .lblRuntime.Text = String.Empty
                 .pnlTop250.Visible = False
                 .lblTop250.Text = String.Empty
@@ -348,11 +348,21 @@ Public Class frmMain
                 .pbStar3.Image = Nothing
                 .pbStar4.Image = Nothing
                 .pbStar5.Image = Nothing
+                .pbStar6.Image = Nothing
+                .pbStar7.Image = Nothing
+                .pbStar8.Image = Nothing
+                .pbStar9.Image = Nothing
+                .pbStar10.Image = Nothing
                 ToolTips.SetToolTip(pbStar1, "")
                 ToolTips.SetToolTip(pbStar2, "")
                 ToolTips.SetToolTip(pbStar3, "")
                 ToolTips.SetToolTip(pbStar4, "")
                 ToolTips.SetToolTip(pbStar5, "")
+                ToolTips.SetToolTip(pbStar6, "")
+                ToolTips.SetToolTip(pbStar7, "")
+                ToolTips.SetToolTip(pbStar8, "")
+                ToolTips.SetToolTip(pbStar9, "")
+                ToolTips.SetToolTip(pbStar10, "")
 
                 .lstActors.Items.Clear()
                 If Not IsNothing(.alActors) Then
@@ -933,6 +943,11 @@ Public Class frmMain
                 .pbStar3.Image = Nothing
                 .pbStar4.Image = Nothing
                 .pbStar5.Image = Nothing
+                .pbStar6.Image = Nothing
+                .pbStar7.Image = Nothing
+                .pbStar8.Image = Nothing
+                .pbStar9.Image = Nothing
+                .pbStar10.Image = Nothing
 
                 Dim tTip As String = String.Concat(Master.eLang.GetString(245, "Rating:"), String.Format(" {0:N}", sinRating))
                 ToolTips.SetToolTip(.pbStar1, tTip)
@@ -940,49 +955,234 @@ Public Class frmMain
                 ToolTips.SetToolTip(.pbStar3, tTip)
                 ToolTips.SetToolTip(.pbStar4, tTip)
                 ToolTips.SetToolTip(.pbStar5, tTip)
+                ToolTips.SetToolTip(.pbStar6, tTip)
+                ToolTips.SetToolTip(.pbStar7, tTip)
+                ToolTips.SetToolTip(.pbStar8, tTip)
+                ToolTips.SetToolTip(.pbStar9, tTip)
+                ToolTips.SetToolTip(.pbStar10, tTip)
 
                 If sinRating >= 0.5 Then ' if rating is less than .5 out of ten, consider it a 0
-                    Select Case (sinRating / 2)
+                    Select Case (sinRating)
                         Case Is <= 0.5
                             .pbStar1.Image = My.Resources.starhalf
+                            .pbStar2.Image = My.Resources.starempty
+                            .pbStar3.Image = My.Resources.starempty
+                            .pbStar4.Image = My.Resources.starempty
+                            .pbStar5.Image = My.Resources.starempty
+                            .pbStar6.Image = My.Resources.starempty
+                            .pbStar7.Image = My.Resources.starempty
+                            .pbStar8.Image = My.Resources.starempty
+                            .pbStar9.Image = My.Resources.starempty
+                            .pbStar10.Image = My.Resources.starempty
                         Case Is <= 1
                             .pbStar1.Image = My.Resources.star
+                            .pbStar2.Image = My.Resources.starempty
+                            .pbStar3.Image = My.Resources.starempty
+                            .pbStar4.Image = My.Resources.starempty
+                            .pbStar5.Image = My.Resources.starempty
+                            .pbStar6.Image = My.Resources.starempty
+                            .pbStar7.Image = My.Resources.starempty
+                            .pbStar8.Image = My.Resources.starempty
+                            .pbStar9.Image = My.Resources.starempty
+                            .pbStar10.Image = My.Resources.starempty
                         Case Is <= 1.5
                             .pbStar1.Image = My.Resources.star
                             .pbStar2.Image = My.Resources.starhalf
+                            .pbStar3.Image = My.Resources.starempty
+                            .pbStar4.Image = My.Resources.starempty
+                            .pbStar5.Image = My.Resources.starempty
+                            .pbStar6.Image = My.Resources.starempty
+                            .pbStar7.Image = My.Resources.starempty
+                            .pbStar8.Image = My.Resources.starempty
+                            .pbStar9.Image = My.Resources.starempty
+                            .pbStar10.Image = My.Resources.starempty
                         Case Is <= 2
                             .pbStar1.Image = My.Resources.star
                             .pbStar2.Image = My.Resources.star
+                            .pbStar3.Image = My.Resources.starempty
+                            .pbStar4.Image = My.Resources.starempty
+                            .pbStar5.Image = My.Resources.starempty
+                            .pbStar6.Image = My.Resources.starempty
+                            .pbStar7.Image = My.Resources.starempty
+                            .pbStar8.Image = My.Resources.starempty
+                            .pbStar9.Image = My.Resources.starempty
+                            .pbStar10.Image = My.Resources.starempty
                         Case Is <= 2.5
                             .pbStar1.Image = My.Resources.star
                             .pbStar2.Image = My.Resources.star
                             .pbStar3.Image = My.Resources.starhalf
+                            .pbStar4.Image = My.Resources.starempty
+                            .pbStar5.Image = My.Resources.starempty
+                            .pbStar6.Image = My.Resources.starempty
+                            .pbStar7.Image = My.Resources.starempty
+                            .pbStar8.Image = My.Resources.starempty
+                            .pbStar9.Image = My.Resources.starempty
+                            .pbStar10.Image = My.Resources.starempty
                         Case Is <= 3
                             .pbStar1.Image = My.Resources.star
                             .pbStar2.Image = My.Resources.star
                             .pbStar3.Image = My.Resources.star
+                            .pbStar4.Image = My.Resources.starempty
+                            .pbStar5.Image = My.Resources.starempty
+                            .pbStar6.Image = My.Resources.starempty
+                            .pbStar7.Image = My.Resources.starempty
+                            .pbStar8.Image = My.Resources.starempty
+                            .pbStar9.Image = My.Resources.starempty
+                            .pbStar10.Image = My.Resources.starempty
                         Case Is <= 3.5
                             .pbStar1.Image = My.Resources.star
                             .pbStar2.Image = My.Resources.star
                             .pbStar3.Image = My.Resources.star
                             .pbStar4.Image = My.Resources.starhalf
+                            .pbStar5.Image = My.Resources.starempty
+                            .pbStar6.Image = My.Resources.starempty
+                            .pbStar7.Image = My.Resources.starempty
+                            .pbStar8.Image = My.Resources.starempty
+                            .pbStar9.Image = My.Resources.starempty
+                            .pbStar10.Image = My.Resources.starempty
                         Case Is <= 4
                             .pbStar1.Image = My.Resources.star
                             .pbStar2.Image = My.Resources.star
                             .pbStar3.Image = My.Resources.star
                             .pbStar4.Image = My.Resources.star
+                            .pbStar5.Image = My.Resources.starempty
+                            .pbStar6.Image = My.Resources.starempty
+                            .pbStar7.Image = My.Resources.starempty
+                            .pbStar8.Image = My.Resources.starempty
+                            .pbStar9.Image = My.Resources.starempty
+                            .pbStar10.Image = My.Resources.starempty
                         Case Is <= 4.5
                             .pbStar1.Image = My.Resources.star
                             .pbStar2.Image = My.Resources.star
                             .pbStar3.Image = My.Resources.star
                             .pbStar4.Image = My.Resources.star
                             .pbStar5.Image = My.Resources.starhalf
+                            .pbStar6.Image = My.Resources.starempty
+                            .pbStar7.Image = My.Resources.starempty
+                            .pbStar8.Image = My.Resources.starempty
+                            .pbStar9.Image = My.Resources.starempty
+                            .pbStar10.Image = My.Resources.starempty
+                        Case Is <= 5
+                            .pbStar1.Image = My.Resources.star
+                            .pbStar2.Image = My.Resources.star
+                            .pbStar3.Image = My.Resources.star
+                            .pbStar4.Image = My.Resources.star
+                            .pbStar5.Image = My.Resources.star
+                            .pbStar6.Image = My.Resources.starempty
+                            .pbStar7.Image = My.Resources.starempty
+                            .pbStar8.Image = My.Resources.starempty
+                            .pbStar9.Image = My.Resources.starempty
+                            .pbStar10.Image = My.Resources.starempty
+                        Case Is <= 5.5
+                            .pbStar1.Image = My.Resources.star
+                            .pbStar2.Image = My.Resources.star
+                            .pbStar3.Image = My.Resources.star
+                            .pbStar4.Image = My.Resources.star
+                            .pbStar5.Image = My.Resources.star
+                            .pbStar6.Image = My.Resources.starhalf
+                            .pbStar7.Image = My.Resources.starempty
+                            .pbStar8.Image = My.Resources.starempty
+                            .pbStar9.Image = My.Resources.starempty
+                            .pbStar10.Image = My.Resources.starempty
+                        Case Is <= 6
+                            .pbStar1.Image = My.Resources.star
+                            .pbStar2.Image = My.Resources.star
+                            .pbStar3.Image = My.Resources.star
+                            .pbStar4.Image = My.Resources.star
+                            .pbStar5.Image = My.Resources.star
+                            .pbStar6.Image = My.Resources.star
+                            .pbStar7.Image = My.Resources.starempty
+                            .pbStar8.Image = My.Resources.starempty
+                            .pbStar9.Image = My.Resources.starempty
+                            .pbStar10.Image = My.Resources.starempty
+                        Case Is <= 6.5
+                            .pbStar1.Image = My.Resources.star
+                            .pbStar2.Image = My.Resources.star
+                            .pbStar3.Image = My.Resources.star
+                            .pbStar4.Image = My.Resources.star
+                            .pbStar5.Image = My.Resources.star
+                            .pbStar6.Image = My.Resources.star
+                            .pbStar7.Image = My.Resources.starhalf
+                            .pbStar8.Image = My.Resources.starempty
+                            .pbStar9.Image = My.Resources.starempty
+                            .pbStar10.Image = My.Resources.starempty
+                        Case Is <= 7
+                            .pbStar1.Image = My.Resources.star
+                            .pbStar2.Image = My.Resources.star
+                            .pbStar3.Image = My.Resources.star
+                            .pbStar4.Image = My.Resources.star
+                            .pbStar5.Image = My.Resources.star
+                            .pbStar6.Image = My.Resources.star
+                            .pbStar7.Image = My.Resources.star
+                            .pbStar8.Image = My.Resources.starempty
+                            .pbStar9.Image = My.Resources.starempty
+                            .pbStar10.Image = My.Resources.starempty
+                        Case Is <= 7.5
+                            .pbStar1.Image = My.Resources.star
+                            .pbStar2.Image = My.Resources.star
+                            .pbStar3.Image = My.Resources.star
+                            .pbStar4.Image = My.Resources.star
+                            .pbStar5.Image = My.Resources.star
+                            .pbStar6.Image = My.Resources.star
+                            .pbStar7.Image = My.Resources.star
+                            .pbStar8.Image = My.Resources.starhalf
+                            .pbStar9.Image = My.Resources.starempty
+                            .pbStar10.Image = My.Resources.starempty
+                        Case Is <= 8
+                            .pbStar1.Image = My.Resources.star
+                            .pbStar2.Image = My.Resources.star
+                            .pbStar3.Image = My.Resources.star
+                            .pbStar4.Image = My.Resources.star
+                            .pbStar5.Image = My.Resources.star
+                            .pbStar6.Image = My.Resources.star
+                            .pbStar7.Image = My.Resources.star
+                            .pbStar8.Image = My.Resources.star
+                            .pbStar9.Image = My.Resources.starempty
+                            .pbStar10.Image = My.Resources.starempty
+                        Case Is <= 8.5
+                            .pbStar1.Image = My.Resources.star
+                            .pbStar2.Image = My.Resources.star
+                            .pbStar3.Image = My.Resources.star
+                            .pbStar4.Image = My.Resources.star
+                            .pbStar5.Image = My.Resources.star
+                            .pbStar6.Image = My.Resources.star
+                            .pbStar7.Image = My.Resources.star
+                            .pbStar8.Image = My.Resources.star
+                            .pbStar9.Image = My.Resources.starhalf
+                            .pbStar10.Image = My.Resources.starempty
+                        Case Is <= 9
+                            .pbStar1.Image = My.Resources.star
+                            .pbStar2.Image = My.Resources.star
+                            .pbStar3.Image = My.Resources.star
+                            .pbStar4.Image = My.Resources.star
+                            .pbStar5.Image = My.Resources.star
+                            .pbStar6.Image = My.Resources.star
+                            .pbStar7.Image = My.Resources.star
+                            .pbStar8.Image = My.Resources.star
+                            .pbStar9.Image = My.Resources.star
+                            .pbStar10.Image = My.Resources.starempty
+                        Case Is <= 9.5
+                            .pbStar1.Image = My.Resources.star
+                            .pbStar2.Image = My.Resources.star
+                            .pbStar3.Image = My.Resources.star
+                            .pbStar4.Image = My.Resources.star
+                            .pbStar5.Image = My.Resources.star
+                            .pbStar6.Image = My.Resources.star
+                            .pbStar7.Image = My.Resources.star
+                            .pbStar8.Image = My.Resources.star
+                            .pbStar9.Image = My.Resources.star
+                            .pbStar10.Image = My.Resources.starhalf
                         Case Else
                             .pbStar1.Image = My.Resources.star
                             .pbStar2.Image = My.Resources.star
                             .pbStar3.Image = My.Resources.star
                             .pbStar4.Image = My.Resources.star
                             .pbStar5.Image = My.Resources.star
+                            .pbStar6.Image = My.Resources.star
+                            .pbStar7.Image = My.Resources.star
+                            .pbStar8.Image = My.Resources.star
+                            .pbStar9.Image = My.Resources.star
+                            .pbStar10.Image = My.Resources.star
                     End Select
                 End If
             End With
@@ -7686,7 +7886,7 @@ doCancel:
             End If
 
             If Not String.IsNullOrEmpty(Master.currMovie.Movie.Votes) Then
-                Me.lblVotes.Text = String.Format(Master.eLang.GetString(118, "{0} Votes"), Master.currMovie.Movie.Votes)
+                Me.lblRating.Text = String.Concat(Master.currMovie.Movie.Rating, "/10 (", String.Format(Master.eLang.GetString(118, "{0} Votes"), Master.currMovie.Movie.Votes), ")")
             End If
 
             If Not String.IsNullOrEmpty(Master.currMovie.Movie.Runtime) Then

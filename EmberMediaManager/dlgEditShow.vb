@@ -857,49 +857,234 @@ Public Class dlgEditShow
                 .pbStar3.Image = Nothing
                 .pbStar4.Image = Nothing
                 .pbStar5.Image = Nothing
+                .pbStar6.Image = Nothing
+                .pbStar7.Image = Nothing
+                .pbStar8.Image = Nothing
+                .pbStar9.Image = Nothing
+                .pbStar10.Image = Nothing
 
                 If sinRating >= 0.5 Then ' if rating is less than .5 out of ten, consider it a 0
-                    Select Case (sinRating / 2)
+                    Select Case (sinRating)
                         Case Is <= 0.5
                             .pbStar1.Image = My.Resources.starhalf
+                            .pbStar2.Image = My.Resources.starempty
+                            .pbStar3.Image = My.Resources.starempty
+                            .pbStar4.Image = My.Resources.starempty
+                            .pbStar5.Image = My.Resources.starempty
+                            .pbStar6.Image = My.Resources.starempty
+                            .pbStar7.Image = My.Resources.starempty
+                            .pbStar8.Image = My.Resources.starempty
+                            .pbStar9.Image = My.Resources.starempty
+                            .pbStar10.Image = My.Resources.starempty
                         Case Is <= 1
                             .pbStar1.Image = My.Resources.star
+                            .pbStar2.Image = My.Resources.starempty
+                            .pbStar3.Image = My.Resources.starempty
+                            .pbStar4.Image = My.Resources.starempty
+                            .pbStar5.Image = My.Resources.starempty
+                            .pbStar6.Image = My.Resources.starempty
+                            .pbStar7.Image = My.Resources.starempty
+                            .pbStar8.Image = My.Resources.starempty
+                            .pbStar9.Image = My.Resources.starempty
+                            .pbStar10.Image = My.Resources.starempty
                         Case Is <= 1.5
                             .pbStar1.Image = My.Resources.star
                             .pbStar2.Image = My.Resources.starhalf
+                            .pbStar3.Image = My.Resources.starempty
+                            .pbStar4.Image = My.Resources.starempty
+                            .pbStar5.Image = My.Resources.starempty
+                            .pbStar6.Image = My.Resources.starempty
+                            .pbStar7.Image = My.Resources.starempty
+                            .pbStar8.Image = My.Resources.starempty
+                            .pbStar9.Image = My.Resources.starempty
+                            .pbStar10.Image = My.Resources.starempty
                         Case Is <= 2
                             .pbStar1.Image = My.Resources.star
                             .pbStar2.Image = My.Resources.star
+                            .pbStar3.Image = My.Resources.starempty
+                            .pbStar4.Image = My.Resources.starempty
+                            .pbStar5.Image = My.Resources.starempty
+                            .pbStar6.Image = My.Resources.starempty
+                            .pbStar7.Image = My.Resources.starempty
+                            .pbStar8.Image = My.Resources.starempty
+                            .pbStar9.Image = My.Resources.starempty
+                            .pbStar10.Image = My.Resources.starempty
                         Case Is <= 2.5
                             .pbStar1.Image = My.Resources.star
                             .pbStar2.Image = My.Resources.star
                             .pbStar3.Image = My.Resources.starhalf
+                            .pbStar4.Image = My.Resources.starempty
+                            .pbStar5.Image = My.Resources.starempty
+                            .pbStar6.Image = My.Resources.starempty
+                            .pbStar7.Image = My.Resources.starempty
+                            .pbStar8.Image = My.Resources.starempty
+                            .pbStar9.Image = My.Resources.starempty
+                            .pbStar10.Image = My.Resources.starempty
                         Case Is <= 3
                             .pbStar1.Image = My.Resources.star
                             .pbStar2.Image = My.Resources.star
                             .pbStar3.Image = My.Resources.star
+                            .pbStar4.Image = My.Resources.starempty
+                            .pbStar5.Image = My.Resources.starempty
+                            .pbStar6.Image = My.Resources.starempty
+                            .pbStar7.Image = My.Resources.starempty
+                            .pbStar8.Image = My.Resources.starempty
+                            .pbStar9.Image = My.Resources.starempty
+                            .pbStar10.Image = My.Resources.starempty
                         Case Is <= 3.5
                             .pbStar1.Image = My.Resources.star
                             .pbStar2.Image = My.Resources.star
                             .pbStar3.Image = My.Resources.star
                             .pbStar4.Image = My.Resources.starhalf
+                            .pbStar5.Image = My.Resources.starempty
+                            .pbStar6.Image = My.Resources.starempty
+                            .pbStar7.Image = My.Resources.starempty
+                            .pbStar8.Image = My.Resources.starempty
+                            .pbStar9.Image = My.Resources.starempty
+                            .pbStar10.Image = My.Resources.starempty
                         Case Is <= 4
                             .pbStar1.Image = My.Resources.star
                             .pbStar2.Image = My.Resources.star
                             .pbStar3.Image = My.Resources.star
                             .pbStar4.Image = My.Resources.star
+                            .pbStar5.Image = My.Resources.starempty
+                            .pbStar6.Image = My.Resources.starempty
+                            .pbStar7.Image = My.Resources.starempty
+                            .pbStar8.Image = My.Resources.starempty
+                            .pbStar9.Image = My.Resources.starempty
+                            .pbStar10.Image = My.Resources.starempty
                         Case Is <= 4.5
                             .pbStar1.Image = My.Resources.star
                             .pbStar2.Image = My.Resources.star
                             .pbStar3.Image = My.Resources.star
                             .pbStar4.Image = My.Resources.star
                             .pbStar5.Image = My.Resources.starhalf
+                            .pbStar6.Image = My.Resources.starempty
+                            .pbStar7.Image = My.Resources.starempty
+                            .pbStar8.Image = My.Resources.starempty
+                            .pbStar9.Image = My.Resources.starempty
+                            .pbStar10.Image = My.Resources.starempty
+                        Case Is <= 5
+                            .pbStar1.Image = My.Resources.star
+                            .pbStar2.Image = My.Resources.star
+                            .pbStar3.Image = My.Resources.star
+                            .pbStar4.Image = My.Resources.star
+                            .pbStar5.Image = My.Resources.star
+                            .pbStar6.Image = My.Resources.starempty
+                            .pbStar7.Image = My.Resources.starempty
+                            .pbStar8.Image = My.Resources.starempty
+                            .pbStar9.Image = My.Resources.starempty
+                            .pbStar10.Image = My.Resources.starempty
+                        Case Is <= 5.5
+                            .pbStar1.Image = My.Resources.star
+                            .pbStar2.Image = My.Resources.star
+                            .pbStar3.Image = My.Resources.star
+                            .pbStar4.Image = My.Resources.star
+                            .pbStar5.Image = My.Resources.star
+                            .pbStar6.Image = My.Resources.starhalf
+                            .pbStar7.Image = My.Resources.starempty
+                            .pbStar8.Image = My.Resources.starempty
+                            .pbStar9.Image = My.Resources.starempty
+                            .pbStar10.Image = My.Resources.starempty
+                        Case Is <= 6
+                            .pbStar1.Image = My.Resources.star
+                            .pbStar2.Image = My.Resources.star
+                            .pbStar3.Image = My.Resources.star
+                            .pbStar4.Image = My.Resources.star
+                            .pbStar5.Image = My.Resources.star
+                            .pbStar6.Image = My.Resources.star
+                            .pbStar7.Image = My.Resources.starempty
+                            .pbStar8.Image = My.Resources.starempty
+                            .pbStar9.Image = My.Resources.starempty
+                            .pbStar10.Image = My.Resources.starempty
+                        Case Is <= 6.5
+                            .pbStar1.Image = My.Resources.star
+                            .pbStar2.Image = My.Resources.star
+                            .pbStar3.Image = My.Resources.star
+                            .pbStar4.Image = My.Resources.star
+                            .pbStar5.Image = My.Resources.star
+                            .pbStar6.Image = My.Resources.star
+                            .pbStar7.Image = My.Resources.starhalf
+                            .pbStar8.Image = My.Resources.starempty
+                            .pbStar9.Image = My.Resources.starempty
+                            .pbStar10.Image = My.Resources.starempty
+                        Case Is <= 7
+                            .pbStar1.Image = My.Resources.star
+                            .pbStar2.Image = My.Resources.star
+                            .pbStar3.Image = My.Resources.star
+                            .pbStar4.Image = My.Resources.star
+                            .pbStar5.Image = My.Resources.star
+                            .pbStar6.Image = My.Resources.star
+                            .pbStar7.Image = My.Resources.star
+                            .pbStar8.Image = My.Resources.starempty
+                            .pbStar9.Image = My.Resources.starempty
+                            .pbStar10.Image = My.Resources.starempty
+                        Case Is <= 7.5
+                            .pbStar1.Image = My.Resources.star
+                            .pbStar2.Image = My.Resources.star
+                            .pbStar3.Image = My.Resources.star
+                            .pbStar4.Image = My.Resources.star
+                            .pbStar5.Image = My.Resources.star
+                            .pbStar6.Image = My.Resources.star
+                            .pbStar7.Image = My.Resources.star
+                            .pbStar8.Image = My.Resources.starhalf
+                            .pbStar9.Image = My.Resources.starempty
+                            .pbStar10.Image = My.Resources.starempty
+                        Case Is <= 8
+                            .pbStar1.Image = My.Resources.star
+                            .pbStar2.Image = My.Resources.star
+                            .pbStar3.Image = My.Resources.star
+                            .pbStar4.Image = My.Resources.star
+                            .pbStar5.Image = My.Resources.star
+                            .pbStar6.Image = My.Resources.star
+                            .pbStar7.Image = My.Resources.star
+                            .pbStar8.Image = My.Resources.star
+                            .pbStar9.Image = My.Resources.starempty
+                            .pbStar10.Image = My.Resources.starempty
+                        Case Is <= 8.5
+                            .pbStar1.Image = My.Resources.star
+                            .pbStar2.Image = My.Resources.star
+                            .pbStar3.Image = My.Resources.star
+                            .pbStar4.Image = My.Resources.star
+                            .pbStar5.Image = My.Resources.star
+                            .pbStar6.Image = My.Resources.star
+                            .pbStar7.Image = My.Resources.star
+                            .pbStar8.Image = My.Resources.star
+                            .pbStar9.Image = My.Resources.starhalf
+                            .pbStar10.Image = My.Resources.starempty
+                        Case Is <= 9
+                            .pbStar1.Image = My.Resources.star
+                            .pbStar2.Image = My.Resources.star
+                            .pbStar3.Image = My.Resources.star
+                            .pbStar4.Image = My.Resources.star
+                            .pbStar5.Image = My.Resources.star
+                            .pbStar6.Image = My.Resources.star
+                            .pbStar7.Image = My.Resources.star
+                            .pbStar8.Image = My.Resources.star
+                            .pbStar9.Image = My.Resources.star
+                            .pbStar10.Image = My.Resources.starempty
+                        Case Is <= 9.5
+                            .pbStar1.Image = My.Resources.star
+                            .pbStar2.Image = My.Resources.star
+                            .pbStar3.Image = My.Resources.star
+                            .pbStar4.Image = My.Resources.star
+                            .pbStar5.Image = My.Resources.star
+                            .pbStar6.Image = My.Resources.star
+                            .pbStar7.Image = My.Resources.star
+                            .pbStar8.Image = My.Resources.star
+                            .pbStar9.Image = My.Resources.star
+                            .pbStar10.Image = My.Resources.starhalf
                         Case Else
                             .pbStar1.Image = My.Resources.star
                             .pbStar2.Image = My.Resources.star
                             .pbStar3.Image = My.Resources.star
                             .pbStar4.Image = My.Resources.star
                             .pbStar5.Image = My.Resources.star
+                            .pbStar6.Image = My.Resources.star
+                            .pbStar7.Image = My.Resources.star
+                            .pbStar8.Image = My.Resources.star
+                            .pbStar9.Image = My.Resources.star
+                            .pbStar10.Image = My.Resources.star
                     End Select
                 End If
             End With
@@ -1092,6 +1277,11 @@ Public Class dlgEditShow
             .pbStar3.Tag = tRating
             .pbStar4.Tag = tRating
             .pbStar5.Tag = tRating
+            .pbStar6.Tag = tRating
+            .pbStar7.Tag = tRating
+            .pbStar8.Tag = tRating
+            .pbStar9.Tag = tRating
+            .pbStar10.Tag = tRating
             If tRating > 0 Then .BuildStars(tRating)
 
             Me.SelectMPAA()
@@ -1597,21 +1787,21 @@ Public Class dlgEditShow
             Single.TryParse(Me.tmpRating, tmpDBL)
             Me.BuildStars(tmpDBL)
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
     Private Sub pbStar1_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbStar1.MouseMove
         Try
             If e.X < 12 Then
+                Me.pbStar1.Tag = 0.5
+                Me.BuildStars(0.5)
+            Else
                 Me.pbStar1.Tag = 1
                 Me.BuildStars(1)
-            Else
-                Me.pbStar1.Tag = 2
-                Me.BuildStars(2)
             End If
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1625,21 +1815,21 @@ Public Class dlgEditShow
             Single.TryParse(Me.tmpRating, tmpDBL)
             Me.BuildStars(tmpDBL)
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
     Private Sub pbStar2_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbStar2.MouseMove
         Try
             If e.X < 12 Then
-                Me.pbStar2.Tag = 3
-                Me.BuildStars(3)
+                Me.pbStar2.Tag = 1.5
+                Me.BuildStars(1.5)
             Else
-                Me.pbStar2.Tag = 4
-                Me.BuildStars(4)
+                Me.pbStar2.Tag = 2
+                Me.BuildStars(2)
             End If
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1653,21 +1843,21 @@ Public Class dlgEditShow
             Single.TryParse(Me.tmpRating, tmpDBL)
             Me.BuildStars(tmpDBL)
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
     Private Sub pbStar3_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbStar3.MouseMove
         Try
             If e.X < 12 Then
-                Me.pbStar3.Tag = 5
-                Me.BuildStars(5)
+                Me.pbStar3.Tag = 2.5
+                Me.BuildStars(2.5)
             Else
-                Me.pbStar3.Tag = 6
-                Me.BuildStars(6)
+                Me.pbStar3.Tag = 3
+                Me.BuildStars(3)
             End If
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1681,21 +1871,21 @@ Public Class dlgEditShow
             Single.TryParse(Me.tmpRating, tmpDBL)
             Me.BuildStars(tmpDBL)
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
     Private Sub pbStar4_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbStar4.MouseMove
         Try
             If e.X < 12 Then
-                Me.pbStar4.Tag = 7
-                Me.BuildStars(7)
+                Me.pbStar4.Tag = 3.5
+                Me.BuildStars(3.5)
             Else
-                Me.pbStar4.Tag = 8
-                Me.BuildStars(8)
+                Me.pbStar4.Tag = 4
+                Me.BuildStars(4)
             End If
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1709,21 +1899,161 @@ Public Class dlgEditShow
             Single.TryParse(Me.tmpRating, tmpDBL)
             Me.BuildStars(tmpDBL)
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
     Private Sub pbStar5_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbStar5.MouseMove
         Try
             If e.X < 12 Then
-                Me.pbStar5.Tag = 9
-                Me.BuildStars(9)
+                Me.pbStar5.Tag = 4.5
+                Me.BuildStars(4.5)
             Else
-                Me.pbStar5.Tag = 10
+                Me.pbStar5.Tag = 5
+                Me.BuildStars(5)
+            End If
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
+    Private Sub pbStar6_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbStar6.Click
+        Me.tmpRating = Me.pbStar6.Tag.ToString
+    End Sub
+
+    Private Sub pbStar6_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStar6.MouseLeave
+        Try
+            Dim tmpDBL As Single = 0
+            Single.TryParse(Me.tmpRating, tmpDBL)
+            Me.BuildStars(tmpDBL)
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
+    Private Sub pbStar6_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbStar6.MouseMove
+        Try
+            If e.X < 12 Then
+                Me.pbStar6.Tag = 5.5
+                Me.BuildStars(5.5)
+            Else
+                Me.pbStar6.Tag = 6
+                Me.BuildStars(6)
+            End If
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
+    Private Sub pbStar7_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbStar7.Click
+        Me.tmpRating = Me.pbStar7.Tag.ToString
+    End Sub
+
+    Private Sub pbStar7_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStar7.MouseLeave
+        Try
+            Dim tmpDBL As Single = 0
+            Single.TryParse(Me.tmpRating, tmpDBL)
+            Me.BuildStars(tmpDBL)
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
+    Private Sub pbStar7_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbStar7.MouseMove
+        Try
+            If e.X < 12 Then
+                Me.pbStar7.Tag = 6.5
+                Me.BuildStars(6.5)
+            Else
+                Me.pbStar7.Tag = 7
+                Me.BuildStars(7)
+            End If
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
+    Private Sub pbStar8_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbStar8.Click
+        Me.tmpRating = Me.pbStar8.Tag.ToString
+    End Sub
+
+    Private Sub pbStar8_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStar8.MouseLeave
+        Try
+            Dim tmpDBL As Single = 0
+            Single.TryParse(Me.tmpRating, tmpDBL)
+            Me.BuildStars(tmpDBL)
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
+    Private Sub pbStar8_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbStar8.MouseMove
+        Try
+            If e.X < 12 Then
+                Me.pbStar8.Tag = 7.5
+                Me.BuildStars(7.5)
+            Else
+                Me.pbStar8.Tag = 8
+                Me.BuildStars(8)
+            End If
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
+    Private Sub pbStar9_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbStar9.Click
+        Me.tmpRating = Me.pbStar9.Tag.ToString
+    End Sub
+
+    Private Sub pbStar9_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStar9.MouseLeave
+        Try
+            Dim tmpDBL As Single = 0
+            Single.TryParse(Me.tmpRating, tmpDBL)
+            Me.BuildStars(tmpDBL)
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
+    Private Sub pbStar9_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbStar9.MouseMove
+        Try
+            If e.X < 12 Then
+                Me.pbStar9.Tag = 8.5
+                Me.BuildStars(8.5)
+            Else
+                Me.pbStar9.Tag = 9
+                Me.BuildStars(9)
+            End If
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
+    Private Sub pbStar10_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbStar10.Click
+        Me.tmpRating = Me.pbStar10.Tag.ToString
+    End Sub
+
+    Private Sub pbStar10_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStar10.MouseLeave
+        Try
+            Dim tmpDBL As Single = 0
+            Single.TryParse(Me.tmpRating, tmpDBL)
+            Me.BuildStars(tmpDBL)
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
+    Private Sub pbStar10_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbStar10.MouseMove
+        Try
+            If e.X < 12 Then
+                Me.pbStar10.Tag = 9.5
+                Me.BuildStars(9.5)
+            Else
+                Me.pbStar10.Tag = 10
                 Me.BuildStars(10)
             End If
         Catch ex As Exception
-            Logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 

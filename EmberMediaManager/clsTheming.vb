@@ -97,7 +97,7 @@ Public Class Theming
         frmMain.pbStar5.BackColor = xTheme.TopPanelBackColor
 
         frmMain.lblTitle.ForeColor = xTheme.TopPanelForeColor
-        frmMain.lblVotes.ForeColor = xTheme.TopPanelForeColor
+        frmMain.lblRating.ForeColor = xTheme.TopPanelForeColor
         frmMain.lblRuntime.ForeColor = xTheme.TopPanelForeColor
         frmMain.lblTagline.ForeColor = xTheme.TopPanelForeColor
 
