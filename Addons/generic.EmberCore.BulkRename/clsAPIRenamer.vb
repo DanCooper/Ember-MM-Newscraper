@@ -246,7 +246,7 @@ Public Class FileFolderRenamer
         End Try
     End Function
 
-    Public Shared Sub RenameSingle(ByRef _tmpMovie As Structures.DBMovie, ByVal folderPattern As String, ByVal filePattern As String, ByVal BatchMode As Boolean, ByVal toNfo As Boolean, ByVal ShowError As Boolean)
+    Public Shared Sub RenameSingle(ByRef _tmpMovie As Structures.DBMovie, ByVal folderPattern As String, ByVal filePattern As String, ByVal BatchMode As Boolean, ByVal toNfo As Boolean, ByVal ShowError As Boolean, ByVal toDB As Boolean)
         Dim MovieFile As New FileRename
 
         If Not IsNothing(_tmpMovie.Movie.FileInfo) Then
@@ -289,7 +289,7 @@ Public Class FileFolderRenamer
                     MovieFile.MultiViewCount = String.Empty
                 End If
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name,ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         Else
             MovieFile.AudioChannels = String.Empty
@@ -402,9 +402,11 @@ Public Class FileFolderRenamer
         MovieFile.DirExist = File.Exists(Path.Combine(MovieFile.BasePath, MovieFile.NewPath)) AndAlso Not (MovieFile.Path = MovieFile.NewPath)
 
         If Not MovieFile.NewPath = MovieFile.Path OrElse Not MovieFile.NewFileName = MovieFile.FileName Then
-            DoRenameSingle(MovieFile, _tmpMovie, BatchMode, toNfo, ShowError)
+            DoRenameSingle(MovieFile, _tmpMovie, BatchMode, toNfo, ShowError, toDB)
         Else
-            Master.DB.SaveMovieToDB(_tmpMovie, False, True, Not String.IsNullOrEmpty(_tmpMovie.Movie.IMDBID))
+            If toDB Then
+                Master.DB.SaveMovieToDB(_tmpMovie, False, True, Not String.IsNullOrEmpty(_tmpMovie.Movie.IMDBID))
+            End If
         End If
     End Sub
 
@@ -716,7 +718,7 @@ Public Class FileFolderRenamer
         Return pattern
     End Function
 
-    Private Shared Sub DoRenameSingle(ByVal _frename As FileRename, ByRef _movie As Structures.DBMovie, ByVal BatchMode As Boolean, ByVal toNfo As Boolean, ByVal ShowError As Boolean)
+    Private Shared Sub DoRenameSingle(ByVal _frename As FileRename, ByRef _movie As Structures.DBMovie, ByVal BatchMode As Boolean, ByVal toNfo As Boolean, ByVal ShowError As Boolean, ByVal toDB As Boolean)
         Try
             If Not _movie.IsLock Then
                 Dim srcDir As String = Path.Combine(_frename.BasePath, _frename.Path)
@@ -801,7 +803,11 @@ Public Class FileFolderRenamer
                 End If
 
                 UpdateFaSPaths(_movie, srcDir, destDir, _frename.FileName, _frename.NewFileName)
-                Master.DB.SaveMovieToDB(_movie, False, BatchMode, toNfo)
+
+                If toDB Then
+                    Master.DB.SaveMovieToDB(_movie, False, BatchMode, toNfo)
+                End If
+
                 If Not _frename.IsSingle Then
                     Dim fileCount As Integer = 0
                     Dim dirCount As Integer = 0

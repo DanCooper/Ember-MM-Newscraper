@@ -770,6 +770,7 @@ Public Class Enums
         ClearLogoItem = 11
         DiscArtItem = 12
         EFanartsItem = 13
+        MoviePath = 14
     End Enum
 
     Public Enum ScraperEventType_MovieSet As Integer

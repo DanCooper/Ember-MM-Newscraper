@@ -2321,7 +2321,8 @@ Public Class frmMain
                 If bwMovieScraper.CancellationPending Then Exit For
 
                 If Not (Args.scrapeType = Enums.ScrapeType.SingleScrape) Then
-                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieScraperRDYtoSave, Nothing, DBScrapeMovie)
+                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieScraperRDYtoSave, Nothing, Nothing, False, DBScrapeMovie)
+                    MovieScraperEvent(Enums.ScraperEventType_Movie.MoviePath, DBScrapeMovie.Filename)
                     Master.DB.SaveMovieToDB(DBScrapeMovie, False, False, Not String.IsNullOrEmpty(DBScrapeMovie.Movie.IMDBID))
                     ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieSync, Nothing, DBScrapeMovie)
                     bwMovieScraper.ReportProgress(-1, If(Not OldTitle = NewTitle, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldTitle, NewTitle), NewTitle))
@@ -6001,12 +6002,12 @@ doCancel:
                     'AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovieSet.GenericRunCallBack
                     Select Case dEditMovieSet.ShowDialog()
                         Case Windows.Forms.DialogResult.OK
-                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieScraperRDYtoSave, Nothing, Master.currMovieSet)
+                            'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieScraperRDYtoSave, Nothing, Master.currMovieSet)
                             Me.SetMovieSetListItemAfterEdit(ID, indX)
                             If Me.RefreshMovieSet(ID) Then
                                 Me.FillList(False, True, False)
                             End If
-                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieSync, Nothing, Master.currMovieSet)
+                            'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieSync, Nothing, Master.currMovieSet)
                         Case Windows.Forms.DialogResult.Retry
                             Functions.SetScraperMod(Enums.ModType_Movie.All, True, True)
                             Me.MovieSetScrapeData(True, Enums.ScrapeType.SingleScrape, Master.DefaultMovieSetOptions)
@@ -9291,7 +9292,7 @@ doCancel:
                 Master.fLoading.SetLoadingMesg(Master.eLang.GetString(859, "Running Module..."))
                 Dim gModule As ModulesManager._externalGenericModuleClass = ModulesManager.Instance.externalProcessorModules.FirstOrDefault(Function(y) y.ProcessorModule.ModuleName = ModuleName)
                 If Not IsNothing(gModule) Then
-                    gModule.ProcessorModule.RunGeneric(Enums.ModuleEventType.CommandLine, Nothing, Nothing)
+                    gModule.ProcessorModule.RunGeneric(Enums.ModuleEventType.CommandLine, Nothing, Nothing, Nothing)
                 End If
             End If
             If clExport = True Then
@@ -11028,6 +11029,8 @@ doCancel:
                     dScrapeRow(53) = DirectCast(Parameter, Boolean)
                 Case Enums.ScraperEventType_Movie.ListTitle
                     dScrapeRow(3) = DirectCast(Parameter, String)
+                Case Enums.ScraperEventType_Movie.MoviePath
+                    dScrapeRow(1) = DirectCast(Parameter, String)
                 Case Enums.ScraperEventType_Movie.NFOItem
                     dScrapeRow(6) = DirectCast(Parameter, Boolean)
                 Case Enums.ScraperEventType_Movie.PosterItem
