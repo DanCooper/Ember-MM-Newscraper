@@ -91,12 +91,24 @@ Public Class frmFanartTVMediaSettingsHolder_MovieSet
     End Sub
     Private Sub btnUnlockAPI_Click(sender As Object, e As EventArgs) Handles btnUnlockAPI.Click
         Me.lblEMMAPI.Visible = False
-        Me.txtFANARTTVApiKey.Enabled = True
-        Me.txtFANARTTVApiKey.Visible = True
+        Me.txtApiKey.Enabled = True
+        Me.txtApiKey.Visible = True
     End Sub
 
     Private Sub cbEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbEnabled.CheckedChanged
         RaiseEvent SetupScraperChanged(cbEnabled.Checked, 0)
+    End Sub
+
+    Private Sub chkGetBlankImages_Click(sender As Object, e As EventArgs) Handles chkGetBlankImages.Click
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkGetEnglishImages_Click(sender As Object, e As EventArgs) Handles chkGetEnglishImages.Click
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkPrefLanguageOnly_Click(sender As Object, e As EventArgs) Handles chkPrefLanguageOnly.Click
+        RaiseEvent ModuleSettingsChanged()
     End Sub
 
     Private Sub chkScrapeBanner_CheckedChanged(sender As Object, e As EventArgs) Handles chkScrapeBanner.CheckedChanged
@@ -163,10 +175,13 @@ Public Class frmFanartTVMediaSettingsHolder_MovieSet
     End Sub
 
     Sub SetUp()
+        Me.Label1.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), vbCrLf)
+        Me.Label3.Text = Master.eLang.GetString(168, "Scrape Order")
         Me.btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API key")
-        Me.lblEMMAPI.Text = Master.eLang.GetString(1189, "Ember Media Manager API key")
-        Me.chkScrapePoster.Text = Master.eLang.GetString(939, "Get Poster")
-        Me.chkScrapeFanart.Text = Master.eLang.GetString(940, "Get Fanart")
+        Me.cbEnabled.Text = Master.eLang.GetString(774, "Enabled")
+        Me.chkGetBlankImages.Text = Master.eLang.GetString(1207, "Also Get Blank Images")
+        Me.chkGetEnglishImages.Text = Master.eLang.GetString(737, "Also Get English Images")
+        Me.chkPrefLanguageOnly.Text = Master.eLang.GetString(736, "Only Get Images for the Selected Language")
         Me.chkScrapeBanner.Text = Master.eLang.GetString(1051, "Get Banner")
         Me.chkScrapeCharacterArt.Text = Master.eLang.GetString(1052, "Get CharacterArt")
         Me.chkScrapeClearArt.Text = Master.eLang.GetString(1053, "Get ClearArt")
@@ -174,21 +189,22 @@ Public Class frmFanartTVMediaSettingsHolder_MovieSet
         Me.chkScrapeClearLogo.Text = Master.eLang.GetString(1054, "Get ClearLogo")
         Me.chkScrapeClearLogoOnlyHD.Text = Me.chkScrapeClearArtOnlyHD.Text
         Me.chkScrapeDiscArt.Text = Master.eLang.GetString(1055, "Get DiscArt")
+        Me.chkScrapeFanart.Text = Master.eLang.GetString(940, "Get Fanart")
         Me.chkScrapeLandscape.Text = Master.eLang.GetString(1056, "Get Landscape")
-        Me.lblAPIKey.Text = Master.eLang.GetString(789, "Fanart.tv API Key:")
-        Me.lblPrefLanguage.Text = Master.eLang.GetString(741, "Preferred Language:")
-        Me.Label3.Text = Master.eLang.GetString(168, "Scrape Order")
+        Me.chkScrapePoster.Text = Master.eLang.GetString(939, "Get Poster")
+        Me.gbImages.Text = Master.eLang.GetString(497, "Images")
         Me.gbScraper.Text = Master.eLang.GetString(788, "Fanart.tv")
-        Me.cbEnabled.Text = Master.eLang.GetString(774, "Enabled")
-        Me.Label1.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), vbCrLf)
+        Me.lblAPIKey.Text = Master.eLang.GetString(789, "Fanart.tv API Key:")
+        Me.lblEMMAPI.Text = Master.eLang.GetString(1189, "Ember Media Manager API key")
+        Me.lblPrefLanguage.Text = Master.eLang.GetString(741, "Preferred Language:")
     End Sub
 
-    Private Sub txtFANARTTVApiKey_TextEnter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFANARTTVApiKey.Enter
-        _api = txtFANARTTVApiKey.Text
+    Private Sub txtApiKey_TextEnter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtApiKey.Enter
+        _api = txtApiKey.Text
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub cbFANARTTVLanguage_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cbPrefLanguage.SelectedIndexChanged
+    Private Sub cbPrefLanguage_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cbPrefLanguage.SelectedIndexChanged
         If Not (_language = cbPrefLanguage.Text) Then
             RaiseEvent SetupNeedsRestart()
         End If

@@ -312,10 +312,11 @@ Public Class TMDB_Image
         End If
 
         Dim Settings As TMDB.Scraper.sMySettings_ForScraper
-        Settings.FallBackEng = _MySettings_Movie.GetEnglishImages
-        Settings.TMDBAPIKey = _MySettings_Movie.APIKey
-        Settings.TMDBLanguage = _MySettings_Movie.PrefLanguage
-        Settings.TMDBLanguagePrefOnly = _MySettings_Movie.PrefLanguageOnly
+        Settings.GetBlankImages = _MySettings_Movie.GetBlankImages
+        Settings.GetEnglishImages = _MySettings_Movie.GetEnglishImages
+        Settings.APIKey = _MySettings_Movie.APIKey
+        Settings.PrefLanguage = _MySettings_Movie.PrefLanguage
+        Settings.PrefLanguageOnly = _MySettings_Movie.PrefLanguageOnly
 
         ImageList = TMDB.GetTMDBImages(DBMovie.Movie.TMDBID, Type, Settings)
 
@@ -327,10 +328,11 @@ Public Class TMDB_Image
         LoadSettings_MovieSet()
 
         Dim Settings As TMDB.Scraper.sMySettings_ForScraper
-        Settings.FallBackEng = _MySettings_MovieSet.GetEnglishImages
-        Settings.TMDBAPIKey = _MySettings_MovieSet.APIKey
-        Settings.TMDBLanguage = _MySettings_MovieSet.PrefLanguage
-        Settings.TMDBLanguagePrefOnly = _MySettings_MovieSet.PrefLanguageOnly
+        Settings.GetBlankImages = _MySettings_MovieSet.GetBlankImages
+        Settings.GetEnglishImages = _MySettings_MovieSet.GetEnglishImages
+        Settings.APIKey = _MySettings_MovieSet.APIKey
+        Settings.PrefLanguage = _MySettings_MovieSet.PrefLanguage
+        Settings.PrefLanguageOnly = _MySettings_MovieSet.PrefLanguageOnly
 
         ImageList = TMDB.GetTMDBImages(DBMovieSet.MovieSet.ID, Type, Settings)
 
@@ -359,7 +361,7 @@ Public Class TMDB_Image
             settings.SetBooleanSetting("GetBlankImages", _MySettings_MovieSet.GetBlankImages, , , Enums.Content_Type.MovieSet)
             settings.SetBooleanSetting("GetEnglishImages", _MySettings_MovieSet.GetEnglishImages, , , Enums.Content_Type.MovieSet)
             settings.SetBooleanSetting("PrefLanguageOnly", _MySettings_MovieSet.PrefLanguageOnly, , , Enums.Content_Type.MovieSet)
-            settings.SetSetting("PrefLanguage", _MySettings_MovieSet.PrefLanguage, , , Enums.Content_Type.Movie)
+            settings.SetSetting("PrefLanguage", _MySettings_MovieSet.PrefLanguage, , , Enums.Content_Type.MovieSet)
         End Using
     End Sub
 

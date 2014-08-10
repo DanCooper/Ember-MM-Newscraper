@@ -36,13 +36,16 @@ Partial Class frmFanartTVMediaSettingsHolder_MovieSet
         Me.chkScrapePoster = New System.Windows.Forms.CheckBox()
         Me.chkScrapeFanart = New System.Windows.Forms.CheckBox()
         Me.gbScraper = New System.Windows.Forms.GroupBox()
+        Me.chkGetBlankImages = New System.Windows.Forms.CheckBox()
+        Me.chkPrefLanguageOnly = New System.Windows.Forms.CheckBox()
+        Me.chkGetEnglishImages = New System.Windows.Forms.CheckBox()
         Me.lblEMMAPI = New System.Windows.Forms.Label()
         Me.btnUnlockAPI = New System.Windows.Forms.Button()
         Me.cbPrefLanguage = New System.Windows.Forms.ComboBox()
         Me.lblPrefLanguage = New System.Windows.Forms.Label()
         Me.pbFANARTTV = New System.Windows.Forms.PictureBox()
         Me.lblAPIKey = New System.Windows.Forms.Label()
-        Me.txtFANARTTVApiKey = New System.Windows.Forms.TextBox()
+        Me.txtApiKey = New System.Windows.Forms.TextBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.Panel2 = New System.Windows.Forms.Panel()
@@ -50,9 +53,6 @@ Partial Class frmFanartTVMediaSettingsHolder_MovieSet
         Me.btnDown = New System.Windows.Forms.Button()
         Me.btnUp = New System.Windows.Forms.Button()
         Me.cbEnabled = New System.Windows.Forms.CheckBox()
-        Me.chkGetBlankImages = New System.Windows.Forms.CheckBox()
-        Me.chkPrefLanguageOnly = New System.Windows.Forms.CheckBox()
-        Me.chkGetEnglishImages = New System.Windows.Forms.CheckBox()
         Me.pnlSettings.SuspendLayout()
         Me.gbImages.SuspendLayout()
         Me.gbScraper.SuspendLayout()
@@ -232,7 +232,7 @@ Partial Class frmFanartTVMediaSettingsHolder_MovieSet
         Me.gbScraper.Controls.Add(Me.lblPrefLanguage)
         Me.gbScraper.Controls.Add(Me.pbFANARTTV)
         Me.gbScraper.Controls.Add(Me.lblAPIKey)
-        Me.gbScraper.Controls.Add(Me.txtFANARTTVApiKey)
+        Me.gbScraper.Controls.Add(Me.txtApiKey)
         Me.gbScraper.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbScraper.Location = New System.Drawing.Point(10, 31)
         Me.gbScraper.Name = "gbScraper"
@@ -240,6 +240,39 @@ Partial Class frmFanartTVMediaSettingsHolder_MovieSet
         Me.gbScraper.TabIndex = 95
         Me.gbScraper.TabStop = False
         Me.gbScraper.Text = "Fanart.tv"
+        '
+        'chkGetBlankImages
+        '
+        Me.chkGetBlankImages.AutoSize = True
+        Me.chkGetBlankImages.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkGetBlankImages.Location = New System.Drawing.Point(212, 115)
+        Me.chkGetBlankImages.Name = "chkGetBlankImages"
+        Me.chkGetBlankImages.Size = New System.Drawing.Size(140, 17)
+        Me.chkGetBlankImages.TabIndex = 22
+        Me.chkGetBlankImages.Text = "Also Get Blank Images"
+        Me.chkGetBlankImages.UseVisualStyleBackColor = True
+        '
+        'chkPrefLanguageOnly
+        '
+        Me.chkPrefLanguageOnly.AutoSize = True
+        Me.chkPrefLanguageOnly.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkPrefLanguageOnly.Location = New System.Drawing.Point(194, 69)
+        Me.chkPrefLanguageOnly.Name = "chkPrefLanguageOnly"
+        Me.chkPrefLanguageOnly.Size = New System.Drawing.Size(248, 17)
+        Me.chkPrefLanguageOnly.TabIndex = 21
+        Me.chkPrefLanguageOnly.Text = "Only Get Images for the Selected Language"
+        Me.chkPrefLanguageOnly.UseVisualStyleBackColor = True
+        '
+        'chkGetEnglishImages
+        '
+        Me.chkGetEnglishImages.AutoSize = True
+        Me.chkGetEnglishImages.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkGetEnglishImages.Location = New System.Drawing.Point(212, 92)
+        Me.chkGetEnglishImages.Name = "chkGetEnglishImages"
+        Me.chkGetEnglishImages.Size = New System.Drawing.Size(149, 17)
+        Me.chkGetEnglishImages.TabIndex = 20
+        Me.chkGetEnglishImages.Text = "Also Get English Images"
+        Me.chkGetEnglishImages.UseVisualStyleBackColor = True
         '
         'lblEMMAPI
         '
@@ -300,15 +333,15 @@ Partial Class frmFanartTVMediaSettingsHolder_MovieSet
         Me.lblAPIKey.TabIndex = 0
         Me.lblAPIKey.Text = "Fanart.tv API Key:"
         '
-        'txtFANARTTVApiKey
+        'txtApiKey
         '
-        Me.txtFANARTTVApiKey.Enabled = False
-        Me.txtFANARTTVApiKey.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtFANARTTVApiKey.Location = New System.Drawing.Point(194, 37)
-        Me.txtFANARTTVApiKey.Name = "txtFANARTTVApiKey"
-        Me.txtFANARTTVApiKey.Size = New System.Drawing.Size(369, 22)
-        Me.txtFANARTTVApiKey.TabIndex = 1
-        Me.txtFANARTTVApiKey.Visible = False
+        Me.txtApiKey.Enabled = False
+        Me.txtApiKey.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtApiKey.Location = New System.Drawing.Point(194, 37)
+        Me.txtApiKey.Name = "txtApiKey"
+        Me.txtApiKey.Size = New System.Drawing.Size(369, 22)
+        Me.txtApiKey.TabIndex = 1
+        Me.txtApiKey.Visible = False
         '
         'Label1
         '
@@ -388,39 +421,6 @@ Partial Class frmFanartTVMediaSettingsHolder_MovieSet
         Me.cbEnabled.Text = "Enabled"
         Me.cbEnabled.UseVisualStyleBackColor = True
         '
-        'chkGetBlankImages
-        '
-        Me.chkGetBlankImages.AutoSize = True
-        Me.chkGetBlankImages.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkGetBlankImages.Location = New System.Drawing.Point(212, 115)
-        Me.chkGetBlankImages.Name = "chkGetBlankImages"
-        Me.chkGetBlankImages.Size = New System.Drawing.Size(140, 17)
-        Me.chkGetBlankImages.TabIndex = 22
-        Me.chkGetBlankImages.Text = "Also Get Blank Images"
-        Me.chkGetBlankImages.UseVisualStyleBackColor = True
-        '
-        'chkPrefLanguageOnly
-        '
-        Me.chkPrefLanguageOnly.AutoSize = True
-        Me.chkPrefLanguageOnly.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkPrefLanguageOnly.Location = New System.Drawing.Point(194, 69)
-        Me.chkPrefLanguageOnly.Name = "chkPrefLanguageOnly"
-        Me.chkPrefLanguageOnly.Size = New System.Drawing.Size(248, 17)
-        Me.chkPrefLanguageOnly.TabIndex = 21
-        Me.chkPrefLanguageOnly.Text = "Only Get Images for the Selected Language"
-        Me.chkPrefLanguageOnly.UseVisualStyleBackColor = True
-        '
-        'chkGetEnglishImages
-        '
-        Me.chkGetEnglishImages.AutoSize = True
-        Me.chkGetEnglishImages.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkGetEnglishImages.Location = New System.Drawing.Point(212, 92)
-        Me.chkGetEnglishImages.Name = "chkGetEnglishImages"
-        Me.chkGetEnglishImages.Size = New System.Drawing.Size(149, 17)
-        Me.chkGetEnglishImages.TabIndex = 20
-        Me.chkGetEnglishImages.Text = "Also Get English Images"
-        Me.chkGetEnglishImages.UseVisualStyleBackColor = True
-        '
         'frmFanartTVMediaSettingsHolder_MovieSet
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -459,7 +459,7 @@ Partial Class frmFanartTVMediaSettingsHolder_MovieSet
     Friend WithEvents gbScraper As System.Windows.Forms.GroupBox
     Friend WithEvents pbFANARTTV As System.Windows.Forms.PictureBox
     Friend WithEvents lblAPIKey As System.Windows.Forms.Label
-    Friend WithEvents txtFANARTTVApiKey As System.Windows.Forms.TextBox
+    Friend WithEvents txtApiKey As System.Windows.Forms.TextBox
     Friend WithEvents gbImages As System.Windows.Forms.GroupBox
     Friend WithEvents chkScrapePoster As System.Windows.Forms.CheckBox
     Friend WithEvents chkScrapeFanart As System.Windows.Forms.CheckBox

@@ -136,31 +136,33 @@ Public Class frmTMDBMediaSettingsHolder_Movie
         Me.txtApiKey.Visible = True
     End Sub
 
-    Private Sub txtTMDBApiKey_TextEnter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtApiKey.Enter
+    Private Sub txtApiKey_TextEnter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtApiKey.Enter
         _api = txtApiKey.Text
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub txtTMDBApiKey_TextValidated(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtApiKey.Validated
+    Private Sub txtApiKey_TextValidated(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtApiKey.Validated
         If Not (_api = txtApiKey.Text) Then
             RaiseEvent SetupNeedsRestart()
         End If
     End Sub
 
-    Private Sub cbTMDBLanguage_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cbPrefLanguage.SelectedIndexChanged
+    Private Sub cbPrefLanguage_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cbPrefLanguage.SelectedIndexChanged
         If Not (_language = cbPrefLanguage.Text) Then
             RaiseEvent SetupNeedsRestart()
         End If
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkFallBackEng_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles chkGetEnglishImages.CheckedChanged
-        RaiseEvent SetupNeedsRestart()
+    Private Sub chkGetBlankImages_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles chkGetBlankImages.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkTMDBLanguagePrefOnly_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles chkPrefLanguageOnly.CheckedChanged
-        RaiseEvent SetupNeedsRestart()
+    Private Sub chkGetEnglishImages_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles chkGetEnglishImages.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkPrefLanguageOnly_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles chkPrefLanguageOnly.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 

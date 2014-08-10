@@ -123,18 +123,22 @@ Namespace TMDB
                                         aH = CInt(aW / tmdbI.aspect_ratio)
                                 End Select
                                 Dim tmpPoster As New MediaContainers.Image With {.ShortLang = tmdbI.iso_639_1, .LongLang = If(String.IsNullOrEmpty(tmdbI.iso_639_1), "", Localization.ISOGetLangByCode2(tmdbI.iso_639_1)), .URL = _TMDBConf.images.base_url & aSize.size & tmdbI.file_path, .Description = aSize.description, .Width = CStr(aW), .Height = CStr(aH), .ParentID = tmdbI.file_path}
-                                If tmpPoster.ShortLang = Settings.TMDBLanguage Then
+                                If tmpPoster.ShortLang = Settings.PrefLanguage Then
                                     alPostersP.Add(tmpPoster)
                                 ElseIf tmpPoster.ShortLang = "en" Then
-                                    If Settings.FallBackEng Then
+                                    If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetEnglishImages) Then
                                         alPostersE.Add(tmpPoster)
                                     End If
                                 ElseIf tmpPoster.ShortLang = "xx" Then
-                                    alPostersN.Add(tmpPoster)
+                                    If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetBlankImages) Then
+                                        alPostersN.Add(tmpPoster)
+                                    End If
                                 ElseIf String.IsNullOrEmpty(tmpPoster.ShortLang) Then
-                                    alPostersN.Add(tmpPoster)
+                                    If Not Settings.PrefLanguageOnly OrElse (Settings.PrefLanguageOnly AndAlso Settings.GetBlankImages) Then
+                                        alPostersN.Add(tmpPoster)
+                                    End If
                                 Else
-                                    If Not Settings.TMDBLanguagePrefOnly Then
+                                    If Not Settings.PrefLanguageOnly Then
                                         alPostersO.Add(tmpPoster)
                                     End If
                                 End If
@@ -176,127 +180,6 @@ Namespace TMDB
             Return alPosters
         End Function
 
-
-        'Public Function GetTMDBCollectionImages(ByVal CollectionID As String, ByVal Type As Enums.ScraperCapabilities) As List(Of MediaContainers.Image)
-        '    Dim alPosters As New List(Of MediaContainers.Image) 'main poster list
-        '    Dim alPostersP As New List(Of MediaContainers.Image) 'preferred language poster list
-        '    Dim alPostersE As New List(Of MediaContainers.Image) 'english poster list
-        '    Dim alPostersO As New List(Of MediaContainers.Image) 'all others poster list
-        '    Dim alPostersOs As New List(Of MediaContainers.Image) 'all others sorted poster list
-        '    Dim alPostersN As New List(Of MediaContainers.Image) 'neutral/none language poster list
-
-        '    Dim images As V3.TmdbCollectionImages
-        '    Dim aW, aH As Integer
-
-        '    ';If bwTMDB.CancellationPending Then Return Nothing
-        '    Try
-        '        images = _TMDBApiA.GetCollectionImages(CInt(CollectionID))
-        '        If Type = Enums.ScraperCapabilities.Poster Then
-        '            If IsNothing(images.posters) OrElse images.posters.Count = 0 Then
-        '                images = _TMDBApiE.GetCollectionImages(CInt(CollectionID))
-        '                If IsNothing(images.posters) OrElse images.posters.Count = 0 Then
-        '                    Return alPosters
-        '                End If
-        '            End If
-        '        Else
-        '            If IsNothing(images.backdrops) OrElse images.backdrops.Count = 0 Then
-        '                images = _TMDBApiE.GetCollectionImages(CInt(CollectionID))
-        '                If IsNothing(images.backdrops) OrElse images.backdrops.Count = 0 Then
-        '                    Return alPosters
-        '                End If
-        '            End If
-        '        End If
-
-        '        'If bwTMDB.WorkerReportsProgress Then
-        '        '    bwTMDB.ReportProgress(1)
-        '        'End If
-
-        '        'If bwTMDB.CancellationPending Then Return Nothing
-
-        '        If Type = Enums.ScraperCapabilities.Poster Then
-        '            For Each tmdbI As V3.CollectionPoster In images.posters
-        '                'If bwTMDB.CancellationPending Then Return Nothing
-        '                For Each aSize In Master.eSize.poster_names
-        '                    Select Case aSize.size
-        '                        Case Master.eSize.poster_names(5).description
-        '                            aW = tmdbI.width
-        '                            aH = tmdbI.height
-        '                        Case Else
-        '                            aW = aSize.width
-        '                            aH = CInt(aW / tmdbI.aspect_ratio)
-        '                    End Select
-        '                    Dim tmpPoster As New MediaContainers.Image With {.ShortLang = tmdbI.iso_639_1, .LongLang = If(String.IsNullOrEmpty(tmdbI.iso_639_1), "", Localization.ISOGetLangByCode2(tmdbI.iso_639_1)), .URL = _TMDBConf.images.base_url & aSize.size & tmdbI.file_path, .Description = aSize.description, .Width = CStr(aW), .Height = CStr(aH), .ParentID = tmdbI.file_path}
-        '                    If tmpPoster.ShortLang = _MySettings.TMDBLanguage Then
-        '                        alPostersP.Add(tmpPoster)
-        '                    ElseIf tmpPoster.ShortLang = "en" Then
-        '                        alPostersE.Add(tmpPoster)
-        '                    ElseIf tmpPoster.ShortLang = "xx" Then
-        '                        alPostersN.Add(tmpPoster)
-        '                    ElseIf String.IsNullOrEmpty(tmpPoster.ShortLang) Then
-        '                        alPostersN.Add(tmpPoster)
-        '                    Else
-        '                        alPostersO.Add(tmpPoster)
-        '                    End If
-        '                Next
-        '            Next
-        '            For Each xPoster As MediaContainers.Image In alPostersO.OrderBy(Function(p) (p.LongLang))
-        '                alPostersOs.Add(xPoster)
-        '            Next
-        '            alPosters.AddRange(alPostersP)
-        '            alPosters.AddRange(alPostersE)
-        '            alPosters.AddRange(alPostersOs)
-        '            alPosters.AddRange(alPostersN)
-        '        ElseIf Type = Enums.ScraperCapabilities.Fanart Then
-        '            For Each tmdbI As V3.CollectionBackdrop In images.backdrops
-        '                'If bwTMDB.CancellationPending Then Return Nothing
-        '                For Each aSize In Master.eSize.backdrop_names
-        '                    Select Case aSize.size
-        '                        Case Master.eSize.backdrop_names(3).description
-        '                            aW = tmdbI.width
-        '                            aH = tmdbI.height
-        '                        Case Else
-        '                            aW = aSize.width
-        '                            aH = CInt(aW / tmdbI.aspect_ratio)
-        '                    End Select
-        '                    Dim tmpPoster As New MediaContainers.Image With {.ShortLang = tmdbI.iso_639_1, .LongLang = If(String.IsNullOrEmpty(tmdbI.iso_639_1), "", Localization.ISOGetLangByCode2(tmdbI.iso_639_1)), .URL = _TMDBConf.images.base_url & aSize.size & tmdbI.file_path, .Description = aSize.description, .Width = CStr(aW), .Height = CStr(aH), .ParentID = tmdbI.file_path}
-        '                    alPosters.Add(tmpPoster)
-        '                Next
-        '            Next
-        '        End If
-
-        '        'If bwTMDB.WorkerReportsProgress Then
-        '        '    bwTMDB.ReportProgress(3)
-        '        'End If
-
-        '    Catch ex As Exception
-        '        logger.Error(New StackFrame().GetMethod().Name, ex)
-        '    End Try
-
-        '    Return alPosters
-        'End Function
-
-        '      Private Sub bwTMDB_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwTMDB.DoWork
-        '          Dim Args As Arguments = DirectCast(e.Argument, Arguments)
-        '          Try
-        '              e.Result = GetTMDBImages(Args.Parameter, Args.Type)
-        '          Catch ex As Exception
-        '              logger.Error(New StackFrame().GetMethod().Name,ex)
-        '              e.Result = Nothing
-        '          End Try
-        '      End Sub
-
-        'Private Sub bwTMDB_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwTMDB.ProgressChanged
-        '	If Not bwTMDB.CancellationPending Then
-        '		RaiseEvent ProgressUpdated(e.ProgressPercentage)
-        '	End If
-        'End Sub
-
-        'Private Sub bwTMDB_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwTMDB.RunWorkerCompleted
-        '	If Not IsNothing(e.Result) Then
-        '		RaiseEvent PostersDownloaded(DirectCast(e.Result, List(Of MediaContainers.Image)))
-        '	End If
-        'End Sub
-
 #End Region 'Methods
 
 #Region "Nested Types"
@@ -315,10 +198,11 @@ Namespace TMDB
         Structure sMySettings_ForScraper
 
 #Region "Fields"
-            Dim TMDBAPIKey As String
-            Dim TMDBLanguage As String
-            Dim TMDBLanguagePrefOnly As Boolean
-            Dim FallBackEng As Boolean
+            Dim APIKey As String
+            Dim PrefLanguage As String
+            Dim PrefLanguageOnly As Boolean
+            Dim GetEnglishImages As Boolean
+            Dim GetBlankImages As Boolean
 #End Region 'Fields
 
         End Structure
