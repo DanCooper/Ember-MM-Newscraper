@@ -3110,7 +3110,7 @@ Public Class dlgEditMovie
                     Master.currMovie.PosterPath = String.Empty
                 End If
 
-                If Not IsNothing(.MovieTheme) Then
+                If Not String.IsNullOrEmpty(.MovieTheme.Extention) AndAlso Not MovieTheme.toRemove Then 'TODO: proper check, extention check is only a woraround
                     Dim tPath As String = .MovieTheme.SaveAsMovieTheme(Master.currMovie)
                     Master.currMovie.ThemePath = tPath
                 Else
@@ -3118,7 +3118,7 @@ Public Class dlgEditMovie
                     Master.currMovie.ThemePath = String.Empty
                 End If
 
-                If Not IsNothing(.MovieTrailer) AndAlso Not MovieTrailer.toRemove Then
+                If Not String.IsNullOrEmpty(.MovieTrailer.Extention) AndAlso Not MovieTrailer.toRemove Then 'TODO: proper check, extention check is only a woraround
                     If Master.eSettings.MovieTrailerDeleteExisting Then
                         .MovieTrailer.DeleteMovieTrailer(Master.currMovie)
                     End If

@@ -36,6 +36,7 @@ Public Class Themes
     Private _description As String
     Private _duration As String
     Private _bitrate As String
+    Private _toRemove As Boolean
 
     Private _ms As MemoryStream
     Private Ret As Byte()
@@ -137,6 +138,20 @@ Public Class Themes
             _weburl = value
         End Set
     End Property
+    ''' <summary>
+    ''' trigger to remove theme
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public Property toRemove() As Boolean
+        Get
+            Return _toRemove
+        End Get
+        Set(ByVal value As Boolean)
+            _toRemove = value
+        End Set
+    End Property
 
 #End Region 'Properties
 
@@ -158,6 +173,7 @@ Public Class Themes
         _title = String.Empty
         _id = String.Empty
         _isNew = False
+        _toRemove = False
         _url = String.Empty
         _weburl = String.Empty
         _description = String.Empty
