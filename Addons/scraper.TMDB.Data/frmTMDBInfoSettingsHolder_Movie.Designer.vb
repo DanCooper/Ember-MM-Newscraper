@@ -24,16 +24,16 @@ Partial Class frmTMDBInfoSettingsHolder_Movie
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmTMDBInfoSettingsHolder_Movie))
         Me.lblVersion = New System.Windows.Forms.Label()
-        Me.gbTMDBGlobalOpts = New System.Windows.Forms.GroupBox()
+        Me.gbGlobalOpts = New System.Windows.Forms.GroupBox()
         Me.lblEMMAPI = New System.Windows.Forms.Label()
         Me.btnUnlockAPI = New System.Windows.Forms.Button()
         Me.chkGetAdultItems = New System.Windows.Forms.CheckBox()
         Me.pbTMDBApiKeyInfo = New System.Windows.Forms.PictureBox()
         Me.chkFallBackEng = New System.Windows.Forms.CheckBox()
-        Me.cbTMDBPrefLanguage = New System.Windows.Forms.ComboBox()
-        Me.lblTMDBPrefLanguage = New System.Windows.Forms.Label()
-        Me.lblTMDBApiKey = New System.Windows.Forms.Label()
-        Me.txtTMDBApiKey = New System.Windows.Forms.TextBox()
+        Me.cbPrefLanguage = New System.Windows.Forms.ComboBox()
+        Me.lblPrefLanguage = New System.Windows.Forms.Label()
+        Me.lblApiKey = New System.Windows.Forms.Label()
+        Me.txtApiKey = New System.Windows.Forms.TextBox()
         Me.cbEnabled = New System.Windows.Forms.CheckBox()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.lblScraperOrder = New System.Windows.Forms.Label()
@@ -42,7 +42,7 @@ Partial Class frmTMDBInfoSettingsHolder_Movie
         Me.pnlSettings = New System.Windows.Forms.Panel()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
-        Me.gbTMDBScraperOpts = New System.Windows.Forms.GroupBox()
+        Me.gbScraperOpts = New System.Windows.Forms.GroupBox()
         Me.chkCollection = New System.Windows.Forms.CheckBox()
         Me.chkCleanPlotOutline = New System.Windows.Forms.CheckBox()
         Me.chkCrew = New System.Windows.Forms.CheckBox()
@@ -60,12 +60,12 @@ Partial Class frmTMDBInfoSettingsHolder_Movie
         Me.chkMPAA = New System.Windows.Forms.CheckBox()
         Me.chkYear = New System.Windows.Forms.CheckBox()
         Me.chkTitle = New System.Windows.Forms.CheckBox()
-        Me.gbTMDBGlobalOpts.SuspendLayout()
+        Me.gbGlobalOpts.SuspendLayout()
         CType(Me.pbTMDBApiKeyInfo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel1.SuspendLayout()
         Me.pnlSettings.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.gbTMDBScraperOpts.SuspendLayout()
+        Me.gbScraperOpts.SuspendLayout()
         Me.SuspendLayout()
         '
         'lblVersion
@@ -76,24 +76,24 @@ Partial Class frmTMDBInfoSettingsHolder_Movie
         Me.lblVersion.TabIndex = 74
         Me.lblVersion.Text = "Version:"
         '
-        'gbTMDBGlobalOpts
+        'gbGlobalOpts
         '
-        Me.gbTMDBGlobalOpts.Controls.Add(Me.lblEMMAPI)
-        Me.gbTMDBGlobalOpts.Controls.Add(Me.btnUnlockAPI)
-        Me.gbTMDBGlobalOpts.Controls.Add(Me.chkGetAdultItems)
-        Me.gbTMDBGlobalOpts.Controls.Add(Me.pbTMDBApiKeyInfo)
-        Me.gbTMDBGlobalOpts.Controls.Add(Me.chkFallBackEng)
-        Me.gbTMDBGlobalOpts.Controls.Add(Me.cbTMDBPrefLanguage)
-        Me.gbTMDBGlobalOpts.Controls.Add(Me.lblTMDBPrefLanguage)
-        Me.gbTMDBGlobalOpts.Controls.Add(Me.lblTMDBApiKey)
-        Me.gbTMDBGlobalOpts.Controls.Add(Me.txtTMDBApiKey)
-        Me.gbTMDBGlobalOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbTMDBGlobalOpts.Location = New System.Drawing.Point(11, 31)
-        Me.gbTMDBGlobalOpts.Name = "gbTMDBGlobalOpts"
-        Me.gbTMDBGlobalOpts.Size = New System.Drawing.Size(594, 102)
-        Me.gbTMDBGlobalOpts.TabIndex = 1
-        Me.gbTMDBGlobalOpts.TabStop = False
-        Me.gbTMDBGlobalOpts.Text = "TMDB"
+        Me.gbGlobalOpts.Controls.Add(Me.lblEMMAPI)
+        Me.gbGlobalOpts.Controls.Add(Me.btnUnlockAPI)
+        Me.gbGlobalOpts.Controls.Add(Me.chkGetAdultItems)
+        Me.gbGlobalOpts.Controls.Add(Me.pbTMDBApiKeyInfo)
+        Me.gbGlobalOpts.Controls.Add(Me.chkFallBackEng)
+        Me.gbGlobalOpts.Controls.Add(Me.cbPrefLanguage)
+        Me.gbGlobalOpts.Controls.Add(Me.lblPrefLanguage)
+        Me.gbGlobalOpts.Controls.Add(Me.lblApiKey)
+        Me.gbGlobalOpts.Controls.Add(Me.txtApiKey)
+        Me.gbGlobalOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbGlobalOpts.Location = New System.Drawing.Point(11, 31)
+        Me.gbGlobalOpts.Name = "gbGlobalOpts"
+        Me.gbGlobalOpts.Size = New System.Drawing.Size(594, 102)
+        Me.gbGlobalOpts.TabIndex = 1
+        Me.gbGlobalOpts.TabStop = False
+        Me.gbGlobalOpts.Text = "TMDB"
         '
         'lblEMMAPI
         '
@@ -145,46 +145,46 @@ Partial Class frmTMDBInfoSettingsHolder_Movie
         Me.chkFallBackEng.Text = "Fall back on english"
         Me.chkFallBackEng.UseVisualStyleBackColor = True
         '
-        'cbTMDBPrefLanguage
+        'cbPrefLanguage
         '
-        Me.cbTMDBPrefLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbTMDBPrefLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.cbTMDBPrefLanguage.FormattingEnabled = True
-        Me.cbTMDBPrefLanguage.Items.AddRange(New Object() {"bg", "cs", "da", "de", "el", "en", "es", "fi", "fr", "he", "hu", "it", "nb", "nl", "no", "pl", "pt", "ru", "sk", "sv", "ta", "tr", "uk", "vi", "xx", "zh"})
-        Me.cbTMDBPrefLanguage.Location = New System.Drawing.Point(123, 65)
-        Me.cbTMDBPrefLanguage.Name = "cbTMDBPrefLanguage"
-        Me.cbTMDBPrefLanguage.Size = New System.Drawing.Size(45, 21)
-        Me.cbTMDBPrefLanguage.TabIndex = 3
+        Me.cbPrefLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbPrefLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        Me.cbPrefLanguage.FormattingEnabled = True
+        Me.cbPrefLanguage.Items.AddRange(New Object() {"bg", "cs", "da", "de", "el", "en", "es", "fi", "fr", "he", "hu", "it", "nb", "nl", "no", "pl", "pt", "ru", "sk", "sv", "ta", "tr", "uk", "vi", "xx", "zh"})
+        Me.cbPrefLanguage.Location = New System.Drawing.Point(123, 65)
+        Me.cbPrefLanguage.Name = "cbPrefLanguage"
+        Me.cbPrefLanguage.Size = New System.Drawing.Size(45, 21)
+        Me.cbPrefLanguage.TabIndex = 3
         '
-        'lblTMDBPrefLanguage
+        'lblPrefLanguage
         '
-        Me.lblTMDBPrefLanguage.AutoSize = True
-        Me.lblTMDBPrefLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.lblTMDBPrefLanguage.Location = New System.Drawing.Point(6, 68)
-        Me.lblTMDBPrefLanguage.Name = "lblTMDBPrefLanguage"
-        Me.lblTMDBPrefLanguage.Size = New System.Drawing.Size(111, 13)
-        Me.lblTMDBPrefLanguage.TabIndex = 2
-        Me.lblTMDBPrefLanguage.Text = "Preferred Language:"
+        Me.lblPrefLanguage.AutoSize = True
+        Me.lblPrefLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        Me.lblPrefLanguage.Location = New System.Drawing.Point(6, 68)
+        Me.lblPrefLanguage.Name = "lblPrefLanguage"
+        Me.lblPrefLanguage.Size = New System.Drawing.Size(111, 13)
+        Me.lblPrefLanguage.TabIndex = 2
+        Me.lblPrefLanguage.Text = "Preferred Language:"
         '
-        'lblTMDBApiKey
+        'lblApiKey
         '
-        Me.lblTMDBApiKey.AutoSize = True
-        Me.lblTMDBApiKey.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblTMDBApiKey.Location = New System.Drawing.Point(6, 18)
-        Me.lblTMDBApiKey.Name = "lblTMDBApiKey"
-        Me.lblTMDBApiKey.Size = New System.Drawing.Size(79, 13)
-        Me.lblTMDBApiKey.TabIndex = 0
-        Me.lblTMDBApiKey.Text = "TMDB API Key:"
+        Me.lblApiKey.AutoSize = True
+        Me.lblApiKey.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblApiKey.Location = New System.Drawing.Point(6, 18)
+        Me.lblApiKey.Name = "lblApiKey"
+        Me.lblApiKey.Size = New System.Drawing.Size(79, 13)
+        Me.lblApiKey.TabIndex = 0
+        Me.lblApiKey.Text = "TMDB API Key:"
         '
-        'txtTMDBApiKey
+        'txtApiKey
         '
-        Me.txtTMDBApiKey.Enabled = False
-        Me.txtTMDBApiKey.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTMDBApiKey.Location = New System.Drawing.Point(194, 36)
-        Me.txtTMDBApiKey.Name = "txtTMDBApiKey"
-        Me.txtTMDBApiKey.Size = New System.Drawing.Size(372, 22)
-        Me.txtTMDBApiKey.TabIndex = 1
-        Me.txtTMDBApiKey.Visible = False
+        Me.txtApiKey.Enabled = False
+        Me.txtApiKey.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtApiKey.Location = New System.Drawing.Point(194, 36)
+        Me.txtApiKey.Name = "txtApiKey"
+        Me.txtApiKey.Size = New System.Drawing.Size(372, 22)
+        Me.txtApiKey.TabIndex = 1
+        Me.txtApiKey.Visible = False
         '
         'cbEnabled
         '
@@ -246,8 +246,8 @@ Partial Class frmTMDBInfoSettingsHolder_Movie
         Me.pnlSettings.Controls.Add(Me.Label1)
         Me.pnlSettings.Controls.Add(Me.PictureBox1)
         Me.pnlSettings.Controls.Add(Me.Panel1)
-        Me.pnlSettings.Controls.Add(Me.gbTMDBGlobalOpts)
-        Me.pnlSettings.Controls.Add(Me.gbTMDBScraperOpts)
+        Me.pnlSettings.Controls.Add(Me.gbGlobalOpts)
+        Me.pnlSettings.Controls.Add(Me.gbScraperOpts)
         Me.pnlSettings.Location = New System.Drawing.Point(12, 4)
         Me.pnlSettings.Name = "pnlSettings"
         Me.pnlSettings.Size = New System.Drawing.Size(617, 369)
@@ -277,32 +277,32 @@ Partial Class frmTMDBInfoSettingsHolder_Movie
         Me.PictureBox1.TabIndex = 96
         Me.PictureBox1.TabStop = False
         '
-        'gbTMDBScraperOpts
+        'gbScraperOpts
         '
-        Me.gbTMDBScraperOpts.Controls.Add(Me.chkCollection)
-        Me.gbTMDBScraperOpts.Controls.Add(Me.chkCleanPlotOutline)
-        Me.gbTMDBScraperOpts.Controls.Add(Me.chkCrew)
-        Me.gbTMDBScraperOpts.Controls.Add(Me.chkCountry)
-        Me.gbTMDBScraperOpts.Controls.Add(Me.chkStudio)
-        Me.gbTMDBScraperOpts.Controls.Add(Me.chkRuntime)
-        Me.gbTMDBScraperOpts.Controls.Add(Me.chkPlot)
-        Me.gbTMDBScraperOpts.Controls.Add(Me.chkGenre)
-        Me.gbTMDBScraperOpts.Controls.Add(Me.chkTagline)
-        Me.gbTMDBScraperOpts.Controls.Add(Me.chkCast)
-        Me.gbTMDBScraperOpts.Controls.Add(Me.chkVotes)
-        Me.gbTMDBScraperOpts.Controls.Add(Me.chkTrailer)
-        Me.gbTMDBScraperOpts.Controls.Add(Me.chkRating)
-        Me.gbTMDBScraperOpts.Controls.Add(Me.chkRelease)
-        Me.gbTMDBScraperOpts.Controls.Add(Me.chkMPAA)
-        Me.gbTMDBScraperOpts.Controls.Add(Me.chkYear)
-        Me.gbTMDBScraperOpts.Controls.Add(Me.chkTitle)
-        Me.gbTMDBScraperOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.gbTMDBScraperOpts.Location = New System.Drawing.Point(11, 139)
-        Me.gbTMDBScraperOpts.Name = "gbTMDBScraperOpts"
-        Me.gbTMDBScraperOpts.Size = New System.Drawing.Size(513, 150)
-        Me.gbTMDBScraperOpts.TabIndex = 3
-        Me.gbTMDBScraperOpts.TabStop = False
-        Me.gbTMDBScraperOpts.Text = "Scraper Fields - Scraper specific"
+        Me.gbScraperOpts.Controls.Add(Me.chkCollection)
+        Me.gbScraperOpts.Controls.Add(Me.chkCleanPlotOutline)
+        Me.gbScraperOpts.Controls.Add(Me.chkCrew)
+        Me.gbScraperOpts.Controls.Add(Me.chkCountry)
+        Me.gbScraperOpts.Controls.Add(Me.chkStudio)
+        Me.gbScraperOpts.Controls.Add(Me.chkRuntime)
+        Me.gbScraperOpts.Controls.Add(Me.chkPlot)
+        Me.gbScraperOpts.Controls.Add(Me.chkGenre)
+        Me.gbScraperOpts.Controls.Add(Me.chkTagline)
+        Me.gbScraperOpts.Controls.Add(Me.chkCast)
+        Me.gbScraperOpts.Controls.Add(Me.chkVotes)
+        Me.gbScraperOpts.Controls.Add(Me.chkTrailer)
+        Me.gbScraperOpts.Controls.Add(Me.chkRating)
+        Me.gbScraperOpts.Controls.Add(Me.chkRelease)
+        Me.gbScraperOpts.Controls.Add(Me.chkMPAA)
+        Me.gbScraperOpts.Controls.Add(Me.chkYear)
+        Me.gbScraperOpts.Controls.Add(Me.chkTitle)
+        Me.gbScraperOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.gbScraperOpts.Location = New System.Drawing.Point(11, 139)
+        Me.gbScraperOpts.Name = "gbScraperOpts"
+        Me.gbScraperOpts.Size = New System.Drawing.Size(513, 150)
+        Me.gbScraperOpts.TabIndex = 3
+        Me.gbScraperOpts.TabStop = False
+        Me.gbScraperOpts.Text = "Scraper Fields - Scraper specific"
         '
         'chkCollection
         '
@@ -490,7 +490,7 @@ Partial Class frmTMDBInfoSettingsHolder_Movie
         Me.chkTitle.Text = "Title"
         Me.chkTitle.UseVisualStyleBackColor = True
         '
-        'frmTMDBInfoSettingsHolder
+        'frmTMDBInfoSettingsHolder_Movie
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
@@ -502,26 +502,26 @@ Partial Class frmTMDBInfoSettingsHolder_Movie
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "frmTMDBInfoSettingsHolder"
+        Me.Name = "frmTMDBInfoSettingsHolder_Movie"
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Scraper Setup"
-        Me.gbTMDBGlobalOpts.ResumeLayout(False)
-        Me.gbTMDBGlobalOpts.PerformLayout()
+        Me.gbGlobalOpts.ResumeLayout(False)
+        Me.gbGlobalOpts.PerformLayout()
         CType(Me.pbTMDBApiKeyInfo, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
         Me.pnlSettings.ResumeLayout(False)
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.gbTMDBScraperOpts.ResumeLayout(False)
-        Me.gbTMDBScraperOpts.PerformLayout()
+        Me.gbScraperOpts.ResumeLayout(False)
+        Me.gbScraperOpts.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
     Friend WithEvents lblVersion As System.Windows.Forms.Label
-    Friend WithEvents gbTMDBGlobalOpts As System.Windows.Forms.GroupBox
-    Friend WithEvents lblTMDBApiKey As System.Windows.Forms.Label
-    Friend WithEvents txtTMDBApiKey As System.Windows.Forms.TextBox
+    Friend WithEvents gbGlobalOpts As System.Windows.Forms.GroupBox
+    Friend WithEvents lblApiKey As System.Windows.Forms.Label
+    Friend WithEvents txtApiKey As System.Windows.Forms.TextBox
     Friend WithEvents cbEnabled As System.Windows.Forms.CheckBox
     Friend WithEvents Panel1 As System.Windows.Forms.Panel
     Friend WithEvents pnlSettings As System.Windows.Forms.Panel
@@ -530,7 +530,7 @@ Partial Class frmTMDBInfoSettingsHolder_Movie
     Friend WithEvents lblScraperOrder As System.Windows.Forms.Label
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
-    Friend WithEvents gbTMDBScraperOpts As System.Windows.Forms.GroupBox
+    Friend WithEvents gbScraperOpts As System.Windows.Forms.GroupBox
     Friend WithEvents chkCountry As System.Windows.Forms.CheckBox
     Friend WithEvents chkStudio As System.Windows.Forms.CheckBox
     Friend WithEvents chkRuntime As System.Windows.Forms.CheckBox
@@ -546,8 +546,8 @@ Partial Class frmTMDBInfoSettingsHolder_Movie
     Friend WithEvents chkYear As System.Windows.Forms.CheckBox
     Friend WithEvents chkTitle As System.Windows.Forms.CheckBox
     Friend WithEvents chkFallBackEng As System.Windows.Forms.CheckBox
-    Friend WithEvents cbTMDBPrefLanguage As System.Windows.Forms.ComboBox
-    Friend WithEvents lblTMDBPrefLanguage As System.Windows.Forms.Label
+    Friend WithEvents cbPrefLanguage As System.Windows.Forms.ComboBox
+    Friend WithEvents lblPrefLanguage As System.Windows.Forms.Label
     Friend WithEvents chkCrew As System.Windows.Forms.CheckBox
     Friend WithEvents pbTMDBApiKeyInfo As System.Windows.Forms.PictureBox
     Friend WithEvents chkCleanPlotOutline As System.Windows.Forms.CheckBox

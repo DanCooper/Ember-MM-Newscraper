@@ -110,8 +110,8 @@ Public Class frmTMDBInfoSettingsHolder_Movie
 
     Private Sub btnUnlockAPI_Click(sender As Object, e As EventArgs) Handles btnUnlockAPI.Click
         Me.lblEMMAPI.Visible = False
-        Me.txtTMDBApiKey.Enabled = True
-        Me.txtTMDBApiKey.Visible = True
+        Me.txtApiKey.Enabled = True
+        Me.txtApiKey.Visible = True
     End Sub
 
     Private Sub cbEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbEnabled.CheckedChanged
@@ -197,20 +197,20 @@ Public Class frmTMDBInfoSettingsHolder_Movie
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub cbTMDBPrefLanguage_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cbTMDBPrefLanguage.SelectedIndexChanged
-        If Not (_language = cbTMDBPrefLanguage.Text) Then
+    Private Sub cbTMDBPrefLanguage_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cbPrefLanguage.SelectedIndexChanged
+        If Not (_language = cbPrefLanguage.Text) Then
             RaiseEvent SetupNeedsRestart()
         End If
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub txtTMDBApiKey_TextEnter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTMDBApiKey.Enter
-        _api = txtTMDBApiKey.Text
+    Private Sub txtTMDBApiKey_TextEnter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtApiKey.Enter
+        _api = txtApiKey.Text
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub txtTMDBApiKey_TextValidated(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTMDBApiKey.Validated
-        If Not (_api = txtTMDBApiKey.Text) Then
+    Private Sub txtTMDBApiKey_TextValidated(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtApiKey.Validated
+        If Not (_api = txtApiKey.Text) Then
             RaiseEvent SetupNeedsRestart()
         End If
     End Sub
@@ -258,11 +258,11 @@ Public Class frmTMDBInfoSettingsHolder_Movie
         Me.chkTrailer.Text = Master.eLang.GetString(151, "Trailer")
         Me.chkVotes.Text = Master.eLang.GetString(399, "Votes")
         Me.chkYear.Text = Master.eLang.GetString(278, "Year")
-        Me.gbTMDBGlobalOpts.Text = Master.eLang.GetString(937, "TMDB")
-        Me.gbTMDBScraperOpts.Text = Master.eLang.GetString(791, "Scraper Fields - Scraper specific")
+        Me.gbGlobalOpts.Text = Master.eLang.GetString(937, "TMDB")
+        Me.gbScraperOpts.Text = Master.eLang.GetString(791, "Scraper Fields - Scraper specific")
         Me.lblScraperOrder.Text = Master.eLang.GetString(168, "Scrape Order")
-        Me.lblTMDBApiKey.Text = Master.eLang.GetString(870, "TMDB API Key")
-        Me.lblTMDBPrefLanguage.Text = Master.eLang.GetString(741, "Preferred Language:")
+        Me.lblApiKey.Text = Master.eLang.GetString(870, "TMDB API Key")
+        Me.lblPrefLanguage.Text = Master.eLang.GetString(741, "Preferred Language:")
     End Sub
 
 

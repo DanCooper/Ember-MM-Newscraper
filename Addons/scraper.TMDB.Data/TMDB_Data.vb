@@ -149,7 +149,7 @@ Public Class TMDB_Data
         _AssemblyName = sAssemblyName
         LoadSettings_Movie()
         'Must be after Load settings to retrieve the correct API key
-        _TMDBApi = New WatTmdb.V3.Tmdb(_MySettings_Movie.TMDBAPIKey, _MySettings_Movie.TMDBLanguage)
+        _TMDBApi = New WatTmdb.V3.Tmdb(_MySettings_Movie.APIKey, _MySettings_Movie.PrefLanguage)
         If IsNothing(_TMDBApi) Then
             logger.Error(Master.eLang.GetString(938, "TheMovieDB API is missing or not valid"), _TMDBApi.Error.status_message)
         Else
@@ -158,9 +158,9 @@ Public Class TMDB_Data
             End If
         End If
         _TMDBConf = _TMDBApi.GetConfiguration()
-        _TMDBApiE = New WatTmdb.V3.Tmdb(_MySettings_Movie.TMDBAPIKey)
+        _TMDBApiE = New WatTmdb.V3.Tmdb(_MySettings_Movie.APIKey)
         _TMDBConfE = _TMDBApiE.GetConfiguration()
-        _TMDBApiA = New WatTmdb.V3.Tmdb(_MySettings_Movie.TMDBAPIKey, "")
+        _TMDBApiA = New WatTmdb.V3.Tmdb(_MySettings_Movie.APIKey, "")
         _TMDBg = New TMDBg.Scraper(_TMDBConf, _TMDBConfE, _TMDBApi, _TMDBApiE, _TMDBApiA, True)
     End Sub
 
@@ -168,7 +168,7 @@ Public Class TMDB_Data
         _AssemblyName = sAssemblyName
         LoadSettings_MovieSet()
         'Must be after Load settings to retrieve the correct API key
-        _TMDBApi = New WatTmdb.V3.Tmdb(_MySettings_MovieSet.TMDBAPIKey, _MySettings_MovieSet.TMDBLanguage)
+        _TMDBApi = New WatTmdb.V3.Tmdb(_MySettings_MovieSet.APIKey, _MySettings_MovieSet.PrefLanguage)
         If IsNothing(_TMDBApi) Then
             logger.Error(Master.eLang.GetString(938, "TheMovieDB API is missing or not valid"), _TMDBApi.Error.status_message)
         Else
@@ -177,9 +177,9 @@ Public Class TMDB_Data
             End If
         End If
         _TMDBConf = _TMDBApi.GetConfiguration()
-        _TMDBApiE = New WatTmdb.V3.Tmdb(_MySettings_MovieSet.TMDBAPIKey)
+        _TMDBApiE = New WatTmdb.V3.Tmdb(_MySettings_MovieSet.APIKey)
         _TMDBConfE = _TMDBApiE.GetConfiguration()
-        _TMDBApiA = New WatTmdb.V3.Tmdb(_MySettings_MovieSet.TMDBAPIKey, "")
+        _TMDBApiA = New WatTmdb.V3.Tmdb(_MySettings_MovieSet.APIKey, "")
         _TMDBg = New TMDBg.Scraper(_TMDBConf, _TMDBConfE, _TMDBApi, _TMDBApiE, _TMDBApiA, False)
     End Sub
 
@@ -187,10 +187,10 @@ Public Class TMDB_Data
         Dim SPanel As New Containers.SettingsPanel
         _setup_Movie = New frmTMDBInfoSettingsHolder_Movie
         LoadSettings_Movie()
-        _setup_Movie.API = _setup_Movie.txtTMDBApiKey.Text
-        _setup_Movie.Lang = _setup_Movie.cbTMDBPrefLanguage.Text
+        _setup_Movie.API = _setup_Movie.txtApiKey.Text
+        _setup_Movie.Lang = _setup_Movie.cbPrefLanguage.Text
         _setup_Movie.cbEnabled.Checked = _ScraperEnabled_Movie
-        _setup_Movie.cbTMDBPrefLanguage.Text = _MySettings_Movie.TMDBLanguage
+        _setup_Movie.cbPrefLanguage.Text = _MySettings_Movie.PrefLanguage
         _setup_Movie.chkCast.Checked = ConfigOptions_Movie.bFullCast
         _setup_Movie.chkCollection.Checked = ConfigOptions_Movie.bCollection
         _setup_Movie.chkCountry.Checked = ConfigOptions_Movie.bCountry
@@ -210,7 +210,7 @@ Public Class TMDB_Data
         _setup_Movie.chkTrailer.Checked = ConfigOptions_Movie.bTrailer
         _setup_Movie.chkVotes.Checked = ConfigOptions_Movie.bVotes
         _setup_Movie.chkYear.Checked = ConfigOptions_Movie.bYear
-        _setup_Movie.txtTMDBApiKey.Text = strPrivateAPIKey
+        _setup_Movie.txtApiKey.Text = strPrivateAPIKey
 
         _setup_Movie.orderChanged()
 
@@ -233,14 +233,14 @@ Public Class TMDB_Data
         Dim SPanel As New Containers.SettingsPanel
         _setup_MovieSet = New frmTMDBInfoSettingsHolder_MovieSet
         LoadSettings_MovieSet()
-        _setup_MovieSet.API = _setup_MovieSet.txtTMDBApiKey.Text
-        _setup_MovieSet.Lang = _setup_MovieSet.cbTMDBPrefLanguage.Text
+        _setup_MovieSet.API = _setup_MovieSet.txtApiKey.Text
+        _setup_MovieSet.Lang = _setup_MovieSet.cbPrefLanguage.Text
         _setup_MovieSet.cbEnabled.Checked = _ScraperEnabled_MovieSet
-        _setup_MovieSet.cbTMDBPrefLanguage.Text = _MySettings_MovieSet.TMDBLanguage
+        _setup_MovieSet.cbPrefLanguage.Text = _MySettings_MovieSet.PrefLanguage
         _setup_MovieSet.chkFallBackEng.Checked = _MySettings_MovieSet.FallBackEng
         _setup_MovieSet.chkPlot.Checked = ConfigOptions_MovieSet.bPlot
         _setup_MovieSet.chkTitle.Checked = ConfigOptions_MovieSet.bTitle
-        _setup_MovieSet.txtTMDBApiKey.Text = strPrivateAPIKey
+        _setup_MovieSet.txtApiKey.Text = strPrivateAPIKey
 
         _setup_MovieSet.orderChanged()
 
@@ -289,11 +289,11 @@ Public Class TMDB_Data
         ConfigOptions_Movie.bWriters = clsAdvancedSettings.GetBooleanSetting("DoWriters", True, , Enums.Content_Type.Movie)
         ConfigOptions_Movie.bYear = clsAdvancedSettings.GetBooleanSetting("DoYear", True, , Enums.Content_Type.Movie)
 
-        strPrivateAPIKey = clsAdvancedSettings.GetSetting("TMDBAPIKey", "", , Enums.Content_Type.Movie)
+        strPrivateAPIKey = clsAdvancedSettings.GetSetting("APIKey", "", , Enums.Content_Type.Movie)
         _MySettings_Movie.FallBackEng = clsAdvancedSettings.GetBooleanSetting("FallBackEn", False, , Enums.Content_Type.Movie)
         _MySettings_Movie.GetAdultItems = clsAdvancedSettings.GetBooleanSetting("GetAdultItems", False, , Enums.Content_Type.Movie)
-        _MySettings_Movie.TMDBAPIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "44810eefccd9cb1fa1d57e7b0d67b08d", strPrivateAPIKey)
-        _MySettings_Movie.TMDBLanguage = clsAdvancedSettings.GetSetting("TMDBLanguage", "en", , Enums.Content_Type.Movie)
+        _MySettings_Movie.APIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "44810eefccd9cb1fa1d57e7b0d67b08d", strPrivateAPIKey)
+        _MySettings_Movie.PrefLanguage = clsAdvancedSettings.GetSetting("PrefLanguage", "en", , Enums.Content_Type.Movie)
         ConfigScrapeModifier_Movie.DoSearch = True
         ConfigScrapeModifier_Movie.Meta = True
         ConfigScrapeModifier_Movie.NFO = True
@@ -303,11 +303,11 @@ Public Class TMDB_Data
         ConfigOptions_MovieSet.bPlot = clsAdvancedSettings.GetBooleanSetting("DoPlot", True, , Enums.Content_Type.MovieSet)
         ConfigOptions_MovieSet.bTitle = clsAdvancedSettings.GetBooleanSetting("DoTitle", True, , Enums.Content_Type.MovieSet)
 
-        strPrivateAPIKey = clsAdvancedSettings.GetSetting("TMDBAPIKey", "", , Enums.Content_Type.MovieSet)
+        strPrivateAPIKey = clsAdvancedSettings.GetSetting("APIKey", "", , Enums.Content_Type.MovieSet)
         _MySettings_MovieSet.FallBackEng = clsAdvancedSettings.GetBooleanSetting("FallBackEn", False, , Enums.Content_Type.MovieSet)
         _MySettings_MovieSet.GetAdultItems = clsAdvancedSettings.GetBooleanSetting("GetAdultItems", False, , Enums.Content_Type.MovieSet)
-        _MySettings_MovieSet.TMDBAPIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "44810eefccd9cb1fa1d57e7b0d67b08d", strPrivateAPIKey)
-        _MySettings_MovieSet.TMDBLanguage = clsAdvancedSettings.GetSetting("TMDBLanguage", "en", , Enums.Content_Type.MovieSet)
+        _MySettings_MovieSet.APIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "44810eefccd9cb1fa1d57e7b0d67b08d", strPrivateAPIKey)
+        _MySettings_MovieSet.PrefLanguage = clsAdvancedSettings.GetSetting("PrefLanguage", "en", , Enums.Content_Type.MovieSet)
         ConfigScrapeModifier_Movie.DoSearch = True
         ConfigScrapeModifier_Movie.Meta = False
         ConfigScrapeModifier_Movie.NFO = True
@@ -347,8 +347,8 @@ Public Class TMDB_Data
             settings.SetBooleanSetting("FullCast", ConfigOptions_Movie.bFullCast, , , Enums.Content_Type.Movie)
             settings.SetBooleanSetting("FullCrew", ConfigOptions_Movie.bFullCrew, , , Enums.Content_Type.Movie)
             settings.SetBooleanSetting("GetAdultItems", _MySettings_Movie.GetAdultItems, , , Enums.Content_Type.Movie)
-            settings.SetSetting("TMDBAPIKey", _setup_Movie.txtTMDBApiKey.Text, , , Enums.Content_Type.Movie)
-            settings.SetSetting("TMDBLanguage", _MySettings_Movie.TMDBLanguage, , , Enums.Content_Type.Movie)
+            settings.SetSetting("APIKey", _setup_Movie.txtApiKey.Text, , , Enums.Content_Type.Movie)
+            settings.SetSetting("PrefLanguage", _MySettings_Movie.PrefLanguage, , , Enums.Content_Type.Movie)
         End Using
     End Sub
 
@@ -356,8 +356,8 @@ Public Class TMDB_Data
         Using settings = New clsAdvancedSettings()
             settings.SetBooleanSetting("DoPlot", ConfigOptions_MovieSet.bPlot, , , Enums.Content_Type.MovieSet)
             settings.SetBooleanSetting("DoTitle", ConfigOptions_MovieSet.bTitle, , , Enums.Content_Type.MovieSet)
-            settings.SetSetting("TMDBAPIKey", _setup_MovieSet.txtTMDBApiKey.Text, , , Enums.Content_Type.MovieSet)
-            settings.SetSetting("TMDBLanguage", _MySettings_MovieSet.TMDBLanguage, , , Enums.Content_Type.MovieSet)
+            settings.SetSetting("APIKey", _setup_MovieSet.txtApiKey.Text, , , Enums.Content_Type.MovieSet)
+            settings.SetSetting("PrefLanguage", _MySettings_MovieSet.PrefLanguage, , , Enums.Content_Type.MovieSet)
         End Using
     End Sub
 
@@ -390,7 +390,7 @@ Public Class TMDB_Data
         ConfigOptions_Movie.bYear = _setup_Movie.chkYear.Checked
         _MySettings_Movie.FallBackEng = _setup_Movie.chkFallBackEng.Checked
         _MySettings_Movie.GetAdultItems = _setup_Movie.chkGetAdultItems.Checked
-        _MySettings_Movie.TMDBLanguage = _setup_Movie.cbTMDBPrefLanguage.Text
+        _MySettings_Movie.PrefLanguage = _setup_Movie.cbPrefLanguage.Text
         SaveSettings_Movie()
         'ModulesManager.Instance.SaveSettings()
         If DoDispose Then
@@ -405,7 +405,7 @@ Public Class TMDB_Data
         ConfigOptions_MovieSet.bTitle = _setup_MovieSet.chkTitle.Checked
         _MySettings_MovieSet.FallBackEng = _setup_MovieSet.chkFallBackEng.Checked
         _MySettings_MovieSet.GetAdultItems = _setup_MovieSet.chkGetAdultItems.Checked
-        _MySettings_MovieSet.TMDBLanguage = _setup_MovieSet.cbTMDBPrefLanguage.Text
+        _MySettings_MovieSet.PrefLanguage = _setup_MovieSet.cbPrefLanguage.Text
         SaveSettings_MovieSet()
         'ModulesManager.Instance.SaveSettings()
         If DoDispose Then
@@ -555,7 +555,7 @@ Public Class TMDB_Data
         End If
 
         If Not String.IsNullOrEmpty(DBMovie.Movie.Title) Then
-            tTitle = StringUtils.FilterTokens(DBMovie.Movie.Title)
+            tTitle = StringUtils.FilterTokens_Movie(DBMovie.Movie.Title)
             If Not OldTitle = DBMovie.Movie.Title OrElse String.IsNullOrEmpty(DBMovie.Movie.SortTitle) Then DBMovie.Movie.SortTitle = tTitle
             If Master.eSettings.MovieDisplayYear AndAlso Not String.IsNullOrEmpty(DBMovie.Movie.Year) Then
                 DBMovie.ListTitle = String.Format("{0} ({1})", tTitle, DBMovie.Movie.Year)
@@ -680,27 +680,8 @@ Public Class TMDB_Data
         End If
 
         If Not String.IsNullOrEmpty(DBMovieSet.MovieSet.Title) Then
-            DBMovieSet.ListTitle = DBMovieSet.MovieSet.Title
-            '    tTitle = StringUtils.FilterTokens(DBMovieSet.MovieSet.Title)
-            '    If Not OldTitle = DBMovieSet.MovieSet.Title OrElse String.IsNullOrEmpty(DBMovieSet.MovieSet.SortTitle) Then DBMovie.Movie.SortTitle = tTitle
-            '    If Master.eSettings.MovieDisplayYear AndAlso Not String.IsNullOrEmpty(DBMovie.Movie.Year) Then
-            '        DBMovie.ListTitle = String.Format("{0} ({1})", tTitle, DBMovie.Movie.Year)
-            '    Else
-            '        DBMovieSet.ListTitle = tTitle
-            '    End If
-            'Else
-            '    If FileUtils.Common.isVideoTS(DBMovie.Filename) Then
-            '        DBMovie.ListTitle = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).Name)
-            '    ElseIf FileUtils.Common.isBDRip(DBMovie.Filename) Then
-            '        DBMovie.ListTitle = StringUtils.FilterName(Directory.GetParent(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).FullName).Name)
-            '    Else
-            '        If DBMovie.UseFolder AndAlso DBMovie.IsSingle Then
-            '            DBMovie.ListTitle = StringUtils.FilterName(Directory.GetParent(DBMovie.Filename).Name)
-            '        Else
-            '            DBMovie.ListTitle = StringUtils.FilterName(Path.GetFileNameWithoutExtension(DBMovie.Filename))
-            '        End If
-            '    End If
-            '    If Not OldTitle = DBMovie.Movie.Title OrElse String.IsNullOrEmpty(DBMovie.Movie.SortTitle) Then DBMovie.Movie.SortTitle = DBMovie.ListTitle
+            tTitle = StringUtils.FilterTokens_MovieSet(DBMovieSet.MovieSet.Title)
+            DBMovieSet.ListTitle = tTitle
         End If
 
         Return New Interfaces.ModuleResult With {.breakChain = False}
@@ -723,8 +704,8 @@ Public Class TMDB_Data
 #Region "Fields"
         Dim FallBackEng As Boolean
         Dim GetAdultItems As Boolean
-        Dim TMDBAPIKey As String
-        Dim TMDBLanguage As String
+        Dim APIKey As String
+        Dim PrefLanguage As String
 #End Region 'Fields
 
     End Structure
