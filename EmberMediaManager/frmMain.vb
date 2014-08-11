@@ -3541,7 +3541,7 @@ doCancel:
                 AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
                 Select Case dEditMovie.ShowDialog()
                     Case Windows.Forms.DialogResult.OK
-                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieScraperRDYtoSave, Nothing, Master.currMovie)
+                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.RenameMovie, New List(Of Object)(New Object() {False, False, False}), Master.currMovie)
                         Me.SetMovieListItemAfterEdit(ID, indX)
                         If Me.RefreshMovie(ID) Then
                             Me.FillList(True, True, False)
@@ -5286,7 +5286,7 @@ doCancel:
                 AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
                 Select Case dEditMovie.ShowDialog()
                     Case Windows.Forms.DialogResult.OK
-                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieScraperRDYtoSave, Nothing, Master.currMovie)
+                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.RenameMovie, New List(Of Object)(New Object() {False, False, False}), Master.currMovie)
                         Me.SetMovieListItemAfterEdit(ID, indX)
                         If Me.RefreshMovie(ID) Then
                             Me.FillList(True, True, False)
@@ -5616,7 +5616,7 @@ doCancel:
                     AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
                     Select Case dEditMovie.ShowDialog()
                         Case Windows.Forms.DialogResult.OK
-                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieScraperRDYtoSave, Nothing, Master.currMovie)
+                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.RenameMovie, New List(Of Object)(New Object() {False, False, False}), Master.currMovie)
                             Me.SetMovieListItemAfterEdit(ID, indX)
                             If Me.RefreshMovie(ID) Then
                                 Me.FillList(True, True, False)
@@ -10585,7 +10585,7 @@ doCancel:
                     AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
                     Select Case dEditMovie.ShowDialog()
                         Case Windows.Forms.DialogResult.OK
-                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieScraperRDYtoSave, Nothing, Master.currMovie)
+                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.RenameMovie, New List(Of Object)(New Object() {False, False, False}), Master.currMovie)
                             Me.SetMovieListItemAfterEdit(ID, indX)
                             If Me.RefreshMovie(ID) Then
                                 Me.FillList(True, True, False)
