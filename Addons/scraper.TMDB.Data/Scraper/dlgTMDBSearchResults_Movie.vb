@@ -267,7 +267,7 @@ Public Class dlgTMDBSearchResults_Movie
                 Me.lblDirector.Text = Master.tmpMovie.Director
                 Me.lblGenre.Text = Master.tmpMovie.Genre
                 Me.txtPlot.Text = StringUtils.ShortenOutline(Master.tmpMovie.Plot, 410)
-                Me.lblTMDBID.Text = Master.tmpMovie.IMDBID
+                Me.lblTMDBID.Text = Master.tmpMovie.TMDBID
 
                 If _PosterCache.ContainsKey(Master.tmpMovie.TMDBID) Then
                     'just set it
