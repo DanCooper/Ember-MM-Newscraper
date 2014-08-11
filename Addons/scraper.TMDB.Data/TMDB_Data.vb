@@ -399,8 +399,8 @@ Public Class TMDB_Data
         SaveSettings_Movie()
         'ModulesManager.Instance.SaveSettings()
         If DoDispose Then
-            RemoveHandler _setup_MovieSet.SetupScraperChanged, AddressOf Handle_SetupScraperChanged_Movie
-            RemoveHandler _setup_MovieSet.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged_Movie
+            RemoveHandler _setup_Movie.SetupScraperChanged, AddressOf Handle_SetupScraperChanged_Movie
+            RemoveHandler _setup_Movie.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged_Movie
             _setup_Movie.Dispose()
         End If
     End Sub

@@ -222,6 +222,7 @@ Public Class TMDB_Image
         _setup_Movie.chkScrapeFanart.Checked = ConfigScrapeModifier_Movie.Fanart
         _setup_Movie.txtApiKey.Text = strPrivateAPIKey
         _setup_Movie.cbPrefLanguage.Text = _MySettings_Movie.PrefLanguage
+        _setup_Movie.chkGetBlankImages.Checked = _MySettings_Movie.GetBlankImages
         _setup_Movie.chkGetEnglishImages.Checked = _MySettings_Movie.GetEnglishImages
         _setup_Movie.chkPrefLanguageOnly.Checked = _MySettings_Movie.PrefLanguageOnly
         _setup_Movie.Lang = _setup_Movie.cbPrefLanguage.Text
@@ -253,6 +254,7 @@ Public Class TMDB_Image
         _setup_MovieSet.chkScrapeFanart.Checked = ConfigScrapeModifier_MovieSet.Fanart
         _setup_MovieSet.txtApiKey.Text = strPrivateAPIKey
         _setup_MovieSet.cbPrefLanguage.Text = _MySettings_MovieSet.PrefLanguage
+        _setup_MovieSet.chkGetBlankImages.Checked = _MySettings_MovieSet.GetBlankImages
         _setup_MovieSet.chkGetEnglishImages.Checked = _MySettings_MovieSet.GetEnglishImages
         _setup_MovieSet.chkPrefLanguageOnly.Checked = _MySettings_MovieSet.PrefLanguageOnly
         _setup_MovieSet.Lang = _setup_MovieSet.cbPrefLanguage.Text
@@ -367,6 +369,7 @@ Public Class TMDB_Image
 
     Sub SaveSetupScraper_Movie(ByVal DoDispose As Boolean) Implements Interfaces.ScraperModule_Image_Movie.SaveSetupScraper
         _MySettings_Movie.PrefLanguage = _setup_Movie.cbPrefLanguage.Text
+        _MySettings_Movie.GetBlankImages = _setup_Movie.chkGetBlankImages.Checked
         _MySettings_Movie.GetEnglishImages = _setup_Movie.chkGetEnglishImages.Checked
         _MySettings_Movie.PrefLanguageOnly = _setup_Movie.chkPrefLanguageOnly.Checked
         ConfigScrapeModifier_Movie.Poster = _setup_Movie.chkScrapePoster.Checked
@@ -383,6 +386,7 @@ Public Class TMDB_Image
 
     Sub SaveSetupScraper_MovieSet(ByVal DoDispose As Boolean) Implements Interfaces.ScraperModule_Image_MovieSet.SaveSetupScraper
         _MySettings_MovieSet.PrefLanguage = _setup_MovieSet.cbPrefLanguage.Text
+        _MySettings_MovieSet.GetBlankImages = _setup_MovieSet.chkGetBlankImages.Checked
         _MySettings_MovieSet.GetEnglishImages = _setup_MovieSet.chkGetEnglishImages.Checked
         _MySettings_MovieSet.PrefLanguageOnly = _setup_MovieSet.chkPrefLanguageOnly.Checked
         ConfigScrapeModifier_MovieSet.Poster = _setup_MovieSet.chkScrapePoster.Checked
