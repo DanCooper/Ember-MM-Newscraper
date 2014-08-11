@@ -1030,14 +1030,14 @@ Public Class Database
         Try
             _moviesetDB.ID = MovieSetID
             Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                SQLcommand.CommandText = String.Concat("SELECT ID, SetName, HasNfo, NfoPath, HasPoster, PosterPath, HasFanart, ", _
+                SQLcommand.CommandText = String.Concat("SELECT ID, ListTitle, HasNfo, NfoPath, HasPoster, PosterPath, HasFanart, ", _
                                                        "FanartPath, HasBanner, BannerPath, HasLandscape, LandscapePath, ", _
                                                        "HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ", _
-                                                       "ClearArtPath, TMDBColID, Plot FROM sets WHERE id = ", MovieSetID, ";")
+                                                       "ClearArtPath, TMDBColID, Plot, SetName FROM sets WHERE id = ", MovieSetID, ";")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     If SQLreader.HasRows Then
                         SQLreader.Read()
-                        If Not DBNull.Value.Equals(SQLreader("SetName")) Then _moviesetDB.ListTitle = SQLreader("SetName").ToString
+                        If Not DBNull.Value.Equals(SQLreader("ListTitle")) Then _moviesetDB.ListTitle = SQLreader("ListTitle").ToString
                         If Not DBNull.Value.Equals(SQLreader("NfoPath")) Then _moviesetDB.NfoPath = SQLreader("NfoPath").ToString
                         If Not DBNull.Value.Equals(SQLreader("PosterPath")) Then _moviesetDB.PosterPath = SQLreader("PosterPath").ToString
                         If Not DBNull.Value.Equals(SQLreader("FanartPath")) Then _moviesetDB.FanartPath = SQLreader("FanartPath").ToString
@@ -1909,10 +1909,10 @@ Public Class Database
                                 'first check if a Set with same TMDBColID is already existing
                                 If Not String.IsNullOrEmpty(s.TMDBColID) Then
                                     Using SQLcommandSets As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                                        SQLcommandSets.CommandText = String.Concat("SELECT ID, SetName, HasNfo, NfoPath, HasPoster, PosterPath, HasFanart, ", _
+                                        SQLcommandSets.CommandText = String.Concat("SELECT ID, ListTitle, HasNfo, NfoPath, HasPoster, PosterPath, HasFanart, ", _
                                                                                "FanartPath, HasBanner, BannerPath, HasLandscape, LandscapePath, ", _
                                                                                "HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ", _
-                                                                               "ClearArtPath, TMDBColID FROM Sets WHERE TMDBColID LIKE """, s.TMDBColID, """;")
+                                                                               "ClearArtPath, TMDBColID, Plot, SetName FROM Sets WHERE TMDBColID LIKE """, s.TMDBColID, """;")
                                         Using SQLreader As SQLite.SQLiteDataReader = SQLcommandSets.ExecuteReader()
                                             If SQLreader.HasRows Then
                                                 SQLreader.Read()
@@ -1930,10 +1930,10 @@ Public Class Database
                                 If IsNewSet Then
                                     'secondly check if a Set with same name is already existing
                                     Using SQLcommandSets As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                                        SQLcommandSets.CommandText = String.Concat("SELECT ID, SetName, HasNfo, NfoPath, HasPoster, PosterPath, HasFanart, ", _
+                                        SQLcommandSets.CommandText = String.Concat("SELECT ID, ListTitle, HasNfo, NfoPath, HasPoster, PosterPath, HasFanart, ", _
                                                                                "FanartPath, HasBanner, BannerPath, HasLandscape, LandscapePath, ", _
                                                                                "HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ", _
-                                                                               "ClearArtPath, TMDBColID FROM Sets WHERE SetName LIKE """, s.Set, """;")
+                                                                               "ClearArtPath, TMDBColID, Plot, SetName FROM Sets WHERE SetName LIKE """, s.Set, """;")
                                         Using SQLreader As SQLite.SQLiteDataReader = SQLcommandSets.ExecuteReader()
                                             If SQLreader.HasRows Then
                                                 SQLreader.Read()
@@ -1965,12 +1965,12 @@ Public Class Database
                                     'create new Set
                                     Using SQLcommandSets As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
                                         SQLcommandSets.CommandText = String.Concat("INSERT OR REPLACE INTO Sets (", _
-                                                                                         "SetName, HasNfo, NfoPath, HasPoster, PosterPath, HasFanart, ", _
+                                                                                         "ListTitle, HasNfo, NfoPath, HasPoster, PosterPath, HasFanart, ", _
                                                                                          "FanartPath, HasBanner, BannerPath, HasLandscape, LandscapePath, ", _
                                                                                          "HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ", _
-                                                                                         "ClearArtPath, TMDBColID", _
-                                                                                         ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM Sets;")
-                                        Dim parSets_SetName As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_SetName", DbType.String, 0, "SetName")
+                                                                                         "ClearArtPath, TMDBColID, Plot, SetName", _
+                                                                                         ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM Sets;")
+                                        Dim parSets_ListTitle As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_ListTitle", DbType.String, 0, "ListTitle")
                                         Dim parSets_HasNfo As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_HasInfo", DbType.Boolean, 0, "HasNfo")
                                         Dim parSets_NfoPath As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_NfoPath", DbType.String, 0, "NfoPath")
                                         Dim parSets_HasPoster As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_HasPoster", DbType.Boolean, 0, "HasPoster")
@@ -1988,9 +1988,13 @@ Public Class Database
                                         Dim parSets_HasClearArt As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_HasClearArt", DbType.Boolean, 0, "HasClearArt")
                                         Dim parSets_ClearArtPath As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_ClearArtPath", DbType.String, 0, "ClearArtPath")
                                         Dim parSets_TMDBColID As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_TMDBColID", DbType.String, 0, "TMDBColID")
+                                        Dim parSets_Plot As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_Plot", DbType.String, 0, "Plot")
+                                        Dim parSets_SetName As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_SetName", DbType.String, 0, "SetName")
 
                                         parSets_SetName.Value = s.Set
+                                        parSets_ListTitle.Value = StringUtils.FilterTokens_MovieSet(s.Set)
                                         parSets_TMDBColID.Value = s.TMDBColID
+                                        parSets_Plot.Value = String.Empty
                                         parSets_BannerPath.Value = String.Empty
                                         parSets_ClearArtPath.Value = String.Empty
                                         parSets_ClearLogoPath.Value = String.Empty
@@ -2063,22 +2067,22 @@ Public Class Database
             Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
                 If IsNew Then
                     SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO sets (", _
-                     "SetName, HasNfo, NfoPath, HasPoster, PosterPath, HasFanart, ", _
+                     "ListTile, HasNfo, NfoPath, HasPoster, PosterPath, HasFanart, ", _
                      "FanartPath, HasBanner, BannerPath, HasLandscape, LandscapePath, ", _
                      "HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ", _
-                     "ClearArtPath, TMDBColID, Plot", _
-                     ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM sets;")
+                     "ClearArtPath, TMDBColID, Plot, SetName", _
+                     ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM sets;")
                 Else
                     SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO sets (", _
-                     "ID, SetName, HasNfo, NfoPath, HasPoster, PosterPath, HasFanart, ", _
+                     "ID, ListTitle, HasNfo, NfoPath, HasPoster, PosterPath, HasFanart, ", _
                      "FanartPath, HasBanner, BannerPath, HasLandscape, LandscapePath, ", _
                      "HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ", _
-                     "ClearArtPath, TMDBColID, Plot", _
-                     ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM sets;")
+                     "ClearArtPath, TMDBColID, Plot, SetName", _
+                     ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM sets;")
                     Dim parMovieSetID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMovieSetID", DbType.Int32, 0, "ID")
                     parMovieSetID.Value = _moviesetDB.ID
                 End If
-                Dim parSetName As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSetName", DbType.String, 0, "SetName")
+                Dim parListTile As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parListTitle", DbType.String, 0, "ListTitle")
                 Dim parHasNfo As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasInfo", DbType.Boolean, 0, "HasNfo")
                 Dim parNfoPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parNfoPath", DbType.String, 0, "NfoPath")
                 Dim parHasPoster As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasPoster", DbType.Boolean, 0, "HasPoster")
@@ -2097,6 +2101,7 @@ Public Class Database
                 Dim parClearArtPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parClearArtPath", DbType.String, 0, "ClearArtPath")
                 Dim parTMDBColID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTMDBColID", DbType.String, 0, "TMDBColID")
                 Dim parPlot As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPlot", DbType.String, 0, "Plot")
+                Dim parSetName As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSetName", DbType.String, 0, "SetName")
 
                 ' First let's save it to NFO, even because we will need the NFO path
                 'If ToNfo AndAlso Not String.IsNullOrEmpty(_movieDB.Movie.IMDBID) Then NFO.SaveMovieToNFO(_movieDB)
@@ -2121,7 +2126,8 @@ Public Class Database
                 parHasNfo.Value = Not String.IsNullOrEmpty(_moviesetDB.NfoPath)
                 parHasPoster.Value = Not String.IsNullOrEmpty(_moviesetDB.PosterPath)
 
-                parSetName.Value = _moviesetDB.ListTitle
+                parListTile.Value = _moviesetDB.ListTitle
+                parSetName.Value = _moviesetDB.MovieSet.Title
                 parTMDBColID.Value = _moviesetDB.MovieSet.ID
                 parPlot.Value = _moviesetDB.MovieSet.Plot
 

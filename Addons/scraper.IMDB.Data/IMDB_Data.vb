@@ -396,7 +396,7 @@ Public Class IMDB_Data
         End If
 
         If Not String.IsNullOrEmpty(DBMovie.Movie.Title) Then
-            tTitle = StringUtils.FilterTokens(DBMovie.Movie.Title)
+            tTitle = StringUtils.FilterTokens_Movie(DBMovie.Movie.Title)
             If Not OldTitle = DBMovie.Movie.Title OrElse String.IsNullOrEmpty(DBMovie.Movie.SortTitle) Then DBMovie.Movie.SortTitle = tTitle
             If Master.eSettings.MovieDisplayYear AndAlso Not String.IsNullOrEmpty(DBMovie.Movie.Year) Then
                 DBMovie.ListTitle = String.Format("{0} ({1})", tTitle, DBMovie.Movie.Year)

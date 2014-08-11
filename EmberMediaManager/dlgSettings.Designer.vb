@@ -964,6 +964,11 @@ Partial Class dlgSettings
         Me.chkMovieSetClickScrape = New System.Windows.Forms.CheckBox()
         Me.chkMovieSetClickScrapeAsk = New System.Windows.Forms.CheckBox()
         Me.gbMovieSetGeneralMediaListOpts = New System.Windows.Forms.GroupBox()
+        Me.gbMovieSetSortTokensOpts = New System.Windows.Forms.GroupBox()
+        Me.btnMovieSetSortTokenRemove = New System.Windows.Forms.Button()
+        Me.btnMovieSetSortTokenAdd = New System.Windows.Forms.Button()
+        Me.txtMovieSetSortToken = New System.Windows.Forms.TextBox()
+        Me.lstMovieSetSortTokens = New System.Windows.Forms.ListBox()
         Me.chkMovieSetDiscArtCol = New System.Windows.Forms.CheckBox()
         Me.chkMovieSetClearLogoCol = New System.Windows.Forms.CheckBox()
         Me.chkMovieSetClearArtCol = New System.Windows.Forms.CheckBox()
@@ -1211,6 +1216,7 @@ Partial Class dlgSettings
         Me.gbMovieSetGeneralMissingItemsOpts.SuspendLayout
         Me.gbMovieSetGeneralMiscOpts.SuspendLayout
         Me.gbMovieSetGeneralMediaListOpts.SuspendLayout
+        Me.gbMovieSetSortTokensOpts.SuspendLayout
         Me.pnlMovieSetSources.SuspendLayout
         Me.gbMovieSetFileNaming.SuspendLayout
         Me.tcMovieSetFileNaming.SuspendLayout
@@ -11483,6 +11489,7 @@ Partial Class dlgSettings
         '
         'gbMovieSetGeneralMediaListOpts
         '
+        Me.gbMovieSetGeneralMediaListOpts.Controls.Add(Me.gbMovieSetSortTokensOpts)
         Me.gbMovieSetGeneralMediaListOpts.Controls.Add(Me.chkMovieSetDiscArtCol)
         Me.gbMovieSetGeneralMediaListOpts.Controls.Add(Me.chkMovieSetClearLogoCol)
         Me.gbMovieSetGeneralMediaListOpts.Controls.Add(Me.chkMovieSetClearArtCol)
@@ -11498,6 +11505,57 @@ Partial Class dlgSettings
         Me.gbMovieSetGeneralMediaListOpts.TabIndex = 4
         Me.gbMovieSetGeneralMediaListOpts.TabStop = false
         Me.gbMovieSetGeneralMediaListOpts.Text = "Media List Options"
+        '
+        'gbMovieSetSortTokensOpts
+        '
+        Me.gbMovieSetSortTokensOpts.Controls.Add(Me.btnMovieSetSortTokenRemove)
+        Me.gbMovieSetSortTokensOpts.Controls.Add(Me.btnMovieSetSortTokenAdd)
+        Me.gbMovieSetSortTokensOpts.Controls.Add(Me.txtMovieSetSortToken)
+        Me.gbMovieSetSortTokensOpts.Controls.Add(Me.lstMovieSetSortTokens)
+        Me.gbMovieSetSortTokensOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.gbMovieSetSortTokensOpts.Location = New System.Drawing.Point(8, 77)
+        Me.gbMovieSetSortTokensOpts.Name = "gbMovieSetSortTokensOpts"
+        Me.gbMovieSetSortTokensOpts.Size = New System.Drawing.Size(200, 93)
+        Me.gbMovieSetSortTokensOpts.TabIndex = 83
+        Me.gbMovieSetSortTokensOpts.TabStop = false
+        Me.gbMovieSetSortTokensOpts.Text = "Sort Tokens to Ignore"
+        '
+        'btnMovieSetSortTokenRemove
+        '
+        Me.btnMovieSetSortTokenRemove.Image = CType(resources.GetObject("btnMovieSetSortTokenRemove.Image"),System.Drawing.Image)
+        Me.btnMovieSetSortTokenRemove.Location = New System.Drawing.Point(168, 64)
+        Me.btnMovieSetSortTokenRemove.Name = "btnMovieSetSortTokenRemove"
+        Me.btnMovieSetSortTokenRemove.Size = New System.Drawing.Size(23, 23)
+        Me.btnMovieSetSortTokenRemove.TabIndex = 3
+        Me.btnMovieSetSortTokenRemove.UseVisualStyleBackColor = true
+        '
+        'btnMovieSetSortTokenAdd
+        '
+        Me.btnMovieSetSortTokenAdd.Image = CType(resources.GetObject("btnMovieSetSortTokenAdd.Image"),System.Drawing.Image)
+        Me.btnMovieSetSortTokenAdd.Location = New System.Drawing.Point(72, 64)
+        Me.btnMovieSetSortTokenAdd.Name = "btnMovieSetSortTokenAdd"
+        Me.btnMovieSetSortTokenAdd.Size = New System.Drawing.Size(23, 23)
+        Me.btnMovieSetSortTokenAdd.TabIndex = 2
+        Me.btnMovieSetSortTokenAdd.UseVisualStyleBackColor = true
+        '
+        'txtMovieSetSortToken
+        '
+        Me.txtMovieSetSortToken.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.txtMovieSetSortToken.Location = New System.Drawing.Point(10, 64)
+        Me.txtMovieSetSortToken.Name = "txtMovieSetSortToken"
+        Me.txtMovieSetSortToken.Size = New System.Drawing.Size(61, 22)
+        Me.txtMovieSetSortToken.TabIndex = 1
+        '
+        'lstMovieSetSortTokens
+        '
+        Me.lstMovieSetSortTokens.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.lstMovieSetSortTokens.FormattingEnabled = true
+        Me.lstMovieSetSortTokens.Location = New System.Drawing.Point(10, 15)
+        Me.lstMovieSetSortTokens.Name = "lstMovieSetSortTokens"
+        Me.lstMovieSetSortTokens.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
+        Me.lstMovieSetSortTokens.Size = New System.Drawing.Size(180, 43)
+        Me.lstMovieSetSortTokens.Sorted = true
+        Me.lstMovieSetSortTokens.TabIndex = 0
         '
         'chkMovieSetDiscArtCol
         '
@@ -12685,6 +12743,8 @@ Partial Class dlgSettings
         Me.gbMovieSetGeneralMiscOpts.PerformLayout
         Me.gbMovieSetGeneralMediaListOpts.ResumeLayout(false)
         Me.gbMovieSetGeneralMediaListOpts.PerformLayout
+        Me.gbMovieSetSortTokensOpts.ResumeLayout(false)
+        Me.gbMovieSetSortTokensOpts.PerformLayout
         Me.pnlMovieSetSources.ResumeLayout(false)
         Me.gbMovieSetFileNaming.ResumeLayout(false)
         Me.tcMovieSetFileNaming.ResumeLayout(false)
@@ -13730,4 +13790,9 @@ End Sub
     Friend WithEvents chkMovieSetNFOMSAA As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieSetDiscArtMSAA As System.Windows.Forms.CheckBox
     Friend WithEvents pbMSAAInfo As System.Windows.Forms.PictureBox
+    Friend WithEvents gbMovieSetSortTokensOpts As System.Windows.Forms.GroupBox
+    Friend WithEvents btnMovieSetSortTokenRemove As System.Windows.Forms.Button
+    Friend WithEvents btnMovieSetSortTokenAdd As System.Windows.Forms.Button
+    Friend WithEvents txtMovieSetSortToken As System.Windows.Forms.TextBox
+    Friend WithEvents lstMovieSetSortTokens As System.Windows.Forms.ListBox
 End Class

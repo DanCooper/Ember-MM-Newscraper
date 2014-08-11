@@ -526,7 +526,7 @@ Namespace MediaContainers
         <XmlIgnore()> _
         Public ReadOnly Property SortTitleSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._sorttitle) AndAlso Not Me._sorttitle = StringUtils.FilterTokens(Me._title)
+                Return Not String.IsNullOrEmpty(Me._sorttitle) AndAlso Not Me._sorttitle = StringUtils.FilterTokens_Movie(Me._title)
             End Get
         End Property
 

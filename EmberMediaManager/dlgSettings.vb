@@ -566,6 +566,18 @@ Public Class dlgSettings
         End If
     End Sub
 
+    Private Sub btnMovieSetSortTokenAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieSetSortTokenAdd.Click
+        If Not String.IsNullOrEmpty(txtMovieSetSortToken.Text) Then
+            If Not lstMovieSetSortTokens.Items.Contains(txtMovieSetSortToken.Text) Then
+                lstMovieSetSortTokens.Items.Add(txtMovieSetSortToken.Text)
+                Me.sResult.NeedsRefresh = True
+                Me.SetApplyButton(True)
+                txtMovieSetSortToken.Text = String.Empty
+                txtMovieSetSortToken.Focus()
+            End If
+        End If
+    End Sub
+
     Private Sub btnTVSourceAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVSourceAdd.Click
         Using dSource As New dlgTVSource
             If dSource.ShowDialog = Windows.Forms.DialogResult.OK Then
@@ -993,6 +1005,10 @@ Public Class dlgSettings
 
     Private Sub btnMovieSortTokenRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieSortTokenRemove.Click
         Me.RemoveMovieSortToken()
+    End Sub
+
+    Private Sub btnMovieSetSortTokenRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieSetSortTokenRemove.Click
+        Me.RemoveMovieSetSortToken()
     End Sub
 
     Private Sub btnTVGeneralLangFetch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVGeneralLangFetch.Click
@@ -3272,6 +3288,7 @@ Public Class dlgSettings
                 Me.lstFileSystemCleanerWhitelist.Items.AddRange(.FileSystemCleanerWhitelistExts.ToArray)
                 Me.lstFileSystemNoStackExts.Items.AddRange(.FileSystemNoStackExts.ToArray)
                 Me.lstMovieSortTokens.Items.AddRange(.MovieSortTokens.ToArray)
+                Me.lstMovieSetSortTokens.Items.AddRange(.MovieSetSortTokens.ToArray)
                 Me.tbMovieBannerQual.Value = .MovieBannerQual
                 Me.tbMovieEFanartsQual.Value = .MovieEFanartsQual
                 Me.tbMovieEThumbsQual.Value = .MovieEThumbsQual
@@ -4050,6 +4067,10 @@ Public Class dlgSettings
         If e.KeyCode = Keys.Delete Then Me.RemoveMovieSortToken()
     End Sub
 
+    Private Sub lstMovieSetSortTokens_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lstMovieSetSortTokens.KeyDown
+        If e.KeyCode = Keys.Delete Then Me.RemoveMovieSetSortToken()
+    End Sub
+
     Private Sub lstTVScraperDefFIExt_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles lstTVScraperDefFIExt.DoubleClick
         If Me.lstTVScraperDefFIExt.SelectedItems.Count > 0 Then
             Using dEditMeta As New dlgFileInfo
@@ -4343,6 +4364,16 @@ Public Class dlgSettings
         If Me.lstMovieSortTokens.Items.Count > 0 AndAlso Me.lstMovieSortTokens.SelectedItems.Count > 0 Then
             While Me.lstMovieSortTokens.SelectedItems.Count > 0
                 Me.lstMovieSortTokens.Items.Remove(Me.lstMovieSortTokens.SelectedItems(0))
+            End While
+            Me.sResult.NeedsRefresh = True
+            Me.SetApplyButton(True)
+        End If
+    End Sub
+
+    Private Sub RemoveMovieSetSortToken()
+        If Me.lstMovieSetSortTokens.Items.Count > 0 AndAlso Me.lstMovieSetSortTokens.SelectedItems.Count > 0 Then
+            While Me.lstMovieSetSortTokens.SelectedItems.Count > 0
+                Me.lstMovieSetSortTokens.Items.Remove(Me.lstMovieSetSortTokens.SelectedItems(0))
             End While
             Me.sResult.NeedsRefresh = True
             Me.SetApplyButton(True)
@@ -4665,6 +4696,9 @@ Public Class dlgSettings
                 .MovieSortTokens.Clear()
                 .MovieSortTokens.AddRange(lstMovieSortTokens.Items.OfType(Of String).ToList)
                 If .MovieSortTokens.Count <= 0 Then .MovieSortTokensIsEmpty = True
+                .MovieSetSortTokens.Clear()
+                .MovieSetSortTokens.AddRange(lstMovieSetSortTokens.Items.OfType(Of String).ToList)
+                If .MovieSetSortTokens.Count <= 0 Then .MovieSetSortTokensIsEmpty = True
                 .MovieSubCol = Me.chkMovieSubCol.Checked
                 .MovieThemeCol = Me.chkMovieThemeCol.Checked
                 .MovieThemeEnable = Me.chkMovieThemeEnable.Checked
@@ -5637,6 +5671,7 @@ Public Class dlgSettings
         Me.gbMovieGeneralMiscOpts.Text = Me.gbGeneralMisc.Text
         Me.gbMovieNMTOptionalSettings.Text = Me.gbMovieXBMCOptionalSettings.Text
         Me.gbMovieScraperMiscOpts.Text = Me.gbGeneralMisc.Text
+        Me.gbMovieSetSortTokensOpts.Text = Me.gbMovieSortTokensOpts.Text
         Me.gbMovieThemeOpts.Text = Me.gbGeneralThemes.Text
         Me.gbTVASBannerOpts.Text = Me.gbMovieBannerOpts.Text
         Me.gbTVASFanartOpts.Text = Me.gbMovieFanartOpts.Text

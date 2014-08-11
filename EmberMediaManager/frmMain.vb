@@ -2444,7 +2444,7 @@ Public Class frmMain
                 End If
 
                 If Not Args.scrapeType = Enums.ScrapeType.SingleScrape Then
-                    MovieSetScraperEvent(Enums.ScraperEventType_MovieSet.SetName, NewTitle)
+                    MovieSetScraperEvent(Enums.ScraperEventType_MovieSet.ListTitle, NewTitle)
                 End If
 
                 '-----
@@ -7211,7 +7211,7 @@ doCancel:
                 Me.bsMovieSets.DataSource = Nothing
                 Me.dgvMovieSets.DataSource = Nothing
                 Me.ClearInfo()
-                Master.DB.FillDataTable(Me.dtMovieSets, "SELECT ID, SetName, HasNfo, NfoPath, HasPoster, PosterPath, HasFanart, FanartPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath FROM sets ORDER BY SetName COLLATE NOCASE;")
+                Master.DB.FillDataTable(Me.dtMovieSets, "SELECT ID, ListTitle, HasNfo, NfoPath, HasPoster, PosterPath, HasFanart, FanartPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, TMDBColID, Plot, SetName FROM sets ORDER BY ListTitle COLLATE NOCASE;")
             End If
 
 
@@ -7881,7 +7881,7 @@ doCancel:
                 Me.lblTitle.Text = String.Format(Master.eLang.GetString(117, "Unknown Movie ({0})"), Master.currMovie.Movie.Year)
             End If
 
-            If Not String.IsNullOrEmpty(Master.currMovie.Movie.OriginalTitle) AndAlso Master.currMovie.Movie.OriginalTitle <> StringUtils.FilterTokens(Master.currMovie.Movie.Title) Then
+            If Not String.IsNullOrEmpty(Master.currMovie.Movie.OriginalTitle) AndAlso Master.currMovie.Movie.OriginalTitle <> StringUtils.FilterTokens_Movie(Master.currMovie.Movie.Title) Then
                 Me.lblOriginalTitle.Text = String.Format(String.Concat(Master.eLang.GetString(302, "Original Title"), ": {0}"), Master.currMovie.Movie.OriginalTitle)
             Else
                 Me.lblOriginalTitle.Text = String.Empty
@@ -9359,7 +9359,7 @@ doCancel:
                                     End If
                                     If String.IsNullOrEmpty(Master.currMovie.Movie.SortTitle) Then Master.currMovie.Movie.SortTitle = Master.currMovie.ListTitle
                                 Else
-                                    Dim tTitle As String = StringUtils.FilterTokens(Master.currMovie.Movie.Title)
+                                    Dim tTitle As String = StringUtils.FilterTokens_Movie(Master.currMovie.Movie.Title)
                                     If String.IsNullOrEmpty(Master.currMovie.Movie.SortTitle) Then Master.currMovie.Movie.SortTitle = tTitle
                                     If Master.eSettings.MovieDisplayYear AndAlso Not String.IsNullOrEmpty(Master.currMovie.Movie.Year) Then
                                         Master.currMovie.ListTitle = String.Format("{0} ({1})", tTitle, Master.currMovie.Movie.Year)
@@ -11063,7 +11063,7 @@ doCancel:
                     dScrapeRow(6) = DirectCast(Parameter, Boolean)
                 Case Enums.ScraperEventType_MovieSet.LandscapeItem
                     dScrapeRow(10) = DirectCast(Parameter, Boolean)
-                Case Enums.ScraperEventType_MovieSet.SetName
+                Case Enums.ScraperEventType_MovieSet.ListTitle
                     dScrapeRow(1) = DirectCast(Parameter, String)
                 Case Enums.ScraperEventType_MovieSet.NFOItem
                     dScrapeRow(2) = DirectCast(Parameter, Boolean)
@@ -11932,7 +11932,7 @@ doCancel:
                     End If
                     If Not OldTitle = tmpMovieDb.Movie.Title OrElse String.IsNullOrEmpty(tmpMovieDb.Movie.SortTitle) Then tmpMovieDb.Movie.SortTitle = tmpMovieDb.ListTitle
                 Else
-                    Dim tTitle As String = StringUtils.FilterTokens(tmpMovieDb.Movie.Title)
+                    Dim tTitle As String = StringUtils.FilterTokens_Movie(tmpMovieDb.Movie.Title)
                     If Not OldTitle = tmpMovieDb.Movie.Title OrElse String.IsNullOrEmpty(tmpMovieDb.Movie.SortTitle) Then tmpMovieDb.Movie.SortTitle = tTitle
                     If Master.eSettings.MovieDisplayYear AndAlso Not String.IsNullOrEmpty(tmpMovieDb.Movie.Year) Then
                         tmpMovieDb.ListTitle = String.Format("{0} ({1})", tTitle, tmpMovieDb.Movie.Year)

@@ -362,7 +362,7 @@ Public Class StringUtils
             movieName = ProperCase(movieName)
         End If
 
-        If doExtras Then movieName = FilterTokens(movieName.Trim)
+        If doExtras Then movieName = FilterTokens_Movie(movieName.Trim)
         If remPunct Then movieName = RemovePunctuation(movieName.Trim)
 
         Return movieName.Trim
@@ -382,7 +382,7 @@ Public Class StringUtils
     '''    <item>the</item>
     ''' </list>
     ''' Once the first token is found and moved, no further search is made for other tokens.</remarks>
-    Public Shared Function FilterTokens(ByVal sTitle As String) As String
+    Public Shared Function FilterTokens_Movie(ByVal sTitle As String) As String
         If String.IsNullOrEmpty(sTitle) Then Return String.Empty
         Dim newTitle As String = sTitle
 
@@ -391,6 +391,54 @@ Public Class StringUtils
             Dim onlyTokenFromTitle As RegularExpressions.Match
             Dim titleWithoutToken As String
             For Each sToken As String In Master.eSettings.MovieSortTokens
+                Try
+                    If Regex.IsMatch(sTitle, String.Concat("^", sToken), RegexOptions.IgnoreCase) Then
+                        tokenContents = Regex.Replace(sToken, "\[(.*?)\]", String.Empty)
+
+                        onlyTokenFromTitle = Regex.Match(sTitle, String.Concat("^", tokenContents), RegexOptions.IgnoreCase)
+
+                        'cocotus 20140207, Fix for movies like "A.C.O.D." -> check for tokenContents(="A","An","the"..) followed by whitespace at the start of title -> If no space -> don't do anyn filtering!
+                        If sTitle.ToLower.StartsWith(tokenContents.ToLower & " ") = False Then
+                            Exit For
+                        End If
+
+                        titleWithoutToken = Regex.Replace(sTitle, String.Concat("^", sToken), String.Empty, RegexOptions.IgnoreCase).Trim
+                        newTitle = String.Format("{0}, {1}", titleWithoutToken, onlyTokenFromTitle.Value).Trim
+
+                        'newTitle = String.Format("{0}, {1}", Regex.Replace(sTitle, String.Concat("^", sToken), String.Empty, RegexOptions.IgnoreCase).Trim, Regex.Match(sTitle, String.Concat("^", Regex.Replace(sToken, "\[(.*?)\]", String.Empty)), RegexOptions.IgnoreCase)).Trim
+                        Exit For
+                    End If
+                Catch ex As Exception
+                    logger.Error(New StackFrame().GetMethod().Name & vbTab & "Title: " & sTitle & " generated an error message", ex)
+                End Try
+            Next
+        End If
+        Return newTitle.Trim
+    End Function
+    ''' <summary>
+    ''' Scan the <c>String</c> title provided, and if it starts with one of the pre-defined
+    ''' sort tokens (<c>Master.eSettings.SortTokens"</c>) then remove it from the front
+    ''' of the string and move it to the end after a comma.
+    ''' </summary>
+    ''' <param name="sTitle"><c>String</c> to clean up</param>
+    ''' <returns><c>String</c> with any defined sort tokens moved to the end</returns>
+    ''' <remarks>This function will take a string such as "The Movie" and return "Movie, The".
+    ''' The default tokens are:
+    '''  <list>
+    '''    <item>a</item>
+    '''    <item>an</item>
+    '''    <item>the</item>
+    ''' </list>
+    ''' Once the first token is found and moved, no further search is made for other tokens.</remarks>
+    Public Shared Function FilterTokens_MovieSet(ByVal sTitle As String) As String
+        If String.IsNullOrEmpty(sTitle) Then Return String.Empty
+        Dim newTitle As String = sTitle
+
+        If Master.eSettings.MovieSetSortTokens.Count > 0 Then
+            Dim tokenContents As String
+            Dim onlyTokenFromTitle As RegularExpressions.Match
+            Dim titleWithoutToken As String
+            For Each sToken As String In Master.eSettings.MovieSetSortTokens
                 Try
                     If Regex.IsMatch(sTitle, String.Concat("^", sToken), RegexOptions.IgnoreCase) Then
                         tokenContents = Regex.Replace(sToken, "\[(.*?)\]", String.Empty)

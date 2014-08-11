@@ -162,10 +162,10 @@ Public Class dlgSetsManager
 
                                 'cocotus build up tempmovie list which contains all movies belonging to one movieset! this is used to filter right side movies(used in FillList)!
                                 If tmpMovie.Movie.Sets.Count > 0 Then
-                                    lMoviesinSets.Add(String.Concat(StringUtils.FilterTokens(tmpMovie.Movie.Title), If(Not String.IsNullOrEmpty(tmpMovie.Movie.Year), String.Format(" ({0})", tmpMovie.Movie.Year), String.Empty)))
+                                    lMoviesinSets.Add(String.Concat(StringUtils.FilterTokens_Movie(tmpMovie.Movie.Title), If(Not String.IsNullOrEmpty(tmpMovie.Movie.Year), String.Format(" ({0})", tmpMovie.Movie.Year), String.Empty)))
                                 End If
 
-                                lMovies.Add(New Movies With {.DBMovie = tmpMovie, .ListTitle = String.Concat(StringUtils.FilterTokens(tmpMovie.Movie.Title), If(Not String.IsNullOrEmpty(tmpMovie.Movie.Year), String.Format(" ({0})", tmpMovie.Movie.Year), String.Empty))})
+                                lMovies.Add(New Movies With {.DBMovie = tmpMovie, .ListTitle = String.Concat(StringUtils.FilterTokens_Movie(tmpMovie.Movie.Title), If(Not String.IsNullOrEmpty(tmpMovie.Movie.Year), String.Format(" ({0})", tmpMovie.Movie.Year), String.Empty))})
 
                                 If tmpMovie.Movie.Sets.Count > 0 Then
                                     For Each mSet As MediaContainers.Set In tmpMovie.Movie.Sets

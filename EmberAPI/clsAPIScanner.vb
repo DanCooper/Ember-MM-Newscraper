@@ -881,12 +881,12 @@ Public Class Scanner
                 If String.IsNullOrEmpty(tmpMovieDB.Movie.SortTitle) Then tmpMovieDB.Movie.SortTitle = tmpMovieDB.ListTitle
 
             Else
-                Dim tTitle As String = StringUtils.FilterTokens(tmpMovieDB.Movie.Title)
+                Dim tTitle As String = StringUtils.FilterTokens_Movie(tmpMovieDB.Movie.Title)
                 If String.IsNullOrEmpty(tmpMovieDB.Movie.SortTitle) Then tmpMovieDB.Movie.SortTitle = tTitle
                 If Master.eSettings.MovieDisplayYear AndAlso Not String.IsNullOrEmpty(tmpMovieDB.Movie.Year) Then
                     tmpMovieDB.ListTitle = String.Format("{0} ({1})", tTitle, tmpMovieDB.Movie.Year)
                 Else
-                    tmpMovieDB.ListTitle = StringUtils.FilterTokens(tmpMovieDB.Movie.Title)
+                    tmpMovieDB.ListTitle = StringUtils.FilterTokens_Movie(tmpMovieDB.Movie.Title)
                 End If
             End If
 

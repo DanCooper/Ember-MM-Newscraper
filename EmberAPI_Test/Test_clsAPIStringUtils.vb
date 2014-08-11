@@ -585,7 +585,7 @@ Namespace EmberTests
             Dim settings As Settings = New Settings()
             settings.Load()
             'Act
-            Dim result = StringUtils.FilterTokens(Nothing)
+            Dim result = StringUtils.FilterTokens_Movie(Nothing)
             'Assert
             Assert.AreEqual(result, String.Empty, "Unexpected result from Nothing parameter")
         End Sub
@@ -611,7 +611,7 @@ Namespace EmberTests
 
             For Each entry As KeyValuePair(Of String, String) In source
                 'Act
-                Dim returnValue As String = StringUtils.FilterTokens(entry.Key)
+                Dim returnValue As String = StringUtils.FilterTokens_Movie(entry.Key)
                 'Assert
                 Assert.AreEqual(entry.Value, returnValue, "Source <{0}>", entry.Key)
             Next

@@ -471,7 +471,7 @@ Public Class dlgOfflineHolder
         Args.dMovie.Filename = Path.Combine(destPath, String.Concat(MovieName, ".avi"))
 
         If Not String.IsNullOrEmpty(Args.dMovie.Movie.Title) Then
-            Dim tTitle As String = StringUtils.FilterTokens(Args.dMovie.Movie.Title)
+            Dim tTitle As String = StringUtils.FilterTokens_Movie(Args.dMovie.Movie.Title)
             Args.dMovie.Movie.SortTitle = tTitle
             If Master.eSettings.MovieDisplayYear AndAlso Not String.IsNullOrEmpty(Args.dMovie.Movie.Year) Then
                 Args.dMovie.ListTitle = String.Format("{0} ({1})", tTitle, Args.dMovie.Movie.Year)

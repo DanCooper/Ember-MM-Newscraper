@@ -1990,6 +1990,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property MovieSetSortTokensIsEmpty() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieSetSortTokensIsEmpty
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieSetSortTokensIsEmpty = value
+        End Set
+    End Property
+
     Public Property OMMDummyFormat() As Integer
         Get
             Return Settings._XMLSettings.ommdummyformat
@@ -3620,10 +3629,19 @@ Public Class Settings
 
     Public Property MovieSortTokens() As List(Of String)
         Get
-            Return Settings._XMLSettings.moviesorttokens
+            Return Settings._XMLSettings.MovieSortTokens
         End Get
         Set(ByVal value As List(Of String))
-            Settings._XMLSettings.moviesorttokens = value
+            Settings._XMLSettings.MovieSortTokens = value
+        End Set
+    End Property
+
+    Public Property MovieSetSortTokens() As List(Of String)
+        Get
+            Return Settings._XMLSettings.MovieSetSortTokens
+        End Get
+        Set(ByVal value As List(Of String))
+            Settings._XMLSettings.MovieSetSortTokens = value
         End Set
     End Property
 
@@ -5490,6 +5508,12 @@ Public Class Settings
             Master.eSettings.MovieSortTokens.Add("the[\W_]")
             Master.eSettings.MovieSortTokens.Add("a[\W_]")
             Master.eSettings.MovieSortTokens.Add("an[\W_]")
+        End If
+
+        If Type = Enums.DefaultType.All AndAlso Master.eSettings.MovieSetSortTokens.Count <= 0 AndAlso Not Master.eSettings.MovieSetSortTokensIsEmpty Then
+            Master.eSettings.MovieSetSortTokens.Add("the[\W_]")
+            Master.eSettings.MovieSetSortTokens.Add("a[\W_]")
+            Master.eSettings.MovieSetSortTokens.Add("an[\W_]")
         End If
 
         If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.ValidExts) AndAlso (Force OrElse Master.eSettings.FileSystemValidExts.Count <= 0) Then

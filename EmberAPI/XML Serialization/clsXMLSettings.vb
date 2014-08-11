@@ -262,7 +262,9 @@ Partial Public Class clsXMLSettings
     Private _movieskipstackedsizecheck As Boolean
     Private _moviesortbeforescan As Boolean
     Private _moviesorttokens As List(Of String)
+    Private _moviesetsorttokens As List(Of String)
     Private _moviesorttokensisempty As Boolean
+    Private _moviesetsorttokensisempty As Boolean
     Private _moviesubcol As Boolean
     Private _moviethemecol As Boolean
     Private _moviethemeenable As Boolean
@@ -2733,6 +2735,15 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
+    Public Property MovieSetSortTokensIsEmpty() As Boolean
+        Get
+            Return Me._moviesetsorttokensisempty
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetsorttokensisempty = value
+        End Set
+    End Property
+
     Public Property OMMDummyFormat() As Integer
         Get
             Return Me._ommdummyformat
@@ -4368,6 +4379,15 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As List(Of String))
             Me._moviesorttokens = value
+        End Set
+    End Property
+
+    Public Property MovieSetSortTokens() As List(Of String)
+        Get
+            Return Me._moviesetsorttokens
+        End Get
+        Set(ByVal value As List(Of String))
+            Me._moviesetsorttokens = value
         End Set
     End Property
 

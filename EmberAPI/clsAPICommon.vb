@@ -777,7 +777,7 @@ Public Class Enums
         NFOItem = 0
         PosterItem = 1
         FanartItem = 2
-        SetName = 6
+        ListTitle = 6
         BannerItem = 7
         LandscapeItem = 8
         ClearArtItem = 10
