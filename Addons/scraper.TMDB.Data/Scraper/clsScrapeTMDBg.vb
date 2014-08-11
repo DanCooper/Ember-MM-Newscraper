@@ -86,6 +86,11 @@ Namespace TMDBg
         Private _TMDBApiE As V3.Tmdb
         Private _TMDBApiA As V3.Tmdb
         Private _MySettings As TMDB_Data.sMySettings
+        Private _TMDBConf_MovieSet As V3.TmdbConfiguration
+        Private _TMDBConfE_MovieSet As V3.TmdbConfiguration
+        Private _TMDBApi_MovieSet As V3.Tmdb
+        Private _TMDBApiE_MovieSet As V3.Tmdb
+        Private _TMDBApiA_MovieSet As V3.Tmdb
         Private _MySettings_MovieSet As TMDB_Data.sMySettings
         Private strPrivateAPIKey As String = String.Empty
 
@@ -133,24 +138,30 @@ Namespace TMDBg
 
         Public Sub New(ByRef tTMDBConf As V3.TmdbConfiguration, ByRef tTMDBConfE As V3.TmdbConfiguration, ByRef tTMDBApi As V3.Tmdb, ByRef tTMDBApiE As V3.Tmdb, ByRef tTMDBApiA As V3.Tmdb, ByVal IsMovie As Boolean)
             If IsMovie Then
-                strPrivateAPIKey = clsAdvancedSettings.GetSetting("TMDBAPIKey", "")
-                _MySettings.FallBackEng = clsAdvancedSettings.GetBooleanSetting("FallBackEn", False)
+                strPrivateAPIKey = clsAdvancedSettings.GetSetting("APIKey", "", , Enums.Content_Type.Movie)
+                _MySettings.FallBackEng = clsAdvancedSettings.GetBooleanSetting("FallBackEn", False, , Enums.Content_Type.Movie)
                 _MySettings.APIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "44810eefccd9cb1fa1d57e7b0d67b08d", strPrivateAPIKey)
-                _MySettings.PrefLanguage = clsAdvancedSettings.GetSetting("TMDBLanguage", "en")
-                _MySettings.GetAdultItems = clsAdvancedSettings.GetBooleanSetting("GetAdultItems", False)
-            Else
-                strPrivateAPIKey = clsAdvancedSettings.GetSetting("TMDBAPIKey_MovieSet", "")
-                _MySettings_MovieSet.FallBackEng = clsAdvancedSettings.GetBooleanSetting("FallBackEn_MovieSet", False)
-                _MySettings_MovieSet.APIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "44810eefccd9cb1fa1d57e7b0d67b08d", strPrivateAPIKey)
-                _MySettings_MovieSet.PrefLanguage = clsAdvancedSettings.GetSetting("TMDBLanguage_MovieSet", "en")
-                _MySettings_MovieSet.GetAdultItems = clsAdvancedSettings.GetBooleanSetting("GetAdultItems_MovieSet", False)
-            End If
+                _MySettings.PrefLanguage = clsAdvancedSettings.GetSetting("PrefLanguage", "en", , Enums.Content_Type.Movie)
+                _MySettings.GetAdultItems = clsAdvancedSettings.GetBooleanSetting("GetAdultItems", False, , Enums.Content_Type.Movie)
 
-            _TMDBApi = tTMDBApi
-            _TMDBConf = tTMDBConf
-            _TMDBApiE = tTMDBApiE
-            _TMDBApiA = tTMDBApiA
-            _TMDBConfE = tTMDBConfE
+                _TMDBApi = tTMDBApi
+                _TMDBConf = tTMDBConf
+                _TMDBApiE = tTMDBApiE
+                _TMDBApiA = tTMDBApiA
+                _TMDBConfE = tTMDBConfE
+            Else
+                strPrivateAPIKey = clsAdvancedSettings.GetSetting("APIKey", "", , Enums.Content_Type.MovieSet)
+                _MySettings_MovieSet.FallBackEng = clsAdvancedSettings.GetBooleanSetting("FallBackEn", False, , Enums.Content_Type.MovieSet)
+                _MySettings_MovieSet.APIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "44810eefccd9cb1fa1d57e7b0d67b08d", strPrivateAPIKey)
+                _MySettings_MovieSet.PrefLanguage = clsAdvancedSettings.GetSetting("PrefLanguage", "en", , Enums.Content_Type.MovieSet)
+                _MySettings_MovieSet.GetAdultItems = clsAdvancedSettings.GetBooleanSetting("GetAdultItems", False, , Enums.Content_Type.MovieSet)
+
+                _TMDBApi_MovieSet = tTMDBApi
+                _TMDBConf_MovieSet = tTMDBConf
+                _TMDBApiE_MovieSet = tTMDBApiE
+                _TMDBApiA_MovieSet = tTMDBApiA
+                _TMDBConfE_MovieSet = tTMDBConfE
+            End If
         End Sub
 
         Public Sub CancelAsync()
@@ -628,8 +639,8 @@ Namespace TMDBg
 
                 If bwTMDBg.CancellationPending Then Return Nothing
 
-                MovieSet = _TMDBApi.GetCollectionInfo(CInt(strID), _MySettings_MovieSet.PrefLanguage)
-                MovieSetE = _TMDBApiE.GetCollectionInfo(CInt(strID))
+                MovieSet = _TMDBApi_MovieSet.GetCollectionInfo(CInt(strID), _MySettings_MovieSet.PrefLanguage)
+                MovieSetE = _TMDBApiE_MovieSet.GetCollectionInfo(CInt(strID))
 
                 If (Not MovieSet.id > 0 AndAlso Not _MySettings_MovieSet.FallBackEng) OrElse (Not MovieSet.id > 0 AndAlso Not MovieSetE.id > 0) Then
                     Return False
@@ -660,19 +671,19 @@ Namespace TMDBg
                 If GetPoster Then
                     ' I will add original always. to be updated if size, TMDBConf.images.poster_sizes(0) & 
                     Dim Images As WatTmdb.V3.TmdbMovieImages
-                    Images = _TMDBApi.GetMovieImages(MovieSet.id, _MySettings_MovieSet.PrefLanguage)
+                    Images = _TMDBApi_MovieSet.GetMovieImages(MovieSet.id, _MySettings_MovieSet.PrefLanguage)
                     If Not IsNothing(Images) AndAlso Not IsNothing(Images.posters) Then
                         If (Images.posters.Count = 0) AndAlso _MySettings_MovieSet.FallBackEng Then
-                            Images = _TMDBApiE.GetMovieImages(MovieSet.id)
+                            Images = _TMDBApiE_MovieSet.GetMovieImages(MovieSet.id)
                         End If
                     Else
                         If _MySettings_MovieSet.FallBackEng Then
-                            Images = _TMDBApiE.GetMovieImages(MovieSetE.id)
+                            Images = _TMDBApiE_MovieSet.GetMovieImages(MovieSetE.id)
                         End If
                     End If
                     If Not IsNothing(Images) AndAlso Not IsNothing(Images.posters) Then
                         If Images.posters.Count > 0 Then
-                            _sPoster = _TMDBConf.images.base_url & "w92" & Images.posters(0).file_path
+                            _sPoster = _TMDBConf_MovieSet.images.base_url & "w92" & Images.posters(0).file_path
                         Else
                             _sPoster = ""
                         End If
@@ -1058,15 +1069,15 @@ Namespace TMDBg
                 Dim TotP As Integer
                 Dim aE As Boolean
                 'If sYear Is Nothing Then
-                'Movies = _TMDBApi.SearchMovie(sMovie, Page, _MySettings.TMDBLanguage)
+                'Movies = _TMDBApi_MovieSet.SearchMovie(sMovie, Page, _MySettings.TMDBLanguage)
                 'Else
-                MovieSets = _TMDBApi.SearchCollection(sMovieSet, Page, _MySettings_MovieSet.PrefLanguage)
+                MovieSets = _TMDBApi_MovieSet.SearchCollection(sMovieSet, Page, _MySettings_MovieSet.PrefLanguage)
                 'End If
                 If MovieSets.total_results = 0 And _MySettings.FallBackEng Then
                     'If sYear Is Nothing Then
-                    ' Movies = _TMDBApiE.SearchMovie(sMovie, Page)
+                    ' Movies = _TMDBApiE_MovieSet.SearchMovie(sMovie, Page)
                     'Else
-                    MovieSets = _TMDBApiE.SearchCollection(sMovieSet, Page)
+                    MovieSets = _TMDBApiE_MovieSet.SearchCollection(sMovieSet, Page)
                     'End If
                     aE = True
                 End If
@@ -1078,9 +1089,9 @@ Namespace TMDBg
                     While Page <= TotP And Page <= 3
                         For Each aMovieSet In MovieSets.results
                             Dim aMI As WatTmdb.V3.TmdbCollection
-                            aMI = _TMDBApi.GetCollectionInfo(aMovieSet.id)
+                            aMI = _TMDBApi_MovieSet.GetCollectionInfo(aMovieSet.id)
                             If IsNothing(aMI) Then
-                                aMI = _TMDBApiE.GetCollectionInfo(aMovieSet.id)
+                                aMI = _TMDBApiE_MovieSet.GetCollectionInfo(aMovieSet.id)
                             End If
                             t1 = aMI.id.ToString
                             t2 = CStr(IIf(String.IsNullOrEmpty(aMI.name), "", aMI.name))
@@ -1092,15 +1103,15 @@ Namespace TMDBg
                         Page = Page + 1
                         If aE Then
                             'If sYear Is Nothing Then
-                            'Movies = _TMDBApiE.SearchMovie(sMovie, Page)
+                            'Movies = _TMDBApiE_MovieSet.SearchMovie(sMovie, Page)
                             'Else
-                            MovieSets = _TMDBApiE.SearchCollection(sMovieSet, Page)
+                            MovieSets = _TMDBApiE_MovieSet.SearchCollection(sMovieSet, Page)
                             'End If
                         Else
                             'If sYear Is Nothing Then
-                            'Movies = _TMDBApi.SearchMovie(sMovie, Page, _MySettings.TMDBLanguage)
+                            'Movies = _TMDBApi_MovieSet.SearchMovie(sMovie, Page, _MySettings.TMDBLanguage)
                             'Else
-                            MovieSets = _TMDBApi.SearchCollection(sMovieSet, Page, _MySettings.PrefLanguage)
+                            MovieSets = _TMDBApi_MovieSet.SearchCollection(sMovieSet, Page, _MySettings.PrefLanguage)
                             'End If
                         End If
                     End While

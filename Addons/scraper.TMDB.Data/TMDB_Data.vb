@@ -59,6 +59,11 @@ Public Class TMDB_Data
     Private _TMDBApi As V3.Tmdb 'preferred language
     Private _TMDBApiE As V3.Tmdb 'english language
     Private _TMDBApiA As V3.Tmdb 'all languages
+    Private _TMDBConf_MovieSet As V3.TmdbConfiguration
+    Private _TMDBConfE_MovieSet As V3.TmdbConfiguration
+    Private _TMDBApi_MovieSet As V3.Tmdb 'preferred language
+    Private _TMDBApiE_MovieSet As V3.Tmdb 'english language
+    Private _TMDBApiA_MovieSet As V3.Tmdb 'all languages
 
 #End Region 'Fields
 
@@ -168,19 +173,19 @@ Public Class TMDB_Data
         _AssemblyName = sAssemblyName
         LoadSettings_MovieSet()
         'Must be after Load settings to retrieve the correct API key
-        _TMDBApi = New WatTmdb.V3.Tmdb(_MySettings_MovieSet.APIKey, _MySettings_MovieSet.PrefLanguage)
-        If IsNothing(_TMDBApi) Then
-            logger.Error(Master.eLang.GetString(938, "TheMovieDB API is missing or not valid"), _TMDBApi.Error.status_message)
+        _TMDBApi_MovieSet = New WatTmdb.V3.Tmdb(_MySettings_MovieSet.APIKey, _MySettings_MovieSet.PrefLanguage)
+        If IsNothing(_TMDBApi_MovieSet) Then
+            logger.Error(Master.eLang.GetString(938, "TheMovieDB API is missing or not valid"), _TMDBApi_MovieSet.Error.status_message)
         Else
-            If Not IsNothing(_TMDBApi.Error) AndAlso _TMDBApi.Error.status_message.Length > 0 Then
-                logger.Error(_TMDBApi.Error.status_message, _TMDBApi.Error.status_code.ToString())
+            If Not IsNothing(_TMDBApi_MovieSet.Error) AndAlso _TMDBApi_MovieSet.Error.status_message.Length > 0 Then
+                logger.Error(_TMDBApi_MovieSet.Error.status_message, _TMDBApi_MovieSet.Error.status_code.ToString())
             End If
         End If
-        _TMDBConf = _TMDBApi.GetConfiguration()
-        _TMDBApiE = New WatTmdb.V3.Tmdb(_MySettings_MovieSet.APIKey)
-        _TMDBConfE = _TMDBApiE.GetConfiguration()
-        _TMDBApiA = New WatTmdb.V3.Tmdb(_MySettings_MovieSet.APIKey, "")
-        _TMDBg = New TMDBg.Scraper(_TMDBConf, _TMDBConfE, _TMDBApi, _TMDBApiE, _TMDBApiA, False)
+        _TMDBConf_MovieSet = _TMDBApi_MovieSet.GetConfiguration()
+        _TMDBApiE_MovieSet = New WatTmdb.V3.Tmdb(_MySettings_MovieSet.APIKey)
+        _TMDBConfE_MovieSet = _TMDBApiE_MovieSet.GetConfiguration()
+        _TMDBApiA_MovieSet = New WatTmdb.V3.Tmdb(_MySettings_MovieSet.APIKey, "")
+        _TMDBg = New TMDBg.Scraper(_TMDBConf_MovieSet, _TMDBConfE_MovieSet, _TMDBApi_MovieSet, _TMDBApiE_MovieSet, _TMDBApiA_MovieSet, False)
     End Sub
 
     Function InjectSetupScraper_Movie() As Containers.SettingsPanel Implements Interfaces.ScraperModule_Data_Movie.InjectSetupScraper
@@ -585,12 +590,12 @@ Public Class TMDB_Data
         Dim OldTitle As String = DBMovieSet.ListTitle
         Dim filterOptions As Structures.ScrapeOptions_MovieSet = Functions.MovieSetScrapeOptionsAndAlso(Options, ConfigOptions_MovieSet)
 
-        If IsNothing(_TMDBApi) Then
-            logger.Error(Master.eLang.GetString(938, "TheMovieDB API is missing or not valid"), _TMDBApi.Error.status_message)
+        If IsNothing(_TMDBApi_MovieSet) Then
+            logger.Error(Master.eLang.GetString(938, "TheMovieDB API is missing or not valid"), _TMDBApi_MovieSet.Error.status_message)
             Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
         Else
-            If Not IsNothing(_TMDBApi.Error) AndAlso _TMDBApi.Error.status_message.Length > 0 Then
-                logger.Error(_TMDBApi.Error.status_message, _TMDBApi.Error.status_code.ToString())
+            If Not IsNothing(_TMDBApi_MovieSet.Error) AndAlso _TMDBApi_MovieSet.Error.status_message.Length > 0 Then
+                logger.Error(_TMDBApi_MovieSet.Error.status_message, _TMDBApi_MovieSet.Error.status_code.ToString())
                 Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
             End If
         End If
@@ -639,7 +644,7 @@ Public Class TMDB_Data
                 'This is a workaround to remove the "TreeView" error on search results window. The problem is that the last search results are still existing in _TMDBg. 
                 'I don't know another way to remove it. It works, It works so far without errors.
                 'TODO: maybe find another solution.
-                Me._TMDBg = New TMDBg.Scraper(_TMDBConf, _TMDBConfE, _TMDBApi, _TMDBApiE, _TMDBApiA, False)
+                Me._TMDBg = New TMDBg.Scraper(_TMDBConf_MovieSet, _TMDBConfE_MovieSet, _TMDBApi_MovieSet, _TMDBApiE_MovieSet, _TMDBApiA_MovieSet, False)
 
                 Using dSearch As New dlgTMDBSearchResults_MovieSet(_MySettings_MovieSet, Me._TMDBg)
                     Dim tmpTitle As String = DBMovieSet.MovieSet.Title
