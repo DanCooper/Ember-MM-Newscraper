@@ -1436,7 +1436,7 @@ Public Class Database
                             Try
                                 SQLcommand.ExecuteNonQuery()
                             Catch ex As Exception
-                                logger.Error(New StackFrame().GetMethod().Name, ex, Trans.name, _cmd.execute)
+                                logger.Info(New StackFrame().GetMethod().Name, ex, Trans.name, _cmd.execute)
                                 TransOk = False
                                 Exit For
                             End Try
@@ -1459,7 +1459,7 @@ Public Class Database
                     Try
                         SQLcommand.ExecuteNonQuery()
                     Catch ex As Exception
-                        logger.Error(New StackFrame().GetMethod().Name, ex, SQLcommand, _cmd.description, _cmd.execute)
+                        logger.Info(New StackFrame().GetMethod().Name, ex, SQLcommand, _cmd.description, _cmd.execute)
                     End Try
                 End Using
             End If

@@ -112,7 +112,7 @@ Public Class clsAdvancedSettings
             End If
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Info(New StackFrame().GetMethod().Name, ex)
             Return defvalue
         End Try
     End Function
@@ -136,7 +136,7 @@ Public Class clsAdvancedSettings
             End If
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Info(New StackFrame().GetMethod().Name, ex)
             Return defvalue
         End Try
     End Function
@@ -188,7 +188,7 @@ Public Class clsAdvancedSettings
             Dim v = _AdvancedSettings.ComplexSettings.FirstOrDefault(Function(f) f.Table.Name = key AndAlso f.Table.Section = Assembly)
             Return If(v Is Nothing, Nothing, v.Table.Item)
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Info(New StackFrame().GetMethod().Name, ex)
             Return Nothing
         End Try
     End Function
