@@ -2067,7 +2067,7 @@ Public Class Database
             Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
                 If IsNew Then
                     SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO sets (", _
-                     "ListTile, HasNfo, NfoPath, HasPoster, PosterPath, HasFanart, ", _
+                     "ListTitle, HasNfo, NfoPath, HasPoster, PosterPath, HasFanart, ", _
                      "FanartPath, HasBanner, BannerPath, HasLandscape, LandscapePath, ", _
                      "HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ", _
                      "ClearArtPath, TMDBColID, Plot, SetName", _
@@ -2082,7 +2082,7 @@ Public Class Database
                     Dim parMovieSetID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMovieSetID", DbType.Int32, 0, "ID")
                     parMovieSetID.Value = _moviesetDB.ID
                 End If
-                Dim parListTile As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parListTitle", DbType.String, 0, "ListTitle")
+                Dim parListTitle As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parListTitle", DbType.String, 0, "ListTitle")
                 Dim parHasNfo As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasInfo", DbType.Boolean, 0, "HasNfo")
                 Dim parNfoPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parNfoPath", DbType.String, 0, "NfoPath")
                 Dim parHasPoster As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasPoster", DbType.Boolean, 0, "HasPoster")
@@ -2126,7 +2126,7 @@ Public Class Database
                 parHasNfo.Value = Not String.IsNullOrEmpty(_moviesetDB.NfoPath)
                 parHasPoster.Value = Not String.IsNullOrEmpty(_moviesetDB.PosterPath)
 
-                parListTile.Value = _moviesetDB.ListTitle
+                parListTitle.Value = _moviesetDB.ListTitle
                 parSetName.Value = _moviesetDB.MovieSet.Title
                 parTMDBColID.Value = _moviesetDB.MovieSet.ID
                 parPlot.Value = _moviesetDB.MovieSet.Plot
