@@ -76,7 +76,7 @@ Public Class dlgTMDBSearchResults_MovieSet
         Return MyBase.ShowDialog()
     End Function
 
-    Public Overloads Function ShowDialog(ByVal Res As TMDBg.MovieSetSearchResults, ByVal sMovieSetTitle As String) As Windows.Forms.DialogResult
+    Public Overloads Function ShowDialog(ByVal Res As TMDBg.SearchResults_MovieSet, ByVal sMovieSetTitle As String) As Windows.Forms.DialogResult
         Me.tmrWait.Enabled = False
         Me.tmrWait.Interval = 250
         Me.tmrLoad.Enabled = False
@@ -195,7 +195,7 @@ Public Class dlgTMDBSearchResults_MovieSet
     Private Sub dlgTMDBSearchResults_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Me.SetUp()
         pnlPicStatus.Visible = False
-        AddHandler TMDBg.SearchMovieSetInfoDownloaded, AddressOf SearchMovieSetInfoDownloaded
+        AddHandler TMDBg.SearchInfoDownloaded_MovieSet, AddressOf SearchMovieSetInfoDownloaded
         AddHandler TMDBg.SearchResultsDownloaded_MovieSet, AddressOf SearchResultsDownloaded_MovieSet
 
         Try
@@ -278,7 +278,7 @@ Public Class dlgTMDBSearchResults_MovieSet
         End Try
     End Sub
 
-    Private Sub SearchResultsDownloaded_MovieSet(ByVal M As TMDBg.MovieSetSearchResults)
+    Private Sub SearchResultsDownloaded_MovieSet(ByVal M As TMDBg.SearchResults_MovieSet)
         '//
         ' Process the results that TMDB gave us
         '\\

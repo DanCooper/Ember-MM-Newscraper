@@ -32,7 +32,7 @@ Imports System.Diagnostics
 
 Namespace TMDBg
 
-    Public Class MovieSearchResults
+    Public Class SearchResults_Movie
 
 #Region "Fields"
         Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
@@ -54,7 +54,7 @@ Namespace TMDBg
 
     End Class
 
-    Public Class MovieSetSearchResults
+    Public Class SearchResults_MovieSet
 
 #Region "Fields"
         Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
@@ -124,13 +124,13 @@ Namespace TMDBg
 
         Public Event Exception(ByVal ex As Exception)
 
-        Public Event SearchMovieInfoDownloaded(ByVal sPoster As String, ByVal bSuccess As Boolean)
+        Public Event SearchInfoDownloaded_Movie(ByVal sPoster As String, ByVal bSuccess As Boolean)
 
-        Public Event SearchMovieSetInfoDownloaded(ByVal sPoster As String, ByVal bSuccess As Boolean)
+        Public Event SearchInfoDownloaded_MovieSet(ByVal sPoster As String, ByVal bSuccess As Boolean)
 
-        Public Event SearchResultsDownloaded(ByVal mResults As TMDBg.MovieSearchResults)
+        Public Event SearchResultsDownloaded_Movie(ByVal mResults As TMDBg.SearchResults_Movie)
 
-        Public Event SearchResultsDownloaded_MovieSet(ByVal mResults As TMDBg.MovieSetSearchResults)
+        Public Event SearchResultsDownloaded_MovieSet(ByVal mResults As TMDBg.SearchResults_MovieSet)
 
 #End Region 'Events
 
@@ -732,7 +732,7 @@ Namespace TMDBg
         End Function
 
         Public Function GetSearchMovieInfo(ByVal sMovieName As String, ByRef dbMovie As Structures.DBMovie, ByVal iType As Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions_Movie) As MediaContainers.Movie
-            Dim r As MovieSearchResults = SearchMovie(sMovieName, CInt(IIf(Not String.IsNullOrEmpty(dbMovie.Movie.Year), dbMovie.Movie.Year, Nothing)))
+            Dim r As SearchResults_Movie = SearchMovie(sMovieName, CInt(IIf(Not String.IsNullOrEmpty(dbMovie.Movie.Year), dbMovie.Movie.Year, Nothing)))
             Dim b As Boolean = False
             Dim imdbMovie As MediaContainers.Movie = dbMovie.Movie
 
@@ -782,7 +782,7 @@ Namespace TMDBg
         End Function
 
         Public Function GetSearchMovieSetInfo(ByVal sMovieSetName As String, ByRef DBMovieSet As Structures.DBMovieSet, ByVal iType As Enums.ScrapeType, ByVal Options As Structures.ScrapeOptions_MovieSet) As MediaContainers.MovieSet
-            Dim r As MovieSetSearchResults = SearchMovieSet(sMovieSetName, Nothing)
+            Dim r As SearchResults_MovieSet = SearchMovieSet(sMovieSetName, Nothing)
             Dim b As Boolean = False
             Dim tmdbMovieSet As MediaContainers.MovieSet = DBMovieSet.MovieSet
 
@@ -911,7 +911,7 @@ Namespace TMDBg
             Try
                 Select Case Args.Search
                     Case SearchType.Movies
-                        Dim r As MovieSearchResults = SearchMovie(Args.Parameter, Args.Year)
+                        Dim r As SearchResults_Movie = SearchMovie(Args.Parameter, Args.Year)
                         e.Result = New Results With {.ResultType = SearchType.Movies, .Result = r}
 
                     Case SearchType.SearchDetails
@@ -919,7 +919,7 @@ Namespace TMDBg
                         e.Result = New Results With {.ResultType = SearchType.SearchDetails, .Success = s}
 
                     Case SearchType.MovieSets
-                        Dim r As MovieSetSearchResults = SearchMovieSet(Args.Parameter)
+                        Dim r As SearchResults_MovieSet = SearchMovieSet(Args.Parameter)
                         e.Result = New Results With {.ResultType = SearchType.MovieSets, .Result = r}
 
                     Case SearchType.SearchDetails_MovieSet
@@ -938,18 +938,18 @@ Namespace TMDBg
             Try
                 Select Case Res.ResultType
                     Case SearchType.Movies
-                        RaiseEvent SearchResultsDownloaded(DirectCast(Res.Result, MovieSearchResults))
+                        RaiseEvent SearchResultsDownloaded_Movie(DirectCast(Res.Result, SearchResults_Movie))
 
                     Case SearchType.SearchDetails
-                        Dim movieInfo As MovieSearchResults = DirectCast(Res.Result, MovieSearchResults)
-                        RaiseEvent SearchMovieInfoDownloaded(_sPoster, Res.Success)
+                        Dim movieInfo As SearchResults_Movie = DirectCast(Res.Result, SearchResults_Movie)
+                        RaiseEvent SearchInfoDownloaded_Movie(_sPoster, Res.Success)
 
                     Case SearchType.MovieSets
-                        RaiseEvent SearchResultsDownloaded_MovieSet(DirectCast(Res.Result, MovieSetSearchResults))
+                        RaiseEvent SearchResultsDownloaded_MovieSet(DirectCast(Res.Result, SearchResults_MovieSet))
 
                     Case SearchType.SearchDetails_MovieSet
-                        Dim moviesetInfo As MovieSetSearchResults = DirectCast(Res.Result, MovieSetSearchResults)
-                        RaiseEvent SearchMovieSetInfoDownloaded(_sPoster, Res.Success)
+                        Dim moviesetInfo As SearchResults_MovieSet = DirectCast(Res.Result, SearchResults_MovieSet)
+                        RaiseEvent SearchInfoDownloaded_MovieSet(_sPoster, Res.Success)
                 End Select
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -993,9 +993,9 @@ Namespace TMDBg
         '	End Try
         'End Function
 
-        Private Function SearchMovie(ByVal sMovie As String, Optional ByVal sYear As Integer = 0) As MovieSearchResults
+        Private Function SearchMovie(ByVal sMovie As String, Optional ByVal sYear As Integer = 0) As SearchResults_Movie
             Try
-                Dim R As New MovieSearchResults
+                Dim R As New SearchResults_Movie
                 Dim Page As Integer = 1
                 Dim Movies As WatTmdb.V3.TmdbMovieSearch
                 Dim TotP As Integer
@@ -1061,9 +1061,9 @@ Namespace TMDBg
             End Try
         End Function
 
-        Private Function SearchMovieSet(ByVal sMovieSet As String, Optional ByVal sYear As Integer = 0) As MovieSetSearchResults
+        Private Function SearchMovieSet(ByVal sMovieSet As String, Optional ByVal sYear As Integer = 0) As SearchResults_MovieSet
             Try
-                Dim R As New MovieSetSearchResults
+                Dim R As New SearchResults_MovieSet
                 Dim Page As Integer = 1
                 Dim MovieSets As WatTmdb.V3.TmdbCollectionSearch
                 Dim TotP As Integer

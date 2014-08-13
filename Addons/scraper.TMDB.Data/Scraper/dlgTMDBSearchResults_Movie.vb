@@ -77,7 +77,7 @@ Public Class dlgTMDBSearchResults_Movie
         Return MyBase.ShowDialog()
     End Function
 
-    Public Overloads Function ShowDialog(ByVal Res As TMDBg.MovieSearchResults, ByVal sMovieTitle As String, ByVal sMovieFilename As String) As Windows.Forms.DialogResult
+    Public Overloads Function ShowDialog(ByVal Res As TMDBg.SearchResults_Movie, ByVal sMovieTitle As String, ByVal sMovieFilename As String) As Windows.Forms.DialogResult
         Me.tmrWait.Enabled = False
         Me.tmrWait.Interval = 250
         Me.tmrLoad.Enabled = False
@@ -217,8 +217,8 @@ Public Class dlgTMDBSearchResults_Movie
         Me.SetUp()
         pnlPicStatus.Visible = False
         'TMDBg.IMDBURL = IMDBURL
-        AddHandler TMDBg.SearchMovieInfoDownloaded, AddressOf SearchMovieInfoDownloaded
-        AddHandler TMDBg.SearchResultsDownloaded, AddressOf SearchResultsDownloaded
+        AddHandler TMDBg.SearchInfoDownloaded_Movie, AddressOf SearchMovieInfoDownloaded
+        AddHandler TMDBg.SearchResultsDownloaded_Movie, AddressOf SearchResultsDownloaded
 
         Try
             Dim iBackground As New Bitmap(Me.pnlTop.Width, Me.pnlTop.Height)
@@ -304,7 +304,7 @@ Public Class dlgTMDBSearchResults_Movie
         End Try
     End Sub
 
-    Private Sub SearchResultsDownloaded(ByVal M As TMDBg.MovieSearchResults)
+    Private Sub SearchResultsDownloaded(ByVal M As TMDBg.SearchResults_Movie)
         '//
         ' Process the results that TMDB gave us
         '\\
