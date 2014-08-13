@@ -25,6 +25,7 @@ Partial Class frmTMDBMediaSettingsHolder_Movie
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmTMDBMediaSettingsHolder_Movie))
         Me.pnlSettings = New System.Windows.Forms.Panel()
         Me.gbScraper = New System.Windows.Forms.GroupBox()
+        Me.chkGetBlankImages = New System.Windows.Forms.CheckBox()
         Me.chkPrefLanguageOnly = New System.Windows.Forms.CheckBox()
         Me.lblEMMAPI = New System.Windows.Forms.Label()
         Me.btnUnlockAPI = New System.Windows.Forms.Button()
@@ -44,7 +45,6 @@ Partial Class frmTMDBMediaSettingsHolder_Movie
         Me.btnDown = New System.Windows.Forms.Button()
         Me.btnUp = New System.Windows.Forms.Button()
         Me.cbEnabled = New System.Windows.Forms.CheckBox()
-        Me.chkGetBlankImages = New System.Windows.Forms.CheckBox()
         Me.pnlSettings.SuspendLayout()
         Me.gbScraper.SuspendLayout()
         CType(Me.pbTMDB, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -78,12 +78,24 @@ Partial Class frmTMDBMediaSettingsHolder_Movie
         Me.gbScraper.Controls.Add(Me.lblAPIKey)
         Me.gbScraper.Controls.Add(Me.txtApiKey)
         Me.gbScraper.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbScraper.Location = New System.Drawing.Point(11, 31)
+        Me.gbScraper.Location = New System.Drawing.Point(10, 31)
         Me.gbScraper.Name = "gbScraper"
-        Me.gbScraper.Size = New System.Drawing.Size(592, 179)
+        Me.gbScraper.Size = New System.Drawing.Size(600, 140)
         Me.gbScraper.TabIndex = 95
         Me.gbScraper.TabStop = False
         Me.gbScraper.Text = "TMDB"
+        '
+        'chkGetBlankImages
+        '
+        Me.chkGetBlankImages.AutoSize = True
+        Me.chkGetBlankImages.Enabled = False
+        Me.chkGetBlankImages.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkGetBlankImages.Location = New System.Drawing.Point(212, 113)
+        Me.chkGetBlankImages.Name = "chkGetBlankImages"
+        Me.chkGetBlankImages.Size = New System.Drawing.Size(140, 17)
+        Me.chkGetBlankImages.TabIndex = 17
+        Me.chkGetBlankImages.Text = "Also Get Blank Images"
+        Me.chkGetBlankImages.UseVisualStyleBackColor = True
         '
         'chkPrefLanguageOnly
         '
@@ -127,6 +139,7 @@ Partial Class frmTMDBMediaSettingsHolder_Movie
         'chkGetEnglishImages
         '
         Me.chkGetEnglishImages.AutoSize = True
+        Me.chkGetEnglishImages.Enabled = False
         Me.chkGetEnglishImages.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkGetEnglishImages.Location = New System.Drawing.Point(212, 90)
         Me.chkGetEnglishImages.Name = "chkGetEnglishImages"
@@ -205,9 +218,9 @@ Partial Class frmTMDBMediaSettingsHolder_Movie
         Me.gbImages.Controls.Add(Me.chkScrapePoster)
         Me.gbImages.Controls.Add(Me.chkScrapeFanart)
         Me.gbImages.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.gbImages.Location = New System.Drawing.Point(11, 216)
+        Me.gbImages.Location = New System.Drawing.Point(10, 177)
         Me.gbImages.Name = "gbImages"
-        Me.gbImages.Size = New System.Drawing.Size(130, 64)
+        Me.gbImages.Size = New System.Drawing.Size(130, 72)
         Me.gbImages.TabIndex = 1
         Me.gbImages.TabStop = False
         Me.gbImages.Text = "Images"
@@ -216,7 +229,7 @@ Partial Class frmTMDBMediaSettingsHolder_Movie
         '
         Me.chkScrapePoster.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkScrapePoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScrapePoster.Location = New System.Drawing.Point(6, 19)
+        Me.chkScrapePoster.Location = New System.Drawing.Point(6, 21)
         Me.chkScrapePoster.Name = "chkScrapePoster"
         Me.chkScrapePoster.Size = New System.Drawing.Size(114, 15)
         Me.chkScrapePoster.TabIndex = 0
@@ -228,7 +241,7 @@ Partial Class frmTMDBMediaSettingsHolder_Movie
         '
         Me.chkScrapeFanart.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkScrapeFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScrapeFanart.Location = New System.Drawing.Point(6, 37)
+        Me.chkScrapeFanart.Location = New System.Drawing.Point(6, 44)
         Me.chkScrapeFanart.Name = "chkScrapeFanart"
         Me.chkScrapeFanart.Size = New System.Drawing.Size(84, 16)
         Me.chkScrapeFanart.TabIndex = 1
@@ -289,17 +302,6 @@ Partial Class frmTMDBMediaSettingsHolder_Movie
         Me.cbEnabled.TabIndex = 0
         Me.cbEnabled.Text = "Enabled"
         Me.cbEnabled.UseVisualStyleBackColor = True
-        '
-        'chkGetBlankImages
-        '
-        Me.chkGetBlankImages.AutoSize = True
-        Me.chkGetBlankImages.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkGetBlankImages.Location = New System.Drawing.Point(212, 113)
-        Me.chkGetBlankImages.Name = "chkGetBlankImages"
-        Me.chkGetBlankImages.Size = New System.Drawing.Size(140, 17)
-        Me.chkGetBlankImages.TabIndex = 17
-        Me.chkGetBlankImages.Text = "Also Get Blank Images"
-        Me.chkGetBlankImages.UseVisualStyleBackColor = True
         '
         'frmTMDBMediaSettingsHolder_Movie
         '

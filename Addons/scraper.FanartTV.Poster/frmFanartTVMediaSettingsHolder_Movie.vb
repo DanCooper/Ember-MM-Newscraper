@@ -99,16 +99,24 @@ Public Class frmFanartTVMediaSettingsHolder_Movie
         RaiseEvent SetupScraperChanged(cbEnabled.Checked, 0)
     End Sub
 
-    Private Sub chkGetBlankImages_Click(sender As Object, e As EventArgs) Handles chkGetBlankImages.Click
+    Private Sub chkGetBlankImages_CheckedChanged(sender As Object, e As EventArgs) Handles chkGetBlankImages.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkGetEnglishImages_Click(sender As Object, e As EventArgs) Handles chkGetEnglishImages.Click
+    Private Sub chkGetEnglishImages_CheckedChanged(sender As Object, e As EventArgs) Handles chkGetEnglishImages.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkPrefLanguageOnly_Click(sender As Object, e As EventArgs) Handles chkPrefLanguageOnly.Click
+    Private Sub chkPrefLanguageOnly_CheckedChanged(sender As Object, e As EventArgs) Handles chkPrefLanguageOnly.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
+
+        Me.chkGetBlankImages.Enabled = Me.chkPrefLanguageOnly.Checked
+        Me.chkGetEnglishImages.Enabled = Me.chkPrefLanguageOnly.Checked
+
+        If Not Me.chkPrefLanguageOnly.Checked Then
+            Me.chkGetBlankImages.Checked = False
+            Me.chkGetEnglishImages.Checked = False
+        End If
     End Sub
 
     Private Sub chkScrapeBanner_CheckedChanged(sender As Object, e As EventArgs) Handles chkScrapeBanner.CheckedChanged

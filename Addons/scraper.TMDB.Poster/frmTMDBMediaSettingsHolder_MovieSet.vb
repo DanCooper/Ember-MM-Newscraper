@@ -164,6 +164,14 @@ Public Class frmTMDBMediaSettingsHolder_MovieSet
 
     Private Sub chkPrefLanguageOnly_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles chkPrefLanguageOnly.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
+
+        Me.chkGetBlankImages.Enabled = Me.chkPrefLanguageOnly.Checked
+        Me.chkGetEnglishImages.Enabled = Me.chkPrefLanguageOnly.Checked
+
+        If Not Me.chkPrefLanguageOnly.Checked Then
+            Me.chkGetBlankImages.Checked = False
+            Me.chkGetEnglishImages.Checked = False
+        End If
     End Sub
 
     Private Sub PictureBox2_Click(sender As System.Object, e As System.EventArgs) Handles pbTMDB.Click

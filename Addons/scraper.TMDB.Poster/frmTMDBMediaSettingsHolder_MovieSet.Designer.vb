@@ -80,7 +80,7 @@ Partial Class frmTMDBMediaSettingsHolder_MovieSet
         Me.gbScraper.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbScraper.Location = New System.Drawing.Point(10, 31)
         Me.gbScraper.Name = "gbScraper"
-        Me.gbScraper.Size = New System.Drawing.Size(604, 140)
+        Me.gbScraper.Size = New System.Drawing.Size(600, 140)
         Me.gbScraper.TabIndex = 95
         Me.gbScraper.TabStop = False
         Me.gbScraper.Text = "TMDB"
@@ -88,6 +88,7 @@ Partial Class frmTMDBMediaSettingsHolder_MovieSet
         'chkGetBlankImages
         '
         Me.chkGetBlankImages.AutoSize = True
+        Me.chkGetBlankImages.Enabled = False
         Me.chkGetBlankImages.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkGetBlankImages.Location = New System.Drawing.Point(212, 113)
         Me.chkGetBlankImages.Name = "chkGetBlankImages"
@@ -138,6 +139,7 @@ Partial Class frmTMDBMediaSettingsHolder_MovieSet
         'chkGetEnglishImages
         '
         Me.chkGetEnglishImages.AutoSize = True
+        Me.chkGetEnglishImages.Enabled = False
         Me.chkGetEnglishImages.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkGetEnglishImages.Location = New System.Drawing.Point(212, 90)
         Me.chkGetEnglishImages.Name = "chkGetEnglishImages"
