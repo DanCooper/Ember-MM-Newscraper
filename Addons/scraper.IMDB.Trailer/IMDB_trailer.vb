@@ -28,7 +28,7 @@ Imports EmberAPI
 ''' Native Scraper
 ''' </summary>
 ''' <remarks></remarks>
-Public Class IMDB_trailer
+Public Class IMDB_Trailer
     Implements Interfaces.ScraperModule_Trailer_Movie
 
 
