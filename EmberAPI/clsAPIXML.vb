@@ -37,6 +37,7 @@ Public Class APIXML
     Public Shared alGenres As New List(Of String)
     Public Shared dStudios As New Dictionary(Of String, String)
     Public Shared GenreXML As New clsXMLGenres
+    Public Shared MovieCertLanguagesXML As New clsXMLMovieCertLanguages
     Public Shared RatingXML As New clsXMLRatings
     Public Shared SourceList As New List(Of String)(New String() {"bluray", "hddvd", "hdtv", "dvd", "sdtv", "vhs"})
 
@@ -135,6 +136,28 @@ Public Class APIXML
 
                 Try
                     File.Move(rPathD, rPath)
+                Catch ex As Exception
+                    logger.Error(New StackFrame().GetMethod().Name, ex)
+                End Try
+            End If
+
+            Dim cPath As String = FileUtils.Common.ReturnSettingsFile("Settings", "MovieCertLanguages.xml")
+            If File.Exists(cPath) Then
+                objStreamReader = New StreamReader(cPath)
+                Dim xCert As New XmlSerializer(MovieCertLanguagesXML.GetType)
+
+                MovieCertLanguagesXML = CType(xCert.Deserialize(objStreamReader), clsXMLMovieCertLanguages)
+                objStreamReader.Close()
+            Else
+                Dim cPathD As String = FileUtils.Common.ReturnSettingsFile("Defaults", "DefaultMovieCertLanguages.xml")
+                objStreamReader = New StreamReader(cPathD)
+                Dim xCert As New XmlSerializer(MovieCertLanguagesXML.GetType)
+
+                MovieCertLanguagesXML = CType(xCert.Deserialize(objStreamReader), clsXMLMovieCertLanguages)
+                objStreamReader.Close()
+
+                Try
+                    File.Move(cPathD, cPath)
                 Catch ex As Exception
                     logger.Error(New StackFrame().GetMethod().Name, ex)
                 End Try

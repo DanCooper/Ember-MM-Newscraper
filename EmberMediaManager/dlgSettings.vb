@@ -1275,14 +1275,15 @@ Public Class dlgSettings
         Me.cbMovieScraperCertLang.SelectedIndex = -1
         Me.cbMovieScraperCertLang.Enabled = Me.chkMovieScraperCertLang.Checked
         Me.chkMovieScraperCertForMPAA.Enabled = Me.chkMovieScraperCertLang.Checked
+
         If Not Me.chkMovieScraperCertLang.Checked Then
             Me.chkMovieScraperCertForMPAA.Checked = False
-
             Me.chkMovieScraperOnlyValueForMPAA.Checked = False
             Me.chkMovieScraperOnlyValueForMPAA.Enabled = False
             Me.chkMovieScraperUseMPAAFSK.Checked = False
             Me.chkMovieScraperUseMPAAFSK.Enabled = False
         End If
+
         Me.SetApplyButton(True)
     End Sub
 
@@ -3328,15 +3329,6 @@ Public Class dlgSettings
                 Me.txtTVScraperDurationRuntimeFormat.Text = .TVScraperDurationRuntimeFormat.ToString
                 Me.txtTVSkipLessThan.Text = .TVSkipLessThan.ToString
 
-
-                If Not String.IsNullOrEmpty(.MovieScraperCertLang) Then
-                    Me.chkMovieScraperCertLang.Checked = True
-                    Me.cbMovieScraperCertLang.Enabled = True
-                    Me.cbMovieScraperCertLang.Text = .MovieScraperCertLang
-                    Me.chkMovieScraperCertForMPAA.Enabled = True
-                    Me.chkMovieScraperCertForMPAA.Checked = .MovieScraperCertForMPAA
-                End If
-
                 If Not String.IsNullOrEmpty(.MovieScraperForceTitle) Then
                     Me.chkMovieScraperForceTitle.Checked = True
                     Me.cbMovieScraperForceTitle.Enabled = True
@@ -3366,6 +3358,21 @@ Public Class dlgSettings
 
                 Me.TVShowRegex.AddRange(.TVShowRegexes)
                 Me.LoadTVShowRegex()
+
+
+                'If Not String.IsNullOrEmpty(.MovieScraperCertLang) Then
+                '    Me.chkMovieScraperCertLang.Checked = True
+                '    Me.cbMovieScraperCertLang.Enabled = True
+                '    Me.cbMovieScraperCertLang.Text = .MovieScraperCertLang
+                '    Me.chkMovieScraperCertForMPAA.Enabled = True
+                '    Me.chkMovieScraperCertForMPAA.Checked = .MovieScraperCertForMPAA
+                'End If
+
+                Me.cbMovieScraperCertLang.Items.Clear()
+                Me.cbMovieScraperCertLang.Items.AddRange((From lLang In APIXML.MovieCertLanguagesXML.Language Select lLang.name).ToArray)
+                If Me.cbMovieScraperCertLang.Items.Count > 0 Then
+                    Me.cbMovieScraperCertLang.Text = APIXML.MovieCertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = .MovieScraperCertLang).name
+                End If
 
                 Me.cbTVGeneralLang.Items.Clear()
                 Me.cbTVGeneralLang.Items.AddRange((From lLang In .TVGeneralLanguages.Language Select lLang.name).ToArray)
@@ -4640,7 +4647,10 @@ Public Class dlgSettings
                 .MovieScraperCastWithImgOnly = Me.chkMovieScraperCastWithImg.Checked
                 .MovieScraperCertForMPAA = Me.chkMovieScraperCertForMPAA.Checked        'TODO
                 .MovieScraperCertification = Me.chkMovieScraperCertification.Checked
-                .MovieScraperCertLang = Me.cbMovieScraperCertLang.Text                  'TODO
+                '.MovieScraperCertLang = Me.cbMovieScraperCertLang.Text                  'TODO
+                If cbMovieScraperCertLang.Text <> String.Empty Then
+                    .MovieScraperCertLang = APIXML.MovieCertLanguagesXML.Language.FirstOrDefault(Function(l) l.name = cbMovieScraperCertLang.Text).abbreviation
+                End If
                 If Not String.IsNullOrEmpty(Me.cbMovieScraperCertLang.Text) Then
                     .MovieScraperCertForMPAA = Me.chkMovieScraperCertForMPAA.Checked    'TODO
                 Else
