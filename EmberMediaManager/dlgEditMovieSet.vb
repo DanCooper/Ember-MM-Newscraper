@@ -1320,6 +1320,14 @@ Public Class dlgEditMovieSet
                     tcEditMovie.TabPages.Remove(tpFanart)
                     tcEditMovie.TabPages.Remove(tpLandscape)
                     tcEditMovie.TabPages.Remove(tpPoster)
+                Else
+                    If Not Master.eSettings.MovieSetBannerAnyEnabled Then tcEditMovie.TabPages.Remove(tpBanner)
+                    If Not Master.eSettings.MovieSetClearArtAnyEnabled Then tcEditMovie.TabPages.Remove(tpClearArt)
+                    If Not Master.eSettings.MovieSetClearLogoAnyEnabled Then tcEditMovie.TabPages.Remove(tpClearLogo)
+                    If Not Master.eSettings.MovieSetDiscArtAnyEnabled Then tcEditMovie.TabPages.Remove(tpDiscArt)
+                    If Not Master.eSettings.MovieSetFanartAnyEnabled Then tcEditMovie.TabPages.Remove(tpFanart)
+                    If Not Master.eSettings.MovieSetLandscapeAnyEnabled Then tcEditMovie.TabPages.Remove(tpLandscape)
+                    If Not Master.eSettings.MovieSetPosterAnyEnabled Then tcEditMovie.TabPages.Remove(tpPoster)
                 End If
             End With
 
