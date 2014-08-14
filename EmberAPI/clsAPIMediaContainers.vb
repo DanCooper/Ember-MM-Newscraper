@@ -457,6 +457,7 @@ Namespace MediaContainers
         Private _lev As Integer
         Private _videosource As String
         Private _tmdbcolid As String
+        Private _dateadded As String
 #End Region 'Fields
 
 #Region "Constructors"
@@ -964,6 +965,23 @@ Namespace MediaContainers
         Public ReadOnly Property PlayCountSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._playcount)
+            End Get
+        End Property
+
+        <XmlElement("dateadded")> _
+        Public Property DateAdded() As String
+            Get
+                Return Me._dateadded
+            End Get
+            Set(ByVal value As String)
+                Me._dateadded = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property DateAddedSpecified() As Boolean
+            Get
+                Return Not IsNothing(Me._dateadded)
             End Get
         End Property
 

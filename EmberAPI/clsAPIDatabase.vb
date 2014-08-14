@@ -845,6 +845,7 @@ Public Class Database
                         If Not DBNull.Value.Equals(SQLreader("FileSource")) Then _movieDB.FileSource = SQLreader("FileSource").ToString
                         _movieDB.Movie = New MediaContainers.Movie
                         With _movieDB.Movie
+                            If Not DBNull.Value.Equals(SQLreader("DateAdd")) Then .DateAdded = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(SQLreader("DateAdd"))).ToString("yyyy-MM-d HH:mm:ss")
                             If Not DBNull.Value.Equals(SQLreader("IMDB")) Then .ID = SQLreader("IMDB").ToString
                             If Not DBNull.Value.Equals(SQLreader("Title")) Then .Title = SQLreader("Title").ToString
                             If Not DBNull.Value.Equals(SQLreader("OriginalTitle")) Then .OriginalTitle = SQLreader("OriginalTitle").ToString
@@ -1603,7 +1604,12 @@ Public Class Database
                         'Use filecreation date of file instead of simply NOW Date    
                         parMovieDateAdd.Value = If(IsNew, Functions.ConvertToUnixTimestamp(System.IO.File.GetCreationTime(_movieDB.Filename)), _movieDB.DateAdd)
                     Else
-                        parMovieDateAdd.Value = If(IsNew, Functions.ConvertToUnixTimestamp(Now), _movieDB.DateAdd)
+                        If Not String.IsNullOrEmpty(_movieDB.Movie.DateAdded) Then
+                            Dim DateTimeAdded As DateTime = DateTime.ParseExact(_movieDB.Movie.DateAdded, "yyyy-MM-dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture)
+                            parMovieDateAdd.Value = Functions.ConvertToUnixTimestamp(DateTimeAdded)
+                        Else
+                            parMovieDateAdd.Value = If(IsNew, Functions.ConvertToUnixTimestamp(Now), _movieDB.DateAdd)
+                        End If
                     End If
                     'something went wrong so use old way...
                 Catch ex As Exception
