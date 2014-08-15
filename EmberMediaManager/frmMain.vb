@@ -1687,6 +1687,7 @@ Public Class frmMain
             Else
                 Me.ClearInfo()
             End If
+            Me.RefreshAllMovieSets()
             Me.tslLoading.Visible = False
             Me.tspbLoading.Visible = False
             Me.btnCancel.Visible = False
