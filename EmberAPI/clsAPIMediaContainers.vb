@@ -33,6 +33,7 @@ Namespace MediaContainers
         Private _rating As String
         Private _season As Integer
         Private _episode As Integer
+        Private _dateadded As String
         Private _displayseason As Integer
         Private _displayepisode As Integer
         Private _plot As String
@@ -338,6 +339,23 @@ Namespace MediaContainers
             End Set
         End Property
 
+        <XmlElement("dateadded")> _
+        Public Property DateAdded() As String
+            Get
+                Return Me._dateadded
+            End Get
+            Set(ByVal value As String)
+                Me._dateadded = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property DateAddedSpecified() As Boolean
+            Get
+                Return Not IsNothing(Me._dateadded)
+            End Get
+        End Property
+
 
 
 #End Region 'Properties
@@ -352,6 +370,7 @@ Namespace MediaContainers
             Me._rating = String.Empty
             Me._runtime = String.Empty
             Me._plot = String.Empty
+            Me._dateadded = String.Empty
             Me._director = String.Empty
             Me._credits = String.Empty
             Me._actors.Clear()
@@ -1355,6 +1374,7 @@ Namespace MediaContainers
             Me._xsets.Clear()
             Me._lev = 0
             Me._videosource = String.Empty
+            Me._dateadded = String.Empty
             Me.MovieID.Clear()
         End Sub
 
@@ -1390,6 +1410,7 @@ Namespace MediaContainers
             Me._xsets.Clear()
             Me._lev = 0
             'Me._videosource = String.Empty
+            Me._dateadded = String.Empty
             Me.MovieID.Clear()
         End Sub
 

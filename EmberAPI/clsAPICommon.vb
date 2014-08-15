@@ -1843,6 +1843,7 @@ Public Class Structures
     ''' <remarks></remarks>
     Public Structure DBTV
         Dim ClearShowEFanarts As Boolean
+        Dim DateAdd As Double
         Dim efList As List(Of String)
         Dim EpFanartPath As String
         Dim EpID As Long

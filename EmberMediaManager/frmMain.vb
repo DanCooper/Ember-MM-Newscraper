@@ -7116,7 +7116,7 @@ doCancel:
 
         Me.dgvTVEpisodes.Enabled = False
 
-        Master.DB.FillDataTable(Me.dtEpisodes, String.Concat("SELECT ID, TVShowID, Episode, Title, HasPoster, HasFanart, HasNfo, New, Mark, TVEpPathID, Source, Lock, Season, Rating, Plot, Aired, Director, Credits, PosterPath, FanartPath, NfoPath, NeedsSave, Missing, Playcount, HasWatched, DisplaySeason, DisplayEpisode FROM TVEps WHERE TVShowID = ", ShowID, " AND Season = ", Season, " ORDER BY Episode;"))
+        Master.DB.FillDataTable(Me.dtEpisodes, String.Concat("SELECT ID, TVShowID, Episode, Title, HasPoster, HasFanart, HasNfo, New, Mark, TVEpPathID, Source, Lock, Season, Rating, Plot, Aired, Director, Credits, PosterPath, FanartPath, NfoPath, NeedsSave, Missing, Playcount, HasWatched, DisplaySeason, DisplayEpisode, DateAdd FROM TVEps WHERE TVShowID = ", ShowID, " AND Season = ", Season, " ORDER BY Episode;"))
 
         If Me.dtEpisodes.Rows.Count > 0 Then
 
@@ -7179,9 +7179,7 @@ doCancel:
                 .dgvTVEpisodes.Columns(24).SortMode = DataGridViewColumnSortMode.Automatic
                 .dgvTVEpisodes.Columns(24).Visible = Not Master.eSettings.TVEpisodeWatchedCol
                 .dgvTVEpisodes.Columns(24).ToolTipText = Master.eLang.GetString(981, "Watched")
-                .dgvTVEpisodes.Columns(25).Visible = False
-                .dgvTVEpisodes.Columns(26).Visible = False
-                For i As Integer = 27 To .dgvTVEpisodes.Columns.Count - 1
+                For i As Integer = 25 To .dgvTVEpisodes.Columns.Count - 1
                     .dgvTVEpisodes.Columns(i).Visible = False
                 Next
 
