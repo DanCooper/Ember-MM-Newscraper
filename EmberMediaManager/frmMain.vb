@@ -12154,7 +12154,7 @@ doCancel:
     Private Function RefreshMovieSet(ByVal ID As Long, Optional ByVal BatchMode As Boolean = False, Optional ByVal FromNfo As Boolean = True, Optional ByVal ToNfo As Boolean = False, Optional ByVal delWatched As Boolean = False) As Boolean
         'Dim tmpMovieSet As New MediaContainers.Movie
         Dim tmpMovieSetDb As New Structures.DBMovieSet
-        'Dim OldTitle As String = String.Empty
+        Dim OldTitle As String = String.Empty
         Dim selRow As DataRow = Nothing
 
         Dim hasBanner As Boolean = False
@@ -12171,6 +12171,15 @@ doCancel:
         Try
 
             tmpMovieSetDb = Master.DB.LoadMovieSetFromDB(ID)
+
+            OldTitle = tmpMovieSetDb.MovieSet.Title
+
+            Dim tTitle As String = StringUtils.FilterTokens_MovieSet(tmpMovieSetDb.MovieSet.Title)
+            If Not String.IsNullOrEmpty(tTitle) Then
+                tmpMovieSetDb.ListTitle = tTitle
+            Else
+                tmpMovieSetDb.ListTitle = OldTitle
+            End If
 
             Dim mContainer As New Scanner.MovieSetContainer With {.SetName = tmpMovieSetDb.MovieSet.Title}
             fScanner.GetMovieSetFolderContents(mContainer)
@@ -13820,7 +13829,8 @@ doCancel:
             If dresult.NeedsRefresh OrElse dresult.NeedsUpdate Then 'TODO: Check for moviesets
                 If dresult.NeedsRefresh Then
                     If Not Me.fScanner.IsBusy Then
-                        While Me.bwLoadMovieInfo.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwCleanDB.IsBusy
+                        While Me.bwLoadMovieInfo.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse _
+                             Me.bwLoadMovieSetInfo.IsBusy OrElse Me.bwMovieSetScraper.IsBusy OrElse Me.bwRefreshMovieSets.IsBusy OrElse Me.bwCleanDB.IsBusy
                             Application.DoEvents()
                             Threading.Thread.Sleep(50)
                         End While
@@ -13830,7 +13840,8 @@ doCancel:
                 End If
                 If dresult.NeedsUpdate Then
                     If Not Me.fScanner.IsBusy Then
-                        While Me.bwLoadMovieInfo.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwCleanDB.IsBusy
+                        While Me.bwLoadMovieInfo.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse _
+                            Me.bwLoadMovieSetInfo.IsBusy OrElse Me.bwMovieSetScraper.IsBusy OrElse Me.bwRefreshMovieSets.IsBusy OrElse Me.bwCleanDB.IsBusy
                             Application.DoEvents()
                             Threading.Thread.Sleep(50)
                         End While
@@ -13838,7 +13849,8 @@ doCancel:
                     End If
                 End If
             Else
-                If Not Me.fScanner.IsBusy AndAlso Not Me.bwLoadMovieInfo.IsBusy AndAlso Not Me.bwMovieScraper.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
+                If Not Me.fScanner.IsBusy AndAlso Not Me.bwLoadMovieInfo.IsBusy AndAlso Not Me.bwMovieScraper.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso _
+                    Not Me.bwLoadMovieSetInfo.IsBusy AndAlso Not Me.bwMovieSetScraper.IsBusy AndAlso Not Me.bwRefreshMovieSets.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
                     Me.FillList(True, True, True)
                 End If
             End If
