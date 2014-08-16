@@ -1665,15 +1665,19 @@ Public Class dlgEditMovie
                 End If
 
                 If Not String.IsNullOrEmpty(Master.currMovie.Movie.OriginalTitle) Then
-                    If Master.currMovie.Movie.OriginalTitle <> StringUtils.FilterTokens_Movie(Master.currMovie.Movie.Title) Then
-                        .txtOriginalTitle.Text = Master.currMovie.Movie.OriginalTitle
-                    End If
+                    'cocotus, 2014/08/16 Bug report #96  -  Original Title behaviour - Fix: Display the current saved(nfo/database) originaltitle/sortitle in Edit Movie Page (without conditions(title behaviour))
+                    .txtOriginalTitle.Text = Master.currMovie.Movie.OriginalTitle
+                    ' If Master.currMovie.Movie.OriginalTitle <> StringUtils.FilterTokens_Movie(Master.currMovie.Movie.Title) Then
+                    '  .txtOriginalTitle.Text = Master.currMovie.Movie.OriginalTitle
+                    '   End If
                 End If
 
                 If Not String.IsNullOrEmpty(Master.currMovie.Movie.SortTitle) Then
-                    If Master.currMovie.Movie.SortTitle <> StringUtils.FilterTokens_Movie(Master.currMovie.Movie.Title) Then
-                        .txtSortTitle.Text = Master.currMovie.Movie.SortTitle
-                    End If
+                    'cocotus, 2014/08/16 Bug report #96  -  Original Title behaviour - Fix: Display the current saved(nfo/database) originaltitle/sortitle in Edit Movie Page (without conditions(title behaviour))
+                    .txtSortTitle.Text = Master.currMovie.Movie.SortTitle
+                    'If Master.currMovie.Movie.SortTitle <> StringUtils.FilterTokens_Movie(Master.currMovie.Movie.Title) Then
+                    '    .txtSortTitle.Text = Master.currMovie.Movie.SortTitle
+                    'End If
                 End If
 
                 If Not String.IsNullOrEmpty(Master.currMovie.Movie.Tagline) Then
@@ -2890,7 +2894,9 @@ Public Class dlgEditMovie
                 If Not String.IsNullOrEmpty(.txtOriginalTitle.Text) Then
                     Master.currMovie.Movie.OriginalTitle = .txtOriginalTitle.Text.Trim
                 Else
-                    Master.currMovie.Movie.OriginalTitle = StringUtils.FilterTokens_Movie(.txtTitle.Text.Trim)
+                    'cocotus, 2014/08/16 Bug report #96  -  Original Title behaviour - Fix: Don't use sorted title for originaltitle if no originaltitle is set - leave originaltitle empty 
+                    '  Master.currMovie.Movie.OriginalTitle = StringUtils.FilterTokens_Movie(.txtTitle.Text.Trim)
+                    Master.currMovie.Movie.OriginalTitle = ""
                 End If
 
                 If Not String.IsNullOrEmpty(.txtSortTitle.Text) Then
