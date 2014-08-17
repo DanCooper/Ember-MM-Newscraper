@@ -1594,9 +1594,6 @@ Public Class Database
                 Dim parMarkCustom3 As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMarkCustom3", DbType.Boolean, 0, "MarkCustom3")
                 Dim parMarkCustom4 As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMarkCustom4", DbType.Boolean, 0, "MarkCustom4")
 
-                ' First let's save it to NFO, even because we will need the NFO path
-                If ToNfo Then NFO.SaveMovieToNFO(_movieDB)
-
                 Try
                     If Not Master.eSettings.GeneralDateAddedIgnoreNFO AndAlso Not String.IsNullOrEmpty(_movieDB.Movie.DateAdded) Then
                         Dim DateTimeAdded As DateTime = DateTime.ParseExact(_movieDB.Movie.DateAdded, "yyyy-MM-dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture)
@@ -1623,9 +1620,14 @@ Public Class Database
                                 End If
                         End Select
                     End If
+                    _movieDB.Movie.DateAdded = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(parDateAdd.Value)).ToString("yyyy-MM-d HH:mm:ss")
                 Catch ex As Exception
                     parDateAdd.Value = If(IsNew, Functions.ConvertToUnixTimestamp(Now), _movieDB.DateAdd)
+                    _movieDB.Movie.DateAdded = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(parDateAdd.Value)).ToString("yyyy-MM-d HH:mm:ss")
                 End Try
+
+                ' First let's save it to NFO, even because we will need the NFO path
+                If ToNfo Then NFO.SaveMovieToNFO(_movieDB)
 
                 parMoviePath.Value = _movieDB.Filename
                 parType.Value = _movieDB.IsSingle
@@ -2272,9 +2274,6 @@ Public Class Database
 
                 Dim parDateAdd As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parDateAdd", DbType.Int32, 0, "DateAdd")
 
-                ' First let's save it to NFO, even because we will need the NFO path
-                If ToNfo Then NFO.SaveTVEpToNFO(_TVEpDB)
-
                 Try
                     If Not Master.eSettings.GeneralDateAddedIgnoreNFO AndAlso Not String.IsNullOrEmpty(_TVEpDB.TVEp.DateAdded) Then
                         Dim DateTimeAdded As DateTime = DateTime.ParseExact(_TVEpDB.TVEp.DateAdded, "yyyy-MM-dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture)
@@ -2301,9 +2300,14 @@ Public Class Database
                                 End If
                         End Select
                     End If
+                    _TVEpDB.TVEp.DateAdded = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(parDateAdd.Value)).ToString("yyyy-MM-d HH:mm:ss")
                 Catch ex As Exception
                     parDateAdd.Value = If(IsNew, Functions.ConvertToUnixTimestamp(Now), _TVEpDB.DateAdd)
+                    _TVEpDB.TVEp.DateAdded = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(parDateAdd.Value)).ToString("yyyy-MM-d HH:mm:ss")
                 End Try
+
+                ' First let's save it to NFO, even because we will need the NFO path
+                If ToNfo Then NFO.SaveTVEpToNFO(_TVEpDB)
 
                 parTVShowID.Value = _TVEpDB.ShowID
                 parPosterPath.Value = _TVEpDB.EpPosterPath
