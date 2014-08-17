@@ -3906,12 +3906,21 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property GeneralCreationDate() As Boolean
+    Public Property GeneralDateTime() As Enums.DateTime
         Get
-            Return Settings._XMLSettings.generalcreationdate
+            Return Settings._XMLSettings.GeneralDateTime
+        End Get
+        Set(ByVal value As Enums.DateTime)
+            Settings._XMLSettings.GeneralDateTime = value
+        End Set
+    End Property
+
+    Public Property GeneralDateAddedIgnoreNFO() As Boolean
+        Get
+            Return Settings._XMLSettings.GeneralDateAddedIgnoreNFO
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.generalcreationdate = value
+            Settings._XMLSettings.GeneralDateAddedIgnoreNFO = value
         End Set
     End Property
 

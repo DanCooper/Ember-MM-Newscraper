@@ -31,11 +31,11 @@ Partial Class dlgSettings
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgSettings))
         Me.gbGeneralMisc = New System.Windows.Forms.GroupBox()
-        Me.chkGeneralCreationDate = New System.Windows.Forms.CheckBox()
         Me.chkGeneralSourceFromFolder = New System.Windows.Forms.CheckBox()
         Me.chkGeneralCheckUpdates = New System.Windows.Forms.CheckBox()
         Me.chkGeneralOverwriteNfo = New System.Windows.Forms.CheckBox()
         Me.lblGeneralOverwriteNfo = New System.Windows.Forms.Label()
+        Me.chkGeneralDateAddedIgnoreNFO = New System.Windows.Forms.CheckBox()
         Me.gbGeneralDaemon = New System.Windows.Forms.GroupBox()
         Me.lblGeneralDaemonDrive = New System.Windows.Forms.Label()
         Me.cbGeneralDaemonDrive = New System.Windows.Forms.ComboBox()
@@ -214,6 +214,8 @@ Partial Class dlgSettings
         Me.ilSettings = New System.Windows.Forms.ImageList(Me.components)
         Me.tvSettingsList = New System.Windows.Forms.TreeView()
         Me.pnlGeneral = New System.Windows.Forms.Panel()
+        Me.gbDateAdded = New System.Windows.Forms.GroupBox()
+        Me.cbGeneralDateTime = New System.Windows.Forms.ComboBox()
         Me.gbScrapers = New System.Windows.Forms.GroupBox()
         Me.chkGeneralResumeScraper = New System.Windows.Forms.CheckBox()
         Me.gbGeneralMainWindow = New System.Windows.Forms.GroupBox()
@@ -1077,6 +1079,7 @@ Partial Class dlgSettings
         Me.pnlSettingsTop.SuspendLayout
         CType(Me.pbSettingsTopLogo,System.ComponentModel.ISupportInitialize).BeginInit
         Me.pnlGeneral.SuspendLayout
+        Me.gbDateAdded.SuspendLayout
         Me.gbScrapers.SuspendLayout
         Me.gbGeneralMainWindow.SuspendLayout
         Me.gbGeneralInterface.SuspendLayout
@@ -1241,7 +1244,6 @@ Partial Class dlgSettings
         '
         'gbGeneralMisc
         '
-        Me.gbGeneralMisc.Controls.Add(Me.chkGeneralCreationDate)
         Me.gbGeneralMisc.Controls.Add(Me.chkGeneralSourceFromFolder)
         Me.gbGeneralMisc.Controls.Add(Me.chkGeneralCheckUpdates)
         Me.gbGeneralMisc.Controls.Add(Me.chkGeneralOverwriteNfo)
@@ -1253,17 +1255,6 @@ Partial Class dlgSettings
         Me.gbGeneralMisc.TabIndex = 1
         Me.gbGeneralMisc.TabStop = false
         Me.gbGeneralMisc.Text = "Miscellaneous"
-        '
-        'chkGeneralCreationDate
-        '
-        Me.chkGeneralCreationDate.AutoSize = true
-        Me.chkGeneralCreationDate.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkGeneralCreationDate.Location = New System.Drawing.Point(10, 119)
-        Me.chkGeneralCreationDate.Name = "chkGeneralCreationDate"
-        Me.chkGeneralCreationDate.Size = New System.Drawing.Size(196, 17)
-        Me.chkGeneralCreationDate.TabIndex = 10
-        Me.chkGeneralCreationDate.Text = "Use file creation date of videofile"
-        Me.chkGeneralCreationDate.UseVisualStyleBackColor = true
         '
         'chkGeneralSourceFromFolder
         '
@@ -1308,6 +1299,17 @@ Partial Class dlgSettings
         Me.lblGeneralOverwriteNfo.TabIndex = 3
         Me.lblGeneralOverwriteNfo.Text = "(If unchecked, non-conforming nfos will be renamed to <filename>.info)"
         Me.lblGeneralOverwriteNfo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'chkGeneralDateAddedIgnoreNFO
+        '
+        Me.chkGeneralDateAddedIgnoreNFO.AutoSize = true
+        Me.chkGeneralDateAddedIgnoreNFO.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkGeneralDateAddedIgnoreNFO.Location = New System.Drawing.Point(6, 48)
+        Me.chkGeneralDateAddedIgnoreNFO.Name = "chkGeneralDateAddedIgnoreNFO"
+        Me.chkGeneralDateAddedIgnoreNFO.Size = New System.Drawing.Size(188, 17)
+        Me.chkGeneralDateAddedIgnoreNFO.TabIndex = 10
+        Me.chkGeneralDateAddedIgnoreNFO.Text = "Ignore <dateadded> from NFO"
+        Me.chkGeneralDateAddedIgnoreNFO.UseVisualStyleBackColor = true
         '
         'gbGeneralDaemon
         '
@@ -3283,6 +3285,7 @@ Partial Class dlgSettings
         'pnlGeneral
         '
         Me.pnlGeneral.BackColor = System.Drawing.Color.White
+        Me.pnlGeneral.Controls.Add(Me.gbDateAdded)
         Me.pnlGeneral.Controls.Add(Me.gbScrapers)
         Me.pnlGeneral.Controls.Add(Me.gbGeneralDaemon)
         Me.pnlGeneral.Controls.Add(Me.gbGeneralMainWindow)
@@ -3292,12 +3295,34 @@ Partial Class dlgSettings
         Me.pnlGeneral.Name = "pnlGeneral"
         Me.pnlGeneral.Size = New System.Drawing.Size(750, 500)
         Me.pnlGeneral.TabIndex = 10
-        Me.pnlGeneral.Visible = false
+        Me.pnlGeneral.Visible = False
+        '
+        'gbDateAdded
+        '
+        Me.gbDateAdded.Controls.Add(Me.chkGeneralDateAddedIgnoreNFO)
+        Me.gbDateAdded.Controls.Add(Me.cbGeneralDateTime)
+        Me.gbDateAdded.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.gbDateAdded.Location = New System.Drawing.Point(7, 343)
+        Me.gbDateAdded.Name = "gbDateAdded"
+        Me.gbDateAdded.Size = New System.Drawing.Size(196, 74)
+        Me.gbDateAdded.TabIndex = 16
+        Me.gbDateAdded.TabStop = False
+        Me.gbDateAdded.Text = "Adding Date"
+        '
+        'cbGeneralDateTime
+        '
+        Me.cbGeneralDateTime.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.cbGeneralDateTime.FormattingEnabled = True
+        Me.cbGeneralDateTime.Location = New System.Drawing.Point(6, 21)
+        Me.cbGeneralDateTime.Name = "cbGeneralDateTime"
+        Me.cbGeneralDateTime.Size = New System.Drawing.Size(184, 21)
+        Me.cbGeneralDateTime.TabIndex = 11
         '
         'gbScrapers
         '
         Me.gbScrapers.Controls.Add(Me.chkGeneralResumeScraper)
-        Me.gbScrapers.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.gbScrapers.Enabled = False
+        Me.gbScrapers.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbScrapers.Location = New System.Drawing.Point(7, 287)
         Me.gbScrapers.Name = "gbScrapers"
         Me.gbScrapers.Size = New System.Drawing.Size(196, 49)
@@ -12524,6 +12549,8 @@ Partial Class dlgSettings
         Me.pnlSettingsTop.PerformLayout
         CType(Me.pbSettingsTopLogo,System.ComponentModel.ISupportInitialize).EndInit
         Me.pnlGeneral.ResumeLayout(false)
+        Me.gbDateAdded.ResumeLayout(false)
+        Me.gbDateAdded.PerformLayout
         Me.gbScrapers.ResumeLayout(false)
         Me.gbScrapers.PerformLayout
         Me.gbGeneralMainWindow.ResumeLayout(false)
@@ -13229,7 +13256,7 @@ End Sub
     Friend WithEvents chkMovieClickScrapeAsk As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieClickScrape As System.Windows.Forms.CheckBox
     Friend WithEvents chkMoviePosterPrefOnly As System.Windows.Forms.CheckBox
-    Friend WithEvents chkGeneralCreationDate As System.Windows.Forms.CheckBox
+    Friend WithEvents chkGeneralDateAddedIgnoreNFO As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieLockLanguageV As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieLockLanguageA As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieLockMPAA As System.Windows.Forms.CheckBox
@@ -13795,4 +13822,6 @@ End Sub
     Friend WithEvents btnMovieSetSortTokenAdd As System.Windows.Forms.Button
     Friend WithEvents txtMovieSetSortToken As System.Windows.Forms.TextBox
     Friend WithEvents lstMovieSetSortTokens As System.Windows.Forms.ListBox
+    Friend WithEvents gbDateAdded As System.Windows.Forms.GroupBox
+    Friend WithEvents cbGeneralDateTime As System.Windows.Forms.ComboBox
 End Class

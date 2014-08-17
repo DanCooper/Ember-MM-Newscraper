@@ -30,7 +30,8 @@ Partial Public Class clsXMLSettings
     Private _filesystemvalidexts As List(Of String)
     Private _filesystemvalidthemeexts As List(Of String)
     Private _generalcheckupdates As Boolean
-    Private _generalcreationdate As Boolean
+    Private _generaldateaddedignorenfo As Boolean
+    Private _generaldatetime As Enums.DateTime
     Private _generaldaemondrive As String
     Private _generaldaemonpath As String
     Private _generaldoubleclickscrape As Boolean
@@ -4652,12 +4653,21 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property GeneralCreationDate() As Boolean
+    Public Property GeneralDateTime() As Enums.DateTime
         Get
-            Return Me._generalcreationdate
+            Return Me._generaldatetime
+        End Get
+        Set(ByVal value As Enums.DateTime)
+            Me._generaldatetime = value
+        End Set
+    End Property
+
+    Public Property GeneralDateAddedIgnoreNFO() As Boolean
+        Get
+            Return Me._generaldateaddedignorenfo
         End Get
         Set(ByVal value As Boolean)
-            Me._generalcreationdate = value
+            Me._generaldateaddedignorenfo = value
         End Set
     End Property
 

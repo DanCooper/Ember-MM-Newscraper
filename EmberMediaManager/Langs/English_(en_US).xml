@@ -1296,4 +1296,8 @@
   <string id="1206">Collection ID:</string>
   <string id="1207">Also Get Blank Images</string>
   <string id="1208">Reload All MovieSets</string>
+  <string id="1209">Ignore &lt;dateadded&gt; from NFO</string>
+  <string id="1210">Current DateTime when adding</string>
+  <string id="1211">mtime (fallback to ctime)</string>
+  <string id="1212">Newer of mtime and ctime</string>
 </strings>

@@ -616,6 +616,17 @@ End Class 'Globals
 Public Class Enums
 
 #Region "Enumerations"
+    ''' <summary>
+    ''' 0 results in using the current datetime when adding a video
+    ''' 1 results in prefering to use the files mtime (if it's valid) and only using the file's ctime if the mtime isn't valid
+    ''' 2 results in using the newer datetime of the file's mtime and ctime
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Enum DateTime As Integer
+        Now = 0
+        mtime = 1
+        Newer = 2
+    End Enum
 
     Public Enum DefaultType As Integer
         All = 0

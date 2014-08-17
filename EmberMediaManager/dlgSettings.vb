@@ -1088,6 +1088,10 @@ Public Class dlgSettings
         End Try
     End Sub
 
+    Private Sub cbGeneralDateTime_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbGeneralDateTime.SelectedIndexChanged
+        Me.SetApplyButton(True)
+    End Sub
+
     Private Sub cbMovieScraperCertLang_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbMovieScraperCertLang.SelectedIndexChanged
         Me.SetApplyButton(True)
     End Sub
@@ -1804,7 +1808,7 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkGeneralCreationDate_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGeneralCreationDate.CheckedChanged
+    Private Sub chkGeneralDateAddedIgnoreNFO_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGeneralDateAddedIgnoreNFO.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -2920,6 +2924,7 @@ Public Class dlgSettings
                 Me.btnMovieGeneralCustomMarker3.BackColor = System.Drawing.Color.FromArgb(.MovieGeneralCustomMarker3Color)
                 Me.btnMovieGeneralCustomMarker4.BackColor = System.Drawing.Color.FromArgb(.MovieGeneralCustomMarker4Color)
                 Me.cbGeneralDaemonDrive.SelectedItem = .GeneralDaemonDrive
+                Me.cbGeneralDateTime.SelectedIndex = .GeneralDateTime
                 Me.cbGeneralLanguage.SelectedItem = .GeneralLanguage
                 Me.cbGeneralMovieTheme.SelectedItem = .GeneralMovieTheme
                 Me.cbGeneralMovieSetTheme.SelectedItem = .GeneralMovieSetTheme
@@ -2965,7 +2970,7 @@ Public Class dlgSettings
                 Me.chkCleanPosterTBN.Checked = .CleanPosterTBN
                 Me.chkFileSystemCleanerWhitelist.Checked = .FileSystemCleanerWhitelist
                 Me.chkGeneralCheckUpdates.Checked = .GeneralCheckUpdates
-                Me.chkGeneralCreationDate.Checked = .GeneralCreationDate
+                Me.chkGeneralDateAddedIgnoreNFO.Checked = .GeneralDateAddedIgnoreNFO
                 Me.chkGeneralDoubleClickScrape.Checked = .GeneralDoubleClickScrape
                 Me.chkGeneralHideBanner.Checked = .GeneralHideBanner
                 Me.chkGeneralHideCharacterArt.Checked = .GeneralHideCharacterArt
@@ -3874,6 +3879,15 @@ Public Class dlgSettings
         End If
     End Sub
 
+    Private Sub LoadGeneralDateTime()
+        Dim items As New Dictionary(Of String, Enums.DateTime)
+        items.Add(Master.eLang.GetString(1210, "Current DateTime when adding"), Enums.DateTime.Now)
+        items.Add(Master.eLang.GetString(1211, "mtime (fallback to ctime)"), Enums.DateTime.mtime)
+        items.Add(Master.eLang.GetString(1212, "Newer of mtime and ctime"), Enums.DateTime.Newer)
+        Me.cbGeneralDateTime.DataSource = items.ToList
+        Me.cbGeneralDateTime.DisplayMember = "Key"
+        Me.cbGeneralDateTime.ValueMember = "Value"
+    End Sub
 
     Private Sub LoadGenericFanartSizes()
         Dim items As New Dictionary(Of String, Enums.FanartSize)
@@ -4454,7 +4468,8 @@ Public Class dlgSettings
                 .FileSystemValidThemeExts.AddRange(lstFileSystemValidThemeExts.Items.OfType(Of String).ToList)
                 .RestartScraper = Me.chkGeneralResumeScraper.Checked
                 .GeneralCheckUpdates = chkGeneralCheckUpdates.Checked
-                .GeneralCreationDate = Me.chkGeneralCreationDate.Checked
+                .GeneralDateAddedIgnoreNFO = Me.chkGeneralDateAddedIgnoreNFO.Checked
+                .GeneralDateTime = DirectCast(Me.cbGeneralDateTime.SelectedIndex, Enums.DateTime)
                 .GeneralDoubleClickScrape = Me.chkGeneralDoubleClickScrape.Checked
                 .GeneralDaemonDrive = Me.cbGeneralDaemonDrive.Text
                 .GeneralDaemonPath = Me.txtGeneralDaemonPath.Text
@@ -5310,7 +5325,7 @@ Public Class dlgSettings
         Me.cbMovieScraperForceTitle.Items.AddRange(Strings.Split(clsAdvancedSettings.GetSetting("ForceTitle", ""), "|"))
         Me.chkFileSystemCleanerWhitelist.Text = Master.eLang.GetString(440, "Whitelist Video Extensions")
         Me.chkGeneralCheckUpdates.Text = Master.eLang.GetString(432, "Check for Updates")
-        Me.chkGeneralCreationDate.Text = Master.eLang.GetString(874, "Use FileCreated information of videofile")
+        Me.chkGeneralDateAddedIgnoreNFO.Text = Master.eLang.GetString(1209, "Ignore &lt;dateadded&gt; from NFO")
         Me.chkGeneralDoubleClickScrape.Text = Master.eLang.GetString(1198, "Enable Image Scrape On Double Right Click")
         Me.chkGeneralHideBanner.Text = Master.eLang.GetString(1146, "Do Not Display Banner")
         Me.chkGeneralHideCharacterArt.Text = Master.eLang.GetString(1147, "Do Not Display CharacterArt")
@@ -5784,6 +5799,7 @@ Public Class dlgSettings
         Me.cbTVEpisodeRetrieve.Items.AddRange(New String() {Master.eLang.GetString(13, "Folder Name"), Master.eLang.GetString(15, "File Name"), Master.eLang.GetString(16, "Season Result")})
         Me.gbMovieGenrealIMDBMirrorOpts.Text = Master.eLang.GetString(885, "IMDB")
 
+        Me.LoadGeneralDateTime()
         Me.LoadGenericFanartSizes()
         Me.LoadGenericPosterSizes()
         Me.LoadMovieBannerTypes()

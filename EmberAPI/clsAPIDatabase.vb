@@ -1595,29 +1595,37 @@ Public Class Database
                 Dim parMarkCustom4 As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMarkCustom4", DbType.Boolean, 0, "MarkCustom4")
 
                 ' First let's save it to NFO, even because we will need the NFO path
-                'If ToNfo AndAlso Not String.IsNullOrEmpty(_movieDB.Movie.IMDBID) Then NFO.SaveMovieToNFO(_movieDB)
-                'Why do we need IMDB to save to NFO?
                 If ToNfo Then NFO.SaveMovieToNFO(_movieDB)
 
-                'cocotus 20130303 Special DateAddvalue
-                '    parMovieDateAdd.Value = If(IsNew, Functions.ConvertToUnixTimestamp(Now), _movieDB.DateAdd)
                 Try
-                    If Master.eSettings.GeneralCreationDate Then
-                        'Use filecreation date of file instead of simply NOW Date    
-                        parDateAdd.Value = If(IsNew, Functions.ConvertToUnixTimestamp(System.IO.File.GetCreationTime(_movieDB.Filename)), _movieDB.DateAdd)
+                    If Not Master.eSettings.GeneralDateAddedIgnoreNFO AndAlso Not String.IsNullOrEmpty(_movieDB.Movie.DateAdded) Then
+                        Dim DateTimeAdded As DateTime = DateTime.ParseExact(_movieDB.Movie.DateAdded, "yyyy-MM-dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture)
+                        parDateAdd.Value = Functions.ConvertToUnixTimestamp(DateTimeAdded)
                     Else
-                        If Not String.IsNullOrEmpty(_movieDB.Movie.DateAdded) Then
-                            Dim DateTimeAdded As DateTime = DateTime.ParseExact(_movieDB.Movie.DateAdded, "yyyy-MM-dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture)
-                            parDateAdd.Value = Functions.ConvertToUnixTimestamp(DateTimeAdded)
-                        Else
-                            parDateAdd.Value = If(IsNew, Functions.ConvertToUnixTimestamp(Now), _movieDB.DateAdd)
-                        End If
+                        Select Case Master.eSettings.GeneralDateTime
+                            Case Enums.DateTime.Now
+                                parDateAdd.Value = If(IsNew, Functions.ConvertToUnixTimestamp(Now), _movieDB.DateAdd)
+                            Case Enums.DateTime.mtime
+                                Dim mtime As Date = System.IO.File.GetLastWriteTime(_movieDB.Filename)
+                                If mtime.Year > 1601 Then
+                                    parDateAdd.Value = Functions.ConvertToUnixTimestamp(mtime)
+                                Else
+                                    Dim ctime As Date = System.IO.File.GetCreationTime(_movieDB.Filename)
+                                    parDateAdd.Value = Functions.ConvertToUnixTimestamp(ctime)
+                                End If
+                            Case Enums.DateTime.Newer
+                                Dim mtime As Date = System.IO.File.GetLastWriteTime(_movieDB.Filename)
+                                Dim ctime As Date = System.IO.File.GetCreationTime(_movieDB.Filename)
+                                If mtime > ctime Then
+                                    parDateAdd.Value = Functions.ConvertToUnixTimestamp(mtime)
+                                Else
+                                    parDateAdd.Value = Functions.ConvertToUnixTimestamp(ctime)
+                                End If
+                        End Select
                     End If
-                    'something went wrong so use old way...
                 Catch ex As Exception
                     parDateAdd.Value = If(IsNew, Functions.ConvertToUnixTimestamp(Now), _movieDB.DateAdd)
                 End Try
-                'cocotus end
 
                 parMoviePath.Value = _movieDB.Filename
                 parType.Value = _movieDB.IsSingle
@@ -2268,18 +2276,31 @@ Public Class Database
                 If ToNfo Then NFO.SaveTVEpToNFO(_TVEpDB)
 
                 Try
-                    If Master.eSettings.GeneralCreationDate Then
-                        'Use filecreation date of file instead of simply NOW Date    
-                        parDateAdd.Value = If(IsNew, Functions.ConvertToUnixTimestamp(System.IO.File.GetCreationTime(_TVEpDB.Filename)), _TVEpDB.DateAdd)
+                    If Not Master.eSettings.GeneralDateAddedIgnoreNFO AndAlso Not String.IsNullOrEmpty(_TVEpDB.TVEp.DateAdded) Then
+                        Dim DateTimeAdded As DateTime = DateTime.ParseExact(_TVEpDB.TVEp.DateAdded, "yyyy-MM-dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture)
+                        parDateAdd.Value = Functions.ConvertToUnixTimestamp(DateTimeAdded)
                     Else
-                        If Not String.IsNullOrEmpty(_TVEpDB.TVEp.DateAdded) Then
-                            Dim DateTimeAdded As DateTime = DateTime.ParseExact(_TVEpDB.TVEp.DateAdded, "yyyy-MM-dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture)
-                            parDateAdd.Value = Functions.ConvertToUnixTimestamp(DateTimeAdded)
-                        Else
-                            parDateAdd.Value = If(IsNew, Functions.ConvertToUnixTimestamp(Now), _TVEpDB.DateAdd)
-                        End If
+                        Select Case Master.eSettings.GeneralDateTime
+                            Case Enums.DateTime.Now
+                                parDateAdd.Value = If(IsNew, Functions.ConvertToUnixTimestamp(Now), _TVEpDB.DateAdd)
+                            Case Enums.DateTime.mtime
+                                Dim mtime As Date = System.IO.File.GetLastWriteTime(_TVEpDB.Filename)
+                                If mtime.Year > 1601 Then
+                                    parDateAdd.Value = Functions.ConvertToUnixTimestamp(mtime)
+                                Else
+                                    Dim ctime As Date = System.IO.File.GetCreationTime(_TVEpDB.Filename)
+                                    parDateAdd.Value = Functions.ConvertToUnixTimestamp(ctime)
+                                End If
+                            Case Enums.DateTime.Newer
+                                Dim mtime As Date = System.IO.File.GetLastWriteTime(_TVEpDB.Filename)
+                                Dim ctime As Date = System.IO.File.GetCreationTime(_TVEpDB.Filename)
+                                If mtime > ctime Then
+                                    parDateAdd.Value = Functions.ConvertToUnixTimestamp(mtime)
+                                Else
+                                    parDateAdd.Value = Functions.ConvertToUnixTimestamp(ctime)
+                                End If
+                        End Select
                     End If
-                    'something went wrong so use old way...
                 Catch ex As Exception
                     parDateAdd.Value = If(IsNew, Functions.ConvertToUnixTimestamp(Now), _TVEpDB.DateAdd)
                 End Try
