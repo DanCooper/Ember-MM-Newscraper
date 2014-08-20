@@ -1311,6 +1311,10 @@ Namespace FileUtils
             Dim fSetName As String = SetName
             Dim fPath As String = Master.eSettings.MovieMoviesetsPath
 
+            For Each Invalid As Char In Path.GetInvalidFileNameChars
+                fSetName = fSetName.Replace(Invalid, "-")
+            Next
+
             Select Case mType
                 Case Enums.ModType_Movie.NFO
                     With Master.eSettings
