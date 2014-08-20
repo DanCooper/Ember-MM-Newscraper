@@ -3364,26 +3364,32 @@ Public Class dlgSettings
                 Me.TVShowRegex.AddRange(.TVShowRegexes)
                 Me.LoadTVShowRegex()
 
+                Try
+                    If Not String.IsNullOrEmpty(.MovieScraperCertLang) Then
+                        Me.chkMovieScraperCertLang.Checked = True
+                        Me.cbMovieScraperCertLang.Enabled = True
+                        Me.chkMovieScraperCertForMPAA.Enabled = True
+                        Me.chkMovieScraperCertForMPAA.Checked = .MovieScraperCertForMPAA
+                    End If
 
-                'If Not String.IsNullOrEmpty(.MovieScraperCertLang) Then
-                '    Me.chkMovieScraperCertLang.Checked = True
-                '    Me.cbMovieScraperCertLang.Enabled = True
-                '    Me.cbMovieScraperCertLang.Text = .MovieScraperCertLang
-                '    Me.chkMovieScraperCertForMPAA.Enabled = True
-                '    Me.chkMovieScraperCertForMPAA.Checked = .MovieScraperCertForMPAA
-                'End If
+                    Me.cbMovieScraperCertLang.Items.Clear()
+                    Me.cbMovieScraperCertLang.Items.AddRange((From lLang In APIXML.MovieCertLanguagesXML.Language Select lLang.name).ToArray)
+                    If Me.cbMovieScraperCertLang.Items.Count > 0 Then
+                        Me.cbMovieScraperCertLang.Text = APIXML.MovieCertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = .MovieScraperCertLang).name
+                    End If
+                Catch ex As Exception
+                    logger.Error(New StackFrame().GetMethod().Name, ex)
+                End Try
 
-                Me.cbMovieScraperCertLang.Items.Clear()
-                Me.cbMovieScraperCertLang.Items.AddRange((From lLang In APIXML.MovieCertLanguagesXML.Language Select lLang.name).ToArray)
-                If Me.cbMovieScraperCertLang.Items.Count > 0 Then
-                    Me.cbMovieScraperCertLang.Text = APIXML.MovieCertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = .MovieScraperCertLang).name
-                End If
-
-                Me.cbTVGeneralLang.Items.Clear()
-                Me.cbTVGeneralLang.Items.AddRange((From lLang In .TVGeneralLanguages.Language Select lLang.name).ToArray)
-                If Me.cbTVGeneralLang.Items.Count > 0 Then
-                    Me.cbTVGeneralLang.Text = .TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = .TVGeneralLanguage).name
-                End If
+                Try
+                    Me.cbTVGeneralLang.Items.Clear()
+                    Me.cbTVGeneralLang.Items.AddRange((From lLang In .TVGeneralLanguages.Language Select lLang.name).ToArray)
+                    If Me.cbTVGeneralLang.Items.Count > 0 Then
+                        Me.cbTVGeneralLang.Text = .TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = .TVGeneralLanguage).name
+                    End If
+                Catch ex As Exception
+                    logger.Error(New StackFrame().GetMethod().Name, ex)
+                End Try
 
                 If Not String.IsNullOrEmpty(.ProxyURI) AndAlso .ProxyPort >= 0 Then
                     Me.chkProxyEnable.Checked = True

@@ -393,6 +393,11 @@ Public Class APIXML
         Dim v = From e In RatingXML.movies.Where(Function(f) f.searchstring = strRating)
         If v.Count > 0 Then
             imgRatingStr = Path.Combine(mePath, v(0).icon)
+        Else
+            v = From e In RatingXML.movies Where strRating.ToLower.StartsWith(e.searchstring.ToLower)
+            If v.Count > 0 Then
+                imgRatingStr = Path.Combine(mePath, v(0).icon)
+            End If
         End If
         'If RatingXML.Nodes.Count > 0 Then
         '    Dim mePath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Ratings")

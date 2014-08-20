@@ -50,7 +50,7 @@
     </Language>
     <Language>
       <name>Brazil</name>
-      <abbreviation>bt</abbreviation>
+      <abbreviation>br</abbreviation>
     </Language>
     <Language>
       <name>Canada</name>
@@ -143,5 +143,9 @@
     <Language>
       <name>Spain</name>
       <abbreviation>es</abbreviation>
+    </Language>
+    <Language>
+      <name>Hungary</name>
+      <abbreviation>hu</abbreviation>
     </Language>
 </MovieCertLanguages>

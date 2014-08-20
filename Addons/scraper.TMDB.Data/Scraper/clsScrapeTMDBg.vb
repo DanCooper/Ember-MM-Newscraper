@@ -351,7 +351,9 @@ Namespace TMDBg
                         If Releases.countries.Count > 0 Then
                             For Each Country In Releases.countries
                                 If Country.iso_3166_1.ToLower = CStr(IIf(Master.eSettings.MovieScraperCertLang = "", "us", Master.eSettings.MovieScraperCertLang)) Then
-                                    DBMovie.MPAA = Country.certification
+                                    If Not String.IsNullOrEmpty(Country.certification) Then
+                                        DBMovie.MPAA = String.Concat(APIXML.MovieCertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = Country.iso_3166_1.ToLower).name, ":", Country.certification)
+                                    End If
                                     If Options.bCert AndAlso (String.IsNullOrEmpty(DBMovie.Certification) OrElse Not Master.eSettings.MovieLockMPAA) Then
                                         DBMovie.Certification = DBMovie.MPAA
                                     End If
