@@ -428,7 +428,7 @@ Public Class APIXML
     Public Shared Function GetRatingList() As Object()
         Dim retRatings As New List(Of String)
         Try
-            For Each r In RatingXML.movies.FindAll(Function(f) f.country = Master.eSettings.MovieScraperCertLang.ToLower)
+            For Each r In RatingXML.movies.FindAll(Function(f) f.country.ToLower = APIXML.MovieCertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.MovieScraperCertLang).name.ToLower)
                 retRatings.Add(r.searchstring)
             Next
 

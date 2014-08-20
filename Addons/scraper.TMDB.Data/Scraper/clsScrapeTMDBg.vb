@@ -350,7 +350,7 @@ Namespace TMDBg
                         'only update DBMovie if scraped result is not empty/nothing!
                         If Releases.countries.Count > 0 Then
                             For Each Country In Releases.countries
-                                If Country.iso_3166_1.ToUpper = CStr(IIf(Master.eSettings.MovieScraperCertLang = "", "US", Master.eSettings.MovieScraperCertLang)) Then
+                                If Country.iso_3166_1.ToLower = CStr(IIf(Master.eSettings.MovieScraperCertLang = "", "us", Master.eSettings.MovieScraperCertLang)) Then
                                     DBMovie.MPAA = Country.certification
                                     If Options.bCert AndAlso (String.IsNullOrEmpty(DBMovie.Certification) OrElse Not Master.eSettings.MovieLockMPAA) Then
                                         DBMovie.Certification = DBMovie.MPAA

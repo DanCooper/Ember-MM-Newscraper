@@ -253,7 +253,8 @@ Namespace IMDB
                         Dim rCert As MatchCollection = Regex.Matches(HTML.Substring(D, W - D), HREF_PATTERN_3)
 
                         If rCert.Count > 0 Then
-                            Dim Cert = From M In rCert Select N = String.Format("{0}:{1}", DirectCast(M, Match).Groups(1).ToString.Trim, DirectCast(M, Match).Groups(2).ToString.Trim) Order By N Descending Where N.Contains(Master.eSettings.MovieScraperCertLang)
+                            Dim Cert = From M In rCert Select N = String.Format("{0}:{1}", DirectCast(M, Match).Groups(1).ToString.Trim, DirectCast(M, Match).Groups(2).ToString.Trim) Order By N Descending Where _
+                                       N.Contains(APIXML.MovieCertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.MovieScraperCertLang).name)
 
                             If Not String.IsNullOrEmpty(Master.eSettings.MovieScraperCertLang) Then
                                 If Cert.Count > 0 Then
@@ -263,8 +264,8 @@ Namespace IMDB
                                         DBMovie.Certification = scrapedresult
                                     End If
 
-                                    If Options.bMPAA AndAlso Master.eSettings.MovieScraperCertForMPAA AndAlso (Not Master.eSettings.MovieScraperCertLang = "USA" OrElse (Master.eSettings.MovieScraperCertLang = "USA" AndAlso String.IsNullOrEmpty(DBMovie.MPAA))) Then
-                                        scrapedresult = If(Master.eSettings.MovieScraperCertLang = "USA", StringUtils.USACertToMPAA(DBMovie.Certification), If(Master.eSettings.MovieScraperOnlyValueForMPAA, DBMovie.Certification.Split(Convert.ToChar(":"))(1), DBMovie.Certification))
+                                    If Options.bMPAA AndAlso Master.eSettings.MovieScraperCertForMPAA AndAlso (Not Master.eSettings.MovieScraperCertLang = "us" OrElse (Master.eSettings.MovieScraperCertLang = "us" AndAlso String.IsNullOrEmpty(DBMovie.MPAA))) Then
+                                        scrapedresult = If(Master.eSettings.MovieScraperCertLang = "us", StringUtils.USACertToMPAA(DBMovie.Certification), If(Master.eSettings.MovieScraperOnlyValueForMPAA, DBMovie.Certification.Split(Convert.ToChar(":"))(1), DBMovie.Certification))
                                         'only update DBMovie if scraped result is not empty/nothing!
                                         If Not String.IsNullOrEmpty(scrapedresult) Then
                                             DBMovie.MPAA = scrapedresult
@@ -276,7 +277,7 @@ Namespace IMDB
                                     'No FSK Rating was found  -> Alternative: Set USA Rating instead as fallback, MPAA will be converted to FSK, Certification from USA will be used, so people can see that US info was used!
                                     If Master.eSettings.MovieScraperUseMPAAFSK Then
                                         Try
-                                            If Master.eSettings.MovieScraperCertLang = "Germany" AndAlso (DBMovie.MPAA.ToLower.Contains("usa") Or DBMovie.MPAA.ToLower.Contains("rated")) Then
+                                            If Master.eSettings.MovieScraperCertLang = "de" AndAlso (DBMovie.MPAA.ToLower.Contains("usa") Or DBMovie.MPAA.ToLower.Contains("rated")) Then
                                                 Dim LANGRATING As String = "USA"
                                                 Dim Cert2 = From M In rCert Select N = String.Format("{0}:{1}", DirectCast(M, Match).Groups(1).ToString.Trim, DirectCast(M, Match).Groups(2).ToString.Trim) Order By N Descending Where N.Contains(LANGRATING)
                                                 If Cert2.Count > 0 Then
