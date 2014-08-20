@@ -1439,6 +1439,7 @@ Namespace MediaContainers
 #End Region 'Methods
     End Class
 
+    <Serializable()> _
     <XmlRoot("movieset")> _
     Public Class MovieSet
 
