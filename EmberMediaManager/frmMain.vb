@@ -1687,8 +1687,8 @@ Public Class frmMain
             Else
                 Me.ClearInfo()
             End If
-            Me.RefreshAllMovieSets()
             Me.FillList(False, True, False)
+            Me.RefreshAllMovieSets()
             Me.tslLoading.Visible = False
             Me.tspbLoading.Visible = False
             Me.btnCancel.Visible = False
@@ -3022,6 +3022,7 @@ doCancel:
         Me.tslLoading.Visible = False
 
         Me.FillList(True, True, False)
+        Me.RefreshAllMovieSets()
         Me.Cursor = Cursors.Default
     End Sub
 
@@ -7767,6 +7768,7 @@ doCancel:
             Me.tcMain.Enabled = True
             Me.DoTitleCheck()
             Me.EnableFilters(True)
+            Me.SetMovieCount()
             Me.SetMovieSetCount()
             Me.SetTVCount()
         End If
@@ -11309,8 +11311,10 @@ doCancel:
                             Me.SetMovieListItemAfterEdit(ID, indX)
                             If Me.RefreshMovie(ID) Then
                                 Me.FillList(True, True, False)
+                                Me.RefreshAllMovieSets()
                             Else
                                 Me.FillList(False, True, False)
+                                Me.RefreshAllMovieSets()
                             End If
                             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MovieSync, Nothing, Master.currMovie)
                         Case Windows.Forms.DialogResult.Retry
@@ -13195,7 +13199,11 @@ doCancel:
             Me.dgvMovies.Cursor = Cursors.Default
             Me.SetControlsEnabled(True)
 
-            If doFill Then FillList(True, True, False) Else DoTitleCheck()
+            If doFill Then
+                FillList(True, True, False)
+            Else
+                DoTitleCheck()
+            End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
@@ -13398,10 +13406,12 @@ doCancel:
         If Not Master.isCL Then
             Me.SetStatus(String.Empty)
             Me.FillList(True, True, True)
+            Me.RefreshAllMovieSets()
             Me.tspbLoading.Visible = False
             Me.tslLoading.Visible = False
         Else
             Me.FillList(True, True, True)
+            Me.RefreshAllMovieSets()
             LoadingDone = True
         End If
     End Sub
@@ -14043,6 +14053,19 @@ doCancel:
                 Me.cmnuTrayMovieFilterAutoBanner.Enabled = BannerAllowed_Movie
                 Me.cmnuTrayMovieFilterAskBanner.Enabled = BannerAllowed_Movie
 
+                'Banner MovieSet
+                Dim BannerAllowed_MovieSet As Boolean = .MovieSetBannerAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ScraperCapabilities.Banner)
+                Me.mnuMovieSetAllAutoBanner.Enabled = BannerAllowed_MovieSet
+                Me.mnuMovieSetAllAskBanner.Enabled = BannerAllowed_MovieSet
+                Me.mnuMovieSetMissAutoBanner.Enabled = BannerAllowed_MovieSet
+                Me.mnuMovieSetMissAskBanner.Enabled = BannerAllowed_MovieSet
+                Me.mnuMovieSetNewAutoBanner.Enabled = BannerAllowed_MovieSet
+                Me.mnuMovieSetNewAskBanner.Enabled = BannerAllowed_MovieSet
+                Me.mnuMovieSetMarkAutoBanner.Enabled = BannerAllowed_MovieSet
+                Me.mnuMovieSetMarkAskBanner.Enabled = BannerAllowed_MovieSet
+                Me.mnuMovieSetFilterAutoBanner.Enabled = BannerAllowed_MovieSet
+                Me.mnuMovieSetFilterAskBanner.Enabled = BannerAllowed_MovieSet
+
                 'ClearArt Movie
                 Dim ClearArtAllowed_Movie As Boolean = .MovieClearArtAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities.ClearArt)
                 Me.mnuMovieAllAutoClearArt.Enabled = ClearArtAllowed_Movie
@@ -14067,6 +14090,19 @@ doCancel:
                 Me.cmnuTrayMovieMarkAskClearArt.Enabled = ClearArtAllowed_Movie
                 Me.cmnuTrayMovieFilterAutoClearArt.Enabled = ClearArtAllowed_Movie
                 Me.cmnuTrayMovieFilterAskClearArt.Enabled = ClearArtAllowed_Movie
+
+                'ClearArt MovieSet
+                Dim ClearArtAllowed_MovieSet As Boolean = .MovieSetClearArtAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ScraperCapabilities.ClearArt)
+                Me.mnuMovieSetAllAutoClearArt.Enabled = ClearArtAllowed_MovieSet
+                Me.mnuMovieSetAllAskClearArt.Enabled = ClearArtAllowed_MovieSet
+                Me.mnuMovieSetMissAutoClearArt.Enabled = ClearArtAllowed_MovieSet
+                Me.mnuMovieSetMissAskClearArt.Enabled = ClearArtAllowed_MovieSet
+                Me.mnuMovieSetNewAutoClearArt.Enabled = ClearArtAllowed_MovieSet
+                Me.mnuMovieSetNewAskClearArt.Enabled = ClearArtAllowed_MovieSet
+                Me.mnuMovieSetMarkAutoClearArt.Enabled = ClearArtAllowed_MovieSet
+                Me.mnuMovieSetMarkAskClearArt.Enabled = ClearArtAllowed_MovieSet
+                Me.mnuMovieSetFilterAutoClearArt.Enabled = ClearArtAllowed_MovieSet
+                Me.mnuMovieSetFilterAskClearArt.Enabled = ClearArtAllowed_MovieSet
 
                 'ClearLogo Movie
                 Dim ClearLogoAllowed_Movie As Boolean = .MovieClearLogoAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities.ClearLogo)
@@ -14093,6 +14129,19 @@ doCancel:
                 Me.cmnuTrayMovieFilterAutoClearLogo.Enabled = ClearLogoAllowed_Movie
                 Me.cmnuTrayMovieFilterAskClearLogo.Enabled = ClearLogoAllowed_Movie
 
+                'ClearLogo MovieSet
+                Dim ClearLogoAllowed_MovieSet As Boolean = .MovieSetClearLogoAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ScraperCapabilities.ClearLogo)
+                Me.mnuMovieSetAllAutoClearLogo.Enabled = ClearLogoAllowed_MovieSet
+                Me.mnuMovieSetAllAskClearLogo.Enabled = ClearLogoAllowed_MovieSet
+                Me.mnuMovieSetMissAutoClearLogo.Enabled = ClearLogoAllowed_MovieSet
+                Me.mnuMovieSetMissAskClearLogo.Enabled = ClearLogoAllowed_MovieSet
+                Me.mnuMovieSetNewAutoClearLogo.Enabled = ClearLogoAllowed_MovieSet
+                Me.mnuMovieSetNewAskClearLogo.Enabled = ClearLogoAllowed_MovieSet
+                Me.mnuMovieSetMarkAutoClearLogo.Enabled = ClearLogoAllowed_MovieSet
+                Me.mnuMovieSetMarkAskClearLogo.Enabled = ClearLogoAllowed_MovieSet
+                Me.mnuMovieSetFilterAutoClearLogo.Enabled = ClearLogoAllowed_MovieSet
+                Me.mnuMovieSetFilterAskClearLogo.Enabled = ClearLogoAllowed_MovieSet
+
                 'DiscArt Movie
                 Dim DiscArtAllowed_Movie As Boolean = .MovieDiscArtAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities.DiscArt)
                 Me.mnuMovieAllAutoDiscArt.Enabled = DiscArtAllowed_Movie
@@ -14117,6 +14166,19 @@ doCancel:
                 Me.cmnuTrayMovieMarkAskDiscArt.Enabled = DiscArtAllowed_Movie
                 Me.cmnuTrayMovieFilterAutoDiscArt.Enabled = DiscArtAllowed_Movie
                 Me.cmnuTrayMovieFilterAskDiscArt.Enabled = DiscArtAllowed_Movie
+
+                'DiscArt MovieSet
+                Dim DiscArtAllowed_MovieSet As Boolean = .MovieSetDiscArtAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ScraperCapabilities.DiscArt)
+                Me.mnuMovieSetAllAutoDiscArt.Enabled = DiscArtAllowed_MovieSet
+                Me.mnuMovieSetAllAskDiscArt.Enabled = DiscArtAllowed_MovieSet
+                Me.mnuMovieSetMissAutoDiscArt.Enabled = DiscArtAllowed_MovieSet
+                Me.mnuMovieSetMissAskDiscArt.Enabled = DiscArtAllowed_MovieSet
+                Me.mnuMovieSetNewAutoDiscArt.Enabled = DiscArtAllowed_MovieSet
+                Me.mnuMovieSetNewAskDiscArt.Enabled = DiscArtAllowed_MovieSet
+                Me.mnuMovieSetMarkAutoDiscArt.Enabled = DiscArtAllowed_MovieSet
+                Me.mnuMovieSetMarkAskDiscArt.Enabled = DiscArtAllowed_MovieSet
+                Me.mnuMovieSetFilterAutoDiscArt.Enabled = DiscArtAllowed_MovieSet
+                Me.mnuMovieSetFilterAskDiscArt.Enabled = DiscArtAllowed_MovieSet
 
                 'Extrafanart Movie
                 Dim EFanartsAllowed_Movie As Boolean = .MovieEFanartsAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities.Fanart)
@@ -14193,6 +14255,19 @@ doCancel:
                 Me.cmnuTrayMovieFilterAutoFanart.Enabled = FanartAllowed_Movie
                 Me.cmnuTrayMovieFilterAskFanart.Enabled = FanartAllowed_Movie
 
+                'Fanart MovieSet
+                Dim FanartAllowed_MovieSet As Boolean = .MovieSetFanartAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ScraperCapabilities.Fanart)
+                Me.mnuMovieSetAllAutoFanart.Enabled = FanartAllowed_MovieSet
+                Me.mnuMovieSetAllAskFanart.Enabled = FanartAllowed_MovieSet
+                Me.mnuMovieSetMissAutoFanart.Enabled = FanartAllowed_MovieSet
+                Me.mnuMovieSetMissAskFanart.Enabled = FanartAllowed_MovieSet
+                Me.mnuMovieSetMarkAutoFanart.Enabled = FanartAllowed_MovieSet
+                Me.mnuMovieSetMarkAskFanart.Enabled = FanartAllowed_MovieSet
+                Me.mnuMovieSetNewAutoFanart.Enabled = FanartAllowed_MovieSet
+                Me.mnuMovieSetNewAskFanart.Enabled = FanartAllowed_MovieSet
+                Me.mnuMovieSetFilterAutoFanart.Enabled = FanartAllowed_MovieSet
+                Me.mnuMovieSetFilterAskFanart.Enabled = FanartAllowed_MovieSet
+
                 'Landscape Movie
                 Dim LandscapeAllowed_Movie As Boolean = .MovieLandscapeAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_Movie(Enums.ScraperCapabilities.Landscape)
                 Me.mnuMovieAllAutoLandscape.Enabled = LandscapeAllowed_Movie
@@ -14217,6 +14292,19 @@ doCancel:
                 Me.cmnuTrayMovieMarkAskLandscape.Enabled = LandscapeAllowed_Movie
                 Me.cmnuTrayMovieFilterAutoLandscape.Enabled = LandscapeAllowed_Movie
                 Me.cmnuTrayMovieFilterAskLandscape.Enabled = LandscapeAllowed_Movie
+
+                'Landscape MovieSet
+                Dim LandscapeAllowed_MovieSet As Boolean = .MovieSetLandscapeAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ScraperCapabilities.Landscape)
+                Me.mnuMovieSetAllAutoLandscape.Enabled = LandscapeAllowed_MovieSet
+                Me.mnuMovieSetAllAskLandscape.Enabled = LandscapeAllowed_MovieSet
+                Me.mnuMovieSetMissAutoLandscape.Enabled = LandscapeAllowed_MovieSet
+                Me.mnuMovieSetMissAskLandscape.Enabled = LandscapeAllowed_MovieSet
+                Me.mnuMovieSetNewAutoLandscape.Enabled = LandscapeAllowed_MovieSet
+                Me.mnuMovieSetNewAskLandscape.Enabled = LandscapeAllowed_MovieSet
+                Me.mnuMovieSetMarkAutoLandscape.Enabled = LandscapeAllowed_MovieSet
+                Me.mnuMovieSetMarkAskLandscape.Enabled = LandscapeAllowed_MovieSet
+                Me.mnuMovieSetFilterAutoLandscape.Enabled = LandscapeAllowed_MovieSet
+                Me.mnuMovieSetFilterAskLandscape.Enabled = LandscapeAllowed_MovieSet
 
                 'Metadata Movie
                 Me.mnuMovieAllAskMI.Enabled = .MovieScraperMetaDataScan
@@ -14262,6 +14350,19 @@ doCancel:
                 Me.cmnuTrayMovieNewAskPoster.Enabled = PosterAllowed_Movie
                 Me.cmnuTrayMovieFilterAutoPoster.Enabled = PosterAllowed_Movie
                 Me.cmnuTrayMovieFilterAskPoster.Enabled = PosterAllowed_Movie
+
+                'Poster MovieSet
+                Dim PosterAllowed_MovieSet As Boolean = .MovieSetPosterAnyEnabled AndAlso ModulesManager.Instance.QueryScraperCapabilities_Image_MovieSet(Enums.ScraperCapabilities.Poster)
+                Me.mnuMovieSetAllAutoPoster.Enabled = PosterAllowed_MovieSet
+                Me.mnuMovieSetAllAskPoster.Enabled = PosterAllowed_MovieSet
+                Me.mnuMovieSetMissAutoPoster.Enabled = PosterAllowed_MovieSet
+                Me.mnuMovieSetMissAskPoster.Enabled = PosterAllowed_MovieSet
+                Me.mnuMovieSetMarkAutoPoster.Enabled = PosterAllowed_MovieSet
+                Me.mnuMovieSetMarkAskPoster.Enabled = PosterAllowed_MovieSet
+                Me.mnuMovieSetNewAutoPoster.Enabled = PosterAllowed_MovieSet
+                Me.mnuMovieSetNewAskPoster.Enabled = PosterAllowed_MovieSet
+                Me.mnuMovieSetFilterAutoPoster.Enabled = PosterAllowed_MovieSet
+                Me.mnuMovieSetFilterAskPoster.Enabled = PosterAllowed_MovieSet
 
                 'Theme Movie
                 Dim ThemeAllowed_Movie As Boolean = .MovieThemeEnable AndAlso .MovieThemeAnyEnabled ' AndAlso ModulesManager.Instance.QueryPostScraperCapabilities(Enums.ScraperCapabilities.Theme) 'TODO
@@ -14576,11 +14677,29 @@ doCancel:
     ''' Update the displayed moviesets counts
     ''' </summary>
     ''' <remarks></remarks>
+    Private Sub SetMovieCount()
+        Dim MovieCount As Integer = 0
+
+        Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+            SQLCommand.CommandText = "SELECT COUNT(ID) AS COUNT FROM Movies"
+            MovieCount = Convert.ToInt32(SQLCommand.ExecuteScalar)
+        End Using
+
+        If MovieCount > 0 Then
+            Me.tpMovies.Text = String.Format("{0} ({1})", Master.eLang.GetString(36, "Movies"), MovieCount)
+        Else
+            Me.tpMovies.Text = Master.eLang.GetString(36, "Movies")
+        End If
+    End Sub
+    ''' <summary>
+    ''' Update the displayed moviesets counts
+    ''' </summary>
+    ''' <remarks></remarks>
     Private Sub SetMovieSetCount()
         Dim MovieSetCount As Integer = 0
 
         Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-            SQLCommand.CommandText = "SELECT COUNT(SetName) AS COUNT FROM Sets"
+            SQLCommand.CommandText = "SELECT COUNT(ID) AS COUNT FROM Sets"
             MovieSetCount = Convert.ToInt32(SQLCommand.ExecuteScalar)
         End Using
 
@@ -15458,6 +15577,8 @@ doCancel:
             Case 0 'Movies list
                 Me.mnuMainTools.Enabled = True
                 Me.cmnuTrayTools.Enabled = True
+                Me.mnuScrapeMovies.Visible = True
+                Me.mnuScrapeMovieSets.Visible = False
                 Me.pnlFilter.Visible = True
                 Me.pnlListTop.Height = 56
                 Me.btnMarkAll.Visible = True
@@ -15484,8 +15605,8 @@ doCancel:
             Case 1 'MovieSets list
                 Me.mnuMainTools.Enabled = True
                 Me.cmnuTrayTools.Enabled = True
-                Me.mnuScrapeMovies.Enabled = False
-                Me.mnuScrapeMovieSets.Enabled = True
+                Me.mnuScrapeMovies.Visible = False
+                Me.mnuScrapeMovieSets.Visible = True
                 Me.pnlFilter.Visible = False
                 Me.pnlListTop.Height = 56
                 Me.btnMarkAll.Visible = False
@@ -15515,6 +15636,8 @@ doCancel:
                 Me.cmnuTrayTools.Enabled = False
                 Me.mnuScrapeMovies.Enabled = False
                 Me.mnuScrapeMovieSets.Enabled = False
+                Me.mnuScrapeMovies.Visible = False
+                Me.mnuScrapeMovieSets.Visible = False
                 Me.cmnuTrayScrape.Enabled = False
                 Me.dgvMovies.Visible = False
                 Me.dgvMovieSets.Visible = False
