@@ -1302,4 +1302,16 @@
   <string id="1212">Newer of mtime and ctime</string>
   <string id="1213">Scrape MovieSets</string>
   <string id="1214">Scrape/download data from the internet for multiple moviesets.</string>
+  <string id="1215">Scraping Media (All MovieSets - Ask):</string>
+  <string id="1216">Scraping Media (All MovieSets - Auto):</string>
+  <string id="1217">Scraping Media (All MovieSets - Skip):</string>
+  <string id="1218">Scraping Media (MovieSets Missing Items - Auto):</string>
+  <string id="1219">Scraping Media (MovieSets Missing Items - Ask):</string>
+  <string id="1220">Scraping Media (MovieSets Missing Items - Skip):</string>
+  <string id="1221">Scraping Media (New MovieSets - Ask):</string>
+  <string id="1222">Scraping Media (New MovieSets - Auto):</string>
+  <string id="1223">Scraping Media (New MovieSets - Skip):</string>
+  <string id="1224">Scraping Media (Marked MovieSets - Ask):</string>
+  <string id="1225">Scraping Media (Marked MovieSets - Auto):</string>
+  <string id="1226">Scraping Media (Marked MovieSets - Skip):</string>
 </strings>

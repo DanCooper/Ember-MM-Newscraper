@@ -11668,29 +11668,29 @@ doCancel:
         If Not selected Then
             Select Case sType
                 Case Enums.ScrapeType.FullAsk
-                    Me.tslLoading.Text = Master.eLang.GetString(127, "Scraping Media (All Movies - Ask):")
+                    Me.tslLoading.Text = Master.eLang.GetString(1215, "Scraping Media (All MovieSets - Ask):")
                 Case Enums.ScrapeType.FullAuto
-                    Me.tslLoading.Text = Master.eLang.GetString(128, "Scraping Media (All Movies - Auto):")
+                    Me.tslLoading.Text = Master.eLang.GetString(1216, "Scraping Media (All MovieSets - Auto):")
                 Case Enums.ScrapeType.FullSkip
-                    Me.tslLoading.Text = Master.eLang.GetString(853, "Scraping Media (All Movies - Skip):")
+                    Me.tslLoading.Text = Master.eLang.GetString(1217, "Scraping Media (All MovieSets - Skip):")
                 Case Enums.ScrapeType.UpdateAuto
-                    Me.tslLoading.Text = Master.eLang.GetString(132, "Scraping Media (Movies Missing Items - Auto):")
+                    Me.tslLoading.Text = Master.eLang.GetString(1218, "Scraping Media (MovieSets Missing Items - Auto):")
                 Case Enums.ScrapeType.UpdateAsk
-                    Me.tslLoading.Text = Master.eLang.GetString(133, "Scraping Media (Movies Missing Items - Ask):")
+                    Me.tslLoading.Text = Master.eLang.GetString(1219, "Scraping Media (MovieSets Missing Items - Ask):")
                 Case Enums.ScrapeType.UpdateSkip
-                    Me.tslLoading.Text = Master.eLang.GetString(1042, "Scraping Media (Movies Missing Items - Skip):")
+                    Me.tslLoading.Text = Master.eLang.GetString(1220, "Scraping Media (MovieSets Missing Items - Skip):")
                 Case Enums.ScrapeType.NewAsk
-                    Me.tslLoading.Text = Master.eLang.GetString(134, "Scraping Media (New Movies - Ask):")
+                    Me.tslLoading.Text = Master.eLang.GetString(1221, "Scraping Media (New MovieSets - Ask):")
                 Case Enums.ScrapeType.NewAuto
-                    Me.tslLoading.Text = Master.eLang.GetString(135, "Scraping Media (New Movies - Auto):")
+                    Me.tslLoading.Text = Master.eLang.GetString(1222, "Scraping Media (New MovieSets - Auto):")
                 Case Enums.ScrapeType.NewSkip
-                    Me.tslLoading.Text = Master.eLang.GetString(1043, "Scraping Media (New Movies - Skip):")
+                    Me.tslLoading.Text = Master.eLang.GetString(1223, "Scraping Media (New MovieSets - Skip):")
                 Case Enums.ScrapeType.MarkAsk
-                    Me.tslLoading.Text = Master.eLang.GetString(136, "Scraping Media (Marked Movies - Ask):")
+                    Me.tslLoading.Text = Master.eLang.GetString(1224, "Scraping Media (Marked MovieSets - Ask):")
                 Case Enums.ScrapeType.MarkAuto
-                    Me.tslLoading.Text = Master.eLang.GetString(137, "Scraping Media (Marked Movies - Auto):")
+                    Me.tslLoading.Text = Master.eLang.GetString(1225, "Scraping Media (Marked MovieSets - Auto):")
                 Case Enums.ScrapeType.MarkSkip
-                    Me.tslLoading.Text = Master.eLang.GetString(1044, "Scraping Media (Marked Movies - Skip):")
+                    Me.tslLoading.Text = Master.eLang.GetString(1226, "Scraping Media (Marked MovieSets - Skip):")
                 Case Enums.ScrapeType.FilterAsk
                     Me.tslLoading.Text = Master.eLang.GetString(622, "Scraping Media (Current Filter - Ask):")
                 Case Enums.ScrapeType.FilterAuto
@@ -14674,7 +14674,7 @@ doCancel:
         End Try
     End Sub
     ''' <summary>
-    ''' Update the displayed moviesets counts
+    ''' Update the displayed movie counts
     ''' </summary>
     ''' <remarks></remarks>
     Private Sub SetMovieCount()
@@ -14692,7 +14692,7 @@ doCancel:
         End If
     End Sub
     ''' <summary>
-    ''' Update the displayed moviesets counts
+    ''' Update the displayed movieset counts
     ''' </summary>
     ''' <remarks></remarks>
     Private Sub SetMovieSetCount()
