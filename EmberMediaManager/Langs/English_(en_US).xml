@@ -65,7 +65,7 @@
   <string id="64">Plot Outline</string>
   <string id="65">Plot</string>
   <string id="66">Info</string>
-  <string id="67">Scrape Media</string>
+  <string id="67">Scrape Movies</string>
   <string id="68">All Movies</string>
   <string id="69">Automatic (Force Best Match)</string>
   <string id="70">All Items</string>
@@ -1300,4 +1300,6 @@
   <string id="1210">Current DateTime when adding</string>
   <string id="1211">mtime (fallback to ctime)</string>
   <string id="1212">Newer of mtime and ctime</string>
+  <string id="1213">Scrape MovieSets</string>
+  <string id="1214">Scrape/download data from the internet for multiple moviesets.</string>
 </strings>

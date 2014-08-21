@@ -194,11 +194,11 @@ Public Class FileManagerExternalModule
     End Sub
 
     Public Sub RemoveToolsStripItem(value As System.Windows.Forms.ToolStripItem)
-        If (ModulesManager.Instance.RuntimeObjects.MenuMediaList.InvokeRequired) Then
-            ModulesManager.Instance.RuntimeObjects.MenuMediaList.Invoke(New Delegate_RemoveToolsStripItem(AddressOf RemoveToolsStripItem), New Object() {value})
+        If (ModulesManager.Instance.RuntimeObjects.MenuMovieList.InvokeRequired) Then
+            ModulesManager.Instance.RuntimeObjects.MenuMovieList.Invoke(New Delegate_RemoveToolsStripItem(AddressOf RemoveToolsStripItem), New Object() {value})
             Exit Sub
         End If
-        ModulesManager.Instance.RuntimeObjects.MenuMediaList.Items.Remove(value)
+        ModulesManager.Instance.RuntimeObjects.MenuMovieList.Items.Remove(value)
     End Sub
 
     Sub Enable()
@@ -228,11 +228,11 @@ Public Class FileManagerExternalModule
     End Sub
 
     Public Sub SetToolsStripItem(value As System.Windows.Forms.ToolStripItem)
-        If (ModulesManager.Instance.RuntimeObjects.MenuMediaList.InvokeRequired) Then
-            ModulesManager.Instance.RuntimeObjects.MenuMediaList.Invoke(New Delegate_SetToolsStripItem(AddressOf SetToolsStripItem), New Object() {value})
+        If (ModulesManager.Instance.RuntimeObjects.MenuMovieList.InvokeRequired) Then
+            ModulesManager.Instance.RuntimeObjects.MenuMovieList.Invoke(New Delegate_SetToolsStripItem(AddressOf SetToolsStripItem), New Object() {value})
             Exit Sub
         End If
-        ModulesManager.Instance.RuntimeObjects.MenuMediaList.Items.Add(value)
+        ModulesManager.Instance.RuntimeObjects.MenuMovieList.Items.Add(value)
     End Sub
 
     Private Sub FolderSubMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
