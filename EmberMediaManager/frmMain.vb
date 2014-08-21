@@ -14747,24 +14747,38 @@ doCancel:
                 .mnuMovieAll.Text = Master.eLang.GetString(68, "All Movies")
                 .cmnuTrayMovieAll.Text = .mnuMovieAll.Text
 
-                ' Scrape Media Menu: Movie Missing Items
+                ' Scrape Media Menu: All MovieSets
+                .mnuMovieSetAll.Text = Master.eLang.GetString(1227, "All MovieSets")
+
+                ' Scrape Media Menu: Movies Missing Items
                 .mnuMovieMiss.Text = Master.eLang.GetString(78, "Movies Missing Items")
                 .cmnuTrayMovieMiss.Text = .mnuMovieMiss.Text
+
+                ' Scrape Media Menu: MovieSets Missing Items
+                .mnuMovieSetMiss.Text = Master.eLang.GetString(1228, "MovieSets Missing Items")
 
                 'Scrape Media Menu: New Movies
                 .mnuMovieNew.Text = Master.eLang.GetString(79, "New Movies")
                 .cmnuTrayMovieNew.Text = .mnuMovieNew.Text
 
+                'Scrape Media Menu: New MovieSets
+                .mnuMovieSetNew.Text = Master.eLang.GetString(1229, "New MovieSets")
+
                 ' Scrape Media menu: Marked Movies
                 .mnuMovieMark.Text = Master.eLang.GetString(80, "Marked Movies")
                 .cmnuTrayMovieMark.Text = .mnuMovieMark.Text
 
+                ' Scrape Media menu: Marked MovieSets
+                .mnuMovieSetMark.Text = Master.eLang.GetString(1230, "Marked MovieSets")
+
                 ' Scrape Media Menu: Current Filter
                 .mnuMovieFilter.Text = Master.eLang.GetString(624, "Current Filter")
+                .mnuMovieSetFilter.Text = .mnuMovieFilter.Text
                 .cmnuTrayMovieFilter.Text = .mnuMovieFilter.Text
 
                 ' Scrape Media Menu: Custom Scraper
                 .mnuMovieCustom.Text = Master.eLang.GetString(81, "Custom Scraper...")
+                .mnuMovieSetCustom.Text = .mnuMovieCustom.Text
                 .cmnuTrayMovieCustom.Text = .mnuMovieCustom.Text
 
                 ' Scrape Media Menu: Restart last scraper
@@ -15426,6 +15440,7 @@ doCancel:
                 .lblInfoPanelHeader.Text = Master.eLang.GetString(66, "Info")
                 .lblLoadSettings.Text = Master.eLang.GetString(484, "Loading Settings...")
                 .lblMetaDataHeader.Text = Master.eLang.GetString(59, "Meta Data")
+                .lblMoviesInSetHeader.Text = Master.eLang.GetString(367, "Movies In Set")
                 .lblOutlineHeader.Text = Master.eLang.GetString(64, "Plot Outline")
                 .lblPlotHeader.Text = Master.eLang.GetString(65, "Plot")
                 .lblReleaseDateHeader.Text = Master.eLang.GetString(57, "Release Date")

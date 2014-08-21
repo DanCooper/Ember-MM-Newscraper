@@ -1314,4 +1314,8 @@
   <string id="1224">Scraping Media (Marked MovieSets - Ask):</string>
   <string id="1225">Scraping Media (Marked MovieSets - Auto):</string>
   <string id="1226">Scraping Media (Marked MovieSets - Skip):</string>
+  <string id="1227">All MovieSets</string>
+  <string id="1228">MovieSets Missing Items</string>
+  <string id="1229">New MovieSets</string>
+  <string id="1230">Marked MovieSets</string>
 </strings>
