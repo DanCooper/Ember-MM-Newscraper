@@ -812,7 +812,7 @@ Namespace TMDBg
                             b = GetMovieSetInfo(r.Matches.Item(0).ID, tmdbMovieSet, False, Options, True)
                         End If
                     Case Enums.ScrapeType.FullAuto, Enums.ScrapeType.UpdateAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.SingleScrape, Enums.ScrapeType.FilterAuto
-                        If r.Matches.Count > 1 Then
+                        If r.Matches.Count >= 1 Then
                             b = GetMovieSetInfo(r.Matches.Item(0).ID, tmdbMovieSet, False, Options, True)
                         End If
                 End Select
