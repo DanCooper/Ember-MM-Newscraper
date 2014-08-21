@@ -1834,6 +1834,8 @@ Public Class Structures
         Dim DiscArtPath As String
         Dim FanartPath As String
         Dim ID As Long
+        Dim IsLock As Boolean
+        Dim IsMark As Boolean
         Dim RemoveBanner As Boolean
         Dim RemoveClearArt As Boolean
         Dim RemoveClearLogo As Boolean

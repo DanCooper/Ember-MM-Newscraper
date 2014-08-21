@@ -1178,6 +1178,9 @@ Public Class dlgEditMovieSet
     Private Sub FillInfo(Optional ByVal DoAll As Boolean = True)
         Try
             With Me
+
+                Me.chkMark.Checked = Master.currMovieSet.IsMark
+
                 If Not String.IsNullOrEmpty(Master.currMovieSet.MovieSet.Title) Then
                     .txtTitle.Text = Master.currMovieSet.MovieSet.Title
                 End If
@@ -1551,6 +1554,8 @@ Public Class dlgEditMovieSet
                 Me.btnLoadMoviesFromDB.Enabled = False
                 Me.btnRescrape.Enabled = False
 
+                Master.currMovieSet.IsMark = Me.chkMark.Checked
+
                 If Not String.IsNullOrEmpty(.txtTitle.Text) Then
                     Master.currMovieSet.ListTitle = StringUtils.FilterTokens_MovieSet(.txtTitle.Text.Trim)
                     Master.currMovieSet.MovieSet.Title = .txtTitle.Text.Trim
@@ -1683,6 +1688,7 @@ Public Class dlgEditMovieSet
         Me.btnSetMoviePosterDL.Text = Master.eLang.GetString(265, "Change Poster (Download)")
         Me.btnSetMoviePosterLocal.Text = Master.eLang.GetString(249, "Change Poster (Local)")
         Me.btnSetMoviePosterScrape.Text = Master.eLang.GetString(248, "Change Poster (Scrape)")
+        Me.chkMark.Text = Master.eLang.GetString(23, "Mark")
         Me.lblCollectionID.Text = Master.eLang.GetString(1206, "Collection ID:")
         Me.lblPlot.Text = Master.eLang.GetString(241, "Plot:")
         Me.lblTopDetails.Text = Master.eLang.GetString(1132, "Edit the details for the selected movieset.")

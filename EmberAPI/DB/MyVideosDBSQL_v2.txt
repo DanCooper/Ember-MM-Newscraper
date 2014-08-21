@@ -19,7 +19,10 @@ CREATE TABLE Sets(
 	ClearArtPath TEXT,
 	TMDBColID TEXT,
 	Plot TEXT,
-	SetName TEXT
+	SetName TEXT,
+	New BOOL NOT NULL DEFAULT False,
+	Mark BOOL NOT NULL DEFAULT False,
+	Lock BOOL NOT NULL DEFAULT False
 	);
 
 CREATE TABLE Movies (

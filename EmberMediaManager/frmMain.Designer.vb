@@ -83,7 +83,7 @@ Partial Class frmMain
         Me.dgvMovies = New System.Windows.Forms.DataGridView()
         Me.cmnuMovie = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.cmnuMovieTitle = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator()
+        Me.cmnuMovieSep1 = New System.Windows.Forms.ToolStripSeparator()
         Me.cmnuMovieReload = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieMark = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieMarkAs = New System.Windows.Forms.ToolStripMenuItem()
@@ -93,7 +93,7 @@ Partial Class frmMain
         Me.cmnuMovieMarkAsCustom4 = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieLock = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieWatched = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ToolStripMenuItem1 = New System.Windows.Forms.ToolStripSeparator()
+        Me.cmnuMovieSep2 = New System.Windows.Forms.ToolStripSeparator()
         Me.cmnuMovieEdit = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieEditMetaData = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieGenres = New System.Windows.Forms.ToolStripMenuItem()
@@ -102,7 +102,7 @@ Partial Class frmMain
         Me.cmnuMovieGenresAdd = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieGenresSet = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieGenresRemove = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuSep = New System.Windows.Forms.ToolStripSeparator()
+        Me.cmnuMovieSep3 = New System.Windows.Forms.ToolStripSeparator()
         Me.cmnuMovieRescrape = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieReSel = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieReSelAuto = New System.Windows.Forms.ToolStripMenuItem()
@@ -157,9 +157,9 @@ Partial Class frmMain
         Me.cmnuMovieUpSelWriter = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieUpSelYear = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieChange = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuSep2 = New System.Windows.Forms.ToolStripSeparator()
+        Me.cmnuMovieSep4 = New System.Windows.Forms.ToolStripSeparator()
         Me.cmnuMovieOpenFolder = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
+        Me.cmnuMovieSep5 = New System.Windows.Forms.ToolStripSeparator()
         Me.cmnuMovieRemove = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieRemoveFromDB = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieRemoveFromDisc = New System.Windows.Forms.ToolStripMenuItem()
@@ -167,11 +167,14 @@ Partial Class frmMain
         Me.cmnuMovieSet = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.cmnuMovieSetTitle = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieSetSep1 = New System.Windows.Forms.ToolStripSeparator()
+        Me.cmnuMovieSetReload = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuMovieSetMark = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuMovieSetLock = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuMovieSetSep2 = New System.Windows.Forms.ToolStripSeparator()
         Me.cmnuMovieSetNew = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieSetEdit = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieSetReload = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieSetRemove = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
+        Me.cmnuMovieSetSep3 = New System.Windows.Forms.ToolStripSeparator()
         Me.cmnuMovieSetRescrape = New System.Windows.Forms.ToolStripMenuItem()
         Me.scTV = New System.Windows.Forms.SplitContainer()
         Me.dgvTVShows = New System.Windows.Forms.DataGridView()
@@ -1494,7 +1497,7 @@ Partial Class frmMain
         '
         'cmnuMovie
         '
-        Me.cmnuMovie.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuMovieTitle, Me.ToolStripSeparator3, Me.cmnuMovieReload, Me.cmnuMovieMark, Me.cmnuMovieMarkAs, Me.cmnuMovieLock, Me.cmnuMovieWatched, Me.ToolStripMenuItem1, Me.cmnuMovieEdit, Me.cmnuMovieEditMetaData, Me.cmnuMovieGenres, Me.cmnuSep, Me.cmnuMovieRescrape, Me.cmnuMovieReSel, Me.cmnuMovieUpSel, Me.cmnuMovieChange, Me.cmnuSep2, Me.cmnuMovieOpenFolder, Me.ToolStripSeparator1, Me.cmnuMovieRemove})
+        Me.cmnuMovie.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuMovieTitle, Me.cmnuMovieSep1, Me.cmnuMovieReload, Me.cmnuMovieMark, Me.cmnuMovieMarkAs, Me.cmnuMovieLock, Me.cmnuMovieWatched, Me.cmnuMovieSep2, Me.cmnuMovieEdit, Me.cmnuMovieEditMetaData, Me.cmnuMovieGenres, Me.cmnuMovieSep3, Me.cmnuMovieRescrape, Me.cmnuMovieReSel, Me.cmnuMovieUpSel, Me.cmnuMovieChange, Me.cmnuMovieSep4, Me.cmnuMovieOpenFolder, Me.cmnuMovieSep5, Me.cmnuMovieRemove})
         Me.cmnuMovie.Name = "mnuMediaList"
         Me.cmnuMovie.Size = New System.Drawing.Size(247, 364)
         '
@@ -1506,10 +1509,10 @@ Partial Class frmMain
         Me.cmnuMovieTitle.Size = New System.Drawing.Size(246, 22)
         Me.cmnuMovieTitle.Text = "Title"
         '
-        'ToolStripSeparator3
+        'cmnuMovieSep1
         '
-        Me.ToolStripSeparator3.Name = "ToolStripSeparator3"
-        Me.ToolStripSeparator3.Size = New System.Drawing.Size(243, 6)
+        Me.cmnuMovieSep1.Name = "cmnuMovieSep1"
+        Me.cmnuMovieSep1.Size = New System.Drawing.Size(243, 6)
         '
         'cmnuMovieReload
         '
@@ -1579,10 +1582,10 @@ Partial Class frmMain
         Me.cmnuMovieWatched.Size = New System.Drawing.Size(246, 22)
         Me.cmnuMovieWatched.Text = "Watched"
         '
-        'ToolStripMenuItem1
+        'cmnuMovieSep2
         '
-        Me.ToolStripMenuItem1.Name = "ToolStripMenuItem1"
-        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(243, 6)
+        Me.cmnuMovieSep2.Name = "cmnuMovieSep2"
+        Me.cmnuMovieSep2.Size = New System.Drawing.Size(243, 6)
         '
         'cmnuMovieEdit
         '
@@ -1641,10 +1644,10 @@ Partial Class frmMain
         Me.cmnuMovieGenresRemove.Size = New System.Drawing.Size(195, 22)
         Me.cmnuMovieGenresRemove.Text = "Remove"
         '
-        'cmnuSep
+        'cmnuMovieSep3
         '
-        Me.cmnuSep.Name = "cmnuSep"
-        Me.cmnuSep.Size = New System.Drawing.Size(243, 6)
+        Me.cmnuMovieSep3.Name = "cmnuMovieSep3"
+        Me.cmnuMovieSep3.Size = New System.Drawing.Size(243, 6)
         '
         'cmnuMovieRescrape
         '
@@ -2008,10 +2011,10 @@ Partial Class frmMain
         Me.cmnuMovieChange.Size = New System.Drawing.Size(246, 22)
         Me.cmnuMovieChange.Text = "Change Movie"
         '
-        'cmnuSep2
+        'cmnuMovieSep4
         '
-        Me.cmnuSep2.Name = "cmnuSep2"
-        Me.cmnuSep2.Size = New System.Drawing.Size(243, 6)
+        Me.cmnuMovieSep4.Name = "cmnuMovieSep4"
+        Me.cmnuMovieSep4.Size = New System.Drawing.Size(243, 6)
         '
         'cmnuMovieOpenFolder
         '
@@ -2021,10 +2024,10 @@ Partial Class frmMain
         Me.cmnuMovieOpenFolder.Size = New System.Drawing.Size(246, 22)
         Me.cmnuMovieOpenFolder.Text = "Open Containing Folder"
         '
-        'ToolStripSeparator1
+        'cmnuMovieSep5
         '
-        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-        Me.ToolStripSeparator1.Size = New System.Drawing.Size(243, 6)
+        Me.cmnuMovieSep5.Name = "cmnuMovieSep5"
+        Me.cmnuMovieSep5.Size = New System.Drawing.Size(243, 6)
         '
         'cmnuMovieRemove
         '
@@ -2078,9 +2081,9 @@ Partial Class frmMain
         '
         'cmnuMovieSet
         '
-        Me.cmnuMovieSet.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuMovieSetTitle, Me.cmnuMovieSetSep1, Me.cmnuMovieSetNew, Me.cmnuMovieSetEdit, Me.cmnuMovieSetReload, Me.cmnuMovieSetRemove, Me.ToolStripSeparator2, Me.cmnuMovieSetRescrape})
+        Me.cmnuMovieSet.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuMovieSetTitle, Me.cmnuMovieSetSep1, Me.cmnuMovieSetReload, Me.cmnuMovieSetMark, Me.cmnuMovieSetLock, Me.cmnuMovieSetSep2, Me.cmnuMovieSetNew, Me.cmnuMovieSetEdit, Me.cmnuMovieSetRemove, Me.cmnuMovieSetSep3, Me.cmnuMovieSetRescrape})
         Me.cmnuMovieSet.Name = "cmnuMovieSets"
-        Me.cmnuMovieSet.Size = New System.Drawing.Size(222, 148)
+        Me.cmnuMovieSet.Size = New System.Drawing.Size(222, 220)
         '
         'cmnuMovieSetTitle
         '
@@ -2094,6 +2097,35 @@ Partial Class frmMain
         '
         Me.cmnuMovieSetSep1.Name = "cmnuMovieSetSep1"
         Me.cmnuMovieSetSep1.Size = New System.Drawing.Size(218, 6)
+        '
+        'cmnuMovieSetReload
+        '
+        Me.cmnuMovieSetReload.Image = CType(resources.GetObject("cmnuMovieSetReload.Image"), System.Drawing.Image)
+        Me.cmnuMovieSetReload.Name = "cmnuMovieSetReload"
+        Me.cmnuMovieSetReload.ShortcutKeys = System.Windows.Forms.Keys.F5
+        Me.cmnuMovieSetReload.Size = New System.Drawing.Size(221, 22)
+        Me.cmnuMovieSetReload.Text = "Reload"
+        '
+        'cmnuMovieSetMark
+        '
+        Me.cmnuMovieSetMark.Image = CType(resources.GetObject("cmnuMovieSetMark.Image"), System.Drawing.Image)
+        Me.cmnuMovieSetMark.Name = "cmnuMovieSetMark"
+        Me.cmnuMovieSetMark.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.M), System.Windows.Forms.Keys)
+        Me.cmnuMovieSetMark.Size = New System.Drawing.Size(221, 22)
+        Me.cmnuMovieSetMark.Text = "Mark"
+        '
+        'cmnuMovieSetLock
+        '
+        Me.cmnuMovieSetLock.Image = CType(resources.GetObject("cmnuMovieSetLock.Image"), System.Drawing.Image)
+        Me.cmnuMovieSetLock.Name = "cmnuMovieSetLock"
+        Me.cmnuMovieSetLock.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.L), System.Windows.Forms.Keys)
+        Me.cmnuMovieSetLock.Size = New System.Drawing.Size(221, 22)
+        Me.cmnuMovieSetLock.Text = "Lock"
+        '
+        'cmnuMovieSetSep2
+        '
+        Me.cmnuMovieSetSep2.Name = "cmnuMovieSetSep2"
+        Me.cmnuMovieSetSep2.Size = New System.Drawing.Size(218, 6)
         '
         'cmnuMovieSetNew
         '
@@ -2111,14 +2143,6 @@ Partial Class frmMain
         Me.cmnuMovieSetEdit.Size = New System.Drawing.Size(221, 22)
         Me.cmnuMovieSetEdit.Text = "Edit Set"
         '
-        'cmnuMovieSetReload
-        '
-        Me.cmnuMovieSetReload.Image = CType(resources.GetObject("cmnuMovieSetReload.Image"), System.Drawing.Image)
-        Me.cmnuMovieSetReload.Name = "cmnuMovieSetReload"
-        Me.cmnuMovieSetReload.ShortcutKeys = System.Windows.Forms.Keys.F5
-        Me.cmnuMovieSetReload.Size = New System.Drawing.Size(221, 22)
-        Me.cmnuMovieSetReload.Text = "Reload"
-        '
         'cmnuMovieSetRemove
         '
         Me.cmnuMovieSetRemove.Image = CType(resources.GetObject("cmnuMovieSetRemove.Image"), System.Drawing.Image)
@@ -2127,10 +2151,10 @@ Partial Class frmMain
         Me.cmnuMovieSetRemove.Size = New System.Drawing.Size(221, 22)
         Me.cmnuMovieSetRemove.Text = "Remove"
         '
-        'ToolStripSeparator2
+        'cmnuMovieSetSep3
         '
-        Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
-        Me.ToolStripSeparator2.Size = New System.Drawing.Size(218, 6)
+        Me.cmnuMovieSetSep3.Name = "cmnuMovieSetSep3"
+        Me.cmnuMovieSetSep3.Size = New System.Drawing.Size(218, 6)
         '
         'cmnuMovieSetRescrape
         '
@@ -8114,11 +8138,11 @@ Partial Class frmMain
     Friend WithEvents tsbMediaCenters As System.Windows.Forms.ToolStripSplitButton
     Friend WithEvents cmnuMovie As System.Windows.Forms.ContextMenuStrip
     Friend WithEvents cmnuMovieMark As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ToolStripMenuItem1 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents cmnuMovieSep2 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents cmnuMovieChange As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuMovieTitle As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ToolStripSeparator3 As System.Windows.Forms.ToolStripSeparator
-    Friend WithEvents cmnuSep As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents cmnuMovieSep1 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents cmnuMovieSep3 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents cmnuMovieEdit As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnuMovieAllAutoAll As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnuMovieAllAutoNfo As System.Windows.Forms.ToolStripMenuItem
@@ -8171,7 +8195,7 @@ Partial Class frmMain
     Friend WithEvents lblCanceling As System.Windows.Forms.Label
     Private WithEvents pnlNoInfo As System.Windows.Forms.Panel
     Friend WithEvents pnlCancel As System.Windows.Forms.Panel
-    Friend WithEvents cmnuSep2 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents cmnuMovieSep4 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents cmnuMovieOpenFolder As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuMovieRemoveFromDisc As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuMovieLock As System.Windows.Forms.ToolStripMenuItem
@@ -8268,7 +8292,7 @@ Partial Class frmMain
     Friend WithEvents mnuMainToolsCleanDB As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuMovieRemoveFromDB As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuMovieRemove As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents cmnuMovieSep5 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents mnuUpdateMovies As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnuUpdateShows As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnuMainDonate As System.Windows.Forms.ToolStripMenuItem
@@ -8751,7 +8775,7 @@ Partial Class frmMain
     Friend WithEvents cmnuMovieUpSelTop250 As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuMovieUpSelWriter As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuMovieUpSelYear As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ToolStripSeparator2 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents cmnuMovieSetSep3 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents cmnuMovieSetRescrape As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuShowLanguage As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuShowLanguageSet As System.Windows.Forms.ToolStripMenuItem
@@ -8900,4 +8924,7 @@ Partial Class frmMain
     Friend WithEvents mnuMovieSetFilterSkipAll As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnuMovieSetCustom As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnuMovieSetRestart As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuMovieSetMark As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuMovieSetLock As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuMovieSetSep2 As System.Windows.Forms.ToolStripSeparator
 End Class

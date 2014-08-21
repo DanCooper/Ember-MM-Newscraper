@@ -122,6 +122,7 @@ Partial Class dlgEditMovieSet
         Me.pnlSaving = New System.Windows.Forms.Panel()
         Me.lblSaving = New System.Windows.Forms.Label()
         Me.prbSaving = New System.Windows.Forms.ProgressBar()
+        Me.chkMark = New System.Windows.Forms.CheckBox()
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tpFanart.SuspendLayout()
@@ -1257,6 +1258,17 @@ Partial Class dlgEditMovieSet
         Me.prbSaving.Style = System.Windows.Forms.ProgressBarStyle.Marquee
         Me.prbSaving.TabIndex = 1
         '
+        'chkMark
+        '
+        Me.chkMark.AutoSize = True
+        Me.chkMark.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkMark.Location = New System.Drawing.Point(8, 598)
+        Me.chkMark.Name = "chkMark"
+        Me.chkMark.Size = New System.Drawing.Size(86, 17)
+        Me.chkMark.TabIndex = 8
+        Me.chkMark.Text = "Mark Movie"
+        Me.chkMark.UseVisualStyleBackColor = True
+        '
         'dlgEditMovieSet
         '
         Me.AcceptButton = Me.OK_Button
@@ -1264,6 +1276,7 @@ Partial Class dlgEditMovieSet
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
         Me.ClientSize = New System.Drawing.Size(854, 621)
+        Me.Controls.Add(Me.chkMark)
         Me.Controls.Add(Me.pnlSaving)
         Me.Controls.Add(Me.btnRescrape)
         Me.Controls.Add(Me.Cancel_Button)
@@ -1304,6 +1317,7 @@ Partial Class dlgEditMovieSet
         Me.pnlSaving.ResumeLayout(False)
         Me.pnlSaving.PerformLayout()
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
     Friend WithEvents OK_Button As System.Windows.Forms.Button
@@ -1404,5 +1418,6 @@ Partial Class dlgEditMovieSet
     Friend WithEvents lblCollectionID As System.Windows.Forms.Label
     Friend WithEvents txtTitle As System.Windows.Forms.TextBox
     Friend WithEvents lblTitle As System.Windows.Forms.Label
+    Friend WithEvents chkMark As System.Windows.Forms.CheckBox
 
 End Class

@@ -1688,6 +1688,7 @@ Public Class frmMain
                 Me.ClearInfo()
             End If
             Me.RefreshAllMovieSets()
+            Me.FillList(False, True, False)
             Me.tslLoading.Visible = False
             Me.tspbLoading.Visible = False
             Me.btnCancel.Visible = False
@@ -4163,6 +4164,48 @@ doCancel:
         End Try
     End Sub
 
+    Private Sub cmnuMovieSetLock_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieSetLock.Click
+        Try
+            Dim setLock As Boolean = False
+            If Me.dgvMovieSets.SelectedRows.Count > 1 Then
+                For Each sRow As DataGridViewRow In Me.dgvMovieSets.SelectedRows
+                    'if any one item is set as unlocked, set menu to lock
+                    'else they are all locked so set menu to unlock
+                    If Not Convert.ToBoolean(sRow.Cells(23).Value) Then
+                        setLock = True
+                        Exit For
+                    End If
+                Next
+            End If
+
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                    Dim parLock As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLock", DbType.Boolean, 0, "lock")
+                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
+                    SQLcommand.CommandText = "UPDATE Sets SET Lock = (?) WHERE id = (?);"
+                    For Each sRow As DataGridViewRow In Me.dgvMovieSets.SelectedRows
+                        parLock.Value = If(Me.dgvMovieSets.SelectedRows.Count > 1, setLock, Not Convert.ToBoolean(sRow.Cells(23).Value))
+                        parID.Value = sRow.Cells(0).Value
+                        SQLcommand.ExecuteNonQuery()
+                        sRow.Cells(23).Value = parLock.Value
+                    Next
+                End Using
+                SQLtransaction.Commit()
+            End Using
+
+            'If Me.chkFilterLock.Checked Then
+            '    Me.dgvMovieSets.ClearSelection()
+            '    Me.dgvMovieSets.CurrentCell = Nothing
+            '    If Me.dgvMovieSets.RowCount <= 0 Then Me.ClearInfo()
+            'End If
+
+            Me.dgvMovieSets.Invalidate()
+
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
     Private Sub cmnuMarkEp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeMark.Click
         Try
             Dim setMark As Boolean = False
@@ -4340,6 +4383,57 @@ doCancel:
             Me.dgvTVShows.Invalidate()
             Me.dgvTVSeasons.Invalidate()
             Me.dgvTVEpisodes.Invalidate()
+
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+
+    Private Sub cmnuMovieSetMark_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieSetMark.Click
+        Try
+            Dim setMark As Boolean = False
+            If Me.dgvMovieSets.SelectedRows.Count > 1 Then
+                For Each sRow As DataGridViewRow In Me.dgvMovieSets.SelectedRows
+                    'if any one item is set as unmarked, set menu to mark
+                    'else they are all marked, so set menu to unmark
+                    If Not Convert.ToBoolean(sRow.Cells(22).Value) Then
+                        setMark = True
+                        Exit For
+                    End If
+                Next
+            End If
+
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                    Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "Mark")
+                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "ID")
+                    SQLcommand.CommandText = "UPDATE Sets SET Mark = (?) WHERE ID = (?);"
+                    For Each sRow As DataGridViewRow In Me.dgvMovieSets.SelectedRows
+                        parMark.Value = If(Me.dgvMovieSets.SelectedRows.Count > 1, setMark, Not Convert.ToBoolean(sRow.Cells(22).Value))
+                        parID.Value = sRow.Cells(0).Value
+                        SQLcommand.ExecuteNonQuery()
+                        sRow.Cells(22).Value = parMark.Value
+                    Next
+                End Using
+                SQLtransaction.Commit()
+            End Using
+
+            setMark = False
+            For Each sRow As DataGridViewRow In Me.dgvMovieSets.Rows
+                If Convert.ToBoolean(sRow.Cells(22).Value) Then
+                    setMark = True
+                    Exit For
+                End If
+            Next
+            'Me.btnMarkAll.Text = If(setMark, Master.eLang.GetString(105, "Unmark All"), Master.eLang.GetString(35, "Mark All"))
+
+            'If Me.chkFilterMark.Checked Then
+            '    Me.dgvMovieSets.ClearSelection()
+            '    Me.dgvMovieSets.CurrentCell = Nothing
+            '    If Me.dgvMovieSets.RowCount <= 0 Then Me.ClearInfo()
+            'End If
+
+            Me.dgvMovieSets.Invalidate()
 
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -5395,7 +5489,7 @@ doCancel:
                     Me.cmnuMovieRescrape.Visible = False
                     Me.cmnuMovieUpSel.Visible = True
                     'Me.cmuRenamer.Visible = False
-                    Me.cmnuSep2.Visible = False
+                    Me.cmnuMovieSep4.Visible = False
 
                     If Me.dgvMovies.SelectedRows.Count > 1 AndAlso Me.dgvMovies.Rows(e.RowIndex).Selected Then
                         Dim setMark As Boolean = False
@@ -5441,8 +5535,8 @@ doCancel:
                         Me.cmnuMovieReSel.Visible = True
                         Me.cmnuMovieRescrape.Visible = True
                         Me.cmnuMovieUpSel.Visible = True
-                        Me.cmnuSep.Visible = True
-                        Me.cmnuSep2.Visible = True
+                        Me.cmnuMovieSep3.Visible = True
+                        Me.cmnuMovieSep4.Visible = True
 
                         cmnuMovieTitle.Text = String.Concat(">> ", Me.dgvMovies.Item(3, e.RowIndex).Value, " <<")
 
@@ -5700,7 +5794,7 @@ doCancel:
     Private Sub dgvMovieSets_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMovieSets.CellClick
         Try
 
-            If e.ColumnIndex = 1 OrElse Not Master.eSettings.MovieClickScrape Then 'Title
+            If e.ColumnIndex = 1 OrElse Not Master.eSettings.MovieSetClickScrape Then 'Title
                 If Me.dgvMovieSets.SelectedRows.Count > 0 Then
                     If Me.dgvMovieSets.RowCount > 0 Then
                         If Me.dgvMovieSets.SelectedRows.Count > 1 Then
@@ -5711,7 +5805,7 @@ doCancel:
                     End If
                     Me.currMovieSetRow = Me.dgvMovieSets.SelectedRows(0).Index
                 End If
-            ElseIf Master.eSettings.MovieClickScrape AndAlso e.RowIndex >= 1 AndAlso e.ColumnIndex <= 16 AndAlso Not bwMovieScraper.IsBusy Then
+            ElseIf Master.eSettings.MovieSetClickScrape AndAlso e.RowIndex >= 1 AndAlso e.ColumnIndex <= 16 AndAlso Not bwMovieSetScraper.IsBusy Then
                 Dim movieset As Int32 = CType(Me.dgvMovieSets.Rows(e.RowIndex).Cells(0).Value, Int32)
                 Dim objCell As DataGridViewCell = CType(Me.dgvMovieSets.Rows(e.RowIndex).Cells(e.ColumnIndex), DataGridViewCell)
 
@@ -5736,10 +5830,10 @@ doCancel:
                     Case 16 'ClearArt
                         Functions.SetScraperMod(Enums.ModType_Movie.ClearArt, True)
                 End Select
-                If Master.eSettings.MovieClickScrapeAsk Then
-                    MovieScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultMovieOptions)
+                If Master.eSettings.MovieSetClickScrapeAsk Then
+                    MovieSetScrapeData(True, Enums.ScrapeType.FullAsk, Master.DefaultMovieSetOptions)
                 Else
-                    MovieScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultMovieOptions)
+                    MovieSetScrapeData(True, Enums.ScrapeType.FullAuto, Master.DefaultMovieSetOptions)
                 End If
             End If
         Catch ex As Exception
@@ -5813,7 +5907,7 @@ doCancel:
     Private Sub dgvMovieSets_CellMouseDown(sender As Object, e As System.Windows.Forms.DataGridViewCellMouseEventArgs) Handles dgvMovieSets.CellMouseDown
         Try
             If e.Button = Windows.Forms.MouseButtons.Right And Me.dgvMovieSets.RowCount > 0 Then
-                If bwCleanDB.IsBusy OrElse bwMovieScraper.IsBusy OrElse bwNonScrape.IsBusy Then
+                If bwCleanDB.IsBusy OrElse bwMovieSetScraper.IsBusy OrElse bwNonScrape.IsBusy Then
                     Me.cmnuMovieSetTitle.Text = Master.eLang.GetString(845, ">> No Item Selected <<")
                     Return
                 End If
@@ -5825,38 +5919,46 @@ doCancel:
 
                     Me.cmnuMovieSet.Enabled = True
                     Me.cmnuMovieSetReload.Visible = True
-                    Me.cmnuMovieSetSep1.Visible = True
+                    Me.cmnuMovieSetEdit.Visible = False
+                    Me.cmnuMovieSetSep3.Visible = False
+                    Me.cmnuMovieSetRescrape.Visible = False
 
                     If Me.dgvMovieSets.SelectedRows.Count > 1 AndAlso Me.dgvMovieSets.Rows(e.RowIndex).Selected Then
                         Dim setMark As Boolean = False
                         Dim setLock As Boolean = False
-                        Dim setWatched As Boolean = False
+                        'Dim setWatched As Boolean = False
 
-                        Me.cmnuMovieTitle.Text = Master.eLang.GetString(106, ">> Multiple <<")
+                        Me.cmnuMovieSetTitle.Text = Master.eLang.GetString(106, ">> Multiple <<")
 
-                        'For Each sRow As DataGridViewRow In Me.dgvMovieSets.SelectedRows
-                        '    'if any one item is set as unmarked, set menu to mark
-                        '    'else they are all marked, so set menu to unmark
-                        '    If Not Convert.ToBoolean(sRow.Cells(11).Value) Then
-                        '        setMark = True
-                        '        If setLock AndAlso setWatched Then Exit For
-                        '    End If
-                        '    'if any one item is set as unlocked, set menu to lock
-                        '    'else they are all locked so set menu to unlock
-                        '    If Not Convert.ToBoolean(sRow.Cells(14).Value) Then
-                        '        setLock = True
-                        '        If setMark AndAlso setWatched Then Exit For
-                        '    End If
-                        '    'if any one item is set as unwatched, set menu to watched
-                        '    'else they are all watched so set menu to not watched
-                        '    If Not Convert.ToBoolean(sRow.Cells(34).Value) Then
-                        '        setWatched = True
-                        '        If setLock AndAlso setMark Then Exit For
-                        '    End If
-                        'Next
+                        For Each sRow As DataGridViewRow In Me.dgvMovieSets.SelectedRows
+                            'if any one item is set as unmarked, set menu to mark
+                            'else they are all marked, so set menu to unmark
+                            If Not Convert.ToBoolean(sRow.Cells(22).Value) Then
+                                setMark = True
+                                If setLock Then Exit For
+                            End If
+                            'if any one item is set as unlocked, set menu to lock
+                            'else they are all locked so set menu to unlock
+                            If Not Convert.ToBoolean(sRow.Cells(23).Value) Then
+                                setLock = True
+                                If setMark Then Exit For
+                            End If
+                            ''if any one item is set as unwatched, set menu to watched
+                            ''else they are all watched so set menu to not watched
+                            'If Not Convert.ToBoolean(sRow.Cells(34).Value) Then
+                            '    setWatched = True
+                            '    If setLock AndAlso setMark Then Exit For
+                            'End If
+                        Next
+
+                        Me.cmnuMovieSetMark.Text = If(setMark, Master.eLang.GetString(23, "Mark"), Master.eLang.GetString(107, "Unmark"))
+                        Me.cmnuMovieSetLock.Text = If(setLock, Master.eLang.GetString(24, "Lock"), Master.eLang.GetString(108, "Unlock"))
 
                     Else
                         Me.cmnuMovieSetReload.Visible = True
+                        Me.cmnuMovieSetEdit.Visible = True
+                        Me.cmnuMovieSetSep3.Visible = True
+                        Me.cmnuMovieSetRescrape.Visible = True
 
                         cmnuMovieSetTitle.Text = String.Concat(">> ", Me.dgvMovieSets.Item(1, e.RowIndex).Value, " <<")
 
@@ -5869,6 +5971,9 @@ doCancel:
                         Else
                             Me.cmnuMovieSet.Enabled = True
                         End If
+
+                        Me.cmnuMovieSetMark.Text = If(Convert.ToBoolean(Me.dgvMovieSets.Item(22, e.RowIndex).Value), Master.eLang.GetString(107, "Unmark"), Master.eLang.GetString(23, "Mark"))
+                        Me.cmnuMovieSetLock.Text = If(Convert.ToBoolean(Me.dgvMovieSets.Item(23, e.RowIndex).Value), Master.eLang.GetString(108, "Unlock"), Master.eLang.GetString(24, "Lock"))
 
                     End If
                 Else
@@ -5960,34 +6065,34 @@ doCancel:
 
             End If
 
-            ''text
-            'If e.ColumnIndex = 3 AndAlso e.RowIndex >= 0 Then
-            '    If Convert.ToBoolean(Me.dgvMovies.Item(11, e.RowIndex).Value) Then                  'is marked
-            '        e.CellStyle.ForeColor = Color.Crimson
-            '        e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
-            '        e.CellStyle.SelectionForeColor = Color.Crimson
-            '    ElseIf Convert.ToBoolean(Me.dgvMovies.Item(10, e.RowIndex).Value) Then              'is new
-            '        e.CellStyle.ForeColor = Color.Green
-            '        e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
-            '        e.CellStyle.SelectionForeColor = Color.Green
-            '    Else
-            e.CellStyle.ForeColor = Color.Black
-            e.CellStyle.Font = New Font("Segoe UI", 8.25, FontStyle.Regular)
-            e.CellStyle.SelectionForeColor = Color.FromKnownColor(KnownColor.HighlightText)
-            '    End If
-            'End If
+            'text
+            If e.ColumnIndex = 1 AndAlso e.RowIndex >= 0 Then
+                If Convert.ToBoolean(Me.dgvMovieSets.Item(22, e.RowIndex).Value) Then                  'is marked
+                    e.CellStyle.ForeColor = Color.Crimson
+                    e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
+                    e.CellStyle.SelectionForeColor = Color.Crimson
+                ElseIf Convert.ToBoolean(Me.dgvMovieSets.Item(21, e.RowIndex).Value) Then              'is new
+                    e.CellStyle.ForeColor = Color.Green
+                    e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
+                    e.CellStyle.SelectionForeColor = Color.Green
+                Else
+                    e.CellStyle.ForeColor = Color.Black
+                    e.CellStyle.Font = New Font("Segoe UI", 8.25, FontStyle.Regular)
+                    e.CellStyle.SelectionForeColor = Color.FromKnownColor(KnownColor.HighlightText)
+                End If
+            End If
 
-            If e.ColumnIndex >= 0 AndAlso e.ColumnIndex <= 16 AndAlso e.RowIndex >= 0 Then
-                'If Convert.ToBoolean(Me.dgvMovies.Item(14, e.RowIndex).Value) Then                  'is locked
-                '    e.CellStyle.BackColor = Color.LightSteelBlue
-                '    e.CellStyle.SelectionBackColor = Color.DarkTurquoise
-                'ElseIf Convert.ToBoolean(Me.dgvMovies.Item(44, e.RowIndex).Value) Then              'use folder
-                '    e.CellStyle.BackColor = Color.MistyRose
-                '    e.CellStyle.SelectionBackColor = Color.DarkMagenta
-                'Else
-                e.CellStyle.BackColor = Color.White
-                e.CellStyle.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
-                'End If
+            If e.ColumnIndex >= 0 AndAlso e.ColumnIndex <= 23 AndAlso e.RowIndex >= 0 Then
+                If Convert.ToBoolean(Me.dgvMovieSets.Item(23, e.RowIndex).Value) Then                  'is locked
+                    e.CellStyle.BackColor = Color.LightSteelBlue
+                    e.CellStyle.SelectionBackColor = Color.DarkTurquoise
+                    'ElseIf Convert.ToBoolean(Me.dgvMovies.Item(44, e.RowIndex).Value) Then              'use folder
+                    '    e.CellStyle.BackColor = Color.MistyRose
+                    '    e.CellStyle.SelectionBackColor = Color.DarkMagenta
+                Else
+                    e.CellStyle.BackColor = Color.White
+                    e.CellStyle.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
+                End If
 
                 If e.ColumnIndex >= 2 AndAlso e.ColumnIndex <= 17 Then
                     e.PaintBackground(e.ClipBounds, True)
@@ -6002,7 +6107,7 @@ doCancel:
                 End If
             End If
 
-            Me.tpMovieSets.Text = String.Format("{0} ({1})", Master.eLang.GetString(366, "Sets"), Me.dgvMovieSets.RowCount)
+                Me.tpMovieSets.Text = String.Format("{0} ({1})", Master.eLang.GetString(366, "Sets"), Me.dgvMovieSets.RowCount)
 
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -7249,7 +7354,7 @@ doCancel:
                 Me.bsMovieSets.DataSource = Nothing
                 Me.dgvMovieSets.DataSource = Nothing
                 Me.ClearInfo()
-                Master.DB.FillDataTable(Me.dtMovieSets, "SELECT ID, ListTitle, HasNfo, NfoPath, HasPoster, PosterPath, HasFanart, FanartPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, TMDBColID, Plot, SetName FROM sets ORDER BY ListTitle COLLATE NOCASE;")
+                Master.DB.FillDataTable(Me.dtMovieSets, "SELECT ID, ListTitle, HasNfo, NfoPath, HasPoster, PosterPath, HasFanart, FanartPath, HasBanner, BannerPath, HasLandscape, LandscapePath, HasDiscArt, DiscArtPath, HasClearLogo, ClearLogoPath, HasClearArt, ClearArtPath, TMDBColID, Plot, SetName, New, Mark, Lock FROM sets ORDER BY ListTitle COLLATE NOCASE;")
             End If
 
 
@@ -11517,13 +11622,13 @@ doCancel:
             'create list of moviesets acording to scrapetype
             For Each drvRow As DataRow In Me.dtMovieSets.Rows
 
-                'If Convert.ToBoolean(drvRow.Item(14)) Then Continue For 'no Lock for MovieSets
+                If Convert.ToBoolean(drvRow.Item(23)) Then Continue For 'locked
 
                 Select Case sType
                     Case Enums.ScrapeType.NewAsk, Enums.ScrapeType.NewAuto, Enums.ScrapeType.NewSkip
-                        Continue For 'If Not Convert.ToBoolean(drvRow.Item(10)) Then Continue For
+                        If Not Convert.ToBoolean(drvRow.Item(21)) Then Continue For
                     Case Enums.ScrapeType.MarkAsk, Enums.ScrapeType.MarkAuto, Enums.ScrapeType.MarkSkip
-                        Continue For 'If Not Convert.ToBoolean(drvRow.Item(11)) Then Continue For
+                        If Not Convert.ToBoolean(drvRow.Item(22)) Then Continue For
                     Case Enums.ScrapeType.FilterAsk, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.FilterSkip
                         'Dim index As Integer = Me.bsMovies.Find("id", drvRow.Item(0))
                         'If Not index >= 0 Then Continue For

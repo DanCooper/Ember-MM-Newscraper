@@ -342,6 +342,20 @@
       <execute>alter table Sets add Plot TEXT;</execute>
     </command>
   </transaction>
+  <transaction name="doAddColumnSetNewMarkLock">
+    <command type="DB">
+      <description>1</description>
+      <execute>alter table Sets add New BOOL NOT NULL DEFAULT False;</execute>
+    </command>
+    <command type="DB">
+      <description>2</description>
+      <execute>alter table Sets add Mark BOOL NOT NULL DEFAULT False;</execute>
+    </command>
+    <command type="DB">
+      <description>3</description>
+      <execute>alter table Sets add Lock BOOL NOT NULL DEFAULT False;</execute>
+    </command>
+  </transaction>
   <noTransaction type="">
   </noTransaction>
 <!-- 
