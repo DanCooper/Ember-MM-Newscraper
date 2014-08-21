@@ -675,13 +675,11 @@ Namespace TMDBg
                     Dim Images As WatTmdb.V3.TmdbMovieImages
                     Images = _TMDBApi_MovieSet.GetMovieImages(MovieSet.id, _MySettings_MovieSet.PrefLanguage)
                     If Not IsNothing(Images) AndAlso Not IsNothing(Images.posters) Then
-                        If (Images.posters.Count = 0) AndAlso _MySettings_MovieSet.FallBackEng Then
+                        If (Images.posters.Count = 0) Then
                             Images = _TMDBApiE_MovieSet.GetMovieImages(MovieSet.id)
                         End If
                     Else
-                        If _MySettings_MovieSet.FallBackEng Then
-                            Images = _TMDBApiE_MovieSet.GetMovieImages(MovieSetE.id)
-                        End If
+                        Images = _TMDBApiE_MovieSet.GetMovieImages(MovieSetE.id)
                     End If
                     If Not IsNothing(Images) AndAlso Not IsNothing(Images.posters) Then
                         If Images.posters.Count > 0 Then
