@@ -1,0 +1,90 @@
+Changelog 1.4.x Beta(2014-08-22)
+
+[Main]
+added: -tvupdate to command line starting
+added: new movieset management with extra tab
+added: auto scraper for moviesets
+added: new "DateAdded" options (same like in XBMC: now, ctime, mtime, from NFO)
+added: "DateAdded" field for movie and episode NFO
+added: 4 additional custom markers for movie list with adjustable colors and names
+added: "Collection" (TMDB collection ID's) for NFO
+added: option to activate "Scrape image on right mouse double click" in main window
+added: more fields to "Update Single Field"
+added: language and ordering can now be set individually for each tv show source
+added: default search parameter for search on Youtube (search field is auto filled with "moviename {parameter}" like "Avatar trailer german")
+added: new fields and image types to custom scraper
+added: "None" buttons in custom scraper
+added: export movies/tv shows list to XML
+added: new fields for furturer 3D support
+added: more image previews in main window (we need a better concept for more/all image previews)
+fixed: not all content is recognize on DB update
+fixed: command line starting
+fixed: trailer downloading
+fixed: tariler download process bar
+fixed: prefered and minimun trailer quality
+fixed: XBMC YouTube addon trailer link compatibility
+fixed: movie certification languages (now in "MovieCertLanguages.xml", you can add own languages)
+fixed: image tabs in "Edit Movie/MovieSet" are no longer displayed if a image type is not activated in settings
+fixed: image scrolling in image select dialog (now it's smooth and without jumping anymore)
+fixed: search on YouTube (trailers)
+fixed: tv rating region
+fixed: some tv languages issues
+fixed: episode poster prefered size
+fixed: some MediaInfo issues
+fixed: list size while first start
+fixed: some "Movie Expert Settings" issues
+fixed: Boxee tv show ID
+changed: TVDB scraper downloads new informations automatically if no info is precached for a new episode
+changed: removed Adobe Flash plugin (now we use VLC for trailer and theme previews)
+changed: new trailer preview dialog
+changed: rating from 5 to 10 stars
+changed: new internal modules handling
+changed: new internal XML serialization
+removed: NMT and MediaBrower modules (we will rework this later)
+removed: YAMJ module (now fully supported in Ember)
+removed: Boxee module (now fully supported in Ember)
+
+[Renamer]
+fixed: works now on auto and manually scraping
+fixed: errors with rating
+added: new parameters (audio & video codec, channels and more...)
+
+[TMDB data scraper]
+added: different settings for movies and moviesets
+added: get "Collection" ID of a movie
+added: data scraper for moviesets
+fixed: genre limit
+
+[IMDB data scraper]
+fixed: genre limit
+fixed: release date
+
+[OFDB data scraper]
+added: FSK scraping
+
+[TMDB image scraper]
+added: different settings for movies and moviesets
+added: display only preferend language images
+added: also display english images
+added: also blank english images
+added: image scraper for moviesets
+
+[IMDB image scraper]
+added: different settings for movies and moviesets
+
+[Fanart.tv image scraper]
+fixed: URL's for image preview
+added: different settings for movies and moviesets
+added: display only preferend language images
+added: also display english images
+added: also blank english images
+added: image scraper for moviesets
+
+[IMDB trailer scraper]
+fixed: works again
+
+[Apple trailer scraper]
+added: new Apple trailer scraper
+
+[TVDB data scraper]
+fixed: DisplayEpisode and DisplaySeason #
