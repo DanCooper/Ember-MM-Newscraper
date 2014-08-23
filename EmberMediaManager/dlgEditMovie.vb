@@ -1665,15 +1665,11 @@ Public Class dlgEditMovie
                 End If
 
                 If Not String.IsNullOrEmpty(Master.currMovie.Movie.OriginalTitle) Then
-                    If Master.currMovie.Movie.OriginalTitle <> StringUtils.FilterTokens_Movie(Master.currMovie.Movie.Title) Then
-                        .txtOriginalTitle.Text = Master.currMovie.Movie.OriginalTitle
-                    End If
+                    .txtOriginalTitle.Text = Master.currMovie.Movie.OriginalTitle
                 End If
 
                 If Not String.IsNullOrEmpty(Master.currMovie.Movie.SortTitle) Then
-                    If Master.currMovie.Movie.SortTitle <> StringUtils.FilterTokens_Movie(Master.currMovie.Movie.Title) Then
-                        .txtSortTitle.Text = Master.currMovie.Movie.SortTitle
-                    End If
+                    .txtSortTitle.Text = Master.currMovie.Movie.SortTitle
                 End If
 
                 If Not String.IsNullOrEmpty(Master.currMovie.Movie.Tagline) Then
@@ -2879,19 +2875,16 @@ Public Class dlgEditMovie
                 Master.currMovie.IsMark = Me.chkMark.Checked
 
                 If Not String.IsNullOrEmpty(.txtTitle.Text) Then
+                    Master.currMovie.Movie.Title = .txtTitle.Text.Trim
+
                     If Master.eSettings.MovieDisplayYear AndAlso Not String.IsNullOrEmpty(.mtxtYear.Text.Trim) Then
                         Master.currMovie.ListTitle = String.Format("{0} ({1})", StringUtils.FilterTokens_Movie(.txtTitle.Text.Trim), .mtxtYear.Text.Trim)
                     Else
                         Master.currMovie.ListTitle = StringUtils.FilterTokens_Movie(.txtTitle.Text.Trim)
                     End If
-                    Master.currMovie.Movie.Title = .txtTitle.Text.Trim
                 End If
 
-                If Not String.IsNullOrEmpty(.txtOriginalTitle.Text) Then
-                    Master.currMovie.Movie.OriginalTitle = .txtOriginalTitle.Text.Trim
-                Else
-                    Master.currMovie.Movie.OriginalTitle = StringUtils.FilterTokens_Movie(.txtTitle.Text.Trim)
-                End If
+                Master.currMovie.Movie.OriginalTitle = .txtOriginalTitle.Text.Trim
 
                 If Not String.IsNullOrEmpty(.txtSortTitle.Text) Then
                     Master.currMovie.Movie.SortTitle = .txtSortTitle.Text.Trim
