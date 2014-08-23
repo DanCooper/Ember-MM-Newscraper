@@ -112,6 +112,17 @@ Public Class NFO
         End If
     End Function
 
+    ''' <summary>
+    ''' Return the "best" audio stream of the videofile
+    ''' </summary>
+    ''' <param name="miFIA"><c>MediaInfo.Fileinfo</c> The Mediafile-container of the videofile</param>
+    ''' <returns>The best <c>MediaInfo.Audio</c> stream information of the videofile</returns>
+    ''' <remarks>
+    ''' This is used to determine which audio stream information should be displayed in Ember main view (icon display)
+    ''' The audiostream with most channels will be returned - if there are 2 or more streams which have the same "highest" channelcount then either the "DTSHD" stream or the one with highest bitrate will be returned
+    ''' 
+    ''' 2014/08/12 cocotus - Should work better: If there's more than one audiostream which highest channelcount, the one with highest bitrate or the DTSHD stream will be returned
+    ''' </remarks>
     Public Shared Function GetBestAudio(ByVal miFIA As MediaInfo.Fileinfo, ByVal ForTV As Boolean) As MediaInfo.Audio
         '//
         ' Get the highest values from file info
@@ -121,7 +132,9 @@ Public Class NFO
         Try
             Dim sinMostChannels As Single = 0
             Dim sinChans As Single = 0
-
+            Dim sinMostBitrate As Single = 0
+            Dim sinBitrate As Single = 0
+            Dim sinCodec As String = ""
             fiaOut.Codec = String.Empty
             fiaOut.Channels = String.Empty
             fiaOut.Language = String.Empty
@@ -133,7 +146,14 @@ Public Class NFO
             For Each miAudio As MediaInfo.Audio In miFIA.StreamDetails.Audio
                 If Not String.IsNullOrEmpty(miAudio.Channels) Then
                     sinChans = NumUtils.ConvertToSingle(EmberAPI.MediaInfo.FormatAudioChannel(miAudio.Channels))
-                    If sinChans > sinMostChannels Then
+                    sinBitrate = 0
+                    If IsNumeric(miAudio.Bitrate) Then
+                        sinBitrate = CInt(miAudio.Bitrate)
+                    End If
+                    If sinChans >= sinMostChannels AndAlso (sinBitrate > sinMostBitrate OrElse miAudio.Codec.ToLower.Contains("dtshd") OrElse sinBitrate = 0) Then
+                        If IsNumeric(miAudio.Bitrate) Then
+                            sinMostBitrate = CInt(miAudio.Bitrate)
+                        End If
                         sinMostChannels = sinChans
                         fiaOut.Codec = miAudio.Codec
                         fiaOut.Channels = sinChans.ToString
