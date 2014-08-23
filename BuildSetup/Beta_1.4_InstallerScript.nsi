@@ -105,6 +105,10 @@ Section "Ember Media Manager" SecEmberMediaManager
   SetShellVarContext current
   SectionIn RO
   SectionIn 1 2 3 #section is in install type Portable/UserFolder/Minimal
+  
+  ;Cleanup old modules folder
+  RMDir /r "$INSTDIR\Modules"
+  
   ;ADD YOUR OWN FILES HERE...
   SetOutPath "$INSTDIR"
   File "${emm_root}\${emm_folder}\${emm_filename}"
@@ -113,6 +117,10 @@ Section "Ember Media Manager" SecEmberMediaManager
   File "${emm_root}\${emm_folder}\NLog.config"
   File "${emm_root}\${emm_folder}\*.xml"
   File "${emm_root}\${emm_folder}\*.dll"
+  
+  ;workaround for 23.08.2014 beta
+  File "${emm_root}\${emm_folder}\Modules\scraper.Data.TMDB.dll"
+  
   SetOutPath "$INSTDIR\Bin"
   File /r /x *.so "${emm_root}\${emm_folder}\Bin\*.*"
   SetOutPath "$INSTDIR\DB"
