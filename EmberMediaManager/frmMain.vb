@@ -1734,6 +1734,8 @@ Public Class frmMain
 
                 dScrapeRow = dRow
 
+                logger.Trace(String.Concat("Start scraping: ", OldTitle))
+
                 DBScrapeMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(dRow.Item(0)))
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEditMovie, Nothing, DBScrapeMovie)
 
@@ -11937,6 +11939,40 @@ doCancel:
                         End If
                         Me.SetControlsEnabled(True)
                     Case 1 'MovieSets list
+                        If Me.dgvMovieSets.SelectedRows.Count > 1 Then Return
+                        Me.SetControlsEnabled(False)
+
+                        Dim indX As Integer = Me.dgvMovieSets.SelectedRows(0).Index
+                        Dim ID As Integer = Convert.ToInt32(Me.dgvMovieSets.Item(0, indX).Value)
+
+                        Dim dlgImgS As dlgImgSelect
+                        Dim aList As New List(Of MediaContainers.Image)
+                        Dim pResults As New MediaContainers.Image
+                        Dim efList As New List(Of String)
+                        Dim etList As New List(Of String)
+                        Dim newImage As New Images
+
+                        If Not ModulesManager.Instance.ScrapeImage_MovieSet(Master.currMovieSet, Enums.ScraperCapabilities.ClearArt, aList) Then
+                            If aList.Count > 0 Then
+                                dlgImgS = New dlgImgSelect()
+                                If dlgImgS.ShowDialog(Master.currMovieSet, Enums.MovieImageType.ClearArt, aList, efList, etList, True) = DialogResult.OK Then
+                                    pResults = dlgImgS.Results
+                                    If Not String.IsNullOrEmpty(pResults.URL) Then
+                                        Cursor = Cursors.WaitCursor
+                                        pResults.WebImage.FromWeb(pResults.URL)
+                                        newImage = pResults.WebImage
+                                        newImage.IsEdit = True
+                                        newImage.SaveAsMovieSetClearArt(Master.currMovieSet)
+                                        Cursor = Cursors.Default
+                                        Me.SetMovieSetListItemAfterEdit(ID, indX)
+                                        Me.RefreshMovieSet(ID, False, False, False, False)
+                                    End If
+                                End If
+                            Else
+                                MsgBox(Master.eLang.GetString(1099, "No ClearArt images could be found. Please check to see if any ClearArt scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(1102, "No ClearArts Found"))
+                            End If
+                        End If
+                        Me.SetControlsEnabled(True)
                     Case 2 'TV list
                         'TV Show list
                         If Me.dgvTVShows.Focused Then
@@ -12044,6 +12080,40 @@ doCancel:
                         End If
                         Me.SetControlsEnabled(True)
                     Case 1 'MovieSets list
+                        If Me.dgvMovieSets.SelectedRows.Count > 1 Then Return
+                        Me.SetControlsEnabled(False)
+
+                        Dim indX As Integer = Me.dgvMovieSets.SelectedRows(0).Index
+                        Dim ID As Integer = Convert.ToInt32(Me.dgvMovieSets.Item(0, indX).Value)
+
+                        Dim dlgImgS As dlgImgSelect
+                        Dim aList As New List(Of MediaContainers.Image)
+                        Dim pResults As New MediaContainers.Image
+                        Dim efList As New List(Of String)
+                        Dim etList As New List(Of String)
+                        Dim newImage As New Images
+
+                        If Not ModulesManager.Instance.ScrapeImage_MovieSet(Master.currMovieSet, Enums.ScraperCapabilities.Fanart, aList) Then
+                            If aList.Count > 0 Then
+                                dlgImgS = New dlgImgSelect()
+                                If dlgImgS.ShowDialog(Master.currMovieSet, Enums.MovieImageType.Fanart, aList, efList, etList, True) = DialogResult.OK Then
+                                    pResults = dlgImgS.Results
+                                    If Not String.IsNullOrEmpty(pResults.URL) Then
+                                        Cursor = Cursors.WaitCursor
+                                        pResults.WebImage.FromWeb(pResults.URL)
+                                        newImage = pResults.WebImage
+                                        newImage.IsEdit = True
+                                        newImage.SaveAsMovieSetFanart(Master.currMovieSet)
+                                        Cursor = Cursors.Default
+                                        Me.SetMovieSetListItemAfterEdit(ID, indX)
+                                        Me.RefreshMovieSet(ID, False, False, False, False)
+                                    End If
+                                End If
+                            Else
+                                MsgBox(Master.eLang.GetString(969, "No fanart could be found. Please check to see if any fanart scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(970, "No Fanart Found"))
+                            End If
+                        End If
+                        Me.SetControlsEnabled(True)
                     Case 2 'TV list
                         'TV Show list
                         If Me.dgvTVShows.Focused Then
@@ -12185,6 +12255,40 @@ doCancel:
                         End If
                         Me.SetControlsEnabled(True)
                     Case 1 'MovieSets list
+                        If Me.dgvMovieSets.SelectedRows.Count > 1 Then Return
+                        Me.SetControlsEnabled(False)
+
+                        Dim indX As Integer = Me.dgvMovieSets.SelectedRows(0).Index
+                        Dim ID As Integer = Convert.ToInt32(Me.dgvMovieSets.Item(0, indX).Value)
+
+                        Dim dlgImgS As dlgImgSelect
+                        Dim aList As New List(Of MediaContainers.Image)
+                        Dim pResults As New MediaContainers.Image
+                        Dim efList As New List(Of String)
+                        Dim etList As New List(Of String)
+                        Dim newImage As New Images
+
+                        If Not ModulesManager.Instance.ScrapeImage_MovieSet(Master.currMovieSet, Enums.ScraperCapabilities.Poster, aList) Then
+                            If aList.Count > 0 Then
+                                dlgImgS = New dlgImgSelect()
+                                If dlgImgS.ShowDialog(Master.currMovieSet, Enums.MovieImageType.Poster, aList, efList, etList, True) = DialogResult.OK Then
+                                    pResults = dlgImgS.Results
+                                    If Not String.IsNullOrEmpty(pResults.URL) Then
+                                        Cursor = Cursors.WaitCursor
+                                        pResults.WebImage.FromWeb(pResults.URL)
+                                        newImage = pResults.WebImage
+                                        newImage.IsEdit = True
+                                        newImage.SaveAsMovieSetPoster(Master.currMovieSet)
+                                        Cursor = Cursors.Default
+                                        Me.SetMovieSetListItemAfterEdit(ID, indX)
+                                        Me.RefreshMovieSet(ID, False, False, False, False)
+                                    End If
+                                End If
+                            Else
+                                MsgBox(Master.eLang.GetString(971, "No poster could be found. Please check to see if any poster scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(972, "No Poster Found"))
+                            End If
+                        End If
+                        Me.SetControlsEnabled(True)
                     Case 2 'TV list
                         'TV Show list
                         If Me.dgvTVShows.Focused Then
@@ -12326,6 +12430,40 @@ doCancel:
                         End If
                         Me.SetControlsEnabled(True)
                     Case 1 'MovieSets list
+                        If Me.dgvMovieSets.SelectedRows.Count > 1 Then Return
+                        Me.SetControlsEnabled(False)
+
+                        Dim indX As Integer = Me.dgvMovieSets.SelectedRows(0).Index
+                        Dim ID As Integer = Convert.ToInt32(Me.dgvMovieSets.Item(0, indX).Value)
+
+                        Dim dlgImgS As dlgImgSelect
+                        Dim aList As New List(Of MediaContainers.Image)
+                        Dim pResults As New MediaContainers.Image
+                        Dim efList As New List(Of String)
+                        Dim etList As New List(Of String)
+                        Dim newImage As New Images
+
+                        If Not ModulesManager.Instance.ScrapeImage_MovieSet(Master.currMovieSet, Enums.ScraperCapabilities.Landscape, aList) Then
+                            If aList.Count > 0 Then
+                                dlgImgS = New dlgImgSelect()
+                                If dlgImgS.ShowDialog(Master.currMovieSet, Enums.MovieImageType.Landscape, aList, efList, etList, True) = DialogResult.OK Then
+                                    pResults = dlgImgS.Results
+                                    If Not String.IsNullOrEmpty(pResults.URL) Then
+                                        Cursor = Cursors.WaitCursor
+                                        pResults.WebImage.FromWeb(pResults.URL)
+                                        newImage = pResults.WebImage
+                                        newImage.IsEdit = True
+                                        newImage.SaveAsMovieSetLandscape(Master.currMovieSet)
+                                        Cursor = Cursors.Default
+                                        Me.SetMovieSetListItemAfterEdit(ID, indX)
+                                        Me.RefreshMovieSet(ID, False, False, False, False)
+                                    End If
+                                End If
+                            Else
+                                MsgBox(Master.eLang.GetString(1058, "No Landscape images could be found. Please check to see if any Landscape scrapers are enabled."), MsgBoxStyle.Information, Master.eLang.GetString(1197, "No Landscape Found"))
+                            End If
+                        End If
+                        Me.SetControlsEnabled(True)
                     Case 2 'TV list
                         'TV Show list
                         If Me.dgvTVShows.Focused Then
