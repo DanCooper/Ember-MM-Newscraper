@@ -980,7 +980,6 @@
     <string>.wav</string>
     <string>.wma</string>
   </FileSystemValidThemeExts>
-  <Version>r0</Version>
   <GeneralWindowLoc>
     <X>-8</X>
     <Y>-8</Y>
